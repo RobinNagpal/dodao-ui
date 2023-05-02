@@ -20,8 +20,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {isThemeUniswap && <UniswapTheme />}
         {isThemeAave && <AaveTheme />}
         {isThemeCompound && <CompoundTheme />}
-        <NavigationWrapper />
-        <main className="lg:pr-96">{children}</main>
+        <div className="flex">
+          <div className="w-full">
+            <NavigationWrapper>
+              <main className="lg:pr-96 mt-16">{children}</main>
+            </NavigationWrapper>
+          </div>
+        </div>
       </body>
     </html>
   );
