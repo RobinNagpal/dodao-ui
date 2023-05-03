@@ -1795,6 +1795,14 @@
   resolved "https://registry.yarnpkg.com/@web3-react/types/-/types-6.0.7.tgz#34a6204224467eedc6123abaf55fbb6baeb2809f"
   integrity sha512-ofGmfDhxmNT1/P/MgVa8IKSkCStFiyvXe+U5tyZurKdrtTDFU+wJ/LxClPDtFerWpczNFPUSrKcuhfPX1sI6+A==
 
+"@web3-react/url@^8.2.0":
+  version "8.2.0"
+  resolved "https://registry.yarnpkg.com/@web3-react/url/-/url-8.2.0.tgz#5df80f213bf6b6f382aa842ae37ad0703d413a37"
+  integrity sha512-dt1i8AgZso6y0sX67JSZ1DzsU511iFu4Gcxksbw/yJPlFybsHco+Fcg94WLjWj4ec26kVRUBySUVCyXrYlg0kQ==
+  dependencies:
+    "@ethersproject/providers" "^5"
+    "@web3-react/types" "^8.2.0"
+
 "@web3-react/walletconnect-connector@6.2.13":
   version "6.2.13"
   resolved "https://registry.yarnpkg.com/@web3-react/walletconnect-connector/-/walletconnect-connector-6.2.13.tgz#b51cda088e8706e4fbff8da486ab6f09cf2980b1"

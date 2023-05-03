@@ -1,5 +1,5 @@
-import { coinbaseWallet } from '@/app/authy/connectors/coinbaseWallet';
-import { metaMask } from '@/app/authy/connectors/metaMask';
+import { coinbaseWallet } from '@/app/login/connectors/coinbaseWallet';
+import { metaMask } from '@/app/login/connectors/metaMask';
 import { Connector } from '@web3-react/types';
 import { ethers } from 'ethers';
 import { Eip1193Provider } from 'ethers/src.ts/providers/provider-browser';
