@@ -3,10 +3,10 @@ import { useWeb3React, Web3ReactHooks, Web3ReactProvider } from '@web3-react/cor
 import type { MetaMask } from '@web3-react/metamask';
 import type { Network } from '@web3-react/network';
 
-import { coinbaseWallet, hooks as coinbaseWalletHooks } from '../connectors/coinbaseWallet';
-import { hooks as metaMaskHooks, metaMask } from '../connectors/metaMask';
-import { hooks as networkHooks, network } from '../connectors/network';
-import { getName } from '../utils';
+import { coinbaseWallet, hooks as coinbaseWalletHooks } from '@/app/authentication/connectors/coinbaseWallet';
+import { hooks as metaMaskHooks, metaMask } from '@/app/authentication/connectors/metaMask';
+import { hooks as networkHooks, network } from '@/app/authentication/connectors/network';
+import { getName } from '@/app/authentication/utils';
 
 const connectors: [MetaMask | CoinbaseWallet | Network, Web3ReactHooks][] = [
   [metaMask, metaMaskHooks],
@@ -20,10 +20,6 @@ function Child() {
   return null;
 }
 
-export default function ProviderExample() {
-  return (
-    <Web3ReactProvider connectors={connectors}>
-      <Child />
-    </Web3ReactProvider>
-  );
+export default function ProviderExample({ children }: any) {
+  return <Web3ReactProvider connectors={connectors}>{children}</Web3ReactProvider>;
 }

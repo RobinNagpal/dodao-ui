@@ -1,42 +1,28 @@
-import type { CoinbaseWallet } from '@web3-react/coinbase-wallet'
-import type { Web3ReactHooks } from '@web3-react/core'
-import type { GnosisSafe } from '@web3-react/gnosis-safe'
-import type { MetaMask } from '@web3-react/metamask'
-import type { Network } from '@web3-react/network'
-import type { WalletConnect } from '@web3-react/walletconnect'
-import type { WalletConnect as WalletConnectV2 } from '@web3-react/walletconnect-v2'
+import type { CoinbaseWallet } from '@web3-react/coinbase-wallet';
+import type { Web3ReactHooks } from '@web3-react/core';
+import type { MetaMask } from '@web3-react/metamask';
+import type { Network } from '@web3-react/network';
 
-import { getName } from '../utils'
-import { Accounts } from './Accounts'
-import { Chain } from './Chain'
-import { ConnectWithSelect } from './ConnectWithSelect'
-import { Status } from './Status'
+import { getName } from '../utils';
+import { Accounts } from './Accounts';
+import { Chain } from './Chain';
+import { ConnectWithSelect } from './ConnectWithSelect';
+import { Status } from './Status';
 
 interface Props {
-  connector: MetaMask | WalletConnect | WalletConnectV2 | CoinbaseWallet | Network | GnosisSafe
-  activeChainId: ReturnType<Web3ReactHooks['useChainId']>
-  chainIds?: ReturnType<Web3ReactHooks['useChainId']>[]
-  isActivating: ReturnType<Web3ReactHooks['useIsActivating']>
-  isActive: ReturnType<Web3ReactHooks['useIsActive']>
-  error: Error | undefined
-  setError: (error: any) => void
-  ENSNames: ReturnType<Web3ReactHooks['useENSNames']>
-  provider?: ReturnType<Web3ReactHooks['useProvider']>
-  accounts?: string[]
+  connector: MetaMask | CoinbaseWallet | Network;
+  activeChainId: ReturnType<Web3ReactHooks['useChainId']>;
+  chainIds?: ReturnType<Web3ReactHooks['useChainId']>[];
+  isActivating: ReturnType<Web3ReactHooks['useIsActivating']>;
+  isActive: ReturnType<Web3ReactHooks['useIsActive']>;
+  error: Error | undefined;
+  setError: (error: any) => void;
+  ENSNames: ReturnType<Web3ReactHooks['useENSNames']>;
+  provider?: ReturnType<Web3ReactHooks['useProvider']>;
+  accounts?: string[];
 }
 
-export function Card({
-  connector,
-  activeChainId,
-  chainIds,
-  isActivating,
-  isActive,
-  error,
-  setError,
-  ENSNames,
-  accounts,
-  provider,
-}: Props) {
+export function Card({ connector, activeChainId, chainIds, isActivating, isActive, error, setError, ENSNames, accounts, provider }: Props) {
   return (
     <div
       style={{
@@ -69,5 +55,5 @@ export function Card({
         setError={setError}
       />
     </div>
-  )
+  );
 }
