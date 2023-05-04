@@ -29,8 +29,8 @@ const StyledButton = styled.button<ButtonProps>`
   color: var(--link-color);
   border-radius: 0.5rem;
   outline: none;
-  height: 46px;
-  font-size: 18px;
+  height: 36px;
+  font-size: 15px;
 
   ${(props) =>
     props.size === 'sm' &&
