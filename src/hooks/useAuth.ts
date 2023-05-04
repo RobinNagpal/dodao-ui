@@ -11,6 +11,7 @@ export function useAuth() {
   const [active, setActive] = useState<boolean>(false);
   const { data, status } = useSession();
 
+  console.log('useAuth', { data, status });
   async function onSignInWithCrypto() {
     try {
       if (!window.ethereum) {
