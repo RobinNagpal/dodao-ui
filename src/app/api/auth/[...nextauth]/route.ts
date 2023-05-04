@@ -39,6 +39,7 @@ async function authorizeCrypto(
   return {
     id: user.id,
     name: user.publicAddress,
+    username: user.publicAddress,
     publicAddress: user.publicAddress,
   };
 }

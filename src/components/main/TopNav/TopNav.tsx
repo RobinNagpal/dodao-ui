@@ -1,14 +1,22 @@
+import ButtonLarge from '@/components/core/button/ButtonLarge';
 import { DesktopNavLink } from '@/components/main/TopNav/DesktopNavLink';
 import { DesktopProfileMenu } from '@/components/main/TopNav/DesktopProfileMenu';
 import { MobileNavLink } from '@/components/main/TopNav/MobileNavLink';
 import { MobileProfileMenu } from '@/components/main/TopNav/MobileProfileMenu';
+import { useAuth } from '@/hooks/useAuth';
+import { DoDAOSession } from '@/types/DoDAOSession';
 import { Disclosure } from '@headlessui/react';
 import { PlusIcon } from '@heroicons/react/20/solid';
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { useSession } from 'next-auth/react';
 
 export default function TopNav() {
   const { data: session } = useSession();
+  const { loginWithMetamask, logout } = useAuth();
+
+  const login = () => {
+    loginWithMetamask();
+  };
   console.log('TopNav session', session);
   return (
     <Disclosure as="nav" className="bg-white shadow">
@@ -38,25 +46,13 @@ export default function TopNav() {
               </div>
               <div className="flex items-center">
                 <div className="flex-shrink-0">
-                  <button
-                    type="button"
-                    className="relative inline-flex items-center gap-x-1.5 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                  >
+                  <ButtonLarge type="button" variant="contained" primary>
                     <PlusIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
-                    New Job
-                  </button>
+                    Create
+                  </ButtonLarge>
                 </div>
                 <div className="hidden md:ml-4 md:flex md:flex-shrink-0 md:items-center">
-                  <button
-                    type="button"
-                    className="rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                  >
-                    <span className="sr-only">View notifications</span>
-                    <BellIcon className="h-6 w-6" aria-hidden="true" />
-                  </button>
-
-                  {/* Profile dropdown */}
-                  <DesktopProfileMenu />
+                  <DesktopProfileMenu session={session as DoDAOSession} />
                 </div>
               </div>
             </div>
@@ -70,7 +66,7 @@ export default function TopNav() {
               <MobileNavLink label="Simulations" />
               <MobileNavLink label="Timelines" />
             </div>
-            <MobileProfileMenu />
+            <MobileProfileMenu session={session as DoDAOSession} />
           </Disclosure.Panel>
         </>
       )}

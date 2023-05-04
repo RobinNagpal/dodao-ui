@@ -1,18 +1,18 @@
+import { DoDAOSession } from '@/types/DoDAOSession';
 import classNames from '@/utils/classNames';
 import { Menu, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
 
-export function DesktopProfileMenu() {
+interface ProfileMenuProps {
+  session: DoDAOSession | null;
+}
+export function DesktopProfileMenu({ session }: ProfileMenuProps) {
   return (
     <Menu as="div" className="relative ml-3">
       <div>
         <Menu.Button className="flex rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
           <span className="sr-only">Open user menu</span>
-          <img
-            className="h-8 w-8 rounded-full"
-            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-            alt=""
-          />
+          <img className="h-10 w-10 rounded-full" src={`https://api.multiavatar.com/${session?.username || 'unknown'}.svg`} alt="" />
         </Menu.Button>
       </div>
       <Transition
