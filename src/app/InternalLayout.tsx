@@ -1,4 +1,5 @@
 'use client';
+import MainContainer from '@/components/main/Container/MainContainer';
 import TopNav from '@/components/main/TopNav/TopNav';
 import AaveTheme from '@/components/themes/AaveTheme';
 import CompoundTheme from '@/components/themes/CompoundTheme';
@@ -29,7 +30,9 @@ export default function InternalLayout({ children, session }: InternalLayoutProp
         {isThemeAave && <AaveTheme />}
         {isThemeCompound && <CompoundTheme />}
         <TopNav />
-        <main className="mx-auto max-w-7xl sm:px-6 lg:px-8">{children}</main>
+        <main>
+          <MainContainer>{children}</MainContainer>
+        </main>
       </SessionProvider>
     </Web3ReactProviderWrapper>
   );

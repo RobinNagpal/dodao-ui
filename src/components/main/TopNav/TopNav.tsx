@@ -1,31 +1,12 @@
-import { Fragment } from 'react';
+import { DesktopNavLink } from '@/components/main/TopNav/Desktop/DesktopNavLink';
+import { MobileNavLink } from '@/components/main/TopNav/Mobile/MobileNavLink';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { PlusIcon } from '@heroicons/react/20/solid';
-import styled from 'styled-components';
+import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { Fragment } from 'react';
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(' ');
-}
-
-const StyledNavLink = styled.a<{ isActive: boolean }>`
-  border-bottom: ${(props) => (props.isActive ? '2px solid var(--primary-color)' : '')};
-`;
-
-function NavLink({ label, isActive = false }: { label: string; isActive?: boolean }) {
-  return (
-    <StyledNavLink
-      href="#"
-      isActive={isActive}
-      className={
-        isActive
-          ? 'inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium text-gray-900'
-          : 'inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700'
-      }
-    >
-      {label}
-    </StyledNavLink>
-  );
 }
 
 export default function TopNav() {
@@ -48,11 +29,11 @@ export default function TopNav() {
                   <img className="hidden h-8 w-auto lg:block" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="Your Company" />
                 </div>
                 <div className="hidden md:ml-6 md:flex md:space-x-8">
-                  <NavLink label="Guides" isActive />
-                  <NavLink label="Bytes" />
-                  <NavLink label="Courses" />
-                  <NavLink label="Simulations" />
-                  <NavLink label="Timelines" />
+                  <DesktopNavLink label="Guides" isActive />
+                  <DesktopNavLink label="Bytes" />
+                  <DesktopNavLink label="Courses" />
+                  <DesktopNavLink label="Simulations" />
+                  <DesktopNavLink label="Timelines" />
                 </div>
               </div>
               <div className="flex items-center">
@@ -127,35 +108,11 @@ export default function TopNav() {
 
           <Disclosure.Panel className="md:hidden">
             <div className="space-y-1 pb-3 pt-2">
-              {/* Current: "bg-indigo-50 border-indigo-500 text-indigo-700", Default: "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700" */}
-              <Disclosure.Button
-                as="a"
-                href="#"
-                className="block border-l-4 border-indigo-500 bg-indigo-50 py-2 pl-3 pr-4 text-base font-medium text-indigo-700 sm:pl-5 sm:pr-6"
-              >
-                Dashboard
-              </Disclosure.Button>
-              <Disclosure.Button
-                as="a"
-                href="#"
-                className="block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700 sm:pl-5 sm:pr-6"
-              >
-                Team
-              </Disclosure.Button>
-              <Disclosure.Button
-                as="a"
-                href="#"
-                className="block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700 sm:pl-5 sm:pr-6"
-              >
-                Projects
-              </Disclosure.Button>
-              <Disclosure.Button
-                as="a"
-                href="#"
-                className="block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700 sm:pl-5 sm:pr-6"
-              >
-                Calendar
-              </Disclosure.Button>
+              <MobileNavLink label="Guides" isActive />
+              <MobileNavLink label="Bytes" />
+              <MobileNavLink label="Courses" />
+              <MobileNavLink label="Simulations" />
+              <MobileNavLink label="Timelines" />
             </div>
             <div className="border-t border-gray-200 pb-3 pt-4">
               <div className="flex items-center px-4 sm:px-6">
