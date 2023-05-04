@@ -46,8 +46,8 @@ async function authorizeCrypto(
 export const authOptions: AuthOptions = {
   // Setting error and signin pages to our /auth custom page
   pages: {
-    signIn: '/auth',
-    error: '/auth',
+    signIn: '/login',
+    error: '/login',
   },
   providers: [
     // see: https://next-auth.js.org/configuration/providers/credentials

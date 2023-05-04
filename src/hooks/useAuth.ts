@@ -3,15 +3,13 @@ import { metaMask } from '@/app/login/connectors/metaMask';
 import { Connector } from '@web3-react/types';
 import { ethers } from 'ethers';
 import { Eip1193Provider } from 'ethers/src.ts/providers/provider-browser';
-import { signIn, signOut, useSession } from 'next-auth/react';
+import { signIn, signOut } from 'next-auth/react';
 import { useCallback, useState } from 'react';
 
 export function useAuth() {
   const [web3Selection, setWeb3Selection] = useState<{ connector: Connector } | undefined>(); // ['metamask', 'walletconnect', 'coinbase'
   const [active, setActive] = useState<boolean>(false);
-  const { data, status } = useSession();
 
-  console.log('useAuth', { data, status });
   async function onSignInWithCrypto() {
     try {
       if (!window.ethereum) {
@@ -44,7 +42,7 @@ export function useAuth() {
       await signIn('crypto', {
         publicAddress,
         signedNonce,
-        callbackUrl: '/',
+        callbackUrl: '/login',
       });
     } catch {
       window.alert('Error with signing, please try again.');
@@ -93,8 +91,6 @@ export function useAuth() {
     loginWithDiscord,
     loginWithEmailPassword,
     logout,
-    session: data,
-    status,
     active,
   };
 }

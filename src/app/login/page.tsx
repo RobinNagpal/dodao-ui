@@ -6,19 +6,18 @@ import SingleSectionModal from '@/components/core/modal/SingleSectionModal';
 import { useAuth } from '@/hooks/useAuth';
 import React, { useState } from 'react';
 
-function LoginPage() {
+function LoginPage({ session }: { session: any }) {
   const [showModal, setShowModal] = useState(false);
-  const { loginWithMetamask, loginWithCoinbase, loginWithGoogle, loginWithDiscord, loginWithEmailPassword, logout, session, status, active } = useAuth();
+  const { logout, active } = useAuth();
 
   return (
     <div className="w-full flex justify-center">
       <div>
         <LoginButtons />
         <div className="flex-col">
-          {session && <p>Welcome, {session?.user?.email}</p>}
-          {session && <p>Session, {JSON.stringify(session || {})}</p>}
-          {status && <p>Status, {status}</p>}
-          {active && <p>Connected with Web3</p>}
+          <p>Welcome, {session?.user?.email}</p>
+          <p>Session, {JSON.stringify(session || 'No session')}</p>
+          <p>Connected with Web3</p>
           <ButtonLarge variant={'contained'} primary onClick={logout}>
             Logout
           </ButtonLarge>

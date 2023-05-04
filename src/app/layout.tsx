@@ -1,39 +1,25 @@
-'use client';
-import NavigationWrapper from '@/components/main/NavigationWrapper';
-import AaveTheme from '@/components/themes/AaveTheme';
-import CompoundTheme from '@/components/themes/CompoundTheme';
-import GlobalTheme from '@/components/themes/GlobalTheme';
-import UniswapTheme from '@/components/themes/UniswapTheme';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { GetServerSidePropsContext } from 'next';
+import { getServerSession } from 'next-auth';
+import { SessionProvider } from 'next-auth/react';
 import './globals.css';
-import SessionProvider from '@/context/sessionProvider';
-import Web3ReactProviderWrapper from '@/context/web3ReactProvider';
+import InternalLayout from './InternalLayout';
 
 // Based on - https://tailwindui.com/components/application-ui/page-examples/home-screens
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const isThemeCompound = true;
-  const isThemeAave = false;
-  const isThemeUniswap = false;
+interface RootLayoutProps {
+  children: React.ReactNode;
+}
+
+export default async function RootLayout({ children }: RootLayoutProps) {
+  const session = await getServerSession(authOptions);
+  console.log('session', session);
 
   return (
-    <Web3ReactProviderWrapper>
-      <SessionProvider>
-        <html lang="en" className="h-full">
-          <body className="h-full">
-            <GlobalTheme />
-            {isThemeUniswap && <UniswapTheme />}
-            {isThemeAave && <AaveTheme />}
-            {isThemeCompound && <CompoundTheme />}
-            <div className="flex">
-              <div className="w-full">
-                <NavigationWrapper>
-                  <main className="w-full mt-16">{children}</main>
-                </NavigationWrapper>
-              </div>
-            </div>
-          </body>
-        </html>
-      </SessionProvider>
-    </Web3ReactProviderWrapper>
+    <html lang="en" className="h-full">
+      <body className="h-full">
+        <InternalLayout session={session}>{children}</InternalLayout>
+      </body>
+    </html>
   );
 }
