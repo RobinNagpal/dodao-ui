@@ -9,6 +9,12 @@ import { useCallback, useState } from 'react';
 export function useAuth() {
   const [web3Selection, setWeb3Selection] = useState<{ connector: Connector } | undefined>(); // ['metamask', 'walletconnect', 'coinbase'
   const [active, setActive] = useState<boolean>(false);
+  const [processing, setProcessing] = useState<boolean>(false);
+  const [processingMetaMask, setProcessingMetaMask] = useState<boolean>(false);
+  const [processingCoinbase, setProcessingCoinbase] = useState<boolean>(false);
+  const [processingGoogle, setProcessingGoogle] = useState<boolean>(false);
+  const [processingDiscord, setProcessingDiscord] = useState<boolean>(false);
+  const [processingEmailPassword, setProcessingEmailPassword] = useState<boolean>(false);
 
   async function onSignInWithCrypto() {
     try {
@@ -52,31 +58,67 @@ export function useAuth() {
     }
   }
 
-  const loginWithMetamask = useCallback(async () => {
-    await metaMask.activate();
-    await onSignInWithCrypto();
-    setWeb3Selection({ connector: metaMask });
+  const doSigin = async (loginFn: () => Promise<void>) => {
+    try {
+      setProcessing(true);
+      await loginFn();
+      setProcessing(false);
+      setActive(true);
+      setProcessingMetaMask(false);
+      setProcessingCoinbase(false);
+      setProcessingGoogle(false);
+      setProcessingDiscord(false);
+      setProcessingEmailPassword(false);
+    } catch (error) {
+      console.log(error);
+      setProcessing(false);
+      setProcessingMetaMask(false);
+      setProcessingCoinbase(false);
+      setProcessingGoogle(false);
+      setProcessingDiscord(false);
+      setProcessingEmailPassword(false);
 
-    setActive(true);
+      throw error;
+    }
+  };
+
+  const loginWithMetamask = useCallback(async () => {
+    setProcessingMetaMask(true);
+    await doSigin(async () => {
+      await metaMask.activate();
+      await onSignInWithCrypto();
+      setWeb3Selection({ connector: metaMask });
+    });
   }, []);
 
   const loginWithCoinbase = useCallback(async () => {
-    await coinbaseWallet.activate();
-    await onSignInWithCrypto();
-    setWeb3Selection({ connector: coinbaseWallet });
-    setActive(true);
+    setProcessingCoinbase(true);
+    await doSigin(async () => {
+      await coinbaseWallet.activate();
+      await onSignInWithCrypto();
+      setWeb3Selection({ connector: coinbaseWallet });
+    });
   }, []);
 
   const loginWithGoogle = useCallback(async () => {
-    await signIn('google');
+    setProcessingGoogle(true);
+    await doSigin(async () => {
+      await signIn('google');
+    });
   }, []);
 
   const loginWithDiscord = useCallback(async () => {
-    await signIn('discord');
+    setProcessingDiscord(true);
+    await doSigin(async () => {
+      await signIn('discord');
+    });
   }, []);
 
   const loginWithEmailPassword = useCallback(async (email: string, password: string) => {
-    await signIn('credentials', { email, password });
+    setProcessingEmailPassword(true);
+    await doSigin(async () => {
+      await signIn('credentials', { email, password });
+    });
   }, []);
 
   const logout = useCallback(async () => {
@@ -95,5 +137,11 @@ export function useAuth() {
     loginWithEmailPassword,
     logout,
     active,
+    processing,
+    processingMetaMask,
+    processingCoinbase,
+    processingGoogle,
+    processingDiscord,
+    processingEmailPassword,
   };
 }

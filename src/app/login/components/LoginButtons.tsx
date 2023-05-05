@@ -1,33 +1,52 @@
-import ButtonLarge from '@/components/core/button/ButtonLarge';
+import ButtonLarge from '@/components/core/buttons/Button';
 import { useAuth } from '@/hooks/useAuth';
 import React from 'react';
 
 export function LoginButtons() {
-  const { loginWithMetamask, loginWithCoinbase, loginWithGoogle, loginWithDiscord, loginWithEmailPassword, logout, active } = useAuth();
+  const {
+    loginWithMetamask,
+    loginWithCoinbase,
+    loginWithGoogle,
+    loginWithDiscord,
+    loginWithEmailPassword,
+    processing,
+    processingMetaMask,
+    processingCoinbase,
+    processingGoogle,
+    processingDiscord,
+    processingEmailPassword,
+  } = useAuth();
   return (
     <div className="flex-col">
       <div className="mt-2 w-full">
-        <ButtonLarge variant={'outlined'} primary onClick={loginWithMetamask} className="w-full">
+        <ButtonLarge variant={'outlined'} primary onClick={loginWithMetamask} className="w-full" disabled={processing} loading={processingMetaMask}>
           Login with Metamask
         </ButtonLarge>
       </div>
       <div className="mt-2">
-        <ButtonLarge variant={'outlined'} primary onClick={loginWithCoinbase} className="w-full">
+        <ButtonLarge variant={'outlined'} primary onClick={loginWithCoinbase} className="w-full" disabled={processing} loading={processingCoinbase}>
           Login with Coinbase
         </ButtonLarge>
       </div>
       <div className="mt-2">
-        <ButtonLarge variant={'outlined'} primary onClick={loginWithGoogle} className="w-full">
+        <ButtonLarge variant={'outlined'} primary onClick={loginWithGoogle} className="w-full" disabled={processing} loading={processingGoogle}>
           Login with Google
         </ButtonLarge>
       </div>
       <div className="mt-2">
-        <ButtonLarge variant={'outlined'} primary onClick={loginWithDiscord} className="w-full">
+        <ButtonLarge variant={'outlined'} primary onClick={loginWithDiscord} className="w-full" disabled={processing} loading={processingDiscord}>
           Login with Discord
         </ButtonLarge>
       </div>
       <div className="mt-2">
-        <ButtonLarge variant={'outlined'} primary onClick={() => loginWithEmailPassword('email@example.com', 'password123')} className="w-full">
+        <ButtonLarge
+          variant={'outlined'}
+          primary
+          onClick={() => loginWithEmailPassword('email@example.com', 'password123')}
+          className="w-full"
+          disabled={processing}
+          loading={processingEmailPassword}
+        >
           Login with Email/Password
         </ButtonLarge>
       </div>

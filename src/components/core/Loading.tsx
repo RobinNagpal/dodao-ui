@@ -1,3 +1,4 @@
+import { Spinner } from '@/components/core/icons/Spinner';
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
 interface UiLoadingProps {
@@ -12,7 +13,7 @@ const Loading = styled.span<{ big: boolean }>`
     width: 100%;
   }
 
-  ${props =>
+  ${(props) =>
     props.big &&
     `
     svg {
@@ -64,34 +65,14 @@ const Svg = styled.svg<{ fillWhite: boolean }>`
   animation: ${rotate} 0.5s linear infinite;
   path {
     fill: var(--link-color);
-    ${props => props.fillWhite && 'fill: white;'}
+    ${(props) => props.fillWhite && 'fill: white;'}
   }
 `;
 
-export default function LoadingComponent({
-  fillWhite = false,
-  big = false,
-  overlay = false
-}: UiLoadingProps) {
+export default function LoadingComponent({ fillWhite = false, big = false, overlay = false }: UiLoadingProps) {
   return (
     <Loading className={overlay ? 'overlay' : ''} big={big}>
-      <span>
-        <Svg fillWhite={fillWhite}>
-          <path
-            className={fillWhite ? 'fill-white' : ''}
-            d="M25,5A20.14,20.14,0,0,1,45,22.88a2.51,2.51,0,0,0,2.49,2.26h0A2.52,2.52,0,0,0,50,22.33a25.14,25.14,0,0,0-50,0,2.52,2.52,0,0,0,2.5,2.81h0A2.51,2.51,0,0,0,5,22.88,20.14,20.14,0,0,1,25,5Z"
-          >
-            <animateTransform
-              attributeName="transform"
-              type="rotate"
-              from="0 25 25"
-              to="360 25 25"
-              dur="0.5s"
-              repeatCount="indefinite"
-            />
-          </path>
-        </Svg>
-      </span>
+      <Spinner />
     </Loading>
   );
 }

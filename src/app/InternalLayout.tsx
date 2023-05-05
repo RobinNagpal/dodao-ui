@@ -11,6 +11,7 @@ import Web3ReactProviderWrapper from '@/context/web3ReactProvider';
 import { Session } from 'next-auth';
 import { SessionProvider } from 'next-auth/react';
 import './globals.css';
+import styled from 'styled-components';
 
 // Based on - https://tailwindui.com/components/application-ui/page-examples/home-screens
 
@@ -30,17 +31,22 @@ function ThemeComponent() {
   return <GlobalTheme />;
 }
 
+const StyledMain = styled.main`
+  background-color: var(--bg-color);
+  color: var(--text-color);
+`;
+
 export default function InternalLayout({ children, session }: InternalLayoutProps) {
   return (
     <Web3ReactProviderWrapper>
       <SessionProvider session={session}>
         <ThemeComponent />
-        <LoginModal />
         <LoginModalProvider>
+          <LoginModal />
           <TopNav />
-          <main>
+          <StyledMain className="h-full">
             <MainContainer>{children}</MainContainer>
-          </main>
+          </StyledMain>
         </LoginModalProvider>
       </SessionProvider>
     </Web3ReactProviderWrapper>

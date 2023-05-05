@@ -47,6 +47,12 @@ const StyledButton = styled.button<ButtonProps>`
     css`
       border-color: var(--skin-border);
       ${props.primary && `color: var(--primary-color); border-color: var(--primary-color);`}
+
+      &:hover {
+        color: white;
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+      }
     `}
 
   ${(props) =>
@@ -58,9 +64,7 @@ const StyledButton = styled.button<ButtonProps>`
       border-color: var(--primary-color);
 
       &:hover {
-        color: white;
-        background-color: var(--primary-color);
-        border-color: var(--primary-color);
+        border-color: var(--text-color);
       }
 
       &:disabled {
@@ -107,7 +111,8 @@ const CustomButton = ({
       onClick={() => onClick?.()}
       className={className}
     >
-      {loading ? <LoadingComponent /> : children}
+      {loading && <LoadingComponent />}
+      {children}
     </StyledButton>
   );
 };

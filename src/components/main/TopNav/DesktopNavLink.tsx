@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
 const StyledNavLink = styled.a<{ isActive: boolean }>`
-  border-bottom: ${(props) => (props.isActive ? '2px solid var(--primary-color)' : '')};
-  color: ${(props) => (props.isActive ? 'var(--primary-color)' : '')};
+  border-bottom: ${(props) => (props.isActive ? '3px solid var(--primary-color)' : '')};
+  color: ${(props) => (props.isActive ? 'var(--primary-color)' : 'var(--text-color)')};
 `;
 
 export function DesktopNavLink({ label, isActive = false }: { label: string; isActive?: boolean }) {

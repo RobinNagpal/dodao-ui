@@ -1,6 +1,6 @@
 'use client';
 
-import ButtonLarge from '@/components/core/button/ButtonLarge';
+import ButtonLarge from '@/components/core/buttons/Button';
 import PageContainer from '@/components/main/Container/PageContainer';
 import { useLoginModalContext } from '@/context/LoginModalContext';
 import { useAuth } from '@/hooks/useAuth';

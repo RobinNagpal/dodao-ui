@@ -1,8 +1,5 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-import useStyledComponentsRegistry from '@/lib/styled-components';
-import { GetServerSidePropsContext } from 'next';
 import { getServerSession } from 'next-auth';
-import { SessionProvider } from 'next-auth/react';
 import './globals.css';
 import InternalLayout from './InternalLayout';
 
