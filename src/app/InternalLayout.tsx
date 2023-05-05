@@ -19,20 +19,24 @@ interface InternalLayoutProps {
   session: Session | null;
 }
 
-export default function InternalLayout({ children, session }: InternalLayoutProps) {
-  const isThemeCompound = true;
+function ThemeComponent() {
+  const isThemeCompound = false;
   const isThemeAave = false;
-  const isThemeUniswap = false;
+  const isThemeUniswap = true;
 
+  if (isThemeCompound) return <CompoundTheme />;
+  if (isThemeAave) return <AaveTheme />;
+  if (isThemeUniswap) return <UniswapTheme />;
+  return <GlobalTheme />;
+}
+
+export default function InternalLayout({ children, session }: InternalLayoutProps) {
   return (
     <Web3ReactProviderWrapper>
       <SessionProvider session={session}>
+        <ThemeComponent />
+        <LoginModal />
         <LoginModalProvider>
-          <LoginModal />
-          <GlobalTheme />
-          {isThemeUniswap && <UniswapTheme />}
-          {isThemeAave && <AaveTheme />}
-          {isThemeCompound && <CompoundTheme />}
           <TopNav />
           <main>
             <MainContainer>{children}</MainContainer>
