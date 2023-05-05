@@ -1,24 +1,24 @@
 'use client';
 
-import { LoginButtons } from '@/app/login/components/LoginButtons';
 import ButtonLarge from '@/components/core/button/ButtonLarge';
-import SingleSectionModal from '@/components/core/modal/SingleSectionModal';
 import PageContainer from '@/components/main/Container/PageContainer';
+import { useLoginModalContext } from '@/context/LoginModalContext';
 import { useAuth } from '@/hooks/useAuth';
-import React, { useState } from 'react';
+import { useSession } from 'next-auth/react';
+import React from 'react';
 
-function LoginPage({ session }: { session: any }) {
-  const [showModal, setShowModal] = useState(false);
+function LoginPage() {
+  const { data: session } = useSession();
   const { logout, active } = useAuth();
+  const { setShowModal } = useLoginModalContext();
 
   return (
     <PageContainer>
       <div className="w-full flex justify-center">
         <div>
-          <LoginButtons />
           <div className="flex-col">
-            <p>Welcome, {session?.user?.email}</p>
-            <p>Session, {JSON.stringify(session || 'No session')}</p>
+            <p>Welcome - {session?.username}</p>
+            <p>Session - {JSON.stringify(session || 'No session')}</p>
             <p>Connected with Web3</p>
             <ButtonLarge variant={'contained'} primary onClick={logout}>
               Logout
@@ -28,9 +28,6 @@ function LoginPage({ session }: { session: any }) {
             <ButtonLarge onClick={() => setShowModal(true)} primary>
               Show Login Modal
             </ButtonLarge>
-            <SingleSectionModal open={showModal} onClose={() => setShowModal(false)} title={'Login'}>
-              <LoginButtons />
-            </SingleSectionModal>
           </div>
         </div>
       </div>

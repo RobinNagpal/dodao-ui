@@ -18,12 +18,12 @@ datasource db {
 
 model Account {
   id                String  @id @default(cuid())
-  userId            String
+  userId            String  @map("user_id")
   type              String
   provider          String
-  providerAccountId String
-  refresh_token     String?
-  access_token      String?
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String? @map("refresh_token")
+  access_token      String? @map("access_token")
   expires_at        Int?
   token_type        String?
   scope             String?
@@ -33,26 +33,38 @@ model Account {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+  @@map("accounts")
 }
 
 model Session {
   id           String   @id @default(cuid())
-  sessionToken String   @unique
-  userId       String
+  sessionToken String   @unique @map("session_token")
+  userId       String   @map("user_id")
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
 }
 
 model User {
-  id               String            @id @default(cuid())
-  name             String?
-  email            String?           @unique
-  emailVerified    DateTime?
-  image            String?
-  publicAddress    String?           @unique // Added to enable crypto authentication
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime? @map("email_verified")
+  image         String?
+  publicAddress String?   @map("public_address")
+
+  spaceId      String @map("space_id")
+  username     String @map("username")
+  authProvider String @map("auth_provider")
+
   accounts         Account[]
   sessions         Session[]
   cryptoLoginNonce CryptoLoginNonce?
+
+  @@unique([publicAddress, spaceId])
+  @@unique([username, spaceId])
+  @@map("users")
 }
 
 model VerificationToken {
@@ -61,13 +73,16 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+  @@map("verification_tokens")
 }
 
 // Added for crypto authentication
 
 model CryptoLoginNonce {
-  userId  String   @unique
+  userId  String   @unique @map("user_id")
   nonce   String
   expires DateTime
   user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("crypto_login_nonce")
 }

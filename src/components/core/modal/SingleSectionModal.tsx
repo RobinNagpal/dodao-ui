@@ -7,13 +7,9 @@ export interface SingleSectionModalProps {
   onClose: () => void;
   title: string;
   children: React.ReactNode;
+  showCloseButton?: boolean;
 }
-export default function SingleSectionModal({
-  open,
-  title,
-  children,
-  onClose,
-}: SingleSectionModalProps) {
+export default function SingleSectionModal({ open, title, children, onClose, showCloseButton = true }: SingleSectionModalProps) {
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={onClose}>
@@ -42,24 +38,23 @@ export default function SingleSectionModal({
             >
               <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
                 <div>
-                  <div className="flex justify-end">
-                    <button
-                      type="button"
-                      className="inline-flex rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                      onClick={() => {
-                        onClose();
-                      }}
-                    >
-                      <span className="sr-only">Close</span>
-                      <XMarkIcon className="h-5 w-5" aria-hidden="true" />
-                    </button>
-                  </div>
+                  {showCloseButton && (
+                    <div className="flex justify-end">
+                      <button
+                        type="button"
+                        className="inline-flex rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        onClick={() => {
+                          onClose();
+                        }}
+                      >
+                        <span className="sr-only">Close</span>
+                        <XMarkIcon className="h-5 w-5" aria-hidden="true" />
+                      </button>
+                    </div>
+                  )}
 
                   <div className="mt-3 text-center sm:mt-5">
-                    <Dialog.Title
-                      as="h3"
-                      className="text-base font-semibold leading-6 text-gray-900"
-                    >
+                    <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
                       {title}
                     </Dialog.Title>
                     <div className="mt-2">{children}</div>

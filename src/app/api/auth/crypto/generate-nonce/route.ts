@@ -17,7 +17,7 @@ interface CryptoNonceResponse {
 //  the nonce we send back, with that they prove that they are the owners
 //  of the public address they gave.
 async function POST(req: NextRequest, res: NextResponse) {
-  const { publicAddress } = await req.json();
+  const { publicAddress, spaceId } = await req.json();
 
   // Note: this nonce is displayed in the user's wallet for them to sign
   //  you can use any other representation of the nonce that you want
@@ -30,15 +30,18 @@ async function POST(req: NextRequest, res: NextResponse) {
   // Create or update the nonce for the given user
   //  see: https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#upsert
   await prisma.user.upsert({
-    where: { publicAddress: publicAddress || '0x470579d16401a36BF63b1428eaA7189FBdE5Fee9' },
+    where: { publicAddress_spaceId: { publicAddress, spaceId } },
     create: {
-      publicAddress,
+      publicAddress: publicAddress,
       cryptoLoginNonce: {
         create: {
           nonce,
           expires,
         },
       },
+      spaceId: spaceId || 'dodao-eth-1',
+      authProvider: 'crypto',
+      username: publicAddress!,
     },
     update: {
       cryptoLoginNonce: {

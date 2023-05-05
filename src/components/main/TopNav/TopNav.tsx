@@ -3,8 +3,8 @@ import { DesktopNavLink } from '@/components/main/TopNav/DesktopNavLink';
 import { DesktopProfileMenu } from '@/components/main/TopNav/DesktopProfileMenu';
 import { MobileNavLink } from '@/components/main/TopNav/MobileNavLink';
 import { MobileProfileMenu } from '@/components/main/TopNav/MobileProfileMenu';
-import { useAuth } from '@/hooks/useAuth';
-import { DoDAOSession } from '@/types/DoDAOSession';
+import { useLoginModalContext } from '@/context/LoginModalContext';
+import { Session } from '@/types/Session';
 import { Disclosure } from '@headlessui/react';
 import { PlusIcon } from '@heroicons/react/20/solid';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
@@ -12,11 +12,8 @@ import { useSession } from 'next-auth/react';
 
 export default function TopNav() {
   const { data: session } = useSession();
-  const { loginWithMetamask, logout } = useAuth();
+  const { setShowModal } = useLoginModalContext();
 
-  const login = () => {
-    loginWithMetamask();
-  };
   console.log('TopNav session', session);
   return (
     <Disclosure as="nav" className="bg-white shadow">
@@ -46,14 +43,23 @@ export default function TopNav() {
               </div>
               <div className="flex items-center">
                 <div className="flex-shrink-0">
-                  <ButtonLarge type="button" variant="contained" primary>
-                    <PlusIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
-                    Create
-                  </ButtonLarge>
+                  {session ? (
+                    <ButtonLarge type="button" variant="contained" primary>
+                      <PlusIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
+                      Create
+                    </ButtonLarge>
+                  ) : (
+                    <ButtonLarge variant="contained" primary onClick={() => setShowModal(true)}>
+                      Login
+                    </ButtonLarge>
+                  )}
                 </div>
-                <div className="hidden md:ml-4 md:flex md:flex-shrink-0 md:items-center">
-                  <DesktopProfileMenu session={session as DoDAOSession} />
-                </div>
+
+                {session && (
+                  <div className="hidden md:ml-4 md:flex md:flex-shrink-0 md:items-center">
+                    <DesktopProfileMenu session={session as Session} />
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -66,7 +72,7 @@ export default function TopNav() {
               <MobileNavLink label="Simulations" />
               <MobileNavLink label="Timelines" />
             </div>
-            <MobileProfileMenu session={session as DoDAOSession} />
+            {session && <MobileProfileMenu session={session as Session} />}
           </Disclosure.Panel>
         </>
       )}

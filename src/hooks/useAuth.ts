@@ -30,6 +30,8 @@ export function useAuth() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          spaceId: 'dodao-eth-1',
+          authProvider: 'crypto',
           publicAddress,
         }),
       });
@@ -42,6 +44,7 @@ export function useAuth() {
       await signIn('crypto', {
         publicAddress,
         signedNonce,
+        spaceId: 'dodao-eth-1',
         callbackUrl: '/login',
       });
     } catch {

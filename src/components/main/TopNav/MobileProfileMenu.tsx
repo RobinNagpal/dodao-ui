@@ -1,8 +1,16 @@
-import { DoDAOSession } from '@/types/DoDAOSession';
+import { Session } from '@/types/Session';
 import { Disclosure } from '@headlessui/react';
 
 interface ProfileMenuProps {
-  session: DoDAOSession | null;
+  session: Session;
+}
+
+function ProfileActionButton({ label }: { label: string }) {
+  return (
+    <Disclosure.Button as="a" href="#" className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800 sm:px-6">
+      {label}
+    </Disclosure.Button>
+  );
 }
 
 export function MobileProfileMenu({ session }: ProfileMenuProps) {
@@ -18,15 +26,9 @@ export function MobileProfileMenu({ session }: ProfileMenuProps) {
         </div>
       </div>
       <div className="mt-3 space-y-1">
-        <Disclosure.Button as="a" href="#" className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800 sm:px-6">
-          Your Profile
-        </Disclosure.Button>
-        <Disclosure.Button as="a" href="#" className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800 sm:px-6">
-          Settings
-        </Disclosure.Button>
-        <Disclosure.Button as="a" href="#" className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800 sm:px-6">
-          Sign out
-        </Disclosure.Button>
+        <ProfileActionButton label="Your Profile" />
+        <ProfileActionButton label="Settings" />
+        <ProfileActionButton label="Sign out" />
       </div>
     </div>
   );

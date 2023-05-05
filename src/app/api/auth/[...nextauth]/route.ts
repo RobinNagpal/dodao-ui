@@ -1,4 +1,5 @@
 import { prisma } from '@/prisma';
+import { User } from '@/types/User';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { ethers } from 'ethers';
 import NextAuth, { AuthOptions, RequestInternal } from 'next-auth';
@@ -8,16 +9,16 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 //  takes publicAdress and signature from credentials and returns
 //  either a user object on success or null on failure
 async function authorizeCrypto(
-  credentials: Record<'publicAddress' | 'signedNonce', string> | undefined,
+  credentials: Record<'publicAddress' | 'signedNonce' | 'spaceId', string> | undefined,
   req: Pick<RequestInternal, 'body' | 'headers' | 'method' | 'query'>
 ) {
   if (!credentials) return null;
 
-  const { publicAddress, signedNonce } = credentials;
+  const { publicAddress, signedNonce, spaceId } = credentials;
 
   // Get user from database with their generated nonce
   const user = await prisma.user.findUnique({
-    where: { publicAddress },
+    where: { publicAddress_spaceId: { publicAddress, spaceId } },
     include: { cryptoLoginNonce: true },
   });
 
@@ -59,6 +60,7 @@ export const authOptions: AuthOptions = {
       credentials: {
         publicAddress: { label: 'Public Address', type: 'text' },
         signedNonce: { label: 'Signed Nonce', type: 'text' },
+        spaceId: { label: 'Space Id', type: 'text' },
       },
       authorize: authorizeCrypto,
     }),
@@ -71,6 +73,39 @@ export const authOptions: AuthOptions = {
   },
   // Setting secret here for convenience, do not use this in production
   secret: 'DO_NOT_USE_THIS_IN_PROD',
+  callbacks: {
+    async session({ session, user, token }) {
+      let userInfo: any = {};
+      if (token.sub) {
+        const dbUser: User | null = await prisma.user.findUnique({
+          where: { id: token.sub },
+        });
+        if (dbUser) {
+          userInfo.username = dbUser.username;
+          userInfo.authProvider = dbUser.authProvider;
+          userInfo.spaceId = dbUser.spaceId;
+        }
+      }
+      return {
+        ...session,
+        ...userInfo,
+      };
+    },
+    jwt: async ({ token, user, account, profile, isNewUser }) => {
+      if (token.sub) {
+        const dbUser: User | null = await prisma.user.findUnique({
+          where: { id: token.sub },
+        });
+
+        if (dbUser) {
+          token.spaceId = dbUser.spaceId;
+          token.username = dbUser.username;
+          token.authProvider = dbUser.authProvider;
+        }
+      }
+      return token;
+    },
+  },
 };
 
 const handler = NextAuth(authOptions);
