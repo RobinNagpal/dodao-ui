@@ -30,6 +30,7 @@ export const authOptions: AuthOptions = {
     DiscordProvider({
       clientId: process.env.DISCORD_CLIENT_ID!,
       clientSecret: process.env.DISCORD_CLIENT_SECRET!,
+      allowDangerousEmailAccountLinking: true,
       profile(profile): User {
         console.log('profile', profile);
         return {
@@ -44,6 +45,7 @@ export const authOptions: AuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      allowDangerousEmailAccountLinking: true,
       profile(profile) {
         return {
           name: profile.name,
@@ -60,6 +62,7 @@ export const authOptions: AuthOptions = {
     TwitterProvider({
       clientId: process.env.TWITTER_CLIENT_ID!,
       clientSecret: process.env.TWITTER_CLIENT_SECRET!,
+      allowDangerousEmailAccountLinking: true,
       profile(profile) {
         return {
           ...profile,
