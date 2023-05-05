@@ -8,13 +8,12 @@ export function LoginButtons() {
     loginWithCoinbase,
     loginWithGoogle,
     loginWithDiscord,
-    loginWithEmailPassword,
+
     processing,
     processingMetaMask,
     processingCoinbase,
     processingGoogle,
     processingDiscord,
-    processingEmailPassword,
   } = useAuth();
   return (
     <div className="flex-col">
@@ -36,18 +35,6 @@ export function LoginButtons() {
       <div className="mt-2">
         <ButtonLarge variant={'outlined'} primary onClick={loginWithDiscord} className="w-full" disabled={processing} loading={processingDiscord}>
           Login with Discord
-        </ButtonLarge>
-      </div>
-      <div className="mt-2">
-        <ButtonLarge
-          variant={'outlined'}
-          primary
-          onClick={() => loginWithEmailPassword('email@example.com', 'password123')}
-          className="w-full"
-          disabled={processing}
-          loading={processingEmailPassword}
-        >
-          Login with Email/Password
         </ButtonLarge>
       </div>
     </div>

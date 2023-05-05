@@ -1,49 +1,12 @@
+import { authorizeCrypto } from '@/app/api/auth/[...nextauth]/authorizeCrypto';
 import { prisma } from '@/prisma';
 import { User } from '@/types/User';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
-import { ethers } from 'ethers';
-import NextAuth, { AuthOptions, RequestInternal } from 'next-auth';
+import NextAuth, { AuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-
-// Authorization function for crypto login
-//  takes publicAdress and signature from credentials and returns
-//  either a user object on success or null on failure
-async function authorizeCrypto(
-  credentials: Record<'publicAddress' | 'signedNonce' | 'spaceId', string> | undefined,
-  req: Pick<RequestInternal, 'body' | 'headers' | 'method' | 'query'>
-) {
-  if (!credentials) return null;
-
-  const { publicAddress, signedNonce, spaceId } = credentials;
-
-  // Get user from database with their generated nonce
-  const user = await prisma.user.findUnique({
-    where: { publicAddress_spaceId: { publicAddress, spaceId } },
-    include: { cryptoLoginNonce: true },
-  });
-
-  if (!user?.cryptoLoginNonce) return null;
-
-  // Compute the signer address from the saved nonce and the received signature
-  const signerAddress = ethers.verifyMessage(user.cryptoLoginNonce.nonce, signedNonce);
-
-  // Check that the signer address matches the public address
-  //  that is trying to sign in
-  if (signerAddress !== publicAddress) return null;
-
-  // Check that the nonce is not expired
-  if (user.cryptoLoginNonce.expires < new Date()) return null;
-
-  // Everything is fine, clear the nonce and return the user
-  await prisma.cryptoLoginNonce.delete({ where: { userId: user.id } });
-
-  return {
-    id: user.id,
-    name: user.publicAddress,
-    username: user.publicAddress,
-    publicAddress: user.publicAddress,
-  };
-}
+import DiscordProvider from 'next-auth/providers/discord';
+import GoogleProvider from 'next-auth/providers/google';
+import TwitterProvider from 'next-auth/providers/twitter';
 
 // see: https://next-auth.js.org/configuration/options
 export const authOptions: AuthOptions = {
@@ -63,6 +26,48 @@ export const authOptions: AuthOptions = {
         spaceId: { label: 'Space Id', type: 'text' },
       },
       authorize: authorizeCrypto,
+    }),
+    DiscordProvider({
+      clientId: process.env.DISCORD_CLIENT_ID!,
+      clientSecret: process.env.DISCORD_CLIENT_SECRET!,
+      profile(profile): User {
+        console.log('profile', profile);
+        return {
+          ...profile,
+          username: profile.name || profile.email,
+          authProvider: 'discord',
+          spaceId: 'dodao-eth-1',
+        };
+      },
+    }),
+
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      profile(profile) {
+        return {
+          name: profile.name,
+          email: profile.email,
+          emailVerified: profile.email_verified,
+          image: profile.picture,
+          id: profile.sub,
+          username: profile.email || profile.sub,
+          authProvider: 'google',
+          spaceId: 'dodao-eth-1',
+        };
+      },
+    }),
+    TwitterProvider({
+      clientId: process.env.TWITTER_CLIENT_ID!,
+      clientSecret: process.env.TWITTER_CLIENT_SECRET!,
+      profile(profile) {
+        return {
+          ...profile,
+          username: profile.name || profile.email,
+          authProvider: 'twitter',
+          spaceId: 'dodao-eth-1',
+        };
+      },
     }),
   ],
   adapter: PrismaAdapter(prisma),

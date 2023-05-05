@@ -2,7 +2,6 @@ import { coinbaseWallet } from '@/app/login/connectors/coinbaseWallet';
 import { metaMask } from '@/app/login/connectors/metaMask';
 import { Connector } from '@web3-react/types';
 import { ethers } from 'ethers';
-import { Eip1193Provider } from 'ethers/src.ts/providers/provider-browser';
 import { signIn, signOut } from 'next-auth/react';
 import { useCallback, useState } from 'react';
 
@@ -25,7 +24,7 @@ export function useAuth() {
 
       // Get the wallet provider, the signer and address
       //  see: https://docs.ethers.org/v6/getting-started/#starting-signing
-      const provider = new ethers.BrowserProvider(window.ethereum as Eip1193Provider);
+      const provider = new ethers.BrowserProvider(window.ethereum as any);
       const signer = await provider.getSigner();
       const publicAddress = await signer.getAddress();
 
