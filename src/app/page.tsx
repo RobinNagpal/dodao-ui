@@ -10,10 +10,6 @@ import React from 'react';
 import sortBy from 'lodash/sortBy';
 import DeveloperLottie from './developer-lottie.json';
 
-interface AcademyHomeProps {
-  space: SpaceModel;
-}
-
 const UniswapSpace: SpaceModel = {
   blockchain: 'ETH',
   id: 'uniswap-eth-1',
@@ -36,7 +32,7 @@ const UniswapSpace: SpaceModel = {
     gitGuideRepositories: [],
   },
 };
-const AcademyHome: React.FC<AcademyHomeProps> = (props) => {
+export default function Home() {
   const space: SpaceModel = UniswapSpace;
   const { $t } = useI18();
   const spaceFeatures: FeatureItem[] = (space.id && getFeaturesArray(space.id)) || [];
@@ -62,6 +58,4 @@ const AcademyHome: React.FC<AcademyHomeProps> = (props) => {
       </div>
     </div>
   );
-};
-
-export default AcademyHome;
+}
