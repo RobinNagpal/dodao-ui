@@ -16,6 +16,7 @@
     "@heroicons/react": "2.0.17",
     "@next-auth/prisma-adapter": "^1.0.6",
     "@prisma/client": "4.13.0",
+    "@snapshot-labs/snapshot.js": "^0.4.82",
     "@types/lodash": "^4.14.194",
     "@types/node": "18.16.3",
     "@types/react": "18.2.0",
