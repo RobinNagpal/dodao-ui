@@ -51,11 +51,12 @@ export default function TopNav() {
                     <img className="hidden h-8 w-auto lg:block" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="Your Company" />
                   </div>
                   <div className="hidden md:ml-6 md:flex md:space-x-8">
-                    <DesktopNavLink label="Guides" isActive />
-                    <DesktopNavLink label="Bytes" />
-                    <DesktopNavLink label="Courses" />
-                    <DesktopNavLink label="Simulations" />
-                    <DesktopNavLink label="Timelines" />
+                    <DesktopNavLink href="/" label="Home" />
+                    <DesktopNavLink href="/guides" label="Guides" />
+                    <DesktopNavLink href="/bytes" label="Bytes" />
+                    <DesktopNavLink href="/courses" label="Courses" />
+                    <DesktopNavLink href="/simulations" label="Simulations" />
+                    <DesktopNavLink href="/timelines" label="Timelines" />
                   </div>
                 </div>
                 <div className="flex items-center">
@@ -83,11 +84,12 @@ export default function TopNav() {
 
             <Disclosure.Panel className="md:hidden">
               <div className="space-y-1 pb-3 pt-2">
-                <MobileNavLink label="Guides" isActive />
-                <MobileNavLink label="Bytes" />
-                <MobileNavLink label="Courses" />
-                <MobileNavLink label="Simulations" />
-                <MobileNavLink label="Timelines" />
+                <MobileNavLink href="/" label="Home" />
+                <MobileNavLink href="/guides" label="Guides" />
+                <MobileNavLink href="/bytes" label="Bytes" />
+                <MobileNavLink href="/courses" label="Courses" />
+                <MobileNavLink href="/simulations" label="Simulations" />
+                <MobileNavLink href="/timelines" label="Timelines" />
               </div>
               {session && <MobileProfileMenu session={session as Session} />}
             </Disclosure.Panel>

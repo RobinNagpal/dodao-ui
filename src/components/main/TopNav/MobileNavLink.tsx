@@ -1,4 +1,5 @@
 import { Disclosure } from '@headlessui/react';
+import { usePathname } from 'next/navigation';
 import { Fragment } from 'react';
 import styled from 'styled-components';
 
@@ -6,7 +7,10 @@ const StyledNavLink = styled.a<{ isActive: boolean }>`
   border-color: ${(props) => (props.isActive ? 'var(--primary-color)' : '')};
   color: ${(props) => (props.isActive ? 'var(--primary-color)' : '')};
 `;
-export function MobileNavLink({ label, isActive = false }: { label: string; isActive?: boolean }) {
+export function MobileNavLink({ label, href }: { label: string; isActive?: boolean; href: string }) {
+  const pathname = usePathname();
+  const isActive = pathname === href;
+
   return (
     <Disclosure.Button as={Fragment}>
       <StyledNavLink

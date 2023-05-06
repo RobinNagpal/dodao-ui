@@ -1,3 +1,4 @@
+import { usePathname } from 'next/navigation';
 import styled from 'styled-components';
 
 const StyledNavLink = styled.a<{ isActive: boolean }>`
@@ -5,10 +6,12 @@ const StyledNavLink = styled.a<{ isActive: boolean }>`
   color: ${(props) => (props.isActive ? 'var(--primary-color)' : 'var(--text-color)')};
 `;
 
-export function DesktopNavLink({ label, isActive = false }: { label: string; isActive?: boolean }) {
+export function DesktopNavLink({ label, href }: { label: string; isActive?: boolean; href: string }) {
+  const pathname = usePathname();
+  const isActive = pathname === href;
   return (
     <StyledNavLink
-      href="#"
+      href={href}
       isActive={isActive}
       className={
         isActive

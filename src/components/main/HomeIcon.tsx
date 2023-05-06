@@ -45,8 +45,6 @@ function HomeIcon({ space, feature }: HomeIconProps) {
     } else throw Error('Invalid feature name', featureName);
   };
 
-  const routeDetails = getLinkHref(feature.featureName);
-
   return (
     <Link
       href={getLinkHref(feature.featureName)}
