@@ -1,5 +1,5 @@
-import { PublishStatus } from '@dodao/onboarding-schemas/models/enums';
-import { GuideType } from '@dodao/onboarding-schemas/models/GuideModel';
+import { PublishStatus } from '@/types/deprecated/models/enums';
+import { GuideType } from '@/types/deprecated/models/GuideModel';
 import { GitGuideIntegrations } from './GitGuideIntegrations';
 import { GitGuideStep } from './GitGuideStep';
 

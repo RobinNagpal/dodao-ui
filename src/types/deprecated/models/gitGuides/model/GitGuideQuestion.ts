@@ -1,4 +1,4 @@
-import { QuestionType } from '@dodao/onboarding-schemas/models/enums';
+import { QuestionType } from '@/types/deprecated/models/enums';
 import { GitGuideStepItem } from './GitGuideStepItem';
 
 export interface GitQuestionChoice {
