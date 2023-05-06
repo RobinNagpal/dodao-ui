@@ -1,6 +1,7 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { getServerSession } from 'next-auth';
 import './globals.css';
+import 'tailwindcss/tailwind.css';
 import InternalLayout from './InternalLayout';
 
 // Based on - https://tailwindui.com/components/application-ui/page-examples/home-screens

@@ -1,0 +1,236 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "http://example.com/example.json",
+  "type": "object",
+  "title": "The root schema",
+  "description": "The root schema comprises the entire JSON document.",
+  "default": {},
+  "examples": [
+    {
+      "space": "dodao-1",
+      "uuid": "0a756b97-9419-4003-b05b-1ac186e8a642",
+      "guideUuid": "6d56bfc3-0292-4490-8a3b-6ae0acbbc1d1",
+      "from": "0x470579d16401a36BF63b1428eaA7189FBdE5Fee9",
+      "steps": [
+        {
+          "uuid": "943edd37-e403-4936-8153-47197cf88321",
+          "questionResponses": [
+            {
+              "uuid": "5fa467d6-a3b1-475c-9f0f-28b975887e83",
+              "selectedAnswerKeys": [
+                "only_dog"
+              ]
+            }
+          ]
+        }
+      ],
+      "timestamp": 1644437644
+    }
+  ],
+  "required": [
+    "space",
+    "uuid",
+    "guideUuid",
+    "from",
+    "steps",
+    "timestamp"
+  ],
+  "properties": {
+    "space": {
+      "$id": "#/properties/space",
+      "type": "string",
+      "title": "The space schema",
+      "description": "An explanation about the purpose of this instance.",
+      "default": "",
+      "examples": [
+        "dodao-1"
+      ]
+    },
+    "uuid": {
+      "$id": "#/properties/uuid",
+      "type": "string",
+      "title": "The uuid schema",
+      "description": "An explanation about the purpose of this instance.",
+      "default": "",
+      "examples": [
+        "0a756b97-9419-4003-b05b-1ac186e8a642"
+      ]
+    },
+    "guideUuid": {
+      "$id": "#/properties/guideUuid",
+      "type": "string",
+      "title": "The guideUuid schema",
+      "description": "An explanation about the purpose of this instance.",
+      "default": "",
+      "examples": [
+        "6d56bfc3-0292-4490-8a3b-6ae0acbbc1d1"
+      ]
+    },
+    "from": {
+      "$id": "#/properties/from",
+      "type": "string",
+      "title": "The from schema",
+      "description": "An explanation about the purpose of this instance.",
+      "default": "",
+      "examples": [
+        "0x470579d16401a36BF63b1428eaA7189FBdE5Fee9"
+      ]
+    },
+    "steps": {
+      "$id": "#/properties/steps",
+      "type": "array",
+      "title": "The steps schema",
+      "description": "An explanation about the purpose of this instance.",
+      "default": [],
+      "examples": [
+        [
+          {
+            "uuid": "943edd37-e403-4936-8153-47197cf88321",
+            "questionResponses": [
+              {
+                "uuid": "5fa467d6-a3b1-475c-9f0f-28b975887e83",
+                "selectedAnswerKeys": [
+                  "only_dog"
+                ]
+              }
+            ]
+          }
+        ]
+      ],
+      "items": {
+        "$id": "#/properties/steps/items",
+        "anyOf": [
+          {
+            "$id": "#/properties/steps/items/anyOf/0",
+            "type": "object",
+            "title": "The first anyOf schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": {},
+            "examples": [
+              {
+                "uuid": "943edd37-e403-4936-8153-47197cf88321",
+                "questionResponses": [
+                  {
+                    "uuid": "5fa467d6-a3b1-475c-9f0f-28b975887e83",
+                    "selectedAnswerKeys": [
+                      "only_dog"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "required": [
+              "uuid",
+              "questionResponses"
+            ],
+            "properties": {
+              "uuid": {
+                "$id": "#/properties/steps/items/anyOf/0/properties/uuid",
+                "type": "string",
+                "title": "The uuid schema",
+                "description": "An explanation about the purpose of this instance.",
+                "default": "",
+                "examples": [
+                  "943edd37-e403-4936-8153-47197cf88321"
+                ]
+              },
+              "questionResponses": {
+                "$id": "#/properties/steps/items/anyOf/0/properties/questionResponses",
+                "type": "array",
+                "title": "The questionResponses schema",
+                "description": "An explanation about the purpose of this instance.",
+                "default": [],
+                "examples": [
+                  [
+                    {
+                      "uuid": "5fa467d6-a3b1-475c-9f0f-28b975887e83",
+                      "selectedAnswerKeys": [
+                        "only_dog"
+                      ]
+                    }
+                  ]
+                ],
+                "items": {
+                  "$id": "#/properties/steps/items/anyOf/0/properties/questionResponses/items",
+                  "anyOf": [
+                    {
+                      "$id": "#/properties/steps/items/anyOf/0/properties/questionResponses/items/anyOf/0",
+                      "type": "object",
+                      "title": "The first anyOf schema",
+                      "description": "An explanation about the purpose of this instance.",
+                      "default": {},
+                      "examples": [
+                        {
+                          "uuid": "5fa467d6-a3b1-475c-9f0f-28b975887e83",
+                          "selectedAnswerKeys": [
+                            "only_dog"
+                          ]
+                        }
+                      ],
+                      "required": [
+                        "uuid",
+                        "selectedAnswerKeys"
+                      ],
+                      "properties": {
+                        "uuid": {
+                          "$id": "#/properties/steps/items/anyOf/0/properties/questionResponses/items/anyOf/0/properties/uuid",
+                          "type": "string",
+                          "title": "The uuid schema",
+                          "description": "An explanation about the purpose of this instance.",
+                          "default": "",
+                          "examples": [
+                            "5fa467d6-a3b1-475c-9f0f-28b975887e83"
+                          ]
+                        },
+                        "selectedAnswerKeys": {
+                          "$id": "#/properties/steps/items/anyOf/0/properties/questionResponses/items/anyOf/0/properties/selectedAnswerKeys",
+                          "type": "array",
+                          "title": "The selectedAnswerKeys schema",
+                          "description": "An explanation about the purpose of this instance.",
+                          "default": [],
+                          "examples": [
+                            [
+                              "only_dog"
+                            ]
+                          ],
+                          "items": {
+                            "$id": "#/properties/steps/items/anyOf/0/properties/questionResponses/items/anyOf/0/properties/selectedAnswerKeys/items",
+                            "anyOf": [
+                              {
+                                "$id": "#/properties/steps/items/anyOf/0/properties/questionResponses/items/anyOf/0/properties/selectedAnswerKeys/items/anyOf/0",
+                                "type": "string",
+                                "title": "The first anyOf schema",
+                                "description": "An explanation about the purpose of this instance.",
+                                "default": "",
+                                "examples": [
+                                  "only_dog"
+                                ]
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      "additionalProperties": true
+                    }
+                  ]
+                }
+              }
+            },
+            "additionalProperties": true
+          }
+        ]
+      }
+    },
+    "timestamp": {
+      "$id": "#/properties/timestamp",
+      "type": "integer",
+      "title": "The timestamp schema",
+      "description": "An explanation about the purpose of this instance.",
+      "default": 0,
+      "examples": [
+        1644437644
+      ]
+    }
+  },
+  "additionalProperties": true
+}

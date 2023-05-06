@@ -1,0 +1,125 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "Guide": {
+      "properties": {
+        "content": {
+          "type": "string"
+        },
+        "from": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "guideType": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "postSubmissionStepContent": {
+          "type": "string"
+        },
+        "publishStatus": {
+          "type": "string"
+        },
+        "showIncorrectOnCompletion": {
+          "type": "boolean"
+        },
+        "socialShareImage": {
+          "type": "string"
+        },
+        "space": {
+          "type": "string"
+        },
+        "steps": {
+          "items": {
+            "$ref": "#/definitions/GuideStep"
+          },
+          "type": "array"
+        },
+        "timestamp": {
+          "type": "number"
+        },
+        "uuid": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "GuideQuestion": {
+      "properties": {
+        "answerKeys": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "choices": {
+          "items": {
+            "$ref": "#/definitions/QuestionChoice"
+          },
+          "type": "array"
+        },
+        "content": {
+          "type": "string"
+        },
+        "order": {
+          "type": "number"
+        },
+        "questionType": {
+          "$ref": "#/definitions/QuestionType"
+        },
+        "uuid": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "GuideStep": {
+      "properties": {
+        "content": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "order": {
+          "type": "number"
+        },
+        "questions": {
+          "items": {
+            "$ref": "#/definitions/GuideQuestion"
+          },
+          "type": "array"
+        },
+        "uuid": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "QuestionChoice": {
+      "properties": {
+        "content": {
+          "type": "string"
+        },
+        "key": {
+          "type": "string"
+        },
+        "order": {
+          "type": "number"
+        }
+      },
+      "type": "object"
+    },
+    "QuestionType": {
+      "enum": ["MultipleChoice", "SingleChoice"],
+      "type": "string"
+    }
+  }
+}

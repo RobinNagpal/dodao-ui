@@ -1,0 +1,950 @@
+{
+  "searchPlaceholder": "Search",
+  "daoCount": "{0} DAO(s)",
+  "backToHome": "Home",
+  "actions": "Actions",
+  "results": "Results",
+  "currentResults": "Current results",
+  "reset": "Reset",
+  "save": "Save",
+  "author": "Author",
+  "next": "Next",
+  "submit": "Submit",
+  "plugins": "Plugins",
+  "information": "Information",
+  "confirm": "Confirm",
+  "dodao": "DoDAO",
+  "strategies": "Strategie(s)",
+  "strategiesPage": "Strategies",
+  "dao": "DAO",
+  "verifiedDAO": "Verified DAO",
+  "version": "Version",
+  "timeline": "Timeline",
+  "filters": "Filters",
+  "allDAO": "All DAO",
+  "submitOnchain": "Submit on-chain",
+  "inDAO": "In {0} DAO(s)",
+  "votes": "Votes",
+  "seeMore": "See more",
+  "network": "Network",
+  "networks": "Networks",
+  "skins": "Skins",
+  "members": "No members | {count} member | {count} members",
+  "editStrategy": "Edit strategy",
+  "invalidProposals": "Invalid proposals",
+  "account": "Account",
+  "create3box": "Create profile on 3Box",
+  "view3box": "View profile on 3Box",
+  "edit3box": "Edit profile on 3Box",
+  "connectWallet": "Connect wallet",
+  "toggleSkin": "Toggle skin",
+  "about": "About",
+  "license": "License",
+  "ipfsServer": "IPFS server",
+  "hub": "Hub",
+  "cancel": "Cancel",
+  "deleteProposal": "Delete proposal",
+  "demoSite": "This is the demo site, give it a try!",
+  "removeDelegation": "Remove delegation",
+  "confirmRemove": "Are you sure you want to remove your delegation to",
+  "removeDAO": "for the DAO {0}",
+  "confirmVote": "Confirm vote",
+  "sureToVote": "Are you sure you want to vote \"{0}\"?",
+  "cannotBeUndone": "This action cannot be undone.",
+  "options": "Option(s)",
+  "votingPower": "Your voting power",
+  "receipt": "Receipt",
+  "relayer": "Relayer",
+  "verifyOnMycrypto": "Verify receipt on MyCrypto",
+  "verifyOnSignatorio": "Verify on Signator.io",
+  "isCore": "Core",
+  "notificationsBlocked": "Your browser is blocking notifications",
+  "notificationsNotSupported": "Your browser does not support notifications",
+  "walletNotSupported": "Wallet is not supported",
+  "seeInExplorer": "See on explorer",
+  "learnMore": "Learn more",
+  "logout": "Log out",
+  "continue": "Continue",
+  "add": "Add",
+  "edit": "Edit",
+  "strategyParameters": "Strategy parameters",
+  "addAction": "Add action",
+  "removeAction": "Remove action",
+  "yourChoice": "Choice {0}",
+  "targetAddress": "Target address",
+  "value": "Value",
+  "date": "Data",
+  "marketDetails": "Market details",
+  "addMarket": "Add market",
+  "selectNetwork": "Select network",
+  "conditionId": "Condition ID",
+  "basetokenAddress": "Base token address",
+  "quoteAddress": "Quote currency address",
+  "removeMarket": "Remove market",
+  "back": "Back",
+  "loading": "Loading...",
+  "predictedImpact": "Predicted impact",
+  "marketSymbol": "{0} market",
+  "twoChoicesRequired": "Two choices are required for this plugin.",
+  "noResultsFound": "Oops, we can't find any results",
+  "createFirstProposal": "Let's create your first proposal",
+  "noDAOJoined": "Oops, you haven't joined any DAO yet",
+  "addFavorites": "Add favorites",
+  "createdBy": "By {0}",
+  "startToEnd": "start {0} end {1}",
+  "startIn": "start {0}",
+  "endIn": "end {1}",
+  "proposalStartIn": "start in {0}",
+  "proposalToNow": "{0} left",
+  "endedAgo": "ended {1}",
+  "proposalBy": "by {0}",
+  "endDate": "end {0}",
+  "contectHash": "Content hash",
+  "defaultSkin": "Default skin",
+  "select": "Select",
+  "language": "Language",
+  "agree": "I agree",
+  "mustAgreeToTerms": "Before you can complete this action, you must agree to {0} terms of service here:",
+  "playground": "Playground",
+  "rememberMe": "Remember Me",
+  "strategyParams": "Strategy params",
+  "addresses": "Addresses",
+  "networkErrorPlayground": "Network error - please open your browser console for more information",
+  "upload": "Upload",
+  "join": "Join",
+  "joined": "Joined",
+  "leave": "Leave",
+  "copyLink": "Copy link",
+  "duplicateProposal": "Duplicate proposal",
+  "joinedDAO": "Joined DAO",
+  "joinDAO": "Join DAO",
+  "previous": "Previous",
+  "academy": {
+    "navigation": {
+      "newCourse": "New Course",
+      "newGuide": "New Guide",
+      "newTask": "New Task",
+      "refreshGuides": "Refresh Guides",
+      "refreshCourses": "Refresh Courses"
+    },
+    "aave-eth-1": {
+      "academyHeading": "Learn more about AAVE?",
+      "academyText": "We know crypto can be a confusing place and AAVE Academy has your back.",
+      "projectName": "AAVE",
+      "guidesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/aave/AAVE_Guides.png",
+      "coursesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/aave/AAVE+Courses.png"
+    },
+    "balancer-eth-1": {
+      "academyHeading": "Learn more about Balancer?",
+      "academyText": "We know crypto can be a confusing place and Balancer Academy has your back.",
+      "projectName": "Balancer",
+      "guidesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/balancer/Guides.png",
+      "coursesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/balancer/courses.png"
+    },
+    "daocubator-near-mainnet": {
+      "academyHeading": "Learn more about DAOCubator?",
+      "academyText": "We know crypto can be a confusing place and DAOCubator Academy has your back.",
+      "projectName": "DAOCubator",
+      "guidesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/daocubator/Guides.png",
+      "coursesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/daocubator/courses.png"
+    },
+    "dodao-academy-eth-1": {
+      "academyHeading": "Learn more about DeFi?",
+      "academyText": "We know crypto can be a confusing place and DoDAO Academy has your back.",
+      "projectName": "DoDAO",
+      "bytesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/dodao/dodao_bytes.png",
+      "coursesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/dodao/dodao_courses.png",
+      "guidesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/dodao/dodao_guides.png",
+      "simulationsThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/dodao/dodao_demos.png",
+      "timelinesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/dodao/dodao_timelines.png"
+    },
+    "bioxyz-eth-1": {
+      "academyHeading": "Learn how to build a Biotech DAO",
+      "academyText": "Building a DAO in web3 is hard. <br/> Building a biotech organisation is equally hard. <br/> Building a biotech DAO is ULTRA hard. </br> bio.xyz is opening the playbook and offering the necessary support.",
+      "projectName": "bio.xyz",
+      "guidesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/bioxyz/bio_guides.png",
+      "coursesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/bioxyz/bio_courses.png"
+    },
+    "compound-eth-1": {
+      "academyHeading": "Learn more about Compound?",
+      "academyText": "We know crypto can be a confusing place and Compound Academy has your back.",
+      "projectName": "Compound",
+      "bytesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/compound/compound_bytes.png",
+      "coursesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/compound/compound_courses.png",
+      "guidesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/compound/compound_guides.png",
+      "simulationsThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/compound/compound_demos.png",
+      "timelinesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/compound/compound_timelines.png"
+    },
+    "ens-domains-eth-1": {
+      "academyHeading": "Learn more about ENS?",
+      "academyText": "We know crypto can be a confusing place and ENS Academy has your back.",
+      "projectName": "ENS",
+      "guidesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/ens/ENS_Guides.png",
+      "coursesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/ens/ENS_Courses.png"
+    },
+    "grindery-eth-1": {
+      "academyHeading": "Learn more about Grindery?",
+      "academyText": "We know integrations in crypto are a pain and Grindery Academy has your back.",
+      "projectName": "Grindery",
+      "guidesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/balancer/Guides.png",
+      "coursesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/balancer/courses.png"
+    },
+    "kleros-eth-1": {
+      "academyHeading": "Learn more about Kleros?",
+      "academyText": "We know crypto can be a confusing place and Kleros Academy has your back.",
+      "projectName": "Kleros",
+      "guidesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/kleros/kleros_guides.png",
+      "coursesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/kleros/kleros_courses.png"
+    },
+    "serum-sol-mainnet": {
+      "academyHeading": "Learn more about Project Serum?",
+      "academyText": "We know crypto can be a confusing place and Serum Academy has your back.",
+      "projectName": "Project Serum",
+      "guidesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/project-serum/project_serum_guides.png",
+      "coursesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/project-serum/project_serum_courses.png"
+    },
+    "uniswap-eth-1": {
+      "academyHeading": "Learn more about Uniswap?",
+      "academyText": "We know providing liquidity can be a confusing and Uniswap LP Academy has your back.",
+      "projectName": "Uniswap",
+      "bytesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/uniswap/uniswap_bytes.png",
+      "coursesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/uniswap/uniswap_courses.png",
+      "guidesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/uniswap/uniswap_guides.png",
+      "simulationsThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/uniswap/uniswap_demos.png"
+    },
+    "unstoppable-academy-eth-1": {
+      "academyHeading": "Learn more about Unstoppable?",
+      "academyText": "We know crypto can be a confusing place and Unstoppable Academy has your back.",
+      "projectName": "Unstoppable",
+      "guidesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/unstoppable/Unstoppable_Guides.png",
+      "coursesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/unstoppable/Unstoppable_Courses.png"
+    },
+    "ndc-near-mainnet": {
+      "academyHeading": "Learn more about NEAR Digital Collective?",
+      "academyText": "The purpose of the NDC is to further decentralize NEAR’s ecosystem governance and move decision-making on-chain in order to make our community more resilient, transparent, and fair.",
+      "projectName": "NEAR Digital Collective",
+      "guidesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/daocubator/Guides.png",
+      "coursesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/daocubator/courses.png"
+    }
+  },
+  "academyTasks": {
+    "createYourFirstTask": "Get work done as a community by creating tasks and only allow people who have completed the guides or courses to apply for them.",
+    "newTask": "New Task",
+    "navigation": {
+      "New": "New",
+      "InProgress": "In Progress",
+      "Done": "Done"
+    },
+    "notification": {
+      "taskCreated": "Task Created",
+      "taskUpdated": "Task Updated"
+    },
+    "noTasks": {
+      "New": "No tasks in New status",
+      "InProgress": "No tasks in In-Progress status",
+      "Done": "No tasks in Done status"
+    },
+    "noTasksHere": "No tasks currently!",
+    "pageTitle": {
+      "createTask": "Create Task"
+    },
+    "upsert": {
+      "placeholders": {
+        "title": "Task Title",
+        "excerpt": "One Liner",
+        "details": "Details(in markdown format)"
+      },
+      "labels": {
+        "title": "Task Title",
+        "excerpt": "One Liner",
+        "details": "Details",
+        "selectGuide": "Select Guide",
+        "prerequisiteGuides": "Pre-Requisite Guides",
+        "selectCourse": "Select Course",
+        "prerequisiteCourses": "Pre-Requisite Courses"
+      }
+    }
+  },
+  "category": {
+    "protocol": "Protocol",
+    "social": "Social",
+    "investment": "Investment",
+    "grant": "Grant",
+    "service": "Service",
+    "media": "Media",
+    "creator": "Creator",
+    "collector": "Collector"
+  },
+  "errors": {
+    "required": "Field is required",
+    "minLength": "Minimum length is {0}",
+    "maxLength": "Maximum length is {0}",
+    "pattern": "Invalid character",
+    "minItems": "Minimum {0} item(s) required",
+    "minStrategy": "At least one strategy is required.",
+    "format": "Invalid format",
+    "type": "Invalid type"
+  },
+  "form": {
+    "required": "Required",
+    "private": "Private (Information not saved in ipfs or sent in Discord)"
+  },
+  "create": {
+    "question": "Ask a question...",
+    "categorie(s)": "Select up to 2 categorie(s)",
+    "content": "Tell more about your proposal (optional)",
+    "preview": "Preview",
+    "choices": "Choices",
+    "addChoice": "Add choice",
+    "startDate": "Select start date",
+    "endDate": "Select end date",
+    "startTime": "Select start time",
+    "endTime": "Select end time",
+    "publish": "Publish",
+    "dodaoBlock": "DoDAO block number",
+    "validationWarning": {
+      "basic": {
+        "member": "You need to be an author of the DAO in order to submit a proposal.",
+        "minScore": "You need to have a minimum of {0} {1} in order to submit a proposal."
+      },
+      "customValidation": "You need to pass the proposal validation in order to submit a proposal."
+    }
+  },
+  "delegate": {
+    "header": "Delegate",
+    "selectDelegate": "Select delegate",
+    "to": "To",
+    "addressPlaceholder": "Address or ENS name",
+    "delegations": "Your delegation(s)",
+    "delegated": "Delegated to you",
+    "pendingTransaction": "no pending transaction | 1 pending transaction | {count} pending transactions",
+    "topDelegates": "Top delegates"
+  },
+  "proposal": {
+    "castVote": "Cast your vote",
+    "vote": "Vote",
+    "startDate": "Start date",
+    "endDate": "End date",
+    "votingSystem": "Voting system"
+  },
+  "proposals": {
+    "header": "Proposals",
+    "new": "New proposal",
+    "noProposals": "There aren't any proposals here yet!",
+    "createProposal": "Create proposal",
+    "states": {
+      "all": "All",
+      "core": "Core",
+      "community": "Community",
+      "active": "Active",
+      "pending": "Pending",
+      "closed": "Closed"
+    }
+  },
+  "guide": {
+    "addInputOrQuestion": "Add Input or Question",
+    "discordPopUpDesc": "This button will be used by the members to connect their Discord",
+    "castVote": "Cast your vote",
+    "create": {
+      "name": "Name",
+      "excerpt": "Guide excerpt...",
+      "basicInfo": "Basic Information",
+      "advancedInfo": "Advanced Information",
+      "stepByStep": "Step by Step Guide",
+      "connectDiscord": "Connect Discord",
+      "changeDiscordServer": "Change Server",
+      "connectToDiscordForFeatures": "Connect to discord from project settings to access smart features like granting roles on guide completion",
+      "setProjectGalaxyCredentials": "Set Project Galaxy Credentials to grant Galaxy OAT upon completion of guides",
+      "discordRoles": "Discord Roles",
+      "chooseDiscordRoles": "Choose Discord roles",
+      "discordRolesPassingCount": "Passing Answers count",
+      "projectGalaxyCredential": "Project Galaxy Credential",
+      "projectGalaxyCredentialId": "Credential Id",
+      "projectGalaxyOatMintUrl": "Galaxy OAT Mint Url",
+      "projectGalaxyOatPassingCount": "Passing Answers count",
+      "totalQuestionCount": "Total Question Count"
+    },
+    "category": {
+      "community": "Community",
+      "contentWriting": "Content Writing",
+      "design": "Design",
+      "developer": "Developer",
+      "engineering": "Engineering",
+      "general": "General",
+      "governance": "Governance",
+      "introduction": "Introduction",
+      "marketing": "Marketing",
+      "member": "Member",
+      "overview": "Overview",
+      "onboarding": "Onboarding",
+      "products": "Products",
+      "sales": "Sales",
+      "setup": "Setup"
+    },
+    "correctAnswers": "Correct Answers",
+    "postSubmissionStepContent": "After Submission Content",
+    "complete": "Complete",
+    "delete": "Delete",
+    "duplicate": "Duplicate",
+    "discordWebhook": "Discord Webhook",
+    "edit": "Edit",
+    "endDate": "End date",
+    "export": "Export",
+    "guideBy": "by {0}",
+    "guideSteps": "Guide Steps",
+    "guideType": "Guide Type",
+    "import": "Import",
+    "multipleChoiceQuestion": "Multiple Choice",
+    "modal": {
+      "selectGuideOrBundleType": "Select Guide Type"
+    },
+    "next": "Next",
+    "onboardingSteps": "Onboarding Steps",
+    "previous": "Previous",
+    "privateInput": "Private Input",
+    "publicInput": "Public Input",
+    "question": {
+      "content": "Question?",
+      "description": "Question description"
+    },
+    "singleChoiceQuestion": "Single Choice",
+    "startDate": "Start date",
+    "step": {
+      "name": "Step Name",
+      "contents": "Contents"
+    },
+    "addDiscord": "Discord Connect",
+
+    "submissions": "Submissions",
+    "thumbnail": "Thumbnail Image",
+    "vote": "Vote",
+    "votingSystem": "Voting system",
+    "showIncorrectChoices": "Show Incorrect Questions",
+    "hideQuestions": "Hide Questions",
+    "socialShareImage": "Twitter Share Image",
+    "payModal": {
+      "title": "Batch Pay",
+      "description": "Pay the following submissions",
+      "selectedSubmission": "Selected Submissions",
+      "selectYourWallet": "Select Your Wallet",
+      "walletAddr": "Wallet Address",
+      "contract": "Contract",
+      "tokenName": "Token Name",
+      "balance": "Balance",
+      "amount": "Amount",
+      "amountToPay": "Amount to Pay",
+
+      "ok": "Ok",
+      "cancel": "Cancel"
+    },
+    "submissionScreen": {
+      "title": "Guide Submissions",
+      "uniqueFilter": "Unique",
+      "score": "Score",
+      "payBtn": "Pay"
+    },
+    "submissionTable": {
+      "createdBy": "Created By",
+      "result": "Result",
+      "createdDate": "Created Date"
+    }
+  },
+  "byte": {
+    "byteSteps": "Byte Steps",
+    "next": "Next",
+    "previous": "Previous",
+    "complete": "Complete",
+    "create": {
+      "name": "Name",
+      "excerpt": "Byte excerpt...",
+      "basicInfo": "Basic Information",
+      "stepByStep": "Step by Step Byte",
+      "connectDiscord": "Connect Discord",
+      "changeDiscordServer": "Change Server",
+      "connectToDiscordForFeatures": "Connect to discord from project settings to access smart features like granting roles on guide completion",
+      "setProjectGalaxyCredentials": "Set Project Galaxy Credentials to grant Galaxy OAT upon completion of guides",
+      "discordRoles": "Discord Roles",
+      "chooseDiscordRoles": "Choose Discord roles",
+      "discordRolesPassingCount": "Passing Answers count",
+      "projectGalaxyCredential": "Project Galaxy Credential",
+      "projectGalaxyCredentialId": "Credential Id",
+      "projectGalaxyOatMintUrl": "Galaxy OAT Mint Url",
+      "projectGalaxyOatPassingCount": "Passing Answers count",
+      "totalQuestionCount": "Total Question Count"
+    }
+  },
+  "simulation": {
+    "byteSteps": "Simulation Steps",
+    "next": "Next",
+    "previous": "Previous",
+    "complete": "Complete",
+    "create": {
+      "name": "Name",
+      "excerpt": "Simulation excerpt...",
+      "basicInfo": "Basic Information",
+      "stepByStep": "Step by Step Byte"
+    }
+  },
+  "guides": {
+    "header": "Guides",
+    "new": "New guide",
+    "noGuidesHere": "There aren't any guides here yet!",
+    "noGuides": {
+      "onboarding": "There aren't any Onboarding guides here yet!",
+      "how-to": "There aren't any How To guides here yet!",
+      "level-up": "There aren't any Level Up guides here yet!",
+      "course": "There aren't any guides here yet!"
+    },
+    "createGuide": "Create",
+    "createYourFirstGuide": "Let's create your first Guide",
+    "createFirstGuide": {
+      "onboarding": "Let's create your first Onboarding guide",
+      "how-to": "Let's create your first How To guide",
+      "level-up": "Let's create your first Level Up guide",
+      "course": "Let's create your first Course guide"
+    },
+    "states": {
+      "all": "All",
+      "core": "Core",
+      "community": "Community",
+      "active": "Active",
+      "pending": "Pending",
+      "closed": "Closed"
+    }
+  },
+  "courses": {
+    "view": {
+      "courseSubmission": "Finalize Submission",
+      "answerCorrected": "Answer is corrected",
+      "hint": "Hint",
+      "submitTopicBtn": "Submit Chapter",
+      "submitTopicTitle": "Submit Chapter",
+      "chapterSubmitSuccess": "Chapter Submitted!",
+      "chapterSubmitError": "Oops... Chapter Submission Error!",
+      "courseSubmitSuccess": "Course Submitted!",
+      "completeAllQuestionOfChapterToSubmit": "Complete all the questions of the chapter to submit.",
+      "completeAllChapterQuestionsToSubmit": "Complete all the questions of each chapter to submit.",
+      "editCourseRepo": "Edit Repo"
+    },
+    "create": {
+      "name": "Name",
+      "courseJsonUrl": "Course Json Url (DEPRECATED)",
+      "courseRepoUrl": "Course Repo Url (Recommended)",
+      "excerpt": "Course excerpt...",
+      "basicInfo": "Basic Information",
+      "content": "Detailed Description of the Guide Bundle",
+      "guidesInBundle": "Guides in Course",
+      "addGuide": "Add Guide"
+    },
+    "courseGuides": "Course guides",
+    "guideSelect": {
+      "changeGuide": "Change Guide",
+      "selectGuide": "Select Guide"
+    },
+    "modal": {
+      "selectGuide": "Select Guide",
+      "selectGuideOrBundleType": "Select Guide Type"
+    },
+    "category": {
+      "community": "Community",
+      "contentWriting": "Content Writing",
+      "design": "Design",
+      "developer": "Developer",
+      "engineering": "Engineering",
+      "general": "General",
+      "governance": "Governance",
+      "introduction": "Introduction",
+      "marketing": "Marketing",
+      "member": "Member",
+      "overview": "Overview",
+      "products": "Products",
+      "sales": "Sales",
+      "setup": "Setup"
+    },
+    "bundleType": "Bundle Type",
+    "delete": "Delete",
+    "duplicate": "Duplicate",
+    "discordWebhook": "Discord Webhook",
+    "edit": "Edit",
+    "endDate": "End date",
+    "guideBundleBy": "by {0}",
+    "startDate": "Start date",
+    "thumbnail": "Thumbnail Image",
+    "vote": "Vote",
+    "votingSystem": "Voting system",
+    "next": "Next",
+    "previous": "Previous",
+    "complete": "Complete",
+    "submissions": "Submissions",
+    "addInputOrQuestion": "Add Input or Question",
+    "multipleChoiceQuestion": "Multiple Choice",
+    "singleChoiceQuestion": "Single Choice",
+    "publicInput": "Public Input",
+    "privateInput": "Private Input",
+    "socialShareImage": "Twitter Share Image",
+    "all": "All courses",
+    "header": "Guide Bundles",
+    "new": "New course",
+    "createCourse": "Create",
+    "noCoursesYet": "There aren't any Courses here yet!",
+    "createFirstCourse": "Let's create your first course",
+    "duration": "Duration",
+    "highlightsPlaceholder": "Basics of Web3\nAll the products of xxxx\nxxx ecosystem\nBusiness use-cases",
+
+    "states": {
+      "all": "All",
+      "core": "Core",
+      "community": "Community",
+      "active": "Active",
+      "pending": "Pending",
+      "closed": "Closed"
+    }
+  },
+  "navigation": {
+    "course": "Course",
+    "onboarding": "Onboarding",
+    "how-to": "How To",
+    "level-up": "Level Up"
+  },
+  "settings": {
+    "addGnosisWallet": "Add Gnosis Wallet",
+    "about": "About",
+    "accessToken": "Access Token",
+    "admins": "Admins",
+    "avatar": "Avatar",
+    "categories": "Categorie(s)",
+    "customDomain": "Custom domain",
+    "github": "Github",
+    "gitGuidesRepository": "Github Guides Repository",
+    "gitAcademyRepository": "Github Academy Repository",
+    "gnosisWallets": "Gnosis Wallets",
+    "header": "Settings",
+    "missionStatement": "Mission Statement",
+    "missionStatementPlaceholder": "e.g. DoDAO wants to onboard a million users to DAOs by 2025",
+    "name": "Name",
+    "network": "Network",
+    "profile": "Profile",
+    "projectGalaxy": "Project Galaxy",
+    "seeENS": "See on ENS",
+    "skin": "Skin",
+    "setENS": "Set record on ENS",
+    "symbol": "Symbol",
+    "terms": "Terms",
+    "twitter": "Twitter",
+    "domain": "Domain name",
+    "strategies": "Strategie(s)",
+    "selectCategories": "Select categories",
+    "addStrategy": "Add strategy",
+    "authors": "Authors",
+    "defaultTab": "Default tab",
+    "proposalThreshold": "Proposal threshold",
+    "allowOnlyAuthors": "Allow only authors to submit a proposal",
+    "editPlugin": "Edit plugin",
+    "addPlugin": "Add plugin",
+    "pluginParameters": "Plugin parameters",
+    "proposalValidation": "Proposal validation",
+    "validation": "Validation",
+    "editValidation": "Edit validation",
+    "selectValidation": "Select validation",
+    "validationParameters": "Validation parameters",
+    "warningTextRecord": "You must set a text record on the ENS domain.",
+    "votingDelay": "Voting delay",
+    "votingPeriod": "Voting period",
+    "voting": "Voting",
+    "quorum": "Quorum",
+    "tags": "Tags",
+    "type": "Type",
+    "anyType": "Any",
+    "hideAbstain": "Ignore abstain votes in basic voting results",
+    "inviteLinks": {
+      "discordInviteLink": "Discord Invite Link",
+      "telegramInviteLink": "Telegram Invite Link"
+    }
+  },
+  "gnosisWallet": {
+    "table": {
+      "wallet": "Wallet",
+      "info": "Info",
+      "actions": "Actions"
+    },
+    "walletName": "Wallet Name",
+    "walletAddr": "Gnosis Wallet Address",
+    "walletNetwork": "Network",
+    "addWalletBtn": "Add Wallet",
+    "tokenContractAddr": "Token Contract Address"
+  },
+  "setupDAO": {
+    "header": "Setup DAO",
+    "profile": "Profile",
+    "avatar": "Avatar",
+    "name": "Name",
+    "about": "About",
+    "terms": "Terms",
+    "network": "Network",
+    "symbol": "Symbol",
+    "skin": "Skin",
+    "customDomain": "Custom domain",
+    "domain": "Domain name",
+    "strategies": "Strategie(s)",
+    "categories": "Categorie(s)",
+    "selectCategories": "Select categories",
+    "addStrategy": "Add strategy",
+    "authors": "Authors",
+    "admins": "Admins",
+    "defaultTab": "Default tab",
+    "proposalThreshold": "Proposal threshold",
+    "allowOnlyAuthors": "Allow only authors to submit a proposal",
+    "editPlugin": "Edit plugin",
+    "addPlugin": "Add plugin",
+    "pluginParameters": "Plugin parameters",
+    "proposalValidation": "Proposal validation",
+    "validation": "Validation",
+    "editValidation": "Edit validation",
+    "selectValidation": "Select validation",
+    "validationParameters": "Validation parameters",
+    "warningTextRecord": "You must set a text record on the ENS domain.",
+    "votingDelay": "Voting delay",
+    "votingPeriod": "Voting period",
+    "voting": "Voting",
+    "quorum": "Quorum",
+    "type": "Type",
+    "anyType": "Any",
+    "addWalletConfirmMsg": "Are you sure you want to add this wallet?",
+    "deleteWalletConfirmMsg": "<div class=\"msg-delete\">Are you sure you want to delete this wallet <span>{walletAddress}</span>?</div>",
+    "addWalletBtn": "Add Wallet?",
+    "hideAbstain": "Ignore abstain votes in basic voting results"
+  },
+  "setup": {
+    "example": "e.g. yam.eth",
+    "chooseExistingEns": "Choose one of your existing ENS domains to create a DAO with:",
+    "useSingleExistingEns": "Use your existing ENS domain:",
+    "orReigsterNewEns": "Or register a new domain:",
+    "registerEnsButton": "Register",
+    "supportedEnsTLDs": "Supported domain endings"
+  },
+  "notify": {
+    "copied": "Copied!",
+    "delegationSuccess": "Delegation successful",
+    "delegationRemoved": "Delegation removed",
+    "gnosisTransactionsError": "Oops, something went wrong! Please try again or configure your Gnosis Safe wallet again",
+    "gnosisTransactionsQueued": "Payments have been queued to Gnosis Wallet. Please reload gnosis wallet in a couple of mins to see the transactions.",
+    "guideCreated": "Guide Created",
+    "bytePublished": "Byte Published",
+    "byteResponseSubmitted": "Byte Submitted",
+    "guideResponseSubmitted": "Guide Submitted",
+    "guideCourseCreated": "Guide Bundle Created",
+    "proposalDeleted": "Proposal deleted",
+    "somethingWentWrong": "Oops, something went wrong!",
+    "validationFailed": "There are some errors. Please fix them before saving!",
+    "saved": "Saved!",
+    "added": "Added!",
+    "deleted": "Deleted!",
+    "moved": "Moved!",
+    "successful": "Successful!",
+    "proposalCreated": "Proposal created",
+    "voteSuccessful": "Your vote is in!",
+    "youDidIt": "You did it!",
+    "spaceSaved": "Dao Saved. Please reload the page after 20 seconds to see the changes."
+  },
+  "explore": {
+    "createStrategy": "Create strategy",
+    "createSkin": "Create skin",
+    "addNetwork": "Add network",
+    "createPlugin": "Create plugin",
+    "strategies": "strategie(s)",
+    "skins": "skin(s)",
+    "networks": "network(s)",
+    "plugins": "plugin(s)",
+    "results": "result(s)",
+    "categories": {
+      "all": "All",
+      "protocol": "Protocol",
+      "social": "Social",
+      "investment": "Investment",
+      "grant": "Grant",
+      "service": "Service",
+      "media": "Media",
+      "creator": "Creator",
+      "collector": "Collector"
+    }
+  },
+  "voting": {
+    "selectVoting": "Select voting system",
+    "single-choice": "Single choice voting",
+    "approval": "Approval voting",
+    "quadratic": "Quadratic voting",
+    "ranked-choice": "Ranked choice voting",
+    "weighted": "Weighted voting",
+    "basic": "Basic voting",
+    "description": {
+      "single-choice": "Each voter may select only one choice.",
+      "approval": "Each voter may select any number of choices.",
+      "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quadratically.",
+      "ranked-choice": "Each voter may select and rank any number of choices. Results are calculated by instant-runoff counting method.",
+      "weighted": "Each voter may spread voting power across any number of choices.",
+      "basic": "Single choice voting with three choices: For, Against or Abstain"
+    },
+    "choices": {
+      "for": "For",
+      "against": "Against",
+      "abstain": "Abstain"
+    }
+  },
+  "safeSnap": {
+    "currentOutcome": "Current outcome",
+    "currentBond": "Current bond",
+    "finalizedIn": "Finalized {0}",
+    "executableIn": "Executable {0}",
+    "finalOutcome": "Outcome",
+    "nextBond": "Bond to set outcome",
+    "setOutcomeTo": "Set outcome to",
+    "claimBond": "Claim bond",
+    "addBatch": "Add transaction batch",
+    "batch": "Transaction batch",
+    "transactions": "Transactions",
+    "to": "To (address)",
+    "invalidAddress": "Invalid address",
+    "invalidAmount": "Invalid amount",
+    "invalidValue": "Invalid value",
+    "invalidAbi": "Invalid ABI",
+    "invalidData": "Invalid data",
+    "value": "Value (wei)",
+    "data": "Data",
+    "noCollectibles": "No collectibles",
+    "asset": "Asset",
+    "amount": "Amount",
+    "type": "Type",
+    "transferFunds": "Transfer funds",
+    "transferNFT": "Transfer NFT",
+    "contractInteraction": "Contract interaction",
+    "rawTransaction": "Raw transaction",
+    "addTransaction": "Add transaction",
+    "transactionLabels": {
+      "contractInteraction": "{functionName}() - {amount} wei to {address}",
+      "transferFunds": "Transfer {amount} {tokenSymbol} to {address}",
+      "transferNFT": "Send {name} #{id} to {address}",
+      "raw": "Send {amount} wei to {address}"
+    },
+    "labels": {
+      "request": "Request execution",
+      "setOutcome": "Set outcome",
+      "changeOutcome": "Change outcome",
+      "executeTxs": "Execute transaction batch {0} of {1}",
+      "executed": "All transactions have been executed",
+      "error": "Something went wrong",
+      "connectWallet": "Connect wallet to see execution details",
+      "switchChain": "Switch your wallet to {0} to request execution",
+      "question": "Did this proposal pass and does it meet the",
+      "criteria": "acceptance criteria?"
+    }
+  },
+  "poap": {
+    "no_poap_header": "A POAP hasn't been setup for this proposal yet :'(",
+    "no_voted_header": "Vote to get this POAP",
+    "unclaimed_header": "Mint your I voted POAP",
+    "claimed_header": "Congratulations! The POAP has been minted to your collection",
+    "loading_header": "The POAP is being minted to your collection",
+    "button_claim": "Mint",
+    "button_show": "Browse collection",
+    "success_claim": "The POAP has been minted to your collection",
+    "error_claim": "There was a problem minting the token"
+  },
+  "charts": {
+    "charts": "Charts",
+    "noVotesYet": "There are no votes to visualize yet.",
+    "totalVotesPerDay": "Total votes per day",
+    "shareOfVotingPower": "Share of voting power",
+    "votingPowerPerDay": "Voting power per day"
+  },
+  "comment_box": {
+    "title": "Comment box",
+    "add": "Add your comment here",
+    "submit": "Submit",
+    "preview": "Preview",
+    "continue_editing": "Continue editing",
+    "edit": "Edit your reply here",
+    "edit_button": "Edit",
+    "dismiss": "Dismiss",
+    "delete": "Delete",
+    "add_reply": "Add your reply here",
+    "edit_comment": "Edit comment",
+    "edit_modal": "Are you sure you want to edit?",
+    "yes": "Yes",
+    "no": "No",
+    "delete_comment": "Delete comment",
+    "delete_modal": "Are you sure you want to delete?",
+    "error": "Oops, something went wrong",
+    "replies": "replies",
+    "hide": "Hide",
+    "show": "Show",
+    "reply": "Reply",
+    "load_more": "Load more"
+  },
+  "page": {
+    "title": {
+      "home": "DoDAO",
+      "setup": "Create a DAO",
+      "timeline": "Timeline",
+      "explore": "Explore",
+      "playground": "Playground",
+      "strategy": "{key} strategy",
+      "delegate": "Delegate",
+      "dao": {
+        "create": "Create {dao} proposal",
+        "about": "About {dao}",
+        "proposals": "{dao} Proposals",
+        "guides": "{dao} Guides",
+        "proposal": "{dao} proposal: {proposal}",
+        "guide": "Guide: {guide}",
+        "bundle": "{dao} Courses",
+        "settings": "{dao} Settings"
+      },
+      "guide": {
+        "create": "Create Guide"
+      },
+      "course": {
+        "create": "Create Guide",
+        "edit": "Edit Course - {course}"
+      }
+    }
+  },
+  "validations": {
+    "timeline": {
+      "upsert": {
+        "name": {
+          "required": "Name is required",
+          "length": "Name can be between 3 to 50 characters"
+        },
+        "content": {
+          "required": "Content is required",
+          "length": "Content can be between 10 t0 14400 characters"
+        },
+
+        "excerpt": {
+          "required": "Excerpt is required",
+          "length": "Excerpt can be between 5 to 80 characters"
+        },
+        "moreLink": {
+          "valid": "Should be a valid URL",
+          "length": "Can be max of 2048 characters"
+        },
+
+        "eventName": {
+          "required": "Name is required",
+          "length": "Name can be between 3 to 100 characters"
+        },
+        "eventContent": {
+          "required": "Content is required",
+          "length": "Should be at least 80 characters"
+        }
+      }
+    }
+  },
+  "topNav": {
+    "browseByBlockchain": "Browse DAOs by Blockchain"
+  },
+  "hal": {
+    "title": "Track proposals for {daoName}",
+    "text": "Receive notifications every time a new proposal is created or ends"
+  }
+}

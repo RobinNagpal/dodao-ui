@@ -1,0 +1,215 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/Space",
+  "definitions": {
+    "Space": {
+      "title": "Space",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "name",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "private": {
+          "type": "boolean"
+        },
+        "blockchain": {
+          "type": "string",
+          "title": "blockchain",
+          "maxLength": 160
+        },
+        "mission": {
+          "type": "string",
+          "title": "mission",
+          "maxLength": 160
+        },
+        "about": {
+          "type": "string",
+          "title": "about",
+          "maxLength": 16384
+        },
+        "creator": {
+          "type": "string",
+          "title": "creator",
+          "maxLength": 160
+        },
+        "discord": {
+          "type": "string",
+          "title": "discord",
+          "maxLength": 1024
+        },
+        "github": {
+          "type": "string",
+          "title": "github",
+          "pattern": "^[A-Za-z0-9_-]*$",
+          "maxLength": 39
+        },
+        "guidesPageFooterContent": {
+          "type": "string",
+          "title": "guidesPageFooterContent",
+          "maxLength": 16384
+        },
+        "guidesPageHeaderContent": {
+          "type": "string",
+          "title": "guidesPageHeaderContent",
+          "maxLength": 16384
+        },
+        "guidesBundlePageFooterContent": {
+          "type": "string",
+          "title": "guidesBundlePageFooterContent",
+          "maxLength": 16384
+        },
+        "guidesBundlePageHeaderContent": {
+          "type": "string",
+          "title": "guidesBundlePageHeaderContent",
+          "maxLength": 16384
+        },
+        "medium": {
+          "type": "string",
+          "title": "website",
+          "format": "uri",
+          "maxLength": 1024
+        },
+        "guidelines": {
+          "type": "string",
+          "title": "guidelines",
+          "maxLength": 1024
+        },
+        "terms": {
+          "type": "string",
+          "title": "terms",
+          "format": "uri",
+          "maxLength": 128
+        },
+        "avatar": {
+          "type": "string",
+          "title": "avatar",
+          "format": "uri",
+          "maxLength": 256
+        },
+        "location": {
+          "type": "string",
+          "title": "location",
+          "maxLength": 24
+        },
+        "website": {
+          "type": "string",
+          "title": "website",
+          "format": "uri",
+          "maxLength": 128
+        },
+        "twitter": {
+          "type": "string",
+          "title": "twitter",
+          "pattern": "^[A-Za-z0-9_]*$",
+          "maxLength": 15
+        },
+        "email": {
+          "type": "string",
+          "title": "email",
+          "maxLength": 32
+        },
+        "network": {
+          "type": "string",
+          "title": "network",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "domain": {
+          "type": "string",
+          "title": "domain",
+          "maxLength": 64
+        },
+        "members": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "members"
+        },
+        "publicForumWebsite": {
+          "type": "string",
+          "title": "publicForumWebsite",
+          "format": "uri",
+          "maxLength": 1024
+        },
+        "referenceDocsWebsite": {
+          "type": "string",
+          "title": "referenceDocsWebsite",
+          "format": "uri",
+          "maxLength": 1024
+        },
+        "admins": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "admins"
+        },
+        "skin": {
+          "type": "string",
+          "title": "skin",
+          "maxLength": 128
+        },
+        "filters": {
+          "type": "object",
+          "properties": {
+            "defaultTab": {
+              "type": "string"
+            },
+            "minScore": {
+              "type": "number",
+              "minimum": 0
+            },
+            "onlyMembers": {
+              "type": "boolean"
+            },
+            "invalids": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 64
+              },
+              "title": "invalids"
+            }
+          },
+          "additionalProperties": false
+        },
+        "validation": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "maxLength": 64,
+              "title": "name"
+            },
+            "params": {
+              "type": "object",
+              "title": "params"
+            }
+          },
+          "required": ["name"],
+          "additionalProperties": false
+        },
+        "categories": {
+          "type": "array",
+          "maxItems": 2,
+          "items": {
+            "type": "string",
+            "enum": ["protocol", "social", "investment", "grant", "service", "media", "creator", "collector"]
+          }
+        },
+        "telegram": {
+          "type": "string",
+          "title": "telegram",
+          "format": "uri",
+          "maxLength": 1024
+        }
+      },
+      "required": ["name", "network", "mission", "blockchain", "skin"],
+      "additionalProperties": false
+    }
+  }
+}

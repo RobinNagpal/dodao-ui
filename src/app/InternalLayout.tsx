@@ -44,7 +44,7 @@ export default function InternalLayout({ children, session }: InternalLayoutProp
         <LoginModalProvider>
           <LoginModal />
           <TopNav />
-          <StyledMain className="h-full">
+          <StyledMain className="h-max">
             <MainContainer>{children}</MainContainer>
           </StyledMain>
         </LoginModalProvider>
