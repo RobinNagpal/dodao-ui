@@ -1,0 +1,1083 @@
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+type AcademyTask {
+  createdAt: Int!
+  createdBy: String!
+  details: String!
+  excerpt: String!
+  items: [GuideStepItem!]!
+  prerequisiteCourses: [SummarizedGitCourse!]!
+  prerequisiteGuides: [Guide!]!
+  spaceId: String!
+  status: String!
+  title: String!
+  updatedAt: Int!
+  updatedBy: String!
+  uuid: String!
+}
+
+input AddTopicExplanationInput {
+  courseKey: String!
+  details: String!
+  shortTitle: String!
+  title: String!
+  topicKey: String!
+}
+
+input AddTopicInput {
+  courseKey: String!
+  details: String!
+  title: String!
+}
+
+input AddTopicQuestionInput {
+  answerKeys: [String!]!
+  choices: [TopicQuestionChoiceInput!]!
+  content: String!
+  courseKey: String!
+  explanation: String!
+  hint: String!
+  questionType: String!
+  topicKey: String!
+}
+
+input AddTopicSummaryInput {
+  courseKey: String!
+  details: String!
+  shortTitle: String!
+  title: String!
+  topicKey: String!
+}
+
+input AddTopicVideoInput {
+  courseKey: String!
+  details: String!
+  shortTitle: String!
+  title: String!
+  topicKey: String!
+  url: String!
+}
+
+scalar Any
+
+type Byte {
+  admins: [String!]!
+  content: String!
+  created: String!
+  id: String!
+  name: String!
+  postSubmissionStepContent: String
+  priority: Int!
+  publishStatus: String!
+  showIncorrectOnCompletion: Boolean!
+  steps: [ByteStep!]!
+  tags: [String!]!
+}
+
+type ByteQuestion {
+  answerKeys: [String!]!
+  choices: [QuestionChoice!]!
+  content: String!
+  explanation: String!
+  order: Int!
+  type: String!
+  uuid: String!
+}
+
+type ByteStep {
+  content: String!
+  name: String!
+  order: Int!
+  stepItems: [ByteStepItem!]!
+  uuid: String!
+}
+
+input ByteStepInput {
+  content: String!
+  explanation: String
+  name: String!
+  order: Int!
+  stepItems: [StepItemInputGenericInput!]!
+  uuid: String!
+}
+
+union ByteStepItem = ByteQuestion | ByteUserInput | UserDiscordConnect
+
+type ByteStepItemSubmission {
+  selectedAnswerKeys: [String!]
+  type: String!
+  userDiscordInfo: UserDiscordInfo
+  userInput: String
+  uuid: String!
+}
+
+input ByteStepItemSubmissionInput {
+  type: String!
+  userDiscordInfo: UserDiscordInfoInput
+  userInput: String
+  uuid: String!
+}
+
+type ByteStepSubmission {
+  itemResponses: [ByteStepItemSubmission!]!
+  uuid: String!
+}
+
+input ByteStepSubmissionInput {
+  itemResponses: [ByteStepItemSubmissionInput!]!
+  uuid: String!
+}
+
+type ByteSubmission {
+  byteId: String!
+  created: Int!
+  createdBy: String!
+  id: String!
+  spaceId: String!
+}
+
+input ByteSubmissionInput {
+  byteId: String!
+  from: String!
+  space: String!
+  steps: [ByteStepSubmissionInput!]!
+  timestamp: String
+  uuid: String!
+}
+
+type ByteUserInput {
+  label: String!
+  order: Int!
+  required: Boolean!
+  type: String!
+  uuid: String!
+}
+
+input CourseBasicInfoInput {
+  courseAdmins: [String!]!
+  courseFailContent: String
+  coursePassContent: String
+  coursePassCount: Int
+  details: String!
+  duration: String!
+  highlights: [String!]!
+  key: String!
+  priority: Int
+  publishStatus: String!
+  summary: String!
+  thumbnail: String!
+  title: String!
+  topicConfig: TopicConfigInput
+}
+
+type CourseIntegrations {
+  discordRoleIds: [String!]
+  discordRolePassingCount: Int
+  discordWebhook: String
+  projectGalaxyCredentialId: String
+  projectGalaxyOatMintUrl: String
+  projectGalaxyOatMintedContent: String
+  projectGalaxyOatPassingCount: Int
+}
+
+input CourseSubmissionInput {
+  courseKey: String!
+  uuid: String!
+}
+
+input CreateSignedUrlInput {
+  contentType: String!
+  imageType: String!
+  name: String!
+  objectId: String!
+}
+
+input DeleteTopicExplanationInput {
+  courseKey: String!
+  explanationKey: String!
+  topicKey: String!
+}
+
+input DeleteTopicInput {
+  courseKey: String!
+  topicKey: String!
+}
+
+input DeleteTopicQuestionInput {
+  courseKey: String!
+  questionUuid: String!
+  topicKey: String!
+}
+
+input DeleteTopicSummaryInput {
+  courseKey: String!
+  summaryKey: String!
+  topicKey: String!
+}
+
+input DeleteTopicVideoInput {
+  courseKey: String!
+  topicKey: String!
+  videoUuid: String!
+}
+
+type GenericCourse {
+  categories: [String!]!
+  content: String!
+  courseAdmins: [String!]
+  courseType: String!
+  duration: String!
+  excerpt: String!
+  highlights: [String!]!
+  id: String!
+  name: String!
+  priority: Int
+  publishStatus: String!
+  thumbnail: String!
+  uuid: String!
+}
+
+type GitCourse {
+  courseAdmins: [String!]
+  courseFailContent: String
+  coursePassContent: String
+  coursePassCount: Int
+  details: String!
+  duration: String!
+  highlights: [String!]!
+  key: String!
+  priority: Int
+  publishStatus: String!
+  summary: String!
+  thumbnail: String!
+  title: String!
+  topicConfig: TopicConfig
+  topics: [GitCourseTopic!]!
+}
+
+type GitCourseExplanation {
+  details: String!
+  key: String!
+  shortTitle: String!
+  title: String!
+}
+
+type GitCourseExplanationsSubmission {
+  key: String!
+  status: String!
+}
+
+input GitCourseExplanationsSubmissionInput {
+  key: String!
+  status: String!
+}
+
+input GitCourseInput {
+  courseJsonUrl: String
+  courseRepoUrl: String
+  publishStatus: String!
+  weight: Int!
+}
+
+type GitCourseQuestion {
+  answerKeys: [String!]
+  choices: [GitCourseQuestionChoice!]
+  content: String!
+  explanation: String!
+  hint: String!
+  type: String!
+  uuid: String!
+}
+
+type GitCourseQuestionChoice {
+  content: String!
+  key: String!
+}
+
+type GitCourseQuestionsSubmission {
+  answers: [String!]!
+  status: String!
+  uuid: String!
+}
+
+input GitCourseQuestionsSubmissionInput {
+  answers: [String!]!
+  status: String!
+  uuid: String!
+}
+
+type GitCourseReading {
+  details: String!
+  shortTitle: String!
+  title: String!
+  type: String!
+  url: String!
+  uuid: String!
+}
+
+type GitCourseReadingsSubmission {
+  questions: [GitCourseQuestionsSubmission!]!
+  status: String!
+  uuid: String!
+}
+
+input GitCourseReadingsSubmissionInput {
+  questions: [GitCourseQuestionsSubmissionInput!]!
+  status: String!
+  uuid: String!
+}
+
+type GitCourseSubmission {
+  courseKey: String!
+  createdAt: Int!
+  createdBy: String!
+  galaxyCredentialsUpdated: Boolean
+  isLatestSubmission: Boolean
+  questionsAttempted: Int
+  questionsCorrect: Int
+  questionsIncorrect: Int
+  questionsSkipped: Int
+  spaceId: String!
+  status: String!
+  topicSubmissions: [GitCourseTopicSubmission!]!
+  updatedAt: Int!
+  uuid: String!
+}
+
+type GitCourseSummariesSubmission {
+  key: String!
+  status: String!
+}
+
+input GitCourseSummariesSubmissionInput {
+  key: String!
+  status: String!
+}
+
+type GitCourseSummary {
+  details: String!
+  key: String!
+  shortTitle: String!
+  title: String!
+}
+
+type GitCourseTopic {
+  details: String!
+  explanations: [GitCourseExplanation!]
+  key: String!
+  questions: [GitCourseQuestion!]
+  readings: [GitCourseReading!]
+  summaries: [GitCourseSummary!]
+  title: String!
+}
+
+type GitCourseTopicCorrectAnswer {
+  answerKeys: [String!]!
+  uuid: String!
+}
+
+type GitCourseTopicSubmission {
+  correctAnswers: [GitCourseTopicCorrectAnswer!]
+  courseKey: String!
+  courseSubmissionUuid: String!
+  createdAt: Int!
+  createdBy: String!
+  isLatestSubmission: Boolean!
+  questionsAttempted: Int
+  questionsCorrect: Int
+  questionsIncorrect: Int
+  questionsSkipped: Int
+  spaceId: String!
+  status: String!
+  submission: GitCourseTopicSubmissionJson
+  topicKey: String!
+  updatedAt: Int!
+  uuid: String!
+}
+
+input GitCourseTopicSubmissionInput {
+  courseKey: String!
+  explanations: [GitCourseExplanationsSubmissionInput!]!
+  questions: [GitCourseQuestionsSubmissionInput!]!
+  readings: [GitCourseReadingsSubmissionInput!]!
+  status: String!
+  summaries: [GitCourseSummariesSubmissionInput!]!
+  topicKey: String!
+  uuid: String!
+}
+
+type GitCourseTopicSubmissionJson {
+  courseKey: String!
+  explanations: [GitCourseExplanationsSubmission!]
+  questions: [GitCourseQuestionsSubmission!]
+  readings: [GitCourseReadingsSubmission!]
+  status: String!
+  summaries: [GitCourseSummariesSubmission!]
+  topicKey: String!
+  uuid: String!
+}
+
+type GnosisSafeWallet {
+  chainId: Int!
+  id: String!
+  order: Int!
+  tokenContractAddress: String!
+  walletAddress: String!
+  walletName: String!
+}
+
+input GnosisSafeWalletInput {
+  chainId: Int!
+  id: String!
+  order: Int!
+  tokenContractAddress: String!
+  walletAddress: String!
+  walletName: String!
+}
+
+type Guide {
+  authors: [String!]!
+  categories: [String!]!
+  content: String!
+  created: Int!
+  guideIntegrations: GuideIntegrations!
+  guideSource: String!
+  guideType: String!
+  id: String!
+  link: String!
+  name: String!
+  postSubmissionStepContent: String
+  previousId: String
+  publishStatus: String!
+  showIncorrectOnCompletion: Boolean!
+  socialShareImage: String
+  space: Space!
+  steps: [GuideStep!]!
+  thumbnail: String
+  uuid: String!
+  version: Int!
+}
+
+input GuideInput {
+  categories: [String!]!
+  content: String!
+  from: String!
+  guideIntegrations: GuideIntegrationsInput!
+  guideSource: String!
+  guideType: String!
+  id: String!
+  name: String!
+  postSubmissionStepContent: String
+  publishStatus: String!
+  showIncorrectOnCompletion: Boolean!
+  socialShareImage: String
+  space: String!
+  steps: [GuideStepInput!]!
+  thumbnail: String
+  uuid: String!
+}
+
+type GuideIntegrations {
+  discordRoleIds: [String!]
+  discordRolePassingCount: Int
+  discordWebhook: String
+  projectGalaxyCredentialId: String
+  projectGalaxyOatMintUrl: String
+  projectGalaxyOatPassingCount: Int
+}
+
+input GuideIntegrationsInput {
+  discordRoleIds: [String!]!
+  discordRolePassingCount: Int
+  discordWebhook: String
+  projectGalaxyCredentialId: String
+  projectGalaxyOatMintUrl: String
+  projectGalaxyOatPassingCount: Int
+}
+
+type GuideQuestion {
+  answerKeys: [String!]!
+  choices: [QuestionChoice!]!
+  content: String!
+  order: Int!
+  type: String!
+  uuid: String!
+}
+
+input GuideQuestionInput {
+  answerKeys: [String!]
+  choices: [QuestionChoiceInput!]
+  content: String!
+  explanation: String
+  order: Int
+  questionType: String!
+  type: String!
+  uuid: String!
+}
+
+type GuideStep {
+  content: String!
+  created: Int!
+  id: String!
+  name: String!
+  order: Int!
+  stepItems: [GuideStepItem!]!
+  uuid: String!
+}
+
+input GuideStepInput {
+  content: String!
+  id: String!
+  name: String!
+  order: Int!
+  stepItems: [StepItemInputGenericInput!]!
+  uuid: String!
+}
+
+union GuideStepItem = GuideQuestion | GuideUserInput | UserDiscordConnect
+
+type GuideStepItemSubmission {
+  selectedAnswerKeys: [String!]
+  type: String!
+  userDiscordInfo: UserDiscordInfo
+  userInput: String
+  uuid: String!
+}
+
+input GuideStepItemSubmissionInput {
+  selectedAnswerKeys: [String!]
+  type: String!
+  userDiscordInfo: UserDiscordInfoInput
+  userInput: String
+  uuid: String!
+}
+
+type GuideStepSubmission {
+  itemResponses: [GuideStepItemSubmission!]!
+  uuid: String!
+}
+
+input GuideStepSubmissionInput {
+  itemResponses: [GuideStepItemSubmissionInput!]!
+  uuid: String!
+}
+
+type GuideSubmission {
+  created: Int!
+  createdBy: String!
+  galaxyCredentialsUpdated: Boolean
+  guideId: String!
+  guideUuid: String!
+  id: String!
+  result: GuideSubmissionResult!
+  spaceId: String!
+  steps: [GuideStepSubmission!]
+  uuid: String!
+}
+
+input GuideSubmissionInput {
+  from: String!
+  guideUuid: String!
+  space: String!
+  steps: [GuideStepSubmissionInput!]!
+  timestamp: String
+  uuid: String!
+}
+
+type GuideSubmissionResult {
+  allQuestions: [String!]!
+  correctQuestions: [String!]!
+  wrongQuestions: [String!]!
+}
+
+type GuideUserInput {
+  label: String!
+  order: Int!
+  required: Boolean!
+  type: String!
+  uuid: String!
+}
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+
+"""
+The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSONObject
+
+type JwtResponse {
+  jwt: String!
+}
+
+input MoveTopicExplanationInput {
+  courseKey: String!
+  direction: String!
+  explanationKey: String!
+  topicKey: String!
+}
+
+input MoveTopicInput {
+  courseKey: String!
+  direction: String!
+  topicKey: String!
+}
+
+input MoveTopicQuestionInput {
+  courseKey: String!
+  direction: String!
+  questionUuid: String!
+  topicKey: String!
+}
+
+input MoveTopicSummaryInput {
+  courseKey: String!
+  direction: String!
+  summaryKey: String!
+  topicKey: String!
+}
+
+input MoveTopicVideoInput {
+  courseKey: String!
+  direction: String!
+  topicKey: String!
+  videoUuid: String!
+}
+
+type Mutation {
+  addDiscordCredentials(code: String!, redirectUri: String!, spaceId: String!): Space!
+  addTopic(spaceId: String!, topicInfo: AddTopicInput!): GitCourseTopic!
+  addTopicExplanation(explanationInfo: AddTopicExplanationInput!, spaceId: String!): GitCourseExplanation!
+  addTopicQuestion(questionInfo: AddTopicQuestionInput!, spaceId: String!): GitCourseQuestion!
+  addTopicSummary(spaceId: String!, summaryInfo: AddTopicSummaryInput!): GitCourseSummary!
+  addTopicVideo(spaceId: String!, videoInfo: AddTopicVideoInput!): GitCourseReading!
+  authenticateWithUnstoppable(idToken: String!): JwtResponse!
+  createSignedUrl(input: CreateSignedUrlInput!, spaceId: String!): String!
+  deleteTopic(spaceId: String!, topicInfo: DeleteTopicInput!): GitCourse!
+  deleteTopicExplanation(explanationInfo: DeleteTopicExplanationInput!, spaceId: String!): GitCourse!
+  deleteTopicQuestion(questionInfo: DeleteTopicQuestionInput!, spaceId: String!): GitCourse!
+  deleteTopicSummary(spaceId: String!, summaryInfo: DeleteTopicSummaryInput!): GitCourse!
+  deleteTopicVideo(spaceId: String!, videoInfo: DeleteTopicVideoInput!): GitCourse!
+  initializeGitCourseSubmission(courseKey: String!, spaceId: String!): GitCourseSubmission!
+  moveTopic(spaceId: String!, topicInfo: MoveTopicInput!): GitCourse!
+  moveTopicExplanation(explanationInfo: MoveTopicExplanationInput!, spaceId: String!): GitCourse!
+  moveTopicQuestion(questionInfo: MoveTopicQuestionInput!, spaceId: String!): GitCourse!
+  moveTopicSummary(spaceId: String!, summaryInfo: MoveTopicSummaryInput!): GitCourse!
+  moveTopicVideo(spaceId: String!, videoInfo: MoveTopicVideoInput!): GitCourse!
+  refreshGitCourse(courseKey: String!, spaceId: String!): Boolean!
+  refreshGitCourses(spaceId: String!): Boolean!
+  refreshGitGuides(spaceId: String!): Boolean!
+  submitByte(submissionInput: ByteSubmissionInput!): ByteSubmission!
+  submitGitCourse(input: CourseSubmissionInput!, spaceId: String!): GitCourseSubmission!
+  submitGitCourseTopic(gitCourseTopicSubmission: GitCourseTopicSubmissionInput!, spaceId: String!): GitCourseTopicSubmission!
+  submitGuide(submissionInput: GuideSubmissionInput!): GuideSubmission!
+  updateCourseBasicInfo(courseBasicInfo: CourseBasicInfoInput!, spaceId: String!): GitCourse!
+  updateTopicBasicInfo(spaceId: String!, topicInfo: UpdateTopicBasicInfoInput!): GitCourse!
+  updateTopicExplanation(explanationInfo: UpdateTopicExplanationInput!, spaceId: String!): GitCourse!
+  updateTopicQuestion(questionInfo: UpdateTopicQuestionInput!, spaceId: String!): GitCourse!
+  updateTopicSummary(spaceId: String!, summaryInfo: UpdateTopicSummaryInput!): GitCourse!
+  updateTopicVideo(spaceId: String!, videoInfo: UpdateTopicVideoInput!): GitCourse!
+  upsertAcademyTask(spaceId: String!, task: UpsertAcademyTaskInput!): AcademyTask!
+  upsertByte(input: UpsertByteInput!, spaceId: String!): Byte!
+  upsertCourseIntegrations(courseIntegrationInput: UpsertCourseIntegrationsInput!, spaceId: String!): CourseIntegrations!
+  upsertGitCourse(gitCourseInput: GitCourseInput!, spaceId: String!): SummarizedGitCourse
+  upsertGitCourseTopicSubmission(gitCourseTopicSubmission: GitCourseTopicSubmissionInput!, spaceId: String!): GitCourseTopicSubmission!
+  upsertGnosisSafeWallets(spaceId: String!, wallets: [GnosisSafeWalletInput!]!): Space!
+  upsertGuide(guideInput: GuideInput!, spaceId: String!): Guide!
+  upsertProjectGalaxyAccessToken(accessToken: String!, spaceId: String!): Space!
+  upsertSimulation(input: UpsertSimulationInput!, spaceId: String!): Simulation!
+  upsertSpaceAcademyRepository(academyRepository: String!, spaceId: String!): Space!
+  upsertSpaceFeatures(features: [String!]!, spaceId: String!): Space!
+  upsertSpaceGitGuideRepositories(gitGuideRepositories: [SpaceGitRepositoryInput!]!, spaceId: String!): Space!
+  upsertSpaceInviteLinks(spaceId: String!, spaceInviteArgs: SpaceInviteArgs!): Space!
+  upsertTimeline(input: UpsertTimelineInput!, spaceId: String!): Timeline!
+}
+
+enum OrderDirection {
+  asc
+  desc
+}
+
+type Query {
+  academyTask(uuid: String!): AcademyTask!
+  academyTasks(spaceId: String!, status: String): [AcademyTask!]
+  byte(byteId: String!, spaceId: String!): Byte!
+  bytes(spaceId: String!): [Byte!]!
+  courses(spaceId: String!): [GenericCourse!]
+  gitCourse(courseKey: String!, spaceId: String!): GitCourse!
+  gitCourseIntegrations(key: String!, spaceId: String!): CourseIntegrations
+  gitCourseSubmission(courseKey: String!, spaceId: String!): GitCourseSubmission
+  gitCourseSummarized(key: String!, spaceId: String!): SummarizedGitCourse!
+  gitTopicSubmissions(courseKey: String!, spaceId: String!): [GitCourseTopicSubmission!]!
+  guide(spaceId: String!, uuid: String!): Guide!
+  guideSubmissions(guideUuid: String!): [GuideSubmission!]!
+  guides(spaceId: String!): [Guide!]
+  rawGitCourse(key: String!, spaceId: String!): RawGitCourse!
+  simulation(simulationId: String!, spaceId: String!): Simulation!
+  simulations(spaceId: String!): [Simulation!]!
+  space(domain: String, id: String): Space
+  spaceDiscordGuild(spaceId: String!): Any
+  spaces: [Space!]
+  summarizedGitCourses(spaceId: String!): [SummarizedGitCourse!]
+  timeline(spaceId: String!, timelineId: String!): Timeline!
+  timelines(spaceId: String!): [Timeline!]!
+}
+
+type QuestionChoice {
+  content: String!
+  key: String!
+  order: Int!
+}
+
+input QuestionChoiceInput {
+  content: String!
+  key: String!
+  order: Int!
+}
+
+type RawGitCourse {
+  courseJsonUrl: String
+  courseRepoUrl: String
+  key: String!
+  publishStatus: String!
+  weight: Int!
+}
+
+type Simulation {
+  admins: [String!]!
+  content: String!
+  created: String!
+  id: String!
+  name: String!
+  postSubmissionStepContent: String
+  priority: Int!
+  publishStatus: String!
+  showIncorrectOnCompletion: Boolean!
+  steps: [SimulationStep!]!
+  tags: [String!]!
+}
+
+type SimulationStep {
+  content: String!
+  iframeUrl: String
+  name: String!
+  order: Int!
+  uuid: String!
+}
+
+input SimulationStepInput {
+  content: String!
+  iframeUrl: String
+  name: String!
+  order: Int!
+  uuid: String!
+}
+
+type Space {
+  about: String
+  admins: [String!]!
+  avatar: String
+  blogSite: String
+  categories: [String]
+  creator: String!
+  discordInvite: String
+  domain: String
+  email: String
+  features: [String!]!
+  filters: SpaceFilters
+  github: String
+  guidesBundlePageFooterContent: String
+  guidesBundlePageHeaderContent: String
+  guidesPageFooterContent: String
+  guidesPageHeaderContent: String
+  id: String!
+  inviteLinks: SpaceInviteLinks
+  location: String
+  members: [String!]!
+  mission: String!
+  name: String
+  network: String
+  plugins: Any
+  private: Boolean
+  publicForumWebsite: String
+  referenceDocsWebsite: String
+  skin: String!
+  spaceIntegrations: SpaceIntegrations
+  symbol: String
+  telegramInvite: String
+  terms: String
+  twitter: String
+  website: String
+}
+
+type SpaceFilters {
+  minScore: Float
+  onlyMembers: Boolean
+}
+
+type SpaceGitRepository {
+  authenticationToken: String
+  gitRepoType: String
+  repoUrl: String!
+}
+
+input SpaceGitRepositoryInput {
+  authenticationToken: String
+  gitRepoType: String
+  repoUrl: String!
+}
+
+type SpaceIntegrations {
+  academyRepository: String
+  discordGuildId: String
+  gitGuideRepositories: [SpaceGitRepository!]
+  gnosisSafeWallets: [GnosisSafeWallet!]
+  projectGalaxyTokenLastFour: String
+}
+
+input SpaceInviteArgs {
+  discordInviteLink: String
+  showAnimatedButtonForDiscord: Boolean
+  showAnimatedButtonForTelegram: Boolean
+  telegramInviteLink: String
+}
+
+type SpaceInviteLinks {
+  discordInviteLink: String
+  showAnimatedButtonForDiscord: Boolean
+  showAnimatedButtonForTelegram: Boolean
+  telegramInviteLink: String
+}
+
+input SpaceWhere {
+  id: String
+  id_in: [String]
+}
+
+input StepItemInputGenericInput {
+  answerKeys: [String!]
+  choices: [QuestionChoiceInput!]
+  content: String
+  explanation: String
+  label: String
+  order: Int
+  questionType: String
+  required: Boolean
+  type: String!
+  uuid: String!
+}
+
+type SummarizedGitCourse {
+  courseAdmins: [String!]
+  details: String!
+  duration: String!
+  highlights: [String!]!
+  key: String!
+  priority: Int
+  publishStatus: String!
+  summary: String!
+  thumbnail: String!
+  title: String!
+  topics: [SummarizedGitCourseTopic!]!
+  uuid: String!
+}
+
+type SummarizedGitCourseTopic {
+  details: String!
+  key: String!
+  title: String!
+}
+
+type Timeline {
+  admins: [String!]!
+  content: String!
+  created: String!
+  events: [TimelineEvent!]!
+  excerpt: String!
+  id: String!
+  name: String!
+  priority: Int!
+  publishStatus: String!
+  tags: [String!]!
+  thumbnail: String
+}
+
+type TimelineEvent {
+  content: String!
+  date: String!
+  excerpt: String!
+  moreLink: String
+  name: String!
+  order: Int!
+  uuid: String!
+}
+
+type TopicConfig {
+  showExplanations: Boolean!
+  showHints: Boolean!
+}
+
+input TopicConfigInput {
+  showExplanations: Boolean!
+  showHints: Boolean!
+}
+
+input TopicQuestionChoiceInput {
+  content: String!
+  key: String!
+}
+
+input UpdateTopicBasicInfoInput {
+  courseKey: String!
+  details: String!
+  title: String!
+  topicKey: String!
+}
+
+input UpdateTopicExplanationInput {
+  courseKey: String!
+  details: String!
+  explanationKey: String!
+  shortTitle: String!
+  title: String!
+  topicKey: String!
+}
+
+input UpdateTopicQuestionInput {
+  answerKeys: [String!]!
+  choices: [TopicQuestionChoiceInput!]!
+  content: String!
+  courseKey: String!
+  explanation: String!
+  hint: String!
+  questionType: String!
+  questionUuid: String!
+  topicKey: String!
+}
+
+input UpdateTopicSummaryInput {
+  courseKey: String!
+  details: String!
+  shortTitle: String!
+  summaryKey: String!
+  title: String!
+  topicKey: String!
+}
+
+input UpdateTopicVideoInput {
+  courseKey: String!
+  details: String!
+  shortTitle: String!
+  title: String!
+  topicKey: String!
+  url: String!
+  videoUuid: String!
+}
+
+input UpsertAcademyTaskInput {
+  details: String!
+  excerpt: String!
+  items: [StepItemInputGenericInput!]!
+  prerequisiteCourseUuids: [String!]!
+  prerequisiteGuideUuids: [String!]!
+  status: String!
+  title: String!
+  uuid: String!
+}
+
+input UpsertByteInput {
+  admins: [String!]!
+  content: String!
+  created: String!
+  id: String
+  name: String!
+  priority: Int!
+  publishStatus: String!
+  steps: [ByteStepInput!]!
+  tags: [String!]!
+  thumbnail: String
+}
+
+input UpsertCourseIntegrationsInput {
+  courseKey: String!
+  discordRoleIds: [String!]!
+  discordRolePassingCount: Int
+  discordWebhook: String
+  projectGalaxyCredentialId: String
+  projectGalaxyOatMintUrl: String
+  projectGalaxyOatMintedContent: String
+  projectGalaxyOatPassingCount: Int
+}
+
+input UpsertSimulationInput {
+  admins: [String!]!
+  content: String!
+  created: String!
+  id: String
+  name: String!
+  priority: Int!
+  publishStatus: String!
+  steps: [SimulationStepInput!]!
+  tags: [String!]!
+  thumbnail: String
+}
+
+input UpsertTimelineEventInput {
+  content: String!
+  date: String!
+  excerpt: String!
+  moreLink: String
+  name: String!
+  uuid: String!
+}
+
+input UpsertTimelineInput {
+  admins: [String!]!
+  content: String!
+  created: String!
+  events: [UpsertTimelineEventInput!]!
+  excerpt: String!
+  id: String
+  name: String!
+  priority: Int!
+  publishStatus: String!
+  tags: [String!]!
+  thumbnail: String
+}
+
+type UserDiscordConnect {
+  order: Int!
+  type: String!
+  uuid: String!
+}
+
+type UserDiscordInfo {
+  accessToken: String!
+  avatar: String!
+  discriminator: String!
+  email: String!
+  id: String!
+  username: String!
+}
+
+input UserDiscordInfoInput {
+  accessToken: String!
+  avatar: String!
+  discriminator: String!
+  email: String!
+  id: String!
+  username: String!
+}
+
+input UserInputInput {
+  label: String!
+  order: Int
+  required: Boolean
+  type: String!
+  uuid: String!
+}
