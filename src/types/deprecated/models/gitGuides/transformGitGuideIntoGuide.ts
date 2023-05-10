@@ -17,7 +17,7 @@ export function transformGitGuideIntoGuide(guide: GitGuideModel, spaceModel: Spa
     version: 0,
     created,
     guideIntegrations: {
-      discordRoleIds: []
+      discordRoleIds: [],
     },
     guideSource: GuideSource.Git,
     steps: guide.steps.map(
@@ -31,15 +31,15 @@ export function transformGitGuideIntoGuide(guide: GitGuideModel, spaceModel: Spa
             return {
               ...item,
               choices: (item as GuideQuestion).choices.map((choice, i) => ({ ...choice, order: i })),
-              order: i
+              order: i,
             };
           }
           return {
             ...item,
-            order: i
+            order: i,
           };
-        })
+        }),
       })
-    )
+    ),
   };
 }

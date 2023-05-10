@@ -8,8 +8,18 @@ generates:
       - 'typescript-operations'
       - 'typescript-react-apollo'
     config:
+      preResolveTypes: true
       withHooks: true
       withMutationFn: true
       withRefetchFn: true
       withResultType: true
-      addDocBlocks: true
+      flattenGeneratedTypes: true
+      declarationKind:
+        union: type
+        type: interface
+        input: interface
+        scalar: interface
+        arguments: interface
+        interface: interface
+      includeDirectives: true
+      commentDescriptions: true

@@ -3,7 +3,7 @@ import { GuideStepItem } from './../GuideModel';
 export enum AcademyTaskStatus {
   New = 'New',
   InProgress = 'InProgress',
-  Done = 'Done'
+  Done = 'Done',
 }
 
 export interface AcademyTaskModel {

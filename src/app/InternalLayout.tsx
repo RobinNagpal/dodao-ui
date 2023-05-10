@@ -1,5 +1,6 @@
 'use client';
 import LoginModal from '@/components/auth/LoginModal';
+import FullPageLoader from '@/components/core/Loader/FullPageLoading';
 import MainContainer from '@/components/main/Container/MainContainer';
 import TopNav from '@/components/main/TopNav/TopNav';
 import AaveTheme from '@/components/themes/AaveTheme';
@@ -7,11 +8,16 @@ import CompoundTheme from '@/components/themes/CompoundTheme';
 import GlobalTheme from '@/components/themes/GlobalTheme';
 import UniswapTheme from '@/components/themes/UniswapTheme';
 import { LoginModalProvider } from '@/context/LoginModalContext';
-import Web3ReactProviderWrapper from '@/context/web3ReactProvider';
+import { SpaceProvider, useSpace } from '@/context/SpaceContext';
+import Web3ReactProviderWrapper from '@/context/Web3ReactContext';
+import { useExtendedSpaceByDomainQuery } from '@/graphql/generated/generated-types';
+import client from '@/utils/apolloClient';
+import { ApolloProvider } from '@apollo/client';
 import { Session } from 'next-auth';
 import { SessionProvider } from 'next-auth/react';
-import './globals.css';
+import { useEffect } from 'react';
 import styled from 'styled-components';
+import './globals.css';
 
 // Based on - https://tailwindui.com/components/application-ui/page-examples/home-screens
 
@@ -22,13 +28,21 @@ interface InternalLayoutProps {
 
 function ThemeComponent() {
   const isThemeCompound = false;
-  const isThemeAave = false;
-  const isThemeUniswap = true;
-
+  const isThemeAave = true;
+  const isThemeUniswap = false;
+  const { space } = useSpace();
+  if (space?.id === 'uniswap-eth-1') {
+    return <UniswapTheme />;
+  }
   if (isThemeCompound) return <CompoundTheme />;
   if (isThemeAave) return <AaveTheme />;
   if (isThemeUniswap) return <UniswapTheme />;
-  return <GlobalTheme />;
+  return (
+    <div>
+      <h3>{(space && JSON.stringify(space)) || 'No No No'}</h3>
+      <GlobalTheme />
+    </div>
+  );
 }
 
 const StyledMain = styled.main`
@@ -36,19 +50,48 @@ const StyledMain = styled.main`
   color: var(--text-color);
 `;
 
-export default function InternalLayout({ children, session }: InternalLayoutProps) {
+function ChildLayout({ children, session }: InternalLayoutProps) {
+  const { data } = useExtendedSpaceByDomainQuery({
+    client,
+    variables: { domain: 'dodao-ui-robinnagpal.vercel.app' },
+    errorPolicy: 'all',
+  });
+
+  const { setSpace } = useSpace();
+
+  useEffect(() => {
+    if (data?.space) {
+      setSpace(data.space);
+      console.log('set space - in layout', data.space);
+    }
+  }, [data, setSpace]);
+
   return (
     <Web3ReactProviderWrapper>
-      <SessionProvider session={session}>
-        <ThemeComponent />
-        <LoginModalProvider>
-          <LoginModal />
-          <TopNav />
-          <StyledMain className="h-max">
-            <MainContainer>{children}</MainContainer>
-          </StyledMain>
-        </LoginModalProvider>
-      </SessionProvider>
+      <ApolloProvider client={client}>
+        <SessionProvider session={session}>
+          <ThemeComponent />
+          {data?.space ? (
+            <LoginModalProvider>
+              <LoginModal />
+              <TopNav />
+              <StyledMain className="h-max">
+                <MainContainer>{children}</MainContainer>
+              </StyledMain>
+            </LoginModalProvider>
+          ) : (
+            <FullPageLoader />
+          )}
+        </SessionProvider>
+      </ApolloProvider>
     </Web3ReactProviderWrapper>
+  );
+}
+
+export default function InternalLayout({ children, session }: InternalLayoutProps) {
+  return (
+    <SpaceProvider>
+      <ChildLayout session={session}>{children}</ChildLayout>
+    </SpaceProvider>
   );
 }

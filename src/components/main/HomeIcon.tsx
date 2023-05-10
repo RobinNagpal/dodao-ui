@@ -4,6 +4,7 @@ import { SpaceModel } from '@/types/deprecated/models/SpaceModel';
 import { FeatureItem, FeatureName } from '@/types/spaceFeatures';
 import Link from 'next/link';
 import React from 'react';
+import Image from 'next/image';
 
 interface HomeIconProps {
   space: SpaceModel;
@@ -14,7 +15,11 @@ function Card({ space, heading, details, featureName }: { space: SpaceModel; hea
   const { $t } = useI18();
   return (
     <div className="flex flex-col sm:flex-row">
-      <img src={$t(`academy.${space.id}.${featureName.toLowerCase()}Thumbnail`)} className="academy-image w-full md:w-52 md:h-38 object-cover" />
+      <Image
+        src={$t(`academy.${space.id}.${featureName.toLowerCase()}Thumbnail`)}
+        className="academy-image w-full md:w-52 md:h-38 object-cover"
+        alt={featureName}
+      />
       <div className="w-full">
         <h2 className="text-xl text-center sm:text-left font-semibold px-4 py-2">{heading}</h2>
         <p className="text-sm text-center sm:text-left break-words px-4 pb-4">{details}</p>

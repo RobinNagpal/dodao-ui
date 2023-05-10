@@ -1,24 +1,24 @@
 export enum QuestionStatus {
   Skipped = 'Skipped',
   Completed = 'Completed',
-  Uncompleted = 'Uncompleted'
+  Uncompleted = 'Uncompleted',
 }
 
 export enum TopicItemStatus {
   Completed = 'Completed',
-  Uncompleted = 'Uncompleted'
+  Uncompleted = 'Uncompleted',
 }
 
 export enum TopicStatus {
   UnAttempted = 'UnAttempted',
   InProgress = 'InProgress',
   Completed = 'Completed',
-  Submitted = 'Submitted'
+  Submitted = 'Submitted',
 }
 
 export enum CourseStatus {
   InProgress = 'InProgress',
-  Submitted = 'Submitted'
+  Submitted = 'Submitted',
 }
 
 export type CourseQuestionSubmission = {

@@ -6,5 +6,5 @@ export enum InputMessageType {
   unfollow = 'unfollow',
   alias = 'alias',
   subscribe = 'subscribe',
-  unsubscribe = 'unsubscribe'
+  unsubscribe = 'unsubscribe',
 }

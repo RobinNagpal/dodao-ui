@@ -47,10 +47,8 @@ export interface ByteModel {
 
 export type ByteWithoutSteps = Omit<ByteModel, 'steps'>;
 
-export const isQuestion = (item: { type: string }) =>
-  item.type === QuestionType.MultipleChoice || item.type === QuestionType.SingleChoice;
+export const isQuestion = (item: { type: string }) => item.type === QuestionType.MultipleChoice || item.type === QuestionType.SingleChoice;
 
-export const isUserInput = (item: { type: string }) =>
-  item.type === InputType.PublicShortInput || item.type === InputType.PrivateShortInput;
+export const isUserInput = (item: { type: string }) => item.type === InputType.PublicShortInput || item.type === InputType.PrivateShortInput;
 
 export const isUserDiscordConnect = (item: { type: string }) => item.type === UserDiscordConnectType;

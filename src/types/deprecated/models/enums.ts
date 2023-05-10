@@ -1,36 +1,36 @@
 export enum StepItemSubmissionType {
   Question = 'Question',
   UserInput = 'UserInput',
-  UserDiscordConnect = 'UserDiscordConnect'
+  UserDiscordConnect = 'UserDiscordConnect',
 }
 
 export enum MoveCourseItemDirection {
   Up = 'Up',
-  Down = 'Down'
+  Down = 'Down',
 }
 
 export enum SpaceFeatures {
   Tasks = 'Tasks',
   Timeline = 'Timeline',
   Docs = 'Docs',
-  NanoCourses = 'NanoCourses'
+  NanoCourses = 'NanoCourses',
 }
 
 export enum PublishStatus {
   Live = 'Live',
-  Draft = 'Draft'
+  Draft = 'Draft',
 }
 
 export const UserDiscordConnectType = 'UserDiscordConnect';
 
 export enum QuestionType {
   SingleChoice = 'SingleChoice',
-  MultipleChoice = 'MultipleChoice'
+  MultipleChoice = 'MultipleChoice',
 }
 
 export enum InputType {
   PublicShortInput = 'PublicShortInput',
-  PrivateShortInput = 'PrivateShortInput'
+  PrivateShortInput = 'PrivateShortInput',
 }
 
 export type StepItemType = InputType | QuestionType | typeof UserDiscordConnectType | string;

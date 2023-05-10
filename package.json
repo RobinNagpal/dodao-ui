@@ -7,13 +7,16 @@
     "build": "prisma generate && next build",
     "start": "prisma generate && next start",
     "lint": "next lint",
+    "lint-fix": "eslint . --ext .ts,.js --fix",
+    "prettier-fix": "prettier --config .prettierrc 'src/**/*.ts' --write",
+    "prettier-check": "prettier --check 'src/**/*.ts'",
     "graphql:download": "graphql-codegen --config introspection.yml",
     "graphql:generate": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
-    "@auth/core": "^0.7.1",
     "@apollo/client": "^3.7.12",
     "@apollo/react-hooks": "^4.0.0",
+    "@auth/core": "^0.7.1",
     "@ethersproject/bignumber": "^5.7.0",
     "@ethersproject/units": "^5.7.0",
     "@headlessui/react": "^1.7.14",
@@ -64,7 +67,6 @@
     "@graphql-codegen/typescript": "^3.0.4",
     "@graphql-codegen/typescript-operations": "^3.0.4",
     "@graphql-codegen/typescript-react-apollo": "^3.3.7",
-
     "@types/styled-components": "^5.1.26",
     "prettier": "^2.8.8",
     "prisma": "^4.13.0"

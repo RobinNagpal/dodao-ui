@@ -1,6 +1,7 @@
 'use client';
 
 import HomeIcon from '@/components/main/HomeIcon';
+import { useSpace } from '@/context/SpaceContext';
 import { useI18 } from '@/hooks/useI18';
 import { SpaceModel } from '@/types/deprecated/models/SpaceModel';
 import { FeatureItem } from '@/types/spaceFeatures';
@@ -37,6 +38,8 @@ export default function Home() {
   const { $t } = useI18();
   const spaceFeatures: FeatureItem[] = (space.id && getFeaturesArray(space.id)) || [];
   const sortedSpaceFeatures: FeatureItem[] = sortBy(spaceFeatures, [(f1) => -f1.details.priority]);
+  const { space: ssss } = useSpace();
+  console.log('ssss', ssss);
 
   return (
     <div>

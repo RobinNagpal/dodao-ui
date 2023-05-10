@@ -28,10 +28,7 @@ fragment SpaceWithIntegrations on Space {
   publicForumWebsite
   referenceDocsWebsite
   domain
-  members
   admins
-  categories
-  plugins
   filters {
     minScore
     onlyMembers
@@ -58,6 +55,12 @@ fragment SpaceWithIntegrations on Space {
 
 query ExtendedSpace($spaceId: String!) {
   space(id: $spaceId) {
+    ...SpaceWithIntegrations
+  }
+}
+
+query ExtendedSpaceByDomain($domain: String!) {
+  space(domain: $domain) {
     ...SpaceWithIntegrations
   }
 }

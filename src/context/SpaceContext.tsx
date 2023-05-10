@@ -1,13 +1,11 @@
 // SpaceContext.tsx
+import { ExtendedSpaceByDomainQuery } from '@/graphql/generated/generated-types';
 import React, { createContext, useContext, useState } from 'react';
 
-interface Space {
-  id: string;
-  name: string;
-}
+type Space = ExtendedSpaceByDomainQuery['space'];
 
 interface SpaceContextProps {
-  space: Space | null;
+  space: Space;
   setSpace: React.Dispatch<React.SetStateAction<Space | null>>;
 }
 
@@ -21,7 +19,7 @@ export const useSpace = () => {
 };
 
 export const SpaceProvider = ({ children }: { children: React.ReactNode }) => {
-  const [space, setSpace] = useState<Space | null>(null);
+  const [space, setSpace] = useState<Space | null>();
 
   return <SpaceContext.Provider value={{ space, setSpace }}>{children}</SpaceContext.Provider>;
 };

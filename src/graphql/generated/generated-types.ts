@@ -7,7 +7,7 @@ export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: 
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
-export type Scalars = {
+export interface Scalars {
   ID: string;
   String: string;
   Boolean: boolean;
@@ -18,9 +18,9 @@ export type Scalars = {
   JSON: any;
   /** The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
   JSONObject: any;
-};
+}
 
-export type AcademyTask = {
+export interface AcademyTask {
   __typename?: 'AcademyTask';
   createdAt: Scalars['Int'];
   createdBy: Scalars['String'];
@@ -35,23 +35,23 @@ export type AcademyTask = {
   updatedAt: Scalars['Int'];
   updatedBy: Scalars['String'];
   uuid: Scalars['String'];
-};
+}
 
-export type AddTopicExplanationInput = {
+export interface AddTopicExplanationInput {
   courseKey: Scalars['String'];
   details: Scalars['String'];
   shortTitle: Scalars['String'];
   title: Scalars['String'];
   topicKey: Scalars['String'];
-};
+}
 
-export type AddTopicInput = {
+export interface AddTopicInput {
   courseKey: Scalars['String'];
   details: Scalars['String'];
   title: Scalars['String'];
-};
+}
 
-export type AddTopicQuestionInput = {
+export interface AddTopicQuestionInput {
   answerKeys: Array<Scalars['String']>;
   choices: Array<TopicQuestionChoiceInput>;
   content: Scalars['String'];
@@ -60,26 +60,26 @@ export type AddTopicQuestionInput = {
   hint: Scalars['String'];
   questionType: Scalars['String'];
   topicKey: Scalars['String'];
-};
+}
 
-export type AddTopicSummaryInput = {
+export interface AddTopicSummaryInput {
   courseKey: Scalars['String'];
   details: Scalars['String'];
   shortTitle: Scalars['String'];
   title: Scalars['String'];
   topicKey: Scalars['String'];
-};
+}
 
-export type AddTopicVideoInput = {
+export interface AddTopicVideoInput {
   courseKey: Scalars['String'];
   details: Scalars['String'];
   shortTitle: Scalars['String'];
   title: Scalars['String'];
   topicKey: Scalars['String'];
   url: Scalars['String'];
-};
+}
 
-export type Byte = {
+export interface Byte {
   __typename?: 'Byte';
   admins: Array<Scalars['String']>;
   content: Scalars['String'];
@@ -92,9 +92,9 @@ export type Byte = {
   showIncorrectOnCompletion: Scalars['Boolean'];
   steps: Array<ByteStep>;
   tags: Array<Scalars['String']>;
-};
+}
 
-export type ByteQuestion = {
+export interface ByteQuestion {
   __typename?: 'ByteQuestion';
   answerKeys: Array<Scalars['String']>;
   choices: Array<QuestionChoice>;
@@ -103,83 +103,83 @@ export type ByteQuestion = {
   order: Scalars['Int'];
   type: Scalars['String'];
   uuid: Scalars['String'];
-};
+}
 
-export type ByteStep = {
+export interface ByteStep {
   __typename?: 'ByteStep';
   content: Scalars['String'];
   name: Scalars['String'];
   order: Scalars['Int'];
   stepItems: Array<ByteStepItem>;
   uuid: Scalars['String'];
-};
+}
 
-export type ByteStepInput = {
+export interface ByteStepInput {
   content: Scalars['String'];
   explanation?: InputMaybe<Scalars['String']>;
   name: Scalars['String'];
   order: Scalars['Int'];
   stepItems: Array<StepItemInputGenericInput>;
   uuid: Scalars['String'];
-};
+}
 
 export type ByteStepItem = ByteQuestion | ByteUserInput | UserDiscordConnect;
 
-export type ByteStepItemSubmission = {
+export interface ByteStepItemSubmission {
   __typename?: 'ByteStepItemSubmission';
   selectedAnswerKeys?: Maybe<Array<Scalars['String']>>;
   type: Scalars['String'];
   userDiscordInfo?: Maybe<UserDiscordInfo>;
   userInput?: Maybe<Scalars['String']>;
   uuid: Scalars['String'];
-};
+}
 
-export type ByteStepItemSubmissionInput = {
+export interface ByteStepItemSubmissionInput {
   type: Scalars['String'];
   userDiscordInfo?: InputMaybe<UserDiscordInfoInput>;
   userInput?: InputMaybe<Scalars['String']>;
   uuid: Scalars['String'];
-};
+}
 
-export type ByteStepSubmission = {
+export interface ByteStepSubmission {
   __typename?: 'ByteStepSubmission';
   itemResponses: Array<ByteStepItemSubmission>;
   uuid: Scalars['String'];
-};
+}
 
-export type ByteStepSubmissionInput = {
+export interface ByteStepSubmissionInput {
   itemResponses: Array<ByteStepItemSubmissionInput>;
   uuid: Scalars['String'];
-};
+}
 
-export type ByteSubmission = {
+export interface ByteSubmission {
   __typename?: 'ByteSubmission';
   byteId: Scalars['String'];
   created: Scalars['Int'];
   createdBy: Scalars['String'];
   id: Scalars['String'];
   spaceId: Scalars['String'];
-};
+}
 
-export type ByteSubmissionInput = {
+export interface ByteSubmissionInput {
   byteId: Scalars['String'];
   from: Scalars['String'];
   space: Scalars['String'];
   steps: Array<ByteStepSubmissionInput>;
   timestamp?: InputMaybe<Scalars['String']>;
   uuid: Scalars['String'];
-};
+}
 
-export type ByteUserInput = {
+export interface ByteUserInput {
   __typename?: 'ByteUserInput';
   label: Scalars['String'];
   order: Scalars['Int'];
   required: Scalars['Boolean'];
   type: Scalars['String'];
   uuid: Scalars['String'];
-};
+}
 
-export type CourseBasicInfoInput = {
+export interface CourseBasicInfoInput {
   courseAdmins: Array<Scalars['String']>;
   courseFailContent?: InputMaybe<Scalars['String']>;
   coursePassContent?: InputMaybe<Scalars['String']>;
@@ -194,9 +194,9 @@ export type CourseBasicInfoInput = {
   thumbnail: Scalars['String'];
   title: Scalars['String'];
   topicConfig?: InputMaybe<TopicConfigInput>;
-};
+}
 
-export type CourseIntegrations = {
+export interface CourseIntegrations {
   __typename?: 'CourseIntegrations';
   discordRoleIds?: Maybe<Array<Scalars['String']>>;
   discordRolePassingCount?: Maybe<Scalars['Int']>;
@@ -205,50 +205,50 @@ export type CourseIntegrations = {
   projectGalaxyOatMintUrl?: Maybe<Scalars['String']>;
   projectGalaxyOatMintedContent?: Maybe<Scalars['String']>;
   projectGalaxyOatPassingCount?: Maybe<Scalars['Int']>;
-};
+}
 
-export type CourseSubmissionInput = {
+export interface CourseSubmissionInput {
   courseKey: Scalars['String'];
   uuid: Scalars['String'];
-};
+}
 
-export type CreateSignedUrlInput = {
+export interface CreateSignedUrlInput {
   contentType: Scalars['String'];
   imageType: Scalars['String'];
   name: Scalars['String'];
   objectId: Scalars['String'];
-};
+}
 
-export type DeleteTopicExplanationInput = {
+export interface DeleteTopicExplanationInput {
   courseKey: Scalars['String'];
   explanationKey: Scalars['String'];
   topicKey: Scalars['String'];
-};
+}
 
-export type DeleteTopicInput = {
+export interface DeleteTopicInput {
   courseKey: Scalars['String'];
   topicKey: Scalars['String'];
-};
+}
 
-export type DeleteTopicQuestionInput = {
+export interface DeleteTopicQuestionInput {
   courseKey: Scalars['String'];
   questionUuid: Scalars['String'];
   topicKey: Scalars['String'];
-};
+}
 
-export type DeleteTopicSummaryInput = {
+export interface DeleteTopicSummaryInput {
   courseKey: Scalars['String'];
   summaryKey: Scalars['String'];
   topicKey: Scalars['String'];
-};
+}
 
-export type DeleteTopicVideoInput = {
+export interface DeleteTopicVideoInput {
   courseKey: Scalars['String'];
   topicKey: Scalars['String'];
   videoUuid: Scalars['String'];
-};
+}
 
-export type GenericCourse = {
+export interface GenericCourse {
   __typename?: 'GenericCourse';
   categories: Array<Scalars['String']>;
   content: Scalars['String'];
@@ -263,9 +263,9 @@ export type GenericCourse = {
   publishStatus: Scalars['String'];
   thumbnail: Scalars['String'];
   uuid: Scalars['String'];
-};
+}
 
-export type GitCourse = {
+export interface GitCourse {
   __typename?: 'GitCourse';
   courseAdmins?: Maybe<Array<Scalars['String']>>;
   courseFailContent?: Maybe<Scalars['String']>;
@@ -282,35 +282,35 @@ export type GitCourse = {
   title: Scalars['String'];
   topicConfig?: Maybe<TopicConfig>;
   topics: Array<GitCourseTopic>;
-};
+}
 
-export type GitCourseExplanation = {
+export interface GitCourseExplanation {
   __typename?: 'GitCourseExplanation';
   details: Scalars['String'];
   key: Scalars['String'];
   shortTitle: Scalars['String'];
   title: Scalars['String'];
-};
+}
 
-export type GitCourseExplanationsSubmission = {
+export interface GitCourseExplanationsSubmission {
   __typename?: 'GitCourseExplanationsSubmission';
   key: Scalars['String'];
   status: Scalars['String'];
-};
+}
 
-export type GitCourseExplanationsSubmissionInput = {
+export interface GitCourseExplanationsSubmissionInput {
   key: Scalars['String'];
   status: Scalars['String'];
-};
+}
 
-export type GitCourseInput = {
+export interface GitCourseInput {
   courseJsonUrl?: InputMaybe<Scalars['String']>;
   courseRepoUrl?: InputMaybe<Scalars['String']>;
   publishStatus: Scalars['String'];
   weight: Scalars['Int'];
-};
+}
 
-export type GitCourseQuestion = {
+export interface GitCourseQuestion {
   __typename?: 'GitCourseQuestion';
   answerKeys?: Maybe<Array<Scalars['String']>>;
   choices?: Maybe<Array<GitCourseQuestionChoice>>;
@@ -319,28 +319,28 @@ export type GitCourseQuestion = {
   hint: Scalars['String'];
   type: Scalars['String'];
   uuid: Scalars['String'];
-};
+}
 
-export type GitCourseQuestionChoice = {
+export interface GitCourseQuestionChoice {
   __typename?: 'GitCourseQuestionChoice';
   content: Scalars['String'];
   key: Scalars['String'];
-};
+}
 
-export type GitCourseQuestionsSubmission = {
+export interface GitCourseQuestionsSubmission {
   __typename?: 'GitCourseQuestionsSubmission';
   answers: Array<Scalars['String']>;
   status: Scalars['String'];
   uuid: Scalars['String'];
-};
+}
 
-export type GitCourseQuestionsSubmissionInput = {
+export interface GitCourseQuestionsSubmissionInput {
   answers: Array<Scalars['String']>;
   status: Scalars['String'];
   uuid: Scalars['String'];
-};
+}
 
-export type GitCourseReading = {
+export interface GitCourseReading {
   __typename?: 'GitCourseReading';
   details: Scalars['String'];
   shortTitle: Scalars['String'];
@@ -348,22 +348,22 @@ export type GitCourseReading = {
   type: Scalars['String'];
   url: Scalars['String'];
   uuid: Scalars['String'];
-};
+}
 
-export type GitCourseReadingsSubmission = {
+export interface GitCourseReadingsSubmission {
   __typename?: 'GitCourseReadingsSubmission';
   questions: Array<GitCourseQuestionsSubmission>;
   status: Scalars['String'];
   uuid: Scalars['String'];
-};
+}
 
-export type GitCourseReadingsSubmissionInput = {
+export interface GitCourseReadingsSubmissionInput {
   questions: Array<GitCourseQuestionsSubmissionInput>;
   status: Scalars['String'];
   uuid: Scalars['String'];
-};
+}
 
-export type GitCourseSubmission = {
+export interface GitCourseSubmission {
   __typename?: 'GitCourseSubmission';
   courseKey: Scalars['String'];
   createdAt: Scalars['Int'];
@@ -379,28 +379,28 @@ export type GitCourseSubmission = {
   topicSubmissions: Array<GitCourseTopicSubmission>;
   updatedAt: Scalars['Int'];
   uuid: Scalars['String'];
-};
+}
 
-export type GitCourseSummariesSubmission = {
+export interface GitCourseSummariesSubmission {
   __typename?: 'GitCourseSummariesSubmission';
   key: Scalars['String'];
   status: Scalars['String'];
-};
+}
 
-export type GitCourseSummariesSubmissionInput = {
+export interface GitCourseSummariesSubmissionInput {
   key: Scalars['String'];
   status: Scalars['String'];
-};
+}
 
-export type GitCourseSummary = {
+export interface GitCourseSummary {
   __typename?: 'GitCourseSummary';
   details: Scalars['String'];
   key: Scalars['String'];
   shortTitle: Scalars['String'];
   title: Scalars['String'];
-};
+}
 
-export type GitCourseTopic = {
+export interface GitCourseTopic {
   __typename?: 'GitCourseTopic';
   details: Scalars['String'];
   explanations?: Maybe<Array<GitCourseExplanation>>;
@@ -409,15 +409,15 @@ export type GitCourseTopic = {
   readings?: Maybe<Array<GitCourseReading>>;
   summaries?: Maybe<Array<GitCourseSummary>>;
   title: Scalars['String'];
-};
+}
 
-export type GitCourseTopicCorrectAnswer = {
+export interface GitCourseTopicCorrectAnswer {
   __typename?: 'GitCourseTopicCorrectAnswer';
   answerKeys: Array<Scalars['String']>;
   uuid: Scalars['String'];
-};
+}
 
-export type GitCourseTopicSubmission = {
+export interface GitCourseTopicSubmission {
   __typename?: 'GitCourseTopicSubmission';
   correctAnswers?: Maybe<Array<GitCourseTopicCorrectAnswer>>;
   courseKey: Scalars['String'];
@@ -435,9 +435,9 @@ export type GitCourseTopicSubmission = {
   topicKey: Scalars['String'];
   updatedAt: Scalars['Int'];
   uuid: Scalars['String'];
-};
+}
 
-export type GitCourseTopicSubmissionInput = {
+export interface GitCourseTopicSubmissionInput {
   courseKey: Scalars['String'];
   explanations: Array<GitCourseExplanationsSubmissionInput>;
   questions: Array<GitCourseQuestionsSubmissionInput>;
@@ -446,9 +446,9 @@ export type GitCourseTopicSubmissionInput = {
   summaries: Array<GitCourseSummariesSubmissionInput>;
   topicKey: Scalars['String'];
   uuid: Scalars['String'];
-};
+}
 
-export type GitCourseTopicSubmissionJson = {
+export interface GitCourseTopicSubmissionJson {
   __typename?: 'GitCourseTopicSubmissionJson';
   courseKey: Scalars['String'];
   explanations?: Maybe<Array<GitCourseExplanationsSubmission>>;
@@ -458,9 +458,9 @@ export type GitCourseTopicSubmissionJson = {
   summaries?: Maybe<Array<GitCourseSummariesSubmission>>;
   topicKey: Scalars['String'];
   uuid: Scalars['String'];
-};
+}
 
-export type GnosisSafeWallet = {
+export interface GnosisSafeWallet {
   __typename?: 'GnosisSafeWallet';
   chainId: Scalars['Int'];
   id: Scalars['String'];
@@ -468,18 +468,18 @@ export type GnosisSafeWallet = {
   tokenContractAddress: Scalars['String'];
   walletAddress: Scalars['String'];
   walletName: Scalars['String'];
-};
+}
 
-export type GnosisSafeWalletInput = {
+export interface GnosisSafeWalletInput {
   chainId: Scalars['Int'];
   id: Scalars['String'];
   order: Scalars['Int'];
   tokenContractAddress: Scalars['String'];
   walletAddress: Scalars['String'];
   walletName: Scalars['String'];
-};
+}
 
-export type Guide = {
+export interface Guide {
   __typename?: 'Guide';
   authors: Array<Scalars['String']>;
   categories: Array<Scalars['String']>;
@@ -501,9 +501,9 @@ export type Guide = {
   thumbnail?: Maybe<Scalars['String']>;
   uuid: Scalars['String'];
   version: Scalars['Int'];
-};
+}
 
-export type GuideInput = {
+export interface GuideInput {
   categories: Array<Scalars['String']>;
   content: Scalars['String'];
   from: Scalars['String'];
@@ -520,9 +520,9 @@ export type GuideInput = {
   steps: Array<GuideStepInput>;
   thumbnail?: InputMaybe<Scalars['String']>;
   uuid: Scalars['String'];
-};
+}
 
-export type GuideIntegrations = {
+export interface GuideIntegrations {
   __typename?: 'GuideIntegrations';
   discordRoleIds?: Maybe<Array<Scalars['String']>>;
   discordRolePassingCount?: Maybe<Scalars['Int']>;
@@ -530,18 +530,18 @@ export type GuideIntegrations = {
   projectGalaxyCredentialId?: Maybe<Scalars['String']>;
   projectGalaxyOatMintUrl?: Maybe<Scalars['String']>;
   projectGalaxyOatPassingCount?: Maybe<Scalars['Int']>;
-};
+}
 
-export type GuideIntegrationsInput = {
+export interface GuideIntegrationsInput {
   discordRoleIds: Array<Scalars['String']>;
   discordRolePassingCount?: InputMaybe<Scalars['Int']>;
   discordWebhook?: InputMaybe<Scalars['String']>;
   projectGalaxyCredentialId?: InputMaybe<Scalars['String']>;
   projectGalaxyOatMintUrl?: InputMaybe<Scalars['String']>;
   projectGalaxyOatPassingCount?: InputMaybe<Scalars['Int']>;
-};
+}
 
-export type GuideQuestion = {
+export interface GuideQuestion {
   __typename?: 'GuideQuestion';
   answerKeys: Array<Scalars['String']>;
   choices: Array<QuestionChoice>;
@@ -549,9 +549,9 @@ export type GuideQuestion = {
   order: Scalars['Int'];
   type: Scalars['String'];
   uuid: Scalars['String'];
-};
+}
 
-export type GuideQuestionInput = {
+export interface GuideQuestionInput {
   answerKeys?: InputMaybe<Array<Scalars['String']>>;
   choices?: InputMaybe<Array<QuestionChoiceInput>>;
   content: Scalars['String'];
@@ -560,9 +560,9 @@ export type GuideQuestionInput = {
   questionType: Scalars['String'];
   type: Scalars['String'];
   uuid: Scalars['String'];
-};
+}
 
-export type GuideStep = {
+export interface GuideStep {
   __typename?: 'GuideStep';
   content: Scalars['String'];
   created: Scalars['Int'];
@@ -571,48 +571,48 @@ export type GuideStep = {
   order: Scalars['Int'];
   stepItems: Array<GuideStepItem>;
   uuid: Scalars['String'];
-};
+}
 
-export type GuideStepInput = {
+export interface GuideStepInput {
   content: Scalars['String'];
   id: Scalars['String'];
   name: Scalars['String'];
   order: Scalars['Int'];
   stepItems: Array<StepItemInputGenericInput>;
   uuid: Scalars['String'];
-};
+}
 
 export type GuideStepItem = GuideQuestion | GuideUserInput | UserDiscordConnect;
 
-export type GuideStepItemSubmission = {
+export interface GuideStepItemSubmission {
   __typename?: 'GuideStepItemSubmission';
   selectedAnswerKeys?: Maybe<Array<Scalars['String']>>;
   type: Scalars['String'];
   userDiscordInfo?: Maybe<UserDiscordInfo>;
   userInput?: Maybe<Scalars['String']>;
   uuid: Scalars['String'];
-};
+}
 
-export type GuideStepItemSubmissionInput = {
+export interface GuideStepItemSubmissionInput {
   selectedAnswerKeys?: InputMaybe<Array<Scalars['String']>>;
   type: Scalars['String'];
   userDiscordInfo?: InputMaybe<UserDiscordInfoInput>;
   userInput?: InputMaybe<Scalars['String']>;
   uuid: Scalars['String'];
-};
+}
 
-export type GuideStepSubmission = {
+export interface GuideStepSubmission {
   __typename?: 'GuideStepSubmission';
   itemResponses: Array<GuideStepItemSubmission>;
   uuid: Scalars['String'];
-};
+}
 
-export type GuideStepSubmissionInput = {
+export interface GuideStepSubmissionInput {
   itemResponses: Array<GuideStepItemSubmissionInput>;
   uuid: Scalars['String'];
-};
+}
 
-export type GuideSubmission = {
+export interface GuideSubmission {
   __typename?: 'GuideSubmission';
   created: Scalars['Int'];
   createdBy: Scalars['String'];
@@ -624,73 +624,73 @@ export type GuideSubmission = {
   spaceId: Scalars['String'];
   steps?: Maybe<Array<GuideStepSubmission>>;
   uuid: Scalars['String'];
-};
+}
 
-export type GuideSubmissionInput = {
+export interface GuideSubmissionInput {
   from: Scalars['String'];
   guideUuid: Scalars['String'];
   space: Scalars['String'];
   steps: Array<GuideStepSubmissionInput>;
   timestamp?: InputMaybe<Scalars['String']>;
   uuid: Scalars['String'];
-};
+}
 
-export type GuideSubmissionResult = {
+export interface GuideSubmissionResult {
   __typename?: 'GuideSubmissionResult';
   allQuestions: Array<Scalars['String']>;
   correctQuestions: Array<Scalars['String']>;
   wrongQuestions: Array<Scalars['String']>;
-};
+}
 
-export type GuideUserInput = {
+export interface GuideUserInput {
   __typename?: 'GuideUserInput';
   label: Scalars['String'];
   order: Scalars['Int'];
   required: Scalars['Boolean'];
   type: Scalars['String'];
   uuid: Scalars['String'];
-};
+}
 
-export type JwtResponse = {
+export interface JwtResponse {
   __typename?: 'JwtResponse';
   jwt: Scalars['String'];
-};
+}
 
-export type MoveTopicExplanationInput = {
+export interface MoveTopicExplanationInput {
   courseKey: Scalars['String'];
   direction: Scalars['String'];
   explanationKey: Scalars['String'];
   topicKey: Scalars['String'];
-};
+}
 
-export type MoveTopicInput = {
+export interface MoveTopicInput {
   courseKey: Scalars['String'];
   direction: Scalars['String'];
   topicKey: Scalars['String'];
-};
+}
 
-export type MoveTopicQuestionInput = {
+export interface MoveTopicQuestionInput {
   courseKey: Scalars['String'];
   direction: Scalars['String'];
   questionUuid: Scalars['String'];
   topicKey: Scalars['String'];
-};
+}
 
-export type MoveTopicSummaryInput = {
+export interface MoveTopicSummaryInput {
   courseKey: Scalars['String'];
   direction: Scalars['String'];
   summaryKey: Scalars['String'];
   topicKey: Scalars['String'];
-};
+}
 
-export type MoveTopicVideoInput = {
+export interface MoveTopicVideoInput {
   courseKey: Scalars['String'];
   direction: Scalars['String'];
   topicKey: Scalars['String'];
   videoUuid: Scalars['String'];
-};
+}
 
-export type Mutation = {
+export interface Mutation {
   __typename?: 'Mutation';
   addDiscordCredentials: Space;
   addTopic: GitCourseTopic;
@@ -738,286 +738,286 @@ export type Mutation = {
   upsertSpaceGitGuideRepositories: Space;
   upsertSpaceInviteLinks: Space;
   upsertTimeline: Timeline;
-};
+}
 
 
-export type MutationAddDiscordCredentialsArgs = {
+export interface MutationAddDiscordCredentialsArgs {
   code: Scalars['String'];
   redirectUri: Scalars['String'];
   spaceId: Scalars['String'];
-};
+}
 
 
-export type MutationAddTopicArgs = {
+export interface MutationAddTopicArgs {
   spaceId: Scalars['String'];
   topicInfo: AddTopicInput;
-};
+}
 
 
-export type MutationAddTopicExplanationArgs = {
+export interface MutationAddTopicExplanationArgs {
   explanationInfo: AddTopicExplanationInput;
   spaceId: Scalars['String'];
-};
+}
 
 
-export type MutationAddTopicQuestionArgs = {
+export interface MutationAddTopicQuestionArgs {
   questionInfo: AddTopicQuestionInput;
   spaceId: Scalars['String'];
-};
+}
 
 
-export type MutationAddTopicSummaryArgs = {
+export interface MutationAddTopicSummaryArgs {
   spaceId: Scalars['String'];
   summaryInfo: AddTopicSummaryInput;
-};
+}
 
 
-export type MutationAddTopicVideoArgs = {
+export interface MutationAddTopicVideoArgs {
   spaceId: Scalars['String'];
   videoInfo: AddTopicVideoInput;
-};
+}
 
 
-export type MutationAuthenticateWithUnstoppableArgs = {
+export interface MutationAuthenticateWithUnstoppableArgs {
   idToken: Scalars['String'];
-};
+}
 
 
-export type MutationCreateSignedUrlArgs = {
+export interface MutationCreateSignedUrlArgs {
   input: CreateSignedUrlInput;
   spaceId: Scalars['String'];
-};
+}
 
 
-export type MutationDeleteTopicArgs = {
+export interface MutationDeleteTopicArgs {
   spaceId: Scalars['String'];
   topicInfo: DeleteTopicInput;
-};
+}
 
 
-export type MutationDeleteTopicExplanationArgs = {
+export interface MutationDeleteTopicExplanationArgs {
   explanationInfo: DeleteTopicExplanationInput;
   spaceId: Scalars['String'];
-};
+}
 
 
-export type MutationDeleteTopicQuestionArgs = {
+export interface MutationDeleteTopicQuestionArgs {
   questionInfo: DeleteTopicQuestionInput;
   spaceId: Scalars['String'];
-};
+}
 
 
-export type MutationDeleteTopicSummaryArgs = {
+export interface MutationDeleteTopicSummaryArgs {
   spaceId: Scalars['String'];
   summaryInfo: DeleteTopicSummaryInput;
-};
+}
 
 
-export type MutationDeleteTopicVideoArgs = {
+export interface MutationDeleteTopicVideoArgs {
   spaceId: Scalars['String'];
   videoInfo: DeleteTopicVideoInput;
-};
+}
 
 
-export type MutationInitializeGitCourseSubmissionArgs = {
+export interface MutationInitializeGitCourseSubmissionArgs {
   courseKey: Scalars['String'];
   spaceId: Scalars['String'];
-};
+}
 
 
-export type MutationMoveTopicArgs = {
+export interface MutationMoveTopicArgs {
   spaceId: Scalars['String'];
   topicInfo: MoveTopicInput;
-};
+}
 
 
-export type MutationMoveTopicExplanationArgs = {
+export interface MutationMoveTopicExplanationArgs {
   explanationInfo: MoveTopicExplanationInput;
   spaceId: Scalars['String'];
-};
+}
 
 
-export type MutationMoveTopicQuestionArgs = {
+export interface MutationMoveTopicQuestionArgs {
   questionInfo: MoveTopicQuestionInput;
   spaceId: Scalars['String'];
-};
+}
 
 
-export type MutationMoveTopicSummaryArgs = {
+export interface MutationMoveTopicSummaryArgs {
   spaceId: Scalars['String'];
   summaryInfo: MoveTopicSummaryInput;
-};
+}
 
 
-export type MutationMoveTopicVideoArgs = {
+export interface MutationMoveTopicVideoArgs {
   spaceId: Scalars['String'];
   videoInfo: MoveTopicVideoInput;
-};
+}
 
 
-export type MutationRefreshGitCourseArgs = {
+export interface MutationRefreshGitCourseArgs {
   courseKey: Scalars['String'];
   spaceId: Scalars['String'];
-};
+}
 
 
-export type MutationRefreshGitCoursesArgs = {
+export interface MutationRefreshGitCoursesArgs {
   spaceId: Scalars['String'];
-};
+}
 
 
-export type MutationRefreshGitGuidesArgs = {
+export interface MutationRefreshGitGuidesArgs {
   spaceId: Scalars['String'];
-};
+}
 
 
-export type MutationSubmitByteArgs = {
+export interface MutationSubmitByteArgs {
   submissionInput: ByteSubmissionInput;
-};
+}
 
 
-export type MutationSubmitGitCourseArgs = {
+export interface MutationSubmitGitCourseArgs {
   input: CourseSubmissionInput;
   spaceId: Scalars['String'];
-};
+}
 
 
-export type MutationSubmitGitCourseTopicArgs = {
+export interface MutationSubmitGitCourseTopicArgs {
   gitCourseTopicSubmission: GitCourseTopicSubmissionInput;
   spaceId: Scalars['String'];
-};
+}
 
 
-export type MutationSubmitGuideArgs = {
+export interface MutationSubmitGuideArgs {
   submissionInput: GuideSubmissionInput;
-};
+}
 
 
-export type MutationUpdateCourseBasicInfoArgs = {
+export interface MutationUpdateCourseBasicInfoArgs {
   courseBasicInfo: CourseBasicInfoInput;
   spaceId: Scalars['String'];
-};
+}
 
 
-export type MutationUpdateTopicBasicInfoArgs = {
+export interface MutationUpdateTopicBasicInfoArgs {
   spaceId: Scalars['String'];
   topicInfo: UpdateTopicBasicInfoInput;
-};
+}
 
 
-export type MutationUpdateTopicExplanationArgs = {
+export interface MutationUpdateTopicExplanationArgs {
   explanationInfo: UpdateTopicExplanationInput;
   spaceId: Scalars['String'];
-};
+}
 
 
-export type MutationUpdateTopicQuestionArgs = {
+export interface MutationUpdateTopicQuestionArgs {
   questionInfo: UpdateTopicQuestionInput;
   spaceId: Scalars['String'];
-};
+}
 
 
-export type MutationUpdateTopicSummaryArgs = {
+export interface MutationUpdateTopicSummaryArgs {
   spaceId: Scalars['String'];
   summaryInfo: UpdateTopicSummaryInput;
-};
+}
 
 
-export type MutationUpdateTopicVideoArgs = {
+export interface MutationUpdateTopicVideoArgs {
   spaceId: Scalars['String'];
   videoInfo: UpdateTopicVideoInput;
-};
+}
 
 
-export type MutationUpsertAcademyTaskArgs = {
+export interface MutationUpsertAcademyTaskArgs {
   spaceId: Scalars['String'];
   task: UpsertAcademyTaskInput;
-};
+}
 
 
-export type MutationUpsertByteArgs = {
+export interface MutationUpsertByteArgs {
   input: UpsertByteInput;
   spaceId: Scalars['String'];
-};
+}
 
 
-export type MutationUpsertCourseIntegrationsArgs = {
+export interface MutationUpsertCourseIntegrationsArgs {
   courseIntegrationInput: UpsertCourseIntegrationsInput;
   spaceId: Scalars['String'];
-};
+}
 
 
-export type MutationUpsertGitCourseArgs = {
+export interface MutationUpsertGitCourseArgs {
   gitCourseInput: GitCourseInput;
   spaceId: Scalars['String'];
-};
+}
 
 
-export type MutationUpsertGitCourseTopicSubmissionArgs = {
+export interface MutationUpsertGitCourseTopicSubmissionArgs {
   gitCourseTopicSubmission: GitCourseTopicSubmissionInput;
   spaceId: Scalars['String'];
-};
+}
 
 
-export type MutationUpsertGnosisSafeWalletsArgs = {
+export interface MutationUpsertGnosisSafeWalletsArgs {
   spaceId: Scalars['String'];
   wallets: Array<GnosisSafeWalletInput>;
-};
+}
 
 
-export type MutationUpsertGuideArgs = {
+export interface MutationUpsertGuideArgs {
   guideInput: GuideInput;
   spaceId: Scalars['String'];
-};
+}
 
 
-export type MutationUpsertProjectGalaxyAccessTokenArgs = {
+export interface MutationUpsertProjectGalaxyAccessTokenArgs {
   accessToken: Scalars['String'];
   spaceId: Scalars['String'];
-};
+}
 
 
-export type MutationUpsertSimulationArgs = {
+export interface MutationUpsertSimulationArgs {
   input: UpsertSimulationInput;
   spaceId: Scalars['String'];
-};
+}
 
 
-export type MutationUpsertSpaceAcademyRepositoryArgs = {
+export interface MutationUpsertSpaceAcademyRepositoryArgs {
   academyRepository: Scalars['String'];
   spaceId: Scalars['String'];
-};
+}
 
 
-export type MutationUpsertSpaceFeaturesArgs = {
+export interface MutationUpsertSpaceFeaturesArgs {
   features: Array<Scalars['String']>;
   spaceId: Scalars['String'];
-};
+}
 
 
-export type MutationUpsertSpaceGitGuideRepositoriesArgs = {
+export interface MutationUpsertSpaceGitGuideRepositoriesArgs {
   gitGuideRepositories: Array<SpaceGitRepositoryInput>;
   spaceId: Scalars['String'];
-};
+}
 
 
-export type MutationUpsertSpaceInviteLinksArgs = {
+export interface MutationUpsertSpaceInviteLinksArgs {
   spaceId: Scalars['String'];
   spaceInviteArgs: SpaceInviteArgs;
-};
+}
 
 
-export type MutationUpsertTimelineArgs = {
+export interface MutationUpsertTimelineArgs {
   input: UpsertTimelineInput;
   spaceId: Scalars['String'];
-};
+}
 
 export enum OrderDirection {
   Asc = 'asc',
   Desc = 'desc'
 }
 
-export type Query = {
+export interface Query {
   __typename?: 'Query';
   academyTask: AcademyTask;
   academyTasks?: Maybe<Array<AcademyTask>>;
@@ -1041,148 +1041,148 @@ export type Query = {
   summarizedGitCourses?: Maybe<Array<SummarizedGitCourse>>;
   timeline: Timeline;
   timelines: Array<Timeline>;
-};
+}
 
 
-export type QueryAcademyTaskArgs = {
+export interface QueryAcademyTaskArgs {
   uuid: Scalars['String'];
-};
+}
 
 
-export type QueryAcademyTasksArgs = {
+export interface QueryAcademyTasksArgs {
   spaceId: Scalars['String'];
   status?: InputMaybe<Scalars['String']>;
-};
+}
 
 
-export type QueryByteArgs = {
+export interface QueryByteArgs {
   byteId: Scalars['String'];
   spaceId: Scalars['String'];
-};
+}
 
 
-export type QueryBytesArgs = {
+export interface QueryBytesArgs {
   spaceId: Scalars['String'];
-};
+}
 
 
-export type QueryCoursesArgs = {
+export interface QueryCoursesArgs {
   spaceId: Scalars['String'];
-};
+}
 
 
-export type QueryGitCourseArgs = {
+export interface QueryGitCourseArgs {
   courseKey: Scalars['String'];
   spaceId: Scalars['String'];
-};
+}
 
 
-export type QueryGitCourseIntegrationsArgs = {
+export interface QueryGitCourseIntegrationsArgs {
   key: Scalars['String'];
   spaceId: Scalars['String'];
-};
+}
 
 
-export type QueryGitCourseSubmissionArgs = {
+export interface QueryGitCourseSubmissionArgs {
   courseKey: Scalars['String'];
   spaceId: Scalars['String'];
-};
+}
 
 
-export type QueryGitCourseSummarizedArgs = {
+export interface QueryGitCourseSummarizedArgs {
   key: Scalars['String'];
   spaceId: Scalars['String'];
-};
+}
 
 
-export type QueryGitTopicSubmissionsArgs = {
+export interface QueryGitTopicSubmissionsArgs {
   courseKey: Scalars['String'];
   spaceId: Scalars['String'];
-};
+}
 
 
-export type QueryGuideArgs = {
+export interface QueryGuideArgs {
   spaceId: Scalars['String'];
   uuid: Scalars['String'];
-};
+}
 
 
-export type QueryGuideSubmissionsArgs = {
+export interface QueryGuideSubmissionsArgs {
   guideUuid: Scalars['String'];
-};
+}
 
 
-export type QueryGuidesArgs = {
+export interface QueryGuidesArgs {
   spaceId: Scalars['String'];
-};
+}
 
 
-export type QueryRawGitCourseArgs = {
+export interface QueryRawGitCourseArgs {
   key: Scalars['String'];
   spaceId: Scalars['String'];
-};
+}
 
 
-export type QuerySimulationArgs = {
+export interface QuerySimulationArgs {
   simulationId: Scalars['String'];
   spaceId: Scalars['String'];
-};
+}
 
 
-export type QuerySimulationsArgs = {
+export interface QuerySimulationsArgs {
   spaceId: Scalars['String'];
-};
+}
 
 
-export type QuerySpaceArgs = {
+export interface QuerySpaceArgs {
   domain?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['String']>;
-};
+}
 
 
-export type QuerySpaceDiscordGuildArgs = {
+export interface QuerySpaceDiscordGuildArgs {
   spaceId: Scalars['String'];
-};
+}
 
 
-export type QuerySummarizedGitCoursesArgs = {
+export interface QuerySummarizedGitCoursesArgs {
   spaceId: Scalars['String'];
-};
+}
 
 
-export type QueryTimelineArgs = {
+export interface QueryTimelineArgs {
   spaceId: Scalars['String'];
   timelineId: Scalars['String'];
-};
+}
 
 
-export type QueryTimelinesArgs = {
+export interface QueryTimelinesArgs {
   spaceId: Scalars['String'];
-};
+}
 
-export type QuestionChoice = {
+export interface QuestionChoice {
   __typename?: 'QuestionChoice';
   content: Scalars['String'];
   key: Scalars['String'];
   order: Scalars['Int'];
-};
+}
 
-export type QuestionChoiceInput = {
+export interface QuestionChoiceInput {
   content: Scalars['String'];
   key: Scalars['String'];
   order: Scalars['Int'];
-};
+}
 
-export type RawGitCourse = {
+export interface RawGitCourse {
   __typename?: 'RawGitCourse';
   courseJsonUrl?: Maybe<Scalars['String']>;
   courseRepoUrl?: Maybe<Scalars['String']>;
   key: Scalars['String'];
   publishStatus: Scalars['String'];
   weight: Scalars['Int'];
-};
+}
 
-export type Simulation = {
+export interface Simulation {
   __typename?: 'Simulation';
   admins: Array<Scalars['String']>;
   content: Scalars['String'];
@@ -1195,26 +1195,26 @@ export type Simulation = {
   showIncorrectOnCompletion: Scalars['Boolean'];
   steps: Array<SimulationStep>;
   tags: Array<Scalars['String']>;
-};
+}
 
-export type SimulationStep = {
+export interface SimulationStep {
   __typename?: 'SimulationStep';
   content: Scalars['String'];
   iframeUrl?: Maybe<Scalars['String']>;
   name: Scalars['String'];
   order: Scalars['Int'];
   uuid: Scalars['String'];
-};
+}
 
-export type SimulationStepInput = {
+export interface SimulationStepInput {
   content: Scalars['String'];
   iframeUrl?: InputMaybe<Scalars['String']>;
   name: Scalars['String'];
   order: Scalars['Int'];
   uuid: Scalars['String'];
-};
+}
 
-export type Space = {
+export interface Space {
   __typename?: 'Space';
   about?: Maybe<Scalars['String']>;
   admins: Array<Scalars['String']>;
@@ -1250,57 +1250,57 @@ export type Space = {
   terms?: Maybe<Scalars['String']>;
   twitter?: Maybe<Scalars['String']>;
   website?: Maybe<Scalars['String']>;
-};
+}
 
-export type SpaceFilters = {
+export interface SpaceFilters {
   __typename?: 'SpaceFilters';
   minScore?: Maybe<Scalars['Float']>;
   onlyMembers?: Maybe<Scalars['Boolean']>;
-};
+}
 
-export type SpaceGitRepository = {
+export interface SpaceGitRepository {
   __typename?: 'SpaceGitRepository';
   authenticationToken?: Maybe<Scalars['String']>;
   gitRepoType?: Maybe<Scalars['String']>;
   repoUrl: Scalars['String'];
-};
+}
 
-export type SpaceGitRepositoryInput = {
+export interface SpaceGitRepositoryInput {
   authenticationToken?: InputMaybe<Scalars['String']>;
   gitRepoType?: InputMaybe<Scalars['String']>;
   repoUrl: Scalars['String'];
-};
+}
 
-export type SpaceIntegrations = {
+export interface SpaceIntegrations {
   __typename?: 'SpaceIntegrations';
   academyRepository?: Maybe<Scalars['String']>;
   discordGuildId?: Maybe<Scalars['String']>;
   gitGuideRepositories?: Maybe<Array<SpaceGitRepository>>;
   gnosisSafeWallets?: Maybe<Array<GnosisSafeWallet>>;
   projectGalaxyTokenLastFour?: Maybe<Scalars['String']>;
-};
+}
 
-export type SpaceInviteArgs = {
+export interface SpaceInviteArgs {
   discordInviteLink?: InputMaybe<Scalars['String']>;
   showAnimatedButtonForDiscord?: InputMaybe<Scalars['Boolean']>;
   showAnimatedButtonForTelegram?: InputMaybe<Scalars['Boolean']>;
   telegramInviteLink?: InputMaybe<Scalars['String']>;
-};
+}
 
-export type SpaceInviteLinks = {
+export interface SpaceInviteLinks {
   __typename?: 'SpaceInviteLinks';
   discordInviteLink?: Maybe<Scalars['String']>;
   showAnimatedButtonForDiscord?: Maybe<Scalars['Boolean']>;
   showAnimatedButtonForTelegram?: Maybe<Scalars['Boolean']>;
   telegramInviteLink?: Maybe<Scalars['String']>;
-};
+}
 
-export type SpaceWhere = {
+export interface SpaceWhere {
   id?: InputMaybe<Scalars['String']>;
   id_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-};
+}
 
-export type StepItemInputGenericInput = {
+export interface StepItemInputGenericInput {
   answerKeys?: InputMaybe<Array<Scalars['String']>>;
   choices?: InputMaybe<Array<QuestionChoiceInput>>;
   content?: InputMaybe<Scalars['String']>;
@@ -1311,9 +1311,9 @@ export type StepItemInputGenericInput = {
   required?: InputMaybe<Scalars['Boolean']>;
   type: Scalars['String'];
   uuid: Scalars['String'];
-};
+}
 
-export type SummarizedGitCourse = {
+export interface SummarizedGitCourse {
   __typename?: 'SummarizedGitCourse';
   courseAdmins?: Maybe<Array<Scalars['String']>>;
   details: Scalars['String'];
@@ -1327,16 +1327,16 @@ export type SummarizedGitCourse = {
   title: Scalars['String'];
   topics: Array<SummarizedGitCourseTopic>;
   uuid: Scalars['String'];
-};
+}
 
-export type SummarizedGitCourseTopic = {
+export interface SummarizedGitCourseTopic {
   __typename?: 'SummarizedGitCourseTopic';
   details: Scalars['String'];
   key: Scalars['String'];
   title: Scalars['String'];
-};
+}
 
-export type Timeline = {
+export interface Timeline {
   __typename?: 'Timeline';
   admins: Array<Scalars['String']>;
   content: Scalars['String'];
@@ -1349,9 +1349,9 @@ export type Timeline = {
   publishStatus: Scalars['String'];
   tags: Array<Scalars['String']>;
   thumbnail?: Maybe<Scalars['String']>;
-};
+}
 
-export type TimelineEvent = {
+export interface TimelineEvent {
   __typename?: 'TimelineEvent';
   content: Scalars['String'];
   date: Scalars['String'];
@@ -1360,41 +1360,41 @@ export type TimelineEvent = {
   name: Scalars['String'];
   order: Scalars['Int'];
   uuid: Scalars['String'];
-};
+}
 
-export type TopicConfig = {
+export interface TopicConfig {
   __typename?: 'TopicConfig';
   showExplanations: Scalars['Boolean'];
   showHints: Scalars['Boolean'];
-};
+}
 
-export type TopicConfigInput = {
+export interface TopicConfigInput {
   showExplanations: Scalars['Boolean'];
   showHints: Scalars['Boolean'];
-};
+}
 
-export type TopicQuestionChoiceInput = {
+export interface TopicQuestionChoiceInput {
   content: Scalars['String'];
   key: Scalars['String'];
-};
+}
 
-export type UpdateTopicBasicInfoInput = {
+export interface UpdateTopicBasicInfoInput {
   courseKey: Scalars['String'];
   details: Scalars['String'];
   title: Scalars['String'];
   topicKey: Scalars['String'];
-};
+}
 
-export type UpdateTopicExplanationInput = {
+export interface UpdateTopicExplanationInput {
   courseKey: Scalars['String'];
   details: Scalars['String'];
   explanationKey: Scalars['String'];
   shortTitle: Scalars['String'];
   title: Scalars['String'];
   topicKey: Scalars['String'];
-};
+}
 
-export type UpdateTopicQuestionInput = {
+export interface UpdateTopicQuestionInput {
   answerKeys: Array<Scalars['String']>;
   choices: Array<TopicQuestionChoiceInput>;
   content: Scalars['String'];
@@ -1404,18 +1404,18 @@ export type UpdateTopicQuestionInput = {
   questionType: Scalars['String'];
   questionUuid: Scalars['String'];
   topicKey: Scalars['String'];
-};
+}
 
-export type UpdateTopicSummaryInput = {
+export interface UpdateTopicSummaryInput {
   courseKey: Scalars['String'];
   details: Scalars['String'];
   shortTitle: Scalars['String'];
   summaryKey: Scalars['String'];
   title: Scalars['String'];
   topicKey: Scalars['String'];
-};
+}
 
-export type UpdateTopicVideoInput = {
+export interface UpdateTopicVideoInput {
   courseKey: Scalars['String'];
   details: Scalars['String'];
   shortTitle: Scalars['String'];
@@ -1423,9 +1423,9 @@ export type UpdateTopicVideoInput = {
   topicKey: Scalars['String'];
   url: Scalars['String'];
   videoUuid: Scalars['String'];
-};
+}
 
-export type UpsertAcademyTaskInput = {
+export interface UpsertAcademyTaskInput {
   details: Scalars['String'];
   excerpt: Scalars['String'];
   items: Array<StepItemInputGenericInput>;
@@ -1434,9 +1434,9 @@ export type UpsertAcademyTaskInput = {
   status: Scalars['String'];
   title: Scalars['String'];
   uuid: Scalars['String'];
-};
+}
 
-export type UpsertByteInput = {
+export interface UpsertByteInput {
   admins: Array<Scalars['String']>;
   content: Scalars['String'];
   created: Scalars['String'];
@@ -1447,9 +1447,9 @@ export type UpsertByteInput = {
   steps: Array<ByteStepInput>;
   tags: Array<Scalars['String']>;
   thumbnail?: InputMaybe<Scalars['String']>;
-};
+}
 
-export type UpsertCourseIntegrationsInput = {
+export interface UpsertCourseIntegrationsInput {
   courseKey: Scalars['String'];
   discordRoleIds: Array<Scalars['String']>;
   discordRolePassingCount?: InputMaybe<Scalars['Int']>;
@@ -1458,9 +1458,9 @@ export type UpsertCourseIntegrationsInput = {
   projectGalaxyOatMintUrl?: InputMaybe<Scalars['String']>;
   projectGalaxyOatMintedContent?: InputMaybe<Scalars['String']>;
   projectGalaxyOatPassingCount?: InputMaybe<Scalars['Int']>;
-};
+}
 
-export type UpsertSimulationInput = {
+export interface UpsertSimulationInput {
   admins: Array<Scalars['String']>;
   content: Scalars['String'];
   created: Scalars['String'];
@@ -1471,18 +1471,18 @@ export type UpsertSimulationInput = {
   steps: Array<SimulationStepInput>;
   tags: Array<Scalars['String']>;
   thumbnail?: InputMaybe<Scalars['String']>;
-};
+}
 
-export type UpsertTimelineEventInput = {
+export interface UpsertTimelineEventInput {
   content: Scalars['String'];
   date: Scalars['String'];
   excerpt: Scalars['String'];
   moreLink?: InputMaybe<Scalars['String']>;
   name: Scalars['String'];
   uuid: Scalars['String'];
-};
+}
 
-export type UpsertTimelineInput = {
+export interface UpsertTimelineInput {
   admins: Array<Scalars['String']>;
   content: Scalars['String'];
   created: Scalars['String'];
@@ -1494,16 +1494,16 @@ export type UpsertTimelineInput = {
   publishStatus: Scalars['String'];
   tags: Array<Scalars['String']>;
   thumbnail?: InputMaybe<Scalars['String']>;
-};
+}
 
-export type UserDiscordConnect = {
+export interface UserDiscordConnect {
   __typename?: 'UserDiscordConnect';
   order: Scalars['Int'];
   type: Scalars['String'];
   uuid: Scalars['String'];
-};
+}
 
-export type UserDiscordInfo = {
+export interface UserDiscordInfo {
   __typename?: 'UserDiscordInfo';
   accessToken: Scalars['String'];
   avatar: Scalars['String'];
@@ -1511,26 +1511,24 @@ export type UserDiscordInfo = {
   email: Scalars['String'];
   id: Scalars['String'];
   username: Scalars['String'];
-};
+}
 
-export type UserDiscordInfoInput = {
+export interface UserDiscordInfoInput {
   accessToken: Scalars['String'];
   avatar: Scalars['String'];
   discriminator: Scalars['String'];
   email: Scalars['String'];
   id: Scalars['String'];
   username: Scalars['String'];
-};
+}
 
-export type UserInputInput = {
+export interface UserInputInput {
   label: Scalars['String'];
   order?: InputMaybe<Scalars['Int']>;
   required?: InputMaybe<Scalars['Boolean']>;
   type: Scalars['String'];
   uuid: Scalars['String'];
-};
-
-export type AcademyTaskFragmentFragment = { __typename?: 'AcademyTask', uuid: string, createdAt: number, createdBy: string, excerpt: string, spaceId: string, status: string, details: string, title: string, updatedAt: number, updatedBy: string, prerequisiteCourses: Array<{ __typename?: 'SummarizedGitCourse', uuid: string, key: string, title: string, thumbnail: string }>, prerequisiteGuides: Array<{ __typename?: 'Guide', uuid: string, name: string, content: string, thumbnail?: string | null, guideType: string }>, items: Array<{ __typename: 'GuideQuestion', answerKeys: Array<string>, content: string, order: number, type: string, uuid: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string, order: number }> } | { __typename: 'GuideUserInput', label: string, order: number, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', order: number, type: string, uuid: string }> };
+}
 
 export type AcademyTasksQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -1562,8 +1560,6 @@ export type AuthenticateWithUnstoppableMutationVariables = Exact<{
 
 export type AuthenticateWithUnstoppableMutation = { __typename?: 'Mutation', payload: { __typename?: 'JwtResponse', jwt: string } };
 
-export type ByteDetailsFragmentFragment = { __typename?: 'Byte', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, order: number, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, order: number, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string, order: number }> } | { __typename: 'ByteUserInput', label: string, order: number, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', order: number, type: string, uuid: string }> }> };
-
 export type BytesQueryVariables = Exact<{
   spaceId: Scalars['String'];
 }>;
@@ -1593,12 +1589,6 @@ export type SubmitByteMutationVariables = Exact<{
 
 
 export type SubmitByteMutation = { __typename?: 'Mutation', submitByte: { __typename?: 'ByteSubmission', id: string, created: number, createdBy: string, byteId: string, spaceId: string } };
-
-export type TopicSubmissionJsonFragmentFragment = { __typename?: 'GitCourseTopicSubmissionJson', uuid: string, topicKey: string, status: string, explanations?: Array<{ __typename?: 'GitCourseExplanationsSubmission', key: string, status: string }> | null, questions?: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, status: string, answers: Array<string> }> | null, readings?: Array<{ __typename?: 'GitCourseReadingsSubmission', uuid: string, status: string, questions: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, answers: Array<string>, status: string }> }> | null, summaries?: Array<{ __typename?: 'GitCourseSummariesSubmission', key: string, status: string }> | null };
-
-export type TopicSubmissionFragmentFragment = { __typename?: 'GitCourseTopicSubmission', uuid: string, courseKey: string, courseSubmissionUuid: string, createdAt: number, createdBy: string, isLatestSubmission: boolean, questionsAttempted?: number | null, questionsCorrect?: number | null, questionsIncorrect?: number | null, questionsSkipped?: number | null, spaceId: string, status: string, topicKey: string, updatedAt: number, correctAnswers?: Array<{ __typename?: 'GitCourseTopicCorrectAnswer', uuid: string, answerKeys: Array<string> }> | null, submission?: { __typename?: 'GitCourseTopicSubmissionJson', uuid: string, topicKey: string, status: string, explanations?: Array<{ __typename?: 'GitCourseExplanationsSubmission', key: string, status: string }> | null, questions?: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, status: string, answers: Array<string> }> | null, readings?: Array<{ __typename?: 'GitCourseReadingsSubmission', uuid: string, status: string, questions: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, answers: Array<string>, status: string }> }> | null, summaries?: Array<{ __typename?: 'GitCourseSummariesSubmission', key: string, status: string }> | null } | null };
-
-export type CourseSubmissionFragmentFragment = { __typename?: 'GitCourseSubmission', uuid: string, courseKey: string, createdAt: number, createdBy: string, galaxyCredentialsUpdated?: boolean | null, isLatestSubmission?: boolean | null, questionsAttempted?: number | null, questionsCorrect?: number | null, questionsIncorrect?: number | null, questionsSkipped?: number | null, spaceId: string, status: string, updatedAt: number, topicSubmissions: Array<{ __typename?: 'GitCourseTopicSubmission', uuid: string, courseKey: string, courseSubmissionUuid: string, createdAt: number, createdBy: string, isLatestSubmission: boolean, questionsAttempted?: number | null, questionsCorrect?: number | null, questionsIncorrect?: number | null, questionsSkipped?: number | null, spaceId: string, status: string, topicKey: string, updatedAt: number, correctAnswers?: Array<{ __typename?: 'GitCourseTopicCorrectAnswer', uuid: string, answerKeys: Array<string> }> | null, submission?: { __typename?: 'GitCourseTopicSubmissionJson', uuid: string, topicKey: string, status: string, explanations?: Array<{ __typename?: 'GitCourseExplanationsSubmission', key: string, status: string }> | null, questions?: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, status: string, answers: Array<string> }> | null, readings?: Array<{ __typename?: 'GitCourseReadingsSubmission', uuid: string, status: string, questions: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, answers: Array<string>, status: string }> }> | null, summaries?: Array<{ __typename?: 'GitCourseSummariesSubmission', key: string, status: string }> | null } | null }> };
 
 export type GitCourseSubmissionQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -1669,10 +1659,6 @@ export type UpsertCourseIntegrationsMutationVariables = Exact<{
 
 
 export type UpsertCourseIntegrationsMutation = { __typename?: 'Mutation', payload: { __typename?: 'CourseIntegrations', discordRoleIds?: Array<string> | null, discordRolePassingCount?: number | null, discordWebhook?: string | null, projectGalaxyCredentialId?: string | null, projectGalaxyOatMintUrl?: string | null, projectGalaxyOatPassingCount?: number | null, projectGalaxyOatMintedContent?: string | null } };
-
-export type GitCourseTopicFragmentFragment = { __typename?: 'GitCourseTopic', title: string, key: string, details: string, explanations?: Array<{ __typename?: 'GitCourseExplanation', title: string, shortTitle: string, key: string, details: string }> | null, readings?: Array<{ __typename?: 'GitCourseReading', uuid: string, title: string, shortTitle: string, details: string, type: string, url: string }> | null, summaries?: Array<{ __typename?: 'GitCourseSummary', title: string, shortTitle: string, key: string, details: string }> | null, questions?: Array<{ __typename?: 'GitCourseQuestion', uuid: string, type: string, content: string, answerKeys?: Array<string> | null, hint: string, explanation: string, choices?: Array<{ __typename?: 'GitCourseQuestionChoice', content: string, key: string }> | null }> | null };
-
-export type GitCourseFragmentFragment = { __typename?: 'GitCourse', key: string, title: string, summary: string, details: string, duration: string, priority?: number | null, publishStatus: string, highlights: Array<string>, thumbnail: string, courseAdmins?: Array<string> | null, coursePassCount?: number | null, coursePassContent?: string | null, courseFailContent?: string | null, topicConfig?: { __typename?: 'TopicConfig', showExplanations: boolean, showHints: boolean } | null, topics: Array<{ __typename?: 'GitCourseTopic', title: string, key: string, details: string, explanations?: Array<{ __typename?: 'GitCourseExplanation', title: string, shortTitle: string, key: string, details: string }> | null, readings?: Array<{ __typename?: 'GitCourseReading', uuid: string, title: string, shortTitle: string, details: string, type: string, url: string }> | null, summaries?: Array<{ __typename?: 'GitCourseSummary', title: string, shortTitle: string, key: string, details: string }> | null, questions?: Array<{ __typename?: 'GitCourseQuestion', uuid: string, type: string, content: string, answerKeys?: Array<string> | null, hint: string, explanation: string, choices?: Array<{ __typename?: 'GitCourseQuestionChoice', content: string, key: string }> | null }> | null }> };
 
 export type UpsertGitCourseMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -1897,8 +1883,6 @@ export type UpsertGnosisSafeWalletsMutationVariables = Exact<{
 
 export type UpsertGnosisSafeWalletsMutation = { __typename?: 'Mutation', payload: { __typename?: 'Space', id: string } };
 
-export type GuideFragmentFragment = { __typename?: 'Guide', authors: Array<string>, categories: Array<string>, postSubmissionStepContent?: string | null, content: string, created: number, id: string, guideSource: string, guideType: string, link: string, name: string, previousId?: string | null, showIncorrectOnCompletion: boolean, publishStatus: string, socialShareImage?: string | null, thumbnail?: string | null, uuid: string, version: number, guideIntegrations: { __typename?: 'GuideIntegrations', discordRoleIds?: Array<string> | null, discordRolePassingCount?: number | null, discordWebhook?: string | null, projectGalaxyCredentialId?: string | null, projectGalaxyOatMintUrl?: string | null, projectGalaxyOatPassingCount?: number | null }, space: { __typename?: 'Space', id: string, name?: string | null }, steps: Array<{ __typename?: 'GuideStep', content: string, created: number, id: string, name: string, order: number, uuid: string, stepItems: Array<{ __typename: 'GuideQuestion', answerKeys: Array<string>, content: string, order: number, type: string, uuid: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string, order: number }> } | { __typename: 'GuideUserInput', label: string, order: number, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', order: number, type: string, uuid: string }> }> };
-
 export type UpsertGuideMutationVariables = Exact<{
   spaceId: Scalars['String'];
   guideInput: GuideInput;
@@ -1943,8 +1927,6 @@ export type GuidesQueryQueryVariables = Exact<{
 
 export type GuidesQueryQuery = { __typename?: 'Query', guides?: Array<{ __typename?: 'Guide', id: string, authors: Array<string>, name: string, categories: Array<string>, content: string, created: number, guideSource: string, guideType: string, publishStatus: string, socialShareImage?: string | null, thumbnail?: string | null, uuid: string, space: { __typename?: 'Space', id: string, name?: string | null, members: Array<string>, avatar?: string | null, symbol?: string | null } }> | null };
 
-export type SimulationDetailsFragmentFragment = { __typename?: 'Simulation', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, steps: Array<{ __typename?: 'SimulationStep', content: string, iframeUrl?: string | null, name: string, uuid: string, order: number }> };
-
 export type SimulationsQueryVariables = Exact<{
   spaceId: Scalars['String'];
 }>;
@@ -1968,21 +1950,19 @@ export type UpsertSimulationMutationVariables = Exact<{
 
 export type UpsertSimulationMutation = { __typename?: 'Mutation', payload: { __typename?: 'Simulation', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, steps: Array<{ __typename?: 'SimulationStep', content: string, iframeUrl?: string | null, name: string, uuid: string, order: number }> } };
 
-export type SpaceWithIntegrationsFragment = { __typename?: 'Space', id: string, about?: string | null, blogSite?: string | null, creator: string, features: Array<string>, mission: string, name?: string | null, network?: string | null, symbol?: string | null, terms?: string | null, skin: string, avatar?: string | null, twitter?: string | null, github?: string | null, guidesPageFooterContent?: string | null, guidesPageHeaderContent?: string | null, guidesBundlePageFooterContent?: string | null, guidesBundlePageHeaderContent?: string | null, private?: boolean | null, publicForumWebsite?: string | null, referenceDocsWebsite?: string | null, domain?: string | null, members: Array<string>, admins: Array<string>, categories?: Array<string | null> | null, plugins?: any | null, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, filters?: { __typename?: 'SpaceFilters', minScore?: number | null, onlyMembers?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null };
-
 export type ExtendedSpaceQueryVariables = Exact<{
   spaceId: Scalars['String'];
 }>;
 
 
-export type ExtendedSpaceQuery = { __typename?: 'Query', space?: { __typename?: 'Space', id: string, about?: string | null, blogSite?: string | null, creator: string, features: Array<string>, mission: string, name?: string | null, network?: string | null, symbol?: string | null, terms?: string | null, skin: string, avatar?: string | null, twitter?: string | null, github?: string | null, guidesPageFooterContent?: string | null, guidesPageHeaderContent?: string | null, guidesBundlePageFooterContent?: string | null, guidesBundlePageHeaderContent?: string | null, private?: boolean | null, publicForumWebsite?: string | null, referenceDocsWebsite?: string | null, domain?: string | null, members: Array<string>, admins: Array<string>, categories?: Array<string | null> | null, plugins?: any | null, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, filters?: { __typename?: 'SpaceFilters', minScore?: number | null, onlyMembers?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null } | null };
+export type ExtendedSpaceQuery = { __typename?: 'Query', space?: { __typename?: 'Space', id: string, about?: string | null, blogSite?: string | null, creator: string, features: Array<string>, mission: string, name?: string | null, network?: string | null, symbol?: string | null, terms?: string | null, skin: string, avatar?: string | null, twitter?: string | null, github?: string | null, guidesPageFooterContent?: string | null, guidesPageHeaderContent?: string | null, guidesBundlePageFooterContent?: string | null, guidesBundlePageHeaderContent?: string | null, private?: boolean | null, publicForumWebsite?: string | null, referenceDocsWebsite?: string | null, domain?: string | null, admins: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, filters?: { __typename?: 'SpaceFilters', minScore?: number | null, onlyMembers?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null } | null };
 
 export type ExtendedSpaceByDomainQueryVariables = Exact<{
   domain: Scalars['String'];
 }>;
 
 
-export type ExtendedSpaceByDomainQuery = { __typename?: 'Query', space?: { __typename?: 'Space', id: string, about?: string | null, blogSite?: string | null, creator: string, features: Array<string>, mission: string, name?: string | null, network?: string | null, symbol?: string | null, terms?: string | null, skin: string, avatar?: string | null, twitter?: string | null, github?: string | null, guidesPageFooterContent?: string | null, guidesPageHeaderContent?: string | null, guidesBundlePageFooterContent?: string | null, guidesBundlePageHeaderContent?: string | null, private?: boolean | null, publicForumWebsite?: string | null, referenceDocsWebsite?: string | null, domain?: string | null, members: Array<string>, admins: Array<string>, categories?: Array<string | null> | null, plugins?: any | null, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, filters?: { __typename?: 'SpaceFilters', minScore?: number | null, onlyMembers?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null } | null };
+export type ExtendedSpaceByDomainQuery = { __typename?: 'Query', space?: { __typename?: 'Space', id: string, about?: string | null, blogSite?: string | null, creator: string, features: Array<string>, mission: string, name?: string | null, network?: string | null, symbol?: string | null, terms?: string | null, skin: string, avatar?: string | null, twitter?: string | null, github?: string | null, guidesPageFooterContent?: string | null, guidesPageHeaderContent?: string | null, guidesBundlePageFooterContent?: string | null, guidesBundlePageHeaderContent?: string | null, private?: boolean | null, publicForumWebsite?: string | null, referenceDocsWebsite?: string | null, domain?: string | null, admins: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, filters?: { __typename?: 'SpaceFilters', minScore?: number | null, onlyMembers?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null } | null };
 
 export type SpaceDiscordGuildQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -1997,7 +1977,7 @@ export type UpsertSpaceFeaturesMutationVariables = Exact<{
 }>;
 
 
-export type UpsertSpaceFeaturesMutation = { __typename?: 'Mutation', payload: { __typename?: 'Space', id: string, about?: string | null, blogSite?: string | null, creator: string, features: Array<string>, mission: string, name?: string | null, network?: string | null, symbol?: string | null, terms?: string | null, skin: string, avatar?: string | null, twitter?: string | null, github?: string | null, guidesPageFooterContent?: string | null, guidesPageHeaderContent?: string | null, guidesBundlePageFooterContent?: string | null, guidesBundlePageHeaderContent?: string | null, private?: boolean | null, publicForumWebsite?: string | null, referenceDocsWebsite?: string | null, domain?: string | null, members: Array<string>, admins: Array<string>, categories?: Array<string | null> | null, plugins?: any | null, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, filters?: { __typename?: 'SpaceFilters', minScore?: number | null, onlyMembers?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null } };
+export type UpsertSpaceFeaturesMutation = { __typename?: 'Mutation', payload: { __typename?: 'Space', id: string, about?: string | null, blogSite?: string | null, creator: string, features: Array<string>, mission: string, name?: string | null, network?: string | null, symbol?: string | null, terms?: string | null, skin: string, avatar?: string | null, twitter?: string | null, github?: string | null, guidesPageFooterContent?: string | null, guidesPageHeaderContent?: string | null, guidesBundlePageFooterContent?: string | null, guidesBundlePageHeaderContent?: string | null, private?: boolean | null, publicForumWebsite?: string | null, referenceDocsWebsite?: string | null, domain?: string | null, admins: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, filters?: { __typename?: 'SpaceFilters', minScore?: number | null, onlyMembers?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null } };
 
 export type UpsertSpaceInviteLinksMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -2014,8 +1994,6 @@ export type UpsertProjectGalaxyAccessTokenMutationVariables = Exact<{
 
 
 export type UpsertProjectGalaxyAccessTokenMutation = { __typename?: 'Mutation', payload: { __typename?: 'Space', id: string } };
-
-export type SpaceFragmentFragment = { __typename?: 'Space', id: string, about?: string | null, admins: Array<string>, avatar?: string | null, categories?: Array<string | null> | null, creator: string, domain?: string | null, github?: string | null, location?: string | null, members: Array<string>, mission: string, name?: string | null, plugins?: any | null, private?: boolean | null, symbol?: string | null, skin: string, terms?: string | null, twitter?: string | null, website?: string | null, email?: string | null, network?: string | null };
 
 export type CreateSignedUrlMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -2049,8 +2027,6 @@ export type UpsertSpaceAcademyRepositoryMutationVariables = Exact<{
 
 
 export type UpsertSpaceAcademyRepositoryMutation = { __typename?: 'Mutation', upsertSpaceAcademyRepository: { __typename?: 'Space', id: string } };
-
-export type TimelineDetailsFragmentFragment = { __typename?: 'Timeline', id: string, name: string, excerpt: string, content: string, thumbnail?: string | null, created: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, events: Array<{ __typename?: 'TimelineEvent', name: string, uuid: string, date: string, excerpt: string, content: string, moreLink?: string | null }> };
 
 export type TimelinesQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -2432,10 +2408,7 @@ export const SpaceWithIntegrationsFragmentDoc = gql`
   publicForumWebsite
   referenceDocsWebsite
   domain
-  members
   admins
-  categories
-  plugins
   filters {
     minScore
     onlyMembers

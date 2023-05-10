@@ -1,4 +1,5 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import StyledComponentsRegistry from '@/utils/StyledComponentsRegistry';
 import { getServerSession } from 'next-auth';
 import './globals.css';
 import 'tailwindcss/tailwind.css';
@@ -17,7 +18,9 @@ export default async function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" className="h-full">
       <body className="h-full">
-        <InternalLayout session={session}>{children}</InternalLayout>
+        <StyledComponentsRegistry>
+          <InternalLayout session={session}>{children}</InternalLayout>
+        </StyledComponentsRegistry>
       </body>
     </html>
   );

@@ -6,13 +6,13 @@ export enum GuideType {
   Course = 'course',
   Onboarding = 'onboarding',
   HowTo = 'how-to',
-  LevelUp = 'level-up'
+  LevelUp = 'level-up',
 }
 
 export enum GuideSource {
   Database = 'Database',
   Git = 'Git',
-  Academy = 'Academy'
+  Academy = 'Academy',
 }
 
 export const GuideTypesArray = [GuideType.Course, GuideType.Onboarding, GuideType.HowTo, GuideType.LevelUp];

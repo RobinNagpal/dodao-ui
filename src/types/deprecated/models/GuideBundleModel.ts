@@ -1,4 +1,4 @@
 export enum GuideCoursePublishStatus {
   Live = 'Live',
-  Draft = 'Draft'
+  Draft = 'Draft',
 }
