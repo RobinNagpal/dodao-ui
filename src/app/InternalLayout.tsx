@@ -1,23 +1,23 @@
 'use client';
-import LoginModal from "@/components/auth/LoginModal";
-import FullPageLoader from "@/components/core/Loader/FullPageLoading";
-import MainContainer from "@/components/main/Container/MainContainer";
-import TopNav from "@/components/main/TopNav/TopNav";
-import AaveTheme from "@/components/themes/AaveTheme";
-import CompoundTheme from "@/components/themes/CompoundTheme";
-import GlobalTheme from "@/components/themes/GlobalTheme";
-import UniswapTheme from "@/components/themes/UniswapTheme";
-import { LoginModalProvider } from "@/context/LoginModalContext";
-import { SpaceProvider, useSpace } from "@/context/SpaceContext";
-import Web3ReactProviderWrapper from "@/context/Web3ReactContext";
-import { useExtendedSpaceByDomainQuery } from "@/graphql/generated/generated-types";
-import client from "@/utils/apolloClient";
-import { ApolloProvider } from "@apollo/client";
-import { Session } from "next-auth";
-import { SessionProvider } from "next-auth/react";
-import { useEffect } from "react";
-import styled from "styled-components";
-import "./globals.css";
+import LoginModal from '@/components/auth/LoginModal';
+import FullPageLoader from '@/components/core/Loader/FullPageLoading';
+import MainContainer from '@/components/main/Container/MainContainer';
+import TopNav from '@/components/main/TopNav/TopNav';
+import AaveTheme from '@/components/themes/AaveTheme';
+import CompoundTheme from '@/components/themes/CompoundTheme';
+import GlobalTheme from '@/components/themes/GlobalTheme';
+import UniswapTheme from '@/components/themes/UniswapTheme';
+import { LoginModalProvider } from '@/context/LoginModalContext';
+import { SpaceProvider, useSpace } from '@/context/SpaceContext';
+import Web3ReactProviderWrapper from '@/context/Web3ReactContext';
+import { useExtendedSpaceByDomainQuery } from '@/graphql/generated/generated-types';
+import client from '@/utils/apolloClient';
+import { ApolloProvider } from '@apollo/client';
+import { Session } from 'next-auth';
+import { SessionProvider } from 'next-auth/react';
+import { useEffect } from 'react';
+import styled from 'styled-components';
+import './globals.css';
 
 // Based on - https://tailwindui.com/components/application-ui/page-examples/home-screens
 
