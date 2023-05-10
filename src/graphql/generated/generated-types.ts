@@ -1977,6 +1977,13 @@ export type ExtendedSpaceQueryVariables = Exact<{
 
 export type ExtendedSpaceQuery = { __typename?: 'Query', space?: { __typename?: 'Space', id: string, about?: string | null, blogSite?: string | null, creator: string, features: Array<string>, mission: string, name?: string | null, network?: string | null, symbol?: string | null, terms?: string | null, skin: string, avatar?: string | null, twitter?: string | null, github?: string | null, guidesPageFooterContent?: string | null, guidesPageHeaderContent?: string | null, guidesBundlePageFooterContent?: string | null, guidesBundlePageHeaderContent?: string | null, private?: boolean | null, publicForumWebsite?: string | null, referenceDocsWebsite?: string | null, domain?: string | null, members: Array<string>, admins: Array<string>, categories?: Array<string | null> | null, plugins?: any | null, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, filters?: { __typename?: 'SpaceFilters', minScore?: number | null, onlyMembers?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null } | null };
 
+export type ExtendedSpaceByDomainQueryVariables = Exact<{
+  domain: Scalars['String'];
+}>;
+
+
+export type ExtendedSpaceByDomainQuery = { __typename?: 'Query', space?: { __typename?: 'Space', id: string, about?: string | null, blogSite?: string | null, creator: string, features: Array<string>, mission: string, name?: string | null, network?: string | null, symbol?: string | null, terms?: string | null, skin: string, avatar?: string | null, twitter?: string | null, github?: string | null, guidesPageFooterContent?: string | null, guidesPageHeaderContent?: string | null, guidesBundlePageFooterContent?: string | null, guidesBundlePageHeaderContent?: string | null, private?: boolean | null, publicForumWebsite?: string | null, referenceDocsWebsite?: string | null, domain?: string | null, members: Array<string>, admins: Array<string>, categories?: Array<string | null> | null, plugins?: any | null, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, filters?: { __typename?: 'SpaceFilters', minScore?: number | null, onlyMembers?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null } | null };
+
 export type SpaceDiscordGuildQueryVariables = Exact<{
   spaceId: Scalars['String'];
 }>;
@@ -4589,6 +4596,44 @@ export type ExtendedSpaceLazyQueryHookResult = ReturnType<typeof useExtendedSpac
 export type ExtendedSpaceQueryResult = Apollo.QueryResult<ExtendedSpaceQuery, ExtendedSpaceQueryVariables>;
 export function refetchExtendedSpaceQuery(variables: ExtendedSpaceQueryVariables) {
       return { query: ExtendedSpaceDocument, variables: variables }
+    }
+export const ExtendedSpaceByDomainDocument = gql`
+    query ExtendedSpaceByDomain($domain: String!) {
+  space(domain: $domain) {
+    ...SpaceWithIntegrations
+  }
+}
+    ${SpaceWithIntegrationsFragmentDoc}`;
+
+/**
+ * __useExtendedSpaceByDomainQuery__
+ *
+ * To run a query within a React component, call `useExtendedSpaceByDomainQuery` and pass it any options that fit your needs.
+ * When your component renders, `useExtendedSpaceByDomainQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useExtendedSpaceByDomainQuery({
+ *   variables: {
+ *      domain: // value for 'domain'
+ *   },
+ * });
+ */
+export function useExtendedSpaceByDomainQuery(baseOptions: Apollo.QueryHookOptions<ExtendedSpaceByDomainQuery, ExtendedSpaceByDomainQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ExtendedSpaceByDomainQuery, ExtendedSpaceByDomainQueryVariables>(ExtendedSpaceByDomainDocument, options);
+      }
+export function useExtendedSpaceByDomainLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ExtendedSpaceByDomainQuery, ExtendedSpaceByDomainQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ExtendedSpaceByDomainQuery, ExtendedSpaceByDomainQueryVariables>(ExtendedSpaceByDomainDocument, options);
+        }
+export type ExtendedSpaceByDomainQueryHookResult = ReturnType<typeof useExtendedSpaceByDomainQuery>;
+export type ExtendedSpaceByDomainLazyQueryHookResult = ReturnType<typeof useExtendedSpaceByDomainLazyQuery>;
+export type ExtendedSpaceByDomainQueryResult = Apollo.QueryResult<ExtendedSpaceByDomainQuery, ExtendedSpaceByDomainQueryVariables>;
+export function refetchExtendedSpaceByDomainQuery(variables: ExtendedSpaceByDomainQueryVariables) {
+      return { query: ExtendedSpaceByDomainDocument, variables: variables }
     }
 export const SpaceDiscordGuildDocument = gql`
     query SpaceDiscordGuild($spaceId: String!) {
