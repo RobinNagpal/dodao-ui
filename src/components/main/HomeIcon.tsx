@@ -19,6 +19,8 @@ function Card({ space, heading, details, featureName }: { space: SpaceModel; hea
         src={$t(`academy.${space.id}.${featureName.toLowerCase()}Thumbnail`)}
         className="academy-image w-full md:w-52 md:h-38 object-cover"
         alt={featureName}
+        width={250}
+        height={150}
       />
       <div className="w-full">
         <h2 className="text-xl text-center sm:text-left font-semibold px-4 py-2">{heading}</h2>
