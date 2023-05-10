@@ -1,0 +1,27 @@
+query GuideSubmissionsQuery($guideUuid: String!) {
+  guideSubmissions(guideUuid: $guideUuid) {
+    id
+    created
+    createdBy
+    guideId
+    guideUuid
+    result {
+      correctQuestions
+      wrongQuestions
+      allQuestions
+    }
+    spaceId
+    uuid
+  }
+}
+
+mutation SubmitGuide($input: GuideSubmissionInput!) {
+  payload: submitGuide(submissionInput: $input) {
+    result {
+      wrongQuestions
+      correctQuestions
+      allQuestions
+    }
+    galaxyCredentialsUpdated
+  }
+}

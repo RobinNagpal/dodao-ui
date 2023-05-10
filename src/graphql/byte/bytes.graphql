@@ -1,0 +1,73 @@
+fragment ByteDetailsFragment on Byte {
+  postSubmissionStepContent
+  content
+  created
+  id
+  name
+  publishStatus
+  admins
+  tags
+  priority
+  steps {
+    content
+    stepItems {
+      __typename
+      ... on ByteQuestion {
+        answerKeys
+        choices {
+          content
+          key
+          order
+        }
+        content
+        order
+        type
+        uuid
+        explanation
+      }
+
+      ... on ByteUserInput {
+        label
+        order
+        required
+        type
+        uuid
+      }
+
+      ... on UserDiscordConnect {
+        order
+        type
+        uuid
+      }
+    }
+    name
+    order
+    uuid
+  }
+}
+
+query Bytes($spaceId: String!) {
+  bytes(spaceId: $spaceId) {
+    postSubmissionStepContent
+    content
+    created
+    id
+    name
+    publishStatus
+    admins
+    tags
+    priority
+  }
+}
+
+query ByteDetails($spaceId: String!, $byteId: String!) {
+  byte(spaceId: $spaceId, byteId: $byteId) {
+    ...ByteDetailsFragment
+  }
+}
+
+mutation UpsertByte($spaceId: String!, $input: UpsertByteInput!) {
+  payload: upsertByte(spaceId: $spaceId, input: $input) {
+    ...ByteDetailsFragment
+  }
+}

@@ -1,0 +1,5 @@
+mutation UpsertSpaceInviteLinks($spaceId: String!, $spaceInviteArgs: SpaceInviteArgs!) {
+  payload: upsertSpaceInviteLinks(spaceId: $spaceId, spaceInviteArgs: $spaceInviteArgs) {
+    id
+  }
+}

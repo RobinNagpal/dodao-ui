@@ -1,0 +1,23 @@
+fragment SpaceFragment on Space {
+  id
+  about
+  admins
+  avatar
+  categories
+  creator
+  domain
+  github
+  location
+  members
+  mission
+  name
+  plugins
+  private
+  symbol
+  skin
+  terms
+  twitter
+  website
+  email
+  network
+}

@@ -1,0 +1,73 @@
+fragment SpaceWithIntegrations on Space {
+  id
+  about
+  blogSite
+  creator
+  features
+  mission
+  name
+  network
+  symbol
+  network
+  terms
+  skin
+  avatar
+  twitter
+  github
+  guidesPageFooterContent
+  guidesPageHeaderContent
+  guidesBundlePageFooterContent
+  guidesBundlePageHeaderContent
+  inviteLinks {
+    discordInviteLink
+    showAnimatedButtonForDiscord
+    telegramInviteLink
+    showAnimatedButtonForTelegram
+  }
+  private
+  publicForumWebsite
+  referenceDocsWebsite
+  domain
+  members
+  admins
+  categories
+  plugins
+  filters {
+    minScore
+    onlyMembers
+  }
+  spaceIntegrations {
+    academyRepository
+    discordGuildId
+    gitGuideRepositories {
+      authenticationToken
+      gitRepoType
+      repoUrl
+    }
+    gnosisSafeWallets {
+      id
+      chainId
+      order
+      tokenContractAddress
+      walletAddress
+      walletName
+    }
+    projectGalaxyTokenLastFour
+  }
+}
+
+query ExtendedSpace($spaceId: String!) {
+  space(id: $spaceId) {
+    ...SpaceWithIntegrations
+  }
+}
+
+query SpaceDiscordGuild($spaceId: String!) {
+  payload: spaceDiscordGuild(spaceId: $spaceId)
+}
+
+mutation UpsertSpaceFeatures($spaceId: String!, $features: [String!]!) {
+  payload: upsertSpaceFeatures(spaceId: $spaceId, features: $features) {
+    ...SpaceWithIntegrations
+  }
+}

@@ -1,0 +1,31 @@
+query CoursesQuery($spaceId: String!) {
+  courses(spaceId: $spaceId) {
+    id
+    name
+    categories
+    courseAdmins
+    courseType
+    duration
+    excerpt
+    highlights
+    priority
+    publishStatus
+    thumbnail
+    uuid
+  }
+}
+
+query SummarizedCoursesQuery($spaceId: String!) {
+  summarizedGitCourses(spaceId: $spaceId) {
+    uuid
+    key
+    courseAdmins
+    duration
+    summary
+    highlights
+    priority
+    publishStatus
+    title
+    thumbnail
+  }
+}

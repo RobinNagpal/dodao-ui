@@ -1,0 +1,101 @@
+fragment TopicSubmissionJsonFragment on GitCourseTopicSubmissionJson {
+  uuid
+  topicKey
+  explanations {
+    key
+    status
+  }
+  questions {
+    uuid
+    status
+    answers
+  }
+  readings {
+    uuid
+    questions {
+      uuid
+      answers
+      status
+    }
+    status
+  }
+  summaries {
+    key
+    status
+  }
+  status
+}
+
+fragment TopicSubmissionFragment on GitCourseTopicSubmission {
+  uuid
+  courseKey
+
+  courseSubmissionUuid
+  createdAt
+  createdBy
+  correctAnswers {
+    uuid
+    answerKeys
+  }
+  isLatestSubmission
+  questionsAttempted
+  questionsCorrect
+  questionsIncorrect
+  questionsSkipped
+  submission {
+    ...TopicSubmissionJsonFragment
+  }
+  spaceId
+  status
+  topicKey
+  updatedAt
+}
+
+fragment CourseSubmissionFragment on GitCourseSubmission {
+  uuid
+  courseKey
+  createdAt
+  createdBy
+  galaxyCredentialsUpdated
+  isLatestSubmission
+  questionsAttempted
+  questionsCorrect
+  questionsIncorrect
+  questionsSkipped
+  spaceId
+  status
+  updatedAt
+  topicSubmissions {
+    ...TopicSubmissionFragment
+  }
+}
+
+query GitCourseSubmission($spaceId: String!, $courseKey: String!) {
+  payload: gitCourseSubmission(spaceId: $spaceId, courseKey: $courseKey) {
+    ...CourseSubmissionFragment
+  }
+}
+
+mutation UpsertGitCourseTopicSubmission($spaceId: String!, $gitCourseTopicSubmission: GitCourseTopicSubmissionInput!) {
+  payload: upsertGitCourseTopicSubmission(spaceId: $spaceId, gitCourseTopicSubmission: $gitCourseTopicSubmission) {
+    ...TopicSubmissionFragment
+  }
+}
+
+mutation SubmitGitCourseTopic($spaceId: String!, $gitCourseTopicSubmission: GitCourseTopicSubmissionInput!) {
+  payload: submitGitCourseTopic(spaceId: $spaceId, gitCourseTopicSubmission: $gitCourseTopicSubmission) {
+    ...TopicSubmissionFragment
+  }
+}
+
+mutation SubmitGitCourse($spaceId: String!, $input: CourseSubmissionInput!) {
+  payload: submitGitCourse(spaceId: $spaceId, input: $input) {
+    ...CourseSubmissionFragment
+  }
+}
+
+mutation InitializeGitCourseSubmission($spaceId: String!, $courseKey: String!) {
+  payload: initializeGitCourseSubmission(spaceId: $spaceId, courseKey: $courseKey) {
+    ...CourseSubmissionFragment
+  }
+}

@@ -1,0 +1,13 @@
+mutation AddDiscordCredentials(
+  $spaceId: String!
+  $code: String!
+  $redirectUri: String!
+) {
+  payload: addDiscordCredentials(
+    spaceId: $spaceId
+    code: $code
+    redirectUri: $redirectUri
+  ) {
+    id
+  }
+}

@@ -1,0 +1,11 @@
+mutation UpsertProjectGalaxyAccessToken(
+  $spaceId: String!
+  $accessToken: String!
+) {
+  payload: upsertProjectGalaxyAccessToken(
+    spaceId: $spaceId
+    accessToken: $accessToken
+  ) {
+    id
+  }
+}

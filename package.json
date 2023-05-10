@@ -6,10 +6,14 @@
     "dev": "prisma generate && next dev",
     "build": "prisma generate && next build",
     "start": "prisma generate && next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "graphql:download": "graphql-codegen --config introspection.yml",
+    "graphql:generate": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
     "@auth/core": "^0.7.1",
+    "@apollo/client": "^3.7.12",
+    "@apollo/react-hooks": "^4.0.0",
     "@ethersproject/bignumber": "^5.7.0",
     "@ethersproject/units": "^5.7.0",
     "@headlessui/react": "^1.7.14",
@@ -39,6 +43,8 @@
     "eslint": "8.39.0",
     "eslint-config-next": "13.3.4",
     "ethers": "^6.3.0",
+    "graphql": "^16.6.0",
+    "graphql-tag": "^2.12.6",
     "lodash": "^4.17.21",
     "lottie-react": "^2.4.0",
     "next": "13.3.5-canary.8",
@@ -52,6 +58,13 @@
     "web3": "^1.9.0"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^3.3.1",
+    "@graphql-codegen/introspection": "^3.0.1",
+    "@graphql-codegen/schema-ast": "^3.0.1",
+    "@graphql-codegen/typescript": "^3.0.4",
+    "@graphql-codegen/typescript-operations": "^3.0.4",
+    "@graphql-codegen/typescript-react-apollo": "^3.3.7",
+
     "@types/styled-components": "^5.1.26",
     "prettier": "^2.8.8",
     "prisma": "^4.13.0"

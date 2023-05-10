@@ -1,0 +1,46 @@
+fragment TimelineDetailsFragment on Timeline {
+  id
+  name
+  excerpt
+  content
+  thumbnail
+  created
+  publishStatus
+  admins
+  tags
+  priority
+  events {
+    name
+    uuid
+    date
+    excerpt
+    content
+    moreLink
+  }
+}
+query Timelines($spaceId: String!) {
+  timelines(spaceId: $spaceId) {
+    id
+    name
+    excerpt
+    content
+    thumbnail
+    created
+    publishStatus
+    admins
+    tags
+    priority
+  }
+}
+
+query TimelineDetails($spaceId: String!, $timelineId: String!) {
+  timeline(spaceId: $spaceId, timelineId: $timelineId) {
+    ...TimelineDetailsFragment
+  }
+}
+
+mutation UpsertTimeline($spaceId: String!, $input: UpsertTimelineInput!) {
+  upsertTimeline(spaceId: $spaceId, input: $input) {
+    ...TimelineDetailsFragment
+  }
+}

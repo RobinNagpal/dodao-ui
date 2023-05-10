@@ -1,0 +1,264 @@
+fragment GitCourseTopicFragment on GitCourseTopic {
+  title
+  key
+  details
+
+  explanations {
+    title
+    shortTitle
+    key
+    details
+  }
+
+  readings {
+    uuid
+    title
+    shortTitle
+    details
+    type
+    url
+  }
+
+  summaries {
+    title
+    shortTitle
+    key
+    details
+  }
+
+  questions {
+    uuid
+    type
+    content
+    answerKeys
+    hint
+    explanation
+    choices {
+      content
+      key
+    }
+  }
+}
+
+fragment GitCourseFragment on GitCourse {
+  key
+  title
+  summary
+  details
+  duration
+  priority
+  publishStatus
+  highlights
+  thumbnail
+  courseAdmins
+  coursePassCount
+  coursePassContent
+  courseFailContent
+  topicConfig {
+    showExplanations
+    showHints
+  }
+  topics {
+    ...GitCourseTopicFragment
+  }
+}
+
+mutation UpsertGitCourse($spaceId: String!, $gitCourseInput: GitCourseInput!) {
+  payload: upsertGitCourse(spaceId: $spaceId, gitCourseInput: $gitCourseInput) {
+    key
+    title
+    summary
+    details
+    duration
+    courseAdmins
+    priority
+    topics {
+      key
+      title
+      details
+    }
+  }
+}
+
+mutation RefreshGitCourses($spaceId: String!) {
+  payload: refreshGitCourses(spaceId: $spaceId)
+}
+mutation RefreshGitCourse($spaceId: String!, $courseKey: String!) {
+  payload: refreshGitCourse(spaceId: $spaceId, courseKey: $courseKey)
+}
+
+mutation UpdateCourseBasicInfo($spaceId: String!, $courseBasicInfo: CourseBasicInfoInput!) {
+  payload: updateCourseBasicInfo(spaceId: $spaceId, courseBasicInfo: $courseBasicInfo) {
+    ...GitCourseFragment
+  }
+}
+
+mutation UpdateTopicBasicInfo($spaceId: String!, $topicInfo: UpdateTopicBasicInfoInput!) {
+  payload: updateTopicBasicInfo(spaceId: $spaceId, topicInfo: $topicInfo) {
+    ...GitCourseFragment
+  }
+}
+mutation AddTopic($spaceId: String!, $topicInfo: AddTopicInput!) {
+  payload: addTopic(spaceId: $spaceId, topicInfo: $topicInfo) {
+    ...GitCourseTopicFragment
+  }
+}
+
+mutation MoveTopic($spaceId: String!, $topicInfo: MoveTopicInput!) {
+  payload: moveTopic(spaceId: $spaceId, topicInfo: $topicInfo) {
+    ...GitCourseFragment
+  }
+}
+
+mutation DeleteTopic($spaceId: String!, $topicInfo: DeleteTopicInput!) {
+  payload: deleteTopic(spaceId: $spaceId, topicInfo: $topicInfo) {
+    ...GitCourseFragment
+  }
+}
+
+mutation UpdateTopicExplanation($spaceId: String!, $explanationInfo: UpdateTopicExplanationInput!) {
+  payload: updateTopicExplanation(spaceId: $spaceId, explanationInfo: $explanationInfo) {
+    ...GitCourseFragment
+  }
+}
+
+mutation UpdateTopicSummary($spaceId: String!, $summaryInfo: UpdateTopicSummaryInput!) {
+  payload: updateTopicSummary(spaceId: $spaceId, summaryInfo: $summaryInfo) {
+    ...GitCourseFragment
+  }
+}
+
+mutation UpdateTopicVideo($spaceId: String!, $videoInfo: UpdateTopicVideoInput!) {
+  payload: updateTopicVideo(spaceId: $spaceId, videoInfo: $videoInfo) {
+    ...GitCourseFragment
+  }
+}
+
+mutation UpdateTopicQuestion($spaceId: String!, $questionInfo: UpdateTopicQuestionInput!) {
+  payload: updateTopicQuestion(spaceId: $spaceId, questionInfo: $questionInfo) {
+    ...GitCourseFragment
+  }
+}
+
+mutation AddTopicExplanation($spaceId: String!, $explanationInfo: AddTopicExplanationInput!) {
+  payload: addTopicExplanation(spaceId: $spaceId, explanationInfo: $explanationInfo) {
+    title
+    shortTitle
+    key
+    details
+  }
+}
+
+mutation AddTopicSummary($spaceId: String!, $summaryInfo: AddTopicSummaryInput!) {
+  payload: addTopicSummary(spaceId: $spaceId, summaryInfo: $summaryInfo) {
+    title
+    shortTitle
+    key
+    details
+  }
+}
+
+mutation AddTopicVideo($spaceId: String!, $videoInfo: AddTopicVideoInput!) {
+  payload: addTopicVideo(spaceId: $spaceId, videoInfo: $videoInfo) {
+    uuid
+    title
+    shortTitle
+    details
+    type
+    url
+  }
+}
+
+mutation AddTopicQuestion($spaceId: String!, $questionInfo: AddTopicQuestionInput!) {
+  payload: addTopicQuestion(spaceId: $spaceId, questionInfo: $questionInfo) {
+    uuid
+    type
+    content
+    answerKeys
+    hint
+    explanation
+    choices {
+      content
+      key
+    }
+  }
+}
+
+mutation DeleteTopicExplanation($spaceId: String!, $explanationInfo: DeleteTopicExplanationInput!) {
+  payload: deleteTopicExplanation(spaceId: $spaceId, explanationInfo: $explanationInfo) {
+    ...GitCourseFragment
+  }
+}
+
+mutation DeleteTopicSummary($spaceId: String!, $summaryInfo: DeleteTopicSummaryInput!) {
+  payload: deleteTopicSummary(spaceId: $spaceId, summaryInfo: $summaryInfo) {
+    ...GitCourseFragment
+  }
+}
+
+mutation DeleteTopicVideo($spaceId: String!, $videoInfo: DeleteTopicVideoInput!) {
+  payload: deleteTopicVideo(spaceId: $spaceId, videoInfo: $videoInfo) {
+    ...GitCourseFragment
+  }
+}
+
+mutation DeleteTopicQuestion($spaceId: String!, $questionInfo: DeleteTopicQuestionInput!) {
+  payload: deleteTopicQuestion(spaceId: $spaceId, questionInfo: $questionInfo) {
+    ...GitCourseFragment
+  }
+}
+
+mutation MoveTopicExplanation($spaceId: String!, $explanationInfo: MoveTopicExplanationInput!) {
+  payload: moveTopicExplanation(spaceId: $spaceId, explanationInfo: $explanationInfo) {
+    ...GitCourseFragment
+  }
+}
+
+mutation MoveTopicSummary($spaceId: String!, $summaryInfo: MoveTopicSummaryInput!) {
+  payload: moveTopicSummary(spaceId: $spaceId, summaryInfo: $summaryInfo) {
+    ...GitCourseFragment
+  }
+}
+
+mutation MoveTopicVideo($spaceId: String!, $videoInfo: MoveTopicVideoInput!) {
+  payload: moveTopicVideo(spaceId: $spaceId, videoInfo: $videoInfo) {
+    ...GitCourseFragment
+  }
+}
+
+mutation MoveTopicQuestion($spaceId: String!, $questionInfo: MoveTopicQuestionInput!) {
+  payload: moveTopicQuestion(spaceId: $spaceId, questionInfo: $questionInfo) {
+    ...GitCourseFragment
+  }
+}
+
+query RawGitCourse($spaceId: String!, $key: String!) {
+  payload: rawGitCourse(spaceId: $spaceId, key: $key) {
+    key
+    courseJsonUrl
+    courseRepoUrl
+    weight
+  }
+}
+
+query GitCourseSummarized($spaceId: String!, $key: String!) {
+  payload: gitCourseSummarized(spaceId: $spaceId, key: $key) {
+    key
+    title
+    summary
+    details
+    duration
+    courseAdmins
+    topics {
+      title
+      key
+      details
+    }
+  }
+}
+
+query GitCourseQuery($spaceId: String!, $courseKey: String!) {
+  course: gitCourse(spaceId: $spaceId, courseKey: $courseKey) {
+    ...GitCourseFragment
+  }
+}

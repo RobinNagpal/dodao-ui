@@ -1,0 +1,23 @@
+query GitCourseIntegrationsQuery($spaceId: String!, $key: String!) {
+  payload: gitCourseIntegrations(spaceId: $spaceId, key: $key) {
+    discordRoleIds
+    discordRolePassingCount
+    discordWebhook
+    projectGalaxyCredentialId
+    projectGalaxyOatMintUrl
+    projectGalaxyOatPassingCount
+    projectGalaxyOatMintedContent
+  }
+}
+
+mutation UpsertCourseIntegrations($spaceId: String!, $input: UpsertCourseIntegrationsInput!) {
+  payload: upsertCourseIntegrations(spaceId: $spaceId, courseIntegrationInput: $input) {
+    discordRoleIds
+    discordRolePassingCount
+    discordWebhook
+    projectGalaxyCredentialId
+    projectGalaxyOatMintUrl
+    projectGalaxyOatPassingCount
+    projectGalaxyOatMintedContent
+  }
+}

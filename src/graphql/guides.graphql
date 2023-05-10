@@ -1,0 +1,25 @@
+query GuidesQuery(
+  $space: String!
+) {
+  guides(spaceId: $space) {
+    id
+    authors
+    name
+    categories
+    content
+    created
+    guideSource
+    guideType
+    space {
+      id
+      name
+      members
+      avatar
+      symbol
+    }
+    publishStatus
+    socialShareImage
+    thumbnail
+    uuid
+  }
+}

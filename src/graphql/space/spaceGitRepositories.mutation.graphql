@@ -1,0 +1,11 @@
+mutation UpsertSpaceGitGuideRepositories($spaceId: String!, $gitGuideRepositories: [SpaceGitRepositoryInput!]!) {
+  payload: upsertSpaceGitGuideRepositories(spaceId: $spaceId, gitGuideRepositories: $gitGuideRepositories) {
+    id
+  }
+}
+
+mutation UpsertSpaceAcademyRepository($spaceId: String!, $academyRepository: String!) {
+  upsertSpaceAcademyRepository(spaceId: $spaceId, academyRepository: $academyRepository) {
+    id
+  }
+}

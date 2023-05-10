@@ -1,0 +1,8 @@
+mutation UpsertGnosisSafeWallets(
+  $spaceId: String!
+  $wallets: [GnosisSafeWalletInput!]!
+) {
+  payload: upsertGnosisSafeWallets(spaceId: $spaceId, wallets: $wallets) {
+    id
+  }
+}

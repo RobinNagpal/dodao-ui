@@ -1,0 +1,5 @@
+mutation AuthenticateWithUnstoppable($idToken: String!) {
+  payload: authenticateWithUnstoppable(idToken: $idToken) {
+    jwt
+  }
+}

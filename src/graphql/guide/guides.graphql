@@ -1,0 +1,84 @@
+fragment GuideFragment on Guide {
+  authors
+  categories
+  postSubmissionStepContent
+  content
+  created
+  id
+  guideIntegrations {
+    discordRoleIds
+    discordRolePassingCount
+    discordWebhook
+    projectGalaxyCredentialId
+    projectGalaxyOatMintUrl
+    projectGalaxyOatPassingCount
+  }
+  guideSource
+  guideType
+  link
+  name
+  previousId
+  showIncorrectOnCompletion
+  space {
+    id
+    name
+  }
+  steps {
+    content
+    created
+    stepItems {
+      __typename
+      ... on GuideQuestion {
+        answerKeys
+        choices {
+          content
+          key
+          order
+        }
+        content
+        order
+        type
+        uuid
+      }
+
+      ... on GuideUserInput {
+        label
+        order
+        required
+        type
+        uuid
+      }
+
+      ... on UserDiscordConnect {
+        order
+        type
+        uuid
+      }
+    }
+    id
+    name
+    order
+    uuid
+  }
+  publishStatus
+  socialShareImage
+  thumbnail
+  uuid
+  version
+}
+
+mutation UpsertGuide($spaceId: String!, $guideInput: GuideInput!) {
+  payload: upsertGuide(spaceId: $spaceId, guideInput: $guideInput) {
+    ...GuideFragment
+  }
+}
+
+query GuideQuery($spaceId: String!, $uuid: String!) {
+  guide(spaceId: $spaceId, uuid: $uuid) {
+    ...GuideFragment
+  }
+}
+
+mutation RefreshGitGuides($spaceId: String!) {
+  payload: refreshGitGuides(spaceId: $spaceId)
+}

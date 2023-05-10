@@ -1,0 +1,15 @@
+overwrite: true
+schema: 'src/schema.graphql'
+documents: 'src/graphql/**/*.graphql'
+generates:
+  src/graphql/generated/generated-types.ts:
+    plugins:
+      - 'typescript'
+      - 'typescript-operations'
+      - 'typescript-react-apollo'
+    config:
+      withHooks: true
+      withMutationFn: true
+      withRefetchFn: true
+      withResultType: true
+      addDocBlocks: true

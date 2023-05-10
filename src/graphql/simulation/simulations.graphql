@@ -1,0 +1,44 @@
+fragment SimulationDetailsFragment on Simulation {
+  postSubmissionStepContent
+  content
+  created
+  id
+  name
+  publishStatus
+  admins
+  tags
+  priority
+  steps {
+    content
+    iframeUrl
+    name
+    uuid
+    order
+  }
+}
+
+query Simulations($spaceId: String!) {
+  simulations(spaceId: $spaceId) {
+    postSubmissionStepContent
+    content
+    created
+    id
+    name
+    publishStatus
+    admins
+    tags
+    priority
+  }
+}
+
+query SimulationDetails($spaceId: String!, $simulationId: String!) {
+  simulation(spaceId: $spaceId, simulationId: $simulationId) {
+    ...SimulationDetailsFragment
+  }
+}
+
+mutation UpsertSimulation($spaceId: String!, $input: UpsertSimulationInput!) {
+  payload: upsertSimulation(spaceId: $spaceId, input: $input) {
+    ...SimulationDetailsFragment
+  }
+}

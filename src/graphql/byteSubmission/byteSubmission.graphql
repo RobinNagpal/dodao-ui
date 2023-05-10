@@ -1,0 +1,9 @@
+mutation SubmitByte($input: ByteSubmissionInput!) {
+  submitByte(submissionInput: $input) {
+    id
+    created
+    createdBy
+    byteId
+    spaceId
+  }
+}

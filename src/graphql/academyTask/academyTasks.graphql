@@ -1,0 +1,72 @@
+fragment AcademyTaskFragment on AcademyTask {
+  uuid
+  createdAt
+  createdBy
+  excerpt
+  prerequisiteCourses {
+    uuid
+    key
+    title
+    thumbnail
+  }
+  prerequisiteGuides {
+    uuid
+    name
+    content
+    thumbnail
+    guideType
+  }
+  spaceId
+  status
+  details
+  title
+  items {
+    __typename
+    ... on GuideQuestion {
+      answerKeys
+      choices {
+        content
+        key
+        order
+      }
+      content
+      order
+      type
+      uuid
+    }
+
+    ... on GuideUserInput {
+      label
+      order
+      required
+      type
+      uuid
+    }
+
+    ... on UserDiscordConnect {
+      order
+      type
+      uuid
+    }
+  }
+  updatedAt
+  updatedBy
+}
+
+query AcademyTasks($spaceId: String!, $status: String) {
+  academyTasks(spaceId: $spaceId, status: $status) {
+    ...AcademyTaskFragment
+  }
+}
+
+query AcademyTask($uuid: String!) {
+  academyTask(uuid: $uuid) {
+    ...AcademyTaskFragment
+  }
+}
+
+mutation UpsertAcademyTask($spaceId: String!, $task: UpsertAcademyTaskInput!) {
+  upsertAcademyTask(spaceId: $spaceId, task: $task) {
+    ...AcademyTaskFragment
+  }
+}

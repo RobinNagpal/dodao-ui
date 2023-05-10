@@ -1,3 +1,4 @@
+import { getLinkToFeaturePage } from '@/components/main/getLinkToFeaturePage';
 import { useI18 } from '@/hooks/useI18';
 import { SpaceModel } from '@/types/deprecated/models/SpaceModel';
 import { FeatureItem, FeatureName } from '@/types/spaceFeatures';
@@ -23,31 +24,10 @@ function Card({ space, heading, details, featureName }: { space: SpaceModel; hea
 }
 function HomeIcon({ space, feature }: HomeIconProps) {
   const { $t } = useI18();
-  const getLinkHref = (featureName: FeatureName): string => {
-    if (featureName === FeatureName.Guides) {
-      return '/guides';
-    }
-
-    if (featureName === FeatureName.Courses) {
-      return '/courses';
-    }
-
-    if (featureName === FeatureName.Bytes) {
-      return '/bytes';
-    }
-
-    if (featureName === FeatureName.Timelines) {
-      return '/timelines';
-    }
-
-    if (featureName === FeatureName.Simulations) {
-      return '/simulations';
-    } else throw Error('Invalid feature name', featureName);
-  };
 
   return (
     <Link
-      href={getLinkHref(feature.featureName)}
+      href={getLinkToFeaturePage(feature.featureName)}
       className="border border-gray-200 rounded-xl shadow-md transform hover:scale-105 transition duration-300 ease-in-out max-w-md overflow-hidden"
     >
       {feature.featureName === FeatureName.Courses && (
