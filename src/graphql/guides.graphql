@@ -13,9 +13,7 @@ query GuidesQuery(
     space {
       id
       name
-      members
       avatar
-      symbol
     }
     publishStatus
     socialShareImage

@@ -10,6 +10,9 @@ const nextConfig = {
   images: {
     domains: ['api.multiavatar.com', 'tailwindui.com', 'd31h13bdjwgzxs.cloudfront.net'],
   },
+  env: {
+    V2_API_SERVER_URL: process.env.V2_API_SERVER_URL,
+  },
 };
 
 module.exports = nextConfig;

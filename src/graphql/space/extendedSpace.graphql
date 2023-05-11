@@ -1,38 +1,17 @@
 fragment SpaceWithIntegrations on Space {
   id
-  about
-  blogSite
   creator
   features
-  mission
   name
-  network
-  symbol
-  network
-  terms
   skin
   avatar
-  twitter
-  github
-  guidesPageFooterContent
-  guidesPageHeaderContent
-  guidesBundlePageFooterContent
-  guidesBundlePageHeaderContent
   inviteLinks {
     discordInviteLink
     showAnimatedButtonForDiscord
     telegramInviteLink
     showAnimatedButtonForTelegram
   }
-  private
-  publicForumWebsite
-  referenceDocsWebsite
-  domain
   admins
-  filters {
-    minScore
-    onlyMembers
-  }
   spaceIntegrations {
     academyRepository
     discordGuildId

@@ -779,40 +779,17 @@ input SimulationStepInput {
 }
 
 type Space {
-  about: String
   admins: [String!]!
   avatar: String
-  blogSite: String
-  categories: [String]
   creator: String!
   discordInvite: String
-  domain: String
-  email: String
   features: [String!]!
-  filters: SpaceFilters
-  github: String
-  guidesBundlePageFooterContent: String
-  guidesBundlePageHeaderContent: String
-  guidesPageFooterContent: String
-  guidesPageHeaderContent: String
   id: String!
   inviteLinks: SpaceInviteLinks
-  location: String
-  members: [String!]!
-  mission: String!
   name: String
-  network: String
-  plugins: Any
-  private: Boolean
-  publicForumWebsite: String
-  referenceDocsWebsite: String
   skin: String!
   spaceIntegrations: SpaceIntegrations
-  symbol: String
   telegramInvite: String
-  terms: String
-  twitter: String
-  website: String
 }
 
 type SpaceFilters {

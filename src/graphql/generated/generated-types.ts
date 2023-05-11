@@ -1216,40 +1216,17 @@ export interface SimulationStepInput {
 
 export interface Space {
   __typename?: 'Space';
-  about?: Maybe<Scalars['String']>;
   admins: Array<Scalars['String']>;
   avatar?: Maybe<Scalars['String']>;
-  blogSite?: Maybe<Scalars['String']>;
-  categories?: Maybe<Array<Maybe<Scalars['String']>>>;
   creator: Scalars['String'];
   discordInvite?: Maybe<Scalars['String']>;
-  domain?: Maybe<Scalars['String']>;
-  email?: Maybe<Scalars['String']>;
   features: Array<Scalars['String']>;
-  filters?: Maybe<SpaceFilters>;
-  github?: Maybe<Scalars['String']>;
-  guidesBundlePageFooterContent?: Maybe<Scalars['String']>;
-  guidesBundlePageHeaderContent?: Maybe<Scalars['String']>;
-  guidesPageFooterContent?: Maybe<Scalars['String']>;
-  guidesPageHeaderContent?: Maybe<Scalars['String']>;
   id: Scalars['String'];
   inviteLinks?: Maybe<SpaceInviteLinks>;
-  location?: Maybe<Scalars['String']>;
-  members: Array<Scalars['String']>;
-  mission: Scalars['String'];
   name?: Maybe<Scalars['String']>;
-  network?: Maybe<Scalars['String']>;
-  plugins?: Maybe<Scalars['Any']>;
-  private?: Maybe<Scalars['Boolean']>;
-  publicForumWebsite?: Maybe<Scalars['String']>;
-  referenceDocsWebsite?: Maybe<Scalars['String']>;
   skin: Scalars['String'];
   spaceIntegrations?: Maybe<SpaceIntegrations>;
-  symbol?: Maybe<Scalars['String']>;
   telegramInvite?: Maybe<Scalars['String']>;
-  terms?: Maybe<Scalars['String']>;
-  twitter?: Maybe<Scalars['String']>;
-  website?: Maybe<Scalars['String']>;
 }
 
 export interface SpaceFilters {
@@ -1925,7 +1902,7 @@ export type GuidesQueryQueryVariables = Exact<{
 }>;
 
 
-export type GuidesQueryQuery = { __typename?: 'Query', guides?: Array<{ __typename?: 'Guide', id: string, authors: Array<string>, name: string, categories: Array<string>, content: string, created: number, guideSource: string, guideType: string, publishStatus: string, socialShareImage?: string | null, thumbnail?: string | null, uuid: string, space: { __typename?: 'Space', id: string, name?: string | null, members: Array<string>, avatar?: string | null, symbol?: string | null } }> | null };
+export type GuidesQueryQuery = { __typename?: 'Query', guides?: Array<{ __typename?: 'Guide', id: string, authors: Array<string>, name: string, categories: Array<string>, content: string, created: number, guideSource: string, guideType: string, publishStatus: string, socialShareImage?: string | null, thumbnail?: string | null, uuid: string, space: { __typename?: 'Space', id: string, name?: string | null, avatar?: string | null } }> | null };
 
 export type SimulationsQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -1955,14 +1932,14 @@ export type ExtendedSpaceQueryVariables = Exact<{
 }>;
 
 
-export type ExtendedSpaceQuery = { __typename?: 'Query', space?: { __typename?: 'Space', id: string, about?: string | null, blogSite?: string | null, creator: string, features: Array<string>, mission: string, name?: string | null, network?: string | null, symbol?: string | null, terms?: string | null, skin: string, avatar?: string | null, twitter?: string | null, github?: string | null, guidesPageFooterContent?: string | null, guidesPageHeaderContent?: string | null, guidesBundlePageFooterContent?: string | null, guidesBundlePageHeaderContent?: string | null, private?: boolean | null, publicForumWebsite?: string | null, referenceDocsWebsite?: string | null, domain?: string | null, admins: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, filters?: { __typename?: 'SpaceFilters', minScore?: number | null, onlyMembers?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null } | null };
+export type ExtendedSpaceQuery = { __typename?: 'Query', space?: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name?: string | null, skin: string, avatar?: string | null, admins: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null } | null };
 
 export type ExtendedSpaceByDomainQueryVariables = Exact<{
   domain: Scalars['String'];
 }>;
 
 
-export type ExtendedSpaceByDomainQuery = { __typename?: 'Query', space?: { __typename?: 'Space', id: string, about?: string | null, blogSite?: string | null, creator: string, features: Array<string>, mission: string, name?: string | null, network?: string | null, symbol?: string | null, terms?: string | null, skin: string, avatar?: string | null, twitter?: string | null, github?: string | null, guidesPageFooterContent?: string | null, guidesPageHeaderContent?: string | null, guidesBundlePageFooterContent?: string | null, guidesBundlePageHeaderContent?: string | null, private?: boolean | null, publicForumWebsite?: string | null, referenceDocsWebsite?: string | null, domain?: string | null, admins: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, filters?: { __typename?: 'SpaceFilters', minScore?: number | null, onlyMembers?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null } | null };
+export type ExtendedSpaceByDomainQuery = { __typename?: 'Query', space?: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name?: string | null, skin: string, avatar?: string | null, admins: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null } | null };
 
 export type SpaceDiscordGuildQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -1977,7 +1954,7 @@ export type UpsertSpaceFeaturesMutationVariables = Exact<{
 }>;
 
 
-export type UpsertSpaceFeaturesMutation = { __typename?: 'Mutation', payload: { __typename?: 'Space', id: string, about?: string | null, blogSite?: string | null, creator: string, features: Array<string>, mission: string, name?: string | null, network?: string | null, symbol?: string | null, terms?: string | null, skin: string, avatar?: string | null, twitter?: string | null, github?: string | null, guidesPageFooterContent?: string | null, guidesPageHeaderContent?: string | null, guidesBundlePageFooterContent?: string | null, guidesBundlePageHeaderContent?: string | null, private?: boolean | null, publicForumWebsite?: string | null, referenceDocsWebsite?: string | null, domain?: string | null, admins: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, filters?: { __typename?: 'SpaceFilters', minScore?: number | null, onlyMembers?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null } };
+export type UpsertSpaceFeaturesMutation = { __typename?: 'Mutation', payload: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name?: string | null, skin: string, avatar?: string | null, admins: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null } };
 
 export type UpsertSpaceInviteLinksMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -2380,39 +2357,18 @@ export const SimulationDetailsFragmentFragmentDoc = gql`
 export const SpaceWithIntegrationsFragmentDoc = gql`
     fragment SpaceWithIntegrations on Space {
   id
-  about
-  blogSite
   creator
   features
-  mission
   name
-  network
-  symbol
-  network
-  terms
   skin
   avatar
-  twitter
-  github
-  guidesPageFooterContent
-  guidesPageHeaderContent
-  guidesBundlePageFooterContent
-  guidesBundlePageHeaderContent
   inviteLinks {
     discordInviteLink
     showAnimatedButtonForDiscord
     telegramInviteLink
     showAnimatedButtonForTelegram
   }
-  private
-  publicForumWebsite
-  referenceDocsWebsite
-  domain
   admins
-  filters {
-    minScore
-    onlyMembers
-  }
   spaceIntegrations {
     academyRepository
     discordGuildId
@@ -2436,26 +2392,11 @@ export const SpaceWithIntegrationsFragmentDoc = gql`
 export const SpaceFragmentFragmentDoc = gql`
     fragment SpaceFragment on Space {
   id
-  about
   admins
   avatar
-  categories
   creator
-  domain
-  github
-  location
-  members
-  mission
   name
-  plugins
-  private
-  symbol
   skin
-  terms
-  twitter
-  website
-  email
-  network
 }
     `;
 export const TimelineDetailsFragmentFragmentDoc = gql`
@@ -4371,9 +4312,7 @@ export const GuidesQueryDocument = gql`
     space {
       id
       name
-      members
       avatar
-      symbol
     }
     publishStatus
     socialShareImage
