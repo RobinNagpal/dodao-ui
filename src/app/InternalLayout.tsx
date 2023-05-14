@@ -7,9 +7,9 @@ import AaveTheme from '@/components/themes/AaveTheme';
 import CompoundTheme from '@/components/themes/CompoundTheme';
 import GlobalTheme from '@/components/themes/GlobalTheme';
 import UniswapTheme from '@/components/themes/UniswapTheme';
-import { LoginModalProvider } from '@/context/LoginModalContext';
-import { SpaceProvider, useSpace } from '@/context/SpaceContext';
-import Web3ReactProviderWrapper from '@/context/Web3ReactContext';
+import { LoginModalProvider } from '@/contexts/LoginModalContext';
+import { SpaceProvider, useSpace } from '@/contexts/SpaceContext';
+import Web3ReactProviderWrapper from '@/contexts/Web3ReactContext';
 import { useExtendedSpaceByDomainQuery } from '@/graphql/generated/generated-types';
 import client from '@/utils/apolloClient';
 import { ApolloProvider } from '@apollo/client';
@@ -18,6 +18,9 @@ import { SessionProvider } from 'next-auth/react';
 import { useEffect } from 'react';
 import styled from 'styled-components';
 import './globals.css';
+
+import { NotificationProvider, useNotificationContext } from '@/contexts/NotificationContext';
+import Notification from '@/components/core/notify/Notification';
 
 // Based on - https://tailwindui.com/components/application-ui/page-examples/home-screens
 
@@ -45,6 +48,25 @@ function ThemeComponent() {
   );
 }
 
+const NotificationWrapper = () => {
+  const { notification, hideNotification } = useNotificationContext();
+
+  if (!notification) return null;
+
+  const key = `${notification.heading}_${notification.type}_${notification.duration}_${Date.now()}`;
+
+  return (
+    <Notification
+      key={key}
+      type={notification.type}
+      duration={notification.duration}
+      heading={notification.heading}
+      message={notification.message}
+      onClose={hideNotification}
+    />
+  );
+};
+
 const StyledMain = styled.main`
   background-color: var(--bg-color);
   color: var(--text-color);
@@ -70,20 +92,23 @@ function ChildLayout({ children, session }: InternalLayoutProps) {
   return (
     <Web3ReactProviderWrapper>
       <ApolloProvider client={client}>
-        <SessionProvider session={session}>
-          <ThemeComponent />
-          {data?.space ? (
-            <LoginModalProvider>
-              <LoginModal />
-              <TopNav />
-              <StyledMain className="h-max">
-                <MainContainer>{children}</MainContainer>
-              </StyledMain>
-            </LoginModalProvider>
-          ) : (
-            <FullPageLoader />
-          )}
-        </SessionProvider>
+        <NotificationProvider>
+          <SessionProvider session={session}>
+            <ThemeComponent />
+            {data?.space ? (
+              <LoginModalProvider>
+                <LoginModal />
+                <TopNav />
+                <StyledMain className="h-max">
+                  <MainContainer>{children}</MainContainer>
+                </StyledMain>
+              </LoginModalProvider>
+            ) : (
+              <FullPageLoader />
+            )}
+          </SessionProvider>
+          <NotificationWrapper />
+        </NotificationProvider>
       </ApolloProvider>
     </Web3ReactProviderWrapper>
   );

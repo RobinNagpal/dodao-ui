@@ -3,14 +3,15 @@ import { DesktopNavLink } from '@/components/main/TopNav/DesktopNavLink';
 import { DesktopProfileMenu } from '@/components/main/TopNav/DesktopProfileMenu';
 import { MobileNavLink } from '@/components/main/TopNav/MobileNavLink';
 import { MobileProfileMenu } from '@/components/main/TopNav/MobileProfileMenu';
-import { useLoginModalContext } from '@/context/LoginModalContext';
-import { useSpace } from '@/context/SpaceContext';
+import { useLoginModalContext } from '@/contexts/LoginModalContext';
+import { useSpace } from '@/contexts/SpaceContext';
 import { Session } from '@/types/Session';
 import { Disclosure } from '@headlessui/react';
 import PlusIcon from '@heroicons/react/20/solid/PlusIcon';
 import Bars3Icon from '@heroicons/react/24/outline/Bars3Icon';
 import XMarkIcon from '@heroicons/react/24/outline/XMarkIcon';
 import { useSession } from 'next-auth/react';
+import Link from 'next/link';
 import styled from 'styled-components';
 import Image from 'next/image';
 
@@ -50,13 +51,29 @@ export default function TopNav() {
                     </Disclosure.Button>
                   </div>
                   <div className="flex flex-shrink-0 items-center">
-                    <Image className="block h-8 w-auto lg:hidden" src={'https://tailwindui.com/img/logos/mark.svg'} alt="Your Company" width={50} height={50} />
-                    <Image className="hidden h-8 w-auto lg:block" src={'https://tailwindui.com/img/logos/mark.svg'} alt="Your Company" width={50} height={50} />
+                    <Link href="/">
+                      <Image
+                        className="block h-8 w-auto lg:hidden"
+                        src={space?.avatar || 'https://tailwindui.com/img/logos/mark.svg'}
+                        alt="Your Company"
+                        width={50}
+                        height={50}
+                      />
+                    </Link>
+                    <Link href="/">
+                      <Image
+                        className="hidden h-8 w-auto lg:block"
+                        src={space?.avatar || 'https://tailwindui.com/img/logos/mark.svg'}
+                        alt="Your Company"
+                        width={50}
+                        height={50}
+                      />
+                    </Link>
                   </div>
                   <div className="hidden md:ml-6 md:flex md:space-x-8">
                     <DesktopNavLink href="/" label="Home" />
                     <DesktopNavLink href="/guides" label="Guides" />
-                    <DesktopNavLink href="/bytes" label="Bytes" />
+                    <DesktopNavLink href="/tidbits" label="Tidbits" />
                     <DesktopNavLink href="/courses" label="Courses" />
                     <DesktopNavLink href="/simulations" label="Simulations" />
                     <DesktopNavLink href="/timelines" label="Timelines" />
@@ -89,7 +106,7 @@ export default function TopNav() {
               <div className="space-y-1 pb-3 pt-2">
                 <MobileNavLink href="/" label="Home" />
                 <MobileNavLink href="/guides" label="Guides" />
-                <MobileNavLink href="/bytes" label="Bytes" />
+                <MobileNavLink href="/tidbits" label="Tidbits" />
                 <MobileNavLink href="/courses" label="Courses" />
                 <MobileNavLink href="/simulations" label="Simulations" />
                 <MobileNavLink href="/timelines" label="Timelines" />

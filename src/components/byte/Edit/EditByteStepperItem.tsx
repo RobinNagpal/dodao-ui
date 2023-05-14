@@ -1,0 +1,408 @@
+import IconButton from '@/components/app/Button/IconButton';
+import CreateConnectDiscord from '@/components/app/Common/CreateDiscordConnect';
+import CreateQuestion from '@/components/app/Common/CreateQuestion';
+import CreateUserInput from '@/components/app/Common/CreateUserInput';
+import { IconTypes } from '@/components/app/Icons/IconTypes';
+import MarkdownEditor from '@/components/app/MarkdownEditor';
+import AddStepItemModal from '@/components/app/Modal/AddStepItemModal';
+import { EditByteStep, EditByteType } from '@/components/byte/Edit/useEditByte';
+import { ByteQuestionFragment, ByteUserInputFragment, SpaceWithIntegrationsFragment, StepItemInputGenericInput } from '@/graphql/generated/generated-types';
+import { InputType, QuestionType, UserDiscordConnectType } from '@/types/deprecated/models/enums';
+import { ByteErrors } from '@/types/errors/byteErrors';
+import { QuestionError, StepError } from '@/types/errors/error';
+import isEqual from 'lodash/isEqual';
+import { useState } from 'react';
+import styled from 'styled-components';
+import { v4 as uuidv4 } from 'uuid';
+
+const BorderContainer = styled.div<{ error: boolean }>`
+  border: ${(props) => (props.error ? '1px solid red' : '1px solid #e5e7eb')};
+  border-radius: 0.375rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+  width: 100%;
+`;
+
+interface EditByteStepperItemProps {
+  space: SpaceWithIntegrationsFragment;
+  byte: EditByteType;
+  byteErrors?: ByteErrors;
+  step: EditByteStep;
+  stepErrors?: StepError;
+  byteHasDiscordEnabled: boolean;
+  moveStepUp: (uuid: string) => void;
+  moveStepDown: (uuid: string) => void;
+  removeStep: (uuid: string) => void;
+  updateStep: (step: EditByteStep) => void;
+}
+
+export default function EditByteStepperItem({
+  space,
+  byte,
+  byteErrors,
+  step,
+  stepErrors,
+  byteHasDiscordEnabled,
+  moveStepUp,
+  moveStepDown,
+  removeStep,
+  updateStep,
+}: EditByteStepperItemProps) {
+  const [modalByteInputOrQuestionOpen, setModalByteInputOrQuestionOpen] = useState(false);
+
+  const inputError = (field: string) => {
+    return stepErrors?.stepItems?.[field];
+  };
+
+  const updateStepName = (name: string) => {
+    updateStep({ ...step, name });
+  };
+
+  const updateStepContent = (content: string) => {
+    updateStep({ ...step, content });
+  };
+
+  const updateQuestionDescription = (questionId: string, content: string) => {
+    const stepItems = step.stepItems.map((question) => {
+      if (question.uuid === questionId) {
+        return {
+          ...question,
+          content,
+        };
+      } else {
+        return question;
+      }
+    });
+
+    updateStep({ ...step, stepItems });
+  };
+
+  function updateChoiceContent(questionId: string, choiceKey: string, content: string) {
+    const stepItems = step.stepItems.map((question) => {
+      if (question.uuid === questionId) {
+        const choices = (question as ByteQuestionFragment).choices.map((choice) => {
+          if (choice.key === choiceKey) {
+            return { ...choice, content };
+          } else {
+            return choice;
+          }
+        });
+        return {
+          ...question,
+          choices,
+        };
+      } else {
+        return question;
+      }
+    });
+
+    updateStep({ ...step, stepItems });
+  }
+
+  const stepItemsForStepper = [
+    ...step.stepItems.map(
+      (
+        q: StepItemInputGenericInput,
+        index: number
+      ): StepItemInputGenericInput & {
+        isQuestion: boolean;
+        isDiscord: boolean;
+        order: number;
+      } => ({
+        ...q,
+        isQuestion: q.type === QuestionType.MultipleChoice || q.type === QuestionType.SingleChoice,
+        isDiscord: q.type === UserDiscordConnectType,
+        order: q.order || index,
+      })
+    ),
+  ];
+
+  function newChoiceKey() {
+    return uuidv4().split('-')[0];
+  }
+
+  function addChoice(questionId: string) {
+    const key = newChoiceKey();
+    const stepItems = step.stepItems.map((question) => {
+      if (question.uuid === questionId) {
+        const choices = [...(question as ByteQuestionFragment).choices, { key, content: '' }];
+        return {
+          ...question,
+          choices: choices.map((choice, index) => ({ ...choice, order: index })),
+        };
+      } else {
+        return question;
+      }
+    });
+    updateStep({ ...step, stepItems });
+  }
+
+  function updateQuestionType(questionId: string, type: QuestionType) {
+    const stepItems = step.stepItems.map((question): StepItemInputGenericInput => {
+      if (question.uuid === questionId) {
+        return {
+          ...question,
+          answerKeys: [],
+          type,
+        };
+      } else {
+        return question;
+      }
+    });
+    updateStep({ ...step, stepItems });
+  }
+
+  function updateExplanation(questionId: string, explanation: string) {
+    const stepItems = step.stepItems.map((question) => {
+      if (question.uuid === questionId) {
+        return {
+          ...question,
+          explanation: explanation,
+        };
+      } else {
+        return question;
+      }
+    });
+    updateStep({ ...step, stepItems });
+  }
+
+  function removeChoice(questionId: string, choiceKey: string) {
+    const stepItems = step.stepItems.map((question) => {
+      if (question.uuid === questionId) {
+        return {
+          ...question,
+          choices: (question as ByteQuestionFragment).choices.filter((choice) => choice.key !== choiceKey),
+        };
+      } else {
+        return question;
+      }
+    });
+
+    updateStep({ ...step, stepItems });
+  }
+
+  function removeStepItem(itemUuid: string) {
+    const filteredQuestions = step.stepItems.filter((stepItem: { uuid: string }) => stepItem.uuid !== itemUuid);
+
+    const itemsWithIndex: ByteQuestionFragment[] = filteredQuestions.map((question, index) => ({
+      ...question,
+      order: index,
+    })) as ByteQuestionFragment[];
+
+    updateStep({ ...step, stepItems: itemsWithIndex });
+  }
+
+  function updateUserInputLabel(itemUuid: string, label: string) {
+    const stepItems = step.stepItems.map((userInput) => {
+      if (userInput.uuid === itemUuid) {
+        return {
+          ...userInput,
+          label,
+        };
+      } else {
+        return userInput;
+      }
+    });
+
+    updateStep({ ...step, stepItems });
+  }
+
+  function updateUserInputPrivate(itemUuid: string, isPrivate: boolean) {
+    const stepItems = step.stepItems.map((stepItem) => {
+      if (stepItem.uuid === itemUuid) {
+        return {
+          ...stepItem,
+          type: isPrivate ? InputType.PrivateShortInput : InputType.PublicShortInput,
+        };
+      } else {
+        return stepItem;
+      }
+    });
+    updateStep({ ...step, stepItems });
+  }
+  function updateUserInputRequired(itemUuid: string, isRequired: boolean) {
+    const stepItems = step.stepItems.map((stepItem) => {
+      if (stepItem.uuid === itemUuid) {
+        return {
+          ...stepItem,
+          required: isRequired,
+        };
+      } else {
+        return stepItem;
+      }
+    });
+    updateStep({ ...step, stepItems });
+  }
+
+  function updateAnswers(questionId: string, choiceKey: string, selected: boolean) {
+    const stepItems = step.stepItems.map((question) => {
+      if (question.uuid === questionId) {
+        const existingAnswerKeys = (question as ByteQuestionFragment).answerKeys;
+        const answerKeys = selected ? [...existingAnswerKeys, choiceKey] : existingAnswerKeys.filter((answer) => answer !== choiceKey);
+        return {
+          ...question,
+          answerKeys,
+        };
+      } else {
+        return question;
+      }
+    });
+    updateStep({ ...step, stepItems });
+  }
+
+  function setAnswer(questionId: string, choiceKey: string) {
+    const stepItems = step.stepItems.map((question) => {
+      if (question.uuid === questionId) {
+        const answerKeys = isEqual((question as ByteQuestionFragment).answerKeys, [choiceKey]) ? [] : [choiceKey];
+        return {
+          ...question,
+          answerKeys,
+        };
+      } else {
+        return question;
+      }
+    });
+    updateStep({ ...step, stepItems });
+  }
+
+  function addQuestion(type: QuestionType) {
+    const question = {
+      uuid: uuidv4(),
+      content: '',
+      choices: [
+        {
+          key: newChoiceKey(),
+          content: '',
+          order: 0,
+        },
+        {
+          key: newChoiceKey(),
+          content: '',
+          order: 1,
+        },
+      ],
+      answerKeys: [],
+      order: step.stepItems.length,
+      type: type,
+    };
+    const stepItems = [...(step.stepItems || []), question];
+    updateStep({ ...step, stepItems });
+  }
+
+  function addInput(type: InputType) {
+    const input: ByteUserInputFragment = {
+      uuid: uuidv4(),
+      label: 'Label',
+      order: step.stepItems.length,
+      type: type,
+      required: false,
+    };
+    const inputs = [...(step.stepItems || []), input];
+    updateStep({ ...step, stepItems: inputs });
+  }
+
+  function addDiscord() {
+    const discord = {
+      uuid: uuidv4(),
+      order: step.stepItems.length,
+      type: UserDiscordConnectType,
+    };
+    const stepItems = [...(step.stepItems || []), discord];
+    updateStep({ ...step, stepItems });
+  }
+
+  return (
+    <div className="w-full">
+      <div className={`border rounded rounded-md p-4 mb-4 ml-4 w-full ${byteErrors?.steps?.[step.uuid] ? 'error-event-border' : ''}`}>
+        <h3 className="float-left">Step {step.order + 1}</h3>
+        <div className="h-10" style={{ minHeight: '40px' }}>
+          <IconButton
+            className="float-right ml-2"
+            iconName={IconTypes.Trash}
+            removeBorder
+            disabled={byte.steps.length === 1}
+            onClick={() => removeStep(step.uuid)}
+          />
+          <IconButton className="float-right ml-2" iconName={IconTypes.MoveUp} removeBorder disabled={step.order === 0} onClick={() => moveStepUp(step.uuid)} />
+          <IconButton
+            className="float-right ml-2"
+            iconName={IconTypes.MoveDown}
+            removeBorder
+            disabled={step.order + 1 === byte.steps.length}
+            onClick={() => moveStepDown(step.uuid)}
+          />
+          <IconButton
+            className="float-right ml-2"
+            iconName={IconTypes.GuideAddIcon}
+            disabled={step.stepItems.length >= 1}
+            removeBorder
+            onClick={() => setModalByteInputOrQuestionOpen(true)}
+          />
+        </div>
+        <MarkdownEditor
+          id={step.uuid}
+          modelValue={step.content}
+          placeholder={'Contents'}
+          onUpdateModelValue={updateStepContent}
+          spaceId={space.id}
+          objectId={byte.id || 'unknown_byte_id'}
+          imageType="Byte"
+          editorStyles={{ height: '200px' }}
+        />
+      </div>
+      {stepItemsForStepper.map((stepItem, index) => (
+        <div key={stepItem.uuid} className="border rounded rounded-md p-4 mb-4 ml-4 w-full">
+          {stepItem.isQuestion ? (
+            <>
+              <CreateQuestion
+                addChoice={addChoice}
+                item={stepItem}
+                removeChoice={removeChoice}
+                removeQuestion={removeStepItem}
+                setAnswer={setAnswer}
+                updateChoiceContent={updateChoiceContent}
+                updateQuestionDescription={updateQuestionDescription}
+                updateAnswers={updateAnswers}
+                questionErrors={stepErrors?.stepItems?.[stepItem.order] as QuestionError}
+                updateQuestionType={updateQuestionType}
+              />
+              <MarkdownEditor
+                id={`${stepItem.uuid}_explanation`}
+                modelValue={stepItem.explanation || ''}
+                placeholder="Explanation (2-3 lines)"
+                editorStyles={{ height: '150px' }}
+                error={!!stepErrors?.stepItems?.[stepItem.order]}
+                onUpdateModelValue={(content) => updateExplanation(stepItem.uuid, content)}
+                spaceId={space.id}
+                objectId={`${byte.id}/${stepItem.uuid}`}
+                imageType="Byte"
+              />
+            </>
+          ) : stepItem.isDiscord ? (
+            <CreateConnectDiscord item={stepItem} removeDiscord={removeStepItem} />
+          ) : (
+            <CreateUserInput
+              removeUserInput={removeStepItem}
+              item={{ ...stepItem, order: index }}
+              userInputErrors={stepErrors?.stepItems?.[stepItem.order]}
+              updateUserInputLabel={updateUserInputLabel}
+              updateUserInputPrivate={updateUserInputPrivate}
+              updateUserInputRequired={updateUserInputRequired}
+            />
+          )}
+        </div>
+      ))}
+      {modalByteInputOrQuestionOpen && (
+        <AddStepItemModal
+          open={modalByteInputOrQuestionOpen}
+          hasDiscordEnabled={byteHasDiscordEnabled}
+          onClose={() => setModalByteInputOrQuestionOpen(false)}
+          onAddQuestion={addQuestion}
+          onAddInput={addInput}
+          onAddDiscord={addDiscord}
+        />
+      )}
+    </div>
+  );
+}

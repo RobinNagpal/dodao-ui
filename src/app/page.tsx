@@ -1,7 +1,7 @@
 'use client';
 
 import HomeIcon from '@/components/main/HomeIcon';
-import { useSpace } from '@/context/SpaceContext';
+import { useSpace } from '@/contexts/SpaceContext';
 import { useI18 } from '@/hooks/useI18';
 import { SpaceModel } from '@/types/deprecated/models/SpaceModel';
 import { FeatureItem } from '@/types/spaceFeatures';
@@ -44,14 +44,12 @@ export default function Home() {
   return (
     <div>
       <div className="pt-[150px]">
-        <div className="flex justify-center mt-8">
+        <div className="flex justify-between mt-8 mx-16">
           <div className="flex flex-col justify-center pr-[48px] max-w-md">
-            <h1 dangerouslySetInnerHTML={{ __html: $t(`academy.${space.id}.academyHeading`) }} />
+            <h1 dangerouslySetInnerHTML={{ __html: $t(`academy.${space.id}.academyHeading`) }} className="text-4xl" />
             <div className="pt-2" dangerouslySetInnerHTML={{ __html: $t(`academy.${space.id}.academyText`) }} />
           </div>
-          <div className="flex center-content align-center">
-            <Lottie animationData={DeveloperLottie} loop={true} />
-          </div>
+          <Lottie animationData={DeveloperLottie} loop={true} />
         </div>
       </div>
       <div className="pt-[150px] grid grid-cols-1 md:grid-cols-2 gap-4 p-4">

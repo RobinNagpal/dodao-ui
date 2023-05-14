@@ -10,7 +10,7 @@ export const getLinkToFeaturePage = (featureName: FeatureName): string => {
   }
 
   if (featureName === FeatureName.Bytes) {
-    return '/bytes';
+    return '/tidbits';
   }
 
   if (featureName === FeatureName.Timelines) {

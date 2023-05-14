@@ -1,0 +1,259 @@
+import {
+  ByteDetailsFragment,
+  ByteQuestionFragment,
+  ByteStepFragment,
+  ByteStepItemFragment,
+  ByteUserDiscordConnectFragment,
+  ByteUserInputFragment,
+  SpaceWithIntegrationsFragment,
+  UserDiscordInfoInput,
+} from '@/graphql/generated/generated-types';
+import { useI18 } from '@/hooks/useI18';
+import useNotification from '@/hooks/useNotification';
+import { useSession } from 'next-auth/react';
+import { LAST_STEP_UUID } from './useViewByte';
+import { getMarkedRenderer } from '@/utils/ui/getMarkedRenderer';
+import ByteStepperItemWarnings from '@/components/byte/View/ByteStepperItemWarnings';
+import { QuestionSection } from '@/components/byte/View/QuestionSection';
+import { UseViewByteHelper } from '@/components/byte/View/useViewByte';
+import Button from '@/components/app/Button';
+import UserDiscord from '@/components/app/Form/UserDiscord';
+import UserInput from '@/components/app/Form/UserInput';
+import CircleProgress from '@/components/app/Progress/CircleProgress';
+import { isQuestion, isUserDiscordConnect, isUserInput } from '@/types/deprecated/helpers/stepItemTypes';
+import { round } from 'lodash';
+import isEqual from 'lodash/isEqual';
+import { marked } from 'marked';
+import 'prismjs';
+import 'prismjs/components/prism-css';
+import 'prismjs/components/prism-javascript';
+import 'prismjs/components/prism-json';
+import 'prismjs/components/prism-markup-templating';
+import 'prismjs/components/prism-rust';
+import 'prismjs/components/prism-solidity';
+import 'prismjs/components/prism-toml';
+import 'prismjs/components/prism-yaml';
+import { useCallback, useMemo, useState } from 'react';
+import styled from 'styled-components';
+
+const StepContent = styled.div`
+  background-color: var(--block-bg);
+  border-radius: 0.5rem;
+
+  @media (min-width: 640px) {
+    .previous-text {
+      display: none;
+    }
+  }
+`;
+
+interface ByteStepperItemProps {
+  byte: ByteDetailsFragment;
+  step: ByteStepFragment;
+  space: SpaceWithIntegrationsFragment;
+  viewByteHelper: UseViewByteHelper;
+  setAccountModalOpen: (shouldOpen: boolean) => void;
+}
+
+function ByteStepperItem({ viewByteHelper, step, byte, space, setAccountModalOpen }: ByteStepperItemProps) {
+  const { $t: t } = useI18();
+  const { showNotification } = useNotification();
+
+  const { data: session } = useSession();
+  const renderer = getMarkedRenderer();
+
+  const isNotFirstStep = step.order !== 0;
+
+  const isLastStep = byte.steps.length - 2 === step.order;
+
+  const isByteCompletedStep = step.uuid === LAST_STEP_UUID;
+
+  const [nextButtonClicked, setNextButtonClicked] = useState(false);
+  const [incompleteUserInput, setIncompleteUserInput] = useState(false);
+  const [questionNotAnswered, setQuestionNotAnswered] = useState(false);
+
+  const [questionsAnsweredCorrectly, setQuestionsAnsweredCorrectly] = useState(false);
+
+  function isQuestionAnswered() {
+    return viewByteHelper.isQuestionAnswered(step.uuid);
+  }
+
+  function isUserInputComplete() {
+    return viewByteHelper.isUserInputComplete(step.uuid);
+  }
+
+  function isDiscordConnected(): boolean {
+    const hasDiscordConnect = step.stepItems.find(isUserDiscordConnect);
+    if (!hasDiscordConnect) return true;
+    return !!viewByteHelper.getStepItemSubmission(step.uuid, hasDiscordConnect.uuid);
+  }
+
+  const navigateToNextStep = async () => {
+    setNextButtonClicked(true);
+    setIncompleteUserInput(false);
+
+    if (isQuestionAnswered() && isDiscordConnected() && isUserInputComplete()) {
+      setQuestionNotAnswered(true);
+
+      const answeredCorrectly = step.stepItems.filter(isQuestion).every((stepItem: ByteStepItemFragment) => {
+        const question = stepItem as ByteQuestionFragment;
+        return isEqual(question.answerKeys.sort(), ((viewByteHelper.getStepItemSubmission(step.uuid, stepItem.uuid) as string[]) || []).sort());
+      });
+
+      if (!answeredCorrectly) {
+        setQuestionsAnsweredCorrectly(false);
+        return;
+      } else {
+        setQuestionsAnsweredCorrectly(true);
+      }
+      setNextButtonClicked(false);
+
+      if (isLastStep) {
+        if (!viewByteHelper.isValidToSubmit()) {
+          setIncompleteUserInput(true);
+          return;
+        }
+
+        if (!session?.username) {
+          setAccountModalOpen(true);
+          return;
+        } else {
+          const byteSubmitted = await viewByteHelper.submitByte();
+          if (!byteSubmitted) {
+            showNotification({
+              type: 'error',
+              message: t('notify.somethingWentWrong'),
+              heading: 'Error',
+            });
+            return;
+          }
+        }
+      }
+
+      viewByteHelper.goToNextStep(step);
+    }
+  };
+
+  const stepItems = step.stepItems;
+
+  const stepContents = useMemo(() => marked.parse(step.content, { renderer }), [step.content]);
+
+  const postSubmissionContent = useMemo(
+    () => (byte.postSubmissionStepContent ? marked.parse(byte.postSubmissionStepContent, { renderer }) : null),
+    [byte.postSubmissionStepContent]
+  );
+
+  const selectAnswer = useCallback(
+    (questionId: string, selectedAnswers: string[]) => {
+      viewByteHelper.selectAnswer(step.uuid, questionId, selectedAnswers);
+    },
+    [viewByteHelper, step.uuid]
+  );
+
+  const setUserInput = useCallback(
+    (userInputUuid: string, userInput: string) => {
+      viewByteHelper.setUserInput(step.uuid, userInputUuid, userInput);
+    },
+    [viewByteHelper, step.uuid]
+  );
+
+  const setUserDiscord = useCallback(
+    (userDiscordUuid: string, discordId: string) => {
+      viewByteHelper.setUserDiscord(step.uuid, userDiscordUuid, discordId);
+    },
+    [viewByteHelper, step.uuid]
+  );
+
+  const showQuestionsCompletionWarning = nextButtonClicked && (!isQuestionAnswered() || !isDiscordConnected() || !isUserInputComplete());
+
+  return (
+    <StepContent className="bg-white px-4 py-5 sm:px-6 flex flex-col justify-between w-full">
+      <div>
+        <div className="flex justify-between">
+          <div className="mt-2">
+            <h1 className="mb-2">{byte.name}</h1>
+          </div>
+          <div className="ml-6">
+            <CircleProgress percentage={isByteCompletedStep ? 100 : round(((step.order + 1) * 100) / byte.steps.length)} />
+          </div>
+        </div>
+
+        <div style={{ minHeight: '300px' }} className="mt-6">
+          <div dangerouslySetInnerHTML={{ __html: stepContents }} className="markdown-body" />
+          {stepItems.map((stepItem: ByteStepItemFragment, index) => {
+            if (isQuestion(stepItem)) {
+              return (
+                <QuestionSection
+                  key={index}
+                  nextButtonClicked={nextButtonClicked}
+                  allQuestionsAnsweredCorrectly={questionsAnsweredCorrectly}
+                  allQuestionsAnswered={questionNotAnswered}
+                  stepItem={stepItem as ByteQuestionFragment}
+                  stepItemSubmission={viewByteHelper.getStepItemSubmission(step.uuid, stepItem.uuid)}
+                  onSelectAnswer={selectAnswer}
+                />
+              );
+            }
+
+            if (isUserDiscordConnect(stepItem)) {
+              return (
+                <UserDiscord
+                  key={index}
+                  userDiscord={stepItem as ByteUserDiscordConnectFragment}
+                  discordResponse={viewByteHelper.getStepItemSubmission(step.uuid, stepItem.uuid) as UserDiscordInfoInput}
+                  spaceId={space.id}
+                  guideUuid={byte.id}
+                  stepUuid={step.uuid}
+                  stepOrder={step.order}
+                />
+              );
+            }
+
+            if (isUserInput(stepItem)) {
+              return (
+                <UserInput
+                  key={index}
+                  userInput={stepItem as ByteUserInputFragment}
+                  modelValue={viewByteHelper.getStepItemSubmission(step.uuid, stepItem.uuid) as string}
+                  setUserInput={setUserInput}
+                />
+              );
+            }
+
+            return null;
+          })}
+          {postSubmissionContent && <div className="mt-4 text-sm text-gray-500" dangerouslySetInnerHTML={{ __html: postSubmissionContent }} />}
+        </div>
+      </div>
+      <ByteStepperItemWarnings
+        showUseInputCompletionWarning={incompleteUserInput}
+        showQuestionsCompletionWarning={showQuestionsCompletionWarning}
+        isUserInputComplete={isUserInputComplete}
+        isQuestionAnswered={isQuestionAnswered}
+        isDiscordConnected={isDiscordConnected}
+      />
+      <div className="mt-2">
+        {isNotFirstStep && !isByteCompletedStep && (
+          <Button onClick={() => viewByteHelper.goToPreviousStep(step)} className="float-left">
+            <span className="mr-2 font-bold">&#8592;</span>
+            Previous
+          </Button>
+        )}
+        {!isByteCompletedStep && (
+          <Button
+            onClick={navigateToNextStep}
+            disabled={viewByteHelper.byteSubmitting || viewByteHelper.byteSubmission.isSubmitted}
+            variant="contained"
+            className="float-right w-[150px]"
+            primary={true}
+          >
+            <span className="sm:block">{isLastStep ? 'Complete' : 'Next'}</span>
+            <span className="ml-2 font-bold">&#8594;</span>
+          </Button>
+        )}
+      </div>
+    </StepContent>
+  );
+}
+
+export default ByteStepperItem;

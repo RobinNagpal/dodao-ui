@@ -283,8 +283,8 @@ input GitCourseInput {
 }
 
 type GitCourseQuestion {
-  answerKeys: [String!]
-  choices: [GitCourseQuestionChoice!]
+  answerKeys: [String!]!
+  choices: [GitCourseQuestionChoice!]!
   content: String!
   explanation: String!
   hint: String!
@@ -366,11 +366,11 @@ type GitCourseSummary {
 
 type GitCourseTopic {
   details: String!
-  explanations: [GitCourseExplanation!]
+  explanations: [GitCourseExplanation!]!
   key: String!
-  questions: [GitCourseQuestion!]
-  readings: [GitCourseReading!]
-  summaries: [GitCourseSummary!]
+  questions: [GitCourseQuestion!]!
+  readings: [GitCourseReading!]!
+  summaries: [GitCourseSummary!]!
   title: String!
 }
 

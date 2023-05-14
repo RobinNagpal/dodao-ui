@@ -3,10 +3,6 @@ schema: 'src/schema.graphql'
 documents: 'src/graphql/**/*.graphql'
 generates:
   src/graphql/generated/generated-types.ts:
-    plugins:
-      - 'typescript'
-      - 'typescript-operations'
-      - 'typescript-react-apollo'
     config:
       preResolveTypes: true
       withHooks: true
@@ -14,6 +10,8 @@ generates:
       withRefetchFn: true
       withResultType: true
       flattenGeneratedTypes: true
+      flattenGeneratedTypesIncludeFragments: true
+      flattenHoistedTypes: true
       declarationKind:
         union: type
         type: interface
@@ -23,3 +21,11 @@ generates:
         interface: interface
       includeDirectives: true
       commentDescriptions: true
+      flattenTypes: true
+
+
+    plugins:
+      - 'typescript'
+      - 'typescript-operations'
+      - 'typescript-react-apollo'
+#      - 'typescript-type-graphql'

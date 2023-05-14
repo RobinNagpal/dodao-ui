@@ -2,7 +2,7 @@
 
 import ButtonLarge from '@/components/core/buttons/Button';
 import PageContainer from '@/components/main/Container/PageContainer';
-import { useLoginModalContext } from '@/context/LoginModalContext';
+import { useLoginModalContext } from '@/contexts/LoginModalContext';
 import { useAuth } from '@/hooks/useAuth';
 import { useSession } from 'next-auth/react';
 import React from 'react';

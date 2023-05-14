@@ -1,7 +1,7 @@
 // LoginModal.tsx
 import { LoginButtons } from '@/app/login/components/LoginButtons';
 import SingleSectionModal from '@/components/core/modals/SingleSectionModal';
-import { useLoginModalContext } from '@/context/LoginModalContext';
+import { useLoginModalContext } from '@/contexts/LoginModalContext';
 import { useSession } from 'next-auth/react';
 import React, { useEffect } from 'react';
 

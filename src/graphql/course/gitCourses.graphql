@@ -1,46 +1,62 @@
-fragment GitCourseTopicFragment on GitCourseTopic {
+fragment CourseQuestion on GitCourseQuestion {
+  uuid
+  type
+  content
+  answerKeys
+  hint
+  explanation
+  choices {
+    content
+    key
+  }
+}
+
+fragment CourseSummary on GitCourseSummary {
+  title
+  shortTitle
+  key
+  details
+}
+
+fragment CourseExplanation on GitCourseExplanation {
+  title
+  shortTitle
+  key
+  details
+}
+
+fragment CourseReading on GitCourseReading {
+  uuid
+  title
+  shortTitle
+  details
+  type
+  url
+}
+
+fragment CourseTopic on GitCourseTopic {
   title
   key
   details
 
   explanations {
-    title
-    shortTitle
-    key
-    details
+    ...CourseExplanation
   }
 
   readings {
-    uuid
-    title
-    shortTitle
-    details
-    type
-    url
+    ...CourseReading
   }
 
   summaries {
-    title
-    shortTitle
-    key
-    details
+    ...CourseSummary
   }
 
   questions {
-    uuid
-    type
-    content
-    answerKeys
-    hint
-    explanation
-    choices {
-      content
-      key
-    }
+    ...CourseQuestion
   }
 }
 
-fragment GitCourseFragment on GitCourse {
+fragment CourseFragment on GitCourse {
   key
   title
   summary
@@ -59,7 +75,7 @@ fragment GitCourseFragment on GitCourse {
     showHints
   }
   topics {
-    ...GitCourseTopicFragment
+    ...CourseTopic
   }
 }
 
@@ -89,54 +105,54 @@ mutation RefreshGitCourse($spaceId: String!, $courseKey: String!) {
 
 mutation UpdateCourseBasicInfo($spaceId: String!, $courseBasicInfo: CourseBasicInfoInput!) {
   payload: updateCourseBasicInfo(spaceId: $spaceId, courseBasicInfo: $courseBasicInfo) {
-    ...GitCourseFragment
+    ...CourseFragment
   }
 }
 
 mutation UpdateTopicBasicInfo($spaceId: String!, $topicInfo: UpdateTopicBasicInfoInput!) {
   payload: updateTopicBasicInfo(spaceId: $spaceId, topicInfo: $topicInfo) {
-    ...GitCourseFragment
+    ...CourseFragment
   }
 }
 mutation AddTopic($spaceId: String!, $topicInfo: AddTopicInput!) {
   payload: addTopic(spaceId: $spaceId, topicInfo: $topicInfo) {
-    ...GitCourseTopicFragment
+    ...CourseTopic
   }
 }
 
 mutation MoveTopic($spaceId: String!, $topicInfo: MoveTopicInput!) {
   payload: moveTopic(spaceId: $spaceId, topicInfo: $topicInfo) {
-    ...GitCourseFragment
+    ...CourseFragment
   }
 }
 
 mutation DeleteTopic($spaceId: String!, $topicInfo: DeleteTopicInput!) {
   payload: deleteTopic(spaceId: $spaceId, topicInfo: $topicInfo) {
-    ...GitCourseFragment
+    ...CourseFragment
   }
 }
 
 mutation UpdateTopicExplanation($spaceId: String!, $explanationInfo: UpdateTopicExplanationInput!) {
   payload: updateTopicExplanation(spaceId: $spaceId, explanationInfo: $explanationInfo) {
-    ...GitCourseFragment
+    ...CourseFragment
   }
 }
 
 mutation UpdateTopicSummary($spaceId: String!, $summaryInfo: UpdateTopicSummaryInput!) {
   payload: updateTopicSummary(spaceId: $spaceId, summaryInfo: $summaryInfo) {
-    ...GitCourseFragment
+    ...CourseFragment
   }
 }
 
 mutation UpdateTopicVideo($spaceId: String!, $videoInfo: UpdateTopicVideoInput!) {
   payload: updateTopicVideo(spaceId: $spaceId, videoInfo: $videoInfo) {
-    ...GitCourseFragment
+    ...CourseFragment
   }
 }
 
 mutation UpdateTopicQuestion($spaceId: String!, $questionInfo: UpdateTopicQuestionInput!) {
   payload: updateTopicQuestion(spaceId: $spaceId, questionInfo: $questionInfo) {
-    ...GitCourseFragment
+    ...CourseFragment
   }
 }
 
@@ -186,49 +202,49 @@ mutation AddTopicQuestion($spaceId: String!, $questionInfo: AddTopicQuestionInpu
 
 mutation DeleteTopicExplanation($spaceId: String!, $explanationInfo: DeleteTopicExplanationInput!) {
   payload: deleteTopicExplanation(spaceId: $spaceId, explanationInfo: $explanationInfo) {
-    ...GitCourseFragment
+    ...CourseFragment
   }
 }
 
 mutation DeleteTopicSummary($spaceId: String!, $summaryInfo: DeleteTopicSummaryInput!) {
   payload: deleteTopicSummary(spaceId: $spaceId, summaryInfo: $summaryInfo) {
-    ...GitCourseFragment
+    ...CourseFragment
   }
 }
 
 mutation DeleteTopicVideo($spaceId: String!, $videoInfo: DeleteTopicVideoInput!) {
   payload: deleteTopicVideo(spaceId: $spaceId, videoInfo: $videoInfo) {
-    ...GitCourseFragment
+    ...CourseFragment
   }
 }
 
 mutation DeleteTopicQuestion($spaceId: String!, $questionInfo: DeleteTopicQuestionInput!) {
   payload: deleteTopicQuestion(spaceId: $spaceId, questionInfo: $questionInfo) {
-    ...GitCourseFragment
+    ...CourseFragment
   }
 }
 
 mutation MoveTopicExplanation($spaceId: String!, $explanationInfo: MoveTopicExplanationInput!) {
   payload: moveTopicExplanation(spaceId: $spaceId, explanationInfo: $explanationInfo) {
-    ...GitCourseFragment
+    ...CourseFragment
   }
 }
 
 mutation MoveTopicSummary($spaceId: String!, $summaryInfo: MoveTopicSummaryInput!) {
   payload: moveTopicSummary(spaceId: $spaceId, summaryInfo: $summaryInfo) {
-    ...GitCourseFragment
+    ...CourseFragment
   }
 }
 
 mutation MoveTopicVideo($spaceId: String!, $videoInfo: MoveTopicVideoInput!) {
   payload: moveTopicVideo(spaceId: $spaceId, videoInfo: $videoInfo) {
-    ...GitCourseFragment
+    ...CourseFragment
   }
 }
 
 mutation MoveTopicQuestion($spaceId: String!, $questionInfo: MoveTopicQuestionInput!) {
   payload: moveTopicQuestion(spaceId: $spaceId, questionInfo: $questionInfo) {
-    ...GitCourseFragment
+    ...CourseFragment
   }
 }
 
@@ -259,6 +275,6 @@ query GitCourseSummarized($spaceId: String!, $key: String!) {
 
 query GitCourseQuery($spaceId: String!, $courseKey: String!) {
   course: gitCourse(spaceId: $spaceId, courseKey: $courseKey) {
-    ...GitCourseFragment
+    ...CourseFragment
   }
 }

@@ -1,4 +1,56 @@
-fragment GuideFragment on Guide {
+fragment GuideQuestion on GuideQuestion {
+  answerKeys
+  choices {
+    content
+    key
+    order
+  }
+  content
+  order
+  type
+  uuid
+}
+
+fragment GuideUserInput on GuideUserInput {
+  label
+  order
+  required
+  type
+  uuid
+}
+
+fragment UserDiscordConnect on UserDiscordConnect {
+  order
+  type
+  uuid
+}
+
+fragment GuideStep on GuideStep {
+  content
+  created
+  stepItems {
+    __typename
+    ...GuideQuestion
+    ...GuideUserInput
+    ...UserDiscordConnect
+  }
+  id
+  name
+  order
+  uuid
+}
+
+fragment GuideIntegration on GuideIntegrations {
+  discordRoleIds
+  discordRolePassingCount
+  discordWebhook
+  projectGalaxyCredentialId
+  projectGalaxyOatMintUrl
+  projectGalaxyOatPassingCount
+}
+
+
+fragment Guide on Guide {
   authors
   categories
   postSubmissionStepContent
@@ -6,12 +58,7 @@ fragment GuideFragment on Guide {
   created
   id
   guideIntegrations {
-    discordRoleIds
-    discordRolePassingCount
-    discordWebhook
-    projectGalaxyCredentialId
-    projectGalaxyOatMintUrl
-    projectGalaxyOatPassingCount
+    ...GuideIntegration
   }
   guideSource
   guideType
@@ -24,41 +71,7 @@ fragment GuideFragment on Guide {
     name
   }
   steps {
-    content
-    created
-    stepItems {
-      __typename
-      ... on GuideQuestion {
-        answerKeys
-        choices {
-          content
-          key
-          order
-        }
-        content
-        order
-        type
-        uuid
-      }
-
-      ... on GuideUserInput {
-        label
-        order
-        required
-        type
-        uuid
-      }
-
-      ... on UserDiscordConnect {
-        order
-        type
-        uuid
-      }
-    }
-    id
-    name
-    order
-    uuid
+    ...GuideStep
   }
   publishStatus
   socialShareImage
@@ -69,13 +82,13 @@ fragment GuideFragment on Guide {
 
 mutation UpsertGuide($spaceId: String!, $guideInput: GuideInput!) {
   payload: upsertGuide(spaceId: $spaceId, guideInput: $guideInput) {
-    ...GuideFragment
+    ...Guide
   }
 }
 
 query GuideQuery($spaceId: String!, $uuid: String!) {
   guide(spaceId: $spaceId, uuid: $uuid) {
-    ...GuideFragment
+    ...Guide
   }
 }
 

@@ -1,4 +1,58 @@
-fragment ByteDetailsFragment on Byte {
+fragment ByteQuestion on ByteQuestion {
+  answerKeys
+  choices {
+    content
+    key
+    order
+  }
+  content
+  order
+  type
+  uuid
+  explanation
+}
+
+fragment ByteUserInput on ByteUserInput {
+  label
+  order
+  required
+  type
+  uuid
+}
+
+fragment ByteUserDiscordConnect on UserDiscordConnect {
+  order
+  type
+  uuid
+}
+
+fragment ByteStepItem on ByteStepItem {
+  __typename
+  ... on ByteQuestion {
+    ...ByteQuestion
+  }
+
+  ... on ByteUserInput {
+    ...ByteUserInput
+  }
+
+  ... on UserDiscordConnect {
+    ...ByteUserDiscordConnect
+  }
+}
+
+fragment ByteStep on ByteStep {
+  content
+  stepItems {
+    ...ByteStepItem
+  }
+  name
+  order
+  uuid
+}
+
+
+fragment ByteDetails on Byte {
   postSubmissionStepContent
   content
   created
@@ -9,44 +63,11 @@ fragment ByteDetailsFragment on Byte {
   tags
   priority
   steps {
-    content
-    stepItems {
-      __typename
-      ... on ByteQuestion {
-        answerKeys
-        choices {
-          content
-          key
-          order
-        }
-        content
-        order
-        type
-        uuid
-        explanation
-      }
-
-      ... on ByteUserInput {
-        label
-        order
-        required
-        type
-        uuid
-      }
-
-      ... on UserDiscordConnect {
-        order
-        type
-        uuid
-      }
-    }
-    name
-    order
-    uuid
+    ...ByteStep
   }
 }
 
-query Bytes($spaceId: String!) {
+query QueryBytes($spaceId: String!) {
   bytes(spaceId: $spaceId) {
     postSubmissionStepContent
     content
@@ -60,14 +81,14 @@ query Bytes($spaceId: String!) {
   }
 }
 
-query ByteDetails($spaceId: String!, $byteId: String!) {
+query QueryByteDetails($spaceId: String!, $byteId: String!) {
   byte(spaceId: $spaceId, byteId: $byteId) {
-    ...ByteDetailsFragment
+    ...ByteDetails
   }
 }
 
 mutation UpsertByte($spaceId: String!, $input: UpsertByteInput!) {
   payload: upsertByte(spaceId: $spaceId, input: $input) {
-    ...ByteDetailsFragment
+    ...ByteDetails
   }
 }
