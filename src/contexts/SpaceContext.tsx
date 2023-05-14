@@ -1,12 +1,12 @@
 // SpaceContext.tsx
-import { ExtendedSpaceByDomainQuery } from '@/graphql/generated/generated-types';
+import { ExtendedSpaceByDomainQuery, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import React, { createContext, useContext, useState } from 'react';
 
-type Space = ExtendedSpaceByDomainQuery['space'];
+type Space = SpaceWithIntegrationsFragment;
 
 interface SpaceContextProps {
-  space: Space;
-  setSpace: React.Dispatch<React.SetStateAction<Space | null>>;
+  space?: Space | null;
+  setSpace: React.Dispatch<React.SetStateAction<Space | null | undefined>>;
 }
 
 const SpaceContext = createContext<SpaceContextProps>({
@@ -16,6 +16,10 @@ const SpaceContext = createContext<SpaceContextProps>({
 
 export const useSpace = () => {
   return useContext(SpaceContext);
+};
+
+export const useRequiredSpace = () => {
+  return useContext(SpaceContext) as { space: Space };
 };
 
 export const SpaceProvider = ({ children }: { children: React.ReactNode }) => {

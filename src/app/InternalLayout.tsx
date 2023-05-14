@@ -1,6 +1,6 @@
 'use client';
 import LoginModal from '@/components/auth/LoginModal';
-import FullPageLoader from '@/components/core/Loader/FullPageLoading';
+import FullPageLoader from '@/components/core/loaders/FullPageLoading';
 import MainContainer from '@/components/main/Container/MainContainer';
 import TopNav from '@/components/main/TopNav/TopNav';
 import AaveTheme from '@/components/themes/AaveTheme';
@@ -95,7 +95,7 @@ function ChildLayout({ children, session }: InternalLayoutProps) {
         <NotificationProvider>
           <SessionProvider session={session}>
             <ThemeComponent />
-            {data?.space ? (
+            {data?.space?.id ? (
               <LoginModalProvider>
                 <LoginModal />
                 <TopNav />

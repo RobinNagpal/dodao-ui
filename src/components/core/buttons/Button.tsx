@@ -1,5 +1,5 @@
 // Import required dependencies
-import LoadingComponent from '@/components/core/Loader/Loading';
+import LoadingComponent from '@/components/core/loaders/Loading';
 import React from 'react';
 import styled, { css } from 'styled-components';
 

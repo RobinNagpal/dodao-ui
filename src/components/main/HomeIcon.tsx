@@ -1,17 +1,17 @@
 import { getLinkToFeaturePage } from '@/components/main/getLinkToFeaturePage';
+import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
-import { SpaceModel } from '@/types/deprecated/models/SpaceModel';
 import { FeatureItem, FeatureName } from '@/types/spaceFeatures';
+import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
-import Image from 'next/image';
 
 interface HomeIconProps {
-  space: SpaceModel;
+  space: SpaceWithIntegrationsFragment;
   feature: FeatureItem;
 }
 
-function Card({ space, heading, details, featureName }: { space: SpaceModel; heading: string; details: string; featureName: FeatureName }) {
+function Card({ space, heading, details, featureName }: { space: SpaceWithIntegrationsFragment; heading: string; details: string; featureName: FeatureName }) {
   const { $t } = useI18();
   return (
     <div className="flex flex-col sm:flex-row">

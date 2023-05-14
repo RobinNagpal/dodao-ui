@@ -1,25 +1,17 @@
+'use client';
+
+import withSpace, { SpaceProps } from '@/app/withSpace';
 import Block from '@/components/app/Block';
 import Icon from '@/components/app/Icon';
 import RowLoading from '@/components/app/RowLoading';
 import ByteSummaryCard from '@/components/byte/Bytes/ByteSummaryCard';
 import NoByte from '@/components/byte/Bytes/NoBytes';
-import { useSpace } from '@/contexts/SpaceContext';
 import { useQueryBytesQuery } from '@/graphql/generated/generated-types';
 import Link from 'next/link';
-import React, { useEffect } from 'react';
+import React from 'react';
 
-function Byte() {
-  const { space } = useSpace();
-
-  const { data, error, loading, refetch: fetchBytes } = useQueryBytesQuery({ skip: true });
-
-  useEffect(() => {
-    if (space) {
-      fetchBytes({
-        spaceId: space.id,
-      });
-    }
-  }, [space]);
+function Byte({ space }: SpaceProps) {
+  const { data, error, loading, refetch: fetchBytes } = useQueryBytesQuery({ variables: { spaceId: space.id } });
 
   const loadingData = loading || !space;
 
@@ -49,4 +41,4 @@ function Byte() {
   );
 }
 
-export default Byte;
+export default withSpace(Byte);
