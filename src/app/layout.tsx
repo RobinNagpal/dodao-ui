@@ -17,7 +17,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 
   return (
     <html lang="en" className="h-full">
-      <body className="h-full">
+      <body className="max-h-screen">
         <StyledComponentsRegistry>
           <InternalLayout session={session}>{children}</InternalLayout>
         </StyledComponentsRegistry>

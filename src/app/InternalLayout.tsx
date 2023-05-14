@@ -70,6 +70,7 @@ const NotificationWrapper = () => {
 const StyledMain = styled.main`
   background-color: var(--bg-color);
   color: var(--text-color);
+  min-height: 100vh;
 `;
 
 function ChildLayout({ children, session }: InternalLayoutProps) {
@@ -99,7 +100,7 @@ function ChildLayout({ children, session }: InternalLayoutProps) {
               <LoginModalProvider>
                 <LoginModal />
                 <TopNav />
-                <StyledMain className="h-max">
+                <StyledMain>
                   <MainContainer>{children}</MainContainer>
                 </StyledMain>
               </LoginModalProvider>

@@ -1,3 +1,4 @@
+import Card from '@/components/core/card/Card';
 import { QueryBytesQuery } from '@/graphql/generated/generated-types';
 import { shorten } from '@/utils/utils';
 import Link from 'next/link';
@@ -9,7 +10,7 @@ interface ByteSummaryCardProps {
 
 export default function ByteSummaryCard({ byte }: ByteSummaryCardProps) {
   return (
-    <div role="listitem" className="card feature-card h-full">
+    <Card>
       <Link href={'/bytes/' + byte.id} className="card blog-card w-inline-block h-full w-full">
         <div>
           <div className="p-4 text-center">
@@ -24,6 +25,6 @@ export default function ByteSummaryCard({ byte }: ByteSummaryCardProps) {
           )}
         </div>
       </Link>
-    </div>
+    </Card>
   );
 }
