@@ -12,7 +12,7 @@ import Lottie from 'lottie-react';
 import React from 'react';
 import DeveloperLottie from './developer-lottie.json';
 
-export function Home({ space }: { space: SpaceWithIntegrationsFragment }) {
+function Home({ space }: { space: SpaceWithIntegrationsFragment }) {
   const { $t } = useI18();
   const spaceFeatures: FeatureItem[] = getFeaturesArray(space.id) || [];
   const sortedSpaceFeatures: FeatureItem[] = sortBy(spaceFeatures, [(f1) => -f1.details.priority]);
