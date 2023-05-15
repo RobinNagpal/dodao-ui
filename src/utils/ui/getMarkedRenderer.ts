@@ -1,10 +1,10 @@
-import { katexExtension } from '@/helpers/ui/katexMarketExtension';
+import { katexExtension } from '@/utils/ui/katexMarketExtension';
 import { marked } from 'marked';
 import prism from 'prismjs';
 
 export function getMarkedRenderer(): marked.Renderer {
   const renderer = new marked.Renderer();
-  renderer.code = function (code, lang, escaped) {
+  renderer.code = function (code: any, lang: any, escaped: any) {
     console.log(`prism.code - ${lang}`, code);
     code = renderer.options.highlight?.(code, lang!) as string;
     if (!lang) {
@@ -17,7 +17,7 @@ export function getMarkedRenderer(): marked.Renderer {
 
   marked.setOptions({
     renderer,
-    highlight: (code, lang) => {
+    highlight: (code: string, lang: string) => {
       console.log(`prism.highlight with ${lang} `, code);
       if (prism.languages[lang]) {
         return prism.highlight(code, prism.languages[lang], lang);
@@ -28,7 +28,7 @@ export function getMarkedRenderer(): marked.Renderer {
   });
 
   marked.use(katexExtension());
-  renderer.link = function (href, title, text) {
+  renderer.link = function (href: string, title: string, text: string) {
     return '<a target="_blank" href="' + href + '" title="' + title + '">' + text + '</a>';
   };
   return renderer;

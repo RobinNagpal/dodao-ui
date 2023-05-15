@@ -1,3 +1,6 @@
+'use client';
+
+import withSpace from '@/app/withSpace';
 import Block from '@/components/app/Block';
 import Dropdown from '@/components/app/Dropdown';
 
@@ -8,6 +11,7 @@ import { useViewByte } from '@/components/byte/View/useViewByte';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import styled from 'styled-components';
 
 const ByteContainer = styled.div`
@@ -25,13 +29,21 @@ const ThreeDotWrapper = styled.div`
   padding-right: 0.75rem;
 `;
 
-const ByteView = ({ params, space }: { params: { byteId: string; stepOrder: string }; space: SpaceWithIntegrationsFragment }) => {
-  const { byteId, stepOrder } = params;
+const ByteView = ({ params, space }: { params: { byteIdAndStep: string[] }; space: SpaceWithIntegrationsFragment }) => {
+  const { byteIdAndStep } = params;
 
+  const byteId = Array.isArray(byteIdAndStep) ? byteIdAndStep[0] : (byteIdAndStep as string);
   const { isAdmin } = { isAdmin: true };
 
-  const viewByteHelper = useViewByte(space, byteId, parseInt(stepOrder));
+  let stepOrder = 0;
+  if (Array.isArray(byteIdAndStep)) {
+    stepOrder = parseInt(byteIdAndStep[1]);
+  }
 
+  const viewByteHelper = useViewByte(space, byteId, stepOrder);
+  useEffect(() => {
+    viewByteHelper.initialize();
+  }, [byteId]);
   const threeDotItems = [{ text: 'Edit', action: 'edit' }];
 
   const byte = viewByteHelper.byteRef;
@@ -40,7 +52,7 @@ const ByteView = ({ params, space }: { params: { byteId: string; stepOrder: stri
   function selectFromThreedotDropdown(e: string) {
     if (e === 'edit') {
       console.log('got to edit byte', byte.id);
-      router.push(`/tidbids/edit/${byteId}`);
+      router.push(`/tidbits/edit/${byteId}`);
     }
   }
 
@@ -53,7 +65,7 @@ const ByteView = ({ params, space }: { params: { byteId: string; stepOrder: stri
               <div className="px-4 md:px-0 mb-3 flex justify-between">
                 <Link href="/tidbits" className="text-color">
                   <span className="mr-1 font-bold">&#8592;</span>
-                  All Bytes
+                  All Tidbits
                 </Link>
                 <div className="ml-3">
                   {isAdmin && (
@@ -83,4 +95,4 @@ const ByteView = ({ params, space }: { params: { byteId: string; stepOrder: stri
   );
 };
 
-export default ByteView;
+export default withSpace(ByteView);

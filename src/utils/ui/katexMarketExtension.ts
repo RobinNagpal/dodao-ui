@@ -11,10 +11,10 @@ function inlineKatex() {
   return {
     name: 'inlineKatex',
     level: 'inline',
-    start(src) {
+    start(src: string) {
       return src.indexOf('$');
     },
-    tokenizer(src, tokens) {
+    tokenizer(src: string, tokens: any[]) {
       const match = src.match(/^\$\$([^$\n]+?)\$\$/);
       if (match) {
         return {
@@ -24,7 +24,7 @@ function inlineKatex() {
         };
       }
     },
-    renderer(token) {
+    renderer(token: any) {
       return katex.renderToString(token.text, {
         throwOnError: false,
       });
@@ -36,10 +36,10 @@ function blockKatex() {
   return {
     name: 'blockKatex',
     level: 'block',
-    start(src) {
+    start(src: string) {
       return src.indexOf('\n$$');
     },
-    tokenizer(src, tokens) {
+    tokenizer(src: string, tokens: any[]) {
       const match = src.match(/^\$\$+\n([^$]+?)\n\$\$+\n/);
       if (match) {
         return {
@@ -49,7 +49,7 @@ function blockKatex() {
         };
       }
     },
-    renderer(token) {
+    renderer(token: any) {
       return `<p>${katex.renderToString(token.text, {
         throwOnError: false,
       })}</p>`;

@@ -11,7 +11,7 @@ interface ByteSummaryCardProps {
 export default function ByteSummaryCard({ byte }: ByteSummaryCardProps) {
   return (
     <Card>
-      <Link href={'/bytes/' + byte.id} className="card blog-card w-inline-block h-full w-full">
+      <Link href={`/tidbits/view/${byte.id}/0`} className="card blog-card w-inline-block h-full w-full">
         <div>
           <div className="p-4 text-center">
             <h2 className="text-base font-bold whitespace-nowrap overflow-hidden text-ellipsis">{shorten(byte.name, 32)}</h2>

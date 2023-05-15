@@ -39,60 +39,57 @@ export function useViewByte(space: SpaceWithIntegrationsFragment, byteId: string
 
   const router = useRouter();
 
-  const { data: byteData, loading: byteLoading, error: byteError, refetch } = useQueryByteDetailsQuery({ skip: true });
+  const { data: byteData, loading: byteLoading, error: byteError, refetch } = useQueryByteDetailsQuery({ variables: { spaceId: space.id, byteId: byteId } });
   const { showNotification } = useNotificationContext();
 
   const [submitByteMutation] = useSubmitByteMutation();
-  useEffect(() => {
-    async function initialize() {
-      setActiveStepOrder(stepOrder);
-      const refetchResult = await refetch({ spaceId: space.id, byteId: byteId });
 
-      const byte = refetchResult.data.byte;
+  async function initialize() {
+    setActiveStepOrder(stepOrder);
+    const refetchResult = await refetch({ spaceId: space.id, byteId: byteId });
 
-      setByteRef({
-        ...byte,
-        __typename: 'Byte',
-        steps: [
-          ...byte.steps,
-          {
-            __typename: 'ByteStep',
-            content: 'The byte has been completed successfully!',
-            name: 'Completed',
-            order: byte.steps.length,
-            uuid: LAST_STEP_UUID,
-            stepItems: [],
-          },
-        ],
-      });
+    const byte = refetchResult.data.byte;
 
-      if (byteSubmission.isSubmitted) {
-        setByteSubmission({
-          isPristine: true,
-          isSubmitted: false,
-          stepResponsesMap: {},
-        });
-      }
+    setByteRef({
+      ...byte,
+      __typename: 'Byte',
+      steps: [
+        ...byte.steps,
+        {
+          __typename: 'ByteStep',
+          content: 'The byte has been completed successfully!',
+          name: 'Completed',
+          order: byte.steps.length,
+          uuid: LAST_STEP_UUID,
+          stepItems: [],
+        },
+      ],
+    });
 
-      setByteStepsMap(Object.fromEntries(byte.steps.map((step) => [step.uuid, step])));
-
-      // ...
-
+    if (byteSubmission.isSubmitted) {
       setByteSubmission({
-        ...byteSubmission,
-        stepResponsesMap: Object.fromEntries(
-          byte.steps.map((step) => [step.uuid, getStepSubmission(step.uuid) || { itemResponsesMap: {}, isTouched: false, isCompleted: false }])
-        ),
+        isPristine: true,
+        isSubmitted: false,
+        stepResponsesMap: {},
       });
-      setByteLoaded(true);
     }
 
-    initialize();
-  }, [space, byteId, stepOrder]);
+    setByteStepsMap(Object.fromEntries(byte.steps.map((step) => [step.uuid, step])));
+
+    // ...
+
+    setByteSubmission({
+      ...byteSubmission,
+      stepResponsesMap: Object.fromEntries(
+        byte.steps.map((step) => [step.uuid, getStepSubmission(step.uuid) || { itemResponsesMap: {}, isTouched: false, isCompleted: false }])
+      ),
+    });
+    setByteLoaded(true);
+  }
 
   function setActiveStep(order: number) {
     setActiveStepOrder(order);
-    router.push(`/tidbids/view/${byteId}/${order}`);
+    router.push(`/tidbits/view/${byteId}/${order}`);
   }
 
   function getStepSubmission(stepUuid: string): StepResponse | undefined {
@@ -122,13 +119,13 @@ export function useViewByte(space: SpaceWithIntegrationsFragment, byteId: string
       };
     });
 
-    router.push(`/tidbids/view/${byteId}/${nextStepOrder}`);
+    router.replace(`/tidbits/view/${byteId}/${nextStepOrder}`);
   }
   function goToPreviousStep(currentStep: ByteStepFragment) {
     const prevStepOrder = currentStep.order - 1;
     setActiveStepOrder(prevStepOrder);
 
-    router.push(`/tidbids/view/${byteId}/${prevStepOrder}`);
+    router.push(`/tidbits/view/${byteId}/${prevStepOrder}`);
   }
 
   function selectAnswer(stepUuid: string, questionUuid: string, selectedAnswers: string[]) {
@@ -302,6 +299,7 @@ export function useViewByte(space: SpaceWithIntegrationsFragment, byteId: string
     return respondedToAllInputs;
   }
   return {
+    initialize,
     activeStepOrder,
     errors,
     getStepSubmission,
@@ -324,6 +322,7 @@ export function useViewByte(space: SpaceWithIntegrationsFragment, byteId: string
 }
 
 export interface UseViewByteHelper {
+  initialize: () => Promise<void>;
   activeStepOrder: number;
   errors: ByteSubmissionError;
   getStepSubmission: (stepUuid: string) => StepResponse | undefined;

@@ -5,5 +5,5 @@ interface Grid4ColsProps {
 }
 
 export const Grid4Cols: React.FC<Grid4ColsProps> = ({ children }) => {
-  return <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">{children}</div>;
+  return <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-5">{children}</div>;
 };
