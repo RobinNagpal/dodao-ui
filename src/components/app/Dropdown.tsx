@@ -3,8 +3,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
 const StyledDropdown = styled.div`
-  position: relative;
-
+  position: inherit;
+  display: block;
+  width: 100%;
   .button {
     cursor: pointer;
 
@@ -87,6 +88,7 @@ interface DropdownProps extends PropsWithChildren {
   items: Array<DropdownItemType>;
   top?: string;
   right?: string;
+  left?: string;
   subMenuClass?: string;
   hideDropdown?: boolean;
   onSelect?: (action: string) => void;
@@ -97,7 +99,8 @@ interface DropdownProps extends PropsWithChildren {
 function Dropdown({
   items,
   top = '0',
-  right = '0',
+  // right = '0',
+  left = '0',
   subMenuClass = '',
   hideDropdown = false,
   onSelect,
@@ -110,7 +113,7 @@ function Dropdown({
 
   const cssVars = {
     top: top,
-    right: right,
+    left: left,
   };
 
   const handleClick = (action: string) => {

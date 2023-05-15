@@ -26,7 +26,7 @@ export function DesktopProfileMenu({ session }: ProfileMenuProps) {
   return (
     <Menu as="div" className="relative ml-3">
       <div>
-        <Menu.Button className="flex rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+        <Menu.Button className="flex rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
           <span className="sr-only">Open user menu</span>
           <Image className="h-10 w-10 rounded-full" src={`https://api.multiavatar.com/${session?.username || 'unknown'}.svg`} alt="" width={50} height={50} />
         </Menu.Button>
@@ -40,7 +40,7 @@ export function DesktopProfileMenu({ session }: ProfileMenuProps) {
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+        <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
           <ProfileMenuItem label="Your Profile" />
           <ProfileMenuItem label="Settings" />
           <ProfileMenuItem label="Sign out" onClick={() => logout()} />

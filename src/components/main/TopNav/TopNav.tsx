@@ -30,7 +30,7 @@ export default function TopNav() {
     <StyledDiv>
       <Disclosure
         as="nav"
-        className="bg-white shadow"
+        className="shadow"
         style={{
           backgroundColor: 'var(--bg-color)',
           color: 'var(--text-color)',

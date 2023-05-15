@@ -2389,7 +2389,7 @@
   resolved "https://registry.yarnpkg.com/@uiw/copy-to-clipboard/-/copy-to-clipboard-1.0.14.tgz#54fb8e7f43962fb57c48bb49631bac974a3e9e0b"
   integrity sha512-6szYjEU4xMkIqi4LPJLQIHBBBxazNxH0/slF1Ph4xtDtyeiJkIiNgr/PQxJX/REyWWLWllWTiCN491tnLWCOdA==
 
-"@uiw/react-markdown-preview@^4.1.5":
+"@uiw/react-markdown-preview@^4.1.13", "@uiw/react-markdown-preview@^4.1.5":
   version "4.1.13"
   resolved "https://registry.yarnpkg.com/@uiw/react-markdown-preview/-/react-markdown-preview-4.1.13.tgz#4882dda5d767b54aae9455e3159339c6989b36df"
   integrity sha512-fmIGvBpK6HJyDFf7EokjZSIS0713Bq5KwhOsZ8IkbCMYDcDThFlmMkTTqyzGjL3phrkP9ED5O63WSILzefqe6A==
@@ -8644,7 +8644,7 @@ react-is@^18.0.0:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-18.2.0.tgz#199431eeaaa2e09f86427efbb4f1473edb47609b"
   integrity sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==
 
-react-markdown@~8.0.0:
+react-markdown@^8.0.7, react-markdown@~8.0.0:
   version "8.0.7"
   resolved "https://registry.yarnpkg.com/react-markdown/-/react-markdown-8.0.7.tgz#c8dbd1b9ba5f1c5e7e5f2a44de465a3caafdf89b"
   integrity sha512-bvWbzG4MtOU62XqBx3Xx+zB2raaFFsq4mYiAzfjXJMEz2sixgeAfraA3tvzULF02ZdOMUOKTBFFaZJDDrq+BJQ==

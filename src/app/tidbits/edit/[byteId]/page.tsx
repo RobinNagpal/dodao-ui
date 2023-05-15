@@ -1,18 +1,22 @@
+'use client';
+
+import withSpace from '@/app/withSpace';
 import Block from '@/components/app/Block';
 import Button from '@/components/app/Button';
-import Dropdown from '@/components/app/Dropdown';
-import Icon from '@/components/app/Icon';
 import Input from '@/components/app/Input';
 import PageLoading from '@/components/app/PageLoading';
 import TextareaArray from '@/components/app/TextareaArray';
 import EditByteStepper from '@/components/byte/Edit/EditByteStepper';
 import { useEditByte } from '@/components/byte/Edit/useEditByte';
+import EllipsisDropdown, { EllipsisDropdownItem } from '@/components/core/dropdowns/EllipsisDropdown';
+import PageWrapper from '@/components/core/page/PageWrapper';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
-import SingleCardLayout from '@/layouts/SingleCardLayout';
 import { PublishStatus } from '@/types/deprecated/models/enums';
 import { ByteErrors } from '@/types/errors/byteErrors';
-import { ReactVueRouter } from '@/types/ReactVueRouter';
 import { useSession } from 'next-auth/react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import styled from 'styled-components';
 
 const ForceFloat = styled.div`
@@ -22,14 +26,17 @@ const ForceFloat = styled.div`
 
 export interface EditByteProps {
   space: SpaceWithIntegrationsFragment;
-  spaceLoading: boolean;
-  from: string;
-  reactVueRouter: ReactVueRouter;
-  byteId: string;
-  setAccountModalOpen: (shouldOpen: boolean) => void;
+  params: { byteId: string };
 }
 
-export default function Page({ space, reactVueRouter, byteId, setAccountModalOpen }: EditByteProps) {
+function EditByte(props: EditByteProps) {
+  const router = useRouter();
+  const setAccountModalOpen = (boolean: boolean) => {};
+  const {
+    space,
+    params: { byteId },
+  } = props;
+
   const { byteCreating, byteLoaded, byteRef: byte, byteErrors, handleSubmit, initialize, updateByteFunctions } = useEditByte(space, byteId || null);
   const { data: session } = useSession();
   const inputError = (field: keyof ByteErrors): string => {
@@ -37,18 +44,22 @@ export default function Page({ space, reactVueRouter, byteId, setAccountModalOpe
     return error ? error.toString() : '';
   };
 
+  useEffect(() => {
+    initialize();
+  }, [byteId]);
+
   const selectPublishStatus = (status: PublishStatus) => {
     updateByteFunctions.updateByteField('publishStatus', status);
   };
 
-  const byteStatuses = [
+  const byteStatuses: EllipsisDropdownItem[] = [
     {
-      text: 'Live',
-      action: PublishStatus.Live,
+      label: 'Live',
+      key: PublishStatus.Live,
     },
     {
-      text: 'Draft',
-      action: PublishStatus.Draft,
+      label: 'Draft',
+      key: PublishStatus.Draft,
     },
   ];
 
@@ -57,29 +68,23 @@ export default function Page({ space, reactVueRouter, byteId, setAccountModalOpe
   };
 
   const onClickBackButton = () => {
-    reactVueRouter.push(
-      byteId
-        ? {
-            name: 'viewByte',
-            state: {
-              key: space.id,
-              byteId: byteId,
-            },
-          }
-        : { name: 'bytes' }
-    );
+    if (!byteId) {
+      router.push(`/tidbits`);
+    } else {
+      router.push(`/tidbits/view/${byteId}/0`);
+    }
   };
 
   return (
-    <SingleCardLayout>
+    <PageWrapper className="border-2 border-amber-100">
       <div className="px-4 mb-4 md:px-0 overflow-hidden">
-        <a onClick={onClickBackButton} className="text-color">
-          <Icon name="back" size="22" className="!align-middle" />
+        <Link href={byte.id ? `/tidbits/view/${byteId}/0` : `/tidbits`} className="text-color">
+          <span className="mr-1 font-bold">&#8592;</span>
           {byte.id ? byte.name : 'Back to Bytes'}
-        </a>
+        </Link>
       </div>
       {byteLoaded ? (
-        <>
+        <div className="pb-10">
           <Block title="Basic Info" className="mt-4">
             <div className="mb-2">
               <Input modelValue={byte.name} error={inputError('name')} maxLength={32} onUpdate={(e) => updateByteFunctions.updateByteField('name', e)}>
@@ -95,22 +100,17 @@ export default function Page({ space, reactVueRouter, byteId, setAccountModalOpe
                 Excerpt*
               </Input>
 
-              <div className="status-wrapper mt-6">
-                <Dropdown
-                  top="2.5rem"
-                  right="2.5rem"
-                  className="mr-2 w-[5rem] status-drop-down"
-                  onSelect={(value) => selectPublishStatus(value as PublishStatus)}
-                  items={byteStatuses}
-                >
+              <div className="mt-4">
+                <div>Publish Status * </div>
+                <div className="flex justify-start ">
                   <div className="pr-1 select-none">{byte.publishStatus === 'Live' ? 'Live' : 'Draft'}</div>
-                </Dropdown>
-                <div className="input-label text-color mr-2 whitespace-nowrap absolute">
-                  <ForceFloat>Publish Status*</ForceFloat>
+                  <div className="ml-2">
+                    <EllipsisDropdown items={byteStatuses} onSelect={(value) => selectPublishStatus(value as PublishStatus)} />
+                  </div>
                 </div>
               </div>
-              <div className="mt-4">Admins</div>
 
+              <div className="mt-4">Admins</div>
               <TextareaArray
                 modelValue={byte.admins}
                 placeholder={`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`}
@@ -149,10 +149,12 @@ export default function Page({ space, reactVueRouter, byteId, setAccountModalOpe
           <Button onClick={clickSubmit} loading={!byteLoaded || byteCreating} className="block w-full" variant="contained" primary>
             Publish
           </Button>
-        </>
+        </div>
       ) : (
         <PageLoading />
       )}
-    </SingleCardLayout>
+    </PageWrapper>
   );
 }
+
+export default withSpace(EditByte);

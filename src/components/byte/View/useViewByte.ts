@@ -15,8 +15,7 @@ import { StepItemSubmissionType } from '@/types/deprecated/models/enums';
 import { ByteSubmissionError } from '@/types/errors/error';
 import { StepItemResponse, StepResponse, TempByteSubmission } from '@/utils/byte/TempByteSubmission';
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 export const LAST_STEP_UUID = 'LAST_STEP_UUID';
@@ -36,8 +35,6 @@ export function useViewByte(space: SpaceWithIntegrationsFragment, byteId: string
     isSubmitted: false,
     stepResponsesMap: {},
   });
-
-  const router = useRouter();
 
   const { data: byteData, loading: byteLoading, error: byteError, refetch } = useQueryByteDetailsQuery({ variables: { spaceId: space.id, byteId: byteId } });
   const { showNotification } = useNotificationContext();

@@ -171,7 +171,7 @@ function ByteStepperItem({ viewByteHelper, step, byte, space, setAccountModalOpe
   const showQuestionsCompletionWarning = nextButtonClicked && (!isQuestionAnswered() || !isDiscordConnected() || !isUserInputComplete());
 
   return (
-    <StepContent className="bg-white px-4 py-5 sm:px-6 flex flex-col justify-between w-full">
+    <StepContent className="px-4 py-5 sm:px-6 flex flex-col justify-between w-full">
       <div>
         <div className="flex justify-between">
           <div className="mt-2">

@@ -16,9 +16,9 @@ import { StepError } from '@/types/errors/error';
 import { emptyByte } from '@/utils/byte/EmptyByte';
 import { validateQuestion, validateUserInput } from '@/utils/stepItems/validateItems';
 import orderBy from 'lodash/orderBy';
-import { useCallback, useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useCallback, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { useRouter } from 'next/router';
 
 const questionContentLimit = 1024;
 const inputLabelLimit = 32;
@@ -81,10 +81,6 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
       setByteLoaded(true);
     }
   }, [byteId, space]);
-
-  useEffect(() => {
-    initialize();
-  }, [initialize]);
 
   // Add other
   const updateStep = useCallback((step: EditByteStep) => {
