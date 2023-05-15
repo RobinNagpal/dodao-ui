@@ -19,18 +19,11 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
-interface EditByteProps {
-  space: SpaceWithIntegrationsFragment;
-  params: { byteId: string };
-}
-
-function EditByte(props: EditByteProps) {
+function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteId: string } }) {
   const router = useRouter();
   const setAccountModalOpen = (boolean: boolean) => {};
-  const {
-    space,
-    params: { byteId },
-  } = props;
+  const { space, params } = props;
+  const byteId = params.byteId;
 
   const { byteCreating, byteLoaded, byteRef: byte, byteErrors, handleSubmit, initialize, updateByteFunctions } = useEditByte(space, byteId || null);
   const { data: session } = useSession();

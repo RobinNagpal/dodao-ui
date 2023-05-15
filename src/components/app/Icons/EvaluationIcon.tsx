@@ -15,7 +15,7 @@ export default function EvaluationIcon() {
       x="0px"
       y="0px"
       viewBox="0 0 499.996 499.996"
-      style={{ enableBackground: 'new 0 0 499.996 499.996' }}
+      enableBackground={'new 0 0 499.996 499.996'}
       xmlSpace="preserve"
     >
       <g>

@@ -7,8 +7,8 @@ export interface SpaceProps {
   space: SpaceWithIntegrationsFragment;
 }
 
-function withSpace<P extends object>(WrappedComponent: React.ComponentType<P & SpaceProps>) {
-  const SpaceHOC: FC<P> = (props) => {
+function withSpace<P extends SpaceProps>(WrappedComponent: React.ComponentType<P & SpaceProps>): React.FC<Omit<P, 'space'>> {
+  const SpaceHOC: FC<Omit<P, 'space'>> = (props) => {
     const { space } = useSpace();
 
     return space ? <WrappedComponent {...(props as P)} space={space} /> : <FullPageLoader />;
