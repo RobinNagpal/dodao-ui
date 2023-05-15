@@ -1,8 +1,8 @@
 import { CreateSignedUrlInput, useCreateSignedUrlMutation } from '@/graphql/generated/generated-types';
-import '@/styles/markdown_editor.css';
+
 import { getUploadedImageUrlFromSingedUrl } from '@/utils/upload/getUploadedImageUrlFromSingedUrl';
 import MDEditor from '@uiw/react-md-editor';
-import axios from 'axios/index';
+import axios from 'axios';
 import React, { SetStateAction, useState } from 'react';
 import styled from 'styled-components';
 
@@ -20,8 +20,6 @@ interface MarkdownEditorProps {
 }
 
 const MainDiv = styled.div`
-  font-size: 30px;
-
   .w-md-editor-toolbar {
     background-color: var(--bg-color);
     border-color: var(--block-bg);
@@ -32,7 +30,6 @@ const MainDiv = styled.div`
           color: var(--text-color);
           width: 20px;
           height: 20px;
-          //padding: 0 4px;
         }
       }
       font-size: 20px;
@@ -51,11 +48,9 @@ const MainDiv = styled.div`
     border-color: var(--border-color);
   }
   .wmde-markdown-color {
-    margin-left: -15px;
-    margin-top: -13px;
     background-color: var(--block-bg);
     color: var(--text-color);
-    position: relative;
+    width: 100%;
     --color-prettylights-syntax-comment: var(--text-color);
     --color-prettylights-syntax-constant: var(--text-color);
     --color-prettylights-syntax-entity: var(--text-color);
@@ -105,7 +100,6 @@ const MainDiv = styled.div`
   textarea {
     background-color: transparent;
     color: var(--text-color);
-    line-height: 1.5;
   }
   .language-markdown {
     background-color: var(--block-bg);

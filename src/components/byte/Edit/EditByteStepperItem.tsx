@@ -3,7 +3,7 @@ import CreateConnectDiscord from '@/components/app/Common/CreateDiscordConnect';
 import CreateQuestion from '@/components/app/Common/CreateQuestion';
 import CreateUserInput from '@/components/app/Common/CreateUserInput';
 import { IconTypes } from '@/components/app/Icons/IconTypes';
-import MarkdownEditor from '@/components/app/MarkdownEditor';
+import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
 import AddStepItemModal from '@/components/app/Modal/AddStepItemModal';
 import { EditByteStep, EditByteType } from '@/components/byte/Edit/useEditByte';
 import { ByteQuestionFragment, ByteUserInputFragment, SpaceWithIntegrationsFragment, StepItemInputGenericInput } from '@/graphql/generated/generated-types';
@@ -14,15 +14,6 @@ import isEqual from 'lodash/isEqual';
 import { useState } from 'react';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
-
-const BorderContainer = styled.div<{ error: boolean }>`
-  border: ${(props) => (props.error ? '1px solid red' : '1px solid #e5e7eb')};
-  border-radius: 0.375rem;
-  padding: 1rem;
-  margin-bottom: 1rem;
-  margin-left: 1rem;
-  width: 100%;
-`;
 
 interface EditByteStepperItemProps {
   space: SpaceWithIntegrationsFragment;
@@ -36,6 +27,10 @@ interface EditByteStepperItemProps {
   removeStep: (uuid: string) => void;
   updateStep: (step: EditByteStep) => void;
 }
+
+const StyledStepItemContainer = styled.div`
+  width: calc(100% - 3rem);
+`;
 
 export default function EditByteStepperItem({
   space,
@@ -313,7 +308,7 @@ export default function EditByteStepperItem({
   }
 
   return (
-    <div className="w-full">
+    <StyledStepItemContainer className="w-full">
       <div className={`border rounded rounded-md p-4 mb-4 ml-4 w-full ${byteErrors?.steps?.[step.uuid] ? 'error-event-border' : ''}`}>
         <h3 className="float-left">Step {step.order + 1}</h3>
         <div className="h-10" style={{ minHeight: '40px' }}>
@@ -403,6 +398,6 @@ export default function EditByteStepperItem({
           onAddDiscord={addDiscord}
         />
       )}
-    </div>
+    </StyledStepItemContainer>
   );
 }

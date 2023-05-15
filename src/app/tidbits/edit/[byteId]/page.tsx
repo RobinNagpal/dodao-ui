@@ -17,12 +17,6 @@ import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import styled from 'styled-components';
-
-const ForceFloat = styled.div`
-  transform: translatey(-44px);
-  transition: transform 0.1s linear, font-size 0.1s linear;
-`;
 
 export interface EditByteProps {
   space: SpaceWithIntegrationsFragment;
@@ -76,7 +70,7 @@ function EditByte(props: EditByteProps) {
   };
 
   return (
-    <PageWrapper className="border-2 border-amber-100">
+    <PageWrapper>
       <div className="px-4 mb-4 md:px-0 overflow-hidden">
         <Link href={byte.id ? `/tidbits/view/${byteId}/0` : `/tidbits`} className="text-color">
           <span className="mr-1 font-bold">&#8592;</span>

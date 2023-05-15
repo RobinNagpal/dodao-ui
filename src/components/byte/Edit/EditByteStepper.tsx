@@ -2,6 +2,7 @@ import { ByteDetailsFragment, SpaceWithIntegrationsFragment } from '@/graphql/ge
 import { UserDiscordConnectType } from '@/types/deprecated/models/enums';
 import { ByteErrors } from '@/types/errors/byteErrors';
 import { CSSProperties, useMemo } from 'react';
+import styled from 'styled-components';
 import EditByteStepperItem from './EditByteStepperItem';
 import { EditByteType, UpdateByteFunctions } from './useEditByte';
 
@@ -13,6 +14,18 @@ interface EditByteStepperProps {
   successColor?: string;
   updateByteFunctions: UpdateByteFunctions;
 }
+
+const StyledOl = styled.ol`
+  list-style: none;
+`;
+
+const StyledLi = styled.ol`
+  list-style: none;
+`;
+
+const StepperItemContainer = styled.div`
+  width: 100%;
+`;
 
 function EditByteStepper({ space, byte, byteErrors, errorColor = '#d32f2f', successColor = '#00813a', updateByteFunctions }: EditByteStepperProps) {
   const styleObject: CSSProperties = useMemo(() => {
@@ -35,10 +48,10 @@ function EditByteStepper({ space, byte, byteErrors, errorColor = '#d32f2f', succ
 
   return (
     <div className="w-full flex flex-row">
-      <ol className="border-l-2 border-primary m-5 w-full" style={styleObject}>
+      <StyledOl className="border-primary w-full" style={styleObject}>
         {byte.steps.map((step) => (
-          <li className="ml-10 mb-2 w-full flex" key={step.uuid}>
-            <div className="bg-primary w-6 h-6 flex items-center justify-center rounded-full -ml-4">
+          <StyledLi className="mb-2 w-full flex" key={step.uuid}>
+            <div className="bg-primary w-6 h-6 flex items-center justify-center rounded-full">
               <svg
                 aria-hidden="true"
                 focusable="false"
@@ -54,22 +67,24 @@ function EditByteStepper({ space, byte, byteErrors, errorColor = '#d32f2f', succ
                 ></path>
               </svg>
             </div>
-            <EditByteStepperItem
-              space={space}
-              byte={byte}
-              byteErrors={byteErrors}
-              byteHasDiscordEnabled={byteHasDiscordEnabled}
-              step={step}
-              stepErrors={byteErrors?.steps?.[step.order]}
-              updateStep={updateByteFunctions.updateStep}
-              moveStepUp={updateByteFunctions.moveStepUp}
-              moveStepDown={updateByteFunctions.moveStepDown}
-              removeStep={updateByteFunctions.removeStep}
-            />
-          </li>
+            <StepperItemContainer>
+              <EditByteStepperItem
+                space={space}
+                byte={byte}
+                byteErrors={byteErrors}
+                byteHasDiscordEnabled={byteHasDiscordEnabled}
+                step={step}
+                stepErrors={byteErrors?.steps?.[step.order]}
+                updateStep={updateByteFunctions.updateStep}
+                moveStepUp={updateByteFunctions.moveStepUp}
+                moveStepDown={updateByteFunctions.moveStepDown}
+                removeStep={updateByteFunctions.removeStep}
+              />
+            </StepperItemContainer>
+          </StyledLi>
         ))}
-        <li className="ml-10 mb-10 flex w-full">
-          <div className="bg-primary w-6 h-6 flex items-center justify-center rounded-full -ml-4 my-2">
+        <li className="mb-10 flex">
+          <div className="bg-primary w-6 h-6 flex items-center justify-center rounded-full my-2">
             <svg
               aria-hidden="true"
               focusable="false"
@@ -92,7 +107,7 @@ function EditByteStepper({ space, byte, byteErrors, errorColor = '#d32f2f', succ
             <span className="mb-1">+</span>
           </button>
         </li>
-      </ol>
+      </StyledOl>
     </div>
   );
 }
