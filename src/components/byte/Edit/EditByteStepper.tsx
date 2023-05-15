@@ -1,4 +1,4 @@
-import { ByteDetailsFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { UserDiscordConnectType } from '@/types/deprecated/models/enums';
 import { ByteErrors } from '@/types/errors/byteErrors';
 import { CSSProperties, useMemo } from 'react';
@@ -17,6 +17,7 @@ interface EditByteStepperProps {
 
 const StyledOl = styled.ol`
   list-style: none;
+  border-color: var(--primary-color);
 `;
 
 const StyledLi = styled.ol`
@@ -27,6 +28,14 @@ const StepperItemContainer = styled.div`
   width: 100%;
 `;
 
+const SvgContainer = styled.div`
+  background-color: var(--primary-color);
+`;
+
+const StyledButton = styled.button`
+  background-color: var(--primary-color);
+  color: var(--text-color);
+`;
 function EditByteStepper({ space, byte, byteErrors, errorColor = '#d32f2f', successColor = '#00813a', updateByteFunctions }: EditByteStepperProps) {
   const styleObject: CSSProperties = useMemo(() => {
     return {
@@ -48,10 +57,10 @@ function EditByteStepper({ space, byte, byteErrors, errorColor = '#d32f2f', succ
 
   return (
     <div className="w-full flex flex-row">
-      <StyledOl className="border-primary w-full" style={styleObject}>
+      <StyledOl className="border-l-2 border-primary w-full" style={styleObject}>
         {byte.steps.map((step) => (
           <StyledLi className="mb-2 w-full flex" key={step.uuid}>
-            <div className="bg-primary w-6 h-6 flex items-center justify-center rounded-full">
+            <SvgContainer className="bg-primary w-6 h-6 flex items-center justify-center rounded-full -ml-4">
               <svg
                 aria-hidden="true"
                 focusable="false"
@@ -66,7 +75,7 @@ function EditByteStepper({ space, byte, byteErrors, errorColor = '#d32f2f', succ
                   d="M0 464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V192H0v272zm64-192c0-8.8 7.2-16 16-16h288c8.8 0 16 7.2 16 16v64c0 8.8-7.2 16-16 16H80c-8.8 0-16-7.2-16-16v-64zM400 64h-48V16c0-8.8-7.2-16-16-16h-32c-8.8 0-16 7.2-16 16v48H160V16c0-8.8-7.2-16-16-16h-32c-8.8 0-16 7.2-16 16v48H48C21.5 64 0 85.5 0 112v48h448v-48c0-26.5-21.5-48-48-48z"
                 ></path>
               </svg>
-            </div>
+            </SvgContainer>
             <StepperItemContainer>
               <EditByteStepperItem
                 space={space}
@@ -84,7 +93,7 @@ function EditByteStepper({ space, byte, byteErrors, errorColor = '#d32f2f', succ
           </StyledLi>
         ))}
         <li className="mb-10 flex">
-          <div className="bg-primary w-6 h-6 flex items-center justify-center rounded-full my-2">
+          <SvgContainer className="bg-primary w-6 h-6 flex items-center justify-center rounded-full my-2 -ml-4">
             <svg
               aria-hidden="true"
               focusable="false"
@@ -99,13 +108,13 @@ function EditByteStepper({ space, byte, byteErrors, errorColor = '#d32f2f', succ
                 d="M0 464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V192H0v272zm64-192c0-8.8 7.2-16 16-16h288c8.8 0 16 7.2 16 16v64c0 8.8-7.2 16-16 16H80c-8.8 0-16-7.2-16-16v-64zM400 64h-48V16c0-8.8-7.2-16-16-16h-32c-8.8 0-16 7.2-16 16v48H160V16c0-8.8-7.2-16-16-16h-32c-8.8 0-16 7.2-16 16v48H48C21.5 64 0 85.5 0 112v48h448v-48c0-26.5-21.5-48-48-48z"
               ></path>
             </svg>
-          </div>
-          <button
+          </SvgContainer>
+          <StyledButton
             onClick={updateByteFunctions.addStep}
             className="m-auto rounded-full text-2xl bg-primary w-[48px] text-white flex items-center font-bold justify-center h-[48px]"
           >
             <span className="mb-1">+</span>
-          </button>
+          </StyledButton>
         </li>
       </StyledOl>
     </div>

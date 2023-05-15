@@ -1,13 +1,13 @@
 import React, { PropsWithChildren } from 'react';
+import styled from 'styled-components';
 
+const CardContainer = styled.div`
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-color);
+  border-radius: 16px;
+`;
 const SingleCardLayout = ({ children }: PropsWithChildren) => {
-  return (
-    <div className="section mt-16 flex-auto box-border absolute inset-x-0">
-      <div className="mx-auto max-w-7xl">
-        <div className="rounded-2xl shadow-lg border border-gray-200 p-6">{children}</div>
-      </div>
-    </div>
-  );
+  return <CardContainer className="px-6 py-4 rounded-2xl shadow-lg">{children}</CardContainer>;
 };
 
 export default SingleCardLayout;
