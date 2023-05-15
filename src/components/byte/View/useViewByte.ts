@@ -89,7 +89,7 @@ export function useViewByte(space: SpaceWithIntegrationsFragment, byteId: string
 
   function setActiveStep(order: number) {
     setActiveStepOrder(order);
-    router.push(`/tidbits/view/${byteId}/${order}`);
+    history.replaceState(null, '', `/tidbits/view/${byteId}/${order}`);
   }
 
   function getStepSubmission(stepUuid: string): StepResponse | undefined {
@@ -119,13 +119,14 @@ export function useViewByte(space: SpaceWithIntegrationsFragment, byteId: string
       };
     });
 
-    router.replace(`/tidbits/view/${byteId}/${nextStepOrder}`);
+    history.replaceState(null, '', `/tidbits/view/${byteId}/${nextStepOrder}`);
   }
+
   function goToPreviousStep(currentStep: ByteStepFragment) {
     const prevStepOrder = currentStep.order - 1;
     setActiveStepOrder(prevStepOrder);
 
-    router.push(`/tidbits/view/${byteId}/${prevStepOrder}`);
+    history.replaceState(null, '', `/tidbits/view/${byteId}/${prevStepOrder}`);
   }
 
   function selectAnswer(stepUuid: string, questionUuid: string, selectedAnswers: string[]) {

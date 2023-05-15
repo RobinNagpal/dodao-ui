@@ -29,9 +29,9 @@ export interface EditByteProps {
   setAccountModalOpen: (shouldOpen: boolean) => void;
 }
 
-export default function EditByte({ space, reactVueRouter, byteId, setAccountModalOpen }: EditByteProps) {
+export default function Page({ space, reactVueRouter, byteId, setAccountModalOpen }: EditByteProps) {
   const { byteCreating, byteLoaded, byteRef: byte, byteErrors, handleSubmit, initialize, updateByteFunctions } = useEditByte(space, byteId || null);
-  const { data: sesstion } = useSession();
+  const { data: session } = useSession();
   const inputError = (field: keyof ByteErrors): string => {
     const error = byteErrors?.[field];
     return error ? error.toString() : '';
@@ -53,7 +53,7 @@ export default function EditByte({ space, reactVueRouter, byteId, setAccountModa
   ];
 
   const clickSubmit = () => {
-    !sesstion?.username ? setAccountModalOpen(true) : handleSubmit();
+    !session?.username ? setAccountModalOpen(true) : handleSubmit();
   };
 
   const onClickBackButton = () => {
