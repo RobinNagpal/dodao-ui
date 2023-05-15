@@ -47,6 +47,10 @@ const StepContent = styled.div`
   }
 `;
 
+const StyledH1 = styled.h1`
+  color: var(--heading-color);
+`;
+
 interface ByteStepperItemProps {
   byte: ByteDetailsFragment;
   step: ByteStepFragment;
@@ -171,7 +175,7 @@ function ByteStepperItem({ viewByteHelper, step, byte, space, setAccountModalOpe
       <div>
         <div className="flex justify-between">
           <div className="mt-2">
-            <h1 className="mb-2">{byte.name}</h1>
+            <StyledH1 className="mb-2 text-4xl">{byte.name}</StyledH1>
           </div>
           <div className="ml-6">
             <CircleProgress percentage={isByteCompletedStep ? 100 : round(((step.order + 1) * 100) / byte.steps.length)} />

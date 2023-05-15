@@ -2,12 +2,10 @@
 
 import withSpace from '@/app/withSpace';
 import Block from '@/components/app/Block';
-import Dropdown from '@/components/app/Dropdown';
-
-import Icon from '@/components/app/Icon';
 import PageLoading from '@/components/app/PageLoading';
 import ByteStepper from '@/components/byte/View/ByteStepper';
 import { useViewByte } from '@/components/byte/View/useViewByte';
+import EllipsisDropdown from '@/components/core/dropdowns/EllipsisDropdown';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -25,10 +23,6 @@ const StyledByteCard = styled.div`
   }
 `;
 
-const ThreeDotWrapper = styled.div`
-  padding-right: 0.75rem;
-`;
-
 const ByteView = ({ params, space }: { params: { byteIdAndStep: string[] }; space: SpaceWithIntegrationsFragment }) => {
   const { byteIdAndStep } = params;
 
@@ -41,20 +35,16 @@ const ByteView = ({ params, space }: { params: { byteIdAndStep: string[] }; spac
   }
 
   const viewByteHelper = useViewByte(space, byteId, stepOrder);
+
   useEffect(() => {
+    console.log('viewByteHelper.initialize()', 'viewByteHelper.initialize() called');
     viewByteHelper.initialize();
   }, [byteId]);
-  const threeDotItems = [{ text: 'Edit', action: 'edit' }];
+
+  const threeDotItems = [{ label: 'Edit', key: 'edit' }];
 
   const byte = viewByteHelper.byteRef;
   const router = useRouter();
-
-  function selectFromThreedotDropdown(e: string) {
-    if (e === 'edit') {
-      console.log('got to edit byte', byte.id);
-      router.push(`/tidbits/edit/${byteId}`);
-    }
-  }
 
   return (
     <ByteContainer className="pt-4 flex flex-col justify-center items-center byte-container w-full">
@@ -68,11 +58,12 @@ const ByteView = ({ params, space }: { params: { byteIdAndStep: string[] }; spac
                   All Tidbits
                 </Link>
                 <div className="ml-3">
-                  {isAdmin && (
-                    <Dropdown top="2.5rem" right="1.3rem" className="float-right mr-2" items={threeDotItems} onSelect={selectFromThreedotDropdown}>
-                      <ThreeDotWrapper className="pr-3">{byte && <Icon name="threedots" size="25" />}</ThreeDotWrapper>
-                    </Dropdown>
-                  )}
+                  <EllipsisDropdown
+                    items={threeDotItems}
+                    onSelect={(key) => {
+                      router.push(`/tidbits/edit/${byteId}`);
+                    }}
+                  />
                 </div>
               </div>
             )}
