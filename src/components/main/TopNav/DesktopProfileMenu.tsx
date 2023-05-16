@@ -4,16 +4,22 @@ import classNames from '@/utils/classNames';
 import { Menu, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
 import Image from 'next/image';
+import styled from 'styled-components';
 
 interface ProfileMenuProps {
   session: Session;
 }
 
+const StyledMenuItems = styled(Menu.Items)`
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+`;
+
 function ProfileMenuItem({ label, onClick }: { label: string; onClick?: () => void }) {
   return (
     <Menu.Item>
       {({ active }) => (
-        <a href="#" onClick={onClick} className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}>
+        <a href="#" onClick={onClick} className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-300')}>
           {label}
         </a>
       )}
@@ -40,11 +46,11 @@ export function DesktopProfileMenu({ session }: ProfileMenuProps) {
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+        <StyledMenuItems className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
           <ProfileMenuItem label="Your Profile" />
           <ProfileMenuItem label="Settings" />
           <ProfileMenuItem label="Sign out" onClick={() => logout()} />
-        </Menu.Items>
+        </StyledMenuItems>
       </Transition>
     </Menu>
   );

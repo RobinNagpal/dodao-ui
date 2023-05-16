@@ -58,7 +58,7 @@ function EditByteStepper({ space, byte, byteErrors, errorColor = '#d32f2f', succ
   return (
     <div className="w-full flex flex-row">
       <StyledOl className="border-l-2 border-primary w-full" style={styleObject}>
-        {byte.steps.map((step) => (
+        {byte.steps.map((step, index) => (
           <StyledLi className="mb-2 w-full flex" key={step.uuid}>
             <SvgContainer className="bg-primary w-6 h-6 flex items-center justify-center rounded-full -ml-4">
               <svg
@@ -83,7 +83,8 @@ function EditByteStepper({ space, byte, byteErrors, errorColor = '#d32f2f', succ
                 byteErrors={byteErrors}
                 byteHasDiscordEnabled={byteHasDiscordEnabled}
                 step={step}
-                stepErrors={byteErrors?.steps?.[step.order]}
+                stepIndex={index}
+                stepErrors={byteErrors?.steps?.[step.uuid]}
                 updateStep={updateByteFunctions.updateStep}
                 moveStepUp={updateByteFunctions.moveStepUp}
                 moveStepDown={updateByteFunctions.moveStepDown}

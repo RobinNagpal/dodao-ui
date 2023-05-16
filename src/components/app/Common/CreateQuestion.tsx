@@ -5,6 +5,7 @@ import Icon from '@/components/app/Icon';
 import DeleteIcon from '@/components/app/Icons/DeleteIcon';
 import Input from '@/components/app/Input';
 import TextareaAutosize from '@/components/app/TextareaAutosize';
+import { ByteQuestion } from '@/graphql/generated/generated-types';
 import { QuestionError } from '@/types/errors/error';
 import { QuestionType } from '@/types/deprecated/models/enums';
 import { GuideQuestion, GuideStepItem } from '@/types/deprecated/models/GuideModel';
@@ -14,7 +15,7 @@ import SidebarButton from '@/components/app/Button/SidebarButton';
 
 interface QuestionComponentProps {
   addChoice: (uuid: string) => void;
-  item: GuideStepItem;
+  item: GuideStepItem | ByteQuestion;
   questionErrors?: QuestionError;
   removeChoice?: (uuid: string, key: string) => void;
   removeQuestion?: (uuid: string) => void;

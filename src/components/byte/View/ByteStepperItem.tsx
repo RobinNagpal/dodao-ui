@@ -60,15 +60,16 @@ interface ByteStepperItemProps {
 }
 
 function ByteStepperItem({ viewByteHelper, step, byte, space, setAccountModalOpen }: ByteStepperItemProps) {
+  const { activeStepOrder } = viewByteHelper;
   const { $t: t } = useI18();
   const { showNotification } = useNotification();
 
   const { data: session } = useSession();
   const renderer = getMarkedRenderer();
 
-  const isNotFirstStep = step.order !== 0;
+  const isNotFirstStep = activeStepOrder !== 0;
 
-  const isLastStep = byte.steps.length - 2 === step.order;
+  const isLastStep = byte.steps.length - 2 === activeStepOrder;
 
   const isByteCompletedStep = step.uuid === LAST_STEP_UUID;
 
@@ -178,7 +179,7 @@ function ByteStepperItem({ viewByteHelper, step, byte, space, setAccountModalOpe
             <StyledH1 className="mb-2 text-4xl">{byte.name}</StyledH1>
           </div>
           <div className="ml-6">
-            <CircleProgress percentage={isByteCompletedStep ? 100 : round(((step.order + 1) * 100) / byte.steps.length)} />
+            <CircleProgress percentage={isByteCompletedStep ? 100 : round(((activeStepOrder + 1) * 100) / byte.steps.length)} />
           </div>
         </div>
 
@@ -208,7 +209,7 @@ function ByteStepperItem({ viewByteHelper, step, byte, space, setAccountModalOpe
                   spaceId={space.id}
                   guideUuid={byte.id}
                   stepUuid={step.uuid}
-                  stepOrder={step.order}
+                  stepOrder={activeStepOrder}
                 />
               );
             }

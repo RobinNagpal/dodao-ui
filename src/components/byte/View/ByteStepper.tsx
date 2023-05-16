@@ -19,7 +19,7 @@ const Container = styled.div`
 
 function ByteViewStepper({ viewByteHelper, byte, space, setAccountModalOpen }: Props) {
   const activeStep: ByteStepFragment = useMemo(() => {
-    return byte.steps.find((step) => step.order === viewByteHelper.activeStepOrder) || byte.steps[0];
+    return byte.steps?.[viewByteHelper.activeStepOrder] || byte.steps[0];
   }, [viewByteHelper.activeStepOrder, byte.steps]);
 
   return (

@@ -14,8 +14,8 @@ import { useExtendedSpaceByDomainQuery } from '@/graphql/generated/generated-typ
 import client from '@/utils/apolloClient';
 import { ApolloProvider } from '@apollo/client';
 import { Session } from 'next-auth';
-import { SessionProvider } from 'next-auth/react';
-import { useEffect } from 'react';
+import { SessionProvider, useSession } from 'next-auth/react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import './globals.css';
 
@@ -75,7 +75,6 @@ const StyledMain = styled.main`
 
 function ChildLayout({ children, session }: InternalLayoutProps) {
   const origin = typeof window !== 'undefined' && window.location.hostname ? window.location.hostname : '';
-
   const { data } = useExtendedSpaceByDomainQuery({
     client,
     variables: { domain: origin },
