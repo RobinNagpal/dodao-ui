@@ -6,7 +6,13 @@ import { IconTypes } from '@/components/app/Icons/IconTypes';
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
 import AddStepItemModal from '@/components/app/Modal/AddStepItemModal';
 import { EditByteStep, EditByteType } from '@/components/byte/Edit/useEditByte';
-import { ByteQuestionFragment, ByteUserInputFragment, SpaceWithIntegrationsFragment, StepItemInputGenericInput } from '@/graphql/generated/generated-types';
+import {
+  ByteQuestion,
+  ByteQuestionFragment,
+  ByteUserInputFragment,
+  SpaceWithIntegrationsFragment,
+  StepItemInputGenericInput,
+} from '@/graphql/generated/generated-types';
 import { InputType, QuestionType, UserDiscordConnectType } from '@/types/deprecated/models/enums';
 import { ByteErrors } from '@/types/errors/byteErrors';
 import { QuestionError, StepError } from '@/types/errors/error';
@@ -20,6 +26,7 @@ interface EditByteStepperItemProps {
   byte: EditByteType;
   byteErrors?: ByteErrors;
   step: EditByteStep;
+  stepIndex: number;
   stepErrors?: StepError;
   byteHasDiscordEnabled: boolean;
   moveStepUp: (uuid: string) => void;
@@ -37,6 +44,7 @@ export default function EditByteStepperItem({
   byte,
   byteErrors,
   step,
+  stepIndex,
   stepErrors,
   byteHasDiscordEnabled,
   moveStepUp,
@@ -45,14 +53,6 @@ export default function EditByteStepperItem({
   updateStep,
 }: EditByteStepperItemProps) {
   const [modalByteInputOrQuestionOpen, setModalByteInputOrQuestionOpen] = useState(false);
-
-  const inputError = (field: string) => {
-    return stepErrors?.stepItems?.[field];
-  };
-
-  const updateStepName = (name: string) => {
-    updateStep({ ...step, name });
-  };
 
   const updateStepContent = (content: string) => {
     updateStep({ ...step, content });
@@ -103,12 +103,10 @@ export default function EditByteStepperItem({
       ): StepItemInputGenericInput & {
         isQuestion: boolean;
         isDiscord: boolean;
-        order: number;
       } => ({
         ...q,
         isQuestion: q.type === QuestionType.MultipleChoice || q.type === QuestionType.SingleChoice,
         isDiscord: q.type === UserDiscordConnectType,
-        order: q.order || index,
       })
     ),
   ];
@@ -289,7 +287,6 @@ export default function EditByteStepperItem({
     const input: ByteUserInputFragment = {
       uuid: uuidv4(),
       label: 'Label',
-      order: step.stepItems.length,
       type: type,
       required: false,
     };
@@ -310,7 +307,7 @@ export default function EditByteStepperItem({
   return (
     <StyledStepItemContainer className="w-full">
       <div className={`border rounded rounded-md p-4 mb-4 ml-4 w-full ${byteErrors?.steps?.[step.uuid] ? 'error-event-border' : ''}`}>
-        <h3 className="float-left">Step {step.order + 1}</h3>
+        <h3 className="float-left">Step {stepIndex + 1}</h3>
         <div className="h-10" style={{ minHeight: '40px' }}>
           <IconButton
             className="float-right ml-2"
@@ -319,12 +316,12 @@ export default function EditByteStepperItem({
             disabled={byte.steps.length === 1}
             onClick={() => removeStep(step.uuid)}
           />
-          <IconButton className="float-right ml-2" iconName={IconTypes.MoveUp} removeBorder disabled={step.order === 0} onClick={() => moveStepUp(step.uuid)} />
+          <IconButton className="float-right ml-2" iconName={IconTypes.MoveUp} removeBorder disabled={stepIndex === 0} onClick={() => moveStepUp(step.uuid)} />
           <IconButton
             className="float-right ml-2"
             iconName={IconTypes.MoveDown}
             removeBorder
-            disabled={step.order + 1 === byte.steps.length}
+            disabled={stepIndex + 1 === byte.steps.length}
             onClick={() => moveStepDown(step.uuid)}
           />
           <IconButton
@@ -352,14 +349,14 @@ export default function EditByteStepperItem({
             <>
               <CreateQuestion
                 addChoice={addChoice}
-                item={stepItem}
+                item={stepItem as ByteQuestion}
                 removeChoice={removeChoice}
                 removeQuestion={removeStepItem}
                 setAnswer={setAnswer}
                 updateChoiceContent={updateChoiceContent}
                 updateQuestionDescription={updateQuestionDescription}
                 updateAnswers={updateAnswers}
-                questionErrors={stepErrors?.stepItems?.[stepItem.order] as QuestionError}
+                questionErrors={stepErrors?.stepItems?.[stepItem.uuid] as QuestionError}
                 updateQuestionType={updateQuestionType}
               />
               <MarkdownEditor
@@ -367,7 +364,7 @@ export default function EditByteStepperItem({
                 modelValue={stepItem.explanation || ''}
                 placeholder="Explanation (2-3 lines)"
                 editorStyles={{ height: '150px' }}
-                error={!!stepErrors?.stepItems?.[stepItem.order]}
+                error={!!stepErrors?.stepItems?.[stepItem.uuid]}
                 onUpdateModelValue={(content) => updateExplanation(stepItem.uuid, content)}
                 spaceId={space.id}
                 objectId={`${byte.id}/${stepItem.uuid}`}
@@ -380,7 +377,7 @@ export default function EditByteStepperItem({
             <CreateUserInput
               removeUserInput={removeStepItem}
               item={{ ...stepItem, order: index }}
-              userInputErrors={stepErrors?.stepItems?.[stepItem.order]}
+              userInputErrors={stepErrors?.stepItems?.[stepItem.uuid]}
               updateUserInputLabel={updateUserInputLabel}
               updateUserInputPrivate={updateUserInputPrivate}
               updateUserInputRequired={updateUserInputRequired}

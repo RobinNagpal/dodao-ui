@@ -82,7 +82,6 @@ type ByteQuestion {
   choices: [QuestionChoice!]!
   content: String!
   explanation: String!
-  order: Int!
   type: String!
   uuid: String!
 }
@@ -90,7 +89,6 @@ type ByteQuestion {
 type ByteStep {
   content: String!
   name: String!
-  order: Int!
   stepItems: [ByteStepItem!]!
   uuid: String!
 }
@@ -99,7 +97,6 @@ input ByteStepInput {
   content: String!
   explanation: String
   name: String!
-  order: Int!
   stepItems: [StepItemInputGenericInput!]!
   uuid: String!
 }
@@ -150,7 +147,6 @@ input ByteSubmissionInput {
 
 type ByteUserInput {
   label: String!
-  order: Int!
   required: Boolean!
   type: String!
   uuid: String!
@@ -698,6 +694,37 @@ type Mutation {
   upsertTimeline(input: UpsertTimelineInput!, spaceId: String!): Timeline!
 }
 
+input OpenAIChatMessageInput {
+  content: String!
+  role: String!
+}
+
+type OpenAIChatResponse {
+  choices: [OpenAIChoice!]!
+  created: Int!
+  id: ID!
+  model: String!
+  object: String!
+  usage: OpenAIUsage!
+}
+
+type OpenAIChoice {
+  finish_reason: String!
+  index: Int!
+  message: OpenAIMessage!
+}
+
+type OpenAIMessage {
+  content: String!
+  role: String!
+}
+
+type OpenAIUsage {
+  completion_tokens: Int!
+  prompt_tokens: Int!
+  total_tokens: Int!
+}
+
 enum OrderDirection {
   asc
   desc
@@ -717,6 +744,7 @@ type Query {
   guide(spaceId: String!, uuid: String!): Guide!
   guideSubmissions(guideUuid: String!): [GuideSubmission!]!
   guides(spaceId: String!): [Guide!]
+  queryOpenAIChat(messages: [OpenAIChatMessageInput!]!): OpenAIChatResponse
   rawGitCourse(key: String!, spaceId: String!): RawGitCourse!
   simulation(simulationId: String!, spaceId: String!): Simulation!
   simulations(spaceId: String!): [Simulation!]!
@@ -731,13 +759,11 @@ type Query {
 type QuestionChoice {
   content: String!
   key: String!
-  order: Int!
 }
 
 input QuestionChoiceInput {
   content: String!
   key: String!
-  order: Int!
 }
 
 type RawGitCourse {
@@ -842,7 +868,6 @@ input StepItemInputGenericInput {
   content: String
   explanation: String
   label: String
-  order: Int
   questionType: String
   required: Boolean
   type: String!

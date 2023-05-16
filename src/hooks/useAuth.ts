@@ -50,13 +50,17 @@ export function useAuth() {
         publicAddress,
         signedNonce,
         spaceId: 'dodao-eth-1',
-        callbackUrl: '/login',
+        redirect: false,
       });
     } catch {
       window.alert('Error with signing, please try again.');
     }
   }
-
+  const reloadSession = () => {
+    const event = new Event('visibilitychange');
+    document.dispatchEvent(event);
+    window.close();
+  };
   const doSigin = async (loginFn: () => Promise<void>) => {
     try {
       setProcessing(true);
@@ -68,6 +72,7 @@ export function useAuth() {
       setProcessingGoogle(false);
       setProcessingDiscord(false);
       setProcessingEmailPassword(false);
+      reloadSession();
     } catch (error) {
       console.log(error);
       setProcessing(false);
@@ -102,14 +107,14 @@ export function useAuth() {
   const loginWithGoogle = useCallback(async () => {
     setProcessingGoogle(true);
     await doSigin(async () => {
-      await signIn('google');
+      await signIn('google', { redirect: false });
     });
   }, []);
 
   const loginWithDiscord = useCallback(async () => {
     setProcessingDiscord(true);
     await doSigin(async () => {
-      await signIn('discord');
+      await signIn('discord', { redirect: false });
     });
   }, []);
 

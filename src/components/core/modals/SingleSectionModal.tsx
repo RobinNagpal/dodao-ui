@@ -1,6 +1,7 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/20/solid';
 import { Fragment, useState } from 'react';
+import styled from 'styled-components';
 
 export interface SingleSectionModalProps {
   open: boolean;
@@ -9,6 +10,12 @@ export interface SingleSectionModalProps {
   children: React.ReactNode;
   showCloseButton?: boolean;
 }
+
+const ModalContainer = styled.div`
+  background-color: var(--bg-color);
+  color: var(--text-color);
+`;
+
 export default function SingleSectionModal({ open, title, children, onClose, showCloseButton = true }: SingleSectionModalProps) {
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -25,7 +32,7 @@ export default function SingleSectionModal({ open, title, children, onClose, sho
           <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
         </Transition.Child>
 
-        <div className="fixed inset-0 z-10 overflow-y-auto">
+        <ModalContainer className="fixed inset-0 z-10 overflow-y-auto">
           <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
             <Transition.Child
               as={Fragment}
@@ -63,7 +70,7 @@ export default function SingleSectionModal({ open, title, children, onClose, sho
               </Dialog.Panel>
             </Transition.Child>
           </div>
-        </div>
+        </ModalContainer>
       </Dialog>
     </Transition.Root>
   );

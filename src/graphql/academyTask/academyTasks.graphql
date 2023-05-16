@@ -27,7 +27,6 @@ fragment AcademyTaskFragment on AcademyTask {
       choices {
         content
         key
-        order
       }
       content
       order

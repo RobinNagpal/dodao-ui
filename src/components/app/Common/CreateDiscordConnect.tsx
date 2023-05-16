@@ -1,6 +1,7 @@
 import Icon from '@/components/app/Icon';
 import Modal from '@/components/app/Modal';
-import { GuideStepItem, UserDiscordConnect } from '@/types/deprecated/models/GuideModel';
+import { UserDiscordConnect } from '@/types/deprecated/models/byte/ByteModel';
+import { GuideStepItem } from '@/types/deprecated/models/GuideModel';
 import { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import Button from '@/components/app/Button';
@@ -30,7 +31,7 @@ const DiscordButton = styled.a`
 
 interface ConnectDiscordProps {
   removeDiscord: (uuid: string) => void;
-  item: GuideStepItem;
+  item: GuideStepItem | UserDiscordConnect;
 }
 
 function CreateConnectDiscord({ removeDiscord, item }: ConnectDiscordProps) {

@@ -3,10 +3,8 @@ fragment ByteQuestion on ByteQuestion {
   choices {
     content
     key
-    order
   }
   content
-  order
   type
   uuid
   explanation
@@ -14,14 +12,12 @@ fragment ByteQuestion on ByteQuestion {
 
 fragment ByteUserInput on ByteUserInput {
   label
-  order
   required
   type
   uuid
 }
 
 fragment ByteUserDiscordConnect on UserDiscordConnect {
-  order
   type
   uuid
 }
@@ -47,7 +43,6 @@ fragment ByteStep on ByteStep {
     ...ByteStepItem
   }
   name
-  order
   uuid
 }
 

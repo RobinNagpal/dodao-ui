@@ -14,27 +14,22 @@ export const emptyByte = (): ByteDetailsFragment & { isPristine: boolean } => {
       {
         key: 'dog_and_cat',
         content: 'Dog And Cat',
-        order: 0,
       },
       {
         key: 'dog_or_cat',
         content: 'Dog Or Cat',
-        order: 1,
       },
       {
         key: 'only_dog',
         content: 'Only Dog',
-        order: 2,
       },
       {
         key: 'only_cat',
         content: 'Only Cat',
-        order: 3,
       },
     ],
     answerKeys: ['dog_or_cat', 'only_dog', 'only_cat'],
     type: QuestionType.MultipleChoice,
-    order: 0,
     explanation: 'This is the explanation',
   };
   return {
@@ -56,14 +51,12 @@ export const emptyByte = (): ByteDetailsFragment & { isPristine: boolean } => {
 Introduction Comments 
         `,
         stepItems: [],
-        order: 0,
       },
       {
         uuid: step2Uuid,
         name: 'Introduction Evaluation',
         content: ``,
         stepItems: [stepItem],
-        order: 1,
       },
     ],
   };

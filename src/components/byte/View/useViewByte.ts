@@ -56,7 +56,6 @@ export function useViewByte(space: SpaceWithIntegrationsFragment, byteId: string
           __typename: 'ByteStep',
           content: 'The byte has been completed successfully!',
           name: 'Completed',
-          order: byte.steps.length,
           uuid: LAST_STEP_UUID,
           stepItems: [],
         },
@@ -99,8 +98,7 @@ export function useViewByte(space: SpaceWithIntegrationsFragment, byteId: string
   }
 
   function goToNextStep(currentStep: ByteStepFragment) {
-    const nextStepOrder = currentStep.order + 1;
-    setActiveStepOrder(nextStepOrder);
+    setActiveStepOrder(activeStepOrder + 1);
 
     setByteSubmission((prevByteSubmission: any) => {
       return {
@@ -116,14 +114,13 @@ export function useViewByte(space: SpaceWithIntegrationsFragment, byteId: string
       };
     });
 
-    history.replaceState(null, '', `/tidbits/view/${byteId}/${nextStepOrder}`);
+    history.replaceState(null, '', `/tidbits/view/${byteId}/${activeStepOrder + 1}`);
   }
 
   function goToPreviousStep(currentStep: ByteStepFragment) {
-    const prevStepOrder = currentStep.order - 1;
-    setActiveStepOrder(prevStepOrder);
+    setActiveStepOrder(activeStepOrder - 1);
 
-    history.replaceState(null, '', `/tidbits/view/${byteId}/${prevStepOrder}`);
+    history.replaceState(null, '', `/tidbits/view/${byteId}/${activeStepOrder - 1}`);
   }
 
   function selectAnswer(stepUuid: string, questionUuid: string, selectedAnswers: string[]) {
@@ -242,7 +239,6 @@ export function useViewByte(space: SpaceWithIntegrationsFragment, byteId: string
                 __typename: 'ByteStep',
                 content: lastStepContent,
                 name: 'Completed',
-                order: stepsWithoutLastOne.length,
                 uuid: LAST_STEP_UUID,
                 stepItems: [],
               },

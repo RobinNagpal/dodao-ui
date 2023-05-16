@@ -15,7 +15,6 @@ import { ByteErrors } from '@/types/errors/byteErrors';
 import { StepError } from '@/types/errors/error';
 import { emptyByte } from '@/utils/byte/EmptyByte';
 import { validateQuestion, validateUserInput } from '@/utils/stepItems/validateItems';
-import orderBy from 'lodash/orderBy';
 import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
@@ -27,7 +26,7 @@ const byteExceptContentLimit = 64;
 const choiceContentLimit = 256;
 const nameLimit = 32;
 
-export interface EditByteStepItem extends StepItemInputGenericInput {}
+export interface EditByteStepItem extends Omit<StepItemInputGenericInput, 'order'> {}
 
 export interface EditByteStep extends Omit<ByteStepInput, 'stepItems'>, Omit<ByteStepFragment, 'stepItems'> {
   stepItems: EditByteStepItem[];
@@ -99,23 +98,25 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
 
   const moveStepUp = useCallback((stepUuid: string) => {
     setByteRef((prevByte) => {
-      const stepIndex = prevByte.steps.findIndex((s) => s.uuid === stepUuid);
-      const updatedSteps = [...prevByte.steps];
-      updatedSteps[stepIndex - 1].order = stepIndex;
-      updatedSteps[stepIndex].order = stepIndex - 1;
+      const steps = prevByte.steps;
+      const index = steps.findIndex((step) => step.uuid === stepUuid);
+      if (index > 0) {
+        [steps[index - 1], steps[index]] = [steps[index], steps[index - 1]];
+      }
 
-      return { ...prevByte, steps: orderBy(updatedSteps, 'order') };
+      return { ...prevByte, steps: [...steps] };
     });
   }, []);
 
   const moveStepDown = useCallback((stepUuid: string) => {
     setByteRef((prevByte) => {
-      const stepIndex = prevByte.steps.findIndex((s) => s.uuid === stepUuid);
-      const updatedSteps = [...prevByte.steps];
-      updatedSteps[stepIndex + 1].order = stepIndex;
-      updatedSteps[stepIndex].order = stepIndex + 1;
+      const newSteps = [...prevByte.steps];
+      const index = newSteps.findIndex((step) => step.uuid === stepUuid);
+      if (index >= 0 && index < newSteps.length - 1) {
+        [newSteps[index], newSteps[index + 1]] = [newSteps[index + 1], newSteps[index]];
+      }
 
-      return { ...prevByte, steps: orderBy(updatedSteps, 'order') };
+      return { ...prevByte, steps: newSteps };
     });
   }, []);
 
@@ -181,8 +182,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
           if (!updatedByteErrors.steps) {
             updatedByteErrors.steps = {};
           }
-          updatedByteErrors.steps[step.order];
-          updatedByteErrors.steps[step.order] = stepError;
+          updatedByteErrors.steps[step.uuid] = stepError;
         }
       });
       setByteErrors(updatedByteErrors);
@@ -223,10 +223,8 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
       steps: byteRef.steps.map((s) => ({
         content: s.content,
         name: s.name,
-        order: s.order,
         stepItems: s.stepItems.map((si) => ({
           type: si.type,
-          order: si.order,
           uuid: si.uuid,
           answerKeys: si.answerKeys,
           choices: si.choices,
