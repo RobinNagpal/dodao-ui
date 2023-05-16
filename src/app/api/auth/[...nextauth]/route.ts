@@ -1,5 +1,6 @@
 import { authorizeCrypto } from '@/app/api/auth/[...nextauth]/authorizeCrypto';
 import { prisma } from '@/prisma';
+import { Session } from '@/types/Session';
 import { User } from '@/types/User';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import NextAuth, { AuthOptions } from 'next-auth';
@@ -82,7 +83,7 @@ export const authOptions: AuthOptions = {
   // Setting secret here for convenience, do not use this in production
   secret: 'DO_NOT_USE_THIS_IN_PROD',
   callbacks: {
-    async session({ session, user, token }) {
+    async session({ session, user, token }): Promise<Session> {
       let userInfo: any = {};
       if (token.sub) {
         const dbUser: User | null = await prisma.user.findUnique({
@@ -92,9 +93,11 @@ export const authOptions: AuthOptions = {
           userInfo.username = dbUser.username;
           userInfo.authProvider = dbUser.authProvider;
           userInfo.spaceId = dbUser.spaceId;
+          userInfo.id = dbUser.id;
         }
       }
       return {
+        userId: userInfo.id,
         ...session,
         ...userInfo,
       };

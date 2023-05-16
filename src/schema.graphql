@@ -698,6 +698,37 @@ type Mutation {
   upsertTimeline(input: UpsertTimelineInput!, spaceId: String!): Timeline!
 }
 
+input OpenAIChatMessageInput {
+  content: String!
+  role: String!
+}
+
+type OpenAIChatResponse {
+  choices: [OpenAIChoice!]!
+  created: Int!
+  id: ID!
+  model: String!
+  object: String!
+  usage: OpenAIUsage!
+}
+
+type OpenAIChoice {
+  finish_reason: String!
+  index: Int!
+  message: OpenAIMessage!
+}
+
+type OpenAIMessage {
+  content: String!
+  role: String!
+}
+
+type OpenAIUsage {
+  completion_tokens: Int!
+  prompt_tokens: Int!
+  total_tokens: Int!
+}
+
 enum OrderDirection {
   asc
   desc
@@ -717,6 +748,7 @@ type Query {
   guide(spaceId: String!, uuid: String!): Guide!
   guideSubmissions(guideUuid: String!): [GuideSubmission!]!
   guides(spaceId: String!): [Guide!]
+  queryOpenAIChat(messages: [OpenAIChatMessageInput!]!): OpenAIChatResponse
   rawGitCourse(key: String!, spaceId: String!): RawGitCourse!
   simulation(simulationId: String!, spaceId: String!): Simulation!
   simulations(spaceId: String!): [Simulation!]!
@@ -731,7 +763,6 @@ type Query {
 type QuestionChoice {
   content: String!
   key: String!
-  order: Int!
 }
 
 input QuestionChoiceInput {

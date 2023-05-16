@@ -1,7 +1,8 @@
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import styled from 'styled-components';
 
-const StyledNavLink = styled.a<{ isActive: boolean }>`
+const StyledNavLink = styled(Link)<{ isActive: boolean }>`
   border-bottom: ${(props) => (props.isActive ? '3px solid var(--primary-color)' : '')};
   color: ${(props) => (props.isActive ? 'var(--primary-color)' : 'var(--text-color)')};
 `;
