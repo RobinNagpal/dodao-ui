@@ -19,7 +19,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
-function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteId: string } }) {
+function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteId?: string } }) {
   const router = useRouter();
   const setAccountModalOpen = (boolean: boolean) => {};
   const { space, params } = props;
@@ -67,9 +67,9 @@ function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteI
     <PageWrapper>
       <SingleCardLayout>
         <div className="px-4 mb-4 md:px-0 overflow-hidden">
-          <Link href={byte.id ? `/tidbits/view/${byteId}/0` : `/tidbits`} className="text-color">
+          <Link href={byteId ? `/tidbits/view/${byteId}/0` : `/tidbits`} className="text-color">
             <span className="mr-1 font-bold">&#8592;</span>
-            {byte.id ? byte.name : 'Back to Bytes'}
+            {byteId ? byte.name : 'Back to Bytes'}
           </Link>
         </div>
         {byteLoaded ? (
