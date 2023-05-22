@@ -65,9 +65,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       created: is the ISO date reperesentation of the current date and time
       other fields are all static and dont change.
       Create the output in the json format and show in markdown code format. 
-      Here is the New content below return me the json only of the below content .`
-       ;  
-      
+      Here is the New content below return me the json only of the below content .`;
       // Get the user text from the request body
       const { userText } = req.body;
 
@@ -81,7 +79,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         {
           headers: {
             'Content-Type': 'application/json',
-            Authorization: 'Bearer GPT4_API_KEY', 
+            Authorization: 'Bearer GPT4_API_KEY',
             // I haven't added the gptkey in .env
           },
         }
@@ -90,8 +88,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       // Extract the generated Twitter thread from the API response
       const generatedThread = response.data.choices[0].text.trim();
 
-
-      // Still have confusion in this part . 
+      // Still have confusion in this part .
       // Read the existing JSON file
       const filePath = 'json/file.json';
       const jsonData = fs.readFileSync(filePath, 'utf-8');
