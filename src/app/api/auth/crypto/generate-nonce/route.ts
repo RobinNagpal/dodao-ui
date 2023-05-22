@@ -1,5 +1,4 @@
 import { prisma } from '@/prisma';
-import type { NextApiRequest, NextApiResponse } from 'next';
 import crypto from 'crypto';
 import { NextRequest, NextResponse } from 'next/server';
 

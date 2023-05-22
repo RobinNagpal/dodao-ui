@@ -11,11 +11,11 @@ import { LoginModalProvider } from '@/contexts/LoginModalContext';
 import { SpaceProvider, useSpace } from '@/contexts/SpaceContext';
 import Web3ReactProviderWrapper from '@/contexts/Web3ReactContext';
 import { useExtendedSpaceByDomainQuery } from '@/graphql/generated/generated-types';
-import client from '@/utils/apolloClient';
+import { Session } from '@/types/Session';
+import { getAuthenticatedApolloClient } from '@/utils/apolloClient';
 import { ApolloProvider } from '@apollo/client';
-import { Session } from 'next-auth';
 import { SessionProvider, useSession } from 'next-auth/react';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import './globals.css';
 
@@ -75,12 +75,14 @@ const StyledMain = styled.main`
 
 function ChildLayout({ children, session }: InternalLayoutProps) {
   const origin = typeof window !== 'undefined' && window.location.hostname ? window.location.hostname : '';
+  const client = useMemo(() => getAuthenticatedApolloClient(session), [session]);
   const { data } = useExtendedSpaceByDomainQuery({
     client,
     variables: { domain: origin },
     errorPolicy: 'all',
   });
 
+  console.log('client in layouut', client);
   const { setSpace } = useSpace();
 
   useEffect(() => {
