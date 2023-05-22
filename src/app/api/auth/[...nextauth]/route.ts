@@ -8,6 +8,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import DiscordProvider from 'next-auth/providers/discord';
 import GoogleProvider from 'next-auth/providers/google';
 import TwitterProvider from 'next-auth/providers/twitter';
+import jwt from 'jsonwebtoken';
 
 // see: https://next-auth.js.org/configuration/options
 export const authOptions: AuthOptions = {
@@ -80,8 +81,6 @@ export const authOptions: AuthOptions = {
   session: {
     strategy: 'jwt',
   },
-  // Setting secret here for convenience, do not use this in production
-  secret: 'DO_NOT_USE_THIS_IN_PROD',
   callbacks: {
     async session({ session, user, token }): Promise<Session> {
       let userInfo: any = {};
@@ -100,6 +99,14 @@ export const authOptions: AuthOptions = {
         userId: userInfo.id,
         ...session,
         ...userInfo,
+        dodaoAccessToken: jwt.sign(
+          {
+            userId: userInfo.id,
+            spaceId: userInfo.spaceId,
+            username: userInfo.username,
+          },
+          process.env.DODAO_AUTH_SECRET!
+        ),
       };
     },
     jwt: async ({ token, user, account, profile, isNewUser }) => {

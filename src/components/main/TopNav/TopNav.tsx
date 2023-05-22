@@ -1,4 +1,7 @@
+import { LoginButtons } from '@/app/login/components/LoginButtons';
 import ButtonLarge from '@/components/core/buttons/Button';
+import SingleSectionModal from '@/components/core/modals/SingleSectionModal';
+import CreateContentModalContents from '@/components/main/TopNav/CreateContentModalContents';
 import { DesktopNavLink } from '@/components/main/TopNav/DesktopNavLink';
 import { DesktopProfileMenu } from '@/components/main/TopNav/DesktopProfileMenu';
 import { MobileNavLink } from '@/components/main/TopNav/MobileNavLink';
@@ -13,6 +16,7 @@ import Bars3Icon from '@heroicons/react/24/outline/Bars3Icon';
 import XMarkIcon from '@heroicons/react/24/outline/XMarkIcon';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import Image from 'next/image';
 
@@ -24,11 +28,13 @@ const StyledDiv = styled.div`
 export default function TopNav() {
   const { data: session } = useSession();
   const { setShowModal } = useLoginModalContext();
-
-  console.log('TopNav session', session);
+  const [showCreateModal, setShowCreateModal] = useState(false);
   const { space } = useSpace();
   return (
     <StyledDiv>
+      <SingleSectionModal open={showCreateModal} onClose={() => setShowCreateModal(false)} title={'Login'} showCloseButton={false}>
+        <CreateContentModalContents hideModal={() => setShowCreateModal(false)} />
+      </SingleSectionModal>
       <Disclosure
         as="nav"
         className="shadow"
@@ -83,7 +89,7 @@ export default function TopNav() {
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
                     {session ? (
-                      <ButtonLarge type="button" variant="contained" primary>
+                      <ButtonLarge type="button" variant="contained" primary onClick={() => setShowCreateModal(true)}>
                         <PlusIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
                         Create
                       </ButtonLarge>

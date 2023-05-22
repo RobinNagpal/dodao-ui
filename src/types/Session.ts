@@ -5,4 +5,5 @@ export interface Session extends NextAuthSession {
   username: string;
   spaceId: string;
   authProvider: string;
+  dodaoAccessToken: string;
 }

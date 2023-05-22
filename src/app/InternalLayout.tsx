@@ -1,6 +1,7 @@
 'use client';
 import LoginModal from '@/components/auth/LoginModal';
 import FullPageLoader from '@/components/core/loaders/FullPageLoading';
+import Notification from '@/components/core/notify/Notification';
 import MainContainer from '@/components/main/Container/MainContainer';
 import TopNav from '@/components/main/TopNav/TopNav';
 import AaveTheme from '@/components/themes/AaveTheme';
@@ -8,19 +9,18 @@ import CompoundTheme from '@/components/themes/CompoundTheme';
 import GlobalTheme from '@/components/themes/GlobalTheme';
 import UniswapTheme from '@/components/themes/UniswapTheme';
 import { LoginModalProvider } from '@/contexts/LoginModalContext';
+
+import { NotificationProvider, useNotificationContext } from '@/contexts/NotificationContext';
 import { SpaceProvider, useSpace } from '@/contexts/SpaceContext';
 import Web3ReactProviderWrapper from '@/contexts/Web3ReactContext';
 import { useExtendedSpaceByDomainQuery } from '@/graphql/generated/generated-types';
-import client from '@/utils/apolloClient';
+import { Session } from '@/types/Session';
+import { getAuthenticatedApolloClient } from '@/utils/apolloClient';
 import { ApolloProvider } from '@apollo/client';
-import { Session } from 'next-auth';
-import { SessionProvider, useSession } from 'next-auth/react';
-import { useEffect, useState } from 'react';
+import { SessionProvider } from 'next-auth/react';
+import { useEffect, useMemo } from 'react';
 import styled from 'styled-components';
 import './globals.css';
-
-import { NotificationProvider, useNotificationContext } from '@/contexts/NotificationContext';
-import Notification from '@/components/core/notify/Notification';
 
 // Based on - https://tailwindui.com/components/application-ui/page-examples/home-screens
 
@@ -75,12 +75,14 @@ const StyledMain = styled.main`
 
 function ChildLayout({ children, session }: InternalLayoutProps) {
   const origin = typeof window !== 'undefined' && window.location.hostname ? window.location.hostname : '';
+  const client = useMemo(() => getAuthenticatedApolloClient(session), [session]);
   const { data } = useExtendedSpaceByDomainQuery({
     client,
     variables: { domain: origin },
     errorPolicy: 'all',
   });
 
+  console.log('client in layouut', client);
   const { setSpace } = useSpace();
 
   useEffect(() => {

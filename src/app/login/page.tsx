@@ -14,11 +14,11 @@ function LoginPage() {
 
   return (
     <PageContainer>
-      <div className="w-full flex justify-center">
+      <div className="w-full flex justify-center break-all">
         <div>
           <div className="flex-col">
             <p>Welcome - {session?.username}</p>
-            <p>Session - {JSON.stringify(session || 'No session')}</p>
+            <p>Session - {session ? JSON.stringify(session, null, 2) : 'No session'}</p>
             <p>Connected with Web3</p>
             <ButtonLarge variant={'contained'} primary onClick={logout}>
               Logout
