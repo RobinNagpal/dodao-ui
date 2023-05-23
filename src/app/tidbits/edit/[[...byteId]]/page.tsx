@@ -52,7 +52,7 @@ function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteI
   ];
 
   const clickSubmit = () => {
-    !session?.username ? setAccountModalOpen(true) : handleSubmit();
+    handleSubmit();
   };
 
   const onClickBackButton = () => {

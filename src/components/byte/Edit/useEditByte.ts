@@ -24,7 +24,7 @@ const inputLabelLimit = 32;
 const stepContentLimit = 14400;
 const byteExceptContentLimit = 64;
 const choiceContentLimit = 256;
-const nameLimit = 32;
+const nameLimit = 40;
 
 export interface EditByteStepItem extends Omit<StepItemInputGenericInput, 'order'> {}
 
@@ -269,6 +269,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
           spaceId: space.id,
           input: getByteInput(),
         },
+        errorPolicy: 'all',
       });
 
       const payload = response?.data?.payload;
@@ -278,7 +279,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
           message: 'Byte Saved',
         });
 
-        router.push(`/bytes/${payload.id}`);
+        router.push(`/tidbits/view/${payload.id}`);
       } else {
         showNotification({
           type: 'error',

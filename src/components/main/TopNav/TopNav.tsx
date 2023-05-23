@@ -27,7 +27,7 @@ const StyledDiv = styled.div`
 
 export default function TopNav() {
   const { data: session } = useSession();
-  const { setShowModal } = useLoginModalContext();
+  const { setShowLoginModal } = useLoginModalContext();
   const [showCreateModal, setShowCreateModal] = useState(false);
   const { space } = useSpace();
   return (
@@ -94,7 +94,7 @@ export default function TopNav() {
                         Create
                       </ButtonLarge>
                     ) : (
-                      <ButtonLarge variant="contained" primary onClick={() => setShowModal(true)}>
+                      <ButtonLarge variant="contained" primary onClick={() => setShowLoginModal(true)}>
                         Login
                       </ButtonLarge>
                     )}

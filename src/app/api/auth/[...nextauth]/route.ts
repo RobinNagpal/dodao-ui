@@ -99,6 +99,7 @@ export const authOptions: AuthOptions = {
         userId: userInfo.id,
         spaceId: userInfo.spaceId,
         username: userInfo.username,
+        accountId: userInfo.id,
       };
       return {
         userId: userInfo.id,
