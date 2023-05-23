@@ -1,6 +1,6 @@
 import { authorizeCrypto } from '@/app/api/auth/[...nextauth]/authorizeCrypto';
 import { prisma } from '@/prisma';
-import { Session } from '@/types/Session';
+import { DoDaoJwtTokenPayload, Session } from '@/types/Session';
 import { User } from '@/types/User';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import NextAuth, { AuthOptions } from 'next-auth';
@@ -95,18 +95,16 @@ export const authOptions: AuthOptions = {
           userInfo.id = dbUser.id;
         }
       }
+      const doDaoJwtTokenPayload: DoDaoJwtTokenPayload = {
+        userId: userInfo.id,
+        spaceId: userInfo.spaceId,
+        username: userInfo.username,
+      };
       return {
         userId: userInfo.id,
         ...session,
         ...userInfo,
-        dodaoAccessToken: jwt.sign(
-          {
-            userId: userInfo.id,
-            spaceId: userInfo.spaceId,
-            username: userInfo.username,
-          },
-          process.env.DODAO_AUTH_SECRET!
-        ),
+        dodaoAccessToken: jwt.sign(doDaoJwtTokenPayload, process.env.DODAO_AUTH_SECRET!),
       };
     },
     jwt: async ({ token, user, account, profile, isNewUser }) => {

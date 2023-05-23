@@ -7,3 +7,9 @@ export interface Session extends NextAuthSession {
   authProvider: string;
   dodaoAccessToken: string;
 }
+
+export interface DoDaoJwtTokenPayload {
+  spaceId: string;
+  userId: string;
+  username: string;
+}
