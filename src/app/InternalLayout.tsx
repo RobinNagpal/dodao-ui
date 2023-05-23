@@ -82,7 +82,6 @@ function ChildLayout({ children, session }: InternalLayoutProps) {
     errorPolicy: 'all',
   });
 
-  console.log('client in layouut', client);
   const { setSpace } = useSpace();
 
   useEffect(() => {
