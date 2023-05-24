@@ -175,6 +175,16 @@
       "simulationsThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/compound/compound_demos.png",
       "timelinesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/compound/compound_timelines.png"
     },
+    "test-academy-eth": {
+      "academyHeading": "Learn more about Test Academy?",
+      "academyText": "We know crypto can be a confusing place and Test Academy has your back.",
+      "projectName": "Compound",
+      "bytesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/compound/compound_bytes.png",
+      "coursesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/compound/compound_courses.png",
+      "guidesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/compound/compound_guides.png",
+      "simulationsThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/compound/compound_demos.png",
+      "timelinesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/compound/compound_timelines.png"
+    },
     "ens-domains-eth-1": {
       "academyHeading": "Learn more about ENS?",
       "academyText": "We know crypto can be a confusing place and ENS Academy has your back.",
