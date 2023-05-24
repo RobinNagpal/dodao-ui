@@ -93,23 +93,21 @@ function ChildLayout({ children, session }: InternalLayoutProps) {
   return (
     <Web3ReactProviderWrapper>
       <ApolloProvider client={client}>
-        <NotificationProvider>
-          <SessionProvider session={session}>
-            <ThemeComponent />
-            {data?.space?.id ? (
-              <LoginModalProvider>
-                <LoginModal />
-                <TopNav />
-                <StyledMain>
-                  <MainContainer>{children}</MainContainer>
-                </StyledMain>
-              </LoginModalProvider>
-            ) : (
-              <FullPageLoader />
-            )}
-          </SessionProvider>
-          <NotificationWrapper />
-        </NotificationProvider>
+        <SessionProvider session={session}>
+          <ThemeComponent />
+          {data?.space?.id ? (
+            <LoginModalProvider>
+              <LoginModal />
+              <TopNav />
+              <StyledMain>
+                <MainContainer>{children}</MainContainer>
+              </StyledMain>
+            </LoginModalProvider>
+          ) : (
+            <FullPageLoader />
+          )}
+        </SessionProvider>
+        <NotificationWrapper />
       </ApolloProvider>
     </Web3ReactProviderWrapper>
   );
@@ -118,7 +116,9 @@ function ChildLayout({ children, session }: InternalLayoutProps) {
 export default function InternalLayout({ children, session }: InternalLayoutProps) {
   return (
     <SpaceProvider>
-      <ChildLayout session={session}>{children}</ChildLayout>
+      <NotificationProvider>
+        <ChildLayout session={session}>{children}</ChildLayout>
+      </NotificationProvider>
     </SpaceProvider>
   );
 }
