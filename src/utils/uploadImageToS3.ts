@@ -1,9 +1,11 @@
+'use client';
+
 import { CreateSignedUrlDocument, CreateSignedUrlInput, CreateSignedUrlMutation, CreateSignedUrlMutationVariables } from '@/graphql/generated/generated-types';
-import apolloClient from '@/utils/apolloClient';
+import { getAuthenticatedApolloClient } from '@/utils/apolloClient';
 import axios from 'axios';
 
 export async function uploadImageToS3(spaceId: string, input: CreateSignedUrlInput, file: any) {
-  const response = await apolloClient.mutate<CreateSignedUrlMutation, CreateSignedUrlMutationVariables>({
+  const response = await getAuthenticatedApolloClient(null).mutate<CreateSignedUrlMutation, CreateSignedUrlMutationVariables>({
     mutation: CreateSignedUrlDocument,
     variables: {
       spaceId: spaceId,

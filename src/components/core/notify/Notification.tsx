@@ -34,7 +34,7 @@ export interface NotificationProps {
   onClose?: () => void;
 }
 
-export default function Notification({ heading, message, duration = 500, type = 'success', onClose }: NotificationProps) {
+export default function Notification({ heading, message, duration = 5000, type = 'success', onClose }: NotificationProps) {
   const [isVisible, setIsVisible] = useState(true);
   let headingText = heading;
   if (!headingText) {

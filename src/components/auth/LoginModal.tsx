@@ -6,21 +6,21 @@ import { useSession } from 'next-auth/react';
 import React, { useEffect } from 'react';
 
 const LoginModal: React.FC = () => {
-  const { showModal, setShowModal } = useLoginModalContext();
+  const { showLoginModal, setShowLoginModal } = useLoginModalContext();
   const { data } = useSession();
 
   useEffect(() => {
     if (data) {
-      setShowModal(false);
+      setShowLoginModal(false);
     }
-  }, [data, setShowModal]);
+  }, [data, setShowLoginModal]);
 
-  if (!showModal) {
+  if (!showLoginModal) {
     return null;
   }
 
   return (
-    <SingleSectionModal open={showModal} onClose={() => setShowModal(false)} title={'Login'} showCloseButton={false}>
+    <SingleSectionModal open={showLoginModal} onClose={() => setShowLoginModal(false)} title={'Login'} showCloseButton={false}>
       <LoginButtons />
     </SingleSectionModal>
   );

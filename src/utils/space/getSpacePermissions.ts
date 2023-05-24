@@ -1,6 +1,6 @@
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { superAdmins } from '@/utils/auth/superAdmins';
-import { User } from '@/types/User';
+import { User } from '@/types/auth/User';
 
 export function getSpacePermissions(space: SpaceWithIntegrationsFragment, user?: User) {
   const isSuperAdminId = user?.id && superAdmins.includes(user.id);

@@ -8,7 +8,7 @@ import { MobileNavLink } from '@/components/main/TopNav/MobileNavLink';
 import { MobileProfileMenu } from '@/components/main/TopNav/MobileProfileMenu';
 import { useLoginModalContext } from '@/contexts/LoginModalContext';
 import { useSpace } from '@/contexts/SpaceContext';
-import { Session } from '@/types/Session';
+import { Session } from '@/types/auth/Session';
 import { getCDNImageUrl } from '@/utils/images/getCDNImageUrl';
 import { Disclosure } from '@headlessui/react';
 import PlusIcon from '@heroicons/react/20/solid/PlusIcon';
@@ -27,7 +27,7 @@ const StyledDiv = styled.div`
 
 export default function TopNav() {
   const { data: session } = useSession();
-  const { setShowModal } = useLoginModalContext();
+  const { setShowLoginModal } = useLoginModalContext();
   const [showCreateModal, setShowCreateModal] = useState(false);
   const { space } = useSpace();
   return (
@@ -94,7 +94,7 @@ export default function TopNav() {
                         Create
                       </ButtonLarge>
                     ) : (
-                      <ButtonLarge variant="contained" primary onClick={() => setShowModal(true)}>
+                      <ButtonLarge variant="contained" primary onClick={() => setShowLoginModal(true)}>
                         Login
                       </ButtonLarge>
                     )}

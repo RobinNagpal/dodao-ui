@@ -1,3 +1,4 @@
+import { useNotificationContext } from '@/contexts/NotificationContext';
 import {
   ByteDetailsFragment,
   ByteQuestionFragment,
@@ -9,7 +10,6 @@ import {
   UserDiscordInfoInput,
 } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
-import useNotification from '@/hooks/useNotification';
 import { useSession } from 'next-auth/react';
 import { LAST_STEP_UUID } from './useViewByte';
 import { getMarkedRenderer } from '@/utils/ui/getMarkedRenderer';
@@ -62,7 +62,7 @@ interface ByteStepperItemProps {
 function ByteStepperItem({ viewByteHelper, step, byte, space, setAccountModalOpen }: ByteStepperItemProps) {
   const { activeStepOrder } = viewByteHelper;
   const { $t: t } = useI18();
-  const { showNotification } = useNotification();
+  const { showNotification } = useNotificationContext();
 
   const { data: session } = useSession();
   const renderer = getMarkedRenderer();

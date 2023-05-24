@@ -1,3 +1,4 @@
+import { useNotificationContext } from '@/contexts/NotificationContext';
 import {
   ByteQuestionFragment,
   ByteStepFragment,
@@ -8,7 +9,6 @@ import {
   useQueryByteDetailsQuery,
   useUpsertByteMutation,
 } from '@/graphql/generated/generated-types';
-import useNotification from '@/hooks/useNotification';
 import { isQuestion, isUserInput } from '@/types/deprecated/helpers/stepItemTypes';
 import { UserInput } from '@/types/deprecated/models/GuideModel';
 import { ByteErrors } from '@/types/errors/byteErrors';
@@ -24,7 +24,7 @@ const inputLabelLimit = 32;
 const stepContentLimit = 14400;
 const byteExceptContentLimit = 64;
 const choiceContentLimit = 256;
-const nameLimit = 32;
+const nameLimit = 40;
 
 export interface EditByteStepItem extends Omit<StepItemInputGenericInput, 'order'> {}
 
@@ -64,7 +64,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
 
   const { refetch: queryByteDetails, data, error } = useQueryByteDetailsQuery({ skip: true });
   const [upsertByteMutation, { data: upsertResponse, error: UpsertError }] = useUpsertByteMutation();
-  const { showNotification } = useNotification();
+  const { showNotification } = useNotificationContext();
 
   const initialize = useCallback(async () => {
     if (byteId) {
@@ -269,6 +269,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
           spaceId: space.id,
           input: getByteInput(),
         },
+        errorPolicy: 'all',
       });
 
       const payload = response?.data?.payload;
@@ -276,9 +277,10 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
         showNotification({
           type: 'success',
           message: 'Byte Saved',
+          heading: 'Success 🎉',
         });
 
-        router.push(`/bytes/${payload.id}`);
+        router.push(`/tidbits/view/${payload.id}/0`);
       } else {
         showNotification({
           type: 'error',

@@ -2,13 +2,13 @@
 import { createContext, useContext, useState } from 'react';
 
 interface LoginModalContextData {
-  showModal: boolean;
-  setShowModal: (showModal: boolean) => void;
+  showLoginModal: boolean;
+  setShowLoginModal: (showModal: boolean) => void;
 }
 
 const LoginModalContext = createContext<LoginModalContextData>({
-  showModal: false,
-  setShowModal: () => {},
+  showLoginModal: false,
+  setShowLoginModal: () => {},
 });
 
 export const useLoginModalContext = () => useContext(LoginModalContext);
@@ -16,5 +16,5 @@ export const useLoginModalContext = () => useContext(LoginModalContext);
 export const LoginModalProvider = ({ children }: { children: React.ReactNode }) => {
   const [showModal, setShowModal] = useState(false);
 
-  return <LoginModalContext.Provider value={{ showModal, setShowModal }}>{children}</LoginModalContext.Provider>;
+  return <LoginModalContext.Provider value={{ showLoginModal: showModal, setShowLoginModal: setShowModal }}>{children}</LoginModalContext.Provider>;
 };

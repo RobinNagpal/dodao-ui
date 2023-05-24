@@ -129,7 +129,9 @@ export function useAuth() {
     if (web3Selection?.connector) {
       web3Selection?.connector?.deactivate?.();
     } else {
-      await signOut();
+      await signOut({
+        redirect: false,
+      });
     }
   }, [web3Selection]);
 

@@ -19,11 +19,11 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
-function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteId?: string } }) {
+function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteId?: string[] } }) {
   const router = useRouter();
   const setAccountModalOpen = (boolean: boolean) => {};
   const { space, params } = props;
-  const byteId = params.byteId;
+  const byteId = params.byteId ? params.byteId[0] : null;
 
   const { byteCreating, byteLoaded, byteRef: byte, byteErrors, handleSubmit, initialize, updateByteFunctions } = useEditByte(space, byteId || null);
   const { data: session } = useSession();
@@ -52,7 +52,7 @@ function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteI
   ];
 
   const clickSubmit = () => {
-    !session?.username ? setAccountModalOpen(true) : handleSubmit();
+    handleSubmit();
   };
 
   const onClickBackButton = () => {

@@ -10,7 +10,7 @@ import React from 'react';
 function LoginPage() {
   const { data: session } = useSession();
   const { logout, active } = useAuth();
-  const { setShowModal } = useLoginModalContext();
+  const { setShowLoginModal } = useLoginModalContext();
 
   return (
     <PageContainer>
@@ -25,7 +25,7 @@ function LoginPage() {
             </ButtonLarge>
           </div>
           <div className="mt-4">
-            <ButtonLarge onClick={() => setShowModal(true)} primary>
+            <ButtonLarge onClick={() => setShowLoginModal(true)} primary>
               Show Login Modal
             </ButtonLarge>
           </div>

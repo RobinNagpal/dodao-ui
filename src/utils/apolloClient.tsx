@@ -1,10 +1,12 @@
-import { Session } from '@/types/Session';
+import { Session } from '@/types/auth/Session';
 import { ApolloClient, InMemoryCache } from '@apollo/client';
 
 export const getAuthenticatedApolloClient = (session: Session | null) => {
   let headers: Record<string, string> = {};
 
-  if (session?.dodaoAccessToken) headers['dodao-auth-token'] = session.dodaoAccessToken;
+  if (session?.dodaoAccessToken) {
+    headers['dodao-auth-token'] = session.dodaoAccessToken;
+  }
 
   return new ApolloClient({
     uri: process.env.V2_API_SERVER_URL!,
