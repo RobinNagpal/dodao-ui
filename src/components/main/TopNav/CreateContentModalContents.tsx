@@ -10,7 +10,7 @@ export default function CreateContentModalContents({ hideModal }: { hideModal: (
           Create Tidbit
         </Button>
       </Link>
-      <Link href="/tidbits/create/ai" onClick={() => hideModal}>
+      <Link href="/tidbits/ai/create" onClick={() => hideModal}>
         <Button variant="contained" primary className="p-2 m-2">
           Create Tidbit with AI
         </Button>
