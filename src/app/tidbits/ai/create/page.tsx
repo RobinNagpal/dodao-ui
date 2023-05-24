@@ -1,8 +1,10 @@
 'use client';
 import PageWrapper from '@/components/core/page/PageWrapper';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 const Create = () => {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [input, setInput] = useState(`
     Step 1 - Introduction
@@ -92,13 +94,15 @@ const Create = () => {
     const data = await response.json();
     console.log('data', data);
     setResponse(JSON.stringify(data, null, 2));
-    // let generatedThread = JSON.stringify(response) ;
+    if (data.id) {
+      localStorage.setItem(data.id, JSON.stringify(data));
+      router.push(`/tidbits/edit/${data.id}`);
+    }
+
     // let jsonThread = JSON.parse(generatedThread) ;
     // let byteID = jsonThread.id ;
     // localStorage.setItem(byteID , JSON.stringify(jsonThread)) ;
     setLoading(false);
-
-    // router.push(`tidbits/edit/${byteID}`);
   };
 
   return (

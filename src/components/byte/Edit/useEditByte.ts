@@ -10,6 +10,7 @@ import {
   useUpsertByteMutation,
 } from '@/graphql/generated/generated-types';
 import { isQuestion, isUserInput } from '@/types/deprecated/helpers/stepItemTypes';
+import { PublishStatus } from '@/types/deprecated/models/enums';
 import { UserInput } from '@/types/deprecated/models/GuideModel';
 import { ByteErrors } from '@/types/errors/byteErrors';
 import { StepError } from '@/types/errors/error';
@@ -50,6 +51,15 @@ export type UpdateByteFunctions = {
   moveStepUp: (stepUuid: string) => void;
 };
 
+export interface GeneratedByte {
+  id: string;
+  name: string;
+  content: string;
+  steps: {
+    name: string;
+    content: string;
+  }[];
+}
 export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string | null) {
   const router = useRouter();
   const emptyByteModel = emptyByte();
@@ -67,7 +77,23 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
   const { showNotification } = useNotificationContext();
 
   const initialize = useCallback(async () => {
-    if (byteId) {
+    const storedByte = byteId && localStorage.getItem(byteId);
+    if (byteId && storedByte) {
+      const generatedByte = JSON.parse(storedByte) as GeneratedByte;
+      const byte: EditByteType = {
+        ...generatedByte,
+        steps: generatedByte.steps.map((step) => ({ ...step, uuid: uuidv4(), stepItems: [] })),
+        byteExists: true,
+        isPristine: true,
+        admins: [],
+        created: new Date().toISOString(),
+        priority: 50,
+        publishStatus: PublishStatus.Draft,
+        tags: [],
+      };
+      setByteRef(byte);
+      setByteLoaded(true);
+    } else if (byteId) {
       const result = await queryByteDetails({ byteId: byteId, spaceId: space.id });
       const byte = result.data.byte;
       setByteRef({
