@@ -1,78 +1,72 @@
 'use client';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 
 const Create = () => {
   const [loading, setLoading] = useState(false);
-  const [input, setInput] = useState('');
-  const [rep, setResponse] = useState<string>('');
-  const [loaded, gettingLoaded] = useState(false);
-  const router = useRouter();
+  const [input, setInput] = useState(`
+    Step 1 - Introduction
+    Uniswap V3's introduction of concentrated liquidity has transformed the game for liquidity providers, offering them an unparalleled level of flexibility through a range of strategic options.
+    
+    Choice of Pool: Liquidity providers can decide on which pool they wish to deposit their liquidity, offering a level of customization previously unattainable.
+    Fee Selection: Providers can now select their fee tier, enabling them to align their liquidity provision with their risk tolerance and expected return on investment.
+    Price Range Determination: Upon selecting a pool and fee, providers can then specify the price range within which they wish to place their liquidity.
+    While this newfound flexibility brings with it a wealth of opportunities, it also ushers in a level of complexity that can seem daunting, particularly to those new to the DeFi space. This complexity prompts a multitude of questions:
+    
+    Strategic Approach: What should be the optimal strategy for a liquidity provider?
+    Pool Selection: Which pool is the most suitable for their assets and goals?
+    Asset Allocation: Should they deposit all their assets as liquidity, or reserve a portion?
+    Range Width: Is it more advantageous to choose a wide or a narrow price range?
+    Timeframe: What is the ideal duration for liquidity deposit?
+    Rebalancing: Should they rebalance their position if their pool shifts out of the selected price range?
+    
+    These questions represent just a few of the considerations every liquidity provider must grapple with. As we delve further into this guide, we aim to explore these issues and provide guidance on the best strategies for liquidity providers navigating the dynamic world of Uniswap V3.
+  `);
+  const [response, setResponse] = useState<string>('');
+  const [loaded, setLoaded] = useState(false);
 
   const prompt = `Create a tweet thread from the provided text. Try to keep the thread between 6-10 tweets. Keep the tweets short and add more number of tweets in thread.
   The contents of the tweets are for layman, so keep it as simple as possible.
   This is the JSON template I have given you the new content and you have to create me the one just like below 
   {
-    "postSubmissionStepContent": null,
+
     "content": "Benefits of Automated Market Maker over Order Book",
-    "created": "2023-04-13T18:58:14.031Z",
     "id": "amm-benefits-uniswap",
     "name": "AMM Benefits",
-    "publishStatus": "Live",
-    "admins": [],
-    "tags": [],
-    "priority": 0,
+    
+    
     "steps": [{
       "content": "\nAutomated Market Makers (AMMs) and Order Books are two different types of systems for executing trades. An Automated Market Maker (AMM) is a type of decentralized exchange (DEX) protocol that allows traders to trade cryptocurrencies and other digital assets without an order book or an intermediary.\n\nAMMs offer many benefits over order books.",
-      "stepItems": [],
-      "name": "Introduction",
-      "order": 0,
-      "uuid": "7f31e672-0c52-4d89-9d40-9f348c5f5e5b"
+      "name": "Introduction"
     }, {
       "content": "AMMs provide liquidity to traders with always available prices, while order books require both buyer and seller to agree on a price leading to low liquidity for some assets.",
-      "stepItems": [],
       "name": "Introduction Evaluation",
-      "order": 1,
-      "uuid": "e0b6f53b-3dc4-4e4c-af25-90f4cd7d9d9a"
     }, {
       "content": "AMMs do not need order matching, using a mathematical formula for price discovery based on the asset ratio in the pool.\n",
-      "stepItems": [],
-      "name": "Step 3",
-      "order": 2,
-      "uuid": "7d56df42-bafc-4dcb-9e9b-6b3811f32e3c"
+      "name": "Step 3"
     }, {
       "content": "Because AMMs utilize smart contracts and mathematical formulas, traders can exchange assets around the clock, while traditional trading is restricted to operating hours.",
-      "stepItems": [],
-      "name": "Step 4",
-      "order": 3,
-      "uuid": "5b52f5f5-5d5d-4325-8c43-882106b69838"
+      "name": "Step 4"
     }, {
       "content": "AMMs have reduced risks of price manipulation compared to order books that are susceptible to it.",
-      "stepItems": [],
-      "name": "Step 5",
-      "order": 4,
-      "uuid": "9f2b07f1-964d-4b10-ae5e-97d53b29b95a"
+      "name": "Step 5"
     }, {
       "content": "Additionally, AMMs have lower barriers to entry, allowing traders to add liquidity to the pool and earn fees instead of requiring significant capital to participate in the market.",
-      "stepItems": [],
-      "name": "Step 6",
-      "order": 5,
-      "uuid": "c6a3b2f2-1e9c-4a8b-bcf6-01896c28f0de"
+      "name": "Step 6"
     }]
   }
-  Here is the discription of the fields
+  Here is the description of the fields
   id: its a slug string. Infer or formulate it from the heading/name of the tweet
   content: Few words describing the topic of tweet thread.
   name: Infer a heading for tweet thread. Slugify this name and then use it in the id field defined above.
+  
   steps: Describe the list of tweet threads. Steps have three dynamic fields
-  name - infer it for the particulat tweet
+  name - infer it for the particular tweet
   content - contents of the tweet.
-  uuid - random generated uuid4. Generate a new random uuidv4 for each uuid field.
-  created: is the ISO date reperesentation of the current date and time
-  other fields are all static and dont change.
+  
   Create the output in the json format and show in markdown code format. 
   focus on this --> "Here is the New content below return me the json only of the below content Never return tags" .
+   
    ${input}`;
 
   const generateResponse = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -94,26 +88,11 @@ const Create = () => {
       throw new Error(response.statusText);
     }
 
-    // This data is a ReadableStream
-    const data = response.body;
-    if (!data) {
-      return;
-    }
-
-    const reader = data.getReader();
-    const decoder = new TextDecoder();
-    let done = false;
-
-    while (!done) {
-      const { value, done: doneReading } = await reader.read();
-      done = doneReading;
-      const chunkValue = decoder.decode(value);
-      setResponse((prev) => prev + chunkValue);
-      // console.log(rep) ;
-      gettingLoaded(true);
-    }
-
-    // let generatedThread = JSON.stringify(rep) ;
+    setLoaded(true);
+    const data = await response.json();
+    console.log('data', data);
+    setResponse(JSON.stringify(data, null, 2));
+    // let generatedThread = JSON.stringify(response) ;
     // let jsonThread = JSON.parse(generatedThread) ;
     // let byteID = jsonThread.id ;
     // localStorage.setItem(byteID , JSON.stringify(jsonThread)) ;
@@ -143,7 +122,7 @@ const Create = () => {
             <div className="animate-pulse font-medium tracking-widest">Tidbits is Getting Generated by AI </div>
           </button>
         )}
-        {loaded && <div className="mt-8 rounded-xl border text-[#212121] bg-white p-4 shadow-md transition hover:bg-gray-100">{rep}</div>}
+        {loaded && <div className="mt-8 rounded-xl border text-[#212121] bg-white p-4 shadow-md transition hover:bg-gray-100">{response}</div>}
       </div>
     </PageWrapper>
   );
