@@ -14,7 +14,7 @@ import { NotificationProvider, useNotificationContext } from '@/contexts/Notific
 import { SpaceProvider, useSpace } from '@/contexts/SpaceContext';
 import Web3ReactProviderWrapper from '@/contexts/Web3ReactContext';
 import { useExtendedSpaceByDomainQuery } from '@/graphql/generated/generated-types';
-import { Session } from '@/types/Session';
+import { Session } from '@/types/auth/Session';
 import { getAuthenticatedApolloClient } from '@/utils/apolloClient';
 import { ApolloProvider } from '@apollo/client';
 import { SessionProvider } from 'next-auth/react';

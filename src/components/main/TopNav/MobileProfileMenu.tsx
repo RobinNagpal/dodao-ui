@@ -1,4 +1,4 @@
-import { Session } from '@/types/Session';
+import { Session } from '@/types/auth/Session';
 import { Disclosure } from '@headlessui/react';
 import Image from 'next/image';
 

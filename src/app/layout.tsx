@@ -1,5 +1,5 @@
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-import { Session } from '@/types/Session';
+import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
+import { Session } from '@/types/auth/Session';
 import StyledComponentsRegistry from '@/utils/StyledComponentsRegistry';
 import { getServerSession } from 'next-auth';
 import 'tailwindcss/tailwind.css';

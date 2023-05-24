@@ -1,5 +1,5 @@
 import { useAuth } from '@/hooks/useAuth';
-import { Session } from '@/types/Session';
+import { Session } from '@/types/auth/Session';
 import classNames from '@/utils/classNames';
 import { Menu, Transition } from '@headlessui/react';
 import { Fragment } from 'react';

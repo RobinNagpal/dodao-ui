@@ -1,4 +1,4 @@
-import { Session } from '@/types/Session';
+import { Session } from '@/types/auth/Session';
 import { ApolloClient, InMemoryCache } from '@apollo/client';
 
 export const getAuthenticatedApolloClient = (session: Session | null) => {
