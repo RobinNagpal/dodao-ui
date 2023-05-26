@@ -112,7 +112,7 @@ const Create = () => {
       <div className='md:mt-10 md:ml-20'>
       <div className=" container  mx-auto p-4 flex flex-col ">
        
-        <h1 className="text-5xl text-[#9291cd] font-semibold mb-10">Create Tidbits Via AI </h1>
+        <h1 className="md:text-5xl text-3xl text-[#9291cd] font-semibold mb-10">Create Tidbits Via AI </h1>
 
         <textarea
           value={input}
