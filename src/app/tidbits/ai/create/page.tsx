@@ -3,29 +3,27 @@ import PageWrapper from '@/components/core/page/PageWrapper';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import LoadingComponent from '@/components/core/loaders/Loading';
-
+import TextareaAutosize from '@/components/app/TextareaAutosize';
 
 const Create = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [text , setText] = useState('Generate response')
-  const [input, setInput] = useState(`
-    Step 1 - Introduction
-    Uniswap V3's introduction of concentrated liquidity has transformed the game for liquidity providers, offering them an unparalleled level of flexibility through a range of strategic options.
+  const [input, setInput] = useState(`Uniswap V3's introduction of concentrated liquidity has transformed the game for liquidity providers, offering them an unparalleled level of flexibility through a range of strategic options.
+   
+  Choice of Pool: Liquidity providers can decide on which pool they wish to deposit their liquidity, offering a level of customization previously unattainable.
+  Fee Selection: Providers can now select their fee tier, enabling them to align their liquidity provision with their risk tolerance and expected return on investment.
+  Price Range Determination: Upon selecting a pool and fee, providers can then specify the price range within which they wish to place their liquidity.
+  While this newfound flexibility brings with it a wealth of opportunities, it also ushers in a level of complexity that can seem daunting, particularly to those new to the DeFi space. This complexity prompts a multitude of questions:
     
-    Choice of Pool: Liquidity providers can decide on which pool they wish to deposit their liquidity, offering a level of customization previously unattainable.
-    Fee Selection: Providers can now select their fee tier, enabling them to align their liquidity provision with their risk tolerance and expected return on investment.
-    Price Range Determination: Upon selecting a pool and fee, providers can then specify the price range within which they wish to place their liquidity.
-    While this newfound flexibility brings with it a wealth of opportunities, it also ushers in a level of complexity that can seem daunting, particularly to those new to the DeFi space. This complexity prompts a multitude of questions:
+  Strategic Approach: What should be the optimal strategy for a liquidity provider?
+  Pool Selection: Which pool is the most suitable for their assets and goals?
+  Asset Allocation: Should they deposit all their assets as liquidity, or reserve a portion?
+  Range Width: Is it more advantageous to choose a wide or a narrow price range?
+  Timeframe: What is the ideal duration for liquidity deposit?
+  Rebalancing: Should they rebalance their position if their pool shifts out of the selected price range?
     
-    Strategic Approach: What should be the optimal strategy for a liquidity provider?
-    Pool Selection: Which pool is the most suitable for their assets and goals?
-    Asset Allocation: Should they deposit all their assets as liquidity, or reserve a portion?
-    Range Width: Is it more advantageous to choose a wide or a narrow price range?
-    Timeframe: What is the ideal duration for liquidity deposit?
-    Rebalancing: Should they rebalance their position if their pool shifts out of the selected price range?
-    
-    These questions represent just a few of the considerations every liquidity provider must grapple with. As we delve further into this guide, we aim to explore these issues and provide guidance on the best strategies for liquidity providers navigating the dynamic world of Uniswap V3.
+  These questions represent just a few of the considerations every liquidity provider must grapple with. As we delve further into this guide, we aim to explore these issues and provide guidance on the best strategies for liquidity providers navigating the dynamic world of Uniswap V3.
   `);
   const [response, setResponse] = useState<string>('');
   const [loaded, setLoaded] = useState(false);
@@ -78,6 +76,9 @@ const Create = () => {
     e.preventDefault();
     setResponse('');
     setLoading(true);
+    if (!e) {
+      return; // Handle the case when e is undefined
+    }
 
     const response = await fetch('/api/generate', {
       method: 'POST',
@@ -112,15 +113,14 @@ const Create = () => {
       <div className='md:mt-10 md:ml-20'>
       <div className=" container  mx-auto p-4 flex flex-col ">
        
-        <h1 className="md:text-5xl text-3xl text-[#9291cd] font-semibold mb-10">Create Tidbits Via AI </h1>
+        <h1 className="md:text-5xl text-4xl text-[#9291cd] font-semibold mb-10">Create Tidbits Via AI </h1>
 
-        <textarea
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          className="md:w-[80%] w-full px-4 py-2 border text-[#212121] border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
-          rows={10}
-          placeholder="Enter The content..."
-        ></textarea>
+        <TextareaAutosize
+        autosize={true}
+        modelValue={input}
+        onUpdate={(e) => setInput(String(e))}
+        className='border-solid border-2 border-[#9291cd]'
+        />
         {!loading ? (
           <button className="mt-5 md:w-[40%] w-[50%] rounded-xl bg-[#9291cd] px-4 py-2 font-medium text-white/80 hover:b hover:text-white hover:border-white" onClick={(e) => generateResponse(e)}>
             {text} &rarr;
@@ -130,8 +130,7 @@ const Create = () => {
             <div className='flex flex-row justify-around'><div className="animate-pulse font-lg tracking-widest ">AI is generating... </div> <LoadingComponent/> </div>
           </button>
         )}
-        {/* For Testing Purposes Otherwise Remove */}
-        {/* {loaded && <div className="mt-8 rounded-xl border text-[#212121] bg-white p-4 shadow-md transition hover:bg-gray-100">{response}</div>} */}
+       
       </div>
       </div>
     </PageWrapper>
@@ -139,3 +138,5 @@ const Create = () => {
 };
 
 export default Create;
+
+
