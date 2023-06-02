@@ -4,9 +4,6 @@ import {
   ByteStepFragment,
   ByteSubmissionInput,
   ByteUserInputFragmentFragment,
-  QueryByteDetailsDocument,
-  QueryByteDetailsQuery,
-  QueryByteDetailsQueryVariables,
   SpaceWithIntegrationsFragment,
   useQueryByteDetailsQuery,
   UserDiscordInfoInput,
@@ -16,11 +13,9 @@ import {
 import { isQuestion, isUserDiscordConnect, isUserInput } from '@/types/deprecated/helpers/stepItemTypes';
 import { StepItemSubmissionType } from '@/types/deprecated/models/enums';
 import { ByteSubmissionError } from '@/types/errors/error';
-import { getAuthenticatedApolloClient } from '@/utils/apolloClient';
-import { emptyByte } from '@/utils/byte/EmptyByte';
 import { StepItemResponse, StepResponse, TempByteSubmission } from '@/utils/byte/TempByteSubmission';
 import { useSession } from 'next-auth/react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 export const LAST_STEP_UUID = 'LAST_STEP_UUID';
@@ -41,12 +36,7 @@ export function useViewByte(space: SpaceWithIntegrationsFragment, byteId: string
     stepResponsesMap: {},
   });
 
-  const {
-    data: byteData,
-    loading: byteLoading,
-    error: byteError,
-    refetch,
-  } = useQueryByteDetailsQuery({ variables: { spaceId: space.id, byteId: byteId }, skip: true });
+  const { refetch } = useQueryByteDetailsQuery({ skip: true });
   const { showNotification } = useNotificationContext();
 
   const [submitByteMutation] = useSubmitByteMutation();

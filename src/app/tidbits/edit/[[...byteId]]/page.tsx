@@ -21,7 +21,7 @@ import { useEffect } from 'react';
 
 function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteId?: string[] } }) {
   const router = useRouter();
-  const setAccountModalOpen = (boolean: boolean) => {};
+
   const { space, params } = props;
   const byteId = params.byteId ? params.byteId[0] : null;
 
@@ -53,14 +53,6 @@ function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteI
 
   const clickSubmit = () => {
     handleSubmit();
-  };
-
-  const onClickBackButton = () => {
-    if (!byteId) {
-      router.push(`/tidbits`);
-    } else {
-      router.push(`/tidbits/view/${byteId}/0`);
-    }
   };
 
   return (

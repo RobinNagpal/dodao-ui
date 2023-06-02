@@ -281,7 +281,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
       });
 
       if (!valid) {
-        console.log('Guide invalid', valid, byteErrors);
+        console.log('Byte invalid', valid, byteErrors);
         showNotification({
           type: 'error',
           message: "Validation Error: Can't Save Byte",

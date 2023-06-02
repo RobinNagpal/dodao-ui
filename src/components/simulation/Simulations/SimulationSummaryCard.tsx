@@ -11,7 +11,7 @@ interface SimulationSummaryCardProps {
 export default function SimulationSummaryCard({ simulation }: SimulationSummaryCardProps) {
   return (
     <Card>
-      <Link href={`/tidbits/view/${simulation.id}/0`} className="card blog-card w-inline-block h-full w-full">
+      <Link href={`/simulations/view/${simulation.id}/0`} className="card blog-card w-inline-block h-full w-full">
         <div>
           <div className="p-4 text-center">
             <h2 className="text-base font-bold whitespace-nowrap overflow-hidden text-ellipsis">{shorten(simulation.name, 32)}</h2>

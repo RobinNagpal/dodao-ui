@@ -6,6 +6,7 @@ export interface SimulationStepError {
 
 export interface SimulationErrors {
   name?: boolean;
+  excerpt?: boolean;
   content?: boolean;
   steps?: Record<string, SimulationStepError>;
 }

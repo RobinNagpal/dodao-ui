@@ -1,4 +1,12 @@
-fragment SimulationDetailsFragment on Simulation {
+fragment SimulationStep on SimulationStep {
+  content
+  iframeUrl
+  name
+  uuid
+  order
+}
+
+fragment SimulationDetails on Simulation {
   postSubmissionStepContent
   content
   created
@@ -9,11 +17,7 @@ fragment SimulationDetailsFragment on Simulation {
   tags
   priority
   steps {
-    content
-    iframeUrl
-    name
-    uuid
-    order
+    ...SimulationStep
   }
 }
 
@@ -33,12 +37,12 @@ query Simulations($spaceId: String!) {
 
 query SimulationDetails($spaceId: String!, $simulationId: String!) {
   simulation(spaceId: $spaceId, simulationId: $simulationId) {
-    ...SimulationDetailsFragment
+    ...SimulationDetails
   }
 }
 
 mutation UpsertSimulation($spaceId: String!, $input: UpsertSimulationInput!) {
   payload: upsertSimulation(spaceId: $spaceId, input: $input) {
-    ...SimulationDetailsFragment
+    ...SimulationDetails
   }
 }

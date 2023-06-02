@@ -1990,7 +1990,9 @@ export type GuidesQueryQueryVariables = Exact<{
 
 export type GuidesQueryQuery = { __typename?: 'Query', guides?: Array<{ __typename?: 'Guide', id: string, authors: Array<string>, name: string, categories: Array<string>, content: string, created: number, guideSource: string, guideType: string, publishStatus: string, socialShareImage?: string | null, thumbnail?: string | null, uuid: string, space: { __typename?: 'Space', id: string, name?: string | null, avatar?: string | null } }> | null };
 
-export type SimulationDetailsFragmentFragment = { __typename?: 'Simulation', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, steps: Array<{ __typename?: 'SimulationStep', content: string, iframeUrl?: string | null, name: string, uuid: string, order: number }> };
+export type SimulationStepFragment = { __typename?: 'SimulationStep', content: string, iframeUrl?: string | null, name: string, uuid: string, order: number };
+
+export type SimulationDetailsFragment = { __typename?: 'Simulation', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, steps: Array<{ __typename?: 'SimulationStep', content: string, iframeUrl?: string | null, name: string, uuid: string, order: number }> };
 
 export type SimulationsQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -2536,8 +2538,17 @@ export const GuideFragmentDoc = gql`
 }
     ${GuideIntegrationFragmentDoc}
 ${GuideStepFragmentDoc}`;
-export const SimulationDetailsFragmentFragmentDoc = gql`
-    fragment SimulationDetailsFragment on Simulation {
+export const SimulationStepFragmentDoc = gql`
+    fragment SimulationStep on SimulationStep {
+  content
+  iframeUrl
+  name
+  uuid
+  order
+}
+    `;
+export const SimulationDetailsFragmentDoc = gql`
+    fragment SimulationDetails on Simulation {
   postSubmissionStepContent
   content
   created
@@ -2548,14 +2559,10 @@ export const SimulationDetailsFragmentFragmentDoc = gql`
   tags
   priority
   steps {
-    content
-    iframeUrl
-    name
-    uuid
-    order
+    ...SimulationStep
   }
 }
-    `;
+    ${SimulationStepFragmentDoc}`;
 export const SpaceWithIntegrationsFragmentDoc = gql`
     fragment SpaceWithIntegrations on Space {
   id
@@ -4603,10 +4610,10 @@ export function refetchSimulationsQuery(variables: SimulationsQueryVariables) {
 export const SimulationDetailsDocument = gql`
     query SimulationDetails($spaceId: String!, $simulationId: String!) {
   simulation(spaceId: $spaceId, simulationId: $simulationId) {
-    ...SimulationDetailsFragment
+    ...SimulationDetails
   }
 }
-    ${SimulationDetailsFragmentFragmentDoc}`;
+    ${SimulationDetailsFragmentDoc}`;
 
 /**
  * __useSimulationDetailsQuery__
@@ -4642,10 +4649,10 @@ export function refetchSimulationDetailsQuery(variables: SimulationDetailsQueryV
 export const UpsertSimulationDocument = gql`
     mutation UpsertSimulation($spaceId: String!, $input: UpsertSimulationInput!) {
   payload: upsertSimulation(spaceId: $spaceId, input: $input) {
-    ...SimulationDetailsFragment
+    ...SimulationDetails
   }
 }
-    ${SimulationDetailsFragmentFragmentDoc}`;
+    ${SimulationDetailsFragmentDoc}`;
 export type UpsertSimulationMutationFn = Apollo.MutationFunction<UpsertSimulationMutation, UpsertSimulationMutationVariables>;
 
 /**

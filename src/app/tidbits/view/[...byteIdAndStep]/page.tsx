@@ -37,7 +37,6 @@ const ByteView = ({ params, space }: { params: { byteIdAndStep: string[] }; spac
   const viewByteHelper = useViewByte(space, byteId, stepOrder);
 
   useEffect(() => {
-    console.log('viewByteHelper.initialize()', 'viewByteHelper.initialize() called');
     viewByteHelper.initialize();
   }, [byteId]);
 
