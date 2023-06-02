@@ -1,6 +1,6 @@
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import {
-  ByteQuestionFragment,
+  ByteQuestionFragmentFragment,
   ByteStepFragment,
   ByteStepInput,
   SpaceWithIntegrationsFragment,
@@ -199,7 +199,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
         }
         step.stepItems.forEach((item: StepItemInputGenericInput) => {
           if (isQuestion(item)) {
-            validateQuestion(item as ByteQuestionFragment, stepError);
+            validateQuestion(item as ByteQuestionFragmentFragment, stepError);
           } else if (isUserInput(item)) {
             validateUserInput(item as UserInput, stepError);
           }

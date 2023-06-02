@@ -1,17 +1,18 @@
 import { StepItemResponse } from '@/utils/byte/TempByteSubmission';
-import { ByteQuestionFragment } from '@/graphql/generated/generated-types';
+import { ByteQuestionFragmentFragment } from '@/graphql/generated/generated-types';
 import Question from '@/components/app/Common/Question';
 
 export function QuestionSection(props: {
   nextButtonClicked: boolean;
   allQuestionsAnsweredCorrectly: boolean;
   allQuestionsAnswered: boolean;
-  stepItem: ByteQuestionFragment;
+  stepItem: ByteQuestionFragmentFragment;
   stepItemSubmission: StepItemResponse | undefined;
   onSelectAnswer: (questionId: string, selectedAnswers: string[]) => void;
 }) {
   return (
-    <>
+    <div>
+      <h1>Question</h1>
       <div
         className={props.nextButtonClicked && !props.allQuestionsAnsweredCorrectly && props.allQuestionsAnswered ? 'border-2 rounded-lg p-4 border-red' : ''}
       >
@@ -36,6 +37,6 @@ export function QuestionSection(props: {
           />
         </div>
       )}
-    </>
+    </div>
   );
 }

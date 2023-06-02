@@ -1,4 +1,4 @@
-import { ByteQuestionFragment, CourseQuestionFragment, GuideQuestionFragment, StepItemInputGenericInput } from '@/graphql/generated/generated-types';
+import { ByteQuestionFragmentFragment, CourseQuestionFragment, GuideQuestionFragment, StepItemInputGenericInput } from '@/graphql/generated/generated-types';
 import { UserInput } from '@/types/deprecated/models/GuideModel';
 import { ChoiceError, QuestionError, StepError, UserInputError } from '@/types/errors/error';
 
@@ -6,7 +6,7 @@ const questionContentLimit = 1024;
 const inputLabelLimit = 32;
 const choiceContentLimit = 256;
 
-export function validateQuestion(question: GuideQuestionFragment | ByteQuestionFragment | CourseQuestionFragment, stepError: StepError) {
+export function validateQuestion(question: GuideQuestionFragment | ByteQuestionFragmentFragment | CourseQuestionFragment, stepError: StepError) {
   const questionError: QuestionError = {};
   if (!question.content || question.content.length > questionContentLimit) {
     questionError.content = true;
