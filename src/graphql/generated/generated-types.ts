@@ -2099,7 +2099,7 @@ export type UpsertSpaceAcademyRepositoryMutationVariables = Exact<{
 
 export type UpsertSpaceAcademyRepositoryMutation = { __typename?: 'Mutation', upsertSpaceAcademyRepository: { __typename?: 'Space', id: string } };
 
-export type TimelineDetailsFragmentFragment = { __typename?: 'Timeline', id: string, name: string, excerpt: string, content: string, thumbnail?: string | null, created: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, events: Array<{ __typename?: 'TimelineEvent', name: string, uuid: string, date: string, excerpt: string, content: string, moreLink?: string | null }> };
+export type TimelineDetailsFragment = { __typename?: 'Timeline', id: string, name: string, excerpt: string, content: string, thumbnail?: string | null, created: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, events: Array<{ __typename?: 'TimelineEvent', name: string, uuid: string, date: string, excerpt: string, content: string, moreLink?: string | null }> };
 
 export type TimelinesQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -2608,8 +2608,8 @@ export const SpaceFragmentFragmentDoc = gql`
   skin
 }
     `;
-export const TimelineDetailsFragmentFragmentDoc = gql`
-    fragment TimelineDetailsFragment on Timeline {
+export const TimelineDetailsFragmentDoc = gql`
+    fragment TimelineDetails on Timeline {
   id
   name
   excerpt
@@ -5095,10 +5095,10 @@ export function refetchTimelinesQuery(variables: TimelinesQueryVariables) {
 export const TimelineDetailsDocument = gql`
     query TimelineDetails($spaceId: String!, $timelineId: String!) {
   timeline(spaceId: $spaceId, timelineId: $timelineId) {
-    ...TimelineDetailsFragment
+    ...TimelineDetails
   }
 }
-    ${TimelineDetailsFragmentFragmentDoc}`;
+    ${TimelineDetailsFragmentDoc}`;
 
 /**
  * __useTimelineDetailsQuery__
@@ -5134,10 +5134,10 @@ export function refetchTimelineDetailsQuery(variables: TimelineDetailsQueryVaria
 export const UpsertTimelineDocument = gql`
     mutation UpsertTimeline($spaceId: String!, $input: UpsertTimelineInput!) {
   upsertTimeline(spaceId: $spaceId, input: $input) {
-    ...TimelineDetailsFragment
+    ...TimelineDetails
   }
 }
-    ${TimelineDetailsFragmentFragmentDoc}`;
+    ${TimelineDetailsFragmentDoc}`;
 export type UpsertTimelineMutationFn = Apollo.MutationFunction<UpsertTimelineMutation, UpsertTimelineMutationVariables>;
 
 /**

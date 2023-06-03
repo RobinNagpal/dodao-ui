@@ -1,4 +1,4 @@
-fragment TimelineDetailsFragment on Timeline {
+fragment TimelineDetails on Timeline {
   id
   name
   excerpt
@@ -35,12 +35,12 @@ query Timelines($spaceId: String!) {
 
 query TimelineDetails($spaceId: String!, $timelineId: String!) {
   timeline(spaceId: $spaceId, timelineId: $timelineId) {
-    ...TimelineDetailsFragment
+    ...TimelineDetails
   }
 }
 
 mutation UpsertTimeline($spaceId: String!, $input: UpsertTimelineInput!) {
   upsertTimeline(spaceId: $spaceId, input: $input) {
-    ...TimelineDetailsFragment
+    ...TimelineDetails
   }
 }
