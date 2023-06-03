@@ -20,6 +20,7 @@ export type EditSimulationType = UpsertSimulationInput & {
 type KeyOfSimulationInput = keyof EditSimulationType;
 
 export type UpdateSimulationFunctions = {
+  initialize: () => Promise<void>;
   moveStepDown: (stepUuid: string) => void;
   addStep: () => void;
   updateSimulationErrorField: (field: KeyOfSimulationInput, value: any) => void;
@@ -243,6 +244,7 @@ export function useEditSimulation(space: Space, simulationId: string | null) {
   }
 
   const updateSimulationFunctions: UpdateSimulationFunctions = {
+    initialize,
     addStep,
     moveStepUp,
     moveStepDown,
