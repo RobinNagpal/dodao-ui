@@ -1,7 +1,7 @@
 'use client';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState  , useEffect} from 'react';
 import LoadingComponent from '@/components/core/loaders/Loading';
 import TextareaAutosize from '@/components/app/TextareaAutosize';
 import CustomButton from '@/components/core/buttons/Button';
@@ -82,6 +82,31 @@ const Create = () => {
    
    ${input}`;
 
+   const [buttonText, setButtonText] = useState('AI is generating ...');
+
+   // Function to change the button text every 10 seconds
+   useEffect(() => {
+     const interval = setInterval(() => {
+       setButtonText((prevText) => {
+         if (prevText === 'AI is generating ...') {
+           return 'Hang tight ...';
+         }
+         else if (prevText === 'Hang tight ...') {
+          return 'Getting the response ...';
+        }
+
+        else if (prevText === 'Getting the response ...') {
+          return 'Hang tight !';
+        }
+        
+         return 'Redirecting ....';
+       });
+     }, 10000);
+ 
+     // Cleanup the interval on component unmount
+     return () => clearInterval(interval);
+   }, []);
+
   const generateResponse = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setResponse('');
@@ -152,12 +177,12 @@ const Create = () => {
         />
         {!loading ? (
           <button className="mt-5 md:w-[40%] w-[50%] rounded-xl bg-[#9291cd] px-4 py-2 font-medium text-white/80 hover:b hover:text-white hover:border-white" onClick={(e) => generateResponse(e)}>
-            {text} &rarr;
+            Generate response &rarr;
           </button>
         ) : (
           
           <button disabled className="mt-5 md:w-[40%] w-[50%] rounded-xl bg-[#9291cd] px-4 py-2 font-medium text-white/80 hover:b hover:text-white hover:border-white">
-            <div className='flex flex-row justify-around'><div className="animate-pulse font-lg tracking-widest ">AI is generating... </div> <LoadingComponent/> </div>
+            <div className='flex flex-row justify-around'><div className="animate-pulse font-lg tracking-widest ">{buttonText} </div> <LoadingComponent/> </div>
           </button>
         )}
        
