@@ -3,10 +3,10 @@
 import withSpace from '@/app/withSpace';
 import Block from '@/components/app/Block';
 import Button from '@/components/app/Button';
-import Dropdown from '@/components/app/Dropdown';
 import Input from '@/components/app/Input';
 import PageLoading from '@/components/app/PageLoading';
 import TextareaArray from '@/components/app/TextareaArray';
+import EllipsisDropdown, { EllipsisDropdownItem } from '@/components/core/dropdowns/EllipsisDropdown';
 import Stepper from '@/components/simulation/Edit/SimulationStepper';
 import { useEditSimulation } from '@/components/simulation/Edit/useEditSimulation';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
@@ -75,14 +75,14 @@ function EditSimulation(props: { space: SpaceWithIntegrationsFragment; params: {
     updateSimulationFunctions.initialize();
   }, [simulationId]);
 
-  const simulationStatuses = [
+  const simulationStatuses: EllipsisDropdownItem[] = [
     {
-      text: 'Live',
-      action: PublishStatus.Live,
+      label: 'Live',
+      key: PublishStatus.Live,
     },
     {
-      text: 'Draft',
-      action: PublishStatus.Draft,
+      label: 'Draft',
+      key: PublishStatus.Draft,
     },
   ];
 
@@ -130,32 +130,30 @@ function EditSimulation(props: { space: SpaceWithIntegrationsFragment; params: {
                     <div>Excerpt*</div>
                   </Input>
 
-                  <div className="status-wrapper pt-3">
-                    <Dropdown top="2.5rem" right="2.5rem" className="mr-2 w-[5rem] status-drop-down" onSelect={selectPublishStatus} items={simulationStatuses}>
+                  <div className="mt-4">
+                    <div>Publish Status * </div>
+                    <div className="flex justify-start ">
                       <div className="pr-1 select-none">{simulation.publishStatus === 'Live' ? 'Live' : 'Draft'}</div>
-                    </Dropdown>
-                    <div className="input-label text-color mr-2 whitespace-nowrap absolute forceFloat">Publish Status*</div>
+                      <div className="ml-2">
+                        <EllipsisDropdown items={simulationStatuses} onSelect={(value) => selectPublishStatus(value as PublishStatus)} />
+                      </div>
+                    </div>
                   </div>
                   <div className="mt-4">Admins</div>
-                  <Button className="block w-full" style={{ height: 'auto' }}>
-                    <TextareaArray
-                      modelValue={simulation.admins}
-                      placeholder="0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c
-0xeF8305E140ac520225DAf050e2f71d5fBcC543e7"
-                      className="input w-full text-left"
-                      onUpdate={(newValue) => updateSimulationFunctions.updateSimulationField('admins', newValue)}
-                    />
-                  </Button>
+                  <TextareaArray
+                    modelValue={simulation.admins}
+                    placeholder="0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c&#10;0xeF8305E140ac520225DAf050e2f71d5fBcC543e7"
+                    className="input w-full text-left"
+                    onUpdate={(newValue) => updateSimulationFunctions.updateSimulationField('admins', newValue)}
+                  />
                   <div className="mt-4">Tags</div>
-                  <Button className="block w-full" style={{ height: 'auto' }}>
-                    <TextareaArray
-                      modelValue={simulation.tags}
-                      placeholder="tag1
+                  <TextareaArray
+                    modelValue={simulation.tags}
+                    placeholder="tag1
 tag2"
-                      className="input w-full text-left"
-                      onUpdate={(newValue) => updateSimulationFunctions.updateSimulationField('tags', newValue)}
-                    />
-                  </Button>
+                    className="input w-full text-left"
+                    onUpdate={(newValue) => updateSimulationFunctions.updateSimulationField('tags', newValue)}
+                  />
                   <div className="mt-4">
                     <Input
                       modelValue={simulation.priority}

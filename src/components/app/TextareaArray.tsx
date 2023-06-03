@@ -34,7 +34,7 @@ function CustomTextareaAutosize({ id, modelValue = [], splitArrayFunction, onUpd
   );
 
   return (
-    <div className="bg-skin-block-bg w-full">
+    <div className="border md:rounded-lg bg-skin-block-bg">
       <TextareaAutosize
         id={id}
         modelValue={input}
