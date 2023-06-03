@@ -1,4 +1,4 @@
-import { ByteDetailsFragment, ByteQuestionFragment } from '@/graphql/generated/generated-types';
+import { ByteDetailsFragment, ByteQuestionFragmentFragment } from '@/graphql/generated/generated-types';
 import { PublishStatus, QuestionType } from '@/types/deprecated/models/enums';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -6,7 +6,7 @@ export const emptyByte = (): ByteDetailsFragment & { isPristine: boolean } => {
   const step1Uuid = uuidv4();
   const step2Uuid = uuidv4();
   const byteUuid = uuidv4();
-  const stepItem: ByteQuestionFragment & { __typename: 'ByteQuestion' } = {
+  const stepItem: ByteQuestionFragmentFragment & { __typename: 'ByteQuestion' } = {
     __typename: 'ByteQuestion',
     uuid: uuidv4(),
     content: 'What is the best pet?',

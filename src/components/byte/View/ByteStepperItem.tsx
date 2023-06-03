@@ -1,11 +1,11 @@
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import {
   ByteDetailsFragment,
-  ByteQuestionFragment,
+  ByteQuestionFragmentFragment,
   ByteStepFragment,
   ByteStepItemFragment,
-  ByteUserDiscordConnectFragment,
-  ByteUserInputFragment,
+  ByteUserDiscordConnectFragmentFragment,
+  ByteUserInputFragmentFragment,
   SpaceWithIntegrationsFragment,
   UserDiscordInfoInput,
 } from '@/graphql/generated/generated-types';
@@ -101,7 +101,7 @@ function ByteStepperItem({ viewByteHelper, step, byte, space, setAccountModalOpe
       setQuestionNotAnswered(true);
 
       const answeredCorrectly = step.stepItems.filter(isQuestion).every((stepItem: ByteStepItemFragment) => {
-        const question = stepItem as ByteQuestionFragment;
+        const question = stepItem as ByteQuestionFragmentFragment;
         return isEqual(question.answerKeys.sort(), ((viewByteHelper.getStepItemSubmission(step.uuid, stepItem.uuid) as string[]) || []).sort());
       });
 
@@ -193,7 +193,7 @@ function ByteStepperItem({ viewByteHelper, step, byte, space, setAccountModalOpe
                   nextButtonClicked={nextButtonClicked}
                   allQuestionsAnsweredCorrectly={questionsAnsweredCorrectly}
                   allQuestionsAnswered={questionNotAnswered}
-                  stepItem={stepItem as ByteQuestionFragment}
+                  stepItem={stepItem as ByteQuestionFragmentFragment}
                   stepItemSubmission={viewByteHelper.getStepItemSubmission(step.uuid, stepItem.uuid)}
                   onSelectAnswer={selectAnswer}
                 />
@@ -204,7 +204,7 @@ function ByteStepperItem({ viewByteHelper, step, byte, space, setAccountModalOpe
               return (
                 <UserDiscord
                   key={index}
-                  userDiscord={stepItem as ByteUserDiscordConnectFragment}
+                  userDiscord={stepItem as ByteUserDiscordConnectFragmentFragment}
                   discordResponse={viewByteHelper.getStepItemSubmission(step.uuid, stepItem.uuid) as UserDiscordInfoInput}
                   spaceId={space.id}
                   guideUuid={byte.id}
@@ -218,7 +218,7 @@ function ByteStepperItem({ viewByteHelper, step, byte, space, setAccountModalOpe
               return (
                 <UserInput
                   key={index}
-                  userInput={stepItem as ByteUserInputFragment}
+                  userInput={stepItem as ByteUserInputFragmentFragment}
                   modelValue={viewByteHelper.getStepItemSubmission(step.uuid, stepItem.uuid) as string}
                   setUserInput={setUserInput}
                 />

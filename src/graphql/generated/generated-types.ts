@@ -1543,60 +1543,6 @@ export interface UserInputInput {
 
 export type AcademyTaskFragmentFragment = { __typename?: 'AcademyTask', uuid: string, createdAt: number, createdBy: string, excerpt: string, spaceId: string, status: string, details: string, title: string, updatedAt: number, updatedBy: string, prerequisiteCourses: Array<{ __typename?: 'SummarizedGitCourse', uuid: string, key: string, title: string, thumbnail: string }>, prerequisiteGuides: Array<{ __typename?: 'Guide', uuid: string, name: string, content: string, thumbnail?: string | null, guideType: string }>, items: Array<{ __typename: 'GuideQuestion', answerKeys: Array<string>, content: string, order: number, type: string, uuid: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'GuideUserInput', label: string, order: number, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', order: number, type: string, uuid: string }> };
 
-export type ByteDetailsFragment = { __typename?: 'Byte', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> };
-
-export type ByteStepFragment = { __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> };
-
-type ByteStepItem_ByteQuestion_Fragment = { __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> };
-
-type ByteStepItem_ByteUserInput_Fragment = { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string };
-
-type ByteStepItem_UserDiscordConnect_Fragment = { __typename: 'UserDiscordConnect', type: string, uuid: string };
-
-export type ByteStepItemFragment = ByteStepItem_ByteQuestion_Fragment | ByteStepItem_ByteUserInput_Fragment | ByteStepItem_UserDiscordConnect_Fragment;
-
-export type ByteQuestionFragment = { __typename?: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> };
-
-export type ByteUserInputFragment = { __typename?: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string };
-
-export type ByteUserDiscordConnectFragment = { __typename?: 'UserDiscordConnect', type: string, uuid: string };
-
-export type CourseSubmissionFragmentFragment = { __typename?: 'GitCourseSubmission', uuid: string, courseKey: string, createdAt: number, createdBy: string, galaxyCredentialsUpdated?: boolean | null, isLatestSubmission?: boolean | null, questionsAttempted?: number | null, questionsCorrect?: number | null, questionsIncorrect?: number | null, questionsSkipped?: number | null, spaceId: string, status: string, updatedAt: number, topicSubmissions: Array<{ __typename?: 'GitCourseTopicSubmission', uuid: string, courseKey: string, courseSubmissionUuid: string, createdAt: number, createdBy: string, isLatestSubmission: boolean, questionsAttempted?: number | null, questionsCorrect?: number | null, questionsIncorrect?: number | null, questionsSkipped?: number | null, spaceId: string, status: string, topicKey: string, updatedAt: number, correctAnswers?: Array<{ __typename?: 'GitCourseTopicCorrectAnswer', uuid: string, answerKeys: Array<string> }> | null, submission?: { __typename?: 'GitCourseTopicSubmissionJson', uuid: string, topicKey: string, status: string, explanations?: Array<{ __typename?: 'GitCourseExplanationsSubmission', key: string, status: string }> | null, questions?: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, status: string, answers: Array<string> }> | null, readings?: Array<{ __typename?: 'GitCourseReadingsSubmission', uuid: string, status: string, questions: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, answers: Array<string>, status: string }> }> | null, summaries?: Array<{ __typename?: 'GitCourseSummariesSubmission', key: string, status: string }> | null } | null }> };
-
-export type TopicSubmissionFragmentFragment = { __typename?: 'GitCourseTopicSubmission', uuid: string, courseKey: string, courseSubmissionUuid: string, createdAt: number, createdBy: string, isLatestSubmission: boolean, questionsAttempted?: number | null, questionsCorrect?: number | null, questionsIncorrect?: number | null, questionsSkipped?: number | null, spaceId: string, status: string, topicKey: string, updatedAt: number, correctAnswers?: Array<{ __typename?: 'GitCourseTopicCorrectAnswer', uuid: string, answerKeys: Array<string> }> | null, submission?: { __typename?: 'GitCourseTopicSubmissionJson', uuid: string, topicKey: string, status: string, explanations?: Array<{ __typename?: 'GitCourseExplanationsSubmission', key: string, status: string }> | null, questions?: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, status: string, answers: Array<string> }> | null, readings?: Array<{ __typename?: 'GitCourseReadingsSubmission', uuid: string, status: string, questions: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, answers: Array<string>, status: string }> }> | null, summaries?: Array<{ __typename?: 'GitCourseSummariesSubmission', key: string, status: string }> | null } | null };
-
-export type TopicSubmissionJsonFragmentFragment = { __typename?: 'GitCourseTopicSubmissionJson', uuid: string, topicKey: string, status: string, explanations?: Array<{ __typename?: 'GitCourseExplanationsSubmission', key: string, status: string }> | null, questions?: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, status: string, answers: Array<string> }> | null, readings?: Array<{ __typename?: 'GitCourseReadingsSubmission', uuid: string, status: string, questions: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, answers: Array<string>, status: string }> }> | null, summaries?: Array<{ __typename?: 'GitCourseSummariesSubmission', key: string, status: string }> | null };
-
-export type CourseFragmentFragment = { __typename?: 'GitCourse', key: string, title: string, summary: string, details: string, duration: string, priority?: number | null, publishStatus: string, highlights: Array<string>, thumbnail: string, courseAdmins?: Array<string> | null, coursePassCount?: number | null, coursePassContent?: string | null, courseFailContent?: string | null, topicConfig?: { __typename?: 'TopicConfig', showExplanations: boolean, showHints: boolean } | null, topics: Array<{ __typename?: 'GitCourseTopic', title: string, key: string, details: string, explanations: Array<{ __typename?: 'GitCourseExplanation', title: string, shortTitle: string, key: string, details: string }>, readings: Array<{ __typename?: 'GitCourseReading', uuid: string, title: string, shortTitle: string, details: string, type: string, url: string }>, summaries: Array<{ __typename?: 'GitCourseSummary', title: string, shortTitle: string, key: string, details: string }>, questions: Array<{ __typename?: 'GitCourseQuestion', uuid: string, type: string, content: string, answerKeys: Array<string>, hint: string, explanation: string, choices: Array<{ __typename?: 'GitCourseQuestionChoice', content: string, key: string }> }> }> };
-
-export type CourseTopicFragment = { __typename?: 'GitCourseTopic', title: string, key: string, details: string, explanations: Array<{ __typename?: 'GitCourseExplanation', title: string, shortTitle: string, key: string, details: string }>, readings: Array<{ __typename?: 'GitCourseReading', uuid: string, title: string, shortTitle: string, details: string, type: string, url: string }>, summaries: Array<{ __typename?: 'GitCourseSummary', title: string, shortTitle: string, key: string, details: string }>, questions: Array<{ __typename?: 'GitCourseQuestion', uuid: string, type: string, content: string, answerKeys: Array<string>, hint: string, explanation: string, choices: Array<{ __typename?: 'GitCourseQuestionChoice', content: string, key: string }> }> };
-
-export type CourseExplanationFragment = { __typename?: 'GitCourseExplanation', title: string, shortTitle: string, key: string, details: string };
-
-export type CourseReadingFragment = { __typename?: 'GitCourseReading', uuid: string, title: string, shortTitle: string, details: string, type: string, url: string };
-
-export type CourseSummaryFragment = { __typename?: 'GitCourseSummary', title: string, shortTitle: string, key: string, details: string };
-
-export type CourseQuestionFragment = { __typename?: 'GitCourseQuestion', uuid: string, type: string, content: string, answerKeys: Array<string>, hint: string, explanation: string, choices: Array<{ __typename?: 'GitCourseQuestionChoice', content: string, key: string }> };
-
-export type GuideFragment = { __typename?: 'Guide', authors: Array<string>, categories: Array<string>, postSubmissionStepContent?: string | null, content: string, created: number, id: string, guideSource: string, guideType: string, link: string, name: string, previousId?: string | null, showIncorrectOnCompletion: boolean, publishStatus: string, socialShareImage?: string | null, thumbnail?: string | null, uuid: string, version: number, guideIntegrations: { __typename?: 'GuideIntegrations', discordRoleIds?: Array<string> | null, discordRolePassingCount?: number | null, discordWebhook?: string | null, projectGalaxyCredentialId?: string | null, projectGalaxyOatMintUrl?: string | null, projectGalaxyOatPassingCount?: number | null }, space: { __typename?: 'Space', id: string, name?: string | null }, steps: Array<{ __typename?: 'GuideStep', content: string, created: number, id: string, name: string, order: number, uuid: string, stepItems: Array<{ __typename: 'GuideQuestion', answerKeys: Array<string>, content: string, order: number, type: string, uuid: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'GuideUserInput', label: string, order: number, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', order: number, type: string, uuid: string }> }> };
-
-export type GuideIntegrationFragment = { __typename?: 'GuideIntegrations', discordRoleIds?: Array<string> | null, discordRolePassingCount?: number | null, discordWebhook?: string | null, projectGalaxyCredentialId?: string | null, projectGalaxyOatMintUrl?: string | null, projectGalaxyOatPassingCount?: number | null };
-
-export type GuideStepFragment = { __typename?: 'GuideStep', content: string, created: number, id: string, name: string, order: number, uuid: string, stepItems: Array<{ __typename: 'GuideQuestion', answerKeys: Array<string>, content: string, order: number, type: string, uuid: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'GuideUserInput', label: string, order: number, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', order: number, type: string, uuid: string }> };
-
-export type GuideQuestionFragment = { __typename?: 'GuideQuestion', answerKeys: Array<string>, content: string, order: number, type: string, uuid: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> };
-
-export type GuideUserInputFragment = { __typename?: 'GuideUserInput', label: string, order: number, required: boolean, type: string, uuid: string };
-
-export type UserDiscordConnectFragment = { __typename?: 'UserDiscordConnect', order: number, type: string, uuid: string };
-
-export type SimulationDetailsFragmentFragment = { __typename?: 'Simulation', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, steps: Array<{ __typename?: 'SimulationStep', content: string, iframeUrl?: string | null, name: string, uuid: string, order: number }> };
-
-export type SpaceWithIntegrationsFragment = { __typename?: 'Space', id: string, creator: string, features: Array<string>, name?: string | null, skin: string, avatar?: string | null, admins: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null };
-
-export type TimelineDetailsFragmentFragment = { __typename?: 'Timeline', id: string, name: string, excerpt: string, content: string, thumbnail?: string | null, created: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, events: Array<{ __typename?: 'TimelineEvent', name: string, uuid: string, date: string, excerpt: string, content: string, moreLink?: string | null }> };
-
 export type AcademyTasksQueryVariables = Exact<{
   spaceId: Scalars['String'];
   status?: InputMaybe<Scalars['String']>;
@@ -1627,6 +1573,26 @@ export type AuthenticateWithUnstoppableMutationVariables = Exact<{
 
 export type AuthenticateWithUnstoppableMutation = { __typename?: 'Mutation', payload: { __typename?: 'JwtResponse', jwt: string } };
 
+export type ByteQuestionFragmentFragment = { __typename?: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> };
+
+export type ByteUserInputFragmentFragment = { __typename?: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string };
+
+export type ByteUserDiscordConnectFragmentFragment = { __typename?: 'UserDiscordConnect', type: string, uuid: string };
+
+type ByteStepItem_ByteQuestion_Fragment = { __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> };
+
+type ByteStepItem_ByteUserInput_Fragment = { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string };
+
+type ByteStepItem_UserDiscordConnect_Fragment = { __typename: 'UserDiscordConnect', type: string, uuid: string };
+
+export type ByteStepItemFragment = ByteStepItem_ByteQuestion_Fragment | ByteStepItem_ByteUserInput_Fragment | ByteStepItem_UserDiscordConnect_Fragment;
+
+export type ByteStepFragment = { __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> };
+
+export type ByteDetailsFragment = { __typename?: 'Byte', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> };
+
+export type ByteDetailsFragmentFragment = { __typename?: 'Byte', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', order: number, type: string, uuid: string }> }> };
+
 export type QueryBytesQueryVariables = Exact<{
   spaceId: Scalars['String'];
 }>;
@@ -1640,7 +1606,7 @@ export type QueryByteDetailsQueryVariables = Exact<{
 }>;
 
 
-export type QueryByteDetailsQuery = { __typename?: 'Query', byte: { __typename?: 'Byte', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> } };
+export type QueryByteDetailsQuery = { __typename?: 'Query', byte: { __typename?: 'Byte', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', order: number, type: string, uuid: string }> }> } };
 
 export type UpsertByteMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -1656,6 +1622,12 @@ export type SubmitByteMutationVariables = Exact<{
 
 
 export type SubmitByteMutation = { __typename?: 'Mutation', submitByte: { __typename?: 'ByteSubmission', id: string, created: number, createdBy: string, byteId: string, spaceId: string } };
+
+export type TopicSubmissionJsonFragmentFragment = { __typename?: 'GitCourseTopicSubmissionJson', uuid: string, topicKey: string, status: string, explanations?: Array<{ __typename?: 'GitCourseExplanationsSubmission', key: string, status: string }> | null, questions?: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, status: string, answers: Array<string> }> | null, readings?: Array<{ __typename?: 'GitCourseReadingsSubmission', uuid: string, status: string, questions: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, answers: Array<string>, status: string }> }> | null, summaries?: Array<{ __typename?: 'GitCourseSummariesSubmission', key: string, status: string }> | null };
+
+export type TopicSubmissionFragmentFragment = { __typename?: 'GitCourseTopicSubmission', uuid: string, courseKey: string, courseSubmissionUuid: string, createdAt: number, createdBy: string, isLatestSubmission: boolean, questionsAttempted?: number | null, questionsCorrect?: number | null, questionsIncorrect?: number | null, questionsSkipped?: number | null, spaceId: string, status: string, topicKey: string, updatedAt: number, correctAnswers?: Array<{ __typename?: 'GitCourseTopicCorrectAnswer', uuid: string, answerKeys: Array<string> }> | null, submission?: { __typename?: 'GitCourseTopicSubmissionJson', uuid: string, topicKey: string, status: string, explanations?: Array<{ __typename?: 'GitCourseExplanationsSubmission', key: string, status: string }> | null, questions?: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, status: string, answers: Array<string> }> | null, readings?: Array<{ __typename?: 'GitCourseReadingsSubmission', uuid: string, status: string, questions: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, answers: Array<string>, status: string }> }> | null, summaries?: Array<{ __typename?: 'GitCourseSummariesSubmission', key: string, status: string }> | null } | null };
+
+export type CourseSubmissionFragmentFragment = { __typename?: 'GitCourseSubmission', uuid: string, courseKey: string, createdAt: number, createdBy: string, galaxyCredentialsUpdated?: boolean | null, isLatestSubmission?: boolean | null, questionsAttempted?: number | null, questionsCorrect?: number | null, questionsIncorrect?: number | null, questionsSkipped?: number | null, spaceId: string, status: string, updatedAt: number, topicSubmissions: Array<{ __typename?: 'GitCourseTopicSubmission', uuid: string, courseKey: string, courseSubmissionUuid: string, createdAt: number, createdBy: string, isLatestSubmission: boolean, questionsAttempted?: number | null, questionsCorrect?: number | null, questionsIncorrect?: number | null, questionsSkipped?: number | null, spaceId: string, status: string, topicKey: string, updatedAt: number, correctAnswers?: Array<{ __typename?: 'GitCourseTopicCorrectAnswer', uuid: string, answerKeys: Array<string> }> | null, submission?: { __typename?: 'GitCourseTopicSubmissionJson', uuid: string, topicKey: string, status: string, explanations?: Array<{ __typename?: 'GitCourseExplanationsSubmission', key: string, status: string }> | null, questions?: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, status: string, answers: Array<string> }> | null, readings?: Array<{ __typename?: 'GitCourseReadingsSubmission', uuid: string, status: string, questions: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, answers: Array<string>, status: string }> }> | null, summaries?: Array<{ __typename?: 'GitCourseSummariesSubmission', key: string, status: string }> | null } | null }> };
 
 export type GitCourseSubmissionQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -1726,6 +1698,18 @@ export type UpsertCourseIntegrationsMutationVariables = Exact<{
 
 
 export type UpsertCourseIntegrationsMutation = { __typename?: 'Mutation', payload: { __typename?: 'CourseIntegrations', discordRoleIds?: Array<string> | null, discordRolePassingCount?: number | null, discordWebhook?: string | null, projectGalaxyCredentialId?: string | null, projectGalaxyOatMintUrl?: string | null, projectGalaxyOatPassingCount?: number | null, projectGalaxyOatMintedContent?: string | null } };
+
+export type CourseQuestionFragment = { __typename?: 'GitCourseQuestion', uuid: string, type: string, content: string, answerKeys: Array<string>, hint: string, explanation: string, choices: Array<{ __typename?: 'GitCourseQuestionChoice', content: string, key: string }> };
+
+export type CourseSummaryFragment = { __typename?: 'GitCourseSummary', title: string, shortTitle: string, key: string, details: string };
+
+export type CourseExplanationFragment = { __typename?: 'GitCourseExplanation', title: string, shortTitle: string, key: string, details: string };
+
+export type CourseReadingFragment = { __typename?: 'GitCourseReading', uuid: string, title: string, shortTitle: string, details: string, type: string, url: string };
+
+export type CourseTopicFragment = { __typename?: 'GitCourseTopic', title: string, key: string, details: string, explanations: Array<{ __typename?: 'GitCourseExplanation', title: string, shortTitle: string, key: string, details: string }>, readings: Array<{ __typename?: 'GitCourseReading', uuid: string, title: string, shortTitle: string, details: string, type: string, url: string }>, summaries: Array<{ __typename?: 'GitCourseSummary', title: string, shortTitle: string, key: string, details: string }>, questions: Array<{ __typename?: 'GitCourseQuestion', uuid: string, type: string, content: string, answerKeys: Array<string>, hint: string, explanation: string, choices: Array<{ __typename?: 'GitCourseQuestionChoice', content: string, key: string }> }> };
+
+export type CourseFragmentFragment = { __typename?: 'GitCourse', key: string, title: string, summary: string, details: string, duration: string, priority?: number | null, publishStatus: string, highlights: Array<string>, thumbnail: string, courseAdmins?: Array<string> | null, coursePassCount?: number | null, coursePassContent?: string | null, courseFailContent?: string | null, topicConfig?: { __typename?: 'TopicConfig', showExplanations: boolean, showHints: boolean } | null, topics: Array<{ __typename?: 'GitCourseTopic', title: string, key: string, details: string, explanations: Array<{ __typename?: 'GitCourseExplanation', title: string, shortTitle: string, key: string, details: string }>, readings: Array<{ __typename?: 'GitCourseReading', uuid: string, title: string, shortTitle: string, details: string, type: string, url: string }>, summaries: Array<{ __typename?: 'GitCourseSummary', title: string, shortTitle: string, key: string, details: string }>, questions: Array<{ __typename?: 'GitCourseQuestion', uuid: string, type: string, content: string, answerKeys: Array<string>, hint: string, explanation: string, choices: Array<{ __typename?: 'GitCourseQuestionChoice', content: string, key: string }> }> }> };
 
 export type UpsertGitCourseMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -1950,6 +1934,18 @@ export type UpsertGnosisSafeWalletsMutationVariables = Exact<{
 
 export type UpsertGnosisSafeWalletsMutation = { __typename?: 'Mutation', payload: { __typename?: 'Space', id: string } };
 
+export type GuideQuestionFragment = { __typename?: 'GuideQuestion', answerKeys: Array<string>, content: string, order: number, type: string, uuid: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> };
+
+export type GuideUserInputFragment = { __typename?: 'GuideUserInput', label: string, order: number, required: boolean, type: string, uuid: string };
+
+export type UserDiscordConnectFragment = { __typename?: 'UserDiscordConnect', order: number, type: string, uuid: string };
+
+export type GuideStepFragment = { __typename?: 'GuideStep', content: string, created: number, id: string, name: string, order: number, uuid: string, stepItems: Array<{ __typename: 'GuideQuestion', answerKeys: Array<string>, content: string, order: number, type: string, uuid: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'GuideUserInput', label: string, order: number, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', order: number, type: string, uuid: string }> };
+
+export type GuideIntegrationFragment = { __typename?: 'GuideIntegrations', discordRoleIds?: Array<string> | null, discordRolePassingCount?: number | null, discordWebhook?: string | null, projectGalaxyCredentialId?: string | null, projectGalaxyOatMintUrl?: string | null, projectGalaxyOatPassingCount?: number | null };
+
+export type GuideFragment = { __typename?: 'Guide', authors: Array<string>, categories: Array<string>, postSubmissionStepContent?: string | null, content: string, created: number, id: string, guideSource: string, guideType: string, link: string, name: string, previousId?: string | null, showIncorrectOnCompletion: boolean, publishStatus: string, socialShareImage?: string | null, thumbnail?: string | null, uuid: string, version: number, guideIntegrations: { __typename?: 'GuideIntegrations', discordRoleIds?: Array<string> | null, discordRolePassingCount?: number | null, discordWebhook?: string | null, projectGalaxyCredentialId?: string | null, projectGalaxyOatMintUrl?: string | null, projectGalaxyOatPassingCount?: number | null }, space: { __typename?: 'Space', id: string, name?: string | null }, steps: Array<{ __typename?: 'GuideStep', content: string, created: number, id: string, name: string, order: number, uuid: string, stepItems: Array<{ __typename: 'GuideQuestion', answerKeys: Array<string>, content: string, order: number, type: string, uuid: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'GuideUserInput', label: string, order: number, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', order: number, type: string, uuid: string }> }> };
+
 export type UpsertGuideMutationVariables = Exact<{
   spaceId: Scalars['String'];
   guideInput: GuideInput;
@@ -1994,6 +1990,8 @@ export type GuidesQueryQueryVariables = Exact<{
 
 export type GuidesQueryQuery = { __typename?: 'Query', guides?: Array<{ __typename?: 'Guide', id: string, authors: Array<string>, name: string, categories: Array<string>, content: string, created: number, guideSource: string, guideType: string, publishStatus: string, socialShareImage?: string | null, thumbnail?: string | null, uuid: string, space: { __typename?: 'Space', id: string, name?: string | null, avatar?: string | null } }> | null };
 
+export type SimulationDetailsFragmentFragment = { __typename?: 'Simulation', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, steps: Array<{ __typename?: 'SimulationStep', content: string, iframeUrl?: string | null, name: string, uuid: string, order: number }> };
+
 export type SimulationsQueryVariables = Exact<{
   spaceId: Scalars['String'];
 }>;
@@ -2016,6 +2014,8 @@ export type UpsertSimulationMutationVariables = Exact<{
 
 
 export type UpsertSimulationMutation = { __typename?: 'Mutation', payload: { __typename?: 'Simulation', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, steps: Array<{ __typename?: 'SimulationStep', content: string, iframeUrl?: string | null, name: string, uuid: string, order: number }> } };
+
+export type SpaceWithIntegrationsFragment = { __typename?: 'Space', id: string, creator: string, features: Array<string>, name?: string | null, skin: string, avatar?: string | null, admins: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null };
 
 export type ExtendedSpaceQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -2062,6 +2062,8 @@ export type UpsertProjectGalaxyAccessTokenMutationVariables = Exact<{
 
 export type UpsertProjectGalaxyAccessTokenMutation = { __typename?: 'Mutation', payload: { __typename?: 'Space', id: string } };
 
+export type SpaceFragmentFragment = { __typename?: 'Space', id: string, admins: Array<string>, avatar?: string | null, creator: string, name?: string | null, skin: string };
+
 export type CreateSignedUrlMutationVariables = Exact<{
   spaceId: Scalars['String'];
   input: CreateSignedUrlInput;
@@ -2094,6 +2096,8 @@ export type UpsertSpaceAcademyRepositoryMutationVariables = Exact<{
 
 
 export type UpsertSpaceAcademyRepositoryMutation = { __typename?: 'Mutation', upsertSpaceAcademyRepository: { __typename?: 'Space', id: string } };
+
+export type TimelineDetailsFragmentFragment = { __typename?: 'Timeline', id: string, name: string, excerpt: string, content: string, thumbnail?: string | null, created: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, events: Array<{ __typename?: 'TimelineEvent', name: string, uuid: string, date: string, excerpt: string, content: string, moreLink?: string | null }> };
 
 export type TimelinesQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -2171,8 +2175,8 @@ export const AcademyTaskFragmentFragmentDoc = gql`
   updatedBy
 }
     `;
-export const ByteQuestionFragmentDoc = gql`
-    fragment ByteQuestion on ByteQuestion {
+export const ByteQuestionFragmentFragmentDoc = gql`
+    fragment ByteQuestionFragment on ByteQuestion {
   answerKeys
   choices {
     content
@@ -2184,16 +2188,16 @@ export const ByteQuestionFragmentDoc = gql`
   explanation
 }
     `;
-export const ByteUserInputFragmentDoc = gql`
-    fragment ByteUserInput on ByteUserInput {
+export const ByteUserInputFragmentFragmentDoc = gql`
+    fragment ByteUserInputFragment on ByteUserInput {
   label
   required
   type
   uuid
 }
     `;
-export const ByteUserDiscordConnectFragmentDoc = gql`
-    fragment ByteUserDiscordConnect on UserDiscordConnect {
+export const ByteUserDiscordConnectFragmentFragmentDoc = gql`
+    fragment ByteUserDiscordConnectFragment on UserDiscordConnect {
   type
   uuid
 }
@@ -2202,18 +2206,18 @@ export const ByteStepItemFragmentDoc = gql`
     fragment ByteStepItem on ByteStepItem {
   __typename
   ... on ByteQuestion {
-    ...ByteQuestion
+    ...ByteQuestionFragment
   }
   ... on ByteUserInput {
-    ...ByteUserInput
+    ...ByteUserInputFragment
   }
   ... on UserDiscordConnect {
-    ...ByteUserDiscordConnect
+    ...ByteUserDiscordConnectFragment
   }
 }
-    ${ByteQuestionFragmentDoc}
-${ByteUserInputFragmentDoc}
-${ByteUserDiscordConnectFragmentDoc}`;
+    ${ByteQuestionFragmentFragmentDoc}
+${ByteUserInputFragmentFragmentDoc}
+${ByteUserDiscordConnectFragmentFragmentDoc}`;
 export const ByteStepFragmentDoc = gql`
     fragment ByteStep on ByteStep {
   content
@@ -2240,6 +2244,49 @@ export const ByteDetailsFragmentDoc = gql`
   }
 }
     ${ByteStepFragmentDoc}`;
+export const ByteDetailsFragmentFragmentDoc = gql`
+    fragment ByteDetailsFragment on Byte {
+  postSubmissionStepContent
+  content
+  created
+  id
+  name
+  publishStatus
+  admins
+  tags
+  priority
+  steps {
+    content
+    stepItems {
+      __typename
+      ... on ByteQuestion {
+        answerKeys
+        choices {
+          content
+          key
+        }
+        content
+        type
+        uuid
+        explanation
+      }
+      ... on ByteUserInput {
+        label
+        required
+        type
+        uuid
+      }
+      ... on UserDiscordConnect {
+        order
+        type
+        uuid
+      }
+    }
+    name
+    uuid
+  }
+}
+    `;
 export const TopicSubmissionJsonFragmentFragmentDoc = gql`
     fragment TopicSubmissionJsonFragment on GitCourseTopicSubmissionJson {
   uuid
@@ -2769,10 +2816,10 @@ export function refetchQueryBytesQuery(variables: QueryBytesQueryVariables) {
 export const QueryByteDetailsDocument = gql`
     query QueryByteDetails($spaceId: String!, $byteId: String!) {
   byte(spaceId: $spaceId, byteId: $byteId) {
-    ...ByteDetails
+    ...ByteDetailsFragment
   }
 }
-    ${ByteDetailsFragmentDoc}`;
+    ${ByteDetailsFragmentFragmentDoc}`;
 
 /**
  * __useQueryByteDetailsQuery__

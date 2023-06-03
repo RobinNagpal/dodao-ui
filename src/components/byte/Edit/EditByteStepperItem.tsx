@@ -8,8 +8,8 @@ import AddStepItemModal from '@/components/app/Modal/AddStepItemModal';
 import { EditByteStep, EditByteType } from '@/components/byte/Edit/useEditByte';
 import {
   ByteQuestion,
-  ByteQuestionFragment,
-  ByteUserInputFragment,
+  ByteQuestionFragmentFragment,
+  ByteUserInputFragmentFragment,
   SpaceWithIntegrationsFragment,
   StepItemInputGenericInput,
 } from '@/graphql/generated/generated-types';
@@ -76,7 +76,7 @@ export default function EditByteStepperItem({
   function updateChoiceContent(questionId: string, choiceKey: string, content: string) {
     const stepItems = step.stepItems.map((question) => {
       if (question.uuid === questionId) {
-        const choices = (question as ByteQuestionFragment).choices.map((choice) => {
+        const choices = (question as ByteQuestionFragmentFragment).choices.map((choice) => {
           if (choice.key === choiceKey) {
             return { ...choice, content };
           } else {
@@ -119,7 +119,7 @@ export default function EditByteStepperItem({
     const key = newChoiceKey();
     const stepItems = step.stepItems.map((question) => {
       if (question.uuid === questionId) {
-        const choices = [...(question as ByteQuestionFragment).choices, { key, content: '' }];
+        const choices = [...(question as ByteQuestionFragmentFragment).choices, { key, content: '' }];
         return {
           ...question,
           choices: choices.map((choice, index) => ({ ...choice, order: index })),
@@ -165,7 +165,7 @@ export default function EditByteStepperItem({
       if (question.uuid === questionId) {
         return {
           ...question,
-          choices: (question as ByteQuestionFragment).choices.filter((choice) => choice.key !== choiceKey),
+          choices: (question as ByteQuestionFragmentFragment).choices.filter((choice) => choice.key !== choiceKey),
         };
       } else {
         return question;
@@ -178,10 +178,10 @@ export default function EditByteStepperItem({
   function removeStepItem(itemUuid: string) {
     const filteredQuestions = step.stepItems.filter((stepItem: { uuid: string }) => stepItem.uuid !== itemUuid);
 
-    const itemsWithIndex: ByteQuestionFragment[] = filteredQuestions.map((question, index) => ({
+    const itemsWithIndex: ByteQuestionFragmentFragment[] = filteredQuestions.map((question, index) => ({
       ...question,
       order: index,
-    })) as ByteQuestionFragment[];
+    })) as ByteQuestionFragmentFragment[];
 
     updateStep({ ...step, stepItems: itemsWithIndex });
   }
@@ -231,7 +231,7 @@ export default function EditByteStepperItem({
   function updateAnswers(questionId: string, choiceKey: string, selected: boolean) {
     const stepItems = step.stepItems.map((question) => {
       if (question.uuid === questionId) {
-        const existingAnswerKeys = (question as ByteQuestionFragment).answerKeys;
+        const existingAnswerKeys = (question as ByteQuestionFragmentFragment).answerKeys;
         const answerKeys = selected ? [...existingAnswerKeys, choiceKey] : existingAnswerKeys.filter((answer) => answer !== choiceKey);
         return {
           ...question,
@@ -247,7 +247,7 @@ export default function EditByteStepperItem({
   function setAnswer(questionId: string, choiceKey: string) {
     const stepItems = step.stepItems.map((question) => {
       if (question.uuid === questionId) {
-        const answerKeys = isEqual((question as ByteQuestionFragment).answerKeys, [choiceKey]) ? [] : [choiceKey];
+        const answerKeys = isEqual((question as ByteQuestionFragmentFragment).answerKeys, [choiceKey]) ? [] : [choiceKey];
         return {
           ...question,
           answerKeys,
@@ -284,7 +284,7 @@ export default function EditByteStepperItem({
   }
 
   function addInput(type: InputType) {
-    const input: ByteUserInputFragment = {
+    const input: ByteUserInputFragmentFragment = {
       uuid: uuidv4(),
       label: 'Label',
       type: type,

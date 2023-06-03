@@ -4,14 +4,14 @@ documents: 'src/graphql/**/*.graphql'
 generates:
   src/graphql/generated/generated-types.ts:
     config:
-      preResolveTypes: true
+#      preResolveTypes: true
       withHooks: true
       withMutationFn: true
       withRefetchFn: true
-      withResultType: true
-      flattenGeneratedTypes: true
-      flattenGeneratedTypesIncludeFragments: true
-      flattenHoistedTypes: true
+#      withResultType: true
+#      flattenGeneratedTypes: true
+#      flattenGeneratedTypesIncludeFragments: true
+#      flattenHoistedTypes: true
       declarationKind:
         union: type
         type: interface
@@ -19,9 +19,9 @@ generates:
         scalar: interface
         arguments: interface
         interface: interface
-      includeDirectives: true
-      commentDescriptions: true
-      flattenTypes: true
+#      includeDirectives: true
+#      commentDescriptions: true
+#      flattenTypes: true
 
 
     plugins:

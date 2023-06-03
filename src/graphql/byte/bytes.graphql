@@ -1,4 +1,4 @@
-fragment ByteQuestion on ByteQuestion {
+fragment ByteQuestionFragment on ByteQuestion {
   answerKeys
   choices {
     content
@@ -10,14 +10,14 @@ fragment ByteQuestion on ByteQuestion {
   explanation
 }
 
-fragment ByteUserInput on ByteUserInput {
+fragment ByteUserInputFragment on ByteUserInput {
   label
   required
   type
   uuid
 }
 
-fragment ByteUserDiscordConnect on UserDiscordConnect {
+fragment ByteUserDiscordConnectFragment on UserDiscordConnect {
   type
   uuid
 }
@@ -25,15 +25,15 @@ fragment ByteUserDiscordConnect on UserDiscordConnect {
 fragment ByteStepItem on ByteStepItem {
   __typename
   ... on ByteQuestion {
-    ...ByteQuestion
+    ...ByteQuestionFragment
   }
 
   ... on ByteUserInput {
-    ...ByteUserInput
+    ...ByteUserInputFragment
   }
 
   ... on UserDiscordConnect {
-    ...ByteUserDiscordConnect
+    ...ByteUserDiscordConnectFragment
   }
 }
 
@@ -62,6 +62,51 @@ fragment ByteDetails on Byte {
   }
 }
 
+fragment ByteDetailsFragment on Byte {
+  postSubmissionStepContent
+  content
+  created
+  id
+  name
+  publishStatus
+  admins
+  tags
+  priority
+  steps {
+    content
+    stepItems {
+      __typename
+      ... on ByteQuestion {
+        answerKeys
+        choices {
+          content
+          key
+        }
+        content
+        type
+        uuid
+        explanation
+      }
+
+      ... on ByteUserInput {
+        label
+        required
+        type
+        uuid
+      }
+
+      ... on UserDiscordConnect {
+        order
+        type
+        uuid
+      }
+    }
+    name
+    uuid
+  }
+}
+
+
 query QueryBytes($spaceId: String!) {
   bytes(spaceId: $spaceId) {
     postSubmissionStepContent
@@ -78,7 +123,7 @@ query QueryBytes($spaceId: String!) {
 
 query QueryByteDetails($spaceId: String!, $byteId: String!) {
   byte(spaceId: $spaceId, byteId: $byteId) {
-    ...ByteDetails
+    ...ByteDetailsFragment
   }
 }
 
