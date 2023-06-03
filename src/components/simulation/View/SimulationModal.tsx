@@ -1,4 +1,4 @@
-import Modal from '@/components/app/Modal';
+import FullScreenModal from '@/components/core/modals/FullScreenModal';
 import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 
@@ -39,12 +39,12 @@ function SimulationModal({ iframeId, iframeUrl, open, onClose }: SimulationModal
   }, [onClose]);
 
   return (
-    <Modal open={open} onClose={onClose} shellClass="simulation-iframe-shell-max">
+    <FullScreenModal open={open} onClose={onClose} title={'Simulation'}>
       <div className="border-b pt-3 pb-2 text-center">
         <Header>Simulation</Header>
       </div>
       <Iframe src={iframeUrl} id={iframeId} allowFullScreen ref={iframeRef} />
-    </Modal>
+    </FullScreenModal>
   );
 }
 

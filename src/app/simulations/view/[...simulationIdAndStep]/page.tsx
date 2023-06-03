@@ -10,15 +10,10 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import styled from 'styled-components';
 
-const Container = styled.div`
-  display: flex;
-  justify-content: center;
-`;
-
 const SimulationCardWrapper = styled.div`
   width: 100%;
   max-width: 1440px;
-  padding: 24px;
+  padding-top: 40px;
 
   @media screen and (min-width: 767px) {
     height: calc(100vh - 200px);
@@ -48,38 +43,27 @@ function ViewSimulation({ params, space }: { params: { simulationIdAndStep: stri
   const router = useRouter();
 
   return (
-    <div
-      className="section mt-16 flex-auto"
-      style={{
-        boxSizing: 'border-box',
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        height: '100%',
-      }}
-    >
-      <Container>
-        <SimulationCardWrapper>
-          {simulation && (
-            <div className="px-4 md:px-0 mb-3 flex justify-between">
-              <Link href="/simulations" className="text-color">
-                <span className="mr-1 font-bold">&#8592;</span>
-                All Simulations
-              </Link>
-              <div className="ml-3">
-                <EllipsisDropdown
-                  items={threeDotItems}
-                  onSelect={(key) => {
-                    router.push(`/simulations/edit/${simulationId}`);
-                  }}
-                />
-              </div>
-              <SimulationViewStepper viewSimulationHelper={viewSimulationHelper} simulation={simulation} />
+    <SimulationCardWrapper>
+      {simulation && (
+        <div className="w-full h-full">
+          <div className="px-4 md:px-0 mb-3 flex justify-between">
+            <Link href="/simulations" className="text-color">
+              <span className="mr-1 font-bold">&#8592;</span>
+              All Simulations
+            </Link>
+            <div className="ml-3">
+              <EllipsisDropdown
+                items={threeDotItems}
+                onSelect={(key) => {
+                  router.push(`/simulations/edit/${simulationId}`);
+                }}
+              />
             </div>
-          )}
-        </SimulationCardWrapper>
-      </Container>
-    </div>
+          </div>
+          <SimulationViewStepper viewSimulationHelper={viewSimulationHelper} simulation={simulation} />
+        </div>
+      )}
+    </SimulationCardWrapper>
   );
 }
 
