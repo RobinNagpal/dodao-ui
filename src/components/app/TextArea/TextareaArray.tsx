@@ -1,4 +1,4 @@
-import TextareaAutosize, { TextareaAutosizeProps } from '@/components/app/TextArea/TextareaAutosize';
+import UnstyledTextareaAutosize, { TextareaAutosizeProps } from '@/components/app/TextArea/UnstyledTextareaAutosize';
 import { useCallback, useEffect, useState } from 'react';
 
 interface Props extends Omit<TextareaAutosizeProps, 'value' | 'onChange' | 'modelValue' | 'onUpdate'> {
@@ -35,7 +35,7 @@ function CustomTextareaAutosize({ id, modelValue = [], splitArrayFunction, onUpd
 
   return (
     <div className="border md:rounded-lg bg-skin-block-bg">
-      <TextareaAutosize
+      <UnstyledTextareaAutosize
         id={id}
         modelValue={input}
         onUpdate={(e) => updateModel(e?.toString() || '')}

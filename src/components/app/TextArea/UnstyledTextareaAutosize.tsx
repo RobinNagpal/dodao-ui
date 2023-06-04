@@ -22,8 +22,8 @@ const TextareaWrapper = styled.div`
   display: flex;
 `;
 
-const Textarea = styled.textarea.attrs(props => ({
-  placeholder: props.placeholder
+const Textarea = styled.textarea.attrs((props) => ({
+  placeholder: props.placeholder,
 }))`
   padding: 0.5rem 0.5rem 1.5rem 0.5rem;
   background-color: transparent;
@@ -41,7 +41,7 @@ const WarningIcon = styled.div`
   color: red;
 `;
 
-function TextareaAutosize({
+function UnstyledTextareaAutosize({
   id = '',
   modelValue = '',
   minHeight = 100,
@@ -50,12 +50,11 @@ function TextareaAutosize({
   error,
   onUpdate,
   placeholder,
-  className
+  className,
 }: TextareaAutosizeProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [maxHeightScroll, setMaxHeightScroll] = useState(false);
-  const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
-    usePopperTooltip({ trigger: 'hover', placement: 'top' });
+  const { getTooltipProps, setTooltipRef, setTriggerRef, visible } = usePopperTooltip({ trigger: 'hover', placement: 'top' });
 
   const resize = () => {
     if (textareaRef.current) {
@@ -80,9 +79,7 @@ function TextareaAutosize({
     resize();
     const contents = e.target.value;
     if (number) {
-      onUpdate &&
-        onUpdate &&
-        onUpdate(!contents ? undefined : parseFloat(contents));
+      onUpdate && onUpdate && onUpdate(!contents ? undefined : parseFloat(contents));
     } else {
       onUpdate && onUpdate(contents);
     }
@@ -102,26 +99,14 @@ function TextareaAutosize({
 
   return (
     <TextareaWrapper className={className}>
-      <Textarea
-        ref={textareaRef}
-        onChange={handleInput}
-        onFocus={resize}
-        value={modelValue as string}
-        placeholder={placeholder}
-      />
+      <Textarea ref={textareaRef} onChange={handleInput} onFocus={resize} value={modelValue as string} placeholder={placeholder} />
       {error && (
         <div ref={setTriggerRef}>
-          <WarningIcon
-            ref={setTooltipRef}
-            {...getTooltipProps({ className: 'tooltip-container' })}
-          >
+          <WarningIcon ref={setTooltipRef} {...getTooltipProps({ className: 'tooltip-container' })}>
             Warning
           </WarningIcon>
           {visible && (
-            <div
-              ref={setTooltipRef}
-              {...getTooltipProps({ className: 'tooltip-container' })}
-            >
+            <div ref={setTooltipRef} {...getTooltipProps({ className: 'tooltip-container' })}>
               {error}
             </div>
           )}
@@ -130,4 +115,4 @@ function TextareaAutosize({
     </TextareaWrapper>
   );
 }
-export default TextareaAutosize;
+export default UnstyledTextareaAutosize;

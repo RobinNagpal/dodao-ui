@@ -7,24 +7,17 @@ import IconButton from '@/components/app/Button/IconButton';
 import { IconTypes } from '@/components/app/Icons/IconTypes';
 import Input from '@/components/app/Input';
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
-import TextareaAutosize from '@/components/app/TextArea/TextareaAutosize';
+import StyledTextareaAutosize from '@/components/app/TextArea/StyledTextareaAutosize';
 import Button from '@/components/core/buttons/Button';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import { SpaceWithIntegrationsFragment, UpsertTimelineEventInput } from '@/graphql/generated/generated-types';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import styled from 'styled-components';
 
-type TimelineEvent = {
-  uuid: string;
-  name: string;
-  date: number | null;
-  moreLink: string;
-  content: string;
-};
 const EventContainer = styled.div`
   border: ${(props: { hasError: boolean }) => (props.hasError ? 'red solid 1px' : 'none')} !important;
 `;
@@ -49,13 +42,9 @@ const EditTimeline = (props: { space: SpaceWithIntegrationsFragment; params: { t
     updateTimelineEventDate,
   } = useEditTimeline(timelineId || null, props.space);
 
-  const [loadingMore, setLoadingMore] = useState(false);
-
   useEffect(() => {
     initialize();
   }, [timelineId]);
-
-  const loadingData = loadingTimeline;
 
   return (
     <PageWrapper>
@@ -73,12 +62,15 @@ const EditTimeline = (props: { space: SpaceWithIntegrationsFragment; params: { t
             onUpdate={(e) => updateTimelineField('name', e || '')}
             error={timelineErrors.name}
           />
-          <TextareaAutosize
-            modelValue={editTimelineRef.excerpt || ''}
-            placeholder="Timeline description"
-            onUpdate={(e) => updateTimelineField('excerpt', e || '')}
-            error={timelineErrors.excerpt}
-          />
+          <div className="mt-4">
+            <div>Excerpt</div>
+            <StyledTextareaAutosize
+              modelValue={editTimelineRef.excerpt || ''}
+              placeholder="Timeline description"
+              onUpdate={(e) => updateTimelineField('excerpt', e || '')}
+              error={timelineErrors.excerpt}
+            />
+          </div>
           {(editTimelineRef.events || []).map((event: UpsertTimelineEventInput, index: number) => (
             <div className="border-dashed border-t-2 mt-10" key={event.uuid}>
               <EventContainer hasError={!!timelineErrors.events?.[event.uuid]}>
@@ -93,10 +85,7 @@ const EditTimeline = (props: { space: SpaceWithIntegrationsFragment; params: { t
                   onUpdate={(e) => updateTimelineEventField(event.uuid, 'name', e?.toString() || '')}
                   error={timelineErrors.events?.[event.uuid]?.name}
                 />
-                <DatePicker
-                  selected={event.date ? new Date(event.date) : null}
-                  onChange={(date: Date) => updateTimelineEventDate(event.uuid, date.toISOString())}
-                />
+                <DatePicker selected={new Date(event.date)} onChange={(date: Date) => updateTimelineEventDate(event.uuid, date.toISOString())} />
                 <Input
                   modelValue={event.moreLink}
                   placeholder="More link"

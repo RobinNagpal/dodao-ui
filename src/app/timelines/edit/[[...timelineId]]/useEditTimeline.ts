@@ -49,7 +49,7 @@ export function useEditTimeline(timelineId: string | null, space: Space): EditTi
     admins: [],
     priority: 50,
     tags: [],
-    created: Date.toString(),
+    created: new Date().toISOString(),
   });
 
   const { $t } = useI18();

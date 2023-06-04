@@ -1,12 +1,11 @@
 'use client';
+import UnstyledTextareaAutosize from '@/components/app/TextArea/UnstyledTextareaAutosize';
+import LoadingComponent from '@/components/core/loaders/Loading';
+import { NotificationProps } from '@/components/core/notify/Notification';
 import PageWrapper from '@/components/core/page/PageWrapper';
+import { useNotificationContext } from '@/contexts/NotificationContext';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import LoadingComponent from '@/components/core/loaders/Loading';
-import TextareaAutosize from '@/components/app/TextArea/TextareaAutosize';
-import CustomButton from '@/components/core/buttons/Button';
-import { NotificationProps } from '@/components/core/notify/Notification';
-import { useNotificationContext } from '@/contexts/NotificationContext';
 
 const Create = () => {
   const router = useRouter();
@@ -141,7 +140,7 @@ const Create = () => {
         <div className=" container  mx-auto p-4 flex flex-col ">
           <h1 className="md:text-5xl text-4xl text-[#9291cd] font-semibold mb-10">Create Tidbits Via AI </h1>
 
-          <TextareaAutosize
+          <UnstyledTextareaAutosize
             autosize={true}
             modelValue={input}
             onUpdate={(e) => setInput(String(e))}

@@ -4,7 +4,7 @@ import Radio from '@/components/app/Form/Radio';
 import Icon from '@/components/app/Icon';
 import DeleteIcon from '@/components/app/Icons/DeleteIcon';
 import Input from '@/components/app/Input';
-import TextareaAutosize from '@/components/app/TextArea/TextareaAutosize';
+import UnstyledTextareaAutosize from '@/components/app/TextArea/UnstyledTextareaAutosize';
 import { ByteQuestion } from '@/graphql/generated/generated-types';
 import { QuestionError } from '@/types/errors/error';
 import { QuestionType } from '@/types/deprecated/models/enums';
@@ -84,7 +84,7 @@ function QuestionComponent({
       </div>
       <div className="border md:rounded-lg p-4 mb-4 bg-skin-block-bg">
         <Button className="w-full h-96 mb-4 px-[16px] flex items-center" style={{ height: 'max-content' }}>
-          <TextareaAutosize
+          <UnstyledTextareaAutosize
             modelValue={question.content}
             placeholder="Guide question content"
             className="input w-full text-left"
