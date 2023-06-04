@@ -2450,16 +2450,6 @@ export const CourseFragmentFragmentDoc = gql`
   }
 }
     ${CourseTopicFragmentDoc}`;
-export const GuideIntegrationFragmentDoc = gql`
-    fragment GuideIntegration on GuideIntegrations {
-  discordRoleIds
-  discordRolePassingCount
-  discordWebhook
-  projectGalaxyCredentialId
-  projectGalaxyOatMintUrl
-  projectGalaxyOatPassingCount
-}
-    `;
 export const GuideQuestionFragmentDoc = gql`
     fragment GuideQuestion on GuideQuestion {
   answerKeys
@@ -2489,24 +2479,52 @@ export const UserDiscordConnectFragmentDoc = gql`
   uuid
 }
     `;
+export const GuideIntegrationFragmentDoc = gql`
+    fragment GuideIntegration on GuideIntegrations {
+  discordRoleIds
+  discordRolePassingCount
+  discordWebhook
+  projectGalaxyCredentialId
+  projectGalaxyOatMintUrl
+  projectGalaxyOatPassingCount
+}
+    `;
 export const GuideStepFragmentDoc = gql`
     fragment GuideStep on GuideStep {
   content
   created
   stepItems {
     __typename
-    ...GuideQuestion
-    ...GuideUserInput
-    ...UserDiscordConnect
+    ... on GuideQuestion {
+      answerKeys
+      choices {
+        content
+        key
+      }
+      content
+      order
+      type
+      uuid
+    }
+    ... on GuideUserInput {
+      label
+      order
+      required
+      type
+      uuid
+    }
+    ... on UserDiscordConnect {
+      order
+      type
+      uuid
+    }
   }
   id
   name
   order
   uuid
 }
-    ${GuideQuestionFragmentDoc}
-${GuideUserInputFragmentDoc}
-${UserDiscordConnectFragmentDoc}`;
+    `;
 export const GuideFragmentDoc = gql`
     fragment Guide on Guide {
   authors

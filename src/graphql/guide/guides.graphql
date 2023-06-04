@@ -29,9 +29,31 @@ fragment GuideStep on GuideStep {
   created
   stepItems {
     __typename
-    ...GuideQuestion
-    ...GuideUserInput
-    ...UserDiscordConnect
+    ... on GuideQuestion {
+      answerKeys
+      choices {
+        content
+        key
+      }
+      content
+      order
+      type
+      uuid
+    }
+
+    ... on GuideUserInput {
+      label
+      order
+      required
+      type
+      uuid
+    }
+
+    ... on UserDiscordConnect {
+      order
+      type
+      uuid
+    }
   }
   id
   name
