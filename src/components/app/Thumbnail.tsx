@@ -13,6 +13,7 @@ interface ThumbnailProps {
   entityId: string;
   title: string;
   imageClass?: string;
+  className?: string;
 }
 
 const Thumbnail = styled.img<{ bigTile: boolean; size: string | undefined; maxHeight: string | undefined }>`
@@ -22,7 +23,7 @@ const Thumbnail = styled.img<{ bigTile: boolean; size: string | undefined; maxHe
   height: ${(props) => (props.bigTile ? props.maxHeight || '262' : props.size || '22')}px;
 `;
 
-const ImageComponent: React.FC<ThumbnailProps> = ({ big_tile = false, max_tile_height, size, src, entityId, title, imageClass }) => {
+const ImageComponent: React.FC<ThumbnailProps> = ({ big_tile = false, max_tile_height, size, src, entityId, title, imageClass, className }) => {
   const [error, setError] = useState(false);
   const [imgSrc, setImgSrc] = useState('');
   const [address, setAddress] = useState('');
@@ -40,7 +41,7 @@ const ImageComponent: React.FC<ThumbnailProps> = ({ big_tile = false, max_tile_h
   };
 
   return (
-    <div className={`flex justify-center ${big_tile ? 'w-full' : ''}`}>
+    <div className={`flex justify-center ${big_tile ? 'w-full' : ''} ` + className ? className : ''}>
       {imgSrc && !error ? (
         <Thumbnail
           src={imgSrc}

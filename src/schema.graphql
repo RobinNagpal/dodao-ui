@@ -130,7 +130,7 @@ input ByteStepSubmissionInput {
 
 type ByteSubmission {
   byteId: String!
-  created: Int!
+  created: String!
   createdBy: String!
   id: String!
   spaceId: String!
@@ -450,7 +450,6 @@ type Guide {
   publishStatus: String!
   showIncorrectOnCompletion: Boolean!
   socialShareImage: String
-  space: Space!
   steps: [GuideStep!]!
   thumbnail: String
   uuid: String!
@@ -562,7 +561,7 @@ input GuideStepSubmissionInput {
 }
 
 type GuideSubmission {
-  created: Int!
+  created: String!
   createdBy: String!
   galaxyCredentialsUpdated: Boolean
   guideId: String!
@@ -743,7 +742,7 @@ type Query {
   gitTopicSubmissions(courseKey: String!, spaceId: String!): [GitCourseTopicSubmission!]!
   guide(spaceId: String!, uuid: String!): Guide!
   guideSubmissions(guideUuid: String!): [GuideSubmission!]!
-  guides(spaceId: String!): [Guide!]
+  guides(spaceId: String!): [Guide!]!
   queryOpenAIChat(messages: [OpenAIChatMessageInput!]!): OpenAIChatResponse
   rawGitCourse(key: String!, spaceId: String!): RawGitCourse!
   simulation(simulationId: String!, spaceId: String!): Simulation!

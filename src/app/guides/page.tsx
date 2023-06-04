@@ -3,24 +3,24 @@
 import withSpace, { SpaceProps } from '@/app/withSpace';
 import Block from '@/components/app/Block';
 import RowLoading from '@/components/app/RowLoading';
-import ByteSummaryCard from '@/components/bytes/Summary/ByteSummaryCard';
-import NoByte from '@/components/bytes/Summary/NoBytes';
+import GuideSummaryCard from '@/components/guides/Summary/GuideSummaryCard';
+import NoGuide from '@/components/guides/Summary/NoGuides';
 import { Grid4Cols } from '@/components/core/grids/Grid4Colst';
 import PageWrapper from '@/components/core/page/PageWrapper';
-import { useQueryBytesQuery } from '@/graphql/generated/generated-types';
+import { GuideSummaryFragment, useGuidesQueryQuery } from '@/graphql/generated/generated-types';
 import React from 'react';
 
-function Byte({ space }: SpaceProps) {
-  const { data, error, loading, refetch: fetchBytes } = useQueryBytesQuery({ variables: { spaceId: space.id } });
+function Guide({ space }: SpaceProps) {
+  const { data, loading } = useGuidesQueryQuery({ variables: { space: space.id } });
 
   const loadingData = loading || !space;
   return (
     <PageWrapper>
-      {!data?.bytes.length && !loadingData && <NoByte />}
-      {!!data?.bytes?.length && (
+      {!data?.guides?.length && !loadingData && <NoGuide />}
+      {!!data?.guides?.length && (
         <Grid4Cols>
-          {data?.bytes?.map((byte, i) => (
-            <ByteSummaryCard key={i} byte={byte} />
+          {data?.guides?.map((guide: GuideSummaryFragment, i) => (
+            <GuideSummaryCard key={i} guide={guide} inProgress={false} />
           ))}
         </Grid4Cols>
       )}
@@ -34,4 +34,4 @@ function Byte({ space }: SpaceProps) {
   );
 }
 
-export default withSpace(Byte);
+export default withSpace(Guide);

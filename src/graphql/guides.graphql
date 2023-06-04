@@ -1,23 +1,23 @@
+fragment GuideSummary on Guide{
+  id
+  authors
+  name
+  categories
+  content
+  created
+  guideSource
+  guideType
+  publishStatus
+  socialShareImage
+  thumbnail
+  uuid
+
+}
+
 query GuidesQuery(
   $space: String!
 ) {
   guides(spaceId: $space) {
-    id
-    authors
-    name
-    categories
-    content
-    created
-    guideSource
-    guideType
-    space {
-      id
-      name
-      avatar
-    }
-    publishStatus
-    socialShareImage
-    thumbnail
-    uuid
+    ...GuideSummary
   }
 }

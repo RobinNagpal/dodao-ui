@@ -65,10 +65,6 @@ fragment Guide on Guide {
   name
   previousId
   showIncorrectOnCompletion
-  space {
-    id
-    name
-  }
   steps {
     ...GuideStep
   }
