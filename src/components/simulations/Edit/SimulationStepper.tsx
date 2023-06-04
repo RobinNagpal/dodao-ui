@@ -1,5 +1,5 @@
 import CalendarIcon from '@/components/app/Icons/CalendarIcon';
-import SimulationStepperItem from '@/components/simulation/Edit/SimulationStepperItem';
+import SimulationStepperItem from '@/components/simulations/Edit/SimulationStepperItem';
 import { Space } from '@/graphql/generated/generated-types';
 import { SimulationErrors } from '@/types/errors/simulationErrors';
 import styled from 'styled-components';

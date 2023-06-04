@@ -3,8 +3,8 @@
 import withSpace, { SpaceProps } from '@/app/withSpace';
 import Block from '@/components/app/Block';
 import RowLoading from '@/components/app/RowLoading';
-import TimelineSummaryCard from '@/components/timeline/Timelines/TimelineSummaryCard';
-import NoTimeline from '@/components/timeline/Timelines/NoTimelines';
+import TimelineSummaryCard from '@/components/timelines/Timelines/TimelineSummaryCard';
+import NoTimeline from '@/components/timelines/Timelines/NoTimelines';
 import { Grid4Cols } from '@/components/core/grids/Grid4Colst';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import { useTimelinesQuery } from '@/graphql/generated/generated-types';

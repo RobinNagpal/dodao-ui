@@ -3,8 +3,8 @@
 import withSpace from '@/app/withSpace';
 import Block from '@/components/app/Block';
 import PageLoading from '@/components/app/PageLoading';
-import ByteStepper from '@/components/byte/View/ByteStepper';
-import { useViewByte } from '@/components/byte/View/useViewByte';
+import ByteStepper from '@/components/bytes/View/ByteStepper';
+import { useViewByte } from '@/components/bytes/View/useViewByte';
 import EllipsisDropdown from '@/components/core/dropdowns/EllipsisDropdown';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import Link from 'next/link';

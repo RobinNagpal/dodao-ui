@@ -1,4 +1,4 @@
-import { StepResponse, TempSimulationSubmission } from '@/components/simulation/Edit/TempSimulationSubmission';
+import { StepResponse, TempSimulationSubmission } from '@/components/simulations/Edit/TempSimulationSubmission';
 import { SimulationDetailsFragment, SimulationStepFragment, Space, useSimulationDetailsQuery } from '@/graphql/generated/generated-types';
 
 import { useState } from 'react';

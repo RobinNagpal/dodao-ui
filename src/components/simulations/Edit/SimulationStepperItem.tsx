@@ -3,7 +3,7 @@ import IconButton from '@/components/app/Button/IconButton';
 import Input from '@/components/app/Input';
 import { IconTypes } from '@/components/app/Icons/IconTypes';
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
-import { EditSimulationType } from '@/components/simulation/Edit/useEditSimulation';
+import { EditSimulationType } from '@/components/simulations/Edit/useEditSimulation';
 import { SimulationStepInput, Space } from '@/graphql/generated/generated-types';
 import { StepError } from '@/types/errors/error';
 import { SimulationErrors } from '@/types/errors/simulationErrors';

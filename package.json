@@ -50,6 +50,7 @@
     "discord-oauth2": "^2.11.0",
     "eslint": "8.39.0",
     "eslint-config-next": "13.3.4",
+    "ethereum-blockies-base64": "^1.0.2",
     "ethers": "^6.3.0",
     "fs": "^0.0.1-security",
     "graphql": "^16.6.0",

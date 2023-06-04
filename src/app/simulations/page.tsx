@@ -3,8 +3,8 @@
 import withSpace, { SpaceProps } from '@/app/withSpace';
 import Block from '@/components/app/Block';
 import RowLoading from '@/components/app/RowLoading';
-import SimulationSummaryCard from '@/components/simulation/Simulations/SimulationSummaryCard';
-import NoSimulation from '@/components/simulation/Simulations/NoSimulations';
+import SimulationSummaryCard from '@/components/simulations/Simulations/SimulationSummaryCard';
+import NoSimulation from '@/components/simulations/Simulations/NoSimulations';
 import { Grid4Cols } from '@/components/core/grids/Grid4Colst';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import { useSimulationsQuery } from '@/graphql/generated/generated-types';

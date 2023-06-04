@@ -5,7 +5,7 @@ import CreateUserInput from '@/components/app/Common/CreateUserInput';
 import { IconTypes } from '@/components/app/Icons/IconTypes';
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
 import AddStepItemModal from '@/components/app/Modal/AddStepItemModal';
-import { EditByteStep, EditByteType } from '@/components/byte/Edit/useEditByte';
+import { EditByteStep, EditByteType } from '@/components/bytes/Edit/useEditByte';
 import {
   ByteQuestion,
   ByteQuestionFragmentFragment,

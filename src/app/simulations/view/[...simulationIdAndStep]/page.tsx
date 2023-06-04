@@ -2,8 +2,8 @@
 
 import withSpace from '@/app/withSpace';
 import EllipsisDropdown from '@/components/core/dropdowns/EllipsisDropdown';
-import SimulationViewStepper from '@/components/simulation/View/SimulationStepper';
-import { useViewSimulation } from '@/components/simulation/View/useViewSimulation';
+import SimulationViewStepper from '@/components/simulations/View/SimulationStepper';
+import { useViewSimulation } from '@/components/simulations/View/useViewSimulation';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';

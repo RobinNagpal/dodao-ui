@@ -3,8 +3,8 @@
 import withSpace, { SpaceProps } from '@/app/withSpace';
 import Block from '@/components/app/Block';
 import RowLoading from '@/components/app/RowLoading';
-import ByteSummaryCard from '@/components/byte/Bytes/ByteSummaryCard';
-import NoByte from '@/components/byte/Bytes/NoBytes';
+import ByteSummaryCard from '@/components/bytes/Bytes/ByteSummaryCard';
+import NoByte from '@/components/bytes/Bytes/NoBytes';
 import { Grid4Cols } from '@/components/core/grids/Grid4Colst';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import { useQueryBytesQuery } from '@/graphql/generated/generated-types';

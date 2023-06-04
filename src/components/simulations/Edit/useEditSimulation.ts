@@ -1,4 +1,4 @@
-import { emptySimulation } from '@/components/simulation/Edit/EmptySimulation';
+import { emptySimulation } from '@/components/simulations/Edit/EmptySimulation';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import { SimulationStepInput, Space, UpsertSimulationInput, useSimulationDetailsQuery, useUpsertSimulationMutation } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';

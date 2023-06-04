@@ -4,7 +4,7 @@ import withSpace from '@/app/withSpace';
 import Block from '@/components/app/Block';
 import RowLoading from '@/components/app/RowLoading';
 import EllipsisDropdown from '@/components/core/dropdowns/EllipsisDropdown';
-import TimelineDetails from '@/components/timeline/View/TimelineDetails';
+import TimelineDetails from '@/components/timelines/View/TimelineDetails';
 import { SpaceWithIntegrationsFragment, useTimelineDetailsQuery } from '@/graphql/generated/generated-types';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
 import Link from 'next/link';

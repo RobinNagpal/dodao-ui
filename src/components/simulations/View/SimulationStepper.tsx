@@ -1,6 +1,6 @@
 // SimulationViewStepper.tsx
-import SimulationStepperItem from '@/components/simulation/View/SimulationStepperItem';
-import { UseViewSimulationHelper } from '@/components/simulation/View/useViewSimulation';
+import SimulationStepperItem from '@/components/simulations/View/SimulationStepperItem';
+import { UseViewSimulationHelper } from '@/components/simulations/View/useViewSimulation';
 import { SimulationDetailsFragment, SimulationStepFragment } from '@/graphql/generated/generated-types';
 import React, { useMemo } from 'react';
 import styled from 'styled-components';
