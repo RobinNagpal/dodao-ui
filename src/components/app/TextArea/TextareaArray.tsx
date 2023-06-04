@@ -1,4 +1,4 @@
-import TextareaAutosize, { TextareaAutosizeProps } from '@/components/app/TextareaAutosize';
+import TextareaAutosize, { TextareaAutosizeProps } from '@/components/app/TextArea/TextareaAutosize';
 import { useCallback, useEffect, useState } from 'react';
 
 interface Props extends Omit<TextareaAutosizeProps, 'value' | 'onChange' | 'modelValue' | 'onUpdate'> {

@@ -5,7 +5,7 @@ import Block from '@/components/app/Block';
 import Button from '@/components/app/Button';
 import Input from '@/components/app/Input';
 import PageLoading from '@/components/app/PageLoading';
-import TextareaArray from '@/components/app/TextareaArray';
+import TextareaArray from '@/components/app/TextArea/TextareaArray';
 import EllipsisDropdown, { EllipsisDropdownItem } from '@/components/core/dropdowns/EllipsisDropdown';
 import Stepper from '@/components/simulation/Edit/SimulationStepper';
 import { useEditSimulation } from '@/components/simulation/Edit/useEditSimulation';

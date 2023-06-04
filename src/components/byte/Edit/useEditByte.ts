@@ -73,7 +73,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
   const [byteCreating, setByteCreating] = useState<boolean>(false);
 
   const { refetch: queryByteDetails, data, error } = useQueryByteDetailsQuery({ skip: true });
-  const [upsertByteMutation, { data: upsertResponse, error: UpsertError }] = useUpsertByteMutation();
+  const [upsertByteMutation] = useUpsertByteMutation();
   const { showNotification } = useNotificationContext();
 
   const initialize = useCallback(async () => {

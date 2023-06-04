@@ -3,17 +3,17 @@ import PageWrapper from '@/components/core/page/PageWrapper';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import LoadingComponent from '@/components/core/loaders/Loading';
-import TextareaAutosize from '@/components/app/TextareaAutosize';
+import TextareaAutosize from '@/components/app/TextArea/TextareaAutosize';
 import CustomButton from '@/components/core/buttons/Button';
-import  {NotificationProps} from '@/components/core/notify/Notification';
+import { NotificationProps } from '@/components/core/notify/Notification';
 import { useNotificationContext } from '@/contexts/NotificationContext';
-
 
 const Create = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [text , setText] = useState('Generate response')
-  const [input, setInput] = useState(`Uniswap V3's introduction of concentrated liquidity has transformed the game for liquidity providers, offering them an unparalleled level of flexibility through a range of strategic options.
+  const [text, setText] = useState('Generate response');
+  const [input, setInput] =
+    useState(`Uniswap V3's introduction of concentrated liquidity has transformed the game for liquidity providers, offering them an unparalleled level of flexibility through a range of strategic options.
    
   Choice of Pool: Liquidity providers can decide on which pool they wish to deposit their liquidity, offering a level of customization previously unattainable.
   Fee Selection: Providers can now select their fee tier, enabling them to align their liquidity provision with their risk tolerance and expected return on investment.
@@ -31,7 +31,6 @@ const Create = () => {
   `);
   const [response, setResponse] = useState<string>('');
   const [loaded, setLoaded] = useState(false);
-
 
   const { showNotification } = useNotificationContext();
   const handleShowNotification = (notificationProps: NotificationProps) => {
@@ -87,87 +86,89 @@ const Create = () => {
     setResponse('');
     setLoading(true);
     if (!e) {
-      return; 
+      return;
     }
 
-  const timeoutDuration = 50000; 
-  const timeoutPromise = new Promise((_, reject) => {
-    setTimeout(() => reject(new Error('Request timeout')), timeoutDuration);
-  });
+    const timeoutDuration = 50000;
+    const timeoutPromise = new Promise((_, reject) => {
+      setTimeout(() => reject(new Error('Request timeout')), timeoutDuration);
+    });
 
-  const responsePromise = fetch('/api/generate', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      prompt,
-    }),
-  });
+    const responsePromise = fetch('/api/generate', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        prompt,
+      }),
+    });
 
-  try {
-    const response = await Promise.race([responsePromise, timeoutPromise]) as Response;
+    try {
+      const response = (await Promise.race([responsePromise, timeoutPromise])) as Response;
 
-    if (!response.ok) {
-      throw new Error(response.statusText);
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+
+      setLoaded(true);
+      const data = await response.json();
+      console.log('data', data);
+      setResponse(JSON.stringify(data, null, 2));
+      setLoading(false);
+      setText('Generated');
+
+      if (data.id) {
+        localStorage.setItem(data.id, JSON.stringify(data));
+        router.push(`/tidbits/edit/${data.id}`);
+      } else {
+        handleShowNotification({
+          heading: 'Error',
+          type: 'error',
+          message: 'The Tidbit Was not generated properly either the content given was inappropriate or server issue please try again later ',
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      setLoading(false);
+      handleShowNotification({ heading: 'TimeOut Error', type: 'error', message: 'This request Took More time then Expected Please Try Again' });
     }
-
-    setLoaded(true);
-    const data = await response.json();
-    console.log('data', data);
-    setResponse(JSON.stringify(data, null, 2));
-    setLoading(false);
-    setText('Generated');
-
-
-    if (data.id) {
-      localStorage.setItem(data.id, JSON.stringify(data));
-      router.push(`/tidbits/edit/${data.id}`);
-    } else {
-      handleShowNotification({ heading: 'Error', type: 'error', message: 'The Tidbit Was not generated properly either the content given was inappropriate or server issue please try again later ' });
-    }
-
-
-  } catch (error) {
-    console.error(error);
-    setLoading(false);
-    handleShowNotification({ heading: 'TimeOut Error', type: 'error', message: 'This request Took More time then Expected Please Try Again' });
-  }
-    
-
   };
 
   return (
-    <PageWrapper >
-      <div className=' md:ml-20'>
-      <div className=" container  mx-auto p-4 flex flex-col ">
-        <h1 className="md:text-5xl text-4xl text-[#9291cd] font-semibold mb-10">Create Tidbits Via AI </h1>
-        
-        <TextareaAutosize
-        autosize={true}
-        modelValue={input}
-        onUpdate={(e) => setInput(String(e))}
-        className='border-solid border-2 border-[#9291cd]'
-        maxHeight={500}
-        />
-        {!loading ? (
-          <button className="mt-5 md:w-[40%] w-[50%] rounded-xl bg-[#9291cd] px-4 py-2 font-medium text-white/80 hover:b hover:text-white hover:border-white" onClick={(e) => generateResponse(e)}>
-            {text} &rarr;
-          </button>
-        ) : (
-          
-          <button disabled className="mt-5 md:w-[40%] w-[50%] rounded-xl bg-[#9291cd] px-4 py-2 font-medium text-white/80 hover:b hover:text-white hover:border-white">
-            <div className='flex flex-row justify-around'><div className="animate-pulse font-lg tracking-widest ">AI is generating... </div> <LoadingComponent/> </div>
-          </button>
-        )}
-       
+    <PageWrapper>
+      <div className=" md:ml-20">
+        <div className=" container  mx-auto p-4 flex flex-col ">
+          <h1 className="md:text-5xl text-4xl text-[#9291cd] font-semibold mb-10">Create Tidbits Via AI </h1>
+
+          <TextareaAutosize
+            autosize={true}
+            modelValue={input}
+            onUpdate={(e) => setInput(String(e))}
+            className="border-solid border-2 border-[#9291cd]"
+            maxHeight={500}
+          />
+          {!loading ? (
+            <button
+              className="mt-5 md:w-[40%] w-[50%] rounded-xl bg-[#9291cd] px-4 py-2 font-medium text-white/80 hover:b hover:text-white hover:border-white"
+              onClick={(e) => generateResponse(e)}
+            >
+              {text} &rarr;
+            </button>
+          ) : (
+            <button
+              disabled
+              className="mt-5 md:w-[40%] w-[50%] rounded-xl bg-[#9291cd] px-4 py-2 font-medium text-white/80 hover:b hover:text-white hover:border-white"
+            >
+              <div className="flex flex-row justify-around">
+                <div className="animate-pulse font-lg tracking-widest ">AI is generating... </div> <LoadingComponent />{' '}
+              </div>
+            </button>
+          )}
+        </div>
       </div>
-      </div>
-   
     </PageWrapper>
   );
 };
 
 export default Create;
-
-

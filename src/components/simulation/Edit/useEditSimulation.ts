@@ -43,7 +43,7 @@ export function useEditSimulation(space: Space, simulationId: string | null) {
   const [simulationErrors, setSimulationErrors] = useState<SimulationErrors>({});
   const [simulationLoaded, setSimulationLoaded] = useState<boolean>(false);
   const [simulationCreating, setSimulationCreating] = useState<boolean>(false);
-  const { refetch: querySimulationDetails, data, error } = useSimulationDetailsQuery({ skip: true });
+  const { refetch: querySimulationDetails } = useSimulationDetailsQuery({ skip: true });
   const [upsertSimulationMutation, { data: upsertResponse, error: UpsertError }] = useUpsertSimulationMutation();
 
   async function initialize() {

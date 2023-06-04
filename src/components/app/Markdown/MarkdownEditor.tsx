@@ -16,7 +16,7 @@ interface MarkdownEditorProps {
   error?: string | boolean;
   editorClass?: string;
   editorStyles?: React.CSSProperties;
-  onUpdateModelValue?: (value: string) => void;
+  onUpdate?: (value: string) => void;
 }
 
 const MainDiv = styled.div`
@@ -117,14 +117,14 @@ function MarkdownEditor({
   error,
   editorClass,
   editorStyles,
-  onUpdateModelValue,
+  onUpdate,
 }: MarkdownEditorProps) {
   const [markdown, setMarkdown] = useState<string | undefined>();
 
   const [createSignedUrlMutation, { loading: creatingSingedUrl }] = useCreateSignedUrlMutation();
   const handleInput = (value: SetStateAction<string | undefined>) => {
     setMarkdown(value || '');
-    onUpdateModelValue && onUpdateModelValue(value?.toString() || '');
+    onUpdate && onUpdate(value?.toString() || '');
   };
 
   const insertToTextArea = (intsertString: string) => {

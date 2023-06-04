@@ -4,7 +4,7 @@ import Radio from '@/components/app/Form/Radio';
 import Icon from '@/components/app/Icon';
 import DeleteIcon from '@/components/app/Icons/DeleteIcon';
 import Input from '@/components/app/Input';
-import TextareaAutosize from '@/components/app/TextareaAutosize';
+import TextareaAutosize from '@/components/app/TextArea/TextareaAutosize';
 import { ByteQuestion } from '@/graphql/generated/generated-types';
 import { QuestionError } from '@/types/errors/error';
 import { QuestionType } from '@/types/deprecated/models/enums';

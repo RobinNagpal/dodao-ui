@@ -64,7 +64,7 @@ export default function Step({ space, simulation, simulationErrors, step, stepEr
         <MarkdownEditor
           id={step.uuid}
           modelValue={step.content}
-          onUpdateModelValue={updateStepContent}
+          onUpdate={updateStepContent}
           spaceId={space.id}
           objectId={simulation.id || ''}
           imageType="Simulation"

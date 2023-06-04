@@ -336,7 +336,7 @@ export default function EditByteStepperItem({
           id={step.uuid}
           modelValue={step.content}
           placeholder={'Contents'}
-          onUpdateModelValue={updateStepContent}
+          onUpdate={updateStepContent}
           spaceId={space.id}
           objectId={byte.id || 'unknown_byte_id'}
           imageType="Byte"
@@ -365,7 +365,7 @@ export default function EditByteStepperItem({
                 placeholder="Explanation (2-3 lines)"
                 editorStyles={{ height: '150px' }}
                 error={!!stepErrors?.stepItems?.[stepItem.uuid]}
-                onUpdateModelValue={(content) => updateExplanation(stepItem.uuid, content)}
+                onUpdate={(content) => updateExplanation(stepItem.uuid, content)}
                 spaceId={space.id}
                 objectId={`${byte.id}/${stepItem.uuid}`}
                 imageType="Byte"
