@@ -1937,7 +1937,7 @@ export type GuideQuestionFragment = { __typename?: 'GuideQuestion', answerKeys: 
 
 export type GuideUserInputFragment = { __typename?: 'GuideUserInput', label: string, order: number, required: boolean, type: string, uuid: string };
 
-export type UserDiscordConnectFragment = { __typename?: 'UserDiscordConnect', order: number, type: string, uuid: string };
+export type GuideUserDiscordConnectFragment = { __typename?: 'UserDiscordConnect', order: number, type: string, uuid: string };
 
 export type GuideStepFragment = { __typename?: 'GuideStep', content: string, created: number, id: string, name: string, order: number, uuid: string, stepItems: Array<{ __typename: 'GuideQuestion', answerKeys: Array<string>, content: string, order: number, type: string, uuid: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'GuideUserInput', label: string, order: number, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', order: number, type: string, uuid: string }> };
 
@@ -2472,8 +2472,8 @@ export const GuideUserInputFragmentDoc = gql`
   uuid
 }
     `;
-export const UserDiscordConnectFragmentDoc = gql`
-    fragment UserDiscordConnect on UserDiscordConnect {
+export const GuideUserDiscordConnectFragmentDoc = gql`
+    fragment GuideUserDiscordConnect on UserDiscordConnect {
   order
   type
   uuid

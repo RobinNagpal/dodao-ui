@@ -18,7 +18,7 @@ fragment GuideUserInput on GuideUserInput {
   uuid
 }
 
-fragment UserDiscordConnect on UserDiscordConnect {
+fragment GuideUserDiscordConnect on UserDiscordConnect {
   order
   type
   uuid

@@ -1,4 +1,4 @@
-import { ByteUserDiscordConnectFragmentFragment, UserDiscordInfoInput } from '@/graphql/generated/generated-types';
+import { ByteUserDiscordConnectFragmentFragment, GuideUserDiscordConnectFragment, UserDiscordInfoInput } from '@/graphql/generated/generated-types';
 import { GuideType } from '@/types/deprecated/models/GuideModel';
 import { shorten } from '@/utils/utils';
 import { useMemo } from 'react';
@@ -7,7 +7,7 @@ import styled from 'styled-components';
 const discordClientId = process.env.VITE_DISCORD_CLIENT_ID?.toString() || '957438694476898384';
 
 interface DiscordButtonProps {
-  userDiscord: ByteUserDiscordConnectFragmentFragment;
+  userDiscord: ByteUserDiscordConnectFragmentFragment | GuideUserDiscordConnectFragment;
   spaceId: string;
   guideUuid: string;
   stepOrder?: number;
