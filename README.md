@@ -1,24 +1,58 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+## Clone the repo
+`git clone git@github.com:RobinNagpal/dodao-ui.git`
 
-First, run the development server:
+## Prerequisits
+1) Nodejs 18+
+2) Yarn 1.22.x
+3) Docker
+4) DockerCompose
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+## Code setup
+1) Copy .env.example and name it as .env
+Populate the environment variables. For some env variables you can add dummy strings.
+
+For example for the below env variables add some dummy values
+```
+DISCORD_CLIENT_ID=
+DISCORD_CLIENT_SECRET=
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+
+TWITTER_CLIENT_ID=
+TWITTER_CLIENT_SECRET=
+
+NEXTAUTH_SECRET=
+DODAO_AUTH_SECRET=
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+2) Generate graphql files
 
-[http://localhost:3000/api/hello](http://localhost:3000/api/hello) is an endpoint that uses [Route Handlers](https://beta.nextjs.org/docs/routing/route-handlers). This endpoint can be edited in `app/api/hello/route.ts`.
+`yarn graphql:generate`
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+3) Generate prisma files
+
+`npx prisma generate`
+
+4) Run Database: We run databse in a docker container. For that we use docker compose. To run it, open a new terminal and run docker-compose up. Make sure to keep that terminal running
+
+`docker-compose up`
+
+5) generate dabase tables
+`npx prisma db push`
+
+6) Make sure tables are created. Install a postgres client and make sure a new DB is created `next_app_localhost_db` and tables are also created in it.
+
+## Run the code
+1) Install dependencies
+
+`yarn install`
+
+2) Run server
+
+`yarn dev`
 
 ## Learn More
 
