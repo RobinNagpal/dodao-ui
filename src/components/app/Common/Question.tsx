@@ -62,7 +62,7 @@ function Question({ answerClass = '', question, questionResponse, readonly, show
 
   const selectSingleChoice = (choiceKey: string) => {
     const selectedAnswers = isEqual(currentlySelectedChoices, [choiceKey]) ? [] : [choiceKey];
-    setSingleChoice((prev) => [...prev, choiceKey]);
+    setSingleChoice((prev) => [ choiceKey,...prev]);
     console.log(selectedSingleChoice);
 
     onSelectAnswer(question.uuid, selectedAnswers);
