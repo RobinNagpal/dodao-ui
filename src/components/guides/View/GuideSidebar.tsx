@@ -54,8 +54,6 @@ export default function GuideSidebar({ activeStep, guide, viewGuideHelper }: Gui
     [activeStep.uuid, viewGuideHelper.guideSubmission?.isPristine]
   );
 
-  const showSuccess = useMemo(() => viewGuideHelper.getStepSubmission(activeStep.uuid)?.isCompleted, [activeStep.uuid]);
-
   function goToStep(order: number) {
     if (guide.steps.length - 1 === order) {
       // we don't want user to navigate to the complete/final step
@@ -76,6 +74,11 @@ export default function GuideSidebar({ activeStep, guide, viewGuideHelper }: Gui
           {guide.steps.map((step, stepIdx) => {
             const iconBackground = true;
             const Icon = getGuideSidebarIcon(step);
+
+            const showError = !viewGuideHelper.guideSubmission?.isPristine && !viewGuideHelper.isEveryQuestionAnsweredInStep(step.uuid);
+            const showSuccess = viewGuideHelper.getStepSubmission(step.uuid)?.isCompleted;
+            const showActive = stepIdx === viewGuideHelper.activeStepOrder;
+
             return (
               <li key={step.uuid}>
                 <div className={'relative pb-8 '}>
@@ -83,7 +86,7 @@ export default function GuideSidebar({ activeStep, guide, viewGuideHelper }: Gui
                   <div className="relative flex space-x-3">
                     <div>
                       <StyledSpan
-                        showActive={stepIdx === viewGuideHelper.activeStepOrder}
+                        showActive={showActive}
                         showSuccess={showSuccess}
                         showError={showError}
                         className={classNames(iconBackground, 'h-8 w-8 rounded-full flex items-center justify-center  ring-white')}
@@ -94,7 +97,7 @@ export default function GuideSidebar({ activeStep, guide, viewGuideHelper }: Gui
                     <div className="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
                       <StyledAnchor
                         onClick={() => goToStep(stepIdx)}
-                        isActive={stepIdx === viewGuideHelper.activeStepOrder}
+                        isActive={showActive}
                         isDisabled={step.id === LAST_STEP_UUID || stepIdx === guide.steps.length - 1}
                       >
                         {step.name}

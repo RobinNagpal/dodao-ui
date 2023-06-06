@@ -147,8 +147,9 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
           }
         }
       }
+
+      viewGuideHelper.goToNextStep(step);
     }
-    viewGuideHelper.submitGuide();
   };
 
   return (
