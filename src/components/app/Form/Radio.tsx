@@ -7,6 +7,7 @@ export interface RadioProps {
   className?: string;
   readonly?: boolean;
   onChange: (value: boolean) => void;
+  questionId : string;
 }
 
 const Overlay = styled.div<{ readonly?: boolean; isSelected?: boolean }>`
@@ -36,9 +37,6 @@ const StyledInput = styled.input`
     background-color: var(--primary-color) !important;
   }
 
-  &:focus {
-    outline-color: var(--primary-color);
-  }
   :disabled {
     cursor: not-allowed;
   }
@@ -48,13 +46,13 @@ const StyledLabel = styled.label`
   color: var(--text-color);
 `;
 
-export default function Radio({ id, labelContent, isSelected, className, readonly, onChange }: RadioProps) {
+export default function Radio({ id, labelContent, isSelected, className, readonly, onChange,questionId }: RadioProps) {
   return (
     <div key={id} className={`custom-radio flex items-center ${className || ''}`}>
       <div className="relative mt-2">
         <StyledInput
           id={id}
-          name="notification-method"
+          name={questionId}
           type="radio"
           defaultChecked={isSelected}
           disabled={!!readonly}
