@@ -175,7 +175,7 @@ export function useViewGuide(space: Space, uuid: string, stepOrder: number): Use
   }
 
   function isEverythingInGuideIsAnswered(): boolean {
-    return Object.keys(guideStepsMap.value).every((stepUuid) => isEveryQuestionAnsweredInStep(stepUuid));
+    return Object.keys(guideStepsMap).every((stepUuid) => isEveryQuestionAnsweredInStep(stepUuid));
   }
 
   function isValidToSubmit() {

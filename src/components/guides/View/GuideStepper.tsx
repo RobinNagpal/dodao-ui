@@ -19,7 +19,7 @@ const Guide: React.FC<GuideProps> = ({ viewGuideHelper, guide, space }) => {
   return (
     <div className="flex">
       <div className="flex grow flex-col gap-y-5 overflow-y-auto  px-6 p-4">
-        <GuideSidebar guide={guide} viewGuideHelper={viewGuideHelper} />
+        <GuideSidebar guide={guide} viewGuideHelper={viewGuideHelper} activeStep={activeStep} />
       </div>
       <div className="w-full flex flex-row">
         <GuideStepperItem space={space} viewGuideHelper={viewGuideHelper} guide={guide} step={activeStep} />
