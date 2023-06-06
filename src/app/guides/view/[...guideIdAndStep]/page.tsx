@@ -75,7 +75,7 @@ const GuideView = ({ params, space }: { params: { guideIdAndStep: string[] }; sp
               <div className="px-4 md:px-0 mb-3 flex justify-between">
                 <Link href="/guides" className="text-color">
                   <span className="mr-1 font-bold">&#8592;</span>
-                  All Tidbits
+                  All Guides
                 </Link>
                 <div className="ml-3">
                   <EllipsisDropdown
@@ -89,9 +89,9 @@ const GuideView = ({ params, space }: { params: { guideIdAndStep: string[] }; sp
             )}
 
             <div className="px-4 md:px-0">
-              <div>
-                <h1 className="mb-2">{guide?.name}</h1>
-                <div className="mb-4">
+              <div className="ml-12 mt-4">
+                <h1 className="mb-2 text-3xl">{guide?.name}</h1>
+                <div className="mb-4 text-xl">
                   <div className="flex justify-between">
                     <div dangerouslySetInnerHTML={{ __html: guideContents }} className="markdown-body mb-6 w-[80%]" />
                   </div>
