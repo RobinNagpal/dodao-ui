@@ -31,7 +31,7 @@ export interface UseViewGuideHelper {
   goToNextStep: (currentStep: GuideStepFragment) => void;
   goToPreviousStep: (currentStep: GuideStepFragment) => void;
   guideLoaded: boolean;
-  guideRef: GuideFragment | null;
+  guide: GuideFragment | null;
   guideSubmission: TempGuideSubmission;
   guideSubmitting: boolean;
   initialize: () => void;
@@ -39,7 +39,7 @@ export interface UseViewGuideHelper {
   isValidToSubmit: () => boolean;
   selectAnswer: (stepUuid: string, questionUuid: string, selectedAnswers: string[]) => void;
   setActiveStep: (order: number) => void;
-  submitGuide: () => void;
+  submitGuide: () => Promise<boolean>;
   setUserInput: (stepUuid: string, userInputUuid: string, userInput: string) => void;
   setUserDiscord: (stepUuid: string, userDiscordUuid: string, userDiscordId: string) => void;
 }
@@ -48,7 +48,7 @@ export function useViewGuide(space: Space, uuid: string, stepOrder: number): Use
   const { $t: t } = useI18();
 
   const { data: session } = useSession();
-  const [guideRef, setGuideRef] = useState<GuideFragment | null>(null);
+  const [guide, setGuide] = useState<GuideFragment | null>(null);
   const [guideStepsMap, setGuideStepsMap] = useState<{ [uuid: string]: GuideStepFragment }>({});
   const [errors, setErrors] = useState<GuideSubmissionError>({});
   const [guideLoaded, setGuideLoaded] = useState<boolean>(false);
@@ -72,20 +72,20 @@ export function useViewGuide(space: Space, uuid: string, stepOrder: number): Use
   async function initialize() {
     console.log('initialize');
     setActiveStepOrder(stepOrder);
-    const result = await refetch({ uuid: uuid });
+    const result = await refetch({ uuid: uuid, spaceId: space.id });
 
-    const guide = result.data?.guide;
+    const fetchedGuide = result.data?.guide!;
 
-    setGuideRef({
-      ...guide,
+    setGuide({
+      ...fetchedGuide,
       __typename: 'Guide',
       steps: [
-        ...guide.steps,
+        ...fetchedGuide.steps,
         {
           __typename: 'GuideStep',
           content: 'The guide has been completed successfully!',
           name: 'Completed',
-          order: guide.steps.length,
+          order: fetchedGuide.steps.length,
           uuid: LAST_STEP_UUID,
           stepItems: [],
           id: 'some_id',
@@ -94,6 +94,7 @@ export function useViewGuide(space: Space, uuid: string, stepOrder: number): Use
       ],
     });
 
+    setGuideLoaded(true);
     readGuideSubmissions();
 
     if (guideSubmission.isSubmitted) {
@@ -105,13 +106,13 @@ export function useViewGuide(space: Space, uuid: string, stepOrder: number): Use
       });
     }
 
-    setGuideStepsMap(Object.fromEntries<GuideStepFragment>(guide.steps.map((step) => [step.uuid, step])));
+    setGuideStepsMap(Object.fromEntries<GuideStepFragment>(fetchedGuide.steps.map((step) => [step.uuid, step])));
 
     // This just sets submission data for every step
     setGuideSubmission((prev) => ({
       ...prev,
       stepResponsesMap: Object.fromEntries(
-        guide.steps.map((step) => [step.uuid, getStepSubmission(step.uuid) || { itemResponsesMap: {}, isTouched: false, isCompleted: false }])
+        fetchedGuide.steps.map((step) => [step.uuid, getStepSubmission(step.uuid) || { itemResponsesMap: {}, isTouched: false, isCompleted: false }])
       ),
     }));
   }
@@ -124,7 +125,7 @@ export function useViewGuide(space: Space, uuid: string, stepOrder: number): Use
     getStepSubmission(currentStep.uuid).isCompleted = true;
     const newStepOrder = currentStep.order + 1;
     setActiveStepOrder(newStepOrder);
-    const navigateToLastStep = activeStepOrder === (guideRef?.steps || []).length - 1;
+    const navigateToLastStep = activeStepOrder === (guide?.steps || []).length - 1;
 
     if (!navigateToLastStep) {
       saveGuideSubmissionToLocalStorage();
@@ -185,7 +186,7 @@ export function useViewGuide(space: Space, uuid: string, stepOrder: number): Use
 
     return isEverythingInGuideIsAnswered();
   }
-  async function submitGuide() {
+  async function submitGuide(): Promise<boolean> {
     setGuideSubmittingRef(true);
 
     setGuideSubmission({
@@ -197,7 +198,7 @@ export function useViewGuide(space: Space, uuid: string, stepOrder: number): Use
 
     if (!isEverythingInGuideIsAnswered()) {
       setGuideSubmittingRef(false);
-      return;
+      return false;
     }
 
     const guideSubmissionInput: Omit<GuideSubmissionInput, 'timestamp'> = {
@@ -262,10 +263,10 @@ export function useViewGuide(space: Space, uuid: string, stepOrder: number): Use
       You got ${result.correctQuestions.length} correct out of ${result.allQuestions.length} questions
       `;
 
-          const stepsWithoutLastOne = guideRef?.steps?.filter((step) => step.uuid !== LAST_STEP_UUID) || [];
-          setGuideRef({
-            ...guideRef!,
-            showIncorrectOnCompletion: !!guideRef?.showIncorrectOnCompletion,
+          const stepsWithoutLastOne = guide?.steps?.filter((step) => step.uuid !== LAST_STEP_UUID) || [];
+          setGuide({
+            ...guide!,
+            showIncorrectOnCompletion: !!guide?.showIncorrectOnCompletion,
             steps: [
               ...stepsWithoutLastOne,
               {
@@ -348,7 +349,7 @@ export function useViewGuide(space: Space, uuid: string, stepOrder: number): Use
     goToNextStep,
     goToPreviousStep,
     guideLoaded,
-    guideRef: guideRef,
+    guide: guide,
     guideSubmission,
     guideSubmitting: guideSubmittingRef,
     isEveryQuestionAnsweredInStep,

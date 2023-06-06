@@ -20,7 +20,7 @@ import { ApolloProvider } from '@apollo/client';
 import { SessionProvider } from 'next-auth/react';
 import { useEffect, useMemo } from 'react';
 import styled from 'styled-components';
-import './globals.css';
+import 'src/app/globals.scss';
 
 // Based on - https://tailwindui.com/components/application-ui/page-examples/home-screens
 

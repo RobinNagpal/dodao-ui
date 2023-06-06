@@ -3,6 +3,8 @@ import UserDiscord from '@/components/app/Form/UserDiscord';
 import UserInput from '@/components/app/Form/UserInput';
 import Button from '@/components/core/buttons/Button';
 import { LAST_STEP_UUID, UseViewGuideHelper } from '@/components/guides/View/useViewGuide';
+import { useLoginModalContext } from '@/contexts/LoginModalContext';
+import { useNotificationContext } from '@/contexts/NotificationContext';
 import {
   GuideFragment,
   GuideQuestionFragment,
@@ -12,33 +14,13 @@ import {
   Space,
   UserDiscordInfoInput,
 } from '@/graphql/generated/generated-types';
+import { useI18 } from '@/hooks/useI18';
 import { isQuestion, isUserDiscordConnect, isUserInput } from '@/types/deprecated/helpers/stepItemTypes';
 import { getMarkedRenderer } from '@/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
+import { useSession } from 'next-auth/react';
 import { useCallback, useMemo, useState } from 'react';
 import styled from 'styled-components';
-
-const StepContent = styled.div.attrs(() => ({
-  className: 'step-content markdown-body',
-}))`
-  li {
-    @apply mb-2;
-  }
-  p {
-    @apply mb-4;
-  }
-  iframe {
-    @apply my-8;
-  }
-`;
-
-const BadgeHeading = styled.h3`
-  @apply font-bold;
-`;
-
-const BadgeClaimLink = styled.a`
-  @apply font-bold text-primary underline;
-`;
 
 const CorrectAnswer = styled.div`
   background-color: green !important;
@@ -57,14 +39,13 @@ const WrongAnswer = styled.div`
 `;
 
 export interface GuideStepProps {
-  viewGuideHelper: UseViewGuideHelper;
   space: Space;
-  step: GuideStepFragment;
   guide: GuideFragment;
-  submitGuide: () => Promise<void>;
+  step: GuideStepFragment;
+  viewGuideHelper: UseViewGuideHelper;
 }
 
-const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, guide, submitGuide }) => {
+const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, guide }) => {
   const [nextButtonClicked, setNextButtonClicked] = useState(false);
 
   const setUserInput = useCallback(
@@ -137,23 +118,90 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
       guideSubmission.submissionResult?.correctQuestions.length < guideSubmission.submissionResult?.allQuestions.length,
     [guide, guideSubmission]
   );
-
-  const navigateToNextStep = () => {
+  const { data: sesstion } = useSession();
+  const { setShowLoginModal } = useLoginModalContext();
+  const { showNotification } = useNotificationContext();
+  const { $t } = useI18();
+  const navigateToNextStep = async () => {
     setNextButtonClicked(true);
     setShowCompleteAllQuestionsInTheGuide(false);
 
     if (isEveryQuestionAnswered() && isDiscordConnected()) {
-      setNextButtonClicked(true);
+      setNextButtonClicked(false);
+
+      if (isLastStep) {
+        if (!viewGuideHelper.isValidToSubmit()) {
+          setCompleteButtonClicked(true);
+          setShowCompleteAllQuestionsInTheGuide(true);
+          return;
+        }
+
+        if (!sesstion?.username) {
+          setShowLoginModal(true);
+          return;
+        } else {
+          const guideSubmitted = await viewGuideHelper.submitGuide();
+          if (!guideSubmitted) {
+            showNotification({ type: 'error', message: $t('notify.somethingWentWrong') });
+            return;
+          }
+        }
+      }
     }
-    submitGuide();
+    viewGuideHelper.submitGuide();
   };
 
   return (
     <div className="guide-stepper-content w-full px-4 flex flex-col justify-between">
-      <StepContent dangerouslySetInnerHTML={{ __html: step.content }} />
-      {step.stepItems.map((item, index) => {
-        return (
-          // Make sure to replace these components with their actual counterparts in your React codebase.
+      <div style={{ minHeight: '300px' }}>
+        <h2 className="mb-4" style={{ paddingBottom: '12px' }}>
+          Step {step.order + 1} - {step.name}
+        </h2>
+        <div className="step-content markdown-body" dangerouslySetInnerHTML={{ __html: stepContents }} />
+        {isGuideCompletedStep && <div className="step-content markdown-body pt-6" dangerouslySetInnerHTML={{ __html: postSubmissionContent || '' }} />}
+        {guide.guideIntegrations?.projectGalaxyOatMintUrl && guideSubmission?.galaxyCredentialsUpdated && (
+          <div className="mt-4 mb-6 bold">
+            <h3 className="badge-heading">You have WON a Badge</h3>
+            Claim your guide completion badge
+            <a href={guide.guideIntegrations?.projectGalaxyOatMintUrl} className="badge-claim-link">
+              here
+            </a>
+          </div>
+        )}
+        {showIncorrectQuestions && (
+          <div className="flex align-center justify-center mt-4">
+            {!renderIncorrectQuestions && (
+              <Button
+                aria-label={$t('next')} // Make sure to import the `t` function from `react-i18next`
+                className="w-[300px]"
+                primary
+                variant="contained"
+                onClick={() => setRenderIncorrectQuestions(!renderIncorrectQuestions)}
+                loading={viewGuideHelper.guideSubmitting}
+                disabled={viewGuideHelper.guideSubmitting}
+              >
+                <span className="sm:block">{$t(renderIncorrectQuestions ? 'guide.hideQuestions' : 'guide.showIncorrectChoices')}</span>
+              </Button>
+            )}
+            {isGuideCompletedStep && renderIncorrectQuestions && (
+              <div className="mt-4 border-2 rounded-lg border-red p-4 w-full">
+                <h3 className="mb-2">{$t('guide.correctAnswers')}</h3>
+                {wrongQuestions.map((wrongQuestion) => (
+                  <div key={wrongQuestion.uuid} className="mb-6">
+                    <Question
+                      answer-class="correct-answer"
+                      question={wrongQuestion}
+                      onSelectAnswer={() => {}}
+                      questionResponse={wrongQuestion.answerKeys}
+                      readonly={guideSubmission.isSubmitted}
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+        {stepItems.map((item) => (
           <div key={item.uuid}>
             {isQuestion(item) && (
               <Question
@@ -180,12 +228,51 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
               />
             )}
           </div>
-        );
-      })}
-      <div>
-        <Button onClick={navigateToNextStep} disabled={nextButtonClicked} loading={nextButtonClicked}>
-          Next Step
-        </Button>
+        ))}
+      </div>
+      {showCompleteAllQuestionsInTheGuide && (
+        <div className="mb-2 text-red">
+          <i className="iconfont iconwarning" />
+          <span className="ml-1">Answer all the questions in guide to complete</span>
+        </div>
+      )}
+      {showQuestionsCompletionWarning && (
+        <>
+          {!isEveryQuestionAnswered() && (
+            <div className="mb-2 text-red">
+              <i className="iconfont iconwarning" />
+              <span className="ml-1">Answer all questions to proceed</span>
+            </div>
+          )}
+          {!isDiscordConnected() && (
+            <div className="mb-2 text-red">
+              <i className="iconfont iconwarning" />
+              <span className="ml-1">Connect Discord to proceed</span>
+            </div>
+          )}
+        </>
+      )}
+      <div className="mt-2 py-2 pt-2">
+        {isNotFirstStep && !isGuideCompletedStep && (
+          <Button aria-label={$t('previous')} className="float-left w-[150px]" onClick={() => viewGuideHelper.goToPreviousStep(step)}>
+            <span className="mr-2 font-bold">&#8592;</span>
+            <span className="sm:block">{$t('guide.previous')}</span>
+          </Button>
+        )}
+        {!isGuideCompletedStep && (
+          <Button
+            className="float-right w-[150px]"
+            variant="contained"
+            aria-label={$t('next')}
+            primary
+            loading={viewGuideHelper.guideSubmitting}
+            disabled={viewGuideHelper.guideSubmitting || viewGuideHelper.guideSubmission.isSubmitted}
+            onClick={navigateToNextStep}
+          >
+            <span className="sm:block">{$t(isLastStep ? 'guide.complete' : 'guide.next')}</span>
+            <span className="ml-2 font-bold">&#8594;</span>
+          </Button>
+        )}
       </div>
     </div>
   );

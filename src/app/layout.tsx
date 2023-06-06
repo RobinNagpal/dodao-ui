@@ -3,7 +3,7 @@ import { Session } from '@/types/auth/Session';
 import StyledComponentsRegistry from '@/utils/StyledComponentsRegistry';
 import { getServerSession } from 'next-auth';
 import 'tailwindcss/tailwind.css';
-import './globals.css';
+import 'src/app/globals.scss';
 import InternalLayout from './InternalLayout';
 
 interface RootLayoutProps {
