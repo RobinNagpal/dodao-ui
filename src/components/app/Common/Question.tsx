@@ -43,7 +43,7 @@ function Question({ answerClass = '', question, questionResponse, readonly, show
   const questionContent = marked.parse(question.content, { renderer });
 
   const [currentlySelectedChoices, setCurrentlySelectedChoices] = useState<string[]>(questionResponse);
-  const [selectedSingleChoice,setSingleChoice] = useState<string[]>(questionResponse);
+  const [selectedSingleChoice, setSingleChoice] = useState<string[]>(questionResponse);
   const [displayHint, setDisplayHint] = useState<boolean>(false);
 
   useEffect(() => {
@@ -56,13 +56,13 @@ function Question({ answerClass = '', question, questionResponse, readonly, show
 
   const selectMultipleChoice = (choiceKey: string, selected: boolean) => {
     const selectedAnswers = selected ? [...currentlySelectedChoices, choiceKey] : currentlySelectedChoices.filter((choice) => choice !== choiceKey);
-    
+
     onSelectAnswer(question.uuid, selectedAnswers);
   };
 
   const selectSingleChoice = (choiceKey: string) => {
     const selectedAnswers = isEqual(currentlySelectedChoices, [choiceKey]) ? [] : [choiceKey];
-    setSingleChoice((prev)=>[...prev,choiceKey]);
+    setSingleChoice((prev) => [...prev, choiceKey]);
     console.log(selectedSingleChoice);
 
     onSelectAnswer(question.uuid, selectedAnswers);
@@ -96,7 +96,7 @@ function Question({ answerClass = '', question, questionResponse, readonly, show
               isSelected={selectedSingleChoice[0] === choice.key}
               onChange={() => selectSingleChoice(choice.key)}
               readonly={readonly}
-              
+
             />
           ) : (
             <Checkbox
