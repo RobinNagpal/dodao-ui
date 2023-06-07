@@ -31,14 +31,11 @@ const StyledInput = styled.input`
   accent-color: var(--primary-color);
   width: 20px;
   min-width: 20px;
-
+  cursor:pointer;
   &:checked {
     background-color: var(--primary-color) !important;
   }
 
-  &:focus {
-    outline-color: var(--primary-color);
-  }
 `;
 
 const StyledLabel = styled.label`

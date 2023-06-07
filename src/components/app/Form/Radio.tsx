@@ -7,7 +7,7 @@ export interface RadioProps {
   className?: string;
   readonly?: boolean;
   onChange: (value: boolean) => void;
-  questionId : string;
+  questionId: string;
 }
 
 const Overlay = styled.div<{ readonly?: boolean; isSelected?: boolean }>`
@@ -32,7 +32,7 @@ const StyledInput = styled.input`
   border-color: var(--border-color);
   accent-color: var(--primary-color);
   min-width: 24px;
-
+  cursor: pointer;
   &:checked {
     background-color: var(--primary-color) !important;
   }
@@ -46,7 +46,7 @@ const StyledLabel = styled.label`
   color: var(--text-color);
 `;
 
-export default function Radio({ id, labelContent, isSelected, className, readonly, onChange,questionId }: RadioProps) {
+export default function Radio({ id, labelContent, isSelected, className, readonly, onChange, questionId }: RadioProps) {
   return (
     <div key={id} className={`custom-radio flex items-center ${className || ''}`}>
       <div className="relative mt-2">
