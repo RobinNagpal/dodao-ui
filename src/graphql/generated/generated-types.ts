@@ -1939,6 +1939,14 @@ export type GuideUserInputFragment = { __typename?: 'GuideUserInput', label: str
 
 export type GuideUserDiscordConnectFragment = { __typename?: 'UserDiscordConnect', order: number, type: string, uuid: string };
 
+type GuideStepItem_GuideQuestion_Fragment = { __typename: 'GuideQuestion', answerKeys: Array<string>, content: string, order: number, type: string, uuid: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> };
+
+type GuideStepItem_GuideUserInput_Fragment = { __typename: 'GuideUserInput', label: string, order: number, required: boolean, type: string, uuid: string };
+
+type GuideStepItem_UserDiscordConnect_Fragment = { __typename: 'UserDiscordConnect', order: number, type: string, uuid: string };
+
+export type GuideStepItemFragment = GuideStepItem_GuideQuestion_Fragment | GuideStepItem_GuideUserInput_Fragment | GuideStepItem_UserDiscordConnect_Fragment;
+
 export type GuideStepFragment = { __typename?: 'GuideStep', content: string, created: number, id: string, name: string, order: number, uuid: string, stepItems: Array<{ __typename: 'GuideQuestion', answerKeys: Array<string>, content: string, order: number, type: string, uuid: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'GuideUserInput', label: string, order: number, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', order: number, type: string, uuid: string }> };
 
 export type GuideIntegrationFragment = { __typename?: 'GuideIntegrations', discordRoleIds?: Array<string> | null, discordRolePassingCount?: number | null, discordWebhook?: string | null, projectGalaxyCredentialId?: string | null, projectGalaxyOatMintUrl?: string | null, projectGalaxyOatPassingCount?: number | null };
@@ -2477,6 +2485,34 @@ export const GuideUserDiscordConnectFragmentDoc = gql`
   order
   type
   uuid
+}
+    `;
+export const GuideStepItemFragmentDoc = gql`
+    fragment GuideStepItem on GuideStepItem {
+  __typename
+  ... on GuideQuestion {
+    answerKeys
+    choices {
+      content
+      key
+    }
+    content
+    order
+    type
+    uuid
+  }
+  ... on GuideUserInput {
+    label
+    order
+    required
+    type
+    uuid
+  }
+  ... on UserDiscordConnect {
+    order
+    type
+    uuid
+  }
 }
     `;
 export const GuideIntegrationFragmentDoc = gql`

@@ -44,7 +44,7 @@ export function useEditSimulation(space: Space, simulationId: string | null) {
   const [simulationLoaded, setSimulationLoaded] = useState<boolean>(false);
   const [simulationCreating, setSimulationCreating] = useState<boolean>(false);
   const { refetch: querySimulationDetails } = useSimulationDetailsQuery({ skip: true });
-  const [upsertSimulationMutation, { data: upsertResponse, error: UpsertError }] = useUpsertSimulationMutation();
+  const [upsertSimulationMutation] = useUpsertSimulationMutation();
 
   async function initialize() {
     if (simulationId) {
@@ -192,10 +192,7 @@ export function useEditSimulation(space: Space, simulationId: string | null) {
       console.log('simulation valid', valid);
       setSimulation((prevSimulation) => ({ ...prevSimulation, isPristine: false }));
       if (!valid) {
-        showNotification({
-          type: 'error',
-          message: $t('notify.validationFailed'),
-        });
+        showNotification({ type: 'error', message: $t('notify.validationFailed') });
 
         setSimulationCreating(false);
         return;
