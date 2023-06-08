@@ -9,6 +9,7 @@ import {
   useQueryByteDetailsQuery,
   useUpsertByteMutation,
 } from '@/graphql/generated/generated-types';
+import { useI18 } from '@/hooks/useI18';
 import { isQuestion, isUserInput } from '@/types/deprecated/helpers/stepItemTypes';
 import { PublishStatus } from '@/types/deprecated/models/enums';
 import { UserInput } from '@/types/deprecated/models/GuideModel';
@@ -75,6 +76,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
   const { refetch: queryByteDetails } = useQueryByteDetailsQuery({ skip: true });
   const [upsertByteMutation] = useUpsertByteMutation();
   const { showNotification } = useNotificationContext();
+  const { $t } = useI18();
 
   const initialize = useCallback(async () => {
     const storedByte = byteId && localStorage.getItem(byteId);
@@ -282,10 +284,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
 
       if (!valid) {
         console.log('Byte invalid', valid, byteErrors);
-        showNotification({
-          type: 'error',
-          message: "Validation Error: Can't Save Byte",
-        });
+        showNotification({ type: 'error', message: "Validation Error: Can't Save Byte" });
 
         setByteCreating(false);
         return;
@@ -304,11 +303,11 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
 
         router.push(`/tidbits/view/${payload.id}/0`);
       } else {
-        showNotification({ type: 'error', message: "Can't Save Byte" });
+        showNotification({ type: 'error', message: $t('notify.somethingWentWrong') });
         console.error(response.errors);
       }
     } catch (e) {
-      showNotification({ type: 'error', message: "Can't Save Byte" });
+      showNotification({ type: 'error', message: $t('notify.somethingWentWrong') });
       console.error(e);
     }
     setByteCreating(false);
