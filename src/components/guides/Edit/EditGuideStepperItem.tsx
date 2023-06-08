@@ -287,11 +287,11 @@ const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHas
     }) as GuideStepItemFragment[];
     updateStep({ ...step, stepItems });
   }
-const [answerKeys,setAnswers] = useState<string[]>([])
 
-function handleSubmit(e:React.FormEvent){
-  e.preventDefault();
-}
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+  }
 
 
   return (
@@ -339,23 +339,23 @@ function handleSubmit(e:React.FormEvent){
       {stepItemsForStepper.map((stepItem, index) => (
         <div key={stepItem.uuid} className="border  rounded-md p-4 mb-4 ml-4 w-full">
           {stepItem.isQuestion ? (
-            <form   onSubmit={handleSubmit}  >
-             
-            
-            <CreateQuestion
-              addChoice={addChoice}
-              item={stepItem as GuideQuestionFragment}
-              removeChoice={removeChoice}
-              removeQuestion={removeStepItem}
-              setAnswer={setAnswer}
-              updateChoiceContent={updateChoiceContent}
-              updateQuestionDescription={updateQuestionDescription}
-              updateAnswers={updateAnswers}
-              questionErrors={stepErrors?.stepItems?.[stepItem.uuid] as QuestionError}
-              updateQuestionType={updateQuestionType}
-            />
-             {/* <p className='mt-2 invisible peer-required:visible text-pink-600 text-sm'>Please select atleast one</p> */}
-            <button className=' text-center ml-[95%] ' type="submit" >ok</button>
+            <form onSubmit={handleSubmit}  >
+
+
+              <CreateQuestion
+                addChoice={addChoice}
+                item={stepItem as GuideQuestionFragment}
+                removeChoice={removeChoice}
+                removeQuestion={removeStepItem}
+                setAnswer={setAnswer}
+                updateChoiceContent={updateChoiceContent}
+                updateQuestionDescription={updateQuestionDescription}
+                updateAnswers={updateAnswers}
+                questionErrors={stepErrors?.stepItems?.[stepItem.uuid] as QuestionError}
+                updateQuestionType={updateQuestionType}
+              />
+              {/* <p className='mt-2 invisible peer-required:visible text-pink-600 text-sm'>Please select atleast one</p> */}
+              <button className=' text-center ml-[95%] ' type="submit" >ok</button>
             </form>
           ) : stepItem.isDiscord ? (
             <CreateConnectDiscord item={stepItem} removeDiscord={removeStepItem} />

@@ -96,7 +96,7 @@ function QuestionComponent({
           <div key={choice.key} className="flex items-center">
             {question.type === QuestionType.SingleChoice ? (
               <Radio
-              questionId={question.uuid}
+                questionId={question.uuid}
                 isSelected={question.answerKeys.includes(choice.key)}
                 className={questionErrors?.answerKeys ? 'border-2 border-red' : ''}
                 onChange={(e) => setAnswer?.(question.uuid, choice.key, !question.answerKeys.includes(choice.key))}
