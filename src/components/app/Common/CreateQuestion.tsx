@@ -3,6 +3,7 @@ import Checkbox from '@/components/app/Form/Checkbox';
 import Radio from '@/components/app/Form/Radio';
 import Icon from '@/components/app/Icon';
 import DeleteIcon from '@/components/app/Icons/DeleteIcon';
+import MinusCircle from '@/components/app/Icons/MinusCircle';
 import Input from '@/components/app/Input';
 import UnstyledTextareaAutosize from '@/components/app/TextArea/UnstyledTextareaAutosize';
 import { ByteQuestion } from '@/graphql/generated/generated-types';
@@ -121,7 +122,7 @@ function QuestionComponent({
             />
             {!disableChoiceEdit && question.choices.length > 1 && (
               <div className="cursor-pointer p-2" onClick={() => removeChoice?.(question.uuid, choice.key)}>
-                <Icon name="close" size="16" />
+               <MinusCircle></MinusCircle>
               </div>
             )}
           </div>
