@@ -1,16 +1,19 @@
 import { Session } from '@/types/auth/Session';
 import { Disclosure } from '@headlessui/react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 interface ProfileMenuProps {
   session: Session;
 }
 
-function ProfileActionButton({ label }: { label: string }) {
+function ProfileActionButton({ label, href }: { label: string; href?: string }) {
   return (
-    <Disclosure.Button as="a" href="#" className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800 sm:px-6">
-      {label}
-    </Disclosure.Button>
+    <Link href={href || '#'}>
+      <Disclosure.Button as="a" className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800 sm:px-6">
+        {label}
+      </Disclosure.Button>
+    </Link>
   );
 }
 
@@ -28,7 +31,7 @@ export function MobileProfileMenu({ session }: ProfileMenuProps) {
       </div>
       <div className="mt-3 space-y-1">
         <ProfileActionButton label="Your Profile" />
-        <ProfileActionButton label="Settings" />
+        <ProfileActionButton label="Manage Space" href={'/space/manage'} />
         <ProfileActionButton label="Sign out" />
       </div>
     </div>
