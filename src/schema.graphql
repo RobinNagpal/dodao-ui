@@ -734,7 +734,7 @@ type Query {
   academyTasks(spaceId: String!, status: String): [AcademyTask!]
   byte(byteId: String!, spaceId: String!): Byte!
   bytes(spaceId: String!): [Byte!]!
-  courses(spaceId: String!): [GenericCourse!]
+  courses(spaceId: String!): [GitCourse!]!
   gitCourse(courseKey: String!, spaceId: String!): GitCourse!
   gitCourseIntegrations(key: String!, spaceId: String!): CourseIntegrations
   gitCourseSubmission(courseKey: String!, spaceId: String!): GitCourseSubmission
@@ -750,7 +750,6 @@ type Query {
   space(domain: String, id: String): Space
   spaceDiscordGuild(spaceId: String!): Any
   spaces: [Space!]
-  summarizedGitCourses(spaceId: String!): [SummarizedGitCourse!]
   timeline(spaceId: String!, timelineId: String!): Timeline!
   timelines(spaceId: String!): [Timeline!]!
 }

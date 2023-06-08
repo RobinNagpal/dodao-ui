@@ -89,7 +89,6 @@ export function useViewGuide(space: Space, uuid: string, stepOrder: number): Use
           uuid: LAST_STEP_UUID,
           stepItems: [],
           id: 'some_id',
-          created: new Date().getTime(),
         },
       ],
     });
@@ -277,7 +276,6 @@ export function useViewGuide(space: Space, uuid: string, stepOrder: number): Use
                 uuid: LAST_STEP_UUID,
                 stepItems: [],
                 id: 'some_id',
-                created: new Date().getTime(),
               },
             ],
           });
