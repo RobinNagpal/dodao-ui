@@ -8,20 +8,18 @@ import PageLoading from '@/components/app/PageLoading';
 import TextareaArray from '@/components/app/TextArea/TextareaArray';
 import EditByteStepper from '@/components/bytes/Edit/EditByteStepper';
 import { useEditByte } from '@/components/bytes/Edit/useEditByte';
-import EllipsisDropdown, { EllipsisDropdownItem } from '@/components/core/dropdowns/EllipsisDropdown';
+import EllipsisDropdown from '@/components/core/dropdowns/EllipsisDropdown';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
 import { PublishStatus } from '@/types/deprecated/models/enums';
 import { ByteErrors } from '@/types/errors/byteErrors';
+import { statuses } from '@/utils/ui/statuses';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteId?: string[] } }) {
-  const router = useRouter();
-
   const { space, params } = props;
   const byteId = params.byteId ? params.byteId[0] : null;
 
@@ -39,17 +37,6 @@ function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteI
   const selectPublishStatus = (status: PublishStatus) => {
     updateByteFunctions.updateByteField('publishStatus', status);
   };
-
-  const byteStatuses: EllipsisDropdownItem[] = [
-    {
-      label: 'Live',
-      key: PublishStatus.Live,
-    },
-    {
-      label: 'Draft',
-      key: PublishStatus.Draft,
-    },
-  ];
 
   const clickSubmit = () => {
     handleSubmit();
@@ -86,7 +73,7 @@ function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteI
                   <div className="flex justify-start ">
                     <div className="pr-1 select-none">{byte.publishStatus === 'Live' ? 'Live' : 'Draft'}</div>
                     <div className="ml-2">
-                      <EllipsisDropdown items={byteStatuses} onSelect={(value) => selectPublishStatus(value as PublishStatus)} />
+                      <EllipsisDropdown items={statuses} onSelect={(value) => selectPublishStatus(value as PublishStatus)} />
                     </div>
                   </div>
                 </div>

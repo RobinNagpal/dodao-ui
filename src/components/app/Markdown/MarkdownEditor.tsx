@@ -192,7 +192,7 @@ function MarkdownEditor({
   };
 
   return (
-    <MainDiv className="w-full bg-transparent flex h-full">
+    <MainDiv className="w-full bg-transparent flex">
       <MDEditor
         value={modelValue}
         onChange={handleInput}

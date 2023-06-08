@@ -1053,7 +1053,7 @@ export interface Query {
   academyTasks?: Maybe<Array<AcademyTask>>;
   byte: Byte;
   bytes: Array<Byte>;
-  courses?: Maybe<Array<GenericCourse>>;
+  courses: Array<GitCourse>;
   gitCourse: GitCourse;
   gitCourseIntegrations?: Maybe<CourseIntegrations>;
   gitCourseSubmission?: Maybe<GitCourseSubmission>;
@@ -1069,7 +1069,6 @@ export interface Query {
   space?: Maybe<Space>;
   spaceDiscordGuild?: Maybe<Scalars['Any']>;
   spaces?: Maybe<Array<Space>>;
-  summarizedGitCourses?: Maybe<Array<SummarizedGitCourse>>;
   timeline: Timeline;
   timelines: Array<Timeline>;
 }
@@ -1177,11 +1176,6 @@ export interface QuerySpaceArgs {
 
 
 export interface QuerySpaceDiscordGuildArgs {
-  spaceId: Scalars['String'];
-}
-
-
-export interface QuerySummarizedGitCoursesArgs {
   spaceId: Scalars['String'];
 }
 
@@ -1668,20 +1662,6 @@ export type InitializeGitCourseSubmissionMutationVariables = Exact<{
 
 export type InitializeGitCourseSubmissionMutation = { __typename?: 'Mutation', payload: { __typename?: 'GitCourseSubmission', uuid: string, courseKey: string, createdAt: number, createdBy: string, galaxyCredentialsUpdated?: boolean | null, isLatestSubmission?: boolean | null, questionsAttempted?: number | null, questionsCorrect?: number | null, questionsIncorrect?: number | null, questionsSkipped?: number | null, spaceId: string, status: string, updatedAt: number, topicSubmissions: Array<{ __typename?: 'GitCourseTopicSubmission', uuid: string, courseKey: string, courseSubmissionUuid: string, createdAt: number, createdBy: string, isLatestSubmission: boolean, questionsAttempted?: number | null, questionsCorrect?: number | null, questionsIncorrect?: number | null, questionsSkipped?: number | null, spaceId: string, status: string, topicKey: string, updatedAt: number, correctAnswers?: Array<{ __typename?: 'GitCourseTopicCorrectAnswer', uuid: string, answerKeys: Array<string> }> | null, submission?: { __typename?: 'GitCourseTopicSubmissionJson', uuid: string, topicKey: string, status: string, explanations?: Array<{ __typename?: 'GitCourseExplanationsSubmission', key: string, status: string }> | null, questions?: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, status: string, answers: Array<string> }> | null, readings?: Array<{ __typename?: 'GitCourseReadingsSubmission', uuid: string, status: string, questions: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, answers: Array<string>, status: string }> }> | null, summaries?: Array<{ __typename?: 'GitCourseSummariesSubmission', key: string, status: string }> | null } | null }> } };
 
-export type CoursesQueryQueryVariables = Exact<{
-  spaceId: Scalars['String'];
-}>;
-
-
-export type CoursesQueryQuery = { __typename?: 'Query', courses?: Array<{ __typename?: 'GenericCourse', id: string, name: string, categories: Array<string>, courseAdmins?: Array<string> | null, courseType: string, duration: string, excerpt: string, highlights: Array<string>, priority?: number | null, publishStatus: string, thumbnail: string, uuid: string }> | null };
-
-export type SummarizedCoursesQueryQueryVariables = Exact<{
-  spaceId: Scalars['String'];
-}>;
-
-
-export type SummarizedCoursesQueryQuery = { __typename?: 'Query', summarizedGitCourses?: Array<{ __typename?: 'SummarizedGitCourse', uuid: string, key: string, courseAdmins?: Array<string> | null, duration: string, summary: string, highlights: Array<string>, priority?: number | null, publishStatus: string, title: string, thumbnail: string }> | null };
-
 export type GitCourseIntegrationsQueryQueryVariables = Exact<{
   spaceId: Scalars['String'];
   key: Scalars['String'];
@@ -1708,7 +1688,7 @@ export type CourseReadingFragment = { __typename?: 'GitCourseReading', uuid: str
 
 export type CourseTopicFragment = { __typename?: 'GitCourseTopic', title: string, key: string, details: string, explanations: Array<{ __typename?: 'GitCourseExplanation', title: string, shortTitle: string, key: string, details: string }>, readings: Array<{ __typename?: 'GitCourseReading', uuid: string, title: string, shortTitle: string, details: string, type: string, url: string }>, summaries: Array<{ __typename?: 'GitCourseSummary', title: string, shortTitle: string, key: string, details: string }>, questions: Array<{ __typename?: 'GitCourseQuestion', uuid: string, type: string, content: string, answerKeys: Array<string>, hint: string, explanation: string, choices: Array<{ __typename?: 'GitCourseQuestionChoice', content: string, key: string }> }> };
 
-export type CourseFragmentFragment = { __typename?: 'GitCourse', key: string, title: string, summary: string, details: string, duration: string, priority?: number | null, publishStatus: string, highlights: Array<string>, thumbnail: string, courseAdmins?: Array<string> | null, coursePassCount?: number | null, coursePassContent?: string | null, courseFailContent?: string | null, topicConfig?: { __typename?: 'TopicConfig', showExplanations: boolean, showHints: boolean } | null, topics: Array<{ __typename?: 'GitCourseTopic', title: string, key: string, details: string, explanations: Array<{ __typename?: 'GitCourseExplanation', title: string, shortTitle: string, key: string, details: string }>, readings: Array<{ __typename?: 'GitCourseReading', uuid: string, title: string, shortTitle: string, details: string, type: string, url: string }>, summaries: Array<{ __typename?: 'GitCourseSummary', title: string, shortTitle: string, key: string, details: string }>, questions: Array<{ __typename?: 'GitCourseQuestion', uuid: string, type: string, content: string, answerKeys: Array<string>, hint: string, explanation: string, choices: Array<{ __typename?: 'GitCourseQuestionChoice', content: string, key: string }> }> }> };
+export type CourseDetailsFragment = { __typename?: 'GitCourse', key: string, title: string, summary: string, details: string, duration: string, priority?: number | null, publishStatus: string, highlights: Array<string>, thumbnail: string, courseAdmins?: Array<string> | null, coursePassCount?: number | null, coursePassContent?: string | null, courseFailContent?: string | null, topicConfig?: { __typename?: 'TopicConfig', showExplanations: boolean, showHints: boolean } | null, topics: Array<{ __typename?: 'GitCourseTopic', title: string, key: string, details: string, explanations: Array<{ __typename?: 'GitCourseExplanation', title: string, shortTitle: string, key: string, details: string }>, readings: Array<{ __typename?: 'GitCourseReading', uuid: string, title: string, shortTitle: string, details: string, type: string, url: string }>, summaries: Array<{ __typename?: 'GitCourseSummary', title: string, shortTitle: string, key: string, details: string }>, questions: Array<{ __typename?: 'GitCourseQuestion', uuid: string, type: string, content: string, answerKeys: Array<string>, hint: string, explanation: string, choices: Array<{ __typename?: 'GitCourseQuestionChoice', content: string, key: string }> }> }> };
 
 export type UpsertGitCourseMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -1925,6 +1905,15 @@ export type GitCourseQueryQueryVariables = Exact<{
 
 export type GitCourseQueryQuery = { __typename?: 'Query', course: { __typename?: 'GitCourse', key: string, title: string, summary: string, details: string, duration: string, priority?: number | null, publishStatus: string, highlights: Array<string>, thumbnail: string, courseAdmins?: Array<string> | null, coursePassCount?: number | null, coursePassContent?: string | null, courseFailContent?: string | null, topicConfig?: { __typename?: 'TopicConfig', showExplanations: boolean, showHints: boolean } | null, topics: Array<{ __typename?: 'GitCourseTopic', title: string, key: string, details: string, explanations: Array<{ __typename?: 'GitCourseExplanation', title: string, shortTitle: string, key: string, details: string }>, readings: Array<{ __typename?: 'GitCourseReading', uuid: string, title: string, shortTitle: string, details: string, type: string, url: string }>, summaries: Array<{ __typename?: 'GitCourseSummary', title: string, shortTitle: string, key: string, details: string }>, questions: Array<{ __typename?: 'GitCourseQuestion', uuid: string, type: string, content: string, answerKeys: Array<string>, hint: string, explanation: string, choices: Array<{ __typename?: 'GitCourseQuestionChoice', content: string, key: string }> }> }> } };
 
+export type CourseFragment = { __typename?: 'GitCourse', courseAdmins?: Array<string> | null, courseFailContent?: string | null, coursePassContent?: string | null, coursePassCount?: number | null, details: string, duration: string, highlights: Array<string>, key: string, priority?: number | null, publishStatus: string, summary: string, thumbnail: string, title: string };
+
+export type CoursesQueryQueryVariables = Exact<{
+  spaceId: Scalars['String'];
+}>;
+
+
+export type CoursesQueryQuery = { __typename?: 'Query', courses: Array<{ __typename?: 'GitCourse', courseAdmins?: Array<string> | null, courseFailContent?: string | null, coursePassContent?: string | null, coursePassCount?: number | null, details: string, duration: string, highlights: Array<string>, key: string, priority?: number | null, publishStatus: string, summary: string, thumbnail: string, title: string }> };
+
 export type UpsertGnosisSafeWalletsMutationVariables = Exact<{
   spaceId: Scalars['String'];
   wallets: Array<GnosisSafeWalletInput> | GnosisSafeWalletInput;
@@ -1939,11 +1928,19 @@ export type GuideUserInputFragment = { __typename?: 'GuideUserInput', label: str
 
 export type GuideUserDiscordConnectFragment = { __typename?: 'UserDiscordConnect', order: number, type: string, uuid: string };
 
-export type GuideStepFragment = { __typename?: 'GuideStep', content: string, created: number, id: string, name: string, order: number, uuid: string, stepItems: Array<{ __typename: 'GuideQuestion', answerKeys: Array<string>, content: string, order: number, type: string, uuid: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'GuideUserInput', label: string, order: number, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', order: number, type: string, uuid: string }> };
+type GuideStepItem_GuideQuestion_Fragment = { __typename: 'GuideQuestion', answerKeys: Array<string>, content: string, order: number, type: string, uuid: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> };
+
+type GuideStepItem_GuideUserInput_Fragment = { __typename: 'GuideUserInput', label: string, order: number, required: boolean, type: string, uuid: string };
+
+type GuideStepItem_UserDiscordConnect_Fragment = { __typename: 'UserDiscordConnect', order: number, type: string, uuid: string };
+
+export type GuideStepItemFragment = GuideStepItem_GuideQuestion_Fragment | GuideStepItem_GuideUserInput_Fragment | GuideStepItem_UserDiscordConnect_Fragment;
+
+export type GuideStepFragment = { __typename?: 'GuideStep', content: string, id: string, name: string, order: number, uuid: string, stepItems: Array<{ __typename: 'GuideQuestion', answerKeys: Array<string>, content: string, order: number, type: string, uuid: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'GuideUserInput', label: string, order: number, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', order: number, type: string, uuid: string }> };
 
 export type GuideIntegrationFragment = { __typename?: 'GuideIntegrations', discordRoleIds?: Array<string> | null, discordRolePassingCount?: number | null, discordWebhook?: string | null, projectGalaxyCredentialId?: string | null, projectGalaxyOatMintUrl?: string | null, projectGalaxyOatPassingCount?: number | null };
 
-export type GuideFragment = { __typename?: 'Guide', authors: Array<string>, categories: Array<string>, postSubmissionStepContent?: string | null, content: string, created: number, id: string, guideSource: string, guideType: string, link: string, name: string, previousId?: string | null, showIncorrectOnCompletion: boolean, publishStatus: string, socialShareImage?: string | null, thumbnail?: string | null, uuid: string, version: number, guideIntegrations: { __typename?: 'GuideIntegrations', discordRoleIds?: Array<string> | null, discordRolePassingCount?: number | null, discordWebhook?: string | null, projectGalaxyCredentialId?: string | null, projectGalaxyOatMintUrl?: string | null, projectGalaxyOatPassingCount?: number | null }, steps: Array<{ __typename?: 'GuideStep', content: string, created: number, id: string, name: string, order: number, uuid: string, stepItems: Array<{ __typename: 'GuideQuestion', answerKeys: Array<string>, content: string, order: number, type: string, uuid: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'GuideUserInput', label: string, order: number, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', order: number, type: string, uuid: string }> }> };
+export type GuideFragment = { __typename?: 'Guide', authors: Array<string>, categories: Array<string>, postSubmissionStepContent?: string | null, content: string, created: number, id: string, guideSource: string, guideType: string, name: string, showIncorrectOnCompletion: boolean, publishStatus: string, socialShareImage?: string | null, thumbnail?: string | null, uuid: string, version: number, guideIntegrations: { __typename?: 'GuideIntegrations', discordRoleIds?: Array<string> | null, discordRolePassingCount?: number | null, discordWebhook?: string | null, projectGalaxyCredentialId?: string | null, projectGalaxyOatMintUrl?: string | null, projectGalaxyOatPassingCount?: number | null }, steps: Array<{ __typename?: 'GuideStep', content: string, id: string, name: string, order: number, uuid: string, stepItems: Array<{ __typename: 'GuideQuestion', answerKeys: Array<string>, content: string, order: number, type: string, uuid: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'GuideUserInput', label: string, order: number, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', order: number, type: string, uuid: string }> }> };
 
 export type UpsertGuideMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -1951,7 +1948,7 @@ export type UpsertGuideMutationVariables = Exact<{
 }>;
 
 
-export type UpsertGuideMutation = { __typename?: 'Mutation', payload: { __typename?: 'Guide', authors: Array<string>, categories: Array<string>, postSubmissionStepContent?: string | null, content: string, created: number, id: string, guideSource: string, guideType: string, link: string, name: string, previousId?: string | null, showIncorrectOnCompletion: boolean, publishStatus: string, socialShareImage?: string | null, thumbnail?: string | null, uuid: string, version: number, guideIntegrations: { __typename?: 'GuideIntegrations', discordRoleIds?: Array<string> | null, discordRolePassingCount?: number | null, discordWebhook?: string | null, projectGalaxyCredentialId?: string | null, projectGalaxyOatMintUrl?: string | null, projectGalaxyOatPassingCount?: number | null }, steps: Array<{ __typename?: 'GuideStep', content: string, created: number, id: string, name: string, order: number, uuid: string, stepItems: Array<{ __typename: 'GuideQuestion', answerKeys: Array<string>, content: string, order: number, type: string, uuid: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'GuideUserInput', label: string, order: number, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', order: number, type: string, uuid: string }> }> } };
+export type UpsertGuideMutation = { __typename?: 'Mutation', payload: { __typename?: 'Guide', authors: Array<string>, categories: Array<string>, postSubmissionStepContent?: string | null, content: string, created: number, id: string, guideSource: string, guideType: string, name: string, showIncorrectOnCompletion: boolean, publishStatus: string, socialShareImage?: string | null, thumbnail?: string | null, uuid: string, version: number, guideIntegrations: { __typename?: 'GuideIntegrations', discordRoleIds?: Array<string> | null, discordRolePassingCount?: number | null, discordWebhook?: string | null, projectGalaxyCredentialId?: string | null, projectGalaxyOatMintUrl?: string | null, projectGalaxyOatPassingCount?: number | null }, steps: Array<{ __typename?: 'GuideStep', content: string, id: string, name: string, order: number, uuid: string, stepItems: Array<{ __typename: 'GuideQuestion', answerKeys: Array<string>, content: string, order: number, type: string, uuid: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'GuideUserInput', label: string, order: number, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', order: number, type: string, uuid: string }> }> } };
 
 export type GuideQueryQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -1959,7 +1956,7 @@ export type GuideQueryQueryVariables = Exact<{
 }>;
 
 
-export type GuideQueryQuery = { __typename?: 'Query', guide: { __typename?: 'Guide', authors: Array<string>, categories: Array<string>, postSubmissionStepContent?: string | null, content: string, created: number, id: string, guideSource: string, guideType: string, link: string, name: string, previousId?: string | null, showIncorrectOnCompletion: boolean, publishStatus: string, socialShareImage?: string | null, thumbnail?: string | null, uuid: string, version: number, guideIntegrations: { __typename?: 'GuideIntegrations', discordRoleIds?: Array<string> | null, discordRolePassingCount?: number | null, discordWebhook?: string | null, projectGalaxyCredentialId?: string | null, projectGalaxyOatMintUrl?: string | null, projectGalaxyOatPassingCount?: number | null }, steps: Array<{ __typename?: 'GuideStep', content: string, created: number, id: string, name: string, order: number, uuid: string, stepItems: Array<{ __typename: 'GuideQuestion', answerKeys: Array<string>, content: string, order: number, type: string, uuid: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'GuideUserInput', label: string, order: number, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', order: number, type: string, uuid: string }> }> } };
+export type GuideQueryQuery = { __typename?: 'Query', guide: { __typename?: 'Guide', authors: Array<string>, categories: Array<string>, postSubmissionStepContent?: string | null, content: string, created: number, id: string, guideSource: string, guideType: string, name: string, showIncorrectOnCompletion: boolean, publishStatus: string, socialShareImage?: string | null, thumbnail?: string | null, uuid: string, version: number, guideIntegrations: { __typename?: 'GuideIntegrations', discordRoleIds?: Array<string> | null, discordRolePassingCount?: number | null, discordWebhook?: string | null, projectGalaxyCredentialId?: string | null, projectGalaxyOatMintUrl?: string | null, projectGalaxyOatPassingCount?: number | null }, steps: Array<{ __typename?: 'GuideStep', content: string, id: string, name: string, order: number, uuid: string, stepItems: Array<{ __typename: 'GuideQuestion', answerKeys: Array<string>, content: string, order: number, type: string, uuid: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'GuideUserInput', label: string, order: number, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', order: number, type: string, uuid: string }> }> } };
 
 export type RefreshGitGuidesMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -2426,8 +2423,8 @@ export const CourseTopicFragmentDoc = gql`
 ${CourseReadingFragmentDoc}
 ${CourseSummaryFragmentDoc}
 ${CourseQuestionFragmentDoc}`;
-export const CourseFragmentFragmentDoc = gql`
-    fragment CourseFragment on GitCourse {
+export const CourseDetailsFragmentDoc = gql`
+    fragment CourseDetails on GitCourse {
   key
   title
   summary
@@ -2450,6 +2447,23 @@ export const CourseFragmentFragmentDoc = gql`
   }
 }
     ${CourseTopicFragmentDoc}`;
+export const CourseFragmentDoc = gql`
+    fragment Course on GitCourse {
+  courseAdmins
+  courseFailContent
+  coursePassContent
+  coursePassCount
+  details
+  duration
+  highlights
+  key
+  priority
+  publishStatus
+  summary
+  thumbnail
+  title
+}
+    `;
 export const GuideQuestionFragmentDoc = gql`
     fragment GuideQuestion on GuideQuestion {
   answerKeys
@@ -2479,6 +2493,34 @@ export const GuideUserDiscordConnectFragmentDoc = gql`
   uuid
 }
     `;
+export const GuideStepItemFragmentDoc = gql`
+    fragment GuideStepItem on GuideStepItem {
+  __typename
+  ... on GuideQuestion {
+    answerKeys
+    choices {
+      content
+      key
+    }
+    content
+    order
+    type
+    uuid
+  }
+  ... on GuideUserInput {
+    label
+    order
+    required
+    type
+    uuid
+  }
+  ... on UserDiscordConnect {
+    order
+    type
+    uuid
+  }
+}
+    `;
 export const GuideIntegrationFragmentDoc = gql`
     fragment GuideIntegration on GuideIntegrations {
   discordRoleIds
@@ -2492,7 +2534,6 @@ export const GuideIntegrationFragmentDoc = gql`
 export const GuideStepFragmentDoc = gql`
     fragment GuideStep on GuideStep {
   content
-  created
   stepItems {
     __typename
     ... on GuideQuestion {
@@ -2538,9 +2579,7 @@ export const GuideFragmentDoc = gql`
   }
   guideSource
   guideType
-  link
   name
-  previousId
   showIncorrectOnCompletion
   steps {
     ...GuideStep
@@ -3142,102 +3181,6 @@ export function useInitializeGitCourseSubmissionMutation(baseOptions?: Apollo.Mu
 export type InitializeGitCourseSubmissionMutationHookResult = ReturnType<typeof useInitializeGitCourseSubmissionMutation>;
 export type InitializeGitCourseSubmissionMutationResult = Apollo.MutationResult<InitializeGitCourseSubmissionMutation>;
 export type InitializeGitCourseSubmissionMutationOptions = Apollo.BaseMutationOptions<InitializeGitCourseSubmissionMutation, InitializeGitCourseSubmissionMutationVariables>;
-export const CoursesQueryDocument = gql`
-    query CoursesQuery($spaceId: String!) {
-  courses(spaceId: $spaceId) {
-    id
-    name
-    categories
-    courseAdmins
-    courseType
-    duration
-    excerpt
-    highlights
-    priority
-    publishStatus
-    thumbnail
-    uuid
-  }
-}
-    `;
-
-/**
- * __useCoursesQueryQuery__
- *
- * To run a query within a React component, call `useCoursesQueryQuery` and pass it any options that fit your needs.
- * When your component renders, `useCoursesQueryQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useCoursesQueryQuery({
- *   variables: {
- *      spaceId: // value for 'spaceId'
- *   },
- * });
- */
-export function useCoursesQueryQuery(baseOptions: Apollo.QueryHookOptions<CoursesQueryQuery, CoursesQueryQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<CoursesQueryQuery, CoursesQueryQueryVariables>(CoursesQueryDocument, options);
-      }
-export function useCoursesQueryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CoursesQueryQuery, CoursesQueryQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<CoursesQueryQuery, CoursesQueryQueryVariables>(CoursesQueryDocument, options);
-        }
-export type CoursesQueryQueryHookResult = ReturnType<typeof useCoursesQueryQuery>;
-export type CoursesQueryLazyQueryHookResult = ReturnType<typeof useCoursesQueryLazyQuery>;
-export type CoursesQueryQueryResult = Apollo.QueryResult<CoursesQueryQuery, CoursesQueryQueryVariables>;
-export function refetchCoursesQueryQuery(variables: CoursesQueryQueryVariables) {
-      return { query: CoursesQueryDocument, variables: variables }
-    }
-export const SummarizedCoursesQueryDocument = gql`
-    query SummarizedCoursesQuery($spaceId: String!) {
-  summarizedGitCourses(spaceId: $spaceId) {
-    uuid
-    key
-    courseAdmins
-    duration
-    summary
-    highlights
-    priority
-    publishStatus
-    title
-    thumbnail
-  }
-}
-    `;
-
-/**
- * __useSummarizedCoursesQueryQuery__
- *
- * To run a query within a React component, call `useSummarizedCoursesQueryQuery` and pass it any options that fit your needs.
- * When your component renders, `useSummarizedCoursesQueryQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useSummarizedCoursesQueryQuery({
- *   variables: {
- *      spaceId: // value for 'spaceId'
- *   },
- * });
- */
-export function useSummarizedCoursesQueryQuery(baseOptions: Apollo.QueryHookOptions<SummarizedCoursesQueryQuery, SummarizedCoursesQueryQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<SummarizedCoursesQueryQuery, SummarizedCoursesQueryQueryVariables>(SummarizedCoursesQueryDocument, options);
-      }
-export function useSummarizedCoursesQueryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SummarizedCoursesQueryQuery, SummarizedCoursesQueryQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<SummarizedCoursesQueryQuery, SummarizedCoursesQueryQueryVariables>(SummarizedCoursesQueryDocument, options);
-        }
-export type SummarizedCoursesQueryQueryHookResult = ReturnType<typeof useSummarizedCoursesQueryQuery>;
-export type SummarizedCoursesQueryLazyQueryHookResult = ReturnType<typeof useSummarizedCoursesQueryLazyQuery>;
-export type SummarizedCoursesQueryQueryResult = Apollo.QueryResult<SummarizedCoursesQueryQuery, SummarizedCoursesQueryQueryVariables>;
-export function refetchSummarizedCoursesQueryQuery(variables: SummarizedCoursesQueryQueryVariables) {
-      return { query: SummarizedCoursesQueryDocument, variables: variables }
-    }
 export const GitCourseIntegrationsQueryDocument = gql`
     query GitCourseIntegrationsQuery($spaceId: String!, $key: String!) {
   payload: gitCourseIntegrations(spaceId: $spaceId, key: $key) {
@@ -3440,10 +3383,10 @@ export const UpdateCourseBasicInfoDocument = gql`
     spaceId: $spaceId
     courseBasicInfo: $courseBasicInfo
   ) {
-    ...CourseFragment
+    ...CourseDetails
   }
 }
-    ${CourseFragmentFragmentDoc}`;
+    ${CourseDetailsFragmentDoc}`;
 export type UpdateCourseBasicInfoMutationFn = Apollo.MutationFunction<UpdateCourseBasicInfoMutation, UpdateCourseBasicInfoMutationVariables>;
 
 /**
@@ -3474,10 +3417,10 @@ export type UpdateCourseBasicInfoMutationOptions = Apollo.BaseMutationOptions<Up
 export const UpdateTopicBasicInfoDocument = gql`
     mutation UpdateTopicBasicInfo($spaceId: String!, $topicInfo: UpdateTopicBasicInfoInput!) {
   payload: updateTopicBasicInfo(spaceId: $spaceId, topicInfo: $topicInfo) {
-    ...CourseFragment
+    ...CourseDetails
   }
 }
-    ${CourseFragmentFragmentDoc}`;
+    ${CourseDetailsFragmentDoc}`;
 export type UpdateTopicBasicInfoMutationFn = Apollo.MutationFunction<UpdateTopicBasicInfoMutation, UpdateTopicBasicInfoMutationVariables>;
 
 /**
@@ -3542,10 +3485,10 @@ export type AddTopicMutationOptions = Apollo.BaseMutationOptions<AddTopicMutatio
 export const MoveTopicDocument = gql`
     mutation MoveTopic($spaceId: String!, $topicInfo: MoveTopicInput!) {
   payload: moveTopic(spaceId: $spaceId, topicInfo: $topicInfo) {
-    ...CourseFragment
+    ...CourseDetails
   }
 }
-    ${CourseFragmentFragmentDoc}`;
+    ${CourseDetailsFragmentDoc}`;
 export type MoveTopicMutationFn = Apollo.MutationFunction<MoveTopicMutation, MoveTopicMutationVariables>;
 
 /**
@@ -3576,10 +3519,10 @@ export type MoveTopicMutationOptions = Apollo.BaseMutationOptions<MoveTopicMutat
 export const DeleteTopicDocument = gql`
     mutation DeleteTopic($spaceId: String!, $topicInfo: DeleteTopicInput!) {
   payload: deleteTopic(spaceId: $spaceId, topicInfo: $topicInfo) {
-    ...CourseFragment
+    ...CourseDetails
   }
 }
-    ${CourseFragmentFragmentDoc}`;
+    ${CourseDetailsFragmentDoc}`;
 export type DeleteTopicMutationFn = Apollo.MutationFunction<DeleteTopicMutation, DeleteTopicMutationVariables>;
 
 /**
@@ -3613,10 +3556,10 @@ export const UpdateTopicExplanationDocument = gql`
     spaceId: $spaceId
     explanationInfo: $explanationInfo
   ) {
-    ...CourseFragment
+    ...CourseDetails
   }
 }
-    ${CourseFragmentFragmentDoc}`;
+    ${CourseDetailsFragmentDoc}`;
 export type UpdateTopicExplanationMutationFn = Apollo.MutationFunction<UpdateTopicExplanationMutation, UpdateTopicExplanationMutationVariables>;
 
 /**
@@ -3647,10 +3590,10 @@ export type UpdateTopicExplanationMutationOptions = Apollo.BaseMutationOptions<U
 export const UpdateTopicSummaryDocument = gql`
     mutation UpdateTopicSummary($spaceId: String!, $summaryInfo: UpdateTopicSummaryInput!) {
   payload: updateTopicSummary(spaceId: $spaceId, summaryInfo: $summaryInfo) {
-    ...CourseFragment
+    ...CourseDetails
   }
 }
-    ${CourseFragmentFragmentDoc}`;
+    ${CourseDetailsFragmentDoc}`;
 export type UpdateTopicSummaryMutationFn = Apollo.MutationFunction<UpdateTopicSummaryMutation, UpdateTopicSummaryMutationVariables>;
 
 /**
@@ -3681,10 +3624,10 @@ export type UpdateTopicSummaryMutationOptions = Apollo.BaseMutationOptions<Updat
 export const UpdateTopicVideoDocument = gql`
     mutation UpdateTopicVideo($spaceId: String!, $videoInfo: UpdateTopicVideoInput!) {
   payload: updateTopicVideo(spaceId: $spaceId, videoInfo: $videoInfo) {
-    ...CourseFragment
+    ...CourseDetails
   }
 }
-    ${CourseFragmentFragmentDoc}`;
+    ${CourseDetailsFragmentDoc}`;
 export type UpdateTopicVideoMutationFn = Apollo.MutationFunction<UpdateTopicVideoMutation, UpdateTopicVideoMutationVariables>;
 
 /**
@@ -3715,10 +3658,10 @@ export type UpdateTopicVideoMutationOptions = Apollo.BaseMutationOptions<UpdateT
 export const UpdateTopicQuestionDocument = gql`
     mutation UpdateTopicQuestion($spaceId: String!, $questionInfo: UpdateTopicQuestionInput!) {
   payload: updateTopicQuestion(spaceId: $spaceId, questionInfo: $questionInfo) {
-    ...CourseFragment
+    ...CourseDetails
   }
 }
-    ${CourseFragmentFragmentDoc}`;
+    ${CourseDetailsFragmentDoc}`;
 export type UpdateTopicQuestionMutationFn = Apollo.MutationFunction<UpdateTopicQuestionMutation, UpdateTopicQuestionMutationVariables>;
 
 /**
@@ -3911,10 +3854,10 @@ export const DeleteTopicExplanationDocument = gql`
     spaceId: $spaceId
     explanationInfo: $explanationInfo
   ) {
-    ...CourseFragment
+    ...CourseDetails
   }
 }
-    ${CourseFragmentFragmentDoc}`;
+    ${CourseDetailsFragmentDoc}`;
 export type DeleteTopicExplanationMutationFn = Apollo.MutationFunction<DeleteTopicExplanationMutation, DeleteTopicExplanationMutationVariables>;
 
 /**
@@ -3945,10 +3888,10 @@ export type DeleteTopicExplanationMutationOptions = Apollo.BaseMutationOptions<D
 export const DeleteTopicSummaryDocument = gql`
     mutation DeleteTopicSummary($spaceId: String!, $summaryInfo: DeleteTopicSummaryInput!) {
   payload: deleteTopicSummary(spaceId: $spaceId, summaryInfo: $summaryInfo) {
-    ...CourseFragment
+    ...CourseDetails
   }
 }
-    ${CourseFragmentFragmentDoc}`;
+    ${CourseDetailsFragmentDoc}`;
 export type DeleteTopicSummaryMutationFn = Apollo.MutationFunction<DeleteTopicSummaryMutation, DeleteTopicSummaryMutationVariables>;
 
 /**
@@ -3979,10 +3922,10 @@ export type DeleteTopicSummaryMutationOptions = Apollo.BaseMutationOptions<Delet
 export const DeleteTopicVideoDocument = gql`
     mutation DeleteTopicVideo($spaceId: String!, $videoInfo: DeleteTopicVideoInput!) {
   payload: deleteTopicVideo(spaceId: $spaceId, videoInfo: $videoInfo) {
-    ...CourseFragment
+    ...CourseDetails
   }
 }
-    ${CourseFragmentFragmentDoc}`;
+    ${CourseDetailsFragmentDoc}`;
 export type DeleteTopicVideoMutationFn = Apollo.MutationFunction<DeleteTopicVideoMutation, DeleteTopicVideoMutationVariables>;
 
 /**
@@ -4013,10 +3956,10 @@ export type DeleteTopicVideoMutationOptions = Apollo.BaseMutationOptions<DeleteT
 export const DeleteTopicQuestionDocument = gql`
     mutation DeleteTopicQuestion($spaceId: String!, $questionInfo: DeleteTopicQuestionInput!) {
   payload: deleteTopicQuestion(spaceId: $spaceId, questionInfo: $questionInfo) {
-    ...CourseFragment
+    ...CourseDetails
   }
 }
-    ${CourseFragmentFragmentDoc}`;
+    ${CourseDetailsFragmentDoc}`;
 export type DeleteTopicQuestionMutationFn = Apollo.MutationFunction<DeleteTopicQuestionMutation, DeleteTopicQuestionMutationVariables>;
 
 /**
@@ -4050,10 +3993,10 @@ export const MoveTopicExplanationDocument = gql`
     spaceId: $spaceId
     explanationInfo: $explanationInfo
   ) {
-    ...CourseFragment
+    ...CourseDetails
   }
 }
-    ${CourseFragmentFragmentDoc}`;
+    ${CourseDetailsFragmentDoc}`;
 export type MoveTopicExplanationMutationFn = Apollo.MutationFunction<MoveTopicExplanationMutation, MoveTopicExplanationMutationVariables>;
 
 /**
@@ -4084,10 +4027,10 @@ export type MoveTopicExplanationMutationOptions = Apollo.BaseMutationOptions<Mov
 export const MoveTopicSummaryDocument = gql`
     mutation MoveTopicSummary($spaceId: String!, $summaryInfo: MoveTopicSummaryInput!) {
   payload: moveTopicSummary(spaceId: $spaceId, summaryInfo: $summaryInfo) {
-    ...CourseFragment
+    ...CourseDetails
   }
 }
-    ${CourseFragmentFragmentDoc}`;
+    ${CourseDetailsFragmentDoc}`;
 export type MoveTopicSummaryMutationFn = Apollo.MutationFunction<MoveTopicSummaryMutation, MoveTopicSummaryMutationVariables>;
 
 /**
@@ -4118,10 +4061,10 @@ export type MoveTopicSummaryMutationOptions = Apollo.BaseMutationOptions<MoveTop
 export const MoveTopicVideoDocument = gql`
     mutation MoveTopicVideo($spaceId: String!, $videoInfo: MoveTopicVideoInput!) {
   payload: moveTopicVideo(spaceId: $spaceId, videoInfo: $videoInfo) {
-    ...CourseFragment
+    ...CourseDetails
   }
 }
-    ${CourseFragmentFragmentDoc}`;
+    ${CourseDetailsFragmentDoc}`;
 export type MoveTopicVideoMutationFn = Apollo.MutationFunction<MoveTopicVideoMutation, MoveTopicVideoMutationVariables>;
 
 /**
@@ -4152,10 +4095,10 @@ export type MoveTopicVideoMutationOptions = Apollo.BaseMutationOptions<MoveTopic
 export const MoveTopicQuestionDocument = gql`
     mutation MoveTopicQuestion($spaceId: String!, $questionInfo: MoveTopicQuestionInput!) {
   payload: moveTopicQuestion(spaceId: $spaceId, questionInfo: $questionInfo) {
-    ...CourseFragment
+    ...CourseDetails
   }
 }
-    ${CourseFragmentFragmentDoc}`;
+    ${CourseDetailsFragmentDoc}`;
 export type MoveTopicQuestionMutationFn = Apollo.MutationFunction<MoveTopicQuestionMutation, MoveTopicQuestionMutationVariables>;
 
 /**
@@ -4277,10 +4220,10 @@ export function refetchGitCourseSummarizedQuery(variables: GitCourseSummarizedQu
 export const GitCourseQueryDocument = gql`
     query GitCourseQuery($spaceId: String!, $courseKey: String!) {
   course: gitCourse(spaceId: $spaceId, courseKey: $courseKey) {
-    ...CourseFragment
+    ...CourseDetails
   }
 }
-    ${CourseFragmentFragmentDoc}`;
+    ${CourseDetailsFragmentDoc}`;
 
 /**
  * __useGitCourseQueryQuery__
@@ -4312,6 +4255,44 @@ export type GitCourseQueryLazyQueryHookResult = ReturnType<typeof useGitCourseQu
 export type GitCourseQueryQueryResult = Apollo.QueryResult<GitCourseQueryQuery, GitCourseQueryQueryVariables>;
 export function refetchGitCourseQueryQuery(variables: GitCourseQueryQueryVariables) {
       return { query: GitCourseQueryDocument, variables: variables }
+    }
+export const CoursesQueryDocument = gql`
+    query CoursesQuery($spaceId: String!) {
+  courses(spaceId: $spaceId) {
+    ...Course
+  }
+}
+    ${CourseFragmentDoc}`;
+
+/**
+ * __useCoursesQueryQuery__
+ *
+ * To run a query within a React component, call `useCoursesQueryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCoursesQueryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCoursesQueryQuery({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *   },
+ * });
+ */
+export function useCoursesQueryQuery(baseOptions: Apollo.QueryHookOptions<CoursesQueryQuery, CoursesQueryQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<CoursesQueryQuery, CoursesQueryQueryVariables>(CoursesQueryDocument, options);
+      }
+export function useCoursesQueryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CoursesQueryQuery, CoursesQueryQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CoursesQueryQuery, CoursesQueryQueryVariables>(CoursesQueryDocument, options);
+        }
+export type CoursesQueryQueryHookResult = ReturnType<typeof useCoursesQueryQuery>;
+export type CoursesQueryLazyQueryHookResult = ReturnType<typeof useCoursesQueryLazyQuery>;
+export type CoursesQueryQueryResult = Apollo.QueryResult<CoursesQueryQuery, CoursesQueryQueryVariables>;
+export function refetchCoursesQueryQuery(variables: CoursesQueryQueryVariables) {
+      return { query: CoursesQueryDocument, variables: variables }
     }
 export const UpsertGnosisSafeWalletsDocument = gql`
     mutation UpsertGnosisSafeWallets($spaceId: String!, $wallets: [GnosisSafeWalletInput!]!) {

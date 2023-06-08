@@ -72,7 +72,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
 
   const [byteCreating, setByteCreating] = useState<boolean>(false);
 
-  const { refetch: queryByteDetails, data, error } = useQueryByteDetailsQuery({ skip: true });
+  const { refetch: queryByteDetails } = useQueryByteDetailsQuery({ skip: true });
   const [upsertByteMutation] = useUpsertByteMutation();
   const { showNotification } = useNotificationContext();
 
@@ -300,25 +300,15 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
 
       const payload = response?.data?.payload;
       if (payload) {
-        showNotification({
-          type: 'success',
-          message: 'Byte Saved',
-          heading: 'Success 🎉',
-        });
+        showNotification({ type: 'success', message: 'Byte Saved', heading: 'Success 🎉' });
 
         router.push(`/tidbits/view/${payload.id}/0`);
       } else {
-        showNotification({
-          type: 'error',
-          message: "Can't Save Byte",
-        });
+        showNotification({ type: 'error', message: "Can't Save Byte" });
         console.error(response.errors);
       }
     } catch (e) {
-      showNotification({
-        type: 'error',
-        message: "Can't Save Byte",
-      });
+      showNotification({ type: 'error', message: "Can't Save Byte" });
       console.error(e);
     }
     setByteCreating(false);

@@ -1,4 +1,4 @@
-import { GuideIntegrations } from '@/graphql/generated/generated-types';
+import { GuideIntegrationFragment } from '@/graphql/generated/generated-types';
 
 export interface ChoiceError {
   content?: boolean;
@@ -21,7 +21,7 @@ export interface StepError {
   stepItems?: Record<string, QuestionError | UserInputError>;
 }
 
-export type KeyOfGuideIntegration = keyof GuideIntegrations;
+export type KeyOfGuideIntegration = keyof GuideIntegrationFragment;
 
 export interface GuideError {
   name?: boolean;
