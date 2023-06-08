@@ -1,3 +1,5 @@
+'use client';
+
 import withSpace from '@/app/withSpace';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 
