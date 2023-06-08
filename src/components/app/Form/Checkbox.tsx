@@ -62,6 +62,7 @@ export default function Checkbox({
           onChange={() => onChange(!isChecked)}
           className="h-4 w-4 border focus:ring focus:outline-none mr-2"
           disabled={readonly}
+          required
         />
         <CheckboxOverlay readonly={readonly} isChecked={isChecked} />
       </div>

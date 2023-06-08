@@ -58,7 +58,8 @@ export default function Radio({ id, labelContent, isSelected, className, readonl
           disabled={!!readonly}
           readOnly={readonly}
           onChange={() => onChange(!isSelected)}
-          className="h-4 w-4 border focus:ring focus:outline-none mr-2"
+          className="h-4 w-4 border focus:ring focus:outline-none mr-2 peer "
+          required
         />
         <Overlay readonly={readonly} isSelected={isSelected} />
       </div>

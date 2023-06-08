@@ -287,6 +287,12 @@ const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHas
     }) as GuideStepItemFragment[];
     updateStep({ ...step, stepItems });
   }
+const [answerKeys,setAnswers] = useState<string[]>([])
+
+function handleSubmit(e:React.FormEvent){
+  e.preventDefault();
+}
+
 
   return (
     <div className="w-full p-4">
@@ -333,6 +339,9 @@ const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHas
       {stepItemsForStepper.map((stepItem, index) => (
         <div key={stepItem.uuid} className="border  rounded-md p-4 mb-4 ml-4 w-full">
           {stepItem.isQuestion ? (
+            <form   onSubmit={handleSubmit}  >
+             
+            
             <CreateQuestion
               addChoice={addChoice}
               item={stepItem as GuideQuestionFragment}
@@ -345,6 +354,9 @@ const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHas
               questionErrors={stepErrors?.stepItems?.[stepItem.uuid] as QuestionError}
               updateQuestionType={updateQuestionType}
             />
+             {/* <p className='mt-2 invisible peer-required:visible text-pink-600 text-sm'>Please select atleast one</p> */}
+            <button className=' text-center ml-[95%] ' type="submit" >ok</button>
+            </form>
           ) : stepItem.isDiscord ? (
             <CreateConnectDiscord item={stepItem} removeDiscord={removeStepItem} />
           ) : (
