@@ -55,7 +55,6 @@ fragment GuideStepItem on GuideStepItem {
 
 fragment GuideStep on GuideStep {
   content
-  created
   stepItems {
     __typename
     ... on GuideQuestion {
@@ -112,9 +111,7 @@ fragment Guide on Guide {
   }
   guideSource
   guideType
-  link
   name
-  previousId
   showIncorrectOnCompletion
   steps {
     ...GuideStep

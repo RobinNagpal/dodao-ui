@@ -1,3 +1,4 @@
+import { EditGuideType } from '@/components/guides/Edit/editGuideType';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import {
   GuideInput,
@@ -26,11 +27,6 @@ const stepContentLimit = 14400;
 const guideExceptContentLimit = 64;
 const nameLimit = 32;
 
-export type EditGuideType = GuideInput & { id?: string } & {
-  isPristine: boolean;
-  guideExists: boolean;
-};
-
 type KeyOfGuideInput = keyof EditGuideType;
 
 export type UpdateGuideFunctions = {
@@ -51,6 +47,7 @@ export interface UseEditGuideHelper {
   guideErrors: GuideError;
   guideLoaded: boolean;
   guideCreating: boolean;
+  handleSubmit: () => Promise<void>;
   activeStepId?: string | null;
   initialize: () => Promise<void>;
   updateGuideFunctions: UpdateGuideFunctions;
@@ -58,7 +55,8 @@ export interface UseEditGuideHelper {
 export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHelper {
   const { data: session } = useSession();
   const emptyGuideModel = emptyGuide(session?.username || '', space, GuideType.Onboarding);
-  const [guide, setGuide] = useState<EditGuideType>({ ...emptyGuideModel, guideExists: false });
+  const initialState: EditGuideType = { ...emptyGuideModel, guideExists: false };
+  const [guide, setGuide] = useState<EditGuideType>(initialState);
   const [guideErrors, setGuideErrors] = useState<GuideError>({});
   const [guideLoaded, setGuideLoaded] = useState<boolean>(false);
 
@@ -80,10 +78,9 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
         ...guide,
         guideExists: true,
         isPristine: true,
-        from: session?.username || '',
         postSubmissionStepContent: guide.postSubmissionStepContent || undefined,
         socialShareImage: guide.socialShareImage || undefined,
-        space: space.id,
+
         thumbnail: guide.thumbnail || undefined,
         guideIntegrations: { ...guide.guideIntegrations, discordRoleIds: guide.guideIntegrations.discordRoleIds || [] },
       });
@@ -101,10 +98,10 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
   }
 
   function updateStep(step: GuideStepFragment) {
-    setGuide((prevGuide: EditGuideType) => {
+    setGuide((prevGuide: EditGuideType): EditGuideType => {
       return {
         ...prevGuide,
-        steps: prevGuide.steps.map((s: GuideStepInput) => {
+        steps: prevGuide.steps.map((s: GuideStepFragment) => {
           if (s.uuid === step.uuid) {
             return step;
           } else {
@@ -177,7 +174,7 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
     }));
   }
 
-  function validateGuide(guide: GuideInput) {
+  function validateGuide(guide: EditGuideType) {
     const errors: GuideError = { ...guideErrors };
 
     errors.name = undefined;
@@ -216,13 +213,15 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
     return Object.values(errors).filter((v) => !!v).length === 0;
   }
 
-  function convertToGuideInput(model: GuideInput): GuideInput {
+  function convertToGuideInput(model: EditGuideType): GuideInput {
     return {
       id: model.id || model.uuid,
       categories: model.categories,
       content: model.content,
       from: session?.username || '',
-      guideIntegrations: model.guideIntegrations,
+      guideIntegrations: {
+        discordRoleIds: [],
+      },
       guideSource: model.guideSource,
       guideType: model.guideType,
       name: model.name,
@@ -236,7 +235,8 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
           content: step.content,
           name: step.name,
           order: step.order,
-          stepItems: step.stepItems.map((stepItem, index) => {
+          stepItems: step.stepItems.map((item, index) => {
+            const stepItem = item as StepItemInputGenericInput;
             return {
               type: stepItem.type,
               order: index,
@@ -362,6 +362,7 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
     guideLoaded,
     guide,
     guideErrors,
+    handleSubmit,
     updateGuideFunctions,
   };
 }

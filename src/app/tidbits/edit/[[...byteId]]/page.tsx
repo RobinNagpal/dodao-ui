@@ -14,14 +14,13 @@ import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-typ
 import SingleCardLayout from '@/layouts/SingleCardLayout';
 import { PublishStatus } from '@/types/deprecated/models/enums';
 import { ByteErrors } from '@/types/errors/byteErrors';
+import { statuses } from '@/utils/ui/statuses';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteId?: string[] } }) {
-  const router = useRouter();
-
   const { space, params } = props;
   const byteId = params.byteId ? params.byteId[0] : null;
 
@@ -39,17 +38,6 @@ function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteI
   const selectPublishStatus = (status: PublishStatus) => {
     updateByteFunctions.updateByteField('publishStatus', status);
   };
-
-  const byteStatuses: EllipsisDropdownItem[] = [
-    {
-      label: 'Live',
-      key: PublishStatus.Live,
-    },
-    {
-      label: 'Draft',
-      key: PublishStatus.Draft,
-    },
-  ];
 
   const clickSubmit = () => {
     handleSubmit();
@@ -86,7 +74,7 @@ function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteI
                   <div className="flex justify-start ">
                     <div className="pr-1 select-none">{byte.publishStatus === 'Live' ? 'Live' : 'Draft'}</div>
                     <div className="ml-2">
-                      <EllipsisDropdown items={byteStatuses} onSelect={(value) => selectPublishStatus(value as PublishStatus)} />
+                      <EllipsisDropdown items={statuses} onSelect={(value) => selectPublishStatus(value as PublishStatus)} />
                     </div>
                   </div>
                 </div>

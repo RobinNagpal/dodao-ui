@@ -8,6 +8,7 @@ import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
 import AddStepItemModal from '@/components/app/Modal/AddStepItemModal';
 import { UseEditGuideHelper } from '@/components/guides/Edit/useEditGuide';
 import {
+  GuideFragment,
   GuideInput,
   GuideQuestion,
   GuideQuestionFragment,
@@ -28,7 +29,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 interface GuideStepProps {
   space: Space;
-  guide: GuideInput;
+  guide: GuideFragment;
   guideHasDiscordEnabled: boolean;
   step: GuideStepFragment;
   stepErrors?: StepError;
@@ -325,7 +326,7 @@ const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHas
         modelValue={step.content}
         placeholder={$t(`guide.step.contents`)}
         onUpdate={updateStepContent}
-        spaceId={guide.space}
+        spaceId={space.id}
         objectId={guide.uuid}
         imageType="Guide"
       />
