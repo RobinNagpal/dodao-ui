@@ -1,4 +1,4 @@
-fragment TopicSubmissionJsonFragment on GitCourseTopicSubmissionJson {
+fragment TopicSubmissionJson on GitCourseTopicSubmissionJson {
   uuid
   topicKey
   explanations {
@@ -26,7 +26,12 @@ fragment TopicSubmissionJsonFragment on GitCourseTopicSubmissionJson {
   status
 }
 
-fragment TopicSubmissionFragment on GitCourseTopicSubmission {
+fragment TopicCorrectAnswer on GitCourseTopicCorrectAnswer {
+  uuid
+  answerKeys
+}
+
+fragment TopicSubmission on GitCourseTopicSubmission {
   uuid
   courseKey
 
@@ -34,8 +39,7 @@ fragment TopicSubmissionFragment on GitCourseTopicSubmission {
   createdAt
   createdBy
   correctAnswers {
-    uuid
-    answerKeys
+    ...TopicCorrectAnswers
   }
   isLatestSubmission
   questionsAttempted
@@ -43,7 +47,7 @@ fragment TopicSubmissionFragment on GitCourseTopicSubmission {
   questionsIncorrect
   questionsSkipped
   submission {
-    ...TopicSubmissionJsonFragment
+    ...TopicSubmissionJson
   }
   spaceId
   status
@@ -51,7 +55,7 @@ fragment TopicSubmissionFragment on GitCourseTopicSubmission {
   updatedAt
 }
 
-fragment CourseSubmissionFragment on GitCourseSubmission {
+fragment CourseSubmission on GitCourseSubmission {
   uuid
   courseKey
   createdAt
@@ -66,36 +70,36 @@ fragment CourseSubmissionFragment on GitCourseSubmission {
   status
   updatedAt
   topicSubmissions {
-    ...TopicSubmissionFragment
+    ...TopicSubmission
   }
 }
 
 query GitCourseSubmission($spaceId: String!, $courseKey: String!) {
   payload: gitCourseSubmission(spaceId: $spaceId, courseKey: $courseKey) {
-    ...CourseSubmissionFragment
+    ...CourseSubmission
   }
 }
 
 mutation UpsertGitCourseTopicSubmission($spaceId: String!, $gitCourseTopicSubmission: GitCourseTopicSubmissionInput!) {
   payload: upsertGitCourseTopicSubmission(spaceId: $spaceId, gitCourseTopicSubmission: $gitCourseTopicSubmission) {
-    ...TopicSubmissionFragment
+    ...TopicSubmission
   }
 }
 
 mutation SubmitGitCourseTopic($spaceId: String!, $gitCourseTopicSubmission: GitCourseTopicSubmissionInput!) {
   payload: submitGitCourseTopic(spaceId: $spaceId, gitCourseTopicSubmission: $gitCourseTopicSubmission) {
-    ...TopicSubmissionFragment
+    ...TopicSubmission
   }
 }
 
 mutation SubmitGitCourse($spaceId: String!, $input: CourseSubmissionInput!) {
   payload: submitGitCourse(spaceId: $spaceId, input: $input) {
-    ...CourseSubmissionFragment
+    ...CourseSubmission
   }
 }
 
 mutation InitializeGitCourseSubmission($spaceId: String!, $courseKey: String!) {
   payload: initializeGitCourseSubmission(spaceId: $spaceId, courseKey: $courseKey) {
-    ...CourseSubmissionFragment
+    ...CourseSubmission
   }
 }

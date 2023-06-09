@@ -1616,11 +1616,13 @@ export type SubmitByteMutationVariables = Exact<{
 
 export type SubmitByteMutation = { __typename?: 'Mutation', submitByte: { __typename?: 'ByteSubmission', id: string, created: string, createdBy: string, byteId: string, spaceId: string } };
 
-export type TopicSubmissionJsonFragmentFragment = { __typename?: 'GitCourseTopicSubmissionJson', uuid: string, topicKey: string, status: string, explanations?: Array<{ __typename?: 'GitCourseExplanationsSubmission', key: string, status: string }> | null, questions?: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, status: string, answers: Array<string> }> | null, readings?: Array<{ __typename?: 'GitCourseReadingsSubmission', uuid: string, status: string, questions: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, answers: Array<string>, status: string }> }> | null, summaries?: Array<{ __typename?: 'GitCourseSummariesSubmission', key: string, status: string }> | null };
+export type TopicSubmissionJsonFragment = { __typename?: 'GitCourseTopicSubmissionJson', uuid: string, topicKey: string, status: string, explanations?: Array<{ __typename?: 'GitCourseExplanationsSubmission', key: string, status: string }> | null, questions?: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, status: string, answers: Array<string> }> | null, readings?: Array<{ __typename?: 'GitCourseReadingsSubmission', uuid: string, status: string, questions: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, answers: Array<string>, status: string }> }> | null, summaries?: Array<{ __typename?: 'GitCourseSummariesSubmission', key: string, status: string }> | null };
 
-export type TopicSubmissionFragmentFragment = { __typename?: 'GitCourseTopicSubmission', uuid: string, courseKey: string, courseSubmissionUuid: string, createdAt: number, createdBy: string, isLatestSubmission: boolean, questionsAttempted?: number | null, questionsCorrect?: number | null, questionsIncorrect?: number | null, questionsSkipped?: number | null, spaceId: string, status: string, topicKey: string, updatedAt: number, correctAnswers?: Array<{ __typename?: 'GitCourseTopicCorrectAnswer', uuid: string, answerKeys: Array<string> }> | null, submission?: { __typename?: 'GitCourseTopicSubmissionJson', uuid: string, topicKey: string, status: string, explanations?: Array<{ __typename?: 'GitCourseExplanationsSubmission', key: string, status: string }> | null, questions?: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, status: string, answers: Array<string> }> | null, readings?: Array<{ __typename?: 'GitCourseReadingsSubmission', uuid: string, status: string, questions: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, answers: Array<string>, status: string }> }> | null, summaries?: Array<{ __typename?: 'GitCourseSummariesSubmission', key: string, status: string }> | null } | null };
+export type TopicCorrectAnswersFragment = { __typename?: 'GitCourseTopicCorrectAnswer', uuid: string, answerKeys: Array<string> };
 
-export type CourseSubmissionFragmentFragment = { __typename?: 'GitCourseSubmission', uuid: string, courseKey: string, createdAt: number, createdBy: string, galaxyCredentialsUpdated?: boolean | null, isLatestSubmission?: boolean | null, questionsAttempted?: number | null, questionsCorrect?: number | null, questionsIncorrect?: number | null, questionsSkipped?: number | null, spaceId: string, status: string, updatedAt: number, topicSubmissions: Array<{ __typename?: 'GitCourseTopicSubmission', uuid: string, courseKey: string, courseSubmissionUuid: string, createdAt: number, createdBy: string, isLatestSubmission: boolean, questionsAttempted?: number | null, questionsCorrect?: number | null, questionsIncorrect?: number | null, questionsSkipped?: number | null, spaceId: string, status: string, topicKey: string, updatedAt: number, correctAnswers?: Array<{ __typename?: 'GitCourseTopicCorrectAnswer', uuid: string, answerKeys: Array<string> }> | null, submission?: { __typename?: 'GitCourseTopicSubmissionJson', uuid: string, topicKey: string, status: string, explanations?: Array<{ __typename?: 'GitCourseExplanationsSubmission', key: string, status: string }> | null, questions?: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, status: string, answers: Array<string> }> | null, readings?: Array<{ __typename?: 'GitCourseReadingsSubmission', uuid: string, status: string, questions: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, answers: Array<string>, status: string }> }> | null, summaries?: Array<{ __typename?: 'GitCourseSummariesSubmission', key: string, status: string }> | null } | null }> };
+export type TopicSubmissionFragment = { __typename?: 'GitCourseTopicSubmission', uuid: string, courseKey: string, courseSubmissionUuid: string, createdAt: number, createdBy: string, isLatestSubmission: boolean, questionsAttempted?: number | null, questionsCorrect?: number | null, questionsIncorrect?: number | null, questionsSkipped?: number | null, spaceId: string, status: string, topicKey: string, updatedAt: number, correctAnswers?: Array<{ __typename?: 'GitCourseTopicCorrectAnswer', uuid: string, answerKeys: Array<string> }> | null, submission?: { __typename?: 'GitCourseTopicSubmissionJson', uuid: string, topicKey: string, status: string, explanations?: Array<{ __typename?: 'GitCourseExplanationsSubmission', key: string, status: string }> | null, questions?: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, status: string, answers: Array<string> }> | null, readings?: Array<{ __typename?: 'GitCourseReadingsSubmission', uuid: string, status: string, questions: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, answers: Array<string>, status: string }> }> | null, summaries?: Array<{ __typename?: 'GitCourseSummariesSubmission', key: string, status: string }> | null } | null };
+
+export type CourseSubmissionFragment = { __typename?: 'GitCourseSubmission', uuid: string, courseKey: string, createdAt: number, createdBy: string, galaxyCredentialsUpdated?: boolean | null, isLatestSubmission?: boolean | null, questionsAttempted?: number | null, questionsCorrect?: number | null, questionsIncorrect?: number | null, questionsSkipped?: number | null, spaceId: string, status: string, updatedAt: number, topicSubmissions: Array<{ __typename?: 'GitCourseTopicSubmission', uuid: string, courseKey: string, courseSubmissionUuid: string, createdAt: number, createdBy: string, isLatestSubmission: boolean, questionsAttempted?: number | null, questionsCorrect?: number | null, questionsIncorrect?: number | null, questionsSkipped?: number | null, spaceId: string, status: string, topicKey: string, updatedAt: number, correctAnswers?: Array<{ __typename?: 'GitCourseTopicCorrectAnswer', uuid: string, answerKeys: Array<string> }> | null, submission?: { __typename?: 'GitCourseTopicSubmissionJson', uuid: string, topicKey: string, status: string, explanations?: Array<{ __typename?: 'GitCourseExplanationsSubmission', key: string, status: string }> | null, questions?: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, status: string, answers: Array<string> }> | null, readings?: Array<{ __typename?: 'GitCourseReadingsSubmission', uuid: string, status: string, questions: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, answers: Array<string>, status: string }> }> | null, summaries?: Array<{ __typename?: 'GitCourseSummariesSubmission', key: string, status: string }> | null } | null }> };
 
 export type GitCourseSubmissionQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -2287,8 +2289,14 @@ export const ByteDetailsFragmentFragmentDoc = gql`
   }
 }
     `;
-export const TopicSubmissionJsonFragmentFragmentDoc = gql`
-    fragment TopicSubmissionJsonFragment on GitCourseTopicSubmissionJson {
+export const TopicCorrectAnswersFragmentDoc = gql`
+    fragment TopicCorrectAnswers on GitCourseTopicCorrectAnswer {
+  uuid
+  answerKeys
+}
+    `;
+export const TopicSubmissionJsonFragmentDoc = gql`
+    fragment TopicSubmissionJson on GitCourseTopicSubmissionJson {
   uuid
   topicKey
   explanations {
@@ -2316,16 +2324,15 @@ export const TopicSubmissionJsonFragmentFragmentDoc = gql`
   status
 }
     `;
-export const TopicSubmissionFragmentFragmentDoc = gql`
-    fragment TopicSubmissionFragment on GitCourseTopicSubmission {
+export const TopicSubmissionFragmentDoc = gql`
+    fragment TopicSubmission on GitCourseTopicSubmission {
   uuid
   courseKey
   courseSubmissionUuid
   createdAt
   createdBy
   correctAnswers {
-    uuid
-    answerKeys
+    ...TopicCorrectAnswers
   }
   isLatestSubmission
   questionsAttempted
@@ -2333,16 +2340,17 @@ export const TopicSubmissionFragmentFragmentDoc = gql`
   questionsIncorrect
   questionsSkipped
   submission {
-    ...TopicSubmissionJsonFragment
+    ...TopicSubmissionJson
   }
   spaceId
   status
   topicKey
   updatedAt
 }
-    ${TopicSubmissionJsonFragmentFragmentDoc}`;
-export const CourseSubmissionFragmentFragmentDoc = gql`
-    fragment CourseSubmissionFragment on GitCourseSubmission {
+    ${TopicCorrectAnswersFragmentDoc}
+${TopicSubmissionJsonFragmentDoc}`;
+export const CourseSubmissionFragmentDoc = gql`
+    fragment CourseSubmission on GitCourseSubmission {
   uuid
   courseKey
   createdAt
@@ -2357,10 +2365,10 @@ export const CourseSubmissionFragmentFragmentDoc = gql`
   status
   updatedAt
   topicSubmissions {
-    ...TopicSubmissionFragment
+    ...TopicSubmission
   }
 }
-    ${TopicSubmissionFragmentFragmentDoc}`;
+    ${TopicSubmissionFragmentDoc}`;
 export const CourseExplanationFragmentDoc = gql`
     fragment CourseExplanation on GitCourseExplanation {
   title
@@ -3003,10 +3011,10 @@ export type SubmitByteMutationOptions = Apollo.BaseMutationOptions<SubmitByteMut
 export const GitCourseSubmissionDocument = gql`
     query GitCourseSubmission($spaceId: String!, $courseKey: String!) {
   payload: gitCourseSubmission(spaceId: $spaceId, courseKey: $courseKey) {
-    ...CourseSubmissionFragment
+    ...CourseSubmission
   }
 }
-    ${CourseSubmissionFragmentFragmentDoc}`;
+    ${CourseSubmissionFragmentDoc}`;
 
 /**
  * __useGitCourseSubmissionQuery__
@@ -3045,10 +3053,10 @@ export const UpsertGitCourseTopicSubmissionDocument = gql`
     spaceId: $spaceId
     gitCourseTopicSubmission: $gitCourseTopicSubmission
   ) {
-    ...TopicSubmissionFragment
+    ...TopicSubmission
   }
 }
-    ${TopicSubmissionFragmentFragmentDoc}`;
+    ${TopicSubmissionFragmentDoc}`;
 export type UpsertGitCourseTopicSubmissionMutationFn = Apollo.MutationFunction<UpsertGitCourseTopicSubmissionMutation, UpsertGitCourseTopicSubmissionMutationVariables>;
 
 /**
@@ -3082,10 +3090,10 @@ export const SubmitGitCourseTopicDocument = gql`
     spaceId: $spaceId
     gitCourseTopicSubmission: $gitCourseTopicSubmission
   ) {
-    ...TopicSubmissionFragment
+    ...TopicSubmission
   }
 }
-    ${TopicSubmissionFragmentFragmentDoc}`;
+    ${TopicSubmissionFragmentDoc}`;
 export type SubmitGitCourseTopicMutationFn = Apollo.MutationFunction<SubmitGitCourseTopicMutation, SubmitGitCourseTopicMutationVariables>;
 
 /**
@@ -3116,10 +3124,10 @@ export type SubmitGitCourseTopicMutationOptions = Apollo.BaseMutationOptions<Sub
 export const SubmitGitCourseDocument = gql`
     mutation SubmitGitCourse($spaceId: String!, $input: CourseSubmissionInput!) {
   payload: submitGitCourse(spaceId: $spaceId, input: $input) {
-    ...CourseSubmissionFragment
+    ...CourseSubmission
   }
 }
-    ${CourseSubmissionFragmentFragmentDoc}`;
+    ${CourseSubmissionFragmentDoc}`;
 export type SubmitGitCourseMutationFn = Apollo.MutationFunction<SubmitGitCourseMutation, SubmitGitCourseMutationVariables>;
 
 /**
@@ -3150,10 +3158,10 @@ export type SubmitGitCourseMutationOptions = Apollo.BaseMutationOptions<SubmitGi
 export const InitializeGitCourseSubmissionDocument = gql`
     mutation InitializeGitCourseSubmission($spaceId: String!, $courseKey: String!) {
   payload: initializeGitCourseSubmission(spaceId: $spaceId, courseKey: $courseKey) {
-    ...CourseSubmissionFragment
+    ...CourseSubmission
   }
 }
-    ${CourseSubmissionFragmentFragmentDoc}`;
+    ${CourseSubmissionFragmentDoc}`;
 export type InitializeGitCourseSubmissionMutationFn = Apollo.MutationFunction<InitializeGitCourseSubmissionMutation, InitializeGitCourseSubmissionMutationVariables>;
 
 /**

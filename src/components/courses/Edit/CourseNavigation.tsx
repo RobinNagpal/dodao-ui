@@ -2,8 +2,10 @@ import AddIcon from '@/components/app/Icons/AddIcon';
 import ReadingIcon from '@/components/app/Icons/ReadingIcon';
 import TreeItem from '@/components/app/Tree/TreeItem';
 import TreeView from '@/components/app/Tree/TreeView';
+import { Tree } from '@/components/app/TreeView/Tree';
+import { TreeNodeType } from '@/components/app/TreeView/TreeNode';
 import Button from '@/components/core/buttons/Button';
-import { CourseDetailsFragment, Space } from '@/graphql/generated/generated-types';
+import { CourseDetailsFragment, CourseExplanationFragment, CourseReadingFragment, CourseSummaryFragment, Space } from '@/graphql/generated/generated-types';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
@@ -121,6 +123,127 @@ const CourseComponent: React.FC<CourseNavigationProps> = ({ course, space, showA
       setOpenChapter(location.pathname);
     }
   }, [location]);
+  const treeData: TreeNodeType[] = [
+    {
+      component: <div key="p1">Parent 1</div>,
+      children: [
+        { component: <div key="c1.1">Child 1.1</div> },
+        {
+          component: <div key="c1.2">Child 1.2</div>,
+          children: [{ component: <div key="gc1.2.1">Grandchild 1.2.1</div> }],
+        },
+      ],
+    },
+    {
+      component: <div key="p2">Parent 2</div>,
+      children: [{ component: <div key="c2.1">Child 2.1</div> }],
+    },
+    {
+      component: <div key="p3">Parent 3</div>,
+    },
+  ];
+
+  function getReadings(readings: CourseReadingFragment[]) {
+    return readings.map((reading, i) => {
+      return {
+        component: (
+          <div key={reading.uuid} className="flex items-center">
+            <span className="icon mr-2">
+              <CheckMark />
+            </span>
+            <span className="item-title">{reading.title}</span>
+          </div>
+        ),
+      };
+    });
+  }
+
+  function getExplanations(explanations: CourseExplanationFragment[]) {
+    return explanations.map((explanation, i) => {
+      return {
+        component: (
+          <div key={explanation.key} className="flex items-center">
+            <span className="icon mr-2">
+              <CheckMark />
+            </span>
+            <span className="item-title">{explanation.title}</span>
+          </div>
+        ),
+      };
+    });
+  }
+  function getSummaries(summaries: CourseSummaryFragment[]) {
+    return summaries.map((summary, i) => {
+      return {
+        component: (
+          <div key={summary.key} className="flex items-center">
+            <span className="icon mr-2">
+              <CheckMark />
+            </span>
+            <span className="item-title">{summary.title}</span>
+          </div>
+        ),
+      };
+    });
+  }
+
+  const treeData1: TreeNodeType[] = course.topics.map((chapter, i) => {
+    const readings: TreeNodeType[] = getReadings(chapter.readings);
+    const explanations: TreeNodeType[] = getExplanations(chapter.explanations);
+    const summaries: TreeNodeType[] = getSummaries(chapter.summaries);
+
+    const children: TreeNodeType[] = [];
+    if (readings.length) {
+      children.push({
+        component: (
+          <div key={chapter.key} className="flex items-center">
+            <span className="icon mr-2">
+              <CheckMark />
+            </span>
+            <span className="item-title">Videos</span>
+          </div>
+        ),
+        children: readings,
+      });
+    }
+    if (explanations.length) {
+      children.push({
+        component: (
+          <div key={chapter.key} className="flex items-center">
+            <span className="icon mr-2">
+              <CheckMark />
+            </span>
+            <span className="item-title">Explanations</span>
+          </div>
+        ),
+        children: explanations,
+      });
+    }
+    if (summaries.length) {
+      children.push({
+        component: (
+          <div key={chapter.key} className="flex items-center">
+            <span className="icon mr-2">
+              <CheckMark />
+            </span>
+            <span className="item-title">Summaries</span>
+          </div>
+        ),
+        children: summaries,
+      });
+    }
+    return {
+      component: (
+        <div key={chapter.key} className="flex items-center">
+          <span className="icon mr-2">
+            <CheckMark />
+          </span>
+          <span className="item-title">{chapter.title}</span>
+        </div>
+      ),
+      children: children,
+    };
+  });
 
   return (
     <Container className="p-4 min-h-auto bg-skin-header-bg rounded-l-lg border-skin-border h-full w-full">
@@ -129,30 +252,7 @@ const CourseComponent: React.FC<CourseNavigationProps> = ({ course, space, showA
           <AddIcon /> Add
         </Button>
       )}
-      <TreeView>
-        {course.topics?.map((chapter, i) => {
-          return (
-            <TreeItem id={chapter.key} key={chapter.key}>
-              <TreeView>
-                {chapter.readings.map((reading, i) => {
-                  return (
-                    <TreeItem id={reading.uuid} key={reading.uuid}>
-                      <Link href={`/courses/view/${course.key}/${chapter.key}/readings`}>
-                        <span className="mt-1 flex items-center">
-                          <span className="icon mr-2">
-                            <ReadingIcon />
-                          </span>
-                          Videos
-                        </span>
-                      </Link>
-                    </TreeItem>
-                  );
-                })}
-              </TreeView>
-            </TreeItem>
-          );
-        })}
-      </TreeView>
+      <Tree data={treeData1} />
     </Container>
   );
 };
