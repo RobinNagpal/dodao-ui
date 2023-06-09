@@ -355,7 +355,7 @@ const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHas
                 updateQuestionType={updateQuestionType}
               />
               {/* <p className='mt-2 invisible peer-required:visible text-pink-600 text-sm'>Please select atleast one</p> */}
-              <button className=' text-center ml-[95%] ' type="submit" >ok</button>
+              <button className='  ml-[95%] ' type="submit" >ok</button>
             </form>
           ) : stepItem.isDiscord ? (
             <CreateConnectDiscord item={stepItem} removeDiscord={removeStepItem} />

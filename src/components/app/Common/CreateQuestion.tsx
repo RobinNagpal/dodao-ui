@@ -14,6 +14,7 @@ import styled from 'styled-components';
 import Button from '@/components/app/Button';
 import SidebarButton from '@/components/app/Button/SidebarButton';
 
+
 interface QuestionComponentProps {
   addChoice: (uuid: string) => void;
   item: GuideStepItem | ByteQuestion;
@@ -122,7 +123,7 @@ function QuestionComponent({
             />
             {!disableChoiceEdit && question.choices.length > 1 && (
               <div className="cursor-pointer p-2" onClick={() => removeChoice?.(question.uuid, choice.key)}>
-               <MinusCircle></MinusCircle>
+                <MinusCircle></MinusCircle>
               </div>
             )}
           </div>
