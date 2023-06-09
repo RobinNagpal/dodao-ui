@@ -1,11 +1,17 @@
 import AddIcon from '@/components/app/Icons/AddIcon';
-import ReadingIcon from '@/components/app/Icons/ReadingIcon';
-import TreeItem from '@/components/app/Tree/TreeItem';
-import TreeView from '@/components/app/Tree/TreeView';
 import { Tree } from '@/components/app/TreeView/Tree';
 import { TreeNodeType } from '@/components/app/TreeView/TreeNode';
 import Button from '@/components/core/buttons/Button';
-import { CourseDetailsFragment, CourseExplanationFragment, CourseReadingFragment, CourseSummaryFragment, Space } from '@/graphql/generated/generated-types';
+import { CourseSubmissionHelper } from '@/components/courses/View/useCourseSubmission';
+import { CourseHelper } from '@/components/courses/View/useViewCourse';
+import {
+  CourseDetailsFragment,
+  CourseExplanationFragment,
+  CourseReadingFragment,
+  CourseSummaryFragment,
+  CourseTopicFragment,
+  Space,
+} from '@/graphql/generated/generated-types';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
@@ -14,7 +20,12 @@ interface CourseNavigationProps {
   course: CourseDetailsFragment;
   space: Space;
   showAddModal: () => void;
+  courseHelper: CourseHelper;
+  submissionHelper: CourseSubmissionHelper;
 }
+const ClickableDiv = styled.div`
+  cursor: pointer;
+`;
 
 const CheckMark = styled.div`
   position: relative;
@@ -94,7 +105,7 @@ const Container = styled.div`
   }
 `;
 
-const CourseComponent: React.FC<CourseNavigationProps> = ({ course, space, showAddModal }) => {
+const CourseComponent: React.FC<CourseNavigationProps> = ({ course, space, showAddModal, courseHelper }) => {
   const isCourseAdmin = true;
   const [openChapter, setOpenChapter] = useState(location.pathname);
   const [nodemap, setNodemap] = useState<any>({});
@@ -123,85 +134,78 @@ const CourseComponent: React.FC<CourseNavigationProps> = ({ course, space, showA
       setOpenChapter(location.pathname);
     }
   }, [location]);
-  const treeData: TreeNodeType[] = [
-    {
-      component: <div key="p1">Parent 1</div>,
-      children: [
-        { component: <div key="c1.1">Child 1.1</div> },
-        {
-          component: <div key="c1.2">Child 1.2</div>,
-          children: [{ component: <div key="gc1.2.1">Grandchild 1.2.1</div> }],
-        },
-      ],
-    },
-    {
-      component: <div key="p2">Parent 2</div>,
-      children: [{ component: <div key="c2.1">Child 2.1</div> }],
-    },
-    {
-      component: <div key="p3">Parent 3</div>,
-    },
-  ];
 
-  function getReadings(readings: CourseReadingFragment[]) {
+  function getReadings(topic: CourseTopicFragment, readings: CourseReadingFragment[]) {
     return readings.map((reading, i) => {
       return {
         component: (
-          <div key={reading.uuid} className="flex items-center">
-            <span className="icon mr-2">
+          <ClickableDiv
+            key={reading.uuid}
+            className="flex items-center"
+            onClick={() => courseHelper.goToLink(`/courses/view/${course.key}/${topic.key}/readings/${reading.uuid}`)}
+          >
+            <div className="icon mr-2">
               <CheckMark />
-            </span>
-            <span className="item-title">{reading.title}</span>
-          </div>
+            </div>
+            <div>{reading.title}</div>
+          </ClickableDiv>
         ),
       };
     });
   }
 
-  function getExplanations(explanations: CourseExplanationFragment[]) {
+  function getExplanations(topic: CourseTopicFragment, explanations: CourseExplanationFragment[]) {
     return explanations.map((explanation, i) => {
       return {
         component: (
-          <div key={explanation.key} className="flex items-center">
-            <span className="icon mr-2">
+          <ClickableDiv
+            key={explanation.key}
+            className="flex items-center"
+            onClick={() => courseHelper.goToLink(`/courses/view/${course.key}/${topic.key}/explanations/${explanation.key}`)}
+          >
+            <div className="icon mr-2">
               <CheckMark />
-            </span>
-            <span className="item-title">{explanation.title}</span>
-          </div>
+            </div>
+            <div>{explanation.title}</div>
+          </ClickableDiv>
         ),
       };
     });
   }
-  function getSummaries(summaries: CourseSummaryFragment[]) {
+  function getSummaries(topic: CourseTopicFragment, summaries: CourseSummaryFragment[]) {
     return summaries.map((summary, i) => {
       return {
         component: (
-          <div key={summary.key} className="flex items-center">
-            <span className="icon mr-2">
+          <ClickableDiv
+            key={summary.key}
+            className="flex items-center"
+            onClick={() => courseHelper.goToLink(`/courses/view/${course.key}/${topic.key}/summaries/${summary.key}`)}
+          >
+            <div className="icon mr-2">
               <CheckMark />
-            </span>
-            <span className="item-title">{summary.title}</span>
-          </div>
+            </div>
+            <div>{summary.title}</div>
+          </ClickableDiv>
         ),
       };
     });
   }
 
   const treeData1: TreeNodeType[] = course.topics.map((chapter, i) => {
-    const readings: TreeNodeType[] = getReadings(chapter.readings);
-    const explanations: TreeNodeType[] = getExplanations(chapter.explanations);
-    const summaries: TreeNodeType[] = getSummaries(chapter.summaries);
+    const readings: TreeNodeType[] = getReadings(chapter, chapter.readings);
+    const explanations: TreeNodeType[] = getExplanations(chapter, chapter.explanations);
+    const summaries: TreeNodeType[] = getSummaries(chapter, chapter.summaries);
 
     const children: TreeNodeType[] = [];
     if (readings.length) {
       children.push({
         component: (
-          <div key={chapter.key} className="flex items-center">
-            <span className="icon mr-2">
+          <ClickableDiv key={chapter.key + '_readings'} className="flex items-center">
+            <div className="icon mr-2">
               <CheckMark />
-            </span>
-            <span className="item-title">Videos</span>
-          </div>
+            </div>
+            <div>Videos</div>
+          </ClickableDiv>
         ),
         children: readings,
       });
@@ -209,11 +213,11 @@ const CourseComponent: React.FC<CourseNavigationProps> = ({ course, space, showA
     if (explanations.length) {
       children.push({
         component: (
-          <div key={chapter.key} className="flex items-center">
-            <span className="icon mr-2">
+          <div key={chapter.key + '_explanations'} className="flex items-center">
+            <div className="icon mr-2">
               <CheckMark />
-            </span>
-            <span className="item-title">Explanations</span>
+            </div>
+            <div>Explanations</div>
           </div>
         ),
         children: explanations,
@@ -222,11 +226,11 @@ const CourseComponent: React.FC<CourseNavigationProps> = ({ course, space, showA
     if (summaries.length) {
       children.push({
         component: (
-          <div key={chapter.key} className="flex items-center">
-            <span className="icon mr-2">
+          <div key={chapter.key + '_summaries'} className="flex items-center">
+            <div className="icon mr-2">
               <CheckMark />
-            </span>
-            <span className="item-title">Summaries</span>
+            </div>
+            <div>Summaries</div>
           </div>
         ),
         children: summaries,
@@ -234,21 +238,21 @@ const CourseComponent: React.FC<CourseNavigationProps> = ({ course, space, showA
     }
     return {
       component: (
-        <div key={chapter.key} className="flex items-center">
-          <span className="icon mr-2">
+        <Link key={chapter.key + '_chapter_root'} className="flex items-center" href={`/courses/view/${course.key}/${chapter.key}`}>
+          <div className="icon mr-2">
             <CheckMark />
-          </span>
-          <span className="item-title">{chapter.title}</span>
-        </div>
+          </div>
+          <div>{chapter.title}</div>
+        </Link>
       ),
       children: children,
     };
   });
 
   return (
-    <Container className="p-4 min-h-auto bg-skin-header-bg rounded-l-lg border-skin-border h-full w-full">
+    <Container className="p-4 bg-skin-header-bg rounded-l-lg border-skin-border h-full w-full">
       {isCourseAdmin && (
-        <Button primary variant="contained" className="w-full mb-4" onClick={() => {}}>
+        <Button primary variant="contained" className="w-full mb-4" onClick={showAddModal}>
           <AddIcon /> Add
         </Button>
       )}

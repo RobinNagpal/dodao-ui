@@ -5,6 +5,8 @@ import EditCourseQuestion from '@/components/courses/Edit/Items/EditCourseQuesti
 import EditCourseReading, { UpdateTopicReadingForm } from '@/components/courses/Edit/Items/EditCourseReading';
 import EditCourseSummary, { UpdateTopicSummaryForm } from '@/components/courses/Edit/Items/EditCourseSummary';
 import EditTopic, { UpdateTopicForm } from '@/components/courses/Edit/Items/EditTopic';
+import { CourseSubmissionHelper } from '@/components/courses/View/useCourseSubmission';
+import { CourseHelper } from '@/components/courses/View/useViewCourse';
 import { CourseDetailsFragment, Space } from '@/graphql/generated/generated-types';
 import { QuestionType } from '@/types/deprecated/models/enums';
 import React, { useState } from 'react';
@@ -21,8 +23,8 @@ enum AddActions {
 interface ModalCourseNewItemProps {
   course: CourseDetailsFragment;
   space: Space;
-  submissionHelper: any;
-  courseHelper: any;
+  courseHelper: CourseHelper;
+  submissionHelper: CourseSubmissionHelper;
   open: boolean;
   closeModal: () => void;
 }

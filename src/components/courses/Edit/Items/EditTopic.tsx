@@ -8,9 +8,9 @@ import styled from 'styled-components';
 
 export interface UpdateTopicForm {
   courseKey: string;
-  topicKey?: string;
-  title?: string;
-  details?: string;
+  topicKey: string;
+  title: string;
+  details: string;
   isPristine: boolean;
 }
 
@@ -26,9 +26,9 @@ interface EditTopicProps {
 export default function EditTopic({ course, space, topicKey, currentTopic, saveTopic, cancel }: EditTopicProps) {
   const [form, setForm] = useState<UpdateTopicForm>({
     courseKey: course.key,
-    topicKey,
-    title: currentTopic?.title,
-    details: currentTopic?.details,
+    topicKey: topicKey || '',
+    title: currentTopic?.title || '',
+    details: currentTopic?.details || '',
     isPristine: true,
   });
   const [upserting, setUpserting] = useState(false);

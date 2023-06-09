@@ -144,7 +144,7 @@ function transformCourseSubmissionResponse(courseSubmissionResponse: CourseSubmi
 
 export interface CourseSubmissionHelper {
   courseSubmission: TempCourseSubmission | undefined;
-  loadCourseSubmission: (courseRef: CourseDetailsFragment) => Promise<void>;
+  loadCourseSubmission: (course: CourseDetailsFragment) => Promise<void>;
   loadedSubmission?: CourseSubmissionFragment | null;
   getTopic: (topicKey: string) => CourseTopicFragment;
   saveReading: Function;

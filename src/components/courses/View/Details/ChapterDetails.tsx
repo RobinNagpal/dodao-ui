@@ -1,47 +1,28 @@
 'use client';
 
-import withSpace from '@/app/withSpace';
 import SidebarButton from '@/components/app/Button/SidebarButton';
 import EditIcon from '@/components/app/Icons/EditIcon';
 import Button from '@/components/core/buttons/Button';
 import FullPageLoader from '@/components/core/loaders/FullPageLoading';
-import {
-  CourseBasicInfoInput,
-  CourseDetailsFragment,
-  SpaceWithIntegrationsFragment,
-  useCoursesQueryQuery,
-  useGitCourseQueryQuery,
-} from '@/graphql/generated/generated-types';
+import { CourseSubmissionHelper } from '@/components/courses/View/useCourseSubmission';
+import { CourseHelper } from '@/components/courses/View/useViewCourse';
+import { CourseBasicInfoInput, CourseDetailsFragment, Space } from '@/graphql/generated/generated-types';
 import { getMarkedRenderer } from '@/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
 import Link from 'next/link';
 
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
-const CourseView = ({ params, space }: { params: { courseInfo: string[] }; space: SpaceWithIntegrationsFragment }) => {
-  const { courseInfo } = params;
+interface ChapterDetailsProps {
+  course: CourseDetailsFragment;
+  space: Space;
+  isCourseAdmin: boolean;
+  courseHelper: CourseHelper;
+  submissionHelper: CourseSubmissionHelper;
+}
 
-  const courseKey = Array.isArray(courseInfo) ? courseInfo[0] : (courseInfo as string);
-
+const ChapterDetails = ({ course, space, isCourseAdmin, courseHelper, submissionHelper }: ChapterDetailsProps) => {
   const [editMode, setEditMode] = useState(false);
-  const [course, setCourse] = useState<CourseDetailsFragment>();
-  const { refetch } = useGitCourseQueryQuery({
-    variables: {
-      spaceId: space.id,
-      courseKey: courseKey,
-    },
-    skip: true,
-  });
-
-  useEffect(() => {
-    (async () => {
-      const response = await refetch();
-      const courseResponse = response.data?.course;
-      if (courseResponse) {
-        setCourse(courseResponse);
-      }
-    })();
-  });
 
   const renderer = useMemo(() => getMarkedRenderer(), []);
   const details = useMemo(() => marked.parse(course?.details || '', { renderer }), [course, renderer]);
@@ -50,7 +31,7 @@ const CourseView = ({ params, space }: { params: { courseInfo: string[] }; space
   const showEditMode = () => setEditMode(true);
 
   const saveUpdates = (updates: CourseBasicInfoInput) => {};
-  const isCourseAdmin = true;
+
   if (editMode) {
     // return <EditCourse course={course} space={space} updateCourse={saveUpdates} cancel={cancelEditMode} />;
   }
@@ -93,4 +74,4 @@ const CourseView = ({ params, space }: { params: { courseInfo: string[] }; space
     </div>
   );
 };
-export default withSpace(CourseView);
+export default ChapterDetails;

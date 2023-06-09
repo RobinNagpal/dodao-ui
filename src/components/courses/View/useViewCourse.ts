@@ -47,12 +47,12 @@ import {
 } from '@/graphql/generated/generated-types';
 
 import { FetchResult } from '@apollo/client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-export interface UseViewCourseHelper {
+export interface CourseHelper {
   course?: CourseDetailsFragment;
-  initialize: () => Promise<void>;
   loading: boolean;
+  goToLink: (link: string) => void;
   updateCourseBasicInfo: (updates: CourseBasicInfoInput) => Promise<boolean>;
 
   updateTopic: (updates: UpdateTopicBasicInfoInput) => Promise<boolean>;
@@ -81,11 +81,11 @@ export interface UseViewCourseHelper {
   moveTopicQuestion: (updates: MoveTopicQuestionInput) => Promise<boolean>;
 }
 
-const useViewCourse = (space: Space, courseKey: string): UseViewCourseHelper => {
+const useViewCourse = (space: Space, courseKey: string): CourseHelper => {
   const [course, setCourse] = useState<CourseDetailsFragment | undefined>();
-  const [loading, setLoading] = useState<boolean>(false);
 
-  const { refetch: getCourse } = useGitCourseQueryQuery({ variables: { spaceId: space.id, courseKey: courseKey }, skip: true });
+  const { refetch: getCourse, data, loading } = useGitCourseQueryQuery({ variables: { spaceId: space.id, courseKey: courseKey } });
+
   const [updateCourseBasicInfoMutation] = useUpdateCourseBasicInfoMutation();
   const [updateTopicBasicInfoMutation] = useUpdateTopicBasicInfoMutation();
   const [addTopicMutation] = useAddTopicMutation();
@@ -107,13 +107,12 @@ const useViewCourse = (space: Space, courseKey: string): UseViewCourseHelper => 
   const [moveTopicSummaryMutation] = useMoveTopicSummaryMutation();
   const [moveTopicVideoMutation] = useMoveTopicVideoMutation();
   const [moveTopicQuestionMutation] = useMoveTopicQuestionMutation();
-  const initialize = async () => {
-    setLoading(true);
-    const response = await getCourse();
-    setCourse(response.data.course);
-    setLoading(false);
-  };
 
+  useEffect(() => {
+    if (data?.course) {
+      setCourse(data.course);
+    }
+  }, [data]);
   const checkResult = (result: FetchResult<{ payload: CourseDetailsFragment }>) => {
     const updatedCourse = result.data?.payload;
     if (updatedCourse) {
@@ -347,10 +346,15 @@ const useViewCourse = (space: Space, courseKey: string): UseViewCourseHelper => 
     return checkResultAndNavigate(result, `/courses/view/${course?.key}/${updates.topicKey}`);
   };
 
+  const goToLink = (link: string) => {
+    console.log('goToLink', link);
+    history.replaceState(null, '', link);
+  };
+
   return {
     course,
     loading,
-    initialize,
+    goToLink,
     updateCourseBasicInfo,
 
     updateTopicExplanation,
