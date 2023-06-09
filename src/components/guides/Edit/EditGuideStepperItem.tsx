@@ -331,7 +331,7 @@ const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHas
         imageType="Guide"
       />
       {stepItemsForStepper.map((stepItem, index) => (
-        <div key={stepItem.uuid} className="border rounded rounded-md p-4 mb-4 ml-4 w-full">
+        <div key={stepItem.uuid} className="border rounded-md p-4 mb-4 ml-4 w-full">
           {stepItem.isQuestion ? (
             <CreateQuestion
               addChoice={addChoice}
