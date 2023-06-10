@@ -11,10 +11,12 @@ export interface EllipsisDropdownItem {
   label: string;
   key: string;
   active?: boolean;
+
 }
 
 export interface EllipsisDropdownProps {
   items: EllipsisDropdownItem[];
+  className?: string;
   onSelect: (item: string) => void;
 }
 
@@ -53,7 +55,6 @@ export default function EllipsisDropdown(props: EllipsisDropdownProps) {
           <EllipsisVerticalIcon className="h-5 w-5" aria-hidden="true" />
         </MenuButton>
       </div>
-
       <Transition
         as={Fragment}
         enter="transition ease-out duration-100"

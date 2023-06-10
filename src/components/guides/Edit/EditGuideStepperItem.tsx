@@ -27,6 +27,7 @@ import { useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
 
+
 interface GuideStepProps {
   space: Space;
   guide: GuideFragment;
@@ -289,13 +290,9 @@ const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHas
   }
 
 
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-  }
-
 
   return (
-    <div className="w-full p-4">
+    <div className="w-full p-4 flex flex-col justify-center items-center">
       <StepContainer className="h-10 mb-4 flex justify-between items-center">
         <h3>Step {step.order + 1}</h3>
         <div className="h-10" style={{ minHeight: '40px' }}>
@@ -336,10 +333,12 @@ const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHas
         objectId={guide.uuid}
         imageType="Guide"
       />
+
+
       {stepItemsForStepper.map((stepItem, index) => (
-        <div key={stepItem.uuid} className="border  rounded-md p-4 mb-4 ml-4 w-full">
+        <div style={{ margin: 'auto' }} key={stepItem.uuid} className="border m-auto flex flex-col rounded-md p-4 mb-4 ml-4 w-full">
           {stepItem.isQuestion ? (
-            <form onSubmit={handleSubmit}  >
+            <>
 
 
               <CreateQuestion
@@ -354,9 +353,7 @@ const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHas
                 questionErrors={stepErrors?.stepItems?.[stepItem.uuid] as QuestionError}
                 updateQuestionType={updateQuestionType}
               />
-              {/* <p className='mt-2 invisible peer-required:visible text-pink-600 text-sm'>Please select atleast one</p> */}
-              <button className='  ml-[95%] ' type="submit" >ok</button>
-            </form>
+            </>
           ) : stepItem.isDiscord ? (
             <CreateConnectDiscord item={stepItem} removeDiscord={removeStepItem} />
           ) : (

@@ -19,9 +19,10 @@ import { validateQuestion, validateUserInput } from '@/utils/stepItems/validateI
 import orderBy from 'lodash/orderBy';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { emptyGuide } from './EmptyGuide';
+
 
 const stepContentLimit = 14400;
 const guideExceptContentLimit = 64;
@@ -52,6 +53,8 @@ export interface UseEditGuideHelper {
   initialize: () => Promise<void>;
   updateGuideFunctions: UpdateGuideFunctions;
 }
+
+
 export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHelper {
   const { data: session } = useSession();
   const emptyGuideModel = emptyGuide(session?.username || '', space, GuideType.Onboarding);
@@ -59,7 +62,7 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
   const [guide, setGuide] = useState<EditGuideType>(initialState);
   const [guideErrors, setGuideErrors] = useState<GuideError>({});
   const [guideLoaded, setGuideLoaded] = useState<boolean>(false);
-
+  const [guideValid,setGuideValid] = useState(true);
   const [activeStepId, setActiveStepId] = useState<string | null>();
 
   const [guideCreating, setGuideCreating] = useState(false);
@@ -69,6 +72,14 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
 
   const { refetch: queryGuideDetails } = useGuideQueryQuery({ skip: true });
   const [upsertGuideMutation] = useUpsertGuideMutation();
+
+  useEffect(()=>{
+    console.log("guide valid status: ",guideValid);
+    if(!guideValid){
+      alert("please correct the guide inputs make sure every has correct choices marked!")
+    }
+  },[guideValid])
+
 
   const initialize = async () => {
     if (uuid) {
@@ -114,7 +125,9 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
 
   function moveStepUp(stepUuid: string) {
     const stepIndex = guide.steps.findIndex((s) => s.uuid === stepUuid);
-    const steps = [...guide.steps];
+    const steps = guide.steps.map((s)=>{
+      return {...s};
+    }) ;
     steps[stepIndex - 1].order = stepIndex;
     steps[stepIndex].order = stepIndex - 1;
     setGuide((prevGuide: EditGuideType) => ({
@@ -192,11 +205,20 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
         stepError.name = true;
       }
       if (step.content?.length > stepContentLimit) {
+        setGuideValid(false)  
         stepError.content = true;
       }
       step.stepItems.forEach((item: StepItemInputGenericInput) => {
+        
+        
         if (isQuestion(item)) {
-          validateQuestion(item as GuideQuestionFragment, stepError);
+       
+          const questionError = validateQuestion(item as GuideQuestionFragment, stepError);
+          console.log("answer keys: ",questionError.answerKeys);
+          if(questionError.answerKeys||questionError.content||questionError.explanation){
+          setGuideValid(false)  
+         }
+          
         } else if (isUserInput(item)) {
           validateUserInput(item as GuideUserInputFragment, stepError);
         }
@@ -207,6 +229,9 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
         }
         errors.steps[step.order] = stepError;
       }
+      
+      return errors
+      
     });
 
     setGuideErrors(errors);
@@ -261,20 +286,22 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
   async function handleSubmit() {
     setGuideCreating(true);
     try {
-      const valid = validateGuide(guide);
+    const valid = validateGuide(guide)
+      console.log("valid : ",guideValid)
       setGuide((prevGuide: EditGuideType) => ({
         ...prevGuide,
         isPristine: false,
       }));
 
-      if (!valid) {
-        console.log('Guide invalid', valid, guideErrors);
+      if (!guideValid) {
+        alert("please correct! ")
+        console.log('Guide invalid', guideValid, guideErrors);
         showNotification({ type: 'error', message: $t('notify.validationFailed') });
         setGuideCreating(false);
         return;
       }
 
-      console.log('guideRef.value', guide);
+      // console.log('guideRef.value', guide);
 
       const response = await upsertGuideMutation({
         variables: {
@@ -353,7 +380,7 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
     updateStep,
   };
 
-  console.log('guide', guide);
+  // console.log('guide', guide);
 
   return {
     initialize,

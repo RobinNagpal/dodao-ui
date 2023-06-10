@@ -13,7 +13,7 @@ import { GuideQuestion, GuideStepItem } from '@/types/deprecated/models/GuideMod
 import styled from 'styled-components';
 import Button from '@/components/app/Button';
 import SidebarButton from '@/components/app/Button/SidebarButton';
-
+import EllipsisDropdown from '@/components/core/dropdowns/EllipsisDropdown';
 
 interface QuestionComponentProps {
   addChoice: (uuid: string) => void;
@@ -68,7 +68,7 @@ function QuestionComponent({
   return (
     <>
       <div>
-        <Dropdown
+        {/* <Dropdown
           top="2.5rem"
           right="2.5rem"
           className="m-2 ml-4 float-left"
@@ -76,8 +76,21 @@ function QuestionComponent({
           items={questionTypes}
         >
           <div className="pr-1 select-none">{question.type === QuestionType.MultipleChoice ? 'Multiple Choice' : 'Single Choice'}</div>
-        </Dropdown>
+        </Dropdown> */}
 
+        <div className='flex items-center p-4'>
+          <div className="pr-1 select-none">{question.type === QuestionType.MultipleChoice ? 'Multiple Choice' : 'Single Choice'}</div>
+          <EllipsisDropdown
+            items={questionTypes.map((item) => {
+              return {
+                label: item.text, key: item.action
+              }
+
+            }
+            )}
+            onSelect={(value) => updateQuestionType(question.uuid, value as QuestionType)}
+          />
+        </div>
         {removeQuestion && (
           <SidebarButton className="float-right my-2 mr-4" onClick={() => removeQuestion(question.uuid)}>
             <DeleteIcon />
