@@ -19,7 +19,7 @@ import { validateQuestion, validateUserInput } from '@/utils/stepItems/validateI
 import orderBy from 'lodash/orderBy';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { emptyGuide } from './EmptyGuide';
 

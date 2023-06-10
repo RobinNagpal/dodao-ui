@@ -1,6 +1,7 @@
 import CourseDetails from '@/components/courses/View/Details/CourseDetails';
 import SummaryDetails from '@/components/courses/View/Details/SummaryDetails';
 import TopicDetails from '@/components/courses/View/Details/TopicDetails';
+import VideoDetails from '@/components/courses/View/Details/VideoDetails';
 import { CourseSubmissionHelper } from '@/components/courses/View/useCourseSubmission';
 import { CourseHelper } from '@/components/courses/View/useViewCourse';
 import { CourseDetailsFragment, Space } from '@/graphql/generated/generated-types';
@@ -20,7 +21,17 @@ interface CourseDetailsRightSectionProps {
 
 export default function CourseDetailsRightSection(props: CourseDetailsRightSectionProps) {
   if (props.itemType === 'readings' && props.topicKey && props.itemKey) {
-    return <div>Readings</div>;
+    return (
+      <VideoDetails
+        space={props.space}
+        course={props.course}
+        isCourseAdmin={props.isCourseAdmin}
+        courseHelper={props.courseHelper}
+        submissionHelper={props.submissionHelper}
+        topicKey={props.topicKey}
+        videoUuid={props.itemKey}
+      />
+    );
   } else if (props.itemType === 'summaries' && props.topicKey && props.itemKey) {
     return (
       <SummaryDetails

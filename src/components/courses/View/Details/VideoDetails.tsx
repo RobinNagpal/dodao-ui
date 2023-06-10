@@ -15,6 +15,7 @@ import EditCourseReading from '@/components/courses/Edit/Items/EditCourseReading
 import { useDeleteCourseItem } from '@/components/courses/Edit/useDeleteCourseItem';
 import { useEditCourseDetails } from '@/components/courses/Edit/useEditCourseDetails';
 import { useMoveCourseItem } from '@/components/courses/Edit/useMoveCourseItem';
+import VideoWithQuestions from '@/components/courses/View/Details/VideoWithQuestion';
 import { CourseSubmissionHelper } from '@/components/courses/View/useCourseSubmission';
 import { CourseHelper } from '@/components/courses/View/useViewCourse';
 import { useLoginModalContext } from '@/contexts/LoginModalContext';
@@ -192,6 +193,7 @@ const CourseVideo: React.FC<CourseVideoProps> = ({ course, isCourseAdmin, space,
                   </div>
                 )}
               </div>
+              <VideoWithQuestions reading={currentReading} submissionHelper={submissionHelper} />
               <p className="mt-6 markdown-body" dangerouslySetInnerHTML={{ __html: details }} />
             </div>
           </div>
@@ -225,34 +227,3 @@ const CourseVideo: React.FC<CourseVideoProps> = ({ course, isCourseAdmin, space,
 };
 
 export default CourseVideo;
-
-// Styled Components
-import styled from 'styled-components';
-
-const Right = styled.div`
-  min-height: 300px;
-`;
-
-const Left = styled.div`
-  width: 100%;
-  @media (min-width: 1024px) {
-    width: 30%;
-  }
-`;
-
-const IframeContainer = styled.div`
-  position: relative;
-  overflow: hidden;
-  width: 100%;
-  padding-top: 56.25%; /* 16:9 Aspect Ratio (divide 9 by 16 = 0.5625) */
-`;
-
-const ResponsiveIframe = styled.iframe`
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  width: 100%;
-  height: 100%;
-`;
