@@ -23,7 +23,6 @@ import { useCallback, useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { emptyGuide } from './EmptyGuide';
 
-
 const stepContentLimit = 14400;
 const guideExceptContentLimit = 64;
 const nameLimit = 32;
@@ -54,7 +53,6 @@ export interface UseEditGuideHelper {
   updateGuideFunctions: UpdateGuideFunctions;
 }
 
-
 export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHelper {
   const { data: session } = useSession();
   const emptyGuideModel = emptyGuide(session?.username || '', space, GuideType.Onboarding);
@@ -62,7 +60,7 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
   const [guide, setGuide] = useState<EditGuideType>(initialState);
   const [guideErrors, setGuideErrors] = useState<GuideError>({});
   const [guideLoaded, setGuideLoaded] = useState<boolean>(false);
-  const [guideValid,setGuideValid] = useState(true);
+  const [guideValid, setGuideValid] = useState(true);
   const [activeStepId, setActiveStepId] = useState<string | null>();
 
   const [guideCreating, setGuideCreating] = useState(false);
@@ -73,13 +71,12 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
   const { refetch: queryGuideDetails } = useGuideQueryQuery({ skip: true });
   const [upsertGuideMutation] = useUpsertGuideMutation();
 
-  useEffect(()=>{
-    console.log("guide valid status: ",guideValid);
-    if(!guideValid){
-      alert("please correct the guide inputs make sure every has correct choices marked!")
+  useEffect(() => {
+    console.log('guide valid status: ', guideValid);
+    if (!guideValid) {
+      alert('please correct the guide inputs make sure every has correct choices marked!');
     }
-  },[guideValid])
-
+  }, [guideValid]);
 
   const initialize = async () => {
     if (uuid) {
@@ -125,9 +122,9 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
 
   function moveStepUp(stepUuid: string) {
     const stepIndex = guide.steps.findIndex((s) => s.uuid === stepUuid);
-    const steps = guide.steps.map((s)=>{
-      return {...s};
-    }) ;
+    const steps = guide.steps.map((s) => {
+      return { ...s };
+    });
     steps[stepIndex - 1].order = stepIndex;
     steps[stepIndex].order = stepIndex - 1;
     setGuide((prevGuide: EditGuideType) => ({
@@ -205,20 +202,16 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
         stepError.name = true;
       }
       if (step.content?.length > stepContentLimit) {
-        setGuideValid(false)  
+        setGuideValid(false);
         stepError.content = true;
       }
       step.stepItems.forEach((item: StepItemInputGenericInput) => {
-        
-        
         if (isQuestion(item)) {
-       
           const questionError = validateQuestion(item as GuideQuestionFragment, stepError);
-          console.log("answer keys: ",questionError.answerKeys);
-          if(questionError.answerKeys||questionError.content||questionError.explanation){
-          setGuideValid(false)  
-         }
-          
+          console.log('answer keys: ', questionError.answerKeys);
+          if (questionError.answerKeys || questionError.content || questionError.explanation) {
+            setGuideValid(false);
+          }
         } else if (isUserInput(item)) {
           validateUserInput(item as GuideUserInputFragment, stepError);
         }
@@ -229,9 +222,8 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
         }
         errors.steps[step.order] = stepError;
       }
-      
-      return errors
-      
+
+      return errors;
     });
 
     setGuideErrors(errors);
@@ -286,15 +278,15 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
   async function handleSubmit() {
     setGuideCreating(true);
     try {
-    const valid = validateGuide(guide)
-      console.log("valid : ",guideValid)
+      const valid = validateGuide(guide);
+      console.log('valid : ', guideValid);
       setGuide((prevGuide: EditGuideType) => ({
         ...prevGuide,
         isPristine: false,
       }));
 
-      if (!guideValid) {
-        alert("please correct! ")
+      if (!valid) {
+        alert('please correct! ');
         console.log('Guide invalid', guideValid, guideErrors);
         showNotification({ type: 'error', message: $t('notify.validationFailed') });
         setGuideCreating(false);

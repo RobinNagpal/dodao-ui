@@ -10,6 +10,7 @@ import {
   ByteQuestion,
   ByteQuestionFragmentFragment,
   ByteUserInputFragmentFragment,
+  GuideQuestion,
   SpaceWithIntegrationsFragment,
   StepItemInputGenericInput,
 } from '@/graphql/generated/generated-types';
@@ -166,6 +167,7 @@ export default function EditByteStepperItem({
         return {
           ...question,
           choices: (question as ByteQuestionFragmentFragment).choices.filter((choice) => choice.key !== choiceKey),
+          answerKeys: (question as GuideQuestion).answerKeys.filter((answerKey) => answerKey !== choiceKey),
         };
       } else {
         return question;

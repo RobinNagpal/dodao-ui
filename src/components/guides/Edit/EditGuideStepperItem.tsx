@@ -27,7 +27,6 @@ import { useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
 
-
 interface GuideStepProps {
   space: Space;
   guide: GuideFragment;
@@ -132,6 +131,7 @@ const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHas
         return {
           ...question,
           choices: (question as GuideQuestion).choices.filter((choice) => choice.key !== choiceKey),
+          answerKeys: (question as GuideQuestion).answerKeys.filter((answerKey) => answerKey !== choiceKey),
         };
       } else {
         return question;
@@ -289,8 +289,6 @@ const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHas
     updateStep({ ...step, stepItems });
   }
 
-
-
   return (
     <div className="w-full p-4 flex flex-col justify-center items-center">
       <StepContainer className="h-10 mb-4 flex justify-between items-center">
@@ -334,13 +332,10 @@ const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHas
         imageType="Guide"
       />
 
-
       {stepItemsForStepper.map((stepItem, index) => (
         <div style={{ margin: 'auto' }} key={stepItem.uuid} className="border m-auto flex flex-col rounded-md p-4 mb-4 ml-4 w-full">
           {stepItem.isQuestion ? (
             <>
-
-
               <CreateQuestion
                 addChoice={addChoice}
                 item={stepItem as GuideQuestionFragment}
