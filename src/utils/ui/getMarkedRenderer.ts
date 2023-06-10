@@ -5,7 +5,6 @@ import prism from 'prismjs';
 export function getMarkedRenderer(): marked.Renderer {
   const renderer = new marked.Renderer();
   renderer.code = function (code: any, lang: any, escaped: any) {
-    console.log(`prism.code - ${lang}`, code);
     code = renderer.options.highlight?.(code, lang!) as string;
     if (!lang) {
       return `<pre><code>${code}</code></pre>`;

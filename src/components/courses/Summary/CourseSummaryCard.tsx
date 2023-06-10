@@ -47,7 +47,7 @@ const Ribbon = styled.div`
 const CourseSummaryCard: React.FC<GuideSummaryCardProps> = ({ course, inProgress }) => {
   return (
     <Card>
-      <Link href={`/guides/view/${course.key}/0`} className="card blog-card w-inline-block h-full w-full">
+      <Link href={`/courses/view/${course.key}`} className="card blog-card w-inline-block h-full w-full">
         {inProgress && <Ribbon className="ribbon progress-label">In progress</Ribbon>}
         <div className="image-wrapper blog-card-thumbnail w-full">
           <Thumbnail src={course.thumbnail!} entityId={course.key} title={course.title} size="350" className="mb-1 w-full" big_tile imageClass="w-full" />
