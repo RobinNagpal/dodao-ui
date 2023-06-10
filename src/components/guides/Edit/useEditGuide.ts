@@ -71,13 +71,6 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
   const { refetch: queryGuideDetails } = useGuideQueryQuery({ skip: true });
   const [upsertGuideMutation] = useUpsertGuideMutation();
 
-  useEffect(() => {
-    console.log('guide valid status: ', guideValid);
-    if (!guideValid) {
-      alert('please correct the guide inputs make sure every has correct choices marked!');
-    }
-  }, [guideValid]);
-
   const initialize = async () => {
     if (uuid) {
       const result = await queryGuideDetails({ uuid, spaceId: space.id });
@@ -220,7 +213,7 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
         if (!errors.steps) {
           errors.steps = {};
         }
-        errors.steps[step.order] = stepError;
+        errors.steps[step.uuid] = stepError;
       }
 
       return errors;
@@ -286,7 +279,6 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
       }));
 
       if (!valid) {
-        alert('please correct! ');
         console.log('Guide invalid', guideValid, guideErrors);
         showNotification({ type: 'error', message: $t('notify.validationFailed') });
         setGuideCreating(false);

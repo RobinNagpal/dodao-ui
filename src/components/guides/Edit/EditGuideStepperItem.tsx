@@ -41,6 +41,11 @@ const StepContainer = styled.div`
   min-height: 40px;
 `;
 
+const StepItemWrapper = styled.div<{ hasError: boolean }>`
+  border: ${(props) => (props.hasError ? '1px solid red' : '1px solid var(--border-color)')};
+  border-radius: 0.5rem;
+`;
+
 const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHasDiscordEnabled, editGuideHelper, space }) => {
   const { moveStepUp, moveStepDown, removeStep, updateStep } = editGuideHelper.updateGuideFunctions;
   const [modalGuidInputOrQuestionOpen, setModalGuidInputOrQuestionOpen] = useState(false);
@@ -333,7 +338,7 @@ const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHas
       />
 
       {stepItemsForStepper.map((stepItem, index) => (
-        <div style={{ margin: 'auto' }} key={stepItem.uuid} className="border m-auto flex flex-col rounded-md p-4 mb-4 ml-4 w-full">
+        <StepItemWrapper style={{ margin: 'auto' }} key={stepItem.uuid} className="ml-4 p-4 mb-4 w-full" hasError={!!stepErrors?.stepItems?.[stepItem.uuid]}>
           {stepItem.isQuestion ? (
             <>
               <CreateQuestion
@@ -361,7 +366,7 @@ const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHas
               updateUserInputRequired={updateUserInputRequired}
             />
           )}
-        </div>
+        </StepItemWrapper>
       ))}
       {modalGuidInputOrQuestionOpen && (
         <AddStepItemModal
