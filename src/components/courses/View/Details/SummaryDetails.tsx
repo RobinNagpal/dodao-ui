@@ -19,6 +19,7 @@ import {
 } from '@/graphql/generated/generated-types';
 import { MoveCourseItemDirection } from '@/types/deprecated/models/enums';
 import { getMarkedRenderer } from '@/utils/ui/getMarkedRenderer';
+import { sha1 } from '@noble/hashes/sha1';
 import { marked } from 'marked';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
@@ -40,10 +41,6 @@ const RightDiv = styled.div`
   min-height: 300px;
 `;
 
-const CourseSummaryDiv = styled.div`
-  max-width: 900px;
-`;
-
 interface CourseSummaryProps {
   course: CourseDetailsFragment;
   isCourseAdmin: boolean;
@@ -55,18 +52,31 @@ interface CourseSummaryProps {
   summaryKey: string;
 }
 
-function NextButtonForSummary(props: {
+function NextButton(props: {
   course: CourseDetailsFragment;
   currentSummary: CourseSummaryFragment;
   currentSummaryIndex: number;
   currentTopic: CourseTopicFragment;
   currentTopicIndex: number;
 }) {
+  const { data: session } = useSession();
+
+  const { setShowLoginModal } = useLoginModalContext();
+
   const { course, currentSummary, currentSummaryIndex, currentTopic, currentTopicIndex } = props;
 
   const isLastSummary = currentSummaryIndex === currentTopic.summaries.length - 1;
   const isLastTopic = currentTopicIndex === course.topics.length - 1;
   const hasQuestions = currentTopic.questions.length > 0;
+
+  if (!session) {
+    return (
+      <Button onClick={() => setShowLoginModal(true)}>
+        Next
+        <span className="ml-2 font-bold">&#8594;</span>
+      </Button>
+    );
+  }
 
   if (isLastSummary && hasQuestions) {
     return (
@@ -87,8 +97,8 @@ function NextButtonForSummary(props: {
 
   if (isLastSummary && isLastTopic) {
     return (
-      <Link href={`/courses/submit/${course.key}`}>
-        Next Chapter <span className="ml-2 font-bold">&#8594;</span>
+      <Link href={`/courses/view/${course.key}/${currentTopic.key}/submit`}>
+        Submission <span className="ml-2 font-bold">&#8594;</span>
       </Link>
     );
   }
@@ -96,7 +106,7 @@ function NextButtonForSummary(props: {
   if (!isLastSummary) {
     return (
       <Link href={`/courses/view/${course.key}/${currentTopic.key}/summaries/${currentTopic.summaries[currentSummaryIndex + 1].key}`}>
-        Next Chapter <span className="ml-2 font-bold">&#8594;</span>
+        Next <span className="ml-2 font-bold">&#8594;</span>
       </Link>
     );
   }
@@ -107,15 +117,11 @@ function NextButtonForSummary(props: {
 const SummaryDetails: FC<CourseSummaryProps> = ({ course, isCourseAdmin, space, topicKey, submissionHelper, summaryKey, courseHelper }) => {
   // Some hooks may need to be adjusted to work with your codebase.
 
-  const topic = courseHelper.getTopic(topicKey);
   const { summary: currentSummary, index: currentSummaryIndex } = courseHelper.getTopicSummaryWithIndex(topicKey, summaryKey);
   const { topic: currentTopic, index: currentTopicIndex } = courseHelper.getTopicWithIndex(topicKey);
 
   const renderer = getMarkedRenderer();
   const details = currentSummary?.details && marked.parse(currentSummary.details, { renderer });
-  const { data: session } = useSession();
-
-  const { setShowLoginModal } = useLoginModalContext();
 
   const { editMode, cancel, showEdit, save } = useEditCourseDetails<UpdateTopicSummaryInput>(
     async (updates: UpdateTopicSummaryInput) => await courseHelper.updateTopicSummary(updates)
@@ -167,18 +173,18 @@ const SummaryDetails: FC<CourseSummaryProps> = ({ course, isCourseAdmin, space, 
                     iconName={IconTypes.MoveDown}
                     removeBorder
                     loading={movingDown}
-                    disabled={movingUp || movingDown || currentSummaryIndex === topic?.summaries.length - 1}
+                    disabled={movingUp || movingDown || currentSummaryIndex === currentTopic?.summaries.length - 1}
                     onClick={() => doMove(MoveCourseItemDirection.Down)}
                   />
                   <IconButton iconName={IconTypes.Trash} removeBorder disabled={deleting} loading={deleting} onClick={doDelete} />
                 </div>
               )}
             </div>
-            <CourseSummaryDiv className="markdown-body" dangerouslySetInnerHTML={{ __html: details }} />
+            <div className="markdown-body" dangerouslySetInnerHTML={{ __html: details }} />
           </RightDiv>
           <div className="flex flex-between mt-4 flex-1 items-end p-2">
             {currentSummaryIndex > 0 && (
-              <Link href={`/courses/view/${course.key}/${topicKey}/summaries/${topic?.summaries?.[currentSummaryIndex - 1]?.key}`}>
+              <Link href={`/courses/view/${course.key}/${topicKey}/summaries/${currentTopic?.summaries?.[currentSummaryIndex - 1]?.key}`}>
                 <Button>
                   <span className="mr-2 font-bold">&#8592;</span>
                   Previous
@@ -186,11 +192,11 @@ const SummaryDetails: FC<CourseSummaryProps> = ({ course, isCourseAdmin, space, 
               </Link>
             )}
             <div className="flex-1"></div>
-            <NextButtonForSummary
+            <NextButton
               course={course}
               currentSummary={currentSummary}
               currentSummaryIndex={currentSummaryIndex}
-              currentTopic={topic}
+              currentTopic={currentTopic}
               currentTopicIndex={currentTopicIndex}
             />
           </div>

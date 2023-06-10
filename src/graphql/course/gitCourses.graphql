@@ -25,6 +25,20 @@ fragment CourseExplanation on GitCourseExplanation {
   details
 }
 
+fragment CourseReadingQuestion on CourseReadingQuestion {
+  uuid
+  type
+  content
+  answerKeys
+  hint
+  explanation
+  choices {
+    content
+    key
+  }
+  timeInSec
+}
+
 fragment CourseReading on GitCourseReading {
   uuid
   title
@@ -32,6 +46,9 @@ fragment CourseReading on GitCourseReading {
   details
   type
   url
+  questions {
+    ...CourseReadingQuestion
+  }
 }
 
 fragment CourseTopic on GitCourseTopic {
