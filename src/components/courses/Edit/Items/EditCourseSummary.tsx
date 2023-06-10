@@ -2,7 +2,7 @@ import Input from '@/components/app/Input';
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
 import Button from '@/components/core/buttons/Button';
 import { minMaxValidation, minValidation } from '@/components/courses/Edit/courseValidations';
-import { CourseDetailsFragment, CourseSummaryFragment, Space } from '@/graphql/generated/generated-types';
+import { CourseDetailsFragment, CourseSummaryFragment, Space, UpdateTopicSummaryInput } from '@/graphql/generated/generated-types';
 import React, { useCallback, useMemo, useState } from 'react';
 import styled from 'styled-components';
 
@@ -21,7 +21,7 @@ interface EditCourseSummaryProps {
   space: Space;
   topicKey: string;
   currentSummary?: CourseSummaryFragment;
-  saveSummary: (updatedSummary: UpdateTopicSummaryForm) => Promise<void>;
+  saveSummary: (updatedSummary: UpdateTopicSummaryInput) => Promise<void>;
   cancel: () => void;
 }
 
@@ -49,14 +49,13 @@ export default function EditCourseSummary({ course, space, topicKey, currentSumm
   const save = useCallback(async () => {
     if (hasErrors) return;
     setUpserting(true);
-    const updatedSummary: UpdateTopicSummaryForm = {
-      isPristine: false,
+    const updatedSummary: UpdateTopicSummaryInput = {
       courseKey: form.courseKey,
       topicKey: form.topicKey,
-      summaryKey: form.summaryKey,
-      title: form.title,
-      shortTitle: form.shortTitle,
-      details: form.details,
+      summaryKey: form.summaryKey || '',
+      title: form.title || '',
+      shortTitle: form.shortTitle || '',
+      details: form.details || '',
     };
     await saveSummary(updatedSummary);
     setUpserting(false);

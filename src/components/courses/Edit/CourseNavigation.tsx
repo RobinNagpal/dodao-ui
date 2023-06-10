@@ -79,76 +79,21 @@ const Container = styled.div`
     margin-left: 0;
     list-style-type: none;
   }
-
-  .checkmark {
-    position: relative;
-    height: 20px;
-    width: 20px;
-    text-align: center;
-    background-color: #00813a;
-    border: 1px solid #00813a;
-    border-radius: 50%;
-    z-index: 1;
-
-    &:after {
-      content: '';
-      left: 6px;
-      top: 3px;
-      width: 6px;
-      height: 10px;
-      border: solid white;
-      border-width: 0 2px 2px 0;
-      transform: rotate(45deg);
-      -ms-transform: rotate(45deg);
-      position: absolute;
-    }
-  }
 `;
 
 const CourseComponent: React.FC<CourseNavigationProps> = ({ course, space, showAddModal, courseHelper }) => {
   const isCourseAdmin = true;
-  const [openChapter, setOpenChapter] = useState(location.pathname);
-  const [nodemap, setNodemap] = useState<any>({});
-
-  const handleToggle = (key: string, open: boolean) => {
-    if (open) {
-      setOpenChapter(key);
-    } else {
-      setOpenChapter('');
-    }
-  };
-
-  const handleToggleSubHeading = (key: string, open: boolean) => {
-    setNodemap({ ...nodemap, [key]: open });
-  };
-
-  useEffect(() => {
-    if (location.pathname === 'courseSummary') {
-      setNodemap({ ...nodemap, [`summary-${location.pathname}`]: true });
-    } else if (location.pathname === 'courseReading') {
-      setNodemap({ ...nodemap, [`reading-${location.pathname}`]: true });
-    } else if (location.pathname === 'courseExplanation') {
-      setNodemap({ ...nodemap, [`explanation-${location.pathname}`]: true });
-    }
-    if (location.pathname) {
-      setOpenChapter(location.pathname);
-    }
-  }, [location]);
 
   function getReadings(topic: CourseTopicFragment, readings: CourseReadingFragment[]) {
     return readings.map((reading, i) => {
       return {
         component: (
-          <ClickableDiv
-            key={reading.uuid}
-            className="flex items-center"
-            onClick={() => courseHelper.goToLink(`/courses/view/${course.key}/${topic.key}/readings/${reading.uuid}`)}
-          >
+          <Link key={reading.uuid} className="flex items-center" href={`/courses/view/${course.key}/${topic.key}/readings/${reading.uuid}`}>
             <div className="icon mr-2">
               <CheckMark />
             </div>
             <div>{reading.title}</div>
-          </ClickableDiv>
+          </Link>
         ),
       };
     });
@@ -158,16 +103,12 @@ const CourseComponent: React.FC<CourseNavigationProps> = ({ course, space, showA
     return explanations.map((explanation, i) => {
       return {
         component: (
-          <ClickableDiv
-            key={explanation.key}
-            className="flex items-center"
-            onClick={() => courseHelper.goToLink(`/courses/view/${course.key}/${topic.key}/explanations/${explanation.key}`)}
-          >
+          <Link key={explanation.key} className="flex items-center" href={`/courses/view/${course.key}/${topic.key}/explanations/${explanation.key}`}>
             <div className="icon mr-2">
               <CheckMark />
             </div>
             <div>{explanation.title}</div>
-          </ClickableDiv>
+          </Link>
         ),
       };
     });
@@ -176,16 +117,12 @@ const CourseComponent: React.FC<CourseNavigationProps> = ({ course, space, showA
     return summaries.map((summary, i) => {
       return {
         component: (
-          <ClickableDiv
-            key={summary.key}
-            className="flex items-center"
-            onClick={() => courseHelper.goToLink(`/courses/view/${course.key}/${topic.key}/summaries/${summary.key}`)}
-          >
+          <Link key={summary.key} className="flex items-center" href={`/courses/view/${course.key}/${topic.key}/summaries/${summary.key}`}>
             <div className="icon mr-2">
               <CheckMark />
             </div>
             <div>{summary.title}</div>
-          </ClickableDiv>
+          </Link>
         ),
       };
     });

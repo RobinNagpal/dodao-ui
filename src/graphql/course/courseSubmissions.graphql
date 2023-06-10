@@ -26,7 +26,7 @@ fragment TopicSubmissionJson on GitCourseTopicSubmissionJson {
   status
 }
 
-fragment TopicCorrectAnswer on GitCourseTopicCorrectAnswer {
+fragment TopicCorrectAnswers on GitCourseTopicCorrectAnswer {
   uuid
   answerKeys
 }

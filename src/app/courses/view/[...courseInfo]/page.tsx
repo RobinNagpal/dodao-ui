@@ -51,15 +51,6 @@ const CourseView = ({ params, space }: { params: { courseInfo: string[] }; space
   });
 
   const [modalCourseNewItemOpen, setModalCourseNewItemOpen] = useState(false);
-  const [course, setCourse] = useState<CourseDetailsFragment>();
-
-  const { refetch, loading } = useGitCourseQueryQuery({
-    variables: {
-      spaceId: space.id,
-      courseKey: courseKey,
-    },
-    skip: true,
-  });
 
   const courseHelper = useViewCourse(space, courseKey);
   const submissionHelper = useCourseSubmission(space, courseKey);
@@ -96,19 +87,11 @@ const CourseView = ({ params, space }: { params: { courseInfo: string[] }; space
     { label: 'Refresh', key: 'refreshCourse' },
   ];
 
-  useEffect(() => {
-    (async () => {
-      const response = await refetch();
-      const courseResponse = response.data?.course;
-      if (courseResponse) {
-        setCourse(courseResponse);
-      }
-    })();
-  }, [courseHelper.course]);
-
   const showAddModal = () => {
     setModalCourseNewItemOpen(true);
   };
+
+  const { course, loading } = courseHelper;
 
   return (
     <div className="pt-6 container-default">
@@ -124,26 +107,23 @@ const CourseView = ({ params, space }: { params: { courseInfo: string[] }; space
               </div>
             )}
           </div>
-
-          {course && (
-            <div className="flex flex-col md:flex-row">
-              <StyledNavWrapper className="my-4 relative overflow-scroll border-r-2 h-full">
-                <CourseNavigation course={course} space={space} showAddModal={showAddModal} courseHelper={courseHelper} submissionHelper={submissionHelper} />
-              </StyledNavWrapper>
-              <StyledRightContent className="flex-1 m-4">
-                <CourseDetailsRightSection
-                  course={course}
-                  space={space}
-                  isCourseAdmin={true}
-                  courseHelper={courseHelper}
-                  submissionHelper={submissionHelper}
-                  topicKey={topicKey}
-                  itemType={itemType as ItemTypes}
-                  itemKey={itemKey}
-                />
-              </StyledRightContent>
-            </div>
-          )}
+          <div className="flex flex-col md:flex-row">
+            <StyledNavWrapper className="my-4 relative overflow-scroll border-r-2 h-full">
+              <CourseNavigation course={course} space={space} showAddModal={showAddModal} courseHelper={courseHelper} submissionHelper={submissionHelper} />
+            </StyledNavWrapper>
+            <StyledRightContent className="flex-1 m-4">
+              <CourseDetailsRightSection
+                course={course}
+                space={space}
+                isCourseAdmin={true}
+                courseHelper={courseHelper}
+                submissionHelper={submissionHelper}
+                topicKey={topicKey}
+                itemType={itemType as ItemTypes}
+                itemKey={itemKey}
+              />
+            </StyledRightContent>
+          </div>
         </Block>
       ) : (
         loading && (
