@@ -81,8 +81,9 @@ const Topic = ({ course, isCourseAdmin, space, topicKey, courseHelper }: TopicPr
     <div className="h-full">
       {!editMode && topic && (
         <div className="flex flex-col h-full w-full">
-          <RightDiv className="flex justify-end w-full">
+          <RightDiv className="right w-full">
             <div className="flex justify-between">
+              <h1 className="text-3xl mb-4">{topic?.title}</h1>
               {isCourseAdmin && (
                 <div className="flex">
                   <IconButton iconName={IconTypes.Edit} removeBorder onClick={showEdit} />
@@ -104,9 +105,9 @@ const Topic = ({ course, isCourseAdmin, space, topicKey, courseHelper }: TopicPr
                 </div>
               )}
             </div>
+            <div className="markdown-body" dangerouslySetInnerHTML={{ __html: details || '' }} />
           </RightDiv>
-          <h1 className="text-3xl mb-4">{topic?.title}</h1>
-          <div className="markdown-body" dangerouslySetInnerHTML={{ __html: details || '' }} />
+
           <div className="flex flex-between mt-4 flex-1 items-end p-2">
             {currentTopicIndex === 0 && (
               <Button primary variant="contained" onClick={() => courseHelper.goToLink(`/courses/view/${course.key}`)}>

@@ -1,4 +1,4 @@
-import CourseDetails from '@/components/courses/View/Details/ChapterDetails';
+import CourseDetails from '@/components/courses/View/Details/CourseDetails';
 import SummaryDetails from '@/components/courses/View/Details/SummaryDetails';
 import TopicDetails from '@/components/courses/View/Details/TopicDetails';
 import { CourseSubmissionHelper } from '@/components/courses/View/useCourseSubmission';

@@ -2,7 +2,7 @@ import Input from '@/components/app/Input';
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
 import Button from '@/components/core/buttons/Button';
 import { minMaxValidation, minValidation } from '@/components/courses/Edit/courseValidations';
-import { CourseDetailsFragment, GitCourseReading, Space } from '@/graphql/generated/generated-types';
+import { CourseDetailsFragment, GitCourseReading, Space, UpdateTopicVideoInput } from '@/graphql/generated/generated-types';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
@@ -22,7 +22,7 @@ interface TopicReadingFormProps {
   space: Space;
   topicKey: string;
   currentReading?: GitCourseReading;
-  saveReading: (updatedReading: UpdateTopicReadingForm) => Promise<void>;
+  saveReading: (updatedReading: UpdateTopicVideoInput) => Promise<void>;
   cancel: () => void;
 }
 
@@ -55,15 +55,14 @@ export default function EditCourseReading({ course, space, topicKey, currentRead
     }
     setUpserting(true);
 
-    const updatedReading: UpdateTopicReadingForm = {
-      isPristine: false,
+    const updatedReading: UpdateTopicVideoInput = {
       courseKey: form.courseKey,
       topicKey: form.topicKey,
-      videoUuid: form.videoUuid,
-      title: form.title,
-      shortTitle: form.shortTitle,
-      details: form.details,
-      url: form.url,
+      videoUuid: form.videoUuid || '',
+      title: form.title || '',
+      shortTitle: form.shortTitle || '',
+      details: form.details || '',
+      url: form.url || '',
     };
 
     await saveReading(updatedReading);
