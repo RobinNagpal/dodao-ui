@@ -1,4 +1,5 @@
 import CourseDetails from '@/components/courses/View/Details/CourseDetails';
+import QuestionDetails from '@/components/courses/View/Details/QuestionDetails';
 import SummaryDetails from '@/components/courses/View/Details/SummaryDetails';
 import TopicDetails from '@/components/courses/View/Details/TopicDetails';
 import VideoDetails from '@/components/courses/View/Details/VideoDetails';
@@ -47,7 +48,17 @@ export default function CourseDetailsRightSection(props: CourseDetailsRightSecti
   } else if (props.itemType === 'explanations' && props.topicKey && props.itemKey) {
     return <div>Explanations</div>;
   } else if (props.itemType === 'questions' && props.topicKey && props.itemKey) {
-    return <div>Questions</div>;
+    return (
+      <QuestionDetails
+        space={props.space}
+        course={props.course}
+        isCourseAdmin={props.isCourseAdmin}
+        topicKey={props.topicKey}
+        courseHelper={props.courseHelper}
+        submissionHelper={props.submissionHelper}
+        questionIndex={props.itemKey}
+      />
+    );
   } else if (props.topicKey) {
     return (
       <TopicDetails

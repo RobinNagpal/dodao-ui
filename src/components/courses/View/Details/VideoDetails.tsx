@@ -60,7 +60,7 @@ function NextButton(props: {
 
   const { course, currentReading, currentReadingIndex, currentTopic, currentTopicIndex } = props;
 
-  const isLastSummary = currentReadingIndex === currentTopic.readings.length - 1;
+  const isLastReading = currentReadingIndex === currentTopic.readings.length - 1;
   const isLastTopic = currentTopicIndex === course.topics.length - 1;
   const hasExplanations = currentTopic.explanations.length > 0;
   const hasQuestions = currentTopic.questions.length > 0;
@@ -68,60 +68,72 @@ function NextButton(props: {
 
   if (!session) {
     return (
-      <Button onClick={() => setShowLoginModal(true)}>
+      <Button variant="contained" onClick={() => setShowLoginModal(true)} primary>
         Next
         <span className="ml-2 font-bold">&#8594;</span>
       </Button>
     );
   }
 
-  if (isLastSummary && hasExplanations) {
+  if (isLastReading && hasExplanations) {
     return (
       <Link href={`/courses/view/${course.key}/${currentTopic.key}/explanations/${currentTopic.explanations[0].key}`}>
-        Evaluation
-        <span className="ml-2 font-bold">&#8594;</span>
+        <Button variant="contained" primary>
+          Evaluation
+          <span className="ml-2 font-bold">&#8594;</span>
+        </Button>
       </Link>
     );
   }
 
-  if (isLastSummary && hasSummaries) {
+  if (isLastReading && hasSummaries) {
     return (
       <Link href={`/courses/view/${course.key}/${currentTopic.key}/summaries/${currentTopic.summaries[0].key}`}>
-        Evaluation
-        <span className="ml-2 font-bold">&#8594;</span>
+        <Button variant="contained" primary>
+          Evaluation
+          <span className="ml-2 font-bold">&#8594;</span>
+        </Button>
       </Link>
     );
   }
 
-  if (isLastSummary && hasQuestions) {
+  if (isLastReading && hasQuestions) {
     return (
       <Link href={`/courses/view/${course.key}/${currentTopic.key}/questions/${0}`}>
-        Evaluation
-        <span className="ml-2 font-bold">&#8594;</span>
+        <Button variant="contained" primary>
+          Evaluation
+          <span className="ml-2 font-bold">&#8594;</span>
+        </Button>
       </Link>
     );
   }
 
-  if (isLastSummary && !isLastTopic) {
+  if (isLastReading && !isLastTopic) {
     return (
       <Link href={`/courses/view/${course.key}/${course.topics[currentTopicIndex + 1].key}`}>
-        Next Chapter <span className="ml-2 font-bold">&#8594;</span>
+        <Button variant="contained" primary>
+          Next Chapter <span className="ml-2 font-bold">&#8594;</span>
+        </Button>
       </Link>
     );
   }
 
-  if (isLastSummary && isLastTopic) {
+  if (isLastReading && isLastTopic) {
     return (
       <Link href={`/courses/view/${course.key}/${currentTopic.key}/submit`}>
-        Submission <span className="ml-2 font-bold">&#8594;</span>
+        <Button variant="contained" primary>
+          Submission <span className="ml-2 font-bold">&#8594;</span>
+        </Button>
       </Link>
     );
   }
 
-  if (!isLastSummary) {
+  if (!isLastReading) {
     return (
       <Link href={`/courses/view/${course.key}/${currentTopic.key}/readings/${currentTopic.readings[currentReadingIndex + 1].uuid}`}>
-        Next <span className="ml-2 font-bold">&#8594;</span>
+        <Button variant="contained" primary>
+          Next <span className="ml-2 font-bold">&#8594;</span>
+        </Button>
       </Link>
     );
   }

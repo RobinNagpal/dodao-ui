@@ -90,6 +90,7 @@ export interface CourseHelper {
   getTopicSummary: (topicKey: string, summaryKey: string) => CourseSummaryFragment;
   getTopicVideo: (topicKey: string, videoKey: string) => CourseReadingFragment;
   getTopicQuestion: (topicKey: string, questionKey: string) => CourseQuestionFragment;
+  getTopicQuestionByIndex: (topicKey: string, questionIndex: number) => CourseQuestionFragment;
 
   getTopicWithIndex: (topicKey: string) => { topic: CourseTopicFragment; index: number };
   getTopicExplanationWithIndex: (topicKey: string, explanationKey: string) => { explanation: CourseExplanationFragment; index: number };
@@ -402,6 +403,13 @@ const useViewCourse = (space: Space, courseKey: string): CourseHelper => {
     return question;
   };
 
+  const getTopicQuestionByIndex = (topicKey: string, index: number): CourseQuestionFragment => {
+    const topic = getTopic(topicKey);
+    const question = topic.questions?.[index];
+    if (!question) throw new Error(`Question ${0} not found`);
+    return question;
+  };
+
   const getTopicWithIndex = (topicKey: string): { topic: CourseTopicFragment; index: number } => {
     const index = course?.topics.findIndex((topic) => topic.key === topicKey);
     if (index === -1 || index === undefined) throw new Error(`Topic ${topicKey} not found`);
@@ -471,6 +479,7 @@ const useViewCourse = (space: Space, courseKey: string): CourseHelper => {
     getTopicSummary,
     getTopicVideo,
     getTopicQuestion,
+    getTopicQuestionByIndex,
 
     getTopicWithIndex,
     getTopicExplanationWithIndex,

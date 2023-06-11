@@ -71,7 +71,7 @@ function NextButton(props: {
 
   if (!session) {
     return (
-      <Button onClick={() => setShowLoginModal(true)}>
+      <Button variant="contained" onClick={() => setShowLoginModal(true)} primary>
         Next
         <span className="ml-2 font-bold">&#8594;</span>
       </Button>
@@ -81,8 +81,10 @@ function NextButton(props: {
   if (isLastSummary && hasQuestions) {
     return (
       <Link href={`/courses/view/${course.key}/${currentTopic.key}/questions/${0}`}>
-        Evaluation
-        <span className="ml-2 font-bold">&#8594;</span>
+        <Button variant="contained" primary>
+          Evaluation
+          <span className="ml-2 font-bold">&#8594;</span>
+        </Button>
       </Link>
     );
   }
@@ -90,7 +92,9 @@ function NextButton(props: {
   if (isLastSummary && !isLastTopic) {
     return (
       <Link href={`/courses/view/${course.key}/${course.topics[currentTopicIndex + 1].key}`}>
-        Next Chapter <span className="ml-2 font-bold">&#8594;</span>
+        <Button variant="contained" primary>
+          Next Chapter <span className="ml-2 font-bold">&#8594;</span>
+        </Button>
       </Link>
     );
   }
@@ -98,7 +102,9 @@ function NextButton(props: {
   if (isLastSummary && isLastTopic) {
     return (
       <Link href={`/courses/view/${course.key}/${currentTopic.key}/submit`}>
-        Submission <span className="ml-2 font-bold">&#8594;</span>
+        <Button variant="contained" primary>
+          Submission <span className="ml-2 font-bold">&#8594;</span>
+        </Button>
       </Link>
     );
   }
@@ -106,7 +112,9 @@ function NextButton(props: {
   if (!isLastSummary) {
     return (
       <Link href={`/courses/view/${course.key}/${currentTopic.key}/summaries/${currentTopic.summaries[currentSummaryIndex + 1].key}`}>
-        Next <span className="ml-2 font-bold">&#8594;</span>
+        <Button variant="contained" primary>
+          Next <span className="ml-2 font-bold">&#8594;</span>
+        </Button>
       </Link>
     );
   }
