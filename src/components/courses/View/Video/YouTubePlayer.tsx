@@ -26,10 +26,8 @@ declare global {
  * Light wrapper component to utilize YouTube's Player API for iframe embeds.
  * Reference: https://developers.google.com/youtube/iframe_api_reference
  */
-function YouTubePlayer(props: YouTubePlayerProps): ReactElement {
-  const [isYouTubeApiLoaded, setIsYouTubeApiLoaded] = useState(
-    !!window.YT?.Player,
-  );
+export default function YouTubePlayer(props: YouTubePlayerProps): ReactElement {
+  const [isYouTubeApiLoaded, setIsYouTubeApiLoaded] = useState(!!window.YT?.Player);
   const [isIFrameLoaded, setIsIFrameLoaded] = useState(false);
 
   useEffect(() => {
@@ -65,10 +63,10 @@ function YouTubePlayer(props: YouTubePlayerProps): ReactElement {
         controls: props.controls ? +props.controls : 1,
       },
       events: {
-        onReady: event => {
+        onReady: (event) => {
           props.onReady?.(event.target);
         },
-        onStateChange: event => {
+        onStateChange: (event) => {
           switch (event.data) {
             case YT.PlayerState.PLAYING:
               props.onPlay?.(event.target);
@@ -109,9 +107,4 @@ function YouTubePlayer(props: YouTubePlayerProps): ReactElement {
       />
     </>
   );
-}
-
-export default function (props: YouTubePlayerProps): ReactElement | null {
-  if (!process.browser) return null;
-  return <YouTubePlayer {...props} />;
 }
