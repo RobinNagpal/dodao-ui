@@ -676,9 +676,11 @@ type Mutation {
   moveTopicQuestion(questionInfo: MoveTopicQuestionInput!, spaceId: String!): GitCourse!
   moveTopicSummary(spaceId: String!, summaryInfo: MoveTopicSummaryInput!): GitCourse!
   moveTopicVideo(spaceId: String!, videoInfo: MoveTopicVideoInput!): GitCourse!
+  publishByte(byteId: String!, spaceId: String!): Byte!
   refreshGitCourse(courseKey: String!, spaceId: String!): Boolean!
   refreshGitCourses(spaceId: String!): Boolean!
   refreshGitGuides(spaceId: String!): Boolean!
+  saveByte(input: UpsertByteInput!, spaceId: String!): Byte!
   submitByte(submissionInput: ByteSubmissionInput!): ByteSubmission!
   submitGitCourse(input: CourseSubmissionInput!, spaceId: String!): GitCourseSubmission!
   submitGitCourseTopic(gitCourseTopicSubmission: GitCourseTopicSubmissionInput!, spaceId: String!): GitCourseTopicSubmission!

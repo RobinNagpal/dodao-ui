@@ -7,6 +7,7 @@ import {
   StepItemInputGenericInput,
   UpsertByteInput,
   useQueryByteDetailsQuery,
+  useSaveByteMutation,
   useUpsertByteMutation,
 } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
@@ -75,6 +76,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
 
   const { refetch: queryByteDetails } = useQueryByteDetailsQuery({ skip: true });
   const [upsertByteMutation] = useUpsertByteMutation();
+  const [saveByteMutation] = useSaveByteMutation();
   const { showNotification } = useNotificationContext();
   const { $t } = useI18();
 
@@ -313,6 +315,46 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
     setByteCreating(false);
   };
 
+  const handleSave = async () => {
+    setByteCreating(true);
+    try {
+      const valid = validateByte(byteRef);
+      setByteRef({
+        ...byteRef,
+        isPristine: false,
+      });
+
+      if (!valid) {
+        console.log('Byte invalid', valid, byteErrors);
+        showNotification({ type: 'error', message: "Validation Error: Can't Save Byte" });
+
+        setByteCreating(false);
+        return;
+      }
+      const response = await saveByteMutation({
+        variables: {
+          spaceId: space.id,
+          input: getByteInput(),
+        },
+        errorPolicy: 'all',
+      });
+
+      const payload = response?.data?.payload;
+      if (payload) {
+        showNotification({ type: 'success', message: 'Byte Saved', heading: 'Success 🎉' });
+
+        router.push(`/tidbits/view/${payload.id}/0`);
+      } else {
+        showNotification({ type: 'error', message: $t('notify.somethingWentWrong') });
+        console.error(response.errors);
+      }
+    } catch (e) {
+      showNotification({ type: 'error', message: $t('notify.somethingWentWrong') });
+      console.error(e);
+    }
+    setByteCreating(false);
+  };
+
   return {
     byteCreating,
     byteLoaded,
@@ -320,6 +362,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
     byteErrors,
     updateByteFunctions,
     handleSubmit,
+    handleSave,
     initialize,
   };
 }

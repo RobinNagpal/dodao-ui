@@ -719,9 +719,11 @@ export interface Mutation {
   moveTopicQuestion: GitCourse;
   moveTopicSummary: GitCourse;
   moveTopicVideo: GitCourse;
+  publishByte: Byte;
   refreshGitCourse: Scalars['Boolean'];
   refreshGitCourses: Scalars['Boolean'];
   refreshGitGuides: Scalars['Boolean'];
+  saveByte: Byte;
   submitByte: ByteSubmission;
   submitGitCourse: GitCourseSubmission;
   submitGitCourseTopic: GitCourseTopicSubmission;
@@ -863,6 +865,12 @@ export interface MutationMoveTopicVideoArgs {
 }
 
 
+export interface MutationPublishByteArgs {
+  byteId: Scalars['String'];
+  spaceId: Scalars['String'];
+}
+
+
 export interface MutationRefreshGitCourseArgs {
   courseKey: Scalars['String'];
   spaceId: Scalars['String'];
@@ -875,6 +883,12 @@ export interface MutationRefreshGitCoursesArgs {
 
 
 export interface MutationRefreshGitGuidesArgs {
+  spaceId: Scalars['String'];
+}
+
+
+export interface MutationSaveByteArgs {
+  input: UpsertByteInput;
   spaceId: Scalars['String'];
 }
 
@@ -1621,6 +1635,14 @@ export type UpsertByteMutationVariables = Exact<{
 
 
 export type UpsertByteMutation = { __typename?: 'Mutation', payload: { __typename?: 'Byte', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> } };
+
+export type SaveByteMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+  input: UpsertByteInput;
+}>;
+
+
+export type SaveByteMutation = { __typename?: 'Mutation', payload: { __typename?: 'Byte', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> } };
 
 export type SubmitByteMutationVariables = Exact<{
   input: ByteSubmissionInput;
@@ -3004,6 +3026,40 @@ export function useUpsertByteMutation(baseOptions?: Apollo.MutationHookOptions<U
 export type UpsertByteMutationHookResult = ReturnType<typeof useUpsertByteMutation>;
 export type UpsertByteMutationResult = Apollo.MutationResult<UpsertByteMutation>;
 export type UpsertByteMutationOptions = Apollo.BaseMutationOptions<UpsertByteMutation, UpsertByteMutationVariables>;
+export const SaveByteDocument = gql`
+    mutation SaveByte($spaceId: String!, $input: UpsertByteInput!) {
+  payload: saveByte(spaceId: $spaceId, input: $input) {
+    ...ByteDetails
+  }
+}
+    ${ByteDetailsFragmentDoc}`;
+export type SaveByteMutationFn = Apollo.MutationFunction<SaveByteMutation, SaveByteMutationVariables>;
+
+/**
+ * __useSaveByteMutation__
+ *
+ * To run a mutation, you first call `useSaveByteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSaveByteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [saveByteMutation, { data, loading, error }] = useSaveByteMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useSaveByteMutation(baseOptions?: Apollo.MutationHookOptions<SaveByteMutation, SaveByteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SaveByteMutation, SaveByteMutationVariables>(SaveByteDocument, options);
+      }
+export type SaveByteMutationHookResult = ReturnType<typeof useSaveByteMutation>;
+export type SaveByteMutationResult = Apollo.MutationResult<SaveByteMutation>;
+export type SaveByteMutationOptions = Apollo.BaseMutationOptions<SaveByteMutation, SaveByteMutationVariables>;
 export const SubmitByteDocument = gql`
     mutation SubmitByte($input: ByteSubmissionInput!) {
   submitByte(submissionInput: $input) {

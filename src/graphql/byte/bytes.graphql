@@ -132,3 +132,9 @@ mutation UpsertByte($spaceId: String!, $input: UpsertByteInput!) {
     ...ByteDetails
   }
 }
+
+mutation SaveByte($spaceId: String!, $input: UpsertByteInput!) {
+  payload: saveByte(spaceId: $spaceId, input: $input) {
+    ...ByteDetails
+  }
+}
