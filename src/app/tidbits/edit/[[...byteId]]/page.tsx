@@ -115,7 +115,7 @@ function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteI
                 Publish
               </Button>
               <Button onClick={handleSave} loading={!byteLoaded || byteCreating} className="ml-2 block w-full" variant="contained" primary>
-                Publish
+                Save
               </Button>
             </div>
           </div>
