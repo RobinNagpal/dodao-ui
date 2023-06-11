@@ -7,23 +7,94 @@ import { useEditCourseDetails } from '@/components/courses/Edit/useEditCourseDet
 import { useMoveCourseItem } from '@/components/courses/Edit/useMoveCourseItem';
 import { CourseSubmissionHelper } from '@/components/courses/View/useCourseSubmission';
 import { CourseHelper } from '@/components/courses/View/useViewCourse';
+import { useLoginModalContext } from '@/contexts/LoginModalContext';
 import {
   CourseDetailsFragment,
   CourseTopicFragment,
   DeleteTopicInput,
+  MoveTopicInput,
   Space,
   UpdateTopicBasicInfoInput,
-  MoveTopicInput,
 } from '@/graphql/generated/generated-types';
 import { MoveCourseItemDirection } from '@/types/deprecated/models/enums';
 import { getMarkedRenderer } from '@/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
-import { useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
+import Link from 'next/link';
+import React from 'react';
 import styled from 'styled-components';
 
 const RightDiv = styled.div`
   min-height: 300px;
 `;
+
+function NextButton(props: { course: CourseDetailsFragment; currentTopic: CourseTopicFragment; currentTopicIndex: number }) {
+  const { data: session } = useSession();
+
+  const { setShowLoginModal } = useLoginModalContext();
+
+  const { course, currentTopic, currentTopicIndex } = props;
+
+  const hasQuestions = currentTopic.questions.length > 0;
+  const hasSummaries = currentTopic.summaries.length > 0;
+  const hasExplanations = currentTopic.explanations.length > 0;
+  const hasReadings = currentTopic.readings.length > 0;
+
+  if (!session) {
+    return (
+      <Button variant="contained" onClick={() => setShowLoginModal(true)} primary>
+        Next
+        <span className="ml-2 font-bold">&#8594;</span>
+      </Button>
+    );
+  }
+
+  if (hasReadings) {
+    return (
+      <Link href={`/courses/view/${course.key}/${currentTopic.key}/readings/${currentTopic.readings?.[0].uuid}`}>
+        <Button variant="contained" primary>
+          Next
+          <span className="ml-2 font-bold">&#8594;</span>
+        </Button>
+      </Link>
+    );
+  }
+
+  if (hasExplanations) {
+    return (
+      <Link href={`/courses/view/${course.key}/${currentTopic.key}/explanations/${currentTopic.explanations?.[0].key}`}>
+        <Button variant="contained" primary>
+          Next
+          <span className="ml-2 font-bold">&#8594;</span>
+        </Button>
+      </Link>
+    );
+  }
+
+  if (hasSummaries) {
+    return (
+      <Link href={`/courses/view/${course.key}/${currentTopic.key}/summaries/${currentTopic.summaries?.[0].key}`}>
+        <Button variant="contained" primary>
+          Next
+          <span className="ml-2 font-bold">&#8594;</span>
+        </Button>
+      </Link>
+    );
+  }
+
+  if (hasQuestions) {
+    return (
+      <Link href={`/courses/view/${course.key}/${currentTopic.key}/questions/${0}`}>
+        <Button variant="contained" primary>
+          Evaluation
+          <span className="ml-2 font-bold">&#8594;</span>
+        </Button>
+      </Link>
+    );
+  }
+
+  return null;
+}
 
 interface TopicProps {
   course: CourseDetailsFragment;
@@ -35,23 +106,9 @@ interface TopicProps {
 }
 
 const Topic = ({ course, isCourseAdmin, space, topicKey, courseHelper }: TopicProps) => {
-  const [currentTopicIndex, setCurrentTopicIndex] = useState<number | null>(null);
-  const [topic, setTopic] = useState<CourseTopicFragment | null>(null);
+  const { topic: currentTopic, index: currentTopicIndex } = courseHelper.getTopicWithIndex(topicKey);
   const renderer = getMarkedRenderer();
-  const [details, setDetails] = useState<string | null>(null);
-
-  useEffect(() => {
-    setCurrentTopicIndex(course.topics.findIndex((topic) => topic.key === topicKey));
-  }, [course, topicKey]);
-
-  useEffect(() => {
-    setTopic(currentTopicIndex !== -1 ? course.topics[currentTopicIndex || 0] : null);
-  }, [course, currentTopicIndex]);
-
-  useEffect(() => {
-    const details = topic?.details;
-    setDetails((details && marked.parse(details, { renderer })) || '');
-  }, [topic]);
+  const details = marked.parse(currentTopic.details, { renderer });
 
   const { editMode, cancel, showEdit, save } = useEditCourseDetails<UpdateTopicBasicInfoInput>(
     async (updates: UpdateTopicBasicInfoInput) => await courseHelper.updateTopic(updates)
@@ -60,30 +117,26 @@ const Topic = ({ course, isCourseAdmin, space, topicKey, courseHelper }: TopicPr
   const { deleting, deleteItem } = useDeleteCourseItem<DeleteTopicInput>(async (updates: DeleteTopicInput) => await courseHelper.deleteTopic(updates));
 
   const doDelete = () => {
-    if (topic) {
-      deleteItem({ courseKey: course.key, topicKey: topicKey });
-    }
+    deleteItem({ courseKey: course.key, topicKey: topicKey });
   };
 
   const { movingUp, movingDown, moveItem } = useMoveCourseItem<MoveTopicInput>(async (updates: MoveTopicInput) => await courseHelper.moveTopic(updates));
 
   const doMove = (direction: MoveCourseItemDirection) => {
-    if (topic) {
-      moveItem({
-        courseKey: course.key,
-        topicKey: topicKey,
-        direction: direction,
-      });
-    }
+    moveItem({
+      courseKey: course.key,
+      topicKey: topicKey,
+      direction: direction,
+    });
   };
 
   return (
     <div className="h-full">
-      {!editMode && topic && (
+      {!editMode && (
         <div className="flex flex-col h-full w-full">
           <RightDiv className="right w-full">
             <div className="flex justify-between">
-              <h1 className="text-3xl mb-4">{topic?.title}</h1>
+              <h1 className="text-3xl mb-4">{currentTopic?.title}</h1>
               {isCourseAdmin && (
                 <div className="flex">
                   <IconButton iconName={IconTypes.Edit} removeBorder onClick={showEdit} />
@@ -98,7 +151,7 @@ const Topic = ({ course, isCourseAdmin, space, topicKey, courseHelper }: TopicPr
                     iconName={IconTypes.MoveDown}
                     removeBorder
                     loading={movingDown}
-                    disabled={movingUp || movingDown || currentTopicIndex === topic.summaries.length - 1}
+                    disabled={movingUp || movingDown || currentTopicIndex === course.topics.length - 1}
                     onClick={() => doMove(MoveCourseItemDirection.Down)}
                   />
                   <IconButton iconName={IconTypes.Trash} removeBorder disabled={deleting} loading={deleting} onClick={doDelete} />
@@ -116,18 +169,13 @@ const Topic = ({ course, isCourseAdmin, space, topicKey, courseHelper }: TopicPr
               </Button>
             )}
             <div className="flex-1"></div>
-            {topic.readings.length > 0 && (
-              <Button primary variant="contained" onClick={() => courseHelper.goToLink(`/courses/view/${course.key}/readings/${topic.readings[0].uuid}`)}>
-                Next
-                <span className="ml-2 font-bold">&#8594;</span>
-              </Button>
-            )}
+            <NextButton course={course} currentTopic={currentTopic} currentTopicIndex={currentTopicIndex} />
           </div>
         </div>
       )}
       {editMode && (
         <div className="flex flex-col justify-between h-full">
-          <EditTopic course={course} space={space} topicKey={topicKey} currentTopic={topic!} saveTopic={save} cancel={cancel} />
+          <EditTopic course={course} space={space} topicKey={topicKey} currentTopic={currentTopic!} saveTopic={save} cancel={cancel} />
         </div>
       )}
     </div>
