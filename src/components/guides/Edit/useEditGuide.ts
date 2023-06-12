@@ -60,7 +60,6 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
   const [guide, setGuide] = useState<EditGuideType>(initialState);
   const [guideErrors, setGuideErrors] = useState<GuideError>({});
   const [guideLoaded, setGuideLoaded] = useState<boolean>(false);
-  const [guideValid, setGuideValid] = useState(true);
   const [activeStepId, setActiveStepId] = useState<string | null>();
 
   const [guideCreating, setGuideCreating] = useState(false);
@@ -195,16 +194,11 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
         stepError.name = true;
       }
       if (step.content?.length > stepContentLimit) {
-        setGuideValid(false);
         stepError.content = true;
       }
       step.stepItems.forEach((item: StepItemInputGenericInput) => {
         if (isQuestion(item)) {
-          const questionError = validateQuestion(item as GuideQuestionFragment, stepError);
-
-          if (questionError.answerKeys || questionError.content || questionError.explanation) {
-            setGuideValid(false);
-          }
+          validateQuestion(item as GuideQuestionFragment, stepError);
         } else if (isUserInput(item)) {
           validateUserInput(item as GuideUserInputFragment, stepError);
         }
@@ -272,21 +266,17 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
     setGuideCreating(true);
     try {
       const valid = validateGuide(guide);
-      console.log('valid : ', guideValid);
       setGuide((prevGuide: EditGuideType) => ({
         ...prevGuide,
         isPristine: false,
       }));
 
       if (!valid) {
-        console.log('Guide invalid', guideValid, guideErrors);
+        console.log('Guide invalid', guideErrors);
         showNotification({ type: 'error', message: $t('notify.validationFailed') });
         setGuideCreating(false);
         return;
       }
-
-      // console.log('guideRef.value', guide);
-
       const response = await upsertGuideMutation({
         variables: {
           spaceId: space.id,
@@ -363,8 +353,6 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
     updateGuideIntegrationField,
     updateStep,
   };
-
-  // console.log('guide', guide);
 
   return {
     initialize,
