@@ -28,7 +28,7 @@ export function validateQuestion(question: GuideQuestionFragment | ByteQuestionF
   if (question.answerKeys.length === 0) {
     questionError.answerKeys = true;
   }
-  
+
   if (Object.keys(questionError).length > 0) {
     if (!stepError.stepItems) {
       stepError.stepItems = {};
@@ -37,8 +37,7 @@ export function validateQuestion(question: GuideQuestionFragment | ByteQuestionF
   } else {
     stepError.stepItems?.[question.uuid] && delete stepError.stepItems[question.uuid];
   }
-return questionError;
-
+  return questionError;
 }
 
 export function validateUserInput(userInput: UserInput, stepError: StepError) {

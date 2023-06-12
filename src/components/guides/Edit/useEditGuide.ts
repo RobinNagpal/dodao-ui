@@ -201,7 +201,7 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
       step.stepItems.forEach((item: StepItemInputGenericInput) => {
         if (isQuestion(item)) {
           const questionError = validateQuestion(item as GuideQuestionFragment, stepError);
-         
+
           if (questionError.answerKeys || questionError.content || questionError.explanation) {
             setGuideValid(false);
           }
