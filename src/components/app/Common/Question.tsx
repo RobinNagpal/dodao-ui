@@ -1,7 +1,12 @@
 import Checkbox from '@/components/app/Form/Checkbox';
 import Radio from '@/components/app/Form/Radio';
 import HintIcon from '@/components/app/Icons/HintIcon';
-import { ByteQuestionFragmentFragment, CourseQuestionFragment, GuideQuestionFragment } from '@/graphql/generated/generated-types';
+import {
+  ByteQuestionFragmentFragment,
+  CourseQuestionFragment,
+  CourseReadingQuestionFragment,
+  GuideQuestionFragment,
+} from '@/graphql/generated/generated-types';
 import { QuestionType } from '@/types/deprecated/models/enums';
 import { getMarkedRenderer } from '@/utils/ui/getMarkedRenderer';
 import isEqual from 'lodash/isEqual';
@@ -23,7 +28,8 @@ const HintIconWrapper = styled.div`
   cursor: pointer;
 `;
 
-interface LocalQuestionType extends Omit<CourseQuestionFragment | GuideQuestionFragment | ByteQuestionFragmentFragment, 'hint' | 'explanation'> {
+interface LocalQuestionType
+  extends Omit<CourseQuestionFragment | GuideQuestionFragment | ByteQuestionFragmentFragment | CourseReadingQuestionFragment, 'hint' | 'explanation'> {
   hint?: string;
   explanation?: string;
 }

@@ -1,6 +1,8 @@
-import CourseDetails from '@/components/courses/View/Details/ChapterDetails';
+import CourseDetails from '@/components/courses/View/Details/CourseDetails';
+import QuestionDetails from '@/components/courses/View/Details/QuestionDetails';
 import SummaryDetails from '@/components/courses/View/Details/SummaryDetails';
 import TopicDetails from '@/components/courses/View/Details/TopicDetails';
+import VideoDetails from '@/components/courses/View/Details/VideoDetails';
 import { CourseSubmissionHelper } from '@/components/courses/View/useCourseSubmission';
 import { CourseHelper } from '@/components/courses/View/useViewCourse';
 import { CourseDetailsFragment, Space } from '@/graphql/generated/generated-types';
@@ -20,7 +22,17 @@ interface CourseDetailsRightSectionProps {
 
 export default function CourseDetailsRightSection(props: CourseDetailsRightSectionProps) {
   if (props.itemType === 'readings' && props.topicKey && props.itemKey) {
-    return <div>Readings</div>;
+    return (
+      <VideoDetails
+        space={props.space}
+        course={props.course}
+        isCourseAdmin={props.isCourseAdmin}
+        courseHelper={props.courseHelper}
+        submissionHelper={props.submissionHelper}
+        topicKey={props.topicKey}
+        videoUuid={props.itemKey}
+      />
+    );
   } else if (props.itemType === 'summaries' && props.topicKey && props.itemKey) {
     return (
       <SummaryDetails
@@ -36,7 +48,17 @@ export default function CourseDetailsRightSection(props: CourseDetailsRightSecti
   } else if (props.itemType === 'explanations' && props.topicKey && props.itemKey) {
     return <div>Explanations</div>;
   } else if (props.itemType === 'questions' && props.topicKey && props.itemKey) {
-    return <div>Questions</div>;
+    return (
+      <QuestionDetails
+        space={props.space}
+        course={props.course}
+        isCourseAdmin={props.isCourseAdmin}
+        topicKey={props.topicKey}
+        courseHelper={props.courseHelper}
+        submissionHelper={props.submissionHelper}
+        questionIndex={props.itemKey}
+      />
+    );
   } else if (props.topicKey) {
     return (
       <TopicDetails

@@ -173,6 +173,20 @@ const CourseComponent: React.FC<CourseNavigationProps> = ({ course, space, showA
         children: summaries,
       });
     }
+    if (chapter.questions.length) {
+      children.push({
+        component: (
+          <Link key={chapter.key + '_questions'} className="flex items-center" href={`/courses/view/${course.key}/${chapter.key}/questions/0`}>
+            <div className="icon mr-2">
+              <CheckMark />
+            </div>
+            <div>Questions</div>
+          </Link>
+        ),
+        children: [],
+      });
+    }
+
     return {
       component: (
         <Link key={chapter.key + '_chapter_root'} className="flex items-center" href={`/courses/view/${course.key}/${chapter.key}`}>

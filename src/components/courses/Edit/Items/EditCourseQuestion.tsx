@@ -1,7 +1,7 @@
 import Button from '@/components/app/Button';
 import CreateQuestion from '@/components/app/Common/CreateQuestion';
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
-import { CourseDetailsFragment, CourseQuestionFragment, Space, TopicQuestionChoiceInput } from '@/graphql/generated/generated-types';
+import { CourseDetailsFragment, CourseQuestionFragment, Space, TopicQuestionChoiceInput, UpdateTopicQuestionInput } from '@/graphql/generated/generated-types';
 import { QuestionType } from '@/types/deprecated/models/enums';
 import { QuestionError } from '@/types/errors/error';
 import isEqual from 'lodash/isEqual';
@@ -27,7 +27,7 @@ interface Props {
   topicKey: string;
   currentQuestion?: CourseQuestionFragment;
   selectedQuestionType: string;
-  saveQuestion: (question: QuestionToUpdate) => void;
+  saveQuestion: (question: UpdateTopicQuestionInput) => void;
   cancel: () => void;
 }
 
@@ -118,7 +118,18 @@ export const QuestionForm: React.FC<Props> = ({ course, space, topicKey, current
     // Your error checking code here
     setUpserting(true);
     // Your saving code here
-    await saveQuestion(form);
+    const input: UpdateTopicQuestionInput = {
+      answerKeys: form.answerKeys,
+      choices: form.choices,
+      content: form.content,
+      courseKey: form.courseKey,
+      explanation: form.explanation,
+      hint: form.hint,
+      questionType: form.type,
+      questionUuid: form.questionUuid,
+      topicKey: form.topicKey,
+    };
+    await saveQuestion(input);
     setUpserting(false);
   };
 
