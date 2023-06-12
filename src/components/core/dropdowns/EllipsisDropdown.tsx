@@ -2,16 +2,10 @@ import { Fragment } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import { EllipsisVerticalIcon } from '@heroicons/react/20/solid';
 import styled from 'styled-components';
-
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(' ');
-}
-
 export interface EllipsisDropdownItem {
   label: string;
   key: string;
   active?: boolean;
-
 }
 
 export interface EllipsisDropdownProps {
@@ -48,7 +42,7 @@ const MenuItems = styled(Menu.Items)`
 
 export default function EllipsisDropdown(props: EllipsisDropdownProps) {
   return (
-    <Menu as="div" className="relative inline-block text-left">
+    <Menu as="div" className={`relative inline-block text-left ${props.className || ''}`}>
       <div>
         <MenuButton className="flex items-center rounded-full focus:ring-offset-2">
           <span className="sr-only">Open options</span>
