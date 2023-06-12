@@ -296,8 +296,8 @@ const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHas
 
   return (
     <div className="w-full p-4 flex flex-col justify-center items-center">
-      <StepContainer className="h-10 mb-4 flex justify-between items-center">
-        <h3>Step {step.order + 1}</h3>
+      <StepContainer className="h-10 mb-4 flex justify-between items-center w-full">
+        <h3 className='text-2xl font-bold'>Step {step.order + 1}</h3>
         <div className="h-10" style={{ minHeight: '40px' }}>
           <IconButton
             className="float-right ml-2"
