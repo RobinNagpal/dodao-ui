@@ -31,7 +31,7 @@ export function EditGuideStepper(props: EditGuideStepperProps) {
   return (
     <div className="flex">
       <div className="flex grow flex-col gap-y-5 overflow-y-auto  px-6 p-4">
-        <EditGuideSidebar guide={guide} editGuideHelper={editGuideHelper} activeStep={activeStep} />
+        <EditGuideSidebar guide={guide} stepErrors={guideErrors?.steps?.[activeStep.uuid]} editGuideHelper={editGuideHelper} activeStep={activeStep} />
       </div>
       <div className="w-full flex flex-row ">
         <EditGuideStepperItem

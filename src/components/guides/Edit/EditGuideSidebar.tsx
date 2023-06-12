@@ -5,18 +5,20 @@ import { GuideFragment, GuideStepFragment } from '@/graphql/generated/generated-
 import classNames from '@/utils/classNames';
 import { useMemo } from 'react';
 import styled, { css } from 'styled-components';
+import { StepError } from '@/types/errors/error';
 
 export interface GuideSidebarProps {
   guide: GuideFragment;
   activeStep: GuideStepFragment;
   editGuideHelper: UseEditGuideHelper;
+  stepErrors?: StepError;
 }
 
 const StyledSpan = styled.span<{ showActive: boolean; showSuccess: boolean; showError: boolean }>`
   background-color: var(--block-bg);
 
-  ${({ showSuccess }) =>
-    showSuccess &&
+  ${({ showSuccess, showError }) =>
+    showSuccess && !showError &&
     css`
       background-color: green;
     `}
@@ -27,8 +29,8 @@ const StyledSpan = styled.span<{ showActive: boolean; showSuccess: boolean; show
       background-color: red;
     `}
 
-  ${({ showActive }) =>
-    showActive &&
+  ${({ showActive, showError }) =>
+    showActive && !showError &&
     css`
       background-color: var(--primary-color);
     `}
@@ -49,8 +51,10 @@ const StyledAnchor = styled.a<{ isActive: boolean; isDisabled: boolean }>`
       cursor: not-allowed;
     `}
 `;
-export default function EditGuideSidebar({ activeStep, guide, editGuideHelper }: GuideSidebarProps) {
+export default function EditGuideSidebar({ activeStep, guide, editGuideHelper, stepErrors }: GuideSidebarProps) {
+
   const showError = false;
+
 
   return (
     <nav className="flex flex-col w-full">
@@ -60,7 +64,14 @@ export default function EditGuideSidebar({ activeStep, guide, editGuideHelper }:
             const iconBackground = true;
             const Icon = getGuideSidebarIcon(step);
 
-            const showError = false;
+
+            let showError = !!stepErrors?.stepItems && (activeStep.uuid === step.uuid)
+
+
+
+
+
+
             const showActive = step.uuid === editGuideHelper.activeStepId;
 
             return (

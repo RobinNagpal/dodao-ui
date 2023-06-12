@@ -8,7 +8,6 @@ const choiceContentLimit = 256;
 
 export function validateQuestion(question: GuideQuestionFragment | ByteQuestionFragmentFragment | CourseQuestionFragment, stepError: StepError) {
   const questionError: QuestionError = {};
-  console.log("number of answerkeys",question.answerKeys,question.content)
 
   if (!question.content || question.content.length > questionContentLimit) {
     questionError.content = true;
