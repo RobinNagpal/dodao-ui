@@ -297,7 +297,7 @@ const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHas
   return (
     <div className="w-full p-4 flex flex-col justify-center items-center">
       <StepContainer className="h-10 mb-4 flex justify-between items-center w-full">
-        <h3 className='text-2xl font-bold'>Step {step.order + 1}</h3>
+        <h3 className="text-2xl font-bold">Step {step.order + 1}</h3>
         <div className="h-10" style={{ minHeight: '40px' }}>
           <IconButton
             className="float-right ml-2"
@@ -337,37 +337,41 @@ const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHas
         imageType="Guide"
       />
 
-      {stepItemsForStepper.map((stepItem, index) => (
-        <StepItemWrapper style={{ margin: '50px 0 0 0' }} key={stepItem.uuid} className="ml-4  p-4 mb-4 w-full" hasError={!!stepErrors?.stepItems?.[stepItem.uuid]}>
-          {stepItem.isQuestion ? (
-            <>
-              <CreateQuestion
-                addChoice={addChoice}
-                item={stepItem as GuideQuestionFragment}
-                removeChoice={removeChoice}
-                removeQuestion={removeStepItem}
-                setAnswer={setAnswer}
-                updateChoiceContent={updateChoiceContent}
-                updateQuestionDescription={updateQuestionDescription}
-                updateAnswers={updateAnswers}
-                questionErrors={stepErrors?.stepItems?.[stepItem.uuid] as QuestionError}
-                updateQuestionType={updateQuestionType}
+      {stepItemsForStepper.map((stepItem, index) => {
+        const itemError = stepErrors?.stepItems?.[stepItem.uuid];
+        const hasError = !!itemError;
+        return (
+          <StepItemWrapper style={{ margin: '50px 0 0 0' }} key={stepItem.uuid} className="ml-4  p-4 mb-4 w-full" hasError={hasError}>
+            {stepItem.isQuestion ? (
+              <>
+                <CreateQuestion
+                  addChoice={addChoice}
+                  item={stepItem as GuideQuestionFragment}
+                  removeChoice={removeChoice}
+                  removeQuestion={removeStepItem}
+                  setAnswer={setAnswer}
+                  updateChoiceContent={updateChoiceContent}
+                  updateQuestionDescription={updateQuestionDescription}
+                  updateAnswers={updateAnswers}
+                  questionErrors={itemError as QuestionError}
+                  updateQuestionType={updateQuestionType}
+                />
+              </>
+            ) : stepItem.isDiscord ? (
+              <CreateConnectDiscord item={stepItem} removeDiscord={removeStepItem} />
+            ) : (
+              <CreateUserInput
+                removeUserInput={removeStepItem}
+                item={{ ...stepItem, order: index }}
+                userInputErrors={itemError}
+                updateUserInputLabel={updateUserInputLabel}
+                updateUserInputPrivate={updateUserInputPrivate}
+                updateUserInputRequired={updateUserInputRequired}
               />
-            </>
-          ) : stepItem.isDiscord ? (
-            <CreateConnectDiscord item={stepItem} removeDiscord={removeStepItem} />
-          ) : (
-            <CreateUserInput
-              removeUserInput={removeStepItem}
-              item={{ ...stepItem, order: index }}
-              userInputErrors={stepErrors?.stepItems?.[stepItem.uuid]}
-              updateUserInputLabel={updateUserInputLabel}
-              updateUserInputPrivate={updateUserInputPrivate}
-              updateUserInputRequired={updateUserInputRequired}
-            />
-          )}
-        </StepItemWrapper>
-      ))}
+            )}
+          </StepItemWrapper>
+        );
+      })}
       {modalGuidInputOrQuestionOpen && (
         <AddStepItemModal
           open={modalGuidInputOrQuestionOpen}
