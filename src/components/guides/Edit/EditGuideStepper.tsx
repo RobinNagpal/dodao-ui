@@ -1,5 +1,6 @@
 import EditGuideSidebar from '@/components/guides/Edit/EditGuideSidebar';
 import EditGuideStepperItem from '@/components/guides/Edit/EditGuideStepperItem';
+import { EditGuideType } from '@/components/guides/Edit/editGuideType';
 import { UseEditGuideHelper } from '@/components/guides/Edit/useEditGuide';
 import { GuideFragment, GuideStepFragment, Space } from '@/graphql/generated/generated-types';
 import { UserDiscordConnectType } from '@/types/deprecated/models/enums';
@@ -7,7 +8,7 @@ import { GuideError } from '@/types/errors/error';
 import React, { useMemo } from 'react';
 
 interface EditGuideStepperProps {
-  guide: GuideFragment;
+  guide: EditGuideType;
   guideErrors?: GuideError;
   editGuideHelper: UseEditGuideHelper;
   space: Space;

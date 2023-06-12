@@ -1,3 +1,4 @@
+import { EditGuideType } from '@/components/guides/Edit/editGuideType';
 import { UseEditGuideHelper } from '@/components/guides/Edit/useEditGuide';
 import { getGuideSidebarIcon } from '@/components/guides/View/GetGuideSidebarIcon';
 import { LAST_STEP_UUID } from '@/components/guides/View/useViewGuide';
@@ -7,7 +8,7 @@ import classNames from '@/utils/classNames';
 import styled, { css } from 'styled-components';
 
 export interface GuideSidebarProps {
-  guide: GuideFragment;
+  guide: EditGuideType;
   activeStep: GuideStepFragment;
   editGuideHelper: UseEditGuideHelper;
   stepErrors?: StepError;
