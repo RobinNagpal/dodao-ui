@@ -37,7 +37,6 @@ export function validateQuestion(question: GuideQuestionFragment | ByteQuestionF
   } else {
     stepError.stepItems?.[question.uuid] && delete stepError.stepItems[question.uuid];
   }
-  return questionError;
 }
 
 export function validateUserInput(userInput: UserInput, stepError: StepError) {
