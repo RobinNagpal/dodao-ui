@@ -16,6 +16,7 @@ import { PublishStatus } from '@/types/deprecated/models/enums';
 import { UserInput } from '@/types/deprecated/models/GuideModel';
 import { ByteErrors } from '@/types/errors/byteErrors';
 import { StepError } from '@/types/errors/error';
+import { slugify } from '@/utils/auth/slugify';
 import { emptyByte } from '@/utils/byte/EmptyByte';
 import { validateQuestion, validateUserInput } from '@/utils/stepItems/validateItems';
 import { useRouter } from 'next/navigation';
@@ -248,7 +249,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
   function getByteInput(): UpsertByteInput {
     return {
       content: byteRef.content,
-      id: byteRef.id,
+      id: byteRef.id || slugify(byteRef.name) + '-' + uuidv4().toString().substring(0, 4),
       name: byteRef.name,
       steps: byteRef.steps.map((s) => ({
         content: s.content,

@@ -35,11 +35,12 @@ const CourseView = ({ params, space }: { params: { courseInfo: string[] }; space
   const router = useRouter();
   const { courseInfo } = params;
 
+  // urls - /courses/view/${course.key}/${topic.key}/[readings/summaries/questions/submission]/[summaryKey/readingKey/questionKey]
   const courseKey = Array.isArray(courseInfo) ? courseInfo[0] : (courseInfo as string);
 
   const topicKey = Array.isArray(courseInfo) && courseInfo.length > 1 ? courseInfo[1] : undefined;
 
-  const itemType = Array.isArray(courseInfo) && courseInfo.length > 3 ? courseInfo[2] : undefined;
+  const itemType = Array.isArray(courseInfo) && courseInfo.length > 2 ? courseInfo[2] : undefined;
 
   const itemKey = Array.isArray(courseInfo) && courseInfo.length > 3 ? courseInfo[3] : undefined;
 

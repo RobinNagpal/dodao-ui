@@ -1,5 +1,6 @@
 import { LoginButtons } from '@/app/login/components/LoginButtons';
 import ButtonLarge from '@/components/core/buttons/Button';
+import FullScreenModal from '@/components/core/modals/FullScreenModal';
 import SingleSectionModal from '@/components/core/modals/SingleSectionModal';
 import CreateContentModalContents from '@/components/main/TopNav/CreateContentModalContents';
 import { DesktopNavLink } from '@/components/main/TopNav/DesktopNavLink';
@@ -32,9 +33,9 @@ export default function TopNav() {
   const { space } = useSpace();
   return (
     <StyledDiv>
-      <SingleSectionModal open={showCreateModal} onClose={() => setShowCreateModal(false)} title={'Login'} showCloseButton={false}>
+      <FullScreenModal open={showCreateModal} onClose={() => setShowCreateModal(false)} title={'Login'} showCloseButton={false}>
         <CreateContentModalContents hideModal={() => setShowCreateModal(false)} />
-      </SingleSectionModal>
+      </FullScreenModal>
       <Disclosure
         as="nav"
         className="shadow"

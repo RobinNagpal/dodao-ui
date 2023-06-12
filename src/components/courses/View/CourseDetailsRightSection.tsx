@@ -1,3 +1,4 @@
+import ChapterSubmission from '@/components/courses/View/Details/ChapterSubmission';
 import CourseDetails from '@/components/courses/View/Details/CourseDetails';
 import QuestionDetails from '@/components/courses/View/Details/QuestionDetails';
 import SummaryDetails from '@/components/courses/View/Details/SummaryDetails';
@@ -7,7 +8,7 @@ import { CourseSubmissionHelper } from '@/components/courses/View/useCourseSubmi
 import { CourseHelper } from '@/components/courses/View/useViewCourse';
 import { CourseDetailsFragment, Space } from '@/graphql/generated/generated-types';
 
-export type ItemTypes = 'readings' | 'summaries' | 'explanations' | 'questions';
+export type ItemTypes = 'readings' | 'summaries' | 'explanations' | 'questions' | 'submission';
 interface CourseDetailsRightSectionProps {
   space: Space;
   course: CourseDetailsFragment;
@@ -57,6 +58,17 @@ export default function CourseDetailsRightSection(props: CourseDetailsRightSecti
         courseHelper={props.courseHelper}
         submissionHelper={props.submissionHelper}
         questionIndex={props.itemKey}
+      />
+    );
+  } else if (props.itemType === 'submission' && props.topicKey) {
+    return (
+      <ChapterSubmission
+        space={props.space}
+        course={props.course}
+        isCourseAdmin={props.isCourseAdmin}
+        topicKey={props.topicKey}
+        courseHelper={props.courseHelper}
+        submissionHelper={props.submissionHelper}
       />
     );
   } else if (props.topicKey) {
