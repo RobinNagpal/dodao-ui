@@ -1,19 +1,17 @@
-import Dropdown from '@/components/app/Dropdown';
-import Checkbox from '@/components/app/Form/Checkbox';
-import Radio from '@/components/app/Form/Radio';
-import Icon from '@/components/app/Icon';
-import DeleteIcon from '@/components/app/Icons/DeleteIcon';
-import MinusCircle from '@/components/app/Icons/MinusCircle';
-import Input from '@/components/app/Input';
-import UnstyledTextareaAutosize from '@/components/app/TextArea/UnstyledTextareaAutosize';
-import { ByteQuestion, CourseQuestionFragment } from '@/graphql/generated/generated-types';
-import { QuestionError } from '@/types/errors/error';
-import { QuestionType } from '@/types/deprecated/models/enums';
-import { GuideQuestion, GuideStepItem } from '@/types/deprecated/models/GuideModel';
-import styled from 'styled-components';
 import Button from '@/components/app/Button';
 import SidebarButton from '@/components/app/Button/SidebarButton';
+import Checkbox from '@/components/app/Form/Checkbox';
+import Radio from '@/components/app/Form/Radio';
+import DeleteIcon from '@/components/app/Icons/DeleteIcon';
+import Input from '@/components/app/Input';
+import UnstyledTextareaAutosize from '@/components/app/TextArea/UnstyledTextareaAutosize';
 import EllipsisDropdown from '@/components/core/dropdowns/EllipsisDropdown';
+import { ByteQuestion, CourseQuestionFragment } from '@/graphql/generated/generated-types';
+import { QuestionType } from '@/types/deprecated/models/enums';
+import { GuideQuestion, GuideStepItem } from '@/types/deprecated/models/GuideModel';
+import { QuestionError } from '@/types/errors/error';
+import MinusCircle from '@heroicons/react/24/solid/MinusCircleIcon';
+import styled from 'styled-components';
 
 interface QuestionComponentProps {
   addChoice: (uuid: string) => void;
