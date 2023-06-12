@@ -11,25 +11,24 @@ export interface GuideSidebarProps {
   guide: EditGuideType;
   activeStep: GuideStepFragment;
   editGuideHelper: UseEditGuideHelper;
-  stepErrors?: StepError;
+  errorsInSteps?: Record<string, StepError>;
 }
 
 const StyledSpan = styled.span<{ showActive: boolean; showSuccess: boolean; showError: boolean }>`
   background-color: var(--block-bg);
 
-  ${({ showSuccess, showError }) =>
+  ${({ showActive }) =>
+    showActive &&
+    css`
+      background-color: var(--primary-color);
+    `}
+
+  ${({ showSuccess }) =>
     showSuccess &&
-    !showError &&
     css`
       background-color: green;
     `}
 
-  ${({ showActive, showError }) =>
-    showActive &&
-    !showError &&
-    css`
-      background-color: var(--primary-color);
-    `}
 
   ${({ showError }) =>
     showError &&
@@ -53,7 +52,7 @@ const StyledAnchor = styled.a<{ isActive: boolean; isDisabled: boolean }>`
       cursor: not-allowed;
     `}
 `;
-export default function EditGuideSidebar({ activeStep, guide, editGuideHelper, stepErrors }: GuideSidebarProps) {
+export default function EditGuideSidebar({ activeStep, guide, editGuideHelper, errorsInSteps }: GuideSidebarProps) {
   return (
     <nav className="flex flex-col w-full">
       <div className="flow-root">
@@ -61,11 +60,13 @@ export default function EditGuideSidebar({ activeStep, guide, editGuideHelper, s
           {guide.steps.map((step, stepIdx) => {
             const iconBackground = true;
             const Icon = getGuideSidebarIcon(step);
+            const stepErrors = errorsInSteps?.[step.uuid];
 
-            const showError = !!stepErrors?.stepItems && activeStep.uuid === step.uuid;
+            const showError = Object.keys(stepErrors?.stepItems || {}).length > 0 && !guide.isPristine;
 
             const showActive = step.uuid === editGuideHelper.activeStepId;
 
+            const showSuccess = !showError && !guide.isPristine;
             return (
               <li key={step.uuid}>
                 <div className={'relative pb-8 '}>
@@ -74,7 +75,7 @@ export default function EditGuideSidebar({ activeStep, guide, editGuideHelper, s
                     <div>
                       <StyledSpan
                         showActive={showActive}
-                        showSuccess={false}
+                        showSuccess={showSuccess}
                         showError={showError}
                         className={classNames(iconBackground, 'h-8 w-8 rounded-full flex items-center justify-center  ring-white')}
                       >

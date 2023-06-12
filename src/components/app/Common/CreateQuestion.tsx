@@ -100,7 +100,6 @@ function QuestionComponent({
               <Radio
                 questionId={question.uuid}
                 isSelected={question.answerKeys.includes(choice.key)}
-                className={questionErrors?.answerKeys ? 'border-2 border-red' : ''}
                 onChange={(e) => setAnswer?.(question.uuid, choice.key, !question.answerKeys.includes(choice.key))}
                 id={choice.key}
                 labelContent={''}
@@ -108,7 +107,6 @@ function QuestionComponent({
             ) : (
               <Checkbox
                 isChecked={question.answerKeys.includes(choice.key)}
-                className={questionErrors?.answerKeys ? 'border-2 border-red' : ''}
                 onChange={(e) => updateAnswers?.(question.uuid, choice.key, !question.answerKeys.includes(choice.key))}
                 id={choice.key}
                 labelContent={''}
@@ -119,7 +117,7 @@ function QuestionComponent({
               maxLength={256}
               disabled={disableChoiceEdit}
               onUpdate={(e) => updateChoiceContent?.(question.uuid, choice.key, e !== undefined ? e.toString() : '')}
-              error={questionErrors?.choices?.[choice.order]?.content}
+              error={questionErrors?.choices?.[choice.key]?.content}
             />
             {!disableChoiceEdit && question.choices.length > 1 && (
               <RemoveChoiceDiv className="cursor-pointer p-2" onClick={() => removeChoice?.(question.uuid, choice.key)}>
