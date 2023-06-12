@@ -10,7 +10,8 @@ import { ByteQuestion, CourseQuestionFragment } from '@/graphql/generated/genera
 import { QuestionType } from '@/types/deprecated/models/enums';
 import { GuideQuestion, GuideStepItem } from '@/types/deprecated/models/GuideModel';
 import { QuestionError } from '@/types/errors/error';
-import MinusCircle from '@heroicons/react/24/solid/MinusCircleIcon';
+import MinusCircle from '@heroicons/react/20/solid/MinusCircleIcon';
+import PlusCircle from '@heroicons/react/20/solid/PlusCircleIcon';
 import styled from 'styled-components';
 
 interface QuestionComponentProps {
@@ -26,10 +27,12 @@ interface QuestionComponentProps {
   updateQuestionType: (questionId: string, type: QuestionType) => void;
 }
 
-const AddChoiceButton = styled.button` &:hover {
-  background-color: var(--primary-hover-color)
+const AddChoiceButton = styled.button`
+  color: var(--primary-color);
+`;
 
-// Change this color to your desired hover color }
+const RemoveChoiceDiv = styled.button`
+  color: var(--text-color);
 `;
 
 const questionTypes = [
@@ -119,9 +122,9 @@ function QuestionComponent({
               error={questionErrors?.choices?.[choice.order]?.content}
             />
             {!disableChoiceEdit && question.choices.length > 1 && (
-              <div className="cursor-pointer p-2" onClick={() => removeChoice?.(question.uuid, choice.key)}>
-                <MinusCircle></MinusCircle>
-              </div>
+              <RemoveChoiceDiv className="cursor-pointer p-2" onClick={() => removeChoice?.(question.uuid, choice.key)}>
+                <MinusCircle height={20} width={20}></MinusCircle>
+              </RemoveChoiceDiv>
             )}
           </div>
         ))}
@@ -130,7 +133,7 @@ function QuestionComponent({
             className="m-auto rounded-full text-2xl bg-primary w-[48px] text-white flex items-center font-bold justify-center h-[48px]"
             onClick={() => addChoice(question.uuid)}
           >
-            <span className="mb-1">+</span>
+            <PlusCircle height={25} width={25} />
           </AddChoiceButton>
         )}
       </div>
