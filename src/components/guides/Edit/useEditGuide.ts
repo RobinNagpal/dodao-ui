@@ -114,9 +114,7 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
 
   function moveStepUp(stepUuid: string) {
     const stepIndex = guide.steps.findIndex((s) => s.uuid === stepUuid);
-    const steps = guide.steps.map((s) => {
-      return { ...s };
-    });
+    const steps = guide.steps.map((s) => ({ ...s }));
     steps[stepIndex - 1].order = stepIndex;
     steps[stepIndex].order = stepIndex - 1;
     setGuide((prevGuide: EditGuideType) => ({
