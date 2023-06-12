@@ -27,7 +27,6 @@ import { useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
 
-
 interface GuideStepProps {
   space: Space;
   guide: GuideFragment;
@@ -40,6 +39,11 @@ interface GuideStepProps {
 const StepContainer = styled.div`
   // Create a styled-component for styles where Tailwind classes are not available.
   min-height: 40px;
+`;
+
+const StepItemWrapper = styled.div<{ hasError: boolean }>`
+  border: ${(props) => (props.hasError ? '1px solid red' : '1px solid var(--border-color)')};
+  border-radius: 0.5rem;
 `;
 
 const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHasDiscordEnabled, editGuideHelper, space }) => {
@@ -132,6 +136,7 @@ const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHas
         return {
           ...question,
           choices: (question as GuideQuestion).choices.filter((choice) => choice.key !== choiceKey),
+          answerKeys: (question as GuideQuestion).answerKeys.filter((answerKey) => answerKey !== choiceKey),
         };
       } else {
         return question;
@@ -289,8 +294,6 @@ const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHas
     updateStep({ ...step, stepItems });
   }
 
-
-
   return (
     <div className="w-full p-4 flex flex-col justify-center items-center">
       <StepContainer className="h-10 mb-4 flex justify-between items-center">
@@ -334,13 +337,10 @@ const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHas
         imageType="Guide"
       />
 
-
       {stepItemsForStepper.map((stepItem, index) => (
-        <div style={{ margin: 'auto' }} key={stepItem.uuid} className="border m-auto flex flex-col rounded-md p-4 mb-4 ml-4 w-full">
+        <StepItemWrapper style={{ margin: 'auto' }} key={stepItem.uuid} className="ml-4 p-4 mb-4 w-full" hasError={!!stepErrors?.stepItems?.[stepItem.uuid]}>
           {stepItem.isQuestion ? (
             <>
-
-
               <CreateQuestion
                 addChoice={addChoice}
                 item={stepItem as GuideQuestionFragment}
@@ -366,7 +366,7 @@ const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHas
               updateUserInputRequired={updateUserInputRequired}
             />
           )}
-        </div>
+        </StepItemWrapper>
       ))}
       {modalGuidInputOrQuestionOpen && (
         <AddStepItemModal

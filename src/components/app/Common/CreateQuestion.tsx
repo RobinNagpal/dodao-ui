@@ -34,11 +34,6 @@ const AddChoiceButton = styled.button` &:hover {
 // Change this color to your desired hover color }
 `;
 
-const ForceFloat = styled.div`
-  transform: translatey(-44px);
-  transition: transform 0.1s linear, font-size 0.1s linear;
-`;
-
 const questionTypes = [
   {
     text: 'Multiple Choice',
@@ -68,34 +63,25 @@ function QuestionComponent({
   return (
     <>
       <div>
-        {/* <Dropdown
-          top="2.5rem"
-          right="2.5rem"
-          className="m-2 ml-4 float-left"
-          onSelect={(value) => updateQuestionType(question.uuid, value as QuestionType)}
-          items={questionTypes}
-        >
-          <div className="pr-1 select-none">{question.type === QuestionType.MultipleChoice ? 'Multiple Choice' : 'Single Choice'}</div>
-        </Dropdown> */}
-
-        <div className='flex items-center p-4'>
-          <div className="pr-1 select-none">{question.type === QuestionType.MultipleChoice ? 'Multiple Choice' : 'Single Choice'}</div>
-          <EllipsisDropdown
-            items={questionTypes.map((item) => {
-              return {
-                label: item.text, key: item.action
-              }
-
-            }
-            )}
-            onSelect={(value) => updateQuestionType(question.uuid, value as QuestionType)}
-          />
+        <div className="flex items-center justify-between pb-2">
+          <div className="flex">
+            <div className="pr-1 select-none">{question.type === QuestionType.MultipleChoice ? 'Multiple Choice' : 'Single Choice'}</div>
+            <EllipsisDropdown
+              items={questionTypes.map((item) => {
+                return {
+                  label: item.text,
+                  key: item.action,
+                };
+              })}
+              onSelect={(value) => updateQuestionType(question.uuid, value as QuestionType)}
+            />
+          </div>
+          {removeQuestion && (
+            <SidebarButton className="float-right my-2 mr-4" onClick={() => removeQuestion(question.uuid)}>
+              <DeleteIcon />
+            </SidebarButton>
+          )}
         </div>
-        {removeQuestion && (
-          <SidebarButton className="float-right my-2 mr-4" onClick={() => removeQuestion(question.uuid)}>
-            <DeleteIcon />
-          </SidebarButton>
-        )}
       </div>
       <div className="border md:rounded-lg p-4 mb-4 bg-skin-block-bg">
         <Button className="w-full h-96 mb-4 px-[16px] flex items-center" style={{ height: 'max-content' }}>
