@@ -1,11 +1,10 @@
 import { UseEditGuideHelper } from '@/components/guides/Edit/useEditGuide';
 import { getGuideSidebarIcon } from '@/components/guides/View/GetGuideSidebarIcon';
-import { LAST_STEP_UUID, UseViewGuideHelper } from '@/components/guides/View/useViewGuide';
+import { LAST_STEP_UUID } from '@/components/guides/View/useViewGuide';
 import { GuideFragment, GuideStepFragment } from '@/graphql/generated/generated-types';
-import classNames from '@/utils/classNames';
-import { useMemo } from 'react';
-import styled, { css } from 'styled-components';
 import { StepError } from '@/types/errors/error';
+import classNames from '@/utils/classNames';
+import styled, { css } from 'styled-components';
 
 export interface GuideSidebarProps {
   guide: GuideFragment;
@@ -18,21 +17,23 @@ const StyledSpan = styled.span<{ showActive: boolean; showSuccess: boolean; show
   background-color: var(--block-bg);
 
   ${({ showSuccess, showError }) =>
-    showSuccess && !showError &&
+    showSuccess &&
+    !showError &&
     css`
       background-color: green;
+    `}
+
+  ${({ showActive, showError }) =>
+    showActive &&
+    !showError &&
+    css`
+      background-color: var(--primary-color);
     `}
 
   ${({ showError }) =>
     showError &&
     css`
       background-color: red;
-    `}
-
-  ${({ showActive, showError }) =>
-    showActive && !showError &&
-    css`
-      background-color: var(--primary-color);
     `}
 `;
 
@@ -52,10 +53,6 @@ const StyledAnchor = styled.a<{ isActive: boolean; isDisabled: boolean }>`
     `}
 `;
 export default function EditGuideSidebar({ activeStep, guide, editGuideHelper, stepErrors }: GuideSidebarProps) {
-
-  const showError = false;
-
-
   return (
     <nav className="flex flex-col w-full">
       <div className="flow-root">
@@ -64,13 +61,7 @@ export default function EditGuideSidebar({ activeStep, guide, editGuideHelper, s
             const iconBackground = true;
             const Icon = getGuideSidebarIcon(step);
 
-
-            let showError = !!stepErrors?.stepItems && (activeStep.uuid === step.uuid)
-
-
-
-
-
+            const showError = !!stepErrors?.stepItems && activeStep.uuid === step.uuid;
 
             const showActive = step.uuid === editGuideHelper.activeStepId;
 
