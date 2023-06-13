@@ -3,6 +3,7 @@ import Modal from '@/components/app/Modal';
 import styled from 'styled-components';
 import Button from '@/components/app/Button';
 import { GuideCategoryType } from '@/types/deprecated/models/enums';
+import { CheckCircleIcon } from '@heroicons/react/24/outline';
 
 const ModalHeader = styled.h3`
   /* Custom styles if needed */
@@ -46,11 +47,14 @@ const AddGuideCategoryModal = ({ open, onClose, onAddInput }: GuideCategoryModal
         {Object.values(GuideCategoryType).map((i, buttonIndex) => (
           <Button
             key={i}
-            className={`button-outline w-full flex justify-center items-center transition-opacity ${selectedButtons.includes(i) ? 'opacity-50 ' : ''}`}
+            className={`button-outline w-full flex  justify-between items-center transition-opacity ${
+              selectedButtons.includes(i) || selectedButtons.length < 2 || selectedButtons.length === 0 ? '' : 'opacity-50'
+            }`}
             onClick={() => addInput(i, buttonIndex)}
             disabled={selectedButtons.length >= 2 && !selectedButtons.includes(i)}
           >
-            {i}
+            <p>{i}</p>
+            {selectedButtons.includes(i) && <CheckCircleIcon height={20} width={20} />}
           </Button>
         ))}
       </div>
