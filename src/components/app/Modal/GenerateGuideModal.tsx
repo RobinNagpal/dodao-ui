@@ -26,6 +26,7 @@ const GenerateGuideModal = ({ open, onClose }: GenerateGuideProps) => {
         console.log(directions);
         // We can make post request from the data 
         // fetch("post","route")
+        onClose()
     }
 
     return (

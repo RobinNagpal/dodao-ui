@@ -48,8 +48,8 @@ const EditGuide = (props: { space: SpaceWithIntegrationsFragment; params: { guid
         </div>
 
         {guideLoaded ? (
-          <div>
-            <button onClick={()=>setGenerateGuideModal(true)} >Generate Guide</button>
+          <div className='relative'>
+            <Button className='absolute right-0' onClick={() => setGenerateGuideModal(true)} >Generate Guide</Button>
             <Wrapper>
               <BasicGuideSettings guide={guide} guideErrors={guideErrors} space={space} editGuideHelper={editGuideHelper} />
             </Wrapper>
@@ -63,7 +63,7 @@ const EditGuide = (props: { space: SpaceWithIntegrationsFragment; params: { guid
         )}
 
         {
-          generateGuideModal && <GenerateGuideModal open={generateGuideModal} onClose={()=>setGenerateGuideModal(false)} ></GenerateGuideModal>
+          generateGuideModal && <GenerateGuideModal open={generateGuideModal} onClose={() => setGenerateGuideModal(false)} ></GenerateGuideModal>
         }
       </SingleCardLayout>
     </PageWrapper>
