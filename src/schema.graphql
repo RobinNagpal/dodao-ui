@@ -75,6 +75,7 @@ type Byte {
   showIncorrectOnCompletion: Boolean!
   steps: [ByteStep!]!
   tags: [String!]!
+  visibility: String
 }
 
 type ByteQuestion {
@@ -1024,6 +1025,7 @@ input UpsertByteInput {
   steps: [ByteStepInput!]!
   tags: [String!]!
   thumbnail: String
+  visibility: String
 }
 
 input UpsertCourseIntegrationsInput {

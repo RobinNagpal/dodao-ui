@@ -92,6 +92,7 @@ export interface Byte {
   showIncorrectOnCompletion: Scalars['Boolean'];
   steps: Array<ByteStep>;
   tags: Array<Scalars['String']>;
+  visibility?: Maybe<Scalars['String']>;
 }
 
 export interface ByteQuestion {
@@ -1488,6 +1489,7 @@ export interface UpsertByteInput {
   steps: Array<ByteStepInput>;
   tags: Array<Scalars['String']>;
   thumbnail?: InputMaybe<Scalars['String']>;
+  visibility?: InputMaybe<Scalars['String']>;
 }
 
 export interface UpsertCourseIntegrationsInput {
@@ -1620,14 +1622,14 @@ export type ByteStepFragment = { __typename?: 'ByteStep', content: string, name:
 
 export type ByteDetailsFragment = { __typename?: 'Byte', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> };
 
-export type ByteDetailsFragmentFragment = { __typename?: 'Byte', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> };
+export type ByteDetailsFragmentFragment = { __typename?: 'Byte', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, publishStatus: string, visibility?: string | null, admins: Array<string>, tags: Array<string>, priority: number, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> };
 
 export type QueryBytesQueryVariables = Exact<{
   spaceId: Scalars['String'];
 }>;
 
 
-export type QueryBytesQuery = { __typename?: 'Query', bytes: Array<{ __typename?: 'Byte', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number }> };
+export type QueryBytesQuery = { __typename?: 'Query', bytes: Array<{ __typename?: 'Byte', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, publishStatus: string, visibility?: string | null, admins: Array<string>, tags: Array<string>, priority: number }> };
 
 export type QueryByteDetailsQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -1636,7 +1638,7 @@ export type QueryByteDetailsQueryVariables = Exact<{
 }>;
 
 
-export type QueryByteDetailsQuery = { __typename?: 'Query', byte: { __typename?: 'Byte', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> } };
+export type QueryByteDetailsQuery = { __typename?: 'Query', byte: { __typename?: 'Byte', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, publishStatus: string, visibility?: string | null, admins: Array<string>, tags: Array<string>, priority: number, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> } };
 
 export type UpsertByteMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -2315,6 +2317,7 @@ export const ByteDetailsFragmentFragmentDoc = gql`
   id
   name
   publishStatus
+  visibility
   admins
   tags
   priority
@@ -2936,6 +2939,7 @@ export const QueryBytesDocument = gql`
     id
     name
     publishStatus
+    visibility
     admins
     tags
     priority

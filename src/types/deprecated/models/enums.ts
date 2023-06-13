@@ -51,3 +51,8 @@ export enum GuideCategoryType {
 }
 
 export type StepItemType = InputType | QuestionType | typeof UserDiscordConnectType | string;
+
+export enum VisibilityEnum {
+  Public = 'Public',
+  Hidden = 'Hidden',
+}

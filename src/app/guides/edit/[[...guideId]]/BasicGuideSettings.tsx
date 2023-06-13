@@ -10,7 +10,7 @@ import { UseEditGuideHelper } from '@/components/guides/Edit/useEditGuide';
 import { Space } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
 import { GuideCategoryType, PublishStatus } from '@/types/deprecated/models/enums';
-import { statuses } from '@/utils/ui/statuses';
+import { publishStatuses } from '@/utils/ui/statuses';
 import React, { useState } from 'react';
 
 type BasicGuideSettingsProps = {
@@ -70,7 +70,7 @@ export default function BasicGuideSettings({ editGuideHelper, guide, guideErrors
           <div className="flex justify-start ">
             <div className="pr-1 select-none">{guide.publishStatus === 'Live' ? 'Live' : 'Draft'}</div>
             <div className="ml-2">
-              <EllipsisDropdown items={statuses} onSelect={(value) => selectPublishStatus(value as PublishStatus)} />
+              <EllipsisDropdown items={publishStatuses} onSelect={(value) => selectPublishStatus(value as PublishStatus)} />
             </div>
           </div>
         </div>

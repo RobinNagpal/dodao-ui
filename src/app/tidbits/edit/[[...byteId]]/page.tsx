@@ -12,9 +12,9 @@ import EllipsisDropdown from '@/components/core/dropdowns/EllipsisDropdown';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
-import { PublishStatus } from '@/types/deprecated/models/enums';
+import { PublishStatus, VisibilityEnum } from '@/types/deprecated/models/enums';
 import { ByteErrors } from '@/types/errors/byteErrors';
-import { statuses } from '@/utils/ui/statuses';
+import { publishStatuses, visibilityOptions } from '@/utils/ui/statuses';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useEffect } from 'react';
@@ -44,8 +44,8 @@ function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteI
     initialize();
   }, [byteId]);
 
-  const selectPublishStatus = (status: PublishStatus) => {
-    updateByteFunctions.updateByteField('publishStatus', status);
+  const selectVisibilityValue = (status: VisibilityEnum) => {
+    updateByteFunctions.updateByteField('visibility', status);
   };
 
   return (
@@ -75,11 +75,11 @@ function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteI
                 </Input>
 
                 <div className="mt-4">
-                  <div>Publish Status * </div>
+                  <div>Visibility * </div>
                   <div className="flex justify-start ">
-                    <div className="pr-1 select-none">{byte.publishStatus === 'Live' ? 'Live' : 'Draft'}</div>
+                    <div className="pr-1 select-none">{byte.visibility === VisibilityEnum.Hidden ? 'Hidden' : 'Public'}</div>
                     <div className="ml-2">
-                      <EllipsisDropdown items={statuses} onSelect={(value) => selectPublishStatus(value as PublishStatus)} />
+                      <EllipsisDropdown items={visibilityOptions} onSelect={(value) => selectVisibilityValue(value as VisibilityEnum)} />
                     </div>
                   </div>
                 </div>
