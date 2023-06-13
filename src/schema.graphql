@@ -73,7 +73,7 @@ type Byte {
   priority: Int!
   publishStatus: String!
   showIncorrectOnCompletion: Boolean!
-  steps: [ByteStep]!
+  steps: [ByteStep!]!
   tags: [String!]!
 }
 
@@ -89,7 +89,7 @@ type ByteQuestion {
 type ByteStep {
   content: String!
   name: String!
-  stepItems: [ByteStepItem]
+  stepItems: [ByteStepItem!]!
   uuid: String!
 }
 

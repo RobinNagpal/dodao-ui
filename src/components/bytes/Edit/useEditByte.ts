@@ -1,5 +1,6 @@
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import {
+  ByteDetailsFragment,
   ByteQuestionFragmentFragment,
   ByteStepFragment,
   ByteStepInput,
@@ -9,7 +10,7 @@ import {
   usePublishByteMutation,
   useQueryByteDetailsQuery,
   useSaveByteMutation,
-  useUpsertByteMutation
+  useUpsertByteMutation,
 } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
 import { isQuestion, isUserInput } from '@/types/deprecated/helpers/stepItemTypes';
@@ -102,7 +103,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
       setByteLoaded(true);
     } else if (byteId) {
       const result = await queryByteDetails({ byteId: byteId, spaceId: space.id });
-      const byte = result.data.byte;
+      const byte: ByteDetailsFragment = result.data.byte;
       setByteRef({
         ...byte,
         byteExists: true,
@@ -260,7 +261,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
           type: si.type,
           uuid: si.uuid,
           answerKeys: si.answerKeys,
-          choices: si.choices,
+          choices: si.choices?.map((c) => ({ key: c.key, content: c.content })),
           content: si.content,
           questionType: si.questionType,
           label: si.label,
