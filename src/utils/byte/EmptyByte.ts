@@ -2,7 +2,7 @@ import { ByteDetailsFragment, ByteQuestionFragmentFragment } from '@/graphql/gen
 import { PublishStatus, QuestionType } from '@/types/deprecated/models/enums';
 import { v4 as uuidv4 } from 'uuid';
 
-export const emptyByte = (): Omit<ByteDetailsFragment, 'id'> & { isPristine: boolean,id:string } => {
+export const emptyByte = (): Omit<ByteDetailsFragment, 'id'> & { isPristine: boolean; id: string } => {
   const step1Uuid = uuidv4();
   const step2Uuid = uuidv4();
   const byteUuid = uuidv4();
@@ -33,7 +33,7 @@ export const emptyByte = (): Omit<ByteDetailsFragment, 'id'> & { isPristine: boo
     explanation: 'This is the explanation',
   };
   return {
-    id:byteUuid,
+    id: byteUuid,
     admins: [],
     created: new Date().toISOString(),
     priority: 0,
