@@ -7,6 +7,7 @@ interface ModalProps extends PropsWithChildren {
   open: boolean;
   shellClass?: string;
   onClose: () => void;
+  className?:string;
 }
 
 const fadeAnimation = keyframes`
@@ -77,7 +78,7 @@ const CloseButton = styled.a`
   cursor: pointer;
 `;
 
-function Modal({ open, shellClass, onClose, children }: ModalProps) {
+function Modal({ open, shellClass, onClose, children,className }: ModalProps) {
   const modalRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -91,7 +92,7 @@ function Modal({ open, shellClass, onClose, children }: ModalProps) {
       {open && (
         <ModalWrapper>
           <Backdrop onClick={onClose} />
-          <Shell className={`shell overflow-hidden relative rounded-none md:rounded-lg ${shellClass || ''}`}>
+          <Shell className={`shell overflow-hidden relative rounded-none md:rounded-lg ${shellClass || ''} ${className} `}>
             {children}
             <CloseButton onClick={onClose}>
               <Icon name="close" />

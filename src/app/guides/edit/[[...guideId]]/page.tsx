@@ -9,12 +9,14 @@ import { useEditGuide } from '@/components/guides/Edit/useEditGuide';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
 import Link from 'next/link';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import GenerateGuideModal from '@/components/app/Modal/GenerateGuideModal';
 
 const Wrapper = styled.div`
   min-height: 484px;
 `;
+
 
 const EditGuide = (props: { space: SpaceWithIntegrationsFragment; params: { guideId?: string[] } }) => {
   const { space, params } = props;
@@ -22,6 +24,7 @@ const EditGuide = (props: { space: SpaceWithIntegrationsFragment; params: { guid
 
   const editGuideHelper = useEditGuide(space, guideId);
   const { activeStepId, guideCreating, guideLoaded, guide: guide, guideErrors, initialize, updateGuideFunctions, handleSubmit } = editGuideHelper;
+  const [generateGuideModal, setGenerateGuideModal] = useState(false);
 
   useEffect(() => {
     initialize().then(() => {
@@ -46,6 +49,7 @@ const EditGuide = (props: { space: SpaceWithIntegrationsFragment; params: { guid
 
         {guideLoaded ? (
           <div>
+            <button onClick={()=>setGenerateGuideModal(true)} >Generate Guide</button>
             <Wrapper>
               <BasicGuideSettings guide={guide} guideErrors={guideErrors} space={space} editGuideHelper={editGuideHelper} />
             </Wrapper>
@@ -57,6 +61,10 @@ const EditGuide = (props: { space: SpaceWithIntegrationsFragment; params: { guid
         ) : (
           <PageLoading />
         )}
+
+        {
+          generateGuideModal && <GenerateGuideModal open={generateGuideModal} onClose={()=>setGenerateGuideModal(false)} ></GenerateGuideModal>
+        }
       </SingleCardLayout>
     </PageWrapper>
   );
