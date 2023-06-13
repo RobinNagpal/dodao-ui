@@ -96,7 +96,6 @@ fragment ByteDetailsFragment on Byte {
       }
 
       ... on UserDiscordConnect {
-        order
         type
         uuid
       }
@@ -135,6 +134,12 @@ mutation UpsertByte($spaceId: String!, $input: UpsertByteInput!) {
 
 mutation SaveByte($spaceId: String!, $input: UpsertByteInput!) {
   payload: saveByte(spaceId: $spaceId, input: $input) {
+    ...ByteDetails
+  }
+}
+
+mutation PublishByte($spaceId: String!, $input: UpsertByteInput!) {
+  payload: publishByte(spaceId: $spaceId, input: $input) {
     ...ByteDetails
   }
 }

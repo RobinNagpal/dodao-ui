@@ -6,9 +6,10 @@ import {
   SpaceWithIntegrationsFragment,
   StepItemInputGenericInput,
   UpsertByteInput,
+  usePublishByteMutation,
   useQueryByteDetailsQuery,
   useSaveByteMutation,
-  useUpsertByteMutation,
+  useUpsertByteMutation
 } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
 import { isQuestion, isUserInput } from '@/types/deprecated/helpers/stepItemTypes';
@@ -36,7 +37,7 @@ export interface EditByteStep extends Omit<ByteStepInput, 'stepItems'>, Omit<Byt
   stepItems: EditByteStepItem[];
 }
 export interface EditByteType extends UpsertByteInput {
-  id?: string;
+  id: string;
   isPristine: boolean;
   byteExists: boolean;
   steps: EditByteStep[];
@@ -78,6 +79,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
   const { refetch: queryByteDetails } = useQueryByteDetailsQuery({ skip: true });
   const [upsertByteMutation] = useUpsertByteMutation();
   const [saveByteMutation] = useSaveByteMutation();
+  const [publishByteMutation] = usePublishByteMutation();
   const { showNotification } = useNotificationContext();
   const { $t } = useI18();
 
@@ -355,6 +357,45 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
     }
     setByteCreating(false);
   };
+  const handlePublish = async () => {
+    setByteCreating(true);
+    try {
+      const valid = validateByte(byteRef);
+      setByteRef({
+        ...byteRef,
+        isPristine: false,
+      });
+
+      if (!valid) {
+        console.log('Byte invalid', valid, byteErrors);
+        showNotification({ type: 'error', message: "Validation Error: Can't Save Byte" });
+
+        setByteCreating(false);
+        return;
+      }
+      const response = await publishByteMutation({
+        variables: {
+          spaceId: space.id,
+          input: getByteInput(),
+        },
+        errorPolicy: 'all',
+      });
+
+      const payload = response?.data?.payload;
+      if (payload) {
+        showNotification({ type: 'success', message: 'Byte Saved', heading: 'Success 🎉' });
+
+        router.push(`/tidbits/view/${payload.id}/0`);
+      } else {
+        showNotification({ type: 'error', message: $t('notify.somethingWentWrong') });
+        console.error(response.errors);
+      }
+    } catch (e) {
+      showNotification({ type: 'error', message: $t('notify.somethingWentWrong') });
+      console.error(e);
+    }
+    setByteCreating(false);
+  };
 
   return {
     byteCreating,
@@ -364,6 +405,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
     updateByteFunctions,
     handleSubmit,
     handleSave,
+    handlePublish,
     initialize,
   };
 }
