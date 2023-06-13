@@ -23,7 +23,17 @@ function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteI
   const { space, params } = props;
   const byteId = params.byteId ? params.byteId[0] : null;
 
-  const { byteCreating, byteLoaded, byteRef: byte, byteErrors, handleSubmit, handleSave,handlePublish, initialize, updateByteFunctions } = useEditByte(space, byteId || null);
+  const {
+    byteCreating,
+    byteLoaded,
+    byteRef: byte,
+    byteErrors,
+    handleSubmit,
+    handleSave,
+    handlePublish,
+    initialize,
+    updateByteFunctions,
+  } = useEditByte(space, byteId || null);
   const { data: session } = useSession();
   const inputError = (field: keyof ByteErrors): string => {
     const error = byteErrors?.[field];

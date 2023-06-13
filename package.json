@@ -7,9 +7,9 @@
     "build": "prisma generate && next build",
     "start": "prisma generate && next start",
     "lint": "next lint",
-    "lint-fix": "eslint . --ext .ts,.js --fix",
-    "prettier-fix": "prettier --config .prettierrc 'src/**/*.ts' --write",
-    "prettier-check": "prettier --check 'src/**/*.ts'",
+    "lint-fix": "eslint . --ext .ts,.js,.tsx --fix",
+    "prettier-fix": "prettier --config .prettierrc 'src/**/*.{js,ts,tsx,json}' --write",
+    "prettier-check": "prettier --check 'src/**/*.{js,ts,tsx,json}'",
     "graphql:download": "graphql-codegen --config introspection.yml",
     "graphql:generate": "graphql-codegen --config codegen.yml"
   },
