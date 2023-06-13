@@ -12,11 +12,11 @@ interface Props extends PropsWithChildren {
   className?: string;
 }
 
-const Block = ({ title, counter, slim, icon, loading, onSubmit, children }: Props) => {
+const Block = ({ title, counter, slim, icon, loading, onSubmit, children,className }: Props) => {
   return (
     <div className="rounded-none md:rounded-lg mb-4 bg-skin-block-bg h-full">
       {title && (
-        <h4 className="px-4 pt-3 block bg-skin-header-bg lg:rounded-2xl" style={{ paddingBottom: '12px' }}>
+        <h4 className={`px-4 pt-3 block bg-skin-header-bg lg:rounded-2xl ${className}`} style={{ paddingBottom: '12px' }}>
           {title}
           {icon && (
             <a onClick={onSubmit} className="float-right text-color" style={{ paddingTop: '2px' }}>

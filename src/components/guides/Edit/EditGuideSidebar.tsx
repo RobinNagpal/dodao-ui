@@ -1,19 +1,27 @@
+import { EditGuideType } from '@/components/guides/Edit/editGuideType';
 import { UseEditGuideHelper } from '@/components/guides/Edit/useEditGuide';
 import { getGuideSidebarIcon } from '@/components/guides/View/GetGuideSidebarIcon';
-import { LAST_STEP_UUID, UseViewGuideHelper } from '@/components/guides/View/useViewGuide';
+import { LAST_STEP_UUID } from '@/components/guides/View/useViewGuide';
 import { GuideFragment, GuideStepFragment } from '@/graphql/generated/generated-types';
+import { StepError } from '@/types/errors/error';
 import classNames from '@/utils/classNames';
-import { useMemo } from 'react';
 import styled, { css } from 'styled-components';
 
 export interface GuideSidebarProps {
-  guide: GuideFragment;
+  guide: EditGuideType;
   activeStep: GuideStepFragment;
   editGuideHelper: UseEditGuideHelper;
+  errorsInSteps?: Record<string, StepError>;
 }
 
 const StyledSpan = styled.span<{ showActive: boolean; showSuccess: boolean; showError: boolean }>`
   background-color: var(--block-bg);
+
+  ${({ showActive }) =>
+    showActive &&
+    css`
+      background-color: var(--primary-color);
+    `}
 
   ${({ showSuccess }) =>
     showSuccess &&
@@ -21,16 +29,11 @@ const StyledSpan = styled.span<{ showActive: boolean; showSuccess: boolean; show
       background-color: green;
     `}
 
+
   ${({ showError }) =>
     showError &&
     css`
       background-color: red;
-    `}
-
-  ${({ showActive }) =>
-    showActive &&
-    css`
-      background-color: var(--primary-color);
     `}
 `;
 
@@ -49,9 +52,7 @@ const StyledAnchor = styled.a<{ isActive: boolean; isDisabled: boolean }>`
       cursor: not-allowed;
     `}
 `;
-export default function EditGuideSidebar({ activeStep, guide, editGuideHelper }: GuideSidebarProps) {
-  const showError = false;
-
+export default function EditGuideSidebar({ activeStep, guide, editGuideHelper, errorsInSteps }: GuideSidebarProps) {
   return (
     <nav className="flex flex-col w-full">
       <div className="flow-root">
@@ -59,10 +60,13 @@ export default function EditGuideSidebar({ activeStep, guide, editGuideHelper }:
           {guide.steps.map((step, stepIdx) => {
             const iconBackground = true;
             const Icon = getGuideSidebarIcon(step);
+            const stepErrors = errorsInSteps?.[step.uuid];
 
-            const showError = false;
+            const showError = Object.keys(stepErrors?.stepItems || {}).length > 0 && !guide.isPristine;
+
             const showActive = step.uuid === editGuideHelper.activeStepId;
 
+            const showSuccess = !showError && !guide.isPristine;
             return (
               <li key={step.uuid}>
                 <div className={'relative pb-8 '}>
@@ -71,7 +75,7 @@ export default function EditGuideSidebar({ activeStep, guide, editGuideHelper }:
                     <div>
                       <StyledSpan
                         showActive={showActive}
-                        showSuccess={false}
+                        showSuccess={showSuccess}
                         showError={showError}
                         className={classNames(iconBackground, 'h-8 w-8 rounded-full flex items-center justify-center  ring-white')}
                       >

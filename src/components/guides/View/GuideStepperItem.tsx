@@ -202,17 +202,22 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
             )}
           </div>
         )}
-        {stepItems.map((item) => (
-          <div key={item.uuid}>
-            {isQuestion(item) && (
+        {stepItems.map((item) => {
+          if (isQuestion(item)) {
+            return (
               <Question
+                key={item.uuid}
                 question={item as GuideQuestionFragment}
                 questionResponse={(viewGuideHelper.getStepItemSubmission(step.uuid, item.uuid) as []) || []}
                 onSelectAnswer={selectAnswer}
               />
-            )}
-            {isUserDiscordConnect(item) && (
+            );
+          }
+
+          if (isUserDiscordConnect(item)) {
+            return (
               <UserDiscord
+                key={item.uuid}
                 userDiscord={item as GuideUserDiscordConnectFragment}
                 discordResponse={viewGuideHelper.getStepItemSubmission(step.uuid, item.uuid) as UserDiscordInfoInput}
                 spaceId={space.id}
@@ -220,16 +225,22 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
                 stepUuid={step.uuid}
                 stepOrder={viewGuideHelper.activeStepOrder}
               />
-            )}
-            {isUserInput(item) && (
+            );
+          }
+          if (isUserInput(item)) {
+            const stepItem = item as GuideUserInputFragment;
+            return (
               <UserInput
-                userInput={item as GuideUserInputFragment}
+                key={item.uuid}
                 modelValue={viewGuideHelper.getStepItemSubmission(step.uuid, item.uuid) as string}
-                setUserInput={setUserInput}
+                label={stepItem.label}
+                required={stepItem.required}
+                setUserInput={(value) => setUserInput(stepItem.uuid, value)}
               />
-            )}
-          </div>
-        ))}
+            );
+          }
+          return null;
+        })}
       </div>
       {showCompleteAllQuestionsInTheGuide && (
         <div className="mb-2 text-red">

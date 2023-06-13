@@ -1,16 +1,11 @@
 import styled from 'styled-components';
 import Input from '../Input';
 
-interface InputProps {
-  uuid: string;
+interface UserInputProps {
   label: string;
   required: boolean;
-}
-
-interface UserInputProps {
   modelValue?: string | number | null;
-  userInput: InputProps;
-  setUserInput: (uuid: string, value: string) => void;
+  setUserInput: (value: string) => void;
 }
 
 const StyledUiInput = styled(Input)`
@@ -19,16 +14,11 @@ const StyledUiInput = styled(Input)`
   }
 `;
 
-function UserInput({ modelValue, userInput, setUserInput }: UserInputProps) {
+function UserInput({ modelValue, label, required, setUserInput }: UserInputProps) {
   return (
-    <StyledUiInput
-      modelValue={modelValue}
-      maxLength={64}
-      className="mt-4"
-      onUpdate={(value?: string | number) => setUserInput(userInput.uuid, value?.toString() || '')}
-    >
+    <StyledUiInput modelValue={modelValue} maxLength={64} className="mt-4" onUpdate={(value?: string | number) => setUserInput(value?.toString() || '')}>
       <label>
-        {userInput.label} {userInput.required ? '*' : ''}
+        {label} {required ? '*' : ''}
       </label>
     </StyledUiInput>
   );
