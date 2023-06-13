@@ -69,6 +69,7 @@ fragment ByteDetailsFragment on Byte {
   id
   name
   publishStatus
+  visibility
   admins
   tags
   priority
@@ -114,6 +115,7 @@ query QueryBytes($spaceId: String!) {
     id
     name
     publishStatus
+    visibility
     admins
     tags
     priority

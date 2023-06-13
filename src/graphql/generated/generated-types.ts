@@ -92,6 +92,7 @@ export interface Byte {
   showIncorrectOnCompletion: Scalars['Boolean'];
   steps: Array<ByteStep>;
   tags: Array<Scalars['String']>;
+  visibility?: Maybe<Scalars['String']>;
 }
 
 export interface ByteQuestion {
@@ -174,6 +175,12 @@ export interface ByteUserInput {
   uuid: Scalars['String'];
 }
 
+export enum ChatCompletionRequestMessageRoleEnum {
+  Assistant = 'assistant',
+  System = 'system',
+  User = 'user'
+}
+
 export interface CourseBasicInfoInput {
   courseAdmins: Array<Scalars['String']>;
   courseFailContent?: InputMaybe<Scalars['String']>;
@@ -217,6 +224,14 @@ export interface CourseReadingQuestion {
 export interface CourseSubmissionInput {
   courseKey: Scalars['String'];
   uuid: Scalars['String'];
+}
+
+export interface CreateCompletionResponseChoice {
+  __typename?: 'CreateCompletionResponseChoice';
+  finish_reason?: Maybe<Scalars['String']>;
+  index?: Maybe<Scalars['Int']>;
+  logprobs?: Maybe<OpenAiChoiceLogprobs>;
+  text?: Maybe<Scalars['String']>;
 }
 
 export interface CreateSignedUrlInput {
@@ -1035,30 +1050,26 @@ export interface MutationUpsertTimelineArgs {
 
 export interface OpenAiChatMessageInput {
   content: Scalars['String'];
-  role: Scalars['String'];
+  role: ChatCompletionRequestMessageRoleEnum;
 }
 
 export interface OpenAiChatResponse {
   __typename?: 'OpenAIChatResponse';
-  choices: Array<OpenAiChoice>;
+  choices: Array<CreateCompletionResponseChoice>;
   created: Scalars['Int'];
   id: Scalars['ID'];
   model: Scalars['String'];
   object: Scalars['String'];
-  usage: OpenAiUsage;
+  usage?: Maybe<OpenAiUsage>;
 }
 
-export interface OpenAiChoice {
-  __typename?: 'OpenAIChoice';
-  finish_reason: Scalars['String'];
-  index: Scalars['Int'];
-  message: OpenAiMessage;
-}
-
-export interface OpenAiMessage {
-  __typename?: 'OpenAIMessage';
-  content: Scalars['String'];
-  role: Scalars['String'];
+export interface OpenAiChoiceLogprobs {
+  __typename?: 'OpenAIChoiceLogprobs';
+  text?: Maybe<Scalars['String']>;
+  text_offset?: Maybe<Array<Scalars['Int']>>;
+  token_logprobs?: Maybe<Array<Scalars['Float']>>;
+  tokens?: Maybe<Array<Scalars['String']>>;
+  top_logprobs?: Maybe<Array<Scalars['Any']>>;
 }
 
 export interface OpenAiUsage {
@@ -1077,6 +1088,7 @@ export interface Query {
   __typename?: 'Query';
   academyTask: AcademyTask;
   academyTasks?: Maybe<Array<AcademyTask>>;
+  askOpenAI: OpenAiChatResponse;
   byte: Byte;
   bytes: Array<Byte>;
   courses: Array<GitCourse>;
@@ -1088,7 +1100,6 @@ export interface Query {
   guide: Guide;
   guideSubmissions: Array<GuideSubmission>;
   guides: Array<Guide>;
-  queryOpenAIChat?: Maybe<OpenAiChatResponse>;
   rawGitCourse: RawGitCourse;
   simulation: Simulation;
   simulations: Array<Simulation>;
@@ -1108,6 +1119,11 @@ export interface QueryAcademyTaskArgs {
 export interface QueryAcademyTasksArgs {
   spaceId: Scalars['String'];
   status?: InputMaybe<Scalars['String']>;
+}
+
+
+export interface QueryAskOpenAiArgs {
+  messages: Array<OpenAiChatMessageInput>;
 }
 
 
@@ -1171,11 +1187,6 @@ export interface QueryGuideSubmissionsArgs {
 
 export interface QueryGuidesArgs {
   spaceId: Scalars['String'];
-}
-
-
-export interface QueryQueryOpenAiChatArgs {
-  messages: Array<OpenAiChatMessageInput>;
 }
 
 
@@ -1478,6 +1489,7 @@ export interface UpsertByteInput {
   steps: Array<ByteStepInput>;
   tags: Array<Scalars['String']>;
   thumbnail?: InputMaybe<Scalars['String']>;
+  visibility?: InputMaybe<Scalars['String']>;
 }
 
 export interface UpsertCourseIntegrationsInput {
@@ -1610,14 +1622,14 @@ export type ByteStepFragment = { __typename?: 'ByteStep', content: string, name:
 
 export type ByteDetailsFragment = { __typename?: 'Byte', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> };
 
-export type ByteDetailsFragmentFragment = { __typename?: 'Byte', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> };
+export type ByteDetailsFragmentFragment = { __typename?: 'Byte', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, publishStatus: string, visibility?: string | null, admins: Array<string>, tags: Array<string>, priority: number, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> };
 
 export type QueryBytesQueryVariables = Exact<{
   spaceId: Scalars['String'];
 }>;
 
 
-export type QueryBytesQuery = { __typename?: 'Query', bytes: Array<{ __typename?: 'Byte', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number }> };
+export type QueryBytesQuery = { __typename?: 'Query', bytes: Array<{ __typename?: 'Byte', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, publishStatus: string, visibility?: string | null, admins: Array<string>, tags: Array<string>, priority: number }> };
 
 export type QueryByteDetailsQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -1626,7 +1638,7 @@ export type QueryByteDetailsQueryVariables = Exact<{
 }>;
 
 
-export type QueryByteDetailsQuery = { __typename?: 'Query', byte: { __typename?: 'Byte', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> } };
+export type QueryByteDetailsQuery = { __typename?: 'Query', byte: { __typename?: 'Byte', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, publishStatus: string, visibility?: string | null, admins: Array<string>, tags: Array<string>, priority: number, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> } };
 
 export type UpsertByteMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -2035,6 +2047,13 @@ export type GuidesQueryQueryVariables = Exact<{
 
 export type GuidesQueryQuery = { __typename?: 'Query', guides: Array<{ __typename?: 'Guide', id: string, authors: Array<string>, name: string, categories: Array<string>, content: string, created: number, guideSource: string, guideType: string, publishStatus: string, socialShareImage?: string | null, thumbnail?: string | null, uuid: string }> };
 
+export type AskOpenAiQueryVariables = Exact<{
+  messages: Array<OpenAiChatMessageInput> | OpenAiChatMessageInput;
+}>;
+
+
+export type AskOpenAiQuery = { __typename?: 'Query', askOpenAI: { __typename?: 'OpenAIChatResponse', created: number, id: string, model: string, object: string, choices: Array<{ __typename?: 'CreateCompletionResponseChoice', finish_reason?: string | null, index?: number | null, text?: string | null, logprobs?: { __typename?: 'OpenAIChoiceLogprobs', text?: string | null, text_offset?: Array<number> | null, token_logprobs?: Array<number> | null, tokens?: Array<string> | null } | null }>, usage?: { __typename?: 'OpenAIUsage', completion_tokens: number, prompt_tokens: number, total_tokens: number } | null } };
+
 export type SimulationStepFragment = { __typename?: 'SimulationStep', content: string, iframeUrl?: string | null, name: string, uuid: string, order: number };
 
 export type SimulationDetailsFragment = { __typename?: 'Simulation', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, steps: Array<{ __typename?: 'SimulationStep', content: string, iframeUrl?: string | null, name: string, uuid: string, order: number }> };
@@ -2298,6 +2317,7 @@ export const ByteDetailsFragmentFragmentDoc = gql`
   id
   name
   publishStatus
+  visibility
   admins
   tags
   priority
@@ -2919,6 +2939,7 @@ export const QueryBytesDocument = gql`
     id
     name
     publishStatus
+    visibility
     admins
     tags
     priority
@@ -4691,6 +4712,63 @@ export type GuidesQueryLazyQueryHookResult = ReturnType<typeof useGuidesQueryLaz
 export type GuidesQueryQueryResult = Apollo.QueryResult<GuidesQueryQuery, GuidesQueryQueryVariables>;
 export function refetchGuidesQueryQuery(variables: GuidesQueryQueryVariables) {
       return { query: GuidesQueryDocument, variables: variables }
+    }
+export const AskOpenAiDocument = gql`
+    query AskOpenAI($messages: [OpenAIChatMessageInput!]!) {
+  askOpenAI(messages: $messages) {
+    choices {
+      finish_reason
+      index
+      logprobs {
+        text
+        text_offset
+        token_logprobs
+        tokens
+      }
+      text
+    }
+    created
+    id
+    model
+    object
+    usage {
+      completion_tokens
+      prompt_tokens
+      total_tokens
+    }
+  }
+}
+    `;
+
+/**
+ * __useAskOpenAiQuery__
+ *
+ * To run a query within a React component, call `useAskOpenAiQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAskOpenAiQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAskOpenAiQuery({
+ *   variables: {
+ *      messages: // value for 'messages'
+ *   },
+ * });
+ */
+export function useAskOpenAiQuery(baseOptions: Apollo.QueryHookOptions<AskOpenAiQuery, AskOpenAiQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AskOpenAiQuery, AskOpenAiQueryVariables>(AskOpenAiDocument, options);
+      }
+export function useAskOpenAiLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AskOpenAiQuery, AskOpenAiQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AskOpenAiQuery, AskOpenAiQueryVariables>(AskOpenAiDocument, options);
+        }
+export type AskOpenAiQueryHookResult = ReturnType<typeof useAskOpenAiQuery>;
+export type AskOpenAiLazyQueryHookResult = ReturnType<typeof useAskOpenAiLazyQuery>;
+export type AskOpenAiQueryResult = Apollo.QueryResult<AskOpenAiQuery, AskOpenAiQueryVariables>;
+export function refetchAskOpenAiQuery(variables: AskOpenAiQueryVariables) {
+      return { query: AskOpenAiDocument, variables: variables }
     }
 export const SimulationsDocument = gql`
     query Simulations($spaceId: String!) {

@@ -33,4 +33,26 @@ export enum InputType {
   PrivateShortInput = 'PrivateShortInput',
 }
 
+export enum GuideCategoryType {
+  community = 'Community',
+  contentwriting = 'Contentwriting',
+  design = 'Design',
+  developer = 'Developer',
+  engineering = 'Engineering',
+  general = 'General',
+  governance = 'Governance',
+  introduction = 'Introduction',
+  marketing = 'Marketing',
+  member = 'Member',
+  overview = 'Overview',
+  products = 'Products',
+  sales = 'Sales',
+  setup = 'Setup',
+}
+
 export type StepItemType = InputType | QuestionType | typeof UserDiscordConnectType | string;
+
+export enum VisibilityEnum {
+  Public = 'Public',
+  Hidden = 'Hidden',
+}

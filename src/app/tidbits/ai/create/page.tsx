@@ -4,6 +4,7 @@ import LoadingComponent from '@/components/core/loaders/Loading';
 import { NotificationProps } from '@/components/core/notify/Notification';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import { useNotificationContext } from '@/contexts/NotificationContext';
+import { ChatCompletionRequestMessageRoleEnum, useAskOpenAiQuery } from '@/graphql/generated/generated-types';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
@@ -11,6 +12,8 @@ const Create = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [text, setText] = useState('Generate response');
+  const { refetch: askOpenAiQuery } = useAskOpenAiQuery({ skip: true });
+
   const [input, setInput] =
     useState(`Uniswap V3's introduction of concentrated liquidity has transformed the game for liquidity providers, offering them an unparalleled level of flexibility through a range of strategic options.
    
@@ -93,33 +96,28 @@ const Create = () => {
       setTimeout(() => reject(new Error('Request timeout')), timeoutDuration);
     });
 
-    const responsePromise = fetch('/api/generate', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        prompt,
-      }),
-    });
-
     try {
-      const response = (await Promise.race([responsePromise, timeoutPromise])) as Response;
+      const response = await askOpenAiQuery({
+        messages: [{ role: ChatCompletionRequestMessageRoleEnum.User, content: prompt }],
+      });
 
-      if (!response.ok) {
-        throw new Error(response.statusText);
+      const data = await response.data.askOpenAI.choices[0].text;
+
+      if (!data) {
+        throw new Error(JSON.stringify(response));
       }
 
+      const parsedData = JSON.parse(data);
       setLoaded(true);
-      const data = await response.json();
+
       console.log('data', data);
-      setResponse(JSON.stringify(data, null, 2));
+
       setLoading(false);
       setText('Generated');
 
-      if (data.id) {
-        localStorage.setItem(data.id, JSON.stringify(data));
-        router.push(`/tidbits/edit/${data.id}`);
+      if (data) {
+        localStorage.setItem(parsedData.id, data);
+        router.push(`/tidbits/edit/${parsedData.id}`);
       } else {
         handleShowNotification({
           heading: 'Error',
