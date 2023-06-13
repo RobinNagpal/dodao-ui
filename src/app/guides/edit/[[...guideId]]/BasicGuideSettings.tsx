@@ -2,6 +2,7 @@
 
 import Block from '@/components/app/Block';
 import UserInput from '@/components/app/Form/UserInput';
+import AddGuideCategoryModal from '@/components/app/Modal/AddGuideCategoryModal';
 import EllipsisDropdown from '@/components/core/dropdowns/EllipsisDropdown';
 import { EditGuideStepper } from '@/components/guides/Edit/EditGuideStepper';
 import { EditGuideType } from '@/components/guides/Edit/editGuideType';
@@ -11,9 +12,6 @@ import { useI18 } from '@/hooks/useI18';
 import { GuideCategoryType, PublishStatus } from '@/types/deprecated/models/enums';
 import { statuses } from '@/utils/ui/statuses';
 import React, { useState } from 'react';
-import AddGuideTypeModal from '@/components/app/Modal/AddGuideTypeModal';
-import { GuideType } from '@/types/deprecated/models/enums';
-import AddGuideCategoryModal from '@/components/app/Modal/AddGuideCategoryModal';
 
 type BasicGuideSettingsProps = {
   space: Space;
@@ -28,19 +26,14 @@ export default function BasicGuideSettings({ editGuideHelper, guide, guideErrors
   };
   const { $t } = useI18();
   const { updateGuideField } = editGuideHelper.updateGuideFunctions;
-  const [guideTypeModal, setGuideTypeModal] = useState(false);
-  const [guideCategoryModal, setGuideCategoryModal] = useState(false);
 
-  function handleGuideTypeInputs(value: GuideType) {
-    updateGuideField('guideType', value);
-  }
+  const [guideCategoryModal, setGuideCategoryModal] = useState(false);
 
   function handleGuideCategoryInputs(value: GuideCategoryType) {
     // updateGuideField("categories", value)
   }
 
   function handleClose() {
-    setGuideTypeModal(false);
     setGuideCategoryModal(false);
   }
 
@@ -63,11 +56,6 @@ export default function BasicGuideSettings({ editGuideHelper, guide, guideErrors
             <button onClick={() => setGuideCategoryModal(true)}>
               {guide.categories.length !== 0 ? guide.categories.map((category, index) => <p key={index}>{category}</p>) : <p>no categories</p>}
             </button>
-          </div>
-
-          <div>
-            <div>Guide Type </div>
-            <button onClick={() => setGuideTypeModal(true)}>{guide.guideType}</button>
           </div>
 
           <div>Publish Status * </div>
@@ -97,7 +85,6 @@ export default function BasicGuideSettings({ editGuideHelper, guide, guideErrors
         </div>
       )}
 
-      {guideTypeModal && <AddGuideTypeModal open={guideTypeModal} onClose={handleClose} onAddInput={handleGuideTypeInputs} />}
       {guideCategoryModal && <AddGuideCategoryModal open={guideCategoryModal} onClose={handleClose} onAddInput={handleGuideCategoryInputs} />}
     </div>
   );

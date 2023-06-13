@@ -33,13 +33,6 @@ export enum InputType {
   PrivateShortInput = 'PrivateShortInput',
 }
 
-export enum GuideType {
-  course = 'course',
-  Onboarding = 'Onboarding',
-  HowTo = 'How To',
-  LevelUp = 'Level Up',
-}
-
 export enum GuideCategoryType {
   community = 'community',
   contentwriting = 'contentwriting',
