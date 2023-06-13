@@ -30,7 +30,7 @@ export default function BasicGuideSettings({ editGuideHelper, guide, guideErrors
   const [guideCategoryModal, setGuideCategoryModal] = useState(false);
 
   function handleGuideCategoryInputs(value: GuideCategoryType[]) {
-    updateGuideField("categories", value)
+    updateGuideField('categories', value);
   }
 
   function handleClose() {
@@ -54,7 +54,15 @@ export default function BasicGuideSettings({ editGuideHelper, guide, guideErrors
           <div>
             <div>Categories </div>
             <button onClick={() => setGuideCategoryModal(true)}>
-              {guide.categories.length !== 0 ? guide.categories.map((category, index) => <p className='text-left p-2' key={index}>* {category}</p>) : <p>no categories</p>}
+              {guide.categories.length !== 0 ? (
+                guide.categories.map((category, index) => (
+                  <p className="text-left p-2" key={index}>
+                    * {category}
+                  </p>
+                ))
+              ) : (
+                <p>no categories</p>
+              )}
             </button>
           </div>
 
