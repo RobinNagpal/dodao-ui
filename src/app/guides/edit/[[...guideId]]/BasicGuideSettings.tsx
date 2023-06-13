@@ -8,9 +8,12 @@ import { EditGuideType } from '@/components/guides/Edit/editGuideType';
 import { UseEditGuideHelper } from '@/components/guides/Edit/useEditGuide';
 import { Space } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
-import { PublishStatus } from '@/types/deprecated/models/enums';
+import { GuideCategoryType, PublishStatus } from '@/types/deprecated/models/enums';
 import { statuses } from '@/utils/ui/statuses';
-import React from 'react';
+import React, { useState } from 'react';
+import AddGuideTypeModal from '@/components/app/Modal/AddGuideTypeModal';
+import { GuideType } from '@/types/deprecated/models/enums';
+import AddGuideCategoryModal from '@/components/app/Modal/AddGuideCategoryModal';
 
 type BasicGuideSettingsProps = {
   space: Space;
@@ -25,19 +28,64 @@ export default function BasicGuideSettings({ editGuideHelper, guide, guideErrors
   };
   const { $t } = useI18();
   const { updateGuideField } = editGuideHelper.updateGuideFunctions;
+  const [guideTypeModal, setGuideTypeModal] = useState(false)
+  const [guideCategoryModal, setGuideCategoryModal] = useState(false)
+
+  function handleGuideTypeInputs(value: GuideType) {
+    updateGuideField("guideType", value)
+  }
+
+  function handleGuideCategoryInputs(value: GuideCategoryType) {
+    updateGuideField("categories", value)
+  }
+
+  function handleClose() {
+    setGuideTypeModal(false)
+    setGuideCategoryModal(false)
+  }
+
+
 
   return (
     <div>
       {/* Basic Info Section */}
       <Block title={$t('guide.create.basicInfo')} className="mt-4 font-bold text-xl">
-        <div className="mt-4">
+        <div className="mt-4 flex flex-col gap-5">
           <UserInput modelValue={guide.name} setUserInput={(v) => updateGuideField('name', v.toString())} label="Name" required></UserInput>
+
           <UserInput
             modelValue={guide.content}
             setUserInput={(v) => updateGuideField('content', v.toString())}
             label={$t('guide.create.explanation')}
             required
           />
+
+          <div>
+            <div>Categories </div>
+            <button
+              onClick={() => setGuideCategoryModal(true)}
+            >
+              {guide.categories}
+
+            </button>
+
+          </div>
+
+
+
+          <div>
+            <div>Guide Type </div>
+            <button
+              onClick={() => setGuideTypeModal(true)}
+            >
+              {guide.guideType}
+
+            </button>
+
+          </div>
+
+
+
 
           <div>Publish Status * </div>
           <div className="flex justify-start ">
@@ -65,6 +113,27 @@ export default function BasicGuideSettings({ editGuideHelper, guide, guideErrors
           <span className="ml-1">Fix errors to proceed. Make sure you have selected a correct answer for each question</span>
         </div>
       )}
+
+      {
+        guideTypeModal && (
+          <AddGuideTypeModal
+            open={guideTypeModal}
+            onClose={handleClose}
+            onAddInput={handleGuideTypeInputs}
+          />
+
+        )
+      }
+      {
+        guideCategoryModal && (
+          <AddGuideCategoryModal
+            open={guideCategoryModal}
+            onClose={handleClose}
+            onAddInput={handleGuideCategoryInputs}
+          />
+        )
+      }
+
     </div>
   );
 }
