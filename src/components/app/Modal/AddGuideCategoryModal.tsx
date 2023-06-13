@@ -42,7 +42,7 @@ const AddGuideCategoryModal = ({ open, onClose, onAddInput }: GuideCategoryModal
       <ModalHeader className=" p-4 text-center font-bold text-2xl">Select Categories</ModalHeader>
 
       <div className="m-4 space-y-2  max-h-[50%] overflow-scroll">
-        <p>select upto two categories</p>
+        <p>Select upto two categories</p>
 
         {Object.values(GuideCategoryType).map((i, buttonIndex) => (
           <Button
@@ -58,11 +58,11 @@ const AddGuideCategoryModal = ({ open, onClose, onAddInput }: GuideCategoryModal
           </Button>
         ))}
       </div>
-      <div className="flex flex-1 p-5">
-        <Button onClick={onClose} className=" basis-1/2 py-2 gap-2">
+      <div className="flex flex-1 gap-2 p-5">
+        <Button onClick={onClose} className=" basis-1/2 py-2 ">
           cancel
         </Button>
-        <Button onClick={handleConfirm} className=" basis-1/2 py-2">
+        <Button primary onClick={handleConfirm} className=" basis-1/2 py-2">
           confirm
         </Button>
       </div>

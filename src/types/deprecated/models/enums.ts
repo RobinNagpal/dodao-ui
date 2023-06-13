@@ -34,20 +34,20 @@ export enum InputType {
 }
 
 export enum GuideCategoryType {
-  community = 'community',
-  contentwriting = 'contentwriting',
-  design = 'design',
-  developer = 'developer',
-  engineering = 'engineering',
-  general = 'general',
-  governance = 'governance',
-  introduction = 'introduction',
-  marketing = 'marketing',
-  member = 'member',
-  overview = 'overview',
-  products = 'products',
-  sales = 'sales',
-  setup = 'setup',
+  community = 'Community',
+  contentwriting = 'Contentwriting',
+  design = 'Design',
+  developer = 'Developer',
+  engineering = 'Engineering',
+  general = 'General',
+  governance = 'Governance',
+  introduction = 'Introduction',
+  marketing = 'Marketing',
+  member = 'Member',
+  overview = 'Overview',
+  products = 'Products',
+  sales = 'Sales',
+  setup = 'Setup',
 }
 
 export type StepItemType = InputType | QuestionType | typeof UserDiscordConnectType | string;
