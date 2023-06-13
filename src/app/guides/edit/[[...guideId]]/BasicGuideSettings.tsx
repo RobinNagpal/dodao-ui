@@ -28,11 +28,11 @@ export default function BasicGuideSettings({ editGuideHelper, guide, guideErrors
   };
   const { $t } = useI18();
   const { updateGuideField } = editGuideHelper.updateGuideFunctions;
-  const [guideTypeModal, setGuideTypeModal] = useState(false)
-  const [guideCategoryModal, setGuideCategoryModal] = useState(false)
+  const [guideTypeModal, setGuideTypeModal] = useState(false);
+  const [guideCategoryModal, setGuideCategoryModal] = useState(false);
 
   function handleGuideTypeInputs(value: GuideType) {
-    updateGuideField("guideType", value)
+    updateGuideField('guideType', value);
   }
 
   function handleGuideCategoryInputs(value: GuideCategoryType) {
@@ -40,11 +40,9 @@ export default function BasicGuideSettings({ editGuideHelper, guide, guideErrors
   }
 
   function handleClose() {
-    setGuideTypeModal(false)
-    setGuideCategoryModal(false)
+    setGuideTypeModal(false);
+    setGuideCategoryModal(false);
   }
-
-
 
   return (
     <div>
@@ -62,33 +60,15 @@ export default function BasicGuideSettings({ editGuideHelper, guide, guideErrors
 
           <div>
             <div>Categories </div>
-            <button
-              onClick={() => setGuideCategoryModal(true)}
-            >
-              { (guide.categories.length !==0) ?  guide.categories.map((category,index)=>
-              <p key={index} >{category}</p>
-              ): <p>no categories</p> }
-
+            <button onClick={() => setGuideCategoryModal(true)}>
+              {guide.categories.length !== 0 ? guide.categories.map((category, index) => <p key={index}>{category}</p>) : <p>no categories</p>}
             </button>
-           
-
           </div>
-
-
 
           <div>
             <div>Guide Type </div>
-            <button
-              onClick={() => setGuideTypeModal(true)}
-            >
-              {guide.guideType}
-
-            </button>
-
+            <button onClick={() => setGuideTypeModal(true)}>{guide.guideType}</button>
           </div>
-
-
-
 
           <div>Publish Status * </div>
           <div className="flex justify-start ">
@@ -117,26 +97,8 @@ export default function BasicGuideSettings({ editGuideHelper, guide, guideErrors
         </div>
       )}
 
-      {
-        guideTypeModal && (
-          <AddGuideTypeModal
-            open={guideTypeModal}
-            onClose={handleClose}
-            onAddInput={handleGuideTypeInputs}
-          />
-
-        )
-      }
-      {
-        guideCategoryModal && (
-          <AddGuideCategoryModal
-            open={guideCategoryModal}
-            onClose={handleClose}
-            onAddInput={handleGuideCategoryInputs}
-          />
-        )
-      }
-
+      {guideTypeModal && <AddGuideTypeModal open={guideTypeModal} onClose={handleClose} onAddInput={handleGuideTypeInputs} />}
+      {guideCategoryModal && <AddGuideCategoryModal open={guideCategoryModal} onClose={handleClose} onAddInput={handleGuideCategoryInputs} />}
     </div>
   );
 }
