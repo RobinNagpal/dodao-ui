@@ -151,6 +151,12 @@ type ByteUserInput {
   uuid: String!
 }
 
+enum ChatCompletionRequestMessageRoleEnum {
+  assistant
+  system
+  user
+}
+
 input CourseBasicInfoInput {
   courseAdmins: [String!]!
   courseFailContent: String
@@ -192,6 +198,13 @@ type CourseReadingQuestion {
 input CourseSubmissionInput {
   courseKey: String!
   uuid: String!
+}
+
+type CreateCompletionResponseChoice {
+  finish_reason: String
+  index: Int
+  logprobs: OpenAIChoiceLogprobs
+  text: String
 }
 
 input CreateSignedUrlInput {
@@ -708,27 +721,24 @@ type Mutation {
 
 input OpenAIChatMessageInput {
   content: String!
-  role: String!
+  role: ChatCompletionRequestMessageRoleEnum!
 }
 
 type OpenAIChatResponse {
-  choices: [OpenAIChoice!]!
+  choices: [CreateCompletionResponseChoice!]!
   created: Int!
   id: ID!
   model: String!
   object: String!
-  usage: OpenAIUsage!
+  usage: OpenAIUsage
 }
 
-type OpenAIChoice {
-  finish_reason: String!
-  index: Int!
-  message: OpenAIMessage!
-}
-
-type OpenAIMessage {
-  content: String!
-  role: String!
+type OpenAIChoiceLogprobs {
+  text: String
+  text_offset: [Int!]
+  token_logprobs: [Float!]
+  tokens: [String!]
+  top_logprobs: [Any!]
 }
 
 type OpenAIUsage {
@@ -745,6 +755,7 @@ enum OrderDirection {
 type Query {
   academyTask(uuid: String!): AcademyTask!
   academyTasks(spaceId: String!, status: String): [AcademyTask!]
+  askOpenAI(messages: [OpenAIChatMessageInput!]!): OpenAIChatResponse!
   byte(byteId: String!, includeDraft: Boolean, spaceId: String!): Byte!
   bytes(spaceId: String!): [Byte!]!
   courses(spaceId: String!): [GitCourse!]!
@@ -756,7 +767,6 @@ type Query {
   guide(spaceId: String!, uuid: String!): Guide!
   guideSubmissions(guideUuid: String!): [GuideSubmission!]!
   guides(spaceId: String!): [Guide!]!
-  queryOpenAIChat(messages: [OpenAIChatMessageInput!]!): OpenAIChatResponse
   rawGitCourse(key: String!, spaceId: String!): RawGitCourse!
   simulation(simulationId: String!, spaceId: String!): Simulation!
   simulations(spaceId: String!): [Simulation!]!
