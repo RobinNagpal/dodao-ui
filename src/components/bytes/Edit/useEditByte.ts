@@ -1,12 +1,15 @@
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import {
+  ByteDetailsFragment,
   ByteQuestionFragmentFragment,
   ByteStepFragment,
   ByteStepInput,
   SpaceWithIntegrationsFragment,
   StepItemInputGenericInput,
   UpsertByteInput,
+  usePublishByteMutation,
   useQueryByteDetailsQuery,
+  useSaveByteMutation,
   useUpsertByteMutation,
 } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
@@ -15,8 +18,10 @@ import { PublishStatus } from '@/types/deprecated/models/enums';
 import { UserInput } from '@/types/deprecated/models/GuideModel';
 import { ByteErrors } from '@/types/errors/byteErrors';
 import { StepError } from '@/types/errors/error';
+import { slugify } from '@/utils/auth/slugify';
 import { emptyByte } from '@/utils/byte/EmptyByte';
 import { validateQuestion, validateUserInput } from '@/utils/stepItems/validateItems';
+import { FetchResult } from '@apollo/client';
 import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
@@ -34,7 +39,7 @@ export interface EditByteStep extends Omit<ByteStepInput, 'stepItems'>, Omit<Byt
   stepItems: EditByteStepItem[];
 }
 export interface EditByteType extends UpsertByteInput {
-  id?: string;
+  id: string;
   isPristine: boolean;
   byteExists: boolean;
   steps: EditByteStep[];
@@ -75,6 +80,8 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
 
   const { refetch: queryByteDetails } = useQueryByteDetailsQuery({ skip: true });
   const [upsertByteMutation] = useUpsertByteMutation();
+  const [saveByteMutation] = useSaveByteMutation();
+  const [publishByteMutation] = usePublishByteMutation();
   const { showNotification } = useNotificationContext();
   const { $t } = useI18();
 
@@ -97,7 +104,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
       setByteLoaded(true);
     } else if (byteId) {
       const result = await queryByteDetails({ byteId: byteId, spaceId: space.id });
-      const byte = result.data.byte;
+      const byte: ByteDetailsFragment = result.data.byte;
       setByteRef({
         ...byte,
         byteExists: true,
@@ -246,7 +253,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
   function getByteInput(): UpsertByteInput {
     return {
       content: byteRef.content,
-      id: byteRef.id,
+      id: byteRef.id || slugify(byteRef.name) + '-' + uuidv4().toString().substring(0, 4),
       name: byteRef.name,
       steps: byteRef.steps.map((s) => ({
         content: s.content,
@@ -255,7 +262,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
           type: si.type,
           uuid: si.uuid,
           answerKeys: si.answerKeys,
-          choices: si.choices,
+          choices: si.choices?.map((c) => ({ key: c.key, content: c.content })),
           content: si.content,
           questionType: si.questionType,
           label: si.label,
@@ -273,7 +280,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
     };
   }
 
-  const handleSubmit = async () => {
+  const saveViaMutation = async (mutationFn: () => Promise<FetchResult<{ payload: ByteDetailsFragment | undefined }>>) => {
     setByteCreating(true);
     try {
       const valid = validateByte(byteRef);
@@ -289,13 +296,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
         setByteCreating(false);
         return;
       }
-      const response = await upsertByteMutation({
-        variables: {
-          spaceId: space.id,
-          input: getByteInput(),
-        },
-        errorPolicy: 'all',
-      });
+      const response = await mutationFn();
 
       const payload = response?.data?.payload;
       if (payload) {
@@ -313,6 +314,44 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
     setByteCreating(false);
   };
 
+  const handleSubmit = async () => {
+    await saveViaMutation(
+      async () =>
+        await upsertByteMutation({
+          variables: {
+            spaceId: space.id,
+            input: getByteInput(),
+          },
+          errorPolicy: 'all',
+        })
+    );
+  };
+
+  const handleSave = async () => {
+    await saveViaMutation(
+      async () =>
+        await saveByteMutation({
+          variables: {
+            spaceId: space.id,
+            input: getByteInput(),
+          },
+          errorPolicy: 'all',
+        })
+    );
+  };
+  const handlePublish = async () => {
+    await saveViaMutation(
+      async () =>
+        await publishByteMutation({
+          variables: {
+            spaceId: space.id,
+            input: getByteInput(),
+          },
+          errorPolicy: 'all',
+        })
+    );
+  };
+
   return {
     byteCreating,
     byteLoaded,
@@ -320,6 +359,8 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
     byteErrors,
     updateByteFunctions,
     handleSubmit,
+    handleSave,
+    handlePublish,
     initialize,
   };
 }

@@ -162,6 +162,7 @@ export interface CourseSubmissionHelper {
   isTopicComplete: (topic: CourseTopicFragment) => boolean;
   isTopicSubmissionInSubmittedStatus: (topicKey: string) => boolean;
   correctAndWrongAnswerCounts: (topicKey: string) => { correctAnswers: number; wrongAnswers: number };
+  getTopicSubmission: (topicKey: string) => TempTopicSubmission | undefined;
 }
 
 export const useCourseSubmission = (space: Space, courseKey: string): CourseSubmissionHelper => {
@@ -237,6 +238,10 @@ export const useCourseSubmission = (space: Space, courseKey: string): CourseSubm
       courseSub: courseSubmission,
       topicSub: topicSubmission,
     };
+  }
+
+  function getTopicSubmission(topicKey: string): TempTopicSubmission | undefined {
+    return courseSubmission?.topicSubmissionsMap[topicKey];
   }
 
   function getTopicSubmissionInput(courseKey: string, topicKey: string) {
@@ -557,5 +562,6 @@ export const useCourseSubmission = (space: Space, courseKey: string): CourseSubm
     isAllEvaluationsComplete,
     isTopicSubmissionInSubmittedStatus,
     correctAndWrongAnswerCounts,
+    getTopicSubmission,
   };
 };

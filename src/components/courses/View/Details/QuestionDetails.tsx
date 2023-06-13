@@ -113,7 +113,7 @@ export default function QuestionDetails(props: QuestionDetailsProps) {
     });
 
     if (questionIndex === (topic.questions?.length || 0) - 1) {
-      router.push(`/courses/view/${course.key}/${topic.key}/submit`);
+      router.push(`/courses/view/${course.key}/${topic.key}/submission`);
     } else {
       router.push(`/courses/view/${course.key}/${topic.key}/questions/${questionIndex + 1}`);
     }

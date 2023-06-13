@@ -23,7 +23,7 @@ function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteI
   const { space, params } = props;
   const byteId = params.byteId ? params.byteId[0] : null;
 
-  const { byteCreating, byteLoaded, byteRef: byte, byteErrors, handleSubmit, initialize, updateByteFunctions } = useEditByte(space, byteId || null);
+  const { byteCreating, byteLoaded, byteRef: byte, byteErrors, handleSubmit, handleSave,handlePublish, initialize, updateByteFunctions } = useEditByte(space, byteId || null);
   const { data: session } = useSession();
   const inputError = (field: keyof ByteErrors): string => {
     const error = byteErrors?.[field];
@@ -36,10 +36,6 @@ function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteI
 
   const selectPublishStatus = (status: PublishStatus) => {
     updateByteFunctions.updateByteField('publishStatus', status);
-  };
-
-  const clickSubmit = () => {
-    handleSubmit();
   };
 
   return (
@@ -114,9 +110,17 @@ function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteI
               </div>
             </Block>
 
-            <Button onClick={clickSubmit} loading={!byteLoaded || byteCreating} className="block w-full" variant="contained" primary>
-              Publish
-            </Button>
+            <div className="flex">
+              <Button onClick={handleSubmit} loading={!byteLoaded || byteCreating} className="block w-full mr-2" primary>
+                Submit
+              </Button>
+              <Button onClick={handleSave} loading={!byteLoaded || byteCreating} className="ml-2 block w-full" variant="contained" primary>
+                Save
+              </Button>
+              <Button onClick={handlePublish} loading={!byteLoaded || byteCreating} className="ml-2 block w-full" variant="contained" primary>
+                Publish
+              </Button>
+            </div>
           </div>
         ) : (
           <PageLoading />
