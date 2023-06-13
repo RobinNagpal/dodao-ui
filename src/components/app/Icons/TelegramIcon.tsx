@@ -2,14 +2,7 @@ import React from 'react';
 
 export default function TelegramIcon() {
   return (
-    <svg
-      width="16"
-      height="16"
-      xmlns="http://www.w3.org/2000/svg"
-      xmlnsXlink="http://www.w3.org/1999/xlink"
-      viewBox="0 0 189.473 189.473"
-      xmlSpace="preserve"
-    >
+    <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 189.473 189.473" xmlSpace="preserve">
       <g>
         <path
           d="M152.531,179.476c-1.48,0-2.95-0.438-4.211-1.293l-47.641-32.316l-25.552,18.386c-2.004,1.441-4.587,1.804-6.914,0.972

@@ -11,16 +11,14 @@ function ByteStepperItemWarnings({
   showQuestionsCompletionWarning,
   isUserInputComplete,
   isQuestionAnswered,
-  isDiscordConnected
+  isDiscordConnected,
 }: ByteStepperItemWarningsProps) {
   return (
     <>
       {showUseInputCompletionWarning && (
         <div className="mb-2 text-red">
           <i className="iconfont iconwarning"></i>
-          <span className="ml-1">
-            Answer all the questions in guide to complete
-          </span>
+          <span className="ml-1">Answer all the questions in guide to complete</span>
         </div>
       )}
       {showQuestionsCompletionWarning && (

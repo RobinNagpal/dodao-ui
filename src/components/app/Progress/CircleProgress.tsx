@@ -33,8 +33,7 @@ const Progress = styled.circle<Props>`
   stroke-width: 10;
   stroke-linecap: round;
   stroke-dasharray: ${2 * Math.PI * 45};
-  stroke-dashoffset: ${props =>
-    (1 - props.percentage / 100) * 2 * Math.PI * 45};
+  stroke-dashoffset: ${(props) => (1 - props.percentage / 100) * 2 * Math.PI * 45};
   transition: stroke-dashoffset 0.5s ease-out;
 `;
 

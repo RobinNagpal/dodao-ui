@@ -35,12 +35,7 @@ const StyledButton = styled.button<{ disabled?: boolean }>`
     `}
 `;
 
-function IconButton({
-  disabled = false,
-  children,
-  className = '',
-  onClick
-}: IconButtonProps) {
+function IconButton({ disabled = false, children, className = '', onClick }: IconButtonProps) {
   return (
     <StyledButton disabled={disabled} className={className} onClick={onClick}>
       {children}

@@ -34,7 +34,7 @@ function AddStepItemModal({ open, hasDiscordEnabled, onClose, onAddQuestion, onA
 
   return (
     <Modal open={open} onClose={onClose}>
-      <ModalHeader className=' p-4 text-center font-bold text-2xl' >Add Input or Question</ModalHeader>
+      <ModalHeader className=" p-4 text-center font-bold text-2xl">Add Input or Question</ModalHeader>
       <div className="m-4 space-y-2">
         <Button className="button-outline w-full flex justify-center items-center" onClick={() => addInput(InputType.PublicShortInput)}>
           Public Input
