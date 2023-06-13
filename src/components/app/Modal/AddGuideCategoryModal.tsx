@@ -3,6 +3,7 @@ import Modal from '@/components/app/Modal';
 import styled from 'styled-components';
 import Button from '@/components/app/Button';
 import { GuideCategoryType } from '@/types/deprecated/models/enums';
+import { CheckCircleIcon } from '@heroicons/react/24/outline';
 
 const ModalHeader = styled.h3`
   /* Custom styles if needed */
@@ -11,28 +12,29 @@ const ModalHeader = styled.h3`
 interface GuideCategoryModalProps {
   open: boolean;
   onClose: () => void;
-  onAddInput: (value: GuideCategoryType) => void;
+  onAddInput: (value: GuideCategoryType[]) => void;
 }
 
 const AddGuideCategoryModal = ({ open, onClose, onAddInput }: GuideCategoryModalProps) => {
-  const [selectedButtons, setSelectedButtons] = useState<number[]>([]);
+  const [selectedButtons, setSelectedButtons] = useState<GuideCategoryType[]>([]);
 
-  const selectButton = (buttonIndex: number) => {
-    if (selectedButtons.includes(buttonIndex)) {
+  const selectButton = (category: GuideCategoryType) => {
+    if (selectedButtons.includes(category)) {
       // Deselect the button
-      setSelectedButtons(selectedButtons.filter((index) => index !== buttonIndex));
+      setSelectedButtons(selectedButtons.filter((index) => index !== category));
     } else {
       // Select the button
-      setSelectedButtons([...selectedButtons, buttonIndex]);
+      setSelectedButtons([...selectedButtons, category]);
     }
   };
 
   function addInput(inputType: GuideCategoryType, buttonIndex: number) {
-    selectButton(buttonIndex);
+    selectButton(inputType);
   }
 
-  function handleConfirm(inputType: GuideCategoryType) {
-    onAddInput(inputType);
+  function handleConfirm() {
+    onAddInput([...selectedButtons]);
+    onClose();
   }
 
   return (
@@ -44,14 +46,15 @@ const AddGuideCategoryModal = ({ open, onClose, onAddInput }: GuideCategoryModal
 
         {Object.values(GuideCategoryType).map((i, buttonIndex) => (
           <Button
-            key={buttonIndex}
-            className={`button-outline w-full flex justify-center items-center transition - opacity ${
-              selectedButtons.includes(buttonIndex) ? 'opacity-50 cursor-not-allowed' : ''
+            key={i}
+            className={`button-outline w-full flex  justify-between items-center transition-opacity ${
+              selectedButtons.includes(i) || selectedButtons.length < 2 || selectedButtons.length === 0 ? '' : 'opacity-50'
             }`}
             onClick={() => addInput(i, buttonIndex)}
-            disabled={selectedButtons.length >= 2 && !selectedButtons.includes(buttonIndex)}
+            disabled={selectedButtons.length >= 2 && !selectedButtons.includes(i)}
           >
-            {i}
+            <p>{i}</p>
+            {selectedButtons.includes(i) && <CheckCircleIcon height={20} width={20} />}
           </Button>
         ))}
       </div>
@@ -59,7 +62,9 @@ const AddGuideCategoryModal = ({ open, onClose, onAddInput }: GuideCategoryModal
         <Button onClick={onClose} className=" basis-1/2 py-2 gap-2">
           cancel
         </Button>
-        <Button className=" basis-1/2 py-2">confirm</Button>
+        <Button onClick={handleConfirm} className=" basis-1/2 py-2">
+          confirm
+        </Button>
       </div>
     </Modal>
   );
