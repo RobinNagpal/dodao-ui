@@ -52,6 +52,7 @@ export interface UseEditGuideHelper {
   initialize: () => Promise<void>;
   updateGuideFunctions: UpdateGuideFunctions;
 }
+
 export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHelper {
   const { data: session } = useSession();
   const emptyGuideModel = emptyGuide(session?.username || '', space, GuideType.Onboarding);
@@ -59,7 +60,6 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
   const [guide, setGuide] = useState<EditGuideType>(initialState);
   const [guideErrors, setGuideErrors] = useState<GuideError>({});
   const [guideLoaded, setGuideLoaded] = useState<boolean>(false);
-
   const [activeStepId, setActiveStepId] = useState<string | null>();
 
   const [guideCreating, setGuideCreating] = useState(false);
@@ -114,7 +114,7 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
 
   function moveStepUp(stepUuid: string) {
     const stepIndex = guide.steps.findIndex((s) => s.uuid === stepUuid);
-    const steps = [...guide.steps];
+    const steps = guide.steps.map((s) => ({ ...s }));
     steps[stepIndex - 1].order = stepIndex;
     steps[stepIndex].order = stepIndex - 1;
     setGuide((prevGuide: EditGuideType) => ({
@@ -205,8 +205,10 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
         if (!errors.steps) {
           errors.steps = {};
         }
-        errors.steps[step.order] = stepError;
+        errors.steps[step.uuid] = stepError;
       }
+
+      return errors;
     });
 
     setGuideErrors(errors);
@@ -268,14 +270,11 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
       }));
 
       if (!valid) {
-        console.log('Guide invalid', valid, guideErrors);
+        console.log('Guide invalid', guideErrors);
         showNotification({ type: 'error', message: $t('notify.validationFailed') });
         setGuideCreating(false);
         return;
       }
-
-      console.log('guideRef.value', guide);
-
       const response = await upsertGuideMutation({
         variables: {
           spaceId: space.id,
@@ -352,8 +351,6 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
     updateGuideIntegrationField,
     updateStep,
   };
-
-  console.log('guide', guide);
 
   return {
     initialize,

@@ -1,9 +1,10 @@
 import { PropsWithChildren } from '@/types/PropsWithChildren';
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
+import ChevronDown from '@heroicons/react/24/solid/ChevronDownIcon';
 
 const StyledDropdown = styled.div`
-  position: inherit;
+  position: relative;
   display: block;
   width: 100%;
   .button {
@@ -38,7 +39,8 @@ const StyledDropdown = styled.div`
 
 const StyledSubMenuWrapper = styled.div`
   position: absolute;
-  right: 0;
+  left: 110px;
+  float: right;
   top: var(--top);
   width: auto;
   background-color: var(--header-bg);
@@ -152,7 +154,10 @@ function Dropdown({
       }}
       style={cssVars}
     >
-      <div className="button">{children}</div>
+      <div className="button flex items-center">
+        {children}
+        <ChevronDown />
+      </div>
       <StyledSubMenuWrapper className={open ? '' : 'hidden'}>
         <ul className={`sub-menu my-2 ${subMenuClass}`}>
           {items.map((item, index) => (

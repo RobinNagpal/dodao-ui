@@ -8,6 +8,7 @@ const choiceContentLimit = 256;
 
 export function validateQuestion(question: GuideQuestionFragment | ByteQuestionFragmentFragment | CourseQuestionFragment, stepError: StepError) {
   const questionError: QuestionError = {};
+
   if (!question.content || question.content.length > questionContentLimit) {
     questionError.content = true;
   }
@@ -27,6 +28,7 @@ export function validateQuestion(question: GuideQuestionFragment | ByteQuestionF
   if (question.answerKeys.length === 0) {
     questionError.answerKeys = true;
   }
+
   if (Object.keys(questionError).length > 0) {
     if (!stepError.stepItems) {
       stepError.stepItems = {};

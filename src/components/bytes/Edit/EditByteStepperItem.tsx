@@ -10,6 +10,7 @@ import {
   ByteQuestion,
   ByteQuestionFragmentFragment,
   ByteUserInputFragmentFragment,
+  GuideQuestion,
   SpaceWithIntegrationsFragment,
   StepItemInputGenericInput,
 } from '@/graphql/generated/generated-types';
@@ -37,6 +38,11 @@ interface EditByteStepperItemProps {
 
 const StyledStepItemContainer = styled.div`
   width: calc(100% - 3rem);
+`;
+
+const StepItemWrapper = styled.div<{ hasError: boolean }>`
+  border: ${(props) => (props.hasError ? '1px solid red' : '1px solid var(--border-color)')};
+  border-radius: 0.5rem;
 `;
 
 export default function EditByteStepperItem({
@@ -166,6 +172,7 @@ export default function EditByteStepperItem({
         return {
           ...question,
           choices: (question as ByteQuestionFragmentFragment).choices.filter((choice) => choice.key !== choiceKey),
+          answerKeys: (question as GuideQuestion).answerKeys.filter((answerKey) => answerKey !== choiceKey),
         };
       } else {
         return question;
@@ -344,7 +351,7 @@ export default function EditByteStepperItem({
         />
       </div>
       {stepItemsForStepper.map((stepItem, index) => (
-        <div key={stepItem.uuid} className="border rounded rounded-md p-4 mb-4 ml-4 w-full">
+        <StepItemWrapper key={stepItem.uuid} className="ml-4 mt-2 w-full" hasError={!!stepErrors?.stepItems?.[stepItem.uuid]}>
           {stepItem.isQuestion ? (
             <>
               <CreateQuestion
@@ -383,7 +390,7 @@ export default function EditByteStepperItem({
               updateUserInputRequired={updateUserInputRequired}
             />
           )}
-        </div>
+        </StepItemWrapper>
       ))}
       {modalByteInputOrQuestionOpen && (
         <AddStepItemModal

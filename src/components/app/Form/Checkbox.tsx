@@ -31,14 +31,11 @@ const StyledInput = styled.input`
   accent-color: var(--primary-color);
   width: 20px;
   min-width: 20px;
-
+  cursor:pointer;
   &:checked {
     background-color: var(--primary-color) !important;
   }
 
-  &:focus {
-    outline-color: var(--primary-color);
-  }
 `;
 
 const StyledLabel = styled.label`
@@ -65,6 +62,7 @@ export default function Checkbox({
           onChange={() => onChange(!isChecked)}
           className="h-4 w-4 border focus:ring focus:outline-none mr-2"
           disabled={readonly}
+          
         />
         <CheckboxOverlay readonly={readonly} isChecked={isChecked} />
       </div>

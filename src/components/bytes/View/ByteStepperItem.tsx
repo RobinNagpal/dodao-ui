@@ -6,6 +6,7 @@ import {
   ByteStepItemFragment,
   ByteUserDiscordConnectFragmentFragment,
   ByteUserInputFragmentFragment,
+  GuideUserInputFragment,
   SpaceWithIntegrationsFragment,
   UserDiscordInfoInput,
 } from '@/graphql/generated/generated-types';
@@ -215,12 +216,14 @@ function ByteStepperItem({ viewByteHelper, step, byte, space, setAccountModalOpe
             }
 
             if (isUserInput(stepItem)) {
+              const inputFragment = stepItem as ByteUserInputFragmentFragment;
               return (
                 <UserInput
                   key={index}
-                  userInput={stepItem as ByteUserInputFragmentFragment}
-                  modelValue={viewByteHelper.getStepItemSubmission(step.uuid, stepItem.uuid) as string}
-                  setUserInput={setUserInput}
+                  modelValue={viewByteHelper.getStepItemSubmission(step.uuid, inputFragment.uuid) as string}
+                  label={inputFragment.label}
+                  required={inputFragment.required}
+                  setUserInput={(userInput: string) => setUserInput(inputFragment.uuid, userInput)}
                 />
               );
             }

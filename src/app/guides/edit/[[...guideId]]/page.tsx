@@ -9,7 +9,7 @@ import { useEditGuide } from '@/components/guides/Edit/useEditGuide';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
 import Link from 'next/link';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
@@ -22,8 +22,6 @@ const EditGuide = (props: { space: SpaceWithIntegrationsFragment; params: { guid
 
   const editGuideHelper = useEditGuide(space, guideId);
   const { activeStepId, guideCreating, guideLoaded, guide: guide, guideErrors, initialize, updateGuideFunctions, handleSubmit } = editGuideHelper;
-
-  const guideExists = !!guide?.guideExists;
 
   useEffect(() => {
     initialize().then(() => {

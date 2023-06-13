@@ -1,5 +1,6 @@
 import EditGuideSidebar from '@/components/guides/Edit/EditGuideSidebar';
 import EditGuideStepperItem from '@/components/guides/Edit/EditGuideStepperItem';
+import { EditGuideType } from '@/components/guides/Edit/editGuideType';
 import { UseEditGuideHelper } from '@/components/guides/Edit/useEditGuide';
 import { GuideFragment, GuideStepFragment, Space } from '@/graphql/generated/generated-types';
 import { UserDiscordConnectType } from '@/types/deprecated/models/enums';
@@ -7,7 +8,7 @@ import { GuideError } from '@/types/errors/error';
 import React, { useMemo } from 'react';
 
 interface EditGuideStepperProps {
-  guide: GuideFragment;
+  guide: EditGuideType;
   guideErrors?: GuideError;
   editGuideHelper: UseEditGuideHelper;
   space: Space;
@@ -31,9 +32,9 @@ export function EditGuideStepper(props: EditGuideStepperProps) {
   return (
     <div className="flex">
       <div className="flex grow flex-col gap-y-5 overflow-y-auto  px-6 p-4">
-        <EditGuideSidebar guide={guide} editGuideHelper={editGuideHelper} activeStep={activeStep} />
+        <EditGuideSidebar guide={guide} errorsInSteps={guideErrors?.steps} editGuideHelper={editGuideHelper} activeStep={activeStep} />
       </div>
-      <div className="w-full flex flex-row">
+      <div className="w-full flex flex-row ">
         <EditGuideStepperItem
           guide={guide}
           stepErrors={guideErrors?.steps?.[activeStep.uuid]}
