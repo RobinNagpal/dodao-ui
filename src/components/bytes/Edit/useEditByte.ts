@@ -21,6 +21,7 @@ import { StepError } from '@/types/errors/error';
 import { slugify } from '@/utils/auth/slugify';
 import { emptyByte } from '@/utils/byte/EmptyByte';
 import { validateQuestion, validateUserInput } from '@/utils/stepItems/validateItems';
+import { FetchResult } from '@apollo/client';
 import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
@@ -279,7 +280,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
     };
   }
 
-  const handleSubmit = async () => {
+  const saveViaMutation = async (mutationFn: () => Promise<FetchResult<{ payload: ByteDetailsFragment | undefined }>>) => {
     setByteCreating(true);
     try {
       const valid = validateByte(byteRef);
@@ -295,13 +296,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
         setByteCreating(false);
         return;
       }
-      const response = await upsertByteMutation({
-        variables: {
-          spaceId: space.id,
-          input: getByteInput(),
-        },
-        errorPolicy: 'all',
-      });
+      const response = await mutationFn();
 
       const payload = response?.data?.payload;
       if (payload) {
@@ -317,85 +312,44 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
       console.error(e);
     }
     setByteCreating(false);
+  };
+
+  const handleSubmit = async () => {
+    await saveViaMutation(
+      async () =>
+        await upsertByteMutation({
+          variables: {
+            spaceId: space.id,
+            input: getByteInput(),
+          },
+          errorPolicy: 'all',
+        })
+    );
   };
 
   const handleSave = async () => {
-    setByteCreating(true);
-    try {
-      const valid = validateByte(byteRef);
-      setByteRef({
-        ...byteRef,
-        isPristine: false,
-      });
-
-      if (!valid) {
-        console.log('Byte invalid', valid, byteErrors);
-        showNotification({ type: 'error', message: "Validation Error: Can't Save Byte" });
-
-        setByteCreating(false);
-        return;
-      }
-      const response = await saveByteMutation({
-        variables: {
-          spaceId: space.id,
-          input: getByteInput(),
-        },
-        errorPolicy: 'all',
-      });
-
-      const payload = response?.data?.payload;
-      if (payload) {
-        showNotification({ type: 'success', message: 'Byte Saved', heading: 'Success 🎉' });
-
-        router.push(`/tidbits/view/${payload.id}/0`);
-      } else {
-        showNotification({ type: 'error', message: $t('notify.somethingWentWrong') });
-        console.error(response.errors);
-      }
-    } catch (e) {
-      showNotification({ type: 'error', message: $t('notify.somethingWentWrong') });
-      console.error(e);
-    }
-    setByteCreating(false);
+    await saveViaMutation(
+      async () =>
+        await saveByteMutation({
+          variables: {
+            spaceId: space.id,
+            input: getByteInput(),
+          },
+          errorPolicy: 'all',
+        })
+    );
   };
   const handlePublish = async () => {
-    setByteCreating(true);
-    try {
-      const valid = validateByte(byteRef);
-      setByteRef({
-        ...byteRef,
-        isPristine: false,
-      });
-
-      if (!valid) {
-        console.log('Byte invalid', valid, byteErrors);
-        showNotification({ type: 'error', message: "Validation Error: Can't Save Byte" });
-
-        setByteCreating(false);
-        return;
-      }
-      const response = await publishByteMutation({
-        variables: {
-          spaceId: space.id,
-          input: getByteInput(),
-        },
-        errorPolicy: 'all',
-      });
-
-      const payload = response?.data?.payload;
-      if (payload) {
-        showNotification({ type: 'success', message: 'Byte Saved', heading: 'Success 🎉' });
-
-        router.push(`/tidbits/view/${payload.id}/0`);
-      } else {
-        showNotification({ type: 'error', message: $t('notify.somethingWentWrong') });
-        console.error(response.errors);
-      }
-    } catch (e) {
-      showNotification({ type: 'error', message: $t('notify.somethingWentWrong') });
-      console.error(e);
-    }
-    setByteCreating(false);
+    await saveViaMutation(
+      async () =>
+        await publishByteMutation({
+          variables: {
+            spaceId: space.id,
+            input: getByteInput(),
+          },
+          errorPolicy: 'all',
+        })
+    );
   };
 
   return {
