@@ -19,9 +19,7 @@
         "https://eth-mainnet.alchemyapi.io/v2/4bdDVB5QAaorY2UE-GBUbM2yQB3QJqzv",
         "https://cloudflare-eth.com"
       ],
-      "ws": [
-        "wss://eth-mainnet.ws.alchemyapi.io/v2/4bdDVB5QAaorY2UE-GBUbM2yQB3QJqzv"
-      ],
+      "ws": ["wss://eth-mainnet.ws.alchemyapi.io/v2/4bdDVB5QAaorY2UE-GBUbM2yQB3QJqzv"],
       "explorer": "https://etherscan.io"
     },
     "3": {
@@ -32,9 +30,7 @@
       "network": "ropsten",
       "testnet": true,
       "multicall": "0x53c43764255c17bd724f74c4ef150724ac50a3ed",
-      "rpc": [
-        "https://eth-ropsten.alchemyapi.io/v2/QzGz6gdkpTyDzebi3PjxIaKO7bDTGnSy"
-      ],
+      "rpc": ["https://eth-ropsten.alchemyapi.io/v2/QzGz6gdkpTyDzebi3PjxIaKO7bDTGnSy"],
       "explorer": "https://ropsten.etherscan.io"
     },
     "4": {
@@ -46,13 +42,8 @@
       "testnet": true,
       "multicall": "0x42ad527de7d4e9d9d011ac45b31d8551f8fe9821",
       "ensResolver": "0xf6305c19e814d2a75429fd637d01f7ee0e77d615",
-      "rpc": [
-        "https://eth-rinkeby.alchemyapi.io/v2/ugiPEBqMebLQbjro42kalZ1h4StpW_fR",
-        "https://eth-rinkeby.gateway.pokt.network/v1/5f76124fb90218002e9ce985"
-      ],
-      "ws": [
-        "wss://eth-rinkeby.ws.alchemyapi.io/v2/twReQE9Px03E-E_N_Fbb3OVF7YgHxoGq"
-      ],
+      "rpc": ["https://eth-rinkeby.alchemyapi.io/v2/ugiPEBqMebLQbjro42kalZ1h4StpW_fR", "https://eth-rinkeby.gateway.pokt.network/v1/5f76124fb90218002e9ce985"],
+      "ws": ["wss://eth-rinkeby.ws.alchemyapi.io/v2/twReQE9Px03E-E_N_Fbb3OVF7YgHxoGq"],
       "explorer": "https://rinkeby.etherscan.io"
     },
     "5": {
@@ -63,9 +54,7 @@
       "network": "goerli",
       "testnet": true,
       "multicall": "0x77dca2c955b15e9de4dbbcf1246b4b85b651e50e",
-      "rpc": [
-        "https://eth-goerli.alchemyapi.io/v2/v4nqH_J-J3STit45Mm07TxuYexMHQsYZ"
-      ],
+      "rpc": ["https://eth-goerli.alchemyapi.io/v2/v4nqH_J-J3STit45Mm07TxuYexMHQsYZ"],
       "explorer": "https://goerli.etherscan.io"
     },
     "7": {
@@ -94,9 +83,7 @@
       "chainId": 10,
       "network": "Optimistic Ethereum",
       "multicall": "0x35A6Cdb2C9AD4a45112df4a04147EB07dFA01aB7",
-      "rpc": [
-        "https://opt-mainnet.g.alchemy.com/v2/JzmIL4Q3jBj7it2duxLFeuCa9Wobmm7D"
-      ],
+      "rpc": ["https://opt-mainnet.g.alchemy.com/v2/JzmIL4Q3jBj7it2duxLFeuCa9Wobmm7D"],
       "explorer": "https://optimistic.etherscan.io"
     },
     "20": {
@@ -142,9 +129,7 @@
         "https://eth-kovan.alchemyapi.io/v2/s96TIUFYg0LuddgpmafA040ZyUaZbrpM",
         "https://poa-kovan.gateway.pokt.network/v1/5f76124fb90218002e9ce985"
       ],
-      "ws": [
-        "wss://eth-kovan.ws.alchemyapi.io/v2/QCsM2iU0bQ49eGDmZ7-Y--Wpu0lVWXSO"
-      ],
+      "ws": ["wss://eth-kovan.ws.alchemyapi.io/v2/QCsM2iU0bQ49eGDmZ7-Y--Wpu0lVWXSO"],
       "explorer": "https://kovan.etherscan.io"
     },
     "50": {
@@ -259,10 +244,7 @@
       "network": "testnet",
       "testnet": true,
       "multicall": "0x8b54247c6BAe96A6ccAFa468ebae96c4D7445e46",
-      "rpc": [
-        "https://speedy-nodes-nyc.moralis.io/f2963e29bec0de5787da3164/bsc/testnet/archive",
-        "https://data-seed-prebsc-1-s1.binance.org:8545"
-      ],
+      "rpc": ["https://speedy-nodes-nyc.moralis.io/f2963e29bec0de5787da3164/bsc/testnet/archive", "https://data-seed-prebsc-1-s1.binance.org:8545"],
       "explorer": "https://testnet.bscscan.com"
     },
     "100": {
@@ -272,10 +254,7 @@
       "chainId": 100,
       "network": "mainnet",
       "multicall": "0xb5b692a88bdfc81ca69dcb1d924f59f0413a602a",
-      "rpc": [
-        "https://xdai-archive.blockscout.com",
-        "https://poa-xdai.gateway.pokt.network/v1/5f76124fb90218002e9ce985"
-      ],
+      "rpc": ["https://xdai-archive.blockscout.com", "https://poa-xdai.gateway.pokt.network/v1/5f76124fb90218002e9ce985"],
       "ws": ["wss://rpc.xdaichain.com/wss"],
       "explorer": "https://blockscout.com/poa/xdai"
     },
@@ -286,10 +265,7 @@
       "chainId": 106,
       "network": "mainnet",
       "multicall": "0x597Cc7c49a8e0041d3A43ec8D7dc651b47879108",
-      "rpc": [
-        "https://evmexplorer.velas.com/rpc",
-        "https://explorer.velas.com/rpc"
-      ],
+      "rpc": ["https://evmexplorer.velas.com/rpc", "https://explorer.velas.com/rpc"],
       "ws": ["wss://api.velas.com"],
       "explorer": "https://evmexplorer.velas.com"
     },
@@ -301,10 +277,7 @@
       "network": "testnet",
       "testnet": true,
       "multicall": "0x55a827538FbF41b7334Dd49001220597898Ad954",
-      "rpc": [
-        "https://evmexplorer.testnet.velas.com/rpc",
-        "https://explorer.testnet.velas.com/rpc"
-      ],
+      "rpc": ["https://evmexplorer.testnet.velas.com/rpc", "https://explorer.testnet.velas.com/rpc"],
       "ws": ["wss://api.testnet.velas.com"],
       "explorer": "https://evmexplorer.testnet.velas.com"
     },
@@ -350,10 +323,7 @@
       "network": "testnet",
       "testnet": true,
       "multicall": "0x08411ADd0b5AA8ee47563b146743C13b3556c9Cc",
-      "rpc": [
-        "https://speedy-nodes-nyc.moralis.io/f2963e29bec0de5787da3164/polygon/mumbai/archive",
-        "https://rpc-mumbai.matic.today"
-      ],
+      "rpc": ["https://speedy-nodes-nyc.moralis.io/f2963e29bec0de5787da3164/polygon/mumbai/archive", "https://rpc-mumbai.matic.today"],
       "ws": ["wss://ws-mumbai.matic.today"],
       "explorer": ""
     },
@@ -364,9 +334,7 @@
       "network": "mainnet",
       "multicall": "0xba5934ab3056fca1fa458d30fbb3810c3eb5145f",
       "rpc": ["https://gwan-ssl.wandevs.org:56891"],
-      "ws": [
-        "wss://api.wanchain.org:8443/ws/v3/ddd16770c68f30350a21114802d5418eafe039b722de52b488e7eee1ee2cd73f"
-      ],
+      "ws": ["wss://api.wanchain.org:8443/ws/v3/ddd16770c68f30350a21114802d5418eafe039b722de52b488e7eee1ee2cd73f"],
       "explorer": "https://www.wanscan.org"
     },
     "43114": {
@@ -469,9 +437,7 @@
       "chainId": 42161,
       "network": "Arbitrum mainnet",
       "multicall": "0x7A7443F8c577d537f1d8cD4a629d40a3148Dd7ee",
-      "rpc": [
-        "https://arb-mainnet.g.alchemy.com/v2/JDvtNGwnHhTltIwfnxQocKwKkCTKA1DL"
-      ],
+      "rpc": ["https://arb-mainnet.g.alchemy.com/v2/JDvtNGwnHhTltIwfnxQocKwKkCTKA1DL"],
       "explorer": "https://arbiscan.io"
     },
     "4689": {
@@ -525,9 +491,7 @@
       "chainId": 42220,
       "network": "mainnet",
       "multicall": "0xb8d0d2C1391eeB350d2Cd39EfABBaaEC297368D9",
-      "rpc": [
-        "https://celo-mainnet--rpc.datahub.figment.io/apikey/e892a66dc36e4d2d98a5d6406d609796/"
-      ],
+      "rpc": ["https://celo-mainnet--rpc.datahub.figment.io/apikey/e892a66dc36e4d2d98a5d6406d609796/"],
       "explorer": "https://explorer.celo.org"
     },
     "11297108109": {
@@ -537,9 +501,7 @@
       "chainId": 11297108109,
       "network": "mainnet",
       "multicall": "0xfFE2FF36c5b8D948f788a34f867784828aa7415D",
-      "rpc": [
-        "https://palm-mainnet.infura.io/v3/3a961d6501e54add9a41aa53f15de99b"
-      ],
+      "rpc": ["https://palm-mainnet.infura.io/v3/3a961d6501e54add9a41aa53f15de99b"],
       "explorer": "https://explorer.palm.io"
     },
     "333888": {
@@ -652,12 +614,7 @@
       "chainId": 1666600000,
       "network": "mainnet",
       "networkId": "mainnet",
-      "rpc": [
-        "https://api.harmony.one",
-        "https://s1.api.harmony.one",
-        "https://s2.api.harmony.one",
-        "https://s3.api.harmony.one"
-      ],
+      "rpc": ["https://api.harmony.one", "https://s1.api.harmony.one", "https://s2.api.harmony.one", "https://s3.api.harmony.one"],
       "explorer": "https://explorer.harmony.one"
     },
     "testnet": {
@@ -666,12 +623,7 @@
       "chainId": 1666700000,
       "network": "testnet",
       "networkId": "testnet",
-      "rpc": [
-        "https://api.s0.b.hmny.io",
-        "https://api.s1.b.hmny.io",
-        "https://api.s2.b.hmny.io",
-        "https://api.s3.b.hmny.io"
-      ],
+      "rpc": ["https://api.s0.b.hmny.io", "https://api.s1.b.hmny.io", "https://api.s2.b.hmny.io", "https://api.s3.b.hmny.io"],
       "explorer": "https://explorer.pops.one"
     }
   },

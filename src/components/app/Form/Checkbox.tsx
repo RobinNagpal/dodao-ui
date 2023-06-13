@@ -31,25 +31,17 @@ const StyledInput = styled.input`
   accent-color: var(--primary-color);
   width: 20px;
   min-width: 20px;
-  cursor:pointer;
+  cursor: pointer;
   &:checked {
     background-color: var(--primary-color) !important;
   }
-
 `;
 
 const StyledLabel = styled.label`
   color: var(--text-color);
 `;
 
-export default function Checkbox({
-  id,
-  labelContent,
-  isChecked,
-  className,
-  readonly,
-  onChange
-}: CheckboxProps) {
+export default function Checkbox({ id, labelContent, isChecked, className, readonly, onChange }: CheckboxProps) {
   return (
     <div key={id} className={`flex items-center ${className || ''}`}>
       <div className="relative mt-2">
@@ -62,15 +54,10 @@ export default function Checkbox({
           onChange={() => onChange(!isChecked)}
           className="h-4 w-4 border focus:ring focus:outline-none mr-2"
           disabled={readonly}
-          
         />
         <CheckboxOverlay readonly={readonly} isChecked={isChecked} />
       </div>
-      <StyledLabel
-        htmlFor={id}
-        className="ml-3 block text-sm font-medium leading-6 markdown-body"
-        dangerouslySetInnerHTML={{ __html: labelContent }}
-      />
+      <StyledLabel htmlFor={id} className="ml-3 block text-sm font-medium leading-6 markdown-body" dangerouslySetInnerHTML={{ __html: labelContent }} />
     </div>
   );
 }

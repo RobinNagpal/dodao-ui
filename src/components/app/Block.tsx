@@ -12,7 +12,7 @@ interface Props extends PropsWithChildren {
   className?: string;
 }
 
-const Block = ({ title, counter, slim, icon, loading, onSubmit, children,className }: Props) => {
+const Block = ({ title, counter, slim, icon, loading, onSubmit, children, className }: Props) => {
   return (
     <div className="rounded-none md:rounded-lg mb-4 bg-skin-block-bg h-full">
       {title && (
