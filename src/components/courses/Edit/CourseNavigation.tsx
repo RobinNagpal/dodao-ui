@@ -187,6 +187,18 @@ const CourseComponent: React.FC<CourseNavigationProps> = ({ course, space, showA
       });
     }
 
+    children.push({
+      component: (
+        <Link key={chapter.key + '_chapter_submission'} className="flex items-center" href={`/courses/view/${course.key}/${chapter.key}/submission`}>
+          <div className="icon mr-2">
+            <CheckMark />
+          </div>
+          <div>Chapter Submission</div>
+        </Link>
+      ),
+      children: [],
+    });
+
     return {
       component: (
         <Link key={chapter.key + '_chapter_root'} className="flex items-center" href={`/courses/view/${course.key}/${chapter.key}`}>

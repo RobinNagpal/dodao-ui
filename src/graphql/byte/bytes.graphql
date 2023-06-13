@@ -96,7 +96,6 @@ fragment ByteDetailsFragment on Byte {
       }
 
       ... on UserDiscordConnect {
-        order
         type
         uuid
       }
@@ -121,14 +120,26 @@ query QueryBytes($spaceId: String!) {
   }
 }
 
-query QueryByteDetails($spaceId: String!, $byteId: String!) {
-  byte(spaceId: $spaceId, byteId: $byteId) {
+query QueryByteDetails($spaceId: String!, $byteId: String!, $includeDraft: Boolean) {
+  byte(spaceId: $spaceId, byteId: $byteId, includeDraft: $includeDraft) {
     ...ByteDetailsFragment
   }
 }
 
 mutation UpsertByte($spaceId: String!, $input: UpsertByteInput!) {
   payload: upsertByte(spaceId: $spaceId, input: $input) {
+    ...ByteDetails
+  }
+}
+
+mutation SaveByte($spaceId: String!, $input: UpsertByteInput!) {
+  payload: saveByte(spaceId: $spaceId, input: $input) {
+    ...ByteDetails
+  }
+}
+
+mutation PublishByte($spaceId: String!, $input: UpsertByteInput!) {
+  payload: publishByte(spaceId: $spaceId, input: $input) {
     ...ByteDetails
   }
 }

@@ -95,7 +95,6 @@ type ByteStep {
 
 input ByteStepInput {
   content: String!
-  explanation: String
   name: String!
   stepItems: [StepItemInputGenericInput!]!
   uuid: String!
@@ -676,9 +675,11 @@ type Mutation {
   moveTopicQuestion(questionInfo: MoveTopicQuestionInput!, spaceId: String!): GitCourse!
   moveTopicSummary(spaceId: String!, summaryInfo: MoveTopicSummaryInput!): GitCourse!
   moveTopicVideo(spaceId: String!, videoInfo: MoveTopicVideoInput!): GitCourse!
+  publishByte(input: UpsertByteInput!, spaceId: String!): Byte!
   refreshGitCourse(courseKey: String!, spaceId: String!): Boolean!
   refreshGitCourses(spaceId: String!): Boolean!
   refreshGitGuides(spaceId: String!): Boolean!
+  saveByte(input: UpsertByteInput!, spaceId: String!): Byte!
   submitByte(submissionInput: ByteSubmissionInput!): ByteSubmission!
   submitGitCourse(input: CourseSubmissionInput!, spaceId: String!): GitCourseSubmission!
   submitGitCourseTopic(gitCourseTopicSubmission: GitCourseTopicSubmissionInput!, spaceId: String!): GitCourseTopicSubmission!
@@ -744,7 +745,7 @@ enum OrderDirection {
 type Query {
   academyTask(uuid: String!): AcademyTask!
   academyTasks(spaceId: String!, status: String): [AcademyTask!]
-  byte(byteId: String!, spaceId: String!): Byte!
+  byte(byteId: String!, includeDraft: Boolean, spaceId: String!): Byte!
   bytes(spaceId: String!): [Byte!]!
   courses(spaceId: String!): [GitCourse!]!
   gitCourse(courseKey: String!, spaceId: String!): GitCourse!
@@ -1006,7 +1007,7 @@ input UpsertByteInput {
   admins: [String!]!
   content: String!
   created: String!
-  id: String
+  id: String!
   name: String!
   priority: Int!
   publishStatus: String!
@@ -1063,7 +1064,6 @@ input UpsertTimelineInput {
 }
 
 type UserDiscordConnect {
-  order: Int!
   type: String!
   uuid: String!
 }

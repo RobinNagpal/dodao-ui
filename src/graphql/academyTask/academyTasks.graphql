@@ -43,7 +43,6 @@ fragment AcademyTaskFragment on AcademyTask {
     }
 
     ... on UserDiscordConnect {
-      order
       type
       uuid
     }

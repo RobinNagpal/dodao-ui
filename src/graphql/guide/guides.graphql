@@ -19,7 +19,6 @@ fragment GuideUserInput on GuideUserInput {
 }
 
 fragment GuideUserDiscordConnect on UserDiscordConnect {
-  order
   type
   uuid
 }
@@ -47,7 +46,6 @@ fragment GuideStepItem on GuideStepItem {
   }
 
   ... on UserDiscordConnect {
-    order
     type
     uuid
   }
@@ -78,7 +76,6 @@ fragment GuideStep on GuideStep {
     }
 
     ... on UserDiscordConnect {
-      order
       type
       uuid
     }

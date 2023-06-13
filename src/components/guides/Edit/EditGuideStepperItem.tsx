@@ -272,7 +272,6 @@ const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHas
     const discord: GuideStepItemFragment = {
       __typename: 'UserDiscordConnect',
       uuid: uuidv4(),
-      order: step.stepItems.length,
       type: UserDiscordConnectType,
     };
     const stepItems: GuideStepItemFragment[] = [...(step.stepItems || []), discord];
