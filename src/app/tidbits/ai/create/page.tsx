@@ -4,7 +4,8 @@ import LoadingComponent from '@/components/core/loaders/Loading';
 import { NotificationProps } from '@/components/core/notify/Notification';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import { useNotificationContext } from '@/contexts/NotificationContext';
-import { ChatCompletionRequestMessageRoleEnum, useAskOpenAiQuery } from '@/graphql/generated/generated-types';
+import { AskChatCompletionAiQuery, ChatCompletionRequestMessageRoleEnum, useAskChatCompletionAiQuery } from '@/graphql/generated/generated-types';
+import { ApolloQueryResult } from '@apollo/client';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
@@ -12,7 +13,7 @@ const Create = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [text, setText] = useState('Generate response');
-  const { refetch: askOpenAiQuery } = useAskOpenAiQuery({ skip: true });
+  const { refetch: askChatCompletionAiQuery } = useAskChatCompletionAiQuery({ skip: true });
 
   const [input, setInput] =
     useState(`Uniswap V3's introduction of concentrated liquidity has transformed the game for liquidity providers, offering them an unparalleled level of flexibility through a range of strategic options.
@@ -97,11 +98,13 @@ const Create = () => {
     });
 
     try {
-      const response = await askOpenAiQuery({
+      const responsePromise = askChatCompletionAiQuery({
         messages: [{ role: ChatCompletionRequestMessageRoleEnum.User, content: prompt }],
       });
 
-      const data = await response.data.askOpenAI.choices[0].text;
+      const response = (await Promise.race([responsePromise, timeoutPromise])) as ApolloQueryResult<AskChatCompletionAiQuery>;
+
+      const data = await response.data?.askChatCompletionAI.choices?.[0]?.message?.content;
 
       if (!data) {
         throw new Error(JSON.stringify(response));
@@ -109,9 +112,8 @@ const Create = () => {
 
       const parsedData = JSON.parse(data);
       setLoaded(true);
-
       console.log('data', data);
-
+      setResponse(data);
       setLoading(false);
       setText('Generated');
 

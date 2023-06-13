@@ -1,5 +1,5 @@
-query AskOpenAI($messages: [OpenAIChatMessageInput!]!){
-  askOpenAI(messages: $messages) {
+query AskCompletionAI($prompt: String!){
+  askCompletionAI(prompt: $prompt) {
     choices {
       finish_reason
       index
@@ -10,6 +10,28 @@ query AskOpenAI($messages: [OpenAIChatMessageInput!]!){
         tokens
       }
       text
+    }
+    created
+    id
+    model
+    object
+    usage {
+      completion_tokens
+      prompt_tokens
+      total_tokens
+    }
+  }
+}
+
+query AskChatCompletionAI($messages: [OpenAIChatMessageInput!]!){
+  askChatCompletionAI(messages: $messages) {
+    choices {
+      message {
+        content
+        role
+      }
+      finish_reason
+      index
     }
     created
     id

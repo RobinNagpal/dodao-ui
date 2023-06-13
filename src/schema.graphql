@@ -720,18 +720,24 @@ type Mutation {
   upsertTimeline(input: UpsertTimelineInput!, spaceId: String!): Timeline!
 }
 
-input OpenAIChatMessageInput {
-  content: String!
-  role: ChatCompletionRequestMessageRoleEnum!
+type OpenAIChatCompletionChoice {
+  finish_reason: String
+  index: Int
+  message: OpenAIMessage
 }
 
-type OpenAIChatResponse {
-  choices: [CreateCompletionResponseChoice!]!
+type OpenAIChatCompletionResponse {
+  choices: [OpenAIChatCompletionChoice!]!
   created: Int!
   id: ID!
   model: String!
   object: String!
   usage: OpenAIUsage
+}
+
+input OpenAIChatMessageInput {
+  content: String!
+  role: ChatCompletionRequestMessageRoleEnum!
 }
 
 type OpenAIChoiceLogprobs {
@@ -740,6 +746,20 @@ type OpenAIChoiceLogprobs {
   token_logprobs: [Float!]
   tokens: [String!]
   top_logprobs: [Any!]
+}
+
+type OpenAICompletionResponse {
+  choices: [CreateCompletionResponseChoice!]!
+  created: Int!
+  id: ID!
+  model: String!
+  object: String!
+  usage: OpenAIUsage
+}
+
+type OpenAIMessage {
+  content: String!
+  role: String!
 }
 
 type OpenAIUsage {
@@ -756,7 +776,8 @@ enum OrderDirection {
 type Query {
   academyTask(uuid: String!): AcademyTask!
   academyTasks(spaceId: String!, status: String): [AcademyTask!]
-  askOpenAI(messages: [OpenAIChatMessageInput!]!): OpenAIChatResponse!
+  askChatCompletionAI(messages: [OpenAIChatMessageInput!]!): OpenAIChatCompletionResponse!
+  askCompletionAI(prompt: String!): OpenAICompletionResponse!
   byte(byteId: String!, includeDraft: Boolean, spaceId: String!): Byte!
   bytes(spaceId: String!): [Byte!]!
   courses(spaceId: String!): [GitCourse!]!

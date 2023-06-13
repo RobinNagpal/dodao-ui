@@ -1048,19 +1048,26 @@ export interface MutationUpsertTimelineArgs {
   spaceId: Scalars['String'];
 }
 
-export interface OpenAiChatMessageInput {
-  content: Scalars['String'];
-  role: ChatCompletionRequestMessageRoleEnum;
+export interface OpenAiChatCompletionChoice {
+  __typename?: 'OpenAIChatCompletionChoice';
+  finish_reason?: Maybe<Scalars['String']>;
+  index?: Maybe<Scalars['Int']>;
+  message?: Maybe<OpenAiMessage>;
 }
 
-export interface OpenAiChatResponse {
-  __typename?: 'OpenAIChatResponse';
-  choices: Array<CreateCompletionResponseChoice>;
+export interface OpenAiChatCompletionResponse {
+  __typename?: 'OpenAIChatCompletionResponse';
+  choices: Array<OpenAiChatCompletionChoice>;
   created: Scalars['Int'];
   id: Scalars['ID'];
   model: Scalars['String'];
   object: Scalars['String'];
   usage?: Maybe<OpenAiUsage>;
+}
+
+export interface OpenAiChatMessageInput {
+  content: Scalars['String'];
+  role: ChatCompletionRequestMessageRoleEnum;
 }
 
 export interface OpenAiChoiceLogprobs {
@@ -1070,6 +1077,22 @@ export interface OpenAiChoiceLogprobs {
   token_logprobs?: Maybe<Array<Scalars['Float']>>;
   tokens?: Maybe<Array<Scalars['String']>>;
   top_logprobs?: Maybe<Array<Scalars['Any']>>;
+}
+
+export interface OpenAiCompletionResponse {
+  __typename?: 'OpenAICompletionResponse';
+  choices: Array<CreateCompletionResponseChoice>;
+  created: Scalars['Int'];
+  id: Scalars['ID'];
+  model: Scalars['String'];
+  object: Scalars['String'];
+  usage?: Maybe<OpenAiUsage>;
+}
+
+export interface OpenAiMessage {
+  __typename?: 'OpenAIMessage';
+  content: Scalars['String'];
+  role: Scalars['String'];
 }
 
 export interface OpenAiUsage {
@@ -1088,7 +1111,8 @@ export interface Query {
   __typename?: 'Query';
   academyTask: AcademyTask;
   academyTasks?: Maybe<Array<AcademyTask>>;
-  askOpenAI: OpenAiChatResponse;
+  askChatCompletionAI: OpenAiChatCompletionResponse;
+  askCompletionAI: OpenAiCompletionResponse;
   byte: Byte;
   bytes: Array<Byte>;
   courses: Array<GitCourse>;
@@ -1122,8 +1146,13 @@ export interface QueryAcademyTasksArgs {
 }
 
 
-export interface QueryAskOpenAiArgs {
+export interface QueryAskChatCompletionAiArgs {
   messages: Array<OpenAiChatMessageInput>;
+}
+
+
+export interface QueryAskCompletionAiArgs {
+  prompt: Scalars['String'];
 }
 
 
@@ -2047,12 +2076,19 @@ export type GuidesQueryQueryVariables = Exact<{
 
 export type GuidesQueryQuery = { __typename?: 'Query', guides: Array<{ __typename?: 'Guide', id: string, authors: Array<string>, name: string, categories: Array<string>, content: string, created: number, guideSource: string, guideType: string, publishStatus: string, socialShareImage?: string | null, thumbnail?: string | null, uuid: string }> };
 
-export type AskOpenAiQueryVariables = Exact<{
+export type AskCompletionAiQueryVariables = Exact<{
+  prompt: Scalars['String'];
+}>;
+
+
+export type AskCompletionAiQuery = { __typename?: 'Query', askCompletionAI: { __typename?: 'OpenAICompletionResponse', created: number, id: string, model: string, object: string, choices: Array<{ __typename?: 'CreateCompletionResponseChoice', finish_reason?: string | null, index?: number | null, text?: string | null, logprobs?: { __typename?: 'OpenAIChoiceLogprobs', text?: string | null, text_offset?: Array<number> | null, token_logprobs?: Array<number> | null, tokens?: Array<string> | null } | null }>, usage?: { __typename?: 'OpenAIUsage', completion_tokens: number, prompt_tokens: number, total_tokens: number } | null } };
+
+export type AskChatCompletionAiQueryVariables = Exact<{
   messages: Array<OpenAiChatMessageInput> | OpenAiChatMessageInput;
 }>;
 
 
-export type AskOpenAiQuery = { __typename?: 'Query', askOpenAI: { __typename?: 'OpenAIChatResponse', created: number, id: string, model: string, object: string, choices: Array<{ __typename?: 'CreateCompletionResponseChoice', finish_reason?: string | null, index?: number | null, text?: string | null, logprobs?: { __typename?: 'OpenAIChoiceLogprobs', text?: string | null, text_offset?: Array<number> | null, token_logprobs?: Array<number> | null, tokens?: Array<string> | null } | null }>, usage?: { __typename?: 'OpenAIUsage', completion_tokens: number, prompt_tokens: number, total_tokens: number } | null } };
+export type AskChatCompletionAiQuery = { __typename?: 'Query', askChatCompletionAI: { __typename?: 'OpenAIChatCompletionResponse', created: number, id: string, model: string, object: string, choices: Array<{ __typename?: 'OpenAIChatCompletionChoice', finish_reason?: string | null, index?: number | null, message?: { __typename?: 'OpenAIMessage', content: string, role: string } | null }>, usage?: { __typename?: 'OpenAIUsage', completion_tokens: number, prompt_tokens: number, total_tokens: number } | null } };
 
 export type SimulationStepFragment = { __typename?: 'SimulationStep', content: string, iframeUrl?: string | null, name: string, uuid: string, order: number };
 
@@ -4713,9 +4749,9 @@ export type GuidesQueryQueryResult = Apollo.QueryResult<GuidesQueryQuery, Guides
 export function refetchGuidesQueryQuery(variables: GuidesQueryQueryVariables) {
       return { query: GuidesQueryDocument, variables: variables }
     }
-export const AskOpenAiDocument = gql`
-    query AskOpenAI($messages: [OpenAIChatMessageInput!]!) {
-  askOpenAI(messages: $messages) {
+export const AskCompletionAiDocument = gql`
+    query AskCompletionAI($prompt: String!) {
+  askCompletionAI(prompt: $prompt) {
     choices {
       finish_reason
       index
@@ -4741,34 +4777,88 @@ export const AskOpenAiDocument = gql`
     `;
 
 /**
- * __useAskOpenAiQuery__
+ * __useAskCompletionAiQuery__
  *
- * To run a query within a React component, call `useAskOpenAiQuery` and pass it any options that fit your needs.
- * When your component renders, `useAskOpenAiQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useAskCompletionAiQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAskCompletionAiQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useAskOpenAiQuery({
+ * const { data, loading, error } = useAskCompletionAiQuery({
+ *   variables: {
+ *      prompt: // value for 'prompt'
+ *   },
+ * });
+ */
+export function useAskCompletionAiQuery(baseOptions: Apollo.QueryHookOptions<AskCompletionAiQuery, AskCompletionAiQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AskCompletionAiQuery, AskCompletionAiQueryVariables>(AskCompletionAiDocument, options);
+      }
+export function useAskCompletionAiLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AskCompletionAiQuery, AskCompletionAiQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AskCompletionAiQuery, AskCompletionAiQueryVariables>(AskCompletionAiDocument, options);
+        }
+export type AskCompletionAiQueryHookResult = ReturnType<typeof useAskCompletionAiQuery>;
+export type AskCompletionAiLazyQueryHookResult = ReturnType<typeof useAskCompletionAiLazyQuery>;
+export type AskCompletionAiQueryResult = Apollo.QueryResult<AskCompletionAiQuery, AskCompletionAiQueryVariables>;
+export function refetchAskCompletionAiQuery(variables: AskCompletionAiQueryVariables) {
+      return { query: AskCompletionAiDocument, variables: variables }
+    }
+export const AskChatCompletionAiDocument = gql`
+    query AskChatCompletionAI($messages: [OpenAIChatMessageInput!]!) {
+  askChatCompletionAI(messages: $messages) {
+    choices {
+      message {
+        content
+        role
+      }
+      finish_reason
+      index
+    }
+    created
+    id
+    model
+    object
+    usage {
+      completion_tokens
+      prompt_tokens
+      total_tokens
+    }
+  }
+}
+    `;
+
+/**
+ * __useAskChatCompletionAiQuery__
+ *
+ * To run a query within a React component, call `useAskChatCompletionAiQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAskChatCompletionAiQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAskChatCompletionAiQuery({
  *   variables: {
  *      messages: // value for 'messages'
  *   },
  * });
  */
-export function useAskOpenAiQuery(baseOptions: Apollo.QueryHookOptions<AskOpenAiQuery, AskOpenAiQueryVariables>) {
+export function useAskChatCompletionAiQuery(baseOptions: Apollo.QueryHookOptions<AskChatCompletionAiQuery, AskChatCompletionAiQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<AskOpenAiQuery, AskOpenAiQueryVariables>(AskOpenAiDocument, options);
+        return Apollo.useQuery<AskChatCompletionAiQuery, AskChatCompletionAiQueryVariables>(AskChatCompletionAiDocument, options);
       }
-export function useAskOpenAiLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AskOpenAiQuery, AskOpenAiQueryVariables>) {
+export function useAskChatCompletionAiLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AskChatCompletionAiQuery, AskChatCompletionAiQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<AskOpenAiQuery, AskOpenAiQueryVariables>(AskOpenAiDocument, options);
+          return Apollo.useLazyQuery<AskChatCompletionAiQuery, AskChatCompletionAiQueryVariables>(AskChatCompletionAiDocument, options);
         }
-export type AskOpenAiQueryHookResult = ReturnType<typeof useAskOpenAiQuery>;
-export type AskOpenAiLazyQueryHookResult = ReturnType<typeof useAskOpenAiLazyQuery>;
-export type AskOpenAiQueryResult = Apollo.QueryResult<AskOpenAiQuery, AskOpenAiQueryVariables>;
-export function refetchAskOpenAiQuery(variables: AskOpenAiQueryVariables) {
-      return { query: AskOpenAiDocument, variables: variables }
+export type AskChatCompletionAiQueryHookResult = ReturnType<typeof useAskChatCompletionAiQuery>;
+export type AskChatCompletionAiLazyQueryHookResult = ReturnType<typeof useAskChatCompletionAiLazyQuery>;
+export type AskChatCompletionAiQueryResult = Apollo.QueryResult<AskChatCompletionAiQuery, AskChatCompletionAiQueryVariables>;
+export function refetchAskChatCompletionAiQuery(variables: AskChatCompletionAiQueryVariables) {
+      return { query: AskChatCompletionAiDocument, variables: variables }
     }
 export const SimulationsDocument = gql`
     query Simulations($spaceId: String!) {
