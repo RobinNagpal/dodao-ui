@@ -103,7 +103,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
       setByteRef(byte);
       setByteLoaded(true);
     } else if (byteId) {
-      const result = await queryByteDetails({ byteId: byteId, spaceId: space.id });
+      const result = await queryByteDetails({ byteId: byteId, spaceId: space.id, includeDraft: true });
       const byte: ByteDetailsFragment = result.data.byte;
       setByteRef({
         ...byte,
@@ -333,7 +333,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
         await saveByteMutation({
           variables: {
             spaceId: space.id,
-            input: getByteInput(),
+            input: { ...getByteInput(), publishStatus: PublishStatus.Draft },
           },
           errorPolicy: 'all',
         })
@@ -345,7 +345,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
         await publishByteMutation({
           variables: {
             spaceId: space.id,
-            input: getByteInput(),
+            input: { ...getByteInput(), publishStatus: PublishStatus.Live },
           },
           errorPolicy: 'all',
         })

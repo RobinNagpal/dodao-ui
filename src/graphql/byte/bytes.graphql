@@ -120,8 +120,8 @@ query QueryBytes($spaceId: String!) {
   }
 }
 
-query QueryByteDetails($spaceId: String!, $byteId: String!) {
-  byte(spaceId: $spaceId, byteId: $byteId) {
+query QueryByteDetails($spaceId: String!, $byteId: String!, $includeDraft: Boolean) {
+  byte(spaceId: $spaceId, byteId: $byteId, includeDraft: $includeDraft) {
     ...ByteDetailsFragment
   }
 }

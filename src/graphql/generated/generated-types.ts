@@ -1113,6 +1113,7 @@ export interface QueryAcademyTasksArgs {
 
 export interface QueryByteArgs {
   byteId: Scalars['String'];
+  includeDraft?: InputMaybe<Scalars['Boolean']>;
   spaceId: Scalars['String'];
 }
 
@@ -1621,6 +1622,7 @@ export type QueryBytesQuery = { __typename?: 'Query', bytes: Array<{ __typename?
 export type QueryByteDetailsQueryVariables = Exact<{
   spaceId: Scalars['String'];
   byteId: Scalars['String'];
+  includeDraft?: InputMaybe<Scalars['Boolean']>;
 }>;
 
 
@@ -2955,8 +2957,8 @@ export function refetchQueryBytesQuery(variables: QueryBytesQueryVariables) {
       return { query: QueryBytesDocument, variables: variables }
     }
 export const QueryByteDetailsDocument = gql`
-    query QueryByteDetails($spaceId: String!, $byteId: String!) {
-  byte(spaceId: $spaceId, byteId: $byteId) {
+    query QueryByteDetails($spaceId: String!, $byteId: String!, $includeDraft: Boolean) {
+  byte(spaceId: $spaceId, byteId: $byteId, includeDraft: $includeDraft) {
     ...ByteDetailsFragment
   }
 }
@@ -2976,6 +2978,7 @@ export const QueryByteDetailsDocument = gql`
  *   variables: {
  *      spaceId: // value for 'spaceId'
  *      byteId: // value for 'byteId'
+ *      includeDraft: // value for 'includeDraft'
  *   },
  * });
  */

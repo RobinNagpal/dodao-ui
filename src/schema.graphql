@@ -745,7 +745,7 @@ enum OrderDirection {
 type Query {
   academyTask(uuid: String!): AcademyTask!
   academyTasks(spaceId: String!, status: String): [AcademyTask!]
-  byte(byteId: String!, spaceId: String!): Byte!
+  byte(byteId: String!, includeDraft: Boolean, spaceId: String!): Byte!
   bytes(spaceId: String!): [Byte!]!
   courses(spaceId: String!): [GitCourse!]!
   gitCourse(courseKey: String!, spaceId: String!): GitCourse!
