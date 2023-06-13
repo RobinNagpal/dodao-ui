@@ -36,7 +36,7 @@ export default function BasicGuideSettings({ editGuideHelper, guide, guideErrors
   }
 
   function handleGuideCategoryInputs(value: GuideCategoryType) {
-    updateGuideField("categories", value)
+    // updateGuideField("categories", value)
   }
 
   function handleClose() {
@@ -65,9 +65,12 @@ export default function BasicGuideSettings({ editGuideHelper, guide, guideErrors
             <button
               onClick={() => setGuideCategoryModal(true)}
             >
-              {guide.categories}
+              { (guide.categories.length !==0) ?  guide.categories.map((category,index)=>
+              <p key={index} >{category}</p>
+              ): <p>no categories</p> }
 
             </button>
+           
 
           </div>
 

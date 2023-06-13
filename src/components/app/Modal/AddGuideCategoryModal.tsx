@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React, { useState } from 'react'
 import Modal from '@/components/app/Modal';
 import styled from 'styled-components';
 import Button from '@/components/app/Button';
@@ -20,24 +20,27 @@ interface GuideCategoryModalProps {
 const AddGuideCategoryModal = ({ open, onClose, onAddInput }: GuideCategoryModalProps) => {
 
 
-    const [selectedButtons, setSelectedButtons] = useState([]);
+    const [selectedButtons, setSelectedButtons] = useState<number[]>([]);
 
-    // const selectButton = (buttonIndex:number) => {
-    //     if (selectedButtons.includes(buttonIndex)) {
-    //         // Deselect the button
-    //         setSelectedButtons(selectedButtons.filter((index:number) => index !== buttonIndex));
-    //     } else {
-    //         // Select the button
-    //         setSelectedButtons([...selectedButtons, buttonIndex]);
-    //     }
-    // };
+    const selectButton = (buttonIndex: number) => {
+        if (selectedButtons.includes(buttonIndex)) {
+            // Deselect the button
+            setSelectedButtons(selectedButtons.filter((index) => index !== buttonIndex));
+        } else {
+            // Select the button
+            setSelectedButtons([...selectedButtons, buttonIndex]);
+        }
+    };
 
 
-    function addInput(inputType: GuideCategoryType) {
-        onAddInput(inputType)
-        onClose()
+    function addInput(inputType: GuideCategoryType, buttonIndex: number) {
+        selectButton(buttonIndex)
     }
 
+    function handleConfirm(inputType: GuideCategoryType,) {
+        onAddInput(inputType)
+
+    }
 
 
     return (
@@ -49,22 +52,26 @@ const AddGuideCategoryModal = ({ open, onClose, onAddInput }: GuideCategoryModal
                 <p>select upto two categories</p>
 
                 {
-                    Object.values(GuideCategoryType).map((i) =>
+                    Object.values(GuideCategoryType).map((i, buttonIndex) =>
 
-                        <Button key={i} className="button-outline w-full flex justify-center items-center" onClick={() => addInput(i)} >
+                        <Button key={buttonIndex} className={`button-outline w-full flex justify-center items-center transition - opacity ${selectedButtons.includes(buttonIndex) ? 'opacity-50 cursor-not-allowed' : ''}`}
+                            onClick={() => addInput(i, buttonIndex)}
+                            disabled={selectedButtons.length >= 2 && !selectedButtons.includes(buttonIndex)}
+
+                        >
                             {i}
                         </Button>)
                 }
 
 
             </div>
-            <div className='flex'>
-                <button>
+            <div className='flex flex-1 p-5'>
+                <Button onClick={onClose} className=' basis-1/2 py-2 gap-2'>
                     cancel
-                </button>
-                <button>
+                </Button>
+                <Button className=' basis-1/2 py-2'>
                     confirm
-                </button>
+                </Button>
             </div>
 
         </Modal>
