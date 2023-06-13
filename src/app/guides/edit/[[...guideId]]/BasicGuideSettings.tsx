@@ -57,11 +57,11 @@ export default function BasicGuideSettings({ editGuideHelper, guide, guideErrors
               {guide.categories.length !== 0 ? (
                 guide.categories.map((category, index) => (
                   <p className="text-left p-2" key={index}>
-                    * {category}
+                    {category}
                   </p>
                 ))
               ) : (
-                <p>no categories</p>
+                <p>No Categories</p>
               )}
             </button>
           </div>
