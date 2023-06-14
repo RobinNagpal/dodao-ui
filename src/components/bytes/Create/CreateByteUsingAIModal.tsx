@@ -1,16 +1,30 @@
-'use client';
 import UnstyledTextareaAutosize from '@/components/app/TextArea/UnstyledTextareaAutosize';
+import { EditByteType } from '@/components/bytes/Edit/useEditByte';
 import LoadingComponent from '@/components/core/loaders/Loading';
+import FullScreenModal from '@/components/core/modals/FullScreenModal';
 import { NotificationProps } from '@/components/core/notify/Notification';
-import PageWrapper from '@/components/core/page/PageWrapper';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import { AskChatCompletionAiQuery, ChatCompletionRequestMessageRoleEnum, useAskChatCompletionAiQuery } from '@/graphql/generated/generated-types';
+import { PublishStatus, VisibilityEnum } from '@/types/deprecated/models/enums';
 import { ApolloQueryResult } from '@apollo/client';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
-const Create = () => {
-  const router = useRouter();
+export interface CreateByteUsingAIModalProps {
+  open: boolean;
+  onClose: () => void;
+  onGenerateByte: (byte: EditByteType) => void;
+}
+
+export interface GeneratedByte {
+  id: string;
+  name: string;
+  content: string;
+  steps: { name: string; content: string }[];
+}
+export function CreateByteUsingAIModal(props: CreateByteUsingAIModalProps) {
+  const { open, onClose, onGenerateByte } = props;
+
   const [loading, setLoading] = useState(false);
   const [text, setText] = useState('Generate response');
   const { refetch: askChatCompletionAiQuery } = useAskChatCompletionAiQuery({ skip: true });
@@ -110,16 +124,28 @@ const Create = () => {
         throw new Error(JSON.stringify(response));
       }
 
-      const parsedData = JSON.parse(data);
+      const parsedData = JSON.parse(data) as GeneratedByte;
       setLoaded(true);
-      console.log('data', data);
+
       setResponse(data);
       setLoading(false);
       setText('Generated');
+      const editByteType: EditByteType = {
+        ...parsedData,
+        admins: [],
+        byteExists: false,
+        created: new Date().toISOString(),
+        isPristine: true,
+        priority: 0,
+        publishStatus: PublishStatus.Draft,
+        visibility: VisibilityEnum.Public,
+        tags: [],
+        steps: parsedData.steps.map((step) => ({ ...step, uuid: uuidv4(), stepItems: [] })),
+      };
 
-      if (data) {
-        localStorage.setItem(parsedData.id, data);
-        router.push(`/tidbits/edit/${parsedData.id}`);
+      if (parsedData?.id) {
+        onGenerateByte(editByteType);
+        onClose();
       } else {
         handleShowNotification({
           heading: 'Error',
@@ -133,9 +159,8 @@ const Create = () => {
       handleShowNotification({ heading: 'TimeOut Error', type: 'error', message: 'This request Took More time then Expected Please Try Again' });
     }
   };
-
   return (
-    <PageWrapper>
+    <FullScreenModal open={open} onClose={onClose} title="Create Byte Using AI">
       <div className=" md:ml-20">
         <div className=" container  mx-auto p-4 flex flex-col ">
           <h1 className="md:text-5xl text-4xl text-[#9291cd] font-semibold mb-10">Create Tidbits Via AI </h1>
@@ -166,8 +191,6 @@ const Create = () => {
           )}
         </div>
       </div>
-    </PageWrapper>
+    </FullScreenModal>
   );
-};
-
-export default Create;
+}
