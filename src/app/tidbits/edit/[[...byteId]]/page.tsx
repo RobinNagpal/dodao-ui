@@ -14,6 +14,7 @@ import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-typ
 import SingleCardLayout from '@/layouts/SingleCardLayout';
 import { PublishStatus, VisibilityEnum } from '@/types/deprecated/models/enums';
 import { ByteErrors } from '@/types/errors/byteErrors';
+import { StatusBadge } from '@/utils/byte/StatusBadge';
 import { publishStatuses, visibilityOptions } from '@/utils/ui/statuses';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
@@ -56,9 +57,7 @@ function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteI
             <span className="mr-1 font-bold">&#8592;</span>
             {byteId ? byte.name : 'Back to Bytes'}
           </Link>
-          {byte.publishStatus == 'Draft' && (
-            <span className="inline-flex items-center rounded-full bg-blue-100 px-2 py-1 text-xs font-medium text-blue-700">Draft</span>
-          )}
+          <StatusBadge status={byte.publishStatus} />
         </div>
 
         {byteLoaded ? (
