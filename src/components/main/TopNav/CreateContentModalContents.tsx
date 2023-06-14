@@ -13,19 +13,9 @@ export default function CreateContentModalContents({ hideModal }: { hideModal: (
               Create Tidbit
             </Button>
           </Link>
-          <Link href="/tidbits/ai/create" onClick={() => hideModal} className="p-2">
-            <Button variant="contained" primary className="p-2 w-full">
-              Create Tidbit with AI
-            </Button>
-          </Link>
           <Link href="/guides/edit" onClick={() => hideModal} className="p-2">
             <Button variant="outlined" primary className="p-2 w-full">
               Create Guide
-            </Button>
-          </Link>
-          <Link href="/guides/ai/create" onClick={() => hideModal} className="p-2">
-            <Button variant="outlined" primary className="p-2 w-full">
-              Create Guide with AI
             </Button>
           </Link>
         </Grid2Cols>
