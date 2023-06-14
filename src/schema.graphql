@@ -758,7 +758,7 @@ type OpenAICompletionResponse {
 }
 
 type OpenAIMessage {
-  content: String!
+  content: String
   role: String!
 }
 

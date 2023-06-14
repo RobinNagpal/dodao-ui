@@ -1091,7 +1091,7 @@ export interface OpenAiCompletionResponse {
 
 export interface OpenAiMessage {
   __typename?: 'OpenAIMessage';
-  content: Scalars['String'];
+  content?: Maybe<Scalars['String']>;
   role: Scalars['String'];
 }
 
@@ -2088,7 +2088,7 @@ export type AskChatCompletionAiQueryVariables = Exact<{
 }>;
 
 
-export type AskChatCompletionAiQuery = { __typename?: 'Query', askChatCompletionAI: { __typename?: 'OpenAIChatCompletionResponse', created: number, id: string, model: string, object: string, choices: Array<{ __typename?: 'OpenAIChatCompletionChoice', finish_reason?: string | null, index?: number | null, message?: { __typename?: 'OpenAIMessage', content: string, role: string } | null }>, usage?: { __typename?: 'OpenAIUsage', completion_tokens: number, prompt_tokens: number, total_tokens: number } | null } };
+export type AskChatCompletionAiQuery = { __typename?: 'Query', askChatCompletionAI: { __typename?: 'OpenAIChatCompletionResponse', created: number, id: string, model: string, object: string, choices: Array<{ __typename?: 'OpenAIChatCompletionChoice', finish_reason?: string | null, index?: number | null, message?: { __typename?: 'OpenAIMessage', content?: string | null, role: string } | null }>, usage?: { __typename?: 'OpenAIUsage', completion_tokens: number, prompt_tokens: number, total_tokens: number } | null } };
 
 export type SimulationStepFragment = { __typename?: 'SimulationStep', content: string, iframeUrl?: string | null, name: string, uuid: string, order: number };
 

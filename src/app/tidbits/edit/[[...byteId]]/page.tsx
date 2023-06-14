@@ -51,12 +51,16 @@ function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteI
   return (
     <PageWrapper>
       <SingleCardLayout>
-        <div className="px-4 mb-4 md:px-0 overflow-hidden">
+        <div className="px-4 mb-4 md:px-0 overflow-hidden flex justify-between items-center">
           <Link href={byteId ? `/tidbits/view/${byteId}/0` : `/tidbits`} className="text-color">
             <span className="mr-1 font-bold">&#8592;</span>
             {byteId ? byte.name : 'Back to Bytes'}
           </Link>
+          {byte.publishStatus == 'Draft' && (
+            <span className="inline-flex items-center rounded-full bg-blue-100 px-2 py-1 text-xs font-medium text-blue-700">Draft</span>
+          )}
         </div>
+
         {byteLoaded ? (
           <div className="pb-10">
             <Block title="Basic Info" className="mt-4">
@@ -121,10 +125,7 @@ function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteI
             </Block>
 
             <div className="flex">
-              <Button onClick={handleSubmit} loading={!byteLoaded || byteCreating} className="block w-full mr-2" primary>
-                Submit
-              </Button>
-              <Button onClick={handleSave} loading={!byteLoaded || byteCreating} className="ml-2 block w-full" variant="contained" primary>
+              <Button onClick={handleSave} loading={!byteLoaded || byteCreating} className="block w-full mr-2" primary>
                 Save
               </Button>
               <Button onClick={handlePublish} loading={!byteLoaded || byteCreating} className="ml-2 block w-full" variant="contained" primary>
