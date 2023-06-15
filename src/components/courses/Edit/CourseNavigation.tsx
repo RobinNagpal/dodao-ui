@@ -83,7 +83,9 @@ const Container = styled.div`
 
 const CourseComponent: React.FC<CourseNavigationProps> = ({ course, space, showAddModal, courseHelper }) => {
   const isCourseAdmin = true;
+  const [treeData, setTreeData] = useState<TreeNodeType[]>([]);
 
+  
   function getReadings(topic: CourseTopicFragment, readings: CourseReadingFragment[]) {
     return readings.map((reading, i) => {
       return {
@@ -127,90 +129,96 @@ const CourseComponent: React.FC<CourseNavigationProps> = ({ course, space, showA
       };
     });
   }
+  useEffect(() => {
+    // Generate initial tree data with isOpen property
+    const treeData: TreeNodeType[] = course.topics.map((chapter, i) => {
+      const readings: TreeNodeType[] = getReadings(chapter, chapter.readings);
+      const explanations: TreeNodeType[] = getExplanations(chapter, chapter.explanations);
+      const summaries: TreeNodeType[] = getSummaries(chapter, chapter.summaries);
 
-  const treeData1: TreeNodeType[] = course.topics.map((chapter, i) => {
-    const readings: TreeNodeType[] = getReadings(chapter, chapter.readings);
-    const explanations: TreeNodeType[] = getExplanations(chapter, chapter.explanations);
-    const summaries: TreeNodeType[] = getSummaries(chapter, chapter.summaries);
+      const children: TreeNodeType[] = [];
+      if (readings.length) {
+        children.push({
+          component: (
+            <div key={chapter.key + '_readings'} className="flex items-center">
+              <div className="icon mr-2">
+                <CheckMark />
+              </div>
+              <div>Videos</div>
+            </div>
+          ),
+          children: readings,
+        });
+      }
+      if (explanations.length) {
+        children.push({
+          component: (
+            <div key={chapter.key + '_explanations'} className="flex items-center">
+              <div className="icon mr-2">
+                <CheckMark />
+              </div>
+              <div>Explanations</div>
+            </div>
+          ),
+          children: explanations,
+        });
+      }
+      if (summaries.length) {
+        children.push({
+          component: (
+            <div key={chapter.key + '_summaries'} className="flex items-center">
+              <div className="icon mr-2">
+                <CheckMark />
+              </div>
+              <div>Summaries</div>
+            </div>
+          ),
+          children: summaries,
+        });
+      }
+      if (chapter.questions.length) {
+        children.push({
+          component: (
+            <Link key={chapter.key + '_questions'} className="flex items-center" href={`/courses/view/${course.key}/${chapter.key}/questions/0`}>
+              <div className="icon mr-2">
+                <CheckMark />
+              </div>
+              <div>Questions</div>
+            </Link>
+          ),
+          children: [],
+        });
+      }
 
-    const children: TreeNodeType[] = [];
-    if (readings.length) {
       children.push({
         component: (
-          <ClickableDiv key={chapter.key + '_readings'} className="flex items-center">
+          <Link key={chapter.key + '_chapter_submission'} className="flex items-center" href={`/courses/view/${course.key}/${chapter.key}/submission`}>
             <div className="icon mr-2">
               <CheckMark />
             </div>
-            <div>Videos</div>
-          </ClickableDiv>
-        ),
-        children: readings,
-      });
-    }
-    if (explanations.length) {
-      children.push({
-        component: (
-          <div key={chapter.key + '_explanations'} className="flex items-center">
-            <div className="icon mr-2">
-              <CheckMark />
-            </div>
-            <div>Explanations</div>
-          </div>
-        ),
-        children: explanations,
-      });
-    }
-    if (summaries.length) {
-      children.push({
-        component: (
-          <div key={chapter.key + '_summaries'} className="flex items-center">
-            <div className="icon mr-2">
-              <CheckMark />
-            </div>
-            <div>Summaries</div>
-          </div>
-        ),
-        children: summaries,
-      });
-    }
-    if (chapter.questions.length) {
-      children.push({
-        component: (
-          <Link key={chapter.key + '_questions'} className="flex items-center" href={`/courses/view/${course.key}/${chapter.key}/questions/0`}>
-            <div className="icon mr-2">
-              <CheckMark />
-            </div>
-            <div>Questions</div>
+            <div>Chapter Submission</div>
           </Link>
         ),
         children: [],
       });
-    }
 
-    children.push({
-      component: (
-        <Link key={chapter.key + '_chapter_submission'} className="flex items-center" href={`/courses/view/${course.key}/${chapter.key}/submission`}>
-          <div className="icon mr-2">
-            <CheckMark />
-          </div>
-          <div>Chapter Submission</div>
-        </Link>
-      ),
-      children: [],
+      return {
+        component: (
+          <Link key={chapter.key + '_chapter_root'} className="flex items-center" href={`/courses/view/${course.key}/${chapter.key}`}>
+            <div className="icon mr-2">
+              <CheckMark />
+            </div>
+            <div>{chapter.title}</div>
+          </Link>
+        ),
+        children: children,
+        isOpen: true,
+      };
     });
 
-    return {
-      component: (
-        <Link key={chapter.key + '_chapter_root'} className="flex items-center" href={`/courses/view/${course.key}/${chapter.key}`}>
-          <div className="icon mr-2">
-            <CheckMark />
-          </div>
-          <div>{chapter.title}</div>
-        </Link>
-      ),
-      children: children,
-    };
-  });
+    setTreeData(treeData);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [course]);
 
   return (
     <Container className="p-4 bg-skin-header-bg rounded-l-lg border-skin-border h-full w-full">
@@ -219,7 +227,7 @@ const CourseComponent: React.FC<CourseNavigationProps> = ({ course, space, showA
           <AddIcon /> Add
         </Button>
       )}
-      <Tree data={treeData1} />
+      <Tree data={treeData} />
     </Container>
   );
 };

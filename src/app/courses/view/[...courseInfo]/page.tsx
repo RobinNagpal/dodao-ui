@@ -70,7 +70,7 @@ const CourseView = ({ params, space }: { params: { courseInfo: string[] }; space
     if (!submissionHelper.loadedSubmission) return;
 
     submissionHelper.loadCourseSubmission(courseHelper.course);
-  }, [courseHelper.course, submissionHelper.loadedSubmission]);
+  }, [courseHelper.course, submissionHelper, submissionHelper.loadedSubmission]);
   function editCourseRepo() {}
 
   function gitCourseIntegrations() {}
