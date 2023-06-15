@@ -17,6 +17,7 @@ import styled from 'styled-components';
 
 const StyledNavWrapper = styled.div`
   max-width: 400px;
+  overflow: hidden;
 `;
 
 const StyledRightContent = styled.div`
