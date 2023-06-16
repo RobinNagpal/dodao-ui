@@ -17,6 +17,11 @@ import styled from 'styled-components';
 
 const StyledNavWrapper = styled.div`
   max-width: 400px;
+  overflow : hidden;
+`;
+
+const Container = styled.div`
+
   overflow: hidden;
 `;
 
@@ -96,7 +101,7 @@ const CourseView = ({ params, space }: { params: { courseInfo: string[] }; space
   const { course, loading } = courseHelper;
 
   return (
-    <div className="pt-6 container-default">
+    <Container className="pt-6 container-default">
       {course ? (
         <Block slim className="w-full">
           <div className="px-4 py-3 bg-skin-header-bg lg:rounded-2xl pb-3 flex justify-between w-full">
@@ -144,7 +149,7 @@ const CourseView = ({ params, space }: { params: { courseInfo: string[] }; space
           submissionHelper={submissionHelper}
         />
       )}
-    </div>
+    </Container>
   );
 };
 
