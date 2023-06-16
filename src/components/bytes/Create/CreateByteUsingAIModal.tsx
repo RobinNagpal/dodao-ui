@@ -38,7 +38,6 @@ export function CreateByteUsingAIModal(props: CreateByteUsingAIModalProps) {
   const [text, setText] = useState('Generate response');
   const [askChatCompletionAiMutation] = useAskChatCompletionAiMutation();
   const [downloadAndCleanContentMutation] = useDownloadAndCleanContentMutation();
-  const [extractRelevantTextForTopicMutation] = useExtractRelevantTextForTopicMutation();
 
   const [topic, setTopic] = useState<string>(testTiditTopicString);
   const [contents, setContents] = useState<string>(testTidbitContentString);
