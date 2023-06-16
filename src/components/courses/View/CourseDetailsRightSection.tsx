@@ -7,21 +7,24 @@ import VideoDetails from '@/components/courses/View/Details/VideoDetails';
 import { CourseSubmissionHelper } from '@/components/courses/View/useCourseSubmission';
 import { CourseHelper } from '@/components/courses/View/useViewCourse';
 import { CourseDetailsFragment, Space } from '@/graphql/generated/generated-types';
+import { CurrentTopicContext } from '../Edit/CourseNavigation';
 
 export type ItemTypes = 'readings' | 'summaries' | 'explanations' | 'questions' | 'submission';
+
 interface CourseDetailsRightSectionProps {
   space: Space;
   course: CourseDetailsFragment;
   isCourseAdmin: boolean;
   courseHelper: CourseHelper;
   submissionHelper: CourseSubmissionHelper;
-
   topicKey?: string;
   itemType?: ItemTypes;
   itemKey?: string;
 }
 
 export default function CourseDetailsRightSection(props: CourseDetailsRightSectionProps) {
+  const { topicKey } = props;
+
   if (props.itemType === 'readings' && props.topicKey && props.itemKey) {
     return (
       <VideoDetails

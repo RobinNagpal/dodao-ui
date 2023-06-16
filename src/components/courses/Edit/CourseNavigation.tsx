@@ -13,8 +13,9 @@ import {
   Space,
 } from '@/graphql/generated/generated-types';
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
+export const CurrentTopicContext = createContext<string | null>(null);
 
 interface CourseNavigationProps {
   course: CourseDetailsFragment;
@@ -81,10 +82,10 @@ const Container = styled.div`
   }
 `;
 
-const CourseComponent: React.FC<CourseNavigationProps> = ({ course, space, showAddModal, courseHelper }) => {
+const CourseComponent: React.FC<CourseNavigationProps> = ({ course, space, showAddModal, courseHelper, submissionHelper }) => {
   const isCourseAdmin = true;
   const [treeData, setTreeData] = useState<TreeNodeType[]>([]);
-
+  const currentTopic = useContext(CurrentTopicContext); 
   
   function getReadings(topic: CourseTopicFragment, readings: CourseReadingFragment[]) {
     return readings.map((reading, i) => {
@@ -212,15 +213,17 @@ const CourseComponent: React.FC<CourseNavigationProps> = ({ course, space, showA
           </Link>
         ),
         children: children,
-        isOpen: true,
+        isOpen: chapter.key===currentTopic,
       };
     });
 
     setTreeData(treeData);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [course]);
+// eslint-disable-next-line react-hooks/exhaustive-deps
+}, [course, currentTopic]);
 
   return (
+    <CurrentTopicContext.Provider value={currentTopic}>
+
     <Container className="p-4 bg-skin-header-bg rounded-l-lg border-skin-border h-full w-full">
       {isCourseAdmin && (
         <Button primary variant="contained" className="w-full mb-4" onClick={showAddModal}>
@@ -229,6 +232,8 @@ const CourseComponent: React.FC<CourseNavigationProps> = ({ course, space, showA
       )}
       <Tree data={treeData} />
     </Container>
+    </CurrentTopicContext.Provider>
+
   );
 };
 
