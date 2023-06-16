@@ -1,5 +1,5 @@
-query AskCompletionAI($prompt: String!){
-  askCompletionAI(prompt: $prompt) {
+mutation AskCompletionAI($input: CompletionAIInput!){
+  askCompletionAI(input: $input) {
     choices {
       finish_reason
       index
@@ -23,8 +23,8 @@ query AskCompletionAI($prompt: String!){
   }
 }
 
-query AskChatCompletionAI($messages: [OpenAIChatMessageInput!]!){
-  askChatCompletionAI(messages: $messages) {
+mutation AskChatCompletionAI($input: ChatCompletionAIInput!){
+  askChatCompletionAI(input: $input) {
     choices {
       message {
         content
@@ -44,3 +44,31 @@ query AskChatCompletionAI($messages: [OpenAIChatMessageInput!]!){
     }
   }
 }
+
+
+mutation CreateSummaryOfContent($input: String!){
+  createSummaryOfContent(input: $input) {
+    text
+    tokenCount
+  }
+
+}
+
+mutation ExtractRelevantTextForTopic($input: ExtractRelevantTextForTopicInput!){
+  extractRelevantTextForTopic(input: $input) {
+    text
+    tokenCount
+  }
+
+}
+
+
+mutation DownloadAndCleanContent($input: String!){
+  downloadAndCleanContent(input: $input) {
+    text
+    tokenCount
+  }
+
+}
+
+
