@@ -27,3 +27,5 @@ export const Tree: FC<TreeProps> = ({ data }) => {
 
   return <div>{renderedNodes}</div>;
 };
+export type { TreeNodeType };
+

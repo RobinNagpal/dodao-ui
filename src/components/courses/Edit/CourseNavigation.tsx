@@ -84,6 +84,8 @@ const Container = styled.div`
 
 const CourseComponent: React.FC<CourseNavigationProps> = ({ course, space, showAddModal, courseHelper, submissionHelper }) => {
   const isCourseAdmin = true;
+  const [openNodes, setOpenNodes] = useState<{ [key: string]: boolean }>({});
+
   const [treeData, setTreeData] = useState<TreeNodeType[]>([]);
   const currentTopic = useContext(CurrentTopicContext); 
   
@@ -98,10 +100,11 @@ const CourseComponent: React.FC<CourseNavigationProps> = ({ course, space, showA
             <div>{reading.title}</div>
           </Link>
         ),
+        isOpen: openNodes[`${topic.key}_readings`] || false, // Pass isOpen prop based on openNodes state
       };
     });
   }
-
+  
   function getExplanations(topic: CourseTopicFragment, explanations: CourseExplanationFragment[]) {
     return explanations.map((explanation, i) => {
       return {
@@ -113,9 +116,11 @@ const CourseComponent: React.FC<CourseNavigationProps> = ({ course, space, showA
             <div>{explanation.title}</div>
           </Link>
         ),
+        isOpen: openNodes[`${topic.key}_explanations`] || false, // Pass isOpen prop based on openNodes state
       };
     });
   }
+  
   function getSummaries(topic: CourseTopicFragment, summaries: CourseSummaryFragment[]) {
     return summaries.map((summary, i) => {
       return {
@@ -127,9 +132,11 @@ const CourseComponent: React.FC<CourseNavigationProps> = ({ course, space, showA
             <div>{summary.title}</div>
           </Link>
         ),
+        isOpen: openNodes[`${topic.key}_summaries`] || false, // Pass isOpen prop based on openNodes state
       };
     });
   }
+  
   useEffect(() => {
     // Generate initial tree data with isOpen property
     const treeData: TreeNodeType[] = course.topics.map((chapter, i) => {
@@ -213,7 +220,7 @@ const CourseComponent: React.FC<CourseNavigationProps> = ({ course, space, showA
           </Link>
         ),
         children: children,
-        isOpen: chapter.key===currentTopic,
+        isOpen: chapter.key === currentTopic,
       };
     });
 

@@ -21,6 +21,7 @@ export const TreeNode: FC<TreeNodeProps> = ({ node, openNodes, setOpenNodes, lev
       [node.component.key as string]: !prevOpenNodes[node.component.key as string],
     }));
   };
+  
 
   const isQuestionsNode = node.component.props.href?.includes('/questions'); // Check if it is the "Questions" node
   const isChapterSubmissionsNode = node.component.props.href?.includes('/submission'); // Check if it is the "Chapter Submissions" node
