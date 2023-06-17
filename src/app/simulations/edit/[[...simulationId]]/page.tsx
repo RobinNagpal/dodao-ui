@@ -7,6 +7,7 @@ import Input from '@/components/app/Input';
 import PageLoading from '@/components/app/PageLoading';
 import TextareaArray from '@/components/app/TextArea/TextareaArray';
 import EllipsisDropdown, { EllipsisDropdownItem } from '@/components/core/dropdowns/EllipsisDropdown';
+import PageWrapper from '@/components/core/page/PageWrapper';
 import Stepper from '@/components/simulations/Edit/SimulationStepper';
 import { useEditSimulation } from '@/components/simulations/Edit/useEditSimulation';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
@@ -99,7 +100,7 @@ function EditSimulation(props: { space: SpaceWithIntegrationsFragment; params: {
   }
 
   return (
-    <div className="pt-12">
+    <PageWrapper>
       <SingleCardLayout>
         <Wrapper>
           <div className="px-4 mb-4 md:px-0 overflow-hidden">
@@ -185,7 +186,7 @@ tag2"
           )}
         </Wrapper>
       </SingleCardLayout>
-    </div>
+    </PageWrapper>
   );
 }
 

@@ -2,6 +2,7 @@
 
 import withSpace from '@/app/withSpace';
 import EllipsisDropdown from '@/components/core/dropdowns/EllipsisDropdown';
+import PageWrapper from '@/components/core/page/PageWrapper';
 import SimulationViewStepper from '@/components/simulations/View/SimulationStepper';
 import { useViewSimulation } from '@/components/simulations/View/useViewSimulation';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
@@ -43,27 +44,29 @@ function ViewSimulation({ params, space }: { params: { simulationIdAndStep: stri
   const router = useRouter();
 
   return (
-    <SimulationCardWrapper>
-      {simulation && (
-        <div className="w-full h-full">
-          <div className="px-4 md:px-0 mb-3 flex justify-between">
-            <Link href="/simulations" className="text-color">
-              <span className="mr-1 font-bold">&#8592;</span>
-              All Simulations
-            </Link>
-            <div className="ml-3">
-              <EllipsisDropdown
-                items={threeDotItems}
-                onSelect={(key) => {
-                  router.push(`/simulations/edit/${simulationId}`);
-                }}
-              />
+    <PageWrapper>
+      <SimulationCardWrapper>
+        {simulation && (
+          <div className="w-full h-full">
+            <div className="px-4 md:px-0 mb-3 flex justify-between">
+              <Link href="/simulations" className="text-color">
+                <span className="mr-1 font-bold">&#8592;</span>
+                All Simulations
+              </Link>
+              <div className="ml-3">
+                <EllipsisDropdown
+                  items={threeDotItems}
+                  onSelect={(key) => {
+                    router.push(`/simulations/edit/${simulationId}`);
+                  }}
+                />
+              </div>
             </div>
+            <SimulationViewStepper viewSimulationHelper={viewSimulationHelper} simulation={simulation} />
           </div>
-          <SimulationViewStepper viewSimulationHelper={viewSimulationHelper} simulation={simulation} />
-        </div>
-      )}
-    </SimulationCardWrapper>
+        )}
+      </SimulationCardWrapper>
+    </PageWrapper>
   );
 }
 

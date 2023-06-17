@@ -1,7 +1,7 @@
 'use client';
 
 import ButtonLarge from '@/components/core/buttons/Button';
-import PageContainer from '@/components/main/Container/PageContainer';
+import PageWrapper from '@/components/core/page/PageWrapper';
 import { useLoginModalContext } from '@/contexts/LoginModalContext';
 import { useAuth } from '@/hooks/useAuth';
 import { useSession } from 'next-auth/react';
@@ -13,7 +13,7 @@ function LoginPage() {
   const { setShowLoginModal } = useLoginModalContext();
 
   return (
-    <PageContainer>
+    <PageWrapper>
       <div className="w-full flex justify-center break-all">
         <div>
           <div className="flex-col">
@@ -31,7 +31,7 @@ function LoginPage() {
           </div>
         </div>
       </div>
-    </PageContainer>
+    </PageWrapper>
   );
 }
 
