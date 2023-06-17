@@ -1,4 +1,4 @@
-import Input from '@/components/app/Input';
+import Input from '@/components/core/input/Input';
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
 import Button from '@/components/core/buttons/Button';
 import { CourseDetailsFragment, CourseExplanationFragment, Space } from '@/graphql/generated/generated-types';

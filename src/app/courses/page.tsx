@@ -2,7 +2,7 @@
 
 import withSpace, { SpaceProps } from '@/app/withSpace';
 import Block from '@/components/app/Block';
-import RowLoading from '@/components/app/RowLoading';
+import RowLoading from '@/components/core/loaders/RowLoading';
 import { Grid3Cols } from '@/components/core/grids/Grid3Cols';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import CourseSummaryCard from '@/components/courses/Summary/CourseSummaryCard';

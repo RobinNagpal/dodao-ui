@@ -1,6 +1,6 @@
 'use client';
 
-import SidebarButton from '@/components/app/Button/SidebarButton';
+import SidebarButton from '@/components/core/buttons/SidebarButton';
 import EditIcon from '@/components/core/icons/EditIcon';
 import Button from '@/components/core/buttons/Button';
 import FullPageLoader from '@/components/core/loaders/FullPageLoading';

@@ -1,4 +1,4 @@
-import IconButton from '@/components/app/Button/IconButton';
+import IconButton from '@/components/core/buttons/IconButton';
 import { IconTypes } from '@/components/core/icons/IconTypes';
 import Button from '@/components/core/buttons/Button';
 import EditCourseSummary from '@/components/courses/Edit/Items/EditCourseSummary';

@@ -1,4 +1,4 @@
-import Input from '@/components/app/Input';
+import Input from '@/components/core/input/Input';
 import Upload from '@/components/app/Upload';
 import styled from 'styled-components';
 

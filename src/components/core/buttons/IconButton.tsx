@@ -1,5 +1,5 @@
 // Import necessary libraries and components
-import Button from '@/components/app/Button';
+import Button from '@/components/core/buttons/Button';
 import DeleteIcon from '@/components/core/icons/DeleteIcon';
 import EditIcon from '@/components/core/icons/EditIcon';
 import GuideAddIcon from '@/components/core/icons/GuideAddIcon';

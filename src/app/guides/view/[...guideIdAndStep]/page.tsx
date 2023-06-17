@@ -2,7 +2,7 @@
 
 import withSpace from '@/app/withSpace';
 import Block from '@/components/app/Block';
-import PageLoading from '@/components/app/PageLoading';
+import PageLoading from '@/components/core/loaders/PageLoading';
 import EllipsisDropdown from '@/components/core/dropdowns/EllipsisDropdown';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import GuideStepper from '@/components/guides/View/GuideStepper';

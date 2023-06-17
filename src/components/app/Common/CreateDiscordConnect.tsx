@@ -1,10 +1,10 @@
 import Icon from '@/components/app/Icon';
 import Modal from '@/components/app/Modal';
+import Button from '@/components/core/buttons/Button';
 import { UserDiscordConnect } from '@/types/deprecated/models/byte/ByteModel';
 import { GuideStepItem } from '@/types/deprecated/models/GuideModel';
 import { useCallback, useState } from 'react';
 import styled from 'styled-components';
-import Button from '@/components/app/Button';
 
 const RemoveDiscord = styled.span`
   .iconclose {

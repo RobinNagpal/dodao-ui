@@ -1,4 +1,4 @@
-import PageLoading from '@/components/app/PageLoading';
+import PageLoading from '@/components/core/loaders/PageLoading';
 import DetailsField from '@/components/core/details/DetailsField';
 import DetailsHeader from '@/components/core/details/DetailsHeader';
 import DetailsSection from '@/components/core/details/DetailsSection';

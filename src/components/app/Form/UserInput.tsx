@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Input from '../Input';
+import Input from 'src/components/core/input/Input';
 
 interface UserInputProps {
   label: string;

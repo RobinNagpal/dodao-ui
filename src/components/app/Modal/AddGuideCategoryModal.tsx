@@ -1,7 +1,7 @@
+import Button from '@/components/core/buttons/Button';
 import React, { useState } from 'react';
 import Modal from '@/components/app/Modal';
 import styled from 'styled-components';
-import Button from '@/components/app/Button';
 import { GuideCategoryType } from '@/types/deprecated/models/enums';
 import { CheckCircleIcon } from '@heroicons/react/24/outline';
 

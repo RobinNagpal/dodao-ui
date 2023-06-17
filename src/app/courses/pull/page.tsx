@@ -1,8 +1,8 @@
 'use client';
 import withSpace from '@/app/withSpace';
 import Block from '@/components/app/Block';
-import Button from '@/components/app/Button';
-import Input from '@/components/app/Input';
+import Input from '@/components/core/input/Input';
+import Button from '@/components/core/buttons/Button';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import { GitCourseInput, Space, SpaceWithIntegrationsFragment, useUpsertGitCourseMutation } from '@/graphql/generated/generated-types';

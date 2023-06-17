@@ -2,9 +2,9 @@
 
 import withSpace from '@/app/withSpace';
 import Block from '@/components/app/Block';
-import Button from '@/components/app/Button';
-import Input from '@/components/app/Input';
-import PageLoading from '@/components/app/PageLoading';
+import Input from '@/components/core/input/Input';
+import PageLoading from '@/components/core/loaders/PageLoading';
+import Button from '@/components/core/buttons/Button';
 import TextareaArray from '@/components/core/textarea/TextareaArray';
 import { CreateByteUsingAIModal } from '@/components/bytes/Create/CreateByteUsingAIModal';
 import EditByteStepper from '@/components/bytes/Edit/EditByteStepper';

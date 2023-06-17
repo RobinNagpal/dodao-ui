@@ -1,6 +1,6 @@
 // Add necessary imports for your project
-import IconButton from '@/components/app/Button/IconButton';
-import Input from '@/components/app/Input';
+import IconButton from '@/components/core/buttons/IconButton';
+import Input from '@/components/core/input/Input';
 import { IconTypes } from '@/components/core/icons/IconTypes';
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
 import { EditSimulationType } from '@/components/simulations/Edit/useEditSimulation';

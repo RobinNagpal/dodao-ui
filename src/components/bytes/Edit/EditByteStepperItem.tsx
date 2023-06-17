@@ -1,4 +1,4 @@
-import IconButton from '@/components/app/Button/IconButton';
+import IconButton from '@/components/core/buttons/IconButton';
 import CreateConnectDiscord from '@/components/app/Common/CreateDiscordConnect';
 import CreateQuestion from '@/components/app/Common/CreateQuestion';
 import CreateUserInput from '@/components/app/Common/CreateUserInput';

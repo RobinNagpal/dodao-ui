@@ -2,7 +2,7 @@
 
 import withSpace from '@/app/withSpace';
 import Block from '@/components/app/Block';
-import PageLoading from '@/components/app/PageLoading';
+import PageLoading from '@/components/core/loaders/PageLoading';
 import ByteStepper from '@/components/bytes/View/ByteStepper';
 import { useViewByte } from '@/components/bytes/View/useViewByte';
 import EllipsisDropdown from '@/components/core/dropdowns/EllipsisDropdown';

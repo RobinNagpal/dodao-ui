@@ -1,7 +1,7 @@
-import SidebarButton from '@/components/app/Button/SidebarButton';
+import SidebarButton from '@/components/core/buttons/SidebarButton';
 import Checkbox from '@/components/app/Form/Checkbox';
 import Icon from '@/components/app/Icon';
-import Input from '@/components/app/Input';
+import Input from '@/components/core/input/Input';
 import { InputType } from '@/types/deprecated/models/enums';
 import { GuideStepItem, UserInput } from '@/types/deprecated/models/GuideModel';
 import styled from 'styled-components';

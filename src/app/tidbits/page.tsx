@@ -2,7 +2,7 @@
 
 import withSpace, { SpaceProps } from '@/app/withSpace';
 import Block from '@/components/app/Block';
-import RowLoading from '@/components/app/RowLoading';
+import RowLoading from '@/components/core/loaders/RowLoading';
 import ByteSummaryCard from '@/components/bytes/Summary/ByteSummaryCard';
 import NoByte from '@/components/bytes/Summary/NoBytes';
 import { Grid4Cols } from '@/components/core/grids/Grid4Colst';

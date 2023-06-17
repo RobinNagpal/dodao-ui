@@ -1,3 +1,4 @@
+import Button from '@/components/core/buttons/Button';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import {
   ByteDetailsFragment,
@@ -17,7 +18,6 @@ import { getMarkedRenderer } from '@/utils/ui/getMarkedRenderer';
 import ByteStepperItemWarnings from '@/components/bytes/View/ByteStepperItemWarnings';
 import { QuestionSection } from '@/components/bytes/View/QuestionSection';
 import { UseViewByteHelper } from '@/components/bytes/View/useViewByte';
-import Button from '@/components/app/Button';
 import UserDiscord from '@/components/app/Form/UserDiscord';
 import UserInput from '@/components/app/Form/UserInput';
 import CircleProgress from '@/components/app/Progress/CircleProgress';
