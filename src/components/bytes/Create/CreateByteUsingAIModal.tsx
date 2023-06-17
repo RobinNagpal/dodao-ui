@@ -1,4 +1,4 @@
-import UnstyledTextareaAutosize from '@/components/app/TextArea/UnstyledTextareaAutosize';
+import UnstyledTextareaAutosize from '@/components/core/textarea/UnstyledTextareaAutosize';
 import { testTidbitContentString, testTiditTopicString } from '@/components/bytes/Create/testTidbitContentString';
 import { EditByteType } from '@/components/bytes/Edit/useEditByte';
 import LoadingComponent from '@/components/core/loaders/Loading';

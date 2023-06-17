@@ -4,10 +4,10 @@ import { useEditTimeline } from '@/app/timelines/edit/[[...timelineId]]/useEditT
 // EditTimeline.tsx
 import withSpace from '@/app/withSpace';
 import IconButton from '@/components/app/Button/IconButton';
-import { IconTypes } from '@/components/app/Icons/IconTypes';
+import { IconTypes } from '@/components/core/icons/IconTypes';
 import Input from '@/components/app/Input';
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
-import StyledTextareaAutosize from '@/components/app/TextArea/StyledTextareaAutosize';
+import StyledTextareaAutosize from '@/components/core/textarea/StyledTextareaAutosize';
 import Button from '@/components/core/buttons/Button';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import { SpaceWithIntegrationsFragment, UpsertTimelineEventInput } from '@/graphql/generated/generated-types';
