@@ -1,9 +1,9 @@
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
 import { CourseQuestionSubmission, CourseSubmissionHelper, QuestionStatus } from '@/components/courses/View/useCourseSubmission';
 import { CourseHelper } from '@/components/courses/View/useViewCourse';
 import { CourseDetailsFragment, Space, TopicCorrectAnswersFragment } from '@/graphql/generated/generated-types';
 import Link from 'next/link';
-import React, { PropsWithChildren, useEffect, useState } from 'react';
-import styled from 'styled-components';
 import isEqual from 'lodash/isEqual';
 import sortBy from 'lodash/sortBy';
 
@@ -29,14 +29,43 @@ const TickMark = styled.span`
   position: absolute;
 `;
 
-const QuestionNavItem: React.FC<{ className?: string } & PropsWithChildren> = styled.div`
+const QuestionNavItem = styled.div<{ isTopicSubmitted: boolean; questionStatus: string }>`
   width: 40px;
+  position: relative;
 
   .indicator {
     height: 30px;
-    border-radius: 8%;
+    border-radius: 30%;
     position: relative;
+
+    ${(props) =>
+      props.isTopicSubmitted &&
+      props.questionStatus === 'completed' &&
+      `
+      background-color: #D32F2F;
+    `}
+
+    ${(props) =>
+      props.isTopicSubmitted &&
+      props.questionStatus !== 'completed' &&
+      `
+      background-color: transparent;
+      border: 2px solid #D32F2F;
+    `}
   }
+`;
+
+const QuestionNumber = styled.div`
+  background-color: #D32F2F;
+  border-radius: 8%;
+  color: #fff;
+  text-align: center;
+  padding: 0.5rem;
+  font-weight: regular;
+  position: absolute;
+  top: -30px;
+  left: 0;
+  right: 0;
 `;
 
 function EvaluationComponent({ course, courseHelper, topicKey, submissionHelper }: IProps) {
@@ -51,7 +80,7 @@ function EvaluationComponent({ course, courseHelper, topicKey, submissionHelper 
     setCorrectAnswersOfTopic(submissionHelper.courseSubmission?.topicSubmissionsMap?.[topicKey]?.correctAnswers);
   }, [course, topicKey, submissionHelper]);
 
-  const getQuestionClass = (question: any) => {
+  const getQuestionStatus = (question: any) => {
     if (isTopicSubmitted) {
       const questionRes: CourseQuestionSubmission | undefined = questionsSubmissions?.[question.uuid];
       const correctAnswers: TopicCorrectAnswersFragment | undefined = correctAnswersOfTopic?.[question.uuid];
@@ -74,23 +103,29 @@ function EvaluationComponent({ course, courseHelper, topicKey, submissionHelper 
       return 'error';
     }
   };
+return (
+  <div className="flex flex-wrap">
+  {topic?.questions?.map((question: any, index: number) => (
+    <Link className="mx-2 my-2" href={`/courses/view/${course.key}/${topicKey}/questions/${index}`} key={index}>
+      <div className='text-center'>
+        {index + 1}
+      </div>
+      <QuestionNavItem
+        isTopicSubmitted={isTopicSubmitted}
+        questionStatus={getQuestionStatus(question)}
+        className={`question-nav-item ${getQuestionStatus(question)}`}
+      >
+        <div className="indicator">
+          {getQuestionStatus(question) === 'completed' && isTopicSubmitted && <TickMark className="tick-mark" />}
+        </div>
+        <QuestionNumber className="mt-7" />
+      </QuestionNavItem>
+    </Link>
+  ))}
+</div>
 
-  return (
-    <div className="flex flex-wrap">
-      {topic?.questions?.map((question: any, index: number) => (
-        <Link className="mx-2 my-2" href={`/courses/view/${course.key}/${topicKey}/questions/${index}`} key={index}>
-          <QuestionNavItem
-            className={`question-nav-item ${getQuestionClass(question)} ${
-              getQuestionClass(question) === 'completed' && isTopicSubmitted ? 'bg-green-500' : 'bg-red-500'
-            }`}
-          >
-            <div className="bg-skin-header-bg text-center py-1">{index + 1}</div>
-            <div className="indicator">{getQuestionClass(question) === 'completed' && isTopicSubmitted && <TickMark className="tick-mark" />}</div>
-          </QuestionNavItem>
-        </Link>
-      ))}
-    </div>
-  );
+);
+
 }
 
 export default EvaluationComponent;
