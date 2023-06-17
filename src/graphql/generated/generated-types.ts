@@ -2224,8 +2224,6 @@ export type UpsertProjectGalaxyAccessTokenMutationVariables = Exact<{
 
 export type UpsertProjectGalaxyAccessTokenMutation = { __typename?: 'Mutation', payload: { __typename?: 'Space', id: string } };
 
-export type SpaceFragmentFragment = { __typename?: 'Space', id: string, admins: Array<string>, avatar?: string | null, creator: string, name?: string | null, skin: string };
-
 export type CreateSignedUrlMutationVariables = Exact<{
   spaceId: Scalars['String'];
   input: CreateSignedUrlInput;
@@ -2258,6 +2256,13 @@ export type UpsertSpaceAcademyRepositoryMutationVariables = Exact<{
 
 
 export type UpsertSpaceAcademyRepositoryMutation = { __typename?: 'Mutation', upsertSpaceAcademyRepository: { __typename?: 'Space', id: string } };
+
+export type SpaceSummaryFragment = { __typename?: 'Space', id: string, admins: Array<string>, avatar?: string | null, creator: string, name?: string | null, skin: string };
+
+export type SpacesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type SpacesQuery = { __typename?: 'Query', spaces?: Array<{ __typename?: 'Space', id: string, admins: Array<string>, avatar?: string | null, creator: string, name?: string | null, skin: string }> | null };
 
 export type TimelineDetailsFragment = { __typename?: 'Timeline', id: string, name: string, excerpt: string, content: string, thumbnail?: string | null, created: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, events: Array<{ __typename?: 'TimelineEvent', name: string, uuid: string, date: string, excerpt: string, content: string, moreLink?: string | null }> };
 
@@ -2850,8 +2855,8 @@ export const SpaceWithIntegrationsFragmentDoc = gql`
   }
 }
     `;
-export const SpaceFragmentFragmentDoc = gql`
-    fragment SpaceFragment on Space {
+export const SpaceSummaryFragmentDoc = gql`
+    fragment SpaceSummary on Space {
   id
   admins
   avatar
@@ -5496,6 +5501,43 @@ export function useUpsertSpaceAcademyRepositoryMutation(baseOptions?: Apollo.Mut
 export type UpsertSpaceAcademyRepositoryMutationHookResult = ReturnType<typeof useUpsertSpaceAcademyRepositoryMutation>;
 export type UpsertSpaceAcademyRepositoryMutationResult = Apollo.MutationResult<UpsertSpaceAcademyRepositoryMutation>;
 export type UpsertSpaceAcademyRepositoryMutationOptions = Apollo.BaseMutationOptions<UpsertSpaceAcademyRepositoryMutation, UpsertSpaceAcademyRepositoryMutationVariables>;
+export const SpacesDocument = gql`
+    query Spaces {
+  spaces {
+    ...SpaceSummary
+  }
+}
+    ${SpaceSummaryFragmentDoc}`;
+
+/**
+ * __useSpacesQuery__
+ *
+ * To run a query within a React component, call `useSpacesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSpacesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSpacesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useSpacesQuery(baseOptions?: Apollo.QueryHookOptions<SpacesQuery, SpacesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<SpacesQuery, SpacesQueryVariables>(SpacesDocument, options);
+      }
+export function useSpacesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SpacesQuery, SpacesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<SpacesQuery, SpacesQueryVariables>(SpacesDocument, options);
+        }
+export type SpacesQueryHookResult = ReturnType<typeof useSpacesQuery>;
+export type SpacesLazyQueryHookResult = ReturnType<typeof useSpacesLazyQuery>;
+export type SpacesQueryResult = Apollo.QueryResult<SpacesQuery, SpacesQueryVariables>;
+export function refetchSpacesQuery(variables?: SpacesQueryVariables) {
+      return { query: SpacesDocument, variables: variables }
+    }
 export const TimelinesDocument = gql`
     query Timelines($spaceId: String!) {
   timelines(spaceId: $spaceId) {

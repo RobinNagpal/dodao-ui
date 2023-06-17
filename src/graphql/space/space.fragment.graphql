@@ -1,8 +1,0 @@
-fragment SpaceFragment on Space {
-  id
-  admins
-  avatar
-  creator
-  name
-  skin
-}

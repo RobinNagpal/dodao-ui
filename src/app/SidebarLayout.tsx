@@ -2,7 +2,7 @@
 
 import { Dialog, Transition } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
-import { Fragment, PropsWithChildren, useState } from 'react';
+import { Fragment, PropsWithChildren, ReactNode, useState } from 'react';
 import styled from 'styled-components';
 
 const MainDiv = styled.div`
@@ -14,7 +14,12 @@ const DeskTopNavMainDiv = styled.div`
   min-height: calc(100vh);
 `;
 
-export default function SidebarLayout(props: PropsWithChildren) {
+const MainContent = styled.main`
+  background-color: var(--bg-color);
+  color: var(--text-color);
+`;
+
+export default function SidebarLayout(props: { children: ReactNode[] }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
@@ -67,7 +72,7 @@ export default function SidebarLayout(props: PropsWithChildren) {
                   </div>
                   <nav className="flex flex-1 flex-col">
                     <ul role="list" className="flex flex-1 flex-col gap-y-7">
-                      <li>{props.children}</li>
+                      <li>{props.children[0]}</li>
                     </ul>
                   </nav>
                 </div>
@@ -88,17 +93,20 @@ export default function SidebarLayout(props: PropsWithChildren) {
         </div>
       </div>
 
-      <div className="hidden lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
-        {/* Sidebar component, swap this element with another sidebar if you like */}
-        <DeskTopNavMainDiv className="flex grow flex-col gap-y-5 overflow-y-auto bg-indigo-600 px-6 pb-4">
-          <nav className="flex flex-1 flex-col">
-            <ul role="list" className="flex flex-1 flex-col gap-y-7">
-              <li>
-                <li>{props.children}</li>
-              </li>
-            </ul>
-          </nav>
-        </DeskTopNavMainDiv>
+      <div className="flex">
+        <div className="hidden lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
+          {/* Sidebar component, swap this element with another sidebar if you like */}
+          <DeskTopNavMainDiv className="flex grow flex-col gap-y-5 overflow-y-auto bg-indigo-600 px-6 pb-4">
+            <nav className="flex flex-1 flex-col">
+              <ul role="list" className="flex flex-1 flex-col gap-y-7">
+                <li>{props.children[0]}</li>
+              </ul>
+            </nav>
+          </DeskTopNavMainDiv>
+        </div>
+        <MainContent className="py-10 w-full">
+          <div className="px-4 sm:px-6 lg:px-8">{props.children[1]}</div>
+        </MainContent>
       </div>
     </MainDiv>
   );
