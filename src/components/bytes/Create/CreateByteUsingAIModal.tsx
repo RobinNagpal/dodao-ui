@@ -1,7 +1,7 @@
 import UnstyledTextareaAutosize from '@/components/core/textarea/UnstyledTextareaAutosize';
 import { testTidbitContentString, testTiditTopicString } from '@/components/bytes/Create/testTidbitContentString';
 import { EditByteType } from '@/components/bytes/Edit/useEditByte';
-import LoadingComponent from '@/components/core/loaders/Loading';
+import LoadingSpinner from '@/components/core/loaders/LoadingSpinner';
 import FullScreenModal from '@/components/core/modals/FullScreenModal';
 import { NotificationProps } from '@/components/core/notify/Notification';
 import { useNotificationContext } from '@/contexts/NotificationContext';
@@ -159,7 +159,7 @@ export function CreateByteUsingAIModal(props: CreateByteUsingAIModalProps) {
               className="mt-5 md:w-[40%] w-[50%] rounded-xl bg-[#9291cd] px-4 py-2 font-medium text-white/80 hover:b hover:text-white hover:border-white"
             >
               <div className="flex flex-row justify-around">
-                <div className="animate-pulse font-lg tracking-widest ">AI is generating... </div> <LoadingComponent />{' '}
+                <div className="animate-pulse font-lg tracking-widest ">AI is generating... </div> <LoadingSpinner />{' '}
               </div>
             </button>
           )}

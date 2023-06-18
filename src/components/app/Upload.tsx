@@ -1,4 +1,5 @@
 // Replace with your actual uploadImageToS3 import
+import LoadingSpinner from '@/components/core/loaders/LoadingSpinner';
 import { CreateSignedUrlInput, useCreateSignedUrlMutation } from '@/graphql/generated/generated-types';
 import { getUploadedImageUrlFromSingedUrl } from '@/utils/upload/getUploadedImageUrlFromSingedUrl';
 import axios from 'axios';
@@ -28,7 +29,7 @@ const FileSelect = styled.label`
 function ImageUploader({ spaceId, objectId, imageType, onLoading, onInput, children, className }: Props) {
   const [loading, setLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  const [createSignedUrlMutation, { loading: creatingSingedUrl }] = useCreateSignedUrlMutation();
+  const [createSignedUrlMutation] = useCreateSignedUrlMutation();
 
   async function uploadToS3AndReturnImgUrl(imageType: string, file: File, objectId: string) {
     const input: CreateSignedUrlInput = {
@@ -75,8 +76,7 @@ function ImageUploader({ spaceId, objectId, imageType, onLoading, onInput, child
   return (
     <div className={className}>
       {loading ? (
-        // Replace with your actual UiLoading component
-        <div>UiLoading</div>
+        <LoadingSpinner />
       ) : (
         <FileSelect>
           <input type="file" ref={inputRef} onChange={handleFileChange} accept="image/jpg, image/jpeg, image/png" />

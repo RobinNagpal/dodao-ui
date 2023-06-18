@@ -8,7 +8,7 @@ interface UiLoadingProps {
   className?: string;
 }
 
-const Loading = styled.span<{ big: boolean }>`
+const LoadingSpan = styled.span<{ big: boolean }>`
   span {
     width: 100%;
   }
@@ -69,10 +69,10 @@ const Svg = styled.svg<{ fillWhite: boolean }>`
   }
 `;
 
-export default function LoadingComponent({ fillWhite = false, big = false, overlay = false }: UiLoadingProps) {
+export default function LoadingSpinner({ fillWhite = false, big = false, overlay = false }: UiLoadingProps) {
   return (
-    <Loading className={overlay ? 'overlay' : ''} big={big}>
+    <LoadingSpan className={overlay ? 'overlay' : ''} big={big}>
       <Spinner />
-    </Loading>
+    </LoadingSpan>
   );
 }
