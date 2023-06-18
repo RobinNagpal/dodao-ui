@@ -1,15 +1,14 @@
 'use client';
 
 import SidebarLayout from '@/app/SidebarLayout';
-import withSpace from '@/app/withSpace';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import ListSpaces from '@/components/spaces/ListSpaces';
 import { ManageSpaceSubviews } from '@/components/spaces/manageSpaceSubviews';
 import SpaceDetails from '@/components/spaces/SpaceDetails';
 import UpsertSpace from '@/components/spaces/UpsertSpace';
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import classNames from '@/utils/classNames';
-import { CalendarIcon, ChartPieIcon, DocumentDuplicateIcon, FolderIcon, HomeIcon, UsersIcon, CircleStackIcon } from '@heroicons/react/24/outline';
+import { CalendarIcon, ChartPieIcon, CircleStackIcon, DocumentDuplicateIcon, FolderIcon, HomeIcon, UsersIcon } from '@heroicons/react/24/outline';
+import Link from 'next/link';
 
 const navigation = [
   { name: 'Dashboard', href: '#', icon: HomeIcon, current: true },
@@ -48,7 +47,7 @@ function GetSubview(props: { manageInfo: string[] }) {
 
   return null;
 }
-function ManageSpace({ params, space }: { params: { manageInfo: string[] }; space: SpaceWithIntegrationsFragment }) {
+function ManageSpace({ params }: { params: { manageInfo: string[] } }) {
   const { manageInfo } = params;
 
   return (
@@ -56,7 +55,7 @@ function ManageSpace({ params, space }: { params: { manageInfo: string[] }; spac
       <ul role="list" className="-mx-2 space-y-1">
         {navigation.map((item) => (
           <li key={item.name}>
-            <a
+            <Link
               href={item.href}
               className={classNames(
                 item.current ? 'bg-indigo-700 text-white' : 'text-indigo-200 hover:text-white hover:bg-indigo-700',
@@ -68,7 +67,7 @@ function ManageSpace({ params, space }: { params: { manageInfo: string[] }; spac
                 aria-hidden="true"
               />
               {item.name}
-            </a>
+            </Link>
           </li>
         ))}
       </ul>
@@ -79,4 +78,4 @@ function ManageSpace({ params, space }: { params: { manageInfo: string[] }; spac
   );
 }
 
-export default withSpace(ManageSpace);
+export default ManageSpace;
