@@ -1,4 +1,5 @@
 import Button from '@/components/core/buttons/Button';
+import { ManageSpaceSubviews } from '@/components/spaces/manageSpaceSubviews';
 import { SpaceSummaryFragment, useSpacesQuery } from '@/graphql/generated/generated-types';
 import Link from 'next/link';
 import React from 'react';
@@ -60,7 +61,7 @@ export default function ListSpaces() {
                       <td className="whitespace-nowrap px-3 py-4 text-sm">{space.skin}</td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm">{space.admins}</td>
                       <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                        <Link href={`space/manage/space-details/${space.id}`}>Edit</Link>
+                        <Link href={`space/manage/${ManageSpaceSubviews.ViewSpace}/${space.id}`}>View</Link>
                       </td>
                     </tr>
                   ))}

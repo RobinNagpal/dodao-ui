@@ -6,6 +6,7 @@ import PageWrapper from '@/components/core/page/PageWrapper';
 import ListSpaces from '@/components/spaces/ListSpaces';
 import { ManageSpaceSubviews } from '@/components/spaces/manageSpaceSubviews';
 import SpaceDetails from '@/components/spaces/SpaceDetails';
+import UpsertSpace from '@/components/spaces/UpsertSpace';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import classNames from '@/utils/classNames';
 import { CalendarIcon, ChartPieIcon, DocumentDuplicateIcon, FolderIcon, HomeIcon, UsersIcon, CircleStackIcon } from '@heroicons/react/24/outline';
@@ -17,7 +18,7 @@ const navigation = [
   { name: 'Calendar', href: '#', icon: CalendarIcon, current: false },
   { name: 'Documents', href: '#', icon: DocumentDuplicateIcon, current: false },
   { name: 'Reports', href: '#', icon: ChartPieIcon, current: false },
-  { name: 'Spaces', href: '/space/manage/' + ManageSpaceSubviews.Spaces, icon: CircleStackIcon, current: false },
+  { name: 'Spaces', href: '/space/manage/' + ManageSpaceSubviews.SpacesList, icon: CircleStackIcon, current: false },
 ];
 
 function GetSubview(props: { manageInfo: string[] }) {
@@ -32,13 +33,17 @@ function GetSubview(props: { manageInfo: string[] }) {
 
   const entityId = manageInfo?.[2];
 
-  console.log('subView === ManageSpaceSubviews.SpaceDetails', subView === ManageSpaceSubviews.SpaceDetails);
+  console.log('subView === ManageSpaceSubviews.SpaceDetails', subView === ManageSpaceSubviews.ViewSpace);
 
-  if (subView === ManageSpaceSubviews.Spaces) {
+  if (subView === ManageSpaceSubviews.SpacesList) {
     return <ListSpaces />;
   }
-  if (subView === ManageSpaceSubviews.SpaceDetails) {
+  if (subView === ManageSpaceSubviews.ViewSpace) {
     return <SpaceDetails spaceId={entityId} />;
+  }
+
+  if (subView === ManageSpaceSubviews.EditSpace) {
+    return <UpsertSpace spaceId={entityId} />;
   }
 
   return null;

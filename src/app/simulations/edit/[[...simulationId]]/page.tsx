@@ -160,7 +160,7 @@ tag2"
                       modelValue={simulation.priority}
                       maxLength={500}
                       onUpdate={(newValue) => updateSimulationFunctions.updateSimulationField('priority', newValue)}
-                      additionalInputClass="edit-timeline-inputs"
+                      className="edit-timeline-inputs"
                       number
                     >
                       <div>Priority</div>

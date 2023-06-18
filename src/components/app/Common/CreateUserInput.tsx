@@ -41,7 +41,6 @@ function UserInputComponent({ removeUserInput, item, userInputErrors, updateUser
           <EnabledInput
             maxLength={64}
             modelValue={userInput.label}
-            hideBorder
             onUpdate={(value: string | null | number | undefined) => updateUserInputLabel(userInput.uuid, value ? value.toString() : '')}
           />
           <DisabledInput className="ml-2 !bg-skin-header-bg" disabled />

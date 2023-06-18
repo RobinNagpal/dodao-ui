@@ -1,4 +1,5 @@
 export enum ManageSpaceSubviews {
-  Spaces = 'spaces',
-  SpaceDetails = 'space-details',
+  SpacesList = 'spaces',
+  ViewSpace = 'view-space',
+  EditSpace = 'edit-space',
 }

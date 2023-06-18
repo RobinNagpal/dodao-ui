@@ -7,27 +7,25 @@ interface TextInputProps extends PropsWithChildren {
   modelValue?: string | number | null;
   placeholder?: string;
   error?: string | boolean;
-  number?: boolean;
   disabled?: boolean;
   maxLength?: number;
   min?: number | string;
   max?: number | string;
-  additionalInputClass?: string;
+  number?: boolean;
   required?: boolean;
-  hideBorder?: boolean;
+
   onUpdate?: (value: string | number | undefined) => void;
   label?: React.ReactNode;
   info?: React.ReactNode;
-  selected?: React.ReactNode;
   className?: string;
 }
 
-const Wrapper = styled.div<{ hideBorder?: boolean; error?: string | boolean; disabled?: boolean }>`
+const Wrapper = styled.div<{ error?: string | boolean; disabled?: boolean }>`
   position: relative;
   overflow: hidden;
   padding-top: 22px;
   margin-bottom: 3px;
-  border-bottom: ${({ hideBorder }) => (hideBorder ? 'none' : '1px solid')};
+  border-bottom: 1px solid;
   border-color: ${({ error }) => (error ? 'red' : 'skin-border')};
   background-color: transparent;
   text-align: left;
@@ -75,13 +73,10 @@ export default function TextInput({
   maxLength,
   min,
   max,
-  additionalInputClass,
   required = true,
-  hideBorder,
   onUpdate,
   label,
   info,
-  selected,
   children,
   className,
 }: TextInputProps) {
@@ -97,33 +92,22 @@ export default function TextInput({
     }
   };
 
-  useEffect(() => {
-    if (inputRef.current && selected) {
-      inputRef.current.disabled = true;
-    }
-  }, [selected]);
-
   return (
-    <Wrapper error={error} disabled={disabled} hideBorder={hideBorder} className={className || ''}>
-      {selected ? (
-        <SlotSelected>{selected}</SlotSelected>
-      ) : (
-        <Input
-          ref={inputRef}
-          value={modelValue || ''}
-          onChange={handleInput}
-          placeholder={!isFocus && !(label || children) ? placeholder : ''}
-          type={number ? 'number' : 'text'}
-          disabled={disabled}
-          className={additionalInputClass}
-          required={required}
-          maxLength={maxLength ? maxLength : undefined}
-          min={min ? min : undefined}
-          max={max ? max : undefined}
-          onFocus={() => setIsFocus(true)}
-          onBlur={() => setIsFocus(false)}
-        />
-      )}
+    <Wrapper error={error} disabled={disabled} className={className || ''}>
+      <Input
+        ref={inputRef}
+        value={modelValue || ''}
+        onChange={handleInput}
+        placeholder={!isFocus && !(label || children) ? placeholder : ''}
+        type={number ? 'number' : 'text'}
+        disabled={disabled}
+        required={required}
+        maxLength={maxLength ? maxLength : undefined}
+        min={min ? min : undefined}
+        max={max ? max : undefined}
+        onFocus={() => setIsFocus(true)}
+        onBlur={() => setIsFocus(false)}
+      />{' '}
       <InputLabel $selected={isFocus || !!modelValue}>
         {label} {children}
       </InputLabel>
