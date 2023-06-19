@@ -1,6 +1,7 @@
 'use client';
 
 import withSpace from '@/app/withSpace';
+import { Grid2Cols } from '@/components/core/grids/Grid2Cols';
 import PageWithSpace from '@/components/core/loaders/PageWithSpace';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import HomeIcon from '@/components/main/HomeIcon';
@@ -33,11 +34,11 @@ function Home({ space }: { space: SpaceWithIntegrationsFragment }) {
                   <Lottie animationData={DeveloperLottie} loop={true} />
                 </div>
               </div>
-              <div className="pt-[150px] grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
+              <Grid2Cols>
                 {sortedSpaceFeatures.map((feature) => (
                   <HomeIcon space={space} feature={feature} key={feature.featureName} />
                 ))}
-              </div>
+              </Grid2Cols>
             </div>
           );
         }}
