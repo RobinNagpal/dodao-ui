@@ -3,6 +3,7 @@
 import Block from '@/components/app/Block';
 import UserInput from '@/components/app/Form/UserInput';
 import AddGuideCategoryModal from '@/components/app/Modal/AddGuideCategoryModal';
+import UploadInput from '@/components/app/UploadInput';
 import StyledSelect from '@/components/core/select/StyledSelect';
 import { EditGuideStepper } from '@/components/guides/Edit/EditGuideStepper';
 import { EditGuideType } from '@/components/guides/Edit/editGuideType';
@@ -21,6 +22,7 @@ type BasicGuideSettingsProps = {
 };
 
 export default function BasicGuideSettings({ editGuideHelper, guide, guideErrors, space }: BasicGuideSettingsProps) {
+  const [uploadThumbnailLoading, setUploadThumbnailLoading] = useState(false);
   const selectPublishStatus = (status: PublishStatus) => {
     editGuideHelper.updateGuideFunctions.updateGuideField('publishStatus', status);
   };
@@ -45,6 +47,17 @@ export default function BasicGuideSettings({ editGuideHelper, guide, guideErrors
           <UserInput modelValue={guide.name} setUserInput={(v) => updateGuideField('name', v.toString())} label="Name" required></UserInput>
 
           <UserInput modelValue={guide.content} setUserInput={(v) => updateGuideField('content', v.toString())} label={'One line description'} required />
+
+          <UploadInput
+            error={guideErrors['thumbnail']}
+            onUpdate={(v) => updateGuideField('thumbnail', v?.toString() || '')}
+            imageType="Guide"
+            spaceId={space.id}
+            modelValue={guide.thumbnail}
+            objectId={guide.id || 'new-guide' + '-thumbnail'}
+            onInput={(value) => updateGuideField('thumbnail', value?.toString() || '')}
+            onLoading={setUploadThumbnailLoading}
+          />
 
           <StyledSelect
             label="Publish Status *"

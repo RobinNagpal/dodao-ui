@@ -15,10 +15,7 @@ interface Props {
   updateGuideFunctions: UpdateGuideFunctions;
 }
 
-export default function AdvancedGuideInfo(props: Props) {
-  // Implement all other function, component renderings, and hooks similar to the above
-
-  // This is only a partial conversion. The rest of the component would follow this pattern.
+export default function AdvancedSettings(props: Props) {
   const { $t } = useI18();
   const showIncorrectChoices: StyledSelectItem[] = [
     {
@@ -33,25 +30,19 @@ export default function AdvancedGuideInfo(props: Props) {
 
   return (
     <div>
-      <Block title="guide.create.advancedInfo" className="mt-4 wrapper">
-        <div className="show-incorrect-wrapper pt-3 border-b border-current">
-          <StyledSelect
-            selectedItemId={props.guide.showIncorrectOnCompletion?.toString() || 'true'}
-            items={showIncorrectChoices}
-            setSelectedItemId={() => {}}
-          />
-
-          <div className="input-label text-color mr-2 whitespace-nowrap absolute transform -translate-y-11 text-xs transition-transform duration-100 linear transition-font-size duration-100 linear">
-            Show Incorrect Questions*
-          </div>
-        </div>
-      </Block>
-      <Block title="guide.postSubmissionStepContent" className="mt-4 wrapper">
+      <Block title={$t('guide.create.advancedInfo')} className="mt-4 wrapper">
+        <StyledSelect
+          label={'Show Incorrect Questions'}
+          selectedItemId={props.guide.showIncorrectOnCompletion?.toString() || 'true'}
+          items={showIncorrectChoices}
+          setSelectedItemId={(v) => props.updateGuideFunctions.updateGuideField('showIncorrectOnCompletion', v === 'true')}
+          className="mb-4"
+        />
         <StyledTextareaAutosize
           modelValue={props.guide.postSubmissionStepContent || ''}
           placeholder={$t(`guide.postSubmissionStepContent`)}
           className="input w-full text-left"
-          onUpdate={(v) => {}}
+          onUpdate={(v) => props.updateGuideFunctions.updateGuideField('postSubmissionStepContent', v?.toString() || '')}
         />
       </Block>
     </div>
