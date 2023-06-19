@@ -106,3 +106,15 @@ mutation UpsertSpaceAcademyRepository($spaceId: String!, $academyRepository: Str
     id
   }
 }
+
+mutation UpdateSpace($spaceInput: UpsertSpaceInput!){
+  updateSpace(spaceInput: $spaceInput) {
+    ...SpaceWithIntegrations
+  }
+}
+
+mutation CreateSpace($spaceInput: UpsertSpaceInput!){
+  createSpace(spaceInput: $spaceInput) {
+    ...SpaceWithIntegrations
+  }
+}

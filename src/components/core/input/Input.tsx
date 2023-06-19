@@ -72,7 +72,7 @@ export default function Input({
           ref={inputRef}
           value={modelValue || ''}
           onChange={handleInput}
-          placeholder={!isFocus && !(label || children) ? placeholder : ''}
+          placeholder={placeholder}
           type={number ? 'number' : 'text'}
           disabled={disabled}
           required={required}
@@ -82,8 +82,6 @@ export default function Input({
           onFocus={() => setIsFocus(true)}
           onBlur={() => setIsFocus(false)}
           className="block w-full rounded-md border-0 py-1.5 pr-10 ring-1 ring-inset ring-gray-400 shadow-sm focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6"
-          aria-invalid="true"
-          aria-describedby="email-error"
         />
         {error && (
           <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">

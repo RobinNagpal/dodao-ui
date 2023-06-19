@@ -43,6 +43,8 @@ export default function UploadInput(props: {
             placeholder="e.g. https://example.com/guide.png"
             aria-invalid="true"
             aria-describedby="email-error"
+            value={props.modelValue || ''}
+            onChange={(e) => props.onUpdate(e.target.value)}
           />
         </div>
         <Upload

@@ -695,6 +695,7 @@ type Mutation {
   askCompletionAI(input: CompletionAIInput!): OpenAICompletionResponse!
   authenticateWithUnstoppable(idToken: String!): JwtResponse!
   createSignedUrl(input: CreateSignedUrlInput!, spaceId: String!): String!
+  createSpace(spaceInput: UpsertSpaceInput!): Space!
   createSummaryOfContent(input: String!): OpenAITextResponse!
   deleteTopic(spaceId: String!, topicInfo: DeleteTopicInput!): GitCourse!
   deleteTopicExplanation(explanationInfo: DeleteTopicExplanationInput!, spaceId: String!): GitCourse!
@@ -719,6 +720,7 @@ type Mutation {
   submitGitCourseTopic(gitCourseTopicSubmission: GitCourseTopicSubmissionInput!, spaceId: String!): GitCourseTopicSubmission!
   submitGuide(submissionInput: GuideSubmissionInput!): GuideSubmission!
   updateCourseBasicInfo(courseBasicInfo: CourseBasicInfoInput!, spaceId: String!): GitCourse!
+  updateSpace(spaceInput: UpsertSpaceInput!): Space!
   updateTopicBasicInfo(spaceId: String!, topicInfo: UpdateTopicBasicInfoInput!): GitCourse!
   updateTopicExplanation(explanationInfo: UpdateTopicExplanationInput!, spaceId: String!): GitCourse!
   updateTopicQuestion(questionInfo: UpdateTopicQuestionInput!, spaceId: String!): GitCourse!
@@ -874,14 +876,12 @@ type Space {
   admins: [String!]!
   avatar: String
   creator: String!
-  discordInvite: String
   features: [String!]!
   id: String!
   inviteLinks: SpaceInviteLinks
-  name: String
+  name: String!
   skin: String!
   spaceIntegrations: SpaceIntegrations
-  telegramInvite: String
 }
 
 type SpaceFilters {
@@ -909,6 +909,14 @@ type SpaceIntegrations {
   projectGalaxyTokenLastFour: String
 }
 
+input SpaceIntegrationsInput {
+  academyRepository: String
+  discordGuildId: String
+  gitGuideRepositories: [SpaceGitRepositoryInput!]!
+  gnosisSafeWallets: [GnosisSafeWalletInput!]!
+  projectGalaxyTokenLastFour: String
+}
+
 input SpaceInviteArgs {
   discordInviteLink: String
   showAnimatedButtonForDiscord: Boolean
@@ -917,6 +925,13 @@ input SpaceInviteArgs {
 }
 
 type SpaceInviteLinks {
+  discordInviteLink: String
+  showAnimatedButtonForDiscord: Boolean
+  showAnimatedButtonForTelegram: Boolean
+  telegramInviteLink: String
+}
+
+input SpaceInviteLinksInput {
   discordInviteLink: String
   showAnimatedButtonForDiscord: Boolean
   showAnimatedButtonForTelegram: Boolean
@@ -1094,6 +1109,18 @@ input UpsertSimulationInput {
   steps: [SimulationStepInput!]!
   tags: [String!]!
   thumbnail: String
+}
+
+input UpsertSpaceInput {
+  admins: [String!]!
+  avatar: String!
+  creator: String!
+  features: [String!]!
+  id: String!
+  inviteLinks: SpaceInviteLinksInput!
+  name: String!
+  skin: String!
+  spaceIntegrations: SpaceIntegrationsInput!
 }
 
 input UpsertTimelineEventInput {
