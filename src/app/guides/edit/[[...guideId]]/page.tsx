@@ -5,6 +5,7 @@ import withSpace from '@/app/withSpace';
 import PageLoading from '@/components/core/loaders/PageLoading';
 import Button from '@/components/core/buttons/Button';
 import PageWrapper from '@/components/core/page/PageWrapper';
+import TabsWithUnderline, { TabItem } from '@/components/core/tabs/TabsWithUnderline';
 import { useEditGuide } from '@/components/guides/Edit/useEditGuide';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
@@ -34,6 +35,18 @@ const EditGuide = (props: { space: SpaceWithIntegrationsFragment; params: { guid
     handleSubmit();
   };
 
+  const tabs: TabItem[] = [
+    {
+      id: 'basic',
+      label: 'Basic',
+      href: `#`,
+    },
+    {
+      id: 'advanced',
+      label: 'Advanced',
+      href: `#`,
+    },
+  ];
   return (
     <PageWrapper>
       <SingleCardLayout>
@@ -46,6 +59,9 @@ const EditGuide = (props: { space: SpaceWithIntegrationsFragment; params: { guid
 
         {guideLoaded ? (
           <div>
+            <div className="flex justify-end">
+              <TabsWithUnderline selectedTabId={'basic'} setSelectedTabId={() => {}} tabs={tabs} className="w-96" />
+            </div>
             <Wrapper>
               <BasicGuideSettings guide={guide} guideErrors={guideErrors} space={space} editGuideHelper={editGuideHelper} />
             </Wrapper>

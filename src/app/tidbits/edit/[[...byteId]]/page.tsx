@@ -15,7 +15,7 @@ import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-typ
 import SingleCardLayout from '@/layouts/SingleCardLayout';
 import { PublishStatus, VisibilityEnum } from '@/types/deprecated/models/enums';
 import { ByteErrors } from '@/types/errors/byteErrors';
-import { publishStatuses, visibilityOptions } from '@/utils/ui/statuses';
+import { publishStatusesEllipsisDropdown, visibilityOptions } from '@/utils/ui/statuses';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -66,7 +66,7 @@ function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteI
             <Block title="Basic Info" className="mt-4">
               <div className="mb-2">
                 <Input modelValue={byte.name} error={inputError('name')} maxLength={32} onUpdate={(e) => updateByteFunctions.updateByteField('name', e)}>
-                  Name*
+                  Name *
                 </Input>
                 <Input
                   modelValue={byte.content}
@@ -75,7 +75,7 @@ function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteI
                   maxLength={64}
                   onUpdate={(e) => updateByteFunctions.updateByteField('content', e)}
                 >
-                  Excerpt*
+                  Excerpt *
                 </Input>
 
                 <div className="mt-4">

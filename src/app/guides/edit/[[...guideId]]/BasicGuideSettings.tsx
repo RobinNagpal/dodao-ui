@@ -3,14 +3,14 @@
 import Block from '@/components/app/Block';
 import UserInput from '@/components/app/Form/UserInput';
 import AddGuideCategoryModal from '@/components/app/Modal/AddGuideCategoryModal';
-import EllipsisDropdown from '@/components/core/dropdowns/EllipsisDropdown';
+import StyledSelect from '@/components/core/select/StyledSelect';
 import { EditGuideStepper } from '@/components/guides/Edit/EditGuideStepper';
 import { EditGuideType } from '@/components/guides/Edit/editGuideType';
 import { UseEditGuideHelper } from '@/components/guides/Edit/useEditGuide';
 import { Space } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
 import { GuideCategoryType, PublishStatus } from '@/types/deprecated/models/enums';
-import { publishStatuses } from '@/utils/ui/statuses';
+import { publishStatusesSelect } from '@/utils/ui/statuses';
 import React, { useState } from 'react';
 
 type BasicGuideSettingsProps = {
@@ -44,35 +44,14 @@ export default function BasicGuideSettings({ editGuideHelper, guide, guideErrors
         <div className="mt-4 flex flex-col gap-5">
           <UserInput modelValue={guide.name} setUserInput={(v) => updateGuideField('name', v.toString())} label="Name" required></UserInput>
 
-          <UserInput
-            modelValue={guide.content}
-            setUserInput={(v) => updateGuideField('content', v.toString())}
-            label={$t('guide.create.explanation')}
-            required
+          <UserInput modelValue={guide.content} setUserInput={(v) => updateGuideField('content', v.toString())} label={'One line description'} required />
+
+          <StyledSelect
+            label="Publish Status *"
+            selectedItemId={guide.publishStatus || 'Live'}
+            items={publishStatusesSelect}
+            setSelectedItemId={(value) => selectPublishStatus(value as PublishStatus)}
           />
-
-          <div>
-            <div>Categories </div>
-            <button onClick={() => setGuideCategoryModal(true)}>
-              {guide.categories.length !== 0 ? (
-                guide.categories.map((category, index) => (
-                  <p className="text-left p-2" key={index}>
-                    {category}
-                  </p>
-                ))
-              ) : (
-                <p>No Categories</p>
-              )}
-            </button>
-          </div>
-
-          <div>Publish Status * </div>
-          <div className="flex justify-start ">
-            <div className="pr-1 select-none">{guide.publishStatus === 'Live' ? 'Live' : 'Draft'}</div>
-            <div className="ml-2">
-              <EllipsisDropdown items={publishStatuses} onSelect={(value) => selectPublishStatus(value as PublishStatus)} />
-            </div>
-          </div>
         </div>
       </Block>
 

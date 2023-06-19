@@ -1,7 +1,7 @@
 import Card from '@/components/core/card/Card';
 import { QueryBytesQuery } from '@/graphql/generated/generated-types';
 import { VisibilityEnum } from '@/types/deprecated/models/enums';
-import { publishStatuses } from '@/utils/ui/statuses';
+import { publishStatusesEllipsisDropdown } from '@/utils/ui/statuses';
 import { shorten } from '@/utils/utils';
 import Link from 'next/link';
 import React from 'react';

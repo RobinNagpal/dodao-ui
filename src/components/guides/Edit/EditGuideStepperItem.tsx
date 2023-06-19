@@ -323,9 +323,11 @@ const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHas
         </div>
       </StepContainer>
 
-      <Input modelValue={step.name} error={!!inputError('name')} maxLength={32} onUpdate={(e) => updateStepName(e?.toString() || '')}>
-        Name*
-      </Input>
+      <div className="w-full mb-4">
+        <Input modelValue={step.name} error={!!inputError('name')} maxLength={32} onUpdate={(e) => updateStepName(e?.toString() || '')}>
+          Name*
+        </Input>
+      </div>
       <MarkdownEditor
         id={step.uuid}
         modelValue={step.content}
