@@ -2,10 +2,12 @@ import React, { FC, useState } from 'react';
 import { TreeNode, TreeNodeType } from './TreeNode';
 
 interface TreeProps {
-  data: TreeNodeType[];
+  data: TreeNodeType[],
+  openNodes: { [key: string]: boolean };
+  setOpenNodes: React.Dispatch<React.SetStateAction<{ [key: string]: boolean }>>;
 }
-export const Tree: FC<TreeProps> = ({ data }) => {
-  const [openNodes, setOpenNodes] = useState<{ [key: string]: boolean }>({});
+export const Tree: FC<TreeProps> = ({ data, openNodes, setOpenNodes }) => {
+  //const [openNodes, setOpenNodes] = useState<{ [key: string]: boolean }>({});
 
   const renderTreeNode = (node: TreeNodeType, level: number) => {
     return (

@@ -23,6 +23,8 @@ interface CourseNavigationProps {
   showAddModal: () => void;
   courseHelper: CourseHelper;
   submissionHelper: CourseSubmissionHelper;
+  openNodes: { [key: string]: boolean };
+  setOpenNodes: React.Dispatch<React.SetStateAction<{ [key: string]: boolean }>>;
 }
 const ClickableDiv = styled.div`
   cursor: pointer;
@@ -82,9 +84,9 @@ const Container = styled.div`
   }
 `;
 
-const CourseComponent: React.FC<CourseNavigationProps> = ({ course, space, showAddModal, courseHelper, submissionHelper }) => {
+const CourseComponent: React.FC<CourseNavigationProps> = ({ course, space, showAddModal, courseHelper, submissionHelper, openNodes, setOpenNodes }) => {
   const isCourseAdmin = true;
-  const [openNodes, setOpenNodes] = useState<{ [key: string]: boolean }>({});
+  //const [openNodes, setOpenNodes] = useState<{ [key: string]: boolean }>({});
 
   const [treeData, setTreeData] = useState<TreeNodeType[]>([]);
   const currentTopic = useContext(CurrentTopicContext); 
@@ -237,7 +239,10 @@ const CourseComponent: React.FC<CourseNavigationProps> = ({ course, space, showA
           <AddIcon /> Add
         </Button>
       )}
-      <Tree data={treeData} />
+      <Tree data={treeData}
+        openNodes={openNodes}
+        setOpenNodes={setOpenNodes}
+      />
     </Container>
     </CurrentTopicContext.Provider>
 

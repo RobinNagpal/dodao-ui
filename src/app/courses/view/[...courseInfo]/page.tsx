@@ -12,7 +12,7 @@ import useViewCourse from '@/components/courses/View/useViewCourse';
 import { CourseDetailsFragment, SpaceWithIntegrationsFragment, useGitCourseQueryQuery } from '@/graphql/generated/generated-types';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import styled from 'styled-components';
 
 const StyledNavWrapper = styled.div`
@@ -99,6 +99,52 @@ const CourseView = ({ params, space }: { params: { courseInfo: string[] }; space
   };
 
   const { course, loading } = courseHelper;
+  const [openNodes, setOpenNodes] = useState<{ [key: string]: boolean }>({});
+
+
+
+  useLayoutEffect(() => {
+    // console.log('openNodes layout changed', openNodes);
+    if(sessionStorage.getItem('openNodes') && JSON.stringify(JSON.parse("" + sessionStorage.getItem('openNodes'))) !== JSON.stringify({})){
+      //check if they are the same
+      if(JSON.stringify(openNodes) !== JSON.stringify(JSON.parse("" + sessionStorage.getItem('openNodes')))){
+        //check if sessionStorage.getItem('openNodes') is not empty json
+        
+
+          setOpenNodes(JSON.parse("" + sessionStorage.getItem('openNodes')));
+          //clear sessionStorage
+          sessionStorage.setItem('openNodes', JSON.stringify({}));
+        
+      }
+      else{
+        //clear sessionStorage
+        sessionStorage.setItem('openNodes', JSON.stringify({}));
+      }
+    }
+    else{
+      sessionStorage.setItem('openNodes', JSON.stringify(openNodes));
+    }
+  }, []);
+  useEffect(() => {
+    // console.log('openNodes changed', openNodes);
+    sessionStorage.setItem('openNodes', JSON.stringify(openNodes));
+    //close all other nodes when more than one node is open 
+    // if(Object.keys(openNodes).length > 1){
+    //   let newOpenNodes = {};
+    //   Object.keys(openNodes).forEach((key) => {
+    //     if(openNodes[key]){
+    //       newOpenNodes[key] = true;
+    //     }
+    //   }
+    //   );
+    //   setOpenNodes(newOpenNodes);
+    // }
+
+
+
+    
+  }, [openNodes]);
+
 
   return (
     <Container className="pt-6 container-default">
@@ -116,7 +162,10 @@ const CourseView = ({ params, space }: { params: { courseInfo: string[] }; space
           </div>
           <div className="flex flex-col md:flex-row">
             <StyledNavWrapper className="my-4 relative overflow-scroll border-r-2 ">
-              <CourseNavigation course={course} space={space} showAddModal={showAddModal} courseHelper={courseHelper} submissionHelper={submissionHelper} />
+              <CourseNavigation course={course} space={space} showAddModal={showAddModal} courseHelper={courseHelper} submissionHelper={submissionHelper} 
+                openNodes={openNodes}
+                setOpenNodes={setOpenNodes}
+              />
             </StyledNavWrapper>
             <StyledRightContent className="flex-1 m-4">
               <CourseDetailsRightSection
