@@ -60,8 +60,10 @@ function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteI
             <span className="mr-1 font-bold">&#8592;</span>
             {byteId ? byte.name : 'Back to Bytes'}
           </Link>
-          {!byteId && <Button onClick={() => setShowAIGenerateModel(true)}>Create with AI</Button>}
-          <StatusBadge status={byte.publishStatus} />
+          <div>
+            <StatusBadge status={byte.publishStatus} />
+            {!byteId && <Button onClick={() => setShowAIGenerateModel(true)}>Create with AI</Button>}
+          </div>
         </div>
 
         {byteLoaded ? (
