@@ -139,7 +139,7 @@ const CourseView = ({ params, space }: { params: { courseInfo: string[] }; space
     //   );
     //   setOpenNodes(newOpenNodes);
     // }
-
+//test
 
 
     
