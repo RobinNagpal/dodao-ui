@@ -24,9 +24,11 @@ export default function ListSpaces() {
           <p className="mt-2 text-sm">A list of all the spaces.</p>
         </div>
         <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-          <Button variant="contained" primary>
-            Add Space
-          </Button>
+          <Link href={`space/manage/${ManageSpaceSubviews.EditSpace}`}>
+            <Button variant="contained" primary>
+              Add Space
+            </Button>
+          </Link>
         </div>
       </div>
       <div className="mt-8 flow-root">

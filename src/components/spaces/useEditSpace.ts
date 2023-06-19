@@ -116,7 +116,6 @@ export default function useEditSpace(spaceId?: string): UseEditSpaceHelper {
   }
 
   async function upsertSpace() {
-    const spaceId = space.id;
     setUpserting(true);
     try {
       if (spaceId?.trim()) {
