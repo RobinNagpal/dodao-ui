@@ -4,6 +4,7 @@ import withSpace from '@/app/withSpace';
 import Block from '@/components/app/Block';
 import RowLoading from '@/components/app/RowLoading';
 import EllipsisDropdown from '@/components/core/dropdowns/EllipsisDropdown';
+import PageWrapper from '@/components/core/page/PageWrapper';
 import CourseNavigation from '@/components/courses/Edit/CourseNavigation';
 import ModalCourseNewItem from '@/components/courses/Edit/ModalCourseNewItem';
 import CourseDetailsRightSection, { ItemTypes } from '@/components/courses/View/CourseDetailsRightSection';
@@ -147,7 +148,7 @@ const CourseView = ({ params, space }: { params: { courseInfo: string[] }; space
 
 
   return (
-    <Container className="pt-6 container-default">
+    <PageWrapper>
       {course ? (
         <Block slim className="w-full">
           <div className="px-4 py-3 bg-skin-header-bg lg:rounded-2xl pb-3 flex justify-between w-full">
@@ -198,7 +199,7 @@ const CourseView = ({ params, space }: { params: { courseInfo: string[] }; space
           submissionHelper={submissionHelper}
         />
       )}
-    </Container>
+    </PageWrapper>
   );
 };
 
