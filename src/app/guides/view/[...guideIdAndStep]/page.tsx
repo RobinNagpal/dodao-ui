@@ -2,8 +2,9 @@
 
 import withSpace from '@/app/withSpace';
 import Block from '@/components/app/Block';
-import PageLoading from '@/components/app/PageLoading';
+import PageLoading from '@/components/core/loaders/PageLoading';
 import EllipsisDropdown from '@/components/core/dropdowns/EllipsisDropdown';
+import PageWrapper from '@/components/core/page/PageWrapper';
 import GuideStepper from '@/components/guides/View/GuideStepper';
 import { useViewGuide } from '@/components/guides/View/useViewGuide';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
@@ -67,7 +68,7 @@ const GuideView = ({ params, space }: { params: { guideIdAndStep: string[] }; sp
 
   // JSX starts here
   return (
-    <div className="pt-12">
+    <PageWrapper className="pt-12">
       <SingleCardLayout>
         {viewGuideHelper.guideLoaded ? (
           <>
@@ -110,7 +111,7 @@ const GuideView = ({ params, space }: { params: { guideIdAndStep: string[] }; sp
           <PageLoading />
         )}
       </SingleCardLayout>
-    </div>
+    </PageWrapper>
   );
 };
 

@@ -1,0 +1,14 @@
+fragment SpaceSummary on Space {
+  id
+  admins
+  avatar
+  creator
+  name
+  skin
+}
+
+query Spaces {
+  spaces {
+    ...SpaceSummary
+  }
+}

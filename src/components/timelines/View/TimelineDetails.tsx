@@ -1,6 +1,6 @@
 'use client';
 
-import CalendarIcon from '@/components/app/Icons/CalendarIcon';
+import CalendarIcon from '@/components/core/icons/CalendarIcon';
 import Button from '@/components/core/buttons/Button';
 import { Space, TimelineDetailsFragment } from '@/graphql/generated/generated-types';
 import styled from 'styled-components';

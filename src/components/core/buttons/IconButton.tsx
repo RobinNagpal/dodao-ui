@@ -1,11 +1,11 @@
 // Import necessary libraries and components
-import Button from '@/components/app/Button';
-import DeleteIcon from '@/components/app/Icons/DeleteIcon';
-import EditIcon from '@/components/app/Icons/EditIcon';
-import GuideAddIcon from '@/components/app/Icons/GuideAddIcon';
-import { IconTypes } from '@/components/app/Icons/IconTypes';
-import MoveDown from '@/components/app/Icons/MoveDown';
-import MoveUp from '@/components/app/Icons/MoveUp';
+import Button from '@/components/core/buttons/Button';
+import DeleteIcon from '@/components/core/icons/DeleteIcon';
+import EditIcon from '@/components/core/icons/EditIcon';
+import GuideAddIcon from '@/components/core/icons/GuideAddIcon';
+import { IconTypes } from '@/components/core/icons/IconTypes';
+import MoveDown from '@/components/core/icons/MoveDown';
+import MoveUp from '@/components/core/icons/MoveUp';
 import styled from 'styled-components';
 
 // Define component's props using TypeScript interfaces

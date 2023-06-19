@@ -2,11 +2,12 @@
 
 import withSpace from '@/app/withSpace';
 import Block from '@/components/app/Block';
-import Button from '@/components/app/Button';
-import Input from '@/components/app/Input';
-import PageLoading from '@/components/app/PageLoading';
-import TextareaArray from '@/components/app/TextArea/TextareaArray';
+import Input from '@/components/core/input/Input';
+import PageLoading from '@/components/core/loaders/PageLoading';
+import Button from '@/components/core/buttons/Button';
+import TextareaArray from '@/components/core/textarea/TextareaArray';
 import EllipsisDropdown, { EllipsisDropdownItem } from '@/components/core/dropdowns/EllipsisDropdown';
+import PageWrapper from '@/components/core/page/PageWrapper';
 import Stepper from '@/components/simulations/Edit/SimulationStepper';
 import { useEditSimulation } from '@/components/simulations/Edit/useEditSimulation';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
@@ -99,7 +100,7 @@ function EditSimulation(props: { space: SpaceWithIntegrationsFragment; params: {
   }
 
   return (
-    <div className="pt-12">
+    <PageWrapper>
       <SingleCardLayout>
         <Wrapper>
           <div className="px-4 mb-4 md:px-0 overflow-hidden">
@@ -159,7 +160,7 @@ tag2"
                       modelValue={simulation.priority}
                       maxLength={500}
                       onUpdate={(newValue) => updateSimulationFunctions.updateSimulationField('priority', newValue)}
-                      additionalInputClass="edit-timeline-inputs"
+                      className="edit-timeline-inputs"
                       number
                     >
                       <div>Priority</div>
@@ -185,7 +186,7 @@ tag2"
           )}
         </Wrapper>
       </SingleCardLayout>
-    </div>
+    </PageWrapper>
   );
 }
 

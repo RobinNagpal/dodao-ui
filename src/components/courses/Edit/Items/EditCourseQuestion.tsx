@@ -1,6 +1,6 @@
-import Button from '@/components/app/Button';
 import CreateQuestion from '@/components/app/Common/CreateQuestion';
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
+import Button from '@/components/core/buttons/Button';
 import { CourseDetailsFragment, CourseQuestionFragment, Space, TopicQuestionChoiceInput, UpdateTopicQuestionInput } from '@/graphql/generated/generated-types';
 import { QuestionType } from '@/types/deprecated/models/enums';
 import { QuestionError } from '@/types/errors/error';

@@ -1,5 +1,5 @@
-import IconButton from '@/components/app/Button/IconButton';
-import { IconTypes } from '@/components/app/Icons/IconTypes';
+import IconButton from '@/components/core/buttons/IconButton';
+import { IconTypes } from '@/components/core/icons/IconTypes';
 import Button from '@/components/core/buttons/Button';
 import EditCourseSummary from '@/components/courses/Edit/Items/EditCourseSummary';
 import { useDeleteCourseItem } from '@/components/courses/Edit/useDeleteCourseItem';

@@ -55,6 +55,7 @@ export type UpdateByteFunctions = {
   updateStep: (step: EditByteStep) => void;
   removeStep: (stepUuid: string) => void;
   moveStepUp: (stepUuid: string) => void;
+  setByte: (byte: EditByteType) => void;
 };
 
 export interface GeneratedByte {
@@ -69,7 +70,7 @@ export interface GeneratedByte {
 export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string | null) {
   const router = useRouter();
   const emptyByteModel = emptyByte();
-  const [byteRef, setByteRef] = useState<EditByteType>({
+  const [byte, setByte] = useState<EditByteType>({
     ...emptyByteModel,
     byteExists: false,
   });
@@ -100,12 +101,12 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
         publishStatus: PublishStatus.Draft,
         tags: [],
       };
-      setByteRef(byte);
+      setByte(byte);
       setByteLoaded(true);
     } else if (byteId) {
       const result = await queryByteDetails({ byteId: byteId, spaceId: space.id, includeDraft: true });
       const byte: ByteDetailsFragment = result.data.byte;
-      setByteRef({
+      setByte({
         ...byte,
         byteExists: true,
         isPristine: true,
@@ -118,7 +119,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
 
   // Add other
   const updateStep = useCallback((step: EditByteStep) => {
-    setByteRef((prevByte) => {
+    setByte((prevByte) => {
       const updatedSteps = prevByte.steps.map((s) => {
         if (s.uuid === step.uuid) {
           return step;
@@ -132,7 +133,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
   }, []);
 
   const moveStepUp = useCallback((stepUuid: string) => {
-    setByteRef((prevByte) => {
+    setByte((prevByte) => {
       const steps = prevByte.steps;
       const index = steps.findIndex((step) => step.uuid === stepUuid);
       if (index > 0) {
@@ -144,7 +145,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
   }, []);
 
   const moveStepDown = useCallback((stepUuid: string) => {
-    setByteRef((prevByte) => {
+    setByte((prevByte) => {
       const newSteps = [...prevByte.steps];
       const index = newSteps.findIndex((step) => step.uuid === stepUuid);
       if (index >= 0 && index < newSteps.length - 1) {
@@ -156,7 +157,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
   }, []);
 
   const removeStep = useCallback((stepUuid: string) => {
-    setByteRef((prevByte) => {
+    setByte((prevByte) => {
       const updatedSteps = prevByte.steps
         .filter((s) => s.uuid !== stepUuid)
         .map((step, index) => ({
@@ -170,7 +171,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
 
   const addStep = useCallback(() => {
     const uuid = uuidv4();
-    setByteRef((prevByte) => {
+    setByte((prevByte) => {
       const updatedSteps = [
         ...prevByte.steps,
         {
@@ -227,7 +228,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
   );
 
   const updateByteField = useCallback((field: KeyOfByteInput, value: any) => {
-    setByteRef((prevByte) => ({
+    setByte((prevByte) => ({
       ...prevByte,
       [field]: value,
     }));
@@ -248,14 +249,15 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
     updateByteErrorField,
     updateByteField,
     updateStep,
+    setByte,
   };
 
   function getByteInput(): UpsertByteInput {
     return {
-      content: byteRef.content,
-      id: byteRef.id || slugify(byteRef.name) + '-' + uuidv4().toString().substring(0, 4),
-      name: byteRef.name,
-      steps: byteRef.steps.map((s) => ({
+      content: byte.content,
+      id: byte.id || slugify(byte.name) + '-' + uuidv4().toString().substring(0, 4),
+      name: byte.name,
+      steps: byte.steps.map((s) => ({
         content: s.content,
         name: s.name,
         stepItems: s.stepItems.map((si) => ({
@@ -271,21 +273,21 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
         })),
         uuid: s.uuid,
       })),
-      publishStatus: byteRef.publishStatus,
-      thumbnail: byteRef.thumbnail,
-      created: byteRef.created,
-      admins: byteRef.admins,
-      tags: byteRef.tags,
-      priority: byteRef.priority,
+      publishStatus: byte.publishStatus,
+      thumbnail: byte.thumbnail,
+      created: byte.created,
+      admins: byte.admins,
+      tags: byte.tags,
+      priority: byte.priority,
     };
   }
 
   const saveViaMutation = async (mutationFn: () => Promise<FetchResult<{ payload: ByteDetailsFragment | undefined }>>) => {
     setByteCreating(true);
     try {
-      const valid = validateByte(byteRef);
-      setByteRef({
-        ...byteRef,
+      const valid = validateByte(byte);
+      setByte({
+        ...byte,
         isPristine: false,
       });
 
@@ -355,7 +357,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
   return {
     byteCreating,
     byteLoaded,
-    byteRef,
+    byteRef: byte,
     byteErrors,
     updateByteFunctions,
     handleSubmit,

@@ -1,5 +1,5 @@
-import Button from '@/components/app/Button';
 import Modal from '@/components/app/Modal';
+import Button from '@/components/core/buttons/Button';
 import { InputType, QuestionType } from '@/types/deprecated/models/enums';
 import styled from 'styled-components';
 

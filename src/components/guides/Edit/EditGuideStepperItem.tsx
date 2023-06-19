@@ -1,9 +1,9 @@
-import IconButton from '@/components/app/Button/IconButton';
+import IconButton from '@/components/core/buttons/IconButton';
 import CreateConnectDiscord from '@/components/app/Common/CreateDiscordConnect';
 import CreateQuestion from '@/components/app/Common/CreateQuestion';
 import CreateUserInput from '@/components/app/Common/CreateUserInput';
-import { IconTypes } from '@/components/app/Icons/IconTypes';
-import Input from '@/components/app/Input';
+import { IconTypes } from '@/components/core/icons/IconTypes';
+import Input from '@/components/core/input/Input';
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
 import AddStepItemModal from '@/components/app/Modal/AddStepItemModal';
 import { UseEditGuideHelper } from '@/components/guides/Edit/useEditGuide';

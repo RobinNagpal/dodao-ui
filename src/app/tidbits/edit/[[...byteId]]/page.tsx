@@ -2,12 +2,13 @@
 
 import withSpace from '@/app/withSpace';
 import Block from '@/components/app/Block';
-import Button from '@/components/app/Button';
-import Input from '@/components/app/Input';
-import PageLoading from '@/components/app/PageLoading';
-import TextareaArray from '@/components/app/TextArea/TextareaArray';
+import Input from '@/components/core/input/Input';
+import PageLoading from '@/components/core/loaders/PageLoading';
+import Button from '@/components/core/buttons/Button';
+import TextareaArray from '@/components/core/textarea/TextareaArray';
+import { CreateByteUsingAIModal } from '@/components/bytes/Create/CreateByteUsingAIModal';
 import EditByteStepper from '@/components/bytes/Edit/EditByteStepper';
-import { useEditByte } from '@/components/bytes/Edit/useEditByte';
+import { EditByteType, useEditByte } from '@/components/bytes/Edit/useEditByte';
 import EllipsisDropdown from '@/components/core/dropdowns/EllipsisDropdown';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
@@ -18,7 +19,7 @@ import { StatusBadge } from '@/utils/byte/StatusBadge';
 import { publishStatuses, visibilityOptions } from '@/utils/ui/statuses';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteId?: string[] } }) {
   const { space, params } = props;
@@ -45,6 +46,8 @@ function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteI
     initialize();
   }, [byteId]);
 
+  const [showAIGenerateModel, setShowAIGenerateModel] = useState(false);
+
   const selectVisibilityValue = (status: VisibilityEnum) => {
     updateByteFunctions.updateByteField('visibility', status);
   };
@@ -52,11 +55,12 @@ function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteI
   return (
     <PageWrapper>
       <SingleCardLayout>
-        <div className="px-4 mb-4 md:px-0 overflow-hidden flex justify-between items-center">
+        <div className="px-4 mb-4 md:px-0 overflow-hidden flex justify-between">
           <Link href={byteId ? `/tidbits/view/${byteId}/0` : `/tidbits`} className="text-color">
             <span className="mr-1 font-bold">&#8592;</span>
             {byteId ? byte.name : 'Back to Bytes'}
           </Link>
+          {!byteId && <Button onClick={() => setShowAIGenerateModel(true)}>Create with AI</Button>}
           <StatusBadge status={byte.publishStatus} />
         </div>
 
@@ -136,6 +140,13 @@ function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteI
           <PageLoading />
         )}
       </SingleCardLayout>
+      <CreateByteUsingAIModal
+        open={showAIGenerateModel}
+        onClose={() => setShowAIGenerateModel(false)}
+        onGenerateByte={(generated: EditByteType) => {
+          updateByteFunctions.setByte(generated);
+        }}
+      />
     </PageWrapper>
   );
 }

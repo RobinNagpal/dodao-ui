@@ -2,8 +2,8 @@
 
 import BasicGuideSettings from '@/app/guides/edit/[[...guideId]]/BasicGuideSettings';
 import withSpace from '@/app/withSpace';
-import Button from '@/components/app/Button';
-import PageLoading from '@/components/app/PageLoading';
+import PageLoading from '@/components/core/loaders/PageLoading';
+import Button from '@/components/core/buttons/Button';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import { useEditGuide } from '@/components/guides/Edit/useEditGuide';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';

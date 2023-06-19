@@ -53,3 +53,68 @@ mutation UpsertSpaceFeatures($spaceId: String!, $features: [String!]!) {
     ...SpaceWithIntegrations
   }
 }
+
+
+mutation UpsertSpaceInviteLinks($spaceId: String!, $spaceInviteArgs: SpaceInviteArgs!) {
+  payload: upsertSpaceInviteLinks(spaceId: $spaceId, spaceInviteArgs: $spaceInviteArgs) {
+    id
+  }
+}
+
+mutation UpsertProjectGalaxyAccessToken(
+  $spaceId: String!
+  $accessToken: String!
+) {
+  payload: upsertProjectGalaxyAccessToken(
+    spaceId: $spaceId
+    accessToken: $accessToken
+  ) {
+    id
+  }
+}
+
+mutation CreateSignedUrl($spaceId: String!, $input: CreateSignedUrlInput!) {
+  payload: createSignedUrl(spaceId: $spaceId, input: $input)
+}
+
+
+
+
+mutation AddDiscordCredentials(
+  $spaceId: String!
+  $code: String!
+  $redirectUri: String!
+) {
+  payload: addDiscordCredentials(
+    spaceId: $spaceId
+    code: $code
+    redirectUri: $redirectUri
+  ) {
+    id
+  }
+}
+
+
+mutation UpsertSpaceGitGuideRepositories($spaceId: String!, $gitGuideRepositories: [SpaceGitRepositoryInput!]!) {
+  payload: upsertSpaceGitGuideRepositories(spaceId: $spaceId, gitGuideRepositories: $gitGuideRepositories) {
+    id
+  }
+}
+
+mutation UpsertSpaceAcademyRepository($spaceId: String!, $academyRepository: String!) {
+  upsertSpaceAcademyRepository(spaceId: $spaceId, academyRepository: $academyRepository) {
+    id
+  }
+}
+
+mutation UpdateSpace($spaceInput: UpsertSpaceInput!){
+  updateSpace(spaceInput: $spaceInput) {
+    ...SpaceWithIntegrations
+  }
+}
+
+mutation CreateSpace($spaceInput: UpsertSpaceInput!){
+  createSpace(spaceInput: $spaceInput) {
+    ...SpaceWithIntegrations
+  }
+}
