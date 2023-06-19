@@ -115,7 +115,7 @@ const CourseView = ({ params, space }: { params: { courseInfo: string[] }; space
             )}
           </div>
           <div className="flex flex-col md:flex-row">
-            <StyledNavWrapper className="my-4 relative overflow-scroll border-r-2 h-full">
+            <StyledNavWrapper className="my-4 relative overflow-scroll border-r-2 ">
               <CourseNavigation course={course} space={space} showAddModal={showAddModal} courseHelper={courseHelper} submissionHelper={submissionHelper} />
             </StyledNavWrapper>
             <StyledRightContent className="flex-1 m-4">
