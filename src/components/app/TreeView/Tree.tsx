@@ -4,11 +4,11 @@ import { TreeNode, TreeNodeType } from './TreeNode';
 
 interface TreeProps {
   data: TreeNodeType[];
+  openNodes: { [key: string]: string };
+  setOpenNodes: React.Dispatch<React.SetStateAction<{ [key: string]: string }>>;
 }
 
-export const Tree: FC<TreeProps> = ({ data }) => {
-  const [openNodes, setOpenNodes] = useState<{ [key: string]: string }>({});
-
+export const Tree: FC<TreeProps> = ({ data, openNodes, setOpenNodes }) => {
   return (
     <div>
       {data.map((node) => (
