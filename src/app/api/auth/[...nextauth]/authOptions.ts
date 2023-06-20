@@ -1,6 +1,6 @@
 // see: https://next-auth.js.org/configuration/options
 import { authorizeCrypto } from '@/app/api/auth/[...nextauth]/authorizeCrypto';
-import { CustomPrismaAdapter } from '@/app/api/auth/[...nextauth]/customPrismaAdapter';
+import { CustomPrismaAdapter } from './customPrismaAdapter';
 import { prisma } from '@/prisma';
 import { DoDaoJwtTokenPayload, Session } from '@/types/auth/Session';
 import { User } from '@/types/auth/User';
@@ -10,7 +10,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import DiscordProvider from 'next-auth/providers/discord';
 import GoogleProvider from 'next-auth/providers/google';
 import TwitterProvider from 'next-auth/providers/twitter';
-import { DefaultAdapter } from 'next-auth/src/adapters';
+import { DefaultAdapter } from 'next-auth/adapters';
 
 export const authOptions: AuthOptions = {
   // Setting error and signin pages to our /auth custom page
