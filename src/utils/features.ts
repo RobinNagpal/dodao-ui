@@ -7,6 +7,7 @@ import {
   testAcademyFeatures,
   uniswapFeatures,
 } from '@/types/spaceFeatures';
+import sortBy from 'lodash/sortBy';
 
 export function getFeaturesArray(spaceId: string): FeatureItem[] {
   if (spaceId === 'dodao-academy-eth-1') {
@@ -45,4 +46,9 @@ export function getFeaturesArray(spaceId: string): FeatureItem[] {
       },
     },
   ];
+}
+
+export function getSortedFeaturesArray(spaceId: string): FeatureItem[] {
+  const features = getFeaturesArray(spaceId);
+  return sortBy(features, [(f1) => -f1.details.priority]);
 }

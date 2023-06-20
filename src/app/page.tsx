@@ -8,16 +8,14 @@ import HomeIcon from '@/components/main/HomeIcon';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
 import { FeatureItem } from '@/types/spaceFeatures';
-import { getFeaturesArray } from '@/utils/features';
-import sortBy from 'lodash/sortBy';
+import { getSortedFeaturesArray } from '@/utils/features';
 import Lottie from 'lottie-react';
 import React from 'react';
 import DeveloperLottie from './developer-lottie.json';
 
 function Home({ space }: { space: SpaceWithIntegrationsFragment }) {
   const { $t } = useI18();
-  const spaceFeatures: FeatureItem[] = getFeaturesArray(space.id) || [];
-  const sortedSpaceFeatures: FeatureItem[] = sortBy(spaceFeatures, [(f1) => -f1.details.priority]);
+  const sortedSpaceFeatures: FeatureItem[] = getSortedFeaturesArray(space.id);
 
   return (
     <PageWrapper>
