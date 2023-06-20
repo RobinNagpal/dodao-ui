@@ -1,5 +1,6 @@
 import ChapterSubmission from '@/components/courses/View/Details/ChapterSubmission';
 import CourseDetails from '@/components/courses/View/Details/CourseDetails';
+import ExplanationDetails from '@/components/courses/View/Details/ExplanationDetails';
 import QuestionDetails from '@/components/courses/View/Details/QuestionDetails';
 import SummaryDetails from '@/components/courses/View/Details/SummaryDetails';
 import TopicDetails from '@/components/courses/View/Details/TopicDetails';
@@ -50,7 +51,17 @@ export default function CourseDetailsRightSection(props: CourseDetailsRightSecti
       />
     );
   } else if (props.itemType === 'explanations' && props.topicKey && props.itemKey) {
-    return <div>Explanations</div>;
+    return (
+      <ExplanationDetails
+        space={props.space}
+        course={props.course}
+        isCourseAdmin={props.isCourseAdmin}
+        courseHelper={props.courseHelper}
+        submissionHelper={props.submissionHelper}
+        topicKey={props.topicKey}
+        explanationKey={props.itemKey}
+      />
+    );
   } else if (props.itemType === 'questions' && props.topicKey && props.itemKey) {
     return (
       <QuestionDetails

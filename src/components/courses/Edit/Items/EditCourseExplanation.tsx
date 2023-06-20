@@ -1,18 +1,14 @@
 import Input from '@/components/core/input/Input';
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
 import Button from '@/components/core/buttons/Button';
-import { CourseDetailsFragment, CourseExplanationFragment, Space } from '@/graphql/generated/generated-types';
+import { CourseDetailsFragment, CourseExplanationFragment, Space, UpdateTopicExplanationInput } from '@/graphql/generated/generated-types';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { minMaxValidation, minValidation } from './../courseValidations';
 
-interface UpdateTopicExplanationForm {
+interface UpdateTopicExplanationForm extends UpdateTopicExplanationInput {
   courseKey: string;
   topicKey: string;
-  explanationKey?: string;
-  title?: string;
-  shortTitle?: string;
-  details?: string;
   isPristine: boolean;
 }
 
@@ -21,7 +17,7 @@ interface EditCourseExplanationProps {
   space: Space;
   topicKey: string;
   currentExplanation?: CourseExplanationFragment;
-  saveExplanation: (form: UpdateTopicExplanationForm) => void;
+  saveExplanation: (form: UpdateTopicExplanationInput) => void;
   cancel: () => void;
 }
 
@@ -31,10 +27,10 @@ export default function EditCourseExplanation({ course, space, topicKey, current
   const [form, setForm] = useState<UpdateTopicExplanationForm>({
     courseKey: course.key,
     topicKey: topicKey,
-    explanationKey: currentExplanation?.key,
-    title: currentExplanation?.title,
-    shortTitle: currentExplanation?.shortTitle,
-    details: currentExplanation?.details,
+    explanationKey: currentExplanation?.key || '',
+    title: currentExplanation?.title || '',
+    shortTitle: currentExplanation?.shortTitle || '',
+    details: currentExplanation?.details || '',
     isPristine: true,
   });
 
