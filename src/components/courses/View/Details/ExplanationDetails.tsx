@@ -1,7 +1,7 @@
 import Button from '@/components/core/buttons/Button';
 import IconButton from '@/components/core/buttons/IconButton';
 import { IconTypes } from '@/components/core/icons/IconTypes';
-import EditCourseSummary from '@/components/courses/Edit/Items/EditCourseSummary';
+import EditCourseExplanation from '@/components/courses/Edit/Items/EditCourseExplanation';
 import { useDeleteCourseItem } from '@/components/courses/Edit/useDeleteCourseItem';
 import { useEditCourseDetails } from '@/components/courses/Edit/useEditCourseDetails';
 import { useMoveCourseItem } from '@/components/courses/Edit/useMoveCourseItem';
@@ -10,12 +10,12 @@ import { CourseHelper } from '@/components/courses/View/useViewCourse';
 import { useLoginModalContext } from '@/contexts/LoginModalContext';
 import {
   CourseDetailsFragment,
-  CourseSummaryFragment,
+  CourseExplanationFragment,
   CourseTopicFragment,
-  DeleteTopicSummaryInput,
-  MoveTopicSummaryInput,
+  DeleteTopicExplanationInput,
+  MoveTopicExplanationInput,
   Space,
-  UpdateTopicSummaryInput,
+  UpdateTopicExplanationInput,
 } from '@/graphql/generated/generated-types';
 import { MoveCourseItemDirection } from '@/types/deprecated/models/enums';
 import { getMarkedRenderer } from '@/utils/ui/getMarkedRenderer';
@@ -40,7 +40,7 @@ const RightDiv = styled.div`
   min-height: 300px;
 `;
 
-interface CourseSummaryProps {
+interface CourseExplanationProps {
   course: CourseDetailsFragment;
   isCourseAdmin: boolean;
   space: Space;
@@ -48,13 +48,13 @@ interface CourseSummaryProps {
   courseHelper: CourseHelper;
   submissionHelper: CourseSubmissionHelper;
 
-  summaryKey: string;
+  explanationKey: string;
 }
 
 function NextButton(props: {
   course: CourseDetailsFragment;
-  currentSummary: CourseSummaryFragment;
-  currentSummaryIndex: number;
+  currentExplanation: CourseExplanationFragment;
+  currentExplanationIndex: number;
   currentTopic: CourseTopicFragment;
   currentTopicIndex: number;
 }) {
@@ -62,11 +62,12 @@ function NextButton(props: {
 
   const { setShowLoginModal } = useLoginModalContext();
 
-  const { course, currentSummary, currentSummaryIndex, currentTopic, currentTopicIndex } = props;
+  const { course, currentExplanation, currentExplanationIndex, currentTopic, currentTopicIndex } = props;
 
-  const isLastSummary = currentSummaryIndex === currentTopic.summaries.length - 1;
+  const isLastExplanation = currentExplanationIndex === currentTopic.explanations.length - 1;
   const isLastTopic = currentTopicIndex === course.topics.length - 1;
   const hasQuestions = currentTopic.questions.length > 0;
+  const hasSummaries = currentTopic.summaries.length > 0;
 
   if (!session) {
     return (
@@ -77,7 +78,18 @@ function NextButton(props: {
     );
   }
 
-  if (isLastSummary && hasQuestions) {
+  if (isLastExplanation && hasSummaries) {
+    return (
+      <Link href={`/courses/view/${course.key}/${currentTopic.key}/summaries/${currentTopic.summaries[0].key}`}>
+        <Button variant="contained" primary>
+          Summary
+          <span className="ml-2 font-bold">&#8594;</span>
+        </Button>
+      </Link>
+    );
+  }
+
+  if (isLastExplanation && hasQuestions) {
     return (
       <Link href={`/courses/view/${course.key}/${currentTopic.key}/questions/${0}`}>
         <Button variant="contained" primary>
@@ -88,7 +100,7 @@ function NextButton(props: {
     );
   }
 
-  if (isLastSummary && !isLastTopic) {
+  if (isLastExplanation && !isLastTopic) {
     return (
       <Link href={`/courses/view/${course.key}/${course.topics[currentTopicIndex + 1].key}`}>
         <Button variant="contained" primary>
@@ -98,7 +110,7 @@ function NextButton(props: {
     );
   }
 
-  if (isLastSummary && isLastTopic) {
+  if (isLastExplanation && isLastTopic) {
     return (
       <Link href={`/courses/view/${course.key}/${currentTopic.key}/submit`}>
         <Button variant="contained" primary>
@@ -108,9 +120,9 @@ function NextButton(props: {
     );
   }
 
-  if (!isLastSummary) {
+  if (!isLastExplanation) {
     return (
-      <Link href={`/courses/view/${course.key}/${currentTopic.key}/summaries/${currentTopic.summaries[currentSummaryIndex + 1].key}`}>
+      <Link href={`/courses/view/${course.key}/${currentTopic.key}/explanations/${currentTopic.explanations[currentExplanationIndex + 1].key}`}>
         <Button variant="contained" primary>
           Next <span className="ml-2 font-bold">&#8594;</span>
         </Button>
@@ -121,39 +133,39 @@ function NextButton(props: {
   return null;
 }
 
-const SummaryDetails: FC<CourseSummaryProps> = ({ course, isCourseAdmin, space, topicKey, submissionHelper, summaryKey, courseHelper }) => {
+const ExplanationDetails: FC<CourseExplanationProps> = ({ course, isCourseAdmin, space, topicKey, submissionHelper, explanationKey, courseHelper }) => {
   // Some hooks may need to be adjusted to work with your codebase.
 
-  const { summary: currentSummary, index: currentSummaryIndex } = courseHelper.getTopicSummaryWithIndex(topicKey, summaryKey);
+  const { explanation: currentExplanation, index: currentExplanationIndex } = courseHelper.getTopicExplanationWithIndex(topicKey, explanationKey);
   const { topic: currentTopic, index: currentTopicIndex } = courseHelper.getTopicWithIndex(topicKey);
 
   const renderer = getMarkedRenderer();
-  const details = currentSummary?.details && marked.parse(currentSummary.details, { renderer });
+  const details = currentExplanation?.details && marked.parse(currentExplanation.details, { renderer });
 
-  const { editMode, cancel, showEdit, save } = useEditCourseDetails<UpdateTopicSummaryInput>(
-    async (updates: UpdateTopicSummaryInput) => await courseHelper.updateTopicSummary(updates)
+  const { editMode, cancel, showEdit, save } = useEditCourseDetails<UpdateTopicExplanationInput>(
+    async (updates: UpdateTopicExplanationInput) => await courseHelper.updateTopicExplanation(updates)
   );
 
-  const { deleting, deleteItem } = useDeleteCourseItem<DeleteTopicSummaryInput>(
-    async (updates: DeleteTopicSummaryInput) => await courseHelper.deleteTopicSummary(updates)
+  const { deleting, deleteItem } = useDeleteCourseItem<DeleteTopicExplanationInput>(
+    async (updates: DeleteTopicExplanationInput) => await courseHelper.deleteTopicExplanation(updates)
   );
 
   function doDelete() {
-    if (currentSummary) {
-      deleteItem({ courseKey: course.key, topicKey: topicKey, summaryKey: currentSummary.key });
+    if (currentExplanation) {
+      deleteItem({ courseKey: course.key, topicKey: topicKey, explanationKey: currentExplanation.key });
     }
   }
 
-  const { movingUp, movingDown, moveItem } = useMoveCourseItem<MoveTopicSummaryInput>(
-    async (updates: MoveTopicSummaryInput) => await courseHelper.moveTopicSummary(updates)
+  const { movingUp, movingDown, moveItem } = useMoveCourseItem<MoveTopicExplanationInput>(
+    async (updates: MoveTopicExplanationInput) => await courseHelper.moveTopicExplanation(updates)
   );
 
   function doMove(direction: MoveCourseItemDirection) {
-    if (currentSummary) {
+    if (currentExplanation) {
       moveItem({
         courseKey: course.key,
         topicKey: topicKey,
-        summaryKey: currentSummary.key,
+        explanationKey: currentExplanation.key,
         direction: direction,
       });
     }
@@ -161,11 +173,11 @@ const SummaryDetails: FC<CourseSummaryProps> = ({ course, isCourseAdmin, space, 
 
   return (
     <div className="h-full">
-      {!editMode && currentSummary && (
+      {!editMode && currentExplanation && (
         <div className="flex flex-col justify-between h-full w-full">
           <RightDiv className="right w-full">
             <div className="flex justify-between">
-              <h1 className="mb-4">{currentSummary.title}</h1>
+              <h1 className="mb-4">{currentExplanation.title}</h1>
               {isCourseAdmin && (
                 <div className="flex">
                   <IconButton iconName={IconTypes.Edit} removeBorder onClick={showEdit} />
@@ -173,14 +185,14 @@ const SummaryDetails: FC<CourseSummaryProps> = ({ course, isCourseAdmin, space, 
                     iconName={IconTypes.MoveUp}
                     removeBorder
                     loading={movingUp}
-                    disabled={movingUp || movingDown || currentSummaryIndex === 0}
+                    disabled={movingUp || movingDown || currentExplanationIndex === 0}
                     onClick={() => doMove(MoveCourseItemDirection.Up)}
                   />
                   <IconButton
                     iconName={IconTypes.MoveDown}
                     removeBorder
                     loading={movingDown}
-                    disabled={movingUp || movingDown || currentSummaryIndex === currentTopic?.summaries.length - 1}
+                    disabled={movingUp || movingDown || currentExplanationIndex === currentTopic?.explanations.length - 1}
                     onClick={() => doMove(MoveCourseItemDirection.Down)}
                   />
                   <IconButton iconName={IconTypes.Trash} removeBorder disabled={deleting} loading={deleting} onClick={doDelete} />
@@ -190,8 +202,8 @@ const SummaryDetails: FC<CourseSummaryProps> = ({ course, isCourseAdmin, space, 
             <div className="markdown-body" dangerouslySetInnerHTML={{ __html: details }} />
           </RightDiv>
           <div className="flex flex-between mt-4 flex-1 items-end p-2">
-            {currentSummaryIndex > 0 && (
-              <Link href={`/courses/view/${course.key}/${topicKey}/summaries/${currentTopic?.summaries?.[currentSummaryIndex - 1]?.key}`}>
+            {currentExplanationIndex > 0 && (
+              <Link href={`/courses/view/${course.key}/${topicKey}/explanations/${currentTopic?.explanations?.[currentExplanationIndex - 1]?.key}`}>
                 <Button>
                   <span className="mr-2 font-bold">&#8592;</span>
                   Previous
@@ -201,8 +213,8 @@ const SummaryDetails: FC<CourseSummaryProps> = ({ course, isCourseAdmin, space, 
             <div className="flex-1"></div>
             <NextButton
               course={course}
-              currentSummary={currentSummary}
-              currentSummaryIndex={currentSummaryIndex}
+              currentExplanation={currentExplanation}
+              currentExplanationIndex={currentExplanationIndex}
               currentTopic={currentTopic}
               currentTopicIndex={currentTopicIndex}
             />
@@ -211,11 +223,18 @@ const SummaryDetails: FC<CourseSummaryProps> = ({ course, isCourseAdmin, space, 
       )}
       {editMode && (
         <div className="flex flex-col justify-between h-full">
-          <EditCourseSummary course={course} space={space} topicKey={topicKey} currentSummary={currentSummary} saveSummary={save} cancel={cancel} />
+          <EditCourseExplanation
+            course={course}
+            space={space}
+            topicKey={topicKey}
+            currentExplanation={currentExplanation}
+            saveExplanation={save}
+            cancel={cancel}
+          />
         </div>
       )}
     </div>
   );
 };
 
-export default SummaryDetails;
+export default ExplanationDetails;

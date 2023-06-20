@@ -58,7 +58,7 @@ const CourseDetails = ({ course, space, isCourseAdmin, courseHelper, submissionH
             <div className="flex flex-between mt-4 flex-1 items-end p-2">
               <div className="flex-1"></div>
               {course?.topics.length > 0 && (
-                <Link href={`/topic/${course?.topics[0].key}`}>
+                <Link href={`/courses/view/${course.key}/${course?.topics[0].key}`}>
                   <Button primary variant="contained">
                     Next
                     <span className="ml-2 font-bold">&#8594;</span>
