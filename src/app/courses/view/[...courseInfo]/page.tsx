@@ -102,49 +102,17 @@ const CourseView = ({ params, space }: { params: { courseInfo: string[] }; space
   const { course, loading } = courseHelper;
   const [openNodes, setOpenNodes] = useState<{ [key: string]: boolean }>({});
 
-
-
-  useLayoutEffect(() => {
-    // console.log('openNodes layout changed', openNodes);
-    if(sessionStorage.getItem('openNodes') && JSON.stringify(JSON.parse("" + sessionStorage.getItem('openNodes'))) !== JSON.stringify({})){
-      //check if they are the same
-      if(JSON.stringify(openNodes) !== JSON.stringify(JSON.parse("" + sessionStorage.getItem('openNodes')))){
-        //check if sessionStorage.getItem('openNodes') is not empty json
-        
-
-          setOpenNodes(JSON.parse("" + sessionStorage.getItem('openNodes')));
-          //clear sessionStorage
-          sessionStorage.setItem('openNodes', JSON.stringify({}));
-        
-      }
-      else{
-        //clear sessionStorage
-        sessionStorage.setItem('openNodes', JSON.stringify({}));
-      }
-    }
-    else{
-      sessionStorage.setItem('openNodes', JSON.stringify(openNodes));
+  useEffect(() => {
+    const storedOpenNodes = JSON.parse(localStorage.getItem('openNodes') || '{}');
+    if (Object.keys(storedOpenNodes).length !== 0) {
+      setOpenNodes(storedOpenNodes);
     }
   }, []);
+  
   useEffect(() => {
-    // console.log('openNodes changed', openNodes);
-    sessionStorage.setItem('openNodes', JSON.stringify(openNodes));
-    //close all other nodes when more than one node is open 
-    // if(Object.keys(openNodes).length > 1){
-    //   let newOpenNodes = {};
-    //   Object.keys(openNodes).forEach((key) => {
-    //     if(openNodes[key]){
-    //       newOpenNodes[key] = true;
-    //     }
-    //   }
-    //   );
-    //   setOpenNodes(newOpenNodes);
-    // }
-//test
-
-
-    
+    localStorage.setItem('openNodes', JSON.stringify(openNodes));
   }, [openNodes]);
+  
 
 
   return (
