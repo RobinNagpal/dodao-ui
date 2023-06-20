@@ -175,10 +175,20 @@ export interface ByteUserInput {
   uuid: Scalars['String'];
 }
 
+export interface ChatCompletionAiInput {
+  messages: Array<OpenAiChatMessageInput>;
+  model?: InputMaybe<Scalars['String']>;
+}
+
 export enum ChatCompletionRequestMessageRoleEnum {
   Assistant = 'assistant',
   System = 'system',
   User = 'user'
+}
+
+export interface CompletionAiInput {
+  model?: InputMaybe<Scalars['String']>;
+  prompt: Scalars['String'];
 }
 
 export interface CourseBasicInfoInput {
@@ -268,6 +278,11 @@ export interface DeleteTopicVideoInput {
   courseKey: Scalars['String'];
   topicKey: Scalars['String'];
   videoUuid: Scalars['String'];
+}
+
+export interface ExtractRelevantTextForTopicInput {
+  content: Scalars['String'];
+  topic: Scalars['String'];
 }
 
 export interface GenericCourse {
@@ -720,13 +735,19 @@ export interface Mutation {
   addTopicQuestion: GitCourseQuestion;
   addTopicSummary: GitCourseSummary;
   addTopicVideo: GitCourseReading;
+  askChatCompletionAI: OpenAiChatCompletionResponse;
+  askCompletionAI: OpenAiCompletionResponse;
   authenticateWithUnstoppable: JwtResponse;
   createSignedUrl: Scalars['String'];
+  createSpace: Space;
+  createSummaryOfContent: OpenAiTextResponse;
   deleteTopic: GitCourse;
   deleteTopicExplanation: GitCourse;
   deleteTopicQuestion: GitCourse;
   deleteTopicSummary: GitCourse;
   deleteTopicVideo: GitCourse;
+  downloadAndCleanContent: OpenAiTextResponse;
+  extractRelevantTextForTopic: OpenAiTextResponse;
   initializeGitCourseSubmission: GitCourseSubmission;
   moveTopic: GitCourse;
   moveTopicExplanation: GitCourse;
@@ -743,6 +764,7 @@ export interface Mutation {
   submitGitCourseTopic: GitCourseTopicSubmission;
   submitGuide: GuideSubmission;
   updateCourseBasicInfo: GitCourse;
+  updateSpace: Space;
   updateTopicBasicInfo: GitCourse;
   updateTopicExplanation: GitCourse;
   updateTopicQuestion: GitCourse;
@@ -802,6 +824,16 @@ export interface MutationAddTopicVideoArgs {
 }
 
 
+export interface MutationAskChatCompletionAiArgs {
+  input: ChatCompletionAiInput;
+}
+
+
+export interface MutationAskCompletionAiArgs {
+  input: CompletionAiInput;
+}
+
+
 export interface MutationAuthenticateWithUnstoppableArgs {
   idToken: Scalars['String'];
 }
@@ -810,6 +842,16 @@ export interface MutationAuthenticateWithUnstoppableArgs {
 export interface MutationCreateSignedUrlArgs {
   input: CreateSignedUrlInput;
   spaceId: Scalars['String'];
+}
+
+
+export interface MutationCreateSpaceArgs {
+  spaceInput: UpsertSpaceInput;
+}
+
+
+export interface MutationCreateSummaryOfContentArgs {
+  input: Scalars['String'];
 }
 
 
@@ -840,6 +882,16 @@ export interface MutationDeleteTopicSummaryArgs {
 export interface MutationDeleteTopicVideoArgs {
   spaceId: Scalars['String'];
   videoInfo: DeleteTopicVideoInput;
+}
+
+
+export interface MutationDownloadAndCleanContentArgs {
+  input: Scalars['String'];
+}
+
+
+export interface MutationExtractRelevantTextForTopicArgs {
+  input: ExtractRelevantTextForTopicInput;
 }
 
 
@@ -932,6 +984,11 @@ export interface MutationSubmitGuideArgs {
 export interface MutationUpdateCourseBasicInfoArgs {
   courseBasicInfo: CourseBasicInfoInput;
   spaceId: Scalars['String'];
+}
+
+
+export interface MutationUpdateSpaceArgs {
+  spaceInput: UpsertSpaceInput;
 }
 
 
@@ -1091,8 +1148,14 @@ export interface OpenAiCompletionResponse {
 
 export interface OpenAiMessage {
   __typename?: 'OpenAIMessage';
-  content: Scalars['String'];
+  content?: Maybe<Scalars['String']>;
   role: Scalars['String'];
+}
+
+export interface OpenAiTextResponse {
+  __typename?: 'OpenAITextResponse';
+  text: Scalars['String'];
+  tokenCount: Scalars['Int'];
 }
 
 export interface OpenAiUsage {
@@ -1111,8 +1174,6 @@ export interface Query {
   __typename?: 'Query';
   academyTask: AcademyTask;
   academyTasks?: Maybe<Array<AcademyTask>>;
-  askChatCompletionAI: OpenAiChatCompletionResponse;
-  askCompletionAI: OpenAiCompletionResponse;
   byte: Byte;
   bytes: Array<Byte>;
   courses: Array<GitCourse>;
@@ -1143,16 +1204,6 @@ export interface QueryAcademyTaskArgs {
 export interface QueryAcademyTasksArgs {
   spaceId: Scalars['String'];
   status?: InputMaybe<Scalars['String']>;
-}
-
-
-export interface QueryAskChatCompletionAiArgs {
-  messages: Array<OpenAiChatMessageInput>;
-}
-
-
-export interface QueryAskCompletionAiArgs {
-  prompt: Scalars['String'];
 }
 
 
@@ -1314,14 +1365,12 @@ export interface Space {
   admins: Array<Scalars['String']>;
   avatar?: Maybe<Scalars['String']>;
   creator: Scalars['String'];
-  discordInvite?: Maybe<Scalars['String']>;
   features: Array<Scalars['String']>;
   id: Scalars['String'];
   inviteLinks?: Maybe<SpaceInviteLinks>;
-  name?: Maybe<Scalars['String']>;
+  name: Scalars['String'];
   skin: Scalars['String'];
   spaceIntegrations?: Maybe<SpaceIntegrations>;
-  telegramInvite?: Maybe<Scalars['String']>;
 }
 
 export interface SpaceFilters {
@@ -1352,6 +1401,14 @@ export interface SpaceIntegrations {
   projectGalaxyTokenLastFour?: Maybe<Scalars['String']>;
 }
 
+export interface SpaceIntegrationsInput {
+  academyRepository?: InputMaybe<Scalars['String']>;
+  discordGuildId?: InputMaybe<Scalars['String']>;
+  gitGuideRepositories: Array<SpaceGitRepositoryInput>;
+  gnosisSafeWallets: Array<GnosisSafeWalletInput>;
+  projectGalaxyTokenLastFour?: InputMaybe<Scalars['String']>;
+}
+
 export interface SpaceInviteArgs {
   discordInviteLink?: InputMaybe<Scalars['String']>;
   showAnimatedButtonForDiscord?: InputMaybe<Scalars['Boolean']>;
@@ -1365,6 +1422,13 @@ export interface SpaceInviteLinks {
   showAnimatedButtonForDiscord?: Maybe<Scalars['Boolean']>;
   showAnimatedButtonForTelegram?: Maybe<Scalars['Boolean']>;
   telegramInviteLink?: Maybe<Scalars['String']>;
+}
+
+export interface SpaceInviteLinksInput {
+  discordInviteLink?: InputMaybe<Scalars['String']>;
+  showAnimatedButtonForDiscord?: InputMaybe<Scalars['Boolean']>;
+  showAnimatedButtonForTelegram?: InputMaybe<Scalars['Boolean']>;
+  telegramInviteLink?: InputMaybe<Scalars['String']>;
 }
 
 export interface SpaceWhere {
@@ -1543,6 +1607,18 @@ export interface UpsertSimulationInput {
   steps: Array<SimulationStepInput>;
   tags: Array<Scalars['String']>;
   thumbnail?: InputMaybe<Scalars['String']>;
+}
+
+export interface UpsertSpaceInput {
+  admins: Array<Scalars['String']>;
+  avatar: Scalars['String'];
+  creator: Scalars['String'];
+  features: Array<Scalars['String']>;
+  id: Scalars['String'];
+  inviteLinks: SpaceInviteLinksInput;
+  name: Scalars['String'];
+  skin: Scalars['String'];
+  spaceIntegrations: SpaceIntegrationsInput;
 }
 
 export interface UpsertTimelineEventInput {
@@ -2076,19 +2152,40 @@ export type GuidesQueryQueryVariables = Exact<{
 
 export type GuidesQueryQuery = { __typename?: 'Query', guides: Array<{ __typename?: 'Guide', id: string, authors: Array<string>, name: string, categories: Array<string>, content: string, created: number, guideSource: string, guideType: string, publishStatus: string, socialShareImage?: string | null, thumbnail?: string | null, uuid: string }> };
 
-export type AskCompletionAiQueryVariables = Exact<{
-  prompt: Scalars['String'];
+export type AskCompletionAiMutationVariables = Exact<{
+  input: CompletionAiInput;
 }>;
 
 
-export type AskCompletionAiQuery = { __typename?: 'Query', askCompletionAI: { __typename?: 'OpenAICompletionResponse', created: number, id: string, model: string, object: string, choices: Array<{ __typename?: 'CreateCompletionResponseChoice', finish_reason?: string | null, index?: number | null, text?: string | null, logprobs?: { __typename?: 'OpenAIChoiceLogprobs', text?: string | null, text_offset?: Array<number> | null, token_logprobs?: Array<number> | null, tokens?: Array<string> | null } | null }>, usage?: { __typename?: 'OpenAIUsage', completion_tokens: number, prompt_tokens: number, total_tokens: number } | null } };
+export type AskCompletionAiMutation = { __typename?: 'Mutation', askCompletionAI: { __typename?: 'OpenAICompletionResponse', created: number, id: string, model: string, object: string, choices: Array<{ __typename?: 'CreateCompletionResponseChoice', finish_reason?: string | null, index?: number | null, text?: string | null, logprobs?: { __typename?: 'OpenAIChoiceLogprobs', text?: string | null, text_offset?: Array<number> | null, token_logprobs?: Array<number> | null, tokens?: Array<string> | null } | null }>, usage?: { __typename?: 'OpenAIUsage', completion_tokens: number, prompt_tokens: number, total_tokens: number } | null } };
 
-export type AskChatCompletionAiQueryVariables = Exact<{
-  messages: Array<OpenAiChatMessageInput> | OpenAiChatMessageInput;
+export type AskChatCompletionAiMutationVariables = Exact<{
+  input: ChatCompletionAiInput;
 }>;
 
 
-export type AskChatCompletionAiQuery = { __typename?: 'Query', askChatCompletionAI: { __typename?: 'OpenAIChatCompletionResponse', created: number, id: string, model: string, object: string, choices: Array<{ __typename?: 'OpenAIChatCompletionChoice', finish_reason?: string | null, index?: number | null, message?: { __typename?: 'OpenAIMessage', content: string, role: string } | null }>, usage?: { __typename?: 'OpenAIUsage', completion_tokens: number, prompt_tokens: number, total_tokens: number } | null } };
+export type AskChatCompletionAiMutation = { __typename?: 'Mutation', askChatCompletionAI: { __typename?: 'OpenAIChatCompletionResponse', created: number, id: string, model: string, object: string, choices: Array<{ __typename?: 'OpenAIChatCompletionChoice', finish_reason?: string | null, index?: number | null, message?: { __typename?: 'OpenAIMessage', content?: string | null, role: string } | null }>, usage?: { __typename?: 'OpenAIUsage', completion_tokens: number, prompt_tokens: number, total_tokens: number } | null } };
+
+export type CreateSummaryOfContentMutationVariables = Exact<{
+  input: Scalars['String'];
+}>;
+
+
+export type CreateSummaryOfContentMutation = { __typename?: 'Mutation', createSummaryOfContent: { __typename?: 'OpenAITextResponse', text: string, tokenCount: number } };
+
+export type ExtractRelevantTextForTopicMutationVariables = Exact<{
+  input: ExtractRelevantTextForTopicInput;
+}>;
+
+
+export type ExtractRelevantTextForTopicMutation = { __typename?: 'Mutation', extractRelevantTextForTopic: { __typename?: 'OpenAITextResponse', text: string, tokenCount: number } };
+
+export type DownloadAndCleanContentMutationVariables = Exact<{
+  input: Scalars['String'];
+}>;
+
+
+export type DownloadAndCleanContentMutation = { __typename?: 'Mutation', downloadAndCleanContent: { __typename?: 'OpenAITextResponse', text: string, tokenCount: number } };
 
 export type SimulationStepFragment = { __typename?: 'SimulationStep', content: string, iframeUrl?: string | null, name: string, uuid: string, order: number };
 
@@ -2117,21 +2214,21 @@ export type UpsertSimulationMutationVariables = Exact<{
 
 export type UpsertSimulationMutation = { __typename?: 'Mutation', payload: { __typename?: 'Simulation', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, steps: Array<{ __typename?: 'SimulationStep', content: string, iframeUrl?: string | null, name: string, uuid: string, order: number }> } };
 
-export type SpaceWithIntegrationsFragment = { __typename?: 'Space', id: string, creator: string, features: Array<string>, name?: string | null, skin: string, avatar?: string | null, admins: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null };
+export type SpaceWithIntegrationsFragment = { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, skin: string, avatar?: string | null, admins: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null };
 
 export type ExtendedSpaceQueryVariables = Exact<{
   spaceId: Scalars['String'];
 }>;
 
 
-export type ExtendedSpaceQuery = { __typename?: 'Query', space?: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name?: string | null, skin: string, avatar?: string | null, admins: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null } | null };
+export type ExtendedSpaceQuery = { __typename?: 'Query', space?: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, skin: string, avatar?: string | null, admins: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null } | null };
 
 export type ExtendedSpaceByDomainQueryVariables = Exact<{
   domain: Scalars['String'];
 }>;
 
 
-export type ExtendedSpaceByDomainQuery = { __typename?: 'Query', space?: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name?: string | null, skin: string, avatar?: string | null, admins: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null } | null };
+export type ExtendedSpaceByDomainQuery = { __typename?: 'Query', space?: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, skin: string, avatar?: string | null, admins: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null } | null };
 
 export type SpaceDiscordGuildQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -2146,7 +2243,7 @@ export type UpsertSpaceFeaturesMutationVariables = Exact<{
 }>;
 
 
-export type UpsertSpaceFeaturesMutation = { __typename?: 'Mutation', payload: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name?: string | null, skin: string, avatar?: string | null, admins: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null } };
+export type UpsertSpaceFeaturesMutation = { __typename?: 'Mutation', payload: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, skin: string, avatar?: string | null, admins: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null } };
 
 export type UpsertSpaceInviteLinksMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -2163,8 +2260,6 @@ export type UpsertProjectGalaxyAccessTokenMutationVariables = Exact<{
 
 
 export type UpsertProjectGalaxyAccessTokenMutation = { __typename?: 'Mutation', payload: { __typename?: 'Space', id: string } };
-
-export type SpaceFragmentFragment = { __typename?: 'Space', id: string, admins: Array<string>, avatar?: string | null, creator: string, name?: string | null, skin: string };
 
 export type CreateSignedUrlMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -2198,6 +2293,27 @@ export type UpsertSpaceAcademyRepositoryMutationVariables = Exact<{
 
 
 export type UpsertSpaceAcademyRepositoryMutation = { __typename?: 'Mutation', upsertSpaceAcademyRepository: { __typename?: 'Space', id: string } };
+
+export type UpdateSpaceMutationVariables = Exact<{
+  spaceInput: UpsertSpaceInput;
+}>;
+
+
+export type UpdateSpaceMutation = { __typename?: 'Mutation', updateSpace: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, skin: string, avatar?: string | null, admins: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null } };
+
+export type CreateSpaceMutationVariables = Exact<{
+  spaceInput: UpsertSpaceInput;
+}>;
+
+
+export type CreateSpaceMutation = { __typename?: 'Mutation', createSpace: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, skin: string, avatar?: string | null, admins: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null } };
+
+export type SpaceSummaryFragment = { __typename?: 'Space', id: string, admins: Array<string>, avatar?: string | null, creator: string, name: string, skin: string };
+
+export type SpacesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type SpacesQuery = { __typename?: 'Query', spaces?: Array<{ __typename?: 'Space', id: string, admins: Array<string>, avatar?: string | null, creator: string, name: string, skin: string }> | null };
 
 export type TimelineDetailsFragment = { __typename?: 'Timeline', id: string, name: string, excerpt: string, content: string, thumbnail?: string | null, created: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, events: Array<{ __typename?: 'TimelineEvent', name: string, uuid: string, date: string, excerpt: string, content: string, moreLink?: string | null }> };
 
@@ -2790,8 +2906,8 @@ export const SpaceWithIntegrationsFragmentDoc = gql`
   }
 }
     `;
-export const SpaceFragmentFragmentDoc = gql`
-    fragment SpaceFragment on Space {
+export const SpaceSummaryFragmentDoc = gql`
+    fragment SpaceSummary on Space {
   id
   admins
   avatar
@@ -4750,8 +4866,8 @@ export function refetchGuidesQueryQuery(variables: GuidesQueryQueryVariables) {
       return { query: GuidesQueryDocument, variables: variables }
     }
 export const AskCompletionAiDocument = gql`
-    query AskCompletionAI($prompt: String!) {
-  askCompletionAI(prompt: $prompt) {
+    mutation AskCompletionAI($input: CompletionAIInput!) {
+  askCompletionAI(input: $input) {
     choices {
       finish_reason
       index
@@ -4775,40 +4891,35 @@ export const AskCompletionAiDocument = gql`
   }
 }
     `;
+export type AskCompletionAiMutationFn = Apollo.MutationFunction<AskCompletionAiMutation, AskCompletionAiMutationVariables>;
 
 /**
- * __useAskCompletionAiQuery__
+ * __useAskCompletionAiMutation__
  *
- * To run a query within a React component, call `useAskCompletionAiQuery` and pass it any options that fit your needs.
- * When your component renders, `useAskCompletionAiQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
+ * To run a mutation, you first call `useAskCompletionAiMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAskCompletionAiMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
  *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const { data, loading, error } = useAskCompletionAiQuery({
+ * const [askCompletionAiMutation, { data, loading, error }] = useAskCompletionAiMutation({
  *   variables: {
- *      prompt: // value for 'prompt'
+ *      input: // value for 'input'
  *   },
  * });
  */
-export function useAskCompletionAiQuery(baseOptions: Apollo.QueryHookOptions<AskCompletionAiQuery, AskCompletionAiQueryVariables>) {
+export function useAskCompletionAiMutation(baseOptions?: Apollo.MutationHookOptions<AskCompletionAiMutation, AskCompletionAiMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<AskCompletionAiQuery, AskCompletionAiQueryVariables>(AskCompletionAiDocument, options);
+        return Apollo.useMutation<AskCompletionAiMutation, AskCompletionAiMutationVariables>(AskCompletionAiDocument, options);
       }
-export function useAskCompletionAiLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AskCompletionAiQuery, AskCompletionAiQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<AskCompletionAiQuery, AskCompletionAiQueryVariables>(AskCompletionAiDocument, options);
-        }
-export type AskCompletionAiQueryHookResult = ReturnType<typeof useAskCompletionAiQuery>;
-export type AskCompletionAiLazyQueryHookResult = ReturnType<typeof useAskCompletionAiLazyQuery>;
-export type AskCompletionAiQueryResult = Apollo.QueryResult<AskCompletionAiQuery, AskCompletionAiQueryVariables>;
-export function refetchAskCompletionAiQuery(variables: AskCompletionAiQueryVariables) {
-      return { query: AskCompletionAiDocument, variables: variables }
-    }
+export type AskCompletionAiMutationHookResult = ReturnType<typeof useAskCompletionAiMutation>;
+export type AskCompletionAiMutationResult = Apollo.MutationResult<AskCompletionAiMutation>;
+export type AskCompletionAiMutationOptions = Apollo.BaseMutationOptions<AskCompletionAiMutation, AskCompletionAiMutationVariables>;
 export const AskChatCompletionAiDocument = gql`
-    query AskChatCompletionAI($messages: [OpenAIChatMessageInput!]!) {
-  askChatCompletionAI(messages: $messages) {
+    mutation AskChatCompletionAI($input: ChatCompletionAIInput!) {
+  askChatCompletionAI(input: $input) {
     choices {
       message {
         content
@@ -4829,37 +4940,134 @@ export const AskChatCompletionAiDocument = gql`
   }
 }
     `;
+export type AskChatCompletionAiMutationFn = Apollo.MutationFunction<AskChatCompletionAiMutation, AskChatCompletionAiMutationVariables>;
 
 /**
- * __useAskChatCompletionAiQuery__
+ * __useAskChatCompletionAiMutation__
  *
- * To run a query within a React component, call `useAskChatCompletionAiQuery` and pass it any options that fit your needs.
- * When your component renders, `useAskChatCompletionAiQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
+ * To run a mutation, you first call `useAskChatCompletionAiMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAskChatCompletionAiMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
  *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const { data, loading, error } = useAskChatCompletionAiQuery({
+ * const [askChatCompletionAiMutation, { data, loading, error }] = useAskChatCompletionAiMutation({
  *   variables: {
- *      messages: // value for 'messages'
+ *      input: // value for 'input'
  *   },
  * });
  */
-export function useAskChatCompletionAiQuery(baseOptions: Apollo.QueryHookOptions<AskChatCompletionAiQuery, AskChatCompletionAiQueryVariables>) {
+export function useAskChatCompletionAiMutation(baseOptions?: Apollo.MutationHookOptions<AskChatCompletionAiMutation, AskChatCompletionAiMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<AskChatCompletionAiQuery, AskChatCompletionAiQueryVariables>(AskChatCompletionAiDocument, options);
+        return Apollo.useMutation<AskChatCompletionAiMutation, AskChatCompletionAiMutationVariables>(AskChatCompletionAiDocument, options);
       }
-export function useAskChatCompletionAiLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AskChatCompletionAiQuery, AskChatCompletionAiQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<AskChatCompletionAiQuery, AskChatCompletionAiQueryVariables>(AskChatCompletionAiDocument, options);
-        }
-export type AskChatCompletionAiQueryHookResult = ReturnType<typeof useAskChatCompletionAiQuery>;
-export type AskChatCompletionAiLazyQueryHookResult = ReturnType<typeof useAskChatCompletionAiLazyQuery>;
-export type AskChatCompletionAiQueryResult = Apollo.QueryResult<AskChatCompletionAiQuery, AskChatCompletionAiQueryVariables>;
-export function refetchAskChatCompletionAiQuery(variables: AskChatCompletionAiQueryVariables) {
-      return { query: AskChatCompletionAiDocument, variables: variables }
-    }
+export type AskChatCompletionAiMutationHookResult = ReturnType<typeof useAskChatCompletionAiMutation>;
+export type AskChatCompletionAiMutationResult = Apollo.MutationResult<AskChatCompletionAiMutation>;
+export type AskChatCompletionAiMutationOptions = Apollo.BaseMutationOptions<AskChatCompletionAiMutation, AskChatCompletionAiMutationVariables>;
+export const CreateSummaryOfContentDocument = gql`
+    mutation CreateSummaryOfContent($input: String!) {
+  createSummaryOfContent(input: $input) {
+    text
+    tokenCount
+  }
+}
+    `;
+export type CreateSummaryOfContentMutationFn = Apollo.MutationFunction<CreateSummaryOfContentMutation, CreateSummaryOfContentMutationVariables>;
+
+/**
+ * __useCreateSummaryOfContentMutation__
+ *
+ * To run a mutation, you first call `useCreateSummaryOfContentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateSummaryOfContentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createSummaryOfContentMutation, { data, loading, error }] = useCreateSummaryOfContentMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateSummaryOfContentMutation(baseOptions?: Apollo.MutationHookOptions<CreateSummaryOfContentMutation, CreateSummaryOfContentMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateSummaryOfContentMutation, CreateSummaryOfContentMutationVariables>(CreateSummaryOfContentDocument, options);
+      }
+export type CreateSummaryOfContentMutationHookResult = ReturnType<typeof useCreateSummaryOfContentMutation>;
+export type CreateSummaryOfContentMutationResult = Apollo.MutationResult<CreateSummaryOfContentMutation>;
+export type CreateSummaryOfContentMutationOptions = Apollo.BaseMutationOptions<CreateSummaryOfContentMutation, CreateSummaryOfContentMutationVariables>;
+export const ExtractRelevantTextForTopicDocument = gql`
+    mutation ExtractRelevantTextForTopic($input: ExtractRelevantTextForTopicInput!) {
+  extractRelevantTextForTopic(input: $input) {
+    text
+    tokenCount
+  }
+}
+    `;
+export type ExtractRelevantTextForTopicMutationFn = Apollo.MutationFunction<ExtractRelevantTextForTopicMutation, ExtractRelevantTextForTopicMutationVariables>;
+
+/**
+ * __useExtractRelevantTextForTopicMutation__
+ *
+ * To run a mutation, you first call `useExtractRelevantTextForTopicMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useExtractRelevantTextForTopicMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [extractRelevantTextForTopicMutation, { data, loading, error }] = useExtractRelevantTextForTopicMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useExtractRelevantTextForTopicMutation(baseOptions?: Apollo.MutationHookOptions<ExtractRelevantTextForTopicMutation, ExtractRelevantTextForTopicMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ExtractRelevantTextForTopicMutation, ExtractRelevantTextForTopicMutationVariables>(ExtractRelevantTextForTopicDocument, options);
+      }
+export type ExtractRelevantTextForTopicMutationHookResult = ReturnType<typeof useExtractRelevantTextForTopicMutation>;
+export type ExtractRelevantTextForTopicMutationResult = Apollo.MutationResult<ExtractRelevantTextForTopicMutation>;
+export type ExtractRelevantTextForTopicMutationOptions = Apollo.BaseMutationOptions<ExtractRelevantTextForTopicMutation, ExtractRelevantTextForTopicMutationVariables>;
+export const DownloadAndCleanContentDocument = gql`
+    mutation DownloadAndCleanContent($input: String!) {
+  downloadAndCleanContent(input: $input) {
+    text
+    tokenCount
+  }
+}
+    `;
+export type DownloadAndCleanContentMutationFn = Apollo.MutationFunction<DownloadAndCleanContentMutation, DownloadAndCleanContentMutationVariables>;
+
+/**
+ * __useDownloadAndCleanContentMutation__
+ *
+ * To run a mutation, you first call `useDownloadAndCleanContentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDownloadAndCleanContentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [downloadAndCleanContentMutation, { data, loading, error }] = useDownloadAndCleanContentMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useDownloadAndCleanContentMutation(baseOptions?: Apollo.MutationHookOptions<DownloadAndCleanContentMutation, DownloadAndCleanContentMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DownloadAndCleanContentMutation, DownloadAndCleanContentMutationVariables>(DownloadAndCleanContentDocument, options);
+      }
+export type DownloadAndCleanContentMutationHookResult = ReturnType<typeof useDownloadAndCleanContentMutation>;
+export type DownloadAndCleanContentMutationResult = Apollo.MutationResult<DownloadAndCleanContentMutation>;
+export type DownloadAndCleanContentMutationOptions = Apollo.BaseMutationOptions<DownloadAndCleanContentMutation, DownloadAndCleanContentMutationVariables>;
 export const SimulationsDocument = gql`
     query Simulations($spaceId: String!) {
   simulations(spaceId: $spaceId) {
@@ -5344,6 +5552,109 @@ export function useUpsertSpaceAcademyRepositoryMutation(baseOptions?: Apollo.Mut
 export type UpsertSpaceAcademyRepositoryMutationHookResult = ReturnType<typeof useUpsertSpaceAcademyRepositoryMutation>;
 export type UpsertSpaceAcademyRepositoryMutationResult = Apollo.MutationResult<UpsertSpaceAcademyRepositoryMutation>;
 export type UpsertSpaceAcademyRepositoryMutationOptions = Apollo.BaseMutationOptions<UpsertSpaceAcademyRepositoryMutation, UpsertSpaceAcademyRepositoryMutationVariables>;
+export const UpdateSpaceDocument = gql`
+    mutation UpdateSpace($spaceInput: UpsertSpaceInput!) {
+  updateSpace(spaceInput: $spaceInput) {
+    ...SpaceWithIntegrations
+  }
+}
+    ${SpaceWithIntegrationsFragmentDoc}`;
+export type UpdateSpaceMutationFn = Apollo.MutationFunction<UpdateSpaceMutation, UpdateSpaceMutationVariables>;
+
+/**
+ * __useUpdateSpaceMutation__
+ *
+ * To run a mutation, you first call `useUpdateSpaceMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateSpaceMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateSpaceMutation, { data, loading, error }] = useUpdateSpaceMutation({
+ *   variables: {
+ *      spaceInput: // value for 'spaceInput'
+ *   },
+ * });
+ */
+export function useUpdateSpaceMutation(baseOptions?: Apollo.MutationHookOptions<UpdateSpaceMutation, UpdateSpaceMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateSpaceMutation, UpdateSpaceMutationVariables>(UpdateSpaceDocument, options);
+      }
+export type UpdateSpaceMutationHookResult = ReturnType<typeof useUpdateSpaceMutation>;
+export type UpdateSpaceMutationResult = Apollo.MutationResult<UpdateSpaceMutation>;
+export type UpdateSpaceMutationOptions = Apollo.BaseMutationOptions<UpdateSpaceMutation, UpdateSpaceMutationVariables>;
+export const CreateSpaceDocument = gql`
+    mutation CreateSpace($spaceInput: UpsertSpaceInput!) {
+  createSpace(spaceInput: $spaceInput) {
+    ...SpaceWithIntegrations
+  }
+}
+    ${SpaceWithIntegrationsFragmentDoc}`;
+export type CreateSpaceMutationFn = Apollo.MutationFunction<CreateSpaceMutation, CreateSpaceMutationVariables>;
+
+/**
+ * __useCreateSpaceMutation__
+ *
+ * To run a mutation, you first call `useCreateSpaceMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateSpaceMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createSpaceMutation, { data, loading, error }] = useCreateSpaceMutation({
+ *   variables: {
+ *      spaceInput: // value for 'spaceInput'
+ *   },
+ * });
+ */
+export function useCreateSpaceMutation(baseOptions?: Apollo.MutationHookOptions<CreateSpaceMutation, CreateSpaceMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateSpaceMutation, CreateSpaceMutationVariables>(CreateSpaceDocument, options);
+      }
+export type CreateSpaceMutationHookResult = ReturnType<typeof useCreateSpaceMutation>;
+export type CreateSpaceMutationResult = Apollo.MutationResult<CreateSpaceMutation>;
+export type CreateSpaceMutationOptions = Apollo.BaseMutationOptions<CreateSpaceMutation, CreateSpaceMutationVariables>;
+export const SpacesDocument = gql`
+    query Spaces {
+  spaces {
+    ...SpaceSummary
+  }
+}
+    ${SpaceSummaryFragmentDoc}`;
+
+/**
+ * __useSpacesQuery__
+ *
+ * To run a query within a React component, call `useSpacesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSpacesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSpacesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useSpacesQuery(baseOptions?: Apollo.QueryHookOptions<SpacesQuery, SpacesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<SpacesQuery, SpacesQueryVariables>(SpacesDocument, options);
+      }
+export function useSpacesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SpacesQuery, SpacesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<SpacesQuery, SpacesQueryVariables>(SpacesDocument, options);
+        }
+export type SpacesQueryHookResult = ReturnType<typeof useSpacesQuery>;
+export type SpacesLazyQueryHookResult = ReturnType<typeof useSpacesLazyQuery>;
+export type SpacesQueryResult = Apollo.QueryResult<SpacesQuery, SpacesQueryVariables>;
+export function refetchSpacesQuery(variables?: SpacesQueryVariables) {
+      return { query: SpacesDocument, variables: variables }
+    }
 export const TimelinesDocument = gql`
     query Timelines($spaceId: String!) {
   timelines(spaceId: $spaceId) {

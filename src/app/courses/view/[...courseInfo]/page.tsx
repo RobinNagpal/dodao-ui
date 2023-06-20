@@ -2,7 +2,7 @@
 
 import withSpace from '@/app/withSpace';
 import Block from '@/components/app/Block';
-import RowLoading from '@/components/app/RowLoading';
+import RowLoading from '@/components/core/loaders/RowLoading';
 import EllipsisDropdown from '@/components/core/dropdowns/EllipsisDropdown';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import CourseNavigation from '@/components/courses/Edit/CourseNavigation';

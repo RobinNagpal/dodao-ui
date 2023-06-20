@@ -1,15 +1,16 @@
 // see: https://next-auth.js.org/configuration/options
 import { authorizeCrypto } from '@/app/api/auth/[...nextauth]/authorizeCrypto';
+import { CustomPrismaAdapter } from '@/app/api/auth/[...nextauth]/customPrismaAdapter';
 import { prisma } from '@/prisma';
 import { DoDaoJwtTokenPayload, Session } from '@/types/auth/Session';
 import { User } from '@/types/auth/User';
-import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import jwt from 'jsonwebtoken';
 import { AuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import DiscordProvider from 'next-auth/providers/discord';
 import GoogleProvider from 'next-auth/providers/google';
 import TwitterProvider from 'next-auth/providers/twitter';
+import { DefaultAdapter } from 'next-auth/src/adapters';
 
 export const authOptions: AuthOptions = {
   // Setting error and signin pages to our /auth custom page
@@ -75,11 +76,22 @@ export const authOptions: AuthOptions = {
       },
     }),
   ],
-  adapter: PrismaAdapter(prisma),
+  adapter: CustomPrismaAdapter(prisma) as DefaultAdapter,
   // Due to a NextAuth bug, the default database strategy is no usable
   //  with CredentialsProvider, so we need to set strategy to JWT
   session: {
     strategy: 'jwt',
+  },
+  logger: {
+    error(code, metadata) {
+      console.error(code, metadata);
+    },
+    warn(code) {
+      console.warn(code);
+    },
+    debug(code, metadata) {
+      console.debug(code, metadata);
+    },
   },
   callbacks: {
     async session({ session, user, token }): Promise<Session> {

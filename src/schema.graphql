@@ -152,10 +152,20 @@ type ByteUserInput {
   uuid: String!
 }
 
+input ChatCompletionAIInput {
+  messages: [OpenAIChatMessageInput!]!
+  model: String
+}
+
 enum ChatCompletionRequestMessageRoleEnum {
   assistant
   system
   user
+}
+
+input CompletionAIInput {
+  model: String
+  prompt: String!
 }
 
 input CourseBasicInfoInput {
@@ -242,6 +252,11 @@ input DeleteTopicVideoInput {
   courseKey: String!
   topicKey: String!
   videoUuid: String!
+}
+
+input ExtractRelevantTextForTopicInput {
+  content: String!
+  topic: String!
 }
 
 type GenericCourse {
@@ -676,13 +691,19 @@ type Mutation {
   addTopicQuestion(questionInfo: AddTopicQuestionInput!, spaceId: String!): GitCourseQuestion!
   addTopicSummary(spaceId: String!, summaryInfo: AddTopicSummaryInput!): GitCourseSummary!
   addTopicVideo(spaceId: String!, videoInfo: AddTopicVideoInput!): GitCourseReading!
+  askChatCompletionAI(input: ChatCompletionAIInput!): OpenAIChatCompletionResponse!
+  askCompletionAI(input: CompletionAIInput!): OpenAICompletionResponse!
   authenticateWithUnstoppable(idToken: String!): JwtResponse!
   createSignedUrl(input: CreateSignedUrlInput!, spaceId: String!): String!
+  createSpace(spaceInput: UpsertSpaceInput!): Space!
+  createSummaryOfContent(input: String!): OpenAITextResponse!
   deleteTopic(spaceId: String!, topicInfo: DeleteTopicInput!): GitCourse!
   deleteTopicExplanation(explanationInfo: DeleteTopicExplanationInput!, spaceId: String!): GitCourse!
   deleteTopicQuestion(questionInfo: DeleteTopicQuestionInput!, spaceId: String!): GitCourse!
   deleteTopicSummary(spaceId: String!, summaryInfo: DeleteTopicSummaryInput!): GitCourse!
   deleteTopicVideo(spaceId: String!, videoInfo: DeleteTopicVideoInput!): GitCourse!
+  downloadAndCleanContent(input: String!): OpenAITextResponse!
+  extractRelevantTextForTopic(input: ExtractRelevantTextForTopicInput!): OpenAITextResponse!
   initializeGitCourseSubmission(courseKey: String!, spaceId: String!): GitCourseSubmission!
   moveTopic(spaceId: String!, topicInfo: MoveTopicInput!): GitCourse!
   moveTopicExplanation(explanationInfo: MoveTopicExplanationInput!, spaceId: String!): GitCourse!
@@ -699,6 +720,7 @@ type Mutation {
   submitGitCourseTopic(gitCourseTopicSubmission: GitCourseTopicSubmissionInput!, spaceId: String!): GitCourseTopicSubmission!
   submitGuide(submissionInput: GuideSubmissionInput!): GuideSubmission!
   updateCourseBasicInfo(courseBasicInfo: CourseBasicInfoInput!, spaceId: String!): GitCourse!
+  updateSpace(spaceInput: UpsertSpaceInput!): Space!
   updateTopicBasicInfo(spaceId: String!, topicInfo: UpdateTopicBasicInfoInput!): GitCourse!
   updateTopicExplanation(explanationInfo: UpdateTopicExplanationInput!, spaceId: String!): GitCourse!
   updateTopicQuestion(questionInfo: UpdateTopicQuestionInput!, spaceId: String!): GitCourse!
@@ -758,8 +780,13 @@ type OpenAICompletionResponse {
 }
 
 type OpenAIMessage {
-  content: String!
+  content: String
   role: String!
+}
+
+type OpenAITextResponse {
+  text: String!
+  tokenCount: Int!
 }
 
 type OpenAIUsage {
@@ -776,8 +803,6 @@ enum OrderDirection {
 type Query {
   academyTask(uuid: String!): AcademyTask!
   academyTasks(spaceId: String!, status: String): [AcademyTask!]
-  askChatCompletionAI(messages: [OpenAIChatMessageInput!]!): OpenAIChatCompletionResponse!
-  askCompletionAI(prompt: String!): OpenAICompletionResponse!
   byte(byteId: String!, includeDraft: Boolean, spaceId: String!): Byte!
   bytes(spaceId: String!): [Byte!]!
   courses(spaceId: String!): [GitCourse!]!
@@ -851,14 +876,12 @@ type Space {
   admins: [String!]!
   avatar: String
   creator: String!
-  discordInvite: String
   features: [String!]!
   id: String!
   inviteLinks: SpaceInviteLinks
-  name: String
+  name: String!
   skin: String!
   spaceIntegrations: SpaceIntegrations
-  telegramInvite: String
 }
 
 type SpaceFilters {
@@ -886,6 +909,14 @@ type SpaceIntegrations {
   projectGalaxyTokenLastFour: String
 }
 
+input SpaceIntegrationsInput {
+  academyRepository: String
+  discordGuildId: String
+  gitGuideRepositories: [SpaceGitRepositoryInput!]!
+  gnosisSafeWallets: [GnosisSafeWalletInput!]!
+  projectGalaxyTokenLastFour: String
+}
+
 input SpaceInviteArgs {
   discordInviteLink: String
   showAnimatedButtonForDiscord: Boolean
@@ -894,6 +925,13 @@ input SpaceInviteArgs {
 }
 
 type SpaceInviteLinks {
+  discordInviteLink: String
+  showAnimatedButtonForDiscord: Boolean
+  showAnimatedButtonForTelegram: Boolean
+  telegramInviteLink: String
+}
+
+input SpaceInviteLinksInput {
   discordInviteLink: String
   showAnimatedButtonForDiscord: Boolean
   showAnimatedButtonForTelegram: Boolean
@@ -1071,6 +1109,18 @@ input UpsertSimulationInput {
   steps: [SimulationStepInput!]!
   tags: [String!]!
   thumbnail: String
+}
+
+input UpsertSpaceInput {
+  admins: [String!]!
+  avatar: String!
+  creator: String!
+  features: [String!]!
+  id: String!
+  inviteLinks: SpaceInviteLinksInput!
+  name: String!
+  skin: String!
+  spaceIntegrations: SpaceIntegrationsInput!
 }
 
 input UpsertTimelineEventInput {

@@ -1,7 +1,7 @@
 'use client';
 
-import SidebarButton from '@/components/app/Button/SidebarButton';
-import EditIcon from '@/components/app/Icons/EditIcon';
+import SidebarButton from '@/components/core/buttons/SidebarButton';
+import EditIcon from '@/components/core/icons/EditIcon';
 import Button from '@/components/core/buttons/Button';
 import FullPageLoader from '@/components/core/loaders/FullPageLoading';
 import { CourseSubmissionHelper } from '@/components/courses/View/useCourseSubmission';

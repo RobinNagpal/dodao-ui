@@ -1,5 +1,5 @@
 // Import required dependencies
-import LoadingComponent from '@/components/core/loaders/Loading';
+import LoadingSpinner from '@/components/core/loaders/LoadingSpinner';
 import React from 'react';
 import styled, { css } from 'styled-components';
 
@@ -111,7 +111,7 @@ const CustomButton = ({
       onClick={() => onClick?.()}
       className={className}
     >
-      {loading && <LoadingComponent />}
+      {loading && <LoadingSpinner />}
       {children}
     </StyledButton>
   );

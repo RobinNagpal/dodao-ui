@@ -1,7 +1,8 @@
 import { EllipsisDropdownItem } from '@/components/core/dropdowns/EllipsisDropdown';
+import { StyledSelectItem } from '@/components/core/select/StyledSelect';
 import { PublishStatus, VisibilityEnum } from '@/types/deprecated/models/enums';
 
-export const publishStatuses: EllipsisDropdownItem[] = [
+export const publishStatusesEllipsisDropdown: EllipsisDropdownItem[] = [
   {
     label: 'Live',
     key: PublishStatus.Live,
@@ -9,6 +10,17 @@ export const publishStatuses: EllipsisDropdownItem[] = [
   {
     label: 'Draft',
     key: PublishStatus.Draft,
+  },
+];
+
+export const publishStatusesSelect: StyledSelectItem[] = [
+  {
+    label: 'Live',
+    id: PublishStatus.Live,
+  },
+  {
+    label: 'Draft',
+    id: PublishStatus.Draft,
   },
 ];
 

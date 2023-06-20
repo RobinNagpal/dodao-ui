@@ -99,9 +99,7 @@ function ChildLayout({ children, session }: InternalLayoutProps) {
             <LoginModalProvider>
               <LoginModal />
               <TopNav />
-              <StyledMain>
-                <MainContainer>{children}</MainContainer>
-              </StyledMain>
+              <StyledMain>{children}</StyledMain>
             </LoginModalProvider>
           ) : (
             <FullPageLoader />

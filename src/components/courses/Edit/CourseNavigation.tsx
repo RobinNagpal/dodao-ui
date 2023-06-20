@@ -1,4 +1,4 @@
-import AddIcon from '@/components/app/Icons/AddIcon';
+import AddIcon from '@/components/core/icons/AddIcon';
 import { Tree } from '@/components/app/TreeView/Tree';
 import { TreeNodeType } from '@/components/app/TreeView/TreeNode';
 import Button from '@/components/core/buttons/Button';

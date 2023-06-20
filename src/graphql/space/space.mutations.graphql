@@ -1,3 +1,0 @@
-mutation CreateSignedUrl($spaceId: String!, $input: CreateSignedUrlInput!) {
-  payload: createSignedUrl(spaceId: $spaceId, input: $input)
-}

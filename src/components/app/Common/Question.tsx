@@ -1,6 +1,6 @@
 import Checkbox from '@/components/app/Form/Checkbox';
 import Radio from '@/components/app/Form/Radio';
-import HintIcon from '@/components/app/Icons/HintIcon';
+import HintIcon from '@/components/core/icons/HintIcon';
 import {
   ByteQuestionFragmentFragment,
   CourseQuestionFragment,

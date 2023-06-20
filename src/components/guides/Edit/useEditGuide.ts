@@ -6,6 +6,7 @@ import {
   GuideStepFragment,
   GuideStepInput,
   GuideUserInputFragment,
+  QuestionChoiceInput,
   Space,
   StepItemInputGenericInput,
   useGuideQueryQuery,
@@ -241,10 +242,14 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
             const stepItem = item as StepItemInputGenericInput;
             return {
               type: stepItem.type,
-              order: index,
               uuid: stepItem.uuid,
               answerKeys: stepItem.answerKeys,
-              choices: stepItem.choices,
+              choices: stepItem.choices?.map(
+                (choice: QuestionChoiceInput): QuestionChoiceInput => ({
+                  key: choice.key,
+                  content: choice.content,
+                })
+              ),
               content: stepItem.content,
               questionType: stepItem.questionType,
               label: stepItem.label,

@@ -1,4 +1,4 @@
-import UnstyledTextareaAutosize, { TextareaAutosizeProps } from '@/components/app/TextArea/UnstyledTextareaAutosize';
+import UnstyledTextareaAutosize, { TextareaAutosizeProps } from '@/components/core/textarea/UnstyledTextareaAutosize';
 import { useCallback, useEffect, useState } from 'react';
 
 export default function StyledTextareaAutosize(props: TextareaAutosizeProps) {

@@ -1,10 +1,10 @@
-import Button from '@/components/app/Button';
-import SidebarButton from '@/components/app/Button/SidebarButton';
+import Button from '@/components/core/buttons/Button';
+import SidebarButton from '@/components/core/buttons/SidebarButton';
 import Checkbox from '@/components/app/Form/Checkbox';
 import Radio from '@/components/app/Form/Radio';
-import DeleteIcon from '@/components/app/Icons/DeleteIcon';
-import Input from '@/components/app/Input';
-import UnstyledTextareaAutosize from '@/components/app/TextArea/UnstyledTextareaAutosize';
+import DeleteIcon from '@/components/core/icons/DeleteIcon';
+import Input from '@/components/core/input/Input';
+import UnstyledTextareaAutosize from '@/components/core/textarea/UnstyledTextareaAutosize';
 import EllipsisDropdown from '@/components/core/dropdowns/EllipsisDropdown';
 import { ByteQuestion, CourseQuestionFragment } from '@/graphql/generated/generated-types';
 import { QuestionType } from '@/types/deprecated/models/enums';

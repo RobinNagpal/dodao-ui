@@ -2,9 +2,11 @@
 
 import BasicGuideSettings from '@/app/guides/edit/[[...guideId]]/BasicGuideSettings';
 import withSpace from '@/app/withSpace';
-import Button from '@/components/app/Button';
-import PageLoading from '@/components/app/PageLoading';
+import PageLoading from '@/components/core/loaders/PageLoading';
+import Button from '@/components/core/buttons/Button';
 import PageWrapper from '@/components/core/page/PageWrapper';
+import TabsWithUnderline, { TabItem } from '@/components/core/tabs/TabsWithUnderline';
+import AdvancedSettings from '@/components/guides/Edit/AdvancedSettings';
 import { useEditGuide } from '@/components/guides/Edit/useEditGuide';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
@@ -19,6 +21,7 @@ const Wrapper = styled.div`
 const EditGuide = (props: { space: SpaceWithIntegrationsFragment; params: { guideId?: string[] } }) => {
   const { space, params } = props;
   const guideId = params.guideId ? params.guideId[0] : null;
+  const [selectedTabId, setSelectedTabId] = React.useState('basic');
 
   const editGuideHelper = useEditGuide(space, guideId);
   const { activeStepId, guideCreating, guideLoaded, guide: guide, guideErrors, initialize, updateGuideFunctions, handleSubmit } = editGuideHelper;
@@ -34,6 +37,18 @@ const EditGuide = (props: { space: SpaceWithIntegrationsFragment; params: { guid
     handleSubmit();
   };
 
+  const tabs: TabItem[] = [
+    {
+      id: 'basic',
+      label: 'Basic',
+      href: `#`,
+    },
+    {
+      id: 'advanced',
+      label: 'Advanced',
+      href: `#`,
+    },
+  ];
   return (
     <PageWrapper>
       <SingleCardLayout>
@@ -46,8 +61,15 @@ const EditGuide = (props: { space: SpaceWithIntegrationsFragment; params: { guid
 
         {guideLoaded ? (
           <div>
+            <div className="flex justify-end">
+              <TabsWithUnderline selectedTabId={selectedTabId} setSelectedTabId={setSelectedTabId} tabs={tabs} className="w-96" />
+            </div>
             <Wrapper>
-              <BasicGuideSettings guide={guide} guideErrors={guideErrors} space={space} editGuideHelper={editGuideHelper} />
+              {selectedTabId === 'basic' ? (
+                <BasicGuideSettings guide={guide} guideErrors={guideErrors} space={space} editGuideHelper={editGuideHelper} />
+              ) : (
+                <AdvancedSettings guide={guide} guideErrors={guideErrors} space={space} updateGuideFunctions={updateGuideFunctions} />
+              )}
             </Wrapper>
 
             <Button onClick={clickSubmit} loading={!guideLoaded || guideCreating} className="block w-full" variant="contained" primary>
