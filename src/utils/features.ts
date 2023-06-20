@@ -1,4 +1,12 @@
-import { compoundFeatures, dodaoFeatures, FeatureItem, FeatureName, testAcademyFeatures, uniswapFeatures } from '@/types/spaceFeatures';
+import {
+  compoundFeatures,
+  creditUnionAcademyFeatures,
+  dodaoFeatures,
+  FeatureItem,
+  FeatureName,
+  testAcademyFeatures,
+  uniswapFeatures,
+} from '@/types/spaceFeatures';
 
 export function getFeaturesArray(spaceId: string): FeatureItem[] {
   if (spaceId === 'dodao-academy-eth-1') {
@@ -15,6 +23,10 @@ export function getFeaturesArray(spaceId: string): FeatureItem[] {
 
   if (spaceId === 'uniswap-eth-1') {
     return uniswapFeatures;
+  }
+
+  if (spaceId === 'credit-union-academy') {
+    return creditUnionAcademyFeatures;
   }
 
   return [
