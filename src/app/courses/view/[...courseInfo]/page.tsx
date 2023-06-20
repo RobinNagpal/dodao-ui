@@ -128,8 +128,9 @@ const CourseView = ({ params, space }: { params: { courseInfo: string[] }; space
             </StyledNavWrapper>
 
     <StyledRightContent
-     className={`flex-1 m-4 overflow-hidden`}>
-            
+     className={`flex-1 m-4 
+     ${itemType === 'questions' ? 'overflow-y-hidden' : 'overflow-hidden'}`}
+            >
               <CourseDetailsRightSection
                 course={course}
                 space={space}
