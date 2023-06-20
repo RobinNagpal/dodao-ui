@@ -18,11 +18,10 @@ import styled from 'styled-components';
 
 const StyledNavWrapper = styled.div`
   max-width: 400px;
-  overflow : hidden;
+  overflow: hidden;
 `;
 
 const Container = styled.div`
-
   overflow: hidden;
 `;
 
@@ -108,12 +107,10 @@ const CourseView = ({ params, space }: { params: { courseInfo: string[] }; space
       setOpenNodes(storedOpenNodes);
     }
   }, []);
-  
+
   useEffect(() => {
     localStorage.setItem('openNodes', JSON.stringify(openNodes));
   }, [openNodes]);
-  
-
 
   return (
     <PageWrapper>
@@ -131,7 +128,12 @@ const CourseView = ({ params, space }: { params: { courseInfo: string[] }; space
           </div>
           <div className="flex flex-col md:flex-row">
             <StyledNavWrapper className="my-4 relative overflow-scroll border-r-2 ">
-              <CourseNavigation course={course} space={space} showAddModal={showAddModal} courseHelper={courseHelper} submissionHelper={submissionHelper} 
+              <CourseNavigation
+                course={course}
+                space={space}
+                showAddModal={showAddModal}
+                courseHelper={courseHelper}
+                submissionHelper={submissionHelper}
                 openNodes={openNodes}
                 setOpenNodes={setOpenNodes}
               />

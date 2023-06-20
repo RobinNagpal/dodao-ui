@@ -89,8 +89,8 @@ const CourseComponent: React.FC<CourseNavigationProps> = ({ course, space, showA
   //const [openNodes, setOpenNodes] = useState<{ [key: string]: boolean }>({});
 
   const [treeData, setTreeData] = useState<TreeNodeType[]>([]);
-  const currentTopic = useContext(CurrentTopicContext); 
-  
+  const currentTopic = useContext(CurrentTopicContext);
+
   function getReadings(topic: CourseTopicFragment, readings: CourseReadingFragment[]) {
     return readings.map((reading, i) => {
       return {
@@ -106,7 +106,7 @@ const CourseComponent: React.FC<CourseNavigationProps> = ({ course, space, showA
       };
     });
   }
-  
+
   function getExplanations(topic: CourseTopicFragment, explanations: CourseExplanationFragment[]) {
     return explanations.map((explanation, i) => {
       return {
@@ -122,7 +122,7 @@ const CourseComponent: React.FC<CourseNavigationProps> = ({ course, space, showA
       };
     });
   }
-  
+
   function getSummaries(topic: CourseTopicFragment, summaries: CourseSummaryFragment[]) {
     return summaries.map((summary, i) => {
       return {
@@ -138,7 +138,7 @@ const CourseComponent: React.FC<CourseNavigationProps> = ({ course, space, showA
       };
     });
   }
-  
+
   useEffect(() => {
     // Generate initial tree data with isOpen property
     const treeData: TreeNodeType[] = course.topics.map((chapter, i) => {
@@ -227,25 +227,20 @@ const CourseComponent: React.FC<CourseNavigationProps> = ({ course, space, showA
     });
 
     setTreeData(treeData);
-// eslint-disable-next-line react-hooks/exhaustive-deps
-}, [course, currentTopic]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [course, currentTopic]);
 
   return (
     <CurrentTopicContext.Provider value={currentTopic}>
-
-    <Container className="p-4 bg-skin-header-bg rounded-l-lg border-skin-border h-full w-full">
-      {isCourseAdmin && (
-        <Button primary variant="contained" className="w-full mb-4" onClick={showAddModal}>
-          <AddIcon /> Add
-        </Button>
-      )}
-      <Tree data={treeData}
-        openNodes={openNodes}
-        setOpenNodes={setOpenNodes}
-      />
-    </Container>
+      <Container className="p-4 bg-skin-header-bg rounded-l-lg border-skin-border h-full w-full">
+        {isCourseAdmin && (
+          <Button primary variant="contained" className="w-full mb-4" onClick={showAddModal}>
+            <AddIcon /> Add
+          </Button>
+        )}
+        <Tree data={treeData} openNodes={openNodes} setOpenNodes={setOpenNodes} />
+      </Container>
     </CurrentTopicContext.Provider>
-
   );
 };
 

@@ -56,7 +56,7 @@ const QuestionNavItem = styled.div<{ isTopicSubmitted: boolean; questionStatus: 
 `;
 
 const QuestionNumber = styled.div`
-  background-color: #D32F2F;
+  background-color: #d32f2f;
   border-radius: 8%;
   color: #fff;
   text-align: center;
@@ -103,29 +103,23 @@ function EvaluationComponent({ course, courseHelper, topicKey, submissionHelper 
       return 'error';
     }
   };
-return (
-  <div className="flex flex-wrap">
-  {topic?.questions?.map((question: any, index: number) => (
-    <Link className="mx-2 my-2" href={`/courses/view/${course.key}/${topicKey}/questions/${index}`} key={index}>
-      <div className='text-center'>
-        {index + 1}
-      </div>
-      <QuestionNavItem
-        isTopicSubmitted={isTopicSubmitted}
-        questionStatus={getQuestionStatus(question)}
-        className={`question-nav-item ${getQuestionStatus(question)}`}
-      >
-        <div className="indicator">
-          {getQuestionStatus(question) === 'completed' && isTopicSubmitted && <TickMark className="tick-mark" />}
-        </div>
-        <QuestionNumber className="mt-7" />
-      </QuestionNavItem>
-    </Link>
-  ))}
-</div>
-
-);
-
+  return (
+    <div className="flex flex-wrap">
+      {topic?.questions?.map((question: any, index: number) => (
+        <Link className="mx-2 my-2" href={`/courses/view/${course.key}/${topicKey}/questions/${index}`} key={index}>
+          <div className="text-center">{index + 1}</div>
+          <QuestionNavItem
+            isTopicSubmitted={isTopicSubmitted}
+            questionStatus={getQuestionStatus(question)}
+            className={`question-nav-item ${getQuestionStatus(question)}`}
+          >
+            <div className="indicator">{getQuestionStatus(question) === 'completed' && isTopicSubmitted && <TickMark className="tick-mark" />}</div>
+            <QuestionNumber className="mt-7" />
+          </QuestionNavItem>
+        </Link>
+      ))}
+    </div>
+  );
 }
 
 export default EvaluationComponent;

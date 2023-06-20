@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 import { TreeNode, TreeNodeType } from './TreeNode';
 
 interface TreeProps {
-  data: TreeNodeType[],
+  data: TreeNodeType[];
   openNodes: { [key: string]: boolean };
   setOpenNodes: React.Dispatch<React.SetStateAction<{ [key: string]: boolean }>>;
 }
@@ -20,7 +20,6 @@ export const Tree: FC<TreeProps> = ({ data, openNodes, setOpenNodes }) => {
         // Pass isOpen prop
         isOpen={openNodes[node.component.key as string] || false}
         // isOpen={true}
-
       />
     );
   };
@@ -30,4 +29,3 @@ export const Tree: FC<TreeProps> = ({ data, openNodes, setOpenNodes }) => {
   return <div>{renderedNodes}</div>;
 };
 export type { TreeNodeType };
-
