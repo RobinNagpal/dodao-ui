@@ -96,7 +96,11 @@ function getReadings(courseKey: string, topic: CourseTopicFragment, readings: Co
     const isActive = itemKey === reading.uuid;
     return {
       component: (
-        <Link key={reading.uuid} className={`flex items-center ${isActive ? 'underline' : ''}`} href={`/courses/view/${courseKey}/${topic.key}/readings/${reading.uuid}`}>
+        <Link
+          key={reading.uuid}
+          className={`flex items-center ${isActive ? 'underline' : ''}`}
+          href={`/courses/view/${courseKey}/${topic.key}/readings/${reading.uuid}`}
+        >
           <div className="icon mr-2">
             <CheckMark />
           </div>
@@ -112,7 +116,11 @@ function getExplanations(courseKey: string, topic: CourseTopicFragment, explanat
     const isActive = itemKey === explanation.key;
     return {
       component: (
-        <Link key={explanation.key} className={`flex items-center ${isActive ? 'underline' : ''}`} href={`/courses/view/${courseKey}/${topic.key}/explanations/${explanation.key}`}>
+        <Link
+          key={explanation.key}
+          className={`flex items-center ${isActive ? 'underline' : ''}`}
+          href={`/courses/view/${courseKey}/${topic.key}/explanations/${explanation.key}`}
+        >
           <div className="icon mr-2">
             <CheckMark />
           </div>
@@ -128,7 +136,11 @@ function getSummaries(courseKey: string, topic: CourseTopicFragment, summaries: 
     const isActive = itemKey === summary.key;
     return {
       component: (
-        <Link key={summary.key} className={`flex items-center ${isActive ? 'underline' : ''}`} href={`/courses/view/${courseKey}/${topic.key}/summaries/${summary.key}`}>
+        <Link
+          key={summary.key}
+          className={`flex items-center ${isActive ? 'underline' : ''}`}
+          href={`/courses/view/${courseKey}/${topic.key}/summaries/${summary.key}`}
+        >
           <div className="icon mr-2">
             <CheckMark />
           </div>
@@ -188,7 +200,11 @@ function getTreeData(course: CourseDetailsFragment, itemKey: string) {
     if (chapter.questions.length) {
       children.push({
         component: (
-          <Link key={chapter.key + '_questions'} className={`flex items-center ${itemKey === '0' ? 'underline' : ''}`} href={`/courses/view/${course.key}/${chapter.key}/questions/0`}>
+          <Link
+            key={chapter.key + '_questions'}
+            className={`flex items-center ${itemKey === '0' ? 'underline' : ''}`}
+            href={`/courses/view/${course.key}/${chapter.key}/questions/0`}
+          >
             <div className="icon mr-2">
               <CheckMark />
             </div>
@@ -201,7 +217,11 @@ function getTreeData(course: CourseDetailsFragment, itemKey: string) {
 
     children.push({
       component: (
-        <Link key={chapter.key + '_chapter_submission'} className={`flex items-center ${itemKey === 'submission' ? 'underline' : ''}`} href={`/courses/view/${course.key}/${chapter.key}/submission`}>
+        <Link
+          key={chapter.key + '_chapter_submission'}
+          className={`flex items-center ${itemKey === 'submission' ? 'underline' : ''}`}
+          href={`/courses/view/${course.key}/${chapter.key}/submission`}
+        >
           <div className="icon mr-2">
             <CheckMark />
           </div>
@@ -214,7 +234,11 @@ function getTreeData(course: CourseDetailsFragment, itemKey: string) {
     const isActive = itemKey === chapter.key;
     return {
       component: (
-        <Link key={chapter.key + '_chapter_root'} className={`flex items-center ${isActive ? 'underline' : ''}`} href={`/courses/view/${course.key}/${chapter.key}`}>
+        <Link
+          key={chapter.key + '_chapter_root'}
+          className={`flex items-center ${isActive ? 'underline' : ''}`}
+          href={`/courses/view/${course.key}/${chapter.key}`}
+        >
           <div className="icon mr-2">
             <CheckMark />
           </div>
@@ -246,6 +270,7 @@ const CourseComponent: React.FC<CourseNavigationProps> = ({ course, showAddModal
         '1': topicKey! + '_chapter_root',
       });
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [topicKey, itemKey, itemType]);
 
   const treeData: TreeNodeType[] = getTreeData(course, itemKey || '0');

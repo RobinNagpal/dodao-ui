@@ -23,7 +23,6 @@ interface CourseDetailsRightSectionProps {
   itemKey?: string;
 }
 
-
 export default function CourseDetailsRightSection(props: CourseDetailsRightSectionProps) {
   if (props.itemType === 'readings' && props.topicKey && props.itemKey) {
     return (
@@ -51,7 +50,6 @@ export default function CourseDetailsRightSection(props: CourseDetailsRightSecti
     );
   } else if (props.itemType === 'explanations' && props.topicKey && props.itemKey) {
     return (
-      
       <ExplanationDetails
         space={props.space}
         course={props.course}
@@ -60,10 +58,7 @@ export default function CourseDetailsRightSection(props: CourseDetailsRightSecti
         submissionHelper={props.submissionHelper}
         topicKey={props.topicKey}
         explanationKey={props.itemKey}
-        
       />
-      
-      
     );
   } else if (props.itemType === 'questions' && props.topicKey && props.itemKey) {
     return (
