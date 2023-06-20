@@ -15,11 +15,10 @@
  *
  * @module @auth/prisma-adapter
  */
-import { User } from '@/types/auth/User';
-import { AdapterSession, AdapterUser } from '@auth/core/adapters';
-import { Awaitable } from '@auth/core/types';
-import type { PrismaClient, Prisma } from '@prisma/client';
-import type { Adapter, AdapterAccount } from '@auth/core/adapters';
+
+import type { Prisma, PrismaClient, User } from '@prisma/client';
+import { AdapterAccount, AdapterSession, AdapterUser } from 'next-auth/adapters';
+import { DefaultAdapter } from 'next-auth/adapters';
 
 /**
  * ## Setup
@@ -220,10 +219,11 @@ import type { Adapter, AdapterAccount } from '@auth/core/adapters';
  * ```
  *
  **/
-export interface PrismaUser extends Omit<User, 'emailVerified' | 'email'>, AdapterUser {}
-export function CustomPrismaAdapter(p: PrismaClient): Adapter {
+export interface PrismaUser extends Omit<User, 'emailVerified' | 'email' | 'image' | 'name'>, AdapterUser {}
+
+export function CustomPrismaAdapter(p: PrismaClient): DefaultAdapter {
   return {
-    createUser: (data: Omit<PrismaUser, 'id'>): Promise<PrismaUser> => p.user.create({ data }) as Promise<PrismaUser>,
+    createUser: (user: Omit<AdapterUser, 'id'>): Promise<PrismaUser> => p.user.create({ data: user as PrismaUser }) as Promise<PrismaUser>,
     getUser: (id: string) => p.user.findUnique({ where: { id } }) as Promise<PrismaUser>,
     getUserByEmail: (email: string) => p.user.findUnique({ where: { email } }) as Promise<PrismaUser>,
     async getUserByAccount(provider_providerAccountId: Pick<AdapterAccount, 'provider' | 'providerAccountId'>) {
