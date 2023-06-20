@@ -100,7 +100,7 @@ const CourseView = ({ params, space }: { params: { courseInfo: string[] }; space
   const { course, loading } = courseHelper;
 
   return (
-    <PageWrapper  >
+    <PageWrapper>
       {course ? (
         <Block slim className="w-full">
           <div className="px-4 py-3 bg-skin-header-bg lg:rounded-2xl pb-3 flex justify-between w-full">
@@ -127,10 +127,7 @@ const CourseView = ({ params, space }: { params: { courseInfo: string[] }; space
               />
             </StyledNavWrapper>
 
-            <StyledRightContent
-  className={`flex-1 m-4 ${itemType === 'questions' ? 'overflow-y-hidden' : 'overflow-hidden'}`}
->
-            
+            <StyledRightContent className={`flex-1 m-4 ${itemType === 'questions' ? 'overflow-y-hidden' : 'overflow-hidden'}`}>
               <CourseDetailsRightSection
                 course={course}
                 space={space}

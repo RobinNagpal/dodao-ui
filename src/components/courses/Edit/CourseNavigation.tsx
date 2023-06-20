@@ -270,7 +270,7 @@ const CourseComponent: React.FC<CourseNavigationProps> = ({ course, showAddModal
         '1': topicKey! + '_chapter_root',
       });
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [topicKey, itemKey, itemType]);
 
   const treeData: TreeNodeType[] = getTreeData(course, itemKey || '0');
