@@ -28,7 +28,7 @@ export const TreeNode: FC<TreeNodeProps> = ({ node, openNodes, setOpenNodes, lev
   return (
     <div className="px-4 py-2">
       <div className="flex items-center cursor-pointer" onClick={handleClick}>
-        {node.children ? isOpen ? <ChevronDownIcon className="h-5 w-5 mr-2" /> : <ChevronRightIcon className="h-5 w-5 mr-2" /> : null}
+        {node.children && node.children.length>0 ? isOpen ? <ChevronDownIcon className="h-5 w-5 mr-2" /> : <ChevronRightIcon className="h-5 w-5 mr-2" /> : null}
         {node.component}
       </div>
       {isOpen && node.children && (

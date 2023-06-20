@@ -27,6 +27,7 @@ interface CourseNavigationProps {
   itemType?: ItemTypes;
   itemKey?: string;
 }
+
 const ClickableDiv = styled.div`
   cursor: pointer;
 `;
@@ -83,12 +84,19 @@ const Container = styled.div`
     margin-left: 0;
     list-style-type: none;
   }
+
+  /* Add CSS class to underline text of currently open child node */
+  .underline {
+    text-decoration: underline;
+  }
 `;
-function getReadings(courseKey: string, topic: CourseTopicFragment, readings: CourseReadingFragment[]) {
+
+function getReadings(courseKey: string, topic: CourseTopicFragment, readings: CourseReadingFragment[], itemKey: string) {
   return readings.map((reading, i) => {
+    const isActive = itemKey === reading.uuid;
     return {
       component: (
-        <Link key={reading.uuid} className="flex items-center" href={`/courses/view/${courseKey}/${topic.key}/readings/${reading.uuid}`}>
+        <Link key={reading.uuid} className={`flex items-center ${isActive ? 'underline' : ''}`} href={`/courses/view/${courseKey}/${topic.key}/readings/${reading.uuid}`}>
           <div className="icon mr-2">
             <CheckMark />
           </div>
@@ -99,11 +107,12 @@ function getReadings(courseKey: string, topic: CourseTopicFragment, readings: Co
   });
 }
 
-function getExplanations(courseKey: string, topic: CourseTopicFragment, explanations: CourseExplanationFragment[]) {
+function getExplanations(courseKey: string, topic: CourseTopicFragment, explanations: CourseExplanationFragment[], itemKey: string) {
   return explanations.map((explanation, i) => {
+    const isActive = itemKey === explanation.key;
     return {
       component: (
-        <Link key={explanation.key} className="flex items-center" href={`/courses/view/${courseKey}/${topic.key}/explanations/${explanation.key}`}>
+        <Link key={explanation.key} className={`flex items-center ${isActive ? 'underline' : ''}`} href={`/courses/view/${courseKey}/${topic.key}/explanations/${explanation.key}`}>
           <div className="icon mr-2">
             <CheckMark />
           </div>
@@ -113,11 +122,13 @@ function getExplanations(courseKey: string, topic: CourseTopicFragment, explanat
     };
   });
 }
-function getSummaries(courseKey: string, topic: CourseTopicFragment, summaries: CourseSummaryFragment[]) {
+
+function getSummaries(courseKey: string, topic: CourseTopicFragment, summaries: CourseSummaryFragment[], itemKey: string) {
   return summaries.map((summary, i) => {
+    const isActive = itemKey === summary.key;
     return {
       component: (
-        <Link key={summary.key} className="flex items-center" href={`/courses/view/${courseKey}/${topic.key}/summaries/${summary.key}`}>
+        <Link key={summary.key} className={`flex items-center ${isActive ? 'underline' : ''}`} href={`/courses/view/${courseKey}/${topic.key}/summaries/${summary.key}`}>
           <div className="icon mr-2">
             <CheckMark />
           </div>
@@ -128,11 +139,11 @@ function getSummaries(courseKey: string, topic: CourseTopicFragment, summaries: 
   });
 }
 
-function getTreeData(course: CourseDetailsFragment) {
+function getTreeData(course: CourseDetailsFragment, itemKey: string) {
   return course.topics.map((chapter, i) => {
-    const readings: TreeNodeType[] = getReadings(course.key, chapter, chapter.readings);
-    const explanations: TreeNodeType[] = getExplanations(course.key, chapter, chapter.explanations);
-    const summaries: TreeNodeType[] = getSummaries(course.key, chapter, chapter.summaries);
+    const readings: TreeNodeType[] = getReadings(course.key, chapter, chapter.readings, itemKey);
+    const explanations: TreeNodeType[] = getExplanations(course.key, chapter, chapter.explanations, itemKey);
+    const summaries: TreeNodeType[] = getSummaries(course.key, chapter, chapter.summaries, itemKey);
 
     const children: TreeNodeType[] = [];
     if (readings.length) {
@@ -177,7 +188,7 @@ function getTreeData(course: CourseDetailsFragment) {
     if (chapter.questions.length) {
       children.push({
         component: (
-          <Link key={chapter.key + '_questions'} className="flex items-center" href={`/courses/view/${course.key}/${chapter.key}/questions/0`}>
+          <Link key={chapter.key + '_questions'} className={`flex items-center ${itemKey === '0' ? 'underline' : ''}`} href={`/courses/view/${course.key}/${chapter.key}/questions/0`}>
             <div className="icon mr-2">
               <CheckMark />
             </div>
@@ -190,7 +201,7 @@ function getTreeData(course: CourseDetailsFragment) {
 
     children.push({
       component: (
-        <Link key={chapter.key + '_chapter_submission'} className="flex items-center" href={`/courses/view/${course.key}/${chapter.key}/submission`}>
+        <Link key={chapter.key + '_chapter_submission'} className={`flex items-center ${itemKey === 'submission' ? 'underline' : ''}`} href={`/courses/view/${course.key}/${chapter.key}/submission`}>
           <div className="icon mr-2">
             <CheckMark />
           </div>
@@ -200,9 +211,10 @@ function getTreeData(course: CourseDetailsFragment) {
       children: [],
     });
 
+    const isActive = itemKey === chapter.key;
     return {
       component: (
-        <Link key={chapter.key + '_chapter_root'} className="flex items-center" href={`/courses/view/${course.key}/${chapter.key}`}>
+        <Link key={chapter.key + '_chapter_root'} className={`flex items-center ${isActive ? 'underline' : ''}`} href={`/courses/view/${course.key}/${chapter.key}`}>
           <div className="icon mr-2">
             <CheckMark />
           </div>
@@ -236,7 +248,7 @@ const CourseComponent: React.FC<CourseNavigationProps> = ({ course, showAddModal
     }
   }, [topicKey, itemKey, itemType]);
 
-  const treeData: TreeNodeType[] = getTreeData(course);
+  const treeData: TreeNodeType[] = getTreeData(course, itemKey || '0');
 
   return (
     <Container className="p-4 bg-skin-header-bg rounded-l-lg border-skin-border h-full w-full">

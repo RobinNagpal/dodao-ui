@@ -15,20 +15,24 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { over } from 'lodash';
 
 const StyledNavWrapper = styled.div`
   max-width: 400px;
+  overflow: hidden;
 `;
 
 const StyledRightContent = styled.div`
   @screen md {
-    min-height: calc(100vh - 295px);
+    &.overflow-hidden {
+      overflow: hidden;
+    }
   }
 
   > div {
     display: flex;
     flex-direction: column;
-    min-height: 90%;
+    padding-right: 16px;
   }
 `;
 
@@ -96,7 +100,7 @@ const CourseView = ({ params, space }: { params: { courseInfo: string[] }; space
   const { course, loading } = courseHelper;
 
   return (
-    <PageWrapper>
+    <PageWrapper  >
       {course ? (
         <Block slim className="w-full">
           <div className="px-4 py-3 bg-skin-header-bg lg:rounded-2xl pb-3 flex justify-between w-full">
@@ -110,7 +114,7 @@ const CourseView = ({ params, space }: { params: { courseInfo: string[] }; space
             )}
           </div>
           <div className="flex flex-col md:flex-row">
-            <StyledNavWrapper className="my-4 relative overflow-scroll border-r-2 h-full">
+            <StyledNavWrapper className="my-4 relative overflow-scroll border-r-2 h">
               <CourseNavigation
                 course={course}
                 space={space}
@@ -122,7 +126,10 @@ const CourseView = ({ params, space }: { params: { courseInfo: string[] }; space
                 itemKey={itemKey}
               />
             </StyledNavWrapper>
-            <StyledRightContent className="flex-1 m-4">
+
+    <StyledRightContent
+     className={`flex-1 m-4 overflow-hidden`}>
+            
               <CourseDetailsRightSection
                 course={course}
                 space={space}
