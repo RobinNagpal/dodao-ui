@@ -101,16 +101,40 @@ const CourseView = ({ params, space }: { params: { courseInfo: string[] }; space
   const { course, loading } = courseHelper;
   const [openNodes, setOpenNodes] = useState<{ [key: string]: boolean }>({});
 
-  useEffect(() => {
-    const storedOpenNodes = JSON.parse(localStorage.getItem('openNodes') || '{}');
-    if (Object.keys(storedOpenNodes).length !== 0) {
-      setOpenNodes(storedOpenNodes);
-    }
-  }, []);
 
-  useEffect(() => {
-    localStorage.setItem('openNodes', JSON.stringify(openNodes));
-  }, [openNodes]);
+    useEffect(() => {
+      if (itemKey){
+      const storedOpenNodes = itemKey ? { [itemKey]: true } : {};
+
+      if (Object.keys(storedOpenNodes).length !== 0) {
+        setOpenNodes((prevOpenNodes) => ({ ...prevOpenNodes, ...storedOpenNodes }));
+        // console.log('openNodesasiflj', storedOpenNodes);
+
+      }
+      }
+      else if (itemType){
+        const storedOpenNodes = itemType ? { [itemType]: true } : {};
+      
+        if (Object.keys(storedOpenNodes).length !== 0) {
+          setOpenNodes(prevOpenNodes => ({ ...prevOpenNodes, ...storedOpenNodes }));
+        }
+
+      }
+      else if (topicKey){
+        const storedOpenNodes = topicKey ? { [topicKey]: true } : {};
+        if (Object.keys(storedOpenNodes).length !== 0) {
+          setOpenNodes(prevOpenNodes => ({ ...prevOpenNodes, ...storedOpenNodes }));
+        }
+        
+      }
+
+   
+    }, []);
+    
+  
+  // useEffect(() => {
+  //   localStorage.setItem('openNodes', JSON.stringify(openNodes));
+  // }, [openNodes]);
 
   return (
     <PageWrapper>
