@@ -1,10 +1,12 @@
 import UploadInput from '@/components/app/UploadInput';
+import UpsertBadgeInput from '@/components/core/badge/UpsertBadgeInput';
 import Button from '@/components/core/buttons/Button';
 import Checkboxes from '@/components/core/checkboxes/Checkboxes';
 import Input from '@/components/core/input/Input';
 import useEditSpace from '@/components/spaces/useEditSpace';
 import { Space } from '@/graphql/generated/generated-types';
 import { slugify } from '@/utils/auth/slugify';
+import union from 'lodash/union';
 import { useEffect, useState } from 'react';
 
 export interface UpsertSpaceProps {
@@ -40,7 +42,7 @@ export default function UpsertSpace(props: UpsertSpaceProps) {
           <UploadInput
             error={inputError('avatar')}
             onUpdate={(newValue) => updateSpaceField('avatar', newValue)}
-            imageType="Simulation"
+            imageType="AcademyLogo"
             spaceId={space?.id || 'new-space'}
             modelValue={space?.avatar}
             objectId={(space?.name && slugify(space?.name)) || space?.id || 'new-space'}
@@ -52,6 +54,18 @@ export default function UpsertSpace(props: UpsertSpaceProps) {
             modelValue={space?.spaceIntegrations?.academyRepository}
             placeholder={'https://github.com/DoDAO-io/dodao-academy'}
             onUpdate={(value) => setSpaceIntegrationField('academyRepository', value?.toString() || '')}
+          />
+          <UpsertBadgeInput
+            badges={space.domains.map((d) => ({ id: d, label: d }))}
+            onAdd={(d) => {
+              setSpaceField('domains', union(space.domains, [d]));
+            }}
+            onRemove={(d) => {
+              setSpaceField(
+                'domains',
+                space.domains.filter((domain) => domain !== d)
+              );
+            }}
           />
         </div>
         <div className="border-b pb-12">

@@ -876,6 +876,7 @@ type Space {
   admins: [String!]!
   avatar: String
   creator: String!
+  domains: [String!]!
   features: [String!]!
   id: String!
   inviteLinks: SpaceInviteLinks
@@ -1115,6 +1116,7 @@ input UpsertSpaceInput {
   admins: [String!]!
   avatar: String!
   creator: String!
+  domains: [String!]!
   features: [String!]!
   id: String!
   inviteLinks: SpaceInviteLinksInput!

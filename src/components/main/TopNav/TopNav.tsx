@@ -1,7 +1,5 @@
-import { LoginButtons } from '@/app/login/components/LoginButtons';
 import ButtonLarge from '@/components/core/buttons/Button';
 import FullScreenModal from '@/components/core/modals/FullScreenModal';
-import SingleSectionModal from '@/components/core/modals/SingleSectionModal';
 import CreateContentModalContents from '@/components/main/TopNav/CreateContentModalContents';
 import { DesktopNavLink } from '@/components/main/TopNav/DesktopNavLink';
 import { DesktopProfileMenu } from '@/components/main/TopNav/DesktopProfileMenu';
@@ -16,10 +14,10 @@ import PlusIcon from '@heroicons/react/20/solid/PlusIcon';
 import Bars3Icon from '@heroicons/react/24/outline/Bars3Icon';
 import XMarkIcon from '@heroicons/react/24/outline/XMarkIcon';
 import { useSession } from 'next-auth/react';
+import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import Image from 'next/image';
 
 const StyledDiv = styled.div`
   background-color: var(--bg-color);
