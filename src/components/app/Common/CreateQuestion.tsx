@@ -1,17 +1,16 @@
-import Button from '@/components/core/buttons/Button';
-import SidebarButton from '@/components/core/buttons/SidebarButton';
 import Checkbox from '@/components/app/Form/Checkbox';
 import Radio from '@/components/app/Form/Radio';
+import SidebarButton from '@/components/core/buttons/SidebarButton';
+import EllipsisDropdown from '@/components/core/dropdowns/EllipsisDropdown';
 import DeleteIcon from '@/components/core/icons/DeleteIcon';
 import Input from '@/components/core/input/Input';
 import UnstyledTextareaAutosize from '@/components/core/textarea/UnstyledTextareaAutosize';
-import EllipsisDropdown from '@/components/core/dropdowns/EllipsisDropdown';
 import { ByteQuestion, CourseQuestionFragment } from '@/graphql/generated/generated-types';
 import { QuestionType } from '@/types/deprecated/models/enums';
 import { GuideQuestion, GuideStepItem } from '@/types/deprecated/models/GuideModel';
 import { QuestionError } from '@/types/errors/error';
-import MinusCircle from '@heroicons/react/20/solid/MinusCircleIcon';
 import PlusCircle from '@heroicons/react/20/solid/PlusCircleIcon';
+import MinusCircle from '@heroicons/react/24/outline//MinusCircleIcon';
 import styled from 'styled-components';
 
 interface QuestionComponentProps {
@@ -123,8 +122,8 @@ function QuestionComponent({
               className="w-full grow-1"
             />
             {!disableChoiceEdit && question.choices.length > 1 && (
-              <RemoveChoiceDiv className="cursor-pointer p-2 grow-0" onClick={() => removeChoice?.(question.uuid, choice.key)}>
-                <MinusCircle height={20} width={20}></MinusCircle>
+              <RemoveChoiceDiv className="cursor-pointer p-2 grow-0 mt-4" onClick={() => removeChoice?.(question.uuid, choice.key)}>
+                <MinusCircle height={24} width={24}></MinusCircle>
               </RemoveChoiceDiv>
             )}
           </div>

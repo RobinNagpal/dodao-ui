@@ -31,7 +31,8 @@ const Overlay = styled.div<{ readonly?: boolean; isSelected?: boolean }>`
 const StyledInput = styled.input`
   border-color: var(--border-color);
   accent-color: var(--primary-color);
-  min-width: 24px;
+  width: 20px;
+  height: 20px;
   cursor: pointer;
   &:checked {
     background-color: var(--primary-color) !important;
