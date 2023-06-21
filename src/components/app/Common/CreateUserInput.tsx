@@ -1,6 +1,6 @@
-import SidebarButton from '@/components/core/buttons/SidebarButton';
 import Checkbox from '@/components/app/Form/Checkbox';
-import Icon from '@/components/app/Icon';
+import IconButton from '@/components/core/buttons/IconButton';
+import { IconTypes } from '@/components/core/icons/IconTypes';
 import Input from '@/components/core/input/Input';
 import { InputType } from '@/types/deprecated/models/enums';
 import { GuideStepItem, UserInput } from '@/types/deprecated/models/GuideModel';
@@ -27,9 +27,7 @@ function UserInputComponent({ removeUserInput, item, userInputErrors, updateUser
 
   return (
     <>
-      <SidebarButton className="float-right my-2 mr-4" onClick={() => removeUserInput(userInput.uuid)}>
-        <Icon size="20" className="link-color" name="close" />
-      </SidebarButton>
+      <IconButton className="float-right my-2 mr-4" onClick={() => removeUserInput(userInput.uuid)} iconName={IconTypes.Trash} />
 
       <InputWrapper className="flex" error={userInputErrors?.label}>
         <EnabledInput

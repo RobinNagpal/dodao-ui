@@ -42,7 +42,7 @@ export default function BasicGuideSettings({ editGuideHelper, guide, guideErrors
   return (
     <div>
       {/* Basic Info Section */}
-      <Block title={$t('guide.create.basicInfo')} className="mt-4 font-bold text-xl">
+      <Block title={$t('guide.create.basicInfo')} className="font-bold text-xl">
         <div className="mt-4 flex flex-col">
           <UserInput modelValue={guide.name} setUserInput={(v) => updateGuideField('name', v.toString())} label="Name" required></UserInput>
 
