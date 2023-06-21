@@ -8,7 +8,6 @@ import VideoDetails from '@/components/courses/View/Details/VideoDetails';
 import { CourseSubmissionHelper } from '@/components/courses/View/useCourseSubmission';
 import { CourseHelper } from '@/components/courses/View/useViewCourse';
 import { CourseDetailsFragment, Space } from '@/graphql/generated/generated-types';
-import styled from 'styled-components';
 
 export type ItemTypes = 'readings' | 'summaries' | 'explanations' | 'questions' | 'submission';
 interface CourseDetailsRightSectionProps {
