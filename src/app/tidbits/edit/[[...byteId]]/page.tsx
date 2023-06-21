@@ -93,7 +93,6 @@ function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteI
                   </div>
                 </div>
 
-                <div className="mt-4">Admins</div>
                 <TextareaArray
                   label="Admins"
                   id="admins"
@@ -102,8 +101,6 @@ function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteI
                   className="input w-full text-left"
                   onUpdate={(e) => updateByteFunctions.updateByteField('admins', e)}
                 />
-
-                <div className="mt-4">Tags</div>
 
                 <TextareaArray
                   label="Tags"
