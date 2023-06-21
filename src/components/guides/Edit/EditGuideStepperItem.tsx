@@ -1,4 +1,5 @@
 import AddContentOrQuestionAIModal from '@/components/app/Modal/AI/AddContentOrQuestionAIModal';
+import GenerateContentUsingAIModal from '@/components/app/Modal/AI/GenerateContentUsingAIModal';
 import IconButton from '@/components/core/buttons/IconButton';
 import CreateConnectDiscord from '@/components/app/Common/CreateDiscordConnect';
 import CreateQuestion from '@/components/app/Common/CreateQuestion';
@@ -7,7 +8,9 @@ import { IconTypes } from '@/components/core/icons/IconTypes';
 import Input from '@/components/core/input/Input';
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
 import AddStepItemModal from '@/components/app/Modal/StepItem/AddStepItemModal';
+import generateGuideContentPrompt from '@/components/guides/Edit/generateGuideContentPrompt';
 import { UseEditGuideHelper } from '@/components/guides/Edit/useEditGuide';
+import { useNotificationContext } from '@/contexts/NotificationContext';
 import {
   GuideFragment,
   GuideInput,
@@ -51,7 +54,10 @@ const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHas
   const { moveStepUp, moveStepDown, removeStep, updateStep } = editGuideHelper.updateGuideFunctions;
   const [modalGuidInputOrQuestionOpen, setModalGuidInputOrQuestionOpen] = useState(false);
   const [modalGenerateAIOpen, setModalGenerateAIOpen] = useState(false);
+  const [modalGenerateContentUsingAIOpen, setModalGenerateContentUsingAIOpen] = useState(false);
   const { $t } = useI18();
+  const { showNotification } = useNotificationContext();
+
   const inputError = (field: keyof StepError) => {
     return stepErrors?.[field];
   };
@@ -384,8 +390,32 @@ const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHas
         <AddContentOrQuestionAIModal
           open={modalGenerateAIOpen}
           onClose={() => setModalGenerateAIOpen(false)}
-          onGenerateContent={() => {}}
+          onGenerateContent={() => setModalGenerateContentUsingAIOpen(true)}
           onGenerateQuestions={() => {}}
+        />
+      )}
+      {modalGenerateContentUsingAIOpen && (
+        <GenerateContentUsingAIModal
+          open={modalGenerateContentUsingAIOpen}
+          onClose={() => setModalGenerateContentUsingAIOpen(false)}
+          modalTitle={'Generate Content Using AI'}
+          topic={guide.name + ' - ' + step.name}
+          guidelines={`
+            1) Create four to five paragraphs as the output
+            2) Each paragraph should be at least 4 sentences long
+          `}
+          onGenerateContent={(generatedContent) => {
+            if (generatedContent) {
+              updateStepContent(generatedContent);
+            } else {
+              showNotification({
+                heading: 'TimeOut Error',
+                type: 'error',
+                message: 'This request Took More time then Expected Please Try Again',
+              });
+            }
+          }}
+          generatePrompt={(topic: string, guidelines: string, contents: string) => generateGuideContentPrompt(topic, guidelines, contents, guide)}
         />
       )}
     </div>
