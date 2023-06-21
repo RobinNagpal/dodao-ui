@@ -15,7 +15,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { over } from 'lodash';
 
 const StyledNavWrapper = styled.div`
   max-width: 400px;
@@ -74,7 +73,7 @@ const CourseView = ({ params, space }: { params: { courseInfo: string[] }; space
     if (!submissionHelper.loadedSubmission) return;
 
     submissionHelper.loadCourseSubmission(courseHelper.course);
-  }, [courseHelper.course, submissionHelper, submissionHelper.loadedSubmission]);
+  }, [courseHelper.course, submissionHelper.loadedSubmission]);
   function editCourseRepo() {}
 
   function gitCourseIntegrations() {}
