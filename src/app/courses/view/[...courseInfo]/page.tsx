@@ -20,7 +20,7 @@ const StyledNavWrapper = styled.div`
   max-width: 350px;
   overflow-y: auto;
 
-  height: calc(100vh - 180px);
+  height: calc(100vh);
 
   /* Hide the scrollbar width */
   ::-webkit-scrollbar {
