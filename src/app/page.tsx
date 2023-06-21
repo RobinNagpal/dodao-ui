@@ -24,13 +24,13 @@ function Home({ space }: { space: SpaceWithIntegrationsFragment }) {
           return (
             <div>
               <div className="pt-[150px]">
-                <div className="flex justify-between mt-8 mx-16">
+                <Grid2Cols>
                   <div className="flex flex-col justify-center pr-[48px] max-w-md">
                     <h1 dangerouslySetInnerHTML={{ __html: $t(`academy.${space.id}.academyHeading`) }} className="text-4xl" />
                     <div className="pt-2" dangerouslySetInnerHTML={{ __html: $t(`academy.${space.id}.academyText`) }} />
                   </div>
                   <Lottie animationData={DeveloperLottie} loop={true} />
-                </div>
+                </Grid2Cols>
               </div>
               <Grid2Cols>
                 {sortedSpaceFeatures.map((feature) => (
