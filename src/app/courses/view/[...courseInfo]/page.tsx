@@ -30,10 +30,6 @@ const StyledNavWrapper = styled.div`
   ::-webkit-scrollbar-track {
     background-color: transparent;
   }
-
-
-
-  
 `;
 
 const StyledRightContent = styled.div`
