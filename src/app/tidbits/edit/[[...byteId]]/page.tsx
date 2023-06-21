@@ -95,6 +95,8 @@ function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteI
 
                 <div className="mt-4">Admins</div>
                 <TextareaArray
+                  label="Admins"
+                  id="admins"
                   modelValue={byte.admins}
                   placeholder={`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`}
                   className="input w-full text-left"
@@ -104,6 +106,8 @@ function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteI
                 <div className="mt-4">Tags</div>
 
                 <TextareaArray
+                  label="Tags"
+                  id="tags"
                   modelValue={byte.tags}
                   placeholder={`tag1\ntag2`}
                   className="input w-full text-left"

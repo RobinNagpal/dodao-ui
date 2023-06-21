@@ -313,13 +313,7 @@ const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHas
             disabled={step.order + 1 === guide.steps.length}
             onClick={() => moveStepDown(step.uuid)}
           />
-          <IconButton
-            className="float-right ml-2"
-            iconName={IconTypes.GuideAddIcon}
-            disabled={step.stepItems.length >= 1}
-            removeBorder
-            onClick={() => setModalGuidInputOrQuestionOpen(true)}
-          />
+          <IconButton className="float-right ml-2" iconName={IconTypes.GuideAddIcon} removeBorder onClick={() => setModalGuidInputOrQuestionOpen(true)} />
         </div>
       </StepContainer>
 

@@ -130,6 +130,8 @@ export function CreateByteUsingAIModal(props: CreateByteUsingAIModalProps) {
         <div className=" container  mx-auto p-4 flex flex-col ">
           <h1 className="md:text-5xl text-4xl text-[#9291cd] font-semibold mb-10">Create Tidbits Via AI </h1>
           <UnstyledTextareaAutosize
+            label="Topic"
+            id="topic"
             autosize={true}
             modelValue={topic}
             onUpdate={(e) => setTopic(e?.toString() || '')}
@@ -139,6 +141,8 @@ export function CreateByteUsingAIModal(props: CreateByteUsingAIModalProps) {
           />
 
           <UnstyledTextareaAutosize
+            label="Content"
+            id="content"
             autosize={true}
             modelValue={contents}
             minHeight={400}

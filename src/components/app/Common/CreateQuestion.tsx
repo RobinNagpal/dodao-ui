@@ -85,15 +85,15 @@ function QuestionComponent({
         </div>
       </div>
       <div className="border md:rounded-lg p-4 mb-4 bg-skin-block-bg">
-        <Button className="w-full h-96 mb-4 px-[16px] flex items-center" style={{ height: 'max-content' }}>
-          <UnstyledTextareaAutosize
-            modelValue={question.content}
-            placeholder="Guide question content"
-            className="input w-full text-left"
-            onUpdate={(e) => updateQuestionDescription?.(question.uuid, e !== undefined ? e.toString() : '')}
-          />
-          {questionErrors?.content && <i className="iconfont iconwarning !text-red" data-v-abc9f7ae=""></i>}
-        </Button>
+        <UnstyledTextareaAutosize
+          label="Question"
+          id="question"
+          modelValue={question.content}
+          placeholder="Guide question content"
+          className="input w-full text-left"
+          onUpdate={(e) => updateQuestionDescription?.(question.uuid, e !== undefined ? e.toString() : '')}
+        />
+        {questionErrors?.content && <i className="iconfont iconwarning !text-red" data-v-abc9f7ae=""></i>}
         {question.choices.map((choice) => (
           <div key={choice.key} className="flex items-center">
             {question.type === QuestionType.SingleChoice ? (
@@ -103,6 +103,7 @@ function QuestionComponent({
                 onChange={(e) => setAnswer?.(question.uuid, choice.key, !question.answerKeys.includes(choice.key))}
                 id={choice.key}
                 labelContent={''}
+                className="grow-0"
               />
             ) : (
               <Checkbox
@@ -110,6 +111,7 @@ function QuestionComponent({
                 onChange={(e) => updateAnswers?.(question.uuid, choice.key, !question.answerKeys.includes(choice.key))}
                 id={choice.key}
                 labelContent={''}
+                className="grow-0"
               />
             )}
             <Input
@@ -118,9 +120,10 @@ function QuestionComponent({
               disabled={disableChoiceEdit}
               onUpdate={(e) => updateChoiceContent?.(question.uuid, choice.key, e !== undefined ? e.toString() : '')}
               error={questionErrors?.choices?.[choice.key]?.content}
+              className="w-full grow-1"
             />
             {!disableChoiceEdit && question.choices.length > 1 && (
-              <RemoveChoiceDiv className="cursor-pointer p-2" onClick={() => removeChoice?.(question.uuid, choice.key)}>
+              <RemoveChoiceDiv className="cursor-pointer p-2 grow-0" onClick={() => removeChoice?.(question.uuid, choice.key)}>
                 <MinusCircle height={20} width={20}></MinusCircle>
               </RemoveChoiceDiv>
             )}

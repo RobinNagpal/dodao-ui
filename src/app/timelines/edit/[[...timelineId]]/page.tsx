@@ -65,6 +65,8 @@ const EditTimeline = (props: { space: SpaceWithIntegrationsFragment; params: { t
           <div className="mt-4">
             <div>Excerpt</div>
             <StyledTextareaAutosize
+              label="Timeline description"
+              id="timeline-excerpt"
               modelValue={editTimelineRef.excerpt || ''}
               placeholder="Timeline description"
               onUpdate={(e) => updateTimelineField('excerpt', e || '')}

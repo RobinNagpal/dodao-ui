@@ -1,10 +1,13 @@
+import { slugify } from '@/utils/auth/slugify';
 import React, { useEffect, useRef, useState } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 import 'react-popper-tooltip/dist/styles.css';
 import styled from 'styled-components';
+import { v4 } from 'uuid';
 
 export interface TextareaAutosizeProps {
   id?: string;
+  label: string;
   modelValue?: string | number;
   autosize?: boolean;
   minHeight?: number;
@@ -16,21 +19,19 @@ export interface TextareaAutosizeProps {
   className?: string;
 }
 
-const TextareaWrapper = styled.div`
-  width: 100%;
-  background-color: transparent;
-  display: flex;
-`;
-
 const Textarea = styled.textarea.attrs((props) => ({
   placeholder: props.placeholder,
 }))`
-  padding: 0.5rem 0.5rem 1.5rem 0.5rem;
-  background-color: transparent;
-  flex-grow: 1;
   width: 100%;
   resize: none;
   overflow: hidden;
+
+  background-color: var(--bg-color);
+  border-color: var(--primary-color);
+  color: var(--text-color);
+  &:focus {
+    box-shadow: 0 0 0 2px var(--primary-color);
+  }
 `;
 
 const WarningIcon = styled.div`
@@ -51,6 +52,7 @@ function UnstyledTextareaAutosize({
   onUpdate,
   placeholder,
   className,
+  label,
 }: TextareaAutosizeProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [maxHeightScroll, setMaxHeightScroll] = useState(false);
@@ -97,22 +99,42 @@ function UnstyledTextareaAutosize({
     resize();
   }, [modelValue]);
 
+  const uuid = v4();
+
+  const slugLable = slugify(label);
+
   return (
-    <TextareaWrapper className={className}>
-      <Textarea ref={textareaRef} onChange={handleInput} onFocus={resize} value={modelValue as string} placeholder={placeholder} />
-      {error && (
-        <div ref={setTriggerRef}>
-          <WarningIcon ref={setTooltipRef} {...getTooltipProps({ className: 'tooltip-container' })}>
-            Warning
-          </WarningIcon>
-          {visible && (
-            <div ref={setTooltipRef} {...getTooltipProps({ className: 'tooltip-container' })}>
-              {error}
-            </div>
-          )}
-        </div>
-      )}
-    </TextareaWrapper>
+    <div className="w-full">
+      <label htmlFor={id || slugLable || uuid} className="block text-sm font-medium leading-6">
+        {label}
+      </label>
+
+      <div className="mt-2 w-full">
+        <Textarea
+          name={id || slugLable || uuid}
+          id={id || slugLable || uuid}
+          className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6"
+          ref={textareaRef}
+          defaultValue={''}
+          onChange={handleInput}
+          onFocus={resize}
+          value={modelValue as string}
+          placeholder={placeholder}
+        />
+        {error && (
+          <div ref={setTriggerRef}>
+            <WarningIcon ref={setTooltipRef} {...getTooltipProps({ className: 'tooltip-container' })}>
+              Warning
+            </WarningIcon>
+            {visible && (
+              <div ref={setTooltipRef} {...getTooltipProps({ className: 'tooltip-container' })}>
+                {error}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
 export default UnstyledTextareaAutosize;

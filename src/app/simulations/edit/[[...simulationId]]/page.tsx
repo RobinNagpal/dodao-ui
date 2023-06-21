@@ -142,6 +142,8 @@ function EditSimulation(props: { space: SpaceWithIntegrationsFragment; params: {
                   </div>
                   <div className="mt-4">Admins</div>
                   <TextareaArray
+                    label="Admins"
+                    id="admins"
                     modelValue={simulation.admins}
                     placeholder="0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c&#10;0xeF8305E140ac520225DAf050e2f71d5fBcC543e7"
                     className="input w-full text-left"
@@ -149,6 +151,8 @@ function EditSimulation(props: { space: SpaceWithIntegrationsFragment; params: {
                   />
                   <div className="mt-4">Tags</div>
                   <TextareaArray
+                    label="Tags"
+                    id="tags"
                     modelValue={simulation.tags}
                     placeholder="tag1
 tag2"

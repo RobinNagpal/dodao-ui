@@ -39,6 +39,8 @@ export default function AdvancedSettings(props: Props) {
           className="mb-4"
         />
         <StyledTextareaAutosize
+          label={$t(`guide.postSubmissionStepContent`)}
+          id="postSubmissionStepContent"
           modelValue={props.guide.postSubmissionStepContent || ''}
           placeholder={$t(`guide.postSubmissionStepContent`)}
           className="input w-full text-left"
