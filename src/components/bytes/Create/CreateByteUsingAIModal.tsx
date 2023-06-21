@@ -1,4 +1,4 @@
-import UnstyledTextareaAutosize from '@/components/core/textarea/UnstyledTextareaAutosize';
+import TextareaAutosize from '@/components/core/textarea/TextareaAutosize';
 import { testTidbitContentString, testTiditTopicString } from '@/components/bytes/Create/testTidbitContentString';
 import { EditByteType } from '@/components/bytes/Edit/useEditByte';
 import LoadingSpinner from '@/components/core/loaders/LoadingSpinner';
@@ -129,7 +129,7 @@ export function CreateByteUsingAIModal(props: CreateByteUsingAIModalProps) {
       <div className=" md:ml-20">
         <div className=" container  mx-auto p-4 flex flex-col ">
           <h1 className="md:text-5xl text-4xl text-[#9291cd] font-semibold mb-10">Create Tidbits Via AI </h1>
-          <UnstyledTextareaAutosize
+          <TextareaAutosize
             label="Topic"
             id="topic"
             autosize={true}
@@ -140,7 +140,7 @@ export function CreateByteUsingAIModal(props: CreateByteUsingAIModalProps) {
             placeholder={'Just mention a sentence or two about the topic of the Tidbit'}
           />
 
-          <UnstyledTextareaAutosize
+          <TextareaAutosize
             label="Content"
             id="content"
             autosize={true}

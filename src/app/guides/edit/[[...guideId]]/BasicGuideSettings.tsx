@@ -2,7 +2,7 @@
 
 import Block from '@/components/app/Block';
 import UserInput from '@/components/app/Form/UserInput';
-import AddGuideCategoryModal from '@/components/app/Modal/AddGuideCategoryModal';
+import AddGuideCategoryModal from '@/components/app/Modal/Guide/AddGuideCategoryModal';
 import UploadInput from '@/components/app/UploadInput';
 import StyledSelect from '@/components/core/select/StyledSelect';
 import { EditGuideStepper } from '@/components/guides/Edit/EditGuideStepper';
@@ -43,7 +43,7 @@ export default function BasicGuideSettings({ editGuideHelper, guide, guideErrors
     <div>
       {/* Basic Info Section */}
       <Block title={$t('guide.create.basicInfo')} className="mt-4 font-bold text-xl">
-        <div className="mt-4 flex flex-col gap-5">
+        <div className="mt-4 flex flex-col">
           <UserInput modelValue={guide.name} setUserInput={(v) => updateGuideField('name', v.toString())} label="Name" required></UserInput>
 
           <UserInput modelValue={guide.content} setUserInput={(v) => updateGuideField('content', v.toString())} label={'One line description'} required />
@@ -68,12 +68,9 @@ export default function BasicGuideSettings({ editGuideHelper, guide, guideErrors
         </div>
       </Block>
 
-      {/* Step By Step Section */}
       {guide && (
         <Block title={$t('guide.create.stepByStep')} slim>
-          <div className="mt-4">
-            <EditGuideStepper guide={guide} guideErrors={guideErrors} space={space} editGuideHelper={editGuideHelper} />
-          </div>
+          <EditGuideStepper guide={guide} guideErrors={guideErrors} space={space} editGuideHelper={editGuideHelper} />
         </Block>
       )}
 

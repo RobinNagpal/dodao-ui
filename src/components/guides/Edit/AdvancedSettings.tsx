@@ -1,6 +1,6 @@
 import Block from '@/components/app/Block';
 import StyledSelect, { StyledSelectItem } from '@/components/core/select/StyledSelect';
-import StyledTextareaAutosize from '@/components/core/textarea/StyledTextareaAutosize';
+import TextareaAutosize from '@/components/core/textarea/TextareaAutosize';
 import { EditGuideType } from '@/components/guides/Edit/editGuideType';
 import { UpdateGuideFunctions } from '@/components/guides/Edit/useEditGuide';
 import { Space } from '@/graphql/generated/generated-types';
@@ -38,7 +38,7 @@ export default function AdvancedSettings(props: Props) {
           setSelectedItemId={(v) => props.updateGuideFunctions.updateGuideField('showIncorrectOnCompletion', v === 'true')}
           className="mb-4"
         />
-        <StyledTextareaAutosize
+        <TextareaAutosize
           label={$t(`guide.postSubmissionStepContent`)}
           id="postSubmissionStepContent"
           modelValue={props.guide.postSubmissionStepContent || ''}

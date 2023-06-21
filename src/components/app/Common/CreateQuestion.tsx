@@ -4,7 +4,7 @@ import SidebarButton from '@/components/core/buttons/SidebarButton';
 import EllipsisDropdown from '@/components/core/dropdowns/EllipsisDropdown';
 import DeleteIcon from '@/components/core/icons/DeleteIcon';
 import Input from '@/components/core/input/Input';
-import UnstyledTextareaAutosize from '@/components/core/textarea/UnstyledTextareaAutosize';
+import TextareaAutosize from '@/components/core/textarea/TextareaAutosize';
 import { ByteQuestion, CourseQuestionFragment } from '@/graphql/generated/generated-types';
 import { QuestionType } from '@/types/deprecated/models/enums';
 import { GuideQuestion, GuideStepItem } from '@/types/deprecated/models/GuideModel';
@@ -45,7 +45,7 @@ const questionTypes = [
   },
 ];
 
-function QuestionComponent({
+export default function CreateQuestion({
   addChoice,
   item,
   questionErrors,
@@ -83,62 +83,59 @@ function QuestionComponent({
           )}
         </div>
       </div>
-      <div className="border md:rounded-lg p-4 mb-4 bg-skin-block-bg">
-        <UnstyledTextareaAutosize
-          label="Question"
-          id="question"
-          modelValue={question.content}
-          placeholder="Guide question content"
-          className="input w-full text-left"
-          onUpdate={(e) => updateQuestionDescription?.(question.uuid, e !== undefined ? e.toString() : '')}
-        />
-        {questionErrors?.content && <i className="iconfont iconwarning !text-red" data-v-abc9f7ae=""></i>}
-        {question.choices.map((choice) => (
-          <div key={choice.key} className="flex items-center">
-            {question.type === QuestionType.SingleChoice ? (
-              <Radio
-                questionId={question.uuid}
-                isSelected={question.answerKeys.includes(choice.key)}
-                onChange={(e) => setAnswer?.(question.uuid, choice.key, !question.answerKeys.includes(choice.key))}
-                id={choice.key}
-                labelContent={''}
-                className="grow-0"
-              />
-            ) : (
-              <Checkbox
-                isChecked={question.answerKeys.includes(choice.key)}
-                onChange={(e) => updateAnswers?.(question.uuid, choice.key, !question.answerKeys.includes(choice.key))}
-                id={choice.key}
-                labelContent={''}
-                className="grow-0"
-              />
-            )}
-            <Input
-              modelValue={choice.content}
-              maxLength={256}
-              disabled={disableChoiceEdit}
-              onUpdate={(e) => updateChoiceContent?.(question.uuid, choice.key, e !== undefined ? e.toString() : '')}
-              error={questionErrors?.choices?.[choice.key]?.content}
-              className="w-full grow-1"
+
+      <TextareaAutosize
+        label="Question"
+        id="question"
+        modelValue={question.content}
+        placeholder="Guide question content"
+        className="input w-full text-left"
+        onUpdate={(e) => updateQuestionDescription?.(question.uuid, e !== undefined ? e.toString() : '')}
+      />
+      {questionErrors?.content && <i className="iconfont iconwarning !text-red" data-v-abc9f7ae=""></i>}
+      {question.choices.map((choice) => (
+        <div key={choice.key} className="flex items-center">
+          {question.type === QuestionType.SingleChoice ? (
+            <Radio
+              questionId={question.uuid}
+              isSelected={question.answerKeys.includes(choice.key)}
+              onChange={(e) => setAnswer?.(question.uuid, choice.key, !question.answerKeys.includes(choice.key))}
+              id={choice.key}
+              labelContent={''}
+              className="grow-0"
             />
-            {!disableChoiceEdit && question.choices.length > 1 && (
-              <RemoveChoiceDiv className="cursor-pointer p-2 grow-0 mt-4" onClick={() => removeChoice?.(question.uuid, choice.key)}>
-                <MinusCircle height={24} width={24}></MinusCircle>
-              </RemoveChoiceDiv>
-            )}
-          </div>
-        ))}
-        {!disableChoiceEdit && (
-          <AddChoiceButton
-            className="m-auto rounded-full text-2xl bg-primary w-[48px] text-white flex items-center font-bold justify-center h-[48px]"
-            onClick={() => addChoice(question.uuid)}
-          >
-            <PlusCircle height={25} width={25} />
-          </AddChoiceButton>
-        )}
-      </div>
+          ) : (
+            <Checkbox
+              isChecked={question.answerKeys.includes(choice.key)}
+              onChange={(e) => updateAnswers?.(question.uuid, choice.key, !question.answerKeys.includes(choice.key))}
+              id={choice.key}
+              labelContent={''}
+              className="grow-0"
+            />
+          )}
+          <Input
+            modelValue={choice.content}
+            maxLength={256}
+            disabled={disableChoiceEdit}
+            onUpdate={(e) => updateChoiceContent?.(question.uuid, choice.key, e !== undefined ? e.toString() : '')}
+            error={questionErrors?.choices?.[choice.key]?.content}
+            className="w-full grow-1"
+          />
+          {!disableChoiceEdit && question.choices.length > 1 && (
+            <RemoveChoiceDiv className="cursor-pointer p-2 grow-0 mt-4" onClick={() => removeChoice?.(question.uuid, choice.key)}>
+              <MinusCircle height={24} width={24}></MinusCircle>
+            </RemoveChoiceDiv>
+          )}
+        </div>
+      ))}
+      {!disableChoiceEdit && (
+        <AddChoiceButton
+          className="m-auto rounded-full text-2xl bg-primary w-[48px] text-white flex items-center font-bold justify-center h-[48px]"
+          onClick={() => addChoice(question.uuid)}
+        >
+          <PlusCircle height={25} width={25} />
+        </AddChoiceButton>
+      )}
     </>
   );
 }
-
-export default QuestionComponent;

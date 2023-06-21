@@ -1,6 +1,7 @@
 // Import necessary libraries and components
 import Button from '@/components/core/buttons/Button';
 import { IconTypes } from '@/components/core/icons/IconTypes';
+import RobotIconSolid from '@/components/core/icons/RobotIconSolid';
 import { PencilSquareIcon } from '@heroicons/react/24/outline';
 import { ArrowSmallDownIcon, ArrowSmallUpIcon, DocumentPlusIcon, TrashIcon } from '@heroicons/react/24/solid';
 import styled from 'styled-components';
@@ -53,6 +54,8 @@ function IconButton({
         return <ArrowSmallDownIcon width="20" height="20" />;
       case IconTypes.GuideAddIcon:
         return <DocumentPlusIcon width="20" height="20" />;
+      case IconTypes.RobotIconSolid:
+        return <RobotIconSolid />;
       default:
         return null;
     }
