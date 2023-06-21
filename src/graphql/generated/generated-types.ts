@@ -759,6 +759,7 @@ export interface Mutation {
   refreshGitCourses: Scalars['Boolean'];
   refreshGitGuides: Scalars['Boolean'];
   saveByte: Byte;
+  saveGuide: Guide;
   submitByte: ByteSubmission;
   submitGitCourse: GitCourseSubmission;
   submitGitCourseTopic: GitCourseTopicSubmission;
@@ -955,6 +956,12 @@ export interface MutationRefreshGitGuidesArgs {
 
 export interface MutationSaveByteArgs {
   input: UpsertByteInput;
+  spaceId: Scalars['String'];
+}
+
+
+export interface MutationSaveGuideArgs {
+  guideInput: GuideInput;
   spaceId: Scalars['String'];
 }
 
@@ -2115,6 +2122,14 @@ export type UpsertGuideMutationVariables = Exact<{
 
 
 export type UpsertGuideMutation = { __typename?: 'Mutation', payload: { __typename?: 'Guide', authors: Array<string>, categories: Array<string>, postSubmissionStepContent?: string | null, content: string, created: number, id: string, guideSource: string, guideType: string, name: string, showIncorrectOnCompletion: boolean, publishStatus: string, socialShareImage?: string | null, thumbnail?: string | null, uuid: string, version: number, guideIntegrations: { __typename?: 'GuideIntegrations', discordRoleIds?: Array<string> | null, discordRolePassingCount?: number | null, discordWebhook?: string | null, projectGalaxyCredentialId?: string | null, projectGalaxyOatMintUrl?: string | null, projectGalaxyOatPassingCount?: number | null }, steps: Array<{ __typename?: 'GuideStep', content: string, id: string, name: string, order: number, uuid: string, stepItems: Array<{ __typename: 'GuideQuestion', answerKeys: Array<string>, content: string, order: number, type: string, uuid: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'GuideUserInput', label: string, order: number, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> } };
+
+export type SaveGuideMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+  guideInput: GuideInput;
+}>;
+
+
+export type SaveGuideMutation = { __typename?: 'Mutation', payload: { __typename?: 'Guide', authors: Array<string>, categories: Array<string>, postSubmissionStepContent?: string | null, content: string, created: number, id: string, guideSource: string, guideType: string, name: string, showIncorrectOnCompletion: boolean, publishStatus: string, socialShareImage?: string | null, thumbnail?: string | null, uuid: string, version: number, guideIntegrations: { __typename?: 'GuideIntegrations', discordRoleIds?: Array<string> | null, discordRolePassingCount?: number | null, discordWebhook?: string | null, projectGalaxyCredentialId?: string | null, projectGalaxyOatMintUrl?: string | null, projectGalaxyOatPassingCount?: number | null }, steps: Array<{ __typename?: 'GuideStep', content: string, id: string, name: string, order: number, uuid: string, stepItems: Array<{ __typename: 'GuideQuestion', answerKeys: Array<string>, content: string, order: number, type: string, uuid: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'GuideUserInput', label: string, order: number, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> } };
 
 export type GuideQueryQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -4674,6 +4689,40 @@ export function useUpsertGuideMutation(baseOptions?: Apollo.MutationHookOptions<
 export type UpsertGuideMutationHookResult = ReturnType<typeof useUpsertGuideMutation>;
 export type UpsertGuideMutationResult = Apollo.MutationResult<UpsertGuideMutation>;
 export type UpsertGuideMutationOptions = Apollo.BaseMutationOptions<UpsertGuideMutation, UpsertGuideMutationVariables>;
+export const SaveGuideDocument = gql`
+    mutation SaveGuide($spaceId: String!, $guideInput: GuideInput!) {
+  payload: saveGuide(spaceId: $spaceId, guideInput: $guideInput) {
+    ...Guide
+  }
+}
+    ${GuideFragmentDoc}`;
+export type SaveGuideMutationFn = Apollo.MutationFunction<SaveGuideMutation, SaveGuideMutationVariables>;
+
+/**
+ * __useSaveGuideMutation__
+ *
+ * To run a mutation, you first call `useSaveGuideMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSaveGuideMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [saveGuideMutation, { data, loading, error }] = useSaveGuideMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      guideInput: // value for 'guideInput'
+ *   },
+ * });
+ */
+export function useSaveGuideMutation(baseOptions?: Apollo.MutationHookOptions<SaveGuideMutation, SaveGuideMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SaveGuideMutation, SaveGuideMutationVariables>(SaveGuideDocument, options);
+      }
+export type SaveGuideMutationHookResult = ReturnType<typeof useSaveGuideMutation>;
+export type SaveGuideMutationResult = Apollo.MutationResult<SaveGuideMutation>;
+export type SaveGuideMutationOptions = Apollo.BaseMutationOptions<SaveGuideMutation, SaveGuideMutationVariables>;
 export const GuideQueryDocument = gql`
     query GuideQuery($spaceId: String!, $uuid: String!) {
   guide(spaceId: $spaceId, uuid: $uuid) {

@@ -24,7 +24,7 @@ const EditGuide = (props: { space: SpaceWithIntegrationsFragment; params: { guid
   const [selectedTabId, setSelectedTabId] = React.useState('basic');
 
   const editGuideHelper = useEditGuide(space, guideId);
-  const { activeStepId, guideCreating, guideLoaded, guide: guide, guideErrors, initialize, updateGuideFunctions, handleSubmit } = editGuideHelper;
+  const { activeStepId, guideCreating, guideLoaded, guide: guide, guideErrors, initialize, updateGuideFunctions, handleSubmit, handleSave } = editGuideHelper;
 
   useEffect(() => {
     initialize().then(() => {
@@ -35,6 +35,9 @@ const EditGuide = (props: { space: SpaceWithIntegrationsFragment; params: { guid
 
   const clickSubmit = () => {
     handleSubmit();
+  };
+  const clickSave = () => {
+    handleSave();
   };
 
   const tabs: TabItem[] = [
@@ -71,10 +74,14 @@ const EditGuide = (props: { space: SpaceWithIntegrationsFragment; params: { guid
                 <AdvancedSettings guide={guide} guideErrors={guideErrors} space={space} updateGuideFunctions={updateGuideFunctions} />
               )}
             </Wrapper>
-
+            <div className='flex'>
             <Button onClick={clickSubmit} loading={!guideLoaded || guideCreating} className="block w-full" variant="contained" primary>
               Publish
             </Button>
+            <Button onClick={clickSave} loading={!guideLoaded || guideCreating} className="block w-full" variant="contained" primary>
+              Save Guide
+            </Button>
+            </div>
           </div>
         ) : (
           <PageLoading />

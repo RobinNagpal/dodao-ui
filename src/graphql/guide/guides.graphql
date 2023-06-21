@@ -126,6 +126,12 @@ mutation UpsertGuide($spaceId: String!, $guideInput: GuideInput!) {
   }
 }
 
+mutation SaveGuide($spaceId: String!, $guideInput: GuideInput!) {
+  payload: saveGuide(spaceId: $spaceId, guideInput: $guideInput) {
+    ...Guide
+  }
+}
+
 query GuideQuery($spaceId: String!, $uuid: String!) {
   guide(spaceId: $spaceId, uuid: $uuid) {
     ...Guide

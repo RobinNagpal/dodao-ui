@@ -715,6 +715,7 @@ type Mutation {
   refreshGitCourses(spaceId: String!): Boolean!
   refreshGitGuides(spaceId: String!): Boolean!
   saveByte(input: UpsertByteInput!, spaceId: String!): Byte!
+  saveGuide(guideInput: GuideInput!, spaceId: String!): Guide!
   submitByte(submissionInput: ByteSubmissionInput!): ByteSubmission!
   submitGitCourse(input: CourseSubmissionInput!, spaceId: String!): GitCourseSubmission!
   submitGitCourseTopic(gitCourseTopicSubmission: GitCourseTopicSubmissionInput!, spaceId: String!): GitCourseTopicSubmission!

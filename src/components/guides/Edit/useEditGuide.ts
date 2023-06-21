@@ -10,6 +10,7 @@ import {
   Space,
   StepItemInputGenericInput,
   useGuideQueryQuery,
+  useSaveGuideMutation,
   useUpsertGuideMutation,
 } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
@@ -49,6 +50,7 @@ export interface UseEditGuideHelper {
   guideLoaded: boolean;
   guideCreating: boolean;
   handleSubmit: () => Promise<void>;
+  handleSave: () => Promise<void>;
   activeStepId?: string | null;
   initialize: () => Promise<void>;
   updateGuideFunctions: UpdateGuideFunctions;
@@ -70,6 +72,7 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
 
   const { refetch: queryGuideDetails } = useGuideQueryQuery({ skip: true });
   const [upsertGuideMutation] = useUpsertGuideMutation();
+  const [saveGuideMutation] = useSaveGuideMutation();
 
   const initialize = async () => {
     if (uuid) {
@@ -301,6 +304,42 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
     }
     setGuideCreating(false);
   }
+  async function handleSave() {
+    setGuideCreating(true);
+    try {
+      const valid = validateGuide(guide);
+      setGuide((prevGuide: EditGuideType) => ({
+        ...prevGuide,
+        isPristine: false,
+      }));
+
+      if (!valid) {
+        console.log('Guide invalid', guideErrors);
+        showNotification({ type: 'error', message: $t('notify.validationFailed') });
+        setGuideCreating(false);
+        return;
+      }
+      const response = await saveGuideMutation({
+        variables: {
+          spaceId: space.id,
+          guideInput: convertToGuideInput(guide),
+        },
+      });
+
+      const payload = response?.data?.payload;
+      if (payload) {
+        showNotification({ type: 'success', message: 'Guide Saved to db', heading: 'Success 🎉' });
+        router.push(`/guides/view/${payload.id}/0`);
+      } else {
+        console.error(response.errors);
+        showNotification({ type: 'error', message: $t('notify.somethingWentWrong') });
+      }
+    } catch (e) {
+      console.error(e);
+      showNotification({ type: 'error', message: $t('notify.somethingWentWrong') });
+    }
+    setGuideCreating(false);
+  }
 
   const updateGuideField = useCallback((field: KeyOfGuideInput, value: any) => {
     setGuide((prevGuide: EditGuideType) => ({
@@ -365,6 +404,7 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
     guide,
     guideErrors,
     handleSubmit,
+    handleSave,
     updateGuideFunctions,
   };
 }
