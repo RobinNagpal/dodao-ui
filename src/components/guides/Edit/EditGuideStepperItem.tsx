@@ -1,3 +1,4 @@
+import AddContentOrQuestionAIModal from '@/components/app/Modal/AI/AddContentOrQuestionAIModal';
 import IconButton from '@/components/core/buttons/IconButton';
 import CreateConnectDiscord from '@/components/app/Common/CreateDiscordConnect';
 import CreateQuestion from '@/components/app/Common/CreateQuestion';
@@ -5,7 +6,7 @@ import CreateUserInput from '@/components/app/Common/CreateUserInput';
 import { IconTypes } from '@/components/core/icons/IconTypes';
 import Input from '@/components/core/input/Input';
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
-import AddStepItemModal from '@/components/app/Modal/AddStepItemModal';
+import AddStepItemModal from '@/components/app/Modal/StepItem/AddStepItemModal';
 import { UseEditGuideHelper } from '@/components/guides/Edit/useEditGuide';
 import {
   GuideFragment,
@@ -49,6 +50,7 @@ const StepItemWrapper = styled.div<{ hasError: boolean }>`
 const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHasDiscordEnabled, editGuideHelper, space }) => {
   const { moveStepUp, moveStepDown, removeStep, updateStep } = editGuideHelper.updateGuideFunctions;
   const [modalGuidInputOrQuestionOpen, setModalGuidInputOrQuestionOpen] = useState(false);
+  const [modalGenerateAIOpen, setModalGenerateAIOpen] = useState(false);
   const { $t } = useI18();
   const inputError = (field: keyof StepError) => {
     return stepErrors?.[field];
@@ -313,6 +315,7 @@ const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHas
             disabled={step.order + 1 === guide.steps.length}
             onClick={() => moveStepDown(step.uuid)}
           />
+          <IconButton className="float-right ml-2" iconName={IconTypes.RobotIconSolid} removeBorder onClick={() => setModalGenerateAIOpen(true)} />
           <IconButton className="float-right ml-2" iconName={IconTypes.GuideAddIcon} removeBorder onClick={() => setModalGuidInputOrQuestionOpen(true)} />
         </div>
       </StepContainer>
@@ -375,6 +378,14 @@ const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHas
           onAddQuestion={addQuestion}
           onAddInput={addInput}
           onAddDiscord={addDiscord}
+        />
+      )}
+      {modalGenerateAIOpen && (
+        <AddContentOrQuestionAIModal
+          open={modalGenerateAIOpen}
+          onClose={() => setModalGenerateAIOpen(false)}
+          onGenerateContent={() => {}}
+          onGenerateQuestions={() => {}}
         />
       )}
     </div>

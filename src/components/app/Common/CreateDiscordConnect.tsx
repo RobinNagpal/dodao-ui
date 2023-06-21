@@ -1,12 +1,14 @@
-import Icon from '@/components/app/Icon';
 import Modal from '@/components/app/Modal';
 import Button from '@/components/core/buttons/Button';
 import { UserDiscordConnect } from '@/types/deprecated/models/byte/ByteModel';
 import { GuideStepItem } from '@/types/deprecated/models/GuideModel';
+import XMarkIcon from '@heroicons/react/24/outline/XMarkIcon';
 import { useCallback, useState } from 'react';
 import styled from 'styled-components';
 
 const RemoveDiscord = styled.span`
+  color: var(--text-color);
+  cursor: pointer;
   .iconclose {
     color: white !important;
   }
@@ -57,7 +59,7 @@ function CreateConnectDiscord({ removeDiscord, item }: ConnectDiscordProps) {
               <span className="text-white ml-2">
                 Connect Discord
                 <RemoveDiscord className="text-white right-2 top-0 absolute" onClick={() => removeDiscord(userDiscord.uuid)}>
-                  <Icon size="20" className="link-color" name="close" />
+                  <XMarkIcon width="20" height="20" className="link-color" name="close" />
                 </RemoveDiscord>
               </span>
             </div>

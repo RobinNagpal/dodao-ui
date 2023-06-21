@@ -57,7 +57,7 @@ export default function Checkbox({ id, labelContent, isChecked, className, reado
         />
         <CheckboxOverlay readonly={readonly} isChecked={isChecked} />
       </div>
-      <StyledLabel htmlFor={id} className="ml-3 block text-sm font-medium leading-6 markdown-body" dangerouslySetInnerHTML={{ __html: labelContent }} />
+      <StyledLabel htmlFor={id} className="ml-2 mt-3 block text-sm font-medium leading-6 markdown-body" dangerouslySetInnerHTML={{ __html: labelContent }} />
     </div>
   );
 }

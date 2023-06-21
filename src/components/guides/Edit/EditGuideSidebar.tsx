@@ -1,10 +1,10 @@
 import { EditGuideType } from '@/components/guides/Edit/editGuideType';
 import { UseEditGuideHelper } from '@/components/guides/Edit/useEditGuide';
 import { getGuideSidebarIcon } from '@/components/guides/View/GetGuideSidebarIcon';
-import { LAST_STEP_UUID } from '@/components/guides/View/useViewGuide';
-import { GuideFragment, GuideStepFragment } from '@/graphql/generated/generated-types';
+import { GuideStepFragment } from '@/graphql/generated/generated-types';
 import { StepError } from '@/types/errors/error';
 import classNames from '@/utils/classNames';
+import PlusCircleIcon from '@heroicons/react/24/outline/PlusCircleIcon';
 import styled, { css } from 'styled-components';
 
 export interface GuideSidebarProps {
@@ -37,19 +37,13 @@ const StyledSpan = styled.span<{ showActive: boolean; showSuccess: boolean; show
     `}
 `;
 
-const StyledAnchor = styled.a<{ isActive: boolean; isDisabled: boolean }>`
+const StyledAnchor = styled.a<{ isActive: boolean }>`
   color: var(--text-color);
   cursor: pointer;
   ${({ isActive }) =>
     isActive &&
     css`
       color: var(--primary-color);
-    `}
-
-  ${({ isDisabled }) =>
-    isDisabled &&
-    css`
-      cursor: not-allowed;
     `}
 `;
 export default function EditGuideSidebar({ activeStep, guide, editGuideHelper, errorsInSteps }: GuideSidebarProps) {
@@ -70,7 +64,7 @@ export default function EditGuideSidebar({ activeStep, guide, editGuideHelper, e
             return (
               <li key={step.uuid}>
                 <div className={'relative pb-8 '}>
-                  {stepIdx !== guide.steps.length - 1 ? <span className="absolute left-4 top-4 -ml-px h-full w-0.5 bg-gray-200" aria-hidden="true" /> : null}
+                  {stepIdx !== guide.steps.length ? <span className="absolute left-4 top-4 -ml-px h-full w-0.5 bg-gray-200" aria-hidden="true" /> : null}
                   <div className="relative flex space-x-3">
                     <div>
                       <StyledSpan
@@ -83,11 +77,7 @@ export default function EditGuideSidebar({ activeStep, guide, editGuideHelper, e
                       </StyledSpan>
                     </div>
                     <div className="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
-                      <StyledAnchor
-                        onClick={() => editGuideHelper.updateGuideFunctions.setActiveStep(step.uuid)}
-                        isActive={showActive}
-                        isDisabled={step.id === LAST_STEP_UUID || stepIdx === guide.steps.length - 1}
-                      >
+                      <StyledAnchor onClick={() => editGuideHelper.updateGuideFunctions.setActiveStep(step.uuid)} isActive={showActive}>
                         {step.name}
                       </StyledAnchor>
                     </div>
@@ -96,6 +86,27 @@ export default function EditGuideSidebar({ activeStep, guide, editGuideHelper, e
               </li>
             );
           })}
+          <li key="add_step">
+            <div className={'relative pb-8 '}>
+              <div className="relative flex space-x-3">
+                <div>
+                  <StyledSpan
+                    className="h-8 w-8 rounded-full flex items-center justify-center  ring-white"
+                    showError={false}
+                    showSuccess={false}
+                    showActive={false}
+                  >
+                    <PlusCircleIcon className="h-5 w-5 text-white" aria-hidden="true" />
+                  </StyledSpan>
+                </div>
+                <div className="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
+                  <StyledAnchor onClick={() => editGuideHelper.updateGuideFunctions.addStep()} isActive={false}>
+                    Add Step
+                  </StyledAnchor>
+                </div>
+              </div>
+            </div>
+          </li>
         </ul>
       </div>
     </nav>

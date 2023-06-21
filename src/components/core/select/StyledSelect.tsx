@@ -39,7 +39,7 @@ export default function StyledSelect(props: StyledSelectProps) {
   const selectedItem = props.items.find((item) => item.id === props.selectedItemId);
   const items = props.showPleaseSelect ? [{ id: undefined, label: 'Please Select' }, ...props.items] : props.items;
   return (
-    <div className={props.className || ''}>
+    <div className={props.className + ' mt-2'}>
       <Listbox value={props.selectedItemId} onChange={(itemId) => props.setSelectedItemId(itemId)}>
         {({ open }) => {
           return (

@@ -4,4 +4,5 @@ export enum IconTypes {
   MoveUp = 'MoveUp',
   MoveDown = 'MoveDown',
   GuideAddIcon = 'GuideAddIcon',
+  RobotIconSolid = 'RobotIconSolid',
 }

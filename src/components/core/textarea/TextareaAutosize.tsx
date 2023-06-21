@@ -42,7 +42,7 @@ const WarningIcon = styled.div`
   color: red;
 `;
 
-function UnstyledTextareaAutosize({
+export default function TextareaAutosize({
   id = '',
   modelValue = '',
   minHeight = 100,
@@ -137,4 +137,3 @@ function UnstyledTextareaAutosize({
     </div>
   );
 }
-export default UnstyledTextareaAutosize;
