@@ -44,7 +44,7 @@ export default function UploadInput(props: {
             aria-invalid="true"
             aria-describedby="email-error"
             value={props.modelValue || ''}
-            onChange={(e) => props.onUpdate(e.target.value)}
+            onChange={(e) => props.onInput(e.target.value)}
           />
         </div>
         <Upload

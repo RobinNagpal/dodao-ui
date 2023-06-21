@@ -1,7 +1,5 @@
-import { LoginButtons } from '@/app/login/components/LoginButtons';
 import ButtonLarge from '@/components/core/buttons/Button';
 import FullScreenModal from '@/components/core/modals/FullScreenModal';
-import SingleSectionModal from '@/components/core/modals/SingleSectionModal';
 import CreateContentModalContents from '@/components/main/TopNav/CreateContentModalContents';
 import { DesktopNavLink } from '@/components/main/TopNav/DesktopNavLink';
 import { DesktopProfileMenu } from '@/components/main/TopNav/DesktopProfileMenu';
@@ -9,22 +7,78 @@ import { MobileNavLink } from '@/components/main/TopNav/MobileNavLink';
 import { MobileProfileMenu } from '@/components/main/TopNav/MobileProfileMenu';
 import { useLoginModalContext } from '@/contexts/LoginModalContext';
 import { useSpace } from '@/contexts/SpaceContext';
+import { Space } from '@/graphql/generated/generated-types';
 import { Session } from '@/types/auth/Session';
+import { FeatureItem, FeatureName } from '@/types/spaceFeatures';
+import { getSortedFeaturesArray } from '@/utils/features';
 import { getCDNImageUrl } from '@/utils/images/getCDNImageUrl';
 import { Disclosure } from '@headlessui/react';
 import PlusIcon from '@heroicons/react/20/solid/PlusIcon';
 import Bars3Icon from '@heroicons/react/24/outline/Bars3Icon';
 import XMarkIcon from '@heroicons/react/24/outline/XMarkIcon';
+import sortBy from 'lodash/sortBy';
 import { useSession } from 'next-auth/react';
+import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import Image from 'next/image';
 
 const StyledDiv = styled.div`
   background-color: var(--bg-color);
   color: var(--text-color);
 `;
+
+function DesktopNavLinks({ space }: { space: Space }) {
+  const sortedSpaceFeatures: FeatureItem[] = getSortedFeaturesArray(space.id);
+  return (
+    <div className="hidden md:ml-6 md:flex md:space-x-8">
+      {sortedSpaceFeatures.map((feature) => {
+        if (feature.featureName === FeatureName.Courses) {
+          return <DesktopNavLink key="courses" href="/courses" label="Courses" />;
+        }
+        if (feature.featureName === FeatureName.Guides) {
+          return <DesktopNavLink key="guides" href="/guides" label="Guides" />;
+        }
+
+        if (feature.featureName === FeatureName.Bytes) {
+          return <DesktopNavLink key="tidbits" href="/tidbits" label="Tidbits" />;
+        }
+        if (feature.featureName === FeatureName.Simulations) {
+          return <DesktopNavLink key="simulations" href="/simulations" label="Simulations" />;
+        }
+        if (feature.featureName === FeatureName.Timelines) {
+          return <DesktopNavLink key="timelines" href="/timelines" label="Timelines" />;
+        }
+      })}
+    </div>
+  );
+}
+
+function MobileNavLinks({ space }: { space: Space }) {
+  const sortedSpaceFeatures: FeatureItem[] = getSortedFeaturesArray(space.id);
+  return (
+    <div className="space-y-1 pb-3 pt-2">
+      {sortedSpaceFeatures.map((feature) => {
+        if (feature.featureName === FeatureName.Courses) {
+          return <MobileNavLink key="courses" href="/courses" label="Courses" />;
+        }
+        if (feature.featureName === FeatureName.Guides) {
+          return <MobileNavLink key="guides" href="/guides" label="Guides" />;
+        }
+
+        if (feature.featureName === FeatureName.Bytes) {
+          return <MobileNavLink key="tidbits" href="/tidbits" label="Tidbits" />;
+        }
+        if (feature.featureName === FeatureName.Simulations) {
+          return <MobileNavLink key="simulations" href="/simulations" label="Simulations" />;
+        }
+        if (feature.featureName === FeatureName.Timelines) {
+          return <MobileNavLink key="timelines" href="/timelines" label="Timelines" />;
+        }
+      })}
+    </div>
+  );
+}
 
 export default function TopNav() {
   const { data: session } = useSession();
@@ -78,14 +132,7 @@ export default function TopNav() {
                       />
                     </Link>
                   </div>
-                  <div className="hidden md:ml-6 md:flex md:space-x-8">
-                    <DesktopNavLink href="/" label="Home" />
-                    <DesktopNavLink href="/guides" label="Guides" />
-                    <DesktopNavLink href="/tidbits" label="Tidbits" />
-                    <DesktopNavLink href="/courses" label="Courses" />
-                    <DesktopNavLink href="/simulations" label="Simulations" />
-                    <DesktopNavLink href="/timelines" label="Timelines" />
-                  </div>
+                  {space && <DesktopNavLinks space={space} />}
                 </div>
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
@@ -111,14 +158,7 @@ export default function TopNav() {
             </div>
 
             <Disclosure.Panel className="md:hidden">
-              <div className="space-y-1 pb-3 pt-2">
-                <MobileNavLink href="/" label="Home" />
-                <MobileNavLink href="/guides" label="Guides" />
-                <MobileNavLink href="/tidbits" label="Tidbits" />
-                <MobileNavLink href="/courses" label="Courses" />
-                <MobileNavLink href="/simulations" label="Simulations" />
-                <MobileNavLink href="/timelines" label="Timelines" />
-              </div>
+              {space && <MobileNavLinks space={space} />}
               {session && <MobileProfileMenu session={session as Session} />}
             </Disclosure.Panel>
           </>

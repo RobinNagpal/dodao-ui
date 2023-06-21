@@ -5,6 +5,7 @@ fragment SpaceSummary on Space {
   creator
   name
   skin
+  domains
 }
 
 query Spaces {

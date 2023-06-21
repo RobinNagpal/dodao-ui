@@ -7,9 +7,9 @@ import IconButton from '@/components/core/buttons/IconButton';
 import { IconTypes } from '@/components/core/icons/IconTypes';
 import Input from '@/components/core/input/Input';
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
-import StyledTextareaAutosize from '@/components/core/textarea/StyledTextareaAutosize';
 import Button from '@/components/core/buttons/Button';
 import PageWrapper from '@/components/core/page/PageWrapper';
+import TextareaAutosize from '@/components/core/textarea/TextareaAutosize';
 import { SpaceWithIntegrationsFragment, UpsertTimelineEventInput } from '@/graphql/generated/generated-types';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
 import Link from 'next/link';
@@ -64,7 +64,9 @@ const EditTimeline = (props: { space: SpaceWithIntegrationsFragment; params: { t
           />
           <div className="mt-4">
             <div>Excerpt</div>
-            <StyledTextareaAutosize
+            <TextareaAutosize
+              label="Timeline description"
+              id="timeline-description"
               modelValue={editTimelineRef.excerpt || ''}
               placeholder="Timeline description"
               onUpdate={(e) => updateTimelineField('excerpt', e || '')}

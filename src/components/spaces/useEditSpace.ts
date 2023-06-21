@@ -26,6 +26,7 @@ export default function useEditSpace(spaceId?: string): UseEditSpaceHelper {
     inviteLinks: {},
     name: '',
     skin: 'dodao',
+    domains: [],
     spaceIntegrations: {
       academyRepository: null,
       discordGuildId: null,
@@ -61,6 +62,7 @@ export default function useEditSpace(spaceId?: string): UseEditSpaceHelper {
           inviteLinks: spaceResponse.inviteLinks || {},
           name: spaceResponse.name,
           skin: spaceResponse.skin,
+          domains: spaceResponse.domains,
           spaceIntegrations: {
             academyRepository: spaceResponse.spaceIntegrations?.academyRepository || null,
             discordGuildId: spaceResponse.spaceIntegrations?.discordGuildId || null,
@@ -94,6 +96,7 @@ export default function useEditSpace(spaceId?: string): UseEditSpaceHelper {
       features: space.features,
       name: space.name,
       skin: space.skin,
+      domains: space.domains,
       inviteLinks: {
         discordInviteLink: space.inviteLinks.discordInviteLink,
         showAnimatedButtonForDiscord: space.inviteLinks.showAnimatedButtonForDiscord,

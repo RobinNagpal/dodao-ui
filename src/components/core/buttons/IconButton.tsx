@@ -1,11 +1,9 @@
 // Import necessary libraries and components
 import Button from '@/components/core/buttons/Button';
-import DeleteIcon from '@/components/core/icons/DeleteIcon';
-import EditIcon from '@/components/core/icons/EditIcon';
-import GuideAddIcon from '@/components/core/icons/GuideAddIcon';
 import { IconTypes } from '@/components/core/icons/IconTypes';
-import MoveDown from '@/components/core/icons/MoveDown';
-import MoveUp from '@/components/core/icons/MoveUp';
+import RobotIconSolid from '@/components/core/icons/RobotIconSolid';
+import { PencilSquareIcon } from '@heroicons/react/24/outline';
+import { ArrowSmallDownIcon, ArrowSmallUpIcon, DocumentPlusIcon, TrashIcon } from '@heroicons/react/24/solid';
 import styled from 'styled-components';
 
 // Define component's props using TypeScript interfaces
@@ -25,6 +23,10 @@ interface IconButtonProps {
 // Create the Styled Components
 const StyledUiButton = styled(Button)`
   border: none;
+
+  svg {
+    color: var(--text-color);
+  }
 `;
 
 // IconButton component
@@ -43,15 +45,17 @@ function IconButton({
   const renderIcon = () => {
     switch (iconName) {
       case IconTypes.Trash:
-        return <DeleteIcon />;
+        return <TrashIcon width="20" height="20" />;
       case IconTypes.Edit:
-        return <EditIcon />;
+        return <PencilSquareIcon width="20" height="20" />;
       case IconTypes.MoveUp:
-        return <MoveUp />;
+        return <ArrowSmallUpIcon width="20" height="20" />;
       case IconTypes.MoveDown:
-        return <MoveDown />;
+        return <ArrowSmallDownIcon width="20" height="20" />;
       case IconTypes.GuideAddIcon:
-        return <GuideAddIcon />;
+        return <DocumentPlusIcon width="20" height="20" />;
+      case IconTypes.RobotIconSolid:
+        return <RobotIconSolid />;
       default:
         return null;
     }

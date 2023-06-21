@@ -46,6 +46,7 @@ export default function Input({
   label,
   info,
   children,
+  className,
 }: TextInputProps) {
   const [isFocus, setIsFocus] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -62,7 +63,7 @@ export default function Input({
   const inputId = uuidV4();
 
   return (
-    <div className="mt-2">
+    <div className={'mt-2 ' + className || ''}>
       <label htmlFor={id || inputId} className="block text-sm font-medium leading-6">
         {label} {children}
       </label>

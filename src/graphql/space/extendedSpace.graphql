@@ -5,6 +5,7 @@ fragment SpaceWithIntegrations on Space {
   name
   skin
   avatar
+  domains
   inviteLinks {
     discordInviteLink
     showAnimatedButtonForDiscord
