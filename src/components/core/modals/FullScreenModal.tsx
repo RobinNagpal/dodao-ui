@@ -9,6 +9,7 @@ export interface SingleSectionModalProps {
   title: string;
   children: React.ReactNode;
   showCloseButton?: boolean;
+  fullWidth?: boolean;
 }
 
 const ModalContainer = styled.div`
@@ -16,7 +17,7 @@ const ModalContainer = styled.div`
   color: var(--text-color);
 `;
 
-export default function FullScreenModal({ open, title, children, onClose, showCloseButton = true }: SingleSectionModalProps) {
+export default function FullScreenModal({ open, title, children, onClose, showCloseButton = true, fullWidth = false }: SingleSectionModalProps) {
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={onClose}>
@@ -32,7 +33,7 @@ export default function FullScreenModal({ open, title, children, onClose, showCl
           <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
         </Transition.Child>
 
-        <ModalContainer className="fixed inset-0 z-10 overflow-y-auto">
+        <ModalContainer className={`fixed inset-0 z-10 overflow-y-auto`}>
           <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
             <Transition.Child
               as={Fragment}
@@ -44,7 +45,7 @@ export default function FullScreenModal({ open, title, children, onClose, showCl
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
               <Dialog.Panel className="relative transform overflow-hidden rounded-lg px-4 pb-4 pt-5 text-left transition-all sm:my-8  w-full sm:p-6">
-                <div>
+                <div className={fullWidth ? '' : 'mx-auto max-w-7xl sm:px-6 lg:px-8'}>
                   {showCloseButton && (
                     <div className="flex justify-end">
                       <button

@@ -80,7 +80,7 @@ const StyledButton = styled.button<ButtonProps>`
   }
 
   &:disabled {
-    color: var(--border-color) !important;
+    opacity: 0.8 !important;
     cursor: not-allowed;
   }
 `;

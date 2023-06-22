@@ -1,5 +1,6 @@
 import AddContentOrQuestionAIModal from '@/components/app/Modal/AI/AddContentOrQuestionAIModal';
 import GenerateContentUsingAIModal from '@/components/app/Modal/AI/GenerateContentUsingAIModal';
+import GenerateQuestionUsingAIModal, { GeneratedQuestionInterface } from '@/components/app/Modal/AI/GenerateQuestionUsingAIModal';
 import IconButton from '@/components/core/buttons/IconButton';
 import CreateConnectDiscord from '@/components/app/Common/CreateDiscordConnect';
 import CreateQuestion from '@/components/app/Common/CreateQuestion';
@@ -9,6 +10,7 @@ import Input from '@/components/core/input/Input';
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
 import AddStepItemModal from '@/components/app/Modal/StepItem/AddStepItemModal';
 import generateGuideContentPrompt from '@/components/guides/Edit/generateGuideContentPrompt';
+import generateQuestionsPrompt from '@/components/guides/Edit/generateQuestionsPrompt';
 import { UseEditGuideHelper } from '@/components/guides/Edit/useEditGuide';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import {
@@ -55,6 +57,7 @@ const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHas
   const [modalGuidInputOrQuestionOpen, setModalGuidInputOrQuestionOpen] = useState(false);
   const [modalGenerateAIOpen, setModalGenerateAIOpen] = useState(false);
   const [modalGenerateContentUsingAIOpen, setModalGenerateContentUsingAIOpen] = useState(false);
+  const [modalGenerateQuestionsUsingAIOpen, setModalGenerateQuestionsUsingAIOpen] = useState(false);
   const { $t } = useI18();
   const { showNotification } = useNotificationContext();
 
@@ -263,6 +266,19 @@ const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHas
     updateStep({ ...step, stepItems });
   }
 
+  function addGeneratedQuestions(generatedQuestions: GeneratedQuestionInterface[]) {
+    const questions: GuideStepItemFragment[] = generatedQuestions.map((generatedQuestion, index) => ({
+      __typename: 'GuideQuestion',
+      uuid: uuidv4(),
+      ...generatedQuestion,
+      type: QuestionType.SingleChoice,
+      order: step.stepItems.length + index,
+    }));
+
+    const stepItems = [...(step.stepItems || []), ...questions];
+    updateStep({ ...step, stepItems });
+  }
+
   function addInput(type: InputType) {
     const input: GuideStepItemFragment = {
       __typename: 'GuideUserInput',
@@ -391,7 +407,7 @@ const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHas
           open={modalGenerateAIOpen}
           onClose={() => setModalGenerateAIOpen(false)}
           onGenerateContent={() => setModalGenerateContentUsingAIOpen(true)}
-          onGenerateQuestions={() => {}}
+          onGenerateQuestions={() => setModalGenerateQuestionsUsingAIOpen(true)}
         />
       )}
       {modalGenerateContentUsingAIOpen && (
@@ -407,6 +423,7 @@ const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHas
           onGenerateContent={(generatedContent) => {
             if (generatedContent) {
               updateStepContent(generatedContent);
+              setModalGenerateContentUsingAIOpen(false);
             } else {
               showNotification({
                 heading: 'TimeOut Error',
@@ -416,6 +433,28 @@ const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHas
             }
           }}
           generatePrompt={(topic: string, guidelines: string, contents: string) => generateGuideContentPrompt(topic, guidelines, contents, guide)}
+        />
+      )}
+      {modalGenerateQuestionsUsingAIOpen && (
+        <GenerateQuestionUsingAIModal
+          open={modalGenerateQuestionsUsingAIOpen}
+          onClose={() => setModalGenerateQuestionsUsingAIOpen(false)}
+          modalTitle={'Generate Content Using AI'}
+          topic={guide.name + ' - ' + step.name}
+          onGenerateContent={(generatedContent) => {
+            if (generatedContent) {
+              const questions = JSON.parse(generatedContent);
+              addGeneratedQuestions(questions);
+              setModalGenerateQuestionsUsingAIOpen(false);
+            } else {
+              showNotification({
+                heading: 'TimeOut Error',
+                type: 'error',
+                message: 'This request Took More time then Expected Please Try Again',
+              });
+            }
+          }}
+          generatePrompt={(topic: string, numberOfQuestions: number, contents: string) => generateQuestionsPrompt(topic, numberOfQuestions, contents)}
         />
       )}
     </div>

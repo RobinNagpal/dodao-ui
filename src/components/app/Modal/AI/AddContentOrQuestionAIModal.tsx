@@ -10,7 +10,7 @@ interface AddStepItemModalProps {
 
 export default function AddContentOrQuestionAIModal({ open, onClose, onGenerateContent, onGenerateQuestions }: AddStepItemModalProps) {
   const addQuestions = () => {
-    onGenerateContent();
+    onGenerateQuestions();
     onClose();
   };
 
