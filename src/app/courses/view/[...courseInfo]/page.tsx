@@ -17,18 +17,32 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 const StyledNavWrapper = styled.div`
-  max-width: 400px;
+  max-width: 350px;
+  overflow-y: auto;
+
+  height: calc(65vh);
+
+  /* Hide the scrollbar width */
+  ::-webkit-scrollbar {
+    width: 0.5em;
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
 `;
 
 const StyledRightContent = styled.div`
   @screen md {
-    min-height: calc(100vh - 295px);
+    &.overflow-hidden {
+      overflow: hidden;
+    }
   }
 
   > div {
     display: flex;
     flex-direction: column;
-    min-height: 90%;
+    padding-right: 16px;
   }
 `;
 
@@ -110,7 +124,7 @@ const CourseView = ({ params, space }: { params: { courseInfo: string[] }; space
             )}
           </div>
           <div className="flex flex-col md:flex-row">
-            <StyledNavWrapper className="my-4 relative overflow-scroll border-r-2 h-full">
+            <StyledNavWrapper className="my-4 relative overflow-scroll">
               <CourseNavigation
                 course={course}
                 space={space}
@@ -122,7 +136,9 @@ const CourseView = ({ params, space }: { params: { courseInfo: string[] }; space
                 itemKey={itemKey}
               />
             </StyledNavWrapper>
-            <StyledRightContent className="flex-1 m-4">
+            <div className="border-r-2"></div>
+
+            <StyledRightContent className={`flex-1 m-4 ${itemType === 'questions' ? 'overflow-y-hidden' : 'overflow-hidden'}`}>
               <CourseDetailsRightSection
                 course={course}
                 space={space}

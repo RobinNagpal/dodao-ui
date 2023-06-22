@@ -37,7 +37,7 @@ const CourseDetails = ({ course, space, isCourseAdmin, courseHelper, submissionH
   }
 
   return (
-    <div>
+    <div className="h-full">
       {course ? (
         <div className="h-full flex flex-col justify-between">
           <div>
