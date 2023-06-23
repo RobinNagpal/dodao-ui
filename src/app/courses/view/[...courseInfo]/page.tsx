@@ -11,6 +11,7 @@ import CourseDetailsRightSection, { ItemTypes } from '@/components/courses/View/
 import { useCourseSubmission } from '@/components/courses/View/useCourseSubmission';
 import useViewCourse from '@/components/courses/View/useViewCourse';
 import { CourseDetailsFragment, SpaceWithIntegrationsFragment, useGitCourseQueryQuery } from '@/graphql/generated/generated-types';
+import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -34,6 +35,7 @@ const StyledRightContent = styled.div`
 
 const CourseView = ({ params, space }: { params: { courseInfo: string[] }; space: SpaceWithIntegrationsFragment }) => {
   const router = useRouter();
+  const { data: session } = useSession();
   const { courseInfo } = params;
 
   // urls - /courses/view/${course.key}/${topic.key}/[readings/summaries/questions/submission]/[summaryKey/readingKey/questionKey]
@@ -57,20 +59,18 @@ const CourseView = ({ params, space }: { params: { courseInfo: string[] }; space
   const courseHelper = useViewCourse(space, courseKey);
   const submissionHelper = useCourseSubmission(space, courseKey);
   useEffect(() => {
-    console.log('reload course', courseKey);
-  }, [courseKey]);
+    if (session) {
+      if (!courseHelper.course) return;
+      submissionHelper.loadCourseSubmission(courseHelper.course);
+    }
+  }, [courseHelper.course, session]);
+
   const isAdmin = true;
 
   const isCourseAdmin = true;
 
   const isSuperAdmin = true;
 
-  useEffect(() => {
-    if (!courseHelper.course) return;
-    if (!submissionHelper.loadedSubmission) return;
-
-    submissionHelper.loadCourseSubmission(courseHelper.course);
-  }, [courseHelper.course, submissionHelper.loadedSubmission]);
   function editCourseRepo() {}
 
   function gitCourseIntegrations() {}

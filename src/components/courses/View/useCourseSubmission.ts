@@ -8,6 +8,7 @@ import {
   TopicCorrectAnswersFragment,
   TopicSubmissionFragment,
   useGitCourseSubmissionQuery,
+  useInitializeGitCourseSubmissionMutation,
   useSubmitGitCourseMutation,
   useSubmitGitCourseTopicMutation,
   useUpsertGitCourseTopicSubmissionMutation,
@@ -169,20 +170,34 @@ export const useCourseSubmission = (space: Space, courseKey: string): CourseSubm
   const [course, setCourse] = useState<CourseDetailsFragment | undefined>();
   const [courseSubmission, setCourseSubmission] = useState<TempCourseSubmission | undefined>();
 
-  const { refetch, data: loadedSubmissionResponse } = useGitCourseSubmissionQuery({ variables: { courseKey: courseKey, spaceId: space.id } });
+  const { refetch: fetchSubmission, data: loadedSubmissionResponse } = useGitCourseSubmissionQuery({ variables: { courseKey: courseKey, spaceId: space.id } });
   const { showNotification } = useNotificationContext();
   const { $t } = useI18();
   const [upsertGitCourseTopicSubmissionMutation] = useUpsertGitCourseTopicSubmissionMutation();
   const [submitGitCourseTopicMutation] = useSubmitGitCourseTopicMutation();
   const [submitGitCourseMutation] = useSubmitGitCourseMutation();
-  const loadCourseSubmission = async () => {
-    const loadedSubmission = loadedSubmissionResponse?.payload;
+  const [initializeGitCourseSubmissionMutation] = useInitializeGitCourseSubmissionMutation();
 
-    if (!course) throw new Error('Course not loaded');
-    if (!loadedSubmission) throw new Error('Submission not loaded');
+  const loadCourseSubmission = async (loadedCourse: CourseDetailsFragment) => {
+    const submissionResponse = await fetchSubmission();
+    const loadedSubmission = submissionResponse.data?.payload;
 
-    const submission = transformCourseSubmissionResponse(loadedSubmission!, course);
-    setCourseSubmission(submission);
+    setCourse(loadedCourse);
+    if (!loadedCourse) throw new Error('Course not loaded');
+
+    if (loadedSubmission) {
+      const submission = transformCourseSubmissionResponse(loadedSubmission!, loadedCourse);
+      setCourseSubmission(submission);
+    } else {
+      try {
+        const initializationResponse = await initializeGitCourseSubmissionMutation({ variables: { courseKey: courseKey, spaceId: space.id } });
+        const initialedSubmission = initializationResponse.data?.payload;
+        const submission = transformCourseSubmissionResponse(initialedSubmission!, loadedCourse);
+        setCourseSubmission(submission);
+      } catch {
+        showNotification({ type: 'error', message: $t('courses.view.chapterSubmitError') });
+      }
+    }
   };
 
   const isAllReadingsComplete = (topic: CourseTopicFragment) => {
@@ -544,7 +559,6 @@ export const useCourseSubmission = (space: Space, courseKey: string): CourseSubm
 
   return {
     courseSubmission,
-    loadedSubmission: loadedSubmissionResponse?.payload,
     loadCourseSubmission,
     getTopic,
     saveReading,
