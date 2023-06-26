@@ -5,7 +5,7 @@ import PageWrapper from '@/components/core/page/PageWrapper';
 import ListSpaces from '@/components/spaces/ListSpaces';
 import { ManageSpaceSubviews } from '@/components/spaces/manageSpaceSubviews';
 import SpaceDetails from '@/components/spaces/SpaceDetails';
-import UpsertSpace from '@/components/spaces/UpsertSpace';
+import UpsertSpace from '@/components/spaces/Edit/UpsertSpace';
 import classNames from '@/utils/classNames';
 import { CalendarIcon, ChartPieIcon, CircleStackIcon, DocumentDuplicateIcon, FolderIcon, HomeIcon, UsersIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';

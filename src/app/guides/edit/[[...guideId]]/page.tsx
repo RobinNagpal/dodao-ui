@@ -1,6 +1,6 @@
 'use client';
 
-import BasicGuideSettings from '@/app/guides/edit/[[...guideId]]/BasicGuideSettings';
+import BasicGuideSettings from '@/components/guides/Edit/BasicGuideSettings';
 import withSpace from '@/app/withSpace';
 import PageLoading from '@/components/core/loaders/PageLoading';
 import Button from '@/components/core/buttons/Button';

@@ -3,35 +3,22 @@ import UpsertBadgeInput from '@/components/core/badge/UpsertBadgeInput';
 import Button from '@/components/core/buttons/Button';
 import Checkboxes from '@/components/core/checkboxes/Checkboxes';
 import Input from '@/components/core/input/Input';
-import useEditSpace from '@/components/spaces/useEditSpace';
-import { Space } from '@/graphql/generated/generated-types';
+import { UseEditSpaceHelper } from '@/components/spaces/useEditSpace';
 import { slugify } from '@/utils/auth/slugify';
 import union from 'lodash/union';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-export interface UpsertSpaceProps {
-  spaceId?: string;
-}
+export default function BasicSettings(props: { editSpaceHelper: UseEditSpaceHelper }) {
+  const [uploadThumbnailLoading, setUploadThumbnailLoading] = useState(false);
 
-export default function UpsertSpace(props: UpsertSpaceProps) {
-  const { space, initialize, setInviteLinkField, setSpaceField, setSpaceIntegrationField, upsertSpace, upserting } = useEditSpace(props.spaceId);
+  const { space, setSpaceField, setSpaceIntegrationField, upsertSpace, upserting } = props.editSpaceHelper;
 
   function inputError(avatar: string) {
     return null;
   }
 
-  const [uploadThumbnailLoading, setUploadThumbnailLoading] = useState(false);
-
-  function updateSpaceField(field: keyof Space, newValue: string | number | undefined) {
-    console.log(field, newValue);
-  }
-
-  useEffect(() => {
-    initialize();
-  }, [props.spaceId]);
-
   return (
-    <form>
+    <>
       <div className="space-y-12">
         <div className="border-b pb-12">
           <h2 className="text-base font-semibold leading-7">Edit Space</h2>
@@ -41,7 +28,7 @@ export default function UpsertSpace(props: UpsertSpaceProps) {
           <Input label="Name" modelValue={space?.name} onUpdate={(value) => setSpaceField('name', value?.toString() || '')} />
           <UploadInput
             error={inputError('avatar')}
-            onUpdate={(newValue) => updateSpaceField('avatar', newValue)}
+            onUpdate={(newValue) => setSpaceField('avatar', newValue)}
             imageType="AcademyLogo"
             spaceId={space?.id || 'new-space'}
             modelValue={space?.avatar}
@@ -95,6 +82,6 @@ export default function UpsertSpace(props: UpsertSpaceProps) {
           Save
         </Button>
       </div>
-    </form>
+    </>
   );
 }

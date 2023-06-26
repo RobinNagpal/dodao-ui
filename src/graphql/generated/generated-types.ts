@@ -14,6 +14,8 @@ export interface Scalars {
   Int: number;
   Float: number;
   Any: any;
+  /** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.This scalar is serialized to a string in ISO 8601 format and parsed from a string in ISO 8601 format. */
+  DateTimeISO: any;
   /** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
   JSON: any;
   /** The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
@@ -404,7 +406,7 @@ export interface GitCourseReadingsSubmissionInput {
 export interface GitCourseSubmission {
   __typename?: 'GitCourseSubmission';
   courseKey: Scalars['String'];
-  createdAt: Scalars['Int'];
+  createdAt: Scalars['String'];
   createdBy: Scalars['String'];
   galaxyCredentialsUpdated?: Maybe<Scalars['Boolean']>;
   isLatestSubmission?: Maybe<Scalars['Boolean']>;
@@ -415,7 +417,7 @@ export interface GitCourseSubmission {
   spaceId: Scalars['String'];
   status: Scalars['String'];
   topicSubmissions: Array<GitCourseTopicSubmission>;
-  updatedAt: Scalars['Int'];
+  updatedAt: Scalars['DateTimeISO'];
   uuid: Scalars['String'];
 }
 
@@ -460,7 +462,7 @@ export interface GitCourseTopicSubmission {
   correctAnswers?: Maybe<Array<GitCourseTopicCorrectAnswer>>;
   courseKey: Scalars['String'];
   courseSubmissionUuid: Scalars['String'];
-  createdAt: Scalars['Int'];
+  createdAt: Scalars['DateTimeISO'];
   createdBy: Scalars['String'];
   isLatestSubmission: Scalars['Boolean'];
   questionsAttempted?: Maybe<Scalars['Int']>;
@@ -471,7 +473,7 @@ export interface GitCourseTopicSubmission {
   status: Scalars['String'];
   submission?: Maybe<GitCourseTopicSubmissionJson>;
   topicKey: Scalars['String'];
-  updatedAt: Scalars['Int'];
+  updatedAt: Scalars['DateTimeISO'];
   uuid: Scalars['String'];
 }
 
@@ -1186,6 +1188,7 @@ export interface Query {
   guideSubmissions: Array<GuideSubmission>;
   guides: Array<Guide>;
   rawGitCourse: RawGitCourse;
+  rawGitCourses: Array<RawGitCourse>;
   simulation: Simulation;
   simulations: Array<Simulation>;
   space?: Maybe<Space>;
@@ -1272,6 +1275,11 @@ export interface QueryGuidesArgs {
 
 export interface QueryRawGitCourseArgs {
   key: Scalars['String'];
+  spaceId: Scalars['String'];
+}
+
+
+export interface QueryRawGitCoursesArgs {
   spaceId: Scalars['String'];
 }
 
@@ -1782,9 +1790,9 @@ export type TopicSubmissionJsonFragment = { __typename?: 'GitCourseTopicSubmissi
 
 export type TopicCorrectAnswersFragment = { __typename?: 'GitCourseTopicCorrectAnswer', uuid: string, answerKeys: Array<string> };
 
-export type TopicSubmissionFragment = { __typename?: 'GitCourseTopicSubmission', uuid: string, courseKey: string, courseSubmissionUuid: string, createdAt: number, createdBy: string, isLatestSubmission: boolean, questionsAttempted?: number | null, questionsCorrect?: number | null, questionsIncorrect?: number | null, questionsSkipped?: number | null, spaceId: string, status: string, topicKey: string, updatedAt: number, correctAnswers?: Array<{ __typename?: 'GitCourseTopicCorrectAnswer', uuid: string, answerKeys: Array<string> }> | null, submission?: { __typename?: 'GitCourseTopicSubmissionJson', uuid: string, topicKey: string, status: string, explanations?: Array<{ __typename?: 'GitCourseExplanationsSubmission', key: string, status: string }> | null, questions?: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, status: string, answers: Array<string> }> | null, readings?: Array<{ __typename?: 'GitCourseReadingsSubmission', uuid: string, status: string, questions: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, answers: Array<string>, status: string }> }> | null, summaries?: Array<{ __typename?: 'GitCourseSummariesSubmission', key: string, status: string }> | null } | null };
+export type TopicSubmissionFragment = { __typename?: 'GitCourseTopicSubmission', uuid: string, courseKey: string, courseSubmissionUuid: string, createdAt: any, createdBy: string, isLatestSubmission: boolean, questionsAttempted?: number | null, questionsCorrect?: number | null, questionsIncorrect?: number | null, questionsSkipped?: number | null, spaceId: string, status: string, topicKey: string, updatedAt: any, correctAnswers?: Array<{ __typename?: 'GitCourseTopicCorrectAnswer', uuid: string, answerKeys: Array<string> }> | null, submission?: { __typename?: 'GitCourseTopicSubmissionJson', uuid: string, topicKey: string, status: string, explanations?: Array<{ __typename?: 'GitCourseExplanationsSubmission', key: string, status: string }> | null, questions?: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, status: string, answers: Array<string> }> | null, readings?: Array<{ __typename?: 'GitCourseReadingsSubmission', uuid: string, status: string, questions: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, answers: Array<string>, status: string }> }> | null, summaries?: Array<{ __typename?: 'GitCourseSummariesSubmission', key: string, status: string }> | null } | null };
 
-export type CourseSubmissionFragment = { __typename?: 'GitCourseSubmission', uuid: string, courseKey: string, createdAt: number, createdBy: string, galaxyCredentialsUpdated?: boolean | null, isLatestSubmission?: boolean | null, questionsAttempted?: number | null, questionsCorrect?: number | null, questionsIncorrect?: number | null, questionsSkipped?: number | null, spaceId: string, status: string, updatedAt: number, topicSubmissions: Array<{ __typename?: 'GitCourseTopicSubmission', uuid: string, courseKey: string, courseSubmissionUuid: string, createdAt: number, createdBy: string, isLatestSubmission: boolean, questionsAttempted?: number | null, questionsCorrect?: number | null, questionsIncorrect?: number | null, questionsSkipped?: number | null, spaceId: string, status: string, topicKey: string, updatedAt: number, correctAnswers?: Array<{ __typename?: 'GitCourseTopicCorrectAnswer', uuid: string, answerKeys: Array<string> }> | null, submission?: { __typename?: 'GitCourseTopicSubmissionJson', uuid: string, topicKey: string, status: string, explanations?: Array<{ __typename?: 'GitCourseExplanationsSubmission', key: string, status: string }> | null, questions?: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, status: string, answers: Array<string> }> | null, readings?: Array<{ __typename?: 'GitCourseReadingsSubmission', uuid: string, status: string, questions: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, answers: Array<string>, status: string }> }> | null, summaries?: Array<{ __typename?: 'GitCourseSummariesSubmission', key: string, status: string }> | null } | null }> };
+export type CourseSubmissionFragment = { __typename?: 'GitCourseSubmission', uuid: string, courseKey: string, createdAt: string, createdBy: string, galaxyCredentialsUpdated?: boolean | null, isLatestSubmission?: boolean | null, questionsAttempted?: number | null, questionsCorrect?: number | null, questionsIncorrect?: number | null, questionsSkipped?: number | null, spaceId: string, status: string, updatedAt: any, topicSubmissions: Array<{ __typename?: 'GitCourseTopicSubmission', uuid: string, courseKey: string, courseSubmissionUuid: string, createdAt: any, createdBy: string, isLatestSubmission: boolean, questionsAttempted?: number | null, questionsCorrect?: number | null, questionsIncorrect?: number | null, questionsSkipped?: number | null, spaceId: string, status: string, topicKey: string, updatedAt: any, correctAnswers?: Array<{ __typename?: 'GitCourseTopicCorrectAnswer', uuid: string, answerKeys: Array<string> }> | null, submission?: { __typename?: 'GitCourseTopicSubmissionJson', uuid: string, topicKey: string, status: string, explanations?: Array<{ __typename?: 'GitCourseExplanationsSubmission', key: string, status: string }> | null, questions?: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, status: string, answers: Array<string> }> | null, readings?: Array<{ __typename?: 'GitCourseReadingsSubmission', uuid: string, status: string, questions: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, answers: Array<string>, status: string }> }> | null, summaries?: Array<{ __typename?: 'GitCourseSummariesSubmission', key: string, status: string }> | null } | null }> };
 
 export type GitCourseSubmissionQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -1792,7 +1800,7 @@ export type GitCourseSubmissionQueryVariables = Exact<{
 }>;
 
 
-export type GitCourseSubmissionQuery = { __typename?: 'Query', payload?: { __typename?: 'GitCourseSubmission', uuid: string, courseKey: string, createdAt: number, createdBy: string, galaxyCredentialsUpdated?: boolean | null, isLatestSubmission?: boolean | null, questionsAttempted?: number | null, questionsCorrect?: number | null, questionsIncorrect?: number | null, questionsSkipped?: number | null, spaceId: string, status: string, updatedAt: number, topicSubmissions: Array<{ __typename?: 'GitCourseTopicSubmission', uuid: string, courseKey: string, courseSubmissionUuid: string, createdAt: number, createdBy: string, isLatestSubmission: boolean, questionsAttempted?: number | null, questionsCorrect?: number | null, questionsIncorrect?: number | null, questionsSkipped?: number | null, spaceId: string, status: string, topicKey: string, updatedAt: number, correctAnswers?: Array<{ __typename?: 'GitCourseTopicCorrectAnswer', uuid: string, answerKeys: Array<string> }> | null, submission?: { __typename?: 'GitCourseTopicSubmissionJson', uuid: string, topicKey: string, status: string, explanations?: Array<{ __typename?: 'GitCourseExplanationsSubmission', key: string, status: string }> | null, questions?: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, status: string, answers: Array<string> }> | null, readings?: Array<{ __typename?: 'GitCourseReadingsSubmission', uuid: string, status: string, questions: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, answers: Array<string>, status: string }> }> | null, summaries?: Array<{ __typename?: 'GitCourseSummariesSubmission', key: string, status: string }> | null } | null }> } | null };
+export type GitCourseSubmissionQuery = { __typename?: 'Query', payload?: { __typename?: 'GitCourseSubmission', uuid: string, courseKey: string, createdAt: string, createdBy: string, galaxyCredentialsUpdated?: boolean | null, isLatestSubmission?: boolean | null, questionsAttempted?: number | null, questionsCorrect?: number | null, questionsIncorrect?: number | null, questionsSkipped?: number | null, spaceId: string, status: string, updatedAt: any, topicSubmissions: Array<{ __typename?: 'GitCourseTopicSubmission', uuid: string, courseKey: string, courseSubmissionUuid: string, createdAt: any, createdBy: string, isLatestSubmission: boolean, questionsAttempted?: number | null, questionsCorrect?: number | null, questionsIncorrect?: number | null, questionsSkipped?: number | null, spaceId: string, status: string, topicKey: string, updatedAt: any, correctAnswers?: Array<{ __typename?: 'GitCourseTopicCorrectAnswer', uuid: string, answerKeys: Array<string> }> | null, submission?: { __typename?: 'GitCourseTopicSubmissionJson', uuid: string, topicKey: string, status: string, explanations?: Array<{ __typename?: 'GitCourseExplanationsSubmission', key: string, status: string }> | null, questions?: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, status: string, answers: Array<string> }> | null, readings?: Array<{ __typename?: 'GitCourseReadingsSubmission', uuid: string, status: string, questions: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, answers: Array<string>, status: string }> }> | null, summaries?: Array<{ __typename?: 'GitCourseSummariesSubmission', key: string, status: string }> | null } | null }> } | null };
 
 export type UpsertGitCourseTopicSubmissionMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -1800,7 +1808,7 @@ export type UpsertGitCourseTopicSubmissionMutationVariables = Exact<{
 }>;
 
 
-export type UpsertGitCourseTopicSubmissionMutation = { __typename?: 'Mutation', payload: { __typename?: 'GitCourseTopicSubmission', uuid: string, courseKey: string, courseSubmissionUuid: string, createdAt: number, createdBy: string, isLatestSubmission: boolean, questionsAttempted?: number | null, questionsCorrect?: number | null, questionsIncorrect?: number | null, questionsSkipped?: number | null, spaceId: string, status: string, topicKey: string, updatedAt: number, correctAnswers?: Array<{ __typename?: 'GitCourseTopicCorrectAnswer', uuid: string, answerKeys: Array<string> }> | null, submission?: { __typename?: 'GitCourseTopicSubmissionJson', uuid: string, topicKey: string, status: string, explanations?: Array<{ __typename?: 'GitCourseExplanationsSubmission', key: string, status: string }> | null, questions?: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, status: string, answers: Array<string> }> | null, readings?: Array<{ __typename?: 'GitCourseReadingsSubmission', uuid: string, status: string, questions: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, answers: Array<string>, status: string }> }> | null, summaries?: Array<{ __typename?: 'GitCourseSummariesSubmission', key: string, status: string }> | null } | null } };
+export type UpsertGitCourseTopicSubmissionMutation = { __typename?: 'Mutation', payload: { __typename?: 'GitCourseTopicSubmission', uuid: string, courseKey: string, courseSubmissionUuid: string, createdAt: any, createdBy: string, isLatestSubmission: boolean, questionsAttempted?: number | null, questionsCorrect?: number | null, questionsIncorrect?: number | null, questionsSkipped?: number | null, spaceId: string, status: string, topicKey: string, updatedAt: any, correctAnswers?: Array<{ __typename?: 'GitCourseTopicCorrectAnswer', uuid: string, answerKeys: Array<string> }> | null, submission?: { __typename?: 'GitCourseTopicSubmissionJson', uuid: string, topicKey: string, status: string, explanations?: Array<{ __typename?: 'GitCourseExplanationsSubmission', key: string, status: string }> | null, questions?: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, status: string, answers: Array<string> }> | null, readings?: Array<{ __typename?: 'GitCourseReadingsSubmission', uuid: string, status: string, questions: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, answers: Array<string>, status: string }> }> | null, summaries?: Array<{ __typename?: 'GitCourseSummariesSubmission', key: string, status: string }> | null } | null } };
 
 export type SubmitGitCourseTopicMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -1808,7 +1816,7 @@ export type SubmitGitCourseTopicMutationVariables = Exact<{
 }>;
 
 
-export type SubmitGitCourseTopicMutation = { __typename?: 'Mutation', payload: { __typename?: 'GitCourseTopicSubmission', uuid: string, courseKey: string, courseSubmissionUuid: string, createdAt: number, createdBy: string, isLatestSubmission: boolean, questionsAttempted?: number | null, questionsCorrect?: number | null, questionsIncorrect?: number | null, questionsSkipped?: number | null, spaceId: string, status: string, topicKey: string, updatedAt: number, correctAnswers?: Array<{ __typename?: 'GitCourseTopicCorrectAnswer', uuid: string, answerKeys: Array<string> }> | null, submission?: { __typename?: 'GitCourseTopicSubmissionJson', uuid: string, topicKey: string, status: string, explanations?: Array<{ __typename?: 'GitCourseExplanationsSubmission', key: string, status: string }> | null, questions?: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, status: string, answers: Array<string> }> | null, readings?: Array<{ __typename?: 'GitCourseReadingsSubmission', uuid: string, status: string, questions: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, answers: Array<string>, status: string }> }> | null, summaries?: Array<{ __typename?: 'GitCourseSummariesSubmission', key: string, status: string }> | null } | null } };
+export type SubmitGitCourseTopicMutation = { __typename?: 'Mutation', payload: { __typename?: 'GitCourseTopicSubmission', uuid: string, courseKey: string, courseSubmissionUuid: string, createdAt: any, createdBy: string, isLatestSubmission: boolean, questionsAttempted?: number | null, questionsCorrect?: number | null, questionsIncorrect?: number | null, questionsSkipped?: number | null, spaceId: string, status: string, topicKey: string, updatedAt: any, correctAnswers?: Array<{ __typename?: 'GitCourseTopicCorrectAnswer', uuid: string, answerKeys: Array<string> }> | null, submission?: { __typename?: 'GitCourseTopicSubmissionJson', uuid: string, topicKey: string, status: string, explanations?: Array<{ __typename?: 'GitCourseExplanationsSubmission', key: string, status: string }> | null, questions?: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, status: string, answers: Array<string> }> | null, readings?: Array<{ __typename?: 'GitCourseReadingsSubmission', uuid: string, status: string, questions: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, answers: Array<string>, status: string }> }> | null, summaries?: Array<{ __typename?: 'GitCourseSummariesSubmission', key: string, status: string }> | null } | null } };
 
 export type SubmitGitCourseMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -1816,7 +1824,7 @@ export type SubmitGitCourseMutationVariables = Exact<{
 }>;
 
 
-export type SubmitGitCourseMutation = { __typename?: 'Mutation', payload: { __typename?: 'GitCourseSubmission', uuid: string, courseKey: string, createdAt: number, createdBy: string, galaxyCredentialsUpdated?: boolean | null, isLatestSubmission?: boolean | null, questionsAttempted?: number | null, questionsCorrect?: number | null, questionsIncorrect?: number | null, questionsSkipped?: number | null, spaceId: string, status: string, updatedAt: number, topicSubmissions: Array<{ __typename?: 'GitCourseTopicSubmission', uuid: string, courseKey: string, courseSubmissionUuid: string, createdAt: number, createdBy: string, isLatestSubmission: boolean, questionsAttempted?: number | null, questionsCorrect?: number | null, questionsIncorrect?: number | null, questionsSkipped?: number | null, spaceId: string, status: string, topicKey: string, updatedAt: number, correctAnswers?: Array<{ __typename?: 'GitCourseTopicCorrectAnswer', uuid: string, answerKeys: Array<string> }> | null, submission?: { __typename?: 'GitCourseTopicSubmissionJson', uuid: string, topicKey: string, status: string, explanations?: Array<{ __typename?: 'GitCourseExplanationsSubmission', key: string, status: string }> | null, questions?: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, status: string, answers: Array<string> }> | null, readings?: Array<{ __typename?: 'GitCourseReadingsSubmission', uuid: string, status: string, questions: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, answers: Array<string>, status: string }> }> | null, summaries?: Array<{ __typename?: 'GitCourseSummariesSubmission', key: string, status: string }> | null } | null }> } };
+export type SubmitGitCourseMutation = { __typename?: 'Mutation', payload: { __typename?: 'GitCourseSubmission', uuid: string, courseKey: string, createdAt: string, createdBy: string, galaxyCredentialsUpdated?: boolean | null, isLatestSubmission?: boolean | null, questionsAttempted?: number | null, questionsCorrect?: number | null, questionsIncorrect?: number | null, questionsSkipped?: number | null, spaceId: string, status: string, updatedAt: any, topicSubmissions: Array<{ __typename?: 'GitCourseTopicSubmission', uuid: string, courseKey: string, courseSubmissionUuid: string, createdAt: any, createdBy: string, isLatestSubmission: boolean, questionsAttempted?: number | null, questionsCorrect?: number | null, questionsIncorrect?: number | null, questionsSkipped?: number | null, spaceId: string, status: string, topicKey: string, updatedAt: any, correctAnswers?: Array<{ __typename?: 'GitCourseTopicCorrectAnswer', uuid: string, answerKeys: Array<string> }> | null, submission?: { __typename?: 'GitCourseTopicSubmissionJson', uuid: string, topicKey: string, status: string, explanations?: Array<{ __typename?: 'GitCourseExplanationsSubmission', key: string, status: string }> | null, questions?: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, status: string, answers: Array<string> }> | null, readings?: Array<{ __typename?: 'GitCourseReadingsSubmission', uuid: string, status: string, questions: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, answers: Array<string>, status: string }> }> | null, summaries?: Array<{ __typename?: 'GitCourseSummariesSubmission', key: string, status: string }> | null } | null }> } };
 
 export type InitializeGitCourseSubmissionMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -1824,23 +1832,7 @@ export type InitializeGitCourseSubmissionMutationVariables = Exact<{
 }>;
 
 
-export type InitializeGitCourseSubmissionMutation = { __typename?: 'Mutation', payload: { __typename?: 'GitCourseSubmission', uuid: string, courseKey: string, createdAt: number, createdBy: string, galaxyCredentialsUpdated?: boolean | null, isLatestSubmission?: boolean | null, questionsAttempted?: number | null, questionsCorrect?: number | null, questionsIncorrect?: number | null, questionsSkipped?: number | null, spaceId: string, status: string, updatedAt: number, topicSubmissions: Array<{ __typename?: 'GitCourseTopicSubmission', uuid: string, courseKey: string, courseSubmissionUuid: string, createdAt: number, createdBy: string, isLatestSubmission: boolean, questionsAttempted?: number | null, questionsCorrect?: number | null, questionsIncorrect?: number | null, questionsSkipped?: number | null, spaceId: string, status: string, topicKey: string, updatedAt: number, correctAnswers?: Array<{ __typename?: 'GitCourseTopicCorrectAnswer', uuid: string, answerKeys: Array<string> }> | null, submission?: { __typename?: 'GitCourseTopicSubmissionJson', uuid: string, topicKey: string, status: string, explanations?: Array<{ __typename?: 'GitCourseExplanationsSubmission', key: string, status: string }> | null, questions?: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, status: string, answers: Array<string> }> | null, readings?: Array<{ __typename?: 'GitCourseReadingsSubmission', uuid: string, status: string, questions: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, answers: Array<string>, status: string }> }> | null, summaries?: Array<{ __typename?: 'GitCourseSummariesSubmission', key: string, status: string }> | null } | null }> } };
-
-export type GitCourseIntegrationsQueryQueryVariables = Exact<{
-  spaceId: Scalars['String'];
-  key: Scalars['String'];
-}>;
-
-
-export type GitCourseIntegrationsQueryQuery = { __typename?: 'Query', payload?: { __typename?: 'CourseIntegrations', discordRoleIds?: Array<string> | null, discordRolePassingCount?: number | null, discordWebhook?: string | null, projectGalaxyCredentialId?: string | null, projectGalaxyOatMintUrl?: string | null, projectGalaxyOatPassingCount?: number | null, projectGalaxyOatMintedContent?: string | null } | null };
-
-export type UpsertCourseIntegrationsMutationVariables = Exact<{
-  spaceId: Scalars['String'];
-  input: UpsertCourseIntegrationsInput;
-}>;
-
-
-export type UpsertCourseIntegrationsMutation = { __typename?: 'Mutation', payload: { __typename?: 'CourseIntegrations', discordRoleIds?: Array<string> | null, discordRolePassingCount?: number | null, discordWebhook?: string | null, projectGalaxyCredentialId?: string | null, projectGalaxyOatMintUrl?: string | null, projectGalaxyOatPassingCount?: number | null, projectGalaxyOatMintedContent?: string | null } };
+export type InitializeGitCourseSubmissionMutation = { __typename?: 'Mutation', payload: { __typename?: 'GitCourseSubmission', uuid: string, courseKey: string, createdAt: string, createdBy: string, galaxyCredentialsUpdated?: boolean | null, isLatestSubmission?: boolean | null, questionsAttempted?: number | null, questionsCorrect?: number | null, questionsIncorrect?: number | null, questionsSkipped?: number | null, spaceId: string, status: string, updatedAt: any, topicSubmissions: Array<{ __typename?: 'GitCourseTopicSubmission', uuid: string, courseKey: string, courseSubmissionUuid: string, createdAt: any, createdBy: string, isLatestSubmission: boolean, questionsAttempted?: number | null, questionsCorrect?: number | null, questionsIncorrect?: number | null, questionsSkipped?: number | null, spaceId: string, status: string, topicKey: string, updatedAt: any, correctAnswers?: Array<{ __typename?: 'GitCourseTopicCorrectAnswer', uuid: string, answerKeys: Array<string> }> | null, submission?: { __typename?: 'GitCourseTopicSubmissionJson', uuid: string, topicKey: string, status: string, explanations?: Array<{ __typename?: 'GitCourseExplanationsSubmission', key: string, status: string }> | null, questions?: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, status: string, answers: Array<string> }> | null, readings?: Array<{ __typename?: 'GitCourseReadingsSubmission', uuid: string, status: string, questions: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, answers: Array<string>, status: string }> }> | null, summaries?: Array<{ __typename?: 'GitCourseSummariesSubmission', key: string, status: string }> | null } | null }> } };
 
 export type CourseQuestionFragment = { __typename?: 'GitCourseQuestion', uuid: string, type: string, content: string, answerKeys: Array<string>, hint: string, explanation: string, choices: Array<{ __typename?: 'GitCourseQuestionChoice', content: string, key: string }> };
 
@@ -2055,6 +2047,13 @@ export type RawGitCourseQueryVariables = Exact<{
 
 export type RawGitCourseQuery = { __typename?: 'Query', payload: { __typename?: 'RawGitCourse', key: string, courseJsonUrl?: string | null, courseRepoUrl?: string | null, weight: number } };
 
+export type RawGitCoursesQueryVariables = Exact<{
+  spaceId: Scalars['String'];
+}>;
+
+
+export type RawGitCoursesQuery = { __typename?: 'Query', payload: Array<{ __typename?: 'RawGitCourse', key: string, courseJsonUrl?: string | null, courseRepoUrl?: string | null, weight: number }> };
+
 export type GitCourseSummarizedQueryVariables = Exact<{
   spaceId: Scalars['String'];
   key: Scalars['String'];
@@ -2079,6 +2078,22 @@ export type CoursesQueryQueryVariables = Exact<{
 
 
 export type CoursesQueryQuery = { __typename?: 'Query', courses: Array<{ __typename?: 'GitCourse', courseAdmins?: Array<string> | null, courseFailContent?: string | null, coursePassContent?: string | null, coursePassCount?: number | null, details: string, duration: string, highlights: Array<string>, key: string, priority?: number | null, publishStatus: string, summary: string, thumbnail: string, title: string }> };
+
+export type GitCourseIntegrationsQueryQueryVariables = Exact<{
+  spaceId: Scalars['String'];
+  key: Scalars['String'];
+}>;
+
+
+export type GitCourseIntegrationsQueryQuery = { __typename?: 'Query', payload?: { __typename?: 'CourseIntegrations', discordRoleIds?: Array<string> | null, discordRolePassingCount?: number | null, discordWebhook?: string | null, projectGalaxyCredentialId?: string | null, projectGalaxyOatMintUrl?: string | null, projectGalaxyOatPassingCount?: number | null, projectGalaxyOatMintedContent?: string | null } | null };
+
+export type UpsertCourseIntegrationsMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+  input: UpsertCourseIntegrationsInput;
+}>;
+
+
+export type UpsertCourseIntegrationsMutation = { __typename?: 'Mutation', payload: { __typename?: 'CourseIntegrations', discordRoleIds?: Array<string> | null, discordRolePassingCount?: number | null, discordWebhook?: string | null, projectGalaxyCredentialId?: string | null, projectGalaxyOatMintUrl?: string | null, projectGalaxyOatPassingCount?: number | null, projectGalaxyOatMintedContent?: string | null } };
 
 export type UpsertGnosisSafeWalletsMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -3493,94 +3508,6 @@ export function useInitializeGitCourseSubmissionMutation(baseOptions?: Apollo.Mu
 export type InitializeGitCourseSubmissionMutationHookResult = ReturnType<typeof useInitializeGitCourseSubmissionMutation>;
 export type InitializeGitCourseSubmissionMutationResult = Apollo.MutationResult<InitializeGitCourseSubmissionMutation>;
 export type InitializeGitCourseSubmissionMutationOptions = Apollo.BaseMutationOptions<InitializeGitCourseSubmissionMutation, InitializeGitCourseSubmissionMutationVariables>;
-export const GitCourseIntegrationsQueryDocument = gql`
-    query GitCourseIntegrationsQuery($spaceId: String!, $key: String!) {
-  payload: gitCourseIntegrations(spaceId: $spaceId, key: $key) {
-    discordRoleIds
-    discordRolePassingCount
-    discordWebhook
-    projectGalaxyCredentialId
-    projectGalaxyOatMintUrl
-    projectGalaxyOatPassingCount
-    projectGalaxyOatMintedContent
-  }
-}
-    `;
-
-/**
- * __useGitCourseIntegrationsQueryQuery__
- *
- * To run a query within a React component, call `useGitCourseIntegrationsQueryQuery` and pass it any options that fit your needs.
- * When your component renders, `useGitCourseIntegrationsQueryQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGitCourseIntegrationsQueryQuery({
- *   variables: {
- *      spaceId: // value for 'spaceId'
- *      key: // value for 'key'
- *   },
- * });
- */
-export function useGitCourseIntegrationsQueryQuery(baseOptions: Apollo.QueryHookOptions<GitCourseIntegrationsQueryQuery, GitCourseIntegrationsQueryQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GitCourseIntegrationsQueryQuery, GitCourseIntegrationsQueryQueryVariables>(GitCourseIntegrationsQueryDocument, options);
-      }
-export function useGitCourseIntegrationsQueryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GitCourseIntegrationsQueryQuery, GitCourseIntegrationsQueryQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GitCourseIntegrationsQueryQuery, GitCourseIntegrationsQueryQueryVariables>(GitCourseIntegrationsQueryDocument, options);
-        }
-export type GitCourseIntegrationsQueryQueryHookResult = ReturnType<typeof useGitCourseIntegrationsQueryQuery>;
-export type GitCourseIntegrationsQueryLazyQueryHookResult = ReturnType<typeof useGitCourseIntegrationsQueryLazyQuery>;
-export type GitCourseIntegrationsQueryQueryResult = Apollo.QueryResult<GitCourseIntegrationsQueryQuery, GitCourseIntegrationsQueryQueryVariables>;
-export function refetchGitCourseIntegrationsQueryQuery(variables: GitCourseIntegrationsQueryQueryVariables) {
-      return { query: GitCourseIntegrationsQueryDocument, variables: variables }
-    }
-export const UpsertCourseIntegrationsDocument = gql`
-    mutation UpsertCourseIntegrations($spaceId: String!, $input: UpsertCourseIntegrationsInput!) {
-  payload: upsertCourseIntegrations(
-    spaceId: $spaceId
-    courseIntegrationInput: $input
-  ) {
-    discordRoleIds
-    discordRolePassingCount
-    discordWebhook
-    projectGalaxyCredentialId
-    projectGalaxyOatMintUrl
-    projectGalaxyOatPassingCount
-    projectGalaxyOatMintedContent
-  }
-}
-    `;
-export type UpsertCourseIntegrationsMutationFn = Apollo.MutationFunction<UpsertCourseIntegrationsMutation, UpsertCourseIntegrationsMutationVariables>;
-
-/**
- * __useUpsertCourseIntegrationsMutation__
- *
- * To run a mutation, you first call `useUpsertCourseIntegrationsMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpsertCourseIntegrationsMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [upsertCourseIntegrationsMutation, { data, loading, error }] = useUpsertCourseIntegrationsMutation({
- *   variables: {
- *      spaceId: // value for 'spaceId'
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useUpsertCourseIntegrationsMutation(baseOptions?: Apollo.MutationHookOptions<UpsertCourseIntegrationsMutation, UpsertCourseIntegrationsMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpsertCourseIntegrationsMutation, UpsertCourseIntegrationsMutationVariables>(UpsertCourseIntegrationsDocument, options);
-      }
-export type UpsertCourseIntegrationsMutationHookResult = ReturnType<typeof useUpsertCourseIntegrationsMutation>;
-export type UpsertCourseIntegrationsMutationResult = Apollo.MutationResult<UpsertCourseIntegrationsMutation>;
-export type UpsertCourseIntegrationsMutationOptions = Apollo.BaseMutationOptions<UpsertCourseIntegrationsMutation, UpsertCourseIntegrationsMutationVariables>;
 export const UpsertGitCourseDocument = gql`
     mutation UpsertGitCourse($spaceId: String!, $gitCourseInput: GitCourseInput!) {
   payload: upsertGitCourse(spaceId: $spaceId, gitCourseInput: $gitCourseInput) {
@@ -4480,6 +4407,47 @@ export type RawGitCourseQueryResult = Apollo.QueryResult<RawGitCourseQuery, RawG
 export function refetchRawGitCourseQuery(variables: RawGitCourseQueryVariables) {
       return { query: RawGitCourseDocument, variables: variables }
     }
+export const RawGitCoursesDocument = gql`
+    query RawGitCourses($spaceId: String!) {
+  payload: rawGitCourses(spaceId: $spaceId) {
+    key
+    courseJsonUrl
+    courseRepoUrl
+    weight
+  }
+}
+    `;
+
+/**
+ * __useRawGitCoursesQuery__
+ *
+ * To run a query within a React component, call `useRawGitCoursesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useRawGitCoursesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useRawGitCoursesQuery({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *   },
+ * });
+ */
+export function useRawGitCoursesQuery(baseOptions: Apollo.QueryHookOptions<RawGitCoursesQuery, RawGitCoursesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<RawGitCoursesQuery, RawGitCoursesQueryVariables>(RawGitCoursesDocument, options);
+      }
+export function useRawGitCoursesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<RawGitCoursesQuery, RawGitCoursesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<RawGitCoursesQuery, RawGitCoursesQueryVariables>(RawGitCoursesDocument, options);
+        }
+export type RawGitCoursesQueryHookResult = ReturnType<typeof useRawGitCoursesQuery>;
+export type RawGitCoursesLazyQueryHookResult = ReturnType<typeof useRawGitCoursesLazyQuery>;
+export type RawGitCoursesQueryResult = Apollo.QueryResult<RawGitCoursesQuery, RawGitCoursesQueryVariables>;
+export function refetchRawGitCoursesQuery(variables: RawGitCoursesQueryVariables) {
+      return { query: RawGitCoursesDocument, variables: variables }
+    }
 export const GitCourseSummarizedDocument = gql`
     query GitCourseSummarized($spaceId: String!, $key: String!) {
   payload: gitCourseSummarized(spaceId: $spaceId, key: $key) {
@@ -4606,6 +4574,94 @@ export type CoursesQueryQueryResult = Apollo.QueryResult<CoursesQueryQuery, Cour
 export function refetchCoursesQueryQuery(variables: CoursesQueryQueryVariables) {
       return { query: CoursesQueryDocument, variables: variables }
     }
+export const GitCourseIntegrationsQueryDocument = gql`
+    query GitCourseIntegrationsQuery($spaceId: String!, $key: String!) {
+  payload: gitCourseIntegrations(spaceId: $spaceId, key: $key) {
+    discordRoleIds
+    discordRolePassingCount
+    discordWebhook
+    projectGalaxyCredentialId
+    projectGalaxyOatMintUrl
+    projectGalaxyOatPassingCount
+    projectGalaxyOatMintedContent
+  }
+}
+    `;
+
+/**
+ * __useGitCourseIntegrationsQueryQuery__
+ *
+ * To run a query within a React component, call `useGitCourseIntegrationsQueryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGitCourseIntegrationsQueryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGitCourseIntegrationsQueryQuery({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      key: // value for 'key'
+ *   },
+ * });
+ */
+export function useGitCourseIntegrationsQueryQuery(baseOptions: Apollo.QueryHookOptions<GitCourseIntegrationsQueryQuery, GitCourseIntegrationsQueryQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GitCourseIntegrationsQueryQuery, GitCourseIntegrationsQueryQueryVariables>(GitCourseIntegrationsQueryDocument, options);
+      }
+export function useGitCourseIntegrationsQueryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GitCourseIntegrationsQueryQuery, GitCourseIntegrationsQueryQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GitCourseIntegrationsQueryQuery, GitCourseIntegrationsQueryQueryVariables>(GitCourseIntegrationsQueryDocument, options);
+        }
+export type GitCourseIntegrationsQueryQueryHookResult = ReturnType<typeof useGitCourseIntegrationsQueryQuery>;
+export type GitCourseIntegrationsQueryLazyQueryHookResult = ReturnType<typeof useGitCourseIntegrationsQueryLazyQuery>;
+export type GitCourseIntegrationsQueryQueryResult = Apollo.QueryResult<GitCourseIntegrationsQueryQuery, GitCourseIntegrationsQueryQueryVariables>;
+export function refetchGitCourseIntegrationsQueryQuery(variables: GitCourseIntegrationsQueryQueryVariables) {
+      return { query: GitCourseIntegrationsQueryDocument, variables: variables }
+    }
+export const UpsertCourseIntegrationsDocument = gql`
+    mutation UpsertCourseIntegrations($spaceId: String!, $input: UpsertCourseIntegrationsInput!) {
+  payload: upsertCourseIntegrations(
+    spaceId: $spaceId
+    courseIntegrationInput: $input
+  ) {
+    discordRoleIds
+    discordRolePassingCount
+    discordWebhook
+    projectGalaxyCredentialId
+    projectGalaxyOatMintUrl
+    projectGalaxyOatPassingCount
+    projectGalaxyOatMintedContent
+  }
+}
+    `;
+export type UpsertCourseIntegrationsMutationFn = Apollo.MutationFunction<UpsertCourseIntegrationsMutation, UpsertCourseIntegrationsMutationVariables>;
+
+/**
+ * __useUpsertCourseIntegrationsMutation__
+ *
+ * To run a mutation, you first call `useUpsertCourseIntegrationsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertCourseIntegrationsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertCourseIntegrationsMutation, { data, loading, error }] = useUpsertCourseIntegrationsMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpsertCourseIntegrationsMutation(baseOptions?: Apollo.MutationHookOptions<UpsertCourseIntegrationsMutation, UpsertCourseIntegrationsMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpsertCourseIntegrationsMutation, UpsertCourseIntegrationsMutationVariables>(UpsertCourseIntegrationsDocument, options);
+      }
+export type UpsertCourseIntegrationsMutationHookResult = ReturnType<typeof useUpsertCourseIntegrationsMutation>;
+export type UpsertCourseIntegrationsMutationResult = Apollo.MutationResult<UpsertCourseIntegrationsMutation>;
+export type UpsertCourseIntegrationsMutationOptions = Apollo.BaseMutationOptions<UpsertCourseIntegrationsMutation, UpsertCourseIntegrationsMutationVariables>;
 export const UpsertGnosisSafeWalletsDocument = gql`
     mutation UpsertGnosisSafeWallets($spaceId: String!, $wallets: [GnosisSafeWalletInput!]!) {
   payload: upsertGnosisSafeWallets(spaceId: $spaceId, wallets: $wallets) {

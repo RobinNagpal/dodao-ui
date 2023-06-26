@@ -6,7 +6,7 @@ export interface SpaceEditType extends Omit<UpsertSpaceInput, 'id'> {
   id?: string;
 }
 
-type UseEditSpaceHelper = {
+export type UseEditSpaceHelper = {
   setSpaceIntegrationField: (field: keyof UpsertSpaceInput['spaceIntegrations'], value: any) => void;
   setSpaceField: (field: keyof UpsertSpaceInput, value: any) => void;
   setInviteLinkField: (field: keyof UpsertSpaceInput['inviteLinks'], value: any) => void;

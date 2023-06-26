@@ -225,6 +225,11 @@ input CreateSignedUrlInput {
   objectId: String!
 }
 
+"""
+A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.This scalar is serialized to a string in ISO 8601 format and parsed from a string in ISO 8601 format.
+"""
+scalar DateTimeISO
+
 input DeleteTopicExplanationInput {
   courseKey: String!
   explanationKey: String!
@@ -368,7 +373,7 @@ input GitCourseReadingsSubmissionInput {
 
 type GitCourseSubmission {
   courseKey: String!
-  createdAt: Int!
+  createdAt: String!
   createdBy: String!
   galaxyCredentialsUpdated: Boolean
   isLatestSubmission: Boolean
@@ -379,7 +384,7 @@ type GitCourseSubmission {
   spaceId: String!
   status: String!
   topicSubmissions: [GitCourseTopicSubmission!]!
-  updatedAt: Int!
+  updatedAt: DateTimeISO!
   uuid: String!
 }
 
@@ -419,7 +424,7 @@ type GitCourseTopicSubmission {
   correctAnswers: [GitCourseTopicCorrectAnswer!]
   courseKey: String!
   courseSubmissionUuid: String!
-  createdAt: Int!
+  createdAt: DateTimeISO!
   createdBy: String!
   isLatestSubmission: Boolean!
   questionsAttempted: Int
@@ -430,7 +435,7 @@ type GitCourseTopicSubmission {
   status: String!
   submission: GitCourseTopicSubmissionJson
   topicKey: String!
-  updatedAt: Int!
+  updatedAt: DateTimeISO!
   uuid: String!
 }
 
@@ -815,6 +820,7 @@ type Query {
   guideSubmissions(guideUuid: String!): [GuideSubmission!]!
   guides(spaceId: String!): [Guide!]!
   rawGitCourse(key: String!, spaceId: String!): RawGitCourse!
+  rawGitCourses(spaceId: String!): [RawGitCourse!]!
   simulation(simulationId: String!, spaceId: String!): Simulation!
   simulations(spaceId: String!): [Simulation!]!
   space(domain: String, id: String): Space

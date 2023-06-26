@@ -274,6 +274,15 @@ query RawGitCourse($spaceId: String!, $key: String!) {
   }
 }
 
+query RawGitCourses($spaceId: String!) {
+  payload: rawGitCourses(spaceId: $spaceId) {
+    key
+    courseJsonUrl
+    courseRepoUrl
+    weight
+  }
+}
+
 query GitCourseSummarized($spaceId: String!, $key: String!) {
   payload: gitCourseSummarized(spaceId: $spaceId, key: $key) {
     key
