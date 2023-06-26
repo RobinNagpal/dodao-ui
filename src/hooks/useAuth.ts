@@ -59,7 +59,7 @@ export function useAuth() {
   const reloadSession = () => {
     const event = new Event('visibilitychange');
     document.dispatchEvent(event);
-    window.close();
+    // window.close();
   };
   const doSigin = async (loginFn: () => Promise<void>) => {
     try {
