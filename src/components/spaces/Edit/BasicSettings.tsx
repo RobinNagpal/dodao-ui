@@ -43,6 +43,7 @@ export default function BasicSettings(props: { editSpaceHelper: UseEditSpaceHelp
             onUpdate={(value) => setSpaceIntegrationField('academyRepository', value?.toString() || '')}
           />
           <UpsertBadgeInput
+            label={'Domains'}
             badges={space.domains.map((d) => ({ id: d, label: d }))}
             onAdd={(d) => {
               setSpaceField('domains', union(space.domains, [d]));
@@ -51,6 +52,19 @@ export default function BasicSettings(props: { editSpaceHelper: UseEditSpaceHelp
               setSpaceField(
                 'domains',
                 space.domains.filter((domain) => domain !== d)
+              );
+            }}
+          />
+          <UpsertBadgeInput
+            label={'Admins By Usernames'}
+            badges={space.adminUsernames.map((d) => ({ id: d, label: d }))}
+            onAdd={(admin) => {
+              setSpaceField('adminUsernames', union(space.adminUsernames, [admin]));
+            }}
+            onRemove={(d) => {
+              setSpaceField(
+                'adminUsernames',
+                space.adminUsernames.filter((domain) => domain !== d)
               );
             }}
           />

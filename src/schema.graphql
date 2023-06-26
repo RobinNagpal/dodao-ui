@@ -879,6 +879,7 @@ input SimulationStepInput {
 }
 
 type Space {
+  adminUsernames: [String!]!
   admins: [String!]!
   avatar: String
   creator: String!
@@ -1119,6 +1120,7 @@ input UpsertSimulationInput {
 }
 
 input UpsertSpaceInput {
+  adminUsernames: [String!]!
   admins: [String!]!
   avatar: String!
   creator: String!

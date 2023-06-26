@@ -20,6 +20,7 @@ export default function useEditSpace(spaceId?: string): UseEditSpaceHelper {
   const [space, setSpace] = useState<SpaceEditType>({
     id: spaceId,
     admins: [],
+    adminUsernames: [],
     avatar: '',
     creator: '',
     features: [],
@@ -56,6 +57,7 @@ export default function useEditSpace(spaceId?: string): UseEditSpaceHelper {
         setSpace({
           id: spaceResponse.id,
           admins: spaceResponse.admins,
+          adminUsernames: spaceResponse.adminUsernames,
           avatar: spaceResponse.avatar || '',
           creator: spaceResponse.creator,
           features: spaceResponse.features,
@@ -91,6 +93,7 @@ export default function useEditSpace(spaceId?: string): UseEditSpaceHelper {
     return {
       id: spaceId,
       admins: space.admins,
+      adminUsernames: space.adminUsernames,
       avatar: space.avatar,
       creator: space.creator,
       features: space.features,

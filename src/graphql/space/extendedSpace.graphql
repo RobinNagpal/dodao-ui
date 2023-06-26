@@ -13,6 +13,7 @@ fragment SpaceWithIntegrations on Space {
     showAnimatedButtonForTelegram
   }
   admins
+  adminUsernames
   spaceIntegrations {
     academyRepository
     discordGuildId

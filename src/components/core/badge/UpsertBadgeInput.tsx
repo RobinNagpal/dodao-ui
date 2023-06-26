@@ -9,6 +9,7 @@ export interface Badges {
 }
 
 export interface UpsertBadgeItemsProps {
+  label: string;
   badges: Badges[];
   onAdd: (label: string) => void;
   onRemove: (id: string) => void;
@@ -19,7 +20,7 @@ export default function UpsertBadgeInput(props: UpsertBadgeItemsProps) {
   return (
     <div>
       <div className="flex w-full items-end mb-2">
-        <Input label="Domains" onUpdate={(v) => setDomain(v?.toString() || '')} modelValue={domain} className="grow" />
+        <Input label={props.label} onUpdate={(v) => setDomain(v?.toString() || '')} modelValue={domain} className="grow" />
         <Button
           onClick={() => {
             props.onAdd(domain);

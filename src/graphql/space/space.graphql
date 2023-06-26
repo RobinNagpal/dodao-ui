@@ -1,6 +1,7 @@
 fragment SpaceSummary on Space {
   id
   admins
+  adminUsernames
   avatar
   creator
   name
