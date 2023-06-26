@@ -32,7 +32,7 @@ export default function GenerateContentUsingAIModal(props: GenerateContentUsingA
 
   const [topic, setTopic] = useState<string>(props.topic);
   const [contents, setContents] = useState<string>('');
-  const [guidelines, setGuideLines] = useState<string>('');
+  const [guidelines, setGuideLines] = useState<string>(props.guidelines);
 
   const { showNotification } = useNotificationContext();
   const generateResponse = async () => {
@@ -93,7 +93,7 @@ export default function GenerateContentUsingAIModal(props: GenerateContentUsingA
           id="content"
           autosize={true}
           modelValue={guidelines}
-          minHeight={200}
+          minHeight={100}
           onUpdate={(e) => setGuideLines(e?.toString() || '')}
           className="mt-6"
           placeholder={`1. Generate two to three paragraphs of content.
@@ -105,7 +105,7 @@ export default function GenerateContentUsingAIModal(props: GenerateContentUsingA
           id="content"
           autosize={true}
           modelValue={contents}
-          minHeight={400}
+          minHeight={250}
           onUpdate={(e) => setContents(e?.toString() || '')}
           className="mt-6"
           placeholder={'Enter all the content and the links from where you want to generate the Tidbit'}

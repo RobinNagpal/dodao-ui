@@ -42,6 +42,9 @@ interface GuideStepProps {
   editGuideHelper: UseEditGuideHelper;
 }
 
+const defaultGuidelines = `1) Create four to five paragraphs as the output
+2) Each paragraph should be at least 4 sentences long`;
+
 const StepContainer = styled.div`
   // Create a styled-component for styles where Tailwind classes are not available.
   min-height: 40px;
@@ -416,10 +419,7 @@ const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHas
           onClose={() => setModalGenerateContentUsingAIOpen(false)}
           modalTitle={'Generate Content Using AI'}
           topic={guide.name + ' - ' + step.name}
-          guidelines={`
-            1) Create four to five paragraphs as the output
-            2) Each paragraph should be at least 4 sentences long
-          `}
+          guidelines={defaultGuidelines}
           onGenerateContent={(generatedContent) => {
             if (generatedContent) {
               updateStepContent(generatedContent);
