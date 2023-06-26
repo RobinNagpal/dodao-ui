@@ -22,21 +22,28 @@ function Home({ space }: { space: SpaceWithIntegrationsFragment }) {
       <PageWithSpace>
         {(space) => {
           return (
-            <div>
-              <div className="pt-[150px]">
-                <Grid2Cols>
-                  <div className="flex flex-col justify-center pr-[48px] max-w-md">
-                    <h1 dangerouslySetInnerHTML={{ __html: $t(`academy.${space.id}.academyHeading`) }} className="text-4xl" />
-                    <div className="pt-2" dangerouslySetInnerHTML={{ __html: $t(`academy.${space.id}.academyText`) }} />
-                  </div>
-                  <Lottie animationData={DeveloperLottie} loop={true} />
-                </Grid2Cols>
+            <div className="flex justify-center">
+              <div>
+                <div className="pt-[150px]">
+                  <Grid2Cols>
+                    <div className="flex flex-col justify-center pr-[38px] pl-[20px] max-w-md sm:px-[24px]">
+                      <h1
+                        dangerouslySetInnerHTML={{ __html: $t(`academy.${space.id}.academyHeading`) }}
+                        className="text-3xl sm:text-4xl "
+                      />
+                      <div className="pt-2text-sm sm:text-base" dangerouslySetInnerHTML={{ __html: $t(`academy.${space.id}.academyText`) }} />
+                    </div>
+                    <Lottie animationData={DeveloperLottie} loop={true} />
+                  </Grid2Cols>
+                </div>
+              <div className="px-[36px] sm:px-[24px]">
+                  <Grid2Cols>
+                    {sortedSpaceFeatures.map((feature) => (
+                      <HomeIcon space={space} feature={feature} key={feature.featureName} />
+                    ))}
+                  </Grid2Cols>
+                </div>
               </div>
-              <Grid2Cols>
-                {sortedSpaceFeatures.map((feature) => (
-                  <HomeIcon space={space} feature={feature} key={feature.featureName} />
-                ))}
-              </Grid2Cols>
             </div>
           );
         }}
@@ -44,5 +51,8 @@ function Home({ space }: { space: SpaceWithIntegrationsFragment }) {
     </PageWrapper>
   );
 }
+
+
+
 
 export default withSpace(Home);
