@@ -1,7 +1,7 @@
 export interface GitCourseSubmissionModel {
   uuid: string;
   courseKey: string;
-  createdAt: number;
+  createdAt: string;
   createdBy: string;
   galaxyCredentialsUpdated?: boolean;
   isLatestSubmission?: boolean;
