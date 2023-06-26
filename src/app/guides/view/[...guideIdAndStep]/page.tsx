@@ -17,7 +17,7 @@ import styled from 'styled-components';
 import React, { useState, useEffect, useMemo } from 'react';
 
 const InProgress = styled.div`
-  font-size: 12px;
+  font-size: 0.75em;
   padding-top: 2px;
   padding-bottom: 2px;
 `;

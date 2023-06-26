@@ -21,7 +21,7 @@ const DiscordButton = styled.a`
   border: 1px solid;
   outline: none;
   padding: 8px 16px;
-  font-size: 18px;
+  font-size: calc(18/16)rem;
   font-weight: 500;
   min-width: 220px;
   line-height: 36px;
