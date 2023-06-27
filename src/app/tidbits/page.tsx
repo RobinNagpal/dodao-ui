@@ -16,6 +16,8 @@ function Byte({ space }: SpaceProps) {
   const loadingData = loading || !space;
   return (
     <PageWrapper>
+       <div className="flex justify-center items-center px-5 sm:px-0">
+
       {!data?.bytes.length && !loadingData && <NoByte />}
       {!!data?.bytes?.length && (
         <Grid4Cols>
@@ -30,6 +32,7 @@ function Byte({ space }: SpaceProps) {
           <RowLoading className="my-2" />
         </Block>
       )}
+      </div>
     </PageWrapper>
   );
 }
