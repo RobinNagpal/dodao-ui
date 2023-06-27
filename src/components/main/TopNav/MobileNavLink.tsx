@@ -7,6 +7,7 @@ const StyledNavLink = styled.a<{ isActive: boolean }>`
   border-color: ${(props) => (props.isActive ? 'var(--primary-color)' : '')};
   color: ${(props) => (props.isActive ? 'var(--primary-color)' : '')};
 `;
+
 export function MobileNavLink({ label, href }: { label: string; isActive?: boolean; href: string }) {
   const pathname = usePathname();
   const isActive = pathname === href;
@@ -15,7 +16,7 @@ export function MobileNavLink({ label, href }: { label: string; isActive?: boole
     <Disclosure.Button as={Fragment}>
       <StyledNavLink
         isActive={isActive}
-        href="#"
+        href={href} // Update the href prop here
         className={
           isActive
             ? 'block border-l-4 bg-gray-100 py-2 pl-3 pr-4 text-base font-medium sm:pl-5 sm:pr-6'
