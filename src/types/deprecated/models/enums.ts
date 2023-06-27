@@ -21,6 +21,14 @@ export enum PublishStatus {
   Draft = 'Draft',
 }
 
+export enum Themes {
+  Uniswap = 'Uniswap',
+  DoDAO = 'DoDAO',
+  Compound = 'Compound',
+  Aave = 'Aave',
+  Balancer = 'Balancer',
+}
+
 export const UserDiscordConnectType = 'UserDiscordConnect';
 
 export enum QuestionType {
