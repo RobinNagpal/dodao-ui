@@ -155,6 +155,7 @@ type ByteUserInput {
 input ChatCompletionAIInput {
   messages: [OpenAIChatMessageInput!]!
   model: String
+  temperature: Float
 }
 
 enum ChatCompletionRequestMessageRoleEnum {
@@ -166,6 +167,7 @@ enum ChatCompletionRequestMessageRoleEnum {
 input CompletionAIInput {
   model: String
   prompt: String!
+  temperature: Float
 }
 
 input CourseBasicInfoInput {

@@ -180,6 +180,7 @@ export interface ByteUserInput {
 export interface ChatCompletionAiInput {
   messages: Array<OpenAiChatMessageInput>;
   model?: InputMaybe<Scalars['String']>;
+  temperature?: InputMaybe<Scalars['Float']>;
 }
 
 export enum ChatCompletionRequestMessageRoleEnum {
@@ -191,6 +192,7 @@ export enum ChatCompletionRequestMessageRoleEnum {
 export interface CompletionAiInput {
   model?: InputMaybe<Scalars['String']>;
   prompt: Scalars['String'];
+  temperature?: InputMaybe<Scalars['Float']>;
 }
 
 export interface CourseBasicInfoInput {
