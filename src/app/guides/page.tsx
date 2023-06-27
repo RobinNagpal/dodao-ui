@@ -16,6 +16,7 @@ function Guide({ space }: SpaceProps) {
   const loadingData = loading || !space;
   return (
     <PageWrapper>
+      <div className="flex justify-center items-center px-5 sm:px-0">
       {!data?.guides?.length && !loadingData && <NoGuide />}
       {!!data?.guides?.length && (
         <Grid4Cols>
@@ -30,6 +31,7 @@ function Guide({ space }: SpaceProps) {
           <RowLoading className="my-2" />
         </Block>
       )}
+      </div>
     </PageWrapper>
   );
 }
