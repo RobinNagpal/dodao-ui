@@ -121,7 +121,7 @@ export default function GenerateQuestionUsingAIModal(props: GenerateQuestionUsin
           minHeight={250}
           onUpdate={(e) => {
             const contents = e?.toString() || '';
-            if (contents.length > 4000) {
+            if (contents.length > 6000) {
               setWarning('Content is too long. Lesser the content, more relevant the questions are.');
             } else if (containsURL(contents)) {
               setWarning('Content contains URL. Please remove the URL from the content.');
