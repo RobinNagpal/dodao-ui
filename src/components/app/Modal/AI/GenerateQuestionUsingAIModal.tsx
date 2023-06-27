@@ -14,6 +14,7 @@ import {
 import { PublishStatus } from '@/types/deprecated/models/enums';
 import { publishStatusesSelect } from '@/utils/ui/statuses';
 import { FetchResult } from '@apollo/client';
+import { sum } from 'lodash';
 
 import React, { useState } from 'react';
 
@@ -58,8 +59,9 @@ export default function GenerateQuestionUsingAIModal(props: GenerateQuestionUsin
       });
 
       const downloadAndCleanContent = cleanContents.data?.downloadAndCleanContent;
-      const tokenCount = downloadAndCleanContent?.tokenCount;
-      const text = downloadAndCleanContent?.text;
+      const links = downloadAndCleanContent?.links;
+      const tokenCount = (links?.length || 0) > 0 ? sum(links?.map((link) => link?.tokenCount || 0)) : 0;
+      const text = downloadAndCleanContent?.content!;
 
       if (!text) {
         setLoading(false);

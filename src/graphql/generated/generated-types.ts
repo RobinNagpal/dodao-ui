@@ -282,6 +282,19 @@ export interface DeleteTopicVideoInput {
   videoUuid: Scalars['String'];
 }
 
+export interface DownloadAndCleanContentResponse {
+  __typename?: 'DownloadAndCleanContentResponse';
+  content: Scalars['String'];
+  links: Array<DownloadLinkInfo>;
+}
+
+export interface DownloadLinkInfo {
+  __typename?: 'DownloadLinkInfo';
+  downloadStatus: Scalars['String'];
+  link: Scalars['String'];
+  tokenCount: Scalars['Int'];
+}
+
 export interface ExtractRelevantTextForTopicInput {
   content: Scalars['String'];
   topic: Scalars['String'];
@@ -747,7 +760,7 @@ export interface Mutation {
   deleteTopicQuestion: GitCourse;
   deleteTopicSummary: GitCourse;
   deleteTopicVideo: GitCourse;
-  downloadAndCleanContent: OpenAiTextResponse;
+  downloadAndCleanContent: DownloadAndCleanContentResponse;
   extractRelevantTextForTopic: OpenAiTextResponse;
   initializeGitCourseSubmission: GitCourseSubmission;
   moveTopic: GitCourse;
@@ -2210,7 +2223,7 @@ export type DownloadAndCleanContentMutationVariables = Exact<{
 }>;
 
 
-export type DownloadAndCleanContentMutation = { __typename?: 'Mutation', downloadAndCleanContent: { __typename?: 'OpenAITextResponse', text: string, tokenCount: number } };
+export type DownloadAndCleanContentMutation = { __typename?: 'Mutation', downloadAndCleanContent: { __typename?: 'DownloadAndCleanContentResponse', content: string, links: Array<{ __typename?: 'DownloadLinkInfo', downloadStatus: string, link: string, tokenCount: number }> } };
 
 export type SimulationStepFragment = { __typename?: 'SimulationStep', content: string, iframeUrl?: string | null, name: string, uuid: string, order: number };
 
@@ -5151,8 +5164,12 @@ export type ExtractRelevantTextForTopicMutationOptions = Apollo.BaseMutationOpti
 export const DownloadAndCleanContentDocument = gql`
     mutation DownloadAndCleanContent($input: String!) {
   downloadAndCleanContent(input: $input) {
-    text
-    tokenCount
+    content
+    links {
+      downloadStatus
+      link
+      tokenCount
+    }
   }
 }
     `;

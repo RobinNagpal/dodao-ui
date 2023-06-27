@@ -64,7 +64,7 @@ export function CreateByteUsingAIModal(props: CreateByteUsingAIModalProps) {
         },
       });
 
-      const inputContent = geneateBytePrompt(topic, cleanContents.data?.downloadAndCleanContent.text!);
+      const inputContent = geneateBytePrompt(topic, cleanContents.data?.downloadAndCleanContent.content!);
 
       console.log('inputContent', inputContent);
       const responsePromise = askChatCompletionAiMutation({

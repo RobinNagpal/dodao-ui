@@ -4,13 +4,8 @@ import Input from '@/components/core/input/Input';
 import FullScreenModal from '@/components/core/modals/FullScreenModal';
 import TextareaAutosize from '@/components/core/textarea/TextareaAutosize';
 import { useNotificationContext } from '@/contexts/NotificationContext';
-import {
-  AskChatCompletionAiMutation,
-  ChatCompletionRequestMessageRoleEnum,
-  useAskChatCompletionAiMutation,
-  useDownloadAndCleanContentMutation,
-} from '@/graphql/generated/generated-types';
-import { FetchResult } from '@apollo/client';
+import { ChatCompletionRequestMessageRoleEnum, useAskChatCompletionAiMutation, useDownloadAndCleanContentMutation } from '@/graphql/generated/generated-types';
+import { sum } from 'lodash';
 
 import { useState } from 'react';
 
@@ -50,8 +45,9 @@ export default function GenerateContentUsingAIModal(props: GenerateContentUsingA
       });
 
       const cleanContentResponse = cleanContents.data?.downloadAndCleanContent;
-      const tokenCount = cleanContentResponse?.tokenCount;
-      const cleanedContentText = cleanContentResponse?.text!;
+      const links = cleanContentResponse?.links;
+      const tokenCount = (links?.length || 0) > 0 ? sum(links?.map((link) => link?.tokenCount || 0)) : 0;
+      const cleanedContentText = cleanContentResponse?.content!;
 
       if (!cleanedContentText) {
         setLoading(false);

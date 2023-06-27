@@ -259,6 +259,17 @@ input DeleteTopicVideoInput {
   videoUuid: String!
 }
 
+type DownloadAndCleanContentResponse {
+  content: String!
+  links: [DownloadLinkInfo!]!
+}
+
+type DownloadLinkInfo {
+  downloadStatus: String!
+  link: String!
+  tokenCount: Int!
+}
+
 input ExtractRelevantTextForTopicInput {
   content: String!
   topic: String!
@@ -706,7 +717,7 @@ type Mutation {
   deleteTopicQuestion(questionInfo: DeleteTopicQuestionInput!, spaceId: String!): GitCourse!
   deleteTopicSummary(spaceId: String!, summaryInfo: DeleteTopicSummaryInput!): GitCourse!
   deleteTopicVideo(spaceId: String!, videoInfo: DeleteTopicVideoInput!): GitCourse!
-  downloadAndCleanContent(input: String!): OpenAITextResponse!
+  downloadAndCleanContent(input: String!): DownloadAndCleanContentResponse!
   extractRelevantTextForTopic(input: ExtractRelevantTextForTopicInput!): OpenAITextResponse!
   initializeGitCourseSubmission(courseKey: String!, spaceId: String!): GitCourseSubmission!
   moveTopic(spaceId: String!, topicInfo: MoveTopicInput!): GitCourse!
