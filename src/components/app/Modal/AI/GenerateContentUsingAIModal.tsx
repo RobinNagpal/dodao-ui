@@ -14,7 +14,6 @@ export interface GenerateContentUsingAIModalProps {
   onClose: () => void;
   onGenerateContent: (content: string | null | undefined) => void;
   modalTitle: string;
-  topic: string;
   guidelines: string;
   generatePrompt: (topic: string, guidelines: string, cleanedContent: string) => string;
 }
@@ -26,7 +25,7 @@ export default function GenerateContentUsingAIModal(props: GenerateContentUsingA
   const [askChatCompletionAiMutation] = useAskChatCompletionAiMutation();
   const [downloadAndCleanContentMutation] = useDownloadAndCleanContentMutation();
 
-  const [topic, setTopic] = useState<string>(props.topic);
+  const [topic, setTopic] = useState<string>('');
   const [contents, setContents] = useState<string>('');
   const [guidelines, setGuideLines] = useState<string>(props.guidelines);
 
@@ -38,6 +37,12 @@ export default function GenerateContentUsingAIModal(props: GenerateContentUsingA
     setError(null);
 
     try {
+      if (topic.length < 10) {
+        setLoading(false);
+        setError('Please enter a topic with at least 10 characters');
+        return;
+      }
+
       const cleanContents = await downloadAndCleanContentMutation({
         variables: {
           input: contents,

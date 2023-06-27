@@ -7,6 +7,7 @@ export default function generateGuideContentPrompt(topic: string, guidelines: st
   2. The output should be in your own words and not copied from the content provided.
   3. The output should be between 4-8 paragraphs.
   4. The output should be related to the topic: ${topic}
+  5. Don't create a conclusion paragraph.
  
   Also follow the following guidelines:
   ${guidelines}

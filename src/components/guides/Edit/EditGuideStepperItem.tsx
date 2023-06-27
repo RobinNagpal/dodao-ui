@@ -418,7 +418,6 @@ const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHas
           open={modalGenerateContentUsingAIOpen}
           onClose={() => setModalGenerateContentUsingAIOpen(false)}
           modalTitle={'Generate Content Using AI'}
-          topic={guide.name + ' - ' + step.name}
           guidelines={defaultGuidelines}
           onGenerateContent={(generatedContent) => {
             if (generatedContent) {
@@ -440,7 +439,6 @@ const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHas
           open={modalGenerateQuestionsUsingAIOpen}
           onClose={() => setModalGenerateQuestionsUsingAIOpen(false)}
           modalTitle={'Generate Content Using AI'}
-          topic={guide.name + ' - ' + step.name}
           onGenerateContent={(questions) => {
             addGeneratedQuestions(questions);
             setModalGenerateQuestionsUsingAIOpen(false);

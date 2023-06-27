@@ -6,25 +6,25 @@ Then populate the questions in the following JSON template
 
 
 [{
-  "content": "Question 1",
+  "content": "What is an asset?",
   "answerKeys": [
-    "B"
+    "A"
   ],
-  "explanation": "Explanation for the correct choice",
+  "explanation": "Property owned by a person or company, regarded as having value and available to meet debts, commitments, or legacies.",
   "choices": [{
-      "content": "Choice A",
+      "content": "Something that is owned by a person or company and increases in value over time",
       "key": "A"
     },
     {
-      "content": "Choice B",
+      "content": "Something that you buy from a shop",
       "key": "B"
     },
     {
-      "content": "Choice C",
+      "content": "Something that decreases in value over time",
       "key": "C"
     },
     {
-      "content": "Choice D",
+      "content": "Something that you buy for fun",
       "key": "D"
     }
   ]
@@ -42,14 +42,11 @@ ${contents}
 
 
 
-
-
 Make sure
+- Only one choice is correct and rest are incorrect.
 - Output the questions as json array. 
 - Output should be in pure and valid JSON Array format.
 
-focus on this --> "Here is the New content below return me the json array only of the below content Never return tags" .
-
-
-`;
+The JSON object:
+`.trim();
 }
