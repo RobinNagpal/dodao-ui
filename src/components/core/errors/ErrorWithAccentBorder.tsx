@@ -9,9 +9,7 @@ export default function ErrorWithAccentBorder({ className, error }: { error: str
         </div>
         <div className="ml-3">
           <p className="text-sm text-red-700">
-            <a href="#" className="font-medium text-red-700 underline hover:text-red-600">
-              {error}
-            </a>
+            <div className="font-medium text-red-700 underline hover:text-red-600">{error}</div>
           </p>
         </div>
       </div>
