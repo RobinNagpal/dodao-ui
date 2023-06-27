@@ -343,8 +343,7 @@ export interface GitCourseExplanationsSubmissionInput {
 }
 
 export interface GitCourseInput {
-  courseJsonUrl?: InputMaybe<Scalars['String']>;
-  courseRepoUrl?: InputMaybe<Scalars['String']>;
+  courseRepoUrl: Scalars['String'];
   publishStatus: Scalars['String'];
   weight: Scalars['Int'];
 }
@@ -1329,9 +1328,8 @@ export interface QuestionChoiceInput {
 
 export interface RawGitCourse {
   __typename?: 'RawGitCourse';
-  courseJsonUrl?: Maybe<Scalars['String']>;
-  courseRepoUrl?: Maybe<Scalars['String']>;
-  key: Scalars['String'];
+  courseKey: Scalars['String'];
+  courseRepoUrl: Scalars['String'];
   publishStatus: Scalars['String'];
   weight: Scalars['Int'];
 }
@@ -2047,14 +2045,22 @@ export type RawGitCourseQueryVariables = Exact<{
 }>;
 
 
-export type RawGitCourseQuery = { __typename?: 'Query', payload: { __typename?: 'RawGitCourse', key: string, courseJsonUrl?: string | null, courseRepoUrl?: string | null, weight: number } };
+export type RawGitCourseQuery = { __typename?: 'Query', payload: { __typename?: 'RawGitCourse', courseKey: string, courseRepoUrl: string, weight: number, publishStatus: string } };
+
+export type UpsertRawGitCourseMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+  courseInput: GitCourseInput;
+}>;
+
+
+export type UpsertRawGitCourseMutation = { __typename?: 'Mutation', payload?: { __typename?: 'SummarizedGitCourse', courseAdmins?: Array<string> | null, details: string, duration: string, highlights: Array<string>, key: string, priority?: number | null, publishStatus: string, summary: string, thumbnail: string, title: string, uuid: string } | null };
 
 export type RawGitCoursesQueryVariables = Exact<{
   spaceId: Scalars['String'];
 }>;
 
 
-export type RawGitCoursesQuery = { __typename?: 'Query', payload: Array<{ __typename?: 'RawGitCourse', key: string, courseJsonUrl?: string | null, courseRepoUrl?: string | null, weight: number }> };
+export type RawGitCoursesQuery = { __typename?: 'Query', payload: Array<{ __typename?: 'RawGitCourse', courseKey: string, courseRepoUrl: string, weight: number, publishStatus: string }> };
 
 export type GitCourseSummarizedQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -4372,10 +4378,10 @@ export type MoveTopicQuestionMutationOptions = Apollo.BaseMutationOptions<MoveTo
 export const RawGitCourseDocument = gql`
     query RawGitCourse($spaceId: String!, $key: String!) {
   payload: rawGitCourse(spaceId: $spaceId, key: $key) {
-    key
-    courseJsonUrl
+    courseKey
     courseRepoUrl
     weight
+    publishStatus
   }
 }
     `;
@@ -4411,13 +4417,57 @@ export type RawGitCourseQueryResult = Apollo.QueryResult<RawGitCourseQuery, RawG
 export function refetchRawGitCourseQuery(variables: RawGitCourseQueryVariables) {
       return { query: RawGitCourseDocument, variables: variables }
     }
+export const UpsertRawGitCourseDocument = gql`
+    mutation UpsertRawGitCourse($spaceId: String!, $courseInput: GitCourseInput!) {
+  payload: upsertGitCourse(spaceId: $spaceId, gitCourseInput: $courseInput) {
+    courseAdmins
+    details
+    duration
+    highlights
+    key
+    priority
+    publishStatus
+    summary
+    thumbnail
+    title
+    uuid
+  }
+}
+    `;
+export type UpsertRawGitCourseMutationFn = Apollo.MutationFunction<UpsertRawGitCourseMutation, UpsertRawGitCourseMutationVariables>;
+
+/**
+ * __useUpsertRawGitCourseMutation__
+ *
+ * To run a mutation, you first call `useUpsertRawGitCourseMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertRawGitCourseMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertRawGitCourseMutation, { data, loading, error }] = useUpsertRawGitCourseMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      courseInput: // value for 'courseInput'
+ *   },
+ * });
+ */
+export function useUpsertRawGitCourseMutation(baseOptions?: Apollo.MutationHookOptions<UpsertRawGitCourseMutation, UpsertRawGitCourseMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpsertRawGitCourseMutation, UpsertRawGitCourseMutationVariables>(UpsertRawGitCourseDocument, options);
+      }
+export type UpsertRawGitCourseMutationHookResult = ReturnType<typeof useUpsertRawGitCourseMutation>;
+export type UpsertRawGitCourseMutationResult = Apollo.MutationResult<UpsertRawGitCourseMutation>;
+export type UpsertRawGitCourseMutationOptions = Apollo.BaseMutationOptions<UpsertRawGitCourseMutation, UpsertRawGitCourseMutationVariables>;
 export const RawGitCoursesDocument = gql`
     query RawGitCourses($spaceId: String!) {
   payload: rawGitCourses(spaceId: $spaceId) {
-    key
-    courseJsonUrl
+    courseKey
     courseRepoUrl
     weight
+    publishStatus
   }
 }
     `;

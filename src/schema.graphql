@@ -316,8 +316,7 @@ input GitCourseExplanationsSubmissionInput {
 }
 
 input GitCourseInput {
-  courseJsonUrl: String
-  courseRepoUrl: String
+  courseRepoUrl: String!
   publishStatus: String!
   weight: Int!
 }
@@ -841,9 +840,8 @@ input QuestionChoiceInput {
 }
 
 type RawGitCourse {
-  courseJsonUrl: String
-  courseRepoUrl: String
-  key: String!
+  courseKey: String!
+  courseRepoUrl: String!
   publishStatus: String!
   weight: Int!
 }

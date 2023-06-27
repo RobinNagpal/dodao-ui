@@ -45,11 +45,11 @@ export default function UpsertSpace(props: UpsertSpaceProps) {
   }, [props.spaceId]);
 
   return (
-    <form>
+    <div>
       <div className="flex justify-end">
         <TabsWithUnderline selectedTabId={selectedTabId} setSelectedTabId={(id) => setSelectedTabId(id as TabIds)} tabs={tabs} className="w-96" />
       </div>
       <SettingsScreen selectedTabId={selectedTabId} editSpaceHelper={editSpaceHelper} spaceId={props.spaceId} />
-    </form>
+    </div>
   );
 }

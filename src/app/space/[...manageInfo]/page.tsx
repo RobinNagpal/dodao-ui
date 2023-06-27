@@ -1,26 +1,31 @@
 'use client';
 
 import SidebarLayout from '@/app/SidebarLayout';
+import WithSpace from '@/app/withSpace';
 import PageWrapper from '@/components/core/page/PageWrapper';
+import UpsertSpace from '@/components/spaces/Edit/UpsertSpace';
 import ListSpaces from '@/components/spaces/ListSpaces';
 import { ManageSpaceSubviews } from '@/components/spaces/manageSpaceSubviews';
 import SpaceDetails from '@/components/spaces/SpaceDetails';
-import UpsertSpace from '@/components/spaces/Edit/UpsertSpace';
+import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import classNames from '@/utils/classNames';
 import { CalendarIcon, ChartPieIcon, CircleStackIcon, DocumentDuplicateIcon, FolderIcon, HomeIcon, UsersIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 
-const navigation = [
-  { name: 'Dashboard', href: '#', icon: HomeIcon, current: true },
-  { name: 'Team', href: '#', icon: UsersIcon, current: false },
-  { name: 'Projects', href: '#', icon: FolderIcon, current: false },
-  { name: 'Calendar', href: '#', icon: CalendarIcon, current: false },
-  { name: 'Documents', href: '#', icon: DocumentDuplicateIcon, current: false },
-  { name: 'Reports', href: '#', icon: ChartPieIcon, current: false },
-  { name: 'Spaces', href: '/space/manage/' + ManageSpaceSubviews.SpacesList, icon: CircleStackIcon, current: false },
-];
+const getNavigation = (space: SpaceWithIntegrationsFragment) => {
+  const navigation = [
+    { name: 'Dashboard', href: `space/manage/${ManageSpaceSubviews.ViewSpace}/${space.id}`, icon: HomeIcon, current: true },
+    { name: 'Team', href: '#', icon: UsersIcon, current: false },
+    { name: 'Projects', href: '#', icon: FolderIcon, current: false },
+    { name: 'Calendar', href: '#', icon: CalendarIcon, current: false },
+    { name: 'Documents', href: '#', icon: DocumentDuplicateIcon, current: false },
+    { name: 'Reports', href: '#', icon: ChartPieIcon, current: false },
+    { name: 'Spaces', href: '/space/manage/' + ManageSpaceSubviews.SpacesList, icon: CircleStackIcon, current: false },
+  ];
 
-function GetSubview(props: { manageInfo: string[] }) {
+  return navigation;
+};
+function GetSubview(props: { manageInfo: string[]; space: SpaceWithIntegrationsFragment }) {
   const { manageInfo } = props;
 
   console.log('manageInfo', manageInfo);
@@ -38,22 +43,22 @@ function GetSubview(props: { manageInfo: string[] }) {
     return <ListSpaces />;
   }
   if (subView === ManageSpaceSubviews.ViewSpace) {
-    return <SpaceDetails spaceId={entityId} />;
+    return <SpaceDetails spaceId={entityId} editLink={`space/manage/${ManageSpaceSubviews.EditSpace}/${entityId}`} />;
   }
 
   if (subView === ManageSpaceSubviews.EditSpace) {
     return <UpsertSpace spaceId={entityId} />;
   }
 
-  return null;
+  return <SpaceDetails spaceId={props.space.id} editLink={`space/manage/${ManageSpaceSubviews.EditSpace}/${props.space.id}`} />;
 }
-function ManageSpace({ params }: { params: { manageInfo: string[] } }) {
+function ManageSpace({ params, space }: { params: { manageInfo: string[] }; space: SpaceWithIntegrationsFragment }) {
   const { manageInfo } = params;
-
+  console.log('manageInfo', space);
   return (
     <SidebarLayout>
       <ul role="list" className="-mx-2 space-y-1">
-        {navigation.map((item) => (
+        {getNavigation(space).map((item) => (
           <li key={item.name}>
             <Link
               href={item.href}
@@ -72,10 +77,10 @@ function ManageSpace({ params }: { params: { manageInfo: string[] } }) {
         ))}
       </ul>
       <PageWrapper>
-        <GetSubview manageInfo={manageInfo} />
+        <GetSubview manageInfo={manageInfo} space={space} />
       </PageWrapper>
     </SidebarLayout>
   );
 }
 
-export default ManageSpace;
+export default WithSpace(ManageSpace);

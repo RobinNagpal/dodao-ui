@@ -2,9 +2,10 @@ import React from 'react';
 
 const RowLoading = ({ className }: { className?: string }) => {
   return (
-    <div className="px-4 py-3 block">
-      <div className="bg-skin-text rounded-md animate-pulse-fast mb-2" style={{ width: '60%', height: '28px' }} />
-      <div className="bg-skin-text rounded-md animate-pulse-fast" style={{ width: '50%', height: '28px' }} />
+    <div className="flex flex-col gap-5 w-full py-4 px-2 border-b border-gray-200 animate-pulse">
+      <div className="w-2/12 ml-4 bg-gray-300 rounded h-10"></div>
+      <div className="w-2/12 ml-4 bg-gray-300 rounded h-10"></div>
+      <div className="w-2/12 ml-4 bg-gray-300 rounded h-10"></div>
     </div>
   );
 };

@@ -29,7 +29,7 @@ function Home({ space }: { space: SpaceWithIntegrationsFragment }) {
                     <h1 dangerouslySetInnerHTML={{ __html: $t(`academy.${space.id}.academyHeading`) }} className="text-4xl" />
                     <div className="pt-2" dangerouslySetInnerHTML={{ __html: $t(`academy.${space.id}.academyText`) }} />
                   </div>
-                  <Lottie animationData={DeveloperLottie} loop={true} />
+                  <Lottie animationData={DeveloperLottie} loop={true} className="max-h-96" />
                 </Grid2Cols>
               </div>
               <Grid2Cols>

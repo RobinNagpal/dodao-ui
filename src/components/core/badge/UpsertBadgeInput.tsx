@@ -1,7 +1,8 @@
 import BadgeWithRemove from '@/components/core/badge/BadgeWithRemove';
 import Button from '@/components/core/buttons/Button';
 import Input from '@/components/core/input/Input';
-import { FormEvent, useState } from 'react';
+import { InputWithButton } from '@/components/core/input/InputWithButton';
+import React, { FormEvent, useState } from 'react';
 
 export interface Badges {
   id: string;
@@ -29,10 +30,7 @@ export default function UpsertBadgeInput(props: UpsertBadgeItemsProps) {
   return (
     <form className={`${props.className ? props.className : ' '}`} onSubmit={addBadge} onSubmitCapture={addBadge}>
       <div className="flex w-full items-end mb-2">
-        <Input label={props.label} onUpdate={(v) => setNewBadge(v?.toString() || '')} modelValue={newBadge} className="grow" />
-        <Button onClick={addBadge} className="ml-2 grow-0 w-16" variant="contained" primary>
-          Add
-        </Button>
+        <InputWithButton buttonLabel={'Add'} inputLabel={props.label} onButtonClick={(repoUrl) => setNewBadge(repoUrl)} />
       </div>
 
       {props.badges.map((badge) => (

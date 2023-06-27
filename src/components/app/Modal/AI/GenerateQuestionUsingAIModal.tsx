@@ -54,7 +54,10 @@ export default function GenerateQuestionUsingAIModal(props: GenerateQuestionUsin
         },
       });
 
-      const inputContent = props.generatePrompt(topic, numberOfQuestions, cleanContents.data?.downloadAndCleanContent.text!);
+      const downloadAndCleanContent = cleanContents.data?.downloadAndCleanContent;
+      const tokenCount = downloadAndCleanContent?.tokenCount;
+      const text = downloadAndCleanContent?.text;
+      const inputContent = props.generatePrompt(topic, numberOfQuestions, text!);
 
       const responsePromise = askChatCompletionAiMutation({
         variables: {
