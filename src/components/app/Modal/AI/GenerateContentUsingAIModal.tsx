@@ -1,4 +1,5 @@
 import Button from '@/components/core/buttons/Button';
+import ErrorWithAccentBorder from '@/components/core/errors/ErrorWithAccentBorder';
 import Input from '@/components/core/input/Input';
 import FullScreenModal from '@/components/core/modals/FullScreenModal';
 import TextareaAutosize from '@/components/core/textarea/TextareaAutosize';
@@ -34,9 +35,12 @@ export default function GenerateContentUsingAIModal(props: GenerateContentUsingA
   const [contents, setContents] = useState<string>('');
   const [guidelines, setGuideLines] = useState<string>(props.guidelines);
 
+  const [error, setError] = useState<string | null>(null);
+
   const { showNotification } = useNotificationContext();
   const generateResponse = async () => {
     setLoading(true);
+    setError(null);
 
     try {
       const cleanContents = await downloadAndCleanContentMutation({
@@ -45,7 +49,23 @@ export default function GenerateContentUsingAIModal(props: GenerateContentUsingA
         },
       });
 
-      const inputContent = props.generatePrompt(topic, guidelines, cleanContents.data?.downloadAndCleanContent.text!);
+      const cleanContentResponse = cleanContents.data?.downloadAndCleanContent;
+      const tokenCount = cleanContentResponse?.tokenCount;
+      const cleanedContentText = cleanContentResponse?.text!;
+
+      if (!cleanedContentText) {
+        setLoading(false);
+        setError('Please enter valid content');
+        return;
+      }
+
+      if (tokenCount && tokenCount > 12000) {
+        setLoading(false);
+        setError('Please enter less content');
+        return;
+      }
+
+      const inputContent = props.generatePrompt(topic, guidelines, cleanedContentText);
 
       const responsePromise = askChatCompletionAiMutation({
         variables: {
@@ -111,6 +131,7 @@ export default function GenerateContentUsingAIModal(props: GenerateContentUsingA
           placeholder={'Enter all the content and the links from where you want to generate the Tidbit'}
         />
 
+        {error && <ErrorWithAccentBorder error={error} className={'my-4'} />}
         <Button loading={loading} onClick={() => generateResponse()} variant="contained" primary className="mt-4">
           Generate Using AI
         </Button>

@@ -441,18 +441,9 @@ const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHas
           onClose={() => setModalGenerateQuestionsUsingAIOpen(false)}
           modalTitle={'Generate Content Using AI'}
           topic={guide.name + ' - ' + step.name}
-          onGenerateContent={(generatedContent) => {
-            if (generatedContent) {
-              const questions = JSON.parse(generatedContent);
-              addGeneratedQuestions(questions);
-              setModalGenerateQuestionsUsingAIOpen(false);
-            } else {
-              showNotification({
-                heading: 'TimeOut Error',
-                type: 'error',
-                message: 'This request Took More time then Expected Please Try Again',
-              });
-            }
+          onGenerateContent={(questions) => {
+            addGeneratedQuestions(questions);
+            setModalGenerateQuestionsUsingAIOpen(false);
           }}
           generatePrompt={(topic: string, numberOfQuestions: number, contents: string) => generateQuestionsPrompt(topic, numberOfQuestions, contents)}
         />

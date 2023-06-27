@@ -1,4 +1,5 @@
 import Button from '@/components/core/buttons/Button';
+import ErrorWithAccentBorder from '@/components/core/errors/ErrorWithAccentBorder';
 import Input from '@/components/core/input/Input';
 import FullScreenModal from '@/components/core/modals/FullScreenModal';
 import StyledSelect from '@/components/core/select/StyledSelect';
@@ -19,7 +20,7 @@ import React, { useState } from 'react';
 export interface GenerateQuestionUsingAIModalProps {
   open: boolean;
   onClose: () => void;
-  onGenerateContent: (content: string | null | undefined) => void;
+  onGenerateContent: (questions: GeneratedQuestionInterface[]) => void;
   modalTitle: string;
   topic: string;
   generatePrompt: (topic: string, numberOfQuestion: number, cleanedContent: string) => string;
@@ -41,11 +42,13 @@ export default function GenerateQuestionUsingAIModal(props: GenerateQuestionUsin
 
   const [topic, setTopic] = useState<string>(props.topic);
   const [contents, setContents] = useState<string>('');
-  const [numberOfQuestions, setNumberOfQuestions] = useState<number>(2);
+  const [numberOfQuestions, setNumberOfQuestions] = useState<number>(3);
+  const [error, setError] = useState<string | null>(null);
 
   const { showNotification } = useNotificationContext();
   const generateResponse = async () => {
     setLoading(true);
+    setError(null);
 
     try {
       const cleanContents = await downloadAndCleanContentMutation({
@@ -57,6 +60,19 @@ export default function GenerateQuestionUsingAIModal(props: GenerateQuestionUsin
       const downloadAndCleanContent = cleanContents.data?.downloadAndCleanContent;
       const tokenCount = downloadAndCleanContent?.tokenCount;
       const text = downloadAndCleanContent?.text;
+
+      if (!text) {
+        setLoading(false);
+        setError('Please enter valid content');
+        return;
+      }
+
+      if (tokenCount && tokenCount > 12000) {
+        setLoading(false);
+        setError('Please enter less content');
+        return;
+      }
+
       const inputContent = props.generatePrompt(topic, numberOfQuestions, text!);
 
       const responsePromise = askChatCompletionAiMutation({
@@ -75,10 +91,25 @@ export default function GenerateQuestionUsingAIModal(props: GenerateQuestionUsin
 
       const response = (await Promise.race([responsePromise, timeoutPromise])) as FetchResult<AskChatCompletionAiMutation> | undefined;
 
-      const data = await response?.data?.askChatCompletionAI?.choices?.[0]?.message?.content;
+      try {
+        const data = response?.data?.askChatCompletionAI?.choices?.[0]?.message?.content;
 
-      setLoading(false);
-      props.onGenerateContent(data);
+        if (!data) {
+          setLoading(false);
+          setError('Was not able to create questions from the content. Please try again.');
+          return;
+        }
+
+        const questions = JSON.parse(data);
+        setLoading(false);
+        props.onGenerateContent(questions);
+      } catch (e) {
+        console.error(e);
+        console.log('response', response);
+        setLoading(false);
+        setError('Was not able to create questions from the content. Please try again.');
+        return;
+      }
     } catch (error) {
       console.error(error);
       setLoading(false);
@@ -118,11 +149,13 @@ export default function GenerateQuestionUsingAIModal(props: GenerateQuestionUsin
           id="content"
           autosize={true}
           modelValue={contents}
-          minHeight={400}
+          minHeight={250}
           onUpdate={(e) => setContents(e?.toString() || '')}
           className="mt-6"
           placeholder={'Enter all the content and the links from where you want to generate the Tidbit'}
         />
+
+        {error && <ErrorWithAccentBorder error={error} className={'my-4'} />}
 
         <Button loading={loading} onClick={() => generateResponse()} variant="contained" primary className="mt-4">
           Generate Using AI
