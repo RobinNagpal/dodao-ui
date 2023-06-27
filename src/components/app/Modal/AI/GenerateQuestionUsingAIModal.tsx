@@ -75,7 +75,7 @@ export default function GenerateQuestionUsingAIModal(props: GenerateQuestionUsin
 
       const inputContent = props.generatePrompt(topic, numberOfQuestions, text!);
 
-      const responsePromise = askChatCompletionAiMutation({
+      const response = await askChatCompletionAiMutation({
         variables: {
           input: {
             messages: [{ role: ChatCompletionRequestMessageRoleEnum.User, content: inputContent }],
@@ -83,13 +83,6 @@ export default function GenerateQuestionUsingAIModal(props: GenerateQuestionUsin
           },
         },
       });
-
-      const timeoutDuration = 50000;
-      const timeoutPromise = new Promise((_, reject) => {
-        setTimeout(() => reject(new Error('Request timeout')), timeoutDuration);
-      });
-
-      const response = (await Promise.race([responsePromise, timeoutPromise])) as FetchResult<AskChatCompletionAiMutation> | undefined;
 
       try {
         const data = response?.data?.askChatCompletionAI?.choices?.[0]?.message?.content;
