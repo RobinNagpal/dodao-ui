@@ -20,7 +20,7 @@ function Home({ space }: { space: SpaceWithIntegrationsFragment }) {
   return (
     <PageWrapper>
       <PageWithSpace>
-        {() => (
+        {(space) => (
           <div className="flex justify-center flex-col items-center">
             <div className="pt-[150px]">
               <Grid2Cols>
