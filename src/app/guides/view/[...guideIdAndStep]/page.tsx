@@ -69,7 +69,7 @@ const GuideView = ({ params, space }: { params: { guideIdAndStep: string[] }; sp
   // JSX starts here
   return (
     <PageWrapper className="pt-12">
-      <SingleCardLayout>
+      <SingleCardLayout >
         {viewGuideHelper.guideLoaded ? (
           <>
             {guide && (

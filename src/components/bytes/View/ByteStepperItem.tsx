@@ -39,12 +39,13 @@ import styled from 'styled-components';
 
 const StepContent = styled.div`
   background-color: var(--block-bg);
-  border-radius: 0.5rem;
+ 
 
-  @media (min-width: 640px) {
+  @media (min-width: 976px) {
     .previous-text {
       display: none;
     }
+    border-radius: 0.5rem;
   }
 `;
 
@@ -173,7 +174,7 @@ function ByteStepperItem({ viewByteHelper, step, byte, space, setAccountModalOpe
   const showQuestionsCompletionWarning = nextButtonClicked && (!isQuestionAnswered() || !isDiscordConnected() || !isUserInputComplete());
 
   return (
-    <StepContent className="px-2 lg:px-4 py-5 sm:px-6 flex flex-col justify-between w-full">
+    <StepContent className="  px-2 lg:px-4 py-5 sm:px-6 flex flex-col justify-between w-full">
       <div>
         <div className="flex justify-between">
           <div className="mt-2">
