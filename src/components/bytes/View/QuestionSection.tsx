@@ -12,23 +12,25 @@ export function QuestionSection(props: {
 }) {
   return (
     <div>
-      <h1>Question</h1>
+      <h2 className="text-2xl font-semibold mb-4">Question</h2> {/* Increase the size by using text-2xl class */}
       <div
-        className={props.nextButtonClicked && !props.allQuestionsAnsweredCorrectly && props.allQuestionsAnswered ? 'border-2 rounded-lg p-4 border-red' : ''}
+        className={props.nextButtonClicked && !props.allQuestionsAnsweredCorrectly && props.allQuestionsAnswered ? 'border-2 rounded-lg p-4 border-red-500' : ''}
       >
         {/* Show the correct option below in case the user's selection is wrong */}
         <div>
-          <Question question={props.stepItem} questionResponse={(props.stepItemSubmission as string[]) || []} onSelectAnswer={props.onSelectAnswer} />
+          <Question  question={props.stepItem} questionResponse={(props.stepItemSubmission as string[]) || []} onSelectAnswer={props.onSelectAnswer} />
         </div>
       </div>
-      {props.nextButtonClicked && !props.allQuestionsAnsweredCorrectly && props.allQuestionsAnswered && (
-        <div className="border-2 rounded-lg border-green p-4 mt-4">
+      {props.nextButtonClicked 
+      && !props.allQuestionsAnsweredCorrectly && props.allQuestionsAnswered && (
+        <div className="border-2 rounded-lg border-green-500 p-4 mt-4">
           <h3>Correct Answer</h3>
           <Question
             question={{
               ...props.stepItem,
               uuid: props.stepItem.uuid + '_readonly',
             }}
+            hideQuestion={true}
             questionResponse={props.stepItem.answerKeys || []}
             onSelectAnswer={() => {
               // do nothing
