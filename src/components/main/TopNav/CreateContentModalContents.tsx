@@ -12,7 +12,7 @@ export default function CreateContentModalContents({ hideModal }: { hideModal: (
   };
   return (
     <div className="pt-4 flex flex-col justify-center items-center w-full h-max">
-      <div className="p-4">
+      <div className="p-4 mb-[100%] sm:mb-0">
         <Grid2Cols>
           <Button variant="outlined" primary className="p-2 w-full" onClick={() => goToUrl('/tidbits/edit')}>
             Create Tidbit

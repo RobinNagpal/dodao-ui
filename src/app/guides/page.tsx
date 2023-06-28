@@ -16,20 +16,22 @@ function Guide({ space }: SpaceProps) {
   const loadingData = loading || !space;
   return (
     <PageWrapper>
-      {!data?.guides?.length && !loadingData && <NoGuide />}
-      {!!data?.guides?.length && (
-        <Grid4Cols>
-          {data?.guides?.map((guide: GuideSummaryFragment, i) => (
-            <GuideSummaryCard key={i} guide={guide} inProgress={false} />
-          ))}
-        </Grid4Cols>
-      )}
-      <div style={{ height: '10px', width: '10px', position: 'absolute' }} />
-      {loadingData && (
-        <Block slim={true}>
-          <RowLoading className="my-2" />
-        </Block>
-      )}
+      <div className="flex justify-center items-center px-5 sm:px-0">
+        {!data?.guides?.length && !loadingData && <NoGuide />}
+        {!!data?.guides?.length && (
+          <Grid4Cols>
+            {data?.guides?.map((guide: GuideSummaryFragment, i) => (
+              <GuideSummaryCard key={i} guide={guide} inProgress={false} />
+            ))}
+          </Grid4Cols>
+        )}
+        <div style={{ height: '10px', width: '10px', position: 'absolute' }} />
+        {loadingData && (
+          <Block slim={true}>
+            <RowLoading className="my-2" />
+          </Block>
+        )}
+      </div>
     </PageWrapper>
   );
 }

@@ -27,7 +27,7 @@ const Checkmark = styled.span`
 const Icon = styled.div`
   text-align: center;
   width: 30px;
-  font-size: 8px;
+  font-size: 0.5rem;
 `;
 
 interface TopicComponentProps {

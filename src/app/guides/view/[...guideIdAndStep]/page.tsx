@@ -17,7 +17,7 @@ import styled from 'styled-components';
 import React, { useState, useEffect, useMemo } from 'react';
 
 const InProgress = styled.div`
-  font-size: 12px;
+  font-size: 0.75em;
   padding-top: 2px;
   padding-bottom: 2px;
 `;
@@ -89,8 +89,8 @@ const GuideView = ({ params, space }: { params: { guideIdAndStep: string[] }; sp
               </div>
             )}
 
-            <div className="px-4 md:px-0">
-              <div className="ml-12 mt-4">
+            <div>
+              <div className="mt-5 ml-8 lg:ml-12">
                 <h1 className="mb-2 text-3xl">{guide?.name}</h1>
                 <div className="mb-4 text-xl">
                   <div className="flex justify-between">

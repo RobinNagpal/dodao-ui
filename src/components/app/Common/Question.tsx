@@ -42,9 +42,20 @@ interface QuestionProps {
   showHint?: boolean;
   correctAnswer?: string[];
   onSelectAnswer: (uuid: string, selectedAnswers: string[]) => void;
+  hideQuestion?: boolean; // New prop to hide the question
+  hideResponses?: boolean; // New prop to hide the responses
 }
 
-function Question({ answerClass = '', question, questionResponse, readonly, showHint = false, onSelectAnswer }: QuestionProps) {
+function Question({
+  answerClass = '',
+  question,
+  questionResponse,
+  readonly,
+  showHint = false,
+  onSelectAnswer,
+  hideQuestion = false,
+  hideResponses = false,
+}: QuestionProps) {
   const renderer = getMarkedRenderer();
   const questionContent = marked.parse(question.content, { renderer });
 
@@ -80,37 +91,43 @@ function Question({ answerClass = '', question, questionResponse, readonly, show
 
   return (
     <div className="bg-skin-block-bg">
-      <div className="flex justify-between items-center content-center">
-        <div className="markdown-body mb-2" dangerouslySetInnerHTML={{ __html: questionContent }}></div>
-        {showHint && question.hint && question.hint.toLowerCase() !== 'nohint' && (
-          <HintIconWrapper onClick={() => setDisplayHint(!displayHint)}>
-            <HintIcon height="30px" />
-          </HintIconWrapper>
-        )}
-      </div>
-      {questionWithFormattedChoices.choices.map((choice) => (
-        <div key={choice.key} className={`flex leading-loose items-center ${question.type === QuestionType.SingleChoice ? '-ml-2' : 'py-2'}`}>
-          {question.type === QuestionType.SingleChoice ? (
-            <Radio
-              id={question.uuid + choice.key}
-              questionId={question.uuid}
-              labelContent={choice.content}
-              isSelected={currentlySelectedChoices.includes(choice.key)}
-              onChange={() => selectSingleChoice(choice.key)}
-              readonly={readonly}
-            />
-          ) : (
-            <Checkbox
-              id={question.uuid + choice.key}
-              labelContent={choice.content}
-              onChange={(event: boolean) => selectMultipleChoice(choice.key, event)}
-              isChecked={currentlySelectedChoices.includes(choice.key)}
-              className={answerClass}
-              readonly={readonly}
-            />
+      {!hideQuestion && ( // Render the question only if hideQuestion is false
+        <div className="flex justify-between items-center content-center">
+          <div className="markdown-body mb-2 font-semibold" dangerouslySetInnerHTML={{ __html: questionContent }}></div>
+          {showHint && question.hint && question.hint.toLowerCase() !== 'nohint' && (
+            <HintIconWrapper onClick={() => setDisplayHint(!displayHint)}>
+              <HintIcon height="30px" />
+            </HintIconWrapper>
           )}
         </div>
-      ))}
+      )}
+      {!hideResponses && ( // Render the responses only if hideResponses is false
+        <>
+          {questionWithFormattedChoices.choices.map((choice) => (
+            <div key={choice.key} className={`flex leading-loose items-center ${question.type === QuestionType.SingleChoice ? '-ml-2' : 'py-2'}`}>
+              {question.type === QuestionType.SingleChoice ? (
+                <Radio
+                  id={question.uuid + choice.key}
+                  questionId={question.uuid}
+                  labelContent={choice.content}
+                  isSelected={currentlySelectedChoices.includes(choice.key)}
+                  onChange={() => selectSingleChoice(choice.key)}
+                  readonly={readonly}
+                />
+              ) : (
+                <Checkbox
+                  id={question.uuid + choice.key}
+                  labelContent={choice.content}
+                  onChange={(event: boolean) => selectMultipleChoice(choice.key, event)}
+                  isChecked={currentlySelectedChoices.includes(choice.key)}
+                  className={answerClass}
+                  readonly={readonly}
+                />
+              )}
+            </div>
+          ))}
+        </>
+      )}
       {displayHint && (
         <div className="border-t p-2 mt-4">
           <p>Hint: {question.hint}</p>

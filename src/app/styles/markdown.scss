@@ -337,7 +337,7 @@
 .markdown-body code {
   font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas,
     Liberation Mono, monospace;
-  font-size: 12px;
+  font-size: 0.75em;
   color: #a9a9a9;
 }
 
@@ -346,7 +346,7 @@
   margin-bottom: 0;
   font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas,
     Liberation Mono, monospace;
-  font-size: 12px;
+  font-size: 0.75em;
   word-wrap: normal;
 }
 
@@ -865,7 +865,7 @@
 .markdown-body .csv-data th {
   padding: 5px;
   overflow: hidden;
-  font-size: 12px;
+  font-size: 0.75em;
   line-height: 1;
   text-align: left;
   white-space: nowrap;
@@ -889,7 +889,7 @@
 }
 
 .markdown-body .footnotes {
-  font-size: 12px;
+  font-size: 0.75em;
   color: #57606a;
   border-top: 1px solid #d0d7de;
 }

@@ -10,25 +10,25 @@ interface HomeIconProps {
   space: SpaceWithIntegrationsFragment;
   feature: FeatureItem;
 }
-
 function Card({ space, heading, details, featureName }: { space: SpaceWithIntegrationsFragment; heading: string; details: string; featureName: FeatureName }) {
   const { $t } = useI18();
   return (
-    <div className="flex flex-col sm:flex-row">
+    <div className="flex flex-row">
       <Image
         src={$t(`academy.${space.id}.${featureName.toLowerCase()}Thumbnail`)}
-        className="academy-image w-full md:w-52 md:h-38 object-cover"
+        className="academy-image h-18 sm:h-38"
         alt={featureName}
-        width={250}
-        height={150}
+        width={120}
+        height={72}
       />
-      <div className="w-full">
-        <h2 className="text-xl text-center sm:text-left font-semibold px-4 py-2">{heading}</h2>
-        <p className="text-sm text-center sm:text-left break-words px-4 pb-4">{details}</p>
+      <div className="md:ml-4 sm:ml-2">
+        <h2 className="text-sm sm:text-xl text-left font-semibold px-4 py-2">{heading}</h2>
+        <p className="text-xs sm:text-sm text-left break-words px-4 pb-4">{details}</p>
       </div>
     </div>
   );
 }
+
 function HomeIcon({ space, feature }: HomeIconProps) {
   const { $t } = useI18();
 

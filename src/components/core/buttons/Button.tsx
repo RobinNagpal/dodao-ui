@@ -30,14 +30,14 @@ const StyledButton = styled.button<ButtonProps>`
   border-radius: 0.5rem;
   outline: none;
   height: 36px;
-  font-size: 15px;
+  font-size: calc(15 / 16) rem;
 
   ${(props) =>
     props.size === 'sm' &&
     css`
       padding: 0 16px;
       border-radius: 0.2rem;
-      font-size: 14px;
+      font-size: calc(14 / 16) rem;
       line-height: 26px;
       height: 28px;
     `}

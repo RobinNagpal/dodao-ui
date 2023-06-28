@@ -16,20 +16,22 @@ function Byte({ space }: SpaceProps) {
   const loadingData = loading || !space;
   return (
     <PageWrapper>
-      {!data?.bytes.length && !loadingData && <NoByte />}
-      {!!data?.bytes?.length && (
-        <Grid4Cols>
-          {data?.bytes?.map((byte, i) => (
-            <ByteSummaryCard key={i} byte={byte} />
-          ))}
-        </Grid4Cols>
-      )}
-      <div style={{ height: '10px', width: '10px', position: 'absolute' }} />
-      {loadingData && (
-        <Block slim={true}>
-          <RowLoading className="my-2" />
-        </Block>
-      )}
+      <div className="flex justify-center items-center px-5 sm:px-0">
+        {!data?.bytes.length && !loadingData && <NoByte />}
+        {!!data?.bytes?.length && (
+          <Grid4Cols>
+            {data?.bytes?.map((byte, i) => (
+              <ByteSummaryCard key={i} byte={byte} />
+            ))}
+          </Grid4Cols>
+        )}
+        <div style={{ height: '10px', width: '10px', position: 'absolute' }} />
+        {loadingData && (
+          <Block slim={true}>
+            <RowLoading className="my-2" />
+          </Block>
+        )}
+      </div>
     </PageWrapper>
   );
 }

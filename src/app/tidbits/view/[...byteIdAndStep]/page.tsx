@@ -14,7 +14,7 @@ import { useEffect } from 'react';
 import styled from 'styled-components';
 
 const ByteContainer = styled.div`
-  height: calc(100vh - 200px);
+  min-height: calc(100vh - 200px);
 `;
 
 const StyledByteCard = styled.div`
@@ -69,7 +69,7 @@ const ByteView = ({ params, space }: { params: { byteIdAndStep: string[] }; spac
             )}
 
             {byte && byte && (
-              <div className="px-2 lg:px-4 md:px-0">
+              <div className="px-2 lg:px-4 md:px-0 h-max">
                 <Block className="mt-4" slim>
                   <div className="mt-4">
                     <ByteStepper viewByteHelper={viewByteHelper} byte={byte} setAccountModalOpen={() => {}} space={space} />
