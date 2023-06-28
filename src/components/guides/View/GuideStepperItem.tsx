@@ -206,12 +206,12 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
           if (isQuestion(item)) {
             return (
               <div className="mb-12" key={item.uuid}>
-              <Question
-                key={item.uuid}
-                question={item as GuideQuestionFragment}
-                questionResponse={(viewGuideHelper.getStepItemSubmission(step.uuid, item.uuid) as []) || []}
-                onSelectAnswer={selectAnswer}
-              />
+                <Question
+                  key={item.uuid}
+                  question={item as GuideQuestionFragment}
+                  questionResponse={(viewGuideHelper.getStepItemSubmission(step.uuid, item.uuid) as []) || []}
+                  onSelectAnswer={selectAnswer}
+                />
               </div>
             );
           }
