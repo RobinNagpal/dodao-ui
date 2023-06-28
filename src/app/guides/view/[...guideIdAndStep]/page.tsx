@@ -90,7 +90,7 @@ const GuideView = ({ params, space }: { params: { guideIdAndStep: string[] }; sp
             )}
 
             <div>
-              <div className=" mt-5 ml-8 lg:ml-12 mt-4">
+              <div className="mt-5 ml-8 lg:ml-12">
                 <h1 className="mb-2 text-3xl">{guide?.name}</h1>
                 <div className="mb-4 text-xl">
                   <div className="flex justify-between">

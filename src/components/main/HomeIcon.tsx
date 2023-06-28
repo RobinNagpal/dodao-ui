@@ -16,12 +16,12 @@ function Card({ space, heading, details, featureName }: { space: SpaceWithIntegr
     <div className="flex flex-row">
       <Image
         src={$t(`academy.${space.id}.${featureName.toLowerCase()}Thumbnail`)}
-        className="academy-image w-24 sm:w-52 h-18 sm:h-38"
+        className="academy-image h-18 sm:h-38"
         alt={featureName}
         width={120}
         height={72}
       />
-      <div className="ml-4">
+      <div className="md:ml-4 sm:ml-2">
         <h2 className="text-sm sm:text-xl text-left font-semibold px-4 py-2">{heading}</h2>
         <p className="text-xs sm:text-sm text-left break-words px-4 pb-4">{details}</p>
       </div>
