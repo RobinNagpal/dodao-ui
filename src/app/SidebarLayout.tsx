@@ -25,7 +25,7 @@ export default function SidebarLayout(props: { children: ReactNode[] }) {
   return (
     <MainDiv className="h-screen">
       <Transition.Root show={sidebarOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-50 lg:hidden" onClose={setSidebarOpen}>
+        <Dialog as="div" className="relative lg:hidden" onClose={setSidebarOpen}>
           <Transition.Child
             as={Fragment}
             enter="transition-opacity ease-linear duration-300"
@@ -48,7 +48,7 @@ export default function SidebarLayout(props: { children: ReactNode[] }) {
               leaveFrom="translate-x-0"
               leaveTo="-translate-x-full"
             >
-              <Dialog.Panel className="relative mr-16 flex w-full max-w-xs flex-1">
+              <Dialog.Panel className="relative mr-16 flex w-full max-w-xs flex-1 z-10">
                 <Transition.Child
                   as={Fragment}
                   enter="ease-in-out duration-300"
@@ -83,7 +83,7 @@ export default function SidebarLayout(props: { children: ReactNode[] }) {
       </Transition.Root>
       {/* Static sidebar for desktop */}
       <div className="w-full lg:hidden">
-        <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
+        <div className="sticky top-0 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
           <button type="button" className="-m-2.5 p-2.5 text-gray-700 lg:hidden" onClick={() => setSidebarOpen(true)}>
             <span className="sr-only">Open sidebar</span>
             <Bars3Icon className="h-6 w-6" aria-hidden="true" />
@@ -94,7 +94,7 @@ export default function SidebarLayout(props: { children: ReactNode[] }) {
       </div>
 
       <div className="flex">
-        <div className="hidden lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
+        <div className="hidden lg:inset-y-0 lg:flex lg:w-72 lg:flex-col">
           {/* Sidebar component, swap this element with another sidebar if you like */}
           <DeskTopNavMainDiv className="flex grow flex-col gap-y-5 overflow-y-auto bg-indigo-600 px-6 pb-4">
             <nav className="flex flex-1 flex-col">

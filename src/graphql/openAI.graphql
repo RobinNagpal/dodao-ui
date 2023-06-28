@@ -65,8 +65,12 @@ mutation ExtractRelevantTextForTopic($input: ExtractRelevantTextForTopicInput!){
 
 mutation DownloadAndCleanContent($input: String!){
   downloadAndCleanContent(input: $input) {
-    text
-    tokenCount
+    content
+    links {
+      downloadStatus
+      link
+      tokenCount
+    }
   }
 
 }

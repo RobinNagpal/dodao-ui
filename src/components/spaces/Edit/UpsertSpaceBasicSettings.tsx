@@ -3,12 +3,15 @@ import UpsertBadgeInput from '@/components/core/badge/UpsertBadgeInput';
 import Button from '@/components/core/buttons/Button';
 import Checkboxes from '@/components/core/checkboxes/Checkboxes';
 import Input from '@/components/core/input/Input';
+import StyledSelect from '@/components/core/select/StyledSelect';
 import { UseEditSpaceHelper } from '@/components/spaces/useEditSpace';
+import { Themes } from '@/types/deprecated/models/enums';
 import { slugify } from '@/utils/auth/slugify';
+import { themeSelect } from '@/utils/ui/statuses';
 import union from 'lodash/union';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
-export default function BasicSettings(props: { editSpaceHelper: UseEditSpaceHelper }) {
+export default function UpsertSpaceBasicSettings(props: { editSpaceHelper: UseEditSpaceHelper }) {
   const [uploadThumbnailLoading, setUploadThumbnailLoading] = useState(false);
 
   const { space, setSpaceField, setSpaceIntegrationField, upsertSpace, upserting } = props.editSpaceHelper;
@@ -41,6 +44,12 @@ export default function BasicSettings(props: { editSpaceHelper: UseEditSpaceHelp
             modelValue={space?.spaceIntegrations?.academyRepository}
             placeholder={'https://github.com/DoDAO-io/dodao-academy'}
             onUpdate={(value) => setSpaceIntegrationField('academyRepository', value?.toString() || '')}
+          />
+          <StyledSelect
+            label="Theme"
+            selectedItemId={Object.keys(Themes).includes(space?.skin || '') ? space.skin : Themes.DoDAO}
+            items={themeSelect}
+            setSelectedItemId={(value) => setSpaceField('skin', value)}
           />
           <UpsertBadgeInput
             label={'Domains'}

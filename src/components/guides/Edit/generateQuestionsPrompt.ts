@@ -6,25 +6,25 @@ Then populate the questions in the following JSON template
 
 
 [{
-  "content": "What are some of the reasons for exchanging cryptocurrencies?",
+  "content": "What is an asset?",
   "answerKeys": [
-    "B"
+    "A"
   ],
-  "explanation": "Cryptocurrencies are exchanged for reasons like investment, trading, hedging, risk management, payment purposes, access to new tokens and projects, and regulatory compliance.",
+  "explanation": "Property owned by a person or company, regarded as having value and available to meet debts, commitments, or legacies.",
   "choices": [{
-      "content": "For gaming purposes only",
+      "content": "Something that is owned by a person or company and increases in value over time",
       "key": "A"
     },
     {
-      "content": "Investment, trading, hedging, risk management, payment purposes, access to new tokens and projects, and regulatory compliance",
+      "content": "Something that you buy from a shop",
       "key": "B"
     },
     {
-      "content": "For online shopping only",
+      "content": "Something that decreases in value over time",
       "key": "C"
     },
     {
-      "content": "As a means to exchange physical goods",
+      "content": "Something that you buy for fun",
       "key": "D"
     }
   ]
@@ -36,10 +36,17 @@ Here is the description of the fields
 - answerKeys includes the "key" field corresponding to the correct choice. The choices are present in the choices field that is explained below.
 - choices has two fields. "content" field is the content of the choice and a random character from A,B,C,D goes into the "key" Field. The key corresponding to the correct choice goes in "answerKeys" field. Make sure the correct choice is random for every question.
 
-Output the questions as json array. 
-
-focus on this --> "Here is the New content below return me the json array only of the below content Never return tags" .
     
 Here is the text for creating the questions 
-${contents}`;
+${contents}
+
+
+
+Make sure
+- Only one choice is correct and rest are incorrect.
+- Output the questions as json array. 
+- Output should be in pure and valid JSON Array format.
+
+The JSON object:
+`.trim();
 }

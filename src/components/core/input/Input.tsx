@@ -24,10 +24,10 @@ interface TextInputProps extends PropsWithChildren {
 
 const StyledInput = styled.input<{ error?: string | boolean }>`
   background-color: var(--bg-color);
-  border-color: var(--primary-color);
+  border: ${(props) => (props.error ? '1px solid red' : `1px solid var(--border-color)`)};
   color: var(--text-color);
   &:focus {
-    box-shadow: 0 0 0 2px var(--primary-color);
+    box-shadow: ${(props) => (props.error ? '0 0 0 2px red' : `0 0 0 2px var(--primary-color)`)};
   }
 `;
 
@@ -71,6 +71,7 @@ export default function Input({
         <StyledInput
           id={id || inputId}
           ref={inputRef}
+          error={error}
           value={modelValue || ''}
           onChange={handleInput}
           placeholder={placeholder}

@@ -267,19 +267,35 @@ mutation MoveTopicQuestion($spaceId: String!, $questionInfo: MoveTopicQuestionIn
 
 query RawGitCourse($spaceId: String!, $key: String!) {
   payload: rawGitCourse(spaceId: $spaceId, key: $key) {
-    key
-    courseJsonUrl
+    courseKey
     courseRepoUrl
     weight
+    publishStatus
+  }
+}
+
+mutation UpsertRawGitCourse($spaceId: String!, $courseInput: GitCourseInput!) {
+  payload: upsertGitCourse(spaceId: $spaceId, gitCourseInput: $courseInput) {
+    courseAdmins
+    details
+    duration
+    highlights
+    key
+    priority
+    publishStatus
+    summary
+    thumbnail
+    title
+    uuid
   }
 }
 
 query RawGitCourses($spaceId: String!) {
   payload: rawGitCourses(spaceId: $spaceId) {
-    key
-    courseJsonUrl
+    courseKey
     courseRepoUrl
     weight
+    publishStatus
   }
 }
 
@@ -328,3 +344,4 @@ query CoursesQuery($spaceId: String!) {
     ...Course
   }
 }
+

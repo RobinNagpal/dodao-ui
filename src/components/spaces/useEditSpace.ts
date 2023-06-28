@@ -1,3 +1,4 @@
+import { useNotificationContext } from '@/contexts/NotificationContext';
 import { UpsertSpaceInput, useCreateSpaceMutation, useExtendedSpaceQuery, useUpdateSpaceMutation } from '@/graphql/generated/generated-types';
 import { slugify } from '@/utils/auth/slugify';
 import { useState } from 'react';
@@ -17,6 +18,7 @@ export type UseEditSpaceHelper = {
 };
 
 export default function useEditSpace(spaceId?: string): UseEditSpaceHelper {
+  const { showNotification } = useNotificationContext();
   const [space, setSpace] = useState<SpaceEditType>({
     id: spaceId,
     admins: [],
@@ -124,21 +126,29 @@ export default function useEditSpace(spaceId?: string): UseEditSpaceHelper {
   async function upsertSpace() {
     setUpserting(true);
     try {
+      let response;
       if (spaceId?.trim()) {
-        await updateSpaceMutation({
+        response = await updateSpaceMutation({
           variables: {
             spaceInput: getSpaceInput(spaceId),
           },
         });
       } else {
-        await createSpaceMutation({
+        response = await createSpaceMutation({
           variables: {
             spaceInput: getSpaceInput(slugify(space.name)),
           },
         });
       }
+
+      if (response.data) {
+        showNotification({ type: 'success', message: 'Space upserted successfully' });
+      } else {
+        showNotification({ type: 'error', message: 'Error while upserting space' });
+      }
     } catch (error) {
       console.error(error);
+      showNotification({ type: 'error', message: 'Error while upserting space' });
       setUpserting(false);
       throw error;
     }

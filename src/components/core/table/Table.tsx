@@ -24,6 +24,7 @@ export interface TableProps {
   addNewLabel?: string;
   firstColumnBold?: boolean;
   actions?: TableActions;
+  noDataText?: string;
 }
 
 const Heading = styled.h1`
@@ -59,10 +60,8 @@ const TableCell = styled.td`
 `;
 
 export function Table(props: TableProps) {
-  return props.data.length === 0 ? (
-    <div className="align-center">No Data found</div>
-  ) : (
-    <div className="px-4 sm:px-6 lg:px-8">
+  return (
+    <div className="px-4 sm:px-6 lg:px-8 mt-2">
       <div className="sm:flex sm:items-center justify-between">
         {props.heading && (
           <div className="sm:flex-auto">
@@ -81,48 +80,54 @@ export function Table(props: TableProps) {
       <div className="mt-8 flow-root">
         <div className="-mx-4 -my-2 overflow-visible sm:-mx-6 lg:-mx-8">
           <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-            <table className="min-w-full divide-y divide-gray-300">
-              <thead>
-                <tr>
-                  {props.columnsHeadings.map((heading, index) => (
-                    <ColumnHeading key={index} scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold sm:pl-3">
-                      {heading}
-                    </ColumnHeading>
-                  ))}
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200">
-                {props.data.map((row, index) => (
-                  <tr key={index}>
-                    {row.columns.map((cell, index) => {
-                      return index === 0 && props.firstColumnBold ? (
-                        <FirstColumnCell
-                          width={`${props.columnsWidthPercents?.[index] || 100}%`}
-                          key={index}
-                          className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium sm:pl-0 break-all"
-                        >
-                          {cell}
-                        </FirstColumnCell>
-                      ) : (
-                        <TableCell key={index} className="whitespace-nowrap px-3 py-4 text-sm break-all">
-                          {cell}
-                        </TableCell>
-                      );
-                    })}
-                    {props.actions && (
-                      <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
-                        <EllipsisDropdown
-                          items={props.actions.items}
-                          onSelect={(key) => {
-                            props.actions?.onSelect(key, row.item);
-                          }}
-                        />
-                      </td>
-                    )}
+            {props.data.length === 0 ? (
+              <div className="flex justify-center w-full">
+                <div>{props.noDataText || 'No data exists'}</div>
+              </div>
+            ) : (
+              <table className="min-w-full divide-y divide-gray-300">
+                <thead>
+                  <tr>
+                    {props.columnsHeadings.map((heading, index) => (
+                      <ColumnHeading key={index} scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold sm:pl-3">
+                        {heading}
+                      </ColumnHeading>
+                    ))}
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-gray-200">
+                  {props.data.map((row, index) => (
+                    <tr key={index}>
+                      {row.columns.map((cell, index) => {
+                        return index === 0 && props.firstColumnBold ? (
+                          <FirstColumnCell
+                            width={`${props.columnsWidthPercents?.[index] || 100}%`}
+                            key={index}
+                            className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium sm:pl-0 break-all"
+                          >
+                            {cell}
+                          </FirstColumnCell>
+                        ) : (
+                          <TableCell key={index} className="whitespace-nowrap px-3 py-4 text-sm break-all">
+                            {cell}
+                          </TableCell>
+                        );
+                      })}
+                      {props.actions && (
+                        <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
+                          <EllipsisDropdown
+                            items={props.actions.items}
+                            onSelect={(key) => {
+                              props.actions?.onSelect(key, row.item);
+                            }}
+                          />
+                        </td>
+                      )}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
         </div>
       </div>

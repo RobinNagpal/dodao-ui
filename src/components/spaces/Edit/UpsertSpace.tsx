@@ -1,5 +1,5 @@
 import TabsWithUnderline, { TabItem } from '@/components/core/tabs/TabsWithUnderline';
-import BasicSettings from '@/components/spaces/Edit/BasicSettings';
+import UpsertSpaceBasicSettings from '@/components/spaces/Edit/UpsertSpaceBasicSettings';
 import CourseListScreen from '@/components/spaces/Edit/CourseListScreen';
 import useEditSpace, { UseEditSpaceHelper } from '@/components/spaces/useEditSpace';
 import { useEffect, useState } from 'react';
@@ -15,7 +15,7 @@ enum TabIds {
 
 function SettingsScreen(props: { spaceId: string; editSpaceHelper: UseEditSpaceHelper; selectedTabId: TabIds }) {
   if (props.selectedTabId === TabIds.BasicInfo) {
-    return <BasicSettings editSpaceHelper={props.editSpaceHelper} />;
+    return <UpsertSpaceBasicSettings editSpaceHelper={props.editSpaceHelper} />;
   }
 
   if (props.selectedTabId === TabIds.Courses) {
@@ -45,11 +45,11 @@ export default function UpsertSpace(props: UpsertSpaceProps) {
   }, [props.spaceId]);
 
   return (
-    <form>
+    <div>
       <div className="flex justify-end">
         <TabsWithUnderline selectedTabId={selectedTabId} setSelectedTabId={(id) => setSelectedTabId(id as TabIds)} tabs={tabs} className="w-96" />
       </div>
       <SettingsScreen selectedTabId={selectedTabId} editSpaceHelper={editSpaceHelper} spaceId={props.spaceId} />
-    </form>
+    </div>
   );
 }

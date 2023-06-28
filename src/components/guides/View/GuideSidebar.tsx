@@ -12,24 +12,37 @@ export interface GuideSidebarProps {
 }
 
 const StyledSpan = styled.span<{ showActive: boolean; showSuccess: boolean; showError: boolean }>`
-  background-color: var(--block-bg);
+  background-color: var(--border-color);
+  color: var(--text-color);
+  svg {
+    color: var(--text-color);
+  }
 
   ${({ showSuccess }) =>
     showSuccess &&
     css`
       background-color: green;
+      svg {
+        color: white;
+      }
     `}
 
   ${({ showError }) =>
     showError &&
     css`
       background-color: red;
+      svg {
+        color: white;
+      }
     `}
 
   ${({ showActive }) =>
     showActive &&
     css`
       background-color: var(--primary-color);
+      svg {
+        color: white;
+      }
     `}
 `;
 
@@ -82,14 +95,14 @@ export default function GuideSidebar({ activeStep, guide, viewGuideHelper }: Gui
             return (
               <li key={step.uuid}>
                 <div className={'relative pb-8 '}>
-                  {stepIdx !== guide.steps.length - 1 ? <span className="absolute left-4 top-4 -ml-px h-full w-0.5 bg-gray-200" aria-hidden="true" /> : null}
+                  {stepIdx !== guide.steps.length - 1 ? <span className="absolute left-4 top-4 -ml-px h-full w-0.5 bg-neutral-400" aria-hidden="true" /> : null}
                   <div className="relative flex space-x-3">
                     <div>
                       <StyledSpan
                         showActive={showActive}
                         showSuccess={showSuccess}
                         showError={showError}
-                        className={classNames(iconBackground, 'h-8 w-8 rounded-full flex items-center justify-center  ring-white')}
+                        className={classNames(iconBackground, 'h-8 w-8 rounded-full flex items-center justify-center')}
                       >
                         <Icon className="h-5 w-5 text-white" aria-hidden="true" />
                       </StyledSpan>

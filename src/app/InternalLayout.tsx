@@ -15,6 +15,7 @@ import { SpaceProvider, useSpace } from '@/contexts/SpaceContext';
 import Web3ReactProviderWrapper from '@/contexts/Web3ReactContext';
 import { useExtendedSpaceByDomainQuery } from '@/graphql/generated/generated-types';
 import { Session } from '@/types/auth/Session';
+import { Themes } from '@/types/deprecated/models/enums';
 import { getAuthenticatedApolloClient } from '@/utils/apolloClient';
 import { ApolloProvider } from '@apollo/client';
 import { SessionProvider } from 'next-auth/react';
@@ -30,19 +31,21 @@ interface InternalLayoutProps {
 }
 
 function ThemeComponent() {
-  const isThemeCompound = false;
-  const isThemeAave = true;
-  const isThemeUniswap = false;
   const { space } = useSpace();
+  const isThemeCompound = space?.skin === Themes.Compound;
+  const isThemeAave = space?.skin === Themes.Aave;
+  const isThemeUniswap = space?.skin === Themes.Uniswap;
+  const isThemeDoDAO = space?.skin === Themes.DoDAO;
+
   if (space?.id === 'uniswap-eth-1') {
     return <UniswapTheme />;
   }
   if (isThemeCompound) return <CompoundTheme />;
   if (isThemeAave) return <AaveTheme />;
   if (isThemeUniswap) return <UniswapTheme />;
+  if (isThemeDoDAO) return <GlobalTheme />;
   return (
     <div>
-      <h3>{(space && JSON.stringify(space)) || 'No No No'}</h3>
       <GlobalTheme />
     </div>
   );

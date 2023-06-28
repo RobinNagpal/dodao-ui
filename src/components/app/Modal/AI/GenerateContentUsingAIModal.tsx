@@ -1,15 +1,11 @@
 import Button from '@/components/core/buttons/Button';
+import ErrorWithAccentBorder from '@/components/core/errors/ErrorWithAccentBorder';
 import Input from '@/components/core/input/Input';
 import FullScreenModal from '@/components/core/modals/FullScreenModal';
 import TextareaAutosize from '@/components/core/textarea/TextareaAutosize';
 import { useNotificationContext } from '@/contexts/NotificationContext';
-import {
-  AskChatCompletionAiMutation,
-  ChatCompletionRequestMessageRoleEnum,
-  useAskChatCompletionAiMutation,
-  useDownloadAndCleanContentMutation,
-} from '@/graphql/generated/generated-types';
-import { FetchResult } from '@apollo/client';
+import { ChatCompletionRequestMessageRoleEnum, useAskChatCompletionAiMutation, useDownloadAndCleanContentMutation } from '@/graphql/generated/generated-types';
+import { sum } from 'lodash';
 
 import { useState } from 'react';
 
@@ -18,7 +14,6 @@ export interface GenerateContentUsingAIModalProps {
   onClose: () => void;
   onGenerateContent: (content: string | null | undefined) => void;
   modalTitle: string;
-  topic: string;
   guidelines: string;
   generatePrompt: (topic: string, guidelines: string, cleanedContent: string) => string;
 }
@@ -30,24 +25,50 @@ export default function GenerateContentUsingAIModal(props: GenerateContentUsingA
   const [askChatCompletionAiMutation] = useAskChatCompletionAiMutation();
   const [downloadAndCleanContentMutation] = useDownloadAndCleanContentMutation();
 
-  const [topic, setTopic] = useState<string>(props.topic);
+  const [topic, setTopic] = useState<string>('');
   const [contents, setContents] = useState<string>('');
   const [guidelines, setGuideLines] = useState<string>(props.guidelines);
+
+  const [error, setError] = useState<string | null>(null);
 
   const { showNotification } = useNotificationContext();
   const generateResponse = async () => {
     setLoading(true);
+    setError(null);
 
     try {
+      if (topic.length < 10) {
+        setLoading(false);
+        setError('Please enter a topic with at least 10 characters');
+        return;
+      }
+
       const cleanContents = await downloadAndCleanContentMutation({
         variables: {
           input: contents,
         },
       });
 
-      const inputContent = props.generatePrompt(topic, guidelines, cleanContents.data?.downloadAndCleanContent.text!);
+      const cleanContentResponse = cleanContents.data?.downloadAndCleanContent;
+      const links = cleanContentResponse?.links;
+      const tokenCount = (links?.length || 0) > 0 ? sum(links?.map((link) => link?.tokenCount || 0)) : 0;
+      const cleanedContentText = cleanContentResponse?.content!;
 
-      const responsePromise = askChatCompletionAiMutation({
+      if (!cleanedContentText) {
+        setLoading(false);
+        setError('Please enter valid content');
+        return;
+      }
+
+      if (tokenCount && tokenCount > 12000) {
+        setLoading(false);
+        setError('Please enter less content');
+        return;
+      }
+
+      const inputContent = props.generatePrompt(topic, guidelines, cleanedContentText);
+
+      const response = await askChatCompletionAiMutation({
         variables: {
           input: {
             messages: [{ role: ChatCompletionRequestMessageRoleEnum.User, content: inputContent }],
@@ -55,13 +76,6 @@ export default function GenerateContentUsingAIModal(props: GenerateContentUsingA
           },
         },
       });
-
-      const timeoutDuration = 50000;
-      const timeoutPromise = new Promise((_, reject) => {
-        setTimeout(() => reject(new Error('Request timeout')), timeoutDuration);
-      });
-
-      const response = (await Promise.race([responsePromise, timeoutPromise])) as FetchResult<AskChatCompletionAiMutation> | undefined;
 
       const data = await response?.data?.askChatCompletionAI?.choices?.[0]?.message?.content;
 
@@ -111,6 +125,7 @@ export default function GenerateContentUsingAIModal(props: GenerateContentUsingA
           placeholder={'Enter all the content and the links from where you want to generate the Tidbit'}
         />
 
+        {error && <ErrorWithAccentBorder error={error} className={'my-4'} />}
         <Button loading={loading} onClick={() => generateResponse()} variant="contained" primary className="mt-4">
           Generate Using AI
         </Button>

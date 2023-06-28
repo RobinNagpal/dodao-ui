@@ -24,7 +24,7 @@ const Textarea = styled.textarea.attrs((props) => ({
 }))`
   width: 100%;
   resize: none;
-  overflow: hidden;
+  overflow: auto;
 
   background-color: var(--bg-color);
   border-color: var(--primary-color);

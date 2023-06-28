@@ -1,9 +1,10 @@
 'use client';
 
 import Block from '@/components/app/Block';
-import UserInput from '@/components/app/Form/UserInput';
 import AddGuideCategoryModal from '@/components/app/Modal/Guide/AddGuideCategoryModal';
 import UploadInput from '@/components/app/UploadInput';
+import ErrorWithAccentBorder from '@/components/core/errors/ErrorWithAccentBorder';
+import Input from '@/components/core/input/Input';
 import StyledSelect from '@/components/core/select/StyledSelect';
 import { EditGuideStepper } from '@/components/guides/Edit/EditGuideStepper';
 import { EditGuideType } from '@/components/guides/Edit/editGuideType';
@@ -11,13 +12,14 @@ import { UseEditGuideHelper } from '@/components/guides/Edit/useEditGuide';
 import { Space } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
 import { GuideCategoryType, PublishStatus } from '@/types/deprecated/models/enums';
+import { GuideError } from '@/types/errors/error';
 import { publishStatusesSelect } from '@/utils/ui/statuses';
 import React, { useState } from 'react';
 
 type BasicGuideSettingsProps = {
   space: Space;
   guide: EditGuideType;
-  guideErrors: Record<string, any>;
+  guideErrors: GuideError;
   editGuideHelper: UseEditGuideHelper;
 };
 
@@ -44,9 +46,15 @@ export default function BasicGuideSettings({ editGuideHelper, guide, guideErrors
       {/* Basic Info Section */}
       <Block title={$t('guide.create.basicInfo')} className="font-bold text-xl">
         <div className="mt-4 flex flex-col">
-          <UserInput modelValue={guide.name} setUserInput={(v) => updateGuideField('name', v.toString())} label="Name" required></UserInput>
+          <Input modelValue={guide.name} onUpdate={(v) => updateGuideField('name', v?.toString() || '')} label="Name" required error={guideErrors['name']} />
 
-          <UserInput modelValue={guide.content} setUserInput={(v) => updateGuideField('content', v.toString())} label={'One line description'} required />
+          <Input
+            modelValue={guide.content}
+            onUpdate={(v) => updateGuideField('content', v?.toString() || '')}
+            label={'One line description'}
+            required
+            error={guideErrors['content']}
+          />
 
           <UploadInput
             error={guideErrors['thumbnail']}
@@ -75,12 +83,7 @@ export default function BasicGuideSettings({ editGuideHelper, guide, guideErrors
       )}
 
       {/* Error Section */}
-      {Object.values(guideErrors).filter((v) => !!v).length > 0 && (
-        <div className="!text-red flex text-center justify-center mb-2 align-baseline">
-          <i className="iconfont iconwarning !text-red"></i>
-          <span className="ml-1">Fix errors to proceed. Make sure you have selected a correct answer for each question</span>
-        </div>
-      )}
+      {Object.values(guideErrors).filter((v) => !!v).length > 0 && <ErrorWithAccentBorder error={'Fix errors to proceed'} className="mb-4" />}
 
       {guideCategoryModal && <AddGuideCategoryModal open={guideCategoryModal} onClose={handleClose} onAddInput={handleGuideCategoryInputs} />}
     </div>

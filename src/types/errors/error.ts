@@ -26,6 +26,7 @@ export type KeyOfGuideIntegration = keyof GuideIntegrationFragment;
 export interface GuideError {
   name?: boolean;
   content?: boolean;
+  thumbnail?: boolean;
   steps?: Record<string, StepError>;
   guideIntegrations?: Partial<Record<KeyOfGuideIntegration, boolean | undefined>>;
 }

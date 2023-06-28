@@ -304,11 +304,17 @@
   border-left: 0.25em solid #d0d7de;
 }
 
-.markdown-body ul,
+.markdown-body ul {
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-left: 2em;
+  list-style: unset;
+}
 .markdown-body ol {
   margin-top: 0;
   margin-bottom: 0;
   padding-left: 2em;
+  list-style: alpha;
 }
 
 .markdown-body ol ol,
