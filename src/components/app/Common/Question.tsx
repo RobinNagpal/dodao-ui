@@ -42,8 +42,7 @@ interface QuestionProps {
   showHint?: boolean;
   correctAnswer?: string[];
   onSelectAnswer: (uuid: string, selectedAnswers: string[]) => void;
-  hideQuestion?: boolean; // New prop to hide the question
-  hideResponses?: boolean; // New prop to hide the responses
+
 }
 
 function Question({
@@ -53,8 +52,7 @@ function Question({
   readonly,
   showHint = false,
   onSelectAnswer,
-  hideQuestion = false,
-  hideResponses = false,
+
 }: QuestionProps) {
   const renderer = getMarkedRenderer();
   const questionContent = marked.parse(question.content, { renderer });
@@ -91,9 +89,9 @@ function Question({
 
   return (
     <div className="bg-skin-block-bg">
-      {!hideQuestion && ( // Render the question only if hideQuestion is false
+      {( // Render the question only if hideQuestion is false
         <div className="flex justify-between items-center content-center">
-          <div className="markdown-body mb-2 font-semibold" dangerouslySetInnerHTML={{ __html: questionContent }}></div>
+          <div className="markdown-body mb-2 text-xl font-semibold" dangerouslySetInnerHTML={{ __html: questionContent }}></div>
           {showHint && question.hint && question.hint.toLowerCase() !== 'nohint' && (
             <HintIconWrapper onClick={() => setDisplayHint(!displayHint)}>
               <HintIcon height="30px" />
@@ -101,10 +99,10 @@ function Question({
           )}
         </div>
       )}
-      {!hideResponses && ( // Render the responses only if hideResponses is false
+      { ( // Render the responses only if hideResponses is false
         <>
           {questionWithFormattedChoices.choices.map((choice) => (
-            <div key={choice.key} className={`flex leading-loose items-center ${question.type === QuestionType.SingleChoice ? '-ml-2' : 'py-2'}`}>
+            <div key={choice.key} className={`flex leading-loose items-center py-2 sm:py-0 ${question.type === QuestionType.SingleChoice ? '-ml-2' : 'py-2'}`}>
               {question.type === QuestionType.SingleChoice ? (
                 <Radio
                   id={question.uuid + choice.key}
