@@ -11,14 +11,11 @@ interface GuideProps {
   space: Space;
 }
 
-
 const Guide: React.FC<GuideProps> = ({ viewGuideHelper, guide, space }) => {
   const activeStep = useMemo(
     () => guide.steps.find((step) => step.order === viewGuideHelper.activeStepOrder) || guide.steps[0],
     [guide.steps, viewGuideHelper.activeStepOrder]
   );
-
-
 
   return (
     <div className="flex">

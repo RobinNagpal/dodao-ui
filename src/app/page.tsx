@@ -25,16 +25,10 @@ function Home({ space }: { space: SpaceWithIntegrationsFragment }) {
             <div className="pt-[150px]">
               <Grid2Cols>
                 <div className="flex flex-col justify-center pr-[38px] pl-[20px] max-w-md sm:px-[24px]">
-                  <h1
-                    dangerouslySetInnerHTML={{ __html: $t(`academy.${space.id}.academyHeading`) }}
-                    className="text-3xl sm:text-4xl"
-                  />
-                  <div
-                    className="pt-2 text-sm sm:text-base"
-                    dangerouslySetInnerHTML={{ __html: $t(`academy.${space.id}.academyText`) }}
-                  />
+                  <h1 dangerouslySetInnerHTML={{ __html: $t(`academy.${space.id}.academyHeading`) }} className="text-3xl sm:text-4xl" />
+                  <div className="pt-2 text-sm sm:text-base" dangerouslySetInnerHTML={{ __html: $t(`academy.${space.id}.academyText`) }} />
                 </div>
-                  <Lottie animationData={DeveloperLottie} loop={true} className="max-h-96" />
+                <Lottie animationData={DeveloperLottie} loop={true} className="max-h-96" />
               </Grid2Cols>
             </div>
             <div className="px-[36px] sm:px-[24px]">

@@ -25,14 +25,14 @@ const MainDiv = styled.div`
     border-color: var(--block-bg);
     li {
       button {
-        font-size: calc(20/16)rem;
+        font-size: calc(20 / 16) rem;
         svg {
           color: var(--text-color);
           width: 20px;
           height: 20px;
         }
       }
-      font-size: calc(20/16)rem;
+      font-size: calc(20 / 16) rem;
     }
   }
 

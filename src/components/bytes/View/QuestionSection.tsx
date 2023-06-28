@@ -14,17 +14,18 @@ export function QuestionSection(props: {
     <div>
       <h2 className="text-2xl font-semibold mb-4">Question</h2>
       <div
-        className={props.nextButtonClicked && !props.allQuestionsAnsweredCorrectly && props.allQuestionsAnswered ? 'border-2 rounded-lg p-4 border-red-500' : ''}
+        className={
+          props.nextButtonClicked && !props.allQuestionsAnsweredCorrectly && props.allQuestionsAnswered ? 'border-2 rounded-lg p-4 border-red-500' : ''
+        }
       >
         {/* Show the correct option below in case the user's selection is wrong */}
         <div>
-          <Question  question={props.stepItem} questionResponse={(props.stepItemSubmission as string[]) || []} onSelectAnswer={props.onSelectAnswer} />
+          <Question question={props.stepItem} questionResponse={(props.stepItemSubmission as string[]) || []} onSelectAnswer={props.onSelectAnswer} />
         </div>
       </div>
-      {props.nextButtonClicked 
-      && !props.allQuestionsAnsweredCorrectly && props.allQuestionsAnswered && (
+      {props.nextButtonClicked && !props.allQuestionsAnsweredCorrectly && props.allQuestionsAnswered && (
         <div>
-          <h3 className='text-xl font-semibold mb-2 mt-2'>Correct Answer</h3> {/* Move the "Correct Answer" heading outside the green border */}
+          <h3 className="text-xl font-semibold mb-2 mt-2">Correct Answer</h3> {/* Move the "Correct Answer" heading outside the green border */}
           <div className="border-2 rounded-lg border-green-500 p-4 mt-4">
             <Question
               question={{

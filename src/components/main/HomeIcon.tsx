@@ -29,7 +29,6 @@ function Card({ space, heading, details, featureName }: { space: SpaceWithIntegr
   );
 }
 
-
 function HomeIcon({ space, feature }: HomeIconProps) {
   const { $t } = useI18();
 

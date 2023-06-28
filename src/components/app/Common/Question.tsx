@@ -34,7 +34,6 @@ interface LocalQuestionType
   explanation?: string;
 }
 
-
 interface QuestionProps {
   answerClass?: string;
   question: LocalQuestionType;
@@ -47,7 +46,16 @@ interface QuestionProps {
   hideResponses?: boolean; // New prop to hide the responses
 }
 
-function Question({ answerClass = '', question, questionResponse, readonly, showHint = false, onSelectAnswer, hideQuestion = false, hideResponses = false }: QuestionProps) {
+function Question({
+  answerClass = '',
+  question,
+  questionResponse,
+  readonly,
+  showHint = false,
+  onSelectAnswer,
+  hideQuestion = false,
+  hideResponses = false,
+}: QuestionProps) {
   const renderer = getMarkedRenderer();
   const questionContent = marked.parse(question.content, { renderer });
 
@@ -72,7 +80,6 @@ function Question({ answerClass = '', question, questionResponse, readonly, show
     const selectedAnswers = isEqual(currentlySelectedChoices, [choiceKey]) ? [] : [choiceKey];
     onSelectAnswer(question.uuid, selectedAnswers);
   };
-  
 
   const questionWithFormattedChoices = {
     ...question,
