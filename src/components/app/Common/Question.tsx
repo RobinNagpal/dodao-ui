@@ -34,6 +34,7 @@ interface LocalQuestionType
   explanation?: string;
 }
 
+
 interface QuestionProps {
   answerClass?: string;
   question: LocalQuestionType;
@@ -71,12 +72,13 @@ function Question({ answerClass = '', question, questionResponse, readonly, show
     const selectedAnswers = isEqual(currentlySelectedChoices, [choiceKey]) ? [] : [choiceKey];
     onSelectAnswer(question.uuid, selectedAnswers);
   };
+  
 
   const questionWithFormattedChoices = {
     ...question,
     choices: (question.choices || ([] as LocalQuestionType[])).map((choice) => ({
       ...choice,
-      // content: marked.parse(choice.content, { renderer }),
+      content: marked.parse(choice.content, { renderer }),
     })),
   };
 
@@ -84,7 +86,7 @@ function Question({ answerClass = '', question, questionResponse, readonly, show
     <div className="bg-skin-block-bg">
       {!hideQuestion && ( // Render the question only if hideQuestion is false
         <div className="flex justify-between items-center content-center">
-          <div className="markdown-body mb-2" dangerouslySetInnerHTML={{ __html: questionContent }}></div>
+          <div className="markdown-body mb-2 font-semibold" dangerouslySetInnerHTML={{ __html: questionContent }}></div>
           {showHint && question.hint && question.hint.toLowerCase() !== 'nohint' && (
             <HintIconWrapper onClick={() => setDisplayHint(!displayHint)}>
               <HintIcon height="30px" />
