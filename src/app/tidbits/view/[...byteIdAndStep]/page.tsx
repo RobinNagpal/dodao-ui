@@ -49,38 +49,36 @@ const ByteView = ({ params, space }: { params: { byteIdAndStep: string[] }; spac
   return (
     <PageWrapper>
       <ByteContainer className="pt-4 flex flex-col justify-center items-center byte-container w-full">
-        <StyledByteCard className="card integration-main-card">
-          <div className="integration-content">
-            <div className="split-content integration-card-content">
-              {byte && (
-                <div className="px-4 md:px-0 mb-3 flex justify-between">
-                  <Link href="/tidbits" className="text-color">
-                    <span className="mr-1 font-bold">&#8592;</span>
-                    All Tidbits
-                  </Link>
-                  <div className="ml-3">
-                    <EllipsisDropdown
-                      items={threeDotItems}
-                      onSelect={(key) => {
-                        router.push(`/tidbits/edit/${byteId}`);
-                      }}
-                    />
+        <StyledByteCard className="border border-gray-200 rounded-xl shadow-md p-2 lg:p-8">
+          <div className="split-content integration-card-content">
+            {byte && (
+              <div className="px-4 md:px-0 mb-3 flex justify-between">
+                <Link href="/tidbits" className="text-color">
+                  <span className="mr-1 font-bold">&#8592;</span>
+                  All Tidbits
+                </Link>
+                <div className="ml-3">
+                  <EllipsisDropdown
+                    items={threeDotItems}
+                    onSelect={(key) => {
+                      router.push(`/tidbits/edit/${byteId}`);
+                    }}
+                  />
+                </div>
+              </div>
+            )}
+
+            {byte && byte && (
+              <div className="px-2 lg:px-4 md:px-0">
+                <Block className="mt-4" slim>
+                  <div className="mt-4">
+                    <ByteStepper viewByteHelper={viewByteHelper} byte={byte} setAccountModalOpen={() => {}} space={space} />
                   </div>
-                </div>
-              )}
+                </Block>
+              </div>
+            )}
 
-              {byte && byte && (
-                <div className="px-4 md:px-0">
-                  <Block className="mt-4" slim>
-                    <div className="mt-4">
-                      <ByteStepper viewByteHelper={viewByteHelper} byte={byte} setAccountModalOpen={() => {}} space={space} />
-                    </div>
-                  </Block>
-                </div>
-              )}
-
-              {!byte && <PageLoading />}
-            </div>
+            {!byte && <PageLoading />}
           </div>
         </StyledByteCard>
       </ByteContainer>

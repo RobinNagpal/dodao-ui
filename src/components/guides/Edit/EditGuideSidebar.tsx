@@ -15,18 +15,28 @@ export interface GuideSidebarProps {
 }
 
 const StyledSpan = styled.span<{ showActive: boolean; showSuccess: boolean; showError: boolean }>`
-  background-color: var(--block-bg);
+  background-color: var(--border-color);
+  color: var(--text-color);
+  svg {
+    color: var(--text-color);
+  }
 
   ${({ showActive }) =>
     showActive &&
     css`
       background-color: var(--primary-color);
+      svg {
+        color: white;
+      }
     `}
 
   ${({ showSuccess }) =>
     showSuccess &&
     css`
       background-color: green;
+      svg {
+        color: white;
+      }
     `}
 
 
@@ -34,6 +44,9 @@ const StyledSpan = styled.span<{ showActive: boolean; showSuccess: boolean; show
     showError &&
     css`
       background-color: red;
+      svg {
+        color: white;
+      }
     `}
 `;
 
