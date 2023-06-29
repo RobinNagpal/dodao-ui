@@ -32,7 +32,7 @@ export function QuestionSection(props: {
                 ...props.stepItem,
                 uuid: props.stepItem.uuid + '_readonly',
               }}
-              hideQuestion={true}
+            
               questionResponse={props.stepItem.answerKeys || []}
               onSelectAnswer={() => {
                 // do nothing
