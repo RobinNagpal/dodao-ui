@@ -49,7 +49,7 @@ const ByteView = ({ params, space }: { params: { byteIdAndStep: string[] }; spac
   return (
     <PageWrapper>
       <ByteContainer className="pt-4 flex flex-col justify-center items-center byte-container w-full">
-        <StyledByteCard className="border border-gray-200 rounded-xl shadow-md p-2 lg:p-8">
+        <StyledByteCard className="sm:border sm:border-gray-200 rounded-xl sm:shadow-md p-2 lg:p-8">
           <div className="split-content integration-card-content">
             {byte && (
               <div className="px-4 md:px-0 mb-3 flex justify-between">

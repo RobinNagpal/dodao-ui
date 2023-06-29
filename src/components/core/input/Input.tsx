@@ -91,7 +91,7 @@ export default function Input({
           </div>
         )}
       </div>
-      {info && <p className="mt-2 text-sm">{info}</p>}
+      {info && <p className="mt-1 text-xs">{info}</p>}
       {typeof error === 'string' && <p className="mt-2 text-sm text-red-600">{error}</p>}
     </div>
   );

@@ -155,7 +155,7 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
   return (
     <div className="guide-stepper-content w-full px-4 flex flex-col justify-between">
       <div style={{ minHeight: '300px' }}>
-        <h2 className="mb-4" style={{ paddingBottom: '12px' }}>
+        <h2 className="mb-8 pb-4">
           Step {step.order + 1} - {step.name}
         </h2>
         <div className="step-content markdown-body" dangerouslySetInnerHTML={{ __html: stepContents }} />
@@ -205,12 +205,14 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
         {stepItems.map((item) => {
           if (isQuestion(item)) {
             return (
-              <Question
-                key={item.uuid}
-                question={item as GuideQuestionFragment}
-                questionResponse={(viewGuideHelper.getStepItemSubmission(step.uuid, item.uuid) as []) || []}
-                onSelectAnswer={selectAnswer}
-              />
+              <div className="mb-12" key={item.uuid}>
+                <Question
+                  key={item.uuid}
+                  question={item as GuideQuestionFragment}
+                  questionResponse={(viewGuideHelper.getStepItemSubmission(step.uuid, item.uuid) as []) || []}
+                  onSelectAnswer={selectAnswer}
+                />
+              </div>
             );
           }
 

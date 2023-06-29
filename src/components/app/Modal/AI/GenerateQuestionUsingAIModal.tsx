@@ -94,10 +94,12 @@ export default function GenerateQuestionUsingAIModal(props: GenerateQuestionUsin
       <div className="text-left	">
         <Input
           label="Topic"
+          info={"This will be used to generate the questions. It's better to be specific. Add 7-10 words."}
           id="topic"
+          className="mb-6"
           modelValue={topic}
           onUpdate={(e) => setTopic(e?.toString() || '')}
-          placeholder={'Just mention a sentence or two about the topic of the Tidbit'}
+          placeholder={'Just mention a sentence or two about the topic on which you want to generate the questions.'}
         />
 
         <StyledSelect
