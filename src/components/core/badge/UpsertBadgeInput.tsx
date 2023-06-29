@@ -18,19 +18,27 @@ export interface UpsertBadgeItemsProps {
 }
 
 export default function UpsertBadgeInput(props: UpsertBadgeItemsProps) {
-  const [newBadge, setNewBadge] = useState<string>('');
+  const [inputText, setInputText] = useState<string>('');
 
   function addBadge(e?: FormEvent<HTMLFormElement>) {
-    props.onAdd(newBadge);
-    setNewBadge('');
+    props.onAdd(inputText);
+    setInputText('');
     e?.preventDefault();
     return false;
   }
 
   return (
-    <form className={`${props.className ? props.className : ' '}`} onSubmit={addBadge} onSubmitCapture={addBadge}>
+    <form className={`${props.className ? props.className : ' '}`} onSubmit={addBadge}>
       <div className="flex w-full items-end mb-2">
-        <InputWithButton buttonLabel={'Add'} inputLabel={props.label} onButtonClick={(repoUrl) => setNewBadge(repoUrl)} />
+        <InputWithButton
+          buttonLabel={'Add'}
+          inputLabel={props.label}
+          onButtonClick={addBadge}
+          onInputUpdate={(e) => {
+            setInputText(e?.toString() || '');
+          }}
+          inputModelValue={inputText}
+        />
       </div>
 
       {props.badges.map((badge) => (

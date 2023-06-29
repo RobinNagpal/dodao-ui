@@ -1,6 +1,6 @@
 // Import required dependencies
 import LoadingSpinner from '@/components/core/loaders/LoadingSpinner';
-import React from 'react';
+import React, { FormEvent } from 'react';
 import styled, { css } from 'styled-components';
 
 // Define the component's props
@@ -14,7 +14,7 @@ export type ButtonProps = {
   removeBorder?: boolean;
   style?: React.CSSProperties;
   children?: React.ReactNode;
-  onClick?: () => void;
+  onClick?: (e?: FormEvent<HTMLFormElement>) => void;
   className?: string;
 };
 
@@ -30,14 +30,14 @@ const StyledButton = styled.button<ButtonProps>`
   border-radius: 0.5rem;
   outline: none;
   height: 36px;
-  font-size: calc(15 / 16) rem;
+  font-size: calc(15 / 16 * 1rem);
 
   ${(props) =>
     props.size === 'sm' &&
     css`
       padding: 0 16px;
       border-radius: 0.2rem;
-      font-size: calc(14 / 16) rem;
+      font-size: calc(14 / 16 * 1rem);
       line-height: 26px;
       height: 28px;
     `}
