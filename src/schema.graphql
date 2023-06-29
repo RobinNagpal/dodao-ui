@@ -277,6 +277,19 @@ input ExtractRelevantTextForTopicInput {
   topic: String!
 }
 
+input GenerateImageEditInput {
+  editImageUrl: String!
+  prompt: String!
+}
+
+input GenerateImageInput {
+  prompt: String!
+}
+
+type GenerateImageResponse {
+  url: String!
+}
+
 type GenericCourse {
   categories: [String!]!
   content: String!
@@ -721,6 +734,8 @@ type Mutation {
   deleteTopicVideo(spaceId: String!, videoInfo: DeleteTopicVideoInput!): GitCourse!
   downloadAndCleanContent(input: String!): DownloadAndCleanContentResponse!
   extractRelevantTextForTopic(input: ExtractRelevantTextForTopicInput!): OpenAITextResponse!
+  generateImage(input: GenerateImageInput!): GenerateImageResponse!
+  generateImageEdit(input: GenerateImageEditInput!): GenerateImageResponse!
   initializeGitCourseSubmission(courseKey: String!, spaceId: String!): GitCourseSubmission!
   moveTopic(spaceId: String!, topicInfo: MoveTopicInput!): GitCourse!
   moveTopicExplanation(explanationInfo: MoveTopicExplanationInput!, spaceId: String!): GitCourse!

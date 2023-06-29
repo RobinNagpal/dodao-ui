@@ -133,7 +133,7 @@ export default function GenerateQuestionUsingAIModal(props: GenerateQuestionUsin
             setContents(contents);
           }}
           className="mt-6"
-          placeholder={'Enter all the content and the links from where you want to generate the Tidbit'}
+          placeholder={'Enter all the content and the links from where you want to generate the guestions'}
         />
 
         {warning && <WarningWithAccentBorder warning={warning} className={'my-4'} />}

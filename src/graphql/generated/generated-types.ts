@@ -302,6 +302,20 @@ export interface ExtractRelevantTextForTopicInput {
   topic: Scalars['String'];
 }
 
+export interface GenerateImageEditInput {
+  editImageUrl: Scalars['String'];
+  prompt: Scalars['String'];
+}
+
+export interface GenerateImageInput {
+  prompt: Scalars['String'];
+}
+
+export interface GenerateImageResponse {
+  __typename?: 'GenerateImageResponse';
+  url: Scalars['String'];
+}
+
 export interface GenericCourse {
   __typename?: 'GenericCourse';
   categories: Array<Scalars['String']>;
@@ -764,6 +778,8 @@ export interface Mutation {
   deleteTopicVideo: GitCourse;
   downloadAndCleanContent: DownloadAndCleanContentResponse;
   extractRelevantTextForTopic: OpenAiTextResponse;
+  generateImage: GenerateImageResponse;
+  generateImageEdit: GenerateImageResponse;
   initializeGitCourseSubmission: GitCourseSubmission;
   moveTopic: GitCourse;
   moveTopicExplanation: GitCourse;
@@ -908,6 +924,16 @@ export interface MutationDownloadAndCleanContentArgs {
 
 export interface MutationExtractRelevantTextForTopicArgs {
   input: ExtractRelevantTextForTopicInput;
+}
+
+
+export interface MutationGenerateImageArgs {
+  input: GenerateImageInput;
+}
+
+
+export interface MutationGenerateImageEditArgs {
+  input: GenerateImageEditInput;
 }
 
 
@@ -2226,6 +2252,13 @@ export type DownloadAndCleanContentMutationVariables = Exact<{
 
 
 export type DownloadAndCleanContentMutation = { __typename?: 'Mutation', downloadAndCleanContent: { __typename?: 'DownloadAndCleanContentResponse', content: string, links: Array<{ __typename?: 'DownloadLinkInfo', downloadStatus: string, link: string, tokenCount: number }> } };
+
+export type GenerateImageMutationVariables = Exact<{
+  input: GenerateImageInput;
+}>;
+
+
+export type GenerateImageMutation = { __typename?: 'Mutation', generateImage: { __typename?: 'GenerateImageResponse', url: string } };
 
 export type SimulationStepFragment = { __typename?: 'SimulationStep', content: string, iframeUrl?: string | null, name: string, uuid: string, order: number };
 
@@ -5201,6 +5234,39 @@ export function useDownloadAndCleanContentMutation(baseOptions?: Apollo.Mutation
 export type DownloadAndCleanContentMutationHookResult = ReturnType<typeof useDownloadAndCleanContentMutation>;
 export type DownloadAndCleanContentMutationResult = Apollo.MutationResult<DownloadAndCleanContentMutation>;
 export type DownloadAndCleanContentMutationOptions = Apollo.BaseMutationOptions<DownloadAndCleanContentMutation, DownloadAndCleanContentMutationVariables>;
+export const GenerateImageDocument = gql`
+    mutation GenerateImage($input: GenerateImageInput!) {
+  generateImage(input: $input) {
+    url
+  }
+}
+    `;
+export type GenerateImageMutationFn = Apollo.MutationFunction<GenerateImageMutation, GenerateImageMutationVariables>;
+
+/**
+ * __useGenerateImageMutation__
+ *
+ * To run a mutation, you first call `useGenerateImageMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useGenerateImageMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [generateImageMutation, { data, loading, error }] = useGenerateImageMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useGenerateImageMutation(baseOptions?: Apollo.MutationHookOptions<GenerateImageMutation, GenerateImageMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<GenerateImageMutation, GenerateImageMutationVariables>(GenerateImageDocument, options);
+      }
+export type GenerateImageMutationHookResult = ReturnType<typeof useGenerateImageMutation>;
+export type GenerateImageMutationResult = Apollo.MutationResult<GenerateImageMutation>;
+export type GenerateImageMutationOptions = Apollo.BaseMutationOptions<GenerateImageMutation, GenerateImageMutationVariables>;
 export const SimulationsDocument = gql`
     query Simulations($spaceId: String!) {
   simulations(spaceId: $spaceId) {

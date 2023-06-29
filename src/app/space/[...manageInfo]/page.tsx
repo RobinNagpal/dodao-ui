@@ -4,18 +4,20 @@ import SidebarLayout from '@/app/SidebarLayout';
 import WithSpace from '@/app/withSpace';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import UpsertSpace from '@/components/spaces/Edit/UpsertSpace';
+import GenerateImage from '@/components/spaces/Image/GenerateImage';
 import ListSpaces from '@/components/spaces/ListSpaces';
 import { ManageSpaceSubviews } from '@/components/spaces/manageSpaceSubviews';
 import SpaceDetails from '@/components/spaces/SpaceDetails';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import classNames from '@/utils/classNames';
 import { CalendarIcon, ChartPieIcon, CircleStackIcon, DocumentDuplicateIcon, FolderIcon, HomeIcon, UsersIcon } from '@heroicons/react/24/outline';
+import { PhotoIcon } from '@heroicons/react/24/solid';
 import Link from 'next/link';
 
 const getNavigation = (space: SpaceWithIntegrationsFragment) => {
   const navigation = [
     { name: 'Dashboard', href: `space/manage/${ManageSpaceSubviews.ViewSpace}/${space.id}`, icon: HomeIcon, current: true },
-    { name: 'Team', href: '#', icon: UsersIcon, current: false },
+    { name: 'Image', href: `space/manage/${ManageSpaceSubviews.GenerateImage}/${space.id}`, icon: PhotoIcon, current: false },
     { name: 'Projects', href: '#', icon: FolderIcon, current: false },
     { name: 'Calendar', href: '#', icon: CalendarIcon, current: false },
     { name: 'Documents', href: '#', icon: DocumentDuplicateIcon, current: false },
@@ -44,6 +46,9 @@ function GetSubview(props: { manageInfo: string[]; space: SpaceWithIntegrationsF
   }
   if (subView === ManageSpaceSubviews.ViewSpace) {
     return <SpaceDetails spaceId={entityId} editLink={`space/manage/${ManageSpaceSubviews.EditSpace}/${entityId}`} />;
+  }
+  if (subView === ManageSpaceSubviews.GenerateImage) {
+    return <GenerateImage />;
   }
 
   if (subView === ManageSpaceSubviews.EditSpace) {
