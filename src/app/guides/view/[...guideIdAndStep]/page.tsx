@@ -2,8 +2,8 @@
 
 import withSpace from '@/app/withSpace';
 import Block from '@/components/app/Block';
+import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import PageLoading from '@/components/core/loaders/PageLoading';
-import EllipsisDropdown from '@/components/core/dropdowns/EllipsisDropdown';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import GuideStepper from '@/components/guides/View/GuideStepper';
 import { useViewGuide } from '@/components/guides/View/useViewGuide';
@@ -13,29 +13,7 @@ import { getMarkedRenderer } from '@/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import styled from 'styled-components';
-import React, { useState, useEffect, useMemo } from 'react';
-
-const InProgress = styled.div`
-  font-size: 0.75em;
-  padding-top: 2px;
-  padding-bottom: 2px;
-`;
-
-const InfoBar = styled.div`
-  box-shadow: var(--box-shadow);
-  border-color: var(--border-color);
-`;
-
-const GuideInformation = styled.div`
-  @media screen and (max-width: 991px) {
-    display: none;
-  }
-`;
-
-// ... component-specific logic (like 'isAdmin', 'isSuperAdmin', 'deleteGuide', etc.)
-
-// Component starts here
+import React, { useEffect, useMemo, useState } from 'react';
 
 const GuideView = ({ params, space }: { params: { guideIdAndStep: string[] }; space: SpaceWithIntegrationsFragment }) => {
   const { guideIdAndStep } = params;
@@ -45,11 +23,6 @@ const GuideView = ({ params, space }: { params: { guideIdAndStep: string[] }; sp
   if (Array.isArray(guideIdAndStep)) {
     stepOrder = parseInt(guideIdAndStep[1]);
   }
-
-  const { isAdmin } = { isAdmin: true };
-
-  const [modalOpen, setModalOpen] = useState(false);
-  const [modalGuideExportOpen, setModalGuideExportOpen] = useState(false);
 
   const viewGuideHelper = useViewGuide(space, guideId, stepOrder);
   const { guide: guide, guideLoaded, guideSubmission, initialize } = viewGuideHelper;
@@ -79,7 +52,7 @@ const GuideView = ({ params, space }: { params: { guideIdAndStep: string[] }; sp
                   All Guides
                 </Link>
                 <div className="ml-3">
-                  <EllipsisDropdown
+                  <PrivateEllipsisDropdown
                     items={threeDotItems}
                     onSelect={(key) => {
                       router.push(`/guides/edit/${guideId}`);

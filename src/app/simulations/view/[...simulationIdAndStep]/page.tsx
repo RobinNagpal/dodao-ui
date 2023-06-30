@@ -1,7 +1,7 @@
 'use client';
 
 import withSpace from '@/app/withSpace';
-import EllipsisDropdown from '@/components/core/dropdowns/EllipsisDropdown';
+import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import SimulationViewStepper from '@/components/simulations/View/SimulationStepper';
 import { useViewSimulation } from '@/components/simulations/View/useViewSimulation';
@@ -54,7 +54,7 @@ function ViewSimulation({ params, space }: { params: { simulationIdAndStep: stri
                 All Simulations
               </Link>
               <div className="ml-3">
-                <EllipsisDropdown
+                <PrivateEllipsisDropdown
                   items={threeDotItems}
                   onSelect={(key) => {
                     router.push(`/simulations/edit/${simulationId}`);

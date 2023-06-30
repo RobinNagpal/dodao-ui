@@ -2,10 +2,10 @@
 
 import withSpace from '@/app/withSpace';
 import Block from '@/components/app/Block';
-import PageLoading from '@/components/core/loaders/PageLoading';
 import ByteStepper from '@/components/bytes/View/ByteStepper';
 import { useViewByte } from '@/components/bytes/View/useViewByte';
-import EllipsisDropdown from '@/components/core/dropdowns/EllipsisDropdown';
+import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
+import PageLoading from '@/components/core/loaders/PageLoading';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import Link from 'next/link';
@@ -58,7 +58,7 @@ const ByteView = ({ params, space }: { params: { byteIdAndStep: string[] }; spac
                   All Tidbits
                 </Link>
                 <div className="ml-3">
-                  <EllipsisDropdown
+                  <PrivateEllipsisDropdown
                     items={threeDotItems}
                     onSelect={(key) => {
                       router.push(`/tidbits/edit/${byteId}`);

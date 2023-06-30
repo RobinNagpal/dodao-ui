@@ -12,17 +12,22 @@ interface HomeIconProps {
 }
 
 const ImageWrapper = styled.div`
-  // add styles for mobile here
-  max-width: 200px;
+  width: 140px;
+  min-width: 140px;
+  max-width: 140px;
+
   @media (min-width: 768px) {
-    width: 300px;
+    width: 180px;
+    min-width: 180px;
+    max-width: 180px;
   }
 `;
+
 function Card({ space, heading, details, featureName }: { space: SpaceWithIntegrationsFragment; heading: string; details: string; featureName: FeatureName }) {
   const { $t } = useI18();
   return (
     <div className="flex flex-row">
-      <ImageWrapper className="flex w-[200px] lg:w-60 align-middle">
+      <ImageWrapper className="flex justify-center align-middle">
         <img src={$t(`academy.${space.id}.${featureName.toLowerCase()}Thumbnail`)} alt={featureName} className="object-cover w-full" />
       </ImageWrapper>
       <div className="ml-1">
