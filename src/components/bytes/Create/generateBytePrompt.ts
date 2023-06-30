@@ -5,8 +5,8 @@ export default function generateBytePrompt(topic: string, contents: string) {
   2. The summary should be in your own words and not copied from the content provided.
   3. The summary should be between 4-8 paragraphs.
   4. The summary should be related to the topic: ${topic}
-  5. Length of each paragraph should be between 100-200 words.
-  6. Each paragraph should have at least 2-3 sentences. 
+  5. Length of each paragraph should be between 70-120 words.
+  6. Each paragraph should have at least 1-2 sentences. 
      
   This is the JSON template I have given you the new content and you have to create me the one just like below
   JSON Template:
@@ -39,7 +39,7 @@ export default function generateBytePrompt(topic: string, contents: string) {
   }
   Here is the description of the fields
   id: its a slug string. Infer or formulate it from the heading/name of the paragraph
-  content: Few words describing the topic of output.
+  content: One Sentence describing the topic of output.
   name: Infer a heading for paragraph. Slugify this name and then use it in the id field defined above.
   
   steps: Describe the list of paragraphs. Steps have three dynamic fields

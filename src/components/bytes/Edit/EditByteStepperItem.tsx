@@ -6,6 +6,7 @@ import { IconTypes } from '@/components/core/icons/IconTypes';
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
 import AddStepItemModal from '@/components/app/Modal/StepItem/AddStepItemModal';
 import { EditByteStep, EditByteType } from '@/components/bytes/Edit/useEditByte';
+import Input from '@/components/core/input/Input';
 import {
   ByteQuestion,
   ByteQuestionFragmentFragment,
@@ -311,6 +312,10 @@ export default function EditByteStepperItem({
     updateStep({ ...step, stepItems });
   }
 
+  const updateStepName = (name: string) => {
+    updateStep({ ...step, name });
+  };
+
   return (
     <StyledStepItemContainer className="w-full">
       <div className={`border rounded rounded-md p-4 mb-4 ml-4 w-full ${byteErrors?.steps?.[step.uuid] ? 'error-event-border' : ''}`}>
@@ -338,6 +343,11 @@ export default function EditByteStepperItem({
             removeBorder
             onClick={() => setModalByteInputOrQuestionOpen(true)}
           />
+        </div>
+        <div className="w-full mb-4">
+          <Input modelValue={step.name} maxLength={32} onUpdate={(e) => updateStepName(e?.toString() || '')}>
+            Name*
+          </Input>
         </div>
         <MarkdownEditor
           id={step.uuid}

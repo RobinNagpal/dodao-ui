@@ -58,7 +58,7 @@ export default function GenerateQuestionUsingAIModal(props: GenerateQuestionUsin
         variables: {
           input: {
             messages: [{ role: ChatCompletionRequestMessageRoleEnum.User, content: inputContent }],
-            temperature: 0.7,
+            temperature: 0.3,
             model: 'gpt-3.5-turbo-16k',
           },
         },

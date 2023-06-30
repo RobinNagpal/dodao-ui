@@ -1,21 +1,23 @@
-import TextareaAutosize from '@/components/core/textarea/TextareaAutosize';
+import { GeneratedQuestionInterface } from '@/components/app/Modal/AI/GenerateQuestionUsingAIModal';
 import { testTidbitContentString, testTiditTopicString } from '@/components/bytes/Create/testTidbitContentString';
-import { EditByteType } from '@/components/bytes/Edit/useEditByte';
-import LoadingSpinner from '@/components/core/loaders/LoadingSpinner';
+import { EditByteStep, EditByteType } from '@/components/bytes/Edit/useEditByte';
+import Button from '@/components/core/buttons/Button';
+import ErrorWithAccentBorder from '@/components/core/errors/ErrorWithAccentBorder';
 import FullScreenModal from '@/components/core/modals/FullScreenModal';
 import { NotificationProps } from '@/components/core/notify/Notification';
+import TextareaAutosize from '@/components/core/textarea/TextareaAutosize';
+import generateQuestionsPrompt from '@/components/guides/Edit/generateQuestionsPrompt';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import {
-  AskChatCompletionAiMutation,
   ChatCompletionRequestMessageRoleEnum,
+  GuideStepItemFragment,
   useAskChatCompletionAiMutation,
   useDownloadAndCleanContentMutation,
-  useExtractRelevantTextForTopicMutation,
 } from '@/graphql/generated/generated-types';
-import { PublishStatus, VisibilityEnum } from '@/types/deprecated/models/enums';
-import { FetchResult } from '@apollo/client';
+import { PublishStatus, QuestionType, VisibilityEnum } from '@/types/deprecated/models/enums';
+import { sum } from 'lodash';
 
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import geneateBytePrompt from './generateBytePrompt';
 
@@ -33,68 +35,134 @@ export interface GeneratedByte {
 }
 export function CreateByteUsingAIModal(props: CreateByteUsingAIModalProps) {
   const { open, onClose, onGenerateByte } = props;
+  const [error, setError] = useState<string | null>(null);
 
   const [loading, setLoading] = useState(false);
-  const [text, setText] = useState('Generate response');
   const [askChatCompletionAiMutation] = useAskChatCompletionAiMutation();
   const [downloadAndCleanContentMutation] = useDownloadAndCleanContentMutation();
 
-  const [topic, setTopic] = useState<string>(testTiditTopicString);
-  const [contents, setContents] = useState<string>(testTidbitContentString);
-  const [response, setResponse] = useState<string>('');
-  const [loaded, setLoaded] = useState(false);
+  const [topic, setTopic] = useState<string>();
+  const [contents, setContents] = useState<string>();
 
   const { showNotification } = useNotificationContext();
   const handleShowNotification = (notificationProps: NotificationProps) => {
     showNotification(notificationProps);
   };
 
-  const generateResponse = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    setResponse('');
-    setLoading(true);
-    if (!e) {
+  const generateByteContent = async (): Promise<string | undefined> => {
+    const cleanContents = await downloadAndCleanContentMutation({
+      variables: {
+        input: contents!,
+      },
+    });
+
+    const cleanContentResponse = cleanContents.data?.downloadAndCleanContent;
+    const links = cleanContentResponse?.links;
+    const tokenCount = (links?.length || 0) > 0 ? sum(links?.map((link) => link?.tokenCount || 0)) : 0;
+    const cleanedContentText = cleanContentResponse?.content!;
+
+    if (!cleanedContentText) {
+      setLoading(false);
+      setError('Please enter valid content');
       return;
     }
 
+    if (tokenCount && tokenCount > 12000) {
+      setLoading(false);
+      setError('Please enter less content');
+      return;
+    }
+
+    const inputContent = geneateBytePrompt(topic!, cleanedContentText);
+
+    const response = await askChatCompletionAiMutation({
+      variables: {
+        input: {
+          messages: [{ role: ChatCompletionRequestMessageRoleEnum.User, content: inputContent }],
+          model: 'gpt-3.5-turbo-16k',
+        },
+      },
+    });
+
+    const data = await response?.data?.askChatCompletionAI?.choices?.[0]?.message?.content;
+
+    return data || undefined;
+  };
+
+  const generateQuestionsContent = async (parsedData: GeneratedByte): Promise<string | undefined> => {
+    const questionsContent = `
+        ${parsedData.name}
+        ${parsedData.content}
+        
+        ${parsedData.steps.map((step) => `${step.name} \n ${step.content}`).join('\n')}
+      `;
+
+    const questionsPrompt = generateQuestionsPrompt(parsedData.name, 2, questionsContent);
+
+    const questionsResponse = await askChatCompletionAiMutation({
+      variables: {
+        input: {
+          messages: [{ role: ChatCompletionRequestMessageRoleEnum.User, content: questionsPrompt }],
+          temperature: 0.3,
+          model: 'gpt-3.5-turbo-16k',
+        },
+      },
+    });
+
+    const questionsData = questionsResponse?.data?.askChatCompletionAI?.choices?.[0]?.message?.content;
+
+    if (!questionsData) {
+      setLoading(false);
+      setError('Got no response from AI. Please try again.');
+      return;
+    }
+
+    return questionsData;
+  };
+
+  const addGeneratedQuestions = (steps: EditByteStep[], generatedQuestions: GeneratedQuestionInterface[]) => {
+    const questionsSteps: EditByteStep[] = generatedQuestions.map((generatedQuestion, index) => ({
+      uuid: uuidv4(),
+      name: 'Evaluation',
+      content: '',
+      stepItems: [
+        {
+          uuid: uuidv4(),
+          ...generatedQuestion,
+          type: QuestionType.SingleChoice,
+          order: 0,
+        },
+      ],
+    }));
+
+    return [...steps, ...questionsSteps];
+  };
+
+  const generateResponse = async () => {
+    setLoading(true);
+    setError(null);
+
     try {
-      const cleanContents = await downloadAndCleanContentMutation({
-        variables: {
-          input: contents,
-        },
-      });
-
-      const inputContent = geneateBytePrompt(topic, cleanContents.data?.downloadAndCleanContent.content!);
-
-      console.log('inputContent', inputContent);
-      const responsePromise = askChatCompletionAiMutation({
-        variables: {
-          input: {
-            messages: [{ role: ChatCompletionRequestMessageRoleEnum.User, content: inputContent }],
-            model: 'gpt-3.5-turbo-16k',
-          },
-        },
-      });
-
-      const timeoutDuration = 50000;
-      const timeoutPromise = new Promise((_, reject) => {
-        setTimeout(() => reject(new Error('Request timeout')), timeoutDuration);
-      });
-
-      const response = (await Promise.race([responsePromise, timeoutPromise])) as FetchResult<AskChatCompletionAiMutation>;
-
-      const data = await response.data?.askChatCompletionAI.choices?.[0]?.message?.content;
+      const data = await generateByteContent();
 
       if (!data) {
-        throw new Error(JSON.stringify(response));
+        return;
       }
 
       const parsedData = JSON.parse(data) as GeneratedByte;
-      setLoaded(true);
 
-      setResponse(data);
       setLoading(false);
-      setText('Generated');
+
+      const steps = parsedData.steps.map((step) => ({ ...step, uuid: uuidv4(), stepItems: [] }));
+
+      const questionsContent = await generateQuestionsContent(parsedData);
+
+      if (!questionsContent) {
+        return;
+      }
+
+      const stepsWithQuestions = addGeneratedQuestions(steps, JSON.parse(questionsContent) as GeneratedQuestionInterface[]);
+
       const editByteType: EditByteType = {
         ...parsedData,
         admins: [],
@@ -105,7 +173,7 @@ export function CreateByteUsingAIModal(props: CreateByteUsingAIModalProps) {
         publishStatus: PublishStatus.Draft,
         visibility: VisibilityEnum.Public,
         tags: [],
-        steps: parsedData.steps.map((step) => ({ ...step, uuid: uuidv4(), stepItems: [] })),
+        steps: stepsWithQuestions,
       };
 
       if (parsedData?.id) {
@@ -125,48 +193,40 @@ export function CreateByteUsingAIModal(props: CreateByteUsingAIModalProps) {
     }
   };
   return (
-    <FullScreenModal open={open} onClose={onClose} title="Create Byte Using AI">
-      <div className=" md:ml-20">
+    <FullScreenModal open={open} onClose={onClose} title="Create Tidbit Using AI">
+      <div className="text-left	">
         <div className=" container  mx-auto p-4 flex flex-col ">
-          <h1 className="md:text-5xl text-4xl text-[#9291cd] font-semibold mb-10">Create Tidbits Via AI </h1>
           <TextareaAutosize
             label="Topic"
             id="topic"
             autosize={true}
             modelValue={topic}
             onUpdate={(e) => setTopic(e?.toString() || '')}
-            className="border-solid border-2 border-[#9291cd]"
-            maxHeight={200}
+            className="mt-2"
+            maxHeight={150}
             placeholder={'Just mention a sentence or two about the topic of the Tidbit'}
           />
-
           <TextareaAutosize
             label="Content"
             id="content"
             autosize={true}
             modelValue={contents}
-            minHeight={400}
+            minHeight={250}
             onUpdate={(e) => setContents(e?.toString() || '')}
-            className="border-solid border-2 mt-4 border-[#9291cd]"
+            className="mt-2"
             placeholder={'Enter all the content and the links from where you want to generate the Tidbit'}
           />
-          {!loading ? (
-            <button
-              className="mt-5 md:w-[40%] w-[50%] rounded-xl bg-[#9291cd] px-4 py-2 font-medium text-white/80 hover:b hover:text-white hover:border-white"
-              onClick={(e) => generateResponse(e)}
-            >
-              {text} &rarr;
-            </button>
-          ) : (
-            <button
-              disabled
-              className="mt-5 md:w-[40%] w-[50%] rounded-xl bg-[#9291cd] px-4 py-2 font-medium text-white/80 hover:b hover:text-white hover:border-white"
-            >
-              <div className="flex flex-row justify-around">
-                <div className="animate-pulse font-lg tracking-widest ">AI is generating... </div> <LoadingSpinner />{' '}
-              </div>
-            </button>
-          )}
+          {error && <ErrorWithAccentBorder error={error} className={'my-4'} />}
+          <Button
+            loading={loading}
+            disabled={!topic?.trim() || !contents?.trim()}
+            onClick={() => generateResponse()}
+            variant="contained"
+            primary
+            className="mt-4"
+          >
+            Generate Using AI
+          </Button>{' '}
         </div>
       </div>
     </FullScreenModal>
