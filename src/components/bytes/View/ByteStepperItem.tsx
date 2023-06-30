@@ -177,7 +177,7 @@ function ByteStepperItem({ viewByteHelper, step, byte, space, setAccountModalOpe
       <div>
         <div className="flex justify-between">
           <div className="mt-2">
-            <StyledH1 className="mb-2 text-4xl">{byte.name}</StyledH1>
+            <StyledH1 className="mb-2 text-4xl">{step.name || byte.name}</StyledH1>
           </div>
           <div className="ml-6">
             <CircleProgress percentage={isByteCompletedStep ? 100 : round(((activeStepOrder + 1) * 100) / byte.steps.length)} />
