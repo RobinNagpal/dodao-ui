@@ -49,7 +49,7 @@ const StyledLabel = styled.label`
 
 export default function Radio({ id, labelContent, isSelected, className, readonly, onChange, questionId }: RadioProps) {
   return (
-    <div key={id} className={`custom-radio flex items-center ${className || ''}`}>
+    <div key={id} className={`custom-radio flex items-center align-middle ${className || ''}`}>
       <div className="relative mt-2">
         <StyledInput
           id={id}
@@ -59,12 +59,12 @@ export default function Radio({ id, labelContent, isSelected, className, readonl
           disabled={!!readonly}
           readOnly={readonly}
           onChange={() => onChange(!isSelected)}
-          className="h-4 w-4 border focus:ring focus:outline-none mr-2 peer "
+          className="h-4 w-4 border focus:ring focus:outline-none mr-2 peer -mt-3"
           required
         />
         <Overlay readonly={readonly} isSelected={isSelected} />
       </div>
-      <StyledLabel htmlFor={id} className="ml-3 block text-sm font-medium leading-6 markdown-body" dangerouslySetInnerHTML={{ __html: labelContent }} />
+      <StyledLabel htmlFor={id} className="ml-2 block text-sm leading-6 markdown-body" dangerouslySetInnerHTML={{ __html: labelContent }} />
     </div>
   );
 }

@@ -83,7 +83,7 @@ function Question({ answerClass = '', question, questionResponse, readonly, show
       {
         // Render the question only if hideQuestion is false
         <div className="flex justify-between items-center content-center">
-          <div className="markdown-body mb-2 text-xl font-semibold" dangerouslySetInnerHTML={{ __html: questionContent }}></div>
+          <div className="markdown-body mb-2 text-l" dangerouslySetInnerHTML={{ __html: questionContent }}></div>
           {showHint && question.hint && question.hint.toLowerCase() !== 'nohint' && (
             <HintIconWrapper onClick={() => setDisplayHint(!displayHint)}>
               <HintIcon height="30px" />
