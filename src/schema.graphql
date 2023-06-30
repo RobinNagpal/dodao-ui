@@ -567,6 +567,7 @@ type GuideQuestion {
   answerKeys: [String!]!
   choices: [QuestionChoice!]!
   content: String!
+  explanation: String
   order: Int!
   type: String!
   uuid: String!

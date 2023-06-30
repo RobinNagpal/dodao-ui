@@ -91,6 +91,7 @@ Introduction Comments
             ],
             answerKeys: ['choice_1', 'choice_2', 'choice_3'],
             type: QuestionType.MultipleChoice,
+            explanation: 'Explanation of the question',
           },
         ],
       },

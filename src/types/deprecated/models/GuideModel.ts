@@ -34,6 +34,7 @@ export interface GuideQuestion extends GuideStepItem {
   answerKeys: string[];
   choices: QuestionChoice[];
   content: string;
+  explanation: string;
 }
 
 export interface UserInput extends GuideStepItem {

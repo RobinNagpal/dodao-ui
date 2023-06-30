@@ -92,6 +92,21 @@ const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHas
     updateStep({ ...step, stepItems });
   }
 
+  function updateQuestionExplanation(questionId: string, explanation: string) {
+    const stepItems = step.stepItems.map((question) => {
+      if (question.uuid === questionId) {
+        return {
+          ...question,
+          explanation,
+        };
+      } else {
+        return question;
+      }
+    });
+
+    updateStep({ ...step, stepItems });
+  }
+
   function updateChoiceContent(questionId: string, choiceKey: string, content: string) {
     const stepItems = step.stepItems.map((question) => {
       if (question.uuid === questionId) {
@@ -251,6 +266,7 @@ const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHas
       __typename: 'GuideQuestion',
       uuid: uuidv4(),
       content: '',
+      explanation: '',
       choices: [
         {
           key: newChoiceKey(),
@@ -276,6 +292,7 @@ const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHas
       ...generatedQuestion,
       type: QuestionType.SingleChoice,
       order: step.stepItems.length + index,
+      explanation: generatedQuestion.explanation,
     }));
 
     const stepItems = [...(step.stepItems || []), ...questions];
@@ -375,6 +392,7 @@ const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHas
                   setAnswer={setAnswer}
                   updateChoiceContent={updateChoiceContent}
                   updateQuestionDescription={updateQuestionDescription}
+                  updateQuestionExplanation={updateQuestionExplanation}
                   updateAnswers={updateAnswers}
                   questionErrors={itemError as QuestionError}
                   updateQuestionType={updateQuestionType}

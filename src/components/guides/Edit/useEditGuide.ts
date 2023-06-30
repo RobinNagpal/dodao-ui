@@ -251,6 +251,7 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
                 })
               ),
               content: stepItem.content,
+              explanation: stepItem.explanation,
               questionType: stepItem.questionType,
               label: stepItem.label,
               required: stepItem.required,
