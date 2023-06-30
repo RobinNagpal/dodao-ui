@@ -21,6 +21,7 @@ import { marked } from 'marked';
 import { useSession } from 'next-auth/react';
 import { useCallback, useMemo, useState } from 'react';
 import styled from 'styled-components';
+import GuideSuccessModal from '@/components/app/Modal/Guide/GuideSuccess';
 
 const CorrectAnswer = styled.div`
   background-color: green !important;
@@ -151,6 +152,11 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
       viewGuideHelper.goToNextStep(step);
     }
   };
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  };
 
   return (
     <div className="guide-stepper-content w-full px-4 flex flex-col justify-between">
@@ -167,6 +173,11 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
             <a href={guide.guideIntegrations?.projectGalaxyOatMintUrl} className="badge-claim-link">
               here
             </a>
+          </div>
+        )}
+        {!isNotFirstStep &&(
+          <div className='flex align-center justify-center mt-4'>
+          <GuideSuccessModal page={0}/>
           </div>
         )}
         {showIncorrectQuestions && (
