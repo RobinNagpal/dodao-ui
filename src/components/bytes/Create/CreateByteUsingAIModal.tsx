@@ -151,8 +151,6 @@ export function CreateByteUsingAIModal(props: CreateByteUsingAIModalProps) {
 
       const parsedData = JSON.parse(data) as GeneratedByte;
 
-      setLoading(false);
-
       const steps = parsedData.steps.map((step) => ({ ...step, uuid: uuidv4(), stepItems: [] }));
 
       const questionsContent = await generateQuestionsContent(parsedData);
@@ -175,9 +173,11 @@ export function CreateByteUsingAIModal(props: CreateByteUsingAIModalProps) {
         tags: [],
         steps: stepsWithQuestions,
       };
+      setLoading(false);
 
       if (parsedData?.id) {
         onGenerateByte(editByteType);
+
         onClose();
       } else {
         handleShowNotification({

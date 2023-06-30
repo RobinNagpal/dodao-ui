@@ -1,3 +1,5 @@
+import ErrorWithAccentBorder from '@/components/core/errors/ErrorWithAccentBorder';
+
 interface ByteStepperItemWarningsProps {
   showUseInputCompletionWarning: boolean;
   showQuestionsCompletionWarning: boolean;
@@ -14,38 +16,18 @@ function ByteStepperItemWarnings({
   isDiscordConnected,
 }: ByteStepperItemWarningsProps) {
   return (
-    <>
-      {showUseInputCompletionWarning && (
-        <div className="mb-2 text-red">
-          <i className="iconfont iconwarning"></i>
-          <span className="ml-1">Answer all the questions in guide to complete</span>
-        </div>
-      )}
+    <div className="mb-4">
+      {showUseInputCompletionWarning && <ErrorWithAccentBorder error="Answer all the questions in guide to complete" />}
       {showQuestionsCompletionWarning && (
         <>
-          {!isQuestionAnswered() && (
-            <div className="mb-2 text-red">
-              <i className="iconfont iconwarning"></i>
-              <span className="ml-1">Answer question to proceed</span>
-            </div>
-          )}
+          {!isQuestionAnswered() && <ErrorWithAccentBorder error="Answer question to proceed" />}
 
-          {!isUserInputComplete() && (
-            <div className="mb-2 text-red">
-              <i className="iconfont iconwarning"></i>
-              <span className="ml-1">Answer question to proceed</span>
-            </div>
-          )}
+          {!isUserInputComplete() && <ErrorWithAccentBorder error="Add information to proceed" />}
 
-          {!isDiscordConnected() && (
-            <div className="mb-2 text-red">
-              <i className="iconfont iconwarning"></i>
-              <span className="ml-1">Connect Discord to proceed</span>
-            </div>
-          )}
+          {!isDiscordConnected() && <ErrorWithAccentBorder error="Connect your Discord account to proceed" />}
         </>
       )}
-    </>
+    </div>
   );
 }
 
