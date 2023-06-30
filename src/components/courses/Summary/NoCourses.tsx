@@ -7,7 +7,7 @@ const NoBytes = () => {
   return (
     <div className="mb-3 text-center">
       <Block className="pt-1">
-        <p className="mb-2">No courses present for {space?.name}</p>
+        <p className="mb-2">No courses present</p>
       </Block>
     </div>
   );

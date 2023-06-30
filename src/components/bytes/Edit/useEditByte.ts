@@ -77,7 +77,9 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
   const [byteErrors, setByteErrors] = useState<ByteErrors>({});
   const [byteLoaded, setByteLoaded] = useState<boolean>(false);
 
-  const [byteCreating, setByteCreating] = useState<boolean>(false);
+  const [byteUpserting, setByteUpserting] = useState<boolean>(false);
+  const [byteSaving, setByteSaving] = useState<boolean>(false);
+  const [bytePublishing, setBytePublishing] = useState<boolean>(false);
 
   const { refetch: queryByteDetails } = useQueryByteDetailsQuery({ skip: true });
   const [upsertByteMutation] = useUpsertByteMutation();
@@ -283,7 +285,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
   }
 
   const saveViaMutation = async (mutationFn: () => Promise<FetchResult<{ payload: ByteDetailsFragment | undefined }>>) => {
-    setByteCreating(true);
+    setByteUpserting(true);
     try {
       const valid = validateByte(byte);
       setByte({
@@ -295,7 +297,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
         console.log('Byte invalid', valid, byteErrors);
         showNotification({ type: 'error', message: "Validation Error: Can't Save Byte" });
 
-        setByteCreating(false);
+        setByteUpserting(false);
         return;
       }
       const response = await mutationFn();
@@ -313,7 +315,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
       showNotification({ type: 'error', message: $t('notify.somethingWentWrong') });
       console.error(e);
     }
-    setByteCreating(false);
+    setByteUpserting(false);
   };
 
   const handleSubmit = async () => {
@@ -330,6 +332,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
   };
 
   const handleSave = async () => {
+    setByteSaving(true);
     await saveViaMutation(
       async () =>
         await saveByteMutation({
@@ -340,8 +343,10 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
           errorPolicy: 'all',
         })
     );
+    setBytePublishing(false);
   };
   const handlePublish = async () => {
+    setBytePublishing(true);
     await saveViaMutation(
       async () =>
         await publishByteMutation({
@@ -352,10 +357,13 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
           errorPolicy: 'all',
         })
     );
+    setBytePublishing(false);
   };
 
   return {
-    byteCreating,
+    byteUpserting,
+    byteSaving,
+    bytePublishing,
     byteLoaded,
     byteRef: byte,
     byteErrors,

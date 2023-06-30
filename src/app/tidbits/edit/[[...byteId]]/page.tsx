@@ -26,7 +26,9 @@ function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteI
   const byteId = params.byteId ? params.byteId[0] : null;
 
   const {
-    byteCreating,
+    byteUpserting,
+    byteSaving,
+    bytePublishing,
     byteLoaded,
     byteRef: byte,
     byteErrors,
@@ -131,10 +133,17 @@ function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteI
             </Block>
 
             <div className="flex">
-              <Button onClick={handleSave} loading={!byteLoaded || byteCreating} className="block w-full mr-2" primary>
+              <Button onClick={handleSave} loading={byteSaving} disabled={!byteLoaded || bytePublishing || byteSaving} className="block w-full mr-2" primary>
                 Save
               </Button>
-              <Button onClick={handlePublish} loading={!byteLoaded || byteCreating} className="ml-2 block w-full" variant="contained" primary>
+              <Button
+                onClick={handlePublish}
+                loading={bytePublishing}
+                disabled={!byteLoaded || bytePublishing || byteSaving}
+                className="ml-2 block w-full"
+                variant="contained"
+                primary
+              >
                 Publish
               </Button>
             </div>

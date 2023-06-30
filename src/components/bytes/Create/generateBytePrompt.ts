@@ -39,8 +39,8 @@ export default function generateBytePrompt(topic: string, contents: string) {
   }
   Here is the description of the fields
   id: its a slug string. Infer or formulate it from the heading/name of the paragraph
-  content: One Sentence describing the topic of output.
-  name: Infer a heading for paragraph. Slugify this name and then use it in the id field defined above.
+  content: One Sentence describing the topic of output. It should be 10-15 words long.
+  name: Infer a heading for paragraph. It should be max three words. Slugify this name and then use it in the id field defined above.
   
   steps: Describe the list of paragraphs. Steps have three dynamic fields
   name - infer it for the particular paragraph

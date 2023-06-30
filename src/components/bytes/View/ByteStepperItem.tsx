@@ -149,19 +149,13 @@ function ByteStepperItem({ viewByteHelper, step, byte, space, setAccountModalOpe
     [byte.postSubmissionStepContent]
   );
 
-  const selectAnswer = useCallback(
-    (questionId: string, selectedAnswers: string[]) => {
-      viewByteHelper.selectAnswer(step.uuid, questionId, selectedAnswers);
-    },
-    [viewByteHelper, step.uuid]
-  );
+  const selectAnswer = (questionId: string, selectedAnswers: string[]) => {
+    viewByteHelper.selectAnswer(step.uuid, questionId, selectedAnswers);
+  };
 
-  const setUserInput = useCallback(
-    (userInputUuid: string, userInput: string) => {
-      viewByteHelper.setUserInput(step.uuid, userInputUuid, userInput);
-    },
-    [viewByteHelper, step.uuid]
-  );
+  const setUserInput = (userInputUuid: string, userInput: string) => {
+    viewByteHelper.setUserInput(step.uuid, userInputUuid, userInput);
+  };
 
   const setUserDiscord = useCallback(
     (userDiscordUuid: string, discordId: string) => {

@@ -44,6 +44,7 @@ const StyledStepItemContainer = styled.div`
 const StepItemWrapper = styled.div<{ hasError: boolean }>`
   border: ${(props) => (props.hasError ? '1px solid red' : '1px solid var(--border-color)')};
   border-radius: 0.5rem;
+  padding: 1rem;
 `;
 
 export default function EditByteStepperItem({

@@ -1,6 +1,7 @@
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { UserDiscordConnectType } from '@/types/deprecated/models/enums';
 import { ByteErrors } from '@/types/errors/byteErrors';
+import PlusCircle from '@heroicons/react/20/solid/PlusCircleIcon';
 import { CSSProperties, useMemo } from 'react';
 import styled from 'styled-components';
 import EditByteStepperItem from './EditByteStepperItem';
@@ -33,8 +34,10 @@ const SvgContainer = styled.div`
 `;
 
 const StyledButton = styled.button`
-  background-color: var(--primary-color);
-  color: var(--text-color);
+  svg {
+    fill: var(--primary-color);
+    color: var(--primary-color);
+  }
 `;
 function EditByteStepper({ space, byte, byteErrors, errorColor = '#d32f2f', successColor = '#00813a', updateByteFunctions }: EditByteStepperProps) {
   const styleObject: CSSProperties = useMemo(() => {
@@ -110,11 +113,8 @@ function EditByteStepper({ space, byte, byteErrors, errorColor = '#d32f2f', succ
               ></path>
             </svg>
           </SvgContainer>
-          <StyledButton
-            onClick={updateByteFunctions.addStep}
-            className="m-auto rounded-full text-2xl bg-primary w-[48px] text-white flex items-center font-bold justify-center h-[48px]"
-          >
-            <span className="mb-1">+</span>
+          <StyledButton onClick={updateByteFunctions.addStep} className="m-auto rounded-full text-white flex items-center font-bold justify-center">
+            <PlusCircle height={40} width={40} />
           </StyledButton>
         </li>
       </StyledOl>

@@ -10,6 +10,7 @@ export function QuestionSection(props: {
   stepItemSubmission: StepItemResponse | undefined;
   onSelectAnswer: (questionId: string, selectedAnswers: string[]) => void;
 }) {
+  console.log('QuestionSection props', props);
   return (
     <div>
       <h2 className="text-2xl font-semibold mb-4">Question</h2>
@@ -18,10 +19,12 @@ export function QuestionSection(props: {
           props.nextButtonClicked && !props.allQuestionsAnsweredCorrectly && props.allQuestionsAnswered ? 'border-2 rounded-lg p-4 border-red-500' : ''
         }
       >
-        {/* Show the correct option below in case the user's selection is wrong */}
-        <div>
-          <Question question={props.stepItem} questionResponse={(props.stepItemSubmission as string[]) || []} onSelectAnswer={props.onSelectAnswer} />
-        </div>
+        <Question
+          key={props.stepItem.uuid}
+          question={props.stepItem}
+          questionResponse={(props.stepItemSubmission as string[]) || []}
+          onSelectAnswer={props.onSelectAnswer}
+        />
       </div>
       {props.nextButtonClicked && !props.allQuestionsAnsweredCorrectly && props.allQuestionsAnswered && (
         <div>
