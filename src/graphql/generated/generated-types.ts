@@ -790,6 +790,7 @@ export interface Mutation {
   refreshGitCourse: Scalars['Boolean'];
   refreshGitCourses: Scalars['Boolean'];
   refreshGitGuides: Scalars['Boolean'];
+  reloadAcademyRepository: Scalars['Boolean'];
   saveByte: Byte;
   submitByte: ByteSubmission;
   submitGitCourse: GitCourseSubmission;
@@ -991,6 +992,11 @@ export interface MutationRefreshGitCoursesArgs {
 
 
 export interface MutationRefreshGitGuidesArgs {
+  spaceId: Scalars['String'];
+}
+
+
+export interface MutationReloadAcademyRepositoryArgs {
   spaceId: Scalars['String'];
 }
 
@@ -2380,6 +2386,13 @@ export type CreateSpaceMutationVariables = Exact<{
 
 
 export type CreateSpaceMutation = { __typename?: 'Mutation', createSpace: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, skin: string, avatar?: string | null, domains: Array<string>, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null } };
+
+export type ReloadAcademyRepoMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+}>;
+
+
+export type ReloadAcademyRepoMutation = { __typename?: 'Mutation', reloadAcademyRepository: boolean };
 
 export type SpaceSummaryFragment = { __typename?: 'Space', id: string, admins: Array<string>, adminUsernames: Array<string>, avatar?: string | null, creator: string, name: string, skin: string, domains: Array<string> };
 
@@ -5817,6 +5830,37 @@ export function useCreateSpaceMutation(baseOptions?: Apollo.MutationHookOptions<
 export type CreateSpaceMutationHookResult = ReturnType<typeof useCreateSpaceMutation>;
 export type CreateSpaceMutationResult = Apollo.MutationResult<CreateSpaceMutation>;
 export type CreateSpaceMutationOptions = Apollo.BaseMutationOptions<CreateSpaceMutation, CreateSpaceMutationVariables>;
+export const ReloadAcademyRepoDocument = gql`
+    mutation ReloadAcademyRepo($spaceId: String!) {
+  reloadAcademyRepository(spaceId: $spaceId)
+}
+    `;
+export type ReloadAcademyRepoMutationFn = Apollo.MutationFunction<ReloadAcademyRepoMutation, ReloadAcademyRepoMutationVariables>;
+
+/**
+ * __useReloadAcademyRepoMutation__
+ *
+ * To run a mutation, you first call `useReloadAcademyRepoMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useReloadAcademyRepoMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [reloadAcademyRepoMutation, { data, loading, error }] = useReloadAcademyRepoMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *   },
+ * });
+ */
+export function useReloadAcademyRepoMutation(baseOptions?: Apollo.MutationHookOptions<ReloadAcademyRepoMutation, ReloadAcademyRepoMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ReloadAcademyRepoMutation, ReloadAcademyRepoMutationVariables>(ReloadAcademyRepoDocument, options);
+      }
+export type ReloadAcademyRepoMutationHookResult = ReturnType<typeof useReloadAcademyRepoMutation>;
+export type ReloadAcademyRepoMutationResult = Apollo.MutationResult<ReloadAcademyRepoMutation>;
+export type ReloadAcademyRepoMutationOptions = Apollo.BaseMutationOptions<ReloadAcademyRepoMutation, ReloadAcademyRepoMutationVariables>;
 export const SpacesDocument = gql`
     query Spaces {
   spaces {

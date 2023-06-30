@@ -120,3 +120,7 @@ mutation CreateSpace($spaceInput: UpsertSpaceInput!){
     ...SpaceWithIntegrations
   }
 }
+
+mutation ReloadAcademyRepo($spaceId: String!) {
+  reloadAcademyRepository(spaceId: $spaceId)
+}

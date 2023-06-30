@@ -746,6 +746,7 @@ type Mutation {
   refreshGitCourse(courseKey: String!, spaceId: String!): Boolean!
   refreshGitCourses(spaceId: String!): Boolean!
   refreshGitGuides(spaceId: String!): Boolean!
+  reloadAcademyRepository(spaceId: String!): Boolean!
   saveByte(input: UpsertByteInput!, spaceId: String!): Byte!
   submitByte(submissionInput: ByteSubmissionInput!): ByteSubmission!
   submitGitCourse(input: CourseSubmissionInput!, spaceId: String!): GitCourseSubmission!

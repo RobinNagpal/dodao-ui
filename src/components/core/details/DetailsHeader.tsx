@@ -6,10 +6,11 @@ export interface DetailsHeaderProps {
   header: string;
   subheader: string;
   editLink: string;
+  className?: string;
 }
 export default function DetailsHeader(props: DetailsHeaderProps) {
   return (
-    <div className="sm:flex sm:items-center">
+    <div className={`sm:flex sm:items-center ${props.className || ''}`}>
       <div className="sm:flex-auto">
         <h1 className="font-semibold leading-6 text-2xl">{props.header}</h1>
         <p className="mt-2 text-sm">{props.subheader}</p>
