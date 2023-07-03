@@ -2,14 +2,35 @@ import { Fragment, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { CheckIcon } from '@heroicons/react/24/outline'
 import { uuidV4 } from 'ethers'
+import TextareaAutosize from '@/components/core/textarea/TextareaAutosize';
 
-interface GuideSuccesspProps {
+export interface GuideSuccesspProps {
   page: Number;
+  userKey : string ; 
+}
+interface successObjectProps{
+  initialRatings : Number ; 
+  finalRatings : Number
+}
+const successObject:(successObjectProps) = {
+  initialRatings :0 ,
+  finalRatings : 0 ,
+}
+export const  storeUserInitialRatings = (key:string) => {
+  if(key ==='') return false ;
+  console.log(localStorage.getItem(key) , 'this is localstoragegetitem\n') ;
+  if(localStorage.getItem(key) === null){
+    return true; 
+  }else return false ; 
 }
 
-const GuideSuccessModal: React.FC<GuideSuccesspProps> = ({ page }) => {
+
+
+
+const GuideSuccessModal: React.FC<GuideSuccesspProps> = ({ page  , userKey}) => {
   const [open, setOpen] = useState(true)
   const [selectedRating, setSelectedRating] = useState<number | null>(null)
+  const [finalSelectedRating, setFinalSelectedRating] = useState<number | null>(null)
   const [shakeEmojis, setShakeEmojis] = useState(false) // State to control the shaking effect
 
   const skipButtonRef = useRef(null)
@@ -28,25 +49,36 @@ const GuideSuccessModal: React.FC<GuideSuccesspProps> = ({ page }) => {
       setTimeout(() => {
         setShakeEmojis(false) // Stop the shaking effect after 1 second
       }, 1000)
-    } else {
-      const rate = `${rating}`
-      const userID = 'shresth'
-      localStorage.setItem(userID, rate)
+    }
+     else {
+      if(page === 0 ){
+        successObject.initialRatings = rating ; 
+        console.log(successObject ,'this is initial rate\n')
+      }else{
+        successObject.finalRatings = rating ; 
+        console.log(successObject ,'this is final rate\n')
+      }
+      localStorage.setItem(userKey, JSON.stringify(successObject));
       setOpen((prev) => !prev)
     }
   }
 
   const handleRatingClick = (number: number) => {
-    setSelectedRating(number)
+    if(page === 0 ){
+      setSelectedRating(number)
+    }else setFinalSelectedRating(number)
+    
     setShakeEmojis(false) // Stop the shaking effect when a rating is selected
   }
 
   const handleButtonClick = () => {
-    if (selectedRating === null) {
+    if(page ==0 ){
       handleSubmit(selectedRating)
-    }
+    }else handleSubmit(finalSelectedRating);
+      
+    
   }
-
+ 
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="relative z-10" initialFocus={skipButtonRef} onClose={setOpen}>
@@ -81,13 +113,13 @@ const GuideSuccessModal: React.FC<GuideSuccesspProps> = ({ page }) => {
                       <br/>
                       <a className='text-xs text-blue-700 cursor-pointer underline mt-2' onClick={() => setOpen(false)}>Skip </a>
                     </Dialog.Title>
-                    <div className={`mt-4 flex justify-center ${shakeEmojis && selectedRating === null ? 'animate-shake' : ''}`} style={{ animationDuration: '.5s', animationIterationCount: 'infinite' }}>
+                    <div className={`mt-4 flex justify-center ${shakeEmojis && (page ===0 ? selectedRating === null : finalSelectedRating===null) ? 'animate-shake' : ''}`} style={{ animationDuration: '.5s', animationIterationCount: 'infinite' }}>
                       {ratings.map(({ number, label }) => (
                         <button
                           key={number}
                           type="button"
                           className={`inline-flex items-center justify-center w-20 h-16 text-3xl rounded-full ${
-                            selectedRating === number ? 'bg-blue-500 text-white' : ''
+                            (page===0 ? selectedRating === number : finalSelectedRating===number) ? 'bg-blue-500 text-white' : ''
                           } hover:scale-110 transition-transform duration-200`}
                           onClick={() => handleRatingClick(number)}
                         >
@@ -97,6 +129,12 @@ const GuideSuccessModal: React.FC<GuideSuccesspProps> = ({ page }) => {
                     </div>
                   </div>
                 </div>
+                {(page === 1 && 
+                <div>
+                  
+                  <textarea placeholder='Hey Borther' />
+                  
+                  </div>)}
                 <div className="mt-5 sm:mt-6 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3">
                   <button
                     type="button"

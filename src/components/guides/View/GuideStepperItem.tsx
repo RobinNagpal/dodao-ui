@@ -22,6 +22,8 @@ import { useSession } from 'next-auth/react';
 import { useCallback, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import GuideSuccessModal from '@/components/app/Modal/Guide/GuideSuccess';
+import { storeUserInitialRatings } from '@/components/app/Modal/Guide/GuideSuccess';
+import { v4 as uuidv4 } from 'uuid';
 
 const CorrectAnswer = styled.div`
   background-color: green !important;
@@ -157,6 +159,9 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
   const handleCloseModal = () => {
     setModalOpen(false);
   };
+  const userkey:string= (sesstion? sesstion?.user.spaceId :'temks' ); 
+  console.log(userkey , '\n' ) ; 
+  console.log(storeUserInitialRatings(userkey))
 
   return (
     <div className="guide-stepper-content w-full px-4 flex flex-col justify-between">
@@ -175,9 +180,9 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
             </a>
           </div>
         )}
-        {!isNotFirstStep &&(
+        {!isNotFirstStep && storeUserInitialRatings(userkey)&&(
           <div className='flex align-center justify-center mt-4'>
-          <GuideSuccessModal page={0}/>
+          <GuideSuccessModal page={0} userKey={userkey}/>
           </div>
         )}
         {showIncorrectQuestions && (
@@ -292,7 +297,7 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
             primary
             loading={viewGuideHelper.guideSubmitting}
             disabled={viewGuideHelper.guideSubmitting || viewGuideHelper.guideSubmission.isSubmitted}
-            onClick={navigateToNextStep}
+            onClick={isLastStep ?   navigateToNextStep : ()=>{}}
           >
             <span className="sm:block">{$t(isLastStep ? 'guide.complete' : 'guide.next')}</span>
             <span className="ml-2 font-bold">&#8594;</span>
