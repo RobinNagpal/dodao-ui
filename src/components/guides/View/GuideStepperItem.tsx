@@ -158,9 +158,9 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
   const handleCloseModal = () => {
     setModalOpen(false);
   };
-  const userkey:string= (sesstion? sesstion?.user.spaceId :'tmks' ); 
+  const userkey:string= (sesstion? sesstion?.user.spaceId :'sihfoisdh' ); 
   console.log(userkey , '\n' ) ; 
-  console.log(storeUserInitialRatings(userkey))
+  console.log(storeUserInitialRatings(userkey , 1))
 
   return (
     <div className="guide-stepper-content w-full px-4 flex flex-col justify-between">
@@ -179,7 +179,7 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
             </a>
           </div>
         )}
-        {!isNotFirstStep && storeUserInitialRatings(userkey)&&(
+        {!isNotFirstStep && storeUserInitialRatings(userkey , 1)&&(
           <div className='flex align-center justify-center mt-4'>
           <GuideSuccessModal page={1} userKey={userkey}/>
           

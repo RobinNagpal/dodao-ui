@@ -39,8 +39,8 @@ interface successObjectProps{
   Feedback : FeedbackState ; 
 }
 const successObject: successObjectProps = {
-  initialRatings: 0,
-  finalRatings: 0,
+  initialRatings: -1,
+  finalRatings: -1,
   Feedback: {
     questions: false,
     content: false,
@@ -50,12 +50,20 @@ const successObject: successObjectProps = {
     other: '',
   },
 };
-export const  storeUserInitialRatings = (key:string) => {
+export const  storeUserInitialRatings = (key:string , page:Number) => {
   if(key ==='') return false ;
   console.log(localStorage.getItem(key) , 'this is localstoragegetitem\n') ;
-  if(localStorage.getItem(key) === null){
+  const storedString = localStorage.getItem(key) as string ;
+  const storedObject:successObjectProps = JSON.parse(storedString)  
+  console.log(storedObject) ; 
+
+
+  if((storedObject === null || storedObject.initialRatings === -1 ) && page===0 ){
     return true; 
-  }else return false ; 
+  }else if (storedObject === null || storedObject.finalRatings === -1 && page===1 ){
+    return true ; 
+  }
+  else return false ; 
 }
 
 
@@ -191,7 +199,7 @@ const GuideSuccessModal: React.FC<GuideSuccesspProps> = ({ page  , userKey}) => 
                 <div>
                   <div className="mt-2 text-center sm:mt-1">
                     <Dialog.Title as="h3" className="text-xl font-semibold leading-6 text-gray-900">
-                      <span>{page ? 'Assess Your Familiarity! How Well Do You Know?' : 'Boost Your Confidence! Rate Your Mastery'}</span>
+                      <span>{page ? 'Boost Your Confidence! Rate Your Mastery' : 'Assess Your Familiarity! How Well Do You Know?'}</span>
                       <br/>
                       <a className='text-xs text-blue-700 cursor-pointer underline mt-2' onClick={() => setOpen(false)}>Skip </a>
                     </Dialog.Title>
@@ -236,12 +244,7 @@ const GuideSuccessModal: React.FC<GuideSuccesspProps> = ({ page  , userKey}) => 
                     placeholder="Optional"
                   />
                 )}
-                <button
-                  onClick={handleSubmitFeedBack}
-                  className="mt-4 px-4 py-2 text-white bg-blue-500 rounded-md"
-                >
-                  Submit
-                </button>
+               
               </div>
                )}
                 
