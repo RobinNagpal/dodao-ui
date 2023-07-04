@@ -1,8 +1,33 @@
-import { Fragment, useRef, useState } from 'react'
+import { Fragment, useRef, useState,ChangeEvent, FormEvent, MouseEvent  } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
+import { ArrowDownCircleIcon } from '@heroicons/react/24/outline';
 import { CheckIcon } from '@heroicons/react/24/outline'
 import { uuidV4 } from 'ethers'
 import TextareaAutosize from '@/components/core/textarea/TextareaAutosize';
+import GuideFeedback from '@/components/guides/View/GuideFeedback';
+
+
+
+export interface FeedbackState {
+  questions: boolean;
+  content: boolean;
+  clarity:boolean ;
+  UI:boolean ;
+  loading:boolean ;
+  other: string;
+
+  [key: string]: boolean | string;
+}
+
+const feedbackOptions = [
+  { name: 'content', label: 'Usefulness of Guides' },
+  { name: 'questions', label: 'Questions' },
+  { name: 'clarity', label: 'Clarity of Explanations' },
+  { name: 'UI', label: 'User Interface' },
+  { name: 'loading', label: 'Loading' },
+  { name: 'other', label: 'Other' },
+];
+
 
 export interface GuideSuccesspProps {
   page: Number;
@@ -10,12 +35,21 @@ export interface GuideSuccesspProps {
 }
 interface successObjectProps{
   initialRatings : Number ; 
-  finalRatings : Number
+  finalRatings : Number;
+  Feedback : FeedbackState ; 
 }
-const successObject:(successObjectProps) = {
-  initialRatings :0 ,
-  finalRatings : 0 ,
-}
+const successObject: successObjectProps = {
+  initialRatings: 0,
+  finalRatings: 0,
+  Feedback: {
+    questions: false,
+    content: false,
+    clarity: false,
+    UI: false,
+    loading: false,
+    other: '',
+  },
+};
 export const  storeUserInitialRatings = (key:string) => {
   if(key ==='') return false ;
   console.log(localStorage.getItem(key) , 'this is localstoragegetitem\n') ;
@@ -29,6 +63,7 @@ export const  storeUserInitialRatings = (key:string) => {
 
 const GuideSuccessModal: React.FC<GuideSuccesspProps> = ({ page  , userKey}) => {
   const [open, setOpen] = useState(true)
+  const [success , setsuccess] = useState(true);
   const [selectedRating, setSelectedRating] = useState<number | null>(null)
   const [finalSelectedRating, setFinalSelectedRating] = useState<number | null>(null)
   const [shakeEmojis, setShakeEmojis] = useState(false) // State to control the shaking effect
@@ -74,10 +109,57 @@ const GuideSuccessModal: React.FC<GuideSuccesspProps> = ({ page  , userKey}) => 
   const handleButtonClick = () => {
     if(page ==0 ){
       handleSubmit(selectedRating)
-    }else handleSubmit(finalSelectedRating);
+    } 
       
     
   }
+
+  //  Guide Feedback Functions
+
+  const [finalFeedback, setFinalFeedback] = useState<FeedbackState>({
+    questions: false,
+    content: false,
+    clarity:false ,
+    UI:false ,
+    loading:false ,
+    other: '',
+  });
+
+  const handleChange = (event: MouseEvent<HTMLButtonElement>) => {
+    const { name } = event.currentTarget;
+    setFinalFeedback((prevFeedback) => ({
+      ...prevFeedback,
+      [name]: !prevFeedback[name],
+    }));
+  };
+
+  const handleOtherChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    const { value } = event.target;
+    setFinalFeedback((prevFeedback) => ({
+      ...prevFeedback,
+      other: value,
+    }));
+  };
+
+  const handleSubmitFeedBack = (event: FormEvent) => {
+    event.preventDefault();
+    
+    const updatedSuccessObject: successObjectProps = {
+      ...successObject,
+      Feedback: {
+        ...successObject.Feedback,
+        questions: finalFeedback.questions,
+        content: finalFeedback.content,
+        clarity: finalFeedback.clarity,
+        UI: finalFeedback.UI,
+        loading: finalFeedback.loading,
+        other: finalFeedback.other,
+      },
+    };
+
+    handleSubmit(finalSelectedRating);
+    console.log(finalFeedback);
+  };
  
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -129,17 +211,47 @@ const GuideSuccessModal: React.FC<GuideSuccesspProps> = ({ page  , userKey}) => 
                     </div>
                   </div>
                 </div>
-                {(page === 1 && 
-                <div>
-                  
-                  <textarea placeholder='Hey Borther' />
-                  
-                  </div>)}
+               {(success && page === 1) && (
+                <div className="flex flex-col items-center">
+                <h1 className="m-2">What do you like the most?</h1>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                  {feedbackOptions.map((option) => (
+                    <button
+                      key={option.name}
+                      name={option.name}
+                      onClick={handleChange}
+                      className={`w-full h-24 p-3 border-2 rounded-md ${
+                        finalFeedback[option.name] ? 'bg-blue-500 text-white' : ''
+                      }`}
+                    >
+                      <ArrowDownCircleIcon className="w-full h-[50%]" />
+                      <h2>{option.label}</h2>
+                    </button>
+                  ))}
+                </div>
+                {finalFeedback.other && (
+                  <textarea
+                    onChange={handleOtherChange}
+                    className="mt-4 border-2 rounded-md w-full sm:w-[70%] h-40"
+                    placeholder="Optional"
+                  />
+                )}
+                <button
+                  onClick={handleSubmitFeedBack}
+                  className="mt-4 px-4 py-2 text-white bg-blue-500 rounded-md"
+                >
+                  Submit
+                </button>
+              </div>
+               )}
+                
+               
+
                 <div className="mt-5 sm:mt-6 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3">
                   <button
                     type="button"
                     className="inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:col-start-2"
-                    onClick={handleButtonClick}
+                    onClick={(page===0 ? handleButtonClick : handleSubmitFeedBack)}
                   >
                     Submit
                   </button>
@@ -151,8 +263,10 @@ const GuideSuccessModal: React.FC<GuideSuccesspProps> = ({ page  , userKey}) => 
                   >
                     Skip
                   </button>
+
                 </div>
               </Dialog.Panel>
+             
             </Transition.Child>
           </div>
         </div>

@@ -23,7 +23,7 @@ import { useCallback, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import GuideSuccessModal from '@/components/app/Modal/Guide/GuideSuccess';
 import { storeUserInitialRatings } from '@/components/app/Modal/Guide/GuideSuccess';
-import { v4 as uuidv4 } from 'uuid';
+
 
 const CorrectAnswer = styled.div`
   background-color: green !important;
@@ -155,11 +155,10 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
     }
   };
   const [isModalOpen, setModalOpen] = useState(false);
-
   const handleCloseModal = () => {
     setModalOpen(false);
   };
-  const userkey:string= (sesstion? sesstion?.user.spaceId :'temks' ); 
+  const userkey:string= (sesstion? sesstion?.user.spaceId :'tmks' ); 
   console.log(userkey , '\n' ) ; 
   console.log(storeUserInitialRatings(userkey))
 
@@ -182,7 +181,8 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
         )}
         {!isNotFirstStep && storeUserInitialRatings(userkey)&&(
           <div className='flex align-center justify-center mt-4'>
-          <GuideSuccessModal page={0} userKey={userkey}/>
+          <GuideSuccessModal page={1} userKey={userkey}/>
+          
           </div>
         )}
         {showIncorrectQuestions && (
