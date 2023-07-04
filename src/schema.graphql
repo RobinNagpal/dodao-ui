@@ -533,6 +533,18 @@ type Guide {
   version: Int!
 }
 
+type GuideFeedback {
+  content: Boolean!
+  questions: Boolean!
+  ux: Boolean!
+}
+
+input GuideFeedbackInput {
+  content: Boolean
+  questions: Boolean
+  ux: Boolean
+}
+
 input GuideInput {
   categories: [String!]!
   content: String!
@@ -588,6 +600,17 @@ input GuideQuestionInput {
   questionType: String!
   type: String!
   uuid: String!
+}
+
+type GuideRating {
+  createdAt: DateTimeISO!
+  endRating: Int!
+  guideUuid: String!
+  ipAddress: String!
+  negativeFeedback: GuideFeedback!
+  positiveFeedback: GuideFeedback!
+  startRating: Int!
+  userId: String!
 }
 
 type GuideSettings {
@@ -791,6 +814,7 @@ type Mutation {
   upsertGitCourseTopicSubmission(gitCourseTopicSubmission: GitCourseTopicSubmissionInput!, spaceId: String!): GitCourseTopicSubmission!
   upsertGnosisSafeWallets(spaceId: String!, wallets: [GnosisSafeWalletInput!]!): Space!
   upsertGuide(guideInput: GuideInput!, spaceId: String!): Guide!
+  upsertGuideRating(spaceId: String!, upsertGuideRatingInput: UpsertGuideRatingInput!): Boolean!
   upsertProjectGalaxyAccessToken(accessToken: String!, spaceId: String!): Space!
   upsertSimulation(input: UpsertSimulationInput!, spaceId: String!): Simulation!
   upsertSpaceAcademyRepository(academyRepository: String!, spaceId: String!): Space!
@@ -870,6 +894,8 @@ type Query {
   gitCourseSummarized(key: String!, spaceId: String!): SummarizedGitCourse!
   gitTopicSubmissions(courseKey: String!, spaceId: String!): [GitCourseTopicSubmission!]!
   guide(spaceId: String!, uuid: String!): Guide!
+  guideRating(ratingUuid: String!): [GuideRating!]!
+  guideRatings(guideUuid: String!, spaceId: String!): [GuideRating!]!
   guideSubmissions(guideUuid: String!): [GuideSubmission!]!
   guides(spaceId: String!): [Guide!]!
   rawGitCourse(key: String!, spaceId: String!): RawGitCourse!
@@ -1158,6 +1184,18 @@ input UpsertCourseIntegrationsInput {
   projectGalaxyOatMintUrl: String
   projectGalaxyOatMintedContent: String
   projectGalaxyOatPassingCount: Int
+}
+
+input UpsertGuideRatingInput {
+  endRating: Int!
+  guideUuid: String!
+  ipAddress: String!
+  negativeFeedback: GuideFeedbackInput!
+  positiveFeedback: GuideFeedbackInput!
+  ratingUuid: String!
+  spaceId: String!
+  startRating: Int!
+  userId: String!
 }
 
 input UpsertSimulationInput {

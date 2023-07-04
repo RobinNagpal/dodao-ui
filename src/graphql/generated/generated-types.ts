@@ -578,6 +578,19 @@ export interface Guide {
   version: Scalars['Int'];
 }
 
+export interface GuideFeedback {
+  __typename?: 'GuideFeedback';
+  content: Scalars['Boolean'];
+  questions: Scalars['Boolean'];
+  ux: Scalars['Boolean'];
+}
+
+export interface GuideFeedbackInput {
+  content?: InputMaybe<Scalars['Boolean']>;
+  questions?: InputMaybe<Scalars['Boolean']>;
+  ux?: InputMaybe<Scalars['Boolean']>;
+}
+
 export interface GuideInput {
   categories: Array<Scalars['String']>;
   content: Scalars['String'];
@@ -635,6 +648,18 @@ export interface GuideQuestionInput {
   questionType: Scalars['String'];
   type: Scalars['String'];
   uuid: Scalars['String'];
+}
+
+export interface GuideRating {
+  __typename?: 'GuideRating';
+  createdAt: Scalars['DateTimeISO'];
+  endRating: Scalars['Int'];
+  guideUuid: Scalars['String'];
+  ipAddress: Scalars['String'];
+  negativeFeedback: GuideFeedback;
+  positiveFeedback: GuideFeedback;
+  startRating: Scalars['Int'];
+  userId: Scalars['String'];
 }
 
 export interface GuideSettings {
@@ -837,6 +862,7 @@ export interface Mutation {
   upsertGitCourseTopicSubmission: GitCourseTopicSubmission;
   upsertGnosisSafeWallets: Space;
   upsertGuide: Guide;
+  upsertGuideRating: Scalars['Boolean'];
   upsertProjectGalaxyAccessToken: Space;
   upsertSimulation: Simulation;
   upsertSpaceAcademyRepository: Space;
@@ -1149,6 +1175,12 @@ export interface MutationUpsertGuideArgs {
 }
 
 
+export interface MutationUpsertGuideRatingArgs {
+  spaceId: Scalars['String'];
+  upsertGuideRatingInput: UpsertGuideRatingInput;
+}
+
+
 export interface MutationUpsertProjectGalaxyAccessTokenArgs {
   accessToken: Scalars['String'];
   spaceId: Scalars['String'];
@@ -1268,6 +1300,8 @@ export interface Query {
   gitCourseSummarized: SummarizedGitCourse;
   gitTopicSubmissions: Array<GitCourseTopicSubmission>;
   guide: Guide;
+  guideRating: Array<GuideRating>;
+  guideRatings: Array<GuideRating>;
   guideSubmissions: Array<GuideSubmission>;
   guides: Array<Guide>;
   rawGitCourse: RawGitCourse;
@@ -1343,6 +1377,17 @@ export interface QueryGitTopicSubmissionsArgs {
 export interface QueryGuideArgs {
   spaceId: Scalars['String'];
   uuid: Scalars['String'];
+}
+
+
+export interface QueryGuideRatingArgs {
+  ratingUuid: Scalars['String'];
+}
+
+
+export interface QueryGuideRatingsArgs {
+  guideUuid: Scalars['String'];
+  spaceId: Scalars['String'];
 }
 
 
@@ -1688,6 +1733,18 @@ export interface UpsertCourseIntegrationsInput {
   projectGalaxyOatMintUrl?: InputMaybe<Scalars['String']>;
   projectGalaxyOatMintedContent?: InputMaybe<Scalars['String']>;
   projectGalaxyOatPassingCount?: InputMaybe<Scalars['Int']>;
+}
+
+export interface UpsertGuideRatingInput {
+  endRating: Scalars['Int'];
+  guideUuid: Scalars['String'];
+  ipAddress: Scalars['String'];
+  negativeFeedback: GuideFeedbackInput;
+  positiveFeedback: GuideFeedbackInput;
+  ratingUuid: Scalars['String'];
+  spaceId: Scalars['String'];
+  startRating: Scalars['Int'];
+  userId: Scalars['String'];
 }
 
 export interface UpsertSimulationInput {
