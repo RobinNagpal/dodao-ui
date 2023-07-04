@@ -1,3 +1,15 @@
+fragment GuideSettings on GuideSettings {
+  askForLoginToSubmit
+  captureBeforeAndAfterRating
+  showIncorrectAfterEachStep
+  showIncorrectOnCompletion
+}
+
+fragment AuthSettings on AuthSettings {
+  enableLogin
+  loginOptions
+}
+
 fragment SpaceWithIntegrations on Space {
   id
   creator
@@ -31,6 +43,17 @@ fragment SpaceWithIntegrations on Space {
       walletName
     }
     projectGalaxyTokenLastFour
+  }
+  authSettings {
+    loginOptions
+    enableLogin
+  }
+  guideSettings {
+    askForLoginToSubmit
+    captureBeforeAndAfterRating
+    showCategoriesInSidebar
+    showIncorrectAfterEachStep
+    showIncorrectOnCompletion
   }
 }
 
@@ -123,4 +146,16 @@ mutation CreateSpace($spaceInput: UpsertSpaceInput!){
 
 mutation ReloadAcademyRepo($spaceId: String!) {
   reloadAcademyRepository(spaceId: $spaceId)
+}
+
+mutation UpdateSpaceGuideSettings($input: GuideSettingsInput!) {
+  payload: updateGuideSettings(input: $input) {
+    ...SpaceWithIntegrations
+  }
+}
+
+mutation UpdateAuthSettings($input: AuthSettingsInput!) {
+  payload: updateAuthSettings(input: $input) {
+    ...SpaceWithIntegrations
+  }
 }

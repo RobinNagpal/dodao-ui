@@ -63,6 +63,16 @@ input AddTopicVideoInput {
 
 scalar Any
 
+type AuthSettings {
+  enableLogin: Boolean
+  loginOptions: [String!]
+}
+
+input AuthSettingsInput {
+  enableLogin: Boolean!
+  loginOptions: [String!]!
+}
+
 type Byte {
   admins: [String!]!
   content: String!
@@ -508,18 +518,15 @@ type Guide {
   authors: [String!]!
   categories: [String!]!
   content: String!
-  created: Int!
+  createdAt: DateTimeISO!
   guideIntegrations: GuideIntegrations!
   guideSource: String!
   guideType: String!
   id: String!
-  link: String!
   name: String!
   postSubmissionStepContent: String
   previousId: String
   publishStatus: String!
-  showIncorrectOnCompletion: Boolean!
-  socialShareImage: String
   steps: [GuideStep!]!
   thumbnail: String
   uuid: String!
@@ -537,7 +544,6 @@ input GuideInput {
   name: String!
   postSubmissionStepContent: String
   publishStatus: String!
-  showIncorrectOnCompletion: Boolean!
   socialShareImage: String
   space: String!
   steps: [GuideStepInput!]!
@@ -582,6 +588,22 @@ input GuideQuestionInput {
   questionType: String!
   type: String!
   uuid: String!
+}
+
+type GuideSettings {
+  askForLoginToSubmit: Boolean
+  captureBeforeAndAfterRating: Boolean
+  showCategoriesInSidebar: Boolean
+  showIncorrectAfterEachStep: Boolean
+  showIncorrectOnCompletion: Boolean
+}
+
+input GuideSettingsInput {
+  askForLoginToSubmit: Boolean
+  captureBeforeAndAfterRating: Boolean
+  showCategoriesInSidebar: Boolean
+  showIncorrectAfterEachStep: Boolean
+  showIncorrectOnCompletion: Boolean
 }
 
 type GuideStep {
@@ -753,7 +775,9 @@ type Mutation {
   submitGitCourse(input: CourseSubmissionInput!, spaceId: String!): GitCourseSubmission!
   submitGitCourseTopic(gitCourseTopicSubmission: GitCourseTopicSubmissionInput!, spaceId: String!): GitCourseTopicSubmission!
   submitGuide(submissionInput: GuideSubmissionInput!): GuideSubmission!
+  updateAuthSettings(input: AuthSettingsInput!): Space!
   updateCourseBasicInfo(courseBasicInfo: CourseBasicInfoInput!, spaceId: String!): GitCourse!
+  updateGuideSettings(input: GuideSettingsInput!): Space!
   updateSpace(spaceInput: UpsertSpaceInput!): Space!
   updateTopicBasicInfo(spaceId: String!, topicInfo: UpdateTopicBasicInfoInput!): GitCourse!
   updateTopicExplanation(explanationInfo: UpdateTopicExplanationInput!, spaceId: String!): GitCourse!
@@ -909,10 +933,12 @@ input SimulationStepInput {
 type Space {
   adminUsernames: [String!]!
   admins: [String!]!
+  authSettings: AuthSettings!
   avatar: String
   creator: String!
   domains: [String!]!
   features: [String!]!
+  guideSettings: GuideSettings!
   id: String!
   inviteLinks: SpaceInviteLinks
   name: String!

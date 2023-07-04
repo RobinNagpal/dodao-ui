@@ -26,10 +26,9 @@ export const emptyGuide = (from: string, space: Space, guideType: string): EditG
     guideSource,
     guideType: guideType,
     publishStatus: PublishStatus.Live,
-    showIncorrectOnCompletion: true,
     version: 0,
     authors: [],
-    created: Date.now(),
+    createdAt: new Date().toISOString(),
     guideExists: false,
     steps: [
       {

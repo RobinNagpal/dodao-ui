@@ -31,13 +31,6 @@ export default function AdvancedSettings(props: Props) {
   return (
     <div>
       <Block title={$t('guide.create.advancedInfo')} className="mt-4 wrapper">
-        <StyledSelect
-          label={'Show Incorrect Questions'}
-          selectedItemId={props.guide.showIncorrectOnCompletion?.toString() || 'true'}
-          items={showIncorrectChoices}
-          setSelectedItemId={(v) => props.updateGuideFunctions.updateGuideField('showIncorrectOnCompletion', v === 'true')}
-          className="mb-4"
-        />
         <TextareaAutosize
           label={$t(`guide.postSubmissionStepContent`)}
           id="postSubmissionStepContent"

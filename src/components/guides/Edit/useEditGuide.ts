@@ -80,8 +80,6 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
         guideExists: true,
         isPristine: true,
         postSubmissionStepContent: guide.postSubmissionStepContent || undefined,
-        socialShareImage: guide.socialShareImage || undefined,
-
         thumbnail: guide.thumbnail || undefined,
         guideIntegrations: { ...guide.guideIntegrations, discordRoleIds: guide.guideIntegrations.discordRoleIds || [] },
       });
@@ -229,8 +227,6 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
       guideType: model.guideType,
       name: model.name,
       postSubmissionStepContent: model.postSubmissionStepContent,
-      showIncorrectOnCompletion: model.showIncorrectOnCompletion,
-      socialShareImage: model.socialShareImage,
       space: space.id,
       steps: model.steps.map((step) => {
         return {

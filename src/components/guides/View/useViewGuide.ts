@@ -265,7 +265,6 @@ export function useViewGuide(space: Space, uuid: string, stepOrder: number): Use
           const stepsWithoutLastOne = guide?.steps?.filter((step) => step.uuid !== LAST_STEP_UUID) || [];
           setGuide({
             ...guide!,
-            showIncorrectOnCompletion: !!guide?.showIncorrectOnCompletion,
             steps: [
               ...stepsWithoutLastOne,
               {

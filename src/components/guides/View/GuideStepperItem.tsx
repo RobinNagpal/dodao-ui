@@ -113,7 +113,6 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
   const showIncorrectQuestions = useMemo(
     () =>
       isGuideCompletedStep &&
-      guide.showIncorrectOnCompletion &&
       guideSubmission.submissionResult?.allQuestions.length &&
       guideSubmission.submissionResult?.correctQuestions.length < guideSubmission.submissionResult?.allQuestions.length,
     [guide, guideSubmission]

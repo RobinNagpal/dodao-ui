@@ -104,7 +104,7 @@ fragment Guide on Guide {
   categories
   postSubmissionStepContent
   content
-  created
+  createdAt
   id
   guideIntegrations {
     ...GuideIntegration
@@ -112,12 +112,11 @@ fragment Guide on Guide {
   guideSource
   guideType
   name
-  showIncorrectOnCompletion
   steps {
     ...GuideStep
   }
   publishStatus
-  socialShareImage
+
   thumbnail
   uuid
   version
