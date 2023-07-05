@@ -24,7 +24,6 @@ import styled from 'styled-components';
 import GuideSuccessModal from '@/components/app/Modal/Guide/GuideSuccess';
 import { storeUserInitialRatings } from '@/components/app/Modal/Guide/GuideSuccess';
 
-
 const CorrectAnswer = styled.div`
   background-color: green !important;
   border-color: green !important;
@@ -157,9 +156,9 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
   const handleCloseModal = () => {
     setModalOpen(false);
   };
-  const userkey:string= (sesstion? sesstion?.user.spaceId :'sihfoisdh' ); 
-  console.log(userkey , '\n' ) ; 
-  console.log(storeUserInitialRatings(userkey , 1))
+  const userkey: string = sesstion ? sesstion?.user.spaceId : 'sihfoisdh';
+  console.log(userkey, '\n');
+  console.log(storeUserInitialRatings(userkey, 1));
 
   return (
     <div className="guide-stepper-content w-full px-4 flex flex-col justify-between">
@@ -178,9 +177,9 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
             </a>
           </div>
         )}
-        {!isNotFirstStep && storeUserInitialRatings(userkey , 0)&&(
-          <div className='flex align-center justify-center mt-4'>
-          <GuideSuccessModal page={0} userKey={userkey} guideName={guide.name}/>
+        {!isNotFirstStep && storeUserInitialRatings(userkey, 0) && (
+          <div className="flex align-center justify-center mt-4">
+            <GuideSuccessModal page={0} userKey={userkey} guideName={guide.name} />
           </div>
         )}
         {showIncorrectQuestions && (
@@ -295,7 +294,7 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
             primary
             loading={viewGuideHelper.guideSubmitting}
             disabled={viewGuideHelper.guideSubmitting || viewGuideHelper.guideSubmission.isSubmitted}
-            onClick={isLastStep ?   navigateToNextStep : ()=>{}}
+            onClick={isLastStep ? navigateToNextStep : () => {}}
           >
             <span className="sm:block">{$t(isLastStep ? 'guide.complete' : 'guide.next')}</span>
             <span className="ml-2 font-bold">&#8594;</span>

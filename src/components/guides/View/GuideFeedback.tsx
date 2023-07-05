@@ -54,26 +54,15 @@ const GuideFeedback: React.FC = () => {
             key={option.name}
             name={option.name}
             onClick={handleChange}
-            className={`w-full h-24 p-3 border-2 rounded-md ${
-              finalFeedback[option.name] ? 'bg-blue-500 text-white' : ''
-            }`}
+            className={`w-full h-24 p-3 border-2 rounded-md ${finalFeedback[option.name] ? 'bg-blue-500 text-white' : ''}`}
           >
             <ArrowDownCircleIcon className="w-full h-[50%]" />
             <h2>{option.label}</h2>
           </button>
         ))}
       </div>
-      {finalFeedback.other && (
-        <textarea
-          onChange={handleOtherChange}
-          className="mt-4 border-2 rounded-md w-full sm:w-[70%] h-40"
-          placeholder="Optional"
-        />
-      )}
-      <button
-        onClick={handleSubmit}
-        className="mt-4 px-4 py-2 text-white bg-blue-500 rounded-md"
-      >
+      {finalFeedback.other && <textarea onChange={handleOtherChange} className="mt-4 border-2 rounded-md w-full sm:w-[70%] h-40" placeholder="Optional" />}
+      <button onClick={handleSubmit} className="mt-4 px-4 py-2 text-white bg-blue-500 rounded-md">
         Submit
       </button>
     </div>
