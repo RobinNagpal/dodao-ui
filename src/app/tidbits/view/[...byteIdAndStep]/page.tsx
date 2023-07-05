@@ -70,11 +70,9 @@ const ByteView = ({ params, space }: { params: { byteIdAndStep: string[] }; spac
 
             {byte && byte && (
               <div className="px-2 lg:px-4 md:px-0 h-max">
-                <Block className="mt-4" slim>
-                  <div className="mt-4">
-                    <ByteStepper viewByteHelper={viewByteHelper} byte={byte} setAccountModalOpen={() => {}} space={space} />
-                  </div>
-                </Block>
+                <div className="mt-4">
+                  <ByteStepper viewByteHelper={viewByteHelper} byte={byte} setAccountModalOpen={() => {}} space={space} />
+                </div>
               </div>
             )}
 

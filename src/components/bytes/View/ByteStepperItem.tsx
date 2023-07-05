@@ -38,8 +38,6 @@ import { useCallback, useMemo, useState } from 'react';
 import styled from 'styled-components';
 
 const StepContent = styled.div`
-  background-color: var(--block-bg);
-
   @media (min-width: 976px) {
     .previous-text {
       display: none;
