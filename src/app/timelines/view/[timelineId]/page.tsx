@@ -36,7 +36,7 @@ const TimelinePage = ({ params, space }: { params: { timelineId: string }; space
                   />
                 </div>
               </div>
-              <div className="mb-6 ml-6">
+              <div className="mb-8 ml-6 text-2xl">
                 <div className="mt-2">
                   <h1 className="mb-2">{data?.timeline?.name}</h1>
                 </div>
