@@ -798,9 +798,9 @@ type Mutation {
   submitGitCourse(input: CourseSubmissionInput!, spaceId: String!): GitCourseSubmission!
   submitGitCourseTopic(gitCourseTopicSubmission: GitCourseTopicSubmissionInput!, spaceId: String!): GitCourseTopicSubmission!
   submitGuide(submissionInput: GuideSubmissionInput!): GuideSubmission!
-  updateAuthSettings(input: AuthSettingsInput!): Space!
+  updateAuthSettings(input: AuthSettingsInput!, spaceId: String!): Space!
   updateCourseBasicInfo(courseBasicInfo: CourseBasicInfoInput!, spaceId: String!): GitCourse!
-  updateGuideSettings(input: GuideSettingsInput!): Space!
+  updateGuideSettings(input: GuideSettingsInput!, spaceId: String!): Space!
   updateSpace(spaceInput: UpsertSpaceInput!): Space!
   updateTopicBasicInfo(spaceId: String!, topicInfo: UpdateTopicBasicInfoInput!): GitCourse!
   updateTopicExplanation(explanationInfo: UpdateTopicExplanationInput!, spaceId: String!): GitCourse!

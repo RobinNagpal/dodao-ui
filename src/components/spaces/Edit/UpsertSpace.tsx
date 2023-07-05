@@ -1,7 +1,10 @@
+import RowLoading from '@/components/core/loaders/RowLoading';
 import TabsWithUnderline, { TabItem } from '@/components/core/tabs/TabsWithUnderline';
-import UpsertSpaceBasicSettings from '@/components/spaces/Edit/UpsertSpaceBasicSettings';
-import CourseListScreen from '@/components/spaces/Edit/CourseListScreen';
-import useEditSpace, { UseEditSpaceHelper } from '@/components/spaces/useEditSpace';
+import UpsertSpaceBasicSettings from '@/components/spaces/Edit/Basic/UpsertSpaceBasicSettings';
+import useEditSpace, { SpaceEditType, UseEditSpaceHelper } from '@/components/spaces/Edit/Basic/useEditSpace';
+import CourseListScreen from '@/components/spaces/Edit/Courses/CourseListScreen';
+import UpsertSpaceGuideSettings from '@/components/spaces/Edit/Guides/UpsertSpaceGuideSettings';
+import { useExtendedSpaceQuery } from '@/graphql/generated/generated-types';
 import { useEffect, useState } from 'react';
 
 export interface UpsertSpaceProps {
@@ -9,17 +12,32 @@ export interface UpsertSpaceProps {
 }
 
 enum TabIds {
-  BasicInfo = 'BasicInfo',
+  Auth = 'Auth',
+  Basic = 'Basic',
   Courses = 'Courses',
+  Guides = 'Guides',
 }
 
-function SettingsScreen(props: { spaceId: string; editSpaceHelper: UseEditSpaceHelper; selectedTabId: TabIds }) {
-  if (props.selectedTabId === TabIds.BasicInfo) {
+function SettingsScreen(props: { space: SpaceEditType; editSpaceHelper: UseEditSpaceHelper; selectedTabId: TabIds }) {
+  const { data } = useExtendedSpaceQuery({
+    variables: { spaceId: props.space.id! },
+    skip: !props.space.id,
+  });
+
+  if (props.selectedTabId === TabIds.Basic) {
     return <UpsertSpaceBasicSettings editSpaceHelper={props.editSpaceHelper} />;
   }
 
+  if (!data?.space) {
+    return <RowLoading />;
+  }
+
   if (props.selectedTabId === TabIds.Courses) {
-    return <CourseListScreen spaceId={props.spaceId} />;
+    return <CourseListScreen spaceId={props.space.id!} />;
+  }
+
+  if (props.selectedTabId === TabIds.Guides) {
+    return <UpsertSpaceGuideSettings space={data.space} />;
   }
 
   return null;
@@ -30,15 +48,23 @@ export default function UpsertSpace(props: UpsertSpaceProps) {
 
   const tabs: TabItem[] = [
     {
-      id: TabIds.BasicInfo,
-      label: 'Basic Info',
+      id: TabIds.Basic,
+      label: 'Basic',
     },
     {
       id: TabIds.Courses,
       label: 'Courses',
     },
+    {
+      id: TabIds.Guides,
+      label: 'Guides',
+    },
+    {
+      id: TabIds.Auth,
+      label: 'Auth',
+    },
   ];
-  const [selectedTabId, setSelectedTabId] = useState(TabIds.BasicInfo);
+  const [selectedTabId, setSelectedTabId] = useState(TabIds.Guides);
 
   useEffect(() => {
     editSpaceHelper.initialize();
@@ -49,7 +75,11 @@ export default function UpsertSpace(props: UpsertSpaceProps) {
       <div className="flex justify-end">
         <TabsWithUnderline selectedTabId={selectedTabId} setSelectedTabId={(id) => setSelectedTabId(id as TabIds)} tabs={tabs} className="w-96" />
       </div>
-      <SettingsScreen selectedTabId={selectedTabId} editSpaceHelper={editSpaceHelper} spaceId={props.spaceId} />
+      {editSpaceHelper.space ? (
+        <SettingsScreen space={editSpaceHelper.space} editSpaceHelper={editSpaceHelper} selectedTabId={selectedTabId} />
+      ) : (
+        <RowLoading />
+      )}
     </div>
   );
 }

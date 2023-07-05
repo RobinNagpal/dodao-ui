@@ -4,7 +4,7 @@ import Button from '@/components/core/buttons/Button';
 import Checkboxes from '@/components/core/checkboxes/Checkboxes';
 import Input from '@/components/core/input/Input';
 import StyledSelect from '@/components/core/select/StyledSelect';
-import { UseEditSpaceHelper } from '@/components/spaces/useEditSpace';
+import { UseEditSpaceHelper } from '@/components/spaces/Edit/Basic/useEditSpace';
 import { Themes } from '@/types/deprecated/models/enums';
 import { slugify } from '@/utils/auth/slugify';
 import { themeSelect } from '@/utils/ui/statuses';

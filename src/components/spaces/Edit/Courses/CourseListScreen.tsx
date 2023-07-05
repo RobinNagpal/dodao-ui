@@ -44,7 +44,7 @@ export default function CourseListScreen(props: { spaceId: string }) {
 
   const coursesList = coursesResponse?.payload;
   return coursesList ? (
-    <div>
+    <div className="mt-16">
       <Table
         heading={'Courses List'}
         data={coursesList.map(

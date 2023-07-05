@@ -1084,6 +1084,7 @@ export interface MutationSubmitGuideArgs {
 
 export interface MutationUpdateAuthSettingsArgs {
   input: AuthSettingsInput;
+  spaceId: Scalars['String'];
 }
 
 
@@ -1095,6 +1096,7 @@ export interface MutationUpdateCourseBasicInfoArgs {
 
 export interface MutationUpdateGuideSettingsArgs {
   input: GuideSettingsInput;
+  spaceId: Scalars['String'];
 }
 
 
@@ -2495,6 +2497,7 @@ export type ReloadAcademyRepoMutationVariables = Exact<{
 export type ReloadAcademyRepoMutation = { __typename?: 'Mutation', reloadAcademyRepository: boolean };
 
 export type UpdateSpaceGuideSettingsMutationVariables = Exact<{
+  spaceId: Scalars['String'];
   input: GuideSettingsInput;
 }>;
 
@@ -2502,6 +2505,7 @@ export type UpdateSpaceGuideSettingsMutationVariables = Exact<{
 export type UpdateSpaceGuideSettingsMutation = { __typename?: 'Mutation', payload: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, skin: string, avatar?: string | null, domains: Array<string>, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureBeforeAndAfterRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null } } };
 
 export type UpdateAuthSettingsMutationVariables = Exact<{
+  spaceId: Scalars['String'];
   input: AuthSettingsInput;
 }>;
 
@@ -6001,8 +6005,8 @@ export type ReloadAcademyRepoMutationHookResult = ReturnType<typeof useReloadAca
 export type ReloadAcademyRepoMutationResult = Apollo.MutationResult<ReloadAcademyRepoMutation>;
 export type ReloadAcademyRepoMutationOptions = Apollo.BaseMutationOptions<ReloadAcademyRepoMutation, ReloadAcademyRepoMutationVariables>;
 export const UpdateSpaceGuideSettingsDocument = gql`
-    mutation UpdateSpaceGuideSettings($input: GuideSettingsInput!) {
-  payload: updateGuideSettings(input: $input) {
+    mutation UpdateSpaceGuideSettings($spaceId: String!, $input: GuideSettingsInput!) {
+  payload: updateGuideSettings(spaceId: $spaceId, input: $input) {
     ...SpaceWithIntegrations
   }
 }
@@ -6022,6 +6026,7 @@ export type UpdateSpaceGuideSettingsMutationFn = Apollo.MutationFunction<UpdateS
  * @example
  * const [updateSpaceGuideSettingsMutation, { data, loading, error }] = useUpdateSpaceGuideSettingsMutation({
  *   variables: {
+ *      spaceId: // value for 'spaceId'
  *      input: // value for 'input'
  *   },
  * });
@@ -6034,8 +6039,8 @@ export type UpdateSpaceGuideSettingsMutationHookResult = ReturnType<typeof useUp
 export type UpdateSpaceGuideSettingsMutationResult = Apollo.MutationResult<UpdateSpaceGuideSettingsMutation>;
 export type UpdateSpaceGuideSettingsMutationOptions = Apollo.BaseMutationOptions<UpdateSpaceGuideSettingsMutation, UpdateSpaceGuideSettingsMutationVariables>;
 export const UpdateAuthSettingsDocument = gql`
-    mutation UpdateAuthSettings($input: AuthSettingsInput!) {
-  payload: updateAuthSettings(input: $input) {
+    mutation UpdateAuthSettings($spaceId: String!, $input: AuthSettingsInput!) {
+  payload: updateAuthSettings(spaceId: $spaceId, input: $input) {
     ...SpaceWithIntegrations
   }
 }
@@ -6055,6 +6060,7 @@ export type UpdateAuthSettingsMutationFn = Apollo.MutationFunction<UpdateAuthSet
  * @example
  * const [updateAuthSettingsMutation, { data, loading, error }] = useUpdateAuthSettingsMutation({
  *   variables: {
+ *      spaceId: // value for 'spaceId'
  *      input: // value for 'input'
  *   },
  * });
