@@ -2257,6 +2257,14 @@ export type UpsertGnosisSafeWalletsMutationVariables = Exact<{
 
 export type UpsertGnosisSafeWalletsMutation = { __typename?: 'Mutation', payload: { __typename?: 'Space', id: string } };
 
+export type UpsertGuideRatingsMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+  upsertGuideRatingInput: UpsertGuideRatingInput;
+}>;
+
+
+export type UpsertGuideRatingsMutation = { __typename?: 'Mutation', payload: boolean };
+
 export type GuideQuestionFragment = { __typename?: 'GuideQuestion', answerKeys: Array<string>, content: string, order: number, type: string, uuid: string, explanation?: string | null, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> };
 
 export type GuideUserInputFragment = { __typename?: 'GuideUserInput', label: string, order: number, required: boolean, type: string, uuid: string };
@@ -4955,6 +4963,41 @@ export function useUpsertGnosisSafeWalletsMutation(baseOptions?: Apollo.Mutation
 export type UpsertGnosisSafeWalletsMutationHookResult = ReturnType<typeof useUpsertGnosisSafeWalletsMutation>;
 export type UpsertGnosisSafeWalletsMutationResult = Apollo.MutationResult<UpsertGnosisSafeWalletsMutation>;
 export type UpsertGnosisSafeWalletsMutationOptions = Apollo.BaseMutationOptions<UpsertGnosisSafeWalletsMutation, UpsertGnosisSafeWalletsMutationVariables>;
+export const UpsertGuideRatingsDocument = gql`
+    mutation UpsertGuideRatings($spaceId: String!, $upsertGuideRatingInput: UpsertGuideRatingInput!) {
+  payload: upsertGuideRating(
+    spaceId: $spaceId
+    upsertGuideRatingInput: $upsertGuideRatingInput
+  )
+}
+    `;
+export type UpsertGuideRatingsMutationFn = Apollo.MutationFunction<UpsertGuideRatingsMutation, UpsertGuideRatingsMutationVariables>;
+
+/**
+ * __useUpsertGuideRatingsMutation__
+ *
+ * To run a mutation, you first call `useUpsertGuideRatingsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertGuideRatingsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertGuideRatingsMutation, { data, loading, error }] = useUpsertGuideRatingsMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      upsertGuideRatingInput: // value for 'upsertGuideRatingInput'
+ *   },
+ * });
+ */
+export function useUpsertGuideRatingsMutation(baseOptions?: Apollo.MutationHookOptions<UpsertGuideRatingsMutation, UpsertGuideRatingsMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpsertGuideRatingsMutation, UpsertGuideRatingsMutationVariables>(UpsertGuideRatingsDocument, options);
+      }
+export type UpsertGuideRatingsMutationHookResult = ReturnType<typeof useUpsertGuideRatingsMutation>;
+export type UpsertGuideRatingsMutationResult = Apollo.MutationResult<UpsertGuideRatingsMutation>;
+export type UpsertGuideRatingsMutationOptions = Apollo.BaseMutationOptions<UpsertGuideRatingsMutation, UpsertGuideRatingsMutationVariables>;
 export const UpsertGuideDocument = gql`
     mutation UpsertGuide($spaceId: String!, $guideInput: GuideInput!) {
   payload: upsertGuide(spaceId: $spaceId, guideInput: $guideInput) {

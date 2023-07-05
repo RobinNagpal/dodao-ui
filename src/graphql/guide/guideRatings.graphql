@@ -1,0 +1,3 @@
+mutation UpsertGuideRatings($spaceId: String!, $upsertGuideRatingInput: UpsertGuideRatingInput!){
+  payload: upsertGuideRating(spaceId: $spaceId, upsertGuideRatingInput: $upsertGuideRatingInput)
+}

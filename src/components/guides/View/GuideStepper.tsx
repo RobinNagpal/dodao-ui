@@ -1,10 +1,9 @@
-import GuideSuccessModal from '@/components/app/Modal/Guide/GuideSuccess';
+import GuideStartRatingModal from '@/components/app/Modal/Guide/GuideStartRatingModal';
 import GuideSidebar from '@/components/guides/View/GuideSidebar';
 import GuideStepperItem from '@/components/guides/View/GuideStepperItem';
 import { useGuideRatings } from '@/components/guides/View/useGuideRatings';
 import { UseViewGuideHelper } from '@/components/guides/View/useViewGuide';
 import { GuideFragment, Space } from '@/graphql/generated/generated-types';
-import { UserIdKey } from '@/types/auth/User';
 import React, { useEffect, useMemo } from 'react';
 
 interface GuideProps {
@@ -14,7 +13,7 @@ interface GuideProps {
 }
 
 const Guide: React.FC<GuideProps> = ({ viewGuideHelper, guide, space }) => {
-  const { initialize, guideRatings, showRatingsModal } = useGuideRatings(space, guide);
+  const { initialize, guideRatings, showRatingsModal, setStartRating, skipInitialRating } = useGuideRatings(space, guide);
 
   const activeStep = useMemo(
     () => guide.steps.find((step) => step.order === viewGuideHelper.activeStepOrder) || guide.steps[0],
@@ -33,7 +32,14 @@ const Guide: React.FC<GuideProps> = ({ viewGuideHelper, guide, space }) => {
       <div className="w-full flex flex-row">
         <GuideStepperItem space={space} viewGuideHelper={viewGuideHelper} guide={guide} step={activeStep} />
       </div>
-      {showRatingsModal && <GuideSuccessModal page={0} userKey={localStorage.getItem(UserIdKey)!} guideName={guide.name} />}
+      {showRatingsModal && (
+        <GuideStartRatingModal
+          open={showRatingsModal}
+          onClose={() => skipInitialRating()}
+          skipStartRating={skipInitialRating}
+          setStartRating={setStartRating}
+        />
+      )}
     </div>
   );
 };
