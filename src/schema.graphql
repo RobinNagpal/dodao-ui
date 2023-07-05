@@ -63,6 +63,16 @@ input AddTopicVideoInput {
 
 scalar Any
 
+type AuthSettings {
+  enableLogin: Boolean
+  loginOptions: [String!]
+}
+
+input AuthSettingsInput {
+  enableLogin: Boolean!
+  loginOptions: [String!]!
+}
+
 type Byte {
   admins: [String!]!
   content: String!
@@ -508,22 +518,31 @@ type Guide {
   authors: [String!]!
   categories: [String!]!
   content: String!
-  created: Int!
+  createdAt: DateTimeISO!
   guideIntegrations: GuideIntegrations!
   guideSource: String!
   guideType: String!
   id: String!
-  link: String!
   name: String!
   postSubmissionStepContent: String
   previousId: String
   publishStatus: String!
-  showIncorrectOnCompletion: Boolean!
-  socialShareImage: String
   steps: [GuideStep!]!
   thumbnail: String
   uuid: String!
   version: Int!
+}
+
+type GuideFeedback {
+  content: Boolean!
+  questions: Boolean!
+  ux: Boolean!
+}
+
+input GuideFeedbackInput {
+  content: Boolean
+  questions: Boolean
+  ux: Boolean
 }
 
 input GuideInput {
@@ -537,7 +556,6 @@ input GuideInput {
   name: String!
   postSubmissionStepContent: String
   publishStatus: String!
-  showIncorrectOnCompletion: Boolean!
   socialShareImage: String
   space: String!
   steps: [GuideStepInput!]!
@@ -567,6 +585,7 @@ type GuideQuestion {
   answerKeys: [String!]!
   choices: [QuestionChoice!]!
   content: String!
+  explanation: String
   order: Int!
   type: String!
   uuid: String!
@@ -581,6 +600,33 @@ input GuideQuestionInput {
   questionType: String!
   type: String!
   uuid: String!
+}
+
+type GuideRating {
+  createdAt: DateTimeISO!
+  endRating: Int!
+  guideUuid: String!
+  ipAddress: String!
+  negativeFeedback: GuideFeedback!
+  positiveFeedback: GuideFeedback!
+  startRating: Int!
+  userId: String!
+}
+
+type GuideSettings {
+  askForLoginToSubmit: Boolean
+  captureBeforeAndAfterRating: Boolean
+  showCategoriesInSidebar: Boolean
+  showIncorrectAfterEachStep: Boolean
+  showIncorrectOnCompletion: Boolean
+}
+
+input GuideSettingsInput {
+  askForLoginToSubmit: Boolean
+  captureBeforeAndAfterRating: Boolean
+  showCategoriesInSidebar: Boolean
+  showIncorrectAfterEachStep: Boolean
+  showIncorrectOnCompletion: Boolean
 }
 
 type GuideStep {
@@ -752,7 +798,9 @@ type Mutation {
   submitGitCourse(input: CourseSubmissionInput!, spaceId: String!): GitCourseSubmission!
   submitGitCourseTopic(gitCourseTopicSubmission: GitCourseTopicSubmissionInput!, spaceId: String!): GitCourseTopicSubmission!
   submitGuide(submissionInput: GuideSubmissionInput!): GuideSubmission!
+  updateAuthSettings(input: AuthSettingsInput!, spaceId: String!): Space!
   updateCourseBasicInfo(courseBasicInfo: CourseBasicInfoInput!, spaceId: String!): GitCourse!
+  updateGuideSettings(input: GuideSettingsInput!, spaceId: String!): Space!
   updateSpace(spaceInput: UpsertSpaceInput!): Space!
   updateTopicBasicInfo(spaceId: String!, topicInfo: UpdateTopicBasicInfoInput!): GitCourse!
   updateTopicExplanation(explanationInfo: UpdateTopicExplanationInput!, spaceId: String!): GitCourse!
@@ -766,6 +814,7 @@ type Mutation {
   upsertGitCourseTopicSubmission(gitCourseTopicSubmission: GitCourseTopicSubmissionInput!, spaceId: String!): GitCourseTopicSubmission!
   upsertGnosisSafeWallets(spaceId: String!, wallets: [GnosisSafeWalletInput!]!): Space!
   upsertGuide(guideInput: GuideInput!, spaceId: String!): Guide!
+  upsertGuideRating(spaceId: String!, upsertGuideRatingInput: UpsertGuideRatingInput!): Boolean!
   upsertProjectGalaxyAccessToken(accessToken: String!, spaceId: String!): Space!
   upsertSimulation(input: UpsertSimulationInput!, spaceId: String!): Simulation!
   upsertSpaceAcademyRepository(academyRepository: String!, spaceId: String!): Space!
@@ -845,6 +894,8 @@ type Query {
   gitCourseSummarized(key: String!, spaceId: String!): SummarizedGitCourse!
   gitTopicSubmissions(courseKey: String!, spaceId: String!): [GitCourseTopicSubmission!]!
   guide(spaceId: String!, uuid: String!): Guide!
+  guideRating(ratingUuid: String!): [GuideRating!]!
+  guideRatings(guideUuid: String!, spaceId: String!): [GuideRating!]!
   guideSubmissions(guideUuid: String!): [GuideSubmission!]!
   guides(spaceId: String!): [Guide!]!
   rawGitCourse(key: String!, spaceId: String!): RawGitCourse!
@@ -908,10 +959,12 @@ input SimulationStepInput {
 type Space {
   adminUsernames: [String!]!
   admins: [String!]!
+  authSettings: AuthSettings!
   avatar: String
   creator: String!
   domains: [String!]!
   features: [String!]!
+  guideSettings: GuideSettings!
   id: String!
   inviteLinks: SpaceInviteLinks
   name: String!
@@ -1131,6 +1184,18 @@ input UpsertCourseIntegrationsInput {
   projectGalaxyOatMintUrl: String
   projectGalaxyOatMintedContent: String
   projectGalaxyOatPassingCount: Int
+}
+
+input UpsertGuideRatingInput {
+  endRating: Int!
+  guideUuid: String!
+  ipAddress: String!
+  negativeFeedback: GuideFeedbackInput!
+  positiveFeedback: GuideFeedbackInput!
+  ratingUuid: String!
+  spaceId: String!
+  startRating: Int!
+  userId: String!
 }
 
 input UpsertSimulationInput {

@@ -10,13 +10,13 @@ import { useSpace } from '@/contexts/SpaceContext';
 import { Space } from '@/graphql/generated/generated-types';
 import { Session } from '@/types/auth/Session';
 import { FeatureItem, FeatureName } from '@/types/spaceFeatures';
+import { isAdmin } from '@/utils/auth/isAdmin';
 import { getSortedFeaturesArray } from '@/utils/features';
 import { getCDNImageUrl } from '@/utils/images/getCDNImageUrl';
 import { Disclosure } from '@headlessui/react';
 import PlusIcon from '@heroicons/react/20/solid/PlusIcon';
 import Bars3Icon from '@heroicons/react/24/outline/Bars3Icon';
 import XMarkIcon from '@heroicons/react/24/outline/XMarkIcon';
-import sortBy from 'lodash/sortBy';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -80,6 +80,32 @@ function MobileNavLinks({ space }: { space: Space }) {
   );
 }
 
+function CreateOrLoginButton(props: {
+  session?: Session | undefined | null;
+  space: Space | null | undefined;
+  onClickCreate: () => void;
+  onClickLogin: () => void;
+}) {
+  if (props.session && props.space && isAdmin(props.session, props.space)) {
+    return (
+      <ButtonLarge type="button" variant="contained" primary onClick={props.onClickCreate}>
+        <PlusIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
+        Create
+      </ButtonLarge>
+    );
+  }
+
+  if (props.session && props.space) {
+    return null;
+  }
+
+  return (
+    <ButtonLarge variant="contained" primary onClick={props.onClickLogin}>
+      Login
+    </ButtonLarge>
+  );
+}
+
 export default function TopNav() {
   const { data: session } = useSession();
   const { setShowLoginModal } = useLoginModalContext();
@@ -136,21 +162,17 @@ export default function TopNav() {
                 </div>
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
-                    {session ? (
-                      <ButtonLarge type="button" variant="contained" primary onClick={() => setShowCreateModal(true)}>
-                        <PlusIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
-                        Create
-                      </ButtonLarge>
-                    ) : (
-                      <ButtonLarge variant="contained" primary onClick={() => setShowLoginModal(true)}>
-                        Login
-                      </ButtonLarge>
-                    )}
+                    <CreateOrLoginButton
+                      session={session as Session}
+                      space={space}
+                      onClickCreate={() => setShowCreateModal(true)}
+                      onClickLogin={() => setShowLoginModal(true)}
+                    />
                   </div>
 
-                  {session && (
+                  {session && space && (
                     <div className="hidden md:ml-4 md:flex md:flex-shrink-0 md:items-center">
-                      <DesktopProfileMenu session={session as Session} />
+                      <DesktopProfileMenu session={session as Session} space={space} />
                     </div>
                   )}
                 </div>
@@ -159,7 +181,7 @@ export default function TopNav() {
 
             <Disclosure.Panel className="md:hidden">
               {space && <MobileNavLinks space={space} />}
-              {session && <MobileProfileMenu session={session as Session} />}
+              {session && space && <MobileProfileMenu session={session as Session} space={space} />}
             </Disclosure.Panel>
           </>
         )}

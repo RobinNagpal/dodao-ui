@@ -1,8 +1,8 @@
-import EllipsisDropdown from '@/components/core/dropdowns/EllipsisDropdown';
-import PageLoading from '@/components/core/loaders/PageLoading';
 import DetailsField from '@/components/core/details/DetailsField';
 import DetailsHeader from '@/components/core/details/DetailsHeader';
 import DetailsSection from '@/components/core/details/DetailsSection';
+import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
+import PageLoading from '@/components/core/loaders/PageLoading';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import { SpaceWithIntegrationsFragment, useExtendedSpaceQuery, useReloadAcademyRepoMutation } from '@/graphql/generated/generated-types';
 
@@ -58,7 +58,7 @@ export default function SpaceDetails(props: SpaceDetailsProps) {
     <DetailsSection>
       <div className="flex w-full">
         <DetailsHeader header={'Space Details'} subheader={'Information about your space'} editLink={props.editLink} className="grow-1 w-full" />
-        <EllipsisDropdown items={threeDotItems} onSelect={selectFromThreedotDropdown} className="ml-4 pt-4 grow-0 w-16" />
+        <PrivateEllipsisDropdown items={threeDotItems} onSelect={selectFromThreedotDropdown} className="ml-4 pt-4 grow-0 w-16" />
       </div>
       {getSpaceDetailsFields(data.space).map((field) => (
         <DetailsField key={field.label} label={field.label} value={field.value} />

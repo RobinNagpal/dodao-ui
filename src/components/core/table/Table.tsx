@@ -39,18 +39,6 @@ const InfoText = styled.p`
   color: var(--text-color);
 `;
 
-const AddNewButton = styled(Button)`
-  background-color: var(--primary-color);
-  color: var(--text-color);
-  &:hover {
-    background-color: var(--link-color);
-  }
-  &:focus-visible {
-    outline: none;
-    box-shadow: 0 0 0 2px var(--link-color);
-  }
-`;
-
 const FirstColumnCell = styled.td`
   color: var(--heading-color);
 `;
@@ -65,15 +53,15 @@ export function Table(props: TableProps) {
       <div className="sm:flex sm:items-center justify-between">
         {props.heading && (
           <div className="sm:flex-auto">
-            <Heading className="text-base font-semibold leading-6">{props.heading}</Heading>
+            <Heading className="font-semibold leading-6">{props.heading}</Heading>
             {props.infoText && <InfoText className="mt-2 text-sm">{props.infoText}</InfoText>}
           </div>
         )}
         {props.onAddNew && (
           <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-            <AddNewButton type="button" onClick={props.onAddNew}>
+            <Button type="button" primary variant="contained" onClick={props.onAddNew}>
               {props.addNewLabel || 'Add New'}
-            </AddNewButton>
+            </Button>
           </div>
         )}
       </div>

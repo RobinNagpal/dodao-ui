@@ -4,11 +4,10 @@ fragment GuideSummary on Guide{
   name
   categories
   content
-  created
+  createdAt
   guideSource
   guideType
   publishStatus
-  socialShareImage
   thumbnail
   uuid
 

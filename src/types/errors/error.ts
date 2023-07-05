@@ -1,4 +1,4 @@
-import { GuideIntegrationFragment } from '@/graphql/generated/generated-types';
+import { GuideIntegrationFragment, GuideSettingsFragment } from '@/graphql/generated/generated-types';
 
 export interface ChoiceError {
   content?: boolean;

@@ -2,8 +2,8 @@
 
 import withSpace from '@/app/withSpace';
 import Block from '@/components/app/Block';
+import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import RowLoading from '@/components/core/loaders/RowLoading';
-import EllipsisDropdown from '@/components/core/dropdowns/EllipsisDropdown';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import TimelineDetails from '@/components/timelines/View/TimelineDetails';
 import { SpaceWithIntegrationsFragment, useTimelineDetailsQuery } from '@/graphql/generated/generated-types';
@@ -28,7 +28,7 @@ const TimelinePage = ({ params, space }: { params: { timelineId: string }; space
                   All Timelines
                 </Link>
                 <div className="ml-3">
-                  <EllipsisDropdown
+                  <PrivateEllipsisDropdown
                     items={threeDotItems}
                     onSelect={(key) => {
                       router.push(`/timelines/edit/${params.timelineId}`);

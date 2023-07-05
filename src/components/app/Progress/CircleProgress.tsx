@@ -12,7 +12,6 @@ const Container = styled.div`
   position: relative;
   width: 80px;
   height: 80px;
-  background-color: var(--block-bg);
 `;
 
 const Circle = styled.svg`

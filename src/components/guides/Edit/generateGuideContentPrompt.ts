@@ -10,21 +10,7 @@ export default function generateGuideContentPrompt(topic: string, guidelines: st
   5. Don't create a conclusion paragraph.
  
   Also follow the following guidelines:
-  ${guidelines}
- 
-  The output is part of the following document, so make sure that the generated output is coherent with the rest of the document.  
-  Document: ${guide.name}
-  ${guide.steps
-    .filter((s) => s.content.trim())
-    .map(
-      (s, index) => `
-    Heading ${index}: ${s.name} 
-    ${s.content}
-    
-    `
-    )
-    .join('\n')}
-   
+  ${guidelines}   
     
   Here is the content provided:
   ${contents}`;

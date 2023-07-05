@@ -22,6 +22,7 @@ interface QuestionComponentProps {
   setAnswer?: (uuid: string, key: string, checked: boolean) => void;
   updateChoiceContent?: (uuid: string, key: string, content: string) => void;
   updateQuestionDescription?: (uuid: string, content: string) => void;
+  updateQuestionExplanation?: (uuid: string, content: string) => void;
   updateAnswers?: (uuid: string, key: string, checked: boolean) => void;
   updateQuestionType: (questionId: string, type: QuestionType) => void;
 }
@@ -54,6 +55,7 @@ export default function CreateQuestion({
   setAnswer,
   updateChoiceContent,
   updateQuestionDescription,
+  updateQuestionExplanation,
   updateAnswers,
   updateQuestionType,
 }: QuestionComponentProps) {
@@ -136,6 +138,14 @@ export default function CreateQuestion({
           <PlusCircle height={25} width={25} />
         </AddChoiceButton>
       )}
+      <TextareaAutosize
+        label="Explanation"
+        id={question.uuid + 'question_explanation'}
+        modelValue={question.explanation}
+        placeholder="Guide question content"
+        className="input w-full text-left"
+        onUpdate={(e) => updateQuestionExplanation?.(question.uuid, e !== undefined ? e.toString() : '')}
+      />
     </>
   );
 }

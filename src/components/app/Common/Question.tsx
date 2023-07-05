@@ -28,10 +28,10 @@ const HintIconWrapper = styled.div`
   cursor: pointer;
 `;
 
-interface LocalQuestionType
+export interface LocalQuestionType
   extends Omit<CourseQuestionFragment | GuideQuestionFragment | ByteQuestionFragmentFragment | CourseReadingQuestionFragment, 'hint' | 'explanation'> {
   hint?: string;
-  explanation?: string;
+  explanation?: string | null;
 }
 
 interface QuestionProps {

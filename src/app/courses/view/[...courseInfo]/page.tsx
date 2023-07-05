@@ -2,15 +2,18 @@
 
 import withSpace from '@/app/withSpace';
 import Block from '@/components/app/Block';
-import RowLoading from '@/components/core/loaders/RowLoading';
 import EllipsisDropdown from '@/components/core/dropdowns/EllipsisDropdown';
+import RowLoading from '@/components/core/loaders/RowLoading';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import CourseNavigation from '@/components/courses/Edit/CourseNavigation';
 import ModalCourseNewItem from '@/components/courses/Edit/ModalCourseNewItem';
 import CourseDetailsRightSection, { ItemTypes } from '@/components/courses/View/CourseDetailsRightSection';
 import { useCourseSubmission } from '@/components/courses/View/useCourseSubmission';
 import useViewCourse from '@/components/courses/View/useViewCourse';
-import { CourseDetailsFragment, SpaceWithIntegrationsFragment, useGitCourseQueryQuery } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { Session } from '@/types/auth/Session';
+import { isAdmin } from '@/utils/auth/isAdmin';
+import { isSuperAdmin } from '@/utils/auth/superAdmins';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -79,11 +82,11 @@ const CourseView = ({ params, space }: { params: { courseInfo: string[] }; space
     }
   }, [courseHelper.course, session]);
 
-  const isAdmin = true;
+  const isUserAnAdmin = session && isAdmin(session as Session, space);
 
-  const isCourseAdmin = true;
+  const isCourseAdmin = session && isAdmin(session as Session, space);
 
-  const isSuperAdmin = true;
+  const isUserASuperAdmin = session && isSuperAdmin(session as Session);
 
   function editCourseRepo() {}
 
@@ -117,7 +120,7 @@ const CourseView = ({ params, space }: { params: { courseInfo: string[] }; space
             <Link href={`/courses/view/${courseKey}`}>
               <h3>{course.title}</h3>
             </Link>
-            {isSuperAdmin && (
+            {isUserASuperAdmin && (
               <div className="pull-right float-right mr-2 topnav-domain-navigation-three-dots">
                 <EllipsisDropdown items={threeDotItems} onSelect={selectFromThreedotDropdown} />
               </div>
