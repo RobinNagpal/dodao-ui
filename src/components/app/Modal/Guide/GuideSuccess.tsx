@@ -1,10 +1,6 @@
-import { Fragment, useRef, useState, ChangeEvent, FormEvent, MouseEvent, useEffect } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { ArrowDownCircleIcon } from '@heroicons/react/24/outline';
-import { CheckIcon } from '@heroicons/react/24/outline';
-import { uuidV4 } from 'ethers';
-import TextareaAutosize from '@/components/core/textarea/TextareaAutosize';
-import GuideFeedback from '@/components/guides/View/GuideFeedback';
+import { ChangeEvent, FormEvent, Fragment, MouseEvent, useEffect, useRef, useState } from 'react';
 
 export interface FeedbackState {
   questions: boolean;
@@ -31,14 +27,14 @@ export interface GuideSuccesspProps {
   guideName: string;
 }
 
-interface successObjectProps {
+interface SuccessObjectProps {
   guideName: string;
   initialRatings: Number;
   finalRatings: Number;
   Feedback: FeedbackState;
 }
 
-const successObject: successObjectProps = {
+const successObject: SuccessObjectProps = {
   guideName: '',
   initialRatings: -1,
   finalRatings: -1,
@@ -50,18 +46,6 @@ const successObject: successObjectProps = {
     loading: false,
     other: '',
   },
-};
-export const storeUserInitialRatings = (key: string, page: Number) => {
-  if (key === '') return false;
-  console.log(localStorage.getItem(key), 'this is localstoragegetitem\n');
-  const storedString = localStorage.getItem(key) as string;
-  const storedObject: successObjectProps = JSON.parse(storedString);
-  console.log(storedObject);
-  if ((storedObject === null || storedObject.initialRatings === -1) && page === 0) {
-    return true;
-  } else if (storedObject === null || (storedObject.finalRatings === -1 && page === 1)) {
-    return true;
-  } else return false;
 };
 
 const GuideSuccessModal: React.FC<GuideSuccesspProps> = ({ page, userKey, guideName }) => {
@@ -153,7 +137,7 @@ const GuideSuccessModal: React.FC<GuideSuccesspProps> = ({ page, userKey, guideN
   const handleSubmitFeedBack = (event: FormEvent) => {
     event.preventDefault();
 
-    const updatedSuccessObject: successObjectProps = {
+    const updatedSuccessObject: SuccessObjectProps = {
       ...successObject,
       Feedback: finalFeedback,
     };

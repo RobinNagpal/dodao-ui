@@ -2,6 +2,7 @@ import Question from '@/components/app/Common/Question';
 import UserDiscord from '@/components/app/Form/UserDiscord';
 import UserInput from '@/components/app/Form/UserInput';
 import Button from '@/components/core/buttons/Button';
+import { useGuideRatings } from '@/components/guides/View/useGuideRatings';
 import { LAST_STEP_UUID, UseViewGuideHelper } from '@/components/guides/View/useViewGuide';
 import { useLoginModalContext } from '@/contexts/LoginModalContext';
 import { useNotificationContext } from '@/contexts/NotificationContext';
@@ -15,6 +16,7 @@ import {
   UserDiscordInfoInput,
 } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
+import { UserIdKey } from '@/types/auth/User';
 import { isQuestion, isUserDiscordConnect, isUserInput } from '@/types/deprecated/helpers/stepItemTypes';
 import { getMarkedRenderer } from '@/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
@@ -22,7 +24,6 @@ import { useSession } from 'next-auth/react';
 import { useCallback, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import GuideSuccessModal from '@/components/app/Modal/Guide/GuideSuccess';
-import { storeUserInitialRatings } from '@/components/app/Modal/Guide/GuideSuccess';
 
 const CorrectAnswer = styled.div`
   background-color: green !important;
@@ -156,9 +157,6 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
   const handleCloseModal = () => {
     setModalOpen(false);
   };
-  const userkey: string = sesstion ? sesstion?.user.spaceId : 'sihfoisdh';
-  console.log(userkey, '\n');
-  console.log(storeUserInitialRatings(userkey, 1));
 
   return (
     <div className="guide-stepper-content w-full px-4 flex flex-col justify-between">
@@ -175,11 +173,6 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
             <a href={guide.guideIntegrations?.projectGalaxyOatMintUrl} className="badge-claim-link">
               here
             </a>
-          </div>
-        )}
-        {!isNotFirstStep && storeUserInitialRatings(userkey, 0) && (
-          <div className="flex align-center justify-center mt-4">
-            <GuideSuccessModal page={0} userKey={userkey} guideName={guide.name} />
           </div>
         )}
         {showIncorrectQuestions && (

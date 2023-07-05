@@ -653,12 +653,14 @@ export interface GuideQuestionInput {
 export interface GuideRating {
   __typename?: 'GuideRating';
   createdAt: Scalars['DateTimeISO'];
-  endRating: Scalars['Int'];
+  endRating?: Maybe<Scalars['Int']>;
   guideUuid: Scalars['String'];
-  ipAddress: Scalars['String'];
-  negativeFeedback: GuideFeedback;
-  positiveFeedback: GuideFeedback;
-  startRating: Scalars['Int'];
+  ipAddress?: Maybe<Scalars['String']>;
+  negativeFeedback?: Maybe<GuideFeedback>;
+  positiveFeedback?: Maybe<GuideFeedback>;
+  ratingUuid: Scalars['String'];
+  spaceId: Scalars['String'];
+  startRating?: Maybe<Scalars['Int']>;
   userId: Scalars['String'];
 }
 
@@ -1738,14 +1740,13 @@ export interface UpsertCourseIntegrationsInput {
 }
 
 export interface UpsertGuideRatingInput {
-  endRating: Scalars['Int'];
+  endRating?: InputMaybe<Scalars['Int']>;
   guideUuid: Scalars['String'];
-  ipAddress: Scalars['String'];
-  negativeFeedback: GuideFeedbackInput;
-  positiveFeedback: GuideFeedbackInput;
+  negativeFeedback?: InputMaybe<GuideFeedbackInput>;
+  positiveFeedback?: InputMaybe<GuideFeedbackInput>;
   ratingUuid: Scalars['String'];
   spaceId: Scalars['String'];
-  startRating: Scalars['Int'];
+  startRating?: InputMaybe<Scalars['Int']>;
   userId: Scalars['String'];
 }
 
