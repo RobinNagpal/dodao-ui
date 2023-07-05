@@ -154,7 +154,7 @@ mutation UpdateSpaceGuideSettings($spaceId: String!, $input: GuideSettingsInput!
   }
 }
 
-mutation UpdateAuthSettings($spaceId: String!, $input: AuthSettingsInput!) {
+mutation UpdateSpaceAuthSettings($spaceId: String!, $input: AuthSettingsInput!) {
   payload: updateAuthSettings(spaceId: $spaceId, input: $input) {
     ...SpaceWithIntegrations
   }

@@ -64,3 +64,10 @@ export enum VisibilityEnum {
   Public = 'Public',
   Hidden = 'Hidden',
 }
+
+export enum LoginProviders {
+  Discord = 'Discord',
+  MetaMask = 'MetaMask',
+  Google = 'Google',
+  Coinbase = 'Coinbase',
+}

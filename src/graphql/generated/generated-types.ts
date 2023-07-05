@@ -2504,13 +2504,13 @@ export type UpdateSpaceGuideSettingsMutationVariables = Exact<{
 
 export type UpdateSpaceGuideSettingsMutation = { __typename?: 'Mutation', payload: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, skin: string, avatar?: string | null, domains: Array<string>, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureBeforeAndAfterRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null } } };
 
-export type UpdateAuthSettingsMutationVariables = Exact<{
+export type UpdateSpaceAuthSettingsMutationVariables = Exact<{
   spaceId: Scalars['String'];
   input: AuthSettingsInput;
 }>;
 
 
-export type UpdateAuthSettingsMutation = { __typename?: 'Mutation', payload: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, skin: string, avatar?: string | null, domains: Array<string>, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureBeforeAndAfterRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null } } };
+export type UpdateSpaceAuthSettingsMutation = { __typename?: 'Mutation', payload: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, skin: string, avatar?: string | null, domains: Array<string>, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureBeforeAndAfterRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null } } };
 
 export type SpaceSummaryFragment = { __typename?: 'Space', id: string, admins: Array<string>, adminUsernames: Array<string>, avatar?: string | null, creator: string, name: string, skin: string, domains: Array<string> };
 
@@ -6038,40 +6038,40 @@ export function useUpdateSpaceGuideSettingsMutation(baseOptions?: Apollo.Mutatio
 export type UpdateSpaceGuideSettingsMutationHookResult = ReturnType<typeof useUpdateSpaceGuideSettingsMutation>;
 export type UpdateSpaceGuideSettingsMutationResult = Apollo.MutationResult<UpdateSpaceGuideSettingsMutation>;
 export type UpdateSpaceGuideSettingsMutationOptions = Apollo.BaseMutationOptions<UpdateSpaceGuideSettingsMutation, UpdateSpaceGuideSettingsMutationVariables>;
-export const UpdateAuthSettingsDocument = gql`
-    mutation UpdateAuthSettings($spaceId: String!, $input: AuthSettingsInput!) {
+export const UpdateSpaceAuthSettingsDocument = gql`
+    mutation UpdateSpaceAuthSettings($spaceId: String!, $input: AuthSettingsInput!) {
   payload: updateAuthSettings(spaceId: $spaceId, input: $input) {
     ...SpaceWithIntegrations
   }
 }
     ${SpaceWithIntegrationsFragmentDoc}`;
-export type UpdateAuthSettingsMutationFn = Apollo.MutationFunction<UpdateAuthSettingsMutation, UpdateAuthSettingsMutationVariables>;
+export type UpdateSpaceAuthSettingsMutationFn = Apollo.MutationFunction<UpdateSpaceAuthSettingsMutation, UpdateSpaceAuthSettingsMutationVariables>;
 
 /**
- * __useUpdateAuthSettingsMutation__
+ * __useUpdateSpaceAuthSettingsMutation__
  *
- * To run a mutation, you first call `useUpdateAuthSettingsMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateAuthSettingsMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useUpdateSpaceAuthSettingsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateSpaceAuthSettingsMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [updateAuthSettingsMutation, { data, loading, error }] = useUpdateAuthSettingsMutation({
+ * const [updateSpaceAuthSettingsMutation, { data, loading, error }] = useUpdateSpaceAuthSettingsMutation({
  *   variables: {
  *      spaceId: // value for 'spaceId'
  *      input: // value for 'input'
  *   },
  * });
  */
-export function useUpdateAuthSettingsMutation(baseOptions?: Apollo.MutationHookOptions<UpdateAuthSettingsMutation, UpdateAuthSettingsMutationVariables>) {
+export function useUpdateSpaceAuthSettingsMutation(baseOptions?: Apollo.MutationHookOptions<UpdateSpaceAuthSettingsMutation, UpdateSpaceAuthSettingsMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateAuthSettingsMutation, UpdateAuthSettingsMutationVariables>(UpdateAuthSettingsDocument, options);
+        return Apollo.useMutation<UpdateSpaceAuthSettingsMutation, UpdateSpaceAuthSettingsMutationVariables>(UpdateSpaceAuthSettingsDocument, options);
       }
-export type UpdateAuthSettingsMutationHookResult = ReturnType<typeof useUpdateAuthSettingsMutation>;
-export type UpdateAuthSettingsMutationResult = Apollo.MutationResult<UpdateAuthSettingsMutation>;
-export type UpdateAuthSettingsMutationOptions = Apollo.BaseMutationOptions<UpdateAuthSettingsMutation, UpdateAuthSettingsMutationVariables>;
+export type UpdateSpaceAuthSettingsMutationHookResult = ReturnType<typeof useUpdateSpaceAuthSettingsMutation>;
+export type UpdateSpaceAuthSettingsMutationResult = Apollo.MutationResult<UpdateSpaceAuthSettingsMutation>;
+export type UpdateSpaceAuthSettingsMutationOptions = Apollo.BaseMutationOptions<UpdateSpaceAuthSettingsMutation, UpdateSpaceAuthSettingsMutationVariables>;
 export const SpacesDocument = gql`
     query Spaces {
   spaces {

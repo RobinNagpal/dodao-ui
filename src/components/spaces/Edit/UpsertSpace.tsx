@@ -1,5 +1,6 @@
 import RowLoading from '@/components/core/loaders/RowLoading';
 import TabsWithUnderline, { TabItem } from '@/components/core/tabs/TabsWithUnderline';
+import UpsertSpaceAuthSettings from '@/components/spaces/Edit/Auth/UpsertSpaceAuthSettings';
 import UpsertSpaceBasicSettings from '@/components/spaces/Edit/Basic/UpsertSpaceBasicSettings';
 import useEditSpace, { SpaceEditType, UseEditSpaceHelper } from '@/components/spaces/Edit/Basic/useEditSpace';
 import CourseListScreen from '@/components/spaces/Edit/Courses/CourseListScreen';
@@ -40,6 +41,10 @@ function SettingsScreen(props: { space: SpaceEditType; editSpaceHelper: UseEditS
     return <UpsertSpaceGuideSettings space={data.space} />;
   }
 
+  if (props.selectedTabId === TabIds.Auth) {
+    return <UpsertSpaceAuthSettings space={data.space} />;
+  }
+
   return null;
 }
 
@@ -64,7 +69,7 @@ export default function UpsertSpace(props: UpsertSpaceProps) {
       label: 'Auth',
     },
   ];
-  const [selectedTabId, setSelectedTabId] = useState(TabIds.Guides);
+  const [selectedTabId, setSelectedTabId] = useState(TabIds.Auth);
 
   useEffect(() => {
     editSpaceHelper.initialize();
