@@ -179,10 +179,9 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
             </a>
           </div>
         )}
-        {!isNotFirstStep && storeUserInitialRatings(userkey , 1)&&(
+        {!isNotFirstStep && storeUserInitialRatings(userkey , 0)&&(
           <div className='flex align-center justify-center mt-4'>
-          <GuideSuccessModal page={1} userKey={userkey}/>
-          
+          <GuideSuccessModal page={0} userKey={userkey} guideName={guide.name}/>
           </div>
         )}
         {showIncorrectQuestions && (

@@ -1,10 +1,12 @@
-import { Fragment, useRef, useState,ChangeEvent, FormEvent, MouseEvent  } from 'react'
+import { Fragment, useRef, useState,ChangeEvent, FormEvent, MouseEvent , useEffect  } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { ArrowDownCircleIcon } from '@heroicons/react/24/outline';
 import { CheckIcon } from '@heroicons/react/24/outline'
 import { uuidV4 } from 'ethers'
 import TextareaAutosize from '@/components/core/textarea/TextareaAutosize';
 import GuideFeedback from '@/components/guides/View/GuideFeedback';
+
+
 
 
 
@@ -15,7 +17,6 @@ export interface FeedbackState {
   UI:boolean ;
   loading:boolean ;
   other: string;
-
   [key: string]: boolean | string;
 }
 
@@ -28,17 +29,21 @@ const feedbackOptions = [
   { name: 'other', label: 'Other' },
 ];
 
-
 export interface GuideSuccesspProps {
   page: Number;
   userKey : string ; 
+  guideName: string;
 }
-interface successObjectProps{
+
+interface successObjectProps {
+  guideName: string;
   initialRatings : Number ; 
   finalRatings : Number;
   Feedback : FeedbackState ; 
 }
+
 const successObject: successObjectProps = {
+  guideName: '',
   initialRatings: -1,
   finalRatings: -1,
   Feedback: {
@@ -50,14 +55,12 @@ const successObject: successObjectProps = {
     other: '',
   },
 };
-export const  storeUserInitialRatings = (key:string , page:Number) => {
+export const storeUserInitialRatings = (key:string , page:Number) => {
   if(key ==='') return false ;
   console.log(localStorage.getItem(key) , 'this is localstoragegetitem\n') ;
   const storedString = localStorage.getItem(key) as string ;
   const storedObject:successObjectProps = JSON.parse(storedString)  
   console.log(storedObject) ; 
-
-
   if((storedObject === null || storedObject.initialRatings === -1 ) && page===0 ){
     return true; 
   }else if (storedObject === null || storedObject.finalRatings === -1 && page===1 ){
@@ -68,8 +71,7 @@ export const  storeUserInitialRatings = (key:string , page:Number) => {
 
 
 
-
-const GuideSuccessModal: React.FC<GuideSuccesspProps> = ({ page  , userKey}) => {
+const GuideSuccessModal: React.FC<GuideSuccesspProps> = ({ page  , userKey, guideName }) => {
   const [open, setOpen] = useState(true)
   const [success , setsuccess] = useState(true);
   const [selectedRating, setSelectedRating] = useState<number | null>(null)
@@ -96,12 +98,21 @@ const GuideSuccessModal: React.FC<GuideSuccesspProps> = ({ page  , userKey}) => 
      else {
       if(page === 0 ){
         successObject.initialRatings = rating ; 
-        console.log(successObject ,'this is initial rate\n')
       }else{
-        successObject.finalRatings = rating ; 
+        successObject.finalRatings = rating ;
+       
         console.log(successObject ,'this is final rate\n')
       }
-      localStorage.setItem(userKey, JSON.stringify(successObject));
+      const fr = successObject.finalRatings as number
+      const ir  =successObject.initialRatings as number
+      if(fr - ir > 0 ){
+        setsuccess(true) ; 
+      }else{
+        setsuccess(false);
+      }
+      successObject.guideName = guideName; // Set guideName
+    localStorage.setItem(guideName, JSON.stringify(successObject));
+     
       setOpen((prev) => !prev)
     }
   }
@@ -151,23 +162,23 @@ const GuideSuccessModal: React.FC<GuideSuccesspProps> = ({ page  , userKey}) => 
 
   const handleSubmitFeedBack = (event: FormEvent) => {
     event.preventDefault();
-    
+
     const updatedSuccessObject: successObjectProps = {
       ...successObject,
-      Feedback: {
-        ...successObject.Feedback,
-        questions: finalFeedback.questions,
-        content: finalFeedback.content,
-        clarity: finalFeedback.clarity,
-        UI: finalFeedback.UI,
-        loading: finalFeedback.loading,
-        other: finalFeedback.other,
-      },
+      Feedback: finalFeedback,
     };
 
     handleSubmit(finalSelectedRating);
     console.log(finalFeedback);
   };
+
+  const [ratingsFilled, setRatingsFilled] = useState(false);
+
+  useEffect(() => {
+    
+    setRatingsFilled(successObject.finalRatings as number > 0 && successObject.initialRatings as number > 0);
+  }, [success]);
+
  
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -219,9 +230,11 @@ const GuideSuccessModal: React.FC<GuideSuccesspProps> = ({ page  , userKey}) => 
                     </div>
                   </div>
                 </div>
-               {(success && page === 1) && (
+               {(ratingsFilled && page === 1) && (
                 <div className="flex flex-col items-center">
-                <h1 className="m-2">What do you like the most?</h1>
+              <Dialog.Title as="h3" className="text-xl font-semibold leading-6 text-gray-900">
+              {ratingsFilled && success  ? 'What do you like the most?' : 'What do you want us to improve on'}
+            </Dialog.Title>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                   {feedbackOptions.map((option) => (
                     <button
