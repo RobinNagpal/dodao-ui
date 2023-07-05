@@ -604,12 +604,14 @@ input GuideQuestionInput {
 
 type GuideRating {
   createdAt: DateTimeISO!
-  endRating: Int!
+  endRating: Int
   guideUuid: String!
-  ipAddress: String!
-  negativeFeedback: GuideFeedback!
-  positiveFeedback: GuideFeedback!
-  startRating: Int!
+  ipAddress: String
+  negativeFeedback: GuideFeedback
+  positiveFeedback: GuideFeedback
+  ratingUuid: String!
+  spaceId: String!
+  startRating: Int
   userId: String!
 }
 
@@ -1187,14 +1189,13 @@ input UpsertCourseIntegrationsInput {
 }
 
 input UpsertGuideRatingInput {
-  endRating: Int!
+  endRating: Int
   guideUuid: String!
-  ipAddress: String!
-  negativeFeedback: GuideFeedbackInput!
-  positiveFeedback: GuideFeedbackInput!
+  negativeFeedback: GuideFeedbackInput
+  positiveFeedback: GuideFeedbackInput
   ratingUuid: String!
   spaceId: String!
-  startRating: Int!
+  startRating: Int
   userId: String!
 }
 
