@@ -10,6 +10,10 @@ fragment AuthSettings on AuthSettings {
   loginOptions
 }
 
+fragment SocialSettings on SocialSettings {
+  linkedSharePdfBackgroundImage
+}
+
 fragment SpaceWithIntegrations on Space {
   id
   creator
@@ -47,6 +51,10 @@ fragment SpaceWithIntegrations on Space {
   authSettings {
     loginOptions
     enableLogin
+  }
+
+  socialSettings {
+    linkedSharePdfBackgroundImage
   }
   guideSettings {
     askForLoginToSubmit
@@ -156,6 +164,12 @@ mutation UpdateSpaceGuideSettings($spaceId: String!, $input: GuideSettingsInput!
 
 mutation UpdateSpaceAuthSettings($spaceId: String!, $input: AuthSettingsInput!) {
   payload: updateAuthSettings(spaceId: $spaceId, input: $input) {
+    ...SpaceWithIntegrations
+  }
+}
+
+mutation UpdateSpaceSocialSettings($spaceId: String!, $input: SocialSettingsInput!) {
+  payload: updateSocialSettings(spaceId: $spaceId, input: $input) {
     ...SpaceWithIntegrations
   }
 }

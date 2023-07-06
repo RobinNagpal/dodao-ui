@@ -5,6 +5,7 @@ import UpsertSpaceBasicSettings from '@/components/spaces/Edit/Basic/UpsertSpace
 import useEditSpace, { SpaceEditType, UseEditSpaceHelper } from '@/components/spaces/Edit/Basic/useEditSpace';
 import CourseListScreen from '@/components/spaces/Edit/Courses/CourseListScreen';
 import UpsertSpaceGuideSettings from '@/components/spaces/Edit/Guides/UpsertSpaceGuideSettings';
+import UpsertSpaceSocialSettings from '@/components/spaces/Edit/Social/UpsertSpaceSocialSettings';
 import { useExtendedSpaceQuery } from '@/graphql/generated/generated-types';
 import { useEffect, useState } from 'react';
 
@@ -17,6 +18,7 @@ enum TabIds {
   Basic = 'Basic',
   Courses = 'Courses',
   Guides = 'Guides',
+  Social = 'Social',
 }
 
 function SettingsScreen(props: { space: SpaceEditType; editSpaceHelper: UseEditSpaceHelper; selectedTabId: TabIds }) {
@@ -45,6 +47,10 @@ function SettingsScreen(props: { space: SpaceEditType; editSpaceHelper: UseEditS
     return <UpsertSpaceAuthSettings space={data.space} />;
   }
 
+  if (props.selectedTabId === TabIds.Social) {
+    return <UpsertSpaceSocialSettings space={data.space} />;
+  }
+
   return null;
 }
 
@@ -68,8 +74,12 @@ export default function UpsertSpace(props: UpsertSpaceProps) {
       id: TabIds.Auth,
       label: 'Auth',
     },
+    {
+      id: TabIds.Social,
+      label: 'Social',
+    },
   ];
-  const [selectedTabId, setSelectedTabId] = useState(TabIds.Auth);
+  const [selectedTabId, setSelectedTabId] = useState(TabIds.Basic);
 
   useEffect(() => {
     editSpaceHelper.initialize();
