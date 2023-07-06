@@ -2,24 +2,26 @@ import CalendarIcon from '@/components/core/icons/CalendarIcon';
 import Button from '@/components/core/buttons/Button';
 import { Space, TimelineDetailsFragment } from '@/graphql/generated/generated-types';
 import styled from 'styled-components';
+import { Fragment, useState } from 'react';
+import { CheckCircleIcon } from '@heroicons/react/24/solid';
+import { FaceFrownIcon, FaceSmileIcon, FireIcon, HandThumbUpIcon, HeartIcon, PaperClipIcon, XMarkIcon } from '@heroicons/react/20/solid';
+import { Listbox, Transition } from '@headlessui/react';
+import moment from 'moment';
 
 interface TimelineProps {
   space: Space;
   timeline: TimelineDetailsFragment;
   inProgress?: boolean;
 }
-
 const TimelineList = styled.ol`
   border-left: 2px solid var(--primary-color);
 `;
-
 const TimelineItem = styled.li`
   margin-left: 10px;
   margin-bottom: 10px;
   display: flex;
   align-items: flex-start;
 `;
-
 const TimelineDateIcon = styled.div`
   background-color: var(--primary-color);
   width: 15px;
@@ -32,7 +34,6 @@ const TimelineDateIcon = styled.div`
   min-width: 15px;
   box-shadow: 0 0 0 4px var(--bg-color);
 `;
-
 const TimelineContent = styled.div`
   padding: 20px 20px 20px 20px;
   margin-left: 20px;
@@ -41,12 +42,10 @@ const TimelineContent = styled.div`
   border-radius: 8px;
   border: 1px solid var(--border-color);
   background-color: var(--bg-color);
-
   h1 {
     margin-bottom: 1px;
   }
 `;
-
 const CircleCSS = styled.div`
   .circle {
     background-color: #f3f4f6;
@@ -57,34 +56,40 @@ const CircleCSS = styled.div`
     justify-content: center;
   }
 `;
-
 const Timeline = ({ timeline }: TimelineProps) => {
   return (
-    <TimelineList>
-      {timeline.events.map((event, i) => (
-        <TimelineItem key={i}>
-          <TimelineDateIcon>
-            <CircleCSS>
-              <div className="circle" />
-            </CircleCSS>
-          </TimelineDateIcon>
-          <TimelineContent>
-            <div className={event.moreLink ? 'mb-4' : ''}>
-              <div className="flex justify-between">
-                <h1 className="mb-1 text-lg font-semibold">{event.name}</h1>
-                <h3 className="block mb-2 text-sm font-normal leading-none">{new Date(event.date).toISOString().split('T')[0]}</h3>
+    <>
+      <ul role="list" className="space-y-6">
+        {timeline.events.map((event, i) => {
+          const timeAgo = moment(event.date).local().startOf('seconds').fromNow();
+
+          return (
+            <li key={i} className="relative flex gap-x-4">
+              <div className="absolute left-0 top-0 flex w-6 justify-center -bottom-6">
+                <div className="w-px bg-gray-200"></div>
               </div>
-              <p className="text-base font-normal">{event.content}</p>
-            </div>
-            {event.moreLink && (
-              <a href={event.moreLink} target="_blank" rel="noopener noreferrer">
-                <Button primary>Learn More</Button>
-              </a>
-            )}
-          </TimelineContent>
-        </TimelineItem>
-      ))}
-    </TimelineList>
+              <li className="relative flex gap-x-4">
+                <div className="absolute left-0 top-0 flex w-6 justify-center -bottom-6">
+                  <div className="w-px bg-gray-200"></div>
+                </div>
+                <div className="rounded-full bg-gray-120 ring-1 ring-gray-300 mt-3 h-6 w-6 flex-none rounded-full"></div>
+                <div className="flex-auto rounded-md p-3 ring-1 ring-inset ring-gray-200">
+                  <div className="flex justify-between gap-x-4">
+                    <div className="py-0.5 text-xs leading-5 text-gray-500">
+                      <span className="font-medium text-gray-900">{event.name}</span>
+                    </div>
+                    <time dateTime={event.date} className="flex-none py-0.5 text-xs leading-5 text-gray-500">
+                      {timeAgo}
+                    </time>
+                  </div>
+                  <p className="text-sm leading-6 text-gray-500">{event.content}</p>
+                </div>
+              </li>
+            </li>
+          );
+        })}
+      </ul>
+    </>
   );
 };
 
