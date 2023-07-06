@@ -1,9 +1,10 @@
 'use client';
 
 import withSpace from '@/app/withSpace';
-import Block from '@/components/app/Block';
 import ByteStepper from '@/components/bytes/View/ByteStepper';
+import useGenerateByteSocialContent from '@/components/bytes/View/useGenerateByteSocialContent';
 import { useViewByte } from '@/components/bytes/View/useViewByte';
+import { EllipsisDropdownItem } from '@/components/core/dropdowns/EllipsisDropdown';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import PageLoading from '@/components/core/loaders/PageLoading';
 import PageWrapper from '@/components/core/page/PageWrapper';
@@ -28,7 +29,6 @@ const ByteView = ({ params, space }: { params: { byteIdAndStep: string[] }; spac
   const { byteIdAndStep } = params;
 
   const byteId = Array.isArray(byteIdAndStep) ? byteIdAndStep[0] : (byteIdAndStep as string);
-  const { isAdmin } = { isAdmin: true };
 
   let stepOrder = 0;
   if (Array.isArray(byteIdAndStep)) {
@@ -36,12 +36,16 @@ const ByteView = ({ params, space }: { params: { byteIdAndStep: string[] }; spac
   }
 
   const viewByteHelper = useViewByte(space, byteId, stepOrder);
+  const { generatePdf } = useGenerateByteSocialContent(space.id, byteId);
 
   useEffect(() => {
     viewByteHelper.initialize();
   }, [byteId]);
 
-  const threeDotItems = [{ label: 'Edit', key: 'edit' }];
+  const threeDotItems: EllipsisDropdownItem[] = [
+    { label: 'Edit', key: 'edit' },
+    { label: 'Generate Pdf', key: 'generate-pdf' },
+  ];
 
   const byte = viewByteHelper.byteRef;
   const router = useRouter();
@@ -61,7 +65,11 @@ const ByteView = ({ params, space }: { params: { byteIdAndStep: string[] }; spac
                   <PrivateEllipsisDropdown
                     items={threeDotItems}
                     onSelect={(key) => {
-                      router.push(`/tidbits/edit/${byteId}`);
+                      if (key === 'edit') {
+                        router.push(`/tidbits/edit/${byteId}`);
+                      } else if (key === 'generate-pdf') {
+                        generatePdf();
+                      }
                     }}
                   />
                 </div>

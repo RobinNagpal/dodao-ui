@@ -1949,6 +1949,14 @@ export type PublishByteMutationVariables = Exact<{
 
 export type PublishByteMutation = { __typename?: 'Mutation', payload: { __typename?: 'Byte', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> } };
 
+export type GenerateSharablePdfForByteMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+  byteId: Scalars['String'];
+}>;
+
+
+export type GenerateSharablePdfForByteMutation = { __typename?: 'Mutation', payload: string };
+
 export type SubmitByteMutationVariables = Exact<{
   input: ByteSubmissionInput;
 }>;
@@ -3547,6 +3555,38 @@ export function usePublishByteMutation(baseOptions?: Apollo.MutationHookOptions<
 export type PublishByteMutationHookResult = ReturnType<typeof usePublishByteMutation>;
 export type PublishByteMutationResult = Apollo.MutationResult<PublishByteMutation>;
 export type PublishByteMutationOptions = Apollo.BaseMutationOptions<PublishByteMutation, PublishByteMutationVariables>;
+export const GenerateSharablePdfForByteDocument = gql`
+    mutation GenerateSharablePdfForByte($spaceId: String!, $byteId: String!) {
+  payload: generateSharablePdf(byteId: $byteId, spaceId: $spaceId)
+}
+    `;
+export type GenerateSharablePdfForByteMutationFn = Apollo.MutationFunction<GenerateSharablePdfForByteMutation, GenerateSharablePdfForByteMutationVariables>;
+
+/**
+ * __useGenerateSharablePdfForByteMutation__
+ *
+ * To run a mutation, you first call `useGenerateSharablePdfForByteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useGenerateSharablePdfForByteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [generateSharablePdfForByteMutation, { data, loading, error }] = useGenerateSharablePdfForByteMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      byteId: // value for 'byteId'
+ *   },
+ * });
+ */
+export function useGenerateSharablePdfForByteMutation(baseOptions?: Apollo.MutationHookOptions<GenerateSharablePdfForByteMutation, GenerateSharablePdfForByteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<GenerateSharablePdfForByteMutation, GenerateSharablePdfForByteMutationVariables>(GenerateSharablePdfForByteDocument, options);
+      }
+export type GenerateSharablePdfForByteMutationHookResult = ReturnType<typeof useGenerateSharablePdfForByteMutation>;
+export type GenerateSharablePdfForByteMutationResult = Apollo.MutationResult<GenerateSharablePdfForByteMutation>;
+export type GenerateSharablePdfForByteMutationOptions = Apollo.BaseMutationOptions<GenerateSharablePdfForByteMutation, GenerateSharablePdfForByteMutationVariables>;
 export const SubmitByteDocument = gql`
     mutation SubmitByte($input: ByteSubmissionInput!) {
   submitByte(submissionInput: $input) {
