@@ -1,6 +1,7 @@
 'use client';
 
 import withSpace from '@/app/withSpace';
+import ShareByteView from '@/components/bytes/Share/ShareByteView';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import HorizontalStepperWithPanels, { HorizontalStepperItem } from '@/components/core/stepper/HorizontalStepperWithPanels';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
@@ -61,6 +62,7 @@ const SharePage = ({ params, space }: { params: { byteIdAndStep: string[] }; spa
   return (
     <PageWrapper>
       <HorizontalStepperWithPanels steps={steps} />
+      <ShareByteView byteId={byteId} currentStep={currentStepId} space={space} />
     </PageWrapper>
   );
 };

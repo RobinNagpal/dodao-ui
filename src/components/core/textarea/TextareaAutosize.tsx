@@ -1,7 +1,5 @@
 import { slugify } from '@/utils/auth/slugify';
 import React, { useEffect, useRef, useState } from 'react';
-import { usePopperTooltip } from 'react-popper-tooltip';
-import 'react-popper-tooltip/dist/styles.css';
 import styled from 'styled-components';
 import { v4 } from 'uuid';
 
@@ -19,27 +17,17 @@ export interface TextareaAutosizeProps {
   className?: string;
 }
 
-const Textarea = styled.textarea.attrs((props) => ({
-  placeholder: props.placeholder,
-}))`
+const Textarea = styled.textarea<{ error: boolean }>`
   width: 100%;
   resize: none;
   overflow: auto;
 
   background-color: var(--bg-color);
-  border-color: var(--primary-color);
+  border: ${(props) => (props.error ? '2px solid red;' : '')};
   color: var(--text-color);
   &:focus {
-    box-shadow: 0 0 0 2px var(--primary-color);
+    box-shadow: ${(props) => (props.error ? '0 0 0 2px red' : '0 0 0 2px var(--primary-color)')};
   }
-`;
-
-const WarningIcon = styled.div`
-  display: inline-block;
-  padding: 0.25rem;
-  margin-top: 0.375rem;
-  margin-right: -0.25rem;
-  color: red;
 `;
 
 export default function TextareaAutosize({
@@ -56,7 +44,6 @@ export default function TextareaAutosize({
 }: TextareaAutosizeProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [maxHeightScroll, setMaxHeightScroll] = useState(false);
-  const { getTooltipProps, setTooltipRef, setTriggerRef, visible } = usePopperTooltip({ trigger: 'hover', placement: 'top' });
 
   const resize = () => {
     if (textareaRef.current) {
@@ -119,18 +106,12 @@ export default function TextareaAutosize({
           onFocus={resize}
           value={modelValue as string}
           placeholder={placeholder}
+          error={!!error}
         />
-        {error && (
-          <div ref={setTriggerRef}>
-            <WarningIcon ref={setTooltipRef} {...getTooltipProps({ className: 'tooltip-container' })}>
-              Warning
-            </WarningIcon>
-            {visible && (
-              <div ref={setTooltipRef} {...getTooltipProps({ className: 'tooltip-container' })}>
-                {error}
-              </div>
-            )}
-          </div>
+        {error && typeof error === 'string' && (
+          <p className="mt-2 text-sm text-red-600" id="email-error">
+            {error}
+          </p>
         )}
       </div>
     </div>

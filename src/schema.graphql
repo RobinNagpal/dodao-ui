@@ -121,7 +121,7 @@ type ByteQuestion {
 
 type ByteSocialShare {
   byteId: String!
-  linkedInImages: String
+  linkedInImages: [String!]
   linkedInPdf: String
   linkedinPdfContent: ByteLinkedinPdfContent
   spaceId: String!
@@ -923,7 +923,7 @@ type Query {
   academyTask(uuid: String!): AcademyTask!
   academyTasks(spaceId: String!, status: String): [AcademyTask!]
   byte(byteId: String!, includeDraft: Boolean, spaceId: String!): Byte!
-  byteSocialShare(byteId: String!, spaceId: String!): ByteSocialShare!
+  byteSocialShare(byteId: String!, spaceId: String!): ByteSocialShare
   bytes(spaceId: String!): [Byte!]!
   courses(spaceId: String!): [GitCourse!]!
   gitCourse(courseKey: String!, spaceId: String!): GitCourse!
@@ -1224,7 +1224,7 @@ input UpsertByteInput {
 
 input UpsertByteSocialShareInput {
   byteId: String!
-  linkedInImages: String
+  linkedInImages: [String!]
   linkedInPdf: String
   linkedinPdfContent: ByteLinkedinPdfContentInput
   spaceId: String!

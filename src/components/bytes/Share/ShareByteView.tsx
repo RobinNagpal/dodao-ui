@@ -1,3 +1,4 @@
+import ReviewShareContent from '@/components/bytes/Share/Review/ReviewShareContent';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { TidbitShareSteps } from '@/types/deprecated/models/enums';
 
@@ -8,9 +9,9 @@ export interface ShareByteViewProps {
 }
 
 export default function ShareByteView(props: ShareByteViewProps) {
-  return (
-    <div>
-      <h1>ShareByteView</h1>
-    </div>
-  );
+  if (props.currentStep === TidbitShareSteps.ReviewContents) {
+    return <ReviewShareContent space={props.space} byteId={props.byteId} />;
+  }
+
+  return null;
 }

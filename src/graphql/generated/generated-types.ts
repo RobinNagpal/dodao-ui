@@ -145,7 +145,7 @@ export interface ByteQuestion {
 export interface ByteSocialShare {
   __typename?: 'ByteSocialShare';
   byteId: Scalars['String'];
-  linkedInImages?: Maybe<Scalars['String']>;
+  linkedInImages?: Maybe<Array<Scalars['String']>>;
   linkedInPdf?: Maybe<Scalars['String']>;
   linkedinPdfContent?: Maybe<ByteLinkedinPdfContent>;
   spaceId: Scalars['String'];
@@ -1352,7 +1352,7 @@ export interface Query {
   academyTask: AcademyTask;
   academyTasks?: Maybe<Array<AcademyTask>>;
   byte: Byte;
-  byteSocialShare: ByteSocialShare;
+  byteSocialShare?: Maybe<ByteSocialShare>;
   bytes: Array<Byte>;
   courses: Array<GitCourse>;
   gitCourse: GitCourse;
@@ -1803,7 +1803,7 @@ export interface UpsertByteInput {
 
 export interface UpsertByteSocialShareInput {
   byteId: Scalars['String'];
-  linkedInImages?: InputMaybe<Scalars['String']>;
+  linkedInImages?: InputMaybe<Array<Scalars['String']>>;
   linkedInPdf?: InputMaybe<Scalars['String']>;
   linkedinPdfContent?: InputMaybe<ByteLinkedinPdfContentInput>;
   spaceId: Scalars['String'];
@@ -1958,7 +1958,7 @@ export type ByteSocialShareQueryVariables = Exact<{
 }>;
 
 
-export type ByteSocialShareQuery = { __typename?: 'Query', byteSocialShare: { __typename?: 'ByteSocialShare', byteId: string, linkedInImages?: string | null, linkedInPdf?: string | null, spaceId: string, twitterImage?: string | null, uuid: string, linkedinPdfContent?: { __typename?: 'ByteLinkedinPdfContent', excerpt: string, title: string, steps: Array<{ __typename?: 'ByteLinkedinPdfContentStep', content: string, name: string }> } | null } };
+export type ByteSocialShareQuery = { __typename?: 'Query', byteSocialShare?: { __typename?: 'ByteSocialShare', byteId: string, linkedInImages?: Array<string> | null, linkedInPdf?: string | null, spaceId: string, twitterImage?: string | null, uuid: string, linkedinPdfContent?: { __typename?: 'ByteLinkedinPdfContent', excerpt: string, title: string, steps: Array<{ __typename?: 'ByteLinkedinPdfContentStep', content: string, name: string }> } | null } | null };
 
 export type GenerateSharablePdfForByteMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -1974,7 +1974,7 @@ export type UpsertByteSocialShareMutationVariables = Exact<{
 }>;
 
 
-export type UpsertByteSocialShareMutation = { __typename?: 'Mutation', payload: { __typename?: 'ByteSocialShare', byteId: string, linkedInImages?: string | null, linkedInPdf?: string | null, spaceId: string, twitterImage?: string | null, uuid: string, linkedinPdfContent?: { __typename?: 'ByteLinkedinPdfContent', excerpt: string, title: string, steps: Array<{ __typename?: 'ByteLinkedinPdfContentStep', content: string, name: string }> } | null } };
+export type UpsertByteSocialShareMutation = { __typename?: 'Mutation', payload: { __typename?: 'ByteSocialShare', byteId: string, linkedInImages?: Array<string> | null, linkedInPdf?: string | null, spaceId: string, twitterImage?: string | null, uuid: string, linkedinPdfContent?: { __typename?: 'ByteLinkedinPdfContent', excerpt: string, title: string, steps: Array<{ __typename?: 'ByteLinkedinPdfContentStep', content: string, name: string }> } | null } };
 
 export type ByteQuestionFragmentFragment = { __typename?: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> };
 
