@@ -5,6 +5,7 @@ import { useGuideRatings } from '@/components/guides/View/useGuideRatings';
 import { UseViewGuideHelper } from '@/components/guides/View/useViewGuide';
 import { GuideFragment, Space } from '@/graphql/generated/generated-types';
 import React, { useEffect, useMemo } from 'react';
+import GuideEndRatingModal from '@/components/app/Modal/Guide/GuideEndRatingModal';
 
 interface GuideProps {
   viewGuideHelper: UseViewGuideHelper;
@@ -13,14 +14,16 @@ interface GuideProps {
 }
 
 const Guide: React.FC<GuideProps> = ({ viewGuideHelper, guide, space }) => {
-  const { initialize, guideRatings, showRatingsModal, setStartRating, skipInitialRating } = useGuideRatings(space, guide);
+  const { initialize, guideRatings, showRatingsModal, setStartRating,setFinalRating, skipInitialRating , skipFinalRating ,guideSuccess , showFeedBackModal } = useGuideRatings(space, guide);
 
   const activeStep = useMemo(
     () => guide.steps.find((step) => step.order === viewGuideHelper.activeStepOrder) || guide.steps[0],
     [guide.steps, viewGuideHelper.activeStepOrder]
   );
-
+  console.log(activeStep , 'THis is a Active Step\n') ; 
+  
   useEffect(() => {
+    console.log('Initialize function \n') ; 
     initialize();
   }, []);
 
@@ -32,12 +35,22 @@ const Guide: React.FC<GuideProps> = ({ viewGuideHelper, guide, space }) => {
       <div className="w-full flex flex-row">
         <GuideStepperItem space={space} viewGuideHelper={viewGuideHelper} guide={guide} step={activeStep} />
       </div>
-      {showRatingsModal && (
+      { ( showRatingsModal && activeStep.order  === 0 ) && (
         <GuideStartRatingModal
           open={showRatingsModal}
           onClose={() => skipInitialRating()}
           skipStartRating={skipInitialRating}
           setStartRating={setStartRating}
+        />
+      )}
+      { ( showRatingsModal && activeStep.order  === guide.steps.length  - 1 ) && (
+        <GuideEndRatingModal
+          open={showRatingsModal}
+          onClose={() => skipFinalRating()}
+          skipEndRating={skipFinalRating}
+          setEndRating={setFinalRating}
+          guideSuccess={guideSuccess}
+          showFeedBackModal={showFeedBackModal}
         />
       )}
     </div>

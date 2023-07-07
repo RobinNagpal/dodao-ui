@@ -23,7 +23,7 @@ import { marked } from 'marked';
 import { useSession } from 'next-auth/react';
 import { useCallback, useMemo, useState } from 'react';
 import styled from 'styled-components';
-import GuideSuccessModal from '@/components/app/Modal/Guide/GuideSuccess';
+
 
 const CorrectAnswer = styled.div`
   background-color: green !important;
