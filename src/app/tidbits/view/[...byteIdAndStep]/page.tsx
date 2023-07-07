@@ -2,7 +2,6 @@
 
 import withSpace from '@/app/withSpace';
 import ByteStepper from '@/components/bytes/View/ByteStepper';
-import useGenerateByteSocialContent from '@/components/bytes/View/useGenerateByteSocialContent';
 import { useViewByte } from '@/components/bytes/View/useViewByte';
 import { EllipsisDropdownItem } from '@/components/core/dropdowns/EllipsisDropdown';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
@@ -37,7 +36,6 @@ const ByteView = ({ params, space }: { params: { byteIdAndStep: string[] }; spac
   }
 
   const viewByteHelper = useViewByte(space, byteId, stepOrder);
-  const { generatePdf } = useGenerateByteSocialContent(space.id, byteId);
 
   useEffect(() => {
     viewByteHelper.initialize();

@@ -1229,7 +1229,6 @@ input UpsertByteSocialShareInput {
   linkedinPdfContent: ByteLinkedinPdfContentInput
   spaceId: String!
   twitterImage: String
-  uuid: String!
 }
 
 input UpsertCourseIntegrationsInput {
