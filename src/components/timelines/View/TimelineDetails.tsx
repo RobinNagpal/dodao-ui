@@ -17,7 +17,7 @@ const Timeline = ({ timeline }: TimelineProps) => {
                 <div className="w-px bg-gray-200"></div>
               </div>
               <div className="flex items-center">
-                <div className="rounded-full bg-var(--bg--color) h-8 w-5 flex items-center justify-center rounded-full relative z-10">
+                <div className="rounded-full bg-[var(--bg-color)] h-8 w-5 flex items-center justify-center rounded-full relative z-10">
                   <div className="rounded-full bg-gray-200 ring-1 ring-gray-400 h-3 w-3"></div>
                 </div>
               </div>
