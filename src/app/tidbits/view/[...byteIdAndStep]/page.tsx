@@ -9,6 +9,7 @@ import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsis
 import PageLoading from '@/components/core/loaders/PageLoading';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { TidbitShareSteps } from '@/types/deprecated/models/enums';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
@@ -68,7 +69,7 @@ const ByteView = ({ params, space }: { params: { byteIdAndStep: string[] }; spac
                       if (key === 'edit') {
                         router.push(`/tidbits/edit/${byteId}`);
                       } else if (key === 'generate-pdf') {
-                        generatePdf();
+                        router.push(`/tidbits/share/${byteId}/${TidbitShareSteps.SelectSocial}`);
                       }
                     }}
                   />

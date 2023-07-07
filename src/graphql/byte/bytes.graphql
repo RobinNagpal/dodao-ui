@@ -147,6 +147,3 @@ mutation PublishByte($spaceId: String!, $input: UpsertByteInput!) {
 }
 
 
-mutation GenerateSharablePdfForByte($spaceId: String!, $byteId: String!) {
-  payload: generateSharablePdf(byteId: $byteId, spaceId: $spaceId)
-}

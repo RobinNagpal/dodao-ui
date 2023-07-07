@@ -1,0 +1,57 @@
+fragment ByteLinkedinPdfContentStep on ByteLinkedinPdfContentStep {
+  content
+  name
+}
+
+fragment ByteLinkedinPdfContent on ByteLinkedinPdfContent {
+  excerpt
+  steps {
+    ...ByteLinkedinPdfContentStep
+  }
+  title
+}
+
+
+
+query ByteSocialShare($spaceId: String!, $byteId: String!) {
+  byteSocialShare(spaceId: $spaceId, byteId: $byteId) {
+    byteId
+    linkedInImages
+    linkedInPdf
+    linkedinPdfContent {
+      excerpt
+      steps {
+        content
+        name
+      }
+      title
+    }
+    spaceId
+    twitterImage
+    uuid
+  }
+}
+
+
+mutation GenerateSharablePdfForByte($spaceId: String!, $byteId: String!) {
+  payload: generateSharablePdf(byteId: $byteId, spaceId: $spaceId)
+}
+
+mutation UpsertByteSocialShare($spaceId: String!, $input: UpsertByteSocialShareInput!) {
+  payload: upsertByteSocialShare(spaceId: $spaceId, input: $input) {
+    byteId
+    linkedInImages
+    linkedInPdf
+    linkedinPdfContent {
+      excerpt
+      steps {
+        content
+        name
+      }
+      title
+    }
+    spaceId
+    twitterImage
+    uuid
+  }
+}

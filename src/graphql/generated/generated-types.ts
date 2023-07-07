@@ -108,6 +108,30 @@ export interface Byte {
   visibility?: Maybe<Scalars['String']>;
 }
 
+export interface ByteLinkedinPdfContent {
+  __typename?: 'ByteLinkedinPdfContent';
+  excerpt: Scalars['String'];
+  steps: Array<ByteLinkedinPdfContentStep>;
+  title: Scalars['String'];
+}
+
+export interface ByteLinkedinPdfContentInput {
+  excerpt: Scalars['String'];
+  steps: Array<ByteLinkedinPdfContentStepInput>;
+  title: Scalars['String'];
+}
+
+export interface ByteLinkedinPdfContentStep {
+  __typename?: 'ByteLinkedinPdfContentStep';
+  content: Scalars['String'];
+  name: Scalars['String'];
+}
+
+export interface ByteLinkedinPdfContentStepInput {
+  content: Scalars['String'];
+  name: Scalars['String'];
+}
+
 export interface ByteQuestion {
   __typename?: 'ByteQuestion';
   answerKeys: Array<Scalars['String']>;
@@ -115,6 +139,17 @@ export interface ByteQuestion {
   content: Scalars['String'];
   explanation: Scalars['String'];
   type: Scalars['String'];
+  uuid: Scalars['String'];
+}
+
+export interface ByteSocialShare {
+  __typename?: 'ByteSocialShare';
+  byteId: Scalars['String'];
+  linkedInImages?: Maybe<Scalars['String']>;
+  linkedInPdf?: Maybe<Scalars['String']>;
+  linkedinPdfContent?: Maybe<ByteLinkedinPdfContent>;
+  spaceId: Scalars['String'];
+  twitterImage?: Maybe<Scalars['String']>;
   uuid: Scalars['String'];
 }
 
@@ -861,6 +896,7 @@ export interface Mutation {
   updateTopicVideo: GitCourse;
   upsertAcademyTask: AcademyTask;
   upsertByte: Byte;
+  upsertByteSocialShare: ByteSocialShare;
   upsertCourseIntegrations: CourseIntegrations;
   upsertGitCourse?: Maybe<SummarizedGitCourse>;
   upsertGitCourseTopicSubmission: GitCourseTopicSubmission;
@@ -1163,6 +1199,12 @@ export interface MutationUpsertByteArgs {
 }
 
 
+export interface MutationUpsertByteSocialShareArgs {
+  input: UpsertByteSocialShareInput;
+  spaceId: Scalars['String'];
+}
+
+
 export interface MutationUpsertCourseIntegrationsArgs {
   courseIntegrationInput: UpsertCourseIntegrationsInput;
   spaceId: Scalars['String'];
@@ -1310,6 +1352,7 @@ export interface Query {
   academyTask: AcademyTask;
   academyTasks?: Maybe<Array<AcademyTask>>;
   byte: Byte;
+  byteSocialShare: ByteSocialShare;
   bytes: Array<Byte>;
   courses: Array<GitCourse>;
   gitCourse: GitCourse;
@@ -1348,6 +1391,12 @@ export interface QueryAcademyTasksArgs {
 export interface QueryByteArgs {
   byteId: Scalars['String'];
   includeDraft?: InputMaybe<Scalars['Boolean']>;
+  spaceId: Scalars['String'];
+}
+
+
+export interface QueryByteSocialShareArgs {
+  byteId: Scalars['String'];
   spaceId: Scalars['String'];
 }
 
@@ -1752,6 +1801,16 @@ export interface UpsertByteInput {
   visibility?: InputMaybe<Scalars['String']>;
 }
 
+export interface UpsertByteSocialShareInput {
+  byteId: Scalars['String'];
+  linkedInImages?: InputMaybe<Scalars['String']>;
+  linkedInPdf?: InputMaybe<Scalars['String']>;
+  linkedinPdfContent?: InputMaybe<ByteLinkedinPdfContentInput>;
+  spaceId: Scalars['String'];
+  twitterImage?: InputMaybe<Scalars['String']>;
+  uuid: Scalars['String'];
+}
+
 export interface UpsertCourseIntegrationsInput {
   courseKey: Scalars['String'];
   discordRoleIds: Array<Scalars['String']>;
@@ -1889,6 +1948,34 @@ export type AuthenticateWithUnstoppableMutationVariables = Exact<{
 
 export type AuthenticateWithUnstoppableMutation = { __typename?: 'Mutation', payload: { __typename?: 'JwtResponse', jwt: string } };
 
+export type ByteLinkedinPdfContentStepFragment = { __typename?: 'ByteLinkedinPdfContentStep', content: string, name: string };
+
+export type ByteLinkedinPdfContentFragment = { __typename?: 'ByteLinkedinPdfContent', excerpt: string, title: string, steps: Array<{ __typename?: 'ByteLinkedinPdfContentStep', content: string, name: string }> };
+
+export type ByteSocialShareQueryVariables = Exact<{
+  spaceId: Scalars['String'];
+  byteId: Scalars['String'];
+}>;
+
+
+export type ByteSocialShareQuery = { __typename?: 'Query', byteSocialShare: { __typename?: 'ByteSocialShare', byteId: string, linkedInImages?: string | null, linkedInPdf?: string | null, spaceId: string, twitterImage?: string | null, uuid: string, linkedinPdfContent?: { __typename?: 'ByteLinkedinPdfContent', excerpt: string, title: string, steps: Array<{ __typename?: 'ByteLinkedinPdfContentStep', content: string, name: string }> } | null } };
+
+export type GenerateSharablePdfForByteMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+  byteId: Scalars['String'];
+}>;
+
+
+export type GenerateSharablePdfForByteMutation = { __typename?: 'Mutation', payload: string };
+
+export type UpsertByteSocialShareMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+  input: UpsertByteSocialShareInput;
+}>;
+
+
+export type UpsertByteSocialShareMutation = { __typename?: 'Mutation', payload: { __typename?: 'ByteSocialShare', byteId: string, linkedInImages?: string | null, linkedInPdf?: string | null, spaceId: string, twitterImage?: string | null, uuid: string, linkedinPdfContent?: { __typename?: 'ByteLinkedinPdfContent', excerpt: string, title: string, steps: Array<{ __typename?: 'ByteLinkedinPdfContentStep', content: string, name: string }> } | null } };
+
 export type ByteQuestionFragmentFragment = { __typename?: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> };
 
 export type ByteUserInputFragmentFragment = { __typename?: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string };
@@ -1948,14 +2035,6 @@ export type PublishByteMutationVariables = Exact<{
 
 
 export type PublishByteMutation = { __typename?: 'Mutation', payload: { __typename?: 'Byte', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> } };
-
-export type GenerateSharablePdfForByteMutationVariables = Exact<{
-  spaceId: Scalars['String'];
-  byteId: Scalars['String'];
-}>;
-
-
-export type GenerateSharablePdfForByteMutation = { __typename?: 'Mutation', payload: string };
 
 export type SubmitByteMutationVariables = Exact<{
   input: ByteSubmissionInput;
@@ -2639,6 +2718,21 @@ export const AcademyTaskFragmentFragmentDoc = gql`
   updatedBy
 }
     `;
+export const ByteLinkedinPdfContentStepFragmentDoc = gql`
+    fragment ByteLinkedinPdfContentStep on ByteLinkedinPdfContentStep {
+  content
+  name
+}
+    `;
+export const ByteLinkedinPdfContentFragmentDoc = gql`
+    fragment ByteLinkedinPdfContent on ByteLinkedinPdfContent {
+  excerpt
+  steps {
+    ...ByteLinkedinPdfContentStep
+  }
+  title
+}
+    ${ByteLinkedinPdfContentStepFragmentDoc}`;
 export const ByteQuestionFragmentFragmentDoc = gql`
     fragment ByteQuestionFragment on ByteQuestion {
   answerKeys
@@ -3366,6 +3460,137 @@ export function useAuthenticateWithUnstoppableMutation(baseOptions?: Apollo.Muta
 export type AuthenticateWithUnstoppableMutationHookResult = ReturnType<typeof useAuthenticateWithUnstoppableMutation>;
 export type AuthenticateWithUnstoppableMutationResult = Apollo.MutationResult<AuthenticateWithUnstoppableMutation>;
 export type AuthenticateWithUnstoppableMutationOptions = Apollo.BaseMutationOptions<AuthenticateWithUnstoppableMutation, AuthenticateWithUnstoppableMutationVariables>;
+export const ByteSocialShareDocument = gql`
+    query ByteSocialShare($spaceId: String!, $byteId: String!) {
+  byteSocialShare(spaceId: $spaceId, byteId: $byteId) {
+    byteId
+    linkedInImages
+    linkedInPdf
+    linkedinPdfContent {
+      excerpt
+      steps {
+        content
+        name
+      }
+      title
+    }
+    spaceId
+    twitterImage
+    uuid
+  }
+}
+    `;
+
+/**
+ * __useByteSocialShareQuery__
+ *
+ * To run a query within a React component, call `useByteSocialShareQuery` and pass it any options that fit your needs.
+ * When your component renders, `useByteSocialShareQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useByteSocialShareQuery({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      byteId: // value for 'byteId'
+ *   },
+ * });
+ */
+export function useByteSocialShareQuery(baseOptions: Apollo.QueryHookOptions<ByteSocialShareQuery, ByteSocialShareQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ByteSocialShareQuery, ByteSocialShareQueryVariables>(ByteSocialShareDocument, options);
+      }
+export function useByteSocialShareLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ByteSocialShareQuery, ByteSocialShareQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ByteSocialShareQuery, ByteSocialShareQueryVariables>(ByteSocialShareDocument, options);
+        }
+export type ByteSocialShareQueryHookResult = ReturnType<typeof useByteSocialShareQuery>;
+export type ByteSocialShareLazyQueryHookResult = ReturnType<typeof useByteSocialShareLazyQuery>;
+export type ByteSocialShareQueryResult = Apollo.QueryResult<ByteSocialShareQuery, ByteSocialShareQueryVariables>;
+export function refetchByteSocialShareQuery(variables: ByteSocialShareQueryVariables) {
+      return { query: ByteSocialShareDocument, variables: variables }
+    }
+export const GenerateSharablePdfForByteDocument = gql`
+    mutation GenerateSharablePdfForByte($spaceId: String!, $byteId: String!) {
+  payload: generateSharablePdf(byteId: $byteId, spaceId: $spaceId)
+}
+    `;
+export type GenerateSharablePdfForByteMutationFn = Apollo.MutationFunction<GenerateSharablePdfForByteMutation, GenerateSharablePdfForByteMutationVariables>;
+
+/**
+ * __useGenerateSharablePdfForByteMutation__
+ *
+ * To run a mutation, you first call `useGenerateSharablePdfForByteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useGenerateSharablePdfForByteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [generateSharablePdfForByteMutation, { data, loading, error }] = useGenerateSharablePdfForByteMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      byteId: // value for 'byteId'
+ *   },
+ * });
+ */
+export function useGenerateSharablePdfForByteMutation(baseOptions?: Apollo.MutationHookOptions<GenerateSharablePdfForByteMutation, GenerateSharablePdfForByteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<GenerateSharablePdfForByteMutation, GenerateSharablePdfForByteMutationVariables>(GenerateSharablePdfForByteDocument, options);
+      }
+export type GenerateSharablePdfForByteMutationHookResult = ReturnType<typeof useGenerateSharablePdfForByteMutation>;
+export type GenerateSharablePdfForByteMutationResult = Apollo.MutationResult<GenerateSharablePdfForByteMutation>;
+export type GenerateSharablePdfForByteMutationOptions = Apollo.BaseMutationOptions<GenerateSharablePdfForByteMutation, GenerateSharablePdfForByteMutationVariables>;
+export const UpsertByteSocialShareDocument = gql`
+    mutation UpsertByteSocialShare($spaceId: String!, $input: UpsertByteSocialShareInput!) {
+  payload: upsertByteSocialShare(spaceId: $spaceId, input: $input) {
+    byteId
+    linkedInImages
+    linkedInPdf
+    linkedinPdfContent {
+      excerpt
+      steps {
+        content
+        name
+      }
+      title
+    }
+    spaceId
+    twitterImage
+    uuid
+  }
+}
+    `;
+export type UpsertByteSocialShareMutationFn = Apollo.MutationFunction<UpsertByteSocialShareMutation, UpsertByteSocialShareMutationVariables>;
+
+/**
+ * __useUpsertByteSocialShareMutation__
+ *
+ * To run a mutation, you first call `useUpsertByteSocialShareMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertByteSocialShareMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertByteSocialShareMutation, { data, loading, error }] = useUpsertByteSocialShareMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpsertByteSocialShareMutation(baseOptions?: Apollo.MutationHookOptions<UpsertByteSocialShareMutation, UpsertByteSocialShareMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpsertByteSocialShareMutation, UpsertByteSocialShareMutationVariables>(UpsertByteSocialShareDocument, options);
+      }
+export type UpsertByteSocialShareMutationHookResult = ReturnType<typeof useUpsertByteSocialShareMutation>;
+export type UpsertByteSocialShareMutationResult = Apollo.MutationResult<UpsertByteSocialShareMutation>;
+export type UpsertByteSocialShareMutationOptions = Apollo.BaseMutationOptions<UpsertByteSocialShareMutation, UpsertByteSocialShareMutationVariables>;
 export const QueryBytesDocument = gql`
     query QueryBytes($spaceId: String!) {
   bytes(spaceId: $spaceId) {
@@ -3555,38 +3780,6 @@ export function usePublishByteMutation(baseOptions?: Apollo.MutationHookOptions<
 export type PublishByteMutationHookResult = ReturnType<typeof usePublishByteMutation>;
 export type PublishByteMutationResult = Apollo.MutationResult<PublishByteMutation>;
 export type PublishByteMutationOptions = Apollo.BaseMutationOptions<PublishByteMutation, PublishByteMutationVariables>;
-export const GenerateSharablePdfForByteDocument = gql`
-    mutation GenerateSharablePdfForByte($spaceId: String!, $byteId: String!) {
-  payload: generateSharablePdf(byteId: $byteId, spaceId: $spaceId)
-}
-    `;
-export type GenerateSharablePdfForByteMutationFn = Apollo.MutationFunction<GenerateSharablePdfForByteMutation, GenerateSharablePdfForByteMutationVariables>;
-
-/**
- * __useGenerateSharablePdfForByteMutation__
- *
- * To run a mutation, you first call `useGenerateSharablePdfForByteMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useGenerateSharablePdfForByteMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [generateSharablePdfForByteMutation, { data, loading, error }] = useGenerateSharablePdfForByteMutation({
- *   variables: {
- *      spaceId: // value for 'spaceId'
- *      byteId: // value for 'byteId'
- *   },
- * });
- */
-export function useGenerateSharablePdfForByteMutation(baseOptions?: Apollo.MutationHookOptions<GenerateSharablePdfForByteMutation, GenerateSharablePdfForByteMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<GenerateSharablePdfForByteMutation, GenerateSharablePdfForByteMutationVariables>(GenerateSharablePdfForByteDocument, options);
-      }
-export type GenerateSharablePdfForByteMutationHookResult = ReturnType<typeof useGenerateSharablePdfForByteMutation>;
-export type GenerateSharablePdfForByteMutationResult = Apollo.MutationResult<GenerateSharablePdfForByteMutation>;
-export type GenerateSharablePdfForByteMutationOptions = Apollo.BaseMutationOptions<GenerateSharablePdfForByteMutation, GenerateSharablePdfForByteMutationVariables>;
 export const SubmitByteDocument = gql`
     mutation SubmitByte($input: ByteSubmissionInput!) {
   submitByte(submissionInput: $input) {

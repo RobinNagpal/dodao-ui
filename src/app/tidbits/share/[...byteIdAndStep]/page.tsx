@@ -4,12 +4,7 @@ import withSpace from '@/app/withSpace';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import HorizontalStepperWithPanels, { HorizontalStepperItem } from '@/components/core/stepper/HorizontalStepperWithPanels';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
-
-enum StepIds {
-  SelectSocial = 'select-social',
-  ReviewContents = 'review-contents',
-  Preview = 'preview',
-}
+import { TidbitShareSteps } from '@/types/deprecated/models/enums';
 
 const SharePage = ({ params, space }: { params: { byteIdAndStep: string[] }; space: SpaceWithIntegrationsFragment }) => {
   const { byteIdAndStep } = params;
@@ -18,37 +13,39 @@ const SharePage = ({ params, space }: { params: { byteIdAndStep: string[] }; spa
 
   const steps: HorizontalStepperItem[] = [
     {
-      id: StepIds.SelectSocial,
+      id: TidbitShareSteps.SelectSocial,
       number: '01',
       name: 'Select Social',
       description: 'Where do you want to publish?',
-      href: `/tidbits/share/${byteId}/${StepIds.SelectSocial}`,
+      href: `/tidbits/share/${byteId}/${TidbitShareSteps.SelectSocial}`,
       status: 'complete',
     },
     {
-      id: StepIds.ReviewContents,
+      id: TidbitShareSteps.ReviewContents,
       number: '02',
       name: 'Review Contents',
       description: 'Review the contents of pdf/image',
-      href: `/tidbits/share/${byteId}/${StepIds.ReviewContents}`,
+      href: `/tidbits/share/${byteId}/${TidbitShareSteps.ReviewContents}`,
       status: 'current',
     },
     {
-      id: StepIds.Preview,
+      id: TidbitShareSteps.Preview,
       number: '03',
       name: 'Preview',
       description: 'Cross check the final asset',
-      href: `/tidbits/share/${byteId}/${StepIds.Preview}`,
+      href: `/tidbits/share/${byteId}/${TidbitShareSteps.Preview}`,
       status: 'upcoming',
     },
   ];
 
-  let stepName = StepIds.ReviewContents;
+  let currentStepId = TidbitShareSteps.ReviewContents;
+
   if (Array.isArray(byteIdAndStep)) {
-    const stepId = byteIdAndStep[1] as StepIds;
-    const currentStep = steps.find((s) => s.id === stepName);
+    const stepId = byteIdAndStep[1] as TidbitShareSteps;
+    const currentStep = steps.find((s) => s.id.toString() === stepId);
+
     if (currentStep) {
-      stepName = stepId;
+      currentStepId = stepId;
       steps.forEach((s) => {
         if (parseInt(s.number) < parseInt(currentStep.number)) {
           s.status = 'complete';
@@ -60,8 +57,6 @@ const SharePage = ({ params, space }: { params: { byteIdAndStep: string[] }; spa
       });
     }
   }
-
-  console.log('steps', steps);
 
   return (
     <PageWrapper>

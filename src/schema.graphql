@@ -88,12 +88,44 @@ type Byte {
   visibility: String
 }
 
+type ByteLinkedinPdfContent {
+  excerpt: String!
+  steps: [ByteLinkedinPdfContentStep!]!
+  title: String!
+}
+
+input ByteLinkedinPdfContentInput {
+  excerpt: String!
+  steps: [ByteLinkedinPdfContentStepInput!]!
+  title: String!
+}
+
+type ByteLinkedinPdfContentStep {
+  content: String!
+  name: String!
+}
+
+input ByteLinkedinPdfContentStepInput {
+  content: String!
+  name: String!
+}
+
 type ByteQuestion {
   answerKeys: [String!]!
   choices: [QuestionChoice!]!
   content: String!
   explanation: String!
   type: String!
+  uuid: String!
+}
+
+type ByteSocialShare {
+  byteId: String!
+  linkedInImages: String
+  linkedInPdf: String
+  linkedinPdfContent: ByteLinkedinPdfContent
+  spaceId: String!
+  twitterImage: String
   uuid: String!
 }
 
@@ -813,6 +845,7 @@ type Mutation {
   updateTopicVideo(spaceId: String!, videoInfo: UpdateTopicVideoInput!): GitCourse!
   upsertAcademyTask(spaceId: String!, task: UpsertAcademyTaskInput!): AcademyTask!
   upsertByte(input: UpsertByteInput!, spaceId: String!): Byte!
+  upsertByteSocialShare(input: UpsertByteSocialShareInput!, spaceId: String!): ByteSocialShare!
   upsertCourseIntegrations(courseIntegrationInput: UpsertCourseIntegrationsInput!, spaceId: String!): CourseIntegrations!
   upsertGitCourse(gitCourseInput: GitCourseInput!, spaceId: String!): SummarizedGitCourse
   upsertGitCourseTopicSubmission(gitCourseTopicSubmission: GitCourseTopicSubmissionInput!, spaceId: String!): GitCourseTopicSubmission!
@@ -890,6 +923,7 @@ type Query {
   academyTask(uuid: String!): AcademyTask!
   academyTasks(spaceId: String!, status: String): [AcademyTask!]
   byte(byteId: String!, includeDraft: Boolean, spaceId: String!): Byte!
+  byteSocialShare(byteId: String!, spaceId: String!): ByteSocialShare!
   bytes(spaceId: String!): [Byte!]!
   courses(spaceId: String!): [GitCourse!]!
   gitCourse(courseKey: String!, spaceId: String!): GitCourse!
@@ -1186,6 +1220,16 @@ input UpsertByteInput {
   tags: [String!]!
   thumbnail: String
   visibility: String
+}
+
+input UpsertByteSocialShareInput {
+  byteId: String!
+  linkedInImages: String
+  linkedInPdf: String
+  linkedinPdfContent: ByteLinkedinPdfContentInput
+  spaceId: String!
+  twitterImage: String
+  uuid: String!
 }
 
 input UpsertCourseIntegrationsInput {
