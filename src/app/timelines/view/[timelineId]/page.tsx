@@ -19,7 +19,7 @@ const TimelinePage = ({ params, space }: { params: { timelineId: string }; space
   return (
     <PageWrapper>
       <div className="pt-12">
-        <SingleCardLayout>
+        <div className="px-6 py-4">
           {data?.timeline && !loading ? (
             <>
               <div className="px-4 md:px-0 mb-5 flex justify-between">
@@ -36,9 +36,9 @@ const TimelinePage = ({ params, space }: { params: { timelineId: string }; space
                   />
                 </div>
               </div>
-              <div className="mb-6 ml-6">
+              <div className="mb-8 ml-14 text-2xl">
                 <div className="mt-2">
-                  <h1 className="mb-2">{data?.timeline?.name}</h1>
+                  <h1 className="mb-2 ">{data?.timeline?.name}</h1>
                 </div>
                 <div>{data?.timeline?.excerpt}</div>
               </div>
@@ -49,7 +49,7 @@ const TimelinePage = ({ params, space }: { params: { timelineId: string }; space
               <RowLoading className="my-2" />
             </Block>
           )}
-        </SingleCardLayout>
+        </div>
       </div>
     </PageWrapper>
   );
