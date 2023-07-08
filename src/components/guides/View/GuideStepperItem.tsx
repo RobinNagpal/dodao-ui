@@ -2,6 +2,7 @@ import Question from '@/components/app/Common/Question';
 import UserDiscord from '@/components/app/Form/UserDiscord';
 import UserInput from '@/components/app/Form/UserInput';
 import Button from '@/components/core/buttons/Button';
+import ErrorWithAccentBorder from '@/components/core/errors/ErrorWithAccentBorder';
 import { LAST_STEP_UUID, UseViewGuideHelper } from '@/components/guides/View/useViewGuide';
 import { useLoginModalContext } from '@/contexts/LoginModalContext';
 import { useNotificationContext } from '@/contexts/NotificationContext';
@@ -152,7 +153,7 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
   };
 
   return (
-    <div className="guide-stepper-content w-full px-4 flex flex-col justify-between">
+    <div className="guide-stepper-content w-full sm:px-3 lg:px-4 flex flex-col justify-between">
       <div style={{ minHeight: '300px' }}>
         <h2 className="mb-8 pb-4">
           Step {step.order + 1} - {step.name}
@@ -243,26 +244,11 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
           return null;
         })}
       </div>
-      {showCompleteAllQuestionsInTheGuide && (
-        <div className="mb-2 text-red">
-          <i className="iconfont iconwarning" />
-          <span className="ml-1">Answer all the questions in guide to complete</span>
-        </div>
-      )}
+      {showCompleteAllQuestionsInTheGuide && <ErrorWithAccentBorder error={'Answer all the questions in guide to complete'} />}
       {showQuestionsCompletionWarning && (
         <>
-          {!isEveryQuestionAnswered() && (
-            <div className="mb-2 text-red">
-              <i className="iconfont iconwarning" />
-              <span className="ml-1">Answer all questions to proceed</span>
-            </div>
-          )}
-          {!isDiscordConnected() && (
-            <div className="mb-2 text-red">
-              <i className="iconfont iconwarning" />
-              <span className="ml-1">Connect Discord to proceed</span>
-            </div>
-          )}
+          {!isEveryQuestionAnswered() && <ErrorWithAccentBorder error={'Answer all questions to proceed'} />}
+          {!isDiscordConnected() && <ErrorWithAccentBorder error={'Connect Discord to proceed'} />}
         </>
       )}
       <div className="mt-2 py-2 pt-2">

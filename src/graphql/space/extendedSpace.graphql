@@ -10,6 +10,10 @@ fragment AuthSettings on AuthSettings {
   loginOptions
 }
 
+fragment SocialSettings on SocialSettings {
+  linkedSharePdfBackgroundImage
+}
+
 fragment SpaceWithIntegrations on Space {
   id
   creator
@@ -47,6 +51,10 @@ fragment SpaceWithIntegrations on Space {
   authSettings {
     loginOptions
     enableLogin
+  }
+
+  socialSettings {
+    linkedSharePdfBackgroundImage
   }
   guideSettings {
     askForLoginToSubmit
@@ -148,14 +156,20 @@ mutation ReloadAcademyRepo($spaceId: String!) {
   reloadAcademyRepository(spaceId: $spaceId)
 }
 
-mutation UpdateSpaceGuideSettings($input: GuideSettingsInput!) {
-  payload: updateGuideSettings(input: $input) {
+mutation UpdateSpaceGuideSettings($spaceId: String!, $input: GuideSettingsInput!) {
+  payload: updateGuideSettings(spaceId: $spaceId, input: $input) {
     ...SpaceWithIntegrations
   }
 }
 
-mutation UpdateAuthSettings($input: AuthSettingsInput!) {
-  payload: updateAuthSettings(input: $input) {
+mutation UpdateSpaceAuthSettings($spaceId: String!, $input: AuthSettingsInput!) {
+  payload: updateAuthSettings(spaceId: $spaceId, input: $input) {
+    ...SpaceWithIntegrations
+  }
+}
+
+mutation UpdateSpaceSocialSettings($spaceId: String!, $input: SocialSettingsInput!) {
+  payload: updateSocialSettings(spaceId: $spaceId, input: $input) {
     ...SpaceWithIntegrations
   }
 }

@@ -17,6 +17,7 @@ export interface TabsWithUnderlineProps {
 
 const StyledNav = styled.nav`
   border: 1px solid #e5e7eb;
+  cursor: pointer;
 `;
 
 const BottomSpan = styled.span<{ isSelected: boolean }>`

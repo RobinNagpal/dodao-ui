@@ -1,10 +1,9 @@
 import UploadInput from '@/components/app/UploadInput';
 import UpsertBadgeInput from '@/components/core/badge/UpsertBadgeInput';
 import Button from '@/components/core/buttons/Button';
-import Checkboxes from '@/components/core/checkboxes/Checkboxes';
 import Input from '@/components/core/input/Input';
 import StyledSelect from '@/components/core/select/StyledSelect';
-import { UseEditSpaceHelper } from '@/components/spaces/useEditSpace';
+import { UseEditSpaceHelper } from '@/components/spaces/Edit/Basic/useEditSpace';
 import { Themes } from '@/types/deprecated/models/enums';
 import { slugify } from '@/utils/auth/slugify';
 import { themeSelect } from '@/utils/ui/statuses';
@@ -77,25 +76,6 @@ export default function UpsertSpaceBasicSettings(props: { editSpaceHelper: UseEd
               );
             }}
           />
-        </div>
-        <div className="border-b pb-12">
-          <div className="rounded-md">
-            <Checkboxes
-              label={'Space Features'}
-              items={[
-                {
-                  id: 'feature1',
-                  label: 'Feature 1',
-                  name: 'feature1',
-                },
-                {
-                  id: 'feature2',
-                  label: 'Feature 2',
-                  name: 'feature2',
-                },
-              ]}
-            />
-          </div>
         </div>
       </div>
 

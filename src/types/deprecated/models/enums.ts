@@ -64,3 +64,16 @@ export enum VisibilityEnum {
   Public = 'Public',
   Hidden = 'Hidden',
 }
+
+export enum LoginProviders {
+  Discord = 'Discord',
+  MetaMask = 'MetaMask',
+  Google = 'Google',
+  Coinbase = 'Coinbase',
+}
+
+export enum TidbitShareSteps {
+  SelectSocial = 'select-social',
+  ReviewContents = 'review-contents',
+  Preview = 'preview',
+}
