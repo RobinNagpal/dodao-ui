@@ -25,7 +25,7 @@ interface MarkdownEditorProps extends PropsWithChildren {
   className?: string;
 }
 
-const MainDiv = styled.div<{ maxHeight?: number }>`
+const MainDiv = styled.div`
   .w-md-editor-toolbar {
     background-color: var(--bg-color);
     border-color: var(--block-bg);
@@ -204,30 +204,32 @@ function MarkdownEditor({
 
   const fieldId = uuidV4();
   return (
-    <MainDiv className="w-full bg-transparent" maxHeight={maxHeight}>
+    <div>
       <label htmlFor={id || fieldId} className="block text-sm font-medium leading-6 mb-1">
         {label} {children}
       </label>
-      <MDEditor
-        value={modelValue}
-        onChange={handleInput}
-        onPaste={async (event) => {
-          await onImagePasted(event.clipboardData, handleInput);
-        }}
-        onDrop={async (event) => {
-          await onImagePasted(event.dataTransfer, handleInput);
-        }}
-        height={maxHeight || 440}
-        textareaProps={{
-          placeholder: 'Fill in your markdown for the coolest of the cool.',
-        }}
-        className={'w-full ' + editorClass}
-        preview={'edit'}
-      />
+      <MainDiv className="w-full bg-transparent flex">
+        <MDEditor
+          value={modelValue}
+          onChange={handleInput}
+          onPaste={async (event) => {
+            await onImagePasted(event.clipboardData, handleInput);
+          }}
+          onDrop={async (event) => {
+            await onImagePasted(event.dataTransfer, handleInput);
+          }}
+          height={maxHeight || 440}
+          textareaProps={{
+            placeholder: 'Fill in your markdown for the coolest of the cool.',
+          }}
+          className={'w-full ' + editorClass}
+          preview={'edit'}
+        />
+      </MainDiv>
 
       {info && <p className="mt-1 text-xs">{info}</p>}
       {typeof error === 'string' && <p className="mt-2 text-sm text-red-600">{error}</p>}
-    </MainDiv>
+    </div>
   );
 }
 
