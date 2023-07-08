@@ -1,12 +1,14 @@
 import { CreateSignedUrlInput, useCreateSignedUrlMutation } from '@/graphql/generated/generated-types';
+import { PropsWithChildren } from '@/types/PropsWithChildren';
 
 import { getUploadedImageUrlFromSingedUrl } from '@/utils/upload/getUploadedImageUrlFromSingedUrl';
 import MDEditor from '@uiw/react-md-editor';
 import axios from 'axios';
 import React, { SetStateAction, useState } from 'react';
 import styled from 'styled-components';
+import { v4 as uuidV4 } from 'uuid';
 
-interface MarkdownEditorProps {
+interface MarkdownEditorProps extends PropsWithChildren {
   id?: string;
   spaceId: string;
   objectId: string;
@@ -17,22 +19,26 @@ interface MarkdownEditorProps {
   editorClass?: string;
   editorStyles?: React.CSSProperties;
   onUpdate?: (value: string) => void;
+  maxHeight?: number;
+  label?: React.ReactNode;
+  info?: React.ReactNode;
+  className?: string;
 }
 
-const MainDiv = styled.div`
+const MainDiv = styled.div<{ maxHeight?: number }>`
   .w-md-editor-toolbar {
     background-color: var(--bg-color);
     border-color: var(--block-bg);
     li {
       button {
-        font-size: calc(20 / 16) rem;
+        font-size: 16px;
         svg {
           color: var(--text-color);
           width: 20px;
           height: 20px;
         }
       }
-      font-size: calc(20 / 16) rem;
+      font-size: 16px;
     }
   }
 
@@ -118,6 +124,11 @@ function MarkdownEditor({
   editorClass,
   editorStyles,
   onUpdate,
+  maxHeight,
+  label,
+  info,
+  className,
+  children,
 }: MarkdownEditorProps) {
   const [markdown, setMarkdown] = useState<string | undefined>();
 
@@ -191,8 +202,12 @@ function MarkdownEditor({
     );
   };
 
+  const fieldId = uuidV4();
   return (
-    <MainDiv className="w-full bg-transparent flex">
+    <MainDiv className="w-full bg-transparent" maxHeight={maxHeight}>
+      <label htmlFor={id || fieldId} className="block text-sm font-medium leading-6 mb-1">
+        {label} {children}
+      </label>
       <MDEditor
         value={modelValue}
         onChange={handleInput}
@@ -202,20 +217,16 @@ function MarkdownEditor({
         onDrop={async (event) => {
           await onImagePasted(event.dataTransfer, handleInput);
         }}
-        height={440}
+        height={maxHeight || 440}
         textareaProps={{
           placeholder: 'Fill in your markdown for the coolest of the cool.',
         }}
-        className={'w-full h-full ' + editorClass}
+        className={'w-full ' + editorClass}
         preview={'edit'}
       />
 
-      {error && (
-        <div className="float-right flex-none">
-          {/* Replace the following line with your own error icon implementation */}
-          <span className="!text-red p-1 block pt-2 mt-[6px] -mr-1">Error Icon</span>
-        </div>
-      )}
+      {info && <p className="mt-1 text-xs">{info}</p>}
+      {typeof error === 'string' && <p className="mt-2 text-sm text-red-600">{error}</p>}
     </MainDiv>
   );
 }
