@@ -26,11 +26,11 @@ const Timeline = ({ timeline }: TimelineProps) => {
                   <div className="text-xs leading-5 text-gray-500 p-4 pb-0">
                     <span className="font-medium text-lg text-[var(--text-color)]">{event.title}</span>
                   </div>
-                  <time dateTime={event.date} className="flex-none  p-4  pb-0 text-xs leading-5 text-gray-500">
+                  <time dateTime={event.date} className="flex-none  p-4  pb-0 text-xs leading-5">
                     {timeAgo}
                   </time>
                 </div>
-                <p className=" p-4 pt-2 text-sm leading-6 text-gray-500">{event.summary}</p>
+                <p className=" p-4 pt-2 text-sm leading-6">{event.summary}</p>
               </div>
             </li>
           );
