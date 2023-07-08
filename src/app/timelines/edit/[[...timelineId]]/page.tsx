@@ -61,13 +61,13 @@ const EditTimeline = (props: { space: SpaceWithIntegrationsFragment; params: { t
         </div>
         <form onSubmit={handleSubmit} className="px-4">
           <Input
+            label="Timeline name"
             modelValue={editTimelineRef.name}
             placeholder="Timeline name"
             onUpdate={(e) => updateTimelineField('name', e || '')}
             error={timelineErrors.name}
           />
           <div className="mt-4">
-            <div>Excerpt</div>
             <TextareaAutosize
               label="Timeline description"
               id="timeline-description"
@@ -87,17 +87,20 @@ const EditTimeline = (props: { space: SpaceWithIntegrationsFragment; params: { t
                 </div>
                 <Input
                   modelValue={event.title}
+                  label={`Event Title *`}
                   placeholder="Event name"
                   onUpdate={(e) => updateTimelineEventField(event.uuid, 'title', e?.toString() || '')}
                   error={timelineErrors.events?.[event.uuid]?.name}
                 />
                 <Datepicker
                   date={new Date(event.date)}
+                  label={`Event Date *`}
                   onChange={(date) => {
                     updateTimelineEventDate(event.uuid, date?.toISOString() || new Date().toISOString());
                   }}
                 />
                 <Input
+                  label={`More link`}
                   modelValue={event.moreLink}
                   placeholder="More link"
                   onUpdate={(e) => updateTimelineEventField(event.uuid, 'moreLink', e?.toString() || '')}
@@ -105,6 +108,7 @@ const EditTimeline = (props: { space: SpaceWithIntegrationsFragment; params: { t
                 />
                 <div className="mt-4">
                   <MarkdownEditor
+                    label={`Event summary *`}
                     modelValue={event.summary}
                     placeholder="Event content"
                     onUpdate={(e) => updateTimelineEventField(event.uuid, 'summary', e?.toString() || '')}
@@ -112,6 +116,20 @@ const EditTimeline = (props: { space: SpaceWithIntegrationsFragment; params: { t
                     imageType={'Timeline'}
                     objectId={timelineId || 'new-timeline'}
                     spaceId={props.space.id}
+                    maxHeight={150}
+                  />
+                </div>
+                <div className="mt-4">
+                  <MarkdownEditor
+                    label={`Event full details`}
+                    modelValue={event.fullDetails || ''}
+                    placeholder="Event content"
+                    onUpdate={(e) => updateTimelineEventField(event.uuid, 'fullDetails', e?.toString() || '')}
+                    error={timelineErrors.events?.[event.uuid]?.content}
+                    imageType={'Timeline'}
+                    objectId={timelineId || 'new-timeline'}
+                    spaceId={props.space.id}
+                    maxHeight={200}
                   />
                 </div>
               </EventContainer>
