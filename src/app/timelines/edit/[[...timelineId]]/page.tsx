@@ -82,9 +82,9 @@ const EditTimeline = (props: { space: SpaceWithIntegrationsFragment; params: { t
                   <IconButton iconName={IconTypes.MoveUp} size="large" onClick={() => moveEventUp(event.uuid)} />
                 </div>
                 <Input
-                  modelValue={event.name}
+                  modelValue={event.title}
                   placeholder="Event name"
-                  onUpdate={(e) => updateTimelineEventField(event.uuid, 'name', e?.toString() || '')}
+                  onUpdate={(e) => updateTimelineEventField(event.uuid, 'title', e?.toString() || '')}
                   error={timelineErrors.events?.[event.uuid]?.name}
                 />
                 <DatePicker selected={new Date(event.date)} onChange={(date: Date) => updateTimelineEventDate(event.uuid, date.toISOString())} />
@@ -96,9 +96,9 @@ const EditTimeline = (props: { space: SpaceWithIntegrationsFragment; params: { t
                 />
                 <div className="mt-4">
                   <MarkdownEditor
-                    modelValue={event.content}
+                    modelValue={event.summary}
                     placeholder="Event content"
-                    onUpdate={(e) => updateTimelineEventField(event.uuid, 'content', e?.toString() || '')}
+                    onUpdate={(e) => updateTimelineEventField(event.uuid, 'summary', e?.toString() || '')}
                     error={timelineErrors.events?.[event.uuid]?.content}
                     imageType={'Timeline'}
                     objectId={timelineId || 'new-timeline'}

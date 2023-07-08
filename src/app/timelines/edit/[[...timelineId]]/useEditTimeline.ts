@@ -74,11 +74,10 @@ export function useEditTimeline(timelineId: string | null, space: Space): EditTi
         {
           id: '',
           uuid: uuidv4(),
-          name: '',
+          title: '',
           date: Date.toString(),
-          excerpt: '',
-          content: '',
-          thumbnail: '',
+          summary: '',
+          fullDetails: '',
           order: prevTimeline.events.length,
         },
       ],
@@ -157,15 +156,15 @@ export function useEditTimeline(timelineId: string | null, space: Space): EditTi
     editTimelineRef.events.forEach((event) => {
       const eventError: TimelineEventsError = {};
 
-      if (!event.name) {
+      if (!event.title) {
         eventError.name = $t('validations.timeline.upsert.eventName.required');
-      } else if (event.name.length < 3 || event.name.length > nameLimit) {
+      } else if (event.title.length < 3 || event.title.length > nameLimit) {
         eventError.name = $t('validations.timeline.upsert.eventName.length');
       }
 
-      if (!event.content) {
+      if (!event.summary) {
         eventError.content = $t('validations.timeline.upsert.eventContent.required');
-      } else if (event.content.length < 5 || event.content.length > timelineContentLimit) {
+      } else if (event.summary.length < 5 || event.summary.length > timelineContentLimit) {
         eventError.content = $t('validations.timeline.upsert.eventContent.length');
       }
 
@@ -211,10 +210,10 @@ export function useEditTimeline(timelineId: string | null, space: Space): EditTi
               admins: editTimelineRef.admins || [],
               priority: editTimelineRef.priority || 50,
               events: editTimelineRef.events.map((event) => ({
-                name: event.name,
+                title: event.title,
                 uuid: event.uuid,
-                excerpt: event.excerpt,
-                content: event.content,
+                summary: event.summary,
+                fullDetails: event.fullDetails,
                 moreLink: event.moreLink,
                 date: new Date(event.date).toISOString(),
               })),

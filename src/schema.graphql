@@ -1126,12 +1126,12 @@ type Timeline {
 }
 
 type TimelineEvent {
-  content: String!
-  date: String!
-  excerpt: String!
+  date: DateTimeISO!
+  fullDetails: String
   moreLink: String
-  name: String!
   order: Int!
+  summary: String!
+  title: String!
   uuid: String!
 }
 
@@ -1281,11 +1281,11 @@ input UpsertSpaceInput {
 }
 
 input UpsertTimelineEventInput {
-  content: String!
-  date: String!
-  excerpt: String!
+  date: DateTimeISO!
+  fullDetails: String
   moreLink: String
-  name: String!
+  summary: String!
+  title: String!
   uuid: String!
 }
 

@@ -54,9 +54,9 @@ const Timeline = ({ timeline }: TimelineProps) => {
           </TimelineDateIcon>
           <TimelineContent>
             <div className={event.moreLink ? 'mb-4' : ''}>
-              <h1 className="mb-1 text-lg font-semibold">{event.name}</h1>
+              <h1 className="mb-1 text-lg font-semibold">{event.title}</h1>
               <h3 className="block mb-2 text-sm font-normal leading-none">{new Date(event.date).toISOString().split('T')[0]}</h3>
-              <p className="text-base font-normal">{event.content}</p>
+              <p className="text-base font-normal">{event.summary}</p>
             </div>
             {event.moreLink && (
               <a href={event.moreLink} target="_blank" rel="noopener noreferrer">

@@ -1704,12 +1704,12 @@ export interface Timeline {
 
 export interface TimelineEvent {
   __typename?: 'TimelineEvent';
-  content: Scalars['String'];
-  date: Scalars['String'];
-  excerpt: Scalars['String'];
+  date: Scalars['DateTimeISO'];
+  fullDetails?: Maybe<Scalars['String']>;
   moreLink?: Maybe<Scalars['String']>;
-  name: Scalars['String'];
   order: Scalars['Int'];
+  summary: Scalars['String'];
+  title: Scalars['String'];
   uuid: Scalars['String'];
 }
 
@@ -1860,11 +1860,11 @@ export interface UpsertSpaceInput {
 }
 
 export interface UpsertTimelineEventInput {
-  content: Scalars['String'];
-  date: Scalars['String'];
-  excerpt: Scalars['String'];
+  date: Scalars['DateTimeISO'];
+  fullDetails?: InputMaybe<Scalars['String']>;
   moreLink?: InputMaybe<Scalars['String']>;
-  name: Scalars['String'];
+  summary: Scalars['String'];
+  title: Scalars['String'];
   uuid: Scalars['String'];
 }
 
@@ -2640,7 +2640,9 @@ export type SpacesQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type SpacesQuery = { __typename?: 'Query', spaces?: Array<{ __typename?: 'Space', id: string, admins: Array<string>, adminUsernames: Array<string>, avatar?: string | null, creator: string, name: string, skin: string, domains: Array<string> }> | null };
 
-export type TimelineDetailsFragment = { __typename?: 'Timeline', id: string, name: string, excerpt: string, content: string, thumbnail?: string | null, created: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, events: Array<{ __typename?: 'TimelineEvent', name: string, uuid: string, date: string, excerpt: string, content: string, moreLink?: string | null }> };
+export type TimelineEventFragment = { __typename?: 'TimelineEvent', title: string, uuid: string, date: any, summary: string, fullDetails?: string | null, moreLink?: string | null };
+
+export type TimelineDetailsFragment = { __typename?: 'Timeline', id: string, name: string, excerpt: string, content: string, thumbnail?: string | null, created: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, events: Array<{ __typename?: 'TimelineEvent', title: string, uuid: string, date: any, summary: string, fullDetails?: string | null, moreLink?: string | null }> };
 
 export type TimelinesQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -2655,7 +2657,7 @@ export type TimelineDetailsQueryVariables = Exact<{
 }>;
 
 
-export type TimelineDetailsQuery = { __typename?: 'Query', timeline: { __typename?: 'Timeline', id: string, name: string, excerpt: string, content: string, thumbnail?: string | null, created: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, events: Array<{ __typename?: 'TimelineEvent', name: string, uuid: string, date: string, excerpt: string, content: string, moreLink?: string | null }> } };
+export type TimelineDetailsQuery = { __typename?: 'Query', timeline: { __typename?: 'Timeline', id: string, name: string, excerpt: string, content: string, thumbnail?: string | null, created: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, events: Array<{ __typename?: 'TimelineEvent', title: string, uuid: string, date: any, summary: string, fullDetails?: string | null, moreLink?: string | null }> } };
 
 export type UpsertTimelineMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -2663,7 +2665,7 @@ export type UpsertTimelineMutationVariables = Exact<{
 }>;
 
 
-export type UpsertTimelineMutation = { __typename?: 'Mutation', upsertTimeline: { __typename?: 'Timeline', id: string, name: string, excerpt: string, content: string, thumbnail?: string | null, created: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, events: Array<{ __typename?: 'TimelineEvent', name: string, uuid: string, date: string, excerpt: string, content: string, moreLink?: string | null }> } };
+export type UpsertTimelineMutation = { __typename?: 'Mutation', upsertTimeline: { __typename?: 'Timeline', id: string, name: string, excerpt: string, content: string, thumbnail?: string | null, created: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, events: Array<{ __typename?: 'TimelineEvent', title: string, uuid: string, date: any, summary: string, fullDetails?: string | null, moreLink?: string | null }> } };
 
 export const AcademyTaskFragmentFragmentDoc = gql`
     fragment AcademyTaskFragment on AcademyTask {
@@ -3293,6 +3295,16 @@ export const SpaceSummaryFragmentDoc = gql`
   domains
 }
     `;
+export const TimelineEventFragmentDoc = gql`
+    fragment TimelineEvent on TimelineEvent {
+  title
+  uuid
+  date
+  summary
+  fullDetails
+  moreLink
+}
+    `;
 export const TimelineDetailsFragmentDoc = gql`
     fragment TimelineDetails on Timeline {
   id
@@ -3306,11 +3318,11 @@ export const TimelineDetailsFragmentDoc = gql`
   tags
   priority
   events {
-    name
+    title
     uuid
     date
-    excerpt
-    content
+    summary
+    fullDetails
     moreLink
   }
 }
