@@ -2,6 +2,7 @@ import FullScreenModal from '@/components/core/modals/FullScreenModal';
 import styled from 'styled-components';
 import { useState } from 'react';
 import CustomButton from '@/components/core/buttons/Button';
+import Image from 'next/image';
 
 export interface GuideStartRatingModalProps {
   open: boolean;
@@ -38,50 +39,62 @@ const ModalContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  border: 2px solid white;
+  padding: 10px;
+  background-color: #0d131a;
 `;
-
 
 export default function GuideStartRatingModal({ open, onClose, skipStartRating, setStartRating }: GuideStartRatingModalProps) {
   const ratings = [
-    { number: 1, label: '🙁' },
-    { number: 2, label: '😕' },
-    { number: 3, label: '😐' },
-    { number: 4, label: '😄' },
-    { number: 5, label: '😊' },
+    { number: 1, label: 'sad' },
+    { number: 2, label: 'neutral' },
+    { number: 3, label: 'smile' },
+    { number: 4, label: 'smiling' },
+    { number: 5, label: 'superstar' },
   ];
 
-  
   const [selectedRating, setSelectedRating] = useState<number | null>(null);
 
   return (
-    <FullScreenModal open={open} onClose={onClose} title='' >
-     <ModalContent className='border-white border-2 p-10 bg-[#0D131A] '>
-
-      <div className=" flex flex-col justify-center items-center  text-center  h-[300px]">
-      <h1 className='text-2xl font-semibold leading-6 text-gray-200 mb-10'>How well do you know this topic ? </h1>
-        <div className={`mt-4 flex flex-col items-center`}>
-          <div className="flex justify-center space-x-3">
-            {ratings.map(({ number, label }) => (
-              <RatingButton
-                key={number}
-                type="button"
-                className={`inline-flex items-center justify-center w-20 h-16 text-3xl  hover:scale-110 transition-transform duration-200 ${
-                  selectedRating === number ? 'selected' : '' 
-                }`}
-                onClick={() => {
-                  setSelectedRating(number); 
-                  setStartRating(number);
-                }}
-              >
-                {label}
-              </RatingButton>
-            ))}
+    <FullScreenModal open={open} onClose={onClose} title="">
+      <ModalContent>
+        <div className=" flex flex-col justify-center items-center  text-center  h-[300px]">
+          <h1 className="text-2xl font-semibold leading-6 text-gray-200 mb-8">How well do you know this topic ? </h1>
+          <p>Tell us about the level of knowledge you have about the guide</p>
+          <div className={`mt-4 flex flex-col items-center`}>
+            <div className={`flex justify-center`}>
+              {ratings.map(({ number, label }) => (
+                <RatingButton
+                  key={number}
+                  type="button"
+                  className={`inline-flex items-center justify-center mr-3 text-3xl  hover:scale-110 transition-transform duration-200  ${
+                    selectedRating === number ? 'selected' : ''
+                  }`}
+                  onClick={() => {
+                    setStartRating(number);
+                    setSelectedRating(number);
+                  }}
+                >
+                  <Image
+                    src={`/${label}.png`}
+                    width={50}
+                    height={60}
+                    alt={label}
+                   
+                  />
+                </RatingButton>
+              ))}
+            </div>
+            <CustomButton
+              className="mt-5 w-[30%] flex justify-center items-center "
+              onClick={() => {
+                skipStartRating;
+              }}
+            >
+              Skip{' '}
+            </CustomButton>
           </div>
-          <CustomButton  className="mt-5 w-[30%] flex justify-center items-center " onClick={()=>{ skipStartRating}}>Skip </CustomButton>
         </div>
-        
-      </div>
-      
       </ModalContent>
     </FullScreenModal>
   );
