@@ -119,6 +119,18 @@ type ByteQuestion {
   uuid: String!
 }
 
+type ByteSettings {
+  askForLoginToSubmit: Boolean
+  captureBeforeAndAfterRating: Boolean
+  showCategoriesInSidebar: Boolean
+}
+
+input ByteSettingsInput {
+  askForLoginToSubmit: Boolean
+  captureBeforeAndAfterRating: Boolean
+  showCategoriesInSidebar: Boolean
+}
+
 type ByteSocialShare {
   byteId: String!
   linkedInImages: [String!]
@@ -834,6 +846,7 @@ type Mutation {
   submitGitCourseTopic(gitCourseTopicSubmission: GitCourseTopicSubmissionInput!, spaceId: String!): GitCourseTopicSubmission!
   submitGuide(submissionInput: GuideSubmissionInput!): GuideSubmission!
   updateAuthSettings(input: AuthSettingsInput!, spaceId: String!): Space!
+  updateByteSettings(input: ByteSettingsInput!, spaceId: String!): Space!
   updateCourseBasicInfo(courseBasicInfo: CourseBasicInfoInput!, spaceId: String!): GitCourse!
   updateGuideSettings(input: GuideSettingsInput!, spaceId: String!): Space!
   updateSocialSettings(input: SocialSettingsInput!, spaceId: String!): Space!
@@ -1007,6 +1020,7 @@ type Space {
   admins: [String!]!
   authSettings: AuthSettings!
   avatar: String
+  byteSettings: ByteSettings!
   creator: String!
   domains: [String!]!
   features: [String!]!

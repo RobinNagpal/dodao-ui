@@ -2,6 +2,7 @@ import PageLoading from '@/components/core/loaders/PageLoading';
 import TabsWithUnderline, { TabItem } from '@/components/core/tabs/TabsWithUnderline';
 import SpaceAuthDetails from '@/components/spaces/View/SpaceAuthDetails';
 import SpaceBasicDetails from '@/components/spaces/View/SpaceBasicDetails';
+import SpaceByteDetails from '@/components/spaces/View/SpaceByteDetails';
 import SpaceCourseDetails from '@/components/spaces/View/SpaceCoursesDetails';
 import SpaceGuideDetails from '@/components/spaces/View/SpaceGuideDetails';
 import SpaceSocialDetails from '@/components/spaces/View/SpaceSocialDetails';
@@ -53,6 +54,7 @@ export default function SpaceDetails(props: SpaceDetailsProps) {
         <div className="flex flex-col divide-y-2 gap-y-10 divide-gray-300">
           <SpaceCourseDetails space={data.space} className="pt-12" />
           <SpaceGuideDetails space={data.space} className="pt-12" />
+          <SpaceByteDetails space={data.space} className="pt-12" />
         </div>
       )}
     </div>

@@ -9,7 +9,7 @@ import { ManageSpaceSubviews } from '@/components/spaces/manageSpaceSubviews';
 import SpaceDetails from '@/components/spaces/SpaceDetails';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import classNames from '@/utils/classNames';
-import { CalendarIcon, ChartPieIcon, CircleStackIcon, DocumentDuplicateIcon, FolderIcon, HomeIcon, UsersIcon } from '@heroicons/react/24/outline';
+import { CircleStackIcon, HomeIcon } from '@heroicons/react/24/outline';
 import { PhotoIcon } from '@heroicons/react/24/solid';
 import Link from 'next/link';
 
@@ -17,10 +17,6 @@ const getNavigation = (space: SpaceWithIntegrationsFragment) => {
   const navigation = [
     { name: 'Dashboard', href: `space/manage/${ManageSpaceSubviews.ViewSpace}/${space.id}`, icon: HomeIcon, current: true },
     { name: 'Image', href: `space/manage/${ManageSpaceSubviews.GenerateImage}/${space.id}`, icon: PhotoIcon, current: false },
-    { name: 'Projects', href: '#', icon: FolderIcon, current: false },
-    { name: 'Calendar', href: '#', icon: CalendarIcon, current: false },
-    { name: 'Documents', href: '#', icon: DocumentDuplicateIcon, current: false },
-    { name: 'Reports', href: '#', icon: ChartPieIcon, current: false },
     { name: 'Spaces', href: '/space/manage/' + ManageSpaceSubviews.SpacesList, icon: CircleStackIcon, current: false },
   ];
 
