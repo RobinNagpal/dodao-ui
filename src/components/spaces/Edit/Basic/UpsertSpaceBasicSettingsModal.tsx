@@ -2,26 +2,33 @@ import UploadInput from '@/components/app/UploadInput';
 import UpsertBadgeInput from '@/components/core/badge/UpsertBadgeInput';
 import Button from '@/components/core/buttons/Button';
 import Input from '@/components/core/input/Input';
+import FullScreenModal from '@/components/core/modals/FullScreenModal';
 import StyledSelect from '@/components/core/select/StyledSelect';
-import { UseEditSpaceHelper } from '@/components/spaces/Edit/Basic/useEditSpace';
+import useEditSpace, { UseEditSpaceHelper } from '@/components/spaces/Edit/Basic/useEditSpace';
+import { Space } from '@/graphql/generated/generated-types';
 import { Themes } from '@/types/deprecated/models/enums';
 import { slugify } from '@/utils/auth/slugify';
 import { themeSelect } from '@/utils/ui/statuses';
 import union from 'lodash/union';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-export default function UpsertSpaceBasicSettings(props: { editSpaceHelper: UseEditSpaceHelper }) {
+export default function UpsertSpaceBasicSettingsModal(props: { space: Space; open: boolean; onClose: () => void }) {
+  const editSpaceHelper = useEditSpace(props.space.id);
   const [uploadThumbnailLoading, setUploadThumbnailLoading] = useState(false);
 
-  const { space, setSpaceField, setSpaceIntegrationField, upsertSpace, upserting } = props.editSpaceHelper;
+  const { space, setSpaceField, setSpaceIntegrationField, upsertSpace, upserting } = editSpaceHelper;
 
   function inputError(avatar: string) {
     return null;
   }
 
+  useEffect(() => {
+    editSpaceHelper.initialize();
+  }, [space.id]);
+
   return (
-    <>
-      <div className="space-y-12">
+    <FullScreenModal open={props.open} onClose={props.onClose} title="Basic Space Settings">
+      <div className="space-y-12 text-left">
         <div className="border-b pb-12">
           <h2 className="text-base font-semibold leading-7">Edit Space</h2>
           <p className="mt-1 text-sm leading-6">Update the details of Space</p>
@@ -85,6 +92,6 @@ export default function UpsertSpaceBasicSettings(props: { editSpaceHelper: UseEd
           Save
         </Button>
       </div>
-    </>
+    </FullScreenModal>
   );
 }

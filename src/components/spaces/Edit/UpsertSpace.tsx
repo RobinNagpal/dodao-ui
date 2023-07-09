@@ -1,9 +1,6 @@
 import RowLoading from '@/components/core/loaders/RowLoading';
 import TabsWithUnderline, { TabItem } from '@/components/core/tabs/TabsWithUnderline';
-import UpsertSpaceAuthSettings from '@/components/spaces/Edit/Auth/UpsertSpaceAuthSettings';
-import UpsertSpaceBasicSettings from '@/components/spaces/Edit/Basic/UpsertSpaceBasicSettings';
 import useEditSpace, { SpaceEditType, UseEditSpaceHelper } from '@/components/spaces/Edit/Basic/useEditSpace';
-import CourseListScreen from '@/components/spaces/Edit/Courses/CourseListScreen';
 import UpsertSpaceGuideSettings from '@/components/spaces/Edit/Guides/UpsertSpaceGuideSettings';
 import UpsertSpaceSocialSettings from '@/components/spaces/Edit/Social/UpsertSpaceSocialSettings';
 import { useExtendedSpaceQuery } from '@/graphql/generated/generated-types';
@@ -27,16 +24,8 @@ function SettingsScreen(props: { space: SpaceEditType; editSpaceHelper: UseEditS
     skip: !props.space.id,
   });
 
-  if (props.selectedTabId === TabIds.Basic) {
-    return <UpsertSpaceBasicSettings editSpaceHelper={props.editSpaceHelper} />;
-  }
-
   if (!data?.space) {
     return <RowLoading />;
-  }
-
-  if (props.selectedTabId === TabIds.Courses) {
-    return <CourseListScreen spaceId={props.space.id!} />;
   }
 
   if (props.selectedTabId === TabIds.Guides) {

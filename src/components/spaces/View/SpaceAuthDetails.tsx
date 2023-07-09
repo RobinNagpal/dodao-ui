@@ -2,8 +2,9 @@ import DetailsField from '@/components/core/details/DetailsField';
 import DetailsHeader from '@/components/core/details/DetailsHeader';
 import DetailsSection from '@/components/core/details/DetailsSection';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
+import UpsertSpaceAuthSettingsModal from '@/components/spaces/Edit/Auth/UpsertSpaceAuthSettingsModal';
 import { Space, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
-import React from 'react';
+import React, { useState } from 'react';
 
 export interface SpaceAuthDetailsProps {
   space: Space;
@@ -25,18 +26,26 @@ function getSpaceDetailsFields(space: SpaceWithIntegrationsFragment): Array<{ la
 
 export default function SpaceAuthDetails(props: SpaceAuthDetailsProps) {
   const threeDotItems = [{ label: 'Edit', key: 'edit' }];
+  const [showAuthSettingsModal, setShowAuthSettingsModal] = useState(false);
 
-  const selectFromThreedotDropdown = async (e: string) => {};
+  const selectFromThreedotDropdown = async (e: string) => {
+    if (e === 'edit') {
+      setShowAuthSettingsModal(true);
+    }
+  };
 
   return (
-    <DetailsSection className={props.className}>
-      <div className="flex w-full">
-        <DetailsHeader header={'Auth Details'} subheader={'How login and other things are configured'} className="grow-1 w-full" />
-        <PrivateEllipsisDropdown items={threeDotItems} onSelect={selectFromThreedotDropdown} className="ml-4 pt-4 grow-0 w-16" />
-      </div>
-      {getSpaceDetailsFields(props.space).map((field) => (
-        <DetailsField key={field.label} label={field.label} value={field.value} />
-      ))}
-    </DetailsSection>
+    <>
+      <DetailsSection className={props.className}>
+        <div className="flex w-full">
+          <DetailsHeader header={'Auth Details'} className="grow-1 w-full" />
+          <PrivateEllipsisDropdown items={threeDotItems} onSelect={selectFromThreedotDropdown} className="ml-4 pt-4 grow-0 w-16" />
+        </div>
+        {getSpaceDetailsFields(props.space).map((field) => (
+          <DetailsField key={field.label} label={field.label} value={field.value} />
+        ))}
+      </DetailsSection>
+      <UpsertSpaceAuthSettingsModal space={props.space} open={showAuthSettingsModal} onClose={() => setShowAuthSettingsModal(false)} />
+    </>
   );
 }

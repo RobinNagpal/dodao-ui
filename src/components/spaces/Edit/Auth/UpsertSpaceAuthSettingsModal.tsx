@@ -7,15 +7,12 @@ import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-typ
 import { LoginProviders } from '@/types/deprecated/models/enums';
 import React from 'react';
 
-export default function UpsertSpaceAuthSettings(props: { space: SpaceWithIntegrationsFragment; open: boolean; onClose: () => void }) {
+export default function UpsertSpaceAuthSettingsModal(props: { space: SpaceWithIntegrationsFragment; open: boolean; onClose: () => void }) {
   const { authSettings, setAuthSettingsField, updateAuthSettings, updating } = useEditSpaceAuthSettings(props.space);
   return (
     <FullScreenModal open={props.open} onClose={props.onClose} title="Auth Settings">
-      <div className="space-y-12">
+      <div className="space-y-12 text-left">
         <div className="border-b pb-12">
-          <h2 className="text-base font-semibold leading-7">Edit Space</h2>
-          <p className="mt-1 text-sm leading-6">Update the details of Space</p>
-
           <ToggleWithIcon label={'Enable login'} enabled={!!authSettings.enableLogin} setEnabled={(value) => setAuthSettingsField('enableLogin', value)} />
 
           <Checkboxes
@@ -30,7 +27,16 @@ export default function UpsertSpaceAuthSettings(props: { space: SpaceWithIntegra
 
       <div className="mt-6 flex items-center justify-end gap-x-6">
         <Button variant="outlined">Cancel</Button>
-        <Button variant="contained" primary loading={updating} disabled={updating} onClick={updateAuthSettings}>
+        <Button
+          variant="contained"
+          primary
+          loading={updating}
+          disabled={updating}
+          onClick={async () => {
+            await updateAuthSettings();
+            props.onClose();
+          }}
+        >
           Save
         </Button>
       </div>

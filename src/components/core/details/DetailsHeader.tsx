@@ -4,7 +4,7 @@ import React from 'react';
 
 export interface DetailsHeaderProps {
   header: string;
-  subheader: string;
+  subheader?: string;
   editLink?: string;
   className?: string;
 }
@@ -13,7 +13,7 @@ export default function DetailsHeader(props: DetailsHeaderProps) {
     <div className={`sm:flex sm:items-center ${props.className || ''}`}>
       <div className="sm:flex-auto">
         <h1 className="font-semibold leading-6 text-2xl">{props.header}</h1>
-        <p className="mt-2 text-sm">{props.subheader}</p>
+        {props.subheader && <p className="mt-2 text-sm">{props.subheader}</p>}
       </div>
       <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
         {props.editLink && (
