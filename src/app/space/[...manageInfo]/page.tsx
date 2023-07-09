@@ -3,7 +3,6 @@
 import SidebarLayout from '@/app/SidebarLayout';
 import WithSpace from '@/app/withSpace';
 import PageWrapper from '@/components/core/page/PageWrapper';
-import UpsertSpace from '@/components/spaces/Edit/UpsertSpace';
 import GenerateImage from '@/components/spaces/Image/GenerateImage';
 import ListSpaces from '@/components/spaces/ListSpaces';
 import { ManageSpaceSubviews } from '@/components/spaces/manageSpaceSubviews';
@@ -45,17 +44,13 @@ function GetSubview(props: { manageInfo: string[]; space: SpaceWithIntegrationsF
     return <ListSpaces />;
   }
   if (subView === ManageSpaceSubviews.ViewSpace) {
-    return <SpaceDetails spaceId={entityId} editLink={`space/manage/${ManageSpaceSubviews.EditSpace}/${entityId}`} />;
+    return <SpaceDetails spaceId={entityId} />;
   }
   if (subView === ManageSpaceSubviews.GenerateImage) {
     return <GenerateImage />;
   }
 
-  if (subView === ManageSpaceSubviews.EditSpace) {
-    return <UpsertSpace spaceId={entityId} />;
-  }
-
-  return <SpaceDetails spaceId={props.space.id} editLink={`space/manage/${ManageSpaceSubviews.EditSpace}/${props.space.id}`} />;
+  return <SpaceDetails spaceId={props.space.id} />;
 }
 function ManageSpace({ params, space }: { params: { manageInfo: string[] }; space: SpaceWithIntegrationsFragment }) {
   const { manageInfo } = params;

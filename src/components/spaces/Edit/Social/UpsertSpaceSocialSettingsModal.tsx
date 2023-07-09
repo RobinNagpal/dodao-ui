@@ -1,18 +1,11 @@
 import UploadInput from '@/components/app/UploadInput';
-import UpsertBadgeInput from '@/components/core/badge/UpsertBadgeInput';
 import Button from '@/components/core/buttons/Button';
-import Input from '@/components/core/input/Input';
-import StyledSelect from '@/components/core/select/StyledSelect';
-import { UseEditSpaceHelper } from '@/components/spaces/Edit/Basic/useEditSpace';
+import FullScreenModal from '@/components/core/modals/FullScreenModal';
 import { useEditSpaceSocialSettings } from '@/components/spaces/Edit/Social/useEditSpaceSocialSettings';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
-import { Themes } from '@/types/deprecated/models/enums';
-import { slugify } from '@/utils/auth/slugify';
-import { themeSelect } from '@/utils/ui/statuses';
-import union from 'lodash/union';
 import React, { useState } from 'react';
 
-export default function UpsertSpaceSocialSettings(props: { space: SpaceWithIntegrationsFragment }) {
+export default function UpsertSpaceSocialSettingsModal(props: { space: SpaceWithIntegrationsFragment; open: boolean; onClose: () => void }) {
   const { socialSettings, setSocialSettingsField, updateSocialSettings, updating } = useEditSpaceSocialSettings(props.space);
   const [uploadThumbnailLoading, setUploadThumbnailLoading] = useState(false);
 
@@ -21,13 +14,11 @@ export default function UpsertSpaceSocialSettings(props: { space: SpaceWithInteg
   }
 
   return (
-    <>
-      <div className="space-y-12">
+    <FullScreenModal open={props.open} onClose={props.onClose} title="Social Settings">
+      <div className="space-y-12 text-left">
         <div className="border-b pb-12">
-          <h2 className="text-base font-semibold leading-7">Edit Space</h2>
-          <p className="mt-1 text-sm leading-6">Update the details of Space</p>
-
           <UploadInput
+            label="Linked Share PDF Background Image"
             error={inputError('avatar')}
             onUpdate={(newValue) => setSocialSettingsField('linkedSharePdfBackgroundImage', newValue)}
             imageType="Social/PdfBackground"
@@ -41,11 +32,19 @@ export default function UpsertSpaceSocialSettings(props: { space: SpaceWithInteg
       </div>
 
       <div className="mt-6 flex items-center justify-end gap-x-6">
-        <Button variant="outlined">Cancel</Button>
-        <Button variant="contained" primary loading={updating} disabled={uploadThumbnailLoading || updating} onClick={() => updateSocialSettings()}>
+        <Button
+          variant="contained"
+          primary
+          loading={updating}
+          disabled={uploadThumbnailLoading || updating}
+          onClick={async () => {
+            await updateSocialSettings();
+            props.onClose();
+          }}
+        >
           Save
         </Button>
       </div>
-    </>
+    </FullScreenModal>
   );
 }

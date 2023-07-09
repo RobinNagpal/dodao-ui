@@ -1,18 +1,16 @@
 import Button from '@/components/core/buttons/Button';
+import FullScreenModal from '@/components/core/modals/FullScreenModal';
 import ToggleWithIcon from '@/components/core/toggles/ToggleWithIcon';
 import { useEditSpaceGuideSettings } from '@/components/spaces/Edit/Guides/useEditSpaceGuideSettings';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import React from 'react';
 
-export default function UpsertSpaceGuideSettings(props: { space: SpaceWithIntegrationsFragment }) {
+export default function UpsertSpaceGuideSettingsModal(props: { space: SpaceWithIntegrationsFragment; open: boolean; onClose: () => void }) {
   const { guideSettings, setGuideSettingsField, updateGuideSettings, updating } = useEditSpaceGuideSettings(props.space);
   return (
-    <>
-      <div className="space-y-12">
+    <FullScreenModal open={props.open} onClose={props.onClose} title="Guide Settings">
+      <div className="space-y-12 text-left">
         <div className="border-b pb-12">
-          <h2 className="text-base font-semibold leading-7">Edit Space</h2>
-          <p className="mt-1 text-sm leading-6">Update the details of Space</p>
-
           <ToggleWithIcon
             label={'Show ratings'}
             enabled={!!guideSettings.captureBeforeAndAfterRating}
@@ -46,11 +44,19 @@ export default function UpsertSpaceGuideSettings(props: { space: SpaceWithIntegr
       </div>
 
       <div className="mt-6 flex items-center justify-end gap-x-6">
-        <Button variant="outlined">Cancel</Button>
-        <Button variant="contained" primary loading={updating} disabled={updating} onClick={updateGuideSettings}>
+        <Button
+          variant="contained"
+          primary
+          loading={updating}
+          disabled={updating}
+          onClick={async () => {
+            await updateGuideSettings();
+            props.onClose();
+          }}
+        >
           Save
         </Button>
       </div>
-    </>
+    </FullScreenModal>
   );
 }

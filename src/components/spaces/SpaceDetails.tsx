@@ -3,12 +3,13 @@ import TabsWithUnderline, { TabItem } from '@/components/core/tabs/TabsWithUnder
 import SpaceAuthDetails from '@/components/spaces/View/SpaceAuthDetails';
 import SpaceBasicDetails from '@/components/spaces/View/SpaceBasicDetails';
 import SpaceCourseDetails from '@/components/spaces/View/SpaceCoursesDetails';
+import SpaceGuideDetails from '@/components/spaces/View/SpaceGuideDetails';
+import SpaceSocialDetails from '@/components/spaces/View/SpaceSocialDetails';
 import { useExtendedSpaceQuery } from '@/graphql/generated/generated-types';
 import React, { useState } from 'react';
 
 interface SpaceDetailsProps {
   spaceId: string;
-  editLink: string;
 }
 
 enum TabIds {
@@ -45,11 +46,13 @@ export default function SpaceDetails(props: SpaceDetailsProps) {
         <div className="flex flex-col divide-y-2 gap-y-10 divide-gray-300">
           <SpaceBasicDetails space={data.space} className="pt-12" />
           <SpaceAuthDetails space={data.space} className="pt-12" />
+          <SpaceSocialDetails space={data.space} className="pt-12" />
         </div>
       )}
       {selectedTabId === TabIds.Content && (
         <div className="flex flex-col divide-y-2 gap-y-10 divide-gray-300">
           <SpaceCourseDetails space={data.space} className="pt-12" />
+          <SpaceGuideDetails space={data.space} className="pt-12" />
         </div>
       )}
     </div>

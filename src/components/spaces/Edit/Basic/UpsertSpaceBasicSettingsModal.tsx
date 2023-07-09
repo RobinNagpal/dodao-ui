@@ -4,7 +4,7 @@ import Button from '@/components/core/buttons/Button';
 import Input from '@/components/core/input/Input';
 import FullScreenModal from '@/components/core/modals/FullScreenModal';
 import StyledSelect from '@/components/core/select/StyledSelect';
-import useEditSpace, { UseEditSpaceHelper } from '@/components/spaces/Edit/Basic/useEditSpace';
+import useEditSpace from '@/components/spaces/Edit/Basic/useEditSpace';
 import { Space } from '@/graphql/generated/generated-types';
 import { Themes } from '@/types/deprecated/models/enums';
 import { slugify } from '@/utils/auth/slugify';
@@ -12,8 +12,8 @@ import { themeSelect } from '@/utils/ui/statuses';
 import union from 'lodash/union';
 import React, { useEffect, useState } from 'react';
 
-export default function UpsertSpaceBasicSettingsModal(props: { space: Space; open: boolean; onClose: () => void }) {
-  const editSpaceHelper = useEditSpace(props.space.id);
+export default function UpsertSpaceBasicSettingsModal(props: { space?: Space; open: boolean; onClose: () => void }) {
+  const editSpaceHelper = useEditSpace(props.space?.id);
   const [uploadThumbnailLoading, setUploadThumbnailLoading] = useState(false);
 
   const { space, setSpaceField, setSpaceIntegrationField, upsertSpace, upserting } = editSpaceHelper;
@@ -24,7 +24,7 @@ export default function UpsertSpaceBasicSettingsModal(props: { space: Space; ope
 
   useEffect(() => {
     editSpaceHelper.initialize();
-  }, [space.id]);
+  }, [space?.id]);
 
   return (
     <FullScreenModal open={props.open} onClose={props.onClose} title="Basic Space Settings">
@@ -36,6 +36,7 @@ export default function UpsertSpaceBasicSettingsModal(props: { space: Space; ope
           <Input label="Id" modelValue={space?.id} onUpdate={(value) => setSpaceField('id', value?.toString() || '')} />
           <Input label="Name" modelValue={space?.name} onUpdate={(value) => setSpaceField('name', value?.toString() || '')} />
           <UploadInput
+            label="Logo"
             error={inputError('avatar')}
             onUpdate={(newValue) => setSpaceField('avatar', newValue)}
             imageType="AcademyLogo"
@@ -87,8 +88,16 @@ export default function UpsertSpaceBasicSettingsModal(props: { space: Space; ope
       </div>
 
       <div className="mt-6 flex items-center justify-end gap-x-6">
-        <Button variant="outlined">Cancel</Button>
-        <Button variant="contained" primary loading={upserting} disabled={uploadThumbnailLoading || upserting} onClick={() => upsertSpace()}>
+        <Button
+          variant="contained"
+          primary
+          loading={upserting}
+          disabled={uploadThumbnailLoading || upserting}
+          onClick={async () => {
+            await upsertSpace();
+            props.onClose();
+          }}
+        >
           Save
         </Button>
       </div>
