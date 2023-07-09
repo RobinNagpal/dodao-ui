@@ -198,7 +198,7 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
           setStartRating={setStartRating}
         />
       )}
-      {(showRatingsModal &&  isLastStep && isNotFirstStep  && guideRatings && guideRatings.startRating && !guideRatings.submitted  ) && (
+      {(showRatingsModal &&  isLastStep && guideRatings && guideRatings.startRating && !guideRatings.submitted  ) && (
           <GuideEndRatingModal
           open={showRatingsModal}
           onClose={() => skipFinalRating()}
