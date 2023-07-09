@@ -9,7 +9,7 @@ const CardContainer = styled.div`
   background-color: var(--bg-color);
 `;
 const SingleCardLayout = ({ children }: PropsWithChildren) => {
-  return <CardContainer className="px-6 py-4 rounded-2xl sm:shadow-lg">{children}</CardContainer>;
+  return <CardContainer className="lg:px-6 sm:px-2 py-4 rounded-2xl sm:shadow-lg">{children}</CardContainer>;
 };
 
 export default SingleCardLayout;

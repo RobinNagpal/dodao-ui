@@ -71,3 +71,9 @@ export enum LoginProviders {
   Google = 'Google',
   Coinbase = 'Coinbase',
 }
+
+export enum TidbitShareSteps {
+  SelectSocial = 'select-social',
+  ReviewContents = 'review-contents',
+  Preview = 'preview',
+}

@@ -88,12 +88,56 @@ type Byte {
   visibility: String
 }
 
+type ByteLinkedinPdfContent {
+  excerpt: String!
+  steps: [ByteLinkedinPdfContentStep!]!
+  title: String!
+}
+
+input ByteLinkedinPdfContentInput {
+  excerpt: String!
+  steps: [ByteLinkedinPdfContentStepInput!]!
+  title: String!
+}
+
+type ByteLinkedinPdfContentStep {
+  content: String!
+  name: String!
+}
+
+input ByteLinkedinPdfContentStepInput {
+  content: String!
+  name: String!
+}
+
 type ByteQuestion {
   answerKeys: [String!]!
   choices: [QuestionChoice!]!
   content: String!
   explanation: String!
   type: String!
+  uuid: String!
+}
+
+type ByteSettings {
+  askForLoginToSubmit: Boolean
+  captureBeforeAndAfterRating: Boolean
+  showCategoriesInSidebar: Boolean
+}
+
+input ByteSettingsInput {
+  askForLoginToSubmit: Boolean
+  captureBeforeAndAfterRating: Boolean
+  showCategoriesInSidebar: Boolean
+}
+
+type ByteSocialShare {
+  byteId: String!
+  linkedInImages: [String!]
+  linkedInPdf: String
+  linkedinPdfContent: ByteLinkedinPdfContent
+  spaceId: String!
+  twitterImage: String
   uuid: String!
 }
 
@@ -113,31 +157,6 @@ input ByteStepInput {
 
 union ByteStepItem = ByteQuestion | ByteUserInput | UserDiscordConnect
 
-type ByteStepItemSubmission {
-  selectedAnswerKeys: [String!]
-  type: String!
-  userDiscordInfo: UserDiscordInfo
-  userInput: String
-  uuid: String!
-}
-
-input ByteStepItemSubmissionInput {
-  type: String!
-  userDiscordInfo: UserDiscordInfoInput
-  userInput: String
-  uuid: String!
-}
-
-type ByteStepSubmission {
-  itemResponses: [ByteStepItemSubmission!]!
-  uuid: String!
-}
-
-input ByteStepSubmissionInput {
-  itemResponses: [ByteStepItemSubmissionInput!]!
-  uuid: String!
-}
-
 type ByteSubmission {
   byteId: String!
   created: String!
@@ -150,7 +169,6 @@ input ByteSubmissionInput {
   byteId: String!
   from: String!
   space: String!
-  steps: [ByteStepSubmissionInput!]!
   timestamp: String
   uuid: String!
 }
@@ -784,6 +802,7 @@ type Mutation {
   extractRelevantTextForTopic(input: ExtractRelevantTextForTopicInput!): OpenAITextResponse!
   generateImage(input: GenerateImageInput!): GenerateImageResponse!
   generateImageEdit(input: GenerateImageEditInput!): GenerateImageResponse!
+  generateSharablePdf(byteId: String!, spaceId: String!): String!
   initializeGitCourseSubmission(courseKey: String!, spaceId: String!): GitCourseSubmission!
   moveTopic(spaceId: String!, topicInfo: MoveTopicInput!): GitCourse!
   moveTopicExplanation(explanationInfo: MoveTopicExplanationInput!, spaceId: String!): GitCourse!
@@ -801,8 +820,10 @@ type Mutation {
   submitGitCourseTopic(gitCourseTopicSubmission: GitCourseTopicSubmissionInput!, spaceId: String!): GitCourseTopicSubmission!
   submitGuide(submissionInput: GuideSubmissionInput!): GuideSubmission!
   updateAuthSettings(input: AuthSettingsInput!, spaceId: String!): Space!
+  updateByteSettings(input: ByteSettingsInput!, spaceId: String!): Space!
   updateCourseBasicInfo(courseBasicInfo: CourseBasicInfoInput!, spaceId: String!): GitCourse!
   updateGuideSettings(input: GuideSettingsInput!, spaceId: String!): Space!
+  updateSocialSettings(input: SocialSettingsInput!, spaceId: String!): Space!
   updateSpace(spaceInput: UpsertSpaceInput!): Space!
   updateTopicBasicInfo(spaceId: String!, topicInfo: UpdateTopicBasicInfoInput!): GitCourse!
   updateTopicExplanation(explanationInfo: UpdateTopicExplanationInput!, spaceId: String!): GitCourse!
@@ -811,6 +832,7 @@ type Mutation {
   updateTopicVideo(spaceId: String!, videoInfo: UpdateTopicVideoInput!): GitCourse!
   upsertAcademyTask(spaceId: String!, task: UpsertAcademyTaskInput!): AcademyTask!
   upsertByte(input: UpsertByteInput!, spaceId: String!): Byte!
+  upsertByteSocialShare(input: UpsertByteSocialShareInput!, spaceId: String!): ByteSocialShare!
   upsertCourseIntegrations(courseIntegrationInput: UpsertCourseIntegrationsInput!, spaceId: String!): CourseIntegrations!
   upsertGitCourse(gitCourseInput: GitCourseInput!, spaceId: String!): SummarizedGitCourse
   upsertGitCourseTopicSubmission(gitCourseTopicSubmission: GitCourseTopicSubmissionInput!, spaceId: String!): GitCourseTopicSubmission!
@@ -888,6 +910,7 @@ type Query {
   academyTask(uuid: String!): AcademyTask!
   academyTasks(spaceId: String!, status: String): [AcademyTask!]
   byte(byteId: String!, includeDraft: Boolean, spaceId: String!): Byte!
+  byteSocialShare(byteId: String!, spaceId: String!): ByteSocialShare
   bytes(spaceId: String!): [Byte!]!
   courses(spaceId: String!): [GitCourse!]!
   gitCourse(courseKey: String!, spaceId: String!): GitCourse!
@@ -958,11 +981,20 @@ input SimulationStepInput {
   uuid: String!
 }
 
+type SocialSettings {
+  linkedSharePdfBackgroundImage: String
+}
+
+input SocialSettingsInput {
+  linkedSharePdfBackgroundImage: String
+}
+
 type Space {
   adminUsernames: [String!]!
   admins: [String!]!
   authSettings: AuthSettings!
   avatar: String
+  byteSettings: ByteSettings!
   creator: String!
   domains: [String!]!
   features: [String!]!
@@ -971,6 +1003,7 @@ type Space {
   inviteLinks: SpaceInviteLinks
   name: String!
   skin: String!
+  socialSettings: SocialSettings!
   spaceIntegrations: SpaceIntegrations
 }
 
@@ -1081,12 +1114,12 @@ type Timeline {
 }
 
 type TimelineEvent {
-  content: String!
-  date: String!
-  excerpt: String!
+  date: DateTimeISO!
+  fullDetails: String
   moreLink: String
-  name: String!
   order: Int!
+  summary: String!
+  title: String!
   uuid: String!
 }
 
@@ -1177,6 +1210,15 @@ input UpsertByteInput {
   visibility: String
 }
 
+input UpsertByteSocialShareInput {
+  byteId: String!
+  linkedInImages: [String!]
+  linkedInPdf: String
+  linkedinPdfContent: ByteLinkedinPdfContentInput
+  spaceId: String!
+  twitterImage: String
+}
+
 input UpsertCourseIntegrationsInput {
   courseKey: String!
   discordRoleIds: [String!]!
@@ -1227,11 +1269,11 @@ input UpsertSpaceInput {
 }
 
 input UpsertTimelineEventInput {
-  content: String!
-  date: String!
-  excerpt: String!
+  date: DateTimeISO!
+  fullDetails: String
   moreLink: String
-  name: String!
+  summary: String!
+  title: String!
   uuid: String!
 }
 

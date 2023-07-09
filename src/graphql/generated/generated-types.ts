@@ -108,6 +108,30 @@ export interface Byte {
   visibility?: Maybe<Scalars['String']>;
 }
 
+export interface ByteLinkedinPdfContent {
+  __typename?: 'ByteLinkedinPdfContent';
+  excerpt: Scalars['String'];
+  steps: Array<ByteLinkedinPdfContentStep>;
+  title: Scalars['String'];
+}
+
+export interface ByteLinkedinPdfContentInput {
+  excerpt: Scalars['String'];
+  steps: Array<ByteLinkedinPdfContentStepInput>;
+  title: Scalars['String'];
+}
+
+export interface ByteLinkedinPdfContentStep {
+  __typename?: 'ByteLinkedinPdfContentStep';
+  content: Scalars['String'];
+  name: Scalars['String'];
+}
+
+export interface ByteLinkedinPdfContentStepInput {
+  content: Scalars['String'];
+  name: Scalars['String'];
+}
+
 export interface ByteQuestion {
   __typename?: 'ByteQuestion';
   answerKeys: Array<Scalars['String']>;
@@ -115,6 +139,30 @@ export interface ByteQuestion {
   content: Scalars['String'];
   explanation: Scalars['String'];
   type: Scalars['String'];
+  uuid: Scalars['String'];
+}
+
+export interface ByteSettings {
+  __typename?: 'ByteSettings';
+  askForLoginToSubmit?: Maybe<Scalars['Boolean']>;
+  captureBeforeAndAfterRating?: Maybe<Scalars['Boolean']>;
+  showCategoriesInSidebar?: Maybe<Scalars['Boolean']>;
+}
+
+export interface ByteSettingsInput {
+  askForLoginToSubmit?: InputMaybe<Scalars['Boolean']>;
+  captureBeforeAndAfterRating?: InputMaybe<Scalars['Boolean']>;
+  showCategoriesInSidebar?: InputMaybe<Scalars['Boolean']>;
+}
+
+export interface ByteSocialShare {
+  __typename?: 'ByteSocialShare';
+  byteId: Scalars['String'];
+  linkedInImages?: Maybe<Array<Scalars['String']>>;
+  linkedInPdf?: Maybe<Scalars['String']>;
+  linkedinPdfContent?: Maybe<ByteLinkedinPdfContent>;
+  spaceId: Scalars['String'];
+  twitterImage?: Maybe<Scalars['String']>;
   uuid: Scalars['String'];
 }
 
@@ -135,33 +183,6 @@ export interface ByteStepInput {
 
 export type ByteStepItem = ByteQuestion | ByteUserInput | UserDiscordConnect;
 
-export interface ByteStepItemSubmission {
-  __typename?: 'ByteStepItemSubmission';
-  selectedAnswerKeys?: Maybe<Array<Scalars['String']>>;
-  type: Scalars['String'];
-  userDiscordInfo?: Maybe<UserDiscordInfo>;
-  userInput?: Maybe<Scalars['String']>;
-  uuid: Scalars['String'];
-}
-
-export interface ByteStepItemSubmissionInput {
-  type: Scalars['String'];
-  userDiscordInfo?: InputMaybe<UserDiscordInfoInput>;
-  userInput?: InputMaybe<Scalars['String']>;
-  uuid: Scalars['String'];
-}
-
-export interface ByteStepSubmission {
-  __typename?: 'ByteStepSubmission';
-  itemResponses: Array<ByteStepItemSubmission>;
-  uuid: Scalars['String'];
-}
-
-export interface ByteStepSubmissionInput {
-  itemResponses: Array<ByteStepItemSubmissionInput>;
-  uuid: Scalars['String'];
-}
-
 export interface ByteSubmission {
   __typename?: 'ByteSubmission';
   byteId: Scalars['String'];
@@ -175,7 +196,6 @@ export interface ByteSubmissionInput {
   byteId: Scalars['String'];
   from: Scalars['String'];
   space: Scalars['String'];
-  steps: Array<ByteStepSubmissionInput>;
   timestamp?: InputMaybe<Scalars['String']>;
   uuid: Scalars['String'];
 }
@@ -833,6 +853,7 @@ export interface Mutation {
   extractRelevantTextForTopic: OpenAiTextResponse;
   generateImage: GenerateImageResponse;
   generateImageEdit: GenerateImageResponse;
+  generateSharablePdf: Scalars['String'];
   initializeGitCourseSubmission: GitCourseSubmission;
   moveTopic: GitCourse;
   moveTopicExplanation: GitCourse;
@@ -850,8 +871,10 @@ export interface Mutation {
   submitGitCourseTopic: GitCourseTopicSubmission;
   submitGuide: GuideSubmission;
   updateAuthSettings: Space;
+  updateByteSettings: Space;
   updateCourseBasicInfo: GitCourse;
   updateGuideSettings: Space;
+  updateSocialSettings: Space;
   updateSpace: Space;
   updateTopicBasicInfo: GitCourse;
   updateTopicExplanation: GitCourse;
@@ -860,6 +883,7 @@ export interface Mutation {
   updateTopicVideo: GitCourse;
   upsertAcademyTask: AcademyTask;
   upsertByte: Byte;
+  upsertByteSocialShare: ByteSocialShare;
   upsertCourseIntegrations: CourseIntegrations;
   upsertGitCourse?: Maybe<SummarizedGitCourse>;
   upsertGitCourseTopicSubmission: GitCourseTopicSubmission;
@@ -994,6 +1018,12 @@ export interface MutationGenerateImageEditArgs {
 }
 
 
+export interface MutationGenerateSharablePdfArgs {
+  byteId: Scalars['String'];
+  spaceId: Scalars['String'];
+}
+
+
 export interface MutationInitializeGitCourseSubmissionArgs {
   courseKey: Scalars['String'];
   spaceId: Scalars['String'];
@@ -1091,6 +1121,12 @@ export interface MutationUpdateAuthSettingsArgs {
 }
 
 
+export interface MutationUpdateByteSettingsArgs {
+  input: ByteSettingsInput;
+  spaceId: Scalars['String'];
+}
+
+
 export interface MutationUpdateCourseBasicInfoArgs {
   courseBasicInfo: CourseBasicInfoInput;
   spaceId: Scalars['String'];
@@ -1099,6 +1135,12 @@ export interface MutationUpdateCourseBasicInfoArgs {
 
 export interface MutationUpdateGuideSettingsArgs {
   input: GuideSettingsInput;
+  spaceId: Scalars['String'];
+}
+
+
+export interface MutationUpdateSocialSettingsArgs {
+  input: SocialSettingsInput;
   spaceId: Scalars['String'];
 }
 
@@ -1146,6 +1188,12 @@ export interface MutationUpsertAcademyTaskArgs {
 
 export interface MutationUpsertByteArgs {
   input: UpsertByteInput;
+  spaceId: Scalars['String'];
+}
+
+
+export interface MutationUpsertByteSocialShareArgs {
+  input: UpsertByteSocialShareInput;
   spaceId: Scalars['String'];
 }
 
@@ -1297,6 +1345,7 @@ export interface Query {
   academyTask: AcademyTask;
   academyTasks?: Maybe<Array<AcademyTask>>;
   byte: Byte;
+  byteSocialShare?: Maybe<ByteSocialShare>;
   bytes: Array<Byte>;
   courses: Array<GitCourse>;
   gitCourse: GitCourse;
@@ -1335,6 +1384,12 @@ export interface QueryAcademyTasksArgs {
 export interface QueryByteArgs {
   byteId: Scalars['String'];
   includeDraft?: InputMaybe<Scalars['Boolean']>;
+  spaceId: Scalars['String'];
+}
+
+
+export interface QueryByteSocialShareArgs {
+  byteId: Scalars['String'];
   spaceId: Scalars['String'];
 }
 
@@ -1500,12 +1555,22 @@ export interface SimulationStepInput {
   uuid: Scalars['String'];
 }
 
+export interface SocialSettings {
+  __typename?: 'SocialSettings';
+  linkedSharePdfBackgroundImage?: Maybe<Scalars['String']>;
+}
+
+export interface SocialSettingsInput {
+  linkedSharePdfBackgroundImage?: InputMaybe<Scalars['String']>;
+}
+
 export interface Space {
   __typename?: 'Space';
   adminUsernames: Array<Scalars['String']>;
   admins: Array<Scalars['String']>;
   authSettings: AuthSettings;
   avatar?: Maybe<Scalars['String']>;
+  byteSettings: ByteSettings;
   creator: Scalars['String'];
   domains: Array<Scalars['String']>;
   features: Array<Scalars['String']>;
@@ -1514,6 +1579,7 @@ export interface Space {
   inviteLinks?: Maybe<SpaceInviteLinks>;
   name: Scalars['String'];
   skin: Scalars['String'];
+  socialSettings: SocialSettings;
   spaceIntegrations?: Maybe<SpaceIntegrations>;
 }
 
@@ -1632,12 +1698,12 @@ export interface Timeline {
 
 export interface TimelineEvent {
   __typename?: 'TimelineEvent';
-  content: Scalars['String'];
-  date: Scalars['String'];
-  excerpt: Scalars['String'];
+  date: Scalars['DateTimeISO'];
+  fullDetails?: Maybe<Scalars['String']>;
   moreLink?: Maybe<Scalars['String']>;
-  name: Scalars['String'];
   order: Scalars['Int'];
+  summary: Scalars['String'];
+  title: Scalars['String'];
   uuid: Scalars['String'];
 }
 
@@ -1729,6 +1795,15 @@ export interface UpsertByteInput {
   visibility?: InputMaybe<Scalars['String']>;
 }
 
+export interface UpsertByteSocialShareInput {
+  byteId: Scalars['String'];
+  linkedInImages?: InputMaybe<Array<Scalars['String']>>;
+  linkedInPdf?: InputMaybe<Scalars['String']>;
+  linkedinPdfContent?: InputMaybe<ByteLinkedinPdfContentInput>;
+  spaceId: Scalars['String'];
+  twitterImage?: InputMaybe<Scalars['String']>;
+}
+
 export interface UpsertCourseIntegrationsInput {
   courseKey: Scalars['String'];
   discordRoleIds: Array<Scalars['String']>;
@@ -1779,11 +1854,11 @@ export interface UpsertSpaceInput {
 }
 
 export interface UpsertTimelineEventInput {
-  content: Scalars['String'];
-  date: Scalars['String'];
-  excerpt: Scalars['String'];
+  date: Scalars['DateTimeISO'];
+  fullDetails?: InputMaybe<Scalars['String']>;
   moreLink?: InputMaybe<Scalars['String']>;
-  name: Scalars['String'];
+  summary: Scalars['String'];
+  title: Scalars['String'];
   uuid: Scalars['String'];
 }
 
@@ -1865,6 +1940,34 @@ export type AuthenticateWithUnstoppableMutationVariables = Exact<{
 
 
 export type AuthenticateWithUnstoppableMutation = { __typename?: 'Mutation', payload: { __typename?: 'JwtResponse', jwt: string } };
+
+export type ByteLinkedinPdfContentStepFragment = { __typename?: 'ByteLinkedinPdfContentStep', content: string, name: string };
+
+export type ByteLinkedinPdfContentFragment = { __typename?: 'ByteLinkedinPdfContent', excerpt: string, title: string, steps: Array<{ __typename?: 'ByteLinkedinPdfContentStep', content: string, name: string }> };
+
+export type ByteSocialShareQueryVariables = Exact<{
+  spaceId: Scalars['String'];
+  byteId: Scalars['String'];
+}>;
+
+
+export type ByteSocialShareQuery = { __typename?: 'Query', byteSocialShare?: { __typename?: 'ByteSocialShare', byteId: string, linkedInImages?: Array<string> | null, linkedInPdf?: string | null, spaceId: string, twitterImage?: string | null, uuid: string, linkedinPdfContent?: { __typename?: 'ByteLinkedinPdfContent', excerpt: string, title: string, steps: Array<{ __typename?: 'ByteLinkedinPdfContentStep', content: string, name: string }> } | null } | null };
+
+export type GenerateSharablePdfForByteMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+  byteId: Scalars['String'];
+}>;
+
+
+export type GenerateSharablePdfForByteMutation = { __typename?: 'Mutation', payload: string };
+
+export type UpsertByteSocialShareMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+  input: UpsertByteSocialShareInput;
+}>;
+
+
+export type UpsertByteSocialShareMutation = { __typename?: 'Mutation', payload: { __typename?: 'ByteSocialShare', byteId: string, linkedInImages?: Array<string> | null, linkedInPdf?: string | null, spaceId: string, twitterImage?: string | null, uuid: string, linkedinPdfContent?: { __typename?: 'ByteLinkedinPdfContent', excerpt: string, title: string, steps: Array<{ __typename?: 'ByteLinkedinPdfContentStep', content: string, name: string }> } | null } };
 
 export type ByteQuestionFragmentFragment = { __typename?: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> };
 
@@ -2405,21 +2508,23 @@ export type GuideSettingsFragment = { __typename?: 'GuideSettings', askForLoginT
 
 export type AuthSettingsFragment = { __typename?: 'AuthSettings', enableLogin?: boolean | null, loginOptions?: Array<string> | null };
 
-export type SpaceWithIntegrationsFragment = { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, skin: string, avatar?: string | null, domains: Array<string>, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureBeforeAndAfterRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null } };
+export type SocialSettingsFragment = { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null };
+
+export type SpaceWithIntegrationsFragment = { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, skin: string, avatar?: string | null, domains: Array<string>, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureBeforeAndAfterRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureBeforeAndAfterRating?: boolean | null, showCategoriesInSidebar?: boolean | null } };
 
 export type ExtendedSpaceQueryVariables = Exact<{
   spaceId: Scalars['String'];
 }>;
 
 
-export type ExtendedSpaceQuery = { __typename?: 'Query', space?: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, skin: string, avatar?: string | null, domains: Array<string>, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureBeforeAndAfterRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null } } | null };
+export type ExtendedSpaceQuery = { __typename?: 'Query', space?: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, skin: string, avatar?: string | null, domains: Array<string>, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureBeforeAndAfterRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureBeforeAndAfterRating?: boolean | null, showCategoriesInSidebar?: boolean | null } } | null };
 
 export type ExtendedSpaceByDomainQueryVariables = Exact<{
   domain: Scalars['String'];
 }>;
 
 
-export type ExtendedSpaceByDomainQuery = { __typename?: 'Query', space?: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, skin: string, avatar?: string | null, domains: Array<string>, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureBeforeAndAfterRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null } } | null };
+export type ExtendedSpaceByDomainQuery = { __typename?: 'Query', space?: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, skin: string, avatar?: string | null, domains: Array<string>, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureBeforeAndAfterRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureBeforeAndAfterRating?: boolean | null, showCategoriesInSidebar?: boolean | null } } | null };
 
 export type SpaceDiscordGuildQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -2434,7 +2539,7 @@ export type UpsertSpaceFeaturesMutationVariables = Exact<{
 }>;
 
 
-export type UpsertSpaceFeaturesMutation = { __typename?: 'Mutation', payload: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, skin: string, avatar?: string | null, domains: Array<string>, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureBeforeAndAfterRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null } } };
+export type UpsertSpaceFeaturesMutation = { __typename?: 'Mutation', payload: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, skin: string, avatar?: string | null, domains: Array<string>, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureBeforeAndAfterRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureBeforeAndAfterRating?: boolean | null, showCategoriesInSidebar?: boolean | null } } };
 
 export type UpsertSpaceInviteLinksMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -2490,14 +2595,14 @@ export type UpdateSpaceMutationVariables = Exact<{
 }>;
 
 
-export type UpdateSpaceMutation = { __typename?: 'Mutation', updateSpace: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, skin: string, avatar?: string | null, domains: Array<string>, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureBeforeAndAfterRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null } } };
+export type UpdateSpaceMutation = { __typename?: 'Mutation', updateSpace: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, skin: string, avatar?: string | null, domains: Array<string>, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureBeforeAndAfterRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureBeforeAndAfterRating?: boolean | null, showCategoriesInSidebar?: boolean | null } } };
 
 export type CreateSpaceMutationVariables = Exact<{
   spaceInput: UpsertSpaceInput;
 }>;
 
 
-export type CreateSpaceMutation = { __typename?: 'Mutation', createSpace: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, skin: string, avatar?: string | null, domains: Array<string>, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureBeforeAndAfterRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null } } };
+export type CreateSpaceMutation = { __typename?: 'Mutation', createSpace: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, skin: string, avatar?: string | null, domains: Array<string>, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureBeforeAndAfterRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureBeforeAndAfterRating?: boolean | null, showCategoriesInSidebar?: boolean | null } } };
 
 export type ReloadAcademyRepoMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -2512,7 +2617,7 @@ export type UpdateSpaceGuideSettingsMutationVariables = Exact<{
 }>;
 
 
-export type UpdateSpaceGuideSettingsMutation = { __typename?: 'Mutation', payload: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, skin: string, avatar?: string | null, domains: Array<string>, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureBeforeAndAfterRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null } } };
+export type UpdateSpaceGuideSettingsMutation = { __typename?: 'Mutation', payload: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, skin: string, avatar?: string | null, domains: Array<string>, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureBeforeAndAfterRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureBeforeAndAfterRating?: boolean | null, showCategoriesInSidebar?: boolean | null } } };
 
 export type UpdateSpaceAuthSettingsMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -2520,7 +2625,23 @@ export type UpdateSpaceAuthSettingsMutationVariables = Exact<{
 }>;
 
 
-export type UpdateSpaceAuthSettingsMutation = { __typename?: 'Mutation', payload: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, skin: string, avatar?: string | null, domains: Array<string>, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureBeforeAndAfterRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null } } };
+export type UpdateSpaceAuthSettingsMutation = { __typename?: 'Mutation', payload: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, skin: string, avatar?: string | null, domains: Array<string>, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureBeforeAndAfterRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureBeforeAndAfterRating?: boolean | null, showCategoriesInSidebar?: boolean | null } } };
+
+export type UpdateSpaceSocialSettingsMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+  input: SocialSettingsInput;
+}>;
+
+
+export type UpdateSpaceSocialSettingsMutation = { __typename?: 'Mutation', payload: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, skin: string, avatar?: string | null, domains: Array<string>, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureBeforeAndAfterRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureBeforeAndAfterRating?: boolean | null, showCategoriesInSidebar?: boolean | null } } };
+
+export type UpdateSpaceByteSettingsMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+  input: ByteSettingsInput;
+}>;
+
+
+export type UpdateSpaceByteSettingsMutation = { __typename?: 'Mutation', payload: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, skin: string, avatar?: string | null, domains: Array<string>, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureBeforeAndAfterRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureBeforeAndAfterRating?: boolean | null, showCategoriesInSidebar?: boolean | null } } };
 
 export type SpaceSummaryFragment = { __typename?: 'Space', id: string, admins: Array<string>, adminUsernames: Array<string>, avatar?: string | null, creator: string, name: string, skin: string, domains: Array<string> };
 
@@ -2529,7 +2650,9 @@ export type SpacesQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type SpacesQuery = { __typename?: 'Query', spaces?: Array<{ __typename?: 'Space', id: string, admins: Array<string>, adminUsernames: Array<string>, avatar?: string | null, creator: string, name: string, skin: string, domains: Array<string> }> | null };
 
-export type TimelineDetailsFragment = { __typename?: 'Timeline', id: string, name: string, excerpt: string, content: string, thumbnail?: string | null, created: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, events: Array<{ __typename?: 'TimelineEvent', name: string, uuid: string, date: string, excerpt: string, content: string, moreLink?: string | null }> };
+export type TimelineEventFragment = { __typename?: 'TimelineEvent', title: string, uuid: string, date: any, summary: string, fullDetails?: string | null, moreLink?: string | null };
+
+export type TimelineDetailsFragment = { __typename?: 'Timeline', id: string, name: string, excerpt: string, content: string, thumbnail?: string | null, created: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, events: Array<{ __typename?: 'TimelineEvent', title: string, uuid: string, date: any, summary: string, fullDetails?: string | null, moreLink?: string | null }> };
 
 export type TimelinesQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -2544,7 +2667,7 @@ export type TimelineDetailsQueryVariables = Exact<{
 }>;
 
 
-export type TimelineDetailsQuery = { __typename?: 'Query', timeline: { __typename?: 'Timeline', id: string, name: string, excerpt: string, content: string, thumbnail?: string | null, created: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, events: Array<{ __typename?: 'TimelineEvent', name: string, uuid: string, date: string, excerpt: string, content: string, moreLink?: string | null }> } };
+export type TimelineDetailsQuery = { __typename?: 'Query', timeline: { __typename?: 'Timeline', id: string, name: string, excerpt: string, content: string, thumbnail?: string | null, created: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, events: Array<{ __typename?: 'TimelineEvent', title: string, uuid: string, date: any, summary: string, fullDetails?: string | null, moreLink?: string | null }> } };
 
 export type UpsertTimelineMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -2552,7 +2675,7 @@ export type UpsertTimelineMutationVariables = Exact<{
 }>;
 
 
-export type UpsertTimelineMutation = { __typename?: 'Mutation', upsertTimeline: { __typename?: 'Timeline', id: string, name: string, excerpt: string, content: string, thumbnail?: string | null, created: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, events: Array<{ __typename?: 'TimelineEvent', name: string, uuid: string, date: string, excerpt: string, content: string, moreLink?: string | null }> } };
+export type UpsertTimelineMutation = { __typename?: 'Mutation', upsertTimeline: { __typename?: 'Timeline', id: string, name: string, excerpt: string, content: string, thumbnail?: string | null, created: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, events: Array<{ __typename?: 'TimelineEvent', title: string, uuid: string, date: any, summary: string, fullDetails?: string | null, moreLink?: string | null }> } };
 
 export const AcademyTaskFragmentFragmentDoc = gql`
     fragment AcademyTaskFragment on AcademyTask {
@@ -2606,6 +2729,21 @@ export const AcademyTaskFragmentFragmentDoc = gql`
   updatedBy
 }
     `;
+export const ByteLinkedinPdfContentStepFragmentDoc = gql`
+    fragment ByteLinkedinPdfContentStep on ByteLinkedinPdfContentStep {
+  content
+  name
+}
+    `;
+export const ByteLinkedinPdfContentFragmentDoc = gql`
+    fragment ByteLinkedinPdfContent on ByteLinkedinPdfContent {
+  excerpt
+  steps {
+    ...ByteLinkedinPdfContentStep
+  }
+  title
+}
+    ${ByteLinkedinPdfContentStepFragmentDoc}`;
 export const ByteQuestionFragmentFragmentDoc = gql`
     fragment ByteQuestionFragment on ByteQuestion {
   answerKeys
@@ -3099,6 +3237,11 @@ export const AuthSettingsFragmentDoc = gql`
   loginOptions
 }
     `;
+export const SocialSettingsFragmentDoc = gql`
+    fragment SocialSettings on SocialSettings {
+  linkedSharePdfBackgroundImage
+}
+    `;
 export const SpaceWithIntegrationsFragmentDoc = gql`
     fragment SpaceWithIntegrations on Space {
   id
@@ -3138,12 +3281,20 @@ export const SpaceWithIntegrationsFragmentDoc = gql`
     loginOptions
     enableLogin
   }
+  socialSettings {
+    linkedSharePdfBackgroundImage
+  }
   guideSettings {
     askForLoginToSubmit
     captureBeforeAndAfterRating
     showCategoriesInSidebar
     showIncorrectAfterEachStep
     showIncorrectOnCompletion
+  }
+  byteSettings {
+    askForLoginToSubmit
+    captureBeforeAndAfterRating
+    showCategoriesInSidebar
   }
 }
     `;
@@ -3159,6 +3310,16 @@ export const SpaceSummaryFragmentDoc = gql`
   domains
 }
     `;
+export const TimelineEventFragmentDoc = gql`
+    fragment TimelineEvent on TimelineEvent {
+  title
+  uuid
+  date
+  summary
+  fullDetails
+  moreLink
+}
+    `;
 export const TimelineDetailsFragmentDoc = gql`
     fragment TimelineDetails on Timeline {
   id
@@ -3172,11 +3333,11 @@ export const TimelineDetailsFragmentDoc = gql`
   tags
   priority
   events {
-    name
+    title
     uuid
     date
-    excerpt
-    content
+    summary
+    fullDetails
     moreLink
   }
 }
@@ -3325,6 +3486,137 @@ export function useAuthenticateWithUnstoppableMutation(baseOptions?: Apollo.Muta
 export type AuthenticateWithUnstoppableMutationHookResult = ReturnType<typeof useAuthenticateWithUnstoppableMutation>;
 export type AuthenticateWithUnstoppableMutationResult = Apollo.MutationResult<AuthenticateWithUnstoppableMutation>;
 export type AuthenticateWithUnstoppableMutationOptions = Apollo.BaseMutationOptions<AuthenticateWithUnstoppableMutation, AuthenticateWithUnstoppableMutationVariables>;
+export const ByteSocialShareDocument = gql`
+    query ByteSocialShare($spaceId: String!, $byteId: String!) {
+  byteSocialShare(spaceId: $spaceId, byteId: $byteId) {
+    byteId
+    linkedInImages
+    linkedInPdf
+    linkedinPdfContent {
+      excerpt
+      steps {
+        content
+        name
+      }
+      title
+    }
+    spaceId
+    twitterImage
+    uuid
+  }
+}
+    `;
+
+/**
+ * __useByteSocialShareQuery__
+ *
+ * To run a query within a React component, call `useByteSocialShareQuery` and pass it any options that fit your needs.
+ * When your component renders, `useByteSocialShareQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useByteSocialShareQuery({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      byteId: // value for 'byteId'
+ *   },
+ * });
+ */
+export function useByteSocialShareQuery(baseOptions: Apollo.QueryHookOptions<ByteSocialShareQuery, ByteSocialShareQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ByteSocialShareQuery, ByteSocialShareQueryVariables>(ByteSocialShareDocument, options);
+      }
+export function useByteSocialShareLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ByteSocialShareQuery, ByteSocialShareQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ByteSocialShareQuery, ByteSocialShareQueryVariables>(ByteSocialShareDocument, options);
+        }
+export type ByteSocialShareQueryHookResult = ReturnType<typeof useByteSocialShareQuery>;
+export type ByteSocialShareLazyQueryHookResult = ReturnType<typeof useByteSocialShareLazyQuery>;
+export type ByteSocialShareQueryResult = Apollo.QueryResult<ByteSocialShareQuery, ByteSocialShareQueryVariables>;
+export function refetchByteSocialShareQuery(variables: ByteSocialShareQueryVariables) {
+      return { query: ByteSocialShareDocument, variables: variables }
+    }
+export const GenerateSharablePdfForByteDocument = gql`
+    mutation GenerateSharablePdfForByte($spaceId: String!, $byteId: String!) {
+  payload: generateSharablePdf(byteId: $byteId, spaceId: $spaceId)
+}
+    `;
+export type GenerateSharablePdfForByteMutationFn = Apollo.MutationFunction<GenerateSharablePdfForByteMutation, GenerateSharablePdfForByteMutationVariables>;
+
+/**
+ * __useGenerateSharablePdfForByteMutation__
+ *
+ * To run a mutation, you first call `useGenerateSharablePdfForByteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useGenerateSharablePdfForByteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [generateSharablePdfForByteMutation, { data, loading, error }] = useGenerateSharablePdfForByteMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      byteId: // value for 'byteId'
+ *   },
+ * });
+ */
+export function useGenerateSharablePdfForByteMutation(baseOptions?: Apollo.MutationHookOptions<GenerateSharablePdfForByteMutation, GenerateSharablePdfForByteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<GenerateSharablePdfForByteMutation, GenerateSharablePdfForByteMutationVariables>(GenerateSharablePdfForByteDocument, options);
+      }
+export type GenerateSharablePdfForByteMutationHookResult = ReturnType<typeof useGenerateSharablePdfForByteMutation>;
+export type GenerateSharablePdfForByteMutationResult = Apollo.MutationResult<GenerateSharablePdfForByteMutation>;
+export type GenerateSharablePdfForByteMutationOptions = Apollo.BaseMutationOptions<GenerateSharablePdfForByteMutation, GenerateSharablePdfForByteMutationVariables>;
+export const UpsertByteSocialShareDocument = gql`
+    mutation UpsertByteSocialShare($spaceId: String!, $input: UpsertByteSocialShareInput!) {
+  payload: upsertByteSocialShare(spaceId: $spaceId, input: $input) {
+    byteId
+    linkedInImages
+    linkedInPdf
+    linkedinPdfContent {
+      excerpt
+      steps {
+        content
+        name
+      }
+      title
+    }
+    spaceId
+    twitterImage
+    uuid
+  }
+}
+    `;
+export type UpsertByteSocialShareMutationFn = Apollo.MutationFunction<UpsertByteSocialShareMutation, UpsertByteSocialShareMutationVariables>;
+
+/**
+ * __useUpsertByteSocialShareMutation__
+ *
+ * To run a mutation, you first call `useUpsertByteSocialShareMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertByteSocialShareMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertByteSocialShareMutation, { data, loading, error }] = useUpsertByteSocialShareMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpsertByteSocialShareMutation(baseOptions?: Apollo.MutationHookOptions<UpsertByteSocialShareMutation, UpsertByteSocialShareMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpsertByteSocialShareMutation, UpsertByteSocialShareMutationVariables>(UpsertByteSocialShareDocument, options);
+      }
+export type UpsertByteSocialShareMutationHookResult = ReturnType<typeof useUpsertByteSocialShareMutation>;
+export type UpsertByteSocialShareMutationResult = Apollo.MutationResult<UpsertByteSocialShareMutation>;
+export type UpsertByteSocialShareMutationOptions = Apollo.BaseMutationOptions<UpsertByteSocialShareMutation, UpsertByteSocialShareMutationVariables>;
 export const QueryBytesDocument = gql`
     query QueryBytes($spaceId: String!) {
   bytes(spaceId: $spaceId) {
@@ -6117,6 +6409,74 @@ export function useUpdateSpaceAuthSettingsMutation(baseOptions?: Apollo.Mutation
 export type UpdateSpaceAuthSettingsMutationHookResult = ReturnType<typeof useUpdateSpaceAuthSettingsMutation>;
 export type UpdateSpaceAuthSettingsMutationResult = Apollo.MutationResult<UpdateSpaceAuthSettingsMutation>;
 export type UpdateSpaceAuthSettingsMutationOptions = Apollo.BaseMutationOptions<UpdateSpaceAuthSettingsMutation, UpdateSpaceAuthSettingsMutationVariables>;
+export const UpdateSpaceSocialSettingsDocument = gql`
+    mutation UpdateSpaceSocialSettings($spaceId: String!, $input: SocialSettingsInput!) {
+  payload: updateSocialSettings(spaceId: $spaceId, input: $input) {
+    ...SpaceWithIntegrations
+  }
+}
+    ${SpaceWithIntegrationsFragmentDoc}`;
+export type UpdateSpaceSocialSettingsMutationFn = Apollo.MutationFunction<UpdateSpaceSocialSettingsMutation, UpdateSpaceSocialSettingsMutationVariables>;
+
+/**
+ * __useUpdateSpaceSocialSettingsMutation__
+ *
+ * To run a mutation, you first call `useUpdateSpaceSocialSettingsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateSpaceSocialSettingsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateSpaceSocialSettingsMutation, { data, loading, error }] = useUpdateSpaceSocialSettingsMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateSpaceSocialSettingsMutation(baseOptions?: Apollo.MutationHookOptions<UpdateSpaceSocialSettingsMutation, UpdateSpaceSocialSettingsMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateSpaceSocialSettingsMutation, UpdateSpaceSocialSettingsMutationVariables>(UpdateSpaceSocialSettingsDocument, options);
+      }
+export type UpdateSpaceSocialSettingsMutationHookResult = ReturnType<typeof useUpdateSpaceSocialSettingsMutation>;
+export type UpdateSpaceSocialSettingsMutationResult = Apollo.MutationResult<UpdateSpaceSocialSettingsMutation>;
+export type UpdateSpaceSocialSettingsMutationOptions = Apollo.BaseMutationOptions<UpdateSpaceSocialSettingsMutation, UpdateSpaceSocialSettingsMutationVariables>;
+export const UpdateSpaceByteSettingsDocument = gql`
+    mutation UpdateSpaceByteSettings($spaceId: String!, $input: ByteSettingsInput!) {
+  payload: updateByteSettings(spaceId: $spaceId, input: $input) {
+    ...SpaceWithIntegrations
+  }
+}
+    ${SpaceWithIntegrationsFragmentDoc}`;
+export type UpdateSpaceByteSettingsMutationFn = Apollo.MutationFunction<UpdateSpaceByteSettingsMutation, UpdateSpaceByteSettingsMutationVariables>;
+
+/**
+ * __useUpdateSpaceByteSettingsMutation__
+ *
+ * To run a mutation, you first call `useUpdateSpaceByteSettingsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateSpaceByteSettingsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateSpaceByteSettingsMutation, { data, loading, error }] = useUpdateSpaceByteSettingsMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateSpaceByteSettingsMutation(baseOptions?: Apollo.MutationHookOptions<UpdateSpaceByteSettingsMutation, UpdateSpaceByteSettingsMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateSpaceByteSettingsMutation, UpdateSpaceByteSettingsMutationVariables>(UpdateSpaceByteSettingsDocument, options);
+      }
+export type UpdateSpaceByteSettingsMutationHookResult = ReturnType<typeof useUpdateSpaceByteSettingsMutation>;
+export type UpdateSpaceByteSettingsMutationResult = Apollo.MutationResult<UpdateSpaceByteSettingsMutation>;
+export type UpdateSpaceByteSettingsMutationOptions = Apollo.BaseMutationOptions<UpdateSpaceByteSettingsMutation, UpdateSpaceByteSettingsMutationVariables>;
 export const SpacesDocument = gql`
     query Spaces {
   spaces {

@@ -165,8 +165,6 @@ export function useViewByte(space: SpaceWithIntegrationsFragment, byteId: string
     setByteSubmitting(true);
     setByteSubmission((prevByteSubmission) => ({ ...prevByteSubmission, isPristine: false }));
 
-    const responses = byteSubmission.stepResponsesMap;
-
     if (!isEverythingInByteIsAnswered()) {
       setByteSubmitting(false);
       setByteSubmission((prevByteSubmission) => ({ ...prevByteSubmission, isPristine: false }));
@@ -178,36 +176,6 @@ export function useViewByte(space: SpaceWithIntegrationsFragment, byteId: string
       uuid: uuidv4(),
       byteId: byteId,
       from: session?.username || 'anonymous',
-      steps: Object.keys(responses).map((stepUuid) => {
-        const stepResponse = responses[stepUuid];
-
-        const stepSubmissionInput = {
-          uuid: stepUuid,
-          itemResponses: Object.keys(stepResponse.itemResponsesMap).map((itemUuid) => {
-            const stepItem = byteStepsMap[stepUuid].stepItems.find((item) => item.uuid === itemUuid);
-            const stepItemResponse: StepItemResponse = stepResponse.itemResponsesMap[itemUuid];
-            if (isUserInput(stepItem!)) {
-              return {
-                uuid: itemUuid,
-                userInput: stepItemResponse as string,
-                type: StepItemSubmissionType.UserInput,
-              };
-            } else if (isUserDiscordConnect(stepItem!)) {
-              return {
-                uuid: itemUuid,
-                userDiscordInfo: stepItemResponse as UserDiscordInfoInput,
-                type: StepItemSubmissionType.UserDiscordConnect,
-              };
-            } else {
-              return {
-                uuid: itemUuid,
-                type: StepItemSubmissionType.Question,
-              };
-            }
-          }),
-        };
-        return stepSubmissionInput;
-      }),
     };
 
     try {

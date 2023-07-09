@@ -1,13 +1,14 @@
 'use client';
 
 import withSpace from '@/app/withSpace';
-import Block from '@/components/app/Block';
 import ByteStepper from '@/components/bytes/View/ByteStepper';
 import { useViewByte } from '@/components/bytes/View/useViewByte';
+import { EllipsisDropdownItem } from '@/components/core/dropdowns/EllipsisDropdown';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import PageLoading from '@/components/core/loaders/PageLoading';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { TidbitShareSteps } from '@/types/deprecated/models/enums';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
@@ -28,7 +29,6 @@ const ByteView = ({ params, space }: { params: { byteIdAndStep: string[] }; spac
   const { byteIdAndStep } = params;
 
   const byteId = Array.isArray(byteIdAndStep) ? byteIdAndStep[0] : (byteIdAndStep as string);
-  const { isAdmin } = { isAdmin: true };
 
   let stepOrder = 0;
   if (Array.isArray(byteIdAndStep)) {
@@ -41,7 +41,10 @@ const ByteView = ({ params, space }: { params: { byteIdAndStep: string[] }; spac
     viewByteHelper.initialize();
   }, [byteId]);
 
-  const threeDotItems = [{ label: 'Edit', key: 'edit' }];
+  const threeDotItems: EllipsisDropdownItem[] = [
+    { label: 'Edit', key: 'edit' },
+    { label: 'Generate Pdf', key: 'generate-pdf' },
+  ];
 
   const byte = viewByteHelper.byteRef;
   const router = useRouter();
@@ -61,7 +64,11 @@ const ByteView = ({ params, space }: { params: { byteIdAndStep: string[] }; spac
                   <PrivateEllipsisDropdown
                     items={threeDotItems}
                     onSelect={(key) => {
-                      router.push(`/tidbits/edit/${byteId}`);
+                      if (key === 'edit') {
+                        router.push(`/tidbits/edit/${byteId}`);
+                      } else if (key === 'generate-pdf') {
+                        router.push(`/tidbits/share/${byteId}/${TidbitShareSteps.SelectSocial}`);
+                      }
                     }}
                   />
                 </div>
@@ -71,7 +78,7 @@ const ByteView = ({ params, space }: { params: { byteIdAndStep: string[] }; spac
             {byte && byte && (
               <div className="px-2 lg:px-4 md:px-0 h-max">
                 <div className="mt-4">
-                  <ByteStepper viewByteHelper={viewByteHelper} byte={byte} setAccountModalOpen={() => {}} space={space} />
+                  <ByteStepper viewByteHelper={viewByteHelper} byte={byte} space={space} />
                 </div>
               </div>
             )}

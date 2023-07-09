@@ -1,8 +1,9 @@
 import Button from '@/components/core/buttons/Button';
+import UpsertSpaceBasicSettingsModal from '@/components/spaces/Edit/Basic/UpsertSpaceBasicSettingsModal';
 import { ManageSpaceSubviews } from '@/components/spaces/manageSpaceSubviews';
 import { SpaceSummaryFragment, useSpacesQuery } from '@/graphql/generated/generated-types';
 import Link from 'next/link';
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 const MainDiv = styled.div`
@@ -16,6 +17,7 @@ const SpacesTable = styled.table`
 `;
 export default function ListSpaces() {
   const { data } = useSpacesQuery();
+  const [showSpaceAddModal, setShowSpaceAddModal] = useState(false);
   return (
     <MainDiv className="px-4 sm:px-6 lg:px-8">
       <div className="sm:flex sm:items-center">
@@ -24,11 +26,9 @@ export default function ListSpaces() {
           <p className="mt-2 text-sm">A list of all the spaces.</p>
         </div>
         <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-          <Link href={`space/manage/${ManageSpaceSubviews.EditSpace}`}>
-            <Button variant="contained" primary>
-              Add Space
-            </Button>
-          </Link>
+          <Button variant="contained" primary onClick={() => setShowSpaceAddModal(true)}>
+            Add Space
+          </Button>
         </div>
       </div>
       <div className="mt-8 flow-root">
@@ -73,6 +73,7 @@ export default function ListSpaces() {
           </div>
         </div>
       </div>
+      <UpsertSpaceBasicSettingsModal open={showSpaceAddModal} onClose={() => setShowSpaceAddModal(false)} />
     </MainDiv>
   );
 }

@@ -1,3 +1,12 @@
+fragment TimelineEvent on TimelineEvent {
+  title
+  uuid
+  date
+  summary
+  fullDetails
+  moreLink
+}
+
 fragment TimelineDetails on Timeline {
   id
   name
@@ -10,11 +19,11 @@ fragment TimelineDetails on Timeline {
   tags
   priority
   events {
-    name
+    title
     uuid
     date
-    excerpt
-    content
+    summary
+    fullDetails
     moreLink
   }
 }
