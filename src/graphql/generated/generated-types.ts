@@ -183,33 +183,6 @@ export interface ByteStepInput {
 
 export type ByteStepItem = ByteQuestion | ByteUserInput | UserDiscordConnect;
 
-export interface ByteStepItemSubmission {
-  __typename?: 'ByteStepItemSubmission';
-  selectedAnswerKeys?: Maybe<Array<Scalars['String']>>;
-  type: Scalars['String'];
-  userDiscordInfo?: Maybe<UserDiscordInfo>;
-  userInput?: Maybe<Scalars['String']>;
-  uuid: Scalars['String'];
-}
-
-export interface ByteStepItemSubmissionInput {
-  type: Scalars['String'];
-  userDiscordInfo?: InputMaybe<UserDiscordInfoInput>;
-  userInput?: InputMaybe<Scalars['String']>;
-  uuid: Scalars['String'];
-}
-
-export interface ByteStepSubmission {
-  __typename?: 'ByteStepSubmission';
-  itemResponses: Array<ByteStepItemSubmission>;
-  uuid: Scalars['String'];
-}
-
-export interface ByteStepSubmissionInput {
-  itemResponses: Array<ByteStepItemSubmissionInput>;
-  uuid: Scalars['String'];
-}
-
 export interface ByteSubmission {
   __typename?: 'ByteSubmission';
   byteId: Scalars['String'];
@@ -223,7 +196,6 @@ export interface ByteSubmissionInput {
   byteId: Scalars['String'];
   from: Scalars['String'];
   space: Scalars['String'];
-  steps: Array<ByteStepSubmissionInput>;
   timestamp?: InputMaybe<Scalars['String']>;
   uuid: Scalars['String'];
 }

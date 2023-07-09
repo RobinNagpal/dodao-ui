@@ -157,31 +157,6 @@ input ByteStepInput {
 
 union ByteStepItem = ByteQuestion | ByteUserInput | UserDiscordConnect
 
-type ByteStepItemSubmission {
-  selectedAnswerKeys: [String!]
-  type: String!
-  userDiscordInfo: UserDiscordInfo
-  userInput: String
-  uuid: String!
-}
-
-input ByteStepItemSubmissionInput {
-  type: String!
-  userDiscordInfo: UserDiscordInfoInput
-  userInput: String
-  uuid: String!
-}
-
-type ByteStepSubmission {
-  itemResponses: [ByteStepItemSubmission!]!
-  uuid: String!
-}
-
-input ByteStepSubmissionInput {
-  itemResponses: [ByteStepItemSubmissionInput!]!
-  uuid: String!
-}
-
 type ByteSubmission {
   byteId: String!
   created: String!
@@ -194,7 +169,6 @@ input ByteSubmissionInput {
   byteId: String!
   from: String!
   space: String!
-  steps: [ByteStepSubmissionInput!]!
   timestamp: String
   uuid: String!
 }
