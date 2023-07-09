@@ -662,6 +662,7 @@ export interface GuideRating {
   spaceId: Scalars['String'];
   startRating?: Maybe<Scalars['Int']>;
   userId: Scalars['String'];
+  submitted?:Scalars['Boolean'] ; 
 }
 
 export interface GuideSettings {

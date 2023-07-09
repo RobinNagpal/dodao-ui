@@ -13,8 +13,9 @@ export interface SingleSectionModalProps {
 }
 
 const ModalContainer = styled.div`
-  background-color: var(--bg-color);
+  
   color: var(--text-color);
+   backdrop-filter: blur(1px); 
 `;
 
 export default function FullScreenModal({ open, title, children, onClose, showCloseButton = true, fullWidth = false }: SingleSectionModalProps) {

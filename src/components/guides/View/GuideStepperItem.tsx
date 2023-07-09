@@ -2,7 +2,7 @@ import Question from '@/components/app/Common/Question';
 import UserDiscord from '@/components/app/Form/UserDiscord';
 import UserInput from '@/components/app/Form/UserInput';
 import Button from '@/components/core/buttons/Button';
-import { useGuideRatings } from '@/components/guides/View/useGuideRatings';
+import ErrorWithAccentBorder from '@/components/core/errors/ErrorWithAccentBorder';
 import { LAST_STEP_UUID, UseViewGuideHelper } from '@/components/guides/View/useViewGuide';
 import { useLoginModalContext } from '@/contexts/LoginModalContext';
 import { useNotificationContext } from '@/contexts/NotificationContext';
@@ -16,15 +16,15 @@ import {
   UserDiscordInfoInput,
 } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
-import { UserIdKey } from '@/types/auth/User';
 import { isQuestion, isUserDiscordConnect, isUserInput } from '@/types/deprecated/helpers/stepItemTypes';
 import { getMarkedRenderer } from '@/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
 import { useSession } from 'next-auth/react';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState , useEffect } from 'react';
 import styled from 'styled-components';
-
-
+import { useGuideRatings } from './useGuideRatings';
+import GuideStartRatingModal from '@/components/app/Modal/Guide/GuideStartRatingModal';
+import GuideEndRatingModal from '@/components/app/Modal/Guide/GuideEndRatingModal';
 const CorrectAnswer = styled.div`
   background-color: green !important;
   border-color: green !important;
@@ -49,6 +49,25 @@ export interface GuideStepProps {
 }
 
 const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, guide }) => {
+  const {
+    initialize,
+    guideRatings,
+    showRatingsModal,
+    setStartRating,
+    setFinalRating,
+    skipInitialRating,
+    skipFinalRating,
+    guideSuccess,
+    showFeedBackModal,
+    setFeedback,
+    feedbackSubmitted , 
+  } = useGuideRatings(space, guide);
+
+  useEffect(() => {
+    initialize();
+  }, []);
+
+
   const [nextButtonClicked, setNextButtonClicked] = useState(false);
 
   const setUserInput = useCallback(
@@ -153,13 +172,9 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
       viewGuideHelper.goToNextStep(step);
     }
   };
-  const [isModalOpen, setModalOpen] = useState(false);
-  const handleCloseModal = () => {
-    setModalOpen(false);
-  };
 
   return (
-    <div className="guide-stepper-content w-full px-4 flex flex-col justify-between">
+    <div className="guide-stepper-content w-full sm:px-3 lg:px-4 flex flex-col justify-between">
       <div style={{ minHeight: '300px' }}>
         <h2 className="mb-8 pb-4">
           Step {step.order + 1} - {step.name}
@@ -175,6 +190,26 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
             </a>
           </div>
         )}
+        {(showRatingsModal &&  viewGuideHelper.activeStepOrder === 0 && guideRatings && !guideRatings.startRating ) && (
+        <GuideStartRatingModal
+          open={showRatingsModal}
+          onClose={() => skipInitialRating()}
+          skipStartRating={skipInitialRating}
+          setStartRating={setStartRating}
+        />
+      )}
+      {(showRatingsModal &&  isLastStep && isNotFirstStep  && guideRatings && guideRatings.startRating && !guideRatings.submitted  ) && (
+          <GuideEndRatingModal
+          open={showRatingsModal}
+          onClose={() => skipFinalRating()}
+          skipEndRating={skipFinalRating}
+          setEndRating={setFinalRating}
+          setFeedback={setFeedback} 
+          guideSuccess={guideSuccess} 
+          showFeedBackModal = {showFeedBackModal}
+        />
+       
+      )}
         {showIncorrectQuestions && (
           <div className="flex align-center justify-center mt-4">
             {!renderIncorrectQuestions && (
@@ -250,26 +285,11 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
           return null;
         })}
       </div>
-      {showCompleteAllQuestionsInTheGuide && (
-        <div className="mb-2 text-red">
-          <i className="iconfont iconwarning" />
-          <span className="ml-1">Answer all the questions in guide to complete</span>
-        </div>
-      )}
+      {showCompleteAllQuestionsInTheGuide && <ErrorWithAccentBorder error={'Answer all the questions in guide to complete'} />}
       {showQuestionsCompletionWarning && (
         <>
-          {!isEveryQuestionAnswered() && (
-            <div className="mb-2 text-red">
-              <i className="iconfont iconwarning" />
-              <span className="ml-1">Answer all questions to proceed</span>
-            </div>
-          )}
-          {!isDiscordConnected() && (
-            <div className="mb-2 text-red">
-              <i className="iconfont iconwarning" />
-              <span className="ml-1">Connect Discord to proceed</span>
-            </div>
-          )}
+          {!isEveryQuestionAnswered() && <ErrorWithAccentBorder error={'Answer all questions to proceed'} />}
+          {!isDiscordConnected() && <ErrorWithAccentBorder error={'Connect Discord to proceed'} />}
         </>
       )}
       <div className="mt-2 py-2 pt-2">
@@ -287,7 +307,7 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
             primary
             loading={viewGuideHelper.guideSubmitting}
             disabled={viewGuideHelper.guideSubmitting || viewGuideHelper.guideSubmission.isSubmitted}
-            onClick={isLastStep ? navigateToNextStep : () => {}}
+            onClick={navigateToNextStep}
           >
             <span className="sm:block">{$t(isLastStep ? 'guide.complete' : 'guide.next')}</span>
             <span className="ml-2 font-bold">&#8594;</span>
