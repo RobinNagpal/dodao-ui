@@ -1,9 +1,7 @@
-import { GuideFragment, GuideRating,GuideFeedback , Space, useUpsertGuideRatingsMutation } from '@/graphql/generated/generated-types';
+import { GuideFragment, GuideRating, GuideFeedback, Space, useUpsertGuideRatingsMutation } from '@/graphql/generated/generated-types';
 import { UserIdKey } from '@/types/auth/User';
-import { useState , useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { v4 } from 'uuid';
-
-
 
 export type GuideRatingsHelper = {
   skipInitialRating: () => void;
@@ -15,25 +13,23 @@ export type GuideRatingsHelper = {
   setStartRating: (rating: number) => void;
   setFinalRating: (rating: number) => void;
   setFeedback: (feedback: GuideFeedback) => void; // New function to set feedback
-  guideSuccess: boolean|null;
+  guideSuccess: boolean | null;
   showFeedBackModal: boolean;
-  feedbackSubmitted:boolean ; 
-
-  
+  feedbackSubmitted: boolean;
 };
 
 export function useGuideRatings(space: Space, guide: GuideFragment): GuideRatingsHelper {
   const [showRatingsModal, setShowRatingsModal] = useState(false);
   const [guideRatings, setGuideRatings] = useState<GuideRating>();
   const [upsertGuideRatingsMutation] = useUpsertGuideRatingsMutation();
-  
+
   const [showFeedBackModal, setShowFeedbackModal] = useState(false);
-  const [feedbackSubmitted, setFeedbackSubmitted] = useState(false); 
-  
+  const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
+
   useEffect(() => {
     calculateSuccess();
   }, [guideRatings]);
-  
+
   useEffect(() => {
     if (guideRatings) {
       localStorage.setItem(guideRatingsKey, JSON.stringify(guideRatings));
@@ -41,14 +37,14 @@ export function useGuideRatings(space: Space, guide: GuideFragment): GuideRating
   }, [guideRatings]);
 
   const guideRatingsKey = `${space.id}-${guide.id}-guide-ratings`;
-  
+
   const initialize = () => {
     if (space.guideSettings.captureBeforeAndAfterRating) {
       const guideRatingsString = localStorage.getItem(guideRatingsKey);
       if (guideRatingsString) {
         setGuideRatings(JSON.parse(guideRatingsString));
-        
-        setShowRatingsModal(true); 
+
+        setShowRatingsModal(true);
       } else {
         const newGuideRating: GuideRating = {
           guideUuid: guide.uuid,
@@ -72,7 +68,7 @@ export function useGuideRatings(space: Space, guide: GuideFragment): GuideRating
     };
     setGuideRatings(updatedGuideRatings);
     localStorage.setItem(guideRatingsKey, JSON.stringify(updatedGuideRatings));
-    
+
     setShowRatingsModal(false);
   };
 
@@ -92,7 +88,6 @@ export function useGuideRatings(space: Space, guide: GuideFragment): GuideRating
     } else {
       setGuideSuccess(false);
     }
-
   };
 
   const setFinalRating = (rating: number) => {
@@ -108,7 +103,7 @@ export function useGuideRatings(space: Space, guide: GuideFragment): GuideRating
 
   const skipInitialRating = () => {
     localStorage.setItem(guideRatingsKey, JSON.stringify(guideRatings));
-    setGuideRatings(undefined); 
+    setGuideRatings(undefined);
     setShowRatingsModal(false);
   };
 
@@ -118,30 +113,29 @@ export function useGuideRatings(space: Space, guide: GuideFragment): GuideRating
   };
 
   const setFeedback = (feedback: GuideFeedback) => {
-  if(guideSuccess ){
-    const updatedGuideRatings:GuideRating = {
-      ...guideRatings!,
-      positiveFeedback: feedback,
-      negativeFeedback: null,
-      submitted: true,
-    };
-    setGuideRatings(updatedGuideRatings);
-    localStorage.setItem(guideRatingsKey, JSON.stringify(updatedGuideRatings));
-  }else{
-    const updatedGuideRatings = {
-      ...guideRatings!,
-      negativeFeedback: feedback,
-      positiveFeedback: null ,
-      submitted:true , 
-    };
+    if (guideSuccess) {
+      const updatedGuideRatings: GuideRating = {
+        ...guideRatings!,
+        positiveFeedback: feedback,
+        negativeFeedback: null,
+        submitted: true,
+      };
+      setGuideRatings(updatedGuideRatings);
+      localStorage.setItem(guideRatingsKey, JSON.stringify(updatedGuideRatings));
+    } else {
+      const updatedGuideRatings = {
+        ...guideRatings!,
+        negativeFeedback: feedback,
+        positiveFeedback: null,
+        submitted: true,
+      };
 
-    setGuideRatings(updatedGuideRatings);
-    localStorage.setItem(guideRatingsKey, JSON.stringify(updatedGuideRatings));
-    console.log(updatedGuideRatings , '\n'); 
-  }
+      setGuideRatings(updatedGuideRatings);
+      localStorage.setItem(guideRatingsKey, JSON.stringify(updatedGuideRatings));
+      console.log(updatedGuideRatings, '\n');
+    }
     setShowFeedbackModal(false);
     setFeedbackSubmitted(true);
-
   };
 
   const upsertRating = () => {
@@ -166,7 +160,7 @@ export function useGuideRatings(space: Space, guide: GuideFragment): GuideRating
     upsertRating,
     setFeedback,
     guideSuccess,
-    feedbackSubmitted , 
+    feedbackSubmitted,
     showFeedBackModal: showFeedBackModal && !feedbackSubmitted, // Hide feedback modal after submission
   };
 }

@@ -20,7 +20,7 @@ import { isQuestion, isUserDiscordConnect, isUserInput } from '@/types/deprecate
 import { getMarkedRenderer } from '@/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
 import { useSession } from 'next-auth/react';
-import { useCallback, useMemo, useState , useEffect } from 'react';
+import { useCallback, useMemo, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useGuideRatings } from './useGuideRatings';
 import GuideStartRatingModal from '@/components/app/Modal/Guide/GuideStartRatingModal';
@@ -60,13 +60,12 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
     guideSuccess,
     showFeedBackModal,
     setFeedback,
-    feedbackSubmitted , 
+    feedbackSubmitted,
   } = useGuideRatings(space, guide);
 
   useEffect(() => {
     initialize();
   }, []);
-
 
   const [nextButtonClicked, setNextButtonClicked] = useState(false);
 
@@ -190,26 +189,25 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
             </a>
           </div>
         )}
-        {(showRatingsModal &&  viewGuideHelper.activeStepOrder === 0 && guideRatings && !guideRatings.startRating ) && (
-        <GuideStartRatingModal
-          open={showRatingsModal}
-          onClose={() => skipInitialRating()}
-          skipStartRating={skipInitialRating}
-          setStartRating={setStartRating}
-        />
-      )}
-      {(showRatingsModal &&  isLastStep && guideRatings && guideRatings.startRating && !guideRatings.submitted  ) && (
+        {showRatingsModal && viewGuideHelper.activeStepOrder === 0 && guideRatings && !guideRatings.startRating && (
+          <GuideStartRatingModal
+            open={showRatingsModal}
+            onClose={() => skipInitialRating()}
+            skipStartRating={skipInitialRating}
+            setStartRating={setStartRating}
+          />
+        )}
+        {showRatingsModal && isLastStep && guideRatings && guideRatings.startRating && !guideRatings.submitted && (
           <GuideEndRatingModal
-          open={showRatingsModal}
-          onClose={() => skipFinalRating()}
-          skipEndRating={skipFinalRating}
-          setEndRating={setFinalRating}
-          setFeedback={setFeedback} 
-          guideSuccess={guideSuccess} 
-          showFeedBackModal = {showFeedBackModal}
-        />
-       
-      )}
+            open={showRatingsModal}
+            onClose={() => skipFinalRating()}
+            skipEndRating={skipFinalRating}
+            setEndRating={setFinalRating}
+            setFeedback={setFeedback}
+            guideSuccess={guideSuccess}
+            showFeedBackModal={showFeedBackModal}
+          />
+        )}
         {showIncorrectQuestions && (
           <div className="flex align-center justify-center mt-4">
             {!renderIncorrectQuestions && (

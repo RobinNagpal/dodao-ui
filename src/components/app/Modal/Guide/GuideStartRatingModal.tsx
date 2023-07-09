@@ -75,13 +75,7 @@ export default function GuideStartRatingModal({ open, onClose, skipStartRating, 
                     setSelectedRating(number);
                   }}
                 >
-                  <Image
-                    src={`/${label}.png`}
-                    width={50}
-                    height={60}
-                    alt={label}
-                   
-                  />
+                  <Image src={`/${label}.png`} width={50} height={60} alt={label} />
                 </RatingButton>
               ))}
             </div>
