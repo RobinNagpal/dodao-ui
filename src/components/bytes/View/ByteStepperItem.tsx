@@ -1,4 +1,5 @@
 import Button from '@/components/core/buttons/Button';
+import { useLoginModalContext } from '@/contexts/LoginModalContext';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import {
   ByteDetailsFragment,
@@ -55,10 +56,9 @@ interface ByteStepperItemProps {
   step: ByteStepFragment;
   space: SpaceWithIntegrationsFragment;
   viewByteHelper: UseViewByteHelper;
-  setAccountModalOpen: (shouldOpen: boolean) => void;
 }
 
-function ByteStepperItem({ viewByteHelper, step, byte, space, setAccountModalOpen }: ByteStepperItemProps) {
+function ByteStepperItem({ viewByteHelper, step, byte, space }: ByteStepperItemProps) {
   const { activeStepOrder } = viewByteHelper;
   const { $t: t } = useI18();
   const { showNotification } = useNotificationContext();
@@ -78,6 +78,7 @@ function ByteStepperItem({ viewByteHelper, step, byte, space, setAccountModalOpe
 
   const [questionsAnsweredCorrectly, setQuestionsAnsweredCorrectly] = useState(false);
 
+  const { setShowLoginModal } = useLoginModalContext();
   function isQuestionAnswered() {
     return viewByteHelper.isQuestionAnswered(step.uuid);
   }
@@ -119,7 +120,7 @@ function ByteStepperItem({ viewByteHelper, step, byte, space, setAccountModalOpe
         }
 
         if (!session?.username) {
-          setAccountModalOpen(true);
+          setShowLoginModal(true);
           return;
         } else {
           const byteSubmitted = await viewByteHelper.submitByte();

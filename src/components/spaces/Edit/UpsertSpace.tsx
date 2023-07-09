@@ -43,10 +43,6 @@ function SettingsScreen(props: { space: SpaceEditType; editSpaceHelper: UseEditS
     return <UpsertSpaceGuideSettings space={data.space} />;
   }
 
-  if (props.selectedTabId === TabIds.Auth) {
-    return <UpsertSpaceAuthSettings space={data.space} />;
-  }
-
   if (props.selectedTabId === TabIds.Social) {
     return <UpsertSpaceSocialSettings space={data.space} />;
   }

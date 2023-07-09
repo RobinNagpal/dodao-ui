@@ -5,7 +5,7 @@ import React from 'react';
 export interface DetailsHeaderProps {
   header: string;
   subheader: string;
-  editLink: string;
+  editLink?: string;
   className?: string;
 }
 export default function DetailsHeader(props: DetailsHeaderProps) {
@@ -16,11 +16,13 @@ export default function DetailsHeader(props: DetailsHeaderProps) {
         <p className="mt-2 text-sm">{props.subheader}</p>
       </div>
       <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-        <Link href={props.editLink}>
-          <Button variant="contained" primary>
-            Edit
-          </Button>
-        </Link>
+        {props.editLink && (
+          <Link href={props.editLink}>
+            <Button variant="contained" primary>
+              Edit
+            </Button>
+          </Link>
+        )}
       </div>
     </div>
   );

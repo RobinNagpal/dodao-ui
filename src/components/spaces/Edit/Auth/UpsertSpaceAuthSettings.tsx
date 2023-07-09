@@ -1,15 +1,16 @@
 import Button from '@/components/core/buttons/Button';
 import Checkboxes from '@/components/core/checkboxes/Checkboxes';
+import FullScreenModal from '@/components/core/modals/FullScreenModal';
 import ToggleWithIcon from '@/components/core/toggles/ToggleWithIcon';
 import { useEditSpaceAuthSettings } from '@/components/spaces/Edit/Auth/useEditSpaceAuthSettings';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { LoginProviders } from '@/types/deprecated/models/enums';
 import React from 'react';
 
-export default function UpsertSpaceAuthSettings(props: { space: SpaceWithIntegrationsFragment }) {
+export default function UpsertSpaceAuthSettings(props: { space: SpaceWithIntegrationsFragment; open: boolean; onClose: () => void }) {
   const { authSettings, setAuthSettingsField, updateAuthSettings, updating } = useEditSpaceAuthSettings(props.space);
   return (
-    <>
+    <FullScreenModal open={props.open} onClose={props.onClose} title="Auth Settings">
       <div className="space-y-12">
         <div className="border-b pb-12">
           <h2 className="text-base font-semibold leading-7">Edit Space</h2>
@@ -33,6 +34,6 @@ export default function UpsertSpaceAuthSettings(props: { space: SpaceWithIntegra
           Save
         </Button>
       </div>
-    </>
+    </FullScreenModal>
   );
 }
