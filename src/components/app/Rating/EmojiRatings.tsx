@@ -12,6 +12,7 @@ const RatingButton = styled.button`
 `;
 
 export interface EmojiRatingsProps {
+  selectedRating?: number;
   selectRating: (rating: number) => void;
 }
 export default function EmojiRatings(props: EmojiRatingsProps) {
@@ -29,7 +30,9 @@ export default function EmojiRatings(props: EmojiRatingsProps) {
         <RatingButton
           key={number}
           type="button"
-          className={`inline-flex items-center justify-center w-20 h-16 text-3xl rounded-full hover:scale-110 transition-transform duration-200`}
+          className={`inline-flex items-center justify-center w-20 h-16 text-3xl rounded-full hover:scale-110 transition-transform duration-200  ${
+            props.selectedRating === number ? 'selected' : ''
+          }}`}
           onClick={() => props.selectRating(number)}
         >
           {label}

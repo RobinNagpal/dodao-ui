@@ -1,3 +1,26 @@
 mutation UpsertGuideRatings($spaceId: String!, $upsertGuideRatingInput: UpsertGuideRatingInput!){
-  payload: upsertGuideRating(spaceId: $spaceId, upsertGuideRatingInput: $upsertGuideRatingInput)
+  payload: upsertGuideRating(spaceId: $spaceId, upsertGuideRatingInput: $upsertGuideRatingInput) {
+    createdAt
+    endRating
+    guideUuid
+    ipAddress
+    negativeFeedback {
+      content
+      questions
+      ux
+    }
+    positiveFeedback {
+      ux
+      questions
+      content
+    }
+    ratingUuid
+    skipEndRating
+    skipStartRating
+    spaceId
+    startRating
+    updatedAt
+    userId
+    username
+  }
 }

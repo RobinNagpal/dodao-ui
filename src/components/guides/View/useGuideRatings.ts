@@ -39,13 +39,14 @@ export function useGuideRatings(space: Space, guide: GuideFragment, guideSubmiss
     }
   }, [guideSubmission]);
 
-  function createNewRating() {
+  function createNewRating(): GuideRating {
     return {
       guideUuid: guide.uuid,
       ratingUuid: v4(),
       createdAt: new Date().toISOString(),
       spaceId: space.id,
       userId: localStorage.getItem(UserIdKey)!,
+      updatedAt: new Date().toISOString(),
     };
   }
 
@@ -57,9 +58,11 @@ export function useGuideRatings(space: Space, guide: GuideFragment, guideSubmiss
     if (space.guideSettings.captureBeforeAndAfterRating) {
       const guideRatingsString = localStorage.getItem(guideRatingsKey);
       if (guideRatingsString) {
-        setGuideRatings(JSON.parse(guideRatingsString));
-
-        setShowStartRatingsModal(true);
+        const ratings = JSON.parse(guideRatingsString) as GuideRating;
+        setGuideRatings(ratings);
+        if (!ratings.skipStartRating && !ratings.startRating) {
+          setShowStartRatingsModal(true);
+        }
       } else {
         const newGuideRating: GuideRating = createNewRating();
 
@@ -76,8 +79,8 @@ export function useGuideRatings(space: Space, guide: GuideFragment, guideSubmiss
     };
     setGuideRatings(updatedGuideRatings);
     localStorage.setItem(guideRatingsKey, JSON.stringify(updatedGuideRatings));
-
     setShowStartRatingsModal(false);
+    upsertRating();
   };
 
   const setEndRating = (rating: number) => {
@@ -87,6 +90,7 @@ export function useGuideRatings(space: Space, guide: GuideFragment, guideSubmiss
     };
     setGuideRatings(updatedGuideRatings);
     localStorage.setItem(guideRatingsKey, JSON.stringify(updatedGuideRatings));
+    upsertRating();
   };
 
   const skipStartRating = () => {
@@ -121,11 +125,23 @@ export function useGuideRatings(space: Space, guide: GuideFragment, guideSubmiss
   };
 
   const upsertRating = () => {
+    if (!guideRatings) {
+      throw new Error('Guide ratings not set');
+    }
     upsertGuideRatingsMutation({
       variables: {
         spaceId: space.id,
         upsertGuideRatingInput: {
-          ...guideRatings!,
+          endRating: guideRatings.endRating,
+          guideUuid: guideRatings.guideUuid,
+          negativeFeedback: guideRatings.negativeFeedback,
+          positiveFeedback: guideRatings.positiveFeedback,
+          ratingUuid: guideRatings.ratingUuid,
+          skipEndRating: guideRatings.skipEndRating,
+          skipStartRating: guideRatings.skipStartRating,
+          spaceId: guideRatings.spaceId,
+          startRating: guideRatings.startRating,
+          userId: guideRatings.userId,
         },
       },
     });

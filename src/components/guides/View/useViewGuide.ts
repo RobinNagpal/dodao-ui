@@ -282,6 +282,7 @@ export function useViewGuide(space: Space, uuid: string, stepOrder: number): Use
 
         setGuideSubmission({
           ...guideSubmission,
+          isSubmitted: true,
           submissionResult: result,
           galaxyCredentialsUpdated: !!response?.data?.payload?.galaxyCredentialsUpdated,
         });

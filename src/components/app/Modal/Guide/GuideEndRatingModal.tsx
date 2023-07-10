@@ -3,7 +3,6 @@ import Button from '@/components/core/buttons/Button';
 import FullScreenModal from '@/components/core/modals/FullScreenModal';
 import { GuideFeedback } from '@/graphql/generated/generated-types';
 import { ClipboardDocumentListIcon, QuestionMarkCircleIcon, RocketLaunchIcon } from '@heroicons/react/24/outline';
-import Image from 'next/image';
 import { useState } from 'react';
 import styled from 'styled-components';
 
@@ -37,9 +36,6 @@ const ModalContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 2px solid white;
-  padding: 10px;
-  background-color: #0d131a;
 `;
 
 export default function GuideEndRatingModal({
@@ -82,7 +78,6 @@ export default function GuideEndRatingModal({
         <div className="mt-2 text-center sm:mt-1">
           <div className="flex flex-row items-center justify-center ">
             <h1 className="text-2xl font-semibold leading-6 text-gray-200 mr-2">How confident are you after going through the guide !</h1>
-            <Image height={60} width={50} src="/confidence.png" alt="feedbackIcon" />
           </div>
 
           <div className={`mt-4 flex justify-center`}>
@@ -120,13 +115,8 @@ export default function GuideEndRatingModal({
               ))}
             </div>
             <div className="flex flex-row w-[80%] mt-10">
-              <Button
-                className=" w-full flex justify-center items-center "
-                onClick={() => {
-                  skipEndRating;
-                }}
-              >
-                Skip{' '}
+              <Button className=" w-full flex justify-center items-center " onClick={() => {}}>
+                Skip
               </Button>
               <button className="ml-4 w-full text-sm font-medium text-white bg-[#00AD79] rounded-md " onClick={handleSubmitFeedback}>
                 Submit Feedback

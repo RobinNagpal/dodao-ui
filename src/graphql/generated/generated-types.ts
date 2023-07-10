@@ -600,9 +600,9 @@ export interface Guide {
 
 export interface GuideFeedback {
   __typename?: 'GuideFeedback';
-  content: Scalars['Boolean'];
-  questions: Scalars['Boolean'];
-  ux: Scalars['Boolean'];
+  content?: Maybe<Scalars['Boolean']>;
+  questions?: Maybe<Scalars['Boolean']>;
+  ux?: Maybe<Scalars['Boolean']>;
 }
 
 export interface GuideFeedbackInput {
@@ -683,7 +683,9 @@ export interface GuideRating {
   skipStartRating?: Maybe<Scalars['Boolean']>;
   spaceId: Scalars['String'];
   startRating?: Maybe<Scalars['Int']>;
-  userId: Scalars['String'];
+  updatedAt: Scalars['DateTimeISO'];
+  userId?: Maybe<Scalars['String']>;
+  username?: Maybe<Scalars['String']>;
 }
 
 export interface GuideSettings {
@@ -890,7 +892,7 @@ export interface Mutation {
   upsertGitCourseTopicSubmission: GitCourseTopicSubmission;
   upsertGnosisSafeWallets: Space;
   upsertGuide: Guide;
-  upsertGuideRating: Scalars['Boolean'];
+  upsertGuideRating: GuideRating;
   upsertProjectGalaxyAccessToken: Space;
   upsertSimulation: Simulation;
   upsertSpaceAcademyRepository: Space;
@@ -1826,7 +1828,7 @@ export interface UpsertGuideRatingInput {
   skipStartRating?: InputMaybe<Scalars['Boolean']>;
   spaceId: Scalars['String'];
   startRating?: InputMaybe<Scalars['Int']>;
-  userId: Scalars['String'];
+  userId?: InputMaybe<Scalars['String']>;
 }
 
 export interface UpsertSimulationInput {
@@ -2370,7 +2372,7 @@ export type UpsertGuideRatingsMutationVariables = Exact<{
 }>;
 
 
-export type UpsertGuideRatingsMutation = { __typename?: 'Mutation', payload: boolean };
+export type UpsertGuideRatingsMutation = { __typename?: 'Mutation', payload: { __typename?: 'GuideRating', createdAt: any, endRating?: number | null, guideUuid: string, ipAddress?: string | null, ratingUuid: string, skipEndRating?: boolean | null, skipStartRating?: boolean | null, spaceId: string, startRating?: number | null, updatedAt: any, userId?: string | null, username?: string | null, negativeFeedback?: { __typename?: 'GuideFeedback', content?: boolean | null, questions?: boolean | null, ux?: boolean | null } | null, positiveFeedback?: { __typename?: 'GuideFeedback', ux?: boolean | null, questions?: boolean | null, content?: boolean | null } | null } };
 
 export type GuideQuestionFragment = { __typename?: 'GuideQuestion', answerKeys: Array<string>, content: string, order: number, type: string, uuid: string, explanation?: string | null, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> };
 
@@ -5264,7 +5266,30 @@ export const UpsertGuideRatingsDocument = gql`
   payload: upsertGuideRating(
     spaceId: $spaceId
     upsertGuideRatingInput: $upsertGuideRatingInput
-  )
+  ) {
+    createdAt
+    endRating
+    guideUuid
+    ipAddress
+    negativeFeedback {
+      content
+      questions
+      ux
+    }
+    positiveFeedback {
+      ux
+      questions
+      content
+    }
+    ratingUuid
+    skipEndRating
+    skipStartRating
+    spaceId
+    startRating
+    updatedAt
+    userId
+    username
+  }
 }
     `;
 export type UpsertGuideRatingsMutationFn = Apollo.MutationFunction<UpsertGuideRatingsMutation, UpsertGuideRatingsMutationVariables>;
