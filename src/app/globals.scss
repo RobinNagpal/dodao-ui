@@ -3,6 +3,9 @@
 @import 'styles/katex';
 @import 'styles/markdown';
 
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@import "@uiw/react-md-editor/dist/mdeditor.css";
