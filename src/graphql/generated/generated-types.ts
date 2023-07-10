@@ -679,6 +679,8 @@ export interface GuideRating {
   negativeFeedback?: Maybe<GuideFeedback>;
   positiveFeedback?: Maybe<GuideFeedback>;
   ratingUuid: Scalars['String'];
+  skipEndRating?: Maybe<Scalars['Boolean']>;
+  skipStartRating?: Maybe<Scalars['Boolean']>;
   spaceId: Scalars['String'];
   startRating?: Maybe<Scalars['Int']>;
   userId: Scalars['String'];
@@ -1820,6 +1822,8 @@ export interface UpsertGuideRatingInput {
   negativeFeedback?: InputMaybe<GuideFeedbackInput>;
   positiveFeedback?: InputMaybe<GuideFeedbackInput>;
   ratingUuid: Scalars['String'];
+  skipEndRating?: InputMaybe<Scalars['Boolean']>;
+  skipStartRating?: InputMaybe<Scalars['Boolean']>;
   spaceId: Scalars['String'];
   startRating?: InputMaybe<Scalars['Int']>;
   userId: Scalars['String'];

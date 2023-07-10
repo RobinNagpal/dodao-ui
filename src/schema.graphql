@@ -628,6 +628,8 @@ type GuideRating {
   negativeFeedback: GuideFeedback
   positiveFeedback: GuideFeedback
   ratingUuid: String!
+  skipEndRating: Boolean
+  skipStartRating: Boolean
   spaceId: String!
   startRating: Int
   userId: String!
@@ -1236,6 +1238,8 @@ input UpsertGuideRatingInput {
   negativeFeedback: GuideFeedbackInput
   positiveFeedback: GuideFeedbackInput
   ratingUuid: String!
+  skipEndRating: Boolean
+  skipStartRating: Boolean
   spaceId: String!
   startRating: Int
   userId: String!

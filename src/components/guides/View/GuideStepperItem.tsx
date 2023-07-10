@@ -21,27 +21,7 @@ import { getMarkedRenderer } from '@/utils/ui/getMarkedRenderer';
 import flatten from 'lodash/flatten';
 import { marked } from 'marked';
 import { useSession } from 'next-auth/react';
-import { useCallback, useMemo, useState, useEffect } from 'react';
-import styled from 'styled-components';
-import { useGuideRatings } from './useGuideRatings';
-import GuideStartRatingModal from '@/components/app/Modal/Guide/GuideStartRatingModal';
-import GuideEndRatingModal from '@/components/app/Modal/Guide/GuideEndRatingModal';
-
-const CorrectAnswer = styled.div`
-  background-color: green !important;
-  border-color: green !important;
-  &:after {
-    background-color: green !important;
-  }
-`;
-
-const WrongAnswer = styled.div`
-  background-color: red !important;
-  border-color: red !important;
-  &:after {
-    background-color: red;
-  }
-`;
+import { useCallback, useMemo, useState } from 'react';
 
 export interface GuideStepProps {
   space: Space;
@@ -51,24 +31,6 @@ export interface GuideStepProps {
 }
 
 const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, guide }) => {
-  const {
-    initialize,
-    guideRatings,
-    showRatingsModal,
-    setStartRating,
-    setFinalRating,
-    skipInitialRating,
-    skipFinalRating,
-    guideSuccess,
-    showFeedBackModal,
-    setFeedback,
-    feedbackSubmitted,
-  } = useGuideRatings(space, guide);
-
-  useEffect(() => {
-    initialize();
-  }, []);
-
   const [nextButtonClicked, setNextButtonClicked] = useState(false);
 
   const setUserInput = useCallback(
@@ -95,12 +57,8 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
       guideSubmission.submissionResult?.wrongQuestions?.includes(item.uuid)
     ) as GuideQuestionFragment[];
 
-    console.log('questionFragments', questionFragments);
-    console.log('questionFragments', guideSubmission.submissionResult?.wrongQuestions);
     return questionFragments;
   }, [guide, guideSubmission]);
-
-  console.log('wrongQuestions', wrongQuestions);
 
   const renderer = getMarkedRenderer();
 
@@ -141,6 +99,7 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
       guideSubmission.submissionResult?.correctQuestions.length < guideSubmission.submissionResult?.allQuestions.length,
     [guide, guideSubmission]
   );
+
   const { data: session } = useSession();
   const { setShowLoginModal } = useLoginModalContext();
   const { showNotification } = useNotificationContext();
@@ -191,23 +150,6 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
               here
             </a>
           </div>
-        )}
-        <GuideStartRatingModal
-          open={showRatingsModal}
-          onClose={() => skipInitialRating()}
-          skipStartRating={skipInitialRating}
-          setStartRating={setStartRating}
-        />
-        {showRatingsModal && isLastStep && guideRatings && (
-          <GuideEndRatingModal
-            open={showRatingsModal}
-            onClose={() => skipFinalRating()}
-            skipEndRating={skipFinalRating}
-            setEndRating={setFinalRating}
-            setFeedback={setFeedback}
-            guideSuccess={guideSuccess}
-            showFeedBackModal={showFeedBackModal}
-          />
         )}
         {showIncorrectQuestions && (
           <div className="flex align-center justify-center mt-4">

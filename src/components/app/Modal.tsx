@@ -85,6 +85,7 @@ function Modal({ open, shellClass, onClose, children }: ModalProps) {
       modalRef.current.style.opacity = open ? '1' : '0';
     }
   }, [open]);
+
   return (
     <Fade ref={modalRef}>
       {open && (
