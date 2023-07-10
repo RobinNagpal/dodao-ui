@@ -16,11 +16,11 @@ export interface EmojiRatingsProps {
 }
 export default function EmojiRatings(props: EmojiRatingsProps) {
   const ratings = [
-    { number: 1, label: '🙁' },
-    { number: 2, label: '😕' },
+    { number: 1, label: '😔' },
+    { number: 2, label: '🤔' },
     { number: 3, label: '😐' },
     { number: 4, label: '😄' },
-    { number: 5, label: '😊' },
+    { number: 5, label: '🤩' },
   ];
 
   return (

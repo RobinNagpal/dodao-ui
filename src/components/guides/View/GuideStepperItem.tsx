@@ -18,6 +18,7 @@ import {
 import { useI18 } from '@/hooks/useI18';
 import { isQuestion, isUserDiscordConnect, isUserInput } from '@/types/deprecated/helpers/stepItemTypes';
 import { getMarkedRenderer } from '@/utils/ui/getMarkedRenderer';
+import flatten from 'lodash/flatten';
 import { marked } from 'marked';
 import { useSession } from 'next-auth/react';
 import { useCallback, useMemo, useState, useEffect } from 'react';
@@ -25,6 +26,7 @@ import styled from 'styled-components';
 import { useGuideRatings } from './useGuideRatings';
 import GuideStartRatingModal from '@/components/app/Modal/Guide/GuideStartRatingModal';
 import GuideEndRatingModal from '@/components/app/Modal/Guide/GuideEndRatingModal';
+
 const CorrectAnswer = styled.div`
   background-color: green !important;
   border-color: green !important;
@@ -89,15 +91,16 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
   const guideSubmission = viewGuideHelper.guideSubmission;
 
   const wrongQuestions = useMemo(() => {
-    return guide.steps.reduce<GuideQuestionFragment[]>((wrongQuestions: GuideQuestionFragment[], guideStep: GuideStepFragment) => {
-      const wrongOnes: GuideQuestionFragment[] =
-        (step.stepItems
-          .filter((item) => isQuestion(item))
-          .filter((item) => guideSubmission.submissionResult?.wrongQuestions?.includes(item.uuid)) as GuideQuestionFragment[]) || [];
+    const questionFragments = flatten(guide.steps.map((s) => s.stepItems)).filter((item) =>
+      guideSubmission.submissionResult?.wrongQuestions?.includes(item.uuid)
+    ) as GuideQuestionFragment[];
 
-      return [...wrongQuestions, ...wrongOnes];
-    }, new Array<GuideQuestionFragment>());
-  }, [step]);
+    console.log('questionFragments', questionFragments);
+    console.log('questionFragments', guideSubmission.submissionResult?.wrongQuestions);
+    return questionFragments;
+  }, [guide, guideSubmission]);
+
+  console.log('wrongQuestions', wrongQuestions);
 
   const renderer = getMarkedRenderer();
 
@@ -138,7 +141,7 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
       guideSubmission.submissionResult?.correctQuestions.length < guideSubmission.submissionResult?.allQuestions.length,
     [guide, guideSubmission]
   );
-  const { data: sesstion } = useSession();
+  const { data: session } = useSession();
   const { setShowLoginModal } = useLoginModalContext();
   const { showNotification } = useNotificationContext();
   const { $t } = useI18();
@@ -156,7 +159,7 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
           return;
         }
 
-        if (!sesstion?.username) {
+        if (!session?.username && space.authSettings.enableLogin && space.guideSettings.askForLoginToSubmit) {
           setShowLoginModal(true);
           return;
         } else {
@@ -189,15 +192,13 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
             </a>
           </div>
         )}
-        {showRatingsModal && viewGuideHelper.activeStepOrder === 0 && guideRatings && !guideRatings.startRating && (
-          <GuideStartRatingModal
-            open={showRatingsModal}
-            onClose={() => skipInitialRating()}
-            skipStartRating={skipInitialRating}
-            setStartRating={setStartRating}
-          />
-        )}
-        {showRatingsModal && isLastStep && guideRatings && guideRatings.startRating && !guideRatings.submitted && (
+        <GuideStartRatingModal
+          open={showRatingsModal}
+          onClose={() => skipInitialRating()}
+          skipStartRating={skipInitialRating}
+          setStartRating={setStartRating}
+        />
+        {showRatingsModal && isLastStep && guideRatings && (
           <GuideEndRatingModal
             open={showRatingsModal}
             onClose={() => skipFinalRating()}

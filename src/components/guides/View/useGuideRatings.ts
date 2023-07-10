@@ -118,7 +118,7 @@ export function useGuideRatings(space: Space, guide: GuideFragment): GuideRating
         ...guideRatings!,
         positiveFeedback: feedback,
         negativeFeedback: null,
-        submitted: true,
+        // submitted: true,
       };
       setGuideRatings(updatedGuideRatings);
       localStorage.setItem(guideRatingsKey, JSON.stringify(updatedGuideRatings));

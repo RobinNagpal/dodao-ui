@@ -682,7 +682,6 @@ export interface GuideRating {
   spaceId: Scalars['String'];
   startRating?: Maybe<Scalars['Int']>;
   userId: Scalars['String'];
-  submitted?:Scalars['Boolean'] ; 
 }
 
 export interface GuideSettings {
@@ -754,7 +753,7 @@ export interface GuideStepSubmissionInput {
 
 export interface GuideSubmission {
   __typename?: 'GuideSubmission';
-  created: Scalars['String'];
+  createdAt: Scalars['DateTimeISO'];
   createdBy: Scalars['String'];
   galaxyCredentialsUpdated?: Maybe<Scalars['Boolean']>;
   guideId: Scalars['String'];
@@ -2417,7 +2416,7 @@ export type GuideSubmissionsQueryQueryVariables = Exact<{
 }>;
 
 
-export type GuideSubmissionsQueryQuery = { __typename?: 'Query', guideSubmissions: Array<{ __typename?: 'GuideSubmission', id: string, created: string, createdBy: string, guideId: string, guideUuid: string, spaceId: string, uuid: string, result: { __typename?: 'GuideSubmissionResult', correctQuestions: Array<string>, wrongQuestions: Array<string>, allQuestions: Array<string> } }> };
+export type GuideSubmissionsQueryQuery = { __typename?: 'Query', guideSubmissions: Array<{ __typename?: 'GuideSubmission', id: string, createdAt: any, createdBy: string, guideId: string, guideUuid: string, spaceId: string, uuid: string, result: { __typename?: 'GuideSubmissionResult', correctQuestions: Array<string>, wrongQuestions: Array<string>, allQuestions: Array<string> } }> };
 
 export type SubmitGuideMutationVariables = Exact<{
   input: GuideSubmissionInput;
@@ -5399,7 +5398,7 @@ export const GuideSubmissionsQueryDocument = gql`
     query GuideSubmissionsQuery($guideUuid: String!) {
   guideSubmissions(guideUuid: $guideUuid) {
     id
-    created
+    createdAt
     createdBy
     guideId
     guideUuid
