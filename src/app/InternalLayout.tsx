@@ -99,7 +99,7 @@ function ChildLayout({ children, session }: InternalLayoutProps) {
     if (session?.userId) {
       localStorage.setItem(UserIdKey, session?.userId);
     } else {
-      localStorage.setItem(UserIdKey, v4());
+      localStorage.setItem(UserIdKey, 'anonymous');
     }
   }, [session]);
 
