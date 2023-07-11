@@ -1,7 +1,7 @@
 query GuideSubmissionsQuery($guideUuid: String!) {
   guideSubmissions(guideUuid: $guideUuid) {
     id
-    created
+    createdAt
     createdBy
     guideId
     guideUuid

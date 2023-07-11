@@ -600,9 +600,9 @@ export interface Guide {
 
 export interface GuideFeedback {
   __typename?: 'GuideFeedback';
-  content: Scalars['Boolean'];
-  questions: Scalars['Boolean'];
-  ux: Scalars['Boolean'];
+  content?: Maybe<Scalars['Boolean']>;
+  questions?: Maybe<Scalars['Boolean']>;
+  ux?: Maybe<Scalars['Boolean']>;
 }
 
 export interface GuideFeedbackInput {
@@ -679,9 +679,13 @@ export interface GuideRating {
   negativeFeedback?: Maybe<GuideFeedback>;
   positiveFeedback?: Maybe<GuideFeedback>;
   ratingUuid: Scalars['String'];
+  skipEndRating?: Maybe<Scalars['Boolean']>;
+  skipStartRating?: Maybe<Scalars['Boolean']>;
   spaceId: Scalars['String'];
   startRating?: Maybe<Scalars['Int']>;
-  userId: Scalars['String'];
+  updatedAt: Scalars['DateTimeISO'];
+  userId?: Maybe<Scalars['String']>;
+  username?: Maybe<Scalars['String']>;
 }
 
 export interface GuideSettings {
@@ -753,7 +757,7 @@ export interface GuideStepSubmissionInput {
 
 export interface GuideSubmission {
   __typename?: 'GuideSubmission';
-  created: Scalars['String'];
+  createdAt: Scalars['DateTimeISO'];
   createdBy: Scalars['String'];
   galaxyCredentialsUpdated?: Maybe<Scalars['Boolean']>;
   guideId: Scalars['String'];
@@ -888,7 +892,7 @@ export interface Mutation {
   upsertGitCourseTopicSubmission: GitCourseTopicSubmission;
   upsertGnosisSafeWallets: Space;
   upsertGuide: Guide;
-  upsertGuideRating: Scalars['Boolean'];
+  upsertGuideRating: GuideRating;
   upsertProjectGalaxyAccessToken: Space;
   upsertSimulation: Simulation;
   upsertSpaceAcademyRepository: Space;
@@ -1820,9 +1824,11 @@ export interface UpsertGuideRatingInput {
   negativeFeedback?: InputMaybe<GuideFeedbackInput>;
   positiveFeedback?: InputMaybe<GuideFeedbackInput>;
   ratingUuid: Scalars['String'];
+  skipEndRating?: InputMaybe<Scalars['Boolean']>;
+  skipStartRating?: InputMaybe<Scalars['Boolean']>;
   spaceId: Scalars['String'];
   startRating?: InputMaybe<Scalars['Int']>;
-  userId: Scalars['String'];
+  userId?: InputMaybe<Scalars['String']>;
 }
 
 export interface UpsertSimulationInput {
@@ -2360,6 +2366,14 @@ export type UpsertGnosisSafeWalletsMutationVariables = Exact<{
 
 export type UpsertGnosisSafeWalletsMutation = { __typename?: 'Mutation', payload: { __typename?: 'Space', id: string } };
 
+export type UpsertGuideRatingsMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+  upsertGuideRatingInput: UpsertGuideRatingInput;
+}>;
+
+
+export type UpsertGuideRatingsMutation = { __typename?: 'Mutation', payload: { __typename?: 'GuideRating', createdAt: any, endRating?: number | null, guideUuid: string, ipAddress?: string | null, ratingUuid: string, skipEndRating?: boolean | null, skipStartRating?: boolean | null, spaceId: string, startRating?: number | null, updatedAt: any, userId?: string | null, username?: string | null, negativeFeedback?: { __typename?: 'GuideFeedback', content?: boolean | null, questions?: boolean | null, ux?: boolean | null } | null, positiveFeedback?: { __typename?: 'GuideFeedback', ux?: boolean | null, questions?: boolean | null, content?: boolean | null } | null } };
+
 export type GuideQuestionFragment = { __typename?: 'GuideQuestion', answerKeys: Array<string>, content: string, order: number, type: string, uuid: string, explanation?: string | null, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> };
 
 export type GuideUserInputFragment = { __typename?: 'GuideUserInput', label: string, order: number, required: boolean, type: string, uuid: string };
@@ -2408,7 +2422,7 @@ export type GuideSubmissionsQueryQueryVariables = Exact<{
 }>;
 
 
-export type GuideSubmissionsQueryQuery = { __typename?: 'Query', guideSubmissions: Array<{ __typename?: 'GuideSubmission', id: string, created: string, createdBy: string, guideId: string, guideUuid: string, spaceId: string, uuid: string, result: { __typename?: 'GuideSubmissionResult', correctQuestions: Array<string>, wrongQuestions: Array<string>, allQuestions: Array<string> } }> };
+export type GuideSubmissionsQueryQuery = { __typename?: 'Query', guideSubmissions: Array<{ __typename?: 'GuideSubmission', id: string, createdAt: any, createdBy: string, guideId: string, guideUuid: string, spaceId: string, uuid: string, result: { __typename?: 'GuideSubmissionResult', correctQuestions: Array<string>, wrongQuestions: Array<string>, allQuestions: Array<string> } }> };
 
 export type SubmitGuideMutationVariables = Exact<{
   input: GuideSubmissionInput;
@@ -5247,6 +5261,64 @@ export function useUpsertGnosisSafeWalletsMutation(baseOptions?: Apollo.Mutation
 export type UpsertGnosisSafeWalletsMutationHookResult = ReturnType<typeof useUpsertGnosisSafeWalletsMutation>;
 export type UpsertGnosisSafeWalletsMutationResult = Apollo.MutationResult<UpsertGnosisSafeWalletsMutation>;
 export type UpsertGnosisSafeWalletsMutationOptions = Apollo.BaseMutationOptions<UpsertGnosisSafeWalletsMutation, UpsertGnosisSafeWalletsMutationVariables>;
+export const UpsertGuideRatingsDocument = gql`
+    mutation UpsertGuideRatings($spaceId: String!, $upsertGuideRatingInput: UpsertGuideRatingInput!) {
+  payload: upsertGuideRating(
+    spaceId: $spaceId
+    upsertGuideRatingInput: $upsertGuideRatingInput
+  ) {
+    createdAt
+    endRating
+    guideUuid
+    ipAddress
+    negativeFeedback {
+      content
+      questions
+      ux
+    }
+    positiveFeedback {
+      ux
+      questions
+      content
+    }
+    ratingUuid
+    skipEndRating
+    skipStartRating
+    spaceId
+    startRating
+    updatedAt
+    userId
+    username
+  }
+}
+    `;
+export type UpsertGuideRatingsMutationFn = Apollo.MutationFunction<UpsertGuideRatingsMutation, UpsertGuideRatingsMutationVariables>;
+
+/**
+ * __useUpsertGuideRatingsMutation__
+ *
+ * To run a mutation, you first call `useUpsertGuideRatingsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertGuideRatingsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertGuideRatingsMutation, { data, loading, error }] = useUpsertGuideRatingsMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      upsertGuideRatingInput: // value for 'upsertGuideRatingInput'
+ *   },
+ * });
+ */
+export function useUpsertGuideRatingsMutation(baseOptions?: Apollo.MutationHookOptions<UpsertGuideRatingsMutation, UpsertGuideRatingsMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpsertGuideRatingsMutation, UpsertGuideRatingsMutationVariables>(UpsertGuideRatingsDocument, options);
+      }
+export type UpsertGuideRatingsMutationHookResult = ReturnType<typeof useUpsertGuideRatingsMutation>;
+export type UpsertGuideRatingsMutationResult = Apollo.MutationResult<UpsertGuideRatingsMutation>;
+export type UpsertGuideRatingsMutationOptions = Apollo.BaseMutationOptions<UpsertGuideRatingsMutation, UpsertGuideRatingsMutationVariables>;
 export const UpsertGuideDocument = gql`
     mutation UpsertGuide($spaceId: String!, $guideInput: GuideInput!) {
   payload: upsertGuide(spaceId: $spaceId, guideInput: $guideInput) {
@@ -5355,7 +5427,7 @@ export const GuideSubmissionsQueryDocument = gql`
     query GuideSubmissionsQuery($guideUuid: String!) {
   guideSubmissions(guideUuid: $guideUuid) {
     id
-    created
+    createdAt
     createdBy
     guideId
     guideUuid

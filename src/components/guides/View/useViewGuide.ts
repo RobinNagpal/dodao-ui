@@ -204,7 +204,7 @@ export function useViewGuide(space: Space, uuid: string, stepOrder: number): Use
       space: space.id,
       uuid: uuidv4(),
       guideUuid: uuid,
-      from: session?.username || '',
+      from: session?.username || 'anonymous',
       steps: Object.keys(responses).map((stepUuid): GuideStepSubmissionInput => {
         const stepResponse: undefined | StepResponse = responses[stepUuid];
 
@@ -282,6 +282,7 @@ export function useViewGuide(space: Space, uuid: string, stepOrder: number): Use
 
         setGuideSubmission({
           ...guideSubmission,
+          isSubmitted: true,
           submissionResult: result,
           galaxyCredentialsUpdated: !!response?.data?.payload?.galaxyCredentialsUpdated,
         });

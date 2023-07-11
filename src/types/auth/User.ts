@@ -9,3 +9,5 @@ export interface User {
   username: string;
   authProvider: string;
 }
+
+export const UserIdKey = 'dodao_user_id';

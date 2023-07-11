@@ -552,9 +552,9 @@ type Guide {
 }
 
 type GuideFeedback {
-  content: Boolean!
-  questions: Boolean!
-  ux: Boolean!
+  content: Boolean
+  questions: Boolean
+  ux: Boolean
 }
 
 input GuideFeedbackInput {
@@ -628,9 +628,13 @@ type GuideRating {
   negativeFeedback: GuideFeedback
   positiveFeedback: GuideFeedback
   ratingUuid: String!
+  skipEndRating: Boolean
+  skipStartRating: Boolean
   spaceId: String!
   startRating: Int
-  userId: String!
+  updatedAt: DateTimeISO!
+  userId: String
+  username: String
 }
 
 type GuideSettings {
@@ -697,7 +701,7 @@ input GuideStepSubmissionInput {
 }
 
 type GuideSubmission {
-  created: String!
+  createdAt: DateTimeISO!
   createdBy: String!
   galaxyCredentialsUpdated: Boolean
   guideId: String!
@@ -838,7 +842,7 @@ type Mutation {
   upsertGitCourseTopicSubmission(gitCourseTopicSubmission: GitCourseTopicSubmissionInput!, spaceId: String!): GitCourseTopicSubmission!
   upsertGnosisSafeWallets(spaceId: String!, wallets: [GnosisSafeWalletInput!]!): Space!
   upsertGuide(guideInput: GuideInput!, spaceId: String!): Guide!
-  upsertGuideRating(spaceId: String!, upsertGuideRatingInput: UpsertGuideRatingInput!): Boolean!
+  upsertGuideRating(spaceId: String!, upsertGuideRatingInput: UpsertGuideRatingInput!): GuideRating!
   upsertProjectGalaxyAccessToken(accessToken: String!, spaceId: String!): Space!
   upsertSimulation(input: UpsertSimulationInput!, spaceId: String!): Simulation!
   upsertSpaceAcademyRepository(academyRepository: String!, spaceId: String!): Space!
@@ -1236,9 +1240,11 @@ input UpsertGuideRatingInput {
   negativeFeedback: GuideFeedbackInput
   positiveFeedback: GuideFeedbackInput
   ratingUuid: String!
+  skipEndRating: Boolean
+  skipStartRating: Boolean
   spaceId: String!
   startRating: Int
-  userId: String!
+  userId: String
 }
 
 input UpsertSimulationInput {
