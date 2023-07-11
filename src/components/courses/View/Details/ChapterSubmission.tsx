@@ -1,13 +1,13 @@
 import Button from '@/components/core/buttons/Button';
-import { CourseSubmissionHelper, TempTopicSubmission, TopicItemStatus } from '@/components/courses/View/useCourseSubmission';
+import { CourseSubmissionHelper, TopicItemStatus } from '@/components/courses/View/useCourseSubmission';
 import { CourseHelper } from '@/components/courses/View/useViewCourse';
 import { useLoginModalContext } from '@/contexts/LoginModalContext';
-import { CourseDetailsFragment, CourseTopicFragment, Space } from '@/graphql/generated/generated-types';
+import { CourseDetailsFragment, Space } from '@/graphql/generated/generated-types';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
-import React, { useState, useEffect, FunctionComponent } from 'react';
-import EvaluationReview from './EvaluationReview';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import styled from 'styled-components';
+import EvaluationReview from './EvaluationReview';
 
 // Styled Components
 const Right = styled.div`
@@ -67,7 +67,7 @@ const TopicComponent: FunctionComponent<TopicComponentProps> = (props) => {
       return;
     }
     try {
-      await submissionHelper.submitTopic(topicKey);
+      await submissionHelper.submitCourseTopic(topicKey);
     } catch (e) {
       console.log(e);
       notify(['red', e]);

@@ -12,7 +12,6 @@ import { useCourseSubmission } from '@/components/courses/View/useCourseSubmissi
 import useViewCourse from '@/components/courses/View/useViewCourse';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { Session } from '@/types/auth/Session';
-import { isAdmin } from '@/utils/auth/isAdmin';
 import { isSuperAdmin } from '@/utils/auth/superAdmins';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
@@ -64,13 +63,6 @@ const CourseView = ({ params, space }: { params: { courseInfo: string[] }; space
 
   const itemKey = Array.isArray(courseInfo) && courseInfo.length > 3 ? courseInfo[3] : undefined;
 
-  console.log('course view params', {
-    courseKey,
-    topicKey,
-    itemType,
-    itemKey,
-  });
-
   const [modalCourseNewItemOpen, setModalCourseNewItemOpen] = useState(false);
 
   const courseHelper = useViewCourse(space, courseKey);
@@ -78,13 +70,9 @@ const CourseView = ({ params, space }: { params: { courseInfo: string[] }; space
   useEffect(() => {
     if (session) {
       if (!courseHelper.course) return;
-      submissionHelper.loadCourseSubmission(courseHelper.course);
+      submissionHelper.initialize(courseHelper.course);
     }
   }, [courseHelper.course, session]);
-
-  const isUserAnAdmin = session && isAdmin(session as Session, space);
-
-  const isCourseAdmin = session && isAdmin(session as Session, space);
 
   const isUserASuperAdmin = session && isSuperAdmin(session as Session);
 
@@ -117,7 +105,7 @@ const CourseView = ({ params, space }: { params: { courseInfo: string[] }; space
       {course ? (
         <Block slim className="w-full">
           <div className="px-4 py-3 bg-skin-header-bg lg:rounded-2xl pb-3 flex justify-between w-full">
-            <Link href={`/courses/view/${courseKey}`}>
+            <Link href={`/courses/view/${courseKey}`} className="text-xl">
               <h3>{course.title}</h3>
             </Link>
             {isUserASuperAdmin && (

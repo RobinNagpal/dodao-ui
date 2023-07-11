@@ -413,7 +413,7 @@ type GitCourseReading {
 }
 
 type GitCourseReadingsSubmission {
-  questions: [GitCourseQuestionsSubmission!]!
+  questions: [GitCourseQuestionsSubmission!]
   status: String!
   uuid: String!
 }
