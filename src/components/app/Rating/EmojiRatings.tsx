@@ -5,10 +5,9 @@ const RatingButton = styled.button`
     background-color: var(--primary-color);
   }
 
-  
   &.selected {
     background-color: var(--primary-color);
-
+  }
 `;
 
 export interface EmojiRatingsProps {
@@ -32,7 +31,7 @@ export default function EmojiRatings(props: EmojiRatingsProps) {
           type="button"
           className={`inline-flex items-center justify-center w-20 h-16 text-3xl rounded-full hover:scale-110 transition-transform duration-200  ${
             props.selectedRating === number ? 'selected' : ''
-          }}`}
+          }`}
           onClick={() => props.selectRating(number)}
         >
           {label}

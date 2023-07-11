@@ -45,14 +45,14 @@ const Guide: React.FC<GuideProps> = ({ viewGuideHelper, guide, space }) => {
         <GuideStepperItem space={space} viewGuideHelper={viewGuideHelper} guide={guide} step={activeStep} />
       </div>
       <GuideStartRatingModal open={showStartRatingsModal} onClose={() => skipStartRating()} skipStartRating={skipStartRating} setStartRating={setStartRating} />
+
       <GuideEndRatingModal
         open={showEndRatingsModal}
         onClose={() => skipEndRating()}
+        guideRatings={guideRatings}
         skipEndRating={skipEndRating}
         setEndRating={setEndRating}
-        setFeedback={setGuideFeedback}
-        guideSuccess={false}
-        showFeedBackModal={false}
+        setGuideFeedback={setGuideFeedback}
       />
     </div>
   );

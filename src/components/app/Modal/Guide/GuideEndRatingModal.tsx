@@ -1,7 +1,6 @@
 import EmojiRatings from '@/components/app/Rating/EmojiRatings';
-import Button from '@/components/core/buttons/Button';
 import FullScreenModal from '@/components/core/modals/FullScreenModal';
-import { GuideFeedback } from '@/graphql/generated/generated-types';
+import { GuideFeedback, GuideRating } from '@/graphql/generated/generated-types';
 import { ClipboardDocumentListIcon, QuestionMarkCircleIcon, RocketLaunchIcon } from '@heroicons/react/24/outline';
 import { useState } from 'react';
 import styled from 'styled-components';
@@ -11,9 +10,8 @@ export interface GuideEndRatingModalProps {
   onClose: () => void;
   skipEndRating: () => void;
   setEndRating: (rating: number) => void;
-  setFeedback: (feedback: GuideFeedback) => void;
-  guideSuccess: boolean | null;
-  showFeedBackModal: boolean;
+  setGuideFeedback: (feedback: GuideFeedback) => void;
+  guideRatings?: GuideRating;
 }
 
 export interface GuideFeedbackOptions {
@@ -22,14 +20,10 @@ export interface GuideFeedbackOptions {
   image: any;
 }
 
-export interface GuideFeedbackState {
-  [key: string]: boolean;
-}
-
 const feedbackOptions: GuideFeedbackOptions[] = [
-  { name: 'content', label: 'Usefulness of Guides', image: ClipboardDocumentListIcon },
+  { name: 'content', label: 'Content', image: ClipboardDocumentListIcon },
   { name: 'questions', label: 'Questions', image: QuestionMarkCircleIcon },
-  { name: 'UX', label: 'User Experience', image: RocketLaunchIcon },
+  { name: 'ux', label: 'User Experience', image: RocketLaunchIcon },
 ];
 
 const ModalContent = styled.div`
@@ -38,92 +32,80 @@ const ModalContent = styled.div`
   align-items: center;
 `;
 
-export default function GuideEndRatingModal({
-  open,
-  onClose,
-  skipEndRating,
-  setEndRating,
-  setFeedback,
-  guideSuccess,
-  showFeedBackModal,
-}: GuideEndRatingModalProps) {
-  const handleSubmitFeedback = () => {
-    const selectedFeedback: GuideFeedback = {
-      content: feedbackState['content'],
-      questions: feedbackState['questions'],
-      ux: feedbackState['UX'],
-    };
+const FeedbackOptionDiv = styled.div`
+  :hover {
+    border-radius: 0.5rem;
+    border-color: var(--bg-color);
+    background-color: var(--primary-color);
+  }
+`;
 
-    setFeedback(selectedFeedback);
-    onClose();
-  };
-
-  const [feedbackState, setFeedbackState] = useState<GuideFeedbackState>({
-    content: false,
-    questions: false,
-    ux: false,
-  });
-
+export default function GuideEndRatingModal({ open, onClose, skipEndRating, setEndRating, setGuideFeedback }: GuideEndRatingModalProps) {
   const handleFeedbackSelection = (optionName: string) => {
-    setFeedbackState((prevState) => ({
-      ...prevState,
-      [optionName]: !prevState[optionName],
-    }));
+    const feedback: GuideFeedback = {};
+    if (optionName === 'content') {
+      feedback.content = true;
+    } else if (optionName === 'questions') {
+      feedback.questions = true;
+    } else if (optionName === 'ux') {
+      feedback.ux = true;
+    }
+    setGuideFeedback(feedback);
   };
-  const [selectedRating, setSelectedRating] = useState<number | null>(null);
+
+  const [selectedRating, setSelectedRating] = useState<number>();
 
   return (
     <FullScreenModal open={open} onClose={onClose} title={''}>
       <ModalContent>
         <div className="mt-2 text-center sm:mt-1">
           <div className="flex flex-row items-center justify-center ">
-            <h1 className="text-2xl font-semibold leading-6 text-gray-200 mr-2">How confident are you after going through the guide !</h1>
+            <h1 className="text-xl font-semibold leading-6 text-gray-200 mr-2">Share your feedback about the Guide</h1>
           </div>
 
           <div className={`mt-4 flex justify-center`}>
-            <EmojiRatings selectRating={(rating) => setSelectedRating(rating)} />
+            <EmojiRatings
+              selectedRating={selectedRating}
+              selectRating={(rating) => {
+                setEndRating(rating);
+                setSelectedRating(rating);
+              }}
+            />
           </div>
-          {!showFeedBackModal && (
-            <div className="mt-10">
-              <a className="text-md text-[#00AD79] cursor-pointer underline" onClick={() => skipEndRating()}>
-                Skip
-              </a>
-            </div>
-          )}
         </div>
 
-        {showFeedBackModal && (
+        {selectedRating && (
           <div className="flex flex-col  items-center mt-8">
-            {guideSuccess ? (
+            {selectedRating > 2 ? (
               <div className="flex flex-row items-center justify-center ">
-                <h2 className="text-2xl mr-2  font-semibold leading-6 text-gray-200 ">What did you like the most?</h2>
+                <h2 className="text-xl mr-2  font-semibold leading-6 ">What did you like the most?</h2>
               </div>
             ) : (
               <div className="flex flex-row items-center justify-center ">
-                <h2 className="text-2xl  mr-2 font-semibold leading-6 text-gray-200 ">What do you want us to improve upon?</h2>
+                <h2 className="text-xl  mr-2 font-semibold leading-6">What do you want us to improve upon?</h2>
               </div>
             )}
 
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-8">
               {feedbackOptions.map((option) => (
-                <div key={option.name} onClick={() => handleFeedbackSelection(option.name)} className={`flex flex-col items-center cursor-pointer`}>
-                  <option.image
-                    className={`mb-4 hover:border-2 h-20 hover:border-[#00AD79] p-4 ${feedbackState[option.name] ? 'scale-125 border border-green-300 ' : ''}`}
-                  />
-                  <h2 className="text-lg mt-2">{option.label}</h2>
-                </div>
+                <FeedbackOptionDiv
+                  key={option.name}
+                  onClick={() => handleFeedbackSelection(option.name)}
+                  className={`flex flex-col items-center cursor-pointer p-2`}
+                >
+                  <option.image height={40} width={40} />
+                  <h2 className="text-md">{option.label}</h2>
+                </FeedbackOptionDiv>
               ))}
-            </div>
-            <div className="flex flex-row w-[80%] mt-10">
-              <Button className=" w-full flex justify-center items-center " onClick={() => {}}>
-                Skip
-              </Button>
-              <button className="ml-4 w-full text-sm font-medium text-white bg-[#00AD79] rounded-md " onClick={handleSubmitFeedback}>
-                Submit Feedback
-              </button>
             </div>
           </div>
         )}
+
+        <div className="mt-4">
+          <a className="text-md cursor-pointer underline" onClick={() => skipEndRating()}>
+            Skip
+          </a>
+        </div>
       </ModalContent>
     </FullScreenModal>
   );
