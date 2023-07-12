@@ -1,5 +1,6 @@
 import IconButton from '@/components/core/buttons/IconButton';
 import Question from '@/components/app/Common/Question';
+import ErrorWithAccentBorder from '@/components/core/errors/ErrorWithAccentBorder';
 import { IconTypes } from '@/components/core/icons/IconTypes';
 import Button from '@/components/core/buttons/Button';
 import EditCourseQuestion from '@/components/courses/Edit/Items/EditCourseQuestion';
@@ -57,7 +58,6 @@ const CorrectAnswerContainer = styled.div<{ isTopicSubmitted: boolean; isCorrect
 export default function QuestionDetails(props: QuestionDetailsProps) {
   const { data: session } = useSession();
   const { setShowLoginModal } = useLoginModalContext();
-
   const { course, isCourseAdmin, space, topicKey, courseHelper, submissionHelper } = props;
   const questionIndex = parseInt(props.questionIndex, 10);
   // previous setup code here...
@@ -65,18 +65,15 @@ export default function QuestionDetails(props: QuestionDetailsProps) {
 
   const isTopicSubmitted = props.submissionHelper.isTopicSubmissionInSubmittedStatus(props.topicKey);
   const currentQuestion = courseHelper.getTopicQuestionByIndex(topicKey, questionIndex);
+
+  const questionResponse = props.submissionHelper.getTopicSubmission(props.topicKey)?.questions?.[currentQuestion.uuid]?.answers;
+
   const topic = courseHelper.getTopic(topicKey);
 
-  const [questionResponse, setQuestionResponse] = useState<string[]>([]);
-  useEffect(() => {
-    setQuestionResponse(
-      (currentQuestion && props.submissionHelper.courseSubmission?.topicSubmissionsMap?.[props.topicKey]?.questions?.[currentQuestion.uuid]?.answers) || []
-    );
-  }, [currentQuestion, props.submissionHelper.courseSubmission, props.topicKey]);
-
   const [showQuestionsCompletionWarning, setShowQuestionsCompletionWarning] = useState(false);
+
   useEffect(() => {
-    setShowQuestionsCompletionWarning(nextButtonClicked && !questionResponse.length);
+    setShowQuestionsCompletionWarning(nextButtonClicked && !questionResponse?.length);
   }, [nextButtonClicked, questionResponse]);
 
   const router = useRouter();
@@ -104,9 +101,11 @@ export default function QuestionDetails(props: QuestionDetailsProps) {
       return;
     }
     setNextButtonClicked(true);
-    if (!questionResponse.length) {
+
+    if (!questionResponse?.length) {
       return;
     }
+
     await props.submissionHelper.saveAnswer(props.topicKey, currentQuestion?.uuid, {
       status: questionResponse.length > 0 ? QuestionStatus.Completed : QuestionStatus.Uncompleted,
       answers: questionResponse,
@@ -213,7 +212,7 @@ export default function QuestionDetails(props: QuestionDetailsProps) {
               <Question
                 onSelectAnswer={selectAnswer}
                 answerClass={isTopicSubmitted && isCorrectAnswer ? 'correct-answer' : ''}
-                questionResponse={questionResponse}
+                questionResponse={questionResponse || []}
                 question={currentQuestion}
                 readonly={isTopicSubmitted}
                 showHint={!isTopicSubmitted && !!props.course.topicConfig?.showHints}
@@ -248,12 +247,7 @@ export default function QuestionDetails(props: QuestionDetailsProps) {
         </div>
 
         <div>
-          {showQuestionsCompletionWarning && (
-            <div className="mb-2 text-red-500 flex items-center">
-              <i className="iconfont iconwarning"></i>
-              <span className="ml-1">{`Answer question or select "Skip" to proceed`}</span>
-            </div>
-          )}
+          {showQuestionsCompletionWarning && <ErrorWithAccentBorder error={`Answer question or select "Skip" to proceed`} className="mb-4" />}
           <div className="flex flex-between mt-4 flex-1 items-end p-2">
             {questionIndex > 0 && (
               <Link href={`/courses/view/${course.key}/${topic.key}/questions/${questionIndex - 1}`}>

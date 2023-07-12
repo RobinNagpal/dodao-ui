@@ -240,7 +240,7 @@ function getTreeData(course: CourseDetailsFragment, submissionHelper: CourseSubm
           className={`flex items-center ${itemKey === 'submission' ? 'underline' : ''}`}
           href={`/courses/view/${course.key}/${chapter.key}/submission`}
         >
-          {topicSubmission?.status === TopicStatus.Completed && <Checkmark />}
+          {topicSubmission?.status === TopicStatus.Submitted && <Checkmark />}
           <div>Chapter Submission</div>
         </Link>
       ),
@@ -255,7 +255,7 @@ function getTreeData(course: CourseDetailsFragment, submissionHelper: CourseSubm
           className={`flex items-center ${isActive ? 'underline' : ''}`}
           href={`/courses/view/${course.key}/${chapter.key}`}
         >
-          {topicSubmission?.status === TopicStatus.Completed && <Checkmark />}
+          {topicSubmission?.status === TopicStatus.Submitted && <Checkmark />}
           <div>{chapter.title}</div>
         </Link>
       ),
