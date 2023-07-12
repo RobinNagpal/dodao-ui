@@ -43,9 +43,9 @@ interface QuestionProps {
   correctAnswer?: string[];
   onSelectAnswer: (uuid: string, selectedAnswers: string[]) => void;
 }
+const renderer = getMarkedRenderer();
 
 function Question({ answerClass = '', question, questionResponse, readonly, showHint = false, onSelectAnswer }: QuestionProps) {
-  const renderer = getMarkedRenderer();
   const questionContent = marked.parse(question.content, { renderer });
 
   const [displayHint, setDisplayHint] = useState<boolean>(false);
@@ -74,17 +74,14 @@ function Question({ answerClass = '', question, questionResponse, readonly, show
 
   return (
     <div className="bg-skin-block-bg">
-      {
-        // Render the question only if hideQuestion is false
-        <div className="flex justify-between items-center content-center">
-          <div className="markdown-body mb-2 text-l" dangerouslySetInnerHTML={{ __html: questionContent }}></div>
-          {showHint && question.hint && question.hint.toLowerCase() !== 'nohint' && (
-            <HintIconWrapper onClick={() => setDisplayHint(!displayHint)}>
-              <HintIcon height="30px" />
-            </HintIconWrapper>
-          )}
-        </div>
-      }
+      <div className="flex justify-between items-center content-center">
+        <div className="markdown-body mb-2 text-l" dangerouslySetInnerHTML={{ __html: questionContent }}></div>
+        {showHint && question.hint && question.hint.toLowerCase() !== 'nohint' && (
+          <HintIconWrapper onClick={() => setDisplayHint(!displayHint)}>
+            <HintIcon height="30px" />
+          </HintIconWrapper>
+        )}
+      </div>
       {questionWithFormattedChoices.choices.map((choice) => {
         const isSelected = questionResponse.includes(choice.key);
 

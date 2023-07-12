@@ -12,7 +12,9 @@ import { CourseHelper } from '@/components/courses/View/useViewCourse';
 import { useLoginModalContext } from '@/contexts/LoginModalContext';
 import { CourseDetailsFragment, DeleteTopicQuestionInput, MoveTopicQuestionInput, Space, UpdateTopicQuestionInput } from '@/graphql/generated/generated-types';
 import { MoveCourseItemDirection } from '@/types/deprecated/models/enums';
+import { getMarkedRenderer } from '@/utils/ui/getMarkedRenderer';
 import isEqual from 'lodash/isEqual';
+import { marked } from 'marked';
 import { useSession } from 'next-auth/react';
 import sortBy from 'lodash/sortBy';
 import Link from 'next/link';
@@ -54,7 +56,7 @@ const CorrectAnswerContainer = styled.div<{ isTopicSubmitted: boolean; isCorrect
     margin-top: 1rem; // 16px
   `}
 `;
-
+const renderer = getMarkedRenderer();
 export default function QuestionDetails(props: QuestionDetailsProps) {
   const { data: session } = useSession();
   const { setShowLoginModal } = useLoginModalContext();
@@ -171,9 +173,11 @@ export default function QuestionDetails(props: QuestionDetailsProps) {
     );
   }
 
+  const questionExplanation = currentQuestion.explanation && marked.parse(currentQuestion.explanation, { renderer });
+
   if (!editMode && currentQuestion) {
     return (
-      <div className="h-full flex flex-col justify-between">
+      <div className="h-full flex flex-col justify-between text-base">
         <div>
           <EvaluationReview
             space={space}
@@ -220,7 +224,7 @@ export default function QuestionDetails(props: QuestionDetailsProps) {
               {isTopicSubmitted && isCorrectAnswer && props.course.topicConfig?.showExplanations && (
                 <div className="p-2 mt-2">
                   <h4 className="text-lg mb-2">Explanation</h4>
-                  <p>{currentQuestion.explanation}</p>
+                  <p dangerouslySetInnerHTML={{ __html: questionExplanation }} className="mt-2" />
                 </div>
               )}
             </QuestionContainer>
@@ -236,9 +240,9 @@ export default function QuestionDetails(props: QuestionDetailsProps) {
                   readonly={true}
                 />
                 {isTopicSubmitted && !isCorrectAnswer && props.course.topicConfig?.showExplanations && (
-                  <div>
+                  <div className="text-sm mt-2">
                     <h3>Explanation</h3>
-                    <p>{currentQuestion.explanation}</p>
+                    <p dangerouslySetInnerHTML={{ __html: questionExplanation }} className="mt-2" />
                   </div>
                 )}
               </CorrectAnswerContainer>
