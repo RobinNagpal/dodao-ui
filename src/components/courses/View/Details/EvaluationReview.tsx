@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
 import { CourseQuestionSubmission, CourseSubmissionHelper, QuestionStatus } from '@/components/courses/View/useCourseSubmission';
 import { CourseHelper } from '@/components/courses/View/useViewCourse';
 import { CourseDetailsFragment, Space, TopicCorrectAnswersFragment } from '@/graphql/generated/generated-types';
-import Link from 'next/link';
 import isEqual from 'lodash/isEqual';
 import sortBy from 'lodash/sortBy';
+import Link from 'next/link';
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
 
 interface IProps {
   course: CourseDetailsFragment;
@@ -55,13 +55,12 @@ const QuestionNavItem = styled.div<{ isTopicSubmitted: boolean; questionStatus: 
   }
 `;
 
-const QuestionNumber = styled.div`
-  background-color: #d32f2f;
+const QuestionNumber = styled.div<{ status?: QuestionStatus }>`
+  background-color: ${(props) => (props.status === QuestionStatus.Completed ? 'green' : props.status === QuestionStatus.Skipped ? 'yellow' : 'red')};
   border-radius: 8%;
   color: #fff;
   text-align: center;
   padding: 0.5rem;
-  font-weight: regular;
   position: absolute;
   top: -30px;
   left: 0;
@@ -89,35 +88,34 @@ function EvaluationComponent({ course, courseHelper, topicKey, submissionHelper 
         const sortedResponse = sortBy(questionRes.answers, (answer) => answer.toLowerCase());
         const sortedCorrectAnswers = sortBy(correctAnswers.answerKeys, (answer) => answer.toLowerCase());
         if (isEqual(sortedResponse, sortedCorrectAnswers)) {
-          return 'completed';
+          return QuestionStatus.Completed;
         }
       }
-      return 'error';
+      return QuestionStatus.Uncompleted;
     } else {
       const questionRes: CourseQuestionSubmission | undefined = questionsSubmissions?.[question.uuid];
       if (questionRes?.status === QuestionStatus.Completed && questionRes?.answers?.length > 0) {
-        return 'completed';
+        return QuestionStatus.Completed;
       } else if (questionRes?.status === QuestionStatus.Skipped) {
-        return 'skipped';
+        return QuestionStatus.Skipped;
       }
-      return 'error';
+      return QuestionStatus.Uncompleted;
     }
   };
   return (
     <div className="flex flex-wrap">
-      {topic?.questions?.map((question: any, index: number) => (
-        <Link className="mx-2 my-2" href={`/courses/view/${course.key}/${topicKey}/questions/${index}`} key={index}>
-          <div className="text-center">{index + 1}</div>
-          <QuestionNavItem
-            isTopicSubmitted={isTopicSubmitted}
-            questionStatus={getQuestionStatus(question)}
-            className={`question-nav-item ${getQuestionStatus(question)}`}
-          >
-            <div className="indicator">{getQuestionStatus(question) === 'completed' && isTopicSubmitted && <TickMark className="tick-mark" />}</div>
-            <QuestionNumber className="mt-7" />
-          </QuestionNavItem>
-        </Link>
-      ))}
+      {topic?.questions?.map((question, index) => {
+        const questionStatus = getQuestionStatus(question) as QuestionStatus;
+        return (
+          <Link className="mx-2 my-2" href={`/courses/view/${course.key}/${topicKey}/questions/${index}`} key={index}>
+            <div className="text-center">{index + 1}</div>
+            <QuestionNavItem isTopicSubmitted={isTopicSubmitted} questionStatus={questionStatus} className={`question-nav-item ${questionStatus}`}>
+              <div className="indicator">{questionStatus === QuestionStatus.Completed && isTopicSubmitted && <TickMark className="tick-mark" />}</div>
+              <QuestionNumber className="mt-7" status={questionStatus} />
+            </QuestionNavItem>
+          </Link>
+        );
+      })}
     </div>
   );
 }

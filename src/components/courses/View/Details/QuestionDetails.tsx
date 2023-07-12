@@ -184,7 +184,7 @@ export default function QuestionDetails(props: QuestionDetailsProps) {
             submissionHelper={submissionHelper}
             isCourseAdmin={isCourseAdmin}
           />
-          <div className="h-full pt-4 border-t border-skin-border">
+          <div className="h-full p-4 border-t border-skin-border">
             <div className="flex justify-between w-full">
               <h1 className="mb-4">Question {questionIndex + 1}</h1>
               {isCourseAdmin && (
@@ -208,7 +208,7 @@ export default function QuestionDetails(props: QuestionDetailsProps) {
                 </div>
               )}
             </div>
-            <QuestionContainer isTopicSubmitted={isTopicSubmitted} isCorrectAnswer={isCorrectAnswer}>
+            <QuestionContainer isTopicSubmitted={isTopicSubmitted} isCorrectAnswer={isCorrectAnswer} className="px-2">
               {isTopicSubmitted && !isCorrectAnswer && <h3>Your Selection</h3>}
               <Question
                 onSelectAnswer={selectAnswer}

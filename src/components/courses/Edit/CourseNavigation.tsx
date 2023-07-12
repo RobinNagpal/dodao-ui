@@ -167,12 +167,28 @@ function getTreeData(course: CourseDetailsFragment, submissionHelper: CourseSubm
     const topicSubmission = submissionHelper.getTopicSubmission(chapter.key);
 
     const children: TreeNodeType[] = [];
+
+    const allReadingsComplete =
+      Object.keys(topicSubmission?.readings || {}).length === chapter.readings.length &&
+      Object.values(topicSubmission?.readings || {}).every((r) => r.status === TopicItemStatus.Completed);
+
+    const allExplanationsComplete =
+      Object.keys(topicSubmission?.explanations || {}).length === chapter.explanations.length &&
+      Object.values(topicSubmission?.explanations || {}).every((r) => r.status === TopicItemStatus.Completed);
+
+    const allSummariesComplete =
+      Object.keys(topicSubmission?.summaries || {}).length === chapter.summaries.length &&
+      Object.values(topicSubmission?.summaries || {}).every((r) => r.status === TopicItemStatus.Completed);
+
+    const allQuestionsComplete =
+      Object.keys(topicSubmission?.questions || {}).length === chapter.questions.length &&
+      Object.values(topicSubmission?.questions || {}).every((r) => r.status === QuestionStatus.Completed);
+
     if (readings.length) {
       children.push({
         component: (
           <ClickableDiv key={chapter.key + '_readings'} className="flex items-center">
-            {Object.keys(topicSubmission?.readings || {}).length === chapter.readings.length &&
-              Object.values(topicSubmission?.readings || {}).every((r) => r.status === TopicItemStatus.Completed) && <Checkmark />}
+            {allReadingsComplete && <Checkmark />}
             <div>Videos</div>
           </ClickableDiv>
         ),
@@ -183,8 +199,7 @@ function getTreeData(course: CourseDetailsFragment, submissionHelper: CourseSubm
       children.push({
         component: (
           <div key={chapter.key + '_explanations'} className="flex items-center">
-            {Object.keys(topicSubmission?.explanations || {}).length === chapter.explanations.length &&
-              Object.values(topicSubmission?.explanations || {}).every((r) => r.status === TopicItemStatus.Completed) && <Checkmark />}
+            {allExplanationsComplete && <Checkmark />}
             <div>Explanations</div>
           </div>
         ),
@@ -195,8 +210,7 @@ function getTreeData(course: CourseDetailsFragment, submissionHelper: CourseSubm
       children.push({
         component: (
           <div key={chapter.key + '_summaries'} className="flex items-center">
-            {Object.keys(topicSubmission?.summaries || {}).length === chapter.summaries.length &&
-              Object.values(topicSubmission?.summaries || {}).every((r) => r.status === TopicItemStatus.Completed) && <Checkmark />}
+            {allSummariesComplete && <Checkmark />}
             <div>Summaries</div>
           </div>
         ),
@@ -211,8 +225,7 @@ function getTreeData(course: CourseDetailsFragment, submissionHelper: CourseSubm
             className={`flex items-center ${itemKey === '0' ? 'underline' : ''}`}
             href={`/courses/view/${course.key}/${chapter.key}/questions/0`}
           >
-            {Object.keys(topicSubmission?.questions || {}).length === chapter.questions.length &&
-              Object.values(topicSubmission?.questions || {}).every((r) => r.status === QuestionStatus.Completed) && <Checkmark />}
+            {allQuestionsComplete && <Checkmark />}
             <div>Questions</div>
           </Link>
         ),
@@ -242,6 +255,7 @@ function getTreeData(course: CourseDetailsFragment, submissionHelper: CourseSubm
           className={`flex items-center ${isActive ? 'underline' : ''}`}
           href={`/courses/view/${course.key}/${chapter.key}`}
         >
+          {topicSubmission?.status === TopicStatus.Completed && <Checkmark />}
           <div>{chapter.title}</div>
         </Link>
       ),
