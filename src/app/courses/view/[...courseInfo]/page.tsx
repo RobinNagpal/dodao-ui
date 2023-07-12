@@ -57,7 +57,8 @@ const CourseView = ({ params, space }: { params: { courseInfo: string[] }; space
   // urls - /courses/view/${course.key}/${topic.key}/[readings/summaries/questions/submission]/[summaryKey/readingKey/questionKey]
   const courseKey = Array.isArray(courseInfo) ? courseInfo[0] : (courseInfo as string);
 
-  const topicKey = Array.isArray(courseInfo) && courseInfo.length > 1 ? courseInfo[1] : undefined;
+  const isCourseSubmissionScreen = Array.isArray(courseInfo) && courseInfo.length > 1 && courseInfo[1] === 'submission';
+  const topicKey = Array.isArray(courseInfo) && courseInfo.length > 1 && !isCourseSubmissionScreen ? courseInfo[1] : undefined;
 
   const itemType = Array.isArray(courseInfo) && courseInfo.length > 2 ? courseInfo[2] : undefined;
 
@@ -118,6 +119,7 @@ const CourseView = ({ params, space }: { params: { courseInfo: string[] }; space
             <StyledNavWrapper className="my-4 relative overflow-scroll">
               <CourseNavigation
                 course={course}
+                isCourseSubmissionScreen={isCourseSubmissionScreen}
                 space={space}
                 showAddModal={showAddModal}
                 courseHelper={courseHelper}
@@ -136,6 +138,7 @@ const CourseView = ({ params, space }: { params: { courseInfo: string[] }; space
                 isCourseAdmin={true}
                 courseHelper={courseHelper}
                 submissionHelper={submissionHelper}
+                isCourseSubmissionScreen={isCourseSubmissionScreen}
                 topicKey={topicKey}
                 itemType={itemType as ItemTypes}
                 itemKey={itemKey}

@@ -1,5 +1,6 @@
 import ChapterSubmission from '@/components/courses/View/Details/ChapterSubmission';
 import CourseDetails from '@/components/courses/View/Details/CourseDetails';
+import CourseSubmission from '@/components/courses/View/Details/CourseSubmission';
 import ExplanationDetails from '@/components/courses/View/Details/ExplanationDetails';
 import QuestionDetails from '@/components/courses/View/Details/QuestionDetails';
 import SummaryDetails from '@/components/courses/View/Details/SummaryDetails';
@@ -16,13 +17,17 @@ interface CourseDetailsRightSectionProps {
   isCourseAdmin: boolean;
   courseHelper: CourseHelper;
   submissionHelper: CourseSubmissionHelper;
-
+  isCourseSubmissionScreen: boolean;
   topicKey?: string;
   itemType?: ItemTypes;
   itemKey?: string;
 }
 
 export default function CourseDetailsRightSection(props: CourseDetailsRightSectionProps) {
+  if (props.isCourseSubmissionScreen) {
+    return <CourseSubmission course={props.course} submissionHelper={props.submissionHelper} />;
+  }
+
   if (props.itemType === 'readings' && props.topicKey && props.itemKey) {
     return (
       <VideoDetails

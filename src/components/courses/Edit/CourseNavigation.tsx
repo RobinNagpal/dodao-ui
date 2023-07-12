@@ -24,6 +24,7 @@ interface CourseNavigationProps {
   showAddModal: () => void;
   courseHelper: CourseHelper;
   submissionHelper: CourseSubmissionHelper;
+  isCourseSubmissionScreen: boolean;
   topicKey?: string;
   itemType?: ItemTypes;
   itemKey?: string;
@@ -159,8 +160,8 @@ function getSummaries(
   });
 }
 
-function getTreeData(course: CourseDetailsFragment, submissionHelper: CourseSubmissionHelper, itemKey: string) {
-  return course.topics.map((chapter, i) => {
+function getTreeData(course: CourseDetailsFragment, submissionHelper: CourseSubmissionHelper, itemKey: string, isCourseSubmissionScreen: boolean) {
+  const treeNodes: TreeNodeType[] = course.topics.map((chapter, i) => {
     const readings: TreeNodeType[] = getReadings(course.key, submissionHelper, chapter, chapter.readings, itemKey);
     const explanations: TreeNodeType[] = getExplanations(course.key, submissionHelper, chapter, chapter.explanations, itemKey);
     const summaries: TreeNodeType[] = getSummaries(course.key, submissionHelper, chapter, chapter.summaries, itemKey);
@@ -262,9 +263,30 @@ function getTreeData(course: CourseDetailsFragment, submissionHelper: CourseSubm
       children: children,
     };
   });
+  treeNodes.push({
+    component: (
+      <Link
+        key={course.key + '_course_submission'}
+        href={`/courses/view/${course.key}/submission`}
+        className={`flex items-center ${isCourseSubmissionScreen ? 'underline' : ''}`}
+      >
+        <div>Course Submission</div>
+      </Link>
+    ),
+    children: [],
+  });
+  return treeNodes;
 }
 
-const CourseComponent: React.FC<CourseNavigationProps> = ({ course, showAddModal, topicKey, itemKey, itemType, submissionHelper }) => {
+const CourseComponent: React.FC<CourseNavigationProps> = ({
+  course,
+  showAddModal,
+  topicKey,
+  itemKey,
+  itemType,
+  submissionHelper,
+  isCourseSubmissionScreen,
+}) => {
   const isCourseAdmin = true;
   const [openNodes, setOpenNodes] = useState<{ [key: string]: string }>({});
 
@@ -286,7 +308,7 @@ const CourseComponent: React.FC<CourseNavigationProps> = ({ course, showAddModal
     }
   }, [topicKey, itemKey, itemType]);
 
-  const treeData: TreeNodeType[] = getTreeData(course, submissionHelper, itemKey || '0');
+  const treeData: TreeNodeType[] = getTreeData(course, submissionHelper, itemKey || '0', isCourseSubmissionScreen);
 
   return (
     <Container className="p-4 bg-skin-header-bg rounded-l-lg border-skin-border h-full w-full text-sm">

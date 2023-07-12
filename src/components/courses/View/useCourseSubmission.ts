@@ -154,7 +154,7 @@ function transformCourseSubmissionResponse(courseSubmissionResponse: CourseSubmi
               questions: {},
               readings: {},
               summaries: {},
-              status: TopicStatus.InProgress,
+              status: TopicStatus.UnAttempted,
             };
 
         return [topicSubmission.topicKey, topicSubmission];
