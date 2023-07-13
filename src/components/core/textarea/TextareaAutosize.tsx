@@ -91,7 +91,7 @@ export default function TextareaAutosize({
   const slugLable = slugify(label);
 
   return (
-    <div className={'w-full ' + className || ''}>
+    <div className={'w-full mt-2 ' + className || ''}>
       <label htmlFor={id || slugLable || uuid} className="block text-sm font-medium leading-6">
         {label}
       </label>

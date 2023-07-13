@@ -38,8 +38,6 @@ export default function BasicCourseConfigurations({ space, courseKey }: BasicCou
     setShowUpsertRawCourseModal(true);
   }
 
-  function gitCourseIntegrations() {}
-
   async function refreshCourse() {
     await refreshGitCourseMutation({
       variables: {
@@ -52,13 +50,11 @@ export default function BasicCourseConfigurations({ space, courseKey }: BasicCou
 
   const selectFromThreedotDropdown = (e: string) => {
     if (e === 'editRawCourseInfo') editRawCourseInfo();
-    if (e === 'gitCourseIntegrations') gitCourseIntegrations();
     if (e === 'refreshCourse') refreshCourse();
   };
 
   const threeDotItems = [
     { label: 'Edit Raw Course Info', key: 'editRawCourseInfo' },
-    { label: 'Integrations', key: 'gitCourseIntegrations' },
     { label: 'Refresh', key: 'refreshCourse' },
   ];
 

@@ -1,3 +1,4 @@
+import { useNotificationContext } from '@/contexts/NotificationContext';
 import {
   AddTopicExplanationInput,
   AddTopicInput,
@@ -104,6 +105,7 @@ const useViewCourse = (space: Space, courseKey: string): CourseHelper => {
 
   const { refetch: getCourse, data, loading } = useGitCourseQueryQuery({ variables: { spaceId: space.id, courseKey: courseKey } });
 
+  const { showNotification } = useNotificationContext();
   const [updateCourseBasicInfoMutation] = useUpdateCourseBasicInfoMutation();
   const [updateTopicBasicInfoMutation] = useUpdateTopicBasicInfoMutation();
   const [addTopicMutation] = useAddTopicMutation();
@@ -135,9 +137,10 @@ const useViewCourse = (space: Space, courseKey: string): CourseHelper => {
     const updatedCourse = result.data?.payload;
     if (updatedCourse) {
       setCourse(updatedCourse);
-
+      showNotification({ message: 'Updated', type: 'success' });
       return true;
     } else {
+      showNotification({ message: 'Failed to update', type: 'error' });
       return false;
     }
   };

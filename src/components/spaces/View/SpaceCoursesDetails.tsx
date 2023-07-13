@@ -29,7 +29,6 @@ export default function SpaceCourseDetails(props: SpaceAuthDetailsProps) {
       (course): TableRow => ({
         id: course.courseKey,
         columns: [course.courseKey, course.courseRepoUrl, course.weight.toString()],
-
         item: course,
       })
     );

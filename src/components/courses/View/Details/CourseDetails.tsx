@@ -4,6 +4,7 @@ import SidebarButton from '@/components/core/buttons/SidebarButton';
 import EditIcon from '@/components/core/icons/EditIcon';
 import Button from '@/components/core/buttons/Button';
 import FullPageLoader from '@/components/core/loaders/FullPageLoading';
+import EditCourse from '@/components/courses/Edit/EditCourse';
 import { CourseSubmissionHelper } from '@/components/courses/View/useCourseSubmission';
 import { CourseHelper } from '@/components/courses/View/useViewCourse';
 import { CourseBasicInfoInput, CourseDetailsFragment, Space } from '@/graphql/generated/generated-types';
@@ -30,10 +31,12 @@ const CourseDetails = ({ course, space, isCourseAdmin, courseHelper, submissionH
   const cancelEditMode = () => setEditMode(false);
   const showEditMode = () => setEditMode(true);
 
-  const saveUpdates = (updates: CourseBasicInfoInput) => {};
+  const saveUpdates = (updates: CourseBasicInfoInput) => {
+    courseHelper.updateCourseBasicInfo(updates);
+  };
 
   if (editMode) {
-    // return <EditCourse course={course} space={space} updateCourse={saveUpdates} cancel={cancelEditMode} />;
+    return <EditCourse course={course} space={space} updateCourse={saveUpdates} cancel={cancelEditMode} />;
   }
 
   return (
