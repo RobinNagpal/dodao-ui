@@ -2,20 +2,17 @@
 
 import withSpace from '@/app/withSpace';
 import Block from '@/components/app/Block';
-import EllipsisDropdown from '@/components/core/dropdowns/EllipsisDropdown';
 import RowLoading from '@/components/core/loaders/RowLoading';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import CourseNavigation from '@/components/courses/Edit/CourseNavigation';
 import ModalCourseNewItem from '@/components/courses/Edit/ModalCourseNewItem';
+import BasicCourseConfigurations from '@/components/courses/View/BasicCourseConfigurations';
 import CourseDetailsRightSection, { ItemTypes } from '@/components/courses/View/CourseDetailsRightSection';
 import { useCourseSubmission } from '@/components/courses/View/useCourseSubmission';
 import useViewCourse from '@/components/courses/View/useViewCourse';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
-import { Session } from '@/types/auth/Session';
-import { isSuperAdmin } from '@/utils/auth/superAdmins';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
@@ -50,7 +47,6 @@ const StyledRightContent = styled.div`
 `;
 
 const CourseView = ({ params, space }: { params: { courseInfo: string[] }; space: SpaceWithIntegrationsFragment }) => {
-  const router = useRouter();
   const { data: session } = useSession();
   const { courseInfo } = params;
 
@@ -68,6 +64,7 @@ const CourseView = ({ params, space }: { params: { courseInfo: string[] }; space
 
   const courseHelper = useViewCourse(space, courseKey);
   const submissionHelper = useCourseSubmission(space, courseKey);
+
   useEffect(() => {
     if (session) {
       if (!courseHelper.course) return;
@@ -75,31 +72,11 @@ const CourseView = ({ params, space }: { params: { courseInfo: string[] }; space
     }
   }, [courseHelper.course, session]);
 
-  const isUserASuperAdmin = session && isSuperAdmin(session as Session);
-
-  function editCourseRepo() {}
-
-  function gitCourseIntegrations() {}
-
-  function refreshCourse() {}
-
-  const selectFromThreedotDropdown = (e: string) => {
-    if (e === 'editCourseRepo') editCourseRepo();
-    if (e === 'gitCourseIntegrations') gitCourseIntegrations();
-    if (e === 'refreshCourse') refreshCourse();
-  };
-
-  const threeDotItems = [
-    { label: 'Edit Course Repo', key: 'refreshCourse' },
-    { label: 'Integrations', key: 'gitCourseIntegrations' },
-    { label: 'Refresh', key: 'refreshCourse' },
-  ];
+  const { course, loading } = courseHelper;
 
   const showAddModal = () => {
     setModalCourseNewItemOpen(true);
   };
-
-  const { course, loading } = courseHelper;
 
   return (
     <PageWrapper>
@@ -109,11 +86,7 @@ const CourseView = ({ params, space }: { params: { courseInfo: string[] }; space
             <Link href={`/courses/view/${courseKey}`} className="text-xl">
               <h3>{course.title}</h3>
             </Link>
-            {isUserASuperAdmin && (
-              <div className="pull-right float-right mr-2 topnav-domain-navigation-three-dots">
-                <EllipsisDropdown items={threeDotItems} onSelect={selectFromThreedotDropdown} />
-              </div>
-            )}
+            <BasicCourseConfigurations space={space} courseKey={courseKey} />
           </div>
           <div className="flex flex-col md:flex-row">
             <StyledNavWrapper className="my-4 relative overflow-scroll">

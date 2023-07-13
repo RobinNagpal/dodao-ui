@@ -1,8 +1,9 @@
-import AddRawCourseModal from '@/components/app/Modal/Course/AddRawCourseModal';
+import UpsertRawCourseModal from '@/components/app/Modal/Course/UpsertRawCourseModal';
 import DetailsField from '@/components/core/details/DetailsField';
 import DetailsHeader from '@/components/core/details/DetailsHeader';
 import DetailsSection from '@/components/core/details/DetailsSection';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
+import { Table, TableRow } from '@/components/core/table/Table';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import { RawGitCourse, Space, useRawGitCoursesQuery, useUpsertGitCourseMutation } from '@/graphql/generated/generated-types';
 import { PublishStatus } from '@/types/deprecated/models/enums';
@@ -14,10 +15,6 @@ export interface SpaceAuthDetailsProps {
   className?: string;
 }
 
-function getCourseDetailsFields(courses: RawGitCourse[]): Array<{ label: string; value: string }> {
-  return courses.map((course) => ({ label: course.courseKey, value: course.courseRepoUrl }));
-}
-
 export default function SpaceCourseDetails(props: SpaceAuthDetailsProps) {
   const [showAddRawCourseModal, setShowAddRawCourseModal] = useState(false);
   const threeDotItems = [{ label: 'Add New', key: 'add' }];
@@ -26,6 +23,21 @@ export default function SpaceCourseDetails(props: SpaceAuthDetailsProps) {
     setShowAddRawCourseModal(true);
   };
 
+  function getCourseDetailsFields(courses: RawGitCourse[]): Array<{ label: string; value: string }> {
+    return courses.map((course) => ({ label: course.courseKey, value: course.courseRepoUrl }));
+  }
+
+  function getCourseTableRows(courses?: RawGitCourse[]): TableRow[] {
+    return (
+      courses?.map(
+        (course): TableRow => ({
+          id: course.courseKey,
+          columns: [course.courseKey, course.courseRepoUrl, course.weight.toString()],
+          item: course,
+        })
+      ) || []
+    );
+  }
   const router = useRouter();
   const { showNotification } = useNotificationContext();
 
@@ -61,18 +73,15 @@ export default function SpaceCourseDetails(props: SpaceAuthDetailsProps) {
 
   return (
     <>
-      <DetailsSection className={props.className}>
-        <div className="flex w-full">
-          <DetailsHeader header={'Courses'} className="grow-1 w-full" />
-          <PrivateEllipsisDropdown items={threeDotItems} onSelect={selectFromThreedotDropdown} className="ml-4 pt-4 grow-0 w-16" />
-        </div>
-        {(coursesResponse?.payload ? getCourseDetailsFields(coursesResponse?.payload) : []).map((field) => (
-          <DetailsField key={field.label} label={field.label} value={field.value} />
-        ))}
-      </DetailsSection>
-      <AddRawCourseModal
+      <Table
+        heading={'Courses'}
+        data={getCourseTableRows(coursesResponse?.payload)}
+        columnsHeadings={['Key', 'Repo URL', 'Weight']}
+        columnsWidthPercents={[20, 60, 20]}
+      />
+      <UpsertRawCourseModal
         open={showAddRawCourseModal}
-        onAddRawCourse={(repoUrl, publishStatus, weight) => onAddRawCourse(repoUrl, publishStatus, weight)}
+        onUpsertRawCourse={(repoUrl, publishStatus, weight) => onAddRawCourse(repoUrl, publishStatus, weight)}
         onClose={() => setShowAddRawCourseModal(false)}
       />
     </>
