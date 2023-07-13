@@ -5,6 +5,7 @@ import { useNotificationContext } from '@/contexts/NotificationContext';
 import { RawGitCourse, Space, useRawGitCoursesQuery, useUpsertGitCourseMutation } from '@/graphql/generated/generated-types';
 import { PublishStatus } from '@/types/deprecated/models/enums';
 import React, { useMemo, useState } from 'react';
+import soryBy from 'lodash/sortBy';
 
 export interface SpaceAuthDetailsProps {
   space: Space;
@@ -23,15 +24,14 @@ export default function SpaceCourseDetails(props: SpaceAuthDetailsProps) {
   };
 
   function getCourseTableRows(courses?: RawGitCourse[]): TableRow[] {
-    return (
-      courses?.map(
-        (course): TableRow => ({
-          id: course.courseKey,
-          columns: [course.courseKey, course.courseRepoUrl, course.weight.toString()],
+    const sortedCourses = soryBy((courses || []) as RawGitCourse[], (course) => -course.weight);
+    return sortedCourses.map(
+      (course): TableRow => ({
+        id: course.courseKey,
+        columns: [course.courseKey, course.courseRepoUrl, course.weight.toString()],
 
-          item: course,
-        })
-      ) || []
+        item: course,
+      })
     );
   }
 
