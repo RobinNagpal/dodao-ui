@@ -19,9 +19,8 @@ export default function UpsertRawCourseModal({ open, onUpsertRawCourse, onClose,
   const [publishStatus, setPublishStatus] = useState<PublishStatus>((rawGitCourse?.publishStatus as PublishStatus) || PublishStatus.Live);
 
   return (
-    <FullScreenModal open={open} onClose={onClose} title={'Add Raw Course'}>
+    <FullScreenModal open={open} onClose={onClose} title={'Upsert Course'}>
       <div className="text-left">
-        <h3 className=" p-4 text-center font-bold text-2xl">Add Raw Course</h3>
         <div className="m-4 space-y-2">
           <Input label={'Course Repo URL'} onUpdate={(repoUrl) => setRepoUrl(repoUrl?.toString() || '')} modelValue={repoUrl} />
           <Input label="Priority" number modelValue={weight} onUpdate={(e) => (typeof e === 'number' ? setWeight(e) : setWeight(0))} />
@@ -31,6 +30,7 @@ export default function UpsertRawCourseModal({ open, onUpsertRawCourse, onClose,
             items={publishStatusesSelect}
             setSelectedItemId={(value) => setPublishStatus(value as PublishStatus)}
           />
+
           <Button onClick={() => onUpsertRawCourse(repoUrl, publishStatus, weight)} variant="contained" primary>
             {rawGitCourse ? 'Update' : 'Add'}
           </Button>

@@ -52,13 +52,13 @@ export default function FullScreenModal({ open, title, children, onClose, showCl
                     <div className="flex justify-end">
                       <button
                         type="button"
-                        className="inline-flex rounded-md hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        className="inline-flex rounded-md hover:text-gray-500"
                         onClick={() => {
                           onClose();
                         }}
                       >
                         <span className="sr-only">Close</span>
-                        <XMarkIcon className="h-8 w-8" aria-hidden="true" />
+                        <XMarkIcon className="h-8 w-8" />
                       </button>
                     </div>
                   )}

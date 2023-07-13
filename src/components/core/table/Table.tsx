@@ -1,10 +1,10 @@
 import Button from '@/components/core/buttons/Button';
 import EllipsisDropdown, { EllipsisDropdownItem } from '@/components/core/dropdowns/EllipsisDropdown';
-import React from 'react';
+import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 
 export interface TableRow {
-  columns: string[];
+  columns: (string | ReactNode)[];
   id: string;
   item: any;
 }
@@ -15,7 +15,7 @@ export interface TableActions {
 }
 
 export interface TableProps {
-  heading: string;
+  heading?: string;
   infoText?: string;
   data: TableRow[];
   columnsHeadings: string[];
@@ -49,7 +49,7 @@ const TableCell = styled.td`
 
 export function Table(props: TableProps) {
   return (
-    <div className="px-4 sm:px-6 lg:px-8 mt-2">
+    <div className="mt-2">
       <div className="sm:flex sm:items-center justify-between">
         {props.heading && (
           <div className="sm:flex-auto">
