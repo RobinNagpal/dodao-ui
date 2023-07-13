@@ -345,3 +345,9 @@ query CoursesQuery($spaceId: String!) {
   }
 }
 
+mutation DeleteAndPullCourseRepo($spaceId: String!, $courseKey: String!) {
+  deleteAndPullCourseRepo(spaceId: $spaceId, courseKey: $courseKey) {
+    ...Course
+  }
+}
+

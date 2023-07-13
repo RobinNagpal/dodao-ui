@@ -797,6 +797,7 @@ type Mutation {
   createSignedUrl(input: CreateSignedUrlInput!, spaceId: String!): String!
   createSpace(spaceInput: UpsertSpaceInput!): Space!
   createSummaryOfContent(input: String!): OpenAITextResponse!
+  deleteAndPullCourseRepo(courseKey: String!, spaceId: String!): GitCourse!
   deleteTopic(spaceId: String!, topicInfo: DeleteTopicInput!): GitCourse!
   deleteTopicExplanation(explanationInfo: DeleteTopicExplanationInput!, spaceId: String!): GitCourse!
   deleteTopicQuestion(questionInfo: DeleteTopicQuestionInput!, spaceId: String!): GitCourse!

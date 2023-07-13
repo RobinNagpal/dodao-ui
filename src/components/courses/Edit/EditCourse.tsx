@@ -16,6 +16,7 @@ export interface EditCourseProps {
   course: CourseFragment;
   updateCourse: (courseInfo: CourseBasicInfoInput) => void;
   cancel: () => void;
+  updating: boolean;
 }
 
 export default function EditCourse(props: EditCourseProps) {
@@ -127,7 +128,14 @@ export default function EditCourse(props: EditCourseProps) {
         <Button className="btn btn-secondary mr-2" onClick={props.cancel}>
           Cancel
         </Button>
-        <Button className="btn btn-primary mr-2" onClick={() => props.updateCourse(courseBasicInfo)} variant="contained" primary>
+        <Button
+          className="btn btn-primary mr-2"
+          onClick={() => props.updateCourse(courseBasicInfo)}
+          variant="contained"
+          primary
+          loading={props.updating}
+          disabled={props.updating}
+        >
           Update
         </Button>
       </div>

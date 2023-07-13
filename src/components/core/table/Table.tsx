@@ -47,6 +47,11 @@ const TableCell = styled.td`
   color: var(--text-color);
 `;
 
+const TableRow = styled.tr`
+  &:nth-child(odd) {
+    background: linear-gradient(0deg, rgba(127, 127, 127, 0.2), rgba(127, 127, 127, 0.2)), var(--bg-color);
+  }
+`;
 export function Table(props: TableProps) {
   return (
     <div className="mt-2">
@@ -85,7 +90,7 @@ export function Table(props: TableProps) {
                 </thead>
                 <tbody className="divide-y divide-gray-200">
                   {props.data.map((row, index) => (
-                    <tr key={index}>
+                    <TableRow key={index}>
                       {row.columns.map((cell, index) => {
                         return index === 0 && props.firstColumnBold ? (
                           <FirstColumnCell
@@ -108,10 +113,11 @@ export function Table(props: TableProps) {
                             onSelect={(key) => {
                               props.actions?.onSelect(key, row.item);
                             }}
+                            className="pr-4"
                           />
                         </td>
                       )}
-                    </tr>
+                    </TableRow>
                   ))}
                 </tbody>
               </table>

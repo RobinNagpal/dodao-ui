@@ -847,6 +847,7 @@ export interface Mutation {
   createSignedUrl: Scalars['String'];
   createSpace: Space;
   createSummaryOfContent: OpenAiTextResponse;
+  deleteAndPullCourseRepo: GitCourse;
   deleteTopic: GitCourse;
   deleteTopicExplanation: GitCourse;
   deleteTopicQuestion: GitCourse;
@@ -968,6 +969,12 @@ export interface MutationCreateSpaceArgs {
 
 export interface MutationCreateSummaryOfContentArgs {
   input: Scalars['String'];
+}
+
+
+export interface MutationDeleteAndPullCourseRepoArgs {
+  courseKey: Scalars['String'];
+  spaceId: Scalars['String'];
 }
 
 
@@ -2341,6 +2348,14 @@ export type CoursesQueryQueryVariables = Exact<{
 
 
 export type CoursesQueryQuery = { __typename?: 'Query', courses: Array<{ __typename?: 'GitCourse', courseAdmins?: Array<string> | null, courseFailContent?: string | null, coursePassContent?: string | null, coursePassCount?: number | null, details: string, duration: string, highlights: Array<string>, key: string, priority?: number | null, publishStatus: string, summary: string, thumbnail: string, title: string }> };
+
+export type DeleteAndPullCourseRepoMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+  courseKey: Scalars['String'];
+}>;
+
+
+export type DeleteAndPullCourseRepoMutation = { __typename?: 'Mutation', deleteAndPullCourseRepo: { __typename?: 'GitCourse', courseAdmins?: Array<string> | null, courseFailContent?: string | null, coursePassContent?: string | null, coursePassCount?: number | null, details: string, duration: string, highlights: Array<string>, key: string, priority?: number | null, publishStatus: string, summary: string, thumbnail: string, title: string } };
 
 export type GitCourseIntegrationsQueryQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -5139,6 +5154,40 @@ export type CoursesQueryQueryResult = Apollo.QueryResult<CoursesQueryQuery, Cour
 export function refetchCoursesQueryQuery(variables: CoursesQueryQueryVariables) {
       return { query: CoursesQueryDocument, variables: variables }
     }
+export const DeleteAndPullCourseRepoDocument = gql`
+    mutation DeleteAndPullCourseRepo($spaceId: String!, $courseKey: String!) {
+  deleteAndPullCourseRepo(spaceId: $spaceId, courseKey: $courseKey) {
+    ...Course
+  }
+}
+    ${CourseFragmentDoc}`;
+export type DeleteAndPullCourseRepoMutationFn = Apollo.MutationFunction<DeleteAndPullCourseRepoMutation, DeleteAndPullCourseRepoMutationVariables>;
+
+/**
+ * __useDeleteAndPullCourseRepoMutation__
+ *
+ * To run a mutation, you first call `useDeleteAndPullCourseRepoMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteAndPullCourseRepoMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteAndPullCourseRepoMutation, { data, loading, error }] = useDeleteAndPullCourseRepoMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      courseKey: // value for 'courseKey'
+ *   },
+ * });
+ */
+export function useDeleteAndPullCourseRepoMutation(baseOptions?: Apollo.MutationHookOptions<DeleteAndPullCourseRepoMutation, DeleteAndPullCourseRepoMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteAndPullCourseRepoMutation, DeleteAndPullCourseRepoMutationVariables>(DeleteAndPullCourseRepoDocument, options);
+      }
+export type DeleteAndPullCourseRepoMutationHookResult = ReturnType<typeof useDeleteAndPullCourseRepoMutation>;
+export type DeleteAndPullCourseRepoMutationResult = Apollo.MutationResult<DeleteAndPullCourseRepoMutation>;
+export type DeleteAndPullCourseRepoMutationOptions = Apollo.BaseMutationOptions<DeleteAndPullCourseRepoMutation, DeleteAndPullCourseRepoMutationVariables>;
 export const GitCourseIntegrationsQueryDocument = gql`
     query GitCourseIntegrationsQuery($spaceId: String!, $key: String!) {
   payload: gitCourseIntegrations(spaceId: $spaceId, key: $key) {

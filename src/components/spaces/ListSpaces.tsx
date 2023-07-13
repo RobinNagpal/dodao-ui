@@ -1,9 +1,12 @@
 import Button from '@/components/core/buttons/Button';
+import { Table, TableActions, TableRow } from '@/components/core/table/Table';
 import UpsertSpaceBasicSettingsModal from '@/components/spaces/Edit/Basic/UpsertSpaceBasicSettingsModal';
 import { ManageSpaceSubviews } from '@/components/spaces/manageSpaceSubviews';
-import { SpaceSummaryFragment, useSpacesQuery } from '@/graphql/generated/generated-types';
+import { RawGitCourse, SpaceSummaryFragment, useSpacesQuery } from '@/graphql/generated/generated-types';
+import soryBy from 'lodash/sortBy';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import React, { useMemo, useState } from 'react';
 import styled from 'styled-components';
 
 const MainDiv = styled.div`
@@ -15,9 +18,37 @@ const SpacesTable = styled.table`
   border-color: var(--border-color);
   border: 1px solid var(--border-color);
 `;
+
+function getSpaceTableRows(spaceList?: SpaceSummaryFragment[]): TableRow[] {
+  return (spaceList || []).map(
+    (space): TableRow => ({
+      id: space.id,
+      columns: [space.name, space.id, space.skin, space.admins.join(', ')],
+      item: space,
+    })
+  );
+}
+
 export default function ListSpaces() {
   const { data } = useSpacesQuery();
   const [showSpaceAddModal, setShowSpaceAddModal] = useState(false);
+  const router = useRouter();
+  const tableActions: TableActions = useMemo(() => {
+    return {
+      items: [
+        {
+          key: 'view',
+          label: 'View',
+        },
+      ],
+      onSelect: async (key: string, space: SpaceSummaryFragment) => {
+        if (key === 'view') {
+          router.push(`/space/manage/${ManageSpaceSubviews.ViewSpace}/${space.id}`);
+        }
+      },
+    };
+  }, []);
+
   return (
     <MainDiv className="px-4 sm:px-6 lg:px-8">
       <div className="sm:flex sm:items-center">
@@ -31,48 +62,12 @@ export default function ListSpaces() {
           </Button>
         </div>
       </div>
-      <div className="mt-8 flow-root">
-        <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-          <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-            <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
-              <SpacesTable className="min-w-full divide-y divide-gray-300">
-                <thead>
-                  <tr>
-                    <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold sm:pl-6">
-                      Name
-                    </th>
-                    <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold">
-                      ID
-                    </th>
-                    <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold">
-                      Skin
-                    </th>
-                    <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold">
-                      Admins
-                    </th>
-                    <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6">
-                      <span className="sr-only">Edit</span>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200">
-                  {(data?.spaces || []).map((space: SpaceSummaryFragment) => (
-                    <tr key={space.id}>
-                      <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium sm:pl-6">{space.name}</td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm">{space.id}</td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm">{space.skin}</td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm">{space.admins}</td>
-                      <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                        <Link href={`space/manage/${ManageSpaceSubviews.ViewSpace}/${space.id}`}>View</Link>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </SpacesTable>
-            </div>
-          </div>
-        </div>
-      </div>
+      <Table
+        data={getSpaceTableRows(data?.spaces || [])}
+        columnsHeadings={['Name', 'Id', 'Skin', 'Admins']}
+        columnsWidthPercents={[20, 20, 20, 20]}
+        actions={tableActions}
+      />
       <UpsertSpaceBasicSettingsModal open={showSpaceAddModal} onClose={() => setShowSpaceAddModal(false)} />
     </MainDiv>
   );

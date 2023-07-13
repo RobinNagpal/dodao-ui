@@ -2,7 +2,13 @@ import UpsertRawCourseModal from '@/components/app/Modal/Course/UpsertRawCourseM
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import { Table, TableActions, TableRow } from '@/components/core/table/Table';
 import { useNotificationContext } from '@/contexts/NotificationContext';
-import { RawGitCourse, Space, useRawGitCoursesQuery, useUpsertGitCourseMutation } from '@/graphql/generated/generated-types';
+import {
+  RawGitCourse,
+  Space,
+  useDeleteAndPullCourseRepoMutation,
+  useRawGitCoursesQuery,
+  useUpsertGitCourseMutation,
+} from '@/graphql/generated/generated-types';
 import { PublishStatus } from '@/types/deprecated/models/enums';
 import React, { useMemo, useState } from 'react';
 import soryBy from 'lodash/sortBy';
@@ -16,7 +22,8 @@ export default function SpaceCourseDetails(props: SpaceAuthDetailsProps) {
   const [showUpsertRawCourseModal, setShowUpsertRawCourseModal] = useState(false);
   const threeDotItems = [{ label: 'Add New', key: 'add' }];
   const [upsertGitCourseMutation] = useUpsertGitCourseMutation();
-
+  const [deleteAndPullCourseRepoMutation] = useDeleteAndPullCourseRepoMutation();
+  const { showNotification } = useNotificationContext();
   const [courseToEdit, setCourseToEdit] = useState<RawGitCourse | null>(null);
 
   const selectFromThreedotDropdown = async (e: string) => {
@@ -41,15 +48,28 @@ export default function SpaceCourseDetails(props: SpaceAuthDetailsProps) {
           key: 'edit',
           label: 'Edit',
         },
+        {
+          key: 'deleteAndPull',
+          label: 'Delete and Pull',
+        },
       ],
-      onSelect: (key: string, course: RawGitCourse) => {
-        setCourseToEdit(course);
-        setShowUpsertRawCourseModal(true);
+      onSelect: async (key: string, course: RawGitCourse) => {
+        if (key === 'edit') {
+          setCourseToEdit(course);
+          setShowUpsertRawCourseModal(true);
+        } else if (key === 'deleteAndPull') {
+          await deleteAndPullCourseRepoMutation({
+            variables: {
+              spaceId: props.space.id,
+              courseKey: course.courseKey,
+            },
+          });
+
+          showNotification({ type: 'success', message: 'Course deleted and pulled successfully' });
+        }
       },
     };
   }, []);
-
-  const { showNotification } = useNotificationContext();
 
   const upsertRawCourse = async (repoUrl: string, publishStatus: PublishStatus, weight: number) => {
     setShowUpsertRawCourseModal(false);
