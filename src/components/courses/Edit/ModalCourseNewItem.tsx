@@ -7,7 +7,7 @@ import EditCourseSummary from '@/components/courses/Edit/Items/EditCourseSummary
 import EditTopic, { UpdateTopicForm } from '@/components/courses/Edit/Items/EditTopic';
 import { CourseSubmissionHelper } from '@/components/courses/View/useCourseSubmission';
 import { CourseHelper } from '@/components/courses/View/useViewCourse';
-import { CourseDetailsFragment, Space, UpdateTopicSummaryInput, UpdateTopicVideoInput } from '@/graphql/generated/generated-types';
+import { CourseDetailsFragment, Space, UpdateTopicBasicInfoInput, UpdateTopicSummaryInput, UpdateTopicVideoInput } from '@/graphql/generated/generated-types';
 import { QuestionType } from '@/types/deprecated/models/enums';
 import React, { useState } from 'react';
 import styled from 'styled-components';
@@ -59,7 +59,7 @@ const ModalCourseNewItem: React.FC<ModalCourseNewItemProps> = ({ course, space, 
     setShowAddSection(true);
   }
 
-  const addTopic = async (updatedTopic: UpdateTopicForm): Promise<void> => {};
+  const addTopic = async (updatedTopic: UpdateTopicBasicInfoInput): Promise<void> => {};
   const addExplanation = () => {};
   const addSummary = async (updatedSummary: UpdateTopicSummaryInput) => {};
   const addReading = async (updatedReading: UpdateTopicVideoInput) => {};
