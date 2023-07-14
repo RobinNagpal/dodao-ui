@@ -135,7 +135,7 @@ export const QuestionForm: React.FC<Props> = ({ course, space, topicKey, current
 
   // Here is the part that was already converted
   return (
-    <div className="flex flex-col justify-between h-full px-4">
+    <div className="flex flex-col justify-between h-full px-4 text-left">
       <div className="w-full">
         <CreateQuestion
           addChoice={addChoice}
@@ -148,7 +148,7 @@ export const QuestionForm: React.FC<Props> = ({ course, space, topicKey, current
           questionErrors={questionErrors}
           updateQuestionType={(type) => setForm({ ...form, type })}
         />
-        <div className="mt-4">Hint</div>
+
         <MarkdownEditor
           id={course.key + '_details'}
           label="Hint"

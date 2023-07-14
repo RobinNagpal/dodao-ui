@@ -56,7 +56,7 @@ export default function EditTopic({ course, space, topicKey, currentTopic, saveT
   }, [form, hasErrors, saveTopic]);
 
   return (
-    <div className="flex flex-col justify-between h-full w-full">
+    <div className="flex flex-col justify-between h-full w-full text-left">
       <div className="w-full">
         <Input
           modelValue={form.title}

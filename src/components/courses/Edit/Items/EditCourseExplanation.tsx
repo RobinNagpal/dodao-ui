@@ -65,7 +65,7 @@ export default function EditCourseExplanation({ course, space, topicKey, current
   };
 
   return (
-    <div className="flex flex-col justify-between h-full w-full">
+    <div className="flex flex-col justify-between h-full w-full text-left">
       <div className="w-full">
         <Input modelValue={form.title} error={!form.isPristine && titleError} onUpdate={(content) => updateField('title', content?.toString() || '')}>
           <span>Explanation Title*</span>
@@ -77,19 +77,18 @@ export default function EditCourseExplanation({ course, space, topicKey, current
         >
           <span>Short Title*(Shown in left nav. Max length: 20 chars)</span>
         </Input>
-        <div className="mt-4">Details</div>
-        <DetailsContainer>
-          <MarkdownEditor
-            id={course.key + '_details'}
-            modelValue={form.details}
-            placeholder="Explanation(2-3 paragraphs)"
-            error={!form.isPristine && detailsError}
-            onUpdate={(content) => updateField('details', content)}
-            spaceId={space.id}
-            objectId={`${course.key}/${topicKey}`}
-            imageType="Course"
-          />
-        </DetailsContainer>
+
+        <MarkdownEditor
+          label={'Details'}
+          id={course.key + '_details'}
+          modelValue={form.details}
+          placeholder="Explanation(2-3 paragraphs)"
+          error={!form.isPristine && detailsError}
+          onUpdate={(content) => updateField('details', content)}
+          spaceId={space.id}
+          objectId={`${course.key}/${topicKey}`}
+          imageType="Course"
+        />
       </div>
       <div className="flex justify-between mt-4 w-full">
         <Button primary onClick={cancel}>
@@ -102,10 +101,3 @@ export default function EditCourseExplanation({ course, space, topicKey, current
     </div>
   );
 }
-
-const DetailsContainer = styled.div`
-  border: 1px solid;
-  border-color: var(--skin-border);
-  border-radius: 0.25rem; // Equivalent to 'rounded-md' in Tailwind
-  padding: 0.5rem; // Equivalent to 'p-2' in Tailwind
-`;

@@ -63,7 +63,7 @@ const CourseView = ({ params, space }: { params: { courseInfo: string[] }; space
 
   const itemKey = Array.isArray(courseInfo) && courseInfo.length > 3 ? courseInfo[3] : undefined;
 
-  const [modalCourseNewItemOpen, setModalCourseNewItemOpen] = useState(false);
+  const [modalCourseNewItemOpen, setModalCourseNewItemOpen] = useState(true);
 
   const courseHelper = useViewCourse(space, courseKey);
   const submissionHelper = useCourseSubmission(space, courseKey);

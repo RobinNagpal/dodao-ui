@@ -29,7 +29,7 @@ interface ModalCourseNewItemProps {
   closeModal: () => void;
 }
 
-const ModalCourseNewItem: React.FC<ModalCourseNewItemProps> = ({ course, space, submissionHelper, courseHelper, open, closeModal }) => {
+const ModalCourseNewItem: React.FC<ModalCourseNewItemProps> = ({ course, space, submissionHelper, courseHelper, open, closeModal: onCloseModal }) => {
   const [selectedTopicKey, setSelectedTopicKey] = useState<string | null>(null);
   const [selectedQuestionType, setSelectedQuestionType] = useState<QuestionType | null>(null);
   const [showAddButtons, setShowAddButtons] = useState(true);
@@ -37,6 +37,15 @@ const ModalCourseNewItem: React.FC<ModalCourseNewItemProps> = ({ course, space, 
   const [showAddSection, setShowAddSection] = useState(false);
   const [selectedAction, setSelectedAction] = useState<AddActions | null>(AddActions.Explanation);
 
+  const closeModal = () => {
+    setSelectedTopicKey(null);
+    setSelectedQuestionType(null);
+    setSelectedAction(null);
+    setShowAddButtons(true);
+    setShowChapterSelectionButtons(false);
+    setShowAddSection(false);
+    onCloseModal();
+  };
   //... define your addTopic, addExplanation, addSummary, addReading, and addQuestion functions here.
 
   function selectAction(action: AddActions) {
@@ -65,9 +74,8 @@ const ModalCourseNewItem: React.FC<ModalCourseNewItemProps> = ({ course, space, 
   const addReading = async (updatedReading: UpdateTopicVideoInput) => {};
   const addQuestion = () => {};
   return (
-    <FullScreenModal open={open} onClose={closeModal} title={'Add'}>
-      <h3>Add</h3>
-      <ModalBody className="mt-4 flex justify-center h-full">
+    <FullScreenModal open={open} onClose={closeModal} title={'Add Course Contents'}>
+      <ModalBody className="mt-4 flex align-center justify-center h-full w-full">
         {showAddButtons && (
           <div className="max-w-xs">
             <Button primary onClick={() => selectAction(AddActions.Topic)} className="w-full mb-4">
@@ -89,38 +97,33 @@ const ModalCourseNewItem: React.FC<ModalCourseNewItemProps> = ({ course, space, 
         )}
 
         {showChapterSelectionButtons && (
-          <div className="max-w-xs">
-            <p className="mb-4 text-center">Select the chapter to which you want to add the new {selectedAction}</p>
-            {course.topics.map((topic) => (
-              <Button key={topic.key} primary onClick={() => selectTopic(topic.key)} className="w-full mb-4">
-                {topic.title}
-              </Button>
-            ))}
+          <div className="mt-4 flex justify-center align-center h-full w-full">
+            <div className="max-w-xs">
+              <p className="mb-4 text-center">Select the chapter to which you want to add the new {selectedAction}</p>
+              {course.topics.map((topic) => (
+                <Button key={topic.key} primary onClick={() => selectTopic(topic.key)} className="w-full mb-4">
+                  {topic.title}
+                </Button>
+              ))}
+            </div>
           </div>
         )}
+        {selectedAction && (
+          <>
+            {selectedAction === AddActions.Topic && showAddSection && <EditTopic course={course} space={space} saveTopic={addTopic} cancel={closeModal} />}
 
-        {selectedAction === AddActions.Topic && showAddSection && (
-          <div className="p-4 w-full h-full">
-            <EditTopic course={course} space={space} saveTopic={addTopic} cancel={closeModal} />
-          </div>
-        )}
+            {selectedAction === AddActions.Explanation && showAddSection && (
+              <EditCourseExplanation course={course} space={space} topicKey={selectedTopicKey!} saveExplanation={addExplanation} cancel={closeModal} />
+            )}
 
-        {selectedAction === AddActions.Explanation && showAddSection && (
-          <div className="p-4 w-full h-full">
-            <EditCourseExplanation course={course} space={space} topicKey={selectedTopicKey!} saveExplanation={addExplanation} cancel={closeModal} />
-          </div>
-        )}
+            {selectedAction === AddActions.Summary && showAddSection && (
+              <EditCourseSummary course={course} space={space} topicKey={selectedTopicKey!} saveSummary={addSummary} cancel={closeModal} />
+            )}
 
-        {selectedAction === AddActions.Summary && showAddSection && (
-          <div className="p-4 w-full h-full">
-            <EditCourseSummary course={course} space={space} topicKey={selectedTopicKey!} saveSummary={addSummary} cancel={closeModal} />
-          </div>
-        )}
-
-        {selectedAction === AddActions.Reading && showAddSection && (
-          <div className="p-4 w-full h-full">
-            <EditCourseReading course={course} space={space} topicKey={selectedTopicKey!} saveReading={addReading} cancel={closeModal} />
-          </div>
+            {selectedAction === AddActions.Reading && showAddSection && (
+              <EditCourseReading course={course} space={space} topicKey={selectedTopicKey!} saveReading={addReading} cancel={closeModal} />
+            )}
+          </>
         )}
 
         {selectedAction === AddActions.Question && showAddSection && (
