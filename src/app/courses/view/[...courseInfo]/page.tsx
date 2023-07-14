@@ -11,6 +11,9 @@ import CourseDetailsRightSection, { ItemTypes } from '@/components/courses/View/
 import { useCourseSubmission } from '@/components/courses/View/useCourseSubmission';
 import useViewCourse from '@/components/courses/View/useViewCourse';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { Session } from '@/types/auth/Session';
+import { isAdmin } from '@/utils/auth/isAdmin';
+import { isSuperAdmin } from '@/utils/auth/superAdmins';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -74,6 +77,9 @@ const CourseView = ({ params, space }: { params: { courseInfo: string[] }; space
 
   const { course, loading } = courseHelper;
 
+  const isCourseAdmin =
+    session && (isAdmin(session as Session, space) || isSuperAdmin(session as Session) || course?.courseAdmins?.includes(session?.username));
+
   const showAddModal = () => {
     setModalCourseNewItemOpen(true);
   };
@@ -108,7 +114,7 @@ const CourseView = ({ params, space }: { params: { courseInfo: string[] }; space
               <CourseDetailsRightSection
                 course={course}
                 space={space}
-                isCourseAdmin={true}
+                isCourseAdmin={!!isCourseAdmin}
                 courseHelper={courseHelper}
                 submissionHelper={submissionHelper}
                 isCourseSubmissionScreen={isCourseSubmissionScreen}
