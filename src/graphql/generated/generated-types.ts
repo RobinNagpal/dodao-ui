@@ -64,6 +64,12 @@ export interface AddTopicQuestionInput {
   topicKey: Scalars['String'];
 }
 
+export interface AddTopicQuestionsInput {
+  courseKey: Scalars['String'];
+  questions: Array<AddTopicQuestionInput>;
+  topicKey: Scalars['String'];
+}
+
 export interface AddTopicSummaryInput {
   courseKey: Scalars['String'];
   details: Scalars['String'];
@@ -839,6 +845,7 @@ export interface Mutation {
   addTopic: GitCourseTopic;
   addTopicExplanation: GitCourseExplanation;
   addTopicQuestion: GitCourseQuestion;
+  addTopicQuestions: Array<GitCourseQuestion>;
   addTopicSummary: GitCourseSummary;
   addTopicVideo: GitCourseReading;
   askChatCompletionAI: OpenAiChatCompletionResponse;
@@ -925,6 +932,12 @@ export interface MutationAddTopicExplanationArgs {
 
 export interface MutationAddTopicQuestionArgs {
   questionInfo: AddTopicQuestionInput;
+  spaceId: Scalars['String'];
+}
+
+
+export interface MutationAddTopicQuestionsArgs {
+  input: AddTopicQuestionsInput;
   spaceId: Scalars['String'];
 }
 
@@ -2236,6 +2249,14 @@ export type AddTopicQuestionMutationVariables = Exact<{
 
 
 export type AddTopicQuestionMutation = { __typename?: 'Mutation', payload: { __typename?: 'GitCourseQuestion', uuid: string, type: string, content: string, answerKeys: Array<string>, hint: string, explanation: string, choices: Array<{ __typename?: 'GitCourseQuestionChoice', content: string, key: string }> } };
+
+export type AddTopicQuestionsMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+  input: AddTopicQuestionsInput;
+}>;
+
+
+export type AddTopicQuestionsMutation = { __typename?: 'Mutation', payload: Array<{ __typename?: 'GitCourseQuestion', uuid: string, type: string, content: string, answerKeys: Array<string>, hint: string, explanation: string, choices: Array<{ __typename?: 'GitCourseQuestionChoice', content: string, key: string }> }> };
 
 export type DeleteTopicExplanationMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -4623,6 +4644,49 @@ export function useAddTopicQuestionMutation(baseOptions?: Apollo.MutationHookOpt
 export type AddTopicQuestionMutationHookResult = ReturnType<typeof useAddTopicQuestionMutation>;
 export type AddTopicQuestionMutationResult = Apollo.MutationResult<AddTopicQuestionMutation>;
 export type AddTopicQuestionMutationOptions = Apollo.BaseMutationOptions<AddTopicQuestionMutation, AddTopicQuestionMutationVariables>;
+export const AddTopicQuestionsDocument = gql`
+    mutation AddTopicQuestions($spaceId: String!, $input: AddTopicQuestionsInput!) {
+  payload: addTopicQuestions(spaceId: $spaceId, input: $input) {
+    uuid
+    type
+    content
+    answerKeys
+    hint
+    explanation
+    choices {
+      content
+      key
+    }
+  }
+}
+    `;
+export type AddTopicQuestionsMutationFn = Apollo.MutationFunction<AddTopicQuestionsMutation, AddTopicQuestionsMutationVariables>;
+
+/**
+ * __useAddTopicQuestionsMutation__
+ *
+ * To run a mutation, you first call `useAddTopicQuestionsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddTopicQuestionsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addTopicQuestionsMutation, { data, loading, error }] = useAddTopicQuestionsMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAddTopicQuestionsMutation(baseOptions?: Apollo.MutationHookOptions<AddTopicQuestionsMutation, AddTopicQuestionsMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AddTopicQuestionsMutation, AddTopicQuestionsMutationVariables>(AddTopicQuestionsDocument, options);
+      }
+export type AddTopicQuestionsMutationHookResult = ReturnType<typeof useAddTopicQuestionsMutation>;
+export type AddTopicQuestionsMutationResult = Apollo.MutationResult<AddTopicQuestionsMutation>;
+export type AddTopicQuestionsMutationOptions = Apollo.BaseMutationOptions<AddTopicQuestionsMutation, AddTopicQuestionsMutationVariables>;
 export const DeleteTopicExplanationDocument = gql`
     mutation DeleteTopicExplanation($spaceId: String!, $explanationInfo: DeleteTopicExplanationInput!) {
   payload: deleteTopicExplanation(

@@ -1,6 +1,7 @@
+import { GeneratedQuestionInterface } from '@/components/ai/GenerateQuestionUsingAI';
 import AddContentOrQuestionAIModal from '@/components/app/Modal/AI/AddContentOrQuestionAIModal';
 import GenerateContentUsingAIModal from '@/components/app/Modal/AI/GenerateContentUsingAIModal';
-import GenerateQuestionUsingAIModal, { GeneratedQuestionInterface } from '@/components/app/Modal/AI/GenerateQuestionUsingAIModal';
+import GenerateQuestionUsingAIModal from '@/components/app/Modal/AI/GenerateQuestionUsingAIModal';
 import IconButton from '@/components/core/buttons/IconButton';
 import CreateConnectDiscord from '@/components/app/Common/CreateDiscordConnect';
 import CreateQuestion from '@/components/app/Common/CreateQuestion';

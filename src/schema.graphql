@@ -44,6 +44,12 @@ input AddTopicQuestionInput {
   topicKey: String!
 }
 
+input AddTopicQuestionsInput {
+  courseKey: String!
+  questions: [AddTopicQuestionInput!]!
+  topicKey: String!
+}
+
 input AddTopicSummaryInput {
   courseKey: String!
   details: String!
@@ -789,6 +795,7 @@ type Mutation {
   addTopic(spaceId: String!, topicInfo: AddTopicInput!): GitCourseTopic!
   addTopicExplanation(explanationInfo: AddTopicExplanationInput!, spaceId: String!): GitCourseExplanation!
   addTopicQuestion(questionInfo: AddTopicQuestionInput!, spaceId: String!): GitCourseQuestion!
+  addTopicQuestions(input: AddTopicQuestionsInput!, spaceId: String!): [GitCourseQuestion!]!
   addTopicSummary(spaceId: String!, summaryInfo: AddTopicSummaryInput!): GitCourseSummary!
   addTopicVideo(spaceId: String!, videoInfo: AddTopicVideoInput!): GitCourseReading!
   askChatCompletionAI(input: ChatCompletionAIInput!): OpenAIChatCompletionResponse!

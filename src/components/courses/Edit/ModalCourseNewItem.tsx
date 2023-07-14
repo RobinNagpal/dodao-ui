@@ -1,13 +1,25 @@
+import GenerateQuestionUsingAI, { GeneratedQuestionInterface } from '@/components/ai/GenerateQuestionUsingAI';
 import Button from '@/components/core/buttons/Button';
 import FullScreenModal from '@/components/core/modals/FullScreenModal';
 import EditCourseExplanation from '@/components/courses/Edit/Items/EditCourseExplanation';
 import EditCourseQuestion from '@/components/courses/Edit/Items/EditCourseQuestion';
 import EditCourseReading from '@/components/courses/Edit/Items/EditCourseReading';
 import EditCourseSummary from '@/components/courses/Edit/Items/EditCourseSummary';
-import EditTopic, { UpdateTopicForm } from '@/components/courses/Edit/Items/EditTopic';
+import EditTopic from '@/components/courses/Edit/Items/EditTopic';
 import { CourseSubmissionHelper } from '@/components/courses/View/useCourseSubmission';
 import { CourseHelper } from '@/components/courses/View/useViewCourse';
-import { CourseDetailsFragment, Space, UpdateTopicBasicInfoInput, UpdateTopicSummaryInput, UpdateTopicVideoInput } from '@/graphql/generated/generated-types';
+import generateQuestionsPrompt from '@/components/guides/Edit/generateQuestionsPrompt';
+import {
+  AddTopicQuestionInput,
+  AddTopicQuestionsInput,
+  CourseDetailsFragment,
+  Space,
+  UpdateTopicBasicInfoInput,
+  UpdateTopicExplanationInput,
+  UpdateTopicQuestionInput,
+  UpdateTopicSummaryInput,
+  UpdateTopicVideoInput,
+} from '@/graphql/generated/generated-types';
 import { QuestionType } from '@/types/deprecated/models/enums';
 import React, { useState } from 'react';
 import styled from 'styled-components';
@@ -17,6 +29,7 @@ enum AddActions {
   Explanation = 'Explanation',
   Reading = 'Reading',
   Question = 'Question',
+  AIQuestions = 'AIQuestions',
   Summary = 'Summary',
 }
 
@@ -68,11 +81,48 @@ const ModalCourseNewItem: React.FC<ModalCourseNewItemProps> = ({ course, space, 
     setShowAddSection(true);
   }
 
-  const addTopic = async (updatedTopic: UpdateTopicBasicInfoInput): Promise<void> => {};
-  const addExplanation = () => {};
-  const addSummary = async (updatedSummary: UpdateTopicSummaryInput) => {};
-  const addReading = async (updatedReading: UpdateTopicVideoInput) => {};
-  const addQuestion = () => {};
+  const addTopic = async (topicInfo: UpdateTopicBasicInfoInput): Promise<void> => {
+    await courseHelper.addTopic(topicInfo);
+    closeModal();
+  };
+  const addExplanation = async (input: UpdateTopicExplanationInput) => {
+    await courseHelper.addTopicExplanation(input!);
+    closeModal();
+  };
+  const addSummary = async (input: UpdateTopicSummaryInput) => {
+    await courseHelper.addTopicSummary(input!);
+    closeModal();
+  };
+  const addReading = async (input: UpdateTopicVideoInput) => {
+    await courseHelper.addTopicVideo(input!);
+    closeModal();
+  };
+  const addQuestion = async (question: UpdateTopicQuestionInput) => {
+    await courseHelper.addTopicQuestion(question!);
+    closeModal();
+  };
+
+  const addGeneratedQuestions = async (generatedQuestions: GeneratedQuestionInterface[]) => {
+    const input: AddTopicQuestionsInput = {
+      courseKey: course.key,
+      topicKey: selectedTopicKey!,
+      questions: generatedQuestions.map(
+        (generatedQuestion, index): AddTopicQuestionInput => ({
+          answerKeys: generatedQuestion.answerKeys,
+          choices: generatedQuestion.choices,
+          content: generatedQuestion.content,
+          courseKey: course.key,
+          hint: 'NoHint',
+          topicKey: selectedTopicKey!,
+          questionType: QuestionType.SingleChoice,
+          explanation: generatedQuestion.explanation,
+        })
+      ),
+    };
+    await courseHelper.addTopicQuestions(input!);
+    closeModal();
+  };
+
   return (
     <FullScreenModal open={open} onClose={closeModal} title={'Add Course Contents'}>
       <ModalBody className="mt-4 flex align-center justify-center h-full w-full">
@@ -92,6 +142,9 @@ const ModalCourseNewItem: React.FC<ModalCourseNewItemProps> = ({ course, space, 
             </Button>
             <Button primary onClick={() => selectAction(AddActions.Summary)} className="w-full mb-4">
               Add Summary
+            </Button>
+            <Button primary onClick={() => selectAction(AddActions.AIQuestions)} className="w-full mb-4">
+              Add Questions using AI
             </Button>
           </div>
         )}
@@ -122,6 +175,14 @@ const ModalCourseNewItem: React.FC<ModalCourseNewItemProps> = ({ course, space, 
 
             {selectedAction === AddActions.Reading && showAddSection && (
               <EditCourseReading course={course} space={space} topicKey={selectedTopicKey!} saveReading={addReading} cancel={closeModal} />
+            )}
+            {selectedAction === AddActions.AIQuestions && showAddSection && (
+              <GenerateQuestionUsingAI
+                onGenerateContent={(questions) => {
+                  addGeneratedQuestions(questions);
+                }}
+                generatePrompt={(topic: string, numberOfQuestions: number, contents: string) => generateQuestionsPrompt(topic, numberOfQuestions, contents)}
+              />
             )}
           </>
         )}

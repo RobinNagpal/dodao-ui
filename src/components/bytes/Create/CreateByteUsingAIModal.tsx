@@ -1,5 +1,4 @@
-import { GeneratedQuestionInterface } from '@/components/app/Modal/AI/GenerateQuestionUsingAIModal';
-import { testTidbitContentString, testTiditTopicString } from '@/components/bytes/Create/testTidbitContentString';
+import { GeneratedQuestionInterface } from '@/components/ai/GenerateQuestionUsingAI';
 import { EditByteStep, EditByteType } from '@/components/bytes/Edit/useEditByte';
 import Button from '@/components/core/buttons/Button';
 import ErrorWithAccentBorder from '@/components/core/errors/ErrorWithAccentBorder';
@@ -8,16 +7,11 @@ import { NotificationProps } from '@/components/core/notify/Notification';
 import TextareaAutosize from '@/components/core/textarea/TextareaAutosize';
 import generateQuestionsPrompt from '@/components/guides/Edit/generateQuestionsPrompt';
 import { useNotificationContext } from '@/contexts/NotificationContext';
-import {
-  ChatCompletionRequestMessageRoleEnum,
-  GuideStepItemFragment,
-  useAskChatCompletionAiMutation,
-  useDownloadAndCleanContentMutation,
-} from '@/graphql/generated/generated-types';
+import { ChatCompletionRequestMessageRoleEnum, useAskChatCompletionAiMutation, useDownloadAndCleanContentMutation } from '@/graphql/generated/generated-types';
 import { PublishStatus, QuestionType, VisibilityEnum } from '@/types/deprecated/models/enums';
 import { sum } from 'lodash';
 
-import { FormEvent, useState } from 'react';
+import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import geneateBytePrompt from './generateBytePrompt';
 
