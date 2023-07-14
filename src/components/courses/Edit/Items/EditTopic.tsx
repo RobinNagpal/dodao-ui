@@ -2,7 +2,7 @@ import Input from '@/components/core/input/Input';
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
 import Button from '@/components/core/buttons/Button';
 import { minMaxValidation, minValidation } from '@/components/courses/Edit/courseValidations';
-import { CourseDetailsFragment, CourseTopicFragment, Space } from '@/graphql/generated/generated-types';
+import { CourseDetailsFragment, CourseTopicFragment, Space, UpdateTopicBasicInfoInput } from '@/graphql/generated/generated-types';
 import React, { useCallback, useMemo, useState } from 'react';
 import styled from 'styled-components';
 
@@ -19,7 +19,7 @@ interface EditTopicProps {
   space: Space;
   topicKey?: string;
   currentTopic?: CourseTopicFragment;
-  saveTopic: (updatedTopic: UpdateTopicForm) => Promise<void>;
+  saveTopic: (updatedTopic: UpdateTopicBasicInfoInput) => Promise<void>;
   cancel: () => void;
 }
 
@@ -44,13 +44,13 @@ export default function EditTopic({ course, space, topicKey, currentTopic, saveT
   const save = useCallback(async () => {
     if (hasErrors) return;
     setUpserting(true);
-    const updatedTopic: UpdateTopicForm = {
-      isPristine: false,
+    const updatedTopic: UpdateTopicBasicInfoInput = {
       courseKey: form.courseKey,
       topicKey: form.topicKey,
       title: form.title,
       details: form.details,
     };
+
     await saveTopic(updatedTopic);
     setUpserting(false);
   }, [form, hasErrors, saveTopic]);

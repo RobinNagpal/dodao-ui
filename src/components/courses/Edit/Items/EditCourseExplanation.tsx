@@ -53,7 +53,14 @@ export default function EditCourseExplanation({ course, space, topicKey, current
       return;
     }
     setUpserting(true);
-    await saveExplanation(form);
+    await saveExplanation({
+      courseKey: form.courseKey,
+      topicKey: form.topicKey,
+      explanationKey: form.explanationKey,
+      title: form.title,
+      shortTitle: form.shortTitle,
+      details: form.details,
+    });
     setUpserting(false);
   };
 

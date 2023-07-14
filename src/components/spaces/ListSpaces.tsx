@@ -2,9 +2,7 @@ import Button from '@/components/core/buttons/Button';
 import { Table, TableActions, TableRow } from '@/components/core/table/Table';
 import UpsertSpaceBasicSettingsModal from '@/components/spaces/Edit/Basic/UpsertSpaceBasicSettingsModal';
 import { ManageSpaceSubviews } from '@/components/spaces/manageSpaceSubviews';
-import { RawGitCourse, SpaceSummaryFragment, useSpacesQuery } from '@/graphql/generated/generated-types';
-import soryBy from 'lodash/sortBy';
-import Link from 'next/link';
+import { SpaceSummaryFragment, useSpacesQuery } from '@/graphql/generated/generated-types';
 import { useRouter } from 'next/navigation';
 import React, { useMemo, useState } from 'react';
 import styled from 'styled-components';
@@ -12,11 +10,6 @@ import styled from 'styled-components';
 const MainDiv = styled.div`
   background-color: var(--bg-color);
   color: var(--text-color);
-`;
-
-const SpacesTable = styled.table`
-  border-color: var(--border-color);
-  border: 1px solid var(--border-color);
 `;
 
 function getSpaceTableRows(spaceList?: SpaceSummaryFragment[]): TableRow[] {

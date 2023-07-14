@@ -120,7 +120,7 @@ export const QuestionForm: React.FC<Props> = ({ course, space, topicKey, current
     // Your saving code here
     const input: UpdateTopicQuestionInput = {
       answerKeys: form.answerKeys,
-      choices: form.choices,
+      choices: form.choices.map((choice) => ({ key: choice.key, content: choice.content })),
       content: form.content,
       courseKey: form.courseKey,
       explanation: form.explanation,
@@ -135,7 +135,7 @@ export const QuestionForm: React.FC<Props> = ({ course, space, topicKey, current
 
   // Here is the part that was already converted
   return (
-    <div className="flex flex-col justify-between h-full">
+    <div className="flex flex-col justify-between h-full px-4">
       <div className="w-full">
         <CreateQuestion
           addChoice={addChoice}
@@ -149,34 +149,17 @@ export const QuestionForm: React.FC<Props> = ({ course, space, topicKey, current
           updateQuestionType={(type) => setForm({ ...form, type })}
         />
         <div className="mt-4">Hint</div>
-        <div className="border border-skin-border rounded-md p-2">
-          <MarkdownEditor
-            id={course.key + '_details'}
-            modelValue={form.hint}
-            placeholder="Hint"
-            editorStyles={{ height: '100px' }}
-            onUpdate={(content) => updateField('hint', content)}
-            spaceId={space.id}
-            objectId={`${course.key}/${topicKey}`}
-            imageType="Course"
-          />
-        </div>
-        <div className="mt-4">Explanation*</div>
-        <div className="text-xs">Shown after user submits the chapter</div>
-        <div className="border border-skin-border rounded-md p-2">
-          <MarkdownEditor
-            id={course.key + '_details'}
-            modelValue={form.explanation}
-            placeholder="Details (at least 2-3 lines)"
-            editorStyles={{ height: '250px' }}
-            error={!form.isPristine && explanationError}
-            onUpdate={(content) => updateField('explanation', content)}
-            spaceId={space.id}
-            objectId={`${course.key}/${topicKey}`}
-            imageType="Course"
-          />
-        </div>
-
+        <MarkdownEditor
+          id={course.key + '_details'}
+          label="Hint"
+          modelValue={form.hint}
+          placeholder="Hint"
+          maxHeight={100}
+          onUpdate={(content) => updateField('hint', content)}
+          spaceId={space.id}
+          objectId={`${course.key}/${topicKey}`}
+          imageType="Course"
+        />
         {form.isPristine && (form.answerKeys?.length || 0) === 0 && (
           <div className="mb-2 text-red-500">
             <i className="iconfont iconwarning"></i>
@@ -184,12 +167,12 @@ export const QuestionForm: React.FC<Props> = ({ course, space, topicKey, current
           </div>
         )}
       </div>
-      <div className="flex mt-5">
-        <Button variant="outlined" onClick={save} disabled={upserting}>
-          Save
-        </Button>
+      <div className="flex mt-5 justify-end">
         <Button variant="outlined" onClick={cancel} disabled={upserting}>
           Cancel
+        </Button>
+        <Button variant="contained" onClick={save} disabled={upserting} primary className="ml-4">
+          Save
         </Button>
       </div>
     </div>
