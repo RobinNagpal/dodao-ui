@@ -23,7 +23,7 @@ interface ChapterDetailsProps {
 }
 
 const CourseDetails = ({ course, space, isCourseAdmin, courseHelper, submissionHelper }: ChapterDetailsProps) => {
-  const [editMode, setEditMode] = useState(false);
+  const [editMode, setEditMode] = useState(true);
 
   const renderer = useMemo(() => getMarkedRenderer(), []);
   const details = useMemo(() => marked.parse(course?.details || '', { renderer }), [course, renderer]);

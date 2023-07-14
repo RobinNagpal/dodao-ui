@@ -42,8 +42,10 @@ interface GuideStepProps {
   editGuideHelper: UseEditGuideHelper;
 }
 
-const defaultGuidelines = `1) Create four to five paragraphs as the output
-2) Each paragraph should be at least 4 sentences long`;
+const defaultGuidelines = `- The output should be in simple language and easy to understand.
+- The output should be in your own words and not copied from the content provided.
+- The output should be between 4-8 paragraphs.
+- Don't create a conclusion or summary paragraph.`;
 
 const StepContainer = styled.div`
   // Create a styled-component for styles where Tailwind classes are not available.
@@ -443,9 +445,9 @@ const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHas
               setModalGenerateContentUsingAIOpen(false);
             } else {
               showNotification({
-                heading: 'TimeOut Error',
+                heading: 'Error',
                 type: 'error',
-                message: 'This request Took More time then Expected Please Try Again',
+                message: 'For some reason, we were unable to generate content. Please try again.',
               });
             }
           }}
