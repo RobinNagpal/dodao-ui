@@ -1,4 +1,4 @@
-import { GeneratedQuestionInterface } from '@/components/ai/GenerateQuestionUsingAI';
+import { GeneratedQuestionInterface } from '@/components/ai/questions/GenerateQuestionUsingAI';
 import AddContentOrQuestionAIModal from '@/components/app/Modal/AI/AddContentOrQuestionAIModal';
 import GenerateContentUsingAIModal from '@/components/app/Modal/AI/GenerateContentUsingAIModal';
 import GenerateQuestionUsingAIModal from '@/components/app/Modal/AI/GenerateQuestionUsingAIModal';

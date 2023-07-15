@@ -1,4 +1,4 @@
-import GenerateQuestionUsingAI, { GeneratedQuestionInterface } from '@/components/ai/GenerateQuestionUsingAI';
+import GenerateQuestionUsingAI, { GeneratedQuestionInterface } from '@/components/ai/questions/GenerateQuestionUsingAI';
 import Button from '@/components/core/buttons/Button';
 import FullScreenModal from '@/components/core/modals/FullScreenModal';
 import EditCourseExplanation from '@/components/courses/Edit/Items/EditCourseExplanation';

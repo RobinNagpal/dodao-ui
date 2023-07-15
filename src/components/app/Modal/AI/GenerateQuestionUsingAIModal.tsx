@@ -1,4 +1,4 @@
-import GenerateQuestionUsingAI, { GeneratedQuestionInterface } from '@/components/ai/GenerateQuestionUsingAI';
+import GenerateQuestionUsingAI, { GeneratedQuestionInterface } from '@/components/ai/questions/GenerateQuestionUsingAI';
 import FullScreenModal from '@/components/core/modals/FullScreenModal';
 
 import React from 'react';

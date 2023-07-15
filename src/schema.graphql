@@ -189,6 +189,7 @@ type ByteUserInput {
 input ChatCompletionAIInput {
   messages: [OpenAIChatMessageInput!]!
   model: String
+  n: Int
   temperature: Float
 }
 
@@ -200,6 +201,7 @@ enum ChatCompletionRequestMessageRoleEnum {
 
 input CompletionAIInput {
   model: String
+  n: Int
   prompt: String!
   temperature: Float
 }
@@ -742,6 +744,16 @@ type GuideUserInput {
   uuid: String!
 }
 
+type ImagesResponse {
+  created: Int!
+  data: [ImagesResponseDataInner!]!
+}
+
+type ImagesResponseDataInner {
+  b64_json: String
+  url: String
+}
+
 """
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
@@ -812,7 +824,7 @@ type Mutation {
   deleteTopicVideo(spaceId: String!, videoInfo: DeleteTopicVideoInput!): GitCourse!
   downloadAndCleanContent(input: String!): DownloadAndCleanContentResponse!
   extractRelevantTextForTopic(input: ExtractRelevantTextForTopicInput!): OpenAITextResponse!
-  generateImage(input: GenerateImageInput!): GenerateImageResponse!
+  generateImage(input: GenerateImageInput!): ImagesResponse!
   generateImageEdit(input: GenerateImageEditInput!): GenerateImageResponse!
   generateSharablePdf(byteId: String!, spaceId: String!): String!
   initializeGitCourseSubmission(courseKey: String!, spaceId: String!): GitCourseSubmission!

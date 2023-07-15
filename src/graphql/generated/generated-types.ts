@@ -217,6 +217,7 @@ export interface ByteUserInput {
 export interface ChatCompletionAiInput {
   messages: Array<OpenAiChatMessageInput>;
   model?: InputMaybe<Scalars['String']>;
+  n?: InputMaybe<Scalars['Int']>;
   temperature?: InputMaybe<Scalars['Float']>;
 }
 
@@ -228,6 +229,7 @@ export enum ChatCompletionRequestMessageRoleEnum {
 
 export interface CompletionAiInput {
   model?: InputMaybe<Scalars['String']>;
+  n?: InputMaybe<Scalars['Int']>;
   prompt: Scalars['String'];
   temperature?: InputMaybe<Scalars['Float']>;
 }
@@ -800,6 +802,18 @@ export interface GuideUserInput {
   uuid: Scalars['String'];
 }
 
+export interface ImagesResponse {
+  __typename?: 'ImagesResponse';
+  created: Scalars['Int'];
+  data: Array<ImagesResponseDataInner>;
+}
+
+export interface ImagesResponseDataInner {
+  __typename?: 'ImagesResponseDataInner';
+  b64_json?: Maybe<Scalars['String']>;
+  url?: Maybe<Scalars['String']>;
+}
+
 export interface JwtResponse {
   __typename?: 'JwtResponse';
   jwt: Scalars['String'];
@@ -862,7 +876,7 @@ export interface Mutation {
   deleteTopicVideo: GitCourse;
   downloadAndCleanContent: DownloadAndCleanContentResponse;
   extractRelevantTextForTopic: OpenAiTextResponse;
-  generateImage: GenerateImageResponse;
+  generateImage: ImagesResponse;
   generateImageEdit: GenerateImageResponse;
   generateSharablePdf: Scalars['String'];
   initializeGitCourseSubmission: GitCourseSubmission;
@@ -2516,7 +2530,7 @@ export type GenerateImageMutationVariables = Exact<{
 }>;
 
 
-export type GenerateImageMutation = { __typename?: 'Mutation', generateImage: { __typename?: 'GenerateImageResponse', url: string } };
+export type GenerateImageMutation = { __typename?: 'Mutation', generateImage: { __typename?: 'ImagesResponse', created: number, data: Array<{ __typename?: 'ImagesResponseDataInner', url?: string | null }> } };
 
 export type SimulationStepFragment = { __typename?: 'SimulationStep', content: string, iframeUrl?: string | null, name: string, uuid: string, order: number };
 
@@ -5871,7 +5885,10 @@ export type DownloadAndCleanContentMutationOptions = Apollo.BaseMutationOptions<
 export const GenerateImageDocument = gql`
     mutation GenerateImage($input: GenerateImageInput!) {
   generateImage(input: $input) {
-    url
+    created
+    data {
+      url
+    }
   }
 }
     `;
