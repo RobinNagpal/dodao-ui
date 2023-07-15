@@ -42,7 +42,11 @@ interface ModalCourseNewItemProps {
   closeModal: () => void;
 }
 
-const ModalCourseNewItem: React.FC<ModalCourseNewItemProps> = ({ course, space, submissionHelper, courseHelper, open, closeModal: onCloseModal }) => {
+const ModalBody = styled.div`
+  min-height: 600px;
+`;
+
+const AddNewCourseContentModal: React.FC<ModalCourseNewItemProps> = ({ course, space, submissionHelper, courseHelper, open, closeModal: onCloseModal }) => {
   const [selectedTopicKey, setSelectedTopicKey] = useState<string | null>(null);
   const [selectedQuestionType, setSelectedQuestionType] = useState<QuestionType | null>(null);
   const [showAddButtons, setShowAddButtons] = useState(true);
@@ -82,7 +86,11 @@ const ModalCourseNewItem: React.FC<ModalCourseNewItemProps> = ({ course, space, 
   }
 
   const addTopic = async (topicInfo: UpdateTopicBasicInfoInput): Promise<void> => {
-    await courseHelper.addTopic(topicInfo);
+    await courseHelper.addTopic({
+      courseKey: course.key,
+      details: topicInfo.details,
+      title: topicInfo.title,
+    });
     closeModal();
   };
   const addExplanation = async (input: UpdateTopicExplanationInput) => {
@@ -215,8 +223,4 @@ const ModalCourseNewItem: React.FC<ModalCourseNewItemProps> = ({ course, space, 
   );
 };
 
-export default ModalCourseNewItem;
-
-const ModalBody = styled.div`
-  min-height: 600px;
-`;
+export default AddNewCourseContentModal;

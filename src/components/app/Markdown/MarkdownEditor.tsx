@@ -1,10 +1,16 @@
 import generateNewMarkdownContentPrompt from '@/components/app/Markdown/generateNewMarkdownContentPrompt';
+import { markdownAIRewriteCommandFacotry } from '@/components/app/Markdown/MarkdownAICommand';
 import rewriteMarkdownContentPrompt from '@/components/app/Markdown/rewriteMarkdownContentPrompt';
 import SelectAIGeneratorModal from '@/components/app/Markdown/SelectAIGeneratorModal';
 import GenerateContentUsingAIModal from '@/components/app/Modal/AI/GenerateContentUsingAIModal';
 import RobotIconSolid from '@/components/core/icons/RobotIconSolid';
 import { useNotificationContext } from '@/contexts/NotificationContext';
-import { CreateSignedUrlInput, useCreateSignedUrlMutation } from '@/graphql/generated/generated-types';
+import {
+  ChatCompletionRequestMessageRoleEnum,
+  CreateSignedUrlInput,
+  useAskChatCompletionAiMutation,
+  useCreateSignedUrlMutation,
+} from '@/graphql/generated/generated-types';
 import { PropsWithChildren } from '@/types/PropsWithChildren';
 
 import { getUploadedImageUrlFromSingedUrl } from '@/utils/upload/getUploadedImageUrlFromSingedUrl';
@@ -149,6 +155,7 @@ function MarkdownEditor({
   const [markdown, setMarkdown] = useState<string | undefined>();
 
   const [createSignedUrlMutation, { loading: creatingSingedUrl }] = useCreateSignedUrlMutation();
+  const [askChatCompletetionAI] = useAskChatCompletionAiMutation();
   const handleInput = (value: SetStateAction<string | undefined>) => {
     setMarkdown(value || '');
     onUpdate && onUpdate(value?.toString() || '');
@@ -218,6 +225,27 @@ function MarkdownEditor({
     );
   };
 
+  const rewriteContent = async (text: string) => {
+    const response = await askChatCompletetionAI({
+      variables: {
+        input: {
+          messages: [
+            {
+              role: ChatCompletionRequestMessageRoleEnum.User,
+              content: `Rewrite this content and maintain the same word length: \n ${text}`,
+            },
+          ],
+        },
+      },
+    });
+    const rewrittenText = response.data?.askChatCompletionAI?.choices[0]?.message?.content;
+    if (rewrittenText) {
+      return rewrittenText;
+    } else {
+      return text;
+    }
+  };
+
   const fieldId = uuidV4();
   return (
     <div className="mt-2">
@@ -247,17 +275,13 @@ function MarkdownEditor({
             commands.divider,
 
             commands.bold,
-            commands.codeBlock,
-            commands.comment,
             commands.italic,
-            commands.strikethrough,
 
             commands.divider,
 
             commands.hr,
             commands.link,
             commands.quote,
-            commands.code,
             commands.image,
 
             commands.divider,
@@ -266,12 +290,11 @@ function MarkdownEditor({
             commands.checkedListCommand,
             commands.divider,
 
-            commands.codeEdit,
-            commands.codeLive,
             commands.codePreview,
             commands.fullscreen,
           ]}
           extraCommands={[
+            markdownAIRewriteCommandFacotry(rewriteContent),
             commands.group([], {
               name: 'update',
               groupName: 'update',

@@ -5,7 +5,7 @@ import Block from '@/components/app/Block';
 import RowLoading from '@/components/core/loaders/RowLoading';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import CourseNavigation from '@/components/courses/Edit/CourseNavigation';
-import ModalCourseNewItem from '@/components/courses/Edit/ModalCourseNewItem';
+import AddNewCourseContentModal from '@/components/courses/Edit/AddNewCourseContentModal';
 import BasicCourseConfigurations from '@/components/courses/View/BasicCourseConfigurations';
 import CourseDetailsRightSection, { ItemTypes } from '@/components/courses/View/CourseDetailsRightSection';
 import { useCourseSubmission } from '@/components/courses/View/useCourseSubmission';
@@ -106,6 +106,7 @@ const CourseView = ({ params, space }: { params: { courseInfo: string[] }; space
                 topicKey={topicKey}
                 itemType={itemType as ItemTypes}
                 itemKey={itemKey}
+                isCourseAdmin={!!isCourseAdmin}
               />
             </StyledNavWrapper>
             <div className="border-r-2"></div>
@@ -133,7 +134,7 @@ const CourseView = ({ params, space }: { params: { courseInfo: string[] }; space
         )
       )}
       {course && (
-        <ModalCourseNewItem
+        <AddNewCourseContentModal
           open={modalCourseNewItemOpen}
           closeModal={() => setModalCourseNewItemOpen(false)}
           course={course}

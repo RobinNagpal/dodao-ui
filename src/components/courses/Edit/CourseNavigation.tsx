@@ -28,6 +28,7 @@ interface CourseNavigationProps {
   topicKey?: string;
   itemType?: ItemTypes;
   itemKey?: string;
+  isCourseAdmin: boolean;
 }
 
 const ClickableDiv = styled.div`
@@ -286,8 +287,8 @@ const CourseComponent: React.FC<CourseNavigationProps> = ({
   itemType,
   submissionHelper,
   isCourseSubmissionScreen,
+  isCourseAdmin,
 }) => {
-  const isCourseAdmin = true;
   const [openNodes, setOpenNodes] = useState<{ [key: string]: string }>({});
 
   useEffect(() => {
