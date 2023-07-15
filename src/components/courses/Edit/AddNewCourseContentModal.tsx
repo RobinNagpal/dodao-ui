@@ -94,19 +94,47 @@ const AddNewCourseContentModal: React.FC<ModalCourseNewItemProps> = ({ course, s
     closeModal();
   };
   const addExplanation = async (input: UpdateTopicExplanationInput) => {
-    await courseHelper.addTopicExplanation(input!);
+    await courseHelper.addTopicExplanation({
+      courseKey: input.courseKey,
+      details: input.details,
+      shortTitle: input.shortTitle,
+      title: input.title,
+      topicKey: input.topicKey,
+    });
     closeModal();
   };
   const addSummary = async (input: UpdateTopicSummaryInput) => {
-    await courseHelper.addTopicSummary(input!);
+    await courseHelper.addTopicSummary({
+      courseKey: input.courseKey,
+      details: input.details,
+      shortTitle: input.shortTitle,
+      title: input.title,
+      topicKey: input.topicKey,
+    });
     closeModal();
   };
   const addReading = async (input: UpdateTopicVideoInput) => {
-    await courseHelper.addTopicVideo(input!);
+    await courseHelper.addTopicVideo({
+      courseKey: input.courseKey,
+      details: input.details,
+      shortTitle: input.shortTitle,
+      title: input.title,
+      topicKey: input.topicKey,
+      url: input.url,
+    });
     closeModal();
   };
   const addQuestion = async (question: UpdateTopicQuestionInput) => {
-    await courseHelper.addTopicQuestion(question!);
+    await courseHelper.addTopicQuestion({
+      answerKeys: question.answerKeys,
+      choices: question.choices,
+      content: question.content,
+      courseKey: question.courseKey,
+      explanation: question.explanation,
+      hint: question.hint,
+      questionType: question.questionType,
+      topicKey: question.topicKey,
+    });
     closeModal();
   };
 
