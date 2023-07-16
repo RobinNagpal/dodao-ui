@@ -7,6 +7,7 @@ import GenerateImage from '@/components/spaces/Image/GenerateImage';
 import ListSpaces from '@/components/spaces/ListSpaces';
 import { ManageSpaceSubviews } from '@/components/spaces/manageSpaceSubviews';
 import SpaceDetails from '@/components/spaces/SpaceDetails';
+import GenerateStoryBoard from '@/components/spaces/StoryBoard/GenerateStoryBoard';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import classNames from '@/utils/classNames';
 import { CircleStackIcon, HomeIcon } from '@heroicons/react/24/outline';
@@ -17,6 +18,7 @@ const getNavigation = (space: SpaceWithIntegrationsFragment) => {
   const navigation = [
     { name: 'Dashboard', href: `space/manage/${ManageSpaceSubviews.ViewSpace}/${space.id}`, icon: HomeIcon, current: true },
     { name: 'Image', href: `space/manage/${ManageSpaceSubviews.GenerateImage}/${space.id}`, icon: PhotoIcon, current: false },
+    { name: 'Story Board', href: `space/manage/${ManageSpaceSubviews.GenerateStoryBoard}/${space.id}`, icon: PhotoIcon, current: false },
     { name: 'Spaces', href: '/space/manage/' + ManageSpaceSubviews.SpacesList, icon: CircleStackIcon, current: false },
   ];
 
@@ -44,6 +46,9 @@ function GetSubview(props: { manageInfo: string[]; space: SpaceWithIntegrationsF
   }
   if (subView === ManageSpaceSubviews.GenerateImage) {
     return <GenerateImage />;
+  }
+  if (subView === ManageSpaceSubviews.GenerateStoryBoard) {
+    return <GenerateStoryBoard />;
   }
 
   return <SpaceDetails spaceId={props.space.id} />;
