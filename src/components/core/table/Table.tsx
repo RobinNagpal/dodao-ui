@@ -96,18 +96,18 @@ export function Table(props: TableProps) {
                           <FirstColumnCell
                             width={`${props.columnsWidthPercents?.[index] || 100}%`}
                             key={index}
-                            className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium sm:pl-0 break-all"
+                            className="py-4 pl-4 pr-3 text-sm font-medium sm:pl-0 break-words"
                           >
                             {cell}
                           </FirstColumnCell>
                         ) : (
-                          <TableCell key={index} className="whitespace-nowrap px-3 py-4 text-sm break-all">
+                          <TableCell key={index} className="px-3 py-4 text-sm break-all">
                             {cell}
                           </TableCell>
                         );
-                      })}
+                      })}{' '}
                       {props.actions && (
-                        <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
+                        <td className="relative py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
                           <EllipsisDropdown
                             items={props.actions.items}
                             onSelect={(key) => {

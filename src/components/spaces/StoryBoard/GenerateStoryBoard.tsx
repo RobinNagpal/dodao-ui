@@ -6,7 +6,7 @@ import { Table, TableRow } from '@/components/core/table/Table';
 import TextareaAutosize from '@/components/core/textarea/TextareaAutosize';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import { ChatCompletionRequestMessageRoleEnum, useAskChatCompletionAiMutation, useGenerateImageMutation } from '@/graphql/generated/generated-types';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface StoryBoardInterface {
   panels: { dialogues: { text: string; user: string }[]; scene: string }[];
@@ -84,17 +84,19 @@ ${form.openAIStoryboardPrompt}
 }
 
 const defaultStoryBoardPrompt = `
-Generate a storyboard for the above TOPIC and  DETAILS. storyboard is interaction between two people. Make sure the storyboard has 8 panels. Strictly 
+Generate a storyboard for the above TOPIC and  DETAILS. storyboard is interaction between two people. Make sure the storyboard has 4 panels. Strictly 
 ensure the following JSON format while generating the storyboard:
 
 ${JSON.stringify(storyBoardSample, null, 2)}
+
+
+Don't create more than 4 panels.
+
 
 JSON output is:
 `;
 
 export default function GenerateStoryBoard() {
-  const generateStoryboardForm = localStorage.getItem('generate_story_book_form');
-
   const defaultFormValues: GenerateStoryboardForm = {
     contents: '',
     topic: '',
@@ -104,7 +106,23 @@ export default function GenerateStoryBoard() {
     imageType: 'Oil Painting',
   };
 
-  const [form, setForm] = useState<GenerateStoryboardForm>(generateStoryboardForm ? JSON.parse(generateStoryboardForm) : defaultFormValues);
+  const [form, setForm] = useState<GenerateStoryboardForm>(defaultFormValues);
+
+  const GENERATE_STORYBOOK_FORM_KEY = 'generate_story_book_form';
+  const GENERATE_STORYBOOK_SCRIPT_KEY = 'generate_story_book_script';
+
+  useEffect(() => {
+    const generateStoryboardForm = localStorage.getItem(GENERATE_STORYBOOK_FORM_KEY);
+    if (generateStoryboardForm) {
+      setForm(JSON.parse(generateStoryboardForm));
+    }
+
+    const generateStoryboardScript = localStorage.getItem(GENERATE_STORYBOOK_SCRIPT_KEY);
+
+    if (generateStoryboardScript) {
+      setStoryboardScript(JSON.parse(generateStoryboardScript));
+    }
+  }, []);
 
   const updateFormField = (field: keyof GenerateStoryboardForm, value: string | number) => {
     setForm((prevForm) => {
@@ -112,7 +130,7 @@ export default function GenerateStoryBoard() {
         ...prevForm,
         [field]: value,
       };
-      localStorage.setItem('generate_story_book_form', JSON.stringify(updatedForm));
+      localStorage.setItem(GENERATE_STORYBOOK_FORM_KEY, JSON.stringify(updatedForm));
       return updatedForm;
     });
   };
@@ -178,9 +196,11 @@ export default function GenerateStoryBoard() {
           n: 1,
         },
       },
+      errorPolicy: 'all',
     });
     const script = response.data?.askChatCompletionAI.choices?.[0]?.message?.content;
     setStoryboardScript(script ? JSON.parse(script) : undefined);
+    localStorage.setItem(GENERATE_STORYBOOK_SCRIPT_KEY, script || '');
     setGeneratingStoryboard(false);
   };
 
@@ -200,8 +220,10 @@ export default function GenerateStoryBoard() {
             n: 1,
           },
         },
+        errorPolicy: 'all',
       });
       const openAIGeneratedPrompt = response.data?.askChatCompletionAI.choices?.[0]?.message?.content;
+      imagePrompts.push(openAIGeneratedPrompt || '');
       setImagePrompts((prev) => (openAIGeneratedPrompt ? [...prev, openAIGeneratedPrompt] : [...prev]));
     }
 
@@ -261,7 +283,7 @@ export default function GenerateStoryBoard() {
 
       {storyboardScript && (
         <>
-          <div className="text-xs">
+          <div className="text-xs mt-6">
             <pre>{storyboardScript && JSON.stringify(storyboardScript, null, 2)}</pre>
           </div>
           <TextareaAutosize
