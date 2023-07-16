@@ -9,7 +9,7 @@ import { ChatCompletionRequestMessageRoleEnum, useAskChatCompletionAiMutation, u
 import React, { useState } from 'react';
 
 const defaultPrompt = `
-Generate an image description (within 30 words) with the theme as TOPIC and image
+Generate an image description (within 100 words) with the theme as TOPIC and image
 depicts DETAILS. Strictly ensure the following rules while generating the description:
 - Depict the basic essence of the DETAILS
 - Do not use terms like representing and symbolizing in the description.
@@ -78,14 +78,17 @@ export default function GenerateImage() {
   const [imagePrompts, setImagePrompts] = useState<string[]>([]);
 
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+
+  const [generatingImagePrompts, setGeneratingImagePrompts] = useState(false);
+  const [generatingImages, setGeneratingImages] = useState(false);
+
   const [generateImageMutation] = useGenerateImageMutation();
   const [imageUrls, setImageUrls] = useState<string[]>([]);
   const { showNotification } = useNotificationContext();
 
   const [askChatCompletionAiMutation] = useAskChatCompletionAiMutation();
   async function generateImage(prompt: string): Promise<string | undefined> {
-    setLoading(true);
+    setGeneratingImages(true);
 
     const response = await generateImageMutation({
       variables: {
@@ -96,7 +99,7 @@ export default function GenerateImage() {
     });
 
     const imageUrl = response.data?.generateImage?.data?.map((d) => d.url).filter((url) => url)[0];
-    setLoading(false);
+    setGeneratingImages(false);
     return imageUrl || undefined;
   }
 
@@ -114,7 +117,7 @@ export default function GenerateImage() {
   };
 
   const generateImagePrompts = async () => {
-    setLoading(true);
+    setGeneratingImagePrompts(true);
     const response = await askChatCompletionAiMutation({
       variables: {
         input: {
@@ -130,7 +133,7 @@ export default function GenerateImage() {
     });
     const openAIGeneratedPrompts = response.data?.askChatCompletionAI.choices.map((choice) => choice.message?.content).filter((content) => content);
     setImagePrompts((openAIGeneratedPrompts as string[]) || []);
-    setLoading(false);
+    setGeneratingImagePrompts(false);
   };
 
   return (
@@ -181,7 +184,7 @@ export default function GenerateImage() {
       />
 
       <Button
-        loading={loading}
+        loading={generatingImagePrompts}
         onClick={() => {
           setImagePrompts([]);
           generateImagePrompts();
@@ -207,7 +210,7 @@ export default function GenerateImage() {
             columnsWidthPercents={[20, 80]}
           />
           <Input label="Image Type" modelValue={form.imageType} onUpdate={(v) => updateFormField('imageType', v || '')} />
-          <Button disabled={loading} loading={loading} onClick={generateImages} variant="contained" primary className="mt-4">
+          <Button disabled={generatingImages} loading={generatingImages} onClick={generateImages} variant="contained" primary className="mt-4">
             Generate Images
           </Button>
         </>

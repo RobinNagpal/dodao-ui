@@ -8,20 +8,11 @@ import { useNotificationContext } from '@/contexts/NotificationContext';
 import { ChatCompletionRequestMessageRoleEnum, useAskChatCompletionAiMutation, useGenerateImageMutation } from '@/graphql/generated/generated-types';
 import React, { useState } from 'react';
 
-const defaultImagePrompt = `
-Generate an image description (within 30 words) with the theme as TOPIC and image
-depicts DETAILS. Strictly ensure the following rules while generating the description:
-- Depict the basic essence of the DETAILS
-- Do not use terms like representing and symbolizing in the description.
-- The image must not include any numbers, digits, alphabets, texts, irrelevant, absurd, or odd icons/signs, even if suggested by the DETAILS or TOPIC.
-- Also refrain from mentioning anything particular in image description which can only be described in numbers/digits or quantitative values.
-- Do not invent or add any details that are not suggested by the DETAILS.
-- The image should be of high quality, preferably no less than 300 dpi for print or 72 dpi for web.
-- The image should be clear, without any ambiguous elements.
-- The image should be visually appealing, avoiding overly bright or clashing colours.
-`;
+interface StoryBoardInterface {
+  panels: { dialogues: { text: string; user: string }[]; scene: string }[];
+}
 
-const storyBoardSample = {
+const storyBoardSample: StoryBoardInterface = {
   panels: [
     {
       scene: 'Charlie Brown is ask Sam a question.',
@@ -52,15 +43,6 @@ const storyBoardSample = {
   ],
 };
 
-const defaultStoryBoardPrompt = `
-Generate a storyboard for the above TOPIC and  DETAILS. storyboard is interaction between two people. Make sure the storyboard has 8 panels. Strictly 
-ensure the following JSON format while generating the storyboard:
-
-${JSON.stringify(storyBoardSample, null, 2)}
-
-JSON output is:
-`;
-
 interface GenerateStoryboardForm {
   contents: string;
   topic: string;
@@ -70,15 +52,26 @@ interface GenerateStoryboardForm {
   imageType: string;
 }
 
-function getGenerateImagesPrompt(form: GenerateStoryboardForm) {
+function getGenerateImagesPrompt(scene: string, openAIImagePrompt: string) {
   return `
-TOPIC = "${form.topic}"
-DETAILS = "${form.contents}"
+SCENE = "${scene}"
 
-
-${form.openAIImagePrompt}
+${openAIImagePrompt}
 `;
 }
+
+const defaultImagePrompt = `
+Generate an image description (within 100 words) with the above mentioned SCENE. 
+Strictly ensure the following rules while generating the description:
+- Depict the basic essence of the SCENE
+- Do not use terms like representing and symbolizing in the description.
+- The image must not include any numbers, digits, alphabets, texts, irrelevant, absurd, or odd icons/signs, even if suggested by the SCENE.
+- Also refrain from mentioning anything particular in image description which can only be described in numbers/digits or quantitative values.
+- Do not invent or add any details that are not suggested by the SCENE.
+- The image should be of high quality, preferably no less than 300 dpi for print or 72 dpi for web.
+- The image should be clear, without any ambiguous elements.
+- The image should be visually appealing, avoiding overly bright or clashing colours.
+`;
 
 function getGenerateStoryboardPrompt(form: GenerateStoryboardForm) {
   return `
@@ -89,6 +82,15 @@ DETAILS = "${form.contents}"
 ${form.openAIStoryboardPrompt}
 `;
 }
+
+const defaultStoryBoardPrompt = `
+Generate a storyboard for the above TOPIC and  DETAILS. storyboard is interaction between two people. Make sure the storyboard has 8 panels. Strictly 
+ensure the following JSON format while generating the storyboard:
+
+${JSON.stringify(storyBoardSample, null, 2)}
+
+JSON output is:
+`;
 
 export default function GenerateStoryBoard() {
   const generateStoryboardForm = localStorage.getItem('generate_story_book_form');
@@ -119,19 +121,22 @@ export default function GenerateStoryBoard() {
     setForm(defaultFormValues);
   };
 
-  const [storyboardScript, setStoryboardScript] = useState<string>();
+  const [storyboardScript, setStoryboardScript] = useState<StoryBoardInterface | undefined>();
 
   const [imagePrompts, setImagePrompts] = useState<string[]>([]);
 
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [generatingStoryboard, setGeneratingStoryboard] = useState(false);
+  const [generatingImagePrompts, setGeneratingImagePrompts] = useState(false);
+  const [generatingImages, setGeneratingImages] = useState(false);
+
   const [generateImageMutation] = useGenerateImageMutation();
   const [imageUrls, setImageUrls] = useState<string[]>([]);
   const { showNotification } = useNotificationContext();
 
   const [askChatCompletionAiMutation] = useAskChatCompletionAiMutation();
   async function generateImage(prompt: string): Promise<string | undefined> {
-    setLoading(true);
+    setGeneratingImages(true);
 
     const response = await generateImageMutation({
       variables: {
@@ -142,7 +147,7 @@ export default function GenerateStoryBoard() {
     });
 
     const imageUrl = response.data?.generateImage?.data?.map((d) => d.url).filter((url) => url)[0];
-    setLoading(false);
+    setGeneratingImages(false);
     return imageUrl || undefined;
   }
 
@@ -160,7 +165,7 @@ export default function GenerateStoryBoard() {
   };
 
   const generateStoryboardScriptPrompt = async () => {
-    setLoading(true);
+    setGeneratingStoryboard(true);
     const response = await askChatCompletionAiMutation({
       variables: {
         input: {
@@ -175,28 +180,33 @@ export default function GenerateStoryBoard() {
       },
     });
     const script = response.data?.askChatCompletionAI.choices?.[0]?.message?.content;
-    setStoryboardScript(script || '');
-    setLoading(false);
+    setStoryboardScript(script ? JSON.parse(script) : undefined);
+    setGeneratingStoryboard(false);
   };
 
   const generateImagePrompts = async () => {
-    setLoading(true);
-    const response = await askChatCompletionAiMutation({
-      variables: {
-        input: {
-          messages: [
-            {
-              role: ChatCompletionRequestMessageRoleEnum.User,
-              content: getGenerateImagesPrompt(form),
-            },
-          ],
-          n: 1,
+    setGeneratingImagePrompts(true);
+    const imagePrompts: string[] = [];
+    for (const panel of storyboardScript?.panels || []) {
+      const response = await askChatCompletionAiMutation({
+        variables: {
+          input: {
+            messages: [
+              {
+                role: ChatCompletionRequestMessageRoleEnum.User,
+                content: getGenerateImagesPrompt(JSON.stringify(panel), form.openAIImagePrompt),
+              },
+            ],
+            n: 1,
+          },
         },
-      },
-    });
-    const openAIGeneratedPrompts = response.data?.askChatCompletionAI.choices.map((choice) => choice.message?.content).filter((content) => content);
-    setImagePrompts((openAIGeneratedPrompts as string[]) || []);
-    setLoading(false);
+      });
+      const openAIGeneratedPrompt = response.data?.askChatCompletionAI.choices?.[0]?.message?.content;
+      setImagePrompts((prev) => (openAIGeneratedPrompt ? [...prev, openAIGeneratedPrompt] : [...prev]));
+    }
+
+    setImagePrompts((prev) => [...imagePrompts]);
+    setGeneratingImagePrompts(false);
   };
 
   return (
@@ -237,9 +247,9 @@ export default function GenerateStoryBoard() {
       />
 
       <Button
-        loading={loading}
+        loading={generatingStoryboard}
         onClick={() => {
-          setStoryboardScript('');
+          setStoryboardScript(undefined);
           generateStoryboardScriptPrompt();
         }}
         variant="contained"
@@ -248,6 +258,38 @@ export default function GenerateStoryBoard() {
       >
         Generate Storyboard Script
       </Button>
+
+      {storyboardScript && (
+        <>
+          <div className="text-xs">
+            <pre>{storyboardScript && JSON.stringify(storyboardScript, null, 2)}</pre>
+          </div>
+          <TextareaAutosize
+            label="Open AI Image Prompt"
+            id="openAIImagePrompt"
+            autosize={true}
+            modelValue={form.openAIImagePrompt}
+            minHeight={100}
+            onUpdate={(e) => {
+              const contents = e?.toString() || '';
+              updateFormField('openAIImagePrompt', contents);
+            }}
+            className="mt-6"
+            placeholder={'Prompt that will be used to generate images for storyboard.'}
+            infoText={'Prompt that will be used to generate images for storyboard.'}
+          />
+          <Button
+            disabled={generatingImagePrompts}
+            loading={generatingImagePrompts}
+            onClick={generateImagePrompts}
+            variant="contained"
+            primary
+            className="mt-4"
+          >
+            Generate Image Prompts
+          </Button>
+        </>
+      )}
 
       {imagePrompts.length > 0 && (
         <>
@@ -263,17 +305,12 @@ export default function GenerateStoryBoard() {
             columnsWidthPercents={[20, 80]}
           />
           <Input label="Image Type" modelValue={form.imageType} onUpdate={(v) => updateFormField('imageType', v || '')} />
-          <Button disabled={loading} loading={loading} onClick={generateImages} variant="contained" primary className="mt-4">
+          <Button disabled={generatingImages} loading={generatingImages} onClick={generateImages} variant="contained" primary className="mt-4">
             Generate Images
           </Button>
         </>
       )}
 
-      {storyboardScript && (
-        <div>
-          <pre>{JSON.stringify(JSON.parse(storyboardScript), null, 2)}</pre>
-        </div>
-      )}
       {imageUrls.length > 0 && (
         <div className="w-full flex justify-start my-4">
           {imageUrls.map((imageUrl) => (
