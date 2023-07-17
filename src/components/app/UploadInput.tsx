@@ -17,6 +17,7 @@ const StyledInput = styled.input`
   }
 `;
 export default function UploadInput(props: {
+  label?: string;
   modelValue?: string | null;
   imageType: string;
   objectId: string;
@@ -30,7 +31,7 @@ export default function UploadInput(props: {
   return (
     <UploadWrapper className="mt-2">
       <label htmlFor={inputId} className="block text-sm font-medium leading-6">
-        Image URL
+        {props.label || 'Image URL'}
       </label>
       <div className="mt-2 flex rounded-md shadow-sm">
         <div className="relative flex flex-grow items-stretch focus-within:z-10">

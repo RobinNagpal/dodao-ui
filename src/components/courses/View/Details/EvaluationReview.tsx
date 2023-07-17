@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
 import { CourseQuestionSubmission, CourseSubmissionHelper, QuestionStatus } from '@/components/courses/View/useCourseSubmission';
 import { CourseHelper } from '@/components/courses/View/useViewCourse';
-import { CourseDetailsFragment, Space, TopicCorrectAnswersFragment } from '@/graphql/generated/generated-types';
-import Link from 'next/link';
+import { CourseDetailsFragment, CourseQuestionFragment, Space, TopicCorrectAnswersFragment } from '@/graphql/generated/generated-types';
 import isEqual from 'lodash/isEqual';
 import sortBy from 'lodash/sortBy';
+import Link from 'next/link';
+import React from 'react';
+import styled from 'styled-components';
 
 interface IProps {
   course: CourseDetailsFragment;
@@ -15,19 +15,6 @@ interface IProps {
   courseHelper: CourseHelper;
   submissionHelper: CourseSubmissionHelper;
 }
-
-const TickMark = styled.span`
-  content: '';
-  left: 16px;
-  top: 6px;
-  width: 8px;
-  height: 14px;
-  border: solid white;
-  border-width: 0 2px 2px 0;
-  transform: rotate(45deg);
-  -ms-transform: rotate(45deg);
-  position: absolute;
-`;
 
 const QuestionNavItem = styled.div<{ isTopicSubmitted: boolean; questionStatus: string }>`
   width: 40px;
@@ -55,13 +42,13 @@ const QuestionNavItem = styled.div<{ isTopicSubmitted: boolean; questionStatus: 
   }
 `;
 
-const QuestionNumber = styled.div`
-  background-color: #d32f2f;
-  border-radius: 8%;
-  color: #fff;
+const QuestionStatusDiv = styled.div<{ status?: QuestionStatus }>`
+  background-color: ${(props) => (props.status === QuestionStatus.Completed ? 'green' : props.status === QuestionStatus.Skipped ? 'yellow' : 'red')};
+  border-radius: 0.25rem;
   text-align: center;
-  padding: 0.5rem;
-  font-weight: regular;
+  padding-top: 0.25rem;
+  color: white;
+  height: 2rem;
   position: absolute;
   top: -30px;
   left: 0;
@@ -70,17 +57,12 @@ const QuestionNumber = styled.div`
 
 function EvaluationComponent({ course, courseHelper, topicKey, submissionHelper }: IProps) {
   const topic = courseHelper.getTopic(topicKey);
-  const [isTopicSubmitted, setIsTopicSubmitted] = useState<boolean>(false);
-  const [questionsSubmissions, setQuestionsSubmissions] = useState<Record<string, CourseQuestionSubmission> | undefined>();
-  const [correctAnswersOfTopic, setCorrectAnswersOfTopic] = useState<Record<string, TopicCorrectAnswersFragment> | undefined>();
 
-  useEffect(() => {
-    setIsTopicSubmitted(submissionHelper.isTopicSubmissionInSubmittedStatus(topicKey));
-    setQuestionsSubmissions(submissionHelper.courseSubmission?.topicSubmissionsMap?.[topicKey]?.questions);
-    setCorrectAnswersOfTopic(submissionHelper.courseSubmission?.topicSubmissionsMap?.[topicKey]?.correctAnswers);
-  }, [course, topicKey, submissionHelper]);
+  const isTopicSubmitted = submissionHelper.isTopicSubmissionInSubmittedStatus(topicKey);
+  const questionsSubmissions = submissionHelper.courseSubmission?.topicSubmissionsMap?.[topicKey]?.questions;
+  const correctAnswersOfTopic = submissionHelper.courseSubmission?.topicSubmissionsMap?.[topicKey]?.correctAnswers;
 
-  const getQuestionStatus = (question: any) => {
+  const getQuestionStatus = (question: CourseQuestionFragment) => {
     if (isTopicSubmitted) {
       const questionRes: CourseQuestionSubmission | undefined = questionsSubmissions?.[question.uuid];
       const correctAnswers: TopicCorrectAnswersFragment | undefined = correctAnswersOfTopic?.[question.uuid];
@@ -89,35 +71,35 @@ function EvaluationComponent({ course, courseHelper, topicKey, submissionHelper 
         const sortedResponse = sortBy(questionRes.answers, (answer) => answer.toLowerCase());
         const sortedCorrectAnswers = sortBy(correctAnswers.answerKeys, (answer) => answer.toLowerCase());
         if (isEqual(sortedResponse, sortedCorrectAnswers)) {
-          return 'completed';
+          return QuestionStatus.Completed;
         }
       }
-      return 'error';
+      return QuestionStatus.Uncompleted;
     } else {
       const questionRes: CourseQuestionSubmission | undefined = questionsSubmissions?.[question.uuid];
       if (questionRes?.status === QuestionStatus.Completed && questionRes?.answers?.length > 0) {
-        return 'completed';
+        return QuestionStatus.Completed;
       } else if (questionRes?.status === QuestionStatus.Skipped) {
-        return 'skipped';
+        return QuestionStatus.Skipped;
       }
-      return 'error';
+      return QuestionStatus.Uncompleted;
     }
   };
   return (
-    <div className="flex flex-wrap">
-      {topic?.questions?.map((question: any, index: number) => (
-        <Link className="mx-2 my-2" href={`/courses/view/${course.key}/${topicKey}/questions/${index}`} key={index}>
-          <div className="text-center">{index + 1}</div>
-          <QuestionNavItem
-            isTopicSubmitted={isTopicSubmitted}
-            questionStatus={getQuestionStatus(question)}
-            className={`question-nav-item ${getQuestionStatus(question)}`}
-          >
-            <div className="indicator">{getQuestionStatus(question) === 'completed' && isTopicSubmitted && <TickMark className="tick-mark" />}</div>
-            <QuestionNumber className="mt-7" />
-          </QuestionNavItem>
-        </Link>
-      ))}
+    <div className="flex flex-wrap mb-6">
+      {topic?.questions?.map((question: CourseQuestionFragment, index) => {
+        const questionStatus = getQuestionStatus(question) as QuestionStatus;
+        return (
+          <Link className="mx-2 my-5" href={`/courses/view/${course.key}/${topicKey}/questions/${index}`} key={index}>
+            <div className="text-center">{index + 1}</div>
+            <QuestionNavItem isTopicSubmitted={isTopicSubmitted} questionStatus={questionStatus} className={`question-nav-item ${questionStatus}`}>
+              <QuestionStatusDiv className="mt-7" status={questionStatus}>
+                {isTopicSubmitted ? (questionStatus === QuestionStatus.Completed ? '✓' : '✗') : ''}
+              </QuestionStatusDiv>
+            </QuestionNavItem>
+          </Link>
+        );
+      })}
     </div>
   );
 }

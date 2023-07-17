@@ -63,6 +63,12 @@ fragment SpaceWithIntegrations on Space {
     showIncorrectAfterEachStep
     showIncorrectOnCompletion
   }
+
+  byteSettings {
+    askForLoginToSubmit
+    captureBeforeAndAfterRating
+    showCategoriesInSidebar
+  }
 }
 
 query ExtendedSpace($spaceId: String!) {
@@ -170,6 +176,12 @@ mutation UpdateSpaceAuthSettings($spaceId: String!, $input: AuthSettingsInput!) 
 
 mutation UpdateSpaceSocialSettings($spaceId: String!, $input: SocialSettingsInput!) {
   payload: updateSocialSettings(spaceId: $spaceId, input: $input) {
+    ...SpaceWithIntegrations
+  }
+}
+
+mutation UpdateSpaceByteSettings($spaceId: String!, $input: ByteSettingsInput!) {
+  payload: updateByteSettings(spaceId: $spaceId, input: $input) {
     ...SpaceWithIntegrations
   }
 }

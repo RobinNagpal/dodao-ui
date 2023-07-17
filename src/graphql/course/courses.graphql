@@ -217,6 +217,21 @@ mutation AddTopicQuestion($spaceId: String!, $questionInfo: AddTopicQuestionInpu
   }
 }
 
+mutation AddTopicQuestions($spaceId: String!, $input: AddTopicQuestionsInput!) {
+  payload: addTopicQuestions(spaceId: $spaceId, input: $input) {
+    uuid
+    type
+    content
+    answerKeys
+    hint
+    explanation
+    choices {
+      content
+      key
+    }
+  }
+}
+
 mutation DeleteTopicExplanation($spaceId: String!, $explanationInfo: DeleteTopicExplanationInput!) {
   payload: deleteTopicExplanation(spaceId: $spaceId, explanationInfo: $explanationInfo) {
     ...CourseDetails
@@ -341,6 +356,12 @@ fragment Course on GitCourse {
 
 query CoursesQuery($spaceId: String!) {
   courses(spaceId: $spaceId) {
+    ...Course
+  }
+}
+
+mutation DeleteAndPullCourseRepo($spaceId: String!, $courseKey: String!) {
+  deleteAndPullCourseRepo(spaceId: $spaceId, courseKey: $courseKey) {
     ...Course
   }
 }

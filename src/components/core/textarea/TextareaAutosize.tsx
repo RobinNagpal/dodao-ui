@@ -15,6 +15,7 @@ export interface TextareaAutosizeProps {
   onUpdate?: (value: string | number | undefined) => void;
   placeholder?: string;
   className?: string;
+  infoText?: string;
 }
 
 const Textarea = styled.textarea<{ error: boolean }>`
@@ -41,6 +42,7 @@ export default function TextareaAutosize({
   placeholder,
   className,
   label,
+  infoText,
 }: TextareaAutosizeProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [maxHeightScroll, setMaxHeightScroll] = useState(false);
@@ -91,7 +93,7 @@ export default function TextareaAutosize({
   const slugLable = slugify(label);
 
   return (
-    <div className={'w-full ' + className || ''}>
+    <div className={'w-full mt-2 ' + className || ''}>
       <label htmlFor={id || slugLable || uuid} className="block text-sm font-medium leading-6">
         {label}
       </label>
@@ -108,6 +110,7 @@ export default function TextareaAutosize({
           placeholder={placeholder}
           error={!!error}
         />
+        {infoText && <p className="mt-1 text-xs">{infoText}</p>}
         {error && typeof error === 'string' && (
           <p className="mt-2 text-sm text-red-600" id="email-error">
             {error}

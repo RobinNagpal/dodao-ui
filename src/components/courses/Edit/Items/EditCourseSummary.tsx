@@ -62,7 +62,7 @@ export default function EditCourseSummary({ course, space, topicKey, currentSumm
   }, [form, hasErrors, saveSummary]);
 
   return (
-    <div className="flex flex-col justify-between h-full w-full">
+    <div className="flex flex-col justify-between h-full w-full text-left">
       <div className="h-full w-full">
         <Input
           modelValue={form.title}

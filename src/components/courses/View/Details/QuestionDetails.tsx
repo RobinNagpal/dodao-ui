@@ -1,5 +1,6 @@
 import IconButton from '@/components/core/buttons/IconButton';
 import Question from '@/components/app/Common/Question';
+import ErrorWithAccentBorder from '@/components/core/errors/ErrorWithAccentBorder';
 import { IconTypes } from '@/components/core/icons/IconTypes';
 import Button from '@/components/core/buttons/Button';
 import EditCourseQuestion from '@/components/courses/Edit/Items/EditCourseQuestion';
@@ -11,7 +12,9 @@ import { CourseHelper } from '@/components/courses/View/useViewCourse';
 import { useLoginModalContext } from '@/contexts/LoginModalContext';
 import { CourseDetailsFragment, DeleteTopicQuestionInput, MoveTopicQuestionInput, Space, UpdateTopicQuestionInput } from '@/graphql/generated/generated-types';
 import { MoveCourseItemDirection } from '@/types/deprecated/models/enums';
+import { getMarkedRenderer } from '@/utils/ui/getMarkedRenderer';
 import isEqual from 'lodash/isEqual';
+import { marked } from 'marked';
 import { useSession } from 'next-auth/react';
 import sortBy from 'lodash/sortBy';
 import Link from 'next/link';
@@ -53,11 +56,10 @@ const CorrectAnswerContainer = styled.div<{ isTopicSubmitted: boolean; isCorrect
     margin-top: 1rem; // 16px
   `}
 `;
-
+const renderer = getMarkedRenderer();
 export default function QuestionDetails(props: QuestionDetailsProps) {
   const { data: session } = useSession();
   const { setShowLoginModal } = useLoginModalContext();
-
   const { course, isCourseAdmin, space, topicKey, courseHelper, submissionHelper } = props;
   const questionIndex = parseInt(props.questionIndex, 10);
   // previous setup code here...
@@ -65,18 +67,15 @@ export default function QuestionDetails(props: QuestionDetailsProps) {
 
   const isTopicSubmitted = props.submissionHelper.isTopicSubmissionInSubmittedStatus(props.topicKey);
   const currentQuestion = courseHelper.getTopicQuestionByIndex(topicKey, questionIndex);
+
+  const questionResponse = props.submissionHelper.getTopicSubmission(props.topicKey)?.questions?.[currentQuestion.uuid]?.answers;
+
   const topic = courseHelper.getTopic(topicKey);
 
-  const [questionResponse, setQuestionResponse] = useState<string[]>([]);
-  useEffect(() => {
-    setQuestionResponse(
-      (currentQuestion && props.submissionHelper.courseSubmission?.topicSubmissionsMap?.[props.topicKey]?.questions?.[currentQuestion.uuid]?.answers) || []
-    );
-  }, [currentQuestion, props.submissionHelper.courseSubmission, props.topicKey]);
-
   const [showQuestionsCompletionWarning, setShowQuestionsCompletionWarning] = useState(false);
+
   useEffect(() => {
-    setShowQuestionsCompletionWarning(nextButtonClicked && !questionResponse.length);
+    setShowQuestionsCompletionWarning(nextButtonClicked && !questionResponse?.length);
   }, [nextButtonClicked, questionResponse]);
 
   const router = useRouter();
@@ -104,9 +103,11 @@ export default function QuestionDetails(props: QuestionDetailsProps) {
       return;
     }
     setNextButtonClicked(true);
-    if (!questionResponse.length) {
+
+    if (!questionResponse?.length) {
       return;
     }
+
     await props.submissionHelper.saveAnswer(props.topicKey, currentQuestion?.uuid, {
       status: questionResponse.length > 0 ? QuestionStatus.Completed : QuestionStatus.Uncompleted,
       answers: questionResponse,
@@ -172,9 +173,11 @@ export default function QuestionDetails(props: QuestionDetailsProps) {
     );
   }
 
+  const questionExplanation = currentQuestion.explanation && marked.parse(currentQuestion.explanation, { renderer });
+
   if (!editMode && currentQuestion) {
     return (
-      <div className="h-full flex flex-col justify-between">
+      <div className="h-full flex flex-col justify-between text-base">
         <div>
           <EvaluationReview
             space={space}
@@ -184,7 +187,7 @@ export default function QuestionDetails(props: QuestionDetailsProps) {
             submissionHelper={submissionHelper}
             isCourseAdmin={isCourseAdmin}
           />
-          <div className="h-full pt-4 border-t border-skin-border">
+          <div className="h-full p-4 border-t border-skin-border">
             <div className="flex justify-between w-full">
               <h1 className="mb-4">Question {questionIndex + 1}</h1>
               {isCourseAdmin && (
@@ -208,12 +211,12 @@ export default function QuestionDetails(props: QuestionDetailsProps) {
                 </div>
               )}
             </div>
-            <QuestionContainer isTopicSubmitted={isTopicSubmitted} isCorrectAnswer={isCorrectAnswer}>
+            <QuestionContainer isTopicSubmitted={isTopicSubmitted} isCorrectAnswer={isCorrectAnswer} className="px-2">
               {isTopicSubmitted && !isCorrectAnswer && <h3>Your Selection</h3>}
               <Question
                 onSelectAnswer={selectAnswer}
                 answerClass={isTopicSubmitted && isCorrectAnswer ? 'correct-answer' : ''}
-                questionResponse={questionResponse}
+                questionResponse={questionResponse || []}
                 question={currentQuestion}
                 readonly={isTopicSubmitted}
                 showHint={!isTopicSubmitted && !!props.course.topicConfig?.showHints}
@@ -221,7 +224,7 @@ export default function QuestionDetails(props: QuestionDetailsProps) {
               {isTopicSubmitted && isCorrectAnswer && props.course.topicConfig?.showExplanations && (
                 <div className="p-2 mt-2">
                   <h4 className="text-lg mb-2">Explanation</h4>
-                  <p>{currentQuestion.explanation}</p>
+                  <p dangerouslySetInnerHTML={{ __html: questionExplanation }} className="mt-2" />
                 </div>
               )}
             </QuestionContainer>
@@ -237,9 +240,9 @@ export default function QuestionDetails(props: QuestionDetailsProps) {
                   readonly={true}
                 />
                 {isTopicSubmitted && !isCorrectAnswer && props.course.topicConfig?.showExplanations && (
-                  <div>
+                  <div className="text-sm mt-2">
                     <h3>Explanation</h3>
-                    <p>{currentQuestion.explanation}</p>
+                    <p dangerouslySetInnerHTML={{ __html: questionExplanation }} className="mt-2" />
                   </div>
                 )}
               </CorrectAnswerContainer>
@@ -248,12 +251,7 @@ export default function QuestionDetails(props: QuestionDetailsProps) {
         </div>
 
         <div>
-          {showQuestionsCompletionWarning && (
-            <div className="mb-2 text-red-500 flex items-center">
-              <i className="iconfont iconwarning"></i>
-              <span className="ml-1">{`Answer question or select "Skip" to proceed`}</span>
-            </div>
-          )}
+          {showQuestionsCompletionWarning && <ErrorWithAccentBorder error={`Answer question or select "Skip" to proceed`} className="mb-4" />}
           <div className="flex flex-between mt-4 flex-1 items-end p-2">
             {questionIndex > 0 && (
               <Link href={`/courses/view/${course.key}/${topic.key}/questions/${questionIndex - 1}`}>

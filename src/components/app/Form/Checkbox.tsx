@@ -49,7 +49,7 @@ export default function Checkbox({ id, labelContent, isChecked, className, reado
           id={id}
           name="notification-method"
           type="checkbox"
-          defaultChecked={isChecked}
+          checked={isChecked}
           readOnly={readonly}
           onChange={() => onChange(!isChecked)}
           className="h-4 w-4 border focus:ring focus:outline-none mr-2"

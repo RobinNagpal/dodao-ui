@@ -1,7 +1,9 @@
+import { useNotificationContext } from '@/contexts/NotificationContext';
 import {
   AddTopicExplanationInput,
   AddTopicInput,
   AddTopicQuestionInput,
+  AddTopicQuestionsInput,
   AddTopicSummaryInput,
   AddTopicVideoInput,
   CourseBasicInfoInput,
@@ -30,6 +32,7 @@ import {
   useAddTopicExplanationMutation,
   useAddTopicMutation,
   useAddTopicQuestionMutation,
+  useAddTopicQuestionsMutation,
   useAddTopicSummaryMutation,
   useAddTopicVideoMutation,
   useDeleteTopicExplanationMutation,
@@ -74,6 +77,7 @@ export interface CourseHelper {
   addTopicSummary: (updates: AddTopicSummaryInput) => Promise<boolean>;
   addTopicVideo: (updates: AddTopicVideoInput) => Promise<boolean>;
   addTopicQuestion: (updates: AddTopicQuestionInput) => Promise<boolean>;
+  addTopicQuestions: (updates: AddTopicQuestionsInput) => Promise<boolean>;
 
   deleteTopicExplanation: (updates: DeleteTopicExplanationInput) => Promise<boolean>;
   deleteTopicSummary: (updates: DeleteTopicSummaryInput) => Promise<boolean>;
@@ -104,23 +108,29 @@ const useViewCourse = (space: Space, courseKey: string): CourseHelper => {
 
   const { refetch: getCourse, data, loading } = useGitCourseQueryQuery({ variables: { spaceId: space.id, courseKey: courseKey } });
 
+  const { showNotification } = useNotificationContext();
   const [updateCourseBasicInfoMutation] = useUpdateCourseBasicInfoMutation();
   const [updateTopicBasicInfoMutation] = useUpdateTopicBasicInfoMutation();
   const [addTopicMutation] = useAddTopicMutation();
   const [deleteTopicMutation] = useDeleteTopicMutation();
   const [moveTopicMutation] = useMoveTopicMutation();
+
   const [updateTopicExplanationMutation] = useUpdateTopicExplanationMutation();
   const [updateTopicSummaryMutation] = useUpdateTopicSummaryMutation();
   const [updateTopicVideoMutation] = useUpdateTopicVideoMutation();
   const [updateTopicQuestionMutation] = useUpdateTopicQuestionMutation();
+
   const [addTopicExplanationMutation] = useAddTopicExplanationMutation();
   const [addTopicSummaryMutation] = useAddTopicSummaryMutation();
   const [addTopicVideoMutation] = useAddTopicVideoMutation();
   const [addTopicQuestionMutation] = useAddTopicQuestionMutation();
+  const [addTopicQuestionsMutation] = useAddTopicQuestionsMutation();
+
   const [deleteTopicExplanationMutation] = useDeleteTopicExplanationMutation();
   const [deleteTopicSummaryMutation] = useDeleteTopicSummaryMutation();
   const [deleteTopicVideoMutation] = useDeleteTopicVideoMutation();
   const [deleteTopicQuestionMutation] = useDeleteTopicQuestionMutation();
+
   const [moveTopicExplanationMutation] = useMoveTopicExplanationMutation();
   const [moveTopicSummaryMutation] = useMoveTopicSummaryMutation();
   const [moveTopicVideoMutation] = useMoveTopicVideoMutation();
@@ -135,9 +145,10 @@ const useViewCourse = (space: Space, courseKey: string): CourseHelper => {
     const updatedCourse = result.data?.payload;
     if (updatedCourse) {
       setCourse(updatedCourse);
-
+      showNotification({ message: 'Updated', type: 'success' });
       return true;
     } else {
+      showNotification({ message: 'Failed to update', type: 'error' });
       return false;
     }
   };
@@ -243,6 +254,17 @@ const useViewCourse = (space: Space, courseKey: string): CourseHelper => {
     });
     const questionIndex = course?.topics.find((topic) => topic.key === updates.topicKey)?.questions?.length || 0;
     return checkResultAndNavigate(result, `/courses/view/${course?.key}/${updates.topicKey}/questions/${questionIndex}`);
+  };
+
+  const addTopicQuestions = async (input: AddTopicQuestionsInput): Promise<boolean> => {
+    const result = await addTopicQuestionsMutation({
+      variables: {
+        spaceId: space.id,
+        input: input,
+      },
+    });
+    const questionIndex = course?.topics.find((topic) => topic.key === input.topicKey)?.questions?.length || 0;
+    return checkResultAndNavigate(result, `/courses/view/${course?.key}/${input.topicKey}/questions/${questionIndex}`);
   };
 
   const deleteTopicExplanation = async (updates: DeleteTopicExplanationInput): Promise<boolean> => {
@@ -458,6 +480,7 @@ const useViewCourse = (space: Space, courseKey: string): CourseHelper => {
     addTopicSummary,
     addTopicVideo,
     addTopicQuestion,
+    addTopicQuestions,
 
     deleteTopicExplanation,
     deleteTopicSummary,

@@ -1,4 +1,11 @@
+import UserDiscord from '@/components/app/Form/UserDiscord';
+import UserInput from '@/components/app/Form/UserInput';
+import CircleProgress from '@/components/app/Progress/CircleProgress';
+import ByteStepperItemWarnings from '@/components/bytes/View/ByteStepperItemWarnings';
+import { QuestionSection } from '@/components/bytes/View/QuestionSection';
+import { UseViewByteHelper } from '@/components/bytes/View/useViewByte';
 import Button from '@/components/core/buttons/Button';
+import { useLoginModalContext } from '@/contexts/LoginModalContext';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import {
   ByteDetailsFragment,
@@ -7,24 +14,16 @@ import {
   ByteStepItemFragment,
   ByteUserDiscordConnectFragmentFragment,
   ByteUserInputFragmentFragment,
-  GuideUserInputFragment,
   SpaceWithIntegrationsFragment,
   UserDiscordInfoInput,
 } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
-import { useSession } from 'next-auth/react';
-import { LAST_STEP_UUID } from './useViewByte';
-import { getMarkedRenderer } from '@/utils/ui/getMarkedRenderer';
-import ByteStepperItemWarnings from '@/components/bytes/View/ByteStepperItemWarnings';
-import { QuestionSection } from '@/components/bytes/View/QuestionSection';
-import { UseViewByteHelper } from '@/components/bytes/View/useViewByte';
-import UserDiscord from '@/components/app/Form/UserDiscord';
-import UserInput from '@/components/app/Form/UserInput';
-import CircleProgress from '@/components/app/Progress/CircleProgress';
 import { isQuestion, isUserDiscordConnect, isUserInput } from '@/types/deprecated/helpers/stepItemTypes';
+import { getMarkedRenderer } from '@/utils/ui/getMarkedRenderer';
 import { round } from 'lodash';
 import isEqual from 'lodash/isEqual';
 import { marked } from 'marked';
+import { useSession } from 'next-auth/react';
 import 'prismjs';
 import 'prismjs/components/prism-css';
 import 'prismjs/components/prism-javascript';
@@ -36,6 +35,7 @@ import 'prismjs/components/prism-toml';
 import 'prismjs/components/prism-yaml';
 import { useCallback, useMemo, useState } from 'react';
 import styled from 'styled-components';
+import { LAST_STEP_UUID } from './useViewByte';
 
 const StepContent = styled.div`
   @media (min-width: 976px) {
@@ -55,10 +55,9 @@ interface ByteStepperItemProps {
   step: ByteStepFragment;
   space: SpaceWithIntegrationsFragment;
   viewByteHelper: UseViewByteHelper;
-  setAccountModalOpen: (shouldOpen: boolean) => void;
 }
 
-function ByteStepperItem({ viewByteHelper, step, byte, space, setAccountModalOpen }: ByteStepperItemProps) {
+function ByteStepperItem({ viewByteHelper, step, byte, space }: ByteStepperItemProps) {
   const { activeStepOrder } = viewByteHelper;
   const { $t: t } = useI18();
   const { showNotification } = useNotificationContext();
@@ -78,6 +77,7 @@ function ByteStepperItem({ viewByteHelper, step, byte, space, setAccountModalOpe
 
   const [questionsAnsweredCorrectly, setQuestionsAnsweredCorrectly] = useState(false);
 
+  const { setShowLoginModal } = useLoginModalContext();
   function isQuestionAnswered() {
     return viewByteHelper.isQuestionAnswered(step.uuid);
   }
@@ -118,8 +118,8 @@ function ByteStepperItem({ viewByteHelper, step, byte, space, setAccountModalOpe
           return;
         }
 
-        if (!session?.username) {
-          setAccountModalOpen(true);
+        if (!session?.username && space.authSettings.enableLogin && space.byteSettings.askForLoginToSubmit) {
+          setShowLoginModal(true);
           return;
         } else {
           const byteSubmitted = await viewByteHelper.submitByte();

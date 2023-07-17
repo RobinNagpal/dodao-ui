@@ -57,6 +57,7 @@ function NextButton(props: {
   currentSummaryIndex: number;
   currentTopic: CourseTopicFragment;
   currentTopicIndex: number;
+  submissionHelper: CourseSubmissionHelper;
 }) {
   const { data: session } = useSession();
 
@@ -77,10 +78,12 @@ function NextButton(props: {
     );
   }
 
+  const markSummaryCompleted = () => props.submissionHelper.markSummaryCompleted(props.currentTopic.key, props.currentSummary.key);
+
   if (isLastSummary && hasQuestions) {
     return (
       <Link href={`/courses/view/${course.key}/${currentTopic.key}/questions/${0}`}>
-        <Button variant="contained" primary>
+        <Button variant="contained" primary onClick={() => markSummaryCompleted()}>
           Evaluation
           <span className="ml-2 font-bold">&#8594;</span>
         </Button>
@@ -91,7 +94,7 @@ function NextButton(props: {
   if (isLastSummary && !isLastTopic) {
     return (
       <Link href={`/courses/view/${course.key}/${course.topics[currentTopicIndex + 1].key}`}>
-        <Button variant="contained" primary>
+        <Button variant="contained" primary onClick={() => markSummaryCompleted()}>
           Next Chapter <span className="ml-2 font-bold">&#8594;</span>
         </Button>
       </Link>
@@ -101,7 +104,7 @@ function NextButton(props: {
   if (isLastSummary && isLastTopic) {
     return (
       <Link href={`/courses/view/${course.key}/${currentTopic.key}/submit`}>
-        <Button variant="contained" primary>
+        <Button variant="contained" primary onClick={() => markSummaryCompleted()}>
           Submission <span className="ml-2 font-bold">&#8594;</span>
         </Button>
       </Link>
@@ -111,7 +114,7 @@ function NextButton(props: {
   if (!isLastSummary) {
     return (
       <Link href={`/courses/view/${course.key}/${currentTopic.key}/summaries/${currentTopic.summaries[currentSummaryIndex + 1].key}`}>
-        <Button variant="contained" primary>
+        <Button variant="contained" primary onClick={() => markSummaryCompleted()}>
           Next <span className="ml-2 font-bold">&#8594;</span>
         </Button>
       </Link>
@@ -205,6 +208,7 @@ const SummaryDetails: FC<CourseSummaryProps> = ({ course, isCourseAdmin, space, 
               currentSummaryIndex={currentSummaryIndex}
               currentTopic={currentTopic}
               currentTopicIndex={currentTopicIndex}
+              submissionHelper={submissionHelper}
             />
           </div>
         </div>

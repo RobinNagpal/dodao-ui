@@ -1,6 +1,8 @@
+import { ReactNode } from 'react';
+
 export interface DetailsFieldProps {
   label: string;
-  value: string;
+  value: string | ReactNode | ReactNode[];
 }
 
 export default function DetailsField(props: DetailsFieldProps) {

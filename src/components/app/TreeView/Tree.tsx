@@ -1,5 +1,5 @@
 // Tree.tsx
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { TreeNode, TreeNodeType } from './TreeNode';
 
 interface TreeProps {

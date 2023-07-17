@@ -8,7 +8,6 @@ type Props = {
   viewByteHelper: UseViewByteHelper;
   byte: ByteDetailsFragment;
   space: SpaceWithIntegrationsFragment;
-  setAccountModalOpen: (shouldOpen: boolean) => void;
 };
 
 const Container = styled.div`
@@ -17,14 +16,14 @@ const Container = styled.div`
   flex-direction: row;
 `;
 
-function ByteViewStepper({ viewByteHelper, byte, space, setAccountModalOpen }: Props) {
+function ByteViewStepper({ viewByteHelper, byte, space }: Props) {
   const activeStep: ByteStepFragment = useMemo(() => {
     return byte.steps?.[viewByteHelper.activeStepOrder] || byte.steps[0];
   }, [viewByteHelper.activeStepOrder, byte.steps]);
 
   return (
     <Container>
-      <ByteStepperItem viewByteHelper={viewByteHelper} byte={byte} step={activeStep} space={space} setAccountModalOpen={setAccountModalOpen} />
+      <ByteStepperItem viewByteHelper={viewByteHelper} byte={byte} step={activeStep} space={space} />
     </Container>
   );
 }

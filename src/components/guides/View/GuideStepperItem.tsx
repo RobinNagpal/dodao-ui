@@ -18,26 +18,10 @@ import {
 import { useI18 } from '@/hooks/useI18';
 import { isQuestion, isUserDiscordConnect, isUserInput } from '@/types/deprecated/helpers/stepItemTypes';
 import { getMarkedRenderer } from '@/utils/ui/getMarkedRenderer';
+import flatten from 'lodash/flatten';
 import { marked } from 'marked';
 import { useSession } from 'next-auth/react';
 import { useCallback, useMemo, useState } from 'react';
-import styled from 'styled-components';
-
-const CorrectAnswer = styled.div`
-  background-color: green !important;
-  border-color: green !important;
-  &:after {
-    background-color: green !important;
-  }
-`;
-
-const WrongAnswer = styled.div`
-  background-color: red !important;
-  border-color: red !important;
-  &:after {
-    background-color: red;
-  }
-`;
 
 export interface GuideStepProps {
   space: Space;
@@ -69,15 +53,12 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
   const guideSubmission = viewGuideHelper.guideSubmission;
 
   const wrongQuestions = useMemo(() => {
-    return guide.steps.reduce<GuideQuestionFragment[]>((wrongQuestions: GuideQuestionFragment[], guideStep: GuideStepFragment) => {
-      const wrongOnes: GuideQuestionFragment[] =
-        (step.stepItems
-          .filter((item) => isQuestion(item))
-          .filter((item) => guideSubmission.submissionResult?.wrongQuestions?.includes(item.uuid)) as GuideQuestionFragment[]) || [];
+    const questionFragments = flatten(guide.steps.map((s) => s.stepItems)).filter((item) =>
+      guideSubmission.submissionResult?.wrongQuestions?.includes(item.uuid)
+    ) as GuideQuestionFragment[];
 
-      return [...wrongQuestions, ...wrongOnes];
-    }, new Array<GuideQuestionFragment>());
-  }, [step]);
+    return questionFragments;
+  }, [guide, guideSubmission]);
 
   const renderer = getMarkedRenderer();
 
@@ -118,7 +99,8 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
       guideSubmission.submissionResult?.correctQuestions.length < guideSubmission.submissionResult?.allQuestions.length,
     [guide, guideSubmission]
   );
-  const { data: sesstion } = useSession();
+
+  const { data: session } = useSession();
   const { setShowLoginModal } = useLoginModalContext();
   const { showNotification } = useNotificationContext();
   const { $t } = useI18();
@@ -136,7 +118,7 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
           return;
         }
 
-        if (!sesstion?.username) {
+        if (!session?.username && space.authSettings.enableLogin && space.guideSettings.askForLoginToSubmit) {
           setShowLoginModal(true);
           return;
         } else {

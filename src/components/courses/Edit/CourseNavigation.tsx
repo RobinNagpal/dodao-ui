@@ -1,9 +1,9 @@
-import AddIcon from '@/components/core/icons/AddIcon';
 import { Tree } from '@/components/app/TreeView/Tree';
 import { TreeNodeType } from '@/components/app/TreeView/TreeNode';
 import Button from '@/components/core/buttons/Button';
+import AddIcon from '@/components/core/icons/AddIcon';
 import { ItemTypes } from '@/components/courses/View/CourseDetailsRightSection';
-import { CourseSubmissionHelper } from '@/components/courses/View/useCourseSubmission';
+import { CourseSubmissionHelper, QuestionStatus, TopicItemStatus, TopicStatus } from '@/components/courses/View/useCourseSubmission';
 import { CourseHelper } from '@/components/courses/View/useViewCourse';
 import {
   CourseDetailsFragment,
@@ -13,6 +13,7 @@ import {
   CourseTopicFragment,
   Space,
 } from '@/graphql/generated/generated-types';
+import { CheckCircleIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
@@ -23,36 +24,15 @@ interface CourseNavigationProps {
   showAddModal: () => void;
   courseHelper: CourseHelper;
   submissionHelper: CourseSubmissionHelper;
+  isCourseSubmissionScreen: boolean;
   topicKey?: string;
   itemType?: ItemTypes;
   itemKey?: string;
+  isCourseAdmin: boolean;
 }
 
 const ClickableDiv = styled.div`
   cursor: pointer;
-`;
-
-const CheckMark = styled.div`
-  position: relative;
-  height: 20px;
-  width: 20px;
-  text-align: center;
-  background-color: #00813a;
-  border: 1px solid #00813a;
-  border-radius: 50%;
-  z-index: 1;
-
-  &:after {
-    content: '';
-    left: 6px;
-    top: 3px;
-    width: 6px;
-    height: 10px;
-    border: solid white;
-    border-width: 0 2px 2px 0;
-    transform: rotate(45deg);
-    position: absolute;
-  }
 `;
 
 const Container = styled.div`
@@ -91,80 +71,126 @@ const Container = styled.div`
   }
 `;
 
-function getReadings(courseKey: string, topic: CourseTopicFragment, readings: CourseReadingFragment[], itemKey: string) {
+function Checkmark() {
+  return (
+    <div className="w-4 text-green-700 mr-2">
+      <CheckCircleIcon width={20} height={20} />
+    </div>
+  );
+}
+function getReadings(
+  courseKey: string,
+  submissionHelper: CourseSubmissionHelper,
+  topic: CourseTopicFragment,
+  readings: CourseReadingFragment[],
+  itemKey: string
+) {
   return readings.map((reading, i) => {
     const isActive = itemKey === reading.uuid;
+
+    const isComplete = submissionHelper.getTopicSubmission(topic.key)?.readings?.[reading.uuid]?.status === TopicItemStatus.Completed;
+
     return {
       component: (
-        <Link
-          key={reading.uuid}
-          className={`flex items-center ${isActive ? 'underline' : ''}`}
-          href={`/courses/view/${courseKey}/${topic.key}/readings/${reading.uuid}`}
-        >
-          <div className="icon mr-2">
-            <CheckMark />
-          </div>
-          <div>{reading.title}</div>
-        </Link>
+        <div className="flex">
+          {isComplete && <Checkmark />}
+          <Link
+            key={reading.uuid}
+            className={`flex items-center ${isActive ? 'underline' : ''}`}
+            href={`/courses/view/${courseKey}/${topic.key}/readings/${reading.uuid}`}
+          >
+            <div>{reading.title}</div>
+          </Link>
+        </div>
       ),
     };
   });
 }
 
-function getExplanations(courseKey: string, topic: CourseTopicFragment, explanations: CourseExplanationFragment[], itemKey: string) {
+function getExplanations(
+  courseKey: string,
+  submissionHelper: CourseSubmissionHelper,
+  topic: CourseTopicFragment,
+  explanations: CourseExplanationFragment[],
+  itemKey: string
+) {
   return explanations.map((explanation, i) => {
     const isActive = itemKey === explanation.key;
+    const isComplete = submissionHelper.getTopicSubmission(topic.key)?.explanations?.[explanation.key]?.status === TopicItemStatus.Completed;
     return {
       component: (
-        <Link
-          key={explanation.key}
-          className={`flex items-center ${isActive ? 'underline' : ''}`}
-          href={`/courses/view/${courseKey}/${topic.key}/explanations/${explanation.key}`}
-        >
-          <div className="icon mr-2">
-            <CheckMark />
-          </div>
-          <div>{explanation.title}</div>
-        </Link>
+        <div className="flex align-middle items-center">
+          {isComplete && <Checkmark />}
+          <Link
+            key={explanation.key}
+            className={`flex items-center ${isActive ? 'underline' : ''}`}
+            href={`/courses/view/${courseKey}/${topic.key}/explanations/${explanation.key}`}
+          >
+            {explanation.title}
+          </Link>
+        </div>
       ),
     };
   });
 }
 
-function getSummaries(courseKey: string, topic: CourseTopicFragment, summaries: CourseSummaryFragment[], itemKey: string) {
+function getSummaries(
+  courseKey: string,
+  submissionHelper: CourseSubmissionHelper,
+  topic: CourseTopicFragment,
+  summaries: CourseSummaryFragment[],
+  itemKey: string
+) {
   return summaries.map((summary, i) => {
     const isActive = itemKey === summary.key;
+    const isComplete = submissionHelper.getTopicSubmission(topic.key)?.summaries?.[summary.key]?.status === TopicItemStatus.Completed;
     return {
       component: (
-        <Link
-          key={summary.key}
-          className={`flex items-center ${isActive ? 'underline' : ''}`}
-          href={`/courses/view/${courseKey}/${topic.key}/summaries/${summary.key}`}
-        >
-          <div className="icon mr-2">
-            <CheckMark />
-          </div>
-          <div>{summary.title}</div>
-        </Link>
+        <div className="flex align-middle items-center">
+          {isComplete && <Checkmark />}
+          <Link
+            key={summary.key}
+            className={`flex items-center ${isActive ? 'underline' : ''}`}
+            href={`/courses/view/${courseKey}/${topic.key}/summaries/${summary.key}`}
+          >
+            <div>{summary.title}</div>
+          </Link>
+        </div>
       ),
     };
   });
 }
 
-function getTreeData(course: CourseDetailsFragment, itemKey: string) {
-  return course.topics.map((chapter, i) => {
-    const readings: TreeNodeType[] = getReadings(course.key, chapter, chapter.readings, itemKey);
-    const explanations: TreeNodeType[] = getExplanations(course.key, chapter, chapter.explanations, itemKey);
-    const summaries: TreeNodeType[] = getSummaries(course.key, chapter, chapter.summaries, itemKey);
+function getTreeData(course: CourseDetailsFragment, submissionHelper: CourseSubmissionHelper, itemKey: string, isCourseSubmissionScreen: boolean) {
+  const treeNodes: TreeNodeType[] = course.topics.map((chapter, i) => {
+    const readings: TreeNodeType[] = getReadings(course.key, submissionHelper, chapter, chapter.readings, itemKey);
+    const explanations: TreeNodeType[] = getExplanations(course.key, submissionHelper, chapter, chapter.explanations, itemKey);
+    const summaries: TreeNodeType[] = getSummaries(course.key, submissionHelper, chapter, chapter.summaries, itemKey);
+    const topicSubmission = submissionHelper.getTopicSubmission(chapter.key);
 
     const children: TreeNodeType[] = [];
+
+    const allReadingsComplete =
+      Object.keys(topicSubmission?.readings || {}).length === chapter.readings.length &&
+      Object.values(topicSubmission?.readings || {}).every((r) => r.status === TopicItemStatus.Completed);
+
+    const allExplanationsComplete =
+      Object.keys(topicSubmission?.explanations || {}).length === chapter.explanations.length &&
+      Object.values(topicSubmission?.explanations || {}).every((r) => r.status === TopicItemStatus.Completed);
+
+    const allSummariesComplete =
+      Object.keys(topicSubmission?.summaries || {}).length === chapter.summaries.length &&
+      Object.values(topicSubmission?.summaries || {}).every((r) => r.status === TopicItemStatus.Completed);
+
+    const allQuestionsComplete =
+      Object.keys(topicSubmission?.questions || {}).length === chapter.questions.length &&
+      Object.values(topicSubmission?.questions || {}).every((r) => r.status === QuestionStatus.Completed);
+
     if (readings.length) {
       children.push({
         component: (
           <ClickableDiv key={chapter.key + '_readings'} className="flex items-center">
-            <div className="icon mr-2">
-              <CheckMark />
-            </div>
+            {allReadingsComplete && <Checkmark />}
             <div>Videos</div>
           </ClickableDiv>
         ),
@@ -175,9 +201,7 @@ function getTreeData(course: CourseDetailsFragment, itemKey: string) {
       children.push({
         component: (
           <div key={chapter.key + '_explanations'} className="flex items-center">
-            <div className="icon mr-2">
-              <CheckMark />
-            </div>
+            {allExplanationsComplete && <Checkmark />}
             <div>Explanations</div>
           </div>
         ),
@@ -188,9 +212,7 @@ function getTreeData(course: CourseDetailsFragment, itemKey: string) {
       children.push({
         component: (
           <div key={chapter.key + '_summaries'} className="flex items-center">
-            <div className="icon mr-2">
-              <CheckMark />
-            </div>
+            {allSummariesComplete && <Checkmark />}
             <div>Summaries</div>
           </div>
         ),
@@ -205,9 +227,7 @@ function getTreeData(course: CourseDetailsFragment, itemKey: string) {
             className={`flex items-center ${itemKey === '0' ? 'underline' : ''}`}
             href={`/courses/view/${course.key}/${chapter.key}/questions/0`}
           >
-            <div className="icon mr-2">
-              <CheckMark />
-            </div>
+            {allQuestionsComplete && <Checkmark />}
             <div>Questions</div>
           </Link>
         ),
@@ -222,9 +242,7 @@ function getTreeData(course: CourseDetailsFragment, itemKey: string) {
           className={`flex items-center ${itemKey === 'submission' ? 'underline' : ''}`}
           href={`/courses/view/${course.key}/${chapter.key}/submission`}
         >
-          <div className="icon mr-2">
-            <CheckMark />
-          </div>
+          {topicSubmission?.status === TopicStatus.Submitted && <Checkmark />}
           <div>Chapter Submission</div>
         </Link>
       ),
@@ -239,19 +257,38 @@ function getTreeData(course: CourseDetailsFragment, itemKey: string) {
           className={`flex items-center ${isActive ? 'underline' : ''}`}
           href={`/courses/view/${course.key}/${chapter.key}`}
         >
-          <div className="icon mr-2">
-            <CheckMark />
-          </div>
+          {topicSubmission?.status === TopicStatus.Submitted && <Checkmark />}
           <div>{chapter.title}</div>
         </Link>
       ),
       children: children,
     };
   });
+  treeNodes.push({
+    component: (
+      <Link
+        key={course.key + '_course_submission'}
+        href={`/courses/view/${course.key}/submission`}
+        className={`flex items-center ${isCourseSubmissionScreen ? 'underline' : ''}`}
+      >
+        <div>Course Submission</div>
+      </Link>
+    ),
+    children: [],
+  });
+  return treeNodes;
 }
 
-const CourseComponent: React.FC<CourseNavigationProps> = ({ course, showAddModal, topicKey, itemKey, itemType }) => {
-  const isCourseAdmin = true;
+const CourseComponent: React.FC<CourseNavigationProps> = ({
+  course,
+  showAddModal,
+  topicKey,
+  itemKey,
+  itemType,
+  submissionHelper,
+  isCourseSubmissionScreen,
+  isCourseAdmin,
+}) => {
   const [openNodes, setOpenNodes] = useState<{ [key: string]: string }>({});
 
   useEffect(() => {
@@ -272,10 +309,10 @@ const CourseComponent: React.FC<CourseNavigationProps> = ({ course, showAddModal
     }
   }, [topicKey, itemKey, itemType]);
 
-  const treeData: TreeNodeType[] = getTreeData(course, itemKey || '0');
+  const treeData: TreeNodeType[] = getTreeData(course, submissionHelper, itemKey || '0', isCourseSubmissionScreen);
 
   return (
-    <Container className="p-4 bg-skin-header-bg rounded-l-lg border-skin-border h-full w-full">
+    <Container className="p-4 bg-skin-header-bg rounded-l-lg border-skin-border h-full w-full text-sm">
       {isCourseAdmin && (
         <Button primary variant="contained" className="w-full mb-4" onClick={showAddModal}>
           <AddIcon /> Add

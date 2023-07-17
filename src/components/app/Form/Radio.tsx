@@ -55,7 +55,7 @@ export default function Radio({ id, labelContent, isSelected, className, readonl
           id={id}
           name={questionId}
           type="radio"
-          defaultChecked={isSelected}
+          checked={isSelected}
           disabled={!!readonly}
           readOnly={readonly}
           onChange={() => onChange(!isSelected)}

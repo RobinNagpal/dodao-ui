@@ -57,6 +57,7 @@ function NextButton(props: {
   currentExplanationIndex: number;
   currentTopic: CourseTopicFragment;
   currentTopicIndex: number;
+  submissionHelper: CourseSubmissionHelper;
 }) {
   const { data: session } = useSession();
 
@@ -68,6 +69,8 @@ function NextButton(props: {
   const isLastTopic = currentTopicIndex === course.topics.length - 1;
   const hasQuestions = currentTopic.questions.length > 0;
   const hasSummaries = currentTopic.summaries.length > 0;
+
+  const markExplanationCompleted = () => props.submissionHelper.markExplanationCompleted(props.currentTopic.key, props.currentExplanation.key);
 
   if (!session) {
     return (
@@ -81,7 +84,7 @@ function NextButton(props: {
   if (isLastExplanation && hasSummaries) {
     return (
       <Link href={`/courses/view/${course.key}/${currentTopic.key}/summaries/${currentTopic.summaries[0].key}`}>
-        <Button variant="contained" primary>
+        <Button variant="contained" primary onClick={() => markExplanationCompleted()}>
           Summary
           <span className="ml-2 font-bold">&#8594;</span>
         </Button>
@@ -92,7 +95,7 @@ function NextButton(props: {
   if (isLastExplanation && hasQuestions) {
     return (
       <Link href={`/courses/view/${course.key}/${currentTopic.key}/questions/${0}`}>
-        <Button variant="contained" primary>
+        <Button variant="contained" primary onClick={() => markExplanationCompleted()}>
           Evaluation
           <span className="ml-2 font-bold">&#8594;</span>
         </Button>
@@ -103,7 +106,7 @@ function NextButton(props: {
   if (isLastExplanation && !isLastTopic) {
     return (
       <Link href={`/courses/view/${course.key}/${course.topics[currentTopicIndex + 1].key}`}>
-        <Button variant="contained" primary>
+        <Button variant="contained" primary onClick={() => markExplanationCompleted()}>
           Next Chapter <span className="ml-2 font-bold">&#8594;</span>
         </Button>
       </Link>
@@ -113,7 +116,7 @@ function NextButton(props: {
   if (isLastExplanation && isLastTopic) {
     return (
       <Link href={`/courses/view/${course.key}/${currentTopic.key}/submit`}>
-        <Button variant="contained" primary>
+        <Button variant="contained" primary onClick={() => markExplanationCompleted()}>
           Submission <span className="ml-2 font-bold">&#8594;</span>
         </Button>
       </Link>
@@ -123,7 +126,7 @@ function NextButton(props: {
   if (!isLastExplanation) {
     return (
       <Link href={`/courses/view/${course.key}/${currentTopic.key}/explanations/${currentTopic.explanations[currentExplanationIndex + 1].key}`}>
-        <Button variant="contained" primary>
+        <Button variant="contained" primary onClick={() => markExplanationCompleted()}>
           Next <span className="ml-2 font-bold">&#8594;</span>
         </Button>
       </Link>
@@ -217,6 +220,7 @@ const ExplanationDetails: FC<CourseExplanationProps> = ({ course, isCourseAdmin,
               currentExplanationIndex={currentExplanationIndex}
               currentTopic={currentTopic}
               currentTopicIndex={currentTopicIndex}
+              submissionHelper={submissionHelper}
             />
           </div>
         </div>

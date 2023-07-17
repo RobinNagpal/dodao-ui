@@ -78,7 +78,10 @@ mutation DownloadAndCleanContent($input: String!){
 
 mutation GenerateImage($input: GenerateImageInput!){
   generateImage(input: $input) {
-    url
+    created
+    data {
+      url
+    }
   }
 }
 

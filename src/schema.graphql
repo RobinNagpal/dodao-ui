@@ -44,6 +44,12 @@ input AddTopicQuestionInput {
   topicKey: String!
 }
 
+input AddTopicQuestionsInput {
+  courseKey: String!
+  questions: [AddTopicQuestionInput!]!
+  topicKey: String!
+}
+
 input AddTopicSummaryInput {
   courseKey: String!
   details: String!
@@ -119,6 +125,18 @@ type ByteQuestion {
   uuid: String!
 }
 
+type ByteSettings {
+  askForLoginToSubmit: Boolean
+  captureBeforeAndAfterRating: Boolean
+  showCategoriesInSidebar: Boolean
+}
+
+input ByteSettingsInput {
+  askForLoginToSubmit: Boolean
+  captureBeforeAndAfterRating: Boolean
+  showCategoriesInSidebar: Boolean
+}
+
 type ByteSocialShare {
   byteId: String!
   linkedInImages: [String!]
@@ -145,31 +163,6 @@ input ByteStepInput {
 
 union ByteStepItem = ByteQuestion | ByteUserInput | UserDiscordConnect
 
-type ByteStepItemSubmission {
-  selectedAnswerKeys: [String!]
-  type: String!
-  userDiscordInfo: UserDiscordInfo
-  userInput: String
-  uuid: String!
-}
-
-input ByteStepItemSubmissionInput {
-  type: String!
-  userDiscordInfo: UserDiscordInfoInput
-  userInput: String
-  uuid: String!
-}
-
-type ByteStepSubmission {
-  itemResponses: [ByteStepItemSubmission!]!
-  uuid: String!
-}
-
-input ByteStepSubmissionInput {
-  itemResponses: [ByteStepItemSubmissionInput!]!
-  uuid: String!
-}
-
 type ByteSubmission {
   byteId: String!
   created: String!
@@ -182,7 +175,6 @@ input ByteSubmissionInput {
   byteId: String!
   from: String!
   space: String!
-  steps: [ByteStepSubmissionInput!]!
   timestamp: String
   uuid: String!
 }
@@ -197,6 +189,7 @@ type ByteUserInput {
 input ChatCompletionAIInput {
   messages: [OpenAIChatMessageInput!]!
   model: String
+  n: Int
   temperature: Float
 }
 
@@ -208,6 +201,7 @@ enum ChatCompletionRequestMessageRoleEnum {
 
 input CompletionAIInput {
   model: String
+  n: Int
   prompt: String!
   temperature: Float
 }
@@ -427,7 +421,7 @@ type GitCourseReading {
 }
 
 type GitCourseReadingsSubmission {
-  questions: [GitCourseQuestionsSubmission!]!
+  questions: [GitCourseQuestionsSubmission!]
   status: String!
   uuid: String!
 }
@@ -566,9 +560,9 @@ type Guide {
 }
 
 type GuideFeedback {
-  content: Boolean!
-  questions: Boolean!
-  ux: Boolean!
+  content: Boolean
+  questions: Boolean
+  ux: Boolean
 }
 
 input GuideFeedbackInput {
@@ -642,9 +636,13 @@ type GuideRating {
   negativeFeedback: GuideFeedback
   positiveFeedback: GuideFeedback
   ratingUuid: String!
+  skipEndRating: Boolean
+  skipStartRating: Boolean
   spaceId: String!
   startRating: Int
-  userId: String!
+  updatedAt: DateTimeISO!
+  userId: String
+  username: String
 }
 
 type GuideSettings {
@@ -711,7 +709,7 @@ input GuideStepSubmissionInput {
 }
 
 type GuideSubmission {
-  created: String!
+  createdAt: DateTimeISO!
   createdBy: String!
   galaxyCredentialsUpdated: Boolean
   guideId: String!
@@ -744,6 +742,16 @@ type GuideUserInput {
   required: Boolean!
   type: String!
   uuid: String!
+}
+
+type ImagesResponse {
+  created: Int!
+  data: [ImagesResponseDataInner!]!
+}
+
+type ImagesResponseDataInner {
+  b64_json: String
+  url: String
 }
 
 """
@@ -799,6 +807,7 @@ type Mutation {
   addTopic(spaceId: String!, topicInfo: AddTopicInput!): GitCourseTopic!
   addTopicExplanation(explanationInfo: AddTopicExplanationInput!, spaceId: String!): GitCourseExplanation!
   addTopicQuestion(questionInfo: AddTopicQuestionInput!, spaceId: String!): GitCourseQuestion!
+  addTopicQuestions(input: AddTopicQuestionsInput!, spaceId: String!): [GitCourseQuestion!]!
   addTopicSummary(spaceId: String!, summaryInfo: AddTopicSummaryInput!): GitCourseSummary!
   addTopicVideo(spaceId: String!, videoInfo: AddTopicVideoInput!): GitCourseReading!
   askChatCompletionAI(input: ChatCompletionAIInput!): OpenAIChatCompletionResponse!
@@ -807,6 +816,7 @@ type Mutation {
   createSignedUrl(input: CreateSignedUrlInput!, spaceId: String!): String!
   createSpace(spaceInput: UpsertSpaceInput!): Space!
   createSummaryOfContent(input: String!): OpenAITextResponse!
+  deleteAndPullCourseRepo(courseKey: String!, spaceId: String!): GitCourse!
   deleteTopic(spaceId: String!, topicInfo: DeleteTopicInput!): GitCourse!
   deleteTopicExplanation(explanationInfo: DeleteTopicExplanationInput!, spaceId: String!): GitCourse!
   deleteTopicQuestion(questionInfo: DeleteTopicQuestionInput!, spaceId: String!): GitCourse!
@@ -814,7 +824,7 @@ type Mutation {
   deleteTopicVideo(spaceId: String!, videoInfo: DeleteTopicVideoInput!): GitCourse!
   downloadAndCleanContent(input: String!): DownloadAndCleanContentResponse!
   extractRelevantTextForTopic(input: ExtractRelevantTextForTopicInput!): OpenAITextResponse!
-  generateImage(input: GenerateImageInput!): GenerateImageResponse!
+  generateImage(input: GenerateImageInput!): ImagesResponse!
   generateImageEdit(input: GenerateImageEditInput!): GenerateImageResponse!
   generateSharablePdf(byteId: String!, spaceId: String!): String!
   initializeGitCourseSubmission(courseKey: String!, spaceId: String!): GitCourseSubmission!
@@ -834,6 +844,7 @@ type Mutation {
   submitGitCourseTopic(gitCourseTopicSubmission: GitCourseTopicSubmissionInput!, spaceId: String!): GitCourseTopicSubmission!
   submitGuide(submissionInput: GuideSubmissionInput!): GuideSubmission!
   updateAuthSettings(input: AuthSettingsInput!, spaceId: String!): Space!
+  updateByteSettings(input: ByteSettingsInput!, spaceId: String!): Space!
   updateCourseBasicInfo(courseBasicInfo: CourseBasicInfoInput!, spaceId: String!): GitCourse!
   updateGuideSettings(input: GuideSettingsInput!, spaceId: String!): Space!
   updateSocialSettings(input: SocialSettingsInput!, spaceId: String!): Space!
@@ -851,7 +862,7 @@ type Mutation {
   upsertGitCourseTopicSubmission(gitCourseTopicSubmission: GitCourseTopicSubmissionInput!, spaceId: String!): GitCourseTopicSubmission!
   upsertGnosisSafeWallets(spaceId: String!, wallets: [GnosisSafeWalletInput!]!): Space!
   upsertGuide(guideInput: GuideInput!, spaceId: String!): Guide!
-  upsertGuideRating(spaceId: String!, upsertGuideRatingInput: UpsertGuideRatingInput!): Boolean!
+  upsertGuideRating(spaceId: String!, upsertGuideRatingInput: UpsertGuideRatingInput!): GuideRating!
   upsertProjectGalaxyAccessToken(accessToken: String!, spaceId: String!): Space!
   upsertSimulation(input: UpsertSimulationInput!, spaceId: String!): Simulation!
   upsertSpaceAcademyRepository(academyRepository: String!, spaceId: String!): Space!
@@ -1007,6 +1018,7 @@ type Space {
   admins: [String!]!
   authSettings: AuthSettings!
   avatar: String
+  byteSettings: ByteSettings!
   creator: String!
   domains: [String!]!
   features: [String!]!
@@ -1248,9 +1260,11 @@ input UpsertGuideRatingInput {
   negativeFeedback: GuideFeedbackInput
   positiveFeedback: GuideFeedbackInput
   ratingUuid: String!
+  skipEndRating: Boolean
+  skipStartRating: Boolean
   spaceId: String!
   startRating: Int
-  userId: String!
+  userId: String
 }
 
 input UpsertSimulationInput {

@@ -84,8 +84,19 @@ function transformTopicSubmissionResponse(sub: TopicSubmissionFragment): TempTop
   const tempTopicSubmission: TempTopicSubmission = {
     topicKey: sub.topicKey,
     uuid: sub.uuid,
-    explanations: Object.fromEntries(explanations.map((explanation) => [explanation.key, explanation as ExplanationSubmission])),
-    questions: Object.fromEntries(questions.map((question) => [question.uuid, question as CourseQuestionSubmission])),
+    explanations: Object.fromEntries(
+      explanations.map((explanation) => [explanation.key, { key: explanation.key, status: explanation.status as TopicItemStatus }])
+    ),
+    questions: Object.fromEntries(
+      questions.map((question) => [
+        question.uuid,
+        {
+          uuid: question.uuid,
+          status: question.status as QuestionStatus,
+          answers: question.answers,
+        },
+      ])
+    ),
     readings: Object.fromEntries(
       readings.map((reading) => {
         const readingsQuestions = reading.questions || [];
@@ -94,12 +105,21 @@ function transformTopicSubmissionResponse(sub: TopicSubmissionFragment): TempTop
           {
             uuid: reading.uuid,
             status: reading.status as TopicItemStatus,
-            questions: Object.fromEntries(readingsQuestions.map((question) => [question.uuid, question as CourseQuestionSubmission])),
+            questions: Object.fromEntries(
+              readingsQuestions.map((question) => [
+                question.uuid,
+                {
+                  uuid: question.uuid,
+                  status: question.status as QuestionStatus,
+                  answers: question.answers,
+                },
+              ])
+            ),
           },
         ];
       })
     ),
-    summaries: Object.fromEntries(summaries.map((summary) => [summary.key, summary as SummarySubmission])),
+    summaries: Object.fromEntries(summaries.map((summary) => [summary.key, { key: summary.key, status: summary.status as TopicItemStatus }])),
     status: sub.status as TopicStatus,
     correctAnswers: sub.correctAnswers ? Object.fromEntries(sub.correctAnswers?.map((correct) => [correct.uuid, correct])) : undefined,
   };
@@ -109,7 +129,7 @@ function transformTopicSubmissionResponse(sub: TopicSubmissionFragment): TempTop
 function transformCourseSubmissionResponse(courseSubmissionResponse: CourseSubmissionFragment, course: CourseDetailsFragment): TempCourseSubmission {
   const topicSubmissionsMap: Record<string, TopicSubmissionFragment> =
     Object.fromEntries(courseSubmissionResponse.topicSubmissions?.map((t) => [t.topicKey, t])) || {};
-  return {
+  const courseSubmission = {
     uuid: courseSubmissionResponse.uuid,
     courseKey: courseSubmissionResponse.courseKey,
     createdAt: courseSubmissionResponse.createdAt,
@@ -134,27 +154,28 @@ function transformCourseSubmissionResponse(courseSubmissionResponse: CourseSubmi
               questions: {},
               readings: {},
               summaries: {},
-              status: TopicStatus.InProgress,
+              status: TopicStatus.UnAttempted,
             };
 
         return [topicSubmission.topicKey, topicSubmission];
       })
     ),
   };
+  return courseSubmission;
 }
 
 export interface CourseSubmissionHelper {
   courseSubmission: TempCourseSubmission | undefined;
-  loadCourseSubmission: (course: CourseDetailsFragment) => Promise<void>;
+  initialize: (course: CourseDetailsFragment) => Promise<void>;
   loadedSubmission?: CourseSubmissionFragment | null;
   getTopic: (topicKey: string) => CourseTopicFragment;
-  saveReading: Function;
+  markReadingCompleted: Function;
   saveReadingAnswer: Function;
-  saveSummary: Function;
-  saveExplanation: Function;
+  markSummaryCompleted: Function;
+  markExplanationCompleted: Function;
   saveAnswer: Function;
   submitCourse: Function;
-  submitTopic: Function;
+  submitCourseTopic: Function;
   upsertTopicSubmission: Function;
   isAllReadingsComplete: (topic: CourseTopicFragment) => boolean;
   isAllExplanationsComplete: (topic: CourseTopicFragment) => boolean;
@@ -170,7 +191,10 @@ export const useCourseSubmission = (space: Space, courseKey: string): CourseSubm
   const [course, setCourse] = useState<CourseDetailsFragment | undefined>();
   const [courseSubmission, setCourseSubmission] = useState<TempCourseSubmission | undefined>();
 
-  const { refetch: fetchSubmission, data: loadedSubmissionResponse } = useGitCourseSubmissionQuery({ variables: { courseKey: courseKey, spaceId: space.id } });
+  const { refetch: fetchSubmission } = useGitCourseSubmissionQuery({
+    variables: { courseKey: courseKey, spaceId: space.id },
+    skip: true,
+  });
   const { showNotification } = useNotificationContext();
   const { $t } = useI18();
   const [upsertGitCourseTopicSubmissionMutation] = useUpsertGitCourseTopicSubmissionMutation();
@@ -178,11 +202,12 @@ export const useCourseSubmission = (space: Space, courseKey: string): CourseSubm
   const [submitGitCourseMutation] = useSubmitGitCourseMutation();
   const [initializeGitCourseSubmissionMutation] = useInitializeGitCourseSubmissionMutation();
 
-  const loadCourseSubmission = async (loadedCourse: CourseDetailsFragment) => {
+  const initialize = async (loadedCourse: CourseDetailsFragment) => {
+    setCourse(loadedCourse);
+
     const submissionResponse = await fetchSubmission();
     const loadedSubmission = submissionResponse.data?.payload;
 
-    setCourse(loadedCourse);
     if (!loadedCourse) throw new Error('Course not loaded');
 
     if (loadedSubmission) {
@@ -259,15 +284,16 @@ export const useCourseSubmission = (space: Space, courseKey: string): CourseSubm
     return courseSubmission?.topicSubmissionsMap[topicKey];
   }
 
-  function getTopicSubmissionInput(courseKey: string, topicKey: string) {
-    const topic = getTopic(topicKey);
+  function getTopicSubmissionInput(courseKey: string, tempTopicSubmission: TempTopicSubmission) {
+    const topic = getTopic(tempTopicSubmission.topicKey);
 
-    const topicSubmission = courseSubmission?.topicSubmissionsMap[topicKey];
+    const topicSubmission = tempTopicSubmission;
     if (!topicSubmission) {
       console.error('No topic submission', courseSubmission?.topicSubmissionsMap);
       showNotification({ type: 'error', message: $t('notify.somethingWentWrong') });
       return;
     }
+
     const readingComplete = isAllReadingsComplete(topic);
     const summaryComplete = isAllSummariesComplete(topic);
     const explanationComplete = isAllExplanationsComplete(topic);
@@ -283,7 +309,7 @@ export const useCourseSubmission = (space: Space, courseKey: string): CourseSubm
     const request: GitCourseTopicSubmissionInput = {
       uuid: topicSubmission.uuid,
       courseKey,
-      topicKey,
+      topicKey: topicSubmission.topicKey,
       summaries: Object.values(topicSubmission?.summaries || {}) || [],
       explanations: Object.values(topicSubmission?.explanations || {}) || [],
       questions: Object.values(topicSubmission?.questions || {}) || [],
@@ -297,8 +323,8 @@ export const useCourseSubmission = (space: Space, courseKey: string): CourseSubm
     return request;
   }
 
-  const upsertTopicSubmission = async (courseKey: string, topicKey: string) => {
-    const request = getTopicSubmissionInput(courseKey, topicKey);
+  const upsertTopicSubmission = async (courseKey: string, tempTopicSubmission: TempTopicSubmission) => {
+    const request = getTopicSubmissionInput(courseKey, tempTopicSubmission);
     if (!request) {
       console.error('No topic submission request');
       showNotification({ type: 'error', message: $t('notify.somethingWentWrong') });
@@ -318,46 +344,48 @@ export const useCourseSubmission = (space: Space, courseKey: string): CourseSubm
     }
   };
 
-  const saveSummary = async (chapterId: string, summaryId: string) => {
+  const markSummaryCompleted = async (chapterId: string, summaryId: string) => {
     const { courseSub, topicSub } = courseAndTopicSubmission(chapterId);
+    const updatedTopicSubmission = {
+      ...topicSub,
+      summaries: {
+        ...topicSub.summaries,
+        [summaryId]: {
+          key: summaryId,
+          status: TopicItemStatus.Completed,
+        },
+      },
+    };
     setCourseSubmission({
       ...courseSub,
       topicSubmissionsMap: {
         ...courseSub.topicSubmissionsMap,
-        [chapterId]: {
-          ...topicSub,
-          summaries: {
-            ...topicSub.summaries,
-            [summaryId]: {
-              key: summaryId,
-              status: TopicItemStatus.Completed,
-            },
-          },
-        },
+        [chapterId]: updatedTopicSubmission,
       },
     });
-    await upsertTopicSubmission(courseKey, chapterId);
+    await upsertTopicSubmission(courseKey, updatedTopicSubmission);
   };
 
-  const saveExplanation = async (chapterId: string, explanationKey: string) => {
+  const markExplanationCompleted = async (chapterId: string, explanationKey: string) => {
     const { courseSub, topicSub } = courseAndTopicSubmission(chapterId);
+    const updatedTopicSubmission = {
+      ...topicSub,
+      explanations: {
+        ...topicSub.explanations,
+        [explanationKey]: {
+          key: explanationKey,
+          status: TopicItemStatus.Completed,
+        },
+      },
+    };
     setCourseSubmission({
       ...courseSub,
       topicSubmissionsMap: {
         ...courseSub.topicSubmissionsMap,
-        [chapterId]: {
-          ...topicSub,
-          explanations: {
-            ...topicSub.explanations,
-            [explanationKey]: {
-              key: explanationKey,
-              status: TopicItemStatus.Completed,
-            },
-          },
-        },
+        [chapterId]: updatedTopicSubmission,
       },
     });
-    await upsertTopicSubmission(courseKey, chapterId);
+    await upsertTopicSubmission(courseKey, updatedTopicSubmission);
   };
 
   const saveReadingAnswer = async (chapterId: string, readingId: string, questionUUid: string, questionResponse: CourseQuestionSubmission) => {
@@ -380,21 +408,22 @@ export const useCourseSubmission = (space: Space, courseKey: string): CourseSubm
         status: TopicItemStatus.Completed,
       },
     };
+    const updatedTopicSubmission = {
+      ...topicSub,
+      readings: readings,
+    };
     const topicSubmissionsMap: Record<string, TempTopicSubmission> = {
       ...courseSub.topicSubmissionsMap,
-      [chapterId]: {
-        ...topicSub,
-        readings: readings,
-      },
+      [chapterId]: updatedTopicSubmission,
     };
     setCourseSubmission({
       ...courseSub,
       topicSubmissionsMap: topicSubmissionsMap,
     });
-    await upsertTopicSubmission(courseKey, chapterId);
+    await upsertTopicSubmission(courseKey, updatedTopicSubmission);
   };
 
-  const saveReading = async (chapterId: string, readingId: string) => {
+  const markReadingCompleted = async (chapterId: string, readingId: string) => {
     const { courseSub, topicSub } = courseAndTopicSubmission(chapterId);
     const readings: Record<string, ReadingSubmission> = {
       ...topicSub.readings,
@@ -403,42 +432,44 @@ export const useCourseSubmission = (space: Space, courseKey: string): CourseSubm
         status: TopicItemStatus.Completed,
       },
     };
+    const updatedTopicSubmission = {
+      ...topicSub,
+      readings: readings,
+    };
     const topicSubmissionsMap: Record<string, TempTopicSubmission> = {
       ...courseSub.topicSubmissionsMap,
-      [chapterId]: {
-        ...topicSub,
-        readings: readings,
-      },
+      [chapterId]: updatedTopicSubmission,
     };
     setCourseSubmission({
       ...courseSub,
       topicSubmissionsMap: topicSubmissionsMap,
     });
 
-    await upsertTopicSubmission(courseKey, chapterId);
+    await upsertTopicSubmission(courseKey, updatedTopicSubmission);
   };
 
   const saveAnswer = async (chapterId: string, questionUUid: string, questionResponse: CourseQuestionSubmission) => {
     const { courseSub, topicSub } = courseAndTopicSubmission(chapterId);
+    const updatedTopicSubmission = {
+      ...topicSub,
+      questions: {
+        ...topicSub.questions,
+        [questionUUid]: {
+          uuid: questionUUid,
+          answers: questionResponse.answers,
+          status: questionResponse.status,
+        },
+      },
+    };
     setCourseSubmission({
       ...courseSub,
       topicSubmissionsMap: {
         ...courseSub.topicSubmissionsMap,
-        [chapterId]: {
-          ...topicSub,
-          questions: {
-            ...topicSub.questions,
-            [questionUUid]: {
-              uuid: questionUUid,
-              answers: questionResponse.answers,
-              status: questionResponse.status,
-            },
-          },
-        },
+        [chapterId]: updatedTopicSubmission,
       },
     });
 
-    await upsertTopicSubmission(courseKey, chapterId);
+    await upsertTopicSubmission(courseKey, updatedTopicSubmission);
   };
 
   const isTopicComplete = (topic: CourseTopicFragment) => {
@@ -472,7 +503,17 @@ export const useCourseSubmission = (space: Space, courseKey: string): CourseSubm
       showNotification({ type: 'error', message: $t('courses.view.completeAllQuestionOfChapterToSubmit') });
       return;
     }
-    const request = getTopicSubmissionInput(courseKey, topicKey);
+    const topic = getTopic(topicKey);
+
+    const topicSubmission = courseSubmission?.topicSubmissionsMap[topicKey];
+
+    if (!topicSubmission) {
+      console.error('No topic submission', courseSubmission?.topicSubmissionsMap);
+      showNotification({ type: 'error', message: $t('notify.somethingWentWrong') });
+      return;
+    }
+
+    const request = getTopicSubmissionInput(courseKey, topicSubmission);
     if (!request) {
       console.error('No topic input');
       showNotification({ type: 'error', message: $t('notify.somethingWentWrong') });
@@ -559,15 +600,15 @@ export const useCourseSubmission = (space: Space, courseKey: string): CourseSubm
 
   return {
     courseSubmission,
-    loadCourseSubmission,
+    initialize,
     getTopic,
-    saveReading,
+    markReadingCompleted,
     saveReadingAnswer,
-    saveSummary,
-    saveExplanation,
+    markSummaryCompleted,
+    markExplanationCompleted,
     saveAnswer,
     submitCourse,
-    submitTopic: submitCourseTopic,
+    submitCourseTopic,
     upsertTopicSubmission,
     isTopicComplete,
     isAllReadingsComplete,

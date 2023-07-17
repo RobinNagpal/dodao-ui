@@ -15,6 +15,7 @@ import { SpaceProvider, useSpace } from '@/contexts/SpaceContext';
 import Web3ReactProviderWrapper from '@/contexts/Web3ReactContext';
 import { useExtendedSpaceByDomainQuery } from '@/graphql/generated/generated-types';
 import { Session } from '@/types/auth/Session';
+import { UserIdKey } from '@/types/auth/User';
 import { Themes } from '@/types/deprecated/models/enums';
 import { getAuthenticatedApolloClient } from '@/utils/apolloClient';
 import { ApolloProvider } from '@apollo/client';
@@ -22,6 +23,7 @@ import { SessionProvider } from 'next-auth/react';
 import { useEffect, useMemo } from 'react';
 import styled from 'styled-components';
 import 'src/app/globals.scss';
+import { v4 } from 'uuid';
 
 // Based on - https://tailwindui.com/components/application-ui/page-examples/home-screens
 
@@ -92,6 +94,14 @@ function ChildLayout({ children, session }: InternalLayoutProps) {
       setSpace(data.space);
     }
   }, [data, setSpace]);
+
+  useEffect(() => {
+    if (session?.userId) {
+      localStorage.setItem(UserIdKey, session?.userId);
+    } else {
+      localStorage.setItem(UserIdKey, 'anonymous');
+    }
+  }, [session]);
 
   return (
     <Web3ReactProviderWrapper>
