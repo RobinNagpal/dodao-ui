@@ -1,62 +1,45 @@
 import Thumbnail from '@/components/app/Thumbnail';
 import Card from '@/components/core/card/Card';
+import guideSubmissionCache from '@/components/guides/View/guideSubmissionCache';
 import { GuideSummaryFragment } from '@/graphql/generated/generated-types';
 import { shorten } from '@/utils/utils';
 import Link from 'next/link';
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
 interface GuideSummaryCardProps {
   guide: GuideSummaryFragment;
-  inProgress: boolean;
 }
 
-const Ribbon = styled.div`
-  margin: 28px 18px 18px 0;
-  color: white;
-  padding: 16px 0;
+const InProgressSpan = styled.span`
   position: absolute;
-  top: 0;
-  left: 0;
-  transform: translateX(0%) translateY(135%) rotate(-45deg);
-  transform-origin: top left;
+  right: 10px;
+  top: 10px;
   background-color: var(--primary-color);
-  z-index: 2;
-  line-height: 0;
-  font-weight: 650;
-
-  &::before,
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    margin: 0 -1px; /* tweak */
-    width: 100%;
-    height: 100%;
-  }
-
-  &::before {
-    right: 100%;
-  }
-
-  &::after {
-    left: 100%;
-  }
+  color: white;
 `;
+const GuideSummaryCard: React.FC<GuideSummaryCardProps> = ({ guide }) => {
+  const [inProgress, setInProgress] = React.useState(false);
 
-const GuideSummaryCard: React.FC<GuideSummaryCardProps> = ({ guide, inProgress }) => {
+  useEffect(() => {
+    const submissionsCache = guideSubmissionCache.readGuideSubmissionsCache(guide.id);
+    if (submissionsCache && Object.values(submissionsCache.stepResponsesMap).some((s) => s.isCompleted)) {
+      setInProgress(true);
+    }
+  }, []);
+
   return (
     <Card>
       <Link href={`/guides/view/${guide.id}/0`} className="card blog-card w-inline-block h-full w-full">
         {inProgress && (
-          <span className="inline-flex items-center gap-x-1.5 rounded-md bg-green-100 px-2 py-1 text-xs font-medium text-green-700">
-            <svg className="h-1.5 w-1.5 fill-green-500" viewBox="0 0 6 6" aria-hidden="true">
+          <InProgressSpan className="inline-flex items-center gap-x-1.5 rounded-md  px-2 py-1 text-xs font-medium text-green-700">
+            <svg className="h-1.5 w-1.5 fill-white" viewBox="0 0 6 6" aria-hidden="true">
               <circle cx={3} cy={3} r={3} />
             </svg>
-            Badge
-          </span>
+            In Progress
+          </InProgressSpan>
         )}
-        <div className="image-wrapper blog-card-thumbnail w-full">
+        <div className="w-full">
           <Thumbnail src={guide.thumbnail!} entityId={guide.uuid} title={guide.name} size="350" className="mb-1 w-full" big_tile imageClass="w-full" />
         </div>
         <div className="p-4 text-center">

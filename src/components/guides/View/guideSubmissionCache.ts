@@ -7,7 +7,7 @@ const account = ANONYMOUS;
 
 const saveGuideSubmission = (guideUuid: string, data: TempGuideSubmission) => {
   const key = `${account}_${guideUuid}`;
-  const guideSubmissions = localStorage.getItem(`${GUIDE_SUBMISSION}_${account}_${guideUuid}`);
+  const guideSubmissions = localStorage.getItem(GUIDE_SUBMISSION);
 
   if (guideSubmissions) {
     const existingGuideSubmissions = JSON.parse(guideSubmissions);
