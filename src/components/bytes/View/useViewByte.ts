@@ -191,7 +191,7 @@ export function useViewByte(space: SpaceWithIntegrationsFragment, byteId: string
       if (result) {
         showNotification({
           type: 'success',
-          message: 'Byte Submitted',
+          message: 'Tidbit Submitted',
           heading: 'Success 🎉',
         });
 

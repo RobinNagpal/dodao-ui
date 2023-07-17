@@ -48,7 +48,14 @@ const GuideSummaryCard: React.FC<GuideSummaryCardProps> = ({ guide, inProgress }
   return (
     <Card>
       <Link href={`/guides/view/${guide.id}/0`} className="card blog-card w-inline-block h-full w-full">
-        {inProgress && <Ribbon className="ribbon progress-label">In progress</Ribbon>}
+        {inProgress && (
+          <span className="inline-flex items-center gap-x-1.5 rounded-md bg-green-100 px-2 py-1 text-xs font-medium text-green-700">
+            <svg className="h-1.5 w-1.5 fill-green-500" viewBox="0 0 6 6" aria-hidden="true">
+              <circle cx={3} cy={3} r={3} />
+            </svg>
+            Badge
+          </span>
+        )}
         <div className="image-wrapper blog-card-thumbnail w-full">
           <Thumbnail src={guide.thumbnail!} entityId={guide.uuid} title={guide.name} size="350" className="mb-1 w-full" big_tile imageClass="w-full" />
         </div>

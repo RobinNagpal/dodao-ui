@@ -1,3 +1,4 @@
+import { guideRatingsCache } from '@/components/guides/View/guideRatingsCache';
 import { TempGuideSubmission } from '@/components/guides/View/TempGuideSubmission';
 import { GuideFragment, GuideRating, GuideFeedback, Space, useUpsertGuideRatingsMutation } from '@/graphql/generated/generated-types';
 import { UserIdKey } from '@/types/auth/User';
@@ -24,14 +25,6 @@ export function useGuideRatings(space: Space, guide: GuideFragment, guideSubmiss
   const [upsertGuideRatingsMutation] = useUpsertGuideRatingsMutation();
 
   useEffect(() => {
-    if (guideRatings) {
-      localStorage.setItem(guideRatingsKey, JSON.stringify(guideRatings));
-    }
-  }, [guideRatings]);
-
-  const guideRatingsKey = `${space.id}-${guide.id}-guide-ratings`;
-
-  useEffect(() => {
     if (guideSubmission.isSubmitted) {
       if (!guideRatings?.skipEndRating && !guideRatings?.endRating) {
         setShowEndRatingsModal(true);
@@ -56,9 +49,8 @@ export function useGuideRatings(space: Space, guide: GuideFragment, guideSubmiss
 
   const initialize = () => {
     if (space.guideSettings.captureBeforeAndAfterRating) {
-      const guideRatingsString = localStorage.getItem(guideRatingsKey);
-      if (guideRatingsString) {
-        const ratings = JSON.parse(guideRatingsString) as GuideRating;
+      const ratings = guideRatingsCache.getGuideRatings(guide.uuid);
+      if (ratings) {
         setGuideRatings(ratings);
         if (!ratings.skipStartRating && !ratings.startRating) {
           setShowStartRatingsModal(true);
@@ -78,7 +70,7 @@ export function useGuideRatings(space: Space, guide: GuideFragment, guideSubmiss
       startRating: rating,
     };
     setGuideRatings(updatedGuideRatings);
-    localStorage.setItem(guideRatingsKey, JSON.stringify(updatedGuideRatings));
+    guideRatingsCache.saveGuideRatings(guideRatings!.guideUuid, updatedGuideRatings);
     setShowStartRatingsModal(false);
     upsertRating();
   };
@@ -89,14 +81,14 @@ export function useGuideRatings(space: Space, guide: GuideFragment, guideSubmiss
       endRating: rating,
     };
     setGuideRatings(updatedGuideRatings);
-    localStorage.setItem(guideRatingsKey, JSON.stringify(updatedGuideRatings));
+    guideRatingsCache.saveGuideRatings(guideRatings!.guideUuid, updatedGuideRatings);
     upsertRating();
   };
 
   const skipStartRating = () => {
     const rating: GuideRating = { ...getRatings(), skipStartRating: true };
     setGuideRatings(rating);
-    localStorage.setItem(guideRatingsKey, JSON.stringify(rating));
+    guideRatingsCache.saveGuideRatings(guideRatings!.guideUuid, rating);
     setShowStartRatingsModal(false);
     upsertRating();
   };
@@ -104,7 +96,7 @@ export function useGuideRatings(space: Space, guide: GuideFragment, guideSubmiss
   const skipEndRating = () => {
     const rating: GuideRating = { ...getRatings(), skipEndRating: true };
     setGuideRatings(rating);
-    localStorage.setItem(guideRatingsKey, JSON.stringify(rating));
+    guideRatingsCache.saveGuideRatings(guideRatings!.guideUuid, rating);
     setShowStartRatingsModal(false);
     upsertRating();
   };
@@ -119,7 +111,7 @@ export function useGuideRatings(space: Space, guide: GuideFragment, guideSubmiss
       existingGuideRatings.positiveFeedback = feedback;
     }
     setGuideRatings(existingGuideRatings);
-    localStorage.setItem(guideRatingsKey, JSON.stringify(existingGuideRatings));
+    guideRatingsCache.saveGuideRatings(guideRatings!.guideUuid, existingGuideRatings);
     setShowEndRatingsModal(false);
     upsertRating();
   };

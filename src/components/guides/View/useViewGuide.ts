@@ -53,7 +53,7 @@ export function useViewGuide(space: Space, uuid: string, stepOrder: number): Use
   const [errors, setErrors] = useState<GuideSubmissionError>({});
   const [guideLoaded, setGuideLoaded] = useState<boolean>(false);
   const [guideSubmittingRef, setGuideSubmittingRef] = useState<boolean>(false);
-  const [guideSubmission, setGuideSubmission] = useState<TempGuideSubmission>({
+  const [guideSubmission, setGuideSubmissionState] = useState<TempGuideSubmission>({
     isPristine: true,
     isSubmitted: false,
     stepResponsesMap: {},
@@ -66,11 +66,18 @@ export function useViewGuide(space: Space, uuid: string, stepOrder: number): Use
     return guideSubmission.stepResponsesMap?.[stepUuid];
   }
 
+  function setGuideSubmission(callback: (tempSubmission?: TempGuideSubmission) => TempGuideSubmission) {
+    setGuideSubmissionState((prevState) => {
+      const newState = callback(prevState);
+      guideSubmissionCache.saveGuideSubmission(uuid, newState);
+      return newState;
+    });
+  }
+
   function getStepItemSubmission(stepUuid: string, stepItemUuid: string): StepItemResponse | undefined {
-    return getStepSubmission(stepUuid).itemResponsesMap[stepItemUuid];
+    return getStepSubmission(stepUuid)?.itemResponsesMap?.[stepItemUuid];
   }
   async function initialize() {
-    console.log('initialize');
     setActiveStepOrder(stepOrder);
     const result = await refetch({ uuid: uuid, spaceId: space.id });
 
@@ -94,26 +101,39 @@ export function useViewGuide(space: Space, uuid: string, stepOrder: number): Use
     });
 
     setGuideLoaded(true);
-    readGuideSubmissions();
-
-    if (guideSubmission.isSubmitted) {
-      guideSubmissionCache.deleteGuideSubmission(uuid);
-      setGuideSubmission({
-        isPristine: true,
-        isSubmitted: false,
-        stepResponsesMap: {},
-      });
-    }
 
     setGuideStepsMap(Object.fromEntries<GuideStepFragment>(fetchedGuide.steps.map((step) => [step.uuid, step])));
 
-    // This just sets submission data for every step
-    setGuideSubmission((prev) => ({
-      ...prev,
-      stepResponsesMap: Object.fromEntries(
-        fetchedGuide.steps.map((step) => [step.uuid, getStepSubmission(step.uuid) || { itemResponsesMap: {}, isTouched: false, isCompleted: false }])
-      ),
-    }));
+    const newStepResponseMap = Object.fromEntries(
+      fetchedGuide.steps.map((step) => [
+        step.uuid,
+        getStepSubmission(step.uuid) || {
+          itemResponsesMap: {},
+          isTouched: false,
+          isCompleted: false,
+        },
+      ])
+    );
+
+    const guideSubmissionsFromCache = guideSubmissionCache.readGuideSubmissionsCache(uuid);
+    if (guideSubmissionsFromCache) {
+      if (guideSubmissionsFromCache.isSubmitted) {
+        guideSubmissionCache.deleteGuideSubmission(uuid);
+        setGuideSubmission(() => ({
+          isPristine: true,
+          isSubmitted: false,
+          stepResponsesMap: newStepResponseMap,
+        }));
+      } else {
+        setGuideSubmission(() => guideSubmissionsFromCache);
+      }
+    } else {
+      setGuideSubmission(() => ({
+        isPristine: true,
+        isSubmitted: false,
+        stepResponsesMap: newStepResponseMap,
+      }));
+    }
   }
   function setActiveStep(order: number) {
     setActiveStepOrder(order);
@@ -121,27 +141,29 @@ export function useViewGuide(space: Space, uuid: string, stepOrder: number): Use
   }
 
   function goToNextStep(currentStep: GuideStepFragment) {
-    getStepSubmission(currentStep.uuid).isCompleted = true;
+    setGuideSubmission((tempSubmission) => {
+      const prev = tempSubmission as TempGuideSubmission;
+      return {
+        ...prev,
+        stepResponsesMap: {
+          ...prev.stepResponsesMap,
+          [currentStep.uuid]: {
+            ...prev.stepResponsesMap[currentStep.uuid],
+            isCompleted: true,
+          },
+        },
+      };
+    });
+
     const newStepOrder = currentStep.order + 1;
     setActiveStepOrder(newStepOrder);
-    const navigateToLastStep = activeStepOrder === (guide?.steps || []).length - 1;
-
-    if (!navigateToLastStep) {
-      saveGuideSubmissionToLocalStorage();
-    }
-
     history.replaceState(null, '', `/guides/view/${uuid}/${newStepOrder}`);
   }
 
   function goToPreviousStep(currentStep: GuideStepFragment) {
     const newStepOrder = currentStep.order - 1;
     setActiveStepOrder(newStepOrder);
-    saveGuideSubmissionToLocalStorage();
     history.replaceState(null, '', `/guides/view/${uuid}/${newStepOrder}`);
-  }
-
-  function saveGuideSubmissionToLocalStorage() {
-    guideSubmissionCache.saveGuideSubmission(uuid, guideSubmission);
   }
 
   function selectAnswer(stepUuid: string, questionUuid: string, selectedAnswers: string[]) {
@@ -157,20 +179,22 @@ export function useViewGuide(space: Space, uuid: string, stepOrder: number): Use
   }
 
   function updateItemValue(stepUuid: string, itemUuid: string, itemValue: string | string[]) {
-    setGuideSubmission({
-      ...guideSubmission,
-      stepResponsesMap: {
-        ...guideSubmission.stepResponsesMap,
-        [stepUuid]: {
-          ...guideSubmission.stepResponsesMap?.[stepUuid],
-          itemResponsesMap: {
-            ...guideSubmission.stepResponsesMap?.[stepUuid]?.itemResponsesMap,
-            [itemUuid]: itemValue,
+    setGuideSubmission((tempSubmission) => {
+      const prev = tempSubmission as TempGuideSubmission;
+      return {
+        ...prev,
+        stepResponsesMap: {
+          ...prev.stepResponsesMap,
+          [stepUuid]: {
+            ...guideSubmission.stepResponsesMap?.[stepUuid],
+            itemResponsesMap: {
+              ...guideSubmission.stepResponsesMap?.[stepUuid]?.itemResponsesMap,
+              [itemUuid]: itemValue,
+            },
           },
         },
-      },
+      };
     });
-    saveGuideSubmissionToLocalStorage();
   }
 
   function isEverythingInGuideIsAnswered(): boolean {
@@ -178,9 +202,12 @@ export function useViewGuide(space: Space, uuid: string, stepOrder: number): Use
   }
 
   function isValidToSubmit() {
-    setGuideSubmission({
-      ...guideSubmission,
-      isPristine: false,
+    setGuideSubmission((tempSubmission) => {
+      const prev = tempSubmission as TempGuideSubmission;
+      return {
+        ...prev,
+        isPristine: false,
+      };
     });
 
     return isEverythingInGuideIsAnswered();
@@ -188,14 +215,9 @@ export function useViewGuide(space: Space, uuid: string, stepOrder: number): Use
   async function submitGuide(): Promise<boolean> {
     setGuideSubmittingRef(true);
 
-    setGuideSubmission({
-      ...guideSubmission,
-      isPristine: false,
-    });
-
     const responses = guideSubmission.stepResponsesMap;
 
-    if (!isEverythingInGuideIsAnswered()) {
+    if (!isEverythingInGuideIsAnswered() || !isValidToSubmit()) {
       setGuideSubmittingRef(false);
       return false;
     }
@@ -238,13 +260,9 @@ export function useViewGuide(space: Space, uuid: string, stepOrder: number): Use
     };
 
     try {
-      const response = await submitGuideMutation({ variables: { input: guideSubmissionInput } });
+      const response = await submitGuideMutation({ variables: { input: guideSubmissionInput }, errorPolicy: 'all' });
 
       setGuideSubmittingRef(false);
-      setGuideSubmission({
-        ...guideSubmission,
-        isSubmitted: true,
-      });
       const result = response?.data?.payload.result;
       if (result) {
         showNotification({
@@ -280,32 +298,27 @@ export function useViewGuide(space: Space, uuid: string, stepOrder: number): Use
           });
         }
 
-        setGuideSubmission({
-          ...guideSubmission,
-          isSubmitted: true,
-          submissionResult: result,
-          galaxyCredentialsUpdated: !!response?.data?.payload?.galaxyCredentialsUpdated,
+        setGuideSubmission((tempSubmission) => {
+          const prev = tempSubmission as TempGuideSubmission;
+          return {
+            ...prev,
+            isSubmitted: true,
+            submissionResult: result,
+            galaxyCredentialsUpdated: !!response?.data?.payload?.galaxyCredentialsUpdated,
+          };
         });
-        guideSubmissionCache.saveGuideSubmission(uuid, guideSubmission);
 
         return true;
       } else {
         setGuideSubmittingRef(false);
-        setGuideSubmission({
-          ...guideSubmission,
-          isSubmitted: false,
-        });
         return false;
       }
     } catch (e) {
       console.log(e);
       setGuideSubmittingRef(false);
-      setGuideSubmission({
-        ...guideSubmission,
-        isSubmitted: false,
-      });
-      return false;
     }
+
+    return false;
   }
 
   function isEveryQuestionAnsweredInStep(stepUuid: string): boolean {
@@ -326,16 +339,6 @@ export function useViewGuide(space: Space, uuid: string, stepOrder: number): Use
       .every((userInput) => !!(stepSubmission?.itemResponsesMap?.[userInput.uuid] as string)?.trim());
 
     return allQuestionsAnswered && allRequiredFieldsAnswered;
-  }
-
-  function readGuideSubmissions() {
-    const answerCache = guideSubmissionCache.readGuideSubmissionsCache(uuid);
-    if (answerCache) {
-      setGuideSubmission({
-        ...guideSubmission,
-        ...(answerCache || {}),
-      });
-    }
   }
 
   return {
