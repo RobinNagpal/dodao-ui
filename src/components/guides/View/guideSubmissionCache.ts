@@ -1,31 +1,35 @@
 import { TempGuideSubmission } from '@/components/guides/View/TempGuideSubmission';
 import { UserDiscordInfoInput } from '@/graphql/generated/generated-types';
 
-const GUIDE_SUBMISSION = 'GUIDE-SUBMISSION-V1';
+const GUIDE_SUBMISSION = 'GUIDE-SUBMISSION-V2';
 const ANONYMOUS = 'ANONYMOUS';
 const account = ANONYMOUS;
 
 const saveGuideSubmission = (guideUuid: string, data: TempGuideSubmission) => {
-  const key = `${GUIDE_SUBMISSION}_${account}_${guideUuid}`;
-  localStorage.setItem(key, JSON.stringify(data));
-};
+  const key = `${account}_${guideUuid}`;
+  const guideSubmissions = localStorage.getItem(GUIDE_SUBMISSION);
 
-const readGuideSubmissionsCache = (guideUuid: string): TempGuideSubmission => {
-  return JSON.parse(localStorage.getItem(`${GUIDE_SUBMISSION}_${account}_${guideUuid}`) || '{}');
-};
+  if (guideSubmissions) {
+    const existingGuideSubmissions = JSON.parse(guideSubmissions);
+    const submissions = {
+      ...existingGuideSubmissions,
+      [key]: data,
+    };
 
-const readAllInProgressGuides = () => {
-  const guideMap: any = {};
-  for (const key in localStorage) {
-    if (key.indexOf(`${GUIDE_SUBMISSION}_${account}`) > -1) {
-      const parse: TempGuideSubmission = JSON.parse(localStorage.getItem(key) || '{}');
-      const guideHasSomeUserResponse =
-        !parse.isSubmitted && (Object.values(parse?.stepResponsesMap || {}) || []).some((step: any) => Object.values(step.itemResponsesMap || {}).length > 0);
-      const guideUuid = key.split('_')[2];
-      guideMap[guideUuid] = guideHasSomeUserResponse;
-    }
+    localStorage.setItem(GUIDE_SUBMISSION, JSON.stringify(submissions));
+  } else {
+    const submissions = {
+      [key]: data,
+    };
+
+    localStorage.setItem(GUIDE_SUBMISSION, JSON.stringify(submissions));
   }
-  return guideMap;
+};
+
+const readGuideSubmissionsCache = (guideUuid: string): TempGuideSubmission | undefined => {
+  const submissions = JSON.parse(localStorage.getItem(GUIDE_SUBMISSION) || '{}');
+  const key = `${account}_${guideUuid}`;
+  return submissions[key];
 };
 
 const deleteGuideSubmission = (guideUuid: string) => {
@@ -40,7 +44,10 @@ const setUserDiscordInSubmission = (
   userDiscordUuid: string,
   discordInfo: UserDiscordInfoInput
 ) => {
-  let guideSubmissionRef: TempGuideSubmission = readGuideSubmissionsCache(guideUuid);
+  let guideSubmissionRef: TempGuideSubmission | undefined = readGuideSubmissionsCache(guideUuid);
+  if (!guideSubmissionRef) {
+    return;
+  }
   guideSubmissionRef = {
     ...guideSubmissionRef,
     stepResponsesMap: {
@@ -68,6 +75,5 @@ export default {
   saveGuideSubmission,
   deleteGuideSubmission,
   readGuideSubmissionsCache,
-  readAllInProgressGuides,
   setUserDiscordInSubmission,
 };

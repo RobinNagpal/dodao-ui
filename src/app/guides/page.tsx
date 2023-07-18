@@ -21,7 +21,7 @@ function Guide({ space }: SpaceProps) {
         {!!data?.guides?.length && (
           <Grid4Cols>
             {data?.guides?.map((guide: GuideSummaryFragment, i) => (
-              <GuideSummaryCard key={i} guide={guide} inProgress={false} />
+              <GuideSummaryCard key={i} guide={guide} />
             ))}
           </Grid4Cols>
         )}
