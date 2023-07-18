@@ -44,7 +44,7 @@ export default function TabsWithUnderline(props: TabsWithUnderlineProps) {
                 className={classNames(
                   tabIdx === 0 ? 'rounded-l-lg' : '',
                   tabIdx === props.tabs.length - 1 ? 'rounded-r-lg' : '',
-                  'group relative min-w-0 flex-1 overflow-hidden py-4 px-4 text-center text-sm font-medium focus:z-10'
+                  'group relative min-w-0 flex-1 overflow-hidden py-4 px-4 text-center text-sm font-medium focus:z-10',
                 )}
                 aria-current={isSelected ? 'page' : undefined}
                 onClick={() => props.setSelectedTabId(tab.id)}

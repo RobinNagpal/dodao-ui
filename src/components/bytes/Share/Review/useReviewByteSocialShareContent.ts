@@ -111,7 +111,7 @@ export default function useReviewByteSocialShareContent(spaceId: string, byteId:
             name: step.name,
             content: step.content,
             order: index,
-          })
+          }),
         ),
       };
       setByteSocialShare({

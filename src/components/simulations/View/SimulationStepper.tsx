@@ -20,7 +20,7 @@ interface SimulationViewStepperProps {
 function SimulationViewStepper({ viewSimulationHelper, simulation }: SimulationViewStepperProps) {
   const activeStep: SimulationStepFragment | undefined = useMemo(
     () => simulation.steps.find((step) => step.order === viewSimulationHelper.activeStepOrder) || simulation.steps[0],
-    [simulation.steps, viewSimulationHelper.activeStepOrder]
+    [simulation.steps, viewSimulationHelper.activeStepOrder],
   );
 
   return (

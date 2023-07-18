@@ -60,7 +60,7 @@ export default function CourseSubmission(props: CourseViewProps) {
       const topicSubmissionValue = courseSubmission?.topicSubmissionsMap?.[topic.key];
       const topicQuestions = topicSubmissionValue?.questions || {};
       const answeredQuestions = Object.keys(topicQuestions).filter(
-        (key) => topicQuestions[key].status === QuestionStatus.Completed && topicQuestions[key].answers.length > 0
+        (key) => topicQuestions[key].status === QuestionStatus.Completed && topicQuestions[key].answers.length > 0,
       ).length;
       if (!topicSubmissionValue) {
         map[topic.key] = {
@@ -94,7 +94,7 @@ export default function CourseSubmission(props: CourseViewProps) {
     !!courseSubmission &&
     !Object.values(courseSubmission.topicSubmissionsMap || {}).every(
       //  has no questions or is submitted
-      (ts) => !submissionHelper.getTopic(ts.topicKey).questions?.length || ts.status === TopicStatus.Submitted
+      (ts) => !submissionHelper.getTopic(ts.topicKey).questions?.length || ts.status === TopicStatus.Submitted,
     );
   // Translate the Vue template into JSX here
 

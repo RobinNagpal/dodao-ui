@@ -71,7 +71,7 @@ export default function YouTubeVideoContainer({
       }
     },
     // The interval needs to be cleared when the video is paused
-    videoState === VideoState.playing ? 250 : null
+    videoState === VideoState.playing ? 250 : null,
   );
 
   // The video state may change from a component above

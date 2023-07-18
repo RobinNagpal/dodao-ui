@@ -20,11 +20,7 @@ function Guide({ space }: SpaceProps) {
       <PageWrapper>
         {!data?.courses?.length && !loadingData && <NoCourses />}
         {!!data?.courses?.length && (
-          <Grid3Cols>
-            {data?.courses?.map((c: CourseFragment, i) => (
-              <CourseSummaryCard key={i} course={c} inProgress={false} />
-            ))}
-          </Grid3Cols>
+          <Grid3Cols>{data?.courses?.map((c: CourseFragment, i) => <CourseSummaryCard key={i} course={c} inProgress={false} />)}</Grid3Cols>
         )}
         <div style={{ height: '10px', width: '10px', position: 'absolute' }} />
         {loadingData && (

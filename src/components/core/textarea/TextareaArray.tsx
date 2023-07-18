@@ -30,7 +30,7 @@ function CustomTextareaAutosize({ id, modelValue = [], splitArrayFunction, onUpd
         onUpdate(inputStrings);
       }
     },
-    [splitArrayFunction, onUpdate]
+    [splitArrayFunction, onUpdate],
   );
 
   return (

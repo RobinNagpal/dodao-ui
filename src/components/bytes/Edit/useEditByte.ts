@@ -226,7 +226,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
       setByteErrors(updatedByteErrors);
       return Object.values(updatedByteErrors).filter((v) => !!v).length === 0;
     },
-    [validateQuestion, validateUserInput, byteErrors]
+    [validateQuestion, validateUserInput, byteErrors],
   );
 
   const updateByteField = useCallback((field: KeyOfByteInput, value: any) => {
@@ -327,7 +327,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
             input: getByteInput(),
           },
           errorPolicy: 'all',
-        })
+        }),
     );
   };
 
@@ -341,7 +341,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
             input: { ...getByteInput(), publishStatus: PublishStatus.Draft },
           },
           errorPolicy: 'all',
-        })
+        }),
     );
     setBytePublishing(false);
   };
@@ -355,7 +355,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
             input: { ...getByteInput(), publishStatus: PublishStatus.Live },
           },
           errorPolicy: 'all',
-        })
+        }),
     );
     setBytePublishing(false);
   };

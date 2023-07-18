@@ -321,7 +321,7 @@ export default function GenerateStoryBoard() {
                 item: ip,
                 columns: [`${index}`, ip],
                 id: index.toString(),
-              })
+              }),
             )}
             columnsHeadings={['S.No.', 'Prompt']}
             columnsWidthPercents={[20, 80]}

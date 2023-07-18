@@ -18,7 +18,7 @@ function getSpaceTableRows(spaceList?: SpaceSummaryFragment[]): TableRow[] {
       id: space.id,
       columns: [space.name, space.id, space.skin, space.admins.join(', ')],
       item: space,
-    })
+    }),
   );
 }
 

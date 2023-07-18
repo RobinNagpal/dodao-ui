@@ -17,13 +17,7 @@ function Timeline({ space }: SpaceProps) {
   return (
     <PageWrapper>
       {!data?.timelines.length && !loadingData && <NoTimeline />}
-      {!!data?.timelines?.length && (
-        <Grid4Cols>
-          {data?.timelines?.map((timeline, i) => (
-            <TimelineSummaryCard key={i} timeline={timeline} />
-          ))}
-        </Grid4Cols>
-      )}
+      {!!data?.timelines?.length && <Grid4Cols>{data?.timelines?.map((timeline, i) => <TimelineSummaryCard key={i} timeline={timeline} />)}</Grid4Cols>}
       <div style={{ height: '10px', width: '10px', position: 'absolute' }} />
       {loadingData && (
         <Block slim={true}>

@@ -19,21 +19,14 @@ function Byte({ space }: SpaceProps) {
     <PageWrapper>
       <div className="flex justify-center items-center px-5 sm:px-0">
         {!data?.bytes.length && !loadingData && <NoByte />}
-        {!!data?.bytes?.length && (
-          <Grid4Cols>
-            {data?.bytes?.map((byte, i) => (
-              <ByteSummaryCard key={i} byte={byte} />
-            ))}
-          </Grid4Cols>
-        )}
+        {!!data?.bytes?.length && <Grid4Cols>{data?.bytes?.map((byte, i) => <ByteSummaryCard key={i} byte={byte} />)}</Grid4Cols>}
         <div style={{ height: '10px', width: '10px', position: 'absolute' }} />
-        
       </div>
       {loadingData && (
-          <Block slim={true}>
-            <TidbitsSkeleton/>
-          </Block>
-        )}
+        <Block slim={true}>
+          <TidbitsSkeleton />
+        </Block>
+      )}
     </PageWrapper>
   );
 }

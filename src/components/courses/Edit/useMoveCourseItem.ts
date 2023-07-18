@@ -6,7 +6,7 @@ import { useState } from 'react';
 export function useMoveCourseItem<
   T extends {
     direction: MoveCourseItemDirection | string;
-  }
+  },
 >(doMove: (form: T) => Promise<boolean>) {
   const { showNotification } = useNotificationContext();
   const [movingUp, setMovingUp] = useState(false);

@@ -40,7 +40,9 @@ const Wrapper = styled.div`
   .forceFloat {
     transform: translatey(-44px);
     @apply text-xs;
-    transition: transform 0.1s linear, font-size 0.1s linear;
+    transition:
+      transform 0.1s linear,
+      font-size 0.1s linear;
   }
 
   .status-drop-down {
@@ -56,7 +58,7 @@ function EditSimulation(props: { space: SpaceWithIntegrationsFragment; params: {
 
   const { simulationCreating, simulationLoaded, simulation, simulationErrors, handleSubmit, updateSimulationFunctions } = useEditSimulation(
     space,
-    simulationId
+    simulationId,
   );
 
   const errors = simulationErrors;

@@ -44,7 +44,6 @@
 
 // export default GuideSkeleton;
 
-
 // import React from 'react';
 
 // interface GuideSkeletonProps {
@@ -91,11 +90,7 @@ const GuideSkeleton: React.FC = () => {
     </div>
   ));
 
-  return (
-    <div className="flex flex-wrap justify-between">
-      {cards}
-    </div>
-  );
+  return <div className="flex flex-wrap justify-between">{cards}</div>;
 };
 
 export default GuideSkeleton;

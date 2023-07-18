@@ -51,7 +51,7 @@ export default function GenerateImage() {
           topic: '',
           openAIPrompt: defaultPrompt,
           imageType: 'Oil Painting',
-        }
+        },
   );
 
   const updateFormField = (field: keyof GenerateImageForm, value: string | number) => {
@@ -204,7 +204,7 @@ export default function GenerateImage() {
                 item: ip,
                 columns: [`${index}`, ip],
                 id: index.toString(),
-              })
+              }),
             )}
             columnsHeadings={['S.No.', 'Prompt']}
             columnsWidthPercents={[20, 80]}

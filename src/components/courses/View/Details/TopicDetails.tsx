@@ -111,7 +111,7 @@ const Topic = ({ course, isCourseAdmin, space, topicKey, courseHelper }: TopicPr
   const details = marked.parse(currentTopic.details, { renderer });
 
   const { editMode, cancel, showEdit, save } = useEditCourseDetails<UpdateTopicBasicInfoInput>(
-    async (updates: UpdateTopicBasicInfoInput) => await courseHelper.updateTopic(updates)
+    async (updates: UpdateTopicBasicInfoInput) => await courseHelper.updateTopic(updates),
   );
 
   const { deleting, deleteItem } = useDeleteCourseItem<DeleteTopicInput>(async (updates: DeleteTopicInput) => await courseHelper.deleteTopic(updates));

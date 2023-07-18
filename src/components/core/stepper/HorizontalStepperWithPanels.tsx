@@ -52,7 +52,7 @@ export default function HorizontalStepperWithPanels({ steps }: HorizontalStepper
                 className={classNames(
                   stepIdx === 0 ? 'rounded-t-md border-b-0' : '',
                   stepIdx === steps.length - 1 ? 'rounded-b-md border-t-0' : '',
-                  'overflow-hidden border border-gray-200 lg:border-0'
+                  'overflow-hidden border border-gray-200 lg:border-0',
                 )}
               >
                 {step.status === 'complete' ? (

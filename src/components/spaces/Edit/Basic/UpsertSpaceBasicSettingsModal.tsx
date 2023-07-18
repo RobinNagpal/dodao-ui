@@ -67,7 +67,7 @@ export default function UpsertSpaceBasicSettingsModal(props: { space?: Space; op
             onRemove={(d) => {
               setSpaceField(
                 'domains',
-                space.domains.filter((domain) => domain !== d)
+                space.domains.filter((domain) => domain !== d),
               );
             }}
           />
@@ -80,7 +80,7 @@ export default function UpsertSpaceBasicSettingsModal(props: { space?: Space; op
             onRemove={(d) => {
               setSpaceField(
                 'adminUsernames',
-                space.adminUsernames.filter((domain) => domain !== d)
+                space.adminUsernames.filter((domain) => domain !== d),
               );
             }}
           />
