@@ -36,7 +36,7 @@ const Timeline = ({ timeline }: TimelineProps) => {
                     {timeAgo}
                   </time>
                 </div>
-                <p className=" p-4 pt-2 text-sm leading-6" dangerouslySetInnerHTML={{ __html: eventSummary }} />
+                <p className=" p-4 pt-2 text-sm leading-6 markdown-body" dangerouslySetInnerHTML={{ __html: eventSummary }} />
               </div>
             </li>
           );
