@@ -59,7 +59,7 @@ const EditTimeline = (props: { space: SpaceWithIntegrationsFragment; params: { t
             {timelineId ? editTimelineRef.name : 'Back to Timelines'}
           </Link>
         </div>
-        <form onSubmit={handleSubmit} className="px-4">
+        <div className="px-4">
           <Input
             label="Timeline name"
             modelValue={editTimelineRef.name}
@@ -67,18 +67,29 @@ const EditTimeline = (props: { space: SpaceWithIntegrationsFragment; params: { t
             onUpdate={(e) => updateTimelineField('name', e || '')}
             error={timelineErrors.name}
           />
-          <div className="mt-4">
-            <TextareaAutosize
-              label="Timeline description"
-              id="timeline-description"
-              modelValue={editTimelineRef.excerpt || ''}
-              placeholder="Timeline description"
-              onUpdate={(e) => updateTimelineField('excerpt', e || '')}
-              error={timelineErrors.excerpt}
-            />
-          </div>
+          <TextareaAutosize
+            label="Timeline Excerpt"
+            id="timeline-excerpt"
+            modelValue={editTimelineRef.excerpt || ''}
+            placeholder="Timeline Excerpt"
+            onUpdate={(e) => updateTimelineField('excerpt', e || '')}
+            error={timelineErrors.excerpt}
+            className="mt-4"
+          />
+          <MarkdownEditor
+            label={`Timeline Details *`}
+            modelValue={editTimelineRef.content}
+            placeholder="Timeline content"
+            onUpdate={(e) => updateTimelineField('content', e?.toString() || '')}
+            error={timelineErrors.content}
+            imageType={'Timeline'}
+            objectId={timelineId || 'new-timeline'}
+            spaceId={props.space.id}
+            maxHeight={200}
+            className="mt-4"
+          />
           {(editTimelineRef.events || []).map((event: UpsertTimelineEventInput, index: number) => (
-            <div className="border-dashed border-t-2 mt-10" key={event.uuid}>
+            <div className="border-dashed border-t-2 mt-10 px-4" key={event.uuid}>
               <EventContainer hasError={!!timelineErrors.events?.[event.uuid]}>
                 <div className="flex flex-row-reverse mt-2">
                   <IconButton iconName={IconTypes.Trash} size="large" onClick={() => removeEvent(event.uuid)} />
@@ -106,32 +117,30 @@ const EditTimeline = (props: { space: SpaceWithIntegrationsFragment; params: { t
                   onUpdate={(e) => updateTimelineEventField(event.uuid, 'moreLink', e?.toString() || '')}
                   error={timelineErrors.events?.[event.uuid]?.moreLink}
                 />
-                <div className="mt-4">
-                  <MarkdownEditor
-                    label={`Event summary *`}
-                    modelValue={event.summary}
-                    placeholder="Event content"
-                    onUpdate={(e) => updateTimelineEventField(event.uuid, 'summary', e?.toString() || '')}
-                    error={timelineErrors.events?.[event.uuid]?.content}
-                    imageType={'Timeline'}
-                    objectId={timelineId || 'new-timeline'}
-                    spaceId={props.space.id}
-                    maxHeight={150}
-                  />
-                </div>
-                <div className="mt-4">
-                  <MarkdownEditor
-                    label={`Event full details`}
-                    modelValue={event.fullDetails || ''}
-                    placeholder="Event content"
-                    onUpdate={(e) => updateTimelineEventField(event.uuid, 'fullDetails', e?.toString() || '')}
-                    error={timelineErrors.events?.[event.uuid]?.content}
-                    imageType={'Timeline'}
-                    objectId={timelineId || 'new-timeline'}
-                    spaceId={props.space.id}
-                    maxHeight={200}
-                  />
-                </div>
+                <MarkdownEditor
+                  label={`Event summary *`}
+                  modelValue={event.summary}
+                  placeholder="Event content"
+                  onUpdate={(e) => updateTimelineEventField(event.uuid, 'summary', e?.toString() || '')}
+                  error={timelineErrors.events?.[event.uuid]?.content}
+                  imageType={'Timeline'}
+                  objectId={timelineId || 'new-timeline'}
+                  spaceId={props.space.id}
+                  maxHeight={150}
+                  className="mt-4"
+                />
+                <MarkdownEditor
+                  label={`Event full details`}
+                  modelValue={event.fullDetails || ''}
+                  placeholder="Event content"
+                  onUpdate={(e) => updateTimelineEventField(event.uuid, 'fullDetails', e?.toString() || '')}
+                  error={timelineErrors.events?.[event.uuid]?.content}
+                  imageType={'Timeline'}
+                  objectId={timelineId || 'new-timeline'}
+                  spaceId={props.space.id}
+                  maxHeight={200}
+                  className="mt-4"
+                />
               </EventContainer>
             </div>
           ))}
@@ -142,10 +151,10 @@ const EditTimeline = (props: { space: SpaceWithIntegrationsFragment; params: { t
             <PlusCircle height={25} width={25} />
           </AddEventButton>
 
-          <Button variant="contained" primary loading={timelineCreating} type="submit" className="w-full">
+          <Button variant="contained" primary loading={timelineCreating} className="w-full" onClick={handleSubmit}>
             Publish
           </Button>
-        </form>
+        </div>
       </SingleCardLayout>
     </PageWrapper>
   );
