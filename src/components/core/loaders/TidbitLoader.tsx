@@ -1,15 +1,40 @@
 import React from 'react';
 
-const TidbitsSkeleton: React.FC = () => {
-  const cards = [0, 1, 2, 3, 4, 5].map((index) => (
-    <div key={index} className="animate-pulse m-3 mb-8 flex-1" style={{ flexBasis: 'calc(33.33% - 2rem)' }}>
-      <div className="rounded-lg bg-white h-60 w-full" style={{ height: '4rem' }} />
-      <div className="mt-4 h-4 bg-white rounded w-3/4" style={{ width: '75%' }} />
-      <div className="mt-2 h-4 bg-white rounded w-1/2" style={{ width: '50%' }} />
-    </div>
-  ));
+const TidbitsSkeleton = () => {
+  const skeletonArray = new Array(9).fill(0);
 
-  return <div className="flex flex-wrap justify-between">{cards}</div>;
+  return (
+    <>
+      <div className="container  grid grid-cols-3 gap-10  ">
+        {[0, 1, 2, 3, 4,5 , 6 ,7].map((item, index) => (
+          <div key={index} className="flex flex-col w-full bg-white shadow-lg rounded-lg overflow-hidden relative">
+            <div className="p-4 text-center">
+              <h2 className="shine h-4 w-full mb-2 rounded"></h2>
+              <p className="shine h-12 rounded"></p>
+            </div>
+            <div className="flex flex-wrap justify-end absolute top-2 left-2">
+            </div>
+          </div>
+        ))}
+      </div>
+      <style jsx>{`
+        @keyframes shine {
+          to {
+            background-position: right -40px top 0;
+          }
+        }
+
+        .shine {
+          background-color: #e2e5e7;
+          background-image: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0));
+          background-size: 40px 100%;
+          background-repeat: no-repeat;
+          background-position: left -40px top 0;
+          animation: shine 1s ease infinite;
+        }
+      `}</style>
+    </>
+  );
 };
 
 export default TidbitsSkeleton;
