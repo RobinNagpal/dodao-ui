@@ -6,14 +6,13 @@ const TidbitsSkeleton = () => {
   return (
     <>
       <div className="container  grid grid-cols-3 gap-10  ">
-        {[0, 1, 2, 3, 4,5 , 6 ,7].map((item, index) => (
+        {[0, 1, 2, 3, 4, 5, 6, 7].map((item, index) => (
           <div key={index} className="flex flex-col w-full bg-white shadow-lg rounded-lg overflow-hidden relative">
             <div className="p-4 text-center">
               <h2 className="shine h-4 w-full mb-2 rounded"></h2>
               <p className="shine h-12 rounded"></p>
             </div>
-            <div className="flex flex-wrap justify-end absolute top-2 left-2">
-            </div>
+            <div className="flex flex-wrap justify-end absolute top-2 left-2"></div>
           </div>
         ))}
       </div>
