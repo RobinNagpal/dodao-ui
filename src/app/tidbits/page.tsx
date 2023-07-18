@@ -9,7 +9,7 @@ import { Grid4Cols } from '@/components/core/grids/Grid4Colst';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import { useQueryBytesQuery } from '@/graphql/generated/generated-types';
 import React from 'react';
-import GuideSkeleton from '@/components/core/loaders/CardLoader';
+import TidbitsSkeleton from '@/components/core/loaders/TidbitLoader';
 
 function Byte({ space }: SpaceProps) {
   const { data, error, loading, refetch: fetchBytes } = useQueryBytesQuery({ variables: { spaceId: space.id } });
@@ -31,7 +31,7 @@ function Byte({ space }: SpaceProps) {
       </div>
       {loadingData && (
           <Block slim={true}>
-            <GuideSkeleton/>
+            <TidbitsSkeleton/>
           </Block>
         )}
     </PageWrapper>
