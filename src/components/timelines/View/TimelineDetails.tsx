@@ -1,15 +1,20 @@
 import { Space, TimelineDetailsFragment } from '@/graphql/generated/generated-types';
 import moment from 'moment';
+import { getMarkedRenderer } from '@/utils/ui/getMarkedRenderer';
+import { marked } from 'marked';
 interface TimelineProps {
   space: Space;
   timeline: TimelineDetailsFragment;
   inProgress?: boolean;
 }
 const Timeline = ({ timeline }: TimelineProps) => {
+  const renderer = getMarkedRenderer();
   return (
     <>
       <ul role="list" className="space-y-6">
         {timeline.events.map((event, i) => {
+          const eventSummary = marked.parse(event.summary, { renderer });
+
           const timeAgo = moment(event.date).local().startOf('seconds').fromNow();
           return (
             <li key={i} className="relative flex gap-x-4 items-center">
@@ -30,7 +35,7 @@ const Timeline = ({ timeline }: TimelineProps) => {
                     {timeAgo}
                   </time>
                 </div>
-                <p className=" p-4 pt-2 text-sm leading-6">{event.summary}</p>
+                <p className=" p-4 pt-2 text-sm leading-6" dangerouslySetInnerHTML={{ __html: eventSummary }} />
               </div>
             </li>
           );
