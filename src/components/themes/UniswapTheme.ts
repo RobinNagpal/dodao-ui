@@ -11,7 +11,6 @@ const UniswapStyle = createGlobalStyle`
     --border-color: #909294;
     --header-bg: #4B47AB;
     --block-bg: #4d5054;
-    --sub-heading-color: #000000;
   }
 `;
 
