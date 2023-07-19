@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 
-export default function CloseTimeline() {
+export default function CloseSimulation() {
   useEffect(() => {
     window.close();
     setTimeout(() => {
