@@ -1,0 +1,47 @@
+/* Styles for the modal overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Styles for the modal */
+.modal {
+  background-color: var(--bg-color); /* Use the same background color as the page */
+  color: var(--text-color); /* Use the same text color as the page */
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  max-width: 90%;
+  max-height: 90%;
+  overflow-y: auto;
+  padding: 16px;
+  position: relative;
+}
+
+/* Styles for the modal close button */
+.modal-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  cursor: pointer;
+  font-size: 24px;
+}
+
+/* Styles for the modal content */
+.modal-content {
+  padding: 16px;
+}
+
+/* Dark theme styles for the modal content */
+.dark-theme {
+  background-color: var(--bg-color); /* Use the same background color as the page */
+  color: var(--text-color); /* Use the same text color as the page */
+}
+
+/* Add any additional dark theme styles you may need for the modal content */
