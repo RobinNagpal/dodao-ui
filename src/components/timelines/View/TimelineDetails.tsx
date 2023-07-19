@@ -1,10 +1,12 @@
+import TimelineDetailsModal from '@/components/timelines/View/TimelineDetailsModal';
+import ArrowRightIcon from '@heroicons/react/24/solid/ArrowRightIcon';
+import ArrowTopRightOnSquareIcon from '@heroicons/react/24/solid/ArrowTopRightOnSquareIcon';
 import React, { useState } from 'react';
 import { Space, TimelineDetailsFragment } from '@/graphql/generated/generated-types';
 import { getMarkedRenderer } from '@/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
 import moment from 'moment';
-
-import './styles.css'; // Add the CSS styles in a file named 'styles.css' in the same directory
+import styled from 'styled-components';
 
 interface TimelineProps {
   space: Space;
@@ -12,13 +14,14 @@ interface TimelineProps {
   inProgress?: boolean;
 }
 
+const StyledLink = styled.a`
+  color: var(--primary-color);
+  cursor: pointer;
+`;
+
 const Timeline = ({ timeline }: TimelineProps) => {
   const renderer = getMarkedRenderer();
-  const [showModal, setShowModal] = useState(false);
-
-  const toggleModal = () => {
-    setShowModal((prev) => !prev);
-  };
+  const [showFullDetailsModal, setShowFullDetailsModal] = useState(false);
 
   return (
     <>
@@ -48,33 +51,25 @@ const Timeline = ({ timeline }: TimelineProps) => {
                   </time>
                 </div>
 
-                <p className="p-4 pt-2 text-sm leading-6 markdown-body">
-                  <span dangerouslySetInnerHTML={{ __html: eventSummary.slice(0, 270) }} />
-                  {eventSummary.length > 200 && !showModal && (
-                    <button onClick={toggleModal} className="text-blue-500">
-                      See Complete Table and All Audits
-                    </button>
+                <p className="p-4 pt-2 text-sm leading-6 markdown-body" dangerouslySetInnerHTML={{ __html: eventSummary }} />
+
+                <div className="flex">
+                  {event.fullDetails && (
+                    <>
+                      <StyledLink className="p-4 flex" onClick={() => setShowFullDetailsModal(true)}>
+                        <ArrowTopRightOnSquareIcon width={20} height={20} /> Show Full Details
+                      </StyledLink>
+                      {showFullDetailsModal && (
+                        <TimelineDetailsModal open={showFullDetailsModal} onClose={() => setShowFullDetailsModal(false)} event={event} />
+                      )}
+                    </>
                   )}
-                </p>
-
-                {showModal && (
-                  <div className="modal-overlay">
-                    <div className="modal">
-                      <span className="modal-close" onClick={toggleModal}>
-                        &times;
-                      </span>
-                      <div className="modal-content">
-                        <p className="p-4 pt-2 text-sm leading-6 markdown-body" dangerouslySetInnerHTML={{ __html: eventSummary }} />
-                        <span className="markdown-body font-medium text-lg text-[var(--text-color)]" dangerouslySetInnerHTML={{ __html: eventDetails }} />
-
-                        {/* Event More Link */}
-                        <a href="#your-event-more-link" className="text-indigo-700 text-lg font-bold		block ml-2 mt-4">
-                          Event More Link 🔗
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                )}
+                  {event.moreLink && (
+                    <StyledLink className="p-4 flex" href={event.moreLink} target="_blank">
+                      More Details <ArrowRightIcon width={20} height={20} />
+                    </StyledLink>
+                  )}
+                </div>
               </div>
             </li>
           );
