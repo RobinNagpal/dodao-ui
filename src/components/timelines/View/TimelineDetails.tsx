@@ -1,80 +1,48 @@
-'use client';
-
-import CalendarIcon from '@/components/core/icons/CalendarIcon';
-import Button from '@/components/core/buttons/Button';
 import { Space, TimelineDetailsFragment } from '@/graphql/generated/generated-types';
 import { getMarkedRenderer } from '@/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
-import styled from 'styled-components';
+import moment from 'moment';
 
 interface TimelineProps {
   space: Space;
   timeline: TimelineDetailsFragment;
   inProgress?: boolean;
 }
-
-const TimelineList = styled.ol`
-  border-left: 2px solid var(--primary-color);
-`;
-
-const TimelineItem = styled.li`
-  margin-left: 10px;
-  margin-bottom: 10px;
-  display: flex;
-  align-items: flex-start;
-`;
-
-const TimelineDateIcon = styled.div`
-  background-color: var(--primary-color);
-  width: 30px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  margin-left: -33px;
-  min-width: 40px;
-`;
-
-const TimelineContent = styled.div`
-  padding: 0 20px 20px 20px;
-  margin-left: 20px;
-  width: max-content;
-  margin-bottom: 10px;
-
-  h1 {
-    margin-bottom: 1px;
-  }
-`;
 const Timeline = ({ timeline }: TimelineProps) => {
   const renderer = getMarkedRenderer();
-
   return (
-    <TimelineList>
-      {timeline.events.map((event, i) => {
-        const eventSummary = marked.parse(event.summary, { renderer });
-        return (
-          <TimelineItem key={i}>
-            <TimelineDateIcon>
-              <CalendarIcon />
-            </TimelineDateIcon>
-            <TimelineContent>
-              <div className={event.moreLink ? 'mb-4' : ''}>
-                <h1 className="mb-1 text-lg font-semibold">{event.title}</h1>
-                <h3 className="block mb-2 text-sm font-normal leading-none">{new Date(event.date).toISOString().split('T')[0]}</h3>
-                <p className="text-base font-normal markdown-body" dangerouslySetInnerHTML={{ __html: eventSummary }} />
+    <>
+      <ul role="list" className="space-y-6">
+        {timeline.events.map((event, i) => {
+          const eventSummary = marked.parse(event.summary, { renderer });
+
+          const timeAgo = moment(event.date).local().startOf('seconds').fromNow();
+          return (
+            <li key={i} className="relative flex gap-x-4 items-center">
+              <div className="absolute left-0 top-0 flex w-5 justify-center -bottom-6 mr-4 ">
+                <div className="w-px bg-gray-200"></div>
               </div>
-              {event.moreLink && (
-                <a href={event.moreLink} target="_blank" rel="noopener noreferrer">
-                  <Button primary>Learn More</Button>
-                </a>
-              )}
-            </TimelineContent>
-          </TimelineItem>
-        );
-      })}
-    </TimelineList>
+              <div className="flex items-center">
+                <div className="rounded-full bg-[var(--bg-color)] h-8 w-5 flex items-center justify-center relative z-10">
+                  <div className="rounded-full bg-gray-200 ring-1 ring-gray-400 h-3 w-3"></div>
+                </div>
+              </div>
+              <div className="flex-auto rounded-md ring-1 ring-inset ring-gray-200">
+                <div className="flex justify-between gap-x-4">
+                  <div className="text-xs leading-5 text-gray-500 p-4 pb-0">
+                    <span className="font-medium text-lg text-[var(--text-color)]">{event.title}</span>
+                  </div>
+                  <time dateTime={event.date} className="flex-none  p-4  pb-0 text-xs leading-5">
+                    {timeAgo}
+                  </time>
+                </div>
+                <p className=" p-4 pt-2 text-sm leading-6 markdown-body" dangerouslySetInnerHTML={{ __html: eventSummary }} />
+              </div>
+            </li>
+          );
+        })}
+      </ul>
+    </>
   );
 };
-
 export default Timeline;
