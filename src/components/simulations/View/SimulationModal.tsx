@@ -3,15 +3,12 @@ import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 
 interface SimulationModalProps {
+  title: string;
   iframeId: string;
   iframeUrl: string;
   open: boolean;
   onClose: () => void;
 }
-
-const Header = styled.h3`
-  /* Add header styles here */
-`;
 
 const Iframe = styled.iframe`
   width: 100%;
@@ -20,7 +17,7 @@ const Iframe = styled.iframe`
   min-height: calc(100vh - 100px);
 `;
 
-function SimulationModal({ iframeId, iframeUrl, open, onClose }: SimulationModalProps) {
+function SimulationModal({ iframeId, iframeUrl, open, onClose, title }: SimulationModalProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
   useEffect(() => {
@@ -39,10 +36,7 @@ function SimulationModal({ iframeId, iframeUrl, open, onClose }: SimulationModal
   }, [onClose]);
 
   return (
-    <FullScreenModal open={open} onClose={onClose} title={'Simulation'}>
-      <div className="border-b pt-3 pb-2 text-center">
-        <Header>Simulation</Header>
-      </div>
+    <FullScreenModal open={open} onClose={onClose} title={title}>
       <Iframe src={iframeUrl} id={iframeId} allowFullScreen ref={iframeRef} />
     </FullScreenModal>
   );
