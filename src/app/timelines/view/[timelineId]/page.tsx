@@ -7,7 +7,6 @@ import RowLoading from '@/components/core/loaders/RowLoading';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import TimelineDetails from '@/components/timelines/View/TimelineDetails';
 import { SpaceWithIntegrationsFragment, useTimelineDetailsQuery } from '@/graphql/generated/generated-types';
-import SingleCardLayout from '@/layouts/SingleCardLayout';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
