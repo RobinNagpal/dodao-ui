@@ -72,16 +72,18 @@ const Timeline = ({ timeline }: TimelineProps) => {
                       <StyledLink className="p-4 flex" onClick={() => handleShowFullDetailsModal(event)}>
                         <ArrowTopRightOnSquareIcon width={20} height={20} className="mt-1 mr-1" /> Show Full Details
                       </StyledLink>
-                      <StyledLink
-                        className="p-4 flex "
-                        onClick={() => {
-                          if (event.moreLink) window.open(event.moreLink);
-                        }}
-                      >
-                        <ArrowRightIcon width={20} height={20} className="mt-1 mr-1" /> Get More Details
-                      </StyledLink>
                     </>
                   )}
+                  <>
+                    <StyledLink
+                      className="p-4 flex "
+                      onClick={() => {
+                        if (event.moreLink) window.open(event.moreLink);
+                      }}
+                    >
+                      <ArrowRightIcon width={20} height={20} className="mt-1 mr-1" /> Get More Details
+                    </StyledLink>
+                  </>
                 </div>
               </div>
             </li>
