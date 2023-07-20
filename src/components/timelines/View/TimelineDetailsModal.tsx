@@ -9,7 +9,9 @@ export interface TimelineDetailsModalProps {
   onClose: () => void;
   event: TimelineEventFragment;
 }
-export default function TimelineDetailsModal({ event, open, onClose }: TimelineDetailsModalProps) {
+export default function TimelineDetailsModal({ event, open, onClose, }: TimelineDetailsModalProps) {
+
+
   const fullDetails = event.fullDetails;
   if (!fullDetails) return null;
 
