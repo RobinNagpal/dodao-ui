@@ -13,25 +13,23 @@ import TidbitsSkeleton from '@/components/core/loaders/TidbitLoader';
 
 function Byte({ space }: SpaceProps) {
   const { data, error, loading, refetch: fetchBytes } = useQueryBytesQuery({ variables: { spaceId: space.id } });
-
-  const loadingData = loading || !space;
   return (
     <PageWrapper>
-      <div className="flex justify-center items-center px-5 sm:px-0">
-        {!data?.bytes.length && !loadingData && <NoByte />}
-        {!!data?.bytes?.length && (
-          <Grid4Cols>
-            {data?.bytes?.map((byte, i) => (
-              <ByteSummaryCard key={i} byte={byte} />
-            ))}
-          </Grid4Cols>
-        )}
-        <div style={{ height: '10px', width: '10px', position: 'absolute' }} />
-      </div>
-      {loadingData && (
-        <Block slim={true}>
+      {loading ? (
+        <Block>
           <TidbitsSkeleton />
         </Block>
+      ) : (
+        <div className="flex justify-center items-center px-5 sm:px-0">
+          {!data?.bytes.length && <NoByte />}
+          {!!data?.bytes?.length && (
+            <Grid4Cols>
+              {data?.bytes?.map((byte, i) => (
+                <ByteSummaryCard key={i} byte={byte} />
+              ))}
+            </Grid4Cols>
+          )}
+        </div>
       )}
     </PageWrapper>
   );

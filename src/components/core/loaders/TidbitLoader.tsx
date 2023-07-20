@@ -1,21 +1,20 @@
+import { Grid4Cols } from '@/components/core/grids/Grid4Colst';
 import React from 'react';
 
 const TidbitsSkeleton = () => {
-  const skeletonArray = new Array(9).fill(0);
-
   return (
     <>
-      <div className="container  grid grid-cols-3 gap-10  ">
-        {[0, 1, 2, 3, 4, 5, 6, 7].map((item, index) => (
+      <Grid4Cols>
+        {[0, 1, 2, 3].map((item, index) => (
           <div key={index} className="flex flex-col w-full bg-white shadow-lg rounded-lg overflow-hidden relative">
-            <div className="p-4 text-center">
+            <div className="p-4 w-full text-center">
               <h2 className="shine h-4 w-full mb-2 rounded"></h2>
               <p className="shine h-12 rounded"></p>
             </div>
             <div className="flex flex-wrap justify-end absolute top-2 left-2"></div>
           </div>
         ))}
-      </div>
+      </Grid4Cols>
       <style jsx>{`
         @keyframes shine {
           to {

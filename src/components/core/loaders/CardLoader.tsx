@@ -1,11 +1,12 @@
+import { Grid4Cols } from '@/components/core/grids/Grid4Colst';
 import React from 'react';
 
 const GuideSkeleton = () => {
-  const skeletonArray = new Array(9).fill(0);
+  const skeletonArray = new Array(3).fill(0);
 
   return (
     <>
-      <div className="container  grid grid-cols-3 gap-10  ">
+      <Grid4Cols>
         {skeletonArray.map((item, index) => (
           <div key={index} className="flex flex-col w-full bg-white shadow-lg rounded-lg overflow-hidden relative">
             <div className="shine w-full h-[200px]"></div>
@@ -18,7 +19,7 @@ const GuideSkeleton = () => {
             </div>
           </div>
         ))}
-      </div>
+      </Grid4Cols>
       <style jsx>{`
         @keyframes shine {
           to {

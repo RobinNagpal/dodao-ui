@@ -14,21 +14,15 @@ import { useEffect, useState } from 'react';
 function Guide({ space }: SpaceProps) {
   const { data, loading } = useGuidesQueryQuery({ variables: { space: space.id } });
 
-  const loadingData = loading || !space;
-  const [showSkeleton, setShowSkeleton] = useState(true);
-  console.log('First time:showSkeleton', showSkeleton);
-  useEffect(() => {
-    if (!loading) {
-      setShowSkeleton(false);
-    }
-  }, [loading]);
   return (
-    <>
-      <PageWrapper>
-        <Block>{showSkeleton && <GuideSkeleton />}</Block>
-
+    <PageWrapper>
+      {loading ? (
+        <Block>
+          <GuideSkeleton />
+        </Block>
+      ) : (
         <div className="flex justify-center items-center px-5 sm:px-0">
-          {!data?.guides?.length && !loadingData && <NoGuide />}
+          {!data?.guides?.length && !loading && <NoGuide />}
           {!!data?.guides?.length && (
             <Grid4Cols>
               {data?.guides?.map((guide: GuideSummaryFragment, i) => (
@@ -37,9 +31,8 @@ function Guide({ space }: SpaceProps) {
             </Grid4Cols>
           )}
         </div>
-        <div style={{ height: '10px', width: '10px', position: 'absolute' }} />
-      </PageWrapper>
-    </>
+      )}
+    </PageWrapper>
   );
 }
 
