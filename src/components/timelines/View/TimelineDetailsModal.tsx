@@ -9,18 +9,6 @@ const LargeTitle = styled.h2`
   font-size: 1.5rem;
   font-weight: bold;
 `;
-const ModalContent = styled.div`
-  max-width: 500px; /* Adjust the max-width as needed */
-  margin: 0 auto;
-`;
-
-const CloseButton = styled.button`
-  transition: all 0.2s ease-in-out;
-  &:hover {
-    transform: scale(1.1);
-  }
-`;
-
 export interface TimelineDetailsModalProps {
   open: boolean;
   onClose: () => void;

@@ -37,9 +37,9 @@ const TimelinePage = ({ params, space }: { params: { timelineId: string }; space
               </div>
               <div className="mb-8 ml-14 text-2xl">
                 <div className="mt-2">
-                  <h1 className="mb-2 ">{data?.timeline?.name}</h1>
+                  <h1 className="mb-2 text-3xl font-semibold ">{data?.timeline?.name}</h1>
                 </div>
-                <div>{data?.timeline?.excerpt}</div>
+                <div className="text-lg font-normal">{data?.timeline?.excerpt}</div>
               </div>
               <div className="px-10 md:px-5">{!loading && <TimelineDetails timeline={data?.timeline} space={space} />}</div>
             </>
