@@ -104,9 +104,9 @@ const Simulation = ({ viewSimulationHelper, step, simulation, submitSimulation }
     viewSimulationHelper.goToNextStep(step);
   }
 
-  function closeSimulationModal() {
+  async function closeSimulationModal() {
+    await navigateToNextStep();
     setIframeModalOpen(false);
-    navigateToNextStep();
   }
 
   return (
@@ -141,9 +141,12 @@ const Simulation = ({ viewSimulationHelper, step, simulation, submitSimulation }
       </ButtonContainer>
       {step?.iframeUrl && (
         <SimulationModal
+          title={simulation.name}
           iframeId={`${simulation.id}__${step.uuid}__iframe_id`}
           open={iframeModalOpen}
-          onClose={closeSimulationModal}
+          onClose={() => {
+            closeSimulationModal();
+          }}
           iframeUrl={step?.iframeUrl || ''}
         />
       )}

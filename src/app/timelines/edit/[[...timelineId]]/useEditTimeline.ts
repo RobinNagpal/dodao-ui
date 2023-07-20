@@ -75,7 +75,7 @@ export function useEditTimeline(timelineId: string | null, space: Space): EditTi
           id: '',
           uuid: uuidv4(),
           title: '',
-          date: Date.toString(),
+          date: new Date().toISOString(),
           summary: '',
           fullDetails: '',
           order: prevTimeline.events.length,
@@ -168,7 +168,7 @@ export function useEditTimeline(timelineId: string | null, space: Space): EditTi
         eventError.content = $t('validations.timeline.upsert.eventContent.length');
       }
 
-      if (event.moreLink) {
+      if (event.moreLink?.trim()) {
         if (!isValidURL(event.moreLink)) {
           eventError.moreLink = $t('validations.timeline.upsert.moreLink.valid');
         } else if (event.moreLink.length < 5 || event.moreLink.length > 2048) {
