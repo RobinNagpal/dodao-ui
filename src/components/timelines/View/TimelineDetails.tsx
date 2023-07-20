@@ -1,8 +1,8 @@
-import TimelineDetailsModal from '@/components/timelines/View/TimelineDetailsModal';
+import TimelineDetailsModal from './TimelineDetailsModal'; // Assuming the correct file location for TimelineDetailsModal
 import ArrowRightIcon from '@heroicons/react/24/solid/ArrowRightIcon';
 import ArrowTopRightOnSquareIcon from '@heroicons/react/24/solid/ArrowTopRightOnSquareIcon';
 import React, { useState } from 'react';
-import { Space, TimelineDetailsFragment } from '@/graphql/generated/generated-types';
+import { Space, TimelineDetailsFragment, TimelineEventFragment } from '@/graphql/generated/generated-types';
 import { getMarkedRenderer } from '@/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
 import moment from 'moment';
@@ -22,13 +22,26 @@ const StyledLink = styled.a`
 const Timeline = ({ timeline }: TimelineProps) => {
   const renderer = getMarkedRenderer();
   const [showFullDetailsModal, setShowFullDetailsModal] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState<TimelineEventFragment | null>(null); // State to track the selected event
+
+  // Function to open the modal for the selected event
+  const handleShowFullDetailsModal = (event: TimelineEventFragment) => {
+    setSelectedEvent(event);
+    setShowFullDetailsModal(true);
+  };
+
+  // Function to close the modal
+  const handleCloseFullDetailsModal = () => {
+    setSelectedEvent(null);
+    setShowFullDetailsModal(false);
+  };
 
   return (
     <>
       <ul role="list" className="space-y-6">
         {timeline.events.map((event, i) => {
           const eventSummary = marked.parse(event.summary, { renderer });
-          const eventDetails = event.fullDetails ? marked.parse(event.fullDetails, { renderer }) : '';
+          // const eventDetails = event.fullDetails ? marked.parse(event.fullDetails, { renderer }) : '';
           const timeAgo = moment(event.date).local().startOf('seconds').fromNow();
 
           return (
@@ -44,7 +57,7 @@ const Timeline = ({ timeline }: TimelineProps) => {
               <div className="flex-auto rounded-md ring-1 ring-inset ring-gray-200">
                 <div className="flex justify-between gap-x-4">
                   <div className="text-xs leading-5 text-gray-500 p-4 pb-0">
-                    <span className="font-medium text-lg text-[var(--text-color)]">{event.title}</span>
+                    <span className="font-medium text-xl text-[var(--text-color)]">{event.title}</span>
                   </div>
                   <time dateTime={event.date} className="flex-none  p-4  pb-0 text-xs leading-5">
                     {timeAgo}
@@ -56,25 +69,29 @@ const Timeline = ({ timeline }: TimelineProps) => {
                 <div className="flex">
                   {event.fullDetails && (
                     <>
-                      <StyledLink className="p-4 flex" onClick={() => setShowFullDetailsModal(true)}>
-                        <ArrowTopRightOnSquareIcon width={20} height={20} /> Show Full Details
+                      <StyledLink className="p-4 flex" onClick={() => handleShowFullDetailsModal(event)}>
+                        <ArrowTopRightOnSquareIcon width={20} height={20} className="mt-1 mr-1" /> Show Full Details
                       </StyledLink>
-                      {showFullDetailsModal && (
-                        <TimelineDetailsModal open={showFullDetailsModal} onClose={() => setShowFullDetailsModal(false)} event={event} />
-                      )}
                     </>
                   )}
-                  {event.moreLink && (
-                    <StyledLink className="p-4 flex" href={event.moreLink} target="_blank">
-                      More Details <ArrowRightIcon width={20} height={20} />
+                  <>
+                    <StyledLink
+                      className="p-4 flex "
+                      onClick={() => {
+                        if (event.moreLink) window.open(event.moreLink);
+                      }}
+                    >
+                      <ArrowRightIcon width={20} height={20} className="mt-1 mr-1" /> Get More Details
                     </StyledLink>
-                  )}
+                  </>
                 </div>
               </div>
             </li>
           );
         })}
       </ul>
+
+      {selectedEvent && <TimelineDetailsModal open={showFullDetailsModal} onClose={handleCloseFullDetailsModal} event={selectedEvent} />}
     </>
   );
 };
