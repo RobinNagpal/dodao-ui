@@ -104,6 +104,7 @@ fragment Guide on Guide {
   categories
   postSubmissionStepContent
   content
+  categories
   createdAt
   id
   guideIntegrations {

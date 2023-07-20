@@ -3220,6 +3220,7 @@ export const GuideFragmentDoc = gql`
   categories
   postSubmissionStepContent
   content
+  categories
   createdAt
   id
   guideIntegrations {
