@@ -27,14 +27,16 @@ function SimulationModal({ iframeId, iframeUrl, open, onClose, title }: Simulati
       }
     }
 
-    const iframeElement = iframeRef.current;
-    iframeElement?.addEventListener('load', handleIframeLoaded);
+    // Check if the iframe is initialized
+    if (iframeRef.current) {
+      iframeRef.current.addEventListener('load', handleIframeLoaded);
 
-    return () => {
-      iframeElement?.removeEventListener('load', handleIframeLoaded);
-    };
-  }, [onClose]);
-
+      // Remove the event listener when the component is unmounted or before the next render
+      return () => {
+        iframeRef.current?.removeEventListener('load', handleIframeLoaded);
+      };
+    }
+  }, [onClose, iframeRef.current]); // Add iframeRef.current to the dependency array
   return (
     <FullScreenModal open={open} onClose={onClose} title={title}>
       <Iframe src={iframeUrl} id={iframeId} allowFullScreen ref={iframeRef} />
