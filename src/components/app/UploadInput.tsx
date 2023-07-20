@@ -1,5 +1,6 @@
 import Upload from '@/components/app/Upload';
-import { ArrowUpTrayIcon, PhotoIcon } from '@heroicons/react/24/solid';
+import ArrowUpTrayIcon from '@heroicons/react/24/solid/ArrowUpTrayIcon';
+import PhotoIcon from '@heroicons/react/24/solid/PhotoIcon';
 import styled from 'styled-components';
 import { v4 as uuidV4 } from 'uuid';
 

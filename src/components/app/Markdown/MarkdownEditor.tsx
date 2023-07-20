@@ -3,19 +3,13 @@ import { markdownAIRewriteCommandFacotry } from '@/components/app/Markdown/Markd
 import rewriteMarkdownContentPrompt from '@/components/app/Markdown/rewriteMarkdownContentPrompt';
 import SelectAIGeneratorModal from '@/components/app/Markdown/SelectAIGeneratorModal';
 import GenerateContentUsingAIModal from '@/components/app/Modal/AI/GenerateContentUsingAIModal';
+import UploadImageModal from '@/components/app/Modal/Image/UploadImageModal';
+import PhotoIcon from '@heroicons/react/24/solid/PhotoIcon';
 import RobotIconSolid from '@/components/core/icons/RobotIconSolid';
 import { useNotificationContext } from '@/contexts/NotificationContext';
-import {
-  ChatCompletionRequestMessageRoleEnum,
-  CreateSignedUrlInput,
-  useAskChatCompletionAiMutation,
-  useCreateSignedUrlMutation,
-} from '@/graphql/generated/generated-types';
+import { ChatCompletionRequestMessageRoleEnum, useAskChatCompletionAiMutation } from '@/graphql/generated/generated-types';
 import { PropsWithChildren } from '@/types/PropsWithChildren';
-
-import { getUploadedImageUrlFromSingedUrl } from '@/utils/upload/getUploadedImageUrlFromSingedUrl';
 import MDEditor, { commands } from '@uiw/react-md-editor';
-import axios from 'axios';
 import React, { SetStateAction, useState } from 'react';
 import styled from 'styled-components';
 import { v4 as uuidV4 } from 'uuid';
@@ -150,79 +144,13 @@ function MarkdownEditor({
   const [showSelectAIModal, setShowSelectAIModal] = useState(false);
   const [showAddNewContentModal, setShowAddNewContentModal] = useState(false);
   const [showRewriteContentModal, setShowRewriteContentModal] = useState(false);
+  const [showImageUploadModal, setShowImageUploadModal] = useState(false);
+
   const { showNotification } = useNotificationContext();
 
-  const [markdown, setMarkdown] = useState<string | undefined>();
-
-  const [createSignedUrlMutation, { loading: creatingSingedUrl }] = useCreateSignedUrlMutation();
   const [askChatCompletetionAI] = useAskChatCompletionAiMutation();
-  const handleInput = (value: SetStateAction<string | undefined>) => {
-    setMarkdown(value || '');
+  const handleInputContent = (value: SetStateAction<string | undefined>) => {
     onUpdate && onUpdate(value?.toString() || '');
-  };
-
-  const insertToTextArea = (intsertString: string) => {
-    const textarea = document.querySelector('textarea');
-    if (!textarea) {
-      return null;
-    }
-
-    let sentence = textarea.value;
-    const len = sentence.length;
-    const pos = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-
-    const front = sentence.slice(0, pos);
-    const back = sentence.slice(pos, len);
-
-    sentence = front + intsertString + back;
-
-    textarea.value = sentence;
-    textarea.selectionEnd = end + intsertString.length;
-
-    return sentence;
-  };
-
-  async function uploadToS3AndReturnImgUrl(imageType: string, file: File, objectId: string) {
-    const input: CreateSignedUrlInput = {
-      imageType,
-      contentType: file.type,
-      objectId,
-      name: file.name.replace(' ', '_').toLowerCase(),
-    };
-
-    const response = await createSignedUrlMutation({ variables: { spaceId, input } });
-
-    const signedUrl = response?.data?.payload!;
-    await axios.put(signedUrl, file, {
-      headers: { 'Content-Type': file.type },
-    });
-
-    const imageUrl = getUploadedImageUrlFromSingedUrl(signedUrl);
-    return imageUrl;
-  }
-
-  // https://github.com/uiwjs/react-md-editor/issues/83
-  const onImagePasted = async (dataTransfer: DataTransfer, setMarkdown: (value: SetStateAction<string | undefined>) => void) => {
-    const files: File[] = [];
-    for (let index = 0; index < dataTransfer.items.length; index += 1) {
-      const file = dataTransfer.files.item(index);
-
-      if (file) {
-        files.push(file);
-      }
-    }
-
-    await Promise.all(
-      files.map(async (file) => {
-        const url = await uploadToS3AndReturnImgUrl(imageType, file, objectId);
-        const insertedMarkdown = insertToTextArea(`![](${url})`);
-        if (!insertedMarkdown) {
-          return;
-        }
-        setMarkdown(insertedMarkdown);
-      })
-    );
   };
 
   const rewriteContent = async (text: string) => {
@@ -255,13 +183,7 @@ function MarkdownEditor({
       <MainDiv className="w-full bg-transparent flex">
         <MDEditor
           value={modelValue}
-          onChange={handleInput}
-          onPaste={async (event) => {
-            await onImagePasted(event.clipboardData, handleInput);
-          }}
-          onDrop={async (event) => {
-            await onImagePasted(event.dataTransfer, handleInput);
-          }}
+          onChange={handleInputContent}
           height={maxHeight || 440}
           textareaProps={{
             placeholder: 'Fill in your markdown for the coolest of the cool.',
@@ -282,8 +204,6 @@ function MarkdownEditor({
             commands.hr,
             commands.link,
             commands.quote,
-            commands.image,
-
             commands.divider,
             commands.unorderedListCommand,
             commands.orderedListCommand,
@@ -294,23 +214,53 @@ function MarkdownEditor({
             commands.fullscreen,
           ]}
           extraCommands={[
+            {
+              name: 'imageUpload',
+              keyCommand: 'imageUpload',
+              icon: <PhotoIcon />,
+              buttonProps: { title: 'Upload Image' },
+              execute: () => {
+                setShowImageUploadModal(true);
+              },
+            },
             markdownAIRewriteCommandFacotry(rewriteContent),
-            commands.group([], {
-              name: 'update',
-              groupName: 'update',
+            {
+              name: 'aiContent',
+              keyCommand: 'aiContent',
               icon: <RobotIconSolid />,
-
-              execute: (state: commands.ExecuteState, api: commands.TextAreaTextApi) => {
+              buttonProps: { title: 'AI Content' },
+              execute: () => {
                 setShowSelectAIModal(true);
               },
-              buttonProps: { 'aria-label': 'Insert title' },
-            }),
+            },
           ]}
         />
       </MainDiv>
 
       {info && <p className="mt-1 text-xs">{info}</p>}
       {typeof error === 'string' && <p className="mt-2 text-sm text-red-600">{error}</p>}
+      {showImageUploadModal && (
+        <UploadImageModal
+          open={showImageUploadModal}
+          onClose={() => setShowImageUploadModal(false)}
+          imageType={imageType}
+          objectId={objectId}
+          spaceId={spaceId}
+          imageUploaded={(imageUrl) => {
+            handleInputContent(
+              modelValue +
+                '\n' +
+                `
+<div align="center">
+  <img style="max-height:400px;margin-bottom:30px" src="${imageUrl}"/>
+</div>
+
+`
+            );
+            setShowImageUploadModal(false);
+          }}
+        />
+      )}
       {showSelectAIModal && (
         <SelectAIGeneratorModal
           open={showSelectAIModal}
@@ -334,7 +284,7 @@ function MarkdownEditor({
           guidelines={defaultGuidelines}
           onGenerateContent={(generatedContent) => {
             if (generatedContent) {
-              handleInput(modelValue + '\n' + generatedContent);
+              handleInputContent(modelValue + '\n' + generatedContent);
               setShowAddNewContentModal(false);
             } else {
               showNotification({
@@ -356,7 +306,7 @@ function MarkdownEditor({
           guidelines={defaultGuidelines}
           onGenerateContent={(generatedContent) => {
             if (generatedContent) {
-              handleInput(modelValue + '\n' + generatedContent);
+              handleInputContent(modelValue + '\n' + generatedContent);
               setShowRewriteContentModal(false);
             } else {
               showNotification({
