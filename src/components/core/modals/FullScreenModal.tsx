@@ -6,7 +6,7 @@ import styled from 'styled-components';
 export interface SingleSectionModalProps {
   open: boolean;
   onClose: () => void;
-  title: string;
+  title: string | JSX.Element; // Updated the type to allow JSX.Element
   children: React.ReactNode;
   showCloseButton?: boolean;
   fullWidth?: boolean;
