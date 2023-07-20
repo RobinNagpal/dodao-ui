@@ -20,9 +20,15 @@ export default function TimelineDetailsModal({ event, open, onClose }: TimelineD
 
   const renderer = getMarkedRenderer();
   const eventDetails = marked.parse(fullDetails, { renderer });
+  const eventSummary = marked.parse(event.summary, { renderer });
+
   return (
     <FullScreenModal open={open} onClose={onClose} title={<LargeTitle>{event.title} Details</LargeTitle>}>
-      <div className="markdown-body  text-sm text-left" dangerouslySetInnerHTML={{ __html: eventDetails }} />
+      <p className="markdown-body mt-4 font-semibold  text-2xl text-left">Audit Details </p>
+
+      <div className="markdown-body  text-sm text-left" dangerouslySetInnerHTML={{ __html: eventSummary }} />
+
+      <div className="markdown-body mt-4  text-sm text-left" dangerouslySetInnerHTML={{ __html: eventDetails }} />
     </FullScreenModal>
   );
 }
