@@ -21,8 +21,6 @@ const Thumbnail = styled.img<{ bigTile: boolean; size: string | undefined; maxHe
   border-radius: ${(props) => (props.bigTile ? '0' : '50%')};
   width: ${(props) => (props.bigTile ? '100%' : props.size || '22')}px;
   height: ${(props) => (props.bigTile ? props.maxHeight || '262' : props.size || '22')}px;
-  min-height: 150px;
-  min-width: 200px;
 `;
 
 const ImageComponent: React.FC<ThumbnailProps> = ({ big_tile = false, max_tile_height, size, src, entityId, title, imageClass, className }) => {
@@ -40,8 +38,6 @@ const ImageComponent: React.FC<ThumbnailProps> = ({ big_tile = false, max_tile_h
     bigTile: big_tile,
     size: size,
     maxHeight: max_tile_height,
-    minHeight: '150px',
-    minWidth: '250px',
   };
 
   return (
