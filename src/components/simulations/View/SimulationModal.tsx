@@ -20,24 +20,16 @@ const Iframe = styled.iframe`
 function SimulationModal({ iframeId, iframeUrl, open, onClose, title }: SimulationModalProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
-  useEffect(() => {
-    function handleIframeLoaded() {
+  function handleIframeLoaded() {
+    try {
       if (iframeRef.current?.contentWindow?.location.href && iframeRef.current.contentWindow.location.href.indexOf('/simulation/close-iframe') > 0) {
         onClose();
       }
-    }
-
-    const iframeElement = iframeRef.current;
-    iframeElement?.addEventListener('load', handleIframeLoaded);
-
-    return () => {
-      iframeElement?.removeEventListener('load', handleIframeLoaded);
-    };
-  }, [onClose]);
-
+    } catch (e) {}
+  }
   return (
     <FullScreenModal open={open} onClose={onClose} title={title}>
-      <Iframe src={iframeUrl} id={iframeId} allowFullScreen ref={iframeRef} />
+      <Iframe src={iframeUrl} id={iframeId} allowFullScreen onLoad={handleIframeLoaded} ref={iframeRef} />
     </FullScreenModal>
   );
 }
