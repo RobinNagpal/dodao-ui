@@ -7,7 +7,7 @@ export interface GoogleDriveUrlInfo {
 export const parseGoogleDriveViewUrl = (src: string): GoogleDriveUrlInfo | null => {
   const r =
     /(?:https?:\/\/)?(?:drive|docs)\.google\.com\/(?:a\/[^/]+\/)?(file|document|presentation|spreadsheets)\/d\/([^/]+)(?:\/(?:view|edit|preview))?[^ "'<>]*/i.exec(
-      src,
+      src
     );
   if (r) {
     const type = r[1];

@@ -77,7 +77,7 @@ export function useViewByte(space: SpaceWithIntegrationsFragment, byteId: string
     setByteSubmission({
       ...byteSubmission,
       stepResponsesMap: Object.fromEntries(
-        byte.steps.map((step) => [step.uuid, getStepSubmission(step.uuid) || { itemResponsesMap: {}, isTouched: false, isCompleted: false }]),
+        byte.steps.map((step) => [step.uuid, getStepSubmission(step.uuid) || { itemResponsesMap: {}, isTouched: false, isCompleted: false }])
       ),
     });
     setByteLoaded(true);

@@ -244,7 +244,7 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
                 (choice: QuestionChoiceInput): QuestionChoiceInput => ({
                   key: choice.key,
                   content: choice.content,
-                }),
+                })
               ),
               content: stepItem.content,
               explanation: stepItem.explanation,

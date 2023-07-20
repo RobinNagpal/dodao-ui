@@ -37,14 +37,14 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
     (userInputUuid: string, userInput: string) => {
       viewGuideHelper.setUserInput(step.uuid, userInputUuid, userInput);
     },
-    [viewGuideHelper, step.uuid],
+    [viewGuideHelper, step.uuid]
   );
 
   const selectAnswer = useCallback(
     (questionId: string, selectedAnswers: string[]) => {
       viewGuideHelper.selectAnswer(step.uuid, questionId, selectedAnswers);
     },
-    [viewGuideHelper, step.uuid],
+    [viewGuideHelper, step.uuid]
   );
 
   const [renderIncorrectQuestions, setRenderIncorrectQuestions] = useState(false);
@@ -53,8 +53,8 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
   const guideSubmission = viewGuideHelper.guideSubmission;
 
   const wrongQuestions = useMemo(() => {
-    const questionFragments = flatten(guide.steps.map((s) => s.stepItems)).filter(
-      (item) => guideSubmission.submissionResult?.wrongQuestions?.includes(item.uuid),
+    const questionFragments = flatten(guide.steps.map((s) => s.stepItems)).filter((item) =>
+      guideSubmission.submissionResult?.wrongQuestions?.includes(item.uuid)
     ) as GuideQuestionFragment[];
 
     return questionFragments;
@@ -66,7 +66,7 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
 
   const postSubmissionContent = useMemo(
     () => (guide.postSubmissionStepContent ? marked.parse(guide.postSubmissionStepContent, { renderer }) : null),
-    [guide.postSubmissionStepContent, renderer],
+    [guide.postSubmissionStepContent, renderer]
   );
 
   const [completeButtonClicked, setCompleteButtonClicked] = useState(false);
@@ -97,7 +97,7 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
       isGuideCompletedStep &&
       guideSubmission.submissionResult?.allQuestions.length &&
       guideSubmission.submissionResult?.correctQuestions.length < guideSubmission.submissionResult?.allQuestions.length,
-    [guide, guideSubmission],
+    [guide, guideSubmission]
   );
 
   const { data: session } = useSession();

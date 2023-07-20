@@ -22,9 +22,7 @@ const MenuButton = styled(Menu.Button)`
   }
   &:focus {
     outline: none;
-    box-shadow:
-      0 0 0 2px var(--primary-color),
-      0 0 0 4px var(--bg-color);
+    box-shadow: 0 0 0 2px var(--primary-color), 0 0 0 4px var(--bg-color);
   }
 `;
 

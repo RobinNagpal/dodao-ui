@@ -159,7 +159,7 @@ export function useEditSimulation(space: Space, simulationId: string | null) {
     console.log('newSimulationErrors.content', newSimulationErrors.content);
     console.log(
       'Object.values(newSimulationErrors.steps).filter(v => !!v).length',
-      Object.values(newSimulationErrors?.steps || {}).filter((v) => !!v),
+      Object.values(newSimulationErrors?.steps || {}).filter((v) => !!v)
     );
     return isValid;
   }

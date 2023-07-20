@@ -107,7 +107,7 @@ export default function EditByteStepperItem({
     ...step.stepItems.map(
       (
         q: StepItemInputGenericInput,
-        index: number,
+        index: number
       ): StepItemInputGenericInput & {
         isQuestion: boolean;
         isDiscord: boolean;
@@ -115,7 +115,7 @@ export default function EditByteStepperItem({
         ...q,
         isQuestion: q.type === QuestionType.MultipleChoice || q.type === QuestionType.SingleChoice,
         isDiscord: q.type === UserDiscordConnectType,
-      }),
+      })
     ),
   ];
 

@@ -64,7 +64,7 @@ const StyledAnchor = styled.a<{ isActive: boolean; isDisabled: boolean }>`
 export default function GuideSidebar({ activeStep, guide, viewGuideHelper }: GuideSidebarProps) {
   const showError = useMemo(
     () => !viewGuideHelper.guideSubmission?.isPristine && !viewGuideHelper.isEveryQuestionAnsweredInStep(activeStep.uuid),
-    [activeStep.uuid, viewGuideHelper.guideSubmission?.isPristine],
+    [activeStep.uuid, viewGuideHelper.guideSubmission?.isPristine]
   );
 
   function goToStep(order: number) {

@@ -221,7 +221,7 @@ function MarkdownEditor({
           return;
         }
         setMarkdown(insertedMarkdown);
-      }),
+      })
     );
   };
 

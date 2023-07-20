@@ -7,7 +7,7 @@ export function useEditCourseDetailsOld<T>(
   course: CourseDetailsFragment,
   form: T,
   initialize: (course: CourseDetailsFragment) => void,
-  doSave: (form: T) => Promise<boolean>,
+  doSave: (form: T) => Promise<boolean>
 ) {
   const { showNotification } = useNotificationContext();
   const [editMode, setEditMode] = useState(false);

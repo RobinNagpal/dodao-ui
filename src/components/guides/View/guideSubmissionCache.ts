@@ -42,7 +42,7 @@ const setUserDiscordInSubmission = (
   activeStepOrder: number,
   stepUuid: string,
   userDiscordUuid: string,
-  discordInfo: UserDiscordInfoInput,
+  discordInfo: UserDiscordInfoInput
 ) => {
   let guideSubmissionRef: TempGuideSubmission | undefined = readGuideSubmissionsCache(guideUuid);
   if (!guideSubmissionRef) {

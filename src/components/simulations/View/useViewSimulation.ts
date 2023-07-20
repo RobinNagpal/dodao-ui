@@ -64,7 +64,7 @@ export function useViewSimulation(space: Space, simulationId: string, stepOrder:
     setSimulationSubmission((prevSubmission) => ({
       ...prevSubmission,
       stepResponsesMap: Object.fromEntries(
-        simulation.steps.map((step) => [step.uuid, getStepSubmission(step.uuid) || { itemResponsesMap: {}, isTouched: false, isCompleted: false }]),
+        simulation.steps.map((step) => [step.uuid, getStepSubmission(step.uuid) || { itemResponsesMap: {}, isTouched: false, isCompleted: false }])
       ),
     }));
 

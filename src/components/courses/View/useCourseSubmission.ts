@@ -85,7 +85,7 @@ function transformTopicSubmissionResponse(sub: TopicSubmissionFragment): TempTop
     topicKey: sub.topicKey,
     uuid: sub.uuid,
     explanations: Object.fromEntries(
-      explanations.map((explanation) => [explanation.key, { key: explanation.key, status: explanation.status as TopicItemStatus }]),
+      explanations.map((explanation) => [explanation.key, { key: explanation.key, status: explanation.status as TopicItemStatus }])
     ),
     questions: Object.fromEntries(
       questions.map((question) => [
@@ -95,7 +95,7 @@ function transformTopicSubmissionResponse(sub: TopicSubmissionFragment): TempTop
           status: question.status as QuestionStatus,
           answers: question.answers,
         },
-      ]),
+      ])
     ),
     readings: Object.fromEntries(
       readings.map((reading) => {
@@ -113,11 +113,11 @@ function transformTopicSubmissionResponse(sub: TopicSubmissionFragment): TempTop
                   status: question.status as QuestionStatus,
                   answers: question.answers,
                 },
-              ]),
+              ])
             ),
           },
         ];
-      }),
+      })
     ),
     summaries: Object.fromEntries(summaries.map((summary) => [summary.key, { key: summary.key, status: summary.status as TopicItemStatus }])),
     status: sub.status as TopicStatus,
@@ -158,7 +158,7 @@ function transformCourseSubmissionResponse(courseSubmissionResponse: CourseSubmi
             };
 
         return [topicSubmission.topicKey, topicSubmission];
-      }),
+      })
     ),
   };
   return courseSubmission;
@@ -228,21 +228,21 @@ export const useCourseSubmission = (space: Space, courseKey: string): CourseSubm
   const isAllReadingsComplete = (topic: CourseTopicFragment) => {
     if (!topic?.readings) return false;
     return topic.readings.every(
-      (reading) => courseSubmission?.topicSubmissionsMap?.[topic.key]?.readings?.[reading.uuid]?.status === TopicItemStatus.Completed,
+      (reading) => courseSubmission?.topicSubmissionsMap?.[topic.key]?.readings?.[reading.uuid]?.status === TopicItemStatus.Completed
     );
   };
 
   const isAllSummariesComplete = (topic: CourseTopicFragment) => {
     if (!topic?.summaries) return false;
     return topic.summaries.every(
-      (summary) => courseSubmission?.topicSubmissionsMap?.[topic.key]?.summaries?.[summary.key]?.status === TopicItemStatus.Completed,
+      (summary) => courseSubmission?.topicSubmissionsMap?.[topic.key]?.summaries?.[summary.key]?.status === TopicItemStatus.Completed
     );
   };
 
   const isAllExplanationsComplete = (topic: CourseTopicFragment) => {
     if (!topic?.explanations?.length) return true;
     return topic.explanations.every(
-      (explanation) => courseSubmission?.topicSubmissionsMap?.[topic.key].explanations?.[explanation.key]?.status === TopicItemStatus.Completed,
+      (explanation) => courseSubmission?.topicSubmissionsMap?.[topic.key].explanations?.[explanation.key]?.status === TopicItemStatus.Completed
     );
   };
 
@@ -490,10 +490,10 @@ export const useCourseSubmission = (space: Space, courseKey: string): CourseSubm
     const { correctAnswers } = tempTopicSubmission;
     return {
       correctAnswers: Object.values(correctAnswers || {}).filter((correct) =>
-        isEqual(correct.answerKeys.sort(), tempTopicSubmission.questions[correct.uuid].answers.sort() || []),
+        isEqual(correct.answerKeys.sort(), tempTopicSubmission.questions[correct.uuid].answers.sort() || [])
       ).length,
       wrongAnswers: Object.values(correctAnswers || {}).filter(
-        (correct) => !isEqual(correct.answerKeys.sort(), tempTopicSubmission.questions[correct.uuid].answers.sort() || []),
+        (correct) => !isEqual(correct.answerKeys.sort(), tempTopicSubmission.questions[correct.uuid].answers.sort() || [])
       ).length,
     };
   };

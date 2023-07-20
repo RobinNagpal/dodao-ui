@@ -29,7 +29,13 @@ function Guide({ space }: SpaceProps) {
 
         <div className="flex justify-center items-center px-5 sm:px-0">
           {!data?.guides?.length && !loadingData && <NoGuide />}
-          {!!data?.guides?.length && <Grid4Cols>{data?.guides?.map((guide: GuideSummaryFragment, i) => <GuideSummaryCard key={i} guide={guide} />)}</Grid4Cols>}
+          {!!data?.guides?.length && (
+            <Grid4Cols>
+              {data?.guides?.map((guide: GuideSummaryFragment, i) => (
+                <GuideSummaryCard key={i} guide={guide} />
+              ))}
+            </Grid4Cols>
+          )}
         </div>
         <div style={{ height: '10px', width: '10px', position: 'absolute' }} />
       </PageWrapper>

@@ -70,7 +70,7 @@ export default function VideoWithQuestions({ reading, submissionHelper }: Props)
     const answer = get(
       submissionHelper.courseSubmission,
       `${(history as any).location?.pathname.split('/')[2]}.readings.${readingId}.questions.${currentQuestionId}.answers`,
-      [],
+      []
     );
     setCurrentAnswer(answer);
   }, [submissionHelper.courseSubmission, reading, currentQuestion]);

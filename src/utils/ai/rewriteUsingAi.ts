@@ -4,10 +4,10 @@ import { MutationFunctionOptions } from '@apollo/client/react/types/types';
 
 export async function rewriteToCharacterLengthUsingAi(
   askCompletionAiMutation: (
-    options?: MutationFunctionOptions<AskCompletionAiMutation, AskCompletionAiMutationVariables, DefaultContext, ApolloCache<any>>,
+    options?: MutationFunctionOptions<AskCompletionAiMutation, AskCompletionAiMutationVariables, DefaultContext, ApolloCache<any>>
   ) => Promise<FetchResult<AskCompletionAiMutation>>,
   text: string,
-  length: number,
+  length: number
 ) {
   const response = await askCompletionAiMutation({
     variables: {
@@ -31,10 +31,10 @@ export async function rewriteToCharacterLengthUsingAi(
 
 export async function rewriteToWordsCountUsingAi(
   askCompletionAiMutation: (
-    options?: MutationFunctionOptions<AskCompletionAiMutation, AskCompletionAiMutationVariables, DefaultContext, ApolloCache<any>>,
+    options?: MutationFunctionOptions<AskCompletionAiMutation, AskCompletionAiMutationVariables, DefaultContext, ApolloCache<any>>
   ) => Promise<FetchResult<AskCompletionAiMutation>>,
   text: string,
-  length: number,
+  length: number
 ) {
   const response = await askCompletionAiMutation({
     variables: {

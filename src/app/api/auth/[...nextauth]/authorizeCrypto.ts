@@ -7,7 +7,7 @@ import { RequestInternal } from 'next-auth';
 
 export async function authorizeCrypto(
   credentials: Record<'publicAddress' | 'signedNonce' | 'spaceId', string> | undefined,
-  req: Pick<RequestInternal, 'body' | 'headers' | 'method' | 'query'>,
+  req: Pick<RequestInternal, 'body' | 'headers' | 'method' | 'query'>
 ) {
   if (!credentials) return null;
 

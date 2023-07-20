@@ -112,7 +112,7 @@ export function useViewGuide(space: Space, uuid: string, stepOrder: number): Use
           isTouched: false,
           isCompleted: false,
         },
-      ]),
+      ])
     );
 
     const guideSubmissionsFromCache = guideSubmissionCache.readGuideSubmissionsCache(uuid);

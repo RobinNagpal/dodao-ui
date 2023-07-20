@@ -18,7 +18,11 @@ function Simulation({ space }: SpaceProps) {
     <PageWrapper>
       {!data?.simulations.length && !loadingData && <NoSimulation />}
       {!!data?.simulations?.length && (
-        <Grid4Cols>{data?.simulations?.map((simulation, i) => <SimulationSummaryCard key={i} simulation={simulation} />)}</Grid4Cols>
+        <Grid4Cols>
+          {data?.simulations?.map((simulation, i) => (
+            <SimulationSummaryCard key={i} simulation={simulation} />
+          ))}
+        </Grid4Cols>
       )}
       <div style={{ height: '10px', width: '10px', position: 'absolute' }} />
       {loadingData && (

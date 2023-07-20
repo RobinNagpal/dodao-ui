@@ -152,7 +152,7 @@ const AddNewCourseContentModal: React.FC<ModalCourseNewItemProps> = ({ course, s
           topicKey: selectedTopicKey!,
           questionType: QuestionType.SingleChoice,
           explanation: generatedQuestion.explanation,
-        }),
+        })
       ),
     };
     await courseHelper.addTopicQuestions(input!);

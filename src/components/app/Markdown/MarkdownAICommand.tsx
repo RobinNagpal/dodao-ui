@@ -4,7 +4,7 @@ import { getBreaksNeededForEmptyLineAfter, getBreaksNeededForEmptyLineBefore, se
 import React from 'react';
 
 export const markdownAIRewriteCommandFacotry: (rewriteText: (text: string) => Promise<string>) => ICommand = (
-  rewriteText: (text: string) => Promise<string>,
+  rewriteText: (text: string) => Promise<string>
 ): ICommand => ({
   name: 'markdownAICommand',
   keyCommand: 'markdownAICommand',

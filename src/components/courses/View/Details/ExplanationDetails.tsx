@@ -146,11 +146,11 @@ const ExplanationDetails: FC<CourseExplanationProps> = ({ course, isCourseAdmin,
   const details = currentExplanation?.details && marked.parse(currentExplanation.details, { renderer });
 
   const { editMode, cancel, showEdit, save } = useEditCourseDetails<UpdateTopicExplanationInput>(
-    async (updates: UpdateTopicExplanationInput) => await courseHelper.updateTopicExplanation(updates),
+    async (updates: UpdateTopicExplanationInput) => await courseHelper.updateTopicExplanation(updates)
   );
 
   const { deleting, deleteItem } = useDeleteCourseItem<DeleteTopicExplanationInput>(
-    async (updates: DeleteTopicExplanationInput) => await courseHelper.deleteTopicExplanation(updates),
+    async (updates: DeleteTopicExplanationInput) => await courseHelper.deleteTopicExplanation(updates)
   );
 
   function doDelete() {
@@ -160,7 +160,7 @@ const ExplanationDetails: FC<CourseExplanationProps> = ({ course, isCourseAdmin,
   }
 
   const { movingUp, movingDown, moveItem } = useMoveCourseItem<MoveTopicExplanationInput>(
-    async (updates: MoveTopicExplanationInput) => await courseHelper.moveTopicExplanation(updates),
+    async (updates: MoveTopicExplanationInput) => await courseHelper.moveTopicExplanation(updates)
   );
 
   function doMove(direction: MoveCourseItemDirection) {

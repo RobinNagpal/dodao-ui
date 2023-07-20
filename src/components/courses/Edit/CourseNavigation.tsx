@@ -83,7 +83,7 @@ function getReadings(
   submissionHelper: CourseSubmissionHelper,
   topic: CourseTopicFragment,
   readings: CourseReadingFragment[],
-  itemKey: string,
+  itemKey: string
 ) {
   return readings.map((reading, i) => {
     const isActive = itemKey === reading.uuid;
@@ -112,7 +112,7 @@ function getExplanations(
   submissionHelper: CourseSubmissionHelper,
   topic: CourseTopicFragment,
   explanations: CourseExplanationFragment[],
-  itemKey: string,
+  itemKey: string
 ) {
   return explanations.map((explanation, i) => {
     const isActive = itemKey === explanation.key;
@@ -139,7 +139,7 @@ function getSummaries(
   submissionHelper: CourseSubmissionHelper,
   topic: CourseTopicFragment,
   summaries: CourseSummaryFragment[],
-  itemKey: string,
+  itemKey: string
 ) {
   return summaries.map((summary, i) => {
     const isActive = itemKey === summary.key;

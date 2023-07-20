@@ -144,7 +144,7 @@ function ByteStepperItem({ viewByteHelper, step, byte, space }: ByteStepperItemP
 
   const postSubmissionContent = useMemo(
     () => (byte.postSubmissionStepContent ? marked.parse(byte.postSubmissionStepContent, { renderer }) : null),
-    [byte.postSubmissionStepContent],
+    [byte.postSubmissionStepContent]
   );
 
   const selectAnswer = (questionId: string, selectedAnswers: string[]) => {
@@ -159,7 +159,7 @@ function ByteStepperItem({ viewByteHelper, step, byte, space }: ByteStepperItemP
     (userDiscordUuid: string, discordId: string) => {
       viewByteHelper.setUserDiscord(step.uuid, userDiscordUuid, discordId);
     },
-    [viewByteHelper, step.uuid],
+    [viewByteHelper, step.uuid]
   );
 
   const showQuestionsCompletionWarning = nextButtonClicked && (!isQuestionAnswered() || !isDiscordConnected() || !isUserInputComplete());
