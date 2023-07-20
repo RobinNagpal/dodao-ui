@@ -378,6 +378,7 @@ const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHas
         spaceId={space.id}
         objectId={guide.uuid}
         imageType="Guide"
+        className="w-full"
       />
 
       {stepItemsForStepper.map((stepItem, index) => {

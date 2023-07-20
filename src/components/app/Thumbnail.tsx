@@ -16,14 +16,14 @@ interface ThumbnailProps {
   className?: string;
 }
 
-const Thumbnail = styled.img<{ bigTile: boolean; size: string | undefined; maxHeight: string | undefined }>`
+const ThumbnailImage = styled.img<{ bigTile: boolean; size: string | undefined; maxHeight: string | undefined }>`
   object-fit: ${(props) => (props.bigTile ? 'cover' : 'contain')};
   border-radius: ${(props) => (props.bigTile ? '0' : '50%')};
   width: ${(props) => (props.bigTile ? '100%' : props.size || '22')}px;
   height: ${(props) => (props.bigTile ? props.maxHeight || '262' : props.size || '22')}px;
 `;
 
-const ImageComponent: React.FC<ThumbnailProps> = ({ big_tile = false, max_tile_height, size, src, entityId, title, imageClass, className }) => {
+const Thumbnail: React.FC<ThumbnailProps> = ({ big_tile = false, max_tile_height, size, src, entityId, title, imageClass, className }) => {
   const [error, setError] = useState(false);
   const [imgSrc, setImgSrc] = useState('');
   const [address, setAddress] = useState('');
@@ -43,7 +43,7 @@ const ImageComponent: React.FC<ThumbnailProps> = ({ big_tile = false, max_tile_h
   return (
     <div className={`flex justify-center ${big_tile ? 'w-full' : ''} ` + className ? className : ''}>
       {imgSrc && !error ? (
-        <Thumbnail
+        <ThumbnailImage
           src={imgSrc}
           style={bigTileStyle}
           bigTile={big_tile}
@@ -60,4 +60,4 @@ const ImageComponent: React.FC<ThumbnailProps> = ({ big_tile = false, max_tile_h
   );
 };
 
-export default ImageComponent;
+export default Thumbnail;

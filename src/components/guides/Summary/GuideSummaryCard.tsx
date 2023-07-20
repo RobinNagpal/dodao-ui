@@ -40,7 +40,7 @@ const GuideSummaryCard: React.FC<GuideSummaryCardProps> = ({ guide }) => {
           </InProgressSpan>
         )}
         <div className="w-full">
-          <Thumbnail src={guide.thumbnail!} entityId={guide.uuid} title={guide.name} size="350" className="mb-1 w-full" big_tile imageClass="w-full" />
+          <Thumbnail src={guide.thumbnail!} entityId={guide.uuid} title={guide.name} size="350" className="mb-1 w-full " big_tile imageClass="w-full" />
         </div>
         <div className="p-4 text-center">
           <h2 className="text-base font-bold whitespace-nowrap overflow-hidden overflow-ellipsis">{shorten(guide.name, 32)}</h2>

@@ -137,7 +137,7 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
   return (
     <div className="guide-stepper-content w-full sm:px-3 lg:px-4 flex flex-col justify-between">
       <div style={{ minHeight: '300px' }}>
-        <h2 className="mb-8 pb-4">
+        <h2 className="mb-8 pb-4 text-2xl">
           Step {step.order + 1} - {step.name}
         </h2>
         <div className="step-content markdown-body" dangerouslySetInnerHTML={{ __html: stepContents }} />
