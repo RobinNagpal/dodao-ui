@@ -94,7 +94,7 @@
     "@types/react-datepicker": "^4.11.2",
     "@types/styled-components": "^5.1.26",
     "@types/uuid": "^9.0.1",
-    "prettier": "^3.0.0",
+    "prettier": "^2.8.8",
     "prisma": "^4.13.0"
   }
 }
