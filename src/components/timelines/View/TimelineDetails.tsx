@@ -41,7 +41,6 @@ const Timeline = ({ timeline }: TimelineProps) => {
       <ul role="list" className="space-y-6">
         {timeline.events.map((event, i) => {
           const eventSummary = marked.parse(event.summary, { renderer });
-          // const eventDetails = event.fullDetails ? marked.parse(event.fullDetails, { renderer }) : '';
           const timeAgo = moment(event.date).local().startOf('seconds').fromNow();
 
           return (
@@ -68,22 +67,20 @@ const Timeline = ({ timeline }: TimelineProps) => {
 
                 <div className="flex">
                   {event.fullDetails && (
-                    <>
-                      <StyledLink className="p-4 flex" onClick={() => handleShowFullDetailsModal(event)}>
-                        <ArrowTopRightOnSquareIcon width={20} height={20} className="mt-1 mr-1" /> Show Full Details
-                      </StyledLink>
-                    </>
+                    <StyledLink className="p-4 flex" onClick={() => handleShowFullDetailsModal(event)}>
+                      Full Details <ArrowTopRightOnSquareIcon width={16} height={16} className="ml-1 mt-1 mr-1" />
+                    </StyledLink>
                   )}
-                  <>
+                  {event.moreLink && (
                     <StyledLink
                       className="p-4 flex "
                       onClick={() => {
                         if (event.moreLink) window.open(event.moreLink);
                       }}
                     >
-                      <ArrowRightIcon width={20} height={20} className="mt-1 mr-1" /> Get More Details
+                      More Details <ArrowRightIcon width={16} height={16} className="ml-1 mt-1 mr-1" />
                     </StyledLink>
-                  </>
+                  )}
                 </div>
               </div>
             </li>

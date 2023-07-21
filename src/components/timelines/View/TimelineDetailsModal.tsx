@@ -5,10 +5,6 @@ import { marked } from 'marked';
 import React from 'react';
 import styled from 'styled-components';
 
-const LargeTitle = styled.h2`
-  font-size: 1.5rem;
-  font-weight: bold;
-`;
 export interface TimelineDetailsModalProps {
   open: boolean;
   onClose: () => void;
@@ -22,7 +18,7 @@ export default function TimelineDetailsModal({ event, open, onClose }: TimelineD
   const eventDetails = marked.parse(fullDetails, { renderer });
 
   return (
-    <FullScreenModal open={open} onClose={onClose} title={<LargeTitle>{event.title} Details</LargeTitle>}>
+    <FullScreenModal open={open} onClose={onClose} title={event.title}>
       <div className="markdown-body p-4 text-sm text-left" dangerouslySetInnerHTML={{ __html: eventDetails }} />
     </FullScreenModal>
   );
