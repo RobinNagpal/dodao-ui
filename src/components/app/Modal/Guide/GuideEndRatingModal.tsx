@@ -70,6 +70,8 @@ export default function GuideEndRatingModal({ open, onClose, skipEndRating, setE
                 setEndRating(rating);
                 setSelectedRating(rating);
               }}
+              leftHeading='Very dissatisfied'
+              rightHeading='Very Sattisfied'
             />
           </div>
         </div>
