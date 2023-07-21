@@ -16,7 +16,9 @@ export default function GenerateQuestionUsingAIModal(props: GenerateQuestionUsin
 
   return (
     <FullScreenModal open={open} onClose={onClose} title={props.modalTitle}>
-      <GenerateQuestionUsingAI {...props} />
+      <div className="p-4">
+        <GenerateQuestionUsingAI {...props} />
+      </div>
     </FullScreenModal>
   );
 }

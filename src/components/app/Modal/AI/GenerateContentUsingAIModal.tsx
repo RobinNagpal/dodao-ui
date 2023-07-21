@@ -133,7 +133,7 @@ export default function GenerateContentUsingAIModal(props: GenerateContentUsingA
   };
   return (
     <FullScreenModal open={open} onClose={onClose} title={props.modalTitle}>
-      <div className="text-left	">
+      <div className="text-left	p-4">
         <Input
           label="Topic"
           id="topic"

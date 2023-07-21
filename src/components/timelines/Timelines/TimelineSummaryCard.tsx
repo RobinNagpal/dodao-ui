@@ -15,7 +15,7 @@ export default function TimelineSummaryCard({ timeline }: TimelineSummaryCardPro
         <div>
           <div className="p-4 text-center">
             <h2 className="text-base font-bold whitespace-nowrap overflow-hidden text-ellipsis">{shorten(timeline.name, 32)}</h2>
-            <p className="break-words mb-2 text-sm h-65px text-ellipsis overflow-hidden">{shorten(timeline.content, 300)}</p>
+            <p className="break-words mb-2 text-sm h-65px text-ellipsis overflow-hidden">{shorten(timeline.excerpt, 300)}</p>
           </div>
 
           {timeline.publishStatus === 'Draft' && (
