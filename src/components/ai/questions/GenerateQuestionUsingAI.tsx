@@ -53,7 +53,7 @@ export default function GenerateQuestionUsingAI(props: GenerateQuestionUsingAIPr
           input: {
             messages: [{ role: ChatCompletionRequestMessageRoleEnum.User, content: inputContent }],
             temperature: 0.3,
-            model: 'gpt-4',
+            model: 'gpt-3.5-turbo-16k',
           },
         },
       });
