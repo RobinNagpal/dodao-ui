@@ -79,7 +79,7 @@ function ImageUploader({ spaceId, objectId, imageType, onLoading, onInput, child
         <LoadingSpinner />
       ) : (
         <FileSelect>
-          <input type="file" ref={inputRef} onChange={handleFileChange} accept="image/jpg, image/jpeg, image/png" />
+          <input type="file" ref={inputRef} onChange={handleFileChange} accept="image/jpg, image/jpeg, image/png, image/svg" />
           {children}
         </FileSelect>
       )}
