@@ -294,6 +294,11 @@ export interface CreateSignedUrlInput {
   objectId: Scalars['String'];
 }
 
+export interface DateTimeFilter {
+  after?: InputMaybe<Scalars['DateTimeISO']>;
+  before?: InputMaybe<Scalars['DateTimeISO']>;
+}
+
 export interface DeleteTopicExplanationInput {
   courseKey: Scalars['String'];
   explanationKey: Scalars['String'];
@@ -765,6 +770,7 @@ export interface GuideStepSubmissionInput {
 
 export interface GuideSubmission {
   __typename?: 'GuideSubmission';
+  correctQuestionsCount: Scalars['Int'];
   createdAt: Scalars['DateTimeISO'];
   createdBy: Scalars['String'];
   galaxyCredentialsUpdated?: Maybe<Scalars['Boolean']>;
@@ -775,6 +781,14 @@ export interface GuideSubmission {
   spaceId: Scalars['String'];
   steps?: Maybe<Array<GuideStepSubmission>>;
   uuid: Scalars['String'];
+}
+
+export interface GuideSubmissionFiltersInput {
+  correctQuestionsCount?: InputMaybe<Scalars['Int']>;
+  createdAt?: InputMaybe<DateTimeFilter>;
+  createdBy?: InputMaybe<Scalars['String']>;
+  itemsPerPage: Scalars['Int'];
+  page: Scalars['Int'];
 }
 
 export interface GuideSubmissionInput {
@@ -1489,7 +1503,9 @@ export interface QueryGuideRatingsArgs {
 
 
 export interface QueryGuideSubmissionsArgs {
+  filters: GuideSubmissionFiltersInput;
   guideUuid: Scalars['String'];
+  spaceId: Scalars['String'];
 }
 
 
@@ -2468,11 +2484,13 @@ export type RefreshGitGuidesMutationVariables = Exact<{
 export type RefreshGitGuidesMutation = { __typename?: 'Mutation', payload: boolean };
 
 export type GuideSubmissionsQueryQueryVariables = Exact<{
+  spaceId: Scalars['String'];
   guideUuid: Scalars['String'];
+  filters: GuideSubmissionFiltersInput;
 }>;
 
 
-export type GuideSubmissionsQueryQuery = { __typename?: 'Query', guideSubmissions: Array<{ __typename?: 'GuideSubmission', id: string, createdAt: any, createdBy: string, guideId: string, guideUuid: string, spaceId: string, uuid: string, result: { __typename?: 'GuideSubmissionResult', correctQuestions: Array<string>, wrongQuestions: Array<string>, allQuestions: Array<string> } }> };
+export type GuideSubmissionsQueryQuery = { __typename?: 'Query', guideSubmissions: Array<{ __typename?: 'GuideSubmission', id: string, createdAt: any, createdBy: string, guideId: string, guideUuid: string, spaceId: string, uuid: string, correctQuestionsCount: number, result: { __typename?: 'GuideSubmissionResult', correctQuestions: Array<string>, wrongQuestions: Array<string>, allQuestions: Array<string> }, steps?: Array<{ __typename?: 'GuideStepSubmission', uuid: string, itemResponses: Array<{ __typename?: 'GuideStepItemSubmission', type: string, userInput?: string | null, uuid: string }> }> | null }> };
 
 export type SubmitGuideMutationVariables = Exact<{
   input: GuideSubmissionInput;
@@ -5552,8 +5570,8 @@ export type RefreshGitGuidesMutationHookResult = ReturnType<typeof useRefreshGit
 export type RefreshGitGuidesMutationResult = Apollo.MutationResult<RefreshGitGuidesMutation>;
 export type RefreshGitGuidesMutationOptions = Apollo.BaseMutationOptions<RefreshGitGuidesMutation, RefreshGitGuidesMutationVariables>;
 export const GuideSubmissionsQueryDocument = gql`
-    query GuideSubmissionsQuery($guideUuid: String!) {
-  guideSubmissions(guideUuid: $guideUuid) {
+    query GuideSubmissionsQuery($spaceId: String!, $guideUuid: String!, $filters: GuideSubmissionFiltersInput!) {
+  guideSubmissions(spaceId: $spaceId, guideUuid: $guideUuid, filters: $filters) {
     id
     createdAt
     createdBy
@@ -5564,8 +5582,17 @@ export const GuideSubmissionsQueryDocument = gql`
       wrongQuestions
       allQuestions
     }
+    steps {
+      itemResponses {
+        type
+        userInput
+        uuid
+      }
+      uuid
+    }
     spaceId
     uuid
+    correctQuestionsCount
   }
 }
     `;
@@ -5582,7 +5609,9 @@ export const GuideSubmissionsQueryDocument = gql`
  * @example
  * const { data, loading, error } = useGuideSubmissionsQueryQuery({
  *   variables: {
+ *      spaceId: // value for 'spaceId'
  *      guideUuid: // value for 'guideUuid'
+ *      filters: // value for 'filters'
  *   },
  * });
  */

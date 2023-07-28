@@ -26,7 +26,10 @@ const GuideView = ({ params, space }: { params: { guideIdAndStep: string[] }; sp
 
   const viewGuideHelper = useViewGuide(space, guideId, stepOrder);
   const { guide: guide, guideLoaded, guideSubmission, initialize } = viewGuideHelper;
-  const threeDotItems = [{ label: 'Edit', key: 'edit' }];
+  const threeDotItems = [
+    { label: 'Edit', key: 'edit' },
+    { label: 'Submissions', key: 'submissions' },
+  ];
   const router = useRouter();
 
   useEffect(() => {
@@ -55,6 +58,10 @@ const GuideView = ({ params, space }: { params: { guideIdAndStep: string[] }; sp
                   <PrivateEllipsisDropdown
                     items={threeDotItems}
                     onSelect={(key) => {
+                      if (key === 'submissions') {
+                        router.push(`/guides/submissions/${guideId}`);
+                        return;
+                      }
                       router.push(`/guides/edit/${guideId}`);
                     }}
                   />

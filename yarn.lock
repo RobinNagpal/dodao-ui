@@ -3113,6 +3113,18 @@ aes-js@^3.1.2:
   resolved "https://registry.yarnpkg.com/aes-js/-/aes-js-3.1.2.tgz#db9aabde85d5caabbfc0d4f2a4446960f627146a"
   integrity sha512-e5pEa2kBnBOgR4Y/p20pskXI74UEz7de8ZGVo58asOtvSVG5YAbJeELPZxOmt+Bnz3rX753YKhfIn4X4l1PPRQ==
 
+ag-grid-community@^30.0.5:
+  version "30.0.5"
+  resolved "https://registry.yarnpkg.com/ag-grid-community/-/ag-grid-community-30.0.5.tgz#284623c0af46f87bf0db84975caf7ae7461de59b"
+  integrity sha512-3AXrNx5hnH0/c4QNgNv5ub1Kna3wVPecCFq2ddMYQ6b7Ob8JhU4bMwcBf+GOiDepVc6I+Df6Bop6rGrc4O8OZw==
+
+ag-grid-react@^30.0.5:
+  version "30.0.5"
+  resolved "https://registry.yarnpkg.com/ag-grid-react/-/ag-grid-react-30.0.5.tgz#12c10bf2e977a785f1142062ae8957dd82b2b2cb"
+  integrity sha512-CmO2T52M4DDBXUJJO3R+7GTNFCBSWh5eDBQWdble9W7LhggLcEiQjaGHc7ZZlZbY1mUW9ov0EACbSB4N0qMDPw==
+  dependencies:
+    prop-types "^15.8.1"
+
 agent-base@^7.0.2:
   version "7.0.2"
   resolved "https://registry.yarnpkg.com/agent-base/-/agent-base-7.0.2.tgz#d6c854c21fe5b8c8f1c69ac12a7d21a3d1be2859"

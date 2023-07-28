@@ -1,5 +1,5 @@
-query GuideSubmissionsQuery($guideUuid: String!) {
-  guideSubmissions(guideUuid: $guideUuid) {
+query GuideSubmissionsQuery($spaceId: String!, $guideUuid: String!, $filters: GuideSubmissionFiltersInput!) {
+  guideSubmissions(spaceId: $spaceId, guideUuid: $guideUuid, filters: $filters) {
     id
     createdAt
     createdBy
@@ -10,8 +10,17 @@ query GuideSubmissionsQuery($guideUuid: String!) {
       wrongQuestions
       allQuestions
     }
+    steps {
+      itemResponses {
+        type
+        userInput
+        uuid
+      }
+      uuid
+    }
     spaceId
     uuid
+    correctQuestionsCount
   }
 }
 
