@@ -16,7 +16,7 @@ export default function SpinnerWithText({ message }: SpinnerWithTextProps) {
     <div className="fixed top-0 left-0 w-screen h-full	 flex items-center justify-center bg-opacity-75 z-50">
       <SpinnerWrapper className="flex items-center justify-center">
         <svg className="animate-spin -ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
           <path
             className="opacity-75"
             fill="currentColor"
