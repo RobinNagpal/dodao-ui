@@ -3,6 +3,7 @@ query GuideSubmissionsQuery($spaceId: String!, $guideUuid: String!, $filters: Gu
     id
     createdAt
     createdBy
+    createdByUsername
     guideId
     guideUuid
     result {

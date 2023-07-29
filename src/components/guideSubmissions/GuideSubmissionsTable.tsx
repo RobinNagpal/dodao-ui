@@ -1,5 +1,6 @@
 import SpinnerWithText from '@/components/core/loaders/SpinnerWithText';
 import { SpaceWithIntegrationsFragment, useGuideSubmissionsQueryQuery } from '@/graphql/generated/generated-types';
+import { GridOptions, GridSizeChangedEvent } from 'ag-grid-community';
 import { FilterChangedEvent, FilterModifiedEvent, FilterOpenedEvent } from 'ag-grid-community/dist/lib/events';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
@@ -18,7 +19,7 @@ export default function GuideSubmissionsTable(props: GuideSubmissionsTableProps)
       guideUuid: props.guideId,
       filters: {
         page: 0,
-        itemsPerPage: 20,
+        itemsPerPage: 2000,
       },
     },
   });
@@ -51,15 +52,21 @@ export default function GuideSubmissionsTable(props: GuideSubmissionsTableProps)
     return {
       id: submission.id,
       createdAt: new Date(submission.createdAt),
-      createdBy: submission.createdBy,
+      createdBy: submission.createdByUsername,
       correctQuestionsCount: submission.correctQuestionsCount,
     };
   });
+  const gridOptions: GridOptions = {
+    onGridSizeChanged(event: GridSizeChangedEvent<any>) {
+      event.api.sizeColumnsToFit();
+    },
+  };
 
   return (
     <div
       className="ag-theme-alpine flex-grow h-max"
       style={{
+        minHeight: 'calc(100vh - 200px)',
         height: '500px',
         width: '100%',
       }}
@@ -68,6 +75,7 @@ export default function GuideSubmissionsTable(props: GuideSubmissionsTableProps)
         onFilterOpened={onFilterOpened}
         onFilterChanged={onFilterChanged}
         onFilterModified={onFilterModified}
+        gridOptions={gridOptions}
         columnDefs={[
           { headerName: 'ID', field: 'id' },
           {

@@ -773,6 +773,7 @@ export interface GuideSubmission {
   correctQuestionsCount: Scalars['Int'];
   createdAt: Scalars['DateTimeISO'];
   createdBy: Scalars['String'];
+  createdByUsername: Scalars['String'];
   galaxyCredentialsUpdated?: Maybe<Scalars['Boolean']>;
   guideId: Scalars['String'];
   guideUuid: Scalars['String'];
@@ -786,7 +787,7 @@ export interface GuideSubmission {
 export interface GuideSubmissionFiltersInput {
   correctQuestionsCount?: InputMaybe<Scalars['Int']>;
   createdAt?: InputMaybe<DateTimeFilter>;
-  createdBy?: InputMaybe<Scalars['String']>;
+  createdByUsername?: InputMaybe<Scalars['String']>;
   itemsPerPage: Scalars['Int'];
   page: Scalars['Int'];
 }
@@ -2490,7 +2491,7 @@ export type GuideSubmissionsQueryQueryVariables = Exact<{
 }>;
 
 
-export type GuideSubmissionsQueryQuery = { __typename?: 'Query', guideSubmissions: Array<{ __typename?: 'GuideSubmission', id: string, createdAt: any, createdBy: string, guideId: string, guideUuid: string, spaceId: string, uuid: string, correctQuestionsCount: number, result: { __typename?: 'GuideSubmissionResult', correctQuestions: Array<string>, wrongQuestions: Array<string>, allQuestions: Array<string> }, steps?: Array<{ __typename?: 'GuideStepSubmission', uuid: string, itemResponses: Array<{ __typename?: 'GuideStepItemSubmission', type: string, userInput?: string | null, uuid: string }> }> | null }> };
+export type GuideSubmissionsQueryQuery = { __typename?: 'Query', guideSubmissions: Array<{ __typename?: 'GuideSubmission', id: string, createdAt: any, createdBy: string, createdByUsername: string, guideId: string, guideUuid: string, spaceId: string, uuid: string, correctQuestionsCount: number, result: { __typename?: 'GuideSubmissionResult', correctQuestions: Array<string>, wrongQuestions: Array<string>, allQuestions: Array<string> }, steps?: Array<{ __typename?: 'GuideStepSubmission', uuid: string, itemResponses: Array<{ __typename?: 'GuideStepItemSubmission', type: string, userInput?: string | null, uuid: string }> }> | null }> };
 
 export type SubmitGuideMutationVariables = Exact<{
   input: GuideSubmissionInput;
@@ -5575,6 +5576,7 @@ export const GuideSubmissionsQueryDocument = gql`
     id
     createdAt
     createdBy
+    createdByUsername
     guideId
     guideUuid
     result {

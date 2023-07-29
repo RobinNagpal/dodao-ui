@@ -717,6 +717,7 @@ type GuideSubmission {
   correctQuestionsCount: Int!
   createdAt: DateTimeISO!
   createdBy: String!
+  createdByUsername: String!
   galaxyCredentialsUpdated: Boolean
   guideId: String!
   guideUuid: String!
@@ -730,7 +731,7 @@ type GuideSubmission {
 input GuideSubmissionFiltersInput {
   correctQuestionsCount: Int
   createdAt: DateTimeFilter
-  createdBy: String
+  createdByUsername: String
   itemsPerPage: Int!
   page: Int!
 }
