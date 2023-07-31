@@ -7,7 +7,7 @@ import PageWrapper from '@/components/core/page/PageWrapper';
 import HomeIcon from '@/components/main/HomeIcon';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
-import { FeatureItem } from '@/types/spaceFeatures';
+import { FeatureItem } from '@/types/features/spaceFeatures';
 import { getSortedFeaturesArray } from '@/utils/features';
 import Lottie from 'lottie-react';
 import React from 'react';

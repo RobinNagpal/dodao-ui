@@ -185,6 +185,16 @@
       "simulationsThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/dodao/dodao_demos.png",
       "timelinesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/dodao/dodao_timelines.png"
     },
+    "fuse": {
+      "academyHeading": "Learn more about Fuse?",
+      "academyText": "We know crypto can be a confusing place and Fuse University has your back.",
+      "projectName": "Fuse University",
+      "bytesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/fuse/home/fuse_tidbits.png",
+      "coursesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/dodao/dodao_courses.png",
+      "guidesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/fuse/home/fuse_guides.png",
+      "simulationsThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/dodao/dodao_demos.png",
+      "timelinesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/dodao/dodao_timelines.png"
+    },
     "test-academy-eth": {
       "academyHeading": "Learn more about Test Academy?",
       "academyText": "We know crypto can be a confusing place and Test Academy has your back.",

@@ -24,28 +24,10 @@ export const publishStatusesSelect: StyledSelectItem[] = [
   },
 ];
 
-export const themeSelect: StyledSelectItem[] = [
-  {
-    label: 'Uniswap',
-    id: Themes.Uniswap,
-  },
-  {
-    label: 'DoDAO',
-    id: Themes.DoDAO,
-  },
-  {
-    label: 'Compound',
-    id: Themes.Compound,
-  },
-  {
-    label: 'Aave',
-    id: Themes.Aave,
-  },
-  {
-    label: 'Balancer',
-    id: Themes.Balancer,
-  },
-];
+export const themeSelect: StyledSelectItem[] = Object.keys(Themes).map((t) => ({
+  label: t,
+  id: t,
+}));
 
 export const visibilityOptions: EllipsisDropdownItem[] = [
   {

@@ -2,10 +2,10 @@
 import LoginModal from '@/components/auth/LoginModal';
 import FullPageLoader from '@/components/core/loaders/FullPageLoading';
 import Notification from '@/components/core/notify/Notification';
-import MainContainer from '@/components/main/Container/MainContainer';
 import TopNav from '@/components/main/TopNav/TopNav';
 import AaveTheme from '@/components/themes/AaveTheme';
 import CompoundTheme from '@/components/themes/CompoundTheme';
+import FuseTheme from '@/components/themes/FuseTheme';
 import GlobalTheme from '@/components/themes/GlobalTheme';
 import UniswapTheme from '@/components/themes/UniswapTheme';
 import { LoginModalProvider } from '@/contexts/LoginModalContext';
@@ -21,9 +21,8 @@ import { getAuthenticatedApolloClient } from '@/utils/apolloClient';
 import { ApolloProvider } from '@apollo/client';
 import { SessionProvider } from 'next-auth/react';
 import { useEffect, useMemo } from 'react';
-import styled from 'styled-components';
 import 'src/app/globals.scss';
-import { v4 } from 'uuid';
+import styled from 'styled-components';
 
 // Based on - https://tailwindui.com/components/application-ui/page-examples/home-screens
 
@@ -38,6 +37,7 @@ function ThemeComponent() {
   const isThemeAave = space?.skin === Themes.Aave;
   const isThemeUniswap = space?.skin === Themes.Uniswap;
   const isThemeDoDAO = space?.skin === Themes.DoDAO;
+  const isThemeFuse = space?.skin === Themes.Fuse;
 
   if (space?.id === 'uniswap-eth-1') {
     return <UniswapTheme />;
@@ -45,6 +45,7 @@ function ThemeComponent() {
   if (isThemeCompound) return <CompoundTheme />;
   if (isThemeAave) return <AaveTheme />;
   if (isThemeUniswap) return <UniswapTheme />;
+  if (isThemeFuse) return <FuseTheme />;
   if (isThemeDoDAO) return <GlobalTheme />;
   return (
     <div>

@@ -1,7 +1,7 @@
 import { getLinkToFeaturePage } from '@/components/main/getLinkToFeaturePage';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
-import { FeatureItem, FeatureName } from '@/types/spaceFeatures';
+import { FeatureItem, FeatureName } from '@/types/features/spaceFeatures';
 import Link from 'next/link';
 import React from 'react';
 import styled from 'styled-components';

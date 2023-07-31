@@ -28,7 +28,7 @@ export default function UpsertSpaceBasicSettingsModal(props: { space?: Space; op
 
   return (
     <FullScreenModal open={props.open} onClose={props.onClose} title="Basic Space Settings">
-      <div className="space-y-12 text-left">
+      <div className="space-y-12 text-left p-6">
         <div className="border-b pb-12">
           <h2 className="text-base font-semibold leading-7">Edit Space</h2>
           <p className="mt-1 text-sm leading-6">Update the details of Space</p>
@@ -87,7 +87,7 @@ export default function UpsertSpaceBasicSettingsModal(props: { space?: Space; op
         </div>
       </div>
 
-      <div className="mt-6 flex items-center justify-end gap-x-6">
+      <div className="p-6 flex items-center justify-end gap-x-6">
         <Button
           variant="contained"
           primary

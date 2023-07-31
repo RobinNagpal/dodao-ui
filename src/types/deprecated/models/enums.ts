@@ -24,6 +24,7 @@ export enum PublishStatus {
 export enum Themes {
   Uniswap = 'Uniswap',
   DoDAO = 'DoDAO',
+  Fuse = 'Fuse',
   Compound = 'Compound',
   Aave = 'Aave',
   Balancer = 'Balancer',

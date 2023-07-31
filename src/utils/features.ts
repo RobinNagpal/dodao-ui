@@ -1,12 +1,10 @@
-import {
-  compoundFeatures,
-  creditUnionAcademyFeatures,
-  dodaoFeatures,
-  FeatureItem,
-  FeatureName,
-  testAcademyFeatures,
-  uniswapFeatures,
-} from '@/types/spaceFeatures';
+import { compoundFeatures } from '@/types/features/compoundFeatures';
+import { creditUnionAcademyFeatures } from '@/types/features/creditUnionAcademyFeatures';
+import { dodaoFeatures } from '@/types/features/dodaoFeatures';
+import { fuseFeatures } from '@/types/features/fuseFeatures';
+import { FeatureItem, FeatureName } from '@/types/features/spaceFeatures';
+import { testAcademyFeatures } from '@/types/features/testAcademyFeatures';
+import { uniswapFeatures } from '@/types/features/uniswapFeatures';
 import sortBy from 'lodash/sortBy';
 
 export function getFeaturesArray(spaceId: string): FeatureItem[] {
@@ -28,6 +26,10 @@ export function getFeaturesArray(spaceId: string): FeatureItem[] {
 
   if (spaceId === 'credit-union-academy') {
     return creditUnionAcademyFeatures;
+  }
+
+  if (spaceId === 'fuse') {
+    return fuseFeatures;
   }
 
   return [

@@ -54,7 +54,7 @@ function ImageUploader({ spaceId, objectId, imageType, onLoading, onInput, child
     setLoading(true);
     onLoading && onLoading(true);
     const file = e.target.files![0];
-    if (!['image/jpeg', 'image/jpg', 'image/png'].includes(file.type)) {
+    if (!['image/jpeg', 'image/jpg', 'image/png', 'image/svg+xml', 'image/svg+xml'].includes(file.type)) {
       console.log('File type not supported');
       setLoading(false);
       return;
@@ -79,7 +79,7 @@ function ImageUploader({ spaceId, objectId, imageType, onLoading, onInput, child
         <LoadingSpinner />
       ) : (
         <FileSelect>
-          <input type="file" ref={inputRef} onChange={handleFileChange} accept="image/jpg, image/jpeg, image/png, image/svg" />
+          <input type="file" ref={inputRef} onChange={handleFileChange} accept="image/jpg, image/jpeg, image/png, image/svg+xml" />
           {children}
         </FileSelect>
       )}

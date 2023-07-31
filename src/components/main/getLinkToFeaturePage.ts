@@ -1,4 +1,4 @@
-import { FeatureName } from '@/types/spaceFeatures';
+import { FeatureName } from '@/types/features/spaceFeatures';
 
 export const getLinkToFeaturePage = (featureName: FeatureName): string => {
   if (featureName === FeatureName.Guides) {

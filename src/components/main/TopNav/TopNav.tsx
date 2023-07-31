@@ -9,7 +9,7 @@ import { useLoginModalContext } from '@/contexts/LoginModalContext';
 import { useSpace } from '@/contexts/SpaceContext';
 import { Space } from '@/graphql/generated/generated-types';
 import { Session } from '@/types/auth/Session';
-import { FeatureItem, FeatureName } from '@/types/spaceFeatures';
+import { FeatureItem, FeatureName } from '@/types/features/spaceFeatures';
 import { isAdmin } from '@/utils/auth/isAdmin';
 import { getSortedFeaturesArray } from '@/utils/features';
 import { getCDNImageUrl } from '@/utils/images/getCDNImageUrl';
