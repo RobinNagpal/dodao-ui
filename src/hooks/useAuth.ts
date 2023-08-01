@@ -1,8 +1,10 @@
 import { coinbaseWallet } from '@/app/login/connectors/coinbaseWallet';
 import { metaMask } from '@/app/login/connectors/metaMask';
+import { Session } from '@/types/auth/Session';
+import { DODAO_ACCESS_TOKEN_KEY } from '@/types/deprecated/models/enums';
 import { Connector } from '@web3-react/types';
 import { ethers } from 'ethers';
-import { signIn, signOut } from 'next-auth/react';
+import { getSession, signIn, signOut } from 'next-auth/react';
 import { useCallback, useState } from 'react';
 
 export function useAuth() {
@@ -46,12 +48,13 @@ export function useAuth() {
       const signedNonce = await signer.signMessage(responseData.nonce);
 
       // Use NextAuth to sign in with our address and the nonce
-      await signIn('crypto', {
+      const signinResponse = await signIn('crypto', {
         publicAddress,
         signedNonce,
         spaceId: 'dodao-eth-1',
         redirect: false,
       });
+      console.log('signinResponse', signinResponse);
     } catch {
       window.alert('Error with signing, please try again.');
     }
@@ -83,6 +86,14 @@ export function useAuth() {
       setProcessingEmailPassword(false);
 
       throw error;
+    }
+    const session = (await getSession()) as Session | undefined;
+    try {
+      if (session?.dodaoAccessToken) {
+        localStorage.setItem(DODAO_ACCESS_TOKEN_KEY, session?.dodaoAccessToken);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -132,6 +143,11 @@ export function useAuth() {
       await signOut({
         redirect: false,
       });
+    }
+    try {
+      localStorage.clear();
+    } catch (error) {
+      console.log(error);
     }
   }, [web3Selection]);
 

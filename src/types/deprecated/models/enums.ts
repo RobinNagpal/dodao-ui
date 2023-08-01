@@ -32,6 +32,7 @@ export enum Themes {
 
 export const UserDiscordConnectType = 'UserDiscordConnect';
 
+export const DODAO_ACCESS_TOKEN_KEY = 'DODAO_ACCESS_TOKEN_V1';
 export enum QuestionType {
   SingleChoice = 'SingleChoice',
   MultipleChoice = 'MultipleChoice',
