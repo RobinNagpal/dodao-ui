@@ -11,7 +11,7 @@ export default function UpsertSpaceAuthSettingsModal(props: { space: SpaceWithIn
   const { authSettings, setAuthSettingsField, updateAuthSettings, updating } = useEditSpaceAuthSettings(props.space);
   return (
     <FullScreenModal open={props.open} onClose={props.onClose} title="Auth Settings">
-      <div className="space-y-12 text-left">
+      <div className="space-y-12 text-left p-4">
         <div className="border-b pb-12">
           <ToggleWithIcon label={'Enable login'} enabled={!!authSettings.enableLogin} setEnabled={(value) => setAuthSettingsField('enableLogin', value)} />
 
@@ -25,7 +25,7 @@ export default function UpsertSpaceAuthSettingsModal(props: { space: SpaceWithIn
         </div>
       </div>
 
-      <div className="mt-6 flex items-center justify-end gap-x-6">
+      <div className="flex items-center justify-end gap-x-6 p-4">
         <Button variant="outlined">Cancel</Button>
         <Button
           variant="contained"
