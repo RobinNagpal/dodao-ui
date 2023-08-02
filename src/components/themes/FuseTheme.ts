@@ -8,7 +8,7 @@ const FuseStyle = createGlobalStyle`
     --text-color: #000;
     --link-color: #333;
     --heading-color: #000;
-    --border-color: #555;
+    --border-color: #BBB;
     --header-bg: #EEE;
     --block-bg: #EEE;
   }
