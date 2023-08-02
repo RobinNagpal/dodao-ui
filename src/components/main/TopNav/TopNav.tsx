@@ -113,7 +113,7 @@ export default function TopNav() {
   const { space } = useSpace();
   return (
     <StyledDiv>
-      <FullScreenModal open={showCreateModal} onClose={() => setShowCreateModal(false)} title={'Login'} showCloseButton={false}>
+      <FullScreenModal open={showCreateModal} onClose={() => setShowCreateModal(false)} title={'Create'} showCloseButton={false}>
         <CreateContentModalContents hideModal={() => setShowCreateModal(false)} />
       </FullScreenModal>
       <Disclosure

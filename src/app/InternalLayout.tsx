@@ -19,6 +19,7 @@ import { Session } from '@/types/auth/Session';
 import { UserIdKey } from '@/types/auth/User';
 import { Themes } from '@/types/deprecated/models/enums';
 import { getAuthenticatedApolloClient } from '@/utils/apolloClient';
+import { setDoDAOTokenInLocalStorage } from '@/utils/auth/setDoDAOTokenInLocalStorage';
 import { ApolloProvider } from '@apollo/client';
 import { SessionProvider } from 'next-auth/react';
 import { useEffect, useMemo } from 'react';
@@ -102,6 +103,7 @@ function ChildLayout({ children, session }: InternalLayoutProps) {
   useEffect(() => {
     if (session?.userId) {
       localStorage.setItem(UserIdKey, session?.userId);
+      setDoDAOTokenInLocalStorage(session);
     } else {
       localStorage.setItem(UserIdKey, 'anonymous');
     }

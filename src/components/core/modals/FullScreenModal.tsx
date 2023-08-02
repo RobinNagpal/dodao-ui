@@ -50,8 +50,7 @@ export default function FullScreenModal({ open, title, children, onClose, showCl
                 <StyledModalWrapper className={fullWidth ? '' : 'mx-auto max-w-7xl rounded-lg pb-4 pt-2'}>
                   <div className="text-center">
                     <Dialog.Title as="h3" className="flex text-base font-semibold leading-6 justify-between">
-                      <div />
-                      <div>{title}</div>
+                      <div className="w-full align-center text-center">{title}</div>
                       {showCloseButton && (
                         <div className="flex justify-end pr-2">
                           <button

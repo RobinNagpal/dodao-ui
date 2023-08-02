@@ -1,7 +1,7 @@
 import { coinbaseWallet } from '@/app/login/connectors/coinbaseWallet';
 import { metaMask } from '@/app/login/connectors/metaMask';
 import { Session } from '@/types/auth/Session';
-import { DODAO_ACCESS_TOKEN_KEY } from '@/types/deprecated/models/enums';
+import { setDoDAOTokenInLocalStorage } from '@/utils/auth/setDoDAOTokenInLocalStorage';
 import { Connector } from '@web3-react/types';
 import { ethers } from 'ethers';
 import { getSession, signIn, signOut } from 'next-auth/react';
@@ -88,13 +88,7 @@ export function useAuth() {
       throw error;
     }
     const session = (await getSession()) as Session | undefined;
-    try {
-      if (session?.dodaoAccessToken) {
-        localStorage.setItem(DODAO_ACCESS_TOKEN_KEY, session?.dodaoAccessToken);
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    setDoDAOTokenInLocalStorage(session);
   };
 
   const loginWithMetamask = useCallback(async () => {
