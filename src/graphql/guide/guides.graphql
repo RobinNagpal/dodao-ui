@@ -135,6 +135,6 @@ query GuideQuery($spaceId: String!, $uuid: String!) {
   }
 }
 
-mutation RefreshGitGuides($spaceId: String!) {
-  payload: refreshGitGuides(spaceId: $spaceId)
+mutation DeleteGuide($spaceId: String!, $uuid: String!) {
+  payload: deleteGuide(spaceId: $spaceId, uuid: $uuid)
 }

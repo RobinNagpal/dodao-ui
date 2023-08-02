@@ -884,6 +884,7 @@ export interface Mutation {
   createSpace: Space;
   createSummaryOfContent: OpenAiTextResponse;
   deleteAndPullCourseRepo: GitCourse;
+  deleteGuide: Scalars['Boolean'];
   deleteTopic: GitCourse;
   deleteTopicExplanation: GitCourse;
   deleteTopicQuestion: GitCourse;
@@ -903,7 +904,6 @@ export interface Mutation {
   publishByte: Byte;
   refreshGitCourse: Scalars['Boolean'];
   refreshGitCourses: Scalars['Boolean'];
-  refreshGitGuides: Scalars['Boolean'];
   reloadAcademyRepository: Scalars['Boolean'];
   saveByte: Byte;
   submitByte: ByteSubmission;
@@ -934,7 +934,6 @@ export interface Mutation {
   upsertSimulation: Simulation;
   upsertSpaceAcademyRepository: Space;
   upsertSpaceFeatures: Space;
-  upsertSpaceGitGuideRepositories: Space;
   upsertSpaceInviteLinks: Space;
   upsertTimeline: Timeline;
 }
@@ -1017,6 +1016,12 @@ export interface MutationCreateSummaryOfContentArgs {
 export interface MutationDeleteAndPullCourseRepoArgs {
   courseKey: Scalars['String'];
   spaceId: Scalars['String'];
+}
+
+
+export interface MutationDeleteGuideArgs {
+  spaceId: Scalars['String'];
+  uuid: Scalars['String'];
 }
 
 
@@ -1125,11 +1130,6 @@ export interface MutationRefreshGitCourseArgs {
 
 
 export interface MutationRefreshGitCoursesArgs {
-  spaceId: Scalars['String'];
-}
-
-
-export interface MutationRefreshGitGuidesArgs {
   spaceId: Scalars['String'];
 }
 
@@ -1306,12 +1306,6 @@ export interface MutationUpsertSpaceAcademyRepositoryArgs {
 
 export interface MutationUpsertSpaceFeaturesArgs {
   features: Array<Scalars['String']>;
-  spaceId: Scalars['String'];
-}
-
-
-export interface MutationUpsertSpaceGitGuideRepositoriesArgs {
-  gitGuideRepositories: Array<SpaceGitRepositoryInput>;
   spaceId: Scalars['String'];
 }
 
@@ -2477,12 +2471,13 @@ export type GuideQueryQueryVariables = Exact<{
 
 export type GuideQueryQuery = { __typename?: 'Query', guide: { __typename?: 'Guide', authors: Array<string>, categories: Array<string>, postSubmissionStepContent?: string | null, content: string, createdAt: any, id: string, guideSource: string, guideType: string, name: string, publishStatus: string, thumbnail?: string | null, uuid: string, version: number, guideIntegrations: { __typename?: 'GuideIntegrations', discordRoleIds?: Array<string> | null, discordRolePassingCount?: number | null, discordWebhook?: string | null, projectGalaxyCredentialId?: string | null, projectGalaxyOatMintUrl?: string | null, projectGalaxyOatPassingCount?: number | null }, steps: Array<{ __typename?: 'GuideStep', content: string, id: string, name: string, order: number, uuid: string, stepItems: Array<{ __typename: 'GuideQuestion', answerKeys: Array<string>, content: string, order: number, type: string, uuid: string, explanation?: string | null, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'GuideUserInput', label: string, order: number, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> } };
 
-export type RefreshGitGuidesMutationVariables = Exact<{
+export type DeleteGuideMutationVariables = Exact<{
   spaceId: Scalars['String'];
+  uuid: Scalars['String'];
 }>;
 
 
-export type RefreshGitGuidesMutation = { __typename?: 'Mutation', payload: boolean };
+export type DeleteGuideMutation = { __typename?: 'Mutation', payload: boolean };
 
 export type GuideSubmissionsQueryQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -2647,14 +2642,6 @@ export type AddDiscordCredentialsMutationVariables = Exact<{
 
 
 export type AddDiscordCredentialsMutation = { __typename?: 'Mutation', payload: { __typename?: 'Space', id: string } };
-
-export type UpsertSpaceGitGuideRepositoriesMutationVariables = Exact<{
-  spaceId: Scalars['String'];
-  gitGuideRepositories: Array<SpaceGitRepositoryInput> | SpaceGitRepositoryInput;
-}>;
-
-
-export type UpsertSpaceGitGuideRepositoriesMutation = { __typename?: 'Mutation', payload: { __typename?: 'Space', id: string } };
 
 export type UpsertSpaceAcademyRepositoryMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -5539,37 +5526,38 @@ export type GuideQueryQueryResult = Apollo.QueryResult<GuideQueryQuery, GuideQue
 export function refetchGuideQueryQuery(variables: GuideQueryQueryVariables) {
       return { query: GuideQueryDocument, variables: variables }
     }
-export const RefreshGitGuidesDocument = gql`
-    mutation RefreshGitGuides($spaceId: String!) {
-  payload: refreshGitGuides(spaceId: $spaceId)
+export const DeleteGuideDocument = gql`
+    mutation DeleteGuide($spaceId: String!, $uuid: String!) {
+  payload: deleteGuide(spaceId: $spaceId, uuid: $uuid)
 }
     `;
-export type RefreshGitGuidesMutationFn = Apollo.MutationFunction<RefreshGitGuidesMutation, RefreshGitGuidesMutationVariables>;
+export type DeleteGuideMutationFn = Apollo.MutationFunction<DeleteGuideMutation, DeleteGuideMutationVariables>;
 
 /**
- * __useRefreshGitGuidesMutation__
+ * __useDeleteGuideMutation__
  *
- * To run a mutation, you first call `useRefreshGitGuidesMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useRefreshGitGuidesMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useDeleteGuideMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteGuideMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [refreshGitGuidesMutation, { data, loading, error }] = useRefreshGitGuidesMutation({
+ * const [deleteGuideMutation, { data, loading, error }] = useDeleteGuideMutation({
  *   variables: {
  *      spaceId: // value for 'spaceId'
+ *      uuid: // value for 'uuid'
  *   },
  * });
  */
-export function useRefreshGitGuidesMutation(baseOptions?: Apollo.MutationHookOptions<RefreshGitGuidesMutation, RefreshGitGuidesMutationVariables>) {
+export function useDeleteGuideMutation(baseOptions?: Apollo.MutationHookOptions<DeleteGuideMutation, DeleteGuideMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<RefreshGitGuidesMutation, RefreshGitGuidesMutationVariables>(RefreshGitGuidesDocument, options);
+        return Apollo.useMutation<DeleteGuideMutation, DeleteGuideMutationVariables>(DeleteGuideDocument, options);
       }
-export type RefreshGitGuidesMutationHookResult = ReturnType<typeof useRefreshGitGuidesMutation>;
-export type RefreshGitGuidesMutationResult = Apollo.MutationResult<RefreshGitGuidesMutation>;
-export type RefreshGitGuidesMutationOptions = Apollo.BaseMutationOptions<RefreshGitGuidesMutation, RefreshGitGuidesMutationVariables>;
+export type DeleteGuideMutationHookResult = ReturnType<typeof useDeleteGuideMutation>;
+export type DeleteGuideMutationResult = Apollo.MutationResult<DeleteGuideMutation>;
+export type DeleteGuideMutationOptions = Apollo.BaseMutationOptions<DeleteGuideMutation, DeleteGuideMutationVariables>;
 export const GuideSubmissionsQueryDocument = gql`
     query GuideSubmissionsQuery($spaceId: String!, $guideUuid: String!, $filters: GuideSubmissionFiltersInput!) {
   guideSubmissions(spaceId: $spaceId, guideUuid: $guideUuid, filters: $filters) {
@@ -6360,43 +6348,6 @@ export function useAddDiscordCredentialsMutation(baseOptions?: Apollo.MutationHo
 export type AddDiscordCredentialsMutationHookResult = ReturnType<typeof useAddDiscordCredentialsMutation>;
 export type AddDiscordCredentialsMutationResult = Apollo.MutationResult<AddDiscordCredentialsMutation>;
 export type AddDiscordCredentialsMutationOptions = Apollo.BaseMutationOptions<AddDiscordCredentialsMutation, AddDiscordCredentialsMutationVariables>;
-export const UpsertSpaceGitGuideRepositoriesDocument = gql`
-    mutation UpsertSpaceGitGuideRepositories($spaceId: String!, $gitGuideRepositories: [SpaceGitRepositoryInput!]!) {
-  payload: upsertSpaceGitGuideRepositories(
-    spaceId: $spaceId
-    gitGuideRepositories: $gitGuideRepositories
-  ) {
-    id
-  }
-}
-    `;
-export type UpsertSpaceGitGuideRepositoriesMutationFn = Apollo.MutationFunction<UpsertSpaceGitGuideRepositoriesMutation, UpsertSpaceGitGuideRepositoriesMutationVariables>;
-
-/**
- * __useUpsertSpaceGitGuideRepositoriesMutation__
- *
- * To run a mutation, you first call `useUpsertSpaceGitGuideRepositoriesMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpsertSpaceGitGuideRepositoriesMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [upsertSpaceGitGuideRepositoriesMutation, { data, loading, error }] = useUpsertSpaceGitGuideRepositoriesMutation({
- *   variables: {
- *      spaceId: // value for 'spaceId'
- *      gitGuideRepositories: // value for 'gitGuideRepositories'
- *   },
- * });
- */
-export function useUpsertSpaceGitGuideRepositoriesMutation(baseOptions?: Apollo.MutationHookOptions<UpsertSpaceGitGuideRepositoriesMutation, UpsertSpaceGitGuideRepositoriesMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpsertSpaceGitGuideRepositoriesMutation, UpsertSpaceGitGuideRepositoriesMutationVariables>(UpsertSpaceGitGuideRepositoriesDocument, options);
-      }
-export type UpsertSpaceGitGuideRepositoriesMutationHookResult = ReturnType<typeof useUpsertSpaceGitGuideRepositoriesMutation>;
-export type UpsertSpaceGitGuideRepositoriesMutationResult = Apollo.MutationResult<UpsertSpaceGitGuideRepositoriesMutation>;
-export type UpsertSpaceGitGuideRepositoriesMutationOptions = Apollo.BaseMutationOptions<UpsertSpaceGitGuideRepositoriesMutation, UpsertSpaceGitGuideRepositoriesMutationVariables>;
 export const UpsertSpaceAcademyRepositoryDocument = gql`
     mutation UpsertSpaceAcademyRepository($spaceId: String!, $academyRepository: String!) {
   upsertSpaceAcademyRepository(

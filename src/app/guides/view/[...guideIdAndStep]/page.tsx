@@ -7,16 +7,19 @@ import PageLoading from '@/components/core/loaders/PageLoading';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import GuideStepper from '@/components/guides/View/GuideStepper';
 import { useViewGuide } from '@/components/guides/View/useViewGuide';
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsFragment, useDeleteGuideMutation, useGuidesQueryQuery } from '@/graphql/generated/generated-types';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
 import { getMarkedRenderer } from '@/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 
 const GuideView = ({ params, space }: { params: { guideIdAndStep: string[] }; space: SpaceWithIntegrationsFragment }) => {
   const { guideIdAndStep } = params;
+
+  const [deleteGuideMutation] = useDeleteGuideMutation();
+  const { refetch: refetchGuides } = useGuidesQueryQuery({ skip: true, fetchPolicy: 'no-cache' });
 
   const guideId = Array.isArray(guideIdAndStep) ? guideIdAndStep[0] : (guideIdAndStep as string);
   let stepOrder = 0;
@@ -29,6 +32,7 @@ const GuideView = ({ params, space }: { params: { guideIdAndStep: string[] }; sp
   const threeDotItems = [
     { label: 'Edit', key: 'edit' },
     { label: 'Submissions', key: 'submissions' },
+    { label: 'Delete', key: 'delete' },
   ];
   const router = useRouter();
 
@@ -57,9 +61,20 @@ const GuideView = ({ params, space }: { params: { guideIdAndStep: string[] }; sp
                 <div className="ml-3">
                   <PrivateEllipsisDropdown
                     items={threeDotItems}
-                    onSelect={(key) => {
+                    onSelect={async (key) => {
                       if (key === 'submissions') {
                         router.push(`/guides/submissions/${guideId}`);
+                        return;
+                      }
+                      if (key === 'delete') {
+                        await deleteGuideMutation({
+                          variables: {
+                            spaceId: space.id,
+                            uuid: guideId,
+                          },
+                        });
+                        await refetchGuides({ space: space.id });
+                        router.push(`/guides`);
                         return;
                       }
                       router.push(`/guides/edit/${guideId}`);

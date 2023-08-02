@@ -832,6 +832,7 @@ type Mutation {
   createSpace(spaceInput: UpsertSpaceInput!): Space!
   createSummaryOfContent(input: String!): OpenAITextResponse!
   deleteAndPullCourseRepo(courseKey: String!, spaceId: String!): GitCourse!
+  deleteGuide(spaceId: String!, uuid: String!): Boolean!
   deleteTopic(spaceId: String!, topicInfo: DeleteTopicInput!): GitCourse!
   deleteTopicExplanation(explanationInfo: DeleteTopicExplanationInput!, spaceId: String!): GitCourse!
   deleteTopicQuestion(questionInfo: DeleteTopicQuestionInput!, spaceId: String!): GitCourse!
@@ -851,7 +852,6 @@ type Mutation {
   publishByte(input: UpsertByteInput!, spaceId: String!): Byte!
   refreshGitCourse(courseKey: String!, spaceId: String!): Boolean!
   refreshGitCourses(spaceId: String!): Boolean!
-  refreshGitGuides(spaceId: String!): Boolean!
   reloadAcademyRepository(spaceId: String!): Boolean!
   saveByte(input: UpsertByteInput!, spaceId: String!): Byte!
   submitByte(submissionInput: ByteSubmissionInput!): ByteSubmission!
@@ -882,7 +882,6 @@ type Mutation {
   upsertSimulation(input: UpsertSimulationInput!, spaceId: String!): Simulation!
   upsertSpaceAcademyRepository(academyRepository: String!, spaceId: String!): Space!
   upsertSpaceFeatures(features: [String!]!, spaceId: String!): Space!
-  upsertSpaceGitGuideRepositories(gitGuideRepositories: [SpaceGitRepositoryInput!]!, spaceId: String!): Space!
   upsertSpaceInviteLinks(spaceId: String!, spaceInviteArgs: SpaceInviteArgs!): Space!
   upsertTimeline(input: UpsertTimelineInput!, spaceId: String!): Timeline!
 }
