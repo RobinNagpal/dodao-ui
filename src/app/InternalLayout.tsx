@@ -4,6 +4,7 @@ import FullPageLoader from '@/components/core/loaders/FullPageLoading';
 import Notification from '@/components/core/notify/Notification';
 import TopNav from '@/components/main/TopNav/TopNav';
 import AaveTheme from '@/components/themes/AaveTheme';
+import BalancerTheme from '@/components/themes/BalancerTheme';
 import CompoundTheme from '@/components/themes/CompoundTheme';
 import FuseTheme from '@/components/themes/FuseTheme';
 import GlobalTheme from '@/components/themes/GlobalTheme';
@@ -38,6 +39,7 @@ function ThemeComponent() {
   const isThemeUniswap = space?.skin === Themes.Uniswap;
   const isThemeDoDAO = space?.skin === Themes.DoDAO;
   const isThemeFuse = space?.skin === Themes.Fuse;
+  const isThemeBalancer = space?.skin === Themes.Balancer;
 
   if (space?.id === 'uniswap-eth-1') {
     return <UniswapTheme />;
@@ -46,6 +48,7 @@ function ThemeComponent() {
   if (isThemeAave) return <AaveTheme />;
   if (isThemeUniswap) return <UniswapTheme />;
   if (isThemeFuse) return <FuseTheme />;
+  if (isThemeBalancer) return <BalancerTheme />;
   if (isThemeDoDAO) return <GlobalTheme />;
   return (
     <div>
