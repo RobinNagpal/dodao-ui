@@ -32,6 +32,11 @@ const StyledButton = styled.button<ButtonProps>`
   height: 36px;
   font-size: calc(15 / 16 * 1rem);
 
+  &:hover {
+    color: var(--link-color);
+    border-color: var(--link-color);
+  }
+
   ${(props) =>
     props.size === 'sm' &&
     css`
@@ -74,10 +79,7 @@ const StyledButton = styled.button<ButtonProps>`
       }
     `}
 
-  &:hover {
-    color: var(--link-color);
-    border-color: var(--link-color);
-  }
+  
 
   &:disabled {
     opacity: 0.8 !important;
