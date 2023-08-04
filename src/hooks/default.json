@@ -158,6 +158,16 @@
       "simulationsThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/dodao/dodao_demos.png",
       "timelinesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/dodao/dodao_timelines.png"
     },
+    "dodao-academy": {
+      "academyHeading": "Learn more about Customer Education?",
+      "academyText": "Education customers lead to higher retention and lower churn. DoDAO Academy has your back.",
+      "projectName": "DoDAO",
+      "bytesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/dodao/dodao_bytes.png",
+      "coursesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/dodao/dodao_courses.png",
+      "guidesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/dodao/dodao_guides.png",
+      "simulationsThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/dodao/dodao_demos.png",
+      "timelinesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/dodao/dodao_timelines.png"
+    },
     "bioxyz-eth-1": {
       "academyHeading": "Learn how to build a Biotech DAO",
       "academyText": "Building a DAO in web3 is hard. <br/> Building a biotech organisation is equally hard. <br/> Building a biotech DAO is ULTRA hard. </br> bio.xyz is opening the playbook and offering the necessary support.",
