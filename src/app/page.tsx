@@ -8,7 +8,7 @@ export default function Home() {
   const host = headersList.get('host');
   console.log('host', host);
 
-  if (host === 'dodao-localhost.io:3000') {
+  if (host === 'dodao-localhost.io:3000' || host === 'academy.dodao.io') {
     return <DoDAOHome />;
   }
   return <DefaultHome />;
