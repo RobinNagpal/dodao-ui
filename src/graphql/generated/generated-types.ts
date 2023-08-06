@@ -906,6 +906,7 @@ export interface Mutation {
   refreshGitCourses: Scalars['Boolean'];
   reloadAcademyRepository: Scalars['Boolean'];
   saveByte: Byte;
+  sendEmail: Scalars['Boolean'];
   submitByte: ByteSubmission;
   submitGitCourse: GitCourseSubmission;
   submitGitCourseTopic: GitCourseTopicSubmission;
@@ -1142,6 +1143,11 @@ export interface MutationReloadAcademyRepositoryArgs {
 export interface MutationSaveByteArgs {
   input: UpsertByteInput;
   spaceId: Scalars['String'];
+}
+
+
+export interface MutationSendEmailArgs {
+  input: SendEmailInput;
 }
 
 
@@ -1569,6 +1575,13 @@ export interface RawGitCourse {
   courseRepoUrl: Scalars['String'];
   publishStatus: Scalars['String'];
   weight: Scalars['Int'];
+}
+
+export interface SendEmailInput {
+  email: Scalars['String'];
+  firstName: Scalars['String'];
+  lastName: Scalars['String'];
+  message: Scalars['String'];
 }
 
 export interface Simulation {
@@ -2581,6 +2594,13 @@ export type SocialSettingsFragment = { __typename?: 'SocialSettings', linkedShar
 
 export type SpaceWithIntegrationsFragment = { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, skin: string, avatar?: string | null, domains: Array<string>, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureBeforeAndAfterRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureBeforeAndAfterRating?: boolean | null, showCategoriesInSidebar?: boolean | null } };
 
+export type SpaceSummaryFragment = { __typename?: 'Space', id: string, admins: Array<string>, adminUsernames: Array<string>, avatar?: string | null, creator: string, name: string, skin: string, domains: Array<string> };
+
+export type SpacesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type SpacesQuery = { __typename?: 'Query', spaces?: Array<{ __typename?: 'Space', id: string, admins: Array<string>, adminUsernames: Array<string>, avatar?: string | null, creator: string, name: string, skin: string, domains: Array<string> }> | null };
+
 export type ExtendedSpaceQueryVariables = Exact<{
   spaceId: Scalars['String'];
 }>;
@@ -2704,12 +2724,12 @@ export type UpdateSpaceByteSettingsMutationVariables = Exact<{
 
 export type UpdateSpaceByteSettingsMutation = { __typename?: 'Mutation', payload: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, skin: string, avatar?: string | null, domains: Array<string>, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureBeforeAndAfterRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureBeforeAndAfterRating?: boolean | null, showCategoriesInSidebar?: boolean | null } } };
 
-export type SpaceSummaryFragment = { __typename?: 'Space', id: string, admins: Array<string>, adminUsernames: Array<string>, avatar?: string | null, creator: string, name: string, skin: string, domains: Array<string> };
+export type SendEmailMutationVariables = Exact<{
+  input: SendEmailInput;
+}>;
 
-export type SpacesQueryVariables = Exact<{ [key: string]: never; }>;
 
-
-export type SpacesQuery = { __typename?: 'Query', spaces?: Array<{ __typename?: 'Space', id: string, admins: Array<string>, adminUsernames: Array<string>, avatar?: string | null, creator: string, name: string, skin: string, domains: Array<string> }> | null };
+export type SendEmailMutation = { __typename?: 'Mutation', payload: boolean };
 
 export type TimelineEventFragment = { __typename?: 'TimelineEvent', title: string, uuid: string, date: any, summary: string, fullDetails?: string | null, moreLink?: string | null };
 
@@ -6057,6 +6077,43 @@ export function useUpsertSimulationMutation(baseOptions?: Apollo.MutationHookOpt
 export type UpsertSimulationMutationHookResult = ReturnType<typeof useUpsertSimulationMutation>;
 export type UpsertSimulationMutationResult = Apollo.MutationResult<UpsertSimulationMutation>;
 export type UpsertSimulationMutationOptions = Apollo.BaseMutationOptions<UpsertSimulationMutation, UpsertSimulationMutationVariables>;
+export const SpacesDocument = gql`
+    query Spaces {
+  spaces {
+    ...SpaceSummary
+  }
+}
+    ${SpaceSummaryFragmentDoc}`;
+
+/**
+ * __useSpacesQuery__
+ *
+ * To run a query within a React component, call `useSpacesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSpacesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSpacesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useSpacesQuery(baseOptions?: Apollo.QueryHookOptions<SpacesQuery, SpacesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<SpacesQuery, SpacesQueryVariables>(SpacesDocument, options);
+      }
+export function useSpacesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SpacesQuery, SpacesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<SpacesQuery, SpacesQueryVariables>(SpacesDocument, options);
+        }
+export type SpacesQueryHookResult = ReturnType<typeof useSpacesQuery>;
+export type SpacesLazyQueryHookResult = ReturnType<typeof useSpacesLazyQuery>;
+export type SpacesQueryResult = Apollo.QueryResult<SpacesQuery, SpacesQueryVariables>;
+export function refetchSpacesQuery(variables?: SpacesQueryVariables) {
+      return { query: SpacesDocument, variables: variables }
+    }
 export const ExtendedSpaceDocument = gql`
     query ExtendedSpace($spaceId: String!) {
   space(id: $spaceId) {
@@ -6618,43 +6675,37 @@ export function useUpdateSpaceByteSettingsMutation(baseOptions?: Apollo.Mutation
 export type UpdateSpaceByteSettingsMutationHookResult = ReturnType<typeof useUpdateSpaceByteSettingsMutation>;
 export type UpdateSpaceByteSettingsMutationResult = Apollo.MutationResult<UpdateSpaceByteSettingsMutation>;
 export type UpdateSpaceByteSettingsMutationOptions = Apollo.BaseMutationOptions<UpdateSpaceByteSettingsMutation, UpdateSpaceByteSettingsMutationVariables>;
-export const SpacesDocument = gql`
-    query Spaces {
-  spaces {
-    ...SpaceSummary
-  }
+export const SendEmailDocument = gql`
+    mutation SendEmail($input: SendEmailInput!) {
+  payload: sendEmail(input: $input)
 }
-    ${SpaceSummaryFragmentDoc}`;
+    `;
+export type SendEmailMutationFn = Apollo.MutationFunction<SendEmailMutation, SendEmailMutationVariables>;
 
 /**
- * __useSpacesQuery__
+ * __useSendEmailMutation__
  *
- * To run a query within a React component, call `useSpacesQuery` and pass it any options that fit your needs.
- * When your component renders, `useSpacesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
+ * To run a mutation, you first call `useSendEmailMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSendEmailMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
  *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const { data, loading, error } = useSpacesQuery({
+ * const [sendEmailMutation, { data, loading, error }] = useSendEmailMutation({
  *   variables: {
+ *      input: // value for 'input'
  *   },
  * });
  */
-export function useSpacesQuery(baseOptions?: Apollo.QueryHookOptions<SpacesQuery, SpacesQueryVariables>) {
+export function useSendEmailMutation(baseOptions?: Apollo.MutationHookOptions<SendEmailMutation, SendEmailMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<SpacesQuery, SpacesQueryVariables>(SpacesDocument, options);
+        return Apollo.useMutation<SendEmailMutation, SendEmailMutationVariables>(SendEmailDocument, options);
       }
-export function useSpacesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SpacesQuery, SpacesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<SpacesQuery, SpacesQueryVariables>(SpacesDocument, options);
-        }
-export type SpacesQueryHookResult = ReturnType<typeof useSpacesQuery>;
-export type SpacesLazyQueryHookResult = ReturnType<typeof useSpacesLazyQuery>;
-export type SpacesQueryResult = Apollo.QueryResult<SpacesQuery, SpacesQueryVariables>;
-export function refetchSpacesQuery(variables?: SpacesQueryVariables) {
-      return { query: SpacesDocument, variables: variables }
-    }
+export type SendEmailMutationHookResult = ReturnType<typeof useSendEmailMutation>;
+export type SendEmailMutationResult = Apollo.MutationResult<SendEmailMutation>;
+export type SendEmailMutationOptions = Apollo.BaseMutationOptions<SendEmailMutation, SendEmailMutationVariables>;
 export const TimelinesDocument = gql`
     query Timelines($spaceId: String!) {
   timelines(spaceId: $spaceId) {

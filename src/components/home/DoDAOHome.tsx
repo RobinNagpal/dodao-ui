@@ -1,5 +1,8 @@
 'use client';
 
+import FullScreenModal from '@/components/core/modals/FullScreenModal';
+import { useNotificationContext } from '@/contexts/NotificationContext';
+import { SendEmailInput, useSendEmailMutation } from '@/graphql/generated/generated-types';
 import backgroundCallToAction from '@/images/background-call-to-action.jpg';
 import backgroundFaqs from '@/images/background-faqs.jpg';
 import AAVE from '@/images/DAO/AAVE.png';
@@ -49,7 +52,119 @@ export function Button({ variant = 'solid', color = 'slate', className, href, ..
   return href ? <Link href={href} className={className} {...props} /> : <button className={className} {...props} />;
 }
 
+const formClasses =
+  'block w-full appearance-none rounded-md border border-gray-200 bg-gray-50 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-blue-500 sm:text-sm';
+
+function Label({ id, children }: any) {
+  return (
+    <label htmlFor={id} className="mb-3 block text-sm font-medium text-gray-700">
+      {children}
+    </label>
+  );
+}
+
+export function TextField({ id, label, type = 'text', className = '', onChange, ...props }: any) {
+  return (
+    <div className={className}>
+      {label && <Label id={id}>{label}</Label>}
+      <input id={id} type={type} {...props} className={formClasses} onChange={onChange} />
+    </div>
+  );
+}
+
+export function TextAreaField({ id, label, placeholder, className = '', minLength = 1000, onChange, ...props }: any) {
+  return (
+    <div className={className}>
+      {label && <Label id={id}>{label}</Label>}
+      <textarea id={id} minLength={minLength} {...props} className={formClasses} placeholder={placeholder} onChange={onChange} />
+    </div>
+  );
+}
+
+export function SelectField({ id, label, className = '', onChange, ...props }: any) {
+  return (
+    <div className={className}>
+      {label && <Label id={id}>{label}</Label>}
+      <select id={id} {...props} className={clsx(formClasses, 'pr-8')} onChange={onChange} />
+    </div>
+  );
+}
+function ContactModal({ open, onClose }: any) {
+  const { showNotification } = useNotificationContext();
+  const [sendEmailMutation] = useSendEmailMutation();
+  const [form, setForm] = useState<SendEmailInput>({
+    firstName: '',
+    lastName: '',
+    email: '',
+    message: '',
+  });
+
+  const handleChange = (e: any) => {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    try {
+      await sendEmailMutation({ variables: { input: form } });
+      showNotification({
+        type: 'success',
+        message: 'Email sent successfully',
+      });
+      onClose();
+    } catch (error) {
+      showNotification({
+        type: 'error',
+        message: 'Error sending email',
+      });
+      console.error('Error sending email:', error);
+    }
+  };
+
+  return (
+    <FullScreenModal open={open} onClose={onClose} title={'Get started for free'}>
+      <div className="p-16">
+        <form action="#" className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2" onSubmit={handleSubmit}>
+          <TextField label="First name" id="firstName" name="firstName" type="text" autoComplete="given-name" required onChange={handleChange} />
+          <TextField label="Last name" id="lastName" name="lastName" type="text" autoComplete="family-name" required onChange={handleChange} />
+          <TextField
+            className="col-span-full"
+            label="Email address"
+            id="email"
+            name="email"
+            type="email"
+            autoComplete="email"
+            required
+            onChange={handleChange}
+          />
+          <TextAreaField
+            className="col-span-full"
+            label="Message"
+            name="message"
+            placeholder="Enter your message here"
+            required
+            minLength={30}
+            onChange={handleChange}
+          />
+
+          <div className="col-span-full">
+            <Button type="submit" variant="solid" color="blue" className="w-full">
+              <span>
+                Submit <span aria-hidden="true">&rarr;</span>
+              </span>
+            </Button>
+          </div>
+        </form>
+      </div>
+    </FullScreenModal>
+  );
+}
+
 export function Hero() {
+  const [showContactModal, setShowContactModal] = useState(false);
   return (
     <Container className="pb-16 pt-20 text-center lg:pt-32">
       <h1 className="mx-auto max-w-4xl font-display text-5xl font-medium tracking-tight text-slate-900 sm:text-7xl">
@@ -66,15 +181,9 @@ export function Hero() {
         Elevate Customer Satisfaction and Streamline Support Costs through an All-Inclusive Knowledge Hub.
       </p>
       <div className="mt-10 flex justify-center gap-x-6">
-        <Button href="/contact">Get 1 month free</Button>
-        {/*<Button
-          href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-          variant="outline"
-        >
-          <svg
-            aria-hidden="true"
-            className="h-3 w-3 flex-none fill-blue-600 group-active:fill-current"
-          >
+        <Button onClick={() => setShowContactModal(true)}>Get 1 month free</Button>
+        {/*<Button href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" variant="outline">
+          <svg aria-hidden="true" className="h-3 w-3 flex-none fill-blue-600 group-active:fill-current">
             <path d="m9.997 6.91-7.583 3.447A1 1 0 0 1 1 9.447V2.553a1 1 0 0 1 1.414-.91L9.997 5.09c.782.355.782 1.465 0 1.82Z" />
           </svg>
           <span className="ml-3">Watch video</span>
@@ -107,6 +216,7 @@ export function Hero() {
           ))}
         </ul>
       </div>
+      {showContactModal && <ContactModal open={showContactModal} onClose={() => setShowContactModal(false)} />}
     </Container>
   );
 }
@@ -445,7 +555,7 @@ export function CallToAction() {
             and reduced churn while gaining valuable customer insights. Embark on a journey to redefine your customer relationships today.
           </p>
           <Button href="/contact" color="white" className="mt-10">
-            Get 6 months free
+            Get 1 month free
           </Button>
         </div>
       </Container>
@@ -907,7 +1017,6 @@ export default function DoDAOHome() {
         <PrimaryFeatures />
         <SecondaryFeatures />
         <CallToAction />
-        {/*<Testimonials />*/}
         <Pricing />
         <Faqs />
       </main>

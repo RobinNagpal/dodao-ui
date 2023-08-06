@@ -854,6 +854,7 @@ type Mutation {
   refreshGitCourses(spaceId: String!): Boolean!
   reloadAcademyRepository(spaceId: String!): Boolean!
   saveByte(input: UpsertByteInput!, spaceId: String!): Byte!
+  sendEmail(input: SendEmailInput!): Boolean!
   submitByte(submissionInput: ByteSubmissionInput!): ByteSubmission!
   submitGitCourse(input: CourseSubmissionInput!, spaceId: String!): GitCourseSubmission!
   submitGitCourseTopic(gitCourseTopicSubmission: GitCourseTopicSubmissionInput!, spaceId: String!): GitCourseTopicSubmission!
@@ -987,6 +988,13 @@ type RawGitCourse {
   courseRepoUrl: String!
   publishStatus: String!
   weight: Int!
+}
+
+input SendEmailInput {
+  email: String!
+  firstName: String!
+  lastName: String!
+  message: String!
 }
 
 type Simulation {
