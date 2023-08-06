@@ -4,19 +4,33 @@ import { ApolloClient, ApolloLink, from, HttpLink, InMemoryCache } from '@apollo
 import { RetryLink } from '@apollo/client/link/retry';
 
 const authTokenLink = new ApolloLink((operation, forward) => {
-  operation.setContext(({ headers }: any) => ({
-    headers: {
-      ...(headers || {}),
-      'dodao-auth-token': headers?.['dodao-auth-token'] || localStorage.getItem(DODAO_ACCESS_TOKEN_KEY) || '', // however you get your token
-    },
-  }));
+  operation.setContext(({ headers }: any) => {
+    let authToken = headers?.['dodao-auth-token'];
+
+    if (typeof window !== 'undefined') {
+      // Perform localStorage action
+      authToken = authToken || localStorage.getItem(DODAO_ACCESS_TOKEN_KEY) || '';
+    }
+
+    return {
+      headers: {
+        ...(headers || {}),
+        'dodao-auth-token': authToken, // however you get your token
+      },
+    };
+  });
 
   return forward(operation);
 });
 export const getAuthenticatedApolloClient = (session: Session | null) => {
   let headers: Record<string, string> = {};
 
-  const authToken = session?.dodaoAccessToken || localStorage.getItem(DODAO_ACCESS_TOKEN_KEY);
+  let authToken = session?.dodaoAccessToken;
+
+  if (typeof window !== 'undefined') {
+    // Perform localStorage action
+    authToken = authToken || localStorage.getItem(DODAO_ACCESS_TOKEN_KEY) || '';
+  }
 
   if (authToken) {
     headers['dodao-auth-token'] = authToken;

@@ -101,11 +101,13 @@ function ChildLayout({ children, session }: InternalLayoutProps) {
   }, [data, setSpace]);
 
   useEffect(() => {
-    if (session?.userId) {
-      localStorage.setItem(UserIdKey, session?.userId);
-      setDoDAOTokenInLocalStorage(session);
-    } else {
-      localStorage.setItem(UserIdKey, 'anonymous');
+    if (typeof window !== 'undefined') {
+      if (session?.userId) {
+        localStorage.setItem(UserIdKey, session?.userId);
+        setDoDAOTokenInLocalStorage(session);
+      } else {
+        localStorage.setItem(UserIdKey, 'anonymous');
+      }
     }
   }, [session]);
 
