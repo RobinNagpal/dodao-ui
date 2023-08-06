@@ -1,4 +1,4 @@
-import GenerateQuestionUsingAI, { GeneratedQuestionInterface } from '@/components/ai/questions/GenerateQuestionUsingAI';
+import GenerateQuestionsUsingAI, { GeneratedQuestionInterface } from '@/components/ai/questions/GenerateQuestionsUsingAI';
 import FullScreenModal from '@/components/core/modals/FullScreenModal';
 
 import React from 'react';
@@ -17,7 +17,7 @@ export default function GenerateQuestionUsingAIModal(props: GenerateQuestionUsin
   return (
     <FullScreenModal open={open} onClose={onClose} title={props.modalTitle}>
       <div className="p-4">
-        <GenerateQuestionUsingAI {...props} />
+        <GenerateQuestionsUsingAI {...props} />
       </div>
     </FullScreenModal>
   );

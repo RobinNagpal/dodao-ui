@@ -1,6 +1,7 @@
 'use client';
 
-import backgroundImage from '@/images/background-call-to-action.jpg';
+import backgroundCallToAction from '@/images/background-call-to-action.jpg';
+import backgroundFaqs from '@/images/background-faqs.jpg';
 import AAVE from '@/images/DAO/AAVE.png';
 import Balancer from '@/images/DAO/Balancer.png';
 import Compound from '@/images/DAO/Compound.png';
@@ -161,7 +162,7 @@ export function PrimaryFeatures() {
     <section id="features" aria-label="Features for running your books" className="relative overflow-hidden bg-blue-600 pb-28 pt-20 sm:py-32">
       <Image
         className="absolute left-1/2 top-1/2 max-w-xs translate-x-[-44%] translate-y-[-42%]"
-        src={backgroundImage}
+        src={backgroundCallToAction}
         alt=""
         width={2245}
         height={1636}
@@ -430,7 +431,7 @@ export function CallToAction() {
     <section id="get-started-today" className="relative overflow-hidden bg-blue-600 py-32">
       <Image
         className="absolute left-1/2 top-1/2 max-w-none -translate-x-1/2 -translate-y-1/2"
-        src={backgroundImage}
+        src={backgroundCallToAction}
         alt=""
         width={2347}
         height={1244}
@@ -638,7 +639,7 @@ export function Faqs() {
     <section id="faq" aria-labelledby="faq-title" className="relative overflow-hidden bg-slate-50 py-20 sm:py-32">
       <Image
         className="absolute left-1/2 top-0 max-w-none -translate-y-1/4 translate-x-[-30%]"
-        src={backgroundImage}
+        src={backgroundFaqs}
         alt=""
         width={1558}
         height={946}

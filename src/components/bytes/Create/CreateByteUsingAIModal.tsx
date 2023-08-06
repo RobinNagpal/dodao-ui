@@ -1,4 +1,4 @@
-import { GeneratedQuestionInterface } from '@/components/ai/questions/GenerateQuestionUsingAI';
+import { GeneratedQuestionInterface } from '@/components/ai/questions/GenerateQuestionsUsingAI';
 import { EditByteStep, EditByteType } from '@/components/bytes/Edit/useEditByte';
 import Button from '@/components/core/buttons/Button';
 import ErrorWithAccentBorder from '@/components/core/errors/ErrorWithAccentBorder';

@@ -1,6 +1,7 @@
 import { compoundFeatures } from '@/types/features/compoundFeatures';
 import { creditUnionAcademyFeatures } from '@/types/features/creditUnionAcademyFeatures';
-import { dodaoFeatures } from '@/types/features/dodaoFeatures';
+import { dodaoAcademyFeatures } from '@/types/features/dodaoAcademyFeatures';
+import { dodaoIoFeatures } from '@/types/features/dodaoIoFeatures';
 import { fuseFeatures } from '@/types/features/fuseFeatures';
 import { FeatureItem, FeatureName } from '@/types/features/spaceFeatures';
 import { testAcademyFeatures } from '@/types/features/testAcademyFeatures';
@@ -9,7 +10,11 @@ import sortBy from 'lodash/sortBy';
 
 export function getFeaturesArray(spaceId: string): FeatureItem[] {
   if (spaceId === 'dodao-academy-eth-1') {
-    return dodaoFeatures;
+    return dodaoAcademyFeatures;
+  }
+
+  if (spaceId === 'dodao-academy') {
+    return dodaoIoFeatures;
   }
 
   if (spaceId === 'compound-eth-1') {

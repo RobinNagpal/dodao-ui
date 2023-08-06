@@ -25,7 +25,7 @@ function containsURL(str: string): boolean {
   return urlRegex.test(str);
 }
 
-export default function GenerateQuestionUsingAI(props: GenerateQuestionUsingAIProps) {
+export default function GenerateQuestionsUsingAI(props: GenerateQuestionUsingAIProps) {
   const [loading, setLoading] = useState(false);
   const [askChatCompletionAiMutation] = useAskChatCompletionAiMutation();
 
@@ -53,7 +53,7 @@ export default function GenerateQuestionUsingAI(props: GenerateQuestionUsingAIPr
           input: {
             messages: [{ role: ChatCompletionRequestMessageRoleEnum.User, content: inputContent }],
             temperature: 0.3,
-            model: 'gpt-3.5-turbo-16k',
+            model: 'gpt-4',
           },
         },
       });

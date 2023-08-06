@@ -1,4 +1,4 @@
-import GenerateQuestionUsingAI, { GeneratedQuestionInterface } from '@/components/ai/questions/GenerateQuestionUsingAI';
+import GenerateQuestionsUsingAI, { GeneratedQuestionInterface } from '@/components/ai/questions/GenerateQuestionsUsingAI';
 import Button from '@/components/core/buttons/Button';
 import FullScreenModal from '@/components/core/modals/FullScreenModal';
 import EditCourseExplanation from '@/components/courses/Edit/Items/EditCourseExplanation';
@@ -213,7 +213,7 @@ const AddNewCourseContentModal: React.FC<ModalCourseNewItemProps> = ({ course, s
               <EditCourseReading course={course} space={space} topicKey={selectedTopicKey!} saveReading={addReading} cancel={closeModal} />
             )}
             {selectedAction === AddActions.AIQuestions && showAddSection && (
-              <GenerateQuestionUsingAI
+              <GenerateQuestionsUsingAI
                 onGenerateContent={(questions) => {
                   addGeneratedQuestions(questions);
                 }}

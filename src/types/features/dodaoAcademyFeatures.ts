@@ -1,6 +1,6 @@
 import { FeatureItem, FeatureName } from '@/types/features/spaceFeatures';
 
-export const dodaoFeatures: FeatureItem[] = [
+export const dodaoAcademyFeatures: FeatureItem[] = [
   {
     featureName: FeatureName.Guides,
     enabled: true,
