@@ -73,7 +73,7 @@ export function CreateByteUsingAIModal(props: CreateByteUsingAIModalProps) {
       variables: {
         input: {
           messages: [{ role: ChatCompletionRequestMessageRoleEnum.User, content: inputContent }],
-          model: 'gpt-3.5-turbo-16k',
+          model: 'gpt-4',
         },
       },
     });
