@@ -8,10 +8,8 @@ import styled from 'styled-components';
 export interface GuideEndRatingModalProps {
   open: boolean;
   onClose: () => void;
-  skipEndRating: () => void;
-  setEndRating: (rating: number) => void;
-  setGuideFeedback: (feedback: GuideFeedback) => void;
-  guideRatings?: GuideRating;
+  skipGuideRating: () => void;
+  setGuideRating: (rating: number, feedback?: GuideFeedback) => Promise<void>;
 }
 
 export interface GuideFeedbackOptions {
@@ -40,8 +38,17 @@ const FeedbackOptionDiv = styled.div`
   }
 `;
 
-export default function GuideEndRatingModal({ open, onClose, skipEndRating, setEndRating, setGuideFeedback }: GuideEndRatingModalProps) {
-  const handleFeedbackSelection = (optionName: string) => {
+export default function GuideEndRatingModal({ open, onClose, skipGuideRating, setGuideRating }: GuideEndRatingModalProps) {
+  const [selectedRating, setSelectedRating] = useState<number>();
+  const skipOrCloseModal = async () => {
+    if (selectedRating !== undefined) {
+      await setGuideRating(selectedRating!);
+      onClose();
+    } else {
+      skipGuideRating();
+    }
+  };
+  const handleFeedbackSelection = async (optionName: string) => {
     const feedback: GuideFeedback = {};
     if (optionName === 'content') {
       feedback.content = true;
@@ -50,13 +57,13 @@ export default function GuideEndRatingModal({ open, onClose, skipEndRating, setE
     } else if (optionName === 'ux') {
       feedback.ux = true;
     }
-    setGuideFeedback(feedback);
+
+    await setGuideRating(selectedRating!, feedback);
+    onClose();
   };
 
-  const [selectedRating, setSelectedRating] = useState<number>();
-
   return (
-    <FullScreenModal open={open} onClose={onClose} title={''}>
+    <FullScreenModal open={open} onClose={skipOrCloseModal} title={''}>
       <ModalContent>
         <div className="mt-2 text-center sm:mt-1">
           <div className="flex flex-row items-center justify-center ">
@@ -67,7 +74,6 @@ export default function GuideEndRatingModal({ open, onClose, skipEndRating, setE
             <EmojiRatings
               selectedRating={selectedRating}
               selectRating={(rating) => {
-                setEndRating(rating);
                 setSelectedRating(rating);
               }}
             />
@@ -102,7 +108,7 @@ export default function GuideEndRatingModal({ open, onClose, skipEndRating, setE
         )}
 
         <div className="mt-4">
-          <a className="text-md cursor-pointer underline" onClick={() => skipEndRating()}>
+          <a className="text-md cursor-pointer underline" onClick={() => skipOrCloseModal()}>
             Skip
           </a>
         </div>

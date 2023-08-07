@@ -1,154 +1,98 @@
-import { guideRatingsCache } from '@/components/guides/View/guideRatingsCache';
 import { TempGuideSubmission } from '@/components/guides/View/TempGuideSubmission';
-import { GuideFragment, GuideRating, GuideFeedback, Space, useUpsertGuideRatingsMutation } from '@/graphql/generated/generated-types';
+import { GuideFeedback, GuideFragment, GuideRating, Space, useUpsertGuideRatingsMutation } from '@/graphql/generated/generated-types';
 import { UserIdKey } from '@/types/auth/User';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { v4 } from 'uuid';
 
 export type GuideRatingsHelper = {
-  skipStartRating: () => void;
-  skipEndRating: () => void;
-  showStartRatingsModal: boolean;
+  skipGuideRating: () => void;
   showEndRatingsModal: boolean;
-  guideRatings: GuideRating | undefined;
-  upsertRating: () => void;
-  initialize: () => void;
-  setStartRating: (rating: number) => void;
-  setEndRating: (rating: number) => void;
-  setGuideFeedback: (feedback: GuideFeedback) => void;
+  setShowEndRatingsModal: (show: boolean) => void;
+  setGuideRating: (rating: number, feedback?: GuideFeedback) => Promise<void>;
 };
 
 export function useGuideRatings(space: Space, guide: GuideFragment, guideSubmission: TempGuideSubmission): GuideRatingsHelper {
-  const [showStartRatingsModal, setShowStartRatingsModal] = useState(false);
   const [showEndRatingsModal, setShowEndRatingsModal] = useState(false);
-  const [guideRatings, setGuideRatings] = useState<GuideRating>();
   const [upsertGuideRatingsMutation] = useUpsertGuideRatingsMutation();
+  const [shownGuideRatingsModal, setShownGuideRatingsModal] = useState(false);
 
   useEffect(() => {
-    if (guideSubmission.isSubmitted) {
-      if (!guideRatings?.skipEndRating && !guideRatings?.endRating) {
-        setShowEndRatingsModal(true);
-      }
+    if (guideSubmission.isSubmitted && !shownGuideRatingsModal) {
+      setShownGuideRatingsModal(true);
+      setShowEndRatingsModal(true);
     }
   }, [guideSubmission]);
 
-  function createNewRating(): GuideRating {
-    return {
+  const setGuideRating = async (rating: number, feedback?: GuideFeedback) => {
+    const guideRating: GuideRating = {
       guideUuid: guide.uuid,
+      negativeFeedback: null,
+      positiveFeedback: null,
       ratingUuid: v4(),
-      createdAt: new Date().toISOString(),
+      skipEndRating: false,
+      skipStartRating: true,
       spaceId: space.id,
+      startRating: null,
       userId: localStorage.getItem(UserIdKey)!,
+      endRating: rating,
+      createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
-  }
 
-  function getRatings(): GuideRating {
-    return guideRatings || createNewRating();
-  }
-
-  const initialize = () => {
-    if (space.guideSettings.captureRating) {
-      const ratings = guideRatingsCache.getGuideRatings(guide.uuid);
-      if (ratings) {
-        setGuideRatings(ratings);
-        if (!ratings.skipStartRating && !ratings.startRating) {
-          setShowStartRatingsModal(true);
-        }
+    if (feedback) {
+      if ((rating || 5) < 3) {
+        guideRating.negativeFeedback = feedback;
+        guideRating.positiveFeedback = null;
       } else {
-        const newGuideRating: GuideRating = createNewRating();
-
-        setGuideRatings(newGuideRating);
-        setShowStartRatingsModal(true);
+        guideRating.negativeFeedback = null;
+        guideRating.positiveFeedback = feedback;
       }
     }
-  };
 
-  const setStartRating = (rating: number) => {
-    const updatedGuideRatings = {
-      ...guideRatings!,
-      startRating: rating,
-    };
-    setGuideRatings(updatedGuideRatings);
-    guideRatingsCache.saveGuideRatings(guideRatings!.guideUuid, updatedGuideRatings);
-    setShowStartRatingsModal(false);
-    upsertRating();
-  };
-
-  const setEndRating = (rating: number) => {
-    const updatedGuideRatings = {
-      ...guideRatings!,
-      endRating: rating,
-    };
-    setGuideRatings(updatedGuideRatings);
-    guideRatingsCache.saveGuideRatings(guideRatings!.guideUuid, updatedGuideRatings);
-    upsertRating();
-  };
-
-  const skipStartRating = () => {
-    const rating: GuideRating = { ...getRatings(), skipStartRating: true };
-    setGuideRatings(rating);
-    guideRatingsCache.saveGuideRatings(guideRatings!.guideUuid, rating);
-    setShowStartRatingsModal(false);
-    upsertRating();
-  };
-
-  const skipEndRating = () => {
-    const rating: GuideRating = { ...getRatings(), skipEndRating: true };
-    setGuideRatings(rating);
-    guideRatingsCache.saveGuideRatings(guideRatings!.guideUuid, rating);
-    setShowStartRatingsModal(false);
-    upsertRating();
-  };
-
-  const setGuideFeedback = (feedback: GuideFeedback) => {
-    const existingGuideRatings = getRatings();
-    if ((guideRatings?.endRating || 5) < 3) {
-      existingGuideRatings.negativeFeedback = feedback;
-      existingGuideRatings.positiveFeedback = null;
-    } else {
-      existingGuideRatings.negativeFeedback = null;
-      existingGuideRatings.positiveFeedback = feedback;
-    }
-    setGuideRatings(existingGuideRatings);
-    guideRatingsCache.saveGuideRatings(guideRatings!.guideUuid, existingGuideRatings);
-    setShowEndRatingsModal(false);
-    upsertRating();
-  };
-
-  const upsertRating = () => {
-    if (!guideRatings) {
-      throw new Error('Guide ratings not set');
-    }
-    upsertGuideRatingsMutation({
+    await upsertGuideRatingsMutation({
       variables: {
         spaceId: space.id,
         upsertGuideRatingInput: {
-          endRating: guideRatings.endRating,
-          guideUuid: guideRatings.guideUuid,
-          negativeFeedback: guideRatings.negativeFeedback,
-          positiveFeedback: guideRatings.positiveFeedback,
-          ratingUuid: guideRatings.ratingUuid,
-          skipEndRating: guideRatings.skipEndRating,
-          skipStartRating: guideRatings.skipStartRating,
-          spaceId: guideRatings.spaceId,
-          startRating: guideRatings.startRating,
-          userId: guideRatings.userId,
+          endRating: guideRating.endRating,
+          guideUuid: guideRating.guideUuid,
+          negativeFeedback: guideRating.negativeFeedback,
+          positiveFeedback: guideRating.positiveFeedback,
+          ratingUuid: guideRating.ratingUuid,
+          skipEndRating: guideRating.skipEndRating,
+          skipStartRating: guideRating.skipStartRating,
+          spaceId: guideRating.spaceId,
+          startRating: guideRating.startRating,
+          userId: guideRating.userId,
         },
       },
     });
   };
 
+  const skipGuideRating = async () => {
+    await upsertGuideRatingsMutation({
+      variables: {
+        spaceId: space.id,
+        upsertGuideRatingInput: {
+          endRating: null,
+          guideUuid: guide.uuid,
+          negativeFeedback: null,
+          positiveFeedback: null,
+          ratingUuid: v4(),
+          skipEndRating: true,
+          skipStartRating: true,
+          spaceId: space.id,
+          startRating: null,
+          userId: localStorage.getItem(UserIdKey)!,
+        },
+      },
+    });
+    setShowEndRatingsModal(false);
+  };
+
   return {
-    showStartRatingsModal,
     showEndRatingsModal,
-    guideRatings,
-    initialize,
-    setStartRating,
-    setEndRating,
-    skipStartRating,
-    skipEndRating,
-    upsertRating,
-    setGuideFeedback: setGuideFeedback,
+    setShowEndRatingsModal,
+    setGuideRating,
+    skipGuideRating,
   };
 }
