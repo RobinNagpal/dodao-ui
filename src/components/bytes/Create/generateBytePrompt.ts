@@ -22,7 +22,7 @@ export default function generateBytePrompt(topic: string, contents: string) {
       "name": "Introduction"
     }, {
       "content": "AMMs provide liquidity to traders with always available prices, while order books require both buyer and seller to agree on a price leading to low liquidity for some assets.",
-      "name": "Introduction Evaluation",
+      "name": "Introduction Evaluation"
     }, {
       "content": "AMMs do not need order matching, using a mathematical formula for price discovery based on the asset ratio in the pool.\n",
       "name": "Step 3"
@@ -46,8 +46,12 @@ export default function generateBytePrompt(topic: string, contents: string) {
   name - infer it for the particular paragraph
   content - contents of the paragraph.
   
-  Create the output in the json format and show in markdown code format. 
-  focus on this --> "Here is the New content below return me the json only of the below content Never return tags" .
+  Make sure the output should be in pure and valid JSON Array format.
+  
+  Here is the content from which JSON needs to be generated
    
-   ${contents}`;
+   ${contents}
+   
+   The JSON object:
+   `;
 }
