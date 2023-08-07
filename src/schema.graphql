@@ -127,13 +127,14 @@ type ByteQuestion {
 
 type ByteSettings {
   askForLoginToSubmit: Boolean
-  captureBeforeAndAfterRating: Boolean
+  captureBeforeAndAfterRating: Boolean @deprecated(reason: "Use captureRating instead")
+  captureRating: Boolean
   showCategoriesInSidebar: Boolean
 }
 
 input ByteSettingsInput {
   askForLoginToSubmit: Boolean
-  captureBeforeAndAfterRating: Boolean
+  captureRating: Boolean
   showCategoriesInSidebar: Boolean
 }
 
@@ -652,7 +653,8 @@ type GuideRating {
 
 type GuideSettings {
   askForLoginToSubmit: Boolean
-  captureBeforeAndAfterRating: Boolean
+  captureBeforeAndAfterRating: Boolean @deprecated(reason: "Use captureRating instead")
+  captureRating: Boolean
   showCategoriesInSidebar: Boolean
   showIncorrectAfterEachStep: Boolean
   showIncorrectOnCompletion: Boolean
@@ -660,7 +662,7 @@ type GuideSettings {
 
 input GuideSettingsInput {
   askForLoginToSubmit: Boolean
-  captureBeforeAndAfterRating: Boolean
+  captureRating: Boolean
   showCategoriesInSidebar: Boolean
   showIncorrectAfterEachStep: Boolean
   showIncorrectOnCompletion: Boolean
@@ -818,6 +820,7 @@ input MoveTopicVideoInput {
 }
 
 type Mutation {
+  _empty: String
   addDiscordCredentials(code: String!, redirectUri: String!, spaceId: String!): Space!
   addTopic(spaceId: String!, topicInfo: AddTopicInput!): GitCourseTopic!
   addTopicExplanation(explanationInfo: AddTopicExplanationInput!, spaceId: String!): GitCourseExplanation!
@@ -946,6 +949,7 @@ enum OrderDirection {
 }
 
 type Query {
+  _empty: String
   academyTask(uuid: String!): AcademyTask!
   academyTasks(spaceId: String!, status: String): [AcademyTask!]
   byte(byteId: String!, includeDraft: Boolean, spaceId: String!): Byte!

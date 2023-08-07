@@ -30,7 +30,7 @@ export function useEditSpaceGuideSettings(space: SpaceWithIntegrationsFragment):
           spaceId: space.id,
           input: {
             askForLoginToSubmit: guideSettings.askForLoginToSubmit,
-            captureBeforeAndAfterRating: guideSettings.captureBeforeAndAfterRating,
+            captureRating: guideSettings.captureRating,
             showCategoriesInSidebar: guideSettings.showCategoriesInSidebar,
             showIncorrectAfterEachStep: guideSettings.showIncorrectAfterEachStep,
             showIncorrectOnCompletion: guideSettings.showIncorrectOnCompletion,

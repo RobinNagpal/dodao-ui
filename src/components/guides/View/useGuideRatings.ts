@@ -48,7 +48,7 @@ export function useGuideRatings(space: Space, guide: GuideFragment, guideSubmiss
   }
 
   const initialize = () => {
-    if (space.guideSettings.captureBeforeAndAfterRating) {
+    if (space.guideSettings.captureRating) {
       const ratings = guideRatingsCache.getGuideRatings(guide.uuid);
       if (ratings) {
         setGuideRatings(ratings);

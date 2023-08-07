@@ -30,7 +30,7 @@ export function useEditSpaceByteSettings(space: SpaceWithIntegrationsFragment): 
           spaceId: space.id,
           input: {
             askForLoginToSubmit: byteSettings.askForLoginToSubmit,
-            captureBeforeAndAfterRating: byteSettings.captureBeforeAndAfterRating,
+            captureRating: byteSettings.captureRating,
             showCategoriesInSidebar: byteSettings.showCategoriesInSidebar,
           },
         },

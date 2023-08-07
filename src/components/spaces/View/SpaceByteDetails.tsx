@@ -19,7 +19,7 @@ function getSpaceDetailsFields(space: SpaceWithIntegrationsFragment): Array<{ la
     },
     {
       label: 'Capture Before and After Rating',
-      value: (!!space.byteSettings.captureBeforeAndAfterRating).toString(),
+      value: (!!space.byteSettings.captureRating).toString(),
     },
     {
       label: 'Show Categories in Sidebar',

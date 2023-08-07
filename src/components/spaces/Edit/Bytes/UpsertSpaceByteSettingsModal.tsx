@@ -9,41 +9,43 @@ export default function UpsertSpaceByteSettingsModal(props: { space: SpaceWithIn
   const { byteSettings, setByteSettingsField, updateByteSettings, updating } = useEditSpaceByteSettings(props.space);
   return (
     <FullScreenModal open={props.open} onClose={props.onClose} title="Byte Settings">
-      <div className="space-y-12 text-left">
-        <div className="border-b pb-12">
-          <ToggleWithIcon
-            label={'Show ratings'}
-            enabled={!!byteSettings.captureBeforeAndAfterRating}
-            setEnabled={(value) => setByteSettingsField('captureBeforeAndAfterRating', value)}
-          />
+      <div className="py-4 px-8">
+        <div className="space-y-12 text-left">
+          <div className="border-b pb-12">
+            <ToggleWithIcon
+              label={'Show ratings'}
+              enabled={!!byteSettings.captureRating}
+              setEnabled={(value) => setByteSettingsField('captureRating', value)}
+            />
 
-          <ToggleWithIcon
-            label={'Ask for login to submit'}
-            enabled={!!byteSettings.askForLoginToSubmit}
-            setEnabled={(value) => setByteSettingsField('askForLoginToSubmit', value)}
-          />
+            <ToggleWithIcon
+              label={'Ask for login to submit'}
+              enabled={!!byteSettings.askForLoginToSubmit}
+              setEnabled={(value) => setByteSettingsField('askForLoginToSubmit', value)}
+            />
 
-          <ToggleWithIcon
-            label={'Show categories in sidebar'}
-            enabled={!!byteSettings.showCategoriesInSidebar}
-            setEnabled={(value) => setByteSettingsField('showCategoriesInSidebar', value)}
-          />
+            <ToggleWithIcon
+              label={'Show categories in sidebar'}
+              enabled={!!byteSettings.showCategoriesInSidebar}
+              setEnabled={(value) => setByteSettingsField('showCategoriesInSidebar', value)}
+            />
+          </div>
         </div>
-      </div>
 
-      <div className="mt-6 flex items-center justify-end gap-x-6">
-        <Button
-          variant="contained"
-          primary
-          loading={updating}
-          disabled={updating}
-          onClick={async () => {
-            await updateByteSettings();
-            props.onClose();
-          }}
-        >
-          Save
-        </Button>
+        <div className="mt-6 flex items-center justify-end gap-x-6">
+          <Button
+            variant="contained"
+            primary
+            loading={updating}
+            disabled={updating}
+            onClick={async () => {
+              await updateByteSettings();
+              props.onClose();
+            }}
+          >
+            Save
+          </Button>
+        </div>
       </div>
     </FullScreenModal>
   );
