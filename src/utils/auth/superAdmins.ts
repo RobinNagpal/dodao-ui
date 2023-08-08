@@ -5,5 +5,5 @@ export const superAdmins = ['0x470579d16401a36bf63b1428eaa7189fbde5fee9', 'robin
 );
 
 export const isSuperAdmin = (session: Session) => {
-  return superAdmins.includes(session.username.toLowerCase());
+  return session.username && superAdmins.includes(session.username.toLowerCase());
 };

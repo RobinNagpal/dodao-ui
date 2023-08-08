@@ -21,7 +21,9 @@ import { getMarkedRenderer } from '@/utils/ui/getMarkedRenderer';
 import flatten from 'lodash/flatten';
 import { marked } from 'marked';
 import { useSession } from 'next-auth/react';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import Plyr from 'plyr';
+import 'plyr/dist/plyr.css';
 
 export interface GuideStepProps {
   space: Space;
@@ -133,6 +135,11 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
       viewGuideHelper.goToNextStep(step);
     }
   };
+
+  useEffect(() => {
+    const plyrs = Array.from(document.querySelectorAll('.play-js-player')).map((p: any) => new Plyr(p));
+    console.log('plyrs', plyrs);
+  }, [stepContents]);
 
   return (
     <div className="guide-stepper-content w-full sm:px-3 lg:px-4 flex flex-col justify-between">
