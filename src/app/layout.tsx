@@ -5,6 +5,7 @@ import { getServerSession } from 'next-auth';
 import 'tailwindcss/tailwind.css';
 import './globals.scss';
 import InternalLayout from './InternalLayout';
+import { Analytics } from '@vercel/analytics/react';
 
 interface RootLayoutProps {
   children: React.ReactNode;
@@ -19,6 +20,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
         <StyledComponentsRegistry>
           <InternalLayout session={session as Session}>{children}</InternalLayout>
         </StyledComponentsRegistry>
+        <Analytics />
       </body>
     </html>
   );

@@ -25,6 +25,7 @@ function Guide({ space }: SpaceProps) {
   const [showDrafts, setShowDrafts] = useState(false);
 
   const guides = data?.guides?.filter((guide) => guide.publishStatus !== PublishStatus.Draft || showDrafts) || [];
+  const hasDraftGuides = !!data?.guides?.find((guide) => guide.publishStatus === PublishStatus.Draft);
 
   return (
     <PageWrapper>
@@ -34,7 +35,7 @@ function Guide({ space }: SpaceProps) {
         </Block>
       ) : (
         <div>
-          {isUserAdmin && (
+          {isUserAdmin && hasDraftGuides && (
             <div className="w-full mb-4 flex justify-end">
               <div className="w-52">
                 <ToggleWithIcon label={'Show Draft'} enabled={showDrafts} setEnabled={(value) => setShowDrafts(value)} />

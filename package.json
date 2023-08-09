@@ -36,6 +36,7 @@
     "@uiw/react-markdown-preview": "^4.1.13",
     "@uiw/react-md-editor": "^3.20.10",
     "@use-it/interval": "^1.0.0",
+    "@vercel/analytics": "^1.0.1",
     "@web3-react/coinbase-wallet": "8.2.0",
     "@web3-react/core": "8.2.0",
     "@web3-react/gnosis-safe": "8.2.0",
