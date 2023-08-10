@@ -138,7 +138,6 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
 
   useEffect(() => {
     const plyrs = Array.from(document.querySelectorAll('.play-js-player')).map((p: any) => new Plyr(p));
-    console.log('plyrs', plyrs);
   }, [stepContents]);
 
   return (

@@ -68,6 +68,7 @@
     "lottie-react": "^2.4.0",
     "marked": "^4.3.0",
     "moment": "^2.29.4",
+    "near-api-js": "^2.1.4",
     "next": "13.4.3",
     "next-auth": "^4.22.1",
     "openai": "^3.2.1",

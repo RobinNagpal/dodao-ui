@@ -72,6 +72,7 @@ export enum LoginProviders {
   MetaMask = 'MetaMask',
   Google = 'Google',
   Coinbase = 'Coinbase',
+  Near = 'Near',
 }
 
 export enum TidbitShareSteps {

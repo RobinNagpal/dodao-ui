@@ -33,8 +33,10 @@ import 'prismjs/components/prism-rust';
 import 'prismjs/components/prism-solidity';
 import 'prismjs/components/prism-toml';
 import 'prismjs/components/prism-yaml';
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import styled from 'styled-components';
+import Plyr from 'plyr';
+import 'plyr/dist/plyr.css';
 
 const RightDiv = styled.div`
   min-height: 300px;
@@ -173,6 +175,10 @@ const ExplanationDetails: FC<CourseExplanationProps> = ({ course, isCourseAdmin,
       });
     }
   }
+
+  useEffect(() => {
+    Array.from(document.querySelectorAll('.play-js-player')).map((p: any) => new Plyr(p));
+  });
 
   return (
     <div className="h-full">
