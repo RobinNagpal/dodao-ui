@@ -7,7 +7,9 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import moment from 'moment';
 import { useCallback } from 'react';
+import styled from 'styled-components';
 
+const AgGridWrapper = styled.div``;
 export interface GuideSubmissionsTableProps {
   space: SpaceWithIntegrationsFragment;
   guideId: string;
@@ -68,8 +70,8 @@ export default function GuideSubmissionsTable(props: GuideSubmissionsTableProps)
   };
 
   return (
-    <div
-      className="ag-theme-alpine flex-grow h-max"
+    <AgGridWrapper
+      className="ag-theme-alpine flex-grow h-max text-xs"
       style={{
         minHeight: 'calc(100vh - 200px)',
         height: '500px',
@@ -82,7 +84,7 @@ export default function GuideSubmissionsTable(props: GuideSubmissionsTableProps)
         onFilterModified={onFilterModified}
         gridOptions={gridOptions}
         columnDefs={[
-          { headerName: 'ID', field: 'id' },
+          { headerName: 'ID', field: 'id', width: 50, cellStyle: { fontSize: '12px' } },
           {
             headerName: 'Created At',
             field: 'createdAt',
@@ -98,6 +100,8 @@ export default function GuideSubmissionsTable(props: GuideSubmissionsTableProps)
             cellRenderer: (data: any) => {
               return moment(data.value).format('MM/DD/YYYY HH:mm');
             },
+            width: 80,
+            cellStyle: { fontSize: '12px' },
           },
           {
             headerName: 'Created By',
@@ -109,6 +113,8 @@ export default function GuideSubmissionsTable(props: GuideSubmissionsTableProps)
               filterOptions: ['equals'],
               maxNumConditions: 1,
             },
+            width: 160,
+            cellStyle: { fontSize: '12px' },
           },
           {
             headerName: 'Correct Questions',
@@ -120,6 +126,11 @@ export default function GuideSubmissionsTable(props: GuideSubmissionsTableProps)
               filterOptions: ['equals', 'lessThan', 'greaterThan'],
               maxNumConditions: 1,
             },
+            width: 50,
+            wrapText: true, // <-- HERE
+            autoHeight: true, // <-- & HERE
+            wrapHeaderText: true,
+            cellStyle: { fontSize: '12px' },
           },
           {
             headerName: 'Responses',
@@ -131,10 +142,13 @@ export default function GuideSubmissionsTable(props: GuideSubmissionsTableProps)
               filterOptions: ['equals'],
               maxNumConditions: 1,
             },
+            wrapText: true, // <-- HERE
+            autoHeight: true, // <-- & HERE
+            cellStyle: { fontSize: '12px' },
           },
         ]}
         rowData={rowData}
       />
-    </div>
+    </AgGridWrapper>
   );
 }
