@@ -34,20 +34,27 @@ function NearLoginSuccessful({ space }: { space: SpaceWithIntegrationsFragment }
       const account = walletConnection.account();
       const accessKeyInfoViews = await account.getAccessKeys();
       accessKeyInfoViews.map((key) => key.public_key);
-      console.log('accessKeyInfoViews', accessKeyInfoViews);
+      console.log('accessKeyInfoViews', JSON.stringify(accessKeyInfoViews, null, 2));
       console.log('all_keys', all_keys);
       console.log('account', account);
 
-      await signIn(
-        'near',
-        { redirect: false },
-        {
-          accountId: account_id!,
-          allKeys: all_keys!,
-          // publicKeys: accessKeyInfoViews.map((key) => key.public_key).join(','),
-          spaceId: space.id,
-        }
-      );
+      const publicKeys = accessKeyInfoViews.map((key) => key.public_key);
+      if (!publicKeys.includes(all_keys!)) {
+        console.error('Signature verification failed');
+        window.location.href = '/';
+        return;
+      } else {
+        await signIn(
+          'near',
+          { redirect: false },
+          {
+            accountId: account_id!,
+            allKeys: all_keys!,
+            // publicKeys: accessKeyInfoViews.map((key) => key.public_key).join(','),
+            spaceId: space.id,
+          }
+        );
+      }
 
       window.location.href = localStorage.getItem(LocalStorageKeys.NEAR_PRE_REDIRECT_URL) || '/';
     };
