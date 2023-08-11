@@ -2,6 +2,7 @@
 
 import withSpace from '@/app/withSpace';
 import Block from '@/components/app/Block';
+import DeleteGuideModal from '@/components/app/Modal/Guide/DeleteGuideModal';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import PageLoading from '@/components/core/loaders/PageLoading';
 import PageWrapper from '@/components/core/page/PageWrapper';
@@ -20,6 +21,8 @@ const GuideView = ({ params, space }: { params: { guideIdAndStep: string[] }; sp
 
   const [deleteGuideMutation] = useDeleteGuideMutation();
   const { refetch: refetchGuides } = useGuidesQueryQuery({ skip: true, fetchPolicy: 'no-cache' });
+  const [showDeleteModal, setShowDeleteModal] = React.useState(false);
+  const [deletingGuide, setDeletingGuide] = React.useState(false);
 
   const guideId = Array.isArray(guideIdAndStep) ? guideIdAndStep[0] : (guideIdAndStep as string);
   let stepOrder = 0;
@@ -64,20 +67,11 @@ const GuideView = ({ params, space }: { params: { guideIdAndStep: string[] }; sp
                     onSelect={async (key) => {
                       if (key === 'submissions') {
                         router.push(`/guides/submissions/${guideId}`);
-                        return;
+                      } else if (key === 'delete') {
+                        setShowDeleteModal(true);
+                      } else {
+                        router.push(`/guides/edit/${guideId}`);
                       }
-                      if (key === 'delete') {
-                        await deleteGuideMutation({
-                          variables: {
-                            spaceId: space.id,
-                            uuid: guideId,
-                          },
-                        });
-                        await refetchGuides({ space: space.id });
-                        router.push(`/guides`);
-                        return;
-                      }
-                      router.push(`/guides/edit/${guideId}`);
                     }}
                   />
                 </div>
@@ -106,6 +100,28 @@ const GuideView = ({ params, space }: { params: { guideIdAndStep: string[] }; sp
           <PageLoading />
         )}
       </SingleCardLayout>
+      {showDeleteModal && (
+        <DeleteGuideModal
+          open={showDeleteModal}
+          guideName={guide?.name || ''}
+          onClose={() => setShowDeleteModal(false)}
+          deleting={deletingGuide}
+          onDelete={async () => {
+            setDeletingGuide(true);
+            await deleteGuideMutation({
+              variables: {
+                spaceId: space.id,
+                uuid: guideId,
+              },
+            });
+            await refetchGuides({ space: space.id });
+            setDeletingGuide(false);
+            setShowDeleteModal(false);
+            router.push(`/guides`);
+            return;
+          }}
+        />
+      )}
     </PageWrapper>
   );
 };
