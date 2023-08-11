@@ -12,18 +12,22 @@ function LoginButtonsFunction(props: { space: SpaceWithIntegrationsFragment }) {
     loginWithCoinbase,
     loginWithGoogle,
     loginWithDiscord,
+    loginWithNear,
 
     processing,
     processingMetaMask,
     processingCoinbase,
     processingGoogle,
     processingDiscord,
+    processingNear,
   } = useAuth();
   const allOptionsEnabled = (space.authSettings.loginOptions?.length || 0) === 0;
   const isMetamaskEnabled = !!space.authSettings.loginOptions?.includes(LoginProviders.MetaMask);
   const isCoinbaseEnabled = !!space.authSettings.loginOptions?.includes(LoginProviders.Coinbase);
   const isGoogleEnabled = !!space.authSettings.loginOptions?.includes(LoginProviders.Google);
   const isDiscordEnabled = !!space.authSettings.loginOptions?.includes(LoginProviders.Discord);
+
+  const isNearEnabled = !!space.authSettings.loginOptions?.includes(LoginProviders.Near);
   return (
     <div className="flex-col">
       {allOptionsEnabled || isMetamaskEnabled ? (
@@ -51,6 +55,13 @@ function LoginButtonsFunction(props: { space: SpaceWithIntegrationsFragment }) {
         <div className="mt-2">
           <ButtonLarge variant={'outlined'} primary onClick={loginWithDiscord} className="w-full" disabled={processing} loading={processingDiscord}>
             Login with Discord
+          </ButtonLarge>
+        </div>
+      ) : null}
+      {isNearEnabled ? (
+        <div className="mt-2">
+          <ButtonLarge variant={'outlined'} primary onClick={loginWithNear} className="w-full" disabled={processing} loading={processingNear}>
+            Login with NEAR
           </ButtonLarge>
         </div>
       ) : null}

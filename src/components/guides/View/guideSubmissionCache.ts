@@ -1,13 +1,13 @@
 import { TempGuideSubmission } from '@/components/guides/View/TempGuideSubmission';
 import { UserDiscordInfoInput } from '@/graphql/generated/generated-types';
+import { LocalStorageKeys } from '@/types/deprecated/models/enums';
 
-const GUIDE_SUBMISSION = 'GUIDE-SUBMISSION-V2';
 const ANONYMOUS = 'ANONYMOUS';
 const account = ANONYMOUS;
 
 const saveGuideSubmission = (guideUuid: string, data: TempGuideSubmission) => {
   const key = `${account}_${guideUuid}`;
-  const guideSubmissions = localStorage.getItem(GUIDE_SUBMISSION);
+  const guideSubmissions = localStorage.getItem(LocalStorageKeys.GUIDE_SUBMISSION);
 
   if (guideSubmissions) {
     const existingGuideSubmissions = JSON.parse(guideSubmissions);
@@ -16,24 +16,24 @@ const saveGuideSubmission = (guideUuid: string, data: TempGuideSubmission) => {
       [key]: data,
     };
 
-    localStorage.setItem(GUIDE_SUBMISSION, JSON.stringify(submissions));
+    localStorage.setItem(LocalStorageKeys.GUIDE_SUBMISSION, JSON.stringify(submissions));
   } else {
     const submissions = {
       [key]: data,
     };
 
-    localStorage.setItem(GUIDE_SUBMISSION, JSON.stringify(submissions));
+    localStorage.setItem(LocalStorageKeys.GUIDE_SUBMISSION, JSON.stringify(submissions));
   }
 };
 
 const readGuideSubmissionsCache = (guideUuid: string): TempGuideSubmission | undefined => {
-  const submissions = JSON.parse(localStorage.getItem(GUIDE_SUBMISSION) || '{}');
+  const submissions = JSON.parse(localStorage.getItem(LocalStorageKeys.GUIDE_SUBMISSION) || '{}');
   const key = `${account}_${guideUuid}`;
   return submissions[key];
 };
 
 const deleteGuideSubmission = (guideUuid: string) => {
-  const key = `${GUIDE_SUBMISSION}_${account}_${guideUuid}`;
+  const key = `${LocalStorageKeys.GUIDE_SUBMISSION}_${account}_${guideUuid}`;
   localStorage.removeItem(key);
 };
 

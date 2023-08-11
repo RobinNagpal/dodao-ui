@@ -1,9 +1,11 @@
 import { coinbaseWallet } from '@/app/login/connectors/coinbaseWallet';
 import { metaMask } from '@/app/login/connectors/metaMask';
 import { Session } from '@/types/auth/Session';
+import { LocalStorageKeys } from '@/types/deprecated/models/enums';
 import { setDoDAOTokenInLocalStorage } from '@/utils/auth/setDoDAOTokenInLocalStorage';
 import { Connector } from '@web3-react/types';
 import { ethers } from 'ethers';
+import * as nearAPI from 'near-api-js';
 import { getSession, signIn, signOut } from 'next-auth/react';
 import { useCallback, useState } from 'react';
 
@@ -16,6 +18,7 @@ export function useAuth() {
   const [processingGoogle, setProcessingGoogle] = useState<boolean>(false);
   const [processingDiscord, setProcessingDiscord] = useState<boolean>(false);
   const [processingEmailPassword, setProcessingEmailPassword] = useState<boolean>(false);
+  const [processingNear, setProcessingNear] = useState<boolean>(false);
 
   async function onSignInWithCrypto() {
     try {
@@ -123,6 +126,28 @@ export function useAuth() {
     });
   }, []);
 
+  const loginWithNear = useCallback(async () => {
+    setProcessingNear(true);
+    const { connect, keyStores, WalletConnection } = nearAPI;
+
+    // connect to NEAR
+    const nearConnection = await connect({
+      networkId: 'mainnet',
+      keyStore: new keyStores.BrowserLocalStorageKeyStore(),
+      nodeUrl: 'https://rpc.mainnet.near.org',
+      walletUrl: 'https://wallet.mainnet.near.org',
+      helperUrl: 'https://helper.mainnet.near.org',
+    });
+
+    // create wallet connection
+    const walletConnection = new WalletConnection(nearConnection, 'dodao');
+
+    localStorage.setItem(LocalStorageKeys.NEAR_PRE_REDIRECT_URL, window.location.href);
+    await walletConnection.requestSignIn({
+      successUrl: location.protocol + '//' + location.host + '/auth/success/near',
+    });
+  }, []);
+
   const loginWithEmailPassword = useCallback(async (email: string, password: string) => {
     setProcessingEmailPassword(true);
     await doSigin(async () => {
@@ -151,6 +176,7 @@ export function useAuth() {
     loginWithGoogle,
     loginWithDiscord,
     loginWithEmailPassword,
+    loginWithNear,
     logout,
     active,
     processing,
@@ -159,5 +185,6 @@ export function useAuth() {
     processingGoogle,
     processingDiscord,
     processingEmailPassword,
+    processingNear,
   };
 }

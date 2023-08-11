@@ -30,6 +30,33 @@ export const authOptions: AuthOptions = {
       },
       authorize: authorizeCrypto,
     }),
+    {
+      id: 'near',
+      name: 'Near Wallet Auth',
+      type: 'credentials',
+      credentials: {},
+      authorize: async (credentials, req) => {
+        console.log('req', req.query);
+
+        const accountId = req.query?.accountId || '';
+        const spaceId = req.query?.spaceId || '';
+
+        const user = await prisma.user.upsert({
+          where: { publicAddress_spaceId: { publicAddress: accountId, spaceId } },
+          create: {
+            publicAddress: accountId,
+            username: accountId,
+            name: accountId,
+            authProvider: 'near',
+            spaceId,
+          },
+          update: {},
+        });
+
+        console.log('user', user);
+        return Promise.resolve(user);
+      },
+    },
     DiscordProvider({
       clientId: process.env.DISCORD_CLIENT_ID!,
       clientSecret: process.env.DISCORD_CLIENT_SECRET!,

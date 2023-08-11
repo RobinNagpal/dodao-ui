@@ -80,3 +80,8 @@ export enum TidbitShareSteps {
   ReviewContents = 'review-contents',
   Preview = 'preview',
 }
+
+export enum LocalStorageKeys {
+  GUIDE_SUBMISSION = 'GUIDE-SUBMISSION-V2',
+  NEAR_PRE_REDIRECT_URL = 'NEAR-PRE-REDIRECT-URL',
+}
