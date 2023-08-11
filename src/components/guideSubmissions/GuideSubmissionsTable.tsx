@@ -24,7 +24,7 @@ export default function GuideSubmissionsTable(props: GuideSubmissionsTableProps)
     },
   });
 
-  const guideSubmissions = data?.guideSubmissions;
+  const guideSubmissions = data?.guideSubmissions || [];
 
   const onFilterOpened = useCallback((e: FilterOpenedEvent<any>) => {
     console.log('onFilterOpened', e);
@@ -54,6 +54,11 @@ export default function GuideSubmissionsTable(props: GuideSubmissionsTableProps)
       createdAt: new Date(submission.createdAt),
       createdBy: submission.createdByUsername,
       correctQuestionsCount: submission.correctQuestionsCount,
+      userResponses: submission.steps
+        ?.flatMap((step) => step.itemResponses)
+        .filter((itemResponse) => itemResponse.userInput)
+        .map((response) => response.userInput || '')
+        .join(', '),
     };
   });
   const gridOptions: GridOptions = {
@@ -113,6 +118,17 @@ export default function GuideSubmissionsTable(props: GuideSubmissionsTableProps)
               buttons: ['apply', 'cancel'],
               closeOnApply: true,
               filterOptions: ['equals', 'lessThan', 'greaterThan'],
+              maxNumConditions: 1,
+            },
+          },
+          {
+            headerName: 'Responses',
+            field: 'userResponses',
+            filter: 'agTextColumnFilter',
+            filterParams: {
+              buttons: ['apply', 'cancel'],
+              closeOnApply: true,
+              filterOptions: ['equals'],
               maxNumConditions: 1,
             },
           },
