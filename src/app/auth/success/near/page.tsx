@@ -44,7 +44,7 @@ function NearLoginSuccessful({ space }: { space: SpaceWithIntegrationsFragment }
         {
           accountId: account_id!,
           allKeys: all_keys!,
-          publicKeys: accessKeyInfoViews.map((key) => key.public_key).join(','),
+          // publicKeys: accessKeyInfoViews.map((key) => key.public_key).join(','),
           spaceId: space.id,
         }
       );
