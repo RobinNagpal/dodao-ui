@@ -1,5 +1,6 @@
 import SpinnerWithText from '@/components/core/loaders/SpinnerWithText';
 import { SpaceWithIntegrationsFragment, useGuideSubmissionsQueryQuery } from '@/graphql/generated/generated-types';
+import { DODAO_ACCESS_TOKEN_KEY } from '@/types/deprecated/models/enums';
 import ArrowDownTrayIcon from '@heroicons/react/24/outline/ArrowDownTrayIcon';
 import { GridOptions, GridSizeChangedEvent } from 'ag-grid-community';
 import { FilterChangedEvent, FilterModifiedEvent, FilterOpenedEvent } from 'ag-grid-community/dist/lib/events';
@@ -33,6 +34,9 @@ export default function GuideSubmissionsTable(props: GuideSubmissionsTableProps)
         guideUuid: props.guideId,
       },
       responseType: 'blob',
+      headers: {
+        'dodao-auth-token': localStorage.getItem(DODAO_ACCESS_TOKEN_KEY) || '',
+      },
     });
 
     const url = window.URL.createObjectURL(response.data);
