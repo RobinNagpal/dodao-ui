@@ -123,7 +123,7 @@ export default function GuideSubmissionsTable(props: GuideSubmissionsTableProps)
       }}
     >
       <DownloadWrapper className="w-full flex justify-end mb-4">
-        <IconButton iconName={IconTypes.ArrowDownTrayIcon} loading={csvDownloading} size="large" onClick={() => downloadCSV()} />
+        <IconButton iconName={IconTypes.ArrowDownTrayIcon} disabled={true} loading={csvDownloading} size="large" onClick={() => downloadCSV()} />
       </DownloadWrapper>
       <AgGridReact
         onFilterOpened={onFilterOpened}
