@@ -236,6 +236,16 @@ export interface CompletionAiInput {
   temperature?: InputMaybe<Scalars['Float']>;
 }
 
+export interface ConsolidatedGuideRating {
+  __typename?: 'ConsolidatedGuideRating';
+  avgRating: Scalars['Float'];
+  endRatingFeedbackCount: Scalars['Int'];
+  negativeFeedbackCount: Scalars['Int'];
+  negativeRatingDistribution: RatingDistribution;
+  positiveFeedbackCount: Scalars['Int'];
+  positiveRatingDistribution: RatingDistribution;
+}
+
 export interface CourseBasicInfoInput {
   courseAdmins: Array<Scalars['String']>;
   courseFailContent?: InputMaybe<Scalars['String']>;
@@ -1405,6 +1415,7 @@ export interface Query {
   byte: Byte;
   byteSocialShare?: Maybe<ByteSocialShare>;
   bytes: Array<Byte>;
+  consolidatedGuideRating: ConsolidatedGuideRating;
   courses: Array<GitCourse>;
   gitCourse: GitCourse;
   gitCourseIntegrations?: Maybe<CourseIntegrations>;
@@ -1418,6 +1429,7 @@ export interface Query {
   guides: Array<Guide>;
   rawGitCourse: RawGitCourse;
   rawGitCourses: Array<RawGitCourse>;
+  route53Records: Array<Route53Record>;
   simulation: Simulation;
   simulations: Array<Simulation>;
   space?: Maybe<Space>;
@@ -1425,6 +1437,7 @@ export interface Query {
   spaces?: Maybe<Array<Space>>;
   timeline: Timeline;
   timelines: Array<Timeline>;
+  vercelDomainRecords: Array<VercelDomain>;
 }
 
 
@@ -1453,6 +1466,12 @@ export interface QueryByteSocialShareArgs {
 
 
 export interface QueryBytesArgs {
+  spaceId: Scalars['String'];
+}
+
+
+export interface QueryConsolidatedGuideRatingArgs {
+  guideUuid: Scalars['String'];
   spaceId: Scalars['String'];
 }
 
@@ -1575,12 +1594,27 @@ export interface QuestionChoiceInput {
   key: Scalars['String'];
 }
 
+export interface RatingDistribution {
+  __typename?: 'RatingDistribution';
+  content: Scalars['Float'];
+  questions: Scalars['Float'];
+  ux: Scalars['Float'];
+}
+
 export interface RawGitCourse {
   __typename?: 'RawGitCourse';
   courseKey: Scalars['String'];
   courseRepoUrl: Scalars['String'];
   publishStatus: Scalars['String'];
   weight: Scalars['Int'];
+}
+
+export interface Route53Record {
+  __typename?: 'Route53Record';
+  name?: Maybe<Scalars['String']>;
+  records?: Maybe<Array<Maybe<Scalars['String']>>>;
+  ttl?: Maybe<Scalars['Int']>;
+  type?: Maybe<Scalars['String']>;
 }
 
 export interface SendEmailInput {
@@ -1976,6 +2010,18 @@ export interface UserInputInput {
   required?: InputMaybe<Scalars['Boolean']>;
   type: Scalars['String'];
   uuid: Scalars['String'];
+}
+
+export interface VercelDomain {
+  __typename?: 'VercelDomain';
+  apexName: Scalars['String'];
+  createdAt?: Maybe<Scalars['Int']>;
+  gitBranch?: Maybe<Scalars['String']>;
+  name: Scalars['String'];
+  projectId: Scalars['String'];
+  redirect?: Maybe<Scalars['String']>;
+  updatedAt?: Maybe<Scalars['Int']>;
+  verified: Scalars['Boolean'];
 }
 
 export type AcademyTaskFragmentFragment = { __typename?: 'AcademyTask', uuid: string, createdAt: number, createdBy: string, excerpt: string, spaceId: string, status: string, details: string, title: string, updatedAt: number, updatedBy: string, prerequisiteCourses: Array<{ __typename?: 'SummarizedGitCourse', uuid: string, key: string, title: string, thumbnail: string }>, prerequisiteGuides: Array<{ __typename?: 'Guide', uuid: string, name: string, content: string, thumbnail?: string | null, guideType: string }>, items: Array<{ __typename: 'GuideQuestion', answerKeys: Array<string>, content: string, order: number, type: string, uuid: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'GuideUserInput', label: string, order: number, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> };
@@ -2446,13 +2492,47 @@ export type UpsertGnosisSafeWalletsMutationVariables = Exact<{
 
 export type UpsertGnosisSafeWalletsMutation = { __typename?: 'Mutation', payload: { __typename?: 'Space', id: string } };
 
+export type GuideRatingFragment = { __typename?: 'GuideRating', ratingUuid: string, createdAt: any, endRating?: number | null, guideUuid: string, ipAddress?: string | null, skipEndRating?: boolean | null, skipStartRating?: boolean | null, spaceId: string, startRating?: number | null, updatedAt: any, userId?: string | null, username?: string | null, negativeFeedback?: { __typename?: 'GuideFeedback', content?: boolean | null, questions?: boolean | null, ux?: boolean | null } | null, positiveFeedback?: { __typename?: 'GuideFeedback', ux?: boolean | null, questions?: boolean | null, content?: boolean | null } | null };
+
 export type UpsertGuideRatingsMutationVariables = Exact<{
   spaceId: Scalars['String'];
   upsertGuideRatingInput: UpsertGuideRatingInput;
 }>;
 
 
-export type UpsertGuideRatingsMutation = { __typename?: 'Mutation', payload: { __typename?: 'GuideRating', createdAt: any, endRating?: number | null, guideUuid: string, ipAddress?: string | null, ratingUuid: string, skipEndRating?: boolean | null, skipStartRating?: boolean | null, spaceId: string, startRating?: number | null, updatedAt: any, userId?: string | null, username?: string | null, negativeFeedback?: { __typename?: 'GuideFeedback', content?: boolean | null, questions?: boolean | null, ux?: boolean | null } | null, positiveFeedback?: { __typename?: 'GuideFeedback', ux?: boolean | null, questions?: boolean | null, content?: boolean | null } | null } };
+export type UpsertGuideRatingsMutation = { __typename?: 'Mutation', payload: { __typename?: 'GuideRating', ratingUuid: string, createdAt: any, endRating?: number | null, guideUuid: string, ipAddress?: string | null, skipEndRating?: boolean | null, skipStartRating?: boolean | null, spaceId: string, startRating?: number | null, updatedAt: any, userId?: string | null, username?: string | null, negativeFeedback?: { __typename?: 'GuideFeedback', content?: boolean | null, questions?: boolean | null, ux?: boolean | null } | null, positiveFeedback?: { __typename?: 'GuideFeedback', ux?: boolean | null, questions?: boolean | null, content?: boolean | null } | null } };
+
+export type GuideRatingsQueryVariables = Exact<{
+  spaceId: Scalars['String'];
+  guideUuid: Scalars['String'];
+}>;
+
+
+export type GuideRatingsQuery = { __typename?: 'Query', guideRatings: Array<{ __typename?: 'GuideRating', ratingUuid: string, createdAt: any, endRating?: number | null, guideUuid: string, ipAddress?: string | null, skipEndRating?: boolean | null, skipStartRating?: boolean | null, spaceId: string, startRating?: number | null, updatedAt: any, userId?: string | null, username?: string | null, negativeFeedback?: { __typename?: 'GuideFeedback', content?: boolean | null, questions?: boolean | null, ux?: boolean | null } | null, positiveFeedback?: { __typename?: 'GuideFeedback', ux?: boolean | null, questions?: boolean | null, content?: boolean | null } | null }> };
+
+export type ConsolidatedGuideRatingQueryVariables = Exact<{
+  spaceId: Scalars['String'];
+  guideUuid: Scalars['String'];
+}>;
+
+
+export type ConsolidatedGuideRatingQuery = { __typename?: 'Query', consolidatedGuideRating: { __typename?: 'ConsolidatedGuideRating', avgRating: number, endRatingFeedbackCount: number, positiveFeedbackCount: number, negativeFeedbackCount: number, positiveRatingDistribution: { __typename?: 'RatingDistribution', content: number, questions: number, ux: number }, negativeRatingDistribution: { __typename?: 'RatingDistribution', content: number, questions: number, ux: number } } };
+
+export type GuideSubmissionsQueryQueryVariables = Exact<{
+  spaceId: Scalars['String'];
+  guideUuid: Scalars['String'];
+  filters: GuideSubmissionFiltersInput;
+}>;
+
+
+export type GuideSubmissionsQueryQuery = { __typename?: 'Query', guideSubmissions: Array<{ __typename?: 'GuideSubmission', id: string, createdAt: any, createdBy: string, createdByUsername: string, guideId: string, guideUuid: string, spaceId: string, uuid: string, correctQuestionsCount: number, result: { __typename?: 'GuideSubmissionResult', correctQuestions: Array<string>, wrongQuestions: Array<string>, allQuestions: Array<string> }, steps?: Array<{ __typename?: 'GuideStepSubmission', uuid: string, itemResponses: Array<{ __typename?: 'GuideStepItemSubmission', type: string, userInput?: string | null, uuid: string }> }> | null }> };
+
+export type SubmitGuideMutationVariables = Exact<{
+  input: GuideSubmissionInput;
+}>;
+
+
+export type SubmitGuideMutation = { __typename?: 'Mutation', payload: { __typename?: 'GuideSubmission', galaxyCredentialsUpdated?: boolean | null, result: { __typename?: 'GuideSubmissionResult', wrongQuestions: Array<string>, correctQuestions: Array<string>, allQuestions: Array<string> } } };
 
 export type GuideQuestionFragment = { __typename?: 'GuideQuestion', answerKeys: Array<string>, content: string, order: number, type: string, uuid: string, explanation?: string | null, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> };
 
@@ -2497,22 +2577,6 @@ export type DeleteGuideMutationVariables = Exact<{
 
 
 export type DeleteGuideMutation = { __typename?: 'Mutation', payload: boolean };
-
-export type GuideSubmissionsQueryQueryVariables = Exact<{
-  spaceId: Scalars['String'];
-  guideUuid: Scalars['String'];
-  filters: GuideSubmissionFiltersInput;
-}>;
-
-
-export type GuideSubmissionsQueryQuery = { __typename?: 'Query', guideSubmissions: Array<{ __typename?: 'GuideSubmission', id: string, createdAt: any, createdBy: string, createdByUsername: string, guideId: string, guideUuid: string, spaceId: string, uuid: string, correctQuestionsCount: number, result: { __typename?: 'GuideSubmissionResult', correctQuestions: Array<string>, wrongQuestions: Array<string>, allQuestions: Array<string> }, steps?: Array<{ __typename?: 'GuideStepSubmission', uuid: string, itemResponses: Array<{ __typename?: 'GuideStepItemSubmission', type: string, userInput?: string | null, uuid: string }> }> | null }> };
-
-export type SubmitGuideMutationVariables = Exact<{
-  input: GuideSubmissionInput;
-}>;
-
-
-export type SubmitGuideMutation = { __typename?: 'Mutation', payload: { __typename?: 'GuideSubmission', galaxyCredentialsUpdated?: boolean | null, result: { __typename?: 'GuideSubmissionResult', wrongQuestions: Array<string>, correctQuestions: Array<string>, allQuestions: Array<string> } } };
 
 export type GuideSummaryFragment = { __typename?: 'Guide', id: string, authors: Array<string>, name: string, categories: Array<string>, content: string, createdAt: any, guideSource: string, guideType: string, publishStatus: string, thumbnail?: string | null, uuid: string };
 
@@ -3142,6 +3206,33 @@ export const CourseFragmentDoc = gql`
   summary
   thumbnail
   title
+}
+    `;
+export const GuideRatingFragmentDoc = gql`
+    fragment GuideRating on GuideRating {
+  ratingUuid
+  createdAt
+  endRating
+  guideUuid
+  ipAddress
+  negativeFeedback {
+    content
+    questions
+    ux
+  }
+  positiveFeedback {
+    ux
+    questions
+    content
+  }
+  ratingUuid
+  skipEndRating
+  skipStartRating
+  spaceId
+  startRating
+  updatedAt
+  userId
+  username
 }
     `;
 export const GuideQuestionFragmentDoc = gql`
@@ -5427,31 +5518,10 @@ export const UpsertGuideRatingsDocument = gql`
     spaceId: $spaceId
     upsertGuideRatingInput: $upsertGuideRatingInput
   ) {
-    createdAt
-    endRating
-    guideUuid
-    ipAddress
-    negativeFeedback {
-      content
-      questions
-      ux
-    }
-    positiveFeedback {
-      ux
-      questions
-      content
-    }
-    ratingUuid
-    skipEndRating
-    skipStartRating
-    spaceId
-    startRating
-    updatedAt
-    userId
-    username
+    ...GuideRating
   }
 }
-    `;
+    ${GuideRatingFragmentDoc}`;
 export type UpsertGuideRatingsMutationFn = Apollo.MutationFunction<UpsertGuideRatingsMutation, UpsertGuideRatingsMutationVariables>;
 
 /**
@@ -5479,6 +5549,196 @@ export function useUpsertGuideRatingsMutation(baseOptions?: Apollo.MutationHookO
 export type UpsertGuideRatingsMutationHookResult = ReturnType<typeof useUpsertGuideRatingsMutation>;
 export type UpsertGuideRatingsMutationResult = Apollo.MutationResult<UpsertGuideRatingsMutation>;
 export type UpsertGuideRatingsMutationOptions = Apollo.BaseMutationOptions<UpsertGuideRatingsMutation, UpsertGuideRatingsMutationVariables>;
+export const GuideRatingsDocument = gql`
+    query GuideRatings($spaceId: String!, $guideUuid: String!) {
+  guideRatings(spaceId: $spaceId, guideUuid: $guideUuid) {
+    ...GuideRating
+  }
+}
+    ${GuideRatingFragmentDoc}`;
+
+/**
+ * __useGuideRatingsQuery__
+ *
+ * To run a query within a React component, call `useGuideRatingsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGuideRatingsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGuideRatingsQuery({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      guideUuid: // value for 'guideUuid'
+ *   },
+ * });
+ */
+export function useGuideRatingsQuery(baseOptions: Apollo.QueryHookOptions<GuideRatingsQuery, GuideRatingsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GuideRatingsQuery, GuideRatingsQueryVariables>(GuideRatingsDocument, options);
+      }
+export function useGuideRatingsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GuideRatingsQuery, GuideRatingsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GuideRatingsQuery, GuideRatingsQueryVariables>(GuideRatingsDocument, options);
+        }
+export type GuideRatingsQueryHookResult = ReturnType<typeof useGuideRatingsQuery>;
+export type GuideRatingsLazyQueryHookResult = ReturnType<typeof useGuideRatingsLazyQuery>;
+export type GuideRatingsQueryResult = Apollo.QueryResult<GuideRatingsQuery, GuideRatingsQueryVariables>;
+export function refetchGuideRatingsQuery(variables: GuideRatingsQueryVariables) {
+      return { query: GuideRatingsDocument, variables: variables }
+    }
+export const ConsolidatedGuideRatingDocument = gql`
+    query ConsolidatedGuideRating($spaceId: String!, $guideUuid: String!) {
+  consolidatedGuideRating(spaceId: $spaceId, guideUuid: $guideUuid) {
+    avgRating
+    endRatingFeedbackCount
+    positiveFeedbackCount
+    negativeFeedbackCount
+    positiveRatingDistribution {
+      content
+      questions
+      ux
+    }
+    negativeRatingDistribution {
+      content
+      questions
+      ux
+    }
+  }
+}
+    `;
+
+/**
+ * __useConsolidatedGuideRatingQuery__
+ *
+ * To run a query within a React component, call `useConsolidatedGuideRatingQuery` and pass it any options that fit your needs.
+ * When your component renders, `useConsolidatedGuideRatingQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useConsolidatedGuideRatingQuery({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      guideUuid: // value for 'guideUuid'
+ *   },
+ * });
+ */
+export function useConsolidatedGuideRatingQuery(baseOptions: Apollo.QueryHookOptions<ConsolidatedGuideRatingQuery, ConsolidatedGuideRatingQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ConsolidatedGuideRatingQuery, ConsolidatedGuideRatingQueryVariables>(ConsolidatedGuideRatingDocument, options);
+      }
+export function useConsolidatedGuideRatingLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ConsolidatedGuideRatingQuery, ConsolidatedGuideRatingQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ConsolidatedGuideRatingQuery, ConsolidatedGuideRatingQueryVariables>(ConsolidatedGuideRatingDocument, options);
+        }
+export type ConsolidatedGuideRatingQueryHookResult = ReturnType<typeof useConsolidatedGuideRatingQuery>;
+export type ConsolidatedGuideRatingLazyQueryHookResult = ReturnType<typeof useConsolidatedGuideRatingLazyQuery>;
+export type ConsolidatedGuideRatingQueryResult = Apollo.QueryResult<ConsolidatedGuideRatingQuery, ConsolidatedGuideRatingQueryVariables>;
+export function refetchConsolidatedGuideRatingQuery(variables: ConsolidatedGuideRatingQueryVariables) {
+      return { query: ConsolidatedGuideRatingDocument, variables: variables }
+    }
+export const GuideSubmissionsQueryDocument = gql`
+    query GuideSubmissionsQuery($spaceId: String!, $guideUuid: String!, $filters: GuideSubmissionFiltersInput!) {
+  guideSubmissions(spaceId: $spaceId, guideUuid: $guideUuid, filters: $filters) {
+    id
+    createdAt
+    createdBy
+    createdByUsername
+    guideId
+    guideUuid
+    result {
+      correctQuestions
+      wrongQuestions
+      allQuestions
+    }
+    steps {
+      itemResponses {
+        type
+        userInput
+        uuid
+      }
+      uuid
+    }
+    spaceId
+    uuid
+    correctQuestionsCount
+  }
+}
+    `;
+
+/**
+ * __useGuideSubmissionsQueryQuery__
+ *
+ * To run a query within a React component, call `useGuideSubmissionsQueryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGuideSubmissionsQueryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGuideSubmissionsQueryQuery({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      guideUuid: // value for 'guideUuid'
+ *      filters: // value for 'filters'
+ *   },
+ * });
+ */
+export function useGuideSubmissionsQueryQuery(baseOptions: Apollo.QueryHookOptions<GuideSubmissionsQueryQuery, GuideSubmissionsQueryQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GuideSubmissionsQueryQuery, GuideSubmissionsQueryQueryVariables>(GuideSubmissionsQueryDocument, options);
+      }
+export function useGuideSubmissionsQueryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GuideSubmissionsQueryQuery, GuideSubmissionsQueryQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GuideSubmissionsQueryQuery, GuideSubmissionsQueryQueryVariables>(GuideSubmissionsQueryDocument, options);
+        }
+export type GuideSubmissionsQueryQueryHookResult = ReturnType<typeof useGuideSubmissionsQueryQuery>;
+export type GuideSubmissionsQueryLazyQueryHookResult = ReturnType<typeof useGuideSubmissionsQueryLazyQuery>;
+export type GuideSubmissionsQueryQueryResult = Apollo.QueryResult<GuideSubmissionsQueryQuery, GuideSubmissionsQueryQueryVariables>;
+export function refetchGuideSubmissionsQueryQuery(variables: GuideSubmissionsQueryQueryVariables) {
+      return { query: GuideSubmissionsQueryDocument, variables: variables }
+    }
+export const SubmitGuideDocument = gql`
+    mutation SubmitGuide($input: GuideSubmissionInput!) {
+  payload: submitGuide(submissionInput: $input) {
+    result {
+      wrongQuestions
+      correctQuestions
+      allQuestions
+    }
+    galaxyCredentialsUpdated
+  }
+}
+    `;
+export type SubmitGuideMutationFn = Apollo.MutationFunction<SubmitGuideMutation, SubmitGuideMutationVariables>;
+
+/**
+ * __useSubmitGuideMutation__
+ *
+ * To run a mutation, you first call `useSubmitGuideMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSubmitGuideMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [submitGuideMutation, { data, loading, error }] = useSubmitGuideMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useSubmitGuideMutation(baseOptions?: Apollo.MutationHookOptions<SubmitGuideMutation, SubmitGuideMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SubmitGuideMutation, SubmitGuideMutationVariables>(SubmitGuideDocument, options);
+      }
+export type SubmitGuideMutationHookResult = ReturnType<typeof useSubmitGuideMutation>;
+export type SubmitGuideMutationResult = Apollo.MutationResult<SubmitGuideMutation>;
+export type SubmitGuideMutationOptions = Apollo.BaseMutationOptions<SubmitGuideMutation, SubmitGuideMutationVariables>;
 export const UpsertGuideDocument = gql`
     mutation UpsertGuide($spaceId: String!, $guideInput: GuideInput!) {
   payload: upsertGuide(spaceId: $spaceId, guideInput: $guideInput) {
@@ -5584,105 +5844,6 @@ export function useDeleteGuideMutation(baseOptions?: Apollo.MutationHookOptions<
 export type DeleteGuideMutationHookResult = ReturnType<typeof useDeleteGuideMutation>;
 export type DeleteGuideMutationResult = Apollo.MutationResult<DeleteGuideMutation>;
 export type DeleteGuideMutationOptions = Apollo.BaseMutationOptions<DeleteGuideMutation, DeleteGuideMutationVariables>;
-export const GuideSubmissionsQueryDocument = gql`
-    query GuideSubmissionsQuery($spaceId: String!, $guideUuid: String!, $filters: GuideSubmissionFiltersInput!) {
-  guideSubmissions(spaceId: $spaceId, guideUuid: $guideUuid, filters: $filters) {
-    id
-    createdAt
-    createdBy
-    createdByUsername
-    guideId
-    guideUuid
-    result {
-      correctQuestions
-      wrongQuestions
-      allQuestions
-    }
-    steps {
-      itemResponses {
-        type
-        userInput
-        uuid
-      }
-      uuid
-    }
-    spaceId
-    uuid
-    correctQuestionsCount
-  }
-}
-    `;
-
-/**
- * __useGuideSubmissionsQueryQuery__
- *
- * To run a query within a React component, call `useGuideSubmissionsQueryQuery` and pass it any options that fit your needs.
- * When your component renders, `useGuideSubmissionsQueryQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGuideSubmissionsQueryQuery({
- *   variables: {
- *      spaceId: // value for 'spaceId'
- *      guideUuid: // value for 'guideUuid'
- *      filters: // value for 'filters'
- *   },
- * });
- */
-export function useGuideSubmissionsQueryQuery(baseOptions: Apollo.QueryHookOptions<GuideSubmissionsQueryQuery, GuideSubmissionsQueryQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GuideSubmissionsQueryQuery, GuideSubmissionsQueryQueryVariables>(GuideSubmissionsQueryDocument, options);
-      }
-export function useGuideSubmissionsQueryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GuideSubmissionsQueryQuery, GuideSubmissionsQueryQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GuideSubmissionsQueryQuery, GuideSubmissionsQueryQueryVariables>(GuideSubmissionsQueryDocument, options);
-        }
-export type GuideSubmissionsQueryQueryHookResult = ReturnType<typeof useGuideSubmissionsQueryQuery>;
-export type GuideSubmissionsQueryLazyQueryHookResult = ReturnType<typeof useGuideSubmissionsQueryLazyQuery>;
-export type GuideSubmissionsQueryQueryResult = Apollo.QueryResult<GuideSubmissionsQueryQuery, GuideSubmissionsQueryQueryVariables>;
-export function refetchGuideSubmissionsQueryQuery(variables: GuideSubmissionsQueryQueryVariables) {
-      return { query: GuideSubmissionsQueryDocument, variables: variables }
-    }
-export const SubmitGuideDocument = gql`
-    mutation SubmitGuide($input: GuideSubmissionInput!) {
-  payload: submitGuide(submissionInput: $input) {
-    result {
-      wrongQuestions
-      correctQuestions
-      allQuestions
-    }
-    galaxyCredentialsUpdated
-  }
-}
-    `;
-export type SubmitGuideMutationFn = Apollo.MutationFunction<SubmitGuideMutation, SubmitGuideMutationVariables>;
-
-/**
- * __useSubmitGuideMutation__
- *
- * To run a mutation, you first call `useSubmitGuideMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useSubmitGuideMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [submitGuideMutation, { data, loading, error }] = useSubmitGuideMutation({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useSubmitGuideMutation(baseOptions?: Apollo.MutationHookOptions<SubmitGuideMutation, SubmitGuideMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<SubmitGuideMutation, SubmitGuideMutationVariables>(SubmitGuideDocument, options);
-      }
-export type SubmitGuideMutationHookResult = ReturnType<typeof useSubmitGuideMutation>;
-export type SubmitGuideMutationResult = Apollo.MutationResult<SubmitGuideMutation>;
-export type SubmitGuideMutationOptions = Apollo.BaseMutationOptions<SubmitGuideMutation, SubmitGuideMutationVariables>;
 export const GuidesQueryDocument = gql`
     query GuidesQuery($space: String!) {
   guides(spaceId: $space) {

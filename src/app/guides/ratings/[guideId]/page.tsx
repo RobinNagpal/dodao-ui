@@ -2,7 +2,7 @@
 
 import withSpace from '@/app/withSpace';
 import PageWrapper from '@/components/core/page/PageWrapper';
-import GuideSubmissionsTable from '@/components/guides/Submissions/GuideSubmissionsTable';
+import GuideRatingsTable from '@/components/guides/Ratings/GuideRatingsTable';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import Link from 'next/link';
 import React from 'react';
@@ -17,7 +17,7 @@ function GuideSubmissionsPage(props: { space: SpaceWithIntegrationsFragment; par
         </Link>
       </div>
       <div className="mt-4">
-        <GuideSubmissionsTable space={props.space} guideId={props.params.guideId} />
+        <GuideRatingsTable space={props.space} guideId={props.params.guideId} />
       </div>
     </PageWrapper>
   );

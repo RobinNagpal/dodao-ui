@@ -207,6 +207,15 @@ input CompletionAIInput {
   temperature: Float
 }
 
+type ConsolidatedGuideRating {
+  avgRating: Float!
+  endRatingFeedbackCount: Int!
+  negativeFeedbackCount: Int!
+  negativeRatingDistribution: RatingDistribution!
+  positiveFeedbackCount: Int!
+  positiveRatingDistribution: RatingDistribution!
+}
+
 input CourseBasicInfoInput {
   courseAdmins: [String!]!
   courseFailContent: String
@@ -955,6 +964,7 @@ type Query {
   byte(byteId: String!, includeDraft: Boolean, spaceId: String!): Byte!
   byteSocialShare(byteId: String!, spaceId: String!): ByteSocialShare
   bytes(spaceId: String!): [Byte!]!
+  consolidatedGuideRating(guideUuid: String!, spaceId: String!): ConsolidatedGuideRating!
   courses(spaceId: String!): [GitCourse!]!
   gitCourse(courseKey: String!, spaceId: String!): GitCourse!
   gitCourseIntegrations(key: String!, spaceId: String!): CourseIntegrations
@@ -968,6 +978,7 @@ type Query {
   guides(spaceId: String!): [Guide!]!
   rawGitCourse(key: String!, spaceId: String!): RawGitCourse!
   rawGitCourses(spaceId: String!): [RawGitCourse!]!
+  route53Records: [Route53Record!]!
   simulation(simulationId: String!, spaceId: String!): Simulation!
   simulations(spaceId: String!): [Simulation!]!
   space(domain: String, id: String): Space
@@ -975,6 +986,7 @@ type Query {
   spaces: [Space!]
   timeline(spaceId: String!, timelineId: String!): Timeline!
   timelines(spaceId: String!): [Timeline!]!
+  vercelDomainRecords: [VercelDomain!]!
 }
 
 type QuestionChoice {
@@ -987,11 +999,24 @@ input QuestionChoiceInput {
   key: String!
 }
 
+type RatingDistribution {
+  content: Float!
+  questions: Float!
+  ux: Float!
+}
+
 type RawGitCourse {
   courseKey: String!
   courseRepoUrl: String!
   publishStatus: String!
   weight: Int!
+}
+
+type Route53Record {
+  name: String
+  records: [String]
+  ttl: Int
+  type: String
 }
 
 input SendEmailInput {
@@ -1372,4 +1397,15 @@ input UserInputInput {
   required: Boolean
   type: String!
   uuid: String!
+}
+
+type VercelDomain {
+  apexName: String!
+  createdAt: Int
+  gitBranch: String
+  name: String!
+  projectId: String!
+  redirect: String
+  updatedAt: Int
+  verified: Boolean!
 }

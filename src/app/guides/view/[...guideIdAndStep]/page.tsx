@@ -35,6 +35,7 @@ const GuideView = ({ params, space }: { params: { guideIdAndStep: string[] }; sp
   const threeDotItems = [
     { label: 'Edit', key: 'edit' },
     { label: 'Submissions', key: 'submissions' },
+    { label: 'Ratings', key: 'ratings' },
     { label: 'Delete', key: 'delete' },
   ];
   const router = useRouter();
@@ -67,6 +68,8 @@ const GuideView = ({ params, space }: { params: { guideIdAndStep: string[] }; sp
                     onSelect={async (key) => {
                       if (key === 'submissions') {
                         router.push(`/guides/submissions/${guideId}`);
+                      } else if (key === 'ratings') {
+                        router.push(`/guides/ratings/${guideId}`);
                       } else if (key === 'delete') {
                         setShowDeleteModal(true);
                       } else {
