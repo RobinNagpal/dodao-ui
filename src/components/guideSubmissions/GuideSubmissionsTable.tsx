@@ -14,7 +14,10 @@ import moment from 'moment';
 import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
 
-const AgGridWrapper = styled.div``;
+const AgGridWrapper = styled.div`
+  width: 100%;
+`;
+
 export interface GuideSubmissionsTableProps {
   space: SpaceWithIntegrationsFragment;
   guideId: string;
@@ -22,6 +25,7 @@ export interface GuideSubmissionsTableProps {
 
 const DownloadWrapper = styled.div`
   color: var(--text-color);
+  height: 30px;
 `;
 
 export default function GuideSubmissionsTable(props: GuideSubmissionsTableProps) {
@@ -114,88 +118,90 @@ export default function GuideSubmissionsTable(props: GuideSubmissionsTableProps)
   };
 
   return (
-    <AgGridWrapper
-      className="ag-theme-alpine flex-grow h-max text-xs"
-      style={{
-        minHeight: 'calc(100vh - 200px)',
-        height: '500px',
-        width: '100%',
-      }}
-    >
+    <div className="w-full">
       <DownloadWrapper className="w-full flex justify-end mb-4">
-        <IconButton iconName={IconTypes.ArrowDownTrayIcon} disabled={true} loading={csvDownloading} size="large" onClick={() => downloadCSV()} />
+        <IconButton iconName={IconTypes.ArrowDownTrayIcon} loading={csvDownloading} size="large" onClick={() => downloadCSV()} />
       </DownloadWrapper>
-      <AgGridReact
-        onFilterOpened={onFilterOpened}
-        onFilterChanged={onFilterChanged}
-        onFilterModified={onFilterModified}
-        gridOptions={gridOptions}
-        columnDefs={[
-          { headerName: 'ID', field: 'id', width: 50, cellStyle: { fontSize: '12px' } },
-          {
-            headerName: 'Created At',
-            field: 'createdAt',
+      <AgGridWrapper
+        className="ag-theme-alpine flex-grow h-max text-xs"
+        style={{
+          minHeight: 'calc(100vh - 200px)',
+          height: '500px',
+          width: '100%',
+        }}
+      >
+        <AgGridReact
+          onFilterOpened={onFilterOpened}
+          onFilterChanged={onFilterChanged}
+          onFilterModified={onFilterModified}
+          gridOptions={gridOptions}
+          columnDefs={[
+            { headerName: 'ID', field: 'id', width: 50, cellStyle: { fontSize: '12px' } },
+            {
+              headerName: 'Created At',
+              field: 'createdAt',
 
-            filter: 'agDateColumnFilter',
-            filterParams: {
-              buttons: ['apply', 'cancel'],
-              closeOnApply: true,
-              filterOptions: ['equals', 'lessThan', 'greaterThan'],
-              maxNumConditions: 1,
-            },
+              filter: 'agDateColumnFilter',
+              filterParams: {
+                buttons: ['apply', 'cancel'],
+                closeOnApply: true,
+                filterOptions: ['equals', 'lessThan', 'greaterThan'],
+                maxNumConditions: 1,
+              },
 
-            cellRenderer: (data: any) => {
-              return moment(data.value).format('MM/DD/YYYY HH:mm');
+              cellRenderer: (data: any) => {
+                return moment(data.value).format('MM/DD/YYYY HH:mm');
+              },
+              width: 80,
+              cellStyle: { fontSize: '12px' },
             },
-            width: 80,
-            cellStyle: { fontSize: '12px' },
-          },
-          {
-            headerName: 'Created By',
-            field: 'createdBy',
-            filter: 'agTextColumnFilter',
-            filterParams: {
-              buttons: ['apply', 'cancel'],
-              closeOnApply: true,
-              filterOptions: ['equals'],
-              maxNumConditions: 1,
+            {
+              headerName: 'Created By',
+              field: 'createdBy',
+              filter: 'agTextColumnFilter',
+              filterParams: {
+                buttons: ['apply', 'cancel'],
+                closeOnApply: true,
+                filterOptions: ['equals'],
+                maxNumConditions: 1,
+              },
+              width: 160,
+              cellStyle: { fontSize: '12px' },
             },
-            width: 160,
-            cellStyle: { fontSize: '12px' },
-          },
-          {
-            headerName: 'Correct Questions',
-            field: 'correctQuestionsCount',
-            filter: 'agNumberColumnFilter',
-            filterParams: {
-              buttons: ['apply', 'cancel'],
-              closeOnApply: true,
-              filterOptions: ['equals', 'lessThan', 'greaterThan'],
-              maxNumConditions: 1,
+            {
+              headerName: 'Correct Questions',
+              field: 'correctQuestionsCount',
+              filter: 'agNumberColumnFilter',
+              filterParams: {
+                buttons: ['apply', 'cancel'],
+                closeOnApply: true,
+                filterOptions: ['equals', 'lessThan', 'greaterThan'],
+                maxNumConditions: 1,
+              },
+              width: 50,
+              wrapText: true, // <-- HERE
+              autoHeight: true, // <-- & HERE
+              wrapHeaderText: true,
+              cellStyle: { fontSize: '12px' },
             },
-            width: 50,
-            wrapText: true, // <-- HERE
-            autoHeight: true, // <-- & HERE
-            wrapHeaderText: true,
-            cellStyle: { fontSize: '12px' },
-          },
-          {
-            headerName: 'Responses',
-            field: 'userResponses',
-            filter: 'agTextColumnFilter',
-            filterParams: {
-              buttons: ['apply', 'cancel'],
-              closeOnApply: true,
-              filterOptions: ['equals'],
-              maxNumConditions: 1,
+            {
+              headerName: 'Responses',
+              field: 'userResponses',
+              filter: 'agTextColumnFilter',
+              filterParams: {
+                buttons: ['apply', 'cancel'],
+                closeOnApply: true,
+                filterOptions: ['equals'],
+                maxNumConditions: 1,
+              },
+              wrapText: true, // <-- HERE
+              autoHeight: true, // <-- & HERE
+              cellStyle: { fontSize: '12px' },
             },
-            wrapText: true, // <-- HERE
-            autoHeight: true, // <-- & HERE
-            cellStyle: { fontSize: '12px' },
-          },
-        ]}
-        rowData={rowData}
-      />
-    </AgGridWrapper>
+          ]}
+          rowData={rowData}
+        />
+      </AgGridWrapper>
+    </div>
   );
 }
