@@ -105,6 +105,7 @@ export default function GuideRatingsTable(props: GuideRatingsTableProps) {
 
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28'];
 
+  const averageRating = consolidatedRatingsResponse?.consolidatedGuideRating?.avgRating?.toFixed(2);
   return (
     <div className="w-full">
       {guideRatings && (
@@ -119,7 +120,7 @@ export default function GuideRatingsTable(props: GuideRatingsTableProps) {
                       {consolidatedRatingsResponse?.consolidatedGuideRating?.endRatingFeedbackCount || 0} Ratings Submitted
                     </dt>
                     <dd className="order-first text-3xl font-semibold tracking-tight text-gray-900 sm:text-5xl">
-                      {consolidatedRatingsResponse?.consolidatedGuideRating?.avgRating?.toFixed(2) || 'N/A'}
+                      {averageRating ? `${averageRating} / 5` : 'N/A'}
                     </dd>
                   </div>
                 </dl>
