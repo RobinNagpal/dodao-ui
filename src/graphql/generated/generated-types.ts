@@ -1415,7 +1415,7 @@ export interface Query {
   byte: Byte;
   byteSocialShare?: Maybe<ByteSocialShare>;
   bytes: Array<Byte>;
-  consolidatedGuideRating: ConsolidatedGuideRating;
+  consolidatedGuideRating?: Maybe<ConsolidatedGuideRating>;
   courses: Array<GitCourse>;
   gitCourse: GitCourse;
   gitCourseIntegrations?: Maybe<CourseIntegrations>;
@@ -2516,7 +2516,7 @@ export type ConsolidatedGuideRatingQueryVariables = Exact<{
 }>;
 
 
-export type ConsolidatedGuideRatingQuery = { __typename?: 'Query', consolidatedGuideRating: { __typename?: 'ConsolidatedGuideRating', avgRating: number, endRatingFeedbackCount: number, positiveFeedbackCount: number, negativeFeedbackCount: number, positiveRatingDistribution: { __typename?: 'RatingDistribution', content: number, questions: number, ux: number }, negativeRatingDistribution: { __typename?: 'RatingDistribution', content: number, questions: number, ux: number } } };
+export type ConsolidatedGuideRatingQuery = { __typename?: 'Query', consolidatedGuideRating?: { __typename?: 'ConsolidatedGuideRating', avgRating: number, endRatingFeedbackCount: number, positiveFeedbackCount: number, negativeFeedbackCount: number, positiveRatingDistribution: { __typename?: 'RatingDistribution', content: number, questions: number, ux: number }, negativeRatingDistribution: { __typename?: 'RatingDistribution', content: number, questions: number, ux: number } } | null };
 
 export type GuideSubmissionsQueryQueryVariables = Exact<{
   spaceId: Scalars['String'];

@@ -964,7 +964,7 @@ type Query {
   byte(byteId: String!, includeDraft: Boolean, spaceId: String!): Byte!
   byteSocialShare(byteId: String!, spaceId: String!): ByteSocialShare
   bytes(spaceId: String!): [Byte!]!
-  consolidatedGuideRating(guideUuid: String!, spaceId: String!): ConsolidatedGuideRating!
+  consolidatedGuideRating(guideUuid: String!, spaceId: String!): ConsolidatedGuideRating
   courses(spaceId: String!): [GitCourse!]!
   gitCourse(courseKey: String!, spaceId: String!): GitCourse!
   gitCourseIntegrations(key: String!, spaceId: String!): CourseIntegrations
