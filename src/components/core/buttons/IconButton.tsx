@@ -2,8 +2,12 @@
 import Button from '@/components/core/buttons/Button';
 import { IconTypes } from '@/components/core/icons/IconTypes';
 import RobotIconSolid from '@/components/core/icons/RobotIconSolid';
-import { PencilSquareIcon } from '@heroicons/react/24/outline';
-import { ArrowSmallDownIcon, ArrowSmallUpIcon, DocumentPlusIcon, TrashIcon } from '@heroicons/react/24/solid';
+import PencilSquareIcon from '@heroicons/react/24/outline/PencilSquareIcon';
+import ArrowSmallDownIcon from '@heroicons/react/24/solid/ArrowSmallDownIcon';
+import ArrowDownTrayIcon from '@heroicons/react/24/outline/ArrowDownTrayIcon';
+import ArrowSmallUpIcon from '@heroicons/react/24/solid/ArrowSmallUpIcon';
+import DocumentPlusIcon from '@heroicons/react/24/solid/DocumentPlusIcon';
+import TrashIcon from '@heroicons/react/24/solid/TrashIcon';
 import styled from 'styled-components';
 
 // Define component's props using TypeScript interfaces
@@ -54,6 +58,8 @@ function IconButton({
         return <ArrowSmallDownIcon width="20" height="20" />;
       case IconTypes.GuideAddIcon:
         return <DocumentPlusIcon width="20" height="20" />;
+      case IconTypes.ArrowDownTrayIcon:
+        return <ArrowDownTrayIcon width="20" height="20" />;
       case IconTypes.RobotIconSolid:
         return <RobotIconSolid />;
       default:

@@ -1,7 +1,9 @@
+import IconButton from '@/components/core/buttons/IconButton';
+import { IconTypes } from '@/components/core/icons/IconTypes';
 import SpinnerWithText from '@/components/core/loaders/SpinnerWithText';
+import { useNotificationContext } from '@/contexts/NotificationContext';
 import { SpaceWithIntegrationsFragment, useGuideSubmissionsQueryQuery } from '@/graphql/generated/generated-types';
 import { DODAO_ACCESS_TOKEN_KEY } from '@/types/deprecated/models/enums';
-import ArrowDownTrayIcon from '@heroicons/react/24/outline/ArrowDownTrayIcon';
 import { GridOptions, GridSizeChangedEvent } from 'ag-grid-community';
 import { FilterChangedEvent, FilterModifiedEvent, FilterOpenedEvent } from 'ag-grid-community/dist/lib/events';
 import 'ag-grid-community/styles/ag-grid.css';
@@ -9,7 +11,7 @@ import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { AgGridReact } from 'ag-grid-react';
 import axios from 'axios';
 import moment from 'moment';
-import { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
 
 const AgGridWrapper = styled.div``;
@@ -22,30 +24,40 @@ const DownloadWrapper = styled.div`
   color: var(--text-color);
 `;
 
-const DownloadIcon = styled(ArrowDownTrayIcon)`
-  cursor: pointer;
-`;
-
 export default function GuideSubmissionsTable(props: GuideSubmissionsTableProps) {
-  const downloadCSV = async () => {
-    const response = await axios.get(process.env.V2_API_SERVER_URL?.replace('/graphql', '') + '/download-guide-submissions-csv', {
-      params: {
-        spaceId: props.space.id,
-        guideUuid: props.guideId,
-      },
-      responseType: 'blob',
-      headers: {
-        'dodao-auth-token': localStorage.getItem(DODAO_ACCESS_TOKEN_KEY) || '',
-      },
-    });
+  const [csvDownloading, setCsvDownloading] = useState(false);
 
-    const url = window.URL.createObjectURL(response.data);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'guide_submissions.csv';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+  const { showNotification } = useNotificationContext();
+  const downloadCSV = async () => {
+    try {
+      setCsvDownloading(true);
+      const response = await axios.get(process.env.V2_API_SERVER_URL?.replace('/graphql', '') + '/download-guide-submissions-csv-new', {
+        params: {
+          spaceId: props.space.id,
+          guideUuid: props.guideId,
+        },
+        responseType: 'blob',
+        headers: {
+          'dodao-auth-token': localStorage.getItem(DODAO_ACCESS_TOKEN_KEY) || '',
+        },
+      });
+
+      const url = window.URL.createObjectURL(response.data);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'guide_submissions.csv';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    } catch (error) {
+      console.error('Error downloading CSV:', error);
+      showNotification({
+        type: 'error',
+        message: 'Failed to download CSV.',
+      });
+    } finally {
+      setCsvDownloading(false);
+    }
   };
   const { data, loading } = useGuideSubmissionsQueryQuery({
     variables: {
@@ -111,7 +123,7 @@ export default function GuideSubmissionsTable(props: GuideSubmissionsTableProps)
       }}
     >
       <DownloadWrapper className="w-full flex justify-end mb-4">
-        <DownloadIcon height={25} width={25} onClick={() => downloadCSV()} />
+        <IconButton iconName={IconTypes.ArrowDownTrayIcon} loading={csvDownloading} size="large" onClick={() => downloadCSV()} />
       </DownloadWrapper>
       <AgGridReact
         onFilterOpened={onFilterOpened}
