@@ -31,7 +31,7 @@ export default function GuideSubmissionsTable(props: GuideSubmissionsTableProps)
   const downloadCSV = async () => {
     try {
       setCsvDownloading(true);
-      const response = await axios.get(process.env.V2_API_SERVER_URL?.replace('/graphql', '') + '/download-guide-submissions-csv-new', {
+      const response = await axios.get(process.env.V2_API_SERVER_URL?.replace('/graphql', '') + '/download-guide-submissions-csv', {
         params: {
           spaceId: props.space.id,
           guideUuid: props.guideId,
