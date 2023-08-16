@@ -4,8 +4,8 @@ import withSpace from '@/app/withSpace';
 import Block from '@/components/app/Block';
 import RowLoading from '@/components/core/loaders/RowLoading';
 import PageWrapper from '@/components/core/page/PageWrapper';
-import CourseNavigation from '@/components/courses/Edit/CourseNavigation';
 import AddNewCourseContentModal from '@/components/courses/Edit/AddNewCourseContentModal';
+import CourseNavigationNew from '@/components/courses/Edit/CourseNavigationNew';
 import BasicCourseConfigurations from '@/components/courses/View/BasicCourseConfigurations';
 import CourseDetailsRightSection, { ItemTypes } from '@/components/courses/View/CourseDetailsRightSection';
 import { useCourseSubmission } from '@/components/courses/View/useCourseSubmission';
@@ -96,7 +96,7 @@ const CourseView = ({ params, space }: { params: { courseInfo: string[] }; space
           </div>
           <div className="flex flex-col md:flex-row">
             <StyledNavWrapper className="my-4 relative overflow-scroll">
-              <CourseNavigation
+              <CourseNavigationNew
                 course={course}
                 isCourseSubmissionScreen={isCourseSubmissionScreen}
                 space={space}

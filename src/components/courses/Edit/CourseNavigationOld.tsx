@@ -279,7 +279,7 @@ function getTreeData(course: CourseDetailsFragment, submissionHelper: CourseSubm
   return treeNodes;
 }
 
-const CourseComponent: React.FC<CourseNavigationProps> = ({
+const CourseNavigationOld: React.FC<CourseNavigationProps> = ({
   course,
   showAddModal,
   topicKey,
@@ -323,4 +323,4 @@ const CourseComponent: React.FC<CourseNavigationProps> = ({
   );
 };
 
-export default CourseComponent;
+export default CourseNavigationOld;
