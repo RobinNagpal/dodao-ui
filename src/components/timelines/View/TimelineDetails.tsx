@@ -41,7 +41,12 @@ const Timeline = ({ timeline }: TimelineProps) => {
       <ul role="list" className="space-y-6">
         {timeline.events.map((event, i) => {
           const eventSummary = marked.parse(event.summary, { renderer });
-          const timeAgo = moment(event.date).local().startOf('seconds').fromNow();
+          const currentDate = moment().local();
+          const elevenMonthsAgo = currentDate.clone().subtract(11, 'months');
+
+          const timeAgo = moment(event.date).isBefore(elevenMonthsAgo)
+            ? moment(event.date).local().format('YYYY/MM/DD')
+            : moment(event.date).local().startOf('seconds').fromNow();
 
           return (
             <li key={i} className="relative flex gap-x-4 items-center">
