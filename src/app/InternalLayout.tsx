@@ -1,4 +1,5 @@
 'use client';
+import ErrorPage from '@/components/app/ErrorPage';
 import LoginModal from '@/components/auth/LoginModal';
 import FullPageLoader from '@/components/core/loaders/FullPageLoading';
 import Notification from '@/components/core/notify/Notification';
@@ -14,13 +15,13 @@ import { LoginModalProvider } from '@/contexts/LoginModalContext';
 import { NotificationProvider, useNotificationContext } from '@/contexts/NotificationContext';
 import { SpaceProvider, useSpace } from '@/contexts/SpaceContext';
 import Web3ReactProviderWrapper from '@/contexts/Web3ReactContext';
-import { useExtendedSpaceByDomainQuery } from '@/graphql/generated/generated-types';
+import { ExtendedSpaceByDomainQuery, useExtendedSpaceByDomainQuery } from '@/graphql/generated/generated-types';
 import { Session } from '@/types/auth/Session';
 import { UserIdKey } from '@/types/auth/User';
 import { Themes } from '@/types/deprecated/models/enums';
 import { getAuthenticatedApolloClient } from '@/utils/apolloClient';
 import { setDoDAOTokenInLocalStorage } from '@/utils/auth/setDoDAOTokenInLocalStorage';
-import { ApolloProvider } from '@apollo/client';
+import { ApolloError, ApolloProvider } from '@apollo/client';
 import { SessionProvider } from 'next-auth/react';
 import { useEffect, useMemo } from 'react';
 import 'src/app/globals.scss';
@@ -83,10 +84,25 @@ const StyledMain = styled.main`
   min-height: 100vh;
 `;
 
+function BasePage(props: { data?: ExtendedSpaceByDomainQuery; error?: ApolloError; children: React.ReactNode }) {
+  if (props.data?.space?.id) {
+    return (
+      <LoginModalProvider>
+        <LoginModal />
+        <TopNav />
+        <StyledMain>{props.children}</StyledMain>
+      </LoginModalProvider>
+    );
+  } else if (props.error?.clientErrors || props.error?.graphQLErrors || props.error?.networkError) {
+    return <ErrorPage />;
+  }
+  return <FullPageLoader />;
+}
+
 function ChildLayout({ children, session }: InternalLayoutProps) {
   const origin = typeof window !== 'undefined' && window.location.hostname ? window.location.hostname : '';
   const client = useMemo(() => getAuthenticatedApolloClient(session), [session]);
-  const { data } = useExtendedSpaceByDomainQuery({
+  const { data, error } = useExtendedSpaceByDomainQuery({
     client,
     variables: { domain: origin },
     errorPolicy: 'all',
@@ -116,15 +132,9 @@ function ChildLayout({ children, session }: InternalLayoutProps) {
       <ApolloProvider client={client}>
         <SessionProvider session={session}>
           <ThemeComponent />
-          {data?.space?.id ? (
-            <LoginModalProvider>
-              <LoginModal />
-              <TopNav />
-              <StyledMain>{children}</StyledMain>
-            </LoginModalProvider>
-          ) : (
-            <FullPageLoader />
-          )}
+          <BasePage data={data} error={error}>
+            {children}
+          </BasePage>
         </SessionProvider>
         <NotificationWrapper />
       </ApolloProvider>
