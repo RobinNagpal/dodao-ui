@@ -191,29 +191,31 @@ export default function CourseNavigationNew({
                 <>{getReadings(course.key, submissionHelper, chapter, chapter.readings, itemKey || '')}</>
                 <>{getSummaries(course.key, submissionHelper, chapter, chapter.summaries, itemKey || '')}</>
                 <>{getExplanations(course.key, submissionHelper, chapter, chapter.explanations, itemKey || '')}</>
-                <li key={chapter.key + '_questions'} className="relative flex gap-x-4">
-                  <Link
-                    key={chapter.key + '_questions'}
-                    className={`flex items-center ${itemType === 'questions' ? 'underline' : ''}`}
-                    href={`/courses/view/${course.key}/${chapter.key}/questions/0`}
-                  >
-                    <div className={'-bottom-6 absolute left-0 top-0 flex w-6 justify-center'}>
-                      <div className="w-px bg-gray-200" />
-                    </div>
-                    <>
-                      <div className="relative flex h-6 w-6 flex-none items-center justify-center">
-                        {allQuestionsComplete ? (
-                          <StyledCheckCircleIcon className="h-6 w-6" aria-hidden="true" />
-                        ) : (
-                          <div className="h-1.5 w-1.5 rounded-full bg-gray-100 ring-1 ring-gray-300" />
-                        )}
+                {chapter.questions.length > 0 && (
+                  <li key={chapter.key + '_questions'} className="relative flex gap-x-4">
+                    <Link
+                      key={chapter.key + '_questions'}
+                      className={`flex items-center ${itemType === 'questions' ? 'underline' : ''}`}
+                      href={`/courses/view/${course.key}/${chapter.key}/questions/0`}
+                    >
+                      <div className={'-bottom-6 absolute left-0 top-0 flex w-6 justify-center'}>
+                        <div className="w-px bg-gray-200" />
                       </div>
-                      <p className="ml-2 flex-auto py-0.5 text-xs leading-5">
-                        <span className="font-medium">Questions</span>
-                      </p>
-                    </>
-                  </Link>
-                </li>
+                      <>
+                        <div className="relative flex h-6 w-6 flex-none items-center justify-center">
+                          {allQuestionsComplete ? (
+                            <StyledCheckCircleIcon className="h-6 w-6" aria-hidden="true" />
+                          ) : (
+                            <div className="h-1.5 w-1.5 rounded-full bg-gray-100 ring-1 ring-gray-300" />
+                          )}
+                        </div>
+                        <p className="ml-2 flex-auto py-0.5 text-xs leading-5">
+                          <span className="font-medium">Questions</span>
+                        </p>
+                      </>
+                    </Link>
+                  </li>
+                )}
                 <li key={chapter.key + '_questions'} className="relative flex gap-x-4">
                   <Link
                     key={chapter.key + '_questions'}
@@ -242,6 +244,13 @@ export default function CourseNavigationNew({
           </ul>
         );
       })}
+      <Link
+        key={course.key + '_course_submission'}
+        href={`/courses/view/${course.key}/submission`}
+        className={`mt-4 ml-4 flex items-center ${isCourseSubmissionScreen ? 'underline' : ''}`}
+      >
+        <div>Course Submission</div>
+      </Link>
     </div>
   );
 }
