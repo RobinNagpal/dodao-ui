@@ -1,3 +1,5 @@
+import Button from '@/components/core/buttons/Button';
+import AddIcon from '@/components/core/icons/AddIcon';
 import { ItemTypes } from '@/components/courses/View/CourseDetailsRightSection';
 import { CourseSubmissionHelper, QuestionStatus, TopicItemStatus, TopicStatus } from '@/components/courses/View/useCourseSubmission';
 import { CourseHelper } from '@/components/courses/View/useViewCourse';
@@ -9,26 +11,11 @@ import {
   CourseTopicFragment,
   Space,
 } from '@/graphql/generated/generated-types';
-import { FaceFrownIcon, FaceSmileIcon, FireIcon, HandThumbUpIcon, HeartIcon, XMarkIcon } from '@heroicons/react/20/solid';
 import { CheckCircleIcon } from '@heroicons/react/24/solid';
 import classNames from 'classnames';
 import Link from 'next/link';
-import React, { Fragment, useState } from 'react';
+import React, { Fragment } from 'react';
 import styled from 'styled-components';
-
-const activity = [
-  { id: 1, type: 'created', person: { name: 'Chelsea Hagon' }, date: '7d ago', dateTime: '2023-01-23T10:32' },
-  { id: 2, type: 'edited', person: { name: 'Chelsea Hagon' }, date: '6d ago', dateTime: '2023-01-23T11:03' },
-  { id: 6, type: 'paid', person: { name: 'Alex Curren' }, date: '1d ago', dateTime: '2023-01-24T09:20' },
-];
-const moods = [
-  { name: 'Excited', value: 'excited', icon: FireIcon, iconColor: 'text-white', bgColor: 'bg-red-500' },
-  { name: 'Loved', value: 'loved', icon: HeartIcon, iconColor: 'text-white', bgColor: 'bg-pink-400' },
-  { name: 'Happy', value: 'happy', icon: FaceSmileIcon, iconColor: 'text-white', bgColor: 'bg-green-400' },
-  { name: 'Sad', value: 'sad', icon: FaceFrownIcon, iconColor: 'text-white', bgColor: 'bg-yellow-400' },
-  { name: 'Thumbsy', value: 'thumbsy', icon: HandThumbUpIcon, iconColor: 'text-white', bgColor: 'bg-blue-500' },
-  { name: 'I feel nothing', value: null, icon: XMarkIcon, iconColor: 'text-gray-400', bgColor: 'bg-transparent' },
-];
 
 function getReadings(
   courseKey: string,
@@ -166,10 +153,14 @@ export default function CourseNavigationNew({
   isCourseSubmissionScreen,
   isCourseAdmin,
 }: CourseNavigationProps) {
-  const [selected, setSelected] = useState(moods[5]);
-
   return (
     <div className="p-4 bg-skin-header-bg rounded-l-lg border-skin-border h-full w-full text-sm">
+      {isCourseAdmin && (
+        <Button primary variant="contained" className="w-full mb-4" onClick={showAddModal}>
+          <AddIcon /> Add
+        </Button>
+      )}
+
       {course.topics.map((chapter, topicIdx) => {
         const topicSubmission = submissionHelper.getTopicSubmission(chapter.key);
         const allQuestionsComplete =

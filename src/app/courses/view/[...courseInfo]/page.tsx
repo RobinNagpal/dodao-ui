@@ -21,6 +21,7 @@ import styled from 'styled-components';
 
 const StyledNavWrapper = styled.div`
   max-width: 350px;
+  min-width: 300px;
   overflow-y: auto;
 
   height: calc(65vh);
