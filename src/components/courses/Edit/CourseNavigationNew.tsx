@@ -161,7 +161,7 @@ export default function CourseNavigationNew({
         </Button>
       )}
 
-      {course.topics.map((chapter, topicIdx) => {
+      {course.topics.map((chapter) => {
         const topicSubmission = submissionHelper.getTopicSubmission(chapter.key);
         const allQuestionsComplete =
           Object.keys(topicSubmission?.questions || {}).length === chapter.questions.length &&
@@ -185,7 +185,6 @@ export default function CourseNavigationNew({
                 {chapter.questions.length > 0 && (
                   <li key={chapter.key + '_questions'} className="relative flex gap-x-4">
                     <Link
-                      key={chapter.key + '_questions'}
                       className={`flex items-center ${itemType === 'questions' ? 'underline' : ''}`}
                       href={`/courses/view/${course.key}/${chapter.key}/questions/0`}
                     >
@@ -207,9 +206,8 @@ export default function CourseNavigationNew({
                     </Link>
                   </li>
                 )}
-                <li key={chapter.key + '_questions'} className="relative flex gap-x-4">
+                <li key={chapter.key + '_submission'} className="relative flex gap-x-4">
                   <Link
-                    key={chapter.key + '_questions'}
                     className={`flex items-center ${itemType === 'submission' ? 'underline' : ''}`}
                     href={`/courses/view/${course.key}/${chapter.key}/submission`}
                   >

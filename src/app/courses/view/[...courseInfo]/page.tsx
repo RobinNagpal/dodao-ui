@@ -2,6 +2,9 @@
 
 import withSpace from '@/app/withSpace';
 import Block from '@/components/app/Block';
+import DeleteCourseSubmissionModal from '@/components/app/Modal/Course/DeleteCourseSubmissionModal';
+import IconButton from '@/components/core/buttons/IconButton';
+import { IconTypes } from '@/components/core/icons/IconTypes';
 import RowLoading from '@/components/core/loaders/RowLoading';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import AddNewCourseContentModal from '@/components/courses/Edit/AddNewCourseContentModal';
@@ -10,7 +13,7 @@ import BasicCourseConfigurations from '@/components/courses/View/BasicCourseConf
 import CourseDetailsRightSection, { ItemTypes } from '@/components/courses/View/CourseDetailsRightSection';
 import { useCourseSubmission } from '@/components/courses/View/useCourseSubmission';
 import useViewCourse from '@/components/courses/View/useViewCourse';
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsFragment, useDeleteGitCourseSubmissionMutation } from '@/graphql/generated/generated-types';
 import { Session } from '@/types/auth/Session';
 import { isAdmin } from '@/utils/auth/isAdmin';
 import { isSuperAdmin } from '@/utils/auth/superAdmins';
@@ -50,6 +53,11 @@ const StyledRightContent = styled.div`
   }
 `;
 
+const DeleteButton = styled(IconButton)`
+  background-color: red;
+  border-color: white;
+`;
+
 const CourseView = ({ params, space }: { params: { courseInfo: string[] }; space: SpaceWithIntegrationsFragment }) => {
   const { data: session } = useSession();
   const { courseInfo } = params;
@@ -64,10 +72,14 @@ const CourseView = ({ params, space }: { params: { courseInfo: string[] }; space
 
   const itemKey = Array.isArray(courseInfo) && courseInfo.length > 3 ? courseInfo[3] : undefined;
 
+  const [showDeleteSubmissionModal, setShowDeleteSubmissionModal] = useState(false);
+
   const [modalCourseNewItemOpen, setModalCourseNewItemOpen] = useState(false);
 
   const courseHelper = useViewCourse(space, courseKey);
   const submissionHelper = useCourseSubmission(space, courseKey);
+
+  const [deleteGitCourseSubmissionMutation] = useDeleteGitCourseSubmissionMutation();
 
   useEffect(() => {
     if (session) {
@@ -93,7 +105,10 @@ const CourseView = ({ params, space }: { params: { courseInfo: string[] }; space
             <Link href={`/courses/view/${courseKey}`} className="text-xl">
               <h3>{course.title}</h3>
             </Link>
-            <BasicCourseConfigurations space={space} courseKey={courseKey} />
+            <div>
+              {submissionHelper.courseSubmission && <DeleteButton iconName={IconTypes.Trash} onClick={() => setShowDeleteSubmissionModal(true)} />}
+              <BasicCourseConfigurations space={space} courseKey={courseKey} />
+            </div>
           </div>
           <div className="flex flex-col md:flex-row">
             <StyledNavWrapper className="my-4 relative overflow-scroll">
@@ -142,6 +157,22 @@ const CourseView = ({ params, space }: { params: { courseInfo: string[] }; space
           space={space}
           courseHelper={courseHelper}
           submissionHelper={submissionHelper}
+        />
+      )}
+      {showDeleteSubmissionModal && (
+        <DeleteCourseSubmissionModal
+          open={showDeleteSubmissionModal}
+          onClose={() => setShowDeleteSubmissionModal(false)}
+          onDelete={async () => {
+            await deleteGitCourseSubmissionMutation({
+              variables: {
+                spaceId: space.id,
+                courseKey: courseKey,
+              },
+            });
+
+            window.location.reload();
+          }}
         />
       )}
     </PageWrapper>

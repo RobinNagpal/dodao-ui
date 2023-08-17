@@ -844,6 +844,7 @@ type Mutation {
   createSpace(spaceInput: UpsertSpaceInput!): Space!
   createSummaryOfContent(input: String!): OpenAITextResponse!
   deleteAndPullCourseRepo(courseKey: String!, spaceId: String!): GitCourse!
+  deleteGitCourseSubmission(courseKey: String!, spaceId: String!): Boolean!
   deleteGuide(spaceId: String!, uuid: String!): Boolean!
   deleteTopic(spaceId: String!, topicInfo: DeleteTopicInput!): GitCourse!
   deleteTopicExplanation(explanationInfo: DeleteTopicExplanationInput!, spaceId: String!): GitCourse!

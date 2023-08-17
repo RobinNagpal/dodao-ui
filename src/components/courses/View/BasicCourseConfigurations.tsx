@@ -59,7 +59,7 @@ export default function BasicCourseConfigurations({ space, courseKey }: BasicCou
   ];
 
   return isUserASuperAdmin ? (
-    <div className="pull-right float-right mr-2 topnav-domain-navigation-three-dots">
+    <div className="pull-right float-right mr-2 ml-4 pt-1 topnav-domain-navigation-three-dots">
       <EllipsisDropdown items={threeDotItems} onSelect={selectFromThreedotDropdown} />
       {showUpsertRawCourseModal && (
         <UpsertRawCourseModal
