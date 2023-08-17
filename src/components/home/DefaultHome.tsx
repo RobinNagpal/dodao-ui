@@ -29,7 +29,7 @@ function DefaultHome({ space }: { space: SpaceWithIntegrationsFragment }) {
             <div className="pt-[150px]">
               <Grid2Cols>
                 <div className="flex flex-col justify-center pr-[38px] pl-[20px] max-w-md sm:px-[24px]">
-                  <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8">
+                  <div className="mx-auto max-w-7xl px-6 py-24 sm:py-24 lg:px-8">
                     <h2
                       dangerouslySetInnerHTML={{ __html: $t(`academy.${space.id}.academyHeading`) }}
                       className="text-3xl font-bold tracking-tight sm:text-4xl"
@@ -42,16 +42,6 @@ function DefaultHome({ space }: { space: SpaceWithIntegrationsFragment }) {
                       >
                         Get started <span aria-hidden="true">→</span>
                       </GetStartedButton>*/}
-
-                      <GetStartedButton
-                        href="#"
-                        className="rounded-md  px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                      >
-                        Get started
-                      </GetStartedButton>
-                      <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
-                        Learn more <span aria-hidden="true">→</span>
-                      </a>
                     </div>
                   </div>
                 </div>
@@ -61,6 +51,14 @@ function DefaultHome({ space }: { space: SpaceWithIntegrationsFragment }) {
                 </div>*/}
                 <Lottie animationData={DeveloperLottie} loop={true} className="max-h-96" />
               </Grid2Cols>
+            </div>
+            <div className="flex align-center justify-center mb-24">
+              <GetStartedButton
+                href="#"
+                className="rounded-md  px-36 py-4 text-2xl font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+              >
+                Get started <span aria-hidden="true">→</span>
+              </GetStartedButton>
             </div>
             <div className="px-[36px] sm:px-[24px]">
               <Grid2Cols>
