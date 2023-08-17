@@ -103,3 +103,7 @@ mutation InitializeGitCourseSubmission($spaceId: String!, $courseKey: String!) {
     ...CourseSubmission
   }
 }
+
+mutation DeleteGitCourseSubmission($spaceId: String!, $courseKey: String!) {
+  payload: deleteGitCourseSubmission(spaceId: $spaceId, courseKey: $courseKey)
+}

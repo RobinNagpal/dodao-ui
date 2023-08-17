@@ -899,6 +899,7 @@ export interface Mutation {
   createSpace: Space;
   createSummaryOfContent: OpenAiTextResponse;
   deleteAndPullCourseRepo: GitCourse;
+  deleteGitCourseSubmission: Scalars['Boolean'];
   deleteGuide: Scalars['Boolean'];
   deleteTopic: GitCourse;
   deleteTopicExplanation: GitCourse;
@@ -1030,6 +1031,12 @@ export interface MutationCreateSummaryOfContentArgs {
 
 
 export interface MutationDeleteAndPullCourseRepoArgs {
+  courseKey: Scalars['String'];
+  spaceId: Scalars['String'];
+}
+
+
+export interface MutationDeleteGitCourseSubmissionArgs {
   courseKey: Scalars['String'];
   spaceId: Scalars['String'];
 }
@@ -2198,6 +2205,14 @@ export type InitializeGitCourseSubmissionMutationVariables = Exact<{
 
 
 export type InitializeGitCourseSubmissionMutation = { __typename?: 'Mutation', payload: { __typename?: 'GitCourseSubmission', uuid: string, courseKey: string, createdAt: string, createdBy: string, galaxyCredentialsUpdated?: boolean | null, isLatestSubmission?: boolean | null, questionsAttempted?: number | null, questionsCorrect?: number | null, questionsIncorrect?: number | null, questionsSkipped?: number | null, spaceId: string, status: string, updatedAt: any, topicSubmissions: Array<{ __typename?: 'GitCourseTopicSubmission', uuid: string, courseKey: string, courseSubmissionUuid: string, createdAt: any, createdBy: string, isLatestSubmission: boolean, questionsAttempted?: number | null, questionsCorrect?: number | null, questionsIncorrect?: number | null, questionsSkipped?: number | null, spaceId: string, status: string, topicKey: string, updatedAt: any, correctAnswers?: Array<{ __typename?: 'GitCourseTopicCorrectAnswer', uuid: string, answerKeys: Array<string> }> | null, submission?: { __typename?: 'GitCourseTopicSubmissionJson', uuid: string, topicKey: string, status: string, explanations?: Array<{ __typename?: 'GitCourseExplanationsSubmission', key: string, status: string }> | null, questions?: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, status: string, answers: Array<string> }> | null, readings?: Array<{ __typename?: 'GitCourseReadingsSubmission', uuid: string, status: string, questions?: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, answers: Array<string>, status: string }> | null }> | null, summaries?: Array<{ __typename?: 'GitCourseSummariesSubmission', key: string, status: string }> | null } | null }> } };
+
+export type DeleteGitCourseSubmissionMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+  courseKey: Scalars['String'];
+}>;
+
+
+export type DeleteGitCourseSubmissionMutation = { __typename?: 'Mutation', payload: boolean };
 
 export type CourseQuestionFragment = { __typename?: 'GitCourseQuestion', uuid: string, type: string, content: string, answerKeys: Array<string>, hint: string, explanation: string, choices: Array<{ __typename?: 'GitCourseQuestionChoice', content: string, key: string }> };
 
@@ -4203,6 +4218,38 @@ export function useInitializeGitCourseSubmissionMutation(baseOptions?: Apollo.Mu
 export type InitializeGitCourseSubmissionMutationHookResult = ReturnType<typeof useInitializeGitCourseSubmissionMutation>;
 export type InitializeGitCourseSubmissionMutationResult = Apollo.MutationResult<InitializeGitCourseSubmissionMutation>;
 export type InitializeGitCourseSubmissionMutationOptions = Apollo.BaseMutationOptions<InitializeGitCourseSubmissionMutation, InitializeGitCourseSubmissionMutationVariables>;
+export const DeleteGitCourseSubmissionDocument = gql`
+    mutation DeleteGitCourseSubmission($spaceId: String!, $courseKey: String!) {
+  payload: deleteGitCourseSubmission(spaceId: $spaceId, courseKey: $courseKey)
+}
+    `;
+export type DeleteGitCourseSubmissionMutationFn = Apollo.MutationFunction<DeleteGitCourseSubmissionMutation, DeleteGitCourseSubmissionMutationVariables>;
+
+/**
+ * __useDeleteGitCourseSubmissionMutation__
+ *
+ * To run a mutation, you first call `useDeleteGitCourseSubmissionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteGitCourseSubmissionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteGitCourseSubmissionMutation, { data, loading, error }] = useDeleteGitCourseSubmissionMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      courseKey: // value for 'courseKey'
+ *   },
+ * });
+ */
+export function useDeleteGitCourseSubmissionMutation(baseOptions?: Apollo.MutationHookOptions<DeleteGitCourseSubmissionMutation, DeleteGitCourseSubmissionMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteGitCourseSubmissionMutation, DeleteGitCourseSubmissionMutationVariables>(DeleteGitCourseSubmissionDocument, options);
+      }
+export type DeleteGitCourseSubmissionMutationHookResult = ReturnType<typeof useDeleteGitCourseSubmissionMutation>;
+export type DeleteGitCourseSubmissionMutationResult = Apollo.MutationResult<DeleteGitCourseSubmissionMutation>;
+export type DeleteGitCourseSubmissionMutationOptions = Apollo.BaseMutationOptions<DeleteGitCourseSubmissionMutation, DeleteGitCourseSubmissionMutationVariables>;
 export const UpsertGitCourseDocument = gql`
     mutation UpsertGitCourse($spaceId: String!, $gitCourseInput: GitCourseInput!) {
   payload: upsertGitCourse(spaceId: $spaceId, gitCourseInput: $gitCourseInput) {
