@@ -11,8 +11,12 @@ import { FeatureItem } from '@/types/features/spaceFeatures';
 import { getSortedFeaturesArray } from '@/utils/features';
 import Lottie from 'lottie-react';
 import React from 'react';
+import styled from 'styled-components';
 import DeveloperLottie from './developer-lottie.json';
 
+const GetStartedButton = styled.a`
+  background-color: var(--primary-color);
+`;
 function DefaultHome({ space }: { space: SpaceWithIntegrationsFragment }) {
   const { $t } = useI18();
   const sortedSpaceFeatures: FeatureItem[] = getSortedFeaturesArray(space.id);
@@ -25,9 +29,36 @@ function DefaultHome({ space }: { space: SpaceWithIntegrationsFragment }) {
             <div className="pt-[150px]">
               <Grid2Cols>
                 <div className="flex flex-col justify-center pr-[38px] pl-[20px] max-w-md sm:px-[24px]">
+                  <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8">
+                    <h2
+                      dangerouslySetInnerHTML={{ __html: $t(`academy.${space.id}.academyHeading`) }}
+                      className="text-3xl font-bold tracking-tight sm:text-4xl"
+                    />
+                    <div className="pt-2 text-sm sm:text-base" dangerouslySetInnerHTML={{ __html: $t(`academy.${space.id}.academyText`) }} />
+                    <div className="mt-10 flex items-center gap-x-6">
+                      {/*<GetStartedButton
+                        href="#"
+                        className="rounded-md  px-24 py-3.5 text-base font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                      >
+                        Get started <span aria-hidden="true">→</span>
+                      </GetStartedButton>*/}
+
+                      <GetStartedButton
+                        href="#"
+                        className="rounded-md  px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                      >
+                        Get started
+                      </GetStartedButton>
+                      <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
+                        Learn more <span aria-hidden="true">→</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                {/*<div className="flex flex-col justify-center pr-[38px] pl-[20px] max-w-md sm:px-[24px]">
                   <h1 dangerouslySetInnerHTML={{ __html: $t(`academy.${space.id}.academyHeading`) }} className="text-3xl sm:text-4xl" />
                   <div className="pt-2 text-sm sm:text-base" dangerouslySetInnerHTML={{ __html: $t(`academy.${space.id}.academyText`) }} />
-                </div>
+                </div>*/}
                 <Lottie animationData={DeveloperLottie} loop={true} className="max-h-96" />
               </Grid2Cols>
             </div>
