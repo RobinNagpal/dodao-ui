@@ -631,7 +631,7 @@ export function Pricing() {
         <div className="-mx-4 mt-16 grid max-w-2xl grid-cols-1 gap-y-10 sm:mx-auto lg:-mx-8 lg:max-w-none lg:grid-cols-3 xl:mx-0 xl:gap-x-8">
           <Plan
             name="Standard"
-            price="$10,000 per year"
+            price="$350 per month"
             description="Kickstart your customer education journey economically."
             href="/contact"
             cta="Get Started with Standard"
@@ -648,7 +648,7 @@ export function Pricing() {
           <Plan
             featured
             name="Pro"
-            price="$15,000 per year"
+            price="$600 per month"
             description="Amplify engagement with advanced features and support."
             href="/contact"
             cta="Upgrade to pro"
