@@ -11,10 +11,11 @@ import {
   CourseTopicFragment,
   Space,
 } from '@/graphql/generated/generated-types';
-import { CheckCircleIcon } from '@heroicons/react/24/solid';
+import CheckCircleIcon from '@heroicons/react/24/solid/CheckCircleIcon';
+import CheckIcon from '@heroicons/react/24/solid/CheckIcon';
 import classNames from 'classnames';
 import Link from 'next/link';
-import React, { Fragment } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 function getReadings(
@@ -76,7 +77,7 @@ function getExplanations(
           <>
             <div className="relative flex h-6 w-6 flex-none items-center justify-center">
               {isComplete ? (
-                <StyledCheckCircleIcon className="h-6 w-6 text-indigo-600" aria-hidden="true" />
+                <StyledCheckCircleIcon className="h-6 w-6" aria-hidden="true" />
               ) : (
                 <div className="h-1.5 w-1.5 rounded-full bg-gray-100 ring-1 ring-gray-300" />
               )}
@@ -143,6 +144,7 @@ const StyledCheckCircleIcon = styled(CheckCircleIcon)`
   border: 0;
   color: var(--primary-color);
 `;
+
 export default function CourseNavigationNew({
   course,
   showAddModal,
@@ -176,6 +178,7 @@ export default function CourseNavigationNew({
               href={`/courses/view/${course.key}/${chapter.key}`}
             >
               <div>{chapter.title}</div>
+              {topicSubmission?.status === TopicStatus.Submitted && <CheckIcon className="ml-1 h-5 w-5 text-green-500" aria-hidden="true" />}
             </Link>
             {topicKey === chapter.key && (
               <>
