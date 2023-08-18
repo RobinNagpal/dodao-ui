@@ -99,40 +99,6 @@ function getExplanations(
     );
   });
 }
-
-function getSummaries(
-  courseKey: string,
-  submissionHelper: CourseSubmissionHelper,
-  topic: CourseTopicFragment,
-  summaries: CourseSummaryFragment[],
-  itemKey: string
-) {
-  return summaries.map((summary, i) => {
-    const isActive = itemKey === summary.key;
-    const isComplete = submissionHelper.getTopicSubmission(topic.key)?.summaries?.[summary.key]?.status === TopicItemStatus.Completed;
-    return (
-      <li key={summary.key} className="relative flex gap-x-4">
-        <Link key={summary.key} className={`flex ${isActive ? 'underline' : ''}`} href={`/courses/view/${courseKey}/${topic.key}/summaries/${summary.key}`}>
-          <div className={classNames('-bottom-6', 'absolute left-0 top-0 flex w-6 justify-center')}>
-            <div className="w-px bg-gray-200" />
-          </div>
-          <>
-            <div className="relative flex h-6 w-6 flex-none items-center justify-center">
-              {isComplete ? (
-                <StyledCheckCircleIcon className="h-5 w-5" aria-hidden="true" />
-              ) : (
-                <div className="h-1.5 w-1.5 rounded-full bg-gray-100 ring-1 ring-gray-300" />
-              )}
-            </div>
-            <p className="ml-2 flex-auto py-0.5 text-xs leading-5">
-              <span className={`font-medium ${isActive ? 'underline' : ''}`}>{summary.title}</span>
-            </p>
-          </>
-        </Link>
-      </li>
-    );
-  });
-}
 interface CourseNavigationProps {
   course: CourseDetailsFragment;
   space: Space;
@@ -184,7 +150,6 @@ export default function CourseNavigationNew({
             {topicKey === chapter.key && (
               <>
                 <>{getReadings(course.key, submissionHelper, chapter, chapter.readings, itemKey || '')}</>
-                <>{getSummaries(course.key, submissionHelper, chapter, chapter.summaries, itemKey || '')}</>
                 <>{getExplanations(course.key, submissionHelper, chapter, chapter.explanations, itemKey || '')}</>
                 {chapter.questions.length > 0 && (
                   <li key={chapter.key + '_questions'} className="relative flex gap-x-4">

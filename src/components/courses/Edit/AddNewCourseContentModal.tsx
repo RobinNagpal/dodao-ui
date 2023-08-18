@@ -3,8 +3,6 @@ import Button from '@/components/core/buttons/Button';
 import FullScreenModal from '@/components/core/modals/FullScreenModal';
 import EditCourseExplanation from '@/components/courses/Edit/Items/EditCourseExplanation';
 import EditCourseQuestion from '@/components/courses/Edit/Items/EditCourseQuestion';
-import EditCourseReading from '@/components/courses/Edit/Items/EditCourseReading';
-import EditCourseSummary from '@/components/courses/Edit/Items/EditCourseSummary';
 import EditTopic from '@/components/courses/Edit/Items/EditTopic';
 import { CourseSubmissionHelper } from '@/components/courses/View/useCourseSubmission';
 import { CourseHelper } from '@/components/courses/View/useViewCourse';
@@ -170,14 +168,8 @@ const AddNewCourseContentModal: React.FC<ModalCourseNewItemProps> = ({ course, s
             <Button primary onClick={() => selectAction(AddActions.Explanation)} className="w-full mb-4">
               Add Explanation
             </Button>
-            <Button primary onClick={() => selectAction(AddActions.Reading)} className="w-full mb-4">
-              Add Video
-            </Button>
             <Button primary onClick={() => selectAction(AddActions.Question)} className="w-full mb-4">
               Add Question
-            </Button>
-            <Button primary onClick={() => selectAction(AddActions.Summary)} className="w-full mb-4">
-              Add Summary
             </Button>
             <Button primary onClick={() => selectAction(AddActions.AIQuestions)} className="w-full mb-4">
               Add Questions using AI
@@ -205,13 +197,6 @@ const AddNewCourseContentModal: React.FC<ModalCourseNewItemProps> = ({ course, s
               <EditCourseExplanation course={course} space={space} topicKey={selectedTopicKey!} saveExplanation={addExplanation} cancel={closeModal} />
             )}
 
-            {selectedAction === AddActions.Summary && showAddSection && (
-              <EditCourseSummary course={course} space={space} topicKey={selectedTopicKey!} saveSummary={addSummary} cancel={closeModal} />
-            )}
-
-            {selectedAction === AddActions.Reading && showAddSection && (
-              <EditCourseReading course={course} space={space} topicKey={selectedTopicKey!} saveReading={addReading} cancel={closeModal} />
-            )}
             {selectedAction === AddActions.AIQuestions && showAddSection && (
               <GenerateQuestionsUsingAI
                 onGenerateContent={(questions) => {
