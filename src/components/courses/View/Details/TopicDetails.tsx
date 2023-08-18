@@ -1,3 +1,4 @@
+import DeleteConfirmationModal from '@/components/app/Modal/DeleteConfirmationModal';
 import IconButton from '@/components/core/buttons/IconButton';
 import { IconTypes } from '@/components/core/icons/IconTypes';
 import Button from '@/components/core/buttons/Button';
@@ -130,6 +131,8 @@ const Topic = ({ course, isCourseAdmin, space, topicKey, courseHelper }: TopicPr
     });
   };
 
+  const [showDeleteModal, setShowDeleteModal] = React.useState(false);
+
   return (
     <div className="h-full">
       {!editMode && (
@@ -154,7 +157,7 @@ const Topic = ({ course, isCourseAdmin, space, topicKey, courseHelper }: TopicPr
                     disabled={movingUp || movingDown || currentTopicIndex === course.topics.length - 1}
                     onClick={() => doMove(MoveCourseItemDirection.Down)}
                   />
-                  <IconButton iconName={IconTypes.Trash} removeBorder disabled={deleting} loading={deleting} onClick={doDelete} />
+                  <IconButton iconName={IconTypes.Trash} removeBorder disabled={deleting} loading={deleting} onClick={() => setShowDeleteModal(true)} />
                 </div>
               )}
             </div>
@@ -177,6 +180,9 @@ const Topic = ({ course, isCourseAdmin, space, topicKey, courseHelper }: TopicPr
         <div className="flex flex-col justify-between h-full">
           <EditTopic course={course} space={space} topicKey={topicKey} currentTopic={currentTopic!} saveTopic={save} cancel={cancel} />
         </div>
+      )}
+      {showDeleteModal && (
+        <DeleteConfirmationModal title={'Delete Chapter'} open={showDeleteModal} onClose={() => setShowDeleteModal(false)} onDelete={() => doDelete()} />
       )}
     </div>
   );

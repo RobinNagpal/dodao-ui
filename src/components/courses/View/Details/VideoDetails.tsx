@@ -1,16 +1,7 @@
-import 'prismjs';
-import 'prismjs/components/prism-css';
-import 'prismjs/components/prism-graphql';
-import 'prismjs/components/prism-javascript';
-import 'prismjs/components/prism-json';
-import 'prismjs/components/prism-markup-templating';
-import 'prismjs/components/prism-rust';
-import 'prismjs/components/prism-solidity';
-import 'prismjs/components/prism-toml';
-import 'prismjs/components/prism-yaml';
+import DeleteConfirmationModal from '@/components/app/Modal/DeleteConfirmationModal';
+import Button from '@/components/core/buttons/Button';
 import IconButton from '@/components/core/buttons/IconButton';
 import { IconTypes } from '@/components/core/icons/IconTypes';
-import Button from '@/components/core/buttons/Button';
 import EditCourseReading from '@/components/courses/Edit/Items/EditCourseReading';
 import { useDeleteCourseItem } from '@/components/courses/Edit/useDeleteCourseItem';
 import { useEditCourseDetails } from '@/components/courses/Edit/useEditCourseDetails';
@@ -22,7 +13,6 @@ import { useLoginModalContext } from '@/contexts/LoginModalContext';
 import {
   CourseDetailsFragment,
   CourseReadingFragment,
-  CourseSummaryFragment,
   CourseTopicFragment,
   DeleteTopicVideoInput,
   MoveTopicVideoInput,
@@ -34,7 +24,17 @@ import { getMarkedRenderer } from '@/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
-import React from 'react';
+import 'prismjs';
+import 'prismjs/components/prism-css';
+import 'prismjs/components/prism-graphql';
+import 'prismjs/components/prism-javascript';
+import 'prismjs/components/prism-json';
+import 'prismjs/components/prism-markup-templating';
+import 'prismjs/components/prism-rust';
+import 'prismjs/components/prism-solidity';
+import 'prismjs/components/prism-toml';
+import 'prismjs/components/prism-yaml';
+import React, { useState } from 'react';
 
 // Add more detailed types for props if you have them available
 interface CourseVideoProps {
@@ -178,6 +178,9 @@ const CourseVideo: React.FC<CourseVideoProps> = ({ course, isCourseAdmin, space,
       });
     }
   }
+
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
   return (
     <div className="h-full">
       {/* Converting v-if directive to conditional rendering in React */}
@@ -204,7 +207,7 @@ const CourseVideo: React.FC<CourseVideoProps> = ({ course, isCourseAdmin, space,
                       disabled={movingUp || movingDown || currentReadingIndex === currentTopic?.readings.length - 1}
                       onClick={() => doMove(MoveCourseItemDirection.Down)}
                     />
-                    <IconButton iconName={IconTypes.Trash} removeBorder disabled={deleting} loading={deleting} onClick={doDelete} />
+                    <IconButton iconName={IconTypes.Trash} removeBorder disabled={deleting} loading={deleting} onClick={() => setShowDeleteModal(true)} />
                   </div>
                 )}
               </div>
@@ -237,6 +240,9 @@ const CourseVideo: React.FC<CourseVideoProps> = ({ course, isCourseAdmin, space,
         <div className="flex flex-col justify-between h-full">
           <EditCourseReading space={space} course={course} topicKey={topicKey} currentReading={currentReading} saveReading={save} cancel={cancel} />
         </div>
+      )}
+      {showDeleteModal && (
+        <DeleteConfirmationModal title={'Delete Video'} open={showDeleteModal} onClose={() => setShowDeleteModal(false)} onDelete={() => doDelete()} />
       )}
     </div>
   );

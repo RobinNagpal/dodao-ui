@@ -1,3 +1,4 @@
+import DeleteConfirmationModal from '@/components/app/Modal/DeleteConfirmationModal';
 import Button from '@/components/core/buttons/Button';
 import IconButton from '@/components/core/buttons/IconButton';
 import { IconTypes } from '@/components/core/icons/IconTypes';
@@ -33,7 +34,7 @@ import 'prismjs/components/prism-rust';
 import 'prismjs/components/prism-solidity';
 import 'prismjs/components/prism-toml';
 import 'prismjs/components/prism-yaml';
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Plyr from 'plyr';
 import 'plyr/dist/plyr.css';
@@ -180,6 +181,8 @@ const ExplanationDetails: FC<CourseExplanationProps> = ({ course, isCourseAdmin,
     Array.from(document.querySelectorAll('.play-js-player')).map((p: any) => new Plyr(p));
   });
 
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
   return (
     <div className="h-full">
       {!editMode && currentExplanation && (
@@ -204,7 +207,7 @@ const ExplanationDetails: FC<CourseExplanationProps> = ({ course, isCourseAdmin,
                     disabled={movingUp || movingDown || currentExplanationIndex === currentTopic?.explanations.length - 1}
                     onClick={() => doMove(MoveCourseItemDirection.Down)}
                   />
-                  <IconButton iconName={IconTypes.Trash} removeBorder disabled={deleting} loading={deleting} onClick={doDelete} />
+                  <IconButton iconName={IconTypes.Trash} removeBorder disabled={deleting} loading={deleting} onClick={() => setShowDeleteModal(true)} />
                 </div>
               )}
             </div>
@@ -242,6 +245,9 @@ const ExplanationDetails: FC<CourseExplanationProps> = ({ course, isCourseAdmin,
             cancel={cancel}
           />
         </div>
+      )}
+      {showDeleteModal && (
+        <DeleteConfirmationModal title={'Delete Explanation'} open={showDeleteModal} onClose={() => setShowDeleteModal(false)} onDelete={() => doDelete()} />
       )}
     </div>
   );

@@ -1,3 +1,4 @@
+import DeleteConfirmationModal from '@/components/app/Modal/DeleteConfirmationModal';
 import IconButton from '@/components/core/buttons/IconButton';
 import Question from '@/components/app/Common/Question';
 import ErrorWithAccentBorder from '@/components/core/errors/ErrorWithAccentBorder';
@@ -73,6 +74,7 @@ export default function QuestionDetails(props: QuestionDetailsProps) {
   const topic = courseHelper.getTopic(topicKey);
 
   const [showQuestionsCompletionWarning, setShowQuestionsCompletionWarning] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   useEffect(() => {
     setShowQuestionsCompletionWarning(nextButtonClicked && !questionResponse?.length);
@@ -207,7 +209,7 @@ export default function QuestionDetails(props: QuestionDetailsProps) {
                     disabled={movingUp || movingDown || questionIndex === topic.questions.length - 1}
                     onClick={() => doMove(MoveCourseItemDirection.Down)}
                   />
-                  <IconButton iconName={IconTypes.Trash} removeBorder disabled={deleting} loading={deleting} onClick={doDelete} />
+                  <IconButton iconName={IconTypes.Trash} removeBorder disabled={deleting} loading={deleting} onClick={() => setShowDeleteModal(true)} />
                 </div>
               )}
             </div>
@@ -273,6 +275,9 @@ export default function QuestionDetails(props: QuestionDetailsProps) {
             </Button>
           </div>
         </div>
+        {showDeleteModal && (
+          <DeleteConfirmationModal title={'Delete Question'} open={showDeleteModal} onClose={() => setShowDeleteModal(false)} onDelete={() => doDelete()} />
+        )}
       </div>
     );
   }

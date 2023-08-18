@@ -11,7 +11,7 @@ import MainContainer from '@/components/main/Container/MainContainer';
 import { CourseFragment, useCoursesQueryQuery } from '@/graphql/generated/generated-types';
 import React from 'react';
 
-function Guide({ space }: SpaceProps) {
+function Courses({ space }: SpaceProps) {
   const { data, loading } = useCoursesQueryQuery({ variables: { spaceId: space.id } });
 
   const loadingData = loading || !space;
@@ -37,4 +37,4 @@ function Guide({ space }: SpaceProps) {
   );
 }
 
-export default withSpace(Guide);
+export default withSpace(Courses);

@@ -1,3 +1,4 @@
+import DeleteConfirmationModal from '@/components/app/Modal/DeleteConfirmationModal';
 import Button from '@/components/core/buttons/Button';
 import IconButton from '@/components/core/buttons/IconButton';
 import { IconTypes } from '@/components/core/icons/IconTypes';
@@ -33,7 +34,7 @@ import 'prismjs/components/prism-rust';
 import 'prismjs/components/prism-solidity';
 import 'prismjs/components/prism-toml';
 import 'prismjs/components/prism-yaml';
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import styled from 'styled-components';
 
 const RightDiv = styled.div`
@@ -161,7 +162,7 @@ const SummaryDetails: FC<CourseSummaryProps> = ({ course, isCourseAdmin, space, 
       });
     }
   }
-
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   return (
     <div className="h-full">
       {!editMode && currentSummary && (
@@ -186,7 +187,7 @@ const SummaryDetails: FC<CourseSummaryProps> = ({ course, isCourseAdmin, space, 
                     disabled={movingUp || movingDown || currentSummaryIndex === currentTopic?.summaries.length - 1}
                     onClick={() => doMove(MoveCourseItemDirection.Down)}
                   />
-                  <IconButton iconName={IconTypes.Trash} removeBorder disabled={deleting} loading={deleting} onClick={doDelete} />
+                  <IconButton iconName={IconTypes.Trash} removeBorder disabled={deleting} loading={deleting} onClick={() => setShowDeleteModal(true)} />
                 </div>
               )}
             </div>
@@ -217,6 +218,9 @@ const SummaryDetails: FC<CourseSummaryProps> = ({ course, isCourseAdmin, space, 
         <div className="flex flex-col justify-between h-full">
           <EditCourseSummary course={course} space={space} topicKey={topicKey} currentSummary={currentSummary} saveSummary={save} cancel={cancel} />
         </div>
+      )}
+      {showDeleteModal && (
+        <DeleteConfirmationModal title={'Delete Summary'} open={showDeleteModal} onClose={() => setShowDeleteModal(false)} onDelete={() => doDelete()} />
       )}
     </div>
   );
