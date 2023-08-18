@@ -242,7 +242,15 @@ const CourseVideo: React.FC<CourseVideoProps> = ({ course, isCourseAdmin, space,
         </div>
       )}
       {showDeleteModal && (
-        <DeleteConfirmationModal title={'Delete Video'} open={showDeleteModal} onClose={() => setShowDeleteModal(false)} onDelete={() => doDelete()} />
+        <DeleteConfirmationModal
+          title={'Delete Video'}
+          open={showDeleteModal}
+          onClose={() => setShowDeleteModal(false)}
+          onDelete={() => {
+            doDelete();
+            setShowDeleteModal(false);
+          }}
+        />
       )}
     </div>
   );

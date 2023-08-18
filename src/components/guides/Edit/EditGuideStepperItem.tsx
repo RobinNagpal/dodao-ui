@@ -2,6 +2,7 @@ import { GeneratedQuestionInterface } from '@/components/ai/questions/GenerateQu
 import AddContentOrQuestionAIModal from '@/components/app/Modal/AI/AddContentOrQuestionAIModal';
 import GenerateContentUsingAIModal from '@/components/app/Modal/AI/GenerateContentUsingAIModal';
 import GenerateQuestionUsingAIModal from '@/components/app/Modal/AI/GenerateQuestionUsingAIModal';
+import DeleteConfirmationModal from '@/components/app/Modal/DeleteConfirmationModal';
 import IconButton from '@/components/core/buttons/IconButton';
 import CreateConnectDiscord from '@/components/app/Common/CreateDiscordConnect';
 import CreateQuestion from '@/components/app/Common/CreateQuestion';
@@ -339,6 +340,7 @@ const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHas
     }) as GuideStepItemFragment[];
     updateStep({ ...step, stepItems });
   }
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   return (
     <div className="w-full p-4 flex flex-col justify-center items-center">
@@ -350,7 +352,7 @@ const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHas
             iconName={IconTypes.Trash}
             removeBorder
             disabled={guide.steps.length === 1}
-            onClick={() => removeStep(step.uuid)}
+            onClick={() => setShowDeleteModal(true)}
           />
           <IconButton className="float-right ml-2" iconName={IconTypes.MoveUp} removeBorder disabled={step.order === 0} onClick={() => moveStepUp(step.uuid)} />
           <IconButton
@@ -466,6 +468,17 @@ const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHas
             setModalGenerateQuestionsUsingAIOpen(false);
           }}
           generatePrompt={(topic: string, numberOfQuestions: number, contents: string) => generateQuestionsPrompt(topic, numberOfQuestions, contents)}
+        />
+      )}
+      {showDeleteModal && (
+        <DeleteConfirmationModal
+          title={'Delete Step'}
+          open={showDeleteModal}
+          onClose={() => setShowDeleteModal(false)}
+          onDelete={() => {
+            removeStep(step.uuid);
+            setShowDeleteModal(false);
+          }}
         />
       )}
     </div>

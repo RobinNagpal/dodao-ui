@@ -276,7 +276,15 @@ export default function QuestionDetails(props: QuestionDetailsProps) {
           </div>
         </div>
         {showDeleteModal && (
-          <DeleteConfirmationModal title={'Delete Question'} open={showDeleteModal} onClose={() => setShowDeleteModal(false)} onDelete={() => doDelete()} />
+          <DeleteConfirmationModal
+            title={'Delete Question'}
+            open={showDeleteModal}
+            onClose={() => setShowDeleteModal(false)}
+            onDelete={() => {
+              doDelete();
+              setShowDeleteModal(false);
+            }}
+          />
         )}
       </div>
     );

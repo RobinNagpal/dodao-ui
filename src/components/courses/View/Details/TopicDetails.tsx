@@ -182,7 +182,15 @@ const Topic = ({ course, isCourseAdmin, space, topicKey, courseHelper }: TopicPr
         </div>
       )}
       {showDeleteModal && (
-        <DeleteConfirmationModal title={'Delete Chapter'} open={showDeleteModal} onClose={() => setShowDeleteModal(false)} onDelete={() => doDelete()} />
+        <DeleteConfirmationModal
+          title={'Delete Chapter'}
+          open={showDeleteModal}
+          onClose={() => setShowDeleteModal(false)}
+          onDelete={() => {
+            doDelete();
+            setShowDeleteModal(false);
+          }}
+        />
       )}
     </div>
   );

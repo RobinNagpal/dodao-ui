@@ -247,7 +247,15 @@ const ExplanationDetails: FC<CourseExplanationProps> = ({ course, isCourseAdmin,
         </div>
       )}
       {showDeleteModal && (
-        <DeleteConfirmationModal title={'Delete Explanation'} open={showDeleteModal} onClose={() => setShowDeleteModal(false)} onDelete={() => doDelete()} />
+        <DeleteConfirmationModal
+          title={'Delete Explanation'}
+          open={showDeleteModal}
+          onClose={() => setShowDeleteModal(false)}
+          onDelete={() => {
+            doDelete();
+            setShowDeleteModal(false);
+          }}
+        />
       )}
     </div>
   );
