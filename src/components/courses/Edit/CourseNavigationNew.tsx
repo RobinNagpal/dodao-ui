@@ -11,12 +11,20 @@ import {
   CourseTopicFragment,
   Space,
 } from '@/graphql/generated/generated-types';
-import CheckCircleIcon from '@heroicons/react/24/solid/CheckCircleIcon';
 import CheckIcon from '@heroicons/react/24/solid/CheckIcon';
 import classNames from 'classnames';
 import Link from 'next/link';
 import React from 'react';
 import styled from 'styled-components';
+
+const StyledCheckCircleIcon = styled(CheckIcon)`
+  background-color: var(--primary-color);
+  border-radius: 50%;
+
+  border: 4px solid var(--primary-color);
+  color: white;
+  font-weight: bold;
+`;
 
 function getReadings(
   courseKey: string,
@@ -39,7 +47,7 @@ function getReadings(
           <>
             <div className="relative flex h-6 w-6 flex-none items-center justify-center">
               {isComplete ? (
-                <StyledCheckCircleIcon className="h-6 w-6 text-indigo-600" aria-hidden="true" />
+                <StyledCheckCircleIcon className="h-5 w-5" aria-hidden="true" />
               ) : (
                 <div className="h-1.5 w-1.5 rounded-full bg-gray-100 ring-1 ring-gray-300" />
               )}
@@ -77,7 +85,7 @@ function getExplanations(
           <>
             <div className="relative flex h-6 w-6 flex-none items-center justify-center">
               {isComplete ? (
-                <StyledCheckCircleIcon className="h-6 w-6" aria-hidden="true" />
+                <StyledCheckCircleIcon className="h-5 w-5" aria-hidden="true" />
               ) : (
                 <div className="h-1.5 w-1.5 rounded-full bg-gray-100 ring-1 ring-gray-300" />
               )}
@@ -111,7 +119,7 @@ function getSummaries(
           <>
             <div className="relative flex h-6 w-6 flex-none items-center justify-center">
               {isComplete ? (
-                <StyledCheckCircleIcon className="h-6 w-6 text-indigo-600" aria-hidden="true" />
+                <StyledCheckCircleIcon className="h-5 w-5" aria-hidden="true" />
               ) : (
                 <div className="h-1.5 w-1.5 rounded-full bg-gray-100 ring-1 ring-gray-300" />
               )}
@@ -137,13 +145,6 @@ interface CourseNavigationProps {
   itemKey?: string;
   isCourseAdmin: boolean;
 }
-
-const StyledCheckCircleIcon = styled(CheckCircleIcon)`
-  background-color: white;
-  border-radius: 50%;
-  border: 0;
-  color: var(--primary-color);
-`;
 
 export default function CourseNavigationNew({
   course,
@@ -197,7 +198,7 @@ export default function CourseNavigationNew({
                       <>
                         <div className="relative flex h-6 w-6 flex-none items-center justify-center">
                           {allQuestionsComplete ? (
-                            <StyledCheckCircleIcon className="h-6 w-6" aria-hidden="true" />
+                            <StyledCheckCircleIcon className="h-5 w-5" aria-hidden="true" />
                           ) : (
                             <div className="h-1.5 w-1.5 rounded-full bg-gray-100 ring-1 ring-gray-300" />
                           )}
@@ -220,7 +221,7 @@ export default function CourseNavigationNew({
                     <>
                       <div className="relative flex h-6 w-6 flex-none items-center justify-center">
                         {topicSubmission?.status === TopicStatus.Submitted ? (
-                          <StyledCheckCircleIcon className="h-6 w-6" aria-hidden="true" />
+                          <StyledCheckCircleIcon className="h-5 w-5" aria-hidden="true" />
                         ) : (
                           <div className="h-1.5 w-1.5 rounded-full bg-gray-100 ring-1 ring-gray-300" />
                         )}

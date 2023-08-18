@@ -1,7 +1,7 @@
 import Button from '@/components/core/buttons/Button';
 import WarningWithAccentBorder from '@/components/core/warnings/WarningWithAccentBorder';
 import { useLoginModalContext } from '@/contexts/LoginModalContext';
-import { CourseDetailsFragment, CourseTopicFragment, Space } from '@/graphql/generated/generated-types';
+import { CourseDetailsFragment, CourseTopicFragment } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
 import { CourseStatus } from '@/types/deprecated/models/course/GitCourseTopicSubmission';
 import { useSession } from 'next-auth/react';
@@ -53,31 +53,6 @@ export default function CourseSubmission(props: CourseViewProps) {
   const courseSubmission = submissionHelper.courseSubmission;
   const { setShowLoginModal } = useLoginModalContext();
 
-  const topicProgress = useMemo(() => {
-    const map: Record<string, { status: TopicStatus; answeredQuestions?: number }> = {};
-    for (let i = 0; i < course.topics.length; i++) {
-      const topic = course.topics[i];
-      const topicSubmissionValue = courseSubmission?.topicSubmissionsMap?.[topic.key];
-      const topicQuestions = topicSubmissionValue?.questions || {};
-      const answeredQuestions = Object.keys(topicQuestions).filter(
-        (key) => topicQuestions[key].status === QuestionStatus.Completed && topicQuestions[key].answers.length > 0
-      ).length;
-      if (!topicSubmissionValue) {
-        map[topic.key] = {
-          answeredQuestions,
-          status: TopicStatus.UnAttempted,
-        };
-      } else {
-        map[topic.key] = {
-          answeredQuestions,
-          status: topicSubmissionValue && submissionHelper.isTopicSubmissionInSubmittedStatus(topic.key) ? TopicStatus.Completed : TopicStatus.InProgress,
-        };
-      }
-    }
-
-    return map;
-  }, [courseSubmission, course, submissionHelper]);
-
   const handleSubmit = async () => {
     if (!session) {
       setShowLoginModal(true);
@@ -98,6 +73,7 @@ export default function CourseSubmission(props: CourseViewProps) {
     );
   // Translate the Vue template into JSX here
 
+  const tempTopicSubmissions = Object.values(courseSubmission?.topicSubmissionsMap || {});
   return (
     <div>
       <div className="flex">
@@ -162,7 +138,9 @@ export default function CourseSubmission(props: CourseViewProps) {
 
       <div>
         <div>
-          <WarningWithAccentBorder warning={'Submit all the chapters to be able to submit the course'} className="my-4" />
+          {(tempTopicSubmissions.length === 0 || tempTopicSubmissions.find((s) => s.status !== TopicStatus.Submitted)) && (
+            <WarningWithAccentBorder warning={'Submit all the chapters to be able to submit the course'} className="my-4" />
+          )}
           <div className="flex flex-between mt-4 flex-1 items-end p-2">
             <div className="flex-1"></div>
 
