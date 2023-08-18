@@ -45,7 +45,7 @@ function DefaultHome({ space }: { space: SpaceWithIntegrationsFragment }) {
             <div className="flex align-center justify-center mb-24">
               <GetStartedButton
                 href={space.id === 'uniswap-eth-1' ? '/courses' : '/guides'}
-                className="rounded-md  px-36 py-4 text-2xl font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                className="rounded-md px-6 py-3 md:px-24 md:py-4 lg:px-36 lg:py-4 text-2xl font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
               >
                 Get started <span aria-hidden="true">→</span>
               </GetStartedButton>
