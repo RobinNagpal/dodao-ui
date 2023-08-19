@@ -34,6 +34,7 @@ import 'prismjs/components/prism-rust';
 import 'prismjs/components/prism-solidity';
 import 'prismjs/components/prism-toml';
 import 'prismjs/components/prism-yaml';
+import { useRouter } from 'next/navigation';
 import React, { FC, useState } from 'react';
 import styled from 'styled-components';
 
@@ -70,6 +71,8 @@ function NextButton(props: {
   const isLastTopic = currentTopicIndex === course.topics.length - 1;
   const hasQuestions = currentTopic.questions.length > 0;
 
+  const router = useRouter();
+
   if (!session) {
     return (
       <Button variant="contained" onClick={() => setShowLoginModal(true)} primary>
@@ -83,42 +86,62 @@ function NextButton(props: {
 
   if (isLastSummary && hasQuestions) {
     return (
-      <Link href={`/courses/view/${course.key}/${currentTopic.key}/questions/${0}`}>
-        <Button variant="contained" primary onClick={() => markSummaryCompleted()}>
-          Evaluation
-          <span className="ml-2 font-bold">&#8594;</span>
-        </Button>
-      </Link>
+      <Button
+        variant="contained"
+        primary
+        onClick={async () => {
+          await markSummaryCompleted();
+          router.push(`/courses/view/${course.key}/${currentTopic.key}/questions/${0}`);
+        }}
+      >
+        Evaluation
+        <span className="ml-2 font-bold">&#8594;</span>
+      </Button>
     );
   }
 
   if (isLastSummary && !isLastTopic) {
     return (
-      <Link href={`/courses/view/${course.key}/${course.topics[currentTopicIndex + 1].key}`}>
-        <Button variant="contained" primary onClick={() => markSummaryCompleted()}>
-          Next Chapter <span className="ml-2 font-bold">&#8594;</span>
-        </Button>
-      </Link>
+      <Button
+        variant="contained"
+        primary
+        onClick={async () => {
+          await markSummaryCompleted();
+          router.push(`/courses/view/${course.key}/${course.topics[currentTopicIndex + 1].key}`);
+        }}
+      >
+        Next Chapter <span className="ml-2 font-bold">&#8594;</span>
+      </Button>
     );
   }
 
   if (isLastSummary && isLastTopic) {
     return (
-      <Link href={`/courses/view/${course.key}/${currentTopic.key}/submit`}>
-        <Button variant="contained" primary onClick={() => markSummaryCompleted()}>
-          Submission <span className="ml-2 font-bold">&#8594;</span>
-        </Button>
-      </Link>
+      <Button
+        variant="contained"
+        primary
+        onClick={async () => {
+          await markSummaryCompleted();
+          router.push(`/courses/view/${course.key}/${currentTopic.key}/submit`);
+        }}
+      >
+        Submission <span className="ml-2 font-bold">&#8594;</span>
+      </Button>
     );
   }
 
   if (!isLastSummary) {
     return (
-      <Link href={`/courses/view/${course.key}/${currentTopic.key}/summaries/${currentTopic.summaries[currentSummaryIndex + 1].key}`}>
-        <Button variant="contained" primary onClick={() => markSummaryCompleted()}>
-          Next <span className="ml-2 font-bold">&#8594;</span>
-        </Button>
-      </Link>
+      <Button
+        variant="contained"
+        primary
+        onClick={async () => {
+          await markSummaryCompleted();
+          router.push(`/courses/view/${course.key}/${currentTopic.key}/summaries/${currentTopic.summaries[currentSummaryIndex + 1].key}`);
+        }}
+      >
+        Next <span className="ml-2 font-bold">&#8594;</span>
+      </Button>
     );
   }
 
