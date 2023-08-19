@@ -26,9 +26,10 @@ export default function VideoWithQuestions({ reading, submissionHelper }: Props)
     if (currentQuestion?.uuid) {
       questionResponses[currentQuestion?.uuid] = [];
     }
-    submissionHelper.saveReadingAnswer((history as any).location?.pathname.split('/')[2], reading?.uuid, currentQuestion?.uuid, {
+    submissionHelper.saveReadingAnswer((history as any).location?.pathname.split('/')[2], reading?.uuid, currentQuestion?.uuid!, {
+      uuid: currentQuestion?.uuid!,
       status: QuestionStatus.Skipped,
-      answers: null,
+      answers: [],
     });
     setCurrentQuestion(null);
     setIsShowLink(false);
@@ -39,7 +40,8 @@ export default function VideoWithQuestions({ reading, submissionHelper }: Props)
 
   const handleAnswer = () => {
     const currentAnswer = questionResponses[currentQuestion?.uuid!];
-    submissionHelper.saveReadingAnswer((history as any).location?.pathname.split('/')[2], reading?.uuid, currentQuestion?.uuid, {
+    submissionHelper.saveReadingAnswer((history as any).location?.pathname.split('/')[2], reading?.uuid, currentQuestion?.uuid!, {
+      uuid: currentQuestion?.uuid!,
       status: QuestionStatus.Completed,
       answers: currentAnswer,
     });
