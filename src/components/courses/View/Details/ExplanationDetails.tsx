@@ -34,6 +34,7 @@ import 'prismjs/components/prism-rust';
 import 'prismjs/components/prism-solidity';
 import 'prismjs/components/prism-toml';
 import 'prismjs/components/prism-yaml';
+import { useRouter } from 'next/navigation';
 import React, { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Plyr from 'plyr';
@@ -64,6 +65,7 @@ function NextButton(props: {
 }) {
   const { data: session } = useSession();
 
+  const router = useRouter();
   const { setShowLoginModal } = useLoginModalContext();
 
   const { course, currentExplanation, currentExplanationIndex, currentTopic, currentTopicIndex } = props;
@@ -128,11 +130,16 @@ function NextButton(props: {
 
   if (!isLastExplanation) {
     return (
-      <Link href={`/courses/view/${course.key}/${currentTopic.key}/explanations/${currentTopic.explanations[currentExplanationIndex + 1].key}`}>
-        <Button variant="contained" primary onClick={() => markExplanationCompleted()}>
-          Next <span className="ml-2 font-bold">&#8594;</span>
-        </Button>
-      </Link>
+      <Button
+        variant="contained"
+        primary
+        onClick={async () => {
+          await markExplanationCompleted();
+          router.push(`/courses/view/${course.key}/${currentTopic.key}/explanations/${currentTopic.explanations[currentExplanationIndex + 1].key}`);
+        }}
+      >
+        Next <span className="ml-2 font-bold">&#8594;</span>
+      </Button>
     );
   }
 
