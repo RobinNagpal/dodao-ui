@@ -7,6 +7,7 @@ import {
   Space,
   TopicCorrectAnswersFragment,
   TopicSubmissionFragment,
+  useGitCourseQueryQuery,
   useGitCourseSubmissionQuery,
   useInitializeGitCourseSubmissionMutation,
   useSubmitGitCourseMutation,
@@ -16,7 +17,8 @@ import {
 import { useI18 } from '@/hooks/useI18';
 import { GitCourseSubmissionModel } from '@/types/deprecated/models/course/GitCourseSubmissionModel';
 import isEqual from 'lodash/isEqual';
-import { useState } from 'react';
+import { useSession } from 'next-auth/react';
+import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 //... Other necessary imports from your original Vue code
@@ -166,17 +168,16 @@ function transformCourseSubmissionResponse(courseSubmissionResponse: CourseSubmi
 
 export interface CourseSubmissionHelper {
   courseSubmission: TempCourseSubmission | undefined;
-  initialize: (course: CourseDetailsFragment) => Promise<void>;
   loadedSubmission?: CourseSubmissionFragment | null;
   getTopic: (topicKey: string) => CourseTopicFragment;
-  markReadingCompleted: Function;
-  saveReadingAnswer: Function;
-  markSummaryCompleted: Function;
-  markExplanationCompleted: Function;
-  saveAnswer: Function;
-  submitCourse: Function;
-  submitCourseTopic: Function;
-  upsertTopicSubmission: Function;
+  markReadingCompleted: (chapterId: string, readingId: string) => Promise<void>;
+  saveReadingAnswer: (chapterId: string, readingId: string, questionUUid: string, questionResponse: CourseQuestionSubmission) => Promise<void>;
+  markSummaryCompleted: (chapterId: string, summaryId: string) => Promise<void>;
+  markExplanationCompleted: (chapterId: string, explanationKey: string) => Promise<void>;
+  saveAnswer: (chapterId: string, questionUUid: string, questionResponse: CourseQuestionSubmission) => Promise<void>;
+  submitCourse: () => Promise<void>;
+  submitCourseTopic: (topicKey: string) => Promise<void>;
+  upsertTopicSubmission: (courseKey: string, tempTopicSubmission: TempTopicSubmission) => Promise<void>;
   isAllReadingsComplete: (topic: CourseTopicFragment) => boolean;
   isAllExplanationsComplete: (topic: CourseTopicFragment) => boolean;
   isAllSummariesComplete: (topic: CourseTopicFragment) => boolean;
@@ -188,12 +189,13 @@ export interface CourseSubmissionHelper {
 }
 
 export const useCourseSubmission = (space: Space, courseKey: string): CourseSubmissionHelper => {
-  const [course, setCourse] = useState<CourseDetailsFragment | undefined>();
   const [courseSubmission, setCourseSubmission] = useState<TempCourseSubmission | undefined>();
+  const { data: session } = useSession();
 
-  const { refetch: fetchSubmission } = useGitCourseSubmissionQuery({
+  const { data: courseResponse } = useGitCourseQueryQuery({ variables: { spaceId: space.id, courseKey: courseKey }, fetchPolicy: 'cache-only' });
+
+  const { data: submissionResponse, loading: loadingSubmission } = useGitCourseSubmissionQuery({
     variables: { courseKey: courseKey, spaceId: space.id },
-    skip: true,
   });
   const { showNotification } = useNotificationContext();
   const { $t } = useI18();
@@ -202,28 +204,45 @@ export const useCourseSubmission = (space: Space, courseKey: string): CourseSubm
   const [submitGitCourseMutation] = useSubmitGitCourseMutation();
   const [initializeGitCourseSubmissionMutation] = useInitializeGitCourseSubmissionMutation();
 
-  const initialize = async (loadedCourse: CourseDetailsFragment) => {
-    setCourse(loadedCourse);
+  const initialize = async () => {
+    const course = courseResponse?.course;
+    if (!course) return;
 
-    const submissionResponse = await fetchSubmission();
-    const loadedSubmission = submissionResponse.data?.payload;
+    if (!submissionResponse || loadingSubmission) return;
 
-    if (!loadedCourse) throw new Error('Course not loaded');
+    if (!session) return;
 
+    if (courseSubmission || loadingSubmission) return;
+
+    const loadedSubmission = submissionResponse?.payload;
+
+    console.log('submissionResponse', submissionResponse);
+    console.log('loadedSubmission', loadedSubmission);
+    console.log('loadingCourseSubmission', loadingSubmission);
     if (loadedSubmission) {
-      const submission = transformCourseSubmissionResponse(loadedSubmission!, loadedCourse);
+      const submission = transformCourseSubmissionResponse(loadedSubmission!, course);
       setCourseSubmission(submission);
     } else {
       try {
-        const initializationResponse = await initializeGitCourseSubmissionMutation({ variables: { courseKey: courseKey, spaceId: space.id } });
+        const initializationResponse = await initializeGitCourseSubmissionMutation({
+          variables: { courseKey: courseKey, spaceId: space.id },
+          updateQueries: {
+            GitCourseSubmission: (prev, { mutationResult }) => {
+              return mutationResult.data!;
+            },
+          },
+        });
         const initialedSubmission = initializationResponse.data?.payload;
-        const submission = transformCourseSubmissionResponse(initialedSubmission!, loadedCourse);
+        const submission = transformCourseSubmissionResponse(initialedSubmission!, course);
         setCourseSubmission(submission);
       } catch {
         showNotification({ type: 'error', message: $t('courses.view.chapterSubmitError') });
       }
     }
   };
+  useEffect(() => {
+    initialize();
+  }, [submissionResponse?.payload, courseResponse?.course, session]);
 
   const isAllReadingsComplete = (topic: CourseTopicFragment) => {
     if (!topic?.readings) return false;
@@ -260,7 +279,7 @@ export const useCourseSubmission = (space: Space, courseKey: string): CourseSubm
   };
 
   function getTopic(topicKey: string): CourseTopicFragment {
-    const topicInfo: CourseTopicFragment | undefined = course?.topics.find((topic) => topicKey === topic.key);
+    const topicInfo: CourseTopicFragment | undefined = courseResponse?.course?.topics.find((topic) => topicKey === topic.key);
 
     if (!topicInfo) throw new Error('No topic found with key :' + topicKey);
     return topicInfo;
@@ -332,12 +351,19 @@ export const useCourseSubmission = (space: Space, courseKey: string): CourseSubm
     }
 
     try {
-      await upsertGitCourseTopicSubmissionMutation({
+      const topicSubmission = await upsertGitCourseTopicSubmissionMutation({
         variables: {
           spaceId: space.id,
           gitCourseTopicSubmission: request,
         },
+        updateQueries: {
+          GitCourseSubmission: (prev, { mutationResult }) => {
+            console.log('mutationResult', mutationResult);
+            return { ...mutationResult.data! };
+          },
+        },
       });
+      setCourseSubmission(transformCourseSubmissionResponse(topicSubmission.data?.payload!, courseResponse?.course!));
     } catch (e) {
       showNotification({ type: 'error', message: $t('notify.somethingWentWrong') });
       throw e;
@@ -345,7 +371,7 @@ export const useCourseSubmission = (space: Space, courseKey: string): CourseSubm
   };
 
   const markSummaryCompleted = async (chapterId: string, summaryId: string) => {
-    const { courseSub, topicSub } = courseAndTopicSubmission(chapterId);
+    const { topicSub } = courseAndTopicSubmission(chapterId);
     const updatedTopicSubmission = {
       ...topicSub,
       summaries: {
@@ -356,18 +382,11 @@ export const useCourseSubmission = (space: Space, courseKey: string): CourseSubm
         },
       },
     };
-    setCourseSubmission({
-      ...courseSub,
-      topicSubmissionsMap: {
-        ...courseSub.topicSubmissionsMap,
-        [chapterId]: updatedTopicSubmission,
-      },
-    });
     await upsertTopicSubmission(courseKey, updatedTopicSubmission);
   };
 
   const markExplanationCompleted = async (chapterId: string, explanationKey: string) => {
-    const { courseSub, topicSub } = courseAndTopicSubmission(chapterId);
+    const { topicSub } = courseAndTopicSubmission(chapterId);
     const updatedTopicSubmission = {
       ...topicSub,
       explanations: {
@@ -378,18 +397,12 @@ export const useCourseSubmission = (space: Space, courseKey: string): CourseSubm
         },
       },
     };
-    setCourseSubmission({
-      ...courseSub,
-      topicSubmissionsMap: {
-        ...courseSub.topicSubmissionsMap,
-        [chapterId]: updatedTopicSubmission,
-      },
-    });
+
     await upsertTopicSubmission(courseKey, updatedTopicSubmission);
   };
 
   const saveReadingAnswer = async (chapterId: string, readingId: string, questionUUid: string, questionResponse: CourseQuestionSubmission) => {
-    const { courseSub, topicSub } = courseAndTopicSubmission(chapterId);
+    const { topicSub } = courseAndTopicSubmission(chapterId);
     const questions: Record<string, CourseQuestionSubmission> = {
       ...topicSub.readings?.[readingId].questions,
       [questionUUid]: {
@@ -412,14 +425,7 @@ export const useCourseSubmission = (space: Space, courseKey: string): CourseSubm
       ...topicSub,
       readings: readings,
     };
-    const topicSubmissionsMap: Record<string, TempTopicSubmission> = {
-      ...courseSub.topicSubmissionsMap,
-      [chapterId]: updatedTopicSubmission,
-    };
-    setCourseSubmission({
-      ...courseSub,
-      topicSubmissionsMap: topicSubmissionsMap,
-    });
+
     await upsertTopicSubmission(courseKey, updatedTopicSubmission);
   };
 
@@ -436,20 +442,12 @@ export const useCourseSubmission = (space: Space, courseKey: string): CourseSubm
       ...topicSub,
       readings: readings,
     };
-    const topicSubmissionsMap: Record<string, TempTopicSubmission> = {
-      ...courseSub.topicSubmissionsMap,
-      [chapterId]: updatedTopicSubmission,
-    };
-    setCourseSubmission({
-      ...courseSub,
-      topicSubmissionsMap: topicSubmissionsMap,
-    });
 
     await upsertTopicSubmission(courseKey, updatedTopicSubmission);
   };
 
   const saveAnswer = async (chapterId: string, questionUUid: string, questionResponse: CourseQuestionSubmission) => {
-    const { courseSub, topicSub } = courseAndTopicSubmission(chapterId);
+    const { topicSub } = courseAndTopicSubmission(chapterId);
     const updatedTopicSubmission = {
       ...topicSub,
       questions: {
@@ -461,13 +459,6 @@ export const useCourseSubmission = (space: Space, courseKey: string): CourseSubm
         },
       },
     };
-    setCourseSubmission({
-      ...courseSub,
-      topicSubmissionsMap: {
-        ...courseSub.topicSubmissionsMap,
-        [chapterId]: updatedTopicSubmission,
-      },
-    });
 
     await upsertTopicSubmission(courseKey, updatedTopicSubmission);
   };
@@ -503,7 +494,6 @@ export const useCourseSubmission = (space: Space, courseKey: string): CourseSubm
       showNotification({ type: 'error', message: $t('courses.view.completeAllQuestionOfChapterToSubmit') });
       return;
     }
-    const topic = getTopic(topicKey);
 
     const topicSubmission = courseSubmission?.topicSubmissionsMap[topicKey];
 
@@ -532,18 +522,15 @@ export const useCourseSubmission = (space: Space, courseKey: string): CourseSubm
           spaceId: space.id,
           gitCourseTopicSubmission: request,
         },
+        updateQueries: {
+          GitCourseSubmission: (prev, { mutationResult }) => {
+            return mutationResult.data!;
+          },
+        },
       });
       const topicSubmitResponse = submitTopicResponse.data?.payload;
       if (topicSubmitResponse) {
-        const tempTopicSubmission = transformTopicSubmissionResponse(topicSubmitResponse);
-
-        setCourseSubmission({
-          ...courseSubmission,
-          topicSubmissionsMap: {
-            ...courseSubmission?.topicSubmissionsMap,
-            [topicSubmitResponse.topicKey]: tempTopicSubmission,
-          },
-        });
+        setCourseSubmission(transformCourseSubmissionResponse(topicSubmitResponse, courseResponse?.course!));
       } else {
         console.error(submitTopicResponse);
         showNotification({ type: 'error', message: $t('notify.somethingWentWrong') });
@@ -579,11 +566,16 @@ export const useCourseSubmission = (space: Space, courseKey: string): CourseSubm
             courseKey: submission.courseKey,
           },
         },
+        updateQueries: {
+          GitCourseSubmission: (prev, { mutationResult }) => {
+            return mutationResult.data!;
+          },
+        },
       });
 
       const submissionResponse = result.data?.payload;
       if (submissionResponse) {
-        setCourseSubmission(transformCourseSubmissionResponse(submissionResponse, course!));
+        setCourseSubmission(transformCourseSubmissionResponse(submissionResponse, courseResponse?.course!));
 
         showNotification({ type: 'success', message: $t('courses.view.courseSubmitSuccess') });
       } else {
@@ -600,7 +592,6 @@ export const useCourseSubmission = (space: Space, courseKey: string): CourseSubm
 
   return {
     courseSubmission,
-    initialize,
     getTopic,
     markReadingCompleted,
     saveReadingAnswer,

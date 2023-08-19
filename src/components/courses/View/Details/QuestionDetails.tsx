@@ -87,7 +87,8 @@ export default function QuestionDetails(props: QuestionDetailsProps) {
       setShowLoginModal(true);
       return;
     }
-    props.submissionHelper.saveAnswer(props.topicKey, currentQuestion?.uuid, {
+    await props.submissionHelper.saveAnswer(props.topicKey, currentQuestion?.uuid, {
+      uuid: currentQuestion?.uuid,
       status: QuestionStatus.Skipped,
       answers: [],
     });
@@ -111,6 +112,7 @@ export default function QuestionDetails(props: QuestionDetailsProps) {
     }
 
     await props.submissionHelper.saveAnswer(props.topicKey, currentQuestion?.uuid, {
+      uuid: currentQuestion?.uuid,
       status: questionResponse.length > 0 ? QuestionStatus.Completed : QuestionStatus.Uncompleted,
       answers: questionResponse,
     });
@@ -125,6 +127,7 @@ export default function QuestionDetails(props: QuestionDetailsProps) {
 
   async function selectAnswer(questionId: string, selectedAnswers: string[]) {
     await props.submissionHelper.saveAnswer(props.topicKey, currentQuestion?.uuid, {
+      uuid: currentQuestion?.uuid,
       status: selectedAnswers?.length > 0 ? QuestionStatus.Completed : QuestionStatus.Uncompleted,
       answers: selectedAnswers,
     });

@@ -34,6 +34,7 @@ import 'prismjs/components/prism-rust';
 import 'prismjs/components/prism-solidity';
 import 'prismjs/components/prism-toml';
 import 'prismjs/components/prism-yaml';
+import { useRouter } from 'next/navigation';
 import React, { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Plyr from 'plyr';
@@ -64,9 +65,10 @@ function NextButton(props: {
 }) {
   const { data: session } = useSession();
 
+  const router = useRouter();
   const { setShowLoginModal } = useLoginModalContext();
 
-  const { course, currentExplanation, currentExplanationIndex, currentTopic, currentTopicIndex } = props;
+  const { course, currentExplanationIndex, currentTopic, currentTopicIndex } = props;
 
   const isLastExplanation = currentExplanationIndex === currentTopic.explanations.length - 1;
   const isLastTopic = currentTopicIndex === course.topics.length - 1;
@@ -86,53 +88,78 @@ function NextButton(props: {
 
   if (isLastExplanation && hasSummaries) {
     return (
-      <Link href={`/courses/view/${course.key}/${currentTopic.key}/summaries/${currentTopic.summaries[0].key}`}>
-        <Button variant="contained" primary onClick={() => markExplanationCompleted()}>
-          Summary
-          <span className="ml-2 font-bold">&#8594;</span>
-        </Button>
-      </Link>
+      <Button
+        variant="contained"
+        primary
+        onClick={async () => {
+          await markExplanationCompleted();
+          router.push(`/courses/view/${course.key}/${currentTopic.key}/summaries/${currentTopic.summaries[0].key}`);
+        }}
+      >
+        Summary
+        <span className="ml-2 font-bold">&#8594;</span>
+      </Button>
     );
   }
 
   if (isLastExplanation && hasQuestions) {
     return (
-      <Link href={`/courses/view/${course.key}/${currentTopic.key}/questions/${0}`}>
-        <Button variant="contained" primary onClick={() => markExplanationCompleted()}>
-          Evaluation
-          <span className="ml-2 font-bold">&#8594;</span>
-        </Button>
-      </Link>
+      <Button
+        variant="contained"
+        primary
+        onClick={async () => {
+          await markExplanationCompleted();
+          router.push(`/courses/view/${course.key}/${currentTopic.key}/questions/${0}`);
+        }}
+      >
+        Evaluation
+        <span className="ml-2 font-bold">&#8594;</span>
+      </Button>
     );
   }
 
   if (isLastExplanation && !isLastTopic) {
     return (
-      <Link href={`/courses/view/${course.key}/${course.topics[currentTopicIndex + 1].key}`}>
-        <Button variant="contained" primary onClick={() => markExplanationCompleted()}>
-          Next Chapter <span className="ml-2 font-bold">&#8594;</span>
-        </Button>
-      </Link>
+      <Button
+        variant="contained"
+        primary
+        onClick={async () => {
+          await markExplanationCompleted();
+          router.push(`/courses/view/${course.key}/${course.topics[currentTopicIndex + 1].key}`);
+        }}
+      >
+        Next Chapter <span className="ml-2 font-bold">&#8594;</span>
+      </Button>
     );
   }
 
   if (isLastExplanation && isLastTopic) {
     return (
-      <Link href={`/courses/view/${course.key}/${currentTopic.key}/submit`}>
-        <Button variant="contained" primary onClick={() => markExplanationCompleted()}>
-          Submission <span className="ml-2 font-bold">&#8594;</span>
-        </Button>
-      </Link>
+      <Button
+        variant="contained"
+        primary
+        onClick={async () => {
+          await markExplanationCompleted();
+          router.push(`/courses/view/${course.key}/${currentTopic.key}/submit`);
+        }}
+      >
+        Submission <span className="ml-2 font-bold">&#8594;</span>
+      </Button>
     );
   }
 
   if (!isLastExplanation) {
     return (
-      <Link href={`/courses/view/${course.key}/${currentTopic.key}/explanations/${currentTopic.explanations[currentExplanationIndex + 1].key}`}>
-        <Button variant="contained" primary onClick={() => markExplanationCompleted()}>
-          Next <span className="ml-2 font-bold">&#8594;</span>
-        </Button>
-      </Link>
+      <Button
+        variant="contained"
+        primary
+        onClick={async () => {
+          await markExplanationCompleted();
+          router.push(`/courses/view/${course.key}/${currentTopic.key}/explanations/${currentTopic.explanations[currentExplanationIndex + 1].key}`);
+        }}
+      >
+        Next <span className="ml-2 font-bold">&#8594;</span>
+      </Button>
     );
   }
 
@@ -162,6 +189,10 @@ const ExplanationDetails: FC<CourseExplanationProps> = ({ course, isCourseAdmin,
     }
   }
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const { movingUp, movingDown, moveItem } = useMoveCourseItem<MoveTopicExplanationInput>(
     async (updates: MoveTopicExplanationInput) => await courseHelper.moveTopicExplanation(updates)
   );
@@ -177,6 +208,7 @@ const ExplanationDetails: FC<CourseExplanationProps> = ({ course, isCourseAdmin,
     }
   }
 
+  // Special case for not adding any dependencies to the use effect as we want this to run on every render.
   useEffect(() => {
     Array.from(document.querySelectorAll('.play-js-player')).map((p: any) => new Plyr(p));
   });

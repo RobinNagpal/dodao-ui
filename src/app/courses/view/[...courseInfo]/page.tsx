@@ -81,13 +81,6 @@ const CourseView = ({ params, space }: { params: { courseInfo: string[] }; space
 
   const [deleteGitCourseSubmissionMutation] = useDeleteGitCourseSubmissionMutation();
 
-  useEffect(() => {
-    if (session) {
-      if (!courseHelper.course) return;
-      submissionHelper.initialize(courseHelper.course);
-    }
-  }, [courseHelper.course, session]);
-
   const { course, loading } = courseHelper;
 
   const isCourseAdmin =
