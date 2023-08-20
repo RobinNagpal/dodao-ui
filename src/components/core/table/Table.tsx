@@ -88,7 +88,7 @@ export function Table(props: TableProps) {
                     ))}
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-200">
+                <tbody className="divide-y divide-gray-200 text-xs">
                   {props.data.map((row, index) => (
                     <TableRow key={index}>
                       {row.columns.map((cell, index) => {
@@ -96,18 +96,18 @@ export function Table(props: TableProps) {
                           <FirstColumnCell
                             width={`${props.columnsWidthPercents?.[index] || 100}%`}
                             key={index}
-                            className="py-4 pl-4 pr-3 text-sm font-medium sm:pl-0 break-words"
+                            className="py-2 pl-4 pr-3 text-xs font-medium sm:pl-0 break-words"
                           >
                             {cell}
                           </FirstColumnCell>
                         ) : (
-                          <TableCell key={index} className="px-3 py-4 text-sm break-all">
+                          <TableCell key={index} className="px-3 py-2  break-all">
                             {cell}
                           </TableCell>
                         );
                       })}{' '}
                       {props.actions && (
-                        <td className="relative py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
+                        <td className="relative py-2 pl-3 pr-4 text-right font-medium sm:pr-0">
                           <EllipsisDropdown
                             items={props.actions.items}
                             onSelect={(key) => {
