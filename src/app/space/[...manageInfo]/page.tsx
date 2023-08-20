@@ -10,8 +10,10 @@ import SpaceDetails from '@/components/spaces/SpaceDetails';
 import GenerateStoryBoard from '@/components/spaces/StoryBoard/GenerateStoryBoard';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import classNames from '@/utils/classNames';
-import { CircleStackIcon, HomeIcon } from '@heroicons/react/24/outline';
-import { PhotoIcon } from '@heroicons/react/24/solid';
+import BuildingOffice2Icon from '@heroicons/react/24/outline/BuildingOffice2Icon';
+import CircleStackIcon from '@heroicons/react/24/outline/CircleStackIcon';
+import HomeIcon from '@heroicons/react/24/outline/HomeIcon';
+import PhotoIcon from '@heroicons/react/24/solid/PhotoIcon';
 import Link from 'next/link';
 
 const getNavigation = (space: SpaceWithIntegrationsFragment) => {
@@ -19,7 +21,8 @@ const getNavigation = (space: SpaceWithIntegrationsFragment) => {
     { name: 'Dashboard', href: `space/manage/${ManageSpaceSubviews.ViewSpace}/${space.id}`, icon: HomeIcon, current: true },
     { name: 'Image', href: `space/manage/${ManageSpaceSubviews.GenerateImage}/${space.id}`, icon: PhotoIcon, current: false },
     { name: 'Story Board', href: `space/manage/${ManageSpaceSubviews.GenerateStoryBoard}/${space.id}`, icon: PhotoIcon, current: false },
-    { name: 'Spaces', href: '/space/manage/' + ManageSpaceSubviews.SpacesList, icon: CircleStackIcon, current: false },
+    { name: 'Loaders', href: '/space/loaders/' + ManageSpaceSubviews.Loaders, icon: CircleStackIcon, current: false },
+    { name: 'Spaces', href: '/space/manage/' + ManageSpaceSubviews.SpacesList, icon: BuildingOffice2Icon, current: false },
   ];
 
   return navigation;
