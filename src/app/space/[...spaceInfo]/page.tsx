@@ -28,17 +28,17 @@ const getNavigation = (space: SpaceWithIntegrationsFragment) => {
 
   return navigation;
 };
-function GetSubview(props: { manageInfo: string[]; space: SpaceWithIntegrationsFragment }) {
-  const { manageInfo } = props;
+function GetSubview(props: { spaceInfo: string[]; space: SpaceWithIntegrationsFragment }) {
+  const { spaceInfo } = props;
 
-  console.log('manageInfo', manageInfo);
+  console.log('manageInfo', spaceInfo);
 
   // urls - /manage
-  const isHome = manageInfo.length === 1 && manageInfo[0] === 'manage';
+  const isHome = spaceInfo.length === 1 && spaceInfo[0] === 'manage';
 
-  const subView = manageInfo?.[1];
+  const subView = spaceInfo?.[1];
 
-  const entityId = manageInfo?.[2];
+  const entityId = spaceInfo?.[2];
 
   console.log('subView === ManageSpaceSubviews.SpaceDetails', subView === ManageSpaceSubviews.ViewSpace);
 
@@ -52,7 +52,7 @@ function GetSubview(props: { manageInfo: string[]; space: SpaceWithIntegrationsF
     return <GenerateImage />;
   }
   if (subView === ManageSpaceSubviews.Loaders) {
-    return <AllLoaders />;
+    return <AllLoaders space={props.space} spaceInfoParams={spaceInfo} />;
   }
 
   if (subView === ManageSpaceSubviews.GenerateStoryBoard) {
@@ -61,9 +61,8 @@ function GetSubview(props: { manageInfo: string[]; space: SpaceWithIntegrationsF
 
   return <SpaceDetails spaceId={props.space.id} />;
 }
-function ManageSpace({ params, space }: { params: { manageInfo: string[] }; space: SpaceWithIntegrationsFragment }) {
-  const { manageInfo } = params;
-  console.log('manageInfo', space);
+function ManageSpace({ params, space }: { params: { spaceInfo: string[] }; space: SpaceWithIntegrationsFragment }) {
+  const { spaceInfo } = params;
   return (
     <SidebarLayout>
       <ul role="list" className="-mx-2 space-y-1">
@@ -86,7 +85,7 @@ function ManageSpace({ params, space }: { params: { manageInfo: string[] }; spac
         ))}
       </ul>
       <PageWrapper>
-        <GetSubview manageInfo={manageInfo} space={space} />
+        <GetSubview spaceInfo={spaceInfo} space={space} />
       </PageWrapper>
     </SidebarLayout>
   );

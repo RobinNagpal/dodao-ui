@@ -312,6 +312,46 @@ input DeleteTopicVideoInput {
   videoUuid: String!
 }
 
+type DiscourseIndexRun {
+  createdAt: String!
+  id: String!
+  runDate: String
+  spaceId: String!
+  status: String!
+  url: String!
+}
+
+input DiscourseIndexRunInput {
+  runDate: String!
+  spaceId: String!
+  url: String!
+}
+
+type DiscoursePost {
+  author: String
+  createdAt: String!
+  datePublished: String!
+  fullContent: String
+  id: String!
+  indexedAt: DateTimeISO
+  spaceId: String!
+  status: String!
+  title: String!
+  url: String!
+}
+
+type DiscoursePostComment {
+  author: String!
+  commentPostId: String!
+  content: String!
+  createdAt: String!
+  datePublished: String!
+  id: String!
+  indexedAt: String!
+  postId: String!
+  spaceId: String!
+}
+
 type DownloadAndCleanContentResponse {
   content: String!
   links: [DownloadLinkInfo!]!
@@ -840,6 +880,7 @@ type Mutation {
   askChatCompletionAI(input: ChatCompletionAIInput!): OpenAIChatCompletionResponse!
   askCompletionAI(input: CompletionAIInput!): OpenAICompletionResponse!
   authenticateWithUnstoppable(idToken: String!): JwtResponse!
+  createNewDiscourseIndexRun(input: DiscourseIndexRunInput!, spaceId: String!): DiscourseIndexRun!
   createSignedUrl(input: CreateSignedUrlInput!, spaceId: String!): String!
   createSpace(spaceInput: UpsertSpaceInput!): Space!
   createSummaryOfContent(input: String!): OpenAITextResponse!
@@ -872,6 +913,7 @@ type Mutation {
   submitGitCourse(input: CourseSubmissionInput!, spaceId: String!): GitCourseSubmission!
   submitGitCourseTopic(gitCourseTopicSubmission: GitCourseTopicSubmissionInput!, spaceId: String!): GitCourseSubmission!
   submitGuide(submissionInput: GuideSubmissionInput!): GuideSubmission!
+  triggerDiscourseIndexRun(indexRunId: String!, spaceId: String!): DiscourseIndexRun!
   updateAuthSettings(input: AuthSettingsInput!, spaceId: String!): Space!
   updateByteSettings(input: ByteSettingsInput!, spaceId: String!): Space!
   updateCourseBasicInfo(courseBasicInfo: CourseBasicInfoInput!, spaceId: String!): GitCourse!
@@ -967,6 +1009,9 @@ type Query {
   bytes(spaceId: String!): [Byte!]!
   consolidatedGuideRating(guideUuid: String!, spaceId: String!): ConsolidatedGuideRating
   courses(spaceId: String!): [GitCourse!]!
+  discourseIndexRuns(spaceId: String!): [DiscourseIndexRun!]!
+  discoursePostComments(postId: String!, spaceId: String!): [DiscoursePostComment!]!
+  discoursePosts(spaceId: String!): [DiscoursePost!]!
   gitCourse(courseKey: String!, spaceId: String!): GitCourse!
   gitCourseIntegrations(key: String!, spaceId: String!): CourseIntegrations
   gitCourseSubmission(courseKey: String!, spaceId: String!): GitCourseSubmission
