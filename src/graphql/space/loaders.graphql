@@ -1,0 +1,56 @@
+fragment DiscourseIndexRunFragment on DiscourseIndexRun {
+  createdAt
+  id
+  runDate
+  status
+  url
+}
+
+
+query DiscourseIndexRuns($spaceId: String!) {
+  discourseIndexRuns(spaceId: $spaceId){
+    ...DiscourseIndexRunFragment
+  }
+}
+
+query DiscoursePosts($spaceId: String!) {
+  discoursePosts(spaceId: $spaceId){
+    id
+    spaceId
+    title
+    url
+    fullContent
+    author
+    datePublished
+    createdAt
+    indexedAt
+    status
+  }
+}
+
+query DiscourseTopics($spaceId: String!, $postId: String!) {
+  discoursePostComments(spaceId: $spaceId, postId: $postId){
+    id
+    commentPostId
+    spaceId
+    content
+    author
+    datePublished
+    createdAt
+    indexedAt
+    postId
+  }
+}
+
+mutation CreateNewDiscourseIndexRun($spaceId: String!, $input: DiscourseIndexRunInput!) {
+  createNewDiscourseIndexRun(spaceId: $spaceId, input: $input) {
+    ...DiscourseIndexRunFragment
+  }
+}
+
+
+mutation triggerDiscourseIndexRun($spaceId: String!, $indexRunId:String!) {
+  triggerDiscourseIndexRun(spaceId: $spaceId, indexRunId: $indexRunId) {
+    ...DiscourseIndexRunFragment
+  }
+}

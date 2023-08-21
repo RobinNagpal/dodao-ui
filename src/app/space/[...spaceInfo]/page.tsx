@@ -5,36 +5,40 @@ import WithSpace from '@/app/withSpace';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import GenerateImage from '@/components/spaces/Image/GenerateImage';
 import ListSpaces from '@/components/spaces/ListSpaces';
+import AllLoaders from '@/components/spaces/Loaders/AllLoaders';
 import { ManageSpaceSubviews } from '@/components/spaces/manageSpaceSubviews';
 import SpaceDetails from '@/components/spaces/SpaceDetails';
 import GenerateStoryBoard from '@/components/spaces/StoryBoard/GenerateStoryBoard';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import classNames from '@/utils/classNames';
-import { CircleStackIcon, HomeIcon } from '@heroicons/react/24/outline';
-import { PhotoIcon } from '@heroicons/react/24/solid';
+import BuildingOffice2Icon from '@heroicons/react/24/outline/BuildingOffice2Icon';
+import CircleStackIcon from '@heroicons/react/24/outline/CircleStackIcon';
+import HomeIcon from '@heroicons/react/24/outline/HomeIcon';
+import PhotoIcon from '@heroicons/react/24/solid/PhotoIcon';
 import Link from 'next/link';
 
 const getNavigation = (space: SpaceWithIntegrationsFragment) => {
   const navigation = [
-    { name: 'Dashboard', href: `space/manage/${ManageSpaceSubviews.ViewSpace}/${space.id}`, icon: HomeIcon, current: true },
-    { name: 'Image', href: `space/manage/${ManageSpaceSubviews.GenerateImage}/${space.id}`, icon: PhotoIcon, current: false },
-    { name: 'Story Board', href: `space/manage/${ManageSpaceSubviews.GenerateStoryBoard}/${space.id}`, icon: PhotoIcon, current: false },
-    { name: 'Spaces', href: '/space/manage/' + ManageSpaceSubviews.SpacesList, icon: CircleStackIcon, current: false },
+    { name: 'Dashboard', href: `/space/manage/${ManageSpaceSubviews.ViewSpace}/${space.id}`, icon: HomeIcon, current: true },
+    { name: 'Image', href: `/space/manage/${ManageSpaceSubviews.GenerateImage}/${space.id}`, icon: PhotoIcon, current: false },
+    { name: 'Story Board', href: `/space/manage/${ManageSpaceSubviews.GenerateStoryBoard}/${space.id}`, icon: PhotoIcon, current: false },
+    { name: 'Loaders', href: '/space/manage/' + ManageSpaceSubviews.Loaders, icon: CircleStackIcon, current: false },
+    { name: 'Spaces', href: '/space/manage/' + ManageSpaceSubviews.SpacesList, icon: BuildingOffice2Icon, current: false },
   ];
 
   return navigation;
 };
-function GetSubview(props: { manageInfo: string[]; space: SpaceWithIntegrationsFragment }) {
-  const { manageInfo } = props;
+function GetSubview(props: { spaceInfo: string[]; space: SpaceWithIntegrationsFragment }) {
+  const { spaceInfo } = props;
 
-  console.log('manageInfo', manageInfo);
+  console.log('manageInfo', spaceInfo);
 
   // urls - /manage
-  const isHome = manageInfo.length === 1 && manageInfo[0] === 'manage';
+  const isHome = spaceInfo.length === 1 && spaceInfo[0] === 'manage';
 
-  const subView = manageInfo?.[1];
+  const subView = spaceInfo?.[1];
 
-  const entityId = manageInfo?.[2];
+  const entityId = spaceInfo?.[2];
 
   console.log('subView === ManageSpaceSubviews.SpaceDetails', subView === ManageSpaceSubviews.ViewSpace);
 
@@ -47,15 +51,18 @@ function GetSubview(props: { manageInfo: string[]; space: SpaceWithIntegrationsF
   if (subView === ManageSpaceSubviews.GenerateImage) {
     return <GenerateImage />;
   }
+  if (subView === ManageSpaceSubviews.Loaders) {
+    return <AllLoaders space={props.space} spaceInfoParams={spaceInfo} />;
+  }
+
   if (subView === ManageSpaceSubviews.GenerateStoryBoard) {
     return <GenerateStoryBoard />;
   }
 
   return <SpaceDetails spaceId={props.space.id} />;
 }
-function ManageSpace({ params, space }: { params: { manageInfo: string[] }; space: SpaceWithIntegrationsFragment }) {
-  const { manageInfo } = params;
-  console.log('manageInfo', space);
+function ManageSpace({ params, space }: { params: { spaceInfo: string[] }; space: SpaceWithIntegrationsFragment }) {
+  const { spaceInfo } = params;
   return (
     <SidebarLayout>
       <ul role="list" className="-mx-2 space-y-1">
@@ -78,7 +85,7 @@ function ManageSpace({ params, space }: { params: { manageInfo: string[] }; spac
         ))}
       </ul>
       <PageWrapper>
-        <GetSubview manageInfo={manageInfo} space={space} />
+        <GetSubview spaceInfo={spaceInfo} space={space} />
       </PageWrapper>
     </SidebarLayout>
   );

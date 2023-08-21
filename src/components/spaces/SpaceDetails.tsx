@@ -44,17 +44,17 @@ export default function SpaceDetails(props: SpaceDetailsProps) {
         <TabsWithUnderline selectedTabId={selectedTabId} setSelectedTabId={(id) => setSelectedTabId(id as TabIds)} tabs={tabs} className="w-96" />
       </div>
       {selectedTabId === TabIds.Basic && (
-        <div className="flex flex-col divide-y-2 gap-y-10 divide-gray-300">
-          <SpaceBasicDetails space={data.space} className="pt-12" />
-          <SpaceAuthDetails space={data.space} className="pt-12" />
-          <SpaceSocialDetails space={data.space} className="pt-12" />
+        <div className="flex flex-col gap-y-28 divide-gray-300">
+          <SpaceBasicDetails space={data.space} className="pt-6" />
+          <SpaceAuthDetails space={data.space} />
+          <SpaceSocialDetails space={data.space} />
         </div>
       )}
       {selectedTabId === TabIds.Content && (
-        <div className="flex flex-col divide-y-2 gap-y-10 divide-gray-300">
-          <SpaceCourseDetails space={data.space} className="pt-12" />
-          <SpaceGuideDetails space={data.space} className="pt-12" />
-          <SpaceByteDetails space={data.space} className="pt-12" />
+        <div className="flex flex-col  gap-y-10 divide-gray-300">
+          <SpaceCourseDetails space={data.space} className="pt-6" />
+          <SpaceGuideDetails space={data.space} />
+          <SpaceByteDetails space={data.space} />
         </div>
       )}
     </div>

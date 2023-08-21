@@ -340,6 +340,49 @@ export interface DeleteTopicVideoInput {
   videoUuid: Scalars['String'];
 }
 
+export interface DiscourseIndexRun {
+  __typename?: 'DiscourseIndexRun';
+  createdAt: Scalars['String'];
+  id: Scalars['String'];
+  runDate?: Maybe<Scalars['String']>;
+  spaceId: Scalars['String'];
+  status: Scalars['String'];
+  url: Scalars['String'];
+}
+
+export interface DiscourseIndexRunInput {
+  runDate: Scalars['String'];
+  spaceId: Scalars['String'];
+  url: Scalars['String'];
+}
+
+export interface DiscoursePost {
+  __typename?: 'DiscoursePost';
+  author?: Maybe<Scalars['String']>;
+  createdAt: Scalars['String'];
+  datePublished: Scalars['String'];
+  fullContent?: Maybe<Scalars['String']>;
+  id: Scalars['String'];
+  indexedAt?: Maybe<Scalars['DateTimeISO']>;
+  spaceId: Scalars['String'];
+  status: Scalars['String'];
+  title: Scalars['String'];
+  url: Scalars['String'];
+}
+
+export interface DiscoursePostComment {
+  __typename?: 'DiscoursePostComment';
+  author: Scalars['String'];
+  commentPostId: Scalars['String'];
+  content: Scalars['String'];
+  createdAt: Scalars['String'];
+  datePublished: Scalars['String'];
+  id: Scalars['String'];
+  indexedAt: Scalars['String'];
+  postId: Scalars['String'];
+  spaceId: Scalars['String'];
+}
+
 export interface DownloadAndCleanContentResponse {
   __typename?: 'DownloadAndCleanContentResponse';
   content: Scalars['String'];
@@ -895,6 +938,7 @@ export interface Mutation {
   askChatCompletionAI: OpenAiChatCompletionResponse;
   askCompletionAI: OpenAiCompletionResponse;
   authenticateWithUnstoppable: JwtResponse;
+  createNewDiscourseIndexRun: DiscourseIndexRun;
   createSignedUrl: Scalars['String'];
   createSpace: Space;
   createSummaryOfContent: OpenAiTextResponse;
@@ -927,6 +971,7 @@ export interface Mutation {
   submitGitCourse: GitCourseSubmission;
   submitGitCourseTopic: GitCourseSubmission;
   submitGuide: GuideSubmission;
+  triggerDiscourseIndexRun: DiscourseIndexRun;
   updateAuthSettings: Space;
   updateByteSettings: Space;
   updateCourseBasicInfo: GitCourse;
@@ -1011,6 +1056,12 @@ export interface MutationAskCompletionAiArgs {
 
 export interface MutationAuthenticateWithUnstoppableArgs {
   idToken: Scalars['String'];
+}
+
+
+export interface MutationCreateNewDiscourseIndexRunArgs {
+  input: DiscourseIndexRunInput;
+  spaceId: Scalars['String'];
 }
 
 
@@ -1192,6 +1243,12 @@ export interface MutationSubmitGitCourseTopicArgs {
 
 export interface MutationSubmitGuideArgs {
   submissionInput: GuideSubmissionInput;
+}
+
+
+export interface MutationTriggerDiscourseIndexRunArgs {
+  indexRunId: Scalars['String'];
+  spaceId: Scalars['String'];
 }
 
 
@@ -1424,6 +1481,9 @@ export interface Query {
   bytes: Array<Byte>;
   consolidatedGuideRating?: Maybe<ConsolidatedGuideRating>;
   courses: Array<GitCourse>;
+  discourseIndexRuns: Array<DiscourseIndexRun>;
+  discoursePostComments: Array<DiscoursePostComment>;
+  discoursePosts: Array<DiscoursePost>;
   gitCourse: GitCourse;
   gitCourseIntegrations?: Maybe<CourseIntegrations>;
   gitCourseSubmission?: Maybe<GitCourseSubmission>;
@@ -1484,6 +1544,22 @@ export interface QueryConsolidatedGuideRatingArgs {
 
 
 export interface QueryCoursesArgs {
+  spaceId: Scalars['String'];
+}
+
+
+export interface QueryDiscourseIndexRunsArgs {
+  spaceId: Scalars['String'];
+}
+
+
+export interface QueryDiscoursePostCommentsArgs {
+  postId: Scalars['String'];
+  spaceId: Scalars['String'];
+}
+
+
+export interface QueryDiscoursePostsArgs {
   spaceId: Scalars['String'];
 }
 
@@ -2671,6 +2747,46 @@ export type UpsertSimulationMutationVariables = Exact<{
 
 export type UpsertSimulationMutation = { __typename?: 'Mutation', payload: { __typename?: 'Simulation', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, steps: Array<{ __typename?: 'SimulationStep', content: string, iframeUrl?: string | null, name: string, uuid: string, order: number }> } };
 
+export type DiscourseIndexRunFragmentFragment = { __typename?: 'DiscourseIndexRun', createdAt: string, id: string, runDate?: string | null, status: string, url: string };
+
+export type DiscourseIndexRunsQueryVariables = Exact<{
+  spaceId: Scalars['String'];
+}>;
+
+
+export type DiscourseIndexRunsQuery = { __typename?: 'Query', discourseIndexRuns: Array<{ __typename?: 'DiscourseIndexRun', createdAt: string, id: string, runDate?: string | null, status: string, url: string }> };
+
+export type DiscoursePostsQueryVariables = Exact<{
+  spaceId: Scalars['String'];
+}>;
+
+
+export type DiscoursePostsQuery = { __typename?: 'Query', discoursePosts: Array<{ __typename?: 'DiscoursePost', id: string, spaceId: string, title: string, url: string, fullContent?: string | null, author?: string | null, datePublished: string, createdAt: string, indexedAt?: any | null, status: string }> };
+
+export type DiscourseTopicsQueryVariables = Exact<{
+  spaceId: Scalars['String'];
+  postId: Scalars['String'];
+}>;
+
+
+export type DiscourseTopicsQuery = { __typename?: 'Query', discoursePostComments: Array<{ __typename?: 'DiscoursePostComment', id: string, commentPostId: string, spaceId: string, content: string, author: string, datePublished: string, createdAt: string, indexedAt: string, postId: string }> };
+
+export type CreateNewDiscourseIndexRunMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+  input: DiscourseIndexRunInput;
+}>;
+
+
+export type CreateNewDiscourseIndexRunMutation = { __typename?: 'Mutation', createNewDiscourseIndexRun: { __typename?: 'DiscourseIndexRun', createdAt: string, id: string, runDate?: string | null, status: string, url: string } };
+
+export type TriggerDiscourseIndexRunMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+  indexRunId: Scalars['String'];
+}>;
+
+
+export type TriggerDiscourseIndexRunMutation = { __typename?: 'Mutation', triggerDiscourseIndexRun: { __typename?: 'DiscourseIndexRun', createdAt: string, id: string, runDate?: string | null, status: string, url: string } };
+
 export type GuideSettingsFragment = { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null };
 
 export type AuthSettingsFragment = { __typename?: 'AuthSettings', enableLogin?: boolean | null, loginOptions?: Array<string> | null };
@@ -3417,6 +3533,15 @@ export const SimulationDetailsFragmentDoc = gql`
   }
 }
     ${SimulationStepFragmentDoc}`;
+export const DiscourseIndexRunFragmentFragmentDoc = gql`
+    fragment DiscourseIndexRunFragment on DiscourseIndexRun {
+  createdAt
+  id
+  runDate
+  status
+  url
+}
+    `;
 export const GuideSettingsFragmentDoc = gql`
     fragment GuideSettings on GuideSettings {
   askForLoginToSubmit
@@ -6291,6 +6416,206 @@ export function useUpsertSimulationMutation(baseOptions?: Apollo.MutationHookOpt
 export type UpsertSimulationMutationHookResult = ReturnType<typeof useUpsertSimulationMutation>;
 export type UpsertSimulationMutationResult = Apollo.MutationResult<UpsertSimulationMutation>;
 export type UpsertSimulationMutationOptions = Apollo.BaseMutationOptions<UpsertSimulationMutation, UpsertSimulationMutationVariables>;
+export const DiscourseIndexRunsDocument = gql`
+    query DiscourseIndexRuns($spaceId: String!) {
+  discourseIndexRuns(spaceId: $spaceId) {
+    ...DiscourseIndexRunFragment
+  }
+}
+    ${DiscourseIndexRunFragmentFragmentDoc}`;
+
+/**
+ * __useDiscourseIndexRunsQuery__
+ *
+ * To run a query within a React component, call `useDiscourseIndexRunsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useDiscourseIndexRunsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useDiscourseIndexRunsQuery({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *   },
+ * });
+ */
+export function useDiscourseIndexRunsQuery(baseOptions: Apollo.QueryHookOptions<DiscourseIndexRunsQuery, DiscourseIndexRunsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<DiscourseIndexRunsQuery, DiscourseIndexRunsQueryVariables>(DiscourseIndexRunsDocument, options);
+      }
+export function useDiscourseIndexRunsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<DiscourseIndexRunsQuery, DiscourseIndexRunsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<DiscourseIndexRunsQuery, DiscourseIndexRunsQueryVariables>(DiscourseIndexRunsDocument, options);
+        }
+export type DiscourseIndexRunsQueryHookResult = ReturnType<typeof useDiscourseIndexRunsQuery>;
+export type DiscourseIndexRunsLazyQueryHookResult = ReturnType<typeof useDiscourseIndexRunsLazyQuery>;
+export type DiscourseIndexRunsQueryResult = Apollo.QueryResult<DiscourseIndexRunsQuery, DiscourseIndexRunsQueryVariables>;
+export function refetchDiscourseIndexRunsQuery(variables: DiscourseIndexRunsQueryVariables) {
+      return { query: DiscourseIndexRunsDocument, variables: variables }
+    }
+export const DiscoursePostsDocument = gql`
+    query DiscoursePosts($spaceId: String!) {
+  discoursePosts(spaceId: $spaceId) {
+    id
+    spaceId
+    title
+    url
+    fullContent
+    author
+    datePublished
+    createdAt
+    indexedAt
+    status
+  }
+}
+    `;
+
+/**
+ * __useDiscoursePostsQuery__
+ *
+ * To run a query within a React component, call `useDiscoursePostsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useDiscoursePostsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useDiscoursePostsQuery({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *   },
+ * });
+ */
+export function useDiscoursePostsQuery(baseOptions: Apollo.QueryHookOptions<DiscoursePostsQuery, DiscoursePostsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<DiscoursePostsQuery, DiscoursePostsQueryVariables>(DiscoursePostsDocument, options);
+      }
+export function useDiscoursePostsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<DiscoursePostsQuery, DiscoursePostsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<DiscoursePostsQuery, DiscoursePostsQueryVariables>(DiscoursePostsDocument, options);
+        }
+export type DiscoursePostsQueryHookResult = ReturnType<typeof useDiscoursePostsQuery>;
+export type DiscoursePostsLazyQueryHookResult = ReturnType<typeof useDiscoursePostsLazyQuery>;
+export type DiscoursePostsQueryResult = Apollo.QueryResult<DiscoursePostsQuery, DiscoursePostsQueryVariables>;
+export function refetchDiscoursePostsQuery(variables: DiscoursePostsQueryVariables) {
+      return { query: DiscoursePostsDocument, variables: variables }
+    }
+export const DiscourseTopicsDocument = gql`
+    query DiscourseTopics($spaceId: String!, $postId: String!) {
+  discoursePostComments(spaceId: $spaceId, postId: $postId) {
+    id
+    commentPostId
+    spaceId
+    content
+    author
+    datePublished
+    createdAt
+    indexedAt
+    postId
+  }
+}
+    `;
+
+/**
+ * __useDiscourseTopicsQuery__
+ *
+ * To run a query within a React component, call `useDiscourseTopicsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useDiscourseTopicsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useDiscourseTopicsQuery({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      postId: // value for 'postId'
+ *   },
+ * });
+ */
+export function useDiscourseTopicsQuery(baseOptions: Apollo.QueryHookOptions<DiscourseTopicsQuery, DiscourseTopicsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<DiscourseTopicsQuery, DiscourseTopicsQueryVariables>(DiscourseTopicsDocument, options);
+      }
+export function useDiscourseTopicsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<DiscourseTopicsQuery, DiscourseTopicsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<DiscourseTopicsQuery, DiscourseTopicsQueryVariables>(DiscourseTopicsDocument, options);
+        }
+export type DiscourseTopicsQueryHookResult = ReturnType<typeof useDiscourseTopicsQuery>;
+export type DiscourseTopicsLazyQueryHookResult = ReturnType<typeof useDiscourseTopicsLazyQuery>;
+export type DiscourseTopicsQueryResult = Apollo.QueryResult<DiscourseTopicsQuery, DiscourseTopicsQueryVariables>;
+export function refetchDiscourseTopicsQuery(variables: DiscourseTopicsQueryVariables) {
+      return { query: DiscourseTopicsDocument, variables: variables }
+    }
+export const CreateNewDiscourseIndexRunDocument = gql`
+    mutation CreateNewDiscourseIndexRun($spaceId: String!, $input: DiscourseIndexRunInput!) {
+  createNewDiscourseIndexRun(spaceId: $spaceId, input: $input) {
+    ...DiscourseIndexRunFragment
+  }
+}
+    ${DiscourseIndexRunFragmentFragmentDoc}`;
+export type CreateNewDiscourseIndexRunMutationFn = Apollo.MutationFunction<CreateNewDiscourseIndexRunMutation, CreateNewDiscourseIndexRunMutationVariables>;
+
+/**
+ * __useCreateNewDiscourseIndexRunMutation__
+ *
+ * To run a mutation, you first call `useCreateNewDiscourseIndexRunMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateNewDiscourseIndexRunMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createNewDiscourseIndexRunMutation, { data, loading, error }] = useCreateNewDiscourseIndexRunMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateNewDiscourseIndexRunMutation(baseOptions?: Apollo.MutationHookOptions<CreateNewDiscourseIndexRunMutation, CreateNewDiscourseIndexRunMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateNewDiscourseIndexRunMutation, CreateNewDiscourseIndexRunMutationVariables>(CreateNewDiscourseIndexRunDocument, options);
+      }
+export type CreateNewDiscourseIndexRunMutationHookResult = ReturnType<typeof useCreateNewDiscourseIndexRunMutation>;
+export type CreateNewDiscourseIndexRunMutationResult = Apollo.MutationResult<CreateNewDiscourseIndexRunMutation>;
+export type CreateNewDiscourseIndexRunMutationOptions = Apollo.BaseMutationOptions<CreateNewDiscourseIndexRunMutation, CreateNewDiscourseIndexRunMutationVariables>;
+export const TriggerDiscourseIndexRunDocument = gql`
+    mutation triggerDiscourseIndexRun($spaceId: String!, $indexRunId: String!) {
+  triggerDiscourseIndexRun(spaceId: $spaceId, indexRunId: $indexRunId) {
+    ...DiscourseIndexRunFragment
+  }
+}
+    ${DiscourseIndexRunFragmentFragmentDoc}`;
+export type TriggerDiscourseIndexRunMutationFn = Apollo.MutationFunction<TriggerDiscourseIndexRunMutation, TriggerDiscourseIndexRunMutationVariables>;
+
+/**
+ * __useTriggerDiscourseIndexRunMutation__
+ *
+ * To run a mutation, you first call `useTriggerDiscourseIndexRunMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useTriggerDiscourseIndexRunMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [triggerDiscourseIndexRunMutation, { data, loading, error }] = useTriggerDiscourseIndexRunMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      indexRunId: // value for 'indexRunId'
+ *   },
+ * });
+ */
+export function useTriggerDiscourseIndexRunMutation(baseOptions?: Apollo.MutationHookOptions<TriggerDiscourseIndexRunMutation, TriggerDiscourseIndexRunMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<TriggerDiscourseIndexRunMutation, TriggerDiscourseIndexRunMutationVariables>(TriggerDiscourseIndexRunDocument, options);
+      }
+export type TriggerDiscourseIndexRunMutationHookResult = ReturnType<typeof useTriggerDiscourseIndexRunMutation>;
+export type TriggerDiscourseIndexRunMutationResult = Apollo.MutationResult<TriggerDiscourseIndexRunMutation>;
+export type TriggerDiscourseIndexRunMutationOptions = Apollo.BaseMutationOptions<TriggerDiscourseIndexRunMutation, TriggerDiscourseIndexRunMutationVariables>;
 export const SpacesDocument = gql`
     query Spaces {
   spaces {

@@ -58,7 +58,7 @@ export function Table(props: TableProps) {
       <div className="sm:flex sm:items-center justify-between">
         {props.heading && (
           <div className="sm:flex-auto">
-            <Heading className="font-semibold leading-6">{props.heading}</Heading>
+            <Heading className="font-semibold leading-6 text-2xl">{props.heading}</Heading>
             {props.infoText && <InfoText className="mt-2 text-sm">{props.infoText}</InfoText>}
           </div>
         )}
@@ -70,11 +70,11 @@ export function Table(props: TableProps) {
           </div>
         )}
       </div>
-      <div className="mt-8 flow-root">
-        <div className="-mx-4 -my-2 overflow-visible sm:-mx-6 lg:-mx-8">
-          <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+      <div className="flow-root">
+        <div className="-my-2 overflow-visible">
+          <div className="inline-block min-w-full py-2 align-middle">
             {props.data.length === 0 ? (
-              <div className="flex justify-center w-full">
+              <div className="flex justify-center w-full mt-24">
                 <div>{props.noDataText || 'No data exists'}</div>
               </div>
             ) : (
@@ -88,7 +88,7 @@ export function Table(props: TableProps) {
                     ))}
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-200">
+                <tbody className="divide-y divide-gray-200 text-xs">
                   {props.data.map((row, index) => (
                     <TableRow key={index}>
                       {row.columns.map((cell, index) => {
@@ -96,18 +96,18 @@ export function Table(props: TableProps) {
                           <FirstColumnCell
                             width={`${props.columnsWidthPercents?.[index] || 100}%`}
                             key={index}
-                            className="py-4 pl-4 pr-3 text-sm font-medium sm:pl-0 break-words"
+                            className="py-2 pl-4 pr-3 text-xs font-medium sm:pl-0 break-words"
                           >
                             {cell}
                           </FirstColumnCell>
                         ) : (
-                          <TableCell key={index} className="px-3 py-4 text-sm break-all">
+                          <TableCell key={index} className="px-3 py-2  break-all">
                             {cell}
                           </TableCell>
                         );
-                      })}{' '}
+                      })}
                       {props.actions && (
-                        <td className="relative py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
+                        <td className="relative py-2 pl-3 pr-4 text-right font-medium sm:pr-0">
                           <EllipsisDropdown
                             items={props.actions.items}
                             onSelect={(key) => {
