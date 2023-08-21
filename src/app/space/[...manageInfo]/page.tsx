@@ -5,6 +5,7 @@ import WithSpace from '@/app/withSpace';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import GenerateImage from '@/components/spaces/Image/GenerateImage';
 import ListSpaces from '@/components/spaces/ListSpaces';
+import AllLoaders from '@/components/spaces/Loaders/AllLoaders';
 import { ManageSpaceSubviews } from '@/components/spaces/manageSpaceSubviews';
 import SpaceDetails from '@/components/spaces/SpaceDetails';
 import GenerateStoryBoard from '@/components/spaces/StoryBoard/GenerateStoryBoard';
@@ -18,10 +19,10 @@ import Link from 'next/link';
 
 const getNavigation = (space: SpaceWithIntegrationsFragment) => {
   const navigation = [
-    { name: 'Dashboard', href: `space/manage/${ManageSpaceSubviews.ViewSpace}/${space.id}`, icon: HomeIcon, current: true },
-    { name: 'Image', href: `space/manage/${ManageSpaceSubviews.GenerateImage}/${space.id}`, icon: PhotoIcon, current: false },
-    { name: 'Story Board', href: `space/manage/${ManageSpaceSubviews.GenerateStoryBoard}/${space.id}`, icon: PhotoIcon, current: false },
-    { name: 'Loaders', href: '/space/loaders/' + ManageSpaceSubviews.Loaders, icon: CircleStackIcon, current: false },
+    { name: 'Dashboard', href: `/space/manage/${ManageSpaceSubviews.ViewSpace}/${space.id}`, icon: HomeIcon, current: true },
+    { name: 'Image', href: `/space/manage/${ManageSpaceSubviews.GenerateImage}/${space.id}`, icon: PhotoIcon, current: false },
+    { name: 'Story Board', href: `/space/manage/${ManageSpaceSubviews.GenerateStoryBoard}/${space.id}`, icon: PhotoIcon, current: false },
+    { name: 'Loaders', href: '/space/manage/' + ManageSpaceSubviews.Loaders, icon: CircleStackIcon, current: false },
     { name: 'Spaces', href: '/space/manage/' + ManageSpaceSubviews.SpacesList, icon: BuildingOffice2Icon, current: false },
   ];
 
@@ -50,6 +51,10 @@ function GetSubview(props: { manageInfo: string[]; space: SpaceWithIntegrationsF
   if (subView === ManageSpaceSubviews.GenerateImage) {
     return <GenerateImage />;
   }
+  if (subView === ManageSpaceSubviews.Loaders) {
+    return <AllLoaders />;
+  }
+
   if (subView === ManageSpaceSubviews.GenerateStoryBoard) {
     return <GenerateStoryBoard />;
   }

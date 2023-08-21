@@ -105,7 +105,7 @@ export function Table(props: TableProps) {
                             {cell}
                           </TableCell>
                         );
-                      })}{' '}
+                      })}
                       {props.actions && (
                         <td className="relative py-2 pl-3 pr-4 text-right font-medium sm:pr-0">
                           <EllipsisDropdown
