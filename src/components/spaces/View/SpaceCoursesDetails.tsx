@@ -101,7 +101,7 @@ export default function SpaceCourseDetails(props: SpaceAuthDetailsProps) {
   });
 
   return (
-    <div className="mx-8 mt-8">
+    <div className="mt-8">
       <div className="flex justify-between">
         <div className="text-xl">Courses</div>
         <PrivateEllipsisDropdown items={threeDotItems} onSelect={selectFromThreedotDropdown} />

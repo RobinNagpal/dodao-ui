@@ -58,7 +58,7 @@ export function Table(props: TableProps) {
       <div className="sm:flex sm:items-center justify-between">
         {props.heading && (
           <div className="sm:flex-auto">
-            <Heading className="font-semibold leading-6">{props.heading}</Heading>
+            <Heading className="font-semibold leading-6 text-2xl">{props.heading}</Heading>
             {props.infoText && <InfoText className="mt-2 text-sm">{props.infoText}</InfoText>}
           </div>
         )}
@@ -70,11 +70,11 @@ export function Table(props: TableProps) {
           </div>
         )}
       </div>
-      <div className="mt-8 flow-root">
-        <div className="-mx-4 -my-2 overflow-visible sm:-mx-6 lg:-mx-8">
+      <div className="flow-root">
+        <div className="-my-2 overflow-visible">
           <div className="inline-block min-w-full py-2 align-middle">
             {props.data.length === 0 ? (
-              <div className="flex justify-center w-full">
+              <div className="flex justify-center w-full mt-24">
                 <div>{props.noDataText || 'No data exists'}</div>
               </div>
             ) : (
