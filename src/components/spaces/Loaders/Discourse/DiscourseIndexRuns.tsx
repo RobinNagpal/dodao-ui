@@ -2,7 +2,13 @@ import SectionLoader from '@/components/core/loaders/SectionLoader';
 import { Table, TableRow } from '@/components/core/table/Table';
 import TabsWithUnderline, { TabItem } from '@/components/core/tabs/TabsWithUnderline';
 import DiscoursePosts from '@/components/spaces/Loaders/Discourse/DiscoursePosts';
-import { DiscourseIndexRunFragmentFragment, SpaceWithIntegrationsFragment, useDiscourseIndexRunsQuery } from '@/graphql/generated/generated-types';
+import { useNotificationContext } from '@/contexts/NotificationContext';
+import {
+  DiscourseIndexRunFragmentFragment,
+  SpaceWithIntegrationsFragment,
+  useDiscourseIndexRunsQuery,
+  useTriggerNewDiscourseIndexRunMutation,
+} from '@/graphql/generated/generated-types';
 import moment from 'moment';
 import React, { useState } from 'react';
 
@@ -30,6 +36,8 @@ export default function DiscourseIndexRuns(props: { space: SpaceWithIntegrations
     },
   });
 
+  const { showNotification } = useNotificationContext();
+
   const discourseIndexRuns = data?.discourseIndexRuns;
   const tabs: TabItem[] = [
     {
@@ -44,7 +52,7 @@ export default function DiscourseIndexRuns(props: { space: SpaceWithIntegrations
   ];
 
   const [selectedTabId, setSelectedTabId] = useState(TabIds.Runs);
-  const [showCreateNewDiscourseIndexRunModal, setShowCreateNewDiscourseIndexRunModal] = useState(false);
+  const [triggerNewDiscourseIndexRunMutation] = useTriggerNewDiscourseIndexRunMutation();
 
   if (loading || !discourseIndexRuns) {
     return <SectionLoader />;
@@ -61,7 +69,15 @@ export default function DiscourseIndexRuns(props: { space: SpaceWithIntegrations
         <div className="mt-8">
           <Table
             addNewLabel="Trigger New"
-            onAddNew={() => {}}
+            onAddNew={async () => {
+              await triggerNewDiscourseIndexRunMutation({
+                variables: {
+                  spaceId: props.space.id,
+                },
+                refetchQueries: ['DiscourseIndexRuns'],
+              });
+              showNotification({ message: 'Triggered new discourse index run', type: 'success' });
+            }}
             heading={'Discourse Index Runs'}
             data={getIndexRunRows(discourseIndexRuns)}
             columnsHeadings={['Id', 'Created At', 'Ran At', 'Status']}
