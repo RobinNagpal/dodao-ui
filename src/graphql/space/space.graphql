@@ -47,6 +47,10 @@ fragment SpaceWithIntegrations on Space {
       walletName
     }
     projectGalaxyTokenLastFour
+
+    loadersInfo {
+      discourseUrl
+    }
   }
   authSettings {
     loginOptions
@@ -69,6 +73,8 @@ fragment SpaceWithIntegrations on Space {
     captureRating
     showCategoriesInSidebar
   }
+
+
 }
 
 fragment SpaceSummary on Space {
@@ -200,4 +206,11 @@ mutation UpdateSpaceByteSettings($spaceId: String!, $input: ByteSettingsInput!) 
 
 mutation SendEmail($input: SendEmailInput!) {
   payload: sendEmail(input: $input)
+}
+
+
+mutation UpsertSpaceLoaderInfo($spaceId: String!, $input: SpaceLoadersInfoInput!) {
+  payload: upsertSpaceLoaderInfo(spaceId: $spaceId, input: $input) {
+    ...SpaceWithIntegrations
+  }
 }

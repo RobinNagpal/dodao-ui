@@ -3,7 +3,6 @@ fragment DiscourseIndexRunFragment on DiscourseIndexRun {
   id
   runDate
   status
-  url
 }
 
 
@@ -42,15 +41,10 @@ query DiscourseTopics($spaceId: String!, $postId: String!) {
   }
 }
 
-mutation CreateNewDiscourseIndexRun($spaceId: String!, $input: DiscourseIndexRunInput!) {
-  createNewDiscourseIndexRun(spaceId: $spaceId, input: $input) {
-    ...DiscourseIndexRunFragment
-  }
-}
 
 
-mutation triggerDiscourseIndexRun($spaceId: String!, $indexRunId:String!) {
-  triggerDiscourseIndexRun(spaceId: $spaceId, indexRunId: $indexRunId) {
+mutation triggerNewDiscourseIndexRun($spaceId: String!) {
+  triggerNewDiscourseIndexRun(spaceId: $spaceId) {
     ...DiscourseIndexRunFragment
   }
 }

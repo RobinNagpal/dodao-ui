@@ -342,25 +342,18 @@ export interface DeleteTopicVideoInput {
 
 export interface DiscourseIndexRun {
   __typename?: 'DiscourseIndexRun';
-  createdAt: Scalars['String'];
+  createdAt: Scalars['DateTimeISO'];
   id: Scalars['String'];
-  runDate?: Maybe<Scalars['String']>;
+  runDate?: Maybe<Scalars['DateTimeISO']>;
   spaceId: Scalars['String'];
   status: Scalars['String'];
-  url: Scalars['String'];
-}
-
-export interface DiscourseIndexRunInput {
-  runDate: Scalars['String'];
-  spaceId: Scalars['String'];
-  url: Scalars['String'];
 }
 
 export interface DiscoursePost {
   __typename?: 'DiscoursePost';
   author?: Maybe<Scalars['String']>;
-  createdAt: Scalars['String'];
-  datePublished: Scalars['String'];
+  createdAt: Scalars['DateTimeISO'];
+  datePublished: Scalars['DateTimeISO'];
   fullContent?: Maybe<Scalars['String']>;
   id: Scalars['String'];
   indexedAt?: Maybe<Scalars['DateTimeISO']>;
@@ -375,10 +368,10 @@ export interface DiscoursePostComment {
   author: Scalars['String'];
   commentPostId: Scalars['String'];
   content: Scalars['String'];
-  createdAt: Scalars['String'];
-  datePublished: Scalars['String'];
+  createdAt: Scalars['DateTimeISO'];
+  datePublished: Scalars['DateTimeISO'];
   id: Scalars['String'];
-  indexedAt: Scalars['String'];
+  indexedAt: Scalars['DateTimeISO'];
   postId: Scalars['String'];
   spaceId: Scalars['String'];
 }
@@ -938,7 +931,6 @@ export interface Mutation {
   askChatCompletionAI: OpenAiChatCompletionResponse;
   askCompletionAI: OpenAiCompletionResponse;
   authenticateWithUnstoppable: JwtResponse;
-  createNewDiscourseIndexRun: DiscourseIndexRun;
   createSignedUrl: Scalars['String'];
   createSpace: Space;
   createSummaryOfContent: OpenAiTextResponse;
@@ -971,7 +963,7 @@ export interface Mutation {
   submitGitCourse: GitCourseSubmission;
   submitGitCourseTopic: GitCourseSubmission;
   submitGuide: GuideSubmission;
-  triggerDiscourseIndexRun: DiscourseIndexRun;
+  triggerNewDiscourseIndexRun: DiscourseIndexRun;
   updateAuthSettings: Space;
   updateByteSettings: Space;
   updateCourseBasicInfo: GitCourse;
@@ -997,6 +989,7 @@ export interface Mutation {
   upsertSpaceAcademyRepository: Space;
   upsertSpaceFeatures: Space;
   upsertSpaceInviteLinks: Space;
+  upsertSpaceLoaderInfo: Space;
   upsertTimeline: Timeline;
 }
 
@@ -1056,12 +1049,6 @@ export interface MutationAskCompletionAiArgs {
 
 export interface MutationAuthenticateWithUnstoppableArgs {
   idToken: Scalars['String'];
-}
-
-
-export interface MutationCreateNewDiscourseIndexRunArgs {
-  input: DiscourseIndexRunInput;
-  spaceId: Scalars['String'];
 }
 
 
@@ -1246,8 +1233,7 @@ export interface MutationSubmitGuideArgs {
 }
 
 
-export interface MutationTriggerDiscourseIndexRunArgs {
-  indexRunId: Scalars['String'];
+export interface MutationTriggerNewDiscourseIndexRunArgs {
   spaceId: Scalars['String'];
 }
 
@@ -1398,6 +1384,12 @@ export interface MutationUpsertSpaceFeaturesArgs {
 export interface MutationUpsertSpaceInviteLinksArgs {
   spaceId: Scalars['String'];
   spaceInviteArgs: SpaceInviteArgs;
+}
+
+
+export interface MutationUpsertSpaceLoaderInfoArgs {
+  input: SpaceLoadersInfoInput;
+  spaceId: Scalars['String'];
 }
 
 
@@ -1792,6 +1784,7 @@ export interface SpaceIntegrations {
   discordGuildId?: Maybe<Scalars['String']>;
   gitGuideRepositories?: Maybe<Array<SpaceGitRepository>>;
   gnosisSafeWallets?: Maybe<Array<GnosisSafeWallet>>;
+  loadersInfo?: Maybe<SpaceLoadersInfo>;
   projectGalaxyTokenLastFour?: Maybe<Scalars['String']>;
 }
 
@@ -1823,6 +1816,15 @@ export interface SpaceInviteLinksInput {
   showAnimatedButtonForDiscord?: InputMaybe<Scalars['Boolean']>;
   showAnimatedButtonForTelegram?: InputMaybe<Scalars['Boolean']>;
   telegramInviteLink?: InputMaybe<Scalars['String']>;
+}
+
+export interface SpaceLoadersInfo {
+  __typename?: 'SpaceLoadersInfo';
+  discourseUrl?: Maybe<Scalars['String']>;
+}
+
+export interface SpaceLoadersInfoInput {
+  discourseUrl?: InputMaybe<Scalars['String']>;
 }
 
 export interface SpaceWhere {
@@ -2747,21 +2749,21 @@ export type UpsertSimulationMutationVariables = Exact<{
 
 export type UpsertSimulationMutation = { __typename?: 'Mutation', payload: { __typename?: 'Simulation', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, steps: Array<{ __typename?: 'SimulationStep', content: string, iframeUrl?: string | null, name: string, uuid: string, order: number }> } };
 
-export type DiscourseIndexRunFragmentFragment = { __typename?: 'DiscourseIndexRun', createdAt: string, id: string, runDate?: string | null, status: string, url: string };
+export type DiscourseIndexRunFragmentFragment = { __typename?: 'DiscourseIndexRun', createdAt: any, id: string, runDate?: any | null, status: string };
 
 export type DiscourseIndexRunsQueryVariables = Exact<{
   spaceId: Scalars['String'];
 }>;
 
 
-export type DiscourseIndexRunsQuery = { __typename?: 'Query', discourseIndexRuns: Array<{ __typename?: 'DiscourseIndexRun', createdAt: string, id: string, runDate?: string | null, status: string, url: string }> };
+export type DiscourseIndexRunsQuery = { __typename?: 'Query', discourseIndexRuns: Array<{ __typename?: 'DiscourseIndexRun', createdAt: any, id: string, runDate?: any | null, status: string }> };
 
 export type DiscoursePostsQueryVariables = Exact<{
   spaceId: Scalars['String'];
 }>;
 
 
-export type DiscoursePostsQuery = { __typename?: 'Query', discoursePosts: Array<{ __typename?: 'DiscoursePost', id: string, spaceId: string, title: string, url: string, fullContent?: string | null, author?: string | null, datePublished: string, createdAt: string, indexedAt?: any | null, status: string }> };
+export type DiscoursePostsQuery = { __typename?: 'Query', discoursePosts: Array<{ __typename?: 'DiscoursePost', id: string, spaceId: string, title: string, url: string, fullContent?: string | null, author?: string | null, datePublished: any, createdAt: any, indexedAt?: any | null, status: string }> };
 
 export type DiscourseTopicsQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -2769,23 +2771,14 @@ export type DiscourseTopicsQueryVariables = Exact<{
 }>;
 
 
-export type DiscourseTopicsQuery = { __typename?: 'Query', discoursePostComments: Array<{ __typename?: 'DiscoursePostComment', id: string, commentPostId: string, spaceId: string, content: string, author: string, datePublished: string, createdAt: string, indexedAt: string, postId: string }> };
+export type DiscourseTopicsQuery = { __typename?: 'Query', discoursePostComments: Array<{ __typename?: 'DiscoursePostComment', id: string, commentPostId: string, spaceId: string, content: string, author: string, datePublished: any, createdAt: any, indexedAt: any, postId: string }> };
 
-export type CreateNewDiscourseIndexRunMutationVariables = Exact<{
+export type TriggerNewDiscourseIndexRunMutationVariables = Exact<{
   spaceId: Scalars['String'];
-  input: DiscourseIndexRunInput;
 }>;
 
 
-export type CreateNewDiscourseIndexRunMutation = { __typename?: 'Mutation', createNewDiscourseIndexRun: { __typename?: 'DiscourseIndexRun', createdAt: string, id: string, runDate?: string | null, status: string, url: string } };
-
-export type TriggerDiscourseIndexRunMutationVariables = Exact<{
-  spaceId: Scalars['String'];
-  indexRunId: Scalars['String'];
-}>;
-
-
-export type TriggerDiscourseIndexRunMutation = { __typename?: 'Mutation', triggerDiscourseIndexRun: { __typename?: 'DiscourseIndexRun', createdAt: string, id: string, runDate?: string | null, status: string, url: string } };
+export type TriggerNewDiscourseIndexRunMutation = { __typename?: 'Mutation', triggerNewDiscourseIndexRun: { __typename?: 'DiscourseIndexRun', createdAt: any, id: string, runDate?: any | null, status: string } };
 
 export type GuideSettingsFragment = { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null };
 
@@ -2793,7 +2786,7 @@ export type AuthSettingsFragment = { __typename?: 'AuthSettings', enableLogin?: 
 
 export type SocialSettingsFragment = { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null };
 
-export type SpaceWithIntegrationsFragment = { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, skin: string, avatar?: string | null, domains: Array<string>, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null } };
+export type SpaceWithIntegrationsFragment = { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, skin: string, avatar?: string | null, domains: Array<string>, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null, loadersInfo?: { __typename?: 'SpaceLoadersInfo', discourseUrl?: string | null } | null } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null } };
 
 export type SpaceSummaryFragment = { __typename?: 'Space', id: string, admins: Array<string>, adminUsernames: Array<string>, avatar?: string | null, creator: string, name: string, skin: string, domains: Array<string> };
 
@@ -2807,14 +2800,14 @@ export type ExtendedSpaceQueryVariables = Exact<{
 }>;
 
 
-export type ExtendedSpaceQuery = { __typename?: 'Query', space?: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, skin: string, avatar?: string | null, domains: Array<string>, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null } } | null };
+export type ExtendedSpaceQuery = { __typename?: 'Query', space?: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, skin: string, avatar?: string | null, domains: Array<string>, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null, loadersInfo?: { __typename?: 'SpaceLoadersInfo', discourseUrl?: string | null } | null } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null } } | null };
 
 export type ExtendedSpaceByDomainQueryVariables = Exact<{
   domain: Scalars['String'];
 }>;
 
 
-export type ExtendedSpaceByDomainQuery = { __typename?: 'Query', space?: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, skin: string, avatar?: string | null, domains: Array<string>, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null } } | null };
+export type ExtendedSpaceByDomainQuery = { __typename?: 'Query', space?: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, skin: string, avatar?: string | null, domains: Array<string>, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null, loadersInfo?: { __typename?: 'SpaceLoadersInfo', discourseUrl?: string | null } | null } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null } } | null };
 
 export type SpaceDiscordGuildQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -2829,7 +2822,7 @@ export type UpsertSpaceFeaturesMutationVariables = Exact<{
 }>;
 
 
-export type UpsertSpaceFeaturesMutation = { __typename?: 'Mutation', payload: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, skin: string, avatar?: string | null, domains: Array<string>, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null } } };
+export type UpsertSpaceFeaturesMutation = { __typename?: 'Mutation', payload: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, skin: string, avatar?: string | null, domains: Array<string>, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null, loadersInfo?: { __typename?: 'SpaceLoadersInfo', discourseUrl?: string | null } | null } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null } } };
 
 export type UpsertSpaceInviteLinksMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -2877,14 +2870,14 @@ export type UpdateSpaceMutationVariables = Exact<{
 }>;
 
 
-export type UpdateSpaceMutation = { __typename?: 'Mutation', updateSpace: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, skin: string, avatar?: string | null, domains: Array<string>, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null } } };
+export type UpdateSpaceMutation = { __typename?: 'Mutation', updateSpace: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, skin: string, avatar?: string | null, domains: Array<string>, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null, loadersInfo?: { __typename?: 'SpaceLoadersInfo', discourseUrl?: string | null } | null } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null } } };
 
 export type CreateSpaceMutationVariables = Exact<{
   spaceInput: UpsertSpaceInput;
 }>;
 
 
-export type CreateSpaceMutation = { __typename?: 'Mutation', createSpace: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, skin: string, avatar?: string | null, domains: Array<string>, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null } } };
+export type CreateSpaceMutation = { __typename?: 'Mutation', createSpace: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, skin: string, avatar?: string | null, domains: Array<string>, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null, loadersInfo?: { __typename?: 'SpaceLoadersInfo', discourseUrl?: string | null } | null } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null } } };
 
 export type ReloadAcademyRepoMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -2899,7 +2892,7 @@ export type UpdateSpaceGuideSettingsMutationVariables = Exact<{
 }>;
 
 
-export type UpdateSpaceGuideSettingsMutation = { __typename?: 'Mutation', payload: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, skin: string, avatar?: string | null, domains: Array<string>, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null } } };
+export type UpdateSpaceGuideSettingsMutation = { __typename?: 'Mutation', payload: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, skin: string, avatar?: string | null, domains: Array<string>, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null, loadersInfo?: { __typename?: 'SpaceLoadersInfo', discourseUrl?: string | null } | null } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null } } };
 
 export type UpdateSpaceAuthSettingsMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -2907,7 +2900,7 @@ export type UpdateSpaceAuthSettingsMutationVariables = Exact<{
 }>;
 
 
-export type UpdateSpaceAuthSettingsMutation = { __typename?: 'Mutation', payload: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, skin: string, avatar?: string | null, domains: Array<string>, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null } } };
+export type UpdateSpaceAuthSettingsMutation = { __typename?: 'Mutation', payload: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, skin: string, avatar?: string | null, domains: Array<string>, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null, loadersInfo?: { __typename?: 'SpaceLoadersInfo', discourseUrl?: string | null } | null } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null } } };
 
 export type UpdateSpaceSocialSettingsMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -2915,7 +2908,7 @@ export type UpdateSpaceSocialSettingsMutationVariables = Exact<{
 }>;
 
 
-export type UpdateSpaceSocialSettingsMutation = { __typename?: 'Mutation', payload: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, skin: string, avatar?: string | null, domains: Array<string>, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null } } };
+export type UpdateSpaceSocialSettingsMutation = { __typename?: 'Mutation', payload: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, skin: string, avatar?: string | null, domains: Array<string>, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null, loadersInfo?: { __typename?: 'SpaceLoadersInfo', discourseUrl?: string | null } | null } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null } } };
 
 export type UpdateSpaceByteSettingsMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -2923,7 +2916,7 @@ export type UpdateSpaceByteSettingsMutationVariables = Exact<{
 }>;
 
 
-export type UpdateSpaceByteSettingsMutation = { __typename?: 'Mutation', payload: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, skin: string, avatar?: string | null, domains: Array<string>, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null } } };
+export type UpdateSpaceByteSettingsMutation = { __typename?: 'Mutation', payload: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, skin: string, avatar?: string | null, domains: Array<string>, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null, loadersInfo?: { __typename?: 'SpaceLoadersInfo', discourseUrl?: string | null } | null } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null } } };
 
 export type SendEmailMutationVariables = Exact<{
   input: SendEmailInput;
@@ -2931,6 +2924,14 @@ export type SendEmailMutationVariables = Exact<{
 
 
 export type SendEmailMutation = { __typename?: 'Mutation', payload: boolean };
+
+export type UpsertSpaceLoaderInfoMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+  input: SpaceLoadersInfoInput;
+}>;
+
+
+export type UpsertSpaceLoaderInfoMutation = { __typename?: 'Mutation', payload: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, skin: string, avatar?: string | null, domains: Array<string>, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null, loadersInfo?: { __typename?: 'SpaceLoadersInfo', discourseUrl?: string | null } | null } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null } } };
 
 export type TimelineEventFragment = { __typename?: 'TimelineEvent', title: string, uuid: string, date: any, summary: string, fullDetails?: string | null, moreLink?: string | null };
 
@@ -3539,7 +3540,6 @@ export const DiscourseIndexRunFragmentFragmentDoc = gql`
   id
   runDate
   status
-  url
 }
     `;
 export const GuideSettingsFragmentDoc = gql`
@@ -3595,6 +3595,9 @@ export const SpaceWithIntegrationsFragmentDoc = gql`
       walletName
     }
     projectGalaxyTokenLastFour
+    loadersInfo {
+      discourseUrl
+    }
   }
   authSettings {
     loginOptions
@@ -6548,74 +6551,39 @@ export type DiscourseTopicsQueryResult = Apollo.QueryResult<DiscourseTopicsQuery
 export function refetchDiscourseTopicsQuery(variables: DiscourseTopicsQueryVariables) {
       return { query: DiscourseTopicsDocument, variables: variables }
     }
-export const CreateNewDiscourseIndexRunDocument = gql`
-    mutation CreateNewDiscourseIndexRun($spaceId: String!, $input: DiscourseIndexRunInput!) {
-  createNewDiscourseIndexRun(spaceId: $spaceId, input: $input) {
+export const TriggerNewDiscourseIndexRunDocument = gql`
+    mutation triggerNewDiscourseIndexRun($spaceId: String!) {
+  triggerNewDiscourseIndexRun(spaceId: $spaceId) {
     ...DiscourseIndexRunFragment
   }
 }
     ${DiscourseIndexRunFragmentFragmentDoc}`;
-export type CreateNewDiscourseIndexRunMutationFn = Apollo.MutationFunction<CreateNewDiscourseIndexRunMutation, CreateNewDiscourseIndexRunMutationVariables>;
+export type TriggerNewDiscourseIndexRunMutationFn = Apollo.MutationFunction<TriggerNewDiscourseIndexRunMutation, TriggerNewDiscourseIndexRunMutationVariables>;
 
 /**
- * __useCreateNewDiscourseIndexRunMutation__
+ * __useTriggerNewDiscourseIndexRunMutation__
  *
- * To run a mutation, you first call `useCreateNewDiscourseIndexRunMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateNewDiscourseIndexRunMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useTriggerNewDiscourseIndexRunMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useTriggerNewDiscourseIndexRunMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [createNewDiscourseIndexRunMutation, { data, loading, error }] = useCreateNewDiscourseIndexRunMutation({
+ * const [triggerNewDiscourseIndexRunMutation, { data, loading, error }] = useTriggerNewDiscourseIndexRunMutation({
  *   variables: {
  *      spaceId: // value for 'spaceId'
- *      input: // value for 'input'
  *   },
  * });
  */
-export function useCreateNewDiscourseIndexRunMutation(baseOptions?: Apollo.MutationHookOptions<CreateNewDiscourseIndexRunMutation, CreateNewDiscourseIndexRunMutationVariables>) {
+export function useTriggerNewDiscourseIndexRunMutation(baseOptions?: Apollo.MutationHookOptions<TriggerNewDiscourseIndexRunMutation, TriggerNewDiscourseIndexRunMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateNewDiscourseIndexRunMutation, CreateNewDiscourseIndexRunMutationVariables>(CreateNewDiscourseIndexRunDocument, options);
+        return Apollo.useMutation<TriggerNewDiscourseIndexRunMutation, TriggerNewDiscourseIndexRunMutationVariables>(TriggerNewDiscourseIndexRunDocument, options);
       }
-export type CreateNewDiscourseIndexRunMutationHookResult = ReturnType<typeof useCreateNewDiscourseIndexRunMutation>;
-export type CreateNewDiscourseIndexRunMutationResult = Apollo.MutationResult<CreateNewDiscourseIndexRunMutation>;
-export type CreateNewDiscourseIndexRunMutationOptions = Apollo.BaseMutationOptions<CreateNewDiscourseIndexRunMutation, CreateNewDiscourseIndexRunMutationVariables>;
-export const TriggerDiscourseIndexRunDocument = gql`
-    mutation triggerDiscourseIndexRun($spaceId: String!, $indexRunId: String!) {
-  triggerDiscourseIndexRun(spaceId: $spaceId, indexRunId: $indexRunId) {
-    ...DiscourseIndexRunFragment
-  }
-}
-    ${DiscourseIndexRunFragmentFragmentDoc}`;
-export type TriggerDiscourseIndexRunMutationFn = Apollo.MutationFunction<TriggerDiscourseIndexRunMutation, TriggerDiscourseIndexRunMutationVariables>;
-
-/**
- * __useTriggerDiscourseIndexRunMutation__
- *
- * To run a mutation, you first call `useTriggerDiscourseIndexRunMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useTriggerDiscourseIndexRunMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [triggerDiscourseIndexRunMutation, { data, loading, error }] = useTriggerDiscourseIndexRunMutation({
- *   variables: {
- *      spaceId: // value for 'spaceId'
- *      indexRunId: // value for 'indexRunId'
- *   },
- * });
- */
-export function useTriggerDiscourseIndexRunMutation(baseOptions?: Apollo.MutationHookOptions<TriggerDiscourseIndexRunMutation, TriggerDiscourseIndexRunMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<TriggerDiscourseIndexRunMutation, TriggerDiscourseIndexRunMutationVariables>(TriggerDiscourseIndexRunDocument, options);
-      }
-export type TriggerDiscourseIndexRunMutationHookResult = ReturnType<typeof useTriggerDiscourseIndexRunMutation>;
-export type TriggerDiscourseIndexRunMutationResult = Apollo.MutationResult<TriggerDiscourseIndexRunMutation>;
-export type TriggerDiscourseIndexRunMutationOptions = Apollo.BaseMutationOptions<TriggerDiscourseIndexRunMutation, TriggerDiscourseIndexRunMutationVariables>;
+export type TriggerNewDiscourseIndexRunMutationHookResult = ReturnType<typeof useTriggerNewDiscourseIndexRunMutation>;
+export type TriggerNewDiscourseIndexRunMutationResult = Apollo.MutationResult<TriggerNewDiscourseIndexRunMutation>;
+export type TriggerNewDiscourseIndexRunMutationOptions = Apollo.BaseMutationOptions<TriggerNewDiscourseIndexRunMutation, TriggerNewDiscourseIndexRunMutationVariables>;
 export const SpacesDocument = gql`
     query Spaces {
   spaces {
@@ -7245,6 +7213,40 @@ export function useSendEmailMutation(baseOptions?: Apollo.MutationHookOptions<Se
 export type SendEmailMutationHookResult = ReturnType<typeof useSendEmailMutation>;
 export type SendEmailMutationResult = Apollo.MutationResult<SendEmailMutation>;
 export type SendEmailMutationOptions = Apollo.BaseMutationOptions<SendEmailMutation, SendEmailMutationVariables>;
+export const UpsertSpaceLoaderInfoDocument = gql`
+    mutation UpsertSpaceLoaderInfo($spaceId: String!, $input: SpaceLoadersInfoInput!) {
+  payload: upsertSpaceLoaderInfo(spaceId: $spaceId, input: $input) {
+    ...SpaceWithIntegrations
+  }
+}
+    ${SpaceWithIntegrationsFragmentDoc}`;
+export type UpsertSpaceLoaderInfoMutationFn = Apollo.MutationFunction<UpsertSpaceLoaderInfoMutation, UpsertSpaceLoaderInfoMutationVariables>;
+
+/**
+ * __useUpsertSpaceLoaderInfoMutation__
+ *
+ * To run a mutation, you first call `useUpsertSpaceLoaderInfoMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertSpaceLoaderInfoMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertSpaceLoaderInfoMutation, { data, loading, error }] = useUpsertSpaceLoaderInfoMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpsertSpaceLoaderInfoMutation(baseOptions?: Apollo.MutationHookOptions<UpsertSpaceLoaderInfoMutation, UpsertSpaceLoaderInfoMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpsertSpaceLoaderInfoMutation, UpsertSpaceLoaderInfoMutationVariables>(UpsertSpaceLoaderInfoDocument, options);
+      }
+export type UpsertSpaceLoaderInfoMutationHookResult = ReturnType<typeof useUpsertSpaceLoaderInfoMutation>;
+export type UpsertSpaceLoaderInfoMutationResult = Apollo.MutationResult<UpsertSpaceLoaderInfoMutation>;
+export type UpsertSpaceLoaderInfoMutationOptions = Apollo.BaseMutationOptions<UpsertSpaceLoaderInfoMutation, UpsertSpaceLoaderInfoMutationVariables>;
 export const TimelinesDocument = gql`
     query Timelines($spaceId: String!) {
   timelines(spaceId: $spaceId) {

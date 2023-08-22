@@ -29,6 +29,7 @@ export default function DiscourseIndexRuns(props: { space: SpaceWithIntegrations
       spaceId: props.space.id,
     },
   });
+
   const discourseIndexRuns = data?.discourseIndexRuns;
   const tabs: TabItem[] = [
     {
@@ -43,6 +44,7 @@ export default function DiscourseIndexRuns(props: { space: SpaceWithIntegrations
   ];
 
   const [selectedTabId, setSelectedTabId] = useState(TabIds.Runs);
+  const [showCreateNewDiscourseIndexRunModal, setShowCreateNewDiscourseIndexRunModal] = useState(false);
 
   if (loading || !discourseIndexRuns) {
     return <SectionLoader />;
@@ -56,12 +58,16 @@ export default function DiscourseIndexRuns(props: { space: SpaceWithIntegrations
       {selectedTabId === TabIds.Posts ? (
         <DiscoursePosts space={props.space} />
       ) : (
-        <Table
-          heading={'Discourse Index Runs'}
-          data={getIndexRunRows(discourseIndexRuns)}
-          columnsHeadings={['Id', 'Created At', 'Ran At', 'Status']}
-          columnsWidthPercents={[20, 50, 20, 10]}
-        />
+        <div className="mt-8">
+          <Table
+            addNewLabel="Trigger New"
+            onAddNew={() => {}}
+            heading={'Discourse Index Runs'}
+            data={getIndexRunRows(discourseIndexRuns)}
+            columnsHeadings={['Id', 'Created At', 'Ran At', 'Status']}
+            columnsWidthPercents={[20, 50, 20, 10]}
+          />
+        </div>
       )}
     </div>
   );

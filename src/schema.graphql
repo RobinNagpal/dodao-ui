@@ -313,24 +313,17 @@ input DeleteTopicVideoInput {
 }
 
 type DiscourseIndexRun {
-  createdAt: String!
+  createdAt: DateTimeISO!
   id: String!
-  runDate: String
+  runDate: DateTimeISO
   spaceId: String!
   status: String!
-  url: String!
-}
-
-input DiscourseIndexRunInput {
-  runDate: String!
-  spaceId: String!
-  url: String!
 }
 
 type DiscoursePost {
   author: String
-  createdAt: String!
-  datePublished: String!
+  createdAt: DateTimeISO!
+  datePublished: DateTimeISO!
   fullContent: String
   id: String!
   indexedAt: DateTimeISO
@@ -344,10 +337,10 @@ type DiscoursePostComment {
   author: String!
   commentPostId: String!
   content: String!
-  createdAt: String!
-  datePublished: String!
+  createdAt: DateTimeISO!
+  datePublished: DateTimeISO!
   id: String!
-  indexedAt: String!
+  indexedAt: DateTimeISO!
   postId: String!
   spaceId: String!
 }
@@ -880,7 +873,6 @@ type Mutation {
   askChatCompletionAI(input: ChatCompletionAIInput!): OpenAIChatCompletionResponse!
   askCompletionAI(input: CompletionAIInput!): OpenAICompletionResponse!
   authenticateWithUnstoppable(idToken: String!): JwtResponse!
-  createNewDiscourseIndexRun(input: DiscourseIndexRunInput!, spaceId: String!): DiscourseIndexRun!
   createSignedUrl(input: CreateSignedUrlInput!, spaceId: String!): String!
   createSpace(spaceInput: UpsertSpaceInput!): Space!
   createSummaryOfContent(input: String!): OpenAITextResponse!
@@ -913,7 +905,7 @@ type Mutation {
   submitGitCourse(input: CourseSubmissionInput!, spaceId: String!): GitCourseSubmission!
   submitGitCourseTopic(gitCourseTopicSubmission: GitCourseTopicSubmissionInput!, spaceId: String!): GitCourseSubmission!
   submitGuide(submissionInput: GuideSubmissionInput!): GuideSubmission!
-  triggerDiscourseIndexRun(indexRunId: String!, spaceId: String!): DiscourseIndexRun!
+  triggerNewDiscourseIndexRun(spaceId: String!): DiscourseIndexRun!
   updateAuthSettings(input: AuthSettingsInput!, spaceId: String!): Space!
   updateByteSettings(input: ByteSettingsInput!, spaceId: String!): Space!
   updateCourseBasicInfo(courseBasicInfo: CourseBasicInfoInput!, spaceId: String!): GitCourse!
@@ -939,6 +931,7 @@ type Mutation {
   upsertSpaceAcademyRepository(academyRepository: String!, spaceId: String!): Space!
   upsertSpaceFeatures(features: [String!]!, spaceId: String!): Space!
   upsertSpaceInviteLinks(spaceId: String!, spaceInviteArgs: SpaceInviteArgs!): Space!
+  upsertSpaceLoaderInfo(input: SpaceLoadersInfoInput!, spaceId: String!): Space!
   upsertTimeline(input: UpsertTimelineInput!, spaceId: String!): Timeline!
 }
 
@@ -1150,6 +1143,7 @@ type SpaceIntegrations {
   discordGuildId: String
   gitGuideRepositories: [SpaceGitRepository!]
   gnosisSafeWallets: [GnosisSafeWallet!]
+  loadersInfo: SpaceLoadersInfo
   projectGalaxyTokenLastFour: String
 }
 
@@ -1180,6 +1174,14 @@ input SpaceInviteLinksInput {
   showAnimatedButtonForDiscord: Boolean
   showAnimatedButtonForTelegram: Boolean
   telegramInviteLink: String
+}
+
+type SpaceLoadersInfo {
+  discourseUrl: String
+}
+
+input SpaceLoadersInfoInput {
+  discourseUrl: String
 }
 
 input SpaceWhere {
