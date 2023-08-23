@@ -27,10 +27,6 @@ export function MobileProfileMenu({ session, space }: ProfileMenuProps) {
         <div className="flex-shrink-0">
           <Image className="h-10 w-10 rounded-full" src={`https://api.multiavatar.com/${session?.username || 'unknown'}.svg`} alt="" width={50} height={50} />
         </div>
-        <div className="ml-3">
-          <div className="text-base font-medium">Tom Cook</div>
-          <div className="text-sm font-medium">tom@example.com</div>
-        </div>
       </div>
       <div className="mt-3 space-y-1">
         {isSuperAdmin(session) && <ProfileActionButton label="Your Profile" />}
