@@ -27,6 +27,20 @@ query DiscoursePosts($spaceId: String!) {
   }
 }
 
+query DiscoursePostComments($spaceId: String!, $postId: String!) {
+  discoursePostComments(spaceId: $spaceId, postId: $postId){
+    id
+    spaceId
+    commentPostId
+    author
+    datePublished
+    createdAt
+    indexedAt
+    content
+    postId
+  }
+}
+
 query DiscourseTopics($spaceId: String!, $postId: String!) {
   discoursePostComments(spaceId: $spaceId, postId: $postId){
     id

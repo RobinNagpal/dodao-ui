@@ -1,5 +1,6 @@
 import { Table, TableActions, TableRow } from '@/components/core/table/Table';
 import DiscourseIndexRuns from '@/components/spaces/Loaders/Discourse/DiscourseIndexRuns';
+import DiscoursePostComments from '@/components/spaces/Loaders/Discourse/DiscoursePostComments';
 import { ManageSpaceSubviews } from '@/components/spaces/manageSpaceSubviews';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import moment from 'moment/moment';
@@ -31,6 +32,7 @@ export default function AllLoaders(props: { space: SpaceWithIntegrationsFragment
   const router = useRouter();
 
   const loaderSubview = props.spaceInfoParams?.[2];
+  const subviewPathParam = props.spaceInfoParams?.[3];
 
   console.log('loaderSubview', loaderSubview);
   const tableActions: TableActions = useMemo(() => {
@@ -54,6 +56,9 @@ export default function AllLoaders(props: { space: SpaceWithIntegrationsFragment
 
   if (loaderSubview === 'discourse-index-runs') {
     return <DiscourseIndexRuns space={props.space} />;
+  }
+  if (loaderSubview === 'post-comments' && subviewPathParam) {
+    return <DiscoursePostComments space={props.space} postId={subviewPathParam} />;
   }
   return (
     <div className="mx-8 mt-8">

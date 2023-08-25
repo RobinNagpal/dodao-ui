@@ -2765,6 +2765,14 @@ export type DiscoursePostsQueryVariables = Exact<{
 
 export type DiscoursePostsQuery = { __typename?: 'Query', discoursePosts: Array<{ __typename?: 'DiscoursePost', id: string, spaceId: string, title: string, url: string, fullContent?: string | null, author?: string | null, datePublished: any, createdAt: any, indexedAt?: any | null, status: string }> };
 
+export type DiscoursePostCommentsQueryVariables = Exact<{
+  spaceId: Scalars['String'];
+  postId: Scalars['String'];
+}>;
+
+
+export type DiscoursePostCommentsQuery = { __typename?: 'Query', discoursePostComments: Array<{ __typename?: 'DiscoursePostComment', id: string, spaceId: string, commentPostId: string, author: string, datePublished: any, createdAt: any, indexedAt: any, content: string, postId: string }> };
+
 export type DiscourseTopicsQueryVariables = Exact<{
   spaceId: Scalars['String'];
   postId: Scalars['String'];
@@ -6503,6 +6511,53 @@ export type DiscoursePostsLazyQueryHookResult = ReturnType<typeof useDiscoursePo
 export type DiscoursePostsQueryResult = Apollo.QueryResult<DiscoursePostsQuery, DiscoursePostsQueryVariables>;
 export function refetchDiscoursePostsQuery(variables: DiscoursePostsQueryVariables) {
       return { query: DiscoursePostsDocument, variables: variables }
+    }
+export const DiscoursePostCommentsDocument = gql`
+    query DiscoursePostComments($spaceId: String!, $postId: String!) {
+  discoursePostComments(spaceId: $spaceId, postId: $postId) {
+    id
+    spaceId
+    commentPostId
+    author
+    datePublished
+    createdAt
+    indexedAt
+    content
+    postId
+  }
+}
+    `;
+
+/**
+ * __useDiscoursePostCommentsQuery__
+ *
+ * To run a query within a React component, call `useDiscoursePostCommentsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useDiscoursePostCommentsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useDiscoursePostCommentsQuery({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      postId: // value for 'postId'
+ *   },
+ * });
+ */
+export function useDiscoursePostCommentsQuery(baseOptions: Apollo.QueryHookOptions<DiscoursePostCommentsQuery, DiscoursePostCommentsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<DiscoursePostCommentsQuery, DiscoursePostCommentsQueryVariables>(DiscoursePostCommentsDocument, options);
+      }
+export function useDiscoursePostCommentsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<DiscoursePostCommentsQuery, DiscoursePostCommentsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<DiscoursePostCommentsQuery, DiscoursePostCommentsQueryVariables>(DiscoursePostCommentsDocument, options);
+        }
+export type DiscoursePostCommentsQueryHookResult = ReturnType<typeof useDiscoursePostCommentsQuery>;
+export type DiscoursePostCommentsLazyQueryHookResult = ReturnType<typeof useDiscoursePostCommentsLazyQuery>;
+export type DiscoursePostCommentsQueryResult = Apollo.QueryResult<DiscoursePostCommentsQuery, DiscoursePostCommentsQueryVariables>;
+export function refetchDiscoursePostCommentsQuery(variables: DiscoursePostCommentsQueryVariables) {
+      return { query: DiscoursePostCommentsDocument, variables: variables }
     }
 export const DiscourseTopicsDocument = gql`
     query DiscourseTopics($spaceId: String!, $postId: String!) {
