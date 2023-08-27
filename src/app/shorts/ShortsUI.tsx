@@ -1,6 +1,6 @@
-'use client'
-import PageWrapper from '@/components/core/page/PageWrapper'
-import Shorts from './Shorts'
+'use client';
+import PageWrapper from '@/components/core/page/PageWrapper';
+import Shorts from './Shorts';
 
 import { useEffect, useState } from 'react';
 const videos = [
@@ -8,31 +8,31 @@ const videos = [
     image: 'imge1.jpg',
     title: 'What is leverage',
     topic: 'Blockchain',
-    link: '/video1'
+    link: '/video1',
   },
   {
     image: 'imge1.jpg',
     title: 'What is leverage',
     topic: 'Blockchain',
-    link: '/video1'
+    link: '/video1',
   },
   {
     image: 'imge1.jpg',
     title: 'What is leverage',
     topic: 'Blockchain',
-    link: '/video1'
+    link: '/video1',
   },
   {
     image: 'imge1.jpg',
     title: 'What is leverage',
     topic: 'Blockchain',
-    link: '/video1'
+    link: '/video1',
   },
   {
     image: 'imge1.jpg',
     title: 'What is leverage',
     topic: 'Blockchain',
-    link: '/video1'
+    link: '/video1',
   },
 ];
 
@@ -41,18 +41,21 @@ interface Props {
   title: string;
   topic: string;
   link: string;
-  onClick?: () => void; 
+  onClick?: () => void;
 }
 
-const ShortsThumbnail: React.FC<Props> = ({ image, title, topic, link ,onClick}) => {
+const ShortsThumbnail: React.FC<Props> = ({ image, title, topic, link, onClick }) => {
   return (
     <button onClick={onClick}>
       <a className="thumbnail-wrapper">
         <div className="image-wrapper">
-          <img src={image} alt={title} className='thumbnail-image' />
+          <img src={image} alt={title} className="thumbnail-image" />
         </div>
         <div className="title-wrapper">
-        <h1>  {title} | {topic}</h1>
+          <h1>
+            {' '}
+            {title} | {topic}
+          </h1>
         </div>
         <style jsx>{`
           .thumbnail-wrapper {
@@ -61,23 +64,21 @@ const ShortsThumbnail: React.FC<Props> = ({ image, title, topic, link ,onClick})
             align-items: center;
             cursor: pointer;
             text-decoration: none;
-            color:white; 
-            
+            color: white;
           }
           .title-wrapper {
-            margin-top:10px;
+            margin-top: 10px;
             text-align: center;
-            font-size:18px;
+            font-size: 18px;
           }
-          .thumbnail-image{
-            height :30vh ; 
-            width:20vw;
-            border-radius:5%;
+          .thumbnail-image {
+            height: 30vh;
+            width: 20vw;
+            border-radius: 5%;
           }
         `}</style>
       </a>
-      </button>
-    
+    </button>
   );
 };
 interface ShortsUIProps {
@@ -106,23 +107,18 @@ const ShortsUI: React.FC<ShortsUIProps> = ({ onThumbnailClick }) => {
 
   return (
     <PageWrapper>
-      
-    <div className="grid">
-      {videos.map((video, index) => (
-        <ShortsThumbnail 
-        key={index} 
-        {...video} 
-        onClick={() => onThumbnailClick(index)} 
-      />
-      ))}
-      <style jsx>{`
-        .grid {
-          display: grid;
-          grid-template-columns: repeat(${gridCols}, 1fr);
-          gap: 50px;
-        }
-      `}</style>
-    </div>
+      <div className="grid">
+        {videos.map((video, index) => (
+          <ShortsThumbnail key={index} {...video} onClick={() => onThumbnailClick(index)} />
+        ))}
+        <style jsx>{`
+          .grid {
+            display: grid;
+            grid-template-columns: repeat(${gridCols}, 1fr);
+            gap: 50px;
+          }
+        `}</style>
+      </div>
     </PageWrapper>
   );
 };
