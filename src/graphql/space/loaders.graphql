@@ -5,6 +5,14 @@ fragment DiscourseIndexRunFragment on DiscourseIndexRun {
   status
 }
 
+fragment DiscordServerFragment on DiscordServer {
+  createdAt
+  discordServerId
+  iconUrl
+  id
+  name
+  updatedAt
+}
 
 query DiscourseIndexRuns($spaceId: String!) {
   discourseIndexRuns(spaceId: $spaceId){
@@ -55,10 +63,21 @@ query DiscourseTopics($spaceId: String!, $postId: String!) {
   }
 }
 
+query DiscordServer($spaceId: String!, $id: String!) {
+  discordServer(spaceId: $spaceId, id: $id){
+    ...DiscordServerFragment
+  }
+}
 
 
 mutation triggerNewDiscourseIndexRun($spaceId: String!) {
   triggerNewDiscourseIndexRun(spaceId: $spaceId) {
     ...DiscourseIndexRunFragment
+  }
+}
+
+mutation ReFetchDiscordServers {
+  reFetchDiscordServers {
+    ...DiscordServerFragment
   }
 }

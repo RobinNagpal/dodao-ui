@@ -50,6 +50,7 @@ fragment SpaceWithIntegrations on Space {
 
     loadersInfo {
       discourseUrl
+      discordServerId
     }
   }
   authSettings {

@@ -312,6 +312,37 @@ input DeleteTopicVideoInput {
   videoUuid: String!
 }
 
+type DiscordChannel {
+  createdAt: DateTimeISO!
+  discordChannelId: String!
+  id: String!
+  name: String!
+  serverId: String!
+  shouldIndex: Boolean!
+  status: String!
+  type: String!
+  updatedAt: DateTimeISO!
+}
+
+type DiscordMessage {
+  channelId: String!
+  content: String!
+  createdAt: DateTimeISO!
+  discordMessageId: String!
+  id: String!
+  serverId: String!
+  updatedAt: DateTimeISO!
+}
+
+type DiscordServer {
+  createdAt: DateTimeISO!
+  discordServerId: String!
+  iconUrl: String
+  id: String!
+  name: String!
+  updatedAt: DateTimeISO!
+}
+
 type DiscourseIndexRun {
   createdAt: DateTimeISO!
   id: String!
@@ -896,6 +927,9 @@ type Mutation {
   moveTopicSummary(spaceId: String!, summaryInfo: MoveTopicSummaryInput!): GitCourse!
   moveTopicVideo(spaceId: String!, videoInfo: MoveTopicVideoInput!): GitCourse!
   publishByte(input: UpsertByteInput!, spaceId: String!): Byte!
+  reFetchDiscordChannels(serverId: String!, spaceId: String!): [DiscordChannel!]!
+  reFetchDiscordMessages(serverId: String!, spaceId: String!): Boolean!
+  reFetchDiscordServers: [DiscordServer!]!
   refreshGitCourse(courseKey: String!, spaceId: String!): Boolean!
   refreshGitCourses(spaceId: String!): Boolean!
   reloadAcademyRepository(spaceId: String!): Boolean!
@@ -1002,6 +1036,9 @@ type Query {
   bytes(spaceId: String!): [Byte!]!
   consolidatedGuideRating(guideUuid: String!, spaceId: String!): ConsolidatedGuideRating
   courses(spaceId: String!): [GitCourse!]!
+  discordChannels(serverId: String!, spaceId: String!): [DiscordChannel!]!
+  discordMessages(channelId: String!, spaceId: String!): [DiscordMessage!]!
+  discordServer(id: String!, spaceId: String!): DiscordServer!
   discourseIndexRuns(spaceId: String!): [DiscourseIndexRun!]!
   discoursePostComments(postId: String!, spaceId: String!): [DiscoursePostComment!]!
   discoursePosts(spaceId: String!): [DiscoursePost!]!
@@ -1177,10 +1214,12 @@ input SpaceInviteLinksInput {
 }
 
 type SpaceLoadersInfo {
+  discordServerId: String
   discourseUrl: String
 }
 
 input SpaceLoadersInfoInput {
+  discordServerId: String
   discourseUrl: String
 }
 
