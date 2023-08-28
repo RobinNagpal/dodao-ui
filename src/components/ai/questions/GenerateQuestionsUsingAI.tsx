@@ -104,7 +104,7 @@ export default function GenerateQuestionsUsingAI(props: GenerateQuestionUsingAIP
           { id: '3', label: '3' },
           { id: '4', label: '4' },
         ]}
-        setSelectedItemId={(value) => setNumberOfQuestions(parseInt(value))}
+        setSelectedItemId={(value) => setNumberOfQuestions(value ? parseInt(value) : 2)}
         className="mt-2"
       />
 
