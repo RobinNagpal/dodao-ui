@@ -6,7 +6,7 @@ import { useTranslation } from 'next-i18next';
 
 import { getEndpoint } from '@/chatbot/utils/app/api';
 import { saveConversation, saveConversations, updateConversation } from '@/chatbot/utils/app/conversation';
-import { throttle } from '@/chatbot/utils/data/throttle';
+import { throttle } from '@/chatbot/utils/throttle/throttle';
 
 import { ChatBody, Conversation, Message } from '@/chatbot/types/chat';
 import { Plugin } from '@/chatbot/types/plugin';
