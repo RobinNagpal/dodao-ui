@@ -325,11 +325,13 @@ type DiscordChannel {
 }
 
 type DiscordMessage {
+  authorUsername: String!
   channelId: String!
   content: String!
   createdAt: DateTimeISO!
   discordMessageId: String!
   id: String!
+  messageDate: DateTimeISO!
   serverId: String!
   updatedAt: DateTimeISO!
 }
@@ -928,7 +930,7 @@ type Mutation {
   moveTopicVideo(spaceId: String!, videoInfo: MoveTopicVideoInput!): GitCourse!
   publishByte(input: UpsertByteInput!, spaceId: String!): Byte!
   reFetchDiscordChannels(serverId: String!, spaceId: String!): [DiscordChannel!]!
-  reFetchDiscordMessages(serverId: String!, spaceId: String!): Boolean!
+  reFetchDiscordMessages(channelId: String!, spaceId: String!): Boolean!
   reFetchDiscordServers: [DiscordServer!]!
   refreshGitCourse(courseKey: String!, spaceId: String!): Boolean!
   refreshGitCourses(spaceId: String!): Boolean!
@@ -944,6 +946,7 @@ type Mutation {
   updateByteSettings(input: ByteSettingsInput!, spaceId: String!): Space!
   updateCourseBasicInfo(courseBasicInfo: CourseBasicInfoInput!, spaceId: String!): GitCourse!
   updateGuideSettings(input: GuideSettingsInput!, spaceId: String!): Space!
+  updateIndexingOfDiscordChannel(channelId: String!, shouldIndex: Boolean!, spaceId: String!): DiscordChannel!
   updateSocialSettings(input: SocialSettingsInput!, spaceId: String!): Space!
   updateSpace(spaceInput: UpsertSpaceInput!): Space!
   updateTopicBasicInfo(spaceId: String!, topicInfo: UpdateTopicBasicInfoInput!): GitCourse!

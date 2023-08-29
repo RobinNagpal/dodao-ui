@@ -34,7 +34,7 @@ export default function DiscoursePostComments(props: { space: SpaceWithIntegrati
 
   return (
     <div className="w-full">
-      <Link href={'/space/manage/' + ManageSpaceSubviews.Loaders + '/' + 'discourse-index-runs'} className="text-color">
+      <Link href={'/space/manage/' + ManageSpaceSubviews.Loaders + '/discourse/discourse-index-runs'} className="text-color">
         <span className="mr-1 font-bold">&#8592;</span>
         All Posts
       </Link>

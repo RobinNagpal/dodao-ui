@@ -355,11 +355,13 @@ export interface DiscordChannel {
 
 export interface DiscordMessage {
   __typename?: 'DiscordMessage';
+  authorUsername: Scalars['String'];
   channelId: Scalars['String'];
   content: Scalars['String'];
   createdAt: Scalars['DateTimeISO'];
   discordMessageId: Scalars['String'];
   id: Scalars['String'];
+  messageDate: Scalars['DateTimeISO'];
   serverId: Scalars['String'];
   updatedAt: Scalars['DateTimeISO'];
 }
@@ -1005,6 +1007,7 @@ export interface Mutation {
   updateByteSettings: Space;
   updateCourseBasicInfo: GitCourse;
   updateGuideSettings: Space;
+  updateIndexingOfDiscordChannel: DiscordChannel;
   updateSocialSettings: Space;
   updateSpace: Space;
   updateTopicBasicInfo: GitCourse;
@@ -1228,7 +1231,7 @@ export interface MutationReFetchDiscordChannelsArgs {
 
 
 export interface MutationReFetchDiscordMessagesArgs {
-  serverId: Scalars['String'];
+  channelId: Scalars['String'];
   spaceId: Scalars['String'];
 }
 
@@ -1307,6 +1310,13 @@ export interface MutationUpdateCourseBasicInfoArgs {
 
 export interface MutationUpdateGuideSettingsArgs {
   input: GuideSettingsInput;
+  spaceId: Scalars['String'];
+}
+
+
+export interface MutationUpdateIndexingOfDiscordChannelArgs {
+  channelId: Scalars['String'];
+  shouldIndex: Scalars['Boolean'];
   spaceId: Scalars['String'];
 }
 
@@ -2825,6 +2835,10 @@ export type DiscourseIndexRunFragmentFragment = { __typename?: 'DiscourseIndexRu
 
 export type DiscordServerFragmentFragment = { __typename?: 'DiscordServer', createdAt: any, discordServerId: string, iconUrl?: string | null, id: string, name: string, updatedAt: any };
 
+export type DiscordChannelFragmentFragment = { __typename?: 'DiscordChannel', id: string, name: string, type: string, status: string, discordChannelId: string, shouldIndex: boolean, createdAt: any, serverId: string, updatedAt: any };
+
+export type DiscordMessageFragmentFragment = { __typename?: 'DiscordMessage', id: string, content: string, discordMessageId: string, createdAt: any, updatedAt: any, serverId: string, channelId: string, messageDate: any, authorUsername: string };
+
 export type DiscourseIndexRunsQueryVariables = Exact<{
   spaceId: Scalars['String'];
 }>;
@@ -2863,6 +2877,22 @@ export type DiscordServerQueryVariables = Exact<{
 
 export type DiscordServerQuery = { __typename?: 'Query', discordServer: { __typename?: 'DiscordServer', createdAt: any, discordServerId: string, iconUrl?: string | null, id: string, name: string, updatedAt: any } };
 
+export type DiscordChannelsQueryVariables = Exact<{
+  spaceId: Scalars['String'];
+  serverId: Scalars['String'];
+}>;
+
+
+export type DiscordChannelsQuery = { __typename?: 'Query', discordChannels: Array<{ __typename?: 'DiscordChannel', id: string, name: string, type: string, status: string, discordChannelId: string, shouldIndex: boolean, createdAt: any, serverId: string, updatedAt: any }> };
+
+export type DiscordMessagesQueryVariables = Exact<{
+  spaceId: Scalars['String'];
+  channelId: Scalars['String'];
+}>;
+
+
+export type DiscordMessagesQuery = { __typename?: 'Query', discordMessages: Array<{ __typename?: 'DiscordMessage', id: string, content: string, discordMessageId: string, createdAt: any, updatedAt: any, serverId: string, channelId: string, messageDate: any, authorUsername: string }> };
+
 export type TriggerNewDiscourseIndexRunMutationVariables = Exact<{
   spaceId: Scalars['String'];
 }>;
@@ -2874,6 +2904,31 @@ export type ReFetchDiscordServersMutationVariables = Exact<{ [key: string]: neve
 
 
 export type ReFetchDiscordServersMutation = { __typename?: 'Mutation', reFetchDiscordServers: Array<{ __typename?: 'DiscordServer', createdAt: any, discordServerId: string, iconUrl?: string | null, id: string, name: string, updatedAt: any }> };
+
+export type ReFetchDiscordChannelsMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+  serverId: Scalars['String'];
+}>;
+
+
+export type ReFetchDiscordChannelsMutation = { __typename?: 'Mutation', reFetchDiscordChannels: Array<{ __typename?: 'DiscordChannel', id: string, name: string, type: string, status: string, discordChannelId: string, shouldIndex: boolean, createdAt: any, serverId: string, updatedAt: any }> };
+
+export type ReFetchDiscordMessagesMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+  channelId: Scalars['String'];
+}>;
+
+
+export type ReFetchDiscordMessagesMutation = { __typename?: 'Mutation', reFetchDiscordMessages: boolean };
+
+export type UpdateIndexingOfDiscordChannelMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+  channelId: Scalars['String'];
+  shouldIndex: Scalars['Boolean'];
+}>;
+
+
+export type UpdateIndexingOfDiscordChannelMutation = { __typename?: 'Mutation', updateIndexingOfDiscordChannel: { __typename?: 'DiscordChannel', id: string, name: string, type: string, status: string, discordChannelId: string, shouldIndex: boolean, createdAt: any, serverId: string, updatedAt: any } };
 
 export type GuideSettingsFragment = { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null };
 
@@ -3645,6 +3700,32 @@ export const DiscordServerFragmentFragmentDoc = gql`
   id
   name
   updatedAt
+}
+    `;
+export const DiscordChannelFragmentFragmentDoc = gql`
+    fragment DiscordChannelFragment on DiscordChannel {
+  id
+  name
+  type
+  status
+  discordChannelId
+  shouldIndex
+  createdAt
+  serverId
+  updatedAt
+}
+    `;
+export const DiscordMessageFragmentFragmentDoc = gql`
+    fragment DiscordMessageFragment on DiscordMessage {
+  id
+  content
+  discordMessageId
+  createdAt
+  updatedAt
+  serverId
+  channelId
+  messageDate
+  authorUsername
 }
     `;
 export const GuideSettingsFragmentDoc = gql`
@@ -6743,6 +6824,84 @@ export type DiscordServerQueryResult = Apollo.QueryResult<DiscordServerQuery, Di
 export function refetchDiscordServerQuery(variables: DiscordServerQueryVariables) {
       return { query: DiscordServerDocument, variables: variables }
     }
+export const DiscordChannelsDocument = gql`
+    query DiscordChannels($spaceId: String!, $serverId: String!) {
+  discordChannels(spaceId: $spaceId, serverId: $serverId) {
+    ...DiscordChannelFragment
+  }
+}
+    ${DiscordChannelFragmentFragmentDoc}`;
+
+/**
+ * __useDiscordChannelsQuery__
+ *
+ * To run a query within a React component, call `useDiscordChannelsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useDiscordChannelsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useDiscordChannelsQuery({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      serverId: // value for 'serverId'
+ *   },
+ * });
+ */
+export function useDiscordChannelsQuery(baseOptions: Apollo.QueryHookOptions<DiscordChannelsQuery, DiscordChannelsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<DiscordChannelsQuery, DiscordChannelsQueryVariables>(DiscordChannelsDocument, options);
+      }
+export function useDiscordChannelsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<DiscordChannelsQuery, DiscordChannelsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<DiscordChannelsQuery, DiscordChannelsQueryVariables>(DiscordChannelsDocument, options);
+        }
+export type DiscordChannelsQueryHookResult = ReturnType<typeof useDiscordChannelsQuery>;
+export type DiscordChannelsLazyQueryHookResult = ReturnType<typeof useDiscordChannelsLazyQuery>;
+export type DiscordChannelsQueryResult = Apollo.QueryResult<DiscordChannelsQuery, DiscordChannelsQueryVariables>;
+export function refetchDiscordChannelsQuery(variables: DiscordChannelsQueryVariables) {
+      return { query: DiscordChannelsDocument, variables: variables }
+    }
+export const DiscordMessagesDocument = gql`
+    query DiscordMessages($spaceId: String!, $channelId: String!) {
+  discordMessages(spaceId: $spaceId, channelId: $channelId) {
+    ...DiscordMessageFragment
+  }
+}
+    ${DiscordMessageFragmentFragmentDoc}`;
+
+/**
+ * __useDiscordMessagesQuery__
+ *
+ * To run a query within a React component, call `useDiscordMessagesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useDiscordMessagesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useDiscordMessagesQuery({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      channelId: // value for 'channelId'
+ *   },
+ * });
+ */
+export function useDiscordMessagesQuery(baseOptions: Apollo.QueryHookOptions<DiscordMessagesQuery, DiscordMessagesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<DiscordMessagesQuery, DiscordMessagesQueryVariables>(DiscordMessagesDocument, options);
+      }
+export function useDiscordMessagesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<DiscordMessagesQuery, DiscordMessagesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<DiscordMessagesQuery, DiscordMessagesQueryVariables>(DiscordMessagesDocument, options);
+        }
+export type DiscordMessagesQueryHookResult = ReturnType<typeof useDiscordMessagesQuery>;
+export type DiscordMessagesLazyQueryHookResult = ReturnType<typeof useDiscordMessagesLazyQuery>;
+export type DiscordMessagesQueryResult = Apollo.QueryResult<DiscordMessagesQuery, DiscordMessagesQueryVariables>;
+export function refetchDiscordMessagesQuery(variables: DiscordMessagesQueryVariables) {
+      return { query: DiscordMessagesDocument, variables: variables }
+    }
 export const TriggerNewDiscourseIndexRunDocument = gql`
     mutation triggerNewDiscourseIndexRun($spaceId: String!) {
   triggerNewDiscourseIndexRun(spaceId: $spaceId) {
@@ -6808,6 +6967,111 @@ export function useReFetchDiscordServersMutation(baseOptions?: Apollo.MutationHo
 export type ReFetchDiscordServersMutationHookResult = ReturnType<typeof useReFetchDiscordServersMutation>;
 export type ReFetchDiscordServersMutationResult = Apollo.MutationResult<ReFetchDiscordServersMutation>;
 export type ReFetchDiscordServersMutationOptions = Apollo.BaseMutationOptions<ReFetchDiscordServersMutation, ReFetchDiscordServersMutationVariables>;
+export const ReFetchDiscordChannelsDocument = gql`
+    mutation ReFetchDiscordChannels($spaceId: String!, $serverId: String!) {
+  reFetchDiscordChannels(spaceId: $spaceId, serverId: $serverId) {
+    ...DiscordChannelFragment
+  }
+}
+    ${DiscordChannelFragmentFragmentDoc}`;
+export type ReFetchDiscordChannelsMutationFn = Apollo.MutationFunction<ReFetchDiscordChannelsMutation, ReFetchDiscordChannelsMutationVariables>;
+
+/**
+ * __useReFetchDiscordChannelsMutation__
+ *
+ * To run a mutation, you first call `useReFetchDiscordChannelsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useReFetchDiscordChannelsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [reFetchDiscordChannelsMutation, { data, loading, error }] = useReFetchDiscordChannelsMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      serverId: // value for 'serverId'
+ *   },
+ * });
+ */
+export function useReFetchDiscordChannelsMutation(baseOptions?: Apollo.MutationHookOptions<ReFetchDiscordChannelsMutation, ReFetchDiscordChannelsMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ReFetchDiscordChannelsMutation, ReFetchDiscordChannelsMutationVariables>(ReFetchDiscordChannelsDocument, options);
+      }
+export type ReFetchDiscordChannelsMutationHookResult = ReturnType<typeof useReFetchDiscordChannelsMutation>;
+export type ReFetchDiscordChannelsMutationResult = Apollo.MutationResult<ReFetchDiscordChannelsMutation>;
+export type ReFetchDiscordChannelsMutationOptions = Apollo.BaseMutationOptions<ReFetchDiscordChannelsMutation, ReFetchDiscordChannelsMutationVariables>;
+export const ReFetchDiscordMessagesDocument = gql`
+    mutation ReFetchDiscordMessages($spaceId: String!, $channelId: String!) {
+  reFetchDiscordMessages(spaceId: $spaceId, channelId: $channelId)
+}
+    `;
+export type ReFetchDiscordMessagesMutationFn = Apollo.MutationFunction<ReFetchDiscordMessagesMutation, ReFetchDiscordMessagesMutationVariables>;
+
+/**
+ * __useReFetchDiscordMessagesMutation__
+ *
+ * To run a mutation, you first call `useReFetchDiscordMessagesMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useReFetchDiscordMessagesMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [reFetchDiscordMessagesMutation, { data, loading, error }] = useReFetchDiscordMessagesMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      channelId: // value for 'channelId'
+ *   },
+ * });
+ */
+export function useReFetchDiscordMessagesMutation(baseOptions?: Apollo.MutationHookOptions<ReFetchDiscordMessagesMutation, ReFetchDiscordMessagesMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ReFetchDiscordMessagesMutation, ReFetchDiscordMessagesMutationVariables>(ReFetchDiscordMessagesDocument, options);
+      }
+export type ReFetchDiscordMessagesMutationHookResult = ReturnType<typeof useReFetchDiscordMessagesMutation>;
+export type ReFetchDiscordMessagesMutationResult = Apollo.MutationResult<ReFetchDiscordMessagesMutation>;
+export type ReFetchDiscordMessagesMutationOptions = Apollo.BaseMutationOptions<ReFetchDiscordMessagesMutation, ReFetchDiscordMessagesMutationVariables>;
+export const UpdateIndexingOfDiscordChannelDocument = gql`
+    mutation UpdateIndexingOfDiscordChannel($spaceId: String!, $channelId: String!, $shouldIndex: Boolean!) {
+  updateIndexingOfDiscordChannel(
+    spaceId: $spaceId
+    channelId: $channelId
+    shouldIndex: $shouldIndex
+  ) {
+    ...DiscordChannelFragment
+  }
+}
+    ${DiscordChannelFragmentFragmentDoc}`;
+export type UpdateIndexingOfDiscordChannelMutationFn = Apollo.MutationFunction<UpdateIndexingOfDiscordChannelMutation, UpdateIndexingOfDiscordChannelMutationVariables>;
+
+/**
+ * __useUpdateIndexingOfDiscordChannelMutation__
+ *
+ * To run a mutation, you first call `useUpdateIndexingOfDiscordChannelMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateIndexingOfDiscordChannelMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateIndexingOfDiscordChannelMutation, { data, loading, error }] = useUpdateIndexingOfDiscordChannelMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      channelId: // value for 'channelId'
+ *      shouldIndex: // value for 'shouldIndex'
+ *   },
+ * });
+ */
+export function useUpdateIndexingOfDiscordChannelMutation(baseOptions?: Apollo.MutationHookOptions<UpdateIndexingOfDiscordChannelMutation, UpdateIndexingOfDiscordChannelMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateIndexingOfDiscordChannelMutation, UpdateIndexingOfDiscordChannelMutationVariables>(UpdateIndexingOfDiscordChannelDocument, options);
+      }
+export type UpdateIndexingOfDiscordChannelMutationHookResult = ReturnType<typeof useUpdateIndexingOfDiscordChannelMutation>;
+export type UpdateIndexingOfDiscordChannelMutationResult = Apollo.MutationResult<UpdateIndexingOfDiscordChannelMutation>;
+export type UpdateIndexingOfDiscordChannelMutationOptions = Apollo.BaseMutationOptions<UpdateIndexingOfDiscordChannelMutation, UpdateIndexingOfDiscordChannelMutationVariables>;
 export const SpacesDocument = gql`
     query Spaces {
   spaces {

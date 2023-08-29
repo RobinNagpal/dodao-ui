@@ -42,7 +42,7 @@ export default function DiscoursePosts(props: { space: SpaceWithIntegrationsFrag
   ];
   return (
     <Table
-      heading={'Discourse Index Runs'}
+      heading={'Discourse Posts'}
       data={getIndexRunRows(discoursePosts)}
       columnsHeadings={['Id', 'Title', 'Url', 'Post Date', 'Indexed At', 'Status']}
       columnsWidthPercents={[5, 25, 20, 10, 10, 10, 10, 10]}
@@ -50,7 +50,7 @@ export default function DiscoursePosts(props: { space: SpaceWithIntegrationsFrag
         items: actionItems,
         onSelect: async (key: string, item: { id: string }) => {
           console.log('item', item);
-          router.push('/space/manage/' + ManageSpaceSubviews.Loaders + '/post-comments/' + item.id);
+          router.push('/space/manage/' + ManageSpaceSubviews.Loaders + '/discourse/post-comments/' + item.id);
         },
       }}
     />

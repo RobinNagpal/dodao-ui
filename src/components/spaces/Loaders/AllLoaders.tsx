@@ -1,4 +1,6 @@
 import { Table, TableActions, TableRow } from '@/components/core/table/Table';
+import DiscordChannels from '@/components/spaces/Loaders/Discord/DiscordChannels';
+import DiscordMessages from '@/components/spaces/Loaders/Discord/DiscordMessages';
 import DiscourseIndexRuns from '@/components/spaces/Loaders/Discourse/DiscourseIndexRuns';
 import DiscoursePostComments from '@/components/spaces/Loaders/Discourse/DiscoursePostComments';
 import { ManageSpaceSubviews } from '@/components/spaces/manageSpaceSubviews';
@@ -31,10 +33,10 @@ function getLoaderRows(): TableRow[] {
 export default function AllLoaders(props: { space: SpaceWithIntegrationsFragment; spaceInfoParams: string[] }) {
   const router = useRouter();
 
-  const loaderSubview = props.spaceInfoParams?.[2];
-  const subviewPathParam = props.spaceInfoParams?.[3];
+  const loaderType = props.spaceInfoParams?.[2];
+  const loaderSubview = props.spaceInfoParams?.[3];
+  const subviewPathParam = props.spaceInfoParams?.[4];
 
-  console.log('loaderSubview', loaderSubview);
   const tableActions: TableActions = useMemo(() => {
     return {
       items: [
@@ -46,7 +48,14 @@ export default function AllLoaders(props: { space: SpaceWithIntegrationsFragment
       onSelect: async (key: string, item: { id: string }) => {
         if (key === 'view') {
           if (item.id === 'discourse') {
-            router.push('/space/manage/' + ManageSpaceSubviews.Loaders + '/' + 'discourse-index-runs');
+            router.push('/space/manage/' + ManageSpaceSubviews.Loaders + '/discourse/discourse-index-runs');
+            return;
+          }
+
+          const discordServerId = props.space.spaceIntegrations?.loadersInfo?.discordServerId;
+          console.log('discordServerId', discordServerId);
+          if (item.id === 'discord' && discordServerId) {
+            router.push('/space/manage/' + ManageSpaceSubviews.Loaders + '/discord/channels');
             return;
           }
         }
@@ -57,8 +66,17 @@ export default function AllLoaders(props: { space: SpaceWithIntegrationsFragment
   if (loaderSubview === 'discourse-index-runs') {
     return <DiscourseIndexRuns space={props.space} />;
   }
+
   if (loaderSubview === 'post-comments' && subviewPathParam) {
     return <DiscoursePostComments space={props.space} postId={subviewPathParam} />;
+  }
+
+  if (loaderSubview === 'channels') {
+    return <DiscordChannels space={props.space} />;
+  }
+
+  if (loaderSubview === 'messages' && subviewPathParam) {
+    return <DiscordMessages space={props.space} channelId={subviewPathParam} />;
   }
   return (
     <div className="mx-8 mt-8">
