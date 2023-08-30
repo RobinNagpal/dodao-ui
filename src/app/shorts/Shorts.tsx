@@ -2,9 +2,10 @@
 import React, { useRef, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore from 'swiper';
-import { Mousewheel, Keyboard, History } from 'swiper/modules';
+import { Mousewheel, Keyboard, History ,Navigation } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
+import 'swiper/css/navigation';
 import './styles.css';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import ReactPlayer from 'react-player/lazy';
@@ -77,12 +78,8 @@ const Shorts: React.FC<MySwiperProps> = ({ initialSlide, goBack }) => {
 
   return (
     <div className="flex justify-around">
-      <div className="flex relative">
-        <button className="self-center pb-[130%] pr-[10px] text-white relative" onClick={goBack}>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-16 h-16">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 9l-3 3m0 0l3 3m-3-3h7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-        </button>
+      
+        
         <Swiper
           ref={swiperRef as any}
           direction={'vertical'}
@@ -91,7 +88,10 @@ const Shorts: React.FC<MySwiperProps> = ({ initialSlide, goBack }) => {
           spaceBetween={30}
           keyboard={{ enabled: true }}
           mousewheel={true}
-          modules={[Keyboard, Mousewheel, History]}
+          loop={true}
+          cssMode={true}
+          navigation={true} 
+          modules={[Keyboard, Mousewheel, History,Navigation]}
           onSlideChange={handleSlideChange}
           initialSlide={initialSlide}
         >
@@ -114,7 +114,8 @@ const Shorts: React.FC<MySwiperProps> = ({ initialSlide, goBack }) => {
             </SwiperSlide>
           ))}
         </Swiper>
-      </div>
+        
+    
     </div>
   );
 };
