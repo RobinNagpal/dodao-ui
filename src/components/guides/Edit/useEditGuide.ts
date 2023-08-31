@@ -222,6 +222,9 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
       from: session?.username || '',
       guideIntegrations: {
         discordRoleIds: [],
+        projectGalaxyCredentialId: model.guideIntegrations.projectGalaxyCredentialId,
+        projectGalaxyOatPassingCount: model.guideIntegrations.projectGalaxyOatPassingCount,
+        projectGalaxyOatMintUrl: model.guideIntegrations.projectGalaxyOatMintUrl,
       },
       guideSource: model.guideSource,
       guideType: model.guideType,
@@ -282,6 +285,7 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
           spaceId: space.id,
           guideInput: convertToGuideInput(guide),
         },
+        refetchQueries: ['GuidesQuery'],
       });
 
       const payload = response?.data?.payload;

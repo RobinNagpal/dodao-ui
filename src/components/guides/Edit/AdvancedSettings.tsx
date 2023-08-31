@@ -1,4 +1,5 @@
 import Block from '@/components/app/Block';
+import Input from '@/components/core/input/Input';
 import StyledSelect, { StyledSelectItem } from '@/components/core/select/StyledSelect';
 import TextareaAutosize from '@/components/core/textarea/TextareaAutosize';
 import { EditGuideType } from '@/components/guides/Edit/editGuideType';
@@ -30,7 +31,25 @@ export default function AdvancedSettings(props: Props) {
 
   return (
     <div>
-      <Block title={$t('guide.create.advancedInfo')} className="mt-4 wrapper">
+      <Block title="Project Galaxy Settings" className="mt-4 wrapper">
+        <Input
+          modelValue={props.guide.guideIntegrations.projectGalaxyCredentialId}
+          onUpdate={(v) => props.updateGuideFunctions.updateGuideIntegrationField('projectGalaxyCredentialId', v?.toString() || '')}
+          label={'Project Galaxy Credential ID'}
+        />
+        <Input
+          modelValue={props.guide.guideIntegrations.projectGalaxyOatMintUrl}
+          onUpdate={(v) => props.updateGuideFunctions.updateGuideIntegrationField('projectGalaxyOatMintUrl', v?.toString() || '')}
+          label={'Project Galaxy OAT/NFT Mint URL'}
+        />
+        <Input
+          modelValue={props.guide.guideIntegrations.projectGalaxyOatPassingCount}
+          onUpdate={(v) => props.updateGuideFunctions.updateGuideIntegrationField('projectGalaxyOatPassingCount', v ? parseInt(v.toString()) : null)}
+          label={'Project Galaxy Passing Count'}
+          number
+        />
+      </Block>
+      <Block title="Other Settings" className="mt-4 wrapper">
         <TextareaAutosize
           label={$t(`guide.postSubmissionStepContent`)}
           id="postSubmissionStepContent"
