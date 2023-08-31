@@ -14,17 +14,13 @@ const MainShortsComponent: React.FC = () => {
   };
 
   if (selectedVideoIndex !== null) {
-    return(
-      <FullScreenModal title='' open={true} onClose={handleGoBack} fullWidth={false}>
-    <Shorts initialSlide={selectedVideoIndex} goBack={handleGoBack} />
-    </FullScreenModal>
+    return (
+      <FullScreenModal title="" open={true} onClose={handleGoBack} fullWidth={false}>
+        <Shorts initialSlide={selectedVideoIndex} goBack={handleGoBack} />
+      </FullScreenModal>
     );
   } else {
-    return (
-     
-    <ShortsUI onThumbnailClick={handleThumbnailClick} />
-   
-    );
+    return <ShortsUI onThumbnailClick={handleThumbnailClick} />;
   }
 };
 
