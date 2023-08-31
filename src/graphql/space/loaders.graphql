@@ -5,6 +5,38 @@ fragment DiscourseIndexRunFragment on DiscourseIndexRun {
   status
 }
 
+fragment DiscordServerFragment on DiscordServer {
+  createdAt
+  discordServerId
+  iconUrl
+  id
+  name
+  updatedAt
+}
+
+fragment DiscordChannelFragment on DiscordChannel {
+  id
+  name
+  type
+  status
+  discordChannelId
+  shouldIndex
+  createdAt
+  serverId
+  updatedAt
+}
+
+fragment DiscordMessageFragment on DiscordMessage {
+  id
+  content
+  discordMessageId
+  createdAt
+  updatedAt
+  serverId
+  channelId
+  messageDate
+  authorUsername
+}
 
 query DiscourseIndexRuns($spaceId: String!) {
   discourseIndexRuns(spaceId: $spaceId){
@@ -55,10 +87,49 @@ query DiscourseTopics($spaceId: String!, $postId: String!) {
   }
 }
 
+query DiscordServer($spaceId: String!, $id: String!) {
+  discordServer(spaceId: $spaceId, id: $id){
+    ...DiscordServerFragment
+  }
+}
 
+query DiscordChannels($spaceId: String!, $serverId: String!) {
+  discordChannels(spaceId: $spaceId, serverId: $serverId){
+    ...DiscordChannelFragment
+  }
+}
+
+
+query DiscordMessages($spaceId: String!, $channelId: String!) {
+  discordMessages(spaceId: $spaceId, channelId: $channelId){
+    ...DiscordMessageFragment
+  }
+}
 
 mutation triggerNewDiscourseIndexRun($spaceId: String!) {
   triggerNewDiscourseIndexRun(spaceId: $spaceId) {
     ...DiscourseIndexRunFragment
+  }
+}
+
+mutation ReFetchDiscordServers {
+  reFetchDiscordServers {
+    ...DiscordServerFragment
+  }
+}
+
+mutation ReFetchDiscordChannels($spaceId: String!, $serverId: String!) {
+  reFetchDiscordChannels(spaceId: $spaceId, serverId: $serverId) {
+    ...DiscordChannelFragment
+  }
+}
+
+mutation ReFetchDiscordMessages($spaceId: String!, $channelId: String!) {
+  reFetchDiscordMessages(spaceId: $spaceId, channelId: $channelId)
+}
+
+mutation UpdateIndexingOfDiscordChannel($spaceId: String!, $channelId: String!, $shouldIndex: Boolean!) {
+  updateIndexingOfDiscordChannel(spaceId: $spaceId, channelId: $channelId, shouldIndex: $shouldIndex) {
+    ...DiscordChannelFragment
   }
 }

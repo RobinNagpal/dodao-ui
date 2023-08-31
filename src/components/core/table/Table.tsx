@@ -10,7 +10,7 @@ export interface TableRow {
 }
 
 export interface TableActions {
-  items: EllipsisDropdownItem[];
+  items: EllipsisDropdownItem[] | ((item: any) => EllipsisDropdownItem[]);
   onSelect: (key: string, item: any) => void;
 }
 
@@ -52,6 +52,7 @@ const TableRow = styled.tr`
     background: linear-gradient(0deg, rgba(127, 127, 127, 0.2), rgba(127, 127, 127, 0.2)), var(--bg-color);
   }
 `;
+
 export function Table(props: TableProps) {
   return (
     <div className="mt-2">
@@ -109,7 +110,7 @@ export function Table(props: TableProps) {
                       {props.actions && (
                         <td className="relative py-2 pl-3 pr-4 text-right font-medium sm:pr-0">
                           <EllipsisDropdown
-                            items={props.actions.items}
+                            items={typeof props.actions.items === 'function' ? props.actions.items(row.item) : props.actions.items}
                             onSelect={(key) => {
                               props.actions?.onSelect(key, row.item);
                             }}

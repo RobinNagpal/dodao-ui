@@ -166,7 +166,7 @@ export default function GenerateImage() {
           { id: '3', label: '3' },
           { id: '4', label: '4' },
         ]}
-        setSelectedItemId={(value) => updateFormField('numberOfImages', parseInt(value))}
+        setSelectedItemId={(value) => updateFormField('numberOfImages', value ? parseInt(value) : 2)}
       />
       <TextareaAutosize
         label="Open AI Prompt"
