@@ -22,6 +22,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useId, useState } from 'react';
+import { TypeAnimation } from 'react-type-animation';
 
 export function Container({ className, ...props }: any) {
   return <div className={clsx('mx-auto max-w-7xl px-4 sm:px-6 lg:px-8', className)} {...props} />;
@@ -167,7 +168,7 @@ export function Hero() {
   const [showContactModal, setShowContactModal] = useState(false);
   return (
     <Container className="pb-16 pt-20 text-center lg:pt-32">
-      <h1 className="mx-auto max-w-4xl font-display text-5xl font-medium tracking-tight text-slate-900 sm:text-7xl">
+      <h1 className="mx-auto max-w-4xl font-display text-3xl font-medium tracking-tight text-slate-900 sm:text-7xl">
         Empower Your Customers with{' '}
         <span className="relative whitespace-nowrap text-blue-600">
           <svg aria-hidden="true" viewBox="0 0 418 42" className="absolute left-0 top-2/3 h-[0.58em] w-full fill-blue-300/70" preserveAspectRatio="none">
@@ -189,7 +190,28 @@ export function Hero() {
           <span className="ml-3">Watch video</span>
         </Button>*/}
       </div>
-      <div className="mt-36 lg:mt-44">
+      <div className="mt-8">
+        <TypeAnimation
+          omitDeletionAnimation={true}
+          sequence={[
+            'Educated customers make confident buying decisions.',
+            2000,
+            'Knowledge empowers loyalty and brand trust.',
+            2000,
+            'Informed customers become brand ambassadors.',
+            2000,
+            'Understanding products enhances user experience.',
+            2000,
+            'Educate today, cultivate lasting relationships tomorrow.',
+            2000,
+            'Knowledge drives satisfaction, satisfaction drives sales.',
+            2000,
+          ]}
+          style={{ fontSize: '3em' }}
+          repeat={Infinity}
+        />
+      </div>
+      <div className="mt-36 lg:mt-16">
         <p className="font-display text-base text-slate-900">Serving Industry Leaders</p>
         <ul role="list" className="mt-8 flex items-center justify-center gap-x-8 sm:flex-col sm:gap-x-0 sm:gap-y-10 xl:flex-row xl:gap-x-12 xl:gap-y-0">
           {[
