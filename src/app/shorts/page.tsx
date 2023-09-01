@@ -1,26 +1,19 @@
 'use client';
+
+import ShortVideoModal from '@/components/shorts/ShortVideoModal';
 import React, { useState } from 'react';
-import ShortsUI from './ShortsUI';
-import Shorts from './Shorts';
-import FullScreenModal from '@/components/core/modals/FullScreenModal';
+import Shorts from '@/components/shorts/Shorts';
 
 const MainShortsComponent: React.FC = () => {
   const [selectedVideoIndex, setSelectedVideoIndex] = useState<number | null>(null);
   const handleThumbnailClick = (index: number) => {
     setSelectedVideoIndex(index);
   };
-  const handleGoBack = () => {
-    setSelectedVideoIndex(null);
-  };
 
   if (selectedVideoIndex !== null) {
-    return (
-      <FullScreenModal title="" open={true} onClose={handleGoBack} fullWidth={false}>
-        <Shorts initialSlide={selectedVideoIndex} goBack={handleGoBack} />
-      </FullScreenModal>
-    );
+    return <ShortVideoModal initialSlide={selectedVideoIndex} onClose={() => setSelectedVideoIndex(null)} />;
   } else {
-    return <ShortsUI onThumbnailClick={handleThumbnailClick} />;
+    return <Shorts onThumbnailClick={handleThumbnailClick} />;
   }
 };
 
