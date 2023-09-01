@@ -192,8 +192,8 @@ function MarkdownEditor({
           preview={'edit'}
           commands={[
             { ...commands.title1, icon: <div style={{ fontSize: 24, textAlign: 'left' }}>H1</div> },
-            { ...commands.title1, icon: <div style={{ fontSize: 24, textAlign: 'left' }}>H2</div> },
-            { ...commands.title1, icon: <div style={{ fontSize: 24, textAlign: 'left' }}>H3</div> },
+            { ...commands.title2, icon: <div style={{ fontSize: 24, textAlign: 'left' }}>H2</div> },
+            { ...commands.title3, icon: <div style={{ fontSize: 24, textAlign: 'left' }}>H3</div> },
             commands.divider,
 
             commands.bold,
