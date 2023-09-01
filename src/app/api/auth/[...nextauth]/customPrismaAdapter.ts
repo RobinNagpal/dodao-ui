@@ -18,7 +18,7 @@
 
 import type { Prisma, PrismaClient, User } from '@prisma/client';
 import { AdapterAccount, AdapterSession, AdapterUser } from 'next-auth/adapters';
-import { DefaultAdapter } from 'next-auth/adapters';
+import { Adapter } from 'next-auth/adapters';
 
 /**
  * ## Setup
@@ -221,7 +221,7 @@ import { DefaultAdapter } from 'next-auth/adapters';
  **/
 export interface PrismaUser extends Omit<User, 'emailVerified' | 'email' | 'image' | 'name'>, AdapterUser {}
 
-export function CustomPrismaAdapter(p: PrismaClient): DefaultAdapter {
+export function CustomPrismaAdapter(p: PrismaClient): Adapter {
   return {
     createUser: (user: Omit<AdapterUser, 'id'>): Promise<PrismaUser> => p.user.create({ data: user as PrismaUser }) as Promise<PrismaUser>,
     getUser: (id: string) => p.user.findUnique({ where: { id } }) as Promise<PrismaUser>,

@@ -10,7 +10,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import DiscordProvider from 'next-auth/providers/discord';
 import GoogleProvider from 'next-auth/providers/google';
 import TwitterProvider from 'next-auth/providers/twitter';
-import { DefaultAdapter } from 'next-auth/adapters';
+import { Adapter } from 'next-auth/adapters';
 
 export const authOptions: AuthOptions = {
   // Setting error and signin pages to our /auth custom page
@@ -103,7 +103,7 @@ export const authOptions: AuthOptions = {
       },
     }),
   ],
-  adapter: CustomPrismaAdapter(prisma) as DefaultAdapter,
+  adapter: CustomPrismaAdapter(prisma) as Adapter,
   // Due to a NextAuth bug, the default database strategy is no usable
   //  with CredentialsProvider, so we need to set strategy to JWT
   session: {
