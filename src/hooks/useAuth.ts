@@ -99,7 +99,7 @@ export function useAuth() {
     await doSigin(async () => {
       await metaMask.activate();
       await onSignInWithCrypto();
-      setWeb3Selection({ connector: metaMask });
+      setWeb3Selection({ connector: metaMask as any });
     });
   }, []);
 
@@ -108,7 +108,7 @@ export function useAuth() {
     await doSigin(async () => {
       await coinbaseWallet.activate();
       await onSignInWithCrypto();
-      setWeb3Selection({ connector: coinbaseWallet });
+      setWeb3Selection({ connector: coinbaseWallet as any });
     });
   }, []);
 
