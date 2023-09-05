@@ -1,15 +1,17 @@
-import { useEffect, useRef, useState } from 'react';
-import { useQuery } from 'react-query';
+'use client';
 
-import { GetServerSideProps } from 'next';
-import { useTranslation } from 'next-i18next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import Head from 'next/head';
+import { Chat } from '@/chatbot/components/Chat/Chat';
+import { Chatbar } from '@/chatbot/components/Chatbar/Chatbar';
+import { Navbar } from '@/chatbot/components/Mobile/Navbar';
+import Promptbar from '@/chatbot/components/Promptbar';
 
 import { useCreateReducer } from '@/chatbot/hooks/useCreateReducer';
 
-import useErrorService from '@/chatbot/services/errorService';
-import useApiService from '@/chatbot/services/useApiService';
+import { Conversation } from '@/chatbot/types/chat';
+import { KeyValuePair } from '@/chatbot/types/data';
+import { FolderInterface, FolderType } from '@/chatbot/types/folder';
+import { OpenAIModelID, OpenAIModels } from '@/chatbot/types/openai';
+import { Prompt } from '@/chatbot/types/prompt';
 
 import { cleanConversationHistory, cleanSelectedConversation } from '@/chatbot/utils/app/clean';
 import { DEFAULT_SYSTEM_PROMPT, DEFAULT_TEMPERATURE } from '@/chatbot/utils/app/const';
@@ -18,21 +20,14 @@ import { saveFolders } from '@/chatbot/utils/app/folders';
 import { savePrompts } from '@/chatbot/utils/app/prompts';
 import { getSettings } from '@/chatbot/utils/app/settings';
 
-import { Conversation } from '@/chatbot/types/chat';
-import { KeyValuePair } from '@/chatbot/types/data';
-import { FolderInterface, FolderType } from '@/chatbot/types/folder';
-import { OpenAIModelID, OpenAIModels, fallbackModelID } from '@/chatbot/types/openai';
-import { Prompt } from '@/chatbot/types/prompt';
+import { useTranslation } from 'next-i18next';
+import Head from 'next/head';
+import { useEffect, useRef } from 'react';
 
-import { Chat } from '@/chatbot/components/Chat/Chat';
-import { Chatbar } from '@/chatbot/components/Chatbar/Chatbar';
-import { Navbar } from '@/chatbot/components/Mobile/Navbar';
-import Promptbar from '@/chatbot/components/Promptbar';
+import { v4 as uuidv4 } from 'uuid';
 
 import HomeContext from './home.context';
 import { HomeInitialState, initialState } from './home.state';
-
-import { v4 as uuidv4 } from 'uuid';
 
 interface Props {
   serverSideApiKeyIsSet: boolean;
@@ -42,9 +37,6 @@ interface Props {
 
 const Home = ({ serverSideApiKeyIsSet, serverSidePluginKeysSet, defaultModelId }: Props) => {
   const { t } = useTranslation('chat');
-  const { getModels } = useApiService();
-  const { getModelsError } = useErrorService();
-  const [initialRender, setInitialRender] = useState<boolean>(true);
 
   const contextValue = useCreateReducer<HomeInitialState>({
     initialState,
@@ -56,29 +48,6 @@ const Home = ({ serverSideApiKeyIsSet, serverSidePluginKeysSet, defaultModelId }
   } = contextValue;
 
   const stopConversationRef = useRef<boolean>(false);
-
-  const { data, error, refetch } = useQuery(
-    ['GetModels', apiKey, serverSideApiKeyIsSet],
-    ({ signal }) => {
-      if (!apiKey && !serverSideApiKeyIsSet) return null;
-
-      return getModels(
-        {
-          key: apiKey,
-        },
-        signal
-      );
-    },
-    { enabled: true, refetchOnMount: false }
-  );
-
-  useEffect(() => {
-    if (data) dispatch({ field: 'models', value: data });
-  }, [data, dispatch]);
-
-  useEffect(() => {
-    dispatch({ field: 'modelError', value: getModelsError(error) });
-  }, [dispatch, error, getModelsError]);
 
   // FETCH MODELS ----------------------------------------------
 
@@ -330,7 +299,7 @@ const Home = ({ serverSideApiKeyIsSet, serverSidePluginKeysSet, defaultModelId }
       </Head>
       {selectedConversation && (
         <main className={`flex h-screen w-screen flex-col text-sm text-white dark:text-white ${lightMode}`}>
-          <div className="fixed top-0 w-full sm:hidden">
+          <div className="fixed top-16 w-full sm:hidden">
             <Navbar selectedConversation={selectedConversation} onNewConversation={handleNewConversation} />
           </div>
 
@@ -349,27 +318,3 @@ const Home = ({ serverSideApiKeyIsSet, serverSidePluginKeysSet, defaultModelId }
   );
 };
 export default Home;
-
-export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
-  const defaultModelId =
-    (process.env.DEFAULT_MODEL && Object.values(OpenAIModelID).includes(process.env.DEFAULT_MODEL as OpenAIModelID) && process.env.DEFAULT_MODEL) ||
-    fallbackModelID;
-
-  let serverSidePluginKeysSet = false;
-
-  const googleApiKey = process.env.GOOGLE_API_KEY;
-  const googleCSEId = process.env.GOOGLE_CSE_ID;
-
-  if (googleApiKey && googleCSEId) {
-    serverSidePluginKeysSet = true;
-  }
-
-  return {
-    props: {
-      serverSideApiKeyIsSet: !!process.env.OPENAI_API_KEY,
-      defaultModelId,
-      serverSidePluginKeysSet,
-      ...(await serverSideTranslations(locale ?? 'en', ['common', 'chat', 'sidebar', 'markdown', 'promptbar', 'settings'])),
-    },
-  };
-};
