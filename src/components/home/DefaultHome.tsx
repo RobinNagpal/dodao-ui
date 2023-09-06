@@ -13,6 +13,7 @@ import Lottie from 'lottie-react';
 import Link from 'next/link';
 import React from 'react';
 import styled from 'styled-components';
+import EmpowerherLottie from './empower-her-lottie.json';
 import DeveloperLottie from './developer-lottie.json';
 
 const GetStartedButton = styled(Link)`
@@ -39,7 +40,11 @@ function DefaultHome({ space }: { space: SpaceWithIntegrationsFragment }) {
                     <div className="mt-10 flex items-center gap-x-6"></div>
                   </div>
                 </div>
-                <Lottie animationData={DeveloperLottie} loop={true} className="max-h-96" />
+                {space.id === 'empowerher-academy' ? (
+                  <Lottie animationData={EmpowerherLottie} loop={true} className="max-h-96 -mt-24" />
+                ) : (
+                  <Lottie animationData={DeveloperLottie} loop={true} className="max-h-96" />
+                )}
               </Grid2Cols>
             </div>
             <div className="flex align-center justify-center mb-24">
