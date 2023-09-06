@@ -168,6 +168,16 @@
       "simulationsThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/dodao/dodao_demos.png",
       "timelinesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/dodao/dodao_timelines.png"
     },
+    "empowerher-academy": {
+      "academyHeading": "Empowering Every Woman's Journey",
+      "academyText": "Empowerher Academy: Because every woman deserves the tools to craft her unique path to success.",
+      "projectName": "Empowerher",
+      "bytesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/dodao/dodao_bytes.png",
+      "coursesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/dodao/dodao_courses.png",
+      "guidesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/dodao/dodao_guides.png",
+      "simulationsThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/dodao/dodao_demos.png",
+      "timelinesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/dodao/dodao_timelines.png"
+    },
     "bioxyz-eth-1": {
       "academyHeading": "Learn how to build a Biotech DAO",
       "academyText": "Building a DAO in web3 is hard. <br/> Building a biotech organisation is equally hard. <br/> Building a biotech DAO is ULTRA hard. </br> bio.xyz is opening the playbook and offering the necessary support.",
