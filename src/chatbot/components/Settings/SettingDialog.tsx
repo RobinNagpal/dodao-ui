@@ -62,15 +62,15 @@ export const SettingDialog: FC<Props> = ({ open, onClose }) => {
 
           <div
             ref={modalRef}
-            className="dark:border-netural-400 inline-block max-h-[400px] transform overflow-y-auto rounded-lg border border-gray-300 bg-white px-4 pt-5 pb-4 text-left align-bottom shadow-xl transition-all dark:bg-[#202123] sm:my-8 sm:max-h-[600px] sm:w-full sm:max-w-lg sm:p-6 sm:align-middle"
+            className="dark:border-netural-400 inline-block max-h-[400px] transform overflow-y-auto rounded-lg border border-gray-300 px-4 pt-5 pb-4 text-left align-bottom shadow-xl transition-all sm:my-8 sm:max-h-[600px] sm:w-full sm:max-w-lg sm:p-6 sm:align-middle"
             role="dialog"
           >
-            <div className="text-lg pb-4 font-bold text-black dark:text-neutral-200">{t('Settings')}</div>
+            <div className="text-lg pb-4 font-bold">{t('Settings')}</div>
 
-            <div className="text-sm font-bold mb-2 text-black dark:text-neutral-200">{t('Theme')}</div>
+            <div className="text-sm font-bold mb-2">{t('Theme')}</div>
 
             <select
-              className="w-full cursor-pointer bg-transparent p-2 text-neutral-700 dark:text-neutral-200"
+              className="w-full cursor-pointer bg-transparent p-2"
               value={state.theme}
               onChange={(event) => dispatch({ field: 'theme', value: event.target.value })}
             >
@@ -80,7 +80,7 @@ export const SettingDialog: FC<Props> = ({ open, onClose }) => {
 
             <button
               type="button"
-              className="w-full px-4 py-2 mt-6 border rounded-lg shadow border-neutral-500 text-neutral-900 hover:bg-neutral-100 focus:outline-none dark:border-neutral-800 dark:border-opacity-50 dark:bg-white dark:text-black dark:hover:bg-neutral-300"
+              className="w-full px-4 py-2 mt-6 border rounded-lg shadow border-neutral-500 hover:bg-neutral-100 focus:outline-none dark:border-neutral-800 dark:border-opacity-50"
               onClick={() => {
                 handleSave();
                 onClose();

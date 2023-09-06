@@ -298,7 +298,7 @@ const Home = ({ serverSideApiKeyIsSet, serverSidePluginKeysSet, defaultModelId }
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {selectedConversation && (
-        <main className={`flex h-screen w-screen flex-col text-sm text-white dark:text-white ${lightMode}`}>
+        <main className={`flex h-screen w-screen flex-col text-sm ${lightMode}`}>
           <div className="fixed top-16 w-full sm:hidden">
             <Navbar selectedConversation={selectedConversation} onNewConversation={handleNewConversation} />
           </div>
