@@ -53,7 +53,7 @@ function DefaultHome({ space }: { space: SpaceWithIntegrationsFragment }) {
                   href={'/guides'}
                   className="rounded-md px-6 py-3 md:px-24 md:py-4 lg:px-24 lg:py-4 text-2xl font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                 >
-                  100% Free Content <span aria-hidden="true">→</span>
+                  100% Free Courses <span aria-hidden="true">→</span>
                 </GetStartedButton>
               ) : (
                 <GetStartedButton
