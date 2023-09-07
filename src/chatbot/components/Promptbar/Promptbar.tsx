@@ -10,8 +10,6 @@ import { Prompt } from '@/chatbot/types/prompt';
 
 import HomeContext from '@/chatbot/home/home.context';
 
-import { PromptFolders } from '@/chatbot/components/Promptbar/components/PromptFolders';
-import { PromptbarSettings } from '@/chatbot/components/Promptbar/components/PromptbarSettings';
 import { Prompts } from '@/chatbot/components/Promptbar/components/Prompts';
 
 import Sidebar from '@/chatbot/components/Sidebar';
@@ -125,13 +123,11 @@ const Promptbar = () => {
         isOpen={showPromptbar}
         addItemButtonTitle={t('New prompt')}
         itemComponent={<Prompts prompts={filteredPrompts.filter((prompt) => !prompt.folderId)} />}
-        folderComponent={<PromptFolders />}
         items={filteredPrompts}
         searchTerm={searchTerm}
         handleSearchTerm={(searchTerm: string) => promptDispatch({ field: 'searchTerm', value: searchTerm })}
         toggleOpen={handleTogglePromptbar}
         handleCreateItem={handleCreatePrompt}
-        handleCreateFolder={() => handleCreateFolder(t('New folder'), 'prompt')}
         handleDrop={handleDrop}
       />
     </PromptbarContext.Provider>

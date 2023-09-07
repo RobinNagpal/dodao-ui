@@ -23,6 +23,7 @@ import { getSettings } from '@/chatbot/utils/app/settings';
 import { useTranslation } from 'next-i18next';
 import Head from 'next/head';
 import { useEffect, useRef } from 'react';
+import styled from 'styled-components';
 
 import { v4 as uuidv4 } from 'uuid';
 
@@ -35,6 +36,9 @@ interface Props {
   defaultModelId: OpenAIModelID;
 }
 
+const MainSection = styled.main`
+  height: calc(100vh - 100px);
+`;
 const Home = ({ serverSideApiKeyIsSet, serverSidePluginKeysSet, defaultModelId }: Props) => {
   const { t } = useTranslation('chat');
 
@@ -298,7 +302,7 @@ const Home = ({ serverSideApiKeyIsSet, serverSidePluginKeysSet, defaultModelId }
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {selectedConversation && (
-        <main className={`flex h-screen w-screen flex-col text-sm ${lightMode}`}>
+        <MainSection className={`flex h-screen w-screen flex-col text-sm ${lightMode}`}>
           <div className="fixed top-16 w-full sm:hidden">
             <Navbar selectedConversation={selectedConversation} onNewConversation={handleNewConversation} />
           </div>
@@ -312,7 +316,7 @@ const Home = ({ serverSideApiKeyIsSet, serverSidePluginKeysSet, defaultModelId }
 
             <Promptbar />
           </div>
-        </main>
+        </MainSection>
       )}
     </HomeContext.Provider>
   );

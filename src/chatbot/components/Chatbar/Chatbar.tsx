@@ -16,7 +16,6 @@ import { PluginKey } from '@/chatbot/types/plugin';
 
 import HomeContext from '@/chatbot/home/home.context';
 
-import { ChatFolders } from '@/chatbot/components/Chatbar/components/ChatFolders';
 import { ChatbarSettings } from '@/chatbot/components/Chatbar/components/ChatbarSettings';
 import { Conversations } from '@/chatbot/components/Chatbar/components/Conversations';
 
@@ -214,13 +213,11 @@ export const Chatbar = () => {
         isOpen={showChatbar}
         addItemButtonTitle={t('New chat')}
         itemComponent={<Conversations conversations={filteredConversations} />}
-        folderComponent={<ChatFolders searchTerm={searchTerm} />}
         items={filteredConversations}
         searchTerm={searchTerm}
         handleSearchTerm={(searchTerm: string) => chatDispatch({ field: 'searchTerm', value: searchTerm })}
         toggleOpen={handleToggleChatbar}
         handleCreateItem={handleNewConversation}
-        handleCreateFolder={() => handleCreateFolder(t('New folder'), 'chat')}
         handleDrop={handleDrop}
         footerComponent={<ChatbarSettings />}
       />
