@@ -1,9 +1,11 @@
+import StyledSelect, { StyledSelectItem } from '@/components/core/select/StyledSelect';
+import { PublishStatus } from '@/types/deprecated/models/enums';
 import { IconExternalLink } from '@tabler/icons-react';
-import { useContext } from 'react';
+import React, { useContext } from 'react';
 
 import { useTranslation } from 'next-i18next';
 
-import { OpenAIModel } from '@/chatbot/types/openai';
+import { OpenAIModel, OpenAIModelID } from '@/chatbot/types/openai';
 
 import HomeContext from '@/chatbot/home/home.context';
 
@@ -13,34 +15,36 @@ export const ModelSelect = () => {
   const {
     state: { selectedConversation, models, defaultModelId },
     handleUpdateConversation,
-    dispatch: homeDispatch,
   } = useContext(HomeContext);
 
-  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleChange = (value: string) => {
     selectedConversation &&
       handleUpdateConversation(selectedConversation, {
         key: 'model',
-        value: models.find((model) => model.id === e.target.value) as OpenAIModel,
+        value: models.find((model) => model.id === value) as OpenAIModel,
       });
   };
 
+  const modelSelect: StyledSelectItem[] = [
+    {
+      label: 'GPT-3.5 (Default)',
+      id: OpenAIModelID.GPT_3_5,
+    },
+    {
+      label: 'GPT-4',
+      id: OpenAIModelID.GPT_4,
+    },
+  ];
+
   return (
     <div className="flex flex-col">
-      <label className="mb-2 text-left">{t('Model')}</label>
-      <div className="w-full rounded-lg border border-neutral-200 bg-transparent pr-2">
-        <select
-          className="w-full bg-transparent p-2"
-          placeholder={t('Select a model') || ''}
-          value={selectedConversation?.model?.id || defaultModelId}
-          onChange={handleChange}
-        >
-          {models.map((model) => (
-            <option key={model.id} value={model.id}>
-              {model.id === defaultModelId ? `Default (${model.name})` : model.name}
-            </option>
-          ))}
-        </select>
-      </div>
+      <StyledSelect
+        label={t('Model')}
+        selectedItemId={selectedConversation?.model?.id || defaultModelId}
+        items={modelSelect}
+        setSelectedItemId={(value) => handleChange(value as PublishStatus)}
+      />
+
       <div className="w-full mt-3 text-left flex items-center">
         <a href="https://platform.openai.com/account/usage" target="_blank" className="flex items-center">
           <IconExternalLink size={18} className={'inline mr-1'} />

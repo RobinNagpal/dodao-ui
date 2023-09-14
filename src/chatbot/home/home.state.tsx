@@ -1,7 +1,7 @@
 import { Conversation, Message } from '@/chatbot/types/chat';
 import { ErrorMessage } from '@/chatbot/types/error';
 import { FolderInterface } from '@/chatbot/types/folder';
-import { OpenAIModel, OpenAIModelID } from '@/chatbot/types/openai';
+import { OpenAIModel, OpenAIModelID, OpenAIModels } from '@/chatbot/types/openai';
 import { PluginKey } from '@/chatbot/types/plugin';
 import { Prompt } from '@/chatbot/types/prompt';
 
@@ -36,7 +36,7 @@ export const initialState: HomeInitialState = {
   lightMode: 'dark',
   messageIsStreaming: false,
   modelError: null,
-  models: [],
+  models: [OpenAIModels[OpenAIModelID.GPT_3_5], OpenAIModels[OpenAIModelID.GPT_4]],
   folders: [],
   conversations: [],
   selectedConversation: undefined,

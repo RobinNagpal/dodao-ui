@@ -1,5 +1,6 @@
+import TextareaAutosize from '@/components/core/textarea/TextareaAutosize';
 import { IconArrowDown, IconBolt, IconBrandGoogle, IconPlayerStop, IconRepeat, IconSend } from '@tabler/icons-react';
-import { KeyboardEvent, MutableRefObject, useCallback, useContext, useEffect, useRef, useState } from 'react';
+import React, { KeyboardEvent, MutableRefObject, useCallback, useContext, useEffect, useRef, useState } from 'react';
 
 import { useTranslation } from 'next-i18next';
 
@@ -45,8 +46,7 @@ export const ChatInput = ({ onSend, onRegenerate, onScrollDownClick, stopConvers
 
   const filteredPrompts = prompts.filter((prompt) => prompt.name.toLowerCase().includes(promptInputValue.toLowerCase()));
 
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const value = e.target.value;
+  const handleChange = (value: string) => {
     const maxLength = selectedConversation?.model.maxLength;
 
     if (maxLength && value.length > maxLength) {
@@ -212,7 +212,7 @@ export const ChatInput = ({ onSend, onRegenerate, onScrollDownClick, stopConvers
   }, []);
 
   return (
-    <div className="absolute bottom-0 left-0 w-full border-transparent bg-gradient-to-b from-transparent via-white to-white pt-6 dark:border-white/20 dark:via-[#343541] dark:to-[#343541] md:pt-2">
+    <div className="absolute bottom-0 left-0 w-full">
       <div className="stretch mx-2 mt-4 flex flex-row gap-3 last:mb-2 md:mx-4 md:mt-[52px] md:last:mb-6 lg:mx-auto lg:max-w-3xl">
         {messageIsStreaming && (
           <button
@@ -232,8 +232,8 @@ export const ChatInput = ({ onSend, onRegenerate, onScrollDownClick, stopConvers
           </button>
         )}
 
-        <div className="relative mx-2 flex w-full flex-grow flex-col rounded-md border border-black/10 sm:mx-4">
-          <button className="absolute left-2 top-2 rounded-sm p-1 opacity-60" onClick={() => setShowPluginSelect(!showPluginSelect)} onKeyDown={(e) => {}}>
+        <div className="relative mx-2 flex w-full flex-grow flex-col sm:mx-4 mb-8">
+          <button className="absolute left-2 top-4 rounded-sm p-1 pt-2 opacity-60" onClick={() => setShowPluginSelect(!showPluginSelect)} onKeyDown={(e) => {}}>
             {plugin ? <IconBrandGoogle size={20} /> : <IconBolt size={20} />}
           </button>
 
@@ -260,25 +260,19 @@ export const ChatInput = ({ onSend, onRegenerate, onScrollDownClick, stopConvers
             </div>
           )}
 
-          <textarea
-            ref={textareaRef}
-            className="m-0 w-full resize-none border-0 p-0 py-2 pr-8 pl-10 md:py-3 md:pl-10"
-            style={{
-              resize: 'none',
-              bottom: `${textareaRef?.current?.scrollHeight}px`,
-              maxHeight: '400px',
-              overflow: `${textareaRef.current && textareaRef.current.scrollHeight > 400 ? 'auto' : 'hidden'}`,
-            }}
+          <TextareaAutosize
+            label={null}
+            id="chat-input"
+            modelValue={content}
+            maxHeight={400}
+            minHeight={30}
             placeholder={t('Type a message or type "/" to select a prompt...') || ''}
-            value={content}
+            onUpdate={(e) => handleChange(e?.toString() || '')}
+            textAreaClassName="px-8"
             rows={1}
-            onCompositionStart={() => setIsTyping(true)}
-            onCompositionEnd={() => setIsTyping(false)}
-            onChange={handleChange}
-            onKeyDown={handleKeyDown}
           />
 
-          <button className="absolute right-2 top-2 rounded-sm p-1 opacity-60" onClick={handleSend}>
+          <button className="absolute right-2 top-4 rounded-sm p-1  pt-2 opacity-60" onClick={handleSend}>
             {messageIsStreaming ? (
               <div className="h-4 w-4 animate-spin rounded-full border-t-2 border-neutral-800 opacity-60 dark:border-neutral-100"></div>
             ) : (
@@ -313,12 +307,6 @@ export const ChatInput = ({ onSend, onRegenerate, onScrollDownClick, stopConvers
             <VariableModal prompt={filteredPrompts[activePromptIndex]} variables={variables} onSubmit={handleSubmit} onClose={() => setIsModalVisible(false)} />
           )}
         </div>
-      </div>
-      <div className="px-3 pt-2 pb-3 text-center text-[12px] md:px-4 md:pt-3 md:pb-6">
-        <a href="https://github.com/mckaywrigley/chatbot-ui" target="_blank" rel="noreferrer" className="underline">
-          ChatBot UI
-        </a>
-        . {t("Chatbot UI is an advanced chatbot kit for OpenAI's chat models aiming to mimic ChatGPT's interface and functionality.")}
       </div>
     </div>
   );

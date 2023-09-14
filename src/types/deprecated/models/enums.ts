@@ -29,6 +29,7 @@ export enum Themes {
   Aave = 'Aave',
   Balancer = 'Balancer',
   Kleros = 'Kleros',
+  Optimism = 'Optimism',
 }
 
 export const UserDiscordConnectType = 'UserDiscordConnect';

@@ -246,6 +246,16 @@
       "guidesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/kleros/kleros_guides.png",
       "coursesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/kleros/kleros_courses.png"
     },
+    "optimism-university": {
+      "academyHeading": "Learn more about Optimism?",
+      "academyText": "We know crypto and optimism can be a confusing place and Optimism University has your back.",
+      "projectName": "Optimism",
+      "bytesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/dodao/dodao_bytes.png",
+      "coursesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/dodao/dodao_courses.png",
+      "guidesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/dodao/dodao_guides.png",
+      "simulationsThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/dodao/dodao_demos.png",
+      "timelinesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/dodao/dodao_timelines.png"
+    },
     "serum-sol-mainnet": {
       "academyHeading": "Learn more about Project Serum?",
       "academyText": "We know crypto can be a confusing place and Serum Academy has your back.",

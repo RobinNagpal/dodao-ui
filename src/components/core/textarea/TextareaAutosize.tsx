@@ -5,7 +5,7 @@ import { v4 } from 'uuid';
 
 export interface TextareaAutosizeProps {
   id?: string;
-  label: string;
+  label: string | null;
   modelValue?: string | number;
   autosize?: boolean;
   minHeight?: number;
@@ -13,9 +13,12 @@ export interface TextareaAutosizeProps {
   number?: number;
   error?: string | boolean;
   onUpdate?: (value: string | number | undefined) => void;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
   placeholder?: string;
   className?: string;
+  textAreaClassName?: string;
   infoText?: string;
+  rows?: number;
 }
 
 const Textarea = styled.textarea<{ error: boolean }>`
@@ -39,10 +42,13 @@ export default function TextareaAutosize({
   number,
   error,
   onUpdate,
+  onKeyDown,
   placeholder,
   className,
+  textAreaClassName,
   label,
   infoText,
+  rows = 3,
 }: TextareaAutosizeProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [maxHeightScroll, setMaxHeightScroll] = useState(false);
@@ -90,25 +96,31 @@ export default function TextareaAutosize({
 
   const uuid = v4();
 
-  const slugLable = slugify(label);
+  const slugLabel = (label && slugify(label)) || '';
 
   return (
     <div className={'w-full mt-2 ' + className || ''}>
-      <label htmlFor={id || slugLable || uuid} className="block text-sm font-medium leading-6">
-        {label}
-      </label>
+      {label && (
+        <label htmlFor={id || slugLabel || uuid} className="block text-sm font-medium leading-6">
+          {label}
+        </label>
+      )}
 
       <div className="mt-2 w-full">
         <Textarea
-          name={id || slugLable || uuid}
-          id={id || slugLable || uuid}
-          className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6"
+          name={id || slugLabel || uuid}
+          id={id || slugLabel || uuid}
+          className={`block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 ${
+            textAreaClassName || ''
+          }`}
           ref={textareaRef}
           onChange={handleInput}
           onFocus={resize}
           value={modelValue as string}
           placeholder={placeholder}
           error={!!error}
+          onKeyDown={onKeyDown}
+          rows={rows}
         />
         {infoText && <p className="mt-1 text-xs">{infoText}</p>}
         {error && typeof error === 'string' && (

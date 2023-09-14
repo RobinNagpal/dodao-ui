@@ -9,6 +9,7 @@ import BalancerTheme from '@/components/themes/BalancerTheme';
 import CompoundTheme from '@/components/themes/CompoundTheme';
 import FuseTheme from '@/components/themes/FuseTheme';
 import GlobalTheme from '@/components/themes/GlobalTheme';
+import OptimismTheme from '@/components/themes/OptimismTheme';
 import KlerosTheme from '@/components/themes/KlerosTheme';
 import UniswapTheme from '@/components/themes/UniswapTheme';
 import { LoginModalProvider } from '@/contexts/LoginModalContext';
@@ -44,6 +45,7 @@ function ThemeComponent() {
   const isThemeFuse = space?.skin === Themes.Fuse;
   const isThemeBalancer = space?.skin === Themes.Balancer;
   const isThemeKleros = space?.skin === Themes.Kleros;
+  const isOptimismTheme = space?.skin === Themes.Optimism;
 
   if (space?.id === 'uniswap-eth-1') {
     return <UniswapTheme />;
@@ -54,6 +56,7 @@ function ThemeComponent() {
   if (isThemeFuse) return <FuseTheme />;
   if (isThemeBalancer) return <BalancerTheme />;
   if (isThemeKleros) return <KlerosTheme />;
+  if (isOptimismTheme) return <OptimismTheme />;
   if (isThemeDoDAO) return <GlobalTheme />;
   return (
     <div>

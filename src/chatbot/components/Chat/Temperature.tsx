@@ -32,17 +32,19 @@ export const TemperatureSlider: FC<Props> = ({ label, onChangeTemperature }) => 
       </span>
       <span className="mt-2 mb-1 text-center">{temperature.toFixed(1)}</span>
       <input className="cursor-pointer" type="range" min={0} max={1} step={0.1} value={temperature} onChange={handleChange} />
-      <ul className="w mt-2 pb-8 flex justify-between px-[24px]">
-        <li className="flex justify-center">
-          <span className="absolute">{t('Precise')}</span>
-        </li>
-        <li className="flex justify-center">
-          <span className="absolute">{t('Neutral')}</span>
-        </li>
-        <li className="flex justify-center">
-          <span className="absolute">{t('Creative')}</span>
-        </li>
-      </ul>
+      <div className="mt-2 pb-8 px-6">
+        <ul className="flex justify-between">
+          <li className="flex justify-center">
+            <span className="absolute">{t('Precise')}</span>
+          </li>
+          <li className="flex justify-center">
+            <span className="absolute">{t('Neutral')}</span>
+          </li>
+          <li className="flex justify-center">
+            <span className="absolute">{t('Creative')}</span>
+          </li>
+        </ul>
+      </div>
     </div>
   );
 };
