@@ -1,7 +1,7 @@
 import SectionLoader from '@/components/core/loaders/SectionLoader';
 import { Table, TableRow } from '@/components/core/table/Table';
 import TabsWithUnderline, { TabItem } from '@/components/core/tabs/TabsWithUnderline';
-import DiscoursePosts from '@/components/spaces/Loaders/Discourse/DiscoursePosts';
+import DiscoursePostsTable from '@/components/spaces/Loaders/Discourse/DiscoursePostsTable';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import {
   DiscourseIndexRunFragmentFragment,
@@ -64,7 +64,7 @@ export default function DiscourseIndexRuns(props: { space: SpaceWithIntegrations
         <TabsWithUnderline selectedTabId={selectedTabId} setSelectedTabId={(id) => setSelectedTabId(id as TabIds)} tabs={tabs} className="w-96" />
       </div>
       {selectedTabId === TabIds.Posts ? (
-        <DiscoursePosts space={props.space} />
+        <DiscoursePostsTable space={props.space} />
       ) : (
         <div className="mt-8">
           <Table

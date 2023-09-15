@@ -133,3 +133,7 @@ mutation UpdateIndexingOfDiscordChannel($spaceId: String!, $channelId: String!, 
     ...DiscordChannelFragment
   }
 }
+
+mutation IndexDiscoursePost($spaceId: String!, $postId: String!) {
+  indexDiscoursePost(spaceId: $spaceId, postId: $postId)
+}

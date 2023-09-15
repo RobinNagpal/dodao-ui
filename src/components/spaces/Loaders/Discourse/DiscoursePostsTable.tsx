@@ -2,7 +2,8 @@ import { EllipsisDropdownItem } from '@/components/core/dropdowns/EllipsisDropdo
 import SectionLoader from '@/components/core/loaders/SectionLoader';
 import { Table, TableRow } from '@/components/core/table/Table';
 import { ManageSpaceSubviews } from '@/components/spaces/manageSpaceSubviews';
-import { DiscoursePost, SpaceWithIntegrationsFragment, useDiscoursePostsQuery } from '@/graphql/generated/generated-types';
+import { useNotificationContext } from '@/contexts/NotificationContext';
+import { DiscoursePost, SpaceWithIntegrationsFragment, useDiscoursePostsQuery, useIndexDiscoursePostMutation } from '@/graphql/generated/generated-types';
 import moment from 'moment/moment';
 import { useRouter } from 'next/navigation';
 import React from 'react';
@@ -19,7 +20,7 @@ function getIndexRunRows(discoursePosts: DiscoursePost[]): TableRow[] {
   });
 }
 
-export default function DiscoursePosts(props: { space: SpaceWithIntegrationsFragment }) {
+export default function DiscoursePostsTable(props: { space: SpaceWithIntegrationsFragment }) {
   const { data, loading } = useDiscoursePostsQuery({
     variables: {
       spaceId: props.space.id,
@@ -27,8 +28,10 @@ export default function DiscoursePosts(props: { space: SpaceWithIntegrationsFrag
   });
 
   const router = useRouter();
+  const { showNotification } = useNotificationContext();
 
   const discoursePosts = data?.discoursePosts;
+  const [indexDiscoursePostMutation] = useIndexDiscoursePostMutation();
 
   if (loading || !discoursePosts) {
     return <SectionLoader />;
@@ -38,6 +41,10 @@ export default function DiscoursePosts(props: { space: SpaceWithIntegrationsFrag
     {
       key: 'view',
       label: 'View',
+    },
+    {
+      key: 'index',
+      label: 'Index',
     },
   ];
   return (
@@ -49,8 +56,17 @@ export default function DiscoursePosts(props: { space: SpaceWithIntegrationsFrag
       actions={{
         items: actionItems,
         onSelect: async (key: string, item: { id: string }) => {
-          console.log('item', item);
-          router.push('/space/manage/' + ManageSpaceSubviews.Loaders + '/discourse/post-comments/' + item.id);
+          if (key === 'view') {
+            router.push('/space/manage/' + ManageSpaceSubviews.Loaders + '/discourse/post-comments/' + item.id);
+          } else if (key === 'index') {
+            await indexDiscoursePostMutation({
+              variables: {
+                spaceId: props.space.id,
+                postId: item.id,
+              },
+            });
+            showNotification({ message: 'Indexed Post', type: 'success' });
+          }
         },
       }}
     />

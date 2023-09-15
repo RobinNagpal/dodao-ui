@@ -922,6 +922,7 @@ type Mutation {
   generateImage(input: GenerateImageInput!): ImagesResponse!
   generateImageEdit(input: GenerateImageEditInput!): GenerateImageResponse!
   generateSharablePdf(byteId: String!, spaceId: String!): String!
+  indexDiscoursePost(postId: String!, spaceId: String!): Boolean!
   initializeGitCourseSubmission(courseKey: String!, spaceId: String!): GitCourseSubmission!
   moveTopic(spaceId: String!, topicInfo: MoveTopicInput!): GitCourse!
   moveTopicExplanation(explanationInfo: MoveTopicExplanationInput!, spaceId: String!): GitCourse!

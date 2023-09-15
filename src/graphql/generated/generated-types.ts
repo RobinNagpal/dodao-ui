@@ -983,6 +983,7 @@ export interface Mutation {
   generateImage: ImagesResponse;
   generateImageEdit: GenerateImageResponse;
   generateSharablePdf: Scalars['String'];
+  indexDiscoursePost: Scalars['Boolean'];
   initializeGitCourseSubmission: GitCourseSubmission;
   moveTopic: GitCourse;
   moveTopicExplanation: GitCourse;
@@ -1178,6 +1179,12 @@ export interface MutationGenerateImageEditArgs {
 
 export interface MutationGenerateSharablePdfArgs {
   byteId: Scalars['String'];
+  spaceId: Scalars['String'];
+}
+
+
+export interface MutationIndexDiscoursePostArgs {
+  postId: Scalars['String'];
   spaceId: Scalars['String'];
 }
 
@@ -2929,6 +2936,14 @@ export type UpdateIndexingOfDiscordChannelMutationVariables = Exact<{
 
 
 export type UpdateIndexingOfDiscordChannelMutation = { __typename?: 'Mutation', updateIndexingOfDiscordChannel: { __typename?: 'DiscordChannel', id: string, name: string, type: string, status: string, discordChannelId: string, shouldIndex: boolean, createdAt: any, serverId: string, updatedAt: any } };
+
+export type IndexDiscoursePostMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+  postId: Scalars['String'];
+}>;
+
+
+export type IndexDiscoursePostMutation = { __typename?: 'Mutation', indexDiscoursePost: boolean };
 
 export type GuideSettingsFragment = { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null };
 
@@ -7072,6 +7087,38 @@ export function useUpdateIndexingOfDiscordChannelMutation(baseOptions?: Apollo.M
 export type UpdateIndexingOfDiscordChannelMutationHookResult = ReturnType<typeof useUpdateIndexingOfDiscordChannelMutation>;
 export type UpdateIndexingOfDiscordChannelMutationResult = Apollo.MutationResult<UpdateIndexingOfDiscordChannelMutation>;
 export type UpdateIndexingOfDiscordChannelMutationOptions = Apollo.BaseMutationOptions<UpdateIndexingOfDiscordChannelMutation, UpdateIndexingOfDiscordChannelMutationVariables>;
+export const IndexDiscoursePostDocument = gql`
+    mutation IndexDiscoursePost($spaceId: String!, $postId: String!) {
+  indexDiscoursePost(spaceId: $spaceId, postId: $postId)
+}
+    `;
+export type IndexDiscoursePostMutationFn = Apollo.MutationFunction<IndexDiscoursePostMutation, IndexDiscoursePostMutationVariables>;
+
+/**
+ * __useIndexDiscoursePostMutation__
+ *
+ * To run a mutation, you first call `useIndexDiscoursePostMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useIndexDiscoursePostMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [indexDiscoursePostMutation, { data, loading, error }] = useIndexDiscoursePostMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      postId: // value for 'postId'
+ *   },
+ * });
+ */
+export function useIndexDiscoursePostMutation(baseOptions?: Apollo.MutationHookOptions<IndexDiscoursePostMutation, IndexDiscoursePostMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<IndexDiscoursePostMutation, IndexDiscoursePostMutationVariables>(IndexDiscoursePostDocument, options);
+      }
+export type IndexDiscoursePostMutationHookResult = ReturnType<typeof useIndexDiscoursePostMutation>;
+export type IndexDiscoursePostMutationResult = Apollo.MutationResult<IndexDiscoursePostMutation>;
+export type IndexDiscoursePostMutationOptions = Apollo.BaseMutationOptions<IndexDiscoursePostMutation, IndexDiscoursePostMutationVariables>;
 export const SpacesDocument = gql`
     query Spaces {
   spaces {

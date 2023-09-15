@@ -1,5 +1,6 @@
 'use client';
 
+import withSpace, { SpaceProps } from '@/app/withSpace';
 import { Chat } from '@/chatbot/components/Chat/Chat';
 import { Chatbar } from '@/chatbot/components/Chatbar/Chatbar';
 import { Navbar } from '@/chatbot/components/Mobile/Navbar';
@@ -30,7 +31,7 @@ import { v4 as uuidv4 } from 'uuid';
 import HomeContext from './home.context';
 import { HomeInitialState, initialState } from './home.state';
 
-interface Props {
+interface Props extends SpaceProps {
   serverSideApiKeyIsSet: boolean;
   serverSidePluginKeysSet: boolean;
   defaultModelId: OpenAIModelID;
@@ -39,7 +40,7 @@ interface Props {
 const MainSection = styled.main`
   height: calc(100vh - 100px);
 `;
-const Home = ({ serverSideApiKeyIsSet, serverSidePluginKeysSet, defaultModelId }: Props) => {
+const Home = ({ serverSideApiKeyIsSet, serverSidePluginKeysSet, defaultModelId, space }: Props) => {
   const { t } = useTranslation('chat');
 
   const contextValue = useCreateReducer<HomeInitialState>({
@@ -296,10 +297,9 @@ const Home = ({ serverSideApiKeyIsSet, serverSidePluginKeysSet, defaultModelId }
       }}
     >
       <Head>
-        <title>Chatbot UI</title>
+        <title>Nema</title>
         <meta name="description" content="ChatGPT but better." />
         <meta name="viewport" content="height=device-height ,width=device-width, initial-scale=1, user-scalable=no" />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
       {selectedConversation && (
         <MainSection className={`flex h-screen w-screen flex-col text-sm ${lightMode}`}>
@@ -308,17 +308,17 @@ const Home = ({ serverSideApiKeyIsSet, serverSidePluginKeysSet, defaultModelId }
           </div>
 
           <div className="flex h-full w-full pt-[48px] sm:pt-0">
-            <Chatbar />
+            {/*<Chatbar />*/}
 
             <div className="flex flex-1">
-              <Chat stopConversationRef={stopConversationRef} />
+              <Chat stopConversationRef={stopConversationRef} space={space} />
             </div>
 
-            <Promptbar />
+            {/*<Promptbar />*/}
           </div>
         </MainSection>
       )}
     </HomeContext.Provider>
   );
 };
-export default Home;
+export default withSpace(Home);

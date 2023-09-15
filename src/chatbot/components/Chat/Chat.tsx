@@ -1,10 +1,10 @@
+import { SpaceProps } from '@/app/withSpace';
 import { IconClearAll, IconSettings } from '@tabler/icons-react';
 import { MutableRefObject, memo, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 
 import { useTranslation } from 'next-i18next';
 
-import { getEndpoint } from '@/chatbot/utils/app/api';
 import { saveConversation, saveConversations, updateConversation } from '@/chatbot/utils/app/conversation';
 import { throttle } from '@/chatbot/utils/throttle/throttle';
 
@@ -22,15 +22,15 @@ import { SystemPrompt } from '@/chatbot/components/Chat/SystemPrompt';
 import { TemperatureSlider } from '@/chatbot/components/Chat/Temperature';
 import { MemoizedChatMessage } from '@/chatbot/components/Chat/MemoizedChatMessage';
 
-interface Props {
+interface Props extends SpaceProps {
   stopConversationRef: MutableRefObject<boolean>;
 }
 
-export const Chat = memo(({ stopConversationRef }: Props) => {
+export const Chat = memo(({ stopConversationRef, space }: Props) => {
   const { t } = useTranslation('chat');
 
   const {
-    state: { selectedConversation, conversations, models, apiKey, pluginKeys, serverSideApiKeyIsSet, messageIsStreaming, modelError, loading, prompts },
+    state: { selectedConversation, conversations, models, pluginKeys, messageIsStreaming, modelError, loading, prompts },
     handleUpdateConversation,
     dispatch: homeDispatch,
   } = useContext(HomeContext);
@@ -72,9 +72,9 @@ export const Chat = memo(({ stopConversationRef }: Props) => {
         const chatBody: ChatBody = {
           model: updatedConversation.model,
           messages: updatedConversation.messages,
-          key: apiKey,
           prompt: updatedConversation.prompt,
           temperature: updatedConversation.temperature,
+          spaceId: space.id,
         };
         const endpoint = 'https://api.openai.com/v1/engines/davinci/completions';
         let body;
@@ -206,7 +206,7 @@ export const Chat = memo(({ stopConversationRef }: Props) => {
         }
       }
     },
-    [apiKey, conversations, pluginKeys, selectedConversation, stopConversationRef]
+    [conversations, pluginKeys, selectedConversation, stopConversationRef]
   );
 
   const scrollToBottom = useCallback(() => {
@@ -258,14 +258,6 @@ export const Chat = memo(({ stopConversationRef }: Props) => {
   };
   const throttledScrollDown = throttle(scrollDown, 250);
 
-  // useEffect(() => {
-  //   console.log('currentMessage', currentMessage);
-  //   if (currentMessage) {
-  //     handleSend(currentMessage);
-  //     homeDispatch({ field: 'currentMessage', value: undefined });
-  //   }
-  // }, [currentMessage]);
-
   useEffect(() => {
     throttledScrollDown();
     selectedConversation && setCurrentMessage(selectedConversation.messages[selectedConversation.messages.length - 2]);
@@ -297,28 +289,7 @@ export const Chat = memo(({ stopConversationRef }: Props) => {
 
   return (
     <div className="relative flex-1 overflow-hidden">
-      {!(apiKey || serverSideApiKeyIsSet) ? (
-        <div className="mx-auto flex h-full w-[300px] flex-col justify-center space-y-6 sm:w-[600px]">
-          <div className="text-center text-4xl font-bold">Welcome to Chatbot UI</div>
-          <div className="text-center text-lg">
-            <div className="mb-8">{`Chatbot UI is an open source clone of OpenAI's ChatGPT UI.`}</div>
-            <div className="mb-2 font-bold">Important: Chatbot UI is 100% unaffiliated with OpenAI.</div>
-          </div>
-          <div className="text-center">
-            <div className="mb-2">Chatbot UI allows you to plug in your API key to use this UI with their API.</div>
-            <div className="mb-2">
-              It is <span className="italic">only</span> used to communicate with their API.
-            </div>
-            <div className="mb-2">{t('Please set your OpenAI API key in the bottom left of the sidebar.')}</div>
-            <div>
-              {t("If you don't have an OpenAI API key, you can get one here: ")}
-              <a href="https://platform.openai.com/account/api-keys" target="_blank" rel="noreferrer" className="text-blue-500 hover:underline">
-                openai.com
-              </a>
-            </div>
-          </div>
-        </div>
-      ) : modelError ? (
+      {modelError ? (
         <ErrorMessageDiv error={modelError} />
       ) : (
         <>
