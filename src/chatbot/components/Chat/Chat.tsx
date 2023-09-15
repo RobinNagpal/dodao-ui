@@ -76,20 +76,18 @@ export const Chat = memo(({ stopConversationRef }: Props) => {
           prompt: updatedConversation.prompt,
           temperature: updatedConversation.temperature,
         };
-        const endpoint = getEndpoint(plugin);
+        const endpoint = 'https://api.openai.com/v1/engines/davinci/completions';
         let body;
         if (!plugin) {
           body = JSON.stringify(chatBody);
         } else {
           body = JSON.stringify({
             ...chatBody,
-            googleAPIKey: pluginKeys.find((key) => key.pluginId === 'google-search')?.requiredKeys.find((key) => key.key === 'GOOGLE_API_KEY')?.value,
-            googleCSEId: pluginKeys.find((key) => key.pluginId === 'google-search')?.requiredKeys.find((key) => key.key === 'GOOGLE_CSE_ID')?.value,
           });
         }
         const controller = new AbortController();
         console.log('endpoint', endpoint);
-        const response = await fetch(endpoint, {
+        const response = await fetch(process.env.V2_API_SERVER_URL?.replace('/graphql', '') + '/chat', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

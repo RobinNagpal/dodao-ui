@@ -232,54 +232,60 @@ export const ChatInput = ({ onSend, onRegenerate, onScrollDownClick, stopConvers
           </button>
         )}
 
-        <div className="relative mx-2 flex w-full flex-grow flex-col sm:mx-4 mb-8">
-          <button className="absolute left-2 top-4 rounded-sm p-1 pt-2 opacity-60" onClick={() => setShowPluginSelect(!showPluginSelect)} onKeyDown={(e) => {}}>
-            {plugin ? <IconBrandGoogle size={20} /> : <IconBolt size={20} />}
-          </button>
+        <div className="w-full pt-4 px-2">
+          <div className="relative mx-2 flex w-full flex-grow flex-col sm:mx-4 mb-8">
+            <button
+              className="absolute left-2 top-4 rounded-sm p-1 pt-2 opacity-60"
+              onClick={() => setShowPluginSelect(!showPluginSelect)}
+              onKeyDown={(e) => {}}
+            >
+              {plugin ? <IconBrandGoogle size={20} /> : <IconBolt size={20} />}
+            </button>
 
-          {showPluginSelect && (
-            <div className="absolute left-0 bottom-14 rounded">
-              <PluginSelect
-                plugin={plugin}
-                onKeyDown={(e: any) => {
-                  if (e.key === 'Escape') {
-                    e.preventDefault();
+            {showPluginSelect && (
+              <div className="absolute left-0 bottom-14 rounded">
+                <PluginSelect
+                  plugin={plugin}
+                  onKeyDown={(e: any) => {
+                    if (e.key === 'Escape') {
+                      e.preventDefault();
+                      setShowPluginSelect(false);
+                      textareaRef.current?.focus();
+                    }
+                  }}
+                  onPluginChange={(plugin: Plugin) => {
+                    setPlugin(plugin);
                     setShowPluginSelect(false);
-                    textareaRef.current?.focus();
-                  }
-                }}
-                onPluginChange={(plugin: Plugin) => {
-                  setPlugin(plugin);
-                  setShowPluginSelect(false);
 
-                  if (textareaRef && textareaRef.current) {
-                    textareaRef.current.focus();
-                  }
-                }}
-              />
-            </div>
-          )}
-
-          <TextareaAutosize
-            label={null}
-            id="chat-input"
-            modelValue={content}
-            maxHeight={400}
-            minHeight={30}
-            placeholder={t('Type a message or type "/" to select a prompt...') || ''}
-            onUpdate={(e) => handleChange(e?.toString() || '')}
-            textAreaClassName="px-8"
-            rows={1}
-          />
-
-          <button className="absolute right-2 top-4 rounded-sm p-1  pt-2 opacity-60" onClick={handleSend}>
-            {messageIsStreaming ? (
-              <div className="h-4 w-4 animate-spin rounded-full border-t-2 border-neutral-800 opacity-60 dark:border-neutral-100"></div>
-            ) : (
-              <IconSend size={18} />
+                    if (textareaRef && textareaRef.current) {
+                      textareaRef.current.focus();
+                    }
+                  }}
+                />
+              </div>
             )}
-          </button>
 
+            <TextareaAutosize
+              label={null}
+              id="chat-input"
+              modelValue={content}
+              maxHeight={400}
+              minHeight={30}
+              placeholder={t('Type a message or type "/" to select a prompt...') || ''}
+              onUpdate={(e) => handleChange(e?.toString() || '')}
+              onKeyDown={handleKeyDown}
+              textAreaClassName="px-8"
+              rows={1}
+            />
+
+            <button className="absolute right-2 top-4 rounded-sm p-1  pt-2 opacity-60" onClick={handleSend}>
+              {messageIsStreaming ? (
+                <div className="h-4 w-4 animate-spin rounded-full border-t-2 border-neutral-800 opacity-60 dark:border-neutral-100"></div>
+              ) : (
+                <IconSend size={18} />
+              )}
+            </button>
+          </div>
           {showScrollDownButton && (
             <div className="absolute bottom-12 right-0 lg:bottom-0 lg:-right-10">
               <button
