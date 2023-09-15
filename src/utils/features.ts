@@ -3,6 +3,7 @@ import { creditUnionAcademyFeatures } from '@/types/features/creditUnionAcademyF
 import { dodaoAcademyFeatures } from '@/types/features/dodaoAcademyFeatures';
 import { dodaoIoFeatures } from '@/types/features/dodaoIoFeatures';
 import { fuseFeatures } from '@/types/features/fuseFeatures';
+import { optimismFeatures } from '@/types/features/optimismFeatures';
 import { FeatureItem, FeatureName } from '@/types/features/spaceFeatures';
 import { testAcademyFeatures } from '@/types/features/testAcademyFeatures';
 import { uniswapFeatures } from '@/types/features/uniswapFeatures';
@@ -11,30 +12,20 @@ import sortBy from 'lodash/sortBy';
 export function getFeaturesArray(spaceId: string): FeatureItem[] {
   if (spaceId === 'dodao-academy-eth-1') {
     return dodaoAcademyFeatures;
-  }
-
-  if (spaceId === 'dodao-academy') {
+  } else if (spaceId === 'dodao-academy') {
     return dodaoIoFeatures;
-  }
-
-  if (spaceId === 'compound-eth-1') {
+  } else if (spaceId === 'compound-eth-1') {
     return compoundFeatures;
-  }
-
-  if (spaceId === 'test-academy-eth') {
+  } else if (spaceId === 'test-academy-eth') {
     return testAcademyFeatures;
-  }
-
-  if (spaceId === 'uniswap-eth-1') {
+  } else if (spaceId === 'uniswap-eth-1') {
     return uniswapFeatures;
-  }
-
-  if (spaceId === 'credit-union-academy') {
+  } else if (spaceId === 'credit-union-academy') {
     return creditUnionAcademyFeatures;
-  }
-
-  if (spaceId === 'fuse') {
+  } else if (spaceId === 'fuse') {
     return fuseFeatures;
+  } else if (spaceId === 'optimism-university') {
+    return optimismFeatures;
   }
 
   return [
