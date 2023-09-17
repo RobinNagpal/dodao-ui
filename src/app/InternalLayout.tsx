@@ -134,6 +134,7 @@ function ChildLayout({ children, session, space, spaceError }: InternalLayoutPro
   useNavigationEvent((url: string) => {
     console.log('page_view', url);
     ReactGA.event('page_view', {
+      page_title: url,
       page_location: url,
     });
   });
