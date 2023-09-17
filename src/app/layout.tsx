@@ -1,6 +1,7 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { Session } from '@/types/auth/Session';
+import { getGTagId } from '@/utils/analytics/getGTagId';
 import StyledComponentsRegistry from '@/utils/StyledComponentsRegistry';
 import { Analytics } from '@vercel/analytics/react';
 import axios from 'axios';
@@ -26,17 +27,18 @@ export default async function RootLayout({ children }: RootLayoutProps) {
     },
   });
 
+  const gtag = getGTagId(response?.data as SpaceWithIntegrationsFragment);
   return (
     <html lang="en" className="h-full">
       <body className="max-h-screen">
-        <Script src="https://www.googletagmanager.com/gtag/js?id=G-BJX2V8FE7L" />
+        <Script src={`https://www.googletagmanager.com/gtag/js?id=${gtag}`} />
         <Script id="google-analytics">
           {`
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
  
-          gtag('config', 'G-BJX2V8FE7L');
+          gtag('config', '${gtag}');
         `}
         </Script>
 
