@@ -21,6 +21,8 @@ import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-typ
 import { Session } from '@/types/auth/Session';
 import { UserIdKey } from '@/types/auth/User';
 import { Themes } from '@/types/deprecated/models/enums';
+import { getGTagId } from '@/utils/analytics/getGTagId';
+import { useNavigationEvent } from '@/utils/analytics/useNavigationEvent';
 import { getAuthenticatedApolloClient } from '@/utils/apolloClient';
 import { setDoDAOTokenInLocalStorage } from '@/utils/auth/setDoDAOTokenInLocalStorage';
 import { ApolloProvider } from '@apollo/client';
@@ -28,6 +30,7 @@ import { SessionProvider } from 'next-auth/react';
 import { useEffect, useMemo } from 'react';
 import 'src/app/globals.scss';
 import styled from 'styled-components';
+import ReactGA from 'react-ga4';
 
 // Based on - https://tailwindui.com/components/application-ui/page-examples/home-screens
 
@@ -113,6 +116,7 @@ function ChildLayout({ children, session, space, spaceError }: InternalLayoutPro
   useEffect(() => {
     if (space) {
       setSpace(space);
+      ReactGA.initialize(getGTagId(space));
     }
   }, [space]);
 
@@ -126,6 +130,13 @@ function ChildLayout({ children, session, space, spaceError }: InternalLayoutPro
       }
     }
   }, [session]);
+
+  useNavigationEvent((url: string) => {
+    console.log('page_view', url);
+    ReactGA.event('page_view', {
+      page_location: url,
+    });
+  });
 
   if (spaceError) {
     return <ErrorPage />;
