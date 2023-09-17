@@ -9,6 +9,7 @@ import { headers } from 'next/headers';
 import 'tailwindcss/tailwind.css';
 import './globals.scss';
 import InternalLayout from './InternalLayout';
+import Script from 'next/script';
 
 interface RootLayoutProps {
   children: React.ReactNode;
@@ -19,17 +20,26 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 
   const reqHeaders = headers();
 
-  console.log('reqHeaders', reqHeaders);
-  console.log('reqHeaders', reqHeaders.get('host')!);
   const response = await axios.get(process.env.V2_API_SERVER_URL?.replace('/graphql', '') + '/extended-space', {
     params: {
       domain: reqHeaders.get('host')!,
     },
   });
-  console.log('response', response.data);
+
   return (
     <html lang="en" className="h-full">
       <body className="max-h-screen">
+        <Script src="https://www.googletagmanager.com/gtag/js?id=G-BJX2V8FE7L" />
+        <Script id="google-analytics">
+          {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+ 
+          gtag('config', 'G-BJX2V8FE7L');
+        `}
+        </Script>
+
         <StyledComponentsRegistry>
           <InternalLayout session={session as Session} space={response?.data as SpaceWithIntegrationsFragment} spaceError={response.status !== 200}>
             {children}
