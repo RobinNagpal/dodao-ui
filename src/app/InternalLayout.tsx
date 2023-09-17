@@ -9,21 +9,21 @@ import BalancerTheme from '@/components/themes/BalancerTheme';
 import CompoundTheme from '@/components/themes/CompoundTheme';
 import FuseTheme from '@/components/themes/FuseTheme';
 import GlobalTheme from '@/components/themes/GlobalTheme';
-import OptimismTheme from '@/components/themes/OptimismTheme';
 import KlerosTheme from '@/components/themes/KlerosTheme';
+import OptimismTheme from '@/components/themes/OptimismTheme';
 import UniswapTheme from '@/components/themes/UniswapTheme';
 import { LoginModalProvider } from '@/contexts/LoginModalContext';
 
 import { NotificationProvider, useNotificationContext } from '@/contexts/NotificationContext';
 import { SpaceProvider, useSpace } from '@/contexts/SpaceContext';
 import Web3ReactProviderWrapper from '@/contexts/Web3ReactContext';
-import { ExtendedSpaceByDomainQuery, useExtendedSpaceByDomainQuery } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { Session } from '@/types/auth/Session';
 import { UserIdKey } from '@/types/auth/User';
 import { Themes } from '@/types/deprecated/models/enums';
 import { getAuthenticatedApolloClient } from '@/utils/apolloClient';
 import { setDoDAOTokenInLocalStorage } from '@/utils/auth/setDoDAOTokenInLocalStorage';
-import { ApolloError, ApolloProvider } from '@apollo/client';
+import { ApolloProvider } from '@apollo/client';
 import { SessionProvider } from 'next-auth/react';
 import { useEffect, useMemo } from 'react';
 import 'src/app/globals.scss';
@@ -34,6 +34,8 @@ import styled from 'styled-components';
 interface InternalLayoutProps {
   children: React.ReactNode;
   session: Session | null;
+  space?: SpaceWithIntegrationsFragment | null;
+  spaceError: boolean;
 }
 
 function ThemeComponent() {
@@ -90,8 +92,8 @@ const StyledMain = styled.main`
   min-height: 100vh;
 `;
 
-function BasePage(props: { data?: ExtendedSpaceByDomainQuery; error?: ApolloError; children: React.ReactNode }) {
-  if (props.data?.space?.id) {
+function BasePage(props: { space?: SpaceWithIntegrationsFragment | null; children: React.ReactNode }) {
+  if (props.space?.id) {
     return (
       <LoginModalProvider>
         <LoginModal />
@@ -99,28 +101,20 @@ function BasePage(props: { data?: ExtendedSpaceByDomainQuery; error?: ApolloErro
         <StyledMain>{props.children}</StyledMain>
       </LoginModalProvider>
     );
-  } else if (props.error?.clientErrors || props.error?.graphQLErrors || props.error?.networkError) {
-    return <ErrorPage />;
   }
   return <FullPageLoader />;
 }
 
-function ChildLayout({ children, session }: InternalLayoutProps) {
-  const origin = typeof window !== 'undefined' && window.location.hostname ? window.location.hostname : '';
+function ChildLayout({ children, session, space, spaceError }: InternalLayoutProps) {
   const client = useMemo(() => getAuthenticatedApolloClient(session), [session]);
-  const { data, error } = useExtendedSpaceByDomainQuery({
-    client,
-    variables: { domain: origin },
-    errorPolicy: 'all',
-  });
 
   const { setSpace } = useSpace();
 
   useEffect(() => {
-    if (data?.space) {
-      setSpace(data.space);
+    if (space) {
+      setSpace(space);
     }
-  }, [data, setSpace]);
+  }, [space]);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -133,14 +127,16 @@ function ChildLayout({ children, session }: InternalLayoutProps) {
     }
   }, [session]);
 
+  if (spaceError) {
+    return <ErrorPage />;
+  }
+
   return (
     <Web3ReactProviderWrapper>
       <ApolloProvider client={client}>
         <SessionProvider session={session}>
           <ThemeComponent />
-          <BasePage data={data} error={error}>
-            {children}
-          </BasePage>
+          <BasePage space={space}>{children}</BasePage>
         </SessionProvider>
         <NotificationWrapper />
       </ApolloProvider>
@@ -148,11 +144,13 @@ function ChildLayout({ children, session }: InternalLayoutProps) {
   );
 }
 
-export default function InternalLayout({ children, session }: InternalLayoutProps) {
+export default function InternalLayout({ children, session, space, spaceError }: InternalLayoutProps) {
   return (
     <SpaceProvider>
       <NotificationProvider>
-        <ChildLayout session={session}>{children}</ChildLayout>
+        <ChildLayout session={session} space={space} spaceError={spaceError}>
+          {children}
+        </ChildLayout>
       </NotificationProvider>
     </SpaceProvider>
   );

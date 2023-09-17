@@ -87,7 +87,7 @@ export const Chat = memo(({ stopConversationRef, space }: Props) => {
         }
         const controller = new AbortController();
         console.log('endpoint', endpoint);
-        const response = await fetch(process.env.V2_API_SERVER_URL?.replace('/graphql', '') + '/chat', {
+        const response: Response = await fetch(process.env.V2_API_SERVER_URL?.replace('/graphql', '') + '/chat', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
