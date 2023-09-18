@@ -45,13 +45,13 @@ function Guide({ space }: SpaceProps) {
           <div>
             <div className="flex justify-center items-center px-5 sm:px-0">
               {!guides.length && !loading && <NoGuide />}
-              {guides.length && (
+              {guides.length ? (
                 <Grid4Cols>
                   {guides.map((guide: GuideSummaryFragment, i) => (
                     <GuideSummaryCard key={i} guide={guide} />
                   ))}
                 </Grid4Cols>
-              )}
+              ) : null}
             </div>
           </div>
         </div>

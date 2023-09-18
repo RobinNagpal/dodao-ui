@@ -1,4 +1,5 @@
 import { SpaceProps } from '@/app/withSpace';
+import PageWrapper from '@/components/core/page/PageWrapper';
 import { IconClearAll, IconSettings } from '@tabler/icons-react';
 import { MutableRefObject, memo, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
@@ -21,6 +22,7 @@ import { ModelSelect } from '@/chatbot/components/Chat/ModelSelect';
 import { SystemPrompt } from '@/chatbot/components/Chat/SystemPrompt';
 import { TemperatureSlider } from '@/chatbot/components/Chat/Temperature';
 import { MemoizedChatMessage } from '@/chatbot/components/Chat/MemoizedChatMessage';
+import styles from './Chat.module.scss';
 
 interface Props extends SpaceProps {
   stopConversationRef: MutableRefObject<boolean>;
@@ -288,110 +290,112 @@ export const Chat = memo(({ stopConversationRef, space }: Props) => {
   }, [messagesEndRef]);
 
   return (
-    <div className="relative flex-1 overflow-hidden">
-      {modelError ? (
-        <ErrorMessageDiv error={modelError} />
-      ) : (
-        <>
-          <div className="max-h-full overflow-x-hidden" ref={chatContainerRef} onScroll={handleScroll}>
-            {selectedConversation?.messages.length === 0 ? (
-              <>
-                <div className="mx-auto flex flex-col space-y-5 md:space-y-10 px-3 pt-5 md:pt-12 sm:max-w-[600px]">
-                  <div className="text-center text-3xl font-semibold">
-                    {models.length === 0 ? (
-                      <div>
-                        <Spinner size="16px" className="mx-auto" />
+    <PageWrapper>
+      <div className={`h-max ${styles.chatWrapperDiv}`}>
+        {modelError ? (
+          <ErrorMessageDiv error={modelError} />
+        ) : (
+          <div className="flex flex-col">
+            <div className="overflow-scroll flex-1" ref={chatContainerRef} onScroll={handleScroll}>
+              {selectedConversation?.messages.length === 0 ? (
+                <>
+                  <div className="mx-auto flex flex-col space-y-5 md:space-y-10 px-3 pt-5 md:pt-12 sm:max-w-[600px]">
+                    <div className="text-center text-3xl font-semibold">
+                      {models.length === 0 ? (
+                        <div>
+                          <Spinner size="16px" className="mx-auto" />
+                        </div>
+                      ) : (
+                        'Chatbot UI'
+                      )}
+                    </div>
+
+                    {models.length > 0 && (
+                      <div className="flex h-full flex-col space-y-4 rounded-lg border border-neutral-200 p-4 dark:border-neutral-600">
+                        <ModelSelect />
+
+                        <SystemPrompt
+                          conversation={selectedConversation}
+                          prompts={prompts}
+                          onChangePrompt={(prompt) =>
+                            handleUpdateConversation(selectedConversation, {
+                              key: 'prompt',
+                              value: prompt,
+                            })
+                          }
+                        />
+
+                        <TemperatureSlider
+                          label={t('Temperature')}
+                          onChangeTemperature={(temperature) =>
+                            handleUpdateConversation(selectedConversation, {
+                              key: 'temperature',
+                              value: temperature,
+                            })
+                          }
+                        />
                       </div>
-                    ) : (
-                      'Chatbot UI'
                     )}
                   </div>
-
-                  {models.length > 0 && (
-                    <div className="flex h-full flex-col space-y-4 rounded-lg border border-neutral-200 p-4 dark:border-neutral-600">
-                      <ModelSelect />
-
-                      <SystemPrompt
-                        conversation={selectedConversation}
-                        prompts={prompts}
-                        onChangePrompt={(prompt) =>
-                          handleUpdateConversation(selectedConversation, {
-                            key: 'prompt',
-                            value: prompt,
-                          })
-                        }
-                      />
-
-                      <TemperatureSlider
-                        label={t('Temperature')}
-                        onChangeTemperature={(temperature) =>
-                          handleUpdateConversation(selectedConversation, {
-                            key: 'temperature',
-                            value: temperature,
-                          })
-                        }
-                      />
+                </>
+              ) : (
+                <div className={styles.chatMessagesDiv}>
+                  <div className="sticky top-0 z-10 flex justify-center border border-b-neutral-300 py-2 text-sm">
+                    {t('Model')}: {selectedConversation?.model.name} | {t('Temp')}: {selectedConversation?.temperature} |
+                    <button className="ml-2 cursor-pointer hover:opacity-50" onClick={handleSettings}>
+                      <IconSettings size={18} />
+                    </button>
+                    <button className="ml-2 cursor-pointer hover:opacity-50" onClick={onClearAll}>
+                      <IconClearAll size={18} />
+                    </button>
+                  </div>
+                  {showSettings && (
+                    <div className="flex flex-col space-y-10 md:mx-auto md:max-w-xl md:gap-6 md:py-3 md:pt-6 lg:max-w-2xl lg:px-0 xl:max-w-3xl">
+                      <div className="flex h-full flex-col space-y-4 border-b border-neutral-200 p-4 dark:border-neutral-600 md:rounded-lg md:border">
+                        <ModelSelect />
+                      </div>
                     </div>
                   )}
+
+                  {selectedConversation?.messages.map((message, index) => (
+                    <MemoizedChatMessage
+                      key={index}
+                      message={message}
+                      messageIndex={index}
+                      onEdit={(editedMessage: Message) => {
+                        setCurrentMessage(editedMessage);
+                        // discard edited message and the ones that come after then resend
+                        handleSend(editedMessage, selectedConversation?.messages.length - index);
+                      }}
+                    />
+                  ))}
+
+                  {loading && <ChatLoader />}
+
+                  <div className="h-[162px]" ref={messagesEndRef} />
                 </div>
-              </>
-            ) : (
-              <>
-                <div className="sticky top-0 z-10 flex justify-center border border-b-neutral-300 py-2 text-sm">
-                  {t('Model')}: {selectedConversation?.model.name} | {t('Temp')}: {selectedConversation?.temperature} |
-                  <button className="ml-2 cursor-pointer hover:opacity-50" onClick={handleSettings}>
-                    <IconSettings size={18} />
-                  </button>
-                  <button className="ml-2 cursor-pointer hover:opacity-50" onClick={onClearAll}>
-                    <IconClearAll size={18} />
-                  </button>
-                </div>
-                {showSettings && (
-                  <div className="flex flex-col space-y-10 md:mx-auto md:max-w-xl md:gap-6 md:py-3 md:pt-6 lg:max-w-2xl lg:px-0 xl:max-w-3xl">
-                    <div className="flex h-full flex-col space-y-4 border-b border-neutral-200 p-4 dark:border-neutral-600 md:rounded-lg md:border">
-                      <ModelSelect />
-                    </div>
-                  </div>
-                )}
+              )}
+            </div>
 
-                {selectedConversation?.messages.map((message, index) => (
-                  <MemoizedChatMessage
-                    key={index}
-                    message={message}
-                    messageIndex={index}
-                    onEdit={(editedMessage: Message) => {
-                      setCurrentMessage(editedMessage);
-                      // discard edited message and the ones that come after then resend
-                      handleSend(editedMessage, selectedConversation?.messages.length - index);
-                    }}
-                  />
-                ))}
-
-                {loading && <ChatLoader />}
-
-                <div className="h-[162px]" ref={messagesEndRef} />
-              </>
-            )}
+            <ChatInput
+              stopConversationRef={stopConversationRef}
+              textareaRef={textareaRef}
+              onSend={(message, plugin) => {
+                setCurrentMessage(message);
+                handleSend(message, 0, plugin);
+              }}
+              onScrollDownClick={handleScrollDown}
+              onRegenerate={() => {
+                if (currentMessage) {
+                  handleSend(currentMessage, 2, null);
+                }
+              }}
+              showScrollDownButton={showScrollDownButton}
+            />
           </div>
-
-          <ChatInput
-            stopConversationRef={stopConversationRef}
-            textareaRef={textareaRef}
-            onSend={(message, plugin) => {
-              setCurrentMessage(message);
-              handleSend(message, 0, plugin);
-            }}
-            onScrollDownClick={handleScrollDown}
-            onRegenerate={() => {
-              if (currentMessage) {
-                handleSend(currentMessage, 2, null);
-              }
-            }}
-            showScrollDownButton={showScrollDownButton}
-          />
-        </>
-      )}
-    </div>
+        )}
+      </div>
+    </PageWrapper>
   );
 });
 Chat.displayName = 'Chat';

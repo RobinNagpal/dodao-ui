@@ -111,10 +111,7 @@ export const ChatMessage: FC<Props> = memo(({ message, messageIndex, onEdit }) =
   }, [isEditing]);
 
   return (
-    <div
-      className={`group px-4 ${message.role === 'assistant' ? 'border-b text-sm markdown-body' : 'border-b text-base'}`}
-      style={{ overflowWrap: 'anywhere' }}
-    >
+    <div className={`group overflow-scroll px-4 ${message.role === 'assistant' ? 'border-b text-sm markdown-body' : 'border-b text-base'}`}>
       <div className="relative m-auto flex p-4 md:max-w-2xl md:gap-6 md:py-6 lg:max-w-2xl lg:px-0 xl:max-w-3xl">
         <div className="min-w-[40px] text-right font-bold">
           {message.role === 'assistant' ? <IconRobot size={30} className="mr-4" /> : <IconUser className="mr-4" size={30} />}

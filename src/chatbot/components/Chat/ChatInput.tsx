@@ -13,6 +13,7 @@ import HomeContext from '@/chatbot/home/home.context';
 import { PluginSelect } from '@/chatbot/components/Chat/PluginSelect';
 import { PromptList } from '@/chatbot/components/Chat/PromptList';
 import { VariableModal } from '@/chatbot/components/Chat/VariableModal';
+import styles from './ChatInput.module.scss';
 
 interface Props {
   onSend: (message: Message, plugin: Plugin | null) => void;
@@ -28,8 +29,6 @@ export const ChatInput = ({ onSend, onRegenerate, onScrollDownClick, stopConvers
 
   const {
     state: { selectedConversation, messageIsStreaming, prompts },
-
-    dispatch: homeDispatch,
   } = useContext(HomeContext);
 
   const [content, setContent] = useState<string>();
@@ -212,28 +211,22 @@ export const ChatInput = ({ onSend, onRegenerate, onScrollDownClick, stopConvers
   }, []);
 
   return (
-    <div className="absolute bottom-0 left-0 w-full">
-      <div className="stretch mx-2 mt-4 flex flex-row gap-3 last:mb-2 md:mx-4 md:mt-[52px] md:last:mb-6 lg:mx-auto lg:max-w-3xl">
+    <div className={`absolute bottom-0 w-full max-w-7xl py-6 ${styles.chatInputWrapperDiv}`}>
+      <div className="stretch mx-2 mt-4 flex flex-col gap-3 last:mb-2 md:mx-4 md:mt-[52px] md:last:mb-6 lg:mx-auto pr-16  ">
         {messageIsStreaming && (
-          <button
-            className="absolute top-0 left-0 right-0 mx-auto mb-3 flex w-fit items-center gap-3 rounded border border-neutral-200 py-2 px-4 hover:opacity-50 dark:border-neutral-600 md:mb-0 md:mt-2"
-            onClick={handleStopConversation}
-          >
+          <button className="w-full mx-auto mb-3 flex items-center gap-3 rounded border border-neutral-200 py-2 px-4 " onClick={handleStopConversation}>
             <IconPlayerStop size={16} /> {t('Stop Generating')}
           </button>
         )}
 
         {!messageIsStreaming && selectedConversation && selectedConversation.messages.length > 0 && (
-          <button
-            className="absolute top-0 left-0 right-0 mx-auto mb-3 flex w-fit items-center gap-3 rounded border border-neutral-200 py-2 px-4 hover:opacity-50 dark:border-neutral-600 md:mb-0 md:mt-2"
-            onClick={onRegenerate}
-          >
+          <button className="w-full mx-auto mb-3 flex items-center gap-3 rounded border border-neutral-200 py-2 px-4 " onClick={onRegenerate}>
             <IconRepeat size={16} /> {t('Regenerate response')}
           </button>
         )}
 
-        <div className="w-full pt-4 px-2">
-          <div className="relative mx-2 flex w-full flex-grow flex-col sm:mx-4 mb-8">
+        <div className="w-full pt-4">
+          <div className="relative flex w-full flex-grow flex-col mb-8">
             <button
               className="absolute left-2 top-4 rounded-sm p-1 pt-2 opacity-60"
               onClick={() => setShowPluginSelect(!showPluginSelect)}

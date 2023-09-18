@@ -92,7 +92,7 @@ const NotificationWrapper = () => {
 const StyledMain = styled.main`
   background-color: var(--bg-color);
   color: var(--text-color);
-  min-height: 100vh;
+  min-height: calc(100vh - 64px);
 `;
 
 function BasePage(props: { space?: SpaceWithIntegrationsFragment | null; children: React.ReactNode }) {
