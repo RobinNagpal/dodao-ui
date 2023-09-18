@@ -46,21 +46,11 @@ export const Chat = memo(({ stopConversationRef, space }: Props) => {
     async (message: Message, deleteCount = 0, plugin: Plugin | null = null) => {
       if (selectedConversation) {
         let updatedConversation: Conversation;
-        if (deleteCount) {
-          const updatedMessages = [...selectedConversation.messages];
-          for (let i = 0; i < deleteCount; i++) {
-            updatedMessages.pop();
-          }
-          updatedConversation = {
-            ...selectedConversation,
-            messages: [...updatedMessages, message],
-          };
-        } else {
-          updatedConversation = {
-            ...selectedConversation,
-            messages: [...selectedConversation.messages, message],
-          };
-        }
+
+        updatedConversation = {
+          ...selectedConversation,
+          messages: [message],
+        };
         homeDispatch({
           field: 'selectedConversation',
           value: updatedConversation,
@@ -298,15 +288,9 @@ export const Chat = memo(({ stopConversationRef, space }: Props) => {
           <div className="flex flex-col w-full">
             <div className="overflow-scroll flex-1 w-full" ref={chatContainerRef} onScroll={handleScroll}>
               <div className={styles.chatMessagesDiv}>
-                {(selectedConversation?.messages?.length || 0) > 0 ? (
-                  <div className="sticky top-0 z-10 flex justify-center text-sm">
-                    <Button primary variant="contained" onClick={onClearAll}>
-                      Clear Conversation
-                    </Button>
-                  </div>
-                ) : (
+                {!selectedConversation?.messages?.length ? (
                   <h1 className="align-center w-full text-center text-xl">Ask your question to Nema AI Chatbot by typing in the box below</h1>
-                )}
+                ) : null}
 
                 {selectedConversation?.messages.map((message, index) => (
                   <MemoizedChatMessage
