@@ -1,27 +1,23 @@
 import { SpaceProps } from '@/app/withSpace';
-import PageWrapper from '@/components/core/page/PageWrapper';
-import { IconClearAll, IconSettings } from '@tabler/icons-react';
-import { MutableRefObject, memo, useCallback, useContext, useEffect, useRef, useState } from 'react';
-import toast from 'react-hot-toast';
+import { ChatInput } from '@/chatbot/components/Chat/ChatInput';
+import { ChatLoader } from '@/chatbot/components/Chat/ChatLoader';
+import { ErrorMessageDiv } from '@/chatbot/components/Chat/ErrorMessageDiv';
+import { MemoizedChatMessage } from '@/chatbot/components/Chat/MemoizedChatMessage';
 
-import { useTranslation } from 'next-i18next';
-
-import { saveConversation, saveConversations, updateConversation } from '@/chatbot/utils/app/conversation';
-import { throttle } from '@/chatbot/utils/throttle/throttle';
+import HomeContext from '@/chatbot/home/home.context';
 
 import { ChatBody, Conversation, Message } from '@/chatbot/types/chat';
 import { Plugin } from '@/chatbot/types/plugin';
 
-import HomeContext from '@/chatbot/home/home.context';
+import { saveConversation, saveConversations, updateConversation } from '@/chatbot/utils/app/conversation';
+import { throttle } from '@/chatbot/utils/throttle/throttle';
+import Button from '@/components/core/buttons/Button';
+import PageWrapper from '@/components/core/page/PageWrapper';
+import { IconArrowDown } from '@tabler/icons-react';
 
-import Spinner from '@/chatbot/components/Spinner';
-import { ChatInput } from '@/chatbot/components/Chat/ChatInput';
-import { ChatLoader } from '@/chatbot/components/Chat/ChatLoader';
-import { ErrorMessageDiv } from '@/chatbot/components/Chat/ErrorMessageDiv';
-import { ModelSelect } from '@/chatbot/components/Chat/ModelSelect';
-import { SystemPrompt } from '@/chatbot/components/Chat/SystemPrompt';
-import { TemperatureSlider } from '@/chatbot/components/Chat/Temperature';
-import { MemoizedChatMessage } from '@/chatbot/components/Chat/MemoizedChatMessage';
+import { useTranslation } from 'next-i18next';
+import React, { memo, MutableRefObject, useCallback, useContext, useEffect, useRef, useState } from 'react';
+import toast from 'react-hot-toast';
 import styles from './Chat.module.scss';
 
 interface Props extends SpaceProps {
@@ -289,93 +285,58 @@ export const Chat = memo(({ stopConversationRef, space }: Props) => {
     };
   }, [messagesEndRef]);
 
+  useEffect(() => {
+    handleScrollDown();
+  }, [currentMessage]);
+
   return (
     <PageWrapper>
-      <div className={`h-max ${styles.chatWrapperDiv}`}>
+      <div className={`h-max w-full ${styles.chatWrapperDiv}`}>
         {modelError ? (
           <ErrorMessageDiv error={modelError} />
         ) : (
-          <div className="flex flex-col">
-            <div className="overflow-scroll flex-1" ref={chatContainerRef} onScroll={handleScroll}>
-              {selectedConversation?.messages.length === 0 ? (
-                <>
-                  <div className="mx-auto flex flex-col space-y-5 md:space-y-10 px-3 pt-5 md:pt-12 sm:max-w-[600px]">
-                    <div className="text-center text-3xl font-semibold">
-                      {models.length === 0 ? (
-                        <div>
-                          <Spinner size="16px" className="mx-auto" />
-                        </div>
-                      ) : (
-                        'Chatbot UI'
-                      )}
-                    </div>
-
-                    {models.length > 0 && (
-                      <div className="flex h-full flex-col space-y-4 rounded-lg border border-neutral-200 p-4 dark:border-neutral-600">
-                        <ModelSelect />
-
-                        <SystemPrompt
-                          conversation={selectedConversation}
-                          prompts={prompts}
-                          onChangePrompt={(prompt) =>
-                            handleUpdateConversation(selectedConversation, {
-                              key: 'prompt',
-                              value: prompt,
-                            })
-                          }
-                        />
-
-                        <TemperatureSlider
-                          label={t('Temperature')}
-                          onChangeTemperature={(temperature) =>
-                            handleUpdateConversation(selectedConversation, {
-                              key: 'temperature',
-                              value: temperature,
-                            })
-                          }
-                        />
-                      </div>
-                    )}
+          <div className="flex flex-col w-full">
+            <div className="overflow-scroll flex-1 w-full" ref={chatContainerRef} onScroll={handleScroll}>
+              <div className={styles.chatMessagesDiv}>
+                {(selectedConversation?.messages?.length || 0) > 0 ? (
+                  <div className="sticky top-0 z-10 flex justify-center text-sm">
+                    <Button primary variant="contained" onClick={onClearAll}>
+                      Clear Conversation
+                    </Button>
                   </div>
-                </>
-              ) : (
-                <div className={styles.chatMessagesDiv}>
-                  <div className="sticky top-0 z-10 flex justify-center border border-b-neutral-300 py-2 text-sm">
-                    {t('Model')}: {selectedConversation?.model.name} | {t('Temp')}: {selectedConversation?.temperature} |
-                    <button className="ml-2 cursor-pointer hover:opacity-50" onClick={handleSettings}>
-                      <IconSettings size={18} />
-                    </button>
-                    <button className="ml-2 cursor-pointer hover:opacity-50" onClick={onClearAll}>
-                      <IconClearAll size={18} />
-                    </button>
-                  </div>
-                  {showSettings && (
-                    <div className="flex flex-col space-y-10 md:mx-auto md:max-w-xl md:gap-6 md:py-3 md:pt-6 lg:max-w-2xl lg:px-0 xl:max-w-3xl">
-                      <div className="flex h-full flex-col space-y-4 border-b border-neutral-200 p-4 dark:border-neutral-600 md:rounded-lg md:border">
-                        <ModelSelect />
-                      </div>
-                    </div>
-                  )}
+                ) : (
+                  <h1 className="align-center w-full text-center text-xl">Ask your question to Nema AI Chatbot by typing in the box below</h1>
+                )}
 
-                  {selectedConversation?.messages.map((message, index) => (
-                    <MemoizedChatMessage
-                      key={index}
-                      message={message}
-                      messageIndex={index}
-                      onEdit={(editedMessage: Message) => {
-                        setCurrentMessage(editedMessage);
-                        // discard edited message and the ones that come after then resend
-                        handleSend(editedMessage, selectedConversation?.messages.length - index);
-                      }}
-                    />
-                  ))}
+                {selectedConversation?.messages.map((message, index) => (
+                  <MemoizedChatMessage
+                    key={index}
+                    message={message}
+                    messageIndex={index}
+                    onEdit={(editedMessage: Message) => {
+                      setCurrentMessage(editedMessage);
+                      // discard edited message and the ones that come after then resend
+                      handleSend(editedMessage, selectedConversation?.messages.length - index);
+                    }}
+                    onScrollDownClick={handleScrollDown}
+                  />
+                ))}
 
-                  {loading && <ChatLoader />}
+                {loading && <ChatLoader />}
 
-                  <div className="h-[162px]" ref={messagesEndRef} />
-                </div>
-              )}
+                <div className="h-[162px]" ref={messagesEndRef} />
+              </div>
             </div>
+            {showScrollDownButton && (selectedConversation?.messages.length || 0) > 0 && (
+              <div className="w-full mt-4">
+                <button
+                  className={`float-right h-7 w-7 items-center justify-center rounded-full shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500  ${styles.scrollDownButton}`}
+                  onClick={handleScrollDown}
+                >
+                  <IconArrowDown size={18} />
+                </button>
+              </div>
+            )}
 
             <ChatInput
               stopConversationRef={stopConversationRef}
@@ -384,13 +345,11 @@ export const Chat = memo(({ stopConversationRef, space }: Props) => {
                 setCurrentMessage(message);
                 handleSend(message, 0, plugin);
               }}
-              onScrollDownClick={handleScrollDown}
               onRegenerate={() => {
                 if (currentMessage) {
                   handleSend(currentMessage, 2, null);
                 }
               }}
-              showScrollDownButton={showScrollDownButton}
             />
           </div>
         )}

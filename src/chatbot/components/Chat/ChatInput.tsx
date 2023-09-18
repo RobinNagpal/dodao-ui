@@ -18,13 +18,11 @@ import styles from './ChatInput.module.scss';
 interface Props {
   onSend: (message: Message, plugin: Plugin | null) => void;
   onRegenerate: () => void;
-  onScrollDownClick: () => void;
   stopConversationRef: MutableRefObject<boolean>;
   textareaRef: MutableRefObject<HTMLTextAreaElement | null>;
-  showScrollDownButton: boolean;
 }
 
-export const ChatInput = ({ onSend, onRegenerate, onScrollDownClick, stopConversationRef, textareaRef, showScrollDownButton }: Props) => {
+export const ChatInput = ({ onSend, onRegenerate, stopConversationRef, textareaRef }: Props) => {
   const { t } = useTranslation('chat');
 
   const {
@@ -279,16 +277,6 @@ export const ChatInput = ({ onSend, onRegenerate, onScrollDownClick, stopConvers
               )}
             </button>
           </div>
-          {showScrollDownButton && (
-            <div className="absolute bottom-12 right-0 lg:bottom-0 lg:-right-10">
-              <button
-                className="flex h-7 w-7 items-center justify-center rounded-full shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                onClick={onScrollDownClick}
-              >
-                <IconArrowDown size={18} />
-              </button>
-            </div>
-          )}
 
           {showPromptList && filteredPrompts.length > 0 && (
             <div className="absolute bottom-12 w-full">

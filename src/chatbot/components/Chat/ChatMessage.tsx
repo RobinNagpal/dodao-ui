@@ -20,9 +20,10 @@ export interface Props {
   message: Message;
   messageIndex: number;
   onEdit?: (editedMessage: Message) => void;
+  onScrollDownClick: () => void;
 }
 
-export const ChatMessage: FC<Props> = memo(({ message, messageIndex, onEdit }) => {
+export const ChatMessage: FC<Props> = memo(({ message, messageIndex, onEdit, onScrollDownClick }) => {
   const { t } = useTranslation('chat');
 
   const {
@@ -101,6 +102,7 @@ export const ChatMessage: FC<Props> = memo(({ message, messageIndex, onEdit }) =
 
   useEffect(() => {
     setMessageContent(message.content);
+    onScrollDownClick();
   }, [message.content]);
 
   useEffect(() => {
@@ -177,6 +179,7 @@ export const ChatMessage: FC<Props> = memo(({ message, messageIndex, onEdit }) =
           ) : (
             <div className="flex flex-row">
               <MemoizedReactMarkdown
+                linkTarget="_blank"
                 className="prose dark:prose-invert flex-1"
                 remarkPlugins={[remarkGfm, remarkMath]}
                 components={{
