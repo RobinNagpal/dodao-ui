@@ -12,7 +12,7 @@ async function Home() {
 
   const space = await getSpaceServerSide();
   if (host && (space?.botDomains || [])?.includes(host)) {
-    return <ChatHome defaultModelId={OpenAIModelID.GPT_3_5} serverSideApiKeyIsSet={true} serverSidePluginKeysSet={false} />;
+    return <ChatHome defaultModelId={OpenAIModelID.GPT_3_5} serverSideApiKeyIsSet={true} serverSidePluginKeysSet={false} isChatbotSite={true} />;
   }
   if (host === 'dodao-localhost.io' || host === 'academy.dodao.io' || host === 'dodao.io') {
     return <DoDAOHome />;

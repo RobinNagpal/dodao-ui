@@ -11,8 +11,8 @@ import { Plugin } from '@/chatbot/types/plugin';
 
 import { saveConversation, saveConversations, updateConversation } from '@/chatbot/utils/app/conversation';
 import { throttle } from '@/chatbot/utils/throttle/throttle';
-import Button from '@/components/core/buttons/Button';
 import PageWrapper from '@/components/core/page/PageWrapper';
+import { useI18 } from '@/hooks/useI18';
 import { IconArrowDown } from '@tabler/icons-react';
 
 import { useTranslation } from 'next-i18next';
@@ -22,9 +22,11 @@ import styles from './Chat.module.scss';
 
 interface Props extends SpaceProps {
   stopConversationRef: MutableRefObject<boolean>;
+  isChatbotSite: boolean;
 }
 
-export const Chat = memo(({ stopConversationRef, space }: Props) => {
+export const Chat = memo(({ stopConversationRef, space, isChatbotSite }: Props) => {
+  const { $t } = useI18();
   const { t } = useTranslation('chat');
 
   const {
@@ -280,65 +282,72 @@ export const Chat = memo(({ stopConversationRef, space }: Props) => {
   }, [currentMessage]);
 
   return (
-    <PageWrapper>
-      <div className={`h-max w-full ${styles.chatWrapperDiv}`}>
-        {modelError ? (
-          <ErrorMessageDiv error={modelError} />
-        ) : (
-          <div className="flex flex-col w-full">
-            <div className="overflow-scroll flex-1 w-full" ref={chatContainerRef} onScroll={handleScroll}>
-              <div className={styles.chatMessagesDiv}>
-                {!selectedConversation?.messages?.length ? (
-                  <h1 className="align-center w-full text-center text-xl">Ask your question to Nema AI Chatbot by typing in the box below</h1>
-                ) : null}
+    <div className="w-full">
+      {isChatbotSite ? (
+        <div className="p-2 w-full text-center flex justify-center" style={{ backgroundColor: 'var(--primary-color)', color: 'white' }}>
+          <div className="max-w-7xl sm:px-2 lg:px-8" dangerouslySetInnerHTML={{ __html: $t(`chatbot.${space.id}.topBanner`) }} />
+        </div>
+      ) : null}
+      <PageWrapper>
+        <div className={`h-max w-full ${styles.chatWrapperDiv}`}>
+          {modelError ? (
+            <ErrorMessageDiv error={modelError} />
+          ) : (
+            <div className="flex flex-col w-full">
+              <div className="overflow-scroll flex-1 w-full" ref={chatContainerRef} onScroll={handleScroll}>
+                <div className={styles.chatMessagesDiv}>
+                  {!selectedConversation?.messages?.length ? (
+                    <h1 className="pt-36  mt-36 h-full align-center w-full text-center text-xl">Ask your question to AI Chatbot by typing in the box below</h1>
+                  ) : null}
 
-                {selectedConversation?.messages.map((message, index) => (
-                  <MemoizedChatMessage
-                    key={index}
-                    message={message}
-                    messageIndex={index}
-                    onEdit={(editedMessage: Message) => {
-                      setCurrentMessage(editedMessage);
-                      // discard edited message and the ones that come after then resend
-                      handleSend(editedMessage, selectedConversation?.messages.length - index);
-                    }}
-                    onScrollDownClick={handleScrollDown}
-                  />
-                ))}
+                  {selectedConversation?.messages.map((message, index) => (
+                    <MemoizedChatMessage
+                      key={index}
+                      message={message}
+                      messageIndex={index}
+                      onEdit={(editedMessage: Message) => {
+                        setCurrentMessage(editedMessage);
+                        // discard edited message and the ones that come after then resend
+                        handleSend(editedMessage, selectedConversation?.messages.length - index);
+                      }}
+                      onScrollDownClick={handleScrollDown}
+                    />
+                  ))}
 
-                {loading && <ChatLoader />}
+                  {loading && <ChatLoader />}
 
-                <div className="h-[162px]" ref={messagesEndRef} />
+                  <div className="h-[162px]" ref={messagesEndRef} />
+                </div>
               </div>
+              {showScrollDownButton && (selectedConversation?.messages.length || 0) > 0 && (
+                <div className="w-full mt-4">
+                  <button
+                    className={`float-right h-7 w-7 items-center justify-center rounded-full shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500  ${styles.scrollDownButton}`}
+                    onClick={handleScrollDown}
+                  >
+                    <IconArrowDown size={18} />
+                  </button>
+                </div>
+              )}
+
+              <ChatInput
+                stopConversationRef={stopConversationRef}
+                textareaRef={textareaRef}
+                onSend={(message, plugin) => {
+                  setCurrentMessage(message);
+                  handleSend(message, 0, plugin);
+                }}
+                onRegenerate={() => {
+                  if (currentMessage) {
+                    handleSend(currentMessage, 2, null);
+                  }
+                }}
+              />
             </div>
-            {showScrollDownButton && (selectedConversation?.messages.length || 0) > 0 && (
-              <div className="w-full mt-4">
-                <button
-                  className={`float-right h-7 w-7 items-center justify-center rounded-full shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500  ${styles.scrollDownButton}`}
-                  onClick={handleScrollDown}
-                >
-                  <IconArrowDown size={18} />
-                </button>
-              </div>
-            )}
-
-            <ChatInput
-              stopConversationRef={stopConversationRef}
-              textareaRef={textareaRef}
-              onSend={(message, plugin) => {
-                setCurrentMessage(message);
-                handleSend(message, 0, plugin);
-              }}
-              onRegenerate={() => {
-                if (currentMessage) {
-                  handleSend(currentMessage, 2, null);
-                }
-              }}
-            />
-          </div>
-        )}
-      </div>
-    </PageWrapper>
+          )}
+        </div>
+      </PageWrapper>
+    </div>
   );
 });
 Chat.displayName = 'Chat';

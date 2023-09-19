@@ -35,12 +35,13 @@ interface Props extends SpaceProps {
   serverSideApiKeyIsSet: boolean;
   serverSidePluginKeysSet: boolean;
   defaultModelId: OpenAIModelID;
+  isChatbotSite: boolean;
 }
 
 const MainSection = styled.main`
   height: calc(100vh - 100px);
 `;
-const Home = ({ serverSideApiKeyIsSet, serverSidePluginKeysSet, defaultModelId, space }: Props) => {
+const Home = ({ serverSideApiKeyIsSet, serverSidePluginKeysSet, defaultModelId, space, isChatbotSite }: Props) => {
   const { t } = useTranslation('chat');
 
   const contextValue = useCreateReducer<HomeInitialState>({
@@ -311,7 +312,7 @@ const Home = ({ serverSideApiKeyIsSet, serverSidePluginKeysSet, defaultModelId, 
             {/*<Chatbar />*/}
 
             <div className="flex flex-1">
-              <Chat stopConversationRef={stopConversationRef} space={space} />
+              <Chat stopConversationRef={stopConversationRef} space={space} isChatbotSite={isChatbotSite} />
             </div>
 
             {/*<Promptbar />*/}
