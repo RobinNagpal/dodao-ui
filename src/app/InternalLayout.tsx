@@ -27,7 +27,7 @@ import { getAuthenticatedApolloClient } from '@/utils/apolloClient';
 import { setDoDAOTokenInLocalStorage } from '@/utils/auth/setDoDAOTokenInLocalStorage';
 import { ApolloProvider } from '@apollo/client';
 import { SessionProvider } from 'next-auth/react';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import 'src/app/globals.scss';
 import styled from 'styled-components';
 import ReactGA from 'react-ga4';
@@ -96,7 +96,12 @@ const StyledMain = styled.main`
 `;
 
 function BasePage(props: { space?: SpaceWithIntegrationsFragment | null; children: React.ReactNode }) {
-  const isBotSite = props.space?.botDomains?.includes(window.location.hostname);
+  const [isBotSite, setIsBotSite] = useState(true);
+
+  useEffect(() => {
+    setIsBotSite(!!props.space?.botDomains?.includes?.(window.location.hostname));
+  }, [props.space]);
+
   if (props.space?.id) {
     return (
       <LoginModalProvider>
