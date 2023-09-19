@@ -1,6 +1,6 @@
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 
-export function getGTagId(space?: SpaceWithIntegrationsFragment) {
+export function getGTagId(space?: SpaceWithIntegrationsFragment | null) {
   if (space?.id === 'uniswap-eth-1') {
     return 'G-GHYGJ5DYRF';
   } else {

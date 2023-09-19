@@ -96,11 +96,12 @@ const StyledMain = styled.main`
 `;
 
 function BasePage(props: { space?: SpaceWithIntegrationsFragment | null; children: React.ReactNode }) {
+  const isBotSite = props.space?.botDomains?.includes(window.location.hostname);
   if (props.space?.id) {
     return (
       <LoginModalProvider>
         <LoginModal />
-        <TopNav />
+        {!isBotSite ? <TopNav /> : null}
         <StyledMain>{props.children}</StyledMain>
       </LoginModalProvider>
     );

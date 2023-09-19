@@ -1,15 +1,23 @@
+import { OpenAIModelID } from '@/chatbot/types/openai';
 import DefaultHome from '@/components/home/DefaultHome';
 import DoDAOHome from '@/components/home/DoDAOHome';
+import { getSpaceServerSide } from '@/utils/getSpaceServerSide';
 import { headers } from 'next/headers';
+
 import React from 'react';
-
-export default function Home() {
+import ChatHome from '@/chatbot/home/home';
+async function Home() {
   const headersList = headers();
-  const host = headersList.get('host');
-  console.log('host', host);
+  const host = headersList.get('host')?.split(':')?.[0];
 
-  if (host === 'dodao-localhost.io:3000' || host === 'academy.dodao.io' || host === 'dodao.io') {
+  const space = await getSpaceServerSide();
+  if (host && (space?.botDomains || [])?.includes(host)) {
+    return <ChatHome defaultModelId={OpenAIModelID.GPT_3_5} serverSideApiKeyIsSet={true} serverSidePluginKeysSet={false} />;
+  }
+  if (host === 'dodao-localhost.io' || host === 'academy.dodao.io' || host === 'dodao.io') {
     return <DoDAOHome />;
   }
   return <DefaultHome />;
 }
+
+export default Home;

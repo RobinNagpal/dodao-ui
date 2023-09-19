@@ -1149,6 +1149,7 @@ type Space {
   admins: [String!]!
   authSettings: AuthSettings!
   avatar: String
+  botDomains: [String!]
   byteSettings: ByteSettings!
   creator: String!
   domains: [String!]!
@@ -1426,6 +1427,7 @@ input UpsertSpaceInput {
   adminUsernames: [String!]!
   admins: [String!]!
   avatar: String!
+  botDomains: [String!]
   creator: String!
   domains: [String!]!
   features: [String!]!
