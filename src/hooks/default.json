@@ -121,13 +121,13 @@
   "previous": "Previous",
   "chatbot": {
     "optimism-university": {
-      "topBanner": "Currently the bot is just trained on <a href=\"https://gov.uniswap.org/\" target=\"_blank\">\"https://gov.optimism.io\"</a>. We need support to train it on other information like docs, code, discord, etc. We can make this bot 100x more intelligent. Please support us. \uD83D\uDE4F \uD83D\uDE4F"
+      "topBanner": "Currently the bot is just trained on <a href=\"https://gov.optimism.io\" target=\"_blank\">\"https://gov.optimism.io\"</a>. We need support to train it on other information like docs, code, discord, etc. We can make this bot 100x more intelligent. Please support us. \uD83D\uDE4F \uD83D\uDE4F"
     },
     "aave-eth-1": {
-      "topBanner": "Currently the bot is just trained on <a href=\"https://gov.uniswap.org/\" target=\"_blank\">\"https://governance.aave.com\"</a>. We need support to train it on other information like docs, code, discord, etc. We can make this bot 100x more intelligent. Please support us. \uD83D\uDE4F \uD83D\uDE4F"
+      "topBanner": "Currently the bot is just trained on <a href=\"https://governance.aave.com\" target=\"_blank\">\"https://governance.aave.com\"</a>. We need support to train it on other information like docs, code, discord, etc. We can make this bot 100x more intelligent. Please support us. \uD83D\uDE4F \uD83D\uDE4F"
     },
     "uniswap-eth-1": {
-      "topBanner": "Currently the bot is just trained on <a href=\"https://gov.uniswap.org/\" target=\"_blank\">\"https://gov.uniswap.org\"</a>. We need support to train it on other information like docs, code, discord, etc. We can make this bot 100x more intelligent. Please support us. \uD83D\uDE4F \uD83D\uDE4F"
+      "topBanner": "Currently the bot is just trained on <a href=\"https://gov.uniswap.org\" target=\"_blank\">\"https://gov.uniswap.org\"</a>. We need support to train it on other information like docs, code, discord, etc. We can make this bot 100x more intelligent. Please support us. \uD83D\uDE4F \uD83D\uDE4F"
     }
   },
   "academy": {
