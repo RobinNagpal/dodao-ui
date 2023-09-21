@@ -909,6 +909,7 @@ type Mutation {
   createSignedUrl(input: CreateSignedUrlInput!, spaceId: String!): String!
   createSpace(spaceInput: UpsertSpaceInput!): Space!
   createSummaryOfContent(input: String!): OpenAITextResponse!
+  createWebsiteScrapingInfo(host: String!, ignoreHashInUrl: Boolean!, scrapingStartUrl: String!, spaceId: String!): WebsiteScrapingInfo!
   deleteAndPullCourseRepo(courseKey: String!, spaceId: String!): GitCourse!
   deleteGitCourseSubmission(courseKey: String!, spaceId: String!): Boolean!
   deleteGuide(spaceId: String!, uuid: String!): Boolean!
@@ -943,6 +944,7 @@ type Mutation {
   submitGitCourseTopic(gitCourseTopicSubmission: GitCourseTopicSubmissionInput!, spaceId: String!): GitCourseSubmission!
   submitGuide(submissionInput: GuideSubmissionInput!): GuideSubmission!
   triggerNewDiscourseIndexRun(spaceId: String!): DiscourseIndexRun!
+  triggerSiteScrapingRun(spaceId: String!, websiteScrapingInfoId: String!): SiteScrapingRun!
   updateAuthSettings(input: AuthSettingsInput!, spaceId: String!): Space!
   updateByteSettings(input: ByteSettingsInput!, spaceId: String!): Space!
   updateCourseBasicInfo(courseBasicInfo: CourseBasicInfoInput!, spaceId: String!): GitCourse!
@@ -1059,14 +1061,17 @@ type Query {
   rawGitCourse(key: String!, spaceId: String!): RawGitCourse!
   rawGitCourses(spaceId: String!): [RawGitCourse!]!
   route53Records: [Route53Record!]!
+  scrapedUrlInfos(spaceId: String!, websiteScrapingInfoId: String!): [ScrapedUrlInfo!]!
   simulation(simulationId: String!, spaceId: String!): Simulation!
   simulations(spaceId: String!): [Simulation!]!
+  siteScrapingRuns(spaceId: String!, websiteScrapingInfoId: String!): [SiteScrapingRun!]!
   space(domain: String, id: String): Space
   spaceDiscordGuild(spaceId: String!): Any
   spaces: [Space!]
   timeline(spaceId: String!, timelineId: String!): Timeline!
   timelines(spaceId: String!): [Timeline!]!
   vercelDomainRecords: [VercelDomain!]!
+  websiteScrapingInfos(spaceId: String!): [WebsiteScrapingInfo!]!
 }
 
 type QuestionChoice {
@@ -1097,6 +1102,18 @@ type Route53Record {
   records: [String]
   ttl: Int
   type: String
+}
+
+type ScrapedUrlInfo {
+  createdAt: DateTimeISO!
+  id: String!
+  spaceId: String!
+  text: String!
+  textLength: Int!
+  updatedAt: DateTimeISO!
+  url: String!
+  websiteScrapingInfo: WebsiteScrapingInfo!
+  websiteScrapingInfoId: String!
 }
 
 input SendEmailInput {
@@ -1134,6 +1151,18 @@ input SimulationStepInput {
   name: String!
   order: Int!
   uuid: String!
+}
+
+type SiteScrapingRun {
+  createdAt: DateTimeISO!
+  id: String!
+  scrapingRunDate: DateTimeISO!
+  scrapingStartUrl: String!
+  spaceId: String!
+  status: String!
+  updatedAt: DateTimeISO!
+  websiteScrapingInfo: WebsiteScrapingInfo!
+  websiteScrapingInfoId: String!
 }
 
 type SocialSettings {
@@ -1501,4 +1530,16 @@ type VercelDomain {
   redirect: String
   updatedAt: Int
   verified: Boolean!
+}
+
+type WebsiteScrapingInfo {
+  createdAt: DateTimeISO!
+  host: String!
+  id: String!
+  ignoreHashInUrl: Boolean!
+  scrapedUrlInfos: [ScrapedUrlInfo!]!
+  scrapingRuns: [SiteScrapingRun!]!
+  scrapingStartUrl: String!
+  spaceId: String!
+  updatedAt: DateTimeISO!
 }
