@@ -1,14 +1,37 @@
+import { EllipsisDropdownItem } from '@/components/core/dropdowns/EllipsisDropdown';
+import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import { Table, TableActions, TableRow } from '@/components/core/table/Table';
 import DiscordChannels from '@/components/spaces/Loaders/Discord/DiscordChannels';
 import DiscordMessages from '@/components/spaces/Loaders/Discord/DiscordMessages';
 import DiscourseIndexRuns from '@/components/spaces/Loaders/Discourse/DiscourseIndexRuns';
 import DiscoursePostComments from '@/components/spaces/Loaders/Discourse/DiscoursePostComments';
+import WebsiteScrapedURLInfosTable from '@/components/spaces/Loaders/WebsiteScrape/WebsiteScrapedURLInfosTable';
 import { ManageSpaceSubviews } from '@/components/spaces/manageSpaceSubviews';
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { useNotificationContext } from '@/contexts/NotificationContext';
+import {
+  SpaceWithIntegrationsFragment,
+  useTriggerSiteScrapingRunMutation,
+  useWebsiteScrapingInfosQuery,
+  WebsiteScrapingInfoFragmentFragment,
+} from '@/graphql/generated/generated-types';
 import moment from 'moment/moment';
 import { useRouter } from 'next/navigation';
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 
+export enum LoaderType {
+  Discourse = 'discourse',
+  Discord = 'discord',
+  WebsiteScraping = 'website-scraping',
+}
+
+export enum LoaderSubView {
+  DiscourseIndexRuns = 'discourse-index-runs',
+  DiscoursePostComments = 'post-comments',
+  DiscordChannels = 'channels',
+  DiscordMessages = 'messages',
+
+  WebsiteScrapingURLInfos = 'website-scraping-url-infos',
+}
 function getLoaderRows(): TableRow[] {
   const indexedAt = moment(new Date()).local().format('YYYY/MM/DD HH:mm');
   const tableRows: TableRow[] = [];
@@ -32,6 +55,43 @@ function getLoaderRows(): TableRow[] {
 
 export default function AllLoaders(props: { space: SpaceWithIntegrationsFragment; spaceInfoParams: string[] }) {
   const router = useRouter();
+  const websiteScrappingThreeDotItems = [{ label: 'Add', key: 'add' }];
+  const [showAddWebsiteScrappingInfoModal, setShowAddWebsiteScrappingInfoModal] = useState(false);
+  const { showNotification } = useNotificationContext();
+  const { data: websiteInfos } = useWebsiteScrapingInfosQuery({
+    variables: {
+      spaceId: props.space.id,
+    },
+  });
+
+  const [triggerSiteScrapingRunMutation] = useTriggerSiteScrapingRunMutation();
+
+  const siteScrapingActionItems: EllipsisDropdownItem[] = [
+    {
+      key: 'view',
+      label: 'View',
+    },
+    {
+      key: 'index',
+      label: 'Index',
+    },
+  ];
+
+  function getWebsiteScrapingInfoTable(discoursePosts: WebsiteScrapingInfoFragmentFragment[]): TableRow[] {
+    return discoursePosts.map((post: WebsiteScrapingInfoFragmentFragment): TableRow => {
+      return {
+        id: post.id,
+        columns: [post.id.substring(0, 6), post.host, post.scrapingStartUrl, post.ignoreHashInUrl.toString()],
+        item: post,
+      };
+    });
+  }
+
+  const selectFromScrapingThreedotDropdown = async (e: string) => {
+    if (e === 'add') {
+      setShowAddWebsiteScrappingInfoModal(true);
+    }
+  };
 
   const loaderType = props.spaceInfoParams?.[2];
   const loaderSubview = props.spaceInfoParams?.[3];
@@ -63,20 +123,24 @@ export default function AllLoaders(props: { space: SpaceWithIntegrationsFragment
     };
   }, []);
 
-  if (loaderSubview === 'discourse-index-runs') {
+  if (loaderSubview === LoaderSubView.DiscourseIndexRuns) {
     return <DiscourseIndexRuns space={props.space} />;
   }
 
-  if (loaderSubview === 'post-comments' && subviewPathParam) {
+  if (loaderSubview === LoaderSubView.DiscoursePostComments && subviewPathParam) {
     return <DiscoursePostComments space={props.space} postId={subviewPathParam} />;
   }
 
-  if (loaderSubview === 'channels') {
+  if (loaderSubview === LoaderSubView.DiscordChannels) {
     return <DiscordChannels space={props.space} />;
   }
 
-  if (loaderSubview === 'messages' && subviewPathParam) {
+  if (loaderSubview === LoaderSubView.DiscordMessages && subviewPathParam) {
     return <DiscordMessages space={props.space} channelId={subviewPathParam} />;
+  }
+
+  if (loaderSubview === LoaderSubView.WebsiteScrapingURLInfos && subviewPathParam) {
+    return <WebsiteScrapedURLInfosTable space={props.space} websiteScrapingInfoId={subviewPathParam} />;
   }
   return (
     <div className="mx-8 mt-8">
@@ -84,6 +148,34 @@ export default function AllLoaders(props: { space: SpaceWithIntegrationsFragment
         <div className="text-xl">Loaders</div>
       </div>
       <Table data={getLoaderRows()} columnsHeadings={['Loader', 'Last Indexed At', 'Status']} columnsWidthPercents={[20, 50, 20, 10]} actions={tableActions} />
+
+      <div className="mt-16">
+        <div className="flex justify-between">
+          <div className="text-xl">Website Scraping Infos</div>
+          <PrivateEllipsisDropdown items={websiteScrappingThreeDotItems} onSelect={selectFromScrapingThreedotDropdown} />
+        </div>
+        <Table
+          data={getWebsiteScrapingInfoTable(websiteInfos?.websiteScrapingInfos || [])}
+          columnsHeadings={['Id', 'Host', 'Scraping Start Url', 'Ignore Hash']}
+          columnsWidthPercents={[5, 25, 20, 20, 20]}
+          actions={{
+            items: siteScrapingActionItems,
+            onSelect: async (key: string, item: { id: string }) => {
+              if (key === 'view') {
+                router.push('/space/manage/' + ManageSpaceSubviews.Loaders + '/discourse/website-scraping-url-infos/' + item.id);
+              } else if (key === 'index') {
+                await triggerSiteScrapingRunMutation({
+                  variables: {
+                    spaceId: props.space.id,
+                    websiteScrapingInfoId: item.id,
+                  },
+                });
+                showNotification({ message: 'Triggered Indexing of the site', type: 'success' });
+              }
+            },
+          }}
+        />
+      </div>
     </div>
   );
 }
