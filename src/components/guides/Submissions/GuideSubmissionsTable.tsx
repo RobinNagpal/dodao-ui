@@ -12,21 +12,12 @@ import { AgGridReact } from 'ag-grid-react';
 import axios from 'axios';
 import moment from 'moment';
 import React, { useCallback, useState } from 'react';
-import styled from 'styled-components';
-
-const AgGridWrapper = styled.div`
-  width: 100%;
-`;
+import styles from './GuideSubmissionsTable.module.scss';
 
 export interface GuideSubmissionsTableProps {
   space: SpaceWithIntegrationsFragment;
   guideId: string;
 }
-
-const DownloadWrapper = styled.div`
-  color: var(--text-color);
-  height: 30px;
-`;
 
 export default function GuideSubmissionsTable(props: GuideSubmissionsTableProps) {
   const [csvDownloading, setCsvDownloading] = useState(false);
@@ -119,11 +110,11 @@ export default function GuideSubmissionsTable(props: GuideSubmissionsTableProps)
 
   return (
     <div className="w-full">
-      <DownloadWrapper className="w-full flex justify-end mb-4">
+      <div className={`w-full flex justify-end mb-4 ${styles.downloadWrapper}`}>
         <IconButton iconName={IconTypes.ArrowDownTrayIcon} loading={csvDownloading} size="large" onClick={() => downloadCSV()} />
-      </DownloadWrapper>
-      <AgGridWrapper
-        className="ag-theme-alpine flex-grow h-max text-xs"
+      </div>
+      <div
+        className={`ag-theme-alpine flex-grow h-max text-xs ${styles.agGridWrapper}`}
         style={{
           minHeight: 'calc(100vh - 200px)',
           height: '500px',
@@ -201,7 +192,7 @@ export default function GuideSubmissionsTable(props: GuideSubmissionsTableProps)
           ]}
           rowData={rowData}
         />
-      </AgGridWrapper>
+      </div>
     </div>
   );
 }

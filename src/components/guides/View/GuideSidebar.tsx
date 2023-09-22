@@ -3,7 +3,7 @@ import { LAST_STEP_UUID, UseViewGuideHelper } from '@/components/guides/View/use
 import { GuideFragment, GuideStepFragment } from '@/graphql/generated/generated-types';
 import classNames from '@/utils/classNames';
 import { useMemo } from 'react';
-import styled, { css } from 'styled-components';
+import styles from './GuideSidebar.module.scss';
 
 export interface GuideSidebarProps {
   guide: GuideFragment;
@@ -11,56 +11,6 @@ export interface GuideSidebarProps {
   activeStep: GuideStepFragment;
 }
 
-const StyledSpan = styled.span<{ showActive: boolean; showSuccess: boolean; showError: boolean }>`
-  background-color: var(--border-color);
-  color: var(--text-color);
-  svg {
-    color: var(--text-color);
-  }
-
-  ${({ showSuccess }) =>
-    showSuccess &&
-    css`
-      background-color: green;
-      svg {
-        color: white;
-      }
-    `}
-
-  ${({ showError }) =>
-    showError &&
-    css`
-      background-color: red;
-      svg {
-        color: white;
-      }
-    `}
-
-  ${({ showActive }) =>
-    showActive &&
-    css`
-      background-color: var(--primary-color);
-      svg {
-        color: white;
-      }
-    `}
-`;
-
-const StyledAnchor = styled.a<{ isActive: boolean; isDisabled: boolean }>`
-  color: var(--text-color);
-  cursor: pointer;
-  ${({ isActive }) =>
-    isActive &&
-    css`
-      color: var(--primary-color);
-    `}
-
-  ${({ isDisabled }) =>
-    isDisabled &&
-    css`
-      cursor: not-allowed;
-    `}
-`;
 export default function GuideSidebar({ activeStep, guide, viewGuideHelper }: GuideSidebarProps) {
   const showError = useMemo(
     () => !viewGuideHelper.guideSubmission?.isPristine && !viewGuideHelper.isEveryQuestionAnsweredInStep(activeStep.uuid),
@@ -98,23 +48,30 @@ export default function GuideSidebar({ activeStep, guide, viewGuideHelper }: Gui
                   {stepIdx !== guide.steps.length - 1 ? <span className="absolute left-4 top-4 -ml-px h-full w-0.5 bg-neutral-400" aria-hidden="true" /> : null}
                   <div className="relative flex space-x-3">
                     <div>
-                      <StyledSpan
-                        showActive={showActive}
-                        showSuccess={showSuccess}
-                        showError={showError}
-                        className={classNames(iconBackground, 'h-8 w-8 rounded-full flex items-center justify-center')}
+                      <span
+                        className={classNames(
+                          `${styles.styledSpan}`,
+                          showSuccess && `${styles.showSuccess}`,
+                          showError && `${styles.showError}`,
+                          showActive && `${styles.showActive}`,
+                          iconBackground,
+                          'h-8 w-8 rounded-full flex items-center justify-center'
+                        )}
                       >
                         <Icon className="h-5 w-5 text-white" aria-hidden="true" />
-                      </StyledSpan>
+                      </span>
                     </div>
                     <div className="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
-                      <StyledAnchor
+                      <a
+                        className={classNames(
+                          `${styles.StyledAnchor}`,
+                          showActive && `${styles.isActive}`,
+                          step.id === LAST_STEP_UUID || stepIdx === guide.steps.length - 1 ? `${styles.isDisabled}` : ''
+                        )}
                         onClick={() => goToStep(stepIdx)}
-                        isActive={showActive}
-                        isDisabled={step.id === LAST_STEP_UUID || stepIdx === guide.steps.length - 1}
                       >
                         {step.name}
-                      </StyledAnchor>
+                      </a>
                     </div>
                   </div>
                 </div>

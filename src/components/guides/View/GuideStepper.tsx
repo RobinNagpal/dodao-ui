@@ -5,7 +5,7 @@ import { useGuideRatings } from '@/components/guides/View/useGuideRatings';
 import { UseViewGuideHelper } from '@/components/guides/View/useViewGuide';
 import { GuideFragment, Space } from '@/graphql/generated/generated-types';
 import React, { useMemo } from 'react';
-import styled from 'styled-components';
+import styles from './GuideStepper.module.scss';
 
 interface GuideProps {
   viewGuideHelper: UseViewGuideHelper;
@@ -13,9 +13,6 @@ interface GuideProps {
   space: Space;
 }
 
-const NavWrapperDiv = styled.div`
-  min-width: 220px;
-`;
 const Guide: React.FC<GuideProps> = ({ viewGuideHelper, guide, space }) => {
   const activeStep = useMemo(
     () => guide.steps.find((step) => step.order === viewGuideHelper.activeStepOrder) || guide.steps[0],
@@ -26,9 +23,9 @@ const Guide: React.FC<GuideProps> = ({ viewGuideHelper, guide, space }) => {
 
   return (
     <div className="flex">
-      <NavWrapperDiv className="hidden lg:flex grow flex-col gap-y-5 overflow-hidden px-6 p-4">
+      <div className={`hidden lg:flex grow flex-col gap-y-5 overflow-hidden px-6 p-4 ${styles.navWrapperDiv}`}>
         <GuideSidebar guide={guide} viewGuideHelper={viewGuideHelper} activeStep={activeStep} />
-      </NavWrapperDiv>
+      </div>
       <div className="w-full flex flex-row overflow-scroll">
         <GuideStepperItem space={space} viewGuideHelper={viewGuideHelper} guide={guide} step={activeStep} />
       </div>
