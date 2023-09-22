@@ -1,34 +1,32 @@
 import { SpaceProps } from '@/app/withSpace';
-import PageWrapper from '@/components/core/page/PageWrapper';
-import { IconClearAll, IconSettings } from '@tabler/icons-react';
-import { MutableRefObject, memo, useCallback, useContext, useEffect, useRef, useState } from 'react';
-import toast from 'react-hot-toast';
+import { ChatInput } from '@/chatbot/components/Chat/ChatInput';
+import { ChatLoader } from '@/chatbot/components/Chat/ChatLoader';
+import { ErrorMessageDiv } from '@/chatbot/components/Chat/ErrorMessageDiv';
+import { MemoizedChatMessage } from '@/chatbot/components/Chat/MemoizedChatMessage';
 
-import { useTranslation } from 'next-i18next';
-
-import { saveConversation, saveConversations, updateConversation } from '@/chatbot/utils/app/conversation';
-import { throttle } from '@/chatbot/utils/throttle/throttle';
+import HomeContext from '@/chatbot/home/home.context';
 
 import { ChatBody, Conversation, Message } from '@/chatbot/types/chat';
 import { Plugin } from '@/chatbot/types/plugin';
 
-import HomeContext from '@/chatbot/home/home.context';
+import { saveConversation, saveConversations, updateConversation } from '@/chatbot/utils/app/conversation';
+import { throttle } from '@/chatbot/utils/throttle/throttle';
+import PageWrapper from '@/components/core/page/PageWrapper';
+import { useI18 } from '@/hooks/useI18';
+import { IconArrowDown } from '@tabler/icons-react';
 
-import Spinner from '@/chatbot/components/Spinner';
-import { ChatInput } from '@/chatbot/components/Chat/ChatInput';
-import { ChatLoader } from '@/chatbot/components/Chat/ChatLoader';
-import { ErrorMessageDiv } from '@/chatbot/components/Chat/ErrorMessageDiv';
-import { ModelSelect } from '@/chatbot/components/Chat/ModelSelect';
-import { SystemPrompt } from '@/chatbot/components/Chat/SystemPrompt';
-import { TemperatureSlider } from '@/chatbot/components/Chat/Temperature';
-import { MemoizedChatMessage } from '@/chatbot/components/Chat/MemoizedChatMessage';
+import { useTranslation } from 'next-i18next';
+import React, { memo, MutableRefObject, useCallback, useContext, useEffect, useRef, useState } from 'react';
+import toast from 'react-hot-toast';
 import styles from './Chat.module.scss';
 
 interface Props extends SpaceProps {
   stopConversationRef: MutableRefObject<boolean>;
+  isChatbotSite: boolean;
 }
 
-export const Chat = memo(({ stopConversationRef, space }: Props) => {
+export const Chat = memo(({ stopConversationRef, space, isChatbotSite }: Props) => {
+  const { $t } = useI18();
   const { t } = useTranslation('chat');
 
   const {
@@ -50,21 +48,11 @@ export const Chat = memo(({ stopConversationRef, space }: Props) => {
     async (message: Message, deleteCount = 0, plugin: Plugin | null = null) => {
       if (selectedConversation) {
         let updatedConversation: Conversation;
-        if (deleteCount) {
-          const updatedMessages = [...selectedConversation.messages];
-          for (let i = 0; i < deleteCount; i++) {
-            updatedMessages.pop();
-          }
-          updatedConversation = {
-            ...selectedConversation,
-            messages: [...updatedMessages, message],
-          };
-        } else {
-          updatedConversation = {
-            ...selectedConversation,
-            messages: [...selectedConversation.messages, message],
-          };
-        }
+
+        updatedConversation = {
+          ...selectedConversation,
+          messages: [message],
+        };
         homeDispatch({
           field: 'selectedConversation',
           value: updatedConversation,
@@ -289,73 +277,28 @@ export const Chat = memo(({ stopConversationRef, space }: Props) => {
     };
   }, [messagesEndRef]);
 
+  useEffect(() => {
+    handleScrollDown();
+  }, [currentMessage]);
+
   return (
-    <PageWrapper>
-      <div className={`h-max ${styles.chatWrapperDiv}`}>
-        {modelError ? (
-          <ErrorMessageDiv error={modelError} />
-        ) : (
-          <div className="flex flex-col">
-            <div className="overflow-scroll flex-1" ref={chatContainerRef} onScroll={handleScroll}>
-              {selectedConversation?.messages.length === 0 ? (
-                <>
-                  <div className="mx-auto flex flex-col space-y-5 md:space-y-10 px-3 pt-5 md:pt-12 sm:max-w-[600px]">
-                    <div className="text-center text-3xl font-semibold">
-                      {models.length === 0 ? (
-                        <div>
-                          <Spinner size="16px" className="mx-auto" />
-                        </div>
-                      ) : (
-                        'Chatbot UI'
-                      )}
-                    </div>
-
-                    {models.length > 0 && (
-                      <div className="flex h-full flex-col space-y-4 rounded-lg border border-neutral-200 p-4 dark:border-neutral-600">
-                        <ModelSelect />
-
-                        <SystemPrompt
-                          conversation={selectedConversation}
-                          prompts={prompts}
-                          onChangePrompt={(prompt) =>
-                            handleUpdateConversation(selectedConversation, {
-                              key: 'prompt',
-                              value: prompt,
-                            })
-                          }
-                        />
-
-                        <TemperatureSlider
-                          label={t('Temperature')}
-                          onChangeTemperature={(temperature) =>
-                            handleUpdateConversation(selectedConversation, {
-                              key: 'temperature',
-                              value: temperature,
-                            })
-                          }
-                        />
-                      </div>
-                    )}
-                  </div>
-                </>
-              ) : (
+    <div className="w-full">
+      {isChatbotSite ? (
+        <div className="p-2 w-full text-center flex justify-center" style={{ backgroundColor: 'var(--primary-color)', color: 'white' }}>
+          <div className="max-w-7xl sm:px-2 lg:px-8" dangerouslySetInnerHTML={{ __html: $t(`chatbot.${space.id}.topBanner`) }} />
+        </div>
+      ) : null}
+      <PageWrapper>
+        <div className={`h-max w-full ${styles.chatWrapperDiv}`}>
+          {modelError ? (
+            <ErrorMessageDiv error={modelError} />
+          ) : (
+            <div className="flex flex-col w-full">
+              <div className="overflow-scroll flex-1 w-full" ref={chatContainerRef} onScroll={handleScroll}>
                 <div className={styles.chatMessagesDiv}>
-                  <div className="sticky top-0 z-10 flex justify-center border border-b-neutral-300 py-2 text-sm">
-                    {t('Model')}: {selectedConversation?.model.name} | {t('Temp')}: {selectedConversation?.temperature} |
-                    <button className="ml-2 cursor-pointer hover:opacity-50" onClick={handleSettings}>
-                      <IconSettings size={18} />
-                    </button>
-                    <button className="ml-2 cursor-pointer hover:opacity-50" onClick={onClearAll}>
-                      <IconClearAll size={18} />
-                    </button>
-                  </div>
-                  {showSettings && (
-                    <div className="flex flex-col space-y-10 md:mx-auto md:max-w-xl md:gap-6 md:py-3 md:pt-6 lg:max-w-2xl lg:px-0 xl:max-w-3xl">
-                      <div className="flex h-full flex-col space-y-4 border-b border-neutral-200 p-4 dark:border-neutral-600 md:rounded-lg md:border">
-                        <ModelSelect />
-                      </div>
-                    </div>
-                  )}
+                  {!selectedConversation?.messages?.length ? (
+                    <h1 className="pt-36  mt-36 h-full align-center w-full text-center text-xl">Ask your question to AI Chatbot by typing in the box below</h1>
+                  ) : null}
 
                   {selectedConversation?.messages.map((message, index) => (
                     <MemoizedChatMessage
@@ -367,6 +310,7 @@ export const Chat = memo(({ stopConversationRef, space }: Props) => {
                         // discard edited message and the ones that come after then resend
                         handleSend(editedMessage, selectedConversation?.messages.length - index);
                       }}
+                      onScrollDownClick={handleScrollDown}
                     />
                   ))}
 
@@ -374,28 +318,36 @@ export const Chat = memo(({ stopConversationRef, space }: Props) => {
 
                   <div className="h-[162px]" ref={messagesEndRef} />
                 </div>
+              </div>
+              {showScrollDownButton && (selectedConversation?.messages.length || 0) > 0 && (
+                <div className="w-full mt-4">
+                  <button
+                    className={`float-right h-7 w-7 items-center justify-center rounded-full shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500  ${styles.scrollDownButton}`}
+                    onClick={handleScrollDown}
+                  >
+                    <IconArrowDown size={18} />
+                  </button>
+                </div>
               )}
-            </div>
 
-            <ChatInput
-              stopConversationRef={stopConversationRef}
-              textareaRef={textareaRef}
-              onSend={(message, plugin) => {
-                setCurrentMessage(message);
-                handleSend(message, 0, plugin);
-              }}
-              onScrollDownClick={handleScrollDown}
-              onRegenerate={() => {
-                if (currentMessage) {
-                  handleSend(currentMessage, 2, null);
-                }
-              }}
-              showScrollDownButton={showScrollDownButton}
-            />
-          </div>
-        )}
-      </div>
-    </PageWrapper>
+              <ChatInput
+                stopConversationRef={stopConversationRef}
+                textareaRef={textareaRef}
+                onSend={(message, plugin) => {
+                  setCurrentMessage(message);
+                  handleSend(message, 0, plugin);
+                }}
+                onRegenerate={() => {
+                  if (currentMessage) {
+                    handleSend(currentMessage, 2, null);
+                  }
+                }}
+              />
+            </div>
+          )}
+        </div>
+      </PageWrapper>
+    </div>
   );
 });
 Chat.displayName = 'Chat';

@@ -3,5 +3,10 @@
 }
 
 .chatMessagesDiv {
-  max-height: calc(100vh - 200px);
+  max-height: calc(100vh - 400px);
+}
+
+.scrollDownButton {
+  border: 2px solid var(--primary-color);
+  padding: 2px;
 }

@@ -39,6 +39,10 @@ function getSpaceDetailsFields(space: SpaceWithIntegrationsFragment): Array<{ la
       value: space.domains!.join(', ') || 'None',
     },
     {
+      label: 'Bot Domains',
+      value: space.botDomains!.join(', ') || 'None',
+    },
+    {
       label: 'Admins',
       value: space.admins!.join(', ') || 'None',
     },
