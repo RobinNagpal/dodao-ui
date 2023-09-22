@@ -33,7 +33,6 @@ export interface GuideStepProps {
   viewGuideHelper: UseViewGuideHelper;
 }
 
-
 const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, guide }) => {
   const [nextButtonClicked, setNextButtonClicked] = useState(false);
 
@@ -154,7 +153,7 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
           <div className="mt-4 mb-6 bold">
             <h3 className="badge-heading">You have WON a Badge</h3>
             Claim your guide completion badge &nbsp;
-            <a href={guide.guideIntegrations?.projectGalaxyOatMintUrl} className={`badge-claim-link ${styles.BadgeClaimLink}`}>
+            <a href={guide.guideIntegrations?.projectGalaxyOatMintUrl} className={`badge-claim-link ${styles.badgeClaimLink}`}>
               here
             </a>
           </div>
