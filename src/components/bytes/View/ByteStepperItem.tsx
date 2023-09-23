@@ -34,21 +34,8 @@ import 'prismjs/components/prism-solidity';
 import 'prismjs/components/prism-toml';
 import 'prismjs/components/prism-yaml';
 import { useCallback, useMemo, useState } from 'react';
-import styled from 'styled-components';
 import { LAST_STEP_UUID } from './useViewByte';
-
-const StepContent = styled.div`
-  @media (min-width: 976px) {
-    .previous-text {
-      display: none;
-    }
-    border-radius: 0.5rem;
-  }
-`;
-
-const StyledH1 = styled.h1`
-  color: var(--heading-color);
-`;
+import styles from './ByteStepperItem.module.scss';
 
 interface ByteStepperItemProps {
   byte: ByteDetailsFragment;
@@ -165,11 +152,11 @@ function ByteStepperItem({ viewByteHelper, step, byte, space }: ByteStepperItemP
   const showQuestionsCompletionWarning = nextButtonClicked && (!isQuestionAnswered() || !isDiscordConnected() || !isUserInputComplete());
 
   return (
-    <StepContent className="  px-2 lg:px-4 py-5 sm:px-6 flex flex-col justify-between w-full">
+    <div className={`px-2 lg:px-4 py-5 sm:px-6 flex flex-col justify-between w-full ${styles.stepContent}`}>
       <div>
         <div className="flex justify-between">
           <div className="mt-2">
-            <StyledH1 className="mb-2 text-4xl">{step.name || byte.name}</StyledH1>
+            <h1 className={`mb-2 text-4xl ${styles.styledH1}`}>{step.name || byte.name}</h1>
           </div>
           <div className="ml-6">
             <CircleProgress percentage={isByteCompletedStep ? 100 : round(((activeStepOrder + 1) * 100) / byte.steps.length)} />
@@ -252,7 +239,7 @@ function ByteStepperItem({ viewByteHelper, step, byte, space }: ByteStepperItemP
           </Button>
         )}
       </div>
-    </StepContent>
+    </div>
   );
 }
 
