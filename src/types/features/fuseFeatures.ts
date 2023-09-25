@@ -15,4 +15,11 @@ export const fuseFeatures: FeatureItem[] = [
       priority: 80,
     },
   },
+  {
+    featureName: FeatureName.Simulations,
+    enabled: true,
+    details: {
+      priority: 70,
+    },
+  },
 ];
