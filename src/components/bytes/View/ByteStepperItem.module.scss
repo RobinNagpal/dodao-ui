@@ -1,0 +1,12 @@
+.stepContent {
+  @media (min-width: 976px) {
+    .previous-text {
+      display: none;
+    }
+    border-radius: 0.5rem;
+  }
+}
+
+.styledH1 {
+  color: var(--heading-color);
+}
