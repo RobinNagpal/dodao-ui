@@ -1,15 +1,8 @@
 import React, { PropsWithChildren } from 'react';
-import styled from 'styled-components';
+import styles from './SingleCardLayout.module.scss';
 
-const CardContainer = styled.div`
-  @media (min-width: 992px) {
-    border: 1px solid var(--border-color);
-    border-radius: 16px;
-  }
-  background-color: var(--bg-color);
-`;
 const SingleCardLayout = ({ children }: PropsWithChildren) => {
-  return <CardContainer className="lg:px-6 sm:px-2 py-4 rounded-2xl sm:shadow-lg">{children}</CardContainer>;
+  return <div className={`lg:px-6 sm:px-2 py-4 rounded-2xl sm:shadow-lg ${styles.cardContainer}`}>{children}</div>;
 };
 
 export default SingleCardLayout;

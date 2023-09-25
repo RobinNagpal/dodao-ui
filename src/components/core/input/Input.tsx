@@ -1,7 +1,7 @@
 import { PropsWithChildren } from '@/types/PropsWithChildren';
 import { ExclamationCircleIcon } from '@heroicons/react/20/solid';
 import React, { useRef, useState } from 'react';
-import styled from 'styled-components';
+import styles from './Input.module.scss';
 import { v4 as uuidV4 } from 'uuid';
 
 interface TextInputProps extends PropsWithChildren {
@@ -21,15 +21,6 @@ interface TextInputProps extends PropsWithChildren {
   info?: React.ReactNode;
   className?: string;
 }
-
-const StyledInput = styled.input<{ error?: string | boolean }>`
-  background-color: var(--bg-color);
-  border: ${(props) => (props.error ? '1px solid red' : ``)};
-  color: var(--text-color);
-  &:focus {
-    box-shadow: ${(props) => (props.error ? '0 0 0 2px red' : `0 0 0 2px var(--primary-color)`)};
-  }
-`;
 
 export default function Input({
   modelValue,
@@ -68,10 +59,12 @@ export default function Input({
         {label} {children}
       </label>
       <div className="relative mt-2 rounded-md shadow-sm">
-        <StyledInput
+        <input
           id={id || inputId}
           ref={inputRef}
-          error={error}
+          className={`block w-full rounded-md border-0 py-1.5 pr-10 ring-1 ring-inset ring-gray-400 shadow-sm focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6 ${
+            error ? styles.styledInput + ' ' + styles.error : styles.styledInput
+          }`}
           value={modelValue || ''}
           onChange={handleInput}
           placeholder={placeholder}
@@ -83,7 +76,6 @@ export default function Input({
           max={max ? max : undefined}
           onFocus={() => setIsFocus(true)}
           onBlur={() => setIsFocus(false)}
-          className="block w-full rounded-md border-0 py-1.5 pr-10 ring-1 ring-inset ring-gray-400 shadow-sm focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6"
         />
         {error && (
           <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">

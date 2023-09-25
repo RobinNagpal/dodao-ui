@@ -1,0 +1,31 @@
+.checkboxOverlay {
+  position: absolute;
+  top: 0;
+  margin-top: 2px;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
+}
+
+.checkboxOverlay.readonly {
+  &.isChecked {
+    background-color: var(--primary-color);
+  }
+}
+
+.styledInput {
+  border-color: var(--border-color);
+  accent-color: var(--primary-color);
+  width: 20px;
+  min-width: 20px;
+  cursor: pointer;
+
+  &:checked {
+    background-color: var(--primary-color) !important;
+  }
+}
+
+.styledLabel {
+  color: var(--text-color);
+}
