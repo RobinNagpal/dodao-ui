@@ -54,7 +54,7 @@ export function useViewByte(space: SpaceWithIntegrationsFragment, byteId: string
         ...byte.steps,
         {
           __typename: 'ByteStep',
-          content: 'The byte has been completed successfully!',
+          content: 'The Tidbit has been completed successfully!',
           name: 'Completed',
           uuid: LAST_STEP_UUID,
           stepItems: [],

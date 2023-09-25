@@ -12,18 +12,7 @@ import { TidbitShareSteps } from '@/types/deprecated/models/enums';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import styled from 'styled-components';
-
-const ByteContainer = styled.div`
-  min-height: calc(100vh - 200px);
-`;
-
-const StyledByteCard = styled.div`
-  @media screen and (min-width: 767px) {
-    min-width: 647px;
-    max-width: 647px;
-  }
-`;
+import styles from './ByteView.module.scss';
 
 const ByteView = ({ params, space }: { params: { byteIdAndStep: string[] }; space: SpaceWithIntegrationsFragment }) => {
   const { byteIdAndStep } = params;
@@ -51,8 +40,8 @@ const ByteView = ({ params, space }: { params: { byteIdAndStep: string[] }; spac
 
   return (
     <PageWrapper>
-      <ByteContainer className="pt-4 flex flex-col justify-center items-center byte-container w-full">
-        <StyledByteCard className="sm:border sm:border-gray-200 rounded-xl sm:shadow-md p-2 lg:p-8">
+      <div className={`pt-4 flex flex-col justify-center items-center byte-container w-full ${styles.byteContainer}`}>
+        <div className={`sm:border sm:border-gray-200 rounded-xl sm:shadow-md p-2 lg:p-8 ${styles.styledByteCard}`}>
           <div className="split-content integration-card-content">
             {byte && (
               <div className="px-4 md:px-0 mb-3 flex justify-between">
@@ -85,8 +74,8 @@ const ByteView = ({ params, space }: { params: { byteIdAndStep: string[] }; spac
 
             {!byte && <PageLoading />}
           </div>
-        </StyledByteCard>
-      </ByteContainer>
+        </div>
+      </div>
     </PageWrapper>
   );
 };

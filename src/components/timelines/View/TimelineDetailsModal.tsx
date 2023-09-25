@@ -3,7 +3,6 @@ import { TimelineEventFragment } from '@/graphql/generated/generated-types';
 import { getMarkedRenderer } from '@/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
 import React from 'react';
-import styled from 'styled-components';
 
 export interface TimelineDetailsModalProps {
   open: boolean;

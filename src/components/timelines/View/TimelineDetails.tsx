@@ -6,18 +6,13 @@ import { Space, TimelineDetailsFragment, TimelineEventFragment } from '@/graphql
 import { getMarkedRenderer } from '@/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
 import moment from 'moment';
-import styled from 'styled-components';
+import styles from './TimelineDetails.module.scss';
 
 interface TimelineProps {
   space: Space;
   timeline: TimelineDetailsFragment;
   inProgress?: boolean;
 }
-
-const StyledLink = styled.a`
-  color: var(--primary-color);
-  cursor: pointer;
-`;
 
 const Timeline = ({ timeline }: TimelineProps) => {
   const renderer = getMarkedRenderer();
@@ -72,19 +67,19 @@ const Timeline = ({ timeline }: TimelineProps) => {
 
                 <div className="flex">
                   {event.fullDetails && (
-                    <StyledLink className="p-4 flex" onClick={() => handleShowFullDetailsModal(event)}>
+                    <a className={`p-4 flex ${styles.styledLink}`} onClick={() => handleShowFullDetailsModal(event)}>
                       Full Details <ArrowTopRightOnSquareIcon width={16} height={16} className="ml-1 mt-1 mr-1" />
-                    </StyledLink>
+                    </a>
                   )}
                   {event.moreLink && (
-                    <StyledLink
-                      className="p-4 flex "
+                    <a
+                      className={`p-4 flex ${styles.styledLink}`}
                       onClick={() => {
                         if (event.moreLink) window.open(event.moreLink);
                       }}
                     >
                       More Details <ArrowRightIcon width={16} height={16} className="ml-1 mt-1 mr-1" />
-                    </StyledLink>
+                    </a>
                   )}
                 </div>
               </div>
