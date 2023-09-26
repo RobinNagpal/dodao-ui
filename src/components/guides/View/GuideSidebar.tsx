@@ -64,7 +64,7 @@ export default function GuideSidebar({ activeStep, guide, viewGuideHelper }: Gui
                     <div className="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
                       <a
                         className={classNames(
-                          `${styles.StyledAnchor}`,
+                          `${styles.styledAnchor}`,
                           showActive && `${styles.isActive}`,
                           step.id === LAST_STEP_UUID || stepIdx === guide.steps.length - 1 ? `${styles.isDisabled}` : ''
                         )}
