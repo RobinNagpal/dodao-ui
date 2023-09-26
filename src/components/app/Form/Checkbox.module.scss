@@ -24,6 +24,10 @@
   &:checked {
     background-color: var(--primary-color) !important;
   }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
 }
 
 .styledLabel {
