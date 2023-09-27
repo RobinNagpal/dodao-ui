@@ -1,0 +1,45 @@
+.styledSpan {
+  background-color: var(--border-color);
+  color: var(--text-color);
+
+  svg {
+    color: var(--text-color);
+  }
+
+  &.showSuccess {
+    background-color: green;
+
+    svg {
+      color: white;
+    }
+  }
+
+  &.showError {
+    background-color: red;
+
+    svg {
+      color: white;
+    }
+  }
+
+  &.showActive {
+    background-color: var(--primary-color);
+
+    svg {
+      color: white;
+    }
+  }
+}
+
+.styledAnchor {
+  color: var(--text-color);
+  cursor: pointer;
+
+  &.isActive {
+    color: var(--primary-color);
+  }
+
+  &.isDisabled {
+    cursor: not-allowed;
+  }
+}

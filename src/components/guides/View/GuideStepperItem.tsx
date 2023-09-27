@@ -24,7 +24,7 @@ import { useSession } from 'next-auth/react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import Plyr from 'plyr';
 import 'plyr/dist/plyr.css';
-import styled from 'styled-components';
+import styles from './GuideStepperItem.module.scss';
 
 export interface GuideStepProps {
   space: Space;
@@ -32,10 +32,6 @@ export interface GuideStepProps {
   step: GuideStepFragment;
   viewGuideHelper: UseViewGuideHelper;
 }
-
-const BadgeClaimLink = styled.a`
-  color: var(--primary-color);
-`;
 
 const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, guide }) => {
   const [nextButtonClicked, setNextButtonClicked] = useState(false);
@@ -157,9 +153,9 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
           <div className="mt-4 mb-6 bold">
             <h3 className="badge-heading">You have WON a Badge</h3>
             Claim your guide completion badge &nbsp;
-            <BadgeClaimLink href={guide.guideIntegrations?.projectGalaxyOatMintUrl} className="badge-claim-link">
+            <a href={guide.guideIntegrations?.projectGalaxyOatMintUrl} className={`badge-claim-link ${styles.badgeClaimLink}`}>
               here
-            </BadgeClaimLink>
+            </a>
           </div>
         )}
         {showIncorrectQuestions && (

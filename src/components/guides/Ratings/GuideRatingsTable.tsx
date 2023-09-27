@@ -8,8 +8,8 @@ import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { AgGridReact } from 'ag-grid-react';
 import moment from 'moment';
 import React, { useCallback } from 'react';
-import styled from 'styled-components';
 import { PieChart, Pie, Tooltip, Legend, Cell } from 'recharts';
+import styles from './GuideRatingsTable.module.scss';
 
 interface RatingDistribution {
   ux: number;
@@ -21,20 +21,10 @@ interface Props {
   distribution: RatingDistribution;
 }
 
-const AgGridWrapper = styled.div`
-  width: 100%;
-`;
-
 export interface GuideRatingsTableProps {
   space: SpaceWithIntegrationsFragment;
   guideId: string;
 }
-
-const ReChartsWrapper = styled.div`
-  .recharts-wrapper {
-    margin: 0 auto;
-  }
-`;
 
 export default function GuideRatingsTable(props: GuideRatingsTableProps) {
   const { data: guideRatingsResponse, loading: loadingGuideRatings } = useGuideRatingsQuery({
@@ -127,7 +117,7 @@ export default function GuideRatingsTable(props: GuideRatingsTableProps) {
               </div>
             </div>
           </div>
-          <ReChartsWrapper className="text-center w-full">
+          <div className={`text-center w-full ${styles.reChartsWrapper}`}>
             <h2 className="text-xl font-bold w-full">What did you like the most?</h2>
             {ratingDistributions && (
               <PieChart width={400} height={400}>
@@ -140,11 +130,11 @@ export default function GuideRatingsTable(props: GuideRatingsTableProps) {
                 <Legend />
               </PieChart>
             )}
-          </ReChartsWrapper>
+          </div>
         </Grid2Cols>
       )}
-      <AgGridWrapper
-        className="ag-theme-alpine flex-grow h-max text-xs"
+      <div
+        className={`ag-theme-alpine flex-grow h-max text-xs ${styles.reChartsWrapper}`}
         style={{
           minHeight: 'calc(100vh - 200px)',
           height: '500px',
@@ -222,7 +212,7 @@ export default function GuideRatingsTable(props: GuideRatingsTableProps) {
           ]}
           rowData={rowData}
         />
-      </AgGridWrapper>
+      </div>
     </div>
   );
 }
