@@ -42,7 +42,7 @@ async function getGuideUrlsForAcademy(spaceId: string): Promise<SiteMapUrl[]> {
   return urls;
 }
 
-export async function getCourseUrlsForAcademy(space: SpaceWithIntegrationsFragment): Promise<SiteMapUrl[]> {
+async function getCourseUrlsForAcademy(space: SpaceWithIntegrationsFragment): Promise<SiteMapUrl[]> {
   const gitCourses: CourseDetailsFragment[] = await getAllCourses(space.id);
 
   const urls: SiteMapUrl[] = [];
