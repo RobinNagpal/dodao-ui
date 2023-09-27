@@ -6,8 +6,7 @@ import { DesktopProfileMenu } from '@/components/main/TopNav/DesktopProfileMenu'
 import { MobileNavLink } from '@/components/main/TopNav/MobileNavLink';
 import { MobileProfileMenu } from '@/components/main/TopNav/MobileProfileMenu';
 import { useLoginModalContext } from '@/contexts/LoginModalContext';
-import { useSpace } from '@/contexts/SpaceContext';
-import { Space } from '@/graphql/generated/generated-types';
+import { Space, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { Session } from '@/types/auth/Session';
 import { FeatureItem, FeatureName } from '@/types/features/spaceFeatures';
 import { isAdmin } from '@/utils/auth/isAdmin';
@@ -106,11 +105,11 @@ function CreateOrLoginButton(props: {
   );
 }
 
-export default function TopNav() {
+export default function TopNav(props: { space?: SpaceWithIntegrationsFragment | null }) {
   const { data: session } = useSession();
   const { setShowLoginModal } = useLoginModalContext();
   const [showCreateModal, setShowCreateModal] = useState(false);
-  const { space } = useSpace();
+  const { space } = props;
   return (
     <StyledDiv>
       <FullScreenModal open={showCreateModal} onClose={() => setShowCreateModal(false)} title={'Create'} showCloseButton={false}>

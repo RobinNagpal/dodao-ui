@@ -106,7 +106,7 @@ function BasePage(props: { space?: SpaceWithIntegrationsFragment | null; childre
     return (
       <LoginModalProvider>
         <LoginModal />
-        {!isBotSite ? <TopNav /> : null}
+        {!isBotSite ? <TopNav space={props.space} /> : null}
         <StyledMain>{props.children}</StyledMain>
       </LoginModalProvider>
     );
