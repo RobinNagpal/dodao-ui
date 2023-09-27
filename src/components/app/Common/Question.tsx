@@ -22,11 +22,7 @@ import 'prismjs/components/prism-solidity';
 import 'prismjs/components/prism-toml';
 import 'prismjs/components/prism-yaml';
 import { useEffect, useState } from 'react';
-import styled from 'styled-components';
-
-const HintIconWrapper = styled.div`
-  cursor: pointer;
-`;
+import styles from './Question.module.scss';
 
 export interface LocalQuestionType
   extends Omit<CourseQuestionFragment | GuideQuestionFragment | ByteQuestionFragmentFragment | CourseReadingQuestionFragment, 'hint' | 'explanation'> {
@@ -77,9 +73,9 @@ function Question({ answerClass = '', question, questionResponse, readonly, show
       <div className="flex justify-between items-center content-center">
         <div className="markdown-body mb-2 text-l" dangerouslySetInnerHTML={{ __html: questionContent }}></div>
         {showHint && question.hint && question.hint.toLowerCase() !== 'nohint' && (
-          <HintIconWrapper onClick={() => setDisplayHint(!displayHint)}>
+          <div className={styles.hintIconWrapper} onClick={() => setDisplayHint(!displayHint)}>
             <HintIcon height="30px" />
-          </HintIconWrapper>
+          </div>
         )}
       </div>
       {questionWithFormattedChoices.choices.map((choice) => {

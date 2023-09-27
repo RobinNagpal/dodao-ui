@@ -1,0 +1,35 @@
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.overlay.readonly {
+  &.isSelected {
+    background-color: var(--primary-color);
+  }
+}
+
+.styledInput {
+  border-color: var(--border-color);
+  accent-color: var(--primary-color);
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+
+  &:checked {
+    background-color: var(--primary-color) !important;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+.styledLabel {
+  color: var(--text-color);
+}

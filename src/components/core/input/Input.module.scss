@@ -1,0 +1,17 @@
+.styledInput {
+  background-color: var(--bg-color);
+  border: none;
+  color: var(--text-color);
+
+  &:focus {
+    box-shadow: 0 0 0 2px var(--primary-color);
+  }
+
+  &.error {
+    border: 1px solid red;
+
+    &:focus {
+      box-shadow: 0 0 0 2px red;
+    }
+  }
+}
