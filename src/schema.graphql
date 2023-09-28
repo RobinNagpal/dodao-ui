@@ -69,6 +69,17 @@ input AddTopicVideoInput {
 
 scalar Any
 
+type ArticleIndexingInfo {
+  articleUrl: String!
+  createdAt: DateTimeISO!
+  id: String!
+  spaceId: String!
+  status: String!
+  text: String
+  textLength: Int
+  updatedAt: DateTimeISO!
+}
+
 type AuthSettings {
   enableLogin: Boolean
   loginOptions: [String!]
@@ -906,6 +917,7 @@ type Mutation {
   askChatCompletionAI(input: ChatCompletionAIInput!): OpenAIChatCompletionResponse!
   askCompletionAI(input: CompletionAIInput!): OpenAICompletionResponse!
   authenticateWithUnstoppable(idToken: String!): JwtResponse!
+  createArticleIndexingInfo(articleUrl: String!, spaceId: String!): ArticleIndexingInfo!
   createSignedUrl(input: CreateSignedUrlInput!, spaceId: String!): String!
   createSpace(spaceInput: UpsertSpaceInput!): Space!
   createSummaryOfContent(input: String!): OpenAITextResponse!
@@ -919,6 +931,8 @@ type Mutation {
   deleteTopicSummary(spaceId: String!, summaryInfo: DeleteTopicSummaryInput!): GitCourse!
   deleteTopicVideo(spaceId: String!, videoInfo: DeleteTopicVideoInput!): GitCourse!
   downloadAndCleanContent(input: String!): DownloadAndCleanContentResponse!
+  editArticleIndexingInfo(articleIndexingInfoId: String!, articleUrl: String!, spaceId: String!): ArticleIndexingInfo!
+  editWebsiteScrapingInfo(host: String!, ignoreHashInUrl: Boolean!, scrapingStartUrl: String!, spaceId: String!, websiteScrapingInfoId: String!): WebsiteScrapingInfo!
   extractRelevantTextForTopic(input: ExtractRelevantTextForTopicInput!): OpenAITextResponse!
   generateImage(input: GenerateImageInput!): ImagesResponse!
   generateImageEdit(input: GenerateImageEditInput!): GenerateImageResponse!
@@ -1037,6 +1051,7 @@ type Query {
   _empty: String
   academyTask(uuid: String!): AcademyTask!
   academyTasks(spaceId: String!, status: String): [AcademyTask!]
+  articleIndexingInfos(spaceId: String!): [ArticleIndexingInfo!]!
   byte(byteId: String!, includeDraft: Boolean, spaceId: String!): Byte!
   byteSocialShare(byteId: String!, spaceId: String!): ByteSocialShare
   bytes(spaceId: String!): [Byte!]!

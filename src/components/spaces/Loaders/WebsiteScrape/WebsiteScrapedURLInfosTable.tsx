@@ -33,9 +33,9 @@ export default function WebsiteScrapedURLInfosTable(props: { space: SpaceWithInt
 
   return (
     <div className="w-full">
-      <Link href={'/space/manage/' + ManageSpaceSubviews.Loaders + '/discourse/discourse-index-runs'} className="text-color">
+      <Link href={'/space/manage/' + ManageSpaceSubviews.Loaders} className="text-color">
         <span className="mr-1 font-bold">&#8592;</span>
-        All Posts
+        All Loaders
       </Link>
       <Table
         heading={'Discourse Index Runs'}

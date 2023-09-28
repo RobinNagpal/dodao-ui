@@ -38,13 +38,24 @@ fragment DiscordMessageFragment on DiscordMessage {
   authorUsername
 }
 
-fragment WebsiteScrapingInfoFragment on WebsiteScrapingInfo {
+fragment WebsiteScrapingInfo on WebsiteScrapingInfo {
   id
   host
   scrapingStartUrl
   ignoreHashInUrl
   createdAt
   updatedAt
+}
+
+fragment ArticleIndexingInfo on ArticleIndexingInfo {
+  id
+  spaceId
+  articleUrl
+  createdAt
+  updatedAt
+  status
+  text
+  textLength
 }
 
 fragment SiteScrapingRunFragment on SiteScrapingRun {
@@ -67,13 +78,13 @@ fragment ScrapedUrlInfoFragment on ScrapedUrlInfo {
 }
 
 query DiscourseIndexRuns($spaceId: String!) {
-  discourseIndexRuns(spaceId: $spaceId){
+  discourseIndexRuns(spaceId: $spaceId) {
     ...DiscourseIndexRunFragment
   }
 }
 
 query DiscoursePosts($spaceId: String!) {
-  discoursePosts(spaceId: $spaceId){
+  discoursePosts(spaceId: $spaceId) {
     id
     spaceId
     title
@@ -88,7 +99,7 @@ query DiscoursePosts($spaceId: String!) {
 }
 
 query DiscoursePostComments($spaceId: String!, $postId: String!) {
-  discoursePostComments(spaceId: $spaceId, postId: $postId){
+  discoursePostComments(spaceId: $spaceId, postId: $postId) {
     id
     spaceId
     commentPostId
@@ -102,7 +113,7 @@ query DiscoursePostComments($spaceId: String!, $postId: String!) {
 }
 
 query DiscourseTopics($spaceId: String!, $postId: String!) {
-  discoursePostComments(spaceId: $spaceId, postId: $postId){
+  discoursePostComments(spaceId: $spaceId, postId: $postId) {
     id
     commentPostId
     spaceId
@@ -116,38 +127,43 @@ query DiscourseTopics($spaceId: String!, $postId: String!) {
 }
 
 query DiscordServer($spaceId: String!, $id: String!) {
-  discordServer(spaceId: $spaceId, id: $id){
+  discordServer(spaceId: $spaceId, id: $id) {
     ...DiscordServerFragment
   }
 }
 
 query DiscordChannels($spaceId: String!, $serverId: String!) {
-  discordChannels(spaceId: $spaceId, serverId: $serverId){
+  discordChannels(spaceId: $spaceId, serverId: $serverId) {
     ...DiscordChannelFragment
   }
 }
 
-
 query DiscordMessages($spaceId: String!, $channelId: String!) {
-  discordMessages(spaceId: $spaceId, channelId: $channelId){
+  discordMessages(spaceId: $spaceId, channelId: $channelId) {
     ...DiscordMessageFragment
   }
 }
 
 query WebsiteScrapingInfos($spaceId: String!) {
-  websiteScrapingInfos(spaceId: $spaceId){
-    ...WebsiteScrapingInfoFragment
+  websiteScrapingInfos(spaceId: $spaceId) {
+    ...WebsiteScrapingInfo
+  }
+}
+
+query ArticleIndexingInfos($spaceId: String!) {
+  articleIndexingInfos(spaceId: $spaceId) {
+    ...ArticleIndexingInfo
   }
 }
 
 query SiteScrapingRuns($spaceId: String!, $websiteScrapingInfoId: String!) {
-  siteScrapingRuns(spaceId: $spaceId, websiteScrapingInfoId: $websiteScrapingInfoId){
+  siteScrapingRuns(spaceId: $spaceId, websiteScrapingInfoId: $websiteScrapingInfoId) {
     ...SiteScrapingRunFragment
   }
 }
 
 query ScrapedUrlInfos($spaceId: String!, $websiteScrapingInfoId: String!) {
-  scrapedUrlInfos(spaceId: $spaceId, websiteScrapingInfoId: $websiteScrapingInfoId){
+  scrapedUrlInfos(spaceId: $spaceId, websiteScrapingInfoId: $websiteScrapingInfoId) {
     ...ScrapedUrlInfoFragment
   }
 }
@@ -186,12 +202,36 @@ mutation IndexDiscoursePost($spaceId: String!, $postId: String!) {
 
 mutation CreateWebsiteScrapingInfo($spaceId: String!, $host: String!, $scrapingStartUrl: String!, $ignoreHashInUrl: Boolean!) {
   createWebsiteScrapingInfo(spaceId: $spaceId, host: $host, scrapingStartUrl: $scrapingStartUrl, ignoreHashInUrl: $ignoreHashInUrl) {
-    ...WebsiteScrapingInfoFragment
+    ...WebsiteScrapingInfo
+  }
+}
+
+mutation EditWebsiteScrapingInfo($spaceId: String!, $websiteScrapingInfoId: String!, $host: String!, $scrapingStartUrl: String!, $ignoreHashInUrl: Boolean!) {
+  editWebsiteScrapingInfo(
+    spaceId: $spaceId
+    websiteScrapingInfoId: $websiteScrapingInfoId
+    host: $host
+    scrapingStartUrl: $scrapingStartUrl
+    ignoreHashInUrl: $ignoreHashInUrl
+  ) {
+    ...WebsiteScrapingInfo
   }
 }
 
 mutation TriggerSiteScrapingRun($spaceId: String!, $websiteScrapingInfoId: String!) {
   triggerSiteScrapingRun(spaceId: $spaceId, websiteScrapingInfoId: $websiteScrapingInfoId) {
     ...SiteScrapingRunFragment
+  }
+}
+
+mutation CreateArticleIndexingInfo($spaceId: String!, $articleUrl: String!) {
+  createArticleIndexingInfo(spaceId: $spaceId, articleUrl: $articleUrl) {
+    ...ArticleIndexingInfo
+  }
+}
+
+mutation EditArticleIndexingInfo($spaceId: String!, $articleIndexingInfoId: String!, $articleUrl: String!) {
+  editArticleIndexingInfo(spaceId: $spaceId, articleIndexingInfoId: $articleIndexingInfoId, articleUrl: $articleUrl) {
+    ...ArticleIndexingInfo
   }
 }

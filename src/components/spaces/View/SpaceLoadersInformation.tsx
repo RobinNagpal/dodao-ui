@@ -1,21 +1,14 @@
 import DetailsField from '@/components/core/details/DetailsField';
 import DetailsHeader from '@/components/core/details/DetailsHeader';
 import DetailsSection from '@/components/core/details/DetailsSection';
-import { EllipsisDropdownItem } from '@/components/core/dropdowns/EllipsisDropdown';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
-import { Table, TableRow } from '@/components/core/table/Table';
 import UpsertSpaceLoadersInfoModal from '@/components/spaces/Edit/LoadersInfo/UpsertSpaceLoadersInfoModal';
-import UpsertWebsiteScrapingInfoModal from '@/components/spaces/Edit/LoadersInfo/UpsertWebsiteScrapingInfoModal';
-import { useNotificationContext } from '@/contexts/NotificationContext';
 import {
   Space,
   SpaceLoadersInfoInput,
   SpaceWithIntegrationsFragment,
   useDiscordServerQuery,
-  useTriggerSiteScrapingRunMutation,
   useUpsertSpaceLoaderInfoMutation,
-  useWebsiteScrapingInfosQuery,
-  WebsiteScrapingInfoFragmentFragment,
 } from '@/graphql/generated/generated-types';
 import React, { useEffect, useState } from 'react';
 
@@ -41,7 +34,6 @@ export default function SpaceLoadersInformation(props: SpaceAuthDetailsProps) {
   const websiteScrappingThreeDotItems = [{ label: 'Add', key: 'add' }];
 
   const [showUpsertSpaceLoadersInfoModal, setShowUpsertSpaceLoadersInfoModal] = useState(false);
-  const [showAddWebsiteScrappingInfoModal, setShowAddWebsiteScrappingInfoModal] = useState(false);
 
   const [discordServerName, setDiscordServerName] = useState('Not Set');
   const discordServerId = props.space.spaceIntegrations?.loadersInfo?.discordServerId;
@@ -58,20 +50,7 @@ export default function SpaceLoadersInformation(props: SpaceAuthDetailsProps) {
     }
   };
 
-  const selectFromScrapingThreedotDropdown = async (e: string) => {
-    if (e === 'add') {
-      setShowAddWebsiteScrappingInfoModal(true);
-    }
-  };
   const [upsertSpaceLoaderInfoMutation] = useUpsertSpaceLoaderInfoMutation({});
-  const [triggerSiteScrapingRunMutation] = useTriggerSiteScrapingRunMutation();
-  const { showNotification } = useNotificationContext();
-
-  const { data: websiteInfos } = useWebsiteScrapingInfosQuery({
-    variables: {
-      spaceId: props.space.id,
-    },
-  });
 
   useEffect(() => {
     if (discordServerId && discordServer) {
@@ -92,27 +71,6 @@ export default function SpaceLoadersInformation(props: SpaceAuthDetailsProps) {
     setShowUpsertSpaceLoadersInfoModal(false);
   };
 
-  function getWebsiteScrapingInfoTable(discoursePosts: WebsiteScrapingInfoFragmentFragment[]): TableRow[] {
-    return discoursePosts.map((post: WebsiteScrapingInfoFragmentFragment): TableRow => {
-      return {
-        id: post.id,
-        columns: [post.id.substring(0, 6), post.host, post.scrapingStartUrl, post.ignoreHashInUrl.toString()],
-        item: post,
-      };
-    });
-  }
-
-  const actionItems: EllipsisDropdownItem[] = [
-    {
-      key: 'delete',
-      label: 'Delete',
-    },
-    {
-      key: 'index',
-      label: 'Index',
-    },
-  ];
-
   return (
     <div>
       <DetailsSection className={props.className}>
@@ -124,38 +82,6 @@ export default function SpaceLoadersInformation(props: SpaceAuthDetailsProps) {
           <DetailsField key={field.label} label={field.label} value={field.value} />
         ))}
       </DetailsSection>
-      <div className="mt-16">
-        <div className="flex justify-between">
-          <div className="text-xl">Website Scraping Infos</div>
-          <PrivateEllipsisDropdown items={websiteScrappingThreeDotItems} onSelect={selectFromScrapingThreedotDropdown} />
-        </div>
-        <Table
-          data={getWebsiteScrapingInfoTable(websiteInfos?.websiteScrapingInfos || [])}
-          columnsHeadings={['Id', 'Host', 'Scraping Start Url', 'Ignore Hash']}
-          columnsWidthPercents={[5, 25, 20, 20, 20]}
-          actions={{
-            items: actionItems,
-            onSelect: async (key: string, item: { id: string }) => {
-              if (key === 'delete') {
-              } else if (key === 'index') {
-                await triggerSiteScrapingRunMutation({
-                  variables: {
-                    spaceId: props.space.id,
-                    websiteScrapingInfoId: item.id,
-                  },
-                });
-                showNotification({ message: 'Triggered Indexing of the site', type: 'success' });
-              }
-            },
-          }}
-        />
-      </div>
-      <UpsertWebsiteScrapingInfoModal
-        open={showAddWebsiteScrappingInfoModal}
-        onClose={() => setShowAddWebsiteScrappingInfoModal(false)}
-        websiteScrapingInfo={undefined}
-        spaceId={props.space.id}
-      />
       <UpsertSpaceLoadersInfoModal
         onUpsert={upsert}
         open={showUpsertSpaceLoadersInfoModal}

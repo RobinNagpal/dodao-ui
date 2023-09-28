@@ -1,6 +1,8 @@
 import { EllipsisDropdownItem } from '@/components/core/dropdowns/EllipsisDropdown';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import { Table, TableActions, TableRow } from '@/components/core/table/Table';
+import UpsertArticleIndexingInfoModal from '@/components/spaces/Edit/LoadersInfo/UpsertArticleIndexingInfoModal';
+import UpsertWebsiteScrapingInfoModal from '@/components/spaces/Edit/LoadersInfo/UpsertWebsiteScrapingInfoModal';
 import DiscordChannels from '@/components/spaces/Loaders/Discord/DiscordChannels';
 import DiscordMessages from '@/components/spaces/Loaders/Discord/DiscordMessages';
 import DiscourseIndexRuns from '@/components/spaces/Loaders/Discourse/DiscourseIndexRuns';
@@ -9,10 +11,12 @@ import WebsiteScrapedURLInfosTable from '@/components/spaces/Loaders/WebsiteScra
 import { ManageSpaceSubviews } from '@/components/spaces/manageSpaceSubviews';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import {
+  ArticleIndexingInfoFragment,
   SpaceWithIntegrationsFragment,
+  useArticleIndexingInfosQuery,
   useTriggerSiteScrapingRunMutation,
   useWebsiteScrapingInfosQuery,
-  WebsiteScrapingInfoFragmentFragment,
+  WebsiteScrapingInfoFragment,
 } from '@/graphql/generated/generated-types';
 import moment from 'moment/moment';
 import { useRouter } from 'next/navigation';
@@ -55,10 +59,23 @@ function getLoaderRows(): TableRow[] {
 
 export default function AllLoaders(props: { space: SpaceWithIntegrationsFragment; spaceInfoParams: string[] }) {
   const router = useRouter();
+
   const websiteScrappingThreeDotItems = [{ label: 'Add', key: 'add' }];
+
   const [showAddWebsiteScrappingInfoModal, setShowAddWebsiteScrappingInfoModal] = useState(false);
+  const [editWebsiteScrappingInfo, setEditWebsiteScrappingInfo] = useState<WebsiteScrapingInfoFragment | undefined>(undefined);
+
+  const [editArticleIndexingInfo, setEditArticleIndexingInfo] = useState<ArticleIndexingInfoFragment | undefined>(undefined);
+  const [showAddArticleIndexingInfoModal, setShowAddArticleIndexingInfoModal] = useState(false);
+
   const { showNotification } = useNotificationContext();
   const { data: websiteInfos } = useWebsiteScrapingInfosQuery({
+    variables: {
+      spaceId: props.space.id,
+    },
+  });
+
+  const { data: articleIndexingInfos } = useArticleIndexingInfosQuery({
     variables: {
       spaceId: props.space.id,
     },
@@ -72,13 +89,17 @@ export default function AllLoaders(props: { space: SpaceWithIntegrationsFragment
       label: 'View',
     },
     {
+      key: 'edit',
+      label: 'Edit',
+    },
+    {
       key: 'index',
       label: 'Index',
     },
   ];
 
-  function getWebsiteScrapingInfoTable(discoursePosts: WebsiteScrapingInfoFragmentFragment[]): TableRow[] {
-    return discoursePosts.map((post: WebsiteScrapingInfoFragmentFragment): TableRow => {
+  function getWebsiteScrapingInfoTable(discoursePosts: WebsiteScrapingInfoFragment[]): TableRow[] {
+    return discoursePosts.map((post: WebsiteScrapingInfoFragment): TableRow => {
       return {
         id: post.id,
         columns: [post.id.substring(0, 6), post.host, post.scrapingStartUrl, post.ignoreHashInUrl.toString()],
@@ -87,11 +108,15 @@ export default function AllLoaders(props: { space: SpaceWithIntegrationsFragment
     });
   }
 
-  const selectFromScrapingThreedotDropdown = async (e: string) => {
-    if (e === 'add') {
-      setShowAddWebsiteScrappingInfoModal(true);
-    }
-  };
+  function getArticleIndexingInfoTable(discoursePosts: ArticleIndexingInfoFragment[]): TableRow[] {
+    return discoursePosts.map((post: ArticleIndexingInfoFragment): TableRow => {
+      return {
+        id: post.id,
+        columns: [post.id.substring(0, 6), post.articleUrl, post.text, post.textLength, post.status],
+        item: post,
+      };
+    });
+  }
 
   const loaderType = props.spaceInfoParams?.[2];
   const loaderSubview = props.spaceInfoParams?.[3];
@@ -152,7 +177,7 @@ export default function AllLoaders(props: { space: SpaceWithIntegrationsFragment
       <div className="mt-16">
         <div className="flex justify-between">
           <div className="text-xl">Website Scraping Infos</div>
-          <PrivateEllipsisDropdown items={websiteScrappingThreeDotItems} onSelect={selectFromScrapingThreedotDropdown} />
+          <PrivateEllipsisDropdown items={websiteScrappingThreeDotItems} onSelect={() => setShowAddWebsiteScrappingInfoModal(true)} />
         </div>
         <Table
           data={getWebsiteScrapingInfoTable(websiteInfos?.websiteScrapingInfos || [])}
@@ -163,6 +188,9 @@ export default function AllLoaders(props: { space: SpaceWithIntegrationsFragment
             onSelect: async (key: string, item: { id: string }) => {
               if (key === 'view') {
                 router.push('/space/manage/' + ManageSpaceSubviews.Loaders + '/discourse/website-scraping-url-infos/' + item.id);
+              } else if (key === 'edit') {
+                setEditWebsiteScrappingInfo(item as WebsiteScrapingInfoFragment);
+                setShowAddWebsiteScrappingInfoModal(true);
               } else if (key === 'index') {
                 await triggerSiteScrapingRunMutation({
                   variables: {
@@ -176,6 +204,54 @@ export default function AllLoaders(props: { space: SpaceWithIntegrationsFragment
           }}
         />
       </div>
+
+      <div className="mt-16">
+        <div className="flex justify-between">
+          <div className="text-xl">Articles Indexed</div>
+          <PrivateEllipsisDropdown items={websiteScrappingThreeDotItems} onSelect={() => setShowAddArticleIndexingInfoModal(true)} />
+        </div>
+        <Table
+          data={getArticleIndexingInfoTable(articleIndexingInfos?.articleIndexingInfos || [])}
+          columnsHeadings={['Id', 'Url', 'Text', 'Text Length', 'Status']}
+          columnsWidthPercents={[5, 25, 20, 20, 20]}
+          actions={{
+            items: [
+              {
+                key: 'edit',
+                label: 'Edit',
+              },
+            ],
+            onSelect: async (key: string, item: { id: string }) => {
+              if (key === 'edit') {
+                setEditArticleIndexingInfo(item as ArticleIndexingInfoFragment);
+                setShowAddArticleIndexingInfoModal(true);
+              }
+            },
+          }}
+        />
+      </div>
+      {showAddWebsiteScrappingInfoModal && (
+        <UpsertWebsiteScrapingInfoModal
+          websiteScrapingInfo={editWebsiteScrappingInfo}
+          open={showAddWebsiteScrappingInfoModal}
+          onClose={() => {
+            setEditWebsiteScrappingInfo(undefined);
+            setShowAddWebsiteScrappingInfoModal(false);
+          }}
+          spaceId={props.space.id}
+        />
+      )}
+      {showAddArticleIndexingInfoModal && (
+        <UpsertArticleIndexingInfoModal
+          articleIndexingInfo={editArticleIndexingInfo}
+          open={showAddArticleIndexingInfoModal}
+          onClose={() => {
+            setEditArticleIndexingInfo(undefined);
+            setShowAddArticleIndexingInfoModal(false);
+          }}
+          spaceId={props.space.id}
+        />
+      )}
     </div>
   );
 }

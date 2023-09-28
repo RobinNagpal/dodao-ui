@@ -87,6 +87,18 @@ export interface AddTopicVideoInput {
   url: Scalars['String'];
 }
 
+export interface ArticleIndexingInfo {
+  __typename?: 'ArticleIndexingInfo';
+  articleUrl: Scalars['String'];
+  createdAt: Scalars['DateTimeISO'];
+  id: Scalars['String'];
+  spaceId: Scalars['String'];
+  status: Scalars['String'];
+  text?: Maybe<Scalars['String']>;
+  textLength?: Maybe<Scalars['Int']>;
+  updatedAt: Scalars['DateTimeISO'];
+}
+
 export interface AuthSettings {
   __typename?: 'AuthSettings';
   enableLogin?: Maybe<Scalars['Boolean']>;
@@ -967,6 +979,7 @@ export interface Mutation {
   askChatCompletionAI: OpenAiChatCompletionResponse;
   askCompletionAI: OpenAiCompletionResponse;
   authenticateWithUnstoppable: JwtResponse;
+  createArticleIndexingInfo: ArticleIndexingInfo;
   createSignedUrl: Scalars['String'];
   createSpace: Space;
   createSummaryOfContent: OpenAiTextResponse;
@@ -980,6 +993,8 @@ export interface Mutation {
   deleteTopicSummary: GitCourse;
   deleteTopicVideo: GitCourse;
   downloadAndCleanContent: DownloadAndCleanContentResponse;
+  editArticleIndexingInfo: ArticleIndexingInfo;
+  editWebsiteScrapingInfo: WebsiteScrapingInfo;
   extractRelevantTextForTopic: OpenAiTextResponse;
   generateImage: ImagesResponse;
   generateImageEdit: GenerateImageResponse;
@@ -1095,6 +1110,12 @@ export interface MutationAuthenticateWithUnstoppableArgs {
 }
 
 
+export interface MutationCreateArticleIndexingInfoArgs {
+  articleUrl: Scalars['String'];
+  spaceId: Scalars['String'];
+}
+
+
 export interface MutationCreateSignedUrlArgs {
   input: CreateSignedUrlInput;
   spaceId: Scalars['String'];
@@ -1169,6 +1190,22 @@ export interface MutationDeleteTopicVideoArgs {
 
 export interface MutationDownloadAndCleanContentArgs {
   input: Scalars['String'];
+}
+
+
+export interface MutationEditArticleIndexingInfoArgs {
+  articleIndexingInfoId: Scalars['String'];
+  articleUrl: Scalars['String'];
+  spaceId: Scalars['String'];
+}
+
+
+export interface MutationEditWebsiteScrapingInfoArgs {
+  host: Scalars['String'];
+  ignoreHashInUrl: Scalars['Boolean'];
+  scrapingStartUrl: Scalars['String'];
+  spaceId: Scalars['String'];
+  websiteScrapingInfoId: Scalars['String'];
 }
 
 
@@ -1550,6 +1587,7 @@ export interface Query {
   _empty?: Maybe<Scalars['String']>;
   academyTask: AcademyTask;
   academyTasks?: Maybe<Array<AcademyTask>>;
+  articleIndexingInfos: Array<ArticleIndexingInfo>;
   byte: Byte;
   byteSocialShare?: Maybe<ByteSocialShare>;
   bytes: Array<Byte>;
@@ -1596,6 +1634,11 @@ export interface QueryAcademyTaskArgs {
 export interface QueryAcademyTasksArgs {
   spaceId: Scalars['String'];
   status?: InputMaybe<Scalars['String']>;
+}
+
+
+export interface QueryArticleIndexingInfosArgs {
+  spaceId: Scalars['String'];
 }
 
 
@@ -2923,7 +2966,9 @@ export type DiscordChannelFragmentFragment = { __typename?: 'DiscordChannel', id
 
 export type DiscordMessageFragmentFragment = { __typename?: 'DiscordMessage', id: string, content: string, discordMessageId: string, createdAt: any, updatedAt: any, serverId: string, channelId: string, messageDate: any, authorUsername: string };
 
-export type WebsiteScrapingInfoFragmentFragment = { __typename?: 'WebsiteScrapingInfo', id: string, host: string, scrapingStartUrl: string, ignoreHashInUrl: boolean, createdAt: any, updatedAt: any };
+export type WebsiteScrapingInfoFragment = { __typename?: 'WebsiteScrapingInfo', id: string, host: string, scrapingStartUrl: string, ignoreHashInUrl: boolean, createdAt: any, updatedAt: any };
+
+export type ArticleIndexingInfoFragment = { __typename?: 'ArticleIndexingInfo', id: string, spaceId: string, articleUrl: string, createdAt: any, updatedAt: any, status: string, text?: string | null, textLength?: number | null };
 
 export type SiteScrapingRunFragmentFragment = { __typename?: 'SiteScrapingRun', id: string, websiteScrapingInfoId: string, scrapingRunDate: any, status: string, createdAt: any, updatedAt: any };
 
@@ -2989,6 +3034,13 @@ export type WebsiteScrapingInfosQueryVariables = Exact<{
 
 
 export type WebsiteScrapingInfosQuery = { __typename?: 'Query', websiteScrapingInfos: Array<{ __typename?: 'WebsiteScrapingInfo', id: string, host: string, scrapingStartUrl: string, ignoreHashInUrl: boolean, createdAt: any, updatedAt: any }> };
+
+export type ArticleIndexingInfosQueryVariables = Exact<{
+  spaceId: Scalars['String'];
+}>;
+
+
+export type ArticleIndexingInfosQuery = { __typename?: 'Query', articleIndexingInfos: Array<{ __typename?: 'ArticleIndexingInfo', id: string, spaceId: string, articleUrl: string, createdAt: any, updatedAt: any, status: string, text?: string | null, textLength?: number | null }> };
 
 export type SiteScrapingRunsQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -3061,6 +3113,17 @@ export type CreateWebsiteScrapingInfoMutationVariables = Exact<{
 
 export type CreateWebsiteScrapingInfoMutation = { __typename?: 'Mutation', createWebsiteScrapingInfo: { __typename?: 'WebsiteScrapingInfo', id: string, host: string, scrapingStartUrl: string, ignoreHashInUrl: boolean, createdAt: any, updatedAt: any } };
 
+export type EditWebsiteScrapingInfoMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+  websiteScrapingInfoId: Scalars['String'];
+  host: Scalars['String'];
+  scrapingStartUrl: Scalars['String'];
+  ignoreHashInUrl: Scalars['Boolean'];
+}>;
+
+
+export type EditWebsiteScrapingInfoMutation = { __typename?: 'Mutation', editWebsiteScrapingInfo: { __typename?: 'WebsiteScrapingInfo', id: string, host: string, scrapingStartUrl: string, ignoreHashInUrl: boolean, createdAt: any, updatedAt: any } };
+
 export type TriggerSiteScrapingRunMutationVariables = Exact<{
   spaceId: Scalars['String'];
   websiteScrapingInfoId: Scalars['String'];
@@ -3068,6 +3131,23 @@ export type TriggerSiteScrapingRunMutationVariables = Exact<{
 
 
 export type TriggerSiteScrapingRunMutation = { __typename?: 'Mutation', triggerSiteScrapingRun: { __typename?: 'SiteScrapingRun', id: string, websiteScrapingInfoId: string, scrapingRunDate: any, status: string, createdAt: any, updatedAt: any } };
+
+export type CreateArticleIndexingInfoMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+  articleUrl: Scalars['String'];
+}>;
+
+
+export type CreateArticleIndexingInfoMutation = { __typename?: 'Mutation', createArticleIndexingInfo: { __typename?: 'ArticleIndexingInfo', id: string, spaceId: string, articleUrl: string, createdAt: any, updatedAt: any, status: string, text?: string | null, textLength?: number | null } };
+
+export type EditArticleIndexingInfoMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+  articleIndexingInfoId: Scalars['String'];
+  articleUrl: Scalars['String'];
+}>;
+
+
+export type EditArticleIndexingInfoMutation = { __typename?: 'Mutation', editArticleIndexingInfo: { __typename?: 'ArticleIndexingInfo', id: string, spaceId: string, articleUrl: string, createdAt: any, updatedAt: any, status: string, text?: string | null, textLength?: number | null } };
 
 export type GuideSettingsFragment = { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null };
 
@@ -3867,14 +3947,26 @@ export const DiscordMessageFragmentFragmentDoc = gql`
   authorUsername
 }
     `;
-export const WebsiteScrapingInfoFragmentFragmentDoc = gql`
-    fragment WebsiteScrapingInfoFragment on WebsiteScrapingInfo {
+export const WebsiteScrapingInfoFragmentDoc = gql`
+    fragment WebsiteScrapingInfo on WebsiteScrapingInfo {
   id
   host
   scrapingStartUrl
   ignoreHashInUrl
   createdAt
   updatedAt
+}
+    `;
+export const ArticleIndexingInfoFragmentDoc = gql`
+    fragment ArticleIndexingInfo on ArticleIndexingInfo {
+  id
+  spaceId
+  articleUrl
+  createdAt
+  updatedAt
+  status
+  text
+  textLength
 }
     `;
 export const SiteScrapingRunFragmentFragmentDoc = gql`
@@ -7076,10 +7168,10 @@ export function refetchDiscordMessagesQuery(variables: DiscordMessagesQueryVaria
 export const WebsiteScrapingInfosDocument = gql`
     query WebsiteScrapingInfos($spaceId: String!) {
   websiteScrapingInfos(spaceId: $spaceId) {
-    ...WebsiteScrapingInfoFragment
+    ...WebsiteScrapingInfo
   }
 }
-    ${WebsiteScrapingInfoFragmentFragmentDoc}`;
+    ${WebsiteScrapingInfoFragmentDoc}`;
 
 /**
  * __useWebsiteScrapingInfosQuery__
@@ -7110,6 +7202,44 @@ export type WebsiteScrapingInfosLazyQueryHookResult = ReturnType<typeof useWebsi
 export type WebsiteScrapingInfosQueryResult = Apollo.QueryResult<WebsiteScrapingInfosQuery, WebsiteScrapingInfosQueryVariables>;
 export function refetchWebsiteScrapingInfosQuery(variables: WebsiteScrapingInfosQueryVariables) {
       return { query: WebsiteScrapingInfosDocument, variables: variables }
+    }
+export const ArticleIndexingInfosDocument = gql`
+    query ArticleIndexingInfos($spaceId: String!) {
+  articleIndexingInfos(spaceId: $spaceId) {
+    ...ArticleIndexingInfo
+  }
+}
+    ${ArticleIndexingInfoFragmentDoc}`;
+
+/**
+ * __useArticleIndexingInfosQuery__
+ *
+ * To run a query within a React component, call `useArticleIndexingInfosQuery` and pass it any options that fit your needs.
+ * When your component renders, `useArticleIndexingInfosQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useArticleIndexingInfosQuery({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *   },
+ * });
+ */
+export function useArticleIndexingInfosQuery(baseOptions: Apollo.QueryHookOptions<ArticleIndexingInfosQuery, ArticleIndexingInfosQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ArticleIndexingInfosQuery, ArticleIndexingInfosQueryVariables>(ArticleIndexingInfosDocument, options);
+      }
+export function useArticleIndexingInfosLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ArticleIndexingInfosQuery, ArticleIndexingInfosQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ArticleIndexingInfosQuery, ArticleIndexingInfosQueryVariables>(ArticleIndexingInfosDocument, options);
+        }
+export type ArticleIndexingInfosQueryHookResult = ReturnType<typeof useArticleIndexingInfosQuery>;
+export type ArticleIndexingInfosLazyQueryHookResult = ReturnType<typeof useArticleIndexingInfosLazyQuery>;
+export type ArticleIndexingInfosQueryResult = Apollo.QueryResult<ArticleIndexingInfosQuery, ArticleIndexingInfosQueryVariables>;
+export function refetchArticleIndexingInfosQuery(variables: ArticleIndexingInfosQueryVariables) {
+      return { query: ArticleIndexingInfosDocument, variables: variables }
     }
 export const SiteScrapingRunsDocument = gql`
     query SiteScrapingRuns($spaceId: String!, $websiteScrapingInfoId: String!) {
@@ -7405,10 +7535,10 @@ export const CreateWebsiteScrapingInfoDocument = gql`
     scrapingStartUrl: $scrapingStartUrl
     ignoreHashInUrl: $ignoreHashInUrl
   ) {
-    ...WebsiteScrapingInfoFragment
+    ...WebsiteScrapingInfo
   }
 }
-    ${WebsiteScrapingInfoFragmentFragmentDoc}`;
+    ${WebsiteScrapingInfoFragmentDoc}`;
 export type CreateWebsiteScrapingInfoMutationFn = Apollo.MutationFunction<CreateWebsiteScrapingInfoMutation, CreateWebsiteScrapingInfoMutationVariables>;
 
 /**
@@ -7438,6 +7568,49 @@ export function useCreateWebsiteScrapingInfoMutation(baseOptions?: Apollo.Mutati
 export type CreateWebsiteScrapingInfoMutationHookResult = ReturnType<typeof useCreateWebsiteScrapingInfoMutation>;
 export type CreateWebsiteScrapingInfoMutationResult = Apollo.MutationResult<CreateWebsiteScrapingInfoMutation>;
 export type CreateWebsiteScrapingInfoMutationOptions = Apollo.BaseMutationOptions<CreateWebsiteScrapingInfoMutation, CreateWebsiteScrapingInfoMutationVariables>;
+export const EditWebsiteScrapingInfoDocument = gql`
+    mutation EditWebsiteScrapingInfo($spaceId: String!, $websiteScrapingInfoId: String!, $host: String!, $scrapingStartUrl: String!, $ignoreHashInUrl: Boolean!) {
+  editWebsiteScrapingInfo(
+    spaceId: $spaceId
+    websiteScrapingInfoId: $websiteScrapingInfoId
+    host: $host
+    scrapingStartUrl: $scrapingStartUrl
+    ignoreHashInUrl: $ignoreHashInUrl
+  ) {
+    ...WebsiteScrapingInfo
+  }
+}
+    ${WebsiteScrapingInfoFragmentDoc}`;
+export type EditWebsiteScrapingInfoMutationFn = Apollo.MutationFunction<EditWebsiteScrapingInfoMutation, EditWebsiteScrapingInfoMutationVariables>;
+
+/**
+ * __useEditWebsiteScrapingInfoMutation__
+ *
+ * To run a mutation, you first call `useEditWebsiteScrapingInfoMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEditWebsiteScrapingInfoMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [editWebsiteScrapingInfoMutation, { data, loading, error }] = useEditWebsiteScrapingInfoMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      websiteScrapingInfoId: // value for 'websiteScrapingInfoId'
+ *      host: // value for 'host'
+ *      scrapingStartUrl: // value for 'scrapingStartUrl'
+ *      ignoreHashInUrl: // value for 'ignoreHashInUrl'
+ *   },
+ * });
+ */
+export function useEditWebsiteScrapingInfoMutation(baseOptions?: Apollo.MutationHookOptions<EditWebsiteScrapingInfoMutation, EditWebsiteScrapingInfoMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<EditWebsiteScrapingInfoMutation, EditWebsiteScrapingInfoMutationVariables>(EditWebsiteScrapingInfoDocument, options);
+      }
+export type EditWebsiteScrapingInfoMutationHookResult = ReturnType<typeof useEditWebsiteScrapingInfoMutation>;
+export type EditWebsiteScrapingInfoMutationResult = Apollo.MutationResult<EditWebsiteScrapingInfoMutation>;
+export type EditWebsiteScrapingInfoMutationOptions = Apollo.BaseMutationOptions<EditWebsiteScrapingInfoMutation, EditWebsiteScrapingInfoMutationVariables>;
 export const TriggerSiteScrapingRunDocument = gql`
     mutation TriggerSiteScrapingRun($spaceId: String!, $websiteScrapingInfoId: String!) {
   triggerSiteScrapingRun(
@@ -7475,6 +7648,79 @@ export function useTriggerSiteScrapingRunMutation(baseOptions?: Apollo.MutationH
 export type TriggerSiteScrapingRunMutationHookResult = ReturnType<typeof useTriggerSiteScrapingRunMutation>;
 export type TriggerSiteScrapingRunMutationResult = Apollo.MutationResult<TriggerSiteScrapingRunMutation>;
 export type TriggerSiteScrapingRunMutationOptions = Apollo.BaseMutationOptions<TriggerSiteScrapingRunMutation, TriggerSiteScrapingRunMutationVariables>;
+export const CreateArticleIndexingInfoDocument = gql`
+    mutation CreateArticleIndexingInfo($spaceId: String!, $articleUrl: String!) {
+  createArticleIndexingInfo(spaceId: $spaceId, articleUrl: $articleUrl) {
+    ...ArticleIndexingInfo
+  }
+}
+    ${ArticleIndexingInfoFragmentDoc}`;
+export type CreateArticleIndexingInfoMutationFn = Apollo.MutationFunction<CreateArticleIndexingInfoMutation, CreateArticleIndexingInfoMutationVariables>;
+
+/**
+ * __useCreateArticleIndexingInfoMutation__
+ *
+ * To run a mutation, you first call `useCreateArticleIndexingInfoMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateArticleIndexingInfoMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createArticleIndexingInfoMutation, { data, loading, error }] = useCreateArticleIndexingInfoMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      articleUrl: // value for 'articleUrl'
+ *   },
+ * });
+ */
+export function useCreateArticleIndexingInfoMutation(baseOptions?: Apollo.MutationHookOptions<CreateArticleIndexingInfoMutation, CreateArticleIndexingInfoMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateArticleIndexingInfoMutation, CreateArticleIndexingInfoMutationVariables>(CreateArticleIndexingInfoDocument, options);
+      }
+export type CreateArticleIndexingInfoMutationHookResult = ReturnType<typeof useCreateArticleIndexingInfoMutation>;
+export type CreateArticleIndexingInfoMutationResult = Apollo.MutationResult<CreateArticleIndexingInfoMutation>;
+export type CreateArticleIndexingInfoMutationOptions = Apollo.BaseMutationOptions<CreateArticleIndexingInfoMutation, CreateArticleIndexingInfoMutationVariables>;
+export const EditArticleIndexingInfoDocument = gql`
+    mutation EditArticleIndexingInfo($spaceId: String!, $articleIndexingInfoId: String!, $articleUrl: String!) {
+  editArticleIndexingInfo(
+    spaceId: $spaceId
+    articleIndexingInfoId: $articleIndexingInfoId
+    articleUrl: $articleUrl
+  ) {
+    ...ArticleIndexingInfo
+  }
+}
+    ${ArticleIndexingInfoFragmentDoc}`;
+export type EditArticleIndexingInfoMutationFn = Apollo.MutationFunction<EditArticleIndexingInfoMutation, EditArticleIndexingInfoMutationVariables>;
+
+/**
+ * __useEditArticleIndexingInfoMutation__
+ *
+ * To run a mutation, you first call `useEditArticleIndexingInfoMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEditArticleIndexingInfoMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [editArticleIndexingInfoMutation, { data, loading, error }] = useEditArticleIndexingInfoMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      articleIndexingInfoId: // value for 'articleIndexingInfoId'
+ *      articleUrl: // value for 'articleUrl'
+ *   },
+ * });
+ */
+export function useEditArticleIndexingInfoMutation(baseOptions?: Apollo.MutationHookOptions<EditArticleIndexingInfoMutation, EditArticleIndexingInfoMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<EditArticleIndexingInfoMutation, EditArticleIndexingInfoMutationVariables>(EditArticleIndexingInfoDocument, options);
+      }
+export type EditArticleIndexingInfoMutationHookResult = ReturnType<typeof useEditArticleIndexingInfoMutation>;
+export type EditArticleIndexingInfoMutationResult = Apollo.MutationResult<EditArticleIndexingInfoMutation>;
+export type EditArticleIndexingInfoMutationOptions = Apollo.BaseMutationOptions<EditArticleIndexingInfoMutation, EditArticleIndexingInfoMutationVariables>;
 export const SpacesDocument = gql`
     query Spaces {
   spaces {
