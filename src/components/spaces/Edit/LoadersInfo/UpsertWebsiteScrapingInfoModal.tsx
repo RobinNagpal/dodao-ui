@@ -15,6 +15,7 @@ export default function UpsertWebsiteScrapingInfoModal({ open, spaceId, onClose,
   const [scrapingStartUrl, setScrapingStartUrl] = useState(websiteScrapingInfo?.scrapingStartUrl);
   const [host, setHost] = useState(websiteScrapingInfo?.host);
   const [ignoreHashInUrl, setIgnoreHashInUrl] = useState(!!websiteScrapingInfo?.ignoreHashInUrl);
+  const [ignoreQueryParams, setIgnoreQueryParams] = useState(!!websiteScrapingInfo?.ignoreQueryParams);
 
   const [createWebsiteScrapingInfoMutation] = useCreateWebsiteScrapingInfoMutation();
   const [editWebsiteScrapingInfoMutation] = useEditWebsiteScrapingInfoMutation();
@@ -26,6 +27,7 @@ export default function UpsertWebsiteScrapingInfoModal({ open, spaceId, onClose,
           <Input label={'Host'} onUpdate={(repoUrl) => setHost(repoUrl?.toString())} modelValue={host} />
           <Input label={'Scraping Start Url'} onUpdate={(repoUrl) => setScrapingStartUrl(repoUrl?.toString())} modelValue={scrapingStartUrl} />
           <ToggleWithIcon label={'Ignore Hash In Url'} enabled={ignoreHashInUrl} setEnabled={(value) => setIgnoreHashInUrl(value)} />
+          <ToggleWithIcon label={'Ignore Query params in Url'} enabled={ignoreQueryParams} setEnabled={(value) => setIgnoreQueryParams(value)} />
           <Button
             onClick={async () => {
               if (!scrapingStartUrl || !host) return;
@@ -38,6 +40,7 @@ export default function UpsertWebsiteScrapingInfoModal({ open, spaceId, onClose,
                     host: host?.trim(),
                     scrapingStartUrl: scrapingStartUrl?.trim(),
                     ignoreHashInUrl,
+                    ignoreQueryParams,
                   },
                   refetchQueries: ['WebsiteScrapingInfos'],
                 });
@@ -48,6 +51,7 @@ export default function UpsertWebsiteScrapingInfoModal({ open, spaceId, onClose,
                     host: host?.trim(),
                     scrapingStartUrl: scrapingStartUrl?.trim(),
                     ignoreHashInUrl,
+                    ignoreQueryParams,
                   },
                   refetchQueries: ['WebsiteScrapingInfos'],
                 });

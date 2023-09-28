@@ -43,6 +43,7 @@ fragment WebsiteScrapingInfo on WebsiteScrapingInfo {
   host
   scrapingStartUrl
   ignoreHashInUrl
+  ignoreQueryParams
   createdAt
   updatedAt
 }
@@ -200,19 +201,33 @@ mutation IndexDiscoursePost($spaceId: String!, $postId: String!) {
   indexDiscoursePost(spaceId: $spaceId, postId: $postId)
 }
 
-mutation CreateWebsiteScrapingInfo($spaceId: String!, $host: String!, $scrapingStartUrl: String!, $ignoreHashInUrl: Boolean!) {
-  createWebsiteScrapingInfo(spaceId: $spaceId, host: $host, scrapingStartUrl: $scrapingStartUrl, ignoreHashInUrl: $ignoreHashInUrl) {
+mutation CreateWebsiteScrapingInfo($spaceId: String!, $host: String!, $scrapingStartUrl: String!, $ignoreHashInUrl: Boolean!, $ignoreQueryParams: Boolean!) {
+  createWebsiteScrapingInfo(
+    spaceId: $spaceId
+    host: $host
+    scrapingStartUrl: $scrapingStartUrl
+    ignoreHashInUrl: $ignoreHashInUrl
+    ignoreQueryParams: $ignoreQueryParams
+  ) {
     ...WebsiteScrapingInfo
   }
 }
 
-mutation EditWebsiteScrapingInfo($spaceId: String!, $websiteScrapingInfoId: String!, $host: String!, $scrapingStartUrl: String!, $ignoreHashInUrl: Boolean!) {
+mutation EditWebsiteScrapingInfo(
+  $spaceId: String!
+  $websiteScrapingInfoId: String!
+  $host: String!
+  $scrapingStartUrl: String!
+  $ignoreHashInUrl: Boolean!
+  $ignoreQueryParams: Boolean!
+) {
   editWebsiteScrapingInfo(
     spaceId: $spaceId
     websiteScrapingInfoId: $websiteScrapingInfoId
     host: $host
     scrapingStartUrl: $scrapingStartUrl
     ignoreHashInUrl: $ignoreHashInUrl
+    ignoreQueryParams: $ignoreQueryParams
   ) {
     ...WebsiteScrapingInfo
   }

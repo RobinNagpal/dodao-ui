@@ -102,7 +102,7 @@ export default function AllLoaders(props: { space: SpaceWithIntegrationsFragment
     return discoursePosts.map((post: WebsiteScrapingInfoFragment): TableRow => {
       return {
         id: post.id,
-        columns: [post.id.substring(0, 6), post.host, post.scrapingStartUrl, post.ignoreHashInUrl.toString()],
+        columns: [post.id.substring(0, 6), post.host, post.scrapingStartUrl, post.ignoreHashInUrl.toString(), post.ignoreQueryParams.toString()],
         item: post,
       };
     });
@@ -181,8 +181,8 @@ export default function AllLoaders(props: { space: SpaceWithIntegrationsFragment
         </div>
         <Table
           data={getWebsiteScrapingInfoTable(websiteInfos?.websiteScrapingInfos || [])}
-          columnsHeadings={['Id', 'Host', 'Scraping Start Url', 'Ignore Hash']}
-          columnsWidthPercents={[5, 25, 20, 20, 20]}
+          columnsHeadings={['Id', 'Host', 'Scraping Start Url', 'Ignore Hash', 'Ignore Query']}
+          columnsWidthPercents={[5, 25, 20, 20, 10, 10]}
           actions={{
             items: siteScrapingActionItems,
             onSelect: async (key: string, item: { id: string }) => {
