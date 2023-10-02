@@ -105,6 +105,22 @@ type Byte {
   visibility: String
 }
 
+type ByteCollection {
+  byteIds: [String!]!
+  bytes: [ByteCollectionByte!]!
+  description: String!
+  id: ID!
+  name: String!
+  order: Int!
+  status: String!
+}
+
+type ByteCollectionByte {
+  byteId: String!
+  content: String!
+  name: String!
+}
+
 type ByteLinkedinPdfContent {
   excerpt: String!
   steps: [ByteLinkedinPdfContentStep!]!
@@ -268,6 +284,15 @@ type CourseReadingQuestion {
 input CourseSubmissionInput {
   courseKey: String!
   uuid: String!
+}
+
+input CreateByteCollectionInput {
+  byteIds: [String!]!
+  description: String!
+  name: String!
+  order: Int!
+  spaceId: String!
+  status: String!
 }
 
 type CreateCompletionResponseChoice {
@@ -918,11 +943,13 @@ type Mutation {
   askCompletionAI(input: CompletionAIInput!): OpenAICompletionResponse!
   authenticateWithUnstoppable(idToken: String!): JwtResponse!
   createArticleIndexingInfo(articleUrl: String!, spaceId: String!): ArticleIndexingInfo!
+  createByteCollection(input: CreateByteCollectionInput!): ByteCollection!
   createSignedUrl(input: CreateSignedUrlInput!, spaceId: String!): String!
   createSpace(spaceInput: UpsertSpaceInput!): Space!
   createSummaryOfContent(input: String!): OpenAITextResponse!
   createWebsiteScrapingInfo(host: String!, ignoreHashInUrl: Boolean!, ignoreQueryParams: Boolean!, scrapingStartUrl: String!, spaceId: String!): WebsiteScrapingInfo!
   deleteAndPullCourseRepo(courseKey: String!, spaceId: String!): GitCourse!
+  deleteByteCollection(byteCollectionId: String!): Boolean!
   deleteGitCourseSubmission(courseKey: String!, spaceId: String!): Boolean!
   deleteGuide(spaceId: String!, uuid: String!): Boolean!
   deleteTopic(spaceId: String!, topicInfo: DeleteTopicInput!): GitCourse!
@@ -960,6 +987,7 @@ type Mutation {
   triggerNewDiscourseIndexRun(spaceId: String!): DiscourseIndexRun!
   triggerSiteScrapingRun(spaceId: String!, websiteScrapingInfoId: String!): SiteScrapingRun!
   updateAuthSettings(input: AuthSettingsInput!, spaceId: String!): Space!
+  updateByteCollection(input: UpdateByteCollectionInput!): ByteCollection!
   updateByteSettings(input: ByteSettingsInput!, spaceId: String!): Space!
   updateCourseBasicInfo(courseBasicInfo: CourseBasicInfoInput!, spaceId: String!): GitCourse!
   updateGuideSettings(input: GuideSettingsInput!, spaceId: String!): Space!
@@ -1053,6 +1081,8 @@ type Query {
   academyTasks(spaceId: String!, status: String): [AcademyTask!]
   articleIndexingInfos(spaceId: String!): [ArticleIndexingInfo!]!
   byte(byteId: String!, includeDraft: Boolean, spaceId: String!): Byte!
+  byteCollection(byteCollectionId: String!, spaceId: String!): ByteCollection!
+  byteCollections(spaceId: String!): [ByteCollection!]!
   byteSocialShare(byteId: String!, spaceId: String!): ByteSocialShare
   bytes(spaceId: String!): [Byte!]!
   consolidatedGuideRating(guideUuid: String!, spaceId: String!): ConsolidatedGuideRating
@@ -1347,6 +1377,16 @@ input TopicConfigInput {
 input TopicQuestionChoiceInput {
   content: String!
   key: String!
+}
+
+input UpdateByteCollectionInput {
+  byteCollectionId: String!
+  byteIds: [String!]!
+  description: String!
+  name: String!
+  order: Int!
+  spaceId: String!
+  status: String!
 }
 
 input UpdateTopicBasicInfoInput {

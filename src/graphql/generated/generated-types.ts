@@ -126,6 +126,24 @@ export interface Byte {
   visibility?: Maybe<Scalars['String']>;
 }
 
+export interface ByteCollection {
+  __typename?: 'ByteCollection';
+  byteIds: Array<Scalars['String']>;
+  bytes: Array<ByteCollectionByte>;
+  description: Scalars['String'];
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  order: Scalars['Int'];
+  status: Scalars['String'];
+}
+
+export interface ByteCollectionByte {
+  __typename?: 'ByteCollectionByte';
+  byteId: Scalars['String'];
+  content: Scalars['String'];
+  name: Scalars['String'];
+}
+
 export interface ByteLinkedinPdfContent {
   __typename?: 'ByteLinkedinPdfContent';
   excerpt: Scalars['String'];
@@ -301,6 +319,15 @@ export interface CourseReadingQuestion {
 export interface CourseSubmissionInput {
   courseKey: Scalars['String'];
   uuid: Scalars['String'];
+}
+
+export interface CreateByteCollectionInput {
+  byteIds: Array<Scalars['String']>;
+  description: Scalars['String'];
+  name: Scalars['String'];
+  order: Scalars['Int'];
+  spaceId: Scalars['String'];
+  status: Scalars['String'];
 }
 
 export interface CreateCompletionResponseChoice {
@@ -980,11 +1007,13 @@ export interface Mutation {
   askCompletionAI: OpenAiCompletionResponse;
   authenticateWithUnstoppable: JwtResponse;
   createArticleIndexingInfo: ArticleIndexingInfo;
+  createByteCollection: ByteCollection;
   createSignedUrl: Scalars['String'];
   createSpace: Space;
   createSummaryOfContent: OpenAiTextResponse;
   createWebsiteScrapingInfo: WebsiteScrapingInfo;
   deleteAndPullCourseRepo: GitCourse;
+  deleteByteCollection: Scalars['Boolean'];
   deleteGitCourseSubmission: Scalars['Boolean'];
   deleteGuide: Scalars['Boolean'];
   deleteTopic: GitCourse;
@@ -1022,6 +1051,7 @@ export interface Mutation {
   triggerNewDiscourseIndexRun: DiscourseIndexRun;
   triggerSiteScrapingRun: SiteScrapingRun;
   updateAuthSettings: Space;
+  updateByteCollection: ByteCollection;
   updateByteSettings: Space;
   updateCourseBasicInfo: GitCourse;
   updateGuideSettings: Space;
@@ -1116,6 +1146,11 @@ export interface MutationCreateArticleIndexingInfoArgs {
 }
 
 
+export interface MutationCreateByteCollectionArgs {
+  input: CreateByteCollectionInput;
+}
+
+
 export interface MutationCreateSignedUrlArgs {
   input: CreateSignedUrlInput;
   spaceId: Scalars['String'];
@@ -1144,6 +1179,11 @@ export interface MutationCreateWebsiteScrapingInfoArgs {
 export interface MutationDeleteAndPullCourseRepoArgs {
   courseKey: Scalars['String'];
   spaceId: Scalars['String'];
+}
+
+
+export interface MutationDeleteByteCollectionArgs {
+  byteCollectionId: Scalars['String'];
 }
 
 
@@ -1355,6 +1395,11 @@ export interface MutationTriggerSiteScrapingRunArgs {
 export interface MutationUpdateAuthSettingsArgs {
   input: AuthSettingsInput;
   spaceId: Scalars['String'];
+}
+
+
+export interface MutationUpdateByteCollectionArgs {
+  input: UpdateByteCollectionInput;
 }
 
 
@@ -1591,6 +1636,8 @@ export interface Query {
   academyTasks?: Maybe<Array<AcademyTask>>;
   articleIndexingInfos: Array<ArticleIndexingInfo>;
   byte: Byte;
+  byteCollection: ByteCollection;
+  byteCollections: Array<ByteCollection>;
   byteSocialShare?: Maybe<ByteSocialShare>;
   bytes: Array<Byte>;
   consolidatedGuideRating?: Maybe<ConsolidatedGuideRating>;
@@ -1647,6 +1694,17 @@ export interface QueryArticleIndexingInfosArgs {
 export interface QueryByteArgs {
   byteId: Scalars['String'];
   includeDraft?: InputMaybe<Scalars['Boolean']>;
+  spaceId: Scalars['String'];
+}
+
+
+export interface QueryByteCollectionArgs {
+  byteCollectionId: Scalars['String'];
+  spaceId: Scalars['String'];
+}
+
+
+export interface QueryByteCollectionsArgs {
   spaceId: Scalars['String'];
 }
 
@@ -2106,6 +2164,16 @@ export interface TopicQuestionChoiceInput {
   key: Scalars['String'];
 }
 
+export interface UpdateByteCollectionInput {
+  byteCollectionId: Scalars['String'];
+  byteIds: Array<Scalars['String']>;
+  description: Scalars['String'];
+  name: Scalars['String'];
+  order: Scalars['Int'];
+  spaceId: Scalars['String'];
+  status: Scalars['String'];
+}
+
 export interface UpdateTopicBasicInfoInput {
   courseKey: Scalars['String'];
   details: Scalars['String'];
@@ -2353,6 +2421,44 @@ export type AuthenticateWithUnstoppableMutationVariables = Exact<{
 
 export type AuthenticateWithUnstoppableMutation = { __typename?: 'Mutation', payload: { __typename?: 'JwtResponse', jwt: string } };
 
+export type ByteCollectionFragment = { __typename?: 'ByteCollection', id: string, name: string, description: string, status: string, byteIds: Array<string>, order: number, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string }> };
+
+export type ByteCollectionsQueryVariables = Exact<{
+  spaceId: Scalars['String'];
+}>;
+
+
+export type ByteCollectionsQuery = { __typename?: 'Query', byteCollections: Array<{ __typename?: 'ByteCollection', id: string, name: string, description: string, status: string, byteIds: Array<string>, order: number, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string }> }> };
+
+export type ByteCollectionQueryVariables = Exact<{
+  spaceId: Scalars['String'];
+  byteCollectionId: Scalars['String'];
+}>;
+
+
+export type ByteCollectionQuery = { __typename?: 'Query', byteCollection: { __typename?: 'ByteCollection', id: string, name: string, description: string, status: string, byteIds: Array<string>, order: number, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string }> } };
+
+export type CreateByteCollectionMutationVariables = Exact<{
+  input: CreateByteCollectionInput;
+}>;
+
+
+export type CreateByteCollectionMutation = { __typename?: 'Mutation', createByteCollection: { __typename?: 'ByteCollection', id: string, name: string, description: string, status: string, byteIds: Array<string>, order: number, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string }> } };
+
+export type UpdateByteCollectionMutationVariables = Exact<{
+  input: UpdateByteCollectionInput;
+}>;
+
+
+export type UpdateByteCollectionMutation = { __typename?: 'Mutation', updateByteCollection: { __typename?: 'ByteCollection', id: string, name: string, description: string, status: string, byteIds: Array<string>, order: number, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string }> } };
+
+export type DeleteByteCollectionMutationVariables = Exact<{
+  byteCollectionId: Scalars['String'];
+}>;
+
+
+export type DeleteByteCollectionMutation = { __typename?: 'Mutation', deleteByteCollection: boolean };
+
 export type ByteLinkedinPdfContentStepFragment = { __typename?: 'ByteLinkedinPdfContentStep', content: string, name: string };
 
 export type ByteLinkedinPdfContentFragment = { __typename?: 'ByteLinkedinPdfContent', excerpt: string, title: string, steps: Array<{ __typename?: 'ByteLinkedinPdfContentStep', content: string, name: string }> };
@@ -2401,12 +2507,14 @@ export type ByteDetailsFragment = { __typename?: 'Byte', postSubmissionStepConte
 
 export type ByteDetailsFragmentFragment = { __typename?: 'Byte', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, publishStatus: string, visibility?: string | null, admins: Array<string>, tags: Array<string>, priority: number, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> };
 
+export type ByteSummaryFragment = { __typename?: 'Byte', content: string, created: string, id: string, name: string, publishStatus: string, visibility?: string | null, admins: Array<string>, tags: Array<string>, priority: number };
+
 export type QueryBytesQueryVariables = Exact<{
   spaceId: Scalars['String'];
 }>;
 
 
-export type QueryBytesQuery = { __typename?: 'Query', bytes: Array<{ __typename?: 'Byte', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, publishStatus: string, visibility?: string | null, admins: Array<string>, tags: Array<string>, priority: number }> };
+export type QueryBytesQuery = { __typename?: 'Query', bytes: Array<{ __typename?: 'Byte', content: string, created: string, id: string, name: string, publishStatus: string, visibility?: string | null, admins: Array<string>, tags: Array<string>, priority: number }> };
 
 export type QueryByteDetailsQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -3386,6 +3494,21 @@ export const AcademyTaskFragmentFragmentDoc = gql`
   updatedBy
 }
     `;
+export const ByteCollectionFragmentDoc = gql`
+    fragment ByteCollection on ByteCollection {
+  id
+  name
+  description
+  status
+  byteIds
+  order
+  bytes {
+    byteId
+    name
+    content
+  }
+}
+    `;
 export const ByteLinkedinPdfContentStepFragmentDoc = gql`
     fragment ByteLinkedinPdfContentStep on ByteLinkedinPdfContentStep {
   content
@@ -3511,6 +3634,19 @@ export const ByteDetailsFragmentFragmentDoc = gql`
     name
     uuid
   }
+}
+    `;
+export const ByteSummaryFragmentDoc = gql`
+    fragment ByteSummary on Byte {
+  content
+  created
+  id
+  name
+  publishStatus
+  visibility
+  admins
+  tags
+  priority
 }
     `;
 export const TopicCorrectAnswersFragmentDoc = gql`
@@ -4264,6 +4400,180 @@ export function useAuthenticateWithUnstoppableMutation(baseOptions?: Apollo.Muta
 export type AuthenticateWithUnstoppableMutationHookResult = ReturnType<typeof useAuthenticateWithUnstoppableMutation>;
 export type AuthenticateWithUnstoppableMutationResult = Apollo.MutationResult<AuthenticateWithUnstoppableMutation>;
 export type AuthenticateWithUnstoppableMutationOptions = Apollo.BaseMutationOptions<AuthenticateWithUnstoppableMutation, AuthenticateWithUnstoppableMutationVariables>;
+export const ByteCollectionsDocument = gql`
+    query ByteCollections($spaceId: String!) {
+  byteCollections(spaceId: $spaceId) {
+    ...ByteCollection
+  }
+}
+    ${ByteCollectionFragmentDoc}`;
+
+/**
+ * __useByteCollectionsQuery__
+ *
+ * To run a query within a React component, call `useByteCollectionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useByteCollectionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useByteCollectionsQuery({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *   },
+ * });
+ */
+export function useByteCollectionsQuery(baseOptions: Apollo.QueryHookOptions<ByteCollectionsQuery, ByteCollectionsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ByteCollectionsQuery, ByteCollectionsQueryVariables>(ByteCollectionsDocument, options);
+      }
+export function useByteCollectionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ByteCollectionsQuery, ByteCollectionsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ByteCollectionsQuery, ByteCollectionsQueryVariables>(ByteCollectionsDocument, options);
+        }
+export type ByteCollectionsQueryHookResult = ReturnType<typeof useByteCollectionsQuery>;
+export type ByteCollectionsLazyQueryHookResult = ReturnType<typeof useByteCollectionsLazyQuery>;
+export type ByteCollectionsQueryResult = Apollo.QueryResult<ByteCollectionsQuery, ByteCollectionsQueryVariables>;
+export function refetchByteCollectionsQuery(variables: ByteCollectionsQueryVariables) {
+      return { query: ByteCollectionsDocument, variables: variables }
+    }
+export const ByteCollectionDocument = gql`
+    query ByteCollection($spaceId: String!, $byteCollectionId: String!) {
+  byteCollection(spaceId: $spaceId, byteCollectionId: $byteCollectionId) {
+    ...ByteCollection
+  }
+}
+    ${ByteCollectionFragmentDoc}`;
+
+/**
+ * __useByteCollectionQuery__
+ *
+ * To run a query within a React component, call `useByteCollectionQuery` and pass it any options that fit your needs.
+ * When your component renders, `useByteCollectionQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useByteCollectionQuery({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      byteCollectionId: // value for 'byteCollectionId'
+ *   },
+ * });
+ */
+export function useByteCollectionQuery(baseOptions: Apollo.QueryHookOptions<ByteCollectionQuery, ByteCollectionQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ByteCollectionQuery, ByteCollectionQueryVariables>(ByteCollectionDocument, options);
+      }
+export function useByteCollectionLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ByteCollectionQuery, ByteCollectionQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ByteCollectionQuery, ByteCollectionQueryVariables>(ByteCollectionDocument, options);
+        }
+export type ByteCollectionQueryHookResult = ReturnType<typeof useByteCollectionQuery>;
+export type ByteCollectionLazyQueryHookResult = ReturnType<typeof useByteCollectionLazyQuery>;
+export type ByteCollectionQueryResult = Apollo.QueryResult<ByteCollectionQuery, ByteCollectionQueryVariables>;
+export function refetchByteCollectionQuery(variables: ByteCollectionQueryVariables) {
+      return { query: ByteCollectionDocument, variables: variables }
+    }
+export const CreateByteCollectionDocument = gql`
+    mutation CreateByteCollection($input: CreateByteCollectionInput!) {
+  createByteCollection(input: $input) {
+    ...ByteCollection
+  }
+}
+    ${ByteCollectionFragmentDoc}`;
+export type CreateByteCollectionMutationFn = Apollo.MutationFunction<CreateByteCollectionMutation, CreateByteCollectionMutationVariables>;
+
+/**
+ * __useCreateByteCollectionMutation__
+ *
+ * To run a mutation, you first call `useCreateByteCollectionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateByteCollectionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createByteCollectionMutation, { data, loading, error }] = useCreateByteCollectionMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateByteCollectionMutation(baseOptions?: Apollo.MutationHookOptions<CreateByteCollectionMutation, CreateByteCollectionMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateByteCollectionMutation, CreateByteCollectionMutationVariables>(CreateByteCollectionDocument, options);
+      }
+export type CreateByteCollectionMutationHookResult = ReturnType<typeof useCreateByteCollectionMutation>;
+export type CreateByteCollectionMutationResult = Apollo.MutationResult<CreateByteCollectionMutation>;
+export type CreateByteCollectionMutationOptions = Apollo.BaseMutationOptions<CreateByteCollectionMutation, CreateByteCollectionMutationVariables>;
+export const UpdateByteCollectionDocument = gql`
+    mutation UpdateByteCollection($input: UpdateByteCollectionInput!) {
+  updateByteCollection(input: $input) {
+    ...ByteCollection
+  }
+}
+    ${ByteCollectionFragmentDoc}`;
+export type UpdateByteCollectionMutationFn = Apollo.MutationFunction<UpdateByteCollectionMutation, UpdateByteCollectionMutationVariables>;
+
+/**
+ * __useUpdateByteCollectionMutation__
+ *
+ * To run a mutation, you first call `useUpdateByteCollectionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateByteCollectionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateByteCollectionMutation, { data, loading, error }] = useUpdateByteCollectionMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateByteCollectionMutation(baseOptions?: Apollo.MutationHookOptions<UpdateByteCollectionMutation, UpdateByteCollectionMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateByteCollectionMutation, UpdateByteCollectionMutationVariables>(UpdateByteCollectionDocument, options);
+      }
+export type UpdateByteCollectionMutationHookResult = ReturnType<typeof useUpdateByteCollectionMutation>;
+export type UpdateByteCollectionMutationResult = Apollo.MutationResult<UpdateByteCollectionMutation>;
+export type UpdateByteCollectionMutationOptions = Apollo.BaseMutationOptions<UpdateByteCollectionMutation, UpdateByteCollectionMutationVariables>;
+export const DeleteByteCollectionDocument = gql`
+    mutation DeleteByteCollection($byteCollectionId: String!) {
+  deleteByteCollection(byteCollectionId: $byteCollectionId)
+}
+    `;
+export type DeleteByteCollectionMutationFn = Apollo.MutationFunction<DeleteByteCollectionMutation, DeleteByteCollectionMutationVariables>;
+
+/**
+ * __useDeleteByteCollectionMutation__
+ *
+ * To run a mutation, you first call `useDeleteByteCollectionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteByteCollectionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteByteCollectionMutation, { data, loading, error }] = useDeleteByteCollectionMutation({
+ *   variables: {
+ *      byteCollectionId: // value for 'byteCollectionId'
+ *   },
+ * });
+ */
+export function useDeleteByteCollectionMutation(baseOptions?: Apollo.MutationHookOptions<DeleteByteCollectionMutation, DeleteByteCollectionMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteByteCollectionMutation, DeleteByteCollectionMutationVariables>(DeleteByteCollectionDocument, options);
+      }
+export type DeleteByteCollectionMutationHookResult = ReturnType<typeof useDeleteByteCollectionMutation>;
+export type DeleteByteCollectionMutationResult = Apollo.MutationResult<DeleteByteCollectionMutation>;
+export type DeleteByteCollectionMutationOptions = Apollo.BaseMutationOptions<DeleteByteCollectionMutation, DeleteByteCollectionMutationVariables>;
 export const ByteSocialShareDocument = gql`
     query ByteSocialShare($spaceId: String!, $byteId: String!) {
   byteSocialShare(spaceId: $spaceId, byteId: $byteId) {
@@ -4398,19 +4708,10 @@ export type UpsertByteSocialShareMutationOptions = Apollo.BaseMutationOptions<Up
 export const QueryBytesDocument = gql`
     query QueryBytes($spaceId: String!) {
   bytes(spaceId: $spaceId) {
-    postSubmissionStepContent
-    content
-    created
-    id
-    name
-    publishStatus
-    visibility
-    admins
-    tags
-    priority
+    ...ByteSummary
   }
 }
-    `;
+    ${ByteSummaryFragmentDoc}`;
 
 /**
  * __useQueryBytesQuery__

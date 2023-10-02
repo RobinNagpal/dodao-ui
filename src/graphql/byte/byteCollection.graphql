@@ -1,0 +1,41 @@
+fragment ByteCollection on ByteCollection {
+  id
+  name
+  description
+  status
+  byteIds
+  order
+  bytes {
+    byteId
+    name
+    content
+  }
+}
+
+query ByteCollections($spaceId: String!) {
+  byteCollections(spaceId: $spaceId) {
+    ...ByteCollection
+  }
+}
+
+query ByteCollection($spaceId: String!, $byteCollectionId: String!) {
+  byteCollection(spaceId: $spaceId, byteCollectionId: $byteCollectionId) {
+    ...ByteCollection
+  }
+}
+
+mutation CreateByteCollection($input: CreateByteCollectionInput!) {
+  createByteCollection(input: $input) {
+    ...ByteCollection
+  }
+}
+
+mutation UpdateByteCollection($input: UpdateByteCollectionInput!) {
+  updateByteCollection(input: $input) {
+    ...ByteCollection
+  }
+}
+
+mutation DeleteByteCollection($byteCollectionId: String!) {
+  deleteByteCollection(byteCollectionId: $byteCollectionId)
+}

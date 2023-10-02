@@ -46,7 +46,6 @@ fragment ByteStep on ByteStep {
   uuid
 }
 
-
 fragment ByteDetails on Byte {
   postSubmissionStepContent
   content
@@ -106,19 +105,21 @@ fragment ByteDetailsFragment on Byte {
   }
 }
 
+fragment ByteSummary on Byte {
+  content
+  created
+  id
+  name
+  publishStatus
+  visibility
+  admins
+  tags
+  priority
+}
 
 query QueryBytes($spaceId: String!) {
   bytes(spaceId: $spaceId) {
-    postSubmissionStepContent
-    content
-    created
-    id
-    name
-    publishStatus
-    visibility
-    admins
-    tags
-    priority
+    ...ByteSummary
   }
 }
 
@@ -145,5 +146,3 @@ mutation PublishByte($spaceId: String!, $input: UpsertByteInput!) {
     ...ByteDetails
   }
 }
-
-
