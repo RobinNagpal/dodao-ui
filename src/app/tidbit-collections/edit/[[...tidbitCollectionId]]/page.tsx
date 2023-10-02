@@ -8,7 +8,7 @@ import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-typ
 function EditTidbitCollectionSpace(props: { space: SpaceWithIntegrationsFragment; params: { tidbitCollectionId?: string[] } }) {
   return (
     <PageWrapper>
-      <ByteCollectionEditor space={props.space} />
+      <ByteCollectionEditor space={props.space} byteCollectionId={props.params.tidbitCollectionId?.[0]} />
     </PageWrapper>
   );
 }

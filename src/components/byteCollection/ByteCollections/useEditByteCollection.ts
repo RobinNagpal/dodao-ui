@@ -7,6 +7,7 @@ import {
   useQueryBytesQuery,
   useUpdateByteCollectionMutation,
 } from '@/graphql/generated/generated-types';
+import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 
 type EditByteCollection = Omit<ByteCollectionFragment, 'id'> & { id?: string };
@@ -31,6 +32,7 @@ interface UseEditByteCollectionType {
 
 export function useEditByteCollection(space: SpaceWithIntegrationsFragment, byteCollectionId: string | null): UseEditByteCollectionType {
   const [isPrestine, setIsPrestine] = useState<boolean>(true);
+  const router = useRouter();
 
   const [byteCollection, setByteCollection] = useState<EditByteCollection>({
     bytes: [],
@@ -168,6 +170,7 @@ export function useEditByteCollection(space: SpaceWithIntegrationsFragment, byte
         },
       });
     }
+    router.push('/tidbit-collections');
   };
 
   return {

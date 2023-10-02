@@ -20,6 +20,12 @@ export default function CreateContentModalContents({ hideModal }: { hideModal: (
           <Button variant="outlined" primary className="p-2 w-full" onClick={() => goToUrl('/guides/edit')}>
             Create Guide
           </Button>
+          <Button variant="outlined" primary className="p-2 w-full" onClick={() => goToUrl('/timelines/edit')}>
+            Create timeline
+          </Button>
+          <Button variant="outlined" primary className="p-2 w-full" onClick={() => goToUrl('/tidbit-collections/edit')}>
+            Create Tidbit Collection
+          </Button>
         </Grid2Cols>
       </div>
     </div>

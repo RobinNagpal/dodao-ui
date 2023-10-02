@@ -1,18 +1,24 @@
-import Card from '@/components/core/card/Card';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import { ByteCollectionFragment } from '@/graphql/generated/generated-types';
-import { CheckIcon } from '@heroicons/react/20/solid';
+import ArrowTopRightOnSquareIcon from '@heroicons/react/24/outline/ArrowTopRightOnSquareIcon';
+import Bars3BottomLeftIcon from '@heroicons/react/24/solid/Bars3BottomLeftIcon';
 import { useRouter } from 'next/navigation';
 import React from 'react';
+import styled from 'styled-components';
 
 interface ByteCollectionCardProps {
   byteCollection: ByteCollectionFragment;
+  onSelectByte: (byteId: string) => void;
 }
 
-export default function ByteCollectionsCard({ byteCollection }: ByteCollectionCardProps) {
+const TidBitIconSpan = styled.span`
+  background-color: var(--primary-color);
+`;
+
+export default function ByteCollectionsCard({ byteCollection, onSelectByte }: ByteCollectionCardProps) {
   const router = useRouter();
   return (
-    <Card className="p-4">
+    <div className="border border-gray-200 rounded-xl overflow-hidden  p-4 w-full max-w-xl">
       <div className="w-full flex justify-end">
         <PrivateEllipsisDropdown
           items={[
@@ -43,19 +49,20 @@ export default function ByteCollectionsCard({ byteCollection }: ByteCollectionCa
                 <div className="relative flex space-x-3">
                   <div className="flex cursor-pointer">
                     <div>
-                      <span className={'bg-green-500 h-8 w-8 rounded-full flex items-center justify-center ring-5 ring-white'}>
-                        <CheckIcon className="h-5 w-5 text-white" aria-hidden="true" />
-                      </span>
+                      <TidBitIconSpan className={'h-8 w-8 rounded-full flex items-center justify-center ring-5 ring-white'}>
+                        <Bars3BottomLeftIcon className="h-5 w-5 text-white" aria-hidden="true" />
+                      </TidBitIconSpan>
                     </div>
-                    <div className="flex min-w-0 flex-1 justify-between space-x-2 pt-1.5">
-                      <div>
-                        <p className="ml-2 text-sm">
-                          <div className="flex">
-                            <div>
-                              <span className={'font-bold'}>{byte.name}</span> - <span>{byte.content}</span>
-                            </div>
-                          </div>
-                        </p>
+                    <div
+                      className="flex min-w-0 flex-1 justify-between space-x-2 shadow-md transform hover:scale-95 transition duration-300 ease-in-out"
+                      onClick={() => onSelectByte(byte.byteId)}
+                    >
+                      <div className="ml-3 text-sm">
+                        <div className="font-bold flex">
+                          {`${byte.name}`} <ArrowTopRightOnSquareIcon className="h-4 w-4 ml-2 text-white" />
+                        </div>
+
+                        <div className="flex-wrap">{byte.content}</div>
                       </div>
                     </div>
                   </div>
@@ -65,6 +72,6 @@ export default function ByteCollectionsCard({ byteCollection }: ByteCollectionCa
           ))}
         </ul>
       </div>
-    </Card>
+    </div>
   );
 }

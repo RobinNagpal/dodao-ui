@@ -16,7 +16,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 export const LAST_STEP_UUID = 'LAST_STEP_UUID';
 
-export function useViewByte(space: SpaceWithIntegrationsFragment, byteId: string, stepOrder: number): UseViewByteHelper {
+export function useViewByteInModal(space: SpaceWithIntegrationsFragment, byteId: string, stepOrder: number): UseViewByteHelper {
   const { data: session } = useSession();
   // Replace Vue reactive refs with React state
   const [activeStepOrder, setActiveStepOrder] = useState<number>(0);
@@ -81,7 +81,6 @@ export function useViewByte(space: SpaceWithIntegrationsFragment, byteId: string
 
   function setActiveStep(order: number) {
     setActiveStepOrder(order);
-    history.replaceState(null, '', `/tidbits/view/${byteId}/${order}`);
   }
 
   function getStepSubmission(stepUuid: string): StepResponse | undefined {
@@ -109,14 +108,10 @@ export function useViewByte(space: SpaceWithIntegrationsFragment, byteId: string
         },
       };
     });
-
-    history.replaceState(null, '', `/tidbits/view/${byteId}/${activeStepOrder + 1}`);
   }
 
   function goToPreviousStep(currentStep: ByteStepFragment) {
     setActiveStepOrder(activeStepOrder - 1);
-
-    history.replaceState(null, '', `/tidbits/view/${byteId}/${activeStepOrder - 1}`);
   }
 
   function selectAnswer(stepUuid: string, questionUuid: string, selectedAnswers: string[]) {

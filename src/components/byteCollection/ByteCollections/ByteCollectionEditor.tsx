@@ -5,24 +5,28 @@ import IconButton from '@/components/core/buttons/IconButton';
 import { IconTypes } from '@/components/core/icons/IconTypes';
 import Input from '@/components/core/input/Input';
 import TextareaAutosize from '@/components/core/textarea/TextareaAutosize';
-import { ByteCollectionFragment, Space } from '@/graphql/generated/generated-types';
-import { CheckIcon } from '@heroicons/react/20/solid';
+import { Space } from '@/graphql/generated/generated-types';
 import PlusCircle from '@heroicons/react/20/solid/PlusCircleIcon';
+import Bars3BottomLeftIcon from '@heroicons/react/24/solid/Bars3BottomLeftIcon';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
 interface ByteCollectionEditorProps {
   space: Space;
-  byteCollection?: ByteCollectionFragment;
+  byteCollectionId?: string;
 }
 
 const AddByteButton = styled.button`
   color: var(--primary-color);
 `;
 
+const TidBitIconSpan = styled.span`
+  background-color: var(--primary-color);
+`;
+
 function ByteCollectionEditor(props: ByteCollectionEditorProps) {
   const [showSelectBytesModal, setShowSelectBytesModal] = useState(false);
-  const { isPrestine, byteCollection, byteSummaries, helperFunctions } = useEditByteCollection(props.space, props.byteCollection?.id || null);
+  const { isPrestine, byteCollection, byteSummaries, helperFunctions } = useEditByteCollection(props.space, props.byteCollectionId || null);
 
   return (
     <div>
@@ -60,13 +64,13 @@ function ByteCollectionEditor(props: ByteCollectionEditorProps) {
                   ) : null}
                   <div className="relative flex space-x-3">
                     <div>
-                      <span className={'bg-green-500 h-8 w-8 rounded-full flex items-center justify-center ring-5 ring-white'}>
-                        <CheckIcon className="h-5 w-5 text-white" aria-hidden="true" />
-                      </span>
+                      <TidBitIconSpan className={'h-8 w-8 rounded-full flex items-center justify-center ring-5 ring-white'}>
+                        <Bars3BottomLeftIcon className="h-5 w-5 text-white" aria-hidden="true" />
+                      </TidBitIconSpan>
                     </div>
                     <div className="flex min-w-0 flex-1 justify-between space-x-2 pt-1.5">
                       <div>
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm">
                           <div className="flex">
                             <div>
                               <span className={'font-bold'}>{byte.name}</span> - <span>{byte.content}</span>
