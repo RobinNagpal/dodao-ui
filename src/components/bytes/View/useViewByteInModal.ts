@@ -8,8 +8,10 @@ import {
   useQueryByteDetailsQuery,
   useSubmitByteMutation,
 } from '@/graphql/generated/generated-types';
+import { LocalStorageKeys } from '@/types/deprecated/models/enums';
 import { ByteSubmissionError } from '@/types/errors/error';
 import { StepItemResponse, StepResponse, TempByteSubmission } from '@/utils/byte/TempByteSubmission';
+import union from 'lodash/union';
 import { useSession } from 'next-auth/react';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
@@ -185,6 +187,11 @@ export function useViewByteInModal(space: SpaceWithIntegrationsFragment, byteId:
               },
             ],
           });
+
+          localStorage.setItem(
+            LocalStorageKeys.COMPLETED_TIDBITS,
+            JSON.stringify(union([...JSON.parse(localStorage.getItem(LocalStorageKeys.COMPLETED_TIDBITS) || '[]'), byteId]))
+          );
 
           setByteSubmission((prevByteSubmission) => ({ ...prevByteSubmission }));
         }

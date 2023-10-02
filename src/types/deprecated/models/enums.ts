@@ -86,4 +86,5 @@ export enum TidbitShareSteps {
 export enum LocalStorageKeys {
   GUIDE_SUBMISSION = 'GUIDE-SUBMISSION-V2',
   NEAR_PRE_REDIRECT_URL = 'NEAR-PRE-REDIRECT-URL',
+  COMPLETED_TIDBITS = 'COMPLETED-TIDBITS',
 }
