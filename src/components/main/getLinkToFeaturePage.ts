@@ -19,5 +19,11 @@ export const getLinkToFeaturePage = (featureName: FeatureName): string => {
 
   if (featureName === FeatureName.Simulations) {
     return '/simulations';
-  } else throw Error('Invalid feature name', featureName);
+  }
+
+  if (featureName === FeatureName.ByteCollections) {
+    return '/tidbit-collections';
+  }
+
+  throw Error('Invalid feature name' + featureName);
 };

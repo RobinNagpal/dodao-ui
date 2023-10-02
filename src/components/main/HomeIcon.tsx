@@ -65,6 +65,14 @@ function HomeIcon({ space, feature }: HomeIconProps) {
           featureName={feature.featureName}
         />
       )}
+      {feature.featureName === FeatureName.ByteCollections && (
+        <Card
+          space={space}
+          heading={'Tidbit Collections'}
+          details={'If you want to know the most important details within 2 minutes'}
+          featureName={feature.featureName}
+        />
+      )}
       {feature.featureName === FeatureName.Simulations && (
         <Card space={space} heading={'Simulations'} details={'Simulations that help you understand the protocol better'} featureName={feature.featureName} />
       )}

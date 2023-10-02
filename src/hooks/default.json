@@ -262,6 +262,7 @@
       "academyText": "We know crypto and optimism can be a confusing place and Optimism University has your back.",
       "projectName": "Optimism",
       "bytesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/optimism/tidbits_icon.png",
+      "bytecollectionsThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/optimism/tidbits_icon.png",
       "coursesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/optimism/courses_icon.png",
       "guidesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/optimism/guides_icon.png",
       "simulationsThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/dodao/dodao_demos.png",
@@ -279,6 +280,7 @@
       "academyText": "We know providing liquidity can be a confusing and Uniswap LP Academy has your back.",
       "projectName": "Uniswap",
       "bytesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/uniswap/uniswap_bytes.png",
+      "bytecollectionsThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/uniswap/uniswap_bytes.png",
       "coursesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/uniswap/uniswap_courses.png",
       "guidesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/uniswap/uniswap_guides.png",
       "simulationsThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/uniswap/uniswap_demos.png"

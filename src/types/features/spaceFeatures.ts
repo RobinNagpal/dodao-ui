@@ -3,6 +3,7 @@ export enum FeatureName {
   Simulations = 'Simulations',
   Timelines = 'Timelines',
   Bytes = 'Bytes',
+  ByteCollections = 'ByteCollections',
   Guides = 'Guides',
 }
 

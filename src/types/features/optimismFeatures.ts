@@ -16,6 +16,13 @@ export const optimismFeatures: FeatureItem[] = [
     },
   },
   {
+    featureName: FeatureName.ByteCollections,
+    enabled: true,
+    details: {
+      priority: 70,
+    },
+  },
+  {
     featureName: FeatureName.Timelines,
     enabled: true,
     details: {
