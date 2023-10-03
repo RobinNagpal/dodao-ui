@@ -120,6 +120,9 @@
   "joinDAO": "Join DAO",
   "previous": "Previous",
   "chatbot": {
+    "arbitrum-university": {
+      "topBanner": "Currently the bot is just trained on minimal information. We need support to train it on other information like docs, code, discord, etc. We can make this bot 100x more intelligent. Please support us. \uD83D\uDE4F \uD83D\uDE4F"
+    },
     "optimism-university": {
       "topBanner": "Currently the bot is just trained on <a href=\"https://gov.optimism.io\" target=\"_blank\">\"https://gov.optimism.io\"</a>. We need support to train it on other information like docs, code, discord, etc. We can make this bot 100x more intelligent. Please support us. \uD83D\uDE4F \uD83D\uDE4F"
     },
