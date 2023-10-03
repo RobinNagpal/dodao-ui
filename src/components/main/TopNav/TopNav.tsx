@@ -27,8 +27,9 @@ const StyledDiv = styled.div`
   color: var(--text-color);
 `;
 
-function DesktopNavLinks({ space }: { space: Space }) {
+function DesktopNavLinks({ space, session }: { space: Space; session?: Session }) {
   const sortedSpaceFeatures: FeatureItem[] = getSortedFeaturesArray(space.id);
+  const featureNames: FeatureName[] = sortedSpaceFeatures.map((feature) => feature.featureName);
   return (
     <div className="hidden md:ml-6 md:flex md:space-x-8">
       {sortedSpaceFeatures.map((feature) => {
@@ -39,7 +40,8 @@ function DesktopNavLinks({ space }: { space: Space }) {
           return <DesktopNavLink key="guides" href="/guides" label="Guides" />;
         }
 
-        if (feature.featureName === FeatureName.Bytes) {
+        const showTidbits = featureNames.includes(FeatureName.ByteCollections) ? isAdmin(session) : feature.featureName === FeatureName.Bytes;
+        if (showTidbits) {
           return <DesktopNavLink key="tidbits" href="/tidbits" label="Tidbits" />;
         }
 
@@ -57,8 +59,9 @@ function DesktopNavLinks({ space }: { space: Space }) {
   );
 }
 
-function MobileNavLinks({ space }: { space: Space }) {
+function MobileNavLinks({ space, session }: { space: Space; session: Session }) {
   const sortedSpaceFeatures: FeatureItem[] = getSortedFeaturesArray(space.id);
+  const featureNames: FeatureName[] = sortedSpaceFeatures.map((feature) => feature.featureName);
   return (
     <div className="space-y-1 pb-3 pt-2">
       {sortedSpaceFeatures.map((feature) => {
@@ -69,7 +72,8 @@ function MobileNavLinks({ space }: { space: Space }) {
           return <MobileNavLink key="guides" href="/guides" label="Guides" />;
         }
 
-        if (feature.featureName === FeatureName.Bytes) {
+        const showTidbits = featureNames.includes(FeatureName.ByteCollections) ? isAdmin(session) : feature.featureName === FeatureName.Bytes;
+        if (showTidbits) {
           return <MobileNavLink key="tidbits" href="/tidbits" label="Tidbits" />;
         }
 
@@ -165,7 +169,7 @@ export default function TopNav(props: { space?: SpaceWithIntegrationsFragment | 
                       />
                     </Link>
                   </div>
-                  {space && <DesktopNavLinks space={space} />}
+                  {space && <DesktopNavLinks space={space} session={session as Session} />}
                 </div>
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
@@ -187,7 +191,7 @@ export default function TopNav(props: { space?: SpaceWithIntegrationsFragment | 
             </div>
 
             <Disclosure.Panel className="md:hidden">
-              {space && <MobileNavLinks space={space} />}
+              {space && <MobileNavLinks space={space} session={session as Session} />}
               {session && space && <MobileProfileMenu session={session as Session} space={space} />}
             </Disclosure.Panel>
           </>

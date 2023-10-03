@@ -1,17 +1,18 @@
+import styles from './StatusBadge.module.scss';
+
 type StatusBadgeProps = {
   status: string;
+  className?: string;
 };
 
-export const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
-  let badgeStyles = '  inline-flex items-center rounded-full px-2 py-2 text-xl font-medium';
-
-  let badgeText = status;
-
-  if (status == 'Draft') {
-    badgeStyles += ' bg-blue-100 text-blue-700';
-  } else if (status == 'Live') {
-    badgeStyles += ' bg-green-100 text-green-700';
-  }
-
-  return <span className={badgeStyles}>{badgeText}</span>;
-};
+export default function StatusBadge({ status, className }: StatusBadgeProps) {
+  return (
+    <span
+      className={`inline-flex items-center rounded-md px-2 py-2 text-xs font-medium  ${status === 'Draft' ? styles.draftBadge : styles.liveBadge} ${
+        className || ''
+      }`}
+    >
+      {status}
+    </span>
+  );
+}

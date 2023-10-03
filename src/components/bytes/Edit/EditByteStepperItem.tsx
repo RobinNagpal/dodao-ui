@@ -319,7 +319,7 @@ export default function EditByteStepperItem({
 
   return (
     <StyledStepItemContainer className="w-full">
-      <div className={`border rounded rounded-md p-4 mb-4 ml-4 w-full ${byteErrors?.steps?.[step.uuid] ? 'error-event-border' : ''}`}>
+      <div className={`border rounded-md p-4 mb-4 ml-4 w-full ${byteErrors?.steps?.[step.uuid] ? 'error-event-border' : ''}`}>
         <h3 className="float-left">Step {stepIndex + 1}</h3>
         <div className="h-10" style={{ minHeight: '40px' }}>
           <IconButton
@@ -364,31 +364,19 @@ export default function EditByteStepperItem({
       {stepItemsForStepper.map((stepItem, index) => (
         <StepItemWrapper key={stepItem.uuid} className="ml-4 mt-2 w-full" hasError={!!stepErrors?.stepItems?.[stepItem.uuid]}>
           {stepItem.isQuestion ? (
-            <>
-              <CreateQuestion
-                addChoice={addChoice}
-                item={stepItem as ByteQuestion}
-                removeChoice={removeChoice}
-                removeQuestion={removeStepItem}
-                setAnswer={setAnswer}
-                updateChoiceContent={updateChoiceContent}
-                updateQuestionDescription={updateQuestionDescription}
-                updateAnswers={updateAnswers}
-                questionErrors={stepErrors?.stepItems?.[stepItem.uuid] as QuestionError}
-                updateQuestionType={updateQuestionType}
-              />
-              <MarkdownEditor
-                id={`${stepItem.uuid}_explanation`}
-                modelValue={stepItem.explanation || ''}
-                placeholder="Explanation (2-3 lines)"
-                editorStyles={{ height: '150px' }}
-                error={!!stepErrors?.stepItems?.[stepItem.uuid]}
-                onUpdate={(content) => updateExplanation(stepItem.uuid, content)}
-                spaceId={space.id}
-                objectId={`${byte.id}/${stepItem.uuid}`}
-                imageType="Byte"
-              />
-            </>
+            <CreateQuestion
+              addChoice={addChoice}
+              item={stepItem as ByteQuestion}
+              removeChoice={removeChoice}
+              removeQuestion={removeStepItem}
+              setAnswer={setAnswer}
+              updateChoiceContent={updateChoiceContent}
+              updateQuestionDescription={updateQuestionDescription}
+              updateAnswers={updateAnswers}
+              questionErrors={stepErrors?.stepItems?.[stepItem.uuid] as QuestionError}
+              updateQuestionType={updateQuestionType}
+              updateQuestionExplanation={updateExplanation}
+            />
           ) : stepItem.isDiscord ? (
             <CreateConnectDiscord item={stepItem} removeDiscord={removeStepItem} />
           ) : (

@@ -9,13 +9,6 @@ export const optimismFeatures: FeatureItem[] = [
     },
   },
   {
-    featureName: FeatureName.Bytes,
-    enabled: true,
-    details: {
-      priority: 80,
-    },
-  },
-  {
     featureName: FeatureName.ByteCollections,
     enabled: true,
     details: {
