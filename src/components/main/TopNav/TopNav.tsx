@@ -27,9 +27,9 @@ const StyledDiv = styled.div`
   color: var(--text-color);
 `;
 
-function DesktopNavLinks({ space, session }: { space: Space; session?: Session }) {
+function DesktopNavLinks({ space }: { space: Space }) {
   const sortedSpaceFeatures: FeatureItem[] = getSortedFeaturesArray(space.id);
-  const featureNames: FeatureName[] = sortedSpaceFeatures.map((feature) => feature.featureName);
+
   return (
     <div className="hidden md:ml-6 md:flex md:space-x-8">
       {sortedSpaceFeatures.map((feature) => {
@@ -40,8 +40,7 @@ function DesktopNavLinks({ space, session }: { space: Space; session?: Session }
           return <DesktopNavLink key="guides" href="/guides" label="Guides" />;
         }
 
-        const showTidbits = featureNames.includes(FeatureName.ByteCollections) ? isAdmin(session) : feature.featureName === FeatureName.Bytes;
-        if (showTidbits) {
+        if (feature.featureName === FeatureName.Bytes) {
           return <DesktopNavLink key="tidbits" href="/tidbits" label="Tidbits" />;
         }
 
@@ -59,9 +58,9 @@ function DesktopNavLinks({ space, session }: { space: Space; session?: Session }
   );
 }
 
-function MobileNavLinks({ space, session }: { space: Space; session: Session }) {
+function MobileNavLinks({ space }: { space: Space }) {
   const sortedSpaceFeatures: FeatureItem[] = getSortedFeaturesArray(space.id);
-  const featureNames: FeatureName[] = sortedSpaceFeatures.map((feature) => feature.featureName);
+
   return (
     <div className="space-y-1 pb-3 pt-2">
       {sortedSpaceFeatures.map((feature) => {
@@ -72,8 +71,7 @@ function MobileNavLinks({ space, session }: { space: Space; session: Session }) 
           return <MobileNavLink key="guides" href="/guides" label="Guides" />;
         }
 
-        const showTidbits = featureNames.includes(FeatureName.ByteCollections) ? isAdmin(session) : feature.featureName === FeatureName.Bytes;
-        if (showTidbits) {
+        if (feature.featureName === FeatureName.Bytes) {
           return <MobileNavLink key="tidbits" href="/tidbits" label="Tidbits" />;
         }
 
@@ -169,7 +167,7 @@ export default function TopNav(props: { space?: SpaceWithIntegrationsFragment | 
                       />
                     </Link>
                   </div>
-                  {space && <DesktopNavLinks space={space} session={session as Session} />}
+                  {space && <DesktopNavLinks space={space} />}
                 </div>
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
@@ -191,7 +189,7 @@ export default function TopNav(props: { space?: SpaceWithIntegrationsFragment | 
             </div>
 
             <Disclosure.Panel className="md:hidden">
-              {space && <MobileNavLinks space={space} session={session as Session} />}
+              {space && <MobileNavLinks space={space} />}
               {session && space && <MobileProfileMenu session={session as Session} space={space} />}
             </Disclosure.Panel>
           </>
