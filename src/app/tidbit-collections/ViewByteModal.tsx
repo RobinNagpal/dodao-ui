@@ -20,7 +20,11 @@ export default function ViewByteModal(props: ViewByteModalProps) {
   }, [props.byteId]);
 
   return (
-    <FullScreenModal open={props.showByteModal} onClose={props.onClose} title={viewByteHelper.byteRef?.name || 'Tidbit Details'}>
+    <FullScreenModal
+      open={props.showByteModal}
+      onClose={props.onClose}
+      title={<div className="mt-4 text-2xl"> {viewByteHelper.byteRef?.name || 'Tidbit Details'}</div>}
+    >
       <div className={`pt-4 flex flex-col justify-center items-center byte-container w-full ${styles.byteContainer}`}>
         <div className={`sm:border sm:border-gray-200 rounded-xl sm:shadow-md p-2 lg:p-8 ${styles.styledByteCard}`}>
           <div className="split-content integration-card-content">
