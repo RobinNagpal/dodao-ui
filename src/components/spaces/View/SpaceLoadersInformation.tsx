@@ -31,7 +31,7 @@ function getLoaderInfoFields(space: SpaceWithIntegrationsFragment, discordServer
 }
 
 export default function SpaceLoadersInformation(props: SpaceAuthDetailsProps) {
-  const websiteScrappingThreeDotItems = [{ label: 'Add', key: 'add' }];
+  const threeDotItems = [{ label: 'Edit', key: 'edit' }];
 
   const [showUpsertSpaceLoadersInfoModal, setShowUpsertSpaceLoadersInfoModal] = useState(false);
 
@@ -76,7 +76,7 @@ export default function SpaceLoadersInformation(props: SpaceAuthDetailsProps) {
       <DetailsSection className={props.className}>
         <div className="flex w-full">
           <DetailsHeader header={'Space Loaders Information'} className="grow-1 w-full" />
-          <PrivateEllipsisDropdown items={websiteScrappingThreeDotItems} onSelect={selectFromThreedotDropdown} className="ml-4 pt-4 grow-0 w-16" />
+          <PrivateEllipsisDropdown items={threeDotItems} onSelect={selectFromThreedotDropdown} className="ml-4 pt-4 grow-0 w-16" />
         </div>
         {getLoaderInfoFields(props.space, discordServerName).map((field) => (
           <DetailsField key={field.label} label={field.label} value={field.value} />
