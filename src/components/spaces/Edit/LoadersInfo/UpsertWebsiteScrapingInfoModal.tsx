@@ -13,7 +13,7 @@ export interface UpsertWebsiteScrapingInfoModalProps {
 }
 export default function UpsertWebsiteScrapingInfoModal({ open, spaceId, onClose, websiteScrapingInfo }: UpsertWebsiteScrapingInfoModalProps) {
   const [scrapingStartUrl, setScrapingStartUrl] = useState(websiteScrapingInfo?.scrapingStartUrl);
-  const [host, setHost] = useState(websiteScrapingInfo?.host);
+  const [baseUrl, setBaseUrl] = useState(websiteScrapingInfo?.baseUrl);
   const [ignoreHashInUrl, setIgnoreHashInUrl] = useState(!!websiteScrapingInfo?.ignoreHashInUrl);
   const [ignoreQueryParams, setIgnoreQueryParams] = useState(!!websiteScrapingInfo?.ignoreQueryParams);
 
@@ -24,20 +24,20 @@ export default function UpsertWebsiteScrapingInfoModal({ open, spaceId, onClose,
     <FullScreenModal open={open} onClose={onClose} title={'Space Loaders'}>
       <div className="text-left">
         <div className="m-4 space-y-2">
-          <Input label={'Host'} onUpdate={(repoUrl) => setHost(repoUrl?.toString())} modelValue={host} />
-          <Input label={'Scraping Start Url'} onUpdate={(repoUrl) => setScrapingStartUrl(repoUrl?.toString())} modelValue={scrapingStartUrl} />
+          <Input label={'Base Url'} onUpdate={(url) => setBaseUrl(url?.toString())} modelValue={baseUrl} />
+          <Input label={'Scraping Start Url'} onUpdate={(startUrl) => setScrapingStartUrl(startUrl?.toString())} modelValue={scrapingStartUrl} />
           <ToggleWithIcon label={'Ignore Hash In Url'} enabled={ignoreHashInUrl} setEnabled={(value) => setIgnoreHashInUrl(value)} />
           <ToggleWithIcon label={'Ignore Query params in Url'} enabled={ignoreQueryParams} setEnabled={(value) => setIgnoreQueryParams(value)} />
           <Button
             onClick={async () => {
-              if (!scrapingStartUrl || !host) return;
+              if (!scrapingStartUrl || !baseUrl) return;
 
               if (websiteScrapingInfo) {
                 await editWebsiteScrapingInfoMutation({
                   variables: {
                     websiteScrapingInfoId: websiteScrapingInfo.id,
                     spaceId,
-                    host: host?.trim(),
+                    baseUrl: baseUrl?.trim(),
                     scrapingStartUrl: scrapingStartUrl?.trim(),
                     ignoreHashInUrl,
                     ignoreQueryParams,
@@ -48,7 +48,7 @@ export default function UpsertWebsiteScrapingInfoModal({ open, spaceId, onClose,
                 await createWebsiteScrapingInfoMutation({
                   variables: {
                     spaceId,
-                    host: host?.trim(),
+                    baseUrl: baseUrl?.trim(),
                     scrapingStartUrl: scrapingStartUrl?.trim(),
                     ignoreHashInUrl,
                     ignoreQueryParams,

@@ -40,7 +40,7 @@ fragment DiscordMessageFragment on DiscordMessage {
 
 fragment WebsiteScrapingInfo on WebsiteScrapingInfo {
   id
-  host
+  baseUrl
   scrapingStartUrl
   ignoreHashInUrl
   ignoreQueryParams
@@ -201,10 +201,10 @@ mutation IndexDiscoursePost($spaceId: String!, $postId: String!) {
   indexDiscoursePost(spaceId: $spaceId, postId: $postId)
 }
 
-mutation CreateWebsiteScrapingInfo($spaceId: String!, $host: String!, $scrapingStartUrl: String!, $ignoreHashInUrl: Boolean!, $ignoreQueryParams: Boolean!) {
+mutation CreateWebsiteScrapingInfo($spaceId: String!, $baseUrl: String!, $scrapingStartUrl: String!, $ignoreHashInUrl: Boolean!, $ignoreQueryParams: Boolean!) {
   createWebsiteScrapingInfo(
     spaceId: $spaceId
-    host: $host
+    baseUrl: $baseUrl
     scrapingStartUrl: $scrapingStartUrl
     ignoreHashInUrl: $ignoreHashInUrl
     ignoreQueryParams: $ignoreQueryParams
@@ -216,7 +216,7 @@ mutation CreateWebsiteScrapingInfo($spaceId: String!, $host: String!, $scrapingS
 mutation EditWebsiteScrapingInfo(
   $spaceId: String!
   $websiteScrapingInfoId: String!
-  $host: String!
+  $baseUrl: String!
   $scrapingStartUrl: String!
   $ignoreHashInUrl: Boolean!
   $ignoreQueryParams: Boolean!
@@ -224,7 +224,7 @@ mutation EditWebsiteScrapingInfo(
   editWebsiteScrapingInfo(
     spaceId: $spaceId
     websiteScrapingInfoId: $websiteScrapingInfoId
-    host: $host
+    baseUrl: $baseUrl
     scrapingStartUrl: $scrapingStartUrl
     ignoreHashInUrl: $ignoreHashInUrl
     ignoreQueryParams: $ignoreQueryParams

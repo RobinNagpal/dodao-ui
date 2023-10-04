@@ -1168,7 +1168,7 @@ export interface MutationCreateSummaryOfContentArgs {
 
 
 export interface MutationCreateWebsiteScrapingInfoArgs {
-  host: Scalars['String'];
+  baseUrl: Scalars['String'];
   ignoreHashInUrl: Scalars['Boolean'];
   ignoreQueryParams: Scalars['Boolean'];
   scrapingStartUrl: Scalars['String'];
@@ -1242,7 +1242,7 @@ export interface MutationEditArticleIndexingInfoArgs {
 
 
 export interface MutationEditWebsiteScrapingInfoArgs {
-  host: Scalars['String'];
+  baseUrl: Scalars['String'];
   ignoreHashInUrl: Scalars['Boolean'];
   ignoreQueryParams: Scalars['Boolean'];
   scrapingStartUrl: Scalars['String'];
@@ -2377,8 +2377,8 @@ export interface VercelDomain {
 
 export interface WebsiteScrapingInfo {
   __typename?: 'WebsiteScrapingInfo';
+  baseUrl: Scalars['String'];
   createdAt: Scalars['DateTimeISO'];
-  host: Scalars['String'];
   id: Scalars['String'];
   ignoreHashInUrl: Scalars['Boolean'];
   ignoreQueryParams: Scalars['Boolean'];
@@ -3077,7 +3077,7 @@ export type DiscordChannelFragmentFragment = { __typename?: 'DiscordChannel', id
 
 export type DiscordMessageFragmentFragment = { __typename?: 'DiscordMessage', id: string, content: string, discordMessageId: string, createdAt: any, updatedAt: any, serverId: string, channelId: string, messageDate: any, authorUsername: string };
 
-export type WebsiteScrapingInfoFragment = { __typename?: 'WebsiteScrapingInfo', id: string, host: string, scrapingStartUrl: string, ignoreHashInUrl: boolean, ignoreQueryParams: boolean, createdAt: any, updatedAt: any };
+export type WebsiteScrapingInfoFragment = { __typename?: 'WebsiteScrapingInfo', id: string, baseUrl: string, scrapingStartUrl: string, ignoreHashInUrl: boolean, ignoreQueryParams: boolean, createdAt: any, updatedAt: any };
 
 export type ArticleIndexingInfoFragment = { __typename?: 'ArticleIndexingInfo', id: string, spaceId: string, articleUrl: string, createdAt: any, updatedAt: any, status: string, text?: string | null, textLength?: number | null };
 
@@ -3144,7 +3144,7 @@ export type WebsiteScrapingInfosQueryVariables = Exact<{
 }>;
 
 
-export type WebsiteScrapingInfosQuery = { __typename?: 'Query', websiteScrapingInfos: Array<{ __typename?: 'WebsiteScrapingInfo', id: string, host: string, scrapingStartUrl: string, ignoreHashInUrl: boolean, ignoreQueryParams: boolean, createdAt: any, updatedAt: any }> };
+export type WebsiteScrapingInfosQuery = { __typename?: 'Query', websiteScrapingInfos: Array<{ __typename?: 'WebsiteScrapingInfo', id: string, baseUrl: string, scrapingStartUrl: string, ignoreHashInUrl: boolean, ignoreQueryParams: boolean, createdAt: any, updatedAt: any }> };
 
 export type ArticleIndexingInfosQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -3216,26 +3216,26 @@ export type IndexDiscoursePostMutation = { __typename?: 'Mutation', indexDiscour
 
 export type CreateWebsiteScrapingInfoMutationVariables = Exact<{
   spaceId: Scalars['String'];
-  host: Scalars['String'];
+  baseUrl: Scalars['String'];
   scrapingStartUrl: Scalars['String'];
   ignoreHashInUrl: Scalars['Boolean'];
   ignoreQueryParams: Scalars['Boolean'];
 }>;
 
 
-export type CreateWebsiteScrapingInfoMutation = { __typename?: 'Mutation', createWebsiteScrapingInfo: { __typename?: 'WebsiteScrapingInfo', id: string, host: string, scrapingStartUrl: string, ignoreHashInUrl: boolean, ignoreQueryParams: boolean, createdAt: any, updatedAt: any } };
+export type CreateWebsiteScrapingInfoMutation = { __typename?: 'Mutation', createWebsiteScrapingInfo: { __typename?: 'WebsiteScrapingInfo', id: string, baseUrl: string, scrapingStartUrl: string, ignoreHashInUrl: boolean, ignoreQueryParams: boolean, createdAt: any, updatedAt: any } };
 
 export type EditWebsiteScrapingInfoMutationVariables = Exact<{
   spaceId: Scalars['String'];
   websiteScrapingInfoId: Scalars['String'];
-  host: Scalars['String'];
+  baseUrl: Scalars['String'];
   scrapingStartUrl: Scalars['String'];
   ignoreHashInUrl: Scalars['Boolean'];
   ignoreQueryParams: Scalars['Boolean'];
 }>;
 
 
-export type EditWebsiteScrapingInfoMutation = { __typename?: 'Mutation', editWebsiteScrapingInfo: { __typename?: 'WebsiteScrapingInfo', id: string, host: string, scrapingStartUrl: string, ignoreHashInUrl: boolean, ignoreQueryParams: boolean, createdAt: any, updatedAt: any } };
+export type EditWebsiteScrapingInfoMutation = { __typename?: 'Mutation', editWebsiteScrapingInfo: { __typename?: 'WebsiteScrapingInfo', id: string, baseUrl: string, scrapingStartUrl: string, ignoreHashInUrl: boolean, ignoreQueryParams: boolean, createdAt: any, updatedAt: any } };
 
 export type TriggerSiteScrapingRunMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -4091,7 +4091,7 @@ export const DiscordMessageFragmentFragmentDoc = gql`
 export const WebsiteScrapingInfoFragmentDoc = gql`
     fragment WebsiteScrapingInfo on WebsiteScrapingInfo {
   id
-  host
+  baseUrl
   scrapingStartUrl
   ignoreHashInUrl
   ignoreQueryParams
@@ -7835,10 +7835,10 @@ export type IndexDiscoursePostMutationHookResult = ReturnType<typeof useIndexDis
 export type IndexDiscoursePostMutationResult = Apollo.MutationResult<IndexDiscoursePostMutation>;
 export type IndexDiscoursePostMutationOptions = Apollo.BaseMutationOptions<IndexDiscoursePostMutation, IndexDiscoursePostMutationVariables>;
 export const CreateWebsiteScrapingInfoDocument = gql`
-    mutation CreateWebsiteScrapingInfo($spaceId: String!, $host: String!, $scrapingStartUrl: String!, $ignoreHashInUrl: Boolean!, $ignoreQueryParams: Boolean!) {
+    mutation CreateWebsiteScrapingInfo($spaceId: String!, $baseUrl: String!, $scrapingStartUrl: String!, $ignoreHashInUrl: Boolean!, $ignoreQueryParams: Boolean!) {
   createWebsiteScrapingInfo(
     spaceId: $spaceId
-    host: $host
+    baseUrl: $baseUrl
     scrapingStartUrl: $scrapingStartUrl
     ignoreHashInUrl: $ignoreHashInUrl
     ignoreQueryParams: $ignoreQueryParams
@@ -7863,7 +7863,7 @@ export type CreateWebsiteScrapingInfoMutationFn = Apollo.MutationFunction<Create
  * const [createWebsiteScrapingInfoMutation, { data, loading, error }] = useCreateWebsiteScrapingInfoMutation({
  *   variables: {
  *      spaceId: // value for 'spaceId'
- *      host: // value for 'host'
+ *      baseUrl: // value for 'baseUrl'
  *      scrapingStartUrl: // value for 'scrapingStartUrl'
  *      ignoreHashInUrl: // value for 'ignoreHashInUrl'
  *      ignoreQueryParams: // value for 'ignoreQueryParams'
@@ -7878,11 +7878,11 @@ export type CreateWebsiteScrapingInfoMutationHookResult = ReturnType<typeof useC
 export type CreateWebsiteScrapingInfoMutationResult = Apollo.MutationResult<CreateWebsiteScrapingInfoMutation>;
 export type CreateWebsiteScrapingInfoMutationOptions = Apollo.BaseMutationOptions<CreateWebsiteScrapingInfoMutation, CreateWebsiteScrapingInfoMutationVariables>;
 export const EditWebsiteScrapingInfoDocument = gql`
-    mutation EditWebsiteScrapingInfo($spaceId: String!, $websiteScrapingInfoId: String!, $host: String!, $scrapingStartUrl: String!, $ignoreHashInUrl: Boolean!, $ignoreQueryParams: Boolean!) {
+    mutation EditWebsiteScrapingInfo($spaceId: String!, $websiteScrapingInfoId: String!, $baseUrl: String!, $scrapingStartUrl: String!, $ignoreHashInUrl: Boolean!, $ignoreQueryParams: Boolean!) {
   editWebsiteScrapingInfo(
     spaceId: $spaceId
     websiteScrapingInfoId: $websiteScrapingInfoId
-    host: $host
+    baseUrl: $baseUrl
     scrapingStartUrl: $scrapingStartUrl
     ignoreHashInUrl: $ignoreHashInUrl
     ignoreQueryParams: $ignoreQueryParams
@@ -7908,7 +7908,7 @@ export type EditWebsiteScrapingInfoMutationFn = Apollo.MutationFunction<EditWebs
  *   variables: {
  *      spaceId: // value for 'spaceId'
  *      websiteScrapingInfoId: // value for 'websiteScrapingInfoId'
- *      host: // value for 'host'
+ *      baseUrl: // value for 'baseUrl'
  *      scrapingStartUrl: // value for 'scrapingStartUrl'
  *      ignoreHashInUrl: // value for 'ignoreHashInUrl'
  *      ignoreQueryParams: // value for 'ignoreQueryParams'
