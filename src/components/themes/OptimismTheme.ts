@@ -4,16 +4,13 @@ import { createGlobalStyle } from 'styled-components';
 const OptimismTheme = createGlobalStyle`
   :root {
     --primary-color: #ff0420;
-    --bg-color: white;
-    --text-color: #57606a;
-    --link-color: #111111;
-    --heading-color: #111111;
-    --border-color: #d0d7de;
-    --header-bg: rgb(245, 249, 255);
-    --block-bg: transparent;
-    --header-main-bg: rgba(255, 255, 255, 0.9);
-    --box-shadow: 0 4px 16px 0 rgba(26, 27, 30, 0.1);
-    --border-width: 0px;
+    --bg-color: #1E1313;
+    --text-color: #f1f1f3;
+    --link-color: #f1f1f3;
+    --heading-color: #f1f1f3;
+    --border-color: #d1d5da;
+    --header-bg: #1E1313;
+    --block-bg: #241313;
   }
 `;
 
