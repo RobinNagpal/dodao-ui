@@ -1,4 +1,4 @@
-fragment GuideSummary on Guide{
+fragment GuideSummary on Guide {
   id
   authors
   name
@@ -10,12 +10,10 @@ fragment GuideSummary on Guide{
   publishStatus
   thumbnail
   uuid
-
+  priority
 }
 
-query GuidesQuery(
-  $space: String!
-) {
+query GuidesQuery($space: String!) {
   guides(spaceId: $space) {
     ...GuideSummary
   }

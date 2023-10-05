@@ -12,6 +12,7 @@ import { GuideSummaryFragment, useGuidesQueryQuery } from '@/graphql/generated/g
 import { Session } from '@/types/auth/Session';
 import { PublishStatus } from '@/types/deprecated/models/enums';
 import { isAdmin } from '@/utils/auth/isAdmin';
+import sortBy from 'lodash/sortBy';
 import { useSession } from 'next-auth/react';
 import React, { useState } from 'react';
 
@@ -26,7 +27,7 @@ function Guide({ space }: SpaceProps) {
 
   const guides = data?.guides?.filter((guide) => guide.publishStatus !== PublishStatus.Draft || showDrafts) || [];
   const hasDraftGuides = !!data?.guides?.find((guide) => guide.publishStatus === PublishStatus.Draft);
-
+  const sortedGuides = sortBy(guides, (guide) => -(guide.priority || 50));
   return (
     <PageWrapper>
       {loading ? (
@@ -44,10 +45,10 @@ function Guide({ space }: SpaceProps) {
           )}
           <div>
             <div className="flex justify-center items-center px-5 sm:px-0">
-              {!guides.length && !loading && <NoGuide />}
-              {guides.length ? (
+              {!sortedGuides.length && !loading && <NoGuide />}
+              {sortedGuides.length ? (
                 <Grid4Cols>
-                  {guides.map((guide: GuideSummaryFragment, i) => (
+                  {sortedGuides.map((guide: GuideSummaryFragment, i) => (
                     <GuideSummaryCard key={i} guide={guide} />
                   ))}
                 </Grid4Cols>

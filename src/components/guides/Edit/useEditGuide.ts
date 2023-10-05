@@ -231,6 +231,7 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
       name: model.name,
       postSubmissionStepContent: model.postSubmissionStepContent,
       space: space.id,
+      priority: model.priority,
       steps: model.steps.map((step) => {
         return {
           id: step.id,

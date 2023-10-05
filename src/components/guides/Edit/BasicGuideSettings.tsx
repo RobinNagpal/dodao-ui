@@ -56,6 +56,18 @@ export default function BasicGuideSettings({ editGuideHelper, guide, guideErrors
             error={guideErrors['content']}
           />
 
+          <Input
+            modelValue={guide.priority}
+            onUpdate={(v) => {
+              const priorityString = v?.toString() || '50';
+              updateGuideField('priority', parseInt(priorityString));
+            }}
+            label={'Priority'}
+            number
+            required
+            error={guideErrors['priority']}
+          />
+
           <UploadInput
             error={guideErrors['thumbnail']}
             onUpdate={(v) => updateGuideField('thumbnail', v?.toString() || '')}

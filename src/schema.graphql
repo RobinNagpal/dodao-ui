@@ -669,6 +669,7 @@ type Guide {
   name: String!
   postSubmissionStepContent: String
   previousId: String
+  priority: Int
   publishStatus: String!
   steps: [GuideStep!]!
   thumbnail: String
@@ -698,6 +699,7 @@ input GuideInput {
   id: String!
   name: String!
   postSubmissionStepContent: String
+  priority: Int
   publishStatus: String!
   socialShareImage: String
   space: String!

@@ -98,7 +98,6 @@ fragment GuideIntegration on GuideIntegrations {
   projectGalaxyOatPassingCount
 }
 
-
 fragment Guide on Guide {
   authors
   categories
@@ -117,7 +116,7 @@ fragment Guide on Guide {
     ...GuideStep
   }
   publishStatus
-
+  priority
   thumbnail
   uuid
   version
