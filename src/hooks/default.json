@@ -123,6 +123,9 @@
     "arbitrum-university": {
       "topBanner": "Currently the bot is just trained on minimal information. We need support to train it on other information like docs, code, discord, etc. We can make this bot 100x more intelligent. Please support us. \uD83D\uDE4F \uD83D\uDE4F"
     },
+    "maker-university": {
+      "topBanner": "Currently the bot is just trained on minimal information. We need support to train it on other information like docs, code, discord, etc. We can make this bot 100x more intelligent. Please support us. \uD83D\uDE4F \uD83D\uDE4F"
+    },
     "optimism-university": {
       "topBanner": "Currently the bot is just trained on <a href=\"https://gov.optimism.io\" target=\"_blank\">\"https://gov.optimism.io\"</a>. We need support to train it on other information like docs, code, discord, etc. We can make this bot 100x more intelligent. Please support us. \uD83D\uDE4F \uD83D\uDE4F"
     },
@@ -264,12 +267,12 @@
       "academyHeading": "Learn more about Optimism?",
       "academyText": "We know crypto and optimism can be a confusing place and Optimism University has your back.",
       "projectName": "Optimism",
-      "bytesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/optimism/tidbits_icon.png",
-      "bytecollectionsThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/optimism/tidbits_icon.png",
-      "coursesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/optimism/courses_icon.png",
-      "guidesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/optimism/guides_icon.png",
+      "bytesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/optimism-university/HomeIcons/Tidbits.png",
+      "bytecollectionsThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/optimism-university/HomeIcons/Tidbits.png",
+      "coursesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/optimism-university/HomeIcons/Courses.png",
+      "guidesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/optimism-university/HomeIcons/Guides.png",
       "simulationsThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/dodao/dodao_demos.png",
-      "timelinesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/optimism/timeline_icon.png"
+      "timelinesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/optimism-university/HomeIcons/Timelines.png"
     },
     "serum-sol-mainnet": {
       "academyHeading": "Learn more about Project Serum?",
