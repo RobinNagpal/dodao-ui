@@ -5,6 +5,7 @@ export enum FeatureName {
   Bytes = 'Bytes',
   ByteCollections = 'ByteCollections',
   Guides = 'Guides',
+  Acquisitions = 'Acquisitions',
 }
 
 export interface FeatureItem {

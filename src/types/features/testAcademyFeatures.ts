@@ -36,4 +36,11 @@ export const testAcademyFeatures: FeatureItem[] = [
       priority: 50,
     },
   },
+  {
+    featureName: FeatureName.Acquisitions,
+    enabled: true,
+    details: {
+      priority: 40,
+    },
+  },
 ];

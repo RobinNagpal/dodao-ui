@@ -29,4 +29,11 @@ export const dodaoAcademyFeatures: FeatureItem[] = [
       priority: 60,
     },
   },
+  {
+    featureName: FeatureName.Acquisitions,
+    enabled: true,
+    details: {
+      priority: 60,
+    },
+  },
 ];

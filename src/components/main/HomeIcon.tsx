@@ -79,6 +79,9 @@ function HomeIcon({ space, feature }: HomeIconProps) {
       {feature.featureName === FeatureName.Timelines && (
         <Card space={space} heading={'Timelines'} details={'All the updates captured at one place'} featureName={feature.featureName} />
       )}
+      {feature.featureName === FeatureName.Acquisitions && (
+        <Card space={space} heading={'Acquisitions'} details={'Simple Customer Acquisition Tool'} featureName={feature.featureName} />
+      )}
     </Link>
   );
 }

@@ -25,5 +25,9 @@ export const getLinkToFeaturePage = (featureName: FeatureName): string => {
     return '/tidbit-collections';
   }
 
+  if (featureName === FeatureName.Acquisitions) {
+    return '/acquisitions';
+  }
+
   throw Error('Invalid feature name' + featureName);
 };

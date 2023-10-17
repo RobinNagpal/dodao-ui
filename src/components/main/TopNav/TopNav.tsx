@@ -53,6 +53,9 @@ function DesktopNavLinks({ space }: { space: Space }) {
         if (feature.featureName === FeatureName.Timelines) {
           return <DesktopNavLink key="timelines" href="/timelines" label="Timelines" />;
         }
+        if (feature.featureName === FeatureName.Acquisitions) {
+          return <DesktopNavLink key="acquisitions" href="/acquisitions" label="Acquisitions" />;
+        }
       })}
     </div>
   );
@@ -83,6 +86,9 @@ function MobileNavLinks({ space }: { space: Space }) {
         }
         if (feature.featureName === FeatureName.Timelines) {
           return <MobileNavLink key="timelines" href="/timelines" label="Timelines" />;
+        }
+        if (feature.featureName === FeatureName.Acquisitions) {
+          return <MobileNavLink key="acquisitions" href="/acquisitions" label="Acquisitions" />;
         }
       })}
     </div>
