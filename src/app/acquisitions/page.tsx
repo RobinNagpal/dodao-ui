@@ -1,77 +1,66 @@
-import { CheckIcon } from '@heroicons/react/20/solid';
+'use client';
 
-const steps = [
-  { name: 'Create account', description: 'Vitae sed mi luctus laoreet.', href: '#', status: 'complete' },
-  {
-    name: 'Profile information',
-    description: 'Cursus semper viverra facilisis et et some more.',
-    href: '#',
-    status: 'current',
-  },
-  { name: 'Business information', description: 'Penatibus eu quis ante.', href: '#', status: 'upcoming' },
-  { name: 'Theme', description: 'Faucibus nec enim leo et.', href: '#', status: 'upcoming' },
-  { name: 'Preview', description: 'Iusto et officia maiores porro ad non quas.', href: '#', status: 'upcoming' },
-];
+import ViewAcquisitionModal from '@/app/acquisitions/ViewAcquisitionModal';
+import withSpace, { SpaceProps } from '@/app/withSpace';
+import Block from '@/components/app/Block';
+import AcquisitionsCard from '@/components/acquisitions/view/AcquisitionsCard';
+import { Grid2Cols } from '@/components/core/grids/Grid2Cols';
+import RowLoading from '@/components/core/loaders/RowLoading';
+import PageWrapper from '@/components/core/page/PageWrapper';
+import React from 'react';
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
-}
+function Acquisitions({ space }: SpaceProps) {
+  const steps = [
+    { name: 'Education', description: 'Tidbit Collections', href: '/tidbits', status: 'complete', id: '1' },
+    {
+      name: 'Simulations',
+      description: 'Show them how',
+      href: '/simulations',
+      status: 'current',
+      id: '2',
+    },
+    { name: 'Wallet Connect', description: 'Authenticate them', href: '#', status: 'upcoming', id: '3' },
+    {
+      name: 'Onchain Analysis',
+      description: 'Know them if they are relevant',
+      href: '#',
+      status: 'upcoming',
+      id: '4',
+    },
+    { name: 'Do Action', description: 'Deposit Liquidity', href: '#', status: 'upcoming', id: '5' },
+    { name: 'Connect Social Media', description: 'Connect Twitter / Linkedin', href: '#', status: 'upcoming', id: '6' },
+    { name: 'Claim Rewards', description: '$50-$100', href: '#', status: 'upcoming', id: '7' },
+  ];
+  const data = [[steps], [steps], [steps]];
+  console.log('data: ', data);
+  const loadingData = false;
 
-export default function Example() {
+  const [acquisitionId, setAcquisitionId] = React.useState<string | null>(null);
+
+  const onSelectAcquisition = (acquisitionId: string) => {
+    setAcquisitionId(acquisitionId);
+  };
   return (
-    <nav aria-label="Progress">
-      <ol role="list" className="overflow-hidden">
-        {steps.map((step, stepIdx) => (
-          <li key={step.name} className={classNames(stepIdx !== steps.length - 1 ? 'pb-10' : '', 'relative')}>
-            {step.status === 'complete' ? (
-              <>
-                {stepIdx !== steps.length - 1 ? <div className="absolute left-4 top-4 -ml-px mt-0.5 h-full w-0.5 bg-indigo-600" aria-hidden="true" /> : null}
-                <a href={step.href} className="group relative flex items-start">
-                  <span className="flex h-9 items-center">
-                    <span className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 group-hover:bg-indigo-800">
-                      <CheckIcon className="h-5 w-5 text-white" aria-hidden="true" />
-                    </span>
-                  </span>
-                  <span className="ml-4 flex min-w-0 flex-col">
-                    <span className="text-sm font-medium">{step.name}</span>
-                    <span className="text-sm text-gray-500">{step.description}</span>
-                  </span>
-                </a>
-              </>
-            ) : step.status === 'current' ? (
-              <>
-                {stepIdx !== steps.length - 1 ? <div className="absolute left-4 top-4 -ml-px mt-0.5 h-full w-0.5 bg-gray-300" aria-hidden="true" /> : null}
-                <a href={step.href} className="group relative flex items-start" aria-current="step">
-                  <span className="flex h-9 items-center" aria-hidden="true">
-                    <span className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full border-2 border-indigo-600 bg-white">
-                      <span className="h-2.5 w-2.5 rounded-full bg-indigo-600" />
-                    </span>
-                  </span>
-                  <span className="ml-4 flex min-w-0 flex-col">
-                    <span className="text-sm font-medium text-indigo-600">{step.name}</span>
-                    <span className="text-sm text-gray-500">{step.description}</span>
-                  </span>
-                </a>
-              </>
-            ) : (
-              <>
-                {stepIdx !== steps.length - 1 ? <div className="absolute left-4 top-4 -ml-px mt-0.5 h-full w-0.5 bg-gray-300" aria-hidden="true" /> : null}
-                <a href={step.href} className="group relative flex items-start">
-                  <span className="flex h-9 items-center" aria-hidden="true">
-                    <span className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full border-2 border-gray-300 bg-white group-hover:border-gray-400">
-                      <span className="h-2.5 w-2.5 rounded-full bg-transparent group-hover:bg-gray-300" />
-                    </span>
-                  </span>
-                  <span className="ml-4 flex min-w-0 flex-col">
-                    <span className="text-sm font-medium text-gray-500">{step.name}</span>
-                    <span className="text-sm text-gray-500">{step.description}</span>
-                  </span>
-                </a>
-              </>
-            )}
-          </li>
-        ))}
-      </ol>
-    </nav>
+    <PageWrapper>
+      {!!data?.length && (
+        <Grid2Cols>
+          {data?.map((steps, i) => (
+            <AcquisitionsCard key={i} onSelectAcquisition={onSelectAcquisition} />
+          ))}
+        </Grid2Cols>
+      )}
+      <div style={{ height: '10px', width: '10px', position: 'absolute' }} />
+      {loadingData && (
+        <Block slim={true}>
+          <RowLoading className="my-2" />
+        </Block>
+      )}
+
+      {acquisitionId && (
+        <ViewAcquisitionModal showAcquisitionModal={!!acquisitionId} onClose={() => setAcquisitionId(null)} space={space} acquisitionId={acquisitionId} />
+      )}
+    </PageWrapper>
   );
 }
+
+export default withSpace(Acquisitions);
