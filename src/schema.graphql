@@ -1010,6 +1010,9 @@ type Mutation {
   upsertGnosisSafeWallets(spaceId: String!, wallets: [GnosisSafeWalletInput!]!): Space!
   upsertGuide(guideInput: GuideInput!, spaceId: String!): Guide!
   upsertGuideRating(spaceId: String!, upsertGuideRatingInput: UpsertGuideRatingInput!): GuideRating!
+  upsertProject(input: UpsertProjectInput!): Project!
+  upsertProjectByte(input: UpsertProjectByteInput!, projectId: String!): ProjectByte!
+  upsertProjectByteCollection(input: UpsertProjectByteCollectionInput!, projectId: String!): ProjectByteCollection!
   upsertProjectGalaxyAccessToken(accessToken: String!, spaceId: String!): Space!
   upsertSimulation(input: UpsertSimulationInput!, spaceId: String!): Simulation!
   upsertSpaceAcademyRepository(academyRepository: String!, spaceId: String!): Space!
@@ -1077,6 +1080,45 @@ enum OrderDirection {
   desc
 }
 
+type Project {
+  adminUsernames: [String!]!
+  admins: [String!]!
+  creator: String!
+  details: String!
+  discord: String
+  docs: String
+  github: String
+  id: String!
+  logo: String
+  name: String!
+  telegram: String
+  type: String!
+  website: String
+}
+
+type ProjectByte {
+  admins: [String!]!
+  content: String!
+  created: String!
+  id: String!
+  name: String!
+  postSubmissionStepContent: String
+  priority: Int!
+  publishStatus: String!
+  steps: [ByteStep!]!
+  tags: [String!]!
+}
+
+type ProjectByteCollection {
+  byteIds: [String!]!
+  bytes: [ByteCollectionByte!]!
+  description: String!
+  id: String!
+  name: String!
+  order: Int!
+  status: String!
+}
+
 type Query {
   _empty: String
   academyTask(uuid: String!): AcademyTask!
@@ -1105,6 +1147,12 @@ type Query {
   guideRatings(guideUuid: String!, spaceId: String!): [GuideRating!]!
   guideSubmissions(filters: GuideSubmissionFiltersInput!, guideUuid: String!, spaceId: String!): [GuideSubmission!]!
   guides(spaceId: String!): [Guide!]!
+  project(id: String!): Project!
+  projectByte(projectByteId: String!, projectId: String!): ProjectByte!
+  projectByteCollection(byteCollectionId: String!, projectId: String!): ProjectByteCollection!
+  projectByteCollections(projectId: String!): [ProjectByteCollection!]!
+  projectBytes(projectId: String!): [ProjectByte!]!
+  projects(type: String): [Project!]!
   rawGitCourse(key: String!, spaceId: String!): RawGitCourse!
   rawGitCourses(spaceId: String!): [RawGitCourse!]!
   route53Records: [Route53Record!]!
@@ -1494,6 +1542,44 @@ input UpsertGuideRatingInput {
   spaceId: String!
   startRating: Int
   userId: String
+}
+
+input UpsertProjectByteCollectionInput {
+  byteIds: [String!]!
+  description: String!
+  id: String!
+  name: String!
+  order: Int!
+  projectId: String!
+  status: String!
+}
+
+input UpsertProjectByteInput {
+  admins: [String!]!
+  content: String!
+  created: String!
+  id: String!
+  name: String!
+  priority: Int!
+  publishStatus: String!
+  steps: [ByteStepInput!]!
+  tags: [String!]!
+  thumbnail: String
+}
+
+input UpsertProjectInput {
+  adminUsernames: [String!]!
+  admins: [String!]!
+  details: String!
+  discord: String
+  docs: String
+  github: String
+  id: String!
+  logo: String
+  name: String!
+  telegram: String
+  type: String!
+  website: String
 }
 
 input UpsertSimulationInput {

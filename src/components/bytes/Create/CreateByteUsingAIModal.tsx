@@ -1,5 +1,5 @@
 import { GeneratedQuestionInterface } from '@/components/ai/questions/GenerateQuestionsUsingAI';
-import { EditByteStep, EditByteType } from '@/components/bytes/Edit/useEditByte';
+import { EditByteStep, EditByteType } from '@/components/bytes/Edit/editByteHelper';
 import Button from '@/components/core/buttons/Button';
 import ErrorWithAccentBorder from '@/components/core/errors/ErrorWithAccentBorder';
 import FullScreenModal from '@/components/core/modals/FullScreenModal';

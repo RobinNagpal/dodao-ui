@@ -1,0 +1,98 @@
+fragment Project on Project {
+  adminUsernames
+  admins
+  creator
+  details
+  discord
+  docs
+  github
+  id
+  logo
+  name
+  telegram
+  website
+  type
+}
+
+fragment ProjectByte on ProjectByte {
+  admins
+  content
+  created
+  id
+  name
+  postSubmissionStepContent
+  priority
+  publishStatus
+  steps {
+    ...ByteStep
+  }
+  tags
+}
+
+fragment ProjectByteCollection on ProjectByteCollection {
+  byteIds
+  bytes {
+    byteId
+    name
+    content
+  }
+  description
+  id
+  name
+  order
+  status
+}
+
+query Projects($type: String) {
+  projects(type: $type) {
+    ...Project
+  }
+}
+
+query Project($id: String!) {
+  project(id: $id) {
+    ...Project
+  }
+}
+
+query ProjectBytes($projectId: String!) {
+  projectBytes(projectId: $projectId) {
+    ...ProjectByte
+  }
+}
+
+query ProjectByte($projectId: String!, $id: String!) {
+  projectByte(projectId: $projectId, projectByteId: $id) {
+    ...ProjectByte
+  }
+}
+
+query ProjectByteCollections($projectId: String!) {
+  projectByteCollections(projectId: $projectId) {
+    ...ProjectByteCollection
+  }
+}
+
+query ProjectByteCollection($projectId: String!, $id: String!) {
+  projectByteCollection(projectId: $projectId, byteCollectionId: $id) {
+    ...ProjectByteCollection
+  }
+}
+
+mutation UpsertProject($input: UpsertProjectInput!) {
+  upsertProject(input: $input) {
+    ...Project
+  }
+}
+
+mutation UpsertProjectByte($projectId: String!, $input: UpsertProjectByteInput!) {
+  upsertProjectByte(projectId: $projectId, input: $input) {
+    ...ProjectByte
+  }
+}
+
+mutation UpsertProjectByteCollection($projectId: String!, $input: UpsertProjectByteCollectionInput!) {
+  upsertProjectByteCollection(projectId: $projectId, input: $input) {
+    ...ProjectByteCollection
+  }
+}

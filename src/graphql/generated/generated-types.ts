@@ -1074,6 +1074,9 @@ export interface Mutation {
   upsertGnosisSafeWallets: Space;
   upsertGuide: Guide;
   upsertGuideRating: GuideRating;
+  upsertProject: Project;
+  upsertProjectByte: ProjectByte;
+  upsertProjectByteCollection: ProjectByteCollection;
   upsertProjectGalaxyAccessToken: Space;
   upsertSimulation: Simulation;
   upsertSpaceAcademyRepository: Space;
@@ -1525,6 +1528,23 @@ export interface MutationUpsertGuideRatingArgs {
 }
 
 
+export interface MutationUpsertProjectArgs {
+  input: UpsertProjectInput;
+}
+
+
+export interface MutationUpsertProjectByteArgs {
+  input: UpsertProjectByteInput;
+  projectId: Scalars['String'];
+}
+
+
+export interface MutationUpsertProjectByteCollectionArgs {
+  input: UpsertProjectByteCollectionInput;
+  projectId: Scalars['String'];
+}
+
+
 export interface MutationUpsertProjectGalaxyAccessTokenArgs {
   accessToken: Scalars['String'];
   spaceId: Scalars['String'];
@@ -1631,6 +1651,48 @@ export enum OrderDirection {
   Desc = 'desc'
 }
 
+export interface Project {
+  __typename?: 'Project';
+  adminUsernames: Array<Scalars['String']>;
+  admins: Array<Scalars['String']>;
+  creator: Scalars['String'];
+  details: Scalars['String'];
+  discord?: Maybe<Scalars['String']>;
+  docs?: Maybe<Scalars['String']>;
+  github?: Maybe<Scalars['String']>;
+  id: Scalars['String'];
+  logo?: Maybe<Scalars['String']>;
+  name: Scalars['String'];
+  telegram?: Maybe<Scalars['String']>;
+  type: Scalars['String'];
+  website?: Maybe<Scalars['String']>;
+}
+
+export interface ProjectByte {
+  __typename?: 'ProjectByte';
+  admins: Array<Scalars['String']>;
+  content: Scalars['String'];
+  created: Scalars['String'];
+  id: Scalars['String'];
+  name: Scalars['String'];
+  postSubmissionStepContent?: Maybe<Scalars['String']>;
+  priority: Scalars['Int'];
+  publishStatus: Scalars['String'];
+  steps: Array<ByteStep>;
+  tags: Array<Scalars['String']>;
+}
+
+export interface ProjectByteCollection {
+  __typename?: 'ProjectByteCollection';
+  byteIds: Array<Scalars['String']>;
+  bytes: Array<ByteCollectionByte>;
+  description: Scalars['String'];
+  id: Scalars['String'];
+  name: Scalars['String'];
+  order: Scalars['Int'];
+  status: Scalars['String'];
+}
+
 export interface Query {
   __typename?: 'Query';
   _empty?: Maybe<Scalars['String']>;
@@ -1660,6 +1722,12 @@ export interface Query {
   guideRatings: Array<GuideRating>;
   guideSubmissions: Array<GuideSubmission>;
   guides: Array<Guide>;
+  project: Project;
+  projectByte: ProjectByte;
+  projectByteCollection: ProjectByteCollection;
+  projectByteCollections: Array<ProjectByteCollection>;
+  projectBytes: Array<ProjectByte>;
+  projects: Array<Project>;
   rawGitCourse: RawGitCourse;
   rawGitCourses: Array<RawGitCourse>;
   route53Records: Array<Route53Record>;
@@ -1823,6 +1891,38 @@ export interface QueryGuideSubmissionsArgs {
 
 export interface QueryGuidesArgs {
   spaceId: Scalars['String'];
+}
+
+
+export interface QueryProjectArgs {
+  id: Scalars['String'];
+}
+
+
+export interface QueryProjectByteArgs {
+  projectByteId: Scalars['String'];
+  projectId: Scalars['String'];
+}
+
+
+export interface QueryProjectByteCollectionArgs {
+  byteCollectionId: Scalars['String'];
+  projectId: Scalars['String'];
+}
+
+
+export interface QueryProjectByteCollectionsArgs {
+  projectId: Scalars['String'];
+}
+
+
+export interface QueryProjectBytesArgs {
+  projectId: Scalars['String'];
+}
+
+
+export interface QueryProjectsArgs {
+  type?: InputMaybe<Scalars['String']>;
 }
 
 
@@ -2279,6 +2379,44 @@ export interface UpsertGuideRatingInput {
   spaceId: Scalars['String'];
   startRating?: InputMaybe<Scalars['Int']>;
   userId?: InputMaybe<Scalars['String']>;
+}
+
+export interface UpsertProjectByteCollectionInput {
+  byteIds: Array<Scalars['String']>;
+  description: Scalars['String'];
+  id: Scalars['String'];
+  name: Scalars['String'];
+  order: Scalars['Int'];
+  projectId: Scalars['String'];
+  status: Scalars['String'];
+}
+
+export interface UpsertProjectByteInput {
+  admins: Array<Scalars['String']>;
+  content: Scalars['String'];
+  created: Scalars['String'];
+  id: Scalars['String'];
+  name: Scalars['String'];
+  priority: Scalars['Int'];
+  publishStatus: Scalars['String'];
+  steps: Array<ByteStepInput>;
+  tags: Array<Scalars['String']>;
+  thumbnail?: InputMaybe<Scalars['String']>;
+}
+
+export interface UpsertProjectInput {
+  adminUsernames: Array<Scalars['String']>;
+  admins: Array<Scalars['String']>;
+  details: Scalars['String'];
+  discord?: InputMaybe<Scalars['String']>;
+  docs?: InputMaybe<Scalars['String']>;
+  github?: InputMaybe<Scalars['String']>;
+  id: Scalars['String'];
+  logo?: InputMaybe<Scalars['String']>;
+  name: Scalars['String'];
+  telegram?: InputMaybe<Scalars['String']>;
+  type: Scalars['String'];
+  website?: InputMaybe<Scalars['String']>;
 }
 
 export interface UpsertSimulationInput {
@@ -3043,6 +3181,79 @@ export type GenerateImageMutationVariables = Exact<{
 
 
 export type GenerateImageMutation = { __typename?: 'Mutation', generateImage: { __typename?: 'ImagesResponse', created: number, data: Array<{ __typename?: 'ImagesResponseDataInner', url?: string | null }> } };
+
+export type ProjectFragment = { __typename?: 'Project', adminUsernames: Array<string>, admins: Array<string>, creator: string, details: string, discord?: string | null, docs?: string | null, github?: string | null, id: string, logo?: string | null, name: string, telegram?: string | null, website?: string | null, type: string };
+
+export type ProjectByteFragment = { __typename?: 'ProjectByte', admins: Array<string>, content: string, created: string, id: string, name: string, postSubmissionStepContent?: string | null, priority: number, publishStatus: string, tags: Array<string>, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> };
+
+export type ProjectByteCollectionFragment = { __typename?: 'ProjectByteCollection', byteIds: Array<string>, description: string, id: string, name: string, order: number, status: string, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string }> };
+
+export type ProjectsQueryVariables = Exact<{
+  type?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type ProjectsQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'Project', adminUsernames: Array<string>, admins: Array<string>, creator: string, details: string, discord?: string | null, docs?: string | null, github?: string | null, id: string, logo?: string | null, name: string, telegram?: string | null, website?: string | null, type: string }> };
+
+export type ProjectQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type ProjectQuery = { __typename?: 'Query', project: { __typename?: 'Project', adminUsernames: Array<string>, admins: Array<string>, creator: string, details: string, discord?: string | null, docs?: string | null, github?: string | null, id: string, logo?: string | null, name: string, telegram?: string | null, website?: string | null, type: string } };
+
+export type ProjectBytesQueryVariables = Exact<{
+  projectId: Scalars['String'];
+}>;
+
+
+export type ProjectBytesQuery = { __typename?: 'Query', projectBytes: Array<{ __typename?: 'ProjectByte', admins: Array<string>, content: string, created: string, id: string, name: string, postSubmissionStepContent?: string | null, priority: number, publishStatus: string, tags: Array<string>, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> }> };
+
+export type ProjectByteQueryVariables = Exact<{
+  projectId: Scalars['String'];
+  id: Scalars['String'];
+}>;
+
+
+export type ProjectByteQuery = { __typename?: 'Query', projectByte: { __typename?: 'ProjectByte', admins: Array<string>, content: string, created: string, id: string, name: string, postSubmissionStepContent?: string | null, priority: number, publishStatus: string, tags: Array<string>, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> } };
+
+export type ProjectByteCollectionsQueryVariables = Exact<{
+  projectId: Scalars['String'];
+}>;
+
+
+export type ProjectByteCollectionsQuery = { __typename?: 'Query', projectByteCollections: Array<{ __typename?: 'ProjectByteCollection', byteIds: Array<string>, description: string, id: string, name: string, order: number, status: string, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string }> }> };
+
+export type ProjectByteCollectionQueryVariables = Exact<{
+  projectId: Scalars['String'];
+  id: Scalars['String'];
+}>;
+
+
+export type ProjectByteCollectionQuery = { __typename?: 'Query', projectByteCollection: { __typename?: 'ProjectByteCollection', byteIds: Array<string>, description: string, id: string, name: string, order: number, status: string, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string }> } };
+
+export type UpsertProjectMutationVariables = Exact<{
+  input: UpsertProjectInput;
+}>;
+
+
+export type UpsertProjectMutation = { __typename?: 'Mutation', upsertProject: { __typename?: 'Project', adminUsernames: Array<string>, admins: Array<string>, creator: string, details: string, discord?: string | null, docs?: string | null, github?: string | null, id: string, logo?: string | null, name: string, telegram?: string | null, website?: string | null, type: string } };
+
+export type UpsertProjectByteMutationVariables = Exact<{
+  projectId: Scalars['String'];
+  input: UpsertProjectByteInput;
+}>;
+
+
+export type UpsertProjectByteMutation = { __typename?: 'Mutation', upsertProjectByte: { __typename?: 'ProjectByte', admins: Array<string>, content: string, created: string, id: string, name: string, postSubmissionStepContent?: string | null, priority: number, publishStatus: string, tags: Array<string>, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> } };
+
+export type UpsertProjectByteCollectionMutationVariables = Exact<{
+  projectId: Scalars['String'];
+  input: UpsertProjectByteCollectionInput;
+}>;
+
+
+export type UpsertProjectByteCollectionMutation = { __typename?: 'Mutation', upsertProjectByteCollection: { __typename?: 'ProjectByteCollection', byteIds: Array<string>, description: string, id: string, name: string, order: number, status: string, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string }> } };
 
 export type SimulationStepFragment = { __typename?: 'SimulationStep', content: string, iframeUrl?: string | null, name: string, uuid: string, order: number };
 
@@ -4021,6 +4232,54 @@ export const GuideSummaryFragmentDoc = gql`
   thumbnail
   uuid
   priority
+}
+    `;
+export const ProjectFragmentDoc = gql`
+    fragment Project on Project {
+  adminUsernames
+  admins
+  creator
+  details
+  discord
+  docs
+  github
+  id
+  logo
+  name
+  telegram
+  website
+  type
+}
+    `;
+export const ProjectByteFragmentDoc = gql`
+    fragment ProjectByte on ProjectByte {
+  admins
+  content
+  created
+  id
+  name
+  postSubmissionStepContent
+  priority
+  publishStatus
+  steps {
+    ...ByteStep
+  }
+  tags
+}
+    ${ByteStepFragmentDoc}`;
+export const ProjectByteCollectionFragmentDoc = gql`
+    fragment ProjectByteCollection on ProjectByteCollection {
+  byteIds
+  bytes {
+    byteId
+    name
+    content
+  }
+  description
+  id
+  name
+  order
+  status
 }
     `;
 export const SimulationStepFragmentDoc = gql`
@@ -7061,6 +7320,337 @@ export function useGenerateImageMutation(baseOptions?: Apollo.MutationHookOption
 export type GenerateImageMutationHookResult = ReturnType<typeof useGenerateImageMutation>;
 export type GenerateImageMutationResult = Apollo.MutationResult<GenerateImageMutation>;
 export type GenerateImageMutationOptions = Apollo.BaseMutationOptions<GenerateImageMutation, GenerateImageMutationVariables>;
+export const ProjectsDocument = gql`
+    query Projects($type: String) {
+  projects(type: $type) {
+    ...Project
+  }
+}
+    ${ProjectFragmentDoc}`;
+
+/**
+ * __useProjectsQuery__
+ *
+ * To run a query within a React component, call `useProjectsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProjectsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProjectsQuery({
+ *   variables: {
+ *      type: // value for 'type'
+ *   },
+ * });
+ */
+export function useProjectsQuery(baseOptions?: Apollo.QueryHookOptions<ProjectsQuery, ProjectsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ProjectsQuery, ProjectsQueryVariables>(ProjectsDocument, options);
+      }
+export function useProjectsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProjectsQuery, ProjectsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ProjectsQuery, ProjectsQueryVariables>(ProjectsDocument, options);
+        }
+export type ProjectsQueryHookResult = ReturnType<typeof useProjectsQuery>;
+export type ProjectsLazyQueryHookResult = ReturnType<typeof useProjectsLazyQuery>;
+export type ProjectsQueryResult = Apollo.QueryResult<ProjectsQuery, ProjectsQueryVariables>;
+export function refetchProjectsQuery(variables?: ProjectsQueryVariables) {
+      return { query: ProjectsDocument, variables: variables }
+    }
+export const ProjectDocument = gql`
+    query Project($id: String!) {
+  project(id: $id) {
+    ...Project
+  }
+}
+    ${ProjectFragmentDoc}`;
+
+/**
+ * __useProjectQuery__
+ *
+ * To run a query within a React component, call `useProjectQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProjectQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProjectQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useProjectQuery(baseOptions: Apollo.QueryHookOptions<ProjectQuery, ProjectQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ProjectQuery, ProjectQueryVariables>(ProjectDocument, options);
+      }
+export function useProjectLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProjectQuery, ProjectQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ProjectQuery, ProjectQueryVariables>(ProjectDocument, options);
+        }
+export type ProjectQueryHookResult = ReturnType<typeof useProjectQuery>;
+export type ProjectLazyQueryHookResult = ReturnType<typeof useProjectLazyQuery>;
+export type ProjectQueryResult = Apollo.QueryResult<ProjectQuery, ProjectQueryVariables>;
+export function refetchProjectQuery(variables: ProjectQueryVariables) {
+      return { query: ProjectDocument, variables: variables }
+    }
+export const ProjectBytesDocument = gql`
+    query ProjectBytes($projectId: String!) {
+  projectBytes(projectId: $projectId) {
+    ...ProjectByte
+  }
+}
+    ${ProjectByteFragmentDoc}`;
+
+/**
+ * __useProjectBytesQuery__
+ *
+ * To run a query within a React component, call `useProjectBytesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProjectBytesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProjectBytesQuery({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *   },
+ * });
+ */
+export function useProjectBytesQuery(baseOptions: Apollo.QueryHookOptions<ProjectBytesQuery, ProjectBytesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ProjectBytesQuery, ProjectBytesQueryVariables>(ProjectBytesDocument, options);
+      }
+export function useProjectBytesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProjectBytesQuery, ProjectBytesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ProjectBytesQuery, ProjectBytesQueryVariables>(ProjectBytesDocument, options);
+        }
+export type ProjectBytesQueryHookResult = ReturnType<typeof useProjectBytesQuery>;
+export type ProjectBytesLazyQueryHookResult = ReturnType<typeof useProjectBytesLazyQuery>;
+export type ProjectBytesQueryResult = Apollo.QueryResult<ProjectBytesQuery, ProjectBytesQueryVariables>;
+export function refetchProjectBytesQuery(variables: ProjectBytesQueryVariables) {
+      return { query: ProjectBytesDocument, variables: variables }
+    }
+export const ProjectByteDocument = gql`
+    query ProjectByte($projectId: String!, $id: String!) {
+  projectByte(projectId: $projectId, projectByteId: $id) {
+    ...ProjectByte
+  }
+}
+    ${ProjectByteFragmentDoc}`;
+
+/**
+ * __useProjectByteQuery__
+ *
+ * To run a query within a React component, call `useProjectByteQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProjectByteQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProjectByteQuery({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useProjectByteQuery(baseOptions: Apollo.QueryHookOptions<ProjectByteQuery, ProjectByteQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ProjectByteQuery, ProjectByteQueryVariables>(ProjectByteDocument, options);
+      }
+export function useProjectByteLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProjectByteQuery, ProjectByteQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ProjectByteQuery, ProjectByteQueryVariables>(ProjectByteDocument, options);
+        }
+export type ProjectByteQueryHookResult = ReturnType<typeof useProjectByteQuery>;
+export type ProjectByteLazyQueryHookResult = ReturnType<typeof useProjectByteLazyQuery>;
+export type ProjectByteQueryResult = Apollo.QueryResult<ProjectByteQuery, ProjectByteQueryVariables>;
+export function refetchProjectByteQuery(variables: ProjectByteQueryVariables) {
+      return { query: ProjectByteDocument, variables: variables }
+    }
+export const ProjectByteCollectionsDocument = gql`
+    query ProjectByteCollections($projectId: String!) {
+  projectByteCollections(projectId: $projectId) {
+    ...ProjectByteCollection
+  }
+}
+    ${ProjectByteCollectionFragmentDoc}`;
+
+/**
+ * __useProjectByteCollectionsQuery__
+ *
+ * To run a query within a React component, call `useProjectByteCollectionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProjectByteCollectionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProjectByteCollectionsQuery({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *   },
+ * });
+ */
+export function useProjectByteCollectionsQuery(baseOptions: Apollo.QueryHookOptions<ProjectByteCollectionsQuery, ProjectByteCollectionsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ProjectByteCollectionsQuery, ProjectByteCollectionsQueryVariables>(ProjectByteCollectionsDocument, options);
+      }
+export function useProjectByteCollectionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProjectByteCollectionsQuery, ProjectByteCollectionsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ProjectByteCollectionsQuery, ProjectByteCollectionsQueryVariables>(ProjectByteCollectionsDocument, options);
+        }
+export type ProjectByteCollectionsQueryHookResult = ReturnType<typeof useProjectByteCollectionsQuery>;
+export type ProjectByteCollectionsLazyQueryHookResult = ReturnType<typeof useProjectByteCollectionsLazyQuery>;
+export type ProjectByteCollectionsQueryResult = Apollo.QueryResult<ProjectByteCollectionsQuery, ProjectByteCollectionsQueryVariables>;
+export function refetchProjectByteCollectionsQuery(variables: ProjectByteCollectionsQueryVariables) {
+      return { query: ProjectByteCollectionsDocument, variables: variables }
+    }
+export const ProjectByteCollectionDocument = gql`
+    query ProjectByteCollection($projectId: String!, $id: String!) {
+  projectByteCollection(projectId: $projectId, byteCollectionId: $id) {
+    ...ProjectByteCollection
+  }
+}
+    ${ProjectByteCollectionFragmentDoc}`;
+
+/**
+ * __useProjectByteCollectionQuery__
+ *
+ * To run a query within a React component, call `useProjectByteCollectionQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProjectByteCollectionQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProjectByteCollectionQuery({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useProjectByteCollectionQuery(baseOptions: Apollo.QueryHookOptions<ProjectByteCollectionQuery, ProjectByteCollectionQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ProjectByteCollectionQuery, ProjectByteCollectionQueryVariables>(ProjectByteCollectionDocument, options);
+      }
+export function useProjectByteCollectionLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProjectByteCollectionQuery, ProjectByteCollectionQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ProjectByteCollectionQuery, ProjectByteCollectionQueryVariables>(ProjectByteCollectionDocument, options);
+        }
+export type ProjectByteCollectionQueryHookResult = ReturnType<typeof useProjectByteCollectionQuery>;
+export type ProjectByteCollectionLazyQueryHookResult = ReturnType<typeof useProjectByteCollectionLazyQuery>;
+export type ProjectByteCollectionQueryResult = Apollo.QueryResult<ProjectByteCollectionQuery, ProjectByteCollectionQueryVariables>;
+export function refetchProjectByteCollectionQuery(variables: ProjectByteCollectionQueryVariables) {
+      return { query: ProjectByteCollectionDocument, variables: variables }
+    }
+export const UpsertProjectDocument = gql`
+    mutation UpsertProject($input: UpsertProjectInput!) {
+  upsertProject(input: $input) {
+    ...Project
+  }
+}
+    ${ProjectFragmentDoc}`;
+export type UpsertProjectMutationFn = Apollo.MutationFunction<UpsertProjectMutation, UpsertProjectMutationVariables>;
+
+/**
+ * __useUpsertProjectMutation__
+ *
+ * To run a mutation, you first call `useUpsertProjectMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertProjectMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertProjectMutation, { data, loading, error }] = useUpsertProjectMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpsertProjectMutation(baseOptions?: Apollo.MutationHookOptions<UpsertProjectMutation, UpsertProjectMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpsertProjectMutation, UpsertProjectMutationVariables>(UpsertProjectDocument, options);
+      }
+export type UpsertProjectMutationHookResult = ReturnType<typeof useUpsertProjectMutation>;
+export type UpsertProjectMutationResult = Apollo.MutationResult<UpsertProjectMutation>;
+export type UpsertProjectMutationOptions = Apollo.BaseMutationOptions<UpsertProjectMutation, UpsertProjectMutationVariables>;
+export const UpsertProjectByteDocument = gql`
+    mutation UpsertProjectByte($projectId: String!, $input: UpsertProjectByteInput!) {
+  upsertProjectByte(projectId: $projectId, input: $input) {
+    ...ProjectByte
+  }
+}
+    ${ProjectByteFragmentDoc}`;
+export type UpsertProjectByteMutationFn = Apollo.MutationFunction<UpsertProjectByteMutation, UpsertProjectByteMutationVariables>;
+
+/**
+ * __useUpsertProjectByteMutation__
+ *
+ * To run a mutation, you first call `useUpsertProjectByteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertProjectByteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertProjectByteMutation, { data, loading, error }] = useUpsertProjectByteMutation({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpsertProjectByteMutation(baseOptions?: Apollo.MutationHookOptions<UpsertProjectByteMutation, UpsertProjectByteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpsertProjectByteMutation, UpsertProjectByteMutationVariables>(UpsertProjectByteDocument, options);
+      }
+export type UpsertProjectByteMutationHookResult = ReturnType<typeof useUpsertProjectByteMutation>;
+export type UpsertProjectByteMutationResult = Apollo.MutationResult<UpsertProjectByteMutation>;
+export type UpsertProjectByteMutationOptions = Apollo.BaseMutationOptions<UpsertProjectByteMutation, UpsertProjectByteMutationVariables>;
+export const UpsertProjectByteCollectionDocument = gql`
+    mutation UpsertProjectByteCollection($projectId: String!, $input: UpsertProjectByteCollectionInput!) {
+  upsertProjectByteCollection(projectId: $projectId, input: $input) {
+    ...ProjectByteCollection
+  }
+}
+    ${ProjectByteCollectionFragmentDoc}`;
+export type UpsertProjectByteCollectionMutationFn = Apollo.MutationFunction<UpsertProjectByteCollectionMutation, UpsertProjectByteCollectionMutationVariables>;
+
+/**
+ * __useUpsertProjectByteCollectionMutation__
+ *
+ * To run a mutation, you first call `useUpsertProjectByteCollectionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertProjectByteCollectionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertProjectByteCollectionMutation, { data, loading, error }] = useUpsertProjectByteCollectionMutation({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpsertProjectByteCollectionMutation(baseOptions?: Apollo.MutationHookOptions<UpsertProjectByteCollectionMutation, UpsertProjectByteCollectionMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpsertProjectByteCollectionMutation, UpsertProjectByteCollectionMutationVariables>(UpsertProjectByteCollectionDocument, options);
+      }
+export type UpsertProjectByteCollectionMutationHookResult = ReturnType<typeof useUpsertProjectByteCollectionMutation>;
+export type UpsertProjectByteCollectionMutationResult = Apollo.MutationResult<UpsertProjectByteCollectionMutation>;
+export type UpsertProjectByteCollectionMutationOptions = Apollo.BaseMutationOptions<UpsertProjectByteCollectionMutation, UpsertProjectByteCollectionMutationVariables>;
 export const SimulationsDocument = gql`
     query Simulations($spaceId: String!) {
   simulations(spaceId: $spaceId) {

@@ -1,3 +1,4 @@
+import { EditByteStep, EditByteType } from '@/components/bytes/Edit/editByteHelper';
 import IconButton from '@/components/core/buttons/IconButton';
 import CreateConnectDiscord from '@/components/app/Common/CreateDiscordConnect';
 import CreateQuestion from '@/components/app/Common/CreateQuestion';
@@ -5,7 +6,6 @@ import CreateUserInput from '@/components/app/Common/CreateUserInput';
 import { IconTypes } from '@/components/core/icons/IconTypes';
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
 import AddStepItemModal from '@/components/app/Modal/StepItem/AddStepItemModal';
-import { EditByteStep, EditByteType } from '@/components/bytes/Edit/useEditByte';
 import Input from '@/components/core/input/Input';
 import {
   ByteQuestion,

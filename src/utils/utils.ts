@@ -46,3 +46,7 @@ export function lsGet(key: string, fallback?: any) {
 export function lsRemove(key: string) {
   return localStorage.removeItem(`${pkg.name}.${key}`);
 }
+
+export function randomThreeDigitNumber() {
+  return Math.floor(Math.random() * (999 - 100 + 1) + 100);
+}

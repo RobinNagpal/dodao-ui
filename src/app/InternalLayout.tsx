@@ -1,4 +1,5 @@
 'use client';
+import { TOP_CRYPTO_PROJECTS_SPACE_ID } from '@/chatbot/utils/app/constants';
 import ErrorPage from '@/components/app/ErrorPage';
 import LoginModal from '@/components/auth/LoginModal';
 import FullPageLoader from '@/components/core/loaders/FullPageLoading';
@@ -106,7 +107,7 @@ function BasePage(props: { space?: SpaceWithIntegrationsFragment | null; childre
     return (
       <LoginModalProvider>
         <LoginModal />
-        {!isBotSite ? <TopNav space={props.space} /> : null}
+        {!(isBotSite || props.space.id === TOP_CRYPTO_PROJECTS_SPACE_ID) ? <TopNav space={props.space} /> : null}
         <StyledMain>{props.children}</StyledMain>
       </LoginModalProvider>
     );

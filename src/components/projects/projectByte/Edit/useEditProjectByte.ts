@@ -1,27 +1,26 @@
-import { editByteCommonFunctions, EditByteType, GeneratedByte, KeyOfByteInput, UpdateByteFunctions } from '@/components/bytes/Edit/editByteHelper';
-import { useNotificationContext } from '@/contexts/NotificationContext';
 import {
-  ByteDetailsFragment,
-  SpaceWithIntegrationsFragment,
-  usePublishByteMutation,
-  useQueryByteDetailsQuery,
-  useSaveByteMutation,
-  useUpsertByteMutation,
-} from '@/graphql/generated/generated-types';
+  editByteCommonFunctions,
+  EditByteType,
+  EditProjectByteType,
+  GeneratedByte,
+  KeyOfByteInput,
+  UpdateByteFunctions,
+} from '@/components/bytes/Edit/editByteHelper';
+import { emptyProjectByte } from '@/components/projects/projectByte/Edit/EmptyProjectByte';
+import { useNotificationContext } from '@/contexts/NotificationContext';
+import { ProjectByteFragment, SpaceWithIntegrationsFragment, useProjectByteQuery, useUpsertProjectByteMutation } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
 import { PublishStatus } from '@/types/deprecated/models/enums';
 import { ByteErrors } from '@/types/errors/byteErrors';
-import { emptyByte } from '@/utils/byte/EmptyByte';
 import { validateQuestion, validateUserInput } from '@/utils/stepItems/validateItems';
-import { FetchResult } from '@apollo/client';
 import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string | null) {
+export function useEditProjectByte(space: SpaceWithIntegrationsFragment, projectId: string, byteId: string | null) {
   const router = useRouter();
-  const emptyByteModel = emptyByte();
-  const [byte, setByte] = useState<EditByteType>({
+  const emptyByteModel = emptyProjectByte();
+  const [byte, setByte] = useState<EditProjectByteType>({
     ...emptyByteModel,
     byteExists: false,
   });
@@ -29,13 +28,9 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
   const [byteLoaded, setByteLoaded] = useState<boolean>(false);
 
   const [byteUpserting, setByteUpserting] = useState<boolean>(false);
-  const [byteSaving, setByteSaving] = useState<boolean>(false);
-  const [bytePublishing, setBytePublishing] = useState<boolean>(false);
 
-  const { refetch: queryByteDetails } = useQueryByteDetailsQuery({ skip: true });
-  const [upsertByteMutation] = useUpsertByteMutation();
-  const [saveByteMutation] = useSaveByteMutation();
-  const [publishByteMutation] = usePublishByteMutation();
+  const { refetch: queryProjectByte } = useProjectByteQuery({ skip: true });
+  const [upsertProjectByteMutation] = useUpsertProjectByteMutation();
   const { showNotification } = useNotificationContext();
   const { $t } = useI18();
 
@@ -57,8 +52,8 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
       setByte(byte);
       setByteLoaded(true);
     } else if (byteId) {
-      const result = await queryByteDetails({ byteId: byteId, spaceId: space.id, includeDraft: true });
-      const byte: ByteDetailsFragment = result.data.byte;
+      const result = await queryProjectByte({ projectId: projectId, id: byteId });
+      const byte: ProjectByteFragment = result.data.projectByte;
       setByte({
         ...byte,
         byteExists: true,
@@ -92,9 +87,10 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
   }, []);
 
   const validateByte = useCallback(
-    (byte: EditByteType) => {
+    (byte: EditProjectByteType) => {
       const updatedByteErrors = validateByteFn(byte, byteErrors);
       setByteErrors(updatedByteErrors);
+      console.log('updatedByteErrors', updatedByteErrors);
       return Object.values(updatedByteErrors).filter((v) => !!v).length === 0;
     },
     [validateQuestion, validateUserInput, byteErrors]
@@ -125,7 +121,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
     setByte,
   };
 
-  const saveViaMutation = async (mutationFn: () => Promise<FetchResult<{ payload: ByteDetailsFragment | undefined }>>) => {
+  const handleSubmit = async () => {
     setByteUpserting(true);
     try {
       const valid = validateByte(byte);
@@ -141,9 +137,14 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
         setByteUpserting(false);
         return;
       }
-      const response = await mutationFn();
+      const response = await upsertProjectByteMutation({
+        variables: {
+          input: getByteInputFn(byte),
+          projectId: projectId,
+        },
+      });
 
-      const payload = response?.data?.payload;
+      const payload = response?.data?.upsertProjectByte;
       if (payload) {
         showNotification({ type: 'success', message: 'Byte Saved', heading: 'Success 🎉' });
 
@@ -159,59 +160,13 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
     setByteUpserting(false);
   };
 
-  const handleSubmit = async () => {
-    await saveViaMutation(
-      async () =>
-        await upsertByteMutation({
-          variables: {
-            spaceId: space.id,
-            input: getByteInputFn(byte),
-          },
-          errorPolicy: 'all',
-        })
-    );
-  };
-
-  const handleSave = async () => {
-    setByteSaving(true);
-    await saveViaMutation(
-      async () =>
-        await saveByteMutation({
-          variables: {
-            spaceId: space.id,
-            input: { ...getByteInputFn(byte), publishStatus: PublishStatus.Draft },
-          },
-          errorPolicy: 'all',
-        })
-    );
-    setBytePublishing(false);
-  };
-  const handlePublish = async () => {
-    setBytePublishing(true);
-    await saveViaMutation(
-      async () =>
-        await publishByteMutation({
-          variables: {
-            spaceId: space.id,
-            input: { ...getByteInputFn(byte), publishStatus: PublishStatus.Live },
-          },
-          errorPolicy: 'all',
-        })
-    );
-    setBytePublishing(false);
-  };
-
   return {
     byteUpserting,
-    byteSaving,
-    bytePublishing,
     byteLoaded,
     byteRef: byte,
     byteErrors,
     updateByteFunctions,
     handleSubmit,
-    handleSave,
-    handlePublish,
     initialize,
   };
 }

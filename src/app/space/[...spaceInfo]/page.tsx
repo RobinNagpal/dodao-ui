@@ -3,6 +3,7 @@
 import SidebarLayout from '@/app/SidebarLayout';
 import WithSpace from '@/app/withSpace';
 import PageWrapper from '@/components/core/page/PageWrapper';
+import ListProjects from '@/components/projects/ListProjects';
 import GenerateImage from '@/components/spaces/Image/GenerateImage';
 import ListSpaces from '@/components/spaces/ListSpaces';
 import AllLoaders from '@/components/spaces/Loaders/AllLoaders';
@@ -12,6 +13,7 @@ import GenerateStoryBoard from '@/components/spaces/StoryBoard/GenerateStoryBoar
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import classNames from '@/utils/classNames';
 import BuildingOffice2Icon from '@heroicons/react/24/outline/BuildingOffice2Icon';
+import GlobeAltIcon from '@heroicons/react/24/outline/GlobeAltIcon';
 import CircleStackIcon from '@heroicons/react/24/outline/CircleStackIcon';
 import HomeIcon from '@heroicons/react/24/outline/HomeIcon';
 import PhotoIcon from '@heroicons/react/24/solid/PhotoIcon';
@@ -24,6 +26,7 @@ const getNavigation = (space: SpaceWithIntegrationsFragment) => {
     { name: 'Story Board', href: `/space/manage/${ManageSpaceSubviews.GenerateStoryBoard}/${space.id}`, icon: PhotoIcon, current: false },
     { name: 'Loaders', href: '/space/manage/' + ManageSpaceSubviews.Loaders, icon: CircleStackIcon, current: false },
     { name: 'Spaces', href: '/space/manage/' + ManageSpaceSubviews.SpacesList, icon: BuildingOffice2Icon, current: false },
+    { name: 'Projects', href: '/space/manage/' + ManageSpaceSubviews.ProjectList, icon: GlobeAltIcon, current: false },
   ];
 
   return navigation;
@@ -44,6 +47,10 @@ function GetSubview(props: { spaceInfo: string[]; space: SpaceWithIntegrationsFr
 
   if (subView === ManageSpaceSubviews.SpacesList) {
     return <ListSpaces />;
+  }
+
+  if (subView === ManageSpaceSubviews.ProjectList) {
+    return <ListProjects spaceId={props.space.id} />;
   }
   if (subView === ManageSpaceSubviews.ViewSpace) {
     return <SpaceDetails spaceId={entityId} />;

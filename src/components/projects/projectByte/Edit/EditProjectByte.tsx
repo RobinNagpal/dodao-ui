@@ -1,45 +1,38 @@
 'use client';
 
-import withSpace from '@/app/withSpace';
 import Block from '@/components/app/Block';
 import { CreateByteUsingAIModal } from '@/components/bytes/Create/CreateByteUsingAIModal';
 import { EditByteType } from '@/components/bytes/Edit/editByteHelper';
 import EditByteStepper from '@/components/bytes/Edit/EditByteStepper';
-import { useEditByte } from '@/components/bytes/Edit/useEditByte';
 import Button from '@/components/core/buttons/Button';
-import EllipsisDropdown from '@/components/core/dropdowns/EllipsisDropdown';
 import Input from '@/components/core/input/Input';
 import PageLoading from '@/components/core/loaders/PageLoading';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import TextareaArray from '@/components/core/textarea/TextareaArray';
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { useEditProjectByte } from '@/components/projects/projectByte/Edit/useEditProjectByte';
+import { ProjectFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
-import { VisibilityEnum } from '@/types/deprecated/models/enums';
 import { ByteErrors } from '@/types/errors/byteErrors';
 import StatusBadge from '@/utils/byte/StatusBadge';
-import { visibilityOptions } from '@/utils/ui/statuses';
-import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
-function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteId?: string[] } }) {
-  const { space, params } = props;
+export default function EditProjectByte(props: { space: SpaceWithIntegrationsFragment; project: ProjectFragment; params: { byteId?: string[] } }) {
+  const { space, project, params } = props;
   const byteId = params.byteId ? params.byteId[0] : null;
 
   const {
     byteUpserting,
-    byteSaving,
-    bytePublishing,
+
     byteLoaded,
     byteRef: byte,
     byteErrors,
     handleSubmit,
-    handleSave,
-    handlePublish,
+
     initialize,
     updateByteFunctions,
-  } = useEditByte(space, byteId || null);
-  const { data: session } = useSession();
+  } = useEditProjectByte(space, project.id, byteId || null);
+
   const inputError = (field: keyof ByteErrors): string => {
     const error = byteErrors?.[field];
     return error ? error.toString() : '';
@@ -50,10 +43,6 @@ function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteI
   }, [byteId]);
 
   const [showAIGenerateModel, setShowAIGenerateModel] = useState(false);
-
-  const selectVisibilityValue = (status: VisibilityEnum) => {
-    updateByteFunctions.updateByteField('visibility', status);
-  };
 
   return (
     <PageWrapper>
@@ -85,17 +74,6 @@ function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteI
                 >
                   Excerpt *
                 </Input>
-
-                <div className="mt-4">
-                  <div>Visibility * </div>
-                  <div className="text-xs">This decides if a byte should be displayed on tidbits page or not</div>
-                  <div className="flex justify-start ">
-                    <div className="pr-1 select-none">{byte.visibility === VisibilityEnum.Hidden ? 'Hidden' : 'Public'}</div>
-                    <div className="ml-2">
-                      <EllipsisDropdown items={visibilityOptions} onSelect={(value) => selectVisibilityValue(value as VisibilityEnum)} />
-                    </div>
-                  </div>
-                </div>
 
                 <TextareaArray
                   label="Admins"
@@ -135,18 +113,8 @@ function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteI
             </Block>
 
             <div className="flex">
-              <Button onClick={handleSave} loading={byteSaving} disabled={!byteLoaded || bytePublishing || byteSaving} className="block w-full mr-2" primary>
-                Save Draft
-              </Button>
-              <Button
-                onClick={handlePublish}
-                loading={bytePublishing}
-                disabled={!byteLoaded || bytePublishing || byteSaving}
-                className="ml-2 block w-full"
-                variant="contained"
-                primary
-              >
-                Publish
+              <Button onClick={handleSubmit} loading={byteUpserting} disabled={!byteLoaded || byteUpserting} className="block w-full mr-2" primary>
+                Upsert
               </Button>
             </div>
           </div>
@@ -164,5 +132,3 @@ function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteI
     </PageWrapper>
   );
 }
-
-export default withSpace(EditByte);

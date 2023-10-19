@@ -32,6 +32,14 @@ export enum Themes {
   Optimism = 'Optimism',
 }
 
+export enum ProjectTypes {
+  DeFi = 'DeFi',
+  Chains = 'Chains',
+  NFT = 'NFT',
+  Gaming = 'Gaming',
+  Other = 'Other',
+}
+
 export const UserDiscordConnectType = 'UserDiscordConnect';
 
 export const DODAO_ACCESS_TOKEN_KEY = 'DODAO_ACCESS_TOKEN_V1';
