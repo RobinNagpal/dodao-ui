@@ -1,5 +1,3 @@
-'use client';
-
 import WithSpace from '@/app/withSpace';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import ProjectTopNav from '@/components/projects/Nav/ProjectTopNav';
@@ -7,13 +5,13 @@ import { SpaceWithIntegrationsFragment, useProjectQuery } from '@/graphql/genera
 
 function ProjectViewHome(props: {
   params: {
-    projectIdAndTab: string[];
+    projectId: string;
   };
   space: SpaceWithIntegrationsFragment;
 }) {
-  console.log('ProjectViewHome props', props.params.projectIdAndTab);
-  const projectId = props.params.projectIdAndTab[0];
+  const projectId = props.params.projectId;
 
+  console.log('ProjectViewHome props', props.params);
   const {
     data: projectResponse,
     refetch,
