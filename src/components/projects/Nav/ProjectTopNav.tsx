@@ -29,7 +29,7 @@ function DesktopNavLinks({ features }: { features: FeatureItem[] }) {
         }
 
         if (feature.featureName === FeatureName.ByteCollections) {
-          return <DesktopNavLink key="tidbits" href="/tidbit-collections" label="Tidbit Collections" />;
+          return <DesktopNavLink key="tidbit-collections" href="/tidbit-collections" label="Tidbit Collections" />;
         }
       })}
     </div>
@@ -45,7 +45,7 @@ function MobileNavLinks({ features }: { features: FeatureItem[] }) {
         }
 
         if (feature.featureName === FeatureName.ByteCollections) {
-          return <MobileNavLink key="tidbits" href="/tidbit-collections" label="Tidbit Collections" />;
+          return <MobileNavLink key="tidbit-collections" href="/tidbit-collections" label="Tidbit Collections" />;
         }
       })}
     </div>

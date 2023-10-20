@@ -1,34 +1,23 @@
-import WithSpace from '@/app/withSpace';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import ProjectTopNav from '@/components/projects/Nav/ProjectTopNav';
-import { SpaceWithIntegrationsFragment, useProjectQuery } from '@/graphql/generated/generated-types';
+import { getProjectUsingAPI } from '@/utils/api/getProjectUsingAPI';
+import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
 
-function ProjectViewHome(props: {
+async function ProjectViewHome(props: {
   params: {
     projectId: string;
   };
-  space: SpaceWithIntegrationsFragment;
 }) {
+  const space = await getSpaceServerSide();
   const projectId = props.params.projectId;
-
-  console.log('ProjectViewHome props', props.params);
-  const {
-    data: projectResponse,
-    refetch,
-    error,
-    loading,
-  } = useProjectQuery({
-    variables: {
-      id: projectId,
-    },
-  });
+  const project = await getProjectUsingAPI(projectId);
 
   return (
     <div>
-      {projectResponse?.project && <ProjectTopNav space={props.space} project={projectResponse?.project} />}
+      {project && space && <ProjectTopNav space={space} project={project} />}
       <PageWrapper>Project Details</PageWrapper>
     </div>
   );
 }
 
-export default WithSpace(ProjectViewHome);
+export default ProjectViewHome;

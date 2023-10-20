@@ -3,7 +3,7 @@ import { TOP_CRYPTO_PROJECTS_SPACE_ID } from '@/chatbot/utils/app/constants';
 import DefaultHome from '@/components/home/DefaultHome';
 import DoDAOHome from '@/components/home/DoDAOHome';
 import ProjectsHome from '@/components/projects/ProjectsHome';
-import { getSpaceServerSide } from '@/utils/getSpaceServerSide';
+import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
 import { headers } from 'next/headers';
 
 import React from 'react';
