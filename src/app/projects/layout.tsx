@@ -1,8 +1,6 @@
-import PageWrapper from '@/components/core/page/PageWrapper';
-import ProjectTopNav from '@/components/projects/Nav/ProjectTopNav';
 import TopCryptoTopNav from '@/components/projects/Nav/TopCryptoTopNav';
-import { getProjectUsingAPI } from '@/utils/api/getProjectUsingAPI';
 import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
+import React from 'react';
 
 async function ProjectViewHome(props: { children: React.ReactNode }) {
   const space = await getSpaceServerSide();

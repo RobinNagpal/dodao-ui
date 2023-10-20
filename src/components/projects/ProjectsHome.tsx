@@ -51,7 +51,6 @@ export default function ProjectsHome({ space }: { space: SpaceWithIntegrationsFr
 
   return (
     <div>
-      <TopCryptoTopNav space={space} />
       <PageWrapper>
         <div className="flex justify-between">
           <h1 className="text-3xl"> Projects List</h1>
