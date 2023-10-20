@@ -1,8 +1,9 @@
+'use client';
+
 import Button from '@/components/core/buttons/Button';
 import { Table, TableActions, TableRow } from '@/components/core/table/Table';
 import UpsertProjectModal from '@/components/projects/Edit/UpsertProjectModal';
-import { ManageSpaceSubviews } from '@/components/spaces/manageSpaceSubviews';
-import { ProjectFragment, useProjectsQuery } from '@/graphql/generated/generated-types';
+import { ProjectFragment, SpaceWithIntegrationsFragment, useProjectsQuery } from '@/graphql/generated/generated-types';
 import { useRouter } from 'next/navigation';
 import React, { useMemo, useState } from 'react';
 import styled from 'styled-components';
@@ -22,8 +23,12 @@ function getProjectTableRows(projectList?: ProjectFragment[]): TableRow[] {
   );
 }
 
-export default function ListProjects(props: { spaceId: string }) {
-  const { data } = useProjectsQuery();
+export default function ListProjects(props: { space: SpaceWithIntegrationsFragment; type: string }) {
+  const { data } = useProjectsQuery({
+    variables: {
+      type: props.type,
+    },
+  });
   const [showProjectAddModal, setShowProjectAddModal] = useState(false);
   const router = useRouter();
   const tableActions: TableActions = useMemo(() => {
@@ -61,7 +66,7 @@ export default function ListProjects(props: { spaceId: string }) {
         columnsWidthPercents={[20, 20, 20, 20]}
         actions={tableActions}
       />
-      {showProjectAddModal && <UpsertProjectModal spaceId={props.spaceId} open={showProjectAddModal} onClose={() => setShowProjectAddModal(false)} />}
+      {showProjectAddModal && <UpsertProjectModal spaceId={props.space.id} open={showProjectAddModal} onClose={() => setShowProjectAddModal(false)} />}
     </MainDiv>
   );
 }

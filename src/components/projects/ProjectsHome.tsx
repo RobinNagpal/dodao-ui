@@ -5,18 +5,14 @@ import PageWrapper from '@/components/core/page/PageWrapper';
 import { Table, TableActions, TableRow } from '@/components/core/table/Table';
 import TabsWithUnderline, { TabItem } from '@/components/core/tabs/TabsWithUnderline';
 import UpsertProjectModal from '@/components/projects/Edit/UpsertProjectModal';
+import TopCryptoTopNav from '@/components/projects/Nav/TopCryptoTopNav';
 import { ManageSpaceSubviews } from '@/components/spaces/manageSpaceSubviews';
-import { ProjectFragment, useProjectsQuery } from '@/graphql/generated/generated-types';
+import { ProjectFragment, SpaceWithIntegrationsFragment, useProjectsQuery } from '@/graphql/generated/generated-types';
 import { ProjectTypes } from '@/types/deprecated/models/enums';
 import { useRouter } from 'next/navigation';
 import React, { useMemo, useState } from 'react';
 
-export default function ProjectsHome() {
-  const tabs: TabItem[] = Object.keys(ProjectTypes).map((p) => ({
-    id: p,
-    label: p,
-  }));
-
+export default function ProjectsHome({ space }: { space: SpaceWithIntegrationsFragment }) {
   const [selectedTabId, setSelectedTabId] = useState(ProjectTypes.DeFi);
 
   const { data } = useProjectsQuery({
@@ -54,20 +50,22 @@ export default function ProjectsHome() {
   }, []);
 
   return (
-    <PageWrapper>
-      <div className="flex justify-between">
-        <h1 className="text-3xl"> Projects List</h1>
-        <TabsWithUnderline selectedTabId={selectedTabId} setSelectedTabId={(id) => setSelectedTabId(id as ProjectTypes)} tabs={tabs} className="w-96" />
-      </div>
-      <Table
-        data={getProjectTableRows(data?.projects || [])}
-        columnsHeadings={['Name', 'Id', 'Admins']}
-        columnsWidthPercents={[30, 30, 30]}
-        actions={tableActions}
-      />
-      {showProjectAddModal && (
-        <UpsertProjectModal spaceId={TOP_CRYPTO_PROJECTS_SPACE_ID} open={showProjectAddModal} onClose={() => setShowProjectAddModal(false)} />
-      )}
-    </PageWrapper>
+    <div>
+      <TopCryptoTopNav space={space} />
+      <PageWrapper>
+        <div className="flex justify-between">
+          <h1 className="text-3xl"> Projects List</h1>
+        </div>
+        <Table
+          data={getProjectTableRows(data?.projects || [])}
+          columnsHeadings={['Name', 'Id', 'Admins']}
+          columnsWidthPercents={[30, 30, 30]}
+          actions={tableActions}
+        />
+        {showProjectAddModal && (
+          <UpsertProjectModal spaceId={TOP_CRYPTO_PROJECTS_SPACE_ID} open={showProjectAddModal} onClose={() => setShowProjectAddModal(false)} />
+        )}
+      </PageWrapper>
+    </div>
   );
 }
