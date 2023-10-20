@@ -11,6 +11,7 @@ import { ManageSpaceSubviews } from '@/components/spaces/manageSpaceSubviews';
 import SpaceDetails from '@/components/spaces/SpaceDetails';
 import GenerateStoryBoard from '@/components/spaces/StoryBoard/GenerateStoryBoard';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { ProjectTypes } from '@/types/deprecated/models/enums';
 import classNames from '@/utils/classNames';
 import BuildingOffice2Icon from '@heroicons/react/24/outline/BuildingOffice2Icon';
 import GlobeAltIcon from '@heroicons/react/24/outline/GlobeAltIcon';
@@ -50,7 +51,7 @@ function GetSubview(props: { spaceInfo: string[]; space: SpaceWithIntegrationsFr
   }
 
   if (subView === ManageSpaceSubviews.ProjectList) {
-    return <ListProjects spaceId={props.space.id} />;
+    return <ListProjects space={props.space} />;
   }
   if (subView === ManageSpaceSubviews.ViewSpace) {
     return <SpaceDetails spaceId={entityId} />;

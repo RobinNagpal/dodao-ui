@@ -23,11 +23,13 @@ function getProjectTableRows(projectList?: ProjectFragment[]): TableRow[] {
   );
 }
 
-export default function ListProjects(props: { space: SpaceWithIntegrationsFragment; type: string }) {
+export default function ListProjects(props: { space: SpaceWithIntegrationsFragment; type?: string }) {
+  const variables: any = {};
+  if (props.type) {
+    variables['type'] = props.type;
+  }
   const { data } = useProjectsQuery({
-    variables: {
-      type: props.type,
-    },
+    variables: variables,
   });
   const [showProjectAddModal, setShowProjectAddModal] = useState(false);
   const router = useRouter();
