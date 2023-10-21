@@ -1,5 +1,5 @@
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
-import { ByteCollectionFragment } from '@/graphql/generated/generated-types';
+import { ByteCollectionFragment, ProjectByteCollectionFragment } from '@/graphql/generated/generated-types';
 import { LocalStorageKeys } from '@/types/deprecated/models/enums';
 import ArrowTopRightOnSquareIcon from '@heroicons/react/24/outline/ArrowTopRightOnSquareIcon';
 import Bars3BottomLeftIcon from '@heroicons/react/24/solid/Bars3BottomLeftIcon';
@@ -9,7 +9,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 interface ByteCollectionCardProps {
-  byteCollection: ByteCollectionFragment;
+  byteCollection: ByteCollectionFragment | ProjectByteCollectionFragment;
   onSelectByte: (byteId: string) => void;
 }
 

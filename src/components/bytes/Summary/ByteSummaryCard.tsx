@@ -1,13 +1,15 @@
 import Card from '@/components/core/card/Card';
-import { QueryBytesQuery } from '@/graphql/generated/generated-types';
+import { ProjectByteFragment, QueryBytesQuery } from '@/graphql/generated/generated-types';
 import { VisibilityEnum } from '@/types/deprecated/models/enums';
 import { publishStatusesEllipsisDropdown } from '@/utils/ui/statuses';
 import { shorten } from '@/utils/utils';
 import Link from 'next/link';
 import React from 'react';
 
+export type ByteSummaryType = QueryBytesQuery['bytes'][0];
+
 interface ByteSummaryCardProps {
-  byte: QueryBytesQuery['bytes'][0];
+  byte: ByteSummaryType | ProjectByteFragment;
 }
 
 export default function ByteSummaryCard({ byte }: ByteSummaryCardProps) {
@@ -20,7 +22,7 @@ export default function ByteSummaryCard({ byte }: ByteSummaryCardProps) {
             <p className="break-words mb-2 text-sm h-65px text-ellipsis overflow-hidden">{shorten(byte.content, 300)}</p>
           </div>
 
-          {byte.visibility === VisibilityEnum.Hidden && (
+          {(byte as ByteSummaryType).visibility === VisibilityEnum.Hidden && (
             <div className="flex flex-wrap justify-end absolute top-2 left-2">
               <div className="badge post-category mb-1">{VisibilityEnum.Hidden}</div>
             </div>

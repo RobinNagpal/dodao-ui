@@ -4,7 +4,7 @@ import PageLoading from '@/components/core/loaders/PageLoading';
 import FullScreenModal from '@/components/core/modals/FullScreenModal';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { useEffect } from 'react';
-import styles from './ViewByteModal.module.scss';
+import styles from 'src/components/byteCollection/View/ViewByteModal.module.scss';
 
 export interface ViewByteModalProps {
   showByteModal: boolean;
