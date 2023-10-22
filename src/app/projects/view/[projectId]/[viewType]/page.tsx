@@ -25,7 +25,7 @@ function CollectionsPage(props: { params: { projectId: string; viewType: string 
     },
   });
   if (props.params.viewType === 'tidbits') {
-    return <BytesGrid loading={loadingByte} bytes={bytesData?.projectBytes} />;
+    return <BytesGrid loading={loadingByte} bytes={bytesData?.projectBytes} hrefFn={(byte) => `/projects/view/${project?.project.id}/tidbits/${byte.id}/0`} />;
   }
   return (
     <ByteCollectionsGrid

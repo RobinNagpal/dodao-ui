@@ -3,7 +3,7 @@ import UserInput from '@/components/app/Form/UserInput';
 import CircleProgress from '@/components/app/Progress/CircleProgress';
 import ByteStepperItemWarnings from '@/components/bytes/View/ByteStepperItemWarnings';
 import { QuestionSection } from '@/components/bytes/View/QuestionSection';
-import { UseViewByteHelper } from '@/components/bytes/View/useViewByte';
+import { LAST_STEP_UUID, UseGenericViewByteHelper } from '@/components/bytes/View/useGenericViewByte';
 import Button from '@/components/core/buttons/Button';
 import { useLoginModalContext } from '@/contexts/LoginModalContext';
 import { useNotificationContext } from '@/contexts/NotificationContext';
@@ -14,6 +14,7 @@ import {
   ByteStepItemFragment,
   ByteUserDiscordConnectFragmentFragment,
   ByteUserInputFragmentFragment,
+  ProjectByteFragment,
   SpaceWithIntegrationsFragment,
   UserDiscordInfoInput,
 } from '@/graphql/generated/generated-types';
@@ -34,14 +35,13 @@ import 'prismjs/components/prism-solidity';
 import 'prismjs/components/prism-toml';
 import 'prismjs/components/prism-yaml';
 import { useCallback, useMemo, useState } from 'react';
-import { LAST_STEP_UUID } from './useViewByte';
 import styles from './ByteStepperItem.module.scss';
 
 interface ByteStepperItemProps {
-  byte: ByteDetailsFragment;
+  byte: ByteDetailsFragment | ProjectByteFragment;
   step: ByteStepFragment;
   space: SpaceWithIntegrationsFragment;
-  viewByteHelper: UseViewByteHelper;
+  viewByteHelper: UseGenericViewByteHelper;
 }
 
 function ByteStepperItem({ viewByteHelper, step, byte, space }: ByteStepperItemProps) {

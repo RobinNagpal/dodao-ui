@@ -7,33 +7,44 @@ import { EllipsisDropdownItem } from '@/components/core/dropdowns/EllipsisDropdo
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import PageLoading from '@/components/core/loaders/PageLoading';
 import PageWrapper from '@/components/core/page/PageWrapper';
-import { SpaceWithIntegrationsFragment, useQueryByteDetailsQuery } from '@/graphql/generated/generated-types';
-import { TidbitShareSteps } from '@/types/deprecated/models/enums';
+import { ProjectFragment, SpaceWithIntegrationsFragment, useProjectByteQuery } from '@/graphql/generated/generated-types';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import styles from './ByteView.module.scss';
+import styles from './ViewProjectByte.module.scss';
 
-const ByteView = ({ params, space }: { params: { byteIdAndStep: string[] }; space: SpaceWithIntegrationsFragment }) => {
-  const { byteIdAndStep } = params;
+const ViewProjectByte = ({
+  params,
+  space,
+  project,
+}: {
+  params: { entityIdAndStep: string[] };
+  space: SpaceWithIntegrationsFragment;
+  project: ProjectFragment;
+}) => {
+  const { data, refetch, loading } = useProjectByteQuery({
+    variables: {
+      id: params.entityIdAndStep[0],
+      projectId: project.id,
+    },
+    skip: true,
+  });
+  const { entityIdAndStep } = params;
 
-  const byteId = Array.isArray(byteIdAndStep) ? byteIdAndStep[0] : (byteIdAndStep as string);
+  const byteId = Array.isArray(entityIdAndStep) ? entityIdAndStep[0] : (entityIdAndStep as string);
 
   let stepOrder = 0;
-  if (Array.isArray(byteIdAndStep)) {
-    stepOrder = parseInt(byteIdAndStep[1]);
+  if (Array.isArray(entityIdAndStep)) {
+    stepOrder = parseInt(entityIdAndStep[1]);
   }
-
-  const { refetch: fetchByteDetails } = useQueryByteDetailsQuery({ skip: true });
 
   const viewByteHelper = useGenericViewByte({
     space,
     fetchByte: async () => {
-      const result = await fetchByteDetails({ spaceId: space.id, byteId: byteId });
-
-      return result.data.byte;
+      const result = await refetch();
+      return result.data.projectByte;
     },
-    byteDetailsUrl: `/tidbits/view`,
+    byteDetailsUrl: `/projects/view/${project.id}/tidbits`,
     byteId,
     stepOrder,
   });
@@ -57,7 +68,7 @@ const ByteView = ({ params, space }: { params: { byteIdAndStep: string[] }; spac
           <div className="split-content integration-card-content">
             {byte && (
               <div className="px-4 md:px-0 mb-3 flex justify-between">
-                <Link href="/tidbits" className="text-color">
+                <Link href={`/projects/view/${project.id}/tidbits`} className="text-color">
                   <span className="mr-1 font-bold">&#8592;</span>
                   All Tidbits
                 </Link>
@@ -66,9 +77,7 @@ const ByteView = ({ params, space }: { params: { byteIdAndStep: string[] }; spac
                     items={threeDotItems}
                     onSelect={(key) => {
                       if (key === 'edit') {
-                        router.push(`/tidbits/edit/${byteId}`);
-                      } else if (key === 'generate-pdf') {
-                        router.push(`/tidbits/share/${byteId}/${TidbitShareSteps.SelectSocial}`);
+                        router.push(`/projects/edit/${project.id}/tidbits/${byteId}`);
                       }
                     }}
                   />
@@ -92,4 +101,4 @@ const ByteView = ({ params, space }: { params: { byteIdAndStep: string[] }; spac
   );
 };
 
-export default withSpace(ByteView);
+export default withSpace(ViewProjectByte);
