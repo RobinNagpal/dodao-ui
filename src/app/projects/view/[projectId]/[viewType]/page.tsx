@@ -3,7 +3,13 @@
 import WithSpace from '@/app/withSpace';
 import ByteCollectionsGrid from '@/components/byteCollection/View/ByteCollectionsGrid';
 import BytesGrid from '@/components/bytes/List/BytesGrid';
-import { SpaceWithIntegrationsFragment, useProjectByteCollectionsQuery, useProjectBytesQuery, useProjectQuery } from '@/graphql/generated/generated-types';
+import {
+  SpaceWithIntegrationsFragment,
+  useProjectByteCollectionsQuery,
+  useProjectByteQuery,
+  useProjectBytesQuery,
+  useProjectQuery,
+} from '@/graphql/generated/generated-types';
 import React from 'react';
 
 function CollectionsPage(props: { params: { projectId: string; viewType: string }; space: SpaceWithIntegrationsFragment }) {
@@ -24,9 +30,15 @@ function CollectionsPage(props: { params: { projectId: string; viewType: string 
       projectId: props.params.projectId,
     },
   });
+
+  const { refetch } = useProjectByteQuery({
+    skip: true,
+  });
+
   if (props.params.viewType === 'tidbits') {
     return <BytesGrid loading={loadingByte} bytes={bytesData?.projectBytes} baseByteViewUrl={`/projects/view/${project?.project.id}/tidbits`} />;
   }
+
   return (
     <ByteCollectionsGrid
       loadingData={loadingByteCollections}
@@ -34,6 +46,10 @@ function CollectionsPage(props: { params: { projectId: string; viewType: string 
       project={project?.project}
       byteCollections={byteCollectionsData?.projectByteCollections}
       baseByteCollectionsEditUrl={`/projects/edit/${project?.project.id}/tidbit-collections`}
+      fetchByteFn={async (byteId: string) => {
+        const response = await refetch({ projectId: props.params.projectId, id: byteId });
+        return response.data.projectByte;
+      }}
     />
   );
 }

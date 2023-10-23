@@ -48,7 +48,7 @@ export default function EditProjectByte(props: { space: SpaceWithIntegrationsFra
     <PageWrapper>
       <SingleCardLayout>
         <div className="px-4 mb-4 md:px-0 overflow-hidden flex justify-between">
-          <Link href={byteId ? `/tidbits/view/${byteId}/0` : `/tidbits`} className="text-color">
+          <Link href={byteId ? `/projects/view/${project.id}/tidbits/${byteId}/0` : `/projects/view/${project.id}/tidbits`} className="text-color">
             <span className="mr-1 font-bold">&#8592;</span>
             {byteId ? byte.name : 'Back to Bytes'}
           </Link>

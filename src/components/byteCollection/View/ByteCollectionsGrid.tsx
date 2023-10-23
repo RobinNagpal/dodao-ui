@@ -4,7 +4,14 @@ import NoByteCollections from '@/components/byteCollection/ByteCollections/NoByt
 import ViewByteModal from '@/components/byteCollection/View/ViewByteModal';
 import { Grid2Cols } from '@/components/core/grids/Grid2Cols';
 import RowLoading from '@/components/core/loaders/RowLoading';
-import { ByteCollectionFragment, ProjectByteCollectionFragment, ProjectFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import {
+  ByteCollectionFragment,
+  ByteDetailsFragment,
+  ProjectByteCollectionFragment,
+  ProjectByteFragment,
+  ProjectFragment,
+  SpaceWithIntegrationsFragment,
+} from '@/graphql/generated/generated-types';
 import React from 'react';
 
 export default function ByteCollectionsGrid({
@@ -13,12 +20,14 @@ export default function ByteCollectionsGrid({
   space,
   project,
   baseByteCollectionsEditUrl,
+  fetchByteFn,
 }: {
   loadingData: boolean;
   byteCollections?: ByteCollectionFragment[] | ProjectByteCollectionFragment[];
   space: SpaceWithIntegrationsFragment;
   project?: ProjectFragment;
   baseByteCollectionsEditUrl: string;
+  fetchByteFn: (byteId: string) => Promise<ByteDetailsFragment | ProjectByteFragment>;
 }) {
   const [selectedByteId, setSelectedByteId] = React.useState<string | null>(null);
 
@@ -43,7 +52,15 @@ export default function ByteCollectionsGrid({
         </Block>
       )}
 
-      {selectedByteId && <ViewByteModal showByteModal={!!selectedByteId} onClose={() => setSelectedByteId(null)} space={space} byteId={selectedByteId} />}
+      {selectedByteId && (
+        <ViewByteModal
+          showByteModal={!!selectedByteId}
+          onClose={() => setSelectedByteId(null)}
+          space={space}
+          byteId={selectedByteId}
+          fetchByteFn={fetchByteFn}
+        />
+      )}
     </>
   );
 }
