@@ -11,7 +11,6 @@ function EditTidbitPage(props: {
   };
   space: SpaceWithIntegrationsFragment;
 }) {
-  console.log('ProjectViewHome props', props.params);
   const projectId = props.params.projectId;
 
   const {

@@ -11,6 +11,7 @@ import styled from 'styled-components';
 interface ByteCollectionCardProps {
   byteCollection: ByteCollectionFragment | ProjectByteCollectionFragment;
   onSelectByte: (byteId: string) => void;
+  baseByteCollectionsEditUrl: string;
 }
 
 const TidBitIconSpan = styled.span`
@@ -21,7 +22,7 @@ const OpenInPopupIcon = styled(ArrowTopRightOnSquareIcon)`
   color: var(--primary-color);
 `;
 
-export default function ByteCollectionsCard({ byteCollection, onSelectByte }: ByteCollectionCardProps) {
+export default function ByteCollectionsCard({ byteCollection, baseByteCollectionsEditUrl, onSelectByte }: ByteCollectionCardProps) {
   const router = useRouter();
 
   return (
@@ -36,7 +37,7 @@ export default function ByteCollectionsCard({ byteCollection, onSelectByte }: By
           ]}
           onSelect={async (key) => {
             if (key === 'edit') {
-              router.push(`/tidbit-collections/edit/${byteCollection.id}`);
+              router.push(`${baseByteCollectionsEditUrl}/${byteCollection.id}`);
             }
           }}
         />

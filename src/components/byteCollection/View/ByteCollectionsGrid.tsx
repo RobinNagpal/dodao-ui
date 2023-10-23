@@ -12,11 +12,13 @@ export default function ByteCollectionsGrid({
   loadingData,
   space,
   project,
+  baseByteCollectionsEditUrl,
 }: {
   loadingData: boolean;
   byteCollections?: ByteCollectionFragment[] | ProjectByteCollectionFragment[];
   space: SpaceWithIntegrationsFragment;
   project?: ProjectFragment;
+  baseByteCollectionsEditUrl: string;
 }) {
   const [selectedByteId, setSelectedByteId] = React.useState<string | null>(null);
 
@@ -30,7 +32,7 @@ export default function ByteCollectionsGrid({
       {!!byteCollections?.length && (
         <Grid2Cols>
           {byteCollections?.map((byteCollection, i) => (
-            <ByteCollectionsCard key={i} byteCollection={byteCollection} onSelectByte={onSelectByte} />
+            <ByteCollectionsCard key={i} byteCollection={byteCollection} onSelectByte={onSelectByte} baseByteCollectionsEditUrl={baseByteCollectionsEditUrl} />
           ))}
         </Grid2Cols>
       )}

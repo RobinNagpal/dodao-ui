@@ -13,7 +13,12 @@ function ByteCollections({ space }: SpaceProps) {
 
   return (
     <PageWrapper>
-      <ByteCollectionsGrid byteCollections={data?.byteCollections} loadingData={loadingData} space={space} />
+      <ByteCollectionsGrid
+        byteCollections={data?.byteCollections}
+        loadingData={loadingData}
+        space={space}
+        baseByteCollectionsEditUrl={'/tidbit-collections/edit'}
+      />
     </PageWrapper>
   );
 }

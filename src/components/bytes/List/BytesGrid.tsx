@@ -9,11 +9,11 @@ import React from 'react';
 export default function BytesGrid({
   loading,
   bytes,
-  hrefFn,
+  baseByteViewUrl,
 }: {
   loading: boolean;
   bytes?: ByteSummaryFragment[] | ProjectByteFragment[];
-  hrefFn?: (byte: ByteSummaryType | ProjectByteFragment) => string;
+  baseByteViewUrl: string;
 }) {
   return (
     <>
@@ -27,7 +27,7 @@ export default function BytesGrid({
           {!!bytes?.length && (
             <Grid4Cols>
               {bytes?.map((byte, i) => (
-                <ByteSummaryCard key={i} byte={byte} hrefFn={hrefFn} />
+                <ByteSummaryCard key={i} byte={byte} baseByteViewUrl={baseByteViewUrl} />
               ))}
             </Grid4Cols>
           )}

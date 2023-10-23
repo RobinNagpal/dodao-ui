@@ -2,7 +2,7 @@ import Button from '@/components/core/buttons/Button';
 import Card from '@/components/core/card/Card';
 import { Grid4Cols } from '@/components/core/grids/Grid4Colst';
 import FullScreenModal from '@/components/core/modals/FullScreenModal';
-import { ByteCollectionFragment, ByteSummaryFragment } from '@/graphql/generated/generated-types';
+import { ByteCollectionFragment, ByteSummaryFragment, ProjectByteFragment } from '@/graphql/generated/generated-types';
 import { shorten } from '@/utils/utils';
 import CheckCircleIcon from '@heroicons/react/20/solid/CheckCircleIcon';
 import React from 'react';
@@ -12,7 +12,7 @@ interface SelectBytesModalProps {
   byteCollection?: ByteCollectionFragment;
   showSelectBytesModal: boolean;
   onClose: () => void;
-  byteSummaries: ByteSummaryFragment[];
+  byteSummaries: (ByteSummaryFragment | ProjectByteFragment)[];
   addBytes: (byteIds: string[]) => void;
 }
 

@@ -10,7 +10,7 @@ function Byte({ space }: SpaceProps) {
   const { data, error, loading, refetch: fetchBytes } = useQueryBytesQuery({ variables: { spaceId: space.id } });
   return (
     <PageWrapper>
-      <BytesGrid loading={loading} bytes={data?.bytes} />
+      <BytesGrid loading={loading} bytes={data?.bytes} baseByteViewUrl={`/tidbits/view`} />
     </PageWrapper>
   );
 }
