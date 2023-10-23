@@ -148,7 +148,7 @@ export function useEditProjectByte(space: SpaceWithIntegrationsFragment, project
       if (payload) {
         showNotification({ type: 'success', message: 'Byte Saved', heading: 'Success 🎉' });
 
-        router.push(`/tidbits/view/${payload.id}/0`);
+        router.push(`/projects/view/${projectId}/tidbits/${payload.id}/0`);
       } else {
         showNotification({ type: 'error', message: $t('notify.somethingWentWrong') });
         console.error(response.errors);

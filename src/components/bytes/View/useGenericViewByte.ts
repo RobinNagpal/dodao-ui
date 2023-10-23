@@ -6,7 +6,6 @@ import {
   ByteSubmissionInput,
   ProjectByteFragment,
   SpaceWithIntegrationsFragment,
-  useQueryByteDetailsQuery,
   useSubmitByteMutation,
 } from '@/graphql/generated/generated-types';
 import { LocalStorageKeys } from '@/types/deprecated/models/enums';

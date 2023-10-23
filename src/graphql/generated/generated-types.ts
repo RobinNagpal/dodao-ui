@@ -4262,11 +4262,37 @@ export const ProjectByteFragmentDoc = gql`
   priority
   publishStatus
   steps {
-    ...ByteStep
+    content
+    stepItems {
+      __typename
+      ... on ByteQuestion {
+        answerKeys
+        choices {
+          content
+          key
+        }
+        content
+        type
+        uuid
+        explanation
+      }
+      ... on ByteUserInput {
+        label
+        required
+        type
+        uuid
+      }
+      ... on UserDiscordConnect {
+        type
+        uuid
+      }
+    }
+    name
+    uuid
   }
   tags
 }
-    ${ByteStepFragmentDoc}`;
+    `;
 export const ProjectByteCollectionFragmentDoc = gql`
     fragment ProjectByteCollection on ProjectByteCollection {
   byteIds
