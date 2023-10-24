@@ -22,6 +22,7 @@ export enum PublishStatus {
 }
 
 export enum Themes {
+  Arbitrum = 'Arbitrum',
   Uniswap = 'Uniswap',
   DoDAO = 'DoDAO',
   Fuse = 'Fuse',
