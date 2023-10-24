@@ -4,6 +4,7 @@ import { dodaoAcademyFeatures } from '@/types/features/dodaoAcademyFeatures';
 import { dodaoIoFeatures } from '@/types/features/dodaoIoFeatures';
 import { fuseFeatures } from '@/types/features/fuseFeatures';
 import { optimismFeatures } from '@/types/features/optimismFeatures';
+import { arbitrumFeatures } from '@/types/features/arbitrumFeatures';
 import { FeatureItem, FeatureName } from '@/types/features/spaceFeatures';
 import { testAcademyFeatures } from '@/types/features/testAcademyFeatures';
 import { uniswapFeatures } from '@/types/features/uniswapFeatures';
@@ -26,6 +27,8 @@ export function getFeaturesArray(spaceId: string): FeatureItem[] {
     return fuseFeatures;
   } else if (spaceId === 'optimism-university') {
     return optimismFeatures;
+  } else if (spaceId === 'arbitrum-university') {
+    return arbitrumFeatures;
   }
 
   return [

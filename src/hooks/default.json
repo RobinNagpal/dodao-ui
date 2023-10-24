@@ -151,6 +151,17 @@
       "guidesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/aave/AAVE_Guides.png",
       "coursesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/aave/AAVE+Courses.png"
     },
+    "arbitrum-university": {
+      "academyHeading": "Learn more about Arbitrum?",
+      "academyText": "We know Arbitrum can be a confusing place and Arbitrum Academy has your back.",
+      "projectName": "Arbitrum Academy",
+      "bytesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/arbitrum-university/HomeIcons/Tidbits.png",
+      "bytecollectionsThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/arbitrum-university/HomeIcons/Tidbits.png",
+      "coursesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/arbitrum-university/HomeIcons/Courses.png",
+      "guidesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/arbitrum-university/HomeIcons/Guides.png",
+      "simulationsThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/arbitrum-university/HomeIcons/Simulations.png",
+      "timelinesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/arbitrum-university/HomeIcons/Timelines.png"
+    },
     "balancer-eth-1": {
       "academyHeading": "Learn more about Balancer?",
       "academyText": "We know crypto can be a confusing place and Balancer Academy has your back.",
@@ -158,13 +169,7 @@
       "guidesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/balancer/Guides.png",
       "coursesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/balancer/courses.png"
     },
-    "daocubator-near-mainnet": {
-      "academyHeading": "Learn more about DAOCubator?",
-      "academyText": "We know crypto can be a confusing place and DAOCubator Academy has your back.",
-      "projectName": "DAOCubator",
-      "guidesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/daocubator/Guides.png",
-      "coursesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/daocubator/courses.png"
-    },
+
     "dodao-academy-eth-1": {
       "academyHeading": "Learn more about DeFi?",
       "academyText": "We know crypto can be a confusing place and DoDAO Academy has your back.",
