@@ -4,6 +4,7 @@ import { Table, TableActions, TableRow } from '@/components/core/table/Table';
 import UpsertArticleIndexingInfoModal from '@/components/spaces/Edit/LoadersInfo/UpsertArticleIndexingInfoModal';
 import UpsertWebsiteScrapingInfoModal from '@/components/spaces/Edit/LoadersInfo/UpsertWebsiteScrapingInfoModal';
 import { ChatbotCategoriesTable } from '@/components/spaces/Loaders/Categories/ChatbotCategoriesTable';
+import UpsertChatbotCategory from '@/components/spaces/Loaders/Categories/UpsertChatbotCategory';
 import DiscordChannels from '@/components/spaces/Loaders/Discord/DiscordChannels';
 import DiscordMessages from '@/components/spaces/Loaders/Discord/DiscordMessages';
 import DiscourseIndexRuns from '@/components/spaces/Loaders/Discourse/DiscourseIndexRuns';
@@ -11,7 +12,7 @@ import DiscourseInfo from '@/components/spaces/Loaders/Discourse/DiscourseInfo';
 import DiscoursePostComments from '@/components/spaces/Loaders/Discourse/DiscoursePostComments';
 import { ChatbotFAQsTable } from '@/components/spaces/Loaders/FAQs/ChatbotFAQsTable';
 import WebsiteScrapedURLInfosTable from '@/components/spaces/Loaders/WebsiteScrape/WebsiteScrapedURLInfosTable';
-import { ManageSpaceSubviews } from '@/components/spaces/manageSpaceSubviews';
+import { ChatbotSubView, ChatbotView, getChatbotSubviewUrl, ManageSpaceSubviews } from '@/components/spaces/manageSpaceSubviews';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import {
   ArticleIndexingInfoFragment,
@@ -25,33 +26,6 @@ import moment from 'moment/moment';
 import { useRouter } from 'next/navigation';
 import React, { useMemo, useState } from 'react';
 
-export enum ChatbotViews {
-  Discourse = 'discourse',
-  Discord = 'discord',
-  WebsiteScraping = 'website-scraping',
-  FAQs = 'faqs',
-  Github = 'github',
-  Categories = 'categories',
-}
-
-export enum ChatbotSubView {
-  DiscordInfo = 'discord-info',
-  DiscourseIndexRuns = 'discourse-index-runs',
-  DiscoursePostComments = 'discourse-post-comments',
-
-  DiscouseInfo = 'discourse-info',
-  DiscordChannels = 'discord-channels',
-  DiscordMessages = 'discord-messages',
-
-  WebScrappingInfo = 'web-scrapping-info',
-  WebsiteScrapingURLInfos = 'website-scraping-url-infos',
-
-  FAQsInfo = 'faqs-info',
-
-  GithubInfo = 'github-info',
-
-  CategoriesInfo = 'categories-info',
-}
 function getLoaderRows(): TableRow[] {
   const indexedAt = moment(new Date()).local().format('YYYY/MM/DD HH:mm');
   const tableRows: TableRow[] = [];
@@ -138,10 +112,6 @@ export default function AllLoaders(props: { space: SpaceWithIntegrationsFragment
   const loaderSubview = props.spaceInfoParams?.[3];
   const subviewPathParam = props.spaceInfoParams?.[4];
 
-  console.log('loaderType', loaderType);
-  console.log('loaderSubview', loaderSubview);
-  console.log('subviewPathParam', subviewPathParam);
-
   const tableActions: TableActions = useMemo(() => {
     return {
       items: [
@@ -153,14 +123,16 @@ export default function AllLoaders(props: { space: SpaceWithIntegrationsFragment
       onSelect: async (key: string, item: { id: string }) => {
         if (key === 'view') {
           if (item.id === 'discourse') {
-            router.push('/space/manage/' + ManageSpaceSubviews.Chatbot + '/discourse/discourse-index-runs');
+            const discourseIndexRunsUrl = getChatbotSubviewUrl(ChatbotView.Discourse, ChatbotSubView.DiscourseIndexRuns);
+            router.push(discourseIndexRunsUrl);
             return;
           }
 
           const discordServerId = props.space.spaceIntegrations?.loadersInfo?.discordServerId;
           console.log('discordServerId', discordServerId);
           if (item.id === 'discord' && discordServerId) {
-            router.push('/space/manage/' + ManageSpaceSubviews.Chatbot + '/discord/channels');
+            const discordChannelsUrl = getChatbotSubviewUrl(ChatbotView.Discord, ChatbotSubView.DiscordChannels);
+            router.push(discordChannelsUrl);
             return;
           }
         }
@@ -168,7 +140,7 @@ export default function AllLoaders(props: { space: SpaceWithIntegrationsFragment
     };
   }, []);
 
-  const [selectedTabId, setSelectedTabId] = useState(ChatbotViews.Discourse);
+  const [selectedTabId, setSelectedTabId] = useState(ChatbotView.Discourse);
 
   if (loaderSubview === ChatbotSubView.DiscouseInfo) {
     return <DiscourseInfo space={props.space} />;
@@ -176,6 +148,10 @@ export default function AllLoaders(props: { space: SpaceWithIntegrationsFragment
 
   if (loaderSubview === ChatbotSubView.CategoriesInfo) {
     return <ChatbotCategoriesTable space={props.space} />;
+  }
+
+  if (loaderSubview === ChatbotSubView.CategoriesUpsert) {
+    return <UpsertChatbotCategory space={props.space} categoryId={subviewPathParam} />;
   }
 
   if (loaderSubview === ChatbotSubView.FAQsInfo) {
@@ -230,7 +206,8 @@ export default function AllLoaders(props: { space: SpaceWithIntegrationsFragment
             items: siteScrapingActionItems,
             onSelect: async (key: string, item: { id: string }) => {
               if (key === 'view') {
-                router.push('/space/manage/' + ManageSpaceSubviews.Chatbot + '/discourse/website-scraping-url-infos/' + item.id);
+                const websiteScrapingInfoUrl = getChatbotSubviewUrl(ChatbotView.WebsiteScraping, ChatbotSubView.WebsiteScrapingURLInfos, item.id);
+                router.push(websiteScrapingInfoUrl);
               } else if (key === 'edit') {
                 setEditWebsiteScrappingInfo(item as WebsiteScrapingInfoFragment);
                 setShowAddWebsiteScrappingInfoModal(true);

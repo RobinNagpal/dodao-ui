@@ -266,7 +266,7 @@ export interface ChatbotCategory {
   key: Scalars['String'];
   name: Scalars['String'];
   priority: Scalars['Int'];
-  subcategories: Array<ChatbotSubcategory>;
+  subCategories: Array<ChatbotSubcategory>;
 }
 
 export interface ChatbotFaq {
@@ -1533,19 +1533,19 @@ export interface MutationUpsertByteSocialShareArgs {
 
 
 export interface MutationUpsertChatbotCategoryArgs {
-  input: UpsertChatbotCategory;
+  input: UpsertChatbotCategoryInput;
   spaceId: Scalars['String'];
 }
 
 
 export interface MutationUpsertChatbotFaqArgs {
-  input: UpsertChatbotFaq;
+  input: UpsertChatbotFaqInput;
   spaceId: Scalars['String'];
 }
 
 
 export interface MutationUpsertChatbotUserQuestionArgs {
-  input: UpsertChatbotUserQuestion;
+  input: UpsertChatbotUserQuestionInput;
   spaceId: Scalars['String'];
 }
 
@@ -2433,16 +2433,16 @@ export interface UpsertByteSocialShareInput {
   twitterImage?: InputMaybe<Scalars['String']>;
 }
 
-export interface UpsertChatbotCategory {
+export interface UpsertChatbotCategoryInput {
   description: Scalars['String'];
   id: Scalars['String'];
   key: Scalars['String'];
   name: Scalars['String'];
   priority: Scalars['Int'];
-  subcategories: Array<UpsertChatbotSubcategory>;
+  subCategories: Array<UpsertChatbotSubcategoryInput>;
 }
 
-export interface UpsertChatbotFaq {
+export interface UpsertChatbotFaqInput {
   answer: Scalars['String'];
   categories?: InputMaybe<Array<Scalars['String']>>;
   id: Scalars['String'];
@@ -2452,13 +2452,13 @@ export interface UpsertChatbotFaq {
   subCategories?: InputMaybe<Array<Scalars['String']>>;
 }
 
-export interface UpsertChatbotSubcategory {
+export interface UpsertChatbotSubcategoryInput {
   description: Scalars['String'];
   key: Scalars['String'];
   name: Scalars['String'];
 }
 
-export interface UpsertChatbotUserQuestion {
+export interface UpsertChatbotUserQuestionInput {
   categories?: InputMaybe<Array<Scalars['String']>>;
   id: Scalars['String'];
   question: Scalars['String'];
@@ -2807,7 +2807,7 @@ export type SubmitByteMutation = { __typename?: 'Mutation', submitByte: { __type
 
 export type ChatbotSubCategoryFragment = { __typename?: 'ChatbotSubcategory', name: string, key: string, description: string };
 
-export type ChatbotCategoryFragment = { __typename?: 'ChatbotCategory', id: string, priority: number, description: string, key: string, name: string, subcategories: Array<{ __typename?: 'ChatbotSubcategory', name: string, key: string, description: string }> };
+export type ChatbotCategoryFragment = { __typename?: 'ChatbotCategory', id: string, priority: number, description: string, key: string, name: string, subCategories: Array<{ __typename?: 'ChatbotSubcategory', name: string, key: string, description: string }> };
 
 export type ChatbotFaqFragment = { __typename?: 'ChatbotFAQ', id: string, spaceId: string, question: string, answer: string, priority: number, categories?: Array<{ __typename?: 'ChatbotCategory', name: string, key: string }> | null, subCategories?: Array<{ __typename?: 'ChatbotSubcategory', key: string, name: string }> | null };
 
@@ -2818,7 +2818,7 @@ export type ChatbotCategoriesQueryVariables = Exact<{
 }>;
 
 
-export type ChatbotCategoriesQuery = { __typename?: 'Query', chatbotCategories: Array<{ __typename?: 'ChatbotCategory', id: string, priority: number, description: string, key: string, name: string, subcategories: Array<{ __typename?: 'ChatbotSubcategory', name: string, key: string, description: string }> }> };
+export type ChatbotCategoriesQuery = { __typename?: 'Query', chatbotCategories: Array<{ __typename?: 'ChatbotCategory', id: string, priority: number, description: string, key: string, name: string, subCategories: Array<{ __typename?: 'ChatbotSubcategory', name: string, key: string, description: string }> }> };
 
 export type ChatbotFaQsQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -2836,15 +2836,15 @@ export type ChatbotUserQuestionsQuery = { __typename?: 'Query', chatbotUserQuest
 
 export type UpsertChatbotCategoryMutationVariables = Exact<{
   spaceId: Scalars['String'];
-  input: UpsertChatbotCategory;
+  input: UpsertChatbotCategoryInput;
 }>;
 
 
-export type UpsertChatbotCategoryMutation = { __typename?: 'Mutation', upsertChatbotCategory: { __typename?: 'ChatbotCategory', id: string, priority: number, description: string, key: string, name: string, subcategories: Array<{ __typename?: 'ChatbotSubcategory', name: string, key: string, description: string }> } };
+export type UpsertChatbotCategoryMutation = { __typename?: 'Mutation', upsertChatbotCategory: { __typename?: 'ChatbotCategory', id: string, priority: number, description: string, key: string, name: string, subCategories: Array<{ __typename?: 'ChatbotSubcategory', name: string, key: string, description: string }> } };
 
 export type UpsertChatbotFaqMutationVariables = Exact<{
   spaceId: Scalars['String'];
-  input: UpsertChatbotFaq;
+  input: UpsertChatbotFaqInput;
 }>;
 
 
@@ -2852,7 +2852,7 @@ export type UpsertChatbotFaqMutation = { __typename?: 'Mutation', upsertChatbotF
 
 export type UpsertChatbotUserQuestionMutationVariables = Exact<{
   spaceId: Scalars['String'];
-  input: UpsertChatbotUserQuestion;
+  input: UpsertChatbotUserQuestionInput;
 }>;
 
 
@@ -4038,7 +4038,7 @@ export const ChatbotCategoryFragmentDoc = gql`
   description
   key
   name
-  subcategories {
+  subCategories {
     name
     key
     description
@@ -5541,7 +5541,7 @@ export function refetchChatbotUserQuestionsQuery(variables: ChatbotUserQuestions
       return { query: ChatbotUserQuestionsDocument, variables: variables }
     }
 export const UpsertChatbotCategoryDocument = gql`
-    mutation UpsertChatbotCategory($spaceId: String!, $input: UpsertChatbotCategory!) {
+    mutation UpsertChatbotCategory($spaceId: String!, $input: UpsertChatbotCategoryInput!) {
   upsertChatbotCategory(spaceId: $spaceId, input: $input) {
     ...ChatbotCategory
   }
@@ -5575,7 +5575,7 @@ export type UpsertChatbotCategoryMutationHookResult = ReturnType<typeof useUpser
 export type UpsertChatbotCategoryMutationResult = Apollo.MutationResult<UpsertChatbotCategoryMutation>;
 export type UpsertChatbotCategoryMutationOptions = Apollo.BaseMutationOptions<UpsertChatbotCategoryMutation, UpsertChatbotCategoryMutationVariables>;
 export const UpsertChatbotFaqDocument = gql`
-    mutation UpsertChatbotFAQ($spaceId: String!, $input: UpsertChatbotFAQ!) {
+    mutation UpsertChatbotFAQ($spaceId: String!, $input: UpsertChatbotFAQInput!) {
   upsertChatbotFAQ(spaceId: $spaceId, input: $input) {
     ...ChatbotFAQ
   }
@@ -5609,7 +5609,7 @@ export type UpsertChatbotFaqMutationHookResult = ReturnType<typeof useUpsertChat
 export type UpsertChatbotFaqMutationResult = Apollo.MutationResult<UpsertChatbotFaqMutation>;
 export type UpsertChatbotFaqMutationOptions = Apollo.BaseMutationOptions<UpsertChatbotFaqMutation, UpsertChatbotFaqMutationVariables>;
 export const UpsertChatbotUserQuestionDocument = gql`
-    mutation UpsertChatbotUserQuestion($spaceId: String!, $input: UpsertChatbotUserQuestion!) {
+    mutation UpsertChatbotUserQuestion($spaceId: String!, $input: UpsertChatbotUserQuestionInput!) {
   upsertChatbotUserQuestion(spaceId: $spaceId, input: $input) {
     ...ChatbotUserQuestion
   }

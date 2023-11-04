@@ -6,8 +6,8 @@ import PageWrapper from '@/components/core/page/PageWrapper';
 import ListProjects from '@/components/projects/ListProjects';
 import GenerateImage from '@/components/spaces/Image/GenerateImage';
 import ListSpaces from '@/components/spaces/ListSpaces';
-import AllLoaders, { ChatbotSubView, ChatbotViews } from '@/components/spaces/Loaders/AllLoaders';
-import { getBaseUrlForSpaceSubview, ManageSpaceSubviews } from '@/components/spaces/manageSpaceSubviews';
+import AllLoaders from '@/components/spaces/Loaders/AllLoaders';
+import { ChatbotSubView, ChatbotView, getBaseUrlForSpaceSubview, ManageSpaceSubviews } from '@/components/spaces/manageSpaceSubviews';
 import SpaceDetails from '@/components/spaces/SpaceDetails';
 import GenerateStoryBoard from '@/components/spaces/StoryBoard/GenerateStoryBoard';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
@@ -45,37 +45,37 @@ const getNavigation = (space: SpaceWithIntegrationsFragment, subView?: string, s
       },
       {
         name: 'Discourse',
-        href: chatbotBaseUrl + '/' + ChatbotViews.Discourse + '/' + ChatbotSubView.DiscouseInfo,
+        href: chatbotBaseUrl + '/' + ChatbotView.Discourse + '/' + ChatbotSubView.DiscouseInfo,
         icon: TableCellsIcon,
         current: subSubView === ChatbotSubView.DiscouseInfo,
       },
       {
         name: 'Discord',
-        href: chatbotBaseUrl + '/' + ChatbotViews.Discord + '/' + ChatbotSubView.DiscordInfo,
+        href: chatbotBaseUrl + '/' + ChatbotView.Discord + '/' + ChatbotSubView.DiscordInfo,
         icon: ChatBubbleLeftIcon,
         current: subSubView === ChatbotSubView.DiscordInfo,
       },
       {
         name: 'Website',
-        href: chatbotBaseUrl + '/' + ChatbotViews.WebsiteScraping + '/' + ChatbotSubView.WebScrappingInfo,
+        href: chatbotBaseUrl + '/' + ChatbotView.WebsiteScraping + '/' + ChatbotSubView.WebScrappingInfo,
         icon: ComputerDesktopIcon,
         current: subSubView === ChatbotSubView.WebScrappingInfo,
       },
       {
         name: 'Github',
-        href: chatbotBaseUrl + '/' + ChatbotViews.Github + '/' + ChatbotSubView.GithubInfo,
+        href: chatbotBaseUrl + '/' + ChatbotView.Github + '/' + ChatbotSubView.GithubInfo,
         icon: CodeBracketIcon,
         current: subSubView === ChatbotSubView.GithubInfo,
       },
       {
         name: 'FAQ',
-        href: chatbotBaseUrl + '/' + ChatbotViews.FAQs + '/' + ChatbotSubView.FAQsInfo,
+        href: chatbotBaseUrl + '/' + ChatbotView.FAQs + '/' + ChatbotSubView.FAQsInfo,
         icon: QuestionMarkCircleIcon,
         current: subSubView === ChatbotSubView.FAQsInfo,
       },
       {
         name: 'Categories',
-        href: chatbotBaseUrl + '/' + ChatbotViews.Categories + '/' + ChatbotSubView.CategoriesInfo,
+        href: chatbotBaseUrl + '/' + ChatbotView.Categories + '/' + ChatbotSubView.CategoriesInfo,
         icon: AdjustmentsHorizontalIcon,
         current: subSubView === ChatbotSubView.FAQsInfo,
       },
@@ -102,7 +102,7 @@ const getNavigation = (space: SpaceWithIntegrationsFragment, subView?: string, s
     },
     {
       name: 'Chatbot',
-      href: '/space/manage/' + ManageSpaceSubviews.Chatbot + '/' + ChatbotViews.Discourse + '/' + ChatbotSubView.DiscouseInfo,
+      href: '/space/manage/' + ManageSpaceSubviews.Chatbot + '/' + ChatbotView.Discourse + '/' + ChatbotSubView.DiscouseInfo,
       icon: CircleStackIcon,
       current: subView === ManageSpaceSubviews.Chatbot,
     },

@@ -10,7 +10,7 @@ fragment ChatbotCategory on ChatbotCategory {
   description
   key
   name
-  subcategories {
+  subCategories {
     name
     key
     description
@@ -65,19 +65,19 @@ query ChatbotUserQuestions($spaceId: String!) {
   }
 }
 
-mutation UpsertChatbotCategory($spaceId: String!, $input: UpsertChatbotCategory!) {
+mutation UpsertChatbotCategory($spaceId: String!, $input: UpsertChatbotCategoryInput!) {
   upsertChatbotCategory(spaceId: $spaceId, input: $input) {
     ...ChatbotCategory
   }
 }
 
-mutation UpsertChatbotFAQ($spaceId: String!, $input: UpsertChatbotFAQ!) {
+mutation UpsertChatbotFAQ($spaceId: String!, $input: UpsertChatbotFAQInput!) {
   upsertChatbotFAQ(spaceId: $spaceId, input: $input) {
     ...ChatbotFAQ
   }
 }
 
-mutation UpsertChatbotUserQuestion($spaceId: String!, $input: UpsertChatbotUserQuestion!) {
+mutation UpsertChatbotUserQuestion($spaceId: String!, $input: UpsertChatbotUserQuestionInput!) {
   upsertChatbotUserQuestion(spaceId: $spaceId, input: $input) {
     ...ChatbotUserQuestion
   }

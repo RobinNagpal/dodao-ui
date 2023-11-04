@@ -14,4 +14,9 @@
       box-shadow: 0 0 0 2px red;
     }
   }
+
+  &:disabled {
+    cursor: not-allowed;
+    background: linear-gradient(0deg, rgba(127, 127, 127, 0.2), rgba(127, 127, 127, 0.2)), var(--bg-color);
+  }
 }

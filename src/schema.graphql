@@ -233,7 +233,7 @@ type ChatbotCategory {
   key: String!
   name: String!
   priority: Int!
-  subcategories: [ChatbotSubcategory!]!
+  subCategories: [ChatbotSubcategory!]!
 }
 
 type ChatbotFAQ {
@@ -1037,9 +1037,9 @@ type Mutation {
   upsertAcademyTask(spaceId: String!, task: UpsertAcademyTaskInput!): AcademyTask!
   upsertByte(input: UpsertByteInput!, spaceId: String!): Byte!
   upsertByteSocialShare(input: UpsertByteSocialShareInput!, spaceId: String!): ByteSocialShare!
-  upsertChatbotCategory(input: UpsertChatbotCategory!, spaceId: String!): ChatbotCategory!
-  upsertChatbotFAQ(input: UpsertChatbotFAQ!, spaceId: String!): ChatbotFAQ!
-  upsertChatbotUserQuestion(input: UpsertChatbotUserQuestion!, spaceId: String!): ChatbotUserQuestion!
+  upsertChatbotCategory(input: UpsertChatbotCategoryInput!, spaceId: String!): ChatbotCategory!
+  upsertChatbotFAQ(input: UpsertChatbotFAQInput!, spaceId: String!): ChatbotFAQ!
+  upsertChatbotUserQuestion(input: UpsertChatbotUserQuestionInput!, spaceId: String!): ChatbotUserQuestion!
   upsertCourseIntegrations(courseIntegrationInput: UpsertCourseIntegrationsInput!, spaceId: String!): CourseIntegrations!
   upsertGitCourse(gitCourseInput: GitCourseInput!, spaceId: String!): SummarizedGitCourse
   upsertGitCourseTopicSubmission(gitCourseTopicSubmission: GitCourseTopicSubmissionInput!, spaceId: String!): GitCourseSubmission!
@@ -1559,16 +1559,16 @@ input UpsertByteSocialShareInput {
   twitterImage: String
 }
 
-input UpsertChatbotCategory {
+input UpsertChatbotCategoryInput {
   description: String!
   id: String!
   key: String!
   name: String!
   priority: Int!
-  subcategories: [UpsertChatbotSubcategory!]!
+  subCategories: [UpsertChatbotSubcategoryInput!]!
 }
 
-input UpsertChatbotFAQ {
+input UpsertChatbotFAQInput {
   answer: String!
   categories: [String!]
   id: String!
@@ -1578,13 +1578,13 @@ input UpsertChatbotFAQ {
   subCategories: [String!]
 }
 
-input UpsertChatbotSubcategory {
+input UpsertChatbotSubcategoryInput {
   description: String!
   key: String!
   name: String!
 }
 
-input UpsertChatbotUserQuestion {
+input UpsertChatbotUserQuestionInput {
   categories: [String!]
   id: String!
   question: String!
