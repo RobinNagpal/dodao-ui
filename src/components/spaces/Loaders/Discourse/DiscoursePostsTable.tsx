@@ -57,7 +57,7 @@ export default function DiscoursePostsTable(props: { space: SpaceWithIntegration
         items: actionItems,
         onSelect: async (key: string, item: { id: string }) => {
           if (key === 'view') {
-            router.push('/space/manage/' + ManageSpaceSubviews.Loaders + '/discourse/post-comments/' + item.id);
+            router.push('/space/manage/' + ManageSpaceSubviews.Chatbot + '/discourse/post-comments/' + item.id);
           } else if (key === 'index') {
             await indexDiscoursePostMutation({
               variables: {

@@ -1,0 +1,84 @@
+fragment ChatbotSubCategory on ChatbotSubcategory {
+  name
+  key
+  description
+}
+
+fragment ChatbotCategory on ChatbotCategory {
+  id
+  priority
+  description
+  key
+  name
+  subcategories {
+    name
+    key
+    description
+  }
+}
+
+fragment ChatbotFAQ on ChatbotFAQ {
+  id
+  spaceId
+  question
+  answer
+  categories {
+    name
+    key
+  }
+  subCategories {
+    key
+    name
+  }
+  priority
+}
+
+fragment ChatbotUserQuestion on ChatbotUserQuestion {
+  id
+  spaceId
+  question
+  categories {
+    name
+    key
+  }
+  subCategories {
+    key
+    name
+  }
+}
+
+query ChatbotCategories($spaceId: String!) {
+  chatbotCategories(spaceId: $spaceId) {
+    ...ChatbotCategory
+  }
+}
+
+query ChatbotFAQs($spaceId: String!) {
+  chatbotFAQs(spaceId: $spaceId) {
+    ...ChatbotFAQ
+  }
+}
+
+query ChatbotUserQuestions($spaceId: String!) {
+  chatbotUserQuestions(spaceId: $spaceId) {
+    ...ChatbotUserQuestion
+  }
+}
+
+mutation UpsertChatbotCategory($spaceId: String!, $input: UpsertChatbotCategory!) {
+  upsertChatbotCategory(spaceId: $spaceId, input: $input) {
+    ...ChatbotCategory
+  }
+}
+
+mutation UpsertChatbotFAQ($spaceId: String!, $input: UpsertChatbotFAQ!) {
+  upsertChatbotFAQ(spaceId: $spaceId, input: $input) {
+    ...ChatbotFAQ
+  }
+}
+
+mutation UpsertChatbotUserQuestion($spaceId: String!, $input: UpsertChatbotUserQuestion!) {
+  upsertChatbotUserQuestion(spaceId: $spaceId, input: $input) {
+    ...ChatbotUserQuestion
+  }
+}

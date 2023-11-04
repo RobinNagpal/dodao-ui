@@ -227,6 +227,39 @@ enum ChatCompletionRequestMessageRoleEnum {
   user
 }
 
+type ChatbotCategory {
+  description: String!
+  id: String!
+  key: String!
+  name: String!
+  priority: Int!
+  subcategories: [ChatbotSubcategory!]!
+}
+
+type ChatbotFAQ {
+  answer: String!
+  categories: [ChatbotCategory!]
+  id: String!
+  priority: Int!
+  question: String!
+  spaceId: String!
+  subCategories: [ChatbotSubcategory!]
+}
+
+type ChatbotSubcategory {
+  description: String!
+  key: String!
+  name: String!
+}
+
+type ChatbotUserQuestion {
+  categories: [ChatbotCategory!]
+  id: String!
+  question: String!
+  spaceId: String!
+  subCategories: [ChatbotSubcategory!]
+}
+
 input CompletionAIInput {
   model: String
   n: Int
@@ -1004,6 +1037,9 @@ type Mutation {
   upsertAcademyTask(spaceId: String!, task: UpsertAcademyTaskInput!): AcademyTask!
   upsertByte(input: UpsertByteInput!, spaceId: String!): Byte!
   upsertByteSocialShare(input: UpsertByteSocialShareInput!, spaceId: String!): ByteSocialShare!
+  upsertChatbotCategory(input: UpsertChatbotCategory!, spaceId: String!): ChatbotCategory!
+  upsertChatbotFAQ(input: UpsertChatbotFAQ!, spaceId: String!): ChatbotFAQ!
+  upsertChatbotUserQuestion(input: UpsertChatbotUserQuestion!, spaceId: String!): ChatbotUserQuestion!
   upsertCourseIntegrations(courseIntegrationInput: UpsertCourseIntegrationsInput!, spaceId: String!): CourseIntegrations!
   upsertGitCourse(gitCourseInput: GitCourseInput!, spaceId: String!): SummarizedGitCourse
   upsertGitCourseTopicSubmission(gitCourseTopicSubmission: GitCourseTopicSubmissionInput!, spaceId: String!): GitCourseSubmission!
@@ -1129,6 +1165,9 @@ type Query {
   byteCollections(spaceId: String!): [ByteCollection!]!
   byteSocialShare(byteId: String!, spaceId: String!): ByteSocialShare
   bytes(spaceId: String!): [Byte!]!
+  chatbotCategories(spaceId: String!): [ChatbotCategory!]!
+  chatbotFAQs(spaceId: String!): [ChatbotFAQ!]!
+  chatbotUserQuestions(spaceId: String!): [ChatbotUserQuestion!]!
   consolidatedGuideRating(guideUuid: String!, spaceId: String!): ConsolidatedGuideRating
   courses(spaceId: String!): [GitCourse!]!
   discordChannels(serverId: String!, spaceId: String!): [DiscordChannel!]!
@@ -1518,6 +1557,39 @@ input UpsertByteSocialShareInput {
   linkedinPdfContent: ByteLinkedinPdfContentInput
   spaceId: String!
   twitterImage: String
+}
+
+input UpsertChatbotCategory {
+  description: String!
+  id: String!
+  key: String!
+  name: String!
+  priority: Int!
+  subcategories: [UpsertChatbotSubcategory!]!
+}
+
+input UpsertChatbotFAQ {
+  answer: String!
+  categories: [String!]
+  id: String!
+  priority: Int!
+  question: String!
+  spaceId: String!
+  subCategories: [String!]
+}
+
+input UpsertChatbotSubcategory {
+  description: String!
+  key: String!
+  name: String!
+}
+
+input UpsertChatbotUserQuestion {
+  categories: [String!]
+  id: String!
+  question: String!
+  spaceId: String!
+  subCategories: [String!]
 }
 
 input UpsertCourseIntegrationsInput {

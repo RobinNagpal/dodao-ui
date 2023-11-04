@@ -35,7 +35,7 @@ export default function DiscordMessages(props: { space: SpaceWithIntegrationsFra
 
   return (
     <div className="mt-8 w-full">
-      <Link href={'/space/manage/' + ManageSpaceSubviews.Loaders + '/' + 'discord/channels'} className="text-color">
+      <Link href={'/space/manage/' + ManageSpaceSubviews.Chatbot + '/' + 'discord/channels'} className="text-color">
         <span className="mr-1 font-bold">&#8592;</span>
         All Channels
       </Link>

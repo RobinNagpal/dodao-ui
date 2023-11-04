@@ -3,10 +3,13 @@ import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsis
 import { Table, TableActions, TableRow } from '@/components/core/table/Table';
 import UpsertArticleIndexingInfoModal from '@/components/spaces/Edit/LoadersInfo/UpsertArticleIndexingInfoModal';
 import UpsertWebsiteScrapingInfoModal from '@/components/spaces/Edit/LoadersInfo/UpsertWebsiteScrapingInfoModal';
+import { ChatbotCategoriesTable } from '@/components/spaces/Loaders/Categories/ChatbotCategoriesTable';
 import DiscordChannels from '@/components/spaces/Loaders/Discord/DiscordChannels';
 import DiscordMessages from '@/components/spaces/Loaders/Discord/DiscordMessages';
 import DiscourseIndexRuns from '@/components/spaces/Loaders/Discourse/DiscourseIndexRuns';
+import DiscourseInfo from '@/components/spaces/Loaders/Discourse/DiscourseInfo';
 import DiscoursePostComments from '@/components/spaces/Loaders/Discourse/DiscoursePostComments';
+import { ChatbotFAQsTable } from '@/components/spaces/Loaders/FAQs/ChatbotFAQsTable';
 import WebsiteScrapedURLInfosTable from '@/components/spaces/Loaders/WebsiteScrape/WebsiteScrapedURLInfosTable';
 import { ManageSpaceSubviews } from '@/components/spaces/manageSpaceSubviews';
 import { useNotificationContext } from '@/contexts/NotificationContext';
@@ -22,19 +25,32 @@ import moment from 'moment/moment';
 import { useRouter } from 'next/navigation';
 import React, { useMemo, useState } from 'react';
 
-export enum LoaderType {
+export enum ChatbotViews {
   Discourse = 'discourse',
   Discord = 'discord',
   WebsiteScraping = 'website-scraping',
+  FAQs = 'faqs',
+  Github = 'github',
+  Categories = 'categories',
 }
 
-export enum LoaderSubView {
+export enum ChatbotSubView {
+  DiscordInfo = 'discord-info',
   DiscourseIndexRuns = 'discourse-index-runs',
-  DiscoursePostComments = 'post-comments',
-  DiscordChannels = 'channels',
-  DiscordMessages = 'messages',
+  DiscoursePostComments = 'discourse-post-comments',
 
+  DiscouseInfo = 'discourse-info',
+  DiscordChannels = 'discord-channels',
+  DiscordMessages = 'discord-messages',
+
+  WebScrappingInfo = 'web-scrapping-info',
   WebsiteScrapingURLInfos = 'website-scraping-url-infos',
+
+  FAQsInfo = 'faqs-info',
+
+  GithubInfo = 'github-info',
+
+  CategoriesInfo = 'categories-info',
 }
 function getLoaderRows(): TableRow[] {
   const indexedAt = moment(new Date()).local().format('YYYY/MM/DD HH:mm');
@@ -122,6 +138,10 @@ export default function AllLoaders(props: { space: SpaceWithIntegrationsFragment
   const loaderSubview = props.spaceInfoParams?.[3];
   const subviewPathParam = props.spaceInfoParams?.[4];
 
+  console.log('loaderType', loaderType);
+  console.log('loaderSubview', loaderSubview);
+  console.log('subviewPathParam', subviewPathParam);
+
   const tableActions: TableActions = useMemo(() => {
     return {
       items: [
@@ -133,14 +153,14 @@ export default function AllLoaders(props: { space: SpaceWithIntegrationsFragment
       onSelect: async (key: string, item: { id: string }) => {
         if (key === 'view') {
           if (item.id === 'discourse') {
-            router.push('/space/manage/' + ManageSpaceSubviews.Loaders + '/discourse/discourse-index-runs');
+            router.push('/space/manage/' + ManageSpaceSubviews.Chatbot + '/discourse/discourse-index-runs');
             return;
           }
 
           const discordServerId = props.space.spaceIntegrations?.loadersInfo?.discordServerId;
           console.log('discordServerId', discordServerId);
           if (item.id === 'discord' && discordServerId) {
-            router.push('/space/manage/' + ManageSpaceSubviews.Loaders + '/discord/channels');
+            router.push('/space/manage/' + ManageSpaceSubviews.Chatbot + '/discord/channels');
             return;
           }
         }
@@ -148,23 +168,41 @@ export default function AllLoaders(props: { space: SpaceWithIntegrationsFragment
     };
   }, []);
 
-  if (loaderSubview === LoaderSubView.DiscourseIndexRuns) {
+  const [selectedTabId, setSelectedTabId] = useState(ChatbotViews.Discourse);
+
+  if (loaderSubview === ChatbotSubView.DiscouseInfo) {
+    return <DiscourseInfo space={props.space} />;
+  }
+
+  if (loaderSubview === ChatbotSubView.CategoriesInfo) {
+    return <ChatbotCategoriesTable space={props.space} />;
+  }
+
+  if (loaderSubview === ChatbotSubView.FAQsInfo) {
+    return <ChatbotFAQsTable space={props.space} />;
+  }
+
+  if (loaderSubview === ChatbotSubView.DiscourseIndexRuns) {
     return <DiscourseIndexRuns space={props.space} />;
   }
 
-  if (loaderSubview === LoaderSubView.DiscoursePostComments && subviewPathParam) {
+  if (loaderSubview === ChatbotSubView.DiscoursePostComments && subviewPathParam) {
     return <DiscoursePostComments space={props.space} postId={subviewPathParam} />;
   }
 
-  if (loaderSubview === LoaderSubView.DiscordChannels) {
+  if (loaderSubview === ChatbotSubView.DiscordChannels) {
     return <DiscordChannels space={props.space} />;
   }
 
-  if (loaderSubview === LoaderSubView.DiscordMessages && subviewPathParam) {
+  if (loaderSubview === ChatbotSubView.DiscordChannels) {
+    return <DiscordChannels space={props.space} />;
+  }
+
+  if (loaderSubview === ChatbotSubView.DiscordMessages && subviewPathParam) {
     return <DiscordMessages space={props.space} channelId={subviewPathParam} />;
   }
 
-  if (loaderSubview === LoaderSubView.WebsiteScrapingURLInfos && subviewPathParam) {
+  if (loaderSubview === ChatbotSubView.WebsiteScrapingURLInfos && subviewPathParam) {
     return <WebsiteScrapedURLInfosTable space={props.space} websiteScrapingInfoId={subviewPathParam} />;
   }
   return (
@@ -172,6 +210,7 @@ export default function AllLoaders(props: { space: SpaceWithIntegrationsFragment
       <div className="flex justify-between">
         <div className="text-xl">Loaders</div>
       </div>
+
       <Table data={getLoaderRows()} columnsHeadings={['Loader', 'Last Indexed At', 'Status']} columnsWidthPercents={[20, 50, 20, 10]} actions={tableActions} />
 
       <div className="mt-16">
@@ -187,7 +226,7 @@ export default function AllLoaders(props: { space: SpaceWithIntegrationsFragment
             items: siteScrapingActionItems,
             onSelect: async (key: string, item: { id: string }) => {
               if (key === 'view') {
-                router.push('/space/manage/' + ManageSpaceSubviews.Loaders + '/discourse/website-scraping-url-infos/' + item.id);
+                router.push('/space/manage/' + ManageSpaceSubviews.Chatbot + '/discourse/website-scraping-url-infos/' + item.id);
               } else if (key === 'edit') {
                 setEditWebsiteScrappingInfo(item as WebsiteScrapingInfoFragment);
                 setShowAddWebsiteScrappingInfoModal(true);
