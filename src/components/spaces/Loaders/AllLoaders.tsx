@@ -206,19 +206,23 @@ export default function AllLoaders(props: { space: SpaceWithIntegrationsFragment
     return <WebsiteScrapedURLInfosTable space={props.space} websiteScrapingInfoId={subviewPathParam} />;
   }
   return (
-    <div className="mx-8 mt-8">
-      <div className="flex justify-between">
-        <div className="text-xl">Loaders</div>
+    <div className="divide-y divide-slate-400  divide-dashed">
+      <div className="mb-32">
+        <Table
+          data={getLoaderRows()}
+          heading={'Loader Info'}
+          columnsHeadings={['Loader', 'Last Indexed At', 'Status']}
+          columnsWidthPercents={[20, 50, 20, 10]}
+          actions={tableActions}
+        />
       </div>
 
-      <Table data={getLoaderRows()} columnsHeadings={['Loader', 'Last Indexed At', 'Status']} columnsWidthPercents={[20, 50, 20, 10]} actions={tableActions} />
-
-      <div className="mt-16">
-        <div className="flex justify-between">
-          <div className="text-xl">Website Scraping Infos</div>
+      <div className="mb-32">
+        <div className="flex justify-end mt-4">
           <PrivateEllipsisDropdown items={websiteScrappingThreeDotItems} onSelect={() => setShowAddWebsiteScrappingInfoModal(true)} />
         </div>
         <Table
+          heading={'Website Scraping Info'}
           data={getWebsiteScrapingInfoTable(websiteInfos?.websiteScrapingInfos || [])}
           columnsHeadings={['Id', 'Base Url', 'Scraping Start Url', 'Ignore Hash', 'Ignore Query']}
           columnsWidthPercents={[5, 25, 20, 20, 10, 10]}
@@ -244,12 +248,12 @@ export default function AllLoaders(props: { space: SpaceWithIntegrationsFragment
         />
       </div>
 
-      <div className="mt-16">
-        <div className="flex justify-between">
-          <div className="text-xl">Articles Indexed</div>
+      <div>
+        <div className="flex justify-end mt-4">
           <PrivateEllipsisDropdown items={websiteScrappingThreeDotItems} onSelect={() => setShowAddArticleIndexingInfoModal(true)} />
         </div>
         <Table
+          heading={'Article Indexing Info'}
           data={getArticleIndexingInfoTable(articleIndexingInfos?.articleIndexingInfos || [])}
           columnsHeadings={['Id', 'Url', 'Text', 'Text Length', 'Status']}
           columnsWidthPercents={[5, 25, 20, 20, 20]}

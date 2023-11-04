@@ -25,6 +25,7 @@ export interface TableProps {
   firstColumnBold?: boolean;
   actions?: TableActions;
   noDataText?: string;
+  className?: string;
 }
 
 const Heading = styled.h1`
@@ -55,7 +56,7 @@ const TableRow = styled.tr`
 
 export function Table(props: TableProps) {
   return (
-    <div className="mt-2">
+    <div className={props.className}>
       <div className="sm:flex sm:items-center justify-between">
         {props.heading && (
           <div className="sm:flex-auto">
@@ -79,7 +80,7 @@ export function Table(props: TableProps) {
                 <div>{props.noDataText || 'No data exists'}</div>
               </div>
             ) : (
-              <table className="min-w-full divide-y divide-gray-300">
+              <table className="min-w-full">
                 <thead>
                   <tr>
                     {props.columnsHeadings.map((heading, index) => (
@@ -89,7 +90,7 @@ export function Table(props: TableProps) {
                     ))}
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-200 text-xs">
+                <tbody className="text-xs">
                   {props.data.map((row, index) => (
                     <TableRow key={index}>
                       {row.columns.map((cell, index) => {
@@ -102,7 +103,7 @@ export function Table(props: TableProps) {
                             {cell}
                           </FirstColumnCell>
                         ) : (
-                          <TableCell key={index} className="px-3 py-2  break-all">
+                          <TableCell key={index} className="px-3 py-2 break-all">
                             {cell}
                           </TableCell>
                         );

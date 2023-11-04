@@ -1,4 +1,4 @@
-import DetailsField from '@/components/core/details/DetailsField';
+import DetailsRow from '@/components/core/details/DetailsRow';
 import DetailsHeader from '@/components/core/details/DetailsHeader';
 import DetailsSection from '@/components/core/details/DetailsSection';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
@@ -38,7 +38,7 @@ export default function SpaceSocialDetails(props: SpaceAuthDetailsProps) {
           <PrivateEllipsisDropdown items={threeDotItems} onSelect={selectFromThreedotDropdown} className="ml-4 pt-4 grow-0 w-16" />
         </div>
         {getSpaceSocialFields(props.space).map((field) => (
-          <DetailsField key={field.label} label={field.label} value={field.value} />
+          <DetailsRow key={field.label} label={field.label} value={field.value} />
         ))}
       </DetailsSection>
       <UpsertSpaceSocialSettingsModal space={props.space} open={showSocialSettingsModal} onClose={() => setShowSocialSettingsModal(false)} />

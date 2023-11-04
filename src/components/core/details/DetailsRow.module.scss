@@ -1,0 +1,5 @@
+.styledDl{
+  &:nth-child(odd) {
+    background: linear-gradient(0deg, rgba(127, 127, 127, 0.2), rgba(127, 127, 127, 0.2)), var(--bg-color);
+  }
+}

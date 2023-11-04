@@ -59,7 +59,7 @@ export default function DiscourseIndexRuns(props: { space: SpaceWithIntegrations
   }
 
   return (
-    <div className="mx-8 mt-8">
+    <div className="mt-8">
       <div className="flex justify-end">
         <TabsWithUnderline selectedTabId={selectedTabId} setSelectedTabId={(id) => setSelectedTabId(id as TabIds)} tabs={tabs} className="w-96" />
       </div>
