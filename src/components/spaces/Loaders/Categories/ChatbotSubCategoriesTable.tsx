@@ -1,33 +1,39 @@
+import DeleteConfirmationModal from '@/components/app/Modal/DeleteConfirmationModal';
 import { EllipsisDropdownItem } from '@/components/core/dropdowns/EllipsisDropdown';
 import { Table, TableRow } from '@/components/core/table/Table';
 import UpsertChatbotSubCategoryModal from '@/components/spaces/Loaders/Categories/UpsertChatbotSubCategoryModal';
+import { ChatbotSubCategoryHelperFunctions } from '@/components/spaces/Loaders/Categories/useEditChatbotCategory';
 import { ChatbotSubCategoryFragment } from '@/graphql/generated/generated-types';
-import React from 'react';
+import React, { useState } from 'react';
 
-function getCategoriesTable(categories: ChatbotSubCategoryFragment[]): TableRow[] {
-  categories.map((category: ChatbotSubCategoryFragment): TableRow => {
+function getCategoriesTable(subCategories: ChatbotSubCategoryFragment[]): TableRow[] {
+  return subCategories.map((category: ChatbotSubCategoryFragment): TableRow => {
     return {
       id: category.key,
       columns: [category.key, category.name, category.description],
       item: category,
     };
   });
-  return [];
 }
 
 export function ChatbotSubCategoriesTable(props: {
   subCategories: ChatbotSubCategoryFragment[];
-  upsertChatbotSubCategory: (subCategory: ChatbotSubCategoryFragment) => void;
+  subCategoryHelperFunctions: ChatbotSubCategoryHelperFunctions;
 }) {
   const siteScrapingActionItems: EllipsisDropdownItem[] = [
     {
       key: 'edit',
       label: 'Edit',
     },
+    {
+      key: 'delete',
+      label: 'Delete',
+    },
   ];
 
   const [showUpsertSubCategoryModal, setShowUpsertSubCategoryModal] = React.useState(false);
   const [editChatbotSubCategory, setEditChatbotSubCategory] = React.useState<ChatbotSubCategoryFragment | null>(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   return (
     <div>
@@ -46,6 +52,10 @@ export function ChatbotSubCategoriesTable(props: {
               setEditChatbotSubCategory(item as ChatbotSubCategoryFragment);
               setShowUpsertSubCategoryModal(true);
             }
+            if (key === 'delete') {
+              setEditChatbotSubCategory(item as ChatbotSubCategoryFragment);
+              setShowDeleteModal(true);
+            }
           },
         }}
         noDataText="No sub categories"
@@ -54,11 +64,22 @@ export function ChatbotSubCategoriesTable(props: {
         <UpsertChatbotSubCategoryModal
           open={showUpsertSubCategoryModal}
           onClose={() => setShowUpsertSubCategoryModal(false)}
-          upsertSubCategory={(subCategory) => {
-            props.upsertChatbotSubCategory(subCategory);
-            setShowUpsertSubCategoryModal(false);
-          }}
+          subCategoryHelperFunctions={props.subCategoryHelperFunctions}
           subCategory={editChatbotSubCategory}
+        />
+      )}
+      {showDeleteModal && (
+        <DeleteConfirmationModal
+          title={'Delete Explanation'}
+          open={showDeleteModal}
+          onClose={() => setShowDeleteModal(false)}
+          onDelete={() => {
+            if (editChatbotSubCategory) {
+              props.subCategoryHelperFunctions.deleteSubCategory(editChatbotSubCategory?.key);
+              setEditChatbotSubCategory(null);
+              setShowDeleteModal(false);
+            }
+          }}
         />
       )}
     </div>

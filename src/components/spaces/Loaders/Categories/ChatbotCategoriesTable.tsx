@@ -11,14 +11,13 @@ import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
 function getCategoriesTable(categories: ChatbotCategoryFragment[]): TableRow[] {
-  categories.map((category: ChatbotCategoryFragment): TableRow => {
+  return categories.map((category: ChatbotCategoryFragment): TableRow => {
     return {
       id: category.id,
       columns: [category.id.substring(0, 6), category.key, category.name, category.subCategories.map((sc) => sc.name).join(','), category.description],
       item: category,
     };
   });
-  return [];
 }
 
 export function ChatbotCategoriesTable(props: { space: SpaceWithIntegrationsFragment }) {

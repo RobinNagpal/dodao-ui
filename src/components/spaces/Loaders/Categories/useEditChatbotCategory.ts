@@ -13,6 +13,12 @@ import { v4 } from 'uuid';
 export interface ChatbotCategoryInputType extends Omit<UpsertChatbotCategoryInput, 'id'> {
   id?: string;
 }
+
+export interface ChatbotSubCategoryHelperFunctions {
+  deleteSubCategory: (subCategoryKey: string) => void;
+  isSubCategoryValid: (subCategory: UpsertChatbotSubcategoryInput) => boolean;
+  upsertChatbotSubCategory: (subCategory: UpsertChatbotSubcategoryInput) => void;
+}
 export function useEditChatbotCategory(spaceId: string, categoryId?: string) {
   const { showNotification } = useNotificationContext();
 
@@ -50,11 +56,11 @@ export function useEditChatbotCategory(spaceId: string, categoryId?: string) {
   function upsertChatbotSubCategory(subCategory: UpsertChatbotSubcategoryInput) {
     setChatbotCategory((prev) => ({
       ...prev,
-      subcategories: [...prev.subCategories.filter((s) => s.key !== subCategory.key), subCategory],
+      subCategories: [...prev.subCategories.filter((s) => s.key !== subCategory.key), subCategory],
     }));
   }
 
-  async function upsertChatbotCategory() {
+  async function upsertChatbotCategory(): Promise<void> {
     try {
       setUpserting(true);
       await upsertChatbotCategoryMutation({
@@ -73,10 +79,36 @@ export function useEditChatbotCategory(spaceId: string, categoryId?: string) {
     }
   }
 
+  function deleteSubCategory(subCategoryKey: string) {
+    setChatbotCategory((prev) => ({
+      ...prev,
+      subCategories: prev.subCategories.filter((s) => s.key !== subCategoryKey),
+    }));
+  }
+
+  function isSubCategoryValid(subCategory: UpsertChatbotSubcategoryInput) {
+    const allFieldsPresent = subCategory.key && subCategory.name && subCategory.description;
+    if (!allFieldsPresent) return false;
+
+    const isKeyUnique = !chatbotCategory.subCategories.find((s) => s.key === subCategory.key);
+    const isNameUnique = !chatbotCategory.subCategories.find((s) => s.name === subCategory.name);
+    const isKeyValid = /^[a-z0-9]+$/i.test(subCategory.key);
+    const isNameLengthValid = subCategory.name.length <= 30 && subCategory.name.length <= 30;
+    const isDescriptionLengthValid = subCategory.description.length <= 100;
+
+    return isKeyUnique && isNameUnique && isKeyValid && isNameLengthValid && isDescriptionLengthValid;
+  }
+
+  const subCategoryHelperFunctions: ChatbotSubCategoryHelperFunctions = {
+    deleteSubCategory,
+    isSubCategoryValid,
+    upsertChatbotSubCategory,
+  };
+
   return {
     chatbotCategory,
     setChatbotCategoryField,
-    upsertChatbotSubCategory,
+    subCategoryHelperFunctions,
     upsertChatbotCategory,
     upserting,
   };

@@ -13,7 +13,7 @@ interface UpsertChatbotCategoryProps {
 }
 
 export default function UpsertChatbotCategory(props: UpsertChatbotCategoryProps) {
-  const { chatbotCategory, setChatbotCategoryField, upsertChatbotSubCategory, upsertChatbotCategory, upserting } = useEditChatbotCategory(
+  const { chatbotCategory, setChatbotCategoryField, subCategoryHelperFunctions, upsertChatbotCategory, upserting } = useEditChatbotCategory(
     props.space.id,
     props.categoryId
   );
@@ -35,10 +35,10 @@ export default function UpsertChatbotCategory(props: UpsertChatbotCategoryProps)
           modelValue={chatbotCategory.description}
           onUpdate={(value) => setChatbotCategoryField('description', value?.toString() || '')}
         />
-        <Input label="Priority" number modelValue={chatbotCategory.description} onUpdate={(value) => setChatbotCategoryField('priority', value || 0)} />
+        <Input label="Priority" number modelValue={chatbotCategory.priority} onUpdate={(value) => setChatbotCategoryField('priority', value || 0)} />
       </div>
       <div className="pb-16 pt-8">
-        <ChatbotSubCategoriesTable subCategories={chatbotCategory.subCategories} upsertChatbotSubCategory={upsertChatbotSubCategory} />
+        <ChatbotSubCategoriesTable subCategories={chatbotCategory.subCategories} subCategoryHelperFunctions={subCategoryHelperFunctions} />
       </div>
       <div className="flex pt-8">
         <Button

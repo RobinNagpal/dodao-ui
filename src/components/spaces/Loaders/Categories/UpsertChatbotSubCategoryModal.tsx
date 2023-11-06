@@ -1,12 +1,13 @@
 import Button from '@/components/core/buttons/Button';
 import Input from '@/components/core/input/Input';
 import FullScreenModal from '@/components/core/modals/FullScreenModal';
+import { ChatbotSubCategoryHelperFunctions } from '@/components/spaces/Loaders/Categories/useEditChatbotCategory';
 import { ChatbotSubCategoryFragment } from '@/graphql/generated/generated-types';
 import React from 'react';
 
 interface UpsertChatbotCategoryModalProps {
   subCategory: ChatbotSubCategoryFragment | null;
-  upsertSubCategory: (subCategory: ChatbotSubCategoryFragment) => void;
+  subCategoryHelperFunctions: ChatbotSubCategoryHelperFunctions;
   open: boolean;
   onClose: () => void;
 }
@@ -58,8 +59,11 @@ export default function UpsertChatbotSubCategoryModal(props: UpsertChatbotCatego
         <Button
           variant="contained"
           primary
-          onClick={() => props.upsertSubCategory(chatbotSubCategory)}
-          disabled={!chatbotSubCategory.key?.trim() || !chatbotSubCategory.description?.trim() || !chatbotSubCategory.name?.trim()}
+          onClick={() => {
+            props.subCategoryHelperFunctions.upsertChatbotSubCategory(chatbotSubCategory);
+            props.onClose();
+          }}
+          disabled={props.subCategoryHelperFunctions.isSubCategoryValid(chatbotSubCategory)}
         >
           Save
         </Button>
