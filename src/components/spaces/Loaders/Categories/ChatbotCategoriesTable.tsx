@@ -1,11 +1,12 @@
 import { EllipsisDropdownItem } from '@/components/core/dropdowns/EllipsisDropdown';
 import { Table, TableRow } from '@/components/core/table/Table';
+import DeleteChatbotCategoryModal from '@/components/spaces/Loaders/Categories/DeleteChatbotCategoryModal';
 import { ChatbotSubView, ChatbotView, getChatbotSubviewUrl } from '@/components/spaces/manageSpaceSubviews';
 import {
   ChatbotCategoryFragment,
+  ChatbotSubCategoryFragment,
   SpaceWithIntegrationsFragment,
   useChatbotCategoriesQuery,
-  WebsiteScrapingInfoFragment,
 } from '@/graphql/generated/generated-types';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
@@ -29,20 +30,21 @@ export function ChatbotCategoriesTable(props: { space: SpaceWithIntegrationsFrag
 
   const router = useRouter();
 
-  const siteScrapingActionItems: EllipsisDropdownItem[] = [
-    {
-      key: 'view',
-      label: 'View',
-    },
+  const categoriesActionItems: EllipsisDropdownItem[] = [
     {
       key: 'edit',
       label: 'Edit',
     },
+    {
+      key: 'delete',
+      label: 'Delete',
+    },
   ];
 
-  const [editChatbotCategory, setEditChatbotCategory] = useState<WebsiteScrapingInfoFragment | null>(null);
-  const [showAddChatbotCategoryModal, setShowAddChatbotCategoryModal] = useState(false);
+  const [editChatbotCategory, setEditChatbotCategory] = React.useState<ChatbotSubCategoryFragment | null>(null);
 
+  const [deleteChatbotCategory, setDeleteChatbotCategory] = React.useState<ChatbotCategoryFragment | null>(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   return (
     <div>
       <Table
@@ -54,15 +56,34 @@ export function ChatbotCategoriesTable(props: { space: SpaceWithIntegrationsFrag
         columnsHeadings={['Id', 'Key', 'Name', 'Sub Categories', 'Description']}
         columnsWidthPercents={[5, 25, 20, 20, 10, 10]}
         actions={{
-          items: siteScrapingActionItems,
+          items: categoriesActionItems,
           onSelect: async (key: string, item: { id: string }) => {
             if (key === 'edit') {
-              setEditChatbotCategory(item as WebsiteScrapingInfoFragment);
-              setShowAddChatbotCategoryModal(true);
+              router.push(getChatbotSubviewUrl(ChatbotView.Categories, ChatbotSubView.CategoriesUpsert, item.id));
+            }
+
+            if (key === 'delete') {
+              const category = categories?.chatbotCategories.find((c) => c.id === item.id);
+              if (category) {
+                setDeleteChatbotCategory(category);
+                setShowDeleteModal(true);
+              }
             }
           },
         }}
       />
+
+      {showDeleteModal && deleteChatbotCategory && (
+        <DeleteChatbotCategoryModal
+          showDeleteModal={showDeleteModal}
+          setShowDeleteModal={(value) => {
+            if (!value) setDeleteChatbotCategory(null);
+            setShowDeleteModal(value);
+          }}
+          spaceId={props.space.id}
+          chatbotCategoryId={deleteChatbotCategory.id}
+        />
+      )}
     </div>
   );
 }

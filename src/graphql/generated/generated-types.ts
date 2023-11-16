@@ -1053,6 +1053,9 @@ export interface Mutation {
   createWebsiteScrapingInfo: WebsiteScrapingInfo;
   deleteAndPullCourseRepo: GitCourse;
   deleteByteCollection: Scalars['Boolean'];
+  deleteChatbotCategory: Scalars['Boolean'];
+  deleteChatbotFAQ: Scalars['Boolean'];
+  deleteChatbotUserQuestion: Scalars['Boolean'];
   deleteGitCourseSubmission: Scalars['Boolean'];
   deleteGuide: Scalars['Boolean'];
   deleteTopic: GitCourse;
@@ -1229,6 +1232,24 @@ export interface MutationDeleteAndPullCourseRepoArgs {
 
 export interface MutationDeleteByteCollectionArgs {
   byteCollectionId: Scalars['String'];
+}
+
+
+export interface MutationDeleteChatbotCategoryArgs {
+  id: Scalars['String'];
+  spaceId: Scalars['String'];
+}
+
+
+export interface MutationDeleteChatbotFaqArgs {
+  id: Scalars['String'];
+  spaceId: Scalars['String'];
+}
+
+
+export interface MutationDeleteChatbotUserQuestionArgs {
+  id: Scalars['String'];
+  spaceId: Scalars['String'];
 }
 
 
@@ -2857,6 +2878,30 @@ export type UpsertChatbotUserQuestionMutationVariables = Exact<{
 
 
 export type UpsertChatbotUserQuestionMutation = { __typename?: 'Mutation', upsertChatbotUserQuestion: { __typename?: 'ChatbotUserQuestion', id: string, spaceId: string, question: string, categories?: Array<{ __typename?: 'ChatbotCategory', name: string, key: string }> | null, subCategories?: Array<{ __typename?: 'ChatbotSubcategory', key: string, name: string }> | null } };
+
+export type DeleteChatbotCategoryMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+  id: Scalars['String'];
+}>;
+
+
+export type DeleteChatbotCategoryMutation = { __typename?: 'Mutation', deleteChatbotCategory: boolean };
+
+export type DeleteChatbotFaqMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+  id: Scalars['String'];
+}>;
+
+
+export type DeleteChatbotFaqMutation = { __typename?: 'Mutation', deleteChatbotFAQ: boolean };
+
+export type DeleteChatbotUserQuestionMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+  id: Scalars['String'];
+}>;
+
+
+export type DeleteChatbotUserQuestionMutation = { __typename?: 'Mutation', deleteChatbotUserQuestion: boolean };
 
 export type TopicSubmissionJsonFragment = { __typename?: 'GitCourseTopicSubmissionJson', uuid: string, topicKey: string, status: string, explanations?: Array<{ __typename?: 'GitCourseExplanationsSubmission', key: string, status: string }> | null, questions?: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, status: string, answers: Array<string> }> | null, readings?: Array<{ __typename?: 'GitCourseReadingsSubmission', uuid: string, status: string, questions?: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, answers: Array<string>, status: string }> | null }> | null, summaries?: Array<{ __typename?: 'GitCourseSummariesSubmission', key: string, status: string }> | null };
 
@@ -5642,6 +5687,102 @@ export function useUpsertChatbotUserQuestionMutation(baseOptions?: Apollo.Mutati
 export type UpsertChatbotUserQuestionMutationHookResult = ReturnType<typeof useUpsertChatbotUserQuestionMutation>;
 export type UpsertChatbotUserQuestionMutationResult = Apollo.MutationResult<UpsertChatbotUserQuestionMutation>;
 export type UpsertChatbotUserQuestionMutationOptions = Apollo.BaseMutationOptions<UpsertChatbotUserQuestionMutation, UpsertChatbotUserQuestionMutationVariables>;
+export const DeleteChatbotCategoryDocument = gql`
+    mutation DeleteChatbotCategory($spaceId: String!, $id: String!) {
+  deleteChatbotCategory(spaceId: $spaceId, id: $id)
+}
+    `;
+export type DeleteChatbotCategoryMutationFn = Apollo.MutationFunction<DeleteChatbotCategoryMutation, DeleteChatbotCategoryMutationVariables>;
+
+/**
+ * __useDeleteChatbotCategoryMutation__
+ *
+ * To run a mutation, you first call `useDeleteChatbotCategoryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteChatbotCategoryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteChatbotCategoryMutation, { data, loading, error }] = useDeleteChatbotCategoryMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteChatbotCategoryMutation(baseOptions?: Apollo.MutationHookOptions<DeleteChatbotCategoryMutation, DeleteChatbotCategoryMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteChatbotCategoryMutation, DeleteChatbotCategoryMutationVariables>(DeleteChatbotCategoryDocument, options);
+      }
+export type DeleteChatbotCategoryMutationHookResult = ReturnType<typeof useDeleteChatbotCategoryMutation>;
+export type DeleteChatbotCategoryMutationResult = Apollo.MutationResult<DeleteChatbotCategoryMutation>;
+export type DeleteChatbotCategoryMutationOptions = Apollo.BaseMutationOptions<DeleteChatbotCategoryMutation, DeleteChatbotCategoryMutationVariables>;
+export const DeleteChatbotFaqDocument = gql`
+    mutation DeleteChatbotFAQ($spaceId: String!, $id: String!) {
+  deleteChatbotFAQ(spaceId: $spaceId, id: $id)
+}
+    `;
+export type DeleteChatbotFaqMutationFn = Apollo.MutationFunction<DeleteChatbotFaqMutation, DeleteChatbotFaqMutationVariables>;
+
+/**
+ * __useDeleteChatbotFaqMutation__
+ *
+ * To run a mutation, you first call `useDeleteChatbotFaqMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteChatbotFaqMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteChatbotFaqMutation, { data, loading, error }] = useDeleteChatbotFaqMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteChatbotFaqMutation(baseOptions?: Apollo.MutationHookOptions<DeleteChatbotFaqMutation, DeleteChatbotFaqMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteChatbotFaqMutation, DeleteChatbotFaqMutationVariables>(DeleteChatbotFaqDocument, options);
+      }
+export type DeleteChatbotFaqMutationHookResult = ReturnType<typeof useDeleteChatbotFaqMutation>;
+export type DeleteChatbotFaqMutationResult = Apollo.MutationResult<DeleteChatbotFaqMutation>;
+export type DeleteChatbotFaqMutationOptions = Apollo.BaseMutationOptions<DeleteChatbotFaqMutation, DeleteChatbotFaqMutationVariables>;
+export const DeleteChatbotUserQuestionDocument = gql`
+    mutation DeleteChatbotUserQuestion($spaceId: String!, $id: String!) {
+  deleteChatbotUserQuestion(spaceId: $spaceId, id: $id)
+}
+    `;
+export type DeleteChatbotUserQuestionMutationFn = Apollo.MutationFunction<DeleteChatbotUserQuestionMutation, DeleteChatbotUserQuestionMutationVariables>;
+
+/**
+ * __useDeleteChatbotUserQuestionMutation__
+ *
+ * To run a mutation, you first call `useDeleteChatbotUserQuestionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteChatbotUserQuestionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteChatbotUserQuestionMutation, { data, loading, error }] = useDeleteChatbotUserQuestionMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteChatbotUserQuestionMutation(baseOptions?: Apollo.MutationHookOptions<DeleteChatbotUserQuestionMutation, DeleteChatbotUserQuestionMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteChatbotUserQuestionMutation, DeleteChatbotUserQuestionMutationVariables>(DeleteChatbotUserQuestionDocument, options);
+      }
+export type DeleteChatbotUserQuestionMutationHookResult = ReturnType<typeof useDeleteChatbotUserQuestionMutation>;
+export type DeleteChatbotUserQuestionMutationResult = Apollo.MutationResult<DeleteChatbotUserQuestionMutation>;
+export type DeleteChatbotUserQuestionMutationOptions = Apollo.BaseMutationOptions<DeleteChatbotUserQuestionMutation, DeleteChatbotUserQuestionMutationVariables>;
 export const GitCourseSubmissionDocument = gql`
     query GitCourseSubmission($spaceId: String!, $courseKey: String!) {
   payload: gitCourseSubmission(spaceId: $spaceId, courseKey: $courseKey) {

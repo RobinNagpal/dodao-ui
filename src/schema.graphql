@@ -985,6 +985,9 @@ type Mutation {
   createWebsiteScrapingInfo(baseUrl: String!, ignoreHashInUrl: Boolean!, ignoreQueryParams: Boolean!, scrapingStartUrl: String!, spaceId: String!): WebsiteScrapingInfo!
   deleteAndPullCourseRepo(courseKey: String!, spaceId: String!): GitCourse!
   deleteByteCollection(byteCollectionId: String!): Boolean!
+  deleteChatbotCategory(id: String!, spaceId: String!): Boolean!
+  deleteChatbotFAQ(id: String!, spaceId: String!): Boolean!
+  deleteChatbotUserQuestion(id: String!, spaceId: String!): Boolean!
   deleteGitCourseSubmission(courseKey: String!, spaceId: String!): Boolean!
   deleteGuide(spaceId: String!, uuid: String!): Boolean!
   deleteTopic(spaceId: String!, topicInfo: DeleteTopicInput!): GitCourse!

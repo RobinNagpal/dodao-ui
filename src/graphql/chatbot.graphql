@@ -82,3 +82,15 @@ mutation UpsertChatbotUserQuestion($spaceId: String!, $input: UpsertChatbotUserQ
     ...ChatbotUserQuestion
   }
 }
+
+mutation DeleteChatbotCategory($spaceId: String!, $id: String!) {
+  deleteChatbotCategory(spaceId: $spaceId, id: $id)
+}
+
+mutation DeleteChatbotFAQ($spaceId: String!, $id: String!) {
+  deleteChatbotFAQ(spaceId: $spaceId, id: $id)
+}
+
+mutation DeleteChatbotUserQuestion($spaceId: String!, $id: String!) {
+  deleteChatbotUserQuestion(spaceId: $spaceId, id: $id)
+}

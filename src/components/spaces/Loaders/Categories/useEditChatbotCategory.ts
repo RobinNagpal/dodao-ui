@@ -4,6 +4,7 @@ import {
   UpsertChatbotCategoryInput,
   UpsertChatbotSubcategoryInput,
   useChatbotCategoriesQuery,
+  useDeleteChatbotCategoryMutation,
   useUpsertChatbotCategoryMutation,
 } from '@/graphql/generated/generated-types';
 import { useRouter } from 'next/navigation';
@@ -25,6 +26,8 @@ export function useEditChatbotCategory(spaceId: string, categoryId?: string) {
   const [upserting, setUpserting] = useState(false);
   const router = useRouter();
   const [upsertChatbotCategoryMutation] = useUpsertChatbotCategoryMutation();
+  const [deleteChatbotCategoryMutation] = useDeleteChatbotCategoryMutation();
+
   const { data: categories } = useChatbotCategoriesQuery({
     variables: {
       spaceId: spaceId,
@@ -33,7 +36,7 @@ export function useEditChatbotCategory(spaceId: string, categoryId?: string) {
 
   useEffect(() => {
     if (categories?.chatbotCategories) {
-      const category = categories.chatbotCategories.find((c) => c.key === categoryId);
+      const category = categories.chatbotCategories.find((c) => c.id === categoryId);
       if (category) {
         setChatbotCategory(category);
       }
@@ -66,7 +69,18 @@ export function useEditChatbotCategory(spaceId: string, categoryId?: string) {
       await upsertChatbotCategoryMutation({
         variables: {
           spaceId: spaceId,
-          input: chatbotCategory,
+          input: {
+            id: chatbotCategory.id,
+            key: chatbotCategory.key,
+            name: chatbotCategory.name,
+            description: chatbotCategory.description,
+            priority: chatbotCategory.priority,
+            subCategories: chatbotCategory.subCategories.map((s) => ({
+              key: s.key,
+              name: s.name,
+              description: s.description,
+            })),
+          },
         },
         refetchQueries: ['ChatbotCategories'],
       });
@@ -92,11 +106,27 @@ export function useEditChatbotCategory(spaceId: string, categoryId?: string) {
 
     const isKeyUnique = !chatbotCategory.subCategories.find((s) => s.key === subCategory.key);
     const isNameUnique = !chatbotCategory.subCategories.find((s) => s.name === subCategory.name);
-    const isKeyValid = /^[a-z0-9]+$/i.test(subCategory.key);
-    const isNameLengthValid = subCategory.name.length <= 30 && subCategory.name.length <= 30;
+    const isKeyValid = subCategory.key.length <= 30 && subCategory.key.length >= 3;
+    const isNameLengthValid = subCategory.name.length <= 30 && subCategory.name.length <= 3;
     const isDescriptionLengthValid = subCategory.description.length <= 100;
 
     return isKeyUnique && isNameUnique && isKeyValid && isNameLengthValid && isDescriptionLengthValid;
+  }
+
+  async function deleteChatbotCategory(): Promise<void> {
+    try {
+      await deleteChatbotCategoryMutation({
+        variables: {
+          spaceId: spaceId,
+          id: chatbotCategory.id,
+        },
+        refetchQueries: ['ChatbotCategories'],
+      });
+
+      showNotification({ message: 'Delete', type: 'success' });
+    } catch (e) {
+      showNotification({ message: 'Failed to Delete', type: 'error' });
+    }
   }
 
   const subCategoryHelperFunctions: ChatbotSubCategoryHelperFunctions = {
@@ -110,6 +140,7 @@ export function useEditChatbotCategory(spaceId: string, categoryId?: string) {
     setChatbotCategoryField,
     subCategoryHelperFunctions,
     upsertChatbotCategory,
+    deleteChatbotCategory,
     upserting,
   };
 }
