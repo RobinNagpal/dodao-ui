@@ -3525,6 +3525,8 @@ export type SiteScrapingRunFragmentFragment = { __typename?: 'SiteScrapingRun', 
 
 export type ScrapedUrlInfoFragmentFragment = { __typename?: 'ScrapedUrlInfo', id: string, websiteScrapingInfoId: string, url: string, text: string, textLength: number, createdAt: any, updatedAt: any };
 
+export type DiscoursePostFragment = { __typename?: 'DiscoursePost', id: string, spaceId: string, title: string, url: string, fullContent?: string | null, author?: string | null, datePublished: any, createdAt: any, indexedAt?: any | null, status: string, categories: Array<string>, subCategories: Array<string>, enacted?: boolean | null, discussed?: boolean | null };
+
 export type DiscourseIndexRunsQueryVariables = Exact<{
   spaceId: Scalars['String'];
 }>;
@@ -3701,6 +3703,14 @@ export type EditArticleIndexingInfoMutationVariables = Exact<{
 
 
 export type EditArticleIndexingInfoMutation = { __typename?: 'Mutation', editArticleIndexingInfo: { __typename?: 'ArticleIndexingInfo', id: string, spaceId: string, articleUrl: string, createdAt: any, updatedAt: any, status: string, text?: string | null, textLength?: number | null } };
+
+export type AnnotateDiscoursePostMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+  input: AnnotateDiscoursePostInput;
+}>;
+
+
+export type AnnotateDiscoursePostMutation = { __typename?: 'Mutation', annotateDiscoursePost: { __typename?: 'DiscoursePost', id: string, spaceId: string, title: string, url: string, fullContent?: string | null, author?: string | null, datePublished: any, createdAt: any, indexedAt?: any | null, status: string, categories: Array<string>, subCategories: Array<string>, enacted?: boolean | null, discussed?: boolean | null } };
 
 export type GuideSettingsFragment = { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null };
 
@@ -4699,6 +4709,24 @@ export const ScrapedUrlInfoFragmentFragmentDoc = gql`
   textLength
   createdAt
   updatedAt
+}
+    `;
+export const DiscoursePostFragmentDoc = gql`
+    fragment DiscoursePost on DiscoursePost {
+  id
+  spaceId
+  title
+  url
+  fullContent
+  author
+  datePublished
+  createdAt
+  indexedAt
+  status
+  categories
+  subCategories
+  enacted
+  discussed
 }
     `;
 export const GuideSettingsFragmentDoc = gql`
@@ -8429,23 +8457,10 @@ export function refetchDiscourseIndexRunsQuery(variables: DiscourseIndexRunsQuer
 export const DiscoursePostsDocument = gql`
     query DiscoursePosts($spaceId: String!) {
   discoursePosts(spaceId: $spaceId) {
-    id
-    spaceId
-    title
-    url
-    fullContent
-    author
-    datePublished
-    createdAt
-    indexedAt
-    status
-    categories
-    subCategories
-    enacted
-    discussed
+    ...DiscoursePost
   }
 }
-    `;
+    ${DiscoursePostFragmentDoc}`;
 
 /**
  * __useDiscoursePostsQuery__
@@ -9248,6 +9263,40 @@ export function useEditArticleIndexingInfoMutation(baseOptions?: Apollo.Mutation
 export type EditArticleIndexingInfoMutationHookResult = ReturnType<typeof useEditArticleIndexingInfoMutation>;
 export type EditArticleIndexingInfoMutationResult = Apollo.MutationResult<EditArticleIndexingInfoMutation>;
 export type EditArticleIndexingInfoMutationOptions = Apollo.BaseMutationOptions<EditArticleIndexingInfoMutation, EditArticleIndexingInfoMutationVariables>;
+export const AnnotateDiscoursePostDocument = gql`
+    mutation AnnotateDiscoursePost($spaceId: String!, $input: AnnotateDiscoursePostInput!) {
+  annotateDiscoursePost(spaceId: $spaceId, input: $input) {
+    ...DiscoursePost
+  }
+}
+    ${DiscoursePostFragmentDoc}`;
+export type AnnotateDiscoursePostMutationFn = Apollo.MutationFunction<AnnotateDiscoursePostMutation, AnnotateDiscoursePostMutationVariables>;
+
+/**
+ * __useAnnotateDiscoursePostMutation__
+ *
+ * To run a mutation, you first call `useAnnotateDiscoursePostMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAnnotateDiscoursePostMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [annotateDiscoursePostMutation, { data, loading, error }] = useAnnotateDiscoursePostMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAnnotateDiscoursePostMutation(baseOptions?: Apollo.MutationHookOptions<AnnotateDiscoursePostMutation, AnnotateDiscoursePostMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AnnotateDiscoursePostMutation, AnnotateDiscoursePostMutationVariables>(AnnotateDiscoursePostDocument, options);
+      }
+export type AnnotateDiscoursePostMutationHookResult = ReturnType<typeof useAnnotateDiscoursePostMutation>;
+export type AnnotateDiscoursePostMutationResult = Apollo.MutationResult<AnnotateDiscoursePostMutation>;
+export type AnnotateDiscoursePostMutationOptions = Apollo.BaseMutationOptions<AnnotateDiscoursePostMutation, AnnotateDiscoursePostMutationVariables>;
 export const SpacesDocument = gql`
     query Spaces {
   spaces {

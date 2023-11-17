@@ -78,6 +78,23 @@ fragment ScrapedUrlInfoFragment on ScrapedUrlInfo {
   updatedAt
 }
 
+fragment DiscoursePost on DiscoursePost {
+  id
+  spaceId
+  title
+  url
+  fullContent
+  author
+  datePublished
+  createdAt
+  indexedAt
+  status
+  categories
+  subCategories
+  enacted
+  discussed
+}
+
 query DiscourseIndexRuns($spaceId: String!) {
   discourseIndexRuns(spaceId: $spaceId) {
     ...DiscourseIndexRunFragment
@@ -86,20 +103,7 @@ query DiscourseIndexRuns($spaceId: String!) {
 
 query DiscoursePosts($spaceId: String!) {
   discoursePosts(spaceId: $spaceId) {
-    id
-    spaceId
-    title
-    url
-    fullContent
-    author
-    datePublished
-    createdAt
-    indexedAt
-    status
-    categories
-    subCategories
-    enacted
-    discussed
+    ...DiscoursePost
   }
 }
 
@@ -252,5 +256,11 @@ mutation CreateArticleIndexingInfo($spaceId: String!, $articleUrl: String!) {
 mutation EditArticleIndexingInfo($spaceId: String!, $articleIndexingInfoId: String!, $articleUrl: String!) {
   editArticleIndexingInfo(spaceId: $spaceId, articleIndexingInfoId: $articleIndexingInfoId, articleUrl: $articleUrl) {
     ...ArticleIndexingInfo
+  }
+}
+
+mutation AnnotateDiscoursePost($spaceId: String!, $input: AnnotateDiscoursePostInput!) {
+  annotateDiscoursePost(spaceId: $spaceId, input: $input) {
+    ...DiscoursePost
   }
 }
