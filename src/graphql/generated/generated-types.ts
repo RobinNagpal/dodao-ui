@@ -87,6 +87,15 @@ export interface AddTopicVideoInput {
   url: Scalars['String'];
 }
 
+export interface AnnotateDiscoursePostInput {
+  categories: Array<Scalars['String']>;
+  discussed?: InputMaybe<Scalars['Boolean']>;
+  enacted?: InputMaybe<Scalars['Boolean']>;
+  postId: Scalars['String'];
+  spaceId: Scalars['String'];
+  subCategories: Array<Scalars['String']>;
+}
+
 export interface ArticleIndexingInfo {
   __typename?: 'ArticleIndexingInfo';
   articleUrl: Scalars['String'];
@@ -464,13 +473,17 @@ export interface DiscourseIndexRun {
 export interface DiscoursePost {
   __typename?: 'DiscoursePost';
   author?: Maybe<Scalars['String']>;
+  categories: Array<Scalars['String']>;
   createdAt: Scalars['DateTimeISO'];
   datePublished: Scalars['DateTimeISO'];
+  discussed?: Maybe<Scalars['Boolean']>;
+  enacted?: Maybe<Scalars['Boolean']>;
   fullContent?: Maybe<Scalars['String']>;
   id: Scalars['String'];
   indexedAt?: Maybe<Scalars['DateTimeISO']>;
   spaceId: Scalars['String'];
   status: Scalars['String'];
+  subCategories: Array<Scalars['String']>;
   title: Scalars['String'];
   url: Scalars['String'];
 }
@@ -1042,6 +1055,7 @@ export interface Mutation {
   addTopicQuestions: Array<GitCourseQuestion>;
   addTopicSummary: GitCourseSummary;
   addTopicVideo: GitCourseReading;
+  annotateDiscoursePost: DiscoursePost;
   askChatCompletionAI: OpenAiChatCompletionResponse;
   askCompletionAI: OpenAiCompletionResponse;
   authenticateWithUnstoppable: JwtResponse;
@@ -1170,6 +1184,12 @@ export interface MutationAddTopicSummaryArgs {
 export interface MutationAddTopicVideoArgs {
   spaceId: Scalars['String'];
   videoInfo: AddTopicVideoInput;
+}
+
+
+export interface MutationAnnotateDiscoursePostArgs {
+  input: AnnotateDiscoursePostInput;
+  spaceId: Scalars['String'];
 }
 
 
@@ -3517,7 +3537,7 @@ export type DiscoursePostsQueryVariables = Exact<{
 }>;
 
 
-export type DiscoursePostsQuery = { __typename?: 'Query', discoursePosts: Array<{ __typename?: 'DiscoursePost', id: string, spaceId: string, title: string, url: string, fullContent?: string | null, author?: string | null, datePublished: any, createdAt: any, indexedAt?: any | null, status: string }> };
+export type DiscoursePostsQuery = { __typename?: 'Query', discoursePosts: Array<{ __typename?: 'DiscoursePost', id: string, spaceId: string, title: string, url: string, fullContent?: string | null, author?: string | null, datePublished: any, createdAt: any, indexedAt?: any | null, status: string, categories: Array<string>, subCategories: Array<string>, enacted?: boolean | null, discussed?: boolean | null }> };
 
 export type DiscoursePostCommentsQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -8419,6 +8439,10 @@ export const DiscoursePostsDocument = gql`
     createdAt
     indexedAt
     status
+    categories
+    subCategories
+    enacted
+    discussed
   }
 }
     `;

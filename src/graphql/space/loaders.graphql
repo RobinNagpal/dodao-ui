@@ -96,6 +96,10 @@ query DiscoursePosts($spaceId: String!) {
     createdAt
     indexedAt
     status
+    categories
+    subCategories
+    enacted
+    discussed
   }
 }
 

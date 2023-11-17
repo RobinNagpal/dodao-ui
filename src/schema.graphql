@@ -67,6 +67,15 @@ input AddTopicVideoInput {
   url: String!
 }
 
+input AnnotateDiscoursePostInput {
+  categories: [String!]!
+  discussed: Boolean
+  enacted: Boolean
+  postId: String!
+  spaceId: String!
+  subCategories: [String!]!
+}
+
 scalar Any
 
 type ArticleIndexingInfo {
@@ -424,13 +433,17 @@ type DiscourseIndexRun {
 
 type DiscoursePost {
   author: String
+  categories: [String!]!
   createdAt: DateTimeISO!
   datePublished: DateTimeISO!
+  discussed: Boolean
+  enacted: Boolean
   fullContent: String
   id: String!
   indexedAt: DateTimeISO
   spaceId: String!
   status: String!
+  subCategories: [String!]!
   title: String!
   url: String!
 }
@@ -974,6 +987,7 @@ type Mutation {
   addTopicQuestions(input: AddTopicQuestionsInput!, spaceId: String!): [GitCourseQuestion!]!
   addTopicSummary(spaceId: String!, summaryInfo: AddTopicSummaryInput!): GitCourseSummary!
   addTopicVideo(spaceId: String!, videoInfo: AddTopicVideoInput!): GitCourseReading!
+  annotateDiscoursePost(input: AnnotateDiscoursePostInput!, spaceId: String!): DiscoursePost!
   askChatCompletionAI(input: ChatCompletionAIInput!): OpenAIChatCompletionResponse!
   askCompletionAI(input: CompletionAIInput!): OpenAICompletionResponse!
   authenticateWithUnstoppable(idToken: String!): JwtResponse!
