@@ -26,6 +26,7 @@ export interface TableProps {
   actions?: TableActions;
   noDataText?: string;
   className?: string;
+  breakCellText?: boolean;
 }
 
 const Heading = styled.h1`
@@ -103,7 +104,7 @@ export function Table(props: TableProps) {
                             {cell}
                           </FirstColumnCell>
                         ) : (
-                          <TableCell key={index} className="px-3 py-2 break-all">
+                          <TableCell key={index} className={`px-3 py-2 ${props.breakCellText ? 'break-all' : ''}`}>
                             {cell}
                           </TableCell>
                         );

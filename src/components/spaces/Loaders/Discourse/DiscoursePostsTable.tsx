@@ -13,9 +13,16 @@ function getIndexRunRows(discoursePosts: DiscoursePost[]): TableRow[] {
   return discoursePosts.map((post: DiscoursePost): TableRow => {
     const datePublished = moment(new Date(post.datePublished)).local().format('YYYY/MM/DD HH:mm');
     const indexedAt = post.indexedAt ? moment(new Date(post.indexedAt)).local().format('YYYY/MM/DD HH:mm') : '-';
+    const annotation = `
+Enacted: ${post.enacted ? 'Yes' : 'No'} \n
+Discussed: ${post.discussed ? 'Yes' : 'No'} \n
+Categories: ${post.categories?.join(', ') || '-'} \n
+SubCategories: ${post.subCategories?.join(', ') || '-'} \n
+    
+`;
     return {
       id: post.id,
-      columns: [post.id.substring(0, 6), post.title, post.url, datePublished, indexedAt, post.status],
+      columns: [post.title, post.url, annotation, datePublished, indexedAt, post.status],
       item: post,
     };
   });
@@ -59,8 +66,8 @@ export default function DiscoursePostsTable(props: { space: SpaceWithIntegration
       <Table
         heading={'Discourse Posts'}
         data={getIndexRunRows(discoursePosts)}
-        columnsHeadings={['Id', 'Title', 'Url', 'Post Date', 'Indexed At', 'Status']}
-        columnsWidthPercents={[5, 25, 20, 10, 10, 10, 10, 10]}
+        columnsHeadings={['Title', 'Url', 'Annotations', 'Post Date', 'Indexed At', 'Status']}
+        columnsWidthPercents={[25, 20, 20, 10, 10, 10]}
         actions={{
           items: actionItems,
           onSelect: async (key: string, item: DiscoursePost) => {
