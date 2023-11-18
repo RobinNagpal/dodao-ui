@@ -13,13 +13,14 @@ function getIndexRunRows(discoursePosts: DiscoursePost[]): TableRow[] {
   return discoursePosts.map((post: DiscoursePost): TableRow => {
     const datePublished = moment(new Date(post.datePublished)).local().format('YYYY/MM/DD HH:mm');
     const indexedAt = post.indexedAt ? moment(new Date(post.indexedAt)).local().format('YYYY/MM/DD HH:mm') : '-';
-    const annotation = `
-Enacted: ${post.enacted ? 'Yes' : 'No'} \n
-Discussed: ${post.discussed ? 'Yes' : 'No'} \n
-Categories: ${post.categories?.join(', ') || '-'} \n
-SubCategories: ${post.subCategories?.join(', ') || '-'} \n
-    
-`;
+    const annotation = (
+      <div>
+        Enacted: {post.enacted ? 'Yes' : 'No'} <br />
+        Discussed: {post.discussed ? 'Yes' : 'No'} <br />
+        Categories: {post.categories?.join(', ') || '-'} <br />
+        SubCategories: {post.subCategories?.join(', ') || '-'} <br />
+      </div>
+    );
     return {
       id: post.id,
       columns: [post.title, post.url, annotation, datePublished, indexedAt, post.status],

@@ -17,15 +17,24 @@ const CategoryCheckboxes: React.FC<CategoryCheckboxesProps> = ({
   selectedCategories,
   selectedSubCategories,
 }) => {
-  const handleCategoryChange = (selectedItemKeys: string[]) => {
-    setSelectedCategories(selectedItemKeys);
-    const newSelectedSubCategories =
-      selectedItemKeys.length > 0
-        ? categories
-            .filter((category) => selectedItemKeys.includes(category.key))
-            .flatMap((category) => category.subCategories.map((subCategory) => subCategory.key))
-        : [];
-    setSelectedSubCategories(newSelectedSubCategories);
+  const handleCategorySelectionChange = (categoryKey: string) => {
+    const isSelected = !selectedCategories.includes(categoryKey);
+
+    if (isSelected) {
+      setSelectedCategories([...selectedCategories, categoryKey]);
+      const newSelectedSubCategories = [...selectedSubCategories, ...subCategoryItems(categoryKey).map((item) => item.id)];
+      setSelectedSubCategories(newSelectedSubCategories);
+    } else {
+      setSelectedCategories(selectedCategories.filter((key) => key !== categoryKey));
+      setSelectedSubCategories([
+        ...selectedSubCategories.filter(
+          (key) =>
+            !subCategoryItems(categoryKey)
+              .map((item) => item.id)
+              .includes(key)
+        ),
+      ]);
+    }
   };
 
   const handleSubCategoryChange = (categoryId: string, selectedItemKeys: string[]) => {
@@ -69,7 +78,7 @@ const CategoryCheckboxes: React.FC<CategoryCheckboxesProps> = ({
               ]}
               className="mt-0"
               selectedItemIds={selectedCategories}
-              onChange={handleCategoryChange}
+              onChange={(items) => handleCategorySelectionChange(category.key)}
             />
             {category.subCategories.length > 0 && (
               <div key={category.key} className="ml-6">
