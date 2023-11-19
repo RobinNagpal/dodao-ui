@@ -68,10 +68,16 @@ const getNavigation = (space: SpaceWithIntegrationsFragment, subView?: string, s
         current: subSubView === ChatbotSubView.GithubInfo,
       },
       {
-        name: 'FAQ',
+        name: 'FAQs',
         href: chatbotBaseUrl + '/' + ChatbotView.FAQs + '/' + ChatbotSubView.FAQsInfo,
         icon: QuestionMarkCircleIcon,
         current: subSubView === ChatbotSubView.FAQsInfo,
+      },
+      {
+        name: 'User Questions',
+        href: chatbotBaseUrl + '/' + ChatbotView.UserQuestions + '/' + ChatbotSubView.UserQuestionsInfo,
+        icon: QuestionMarkCircleIcon,
+        current: subSubView === ChatbotSubView.UserQuestionsInfo,
       },
       {
         name: 'Categories',

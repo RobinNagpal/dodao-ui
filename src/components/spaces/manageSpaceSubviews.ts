@@ -13,6 +13,7 @@ export enum ChatbotView {
   Discord = 'discord',
   WebsiteScraping = 'website-scraping',
   FAQs = 'faqs',
+  UserQuestions = 'user-questions',
   Github = 'github',
   Categories = 'categories',
 }
@@ -30,6 +31,8 @@ export enum ChatbotSubView {
   WebsiteScrapingURLInfos = 'website-scraping-url-infos',
 
   FAQsInfo = 'faqs-info',
+
+  UserQuestionsInfo = 'user-questions-info',
 
   GithubInfo = 'github-info',
 

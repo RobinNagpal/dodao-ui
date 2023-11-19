@@ -11,6 +11,7 @@ import DiscourseIndexRuns from '@/components/spaces/Loaders/Discourse/DiscourseI
 import DiscourseInfo from '@/components/spaces/Loaders/Discourse/DiscourseInfo';
 import DiscoursePostComments from '@/components/spaces/Loaders/Discourse/DiscoursePostComments';
 import { ChatbotFAQsTable } from '@/components/spaces/Loaders/FAQs/ChatbotFAQsTable';
+import { ChatbotUserQuestionsTable } from '@/components/spaces/Loaders/UserQuestions/ChatbotUserQuestionsTable';
 import WebsiteScrapedURLInfosTable from '@/components/spaces/Loaders/WebsiteScrape/WebsiteScrapedURLInfosTable';
 import { ChatbotSubView, ChatbotView, getChatbotSubviewUrl, ManageSpaceSubviews } from '@/components/spaces/manageSpaceSubviews';
 import { useNotificationContext } from '@/contexts/NotificationContext';
@@ -156,6 +157,10 @@ export default function AllLoaders(props: { space: SpaceWithIntegrationsFragment
 
   if (loaderSubview === ChatbotSubView.FAQsInfo) {
     return <ChatbotFAQsTable space={props.space} />;
+  }
+
+  if (loaderSubview === ChatbotSubView.UserQuestionsInfo) {
+    return <ChatbotUserQuestionsTable space={props.space} />;
   }
 
   if (loaderSubview === ChatbotSubView.DiscourseIndexRuns) {

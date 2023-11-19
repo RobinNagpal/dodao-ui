@@ -64,7 +64,7 @@ export default function UpsertChatbotFAQModal({
   };
 
   return (
-    <FullScreenModal open={open} onClose={onClose} title="Annotate Discourse Post">
+    <FullScreenModal open={open} onClose={onClose} title="Chatbot FAQs">
       <div className="ml-6 p-4 text-left">
         <div className="mb-6">Upsert Chatbot FAQ</div>
         <div className="my-4">
