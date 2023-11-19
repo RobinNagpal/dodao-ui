@@ -3,6 +3,7 @@ import Button from '@/components/core/buttons/Button';
 import Input from '@/components/core/input/Input';
 import FullScreenModal from '@/components/core/modals/FullScreenModal';
 import CategoryCheckboxes from '@/components/spaces/Loaders/Discourse/CategoryCheckboxes';
+import { useNotificationContext } from '@/contexts/NotificationContext';
 import { ChatbotFaqFragment, SpaceWithIntegrationsFragment, useChatbotCategoriesQuery, useUpsertChatbotFaqMutation } from '@/graphql/generated/generated-types';
 import React, { useEffect, useState } from 'react';
 import { v4 } from 'uuid';
@@ -33,6 +34,7 @@ export default function UpsertChatbotFAQModal({
   const [question, setQuestion] = useState<string>(faq?.question || '');
   const [answer, setAnswer] = useState<string>(faq?.answer || '');
   const [priority, setPriority] = useState<number>(faq?.priority || 50);
+  const { showNotification } = useNotificationContext();
 
   useEffect(() => {
     setSelectedCategories(faq?.categories || []);
@@ -58,6 +60,7 @@ export default function UpsertChatbotFAQModal({
     });
     onClose();
     setUpserting(false);
+    showNotification({ message: 'FAQ upserted', type: 'success' });
   };
 
   return (

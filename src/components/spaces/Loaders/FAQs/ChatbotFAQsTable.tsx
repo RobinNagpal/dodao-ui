@@ -1,8 +1,10 @@
+import DeleteConfirmationModal from '@/components/app/Modal/DeleteConfirmationModal';
 import { EllipsisDropdownItem } from '@/components/core/dropdowns/EllipsisDropdown';
 import { Table, TableRow } from '@/components/core/table/Table';
 import UpsertChatbotFAQModal from '@/components/spaces/Loaders/FAQs/UpsertChatbotFAQModal';
-import { ChatbotFaqFragment, SpaceWithIntegrationsFragment, useChatbotFaQsQuery, WebsiteScrapingInfoFragment } from '@/graphql/generated/generated-types';
+import { ChatbotFaqFragment, SpaceWithIntegrationsFragment, useChatbotFaQsQuery, useDeleteChatbotFaqMutation } from '@/graphql/generated/generated-types';
 import React, { useState } from 'react';
+import { useNotificationContext } from '@/contexts/NotificationContext';
 
 function getFAQsTable(faqs: ChatbotFaqFragment[]): TableRow[] {
   return faqs.map((faq: ChatbotFaqFragment): TableRow => {
@@ -26,11 +28,17 @@ export function ChatbotFAQsTable(props: { space: SpaceWithIntegrationsFragment }
       key: 'edit',
       label: 'Edit',
     },
+    {
+      key: 'delete',
+      label: 'Delete',
+    },
   ];
 
   const [editChatbotFAQ, setEditChatbotFAQ] = useState<ChatbotFaqFragment | null>(null);
   const [showAddChatbotFAQModal, setShowAddChatbotFAQModal] = useState(false);
-
+  const [deleteChatbotFAQ, setDeleteChatbotFAQ] = useState<ChatbotFaqFragment | null>(null);
+  const [deleteChatbotFaqMutation] = useDeleteChatbotFaqMutation();
+  const { showNotification } = useNotificationContext();
   return (
     <>
       <Table
@@ -50,6 +58,9 @@ export function ChatbotFAQsTable(props: { space: SpaceWithIntegrationsFragment }
               setEditChatbotFAQ(item);
               setShowAddChatbotFAQModal(true);
             }
+            if (key === 'delete') {
+              setDeleteChatbotFAQ(item);
+            }
           },
         }}
         breakCellText={true}
@@ -63,6 +74,24 @@ export function ChatbotFAQsTable(props: { space: SpaceWithIntegrationsFragment }
             setShowAddChatbotFAQModal(false);
           }}
           faq={editChatbotFAQ}
+        />
+      )}
+      {deleteChatbotFAQ && (
+        <DeleteConfirmationModal
+          title={'Delete FAQ'}
+          open={!!deleteChatbotFAQ}
+          onClose={() => setDeleteChatbotFAQ(null)}
+          onDelete={async () => {
+            await deleteChatbotFaqMutation({
+              variables: {
+                spaceId: props.space.id,
+                id: deleteChatbotFAQ?.id,
+              },
+              refetchQueries: ['ChatbotFAQs'],
+            });
+            showNotification({ message: 'FAQ deleted', type: 'success' });
+            setDeleteChatbotFAQ(null);
+          }}
         />
       )}
     </>
