@@ -281,12 +281,12 @@ export interface ChatbotCategory {
 export interface ChatbotFaq {
   __typename?: 'ChatbotFAQ';
   answer: Scalars['String'];
-  categories?: Maybe<Array<ChatbotCategory>>;
+  categories?: Maybe<Array<Scalars['String']>>;
   id: Scalars['String'];
   priority: Scalars['Int'];
   question: Scalars['String'];
   spaceId: Scalars['String'];
-  subCategories?: Maybe<Array<ChatbotSubcategory>>;
+  subCategories?: Maybe<Array<Scalars['String']>>;
 }
 
 export interface ChatbotSubcategory {
@@ -298,11 +298,11 @@ export interface ChatbotSubcategory {
 
 export interface ChatbotUserQuestion {
   __typename?: 'ChatbotUserQuestion';
-  categories?: Maybe<Array<ChatbotCategory>>;
+  categories?: Maybe<Array<Scalars['String']>>;
   id: Scalars['String'];
   question: Scalars['String'];
   spaceId: Scalars['String'];
-  subCategories?: Maybe<Array<ChatbotSubcategory>>;
+  subCategories?: Maybe<Array<Scalars['String']>>;
 }
 
 export interface CompletionAiInput {
@@ -2850,9 +2850,9 @@ export type ChatbotSubCategoryFragment = { __typename?: 'ChatbotSubcategory', na
 
 export type ChatbotCategoryFragment = { __typename?: 'ChatbotCategory', id: string, priority: number, description: string, key: string, name: string, subCategories: Array<{ __typename?: 'ChatbotSubcategory', name: string, key: string, description: string }> };
 
-export type ChatbotFaqFragment = { __typename?: 'ChatbotFAQ', id: string, spaceId: string, question: string, answer: string, priority: number, categories?: Array<{ __typename?: 'ChatbotCategory', name: string, key: string }> | null, subCategories?: Array<{ __typename?: 'ChatbotSubcategory', key: string, name: string }> | null };
+export type ChatbotFaqFragment = { __typename?: 'ChatbotFAQ', id: string, spaceId: string, question: string, answer: string, categories?: Array<string> | null, subCategories?: Array<string> | null, priority: number };
 
-export type ChatbotUserQuestionFragment = { __typename?: 'ChatbotUserQuestion', id: string, spaceId: string, question: string, categories?: Array<{ __typename?: 'ChatbotCategory', name: string, key: string }> | null, subCategories?: Array<{ __typename?: 'ChatbotSubcategory', key: string, name: string }> | null };
+export type ChatbotUserQuestionFragment = { __typename?: 'ChatbotUserQuestion', id: string, spaceId: string, question: string, categories?: Array<string> | null, subCategories?: Array<string> | null };
 
 export type ChatbotCategoriesQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -2866,14 +2866,14 @@ export type ChatbotFaQsQueryVariables = Exact<{
 }>;
 
 
-export type ChatbotFaQsQuery = { __typename?: 'Query', chatbotFAQs: Array<{ __typename?: 'ChatbotFAQ', id: string, spaceId: string, question: string, answer: string, priority: number, categories?: Array<{ __typename?: 'ChatbotCategory', name: string, key: string }> | null, subCategories?: Array<{ __typename?: 'ChatbotSubcategory', key: string, name: string }> | null }> };
+export type ChatbotFaQsQuery = { __typename?: 'Query', chatbotFAQs: Array<{ __typename?: 'ChatbotFAQ', id: string, spaceId: string, question: string, answer: string, categories?: Array<string> | null, subCategories?: Array<string> | null, priority: number }> };
 
 export type ChatbotUserQuestionsQueryVariables = Exact<{
   spaceId: Scalars['String'];
 }>;
 
 
-export type ChatbotUserQuestionsQuery = { __typename?: 'Query', chatbotUserQuestions: Array<{ __typename?: 'ChatbotUserQuestion', id: string, spaceId: string, question: string, categories?: Array<{ __typename?: 'ChatbotCategory', name: string, key: string }> | null, subCategories?: Array<{ __typename?: 'ChatbotSubcategory', key: string, name: string }> | null }> };
+export type ChatbotUserQuestionsQuery = { __typename?: 'Query', chatbotUserQuestions: Array<{ __typename?: 'ChatbotUserQuestion', id: string, spaceId: string, question: string, categories?: Array<string> | null, subCategories?: Array<string> | null }> };
 
 export type UpsertChatbotCategoryMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -2889,7 +2889,7 @@ export type UpsertChatbotFaqMutationVariables = Exact<{
 }>;
 
 
-export type UpsertChatbotFaqMutation = { __typename?: 'Mutation', upsertChatbotFAQ: { __typename?: 'ChatbotFAQ', id: string, spaceId: string, question: string, answer: string, priority: number, categories?: Array<{ __typename?: 'ChatbotCategory', name: string, key: string }> | null, subCategories?: Array<{ __typename?: 'ChatbotSubcategory', key: string, name: string }> | null } };
+export type UpsertChatbotFaqMutation = { __typename?: 'Mutation', upsertChatbotFAQ: { __typename?: 'ChatbotFAQ', id: string, spaceId: string, question: string, answer: string, categories?: Array<string> | null, subCategories?: Array<string> | null, priority: number } };
 
 export type UpsertChatbotUserQuestionMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -2897,7 +2897,7 @@ export type UpsertChatbotUserQuestionMutationVariables = Exact<{
 }>;
 
 
-export type UpsertChatbotUserQuestionMutation = { __typename?: 'Mutation', upsertChatbotUserQuestion: { __typename?: 'ChatbotUserQuestion', id: string, spaceId: string, question: string, categories?: Array<{ __typename?: 'ChatbotCategory', name: string, key: string }> | null, subCategories?: Array<{ __typename?: 'ChatbotSubcategory', key: string, name: string }> | null } };
+export type UpsertChatbotUserQuestionMutation = { __typename?: 'Mutation', upsertChatbotUserQuestion: { __typename?: 'ChatbotUserQuestion', id: string, spaceId: string, question: string, categories?: Array<string> | null, subCategories?: Array<string> | null } };
 
 export type DeleteChatbotCategoryMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -4126,14 +4126,8 @@ export const ChatbotFaqFragmentDoc = gql`
   spaceId
   question
   answer
-  categories {
-    name
-    key
-  }
-  subCategories {
-    key
-    name
-  }
+  categories
+  subCategories
   priority
 }
     `;
@@ -4142,14 +4136,8 @@ export const ChatbotUserQuestionFragmentDoc = gql`
   id
   spaceId
   question
-  categories {
-    name
-    key
-  }
-  subCategories {
-    key
-    name
-  }
+  categories
+  subCategories
 }
     `;
 export const TopicCorrectAnswersFragmentDoc = gql`

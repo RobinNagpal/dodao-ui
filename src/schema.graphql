@@ -247,12 +247,12 @@ type ChatbotCategory {
 
 type ChatbotFAQ {
   answer: String!
-  categories: [ChatbotCategory!]
+  categories: [String!]
   id: String!
   priority: Int!
   question: String!
   spaceId: String!
-  subCategories: [ChatbotSubcategory!]
+  subCategories: [String!]
 }
 
 type ChatbotSubcategory {
@@ -262,11 +262,11 @@ type ChatbotSubcategory {
 }
 
 type ChatbotUserQuestion {
-  categories: [ChatbotCategory!]
+  categories: [String!]
   id: String!
   question: String!
   spaceId: String!
-  subCategories: [ChatbotSubcategory!]
+  subCategories: [String!]
 }
 
 input CompletionAIInput {

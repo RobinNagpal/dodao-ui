@@ -22,14 +22,8 @@ fragment ChatbotFAQ on ChatbotFAQ {
   spaceId
   question
   answer
-  categories {
-    name
-    key
-  }
-  subCategories {
-    key
-    name
-  }
+  categories
+  subCategories
   priority
 }
 
@@ -37,14 +31,8 @@ fragment ChatbotUserQuestion on ChatbotUserQuestion {
   id
   spaceId
   question
-  categories {
-    name
-    key
-  }
-  subCategories {
-    key
-    name
-  }
+  categories
+  subCategories
 }
 
 query ChatbotCategories($spaceId: String!) {
