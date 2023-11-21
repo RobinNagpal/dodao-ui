@@ -11,29 +11,3 @@
   padding: 2px;
 }
 
-.chatbotFAQDetails {
-  summary {
-    content: '^';
-    display: flex; /* Use flexbox for alignment */
-    align-items: center; /* Align items vertically in the center */
-    white-space: nowrap; /* Prevents the text from wrapping to a new line */
-    cursor: pointer; /* Indicates that the element is clickable */
-    color: var(--text-color);
-
-    &::marker {
-      margin-right: 5px; /* Adds some space between the marker and the text */
-      color: red; /* Color of the marker, can be adjusted */
-      content: "^";
-    }
-  }
-  //details {
-  //  display: block; /* This ensures the details element is a block-level element */
-  //}
-  //
-  //summary {
-  //  display: flex; /* Using flex to align items in a row */
-  //  align-items: center; /* Aligns the marker and content vertically in the center */
-  //  white-space: nowrap; /* Prevents the text from wrapping to the next line */
-  //}
-
-}

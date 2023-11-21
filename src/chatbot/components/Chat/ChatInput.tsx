@@ -3,7 +3,7 @@ import { VariableModal } from '@/chatbot/components/Chat/VariableModal';
 
 import HomeContext from '@/chatbot/home/home.context';
 
-import { ChatMessageState, ConversationMessage } from '@/chatbot/types/chat';
+import { ConversationMessage } from '@/chatbot/types/chat';
 import { Prompt } from '@/chatbot/types/prompt';
 import TextareaAutosize from '@/components/core/textarea/TextareaAutosize';
 import { IconBolt, IconPlayerStop, IconRepeat, IconSend } from '@tabler/icons-react';
@@ -61,7 +61,7 @@ export const ChatInput = ({ onSend, onRegenerate, stopConversationRef, textareaR
       return;
     }
 
-    onSend({ userQuestion: content, state: ChatMessageState.QuestionAsked });
+    onSend({ userQuestion: content });
     setContent('');
 
     if (window.innerWidth < 640 && textareaRef && textareaRef.current) {
