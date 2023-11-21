@@ -253,6 +253,7 @@ type ChatbotFAQ {
   question: String!
   spaceId: String!
   subCategories: [String!]
+  url: String!
 }
 
 type ChatbotSubcategory {
@@ -1213,6 +1214,7 @@ type Query {
   rawGitCourses(spaceId: String!): [RawGitCourse!]!
   route53Records: [Route53Record!]!
   scrapedUrlInfos(spaceId: String!, websiteScrapingInfoId: String!): [ScrapedUrlInfo!]!
+  searchChatbotFAQs(query: String!, spaceId: String!): [ChatbotFAQ!]!
   simulation(simulationId: String!, spaceId: String!): Simulation!
   simulations(spaceId: String!): [Simulation!]!
   siteScrapingRuns(spaceId: String!, websiteScrapingInfoId: String!): [SiteScrapingRun!]!
@@ -1593,6 +1595,7 @@ input UpsertChatbotFAQInput {
   question: String!
   spaceId: String!
   subCategories: [String!]
+  url: String!
 }
 
 input UpsertChatbotSubcategoryInput {

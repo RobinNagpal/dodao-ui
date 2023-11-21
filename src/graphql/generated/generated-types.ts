@@ -287,6 +287,7 @@ export interface ChatbotFaq {
   question: Scalars['String'];
   spaceId: Scalars['String'];
   subCategories?: Maybe<Array<Scalars['String']>>;
+  url: Scalars['String'];
 }
 
 export interface ChatbotSubcategory {
@@ -1834,6 +1835,7 @@ export interface Query {
   rawGitCourses: Array<RawGitCourse>;
   route53Records: Array<Route53Record>;
   scrapedUrlInfos: Array<ScrapedUrlInfo>;
+  searchChatbotFAQs: Array<ChatbotFaq>;
   simulation: Simulation;
   simulations: Array<Simulation>;
   siteScrapingRuns: Array<SiteScrapingRun>;
@@ -2057,6 +2059,12 @@ export interface QueryRawGitCoursesArgs {
 export interface QueryScrapedUrlInfosArgs {
   spaceId: Scalars['String'];
   websiteScrapingInfoId: Scalars['String'];
+}
+
+
+export interface QuerySearchChatbotFaQsArgs {
+  query: Scalars['String'];
+  spaceId: Scalars['String'];
 }
 
 
@@ -2491,6 +2499,7 @@ export interface UpsertChatbotFaqInput {
   question: Scalars['String'];
   spaceId: Scalars['String'];
   subCategories?: InputMaybe<Array<Scalars['String']>>;
+  url: Scalars['String'];
 }
 
 export interface UpsertChatbotSubcategoryInput {
@@ -2850,7 +2859,7 @@ export type ChatbotSubCategoryFragment = { __typename?: 'ChatbotSubcategory', na
 
 export type ChatbotCategoryFragment = { __typename?: 'ChatbotCategory', id: string, priority: number, description: string, key: string, name: string, subCategories: Array<{ __typename?: 'ChatbotSubcategory', name: string, key: string, description: string }> };
 
-export type ChatbotFaqFragment = { __typename?: 'ChatbotFAQ', id: string, spaceId: string, question: string, answer: string, categories?: Array<string> | null, subCategories?: Array<string> | null, priority: number };
+export type ChatbotFaqFragment = { __typename?: 'ChatbotFAQ', id: string, spaceId: string, question: string, answer: string, categories?: Array<string> | null, subCategories?: Array<string> | null, priority: number, url: string };
 
 export type ChatbotUserQuestionFragment = { __typename?: 'ChatbotUserQuestion', id: string, spaceId: string, question: string, categories?: Array<string> | null, subCategories?: Array<string> | null };
 
@@ -2866,7 +2875,15 @@ export type ChatbotFaQsQueryVariables = Exact<{
 }>;
 
 
-export type ChatbotFaQsQuery = { __typename?: 'Query', chatbotFAQs: Array<{ __typename?: 'ChatbotFAQ', id: string, spaceId: string, question: string, answer: string, categories?: Array<string> | null, subCategories?: Array<string> | null, priority: number }> };
+export type ChatbotFaQsQuery = { __typename?: 'Query', chatbotFAQs: Array<{ __typename?: 'ChatbotFAQ', id: string, spaceId: string, question: string, answer: string, categories?: Array<string> | null, subCategories?: Array<string> | null, priority: number, url: string }> };
+
+export type SearchChatbotFaQsQueryVariables = Exact<{
+  spaceId: Scalars['String'];
+  query: Scalars['String'];
+}>;
+
+
+export type SearchChatbotFaQsQuery = { __typename?: 'Query', searchChatbotFAQs: Array<{ __typename?: 'ChatbotFAQ', id: string, spaceId: string, question: string, answer: string, categories?: Array<string> | null, subCategories?: Array<string> | null, priority: number, url: string }> };
 
 export type ChatbotUserQuestionsQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -2889,7 +2906,7 @@ export type UpsertChatbotFaqMutationVariables = Exact<{
 }>;
 
 
-export type UpsertChatbotFaqMutation = { __typename?: 'Mutation', upsertChatbotFAQ: { __typename?: 'ChatbotFAQ', id: string, spaceId: string, question: string, answer: string, categories?: Array<string> | null, subCategories?: Array<string> | null, priority: number } };
+export type UpsertChatbotFaqMutation = { __typename?: 'Mutation', upsertChatbotFAQ: { __typename?: 'ChatbotFAQ', id: string, spaceId: string, question: string, answer: string, categories?: Array<string> | null, subCategories?: Array<string> | null, priority: number, url: string } };
 
 export type UpsertChatbotUserQuestionMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -4129,6 +4146,7 @@ export const ChatbotFaqFragmentDoc = gql`
   categories
   subCategories
   priority
+  url
 }
     `;
 export const ChatbotUserQuestionFragmentDoc = gql`
@@ -5582,6 +5600,45 @@ export type ChatbotFaQsLazyQueryHookResult = ReturnType<typeof useChatbotFaQsLaz
 export type ChatbotFaQsQueryResult = Apollo.QueryResult<ChatbotFaQsQuery, ChatbotFaQsQueryVariables>;
 export function refetchChatbotFaQsQuery(variables: ChatbotFaQsQueryVariables) {
       return { query: ChatbotFaQsDocument, variables: variables }
+    }
+export const SearchChatbotFaQsDocument = gql`
+    query SearchChatbotFAQs($spaceId: String!, $query: String!) {
+  searchChatbotFAQs(spaceId: $spaceId, query: $query) {
+    ...ChatbotFAQ
+  }
+}
+    ${ChatbotFaqFragmentDoc}`;
+
+/**
+ * __useSearchChatbotFaQsQuery__
+ *
+ * To run a query within a React component, call `useSearchChatbotFaQsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSearchChatbotFaQsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSearchChatbotFaQsQuery({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      query: // value for 'query'
+ *   },
+ * });
+ */
+export function useSearchChatbotFaQsQuery(baseOptions: Apollo.QueryHookOptions<SearchChatbotFaQsQuery, SearchChatbotFaQsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<SearchChatbotFaQsQuery, SearchChatbotFaQsQueryVariables>(SearchChatbotFaQsDocument, options);
+      }
+export function useSearchChatbotFaQsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchChatbotFaQsQuery, SearchChatbotFaQsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<SearchChatbotFaQsQuery, SearchChatbotFaQsQueryVariables>(SearchChatbotFaQsDocument, options);
+        }
+export type SearchChatbotFaQsQueryHookResult = ReturnType<typeof useSearchChatbotFaQsQuery>;
+export type SearchChatbotFaQsLazyQueryHookResult = ReturnType<typeof useSearchChatbotFaQsLazyQuery>;
+export type SearchChatbotFaQsQueryResult = Apollo.QueryResult<SearchChatbotFaQsQuery, SearchChatbotFaQsQueryVariables>;
+export function refetchSearchChatbotFaQsQuery(variables: SearchChatbotFaQsQueryVariables) {
+      return { query: SearchChatbotFaQsDocument, variables: variables }
     }
 export const ChatbotUserQuestionsDocument = gql`
     query ChatbotUserQuestions($spaceId: String!) {

@@ -1,22 +1,19 @@
-import TextareaAutosize from '@/components/core/textarea/TextareaAutosize';
-import { IconArrowDown, IconBolt, IconBrandGoogle, IconPlayerStop, IconRepeat, IconSend } from '@tabler/icons-react';
-import React, { KeyboardEvent, MutableRefObject, useCallback, useContext, useEffect, useRef, useState } from 'react';
-
-import { useTranslation } from 'next-i18next';
-
-import { Message } from '@/chatbot/types/chat';
-import { Plugin } from '@/chatbot/types/plugin';
-import { Prompt } from '@/chatbot/types/prompt';
+import { PromptList } from '@/chatbot/components/Chat/PromptList';
+import { VariableModal } from '@/chatbot/components/Chat/VariableModal';
 
 import HomeContext from '@/chatbot/home/home.context';
 
-import { PluginSelect } from '@/chatbot/components/Chat/PluginSelect';
-import { PromptList } from '@/chatbot/components/Chat/PromptList';
-import { VariableModal } from '@/chatbot/components/Chat/VariableModal';
+import { ChatMessageState, ConversationMessage } from '@/chatbot/types/chat';
+import { Prompt } from '@/chatbot/types/prompt';
+import TextareaAutosize from '@/components/core/textarea/TextareaAutosize';
+import { IconBolt, IconPlayerStop, IconRepeat, IconSend } from '@tabler/icons-react';
+
+import { useTranslation } from 'next-i18next';
+import React, { KeyboardEvent, MutableRefObject, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import styles from './ChatInput.module.scss';
 
 interface Props {
-  onSend: (message: Message, plugin: Plugin | null) => void;
+  onSend: (message: ConversationMessage) => void;
   onRegenerate: () => void;
   stopConversationRef: MutableRefObject<boolean>;
   textareaRef: MutableRefObject<HTMLTextAreaElement | null>;
@@ -37,7 +34,6 @@ export const ChatInput = ({ onSend, onRegenerate, stopConversationRef, textareaR
   const [variables, setVariables] = useState<string[]>([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [showPluginSelect, setShowPluginSelect] = useState(false);
-  const [plugin, setPlugin] = useState<Plugin | null>(null);
 
   const promptListRef = useRef<HTMLUListElement | null>(null);
 
@@ -65,9 +61,8 @@ export const ChatInput = ({ onSend, onRegenerate, stopConversationRef, textareaR
       return;
     }
 
-    onSend({ role: 'user', content }, plugin);
+    onSend({ userQuestion: content, state: ChatMessageState.QuestionAsked });
     setContent('');
-    setPlugin(null);
 
     if (window.innerWidth < 640 && textareaRef && textareaRef.current) {
       textareaRef.current.blur();
@@ -230,31 +225,8 @@ export const ChatInput = ({ onSend, onRegenerate, stopConversationRef, textareaR
               onClick={() => setShowPluginSelect(!showPluginSelect)}
               onKeyDown={(e) => {}}
             >
-              {plugin ? <IconBrandGoogle size={20} /> : <IconBolt size={20} />}
+              <IconBolt size={20} />
             </button>
-
-            {showPluginSelect && (
-              <div className="absolute left-0 bottom-14 rounded">
-                <PluginSelect
-                  plugin={plugin}
-                  onKeyDown={(e: any) => {
-                    if (e.key === 'Escape') {
-                      e.preventDefault();
-                      setShowPluginSelect(false);
-                      textareaRef.current?.focus();
-                    }
-                  }}
-                  onPluginChange={(plugin: Plugin) => {
-                    setPlugin(plugin);
-                    setShowPluginSelect(false);
-
-                    if (textareaRef && textareaRef.current) {
-                      textareaRef.current.focus();
-                    }
-                  }}
-                />
-              </div>
-            )}
 
             <TextareaAutosize
               label={null}
