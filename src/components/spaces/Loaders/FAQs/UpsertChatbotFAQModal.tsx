@@ -34,6 +34,8 @@ export default function UpsertChatbotFAQModal({
   const [question, setQuestion] = useState<string>(faq?.question || '');
   const [answer, setAnswer] = useState<string>(faq?.answer || '');
   const [priority, setPriority] = useState<number>(faq?.priority || 50);
+  const [url, setUrl] = useState<string>(faq?.url || '');
+
   const { showNotification } = useNotificationContext();
 
   useEffect(() => {
@@ -54,6 +56,7 @@ export default function UpsertChatbotFAQModal({
           question,
           spaceId: space.id,
           priority: 50,
+          url,
         },
       },
       refetchQueries: ['ChatbotFAQs'],
@@ -91,6 +94,8 @@ export default function UpsertChatbotFAQModal({
             imageType="FAQ"
           />
 
+          <Input modelValue={url} onUpdate={(e) => setUrl(e?.toString() || '')} className="mb-4" label="Url" />
+
           <Input modelValue={priority} onUpdate={(e) => setPriority(parseInt(e?.toString() || '50'))} className="mb-4" label="Priority" />
 
           <CategoryCheckboxes
@@ -102,7 +107,7 @@ export default function UpsertChatbotFAQModal({
           />
         </div>
         <Button
-          disabled={question.length < 5 || answer.length < 5}
+          disabled={question.length < 5 || answer.length < 5 || url.length < 5}
           onClick={() => upsertChatbotFaq()}
           loading={upserting}
           variant="contained"

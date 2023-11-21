@@ -1,5 +1,11 @@
 import { OpenAIModel } from '@/chatbot/types/openai';
+import { ChatbotFaqFragment } from '@/graphql/generated/generated-types';
 
+export interface ConversationMessage {
+  userQuestion: string;
+  assistantResponse?: string;
+  relatedFAQs?: ChatbotFaqFragment[];
+}
 export interface Message {
   role: Role;
   content: string;
@@ -18,7 +24,7 @@ export interface ChatBody {
 export interface Conversation {
   id: string;
   name: string;
-  messages: Message[];
+  messages: ConversationMessage[];
   model: OpenAIModel;
   prompt: string;
   temperature: number;

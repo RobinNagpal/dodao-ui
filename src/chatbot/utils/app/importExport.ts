@@ -65,7 +65,7 @@ function currentDate() {
 }
 
 export const exportData = () => {
-  let history = localStorage.getItem('conversationHistory');
+  let history = localStorage.getItem('conversationHistory_v2');
   let folders = localStorage.getItem('folders');
   let prompts = localStorage.getItem('prompts');
 
@@ -105,17 +105,17 @@ export const exportData = () => {
 export const importData = (data: SupportedExportFormats): LatestExportFormat => {
   const { history, folders, prompts } = cleanData(data);
 
-  const oldConversations = localStorage.getItem('conversationHistory');
+  const oldConversations = localStorage.getItem('conversationHistory_v2');
   const oldConversationsParsed = oldConversations ? JSON.parse(oldConversations) : [];
 
   const newHistory: Conversation[] = [...oldConversationsParsed, ...history].filter(
     (conversation, index, self) => index === self.findIndex((c) => c.id === conversation.id)
   );
-  localStorage.setItem('conversationHistory', JSON.stringify(newHistory));
+  localStorage.setItem('conversationHistory_v2', JSON.stringify(newHistory));
   if (newHistory.length > 0) {
-    localStorage.setItem('selectedConversation', JSON.stringify(newHistory[newHistory.length - 1]));
+    localStorage.setItem('selectedConversation_v2', JSON.stringify(newHistory[newHistory.length - 1]));
   } else {
-    localStorage.removeItem('selectedConversation');
+    localStorage.removeItem('selectedConversation_v2');
   }
 
   const oldFolders = localStorage.getItem('folders');

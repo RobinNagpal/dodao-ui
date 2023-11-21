@@ -25,6 +25,7 @@ fragment ChatbotFAQ on ChatbotFAQ {
   categories
   subCategories
   priority
+  url
 }
 
 fragment ChatbotUserQuestion on ChatbotUserQuestion {
@@ -43,6 +44,12 @@ query ChatbotCategories($spaceId: String!) {
 
 query ChatbotFAQs($spaceId: String!) {
   chatbotFAQs(spaceId: $spaceId) {
+    ...ChatbotFAQ
+  }
+}
+
+query SearchChatbotFAQs($spaceId: String!, $query: String!) {
+  searchChatbotFAQs(spaceId: $spaceId, query: $query) {
     ...ChatbotFAQ
   }
 }

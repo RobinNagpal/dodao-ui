@@ -10,7 +10,7 @@ function getFAQsTable(faqs: ChatbotFaqFragment[]): TableRow[] {
   return faqs.map((faq: ChatbotFaqFragment): TableRow => {
     return {
       id: faq.id,
-      columns: [faq.id.substring(0, 6), faq.question, faq.answer, faq.priority],
+      columns: [faq.id.substring(0, 6), faq.question, faq.answer.length > 100 ? faq.answer.substring(0, 100) : faq.answer, faq.priority],
       item: faq,
     };
   });

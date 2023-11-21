@@ -251,7 +251,7 @@ const Home = ({ serverSideApiKeyIsSet, serverSidePluginKeysSet, defaultModelId, 
       dispatch({ field: 'prompts', value: JSON.parse(prompts) });
     }
 
-    const conversationHistory = localStorage.getItem('conversationHistory');
+    const conversationHistory = localStorage.getItem('conversationHistory_v2');
     if (conversationHistory) {
       const parsedConversationHistory: Conversation[] = JSON.parse(conversationHistory);
       const cleanedConversationHistory = cleanConversationHistory(parsedConversationHistory);
@@ -259,7 +259,7 @@ const Home = ({ serverSideApiKeyIsSet, serverSidePluginKeysSet, defaultModelId, 
       dispatch({ field: 'conversations', value: cleanedConversationHistory });
     }
 
-    const selectedConversation = localStorage.getItem('selectedConversation');
+    const selectedConversation = localStorage.getItem('selectedConversation_v2');
     if (selectedConversation) {
       const parsedSelectedConversation: Conversation = JSON.parse(selectedConversation);
       const cleanedSelectedConversation = cleanSelectedConversation(parsedSelectedConversation);

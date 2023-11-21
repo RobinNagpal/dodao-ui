@@ -6,12 +6,12 @@ import { MemoizedChatMessage } from '@/chatbot/components/Chat/MemoizedChatMessa
 
 import HomeContext from '@/chatbot/home/home.context';
 
-import { ChatBody, Conversation, Message } from '@/chatbot/types/chat';
-import { Plugin } from '@/chatbot/types/plugin';
+import { Conversation, ConversationMessage } from '@/chatbot/types/chat';
 
-import { saveConversation, saveConversations, updateConversation } from '@/chatbot/utils/app/conversation';
+import { saveConversation, saveConversations } from '@/chatbot/utils/app/conversation';
 import { throttle } from '@/chatbot/utils/throttle/throttle';
 import PageWrapper from '@/components/core/page/PageWrapper';
+import { useSearchChatbotFaQsQuery } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
 import { IconArrowDown } from '@tabler/icons-react';
 
@@ -35,7 +35,7 @@ export const Chat = memo(({ stopConversationRef, space, isChatbotSite }: Props) 
     dispatch: homeDispatch,
   } = useContext(HomeContext);
 
-  const [currentMessage, setCurrentMessage] = useState<Message>();
+  const [currentMessage, setCurrentMessage] = useState<ConversationMessage>();
   const [autoScrollEnabled, setAutoScrollEnabled] = useState<boolean>(true);
   const [showSettings, setShowSettings] = useState<boolean>(false);
   const [showScrollDownButton, setShowScrollDownButton] = useState<boolean>(false);
@@ -43,11 +43,19 @@ export const Chat = memo(({ stopConversationRef, space, isChatbotSite }: Props) 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const { refetch: searchFAQs } = useSearchChatbotFaQsQuery({ skip: true });
 
   const handleSend = useCallback(
-    async (message: Message, deleteCount = 0, plugin: Plugin | null = null) => {
+    async (message: ConversationMessage, deleteCount = 0) => {
       if (selectedConversation) {
+        const result = await searchFAQs({
+          spaceId: space.id,
+          query: message.userQuestion,
+        });
+
         let updatedConversation: Conversation;
+
+        message = { ...message, relatedFAQs: result.data?.searchChatbotFAQs || [] };
 
         updatedConversation = {
           ...selectedConversation,
@@ -59,22 +67,14 @@ export const Chat = memo(({ stopConversationRef, space, isChatbotSite }: Props) 
         });
         homeDispatch({ field: 'loading', value: true });
         homeDispatch({ field: 'messageIsStreaming', value: true });
-        const chatBody: ChatBody = {
+        const endpoint = 'https://api.openai.com/v1/engines/davinci/completions';
+        const body = JSON.stringify({
           model: updatedConversation.model,
-          messages: updatedConversation.messages,
+          messages: [{ role: 'user', content: message.userQuestion }],
           prompt: updatedConversation.prompt,
           temperature: updatedConversation.temperature,
           spaceId: space.id,
-        };
-        const endpoint = 'https://api.openai.com/v1/engines/davinci/completions';
-        let body;
-        if (!plugin) {
-          body = JSON.stringify(chatBody);
-        } else {
-          body = JSON.stringify({
-            ...chatBody,
-          });
-        }
+        });
         const controller = new AbortController();
         console.log('endpoint', endpoint);
         const response: Response = await fetch(process.env.V2_API_SERVER_URL?.replace('/graphql', '') + '/chat', {
@@ -99,101 +99,75 @@ export const Chat = memo(({ stopConversationRef, space, isChatbotSite }: Props) 
           homeDispatch({ field: 'messageIsStreaming', value: false });
           return;
         }
-        if (!plugin) {
-          if (updatedConversation.messages.length === 1) {
-            const { content } = message;
-            const customName = content.length > 30 ? content.substring(0, 30) + '...' : content;
-            updatedConversation = {
-              ...updatedConversation,
-              name: customName,
-            };
-          }
-          homeDispatch({ field: 'loading', value: false });
-          const reader = data.getReader();
-          const decoder = new TextDecoder();
-          let done = false;
-          let isFirst = true;
-          let text = '';
-          while (!done) {
-            if (stopConversationRef.current === true) {
-              controller.abort();
-              done = true;
-              break;
-            }
-            const { value, done: doneReading } = await reader.read();
-            done = doneReading;
-            const chunkValue = decoder.decode(value);
-            text += chunkValue;
-            if (isFirst) {
-              isFirst = false;
-              const updatedMessages: Message[] = [...updatedConversation.messages, { role: 'assistant', content: chunkValue }];
-              updatedConversation = {
-                ...updatedConversation,
-                messages: updatedMessages,
-              };
-              homeDispatch({
-                field: 'selectedConversation',
-                value: updatedConversation,
-              });
-            } else {
-              const updatedMessages: Message[] = updatedConversation.messages.map((message, index) => {
-                if (index === updatedConversation.messages.length - 1) {
-                  return {
-                    ...message,
-                    content: text,
-                  };
-                }
-                return message;
-              });
-              updatedConversation = {
-                ...updatedConversation,
-                messages: updatedMessages,
-              };
-              homeDispatch({
-                field: 'selectedConversation',
-                value: updatedConversation,
-              });
-            }
-          }
-          saveConversation(updatedConversation);
-          const updatedConversations: Conversation[] = conversations.map((conversation) => {
-            if (conversation.id === selectedConversation.id) {
-              return updatedConversation;
-            }
-            return conversation;
-          });
-          if (updatedConversations.length === 0) {
-            updatedConversations.push(updatedConversation);
-          }
-          homeDispatch({ field: 'conversations', value: updatedConversations });
-          saveConversations(updatedConversations);
-          homeDispatch({ field: 'messageIsStreaming', value: false });
-        } else {
-          const { answer } = await response.json();
-          const updatedMessages: Message[] = [...updatedConversation.messages, { role: 'assistant', content: answer }];
+
+        if (updatedConversation.messages.length === 2) {
+          const { userQuestion } = message;
+          const customName = userQuestion.length > 30 ? userQuestion.toString().substring(0, 30) + '...' : userQuestion;
           updatedConversation = {
             ...updatedConversation,
-            messages: updatedMessages,
+            name: customName.toString(),
           };
-          homeDispatch({
-            field: 'selectedConversation',
-            value: updateConversation,
-          });
-          saveConversation(updatedConversation);
-          const updatedConversations: Conversation[] = conversations.map((conversation) => {
-            if (conversation.id === selectedConversation.id) {
-              return updatedConversation;
-            }
-            return conversation;
-          });
-          if (updatedConversations.length === 0) {
-            updatedConversations.push(updatedConversation);
-          }
-          homeDispatch({ field: 'conversations', value: updatedConversations });
-          saveConversations(updatedConversations);
-          homeDispatch({ field: 'loading', value: false });
-          homeDispatch({ field: 'messageIsStreaming', value: false });
         }
+        homeDispatch({ field: 'loading', value: false });
+        const reader = data.getReader();
+        const decoder = new TextDecoder();
+        let done = false;
+        let isFirst = true;
+        let text = '';
+        while (!done) {
+          if (stopConversationRef.current) {
+            controller.abort();
+            done = true;
+            break;
+          }
+          const { value, done: doneReading } = await reader.read();
+          done = doneReading;
+          const chunkValue = decoder.decode(value);
+          text += chunkValue;
+          if (isFirst) {
+            isFirst = false;
+            const updatedMessages: ConversationMessage[] = [{ ...message, assistantResponse: chunkValue }];
+            updatedConversation = {
+              ...updatedConversation,
+              messages: updatedMessages,
+            };
+            homeDispatch({
+              field: 'selectedConversation',
+              value: updatedConversation,
+            });
+          } else {
+            const updatedMessages: ConversationMessage[] = updatedConversation.messages.map((message, index): ConversationMessage => {
+              if (index === updatedConversation.messages.length - 1) {
+                return {
+                  ...message,
+                  assistantResponse: text,
+                };
+              }
+              return message;
+            });
+            updatedConversation = {
+              ...updatedConversation,
+              messages: updatedMessages,
+            };
+            homeDispatch({
+              field: 'selectedConversation',
+              value: updatedConversation,
+            });
+          }
+        }
+        saveConversation(updatedConversation);
+        const updatedConversations: Conversation[] = conversations.map((conversation) => {
+          if (conversation.id === selectedConversation.id) {
+            return updatedConversation;
+          }
+          return conversation;
+        });
+        if (updatedConversations.length === 0) {
+          updatedConversations.push(updatedConversation);
+        }
+        homeDispatch({ field: 'conversations', value: updatedConversations });
+        saveConversations(updatedConversations);
+        homeDispatch({ field: 'messageIsStreaming', value: false });
       }
     },
     [conversations, pluginKeys, selectedConversation, stopConversationRef]
@@ -305,7 +279,7 @@ export const Chat = memo(({ stopConversationRef, space, isChatbotSite }: Props) 
                       key={index}
                       message={message}
                       messageIndex={index}
-                      onEdit={(editedMessage: Message) => {
+                      onEdit={(editedMessage: ConversationMessage) => {
                         setCurrentMessage(editedMessage);
                         // discard edited message and the ones that come after then resend
                         handleSend(editedMessage, selectedConversation?.messages.length - index);
@@ -333,13 +307,13 @@ export const Chat = memo(({ stopConversationRef, space, isChatbotSite }: Props) 
               <ChatInput
                 stopConversationRef={stopConversationRef}
                 textareaRef={textareaRef}
-                onSend={(message, plugin) => {
+                onSend={(message: ConversationMessage) => {
                   setCurrentMessage(message);
-                  handleSend(message, 0, plugin);
+                  handleSend(message, 0);
                 }}
                 onRegenerate={() => {
                   if (currentMessage) {
-                    handleSend(currentMessage, 2, null);
+                    handleSend(currentMessage, 2);
                   }
                 }}
               />
