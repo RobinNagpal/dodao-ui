@@ -75,8 +75,6 @@ fragment SpaceWithIntegrations on Space {
     captureRating
     showCategoriesInSidebar
   }
-
-
 }
 
 fragment SpaceSummary on Space {
@@ -95,7 +93,6 @@ query Spaces {
     ...SpaceSummary
   }
 }
-
 
 query ExtendedSpace($spaceId: String!) {
   space(id: $spaceId) {
@@ -119,6 +116,9 @@ mutation UpsertSpaceFeatures($spaceId: String!, $features: [String!]!) {
   }
 }
 
+mutation DropPineconeNamespace($spaceId: String!) {
+  dropPineconeNamespace(spaceId: $spaceId)
+}
 
 mutation UpsertSpaceInviteLinks($spaceId: String!, $spaceInviteArgs: SpaceInviteArgs!) {
   payload: upsertSpaceInviteLinks(spaceId: $spaceId, spaceInviteArgs: $spaceInviteArgs) {
@@ -126,14 +126,8 @@ mutation UpsertSpaceInviteLinks($spaceId: String!, $spaceInviteArgs: SpaceInvite
   }
 }
 
-mutation UpsertProjectGalaxyAccessToken(
-  $spaceId: String!
-  $accessToken: String!
-) {
-  payload: upsertProjectGalaxyAccessToken(
-    spaceId: $spaceId
-    accessToken: $accessToken
-  ) {
+mutation UpsertProjectGalaxyAccessToken($spaceId: String!, $accessToken: String!) {
+  payload: upsertProjectGalaxyAccessToken(spaceId: $spaceId, accessToken: $accessToken) {
     id
   }
 }
@@ -142,19 +136,8 @@ mutation CreateSignedUrl($spaceId: String!, $input: CreateSignedUrlInput!) {
   payload: createSignedUrl(spaceId: $spaceId, input: $input)
 }
 
-
-
-
-mutation AddDiscordCredentials(
-  $spaceId: String!
-  $code: String!
-  $redirectUri: String!
-) {
-  payload: addDiscordCredentials(
-    spaceId: $spaceId
-    code: $code
-    redirectUri: $redirectUri
-  ) {
+mutation AddDiscordCredentials($spaceId: String!, $code: String!, $redirectUri: String!) {
+  payload: addDiscordCredentials(spaceId: $spaceId, code: $code, redirectUri: $redirectUri) {
     id
   }
 }
@@ -165,13 +148,13 @@ mutation UpsertSpaceAcademyRepository($spaceId: String!, $academyRepository: Str
   }
 }
 
-mutation UpdateSpace($spaceInput: UpsertSpaceInput!){
+mutation UpdateSpace($spaceInput: UpsertSpaceInput!) {
   updateSpace(spaceInput: $spaceInput) {
     ...SpaceWithIntegrations
   }
 }
 
-mutation CreateSpace($spaceInput: UpsertSpaceInput!){
+mutation CreateSpace($spaceInput: UpsertSpaceInput!) {
   createSpace(spaceInput: $spaceInput) {
     ...SpaceWithIntegrations
   }
@@ -205,11 +188,9 @@ mutation UpdateSpaceByteSettings($spaceId: String!, $input: ByteSettingsInput!) 
   }
 }
 
-
 mutation SendEmail($input: SendEmailInput!) {
   payload: sendEmail(input: $input)
 }
-
 
 mutation UpsertSpaceLoaderInfo($spaceId: String!, $input: SpaceLoadersInfoInput!) {
   payload: upsertSpaceLoaderInfo(spaceId: $spaceId, input: $input) {

@@ -1,3 +1,4 @@
+import Button from '@/components/core/buttons/Button';
 import SectionLoader from '@/components/core/loaders/SectionLoader';
 import { Table, TableRow } from '@/components/core/table/Table';
 import TabsWithUnderline, { TabItem } from '@/components/core/tabs/TabsWithUnderline';
@@ -7,6 +8,7 @@ import {
   DiscourseIndexRunFragmentFragment,
   SpaceWithIntegrationsFragment,
   useDiscourseIndexRunsQuery,
+  useIndexNeedsIndexingDiscoursePostsMutation,
   useTriggerNewDiscourseIndexRunMutation,
 } from '@/graphql/generated/generated-types';
 import moment from 'moment';
@@ -53,6 +55,7 @@ export default function DiscourseIndexRuns(props: { space: SpaceWithIntegrations
 
   const [selectedTabId, setSelectedTabId] = useState(TabIds.Runs);
   const [triggerNewDiscourseIndexRunMutation] = useTriggerNewDiscourseIndexRunMutation();
+  const [indexNeedsIndexingDiscoursePostsMutation] = useIndexNeedsIndexingDiscoursePostsMutation();
 
   if (loading || !discourseIndexRuns) {
     return <SectionLoader />;
@@ -67,17 +70,40 @@ export default function DiscourseIndexRuns(props: { space: SpaceWithIntegrations
         <DiscoursePostsTable space={props.space} />
       ) : (
         <div className="mt-8">
+          <div className="flex justify-end">
+            <Button
+              primary
+              variant="contained"
+              onClick={async () => {
+                await triggerNewDiscourseIndexRunMutation({
+                  variables: {
+                    spaceId: props.space.id,
+                  },
+                  refetchQueries: ['DiscourseIndexRuns'],
+                });
+                showNotification({ message: 'Triggered new discourse index run', type: 'success' });
+              }}
+              className="mr-4"
+            >
+              Trigger Full Index
+            </Button>
+            <Button
+              primary
+              variant="contained"
+              onClick={async () => {
+                await indexNeedsIndexingDiscoursePostsMutation({
+                  variables: {
+                    spaceId: props.space.id,
+                  },
+                  refetchQueries: ['DiscourseIndexRuns'],
+                });
+                showNotification({ message: 'Triggered index run for needs indexing', type: 'success' });
+              }}
+            >
+              Update Needs Indexing
+            </Button>
+          </div>
           <Table
-            addNewLabel="Trigger New"
-            onAddNew={async () => {
-              await triggerNewDiscourseIndexRunMutation({
-                variables: {
-                  spaceId: props.space.id,
-                },
-                refetchQueries: ['DiscourseIndexRuns'],
-              });
-              showNotification({ message: 'Triggered new discourse index run', type: 'success' });
-            }}
             heading={'Discourse Index Runs'}
             data={getIndexRunRows(discourseIndexRuns)}
             columnsHeadings={['Id', 'Created At', 'Ran At', 'Status']}

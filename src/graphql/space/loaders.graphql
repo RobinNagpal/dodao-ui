@@ -177,8 +177,14 @@ query ScrapedUrlInfos($spaceId: String!, $websiteScrapingInfoId: String!) {
   }
 }
 
-mutation triggerNewDiscourseIndexRun($spaceId: String!) {
+mutation TriggerNewDiscourseIndexRun($spaceId: String!) {
   triggerNewDiscourseIndexRun(spaceId: $spaceId) {
+    ...DiscourseIndexRunFragment
+  }
+}
+
+mutation IndexNeedsIndexingDiscoursePosts($spaceId: String!) {
+  indexNeedsIndexingDiscoursePosts(spaceId: $spaceId) {
     ...DiscourseIndexRunFragment
   }
 }
