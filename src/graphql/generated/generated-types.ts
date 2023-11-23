@@ -1079,6 +1079,7 @@ export interface Mutation {
   deleteTopicSummary: GitCourse;
   deleteTopicVideo: GitCourse;
   downloadAndCleanContent: DownloadAndCleanContentResponse;
+  dropPineconeNamespace: Scalars['Boolean'];
   editArticleIndexingInfo: ArticleIndexingInfo;
   editWebsiteScrapingInfo: WebsiteScrapingInfo;
   extractRelevantTextForTopic: OpenAiTextResponse;
@@ -1086,6 +1087,7 @@ export interface Mutation {
   generateImageEdit: GenerateImageResponse;
   generateSharablePdf: Scalars['String'];
   indexDiscoursePost: Scalars['Boolean'];
+  indexNeedsIndexingDiscoursePosts: DiscourseIndexRun;
   initializeGitCourseSubmission: GitCourseSubmission;
   moveTopic: GitCourse;
   moveTopicExplanation: GitCourse;
@@ -1321,6 +1323,11 @@ export interface MutationDownloadAndCleanContentArgs {
 }
 
 
+export interface MutationDropPineconeNamespaceArgs {
+  spaceId: Scalars['String'];
+}
+
+
 export interface MutationEditArticleIndexingInfoArgs {
   articleIndexingInfoId: Scalars['String'];
   articleUrl: Scalars['String'];
@@ -1361,6 +1368,11 @@ export interface MutationGenerateSharablePdfArgs {
 
 export interface MutationIndexDiscoursePostArgs {
   postId: Scalars['String'];
+  spaceId: Scalars['String'];
+}
+
+
+export interface MutationIndexNeedsIndexingDiscoursePostsArgs {
   spaceId: Scalars['String'];
 }
 
@@ -3635,6 +3647,13 @@ export type TriggerNewDiscourseIndexRunMutationVariables = Exact<{
 
 export type TriggerNewDiscourseIndexRunMutation = { __typename?: 'Mutation', triggerNewDiscourseIndexRun: { __typename?: 'DiscourseIndexRun', createdAt: any, id: string, runDate?: any | null, status: string } };
 
+export type IndexNeedsIndexingDiscoursePostsMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+}>;
+
+
+export type IndexNeedsIndexingDiscoursePostsMutation = { __typename?: 'Mutation', indexNeedsIndexingDiscoursePosts: { __typename?: 'DiscourseIndexRun', createdAt: any, id: string, runDate?: any | null, status: string } };
+
 export type ReFetchDiscordServersMutationVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -3772,6 +3791,13 @@ export type UpsertSpaceFeaturesMutationVariables = Exact<{
 
 
 export type UpsertSpaceFeaturesMutation = { __typename?: 'Mutation', payload: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, skin: string, avatar?: string | null, domains: Array<string>, botDomains?: Array<string> | null, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null, loadersInfo?: { __typename?: 'SpaceLoadersInfo', discourseUrl?: string | null, discordServerId?: string | null } | null } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null } } };
+
+export type DropPineconeNamespaceMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+}>;
+
+
+export type DropPineconeNamespaceMutation = { __typename?: 'Mutation', dropPineconeNamespace: boolean };
 
 export type UpsertSpaceInviteLinksMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -8909,7 +8935,7 @@ export function refetchScrapedUrlInfosQuery(variables: ScrapedUrlInfosQueryVaria
       return { query: ScrapedUrlInfosDocument, variables: variables }
     }
 export const TriggerNewDiscourseIndexRunDocument = gql`
-    mutation triggerNewDiscourseIndexRun($spaceId: String!) {
+    mutation TriggerNewDiscourseIndexRun($spaceId: String!) {
   triggerNewDiscourseIndexRun(spaceId: $spaceId) {
     ...DiscourseIndexRunFragment
   }
@@ -8941,6 +8967,39 @@ export function useTriggerNewDiscourseIndexRunMutation(baseOptions?: Apollo.Muta
 export type TriggerNewDiscourseIndexRunMutationHookResult = ReturnType<typeof useTriggerNewDiscourseIndexRunMutation>;
 export type TriggerNewDiscourseIndexRunMutationResult = Apollo.MutationResult<TriggerNewDiscourseIndexRunMutation>;
 export type TriggerNewDiscourseIndexRunMutationOptions = Apollo.BaseMutationOptions<TriggerNewDiscourseIndexRunMutation, TriggerNewDiscourseIndexRunMutationVariables>;
+export const IndexNeedsIndexingDiscoursePostsDocument = gql`
+    mutation IndexNeedsIndexingDiscoursePosts($spaceId: String!) {
+  indexNeedsIndexingDiscoursePosts(spaceId: $spaceId) {
+    ...DiscourseIndexRunFragment
+  }
+}
+    ${DiscourseIndexRunFragmentFragmentDoc}`;
+export type IndexNeedsIndexingDiscoursePostsMutationFn = Apollo.MutationFunction<IndexNeedsIndexingDiscoursePostsMutation, IndexNeedsIndexingDiscoursePostsMutationVariables>;
+
+/**
+ * __useIndexNeedsIndexingDiscoursePostsMutation__
+ *
+ * To run a mutation, you first call `useIndexNeedsIndexingDiscoursePostsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useIndexNeedsIndexingDiscoursePostsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [indexNeedsIndexingDiscoursePostsMutation, { data, loading, error }] = useIndexNeedsIndexingDiscoursePostsMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *   },
+ * });
+ */
+export function useIndexNeedsIndexingDiscoursePostsMutation(baseOptions?: Apollo.MutationHookOptions<IndexNeedsIndexingDiscoursePostsMutation, IndexNeedsIndexingDiscoursePostsMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<IndexNeedsIndexingDiscoursePostsMutation, IndexNeedsIndexingDiscoursePostsMutationVariables>(IndexNeedsIndexingDiscoursePostsDocument, options);
+      }
+export type IndexNeedsIndexingDiscoursePostsMutationHookResult = ReturnType<typeof useIndexNeedsIndexingDiscoursePostsMutation>;
+export type IndexNeedsIndexingDiscoursePostsMutationResult = Apollo.MutationResult<IndexNeedsIndexingDiscoursePostsMutation>;
+export type IndexNeedsIndexingDiscoursePostsMutationOptions = Apollo.BaseMutationOptions<IndexNeedsIndexingDiscoursePostsMutation, IndexNeedsIndexingDiscoursePostsMutationVariables>;
 export const ReFetchDiscordServersDocument = gql`
     mutation ReFetchDiscordServers {
   reFetchDiscordServers {
@@ -9525,6 +9584,37 @@ export function useUpsertSpaceFeaturesMutation(baseOptions?: Apollo.MutationHook
 export type UpsertSpaceFeaturesMutationHookResult = ReturnType<typeof useUpsertSpaceFeaturesMutation>;
 export type UpsertSpaceFeaturesMutationResult = Apollo.MutationResult<UpsertSpaceFeaturesMutation>;
 export type UpsertSpaceFeaturesMutationOptions = Apollo.BaseMutationOptions<UpsertSpaceFeaturesMutation, UpsertSpaceFeaturesMutationVariables>;
+export const DropPineconeNamespaceDocument = gql`
+    mutation DropPineconeNamespace($spaceId: String!) {
+  dropPineconeNamespace(spaceId: $spaceId)
+}
+    `;
+export type DropPineconeNamespaceMutationFn = Apollo.MutationFunction<DropPineconeNamespaceMutation, DropPineconeNamespaceMutationVariables>;
+
+/**
+ * __useDropPineconeNamespaceMutation__
+ *
+ * To run a mutation, you first call `useDropPineconeNamespaceMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDropPineconeNamespaceMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [dropPineconeNamespaceMutation, { data, loading, error }] = useDropPineconeNamespaceMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *   },
+ * });
+ */
+export function useDropPineconeNamespaceMutation(baseOptions?: Apollo.MutationHookOptions<DropPineconeNamespaceMutation, DropPineconeNamespaceMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DropPineconeNamespaceMutation, DropPineconeNamespaceMutationVariables>(DropPineconeNamespaceDocument, options);
+      }
+export type DropPineconeNamespaceMutationHookResult = ReturnType<typeof useDropPineconeNamespaceMutation>;
+export type DropPineconeNamespaceMutationResult = Apollo.MutationResult<DropPineconeNamespaceMutation>;
+export type DropPineconeNamespaceMutationOptions = Apollo.BaseMutationOptions<DropPineconeNamespaceMutation, DropPineconeNamespaceMutationVariables>;
 export const UpsertSpaceInviteLinksDocument = gql`
     mutation UpsertSpaceInviteLinks($spaceId: String!, $spaceInviteArgs: SpaceInviteArgs!) {
   payload: upsertSpaceInviteLinks(
