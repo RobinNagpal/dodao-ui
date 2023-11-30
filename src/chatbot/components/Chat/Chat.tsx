@@ -11,6 +11,7 @@ import { Conversation, ConversationMessage } from '@/chatbot/types/chat';
 import { saveConversation, saveConversations } from '@/chatbot/utils/app/conversation';
 import { throttle } from '@/chatbot/utils/throttle/throttle';
 import PageWrapper from '@/components/core/page/PageWrapper';
+import ToggleWithIcon from '@/components/core/toggles/ToggleWithIcon';
 import { useSearchChatbotFaQsQuery } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
 import { IconArrowDown } from '@tabler/icons-react';
@@ -45,6 +46,9 @@ export const Chat = memo(({ stopConversationRef, space, isChatbotSite }: Props) 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { refetch: searchFAQs } = useSearchChatbotFaQsQuery({ skip: true });
 
+  const [enacted, setEnacted] = useState<boolean>(true);
+  const [discussed, setDiscussed] = useState<boolean>(true);
+
   const handleSend = useCallback(
     async (message: ConversationMessage, deleteCount = 0) => {
       if (selectedConversation) {
@@ -74,6 +78,8 @@ export const Chat = memo(({ stopConversationRef, space, isChatbotSite }: Props) 
           prompt: updatedConversation.prompt,
           temperature: updatedConversation.temperature,
           spaceId: space.id,
+          enacted,
+          discussed,
         });
         const controller = new AbortController();
         console.log('endpoint', endpoint);
@@ -268,6 +274,14 @@ export const Chat = memo(({ stopConversationRef, space, isChatbotSite }: Props) 
             <ErrorMessageDiv error={modelError} />
           ) : (
             <div className="flex flex-col w-full">
+              <div className="flex justify-end">
+                <div>
+                  <div className="text-base">Filters</div>
+                  <div className="text-xs mb-4 mt-1">Relevant for information from forums</div>
+                  <ToggleWithIcon label={'Enacted (Decision Taken?)'} enabled={enacted} setEnabled={(value) => setEnacted(value)} />
+                  <ToggleWithIcon label={'Discussed'} enabled={discussed} setEnabled={(value) => setDiscussed(value)} />
+                </div>
+              </div>
               <div className="overflow-scroll flex-1 w-full" ref={chatContainerRef} onScroll={handleScroll}>
                 <div className={styles.chatMessagesDiv}>
                   {!selectedConversation?.messages?.length ? (
