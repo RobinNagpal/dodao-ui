@@ -1,10 +1,10 @@
 import { OpenAIModel } from '@/chatbot/types/openai';
-import { ChatbotFaqFragment } from '@/graphql/generated/generated-types';
+import { SearchedChatbotFaqFragmentFragment } from '@/graphql/generated/generated-types';
 
 export interface ConversationMessage {
   userQuestion: string;
   assistantResponse?: string;
-  relatedFAQs?: ChatbotFaqFragment[];
+  relatedFAQs?: SearchedChatbotFaqFragmentFragment[];
 }
 export interface Message {
   role: Role;
