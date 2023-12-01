@@ -245,7 +245,18 @@ type ChatbotCategory {
   subCategories: [ChatbotSubcategory!]!
 }
 
-type ChatbotFAQ {
+type ChatbotFAQ implements ChatbotFAQCommon {
+  answer: String!
+  categories: [String!]
+  id: String!
+  priority: Int!
+  question: String!
+  spaceId: String!
+  subCategories: [String!]
+  url: String!
+}
+
+interface ChatbotFAQCommon {
   answer: String!
   categories: [String!]
   id: String!
@@ -1216,7 +1227,7 @@ type Query {
   rawGitCourses(spaceId: String!): [RawGitCourse!]!
   route53Records: [Route53Record!]!
   scrapedUrlInfos(spaceId: String!, websiteScrapingInfoId: String!): [ScrapedUrlInfo!]!
-  searchChatbotFAQs(query: String!, spaceId: String!): [ChatbotFAQ!]!
+  searchChatbotFAQs(query: String!, spaceId: String!): [SearchedChatbotFAQ!]!
   simulation(simulationId: String!, spaceId: String!): Simulation!
   simulations(spaceId: String!): [Simulation!]!
   siteScrapingRuns(spaceId: String!, websiteScrapingInfoId: String!): [SiteScrapingRun!]!
@@ -1269,6 +1280,18 @@ type ScrapedUrlInfo {
   url: String!
   websiteScrapingInfo: WebsiteScrapingInfo!
   websiteScrapingInfoId: String!
+}
+
+type SearchedChatbotFAQ implements ChatbotFAQCommon {
+  answer: String!
+  categories: [String!]
+  id: String!
+  priority: Int!
+  question: String!
+  score: Float!
+  spaceId: String!
+  subCategories: [String!]
+  url: String!
 }
 
 input SendEmailInput {

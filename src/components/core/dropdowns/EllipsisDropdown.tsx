@@ -62,7 +62,7 @@ export default function EllipsisDropdown(props: EllipsisDropdownProps) {
           <div className="py-1">
             {props.items.map((item, index) => (
               <Menu.Item key={index}>
-                <DropdownItem href="#" className="block px-4 py-2 text-sm" active={item.active} onClick={() => props.onSelect(item.key)}>
+                <DropdownItem className="block px-4 py-2 text-sm" active={item.active} onClick={() => props.onSelect(item.key)}>
                   {item.label}
                 </DropdownItem>
               </Menu.Item>

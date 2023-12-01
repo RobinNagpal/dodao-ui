@@ -59,7 +59,7 @@ export const ChatMessage: FC<Props> = memo(({ message, messageIndex, onEdit, onS
         </div>
       )}
       {message.assistantResponse && (
-        <div className={`group overflow-scroll px-4 text-sm markdown-body`}>
+        <div className={`group overflow-scroll px-4 text-sm markdown-body pb-28`}>
           <div className="relative m-auto flex p-4 md:max-w-2xl md:gap-6 md:py-6 lg:max-w-2xl lg:px-0 xl:max-w-3xl">
             <div className={'min-w-[40px] text-right font-bold ' + styles.chatMessageIcons}>
               <CommandLineIcon width={30} height={30} className="mr-4" />

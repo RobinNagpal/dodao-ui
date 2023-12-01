@@ -278,8 +278,19 @@ export interface ChatbotCategory {
   subCategories: Array<ChatbotSubcategory>;
 }
 
-export interface ChatbotFaq {
+export interface ChatbotFaq extends ChatbotFaqCommon {
   __typename?: 'ChatbotFAQ';
+  answer: Scalars['String'];
+  categories?: Maybe<Array<Scalars['String']>>;
+  id: Scalars['String'];
+  priority: Scalars['Int'];
+  question: Scalars['String'];
+  spaceId: Scalars['String'];
+  subCategories?: Maybe<Array<Scalars['String']>>;
+  url: Scalars['String'];
+}
+
+export interface ChatbotFaqCommon {
   answer: Scalars['String'];
   categories?: Maybe<Array<Scalars['String']>>;
   id: Scalars['String'];
@@ -1847,7 +1858,7 @@ export interface Query {
   rawGitCourses: Array<RawGitCourse>;
   route53Records: Array<Route53Record>;
   scrapedUrlInfos: Array<ScrapedUrlInfo>;
-  searchChatbotFAQs: Array<ChatbotFaq>;
+  searchChatbotFAQs: Array<SearchedChatbotFaq>;
   simulation: Simulation;
   simulations: Array<Simulation>;
   siteScrapingRuns: Array<SiteScrapingRun>;
@@ -2168,6 +2179,19 @@ export interface ScrapedUrlInfo {
   url: Scalars['String'];
   websiteScrapingInfo: WebsiteScrapingInfo;
   websiteScrapingInfoId: Scalars['String'];
+}
+
+export interface SearchedChatbotFaq extends ChatbotFaqCommon {
+  __typename?: 'SearchedChatbotFAQ';
+  answer: Scalars['String'];
+  categories?: Maybe<Array<Scalars['String']>>;
+  id: Scalars['String'];
+  priority: Scalars['Int'];
+  question: Scalars['String'];
+  score: Scalars['Float'];
+  spaceId: Scalars['String'];
+  subCategories?: Maybe<Array<Scalars['String']>>;
+  url: Scalars['String'];
 }
 
 export interface SendEmailInput {
@@ -2873,6 +2897,8 @@ export type ChatbotCategoryFragment = { __typename?: 'ChatbotCategory', id: stri
 
 export type ChatbotFaqFragment = { __typename?: 'ChatbotFAQ', id: string, spaceId: string, question: string, answer: string, categories?: Array<string> | null, subCategories?: Array<string> | null, priority: number, url: string };
 
+export type SearchedChatbotFaqFragmentFragment = { __typename?: 'SearchedChatbotFAQ', id: string, spaceId: string, question: string, answer: string, categories?: Array<string> | null, subCategories?: Array<string> | null, priority: number, url: string, score: number };
+
 export type ChatbotUserQuestionFragment = { __typename?: 'ChatbotUserQuestion', id: string, spaceId: string, question: string, categories?: Array<string> | null, subCategories?: Array<string> | null };
 
 export type ChatbotCategoriesQueryVariables = Exact<{
@@ -2895,7 +2921,7 @@ export type SearchChatbotFaQsQueryVariables = Exact<{
 }>;
 
 
-export type SearchChatbotFaQsQuery = { __typename?: 'Query', searchChatbotFAQs: Array<{ __typename?: 'ChatbotFAQ', id: string, spaceId: string, question: string, answer: string, categories?: Array<string> | null, subCategories?: Array<string> | null, priority: number, url: string }> };
+export type SearchChatbotFaQsQuery = { __typename?: 'Query', searchChatbotFAQs: Array<{ __typename?: 'SearchedChatbotFAQ', id: string, spaceId: string, question: string, answer: string, categories?: Array<string> | null, subCategories?: Array<string> | null, priority: number, url: string, score: number }> };
 
 export type ChatbotUserQuestionsQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -4173,6 +4199,19 @@ export const ChatbotFaqFragmentDoc = gql`
   subCategories
   priority
   url
+}
+    `;
+export const SearchedChatbotFaqFragmentFragmentDoc = gql`
+    fragment SearchedChatbotFAQFragment on SearchedChatbotFAQ {
+  id
+  spaceId
+  question
+  answer
+  categories
+  subCategories
+  priority
+  url
+  score
 }
     `;
 export const ChatbotUserQuestionFragmentDoc = gql`
@@ -5630,10 +5669,10 @@ export function refetchChatbotFaQsQuery(variables: ChatbotFaQsQueryVariables) {
 export const SearchChatbotFaQsDocument = gql`
     query SearchChatbotFAQs($spaceId: String!, $query: String!) {
   searchChatbotFAQs(spaceId: $spaceId, query: $query) {
-    ...ChatbotFAQ
+    ...SearchedChatbotFAQFragment
   }
 }
-    ${ChatbotFaqFragmentDoc}`;
+    ${SearchedChatbotFaqFragmentFragmentDoc}`;
 
 /**
  * __useSearchChatbotFaQsQuery__
