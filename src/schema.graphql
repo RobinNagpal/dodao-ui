@@ -444,6 +444,8 @@ type DiscourseIndexRun {
 }
 
 type DiscoursePost {
+  aiSummary: String
+  aiSummaryDate: DateTimeISO
   author: String
   categories: [String!]!
   createdAt: DateTimeISO!
@@ -1086,6 +1088,7 @@ type Mutation {
   upsertSpaceFeatures(features: [String!]!, spaceId: String!): Space!
   upsertSpaceInviteLinks(spaceId: String!, spaceInviteArgs: SpaceInviteArgs!): Space!
   upsertSpaceLoaderInfo(input: SpaceLoadersInfoInput!, spaceId: String!): Space!
+  upsertSummaryOfDiscoursePost(input: UpsertSummaryOfDiscoursePostInput!, spaceId: String!): DiscoursePost!
   upsertTimeline(input: UpsertTimelineInput!, spaceId: String!): Timeline!
 }
 
@@ -1725,6 +1728,12 @@ input UpsertSpaceInput {
   name: String!
   skin: String!
   spaceIntegrations: SpaceIntegrationsInput!
+}
+
+input UpsertSummaryOfDiscoursePostInput {
+  aiSummary: String
+  aiSummaryDate: DateTimeISO
+  postId: String!
 }
 
 input UpsertTimelineEventInput {

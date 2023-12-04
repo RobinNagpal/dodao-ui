@@ -2,9 +2,16 @@ import { EllipsisDropdownItem } from '@/components/core/dropdowns/EllipsisDropdo
 import SectionLoader from '@/components/core/loaders/SectionLoader';
 import { Table, TableRow } from '@/components/core/table/Table';
 import AnnotateDiscoursePostModal from '@/components/spaces/Loaders/Discourse/AnnotateDiscoursePostModal';
+import UpdateSummaryDiscoursePostModal from '@/components/spaces/Loaders/Discourse/UpdateSummaryDiscoursePostModal';
 import { ChatbotSubView, ChatbotView, getChatbotSubviewUrl, ManageSpaceSubviews } from '@/components/spaces/manageSpaceSubviews';
 import { useNotificationContext } from '@/contexts/NotificationContext';
-import { DiscoursePost, SpaceWithIntegrationsFragment, useDiscoursePostsQuery, useIndexDiscoursePostMutation } from '@/graphql/generated/generated-types';
+import {
+  DiscoursePost,
+  SpaceWithIntegrationsFragment,
+  useDiscoursePostsQuery,
+  useIndexDiscoursePostMutation,
+  useUpsertSummaryOfDiscoursePostMutation,
+} from '@/graphql/generated/generated-types';
 import moment from 'moment/moment';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
@@ -41,7 +48,9 @@ export default function DiscoursePostsTable(props: { space: SpaceWithIntegration
 
   const discoursePosts = data?.discoursePosts;
   const [indexDiscoursePostMutation] = useIndexDiscoursePostMutation();
+
   const [editDiscoursePost, setEditDiscoursePost] = useState<DiscoursePost | null>(null);
+  const [updateSummaryDiscoursePost, setUpdateSummaryDiscoursePost] = useState<DiscoursePost | null>(null);
 
   const actionItems: EllipsisDropdownItem[] = [
     {
@@ -55,6 +64,10 @@ export default function DiscoursePostsTable(props: { space: SpaceWithIntegration
     {
       key: 'annotate',
       label: 'Annotate',
+    },
+    {
+      key: 'upsertSummary',
+      label: 'Update Summary',
     },
   ];
 
@@ -85,6 +98,8 @@ export default function DiscoursePostsTable(props: { space: SpaceWithIntegration
               showNotification({ message: 'Indexed Post', type: 'success' });
             } else if (key === 'annotate') {
               setEditDiscoursePost(item);
+            } else if (key === 'upsertSummary') {
+              setUpdateSummaryDiscoursePost(item);
             }
           },
         }}
@@ -97,6 +112,16 @@ export default function DiscoursePostsTable(props: { space: SpaceWithIntegration
             setEditDiscoursePost(null);
           }}
           post={editDiscoursePost}
+        />
+      )}
+      {updateSummaryDiscoursePost && (
+        <UpdateSummaryDiscoursePostModal
+          space={props.space}
+          open={!!updateSummaryDiscoursePost}
+          onClose={() => {
+            setUpdateSummaryDiscoursePost(null);
+          }}
+          post={updateSummaryDiscoursePost}
         />
       )}
     </>
