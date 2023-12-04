@@ -484,6 +484,8 @@ export interface DiscourseIndexRun {
 
 export interface DiscoursePost {
   __typename?: 'DiscoursePost';
+  aiSummary?: Maybe<Scalars['String']>;
+  aiSummaryDate?: Maybe<Scalars['DateTimeISO']>;
   author?: Maybe<Scalars['String']>;
   categories: Array<Scalars['String']>;
   createdAt: Scalars['DateTimeISO'];
@@ -1154,6 +1156,7 @@ export interface Mutation {
   upsertSpaceFeatures: Space;
   upsertSpaceInviteLinks: Space;
   upsertSpaceLoaderInfo: Space;
+  upsertSummaryOfDiscoursePost: DiscoursePost;
   upsertTimeline: Timeline;
 }
 
@@ -1700,6 +1703,12 @@ export interface MutationUpsertSpaceInviteLinksArgs {
 
 export interface MutationUpsertSpaceLoaderInfoArgs {
   input: SpaceLoadersInfoInput;
+  spaceId: Scalars['String'];
+}
+
+
+export interface MutationUpsertSummaryOfDiscoursePostArgs {
+  input: UpsertSummaryOfDiscoursePostInput;
   spaceId: Scalars['String'];
 }
 
@@ -2642,6 +2651,12 @@ export interface UpsertSpaceInput {
   spaceIntegrations: SpaceIntegrationsInput;
 }
 
+export interface UpsertSummaryOfDiscoursePostInput {
+  aiSummary?: InputMaybe<Scalars['String']>;
+  aiSummaryDate?: InputMaybe<Scalars['DateTimeISO']>;
+  postId: Scalars['String'];
+}
+
 export interface UpsertTimelineEventInput {
   date: Scalars['DateTimeISO'];
   fullDetails?: InputMaybe<Scalars['String']>;
@@ -3580,7 +3595,7 @@ export type SiteScrapingRunFragmentFragment = { __typename?: 'SiteScrapingRun', 
 
 export type ScrapedUrlInfoFragmentFragment = { __typename?: 'ScrapedUrlInfo', id: string, websiteScrapingInfoId: string, url: string, text: string, textLength: number, createdAt: any, updatedAt: any };
 
-export type DiscoursePostFragment = { __typename?: 'DiscoursePost', id: string, spaceId: string, title: string, url: string, fullContent?: string | null, author?: string | null, datePublished: any, createdAt: any, indexedAt?: any | null, status: string, categories: Array<string>, subCategories: Array<string>, enacted?: boolean | null, discussed?: boolean | null };
+export type DiscoursePostFragment = { __typename?: 'DiscoursePost', id: string, spaceId: string, title: string, url: string, fullContent?: string | null, author?: string | null, datePublished: any, createdAt: any, indexedAt?: any | null, status: string, categories: Array<string>, subCategories: Array<string>, enacted?: boolean | null, discussed?: boolean | null, aiSummary?: string | null, aiSummaryDate?: any | null };
 
 export type DiscourseIndexRunsQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -3594,7 +3609,7 @@ export type DiscoursePostsQueryVariables = Exact<{
 }>;
 
 
-export type DiscoursePostsQuery = { __typename?: 'Query', discoursePosts: Array<{ __typename?: 'DiscoursePost', id: string, spaceId: string, title: string, url: string, fullContent?: string | null, author?: string | null, datePublished: any, createdAt: any, indexedAt?: any | null, status: string, categories: Array<string>, subCategories: Array<string>, enacted?: boolean | null, discussed?: boolean | null }> };
+export type DiscoursePostsQuery = { __typename?: 'Query', discoursePosts: Array<{ __typename?: 'DiscoursePost', id: string, spaceId: string, title: string, url: string, fullContent?: string | null, author?: string | null, datePublished: any, createdAt: any, indexedAt?: any | null, status: string, categories: Array<string>, subCategories: Array<string>, enacted?: boolean | null, discussed?: boolean | null, aiSummary?: string | null, aiSummaryDate?: any | null }> };
 
 export type DiscoursePostCommentsQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -3772,7 +3787,15 @@ export type AnnotateDiscoursePostMutationVariables = Exact<{
 }>;
 
 
-export type AnnotateDiscoursePostMutation = { __typename?: 'Mutation', annotateDiscoursePost: { __typename?: 'DiscoursePost', id: string, spaceId: string, title: string, url: string, fullContent?: string | null, author?: string | null, datePublished: any, createdAt: any, indexedAt?: any | null, status: string, categories: Array<string>, subCategories: Array<string>, enacted?: boolean | null, discussed?: boolean | null } };
+export type AnnotateDiscoursePostMutation = { __typename?: 'Mutation', annotateDiscoursePost: { __typename?: 'DiscoursePost', id: string, spaceId: string, title: string, url: string, fullContent?: string | null, author?: string | null, datePublished: any, createdAt: any, indexedAt?: any | null, status: string, categories: Array<string>, subCategories: Array<string>, enacted?: boolean | null, discussed?: boolean | null, aiSummary?: string | null, aiSummaryDate?: any | null } };
+
+export type UpsertSummaryOfDiscoursePostMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+  input: UpsertSummaryOfDiscoursePostInput;
+}>;
+
+
+export type UpsertSummaryOfDiscoursePostMutation = { __typename?: 'Mutation', upsertSummaryOfDiscoursePost: { __typename?: 'DiscoursePost', id: string, spaceId: string, title: string, url: string, fullContent?: string | null, author?: string | null, datePublished: any, createdAt: any, indexedAt?: any | null, status: string, categories: Array<string>, subCategories: Array<string>, enacted?: boolean | null, discussed?: boolean | null, aiSummary?: string | null, aiSummaryDate?: any | null } };
 
 export type GuideSettingsFragment = { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null };
 
@@ -4798,6 +4821,8 @@ export const DiscoursePostFragmentDoc = gql`
   subCategories
   enacted
   discussed
+  aiSummary
+  aiSummaryDate
 }
     `;
 export const GuideSettingsFragmentDoc = gql`
@@ -9440,6 +9465,40 @@ export function useAnnotateDiscoursePostMutation(baseOptions?: Apollo.MutationHo
 export type AnnotateDiscoursePostMutationHookResult = ReturnType<typeof useAnnotateDiscoursePostMutation>;
 export type AnnotateDiscoursePostMutationResult = Apollo.MutationResult<AnnotateDiscoursePostMutation>;
 export type AnnotateDiscoursePostMutationOptions = Apollo.BaseMutationOptions<AnnotateDiscoursePostMutation, AnnotateDiscoursePostMutationVariables>;
+export const UpsertSummaryOfDiscoursePostDocument = gql`
+    mutation UpsertSummaryOfDiscoursePost($spaceId: String!, $input: UpsertSummaryOfDiscoursePostInput!) {
+  upsertSummaryOfDiscoursePost(spaceId: $spaceId, input: $input) {
+    ...DiscoursePost
+  }
+}
+    ${DiscoursePostFragmentDoc}`;
+export type UpsertSummaryOfDiscoursePostMutationFn = Apollo.MutationFunction<UpsertSummaryOfDiscoursePostMutation, UpsertSummaryOfDiscoursePostMutationVariables>;
+
+/**
+ * __useUpsertSummaryOfDiscoursePostMutation__
+ *
+ * To run a mutation, you first call `useUpsertSummaryOfDiscoursePostMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertSummaryOfDiscoursePostMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertSummaryOfDiscoursePostMutation, { data, loading, error }] = useUpsertSummaryOfDiscoursePostMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpsertSummaryOfDiscoursePostMutation(baseOptions?: Apollo.MutationHookOptions<UpsertSummaryOfDiscoursePostMutation, UpsertSummaryOfDiscoursePostMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpsertSummaryOfDiscoursePostMutation, UpsertSummaryOfDiscoursePostMutationVariables>(UpsertSummaryOfDiscoursePostDocument, options);
+      }
+export type UpsertSummaryOfDiscoursePostMutationHookResult = ReturnType<typeof useUpsertSummaryOfDiscoursePostMutation>;
+export type UpsertSummaryOfDiscoursePostMutationResult = Apollo.MutationResult<UpsertSummaryOfDiscoursePostMutation>;
+export type UpsertSummaryOfDiscoursePostMutationOptions = Apollo.BaseMutationOptions<UpsertSummaryOfDiscoursePostMutation, UpsertSummaryOfDiscoursePostMutationVariables>;
 export const SpacesDocument = gql`
     query Spaces {
   spaces {

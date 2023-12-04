@@ -93,6 +93,8 @@ fragment DiscoursePost on DiscoursePost {
   subCategories
   enacted
   discussed
+  aiSummary
+  aiSummaryDate
 }
 
 query DiscourseIndexRuns($spaceId: String!) {
@@ -267,6 +269,12 @@ mutation EditArticleIndexingInfo($spaceId: String!, $articleIndexingInfoId: Stri
 
 mutation AnnotateDiscoursePost($spaceId: String!, $input: AnnotateDiscoursePostInput!) {
   annotateDiscoursePost(spaceId: $spaceId, input: $input) {
+    ...DiscoursePost
+  }
+}
+
+mutation UpsertSummaryOfDiscoursePost($spaceId: String!, $input: UpsertSummaryOfDiscoursePostInput!) {
+  upsertSummaryOfDiscoursePost(spaceId: $spaceId, input: $input) {
     ...DiscoursePost
   }
 }
