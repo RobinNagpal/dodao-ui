@@ -87,6 +87,15 @@ export interface AddTopicVideoInput {
   url: Scalars['String'];
 }
 
+export interface AnnotateDiscoursePostInput {
+  categories: Array<Scalars['String']>;
+  discussed?: InputMaybe<Scalars['Boolean']>;
+  enacted?: InputMaybe<Scalars['Boolean']>;
+  postId: Scalars['String'];
+  spaceId: Scalars['String'];
+  subCategories: Array<Scalars['String']>;
+}
+
 export interface ArticleIndexingInfo {
   __typename?: 'ArticleIndexingInfo';
   articleUrl: Scalars['String'];
@@ -259,6 +268,55 @@ export enum ChatCompletionRequestMessageRoleEnum {
   User = 'user'
 }
 
+export interface ChatbotCategory {
+  __typename?: 'ChatbotCategory';
+  description: Scalars['String'];
+  id: Scalars['String'];
+  key: Scalars['String'];
+  name: Scalars['String'];
+  priority: Scalars['Int'];
+  subCategories: Array<ChatbotSubcategory>;
+}
+
+export interface ChatbotFaq extends ChatbotFaqCommon {
+  __typename?: 'ChatbotFAQ';
+  answer: Scalars['String'];
+  categories?: Maybe<Array<Scalars['String']>>;
+  id: Scalars['String'];
+  priority: Scalars['Int'];
+  question: Scalars['String'];
+  spaceId: Scalars['String'];
+  subCategories?: Maybe<Array<Scalars['String']>>;
+  url: Scalars['String'];
+}
+
+export interface ChatbotFaqCommon {
+  answer: Scalars['String'];
+  categories?: Maybe<Array<Scalars['String']>>;
+  id: Scalars['String'];
+  priority: Scalars['Int'];
+  question: Scalars['String'];
+  spaceId: Scalars['String'];
+  subCategories?: Maybe<Array<Scalars['String']>>;
+  url: Scalars['String'];
+}
+
+export interface ChatbotSubcategory {
+  __typename?: 'ChatbotSubcategory';
+  description: Scalars['String'];
+  key: Scalars['String'];
+  name: Scalars['String'];
+}
+
+export interface ChatbotUserQuestion {
+  __typename?: 'ChatbotUserQuestion';
+  categories?: Maybe<Array<Scalars['String']>>;
+  id: Scalars['String'];
+  question: Scalars['String'];
+  spaceId: Scalars['String'];
+  subCategories?: Maybe<Array<Scalars['String']>>;
+}
+
 export interface CompletionAiInput {
   model?: InputMaybe<Scalars['String']>;
   n?: InputMaybe<Scalars['Int']>;
@@ -426,14 +484,20 @@ export interface DiscourseIndexRun {
 
 export interface DiscoursePost {
   __typename?: 'DiscoursePost';
+  aiSummary?: Maybe<Scalars['String']>;
+  aiSummaryDate?: Maybe<Scalars['DateTimeISO']>;
   author?: Maybe<Scalars['String']>;
+  categories: Array<Scalars['String']>;
   createdAt: Scalars['DateTimeISO'];
   datePublished: Scalars['DateTimeISO'];
+  discussed?: Maybe<Scalars['Boolean']>;
+  enacted?: Maybe<Scalars['Boolean']>;
   fullContent?: Maybe<Scalars['String']>;
   id: Scalars['String'];
   indexedAt?: Maybe<Scalars['DateTimeISO']>;
   spaceId: Scalars['String'];
   status: Scalars['String'];
+  subCategories: Array<Scalars['String']>;
   title: Scalars['String'];
   url: Scalars['String'];
 }
@@ -1005,6 +1069,7 @@ export interface Mutation {
   addTopicQuestions: Array<GitCourseQuestion>;
   addTopicSummary: GitCourseSummary;
   addTopicVideo: GitCourseReading;
+  annotateDiscoursePost: DiscoursePost;
   askChatCompletionAI: OpenAiChatCompletionResponse;
   askCompletionAI: OpenAiCompletionResponse;
   authenticateWithUnstoppable: JwtResponse;
@@ -1016,6 +1081,9 @@ export interface Mutation {
   createWebsiteScrapingInfo: WebsiteScrapingInfo;
   deleteAndPullCourseRepo: GitCourse;
   deleteByteCollection: Scalars['Boolean'];
+  deleteChatbotCategory: Scalars['Boolean'];
+  deleteChatbotFAQ: Scalars['Boolean'];
+  deleteChatbotUserQuestion: Scalars['Boolean'];
   deleteGitCourseSubmission: Scalars['Boolean'];
   deleteGuide: Scalars['Boolean'];
   deleteTopic: GitCourse;
@@ -1024,6 +1092,7 @@ export interface Mutation {
   deleteTopicSummary: GitCourse;
   deleteTopicVideo: GitCourse;
   downloadAndCleanContent: DownloadAndCleanContentResponse;
+  dropPineconeNamespace: Scalars['Boolean'];
   editArticleIndexingInfo: ArticleIndexingInfo;
   editWebsiteScrapingInfo: WebsiteScrapingInfo;
   extractRelevantTextForTopic: OpenAiTextResponse;
@@ -1031,6 +1100,7 @@ export interface Mutation {
   generateImageEdit: GenerateImageResponse;
   generateSharablePdf: Scalars['String'];
   indexDiscoursePost: Scalars['Boolean'];
+  indexNeedsIndexingDiscoursePosts: DiscourseIndexRun;
   initializeGitCourseSubmission: GitCourseSubmission;
   moveTopic: GitCourse;
   moveTopicExplanation: GitCourse;
@@ -1068,18 +1138,25 @@ export interface Mutation {
   upsertAcademyTask: AcademyTask;
   upsertByte: Byte;
   upsertByteSocialShare: ByteSocialShare;
+  upsertChatbotCategory: ChatbotCategory;
+  upsertChatbotFAQ: ChatbotFaq;
+  upsertChatbotUserQuestion: ChatbotUserQuestion;
   upsertCourseIntegrations: CourseIntegrations;
   upsertGitCourse?: Maybe<SummarizedGitCourse>;
   upsertGitCourseTopicSubmission: GitCourseSubmission;
   upsertGnosisSafeWallets: Space;
   upsertGuide: Guide;
   upsertGuideRating: GuideRating;
+  upsertProject: Project;
+  upsertProjectByte: ProjectByte;
+  upsertProjectByteCollection: ProjectByteCollection;
   upsertProjectGalaxyAccessToken: Space;
   upsertSimulation: Simulation;
   upsertSpaceAcademyRepository: Space;
   upsertSpaceFeatures: Space;
   upsertSpaceInviteLinks: Space;
   upsertSpaceLoaderInfo: Space;
+  upsertSummaryOfDiscoursePost: DiscoursePost;
   upsertTimeline: Timeline;
 }
 
@@ -1124,6 +1201,12 @@ export interface MutationAddTopicSummaryArgs {
 export interface MutationAddTopicVideoArgs {
   spaceId: Scalars['String'];
   videoInfo: AddTopicVideoInput;
+}
+
+
+export interface MutationAnnotateDiscoursePostArgs {
+  input: AnnotateDiscoursePostInput;
+  spaceId: Scalars['String'];
 }
 
 
@@ -1189,6 +1272,24 @@ export interface MutationDeleteByteCollectionArgs {
 }
 
 
+export interface MutationDeleteChatbotCategoryArgs {
+  id: Scalars['String'];
+  spaceId: Scalars['String'];
+}
+
+
+export interface MutationDeleteChatbotFaqArgs {
+  id: Scalars['String'];
+  spaceId: Scalars['String'];
+}
+
+
+export interface MutationDeleteChatbotUserQuestionArgs {
+  id: Scalars['String'];
+  spaceId: Scalars['String'];
+}
+
+
 export interface MutationDeleteGitCourseSubmissionArgs {
   courseKey: Scalars['String'];
   spaceId: Scalars['String'];
@@ -1236,6 +1337,11 @@ export interface MutationDownloadAndCleanContentArgs {
 }
 
 
+export interface MutationDropPineconeNamespaceArgs {
+  spaceId: Scalars['String'];
+}
+
+
 export interface MutationEditArticleIndexingInfoArgs {
   articleIndexingInfoId: Scalars['String'];
   articleUrl: Scalars['String'];
@@ -1276,6 +1382,11 @@ export interface MutationGenerateSharablePdfArgs {
 
 export interface MutationIndexDiscoursePostArgs {
   postId: Scalars['String'];
+  spaceId: Scalars['String'];
+}
+
+
+export interface MutationIndexNeedsIndexingDiscoursePostsArgs {
   spaceId: Scalars['String'];
 }
 
@@ -1489,6 +1600,24 @@ export interface MutationUpsertByteSocialShareArgs {
 }
 
 
+export interface MutationUpsertChatbotCategoryArgs {
+  input: UpsertChatbotCategoryInput;
+  spaceId: Scalars['String'];
+}
+
+
+export interface MutationUpsertChatbotFaqArgs {
+  input: UpsertChatbotFaqInput;
+  spaceId: Scalars['String'];
+}
+
+
+export interface MutationUpsertChatbotUserQuestionArgs {
+  input: UpsertChatbotUserQuestionInput;
+  spaceId: Scalars['String'];
+}
+
+
 export interface MutationUpsertCourseIntegrationsArgs {
   courseIntegrationInput: UpsertCourseIntegrationsInput;
   spaceId: Scalars['String'];
@@ -1525,6 +1654,23 @@ export interface MutationUpsertGuideRatingArgs {
 }
 
 
+export interface MutationUpsertProjectArgs {
+  input: UpsertProjectInput;
+}
+
+
+export interface MutationUpsertProjectByteArgs {
+  input: UpsertProjectByteInput;
+  projectId: Scalars['String'];
+}
+
+
+export interface MutationUpsertProjectByteCollectionArgs {
+  input: UpsertProjectByteCollectionInput;
+  projectId: Scalars['String'];
+}
+
+
 export interface MutationUpsertProjectGalaxyAccessTokenArgs {
   accessToken: Scalars['String'];
   spaceId: Scalars['String'];
@@ -1557,6 +1703,12 @@ export interface MutationUpsertSpaceInviteLinksArgs {
 
 export interface MutationUpsertSpaceLoaderInfoArgs {
   input: SpaceLoadersInfoInput;
+  spaceId: Scalars['String'];
+}
+
+
+export interface MutationUpsertSummaryOfDiscoursePostArgs {
+  input: UpsertSummaryOfDiscoursePostInput;
   spaceId: Scalars['String'];
 }
 
@@ -1631,6 +1783,48 @@ export enum OrderDirection {
   Desc = 'desc'
 }
 
+export interface Project {
+  __typename?: 'Project';
+  adminUsernames: Array<Scalars['String']>;
+  admins: Array<Scalars['String']>;
+  creator: Scalars['String'];
+  details: Scalars['String'];
+  discord?: Maybe<Scalars['String']>;
+  docs?: Maybe<Scalars['String']>;
+  github?: Maybe<Scalars['String']>;
+  id: Scalars['String'];
+  logo?: Maybe<Scalars['String']>;
+  name: Scalars['String'];
+  telegram?: Maybe<Scalars['String']>;
+  type: Scalars['String'];
+  website?: Maybe<Scalars['String']>;
+}
+
+export interface ProjectByte {
+  __typename?: 'ProjectByte';
+  admins: Array<Scalars['String']>;
+  content: Scalars['String'];
+  created: Scalars['String'];
+  id: Scalars['String'];
+  name: Scalars['String'];
+  postSubmissionStepContent?: Maybe<Scalars['String']>;
+  priority: Scalars['Int'];
+  publishStatus: Scalars['String'];
+  steps: Array<ByteStep>;
+  tags: Array<Scalars['String']>;
+}
+
+export interface ProjectByteCollection {
+  __typename?: 'ProjectByteCollection';
+  byteIds: Array<Scalars['String']>;
+  bytes: Array<ByteCollectionByte>;
+  description: Scalars['String'];
+  id: Scalars['String'];
+  name: Scalars['String'];
+  order: Scalars['Int'];
+  status: Scalars['String'];
+}
+
 export interface Query {
   __typename?: 'Query';
   _empty?: Maybe<Scalars['String']>;
@@ -1642,6 +1836,9 @@ export interface Query {
   byteCollections: Array<ByteCollection>;
   byteSocialShare?: Maybe<ByteSocialShare>;
   bytes: Array<Byte>;
+  chatbotCategories: Array<ChatbotCategory>;
+  chatbotFAQs: Array<ChatbotFaq>;
+  chatbotUserQuestions: Array<ChatbotUserQuestion>;
   consolidatedGuideRating?: Maybe<ConsolidatedGuideRating>;
   courses: Array<GitCourse>;
   discordChannels: Array<DiscordChannel>;
@@ -1660,10 +1857,17 @@ export interface Query {
   guideRatings: Array<GuideRating>;
   guideSubmissions: Array<GuideSubmission>;
   guides: Array<Guide>;
+  project: Project;
+  projectByte: ProjectByte;
+  projectByteCollection: ProjectByteCollection;
+  projectByteCollections: Array<ProjectByteCollection>;
+  projectBytes: Array<ProjectByte>;
+  projects: Array<Project>;
   rawGitCourse: RawGitCourse;
   rawGitCourses: Array<RawGitCourse>;
   route53Records: Array<Route53Record>;
   scrapedUrlInfos: Array<ScrapedUrlInfo>;
+  searchChatbotFAQs: Array<SearchedChatbotFaq>;
   simulation: Simulation;
   simulations: Array<Simulation>;
   siteScrapingRuns: Array<SiteScrapingRun>;
@@ -1718,6 +1922,21 @@ export interface QueryByteSocialShareArgs {
 
 
 export interface QueryBytesArgs {
+  spaceId: Scalars['String'];
+}
+
+
+export interface QueryChatbotCategoriesArgs {
+  spaceId: Scalars['String'];
+}
+
+
+export interface QueryChatbotFaQsArgs {
+  spaceId: Scalars['String'];
+}
+
+
+export interface QueryChatbotUserQuestionsArgs {
   spaceId: Scalars['String'];
 }
 
@@ -1826,6 +2045,38 @@ export interface QueryGuidesArgs {
 }
 
 
+export interface QueryProjectArgs {
+  id: Scalars['String'];
+}
+
+
+export interface QueryProjectByteArgs {
+  projectByteId: Scalars['String'];
+  projectId: Scalars['String'];
+}
+
+
+export interface QueryProjectByteCollectionArgs {
+  byteCollectionId: Scalars['String'];
+  projectId: Scalars['String'];
+}
+
+
+export interface QueryProjectByteCollectionsArgs {
+  projectId: Scalars['String'];
+}
+
+
+export interface QueryProjectBytesArgs {
+  projectId: Scalars['String'];
+}
+
+
+export interface QueryProjectsArgs {
+  type?: InputMaybe<Scalars['String']>;
+}
+
+
 export interface QueryRawGitCourseArgs {
   key: Scalars['String'];
   spaceId: Scalars['String'];
@@ -1840,6 +2091,12 @@ export interface QueryRawGitCoursesArgs {
 export interface QueryScrapedUrlInfosArgs {
   spaceId: Scalars['String'];
   websiteScrapingInfoId: Scalars['String'];
+}
+
+
+export interface QuerySearchChatbotFaQsArgs {
+  query: Scalars['String'];
+  spaceId: Scalars['String'];
 }
 
 
@@ -1931,6 +2188,19 @@ export interface ScrapedUrlInfo {
   url: Scalars['String'];
   websiteScrapingInfo: WebsiteScrapingInfo;
   websiteScrapingInfoId: Scalars['String'];
+}
+
+export interface SearchedChatbotFaq extends ChatbotFaqCommon {
+  __typename?: 'SearchedChatbotFAQ';
+  answer: Scalars['String'];
+  categories?: Maybe<Array<Scalars['String']>>;
+  id: Scalars['String'];
+  priority: Scalars['Int'];
+  question: Scalars['String'];
+  score: Scalars['Float'];
+  spaceId: Scalars['String'];
+  subCategories?: Maybe<Array<Scalars['String']>>;
+  url: Scalars['String'];
 }
 
 export interface SendEmailInput {
@@ -2257,6 +2527,40 @@ export interface UpsertByteSocialShareInput {
   twitterImage?: InputMaybe<Scalars['String']>;
 }
 
+export interface UpsertChatbotCategoryInput {
+  description: Scalars['String'];
+  id: Scalars['String'];
+  key: Scalars['String'];
+  name: Scalars['String'];
+  priority: Scalars['Int'];
+  subCategories: Array<UpsertChatbotSubcategoryInput>;
+}
+
+export interface UpsertChatbotFaqInput {
+  answer: Scalars['String'];
+  categories?: InputMaybe<Array<Scalars['String']>>;
+  id: Scalars['String'];
+  priority: Scalars['Int'];
+  question: Scalars['String'];
+  spaceId: Scalars['String'];
+  subCategories?: InputMaybe<Array<Scalars['String']>>;
+  url: Scalars['String'];
+}
+
+export interface UpsertChatbotSubcategoryInput {
+  description: Scalars['String'];
+  key: Scalars['String'];
+  name: Scalars['String'];
+}
+
+export interface UpsertChatbotUserQuestionInput {
+  categories?: InputMaybe<Array<Scalars['String']>>;
+  id: Scalars['String'];
+  question: Scalars['String'];
+  spaceId: Scalars['String'];
+  subCategories?: InputMaybe<Array<Scalars['String']>>;
+}
+
 export interface UpsertCourseIntegrationsInput {
   courseKey: Scalars['String'];
   discordRoleIds: Array<Scalars['String']>;
@@ -2279,6 +2583,44 @@ export interface UpsertGuideRatingInput {
   spaceId: Scalars['String'];
   startRating?: InputMaybe<Scalars['Int']>;
   userId?: InputMaybe<Scalars['String']>;
+}
+
+export interface UpsertProjectByteCollectionInput {
+  byteIds: Array<Scalars['String']>;
+  description: Scalars['String'];
+  id: Scalars['String'];
+  name: Scalars['String'];
+  order: Scalars['Int'];
+  projectId: Scalars['String'];
+  status: Scalars['String'];
+}
+
+export interface UpsertProjectByteInput {
+  admins: Array<Scalars['String']>;
+  content: Scalars['String'];
+  created: Scalars['String'];
+  id: Scalars['String'];
+  name: Scalars['String'];
+  priority: Scalars['Int'];
+  publishStatus: Scalars['String'];
+  steps: Array<ByteStepInput>;
+  tags: Array<Scalars['String']>;
+  thumbnail?: InputMaybe<Scalars['String']>;
+}
+
+export interface UpsertProjectInput {
+  adminUsernames: Array<Scalars['String']>;
+  admins: Array<Scalars['String']>;
+  details: Scalars['String'];
+  discord?: InputMaybe<Scalars['String']>;
+  docs?: InputMaybe<Scalars['String']>;
+  github?: InputMaybe<Scalars['String']>;
+  id: Scalars['String'];
+  logo?: InputMaybe<Scalars['String']>;
+  name: Scalars['String'];
+  telegram?: InputMaybe<Scalars['String']>;
+  type: Scalars['String'];
+  website?: InputMaybe<Scalars['String']>;
 }
 
 export interface UpsertSimulationInput {
@@ -2307,6 +2649,12 @@ export interface UpsertSpaceInput {
   name: Scalars['String'];
   skin: Scalars['String'];
   spaceIntegrations: SpaceIntegrationsInput;
+}
+
+export interface UpsertSummaryOfDiscoursePostInput {
+  aiSummary?: InputMaybe<Scalars['String']>;
+  aiSummaryDate?: InputMaybe<Scalars['DateTimeISO']>;
+  postId: Scalars['String'];
 }
 
 export interface UpsertTimelineEventInput {
@@ -2557,6 +2905,93 @@ export type SubmitByteMutationVariables = Exact<{
 
 
 export type SubmitByteMutation = { __typename?: 'Mutation', submitByte: { __typename?: 'ByteSubmission', id: string, created: string, createdBy: string, byteId: string, spaceId: string } };
+
+export type ChatbotSubCategoryFragment = { __typename?: 'ChatbotSubcategory', name: string, key: string, description: string };
+
+export type ChatbotCategoryFragment = { __typename?: 'ChatbotCategory', id: string, priority: number, description: string, key: string, name: string, subCategories: Array<{ __typename?: 'ChatbotSubcategory', name: string, key: string, description: string }> };
+
+export type ChatbotFaqFragment = { __typename?: 'ChatbotFAQ', id: string, spaceId: string, question: string, answer: string, categories?: Array<string> | null, subCategories?: Array<string> | null, priority: number, url: string };
+
+export type SearchedChatbotFaqFragmentFragment = { __typename?: 'SearchedChatbotFAQ', id: string, spaceId: string, question: string, answer: string, categories?: Array<string> | null, subCategories?: Array<string> | null, priority: number, url: string, score: number };
+
+export type ChatbotUserQuestionFragment = { __typename?: 'ChatbotUserQuestion', id: string, spaceId: string, question: string, categories?: Array<string> | null, subCategories?: Array<string> | null };
+
+export type ChatbotCategoriesQueryVariables = Exact<{
+  spaceId: Scalars['String'];
+}>;
+
+
+export type ChatbotCategoriesQuery = { __typename?: 'Query', chatbotCategories: Array<{ __typename?: 'ChatbotCategory', id: string, priority: number, description: string, key: string, name: string, subCategories: Array<{ __typename?: 'ChatbotSubcategory', name: string, key: string, description: string }> }> };
+
+export type ChatbotFaQsQueryVariables = Exact<{
+  spaceId: Scalars['String'];
+}>;
+
+
+export type ChatbotFaQsQuery = { __typename?: 'Query', chatbotFAQs: Array<{ __typename?: 'ChatbotFAQ', id: string, spaceId: string, question: string, answer: string, categories?: Array<string> | null, subCategories?: Array<string> | null, priority: number, url: string }> };
+
+export type SearchChatbotFaQsQueryVariables = Exact<{
+  spaceId: Scalars['String'];
+  query: Scalars['String'];
+}>;
+
+
+export type SearchChatbotFaQsQuery = { __typename?: 'Query', searchChatbotFAQs: Array<{ __typename?: 'SearchedChatbotFAQ', id: string, spaceId: string, question: string, answer: string, categories?: Array<string> | null, subCategories?: Array<string> | null, priority: number, url: string, score: number }> };
+
+export type ChatbotUserQuestionsQueryVariables = Exact<{
+  spaceId: Scalars['String'];
+}>;
+
+
+export type ChatbotUserQuestionsQuery = { __typename?: 'Query', chatbotUserQuestions: Array<{ __typename?: 'ChatbotUserQuestion', id: string, spaceId: string, question: string, categories?: Array<string> | null, subCategories?: Array<string> | null }> };
+
+export type UpsertChatbotCategoryMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+  input: UpsertChatbotCategoryInput;
+}>;
+
+
+export type UpsertChatbotCategoryMutation = { __typename?: 'Mutation', upsertChatbotCategory: { __typename?: 'ChatbotCategory', id: string, priority: number, description: string, key: string, name: string, subCategories: Array<{ __typename?: 'ChatbotSubcategory', name: string, key: string, description: string }> } };
+
+export type UpsertChatbotFaqMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+  input: UpsertChatbotFaqInput;
+}>;
+
+
+export type UpsertChatbotFaqMutation = { __typename?: 'Mutation', upsertChatbotFAQ: { __typename?: 'ChatbotFAQ', id: string, spaceId: string, question: string, answer: string, categories?: Array<string> | null, subCategories?: Array<string> | null, priority: number, url: string } };
+
+export type UpsertChatbotUserQuestionMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+  input: UpsertChatbotUserQuestionInput;
+}>;
+
+
+export type UpsertChatbotUserQuestionMutation = { __typename?: 'Mutation', upsertChatbotUserQuestion: { __typename?: 'ChatbotUserQuestion', id: string, spaceId: string, question: string, categories?: Array<string> | null, subCategories?: Array<string> | null } };
+
+export type DeleteChatbotCategoryMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+  id: Scalars['String'];
+}>;
+
+
+export type DeleteChatbotCategoryMutation = { __typename?: 'Mutation', deleteChatbotCategory: boolean };
+
+export type DeleteChatbotFaqMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+  id: Scalars['String'];
+}>;
+
+
+export type DeleteChatbotFaqMutation = { __typename?: 'Mutation', deleteChatbotFAQ: boolean };
+
+export type DeleteChatbotUserQuestionMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+  id: Scalars['String'];
+}>;
+
+
+export type DeleteChatbotUserQuestionMutation = { __typename?: 'Mutation', deleteChatbotUserQuestion: boolean };
 
 export type TopicSubmissionJsonFragment = { __typename?: 'GitCourseTopicSubmissionJson', uuid: string, topicKey: string, status: string, explanations?: Array<{ __typename?: 'GitCourseExplanationsSubmission', key: string, status: string }> | null, questions?: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, status: string, answers: Array<string> }> | null, readings?: Array<{ __typename?: 'GitCourseReadingsSubmission', uuid: string, status: string, questions?: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, answers: Array<string>, status: string }> | null }> | null, summaries?: Array<{ __typename?: 'GitCourseSummariesSubmission', key: string, status: string }> | null };
 
@@ -3044,6 +3479,79 @@ export type GenerateImageMutationVariables = Exact<{
 
 export type GenerateImageMutation = { __typename?: 'Mutation', generateImage: { __typename?: 'ImagesResponse', created: number, data: Array<{ __typename?: 'ImagesResponseDataInner', url?: string | null }> } };
 
+export type ProjectFragment = { __typename?: 'Project', adminUsernames: Array<string>, admins: Array<string>, creator: string, details: string, discord?: string | null, docs?: string | null, github?: string | null, id: string, logo?: string | null, name: string, telegram?: string | null, website?: string | null, type: string };
+
+export type ProjectByteFragment = { __typename?: 'ProjectByte', admins: Array<string>, content: string, created: string, id: string, name: string, postSubmissionStepContent?: string | null, priority: number, publishStatus: string, tags: Array<string>, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> };
+
+export type ProjectByteCollectionFragment = { __typename?: 'ProjectByteCollection', byteIds: Array<string>, description: string, id: string, name: string, order: number, status: string, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string }> };
+
+export type ProjectsQueryVariables = Exact<{
+  type?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type ProjectsQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'Project', adminUsernames: Array<string>, admins: Array<string>, creator: string, details: string, discord?: string | null, docs?: string | null, github?: string | null, id: string, logo?: string | null, name: string, telegram?: string | null, website?: string | null, type: string }> };
+
+export type ProjectQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type ProjectQuery = { __typename?: 'Query', project: { __typename?: 'Project', adminUsernames: Array<string>, admins: Array<string>, creator: string, details: string, discord?: string | null, docs?: string | null, github?: string | null, id: string, logo?: string | null, name: string, telegram?: string | null, website?: string | null, type: string } };
+
+export type ProjectBytesQueryVariables = Exact<{
+  projectId: Scalars['String'];
+}>;
+
+
+export type ProjectBytesQuery = { __typename?: 'Query', projectBytes: Array<{ __typename?: 'ProjectByte', admins: Array<string>, content: string, created: string, id: string, name: string, postSubmissionStepContent?: string | null, priority: number, publishStatus: string, tags: Array<string>, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> }> };
+
+export type ProjectByteQueryVariables = Exact<{
+  projectId: Scalars['String'];
+  id: Scalars['String'];
+}>;
+
+
+export type ProjectByteQuery = { __typename?: 'Query', projectByte: { __typename?: 'ProjectByte', admins: Array<string>, content: string, created: string, id: string, name: string, postSubmissionStepContent?: string | null, priority: number, publishStatus: string, tags: Array<string>, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> } };
+
+export type ProjectByteCollectionsQueryVariables = Exact<{
+  projectId: Scalars['String'];
+}>;
+
+
+export type ProjectByteCollectionsQuery = { __typename?: 'Query', projectByteCollections: Array<{ __typename?: 'ProjectByteCollection', byteIds: Array<string>, description: string, id: string, name: string, order: number, status: string, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string }> }> };
+
+export type ProjectByteCollectionQueryVariables = Exact<{
+  projectId: Scalars['String'];
+  id: Scalars['String'];
+}>;
+
+
+export type ProjectByteCollectionQuery = { __typename?: 'Query', projectByteCollection: { __typename?: 'ProjectByteCollection', byteIds: Array<string>, description: string, id: string, name: string, order: number, status: string, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string }> } };
+
+export type UpsertProjectMutationVariables = Exact<{
+  input: UpsertProjectInput;
+}>;
+
+
+export type UpsertProjectMutation = { __typename?: 'Mutation', upsertProject: { __typename?: 'Project', adminUsernames: Array<string>, admins: Array<string>, creator: string, details: string, discord?: string | null, docs?: string | null, github?: string | null, id: string, logo?: string | null, name: string, telegram?: string | null, website?: string | null, type: string } };
+
+export type UpsertProjectByteMutationVariables = Exact<{
+  projectId: Scalars['String'];
+  input: UpsertProjectByteInput;
+}>;
+
+
+export type UpsertProjectByteMutation = { __typename?: 'Mutation', upsertProjectByte: { __typename?: 'ProjectByte', admins: Array<string>, content: string, created: string, id: string, name: string, postSubmissionStepContent?: string | null, priority: number, publishStatus: string, tags: Array<string>, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> } };
+
+export type UpsertProjectByteCollectionMutationVariables = Exact<{
+  projectId: Scalars['String'];
+  input: UpsertProjectByteCollectionInput;
+}>;
+
+
+export type UpsertProjectByteCollectionMutation = { __typename?: 'Mutation', upsertProjectByteCollection: { __typename?: 'ProjectByteCollection', byteIds: Array<string>, description: string, id: string, name: string, order: number, status: string, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string }> } };
+
 export type SimulationStepFragment = { __typename?: 'SimulationStep', content: string, iframeUrl?: string | null, name: string, uuid: string, order: number };
 
 export type SimulationDetailsFragment = { __typename?: 'Simulation', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, steps: Array<{ __typename?: 'SimulationStep', content: string, iframeUrl?: string | null, name: string, uuid: string, order: number }> };
@@ -3087,6 +3595,8 @@ export type SiteScrapingRunFragmentFragment = { __typename?: 'SiteScrapingRun', 
 
 export type ScrapedUrlInfoFragmentFragment = { __typename?: 'ScrapedUrlInfo', id: string, websiteScrapingInfoId: string, url: string, text: string, textLength: number, createdAt: any, updatedAt: any };
 
+export type DiscoursePostFragment = { __typename?: 'DiscoursePost', id: string, spaceId: string, title: string, url: string, fullContent?: string | null, author?: string | null, datePublished: any, createdAt: any, indexedAt?: any | null, status: string, categories: Array<string>, subCategories: Array<string>, enacted?: boolean | null, discussed?: boolean | null, aiSummary?: string | null, aiSummaryDate?: any | null };
+
 export type DiscourseIndexRunsQueryVariables = Exact<{
   spaceId: Scalars['String'];
 }>;
@@ -3099,7 +3609,7 @@ export type DiscoursePostsQueryVariables = Exact<{
 }>;
 
 
-export type DiscoursePostsQuery = { __typename?: 'Query', discoursePosts: Array<{ __typename?: 'DiscoursePost', id: string, spaceId: string, title: string, url: string, fullContent?: string | null, author?: string | null, datePublished: any, createdAt: any, indexedAt?: any | null, status: string }> };
+export type DiscoursePostsQuery = { __typename?: 'Query', discoursePosts: Array<{ __typename?: 'DiscoursePost', id: string, spaceId: string, title: string, url: string, fullContent?: string | null, author?: string | null, datePublished: any, createdAt: any, indexedAt?: any | null, status: string, categories: Array<string>, subCategories: Array<string>, enacted?: boolean | null, discussed?: boolean | null, aiSummary?: string | null, aiSummaryDate?: any | null }> };
 
 export type DiscoursePostCommentsQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -3177,6 +3687,13 @@ export type TriggerNewDiscourseIndexRunMutationVariables = Exact<{
 
 
 export type TriggerNewDiscourseIndexRunMutation = { __typename?: 'Mutation', triggerNewDiscourseIndexRun: { __typename?: 'DiscourseIndexRun', createdAt: any, id: string, runDate?: any | null, status: string } };
+
+export type IndexNeedsIndexingDiscoursePostsMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+}>;
+
+
+export type IndexNeedsIndexingDiscoursePostsMutation = { __typename?: 'Mutation', indexNeedsIndexingDiscoursePosts: { __typename?: 'DiscourseIndexRun', createdAt: any, id: string, runDate?: any | null, status: string } };
 
 export type ReFetchDiscordServersMutationVariables = Exact<{ [key: string]: never; }>;
 
@@ -3264,6 +3781,22 @@ export type EditArticleIndexingInfoMutationVariables = Exact<{
 
 export type EditArticleIndexingInfoMutation = { __typename?: 'Mutation', editArticleIndexingInfo: { __typename?: 'ArticleIndexingInfo', id: string, spaceId: string, articleUrl: string, createdAt: any, updatedAt: any, status: string, text?: string | null, textLength?: number | null } };
 
+export type AnnotateDiscoursePostMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+  input: AnnotateDiscoursePostInput;
+}>;
+
+
+export type AnnotateDiscoursePostMutation = { __typename?: 'Mutation', annotateDiscoursePost: { __typename?: 'DiscoursePost', id: string, spaceId: string, title: string, url: string, fullContent?: string | null, author?: string | null, datePublished: any, createdAt: any, indexedAt?: any | null, status: string, categories: Array<string>, subCategories: Array<string>, enacted?: boolean | null, discussed?: boolean | null, aiSummary?: string | null, aiSummaryDate?: any | null } };
+
+export type UpsertSummaryOfDiscoursePostMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+  input: UpsertSummaryOfDiscoursePostInput;
+}>;
+
+
+export type UpsertSummaryOfDiscoursePostMutation = { __typename?: 'Mutation', upsertSummaryOfDiscoursePost: { __typename?: 'DiscoursePost', id: string, spaceId: string, title: string, url: string, fullContent?: string | null, author?: string | null, datePublished: any, createdAt: any, indexedAt?: any | null, status: string, categories: Array<string>, subCategories: Array<string>, enacted?: boolean | null, discussed?: boolean | null, aiSummary?: string | null, aiSummaryDate?: any | null } };
+
 export type GuideSettingsFragment = { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null };
 
 export type AuthSettingsFragment = { __typename?: 'AuthSettings', enableLogin?: boolean | null, loginOptions?: Array<string> | null };
@@ -3307,6 +3840,13 @@ export type UpsertSpaceFeaturesMutationVariables = Exact<{
 
 
 export type UpsertSpaceFeaturesMutation = { __typename?: 'Mutation', payload: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, skin: string, avatar?: string | null, domains: Array<string>, botDomains?: Array<string> | null, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null, loadersInfo?: { __typename?: 'SpaceLoadersInfo', discourseUrl?: string | null, discordServerId?: string | null } | null } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null } } };
+
+export type DropPineconeNamespaceMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+}>;
+
+
+export type DropPineconeNamespaceMutation = { __typename?: 'Mutation', dropPineconeNamespace: boolean };
 
 export type UpsertSpaceInviteLinksMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -3649,6 +4189,61 @@ export const ByteSummaryFragmentDoc = gql`
   admins
   tags
   priority
+}
+    `;
+export const ChatbotSubCategoryFragmentDoc = gql`
+    fragment ChatbotSubCategory on ChatbotSubcategory {
+  name
+  key
+  description
+}
+    `;
+export const ChatbotCategoryFragmentDoc = gql`
+    fragment ChatbotCategory on ChatbotCategory {
+  id
+  priority
+  description
+  key
+  name
+  subCategories {
+    name
+    key
+    description
+  }
+}
+    `;
+export const ChatbotFaqFragmentDoc = gql`
+    fragment ChatbotFAQ on ChatbotFAQ {
+  id
+  spaceId
+  question
+  answer
+  categories
+  subCategories
+  priority
+  url
+}
+    `;
+export const SearchedChatbotFaqFragmentFragmentDoc = gql`
+    fragment SearchedChatbotFAQFragment on SearchedChatbotFAQ {
+  id
+  spaceId
+  question
+  answer
+  categories
+  subCategories
+  priority
+  url
+  score
+}
+    `;
+export const ChatbotUserQuestionFragmentDoc = gql`
+    fragment ChatbotUserQuestion on ChatbotUserQuestion {
+  id
+  spaceId
+  question
+  categories
+  subCategories
 }
     `;
 export const TopicCorrectAnswersFragmentDoc = gql`
@@ -4023,6 +4618,80 @@ export const GuideSummaryFragmentDoc = gql`
   priority
 }
     `;
+export const ProjectFragmentDoc = gql`
+    fragment Project on Project {
+  adminUsernames
+  admins
+  creator
+  details
+  discord
+  docs
+  github
+  id
+  logo
+  name
+  telegram
+  website
+  type
+}
+    `;
+export const ProjectByteFragmentDoc = gql`
+    fragment ProjectByte on ProjectByte {
+  admins
+  content
+  created
+  id
+  name
+  postSubmissionStepContent
+  priority
+  publishStatus
+  steps {
+    content
+    stepItems {
+      __typename
+      ... on ByteQuestion {
+        answerKeys
+        choices {
+          content
+          key
+        }
+        content
+        type
+        uuid
+        explanation
+      }
+      ... on ByteUserInput {
+        label
+        required
+        type
+        uuid
+      }
+      ... on UserDiscordConnect {
+        type
+        uuid
+      }
+    }
+    name
+    uuid
+  }
+  tags
+}
+    `;
+export const ProjectByteCollectionFragmentDoc = gql`
+    fragment ProjectByteCollection on ProjectByteCollection {
+  byteIds
+  bytes {
+    byteId
+    name
+    content
+  }
+  description
+  id
+  name
+  order
+  status
+}
+    `;
 export const SimulationStepFragmentDoc = gql`
     fragment SimulationStep on SimulationStep {
   content
@@ -4134,6 +4803,26 @@ export const ScrapedUrlInfoFragmentFragmentDoc = gql`
   textLength
   createdAt
   updatedAt
+}
+    `;
+export const DiscoursePostFragmentDoc = gql`
+    fragment DiscoursePost on DiscoursePost {
+  id
+  spaceId
+  title
+  url
+  fullContent
+  author
+  datePublished
+  createdAt
+  indexedAt
+  status
+  categories
+  subCategories
+  enacted
+  discussed
+  aiSummary
+  aiSummaryDate
 }
     `;
 export const GuideSettingsFragmentDoc = gql`
@@ -4926,6 +5615,357 @@ export function useSubmitByteMutation(baseOptions?: Apollo.MutationHookOptions<S
 export type SubmitByteMutationHookResult = ReturnType<typeof useSubmitByteMutation>;
 export type SubmitByteMutationResult = Apollo.MutationResult<SubmitByteMutation>;
 export type SubmitByteMutationOptions = Apollo.BaseMutationOptions<SubmitByteMutation, SubmitByteMutationVariables>;
+export const ChatbotCategoriesDocument = gql`
+    query ChatbotCategories($spaceId: String!) {
+  chatbotCategories(spaceId: $spaceId) {
+    ...ChatbotCategory
+  }
+}
+    ${ChatbotCategoryFragmentDoc}`;
+
+/**
+ * __useChatbotCategoriesQuery__
+ *
+ * To run a query within a React component, call `useChatbotCategoriesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useChatbotCategoriesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useChatbotCategoriesQuery({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *   },
+ * });
+ */
+export function useChatbotCategoriesQuery(baseOptions: Apollo.QueryHookOptions<ChatbotCategoriesQuery, ChatbotCategoriesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ChatbotCategoriesQuery, ChatbotCategoriesQueryVariables>(ChatbotCategoriesDocument, options);
+      }
+export function useChatbotCategoriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ChatbotCategoriesQuery, ChatbotCategoriesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ChatbotCategoriesQuery, ChatbotCategoriesQueryVariables>(ChatbotCategoriesDocument, options);
+        }
+export type ChatbotCategoriesQueryHookResult = ReturnType<typeof useChatbotCategoriesQuery>;
+export type ChatbotCategoriesLazyQueryHookResult = ReturnType<typeof useChatbotCategoriesLazyQuery>;
+export type ChatbotCategoriesQueryResult = Apollo.QueryResult<ChatbotCategoriesQuery, ChatbotCategoriesQueryVariables>;
+export function refetchChatbotCategoriesQuery(variables: ChatbotCategoriesQueryVariables) {
+      return { query: ChatbotCategoriesDocument, variables: variables }
+    }
+export const ChatbotFaQsDocument = gql`
+    query ChatbotFAQs($spaceId: String!) {
+  chatbotFAQs(spaceId: $spaceId) {
+    ...ChatbotFAQ
+  }
+}
+    ${ChatbotFaqFragmentDoc}`;
+
+/**
+ * __useChatbotFaQsQuery__
+ *
+ * To run a query within a React component, call `useChatbotFaQsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useChatbotFaQsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useChatbotFaQsQuery({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *   },
+ * });
+ */
+export function useChatbotFaQsQuery(baseOptions: Apollo.QueryHookOptions<ChatbotFaQsQuery, ChatbotFaQsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ChatbotFaQsQuery, ChatbotFaQsQueryVariables>(ChatbotFaQsDocument, options);
+      }
+export function useChatbotFaQsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ChatbotFaQsQuery, ChatbotFaQsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ChatbotFaQsQuery, ChatbotFaQsQueryVariables>(ChatbotFaQsDocument, options);
+        }
+export type ChatbotFaQsQueryHookResult = ReturnType<typeof useChatbotFaQsQuery>;
+export type ChatbotFaQsLazyQueryHookResult = ReturnType<typeof useChatbotFaQsLazyQuery>;
+export type ChatbotFaQsQueryResult = Apollo.QueryResult<ChatbotFaQsQuery, ChatbotFaQsQueryVariables>;
+export function refetchChatbotFaQsQuery(variables: ChatbotFaQsQueryVariables) {
+      return { query: ChatbotFaQsDocument, variables: variables }
+    }
+export const SearchChatbotFaQsDocument = gql`
+    query SearchChatbotFAQs($spaceId: String!, $query: String!) {
+  searchChatbotFAQs(spaceId: $spaceId, query: $query) {
+    ...SearchedChatbotFAQFragment
+  }
+}
+    ${SearchedChatbotFaqFragmentFragmentDoc}`;
+
+/**
+ * __useSearchChatbotFaQsQuery__
+ *
+ * To run a query within a React component, call `useSearchChatbotFaQsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSearchChatbotFaQsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSearchChatbotFaQsQuery({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      query: // value for 'query'
+ *   },
+ * });
+ */
+export function useSearchChatbotFaQsQuery(baseOptions: Apollo.QueryHookOptions<SearchChatbotFaQsQuery, SearchChatbotFaQsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<SearchChatbotFaQsQuery, SearchChatbotFaQsQueryVariables>(SearchChatbotFaQsDocument, options);
+      }
+export function useSearchChatbotFaQsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchChatbotFaQsQuery, SearchChatbotFaQsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<SearchChatbotFaQsQuery, SearchChatbotFaQsQueryVariables>(SearchChatbotFaQsDocument, options);
+        }
+export type SearchChatbotFaQsQueryHookResult = ReturnType<typeof useSearchChatbotFaQsQuery>;
+export type SearchChatbotFaQsLazyQueryHookResult = ReturnType<typeof useSearchChatbotFaQsLazyQuery>;
+export type SearchChatbotFaQsQueryResult = Apollo.QueryResult<SearchChatbotFaQsQuery, SearchChatbotFaQsQueryVariables>;
+export function refetchSearchChatbotFaQsQuery(variables: SearchChatbotFaQsQueryVariables) {
+      return { query: SearchChatbotFaQsDocument, variables: variables }
+    }
+export const ChatbotUserQuestionsDocument = gql`
+    query ChatbotUserQuestions($spaceId: String!) {
+  chatbotUserQuestions(spaceId: $spaceId) {
+    ...ChatbotUserQuestion
+  }
+}
+    ${ChatbotUserQuestionFragmentDoc}`;
+
+/**
+ * __useChatbotUserQuestionsQuery__
+ *
+ * To run a query within a React component, call `useChatbotUserQuestionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useChatbotUserQuestionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useChatbotUserQuestionsQuery({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *   },
+ * });
+ */
+export function useChatbotUserQuestionsQuery(baseOptions: Apollo.QueryHookOptions<ChatbotUserQuestionsQuery, ChatbotUserQuestionsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ChatbotUserQuestionsQuery, ChatbotUserQuestionsQueryVariables>(ChatbotUserQuestionsDocument, options);
+      }
+export function useChatbotUserQuestionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ChatbotUserQuestionsQuery, ChatbotUserQuestionsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ChatbotUserQuestionsQuery, ChatbotUserQuestionsQueryVariables>(ChatbotUserQuestionsDocument, options);
+        }
+export type ChatbotUserQuestionsQueryHookResult = ReturnType<typeof useChatbotUserQuestionsQuery>;
+export type ChatbotUserQuestionsLazyQueryHookResult = ReturnType<typeof useChatbotUserQuestionsLazyQuery>;
+export type ChatbotUserQuestionsQueryResult = Apollo.QueryResult<ChatbotUserQuestionsQuery, ChatbotUserQuestionsQueryVariables>;
+export function refetchChatbotUserQuestionsQuery(variables: ChatbotUserQuestionsQueryVariables) {
+      return { query: ChatbotUserQuestionsDocument, variables: variables }
+    }
+export const UpsertChatbotCategoryDocument = gql`
+    mutation UpsertChatbotCategory($spaceId: String!, $input: UpsertChatbotCategoryInput!) {
+  upsertChatbotCategory(spaceId: $spaceId, input: $input) {
+    ...ChatbotCategory
+  }
+}
+    ${ChatbotCategoryFragmentDoc}`;
+export type UpsertChatbotCategoryMutationFn = Apollo.MutationFunction<UpsertChatbotCategoryMutation, UpsertChatbotCategoryMutationVariables>;
+
+/**
+ * __useUpsertChatbotCategoryMutation__
+ *
+ * To run a mutation, you first call `useUpsertChatbotCategoryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertChatbotCategoryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertChatbotCategoryMutation, { data, loading, error }] = useUpsertChatbotCategoryMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpsertChatbotCategoryMutation(baseOptions?: Apollo.MutationHookOptions<UpsertChatbotCategoryMutation, UpsertChatbotCategoryMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpsertChatbotCategoryMutation, UpsertChatbotCategoryMutationVariables>(UpsertChatbotCategoryDocument, options);
+      }
+export type UpsertChatbotCategoryMutationHookResult = ReturnType<typeof useUpsertChatbotCategoryMutation>;
+export type UpsertChatbotCategoryMutationResult = Apollo.MutationResult<UpsertChatbotCategoryMutation>;
+export type UpsertChatbotCategoryMutationOptions = Apollo.BaseMutationOptions<UpsertChatbotCategoryMutation, UpsertChatbotCategoryMutationVariables>;
+export const UpsertChatbotFaqDocument = gql`
+    mutation UpsertChatbotFAQ($spaceId: String!, $input: UpsertChatbotFAQInput!) {
+  upsertChatbotFAQ(spaceId: $spaceId, input: $input) {
+    ...ChatbotFAQ
+  }
+}
+    ${ChatbotFaqFragmentDoc}`;
+export type UpsertChatbotFaqMutationFn = Apollo.MutationFunction<UpsertChatbotFaqMutation, UpsertChatbotFaqMutationVariables>;
+
+/**
+ * __useUpsertChatbotFaqMutation__
+ *
+ * To run a mutation, you first call `useUpsertChatbotFaqMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertChatbotFaqMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertChatbotFaqMutation, { data, loading, error }] = useUpsertChatbotFaqMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpsertChatbotFaqMutation(baseOptions?: Apollo.MutationHookOptions<UpsertChatbotFaqMutation, UpsertChatbotFaqMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpsertChatbotFaqMutation, UpsertChatbotFaqMutationVariables>(UpsertChatbotFaqDocument, options);
+      }
+export type UpsertChatbotFaqMutationHookResult = ReturnType<typeof useUpsertChatbotFaqMutation>;
+export type UpsertChatbotFaqMutationResult = Apollo.MutationResult<UpsertChatbotFaqMutation>;
+export type UpsertChatbotFaqMutationOptions = Apollo.BaseMutationOptions<UpsertChatbotFaqMutation, UpsertChatbotFaqMutationVariables>;
+export const UpsertChatbotUserQuestionDocument = gql`
+    mutation UpsertChatbotUserQuestion($spaceId: String!, $input: UpsertChatbotUserQuestionInput!) {
+  upsertChatbotUserQuestion(spaceId: $spaceId, input: $input) {
+    ...ChatbotUserQuestion
+  }
+}
+    ${ChatbotUserQuestionFragmentDoc}`;
+export type UpsertChatbotUserQuestionMutationFn = Apollo.MutationFunction<UpsertChatbotUserQuestionMutation, UpsertChatbotUserQuestionMutationVariables>;
+
+/**
+ * __useUpsertChatbotUserQuestionMutation__
+ *
+ * To run a mutation, you first call `useUpsertChatbotUserQuestionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertChatbotUserQuestionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertChatbotUserQuestionMutation, { data, loading, error }] = useUpsertChatbotUserQuestionMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpsertChatbotUserQuestionMutation(baseOptions?: Apollo.MutationHookOptions<UpsertChatbotUserQuestionMutation, UpsertChatbotUserQuestionMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpsertChatbotUserQuestionMutation, UpsertChatbotUserQuestionMutationVariables>(UpsertChatbotUserQuestionDocument, options);
+      }
+export type UpsertChatbotUserQuestionMutationHookResult = ReturnType<typeof useUpsertChatbotUserQuestionMutation>;
+export type UpsertChatbotUserQuestionMutationResult = Apollo.MutationResult<UpsertChatbotUserQuestionMutation>;
+export type UpsertChatbotUserQuestionMutationOptions = Apollo.BaseMutationOptions<UpsertChatbotUserQuestionMutation, UpsertChatbotUserQuestionMutationVariables>;
+export const DeleteChatbotCategoryDocument = gql`
+    mutation DeleteChatbotCategory($spaceId: String!, $id: String!) {
+  deleteChatbotCategory(spaceId: $spaceId, id: $id)
+}
+    `;
+export type DeleteChatbotCategoryMutationFn = Apollo.MutationFunction<DeleteChatbotCategoryMutation, DeleteChatbotCategoryMutationVariables>;
+
+/**
+ * __useDeleteChatbotCategoryMutation__
+ *
+ * To run a mutation, you first call `useDeleteChatbotCategoryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteChatbotCategoryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteChatbotCategoryMutation, { data, loading, error }] = useDeleteChatbotCategoryMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteChatbotCategoryMutation(baseOptions?: Apollo.MutationHookOptions<DeleteChatbotCategoryMutation, DeleteChatbotCategoryMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteChatbotCategoryMutation, DeleteChatbotCategoryMutationVariables>(DeleteChatbotCategoryDocument, options);
+      }
+export type DeleteChatbotCategoryMutationHookResult = ReturnType<typeof useDeleteChatbotCategoryMutation>;
+export type DeleteChatbotCategoryMutationResult = Apollo.MutationResult<DeleteChatbotCategoryMutation>;
+export type DeleteChatbotCategoryMutationOptions = Apollo.BaseMutationOptions<DeleteChatbotCategoryMutation, DeleteChatbotCategoryMutationVariables>;
+export const DeleteChatbotFaqDocument = gql`
+    mutation DeleteChatbotFAQ($spaceId: String!, $id: String!) {
+  deleteChatbotFAQ(spaceId: $spaceId, id: $id)
+}
+    `;
+export type DeleteChatbotFaqMutationFn = Apollo.MutationFunction<DeleteChatbotFaqMutation, DeleteChatbotFaqMutationVariables>;
+
+/**
+ * __useDeleteChatbotFaqMutation__
+ *
+ * To run a mutation, you first call `useDeleteChatbotFaqMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteChatbotFaqMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteChatbotFaqMutation, { data, loading, error }] = useDeleteChatbotFaqMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteChatbotFaqMutation(baseOptions?: Apollo.MutationHookOptions<DeleteChatbotFaqMutation, DeleteChatbotFaqMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteChatbotFaqMutation, DeleteChatbotFaqMutationVariables>(DeleteChatbotFaqDocument, options);
+      }
+export type DeleteChatbotFaqMutationHookResult = ReturnType<typeof useDeleteChatbotFaqMutation>;
+export type DeleteChatbotFaqMutationResult = Apollo.MutationResult<DeleteChatbotFaqMutation>;
+export type DeleteChatbotFaqMutationOptions = Apollo.BaseMutationOptions<DeleteChatbotFaqMutation, DeleteChatbotFaqMutationVariables>;
+export const DeleteChatbotUserQuestionDocument = gql`
+    mutation DeleteChatbotUserQuestion($spaceId: String!, $id: String!) {
+  deleteChatbotUserQuestion(spaceId: $spaceId, id: $id)
+}
+    `;
+export type DeleteChatbotUserQuestionMutationFn = Apollo.MutationFunction<DeleteChatbotUserQuestionMutation, DeleteChatbotUserQuestionMutationVariables>;
+
+/**
+ * __useDeleteChatbotUserQuestionMutation__
+ *
+ * To run a mutation, you first call `useDeleteChatbotUserQuestionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteChatbotUserQuestionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteChatbotUserQuestionMutation, { data, loading, error }] = useDeleteChatbotUserQuestionMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteChatbotUserQuestionMutation(baseOptions?: Apollo.MutationHookOptions<DeleteChatbotUserQuestionMutation, DeleteChatbotUserQuestionMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteChatbotUserQuestionMutation, DeleteChatbotUserQuestionMutationVariables>(DeleteChatbotUserQuestionDocument, options);
+      }
+export type DeleteChatbotUserQuestionMutationHookResult = ReturnType<typeof useDeleteChatbotUserQuestionMutation>;
+export type DeleteChatbotUserQuestionMutationResult = Apollo.MutationResult<DeleteChatbotUserQuestionMutation>;
+export type DeleteChatbotUserQuestionMutationOptions = Apollo.BaseMutationOptions<DeleteChatbotUserQuestionMutation, DeleteChatbotUserQuestionMutationVariables>;
 export const GitCourseSubmissionDocument = gql`
     query GitCourseSubmission($spaceId: String!, $courseKey: String!) {
   payload: gitCourseSubmission(spaceId: $spaceId, courseKey: $courseKey) {
@@ -7061,6 +8101,337 @@ export function useGenerateImageMutation(baseOptions?: Apollo.MutationHookOption
 export type GenerateImageMutationHookResult = ReturnType<typeof useGenerateImageMutation>;
 export type GenerateImageMutationResult = Apollo.MutationResult<GenerateImageMutation>;
 export type GenerateImageMutationOptions = Apollo.BaseMutationOptions<GenerateImageMutation, GenerateImageMutationVariables>;
+export const ProjectsDocument = gql`
+    query Projects($type: String) {
+  projects(type: $type) {
+    ...Project
+  }
+}
+    ${ProjectFragmentDoc}`;
+
+/**
+ * __useProjectsQuery__
+ *
+ * To run a query within a React component, call `useProjectsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProjectsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProjectsQuery({
+ *   variables: {
+ *      type: // value for 'type'
+ *   },
+ * });
+ */
+export function useProjectsQuery(baseOptions?: Apollo.QueryHookOptions<ProjectsQuery, ProjectsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ProjectsQuery, ProjectsQueryVariables>(ProjectsDocument, options);
+      }
+export function useProjectsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProjectsQuery, ProjectsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ProjectsQuery, ProjectsQueryVariables>(ProjectsDocument, options);
+        }
+export type ProjectsQueryHookResult = ReturnType<typeof useProjectsQuery>;
+export type ProjectsLazyQueryHookResult = ReturnType<typeof useProjectsLazyQuery>;
+export type ProjectsQueryResult = Apollo.QueryResult<ProjectsQuery, ProjectsQueryVariables>;
+export function refetchProjectsQuery(variables?: ProjectsQueryVariables) {
+      return { query: ProjectsDocument, variables: variables }
+    }
+export const ProjectDocument = gql`
+    query Project($id: String!) {
+  project(id: $id) {
+    ...Project
+  }
+}
+    ${ProjectFragmentDoc}`;
+
+/**
+ * __useProjectQuery__
+ *
+ * To run a query within a React component, call `useProjectQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProjectQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProjectQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useProjectQuery(baseOptions: Apollo.QueryHookOptions<ProjectQuery, ProjectQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ProjectQuery, ProjectQueryVariables>(ProjectDocument, options);
+      }
+export function useProjectLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProjectQuery, ProjectQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ProjectQuery, ProjectQueryVariables>(ProjectDocument, options);
+        }
+export type ProjectQueryHookResult = ReturnType<typeof useProjectQuery>;
+export type ProjectLazyQueryHookResult = ReturnType<typeof useProjectLazyQuery>;
+export type ProjectQueryResult = Apollo.QueryResult<ProjectQuery, ProjectQueryVariables>;
+export function refetchProjectQuery(variables: ProjectQueryVariables) {
+      return { query: ProjectDocument, variables: variables }
+    }
+export const ProjectBytesDocument = gql`
+    query ProjectBytes($projectId: String!) {
+  projectBytes(projectId: $projectId) {
+    ...ProjectByte
+  }
+}
+    ${ProjectByteFragmentDoc}`;
+
+/**
+ * __useProjectBytesQuery__
+ *
+ * To run a query within a React component, call `useProjectBytesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProjectBytesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProjectBytesQuery({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *   },
+ * });
+ */
+export function useProjectBytesQuery(baseOptions: Apollo.QueryHookOptions<ProjectBytesQuery, ProjectBytesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ProjectBytesQuery, ProjectBytesQueryVariables>(ProjectBytesDocument, options);
+      }
+export function useProjectBytesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProjectBytesQuery, ProjectBytesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ProjectBytesQuery, ProjectBytesQueryVariables>(ProjectBytesDocument, options);
+        }
+export type ProjectBytesQueryHookResult = ReturnType<typeof useProjectBytesQuery>;
+export type ProjectBytesLazyQueryHookResult = ReturnType<typeof useProjectBytesLazyQuery>;
+export type ProjectBytesQueryResult = Apollo.QueryResult<ProjectBytesQuery, ProjectBytesQueryVariables>;
+export function refetchProjectBytesQuery(variables: ProjectBytesQueryVariables) {
+      return { query: ProjectBytesDocument, variables: variables }
+    }
+export const ProjectByteDocument = gql`
+    query ProjectByte($projectId: String!, $id: String!) {
+  projectByte(projectId: $projectId, projectByteId: $id) {
+    ...ProjectByte
+  }
+}
+    ${ProjectByteFragmentDoc}`;
+
+/**
+ * __useProjectByteQuery__
+ *
+ * To run a query within a React component, call `useProjectByteQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProjectByteQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProjectByteQuery({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useProjectByteQuery(baseOptions: Apollo.QueryHookOptions<ProjectByteQuery, ProjectByteQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ProjectByteQuery, ProjectByteQueryVariables>(ProjectByteDocument, options);
+      }
+export function useProjectByteLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProjectByteQuery, ProjectByteQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ProjectByteQuery, ProjectByteQueryVariables>(ProjectByteDocument, options);
+        }
+export type ProjectByteQueryHookResult = ReturnType<typeof useProjectByteQuery>;
+export type ProjectByteLazyQueryHookResult = ReturnType<typeof useProjectByteLazyQuery>;
+export type ProjectByteQueryResult = Apollo.QueryResult<ProjectByteQuery, ProjectByteQueryVariables>;
+export function refetchProjectByteQuery(variables: ProjectByteQueryVariables) {
+      return { query: ProjectByteDocument, variables: variables }
+    }
+export const ProjectByteCollectionsDocument = gql`
+    query ProjectByteCollections($projectId: String!) {
+  projectByteCollections(projectId: $projectId) {
+    ...ProjectByteCollection
+  }
+}
+    ${ProjectByteCollectionFragmentDoc}`;
+
+/**
+ * __useProjectByteCollectionsQuery__
+ *
+ * To run a query within a React component, call `useProjectByteCollectionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProjectByteCollectionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProjectByteCollectionsQuery({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *   },
+ * });
+ */
+export function useProjectByteCollectionsQuery(baseOptions: Apollo.QueryHookOptions<ProjectByteCollectionsQuery, ProjectByteCollectionsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ProjectByteCollectionsQuery, ProjectByteCollectionsQueryVariables>(ProjectByteCollectionsDocument, options);
+      }
+export function useProjectByteCollectionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProjectByteCollectionsQuery, ProjectByteCollectionsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ProjectByteCollectionsQuery, ProjectByteCollectionsQueryVariables>(ProjectByteCollectionsDocument, options);
+        }
+export type ProjectByteCollectionsQueryHookResult = ReturnType<typeof useProjectByteCollectionsQuery>;
+export type ProjectByteCollectionsLazyQueryHookResult = ReturnType<typeof useProjectByteCollectionsLazyQuery>;
+export type ProjectByteCollectionsQueryResult = Apollo.QueryResult<ProjectByteCollectionsQuery, ProjectByteCollectionsQueryVariables>;
+export function refetchProjectByteCollectionsQuery(variables: ProjectByteCollectionsQueryVariables) {
+      return { query: ProjectByteCollectionsDocument, variables: variables }
+    }
+export const ProjectByteCollectionDocument = gql`
+    query ProjectByteCollection($projectId: String!, $id: String!) {
+  projectByteCollection(projectId: $projectId, byteCollectionId: $id) {
+    ...ProjectByteCollection
+  }
+}
+    ${ProjectByteCollectionFragmentDoc}`;
+
+/**
+ * __useProjectByteCollectionQuery__
+ *
+ * To run a query within a React component, call `useProjectByteCollectionQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProjectByteCollectionQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProjectByteCollectionQuery({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useProjectByteCollectionQuery(baseOptions: Apollo.QueryHookOptions<ProjectByteCollectionQuery, ProjectByteCollectionQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ProjectByteCollectionQuery, ProjectByteCollectionQueryVariables>(ProjectByteCollectionDocument, options);
+      }
+export function useProjectByteCollectionLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProjectByteCollectionQuery, ProjectByteCollectionQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ProjectByteCollectionQuery, ProjectByteCollectionQueryVariables>(ProjectByteCollectionDocument, options);
+        }
+export type ProjectByteCollectionQueryHookResult = ReturnType<typeof useProjectByteCollectionQuery>;
+export type ProjectByteCollectionLazyQueryHookResult = ReturnType<typeof useProjectByteCollectionLazyQuery>;
+export type ProjectByteCollectionQueryResult = Apollo.QueryResult<ProjectByteCollectionQuery, ProjectByteCollectionQueryVariables>;
+export function refetchProjectByteCollectionQuery(variables: ProjectByteCollectionQueryVariables) {
+      return { query: ProjectByteCollectionDocument, variables: variables }
+    }
+export const UpsertProjectDocument = gql`
+    mutation UpsertProject($input: UpsertProjectInput!) {
+  upsertProject(input: $input) {
+    ...Project
+  }
+}
+    ${ProjectFragmentDoc}`;
+export type UpsertProjectMutationFn = Apollo.MutationFunction<UpsertProjectMutation, UpsertProjectMutationVariables>;
+
+/**
+ * __useUpsertProjectMutation__
+ *
+ * To run a mutation, you first call `useUpsertProjectMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertProjectMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertProjectMutation, { data, loading, error }] = useUpsertProjectMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpsertProjectMutation(baseOptions?: Apollo.MutationHookOptions<UpsertProjectMutation, UpsertProjectMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpsertProjectMutation, UpsertProjectMutationVariables>(UpsertProjectDocument, options);
+      }
+export type UpsertProjectMutationHookResult = ReturnType<typeof useUpsertProjectMutation>;
+export type UpsertProjectMutationResult = Apollo.MutationResult<UpsertProjectMutation>;
+export type UpsertProjectMutationOptions = Apollo.BaseMutationOptions<UpsertProjectMutation, UpsertProjectMutationVariables>;
+export const UpsertProjectByteDocument = gql`
+    mutation UpsertProjectByte($projectId: String!, $input: UpsertProjectByteInput!) {
+  upsertProjectByte(projectId: $projectId, input: $input) {
+    ...ProjectByte
+  }
+}
+    ${ProjectByteFragmentDoc}`;
+export type UpsertProjectByteMutationFn = Apollo.MutationFunction<UpsertProjectByteMutation, UpsertProjectByteMutationVariables>;
+
+/**
+ * __useUpsertProjectByteMutation__
+ *
+ * To run a mutation, you first call `useUpsertProjectByteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertProjectByteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertProjectByteMutation, { data, loading, error }] = useUpsertProjectByteMutation({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpsertProjectByteMutation(baseOptions?: Apollo.MutationHookOptions<UpsertProjectByteMutation, UpsertProjectByteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpsertProjectByteMutation, UpsertProjectByteMutationVariables>(UpsertProjectByteDocument, options);
+      }
+export type UpsertProjectByteMutationHookResult = ReturnType<typeof useUpsertProjectByteMutation>;
+export type UpsertProjectByteMutationResult = Apollo.MutationResult<UpsertProjectByteMutation>;
+export type UpsertProjectByteMutationOptions = Apollo.BaseMutationOptions<UpsertProjectByteMutation, UpsertProjectByteMutationVariables>;
+export const UpsertProjectByteCollectionDocument = gql`
+    mutation UpsertProjectByteCollection($projectId: String!, $input: UpsertProjectByteCollectionInput!) {
+  upsertProjectByteCollection(projectId: $projectId, input: $input) {
+    ...ProjectByteCollection
+  }
+}
+    ${ProjectByteCollectionFragmentDoc}`;
+export type UpsertProjectByteCollectionMutationFn = Apollo.MutationFunction<UpsertProjectByteCollectionMutation, UpsertProjectByteCollectionMutationVariables>;
+
+/**
+ * __useUpsertProjectByteCollectionMutation__
+ *
+ * To run a mutation, you first call `useUpsertProjectByteCollectionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertProjectByteCollectionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertProjectByteCollectionMutation, { data, loading, error }] = useUpsertProjectByteCollectionMutation({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpsertProjectByteCollectionMutation(baseOptions?: Apollo.MutationHookOptions<UpsertProjectByteCollectionMutation, UpsertProjectByteCollectionMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpsertProjectByteCollectionMutation, UpsertProjectByteCollectionMutationVariables>(UpsertProjectByteCollectionDocument, options);
+      }
+export type UpsertProjectByteCollectionMutationHookResult = ReturnType<typeof useUpsertProjectByteCollectionMutation>;
+export type UpsertProjectByteCollectionMutationResult = Apollo.MutationResult<UpsertProjectByteCollectionMutation>;
+export type UpsertProjectByteCollectionMutationOptions = Apollo.BaseMutationOptions<UpsertProjectByteCollectionMutation, UpsertProjectByteCollectionMutationVariables>;
 export const SimulationsDocument = gql`
     query Simulations($spaceId: String!) {
   simulations(spaceId: $spaceId) {
@@ -7221,19 +8592,10 @@ export function refetchDiscourseIndexRunsQuery(variables: DiscourseIndexRunsQuer
 export const DiscoursePostsDocument = gql`
     query DiscoursePosts($spaceId: String!) {
   discoursePosts(spaceId: $spaceId) {
-    id
-    spaceId
-    title
-    url
-    fullContent
-    author
-    datePublished
-    createdAt
-    indexedAt
-    status
+    ...DiscoursePost
   }
 }
-    `;
+    ${DiscoursePostFragmentDoc}`;
 
 /**
  * __useDiscoursePostsQuery__
@@ -7637,7 +8999,7 @@ export function refetchScrapedUrlInfosQuery(variables: ScrapedUrlInfosQueryVaria
       return { query: ScrapedUrlInfosDocument, variables: variables }
     }
 export const TriggerNewDiscourseIndexRunDocument = gql`
-    mutation triggerNewDiscourseIndexRun($spaceId: String!) {
+    mutation TriggerNewDiscourseIndexRun($spaceId: String!) {
   triggerNewDiscourseIndexRun(spaceId: $spaceId) {
     ...DiscourseIndexRunFragment
   }
@@ -7669,6 +9031,39 @@ export function useTriggerNewDiscourseIndexRunMutation(baseOptions?: Apollo.Muta
 export type TriggerNewDiscourseIndexRunMutationHookResult = ReturnType<typeof useTriggerNewDiscourseIndexRunMutation>;
 export type TriggerNewDiscourseIndexRunMutationResult = Apollo.MutationResult<TriggerNewDiscourseIndexRunMutation>;
 export type TriggerNewDiscourseIndexRunMutationOptions = Apollo.BaseMutationOptions<TriggerNewDiscourseIndexRunMutation, TriggerNewDiscourseIndexRunMutationVariables>;
+export const IndexNeedsIndexingDiscoursePostsDocument = gql`
+    mutation IndexNeedsIndexingDiscoursePosts($spaceId: String!) {
+  indexNeedsIndexingDiscoursePosts(spaceId: $spaceId) {
+    ...DiscourseIndexRunFragment
+  }
+}
+    ${DiscourseIndexRunFragmentFragmentDoc}`;
+export type IndexNeedsIndexingDiscoursePostsMutationFn = Apollo.MutationFunction<IndexNeedsIndexingDiscoursePostsMutation, IndexNeedsIndexingDiscoursePostsMutationVariables>;
+
+/**
+ * __useIndexNeedsIndexingDiscoursePostsMutation__
+ *
+ * To run a mutation, you first call `useIndexNeedsIndexingDiscoursePostsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useIndexNeedsIndexingDiscoursePostsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [indexNeedsIndexingDiscoursePostsMutation, { data, loading, error }] = useIndexNeedsIndexingDiscoursePostsMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *   },
+ * });
+ */
+export function useIndexNeedsIndexingDiscoursePostsMutation(baseOptions?: Apollo.MutationHookOptions<IndexNeedsIndexingDiscoursePostsMutation, IndexNeedsIndexingDiscoursePostsMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<IndexNeedsIndexingDiscoursePostsMutation, IndexNeedsIndexingDiscoursePostsMutationVariables>(IndexNeedsIndexingDiscoursePostsDocument, options);
+      }
+export type IndexNeedsIndexingDiscoursePostsMutationHookResult = ReturnType<typeof useIndexNeedsIndexingDiscoursePostsMutation>;
+export type IndexNeedsIndexingDiscoursePostsMutationResult = Apollo.MutationResult<IndexNeedsIndexingDiscoursePostsMutation>;
+export type IndexNeedsIndexingDiscoursePostsMutationOptions = Apollo.BaseMutationOptions<IndexNeedsIndexingDiscoursePostsMutation, IndexNeedsIndexingDiscoursePostsMutationVariables>;
 export const ReFetchDiscordServersDocument = gql`
     mutation ReFetchDiscordServers {
   reFetchDiscordServers {
@@ -8036,6 +9431,74 @@ export function useEditArticleIndexingInfoMutation(baseOptions?: Apollo.Mutation
 export type EditArticleIndexingInfoMutationHookResult = ReturnType<typeof useEditArticleIndexingInfoMutation>;
 export type EditArticleIndexingInfoMutationResult = Apollo.MutationResult<EditArticleIndexingInfoMutation>;
 export type EditArticleIndexingInfoMutationOptions = Apollo.BaseMutationOptions<EditArticleIndexingInfoMutation, EditArticleIndexingInfoMutationVariables>;
+export const AnnotateDiscoursePostDocument = gql`
+    mutation AnnotateDiscoursePost($spaceId: String!, $input: AnnotateDiscoursePostInput!) {
+  annotateDiscoursePost(spaceId: $spaceId, input: $input) {
+    ...DiscoursePost
+  }
+}
+    ${DiscoursePostFragmentDoc}`;
+export type AnnotateDiscoursePostMutationFn = Apollo.MutationFunction<AnnotateDiscoursePostMutation, AnnotateDiscoursePostMutationVariables>;
+
+/**
+ * __useAnnotateDiscoursePostMutation__
+ *
+ * To run a mutation, you first call `useAnnotateDiscoursePostMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAnnotateDiscoursePostMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [annotateDiscoursePostMutation, { data, loading, error }] = useAnnotateDiscoursePostMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAnnotateDiscoursePostMutation(baseOptions?: Apollo.MutationHookOptions<AnnotateDiscoursePostMutation, AnnotateDiscoursePostMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AnnotateDiscoursePostMutation, AnnotateDiscoursePostMutationVariables>(AnnotateDiscoursePostDocument, options);
+      }
+export type AnnotateDiscoursePostMutationHookResult = ReturnType<typeof useAnnotateDiscoursePostMutation>;
+export type AnnotateDiscoursePostMutationResult = Apollo.MutationResult<AnnotateDiscoursePostMutation>;
+export type AnnotateDiscoursePostMutationOptions = Apollo.BaseMutationOptions<AnnotateDiscoursePostMutation, AnnotateDiscoursePostMutationVariables>;
+export const UpsertSummaryOfDiscoursePostDocument = gql`
+    mutation UpsertSummaryOfDiscoursePost($spaceId: String!, $input: UpsertSummaryOfDiscoursePostInput!) {
+  upsertSummaryOfDiscoursePost(spaceId: $spaceId, input: $input) {
+    ...DiscoursePost
+  }
+}
+    ${DiscoursePostFragmentDoc}`;
+export type UpsertSummaryOfDiscoursePostMutationFn = Apollo.MutationFunction<UpsertSummaryOfDiscoursePostMutation, UpsertSummaryOfDiscoursePostMutationVariables>;
+
+/**
+ * __useUpsertSummaryOfDiscoursePostMutation__
+ *
+ * To run a mutation, you first call `useUpsertSummaryOfDiscoursePostMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertSummaryOfDiscoursePostMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertSummaryOfDiscoursePostMutation, { data, loading, error }] = useUpsertSummaryOfDiscoursePostMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpsertSummaryOfDiscoursePostMutation(baseOptions?: Apollo.MutationHookOptions<UpsertSummaryOfDiscoursePostMutation, UpsertSummaryOfDiscoursePostMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpsertSummaryOfDiscoursePostMutation, UpsertSummaryOfDiscoursePostMutationVariables>(UpsertSummaryOfDiscoursePostDocument, options);
+      }
+export type UpsertSummaryOfDiscoursePostMutationHookResult = ReturnType<typeof useUpsertSummaryOfDiscoursePostMutation>;
+export type UpsertSummaryOfDiscoursePostMutationResult = Apollo.MutationResult<UpsertSummaryOfDiscoursePostMutation>;
+export type UpsertSummaryOfDiscoursePostMutationOptions = Apollo.BaseMutationOptions<UpsertSummaryOfDiscoursePostMutation, UpsertSummaryOfDiscoursePostMutationVariables>;
 export const SpacesDocument = gql`
     query Spaces {
   spaces {
@@ -8219,6 +9682,37 @@ export function useUpsertSpaceFeaturesMutation(baseOptions?: Apollo.MutationHook
 export type UpsertSpaceFeaturesMutationHookResult = ReturnType<typeof useUpsertSpaceFeaturesMutation>;
 export type UpsertSpaceFeaturesMutationResult = Apollo.MutationResult<UpsertSpaceFeaturesMutation>;
 export type UpsertSpaceFeaturesMutationOptions = Apollo.BaseMutationOptions<UpsertSpaceFeaturesMutation, UpsertSpaceFeaturesMutationVariables>;
+export const DropPineconeNamespaceDocument = gql`
+    mutation DropPineconeNamespace($spaceId: String!) {
+  dropPineconeNamespace(spaceId: $spaceId)
+}
+    `;
+export type DropPineconeNamespaceMutationFn = Apollo.MutationFunction<DropPineconeNamespaceMutation, DropPineconeNamespaceMutationVariables>;
+
+/**
+ * __useDropPineconeNamespaceMutation__
+ *
+ * To run a mutation, you first call `useDropPineconeNamespaceMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDropPineconeNamespaceMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [dropPineconeNamespaceMutation, { data, loading, error }] = useDropPineconeNamespaceMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *   },
+ * });
+ */
+export function useDropPineconeNamespaceMutation(baseOptions?: Apollo.MutationHookOptions<DropPineconeNamespaceMutation, DropPineconeNamespaceMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DropPineconeNamespaceMutation, DropPineconeNamespaceMutationVariables>(DropPineconeNamespaceDocument, options);
+      }
+export type DropPineconeNamespaceMutationHookResult = ReturnType<typeof useDropPineconeNamespaceMutation>;
+export type DropPineconeNamespaceMutationResult = Apollo.MutationResult<DropPineconeNamespaceMutation>;
+export type DropPineconeNamespaceMutationOptions = Apollo.BaseMutationOptions<DropPineconeNamespaceMutation, DropPineconeNamespaceMutationVariables>;
 export const UpsertSpaceInviteLinksDocument = gql`
     mutation UpsertSpaceInviteLinks($spaceId: String!, $spaceInviteArgs: SpaceInviteArgs!) {
   payload: upsertSpaceInviteLinks(

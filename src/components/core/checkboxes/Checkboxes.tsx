@@ -8,7 +8,7 @@ export interface CheckboxItem {
 }
 
 export interface CheckboxesProps {
-  label: ReactElement | string;
+  label?: ReactElement | string;
   items: CheckboxItem[];
   selectedItemIds: string[];
   onChange: (selectedItemIds: string[]) => void;
@@ -25,8 +25,8 @@ const StyledInput = styled.input`
 export default function Checkboxes(props: CheckboxesProps) {
   return (
     <fieldset className={`mt-2 ${props.className || ''}`}>
-      <legend>{props.label}</legend>
-      <div className="space-y-3 mt-3">
+      {props.label && <legend className="mb-3">{props.label}</legend>}
+      <div className="space-y-3">
         {props.items.map((item) => (
           <div className="relative flex items-start" key={item.id}>
             <div className="flex h-6 items-center">

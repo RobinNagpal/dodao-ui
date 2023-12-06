@@ -1,6 +1,6 @@
 import { EllipsisDropdownItem } from '@/components/core/dropdowns/EllipsisDropdown';
 import { StyledSelectItem } from '@/components/core/select/StyledSelect';
-import { PublishStatus, Themes, VisibilityEnum } from '@/types/deprecated/models/enums';
+import { ProjectTypes, PublishStatus, Themes, VisibilityEnum } from '@/types/deprecated/models/enums';
 
 export const publishStatusesEllipsisDropdown: EllipsisDropdownItem[] = [
   {
@@ -39,3 +39,8 @@ export const visibilityOptions: EllipsisDropdownItem[] = [
     key: VisibilityEnum.Hidden,
   },
 ];
+
+export const projectTypeSelect: StyledSelectItem[] = Object.keys(ProjectTypes).map((t) => ({
+  label: t,
+  id: t,
+}));

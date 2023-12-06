@@ -2,12 +2,12 @@
 
 import withSpace from '@/app/withSpace';
 import ByteStepper from '@/components/bytes/View/ByteStepper';
-import { useViewByte } from '@/components/bytes/View/useViewByte';
+import { useGenericViewByte } from '@/components/bytes/View/useGenericViewByte';
 import { EllipsisDropdownItem } from '@/components/core/dropdowns/EllipsisDropdown';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import PageLoading from '@/components/core/loaders/PageLoading';
 import PageWrapper from '@/components/core/page/PageWrapper';
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsFragment, useQueryByteDetailsQuery } from '@/graphql/generated/generated-types';
 import { TidbitShareSteps } from '@/types/deprecated/models/enums';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -24,7 +24,19 @@ const ByteView = ({ params, space }: { params: { byteIdAndStep: string[] }; spac
     stepOrder = parseInt(byteIdAndStep[1]);
   }
 
-  const viewByteHelper = useViewByte(space, byteId, stepOrder);
+  const { refetch: fetchByteDetails } = useQueryByteDetailsQuery({ skip: true });
+
+  const viewByteHelper = useGenericViewByte({
+    space,
+    fetchByte: async () => {
+      const result = await fetchByteDetails({ spaceId: space.id, byteId: byteId });
+
+      return result.data.byte;
+    },
+    byteDetailsUrl: `/tidbits/view`,
+    byteId,
+    stepOrder,
+  });
 
   useEffect(() => {
     viewByteHelper.initialize();

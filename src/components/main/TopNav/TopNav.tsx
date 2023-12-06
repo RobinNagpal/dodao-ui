@@ -129,7 +129,7 @@ export default function TopNav(props: { space?: SpaceWithIntegrationsFragment | 
   return (
     <StyledDiv>
       <FullScreenModal open={showCreateModal} onClose={() => setShowCreateModal(false)} title={'Create'} showCloseButton={false}>
-        <CreateContentModalContents hideModal={() => setShowCreateModal(false)} />
+        <CreateContentModalContents space={props.space} hideModal={() => setShowCreateModal(false)} />
       </FullScreenModal>
       <Disclosure
         as="nav"

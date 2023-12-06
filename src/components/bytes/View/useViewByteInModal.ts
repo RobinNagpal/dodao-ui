@@ -4,8 +4,8 @@ import {
   ByteDetailsFragment,
   ByteStepFragment,
   ByteSubmissionInput,
+  ProjectByteFragment,
   SpaceWithIntegrationsFragment,
-  useQueryByteDetailsQuery,
   useSubmitByteMutation,
 } from '@/graphql/generated/generated-types';
 import { LocalStorageKeys } from '@/types/deprecated/models/enums';
@@ -18,7 +18,13 @@ import { v4 as uuidv4 } from 'uuid';
 
 export const LAST_STEP_UUID = 'LAST_STEP_UUID';
 
-export function useViewByteInModal(space: SpaceWithIntegrationsFragment, byteId: string, stepOrder: number): UseViewByteHelper {
+export interface UseViewByteInModalArgs {
+  space: SpaceWithIntegrationsFragment;
+  byteId: string;
+  stepOrder: number;
+  fetchByteFn: (byteId: string) => Promise<ByteDetailsFragment | ProjectByteFragment>;
+}
+export function useViewByteInModal({ space, byteId, stepOrder, fetchByteFn }: UseViewByteInModalArgs): UseViewByteHelper {
   const { data: session } = useSession();
   // Replace Vue reactive refs with React state
   const [activeStepOrder, setActiveStepOrder] = useState<number>(0);
@@ -34,16 +40,13 @@ export function useViewByteInModal(space: SpaceWithIntegrationsFragment, byteId:
     stepResponsesMap: {},
   });
 
-  const { refetch } = useQueryByteDetailsQuery({ skip: true });
   const { showNotification } = useNotificationContext();
 
   const [submitByteMutation] = useSubmitByteMutation();
 
   async function initialize() {
     setActiveStepOrder(stepOrder);
-    const refetchResult = await refetch({ spaceId: space.id, byteId: byteId });
-
-    const byte = refetchResult.data.byte;
+    const byte = await fetchByteFn(byteId);
 
     setByteRef({
       ...byte,

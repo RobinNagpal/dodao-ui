@@ -2,18 +2,19 @@ import ByteStepper from '@/components/bytes/View/ByteStepper';
 import { useViewByteInModal } from '@/components/bytes/View/useViewByteInModal';
 import PageLoading from '@/components/core/loaders/PageLoading';
 import FullScreenModal from '@/components/core/modals/FullScreenModal';
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { ByteDetailsFragment, ProjectByteFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { useEffect } from 'react';
-import styles from './ViewByteModal.module.scss';
+import styles from 'src/components/byteCollection/View/ViewByteModal.module.scss';
 
 export interface ViewByteModalProps {
   showByteModal: boolean;
   onClose: () => void;
   space: SpaceWithIntegrationsFragment;
   byteId: string;
+  fetchByteFn: (byteId: string) => Promise<ByteDetailsFragment | ProjectByteFragment>;
 }
 export default function ViewByteModal(props: ViewByteModalProps) {
-  const viewByteHelper = useViewByteInModal(props.space, props.byteId, 0);
+  const viewByteHelper = useViewByteInModal({ space: props.space, byteId: props.byteId, stepOrder: 0, fetchByteFn: props.fetchByteFn });
 
   useEffect(() => {
     viewByteHelper.initialize();

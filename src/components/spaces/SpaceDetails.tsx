@@ -5,7 +5,6 @@ import SpaceBasicDetails from '@/components/spaces/View/SpaceBasicDetails';
 import SpaceByteDetails from '@/components/spaces/View/SpaceByteDetails';
 import SpaceCourseDetails from '@/components/spaces/View/SpaceCoursesDetails';
 import SpaceGuideDetails from '@/components/spaces/View/SpaceGuideDetails';
-import SpaceLoadersInformation from '@/components/spaces/View/SpaceLoadersInformation';
 import SpaceSocialDetails from '@/components/spaces/View/SpaceSocialDetails';
 import { useExtendedSpaceQuery } from '@/graphql/generated/generated-types';
 import React, { useState } from 'react';
@@ -49,7 +48,6 @@ export default function SpaceDetails(props: SpaceDetailsProps) {
           <SpaceBasicDetails space={data.space} className="pt-6" />
           <SpaceAuthDetails space={data.space} />
           <SpaceSocialDetails space={data.space} />
-          <SpaceLoadersInformation space={data.space} />
         </div>
       )}
       {selectedTabId === TabIds.Content && (

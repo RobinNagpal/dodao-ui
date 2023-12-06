@@ -22,6 +22,7 @@ export enum PublishStatus {
 }
 
 export enum Themes {
+  Arbitrum = 'Arbitrum',
   Uniswap = 'Uniswap',
   DoDAO = 'DoDAO',
   Fuse = 'Fuse',
@@ -30,6 +31,14 @@ export enum Themes {
   Balancer = 'Balancer',
   Kleros = 'Kleros',
   Optimism = 'Optimism',
+}
+
+export enum ProjectTypes {
+  DeFi = 'DeFi',
+  Chains = 'Chains',
+  NFT = 'NFT',
+  Gaming = 'Gaming',
+  Other = 'Other',
 }
 
 export const UserDiscordConnectType = 'UserDiscordConnect';

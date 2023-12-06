@@ -1,19 +1,22 @@
 import SelectBytesModal from '@/components/byteCollection/ByteCollections/SelectBytesModal';
-import { useEditByteCollection } from '@/components/byteCollection/ByteCollections/useEditByteCollection';
+import { EditByteCollection, useEditByteCollection } from '@/components/byteCollection/ByteCollections/useEditByteCollection';
 import Button from '@/components/core/buttons/Button';
 import IconButton from '@/components/core/buttons/IconButton';
 import { IconTypes } from '@/components/core/icons/IconTypes';
 import Input from '@/components/core/input/Input';
 import TextareaAutosize from '@/components/core/textarea/TextareaAutosize';
-import { Space } from '@/graphql/generated/generated-types';
+import { ByteSummaryFragment, ProjectByteFragment, Space } from '@/graphql/generated/generated-types';
 import PlusCircle from '@heroicons/react/20/solid/PlusCircleIcon';
 import Bars3BottomLeftIcon from '@heroicons/react/24/solid/Bars3BottomLeftIcon';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
 interface ByteCollectionEditorProps {
+  byteSummaries: (ByteSummaryFragment | ProjectByteFragment)[];
   space: Space;
   byteCollectionId?: string;
+  viewByteCollectionsUrl: string;
+  upsertByteCollectionFn: (byteCollection: EditByteCollection, byteCollectionId: string | null) => Promise<void>;
 }
 
 const AddByteButton = styled.button`
@@ -26,7 +29,13 @@ const TidBitIconSpan = styled.span`
 
 function ByteCollectionEditor(props: ByteCollectionEditorProps) {
   const [showSelectBytesModal, setShowSelectBytesModal] = useState(false);
-  const { isPrestine, byteCollection, byteSummaries, helperFunctions } = useEditByteCollection(props.space, props.byteCollectionId || null);
+  const { isPrestine, byteCollection, byteSummaries, helperFunctions } = useEditByteCollection({
+    space: props.space,
+    viewByteCollectionsUrl: props.viewByteCollectionsUrl,
+    byteCollectionId: props.byteCollectionId || null,
+    byteSummaries: props.byteSummaries,
+    upsertByteCollectionFn: props.upsertByteCollectionFn,
+  });
 
   return (
     <div>

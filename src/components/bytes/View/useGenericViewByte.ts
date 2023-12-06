@@ -4,8 +4,8 @@ import {
   ByteDetailsFragment,
   ByteStepFragment,
   ByteSubmissionInput,
+  ProjectByteFragment,
   SpaceWithIntegrationsFragment,
-  useQueryByteDetailsQuery,
   useSubmitByteMutation,
 } from '@/graphql/generated/generated-types';
 import { LocalStorageKeys } from '@/types/deprecated/models/enums';
@@ -18,12 +18,21 @@ import { v4 as uuidv4 } from 'uuid';
 
 export const LAST_STEP_UUID = 'LAST_STEP_UUID';
 
-export function useViewByte(space: SpaceWithIntegrationsFragment, byteId: string, stepOrder: number): UseViewByteHelper {
+type GenericByteType = ProjectByteFragment | ByteDetailsFragment;
+
+export interface UseGenericViewByteParams {
+  space: SpaceWithIntegrationsFragment;
+  fetchByte: () => Promise<GenericByteType>;
+  byteDetailsUrl: string;
+  byteId: string;
+  stepOrder: number;
+}
+export function useGenericViewByte({ space, fetchByte, byteDetailsUrl, byteId, stepOrder }: UseGenericViewByteParams): UseGenericViewByteHelper {
   const { data: session } = useSession();
   // Replace Vue reactive refs with React state
   const [activeStepOrder, setActiveStepOrder] = useState<number>(0);
   const [byteLoaded, setByteLoaded] = useState<boolean>(false);
-  const [byteRef, setByteRef] = useState<ByteDetailsFragment | null>(null);
+  const [byteRef, setByteRef] = useState<GenericByteType | null>(null);
   const [byteStepsMap, setByteStepsMap] = useState<{ [uuid: string]: ByteStepFragment }>({});
   const [byteSubmitting, setByteSubmitting] = useState<boolean>(false);
   const [errors, setErrors] = useState<ByteSubmissionError>({});
@@ -34,20 +43,18 @@ export function useViewByte(space: SpaceWithIntegrationsFragment, byteId: string
     stepResponsesMap: {},
   });
 
-  const { refetch } = useQueryByteDetailsQuery({ skip: true });
   const { showNotification } = useNotificationContext();
 
   const [submitByteMutation] = useSubmitByteMutation();
 
   async function initialize() {
     setActiveStepOrder(stepOrder);
-    const refetchResult = await refetch({ spaceId: space.id, byteId: byteId });
 
-    const byte = refetchResult.data.byte;
+    const byte: GenericByteType = await fetchByte();
 
     setByteRef({
       ...byte,
-      __typename: 'Byte',
+
       steps: [
         ...byte.steps,
         {
@@ -75,7 +82,14 @@ export function useViewByte(space: SpaceWithIntegrationsFragment, byteId: string
     setByteSubmission({
       ...byteSubmission,
       stepResponsesMap: Object.fromEntries(
-        byte.steps.map((step) => [step.uuid, getStepSubmission(step.uuid) || { itemResponsesMap: {}, isTouched: false, isCompleted: false }])
+        byte.steps.map((step) => [
+          step.uuid,
+          getStepSubmission(step.uuid) || {
+            itemResponsesMap: {},
+            isTouched: false,
+            isCompleted: false,
+          },
+        ])
       ),
     });
     setByteLoaded(true);
@@ -83,7 +97,7 @@ export function useViewByte(space: SpaceWithIntegrationsFragment, byteId: string
 
   function setActiveStep(order: number) {
     setActiveStepOrder(order);
-    history.replaceState(null, '', `/tidbits/view/${byteId}/${order}`);
+    history.replaceState(null, '', `${byteDetailsUrl}/${byteId}/${order}`);
   }
 
   function getStepSubmission(stepUuid: string): StepResponse | undefined {
@@ -112,13 +126,13 @@ export function useViewByte(space: SpaceWithIntegrationsFragment, byteId: string
       };
     });
 
-    history.replaceState(null, '', `/tidbits/view/${byteId}/${activeStepOrder + 1}`);
+    history.replaceState(null, '', `${byteDetailsUrl}/${byteId}/${activeStepOrder + 1}`);
   }
 
   function goToPreviousStep(currentStep: ByteStepFragment) {
     setActiveStepOrder(activeStepOrder - 1);
 
-    history.replaceState(null, '', `/tidbits/view/${byteId}/${activeStepOrder - 1}`);
+    history.replaceState(null, '', `${byteDetailsUrl}/${byteId}/${activeStepOrder - 1}`);
   }
 
   function selectAnswer(stepUuid: string, questionUuid: string, selectedAnswers: string[]) {
@@ -141,6 +155,7 @@ export function useViewByte(space: SpaceWithIntegrationsFragment, byteId: string
     setByteSubmission((prevByteSubmission) => ({ ...prevByteSubmission, isPristine: false }));
     return isEverythingInByteIsAnswered();
   }
+
   async function submitByte(): Promise<boolean> {
     setByteSubmitting(true);
     setByteSubmission((prevByteSubmission) => ({ ...prevByteSubmission, isPristine: false }));
@@ -178,7 +193,7 @@ export function useViewByte(space: SpaceWithIntegrationsFragment, byteId: string
         if (result) {
           const lastStepContent = `The tidbit has been completed successfully!`;
 
-          const stepsWithoutLastOne = byteRef!.steps.filter((step) => step.uuid !== LAST_STEP_UUID) || [];
+          const stepsWithoutLastOne = byteRef!.steps.filter((step: ByteStepFragment) => step.uuid !== LAST_STEP_UUID) || [];
           setByteRef({
             ...byteRef!,
             steps: [
@@ -221,6 +236,7 @@ export function useViewByte(space: SpaceWithIntegrationsFragment, byteId: string
   function isUserInputComplete(stepUuid: string) {
     return checkIfUserInputIsComplete(stepUuid, byteStepsMap, getStepSubmission);
   }
+
   return {
     initialize,
     activeStepOrder,
@@ -244,7 +260,7 @@ export function useViewByte(space: SpaceWithIntegrationsFragment, byteId: string
   };
 }
 
-export interface UseViewByteHelper {
+export interface UseGenericViewByteHelper {
   initialize: () => Promise<void>;
   activeStepOrder: number;
   errors: ByteSubmissionError;
@@ -253,7 +269,7 @@ export interface UseViewByteHelper {
   goToNextStep: (currentStep: ByteStepFragment) => void;
   goToPreviousStep: (currentStep: ByteStepFragment) => void;
   byteLoaded: boolean;
-  byteRef: ByteDetailsFragment;
+  byteRef: GenericByteType;
   byteSubmission: TempByteSubmission;
   byteSubmitting: boolean;
   isUserInputComplete: (stepUuid: string) => boolean;

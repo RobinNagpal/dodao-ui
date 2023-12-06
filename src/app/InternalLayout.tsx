@@ -1,10 +1,12 @@
 'use client';
+import { TOP_CRYPTO_PROJECTS_SPACE_ID } from '@/chatbot/utils/app/constants';
 import ErrorPage from '@/components/app/ErrorPage';
 import LoginModal from '@/components/auth/LoginModal';
 import FullPageLoader from '@/components/core/loaders/FullPageLoading';
 import Notification from '@/components/core/notify/Notification';
 import TopNav from '@/components/main/TopNav/TopNav';
 import AaveTheme from '@/components/themes/AaveTheme';
+import ArbitrumTheme from '@/components/themes/ArbitrumTheme';
 import BalancerTheme from '@/components/themes/BalancerTheme';
 import CompoundTheme from '@/components/themes/CompoundTheme';
 import FuseTheme from '@/components/themes/FuseTheme';
@@ -51,6 +53,7 @@ function ThemeComponent() {
   const isThemeBalancer = space?.skin === Themes.Balancer;
   const isThemeKleros = space?.skin === Themes.Kleros;
   const isOptimismTheme = space?.skin === Themes.Optimism;
+  const isArbitrumTheme = space?.skin === Themes.Arbitrum;
 
   if (space?.id === 'uniswap-eth-1') {
     return <UniswapTheme />;
@@ -62,6 +65,7 @@ function ThemeComponent() {
   if (isThemeBalancer) return <BalancerTheme />;
   if (isThemeKleros) return <KlerosTheme />;
   if (isOptimismTheme) return <OptimismTheme />;
+  if (isArbitrumTheme) return <ArbitrumTheme />;
   if (isThemeDoDAO) return <GlobalTheme />;
   return (
     <div>
@@ -106,7 +110,7 @@ function BasePage(props: { space?: SpaceWithIntegrationsFragment | null; childre
     return (
       <LoginModalProvider>
         <LoginModal />
-        {!isBotSite ? <TopNav space={props.space} /> : null}
+        {!(isBotSite || props.space.id === TOP_CRYPTO_PROJECTS_SPACE_ID) ? <TopNav space={props.space} /> : null}
         <StyledMain>{props.children}</StyledMain>
       </LoginModalProvider>
     );

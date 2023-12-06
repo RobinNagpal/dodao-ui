@@ -1,6 +1,6 @@
 import NativeSelect from '@/components/core/select/NativeSelect';
 import classNames from '@/utils/classNames';
-import styled from 'styled-components';
+import styles from './TabsWithUnderline.module.scss';
 
 export interface TabItem {
   id: string;
@@ -15,14 +15,6 @@ export interface TabsWithUnderlineProps {
   className?: string;
 }
 
-const StyledNav = styled.nav`
-  border: 1px solid #e5e7eb;
-  cursor: pointer;
-`;
-
-const BottomSpan = styled.span<{ isSelected: boolean }>`
-  border-bottom: 3px solid ${(props) => (props.isSelected ? 'var(--primary-color)' : 'transparent')};
-`;
 export default function TabsWithUnderline(props: TabsWithUnderlineProps) {
   return (
     <div className={props.className || ''}>
@@ -34,7 +26,7 @@ export default function TabsWithUnderline(props: TabsWithUnderlineProps) {
         <NativeSelect selectedItemId={props.selectedTabId} items={props.tabs} setSelectedItemId={props.setSelectedTabId} />
       </div>
       <div className="hidden sm:block">
-        <StyledNav className="isolate flex divide-x divide-gray-200 rounded-lg shadow" aria-label="Tabs">
+        <nav className={`isolate flex divide-x divide-gray-200 rounded-lg shadow ${styles.styledNav}`} aria-label="Tabs">
           {props.tabs.map((tab, tabIdx) => {
             const isSelected = tab.id === props.selectedTabId;
             return (
@@ -50,11 +42,11 @@ export default function TabsWithUnderline(props: TabsWithUnderlineProps) {
                 onClick={() => props.setSelectedTabId(tab.id)}
               >
                 <span>{tab.label}</span>
-                <BottomSpan aria-hidden="true" isSelected={isSelected} className="absolute inset-x-0 bottom-0 h-0.5" />
+                <span aria-hidden="true" className={`absolute inset-x-0 bottom-0 h-0.5 ${styles.bottomSpan} ${isSelected ? styles.selected : ''}`} />
               </a>
             );
           })}
-        </StyledNav>
+        </nav>
       </div>
     </div>
   );

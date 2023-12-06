@@ -51,7 +51,7 @@ export default function DiscordChannels(props: { space: SpaceWithIntegrationsFra
       },
       onSelect: async (key: string, item: DiscordChannel) => {
         if (key === 'viewMessages') {
-          router.push('/space/manage/' + ManageSpaceSubviews.Loaders + '/discord/messages/' + item.id);
+          router.push('/space/manage/' + ManageSpaceSubviews.Chatbot + '/discord/messages/' + item.id);
           return;
         }
 

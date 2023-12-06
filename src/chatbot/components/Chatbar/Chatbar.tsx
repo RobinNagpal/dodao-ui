@@ -122,8 +122,8 @@ export const Chatbar = () => {
 
     homeDispatch({ field: 'conversations', value: [] });
 
-    localStorage.removeItem('conversationHistory');
-    localStorage.removeItem('selectedConversation');
+    localStorage.removeItem('conversationHistory_v2');
+    localStorage.removeItem('selectedConversation_v2');
 
     const updatedFolders = folders.filter((f) => f.type !== 'chat');
 
@@ -160,7 +160,7 @@ export const Chatbar = () => {
           },
         });
 
-      localStorage.removeItem('selectedConversation');
+      localStorage.removeItem('selectedConversation_v2');
     }
   };
 
@@ -183,7 +183,7 @@ export const Chatbar = () => {
       chatDispatch({
         field: 'filteredConversations',
         value: conversations.filter((conversation) => {
-          const searchable = conversation.name.toLocaleLowerCase() + ' ' + conversation.messages.map((message) => message.content).join(' ');
+          const searchable = conversation.name.toLocaleLowerCase() + ' ' + conversation.messages.map((message) => message.userQuestion).join(' ');
           return searchable.toLowerCase().includes(searchTerm.toLowerCase());
         }),
       });

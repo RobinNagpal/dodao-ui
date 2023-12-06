@@ -3,8 +3,9 @@
 import withSpace from '@/app/withSpace';
 import Block from '@/components/app/Block';
 import { CreateByteUsingAIModal } from '@/components/bytes/Create/CreateByteUsingAIModal';
+import { EditByteType } from '@/components/bytes/Edit/editByteHelper';
 import EditByteStepper from '@/components/bytes/Edit/EditByteStepper';
-import { EditByteType, useEditByte } from '@/components/bytes/Edit/useEditByte';
+import { useEditByte } from '@/components/bytes/Edit/useEditByte';
 import Button from '@/components/core/buttons/Button';
 import EllipsisDropdown from '@/components/core/dropdowns/EllipsisDropdown';
 import Input from '@/components/core/input/Input';

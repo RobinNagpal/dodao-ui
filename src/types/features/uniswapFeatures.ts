@@ -9,7 +9,7 @@ export const uniswapFeatures: FeatureItem[] = [
     },
   },
   {
-    featureName: FeatureName.Bytes,
+    featureName: FeatureName.ByteCollections,
     enabled: true,
     details: {
       priority: 80,

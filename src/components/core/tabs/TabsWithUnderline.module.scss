@@ -1,0 +1,12 @@
+.styledNav {
+  border: 1px solid #e5e7eb;
+  cursor: pointer;
+}
+
+.bottomSpan {
+  border-bottom: 3px solid transparent;
+
+    &.selected {
+        border-bottom: 3px solid var(--primary-color);
+    }
+}

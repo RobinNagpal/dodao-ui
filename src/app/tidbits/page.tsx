@@ -1,36 +1,16 @@
 'use client';
 
 import withSpace, { SpaceProps } from '@/app/withSpace';
-import Block from '@/components/app/Block';
-import RowLoading from '@/components/core/loaders/RowLoading';
-import ByteSummaryCard from '@/components/bytes/Summary/ByteSummaryCard';
-import NoByte from '@/components/bytes/Summary/NoBytes';
-import { Grid4Cols } from '@/components/core/grids/Grid4Colst';
+import BytesGrid from '@/components/bytes/List/BytesGrid';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import { useQueryBytesQuery } from '@/graphql/generated/generated-types';
 import React from 'react';
-import TidbitsSkeleton from '@/components/core/loaders/TidbitLoader';
 
 function Byte({ space }: SpaceProps) {
   const { data, error, loading, refetch: fetchBytes } = useQueryBytesQuery({ variables: { spaceId: space.id } });
   return (
     <PageWrapper>
-      {loading ? (
-        <Block>
-          <TidbitsSkeleton />
-        </Block>
-      ) : (
-        <div className="flex justify-center items-center px-5 sm:px-0">
-          {!data?.bytes.length && <NoByte />}
-          {!!data?.bytes?.length && (
-            <Grid4Cols>
-              {data?.bytes?.map((byte, i) => (
-                <ByteSummaryCard key={i} byte={byte} />
-              ))}
-            </Grid4Cols>
-          )}
-        </div>
-      )}
+      <BytesGrid loading={loading} bytes={data?.bytes} baseByteViewUrl={`/tidbits/view`} />
     </PageWrapper>
   );
 }

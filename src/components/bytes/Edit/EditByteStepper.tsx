@@ -1,3 +1,4 @@
+import { EditByteType, UpdateByteFunctions } from '@/components/bytes/Edit/editByteHelper';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { UserDiscordConnectType } from '@/types/deprecated/models/enums';
 import { ByteErrors } from '@/types/errors/byteErrors';
@@ -5,7 +6,6 @@ import PlusCircle from '@heroicons/react/20/solid/PlusCircleIcon';
 import { CSSProperties, useMemo } from 'react';
 import styled from 'styled-components';
 import EditByteStepperItem from './EditByteStepperItem';
-import { EditByteType, UpdateByteFunctions } from './useEditByte';
 
 interface EditByteStepperProps {
   space: SpaceWithIntegrationsFragment;

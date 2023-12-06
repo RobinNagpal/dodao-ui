@@ -3,12 +3,17 @@ import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsis
 import { Table, TableActions, TableRow } from '@/components/core/table/Table';
 import UpsertArticleIndexingInfoModal from '@/components/spaces/Edit/LoadersInfo/UpsertArticleIndexingInfoModal';
 import UpsertWebsiteScrapingInfoModal from '@/components/spaces/Edit/LoadersInfo/UpsertWebsiteScrapingInfoModal';
+import { ChatbotCategoriesTable } from '@/components/spaces/Loaders/Categories/ChatbotCategoriesTable';
+import UpsertChatbotCategory from '@/components/spaces/Loaders/Categories/UpsertChatbotCategory';
 import DiscordChannels from '@/components/spaces/Loaders/Discord/DiscordChannels';
 import DiscordMessages from '@/components/spaces/Loaders/Discord/DiscordMessages';
 import DiscourseIndexRuns from '@/components/spaces/Loaders/Discourse/DiscourseIndexRuns';
+import DiscourseInfo from '@/components/spaces/Loaders/Discourse/DiscourseInfo';
 import DiscoursePostComments from '@/components/spaces/Loaders/Discourse/DiscoursePostComments';
+import { ChatbotFAQsTable } from '@/components/spaces/Loaders/FAQs/ChatbotFAQsTable';
+import { ChatbotUserQuestionsTable } from '@/components/spaces/Loaders/UserQuestions/ChatbotUserQuestionsTable';
 import WebsiteScrapedURLInfosTable from '@/components/spaces/Loaders/WebsiteScrape/WebsiteScrapedURLInfosTable';
-import { ManageSpaceSubviews } from '@/components/spaces/manageSpaceSubviews';
+import { ChatbotSubView, ChatbotView, getChatbotSubviewUrl, ManageSpaceSubviews } from '@/components/spaces/manageSpaceSubviews';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import {
   ArticleIndexingInfoFragment,
@@ -22,20 +27,6 @@ import moment from 'moment/moment';
 import { useRouter } from 'next/navigation';
 import React, { useMemo, useState } from 'react';
 
-export enum LoaderType {
-  Discourse = 'discourse',
-  Discord = 'discord',
-  WebsiteScraping = 'website-scraping',
-}
-
-export enum LoaderSubView {
-  DiscourseIndexRuns = 'discourse-index-runs',
-  DiscoursePostComments = 'post-comments',
-  DiscordChannels = 'channels',
-  DiscordMessages = 'messages',
-
-  WebsiteScrapingURLInfos = 'website-scraping-url-infos',
-}
 function getLoaderRows(): TableRow[] {
   const indexedAt = moment(new Date()).local().format('YYYY/MM/DD HH:mm');
   const tableRows: TableRow[] = [];
@@ -133,14 +124,16 @@ export default function AllLoaders(props: { space: SpaceWithIntegrationsFragment
       onSelect: async (key: string, item: { id: string }) => {
         if (key === 'view') {
           if (item.id === 'discourse') {
-            router.push('/space/manage/' + ManageSpaceSubviews.Loaders + '/discourse/discourse-index-runs');
+            const discourseIndexRunsUrl = getChatbotSubviewUrl(ChatbotView.Discourse, ChatbotSubView.DiscourseIndexRuns);
+            router.push(discourseIndexRunsUrl);
             return;
           }
 
           const discordServerId = props.space.spaceIntegrations?.loadersInfo?.discordServerId;
           console.log('discordServerId', discordServerId);
           if (item.id === 'discord' && discordServerId) {
-            router.push('/space/manage/' + ManageSpaceSubviews.Loaders + '/discord/channels');
+            const discordChannelsUrl = getChatbotSubviewUrl(ChatbotView.Discord, ChatbotSubView.DiscordChannels);
+            router.push(discordChannelsUrl);
             return;
           }
         }
@@ -148,38 +141,69 @@ export default function AllLoaders(props: { space: SpaceWithIntegrationsFragment
     };
   }, []);
 
-  if (loaderSubview === LoaderSubView.DiscourseIndexRuns) {
+  const [selectedTabId, setSelectedTabId] = useState(ChatbotView.Discourse);
+
+  if (loaderSubview === ChatbotSubView.DiscouseInfo) {
+    return <DiscourseInfo space={props.space} />;
+  }
+
+  if (loaderSubview === ChatbotSubView.CategoriesInfo) {
+    return <ChatbotCategoriesTable space={props.space} />;
+  }
+
+  if (loaderSubview === ChatbotSubView.CategoriesUpsert) {
+    return <UpsertChatbotCategory space={props.space} categoryId={subviewPathParam} />;
+  }
+
+  if (loaderSubview === ChatbotSubView.FAQsInfo) {
+    return <ChatbotFAQsTable space={props.space} />;
+  }
+
+  if (loaderSubview === ChatbotSubView.UserQuestionsInfo) {
+    return <ChatbotUserQuestionsTable space={props.space} />;
+  }
+
+  if (loaderSubview === ChatbotSubView.DiscourseIndexRuns) {
     return <DiscourseIndexRuns space={props.space} />;
   }
 
-  if (loaderSubview === LoaderSubView.DiscoursePostComments && subviewPathParam) {
+  if (loaderSubview === ChatbotSubView.DiscoursePostComments && subviewPathParam) {
     return <DiscoursePostComments space={props.space} postId={subviewPathParam} />;
   }
 
-  if (loaderSubview === LoaderSubView.DiscordChannels) {
+  if (loaderSubview === ChatbotSubView.DiscordChannels) {
     return <DiscordChannels space={props.space} />;
   }
 
-  if (loaderSubview === LoaderSubView.DiscordMessages && subviewPathParam) {
+  if (loaderSubview === ChatbotSubView.DiscordChannels) {
+    return <DiscordChannels space={props.space} />;
+  }
+
+  if (loaderSubview === ChatbotSubView.DiscordMessages && subviewPathParam) {
     return <DiscordMessages space={props.space} channelId={subviewPathParam} />;
   }
 
-  if (loaderSubview === LoaderSubView.WebsiteScrapingURLInfos && subviewPathParam) {
+  if (loaderSubview === ChatbotSubView.WebsiteScrapingURLInfos && subviewPathParam) {
     return <WebsiteScrapedURLInfosTable space={props.space} websiteScrapingInfoId={subviewPathParam} />;
   }
   return (
-    <div className="mx-8 mt-8">
-      <div className="flex justify-between">
-        <div className="text-xl">Loaders</div>
+    <div className="divide-y divide-slate-400  divide-dashed">
+      <div className="mb-32">
+        <Table
+          data={getLoaderRows()}
+          heading={'Loader Info'}
+          columnsHeadings={['Loader', 'Last Indexed At', 'Status']}
+          columnsWidthPercents={[20, 50, 20, 10]}
+          actions={tableActions}
+        />
       </div>
-      <Table data={getLoaderRows()} columnsHeadings={['Loader', 'Last Indexed At', 'Status']} columnsWidthPercents={[20, 50, 20, 10]} actions={tableActions} />
 
-      <div className="mt-16">
-        <div className="flex justify-between">
-          <div className="text-xl">Website Scraping Infos</div>
+      <div className="mb-32">
+        <div className="flex justify-end mt-4">
           <PrivateEllipsisDropdown items={websiteScrappingThreeDotItems} onSelect={() => setShowAddWebsiteScrappingInfoModal(true)} />
         </div>
         <Table
+          heading={'Website Scraping Info'}
           data={getWebsiteScrapingInfoTable(websiteInfos?.websiteScrapingInfos || [])}
           columnsHeadings={['Id', 'Base Url', 'Scraping Start Url', 'Ignore Hash', 'Ignore Query']}
           columnsWidthPercents={[5, 25, 20, 20, 10, 10]}
@@ -187,7 +211,8 @@ export default function AllLoaders(props: { space: SpaceWithIntegrationsFragment
             items: siteScrapingActionItems,
             onSelect: async (key: string, item: { id: string }) => {
               if (key === 'view') {
-                router.push('/space/manage/' + ManageSpaceSubviews.Loaders + '/discourse/website-scraping-url-infos/' + item.id);
+                const websiteScrapingInfoUrl = getChatbotSubviewUrl(ChatbotView.WebsiteScraping, ChatbotSubView.WebsiteScrapingURLInfos, item.id);
+                router.push(websiteScrapingInfoUrl);
               } else if (key === 'edit') {
                 setEditWebsiteScrappingInfo(item as WebsiteScrapingInfoFragment);
                 setShowAddWebsiteScrappingInfoModal(true);
@@ -205,12 +230,12 @@ export default function AllLoaders(props: { space: SpaceWithIntegrationsFragment
         />
       </div>
 
-      <div className="mt-16">
-        <div className="flex justify-between">
-          <div className="text-xl">Articles Indexed</div>
+      <div>
+        <div className="flex justify-end mt-4">
           <PrivateEllipsisDropdown items={websiteScrappingThreeDotItems} onSelect={() => setShowAddArticleIndexingInfoModal(true)} />
         </div>
         <Table
+          heading={'Article Indexing Info'}
           data={getArticleIndexingInfoTable(articleIndexingInfos?.articleIndexingInfos || [])}
           columnsHeadings={['Id', 'Url', 'Text', 'Text Length', 'Status']}
           columnsWidthPercents={[5, 25, 20, 20, 20]}

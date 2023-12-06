@@ -1,0 +1,10 @@
+.byteContainer {
+  min-height: calc(100vh - 400px);
+}
+
+.styledByteCard {
+  @media screen and (min-width: 767px) {
+    min-width: 647px;
+    max-width: 647px;
+  }
+}

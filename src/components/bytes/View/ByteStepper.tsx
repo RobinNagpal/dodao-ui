@@ -1,12 +1,12 @@
-import { ByteDetailsFragment, ByteStepFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { UseGenericViewByteHelper } from '@/components/bytes/View/useGenericViewByte';
+import { ByteDetailsFragment, ByteStepFragment, ProjectByteFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { useMemo } from 'react';
 import ByteStepperItem from './ByteStepperItem';
-import { UseViewByteHelper } from './useViewByte';
 import styles from './ByteStepper.module.scss';
 
 type Props = {
-  viewByteHelper: UseViewByteHelper;
-  byte: ByteDetailsFragment;
+  viewByteHelper: UseGenericViewByteHelper;
+  byte: ByteDetailsFragment | ProjectByteFragment;
   space: SpaceWithIntegrationsFragment;
 };
 

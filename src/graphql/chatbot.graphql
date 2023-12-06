@@ -1,0 +1,103 @@
+fragment ChatbotSubCategory on ChatbotSubcategory {
+  name
+  key
+  description
+}
+
+fragment ChatbotCategory on ChatbotCategory {
+  id
+  priority
+  description
+  key
+  name
+  subCategories {
+    name
+    key
+    description
+  }
+}
+
+fragment ChatbotFAQ on ChatbotFAQ {
+  id
+  spaceId
+  question
+  answer
+  categories
+  subCategories
+  priority
+  url
+}
+
+fragment SearchedChatbotFAQFragment on SearchedChatbotFAQ {
+  id
+  spaceId
+  question
+  answer
+  categories
+  subCategories
+  priority
+  url
+  score
+}
+
+fragment ChatbotUserQuestion on ChatbotUserQuestion {
+  id
+  spaceId
+  question
+  categories
+  subCategories
+}
+
+query ChatbotCategories($spaceId: String!) {
+  chatbotCategories(spaceId: $spaceId) {
+    ...ChatbotCategory
+  }
+}
+
+query ChatbotFAQs($spaceId: String!) {
+  chatbotFAQs(spaceId: $spaceId) {
+    ...ChatbotFAQ
+  }
+}
+
+query SearchChatbotFAQs($spaceId: String!, $query: String!) {
+  searchChatbotFAQs(spaceId: $spaceId, query: $query) {
+    ...SearchedChatbotFAQFragment
+  }
+}
+
+query ChatbotUserQuestions($spaceId: String!) {
+  chatbotUserQuestions(spaceId: $spaceId) {
+    ...ChatbotUserQuestion
+  }
+}
+
+mutation UpsertChatbotCategory($spaceId: String!, $input: UpsertChatbotCategoryInput!) {
+  upsertChatbotCategory(spaceId: $spaceId, input: $input) {
+    ...ChatbotCategory
+  }
+}
+
+mutation UpsertChatbotFAQ($spaceId: String!, $input: UpsertChatbotFAQInput!) {
+  upsertChatbotFAQ(spaceId: $spaceId, input: $input) {
+    ...ChatbotFAQ
+  }
+}
+
+mutation UpsertChatbotUserQuestion($spaceId: String!, $input: UpsertChatbotUserQuestionInput!) {
+  upsertChatbotUserQuestion(spaceId: $spaceId, input: $input) {
+    ...ChatbotUserQuestion
+  }
+}
+
+mutation DeleteChatbotCategory($spaceId: String!, $id: String!) {
+  deleteChatbotCategory(spaceId: $spaceId, id: $id)
+}
+
+mutation DeleteChatbotFAQ($spaceId: String!, $id: String!) {
+  deleteChatbotFAQ(spaceId: $spaceId, id: $id)
+}
+
+mutation DeleteChatbotUserQuestion($spaceId: String!, $id: String!) {
+  deleteChatbotUserQuestion(spaceId: $spaceId, id: $id)
+}

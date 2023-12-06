@@ -1,16 +1,15 @@
 import {
   ByteCollectionFragment,
   ByteSummaryFragment,
+  ProjectByteCollectionFragment,
+  ProjectByteFragment,
   SpaceWithIntegrationsFragment,
   useByteCollectionQuery,
-  useCreateByteCollectionMutation,
-  useQueryBytesQuery,
-  useUpdateByteCollectionMutation,
 } from '@/graphql/generated/generated-types';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 
-type EditByteCollection = Omit<ByteCollectionFragment, 'id'> & { id?: string };
+export type EditByteCollection = Omit<ByteCollectionFragment | ProjectByteCollectionFragment, 'id'> & { id?: string };
 
 interface HelperFunctions {
   updateByteCollectionName: (name: string) => void;
@@ -25,12 +24,26 @@ interface HelperFunctions {
 
 interface UseEditByteCollectionType {
   isPrestine: boolean;
-  byteSummaries: ByteSummaryFragment[];
+  byteSummaries: (ByteSummaryFragment | ProjectByteFragment)[];
   byteCollection: EditByteCollection;
   helperFunctions: HelperFunctions;
 }
 
-export function useEditByteCollection(space: SpaceWithIntegrationsFragment, byteCollectionId: string | null): UseEditByteCollectionType {
+export interface UseEditByteCollectionArgs {
+  space: SpaceWithIntegrationsFragment;
+  viewByteCollectionsUrl: string;
+  byteCollectionId: string | null;
+  byteSummaries: (ByteSummaryFragment | ProjectByteFragment)[];
+  upsertByteCollectionFn: (byteCollection: EditByteCollection, byteCollectionId: string | null) => Promise<void>;
+}
+
+export function useEditByteCollection({
+  space,
+  viewByteCollectionsUrl,
+  byteCollectionId,
+  byteSummaries,
+  upsertByteCollectionFn,
+}: UseEditByteCollectionArgs): UseEditByteCollectionType {
   const [isPrestine, setIsPrestine] = useState<boolean>(true);
   const router = useRouter();
 
@@ -43,8 +56,6 @@ export function useEditByteCollection(space: SpaceWithIntegrationsFragment, byte
     status: 'DRAFT',
   });
 
-  const [byteSummaries, setByteSummaries] = useState<ByteSummaryFragment[]>([]);
-
   const { data, loading } = useByteCollectionQuery({
     variables: {
       spaceId: space.id,
@@ -53,27 +64,11 @@ export function useEditByteCollection(space: SpaceWithIntegrationsFragment, byte
     skip: !byteCollectionId,
   });
 
-  const { data: byteSummariesResponse } = useQueryBytesQuery({
-    variables: {
-      spaceId: space.id,
-    },
-  });
-
-  const [updateByteCollectionMutation] = useUpdateByteCollectionMutation();
-
-  const [createByteCollectionMutation] = useCreateByteCollectionMutation();
-
   useEffect(() => {
     if (data?.byteCollection) {
       setByteCollection(data.byteCollection);
     }
   }, [data?.byteCollection]);
-
-  useEffect(() => {
-    if (byteSummariesResponse?.bytes) {
-      setByteSummaries(byteSummariesResponse.bytes);
-    }
-  }, [byteSummariesResponse?.bytes]);
 
   const moveByteUp = useCallback((byteUuid: string) => {
     setByteCollection((prevByte) => {
@@ -114,7 +109,7 @@ export function useEditByteCollection(space: SpaceWithIntegrationsFragment, byte
 
   const addByte = (byteId: string) => {
     setByteCollection((prevByte) => {
-      const newByte = byteSummaries.find((byte) => byte.id === byteId);
+      const newByte = byteSummaries.find((byte: ByteSummaryFragment | ProjectByteFragment) => byte.id === byteId);
       if (!newByte) {
         return prevByte;
       }
@@ -141,36 +136,8 @@ export function useEditByteCollection(space: SpaceWithIntegrationsFragment, byte
     if (!byteCollection.name.trim() || !byteCollection.description.trim()) {
       return;
     }
-
-    if (!byteCollectionId) {
-      await createByteCollectionMutation({
-        variables: {
-          input: {
-            spaceId: space.id,
-            name: byteCollection.name,
-            description: byteCollection.description,
-            byteIds: byteCollection.bytes.map((byte) => byte.byteId),
-            status: byteCollection.status,
-            order: byteCollection.order,
-          },
-        },
-      });
-    } else {
-      await updateByteCollectionMutation({
-        variables: {
-          input: {
-            byteCollectionId,
-            name: byteCollection.name,
-            description: byteCollection.description,
-            byteIds: byteCollection.bytes.map((byte) => byte.byteId),
-            status: byteCollection.status,
-            spaceId: space.id,
-            order: byteCollection.order,
-          },
-        },
-      });
-    }
-    router.push('/tidbit-collections');
+    await upsertByteCollectionFn(byteCollection, byteCollectionId);
+    router.push(viewByteCollectionsUrl);
   };
 
   return {

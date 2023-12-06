@@ -16,12 +16,20 @@ export const optimismFeatures: FeatureItem[] = [
     },
   },
   {
-    featureName: FeatureName.Timelines,
+    featureName: FeatureName.Simulations,
     enabled: true,
     details: {
       priority: 60,
     },
   },
+  {
+    featureName: FeatureName.Timelines,
+    enabled: true,
+    details: {
+      priority: 55,
+    },
+  },
+
   {
     featureName: FeatureName.Courses,
     enabled: true,
