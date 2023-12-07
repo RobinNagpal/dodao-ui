@@ -25,9 +25,6 @@ export default function UpsertChatbotFAQModal({
     },
   });
 
-  const [selectedCategories, setSelectedCategories] = useState<string[]>(faq?.categories || []);
-  const [selectedSubCategories, setSelectedSubCategories] = useState<string[]>(faq?.subCategories || []);
-
   const [upsertChatbotFaqMutation] = useUpsertChatbotFaqMutation({});
 
   const [upserting, setUpserting] = useState<boolean>(false);
@@ -38,11 +35,6 @@ export default function UpsertChatbotFAQModal({
 
   const { showNotification } = useNotificationContext();
 
-  useEffect(() => {
-    setSelectedCategories(faq?.categories || []);
-    setSelectedSubCategories(faq?.subCategories || []);
-  }, [faq]);
-
   const upsertChatbotFaq = async () => {
     setUpserting(true);
     await upsertChatbotFaqMutation({
@@ -50,8 +42,6 @@ export default function UpsertChatbotFAQModal({
         spaceId: space.id,
         input: {
           id: faq?.id || v4(),
-          categories: selectedCategories,
-          subCategories: selectedSubCategories,
           answer,
           question,
           spaceId: space.id,
@@ -97,14 +87,6 @@ export default function UpsertChatbotFAQModal({
           <Input modelValue={url} onUpdate={(e) => setUrl(e?.toString() || '')} className="mb-4" label="Url" />
 
           <Input modelValue={priority} onUpdate={(e) => setPriority(parseInt(e?.toString() || '50'))} className="mb-4" label="Priority" />
-
-          <CategoryCheckboxes
-            categories={categoriesResponse?.chatbotCategories || []}
-            setSelectedCategories={setSelectedCategories}
-            setSelectedSubCategories={setSelectedSubCategories}
-            selectedCategories={selectedCategories}
-            selectedSubCategories={selectedSubCategories}
-          />
         </div>
         <Button
           disabled={question.length < 5 || answer.length < 5 || url.length < 5}
