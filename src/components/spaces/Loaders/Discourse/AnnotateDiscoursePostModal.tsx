@@ -22,9 +22,6 @@ export default function AnnotateDiscoursePostModal({
     },
   });
 
-  const [selectedCategories, setSelectedCategories] = useState<string[]>(post.categories || []);
-  const [selectedSubCategories, setSelectedSubCategories] = useState<string[]>(post.subCategories || []);
-
   const [enacted, setEnacted] = useState<boolean>(!!post.enacted);
   const [discussed, setDiscussed] = useState<boolean>(!!post.discussed);
 
@@ -33,8 +30,6 @@ export default function AnnotateDiscoursePostModal({
   const [upserting, setUpserting] = useState<boolean>(false);
 
   useEffect(() => {
-    setSelectedCategories(post.categories || []);
-    setSelectedSubCategories(post.subCategories || []);
     setEnacted(!!post.enacted);
     setDiscussed(!!post.discussed);
   }, [post]);
@@ -46,8 +41,6 @@ export default function AnnotateDiscoursePostModal({
         spaceId: space.id,
         input: {
           postId: post.id,
-          categories: selectedCategories,
-          subCategories: selectedSubCategories,
           discussed,
           enacted,
           spaceId: space.id,
@@ -66,16 +59,8 @@ export default function AnnotateDiscoursePostModal({
         <div className="my-4">
           <div className="text-xl">Categories</div>
           <div className="text-sm text-gray-500">Select the categories that best describe this post.</div>
-          <div>Selected Categories: {selectedCategories.join(', ')}</div>
-          <div>Selected Sub Categories: {selectedSubCategories.join(', ')}</div>
+
           <div className="mt-4" />
-          <CategoryCheckboxes
-            categories={categoriesResponse?.chatbotCategories || []}
-            setSelectedCategories={setSelectedCategories}
-            setSelectedSubCategories={setSelectedSubCategories}
-            selectedCategories={selectedCategories}
-            selectedSubCategories={selectedSubCategories}
-          />
           <ToggleWithIcon label={'Enacted (Decision Taken?)'} enabled={enacted} setEnabled={(value) => setEnacted(value)} />
           <ToggleWithIcon label={'Discussed'} enabled={discussed} setEnabled={(value) => setDiscussed(value)} />
         </div>

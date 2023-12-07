@@ -68,12 +68,10 @@ input AddTopicVideoInput {
 }
 
 input AnnotateDiscoursePostInput {
-  categories: [String!]!
   discussed: Boolean
   enacted: Boolean
   postId: String!
   spaceId: String!
-  subCategories: [String!]!
 }
 
 scalar Any
@@ -247,23 +245,19 @@ type ChatbotCategory {
 
 type ChatbotFAQ implements ChatbotFAQCommon {
   answer: String!
-  categories: [String!]
   id: String!
   priority: Int!
   question: String!
   spaceId: String!
-  subCategories: [String!]
   url: String!
 }
 
 interface ChatbotFAQCommon {
   answer: String!
-  categories: [String!]
   id: String!
   priority: Int!
   question: String!
   spaceId: String!
-  subCategories: [String!]
   url: String!
 }
 
@@ -274,11 +268,9 @@ type ChatbotSubcategory {
 }
 
 type ChatbotUserQuestion {
-  categories: [String!]
   id: String!
   question: String!
   spaceId: String!
-  subCategories: [String!]
 }
 
 input CompletionAIInput {
@@ -447,7 +439,6 @@ type DiscoursePost {
   aiSummary: String
   aiSummaryDate: DateTimeISO
   author: String
-  categories: [String!]!
   createdAt: DateTimeISO!
   datePublished: DateTimeISO!
   discussed: Boolean
@@ -457,7 +448,6 @@ type DiscoursePost {
   indexedAt: DateTimeISO
   spaceId: String!
   status: String!
-  subCategories: [String!]!
   title: String!
   url: String!
 }
@@ -1287,13 +1277,11 @@ type ScrapedUrlInfo {
 
 type SearchedChatbotFAQ implements ChatbotFAQCommon {
   answer: String!
-  categories: [String!]
   id: String!
   priority: Int!
   question: String!
   score: Float!
   spaceId: String!
-  subCategories: [String!]
   url: String!
 }
 
@@ -1617,12 +1605,10 @@ input UpsertChatbotCategoryInput {
 
 input UpsertChatbotFAQInput {
   answer: String!
-  categories: [String!]
   id: String!
   priority: Int!
   question: String!
   spaceId: String!
-  subCategories: [String!]
   url: String!
 }
 
@@ -1633,11 +1619,9 @@ input UpsertChatbotSubcategoryInput {
 }
 
 input UpsertChatbotUserQuestionInput {
-  categories: [String!]
   id: String!
   question: String!
   spaceId: String!
-  subCategories: [String!]
 }
 
 input UpsertCourseIntegrationsInput {

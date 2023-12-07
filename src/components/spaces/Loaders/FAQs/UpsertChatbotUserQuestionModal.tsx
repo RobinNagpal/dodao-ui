@@ -29,20 +29,12 @@ export default function UpsertChatbotUserQuestionModal({
     },
   });
 
-  const [selectedCategories, setSelectedCategories] = useState<string[]>(userQuestion?.categories || []);
-  const [selectedSubCategories, setSelectedSubCategories] = useState<string[]>(userQuestion?.subCategories || []);
-
   const [upsertChatbotUserQuestionMutation] = useUpsertChatbotUserQuestionMutation({});
 
   const [upserting, setUpserting] = useState<boolean>(false);
   const [question, setQuestion] = useState<string>(userQuestion?.question || '');
 
   const { showNotification } = useNotificationContext();
-
-  useEffect(() => {
-    setSelectedCategories(userQuestion?.categories || []);
-    setSelectedSubCategories(userQuestion?.subCategories || []);
-  }, [userQuestion]);
 
   const upsertChatbotUserQuestion = async () => {
     setUpserting(true);
@@ -51,8 +43,6 @@ export default function UpsertChatbotUserQuestionModal({
         spaceId: space.id,
         input: {
           id: userQuestion?.id || v4(),
-          categories: selectedCategories,
-          subCategories: selectedSubCategories,
           question,
           spaceId: space.id,
         },
@@ -79,14 +69,6 @@ export default function UpsertChatbotUserQuestionModal({
             spaceId={space.id}
             objectId={`chatbot/userQuestions/question/${userQuestion?.id || 'new-userQuestion'}`}
             imageType="UserQuestion"
-          />
-
-          <CategoryCheckboxes
-            categories={categoriesResponse?.chatbotCategories || []}
-            setSelectedCategories={setSelectedCategories}
-            setSelectedSubCategories={setSelectedSubCategories}
-            selectedCategories={selectedCategories}
-            selectedSubCategories={selectedSubCategories}
           />
         </div>
         <Button disabled={question.length < 5} onClick={() => upsertChatbotUserQuestion()} loading={upserting} variant="contained" primary className="mt-4">
