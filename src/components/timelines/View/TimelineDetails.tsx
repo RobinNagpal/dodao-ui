@@ -31,66 +31,81 @@ const Timeline = ({ timeline }: TimelineProps) => {
     setShowFullDetailsModal(false);
   };
 
+  function removeHtmlTags(text: string): string {
+    return text.replace(/<[^>]*>/g, '');
+  }
+
   return (
     <>
-      <ul role="list" className="space-y-6">
-        {timeline.events.map((event, i) => {
-          const eventSummary = marked.parse(event.summary, { renderer });
-          const currentDate = moment().local();
-          const elevenMonthsAgo = currentDate.clone().subtract(11, 'months');
-
-          const timeAgo = moment(event.date).isBefore(elevenMonthsAgo)
-            ? moment(event.date).local().format('YYYY/MM/DD')
-            : moment(event.date).local().startOf('seconds').fromNow();
-
-          return (
-            <li key={i} className="relative flex gap-x-4 items-center">
-              <div className="absolute left-0 top-0 flex w-5 justify-center -bottom-6 mr-4 ">
-                <div className="w-px bg-gray-200"></div>
-              </div>
-              <div className="flex items-center">
-                <div className="rounded-full bg-[var(--bg-color)] h-8 w-5 flex items-center justify-center relative z-10">
-                  <div className="rounded-full bg-gray-200 ring-1 ring-gray-400 h-3 w-3"></div>
-                </div>
-              </div>
-              <div className="flex-auto rounded-md ring-1 ring-inset ring-gray-200">
-                <div className="flex justify-between gap-x-4">
-                  <div className="text-xs leading-5 text-gray-500 p-4 pb-0">
-                    <span className="font-medium text-xl text-[var(--text-color)]">{event.title}</span>
+      <section className="items-center py-24 font-poppins">
+        <div className="justify-center max-w-6xl px-4 py-4 mx-auto lg:py-8 md:px-6">
+          {timeline.events.map((event, i) => {
+            const eventSummary = marked.parse(event.summary, { renderer });
+            const returnedEventSummary = removeHtmlTags(eventSummary);
+            const currentDate = moment().local();
+            const elevenMonthsAgo = currentDate.clone().subtract(11, 'months');
+            const timeAgo = moment(event.date).isBefore(elevenMonthsAgo)
+              ? moment(event.date).local().format('YYYY/MM/DD')
+              : moment(event.date).local().startOf('seconds').fromNow();
+            return (
+              <div className="w-full mx-auto lg:max-w-3xl">
+                <div className="relative flex justify-between">
+                  <div className="flex flex-col items-center w-10 mr-4 md:w-24">
+                    <div>
+                      <div
+                        className="flex items-center justify-center w-8 h-8 bg-blue-200 rounded-full dark:bg-gray-600">
+                        <div className="w-4 h-4 bg-blue-600 rounded-full dark:bg-blue-400"></div>
+                      </div>
+                    </div>
+                    <div className="w-px h-full bg-blue-300 dark:bg-gray-600"></div>
                   </div>
-                  <time dateTime={event.date} className="flex-none  p-4  pb-0 text-xs leading-5">
-                    {timeAgo}
-                  </time>
-                </div>
-
-                <p className="p-4 pt-2 text-sm leading-6 markdown-body" dangerouslySetInnerHTML={{ __html: eventSummary }} />
-
-                <div className="flex">
-                  {event.fullDetails && (
-                    <a className={`p-4 flex ${styles.styledLink}`} onClick={() => handleShowFullDetailsModal(event)}>
-                      Full Details <ArrowTopRightOnSquareIcon width={16} height={16} className="ml-1 mt-1 mr-1" />
-                    </a>
-                  )}
-                  {event.moreLink && (
-                    <a
-                      className={`p-4 flex ${styles.styledLink}`}
-                      onClick={() => {
-                        if (event.moreLink) window.open(event.moreLink);
-                      }}
+                  <div>
+                    <h2
+                      className="inline-block px-4 py-2 mb-4 text-xs font-medium text-gray-100 bg-gradient-to-r from-blue-500 to-blue-900 dark:from-blue-400 dark:to-blue-500 rounded-3xl dark:text-gray-100">
+                      {timeAgo}</h2>
+                    <div
+                      className="relative flex-1 mb-10 border-b-4 border-blue-200 shadow rounded-3xl"
+                      style={{ width: "800px" }}
                     >
-                      More Details <ArrowRightIcon width={16} height={16} className="ml-1 mt-1 mr-1" />
-                    </a>
-                  )}
+                      <div className="relative z-20 p-6">
+                        <p className="mb-2 text-xl font-bold">{event.title}</p>
+                        <p  dangerouslySetInnerHTML={{__html: eventSummary}}/>
+                        <div className="flex">
+                          {event.fullDetails && (
+                            <a
+                              className={`p-4 flex ${styles.styledLink}`}
+                              onClick={() => handleShowFullDetailsModal(event)}
+                            >
+                              Full Details <ArrowTopRightOnSquareIcon width={16} height={16} className="ml-1 mt-1 mr-1" />
+                            </a>
+                          )}
+                          {event.moreLink && (
+                            <a
+                              className={`mt-4 flex ${styles.styledLink}`}
+                              onClick={() => {
+                                if (event.moreLink) window.open(event.moreLink);
+                              }}
+                            >
+                              More Details <ArrowRightIcon width={16} height={16} className="ml-1 mt-1 mr-1" />
+                            </a>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
                 </div>
               </div>
-            </li>
-          );
-        })}
-      </ul>
+            );
+          })}
+        </div>
+      </section >
 
-      {selectedEvent && <TimelineDetailsModal open={showFullDetailsModal} onClose={handleCloseFullDetailsModal} event={selectedEvent} />}
+      {selectedEvent && <TimelineDetailsModal open={showFullDetailsModal} onClose={handleCloseFullDetailsModal} event={selectedEvent} />
+      }
     </>
   );
 };
 
 export default Timeline;
+

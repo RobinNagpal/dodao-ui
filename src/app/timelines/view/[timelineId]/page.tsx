@@ -38,12 +38,26 @@ const TimelinePage = ({ params, space }: { params: { timelineId: string }; space
                   />
                 </div>
               </div>
-              <div className="mb-8 px-2 text-2xl">
-                <div className="mt-2">
-                  <h1 className="mb-2 px-2 text-3xl font-semibold ">{data?.timeline?.name}</h1>
+
+              <div className="max-w-xl mx-auto">
+                <div className="text-center ">
+                  <div className="relative flex flex-col items-center">
+                    <h1 className="text-6xl font-bold leading-tight"> {data?.timeline?.name}
+                    </h1>
+                    <div className="flex w-24 mt-1 mb-10 overflow-hidden rounded">
+                      <div className="flex-1 h-2 bg-blue-200">
+                      </div>
+                      <div className="flex-1 h-2 bg-blue-400">
+                      </div>
+                      <div className="flex-1 h-2 bg-blue-600">
+                      </div>
+                    </div>
+                  </div>
+                  <p className="text-base text-center">
+                    {data?.timeline?.excerpt}
+                  </p>
+                  <p className="text-sm text-center" dangerouslySetInnerHTML={{ __html: contents || '' }}></p>
                 </div>
-                <div className="px-2 text-base">{data?.timeline?.excerpt}</div>
-                <div className="px-2 mt-2 text-sm " dangerouslySetInnerHTML={{ __html: contents || '' }}></div>
               </div>
               <div className="px-2">{!loading && <TimelineDetails timeline={data?.timeline} space={space} />}</div>
             </>
