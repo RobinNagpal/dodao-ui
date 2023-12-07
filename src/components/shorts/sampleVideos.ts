@@ -36,4 +36,18 @@ export const videos: ImageType[] = [
     topic: 'Blockchain',
     link: 'https://www.youtube.com/shorts/NHxjypDc4xw',
   },
+  {
+    id: '6',
+    image: 'https://i.ytimg.com/vi/vEyNb7D5gb0/oar1.jpg',
+    title: 'What is leverage',
+    topic: 'Blockchain',
+    link: 'https://www.youtube.com/shorts/NHxjypDc4xw',
+  },
+  {
+    id: '7',
+    image: 'https://i.ytimg.com/vi/vEyNb7D5gb0/oar1.jpg',
+    title: 'What is leverage',
+    topic: 'Blockchain',
+    link: 'https://www.youtube.com/shorts/NHxjypDc4xw',
+  },
 ];

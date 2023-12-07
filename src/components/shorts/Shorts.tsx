@@ -10,7 +10,7 @@ const ImageWrapper = styled.div`
 
 function ShortsThumbnail({ image, title, topic, onClick }: ImageType) {
   return (
-    <button onClick={onClick}>
+    <button onClick={onClick} className="p-2 min-w-0 flex">
       <ImageWrapper>
         <div>
           <img src={image} alt={title} className="rounded-lg" />
@@ -31,7 +31,7 @@ interface ShortsUIProps {
 const Shorts: React.FC<ShortsUIProps> = ({ onThumbnailClick }) => {
   return (
     <PageWrapper>
-      <div className="flex flex-row flex-wrap gap-y-8 gap-x-16">
+      <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-1">
         {videos.map((video, index) => (
           <ShortsThumbnail key={index} {...video} onClick={() => onThumbnailClick(index)} />
         ))}
