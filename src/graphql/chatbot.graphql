@@ -78,6 +78,10 @@ mutation UpsertChatbotFAQ($spaceId: String!, $input: UpsertChatbotFAQInput!) {
   }
 }
 
+mutation IndexChatbotFAQs($spaceId: String!) {
+  indexChatbotFAQs(spaceId: $spaceId)
+}
+
 mutation UpsertChatbotUserQuestion($spaceId: String!, $input: UpsertChatbotUserQuestionInput!) {
   upsertChatbotUserQuestion(spaceId: $spaceId, input: $input) {
     ...ChatbotUserQuestion

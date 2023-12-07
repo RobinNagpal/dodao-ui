@@ -1021,6 +1021,7 @@ type Mutation {
   generateImage(input: GenerateImageInput!): ImagesResponse!
   generateImageEdit(input: GenerateImageEditInput!): GenerateImageResponse!
   generateSharablePdf(byteId: String!, spaceId: String!): String!
+  indexChatbotFAQs(spaceId: String!): Boolean!
   indexDiscoursePost(postId: String!, spaceId: String!): Boolean!
   indexNeedsIndexingDiscoursePosts(spaceId: String!): DiscourseIndexRun!
   initializeGitCourseSubmission(courseKey: String!, spaceId: String!): GitCourseSubmission!

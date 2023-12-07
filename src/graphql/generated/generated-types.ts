@@ -1089,6 +1089,7 @@ export interface Mutation {
   generateImage: ImagesResponse;
   generateImageEdit: GenerateImageResponse;
   generateSharablePdf: Scalars['String'];
+  indexChatbotFAQs: Scalars['Boolean'];
   indexDiscoursePost: Scalars['Boolean'];
   indexNeedsIndexingDiscoursePosts: DiscourseIndexRun;
   initializeGitCourseSubmission: GitCourseSubmission;
@@ -1366,6 +1367,11 @@ export interface MutationGenerateImageEditArgs {
 
 export interface MutationGenerateSharablePdfArgs {
   byteId: Scalars['String'];
+  spaceId: Scalars['String'];
+}
+
+
+export interface MutationIndexChatbotFaQsArgs {
   spaceId: Scalars['String'];
 }
 
@@ -2944,6 +2950,13 @@ export type UpsertChatbotFaqMutationVariables = Exact<{
 
 
 export type UpsertChatbotFaqMutation = { __typename?: 'Mutation', upsertChatbotFAQ: { __typename?: 'ChatbotFAQ', id: string, spaceId: string, question: string, answer: string, priority: number, url: string } };
+
+export type IndexChatbotFaQsMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+}>;
+
+
+export type IndexChatbotFaQsMutation = { __typename?: 'Mutation', indexChatbotFAQs: boolean };
 
 export type UpsertChatbotUserQuestionMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -5812,6 +5825,37 @@ export function useUpsertChatbotFaqMutation(baseOptions?: Apollo.MutationHookOpt
 export type UpsertChatbotFaqMutationHookResult = ReturnType<typeof useUpsertChatbotFaqMutation>;
 export type UpsertChatbotFaqMutationResult = Apollo.MutationResult<UpsertChatbotFaqMutation>;
 export type UpsertChatbotFaqMutationOptions = Apollo.BaseMutationOptions<UpsertChatbotFaqMutation, UpsertChatbotFaqMutationVariables>;
+export const IndexChatbotFaQsDocument = gql`
+    mutation IndexChatbotFAQs($spaceId: String!) {
+  indexChatbotFAQs(spaceId: $spaceId)
+}
+    `;
+export type IndexChatbotFaQsMutationFn = Apollo.MutationFunction<IndexChatbotFaQsMutation, IndexChatbotFaQsMutationVariables>;
+
+/**
+ * __useIndexChatbotFaQsMutation__
+ *
+ * To run a mutation, you first call `useIndexChatbotFaQsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useIndexChatbotFaQsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [indexChatbotFaQsMutation, { data, loading, error }] = useIndexChatbotFaQsMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *   },
+ * });
+ */
+export function useIndexChatbotFaQsMutation(baseOptions?: Apollo.MutationHookOptions<IndexChatbotFaQsMutation, IndexChatbotFaQsMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<IndexChatbotFaQsMutation, IndexChatbotFaQsMutationVariables>(IndexChatbotFaQsDocument, options);
+      }
+export type IndexChatbotFaQsMutationHookResult = ReturnType<typeof useIndexChatbotFaQsMutation>;
+export type IndexChatbotFaQsMutationResult = Apollo.MutationResult<IndexChatbotFaQsMutation>;
+export type IndexChatbotFaQsMutationOptions = Apollo.BaseMutationOptions<IndexChatbotFaQsMutation, IndexChatbotFaQsMutationVariables>;
 export const UpsertChatbotUserQuestionDocument = gql`
     mutation UpsertChatbotUserQuestion($spaceId: String!, $input: UpsertChatbotUserQuestionInput!) {
   upsertChatbotUserQuestion(spaceId: $spaceId, input: $input) {
