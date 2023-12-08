@@ -10,9 +10,13 @@ import Datepicker from '@/components/core/datepicker/Datepicker';
 import { IconTypes } from '@/components/core/icons/IconTypes';
 import Input from '@/components/core/input/Input';
 import PageWrapper from '@/components/core/page/PageWrapper';
+import StyledSelect from '@/components/core/select/StyledSelect';
 import TextareaAutosize from '@/components/core/textarea/TextareaAutosize';
 import { SpaceWithIntegrationsFragment, UpsertTimelineEventInput } from '@/graphql/generated/generated-types';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
+import { PublishStatus } from '@/types/deprecated/models/enums';
+import { TimelineStyles, timelineStyleSelect } from '@/utils/timeline/timelineStyles';
+import { publishStatusesSelect } from '@/utils/ui/statuses';
 import PlusCircle from '@heroicons/react/20/solid/PlusCircleIcon';
 import Link from 'next/link';
 import React, { useEffect } from 'react';
@@ -75,6 +79,12 @@ const EditTimeline = (props: { space: SpaceWithIntegrationsFragment; params: { t
             onUpdate={(e) => updateTimelineField('excerpt', e || '')}
             error={timelineErrors.excerpt}
             className="mt-4"
+          />
+          <StyledSelect
+            label="TimelineStyle *"
+            selectedItemId={editTimelineRef.timelineStyle || TimelineStyles.V1_Default}
+            items={timelineStyleSelect}
+            setSelectedItemId={(value) => updateTimelineField('timelineStyle', value)}
           />
           <MarkdownEditor
             label={`Timeline Details *`}

@@ -1477,6 +1477,7 @@ type Timeline {
   publishStatus: String!
   tags: [String!]!
   thumbnail: String
+  timelineStyle: String
 }
 
 type TimelineEvent {
@@ -1742,6 +1743,7 @@ input UpsertTimelineInput {
   publishStatus: String!
   tags: [String!]!
   thumbnail: String
+  timelineStyle: String
 }
 
 type UserDiscordConnect {
