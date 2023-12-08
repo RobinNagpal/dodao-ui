@@ -30,25 +30,19 @@ const Timeline = ({ timeline }: TimelineProps) => {
     setSelectedEvent(null);
     setShowFullDetailsModal(false);
   };
-
-  function removeHtmlTags(text: string): string {
-    return text.replace(/<[^>]*>/g, '');
-  }
-
   return (
     <>
       <section className="items-center py-24 font-poppins">
         <div className="justify-center max-w-6xl px-4 py-4 mx-auto lg:py-8 md:px-6">
           {timeline.events.map((event, i) => {
             const eventSummary = marked.parse(event.summary, { renderer });
-            const returnedEventSummary = removeHtmlTags(eventSummary);
             const currentDate = moment().local();
             const elevenMonthsAgo = currentDate.clone().subtract(11, 'months');
             const timeAgo = moment(event.date).isBefore(elevenMonthsAgo)
               ? moment(event.date).local().format('YYYY/MM/DD')
               : moment(event.date).local().startOf('seconds').fromNow();
             return (
-              <div className="w-full mx-auto lg:max-w-3xl">
+              <div className="w-full mx-auto lg:max-w-3xl" key={event.uuid}>
                 <div className="relative flex justify-between">
                   <div className="flex flex-col items-center w-10 mr-4 md:w-24">
                     <div>
