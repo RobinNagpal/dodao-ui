@@ -1,8 +1,15 @@
 import DeleteConfirmationModal from '@/components/app/Modal/DeleteConfirmationModal';
+import Button from '@/components/core/buttons/Button';
 import { EllipsisDropdownItem } from '@/components/core/dropdowns/EllipsisDropdown';
 import { Table, TableRow } from '@/components/core/table/Table';
 import UpsertChatbotFAQModal from '@/components/spaces/Loaders/FAQs/UpsertChatbotFAQModal';
-import { ChatbotFaqFragment, SpaceWithIntegrationsFragment, useChatbotFaQsQuery, useDeleteChatbotFaqMutation } from '@/graphql/generated/generated-types';
+import {
+  ChatbotFaqFragment,
+  SpaceWithIntegrationsFragment,
+  useChatbotFaQsQuery,
+  useDeleteChatbotFaqMutation,
+  useIndexChatbotFaQsMutation,
+} from '@/graphql/generated/generated-types';
 import React, { useState } from 'react';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 
@@ -38,15 +45,40 @@ export function ChatbotFAQsTable(props: { space: SpaceWithIntegrationsFragment }
   const [showAddChatbotFAQModal, setShowAddChatbotFAQModal] = useState(false);
   const [deleteChatbotFAQ, setDeleteChatbotFAQ] = useState<ChatbotFaqFragment | null>(null);
   const [deleteChatbotFaqMutation] = useDeleteChatbotFaqMutation();
+  const [indexChatbotFaQsMutation] = useIndexChatbotFaQsMutation();
+
   const { showNotification } = useNotificationContext();
+
   return (
-    <>
+    <div>
+      <div className="flex justify-end">
+        <Button
+          primary
+          variant="contained"
+          onClick={async () => {
+            await indexChatbotFaQsMutation({
+              variables: {
+                spaceId: props.space.id,
+              },
+            });
+            showNotification({ message: 'Triggered index run', type: 'success' });
+          }}
+          className="mr-4"
+        >
+          Trigger Full Index
+        </Button>
+        <Button
+          primary
+          variant="contained"
+          onClick={async () => {
+            setEditChatbotFAQ(null);
+            setShowAddChatbotFAQModal(true);
+          }}
+        >
+          Add FAQ
+        </Button>
+      </div>
       <Table
-        addNewLabel={'Add FAQ'}
-        onAddNew={() => {
-          setEditChatbotFAQ(null);
-          setShowAddChatbotFAQModal(true);
-        }}
         heading={'FAQs'}
         data={getFAQsTable(chatbotFAQsResponse?.chatbotFAQs || [])}
         columnsHeadings={['Id', 'Question', 'Answer', 'Priority']}
@@ -94,6 +126,6 @@ export function ChatbotFAQsTable(props: { space: SpaceWithIntegrationsFragment }
           }}
         />
       )}
-    </>
+    </div>
   );
 }

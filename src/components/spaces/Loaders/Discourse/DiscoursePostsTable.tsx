@@ -24,8 +24,6 @@ function getIndexRunRows(discoursePosts: DiscoursePost[]): TableRow[] {
       <div>
         Enacted: {post.enacted ? 'Yes' : 'No'} <br />
         Discussed: {post.discussed ? 'Yes' : 'No'} <br />
-        Categories: {post.categories?.join(', ') || '-'} <br />
-        SubCategories: {post.subCategories?.join(', ') || '-'} <br />
       </div>
     );
     return {

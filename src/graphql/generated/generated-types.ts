@@ -88,12 +88,10 @@ export interface AddTopicVideoInput {
 }
 
 export interface AnnotateDiscoursePostInput {
-  categories: Array<Scalars['String']>;
   discussed?: InputMaybe<Scalars['Boolean']>;
   enacted?: InputMaybe<Scalars['Boolean']>;
   postId: Scalars['String'];
   spaceId: Scalars['String'];
-  subCategories: Array<Scalars['String']>;
 }
 
 export interface ArticleIndexingInfo {
@@ -281,23 +279,19 @@ export interface ChatbotCategory {
 export interface ChatbotFaq extends ChatbotFaqCommon {
   __typename?: 'ChatbotFAQ';
   answer: Scalars['String'];
-  categories?: Maybe<Array<Scalars['String']>>;
   id: Scalars['String'];
   priority: Scalars['Int'];
   question: Scalars['String'];
   spaceId: Scalars['String'];
-  subCategories?: Maybe<Array<Scalars['String']>>;
   url: Scalars['String'];
 }
 
 export interface ChatbotFaqCommon {
   answer: Scalars['String'];
-  categories?: Maybe<Array<Scalars['String']>>;
   id: Scalars['String'];
   priority: Scalars['Int'];
   question: Scalars['String'];
   spaceId: Scalars['String'];
-  subCategories?: Maybe<Array<Scalars['String']>>;
   url: Scalars['String'];
 }
 
@@ -310,11 +304,9 @@ export interface ChatbotSubcategory {
 
 export interface ChatbotUserQuestion {
   __typename?: 'ChatbotUserQuestion';
-  categories?: Maybe<Array<Scalars['String']>>;
   id: Scalars['String'];
   question: Scalars['String'];
   spaceId: Scalars['String'];
-  subCategories?: Maybe<Array<Scalars['String']>>;
 }
 
 export interface CompletionAiInput {
@@ -487,7 +479,6 @@ export interface DiscoursePost {
   aiSummary?: Maybe<Scalars['String']>;
   aiSummaryDate?: Maybe<Scalars['DateTimeISO']>;
   author?: Maybe<Scalars['String']>;
-  categories: Array<Scalars['String']>;
   createdAt: Scalars['DateTimeISO'];
   datePublished: Scalars['DateTimeISO'];
   discussed?: Maybe<Scalars['Boolean']>;
@@ -497,7 +488,6 @@ export interface DiscoursePost {
   indexedAt?: Maybe<Scalars['DateTimeISO']>;
   spaceId: Scalars['String'];
   status: Scalars['String'];
-  subCategories: Array<Scalars['String']>;
   title: Scalars['String'];
   url: Scalars['String'];
 }
@@ -1099,6 +1089,7 @@ export interface Mutation {
   generateImage: ImagesResponse;
   generateImageEdit: GenerateImageResponse;
   generateSharablePdf: Scalars['String'];
+  indexChatbotFAQs: Scalars['Boolean'];
   indexDiscoursePost: Scalars['Boolean'];
   indexNeedsIndexingDiscoursePosts: DiscourseIndexRun;
   initializeGitCourseSubmission: GitCourseSubmission;
@@ -1376,6 +1367,11 @@ export interface MutationGenerateImageEditArgs {
 
 export interface MutationGenerateSharablePdfArgs {
   byteId: Scalars['String'];
+  spaceId: Scalars['String'];
+}
+
+
+export interface MutationIndexChatbotFaQsArgs {
   spaceId: Scalars['String'];
 }
 
@@ -2193,13 +2189,11 @@ export interface ScrapedUrlInfo {
 export interface SearchedChatbotFaq extends ChatbotFaqCommon {
   __typename?: 'SearchedChatbotFAQ';
   answer: Scalars['String'];
-  categories?: Maybe<Array<Scalars['String']>>;
   id: Scalars['String'];
   priority: Scalars['Int'];
   question: Scalars['String'];
   score: Scalars['Float'];
   spaceId: Scalars['String'];
-  subCategories?: Maybe<Array<Scalars['String']>>;
   url: Scalars['String'];
 }
 
@@ -2538,12 +2532,10 @@ export interface UpsertChatbotCategoryInput {
 
 export interface UpsertChatbotFaqInput {
   answer: Scalars['String'];
-  categories?: InputMaybe<Array<Scalars['String']>>;
   id: Scalars['String'];
   priority: Scalars['Int'];
   question: Scalars['String'];
   spaceId: Scalars['String'];
-  subCategories?: InputMaybe<Array<Scalars['String']>>;
   url: Scalars['String'];
 }
 
@@ -2554,11 +2546,9 @@ export interface UpsertChatbotSubcategoryInput {
 }
 
 export interface UpsertChatbotUserQuestionInput {
-  categories?: InputMaybe<Array<Scalars['String']>>;
   id: Scalars['String'];
   question: Scalars['String'];
   spaceId: Scalars['String'];
-  subCategories?: InputMaybe<Array<Scalars['String']>>;
 }
 
 export interface UpsertCourseIntegrationsInput {
@@ -2910,11 +2900,11 @@ export type ChatbotSubCategoryFragment = { __typename?: 'ChatbotSubcategory', na
 
 export type ChatbotCategoryFragment = { __typename?: 'ChatbotCategory', id: string, priority: number, description: string, key: string, name: string, subCategories: Array<{ __typename?: 'ChatbotSubcategory', name: string, key: string, description: string }> };
 
-export type ChatbotFaqFragment = { __typename?: 'ChatbotFAQ', id: string, spaceId: string, question: string, answer: string, categories?: Array<string> | null, subCategories?: Array<string> | null, priority: number, url: string };
+export type ChatbotFaqFragment = { __typename?: 'ChatbotFAQ', id: string, spaceId: string, question: string, answer: string, priority: number, url: string };
 
-export type SearchedChatbotFaqFragmentFragment = { __typename?: 'SearchedChatbotFAQ', id: string, spaceId: string, question: string, answer: string, categories?: Array<string> | null, subCategories?: Array<string> | null, priority: number, url: string, score: number };
+export type SearchedChatbotFaqFragmentFragment = { __typename?: 'SearchedChatbotFAQ', id: string, spaceId: string, question: string, answer: string, priority: number, url: string, score: number };
 
-export type ChatbotUserQuestionFragment = { __typename?: 'ChatbotUserQuestion', id: string, spaceId: string, question: string, categories?: Array<string> | null, subCategories?: Array<string> | null };
+export type ChatbotUserQuestionFragment = { __typename?: 'ChatbotUserQuestion', id: string, spaceId: string, question: string };
 
 export type ChatbotCategoriesQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -2928,7 +2918,7 @@ export type ChatbotFaQsQueryVariables = Exact<{
 }>;
 
 
-export type ChatbotFaQsQuery = { __typename?: 'Query', chatbotFAQs: Array<{ __typename?: 'ChatbotFAQ', id: string, spaceId: string, question: string, answer: string, categories?: Array<string> | null, subCategories?: Array<string> | null, priority: number, url: string }> };
+export type ChatbotFaQsQuery = { __typename?: 'Query', chatbotFAQs: Array<{ __typename?: 'ChatbotFAQ', id: string, spaceId: string, question: string, answer: string, priority: number, url: string }> };
 
 export type SearchChatbotFaQsQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -2936,14 +2926,14 @@ export type SearchChatbotFaQsQueryVariables = Exact<{
 }>;
 
 
-export type SearchChatbotFaQsQuery = { __typename?: 'Query', searchChatbotFAQs: Array<{ __typename?: 'SearchedChatbotFAQ', id: string, spaceId: string, question: string, answer: string, categories?: Array<string> | null, subCategories?: Array<string> | null, priority: number, url: string, score: number }> };
+export type SearchChatbotFaQsQuery = { __typename?: 'Query', searchChatbotFAQs: Array<{ __typename?: 'SearchedChatbotFAQ', id: string, spaceId: string, question: string, answer: string, priority: number, url: string, score: number }> };
 
 export type ChatbotUserQuestionsQueryVariables = Exact<{
   spaceId: Scalars['String'];
 }>;
 
 
-export type ChatbotUserQuestionsQuery = { __typename?: 'Query', chatbotUserQuestions: Array<{ __typename?: 'ChatbotUserQuestion', id: string, spaceId: string, question: string, categories?: Array<string> | null, subCategories?: Array<string> | null }> };
+export type ChatbotUserQuestionsQuery = { __typename?: 'Query', chatbotUserQuestions: Array<{ __typename?: 'ChatbotUserQuestion', id: string, spaceId: string, question: string }> };
 
 export type UpsertChatbotCategoryMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -2959,7 +2949,14 @@ export type UpsertChatbotFaqMutationVariables = Exact<{
 }>;
 
 
-export type UpsertChatbotFaqMutation = { __typename?: 'Mutation', upsertChatbotFAQ: { __typename?: 'ChatbotFAQ', id: string, spaceId: string, question: string, answer: string, categories?: Array<string> | null, subCategories?: Array<string> | null, priority: number, url: string } };
+export type UpsertChatbotFaqMutation = { __typename?: 'Mutation', upsertChatbotFAQ: { __typename?: 'ChatbotFAQ', id: string, spaceId: string, question: string, answer: string, priority: number, url: string } };
+
+export type IndexChatbotFaQsMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+}>;
+
+
+export type IndexChatbotFaQsMutation = { __typename?: 'Mutation', indexChatbotFAQs: boolean };
 
 export type UpsertChatbotUserQuestionMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -2967,7 +2964,7 @@ export type UpsertChatbotUserQuestionMutationVariables = Exact<{
 }>;
 
 
-export type UpsertChatbotUserQuestionMutation = { __typename?: 'Mutation', upsertChatbotUserQuestion: { __typename?: 'ChatbotUserQuestion', id: string, spaceId: string, question: string, categories?: Array<string> | null, subCategories?: Array<string> | null } };
+export type UpsertChatbotUserQuestionMutation = { __typename?: 'Mutation', upsertChatbotUserQuestion: { __typename?: 'ChatbotUserQuestion', id: string, spaceId: string, question: string } };
 
 export type DeleteChatbotCategoryMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -3595,7 +3592,7 @@ export type SiteScrapingRunFragmentFragment = { __typename?: 'SiteScrapingRun', 
 
 export type ScrapedUrlInfoFragmentFragment = { __typename?: 'ScrapedUrlInfo', id: string, websiteScrapingInfoId: string, url: string, text: string, textLength: number, createdAt: any, updatedAt: any };
 
-export type DiscoursePostFragment = { __typename?: 'DiscoursePost', id: string, spaceId: string, title: string, url: string, fullContent?: string | null, author?: string | null, datePublished: any, createdAt: any, indexedAt?: any | null, status: string, categories: Array<string>, subCategories: Array<string>, enacted?: boolean | null, discussed?: boolean | null, aiSummary?: string | null, aiSummaryDate?: any | null };
+export type DiscoursePostFragment = { __typename?: 'DiscoursePost', id: string, spaceId: string, title: string, url: string, fullContent?: string | null, author?: string | null, datePublished: any, createdAt: any, indexedAt?: any | null, status: string, enacted?: boolean | null, discussed?: boolean | null, aiSummary?: string | null, aiSummaryDate?: any | null };
 
 export type DiscourseIndexRunsQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -3609,7 +3606,7 @@ export type DiscoursePostsQueryVariables = Exact<{
 }>;
 
 
-export type DiscoursePostsQuery = { __typename?: 'Query', discoursePosts: Array<{ __typename?: 'DiscoursePost', id: string, spaceId: string, title: string, url: string, fullContent?: string | null, author?: string | null, datePublished: any, createdAt: any, indexedAt?: any | null, status: string, categories: Array<string>, subCategories: Array<string>, enacted?: boolean | null, discussed?: boolean | null, aiSummary?: string | null, aiSummaryDate?: any | null }> };
+export type DiscoursePostsQuery = { __typename?: 'Query', discoursePosts: Array<{ __typename?: 'DiscoursePost', id: string, spaceId: string, title: string, url: string, fullContent?: string | null, author?: string | null, datePublished: any, createdAt: any, indexedAt?: any | null, status: string, enacted?: boolean | null, discussed?: boolean | null, aiSummary?: string | null, aiSummaryDate?: any | null }> };
 
 export type DiscoursePostCommentsQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -3787,7 +3784,7 @@ export type AnnotateDiscoursePostMutationVariables = Exact<{
 }>;
 
 
-export type AnnotateDiscoursePostMutation = { __typename?: 'Mutation', annotateDiscoursePost: { __typename?: 'DiscoursePost', id: string, spaceId: string, title: string, url: string, fullContent?: string | null, author?: string | null, datePublished: any, createdAt: any, indexedAt?: any | null, status: string, categories: Array<string>, subCategories: Array<string>, enacted?: boolean | null, discussed?: boolean | null, aiSummary?: string | null, aiSummaryDate?: any | null } };
+export type AnnotateDiscoursePostMutation = { __typename?: 'Mutation', annotateDiscoursePost: { __typename?: 'DiscoursePost', id: string, spaceId: string, title: string, url: string, fullContent?: string | null, author?: string | null, datePublished: any, createdAt: any, indexedAt?: any | null, status: string, enacted?: boolean | null, discussed?: boolean | null, aiSummary?: string | null, aiSummaryDate?: any | null } };
 
 export type UpsertSummaryOfDiscoursePostMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -3795,7 +3792,7 @@ export type UpsertSummaryOfDiscoursePostMutationVariables = Exact<{
 }>;
 
 
-export type UpsertSummaryOfDiscoursePostMutation = { __typename?: 'Mutation', upsertSummaryOfDiscoursePost: { __typename?: 'DiscoursePost', id: string, spaceId: string, title: string, url: string, fullContent?: string | null, author?: string | null, datePublished: any, createdAt: any, indexedAt?: any | null, status: string, categories: Array<string>, subCategories: Array<string>, enacted?: boolean | null, discussed?: boolean | null, aiSummary?: string | null, aiSummaryDate?: any | null } };
+export type UpsertSummaryOfDiscoursePostMutation = { __typename?: 'Mutation', upsertSummaryOfDiscoursePost: { __typename?: 'DiscoursePost', id: string, spaceId: string, title: string, url: string, fullContent?: string | null, author?: string | null, datePublished: any, createdAt: any, indexedAt?: any | null, status: string, enacted?: boolean | null, discussed?: boolean | null, aiSummary?: string | null, aiSummaryDate?: any | null } };
 
 export type GuideSettingsFragment = { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null };
 
@@ -4218,8 +4215,6 @@ export const ChatbotFaqFragmentDoc = gql`
   spaceId
   question
   answer
-  categories
-  subCategories
   priority
   url
 }
@@ -4230,8 +4225,6 @@ export const SearchedChatbotFaqFragmentFragmentDoc = gql`
   spaceId
   question
   answer
-  categories
-  subCategories
   priority
   url
   score
@@ -4242,8 +4235,6 @@ export const ChatbotUserQuestionFragmentDoc = gql`
   id
   spaceId
   question
-  categories
-  subCategories
 }
     `;
 export const TopicCorrectAnswersFragmentDoc = gql`
@@ -4817,8 +4808,6 @@ export const DiscoursePostFragmentDoc = gql`
   createdAt
   indexedAt
   status
-  categories
-  subCategories
   enacted
   discussed
   aiSummary
@@ -5836,6 +5825,37 @@ export function useUpsertChatbotFaqMutation(baseOptions?: Apollo.MutationHookOpt
 export type UpsertChatbotFaqMutationHookResult = ReturnType<typeof useUpsertChatbotFaqMutation>;
 export type UpsertChatbotFaqMutationResult = Apollo.MutationResult<UpsertChatbotFaqMutation>;
 export type UpsertChatbotFaqMutationOptions = Apollo.BaseMutationOptions<UpsertChatbotFaqMutation, UpsertChatbotFaqMutationVariables>;
+export const IndexChatbotFaQsDocument = gql`
+    mutation IndexChatbotFAQs($spaceId: String!) {
+  indexChatbotFAQs(spaceId: $spaceId)
+}
+    `;
+export type IndexChatbotFaQsMutationFn = Apollo.MutationFunction<IndexChatbotFaQsMutation, IndexChatbotFaQsMutationVariables>;
+
+/**
+ * __useIndexChatbotFaQsMutation__
+ *
+ * To run a mutation, you first call `useIndexChatbotFaQsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useIndexChatbotFaQsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [indexChatbotFaQsMutation, { data, loading, error }] = useIndexChatbotFaQsMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *   },
+ * });
+ */
+export function useIndexChatbotFaQsMutation(baseOptions?: Apollo.MutationHookOptions<IndexChatbotFaQsMutation, IndexChatbotFaQsMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<IndexChatbotFaQsMutation, IndexChatbotFaQsMutationVariables>(IndexChatbotFaQsDocument, options);
+      }
+export type IndexChatbotFaQsMutationHookResult = ReturnType<typeof useIndexChatbotFaQsMutation>;
+export type IndexChatbotFaQsMutationResult = Apollo.MutationResult<IndexChatbotFaQsMutation>;
+export type IndexChatbotFaQsMutationOptions = Apollo.BaseMutationOptions<IndexChatbotFaQsMutation, IndexChatbotFaQsMutationVariables>;
 export const UpsertChatbotUserQuestionDocument = gql`
     mutation UpsertChatbotUserQuestion($spaceId: String!, $input: UpsertChatbotUserQuestionInput!) {
   upsertChatbotUserQuestion(spaceId: $spaceId, input: $input) {

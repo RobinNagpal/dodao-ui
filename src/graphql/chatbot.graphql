@@ -22,8 +22,6 @@ fragment ChatbotFAQ on ChatbotFAQ {
   spaceId
   question
   answer
-  categories
-  subCategories
   priority
   url
 }
@@ -33,8 +31,6 @@ fragment SearchedChatbotFAQFragment on SearchedChatbotFAQ {
   spaceId
   question
   answer
-  categories
-  subCategories
   priority
   url
   score
@@ -44,8 +40,6 @@ fragment ChatbotUserQuestion on ChatbotUserQuestion {
   id
   spaceId
   question
-  categories
-  subCategories
 }
 
 query ChatbotCategories($spaceId: String!) {
@@ -82,6 +76,10 @@ mutation UpsertChatbotFAQ($spaceId: String!, $input: UpsertChatbotFAQInput!) {
   upsertChatbotFAQ(spaceId: $spaceId, input: $input) {
     ...ChatbotFAQ
   }
+}
+
+mutation IndexChatbotFAQs($spaceId: String!) {
+  indexChatbotFAQs(spaceId: $spaceId)
 }
 
 mutation UpsertChatbotUserQuestion($spaceId: String!, $input: UpsertChatbotUserQuestionInput!) {

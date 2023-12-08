@@ -89,8 +89,6 @@ fragment DiscoursePost on DiscoursePost {
   createdAt
   indexedAt
   status
-  categories
-  subCategories
   enacted
   discussed
   aiSummary
