@@ -2401,6 +2401,7 @@ export interface Timeline {
   publishStatus: Scalars['String'];
   tags: Array<Scalars['String']>;
   thumbnail?: Maybe<Scalars['String']>;
+  timelineStyle?: Maybe<Scalars['String']>;
 }
 
 export interface TimelineEvent {
@@ -2668,6 +2669,7 @@ export interface UpsertTimelineInput {
   publishStatus: Scalars['String'];
   tags: Array<Scalars['String']>;
   thumbnail?: InputMaybe<Scalars['String']>;
+  timelineStyle?: InputMaybe<Scalars['String']>;
 }
 
 export interface UserDiscordConnect {
@@ -3956,7 +3958,7 @@ export type UpsertSpaceLoaderInfoMutation = { __typename?: 'Mutation', payload: 
 
 export type TimelineEventFragment = { __typename?: 'TimelineEvent', title: string, uuid: string, date: any, summary: string, fullDetails?: string | null, moreLink?: string | null };
 
-export type TimelineDetailsFragment = { __typename?: 'Timeline', id: string, name: string, excerpt: string, content: string, thumbnail?: string | null, created: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, events: Array<{ __typename?: 'TimelineEvent', title: string, uuid: string, date: any, summary: string, fullDetails?: string | null, moreLink?: string | null }> };
+export type TimelineDetailsFragment = { __typename?: 'Timeline', id: string, name: string, excerpt: string, content: string, thumbnail?: string | null, created: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, timelineStyle?: string | null, events: Array<{ __typename?: 'TimelineEvent', title: string, uuid: string, date: any, summary: string, fullDetails?: string | null, moreLink?: string | null }> };
 
 export type TimelinesQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -3971,7 +3973,7 @@ export type TimelineDetailsQueryVariables = Exact<{
 }>;
 
 
-export type TimelineDetailsQuery = { __typename?: 'Query', timeline: { __typename?: 'Timeline', id: string, name: string, excerpt: string, content: string, thumbnail?: string | null, created: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, events: Array<{ __typename?: 'TimelineEvent', title: string, uuid: string, date: any, summary: string, fullDetails?: string | null, moreLink?: string | null }> } };
+export type TimelineDetailsQuery = { __typename?: 'Query', timeline: { __typename?: 'Timeline', id: string, name: string, excerpt: string, content: string, thumbnail?: string | null, created: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, timelineStyle?: string | null, events: Array<{ __typename?: 'TimelineEvent', title: string, uuid: string, date: any, summary: string, fullDetails?: string | null, moreLink?: string | null }> } };
 
 export type UpsertTimelineMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -3979,7 +3981,7 @@ export type UpsertTimelineMutationVariables = Exact<{
 }>;
 
 
-export type UpsertTimelineMutation = { __typename?: 'Mutation', upsertTimeline: { __typename?: 'Timeline', id: string, name: string, excerpt: string, content: string, thumbnail?: string | null, created: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, events: Array<{ __typename?: 'TimelineEvent', title: string, uuid: string, date: any, summary: string, fullDetails?: string | null, moreLink?: string | null }> } };
+export type UpsertTimelineMutation = { __typename?: 'Mutation', upsertTimeline: { __typename?: 'Timeline', id: string, name: string, excerpt: string, content: string, thumbnail?: string | null, created: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, timelineStyle?: string | null, events: Array<{ __typename?: 'TimelineEvent', title: string, uuid: string, date: any, summary: string, fullDetails?: string | null, moreLink?: string | null }> } };
 
 export const AcademyTaskFragmentFragmentDoc = gql`
     fragment AcademyTaskFragment on AcademyTask {
@@ -4936,6 +4938,7 @@ export const TimelineDetailsFragmentDoc = gql`
     fullDetails
     moreLink
   }
+  timelineStyle
 }
     `;
 export const AcademyTasksDocument = gql`
