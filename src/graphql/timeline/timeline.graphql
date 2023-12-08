@@ -26,6 +26,7 @@ fragment TimelineDetails on Timeline {
     fullDetails
     moreLink
   }
+  timelineStyle
 }
 query Timelines($spaceId: String!) {
   timelines(spaceId: $spaceId) {
