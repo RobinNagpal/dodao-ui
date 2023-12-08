@@ -42,20 +42,14 @@ const TimelinePage = ({ params, space }: { params: { timelineId: string }; space
               <div className="max-w-xl mx-auto">
                 <div className="text-center ">
                   <div className="relative flex flex-col items-center">
-                    <h1 className="text-6xl font-bold leading-tight"> {data?.timeline?.name}
-                    </h1>
+                    <h1 className="text-6xl font-bold leading-tight"> {data?.timeline?.name}</h1>
                     <div className="flex w-24 mt-1 mb-10 overflow-hidden rounded">
-                      <div className="flex-1 h-2 bg-blue-200">
-                      </div>
-                      <div className="flex-1 h-2 bg-blue-400">
-                      </div>
-                      <div className="flex-1 h-2 bg-blue-600">
-                      </div>
+                      <div className="flex-1 h-2 bg-blue-200"></div>
+                      <div className="flex-1 h-2 bg-blue-400"></div>
+                      <div className="flex-1 h-2 bg-blue-600"></div>
                     </div>
                   </div>
-                  <p className="text-base text-center">
-                    {data?.timeline?.excerpt}
-                  </p>
+                  <p className="text-base text-center">{data?.timeline?.excerpt}</p>
                   <p className="text-sm text-center" dangerouslySetInnerHTML={{ __html: contents || '' }}></p>
                 </div>
               </div>
