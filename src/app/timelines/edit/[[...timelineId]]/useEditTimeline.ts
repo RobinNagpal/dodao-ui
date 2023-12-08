@@ -3,6 +3,7 @@ import { Space, UpsertTimelineEventInput, UpsertTimelineInput, useTimelineDetail
 import { useI18 } from '@/hooks/useI18';
 
 import { TimelineErrors, TimelineEventsError } from '@/types/errors/timelineErrors';
+import { TimelineStyles } from '@/utils/timeline/timelineStyles';
 import { isValidURL } from '@/utils/validator';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -50,6 +51,7 @@ export function useEditTimeline(timelineId: string | null, space: Space): EditTi
     priority: 50,
     tags: [],
     created: new Date().toISOString(),
+    timelineStyle: TimelineStyles.V1_Default,
   });
 
   const { $t } = useI18();
@@ -219,6 +221,7 @@ export function useEditTimeline(timelineId: string | null, space: Space): EditTi
               })),
               tags: editTimelineRef.tags || [],
               created: new Date(editTimelineRef.created).toISOString(),
+              timelineStyle: editTimelineRef.timelineStyle,
             },
           },
         });
