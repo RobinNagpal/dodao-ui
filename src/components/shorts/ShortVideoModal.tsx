@@ -44,9 +44,21 @@ export default function ShortVideoModal({ initialSlide, onClose }: MySwiperProps
         >
           {videos.map((vid, index) => (
             <SwiperSlide key={index} data-history={`${vid.link}`}>
-              <div className="flex flex-col">
+              {/* <div className="flex flex-col">
                 <div className="play-js-player py-6" data-plyr-provider="youtube" data-plyr-embed-id="vEyNb7D5gb0"></div>
-              </div>
+              </div> */}
+
+              <video
+                id={vid.id}
+                controls //enables video control options
+                controlsList="nofullscreen" //disable full-screen option
+                autoPlay //enables auto playing of the videos by default
+                muted //videos are muted by default
+                loop //puts the videos on playback
+                poster={vid.image} //thumbnail of the video
+              >
+                <source src={vid.link} type="video/mp4" />
+              </video>
             </SwiperSlide>
           ))}
         </Swiper>
