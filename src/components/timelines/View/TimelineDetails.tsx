@@ -63,7 +63,7 @@ const Timeline = ({ timeline }: TimelineProps) => {
                     >
                       <div className="relative z-20 p-6">
                         <p className="mb-2 text-xl font-bold">{event.title}</p>
-                        <p  dangerouslySetInnerHTML={{__html: eventSummary}}/>
+                        <p dangerouslySetInnerHTML={{ __html: eventSummary }} />
                         <div className="flex">
                           {event.fullDetails && (
                             <a
