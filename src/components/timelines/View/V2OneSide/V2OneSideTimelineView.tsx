@@ -71,7 +71,7 @@ export default function V2OneSideTimelineView({ timeline }: V2OneSideTimelineVie
                       <h2 className="inline-block px-4 py-2 mb-4 text-xs font-medium text-gray-100 bg-gradient-to-r from-blue-500 to-blue-900 dark:from-blue-400 dark:to-blue-500 rounded-3xl dark:text-gray-100">
                         {timeAgo}
                       </h2>
-                      <div className={'relative flex-1 mb-10 border-b-4 border-blue-200 shadow rounded-3xl ' + styles.timelineCard} style={{ width: '800px' }}>
+                      <div className={'relative w-[800px] flex-1 mb-10 border-b-4 border-blue-200 shadow rounded-3xl ' + styles.timelineCard}>
                         <div className="relative p-6">
                           <p className="mb-2 text-xl font-bold">{event.title}</p>
                           <p dangerouslySetInnerHTML={{ __html: eventSummary }} />
