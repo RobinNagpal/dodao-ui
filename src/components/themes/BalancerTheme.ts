@@ -10,6 +10,7 @@ const BalancerTheme = createGlobalStyle`
     --heading-color: white;
     --border-color: #0751bf;
     --header-bg: rgb(15, 23, 42);
+    --block-bg: rgb(29, 44, 82);
   }
 `;
 
