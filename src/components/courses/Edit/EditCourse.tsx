@@ -55,7 +55,6 @@ export default function EditCourse(props: EditCourseProps) {
       <Input label="Title" modelValue={courseBasicInfo.title} onUpdate={(e) => updateCourseBasicInfoField('title', e?.toString() || '')} />
       <UploadInput
         error={courseErrors['thumbnail']}
-        onUpdate={(v) => updateCourseBasicInfoField('thumbnail', v?.toString() || '')}
         imageType="Course"
         spaceId={space.id}
         modelValue={courseBasicInfo.thumbnail}

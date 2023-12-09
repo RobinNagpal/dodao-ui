@@ -14,6 +14,7 @@ interface Props {
   onInput?: (imageUrl: string) => void;
   children: React.ReactNode;
   className?: string;
+  allowedFileTypes: string[];
 }
 
 const FileSelect = styled.label`
@@ -26,7 +27,7 @@ const FileSelect = styled.label`
   }
 `;
 
-function ImageUploader({ spaceId, objectId, imageType, onLoading, onInput, children, className }: Props) {
+export default function FileUploader({ spaceId, objectId, imageType, onLoading, onInput, children, className, allowedFileTypes }: Props) {
   const [loading, setLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const [createSignedUrlMutation] = useCreateSignedUrlMutation();
@@ -54,7 +55,7 @@ function ImageUploader({ spaceId, objectId, imageType, onLoading, onInput, child
     setLoading(true);
     onLoading && onLoading(true);
     const file = e.target.files![0];
-    if (!['image/jpeg', 'image/jpg', 'image/png', 'image/svg+xml', 'image/svg+xml'].includes(file.type)) {
+    if (!allowedFileTypes.includes(file.type)) {
       console.log('File type not supported');
       setLoading(false);
       return;
@@ -79,12 +80,10 @@ function ImageUploader({ spaceId, objectId, imageType, onLoading, onInput, child
         <LoadingSpinner />
       ) : (
         <FileSelect>
-          <input type="file" ref={inputRef} onChange={handleFileChange} accept="image/jpg, image/jpeg, image/png, image/svg+xml" />
+          <input type="file" ref={inputRef} onChange={handleFileChange} accept={allowedFileTypes.join(', ')} />
           {children}
         </FileSelect>
       )}
     </div>
   );
 }
-
-export default ImageUploader;

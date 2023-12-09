@@ -1,20 +1,44 @@
 'use client';
 
-import ShortVideoModal from '@/components/shorts/ShortVideoModal';
+import withSpace, { SpaceProps } from '@/app/withSpace';
+import CardLoader from '@/components/core/loaders/CardLoader';
+import EditShortVideoModal from '@/components/shortVideos/Edit/EditShortVideoModal';
+import ViewShortVideoModal from '@/components/shortVideos/View/ViewShortVideoModal';
+import { useShortVideosQuery } from '@/graphql/generated/generated-types';
 import React, { useState } from 'react';
-import Shorts from '@/components/shorts/Shorts';
+import Shorts from '@/components/shortVideos/View/Shorts';
 
-const MainShortsComponent: React.FC = () => {
+const MainShortsComponent = ({ space }: SpaceProps) => {
+  const { data: queryResponse, loading } = useShortVideosQuery({ variables: { spaceId: '1' } });
   const [selectedVideoIndex, setSelectedVideoIndex] = useState<number | null>(null);
+  const [editVideoIndex, setEditVideoIndex] = useState<number | null>(null);
   const handleThumbnailClick = (index: number) => {
     setSelectedVideoIndex(index);
   };
 
-  if (selectedVideoIndex !== null) {
-    return <ShortVideoModal initialSlide={selectedVideoIndex} onClose={() => setSelectedVideoIndex(null)} />;
-  } else {
-    return <Shorts onThumbnailClick={handleThumbnailClick} />;
+  if (loading) {
+    return <CardLoader numberOfCards={3} />;
   }
+  if (!!selectedVideoIndex) {
+    return (
+      <ViewShortVideoModal
+        initialSlide={selectedVideoIndex}
+        onClose={() => setSelectedVideoIndex(null)}
+        onShowEditModal={() => {
+          setSelectedVideoIndex(null);
+          setEditVideoIndex(selectedVideoIndex);
+        }}
+      />
+    );
+  }
+
+  if (!!editVideoIndex && queryResponse?.shortVideos?.[editVideoIndex]) {
+    const shortVideo = queryResponse?.shortVideos?.[editVideoIndex];
+
+    return <EditShortVideoModal shortVideoToEdit={shortVideo} onClose={() => setEditVideoIndex(null)} space={space} />;
+  }
+
+  return <Shorts onThumbnailClick={handleThumbnailClick} />;
 };
 
-export default MainShortsComponent;
+export default withSpace(MainShortsComponent);

@@ -23,11 +23,6 @@ export default function UploadImageModal(props: UploadImageModalProps) {
           imageType={imageType}
           objectId={objectId}
           error={null}
-          onUpdate={(value) => {
-            if (value) {
-              setImageURL(value as string);
-            }
-          }}
           spaceId={spaceId}
           onInput={(url) => {
             setImageURL(url);

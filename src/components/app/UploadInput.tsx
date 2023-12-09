@@ -1,4 +1,4 @@
-import Upload from '@/components/app/Upload';
+import FileUploader from '@/components/app/FileUploader';
 import ArrowUpTrayIcon from '@heroicons/react/24/solid/ArrowUpTrayIcon';
 import PhotoIcon from '@heroicons/react/24/solid/PhotoIcon';
 import styled from 'styled-components';
@@ -17,22 +17,37 @@ const StyledInput = styled.input`
     box-shadow: 0 0 0 2px var(--primary-color) !important;
   }
 `;
-export default function UploadInput(props: {
+
+interface UploadInputProps {
   label?: string;
   modelValue?: string | null;
   imageType: string;
   objectId: string;
-  error: any;
-  onUpdate: (newValue: string | number | undefined) => void;
   spaceId: string;
   onInput: (url: string) => void;
-  onLoading: (value: ((prevState: boolean) => boolean) | boolean) => void;
-}) {
+  onLoading?: (value: ((prevState: boolean) => boolean) | boolean) => void;
+  placeholder?: string;
+  allowedFileTypes?: string[];
+  error?: any;
+}
+
+export default function UploadInput({
+  label,
+  modelValue,
+  imageType,
+  objectId,
+  spaceId,
+  onInput,
+  onLoading,
+  placeholder = 'e.g. https://example.com/guide.png',
+  allowedFileTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/svg+xml', 'image/svg+xml'],
+  error,
+}: UploadInputProps) {
   const inputId = uuidV4();
   return (
     <UploadWrapper className="mt-2">
       <label htmlFor={inputId} className="block text-sm font-medium leading-6">
-        {props.label || 'Image URL'}
+        {label || 'Image URL'}
       </label>
       <div className="mt-2 flex rounded-md shadow-sm">
         <div className="relative flex flex-grow items-stretch focus-within:z-10">
@@ -42,26 +57,27 @@ export default function UploadInput(props: {
           <StyledInput
             id={inputId}
             className="block w-full rounded-none rounded-l-md border-0 py-1.5 pl-10 ring-1 ring-inset placeholder:text-gray-400 ring-gray-400 shadow-sm focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6"
-            placeholder="e.g. https://example.com/guide.png"
+            placeholder={placeholder}
             aria-invalid="true"
             aria-describedby="email-error"
-            value={props.modelValue || ''}
-            onChange={(e) => props.onInput(e.target.value)}
+            value={modelValue || ''}
+            onChange={(e) => onInput(e.target.value)}
           />
         </div>
-        <Upload
+        <FileUploader
           className="relative -ml-px inline-flex items-center gap-x-1.5 rounded-r-md px-3 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-          spaceId={props.spaceId}
-          onInput={props.onInput}
-          imageType={props.imageType}
-          objectId={props.objectId}
-          onLoading={props.onLoading}
+          spaceId={spaceId}
+          onInput={onInput}
+          imageType={imageType}
+          objectId={objectId}
+          onLoading={onLoading}
+          allowedFileTypes={allowedFileTypes}
         >
           <div className="flex">
             <ArrowUpTrayIcon className="-ml-0.5 h-5 w-5 text-gray-400" aria-hidden="true" />
             <span className="mx-2">Upload</span>
           </div>
-        </Upload>
+        </FileUploader>
       </div>
     </UploadWrapper>
   );

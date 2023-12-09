@@ -1,8 +1,11 @@
 import { Grid4Cols } from '@/components/core/grids/Grid4Colst';
 import React from 'react';
 
-const GuideSkeleton = () => {
-  const skeletonArray = new Array(3).fill(0);
+export interface CardLoaderProps {
+  numberOfCards?: number;
+}
+export default function CardLoader({ numberOfCards = 3 }: CardLoaderProps) {
+  const skeletonArray = new Array(numberOfCards).fill(0);
 
   return (
     <>
@@ -38,6 +41,4 @@ const GuideSkeleton = () => {
       `}</style>
     </>
   );
-};
-
-export default GuideSkeleton;
+}

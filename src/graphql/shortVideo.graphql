@@ -1,0 +1,20 @@
+fragment ShortVideo on ShortVideo {
+  id
+  title
+  description
+  thumbnail
+  videoUrl
+  priority
+}
+
+mutation UpsertShortVideo($spaceId: String!, $shortVideo: ShortVideoInput!) {
+  upsertShortVideo(spaceId: $spaceId, shortVideo: $shortVideo) {
+    ...ShortVideo
+  }
+}
+
+query ShortVideos($spaceId: String!) {
+  shortVideos(spaceId: $spaceId) {
+    ...ShortVideo
+  }
+}

@@ -1,31 +1,41 @@
 'use client';
-import { videos } from '@/components/shorts/sampleVideos';
+
+import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import FullScreenModal from '@/components/core/modals/FullScreenModal';
-import Plyr from 'plyr';
-import React, { useEffect, useRef } from 'react';
+import { videos } from '../sampleVideos';
+import React, { useRef } from 'react';
+import './styles.css';
 import SwiperCore from 'swiper';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { History, Keyboard, Mousewheel, Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import 'src/app/shorts/styles.css';
-import 'plyr/dist/plyr.css';
 
-interface MySwiperProps {
+interface ViewShortVideoModalProps {
   initialSlide: number;
   onClose: () => void;
+  onShowEditModal: () => void;
 }
-export default function ShortVideoModal({ initialSlide, onClose }: MySwiperProps) {
+export default function ViewShortVideoModal({ initialSlide, onClose, onShowEditModal }: ViewShortVideoModalProps) {
   const swiperRef = useRef<SwiperCore>(null);
 
   const handleSlideChange = () => {};
+  const threeDotItems = [{ label: 'Edit', key: 'edit' }];
 
-  useEffect(() => {
-    const plyrs = Array.from(document.querySelectorAll('.play-js-player')).map((p: any) => new Plyr(p));
-  }, [initialSlide]);
   return (
     <FullScreenModal title="" open={true} onClose={onClose} fullWidth={false}>
+      <div className="flex justify-end">
+        <PrivateEllipsisDropdown
+          items={threeDotItems}
+          onSelect={async (key) => {
+            if (key === 'edit') {
+              onShowEditModal();
+            }
+          }}
+          className="mt-2 mr-2"
+        />
+      </div>
       <div className="flex justify-around">
         <Swiper
           ref={swiperRef as any}
@@ -43,7 +53,7 @@ export default function ShortVideoModal({ initialSlide, onClose }: MySwiperProps
           initialSlide={initialSlide}
         >
           {videos.map((vid, index) => (
-            <SwiperSlide key={index} data-history={`${vid.link}`}>
+            <SwiperSlide key={index} data-history={`${vid.videoUrl}`}>
               <video
                 id={vid.id}
                 controls //enables video control options
@@ -51,9 +61,9 @@ export default function ShortVideoModal({ initialSlide, onClose }: MySwiperProps
                 autoPlay //enables auto playing of the videos by default
                 muted //videos are muted by default
                 loop //puts the videos on playback
-                poster={vid.image} //thumbnail of the video
+                poster={vid.thumbnail} //thumbnail of the video
               >
-                <source src={vid.link} type="video/mp4" />
+                <source src={vid.videoUrl} type="video/mp4" />
               </video>
             </SwiperSlide>
           ))}

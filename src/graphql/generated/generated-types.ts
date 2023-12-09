@@ -1142,6 +1142,7 @@ export interface Mutation {
   upsertProjectByte: ProjectByte;
   upsertProjectByteCollection: ProjectByteCollection;
   upsertProjectGalaxyAccessToken: Space;
+  upsertShortVideo: ShortVideo;
   upsertSimulation: Simulation;
   upsertSpaceAcademyRepository: Space;
   upsertSpaceFeatures: Space;
@@ -1673,6 +1674,12 @@ export interface MutationUpsertProjectGalaxyAccessTokenArgs {
 }
 
 
+export interface MutationUpsertShortVideoArgs {
+  shortVideo: ShortVideoInput;
+  spaceId: Scalars['String'];
+}
+
+
 export interface MutationUpsertSimulationArgs {
   input: UpsertSimulationInput;
   spaceId: Scalars['String'];
@@ -1864,6 +1871,7 @@ export interface Query {
   route53Records: Array<Route53Record>;
   scrapedUrlInfos: Array<ScrapedUrlInfo>;
   searchChatbotFAQs: Array<SearchedChatbotFaq>;
+  shortVideos?: Maybe<Array<ShortVideo>>;
   simulation: Simulation;
   simulations: Array<Simulation>;
   siteScrapingRuns: Array<SiteScrapingRun>;
@@ -2096,6 +2104,11 @@ export interface QuerySearchChatbotFaQsArgs {
 }
 
 
+export interface QueryShortVideosArgs {
+  spaceId: Scalars['String'];
+}
+
+
 export interface QuerySimulationArgs {
   simulationId: Scalars['String'];
   spaceId: Scalars['String'];
@@ -2202,6 +2215,27 @@ export interface SendEmailInput {
   firstName: Scalars['String'];
   lastName: Scalars['String'];
   message: Scalars['String'];
+}
+
+export interface ShortVideo {
+  __typename?: 'ShortVideo';
+  createdAt: Scalars['String'];
+  description: Scalars['String'];
+  id: Scalars['ID'];
+  priority: Scalars['Int'];
+  thumbnail: Scalars['String'];
+  title: Scalars['String'];
+  updatedAt: Scalars['String'];
+  videoUrl: Scalars['String'];
+}
+
+export interface ShortVideoInput {
+  description: Scalars['String'];
+  id: Scalars['ID'];
+  priority: Scalars['Int'];
+  thumbnail: Scalars['String'];
+  title: Scalars['String'];
+  videoUrl: Scalars['String'];
 }
 
 export interface Simulation {
@@ -3551,6 +3585,23 @@ export type UpsertProjectByteCollectionMutationVariables = Exact<{
 
 export type UpsertProjectByteCollectionMutation = { __typename?: 'Mutation', upsertProjectByteCollection: { __typename?: 'ProjectByteCollection', byteIds: Array<string>, description: string, id: string, name: string, order: number, status: string, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string }> } };
 
+export type ShortVideoFragment = { __typename?: 'ShortVideo', id: string, title: string, description: string, thumbnail: string, videoUrl: string, priority: number };
+
+export type UpsertShortVideoMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+  shortVideo: ShortVideoInput;
+}>;
+
+
+export type UpsertShortVideoMutation = { __typename?: 'Mutation', upsertShortVideo: { __typename?: 'ShortVideo', id: string, title: string, description: string, thumbnail: string, videoUrl: string, priority: number } };
+
+export type ShortVideosQueryVariables = Exact<{
+  spaceId: Scalars['String'];
+}>;
+
+
+export type ShortVideosQuery = { __typename?: 'Query', shortVideos?: Array<{ __typename?: 'ShortVideo', id: string, title: string, description: string, thumbnail: string, videoUrl: string, priority: number }> | null };
+
 export type SimulationStepFragment = { __typename?: 'SimulationStep', content: string, iframeUrl?: string | null, name: string, uuid: string, order: number };
 
 export type SimulationDetailsFragment = { __typename?: 'Simulation', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, steps: Array<{ __typename?: 'SimulationStep', content: string, iframeUrl?: string | null, name: string, uuid: string, order: number }> };
@@ -4683,6 +4734,16 @@ export const ProjectByteCollectionFragmentDoc = gql`
   name
   order
   status
+}
+    `;
+export const ShortVideoFragmentDoc = gql`
+    fragment ShortVideo on ShortVideo {
+  id
+  title
+  description
+  thumbnail
+  videoUrl
+  priority
 }
     `;
 export const SimulationStepFragmentDoc = gql`
@@ -8455,6 +8516,78 @@ export function useUpsertProjectByteCollectionMutation(baseOptions?: Apollo.Muta
 export type UpsertProjectByteCollectionMutationHookResult = ReturnType<typeof useUpsertProjectByteCollectionMutation>;
 export type UpsertProjectByteCollectionMutationResult = Apollo.MutationResult<UpsertProjectByteCollectionMutation>;
 export type UpsertProjectByteCollectionMutationOptions = Apollo.BaseMutationOptions<UpsertProjectByteCollectionMutation, UpsertProjectByteCollectionMutationVariables>;
+export const UpsertShortVideoDocument = gql`
+    mutation UpsertShortVideo($spaceId: String!, $shortVideo: ShortVideoInput!) {
+  upsertShortVideo(spaceId: $spaceId, shortVideo: $shortVideo) {
+    ...ShortVideo
+  }
+}
+    ${ShortVideoFragmentDoc}`;
+export type UpsertShortVideoMutationFn = Apollo.MutationFunction<UpsertShortVideoMutation, UpsertShortVideoMutationVariables>;
+
+/**
+ * __useUpsertShortVideoMutation__
+ *
+ * To run a mutation, you first call `useUpsertShortVideoMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertShortVideoMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertShortVideoMutation, { data, loading, error }] = useUpsertShortVideoMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      shortVideo: // value for 'shortVideo'
+ *   },
+ * });
+ */
+export function useUpsertShortVideoMutation(baseOptions?: Apollo.MutationHookOptions<UpsertShortVideoMutation, UpsertShortVideoMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpsertShortVideoMutation, UpsertShortVideoMutationVariables>(UpsertShortVideoDocument, options);
+      }
+export type UpsertShortVideoMutationHookResult = ReturnType<typeof useUpsertShortVideoMutation>;
+export type UpsertShortVideoMutationResult = Apollo.MutationResult<UpsertShortVideoMutation>;
+export type UpsertShortVideoMutationOptions = Apollo.BaseMutationOptions<UpsertShortVideoMutation, UpsertShortVideoMutationVariables>;
+export const ShortVideosDocument = gql`
+    query ShortVideos($spaceId: String!) {
+  shortVideos(spaceId: $spaceId) {
+    ...ShortVideo
+  }
+}
+    ${ShortVideoFragmentDoc}`;
+
+/**
+ * __useShortVideosQuery__
+ *
+ * To run a query within a React component, call `useShortVideosQuery` and pass it any options that fit your needs.
+ * When your component renders, `useShortVideosQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useShortVideosQuery({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *   },
+ * });
+ */
+export function useShortVideosQuery(baseOptions: Apollo.QueryHookOptions<ShortVideosQuery, ShortVideosQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ShortVideosQuery, ShortVideosQueryVariables>(ShortVideosDocument, options);
+      }
+export function useShortVideosLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ShortVideosQuery, ShortVideosQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ShortVideosQuery, ShortVideosQueryVariables>(ShortVideosDocument, options);
+        }
+export type ShortVideosQueryHookResult = ReturnType<typeof useShortVideosQuery>;
+export type ShortVideosLazyQueryHookResult = ReturnType<typeof useShortVideosLazyQuery>;
+export type ShortVideosQueryResult = Apollo.QueryResult<ShortVideosQuery, ShortVideosQueryVariables>;
+export function refetchShortVideosQuery(variables: ShortVideosQueryVariables) {
+      return { query: ShortVideosDocument, variables: variables }
+    }
 export const SimulationsDocument = gql`
     query Simulations($spaceId: String!) {
   simulations(spaceId: $spaceId) {
