@@ -69,6 +69,23 @@ export default function V3AlternatingTimelineView({ timeline }: V3AlternatingTim
                         </div>
                         <time className="font-caveat font-medium text-indigo-500">{timeAgo}</time>
                         <div className="mt-3 text-sm text-slate-500 overflow-x-auto pb-3" dangerouslySetInnerHTML={{ __html: eventSummary }}></div>
+                        <div className="flex">
+                          {event.fullDetails && (
+                            <a className={`p-4 flex ${styles.styledLink}`} onClick={() => handleShowFullDetailsModal(event)}>
+                              Full Details <ArrowTopRightOnSquareIcon width={16} height={16} className="ml-1 mt-1 mr-1" />
+                            </a>
+                          )}
+                          {event.moreLink && (
+                            <a
+                              className={`mt-4 flex ${styles.styledLink}`}
+                              onClick={() => {
+                                if (event.moreLink) window.open(event.moreLink);
+                              }}
+                            >
+                              More Details <ArrowRightIcon width={16} height={16} className="ml-1 mt-1 mr-1" />
+                            </a>
+                          )}
+                        </div>
                       </div>
                     </div>
                   );
