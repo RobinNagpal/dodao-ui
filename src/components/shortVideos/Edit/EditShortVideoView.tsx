@@ -1,17 +1,19 @@
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
 import UploadInput from '@/components/app/UploadInput';
+import Button from '@/components/core/buttons/Button';
 import Input from '@/components/core/input/Input';
 import { ShortVideoInput, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import React, { useEffect, useState } from 'react';
 import { v4 } from 'uuid';
 
 export interface EditShortVideoModalProps {
-  onClose: () => void;
   shortVideoToEdit?: ShortVideoInput;
   space: SpaceWithIntegrationsFragment;
+  onSave: () => void;
+  onCancel: () => void;
 }
 
-export default function EditShortVidesView({ onClose, shortVideoToEdit, space }: EditShortVideoModalProps) {
+export default function EditShortVideoView({ shortVideoToEdit, space, onSave, onCancel }: EditShortVideoModalProps) {
   const [shortVideo, setShortVideo] = React.useState<ShortVideoInput>({
     id: shortVideoToEdit?.id || v4(),
     title: shortVideoToEdit?.title || '',
@@ -30,6 +32,8 @@ export default function EditShortVidesView({ onClose, shortVideoToEdit, space }:
   const updateShortVideoField = (field: keyof ShortVideoInput, value: any) => {
     setShortVideo((prev) => ({ ...prev, [field]: value }));
   };
+
+  const [shortVideoUpserting, setShortVideoUpserting] = useState(false);
 
   const [shortVideoErrors, setshortVideoErrors] = useState<Record<keyof ShortVideoInput, any>>({
     id: null,
@@ -59,6 +63,7 @@ export default function EditShortVidesView({ onClose, shortVideoToEdit, space }:
         objectId={shortVideo.id}
         imageType="ShortVideo"
         className="w-full"
+        label={'Description'}
       />
 
       <UploadInput
@@ -75,7 +80,7 @@ export default function EditShortVidesView({ onClose, shortVideoToEdit, space }:
         error={shortVideoErrors['videoUrl']}
         imageType="ShortVideo"
         spaceId={space.id}
-        modelValue={shortVideo.thumbnail}
+        modelValue={shortVideo.videoUrl}
         objectId={shortVideo.id || 'new-short-video' + '-short-video'}
         onInput={(value) => updateShortVideoField('videoUrl', value?.toString() || '')}
         allowedFileTypes={['video/mp4', 'video/x-m4v', 'video/*']}
@@ -94,6 +99,14 @@ export default function EditShortVidesView({ onClose, shortVideoToEdit, space }:
         required
         error={shortVideoErrors['priority']}
       />
+      <div className="flex mt-4">
+        <Button onClick={() => onSave()} loading={shortVideoUpserting} variant="contained" primary>
+          Save
+        </Button>
+        <Button onClick={() => onCancel()} className="ml-2" variant="contained">
+          Cancel
+        </Button>
+      </div>
     </div>
   );
 }

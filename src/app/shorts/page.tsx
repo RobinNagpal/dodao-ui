@@ -35,7 +35,17 @@ const MainShortsComponent = ({ space }: SpaceProps) => {
   if (!!editVideoIndex && queryResponse?.shortVideos?.[editVideoIndex]) {
     const shortVideo = queryResponse?.shortVideos?.[editVideoIndex];
 
-    return <EditShortVideoModal shortVideoToEdit={shortVideo} onClose={() => setEditVideoIndex(null)} space={space} />;
+    return (
+      <EditShortVideoModal
+        shortVideoToEdit={shortVideo}
+        onClose={() => setEditVideoIndex(null)}
+        space={space}
+        onSave={() => {
+          setEditVideoIndex(null);
+          setSelectedVideoIndex(editVideoIndex);
+        }}
+      />
+    );
   }
 
   return <Shorts onThumbnailClick={handleThumbnailClick} />;
