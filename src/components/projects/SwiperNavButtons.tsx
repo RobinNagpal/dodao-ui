@@ -6,10 +6,10 @@ export const SwiperNavButtons = () => {
 
   return (
     <div className="flex justify-end my-4">
-      <button className="bg-gray-500 hover:bg-gray-400 rounded-full inline-flex px-2 mx-2" onClick={() => swiper.slidePrev()}>
+      <button className="bg-blue-500 hover:bg-blue-400 rounded-full inline-flex px-2 mx-2" onClick={() => swiper.slidePrev()}>
         <span>&#x3c;</span>
       </button>
-      <button className="bg-gray-500 hover:bg-gray-400 rounded-full inline-flex px-2" onClick={() => swiper.slideNext()}>
+      <button className="bg-blue-500 hover:bg-blue-400 rounded-full inline-flex px-2" onClick={() => swiper.slideNext()}>
         <span>&#x3e;</span>
       </button>
     </div>

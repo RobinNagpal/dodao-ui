@@ -52,6 +52,42 @@ const dummyProjects: ProjectFragment[] = [
     details: '',
     type: '',
   },
+  {
+    id: '5',
+    name: 'Project A',
+    admins: ['Admin1', 'Admin2'],
+    adminUsernames: [],
+    creator: '',
+    details: '',
+    type: '',
+  },
+  {
+    id: '6',
+    name: 'Project B',
+    admins: ['Admin3', 'Admin4'],
+    adminUsernames: [],
+    creator: '',
+    details: '',
+    type: '',
+  },
+  {
+    id: '7',
+    name: 'Project A',
+    admins: ['Admin1', 'Admin2'],
+    adminUsernames: [],
+    creator: '',
+    details: '',
+    type: '',
+  },
+  {
+    id: '8',
+    name: 'Project B',
+    admins: ['Admin3', 'Admin4'],
+    adminUsernames: [],
+    creator: '',
+    details: '',
+    type: '',
+  },
 ];
 
 function getProjectTableRows(projectList?: ProjectFragment[]): TableRow[] {
