@@ -7,11 +7,88 @@ import { ProjectFragment, SpaceWithIntegrationsFragment, useProjectsQuery } from
 import { useRouter } from 'next/navigation';
 import React, { useMemo, useState } from 'react';
 import styled from 'styled-components';
+import ListProjectsHelper from './ListProjectsHelper';
 
 const MainDiv = styled.div`
   background-color: var(--bg-color);
   color: var(--text-color);
 `;
+
+// Define a dummy project list
+const dummyProjects: ProjectFragment[] = [
+  {
+    id: '1',
+    name: 'Project A',
+    admins: ['Admin1', 'Admin2'],
+    adminUsernames: [],
+    creator: '',
+    details: '',
+    type: '',
+  },
+  {
+    id: '2',
+    name: 'Project B',
+    admins: ['Admin3', 'Admin4'],
+    adminUsernames: [],
+    creator: '',
+    details: '',
+    type: '',
+  },
+  {
+    id: '3',
+    name: 'Project A',
+    admins: ['Admin1', 'Admin2'],
+    adminUsernames: [],
+    creator: '',
+    details: '',
+    type: '',
+  },
+  {
+    id: '4',
+    name: 'Project B',
+    admins: ['Admin3', 'Admin4'],
+    adminUsernames: [],
+    creator: '',
+    details: '',
+    type: '',
+  },
+  {
+    id: '5',
+    name: 'Project A',
+    admins: ['Admin1', 'Admin2'],
+    adminUsernames: [],
+    creator: '',
+    details: '',
+    type: '',
+  },
+  {
+    id: '6',
+    name: 'Project B',
+    admins: ['Admin3', 'Admin4'],
+    adminUsernames: [],
+    creator: '',
+    details: '',
+    type: '',
+  },
+  {
+    id: '7',
+    name: 'Project A',
+    admins: ['Admin1', 'Admin2'],
+    adminUsernames: [],
+    creator: '',
+    details: '',
+    type: '',
+  },
+  {
+    id: '8',
+    name: 'Project B',
+    admins: ['Admin3', 'Admin4'],
+    adminUsernames: [],
+    creator: '',
+    details: '',
+    type: '',
+  },
+];
 
 function getProjectTableRows(projectList?: ProjectFragment[]): TableRow[] {
   return (projectList || []).map(
@@ -47,7 +124,7 @@ export default function ListProjects(props: { space: SpaceWithIntegrationsFragme
         }
       },
     };
-  }, []);
+  }, [router]);
 
   return (
     <MainDiv className="px-4 sm:px-6 lg:px-8">
@@ -62,12 +139,7 @@ export default function ListProjects(props: { space: SpaceWithIntegrationsFragme
           </Button>
         </div>
       </div>
-      <Table
-        data={getProjectTableRows(data?.projects || [])}
-        columnsHeadings={['Name', 'Id', 'Skin', 'Admins']}
-        columnsWidthPercents={[20, 20, 20, 20]}
-        actions={tableActions}
-      />
+      <ListProjectsHelper projects={dummyProjects} />
       {showProjectAddModal && <UpsertProjectModal spaceId={props.space.id} open={showProjectAddModal} onClose={() => setShowProjectAddModal(false)} />}
     </MainDiv>
   );
