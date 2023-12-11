@@ -33,6 +33,7 @@ import { useEffect, useMemo, useState } from 'react';
 import 'src/app/globals.scss';
 import styled from 'styled-components';
 import ReactGA from 'react-ga4';
+import StyledComponentsRegistry from '@/utils/StyledComponentsRegistry';
 
 // Based on - https://tailwindui.com/components/application-ui/page-examples/home-screens
 
@@ -168,12 +169,14 @@ function ChildLayout({ children, session, space, spaceError }: InternalLayoutPro
 
 export default function InternalLayout({ children, session, space, spaceError }: InternalLayoutProps) {
   return (
-    <SpaceProvider>
-      <NotificationProvider>
-        <ChildLayout session={session} space={space} spaceError={spaceError}>
-          {children}
-        </ChildLayout>
-      </NotificationProvider>
-    </SpaceProvider>
+    <StyledComponentsRegistry>
+      <SpaceProvider>
+        <NotificationProvider>
+          <ChildLayout session={session} space={space} spaceError={spaceError}>
+            {children}
+          </ChildLayout>
+        </NotificationProvider>
+      </SpaceProvider>
+    </StyledComponentsRegistry>
   );
 }

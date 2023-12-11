@@ -2,7 +2,6 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import { Session } from '@/types/auth/Session';
 import { getGTagId } from '@/utils/analytics/getGTagId';
 import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
-import StyledComponentsRegistry from '@/utils/StyledComponentsRegistry';
 import { Analytics } from '@vercel/analytics/react';
 import { getServerSession } from 'next-auth';
 import Script from 'next/script';
@@ -34,11 +33,10 @@ export default async function RootLayout({ children }: RootLayoutProps) {
         `}
         </Script>
 
-        <StyledComponentsRegistry>
-          <InternalLayout session={session as Session} space={space} spaceError={!space}>
-            {children}
-          </InternalLayout>
-        </StyledComponentsRegistry>
+        <InternalLayout session={session as Session} space={space} spaceError={!space}>
+          {children}
+        </InternalLayout>
+
         <Analytics />
       </body>
     </html>
