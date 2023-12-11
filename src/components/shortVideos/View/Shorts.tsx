@@ -3,7 +3,6 @@
 import PageWrapper from '@/components/core/page/PageWrapper';
 import { ShortVideoFragment } from '@/graphql/generated/generated-types';
 import styled from 'styled-components';
-import { videos } from '../sampleVideos';
 
 const ImageWrapper = styled.div`
   width: 250px;
@@ -26,13 +25,14 @@ function ShortsThumbnail({ shortVideo, onClick }: { shortVideo: ShortVideoFragme
 }
 interface ShortsUIProps {
   onThumbnailClick: (index: number) => void;
+  shortVideos: ShortVideoFragment[];
 }
 
-export default function Shorts({ onThumbnailClick }: ShortsUIProps) {
+export default function Shorts({ shortVideos, onThumbnailClick }: ShortsUIProps) {
   return (
     <PageWrapper>
       <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-1">
-        {videos.map((video, index) => (
+        {shortVideos.map((video, index) => (
           <ShortsThumbnail key={index} shortVideo={video} onClick={() => onThumbnailClick(index)} />
         ))}
       </div>

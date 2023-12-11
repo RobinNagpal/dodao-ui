@@ -2,7 +2,8 @@ import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
 import UploadInput from '@/components/app/UploadInput';
 import Button from '@/components/core/buttons/Button';
 import Input from '@/components/core/input/Input';
-import { ShortVideoInput, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { useNotificationContext } from '@/contexts/NotificationContext';
+import { ShortVideoInput, SpaceWithIntegrationsFragment, useUpsertShortVideoMutation } from '@/graphql/generated/generated-types';
 import React, { useEffect, useState } from 'react';
 import { v4 } from 'uuid';
 
@@ -43,6 +44,61 @@ export default function EditShortVideoView({ shortVideoToEdit, space, onSave, on
     thumbnail: null,
     videoUrl: null,
   });
+
+  const [upsertShortVideoMutation] = useUpsertShortVideoMutation();
+
+  const { showNotification } = useNotificationContext();
+  const upsertShortVideo = async () => {
+    const errors: Record<keyof ShortVideoInput, any> = {
+      id: null,
+      title: null,
+      description: null,
+      priority: null,
+      thumbnail: null,
+      videoUrl: null,
+    };
+    if (!shortVideo.title || shortVideo.title.length < 3) {
+      errors['title'] = 'Add a proper title';
+    }
+    if (!shortVideo.description || shortVideo.description.length < 5) {
+      errors['description'] = 'Add a proper description';
+    }
+
+    if (!shortVideo.thumbnail) {
+      errors['thumbnail'] = 'Add a thumbnail';
+    }
+
+    if (!shortVideo.videoUrl) {
+      errors['videoUrl'] = 'Add a video';
+    }
+
+    if (shortVideo.priority < 0 || shortVideo.priority > 100) {
+      errors['priority'] = 'Priority must be between 0 and 100';
+    }
+
+    setshortVideoErrors(errors);
+
+    if (Object.values(errors).some((v) => !!v)) {
+      return;
+    }
+
+    setShortVideoUpserting(true);
+
+    try {
+      await upsertShortVideoMutation({
+        variables: {
+          shortVideo: shortVideo,
+          spaceId: space.id,
+        },
+        refetchQueries: ['ShortVideos'],
+      });
+      showNotification({ message: 'Short video saved', type: 'success' });
+    } catch (e) {
+      showNotification({ message: 'Something went wrong', type: 'error' });
+    }
+    setShortVideoUpserting(false);
+    onSave();
+  };
 
   return (
     <div>
@@ -100,7 +156,7 @@ export default function EditShortVideoView({ shortVideoToEdit, space, onSave, on
         error={shortVideoErrors['priority']}
       />
       <div className="flex mt-4">
-        <Button onClick={() => onSave()} loading={shortVideoUpserting} variant="contained" primary>
+        <Button onClick={() => upsertShortVideo()} loading={shortVideoUpserting} variant="contained" primary>
           Save
         </Button>
         <Button onClick={() => onCancel()} className="ml-2" variant="contained">

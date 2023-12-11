@@ -13,7 +13,9 @@ export interface EditShortVideoModalProps {
 export default function EditShortVideoModal({ onClose, shortVideoToEdit, space, onSave }: EditShortVideoModalProps) {
   return (
     <FullScreenModal title="Edit Video" open={true} onClose={onClose} fullWidth={false}>
-      <EditShortVideoView shortVideoToEdit={shortVideoToEdit} space={space} onSave={onSave} onCancel={() => onClose()} />
+      <div className="p-8">
+        <EditShortVideoView shortVideoToEdit={shortVideoToEdit} space={space} onSave={onSave} onCancel={() => onClose()} />
+      </div>
     </FullScreenModal>
   );
 }
