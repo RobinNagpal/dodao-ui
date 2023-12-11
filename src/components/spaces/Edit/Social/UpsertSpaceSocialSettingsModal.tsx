@@ -21,7 +21,6 @@ export default function UpsertSpaceSocialSettingsModal(props: { space: SpaceWith
             <UploadInput
               label="Linked Share PDF Background Image"
               error={inputError('avatar')}
-              onUpdate={(newValue) => setSocialSettingsField('linkedSharePdfBackgroundImage', newValue)}
               imageType="Social/PdfBackground"
               spaceId={props.space.id}
               modelValue={socialSettings.linkedSharePdfBackgroundImage}

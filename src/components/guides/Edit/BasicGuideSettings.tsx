@@ -70,7 +70,6 @@ export default function BasicGuideSettings({ editGuideHelper, guide, guideErrors
 
           <UploadInput
             error={guideErrors['thumbnail']}
-            onUpdate={(v) => updateGuideField('thumbnail', v?.toString() || '')}
             imageType="Guide"
             spaceId={space.id}
             modelValue={guide.thumbnail}

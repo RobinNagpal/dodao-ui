@@ -38,7 +38,6 @@ export default function UpsertSpaceBasicSettingsModal(props: { space?: Space; op
           <UploadInput
             label="Logo"
             error={inputError('avatar')}
-            onUpdate={(newValue) => setSpaceField('avatar', newValue)}
             imageType="AcademyLogo"
             spaceId={space?.id || 'new-space'}
             modelValue={space?.avatar}

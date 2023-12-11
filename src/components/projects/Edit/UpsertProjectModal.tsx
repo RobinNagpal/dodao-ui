@@ -38,7 +38,6 @@ export default function UpsertProjectModal(props: { spaceId: String; project?: P
           <UploadInput
             label="Logo"
             error={inputError('logo')}
-            onUpdate={(newValue) => setProjectField('logo', newValue)}
             imageType="AcademyLogo"
             spaceId={project?.id || 'new-project'}
             modelValue={project?.logo}

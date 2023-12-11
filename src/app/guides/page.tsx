@@ -3,7 +3,7 @@
 import withSpace, { SpaceProps } from '@/app/withSpace';
 import Block from '@/components/app/Block';
 import { Grid4Cols } from '@/components/core/grids/Grid4Colst';
-import GuideSkeleton from '@/components/core/loaders/CardLoader';
+import CardLoader from '@/components/core/loaders/CardLoader';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import ToggleWithIcon from '@/components/core/toggles/ToggleWithIcon';
 import GuideSummaryCard from '@/components/guides/Summary/GuideSummaryCard';
@@ -32,7 +32,7 @@ function Guide({ space }: SpaceProps) {
     <PageWrapper>
       {loading ? (
         <Block>
-          <GuideSkeleton />
+          <CardLoader />
         </Block>
       ) : (
         <div>
