@@ -1,9 +1,11 @@
 import Block from '@/components/app/Block';
-import { useSpace } from '@/contexts/SpaceContext';
+import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import React from 'react';
 
-const NoBytes = () => {
-  const { space } = useSpace();
+export interface NoGuidesProps {
+  space: SpaceWithIntegrationsFragment;
+}
+const NoGuides = ({ space }: NoGuidesProps) => {
   return (
     <div className="mb-3 text-center">
       <Block className="pt-1">
@@ -13,4 +15,4 @@ const NoBytes = () => {
   );
 };
 
-export default NoBytes;
+export default NoGuides;
