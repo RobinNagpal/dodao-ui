@@ -1,129 +1,13 @@
 'use client';
-import { TOP_CRYPTO_PROJECTS_SPACE_ID } from '@/chatbot/utils/app/constants';
-import ErrorPage from '@/components/app/ErrorPage';
-import LoginModal from '@/components/auth/LoginModal';
-import FullPageLoader from '@/components/core/loaders/FullPageLoading';
-import Notification from '@/components/core/notify/Notification';
-import TopNav from '@/components/main/TopNav/TopNav';
-import { LoginModalProvider } from '@/contexts/LoginModalContext';
+import { ChildLayout } from '@/components/layout/ChildLayout';
+import { InternalLayoutProps } from '@/components/layout/InternalLayoutProps';
 
-import { NotificationProvider, useNotificationContext } from '@/contexts/NotificationContext';
-import { SpaceProvider, useSpace } from '@/contexts/SpaceContext';
-import Web3ReactProviderWrapper from '@/contexts/Web3ReactContext';
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
-import { Session } from '@/types/auth/Session';
-import { UserIdKey } from '@/types/auth/User';
-import { getGTagId } from '@/utils/analytics/getGTagId';
-import { useNavigationEvent } from '@/utils/analytics/useNavigationEvent';
-import { getAuthenticatedApolloClient } from '@/utils/apolloClient';
-import { setDoDAOTokenInLocalStorage } from '@/utils/auth/setDoDAOTokenInLocalStorage';
+import { NotificationProvider } from '@/contexts/NotificationContext';
+import { SpaceProvider } from '@/contexts/SpaceContext';
 import StyledComponentsRegistry from '@/utils/StyledComponentsRegistry';
-import { ApolloProvider } from '@apollo/client';
-import { SessionProvider } from 'next-auth/react';
-import { useEffect, useMemo, useState } from 'react';
-import ReactGA from 'react-ga4';
 import 'src/app/globals.scss';
-import styled from 'styled-components';
 
 // Based on - https://tailwindui.com/components/application-ui/page-examples/home-screens
-
-interface InternalLayoutProps {
-  children: React.ReactNode;
-  session: Session | null;
-  space?: SpaceWithIntegrationsFragment | null;
-  spaceError: boolean;
-}
-
-const NotificationWrapper = () => {
-  const { notification, hideNotification } = useNotificationContext();
-
-  if (!notification) return null;
-
-  const key = `${notification.heading}_${notification.type}_${notification.duration}_${Date.now()}`;
-
-  return (
-    <Notification
-      key={key}
-      type={notification.type}
-      duration={notification.duration}
-      heading={notification.heading}
-      message={notification.message}
-      onClose={hideNotification}
-    />
-  );
-};
-
-const StyledMain = styled.main`
-  background-color: var(--bg-color);
-  color: var(--text-color);
-  min-height: calc(100vh - 64px);
-`;
-
-function BasePage(props: { space?: SpaceWithIntegrationsFragment | null; children: React.ReactNode }) {
-  const [isBotSite, setIsBotSite] = useState(true);
-
-  useEffect(() => {
-    setIsBotSite(!!props.space?.botDomains?.includes?.(window.location.hostname));
-  }, [props.space]);
-
-  if (props.space?.id) {
-    return (
-      <LoginModalProvider>
-        <LoginModal />
-        {!(isBotSite || props.space.id === TOP_CRYPTO_PROJECTS_SPACE_ID) ? <TopNav space={props.space} /> : null}
-        <StyledMain>{props.children}</StyledMain>
-      </LoginModalProvider>
-    );
-  }
-  return <FullPageLoader />;
-}
-
-function ChildLayout({ children, session, space, spaceError }: InternalLayoutProps) {
-  const client = useMemo(() => getAuthenticatedApolloClient(session), [session]);
-
-  const { setSpace } = useSpace();
-
-  useEffect(() => {
-    if (space) {
-      setSpace(space);
-      ReactGA.initialize(getGTagId(space));
-    }
-  }, [space]);
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      if (session?.userId) {
-        localStorage.setItem(UserIdKey, session?.userId);
-        setDoDAOTokenInLocalStorage(session);
-      } else {
-        localStorage.setItem(UserIdKey, 'anonymous');
-      }
-    }
-  }, [session]);
-
-  useNavigationEvent((url: string) => {
-    console.log('page_view', url);
-    ReactGA.event('page_view', {
-      page_title: url,
-      page_location: url,
-    });
-  });
-
-  if (spaceError) {
-    return <ErrorPage />;
-  }
-
-  return (
-    <Web3ReactProviderWrapper>
-      <ApolloProvider client={client}>
-        <SessionProvider session={session}>
-          <BasePage space={space}>{children}</BasePage>
-        </SessionProvider>
-        <NotificationWrapper />
-      </ApolloProvider>
-    </Web3ReactProviderWrapper>
-  );
-}
 
 export default function InternalLayout({ children, session, space, spaceError }: InternalLayoutProps) {
   return (

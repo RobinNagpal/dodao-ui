@@ -1,3 +1,5 @@
+'use client';
+
 import { coinbaseWallet } from '@/app/login/connectors/coinbaseWallet';
 import { metaMask } from '@/app/login/connectors/metaMask';
 import { Session } from '@/types/auth/Session';

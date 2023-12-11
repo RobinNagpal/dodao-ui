@@ -1,3 +1,5 @@
+'use client';
+
 import ButtonLarge from '@/components/core/buttons/Button';
 import FullScreenModal from '@/components/core/modals/FullScreenModal';
 import CreateContentModalContents from '@/components/main/TopNav/CreateContentModalContents';

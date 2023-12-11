@@ -1,3 +1,5 @@
+'use client';
+
 // login-modal-context.tsx
 import { createContext, useContext, useState } from 'react';
 

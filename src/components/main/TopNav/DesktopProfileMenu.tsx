@@ -1,3 +1,5 @@
+'use client';
+
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { useAuth } from '@/hooks/useAuth';
 import { Session } from '@/types/auth/Session';

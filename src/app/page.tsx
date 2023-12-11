@@ -24,7 +24,7 @@ async function Home() {
   if (host === 'dodao-localhost.io' || host === 'academy.dodao.io' || host === 'dodao.io') {
     return <DoDAOHome />;
   }
-  return <DefaultHome />;
+  return <DefaultHome space={space!} />;
 }
 
 export default Home;

@@ -4,32 +4,20 @@ import { useI18 } from '@/hooks/useI18';
 import { FeatureItem, FeatureName } from '@/types/features/spaceFeatures';
 import Link from 'next/link';
 import React from 'react';
-import styled from 'styled-components';
+import styles from './HomeIcon.module.scss';
 
 interface HomeIconProps {
   space: SpaceWithIntegrationsFragment;
   feature: FeatureItem;
 }
 
-const ImageWrapper = styled.div`
-  width: 140px;
-  min-width: 140px;
-  max-width: 140px;
-
-  @media (min-width: 768px) {
-    width: 180px;
-    min-width: 180px;
-    max-width: 180px;
-  }
-`;
-
 function Card({ space, heading, details, featureName }: { space: SpaceWithIntegrationsFragment; heading: string; details: string; featureName: FeatureName }) {
   const { $t } = useI18();
   return (
     <div className="flex flex-row">
-      <ImageWrapper className="flex justify-center align-middle">
+      <div className={'flex justify-center align-middle ' + styles.iconWrapper}>
         <img src={$t(`academy.${space.id}.${featureName.toLowerCase()}Thumbnail`)} alt={featureName} className="object-cover w-full" />
-      </ImageWrapper>
+      </div>
       <div className="ml-1">
         <h2 className="text-sm sm:text-xl text-left font-semibold px-4 py-2">{heading}</h2>
         <p className="text-xs sm:text-sm text-left break-words px-4 pb-4">{details}</p>
@@ -39,8 +27,6 @@ function Card({ space, heading, details, featureName }: { space: SpaceWithIntegr
 }
 
 function HomeIcon({ space, feature }: HomeIconProps) {
-  const { $t } = useI18();
-
   return (
     <Link
       href={getLinkToFeaturePage(feature.featureName)}

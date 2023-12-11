@@ -1,3 +1,5 @@
+'use client';
+
 // LoginModal.tsx
 import { LoginButtons } from '@/app/login/components/LoginButtons';
 import SingleSectionModal from '@/components/core/modals/SingleSectionModal';
