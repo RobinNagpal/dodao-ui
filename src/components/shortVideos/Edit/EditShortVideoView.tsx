@@ -87,7 +87,14 @@ export default function EditShortVideoView({ shortVideoToEdit, space, onSave, on
     try {
       await upsertShortVideoMutation({
         variables: {
-          shortVideo: shortVideo,
+          shortVideo: {
+            id: shortVideo.id,
+            title: shortVideo.title,
+            description: shortVideo.description,
+            priority: shortVideo.priority,
+            videoUrl: shortVideo.videoUrl,
+            thumbnail: shortVideo.thumbnail,
+          },
           spaceId: space.id,
         },
         refetchQueries: ['ShortVideos'],
