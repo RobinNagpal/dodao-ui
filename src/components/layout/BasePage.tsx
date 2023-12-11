@@ -25,7 +25,7 @@ export function BasePage(props: { space?: SpaceWithIntegrationsFragment | null; 
     return (
       <LoginModalProvider>
         <LoginModal />
-        {!(isBotSite || props.space.id === TOP_CRYPTO_PROJECTS_SPACE_ID) ? <TopNav space={props.space} /> : null}
+        {isBotSite || props.space.id === TOP_CRYPTO_PROJECTS_SPACE_ID ? null : <TopNav space={props.space} />}
         <StyledMain>{props.children}</StyledMain>
       </LoginModalProvider>
     );
