@@ -5,15 +5,6 @@ import LoginModal from '@/components/auth/LoginModal';
 import FullPageLoader from '@/components/core/loaders/FullPageLoading';
 import Notification from '@/components/core/notify/Notification';
 import TopNav from '@/components/main/TopNav/TopNav';
-import AaveTheme from '@/components/themes/AaveTheme';
-import ArbitrumTheme from '@/components/themes/ArbitrumTheme';
-import BalancerTheme from '@/components/themes/BalancerTheme';
-import CompoundTheme from '@/components/themes/CompoundTheme';
-import FuseTheme from '@/components/themes/FuseTheme';
-import GlobalTheme from '@/components/themes/GlobalTheme';
-import KlerosTheme from '@/components/themes/KlerosTheme';
-import OptimismTheme from '@/components/themes/OptimismTheme';
-import UniswapTheme from '@/components/themes/UniswapTheme';
 import { LoginModalProvider } from '@/contexts/LoginModalContext';
 
 import { NotificationProvider, useNotificationContext } from '@/contexts/NotificationContext';
@@ -22,18 +13,17 @@ import Web3ReactProviderWrapper from '@/contexts/Web3ReactContext';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { Session } from '@/types/auth/Session';
 import { UserIdKey } from '@/types/auth/User';
-import { Themes } from '@/types/deprecated/models/enums';
 import { getGTagId } from '@/utils/analytics/getGTagId';
 import { useNavigationEvent } from '@/utils/analytics/useNavigationEvent';
 import { getAuthenticatedApolloClient } from '@/utils/apolloClient';
 import { setDoDAOTokenInLocalStorage } from '@/utils/auth/setDoDAOTokenInLocalStorage';
+import StyledComponentsRegistry from '@/utils/StyledComponentsRegistry';
 import { ApolloProvider } from '@apollo/client';
 import { SessionProvider } from 'next-auth/react';
 import { useEffect, useMemo, useState } from 'react';
+import ReactGA from 'react-ga4';
 import 'src/app/globals.scss';
 import styled from 'styled-components';
-import ReactGA from 'react-ga4';
-import StyledComponentsRegistry from '@/utils/StyledComponentsRegistry';
 
 // Based on - https://tailwindui.com/components/application-ui/page-examples/home-screens
 
@@ -42,37 +32,6 @@ interface InternalLayoutProps {
   session: Session | null;
   space?: SpaceWithIntegrationsFragment | null;
   spaceError: boolean;
-}
-
-function ThemeComponent() {
-  const { space } = useSpace();
-  const isThemeCompound = space?.skin === Themes.Compound;
-  const isThemeAave = space?.skin === Themes.Aave;
-  const isThemeUniswap = space?.skin === Themes.Uniswap;
-  const isThemeDoDAO = space?.skin === Themes.DoDAO;
-  const isThemeFuse = space?.skin === Themes.Fuse;
-  const isThemeBalancer = space?.skin === Themes.Balancer;
-  const isThemeKleros = space?.skin === Themes.Kleros;
-  const isOptimismTheme = space?.skin === Themes.Optimism;
-  const isArbitrumTheme = space?.skin === Themes.Arbitrum;
-
-  if (space?.id === 'uniswap-eth-1') {
-    return <UniswapTheme />;
-  }
-  if (isThemeCompound) return <CompoundTheme />;
-  if (isThemeAave) return <AaveTheme />;
-  if (isThemeUniswap) return <UniswapTheme />;
-  if (isThemeFuse) return <FuseTheme />;
-  if (isThemeBalancer) return <BalancerTheme />;
-  if (isThemeKleros) return <KlerosTheme />;
-  if (isOptimismTheme) return <OptimismTheme />;
-  if (isArbitrumTheme) return <ArbitrumTheme />;
-  if (isThemeDoDAO) return <GlobalTheme />;
-  return (
-    <div>
-      <GlobalTheme />
-    </div>
-  );
 }
 
 const NotificationWrapper = () => {
@@ -158,7 +117,6 @@ function ChildLayout({ children, session, space, spaceError }: InternalLayoutPro
     <Web3ReactProviderWrapper>
       <ApolloProvider client={client}>
         <SessionProvider session={session}>
-          <ThemeComponent />
           <BasePage space={space}>{children}</BasePage>
         </SessionProvider>
         <NotificationWrapper />

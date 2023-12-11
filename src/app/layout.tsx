@@ -1,5 +1,7 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
+import { useSpace } from '@/contexts/SpaceContext';
 import { Session } from '@/types/auth/Session';
+import { Themes } from '@/types/deprecated/models/enums';
 import { getGTagId } from '@/utils/analytics/getGTagId';
 import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
 import { Analytics } from '@vercel/analytics/react';
@@ -17,9 +19,40 @@ export default async function RootLayout({ children }: RootLayoutProps) {
   const session = (await getServerSession(authOptions)) as Session | null;
   const space = await getSpaceServerSide();
   const gtag = getGTagId(space);
+  const isThemeCompound = space?.skin === Themes.Compound;
+  const isThemeAave = space?.skin === Themes.Aave;
+  const isThemeUniswap = space?.skin === Themes.Uniswap;
+  const isThemeDoDAO = space?.skin === Themes.DoDAO;
+  const isThemeFuse = space?.skin === Themes.Fuse;
+  const isThemeBalancer = space?.skin === Themes.Balancer;
+  const isThemeKleros = space?.skin === Themes.Kleros;
+  const isOptimismTheme = space?.skin === Themes.Optimism;
+  const isArbitrumTheme = space?.skin === Themes.Arbitrum;
+
+  let theme = 'global-theme';
+
+  if (isThemeAave) {
+    theme = 'aave-theme';
+  } else if (isArbitrumTheme) {
+    theme = 'arbitrum-theme';
+  } else if (isThemeBalancer) {
+    theme = 'balancer-theme';
+  } else if (isThemeCompound) {
+    theme = 'compound-theme';
+  } else if (isThemeFuse) {
+    theme = 'fuse-theme';
+  } else if (isThemeKleros) {
+    theme = 'kleros-theme';
+  } else if (isThemeDoDAO) {
+    theme = 'global-theme';
+  } else if (isOptimismTheme) {
+    theme = 'optimism-theme';
+  } else if (isThemeUniswap) {
+    theme = 'uniswap-theme';
+  }
   return (
     <html lang="en" className="h-full">
-      <body className="max-h-screen" style={{ backgroundColor: 'var(--bg-color)' }}>
+      <body className={'max-h-screen ' + theme} style={{ backgroundColor: 'var(--bg-color)' }}>
         <Script src={`https://www.googletagmanager.com/gtag/js?id=${gtag}`} />
         <Script id="google-analytics">
           {`
