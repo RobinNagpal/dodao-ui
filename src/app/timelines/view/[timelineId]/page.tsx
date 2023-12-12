@@ -37,7 +37,7 @@ const TimelinePage = ({ params, space }: { params: { timelineId: string }; space
                 </div>
               </div>
 
-              <div className="px-2">{loading ? <FullPageLoader /> : <TimelineDetails timeline={data?.timeline} space={space} />}</div>
+              <div>{loading ? <FullPageLoader /> : <TimelineDetails timeline={data?.timeline} space={space} />}</div>
             </>
           ) : (
             <Block slim>
