@@ -1,4 +1,4 @@
-import TimelineDetailsModal from './../TimelineDetailsModal'; // Assuming the correct file location for TimelineDetailsModal
+import TimelineDetailsModal from '@/components/timelines/View/TimelineDetailsModal'; // Assuming the correct file location for TimelineDetailsModal
 import ArrowRightIcon from '@heroicons/react/24/solid/ArrowRightIcon';
 import ArrowTopRightOnSquareIcon from '@heroicons/react/24/solid/ArrowTopRightOnSquareIcon';
 import React, { useState } from 'react';
@@ -6,14 +6,14 @@ import { Space, TimelineDetailsFragment, TimelineEventFragment } from '@/graphql
 import { getMarkedRenderer } from '@/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
 import moment from 'moment';
-import styles from './V3AlternatingTimelineView.module.scss';
+import styles from 'src/components/timelines/View/V3Alternating/V2SideBySideTimelineView.module.scss';
 
 interface V3AlternatingTimelineViewProps {
   space: Space;
   timeline: TimelineDetailsFragment;
 }
 
-export default function V3AlternatingTimelineView({ timeline }: V3AlternatingTimelineViewProps) {
+export default function V2SideBySideTimelineView({ timeline }: V3AlternatingTimelineViewProps) {
   const renderer = getMarkedRenderer();
   const [showFullDetailsModal, setShowFullDetailsModal] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<TimelineEventFragment | null>(null); // State to track the selected event
