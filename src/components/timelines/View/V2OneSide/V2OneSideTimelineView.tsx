@@ -35,15 +35,13 @@ export default function V2OneSideTimelineView({ timeline }: V2OneSideTimelineVie
       <div className="max-w-xl mx-auto">
         <div className="text-center ">
           <div className="relative flex flex-col items-center">
-            <h1 className="text-6xl font-bold leading-tight"> {timeline.name}</h1>
+            <h1 className="text-3xl font-bold leading-tight"> {timeline.name}</h1>
             <div className="flex w-24 mt-1 mb-10 overflow-hidden rounded">
-              <div className="flex-1 h-2 bg-blue-200"></div>
-              <div className="flex-1 h-2 bg-blue-400"></div>
-              <div className="flex-1 h-2 bg-blue-600"></div>
+              <div className={'flex-1 h-2 ' + styles.dynamicUnderline}></div>
             </div>
           </div>
           <p className="text-base text-center">{timeline.excerpt}</p>
-          <p className="text-sm text-center" dangerouslySetInnerHTML={{ __html: contents || '' }}></p>
+          <p className="text-sm text-center mt-6" dangerouslySetInnerHTML={{ __html: contents || '' }}></p>
         </div>
       </div>
       <div>
