@@ -57,7 +57,7 @@ export default function V2OneSideTimelineView({ timeline }: V2OneSideTimelineVie
                 ? moment(event.date).local().format('YYYY/MM/DD')
                 : moment(event.date).local().startOf('seconds').fromNow();
               return (
-                <div className="w-full mx-auto lg:max-w-3xl" key={event.uuid}>
+                <div className="w-full lg:max-w-3xl" key={event.uuid}>
                   <div className="relative flex justify-between">
                     <div className="flex flex-col items-center w-10 mr-4 md:w-24">
                       <div>
@@ -71,7 +71,7 @@ export default function V2OneSideTimelineView({ timeline }: V2OneSideTimelineVie
                       <h2 className="inline-block px-4 py-2 mb-4 text-xs font-medium text-gray-100 bg-gradient-to-r from-blue-500 to-blue-900 dark:from-blue-400 dark:to-blue-500 rounded-3xl dark:text-gray-100">
                         {timeAgo}
                       </h2>
-                      <div className={'relative w-[800px] flex-1 mb-10 border-b-4 border-blue-200 shadow rounded-3xl ' + styles.timelineCard}>
+                      <div className={'relative w-[70vw] flex-1 mb-10 border-b-4 border-blue-200 shadow rounded-3xl ' + styles.timelineCard}>
                         <div className="relative p-6">
                           <p className="mb-2 text-xl font-bold">{event.title}</p>
                           <p dangerouslySetInnerHTML={{ __html: eventSummary }} />
