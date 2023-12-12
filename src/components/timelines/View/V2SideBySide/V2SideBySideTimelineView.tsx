@@ -1,4 +1,4 @@
-import TimelineDetailsModal from 'src/components/timelines/View/TimelineDetailsModal'; // Assuming the correct file location for TimelineDetailsModal
+import TimelineDetailsModal from '@/components/timelines/View/TimelineDetailsModal'; // Assuming the correct file location for TimelineDetailsModal
 import ArrowRightIcon from '@heroicons/react/24/solid/ArrowRightIcon';
 import ArrowTopRightOnSquareIcon from '@heroicons/react/24/solid/ArrowTopRightOnSquareIcon';
 import React, { useState } from 'react';
