@@ -64,6 +64,10 @@ export const QuestionForm: React.FC<Props> = ({ course, space, topicKey, current
     setForm((oldForm) => ({ ...oldForm, content }));
   };
 
+  const updateQuestionExplanation = (questionId: string, explanation: string) => {
+    setForm((oldForm) => ({ ...oldForm, explanation }));
+  };
+
   const updateChoiceContent = (questionId: string, choiceKey: string, content: string) => {
     setForm((oldForm) => {
       const newChoices = oldForm.choices?.map((choice) => {
@@ -147,6 +151,7 @@ export const QuestionForm: React.FC<Props> = ({ course, space, topicKey, current
           updateAnswers={updateAnswers}
           questionErrors={questionErrors}
           updateQuestionType={(type) => setForm({ ...form, type })}
+          updateQuestionExplanation={updateQuestionExplanation}
         />
 
         <MarkdownEditor
