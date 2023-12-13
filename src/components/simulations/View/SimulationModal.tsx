@@ -1,5 +1,5 @@
+import FullPageModal from '@/components/core/modals/FullPageModal';
 import FullScreenModal from '@/components/core/modals/FullScreenModal';
-import FullScreenSimulationModal from '@/components/core/modals/FullScreenSimulationModal';
 import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 
@@ -29,9 +29,9 @@ function SimulationModal({ iframeId, iframeUrl, open, onClose, title }: Simulati
     } catch (e) {}
   }
   return (
-    <FullScreenSimulationModal open={open} onClose={onClose} title={title}>
+    <FullScreenModal open={open} onClose={onClose} title={title}>
       <Iframe src={iframeUrl} id={iframeId} allowFullScreen onLoad={handleIframeLoaded} ref={iframeRef} />
-    </FullScreenSimulationModal>
+    </FullScreenModal>
   );
 }
 

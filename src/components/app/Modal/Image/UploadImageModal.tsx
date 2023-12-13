@@ -1,6 +1,6 @@
 import UploadInput from '@/components/app/UploadInput';
 import Button from '@/components/core/buttons/Button';
-import FullScreenModal from '@/components/core/modals/FullScreenModal';
+import FullPageModal from '@/components/core/modals/FullPageModal';
 import { useState } from 'react';
 
 export interface UploadImageModalProps {
@@ -15,7 +15,7 @@ export default function UploadImageModal(props: UploadImageModalProps) {
   const { imageType, objectId, spaceId, open, onClose, imageUploaded } = props;
   const [imageURL, setImageURL] = useState<string>();
   return (
-    <FullScreenModal open={open} onClose={onClose} title={'Upload Image'}>
+    <FullPageModal open={open} onClose={onClose} title={'Upload Image'}>
       <div className="p-16 text-left">
         <UploadInput
           label={'Upload Image'}
@@ -36,6 +36,6 @@ export default function UploadImageModal(props: UploadImageModalProps) {
           </Button>
         </div>
       </div>
-    </FullScreenModal>
+    </FullPageModal>
   );
 }

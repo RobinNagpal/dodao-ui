@@ -1,7 +1,7 @@
 'use client';
 
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
-import FullScreenModal from '@/components/core/modals/FullScreenModal';
+import FullPageModal from '@/components/core/modals/FullPageModal';
 // import { videos } from '../sampleVideos';
 import React, { useRef, useState } from 'react';
 import './styles.css';
@@ -24,7 +24,7 @@ export default function ViewShortVideoModal({ initialSlide, data, onClose, onSho
 
   const threeDotItems = [{ label: 'Edit', key: 'edit' }];
   return (
-    <FullScreenModal title="" open={true} onClose={onClose} fullWidth={false}>
+    <FullPageModal title="" open={true} onClose={onClose} fullWidth={false}>
       <div className="flex justify-end">
         <PrivateEllipsisDropdown
           items={threeDotItems}
@@ -69,6 +69,6 @@ export default function ViewShortVideoModal({ initialSlide, data, onClose, onSho
           ))}
         </Swiper>
       </div>
-    </FullScreenModal>
+    </FullPageModal>
   );
 }

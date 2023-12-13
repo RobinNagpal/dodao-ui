@@ -1,6 +1,6 @@
 import Button from '@/components/core/buttons/Button';
 import Datepicker from '@/components/core/datepicker/Datepicker';
-import FullScreenModal from '@/components/core/modals/FullScreenModal';
+import FullPageModal from '@/components/core/modals/FullPageModal';
 import TextareaAutosize from '@/components/core/textarea/TextareaAutosize';
 import { DiscoursePost, SpaceWithIntegrationsFragment, useUpsertSummaryOfDiscoursePostMutation } from '@/graphql/generated/generated-types';
 import React, { useEffect, useState } from 'react';
@@ -46,7 +46,7 @@ export default function UpdateSummaryDiscoursePostModal({
   };
 
   return (
-    <FullScreenModal open={open} onClose={onClose} title="Add Summary of Discourse Post">
+    <FullPageModal open={open} onClose={onClose} title="Add Summary of Discourse Post">
       <div className={'ml-6 p-4 min-h-screen text-left ' + styles.upsertSummaryModalHeight}>
         <div className="mb-6">Add summary - {post.title} </div>
         <div className="my-4">
@@ -73,6 +73,6 @@ export default function UpdateSummaryDiscoursePostModal({
           Annotate
         </Button>
       </div>
-    </FullScreenModal>
+    </FullPageModal>
   );
 }

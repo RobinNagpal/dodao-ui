@@ -1,5 +1,5 @@
 import Button from '@/components/core/buttons/Button';
-import FullScreenModal from '@/components/core/modals/FullScreenModal';
+import FullPageModal from '@/components/core/modals/FullPageModal';
 import ToggleWithIcon from '@/components/core/toggles/ToggleWithIcon';
 import { useEditSpaceGuideSettings } from '@/components/spaces/Edit/Guides/useEditSpaceGuideSettings';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
@@ -8,7 +8,7 @@ import React from 'react';
 export default function UpsertSpaceGuideSettingsModal(props: { space: SpaceWithIntegrationsFragment; open: boolean; onClose: () => void }) {
   const { guideSettings, setGuideSettingsField, updateGuideSettings, updating } = useEditSpaceGuideSettings(props.space);
   return (
-    <FullScreenModal open={props.open} onClose={props.onClose} title="Guide Settings">
+    <FullPageModal open={props.open} onClose={props.onClose} title="Guide Settings">
       <div className="py-4 px-8">
         <div className="space-y-12 text-left">
           <div className="border-b pb-12">
@@ -59,6 +59,6 @@ export default function UpsertSpaceGuideSettingsModal(props: { space: SpaceWithI
           </Button>
         </div>
       </div>
-    </FullScreenModal>
+    </FullPageModal>
   );
 }

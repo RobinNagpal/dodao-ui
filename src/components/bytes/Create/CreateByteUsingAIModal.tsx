@@ -2,7 +2,7 @@ import { GeneratedQuestionInterface } from '@/components/ai/questions/GenerateQu
 import { EditByteStep, EditByteType } from '@/components/bytes/Edit/editByteHelper';
 import Button from '@/components/core/buttons/Button';
 import ErrorWithAccentBorder from '@/components/core/errors/ErrorWithAccentBorder';
-import FullScreenModal from '@/components/core/modals/FullScreenModal';
+import FullPageModal from '@/components/core/modals/FullPageModal';
 import { NotificationProps } from '@/components/core/notify/Notification';
 import TextareaAutosize from '@/components/core/textarea/TextareaAutosize';
 import generateQuestionsPrompt from '@/components/guides/Edit/generateQuestionsPrompt';
@@ -187,7 +187,7 @@ export function CreateByteUsingAIModal(props: CreateByteUsingAIModalProps) {
     }
   };
   return (
-    <FullScreenModal open={open} onClose={onClose} title="Create Tidbit Using AI">
+    <FullPageModal open={open} onClose={onClose} title="Create Tidbit Using AI">
       <div className="text-left	">
         <div className=" container  mx-auto p-4 flex flex-col ">
           <TextareaAutosize
@@ -223,6 +223,6 @@ export function CreateByteUsingAIModal(props: CreateByteUsingAIModalProps) {
           </Button>{' '}
         </div>
       </div>
-    </FullScreenModal>
+    </FullPageModal>
   );
 }

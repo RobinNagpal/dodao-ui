@@ -1,6 +1,6 @@
 import Button from '@/components/core/buttons/Button';
 import Input from '@/components/core/input/Input';
-import FullScreenModal from '@/components/core/modals/FullScreenModal';
+import FullPageModal from '@/components/core/modals/FullPageModal';
 import { ChatbotSubCategoryHelperFunctions } from '@/components/spaces/Loaders/Categories/useEditChatbotCategory';
 import { ChatbotSubCategoryFragment } from '@/graphql/generated/generated-types';
 import React from 'react';
@@ -30,7 +30,7 @@ export default function UpsertChatbotSubCategoryModal(props: UpsertChatbotCatego
     });
   }
   return (
-    <FullScreenModal open={props.open} onClose={props.onClose} title={'Upsert Sub Category'}>
+    <FullPageModal open={props.open} onClose={props.onClose} title={'Upsert Sub Category'}>
       <div className="project-y-12 text-left px-6">
         <div className="border-b pb-12">
           <Input
@@ -68,6 +68,6 @@ export default function UpsertChatbotSubCategoryModal(props: UpsertChatbotCatego
           Save
         </Button>
       </div>
-    </FullScreenModal>
+    </FullPageModal>
   );
 }

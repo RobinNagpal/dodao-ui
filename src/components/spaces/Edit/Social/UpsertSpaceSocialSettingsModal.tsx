@@ -1,6 +1,6 @@
 import UploadInput from '@/components/app/UploadInput';
 import Button from '@/components/core/buttons/Button';
-import FullScreenModal from '@/components/core/modals/FullScreenModal';
+import FullPageModal from '@/components/core/modals/FullPageModal';
 import { useEditSpaceSocialSettings } from '@/components/spaces/Edit/Social/useEditSpaceSocialSettings';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import React, { useState } from 'react';
@@ -14,7 +14,7 @@ export default function UpsertSpaceSocialSettingsModal(props: { space: SpaceWith
   }
 
   return (
-    <FullScreenModal open={props.open} onClose={props.onClose} title="Social Settings">
+    <FullPageModal open={props.open} onClose={props.onClose} title="Social Settings">
       <div className="p-8">
         <div className="space-y-12 text-left">
           <div className="border-b pb-12">
@@ -46,6 +46,6 @@ export default function UpsertSpaceSocialSettingsModal(props: { space: SpaceWith
           </Button>
         </div>
       </div>
-    </FullScreenModal>
+    </FullPageModal>
   );
 }

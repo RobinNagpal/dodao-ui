@@ -1,5 +1,5 @@
 import Button from '@/components/core/buttons/Button';
-import FullScreenModal from '@/components/core/modals/FullScreenModal';
+import FullPageModal from '@/components/core/modals/FullPageModal';
 import ToggleWithIcon from '@/components/core/toggles/ToggleWithIcon';
 import { useEditSpaceByteSettings } from '@/components/spaces/Edit/Bytes/useEditSpaceByteSettings';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
@@ -8,7 +8,7 @@ import React from 'react';
 export default function UpsertSpaceByteSettingsModal(props: { space: SpaceWithIntegrationsFragment; open: boolean; onClose: () => void }) {
   const { byteSettings, setByteSettingsField, updateByteSettings, updating } = useEditSpaceByteSettings(props.space);
   return (
-    <FullScreenModal open={props.open} onClose={props.onClose} title="Byte Settings">
+    <FullPageModal open={props.open} onClose={props.onClose} title="Byte Settings">
       <div className="py-4 px-8">
         <div className="space-y-12 text-left">
           <div className="border-b pb-12">
@@ -47,6 +47,6 @@ export default function UpsertSpaceByteSettingsModal(props: { space: SpaceWithIn
           </Button>
         </div>
       </div>
-    </FullScreenModal>
+    </FullPageModal>
   );
 }

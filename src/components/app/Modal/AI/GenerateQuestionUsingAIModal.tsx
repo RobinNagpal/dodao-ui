@@ -1,5 +1,5 @@
 import GenerateQuestionsUsingAI, { GeneratedQuestionInterface } from '@/components/ai/questions/GenerateQuestionsUsingAI';
-import FullScreenModal from '@/components/core/modals/FullScreenModal';
+import FullPageModal from '@/components/core/modals/FullPageModal';
 
 import React from 'react';
 
@@ -15,10 +15,10 @@ export default function GenerateQuestionUsingAIModal(props: GenerateQuestionUsin
   const { open, onClose } = props;
 
   return (
-    <FullScreenModal open={open} onClose={onClose} title={props.modalTitle}>
+    <FullPageModal open={open} onClose={onClose} title={props.modalTitle}>
       <div className="p-4">
         <GenerateQuestionsUsingAI {...props} />
       </div>
-    </FullScreenModal>
+    </FullPageModal>
   );
 }

@@ -1,7 +1,7 @@
 import Button from '@/components/core/buttons/Button';
 import Card from '@/components/core/card/Card';
 import { Grid4Cols } from '@/components/core/grids/Grid4Colst';
-import FullScreenModal from '@/components/core/modals/FullScreenModal';
+import FullPageModal from '@/components/core/modals/FullPageModal';
 import { ByteCollectionFragment, ByteSummaryFragment, ProjectByteFragment } from '@/graphql/generated/generated-types';
 import { shorten } from '@/utils/utils';
 import CheckCircleIcon from '@heroicons/react/20/solid/CheckCircleIcon';
@@ -25,7 +25,7 @@ export default function SelectBytesModal(props: SelectBytesModalProps) {
   const { byteSummaries, addBytes } = props;
   const [selectedByteIds, setSelectedByteIds] = React.useState<string[]>([]);
   return (
-    <FullScreenModal open={props.showSelectBytesModal} onClose={props.onClose} title={'Select Bytes'}>
+    <FullPageModal open={props.showSelectBytesModal} onClose={props.onClose} title={'Select Bytes'}>
       <Grid4Cols className="p-16">
         {byteSummaries.map((byte) => {
           return (
@@ -59,6 +59,6 @@ export default function SelectBytesModal(props: SelectBytesModalProps) {
       <Button variant="contained" primary onClick={() => addBytes(selectedByteIds)}>
         Select Bytes
       </Button>
-    </FullScreenModal>
+    </FullPageModal>
   );
 }

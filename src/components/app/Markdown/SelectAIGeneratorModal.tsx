@@ -1,6 +1,6 @@
 import Button from '@/components/core/buttons/Button';
 import { Grid2Cols } from '@/components/core/grids/Grid2Cols';
-import FullScreenModal from '@/components/core/modals/FullScreenModal';
+import FullPageModal from '@/components/core/modals/FullPageModal';
 import React from 'react';
 
 export interface GenerateMarkdownContentModalProps {
@@ -12,7 +12,7 @@ export interface GenerateMarkdownContentModalProps {
 }
 export default function SelectAIGeneratorModal(props: GenerateMarkdownContentModalProps) {
   return (
-    <FullScreenModal open={props.open} onClose={props.onClose} title={props.title}>
+    <FullPageModal open={props.open} onClose={props.onClose} title={props.title}>
       <div className="pt-4 flex flex-col justify-center items-center w-full h-max">
         <div className="p-4 mb-[100%] sm:mb-0">
           <Grid2Cols>
@@ -25,6 +25,6 @@ export default function SelectAIGeneratorModal(props: GenerateMarkdownContentMod
           </Grid2Cols>
         </div>
       </div>
-    </FullScreenModal>
+    </FullPageModal>
   );
 }
