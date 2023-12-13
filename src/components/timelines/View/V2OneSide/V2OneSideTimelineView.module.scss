@@ -7,7 +7,21 @@
   background-color: var(--block-bg);
 }
 
-
 .dynamicUnderline {
-  background: linear-gradient(to right, var(--primary-color), #EEE);
+  background: linear-gradient(to right, var(--primary-color), #eee);
+}
+
+.timelinePrimaryColor {
+  background-color: var(--primary-color);
+}
+
+.timeColor {
+  background-color: rgba(255, 4, 32, 0.7);
+}
+
+.timelineCardBorderColor {
+  border-bottom: 4px solid var(--border-color);
+}
+.timelineSecondaryColor {
+  background-color: var(--border-color);
 }
