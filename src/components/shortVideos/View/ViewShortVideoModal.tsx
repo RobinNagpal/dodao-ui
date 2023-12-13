@@ -50,21 +50,24 @@ export default function ViewShortVideoModal({ initialSlide, data, onClose, onSho
           navigation={true}
           modules={[Keyboard, Mousewheel, History, Navigation]}
           initialSlide={initialSlide - 1}
+          style={{ display: 'flex' }}
         >
           {data?.shortVideos?.map((vid, index) => (
-            <SwiperSlide key={index} data-history={vid.videoUrl} className="min-w-[300px] max-w-[300px] mx-auto">
-              <video
-                id={vid.id}
-                controls //enables video control options
-                controlsList="nofullscreen" //disable full-screen option - only for Chrome
-                autoPlay //enables auto playing of the videos by default
-                muted //videos are muted by default
-                loop //puts the videos on playback
-                poster={vid.thumbnail} //thumbnail of the video
-                className="absolute inset-0 w-full h-full object-cover"
-              >
-                <source src={vid.videoUrl} type="video/mp4" />
-              </video>
+            <SwiperSlide key={index} data-history={vid.videoUrl} className="flex justify-center items-center w-full h-full" style={{ display: 'flex' }}>
+              <div className="relative w-[300px] h-[533px] 2xl:w-[600px] 2xl:h-[1066px]">
+                <video
+                  id={vid.id}
+                  controls //enables video control options
+                  controlsList="nofullscreen" //disable full-screen option - only for Chrome
+                  autoPlay //enables auto playing of the videos by default
+                  muted //videos are muted by default
+                  loop //puts the videos on playback
+                  poster={vid.thumbnail} //thumbnail of the video
+                  className="absolute inset-0 w-full h-full object-cover"
+                >
+                  <source src={vid.videoUrl} type="video/mp4" />
+                </video>
+              </div>
             </SwiperSlide>
           ))}
         </Swiper>
