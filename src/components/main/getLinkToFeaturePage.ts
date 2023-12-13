@@ -25,5 +25,13 @@ export const getLinkToFeaturePage = (featureName: FeatureName): string => {
     return '/tidbit-collections';
   }
 
+  if (featureName === FeatureName.Chatbot) {
+    return '/nema';
+  }
+
+  if (featureName === FeatureName.Shorts) {
+    return '/shorts';
+  }
+
   throw Error('Invalid feature name' + featureName);
 };
