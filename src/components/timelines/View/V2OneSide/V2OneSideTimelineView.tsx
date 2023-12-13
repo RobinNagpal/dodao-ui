@@ -45,7 +45,7 @@ export default function V2OneSideTimelineView({ timeline }: V2OneSideTimelineVie
         </div>
       </div>
       <div>
-        <section className="items-center py-16 font-poppins">
+        <section className="items-center py-16 font-poppins sm:pr-0 pr-5">
           <div className="justify-center max-w-6xl py-4 mx-auto lg:py-8">
             {timeline.events.map((event, i) => {
               const eventSummary = marked.parse(event.summary, { renderer });
