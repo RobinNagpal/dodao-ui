@@ -59,7 +59,7 @@ export const Chat = memo(({ stopConversationRef, space, isChatbotSite }: Props) 
 
         let updatedConversation: Conversation;
 
-        message = { ...message, relatedFAQs: result.data?.searchChatbotFAQs || [] };
+        message = { ...message, relatedFAQs: result.data?.searchChatbotFAQs?.filter((faq) => faq.score > 0.8) || [] };
         updatedConversation = {
           ...selectedConversation,
           messages: [message],
