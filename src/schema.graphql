@@ -1050,6 +1050,7 @@ type Mutation {
   updateByteSettings(input: ByteSettingsInput!, spaceId: String!): Space!
   updateCourseBasicInfo(courseBasicInfo: CourseBasicInfoInput!, spaceId: String!): GitCourse!
   updateGuideSettings(input: GuideSettingsInput!, spaceId: String!): Space!
+  updateIndexWithAllDiscordPosts(spaceId: String!): Boolean!
   updateIndexingOfDiscordChannel(channelId: String!, shouldIndex: Boolean!, spaceId: String!): DiscordChannel!
   updateSocialSettings(input: SocialSettingsInput!, spaceId: String!): Space!
   updateSpace(spaceInput: UpsertSpaceInput!): Space!
