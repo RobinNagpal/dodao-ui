@@ -59,17 +59,15 @@ export default function V2OneSideTimelineView({ timeline }: V2OneSideTimelineVie
                   <div className="relative flex justify-between">
                     <div className="flex flex-col items-center w-8 md:w-24">
                       <div>
-                        <div className="flex items-center justify-center w-8 h-8 bg-blue-200 rounded-full dark:bg-gray-600">
-                          <div className="w-4 h-4 bg-blue-600 rounded-full dark:bg-blue-400"></div>
+                        <div className={'flex items-center justify-center w-8 h-8 rounded-full ' + styles.timelineSecondaryColor}>
+                          <div className={'w-4 h-4 rounded-full ' + styles.timelinePrimaryColor}></div>
                         </div>
                       </div>
-                      <div className="w-px h-full bg-blue-300 dark:bg-gray-600"></div>
+                      <div className={'w-px h-full ' + styles.timelineSecondaryColor}></div>
                     </div>
                     <div className="w-full">
-                      <h2 className="inline-block px-4 py-2 mb-4 text-xs font-medium text-gray-100 bg-gradient-to-r from-blue-500 to-blue-900 dark:from-blue-400 dark:to-blue-500 rounded-3xl dark:text-gray-100">
-                        {timeAgo}
-                      </h2>
-                      <div className={'relative w-full flex-1 mb-10 border-b-4 border-blue-200 shadow rounded-3xl ' + styles.timelineCard}>
+                      <h2 className={'inline-block px-4 py-2 mb-4 text-xs font-medium text-gray-100 rounded-3xl ' + styles.timeColor}>{timeAgo}</h2>
+                      <div className={`relative w-full flex-1 mb-10 rounded-3xl ${styles.timelineCardBorderColor} ${styles.timelineCard}`}>
                         <div className="relative p-6 w-full">
                           <p className="mb-2 text-xl font-bold">{event.title}</p>
                           <p className="w-full" dangerouslySetInnerHTML={{ __html: eventSummary }} />
