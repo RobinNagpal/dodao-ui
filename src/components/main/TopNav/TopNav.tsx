@@ -55,6 +55,12 @@ function DesktopNavLinks({ space }: { space: Space }) {
         if (feature.featureName === FeatureName.Timelines) {
           return <DesktopNavLink key="timelines" href="/timelines" label="Timelines" />;
         }
+        if (feature.featureName === FeatureName.Chatbot) {
+          return <DesktopNavLink key="ai_chatbot" href="/nema" label="Chatbot" />;
+        }
+        if (feature.featureName === FeatureName.Shorts) {
+          return <DesktopNavLink key="shorts" href="/shorts" label="Short Videos" />;
+        }
       })}
     </div>
   );
@@ -85,6 +91,12 @@ function MobileNavLinks({ space }: { space: Space }) {
         }
         if (feature.featureName === FeatureName.Timelines) {
           return <MobileNavLink key="timelines" href="/timelines" label="Timelines" />;
+        }
+        if (feature.featureName === FeatureName.Chatbot) {
+          return <MobileNavLink key="ai_chatbot" href="/nema" label="Chatbot" />;
+        }
+        if (feature.featureName === FeatureName.Shorts) {
+          return <MobileNavLink key="shorts" href="/shorts" label="Short Videos" />;
         }
       })}
     </div>

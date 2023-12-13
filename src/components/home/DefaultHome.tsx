@@ -29,9 +29,9 @@ function DefaultHome({ space }: { space: SpaceWithIntegrationsFragment }) {
           </Grid2Cols>
         </div>
         <div className="flex align-center justify-center mb-24">
-          {space.id === 'empowerher-academy' ? (
-            <GetStartedButton href="/courses">
-              100% Free Courses <span aria-hidden="true">→</span>
+          {space.id === 'life-insurance-tips' ? (
+            <GetStartedButton href="/tidbit-collections">
+              Get started <span aria-hidden="true">→</span>
             </GetStartedButton>
           ) : (
             <GetStartedButton href={space.id === 'uniswap-eth-1' ? '/courses' : '/guides'}>
