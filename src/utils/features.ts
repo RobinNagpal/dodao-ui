@@ -3,6 +3,7 @@ import { creditUnionAcademyFeatures } from '@/types/features/creditUnionAcademyF
 import { dodaoAcademyFeatures } from '@/types/features/dodaoAcademyFeatures';
 import { dodaoIoFeatures } from '@/types/features/dodaoIoFeatures';
 import { fuseFeatures } from '@/types/features/fuseFeatures';
+import { lifeInsuranceFeatures } from '@/types/features/lifeInsuranceFeatures';
 import { optimismFeatures } from '@/types/features/optimismFeatures';
 import { arbitrumFeatures } from '@/types/features/arbitrumFeatures';
 import { FeatureItem, FeatureName } from '@/types/features/spaceFeatures';
@@ -29,6 +30,8 @@ export function getFeaturesArray(spaceId: string): FeatureItem[] {
     return optimismFeatures;
   } else if (spaceId === 'arbitrum-university') {
     return arbitrumFeatures;
+  } else if (spaceId === 'life-insurance-tips') {
+    return lifeInsuranceFeatures;
   }
 
   return [

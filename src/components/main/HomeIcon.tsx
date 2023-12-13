@@ -65,6 +65,12 @@ function HomeIcon({ space, feature }: HomeIconProps) {
       {feature.featureName === FeatureName.Timelines && (
         <Card space={space} heading={'Timelines'} details={'All the updates captured at one place'} featureName={feature.featureName} />
       )}
+      {feature.featureName === FeatureName.Chatbot && (
+        <Card space={space} heading={'AI Chatbot'} details={'Ask anything you want'} featureName={feature.featureName} />
+      )}
+      {feature.featureName === FeatureName.Shorts && (
+        <Card space={space} heading={'Shorts/Reels'} details={'1 min videos explaining once thing at a time'} featureName={feature.featureName} />
+      )}
     </Link>
   );
 }
