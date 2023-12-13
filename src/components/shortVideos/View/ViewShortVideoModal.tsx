@@ -2,7 +2,7 @@
 
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import FullScreenModal from '@/components/core/modals/FullScreenModal';
-import { ShortVideoFragment, ShortVideosQuery } from '@/graphql/generated/generated-types';
+import { ShortVideoFragment } from '@/graphql/generated/generated-types';
 // import { videos } from '../sampleVideos';
 import React, { useRef } from 'react';
 import SwiperCore from 'swiper';
