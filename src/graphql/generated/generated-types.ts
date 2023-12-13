@@ -1118,6 +1118,7 @@ export interface Mutation {
   updateByteSettings: Space;
   updateCourseBasicInfo: GitCourse;
   updateGuideSettings: Space;
+  updateIndexWithAllDiscordPosts: Scalars['Boolean'];
   updateIndexingOfDiscordChannel: DiscordChannel;
   updateSocialSettings: Space;
   updateSpace: Space;
@@ -1527,6 +1528,11 @@ export interface MutationUpdateCourseBasicInfoArgs {
 
 export interface MutationUpdateGuideSettingsArgs {
   input: GuideSettingsInput;
+  spaceId: Scalars['String'];
+}
+
+
+export interface MutationUpdateIndexWithAllDiscordPostsArgs {
   spaceId: Scalars['String'];
 }
 
@@ -3737,6 +3743,13 @@ export type TriggerNewDiscourseIndexRunMutationVariables = Exact<{
 
 
 export type TriggerNewDiscourseIndexRunMutation = { __typename?: 'Mutation', triggerNewDiscourseIndexRun: { __typename?: 'DiscourseIndexRun', createdAt: any, id: string, runDate?: any | null, status: string } };
+
+export type UpdateIndexWithAllDiscordPostsMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+}>;
+
+
+export type UpdateIndexWithAllDiscordPostsMutation = { __typename?: 'Mutation', updateIndexWithAllDiscordPosts: boolean };
 
 export type IndexNeedsIndexingDiscoursePostsMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -9187,6 +9200,37 @@ export function useTriggerNewDiscourseIndexRunMutation(baseOptions?: Apollo.Muta
 export type TriggerNewDiscourseIndexRunMutationHookResult = ReturnType<typeof useTriggerNewDiscourseIndexRunMutation>;
 export type TriggerNewDiscourseIndexRunMutationResult = Apollo.MutationResult<TriggerNewDiscourseIndexRunMutation>;
 export type TriggerNewDiscourseIndexRunMutationOptions = Apollo.BaseMutationOptions<TriggerNewDiscourseIndexRunMutation, TriggerNewDiscourseIndexRunMutationVariables>;
+export const UpdateIndexWithAllDiscordPostsDocument = gql`
+    mutation UpdateIndexWithAllDiscordPosts($spaceId: String!) {
+  updateIndexWithAllDiscordPosts(spaceId: $spaceId)
+}
+    `;
+export type UpdateIndexWithAllDiscordPostsMutationFn = Apollo.MutationFunction<UpdateIndexWithAllDiscordPostsMutation, UpdateIndexWithAllDiscordPostsMutationVariables>;
+
+/**
+ * __useUpdateIndexWithAllDiscordPostsMutation__
+ *
+ * To run a mutation, you first call `useUpdateIndexWithAllDiscordPostsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateIndexWithAllDiscordPostsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateIndexWithAllDiscordPostsMutation, { data, loading, error }] = useUpdateIndexWithAllDiscordPostsMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *   },
+ * });
+ */
+export function useUpdateIndexWithAllDiscordPostsMutation(baseOptions?: Apollo.MutationHookOptions<UpdateIndexWithAllDiscordPostsMutation, UpdateIndexWithAllDiscordPostsMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateIndexWithAllDiscordPostsMutation, UpdateIndexWithAllDiscordPostsMutationVariables>(UpdateIndexWithAllDiscordPostsDocument, options);
+      }
+export type UpdateIndexWithAllDiscordPostsMutationHookResult = ReturnType<typeof useUpdateIndexWithAllDiscordPostsMutation>;
+export type UpdateIndexWithAllDiscordPostsMutationResult = Apollo.MutationResult<UpdateIndexWithAllDiscordPostsMutation>;
+export type UpdateIndexWithAllDiscordPostsMutationOptions = Apollo.BaseMutationOptions<UpdateIndexWithAllDiscordPostsMutation, UpdateIndexWithAllDiscordPostsMutationVariables>;
 export const IndexNeedsIndexingDiscoursePostsDocument = gql`
     mutation IndexNeedsIndexingDiscoursePosts($spaceId: String!) {
   indexNeedsIndexingDiscoursePosts(spaceId: $spaceId) {

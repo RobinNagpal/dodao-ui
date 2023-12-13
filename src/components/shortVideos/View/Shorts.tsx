@@ -33,7 +33,7 @@ export default function Shorts({ shortVideos, onThumbnailClick }: ShortsUIProps)
     <PageWrapper>
       <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-1">
         {shortVideos.map((video, index) => (
-          <ShortsThumbnail key={index} shortVideo={video} onClick={() => onThumbnailClick(index)} />
+          <ShortsThumbnail key={index} shortVideo={video} onClick={() => onThumbnailClick(index + 1)} />
         ))}
       </div>
     </PageWrapper>

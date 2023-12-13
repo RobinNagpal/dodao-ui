@@ -1,4 +1,4 @@
-import Button from '@/components/core/buttons/Button';
+import EllipsisDropdown, { EllipsisDropdownItem } from '@/components/core/dropdowns/EllipsisDropdown';
 import SectionLoader from '@/components/core/loaders/SectionLoader';
 import { Table, TableRow } from '@/components/core/table/Table';
 import TabsWithUnderline, { TabItem } from '@/components/core/tabs/TabsWithUnderline';
@@ -10,6 +10,7 @@ import {
   useDiscourseIndexRunsQuery,
   useIndexNeedsIndexingDiscoursePostsMutation,
   useTriggerNewDiscourseIndexRunMutation,
+  useUpdateIndexWithAllDiscordPostsMutation,
 } from '@/graphql/generated/generated-types';
 import moment from 'moment';
 import React, { useState } from 'react';
@@ -56,6 +57,22 @@ export default function DiscourseIndexRuns(props: { space: SpaceWithIntegrations
   const [selectedTabId, setSelectedTabId] = useState(TabIds.Runs);
   const [triggerNewDiscourseIndexRunMutation] = useTriggerNewDiscourseIndexRunMutation();
   const [indexNeedsIndexingDiscoursePostsMutation] = useIndexNeedsIndexingDiscoursePostsMutation();
+  const [updateIndexWithAllDiscordPostsMutation] = useUpdateIndexWithAllDiscordPostsMutation();
+
+  const indexActions: EllipsisDropdownItem[] = [
+    {
+      label: 'Scrape And Index All Posts',
+      key: 'scrapeAndIndexAllPosts',
+    },
+    {
+      label: 'Index - NeedsIndexing Posts',
+      key: 'indexNeedsIndexingPosts',
+    },
+    {
+      label: 'Index Pincone with Posts in DB',
+      key: 'indexPinconeWithPostsInDB',
+    },
+  ];
 
   if (loading || !discourseIndexRuns) {
     return <SectionLoader />;
@@ -71,37 +88,40 @@ export default function DiscourseIndexRuns(props: { space: SpaceWithIntegrations
       ) : (
         <div className="mt-8">
           <div className="flex justify-end">
-            <Button
-              primary
-              variant="contained"
-              onClick={async () => {
-                await triggerNewDiscourseIndexRunMutation({
-                  variables: {
-                    spaceId: props.space.id,
-                  },
-                  refetchQueries: ['DiscourseIndexRuns'],
-                });
-                showNotification({ message: 'Triggered new discourse index run', type: 'success' });
+            <EllipsisDropdown
+              items={indexActions}
+              onSelect={async (value) => {
+                if (value === 'scrapeAndIndexAllPosts') {
+                  await triggerNewDiscourseIndexRunMutation({
+                    variables: {
+                      spaceId: props.space.id,
+                    },
+                    refetchQueries: ['DiscourseIndexRuns'],
+                  });
+                  showNotification({ message: 'Triggered new discourse index run', type: 'success' });
+                }
+
+                if (value === 'indexNeedsIndexingPosts') {
+                  await indexNeedsIndexingDiscoursePostsMutation({
+                    variables: {
+                      spaceId: props.space.id,
+                    },
+                    refetchQueries: ['DiscourseIndexRuns'],
+                  });
+                  showNotification({ message: 'Triggered index run for needs indexing', type: 'success' });
+                }
+
+                if (value === 'indexPinconeWithPostsInDB') {
+                  await updateIndexWithAllDiscordPostsMutation({
+                    variables: {
+                      spaceId: props.space.id,
+                    },
+                    refetchQueries: ['DiscourseIndexRuns'],
+                  });
+                  showNotification({ message: 'Triggered Indexing for posts in DB', type: 'success' });
+                }
               }}
-              className="mr-4"
-            >
-              Trigger Full Index
-            </Button>
-            <Button
-              primary
-              variant="contained"
-              onClick={async () => {
-                await indexNeedsIndexingDiscoursePostsMutation({
-                  variables: {
-                    spaceId: props.space.id,
-                  },
-                  refetchQueries: ['DiscourseIndexRuns'],
-                });
-                showNotification({ message: 'Triggered index run for needs indexing', type: 'success' });
-              }}
-            >
-              Update Needs Indexing
-            </Button>
+            />
           </div>
           <Table
             heading={'Discourse Index Runs'}

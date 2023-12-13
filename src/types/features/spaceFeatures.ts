@@ -1,10 +1,12 @@
 export enum FeatureName {
   Courses = 'Courses',
-  Simulations = 'Simulations',
-  Timelines = 'Timelines',
+  Chatbot = 'Chatbot',
   Bytes = 'Bytes',
   ByteCollections = 'ByteCollections',
   Guides = 'Guides',
+  Shorts = 'Shorts',
+  Simulations = 'Simulations',
+  Timelines = 'Timelines',
 }
 
 export interface FeatureItem {
