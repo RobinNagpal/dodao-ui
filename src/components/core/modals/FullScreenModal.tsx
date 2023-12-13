@@ -51,12 +51,12 @@ export default function FullScreenModal({ open, title, children, onClose, showCl
                 <StyledModalWrapper className={'w-full pb-4 pt-2'}>
                   <div className="text-center">
                     <Dialog.Title as="h3" className="flex text-base font-semibold leading-6 justify-between">
-                      <div className="w-full align-center text-center">{title}</div>
+                      <div className="w-full align-center text-center text-xl">{title}</div>
                       {showCloseButton && (
                         <div className="flex justify-end pr-2">
                           <button
                             type="button"
-                            className={'inline-flex rounded-md hover:text-gray-500'}
+                            className={'rounded-md border-2 border-gray-400'}
                             onClick={() => {
                               onClose();
                             }}
