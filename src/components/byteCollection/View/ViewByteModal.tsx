@@ -1,7 +1,7 @@
 import ByteStepper from '@/components/bytes/View/ByteStepper';
 import { useViewByteInModal } from '@/components/bytes/View/useViewByteInModal';
 import PageLoading from '@/components/core/loaders/PageLoading';
-import FullPageModal from '@/components/core/modals/FullPageModal';
+import FullScreenModal from '@/components/core/modals/FullScreenModal';
 import { ByteDetailsFragment, ProjectByteFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { useEffect } from 'react';
 import styles from 'src/components/byteCollection/View/ViewByteModal.module.scss';
@@ -21,11 +21,7 @@ export default function ViewByteModal(props: ViewByteModalProps) {
   }, [props.byteId]);
 
   return (
-    <FullPageModal
-      open={props.showByteModal}
-      onClose={props.onClose}
-      title={<div className="mt-4 text-2xl"> {viewByteHelper.byteRef?.name || 'Tidbit Details'}</div>}
-    >
+    <FullScreenModal open={props.showByteModal} onClose={props.onClose} title={viewByteHelper.byteRef?.name || 'Tidbit Details'}>
       <div className={`pt-4 flex flex-col justify-center items-center byte-container w-full ${styles.byteContainer}`}>
         <div className={`sm:border sm:border-gray-200 rounded-xl sm:shadow-md p-2 lg:p-8 ${styles.styledByteCard}`}>
           <div className="split-content integration-card-content">
@@ -41,6 +37,6 @@ export default function ViewByteModal(props: ViewByteModalProps) {
           </div>
         </div>
       </div>
-    </FullPageModal>
+    </FullScreenModal>
   );
 }
