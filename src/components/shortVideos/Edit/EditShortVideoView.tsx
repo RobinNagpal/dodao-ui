@@ -108,7 +108,7 @@ export default function EditShortVideoView({ shortVideoToEdit, space, onSave, on
   };
 
   return (
-    <div>
+    <div className="text-left">
       <Input
         modelValue={shortVideo.title}
         onUpdate={(v) => updateShortVideoField('title', v?.toString() || '')}

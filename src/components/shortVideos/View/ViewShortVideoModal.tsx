@@ -1,30 +1,30 @@
 'use client';
 
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
-import FullPageModal from '@/components/core/modals/FullPageModal';
+import FullScreenModal from '@/components/core/modals/FullScreenModal';
+import { ShortVideoFragment, ShortVideosQuery } from '@/graphql/generated/generated-types';
 // import { videos } from '../sampleVideos';
-import React, { useRef, useState } from 'react';
-import './styles.css';
+import React, { useRef } from 'react';
 import SwiperCore from 'swiper';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { History, Keyboard, Mousewheel, Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { ShortVideosQuery } from '@/graphql/generated/generated-types';
+import './styles.css';
 
 interface ViewShortVideoModalProps {
   initialSlide: number;
-  data: ShortVideosQuery | undefined;
+  videos: ShortVideoFragment[];
   onClose: () => void;
   onShowEditModal: () => void;
 }
-export default function ViewShortVideoModal({ initialSlide, data, onClose, onShowEditModal }: ViewShortVideoModalProps) {
+export default function ViewShortVideoModal({ initialSlide, videos, onClose, onShowEditModal }: ViewShortVideoModalProps) {
   const swiperRef = useRef<SwiperCore>(null);
-
+  const initialVideo = videos?.[initialSlide];
   const threeDotItems = [{ label: 'Edit', key: 'edit' }];
   return (
-    <FullPageModal title="" open={true} onClose={onClose} fullWidth={false}>
+    <FullScreenModal title={initialVideo?.title} open={true} onClose={onClose} fullWidth={false}>
       <div className="flex justify-end">
         <PrivateEllipsisDropdown
           items={threeDotItems}
@@ -49,10 +49,10 @@ export default function ViewShortVideoModal({ initialSlide, data, onClose, onSho
           cssMode={false}
           navigation={true}
           modules={[Keyboard, Mousewheel, History, Navigation]}
-          initialSlide={initialSlide - 1}
+          initialSlide={initialSlide}
           style={{ display: 'flex' }}
         >
-          {data?.shortVideos?.map((vid, index) => (
+          {videos.map((vid, index) => (
             <SwiperSlide key={index} data-history={vid.videoUrl} className="flex justify-center items-center w-full h-full" style={{ display: 'flex' }}>
               <div className="relative w-[300px] h-[533px] 2xl:w-[600px] 2xl:h-[1066px]">
                 <video
@@ -72,6 +72,6 @@ export default function ViewShortVideoModal({ initialSlide, data, onClose, onSho
           ))}
         </Swiper>
       </div>
-    </FullPageModal>
+    </FullScreenModal>
   );
 }

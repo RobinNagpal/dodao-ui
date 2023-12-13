@@ -36,4 +36,11 @@ export const testAcademyFeatures: FeatureItem[] = [
       priority: 50,
     },
   },
+  {
+    featureName: FeatureName.Shorts,
+    enabled: true,
+    details: {
+      priority: 40,
+    },
+  },
 ];

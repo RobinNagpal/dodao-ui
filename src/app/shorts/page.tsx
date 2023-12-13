@@ -27,11 +27,11 @@ const MainShortsComponent = ({ space }: SpaceProps) => {
       </PageWrapper>
     );
   }
-  if (!!selectedVideoIndex) {
+  if (selectedVideoIndex !== null) {
     return (
       <ViewShortVideoModal
         initialSlide={selectedVideoIndex}
-        data={queryResponse}
+        videos={queryResponse?.shortVideos || []}
         onClose={() => setSelectedVideoIndex(null)}
         onShowEditModal={() => {
           setSelectedVideoIndex(null);
@@ -41,8 +41,8 @@ const MainShortsComponent = ({ space }: SpaceProps) => {
     );
   }
 
-  if (!!editVideoIndex && queryResponse?.shortVideos?.[editVideoIndex - 1]) {
-    const shortVideo = queryResponse?.shortVideos?.[editVideoIndex - 1];
+  if (editVideoIndex !== null && queryResponse?.shortVideos?.[editVideoIndex]) {
+    const shortVideo = queryResponse?.shortVideos?.[editVideoIndex];
 
     return (
       <EditShortVideoModal
