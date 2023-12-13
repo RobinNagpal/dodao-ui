@@ -79,6 +79,7 @@ export default function UploadInput({
           </div>
         </FileUploader>
       </div>
+      {typeof error === 'string' && <p className="mt-2 text-sm text-left text-red-600">{error}</p>}
     </UploadWrapper>
   );
 }

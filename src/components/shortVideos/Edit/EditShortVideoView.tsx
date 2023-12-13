@@ -108,7 +108,7 @@ export default function EditShortVideoView({ shortVideoToEdit, space, onSave, on
   };
 
   return (
-    <div>
+    <div className="text-left">
       <Input
         modelValue={shortVideo.title}
         onUpdate={(v) => updateShortVideoField('title', v?.toString() || '')}
@@ -127,6 +127,7 @@ export default function EditShortVideoView({ shortVideoToEdit, space, onSave, on
         imageType="ShortVideo"
         className="w-full"
         label={'Description'}
+        error={shortVideoErrors['description']}
       />
 
       <UploadInput
