@@ -13,10 +13,6 @@ export interface SingleSectionModalProps {
   fullWidth?: boolean;
 }
 
-const ModalContainer = styled.div`
-  color: var(--text-color);
-`;
-
 const StyledModalWrapper = styled.div`
   background-color: var(--bg-color);
 `;
@@ -33,10 +29,10 @@ export default function FullScreenModal({ open, title, children, onClose, showCl
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+          <div className="h-screen bg-gray-500 bg-opacity-75 transition-opacity" />
         </Transition.Child>
 
-        <ModalContainer className={`fixed inset-0 z-10 overflow-y-auto`}>
+        <div className={`fixed inset-0 z-10 overflow-y-auto ${styles.modalContainer}`}>
           <div className="flex min--hflul items-end justify-center text-center sm:items-center sm:p-0">
             <Transition.Child
               as={Fragment}
@@ -48,10 +44,10 @@ export default function FullScreenModal({ open, title, children, onClose, showCl
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
               <Dialog.Panel className={'relative transform overflow-hidden text-left transition-all sm:my-8 w-full ' + styles.dialogMargin}>
-                <StyledModalWrapper className={'w-full pb-4 pt-2'}>
+                <StyledModalWrapper className={'w-full'}>
                   <div className="text-center">
-                    <Dialog.Title as="h3" className="flex text-base font-semibold leading-6 justify-between">
-                      <div className="w-full align-center text-center text-xl">{title}</div>
+                    <Dialog.Title as="h3" className={'flex text-base font-semibold leading-6 justify-between p-2 ' + styles.modalTitle}>
+                      <div className="w-full align-center text-center text-xl mt-1">{title}</div>
                       {showCloseButton && (
                         <div className="flex justify-end pr-2">
                           <button
@@ -73,7 +69,7 @@ export default function FullScreenModal({ open, title, children, onClose, showCl
               </Dialog.Panel>
             </Transition.Child>
           </div>
-        </ModalContainer>
+        </div>
       </Dialog>
     </Transition.Root>
   );
