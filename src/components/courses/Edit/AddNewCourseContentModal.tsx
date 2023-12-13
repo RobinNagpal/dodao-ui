@@ -1,6 +1,6 @@
 import GenerateQuestionsUsingAI, { GeneratedQuestionInterface } from '@/components/ai/questions/GenerateQuestionsUsingAI';
 import Button from '@/components/core/buttons/Button';
-import FullScreenModal from '@/components/core/modals/FullScreenModal';
+import FullPageModal from '@/components/core/modals/FullPageModal';
 import EditCourseExplanation from '@/components/courses/Edit/Items/EditCourseExplanation';
 import EditCourseQuestion from '@/components/courses/Edit/Items/EditCourseQuestion';
 import EditTopic from '@/components/courses/Edit/Items/EditTopic';
@@ -158,7 +158,7 @@ const AddNewCourseContentModal: React.FC<ModalCourseNewItemProps> = ({ course, s
   };
 
   return (
-    <FullScreenModal open={open} onClose={closeModal} title={'Add Course Contents'}>
+    <FullPageModal open={open} onClose={closeModal} title={'Add Course Contents'}>
       <ModalBody className="mt-4 flex align-center justify-center h-full w-full">
         {showAddButtons && (
           <div className="max-w-xs">
@@ -232,7 +232,7 @@ const AddNewCourseContentModal: React.FC<ModalCourseNewItemProps> = ({ course, s
           </div>
         )}
       </ModalBody>
-    </FullScreenModal>
+    </FullPageModal>
   );
 };
 

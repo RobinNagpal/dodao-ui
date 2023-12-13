@@ -1,6 +1,6 @@
 import Button from '@/components/core/buttons/Button';
 import Input from '@/components/core/input/Input';
-import FullScreenModal from '@/components/core/modals/FullScreenModal';
+import FullPageModal from '@/components/core/modals/FullPageModal';
 import StyledSelect from '@/components/core/select/StyledSelect';
 import { DiscordServer, SpaceLoadersInfo, SpaceLoadersInfoInput, useReFetchDiscordServersMutation } from '@/graphql/generated/generated-types';
 import React, { useEffect, useState } from 'react';
@@ -29,7 +29,7 @@ export default function UpsertSpaceLoadersInfoModal({ open, onUpsert, onClose, l
   }, []);
 
   return (
-    <FullScreenModal open={open} onClose={onClose} title={'Space Loaders'}>
+    <FullPageModal open={open} onClose={onClose} title={'Space Loaders'}>
       <div className="text-left">
         <div className="m-4 space-y-2">
           <Input label={'Discourse Url'} onUpdate={(repoUrl) => setDiscourseUrl(repoUrl?.toString())} modelValue={discourseUrl} />
@@ -58,6 +58,6 @@ export default function UpsertSpaceLoadersInfoModal({ open, onUpsert, onClose, l
           </Button>
         </div>
       </div>
-    </FullScreenModal>
+    </FullPageModal>
   );
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import ButtonLarge from '@/components/core/buttons/Button';
-import FullScreenModal from '@/components/core/modals/FullScreenModal';
+import FullPageModal from '@/components/core/modals/FullPageModal';
 import CreateContentModalContents from '@/components/main/TopNav/CreateContentModalContents';
 import { DesktopNavLink } from '@/components/main/TopNav/DesktopNavLink';
 import { DesktopProfileMenu } from '@/components/main/TopNav/DesktopProfileMenu';
@@ -136,9 +136,9 @@ export default function TopNav(props: { space?: SpaceWithIntegrationsFragment | 
   const { space } = props;
   return (
     <StyledDiv>
-      <FullScreenModal open={showCreateModal} onClose={() => setShowCreateModal(false)} title={'Create'} showCloseButton={false}>
+      <FullPageModal open={showCreateModal} onClose={() => setShowCreateModal(false)} title={'Create'} showCloseButton={false}>
         <CreateContentModalContents space={props.space} hideModal={() => setShowCreateModal(false)} />
-      </FullScreenModal>
+      </FullPageModal>
       <Disclosure
         as="nav"
         className="shadow"

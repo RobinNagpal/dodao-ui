@@ -1,7 +1,7 @@
 import ByteStepper from '@/components/bytes/View/ByteStepper';
 import { useViewByteInModal } from '@/components/bytes/View/useViewByteInModal';
 import PageLoading from '@/components/core/loaders/PageLoading';
-import FullScreenModal from '@/components/core/modals/FullScreenModal';
+import FullPageModal from '@/components/core/modals/FullPageModal';
 import { ByteDetailsFragment, ProjectByteFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { useEffect } from 'react';
 import styles from 'src/components/byteCollection/View/ViewByteModal.module.scss';
@@ -21,7 +21,7 @@ export default function ViewByteModal(props: ViewByteModalProps) {
   }, [props.byteId]);
 
   return (
-    <FullScreenModal
+    <FullPageModal
       open={props.showByteModal}
       onClose={props.onClose}
       title={<div className="mt-4 text-2xl"> {viewByteHelper.byteRef?.name || 'Tidbit Details'}</div>}
@@ -41,6 +41,6 @@ export default function ViewByteModal(props: ViewByteModalProps) {
           </div>
         </div>
       </div>
-    </FullScreenModal>
+    </FullPageModal>
   );
 }

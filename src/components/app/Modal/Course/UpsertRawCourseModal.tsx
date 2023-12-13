@@ -1,6 +1,6 @@
 import Button from '@/components/core/buttons/Button';
 import Input from '@/components/core/input/Input';
-import FullScreenModal from '@/components/core/modals/FullScreenModal';
+import FullPageModal from '@/components/core/modals/FullPageModal';
 import StyledSelect from '@/components/core/select/StyledSelect';
 import { RawGitCourse } from '@/graphql/generated/generated-types';
 import { PublishStatus } from '@/types/deprecated/models/enums';
@@ -19,7 +19,7 @@ export default function UpsertRawCourseModal({ open, onUpsertRawCourse, onClose,
   const [publishStatus, setPublishStatus] = useState<PublishStatus>((rawGitCourse?.publishStatus as PublishStatus) || PublishStatus.Live);
 
   return (
-    <FullScreenModal open={open} onClose={onClose} title={'Upsert Course'}>
+    <FullPageModal open={open} onClose={onClose} title={'Upsert Course'}>
       <div className="text-left">
         <div className="m-4 space-y-2">
           <Input label={'Course Repo URL'} onUpdate={(repoUrl) => setRepoUrl(repoUrl?.toString() || '')} modelValue={repoUrl} />
@@ -36,6 +36,6 @@ export default function UpsertRawCourseModal({ open, onUpsertRawCourse, onClose,
           </Button>
         </div>
       </div>
-    </FullScreenModal>
+    </FullPageModal>
   );
 }

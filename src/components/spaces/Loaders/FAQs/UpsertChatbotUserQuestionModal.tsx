@@ -1,6 +1,6 @@
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
 import Button from '@/components/core/buttons/Button';
-import FullScreenModal from '@/components/core/modals/FullScreenModal';
+import FullPageModal from '@/components/core/modals/FullPageModal';
 import CategoryCheckboxes from '@/components/spaces/Loaders/Discourse/CategoryCheckboxes';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import {
@@ -55,7 +55,7 @@ export default function UpsertChatbotUserQuestionModal({
   };
 
   return (
-    <FullScreenModal open={open} onClose={onClose} title="Annotate User Question">
+    <FullPageModal open={open} onClose={onClose} title="Annotate User Question">
       <div className="ml-6 p-4 text-left">
         <div className="mb-6">Upsert Chatbot UserQuestion</div>
         <div className="my-4">
@@ -75,6 +75,6 @@ export default function UpsertChatbotUserQuestionModal({
           Upsert
         </Button>
       </div>
-    </FullScreenModal>
+    </FullPageModal>
   );
 }
