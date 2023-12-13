@@ -60,7 +60,6 @@ export const Chat = memo(({ stopConversationRef, space, isChatbotSite }: Props) 
         let updatedConversation: Conversation;
 
         message = { ...message, relatedFAQs: result.data?.searchChatbotFAQs || [] };
-
         updatedConversation = {
           ...selectedConversation,
           messages: [message],
@@ -230,8 +229,7 @@ export const Chat = memo(({ stopConversationRef, space, isChatbotSite }: Props) 
 
   useEffect(() => {
     throttledScrollDown();
-    selectedConversation && setCurrentMessage(selectedConversation.messages[selectedConversation.messages.length - 2]);
-  }, [selectedConversation, throttledScrollDown]);
+  }, [throttledScrollDown]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(

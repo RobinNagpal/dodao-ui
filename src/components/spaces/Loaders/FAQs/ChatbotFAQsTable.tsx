@@ -3,6 +3,7 @@ import Button from '@/components/core/buttons/Button';
 import { EllipsisDropdownItem } from '@/components/core/dropdowns/EllipsisDropdown';
 import { Table, TableRow } from '@/components/core/table/Table';
 import UpsertChatbotFAQModal from '@/components/spaces/Loaders/FAQs/UpsertChatbotFAQModal';
+import { useNotificationContext } from '@/contexts/NotificationContext';
 import {
   ChatbotFaqFragment,
   SpaceWithIntegrationsFragment,
@@ -10,8 +11,8 @@ import {
   useDeleteChatbotFaqMutation,
   useIndexChatbotFaQsMutation,
 } from '@/graphql/generated/generated-types';
+import orderBy from 'lodash/orderBy';
 import React, { useState } from 'react';
-import { useNotificationContext } from '@/contexts/NotificationContext';
 
 function getFAQsTable(faqs: ChatbotFaqFragment[]): TableRow[] {
   return faqs.map((faq: ChatbotFaqFragment): TableRow => {
@@ -80,7 +81,7 @@ export function ChatbotFAQsTable(props: { space: SpaceWithIntegrationsFragment }
       </div>
       <Table
         heading={'FAQs'}
-        data={getFAQsTable(chatbotFAQsResponse?.chatbotFAQs || [])}
+        data={getFAQsTable(orderBy(chatbotFAQsResponse?.chatbotFAQs || [], ['priority'], ['desc']))}
         columnsHeadings={['Id', 'Question', 'Answer', 'Priority']}
         columnsWidthPercents={[10, 30, 50, 10]}
         actions={{
