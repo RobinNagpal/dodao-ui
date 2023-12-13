@@ -238,7 +238,7 @@ function MarkdownEditor({
       </MainDiv>
 
       {info && <p className="mt-1 text-xs">{info}</p>}
-      {typeof error === 'string' && <p className="mt-2 text-sm text-red-600">{error}</p>}
+      {typeof error === 'string' && <p className="mt-2 text-sm text-left text-red-600">{error}</p>}
       {showImageUploadModal && (
         <UploadImageModal
           open={showImageUploadModal}

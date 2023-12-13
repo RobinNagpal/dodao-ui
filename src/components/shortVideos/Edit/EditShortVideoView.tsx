@@ -127,6 +127,7 @@ export default function EditShortVideoView({ shortVideoToEdit, space, onSave, on
         imageType="ShortVideo"
         className="w-full"
         label={'Description'}
+        error={shortVideoErrors['description']}
       />
 
       <UploadInput
