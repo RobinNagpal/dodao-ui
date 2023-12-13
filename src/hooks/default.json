@@ -162,17 +162,7 @@
       "simulationsThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/arbitrum-university/HomeIcons/Simulations.png",
       "timelinesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/arbitrum-university/HomeIcons/Timelines.png"
     },
-    "life-insurance-tips": {
-      "academyHeading": "Learn more about Life Insurance?",
-      "academyText": "Understanding life insurance can be challenging, but we're here to support you every step of the way.",
-      "projectName": "Life Insurance Tips",
-      "bytesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/arbitrum-university/HomeIcons/Tidbits.png",
-      "bytecollectionsThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/arbitrum-university/HomeIcons/Tidbits.png",
-      "coursesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/arbitrum-university/HomeIcons/Courses.png",
-      "guidesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/arbitrum-university/HomeIcons/Guides.png",
-      "simulationsThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/arbitrum-university/HomeIcons/Simulations.png",
-      "timelinesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/balancer/shorts.png"
-    },
+
     "balancer-eth-1": {
       "academyHeading": "Learn more about Balancer?",
       "academyText": "We know crypto can be a confusing place and Balancer Academy has your back.",
@@ -226,7 +216,8 @@
       "coursesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/compound/compound_courses.png",
       "guidesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/compound/compound_guides.png",
       "simulationsThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/compound/compound_demos.png",
-      "timelinesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/compound/compound_timelines.png"
+      "timelinesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/compound/compound_timelines.png",
+      "chatbotThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/compound/Nema.png"
     },
     "credit-union-academy": {
       "academyHeading": "Learn more about Credit Unions?",
@@ -278,6 +269,17 @@
       "projectName": "Kleros",
       "guidesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/kleros/kleros_guides.png",
       "coursesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/kleros/kleros_courses.png"
+    },
+    "life-insurance-tips": {
+      "academyHeading": "Learn more about Life Insurance?",
+      "academyText": "Understanding life insurance can be challenging, but we're here to support you every step of the way.",
+      "projectName": "Life Insurance Tips",
+      "bytesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/arbitrum-university/HomeIcons/Tidbits.png",
+      "bytecollectionsThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/arbitrum-university/HomeIcons/Tidbits.png",
+      "coursesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/arbitrum-university/HomeIcons/Courses.png",
+      "guidesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/arbitrum-university/HomeIcons/Guides.png",
+      "simulationsThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/arbitrum-university/HomeIcons/Simulations.png",
+      "shortsThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/balancer/shorts.png"
     },
     "optimism-university": {
       "academyHeading": "Learn more about Optimism?",
