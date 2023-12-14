@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { ProjectFragment } from '@/graphql/generated/generated-types';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
+import { SwiperNavButtons } from './SwiperNavButtons';
 import 'react-loading-skeleton/dist/skeleton.css';
 import 'swiper/css';
 import 'swiper/css/pagination';
-import { SwiperNavButtons } from './SwiperNavButtons';
+import styles from './ListProjectsHelper.module.scss';
 
 type ListProjectsHelperProps = {
   projects: ProjectFragment[];
@@ -21,18 +22,79 @@ const ListProjectsHelper: React.FC<ListProjectsHelperProps> = ({ projects }) => 
     }, 4000);
     return () => clearTimeout(timer);
   }, []);
+
   return (
-    <div className="m-5">
-      <Swiper spaceBetween={50} slidesPerView={5}>
+    <div className="m-5 overflow-hidden">
+      <Swiper
+        spaceBetween={10}
+        slidesPerView={5}
+        breakpoints={{
+          0: {
+            slidesPerView: 1,
+            spaceBetween: 10,
+          },
+          140: {
+            slidesPerView: 1.25,
+            spaceBetween: 10,
+          },
+          240: {
+            slidesPerView: 1.5,
+            spaceBetween: 10,
+          },
+          340: {
+            slidesPerView: 1.75,
+            spaceBetween: 10,
+          },
+          440: {
+            slidesPerView: 2,
+            spaceBetween: 10,
+          },
+          480: {
+            slidesPerView: 2.25,
+            spaceBetween: 10,
+          },
+          540: {
+            slidesPerView: 2.5,
+            spaceBetween: 20,
+          },
+          640: {
+            slidesPerView: 2.5,
+            spaceBetween: 20,
+          },
+          680: {
+            slidesPerView: 3,
+            spaceBetween: 20,
+          },
+          740: {
+            slidesPerView: 3.5,
+            spaceBetween: 20,
+          },
+          840: {
+            slidesPerView: 4,
+            spaceBetween: 20,
+          },
+          1024: {
+            slidesPerView: 5,
+            spaceBetween: 20,
+          },
+          1280: {
+            slidesPerView: 5,
+            spaceBetween: 30,
+          },
+        }}
+      >
         {projects.map((project) => (
           <SwiperSlide key={project.id}>
             {loading ? (
               <SkeletonTheme baseColor="#64748b" enableAnimation={true}>
-                <Skeleton height={200} />
+                <Skeleton height={250} />
               </SkeletonTheme>
             ) : (
-              <div className="h-[200px] flex justify-center items-end rounded-xl bg-blue-500">
-                <p className="text-white">{project.name}</p>
+              <div className={`h-[250px] flex flex-col justify-end items-center rounded relative overflow-hidden pt-1 px-1 ${styles.card}`}>
+                <div className="h-[150px] absolute top-1 left-1 right-1 rounded">
+                  <img src="https://picsum.photos/300" alt={project.name} className="object-contain w-full rounded" />
+                </div>
+                <p className={`z-10 ${styles.header}`}>{project.name}</p>
               </div>
             )}
           </SwiperSlide>
