@@ -73,7 +73,7 @@ export default function ViewShortVideoModal({ initialSlide, videos, onClose, onS
         >
           {videos.map((vid, index) => (
             <SwiperSlide key={index} data-history={vid.videoUrl} className="flex justify-center items-center w-full h-full" style={{ display: 'flex' }}>
-              <div className="relative w-[288px] h-[512px] 2xl:w-[585px] 2xl:h-[1040px]">
+              <div className="relative w-[243px] h-[432px] md:w-[288px] md:h-[512px] 2xl:w-[585px] 2xl:h-[1040px]">
                 <video
                   ref={videoRefs.current[index]}
                   id={vid.id}
