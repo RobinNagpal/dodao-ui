@@ -104,14 +104,14 @@ Here is an example of how it looks for me on my local machine (mac)
 
 Here is the table with the mapping of the domains to the academy websites
 
-| Project      | Local Academy Website Domain  |
-|--------------|-------------------------------|
-| dodao        | dodao-localhost.academy       |
-| compound     | compound-localhost.education  |
-| uniswap      | uniswap-localhost.university  |
-| arbitrum     | arbitrum-localhost.education  |
-| optimism     | optimism-localhost.university |
-| cryptogelato | cryptogelato-localhost.com    |
+| Project      | Local Academy Website Domain  | Website URL                               |
+|--------------|-------------------------------|-------------------------------------------|
+| dodao        | dodao-localhost.academy       | http://dodao-localhost.academy:3000       |
+| compound     | compound-localhost.education  | http://compound-localhost.education:3000  |
+| uniswap      | uniswap-localhost.university  | http://uniswap-localhost.university:3000  |
+| arbitrum     | arbitrum-localhost.education  | http://arbitrum-localhost.education:3000  |
+| optimism     | optimism-localhost.university | http://optimism-localhost.university:3000 |
+| cryptogelato | cryptogelato-localhost.com    | http://cryptogelato-localhost.com:3000    |
 
 
 
