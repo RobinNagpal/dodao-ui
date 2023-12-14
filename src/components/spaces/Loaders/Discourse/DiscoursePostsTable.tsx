@@ -3,18 +3,12 @@ import SectionLoader from '@/components/core/loaders/SectionLoader';
 import { Table, TableRow } from '@/components/core/table/Table';
 import AnnotateDiscoursePostModal from '@/components/spaces/Loaders/Discourse/AnnotateDiscoursePostModal';
 import UpdateSummaryDiscoursePostModal from '@/components/spaces/Loaders/Discourse/UpdateSummaryDiscoursePostModal';
-import { ChatbotSubView, ChatbotView, getChatbotSubviewUrl, ManageSpaceSubviews } from '@/components/spaces/manageSpaceSubviews';
+import { ChatbotSubView, ChatbotView, getChatbotSubviewUrl } from '@/components/spaces/manageSpaceSubviews';
 import { useNotificationContext } from '@/contexts/NotificationContext';
-import {
-  DiscoursePost,
-  SpaceWithIntegrationsFragment,
-  useDiscoursePostsQuery,
-  useIndexDiscoursePostMutation,
-  useUpsertSummaryOfDiscoursePostMutation,
-} from '@/graphql/generated/generated-types';
+import { DiscoursePost, SpaceWithIntegrationsFragment, useDiscoursePostsQuery, useIndexDiscoursePostMutation } from '@/graphql/generated/generated-types';
 import moment from 'moment/moment';
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 function getIndexRunRows(discoursePosts: DiscoursePost[]): TableRow[] {
   return discoursePosts.map((post: DiscoursePost): TableRow => {

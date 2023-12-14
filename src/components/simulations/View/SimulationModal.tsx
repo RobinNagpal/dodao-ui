@@ -1,3 +1,4 @@
+import FullPageModal from '@/components/core/modals/FullPageModal';
 import FullScreenModal from '@/components/core/modals/FullScreenModal';
 import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';

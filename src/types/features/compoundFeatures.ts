@@ -9,6 +9,13 @@ export const compoundFeatures: FeatureItem[] = [
     },
   },
   {
+    featureName: FeatureName.Chatbot,
+    enabled: true,
+    details: {
+      priority: 85,
+    },
+  },
+  {
     featureName: FeatureName.Bytes,
     enabled: true,
     details: {

@@ -1050,6 +1050,7 @@ type Mutation {
   updateByteSettings(input: ByteSettingsInput!, spaceId: String!): Space!
   updateCourseBasicInfo(courseBasicInfo: CourseBasicInfoInput!, spaceId: String!): GitCourse!
   updateGuideSettings(input: GuideSettingsInput!, spaceId: String!): Space!
+  updateIndexWithAllDiscordPosts(spaceId: String!): Boolean!
   updateIndexingOfDiscordChannel(channelId: String!, shouldIndex: Boolean!, spaceId: String!): DiscordChannel!
   updateSocialSettings(input: SocialSettingsInput!, spaceId: String!): Space!
   updateSpace(spaceInput: UpsertSpaceInput!): Space!
@@ -1074,6 +1075,7 @@ type Mutation {
   upsertProjectByte(input: UpsertProjectByteInput!, projectId: String!): ProjectByte!
   upsertProjectByteCollection(input: UpsertProjectByteCollectionInput!, projectId: String!): ProjectByteCollection!
   upsertProjectGalaxyAccessToken(accessToken: String!, spaceId: String!): Space!
+  upsertShortVideo(shortVideo: ShortVideoInput!, spaceId: String!): ShortVideo!
   upsertSimulation(input: UpsertSimulationInput!, spaceId: String!): Simulation!
   upsertSpaceAcademyRepository(academyRepository: String!, spaceId: String!): Space!
   upsertSpaceFeatures(features: [String!]!, spaceId: String!): Space!
@@ -1222,6 +1224,7 @@ type Query {
   route53Records: [Route53Record!]!
   scrapedUrlInfos(spaceId: String!, websiteScrapingInfoId: String!): [ScrapedUrlInfo!]!
   searchChatbotFAQs(query: String!, spaceId: String!): [SearchedChatbotFAQ!]!
+  shortVideos(spaceId: String!): [ShortVideo!]
   simulation(simulationId: String!, spaceId: String!): Simulation!
   simulations(spaceId: String!): [Simulation!]!
   siteScrapingRuns(spaceId: String!, websiteScrapingInfoId: String!): [SiteScrapingRun!]!
@@ -1291,6 +1294,26 @@ input SendEmailInput {
   firstName: String!
   lastName: String!
   message: String!
+}
+
+type ShortVideo {
+  createdAt: String!
+  description: String!
+  id: ID!
+  priority: Int!
+  thumbnail: String!
+  title: String!
+  updatedAt: String!
+  videoUrl: String!
+}
+
+input ShortVideoInput {
+  description: String!
+  id: ID!
+  priority: Int!
+  thumbnail: String!
+  title: String!
+  videoUrl: String!
 }
 
 type Simulation {

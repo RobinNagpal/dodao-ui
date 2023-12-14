@@ -1,6 +1,6 @@
 import Button from '@/components/core/buttons/Button';
 import Checkboxes from '@/components/core/checkboxes/Checkboxes';
-import FullScreenModal from '@/components/core/modals/FullScreenModal';
+import FullPageModal from '@/components/core/modals/FullPageModal';
 import ToggleWithIcon from '@/components/core/toggles/ToggleWithIcon';
 import { useEditSpaceAuthSettings } from '@/components/spaces/Edit/Auth/useEditSpaceAuthSettings';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
@@ -10,7 +10,7 @@ import React from 'react';
 export default function UpsertSpaceAuthSettingsModal(props: { space: SpaceWithIntegrationsFragment; open: boolean; onClose: () => void }) {
   const { authSettings, setAuthSettingsField, updateAuthSettings, updating } = useEditSpaceAuthSettings(props.space);
   return (
-    <FullScreenModal open={props.open} onClose={props.onClose} title="Auth Settings">
+    <FullPageModal open={props.open} onClose={props.onClose} title="Auth Settings">
       <div className="space-y-12 text-left p-4">
         <div className="border-b pb-12">
           <ToggleWithIcon label={'Enable login'} enabled={!!authSettings.enableLogin} setEnabled={(value) => setAuthSettingsField('enableLogin', value)} />
@@ -40,6 +40,6 @@ export default function UpsertSpaceAuthSettingsModal(props: { space: SpaceWithIn
           Save
         </Button>
       </div>
-    </FullScreenModal>
+    </FullPageModal>
   );
 }

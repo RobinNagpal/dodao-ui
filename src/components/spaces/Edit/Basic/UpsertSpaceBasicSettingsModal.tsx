@@ -2,7 +2,7 @@ import UploadInput from '@/components/app/UploadInput';
 import UpsertBadgeInput from '@/components/core/badge/UpsertBadgeInput';
 import Button from '@/components/core/buttons/Button';
 import Input from '@/components/core/input/Input';
-import FullScreenModal from '@/components/core/modals/FullScreenModal';
+import FullPageModal from '@/components/core/modals/FullPageModal';
 import StyledSelect from '@/components/core/select/StyledSelect';
 import useEditSpace from '@/components/spaces/Edit/Basic/useEditSpace';
 import { Space } from '@/graphql/generated/generated-types';
@@ -27,7 +27,7 @@ export default function UpsertSpaceBasicSettingsModal(props: { space?: Space; op
   }, [space?.id]);
 
   return (
-    <FullScreenModal open={props.open} onClose={props.onClose} title="Basic Space Settings">
+    <FullPageModal open={props.open} onClose={props.onClose} title="Basic Space Settings">
       <div className="space-y-12 text-left p-6">
         <div className="border-b pb-12">
           <h2 className="text-base font-semibold leading-7">Edit Space</h2>
@@ -38,7 +38,6 @@ export default function UpsertSpaceBasicSettingsModal(props: { space?: Space; op
           <UploadInput
             label="Logo"
             error={inputError('avatar')}
-            onUpdate={(newValue) => setSpaceField('avatar', newValue)}
             imageType="AcademyLogo"
             spaceId={space?.id || 'new-space'}
             modelValue={space?.avatar}
@@ -114,6 +113,6 @@ export default function UpsertSpaceBasicSettingsModal(props: { space?: Space; op
           Save
         </Button>
       </div>
-    </FullScreenModal>
+    </FullPageModal>
   );
 }

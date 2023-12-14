@@ -1,3 +1,5 @@
+'use client';
+
 import withSpace from '@/app/withSpace';
 import ButtonLarge from '@/components/core/buttons/Button';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';

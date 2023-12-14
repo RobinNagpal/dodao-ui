@@ -1,5 +1,5 @@
-import React, { useState, useEffect, CSSProperties } from 'react';
 import makeBlockie from 'ethereum-blockies-base64';
+import React, { CSSProperties } from 'react';
 
 interface IProps {
   seed?: string;
@@ -10,11 +10,8 @@ interface IProps {
 
 const Blockie: React.FC<IProps> = ({ alt, seed, className, style }) => {
   const address = '0x000000000000000000000000000000000000dead';
-  const [blockie, setBlockie] = useState('');
 
-  useEffect(() => {
-    setBlockie(makeBlockie(seed || address));
-  }, [seed]);
+  const blockie = makeBlockie(seed || address);
 
   return <img src={blockie} style={style} className={className} alt={alt} />;
 };

@@ -1,7 +1,7 @@
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
 import Button from '@/components/core/buttons/Button';
 import Input from '@/components/core/input/Input';
-import FullScreenModal from '@/components/core/modals/FullScreenModal';
+import FullPageModal from '@/components/core/modals/FullPageModal';
 import CategoryCheckboxes from '@/components/spaces/Loaders/Discourse/CategoryCheckboxes';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import { ChatbotFaqFragment, SpaceWithIntegrationsFragment, useChatbotCategoriesQuery, useUpsertChatbotFaqMutation } from '@/graphql/generated/generated-types';
@@ -57,7 +57,7 @@ export default function UpsertChatbotFAQModal({
   };
 
   return (
-    <FullScreenModal open={open} onClose={onClose} title="Chatbot FAQs">
+    <FullPageModal open={open} onClose={onClose} title="Chatbot FAQs">
       <div className="ml-6 p-4 text-left">
         <div className="mb-6">Upsert Chatbot FAQ</div>
         <div className="my-4">
@@ -99,6 +99,6 @@ export default function UpsertChatbotFAQModal({
           Upsert
         </Button>
       </div>
-    </FullScreenModal>
+    </FullPageModal>
   );
 }

@@ -1,5 +1,5 @@
 import EmojiRatings from '@/components/app/Rating/EmojiRatings';
-import FullScreenModal from '@/components/core/modals/FullScreenModal';
+import FullPageModal from '@/components/core/modals/FullPageModal';
 import { GuideFeedback, GuideRating } from '@/graphql/generated/generated-types';
 import { ClipboardDocumentListIcon, QuestionMarkCircleIcon, RocketLaunchIcon } from '@heroicons/react/24/outline';
 import { useState } from 'react';
@@ -63,7 +63,7 @@ export default function GuideEndRatingModal({ open, onClose, skipGuideRating, se
   };
 
   return (
-    <FullScreenModal open={open} onClose={skipOrCloseModal} title={''}>
+    <FullPageModal open={open} onClose={skipOrCloseModal} title={''}>
       <ModalContent>
         <div className="mt-2 text-center sm:mt-1">
           <div className="flex flex-row items-center justify-center ">
@@ -113,6 +113,6 @@ export default function GuideEndRatingModal({ open, onClose, skipGuideRating, se
           </a>
         </div>
       </ModalContent>
-    </FullScreenModal>
+    </FullPageModal>
   );
 }

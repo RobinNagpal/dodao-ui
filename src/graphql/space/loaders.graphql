@@ -183,6 +183,10 @@ mutation TriggerNewDiscourseIndexRun($spaceId: String!) {
   }
 }
 
+mutation UpdateIndexWithAllDiscordPosts($spaceId: String!) {
+  updateIndexWithAllDiscordPosts(spaceId: $spaceId)
+}
+
 mutation IndexNeedsIndexingDiscoursePosts($spaceId: String!) {
   indexNeedsIndexingDiscoursePosts(spaceId: $spaceId) {
     ...DiscourseIndexRunFragment

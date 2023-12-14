@@ -1,7 +1,7 @@
 import Button from '@/components/core/buttons/Button';
 import ErrorWithAccentBorder from '@/components/core/errors/ErrorWithAccentBorder';
 import Input from '@/components/core/input/Input';
-import FullScreenModal from '@/components/core/modals/FullScreenModal';
+import FullPageModal from '@/components/core/modals/FullPageModal';
 import TextareaAutosize from '@/components/core/textarea/TextareaAutosize';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import { ChatCompletionRequestMessageRoleEnum, useAskChatCompletionAiMutation, useDownloadAndCleanContentMutation } from '@/graphql/generated/generated-types';
@@ -132,7 +132,7 @@ export default function GenerateContentUsingAIModal(props: GenerateContentUsingA
     }
   };
   return (
-    <FullScreenModal open={open} onClose={onClose} title={props.modalTitle}>
+    <FullPageModal open={open} onClose={onClose} title={props.modalTitle}>
       <div className="text-left	p-4">
         <Input
           label="Topic"
@@ -185,6 +185,6 @@ export default function GenerateContentUsingAIModal(props: GenerateContentUsingA
           Generate Using AI
         </Button>
       </div>
-    </FullScreenModal>
+    </FullPageModal>
   );
 }

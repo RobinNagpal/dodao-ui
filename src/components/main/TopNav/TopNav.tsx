@@ -1,5 +1,7 @@
+'use client';
+
 import ButtonLarge from '@/components/core/buttons/Button';
-import FullScreenModal from '@/components/core/modals/FullScreenModal';
+import FullPageModal from '@/components/core/modals/FullPageModal';
 import CreateContentModalContents from '@/components/main/TopNav/CreateContentModalContents';
 import { DesktopNavLink } from '@/components/main/TopNav/DesktopNavLink';
 import { DesktopProfileMenu } from '@/components/main/TopNav/DesktopProfileMenu';
@@ -53,6 +55,12 @@ function DesktopNavLinks({ space }: { space: Space }) {
         if (feature.featureName === FeatureName.Timelines) {
           return <DesktopNavLink key="timelines" href="/timelines" label="Timelines" />;
         }
+        if (feature.featureName === FeatureName.Chatbot) {
+          return <DesktopNavLink key="ai_chatbot" href="/nema" label="Chatbot" />;
+        }
+        if (feature.featureName === FeatureName.Shorts) {
+          return <DesktopNavLink key="shorts" href="/shorts" label="Short Videos" />;
+        }
       })}
     </div>
   );
@@ -83,6 +91,12 @@ function MobileNavLinks({ space }: { space: Space }) {
         }
         if (feature.featureName === FeatureName.Timelines) {
           return <MobileNavLink key="timelines" href="/timelines" label="Timelines" />;
+        }
+        if (feature.featureName === FeatureName.Chatbot) {
+          return <MobileNavLink key="ai_chatbot" href="/nema" label="Chatbot" />;
+        }
+        if (feature.featureName === FeatureName.Shorts) {
+          return <MobileNavLink key="shorts" href="/shorts" label="Short Videos" />;
         }
       })}
     </div>
@@ -122,9 +136,9 @@ export default function TopNav(props: { space?: SpaceWithIntegrationsFragment | 
   const { space } = props;
   return (
     <StyledDiv>
-      <FullScreenModal open={showCreateModal} onClose={() => setShowCreateModal(false)} title={'Create'} showCloseButton={false}>
+      <FullPageModal open={showCreateModal} onClose={() => setShowCreateModal(false)} title={'Create'} showCloseButton={false}>
         <CreateContentModalContents space={props.space} hideModal={() => setShowCreateModal(false)} />
-      </FullScreenModal>
+      </FullPageModal>
       <Disclosure
         as="nav"
         className="shadow"

@@ -2,7 +2,7 @@ import UploadInput from '@/components/app/UploadInput';
 import UpsertBadgeInput from '@/components/core/badge/UpsertBadgeInput';
 import Button from '@/components/core/buttons/Button';
 import Input from '@/components/core/input/Input';
-import FullScreenModal from '@/components/core/modals/FullScreenModal';
+import FullPageModal from '@/components/core/modals/FullPageModal';
 import StyledSelect from '@/components/core/select/StyledSelect';
 import { Project } from '@/graphql/generated/generated-types';
 import { ProjectTypes } from '@/types/deprecated/models/enums';
@@ -27,7 +27,7 @@ export default function UpsertProjectModal(props: { spaceId: String; project?: P
   }, [project?.id]);
 
   return (
-    <FullScreenModal open={props.open} onClose={props.onClose} title="Basic Project Settings">
+    <FullPageModal open={props.open} onClose={props.onClose} title="Basic Project Settings">
       <div className="project-y-12 text-left p-6">
         <div className="border-b pb-12">
           <h2 className="text-base font-semibold leading-7">Edit Project</h2>
@@ -38,7 +38,6 @@ export default function UpsertProjectModal(props: { spaceId: String; project?: P
           <UploadInput
             label="Logo"
             error={inputError('logo')}
-            onUpdate={(newValue) => setProjectField('logo', newValue)}
             imageType="AcademyLogo"
             spaceId={project?.id || 'new-project'}
             modelValue={project?.logo}
@@ -84,6 +83,6 @@ export default function UpsertProjectModal(props: { spaceId: String; project?: P
           Save
         </Button>
       </div>
-    </FullScreenModal>
+    </FullPageModal>
   );
 }

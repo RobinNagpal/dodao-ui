@@ -35,20 +35,18 @@ export default function V2OneSideTimelineView({ timeline }: V2OneSideTimelineVie
       <div className="max-w-xl mx-auto">
         <div className="text-center ">
           <div className="relative flex flex-col items-center">
-            <h1 className="text-6xl font-bold leading-tight"> {timeline.name}</h1>
+            <h1 className="text-2xl font-bold leading-tight"> {timeline.name}</h1>
             <div className="flex w-24 mt-1 mb-10 overflow-hidden rounded">
-              <div className="flex-1 h-2 bg-blue-200"></div>
-              <div className="flex-1 h-2 bg-blue-400"></div>
-              <div className="flex-1 h-2 bg-blue-600"></div>
+              <div className={'flex-1 h-2 ' + styles.dynamicUnderline}></div>
             </div>
           </div>
           <p className="text-base text-center">{timeline.excerpt}</p>
-          <p className="text-sm text-center" dangerouslySetInnerHTML={{ __html: contents || '' }}></p>
+          <p className="text-sm text-center mt-6" dangerouslySetInnerHTML={{ __html: contents || '' }}></p>
         </div>
       </div>
       <div>
-        <section className="items-center py-24 font-poppins">
-          <div className="justify-center max-w-6xl px-4 py-4 mx-auto lg:py-8 md:px-6">
+        <section className="items-center py-16 font-poppins sm:pr-0 pr-5">
+          <div className="justify-center max-w-6xl py-4 mx-auto lg:py-8">
             {timeline.events.map((event, i) => {
               const eventSummary = marked.parse(event.summary, { renderer });
               const currentDate = moment().local();
@@ -57,24 +55,22 @@ export default function V2OneSideTimelineView({ timeline }: V2OneSideTimelineVie
                 ? moment(event.date).local().format('YYYY/MM/DD')
                 : moment(event.date).local().startOf('seconds').fromNow();
               return (
-                <div className="w-full mx-auto lg:max-w-3xl" key={event.uuid}>
+                <div className="w-full" key={event.uuid}>
                   <div className="relative flex justify-between">
-                    <div className="flex flex-col items-center w-10 mr-4 md:w-24">
+                    <div className="flex flex-col items-center w-8 md:w-24">
                       <div>
-                        <div className="flex items-center justify-center w-8 h-8 bg-blue-200 rounded-full dark:bg-gray-600">
-                          <div className="w-4 h-4 bg-blue-600 rounded-full dark:bg-blue-400"></div>
+                        <div className={'flex items-center justify-center w-8 h-8 rounded-full ' + styles.timelineSecondaryColor}>
+                          <div className={'w-4 h-4 rounded-full ' + styles.timelinePrimaryColor}></div>
                         </div>
                       </div>
-                      <div className="w-px h-full bg-blue-300 dark:bg-gray-600"></div>
+                      <div className={'w-px h-full ' + styles.timelineSecondaryColor}></div>
                     </div>
-                    <div>
-                      <h2 className="inline-block px-4 py-2 mb-4 text-xs font-medium text-gray-100 bg-gradient-to-r from-blue-500 to-blue-900 dark:from-blue-400 dark:to-blue-500 rounded-3xl dark:text-gray-100">
-                        {timeAgo}
-                      </h2>
-                      <div className={'relative flex-1 mb-10 border-b-4 border-blue-200 shadow rounded-3xl ' + styles.timelineCard} style={{ width: '800px' }}>
-                        <div className="relative p-6">
+                    <div className="w-full">
+                      <h2 className={'inline-block px-4 py-2 mb-4 text-xs font-medium text-gray-100 rounded-3xl ' + styles.timeColor}>{timeAgo}</h2>
+                      <div className={`relative w-full flex-1 mb-10 rounded-3xl ${styles.timelineCardBorderColor} ${styles.timelineCard}`}>
+                        <div className="relative p-6 w-full">
                           <p className="mb-2 text-xl font-bold">{event.title}</p>
-                          <p dangerouslySetInnerHTML={{ __html: eventSummary }} />
+                          <p className="w-full" dangerouslySetInnerHTML={{ __html: eventSummary }} />
                           <div className="flex">
                             {event.fullDetails && (
                               <a className={`p-4 flex ${styles.styledLink}`} onClick={() => handleShowFullDetailsModal(event)}>

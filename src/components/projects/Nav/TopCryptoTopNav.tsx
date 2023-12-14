@@ -1,6 +1,6 @@
 'use client';
 
-import FullScreenModal from '@/components/core/modals/FullScreenModal';
+import FullPageModal from '@/components/core/modals/FullPageModal';
 import CreateContentModalContents from '@/components/main/TopNav/CreateContentModalContents';
 import { DesktopNavLink } from '@/components/main/TopNav/DesktopNavLink';
 import { MobileNavLink } from '@/components/main/TopNav/MobileNavLink';
@@ -46,9 +46,9 @@ export default function TopCryptoTopNav({ space }: { space: SpaceWithIntegration
 
   return (
     <StyledDiv>
-      <FullScreenModal open={showCreateModal} onClose={() => setShowCreateModal(false)} title={'Create'} showCloseButton={false}>
+      <FullPageModal open={showCreateModal} onClose={() => setShowCreateModal(false)} title={'Create'} showCloseButton={false}>
         <CreateContentModalContents space={space} hideModal={() => setShowCreateModal(false)} />
-      </FullScreenModal>
+      </FullPageModal>
       <Disclosure
         as="nav"
         className="shadow"

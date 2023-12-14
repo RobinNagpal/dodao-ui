@@ -1,7 +1,7 @@
 'use client';
 
 import Button from '@/components/core/buttons/Button';
-import FullScreenModal from '@/components/core/modals/FullScreenModal';
+import FullPageModal from '@/components/core/modals/FullPageModal';
 import TabsWithUnderline, { TabItem } from '@/components/core/tabs/TabsWithUnderline';
 import CreateProjectContentModalContents from '@/components/projects/Nav/CreateProjectContentModalContents';
 import { ProjectFragment } from '@/graphql/generated/generated-types';
@@ -30,9 +30,9 @@ export function ViewProjectHeader({ project, selectedViewType }: { project: Proj
         <TabsWithUnderline selectedTabId={selectedViewType} setSelectedTabId={(id) => ``} tabs={tabs} className="w-96" />
       </div>
       {showCreateContentsModal && (
-        <FullScreenModal open={showCreateContentsModal} onClose={() => setShowCreateContentsModal(false)} title={'Create'} showCloseButton={false}>
+        <FullPageModal open={showCreateContentsModal} onClose={() => setShowCreateContentsModal(false)} title={'Create'} showCloseButton={false}>
           <CreateProjectContentModalContents projectId={project.id} hideModal={() => setShowCreateContentsModal(false)} />
-        </FullScreenModal>
+        </FullPageModal>
       )}
     </div>
   );

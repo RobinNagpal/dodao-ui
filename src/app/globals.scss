@@ -9,3 +9,13 @@
 @tailwind utilities;
 
 @import "@uiw/react-md-editor/dist/mdeditor.css";
+
+@import 'styles/themes/aaveTheme';
+@import 'styles/themes/arbitrumTheme';
+@import 'styles/themes/balancerTheme';
+@import 'styles/themes/compoundTheme';
+@import 'styles/themes/fuseTheme';
+@import 'styles/themes/globalTheme';
+@import 'styles/themes/klerosTheme';
+@import 'styles/themes/optimismTheme';
+@import 'styles/themes/uniswapTheme';

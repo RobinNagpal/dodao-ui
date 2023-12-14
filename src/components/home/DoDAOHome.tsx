@@ -1,6 +1,6 @@
 'use client';
 
-import FullScreenModal from '@/components/core/modals/FullScreenModal';
+import FullPageModal from '@/components/core/modals/FullPageModal';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import { SendEmailInput, useSendEmailMutation } from '@/graphql/generated/generated-types';
 import backgroundCallToAction from '@/images/background-call-to-action.jpg';
@@ -126,7 +126,7 @@ function ContactModal({ open, onClose }: any) {
   };
 
   return (
-    <FullScreenModal open={open} onClose={onClose} title={'Get started for free'}>
+    <FullPageModal open={open} onClose={onClose} title={'Get started for free'}>
       <div className="p-16">
         <form action="#" className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2" onSubmit={handleSubmit}>
           <TextField label="First name" id="firstName" name="firstName" type="text" autoComplete="given-name" required onChange={handleChange} />
@@ -160,7 +160,7 @@ function ContactModal({ open, onClose }: any) {
           </div>
         </form>
       </div>
-    </FullScreenModal>
+    </FullPageModal>
   );
 }
 

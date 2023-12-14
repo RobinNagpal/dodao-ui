@@ -29,6 +29,9 @@ export default function CreateContentModalContents({ hideModal, space }: { hideM
           <Button variant="outlined" primary className="p-2 w-full" onClick={() => goToUrl('/tidbit-collections/edit')}>
             Create Tidbit Collection
           </Button>
+          <Button variant="outlined" primary className="p-2 w-full" onClick={() => goToUrl('/shorts/create')}>
+            Create Short Video
+          </Button>
           {space?.id === TOP_CRYPTO_PROJECTS_SPACE_ID && (
             <Button variant="outlined" primary className="p-2 w-full" onClick={() => setShowProjectAddModal(true)}>
               Create Project

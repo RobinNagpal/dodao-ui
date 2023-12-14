@@ -1,4 +1,4 @@
-import FullScreenModal from '@/components/core/modals/FullScreenModal';
+import FullPageModal from '@/components/core/modals/FullPageModal';
 import { TimelineEventFragment } from '@/graphql/generated/generated-types';
 import { getMarkedRenderer } from '@/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
@@ -17,8 +17,8 @@ export default function TimelineDetailsModal({ event, open, onClose }: TimelineD
   const eventDetails = marked.parse(fullDetails, { renderer });
 
   return (
-    <FullScreenModal open={open} onClose={onClose} title={event.title}>
+    <FullPageModal open={open} onClose={onClose} title={event.title}>
       <div className="markdown-body p-4 text-sm text-left" dangerouslySetInnerHTML={{ __html: eventDetails }} />
-    </FullScreenModal>
+    </FullPageModal>
   );
 }
