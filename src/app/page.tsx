@@ -2,6 +2,7 @@ import { OpenAIModelID } from '@/chatbot/types/openai';
 import { TOP_CRYPTO_PROJECTS_SPACE_ID } from '@/chatbot/utils/app/constants';
 import DefaultHome from '@/components/home/DefaultHome/DefaultHome';
 import DoDAOHome from '@/components/home/DoDAOHome/DoDAOHome';
+import LifeInsureHomePage from '@/components/home/LifeInsure/LifeInsureHomePage';
 import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
@@ -24,6 +25,11 @@ async function Home() {
   if (host === 'dodao-localhost.io' || host === 'academy.dodao.io' || host === 'dodao.io') {
     return <DoDAOHome />;
   }
+
+  if (space?.id === 'life-insurance-tips') {
+    return <LifeInsureHomePage />;
+  }
+
   return <DefaultHome space={space!} />;
 }
 

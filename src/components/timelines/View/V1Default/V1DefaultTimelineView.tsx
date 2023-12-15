@@ -71,7 +71,7 @@ export default function V1DefaultTimelineView({ timeline }: V1DefaultTimelineVie
                     </time>
                   </div>
 
-                  <p className="p-4 pt-2 text-sm leading-6 markdown-body" dangerouslySetInnerHTML={{ __html: eventSummary }} />
+                  <p className="p-4 pt-2 text-sm leading-6 markdown-body text-left" dangerouslySetInnerHTML={{ __html: eventSummary }} />
 
                   <div className="flex">
                     {event.fullDetails && (
