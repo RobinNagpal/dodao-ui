@@ -4,33 +4,33 @@ import { Container } from './Container';
 
 const features = [
   {
-    name: 'Invest any amount',
-    description: 'Whether it’s $1 or $1,000,000, we can put your money to work for you.',
+    name: 'Educate with Ease',
+    description: 'Make complex terms simple for your clients with our bite-sized learning modules.',
     icon: DeviceArrowIcon,
   },
   {
-    name: 'Build a balanced portfolio',
-    description: 'Invest in different industries to find the most opportunities to win huge.',
+    name: 'Boost Your Business',
+    description: 'Insurance companies using our platform can see up to a 2x increase in client engagement and education.',
     icon: DeviceCardsIcon,
   },
   {
-    name: 'Trade in real-time',
-    description: 'Get insider tips on big stock moves and act on them within seconds.',
+    name: 'Stay Ahead of the Curve',
+    description: 'Be at the forefront of innovation with cutting-edge educational technology that sets you apart.',
     icon: DeviceClockIcon,
   },
   {
-    name: 'Profit from your network',
-    description: 'Invite new insiders to get tips faster and beat even other Pocket users.',
+    name: 'Enhance Brand Reputation',
+    description: 'Position your company as a thought leader in customer education within the insurance industry.',
     icon: DeviceListIcon,
   },
   {
-    name: 'Encrypted and anonymized',
-    description: 'Cutting-edge security technology that even the NSA doesn’t know about keeps you hidden.',
+    name: 'Reduce Support Queries',
+    description: 'Anticipate and address common questions with our comprehensive learning resources, freeing up your support team.',
     icon: DeviceLockIcon,
   },
   {
-    name: 'Portfolio tracking',
-    description: 'Watch your investments grow exponentially, leaving other investors in the dust.',
+    name: 'Empower Your Clients',
+    description: 'Provide clients with the knowledge to make confident insurance choices, fostering trust and loyalty.',
     icon: DeviceChartIcon,
   },
 ];
@@ -158,17 +158,18 @@ export function SecondaryFeatures() {
     <section id="secondary-features" aria-label="Features for building a portfolio" className="py-20 sm:py-32">
       <Container>
         <div className="mx-auto max-w-2xl sm:text-center">
-          <h2 className="text-3xl font-medium tracking-tight text-gray-900">Now is the time to build your portfolio.</h2>
-          <p className="mt-2 text-lg text-gray-600">
-            With typical market returns, you have to start young to secure your future. With Pocket, it’s never too late to build your nest egg.
+          <h2 className="text-3xl font-medium tracking-tight">Elevate Your Client Engagement</h2>
+          <p className="mt-2 text-lg">
+            With our innovative learning platform, insurance companies can double their engagement, simplify client education, and enhance policyholder
+            satisfaction.
           </p>
         </div>
         <ul role="list" className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-6 text-sm sm:mt-20 sm:grid-cols-2 md:gap-y-10 lg:max-w-none lg:grid-cols-3">
           {features.map((feature) => (
             <li key={feature.name} className="rounded-2xl border border-gray-200 p-8">
               <feature.icon className="h-8 w-8" />
-              <h3 className="mt-6 font-semibold text-gray-900">{feature.name}</h3>
-              <p className="mt-2 text-gray-700">{feature.description}</p>
+              <h3 className="mt-6 font-semibold">{feature.name}</h3>
+              <p className="mt-2">{feature.description}</p>
             </li>
           ))}
         </ul>

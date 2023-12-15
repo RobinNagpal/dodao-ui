@@ -22,21 +22,21 @@ interface CustomAnimationProps {
 
 const features = [
   {
-    name: 'Invite friends for better returns',
-    description: 'For every friend you invite to Pocket, you get insider notifications 5 seconds sooner. And it’s 10 seconds if you invite an insider.',
+    name: 'Concise, Step-by-Step Tidbits',
+    description:
+      'Dive into bite-sized learning with content structured in clear, manageable steps. Each tidbit is crafted to deliver understanding swiftly and efficiently, making every 5-10 sentence piece a powerful nugget of knowledge.',
     icon: DeviceUserIcon,
     screen: InviteScreen,
   },
   {
-    name: 'Notifications on stock dips',
-    description:
-      'Get a push notification every time we find out something that’s going to lower the share price on your holdings so you can sell before the information hits the public markets.',
+    name: 'One-Minute Videos',
+    description: 'Absorb critical life insurance concepts through our series of short, one-minute videos.',
     icon: DeviceNotificationIcon,
     screen: StocksScreen,
   },
   {
-    name: 'Invest what you want',
-    description: 'We hide your stock purchases behind thousands of anonymous trading accounts, so suspicious activity can never be traced back to you.',
+    name: 'Interactive Quizzes',
+    description: 'Test your knowledge with quick quizzes following each tidbit.',
     icon: DeviceTouchIcon,
     screen: InvestScreen,
   },
@@ -157,7 +157,7 @@ function InviteScreen(props: ScreenProps) {
       <MotionAppScreenHeader {...(props.animated ? headerAnimation : {})}>
         <AppScreen.Title>Invite people</AppScreen.Title>
         <AppScreen.Subtitle>
-          Get tips <span className="text-white">5s sooner</span> for every invite.
+          Get tips <span className="">5s sooner</span> for every invite.
         </AppScreen.Subtitle>
       </MotionAppScreenHeader>
       <MotionAppScreenBody {...(props.animated ? { ...bodyAnimation, custom: props.custom } : {})}>
@@ -168,12 +168,12 @@ function InviteScreen(props: ScreenProps) {
               { label: 'Email address', value: 'awiggin@chase.com' },
             ].map((field) => (
               <div key={field.label}>
-                <div className="text-sm text-gray-500">{field.label}</div>
-                <div className="mt-2 border-b border-gray-200 pb-2 text-sm text-gray-900">{field.value}</div>
+                <div className="text-sm">{field.label}</div>
+                <div className="mt-2 border-b border-gray-200 pb-2 text-sm">{field.value}</div>
               </div>
             ))}
           </div>
-          <div className="mt-6 rounded-lg bg-cyan-500 px-3 py-2 text-center text-sm font-semibold text-white">Invite person</div>
+          <div className="mt-6 rounded-lg bg-cyan-500 px-3 py-2 text-center text-sm font-semibold">Invite person</div>
         </div>
       </MotionAppScreenBody>
     </AppScreen>
@@ -251,10 +251,10 @@ function StocksScreen(props: ScreenProps) {
               <div className="flex-none rounded-full" style={{ backgroundColor: stock.color }}>
                 <stock.logo className="h-10 w-10" />
               </div>
-              <div className="flex-auto text-sm text-gray-900">{stock.name}</div>
+              <div className="flex-auto text-sm">{stock.name}</div>
               <div className="flex-none text-right">
-                <div className="text-sm font-medium text-gray-900">{stock.price}</div>
-                <div className={clsx('text-xs leading-5', stock.change.startsWith('+') ? 'text-cyan-500' : 'text-gray-500')}>{stock.change}</div>
+                <div className="text-sm font-medium">{stock.price}</div>
+                <div className={clsx('text-xs leading-5', stock.change.startsWith('+') ? '' : '')}>{stock.change}</div>
               </div>
             </div>
           ))}
@@ -270,7 +270,7 @@ function InvestScreen(props: ScreenProps) {
       <MotionAppScreenHeader {...(props.animated ? headerAnimation : {})}>
         <AppScreen.Title>Buy $LA</AppScreen.Title>
         <AppScreen.Subtitle>
-          <span className="text-white">$34.28</span> per share
+          <span className="">$34.28</span> per share
         </AppScreen.Subtitle>
       </MotionAppScreenHeader>
       <MotionAppScreenBody {...(props.animated ? { ...bodyAnimation, custom: props.custom } : {})}>
@@ -292,11 +292,11 @@ function InvestScreen(props: ScreenProps) {
               { label: 'Estimated cost', value: '$3,428.00' },
             ].map((item) => (
               <div key={item.label} className="flex justify-between border-b border-gray-100 pb-4">
-                <div className="text-sm text-gray-500">{item.label}</div>
-                <div className="text-sm font-semibold text-gray-900">{item.value}</div>
+                <div className="text-sm">{item.label}</div>
+                <div className="text-sm font-semibold">{item.value}</div>
               </div>
             ))}
-            <div className="rounded-lg bg-cyan-500 px-3 py-2 text-center text-sm font-semibold text-white">Buy shares</div>
+            <div className="rounded-lg bg-cyan-500 px-3 py-2 text-center text-sm font-semibold">Buy shares</div>
           </div>
         </div>
       </MotionAppScreenBody>
@@ -339,13 +339,13 @@ function FeaturesDesktop() {
             )}
             <div className="relative z-10 p-8">
               <feature.icon className="h-8 w-8" />
-              <h3 className="mt-6 text-lg font-semibold text-white">
+              <h3 className="mt-6 text-lg font-semibold">
                 <Tab className="text-left ui-not-focus-visible:outline-none">
                   <span className="absolute inset-0 rounded-2xl" />
                   {feature.name}
                 </Tab>
               </h3>
-              <p className="mt-2 text-sm text-gray-400">{feature.description}</p>
+              <p className="mt-2 text-sm">{feature.description}</p>
             </div>
           </div>
         ))}
@@ -425,8 +425,8 @@ function FeaturesMobile() {
               </PhoneFrame>
               <div className="absolute inset-x-0 bottom-0 bg-gray-800/95 p-6 backdrop-blur sm:p-10">
                 <feature.icon className="h-8 w-8" />
-                <h3 className="mt-6 text-sm font-semibold text-white sm:text-lg">{feature.name}</h3>
-                <p className="mt-2 text-sm text-gray-400">{feature.description}</p>
+                <h3 className="mt-6 text-sm font-semibold sm:text-lg">{feature.name}</h3>
+                <p className="mt-2 text-sm">{feature.description}</p>
               </div>
             </div>
           </div>
@@ -459,10 +459,12 @@ export function PrimaryFeatures() {
     <section id="features" aria-label="Features for investing all your money" className="bg-gray-900 py-20 sm:py-32">
       <Container>
         <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-3xl">
-          <h2 className="text-3xl font-medium tracking-tight text-white">Every feature you need to win. Try it for yourself.</h2>
-          <p className="mt-2 text-lg text-gray-400">
-            Pocket was built for investors like you who play by their own rules and aren’t going to let SEC regulations get in the way of their dreams. If other
-            investing tools are afraid to build it, Pocket has it.
+          <h2 className="text-3xl font-medium tracking-tight">
+            Embrace Modern Learning. <br></br>Learn Life Insurance the Easy Way
+          </h2>
+          <p className="mt-2 text-lg">
+            Step into a new era of learning with our platform. We have created the best of modern education content to make learning simple & fun! Where others
+            stick to tradition, we innovate to educate.
           </p>
         </div>
       </Container>
