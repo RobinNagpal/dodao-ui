@@ -29,3 +29,6 @@ jobs:
 
       - name: Run Prettier
         run: yarn prettier-check
+
+      - name: TSC
+        run: yarn tsc
