@@ -7,6 +7,7 @@ import { ProjectFragment, SpaceWithIntegrationsFragment, useProjectsQuery } from
 import { useRouter } from 'next/navigation';
 import React, { useMemo, useState } from 'react';
 import styled from 'styled-components';
+import ListProjectsHelper from './ListProjectsHelper';
 
 const MainDiv = styled.div`
   background-color: var(--bg-color);
@@ -31,6 +32,7 @@ export default function ListProjects(props: { space: SpaceWithIntegrationsFragme
   const { data } = useProjectsQuery({
     variables: variables,
   });
+  console.log('data:', data);
   const [showProjectAddModal, setShowProjectAddModal] = useState(false);
   const router = useRouter();
   const tableActions: TableActions = useMemo(() => {
@@ -47,7 +49,7 @@ export default function ListProjects(props: { space: SpaceWithIntegrationsFragme
         }
       },
     };
-  }, []);
+  }, [router]);
 
   return (
     <MainDiv className="px-4 sm:px-6 lg:px-8">
@@ -62,12 +64,7 @@ export default function ListProjects(props: { space: SpaceWithIntegrationsFragme
           </Button>
         </div>
       </div>
-      <Table
-        data={getProjectTableRows(data?.projects || [])}
-        columnsHeadings={['Name', 'Id', 'Skin', 'Admins']}
-        columnsWidthPercents={[20, 20, 20, 20]}
-        actions={tableActions}
-      />
+      <ListProjectsHelper projects={data?.projects || []} />
       {showProjectAddModal && <UpsertProjectModal spaceId={props.space.id} open={showProjectAddModal} onClose={() => setShowProjectAddModal(false)} />}
     </MainDiv>
   );
