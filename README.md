@@ -112,6 +112,7 @@ Here is the table with the mapping of the domains to the academy websites
 | arbitrum     | arbitrum-localhost.education  | http://arbitrum-localhost.education:3000  |
 | optimism     | optimism-localhost.university | http://optimism-localhost.university:3000 |
 | cryptogelato | cryptogelato-localhost.com    | http://cryptogelato-localhost.com:3000    |
+| lifeinsure   | lifeinsure-localhost.tips     | http://lifeinsure-localhost.tips:3000     |
 
 
 
