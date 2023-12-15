@@ -70,7 +70,7 @@ export default function V2OneSideTimelineView({ timeline }: V2OneSideTimelineVie
                       <div className={`relative w-full flex-1 mb-10 rounded-3xl ${styles.timelineCardBorderColor} ${styles.timelineCard}`}>
                         <div className="relative p-6 w-full">
                           <p className="mb-2 text-xl font-bold">{event.title}</p>
-                          <p className="w-full markdown-body text-left" dangerouslySetInnerHTML={{ __html: eventSummary }} />
+                          <p className="w-full p-4 pt-2 text-sm markdown-body text-left" dangerouslySetInnerHTML={{ __html: eventSummary }} />
                           <div className="flex">
                             {event.fullDetails && (
                               <a className={`p-4 flex ${styles.styledLink}`} onClick={() => handleShowFullDetailsModal(event)}>
