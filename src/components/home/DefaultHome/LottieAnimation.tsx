@@ -1,7 +1,7 @@
 'use client';
 
-import DeveloperLottie from '@/components/home/developer-lottie.json';
-import EmpowerherLottie from '@/components/home/empower-her-lottie.json';
+import DeveloperLottie from './developer-lottie.json';
+import EmpowerherLottie from './empower-her-lottie.json';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import Lottie from 'lottie-react';
 import React from 'react';

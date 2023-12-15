@@ -1,4 +1,4 @@
-import styles from '@/components/home/DefaultHome.module.scss';
+import styles from './DefaultHome.module.scss';
 import Link from 'next/link';
 import React from 'react';
 

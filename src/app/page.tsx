@@ -1,7 +1,7 @@
 import { OpenAIModelID } from '@/chatbot/types/openai';
 import { TOP_CRYPTO_PROJECTS_SPACE_ID } from '@/chatbot/utils/app/constants';
-import DefaultHome from '@/components/home/DefaultHome';
-import DoDAOHome from '@/components/home/DoDAOHome';
+import DefaultHome from '@/components/home/DefaultHome/DefaultHome';
+import DoDAOHome from '@/components/home/DoDAOHome/DoDAOHome';
 import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';

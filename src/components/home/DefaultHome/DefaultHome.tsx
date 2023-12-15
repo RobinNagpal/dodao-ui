@@ -1,7 +1,7 @@
 import { Grid2Cols } from '@/components/core/grids/Grid2Cols';
 import PageWrapper from '@/components/core/page/PageWrapper';
-import { GetStartedButton } from '@/components/home/Default/GetStartedButton';
-import { LottieAnimation } from '@/components/home/Default/LottieAnimation';
+import { GetStartedButton } from './GetStartedButton';
+import { LottieAnimation } from './LottieAnimation';
 import HomeIcon from '@/components/main/HomeIcon';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
