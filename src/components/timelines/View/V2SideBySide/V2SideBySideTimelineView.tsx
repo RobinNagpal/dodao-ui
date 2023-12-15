@@ -6,7 +6,7 @@ import { Space, TimelineDetailsFragment, TimelineEventFragment } from '@/graphql
 import { getMarkedRenderer } from '@/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
 import moment from 'moment';
-import styles from 'src/components/timelines/View/V3Alternating/V2SideBySideTimelineView.module.scss';
+import styles from './V2SideBySideTimelineView.module.scss';
 
 interface V3AlternatingTimelineViewProps {
   space: Space;
