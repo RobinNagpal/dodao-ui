@@ -5,6 +5,10 @@ import clsx from 'clsx';
 import { motion, useInView, useMotionValue } from 'framer-motion';
 
 import { AppScreen } from './AppScreen';
+import Lottie from 'lottie-react';
+import DeveloperLottie from '../../../home/DefaultHome/developer-lottie.json';
+import Image from 'next/image';
+import Home from '@/images/lifeInsure/images/home.png';
 
 const prices = [
   997.56, 944.34, 972.25, 832.4, 888.76, 834.8, 805.56, 767.38, 861.21, 669.6, 694.39, 721.32, 694.03, 610.1, 502.2, 549.56, 611.03, 583.4, 610.14, 660.6,
@@ -137,53 +141,10 @@ export function AppDemo() {
 
   return (
     <AppScreen>
+      <Lottie animationData={DeveloperLottie} loop={true} className="max-h-52" />
+
       <AppScreen.Body>
-        <div className="p-4">
-          <div className="flex gap-2">
-            <div className="text-xs leading-6">Tailwind Labs, Inc.</div>
-            <div className="text-sm">$CSS</div>
-            <svg viewBox="0 0 24 24" className="ml-auto h-6 w-6" fill="none">
-              <path d="M5 12a7 7 0 1 1 14 0 7 7 0 0 1-14 0ZM12 9v6M15 12H9" stroke="#171717" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </div>
-          <div className="mt-3 border-t border-gray-200 pt-5">
-            <div className="flex items-baseline gap-2">
-              <div className="text-2xl tabular-nums tracking-tight">{activeValue.toFixed(2)}</div>
-              <div className="text-sm">USD</div>
-              {percentageChange && (
-                <div className={clsx('ml-auto text-sm tabular-nums tracking-tight', percentageChange >= 0 ? 'text-cyan-500' : 'text-gray-500')}>
-                  {`${percentageChange >= 0 ? '+' : ''}${percentageChange.toFixed(2)}%`}
-                </div>
-              )}
-            </div>
-            <div className="mt-6 flex gap-4 text-xs">
-              <div>1D</div>
-              <div>5D</div>
-              <div className="font-semibold">1M</div>
-              <div>6M</div>
-              <div>1Y</div>
-              <div>5Y</div>
-            </div>
-            <div className="mt-3 rounded-lg bg-gray-50 ring-1 ring-inset ring-black/5">
-              <Chart width={286} height={208} paddingX={16} paddingY={32} activePointIndex={activePointIndex} onChangeActivePointIndex={setActivePointIndex} />
-            </div>
-            <div className="mt-4 rounded-lg bg-cyan-500 px-4 py-2 text-center text-sm font-semibold">Trade</div>
-            <div className="mt-3 divide-y divide-gray-100 text-sm">
-              <div className="flex justify-between py-1">
-                <div className="">Open</div>
-                <div className="font-medium">6,387.55</div>
-              </div>
-              <div className="flex justify-between py-1">
-                <div className="">Closed</div>
-                <div className="font-medium">6,487.09</div>
-              </div>
-              <div className="flex justify-between py-1">
-                <div className="t">Low</div>
-                <div className="font-medium">6,322.01</div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <Image src={Home} alt="Home" />
       </AppScreen.Body>
     </AppScreen>
   );
