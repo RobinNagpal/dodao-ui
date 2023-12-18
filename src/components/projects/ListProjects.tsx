@@ -26,7 +26,7 @@ function getProjectTableRows(projectList?: ProjectFragment[]): TableRow[] {
 
 export default function ListProjects(props: { space: SpaceWithIntegrationsFragment; type?: string }) {
   const variables: any = {};
-  if (props.type) {
+  if (props.type && props.type !== 'All') {
     variables['type'] = props.type;
   }
   const { data } = useProjectsQuery({

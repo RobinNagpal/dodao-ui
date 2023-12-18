@@ -34,6 +34,7 @@ export enum Themes {
 }
 
 export enum ProjectTypes {
+  All = 'All',
   DeFi = 'DeFi',
   Chains = 'Chains',
   NFT = 'NFT',
