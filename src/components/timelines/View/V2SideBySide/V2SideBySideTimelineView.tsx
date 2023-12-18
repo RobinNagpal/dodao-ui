@@ -63,7 +63,7 @@ export default function V2SideBySideTimelineView({ timeline }: V3AlternatingTime
                           />
                         </svg>
                       </div>
-                      <div className={'w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-4 rounded border border-slate-200 shadow ' + styles.timelineCard}>
+                      <div className={'w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-4 rounded-xl border border-slate-200 shadow ' + styles.timelineCard}>
                         <div className="flex items-center justify-between space-x-2 mb-1">
                           <div className="font-bold">{event.title}</div>
                         </div>
