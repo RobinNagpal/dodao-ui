@@ -1,5 +1,5 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
-import { useSpace } from '@/contexts/SpaceContext';
+import { CssTheme, ThemeKey, themes } from '@/app/themes';
 import { Session } from '@/types/auth/Session';
 import { Themes } from '@/types/deprecated/models/enums';
 import { getGTagId } from '@/utils/analytics/getGTagId';
@@ -7,12 +7,13 @@ import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
 import { Analytics } from '@vercel/analytics/react';
 import { getServerSession } from 'next-auth';
 import Script from 'next/script';
+import { CSSProperties, ReactNode } from 'react';
 import 'tailwindcss/tailwind.css';
 import './globals.scss';
 import InternalLayout from './InternalLayout';
 
 interface RootLayoutProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 export default async function RootLayout({ children }: RootLayoutProps) {
@@ -29,30 +30,44 @@ export default async function RootLayout({ children }: RootLayoutProps) {
   const isOptimismTheme = space?.skin === Themes.Optimism;
   const isArbitrumTheme = space?.skin === Themes.Arbitrum;
 
-  let theme = 'global-theme';
+  let theme: ThemeKey = CssTheme.GlobalTheme;
 
   if (isThemeAave) {
-    theme = 'aave-theme';
+    theme = CssTheme.AaveTheme;
   } else if (isArbitrumTheme) {
-    theme = 'arbitrum-theme';
+    theme = CssTheme.ArbitrumTheme;
   } else if (isThemeBalancer) {
-    theme = 'balancer-theme';
+    theme = CssTheme.BalancerTheme;
   } else if (isThemeCompound) {
-    theme = 'compound-theme';
+    theme = CssTheme.CompoundTheme;
   } else if (isThemeFuse) {
-    theme = 'fuse-theme';
+    theme = CssTheme.FuseTheme;
   } else if (isThemeKleros) {
-    theme = 'kleros-theme';
+    theme = CssTheme.KlerosTheme;
   } else if (isThemeDoDAO) {
-    theme = 'global-theme';
+    theme = CssTheme.GlobalTheme;
   } else if (isOptimismTheme) {
-    theme = 'optimism-theme';
+    theme = CssTheme.OptimismTheme;
   } else if (isThemeUniswap) {
-    theme = 'uniswap-theme';
+    theme = CssTheme.UniswapTheme;
   }
+
+  const themeValue = themes[theme];
+
+  const style = {
+    '--primary-color': themeValue.primaryColor,
+    '--bg-color': themeValue.bgColor,
+    '--text-color': themeValue.textColor,
+    '--link-color': themeValue.linkColor,
+    '--heading-color': themeValue.headingColor,
+    '--border-color': themeValue.borderColor,
+    '--header-bg': themeValue.headerBg,
+    '--block-bg': themeValue.blockBg,
+  } as CSSProperties;
+
   return (
     <html lang="en" className="h-full">
-      <body className={'max-h-screen ' + theme} style={{ backgroundColor: 'var(--bg-color)' }}>
+      <body className={'max-h-screen ' + theme} style={{ ...style, backgroundColor: 'var(--bg-color)' }}>
         <Script src={`https://www.googletagmanager.com/gtag/js?id=${gtag}`} />
         <Script id="google-analytics">
           {`
