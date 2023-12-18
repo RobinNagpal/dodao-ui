@@ -35,16 +35,16 @@ export default function V2SideBySideTimelineView({ timeline }: V3AlternatingTime
       <div className="max-w-xl mx-auto">
         <div className="text-center ">
           <div className="relative flex flex-col items-center">
-            <h1 className="text-6xl font-bold leading-tight"> {timeline.name}</h1>
+            <h1 className="text-2xl mt-3 font-bold leading-tight"> {timeline.name}</h1>
           </div>
           <p className="mt-4 text-base text-center">{timeline.excerpt}</p>
           <p className="text-sm text-center" dangerouslySetInnerHTML={{ __html: contents || '' }}></p>
         </div>
       </div>
       <div>
-        <div className="w-full max-w-6xl mx-auto px-4 md:px-6 py-24">
+        <div className="w-full max-w-6xl mx-auto px-4 md:px-6 py-12">
           <div className="flex flex-col justify-center divide-y divide-slate-200 [&>*]:py-16">
-            <div className="w-full max-w-3xl mx-auto">
+            <div className="w-full mx-auto">
               <div className="space-y-8 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-300 before:to-transparent">
                 {timeline.events.map((event) => {
                   const eventSummary = marked.parse(event.summary, { renderer });
@@ -63,12 +63,12 @@ export default function V2SideBySideTimelineView({ timeline }: V3AlternatingTime
                           />
                         </svg>
                       </div>
-                      <div className={'w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-4 rounded border border-slate-200 shadow ' + styles.timelineCard}>
+                      <div className={'w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-4 rounded-xl border border-slate-200 shadow ' + styles.timelineCard}>
                         <div className="flex items-center justify-between space-x-2 mb-1">
                           <div className="font-bold">{event.title}</div>
                         </div>
-                        <time className="font-caveat font-medium text-indigo-500">{timeAgo}</time>
-                        <div className="mt-3 text-sm text-slate-500 overflow-x-auto pb-3" dangerouslySetInnerHTML={{ __html: eventSummary }}></div>
+                        <time className={'font-medium ' + styles.timeColor}>{timeAgo}</time>
+                        <div className={'mt-3 text-sm overflow-x-auto pb-3 ' + styles.normalfont} dangerouslySetInnerHTML={{ __html: eventSummary }}></div>
                         <div className="flex">
                           {event.fullDetails && (
                             <a className={`p-4 flex ${styles.styledLink}`} onClick={() => handleShowFullDetailsModal(event)}>
