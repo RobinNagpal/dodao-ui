@@ -90,11 +90,14 @@ const ListProjectsHelper: React.FC<ListProjectsHelperProps> = ({ projects }) => 
                 <Skeleton height={250} />
               </SkeletonTheme>
             ) : (
-              <div className={`h-[250px] flex flex-col justify-end items-center rounded relative overflow-hidden pt-1 px-1 ${styles.card}`}>
-                <div className="h-[150px] absolute top-1 left-1 right-1 rounded">
-                  <img src="https://picsum.photos/300" alt={project.name} className="object-contain w-full rounded" />
+              <div className={`h-[250px] ${styles.card} px-1.5 pt-2 rounded flex flex-col gap-2 overflow-hidden`}>
+                <div className="rounded">
+                  <img src="https://picsum.photos/500/300" alt={project.name} className="h-[150px] w-full object-cover rounded" />
                 </div>
-                <p className={`z-10 ${styles.header}`}>{project.name}</p>
+                <div className={`${styles.header} mx-2`}>
+                  <div className="font-bold">{project.name}</div>
+                  <div className={`text-sm ${styles.details}`}>Level 1</div>
+                </div>
               </div>
             )}
           </SwiperSlide>
