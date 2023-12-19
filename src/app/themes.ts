@@ -61,7 +61,7 @@ export const themes: Record<keyof typeof CssTheme, ThemeValue> = {
     blockBg: '#323432',
   },
   CryptoGelatoTheme: {
-    primaryColor: '#ffff0d',
+    primaryColor: '#3183ff',
     bgColor: '#141924',
     textColor: '#bdc1c7',
     linkColor: '#bdc1c7',

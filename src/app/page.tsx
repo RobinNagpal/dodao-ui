@@ -19,7 +19,7 @@ async function Home() {
   }
 
   if (space?.id === TOP_CRYPTO_PROJECTS_SPACE_ID) {
-    redirect('/projects/type/defi');
+    redirect('/projects/type/all');
   }
 
   if (host === 'dodao-localhost.io' || host === 'academy.dodao.io' || host === 'dodao.io') {
