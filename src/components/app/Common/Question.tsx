@@ -23,6 +23,7 @@ import 'prismjs/components/prism-toml';
 import 'prismjs/components/prism-yaml';
 import { useEffect, useState } from 'react';
 import styles from './Question.module.scss';
+import { RadioGroup } from '@headlessui/react';
 
 export interface LocalQuestionType
   extends Omit<CourseQuestionFragment | GuideQuestionFragment | ByteQuestionFragmentFragment | CourseReadingQuestionFragment, 'hint' | 'explanation'> {
@@ -41,6 +42,10 @@ interface QuestionProps {
 }
 const renderer = getMarkedRenderer();
 
+function classNames(...classes: (string | null | undefined)[]): string {
+  return classes.filter(Boolean).join(' ');
+}
+
 function Question({ answerClass = '', question, questionResponse, readonly, showHint = false, onSelectAnswer }: QuestionProps) {
   const questionContent = marked.parse(question.content, { renderer });
 
@@ -58,6 +63,10 @@ function Question({ answerClass = '', question, questionResponse, readonly, show
   const selectSingleChoice = (choiceKey: string) => {
     const selectedAnswers = isEqual(questionResponse, [choiceKey]) ? [] : [choiceKey];
     onSelectAnswer(question.uuid, selectedAnswers);
+  };
+
+  const handleRadioChange = (choiceKey: string) => {
+    selectSingleChoice(choiceKey);
   };
 
   const questionWithFormattedChoices = {
@@ -80,18 +89,41 @@ function Question({ answerClass = '', question, questionResponse, readonly, show
       </div>
       {questionWithFormattedChoices.choices.map((choice) => {
         const isSelected = questionResponse.includes(choice.key);
-
         return (
-          <div key={choice.key} className={`flex leading-loose items-center py-2 sm:py-0 ${question.type === QuestionType.SingleChoice ? '-ml-2' : 'py-2'}`}>
+          <div key={choice.key} className={`leading-loose items-center py-2 sm:py-0 ${question.type === QuestionType.SingleChoice ? '-ml-2' : 'py-2'}`}>
             {question.type === QuestionType.SingleChoice ? (
-              <Radio
-                id={question.uuid + choice.key}
-                questionId={question.uuid}
-                labelContent={choice.content}
-                isSelected={isSelected}
-                onChange={() => selectSingleChoice(choice.key)}
-                readonly={readonly}
-              />
+              <RadioGroup className="mt-2" value={questionResponse.length > 0 ? questionResponse[0] : null} onChange={handleRadioChange}>
+                <div className="space-y-4">
+                  <RadioGroup.Option
+                    key={question.uuid + choice.key}
+                    value={choice.key}
+                    className={({ active }) =>
+                      classNames(
+                        active ? `${styles.activeBorderColor} ring-2` : 'border-gray-300',
+                        `relative block cursor-pointer rounded-lg border px-6 py-4 shadow-sm focus:outline-none ${styles.backgroundColor}`
+                      )
+                    }
+                  >
+                    {({ active, checked }) => (
+                      <>
+                        <span className="flex items-center">
+                          <span className="flex flex-col text-sm">
+                            <RadioGroup.Label as="span" className="font-medium" dangerouslySetInnerHTML={{__html: choice.content}}/>
+                          </span>
+                        </span>
+                        <span
+                          className={classNames(
+                            active ? `${styles.activeBorderColor}` : 'border-2',
+                            checked ? `${styles.selectedBorderColor}` : 'border-transparent',
+                            'pointer-events-none absolute -inset-px rounded-lg'
+                          )}
+                          aria-hidden="true"
+                        />
+                      </>
+                    )}
+                  </RadioGroup.Option>
+                </div>
+              </RadioGroup>
             ) : (
               <Checkbox
                 id={question.uuid + choice.key}
