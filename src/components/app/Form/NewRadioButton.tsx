@@ -11,7 +11,6 @@ export interface CustomRadioOptionProps {
 function classNames(...classes: (string | null | undefined)[]): string {
   return classes.filter(Boolean).join(' ');
 }
-
 export const CustomRadioOption: React.FC<CustomRadioOptionProps> = ({ key, value, content, isSelected }) => {
   return (
     <RadioGroup.Option
@@ -19,12 +18,12 @@ export const CustomRadioOption: React.FC<CustomRadioOptionProps> = ({ key, value
       value={value}
       className={({ active }) =>
         classNames(
-          active ? `${styles.activeBorderColor} ring-2` : 'border-gray-300',
+          active ? `${styles.activeBorderColor}` : 'border-gray-300',
           `relative block cursor-pointer rounded-lg border px-6 py-4 shadow-sm focus:outline-none ${styles.backgroundColor}`
         )
       }
     >
-      {({ active }) => (
+      {() => (
         <>
           <span className="flex items-center">
             <span className="flex flex-col text-sm">
@@ -32,11 +31,7 @@ export const CustomRadioOption: React.FC<CustomRadioOptionProps> = ({ key, value
             </span>
           </span>
           <span
-            className={classNames(
-              active ? `${styles.activeBorderColor}` : 'border-2',
-              isSelected ? `${styles.selectedBorderColor}` : 'border-transparent',
-              'pointer-events-none absolute -inset-px rounded-lg'
-            )}
+            className={classNames(isSelected ? `${styles.selectedBorderColor}` : 'border-transparent', 'pointer-events-none absolute -inset-px rounded-lg')}
             aria-hidden="true"
           />
         </>

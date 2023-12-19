@@ -3,12 +3,11 @@
 }
 
 .selectedBorderColor {
-  border-color: 2px solid var(--border-color);
+  border: 3px solid var(--primary-color);
 }
 
 .activeBorderColor {
-  border-color: 4px solid var(--border-color);
-  box-shadow: 0 0 0 2px var(--border-color);
+  border: 2px solid var(--primary-color);
 }
 
 .backgroundColor {
