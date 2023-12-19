@@ -1,3 +1,4 @@
+
 import Checkbox from '@/components/app/Form/Checkbox';
 import Radio from '@/components/app/Form/Radio';
 import HintIcon from '@/components/core/icons/HintIcon';
@@ -24,6 +25,7 @@ import 'prismjs/components/prism-yaml';
 import { useEffect, useState } from 'react';
 import styles from './Question.module.scss';
 import { RadioGroup } from '@headlessui/react';
+import { CustomRadioOption } from '../Form/NewRadioButton';
 
 export interface LocalQuestionType
   extends Omit<CourseQuestionFragment | GuideQuestionFragment | ByteQuestionFragmentFragment | CourseReadingQuestionFragment, 'hint' | 'explanation'> {
@@ -68,7 +70,6 @@ function Question({ answerClass = '', question, questionResponse, readonly, show
   const handleRadioChange = (choiceKey: string) => {
     selectSingleChoice(choiceKey);
   };
-
   const questionWithFormattedChoices = {
     ...question,
     choices: (question.choices || ([] as LocalQuestionType[])).map((choice) => ({
@@ -92,36 +93,14 @@ function Question({ answerClass = '', question, questionResponse, readonly, show
         return (
           <div key={choice.key} className={`leading-loose items-center py-2 sm:py-0 ${question.type === QuestionType.SingleChoice ? '-ml-2' : 'py-2'}`}>
             {question.type === QuestionType.SingleChoice ? (
-              <RadioGroup className="mt-2" value={questionResponse.length > 0 ? questionResponse[0] : null} onChange={handleRadioChange}>
+              <RadioGroup key={question.uuid + choice.key} className="mt-2" value={questionResponse.length > 0 ? questionResponse[0] : null} onChange={() => selectSingleChoice(choice.key)}>
                 <div className="space-y-4">
-                  <RadioGroup.Option
+                <CustomRadioOption
                     key={question.uuid + choice.key}
                     value={choice.key}
-                    className={({ active }) =>
-                      classNames(
-                        active ? `${styles.activeBorderColor} ring-2` : 'border-gray-300',
-                        `relative block cursor-pointer rounded-lg border px-6 py-4 shadow-sm focus:outline-none ${styles.backgroundColor}`
-                      )
-                    }
-                  >
-                    {({ active, checked }) => (
-                      <>
-                        <span className="flex items-center">
-                          <span className="flex flex-col text-sm">
-                            <RadioGroup.Label as="span" className="font-medium" dangerouslySetInnerHTML={{ __html: choice.content }} />
-                          </span>
-                        </span>
-                        <span
-                          className={classNames(
-                            active ? `${styles.activeBorderColor}` : 'border-2',
-                            checked ? `${styles.selectedBorderColor}` : 'border-transparent',
-                            'pointer-events-none absolute -inset-px rounded-lg'
-                          )}
-                          aria-hidden="true"
-                        />
-                      </>
-                    )}
-                  </RadioGroup.Option>
+                    content={choice.content}
+                    isSelected={isSelected}
+                  />
                 </div>
               </RadioGroup>
             ) : (
