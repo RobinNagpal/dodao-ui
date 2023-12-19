@@ -87,22 +87,24 @@ function Question({ answerClass = '', question, questionResponse, readonly, show
           </div>
         )}
       </div>
-      {questionWithFormattedChoices.choices.map((choice) => {
-        const isSelected = questionResponse.includes(choice.key);
-        return (
-          <div key={choice.key} className={`leading-loose items-center py-2 sm:py-0 ${question.type === QuestionType.SingleChoice ? '-ml-2' : 'py-2'}`}>
-            {question.type === QuestionType.SingleChoice ? (
-              <RadioGroup
-                key={question.uuid + choice.key}
-                className="mt-2"
-                value={questionResponse.length > 0 ? questionResponse[0] : null}
-                onChange={() => selectSingleChoice(choice.key)}
-              >
-                <div className="space-y-4">
+      {question.type === QuestionType.SingleChoice ? (
+        <RadioGroup value={questionResponse.length > 0 ? questionResponse[0] : null} onChange={selectSingleChoice}>
+          {questionWithFormattedChoices.choices.map((choice) => {
+            const isSelected = questionResponse.includes(choice.key);
+            return (
+              <div key={choice.key} className={`leading-loose items-center py-2 sm:py-0 -ml-2`}>
+                <div className="mt-2">
                   <CustomRadioOption key={question.uuid + choice.key} value={choice.key} content={choice.content} isSelected={isSelected} />
                 </div>
-              </RadioGroup>
-            ) : (
+              </div>
+            );
+          })}
+        </RadioGroup>
+      ) : (
+        questionWithFormattedChoices.choices.map((choice) => {
+          const isSelected = questionResponse.includes(choice.key);
+          return (
+            <div key={choice.key} className={`flex leading-loose items-center py-2 sm:py-0`}>
               <Checkbox
                 id={question.uuid + choice.key}
                 labelContent={choice.content}
@@ -111,10 +113,15 @@ function Question({ answerClass = '', question, questionResponse, readonly, show
                 className={answerClass}
                 readonly={readonly}
               />
-            )}
-          </div>
-        );
-      })}
+            </div>
+          );
+        })
+      )}
+      {displayHint && (
+        <div className="border-t p-2 mt-4">
+          <p>Hint: {question.hint}</p>
+        </div>
+      )}
 
       {displayHint && (
         <div className="border-t p-2 mt-4">
