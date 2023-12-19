@@ -7,11 +7,11 @@ export const SwiperNavButtons = () => {
 
   return (
     <div className="flex justify-end my-4">
-      <button className={`rounded-full inline-flex px-2 mx-2 ${styles.button}`} onClick={() => swiper.slidePrev()}>
-        <span>&#x3c;</span>
+      <button className={`rounded-full flex items-center justify-center px-2 mx-2 ${styles.button}`} onClick={() => swiper.slidePrev()}>
+        <div className="mb-[2px] mr-px">&#x3c;</div>
       </button>
-      <button className={`rounded-full inline-flex px-2 ${styles.button}`} onClick={() => swiper.slideNext()}>
-        <span>&#x3e;</span>
+      <button className={`rounded-full flex items-center justify-center px-2 ${styles.button}`} onClick={() => swiper.slideNext()}>
+        <div className="mb-[2px] ml-px">&#x3e;</div>
       </button>
     </div>
   );
