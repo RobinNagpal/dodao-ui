@@ -108,7 +108,7 @@ function Question({ answerClass = '', question, questionResponse, readonly, show
                       <>
                         <span className="flex items-center">
                           <span className="flex flex-col text-sm">
-                            <RadioGroup.Label as="span" className="font-medium" dangerouslySetInnerHTML={{__html: choice.content}}/>
+                            <RadioGroup.Label as="span" className="font-medium" dangerouslySetInnerHTML={{ __html: choice.content }} />
                           </span>
                         </span>
                         <span

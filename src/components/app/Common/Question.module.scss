@@ -2,16 +2,15 @@
   cursor: pointer;
 }
 
-.selectedBorderColor{
-  border-color: 2px solid var(--border-color)
+.selectedBorderColor {
+  border-color: 2px solid var(--border-color);
 }
 
-
-.activeBorderColor{
+.activeBorderColor {
   border-color: 4px solid var(--border-color);
   box-shadow: 0 0 0 2px var(--border-color);
 }
 
-.backgroundColor{
+.backgroundColor {
   background-color: var(--bg-color);
 }
