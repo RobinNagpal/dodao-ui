@@ -5,7 +5,7 @@ export interface ThemeValue {
   linkColor: string;
   headingColor: string;
   borderColor: string;
-  headerBg: string;
+
   blockBg: string;
 }
 
@@ -14,6 +14,7 @@ export enum CssTheme {
   ArbitrumTheme = 'ArbitrumTheme',
   BalancerTheme = 'BalancerTheme',
   CompoundTheme = 'CompoundTheme',
+  CryptoGelatoTheme = 'CryptoGelatoTheme',
   FuseTheme = 'FuseTheme',
   GlobalTheme = 'GlobalTheme',
   KlerosTheme = 'KlerosTheme',
@@ -30,7 +31,6 @@ export const themes: Record<keyof typeof CssTheme, ThemeValue> = {
     linkColor: '#f1f1f3',
     headingColor: '#f1f1f3',
     borderColor: '#d1d5da',
-    headerBg: '#383D51',
     blockBg: '#383D51',
   },
   ArbitrumTheme: {
@@ -40,7 +40,6 @@ export const themes: Record<keyof typeof CssTheme, ThemeValue> = {
     linkColor: '#ffffff',
     headingColor: '#ffffff',
     borderColor: '#4971E9',
-    headerBg: '#0A0A0A',
     blockBg: '#1D2C52',
   },
   BalancerTheme: {
@@ -50,7 +49,6 @@ export const themes: Record<keyof typeof CssTheme, ThemeValue> = {
     linkColor: '#ffffff',
     headingColor: '#ffffff',
     borderColor: '#0751bf',
-    headerBg: '#0A0A0A',
     blockBg: '#1D2C52',
   },
   CompoundTheme: {
@@ -60,8 +58,16 @@ export const themes: Record<keyof typeof CssTheme, ThemeValue> = {
     linkColor: '#f1f1f3',
     headingColor: '#f1f1f3',
     borderColor: '#d1d5da',
-    headerBg: '#1D2833',
     blockBg: '#323432',
+  },
+  CryptoGelatoTheme: {
+    primaryColor: '#ffff0d',
+    bgColor: '#141924',
+    textColor: '#bdc1c7',
+    linkColor: '#bdc1c7',
+    headingColor: 'white',
+    borderColor: '#2f3645',
+    blockBg: '#2f3645',
   },
   FuseTheme: {
     primaryColor: '#000000',
@@ -70,7 +76,6 @@ export const themes: Record<keyof typeof CssTheme, ThemeValue> = {
     linkColor: '#333333',
     headingColor: '#000000',
     borderColor: '#BBBBBB',
-    headerBg: '#EEEEEE',
     blockBg: '#EEEEEE',
   },
   GlobalTheme: {
@@ -80,7 +85,6 @@ export const themes: Record<keyof typeof CssTheme, ThemeValue> = {
     linkColor: '#111111',
     headingColor: '#111111',
     borderColor: '#d0d7de',
-    headerBg: '#F5F9FF',
     blockBg: '#F5F9FF',
   },
   KlerosTheme: {
@@ -90,7 +94,6 @@ export const themes: Record<keyof typeof CssTheme, ThemeValue> = {
     linkColor: '#000000',
     headingColor: '#4d00b4',
     borderColor: '#cccccc',
-    headerBg: '#fbf9fe',
     blockBg: 'transparent',
   },
   OptimismTheme: {
@@ -100,7 +103,6 @@ export const themes: Record<keyof typeof CssTheme, ThemeValue> = {
     linkColor: '#f1f1f3',
     headingColor: '#f1f1f3',
     borderColor: '#fb9191',
-    headerBg: '#1e1313',
     blockBg: '#2f2d2d',
   },
   UniswapTheme: {
@@ -110,7 +112,6 @@ export const themes: Record<keyof typeof CssTheme, ThemeValue> = {
     linkColor: '#ffffff',
     headingColor: '#6f6cbd',
     borderColor: '#909294',
-    headerBg: '#3B3A60FF',
     blockBg: '#3B3A60FF',
   },
 };
