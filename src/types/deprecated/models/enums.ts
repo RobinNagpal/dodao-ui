@@ -20,19 +20,6 @@ export enum PublishStatus {
   Live = 'Live',
   Draft = 'Draft',
 }
-
-export enum Themes {
-  Arbitrum = 'Arbitrum',
-  Uniswap = 'Uniswap',
-  DoDAO = 'DoDAO',
-  Fuse = 'Fuse',
-  Compound = 'Compound',
-  Aave = 'Aave',
-  Balancer = 'Balancer',
-  Kleros = 'Kleros',
-  Optimism = 'Optimism',
-}
-
 export enum ProjectTypes {
   All = 'All',
   DeFi = 'DeFi',

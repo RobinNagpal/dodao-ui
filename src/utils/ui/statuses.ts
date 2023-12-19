@@ -1,6 +1,7 @@
+import { CssTheme } from '@/app/themes';
 import { EllipsisDropdownItem } from '@/components/core/dropdowns/EllipsisDropdown';
 import { StyledSelectItem } from '@/components/core/select/StyledSelect';
-import { ProjectTypes, PublishStatus, Themes, VisibilityEnum } from '@/types/deprecated/models/enums';
+import { ProjectTypes, PublishStatus, VisibilityEnum } from '@/types/deprecated/models/enums';
 
 export const publishStatusesEllipsisDropdown: EllipsisDropdownItem[] = [
   {
@@ -24,7 +25,7 @@ export const publishStatusesSelect: StyledSelectItem[] = [
   },
 ];
 
-export const themeSelect: StyledSelectItem[] = Object.keys(Themes).map((t) => ({
+export const themeSelect: StyledSelectItem[] = Object.keys(CssTheme).map((t) => ({
   label: t,
   id: t,
 }));

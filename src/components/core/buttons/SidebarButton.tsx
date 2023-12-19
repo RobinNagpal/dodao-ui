@@ -19,7 +19,7 @@ const StyledButton = styled.button<{ disabled?: boolean }>`
   outline: none;
 
   &:not(:disabled):hover {
-    background-color: var(--header-bg);
+    background-color: var(--block-bg);
   }
 
   &:disabled {
