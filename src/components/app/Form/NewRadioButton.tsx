@@ -1,7 +1,6 @@
 import { RadioGroup } from '@headlessui/react';
 import styles from './NewRadioButton.module.scss';
 
-
 export interface CustomRadioOptionProps {
   key: string;
   value: string;
@@ -10,8 +9,8 @@ export interface CustomRadioOptionProps {
 }
 
 function classNames(...classes: (string | null | undefined)[]): string {
-    return classes.filter(Boolean).join(' ');
-  }
+  return classes.filter(Boolean).join(' ');
+}
 
 export const CustomRadioOption: React.FC<CustomRadioOptionProps> = ({ key, value, content, isSelected }) => {
   return (

@@ -1,4 +1,3 @@
-
 import Checkbox from '@/components/app/Form/Checkbox';
 import Radio from '@/components/app/Form/Radio';
 import HintIcon from '@/components/core/icons/HintIcon';
@@ -93,14 +92,14 @@ function Question({ answerClass = '', question, questionResponse, readonly, show
         return (
           <div key={choice.key} className={`leading-loose items-center py-2 sm:py-0 ${question.type === QuestionType.SingleChoice ? '-ml-2' : 'py-2'}`}>
             {question.type === QuestionType.SingleChoice ? (
-              <RadioGroup key={question.uuid + choice.key} className="mt-2" value={questionResponse.length > 0 ? questionResponse[0] : null} onChange={() => selectSingleChoice(choice.key)}>
+              <RadioGroup
+                key={question.uuid + choice.key}
+                className="mt-2"
+                value={questionResponse.length > 0 ? questionResponse[0] : null}
+                onChange={() => selectSingleChoice(choice.key)}
+              >
                 <div className="space-y-4">
-                <CustomRadioOption
-                    key={question.uuid + choice.key}
-                    value={choice.key}
-                    content={choice.content}
-                    isSelected={isSelected}
-                  />
+                  <CustomRadioOption key={question.uuid + choice.key} value={choice.key} content={choice.content} isSelected={isSelected} />
                 </div>
               </RadioGroup>
             ) : (
