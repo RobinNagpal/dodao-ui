@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { ProjectFragment } from '@/graphql/generated/generated-types';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -90,15 +91,17 @@ const ListProjectsHelper: React.FC<ListProjectsHelperProps> = ({ projects }) => 
                 <Skeleton height={250} />
               </SkeletonTheme>
             ) : (
-              <div className={`h-[250px] ${styles.card} px-1.5 pt-2 rounded flex flex-col gap-2 overflow-hidden`}>
-                <div className="rounded">
-                  <img src="https://picsum.photos/500/300" alt={project.name} className="h-[150px] w-full object-cover rounded" />
+              <Link href={`/projects/view/${project.id}/tidbit-collections`}>
+                <div className={`h-[250px] ${styles.card} px-1.5 pt-2 rounded flex flex-col gap-2 overflow-hidden`}>
+                  <div className="rounded">
+                    <img src="https://picsum.photos/500/300" alt={project.name} className="h-[150px] w-full object-cover rounded" />
+                  </div>
+                  <div className={`${styles.header} mx-2`}>
+                    <div className="font-bold">{project.name}</div>
+                    <div className={`text-sm ${styles.details}`}>Level 1</div>
+                  </div>
                 </div>
-                <div className={`${styles.header} mx-2`}>
-                  <div className="font-bold">{project.name}</div>
-                  <div className={`text-sm ${styles.details}`}>Level 1</div>
-                </div>
-              </div>
+              </Link>
             )}
           </SwiperSlide>
         ))}
