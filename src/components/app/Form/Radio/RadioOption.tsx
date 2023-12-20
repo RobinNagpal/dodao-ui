@@ -30,7 +30,7 @@ export default function RadioOption({ key, value, content, isSelected, onSelect 
           </span>
         </span>
         <span
-          className={classNames(isSelected ? `${styles.selectedBorderColor}` : 'border-transparent', 'pointer-events-none absolute -inset-px rounded-lg')}
+          className={classNames(isSelected ? `${styles.selectedOption}` : 'border-transparent', 'pointer-events-none absolute -inset-px rounded-lg')}
           aria-hidden="true"
         />
       </>
