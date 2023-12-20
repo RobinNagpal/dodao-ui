@@ -1,6 +1,12 @@
 import { Grid2Cols } from '@/components/core/grids/Grid2Cols';
 import SpinnerWithText from '@/components/core/loaders/SpinnerWithText';
-import { GuideRating, SpaceWithIntegrationsFragment, useConsolidatedGuideRatingQuery, useGuideRatingsQuery } from '@/graphql/generated/generated-types';
+import {
+  GuideRating,
+  SpaceWithIntegrationsFragment,
+  useConsolidatedGuideRatingQuery,
+  useGuideQueryQuery,
+  useGuideRatingsQuery,
+} from '@/graphql/generated/generated-types';
 import { GridOptions, GridSizeChangedEvent } from 'ag-grid-community';
 import { FilterChangedEvent, FilterModifiedEvent, FilterOpenedEvent } from 'ag-grid-community/dist/lib/events';
 import 'ag-grid-community/styles/ag-grid.css';
@@ -49,6 +55,12 @@ export default function GuideRatingsTable(props: GuideRatingsTableProps) {
     { name: 'Questions', value: +positiveRatingDistribution.questions.toFixed(2) },
   ];
 
+  const { data: guideResponse } = useGuideQueryQuery({
+    variables: {
+      spaceId: props.space.id,
+      uuid: props.guideId,
+    },
+  });
   const guideRatings: GuideRating[] = guideRatingsResponse?.guideRatings || [];
 
   const onFilterOpened = useCallback((e: FilterOpenedEvent<any>) => {
@@ -98,20 +110,20 @@ export default function GuideRatingsTable(props: GuideRatingsTableProps) {
   const averageRating = consolidatedRatingsResponse?.consolidatedGuideRating?.avgRating?.toFixed(2);
   return (
     <div className="w-full">
+      <h1 className="text-center text-2xl">{guideResponse?.guide.name}</h1>
+      <p className="text-center text-xs">{guideResponse?.guide.content}</p>
       {guideRatings && (
         <Grid2Cols className="my-12">
           <div className="text-center w-full">
             <h2 className="text-xl font-bold text-center w-full">Average Guide Ratings</h2>
-            <div className="bg-white py-24 sm:py-32">
+            <div className="py-24 sm:py-32">
               <div className="mx-auto max-w-7xl px-6 lg:px-8">
                 <dl>
                   <div className="mx-auto flex max-w-xs flex-col gap-y-4">
-                    <dt className="text-base leading-7 text-gray-600">
+                    <dt className="text-base leading-7">
                       {consolidatedRatingsResponse?.consolidatedGuideRating?.endRatingFeedbackCount || 0} Ratings Submitted
                     </dt>
-                    <dd className="order-first text-3xl font-semibold tracking-tight text-gray-900 sm:text-5xl">
-                      {averageRating ? `${averageRating} / 5` : 'N/A'}
-                    </dd>
+                    <dd className="order-first text-3xl font-semibold tracking-tight sm:text-5xl">{averageRating ? `${averageRating} / 5` : 'N/A'}</dd>
                   </div>
                 </dl>
               </div>
