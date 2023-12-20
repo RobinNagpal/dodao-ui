@@ -38,7 +38,7 @@ interface EditByteStepperItemProps {
 }
 
 const StyledStepItemContainer = styled.div`
-  width: calc(100% - 3rem);
+  width: 100%;
 `;
 
 const StepItemWrapper = styled.div<{ hasError: boolean }>`
@@ -46,7 +46,6 @@ const StepItemWrapper = styled.div<{ hasError: boolean }>`
   border-radius: 0.5rem;
   padding: 1rem;
 `;
-
 export default function EditByteStepperItem({
   space,
   byte,
@@ -319,9 +318,8 @@ export default function EditByteStepperItem({
 
   return (
     <StyledStepItemContainer className="w-full">
-      <div className={`border rounded-md p-4 mb-4 ml-4 w-full ${byteErrors?.steps?.[step.uuid] ? 'error-event-border' : ''}`}>
-        <h3 className="float-left">Step {stepIndex + 1}</h3>
-        <div className="h-10" style={{ minHeight: '40px' }}>
+      <div className={`border rounded-md p-4 w-full ${byteErrors?.steps?.[step.uuid] ? 'error-event-border' : ''}`}>
+        <div style={{ minHeight: '20px' }}>
           <IconButton
             className="float-right ml-2"
             iconName={IconTypes.Trash}
