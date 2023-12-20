@@ -65,7 +65,7 @@ function EditByteStepper({ space, byte, byteErrors, errorColor = '#d32f2f', succ
       <StyledOl className="w-full" style={styleObject}>
         <div id="accordion-collapse" data-accordion="collapse">
           {byte.steps.map((step, index) => (
-            <div>
+            <div key={step.uuid}>
               <h2 id={`accordion-collapse-heading-${index}`}>
                 <button
                   type="button"
