@@ -107,11 +107,11 @@ export const themes: Record<keyof typeof CssTheme, ThemeValue> = {
   },
   UniswapTheme: {
     primaryColor: '#6f6cbd',
-    bgColor: '#212429',
+    bgColor: '#14141c',
     textColor: '#c2c5ca',
     linkColor: '#ffffff',
     headingColor: '#6f6cbd',
     borderColor: '#909294',
-    blockBg: '#14141c',
+    blockBg: '#212429',
   },
 };
