@@ -1,5 +1,5 @@
 import Checkbox from '@/components/app/Form/Checkbox';
-import Radio from '@/components/app/Form/Radio';
+import RadioOption from '@/components/app/Form/Radio/RadioOption';
 import HintIcon from '@/components/core/icons/HintIcon';
 import {
   ByteQuestionFragmentFragment,
@@ -9,6 +9,7 @@ import {
 } from '@/graphql/generated/generated-types';
 import { QuestionType } from '@/types/deprecated/models/enums';
 import { getMarkedRenderer } from '@/utils/ui/getMarkedRenderer';
+import { RadioGroup } from '@headlessui/react';
 import isEqual from 'lodash/isEqual';
 import { marked } from 'marked';
 import 'prismjs';
@@ -23,8 +24,6 @@ import 'prismjs/components/prism-toml';
 import 'prismjs/components/prism-yaml';
 import { useEffect, useState } from 'react';
 import styles from './Question.module.scss';
-import { RadioGroup } from '@headlessui/react';
-import { CustomRadioOption } from '../Form/NewRadioButton';
 
 export interface LocalQuestionType
   extends Omit<CourseQuestionFragment | GuideQuestionFragment | ByteQuestionFragmentFragment | CourseReadingQuestionFragment, 'hint' | 'explanation'> {
@@ -43,10 +42,6 @@ interface QuestionProps {
 }
 const renderer = getMarkedRenderer();
 
-function classNames(...classes: (string | null | undefined)[]): string {
-  return classes.filter(Boolean).join(' ');
-}
-
 function Question({ answerClass = '', question, questionResponse, readonly, showHint = false, onSelectAnswer }: QuestionProps) {
   const questionContent = marked.parse(question.content, { renderer });
 
@@ -61,14 +56,15 @@ function Question({ answerClass = '', question, questionResponse, readonly, show
     onSelectAnswer(question.uuid, selectedAnswers);
   };
 
-  const selectSingleChoice = (choiceKey: string) => {
-    const selectedAnswers = isEqual(questionResponse, [choiceKey]) ? [] : [choiceKey];
-    onSelectAnswer(question.uuid, selectedAnswers);
+  const selectSingleChoice = (choiceKey: string | null) => {
+    if (!choiceKey) {
+      onSelectAnswer(question.uuid, []);
+    } else {
+      const selectedAnswers = isEqual(questionResponse, [choiceKey]) ? [] : [choiceKey];
+      onSelectAnswer(question.uuid, selectedAnswers);
+    }
   };
 
-  const handleRadioChange = (choiceKey: string) => {
-    selectSingleChoice(choiceKey);
-  };
   const questionWithFormattedChoices = {
     ...question,
     choices: (question.choices || ([] as LocalQuestionType[])).map((choice) => ({
@@ -88,13 +84,24 @@ function Question({ answerClass = '', question, questionResponse, readonly, show
         )}
       </div>
       {question.type === QuestionType.SingleChoice ? (
-        <RadioGroup value={questionResponse.length > 0 ? questionResponse[0] : null} onChange={selectSingleChoice}>
+        <RadioGroup
+          value={questionResponse.length > 0 ? questionResponse[0] : null}
+          onChange={(choiceKey) => {
+            selectSingleChoice(choiceKey);
+          }}
+        >
           {questionWithFormattedChoices.choices.map((choice) => {
             const isSelected = questionResponse.includes(choice.key);
             return (
               <div key={choice.key} className={`leading-loose items-center py-2 sm:py-0 -ml-2`}>
                 <div className="mt-2">
-                  <CustomRadioOption key={question.uuid + choice.key} value={choice.key} content={choice.content} isSelected={isSelected} />
+                  <RadioOption
+                    key={question.uuid + choice.key}
+                    value={choice.key}
+                    content={choice.content}
+                    isSelected={isSelected}
+                    onSelect={selectSingleChoice}
+                  />
                 </div>
               </div>
             );
@@ -117,12 +124,6 @@ function Question({ answerClass = '', question, questionResponse, readonly, show
           );
         })
       )}
-      {displayHint && (
-        <div className="border-t p-2 mt-4">
-          <p>Hint: {question.hint}</p>
-        </div>
-      )}
-
       {displayHint && (
         <div className="border-t p-2 mt-4">
           <p>Hint: {question.hint}</p>
