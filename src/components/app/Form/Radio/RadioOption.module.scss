@@ -1,0 +1,12 @@
+.selectedOption {
+  border: 3px solid var(--primary-color);
+  background-color: rgba(127, 127, 127, 0.2);
+}
+
+.activeBorderColor {
+  background-color: rgba(127, 127, 127, 0.5);
+}
+
+.backgroundColor {
+  background-color: var(--bg-color);
+}

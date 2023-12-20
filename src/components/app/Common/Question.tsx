@@ -1,5 +1,5 @@
 import Checkbox from '@/components/app/Form/Checkbox';
-import Radio from '@/components/app/Form/Radio';
+import RadioOption from '@/components/app/Form/Radio/RadioOption';
 import HintIcon from '@/components/core/icons/HintIcon';
 import {
   ByteQuestionFragmentFragment,
@@ -9,6 +9,7 @@ import {
 } from '@/graphql/generated/generated-types';
 import { QuestionType } from '@/types/deprecated/models/enums';
 import { getMarkedRenderer } from '@/utils/ui/getMarkedRenderer';
+import { RadioGroup } from '@headlessui/react';
 import isEqual from 'lodash/isEqual';
 import { marked } from 'marked';
 import 'prismjs';
@@ -55,9 +56,13 @@ function Question({ answerClass = '', question, questionResponse, readonly, show
     onSelectAnswer(question.uuid, selectedAnswers);
   };
 
-  const selectSingleChoice = (choiceKey: string) => {
-    const selectedAnswers = isEqual(questionResponse, [choiceKey]) ? [] : [choiceKey];
-    onSelectAnswer(question.uuid, selectedAnswers);
+  const selectSingleChoice = (choiceKey: string | null) => {
+    if (!choiceKey) {
+      onSelectAnswer(question.uuid, []);
+    } else {
+      const selectedAnswers = isEqual(questionResponse, [choiceKey]) ? [] : [choiceKey];
+      onSelectAnswer(question.uuid, selectedAnswers);
+    }
   };
 
   const questionWithFormattedChoices = {
@@ -78,21 +83,35 @@ function Question({ answerClass = '', question, questionResponse, readonly, show
           </div>
         )}
       </div>
-      {questionWithFormattedChoices.choices.map((choice) => {
-        const isSelected = questionResponse.includes(choice.key);
-
-        return (
-          <div key={choice.key} className={`flex leading-loose items-center py-2 sm:py-0 ${question.type === QuestionType.SingleChoice ? '-ml-2' : 'py-2'}`}>
-            {question.type === QuestionType.SingleChoice ? (
-              <Radio
-                id={question.uuid + choice.key}
-                questionId={question.uuid}
-                labelContent={choice.content}
-                isSelected={isSelected}
-                onChange={() => selectSingleChoice(choice.key)}
-                readonly={readonly}
-              />
-            ) : (
+      {question.type === QuestionType.SingleChoice ? (
+        <RadioGroup
+          value={questionResponse.length > 0 ? questionResponse[0] : null}
+          onChange={(choiceKey) => {
+            selectSingleChoice(choiceKey);
+          }}
+        >
+          {questionWithFormattedChoices.choices.map((choice) => {
+            const isSelected = questionResponse.includes(choice.key);
+            return (
+              <div key={choice.key} className={`leading-loose items-center py-2 sm:py-0 -ml-2`}>
+                <div className="mt-2">
+                  <RadioOption
+                    key={question.uuid + choice.key}
+                    value={choice.key}
+                    content={choice.content}
+                    isSelected={isSelected}
+                    onSelect={selectSingleChoice}
+                  />
+                </div>
+              </div>
+            );
+          })}
+        </RadioGroup>
+      ) : (
+        questionWithFormattedChoices.choices.map((choice) => {
+          const isSelected = questionResponse.includes(choice.key);
+          return (
+            <div key={choice.key} className={`flex leading-loose items-center py-2 sm:py-0`}>
               <Checkbox
                 id={question.uuid + choice.key}
                 labelContent={choice.content}
@@ -101,11 +120,10 @@ function Question({ answerClass = '', question, questionResponse, readonly, show
                 className={answerClass}
                 readonly={readonly}
               />
-            )}
-          </div>
-        );
-      })}
-
+            </div>
+          );
+        })
+      )}
       {displayHint && (
         <div className="border-t p-2 mt-4">
           <p>Hint: {question.hint}</p>
