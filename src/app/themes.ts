@@ -40,7 +40,7 @@ export const themes: Record<keyof typeof CssTheme, ThemeValue> = {
     linkColor: '#ffffff',
     headingColor: '#ffffff',
     borderColor: '#4971E9',
-    blockBg: '#1D2C52',
+    blockBg: '#11192d',
   },
   BalancerTheme: {
     primaryColor: '#3183ff',
@@ -58,7 +58,7 @@ export const themes: Record<keyof typeof CssTheme, ThemeValue> = {
     linkColor: '#f1f1f3',
     headingColor: '#f1f1f3',
     borderColor: '#d1d5da',
-    blockBg: '#323432',
+    blockBg: '#1e202d',
   },
   CryptoGelatoTheme: {
     primaryColor: '#3183ff',
@@ -112,6 +112,6 @@ export const themes: Record<keyof typeof CssTheme, ThemeValue> = {
     linkColor: '#ffffff',
     headingColor: '#6f6cbd',
     borderColor: '#909294',
-    blockBg: '#3B3A60FF',
+    blockBg: '#14141c',
   },
 };

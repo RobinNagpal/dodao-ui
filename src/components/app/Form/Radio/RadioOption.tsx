@@ -18,7 +18,7 @@ export default function RadioOption({ key, value, content, isSelected, onSelect 
       className={({ active }) =>
         classNames(
           active ? `${styles.activeBorderColor}` : 'border-gray-300',
-          `relative block cursor-pointer rounded-lg border px-6 py-4 shadow-sm focus:outline-none ${styles.backgroundColor}`
+          `relative block cursor-pointer rounded-lg border px-6 py-4 shadow-sm focus:outline-none`
         )
       }
       onClick={() => onSelect(key)}
