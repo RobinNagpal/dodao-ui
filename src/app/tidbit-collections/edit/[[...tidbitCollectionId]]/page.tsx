@@ -63,7 +63,7 @@ function EditTidbitCollectionSpace(props: { space: SpaceWithIntegrationsFragment
         <div tw="px-4 md:px-0 overflow-hidden">
           <Link href="/tidbit-collections" className="text-color">
             <span className="mr-1 font-bold">&#8592;</span>
-            {'Back to Tidbits'}
+            {'Back to Tidbit collections'}
           </Link>
         </div>
         {bytesResponse?.bytes ? (
