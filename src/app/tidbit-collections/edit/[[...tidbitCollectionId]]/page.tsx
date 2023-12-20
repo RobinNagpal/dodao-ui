@@ -12,6 +12,9 @@ import {
   useUpdateByteCollectionMutation,
 } from '@/graphql/generated/generated-types';
 
+import SingleCardLayout from '@/layouts/SingleCardLayout';
+import Link from 'next/link';
+
 function EditTidbitCollectionSpace(props: { space: SpaceWithIntegrationsFragment; params: { tidbitCollectionId?: string[] } }) {
   const { data: bytesResponse } = useQueryBytesQuery({
     variables: {
@@ -56,17 +59,25 @@ function EditTidbitCollectionSpace(props: { space: SpaceWithIntegrationsFragment
 
   return (
     <PageWrapper>
-      {bytesResponse?.bytes ? (
-        <ByteCollectionEditor
-          space={props.space}
-          byteCollectionId={props.params.tidbitCollectionId?.[0]}
-          viewByteCollectionsUrl={'/tidbit-collections'}
-          byteSummaries={bytesResponse?.bytes}
-          upsertByteCollectionFn={upsertByteCollectionFn}
-        />
-      ) : (
-        <PageLoading />
-      )}
+      <SingleCardLayout>
+        <div tw="px-4 md:px-0 overflow-hidden">
+          <Link href="/tidbit-collections" className="text-color">
+            <span className="mr-1 font-bold">&#8592;</span>
+            {'Back to Tidbits'}
+          </Link>
+        </div>
+        {bytesResponse?.bytes ? (
+          <ByteCollectionEditor
+            space={props.space}
+            byteCollectionId={props.params.tidbitCollectionId?.[0]}
+            viewByteCollectionsUrl={'/tidbit-collections'}
+            byteSummaries={bytesResponse?.bytes}
+            upsertByteCollectionFn={upsertByteCollectionFn}
+          />
+        ) : (
+          <PageLoading />
+        )}
+      </SingleCardLayout>
     </PageWrapper>
   );
 }
