@@ -30,10 +30,6 @@ const StepperItemContainer = styled.div`
   width: 100%;
 `;
 
-const SvgContainer = styled.div`
-  background-color: var(--primary-color);
-`;
-
 const StyledButton = styled.button`
   svg {
     fill: var(--primary-color);
