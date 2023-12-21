@@ -65,11 +65,11 @@ function EditByteStepper({ space, byte, byteErrors, errorColor = '#d32f2f', succ
       <StyledOl className="w-full" style={styleObject}>
         <div id="accordion-collapse" data-accordion="collapse">
           {byte.steps.map((step, index) => (
-            <div key={step.uuid}>
+            <div key={step.uuid} className={`${openAccordionIndex === index ? 'bg-gray-200' : ''} mt-2 rounded-md`}>
               <h2 id={`accordion-collapse-heading-${index}`}>
                 <button
                   type="button"
-                  className="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-b-0 border-gray-200 rounded-t-xl focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 gap-3"
+                  className="flex rounded-md items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-200 gap-3"
                   data-accordion-target={`#accordion-collapse-body-${index}`}
                   aria-expanded={openAccordionIndex === index}
                   aria-controls={`accordion-collapse-body-${index}`}
@@ -85,7 +85,7 @@ function EditByteStepper({ space, byte, byteErrors, errorColor = '#d32f2f', succ
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 10 6"
-                    style={{ transform: openAccordionIndex === index ? 'rotate(180deg)' : 'rotate(0deg)' }}
+                    style={{ transform: 'rotate(' + (openAccordionIndex === index ? '180' : '0') + 'deg)' }}
                   >
                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5 5 1 1 5" />
                   </svg>
@@ -93,7 +93,11 @@ function EditByteStepper({ space, byte, byteErrors, errorColor = '#d32f2f', succ
               </h2>
               <div
                 id={`accordion-collapse-body-${index}`}
-                className={`${openAccordionIndex === index ? '' : 'hidden'}`}
+                className="max-h-0 overflow-hidden transition-all duration-400 ease-in-out"
+                style={{
+                  maxHeight: openAccordionIndex === index ? '1000px' : '0',
+                  opacity: openAccordionIndex === index ? 1 : 0,
+                }}
                 aria-labelledby={`accordion-collapse-heading-${index}`}
               >
                 <StyledLi className="w-full flex" key={step.uuid}>

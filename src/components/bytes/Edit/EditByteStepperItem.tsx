@@ -318,7 +318,7 @@ export default function EditByteStepperItem({
 
   return (
     <StyledStepItemContainer className="w-full">
-      <div className={`border rounded-md p-4 w-full ${byteErrors?.steps?.[step.uuid] ? 'error-event-border' : ''}`}>
+      <div className={`p-4 w-full ${byteErrors?.steps?.[step.uuid] ? 'error-event-border' : ''}`}>
         <div style={{ minHeight: '20px' }}>
           <IconButton
             className="float-right ml-2"
