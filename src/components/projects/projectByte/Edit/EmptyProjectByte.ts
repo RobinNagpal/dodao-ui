@@ -41,8 +41,6 @@ export const emptyProjectByte = (): Omit<ProjectByteFragment, 'id'> & { isPristi
     isPristine: true,
     name: 'Byte Name',
     content: 'New Byte',
-
-    publishStatus: PublishStatus.Live,
     steps: [
       {
         uuid: step1Uuid,

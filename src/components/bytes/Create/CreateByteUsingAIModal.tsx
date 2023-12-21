@@ -162,8 +162,6 @@ export function CreateByteUsingAIModal(props: CreateByteUsingAIModalProps) {
         created: new Date().toISOString(),
         isPristine: true,
         priority: 0,
-        publishStatus: PublishStatus.Draft,
-        visibility: VisibilityEnum.Public,
         tags: [],
         steps: stepsWithQuestions,
       };

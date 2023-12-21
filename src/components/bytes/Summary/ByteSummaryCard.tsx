@@ -21,12 +21,6 @@ export default function ByteSummaryCard({ byte, baseByteViewUrl }: ByteSummaryCa
             <h2 className="text-base font-bold whitespace-nowrap overflow-hidden text-ellipsis">{shorten(byte.name, 32)}</h2>
             <p className="break-words mb-2 text-sm h-65px text-ellipsis overflow-hidden">{shorten(byte.content, 300)}</p>
           </div>
-
-          {(byte as ByteSummaryType).visibility === VisibilityEnum.Hidden && (
-            <div className="flex flex-wrap justify-end absolute top-2 left-2">
-              <div className="badge post-category mb-1">{VisibilityEnum.Hidden}</div>
-            </div>
-          )}
         </div>
       </Link>
     </Card>
