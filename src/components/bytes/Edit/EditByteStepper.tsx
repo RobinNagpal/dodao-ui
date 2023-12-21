@@ -66,12 +66,7 @@ function EditByteStepper({ space, byte, byteErrors, errorColor = '#d32f2f', succ
       <StyledOl className="w-full" style={styleObject}>
         <div id="accordion-collapse" data-accordion="collapse">
           {byte.steps.map((step, index) => (
-              <Accordion
-              key={step.uuid}
-              isOpen={openAccordionIndex === index}
-              label={`Step ${index + 1}: ${step.name}`}
-              onClick={() => toggleAccordion(index)}
-            >
+            <Accordion key={step.uuid} isOpen={openAccordionIndex === index} label={`Step ${index + 1}: ${step.name}`} onClick={() => toggleAccordion(index)}>
               <StyledLi className="w-full flex">
                 <StepperItemContainer>
                   <EditByteStepperItem

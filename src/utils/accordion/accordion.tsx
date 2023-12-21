@@ -1,24 +1,18 @@
-// Accordion.tsx
-
 import React, { ReactNode } from 'react';
 import styled from 'styled-components';
+import styles from './accordion.module.scss';
 
 interface AccordionProps {
   isOpen: boolean;
   label: string;
   onClick: () => void;
-  children : ReactNode
+  children: ReactNode;
 }
 
 const AccordionContainer = styled.div`
   margin-top: 2px;
-  border-radius: 0.375rem; /* 6px */
+  border-radius: 0.375rem;
 `;
-
-const AccordionHeader = styled.h2`
-  /* Add your styles for the accordion header */
-`;
-
 const AccordionContent = styled.div`
   max-height: 0;
   overflow: hidden;
@@ -28,10 +22,10 @@ const AccordionContent = styled.div`
 export const Accordion: React.FC<AccordionProps> = ({ isOpen, label, onClick, children }) => {
   return (
     <AccordionContainer className={isOpen ? 'bg-gray-200' : ''}>
-      <AccordionHeader id={`accordion-${label}`}>
+      <h2 id={`accordion-${label}`}>
         <button
           type="button"
-          className="flex rounded-md items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-200 gap-3"
+          className={`flex rounded-md items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 gap-3 ${styles.backgroundColor}`}
           onClick={onClick}
         >
           <span className="flex items-center">{label}</span>
@@ -46,7 +40,7 @@ export const Accordion: React.FC<AccordionProps> = ({ isOpen, label, onClick, ch
             <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5 5 1 1 5" />
           </svg>
         </button>
-      </AccordionHeader>
+      </h2>
       <AccordionContent
         style={{
           maxHeight: isOpen ? '1000px' : '0',
