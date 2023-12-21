@@ -7,6 +7,7 @@ import { CSSProperties, useMemo } from 'react';
 import styled from 'styled-components';
 import EditByteStepperItem from './EditByteStepperItem';
 import React, { useState } from 'react';
+import { Accordion } from '@/utils/accordion/accordion';
 
 interface EditByteStepperProps {
   space: SpaceWithIntegrationsFragment;
@@ -65,60 +66,30 @@ function EditByteStepper({ space, byte, byteErrors, errorColor = '#d32f2f', succ
       <StyledOl className="w-full" style={styleObject}>
         <div id="accordion-collapse" data-accordion="collapse">
           {byte.steps.map((step, index) => (
-            <div key={step.uuid} className={`${openAccordionIndex === index ? 'bg-gray-200' : ''} mt-2 rounded-md`}>
-              <h2 id={`accordion-collapse-heading-${index}`}>
-                <button
-                  type="button"
-                  className="flex rounded-md items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-200 gap-3"
-                  data-accordion-target={`#accordion-collapse-body-${index}`}
-                  aria-expanded={openAccordionIndex === index}
-                  aria-controls={`accordion-collapse-body-${index}`}
-                  onClick={() => toggleAccordion(index)}
-                >
-                  <span className="flex items-center">
-                    Step {index + 1}: {step.name}
-                  </span>
-                  <svg
-                    data-accordion-icon
-                    className="w-3 h-3 shrink-0"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 10 6"
-                    style={{ transform: 'rotate(' + (openAccordionIndex === index ? '180' : '0') + 'deg)' }}
-                  >
-                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5 5 1 1 5" />
-                  </svg>
-                </button>
-              </h2>
-              <div
-                id={`accordion-collapse-body-${index}`}
-                className="max-h-0 overflow-hidden transition-all duration-400 ease-in-out"
-                style={{
-                  maxHeight: openAccordionIndex === index ? '1000px' : '0',
-                  opacity: openAccordionIndex === index ? 1 : 0,
-                }}
-                aria-labelledby={`accordion-collapse-heading-${index}`}
-              >
-                <StyledLi className="w-full flex" key={step.uuid}>
-                  <StepperItemContainer>
-                    <EditByteStepperItem
-                      space={space}
-                      byte={byte}
-                      byteErrors={byteErrors}
-                      byteHasDiscordEnabled={byteHasDiscordEnabled}
-                      step={step}
-                      stepIndex={index}
-                      stepErrors={byteErrors?.steps?.[step.uuid]}
-                      updateStep={updateByteFunctions.updateStep}
-                      moveStepUp={updateByteFunctions.moveStepUp}
-                      moveStepDown={updateByteFunctions.moveStepDown}
-                      removeStep={updateByteFunctions.removeStep}
-                    />
-                  </StepperItemContainer>
-                </StyledLi>
-              </div>
-            </div>
+              <Accordion
+              key={step.uuid}
+              isOpen={openAccordionIndex === index}
+              label={`Step ${index + 1}: ${step.name}`}
+              onClick={() => toggleAccordion(index)}
+            >
+              <StyledLi className="w-full flex">
+                <StepperItemContainer>
+                  <EditByteStepperItem
+                    space={space}
+                    byte={byte}
+                    byteErrors={byteErrors}
+                    byteHasDiscordEnabled={byteHasDiscordEnabled}
+                    step={step}
+                    stepIndex={index}
+                    stepErrors={byteErrors?.steps?.[step.uuid]}
+                    updateStep={updateByteFunctions.updateStep}
+                    moveStepUp={updateByteFunctions.moveStepUp}
+                    moveStepDown={updateByteFunctions.moveStepDown}
+                    removeStep={updateByteFunctions.removeStep}
+                  />
+                </StepperItemContainer>
+              </StyledLi>
+            </Accordion>
           ))}
         </div>
         <li className="mb-10 flex">
