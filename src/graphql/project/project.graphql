@@ -22,7 +22,6 @@ fragment ProjectByte on ProjectByte {
   name
   postSubmissionStepContent
   priority
-  publishStatus
   steps {
     content
     stepItems {

@@ -10,7 +10,6 @@ import { emptyProjectByte } from '@/components/projects/projectByte/Edit/EmptyPr
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import { ProjectByteFragment, SpaceWithIntegrationsFragment, useProjectByteQuery, useUpsertProjectByteMutation } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
-import { PublishStatus } from '@/types/deprecated/models/enums';
 import { ByteErrors } from '@/types/errors/byteErrors';
 import { validateQuestion, validateUserInput } from '@/utils/stepItems/validateItems';
 import { useRouter } from 'next/navigation';
@@ -46,7 +45,6 @@ export function useEditProjectByte(space: SpaceWithIntegrationsFragment, project
         admins: [],
         created: new Date().toISOString(),
         priority: 50,
-        publishStatus: PublishStatus.Draft,
         tags: [],
       };
       setByte(byte);

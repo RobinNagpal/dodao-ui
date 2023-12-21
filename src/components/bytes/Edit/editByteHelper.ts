@@ -172,7 +172,6 @@ export function editByteCommonFunctions(setByte: (value: ((prevState: EditByteTy
         })),
         uuid: s.uuid,
       })),
-      publishStatus: byte.publishStatus,
       thumbnail: byte.thumbnail,
       created: byte.created,
       admins: byte.admins,

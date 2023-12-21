@@ -52,7 +52,6 @@ fragment ByteDetails on Byte {
   created
   id
   name
-  publishStatus
   admins
   tags
   priority
@@ -67,8 +66,6 @@ fragment ByteDetailsFragment on Byte {
   created
   id
   name
-  publishStatus
-  visibility
   admins
   tags
   priority
@@ -110,8 +107,6 @@ fragment ByteSummary on Byte {
   created
   id
   name
-  publishStatus
-  visibility
   admins
   tags
   priority
@@ -131,18 +126,6 @@ query QueryByteDetails($spaceId: String!, $byteId: String!, $includeDraft: Boole
 
 mutation UpsertByte($spaceId: String!, $input: UpsertByteInput!) {
   payload: upsertByte(spaceId: $spaceId, input: $input) {
-    ...ByteDetails
-  }
-}
-
-mutation SaveByte($spaceId: String!, $input: UpsertByteInput!) {
-  payload: saveByte(spaceId: $spaceId, input: $input) {
-    ...ByteDetails
-  }
-}
-
-mutation PublishByte($spaceId: String!, $input: UpsertByteInput!) {
-  payload: publishByte(spaceId: $spaceId, input: $input) {
     ...ByteDetails
   }
 }

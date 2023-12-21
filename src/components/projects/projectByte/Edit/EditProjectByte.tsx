@@ -52,10 +52,7 @@ export default function EditProjectByte(props: { space: SpaceWithIntegrationsFra
             <span className="mr-1 font-bold">&#8592;</span>
             {byteId ? byte.name : 'Back to Bytes'}
           </Link>
-          <div>
-            {byteId && <StatusBadge status={byte.publishStatus} className="mr-4" />}
-            {!byteId && <Button onClick={() => setShowAIGenerateModel(true)}>Create with AI</Button>}
-          </div>
+          <div>{!byteId && <Button onClick={() => setShowAIGenerateModel(true)}>Create with AI</Button>}</div>
         </div>
 
         {byteLoaded ? (

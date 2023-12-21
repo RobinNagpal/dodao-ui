@@ -105,11 +105,9 @@ type Byte {
   name: String!
   postSubmissionStepContent: String
   priority: Int!
-  publishStatus: String!
   showIncorrectOnCompletion: Boolean!
   steps: [ByteStep!]!
   tags: [String!]!
-  visibility: String
 }
 
 type ByteCollection {
@@ -995,6 +993,7 @@ type Mutation {
   askChatCompletionAI(input: ChatCompletionAIInput!): OpenAIChatCompletionResponse!
   askCompletionAI(input: CompletionAIInput!): OpenAICompletionResponse!
   authenticateWithUnstoppable(idToken: String!): JwtResponse!
+  copyAllBytesFromGitToDatabase(spaceId: String!): Boolean!
   createArticleIndexingInfo(articleUrl: String!, spaceId: String!): ArticleIndexingInfo!
   createByteCollection(input: CreateByteCollectionInput!): ByteCollection!
   createSignedUrl(input: CreateSignedUrlInput!, spaceId: String!): String!
@@ -1030,14 +1029,12 @@ type Mutation {
   moveTopicQuestion(questionInfo: MoveTopicQuestionInput!, spaceId: String!): GitCourse!
   moveTopicSummary(spaceId: String!, summaryInfo: MoveTopicSummaryInput!): GitCourse!
   moveTopicVideo(spaceId: String!, videoInfo: MoveTopicVideoInput!): GitCourse!
-  publishByte(input: UpsertByteInput!, spaceId: String!): Byte!
   reFetchDiscordChannels(serverId: String!, spaceId: String!): [DiscordChannel!]!
   reFetchDiscordMessages(channelId: String!, spaceId: String!): Boolean!
   reFetchDiscordServers: [DiscordServer!]!
   refreshGitCourse(courseKey: String!, spaceId: String!): Boolean!
   refreshGitCourses(spaceId: String!): Boolean!
   reloadAcademyRepository(spaceId: String!): Boolean!
-  saveByte(input: UpsertByteInput!, spaceId: String!): Byte!
   sendEmail(input: SendEmailInput!): Boolean!
   submitByte(submissionInput: ByteSubmissionInput!): ByteSubmission!
   submitGitCourse(input: CourseSubmissionInput!, spaceId: String!): GitCourseSubmission!
@@ -1167,7 +1164,6 @@ type ProjectByte {
   name: String!
   postSubmissionStepContent: String
   priority: Int!
-  publishStatus: String!
   steps: [ByteStep!]!
   tags: [String!]!
 }
@@ -1603,11 +1599,9 @@ input UpsertByteInput {
   id: String!
   name: String!
   priority: Int!
-  publishStatus: String!
   steps: [ByteStepInput!]!
   tags: [String!]!
   thumbnail: String
-  visibility: String
 }
 
 input UpsertByteSocialShareInput {
@@ -1690,7 +1684,6 @@ input UpsertProjectByteInput {
   id: String!
   name: String!
   priority: Int!
-  publishStatus: String!
   steps: [ByteStepInput!]!
   tags: [String!]!
   thumbnail: String

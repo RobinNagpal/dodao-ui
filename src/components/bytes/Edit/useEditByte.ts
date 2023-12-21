@@ -1,15 +1,7 @@
 import { editByteCommonFunctions, EditByteType, GeneratedByte, KeyOfByteInput, UpdateByteFunctions } from '@/components/bytes/Edit/editByteHelper';
 import { useNotificationContext } from '@/contexts/NotificationContext';
-import {
-  ByteDetailsFragment,
-  SpaceWithIntegrationsFragment,
-  usePublishByteMutation,
-  useQueryByteDetailsQuery,
-  useSaveByteMutation,
-  useUpsertByteMutation,
-} from '@/graphql/generated/generated-types';
+import { ByteDetailsFragment, SpaceWithIntegrationsFragment, useQueryByteDetailsQuery, useUpsertByteMutation } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
-import { PublishStatus } from '@/types/deprecated/models/enums';
 import { ByteErrors } from '@/types/errors/byteErrors';
 import { emptyByte } from '@/utils/byte/EmptyByte';
 import { validateQuestion, validateUserInput } from '@/utils/stepItems/validateItems';
@@ -29,13 +21,9 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
   const [byteLoaded, setByteLoaded] = useState<boolean>(false);
 
   const [byteUpserting, setByteUpserting] = useState<boolean>(false);
-  const [byteSaving, setByteSaving] = useState<boolean>(false);
-  const [bytePublishing, setBytePublishing] = useState<boolean>(false);
 
   const { refetch: queryByteDetails } = useQueryByteDetailsQuery({ skip: true });
   const [upsertByteMutation] = useUpsertByteMutation();
-  const [saveByteMutation] = useSaveByteMutation();
-  const [publishByteMutation] = usePublishByteMutation();
   const { showNotification } = useNotificationContext();
   const { $t } = useI18();
 
@@ -51,7 +39,6 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
         admins: [],
         created: new Date().toISOString(),
         priority: 50,
-        publishStatus: PublishStatus.Draft,
         tags: [],
       };
       setByte(byte);
@@ -159,7 +146,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
     setByteUpserting(false);
   };
 
-  const handleSubmit = async () => {
+  const handleByteUpsert = async () => {
     await saveViaMutation(
       async () =>
         await upsertByteMutation({
@@ -172,46 +159,13 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
     );
   };
 
-  const handleSave = async () => {
-    setByteSaving(true);
-    await saveViaMutation(
-      async () =>
-        await saveByteMutation({
-          variables: {
-            spaceId: space.id,
-            input: { ...getByteInputFn(byte), publishStatus: PublishStatus.Draft },
-          },
-          errorPolicy: 'all',
-        })
-    );
-    setBytePublishing(false);
-  };
-  const handlePublish = async () => {
-    setBytePublishing(true);
-    await saveViaMutation(
-      async () =>
-        await publishByteMutation({
-          variables: {
-            spaceId: space.id,
-            input: { ...getByteInputFn(byte), publishStatus: PublishStatus.Live },
-          },
-          errorPolicy: 'all',
-        })
-    );
-    setBytePublishing(false);
-  };
-
   return {
     byteUpserting,
-    byteSaving,
-    bytePublishing,
     byteLoaded,
     byteRef: byte,
     byteErrors,
     updateByteFunctions,
-    handleSubmit,
-    handleSave,
-    handlePublish,
+    handleByteUpsert,
     initialize,
   };
 }

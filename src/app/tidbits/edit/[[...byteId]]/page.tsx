@@ -26,19 +26,7 @@ function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteI
   const { space, params } = props;
   const byteId = params.byteId ? params.byteId[0] : null;
 
-  const {
-    byteUpserting,
-    byteSaving,
-    bytePublishing,
-    byteLoaded,
-    byteRef: byte,
-    byteErrors,
-    handleSubmit,
-    handleSave,
-    handlePublish,
-    initialize,
-    updateByteFunctions,
-  } = useEditByte(space, byteId || null);
+  const { byteUpserting, byteLoaded, byteRef: byte, byteErrors, handleByteUpsert, initialize, updateByteFunctions } = useEditByte(space, byteId || null);
   const { data: session } = useSession();
   const inputError = (field: keyof ByteErrors): string => {
     const error = byteErrors?.[field];
@@ -51,10 +39,6 @@ function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteI
 
   const [showAIGenerateModel, setShowAIGenerateModel] = useState(false);
 
-  const selectVisibilityValue = (status: VisibilityEnum) => {
-    updateByteFunctions.updateByteField('visibility', status);
-  };
-
   return (
     <PageWrapper>
       <SingleCardLayout>
@@ -63,10 +47,7 @@ function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteI
             <span className="mr-1 font-bold">&#8592;</span>
             {byteId ? byte.name : 'Back to Bytes'}
           </Link>
-          <div>
-            {byteId && <StatusBadge status={byte.publishStatus} className="mr-4" />}
-            {!byteId && <Button onClick={() => setShowAIGenerateModel(true)}>Create with AI</Button>}
-          </div>
+          <div>{!byteId && <Button onClick={() => setShowAIGenerateModel(true)}>Create with AI</Button>}</div>
         </div>
 
         {byteLoaded ? (
@@ -85,17 +66,6 @@ function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteI
                 >
                   Excerpt *
                 </Input>
-
-                <div className="mt-4">
-                  <div>Visibility * </div>
-                  <div className="text-xs">This decides if a byte should be displayed on tidbits page or not</div>
-                  <div className="flex justify-start ">
-                    <div className="pr-1 select-none">{byte.visibility === VisibilityEnum.Hidden ? 'Hidden' : 'Public'}</div>
-                    <div className="ml-2">
-                      <EllipsisDropdown items={visibilityOptions} onSelect={(value) => selectVisibilityValue(value as VisibilityEnum)} />
-                    </div>
-                  </div>
-                </div>
 
                 <TextareaArray
                   label="Admins"
@@ -135,18 +105,15 @@ function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteI
             </Block>
 
             <div className="flex">
-              <Button onClick={handleSave} loading={byteSaving} disabled={!byteLoaded || bytePublishing || byteSaving} className="block w-full mr-2" primary>
-                Save Draft
-              </Button>
               <Button
-                onClick={handlePublish}
-                loading={bytePublishing}
-                disabled={!byteLoaded || bytePublishing || byteSaving}
+                onClick={handleByteUpsert}
+                loading={byteUpserting}
+                disabled={!byteLoaded || byteUpserting}
                 className="ml-2 block w-full"
                 variant="contained"
                 primary
               >
-                Publish
+                Upsert
               </Button>
             </div>
           </div>
