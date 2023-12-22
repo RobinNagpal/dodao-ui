@@ -1,12 +1,12 @@
 import { EditByteType, UpdateByteFunctions } from '@/components/bytes/Edit/editByteHelper';
+import SidebarButton from '@/components/core/buttons/SidebarButton';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { UserDiscordConnectType } from '@/types/deprecated/models/enums';
 import { ByteErrors } from '@/types/errors/byteErrors';
+import Accordion from '@/utils/accordion/Accordion';
 import PlusCircle from '@heroicons/react/20/solid/PlusCircleIcon';
-import { CSSProperties, useMemo } from 'react';
-import styled from 'styled-components';
+import React, { CSSProperties, useMemo, useState } from 'react';
 import EditByteStepperItem from './EditByteStepperItem';
-import React, { useState } from 'react';
 
 interface EditByteStepperProps {
   space: SpaceWithIntegrationsFragment;
@@ -16,31 +16,11 @@ interface EditByteStepperProps {
   successColor?: string;
   updateByteFunctions: UpdateByteFunctions;
 }
-
-const StyledOl = styled.ol`
-  list-style: none;
-  border-color: var(--primary-color);
-`;
-
-const StyledLi = styled.ol`
-  list-style: none;
-`;
-
-const StepperItemContainer = styled.div`
-  width: 100%;
-`;
-
-const StyledButton = styled.button`
-  svg {
-    fill: var(--primary-color);
-    color: var(--primary-color);
-  }
-`;
 function EditByteStepper({ space, byte, byteErrors, errorColor = '#d32f2f', successColor = '#00813a', updateByteFunctions }: EditByteStepperProps) {
   const [openAccordionIndex, setOpenAccordionIndex] = useState<number | null>(null);
 
   const toggleAccordion = (index: number) => {
-    setOpenAccordionIndex((currentIndex) => (currentIndex === index ? null : index));
+    setOpenAccordionIndex(() => (openAccordionIndex === index ? null : index));
   };
   const styleObject: CSSProperties = useMemo(() => {
     return {
@@ -62,71 +42,34 @@ function EditByteStepper({ space, byte, byteErrors, errorColor = '#d32f2f', succ
 
   return (
     <div className="w-full flex flex-row">
-      <StyledOl className="w-full" style={styleObject}>
+      <div className="w-full" style={styleObject}>
         <div id="accordion-collapse" data-accordion="collapse">
           {byte.steps.map((step, index) => (
-            <div key={step.uuid} className={`${openAccordionIndex === index ? 'bg-gray-200' : ''} mt-2 rounded-md`}>
-              <h2 id={`accordion-collapse-heading-${index}`}>
-                <button
-                  type="button"
-                  className="flex rounded-md items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-200 gap-3"
-                  data-accordion-target={`#accordion-collapse-body-${index}`}
-                  aria-expanded={openAccordionIndex === index}
-                  aria-controls={`accordion-collapse-body-${index}`}
-                  onClick={() => toggleAccordion(index)}
-                >
-                  <span className="flex items-center">
-                    Step {index + 1}: {step.name}
-                  </span>
-                  <svg
-                    data-accordion-icon
-                    className="w-3 h-3 shrink-0"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 10 6"
-                    style={{ transform: 'rotate(' + (openAccordionIndex === index ? '180' : '0') + 'deg)' }}
-                  >
-                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5 5 1 1 5" />
-                  </svg>
-                </button>
-              </h2>
-              <div
-                id={`accordion-collapse-body-${index}`}
-                className="max-h-0 overflow-hidden transition-all duration-400 ease-in-out"
-                style={{
-                  maxHeight: openAccordionIndex === index ? '1000px' : '0',
-                  opacity: openAccordionIndex === index ? 1 : 0,
-                }}
-                aria-labelledby={`accordion-collapse-heading-${index}`}
-              >
-                <StyledLi className="w-full flex" key={step.uuid}>
-                  <StepperItemContainer>
-                    <EditByteStepperItem
-                      space={space}
-                      byte={byte}
-                      byteErrors={byteErrors}
-                      byteHasDiscordEnabled={byteHasDiscordEnabled}
-                      step={step}
-                      stepIndex={index}
-                      stepErrors={byteErrors?.steps?.[step.uuid]}
-                      updateStep={updateByteFunctions.updateStep}
-                      moveStepUp={updateByteFunctions.moveStepUp}
-                      moveStepDown={updateByteFunctions.moveStepDown}
-                      removeStep={updateByteFunctions.removeStep}
-                    />
-                  </StepperItemContainer>
-                </StyledLi>
+            <Accordion key={step.uuid} isOpen={openAccordionIndex === index} label={`Step ${index + 1}: ${step.name}`} onClick={() => toggleAccordion(index)}>
+              <div className="w-full">
+                <EditByteStepperItem
+                  space={space}
+                  byte={byte}
+                  byteErrors={byteErrors}
+                  byteHasDiscordEnabled={byteHasDiscordEnabled}
+                  step={step}
+                  stepIndex={index}
+                  stepErrors={byteErrors?.steps?.[step.uuid]}
+                  updateStep={updateByteFunctions.updateStep}
+                  moveStepUp={updateByteFunctions.moveStepUp}
+                  moveStepDown={updateByteFunctions.moveStepDown}
+                  removeStep={updateByteFunctions.removeStep}
+                />
               </div>
-            </div>
+            </Accordion>
           ))}
         </div>
         <li className="mb-10 flex">
-          <StyledButton onClick={updateByteFunctions.addStep} className="m-auto rounded-full text-white flex items-center font-bold justify-center">
+          <SidebarButton onClick={updateByteFunctions.addStep} className="m-auto" primary>
             <PlusCircle height={40} width={40} />
-          </StyledButton>
+          </SidebarButton>
         </li>
-      </StyledOl>
+      </div>
     </div>
   );
 }

@@ -55,7 +55,7 @@ const MainDiv = styled.div`
 
   .w-md-editor-show-edit {
     color: var(--text-color);
-    background-color: var(--block-bg);
+    background-color: var(--bg-color);
     box-shadow: none;
     border: 1px solid var(--border-color);
   }
@@ -65,7 +65,7 @@ const MainDiv = styled.div`
     border-color: var(--border-color);
   }
   .wmde-markdown-color {
-    background-color: var(--block-bg);
+    background-color: var(--bg-color);
     color: var(--text-color);
     width: 100%;
     --color-prettylights-syntax-comment: var(--text-color);
@@ -119,7 +119,7 @@ const MainDiv = styled.div`
     color: var(--text-color);
   }
   .language-markdown {
-    background-color: var(--block-bg);
+    background-color: var(--bg-color);
     color: var(--text-color);
   }
 `;
@@ -195,7 +195,6 @@ function MarkdownEditor({
             { ...commands.title2, icon: <div style={{ fontSize: 24, textAlign: 'left' }}>H2</div> },
             { ...commands.title3, icon: <div style={{ fontSize: 24, textAlign: 'left' }}>H3</div> },
             commands.divider,
-
             commands.bold,
             commands.italic,
 
