@@ -1,4 +1,4 @@
-import { ProjectByteCollectionFragment, ProjectFragment } from '@/graphql/generated/generated-types';
+import { ProjectByteCollectionFragment } from '@/graphql/generated/generated-types';
 import { getUsingApi } from '@/utils/api/getUsingApi';
 
 export async function getProjectByteCollectionsUsingApi(projectId: string) {

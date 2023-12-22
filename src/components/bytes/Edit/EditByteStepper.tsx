@@ -7,7 +7,7 @@ import { CSSProperties, useMemo } from 'react';
 import styled from 'styled-components';
 import EditByteStepperItem from './EditByteStepperItem';
 import React, { useState } from 'react';
-import { Accordion } from '@/utils/accordion/accordion';
+import Accordion from '@/utils/accordion/Accordion';
 
 interface EditByteStepperProps {
   space: SpaceWithIntegrationsFragment;

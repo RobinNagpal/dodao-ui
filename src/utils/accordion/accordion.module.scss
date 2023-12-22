@@ -1,3 +1,25 @@
-.backgroundColor:hover {
-  background-color: rgb(229 231 235);
+.accordionContainer {
+  margin-top: 2px;
+  border-radius: 0.375rem;
+  &.isOpened {
+    border: 3px solid var(--primary-color);
+    :hover {
+
+      border: 0;
+    }
+  }
+
+  :hover {
+    border-radius: 0.375rem;
+    border: 1px solid var(--primary-color);
+  }
+
+}
+
+.accordionContent {
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.4s ease-in-out;
+
+
 }

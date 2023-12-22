@@ -1,5 +1,4 @@
 import React, { ReactNode } from 'react';
-import styled from 'styled-components';
 import styles from './accordion.module.scss';
 
 interface AccordionProps {
@@ -9,25 +8,11 @@ interface AccordionProps {
   children: ReactNode;
 }
 
-const AccordionContainer = styled.div`
-  margin-top: 2px;
-  border-radius: 0.375rem;
-`;
-const AccordionContent = styled.div`
-  max-height: 0;
-  overflow: hidden;
-  transition: all 0.4s ease-in-out;
-`;
-
-export const Accordion: React.FC<AccordionProps> = ({ isOpen, label, onClick, children }) => {
+export default function Accordion({ isOpen, label, onClick, children }: AccordionProps) {
   return (
-    <AccordionContainer className={isOpen ? 'bg-gray-200' : ''}>
+    <div className={`${styles.accordionContainer} ${isOpen ? `isOpened ${styles.isOpened}` : ''}`}>
       <h2 id={`accordion-${label}`}>
-        <button
-          type="button"
-          className={`flex rounded-md items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 gap-3 ${styles.backgroundColor}`}
-          onClick={onClick}
-        >
+        <button type="button" className={`flex rounded-md items-center justify-between w-full p-5 font-medium rtl:text-right gap-3`} onClick={onClick}>
           <span className="flex items-center">{label}</span>
           <svg
             className="w-3 h-3 shrink-0"
@@ -41,14 +26,15 @@ export const Accordion: React.FC<AccordionProps> = ({ isOpen, label, onClick, ch
           </svg>
         </button>
       </h2>
-      <AccordionContent
+      <div
         style={{
           maxHeight: isOpen ? '1000px' : '0',
           opacity: isOpen ? 1 : 0,
         }}
+        className={styles.accordionContent}
       >
         {children}
-      </AccordionContent>
-    </AccordionContainer>
+      </div>
+    </div>
   );
-};
+}
