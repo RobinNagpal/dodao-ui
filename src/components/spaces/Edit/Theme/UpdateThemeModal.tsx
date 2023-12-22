@@ -1,8 +1,7 @@
 import { themes, ThemeValue } from '@/app/themes';
 import FullScreenModal from '@/components/core/modals/FullScreenModal';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
-import { CSSProperties, useState } from 'react';
-import styles from './UpdateThemeModal.module.scss';
+import { useState } from 'react';
 
 export interface UpdateThemeModalProps {
   space: SpaceWithIntegrationsFragment & { themeColors?: ThemeValue };
@@ -21,9 +20,9 @@ export default function UpdateThemeModal({ space, open, onClose, colorLabels }: 
 
   return (
     <FullScreenModal open={open} onClose={onClose} title="Theme Settings">
-      <div className={'mt-4 ' + styles.bodyText}>
-        <div className="flex flex-wrap">
-          <div className="w-1/2">
+      <div className="mt-4">
+        <div className="flex flex-col md:flex-row flex-wrap">
+          <div className="w-full md:w-1/2 mt-4">
             <h1 className="font-bold text-2xl mb-4">Theme Details</h1>
             {colorLabels.map((label, index) => {
               const colorKey = themeColorKeys[index];
@@ -37,22 +36,14 @@ export default function UpdateThemeModal({ space, open, onClose, colorLabels }: 
             })}
           </div>
           <div
-            className="w-1/2 p-4"
+            className="w-full md:mt-0 mt-4 md:w-1/2 p-2 md:p-4 border-2"
             style={{
               color: themeColors.textColor,
               backgroundColor: themeColors.bgColor,
               border: '3px solid ' + themeColors.borderColor,
             }}
           >
-            <h1
-              className="text-2xl text-center"
-              style={{
-                color: themeColors.headingColor,
-              }}
-            >
-              Test Heading
-            </h1>
-
+            <h1 className="text-xl md:text-2xl text-center">Test Heading</h1>
             <p>
               This is a sample text Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum voluptas eaque illo nesciunt perspiciatis accusantium
               tenetur unde quo exercitationem, molestias error est neque recusandae. Similique sequi, fuga commodi ipsum repellat quisquam cupiditate dolor cum

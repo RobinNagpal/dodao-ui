@@ -47,7 +47,6 @@ export default function SpaceThemeDetails({ space }: SpaceDetailsProps) {
             {colorLabels.map((label, index) => {
               const colorKey = themeColorKeys[index];
               const colorValue = themeColors[colorKey] || '';
-              console.log('i am ali ' + colorValue);
               return (
                 <div key={index} className="flex justify-between items-center mb-2">
                   <label className="ml-7">{label}</label>
