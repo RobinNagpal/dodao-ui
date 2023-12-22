@@ -3,10 +3,15 @@ import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsis
 import UpdateThemeModal from '@/components/spaces/Edit/Theme/UpdateThemeModal';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import React from 'react';
+import styled from 'styled-components';
 
 export interface SpaceDetailsProps {
   space: SpaceWithIntegrationsFragment & { themeColors?: ThemeValue };
 }
+
+const TestDiv = styled.div`
+background-color: var(--block-bg);
+`
 
 export default function SpaceThemeDetails({ space }: SpaceDetailsProps) {
   const [showThemeUpdateModal, setShowThemeUpdateModal] = React.useState(false);
@@ -36,7 +41,7 @@ export default function SpaceThemeDetails({ space }: SpaceDetailsProps) {
         <PrivateEllipsisDropdown items={threeDotItems} onSelect={selectFromThreedotDropdown} className="ml-4 pt-4 grow-0 w-16" />
       </div>
 
-      <div className={'mt-4 '}>
+      <div className={'mt-4'}>
         <div className="flex flex-wrap">
           <div className="w-1/2 mt-4">
             {colorLabels.map((label, index) => {
@@ -51,9 +56,8 @@ export default function SpaceThemeDetails({ space }: SpaceDetailsProps) {
               );
             })}
           </div>
-          <div className="w-1/2 p-4 border">
+          <TestDiv className="w-1/2 p-4 border-2">
             <h1 className="text-2xl text-center">Test Heading</h1>
-
             <p>
               This is a sample text Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum voluptas eaque illo nesciunt perspiciatis accusantium
               tenetur unde quo exercitationem, molestias error est neque recusandae. Similique sequi, fuga commodi ipsum repellat quisquam cupiditate dolor cum
@@ -62,7 +66,7 @@ export default function SpaceThemeDetails({ space }: SpaceDetailsProps) {
               explicabo corrupti voluptatum necessitatibus, debitis commodi laborum numquam, exercitationem ipsum sed. Obcaecati quasi quo error placeat
               repellat assumenda, autem voluptas porro expedita illum excepturi aspernatur ex earum corrupti perspiciatis.
             </p>
-          </div>
+          </TestDiv>
         </div>
       </div>
       <UpdateThemeModal colorLabels={colorLabels} space={space} open={showThemeUpdateModal} onClose={() => setShowThemeUpdateModal(false)} />
