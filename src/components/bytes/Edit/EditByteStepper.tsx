@@ -1,13 +1,12 @@
 import { EditByteType, UpdateByteFunctions } from '@/components/bytes/Edit/editByteHelper';
+import SidebarButton from '@/components/core/buttons/SidebarButton';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { UserDiscordConnectType } from '@/types/deprecated/models/enums';
 import { ByteErrors } from '@/types/errors/byteErrors';
-import PlusCircle from '@heroicons/react/20/solid/PlusCircleIcon';
-import { CSSProperties, useMemo } from 'react';
-import styled from 'styled-components';
-import EditByteStepperItem from './EditByteStepperItem';
-import React, { useState } from 'react';
 import Accordion from '@/utils/accordion/Accordion';
+import PlusCircle from '@heroicons/react/20/solid/PlusCircleIcon';
+import React, { CSSProperties, useMemo, useState } from 'react';
+import EditByteStepperItem from './EditByteStepperItem';
 
 interface EditByteStepperProps {
   space: SpaceWithIntegrationsFragment;
@@ -17,26 +16,6 @@ interface EditByteStepperProps {
   successColor?: string;
   updateByteFunctions: UpdateByteFunctions;
 }
-
-const StyledOl = styled.ol`
-  list-style: none;
-  border-color: var(--primary-color);
-`;
-
-const StyledLi = styled.ol`
-  list-style: none;
-`;
-
-const StepperItemContainer = styled.div`
-  width: 100%;
-`;
-
-const StyledButton = styled.button`
-  svg {
-    fill: var(--primary-color);
-    color: var(--primary-color);
-  }
-`;
 function EditByteStepper({ space, byte, byteErrors, errorColor = '#d32f2f', successColor = '#00813a', updateByteFunctions }: EditByteStepperProps) {
   const [openAccordionIndex, setOpenAccordionIndex] = useState<number | null>(null);
 
@@ -63,36 +42,34 @@ function EditByteStepper({ space, byte, byteErrors, errorColor = '#d32f2f', succ
 
   return (
     <div className="w-full flex flex-row">
-      <StyledOl className="w-full" style={styleObject}>
+      <div className="w-full" style={styleObject}>
         <div id="accordion-collapse" data-accordion="collapse">
           {byte.steps.map((step, index) => (
             <Accordion key={step.uuid} isOpen={openAccordionIndex === index} label={`Step ${index + 1}: ${step.name}`} onClick={() => toggleAccordion(index)}>
-              <StyledLi className="w-full flex">
-                <StepperItemContainer>
-                  <EditByteStepperItem
-                    space={space}
-                    byte={byte}
-                    byteErrors={byteErrors}
-                    byteHasDiscordEnabled={byteHasDiscordEnabled}
-                    step={step}
-                    stepIndex={index}
-                    stepErrors={byteErrors?.steps?.[step.uuid]}
-                    updateStep={updateByteFunctions.updateStep}
-                    moveStepUp={updateByteFunctions.moveStepUp}
-                    moveStepDown={updateByteFunctions.moveStepDown}
-                    removeStep={updateByteFunctions.removeStep}
-                  />
-                </StepperItemContainer>
-              </StyledLi>
+              <div className="w-full">
+                <EditByteStepperItem
+                  space={space}
+                  byte={byte}
+                  byteErrors={byteErrors}
+                  byteHasDiscordEnabled={byteHasDiscordEnabled}
+                  step={step}
+                  stepIndex={index}
+                  stepErrors={byteErrors?.steps?.[step.uuid]}
+                  updateStep={updateByteFunctions.updateStep}
+                  moveStepUp={updateByteFunctions.moveStepUp}
+                  moveStepDown={updateByteFunctions.moveStepDown}
+                  removeStep={updateByteFunctions.removeStep}
+                />
+              </div>
             </Accordion>
           ))}
         </div>
         <li className="mb-10 flex">
-          <StyledButton onClick={updateByteFunctions.addStep} className="m-auto rounded-full text-white flex items-center font-bold justify-center">
+          <SidebarButton onClick={updateByteFunctions.addStep} className="m-auto" primary>
             <PlusCircle height={40} width={40} />
-          </StyledButton>
+          </SidebarButton>
         </li>
-      </StyledOl>
+      </div>
     </div>
   );
 }

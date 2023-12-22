@@ -11,9 +11,9 @@ interface AccordionProps {
 export default function Accordion({ isOpen, label, onClick, children }: AccordionProps) {
   return (
     <div className={`${styles.accordionContainer} ${isOpen ? styles.isOpened : ''}`}>
-      <h2 id={`accordion-${label}`}>
-        <button type="button" className={`flex rounded-md items-center justify-between w-full p-5 font-medium rtl:text-right gap-3`} onClick={onClick}>
-          <span className="flex items-center">{label}</span>
+      <div id={`accordion-${label}`}>
+        <button type="button" className="flex rounded-md items-center justify-between w-full p-5 font-medium rtl:text-right gap-3" onClick={onClick}>
+          <span>{label}</span>
           <svg
             className="w-3 h-3 shrink-0"
             aria-hidden="true"
@@ -25,7 +25,7 @@ export default function Accordion({ isOpen, label, onClick, children }: Accordio
             <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5 5 1 1 5" />
           </svg>
         </button>
-      </h2>
+      </div>
       <div
         style={{
           maxHeight: isOpen ? '1000px' : '0',

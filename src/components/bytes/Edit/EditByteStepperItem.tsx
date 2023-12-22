@@ -1,3 +1,4 @@
+import DeleteConfirmationModal from '@/components/app/Modal/DeleteConfirmationModal';
 import { EditByteStep, EditByteType } from '@/components/bytes/Edit/editByteHelper';
 import IconButton from '@/components/core/buttons/IconButton';
 import CreateConnectDiscord from '@/components/app/Common/CreateDiscordConnect';
@@ -316,6 +317,8 @@ export default function EditByteStepperItem({
     updateStep({ ...step, name });
   };
 
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
   return (
     <StyledStepItemContainer className="w-full">
       <div className={`p-4 w-full ${byteErrors?.steps?.[step.uuid] ? 'error-event-border' : ''}`}>
@@ -325,7 +328,7 @@ export default function EditByteStepperItem({
             iconName={IconTypes.Trash}
             removeBorder
             disabled={byte.steps.length === 1}
-            onClick={() => removeStep(step.uuid)}
+            onClick={() => setShowDeleteModal(true)}
           />
           <IconButton className="float-right ml-2" iconName={IconTypes.MoveUp} removeBorder disabled={stepIndex === 0} onClick={() => moveStepUp(step.uuid)} />
           <IconButton
@@ -397,6 +400,18 @@ export default function EditByteStepperItem({
           onAddQuestion={addQuestion}
           onAddInput={addInput}
           onAddDiscord={addDiscord}
+        />
+      )}
+
+      {showDeleteModal && (
+        <DeleteConfirmationModal
+          title={'Delete Step'}
+          open={showDeleteModal}
+          onClose={() => setShowDeleteModal(false)}
+          onDelete={() => {
+            removeStep(step.uuid);
+            setShowDeleteModal(false);
+          }}
         />
       )}
     </StyledStepItemContainer>
