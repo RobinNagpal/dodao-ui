@@ -8,13 +8,16 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import styles from './ListProjectsHelper.module.scss';
+import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 
 type ListProjectsHelperProps = {
   projects: ProjectFragment[];
+  onShowEditModal: (project: ProjectFragment) => void;
 };
 
-const ListProjectsHelper: React.FC<ListProjectsHelperProps> = ({ projects }) => {
+const ListProjectsHelper: React.FC<ListProjectsHelperProps> = ({ projects, onShowEditModal }) => {
   const [loading, setLoading] = useState(false);
+  const threeDotItems = [{ label: 'Edit', key: 'edit' }];
 
   useEffect(() => {
     setLoading(true);
@@ -25,7 +28,7 @@ const ListProjectsHelper: React.FC<ListProjectsHelperProps> = ({ projects }) => 
   }, []);
 
   return (
-    <div className="m-5 overflow-hidden">
+    <div className="my-5 overflow-hidden">
       <Swiper
         spaceBetween={10}
         slidesPerView={5}
@@ -91,10 +94,31 @@ const ListProjectsHelper: React.FC<ListProjectsHelperProps> = ({ projects }) => 
                 <Skeleton height={250} />
               </SkeletonTheme>
             ) : (
+              //
               <Link href={`/projects/view/${project.id}/tidbit-collections`}>
-                <div className={`h-[250px] ${styles.card} px-1.5 pt-2 rounded flex flex-col gap-2 overflow-hidden`}>
-                  <div className="rounded">
-                    <img src="https://picsum.photos/500/300" alt={project.name} className="h-[150px] w-full object-cover rounded" />
+                <div className={`h-[250px] ${styles.card} px-1.5 pt-2 rounded-lg flex flex-col gap-2.5 overflow-hidden shadow-xl`}>
+                  <div className="rounded relative">
+                    <img
+                      src="https://picsum.photos/500/300"
+                      alt={project.name}
+                      className="h-[150px] w-full object-cover rounded shadow-[0_10px_13px_-5px_rgba(0,0,0,0.6)]"
+                    />
+                    <div
+                      className="absolute top-0 right-0 m-2"
+                      onClick={(event) => {
+                        event.preventDefault();
+                        event.stopPropagation();
+                      }}
+                    >
+                      <PrivateEllipsisDropdown
+                        items={threeDotItems}
+                        onSelect={async (key) => {
+                          if (key === 'edit') {
+                            onShowEditModal(project);
+                          }
+                        }}
+                      />
+                    </div>
                   </div>
                   <div className={`${styles.header} mx-2`}>
                     <div className="font-bold">{project.name}</div>

@@ -34,6 +34,7 @@ export default function ListProjects(props: { space: SpaceWithIntegrationsFragme
   });
   console.log('data:', data);
   const [showProjectAddModal, setShowProjectAddModal] = useState(false);
+  const [project, setProject] = useState<ProjectFragment | null>(null);
   const router = useRouter();
   const tableActions: TableActions = useMemo(() => {
     return {
@@ -64,8 +65,24 @@ export default function ListProjects(props: { space: SpaceWithIntegrationsFragme
           </Button>
         </div>
       </div>
-      <ListProjectsHelper projects={data?.projects || []} />
-      {showProjectAddModal && <UpsertProjectModal spaceId={props.space.id} open={showProjectAddModal} onClose={() => setShowProjectAddModal(false)} />}
+      <ListProjectsHelper
+        projects={data?.projects || []}
+        onShowEditModal={(project) => {
+          setShowProjectAddModal(true);
+          setProject(project);
+        }}
+      />
+      {showProjectAddModal && (
+        <UpsertProjectModal
+          spaceId={props.space.id}
+          project={project || undefined}
+          open={showProjectAddModal}
+          onClose={() => {
+            setShowProjectAddModal(false);
+            setProject(null);
+          }}
+        />
+      )}
     </MainDiv>
   );
 }
