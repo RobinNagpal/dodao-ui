@@ -41,7 +41,7 @@ function EditByteStepper({ space, byte, byteErrors, errorColor = '#d32f2f', succ
   const [openAccordionIndex, setOpenAccordionIndex] = useState<number | null>(null);
 
   const toggleAccordion = (index: number) => {
-    setOpenAccordionIndex((currentIndex) => (currentIndex === index ? null : index));
+    setOpenAccordionIndex(() => (openAccordionIndex === index ? null : index));
   };
   const styleObject: CSSProperties = useMemo(() => {
     return {
