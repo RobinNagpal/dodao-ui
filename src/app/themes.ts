@@ -5,7 +5,6 @@ export interface ThemeValue {
   linkColor: string;
   headingColor: string;
   borderColor: string;
-
   blockBg: string;
 }
 

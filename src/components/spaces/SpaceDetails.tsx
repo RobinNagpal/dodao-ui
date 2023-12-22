@@ -1,3 +1,4 @@
+import { ThemeValue } from '@/app/themes';
 import PageLoading from '@/components/core/loaders/PageLoading';
 import TabsWithUnderline, { TabItem } from '@/components/core/tabs/TabsWithUnderline';
 import SpaceAuthDetails from '@/components/spaces/View/SpaceAuthDetails';
@@ -6,6 +7,7 @@ import SpaceByteDetails from '@/components/spaces/View/SpaceByteDetails';
 import SpaceCourseDetails from '@/components/spaces/View/SpaceCoursesDetails';
 import SpaceGuideDetails from '@/components/spaces/View/SpaceGuideDetails';
 import SpaceSocialDetails from '@/components/spaces/View/SpaceSocialDetails';
+import SpaceThemeDetails from '@/components/spaces/View/SpaceThemeDetails';
 import { useExtendedSpaceQuery } from '@/graphql/generated/generated-types';
 import React, { useState } from 'react';
 
@@ -37,6 +39,16 @@ export default function SpaceDetails(props: SpaceDetailsProps) {
     },
   ];
 
+  const currentTheme: ThemeValue = {
+    primaryColor: '#2EBAC6',
+    bgColor: '#1B2030',
+    textColor: '#f1f1f3',
+    linkColor: '#f1f1f3',
+    headingColor: '#f1f1f3',
+    borderColor: '#d1d5da',
+    blockBg: '#383D51',
+  };
+
   const [selectedTabId, setSelectedTabId] = useState(TabIds.Basic);
   return data?.space ? (
     <div>
@@ -48,6 +60,7 @@ export default function SpaceDetails(props: SpaceDetailsProps) {
           <SpaceBasicDetails space={data.space} className="pt-6" />
           <SpaceAuthDetails space={data.space} />
           <SpaceSocialDetails space={data.space} />
+          <SpaceThemeDetails space={data.space} />
         </div>
       )}
       {selectedTabId === TabIds.Content && (
