@@ -10,8 +10,8 @@ export interface SpaceDetailsProps {
 }
 
 const TestDiv = styled.div`
-background-color: var(--block-bg);
-`
+  background-color: var(--block-bg);
+`;
 
 export default function SpaceThemeDetails({ space }: SpaceDetailsProps) {
   const [showThemeUpdateModal, setShowThemeUpdateModal] = React.useState(false);
@@ -33,17 +33,17 @@ export default function SpaceThemeDetails({ space }: SpaceDetailsProps) {
   };
   return (
     <div>
-      <div className="flex w-full">
-        <div className="sm:flex-auto">
-          <h1 className="font-semibold leading-6 text-2xl">Theme Details</h1>
-          <p className="mt-2 text-sm">You can update your theme</p>
+      <div className="flex flex-col md:flex-row w-full">
+        <div className="md:flex-auto">
+          <h1 className="font-semibold leading-6 text-lg md:text-2xl">Theme Details</h1>
+          <p className="mt-2 text-sm md:text-base">You can update your theme</p>
         </div>
         <PrivateEllipsisDropdown items={threeDotItems} onSelect={selectFromThreedotDropdown} className="ml-4 pt-4 grow-0 w-16" />
       </div>
 
       <div className={'mt-4'}>
-        <div className="flex flex-wrap">
-          <div className="w-1/2 mt-4">
+        <div className="flex flex-col md:flex-row flex-wrap">
+          <div className="w-full md:w-1/2 mt-4">
             {colorLabels.map((label, index) => {
               const colorKey = themeColorKeys[index];
               const colorValue = themeColors[colorKey] || '';
@@ -56,8 +56,8 @@ export default function SpaceThemeDetails({ space }: SpaceDetailsProps) {
               );
             })}
           </div>
-          <TestDiv className="w-1/2 p-4 border-2">
-            <h1 className="text-2xl text-center">Test Heading</h1>
+          <TestDiv className="w-full md:mt-0 mt-4 md:w-1/2 p-2 md:p-4 border-2">
+            <h1 className="text-xl md:text-2xl text-center">Test Heading</h1>
             <p>
               This is a sample text Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum voluptas eaque illo nesciunt perspiciatis accusantium
               tenetur unde quo exercitationem, molestias error est neque recusandae. Similique sequi, fuga commodi ipsum repellat quisquam cupiditate dolor cum
