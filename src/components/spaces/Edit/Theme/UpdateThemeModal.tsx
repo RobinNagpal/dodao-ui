@@ -1,4 +1,5 @@
 import { themes, ThemeValue } from '@/app/themes';
+import Button from '@/components/core/buttons/Button';
 import FullScreenModal from '@/components/core/modals/FullScreenModal';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { useState } from 'react';
@@ -54,6 +55,17 @@ export default function UpdateThemeModal({ space, open, onClose, colorLabels }: 
             </p>
           </div>
         </div>
+      </div>
+      <div className="p-6 mt-4 flex items-center justify-center gap-x-6">
+        <Button
+          variant="contained"
+          primary
+          // loading={}
+          // disabled={uploadThumbnailLoading || upserting}
+          onClick={async () => {}}
+        >
+          Save
+        </Button>
       </div>
     </FullScreenModal>
   );
