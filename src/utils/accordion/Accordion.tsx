@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import styles from './accordion.module.scss';
+import styles from './Accordion.module.scss';
 
 interface AccordionProps {
   isOpen: boolean;
@@ -10,7 +10,7 @@ interface AccordionProps {
 
 export default function Accordion({ isOpen, label, onClick, children }: AccordionProps) {
   return (
-    <div className={`${styles.accordionContainer} ${isOpen ? `isOpened ${styles.isOpened}` : ''}`}>
+    <div className={`${styles.accordionContainer} ${isOpen ? styles.isOpened : ''}`}>
       <h2 id={`accordion-${label}`}>
         <button type="button" className={`flex rounded-md items-center justify-between w-full p-5 font-medium rtl:text-right gap-3`} onClick={onClick}>
           <span className="flex items-center">{label}</span>
