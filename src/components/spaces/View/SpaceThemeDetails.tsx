@@ -2,7 +2,7 @@ import { ThemeValue, themes } from '@/app/themes';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import UpdateThemeModal from '@/components/spaces/Edit/Theme/UpdateThemeModal';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
-import React, { useState } from 'react';
+import React from 'react';
 
 export interface SpaceDetailsProps {
   space: SpaceWithIntegrationsFragment & { themeColors?: ThemeValue };
@@ -11,7 +11,7 @@ export interface SpaceDetailsProps {
 export default function SpaceThemeDetails({ space }: SpaceDetailsProps) {
   const [showThemeUpdateModal, setShowThemeUpdateModal] = React.useState(false);
 
-  const [themeColors, setThemeColors] = useState<ThemeValue>(space.themeColors || themes.GlobalTheme);
+  const themeColors = space.themeColors || themes.GlobalTheme;
   const themeColorKeys = Object.keys(themeColors) as (keyof ThemeValue)[];
 
   const threeDotItems = [
