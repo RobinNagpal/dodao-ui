@@ -10,21 +10,3 @@
 
     color: black;
 }
-
-@media (max-width: 700px) {
-    .swiper {
-        width: 95vw;
-        height: 90vh;
-    }
-
-    .swiper-slide video {
-        object-fit: contain;
-        height: 70%;
-        border-radius: 3% !important;
-
-    }
-
-    .swiper-slide {
-        border-radius: 3% !important;
-    }
-}
