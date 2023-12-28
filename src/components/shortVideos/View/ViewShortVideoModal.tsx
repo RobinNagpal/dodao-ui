@@ -2,7 +2,7 @@
 
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import FullScreenModal from '@/components/core/modals/FullScreenModal';
-import { ShortVideoFragment } from '@/graphql/generated/generated-types';
+import { ProjectShortVideo, ShortVideo } from '@/graphql/generated/generated-types';
 // import { videos } from '../sampleVideos';
 import React, { useRef, useState } from 'react';
 import SwiperCore from 'swiper';
@@ -15,7 +15,7 @@ import './styles.css';
 
 interface ViewShortVideoModalProps {
   initialSlide: number;
-  videos: ShortVideoFragment[];
+  videos: (ShortVideo | ProjectShortVideo)[];
   onClose: () => void;
   onShowEditModal: () => void;
 }

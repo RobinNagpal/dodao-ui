@@ -1,14 +1,14 @@
 'use client';
 
 import PageWrapper from '@/components/core/page/PageWrapper';
-import { ShortVideoFragment } from '@/graphql/generated/generated-types';
+import { ProjectShortVideo, ShortVideo } from '@/graphql/generated/generated-types';
 import styled from 'styled-components';
 
 const ImageWrapper = styled.div`
   width: 250px;
 `;
 
-function ShortsThumbnail({ shortVideo, onClick }: { shortVideo: ShortVideoFragment; onClick: () => void }) {
+function ShortsThumbnail({ shortVideo, onClick }: { shortVideo: ShortVideo | ProjectShortVideo; onClick: () => void }) {
   const { thumbnail, title } = shortVideo;
   return (
     <button onClick={onClick} className="p-2 min-w-0 flex">
@@ -25,7 +25,7 @@ function ShortsThumbnail({ shortVideo, onClick }: { shortVideo: ShortVideoFragme
 }
 interface ShortsUIProps {
   onThumbnailClick: (index: number) => void;
-  shortVideos: ShortVideoFragment[];
+  shortVideos: (ShortVideo | ProjectShortVideo)[];
 }
 
 export default function Shorts({ shortVideos, onThumbnailClick }: ShortsUIProps) {

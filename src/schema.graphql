@@ -993,7 +993,7 @@ type Mutation {
   askChatCompletionAI(input: ChatCompletionAIInput!): OpenAIChatCompletionResponse!
   askCompletionAI(input: CompletionAIInput!): OpenAICompletionResponse!
   authenticateWithUnstoppable(idToken: String!): JwtResponse!
-  copyAllBytesFromGitToDatabase(spaceId: String!): Boolean!
+  copyAllBytesFromGitToDatabase: Boolean!
   createArticleIndexingInfo(articleUrl: String!, spaceId: String!): ArticleIndexingInfo!
   createByteCollection(input: CreateByteCollectionInput!): ByteCollection!
   createSignedUrl(input: CreateSignedUrlInput!, spaceId: String!): String!
@@ -1072,6 +1072,7 @@ type Mutation {
   upsertProjectByte(input: UpsertProjectByteInput!, projectId: String!): ProjectByte!
   upsertProjectByteCollection(input: UpsertProjectByteCollectionInput!, projectId: String!): ProjectByteCollection!
   upsertProjectGalaxyAccessToken(accessToken: String!, spaceId: String!): Space!
+  upsertProjectShortVideo(projectId: String!, shortVideo: ProjectShortVideoInput!): ProjectShortVideo!
   upsertShortVideo(shortVideo: ShortVideoInput!, spaceId: String!): ShortVideo!
   upsertSimulation(input: UpsertSimulationInput!, spaceId: String!): Simulation!
   upsertSpaceAcademyRepository(academyRepository: String!, spaceId: String!): Space!
@@ -1178,6 +1179,26 @@ type ProjectByteCollection {
   status: String!
 }
 
+type ProjectShortVideo {
+  createdAt: String!
+  description: String!
+  id: ID!
+  priority: Int!
+  thumbnail: String!
+  title: String!
+  updatedAt: String!
+  videoUrl: String!
+}
+
+input ProjectShortVideoInput {
+  description: String!
+  id: ID!
+  priority: Int!
+  thumbnail: String!
+  title: String!
+  videoUrl: String!
+}
+
 type Query {
   _empty: String
   academyTask(uuid: String!): AcademyTask!
@@ -1214,6 +1235,8 @@ type Query {
   projectByteCollection(byteCollectionId: String!, projectId: String!): ProjectByteCollection!
   projectByteCollections(projectId: String!): [ProjectByteCollection!]!
   projectBytes(projectId: String!): [ProjectByte!]!
+  projectShortVideo(projectByteId: String!, projectId: String!): ProjectShortVideo!
+  projectShortVideos(projectId: String!): [ProjectShortVideo!]!
   projects(type: String): [Project!]!
   rawGitCourse(key: String!, spaceId: String!): RawGitCourse!
   rawGitCourses(spaceId: String!): [RawGitCourse!]!

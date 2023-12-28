@@ -20,6 +20,9 @@ export default function CreateProjectContentModalContents({ hideModal, projectId
           <Button variant="outlined" primary className="p-2 w-full" onClick={() => goToUrl(`/projects/edit/${projectId}/tidbit-collections`)}>
             Create Tidbit Collection
           </Button>
+          <Button variant="outlined" primary className="p-2 w-full" onClick={() => goToUrl(`/projects/edit/${projectId}/shorts`)}>
+            Create Short
+          </Button>
         </Grid2Cols>
       </div>
     </div>

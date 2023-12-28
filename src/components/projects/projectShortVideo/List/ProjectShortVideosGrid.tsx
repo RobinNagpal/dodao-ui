@@ -1,17 +1,20 @@
 'use client';
 
-import withSpace, { SpaceProps } from '@/app/withSpace';
 import Block from '@/components/app/Block';
 import CardLoader from '@/components/core/loaders/CardLoader';
 import PageWrapper from '@/components/core/page/PageWrapper';
-import EditShortVideoModal from '@/components/shortVideos/Edit/EditShortVideoModal';
+import EditProjectShortVideoModal from '@/components/projects/projectShortVideo/Edit/EditProjectShortVideoModal';
 import Shorts from '@/components/shortVideos/View/Shorts';
 import ViewShortVideoModal from '@/components/shortVideos/View/ViewShortVideoModal';
-import { useShortVideosQuery } from '@/graphql/generated/generated-types';
+import { ProjectFragment, SpaceWithIntegrationsFragment, useProjectShortVideosQuery } from '@/graphql/generated/generated-types';
 import React, { useState } from 'react';
 
-const MainShortsComponent = ({ space }: SpaceProps) => {
-  const { data: queryResponse, loading, refetch } = useShortVideosQuery({ variables: { spaceId: space.id } });
+export interface ProjectShortVideosGridProps {
+  space: SpaceWithIntegrationsFragment;
+  project: ProjectFragment;
+}
+export default function ProjectShortVideosGrid({ space, project }: ProjectShortVideosGridProps) {
+  const { data: queryResponse, loading, refetch } = useProjectShortVideosQuery({ variables: { projectId: project.id } });
   const [selectedVideoIndex, setSelectedVideoIndex] = useState<number | null>(null);
   const [editVideoIndex, setEditVideoIndex] = useState<number | null>(null);
   const handleThumbnailClick = (index: number) => {
@@ -31,7 +34,7 @@ const MainShortsComponent = ({ space }: SpaceProps) => {
     return (
       <ViewShortVideoModal
         initialSlide={selectedVideoIndex}
-        videos={queryResponse?.shortVideos || []}
+        videos={queryResponse?.projectShortVideos || []}
         onClose={() => setSelectedVideoIndex(null)}
         onShowEditModal={() => {
           setSelectedVideoIndex(null);
@@ -41,24 +44,23 @@ const MainShortsComponent = ({ space }: SpaceProps) => {
     );
   }
 
-  if (editVideoIndex !== null && queryResponse?.shortVideos?.[editVideoIndex]) {
-    const shortVideo = queryResponse?.shortVideos?.[editVideoIndex];
+  if (editVideoIndex !== null && queryResponse?.projectShortVideos?.[editVideoIndex]) {
+    const shortVideo = queryResponse?.projectShortVideos?.[editVideoIndex];
 
     return (
-      <EditShortVideoModal
+      <EditProjectShortVideoModal
         shortVideoToEdit={shortVideo}
         onClose={() => setEditVideoIndex(null)}
         space={space}
-        onSave={() => {
+        onAfterSave={() => {
           setEditVideoIndex(null);
           setSelectedVideoIndex(editVideoIndex);
           refetch();
         }}
+        project={project}
       />
     );
   }
 
-  return <Shorts onThumbnailClick={handleThumbnailClick} shortVideos={queryResponse?.shortVideos || []} />;
-};
-
-export default withSpace(MainShortsComponent);
+  return <Shorts onThumbnailClick={handleThumbnailClick} shortVideos={queryResponse?.projectShortVideos || []} />;
+}

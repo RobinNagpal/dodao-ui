@@ -16,6 +16,7 @@ export function ViewProjectHeader({ project, selectedViewType }: { project: Proj
   const tabs = [
     { name: 'Tidbits', href: `/projects/view/${project.id}/tidbits`, current: selectedViewType === 'tidbits' },
     { name: 'Tidbits Collections', href: `/projects/view/${project.id}/tidbit-collections`, current: selectedViewType === 'tidbit-collections' },
+    { name: 'Shorts', href: `/projects/view/${project.id}/shorts`, current: selectedViewType === 'shorts' },
   ];
   return (
     <div>
@@ -59,7 +60,7 @@ export function ViewProjectHeader({ project, selectedViewType }: { project: Proj
             </div>
           </div>
           <PrivateComponent>
-            <div className="ml-4 hidden lg:block -mt-2">
+            <div className="ml-6 hidden lg:block -mt-2">
               <Button variant="contained" primary className="mr-2" onClick={() => setShowCreateContentsModal(true)}>
                 New +
               </Button>
