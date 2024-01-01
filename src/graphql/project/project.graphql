@@ -12,6 +12,7 @@ fragment Project on Project {
   telegram
   website
   type
+  cardThumbnail
 }
 
 fragment ProjectByte on ProjectByte {

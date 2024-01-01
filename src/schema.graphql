@@ -1145,6 +1145,7 @@ enum OrderDirection {
 type Project {
   adminUsernames: [String!]!
   admins: [String!]!
+  cardThumbnail: String
   creator: String!
   details: String!
   discord: String
@@ -1737,6 +1738,7 @@ input UpsertProjectByteInput {
 input UpsertProjectInput {
   adminUsernames: [String!]!
   admins: [String!]!
+  cardThumbnail: String
   details: String!
   discord: String
   docs: String
