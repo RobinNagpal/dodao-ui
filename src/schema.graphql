@@ -1051,6 +1051,7 @@ type Mutation {
   updateIndexingOfDiscordChannel(channelId: String!, shouldIndex: Boolean!, spaceId: String!): DiscordChannel!
   updateSocialSettings(input: SocialSettingsInput!, spaceId: String!): Space!
   updateSpace(spaceInput: UpsertSpaceInput!): Space!
+  updateThemeColors(spaceId: ID!, themeColors: ThemeColorsInput!): Space!
   updateTopicBasicInfo(spaceId: String!, topicInfo: UpdateTopicBasicInfoInput!): GitCourse!
   updateTopicExplanation(explanationInfo: UpdateTopicExplanationInput!, spaceId: String!): GitCourse!
   updateTopicQuestion(questionInfo: UpdateTopicQuestionInput!, spaceId: String!): GitCourse!
@@ -1402,6 +1403,7 @@ type Space {
   skin: String!
   socialSettings: SocialSettings!
   spaceIntegrations: SpaceIntegrations
+  themeColors: ThemeColors
 }
 
 type SpaceFilters {
@@ -1505,6 +1507,26 @@ type SummarizedGitCourseTopic {
   details: String!
   key: String!
   title: String!
+}
+
+type ThemeColors {
+  bgColor: String
+  blockBg: String
+  borderColor: String
+  headingColor: String
+  linkColor: String
+  primaryColor: String
+  textColor: String
+}
+
+input ThemeColorsInput {
+  bgColor: String!
+  blockBg: String!
+  borderColor: String!
+  headingColor: String!
+  linkColor: String!
+  primaryColor: String!
+  textColor: String!
 }
 
 type Timeline {

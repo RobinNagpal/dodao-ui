@@ -197,3 +197,9 @@ mutation UpsertSpaceLoaderInfo($spaceId: String!, $input: SpaceLoadersInfoInput!
     ...SpaceWithIntegrations
   }
 }
+
+mutation UpdateThemeColors($spaceId: ID!, $themeColors: ThemeColorsInput!) {
+  payload: updateThemeColors(spaceId: $spaceId, themeColors: $themeColors) {
+    ...SpaceWithIntegrations
+  }
+}
