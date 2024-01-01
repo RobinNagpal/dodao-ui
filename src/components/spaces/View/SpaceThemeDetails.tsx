@@ -4,7 +4,6 @@ import UpdateThemeModal from '@/components/spaces/Edit/Theme/UpdateThemeModal';
 import { ProjectByteCollectionFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import ByteCollectionsCard from '@/components/byteCollection/ByteCollections/ByteCollectionsCard';
 import React from 'react';
-import styled from 'styled-components';
 
 export interface SpaceDetailsProps {
   space: SpaceWithIntegrationsFragment & { themeColors?: ThemeValue };
