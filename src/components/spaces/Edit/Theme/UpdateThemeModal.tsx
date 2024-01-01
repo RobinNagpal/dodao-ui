@@ -1,9 +1,12 @@
+import { useNotificationContext } from '@/contexts/NotificationContext';
 import { themes, ThemeValue } from '@/app/themes';
 import ByteCollectionsCard from '@/components/byteCollection/ByteCollections/ByteCollectionsCard';
 import Button from '@/components/core/buttons/Button';
 import FullScreenModal from '@/components/core/modals/FullScreenModal';
 import { ProjectByteCollectionFragment, SpaceWithIntegrationsFragment, useUpdateThemeColorsMutation } from '@/graphql/generated/generated-types';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useI18 } from '@/hooks/useI18';
 
 export interface UpdateThemeModalProps {
   space: SpaceWithIntegrationsFragment & { themeColors?: ThemeValue };
@@ -15,24 +18,41 @@ export interface UpdateThemeModalProps {
 export default function UpdateThemeModal({ space, open, onClose, colorLabels }: UpdateThemeModalProps) {
   const [themeColors, setThemeColors] = useState<ThemeValue>(space.themeColors || themes.GlobalTheme);
   const themeColorKeys = Object.keys(themeColors) as (keyof ThemeValue)[];
-
+  const { showNotification } = useNotificationContext();
+  const router = useRouter();
+  const { $t } = useI18();
   const [updateThemeColorsMutation] = useUpdateThemeColorsMutation();
 
   async function upsertThemeColors() {
-    await updateThemeColorsMutation({
-      variables: {
-        spaceId: space.id,
-        themeColors: {
-          bgColor: themeColors.bgColor,
-          textColor: themeColors.textColor,
-          blockBg: themeColors.blockBg,
-          borderColor: themeColors.borderColor,
-          primaryColor: themeColors.primaryColor,
-          headingColor: themeColors.headingColor,
-          linkColor: themeColors.linkColor,
+    try {
+      const response = await updateThemeColorsMutation({
+        variables: {
+          spaceId: space.id,
+          themeColors: {
+            bgColor: themeColors.bgColor,
+            textColor: themeColors.textColor,
+            blockBg: themeColors.blockBg,
+            borderColor: themeColors.borderColor,
+            primaryColor: themeColors.primaryColor,
+            headingColor: themeColors.headingColor,
+            linkColor: themeColors.linkColor,
+          },
         },
-      },
-    });
+      });
+
+      if (!response.errors) {
+        showNotification({
+          type: 'success',
+          message: 'Timeline Saved',
+          heading: 'Success 🎉',
+        });
+        router.push(`/`);
+      } else {
+        showNotification({ type: 'error', message: $t('notify.somethingWentWrong') });
+      }
+    } catch (e) {
+      showNotification({ type: 'error', message: $t('notify.somethingWentWrong') });
+    }
   }
 
   const handleColorChange = (colorKey: keyof ThemeValue, colorValue: string) => {
