@@ -78,7 +78,13 @@ export default function SpaceThemeDetails({ space }: SpaceDetailsProps) {
           </div>
 
           <div className="w-full md:mt-0 mt-4 md:w-1/2 p-2 md:p-4">
-            <ByteCollectionsCard key={byteCollection.id} byteCollection={byteCollection} onSelectByte={() => {}} baseByteCollectionsEditUrl={'TestUrl'} />
+            <ByteCollectionsCard
+              key={byteCollection.id}
+              byteCollection={byteCollection}
+              onSelectByte={() => {}}
+              baseByteCollectionsEditUrl={'TestUrl'}
+              isEditingAllowed={false}
+            />
           </div>
         </div>
       </div>
