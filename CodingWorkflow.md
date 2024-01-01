@@ -1,13 +1,15 @@
-When working with the UI working you might primarily be working with the following things:
+When working with the UI you might primarily be working with the following things:
+
 1. Adding new components - This follows react and nextjs conventions.
 2. Adding new graphql queries - This is when you need to fetch data from the backend and show it on the UI.
 3. Adding new graphql mutations - This is when you need to send data to the backend and update the database.
 
-
 ## Graphql Coding Workflow
 
 We use graphql to fetch and send data to the backend. This is a guide on how to work with graphql in the UI layer.
+
 #### What is graphql?
+
 GraphQL is a query language for APIs and a runtime for executing those queries by using a type system you define for our data. Based on the information you provided and my own knowledge, here are some key points about GraphQL and its benefits for our project:
 
 1. **Efficient Data Retrieval**: GraphQL allows clients to request exactly what they need and nothing more. This minimizes data transfer, which is particularly beneficial for mobile or low-bandwidth environments. In our setup, defining queries and mutations on the client side ensures that our application only retrieves the necessary data from the server.
@@ -18,13 +20,12 @@ GraphQL is a query language for APIs and a runtime for executing those queries b
 
 4. **Modularity and Reusability**: The structure of `codegen.yml` shows a modular approach, where GraphQL documents are organized under `src/graphql/**/*.graphql`. This modularity facilitates reusability and maintainability of our queries and mutations, making it easier to manage and evolve our codebase.
 
-5. **Customizable Configuration for Specific Needs**: Configuration files (`introspection.yml` and `codegen.yml`) indicate a high level of customization, such as including directives, choosing specific types for unions, interfaces, etc. This flexibility allows us to tailor the GraphQL setup to generate code that meets our  specific needs.
+5. **Customizable Configuration for Specific Needs**: Configuration files (`introspection.yml` and `codegen.yml`) indicate a high level of customization, such as including directives, choosing specific types for unions, interfaces, etc. This flexibility allows us to tailor the GraphQL setup to generate code that meets our specific needs.
 
 6. **Real-Time Data with Subscriptions (If Used)**: While not used currently in the project, GraphQL also supports real-time data updates through subscriptions. If implemented, this could enable our application to react instantly to changes in data, enhancing user experience with live updates.
 
-
-
 #### Graphql Workflow
+
 The workflow described here involves using GraphQL in combination with `graphql-codegen` to generate server-side GraphQL schemas and then client-side types and hooks. Here's an explanation of the process in 7-8 points:
 
 1. **Server-Side GraphQL Schema Generation**: Initially, a GraphQL schema is created on the server. This schema defines the structure of data that can be queried or mutated via GraphQL.
@@ -46,16 +47,18 @@ The workflow described here involves using GraphQL in combination with `graphql-
 Note: Some of the data is fetched from API instead of the graphql. This was done to support nextjs server side rendering.
 So check if you need to fetch the new data as API or graphql first.
 
-
 #### Step 1 - Download the latest graphql schema
+
 The schema file is updated at the API/backend layer and we run `yarn graphql:download` to update the schema file in the UI layer.
 
 When fetching the latest schema file, make sure you have the latest version of the API running as the schema is fetched from
 `http://localhost:8000/graphql` url.
 
 #### Step 2 - Declare new query in the graphql file
+
 For this you need a add a .graphql file e.g. `src/graphql/byte/byteCollection.graphql`. In this file you need to add
 the new query. For example:
+
 ```graphql
 fragment ByteCollection on ByteCollection {
   id
@@ -82,21 +85,24 @@ query ByteCollection($spaceId: String!, $byteCollectionId: String!) {
     ...ByteCollection
   }
 }
-
 ```
 
 These queries map to the schema defined in `src/schema.graphql`. If the queries are not present in the schema then
-you will get an error. 
+you will get an error.
 
 #### Step 3 - Generate graphql files/types/code
+
 Run `yarn graphql:generate` to generate the graphql files/types/code. This will generate the following code:
+
 1. Types - Types corresponding to the data returned by the graphql queries.
 2. Hooks - Hooks corresponding to the graphql queries. These hooks can be used to fetch data from the backend.
 
 #### Step 4 - Use the hooks to fetch data
+
 See `src/app/projects/view/[projectId]/[viewType]/page.tsx` for an example of how to use the hooks to fetch data.
 
 Here is the code
+
 ```typescript
 import {
   SpaceWithIntegrationsFragment,
@@ -106,27 +112,30 @@ import {
   useProjectQuery,
 } from '@/graphql/generated/generated-types';
 
-
 const { loading: loadingByteCollections, data: byteCollectionsData } = useProjectByteCollectionsQuery({
-    variables: {
-      projectId: props.params.projectId,
-    },
+  variables: {
+    projectId: props.params.projectId,
+  },
 });
-
 ```
+
 The types imported are generated by the graphql code generation step. This makes sure the UI code
 is always typed and are using the right fields
 
 ## Adding new mutations
+
 #### Step 1 - Download the latest graphql schema
+
 The schema file is updated at the API/backend layer and we run `yarn graphql:download` to update the schema file in the UI layer.
 
 When fetching the latest schema file, make sure you have the latest version of the API running as the schema is fetched from
 `http://localhost:8000/graphql` url.
 
 #### Step 2 - Declare new mutation in the graphql file
+
 For this you need a add a .graphql file e.g. `src/graphql/byte/byteCollection.graphql`. In this file you need to add
 the new mutation. For example:
+
 ```graphql
 fragment ByteCollection on ByteCollection {
   id
@@ -153,11 +162,12 @@ mutation UpdateByteCollection($input: UpdateByteCollectionInput!) {
     ...ByteCollection
   }
 }
-
 ```
 
 #### Step 3 - Generate graphql files/types/code
+
 Run `yarn graphql:generate` to generate the graphql files/types/code. This will generate the following code:
+
 1. Types - Types corresponding to the data to be sent to the backend and also the data returned by the backed in the response.
 2. Hooks - Hooks corresponding to the graphql mutations. These hooks can be used to send data to the backend.
 
