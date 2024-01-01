@@ -115,4 +115,6 @@ Here is the table with the mapping of the domains to the academy websites
 | lifeinsure   | lifeinsure-localhost.tips     | http://lifeinsure-localhost.tips:3000     |
 
 
+## Coding Workflow
+See [CodingWorkflow.md](./CodingWorkflow.md) to learn about how to start contributing to the project.
 
