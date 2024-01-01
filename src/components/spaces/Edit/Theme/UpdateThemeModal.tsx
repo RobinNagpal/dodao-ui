@@ -43,7 +43,7 @@ export default function UpdateThemeModal({ space, open, onClose, colorLabels }: 
       if (!response.errors) {
         showNotification({
           type: 'success',
-          message: 'Timeline Saved',
+          message: 'Theme Updated',
           heading: 'Success 🎉',
         });
         router.push(`/`);
