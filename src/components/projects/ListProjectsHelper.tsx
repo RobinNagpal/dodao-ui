@@ -28,75 +28,17 @@ const ListProjectsHelper: React.FC<ListProjectsHelperProps> = ({ projects, onSho
   }, []);
 
   return (
-    <div className="my-5 overflow-hidden">
-      <Swiper
-        spaceBetween={10}
-        slidesPerView={5}
-        breakpoints={{
-          0: {
-            slidesPerView: 1,
-            spaceBetween: 10,
-          },
-          140: {
-            slidesPerView: 1.25,
-            spaceBetween: 10,
-          },
-          240: {
-            slidesPerView: 1.5,
-            spaceBetween: 10,
-          },
-          340: {
-            slidesPerView: 1.75,
-            spaceBetween: 10,
-          },
-          440: {
-            slidesPerView: 2,
-            spaceBetween: 10,
-          },
-          480: {
-            slidesPerView: 2.25,
-            spaceBetween: 10,
-          },
-          540: {
-            slidesPerView: 2.5,
-            spaceBetween: 20,
-          },
-          640: {
-            slidesPerView: 2.5,
-            spaceBetween: 20,
-          },
-          680: {
-            slidesPerView: 3,
-            spaceBetween: 20,
-          },
-          740: {
-            slidesPerView: 3.5,
-            spaceBetween: 20,
-          },
-          840: {
-            slidesPerView: 4,
-            spaceBetween: 20,
-          },
-          1024: {
-            slidesPerView: 5,
-            spaceBetween: 20,
-          },
-          1280: {
-            slidesPerView: 5,
-            spaceBetween: 30,
-          },
-        }}
-      >
+    <div className="my-5">
+      <div className="grid grid-cols-1 xs:grid-cols-1 s:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
         {projects.map((project) => (
-          <SwiperSlide key={project.id}>
+          <div key={project.id} className="rounded-lg overflow-hidden shadow-xl">
             {loading ? (
               <SkeletonTheme baseColor="#64748b" enableAnimation={true}>
                 <Skeleton height={250} />
               </SkeletonTheme>
             ) : (
-              //
               <Link href={`/projects/view/${project.id}/tidbit-collections`}>
-                <div className={`h-[250px] ${styles.card} px-1.5 pt-2 rounded-lg flex flex-col gap-2.5 overflow-hidden shadow-xl`}>
+                <div className={`h-[250px] ${styles.card} px-1.5 pt-2 rounded-lg flex flex-col gap-2.5 shadow-xl`}>
                   <div className="rounded relative">
                     <img
                       src="https://picsum.photos/500/300"
@@ -127,10 +69,9 @@ const ListProjectsHelper: React.FC<ListProjectsHelperProps> = ({ projects, onSho
                 </div>
               </Link>
             )}
-          </SwiperSlide>
+          </div>
         ))}
-        {!loading && <SwiperNavButtons />}
-      </Swiper>
+      </div>
     </div>
   );
 };
