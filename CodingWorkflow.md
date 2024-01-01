@@ -3,6 +3,44 @@ When working with the UI working you might primarily be working with the followi
 2. Adding new graphql queries - This is when you need to fetch data from the backend and show it on the UI.
 3. Adding new graphql mutations - This is when you need to send data to the backend and update the database.
 
+
+## Graphql Coding Workflow
+
+We use graphql to fetch and send data to the backend. This is a guide on how to work with graphql in the UI layer.
+#### What is graphql?
+GraphQL is a query language for APIs and a runtime for executing those queries by using a type system you define for our data. Based on the information you provided and my own knowledge, here are some key points about GraphQL and its benefits for our project:
+
+1. **Efficient Data Retrieval**: GraphQL allows clients to request exactly what they need and nothing more. This minimizes data transfer, which is particularly beneficial for mobile or low-bandwidth environments. In our setup, defining queries and mutations on the client side ensures that our application only retrieves the necessary data from the server.
+
+2. **Strong Typing and Validation**: By generating a schema (`src/schema.graphql`) from our server at `http://localhost:8000/graphql`, you establish a contract between the client and server. This schema serves as a strong type system for validating queries and mutations, reducing the likelihood of runtime errors and improving development efficiency.
+
+3. **Code Generation for Types and Hooks**: Using `graphql-codegen`, you're automatically generating TypeScript types and React hooks based on our GraphQL schema and operations. This approach streamlines the development process, as it ensures type safety and provides ready-to-use hooks for querying and mutating data, which aligns well with modern React development practices.
+
+4. **Modularity and Reusability**: The structure of `codegen.yml` shows a modular approach, where GraphQL documents are organized under `src/graphql/**/*.graphql`. This modularity facilitates reusability and maintainability of our queries and mutations, making it easier to manage and evolve our codebase.
+
+5. **Customizable Configuration for Specific Needs**: Configuration files (`introspection.yml` and `codegen.yml`) indicate a high level of customization, such as including directives, choosing specific types for unions, interfaces, etc. This flexibility allows us to tailor the GraphQL setup to generate code that meets our  specific needs.
+
+6. **Real-Time Data with Subscriptions (If Used)**: While not used currently in the project, GraphQL also supports real-time data updates through subscriptions. If implemented, this could enable our application to react instantly to changes in data, enhancing user experience with live updates.
+
+
+
+#### Graphql Workflow
+The workflow described here involves using GraphQL in combination with `graphql-codegen` to generate server-side GraphQL schemas and then client-side types and hooks. Here's an explanation of the process in 7-8 points:
+
+1. **Server-Side GraphQL Schema Generation**: Initially, a GraphQL schema is created on the server. This schema defines the structure of data that can be queried or mutated via GraphQL.
+
+2. **Introspection Query with `graphql-codegen`**: Using `graphql-codegen` with the `introspection.yml` configuration, an introspection query is performed against the server's GraphQL endpoint (here, 'http://localhost:8000/graphql'). This process is used to fetch the schema details from the server.
+
+3. **Generation of `schema.graphql`**: The introspection results are used to generate a `schema.graphql` file in the `src` directory. This file represents the server-side schema in GraphQL Schema Definition Language (SDL). The configuration includes plugins like 'schema-ast' and settings like `includeDirectives` to include directives in the schema.
+
+4. **Client-Side Query and Mutation Documentation**: In the client-side codebase, GraphQL queries and mutations are defined in `.graphql` files under `src/graphql`.
+
+5. **Code Generation with `codegen.yml`**: The `codegen.yml` configuration is used to generate TypeScript types and React hooks based on the `src/schema.graphql` and the client-side GraphQL documents.
+
+6. **Generation of TypeScript Types**: The `graphql-codegen` tool generates TypeScript types for the data structures used in the GraphQL queries and mutations. This ensures type safety and autocompletion in IDEs.
+
+7. **Creation of React Apollo Hooks**: The process also generates custom React hooks using the 'typescript-react-apollo' plugin. These hooks can be used to execute the queries and mutations in a React application.
+
 ## Adding new queries
 
 Note: Some of the data is fetched from API instead of the graphql. This was done to support nextjs server side rendering.
