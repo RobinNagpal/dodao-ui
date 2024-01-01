@@ -3,6 +3,8 @@
 import WithSpace from '@/app/withSpace';
 import ByteCollectionsGrid from '@/components/byteCollection/View/ByteCollectionsGrid';
 import BytesGrid from '@/components/bytes/List/BytesGrid';
+import FullPageLoader from '@/components/core/loaders/FullPageLoading';
+import ProjectShortVideosGrid from '@/components/projects/projectShortVideo/List/ProjectShortVideosGrid';
 import {
   SpaceWithIntegrationsFragment,
   useProjectByteCollectionsQuery,
@@ -35,8 +37,16 @@ function CollectionsPage(props: { params: { projectId: string; viewType: string 
     skip: true,
   });
 
+  if (!project?.project) {
+    return <FullPageLoader />;
+  }
+
   if (props.params.viewType === 'tidbits') {
     return <BytesGrid loading={loadingByte} bytes={bytesData?.projectBytes} baseByteViewUrl={`/projects/view/${project?.project.id}/tidbits`} />;
+  }
+
+  if (props.params.viewType === 'shorts') {
+    return <ProjectShortVideosGrid space={props.space} project={project?.project} />;
   }
 
   return (

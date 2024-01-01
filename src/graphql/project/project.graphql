@@ -56,6 +56,17 @@ fragment ProjectByte on ProjectByte {
   tags
 }
 
+fragment ProjectShortVideo on ProjectShortVideo {
+  id
+  title
+  description
+  thumbnail
+  videoUrl
+  priority
+  createdAt
+  updatedAt
+}
+
 fragment ProjectByteCollection on ProjectByteCollection {
   byteIds
   bytes {
@@ -85,6 +96,12 @@ query Project($id: String!) {
 query ProjectBytes($projectId: String!) {
   projectBytes(projectId: $projectId) {
     ...ProjectByte
+  }
+}
+
+query ProjectShortVideos($projectId: String!) {
+  projectShortVideos(projectId: $projectId) {
+    ...ProjectShortVideo
   }
 }
 
@@ -121,5 +138,11 @@ mutation UpsertProjectByte($projectId: String!, $input: UpsertProjectByteInput!)
 mutation UpsertProjectByteCollection($projectId: String!, $input: UpsertProjectByteCollectionInput!) {
   upsertProjectByteCollection(projectId: $projectId, input: $input) {
     ...ProjectByteCollection
+  }
+}
+
+mutation UpsertProjectShortVideo($projectId: String!, $input: ProjectShortVideoInput!) {
+  upsertProjectShortVideo(projectId: $projectId, shortVideo: $input) {
+    ...ProjectShortVideo
   }
 }

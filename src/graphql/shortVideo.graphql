@@ -5,6 +5,8 @@ fragment ShortVideo on ShortVideo {
   thumbnail
   videoUrl
   priority
+  createdAt
+  updatedAt
 }
 
 mutation UpsertShortVideo($spaceId: String!, $shortVideo: ShortVideoInput!) {

@@ -1,21 +1,28 @@
 import EditShortVideoForm from '@/components/shortVideos/Edit/EditShortVideoForm';
-import { ShortVideo, ShortVideoInput, SpaceWithIntegrationsFragment, useUpsertShortVideoMutation } from '@/graphql/generated/generated-types';
+import {
+  ProjectFragment,
+  ProjectShortVideo,
+  ProjectShortVideoInput,
+  SpaceWithIntegrationsFragment,
+  useUpsertProjectShortVideoMutation,
+} from '@/graphql/generated/generated-types';
 import React from 'react';
 
 export interface EditShortVideoModalProps {
-  shortVideoToEdit?: ShortVideo;
+  shortVideoToEdit?: ProjectShortVideo;
   space: SpaceWithIntegrationsFragment;
+  project: ProjectFragment;
   onAfterSave: () => void;
   onCancel: () => void;
 }
 
-export default function EditShortVideoView({ shortVideoToEdit, space, onAfterSave, onCancel }: EditShortVideoModalProps) {
-  const [upsertShortVideoMutation] = useUpsertShortVideoMutation();
+export default function EditProjectShortVideoView({ shortVideoToEdit, space, project, onCancel, onAfterSave }: EditShortVideoModalProps) {
+  const [upsertShortVideoMutation] = useUpsertProjectShortVideoMutation();
 
-  const upsertShortVideo = async (shortVideo: ShortVideoInput) => {
+  const upsertShortVideo = async (shortVideo: ProjectShortVideoInput) => {
     await upsertShortVideoMutation({
       variables: {
-        shortVideo: {
+        input: {
           id: shortVideo.id,
           title: shortVideo.title,
           description: shortVideo.description,
@@ -23,9 +30,9 @@ export default function EditShortVideoView({ shortVideoToEdit, space, onAfterSav
           videoUrl: shortVideo.videoUrl,
           thumbnail: shortVideo.thumbnail,
         },
-        spaceId: space.id,
+        projectId: project.id,
       },
-      refetchQueries: ['ShortVideos'],
+      refetchQueries: ['ProjectShortVideos'],
     });
   };
 

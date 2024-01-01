@@ -10,7 +10,7 @@ const MainShortsComponent = ({ space }: SpaceProps) => {
   const router = useRouter();
   return (
     <PageWrapper>
-      <EditShortVideoView space={space} onSave={() => router.push('/shorts')} onCancel={() => router.push('/shorts')} />
+      <EditShortVideoView space={space} onAfterSave={() => router.push('/shorts')} onCancel={() => router.push('/shorts')} />
     </PageWrapper>
   );
 };

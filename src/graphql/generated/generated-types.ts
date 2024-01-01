@@ -1140,6 +1140,7 @@ export interface Mutation {
   upsertProjectByte: ProjectByte;
   upsertProjectByteCollection: ProjectByteCollection;
   upsertProjectGalaxyAccessToken: Space;
+  upsertProjectShortVideo: ProjectShortVideo;
   upsertShortVideo: ShortVideo;
   upsertSimulation: Simulation;
   upsertSpaceAcademyRepository: Space;
@@ -1212,11 +1213,6 @@ export interface MutationAskCompletionAiArgs {
 
 export interface MutationAuthenticateWithUnstoppableArgs {
   idToken: Scalars['String'];
-}
-
-
-export interface MutationCopyAllBytesFromGitToDatabaseArgs {
-  spaceId: Scalars['String'];
 }
 
 
@@ -1670,6 +1666,12 @@ export interface MutationUpsertProjectGalaxyAccessTokenArgs {
 }
 
 
+export interface MutationUpsertProjectShortVideoArgs {
+  projectId: Scalars['String'];
+  shortVideo: ProjectShortVideoInput;
+}
+
+
 export interface MutationUpsertShortVideoArgs {
   shortVideo: ShortVideoInput;
   spaceId: Scalars['String'];
@@ -1823,6 +1825,27 @@ export interface ProjectByteCollection {
   status: Scalars['String'];
 }
 
+export interface ProjectShortVideo {
+  __typename?: 'ProjectShortVideo';
+  createdAt: Scalars['String'];
+  description: Scalars['String'];
+  id: Scalars['ID'];
+  priority: Scalars['Int'];
+  thumbnail: Scalars['String'];
+  title: Scalars['String'];
+  updatedAt: Scalars['String'];
+  videoUrl: Scalars['String'];
+}
+
+export interface ProjectShortVideoInput {
+  description: Scalars['String'];
+  id: Scalars['ID'];
+  priority: Scalars['Int'];
+  thumbnail: Scalars['String'];
+  title: Scalars['String'];
+  videoUrl: Scalars['String'];
+}
+
 export interface Query {
   __typename?: 'Query';
   _empty?: Maybe<Scalars['String']>;
@@ -1860,6 +1883,8 @@ export interface Query {
   projectByteCollection: ProjectByteCollection;
   projectByteCollections: Array<ProjectByteCollection>;
   projectBytes: Array<ProjectByte>;
+  projectShortVideo: ProjectShortVideo;
+  projectShortVideos: Array<ProjectShortVideo>;
   projects: Array<Project>;
   rawGitCourse: RawGitCourse;
   rawGitCourses: Array<RawGitCourse>;
@@ -2067,6 +2092,17 @@ export interface QueryProjectByteCollectionsArgs {
 
 
 export interface QueryProjectBytesArgs {
+  projectId: Scalars['String'];
+}
+
+
+export interface QueryProjectShortVideoArgs {
+  projectByteId: Scalars['String'];
+  projectId: Scalars['String'];
+}
+
+
+export interface QueryProjectShortVideosArgs {
   projectId: Scalars['String'];
 }
 
@@ -3492,6 +3528,8 @@ export type ProjectFragment = { __typename?: 'Project', adminUsernames: Array<st
 
 export type ProjectByteFragment = { __typename?: 'ProjectByte', admins: Array<string>, content: string, created: string, id: string, name: string, postSubmissionStepContent?: string | null, priority: number, tags: Array<string>, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> };
 
+export type ProjectShortVideoFragment = { __typename?: 'ProjectShortVideo', id: string, title: string, description: string, thumbnail: string, videoUrl: string, priority: number, createdAt: string, updatedAt: string };
+
 export type ProjectByteCollectionFragment = { __typename?: 'ProjectByteCollection', byteIds: Array<string>, description: string, id: string, name: string, order: number, status: string, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string }> };
 
 export type ProjectsQueryVariables = Exact<{
@@ -3514,6 +3552,13 @@ export type ProjectBytesQueryVariables = Exact<{
 
 
 export type ProjectBytesQuery = { __typename?: 'Query', projectBytes: Array<{ __typename?: 'ProjectByte', admins: Array<string>, content: string, created: string, id: string, name: string, postSubmissionStepContent?: string | null, priority: number, tags: Array<string>, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> }> };
+
+export type ProjectShortVideosQueryVariables = Exact<{
+  projectId: Scalars['String'];
+}>;
+
+
+export type ProjectShortVideosQuery = { __typename?: 'Query', projectShortVideos: Array<{ __typename?: 'ProjectShortVideo', id: string, title: string, description: string, thumbnail: string, videoUrl: string, priority: number, createdAt: string, updatedAt: string }> };
 
 export type ProjectByteQueryVariables = Exact<{
   projectId: Scalars['String'];
@@ -3561,7 +3606,15 @@ export type UpsertProjectByteCollectionMutationVariables = Exact<{
 
 export type UpsertProjectByteCollectionMutation = { __typename?: 'Mutation', upsertProjectByteCollection: { __typename?: 'ProjectByteCollection', byteIds: Array<string>, description: string, id: string, name: string, order: number, status: string, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string }> } };
 
-export type ShortVideoFragment = { __typename?: 'ShortVideo', id: string, title: string, description: string, thumbnail: string, videoUrl: string, priority: number };
+export type UpsertProjectShortVideoMutationVariables = Exact<{
+  projectId: Scalars['String'];
+  input: ProjectShortVideoInput;
+}>;
+
+
+export type UpsertProjectShortVideoMutation = { __typename?: 'Mutation', upsertProjectShortVideo: { __typename?: 'ProjectShortVideo', id: string, title: string, description: string, thumbnail: string, videoUrl: string, priority: number, createdAt: string, updatedAt: string } };
+
+export type ShortVideoFragment = { __typename?: 'ShortVideo', id: string, title: string, description: string, thumbnail: string, videoUrl: string, priority: number, createdAt: string, updatedAt: string };
 
 export type UpsertShortVideoMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -3569,14 +3622,14 @@ export type UpsertShortVideoMutationVariables = Exact<{
 }>;
 
 
-export type UpsertShortVideoMutation = { __typename?: 'Mutation', upsertShortVideo: { __typename?: 'ShortVideo', id: string, title: string, description: string, thumbnail: string, videoUrl: string, priority: number } };
+export type UpsertShortVideoMutation = { __typename?: 'Mutation', upsertShortVideo: { __typename?: 'ShortVideo', id: string, title: string, description: string, thumbnail: string, videoUrl: string, priority: number, createdAt: string, updatedAt: string } };
 
 export type ShortVideosQueryVariables = Exact<{
   spaceId: Scalars['String'];
 }>;
 
 
-export type ShortVideosQuery = { __typename?: 'Query', shortVideos?: Array<{ __typename?: 'ShortVideo', id: string, title: string, description: string, thumbnail: string, videoUrl: string, priority: number }> | null };
+export type ShortVideosQuery = { __typename?: 'Query', shortVideos?: Array<{ __typename?: 'ShortVideo', id: string, title: string, description: string, thumbnail: string, videoUrl: string, priority: number, createdAt: string, updatedAt: string }> | null };
 
 export type SimulationStepFragment = { __typename?: 'SimulationStep', content: string, iframeUrl?: string | null, name: string, uuid: string, order: number };
 
@@ -4698,6 +4751,18 @@ export const ProjectByteFragmentDoc = gql`
   tags
 }
     `;
+export const ProjectShortVideoFragmentDoc = gql`
+    fragment ProjectShortVideo on ProjectShortVideo {
+  id
+  title
+  description
+  thumbnail
+  videoUrl
+  priority
+  createdAt
+  updatedAt
+}
+    `;
 export const ProjectByteCollectionFragmentDoc = gql`
     fragment ProjectByteCollection on ProjectByteCollection {
   byteIds
@@ -4721,6 +4786,8 @@ export const ShortVideoFragmentDoc = gql`
   thumbnail
   videoUrl
   priority
+  createdAt
+  updatedAt
 }
     `;
 export const SimulationStepFragmentDoc = gql`
@@ -8208,6 +8275,44 @@ export type ProjectBytesQueryResult = Apollo.QueryResult<ProjectBytesQuery, Proj
 export function refetchProjectBytesQuery(variables: ProjectBytesQueryVariables) {
       return { query: ProjectBytesDocument, variables: variables }
     }
+export const ProjectShortVideosDocument = gql`
+    query ProjectShortVideos($projectId: String!) {
+  projectShortVideos(projectId: $projectId) {
+    ...ProjectShortVideo
+  }
+}
+    ${ProjectShortVideoFragmentDoc}`;
+
+/**
+ * __useProjectShortVideosQuery__
+ *
+ * To run a query within a React component, call `useProjectShortVideosQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProjectShortVideosQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProjectShortVideosQuery({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *   },
+ * });
+ */
+export function useProjectShortVideosQuery(baseOptions: Apollo.QueryHookOptions<ProjectShortVideosQuery, ProjectShortVideosQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ProjectShortVideosQuery, ProjectShortVideosQueryVariables>(ProjectShortVideosDocument, options);
+      }
+export function useProjectShortVideosLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProjectShortVideosQuery, ProjectShortVideosQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ProjectShortVideosQuery, ProjectShortVideosQueryVariables>(ProjectShortVideosDocument, options);
+        }
+export type ProjectShortVideosQueryHookResult = ReturnType<typeof useProjectShortVideosQuery>;
+export type ProjectShortVideosLazyQueryHookResult = ReturnType<typeof useProjectShortVideosLazyQuery>;
+export type ProjectShortVideosQueryResult = Apollo.QueryResult<ProjectShortVideosQuery, ProjectShortVideosQueryVariables>;
+export function refetchProjectShortVideosQuery(variables: ProjectShortVideosQueryVariables) {
+      return { query: ProjectShortVideosDocument, variables: variables }
+    }
 export const ProjectByteDocument = gql`
     query ProjectByte($projectId: String!, $id: String!) {
   projectByte(projectId: $projectId, projectByteId: $id) {
@@ -8425,6 +8530,40 @@ export function useUpsertProjectByteCollectionMutation(baseOptions?: Apollo.Muta
 export type UpsertProjectByteCollectionMutationHookResult = ReturnType<typeof useUpsertProjectByteCollectionMutation>;
 export type UpsertProjectByteCollectionMutationResult = Apollo.MutationResult<UpsertProjectByteCollectionMutation>;
 export type UpsertProjectByteCollectionMutationOptions = Apollo.BaseMutationOptions<UpsertProjectByteCollectionMutation, UpsertProjectByteCollectionMutationVariables>;
+export const UpsertProjectShortVideoDocument = gql`
+    mutation UpsertProjectShortVideo($projectId: String!, $input: ProjectShortVideoInput!) {
+  upsertProjectShortVideo(projectId: $projectId, shortVideo: $input) {
+    ...ProjectShortVideo
+  }
+}
+    ${ProjectShortVideoFragmentDoc}`;
+export type UpsertProjectShortVideoMutationFn = Apollo.MutationFunction<UpsertProjectShortVideoMutation, UpsertProjectShortVideoMutationVariables>;
+
+/**
+ * __useUpsertProjectShortVideoMutation__
+ *
+ * To run a mutation, you first call `useUpsertProjectShortVideoMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertProjectShortVideoMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertProjectShortVideoMutation, { data, loading, error }] = useUpsertProjectShortVideoMutation({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpsertProjectShortVideoMutation(baseOptions?: Apollo.MutationHookOptions<UpsertProjectShortVideoMutation, UpsertProjectShortVideoMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpsertProjectShortVideoMutation, UpsertProjectShortVideoMutationVariables>(UpsertProjectShortVideoDocument, options);
+      }
+export type UpsertProjectShortVideoMutationHookResult = ReturnType<typeof useUpsertProjectShortVideoMutation>;
+export type UpsertProjectShortVideoMutationResult = Apollo.MutationResult<UpsertProjectShortVideoMutation>;
+export type UpsertProjectShortVideoMutationOptions = Apollo.BaseMutationOptions<UpsertProjectShortVideoMutation, UpsertProjectShortVideoMutationVariables>;
 export const UpsertShortVideoDocument = gql`
     mutation UpsertShortVideo($spaceId: String!, $shortVideo: ShortVideoInput!) {
   upsertShortVideo(spaceId: $spaceId, shortVideo: $shortVideo) {

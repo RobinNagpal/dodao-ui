@@ -2,7 +2,7 @@
 
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import FullScreenModal from '@/components/core/modals/FullScreenModal';
-import { ShortVideoFragment } from '@/graphql/generated/generated-types';
+import { ProjectShortVideo, ShortVideo } from '@/graphql/generated/generated-types';
 // import { videos } from '../sampleVideos';
 import React, { useRef, useState } from 'react';
 import SwiperCore from 'swiper';
@@ -15,7 +15,7 @@ import './styles.css';
 
 interface ViewShortVideoModalProps {
   initialSlide: number;
-  videos: ShortVideoFragment[];
+  videos: (ShortVideo | ProjectShortVideo)[];
   onClose: () => void;
   onShowEditModal: () => void;
 }
@@ -73,17 +73,16 @@ export default function ViewShortVideoModal({ initialSlide, videos, onClose, onS
         >
           {videos.map((vid, index) => (
             <SwiperSlide key={index} data-history={vid.videoUrl} className="flex justify-center items-center w-full h-full" style={{ display: 'flex' }}>
-              <div className="relative w-[243px] h-[432px] md:w-[288px] md:h-[512px] 2xl:w-[585px] 2xl:h-[1040px]">
+              <div className="relative">
                 <video
                   ref={videoRefs.current[index]}
                   id={vid.id}
                   controls //enables video control options
                   controlsList="nofullscreen" //disable full-screen option - only for Chrome
-                  autoPlay //enables auto playing of the videos by default
-                  muted //videos are muted by default
                   loop //puts the videos on playback
                   poster={vid.thumbnail} //thumbnail of the video
-                  className="absolute inset-0 w-full h-full object-cover"
+                  width="100%"
+                  style={{ maxHeight: '80vh', maxWidth: '100vw' }}
                 >
                   <source src={vid.videoUrl} type="video/mp4" />
                 </video>
