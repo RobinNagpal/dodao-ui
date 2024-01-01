@@ -12,38 +12,61 @@ interface ByteCollectionCardProps {
   byteCollection: ByteCollectionFragment | ProjectByteCollectionFragment;
   onSelectByte: (byteId: string) => void;
   baseByteCollectionsEditUrl: string;
+  isEditingAllowed?: boolean;
+  iconBgColor?: string;
+  cardBgColor?: string;
+  cardHeadingColor?: string;
+  cardBorderColor?: string;
 }
 
-const TidBitIconSpan = styled.span`
-  background-color: var(--primary-color);
+const TidBitIconSpan = styled.span<{ bgColor?: string }>`
+  background-color: ${(props) => props.bgColor || 'var(--primary-color)'};
 `;
 
 const OpenInPopupIcon = styled(ArrowTopRightOnSquareIcon)`
   color: var(--primary-color);
 `;
 
-export default function ByteCollectionsCard({ byteCollection, baseByteCollectionsEditUrl, onSelectByte }: ByteCollectionCardProps) {
+export default function ByteCollectionsCard({
+  byteCollection,
+  baseByteCollectionsEditUrl,
+  onSelectByte,
+  isEditingAllowed = true,
+  iconBgColor,
+  cardBgColor,
+  cardHeadingColor,
+  cardBorderColor,
+}: ByteCollectionCardProps) {
   const router = useRouter();
 
   return (
-    <div className="border border-gray-200 rounded-xl overflow-hidden  p-4 w-full max-w-xl">
-      <div className="w-full flex justify-end">
-        <PrivateEllipsisDropdown
-          items={[
-            {
-              label: 'Edit',
-              key: 'edit',
-            },
-          ]}
-          onSelect={async (key) => {
-            if (key === 'edit') {
-              router.push(`${baseByteCollectionsEditUrl}/${byteCollection.id}`);
-            }
-          }}
-        />
-      </div>
+    <div
+      className={`border border-gray-200 rounded-xl overflow-hidden p-4 w-full max-w-xl`}
+      style={{
+        backgroundColor: cardBgColor || '',
+        borderColor: cardBorderColor || '',
+      }}
+    >
+      {isEditingAllowed && (
+        <div className="w-full flex justify-end">
+          <PrivateEllipsisDropdown
+            items={[
+              {
+                label: 'Edit',
+                key: 'edit',
+              },
+            ]}
+            onSelect={async (key) => {
+              if (key === 'edit') {
+                router.push(`${baseByteCollectionsEditUrl}/${byteCollection.id}`);
+              }
+            }}
+          />
+        </div>
+      )}
+
       <div className="mt-3 ml-2 text-xl">
-        <div>{byteCollection.name}</div>
+        <div style={{ color: cardHeadingColor || '' }}>{byteCollection.name}</div>
         <div className="my-3 text-sm">{byteCollection.description}</div>
       </div>
       <div className="flow-root p-2">
@@ -64,7 +87,7 @@ export default function ByteCollectionsCard({ byteCollection, baseByteCollection
                             <CheckIcon className="h-5 w-5 text-white" aria-hidden="true" />
                           </div>
                         ) : (
-                          <TidBitIconSpan className={'h-8 w-8 rounded-full flex items-center justify-center ring-5 ring-white'}>
+                          <TidBitIconSpan bgColor={iconBgColor} className={'h-8 w-8 rounded-full flex items-center justify-center ring-5 ring-white'}>
                             <Bars3BottomLeftIcon className="h-5 w-5 text-white" aria-hidden="true" />
                           </TidBitIconSpan>
                         )}

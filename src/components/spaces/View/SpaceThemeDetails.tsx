@@ -1,17 +1,14 @@
 import { ThemeValue, themes } from '@/app/themes';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import UpdateThemeModal from '@/components/spaces/Edit/Theme/UpdateThemeModal';
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { ProjectByteCollectionFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import ByteCollectionsCard from '@/components/byteCollection/ByteCollections/ByteCollectionsCard';
 import React from 'react';
 import styled from 'styled-components';
 
 export interface SpaceDetailsProps {
   space: SpaceWithIntegrationsFragment & { themeColors?: ThemeValue };
 }
-
-const TestDiv = styled.div`
-  background-color: var(--block-bg);
-`;
 
 export default function SpaceThemeDetails({ space }: SpaceDetailsProps) {
   const [showThemeUpdateModal, setShowThemeUpdateModal] = React.useState(false);
@@ -31,6 +28,31 @@ export default function SpaceThemeDetails({ space }: SpaceDetailsProps) {
       setShowThemeUpdateModal(true);
     }
   };
+
+  const byteCollection: ProjectByteCollectionFragment = {
+    id: 'b757246b-1b08-42ce-a8cb-a9ce19bc78b3',
+    name: 'About DEX',
+    description: 'This collection of Tidbits explains different exchange models and the benefits of AMM',
+    status: 'DRAFT',
+    byteIds: ['centralized-vs-decentralized-exchange-uniswap', 'amm-benefits-uniswap'],
+    order: 100,
+    bytes: [
+      {
+        byteId: 'centralized-vs-decentralized-exchange-uniswap',
+        name: 'Centralized vs Decentralized Exchange',
+        content: 'Centralized vs Decentralized Exchanges and AMMs',
+        __typename: 'ByteCollectionByte',
+      },
+      {
+        byteId: 'amm-benefits-uniswap',
+        name: 'AMM Benefits',
+        content: 'Benefits of Automated Market Maker over Order Book',
+        __typename: 'ByteCollectionByte',
+      },
+    ],
+    __typename: 'ProjectByteCollection',
+  };
+
   return (
     <div>
       <div className="flex flex-col md:flex-row w-full">
@@ -55,17 +77,10 @@ export default function SpaceThemeDetails({ space }: SpaceDetailsProps) {
               );
             })}
           </div>
-          <TestDiv className="w-full md:mt-0 mt-4 md:w-1/2 p-2 md:p-4 border-2">
-            <h1 className="text-xl md:text-2xl text-center">Test Heading</h1>
-            <p>
-              This is a sample text Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum voluptas eaque illo nesciunt perspiciatis accusantium
-              tenetur unde quo exercitationem, molestias error est neque recusandae. Similique sequi, fuga commodi ipsum repellat quisquam cupiditate dolor cum
-              possimus odio accusantium nam facere corrupti aliquam inventore est soluta id asperiores dicta temporibus optio. Earum, porro reiciendis quidem
-              nam laudantium dolores, ullam quis enim tempore consequatur, doloremque sed! Suscipit reiciendis officia mollitia adipisci vel velit fugiat,
-              explicabo corrupti voluptatum necessitatibus, debitis commodi laborum numquam, exercitationem ipsum sed. Obcaecati quasi quo error placeat
-              repellat assumenda, autem voluptas porro expedita illum excepturi aspernatur ex earum corrupti perspiciatis.
-            </p>
-          </TestDiv>
+
+          <div className="w-full md:mt-0 mt-4 md:w-1/2 p-2 md:p-4">
+            <ByteCollectionsCard key={byteCollection.id} byteCollection={byteCollection} onSelectByte={() => {}} baseByteCollectionsEditUrl={'TestUrl'} />
+          </div>
         </div>
       </div>
       <UpdateThemeModal colorLabels={colorLabels} space={space} open={showThemeUpdateModal} onClose={() => setShowThemeUpdateModal(false)} />

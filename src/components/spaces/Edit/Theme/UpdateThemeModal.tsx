@@ -1,7 +1,8 @@
 import { themes, ThemeValue } from '@/app/themes';
+import ByteCollectionsCard from '@/components/byteCollection/ByteCollections/ByteCollectionsCard';
 import Button from '@/components/core/buttons/Button';
 import FullScreenModal from '@/components/core/modals/FullScreenModal';
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { ProjectByteCollectionFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { useState } from 'react';
 
 export interface UpdateThemeModalProps {
@@ -17,6 +18,36 @@ export default function UpdateThemeModal({ space, open, onClose, colorLabels }: 
 
   const handleColorChange = (colorKey: keyof ThemeValue, colorValue: string) => {
     setThemeColors({ ...themeColors, [colorKey]: colorValue });
+  };
+
+  const byteCollection: ProjectByteCollectionFragment = {
+    id: 'b757246b-1b08-42ce-a8cb-a9ce19bc78b3',
+    name: 'About DEX',
+    description: 'This collection of Tidbits explains different exchange models and the benefits of AMM',
+    status: 'DRAFT',
+    byteIds: ['centralized-vs-decentralized-exchange-uniswap', 'amm-benefits-uniswap'],
+    order: 100,
+    bytes: [
+      {
+        byteId: 'centralized-vs-decentralized-exchange-uniswap',
+        name: 'Centralized vs Decentralized Exchange',
+        content: 'Centralized vs Decentralized Exchanges and AMMs',
+        __typename: 'ByteCollectionByte',
+      },
+      {
+        byteId: 'amm-benefits-uniswap',
+        name: 'AMM Benefits',
+        content: 'Benefits of Automated Market Maker over Order Book',
+        __typename: 'ByteCollectionByte',
+      },
+      {
+        byteId: 'centralized-vs-decentralized-exchange-uniswap',
+        name: 'Centralized vs Decentralized Exchange',
+        content: 'Centralized vs Decentralized Exchanges and AMMs',
+        __typename: 'ByteCollectionByte',
+      },
+    ],
+    __typename: 'ProjectByteCollection',
   };
 
   return (
@@ -37,22 +68,22 @@ export default function UpdateThemeModal({ space, open, onClose, colorLabels }: 
             })}
           </div>
           <div
-            className="w-full md:mt-0 mt-4 md:w-1/2 p-2 md:p-4 border-2"
+            className="flex justify-center items-center w-full md:mt-0 md:w-1/2 p-2 md:p-4"
             style={{
               color: themeColors.textColor,
-              backgroundColor: themeColors.bgColor,
-              border: '3px solid ' + themeColors.borderColor,
             }}
           >
-            <h1 className="text-xl md:text-2xl text-center">Test Heading</h1>
-            <p>
-              This is a sample text Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum voluptas eaque illo nesciunt perspiciatis accusantium
-              tenetur unde quo exercitationem, molestias error est neque recusandae. Similique sequi, fuga commodi ipsum repellat quisquam cupiditate dolor cum
-              possimus odio accusantium nam facere corrupti aliquam inventore est soluta id asperiores dicta temporibus optio. Earum, porro reiciendis quidem
-              nam laudantium dolores, ullam quis enim tempore consequatur, doloremque sed! Suscipit reiciendis officia mollitia adipisci vel velit fugiat,
-              explicabo corrupti voluptatum necessitatibus, debitis commodi laborum numquam, exercitationem ipsum sed. Obcaecati quasi quo error placeat
-              repellat assumenda, autem voluptas porro expedita illum excepturi aspernatur ex earum corrupti perspiciatis.
-            </p>
+            <ByteCollectionsCard
+              key={byteCollection.id}
+              isEditingAllowed={false}
+              byteCollection={byteCollection}
+              onSelectByte={() => {}}
+              baseByteCollectionsEditUrl={'TestUrl'}
+              iconBgColor={themeColors.primaryColor}
+              cardBgColor={themeColors.bgColor}
+              cardHeadingColor={themeColors.headingColor}
+              cardBorderColor={themeColors.borderColor}
+            />
           </div>
         </div>
       </div>
