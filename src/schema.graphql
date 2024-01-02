@@ -1144,7 +1144,9 @@ enum OrderDirection {
 
 type Project {
   adminUsernames: [String!]!
+  adminUsernamesV1: [UsernameAndName!]!
   admins: [String!]!
+  cardThumbnail: String
   creator: String!
   details: String!
   discord: String
@@ -1388,6 +1390,7 @@ input SocialSettingsInput {
 
 type Space {
   adminUsernames: [String!]!
+  adminUsernamesV1: [UsernameAndName!]!
   admins: [String!]!
   authSettings: AuthSettings!
   avatar: String
@@ -1736,7 +1739,9 @@ input UpsertProjectByteInput {
 
 input UpsertProjectInput {
   adminUsernames: [String!]!
+  adminUsernamesV1: [UsernameAndNameInput!]!
   admins: [String!]!
+  cardThumbnail: String
   details: String!
   discord: String
   docs: String
@@ -1764,6 +1769,7 @@ input UpsertSimulationInput {
 
 input UpsertSpaceInput {
   adminUsernames: [String!]!
+  adminUsernamesV1: [UsernameAndNameInput!]!
   admins: [String!]!
   avatar: String!
   botDomains: [String!]
@@ -1836,6 +1842,16 @@ input UserInputInput {
   required: Boolean
   type: String!
   uuid: String!
+}
+
+type UsernameAndName {
+  nameOfTheUser: String!
+  username: String!
+}
+
+input UsernameAndNameInput {
+  nameOfTheUser: String!
+  username: String!
 }
 
 type VercelDomain {

@@ -12,9 +12,10 @@ import union from 'lodash/union';
 import React, { useEffect, useState } from 'react';
 import useEditProject from './useEditProject';
 
-export default function UpsertProjectModal(props: { spaceId: String; project?: Project; open: boolean; onClose: () => void }) {
+export default function UpsertProjectModal(props: { spaceId: string; project?: Project; open: boolean; onClose: () => void }) {
   const editProjectHelper = useEditProject(props.project?.id);
-  const [uploadThumbnailLoading, setUploadThumbnailLoading] = useState(false);
+  const [uploadLogoThumbnailLoading, setUploadLogoThumbnailLoading] = useState(false);
+  const [uploadCardThumbnailLoading, setUploadCardThumbnailLoading] = useState(false);
 
   const { project, setProjectField, upsertProject, upserting } = editProjectHelper;
 
@@ -43,7 +44,17 @@ export default function UpsertProjectModal(props: { spaceId: String; project?: P
             modelValue={project?.logo}
             objectId={(project?.name && slugify(project?.name)) || project?.id || 'new-project'}
             onInput={(value) => setProjectField('logo', value)}
-            onLoading={setUploadThumbnailLoading}
+            onLoading={setUploadLogoThumbnailLoading}
+          />
+          <UploadInput
+            label="Thumbnail"
+            error={inputError('cardThumbnail')}
+            imageType="CryptoGelatoProjectThumbnail"
+            spaceId={props.spaceId}
+            modelValue={project?.cardThumbnail}
+            objectId={(project?.name && slugify(project?.name)) || project?.id || 'new-project'}
+            onInput={(value) => setProjectField('cardThumbnail', value)}
+            onLoading={setUploadCardThumbnailLoading}
           />
 
           <StyledSelect
@@ -74,7 +85,7 @@ export default function UpsertProjectModal(props: { spaceId: String; project?: P
           variant="contained"
           primary
           loading={upserting}
-          disabled={uploadThumbnailLoading || upserting}
+          disabled={uploadLogoThumbnailLoading || uploadCardThumbnailLoading || upserting}
           onClick={async () => {
             await upsertProject();
             props.onClose();

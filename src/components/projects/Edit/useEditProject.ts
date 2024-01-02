@@ -27,6 +27,7 @@ export default function useEditProject(projectId?: string): UseEditProjectHelper
     id: projectId,
     admins: [],
     adminUsernames: [],
+    adminUsernamesV1: [],
     logo: '',
     name: '',
     type: 'DeFi',
@@ -61,6 +62,7 @@ export default function useEditProject(projectId?: string): UseEditProjectHelper
           adminUsernames: projectResponse.adminUsernames,
           logo: projectResponse.logo,
           name: projectResponse.name,
+          adminUsernamesV1: projectResponse.adminUsernamesV1 || [],
         });
       }
     }
@@ -84,6 +86,7 @@ export default function useEditProject(projectId?: string): UseEditProjectHelper
       adminUsernames: project.adminUsernames,
       logo: project.logo,
       name: project.name,
+      adminUsernamesV1: project.adminUsernamesV1 || [],
     };
   }
 
