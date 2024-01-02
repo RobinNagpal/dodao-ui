@@ -2,7 +2,7 @@ import { ThemeValue, themes } from '@/app/themes';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import UpdateThemeModal from '@/components/spaces/Edit/Theme/UpdateThemeModal';
 import { ProjectByteCollectionFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
-import ByteCollectionsCard from '@/components/byteCollection/ByteCollections/ByteCollectionsCard';
+import ByteCollectionsCard from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCollectionsCard';
 import React from 'react';
 
 export interface SpaceDetailsProps {
@@ -48,6 +48,12 @@ export default function SpaceThemeDetails({ space }: SpaceDetailsProps) {
         content: 'Benefits of Automated Market Maker over Order Book',
         __typename: 'ByteCollectionByte',
       },
+      {
+        byteId: 'centralized-vs-decentralized-exchange-uniswap',
+        name: 'Centralized vs Decentralized Exchange',
+        content: 'Centralized vs Decentralized Exchanges and AMMs',
+        __typename: 'ByteCollectionByte',
+      },
     ],
     __typename: 'ProjectByteCollection',
   };
@@ -88,7 +94,13 @@ export default function SpaceThemeDetails({ space }: SpaceDetailsProps) {
           </div>
         </div>
       </div>
-      <UpdateThemeModal colorLabels={colorLabels} space={space} open={showThemeUpdateModal} onClose={() => setShowThemeUpdateModal(false)} />
+      <UpdateThemeModal
+        byteCollection={byteCollection}
+        colorLabels={colorLabels}
+        space={space}
+        open={showThemeUpdateModal}
+        onClose={() => setShowThemeUpdateModal(false)}
+      />
     </div>
   );
 }

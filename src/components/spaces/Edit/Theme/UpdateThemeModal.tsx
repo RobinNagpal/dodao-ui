@@ -1,6 +1,6 @@
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import { themes, ThemeValue } from '@/app/themes';
-import ByteCollectionsCard from '@/components/byteCollection/ByteCollections/ByteCollectionsCard';
+import ByteCollectionsCard from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCollectionsCard';
 import Button from '@/components/core/buttons/Button';
 import FullScreenModal from '@/components/core/modals/FullScreenModal';
 import { ProjectByteCollectionFragment, SpaceWithIntegrationsFragment, useUpdateThemeColorsMutation } from '@/graphql/generated/generated-types';
@@ -13,9 +13,10 @@ export interface UpdateThemeModalProps {
   open: boolean;
   onClose: () => void;
   colorLabels: string[];
+  byteCollection: ProjectByteCollectionFragment;
 }
 
-export default function UpdateThemeModal({ space, open, onClose, colorLabels }: UpdateThemeModalProps) {
+export default function UpdateThemeModal({ space, open, onClose, colorLabels, byteCollection }: UpdateThemeModalProps) {
   const [themeColors, setThemeColors] = useState<ThemeValue>(space.themeColors || themes.GlobalTheme);
   const themeColorKeys = Object.keys(themeColors) as (keyof ThemeValue)[];
   const { showNotification } = useNotificationContext();
@@ -59,36 +60,6 @@ export default function UpdateThemeModal({ space, open, onClose, colorLabels }: 
     setThemeColors({ ...themeColors, [colorKey]: colorValue });
   };
 
-  const byteCollection: ProjectByteCollectionFragment = {
-    id: 'b757246b-1b08-42ce-a8cb-a9ce19bc78b3',
-    name: 'About DEX',
-    description: 'This collection of Tidbits explains different exchange models and the benefits of AMM',
-    status: 'DRAFT',
-    byteIds: ['centralized-vs-decentralized-exchange-uniswap', 'amm-benefits-uniswap'],
-    order: 100,
-    bytes: [
-      {
-        byteId: 'centralized-vs-decentralized-exchange-uniswap',
-        name: 'Centralized vs Decentralized Exchange',
-        content: 'Centralized vs Decentralized Exchanges and AMMs',
-        __typename: 'ByteCollectionByte',
-      },
-      {
-        byteId: 'amm-benefits-uniswap',
-        name: 'AMM Benefits',
-        content: 'Benefits of Automated Market Maker over Order Book',
-        __typename: 'ByteCollectionByte',
-      },
-      {
-        byteId: 'centralized-vs-decentralized-exchange-uniswap',
-        name: 'Centralized vs Decentralized Exchange',
-        content: 'Centralized vs Decentralized Exchanges and AMMs',
-        __typename: 'ByteCollectionByte',
-      },
-    ],
-    __typename: 'ProjectByteCollection',
-  };
-
   const themeStyles = {
     '--primary-color': themeColors.primaryColor,
     '--bg-color': themeColors.bgColor,
@@ -117,23 +88,13 @@ export default function UpdateThemeModal({ space, open, onClose, colorLabels }: 
                 );
               })}
             </div>
-            <div
-              className="flex justify-center items-center w-full md:mt-0 md:w-1/2 p-2 md:p-4"
-              style={{
-                color: themeColors.textColor,
-                ...themeStyles,
-              }}
-            >
+            <div className="flex justify-center items-center w-full md:mt-0 md:w-1/2 p-2 md:p-4">
               <ByteCollectionsCard
                 key={byteCollection.id}
                 isEditingAllowed={false}
                 byteCollection={byteCollection}
                 onSelectByte={() => {}}
                 baseByteCollectionsEditUrl={'TestUrl'}
-                // iconBgColor={themeColors.primaryColor}
-                // cardBgColor={themeColors.bgColor}
-                // cardHeadingColor={themeColors.headingColor}
-                // cardBorderColor={themeColors.borderColor}
               />
             </div>
           </div>
