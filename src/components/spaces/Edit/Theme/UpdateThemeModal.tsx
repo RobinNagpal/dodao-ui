@@ -4,7 +4,7 @@ import ByteCollectionsCard from '@/components/byteCollection/ByteCollections/Byt
 import Button from '@/components/core/buttons/Button';
 import FullScreenModal from '@/components/core/modals/FullScreenModal';
 import { ProjectByteCollectionFragment, SpaceWithIntegrationsFragment, useUpdateThemeColorsMutation } from '@/graphql/generated/generated-types';
-import { useState } from 'react';
+import { CSSProperties, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useI18 } from '@/hooks/useI18';
 
@@ -89,53 +89,66 @@ export default function UpdateThemeModal({ space, open, onClose, colorLabels }: 
     __typename: 'ProjectByteCollection',
   };
 
+  const themeStyles = {
+    '--primary-color': themeColors.primaryColor,
+    '--bg-color': themeColors.bgColor,
+    '--text-color': themeColors.textColor,
+    '--link-color': themeColors.linkColor,
+    '--heading-color': themeColors.headingColor,
+    '--border-color': themeColors.borderColor,
+    '--block-bg': themeColors.blockBg,
+  } as CSSProperties;
+
   return (
     <FullScreenModal open={open} onClose={onClose} title="Theme Settings">
-      <div className="mt-4">
-        <div className="flex flex-col md:flex-row flex-wrap">
-          <div className="w-full md:w-1/2 mt-4">
-            <h1 className="font-bold text-2xl mb-4">Theme Details</h1>
-            {colorLabels.map((label, index) => {
-              const colorKey = themeColorKeys[index];
-              const colorValue = themeColors[colorKey] || '';
-              return (
-                <div key={index} className="flex justify-between items-center mb-2">
-                  <label className="ml-7">{label}</label>
-                  <input type="color" className="w-12 h-8 mr-8" value={colorValue} onChange={(e) => handleColorChange(colorKey, e.target.value)} />
-                </div>
-              );
-            })}
-          </div>
-          <div
-            className="flex justify-center items-center w-full md:mt-0 md:w-1/2 p-2 md:p-4"
-            style={{
-              color: themeColors.textColor,
-            }}
-          >
-            <ByteCollectionsCard
-              key={byteCollection.id}
-              isEditingAllowed={false}
-              byteCollection={byteCollection}
-              onSelectByte={() => {}}
-              baseByteCollectionsEditUrl={'TestUrl'}
-              iconBgColor={themeColors.primaryColor}
-              cardBgColor={themeColors.bgColor}
-              cardHeadingColor={themeColors.headingColor}
-              cardBorderColor={themeColors.borderColor}
-            />
+      <div style={{ ...themeStyles }}>
+        <div className="mt-4">
+          <div className="flex flex-col md:flex-row flex-wrap">
+            <div className="w-full md:w-1/2 mt-4">
+              <h1 className="font-bold text-2xl mb-4">Theme Details</h1>
+              {colorLabels.map((label, index) => {
+                const colorKey = themeColorKeys[index];
+                const colorValue = themeColors[colorKey] || '';
+                return (
+                  <div key={index} className="flex justify-between items-center mb-2">
+                    <label className="ml-7">{label}</label>
+                    <input type="color" className="w-12 h-8 mr-8" value={colorValue} onChange={(e) => handleColorChange(colorKey, e.target.value)} />
+                  </div>
+                );
+              })}
+            </div>
+            <div
+              className="flex justify-center items-center w-full md:mt-0 md:w-1/2 p-2 md:p-4"
+              style={{
+                color: themeColors.textColor,
+                ...themeStyles,
+              }}
+            >
+              <ByteCollectionsCard
+                key={byteCollection.id}
+                isEditingAllowed={false}
+                byteCollection={byteCollection}
+                onSelectByte={() => {}}
+                baseByteCollectionsEditUrl={'TestUrl'}
+                // iconBgColor={themeColors.primaryColor}
+                // cardBgColor={themeColors.bgColor}
+                // cardHeadingColor={themeColors.headingColor}
+                // cardBorderColor={themeColors.borderColor}
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <div className="p-6 mt-4 flex items-center justify-center gap-x-6">
-        <Button
-          variant="contained"
-          primary
-          // loading={}
-          // disabled={uploadThumbnailLoading || upserting}
-          onClick={upsertThemeColors}
-        >
-          Save
-        </Button>
+        <div className="p-6 mt-4 flex items-center justify-center gap-x-6">
+          <Button
+            variant="contained"
+            primary
+            // loading={}
+            // disabled={uploadThumbnailLoading || upserting}
+            onClick={upsertThemeColors}
+          >
+            Save
+          </Button>
+        </div>
       </div>
     </FullScreenModal>
   );
