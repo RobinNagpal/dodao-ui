@@ -31,6 +31,10 @@ fragment SpaceWithIntegrations on Space {
   }
   admins
   adminUsernames
+  adminUsernamesV1 {
+    username
+    nameOfTheUser
+  }
   spaceIntegrations {
     academyRepository
     discordGuildId

@@ -12,7 +12,7 @@ import union from 'lodash/union';
 import React, { useEffect, useState } from 'react';
 import useEditProject from './useEditProject';
 
-export default function UpsertProjectModal(props: { spaceId: String; project?: Project; open: boolean; onClose: () => void }) {
+export default function UpsertProjectModal(props: { spaceId: string; project?: Project; open: boolean; onClose: () => void }) {
   const editProjectHelper = useEditProject(props.project?.id);
   const [uploadLogoThumbnailLoading, setUploadLogoThumbnailLoading] = useState(false);
   const [uploadCardThumbnailLoading, setUploadCardThumbnailLoading] = useState(false);
@@ -49,8 +49,8 @@ export default function UpsertProjectModal(props: { spaceId: String; project?: P
           <UploadInput
             label="Thumbnail"
             error={inputError('cardThumbnail')}
-            imageType="AcademyCardThumbnail"
-            spaceId={project?.id || 'new-project'}
+            imageType="CryptoGelatoProjectThumbnail"
+            spaceId={props.spaceId}
             modelValue={project?.cardThumbnail}
             objectId={(project?.name && slugify(project?.name)) || project?.id || 'new-project'}
             onInput={(value) => setProjectField('cardThumbnail', value)}

@@ -1,5 +1,9 @@
 fragment Project on Project {
   adminUsernames
+  adminUsernamesV1 {
+    username
+    nameOfTheUser
+  }
   admins
   creator
   details
