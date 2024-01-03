@@ -1,6 +1,7 @@
 import { CssTheme } from '@/app/themes';
 import UploadInput from '@/components/app/UploadInput';
 import UpsertBadgeInput from '@/components/core/badge/UpsertBadgeInput';
+import UpsertKeyValueBadgeInput from '@/components/core/badge/UpsertKeyValueBadgeInput';
 import Button from '@/components/core/buttons/Button';
 import Input from '@/components/core/input/Input';
 import FullPageModal from '@/components/core/modals/FullPageModal';
@@ -93,6 +94,20 @@ export default function UpsertSpaceBasicSettingsModal(props: { space?: Space; op
               setSpaceField(
                 'adminUsernames',
                 space.adminUsernames.filter((domain) => domain !== d)
+              );
+            }}
+          />
+          <UpsertKeyValueBadgeInput
+            label={'Admins By Usernames'}
+            badges={space.adminUsernamesV1.map((d) => ({ key: d.username, value: d.nameOfTheUser }))}
+            onAdd={(admin) => {
+              setSpaceField('adminUsernames', union(space.adminUsernames, [admin]));
+            }}
+            labelFn={(badge) => `${badge.key} - ${badge.value}`}
+            onRemove={(d) => {
+              setSpaceField(
+                'adminUsernames',
+                space.adminUsernamesV1.filter((domain) => domain.username !== d)
               );
             }}
           />
