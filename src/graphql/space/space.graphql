@@ -79,6 +79,15 @@ fragment SpaceWithIntegrations on Space {
     captureRating
     showCategoriesInSidebar
   }
+  themeColors {
+    primaryColor
+    bgColor
+    textColor
+    linkColor
+    headingColor
+    borderColor
+    blockBg
+  }
 }
 
 fragment SpaceSummary on Space {

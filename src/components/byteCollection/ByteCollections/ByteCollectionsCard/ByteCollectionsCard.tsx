@@ -6,44 +6,40 @@ import Bars3BottomLeftIcon from '@heroicons/react/24/solid/Bars3BottomLeftIcon';
 import CheckIcon from '@heroicons/react/24/solid/CheckIcon';
 import { useRouter } from 'next/navigation';
 import React from 'react';
-import styled from 'styled-components';
+import styles from './ByteCollectionsCard.module.scss';
 
 interface ByteCollectionCardProps {
   byteCollection: ByteCollectionFragment | ProjectByteCollectionFragment;
   onSelectByte: (byteId: string) => void;
   baseByteCollectionsEditUrl: string;
+  isEditingAllowed?: boolean;
 }
 
-const TidBitIconSpan = styled.span`
-  background-color: var(--primary-color);
-`;
-
-const OpenInPopupIcon = styled(ArrowTopRightOnSquareIcon)`
-  color: var(--primary-color);
-`;
-
-export default function ByteCollectionsCard({ byteCollection, baseByteCollectionsEditUrl, onSelectByte }: ByteCollectionCardProps) {
+export default function ByteCollectionsCard({ byteCollection, baseByteCollectionsEditUrl, onSelectByte, isEditingAllowed = true }: ByteCollectionCardProps) {
   const router = useRouter();
 
   return (
-    <div className="border border-gray-200 rounded-xl overflow-hidden  p-4 w-full max-w-xl">
-      <div className="w-full flex justify-end">
-        <PrivateEllipsisDropdown
-          items={[
-            {
-              label: 'Edit',
-              key: 'edit',
-            },
-          ]}
-          onSelect={async (key) => {
-            if (key === 'edit') {
-              router.push(`${baseByteCollectionsEditUrl}/${byteCollection.id}`);
-            }
-          }}
-        />
-      </div>
+    <div className={`border border-gray-200 rounded-xl overflow-hidden p-4 w-full max-w-xl ` + styles.cardDiv}>
+      {isEditingAllowed && (
+        <div className="w-full flex justify-end">
+          <PrivateEllipsisDropdown
+            items={[
+              {
+                label: 'Edit',
+                key: 'edit',
+              },
+            ]}
+            onSelect={async (key) => {
+              if (key === 'edit') {
+                router.push(`${baseByteCollectionsEditUrl}/${byteCollection.id}`);
+              }
+            }}
+          />
+        </div>
+      )}
+
       <div className="mt-3 ml-2 text-xl">
-        <div>{byteCollection.name}</div>
+        <div className={styles.headingColor}>{byteCollection.name}</div>
         <div className="my-3 text-sm">{byteCollection.description}</div>
       </div>
       <div className="flow-root p-2">
@@ -64,15 +60,15 @@ export default function ByteCollectionsCard({ byteCollection, baseByteCollection
                             <CheckIcon className="h-5 w-5 text-white" aria-hidden="true" />
                           </div>
                         ) : (
-                          <TidBitIconSpan className={'h-8 w-8 rounded-full flex items-center justify-center ring-5 ring-white'}>
+                          <span className={'h-8 w-8 rounded-full flex items-center justify-center ring-5 ring-white ' + styles.tidbitIconSpan}>
                             <Bars3BottomLeftIcon className="h-5 w-5 text-white" aria-hidden="true" />
-                          </TidBitIconSpan>
+                          </span>
                         )}
                       </div>
                       <div className="flex min-w-0 flex-1 justify-between space-x-2 transform hover:scale-95 transition duration-300 ease-in-out">
                         <div className="ml-3 text-sm">
                           <div className="font-bold flex">
-                            {`${byte.name}`} <OpenInPopupIcon className="h-4 w-4 ml-2" />
+                            {`${byte.name}`} <ArrowTopRightOnSquareIcon className={'h-4 w-4 ml-2 ' + styles.openInPopupIcon} />
                           </div>
 
                           <div className="flex-wrap">{byte.content}</div>

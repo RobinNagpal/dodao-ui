@@ -1,5 +1,5 @@
 import Block from '@/components/app/Block';
-import ByteCollectionsCard from '@/components/byteCollection/ByteCollections/ByteCollectionsCard';
+import ByteCollectionsCard from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCollectionsCard';
 import NoByteCollections from '@/components/byteCollection/ByteCollections/NoByteCollections';
 import ViewByteModal from '@/components/byteCollection/View/ViewByteModal';
 import { Grid2Cols } from '@/components/core/grids/Grid2Cols';

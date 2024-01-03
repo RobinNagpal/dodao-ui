@@ -1,18 +1,78 @@
-import { themes, ThemeValue } from '@/app/themes';
+import { CssTheme, ThemeKey, themes } from '@/app/themes';
+import ByteCollectionsCard from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCollectionsCard';
+import Button from '@/components/core/buttons/Button';
 import FullScreenModal from '@/components/core/modals/FullScreenModal';
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
-import { CSSProperties, useState } from 'react';
-import styles from './UpdateThemeModal.module.scss';
+import { useNotificationContext } from '@/contexts/NotificationContext';
+import { ProjectByteCollectionFragment, SpaceWithIntegrationsFragment, ThemeColors, useUpdateThemeColorsMutation } from '@/graphql/generated/generated-types';
+import { useI18 } from '@/hooks/useI18';
+import { useRouter } from 'next/navigation';
+import React, { CSSProperties, useState } from 'react';
+
 export interface UpdateThemeModalProps {
-  space: SpaceWithIntegrationsFragment & { themeColors?: ThemeValue };
+  space: SpaceWithIntegrationsFragment;
   open: boolean;
   onClose: () => void;
+  byteCollection: ProjectByteCollectionFragment;
 }
 
-export default function UpdateThemeModal({ space, open, onClose }: UpdateThemeModalProps) {
-  const [themeColors, setThemeColors] = useState<ThemeValue>(space.themeColors || themes.ArbitrumTheme);
+export type ThemeColorsKeys = 'bgColor' | 'blockBg' | 'borderColor' | 'headingColor' | 'linkColor' | 'primaryColor' | 'textColor';
 
-  const style = {
+export const ColorLabels: Record<ThemeColorsKeys, string> = {
+  primaryColor: 'Primary Color',
+  bgColor: 'Background Color',
+  textColor: 'Text Color',
+  linkColor: 'Link Color',
+  headingColor: 'Heading Color',
+  borderColor: 'Border Color',
+  blockBg: 'Block Background Color',
+};
+export default function UpdateThemeModal({ space, open, onClose, byteCollection }: UpdateThemeModalProps) {
+  const skin = space?.skin;
+  const theme: ThemeKey = space?.skin && Object.keys(CssTheme).includes(skin || '') ? (skin as CssTheme) : CssTheme.GlobalTheme;
+  const [themeColors, setThemeColors] = useState<ThemeColors>(space?.themeColors || themes[theme]);
+  const { showNotification } = useNotificationContext();
+  const router = useRouter();
+  const { $t } = useI18();
+  const [updateThemeColorsMutation] = useUpdateThemeColorsMutation();
+
+  async function upsertThemeColors() {
+    try {
+      const response = await updateThemeColorsMutation({
+        variables: {
+          spaceId: space.id,
+          themeColors: {
+            bgColor: themeColors.bgColor,
+            textColor: themeColors.textColor,
+            blockBg: themeColors.blockBg,
+            borderColor: themeColors.borderColor,
+            primaryColor: themeColors.primaryColor,
+            headingColor: themeColors.headingColor,
+            linkColor: themeColors.linkColor,
+          },
+        },
+      });
+
+      if (!response.errors) {
+        showNotification({
+          type: 'success',
+          message: 'Theme Updated',
+          heading: 'Success 🎉',
+        });
+        router.push(`/`);
+        location.reload();
+      } else {
+        showNotification({ type: 'error', message: $t('notify.somethingWentWrong') });
+      }
+    } catch (e) {
+      showNotification({ type: 'error', message: $t('notify.somethingWentWrong') });
+    }
+  }
+
+  const handleColorChange = (colorKey: ThemeColorsKeys, colorValue: string) => {
+    setThemeColors({ ...themeColors, [colorKey]: colorValue });
+  };
+
+  const themeStyles = {
     '--primary-color': themeColors.primaryColor,
     '--bg-color': themeColors.bgColor,
     '--text-color': themeColors.textColor,
@@ -22,27 +82,37 @@ export default function UpdateThemeModal({ space, open, onClose }: UpdateThemeMo
     '--block-bg': themeColors.blockBg,
   } as CSSProperties;
 
-  // Here you add logic to show color selector and the Tidbit Grid. This is the screenshot which you send.
-  // This is EDIT MODE
+  console.log('themeStyles', themeStyles);
   return (
-    <FullScreenModal open={open} onClose={onClose} title="Basic Space Settings">
-      <div style={style} className={styles.bodyText}>
-        <div>Here you add logic to show color selector and the Tidbit Grid. This is the screenshot which you send.</div>
-        <div>
-          <label htmlFor="hs-color-input" className="block text-sm font-medium mb-2 dark:text-white">
-            Color picker
-          </label>
-          <input
-            type="color"
-            className="p-1 h-10 block bg-white border border-gray-200 cursor-pointer w-10 rounded-lg disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700"
-            id="hs-color-input"
-            value={themeColors.textColor}
-            title="Choose your color"
-            onChange={(e) => {
-              setThemeColors({ ...themeColors, primaryColor: e.target.value });
-            }}
-          />
-          - {themeColors.textColor}
+    <FullScreenModal open={open} onClose={onClose} title="Theme Settings">
+      <div style={{ ...themeStyles }}>
+        <div className="mt-4">
+          <div className="flex flex-col md:flex-row flex-wrap">
+            <div className="w-full md:w-1/2 mt-4">
+              <h1 className="font-bold text-2xl mb-4">Theme Details</h1>
+              {Object.entries(ColorLabels).map((e) => {
+                const [colorKey, label] = e as [ThemeColorsKeys, string];
+                const colorValue = themeColors[colorKey];
+                return (
+                  <div key={colorKey} className="flex justify-between mb-2">
+                    <label className="ml-7">{label}</label>
+                    <div className="grid grid-cols-2	">
+                      <input type="color" className="w-12 h-8 mr-8" value={colorValue} onChange={(e) => handleColorChange(colorKey, e.target.value)} />
+                      <div>{colorValue}</div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            <div className="flex justify-center items-center w-full md:mt-0 md:w-1/2 p-2 md:p-4">
+              <ByteCollectionsCard isEditingAllowed={false} byteCollection={byteCollection} onSelectByte={() => {}} baseByteCollectionsEditUrl={'TestUrl'} />
+            </div>
+          </div>
+        </div>
+        <div className="p-6 mt-4 flex items-center justify-center gap-x-6">
+          <Button variant="contained" primary onClick={upsertThemeColors}>
+            Save
+          </Button>
         </div>
       </div>
     </FullScreenModal>
