@@ -23,7 +23,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
   const skin = space?.skin;
   const theme: ThemeKey = space?.skin && Object.keys(CssTheme).includes(skin || '') ? (skin as CssTheme) : CssTheme.GlobalTheme;
 
-  const themeValue = themes[theme];
+  const themeValue = space?.themeColors || themes[theme];
 
   const style = {
     '--primary-color': themeValue.primaryColor,
