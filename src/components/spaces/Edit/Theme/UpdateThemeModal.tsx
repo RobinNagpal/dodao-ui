@@ -1,5 +1,5 @@
 import { useNotificationContext } from '@/contexts/NotificationContext';
-import { themes, ThemeValue } from '@/app/themes';
+import { CssTheme, ThemeKey, themes, ThemeValue } from '@/app/themes';
 import ByteCollectionsCard from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCollectionsCard';
 import Button from '@/components/core/buttons/Button';
 import FullScreenModal from '@/components/core/modals/FullScreenModal';
@@ -17,7 +17,10 @@ export interface UpdateThemeModalProps {
 }
 
 export default function UpdateThemeModal({ space, open, onClose, colorLabels, byteCollection }: UpdateThemeModalProps) {
-  const [themeColors, setThemeColors] = useState<ThemeValue>(space.themeColors || themes.GlobalTheme);
+  const skin = space?.skin;
+  const theme: ThemeKey = space?.skin && Object.keys(CssTheme).includes(skin || '') ? (skin as CssTheme) : CssTheme.GlobalTheme;
+  const mythemeColors = space?.themeColors || themes[theme];
+  const [themeColors, setThemeColors] = useState<ThemeValue>(mythemeColors);
   const themeColorKeys = Object.keys(themeColors) as (keyof ThemeValue)[];
   const { showNotification } = useNotificationContext();
   const router = useRouter();
