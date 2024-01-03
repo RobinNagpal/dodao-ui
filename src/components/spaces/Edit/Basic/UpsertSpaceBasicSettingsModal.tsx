@@ -98,15 +98,19 @@ export default function UpsertSpaceBasicSettingsModal(props: { space?: Space; op
             }}
           />
           <UpsertKeyValueBadgeInput
-            label={'Admins By Usernames'}
+            label={'Admins By Usernames & Names'}
             badges={space.adminUsernamesV1.map((d) => ({ key: d.username, value: d.nameOfTheUser }))}
             onAdd={(admin) => {
-              setSpaceField('adminUsernames', union(space.adminUsernames, [admin]));
+              const string = admin.split(',');
+              const username = string[0].trim();
+              const nameOfTheUser = string.length > 1 ? string[1].trim() : '';
+              const newAdmin = { username, nameOfTheUser };
+              setSpaceField('adminUsernamesV1', union(space.adminUsernamesV1, [newAdmin]));
             }}
             labelFn={(badge) => `${badge.key} - ${badge.value}`}
             onRemove={(d) => {
               setSpaceField(
-                'adminUsernames',
+                'adminUsernamesV1',
                 space.adminUsernamesV1.filter((domain) => domain.username !== d)
               );
             }}
