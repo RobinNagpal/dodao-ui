@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation';
 import { useI18 } from '@/hooks/useI18';
 
 export interface UpdateThemeModalProps {
-  space: SpaceWithIntegrationsFragment & { PresentThemeColors?: ThemeValue };
+  space: SpaceWithIntegrationsFragment & { themeColors?: ThemeValue };
   open: boolean;
   onClose: () => void;
   colorLabels: string[];
@@ -17,7 +17,7 @@ export interface UpdateThemeModalProps {
 }
 
 export default function UpdateThemeModal({ space, open, onClose, colorLabels, byteCollection }: UpdateThemeModalProps) {
-  const [themeColors, setThemeColors] = useState<ThemeValue>(space.PresentThemeColors || themes.GlobalTheme);
+  const [themeColors, setThemeColors] = useState<ThemeValue>(space.themeColors || themes.GlobalTheme);
   const themeColorKeys = Object.keys(themeColors) as (keyof ThemeValue)[];
   const { showNotification } = useNotificationContext();
   const router = useRouter();
