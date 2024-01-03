@@ -50,6 +50,13 @@ function getSpaceDetailsFields(space: SpaceWithIntegrationsFragment): Array<{ la
       label: 'Admins By Username',
       value: space.adminUsernames!.join(', ') || 'None',
     },
+    {
+      label: 'Admins By Username & Names',
+      value:
+        space.adminUsernamesV1 && space.adminUsernamesV1.length > 0
+          ? space.adminUsernamesV1.map((admin) => `(${admin.username} , ${admin.nameOfTheUser})`).join(' , ')
+          : 'None',
+    },
   ];
 }
 
@@ -85,7 +92,7 @@ export default function SpaceBasicDetails(props: SpaceBasicDetailsProps) {
 
   return (
     <>
-      <DetailsSection className={props.className}>
+      <DetailsSection className={`props.className shadow`}>
         <div className="flex w-full">
           <DetailsHeader header={'Basic Details'} subheader={'Basic information about your space'} className="grow-1 w-full" />
           <PrivateEllipsisDropdown items={threeDotItems} onSelect={selectFromThreedotDropdown} className="ml-4 pt-4 grow-0 w-16" />
