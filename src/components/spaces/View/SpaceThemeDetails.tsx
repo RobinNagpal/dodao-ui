@@ -6,7 +6,7 @@ import ByteCollectionsCard from '@/components/byteCollection/ByteCollections/Byt
 import React from 'react';
 
 export interface SpaceDetailsProps {
-  space: SpaceWithIntegrationsFragment & { themeColors?: ThemeValue };
+  space: SpaceWithIntegrationsFragment & { PresentThemeColors?: ThemeValue };
 }
 
 export default function SpaceThemeDetails({ space }: SpaceDetailsProps) {

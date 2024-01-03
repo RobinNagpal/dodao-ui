@@ -38,17 +38,6 @@ export default function SpaceDetails(props: SpaceDetailsProps) {
       label: 'Content',
     },
   ];
-
-  const currentTheme: ThemeValue = {
-    primaryColor: '#2EBAC6',
-    bgColor: '#1B2030',
-    textColor: '#f1f1f3',
-    linkColor: '#f1f1f3',
-    headingColor: '#f1f1f3',
-    borderColor: '#d1d5da',
-    blockBg: '#383D51',
-  };
-
   const [selectedTabId, setSelectedTabId] = useState(TabIds.Basic);
   return data?.space ? (
     <div>
