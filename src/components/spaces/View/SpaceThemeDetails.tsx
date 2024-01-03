@@ -72,7 +72,7 @@ export default function SpaceThemeDetails({ space }: SpaceDetailsProps) {
         <div className="flex flex-col md:flex-row flex-wrap">
           <div className="w-full md:w-1/2 mt-4">
             {colorLabels.map((label, index) => {
-              const colorKey = themeColorKeys[index];
+              const colorKey = themeColorKeys[index + 1];
               const colorValue = themeColors[colorKey] || '';
               return (
                 <div key={index} className="flex justify-between items-center mb-2">
