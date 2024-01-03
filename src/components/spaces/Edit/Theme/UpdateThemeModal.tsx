@@ -48,6 +48,7 @@ export default function UpdateThemeModal({ space, open, onClose, colorLabels, by
           heading: 'Success 🎉',
         });
         router.push(`/`);
+        location.reload();
       } else {
         showNotification({ type: 'error', message: $t('notify.somethingWentWrong') });
       }
@@ -78,7 +79,7 @@ export default function UpdateThemeModal({ space, open, onClose, colorLabels, by
             <div className="w-full md:w-1/2 mt-4">
               <h1 className="font-bold text-2xl mb-4">Theme Details</h1>
               {colorLabels.map((label, index) => {
-                const colorKey = themeColorKeys[index];
+                const colorKey = themeColorKeys[index + 1];
                 const colorValue = themeColors[colorKey] || '';
                 return (
                   <div key={index} className="flex justify-between items-center mb-2">
