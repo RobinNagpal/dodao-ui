@@ -1,5 +1,9 @@
 fragment Project on Project {
   adminUsernames
+  adminUsernamesV1 {
+    username
+    nameOfTheUser
+  }
   admins
   creator
   details
@@ -12,6 +16,7 @@ fragment Project on Project {
   telegram
   website
   type
+  cardThumbnail
 }
 
 fragment ProjectByte on ProjectByte {
