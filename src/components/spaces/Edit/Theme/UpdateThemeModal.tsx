@@ -101,13 +101,7 @@ export default function UpdateThemeModal({ space, open, onClose, colorLabels, by
           </div>
         </div>
         <div className="p-6 mt-4 flex items-center justify-center gap-x-6">
-          <Button
-            variant="contained"
-            primary
-            // loading={}
-            // disabled={uploadThumbnailLoading || upserting}
-            onClick={upsertThemeColors}
-          >
+          <Button variant="contained" primary onClick={upsertThemeColors}>
             Save
           </Button>
         </div>

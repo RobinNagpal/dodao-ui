@@ -1,4 +1,4 @@
-import { ThemeValue, themes } from '@/app/themes';
+import { CssTheme, ThemeKey, ThemeValue, themes } from '@/app/themes';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import UpdateThemeModal from '@/components/spaces/Edit/Theme/UpdateThemeModal';
 import { ProjectByteCollectionFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
@@ -11,8 +11,10 @@ export interface SpaceDetailsProps {
 
 export default function SpaceThemeDetails({ space }: SpaceDetailsProps) {
   const [showThemeUpdateModal, setShowThemeUpdateModal] = React.useState(false);
+  const skin = space?.skin;
 
-  const themeColors = space.themeColors || themes.GlobalTheme;
+  const theme: ThemeKey = space?.skin && Object.keys(CssTheme).includes(skin || '') ? (skin as CssTheme) : CssTheme.GlobalTheme;
+  const themeColors = space?.themeColors || themes[theme];
   const themeColorKeys = Object.keys(themeColors) as (keyof ThemeValue)[];
 
   const threeDotItems = [
