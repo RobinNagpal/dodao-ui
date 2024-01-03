@@ -13,6 +13,7 @@ const nextConfig = {
   },
   env: {
     V2_API_SERVER_URL: process.env.V2_API_SERVER_URL,
+    DODAO_SUPERADMINS: process.env.DODAO_SUPERADMINS
   },
 };
 
