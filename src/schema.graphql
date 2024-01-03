@@ -1513,13 +1513,13 @@ type SummarizedGitCourseTopic {
 }
 
 type ThemeColors {
-  bgColor: String
-  blockBg: String
-  borderColor: String
-  headingColor: String
-  linkColor: String
-  primaryColor: String
-  textColor: String
+  bgColor: String!
+  blockBg: String!
+  borderColor: String!
+  headingColor: String!
+  linkColor: String!
+  primaryColor: String!
+  textColor: String!
 }
 
 input ThemeColorsInput {

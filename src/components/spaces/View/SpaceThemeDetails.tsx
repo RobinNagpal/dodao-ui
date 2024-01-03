@@ -1,12 +1,12 @@
 import { CssTheme, ThemeKey, ThemeValue, themes } from '@/app/themes';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
-import UpdateThemeModal from '@/components/spaces/Edit/Theme/UpdateThemeModal';
-import { ProjectByteCollectionFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import UpdateThemeModal, { ColorLabels, ThemeColorsKeys } from '@/components/spaces/Edit/Theme/UpdateThemeModal';
+import { ProjectByteCollectionFragment, SpaceWithIntegrationsFragment, ThemeColors } from '@/graphql/generated/generated-types';
 import ByteCollectionsCard from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCollectionsCard';
 import React from 'react';
 
 export interface SpaceDetailsProps {
-  space: SpaceWithIntegrationsFragment & { themeColors?: ThemeValue };
+  space: SpaceWithIntegrationsFragment;
 }
 
 export default function SpaceThemeDetails({ space }: SpaceDetailsProps) {
@@ -14,15 +14,12 @@ export default function SpaceThemeDetails({ space }: SpaceDetailsProps) {
   const skin = space?.skin;
 
   const theme: ThemeKey = space?.skin && Object.keys(CssTheme).includes(skin || '') ? (skin as CssTheme) : CssTheme.GlobalTheme;
-  const themeColors = space?.themeColors || themes[theme];
-  const themeColorKeys = Object.keys(themeColors) as (keyof ThemeValue)[];
+  const themeColors: ThemeColors = space?.themeColors || themes[theme];
 
   const threeDotItems = [
     { label: 'Reload Repo', key: 'reloadRepo' },
     { label: 'Edit', key: 'edit' },
   ];
-
-  const colorLabels = ['Primary Color', 'Background Color', 'Text Color', 'Link Color', 'Heading Color', 'Border Color', 'Block Color'];
 
   const selectFromThreedotDropdown = async (e: string) => {
     if (e === 'edit') {
@@ -39,7 +36,7 @@ export default function SpaceThemeDetails({ space }: SpaceDetailsProps) {
     order: 100,
     bytes: [
       {
-        byteId: 'centralized-vs-decentralized-exchange-uniswap',
+        byteId: 'centralized-vs-decentralized-exchange-uniswap_1',
         name: 'Centralized vs Decentralized Exchange',
         content: 'Centralized vs Decentralized Exchanges and AMMs',
         __typename: 'ByteCollectionByte',
@@ -51,7 +48,7 @@ export default function SpaceThemeDetails({ space }: SpaceDetailsProps) {
         __typename: 'ByteCollectionByte',
       },
       {
-        byteId: 'centralized-vs-decentralized-exchange-uniswap',
+        byteId: 'centralized-vs-decentralized-exchange-uniswap_2',
         name: 'Centralized vs Decentralized Exchange',
         content: 'Centralized vs Decentralized Exchanges and AMMs',
         __typename: 'ByteCollectionByte',
@@ -73,36 +70,29 @@ export default function SpaceThemeDetails({ space }: SpaceDetailsProps) {
       <div className={'mt-4'}>
         <div className="flex flex-col md:flex-row flex-wrap">
           <div className="w-full md:w-1/2 mt-4">
-            {colorLabels.map((label, index) => {
-              const colorKey = themeColorKeys[index + 1];
-              const colorValue = themeColors[colorKey] || '';
+            {Object.entries(ColorLabels).map((e) => {
+              const [colorKey, label] = e as [ThemeColorsKeys, string];
+              const colorValue = themeColors[colorKey];
               return (
-                <div key={index} className="flex justify-between items-center mb-2">
+                <div key={colorKey} className="flex justify-between mb-2">
                   <label className="ml-7">{label}</label>
-                  <input type="color" className="w-12 h-8 mr-8" value={colorValue} disabled />
+                  <div className="grid grid-cols-2	">
+                    <input type="color" className="w-12 h-8 mr-8" value={colorValue} disabled />
+                    <div>{colorValue}</div>
+                  </div>
                 </div>
               );
             })}
           </div>
 
           <div className="w-full md:mt-0 mt-4 md:w-1/2 p-2 md:p-4">
-            <ByteCollectionsCard
-              key={byteCollection.id}
-              byteCollection={byteCollection}
-              onSelectByte={() => {}}
-              baseByteCollectionsEditUrl={'TestUrl'}
-              isEditingAllowed={false}
-            />
+            <ByteCollectionsCard byteCollection={byteCollection} onSelectByte={() => {}} baseByteCollectionsEditUrl={'TestUrl'} isEditingAllowed={false} />
           </div>
         </div>
       </div>
-      <UpdateThemeModal
-        byteCollection={byteCollection}
-        colorLabels={colorLabels}
-        space={space}
-        open={showThemeUpdateModal}
-        onClose={() => setShowThemeUpdateModal(false)}
-      />
+      {showThemeUpdateModal && (
+        <UpdateThemeModal byteCollection={byteCollection} space={space} open={showThemeUpdateModal} onClose={() => setShowThemeUpdateModal(false)} />
+      )}
     </div>
   );
 }
