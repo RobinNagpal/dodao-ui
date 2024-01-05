@@ -5,7 +5,6 @@ import ByteStepper from '@/components/bytes/View/ByteStepper';
 import { useGenericViewByte } from '@/components/bytes/View/useGenericViewByte';
 import { EllipsisDropdownItem } from '@/components/core/dropdowns/EllipsisDropdown';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
-import PageLoading from '@/components/core/loaders/PageLoading';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import { SpaceWithIntegrationsFragment, useQueryByteDetailsQuery } from '@/graphql/generated/generated-types';
 import { TidbitShareSteps } from '@/types/deprecated/models/enums';
@@ -13,6 +12,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import styles from './ByteView.module.scss';
+import TidbitItemLoader from '@/components/core/loaders/TidbitItemLoader';
 
 const ByteView = ({ params, space }: { params: { byteIdAndStep: string[] }; space: SpaceWithIntegrationsFragment }) => {
   const { byteIdAndStep } = params;
@@ -84,7 +84,7 @@ const ByteView = ({ params, space }: { params: { byteIdAndStep: string[] }; spac
               </div>
             )}
 
-            {!byte && <PageLoading />}
+            {!byte && <TidbitItemLoader />}
           </div>
         </div>
       </div>
