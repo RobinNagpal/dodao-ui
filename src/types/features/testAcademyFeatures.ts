@@ -16,6 +16,13 @@ export const testAcademyFeatures: FeatureItem[] = [
     },
   },
   {
+    featureName: FeatureName.ByteCollections,
+    enabled: true,
+    details: {
+      priority: 75,
+    },
+  },
+  {
     featureName: FeatureName.Simulations,
     enabled: true,
     details: {
