@@ -1,7 +1,7 @@
 import Block from '@/components/app/Block';
 import ByteSummaryCard, { ByteSummaryType } from '@/components/bytes/Summary/ByteSummaryCard';
 import NoByte from '@/components/bytes/Summary/NoBytes';
-import { Grid4Cols } from '@/components/core/grids/Grid4Colst';
+import { Grid4Cols } from '@/components/core/grids/Grid4Cols';
 import TidbitsSkeleton from '@/components/core/loaders/TidbitLoader';
 import { ByteSummaryFragment, ProjectByteFragment } from '@/graphql/generated/generated-types';
 import React from 'react';

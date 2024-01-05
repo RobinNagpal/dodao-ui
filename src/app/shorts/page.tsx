@@ -2,6 +2,7 @@
 
 import withSpace, { SpaceProps } from '@/app/withSpace';
 import Block from '@/components/app/Block';
+import Grid5Cols from '@/components/core/grids/Grid5Cols';
 import CardLoader from '@/components/core/loaders/CardLoader';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import EditShortVideoModal from '@/components/shortVideos/Edit/EditShortVideoModal';
@@ -22,7 +23,9 @@ const MainShortsComponent = ({ space }: SpaceProps) => {
     return (
       <PageWrapper>
         <Block>
-          <CardLoader numberOfCards={3} />
+          <Grid5Cols>
+            <CardLoader numberOfCards={3} />
+          </Grid5Cols>
         </Block>
       </PageWrapper>
     );

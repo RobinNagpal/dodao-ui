@@ -1,4 +1,4 @@
-import { Grid4Cols } from '@/components/core/grids/Grid4Colst';
+import { Grid4Cols } from '@/components/core/grids/Grid4Cols';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import ShowDraftsToggle from '@/components/guides/List/ShowDraftsToggle';
 import GuideSummaryCard from '@/components/guides/Summary/GuideSummaryCard';

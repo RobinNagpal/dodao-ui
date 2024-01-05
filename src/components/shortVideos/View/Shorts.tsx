@@ -1,5 +1,6 @@
 'use client';
 
+import Grid5Cols from '@/components/core/grids/Grid5Cols';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import { ProjectShortVideo, ShortVideo } from '@/graphql/generated/generated-types';
 import styled from 'styled-components';
@@ -31,11 +32,11 @@ interface ShortsUIProps {
 export default function Shorts({ shortVideos, onThumbnailClick }: ShortsUIProps) {
   return (
     <PageWrapper>
-      <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-1">
+      <Grid5Cols>
         {shortVideos.map((video, index) => (
           <ShortsThumbnail key={index} shortVideo={video} onClick={() => onThumbnailClick(index)} />
         ))}
-      </div>
+      </Grid5Cols>
     </PageWrapper>
   );
 }
