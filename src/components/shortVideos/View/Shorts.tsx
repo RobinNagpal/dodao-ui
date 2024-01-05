@@ -2,6 +2,7 @@
 
 import PageWrapper from '@/components/core/page/PageWrapper';
 import { ProjectShortVideo, ShortVideo } from '@/graphql/generated/generated-types';
+import { useState } from 'react';
 import styled from 'styled-components';
 
 const ImageWrapper = styled.div`
@@ -10,11 +11,13 @@ const ImageWrapper = styled.div`
 
 function ShortsThumbnail({ shortVideo, onClick }: { shortVideo: ShortVideo | ProjectShortVideo; onClick: () => void }) {
   const { thumbnail, title } = shortVideo;
+  const [isLoading, setIsLoading] = useState(true);
   return (
     <button onClick={onClick} className="p-2 min-w-0 flex">
       <ImageWrapper>
+        {isLoading && <div className="loading-image">Loading...</div>}
         <div>
-          <img src={thumbnail} alt={title} className="rounded-lg" />
+          <img src={thumbnail} onLoad={() => setIsLoading(false)} alt={title} className="rounded-lg" />
         </div>
         <div className="title-wrapper">
           <h1>{title}</h1>
