@@ -1146,6 +1146,7 @@ type Project {
   adminUsernames: [String!]!
   adminUsernamesV1: [UsernameAndName!]!
   admins: [String!]!
+  archive: Boolean
   cardThumbnail: String
   creator: String!
   details: String!
@@ -1162,6 +1163,7 @@ type Project {
 
 type ProjectByte {
   admins: [String!]!
+  archive: Boolean
   content: String!
   created: String!
   id: String!
@@ -1173,6 +1175,7 @@ type ProjectByte {
 }
 
 type ProjectByteCollection {
+  archive: Boolean
   byteIds: [String!]!
   bytes: [ByteCollectionByte!]!
   description: String!
@@ -1183,6 +1186,7 @@ type ProjectByteCollection {
 }
 
 type ProjectShortVideo {
+  archive: Boolean
   createdAt: String!
   description: String!
   id: ID!
@@ -1194,6 +1198,7 @@ type ProjectShortVideo {
 }
 
 input ProjectShortVideoInput {
+  archive: Boolean
   description: String!
   id: ID!
   priority: Int!
@@ -1716,6 +1721,7 @@ input UpsertGuideRatingInput {
 }
 
 input UpsertProjectByteCollectionInput {
+  archive: Boolean
   byteIds: [String!]!
   description: String!
   id: String!
@@ -1727,6 +1733,7 @@ input UpsertProjectByteCollectionInput {
 
 input UpsertProjectByteInput {
   admins: [String!]!
+  archive: Boolean
   content: String!
   created: String!
   id: String!
@@ -1741,6 +1748,7 @@ input UpsertProjectInput {
   adminUsernames: [String!]!
   adminUsernamesV1: [UsernameAndNameInput!]!
   admins: [String!]!
+  archive: Boolean
   cardThumbnail: String
   details: String!
   discord: String

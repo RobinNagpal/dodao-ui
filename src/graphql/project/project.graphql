@@ -17,6 +17,7 @@ fragment Project on Project {
   website
   type
   cardThumbnail
+  archive
 }
 
 fragment ProjectByte on ProjectByte {
@@ -59,6 +60,7 @@ fragment ProjectByte on ProjectByte {
     uuid
   }
   tags
+  archive
 }
 
 fragment ProjectShortVideo on ProjectShortVideo {
@@ -70,6 +72,7 @@ fragment ProjectShortVideo on ProjectShortVideo {
   priority
   createdAt
   updatedAt
+  archive
 }
 
 fragment ProjectByteCollection on ProjectByteCollection {
@@ -84,6 +87,7 @@ fragment ProjectByteCollection on ProjectByteCollection {
   name
   order
   status
+  archive
 }
 
 query Projects($type: String) {
