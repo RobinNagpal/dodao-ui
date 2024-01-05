@@ -11,6 +11,7 @@ import { projectTypeSelect } from '@/utils/ui/statuses';
 import union from 'lodash/union';
 import React, { useEffect, useState } from 'react';
 import useEditProject from './useEditProject';
+import UpsertKeyValueBadgeInput from '@/components/core/badge/UpsertKeyValueBadgeInput';
 
 export default function UpsertProjectModal(props: { spaceId: string; project?: Project; open: boolean; onClose: () => void }) {
   const editProjectHelper = useEditProject(props.project?.id);
@@ -74,6 +75,25 @@ export default function UpsertProjectModal(props: { spaceId: string; project?: P
               setProjectField(
                 'adminUsernames',
                 project.adminUsernames.filter((domain) => domain !== d)
+              );
+            }}
+          />
+
+          <UpsertKeyValueBadgeInput
+            label={'Admins By Usernames & Names'}
+            badges={project.adminUsernamesV1.map((d) => ({ key: d.username, value: d.nameOfTheUser }))}
+            onAdd={(admin) => {
+              const string = admin.split(',');
+              const username = string[0].trim();
+              const nameOfTheUser = string.length > 1 ? string[1].trim() : '';
+              const newAdmin = { username, nameOfTheUser };
+              setProjectField('adminUsernamesV1', union(project.adminUsernamesV1, [newAdmin]));
+            }}
+            labelFn={(badge) => `${badge.key} - ${badge.value}`}
+            onRemove={(d) => {
+              setProjectField(
+                'adminUsernamesV1',
+                project.adminUsernamesV1.filter((domain) => domain.username !== d)
               );
             }}
           />
