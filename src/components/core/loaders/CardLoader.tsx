@@ -27,15 +27,11 @@ export default function CardLoader({ numberOfCards = 3, type = CardLoaderType.Ca
           </div>
         ))}
       {type === CardLoaderType.CardWithThumbnalAndName &&
-        skeletonArray.map((item, index) => (
-          <div key={index} className="flex flex-col w-full bg-white shadow-lg rounded-lg overflow-hidden relative">
-            <div className={'w-full h-[200px] ' + styles.shine}></div>
-            <div className="p-4 text-center">
-              <h2 className="shine h-6 w-full mb-2 rounded"></h2>
-              <p className="shine h-16 rounded"></p>
-            </div>
-            <div className="flex flex-wrap justify-end absolute top-2 left-2">
-              <div className="shine w-20 h-5 rounded mb-1"></div>
+        skeletonArray.map((index) => (
+          <div key={index} className="max-w-xs rounded overflow-hidden shadow-lg bg-white p-4">
+            <div className={`${styles.shine} w-full h-56 mb-4`}></div>
+            <div className={`w-full flex justify-center`}>
+              <div className={`${styles.shine} h-6 w-1/2`}></div>
             </div>
           </div>
         ))}
