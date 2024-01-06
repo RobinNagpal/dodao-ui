@@ -3,7 +3,7 @@
 import withSpace, { SpaceProps } from '@/app/withSpace';
 import Block from '@/components/app/Block';
 import Grid5Cols from '@/components/core/grids/Grid5Cols';
-import CardLoader from '@/components/core/loaders/CardLoader';
+import CardLoader, { CardLoaderType } from '@/components/core/loaders/CardLoader';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import EditShortVideoModal from '@/components/shortVideos/Edit/EditShortVideoModal';
 import Shorts from '@/components/shortVideos/View/Shorts';
@@ -24,7 +24,7 @@ const MainShortsComponent = ({ space }: SpaceProps) => {
       <PageWrapper>
         <Block>
           <Grid5Cols>
-            <CardLoader numberOfCards={3} />
+            <CardLoader type={CardLoaderType.CardWithThumbnalAndName} numberOfCards={2} />
           </Grid5Cols>
         </Block>
       </PageWrapper>

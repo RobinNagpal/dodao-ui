@@ -1,7 +1,5 @@
-import { Grid4Cols } from '@/components/core/grids/Grid4Cols';
 import React from 'react';
 import styles from './CardLoader.module.scss';
-
 export enum CardLoaderType {
   CardWithThumbnalAndName = 'CardWithThumbnalAndName',
   CardWithSections = 'CardWithSections',
@@ -16,11 +14,16 @@ export default function CardLoader({ numberOfCards = 3, type = CardLoaderType.Ca
   return (
     <>
       {type === CardLoaderType.CardWithSections &&
-        skeletonArray.map((item, index) => (
-          <div key={index} className="flex flex-col w-full bg-white shadow-lg rounded-lg overflow-hidden relative">
-            <div className="w-2/12 ml-4 bg-gray-300 rounded h-10"></div>
-            <div className="w-2/12 ml-4 bg-gray-300 rounded h-10"></div>
-            <div className="w-2/12 ml-4 bg-gray-300 rounded h-10"></div>
+        skeletonArray.map(() => (
+          <div className="flex flex-col bg-white text-white p-4 rounded-lg rounded-lg">
+            <div className={'h-4 w-full mb-2 ' + styles.shine}></div>
+            <div className={'h-4 w-4/5 mb-4 ' + styles.shine}></div>
+            {[...Array(3)].map((_, index) => (
+              <div key={index} className="flex items-center mb-2">
+                <div className={'h-4 w-8 mr-2 ' + styles.shine}></div>
+                <div className={'h-4 w-2/5 ' + styles.shine}></div>
+              </div>
+            ))}
           </div>
         ))}
       {type === CardLoaderType.CardWithThumbnalAndName &&
