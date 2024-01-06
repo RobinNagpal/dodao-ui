@@ -14,8 +14,8 @@ export default function CardLoader({ numberOfCards = 3, type = CardLoaderType.Ca
   return (
     <>
       {type === CardLoaderType.CardWithSections &&
-        skeletonArray.map(() => (
-          <div className="flex flex-col bg-white text-white p-4 rounded-lg rounded-lg">
+        skeletonArray.map((index) => (
+          <div key={index} className="flex flex-col bg-white text-white p-4 rounded-lg rounded-lg">
             <div className={'h-4 w-full mb-2 ' + styles.shine}></div>
             <div className={'h-4 w-4/5 mb-4 ' + styles.shine}></div>
             {[...Array(3)].map((_, index) => (
