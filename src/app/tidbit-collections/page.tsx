@@ -17,11 +17,11 @@ function ByteCollections({ space }: SpaceProps) {
         byteCollections={data?.byteCollections}
         loadingData={loadingData}
         space={space}
-        baseByteCollectionsEditUrl={'/tidbit-collections/edit'}
         fetchByteFn={async (byteId: string) => {
           const response = await refetch({ byteId: byteId, spaceId: space.id });
           return response.data.byte;
         }}
+        byteCollectionType={'byteCollection'}
       />
     </PageWrapper>
   );

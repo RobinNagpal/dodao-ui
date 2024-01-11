@@ -19,6 +19,7 @@ export default function useEditProject(projectId?: string): UseEditProjectHelper
   const { showNotification } = useNotificationContext();
   const [project, setProject] = useState<ProjectEditType>({
     details: '',
+    excerpt: '',
     discord: undefined,
     docs: undefined,
     github: undefined,
@@ -53,6 +54,7 @@ export default function useEditProject(projectId?: string): UseEditProjectHelper
           details: projectResponse.details,
           discord: projectResponse.discord,
           docs: projectResponse.docs,
+          excerpt: projectResponse.excerpt,
           github: projectResponse.github,
           telegram: projectResponse.telegram,
           type: projectResponse.type,
@@ -63,6 +65,7 @@ export default function useEditProject(projectId?: string): UseEditProjectHelper
           logo: projectResponse.logo,
           name: projectResponse.name,
           adminUsernamesV1: projectResponse.adminUsernamesV1 || [],
+          cardThumbnail: projectResponse.cardThumbnail,
         });
       }
     }
@@ -78,6 +81,7 @@ export default function useEditProject(projectId?: string): UseEditProjectHelper
       details: project.details,
       discord: project.discord,
       docs: project.docs,
+      excerpt: project.excerpt,
       github: project.github,
       telegram: project.telegram,
       type: project.type,
@@ -87,6 +91,7 @@ export default function useEditProject(projectId?: string): UseEditProjectHelper
       logo: project.logo,
       name: project.name,
       adminUsernamesV1: project.adminUsernamesV1 || [],
+      cardThumbnail: project.cardThumbnail,
     };
   }
 
@@ -97,6 +102,7 @@ export default function useEditProject(projectId?: string): UseEditProjectHelper
         variables: {
           input: getProjectInput(slugify(project.name)),
         },
+        refetchQueries: ['Projects'],
       });
 
       if (response.data) {

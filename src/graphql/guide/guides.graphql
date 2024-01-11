@@ -1,3 +1,24 @@
+fragment GuideSummary on Guide {
+  id
+  authors
+  name
+  categories
+  content
+  createdAt
+  guideSource
+  guideType
+  publishStatus
+  thumbnail
+  uuid
+  priority
+}
+
+query GuidesQuery($space: String!) {
+  guides(spaceId: $space) {
+    ...GuideSummary
+  }
+}
+
 fragment GuideQuestion on GuideQuestion {
   answerKeys
   choices {

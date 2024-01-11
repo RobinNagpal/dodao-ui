@@ -20,14 +20,14 @@ export default function ByteCollectionsGrid({
   loadingData,
   space,
   project,
-  baseByteCollectionsEditUrl,
   fetchByteFn,
+  byteCollectionType,
 }: {
   loadingData: boolean;
   byteCollections?: ByteCollectionFragment[] | ProjectByteCollectionFragment[];
   space: SpaceWithIntegrationsFragment;
   project?: ProjectFragment;
-  baseByteCollectionsEditUrl: string;
+  byteCollectionType: 'byteCollection' | 'projectByteCollection';
   fetchByteFn: (byteId: string) => Promise<ByteDetailsFragment | ProjectByteFragment>;
 }) {
   const [selectedByteId, setSelectedByteId] = React.useState<string | null>(null);
@@ -42,7 +42,13 @@ export default function ByteCollectionsGrid({
       {!!byteCollections?.length && (
         <Grid2Cols>
           {byteCollections?.map((byteCollection, i) => (
-            <ByteCollectionsCard key={i} byteCollection={byteCollection} onSelectByte={onSelectByte} baseByteCollectionsEditUrl={baseByteCollectionsEditUrl} />
+            <ByteCollectionsCard
+              key={i}
+              byteCollection={byteCollection}
+              onSelectByte={onSelectByte}
+              project={project}
+              byteCollectionType={byteCollectionType}
+            />
           ))}
         </Grid2Cols>
       )}

@@ -37,11 +37,19 @@ export default function UpsertProjectModal(props: { spaceId: string; project?: P
 
           <Input label="Id" modelValue={project?.id} onUpdate={(value) => setProjectField('id', value?.toString() || '')} />
           <Input label="Name" modelValue={project?.name} onUpdate={(value) => setProjectField('name', value?.toString() || '')} />
+
+          <Input
+            modelValue={project?.excerpt || ''}
+            onUpdate={(v) => setProjectField('excerpt', v?.toString() || '')}
+            label={'One line description'}
+            required
+          />
+
           <UploadInput
             label="Logo"
             error={inputError('logo')}
             imageType="AcademyLogo"
-            spaceId={project?.id || 'new-project'}
+            spaceId={props.spaceId}
             modelValue={project?.logo}
             objectId={(project?.name && slugify(project?.name)) || project?.id || 'new-project'}
             onInput={(value) => setProjectField('logo', value)}

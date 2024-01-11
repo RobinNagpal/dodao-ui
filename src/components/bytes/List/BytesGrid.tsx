@@ -3,17 +3,21 @@ import ByteSummaryCard, { ByteSummaryType } from '@/components/bytes/Summary/Byt
 import NoByte from '@/components/bytes/Summary/NoBytes';
 import { Grid4Cols } from '@/components/core/grids/Grid4Cols';
 import TidbitsSkeleton from '@/components/core/loaders/TidbitLoader';
-import { ByteSummaryFragment, ProjectByteFragment } from '@/graphql/generated/generated-types';
+import { ByteSummaryFragment, ProjectByteFragment, ProjectFragment } from '@/graphql/generated/generated-types';
 import React from 'react';
 
 export default function BytesGrid({
   loading,
   bytes,
   baseByteViewUrl,
+  byteType,
+  project,
 }: {
   loading: boolean;
   bytes?: ByteSummaryFragment[] | ProjectByteFragment[];
   baseByteViewUrl: string;
+  byteType: 'byte' | 'projectByte';
+  project?: ProjectFragment;
 }) {
   return (
     <>
@@ -27,7 +31,7 @@ export default function BytesGrid({
           {!!bytes?.length && (
             <Grid4Cols>
               {bytes?.map((byte, i) => (
-                <ByteSummaryCard key={i} byte={byte} baseByteViewUrl={baseByteViewUrl} />
+                <ByteSummaryCard key={i} byte={byte} baseByteViewUrl={baseByteViewUrl} byteType={byteType} project={project} />
               ))}
             </Grid4Cols>
           )}
