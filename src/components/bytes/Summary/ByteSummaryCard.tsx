@@ -1,6 +1,6 @@
+import ByteCardAdminDropdown from '@/components/bytes/List/ByteCardAdminDropdown';
 import Card from '@/components/core/card/Card';
-import { ProjectByteFragment, QueryBytesQuery } from '@/graphql/generated/generated-types';
-import { VisibilityEnum } from '@/types/deprecated/models/enums';
+import { ProjectByteFragment, ProjectFragment, QueryBytesQuery } from '@/graphql/generated/generated-types';
 import { shorten } from '@/utils/utils';
 import Link from 'next/link';
 import React from 'react';
@@ -9,13 +9,18 @@ export type ByteSummaryType = QueryBytesQuery['bytes'][0];
 
 interface ByteSummaryCardProps {
   byte: ByteSummaryType | ProjectByteFragment;
+  byteType: 'byte' | 'projectByte';
   baseByteViewUrl: string;
+  project?: ProjectFragment;
 }
 
-export default function ByteSummaryCard({ byte, baseByteViewUrl }: ByteSummaryCardProps) {
+export default function ByteSummaryCard({ byte, byteType, baseByteViewUrl, project }: ByteSummaryCardProps) {
   return (
     <Card>
       <Link href={`${baseByteViewUrl}/${byte.id}/0`} className="card blog-card w-inline-block h-full w-full">
+        <div className="w-full flex justify-end">
+          <ByteCardAdminDropdown byte={byte} byteType={byteType} project={project} />
+        </div>
         <div>
           <div className="p-4 text-center">
             <h2 className="text-base font-bold whitespace-nowrap overflow-hidden text-ellipsis">{shorten(byte.name, 32)}</h2>

@@ -1,30 +1,24 @@
 import DeleteConfirmationModal from '@/components/app/Modal/DeleteConfirmationModal';
+import { ByteSummaryType } from '@/components/bytes/Summary/ByteSummaryCard';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import { useNotificationContext } from '@/contexts/NotificationContext';
-import {
-  ByteCollectionFragment,
-  ProjectByteCollectionFragment,
-  ProjectFragment,
-  useUpdateArchivedStatusOfProjectByteCollectionMutation,
-} from '@/graphql/generated/generated-types';
+import { ProjectByteFragment, ProjectFragment, useUpdateArchivedStatusOfProjectByteMutation } from '@/graphql/generated/generated-types';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
-interface ByteCollectionCardAdminDropdownProps {
-  byteCollection: ByteCollectionFragment | ProjectByteCollectionFragment;
-  byteCollectionType: 'byteCollection' | 'projectByteCollection';
+interface ByteCardAdminDropdownProps {
+  byte: ByteSummaryType | ProjectByteFragment;
+  byteType: 'byte' | 'projectByte';
   project?: ProjectFragment;
 }
-export default function ByteCollectionCardAdminDropdown({ byteCollection, byteCollectionType, project }: ByteCollectionCardAdminDropdownProps) {
+export default function ByteCardAdminDropdown({ byte, byteType, project }: ByteCardAdminDropdownProps) {
   const router = useRouter();
   const { showNotification } = useNotificationContext();
   const [showDeleteModal, setShowDeleteModal] = React.useState<boolean>(false);
-
-  const baseByteCollectionsEditUrl =
-    byteCollectionType === 'projectByteCollection' ? `/projects/edit/${project?.id}/tidbit-collections` : '/tidbit-collections/edit';
-  const getThreeDotItems = (byteCollection: ByteCollectionFragment | ProjectByteCollectionFragment) => {
-    if (byteCollection.hasOwnProperty('archived')) {
-      if ((byteCollection as ProjectByteCollectionFragment).archived) {
+  const baseBytesEditUrl = byteType === 'projectByte' ? `/projects/edit/${project?.id}/tidbits` : '/tidbits/edit';
+  const getThreeDotItems = (byte: ByteSummaryType | ProjectByteFragment) => {
+    if (byte.hasOwnProperty('archived')) {
+      if ((byte as ProjectByteFragment).archived) {
         return [
           { label: 'Edit', key: 'edit' },
           { label: 'Unarchive', key: 'unarchive' },
@@ -39,22 +33,22 @@ export default function ByteCollectionCardAdminDropdown({ byteCollection, byteCo
     return [{ label: 'Edit', key: 'edit' }];
   };
 
-  const [updateArchivedStatusOfProjectByteCollectionMutation] = useUpdateArchivedStatusOfProjectByteCollectionMutation();
+  const [updateArchivedStatusOfProjectByteMutation] = useUpdateArchivedStatusOfProjectByteMutation();
 
   const onArchivedStatusChange = async (archived: boolean) => {
     try {
-      await updateArchivedStatusOfProjectByteCollectionMutation({
+      await updateArchivedStatusOfProjectByteMutation({
         variables: {
           projectId: project!.id,
-          byteCollectionId: byteCollection.id,
+          projectByteId: byte.id,
           archived: archived,
         },
-        refetchQueries: ['ProjectByteCollections'],
+        refetchQueries: ['ProjectBytes'],
       });
       if (archived) {
-        showNotification({ message: 'ByteCollection archived successfully', type: 'success' });
+        showNotification({ message: 'Byte archived successfully', type: 'success' });
       } else {
-        showNotification({ message: 'ByteCollection un-archived successfully', type: 'success' });
+        showNotification({ message: 'Byte un-archived successfully', type: 'success' });
       }
     } catch (error) {
       showNotification({ message: 'Something went wrong', type: 'error' });
@@ -64,10 +58,10 @@ export default function ByteCollectionCardAdminDropdown({ byteCollection, byteCo
   return (
     <>
       <PrivateEllipsisDropdown
-        items={getThreeDotItems(byteCollection)}
+        items={getThreeDotItems(byte)}
         onSelect={async (key) => {
           if (key === 'edit') {
-            router.push(`${baseByteCollectionsEditUrl}/${byteCollection.id}`);
+            router.push(`${baseBytesEditUrl}/${byte.id}`);
           }
           if (key === 'archive') {
             setShowDeleteModal(true);
@@ -79,7 +73,7 @@ export default function ByteCollectionCardAdminDropdown({ byteCollection, byteCo
       />
       {showDeleteModal && (
         <DeleteConfirmationModal
-          title={'Delete Byte Collection'}
+          title={'Delete Byte '}
           open={showDeleteModal}
           onClose={() => setShowDeleteModal(false)}
           onDelete={() => {
