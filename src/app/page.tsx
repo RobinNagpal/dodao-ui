@@ -24,7 +24,6 @@ async function Home(props: { searchParams: { [key: string]: string | string[] | 
   if (space?.id === TOP_CRYPTO_PROJECTS_SPACE_ID) {
     const projects = await getApiResponse<ProjectFragment[]>(space, 'projects');
     const showArchived = props.searchParams?.['showArchived'] === 'true';
-    console.log('searchParams', props.searchParams);
     return <ListProjects space={space} projects={projects} showArchived={showArchived} />;
   }
 
