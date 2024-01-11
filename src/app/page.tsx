@@ -12,7 +12,7 @@ import { headers } from 'next/headers';
 
 import React from 'react';
 
-async function Home() {
+async function Home(props: { searchParams: { [key: string]: string | string[] | undefined } }) {
   const headersList = headers();
   const host = headersList.get('host')?.split(':')?.[0];
 
@@ -23,7 +23,8 @@ async function Home() {
 
   if (space?.id === TOP_CRYPTO_PROJECTS_SPACE_ID) {
     const projects = await getApiResponse<ProjectFragment[]>(space, 'projects');
-    return <ListProjects space={space} projects={projects} />;
+    const showArchived = props.searchParams?.['showArchived'] === 'true';
+    return <ListProjects space={space} projects={projects} showArchived={showArchived} />;
   }
 
   if (host === 'dodao-localhost.io' || host === 'academy.dodao.io' || host === 'dodao.io') {
