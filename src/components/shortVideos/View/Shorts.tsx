@@ -4,7 +4,7 @@ import Grid5Cols from '@/components/core/grids/Grid5Cols';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import { ProjectShortVideo, ShortVideo } from '@/graphql/generated/generated-types';
 import Image from 'next/image';
-import styles from './shorts.module.scss';
+import styles from './Shorts.module.scss';
 
 function ShortsThumbnail({ shortVideo, onClick }: { shortVideo: ShortVideo | ProjectShortVideo; onClick: () => void }) {
   const { thumbnail, title } = shortVideo;
