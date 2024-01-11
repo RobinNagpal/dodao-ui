@@ -5,6 +5,7 @@ import GuideSummaryCard from '@/components/guides/Summary/GuideSummaryCard';
 import NoGuide from '@/components/guides/Summary/NoGuides';
 import { GuideSummaryFragment } from '@/graphql/generated/generated-types';
 import { PublishStatus } from '@/types/deprecated/models/enums';
+import getApiResponse from '@/utils/api/getApiResponse';
 import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
 import sortBy from 'lodash/sortBy';
 import React from 'react';
@@ -12,8 +13,7 @@ import React from 'react';
 async function Guides({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined } }) {
   const space = (await getSpaceServerSide())!;
 
-  const response = await fetch(process.env.V2_API_SERVER_URL!.replace('/graphql', '') + `/${space.id}/guides`);
-  const allGuides = (await response.json()) as GuideSummaryFragment[];
+  const allGuides = await getApiResponse<GuideSummaryFragment[]>(space, 'guides');
 
   const showDrafts = searchParams?.['showDrafts'] === 'true';
 

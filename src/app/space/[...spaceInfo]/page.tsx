@@ -3,7 +3,6 @@
 import SidebarLayout from '@/app/SidebarLayout';
 import WithSpace from '@/app/withSpace';
 import PageWrapper from '@/components/core/page/PageWrapper';
-import ListProjects from '@/components/projects/ListProjects';
 import GenerateImage from '@/components/spaces/Image/GenerateImage';
 import ListSpaces from '@/components/spaces/ListSpaces';
 import AllLoaders from '@/components/spaces/Loaders/AllLoaders';
@@ -14,16 +13,15 @@ import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-typ
 import classNames from '@/utils/classNames';
 import BuildingOffice2Icon from '@heroicons/react/24/outline/BuildingOffice2Icon';
 import CircleStackIcon from '@heroicons/react/24/outline/CircleStackIcon';
-import GlobeAltIcon from '@heroicons/react/24/outline/GlobeAltIcon';
 import HomeIcon from '@heroicons/react/24/outline/HomeIcon';
-import PhotoIcon from '@heroicons/react/24/solid/PhotoIcon';
+import AdjustmentsHorizontalIcon from '@heroicons/react/24/solid/AdjustmentsHorizontalIcon';
 import ArrowUturnLeftIcon from '@heroicons/react/24/solid/ArrowUturnLeftIcon';
 import ChatBubbleLeftIcon from '@heroicons/react/24/solid/ChatBubbleLeftIcon';
-import TableCellsIcon from '@heroicons/react/24/solid/TableCellsIcon';
 import CodeBracketIcon from '@heroicons/react/24/solid/CodeBracketIcon';
 import ComputerDesktopIcon from '@heroicons/react/24/solid/ComputerDesktopIcon';
+import PhotoIcon from '@heroicons/react/24/solid/PhotoIcon';
 import QuestionMarkCircleIcon from '@heroicons/react/24/solid/QuestionMarkCircleIcon';
-import AdjustmentsHorizontalIcon from '@heroicons/react/24/solid/AdjustmentsHorizontalIcon';
+import TableCellsIcon from '@heroicons/react/24/solid/TableCellsIcon';
 import Link from 'next/link';
 
 interface NavigationElementType {
@@ -113,7 +111,6 @@ const getNavigation = (space: SpaceWithIntegrationsFragment, subView?: string, s
       current: subView === ManageSpaceSubviews.Chatbot,
     },
     { name: 'Spaces', href: '/space/manage/' + ManageSpaceSubviews.SpacesList, icon: BuildingOffice2Icon, current: subView === ManageSpaceSubviews.SpacesList },
-    { name: 'Projects', href: '/space/manage/' + ManageSpaceSubviews.ProjectList, icon: GlobeAltIcon, current: subView === ManageSpaceSubviews.ProjectList },
   ];
 
   return navigation;
@@ -136,9 +133,6 @@ function GetSubview(props: { spaceInfo: string[]; space: SpaceWithIntegrationsFr
     return <ListSpaces />;
   }
 
-  if (subView === ManageSpaceSubviews.ProjectList) {
-    return <ListProjects space={props.space} />;
-  }
   if (subView === ManageSpaceSubviews.ViewSpace) {
     return <SpaceDetails spaceId={entityId} />;
   }

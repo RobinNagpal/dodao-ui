@@ -4,7 +4,9 @@ import { TOP_CRYPTO_PROJECTS_SPACE_ID } from '@/chatbot/utils/app/constants';
 import DefaultHome from '@/components/home/DefaultHome/DefaultHome';
 import DoDAOHome from '@/components/home/DoDAOHome/DoDAOHome';
 import LifeInsureHomePage from '@/components/home/LifeInsure/LifeInsureHomePage';
-import ListProjects from '@/components/projects/ListProjects';
+import ListProjects from '@/components/projects/List/ListProjects';
+import { ProjectFragment } from '@/graphql/generated/generated-types';
+import getApiResponse from '@/utils/api/getApiResponse';
 import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
 import { headers } from 'next/headers';
 
@@ -20,7 +22,8 @@ async function Home() {
   }
 
   if (space?.id === TOP_CRYPTO_PROJECTS_SPACE_ID) {
-    return <ListProjects space={space} type={'All'} />;
+    const projects = await getApiResponse<ProjectFragment[]>(space, 'projects');
+    return <ListProjects space={space} projects={projects} />;
   }
 
   if (host === 'dodao-localhost.io' || host === 'academy.dodao.io' || host === 'dodao.io') {
