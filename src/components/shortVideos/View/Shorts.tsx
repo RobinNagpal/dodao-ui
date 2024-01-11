@@ -3,25 +3,21 @@
 import Grid5Cols from '@/components/core/grids/Grid5Cols';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import { ProjectShortVideo, ShortVideo } from '@/graphql/generated/generated-types';
-import styled from 'styled-components';
 import Image from 'next/image';
-
-const ImageWrapper = styled.div`
-  width: 250px;
-`;
+import styles from './shorts.module.scss';
 
 function ShortsThumbnail({ shortVideo, onClick }: { shortVideo: ShortVideo | ProjectShortVideo; onClick: () => void }) {
   const { thumbnail, title } = shortVideo;
   return (
     <button onClick={onClick} className="p-2 min-w-0 flex">
-      <ImageWrapper>
+      <div className={styles.imageWrapper}>
         <div>
-          <Image alt={title} src={thumbnail} width={300} height={200} className="rounded-lg" placeholder="blur" blurDataURL={thumbnail} />
+          <Image alt={title} src={thumbnail} className={'rounded-lg ' + styles.myClass} placeholder="blur" blurDataURL={thumbnail} fill={true} />
         </div>
         <div className="title-wrapper">
           <h1>{title}</h1>
         </div>
-      </ImageWrapper>
+      </div>
     </button>
   );
 }
