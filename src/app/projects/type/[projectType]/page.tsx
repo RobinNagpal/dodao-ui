@@ -16,7 +16,7 @@ export default async function ProjectListPage(props: {
 
   const projects = await getApiResponse<ProjectFragment[]>(space!, 'projects');
 
-  const projectsByType = projects.filter((project) => project.type === type);
+  const projectsByType = projects.filter((project) => type?.toLowerCase() === 'all' || project.type === type);
   return (
     <PageWrapper>
       <ListProjects space={space!} projects={projectsByType} showArchived={props.searchParams?.['showArchived'] === 'true'} />
