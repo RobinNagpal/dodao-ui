@@ -5,10 +5,12 @@ fragment Project on Project {
     nameOfTheUser
   }
   admins
+  archived
   creator
   details
   discord
   docs
+  excerpt
   github
   id
   logo
@@ -17,73 +19,6 @@ fragment Project on Project {
   website
   type
   cardThumbnail
-}
-
-fragment ProjectByte on ProjectByte {
-  admins
-  content
-  created
-  id
-  name
-  postSubmissionStepContent
-  priority
-  steps {
-    content
-    stepItems {
-      __typename
-      ... on ByteQuestion {
-        answerKeys
-        choices {
-          content
-          key
-        }
-        content
-        type
-        uuid
-        explanation
-      }
-
-      ... on ByteUserInput {
-        label
-        required
-        type
-        uuid
-      }
-
-      ... on UserDiscordConnect {
-        type
-        uuid
-      }
-    }
-    name
-    uuid
-  }
-  tags
-}
-
-fragment ProjectShortVideo on ProjectShortVideo {
-  id
-  title
-  description
-  thumbnail
-  videoUrl
-  priority
-  createdAt
-  updatedAt
-}
-
-fragment ProjectByteCollection on ProjectByteCollection {
-  byteIds
-  bytes {
-    byteId
-    name
-    content
-  }
-  description
-  id
-  name
-  order
-  status
 }
 
 query Projects($type: String) {
@@ -98,56 +33,14 @@ query Project($id: String!) {
   }
 }
 
-query ProjectBytes($projectId: String!) {
-  projectBytes(projectId: $projectId) {
-    ...ProjectByte
-  }
-}
-
-query ProjectShortVideos($projectId: String!) {
-  projectShortVideos(projectId: $projectId) {
-    ...ProjectShortVideo
-  }
-}
-
-query ProjectByte($projectId: String!, $id: String!) {
-  projectByte(projectId: $projectId, projectByteId: $id) {
-    ...ProjectByte
-  }
-}
-
-query ProjectByteCollections($projectId: String!) {
-  projectByteCollections(projectId: $projectId) {
-    ...ProjectByteCollection
-  }
-}
-
-query ProjectByteCollection($projectId: String!, $id: String!) {
-  projectByteCollection(projectId: $projectId, byteCollectionId: $id) {
-    ...ProjectByteCollection
-  }
-}
-
 mutation UpsertProject($input: UpsertProjectInput!) {
   upsertProject(input: $input) {
     ...Project
   }
 }
 
-mutation UpsertProjectByte($projectId: String!, $input: UpsertProjectByteInput!) {
-  upsertProjectByte(projectId: $projectId, input: $input) {
-    ...ProjectByte
-  }
-}
-
-mutation UpsertProjectByteCollection($projectId: String!, $input: UpsertProjectByteCollectionInput!) {
-  upsertProjectByteCollection(projectId: $projectId, input: $input) {
-    ...ProjectByteCollection
-  }
-}
-
-mutation UpsertProjectShortVideo($projectId: String!, $input: ProjectShortVideoInput!) {
-  upsertProjectShortVideo(projectId: $projectId, shortVideo: $input) {
-    ...ProjectShortVideo
+mutation UpdateArchivedStatusOfProject($projectId: String!, $archived: Boolean!) {
+  updateArchivedStatusOfProject(projectId: $projectId, archived: $archived) {
+    ...Project
   }
 }

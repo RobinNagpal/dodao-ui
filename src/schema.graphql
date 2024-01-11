@@ -1042,6 +1042,10 @@ type Mutation {
   submitGuide(submissionInput: GuideSubmissionInput!): GuideSubmission!
   triggerNewDiscourseIndexRun(spaceId: String!): DiscourseIndexRun!
   triggerSiteScrapingRun(spaceId: String!, websiteScrapingInfoId: String!): SiteScrapingRun!
+  updateArchivedStatusOfProject(archived: Boolean!, projectId: String!): Project!
+  updateArchivedStatusOfProjectByte(archived: Boolean!, projectByteId: String!, projectId: String!): ProjectByte!
+  updateArchivedStatusOfProjectByteCollection(archived: Boolean!, byteCollectionId: String!, projectId: String!): ProjectByteCollection!
+  updateArchivedStatusOfProjectShortVideo(archived: Boolean!, projectId: String!, projectShortVideoId: String!): ProjectShortVideo!
   updateAuthSettings(input: AuthSettingsInput!, spaceId: String!): Space!
   updateByteCollection(input: UpdateByteCollectionInput!): ByteCollection!
   updateByteSettings(input: ByteSettingsInput!, spaceId: String!): Space!
@@ -1146,11 +1150,13 @@ type Project {
   adminUsernames: [String!]!
   adminUsernamesV1: [UsernameAndName!]!
   admins: [String!]!
+  archived: Boolean!
   cardThumbnail: String
   creator: String!
   details: String!
   discord: String
   docs: String
+  excerpt: String!
   github: String
   id: String!
   logo: String
@@ -1162,6 +1168,7 @@ type Project {
 
 type ProjectByte {
   admins: [String!]!
+  archived: Boolean!
   content: String!
   created: String!
   id: String!
@@ -1173,6 +1180,7 @@ type ProjectByte {
 }
 
 type ProjectByteCollection {
+  archived: Boolean!
   byteIds: [String!]!
   bytes: [ByteCollectionByte!]!
   description: String!
@@ -1183,6 +1191,7 @@ type ProjectByteCollection {
 }
 
 type ProjectShortVideo {
+  archived: Boolean!
   createdAt: String!
   description: String!
   id: ID!
@@ -1745,6 +1754,7 @@ input UpsertProjectInput {
   details: String!
   discord: String
   docs: String
+  excerpt: String!
   github: String
   id: String!
   logo: String

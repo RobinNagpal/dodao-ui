@@ -1,0 +1,87 @@
+import DeleteConfirmationModal from '@/components/app/Modal/DeleteConfirmationModal';
+import { ByteSummaryType } from '@/components/bytes/Summary/ByteSummaryCard';
+import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
+import { useNotificationContext } from '@/contexts/NotificationContext';
+import { ProjectByteFragment, ProjectFragment, useUpdateArchivedStatusOfProjectByteMutation } from '@/graphql/generated/generated-types';
+import { useRouter } from 'next/navigation';
+import React from 'react';
+
+interface ByteCardAdminDropdownProps {
+  byte: ByteSummaryType | ProjectByteFragment;
+  byteType: 'byte' | 'projectByte';
+  project?: ProjectFragment;
+}
+export default function ByteCardAdminDropdown({ byte, byteType, project }: ByteCardAdminDropdownProps) {
+  const router = useRouter();
+  const { showNotification } = useNotificationContext();
+  const [showDeleteModal, setShowDeleteModal] = React.useState<boolean>(false);
+  const baseBytesEditUrl = byteType === 'projectByte' ? `/projects/edit/${project?.id}/tidbits` : '/tidbits/edit';
+  const getThreeDotItems = (byte: ByteSummaryType | ProjectByteFragment) => {
+    if (byte.hasOwnProperty('archived')) {
+      if ((byte as ProjectByteFragment).archived) {
+        return [
+          { label: 'Edit', key: 'edit' },
+          { label: 'Unarchive', key: 'unarchive' },
+        ];
+      }
+      return [
+        { label: 'Edit', key: 'edit' },
+        { label: 'Archive', key: 'archive' },
+      ];
+    }
+
+    return [{ label: 'Edit', key: 'edit' }];
+  };
+
+  const [updateArchivedStatusOfProjectByteMutation] = useUpdateArchivedStatusOfProjectByteMutation();
+
+  const onArchivedStatusChange = async (archived: boolean) => {
+    try {
+      await updateArchivedStatusOfProjectByteMutation({
+        variables: {
+          projectId: project!.id,
+          projectByteId: byte.id,
+          archived: archived,
+        },
+        refetchQueries: ['ProjectBytes'],
+      });
+      if (archived) {
+        showNotification({ message: 'Byte archived successfully', type: 'success' });
+      } else {
+        showNotification({ message: 'Byte un-archived successfully', type: 'success' });
+      }
+    } catch (error) {
+      showNotification({ message: 'Something went wrong', type: 'error' });
+    }
+  };
+
+  return (
+    <>
+      <PrivateEllipsisDropdown
+        items={getThreeDotItems(byte)}
+        onSelect={async (key) => {
+          if (key === 'edit') {
+            router.push(`${baseBytesEditUrl}/${byte.id}`);
+          }
+          if (key === 'archive') {
+            setShowDeleteModal(true);
+          }
+          if (key === 'unarchive') {
+            onArchivedStatusChange(false);
+          }
+        }}
+      />
+      {showDeleteModal && (
+        <DeleteConfirmationModal
+          title={'Delete Byte '}
+          open={showDeleteModal}
+          onClose={() => setShowDeleteModal(false)}
+          onDelete={() => {
+            onArchivedStatusChange(true);
+            setShowDeleteModal(false);
+          }}
+        />
+      )}
+    </>
+  );
+}

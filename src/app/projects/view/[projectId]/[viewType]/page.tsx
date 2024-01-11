@@ -42,7 +42,15 @@ function CollectionsPage(props: { params: { projectId: string; viewType: string 
   }
 
   if (props.params.viewType === 'tidbits') {
-    return <BytesGrid loading={loadingByte} bytes={bytesData?.projectBytes} baseByteViewUrl={`/projects/view/${project?.project.id}/tidbits`} />;
+    return (
+      <BytesGrid
+        loading={loadingByte}
+        bytes={bytesData?.projectBytes?.filter((byte) => !byte?.archived)}
+        baseByteViewUrl={`/projects/view/${project?.project.id}/tidbits`}
+        byteType={'projectByte'}
+        project={project?.project}
+      />
+    );
   }
 
   if (props.params.viewType === 'shorts') {
@@ -54,12 +62,12 @@ function CollectionsPage(props: { params: { projectId: string; viewType: string 
       loadingData={loadingByteCollections}
       space={props.space}
       project={project?.project}
-      byteCollections={byteCollectionsData?.projectByteCollections}
-      baseByteCollectionsEditUrl={`/projects/edit/${project?.project.id}/tidbit-collections`}
+      byteCollections={byteCollectionsData?.projectByteCollections?.filter((byteCollection) => !byteCollection?.archived)}
       fetchByteFn={async (byteId: string) => {
         const response = await refetch({ projectId: props.params.projectId, id: byteId });
         return response.data.projectByte;
       }}
+      byteCollectionType={'projectByteCollection'}
     />
   );
 }

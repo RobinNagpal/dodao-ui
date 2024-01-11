@@ -1,40 +1,26 @@
-import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
-import { ByteCollectionFragment, ProjectByteCollectionFragment } from '@/graphql/generated/generated-types';
+import ByteCollectionCardAdminDropdown from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCollectionCardAdminDropdown';
+import { ByteCollectionFragment, ProjectByteCollectionFragment, ProjectFragment } from '@/graphql/generated/generated-types';
 import { LocalStorageKeys } from '@/types/deprecated/models/enums';
 import ArrowTopRightOnSquareIcon from '@heroicons/react/24/outline/ArrowTopRightOnSquareIcon';
 import Bars3BottomLeftIcon from '@heroicons/react/24/solid/Bars3BottomLeftIcon';
 import CheckIcon from '@heroicons/react/24/solid/CheckIcon';
-import { useRouter } from 'next/navigation';
 import React from 'react';
 import styles from './ByteCollectionsCard.module.scss';
 
 interface ByteCollectionCardProps {
   byteCollection: ByteCollectionFragment | ProjectByteCollectionFragment;
   onSelectByte: (byteId: string) => void;
-  baseByteCollectionsEditUrl: string;
   isEditingAllowed?: boolean;
+  byteCollectionType: 'byteCollection' | 'projectByteCollection';
+  project?: ProjectFragment;
 }
 
-export default function ByteCollectionsCard({ byteCollection, baseByteCollectionsEditUrl, onSelectByte, isEditingAllowed = true }: ByteCollectionCardProps) {
-  const router = useRouter();
-
+export default function ByteCollectionsCard({ byteCollection, onSelectByte, isEditingAllowed = true, project }: ByteCollectionCardProps) {
   return (
     <div className={`border border-gray-200 rounded-xl overflow-hidden p-4 w-full max-w-xl ` + styles.cardDiv}>
       {isEditingAllowed && (
         <div className="w-full flex justify-end">
-          <PrivateEllipsisDropdown
-            items={[
-              {
-                label: 'Edit',
-                key: 'edit',
-              },
-            ]}
-            onSelect={async (key) => {
-              if (key === 'edit') {
-                router.push(`${baseByteCollectionsEditUrl}/${byteCollection.id}`);
-              }
-            }}
-          />
+          <ByteCollectionCardAdminDropdown byteCollection={byteCollection} byteCollectionType={'byteCollection'} project={project} />
         </div>
       )}
 

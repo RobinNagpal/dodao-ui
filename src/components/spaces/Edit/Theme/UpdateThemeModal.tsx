@@ -105,7 +105,12 @@ export default function UpdateThemeModal({ space, open, onClose, byteCollection 
               })}
             </div>
             <div className="flex justify-center items-center w-full md:mt-0 md:w-1/2 p-2 md:p-4">
-              <ByteCollectionsCard isEditingAllowed={false} byteCollection={byteCollection} onSelectByte={() => {}} baseByteCollectionsEditUrl={'TestUrl'} />
+              <ByteCollectionsCard
+                isEditingAllowed={false}
+                byteCollection={byteCollection}
+                onSelectByte={() => {}}
+                byteCollectionType={'projectByteCollection'}
+              />
             </div>
           </div>
         </div>
