@@ -11,8 +11,16 @@ function ShortsThumbnail({ shortVideo, onClick }: { shortVideo: ShortVideo | Pro
   return (
     <button onClick={onClick} className="p-2 min-w-0 flex">
       <div className={styles.imageWrapper}>
-        <div>
-          <Image alt={title} src={thumbnail} className={'rounded-lg ' + styles.imageDiv} placeholder="blur" blurDataURL={thumbnail} fill={true} />
+        <div className="relative">
+          <Image
+            alt={title}
+            src={thumbnail}
+            className={'rounded-lg ' + styles.imageDiv}
+            placeholder="blur"
+            blurDataURL={thumbnail}
+            fill={true}
+            sizes="(max-width: 640px) 100vw, (max-width: 768px) 80vw, 250px"
+          />
         </div>
         <div className="title-wrapper">
           <h1>{title}</h1>
