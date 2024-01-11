@@ -1,25 +1,31 @@
 'use client';
 
+import Grid5Cols from '@/components/core/grids/Grid5Cols';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import { ProjectShortVideo, ShortVideo } from '@/graphql/generated/generated-types';
-import styled from 'styled-components';
-
-const ImageWrapper = styled.div`
-  width: 250px;
-`;
+import Image from 'next/image';
+import styles from './Shorts.module.scss';
 
 function ShortsThumbnail({ shortVideo, onClick }: { shortVideo: ShortVideo | ProjectShortVideo; onClick: () => void }) {
   const { thumbnail, title } = shortVideo;
   return (
     <button onClick={onClick} className="p-2 min-w-0 flex">
-      <ImageWrapper>
-        <div>
-          <img src={thumbnail} alt={title} className="rounded-lg" />
+      <div className={styles.imageWrapper}>
+        <div className="relative">
+          <Image
+            alt={title}
+            src={thumbnail}
+            className={'rounded-lg ' + styles.imageDiv}
+            placeholder="blur"
+            blurDataURL={thumbnail}
+            fill={true}
+            sizes="(max-width: 640px) 100vw, (max-width: 768px) 80vw, 250px"
+          />
         </div>
         <div className="title-wrapper">
           <h1>{title}</h1>
         </div>
-      </ImageWrapper>
+      </div>
     </button>
   );
 }
@@ -31,11 +37,11 @@ interface ShortsUIProps {
 export default function Shorts({ shortVideos, onThumbnailClick }: ShortsUIProps) {
   return (
     <PageWrapper>
-      <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-1">
+      <Grid5Cols>
         {shortVideos.map((video, index) => (
           <ShortsThumbnail key={index} shortVideo={video} onClick={() => onThumbnailClick(index)} />
         ))}
-      </div>
+      </Grid5Cols>
     </PageWrapper>
   );
 }

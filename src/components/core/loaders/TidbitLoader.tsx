@@ -1,4 +1,4 @@
-import { Grid4Cols } from '@/components/core/grids/Grid4Colst';
+import { Grid4Cols } from '@/components/core/grids/Grid4Cols';
 import React from 'react';
 
 const TidbitsSkeleton = () => {

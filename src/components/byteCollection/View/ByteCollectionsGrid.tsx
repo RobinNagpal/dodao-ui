@@ -3,6 +3,7 @@ import ByteCollectionsCard from '@/components/byteCollection/ByteCollections/Byt
 import NoByteCollections from '@/components/byteCollection/ByteCollections/NoByteCollections';
 import ViewByteModal from '@/components/byteCollection/View/ViewByteModal';
 import { Grid2Cols } from '@/components/core/grids/Grid2Cols';
+import CardLoader, { CardLoaderType } from '@/components/core/loaders/CardLoader';
 import RowLoading from '@/components/core/loaders/RowLoading';
 import {
   ByteCollectionFragment,
@@ -53,9 +54,9 @@ export default function ByteCollectionsGrid({
       )}
       <div style={{ height: '10px', width: '10px', position: 'absolute' }} />
       {loadingData && (
-        <Block slim={true}>
-          <RowLoading className="my-2" />
-        </Block>
+        <Grid2Cols>
+          <CardLoader numberOfCards={2} type={CardLoaderType.CardWithSections} />
+        </Grid2Cols>
       )}
 
       {selectedByteId && (

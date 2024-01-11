@@ -1,6 +1,6 @@
 import Button from '@/components/core/buttons/Button';
 import Card from '@/components/core/card/Card';
-import { Grid4Cols } from '@/components/core/grids/Grid4Colst';
+import { Grid4Cols } from '@/components/core/grids/Grid4Cols';
 import FullPageModal from '@/components/core/modals/FullPageModal';
 import { ByteCollectionFragment, ByteSummaryFragment, ProjectByteFragment } from '@/graphql/generated/generated-types';
 import { shorten } from '@/utils/utils';
