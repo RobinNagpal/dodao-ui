@@ -65,6 +65,7 @@ export default function useEditProject(projectId?: string): UseEditProjectHelper
           logo: projectResponse.logo,
           name: projectResponse.name,
           adminUsernamesV1: projectResponse.adminUsernamesV1 || [],
+          cardThumbnail: projectResponse.cardThumbnail,
         });
       }
     }
@@ -90,6 +91,7 @@ export default function useEditProject(projectId?: string): UseEditProjectHelper
       logo: project.logo,
       name: project.name,
       adminUsernamesV1: project.adminUsernamesV1 || [],
+      cardThumbnail: project.cardThumbnail,
     };
   }
 
@@ -100,6 +102,7 @@ export default function useEditProject(projectId?: string): UseEditProjectHelper
         variables: {
           input: getProjectInput(slugify(project.name)),
         },
+        refetchQueries: ['Projects'],
       });
 
       if (response.data) {
