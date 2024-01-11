@@ -45,7 +45,7 @@ function CollectionsPage(props: { params: { projectId: string; viewType: string 
     return (
       <BytesGrid
         loading={loadingByte}
-        bytes={bytesData?.projectBytes}
+        bytes={bytesData?.projectBytes?.filter((byte) => !byte?.archived)}
         baseByteViewUrl={`/projects/view/${project?.project.id}/tidbits`}
         byteType={'projectByte'}
         project={project?.project}
@@ -62,7 +62,7 @@ function CollectionsPage(props: { params: { projectId: string; viewType: string 
       loadingData={loadingByteCollections}
       space={props.space}
       project={project?.project}
-      byteCollections={byteCollectionsData?.projectByteCollections}
+      byteCollections={byteCollectionsData?.projectByteCollections?.filter((byteCollection) => !byteCollection?.archived)}
       fetchByteFn={async (byteId: string) => {
         const response = await refetch({ projectId: props.params.projectId, id: byteId });
         return response.data.projectByte;

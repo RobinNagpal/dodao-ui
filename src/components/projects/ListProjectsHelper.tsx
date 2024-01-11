@@ -30,21 +30,19 @@ const ListProjectsHelper: React.FC<ListProjectsHelperProps> = ({ projects, onSho
     ];
   };
 
-  const updateArchiveStatus = async (archived: boolean) => {
+  const updateArchiveStatus = async (projectId: string, archived: boolean) => {
     try {
-      if (deleteProjectId) {
-        await updateArchivedStatusOfProjectMutation({
-          variables: {
-            projectId: deleteProjectId,
-            archived: archived,
-          },
-          refetchQueries: ['Projects'],
-        });
-        if (archived) {
-          showNotification({ message: 'Project archived successfully', type: 'success' });
-        } else {
-          showNotification({ message: 'Project un-archived successfully', type: 'success' });
-        }
+      await updateArchivedStatusOfProjectMutation({
+        variables: {
+          projectId: projectId,
+          archived: archived,
+        },
+        refetchQueries: ['Projects'],
+      });
+      if (archived) {
+        showNotification({ message: 'Project archived successfully', type: 'success' });
+      } else {
+        showNotification({ message: 'Project un-archived successfully', type: 'success' });
       }
     } catch (error) {
       showNotification({ message: 'Something went wrong', type: 'error' });
@@ -74,11 +72,14 @@ const ListProjectsHelper: React.FC<ListProjectsHelperProps> = ({ projects, onSho
                     <PrivateEllipsisDropdown
                       items={getThreeDotItems(proj)}
                       onSelect={async (key) => {
-                        setDeleteProjectId(proj.id);
                         if (key === 'edit') {
                           onShowEditModal(proj);
                         } else if (key === 'archive') {
                           setDeleteProjectId(proj.id);
+                          setDeleteProjectId(proj.id);
+                        } else if (key === 'unarchive') {
+                          console.log('unarchive');
+                          updateArchiveStatus(proj.id, false);
                         }
                       }}
                     />
@@ -99,7 +100,7 @@ const ListProjectsHelper: React.FC<ListProjectsHelperProps> = ({ projects, onSho
           open={!!deleteProjectId}
           onClose={() => setDeleteProjectId(null)}
           onDelete={() => {
-            updateArchiveStatus(true);
+            updateArchiveStatus(deleteProjectId, true);
             setDeleteProjectId(null);
           }}
         />
