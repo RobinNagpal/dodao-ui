@@ -5,19 +5,15 @@ import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import styles from './ListProjectsHelper.module.scss';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
-import useEditProject from './Edit/useEditProject';
 
 type ListProjectsHelperProps = {
   projects: ProjectFragment[];
   onShowEditModal: (project: ProjectFragment) => void;
-  onDelete: () => void;
 };
 
-const ListProjectsHelper: React.FC<ListProjectsHelperProps> = ({ projects, onShowEditModal, onDelete }) => {
+const ListProjectsHelper: React.FC<ListProjectsHelperProps> = ({ projects, onShowEditModal }) => {
   const [projectID, setProjectID] = useState<string>();
   const [loading, setLoading] = useState(false);
-  const editProjectHelper = useEditProject(projectID);
-  const { project, setProjectField, upsertProject, upserting } = editProjectHelper;
 
   useEffect(() => {
     setLoading(true);
@@ -67,10 +63,6 @@ const ListProjectsHelper: React.FC<ListProjectsHelperProps> = ({ projects, onSho
                             onShowEditModal(proj);
                           } else if (key === 'delete') {
                             setProjectID(proj.id);
-                            editProjectHelper.initialize();
-                            setProjectField('archive', true);
-                            await upsertProject();
-                            onDelete();
                           }
                         }}
                       />

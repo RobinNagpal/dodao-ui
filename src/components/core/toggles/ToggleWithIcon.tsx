@@ -25,7 +25,7 @@ export default function ToggleWithIcon(props: ToggleWithIconProps) {
 
   return (
     <div className="flex align-center w-full mt-4">
-      <div className="mr-1 s:mr-4">
+      <div className="mr-8">
         <StyledSwitch
           checked={enabled}
           onChange={setEnabled}

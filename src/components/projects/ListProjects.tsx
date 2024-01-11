@@ -38,7 +38,6 @@ export default function ListProjects(props: { space: SpaceWithIntegrationsFragme
   const [showProjectAddModal, setShowProjectAddModal] = useState(false);
   const [showArchived, setShowArchived] = useState(false);
   const [project, setProject] = useState<ProjectFragment | null>(null);
-  const [refresh, setRefresh] = useState(false);
   const router = useRouter();
   const tableActions: TableActions = useMemo(() => {
     return {
@@ -55,13 +54,6 @@ export default function ListProjects(props: { space: SpaceWithIntegrationsFragme
       },
     };
   }, [router]);
-
-  useEffect(() => {
-    if (refresh === true) {
-      refetch();
-      setRefresh(false);
-    }
-  }, [refresh, refetch]);
 
   const filteredProjects = useMemo(() => {
     return (data?.projects || []).filter((project) => (showArchived ? project.archive : !project.archive));
@@ -89,9 +81,6 @@ export default function ListProjects(props: { space: SpaceWithIntegrationsFragme
           setShowProjectAddModal(true);
           setProject(project);
         }}
-        onDelete={() => {
-          setRefresh(true);
-        }}
       />
       {showProjectAddModal && (
         <UpsertProjectModal
@@ -101,9 +90,6 @@ export default function ListProjects(props: { space: SpaceWithIntegrationsFragme
           onClose={() => {
             setShowProjectAddModal(false);
             setProject(null);
-          }}
-          onSave={() => {
-            setRefresh(true);
           }}
         />
       )}

@@ -13,7 +13,7 @@ import React, { useEffect, useState } from 'react';
 import useEditProject from './useEditProject';
 import UpsertKeyValueBadgeInput from '@/components/core/badge/UpsertKeyValueBadgeInput';
 
-export default function UpsertProjectModal(props: { spaceId: string; project?: Project; open: boolean; onClose: () => void; onSave: () => void }) {
+export default function UpsertProjectModal(props: { spaceId: string; project?: Project; open: boolean; onClose: () => void }) {
   const editProjectHelper = useEditProject(props.project?.id);
   const [uploadLogoThumbnailLoading, setUploadLogoThumbnailLoading] = useState(false);
   const [uploadCardThumbnailLoading, setUploadCardThumbnailLoading] = useState(false);
@@ -109,7 +109,6 @@ export default function UpsertProjectModal(props: { spaceId: string; project?: P
           onClick={async () => {
             await upsertProject();
             props.onClose();
-            props.onSave();
           }}
         >
           Save
