@@ -7,14 +7,14 @@ with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/
 
 ## Prerequisits
 
-1) Nodejs 18+
-2) Yarn 1.22.x
-3) Docker
-4) DockerCompose
+1. Nodejs 18+
+2. Yarn 1.22.x
+3. Docker
+4. DockerCompose
 
 ## Code setup
 
-1) Copy .env.example and name it as .env
+1. Copy .env.example and name it as .env
    Populate the environment variables. For some env variables you can add dummy strings.
 
 For example for the below env variables add some dummy values
@@ -32,34 +32,35 @@ NEXTAUTH_SECRET=
 DODAO_AUTH_SECRET=
 ```
 
-2) Generate graphql files
+2. Generate graphql files
 
-`yarn graphql:generate`
+   `yarn graphql:generate`
 
-3) Generate prisma files
+3. Generate prisma files
 
-`npx prisma generate`
+   `npx prisma generate`
 
-4) Run Database: We run databse in a docker container. For that we use docker compose. To run it, open a new terminal
+4. Run Database: We run databse in a docker container. For that we use docker compose. To run it, open a new terminal
    and run docker-compose up. Make sure to keep that terminal running
 
-`docker-compose up`
+   `docker-compose up`
 
-5) generate dabase tables
+5. Generate database tables
+
    `npx prisma db push`
 
-6) Make sure tables are created. Install a postgres client and make sure a new DB is created `next_app_localhost_db` and
+6. Make sure tables are created. Install a postgres client and make sure a new DB is created `next_app_localhost_db` and
    tables are also created in it.
 
 ## Run the code
 
-1) Install dependencies
+1. Install dependencies
 
-`yarn install`
+   `yarn install`
 
-2) Run server
+2. Run server
 
-`yarn dev`
+   `yarn dev`
 
 ## Learn More
 
@@ -85,8 +86,8 @@ Add the following to your /etc/hosts file
 
 See
 
-1) https://www.siteground.com/kb/hosts-file/
-2) https://pureinfotech.com/edit-hosts-file-windows-11/
+1. https://www.siteground.com/kb/hosts-file/
+2. https://pureinfotech.com/edit-hosts-file-windows-11/
 
 Here is an example of how it looks for me on my local machine (mac)
 
@@ -98,14 +99,14 @@ Here is an example of how it looks for me on my local machine (mac)
 # when the system is booting.  Do not change this entry.
 ##
 127.0.0.1    dodao-localhost.academy compound-localhost.education  uniswap-localhost.university creditunion-localhost.academy fuse-localhost.university dodao-localhost.io
-127.0.0.1    kleros-localhost.academy empowerher-localhost.academy optimism-localhost.university 
+127.0.0.1    kleros-localhost.academy empowerher-localhost.academy optimism-localhost.university
 127.0.0.1	 cryptogelato-localhost.com arbitrum-localhost.education lifeinsure-localhost.tips
 ```
 
 Here is the table with the mapping of the domains to the academy websites
 
 | Project      | Local Academy Website Domain  | Website URL                               |
-|--------------|-------------------------------|-------------------------------------------|
+| ------------ | ----------------------------- | ----------------------------------------- |
 | dodao        | dodao-localhost.academy       | http://dodao-localhost.academy:3000       |
 | compound     | compound-localhost.education  | http://compound-localhost.education:3000  |
 | uniswap      | uniswap-localhost.university  | http://uniswap-localhost.university:3000  |
@@ -114,13 +115,12 @@ Here is the table with the mapping of the domains to the academy websites
 | cryptogelato | cryptogelato-localhost.com    | http://cryptogelato-localhost.com:3000    |
 | lifeinsure   | lifeinsure-localhost.tips     | http://lifeinsure-localhost.tips:3000     |
 
-
 ## Coding Workflow
+
 See [CodingWorkflow.md](./CodingWorkflow.md) to learn about how to start contributing to the project.
 
-
 ## Making yourself admin
+
 Create a new key `DODAO_SUPERADMINS` and set its value to your own MetaMask key and comma separated email address.
 
 For example: `DODAO_SUPERADMINS = 0x0000000000000000000000000000000000000000,johndoe@gmail.com`
-
