@@ -56,7 +56,7 @@ const ListProjectsHelper: React.FC<ListProjectsHelperProps> = ({ projects, onSho
     <div className="my-5">
       {Object.keys(groupedProjects).map((type) => (
         <div key={type}>
-          <h2 className="text-xl font-semibold my-2">{type} Projects</h2>
+          <h2 className="text-lg font-semibold my-2">{type} Projects</h2>
           <div className="grid grid-cols-1 xs:grid-cols-1 s:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
             {groupedProjects[type].map((proj) => (
               <div key={proj.id} className="rounded-lg overflow-hidden shadow-xl">
