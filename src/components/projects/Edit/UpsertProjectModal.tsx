@@ -49,7 +49,7 @@ export default function UpsertProjectModal(props: { spaceId: string; project?: P
             label="Logo"
             error={inputError('logo')}
             imageType="AcademyLogo"
-            spaceId={project?.id || 'new-project'}
+            spaceId={props.spaceId}
             modelValue={project?.logo}
             objectId={(project?.name && slugify(project?.name)) || project?.id || 'new-project'}
             onInput={(value) => setProjectField('logo', value)}
