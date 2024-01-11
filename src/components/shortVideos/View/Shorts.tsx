@@ -12,7 +12,7 @@ function ShortsThumbnail({ shortVideo, onClick }: { shortVideo: ShortVideo | Pro
     <button onClick={onClick} className="p-2 min-w-0 flex">
       <div className={styles.imageWrapper}>
         <div>
-          <Image alt={title} src={thumbnail} className={'rounded-lg ' + styles.myClass} placeholder="blur" blurDataURL={thumbnail} fill={true} />
+          <Image alt={title} src={thumbnail} className={'rounded-lg ' + styles.imageDiv} placeholder="blur" blurDataURL={thumbnail} fill={true} />
         </div>
         <div className="title-wrapper">
           <h1>{title}</h1>
