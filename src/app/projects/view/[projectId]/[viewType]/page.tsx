@@ -55,11 +55,11 @@ function CollectionsPage(props: { params: { projectId: string; viewType: string 
       space={props.space}
       project={project?.project}
       byteCollections={byteCollectionsData?.projectByteCollections}
-      baseByteCollectionsEditUrl={`/projects/edit/${project?.project.id}/tidbit-collections`}
       fetchByteFn={async (byteId: string) => {
         const response = await refetch({ projectId: props.params.projectId, id: byteId });
         return response.data.projectByte;
       }}
+      byteCollectionType={'projectByteCollection'}
     />
   );
 }
