@@ -9,7 +9,7 @@ const nextConfig = {
     styledComponents: true,
   },
   images: {
-    domains: ['api.multiavatar.com', 'tailwindui.com', 'd31h13bdjwgzxs.cloudfront.net', 'i.ytimg.com'],
+    domains: ['api.multiavatar.com', 'tailwindui.com', 'd31h13bdjwgzxs.cloudfront.net'],
   },
   env: {
     V2_API_SERVER_URL: process.env.V2_API_SERVER_URL,
