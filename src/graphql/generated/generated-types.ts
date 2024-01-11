@@ -1110,6 +1110,10 @@ export interface Mutation {
   submitGuide: GuideSubmission;
   triggerNewDiscourseIndexRun: DiscourseIndexRun;
   triggerSiteScrapingRun: SiteScrapingRun;
+  updateArchivedStatusOfProject: Project;
+  updateArchivedStatusOfProjectByte: ProjectByte;
+  updateArchivedStatusOfProjectByteCollection: ProjectByteCollection;
+  updateArchivedStatusOfProjectShortVideo: ProjectShortVideo;
   updateAuthSettings: Space;
   updateByteCollection: ByteCollection;
   updateByteSettings: Space;
@@ -1490,6 +1494,33 @@ export interface MutationTriggerSiteScrapingRunArgs {
 }
 
 
+export interface MutationUpdateArchivedStatusOfProjectArgs {
+  archived: Scalars['Boolean'];
+  projectId: Scalars['String'];
+}
+
+
+export interface MutationUpdateArchivedStatusOfProjectByteArgs {
+  archived: Scalars['Boolean'];
+  projectByteId: Scalars['String'];
+  projectId: Scalars['String'];
+}
+
+
+export interface MutationUpdateArchivedStatusOfProjectByteCollectionArgs {
+  archived: Scalars['Boolean'];
+  byteCollectionId: Scalars['String'];
+  projectId: Scalars['String'];
+}
+
+
+export interface MutationUpdateArchivedStatusOfProjectShortVideoArgs {
+  archived: Scalars['Boolean'];
+  projectId: Scalars['String'];
+  projectShortVideoId: Scalars['String'];
+}
+
+
 export interface MutationUpdateAuthSettingsArgs {
   input: AuthSettingsInput;
   spaceId: Scalars['String'];
@@ -1796,12 +1827,13 @@ export interface Project {
   adminUsernames: Array<Scalars['String']>;
   adminUsernamesV1: Array<UsernameAndName>;
   admins: Array<Scalars['String']>;
-  archive?: Maybe<Scalars['Boolean']>;
+  archived: Scalars['Boolean'];
   cardThumbnail?: Maybe<Scalars['String']>;
   creator: Scalars['String'];
   details: Scalars['String'];
   discord?: Maybe<Scalars['String']>;
   docs?: Maybe<Scalars['String']>;
+  excerpt: Scalars['String'];
   github?: Maybe<Scalars['String']>;
   id: Scalars['String'];
   logo?: Maybe<Scalars['String']>;
@@ -1814,7 +1846,7 @@ export interface Project {
 export interface ProjectByte {
   __typename?: 'ProjectByte';
   admins: Array<Scalars['String']>;
-  archive?: Maybe<Scalars['Boolean']>;
+  archived: Scalars['Boolean'];
   content: Scalars['String'];
   created: Scalars['String'];
   id: Scalars['String'];
@@ -1827,7 +1859,7 @@ export interface ProjectByte {
 
 export interface ProjectByteCollection {
   __typename?: 'ProjectByteCollection';
-  archive?: Maybe<Scalars['Boolean']>;
+  archived: Scalars['Boolean'];
   byteIds: Array<Scalars['String']>;
   bytes: Array<ByteCollectionByte>;
   description: Scalars['String'];
@@ -1839,7 +1871,7 @@ export interface ProjectByteCollection {
 
 export interface ProjectShortVideo {
   __typename?: 'ProjectShortVideo';
-  archive?: Maybe<Scalars['Boolean']>;
+  archived: Scalars['Boolean'];
   createdAt: Scalars['String'];
   description: Scalars['String'];
   id: Scalars['ID'];
@@ -1851,7 +1883,6 @@ export interface ProjectShortVideo {
 }
 
 export interface ProjectShortVideoInput {
-  archive?: InputMaybe<Scalars['Boolean']>;
   description: Scalars['String'];
   id: Scalars['ID'];
   priority: Scalars['Int'];
@@ -2677,7 +2708,6 @@ export interface UpsertGuideRatingInput {
 }
 
 export interface UpsertProjectByteCollectionInput {
-  archive?: InputMaybe<Scalars['Boolean']>;
   byteIds: Array<Scalars['String']>;
   description: Scalars['String'];
   id: Scalars['String'];
@@ -2689,7 +2719,6 @@ export interface UpsertProjectByteCollectionInput {
 
 export interface UpsertProjectByteInput {
   admins: Array<Scalars['String']>;
-  archive?: InputMaybe<Scalars['Boolean']>;
   content: Scalars['String'];
   created: Scalars['String'];
   id: Scalars['String'];
@@ -2704,11 +2733,11 @@ export interface UpsertProjectInput {
   adminUsernames: Array<Scalars['String']>;
   adminUsernamesV1: Array<UsernameAndNameInput>;
   admins: Array<Scalars['String']>;
-  archive?: InputMaybe<Scalars['Boolean']>;
   cardThumbnail?: InputMaybe<Scalars['String']>;
   details: Scalars['String'];
   discord?: InputMaybe<Scalars['String']>;
   docs?: InputMaybe<Scalars['String']>;
+  excerpt: Scalars['String'];
   github?: InputMaybe<Scalars['String']>;
   id: Scalars['String'];
   logo?: InputMaybe<Scalars['String']>;
@@ -2945,6 +2974,13 @@ export type UpsertByteSocialShareMutationVariables = Exact<{
 
 export type UpsertByteSocialShareMutation = { __typename?: 'Mutation', payload: { __typename?: 'ByteSocialShare', byteId: string, linkedInImages?: Array<string> | null, linkedInPdf?: string | null, spaceId: string, twitterImage?: string | null, uuid: string, linkedinPdfContent?: { __typename?: 'ByteLinkedinPdfContent', excerpt: string, title: string, steps: Array<{ __typename?: 'ByteLinkedinPdfContentStep', content: string, name: string }> } | null } };
 
+export type SubmitByteMutationVariables = Exact<{
+  input: ByteSubmissionInput;
+}>;
+
+
+export type SubmitByteMutation = { __typename?: 'Mutation', submitByte: { __typename?: 'ByteSubmission', id: string, created: string, createdBy: string, byteId: string, spaceId: string } };
+
 export type ByteQuestionFragmentFragment = { __typename?: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> };
 
 export type ByteUserInputFragmentFragment = { __typename?: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string };
@@ -2990,13 +3026,6 @@ export type UpsertByteMutationVariables = Exact<{
 
 
 export type UpsertByteMutation = { __typename?: 'Mutation', payload: { __typename?: 'Byte', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, admins: Array<string>, tags: Array<string>, priority: number, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> } };
-
-export type SubmitByteMutationVariables = Exact<{
-  input: ByteSubmissionInput;
-}>;
-
-
-export type SubmitByteMutation = { __typename?: 'Mutation', submitByte: { __typename?: 'ByteSubmission', id: string, created: string, createdBy: string, byteId: string, spaceId: string } };
 
 export type ChatbotSubCategoryFragment = { __typename?: 'ChatbotSubcategory', name: string, key: string, description: string };
 
@@ -3483,6 +3512,15 @@ export type SubmitGuideMutationVariables = Exact<{
 
 export type SubmitGuideMutation = { __typename?: 'Mutation', payload: { __typename?: 'GuideSubmission', galaxyCredentialsUpdated?: boolean | null, result: { __typename?: 'GuideSubmissionResult', wrongQuestions: Array<string>, correctQuestions: Array<string>, allQuestions: Array<string> } } };
 
+export type GuideSummaryFragment = { __typename?: 'Guide', id: string, authors: Array<string>, name: string, categories: Array<string>, content: string, createdAt: any, guideSource: string, guideType: string, publishStatus: string, thumbnail?: string | null, uuid: string, priority?: number | null };
+
+export type GuidesQueryQueryVariables = Exact<{
+  space: Scalars['String'];
+}>;
+
+
+export type GuidesQueryQuery = { __typename?: 'Query', guides: Array<{ __typename?: 'Guide', id: string, authors: Array<string>, name: string, categories: Array<string>, content: string, createdAt: any, guideSource: string, guideType: string, publishStatus: string, thumbnail?: string | null, uuid: string, priority?: number | null }> };
+
 export type GuideQuestionFragment = { __typename?: 'GuideQuestion', answerKeys: Array<string>, content: string, order: number, type: string, uuid: string, explanation?: string | null, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> };
 
 export type GuideUserInputFragment = { __typename?: 'GuideUserInput', label: string, order: number, required: boolean, type: string, uuid: string };
@@ -3526,191 +3564,6 @@ export type DeleteGuideMutationVariables = Exact<{
 
 
 export type DeleteGuideMutation = { __typename?: 'Mutation', payload: boolean };
-
-export type GuideSummaryFragment = { __typename?: 'Guide', id: string, authors: Array<string>, name: string, categories: Array<string>, content: string, createdAt: any, guideSource: string, guideType: string, publishStatus: string, thumbnail?: string | null, uuid: string, priority?: number | null };
-
-export type GuidesQueryQueryVariables = Exact<{
-  space: Scalars['String'];
-}>;
-
-
-export type GuidesQueryQuery = { __typename?: 'Query', guides: Array<{ __typename?: 'Guide', id: string, authors: Array<string>, name: string, categories: Array<string>, content: string, createdAt: any, guideSource: string, guideType: string, publishStatus: string, thumbnail?: string | null, uuid: string, priority?: number | null }> };
-
-export type AskCompletionAiMutationVariables = Exact<{
-  input: CompletionAiInput;
-}>;
-
-
-export type AskCompletionAiMutation = { __typename?: 'Mutation', askCompletionAI: { __typename?: 'OpenAICompletionResponse', created: number, id: string, model: string, object: string, choices: Array<{ __typename?: 'CreateCompletionResponseChoice', finish_reason?: string | null, index?: number | null, text?: string | null, logprobs?: { __typename?: 'OpenAIChoiceLogprobs', text?: string | null, text_offset?: Array<number> | null, token_logprobs?: Array<number> | null, tokens?: Array<string> | null } | null }>, usage?: { __typename?: 'OpenAIUsage', completion_tokens: number, prompt_tokens: number, total_tokens: number } | null } };
-
-export type AskChatCompletionAiMutationVariables = Exact<{
-  input: ChatCompletionAiInput;
-}>;
-
-
-export type AskChatCompletionAiMutation = { __typename?: 'Mutation', askChatCompletionAI: { __typename?: 'OpenAIChatCompletionResponse', created: number, id: string, model: string, object: string, choices: Array<{ __typename?: 'OpenAIChatCompletionChoice', finish_reason?: string | null, index?: number | null, message?: { __typename?: 'OpenAIMessage', content?: string | null, role: string } | null }>, usage?: { __typename?: 'OpenAIUsage', completion_tokens: number, prompt_tokens: number, total_tokens: number } | null } };
-
-export type CreateSummaryOfContentMutationVariables = Exact<{
-  input: Scalars['String'];
-}>;
-
-
-export type CreateSummaryOfContentMutation = { __typename?: 'Mutation', createSummaryOfContent: { __typename?: 'OpenAITextResponse', text: string, tokenCount: number } };
-
-export type ExtractRelevantTextForTopicMutationVariables = Exact<{
-  input: ExtractRelevantTextForTopicInput;
-}>;
-
-
-export type ExtractRelevantTextForTopicMutation = { __typename?: 'Mutation', extractRelevantTextForTopic: { __typename?: 'OpenAITextResponse', text: string, tokenCount: number } };
-
-export type DownloadAndCleanContentMutationVariables = Exact<{
-  input: Scalars['String'];
-}>;
-
-
-export type DownloadAndCleanContentMutation = { __typename?: 'Mutation', downloadAndCleanContent: { __typename?: 'DownloadAndCleanContentResponse', content: string, links: Array<{ __typename?: 'DownloadLinkInfo', downloadStatus: string, link: string, tokenCount: number }> } };
-
-export type GenerateImageMutationVariables = Exact<{
-  input: GenerateImageInput;
-}>;
-
-
-export type GenerateImageMutation = { __typename?: 'Mutation', generateImage: { __typename?: 'ImagesResponse', created: number, data: Array<{ __typename?: 'ImagesResponseDataInner', url?: string | null }> } };
-
-export type ProjectFragment = { __typename?: 'Project', adminUsernames: Array<string>, admins: Array<string>, creator: string, details: string, discord?: string | null, docs?: string | null, github?: string | null, id: string, logo?: string | null, name: string, telegram?: string | null, website?: string | null, type: string, cardThumbnail?: string | null, archive?: boolean | null, adminUsernamesV1: Array<{ __typename?: 'UsernameAndName', username: string, nameOfTheUser: string }> };
-
-export type ProjectByteFragment = { __typename?: 'ProjectByte', admins: Array<string>, content: string, created: string, id: string, name: string, postSubmissionStepContent?: string | null, priority: number, tags: Array<string>, archive?: boolean | null, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> };
-
-export type ProjectShortVideoFragment = { __typename?: 'ProjectShortVideo', id: string, title: string, description: string, thumbnail: string, videoUrl: string, priority: number, createdAt: string, updatedAt: string, archive?: boolean | null };
-
-export type ProjectByteCollectionFragment = { __typename?: 'ProjectByteCollection', byteIds: Array<string>, description: string, id: string, name: string, order: number, status: string, archive?: boolean | null, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string }> };
-
-export type ProjectsQueryVariables = Exact<{
-  type?: InputMaybe<Scalars['String']>;
-}>;
-
-
-export type ProjectsQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'Project', adminUsernames: Array<string>, admins: Array<string>, creator: string, details: string, discord?: string | null, docs?: string | null, github?: string | null, id: string, logo?: string | null, name: string, telegram?: string | null, website?: string | null, type: string, cardThumbnail?: string | null, archive?: boolean | null, adminUsernamesV1: Array<{ __typename?: 'UsernameAndName', username: string, nameOfTheUser: string }> }> };
-
-export type ProjectQueryVariables = Exact<{
-  id: Scalars['String'];
-}>;
-
-
-export type ProjectQuery = { __typename?: 'Query', project: { __typename?: 'Project', adminUsernames: Array<string>, admins: Array<string>, creator: string, details: string, discord?: string | null, docs?: string | null, github?: string | null, id: string, logo?: string | null, name: string, telegram?: string | null, website?: string | null, type: string, cardThumbnail?: string | null, archive?: boolean | null, adminUsernamesV1: Array<{ __typename?: 'UsernameAndName', username: string, nameOfTheUser: string }> } };
-
-export type ProjectBytesQueryVariables = Exact<{
-  projectId: Scalars['String'];
-}>;
-
-
-export type ProjectBytesQuery = { __typename?: 'Query', projectBytes: Array<{ __typename?: 'ProjectByte', admins: Array<string>, content: string, created: string, id: string, name: string, postSubmissionStepContent?: string | null, priority: number, tags: Array<string>, archive?: boolean | null, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> }> };
-
-export type ProjectShortVideosQueryVariables = Exact<{
-  projectId: Scalars['String'];
-}>;
-
-
-export type ProjectShortVideosQuery = { __typename?: 'Query', projectShortVideos: Array<{ __typename?: 'ProjectShortVideo', id: string, title: string, description: string, thumbnail: string, videoUrl: string, priority: number, createdAt: string, updatedAt: string, archive?: boolean | null }> };
-
-export type ProjectByteQueryVariables = Exact<{
-  projectId: Scalars['String'];
-  id: Scalars['String'];
-}>;
-
-
-export type ProjectByteQuery = { __typename?: 'Query', projectByte: { __typename?: 'ProjectByte', admins: Array<string>, content: string, created: string, id: string, name: string, postSubmissionStepContent?: string | null, priority: number, tags: Array<string>, archive?: boolean | null, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> } };
-
-export type ProjectByteCollectionsQueryVariables = Exact<{
-  projectId: Scalars['String'];
-}>;
-
-
-export type ProjectByteCollectionsQuery = { __typename?: 'Query', projectByteCollections: Array<{ __typename?: 'ProjectByteCollection', byteIds: Array<string>, description: string, id: string, name: string, order: number, status: string, archive?: boolean | null, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string }> }> };
-
-export type ProjectByteCollectionQueryVariables = Exact<{
-  projectId: Scalars['String'];
-  id: Scalars['String'];
-}>;
-
-
-export type ProjectByteCollectionQuery = { __typename?: 'Query', projectByteCollection: { __typename?: 'ProjectByteCollection', byteIds: Array<string>, description: string, id: string, name: string, order: number, status: string, archive?: boolean | null, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string }> } };
-
-export type UpsertProjectMutationVariables = Exact<{
-  input: UpsertProjectInput;
-}>;
-
-
-export type UpsertProjectMutation = { __typename?: 'Mutation', upsertProject: { __typename?: 'Project', adminUsernames: Array<string>, admins: Array<string>, creator: string, details: string, discord?: string | null, docs?: string | null, github?: string | null, id: string, logo?: string | null, name: string, telegram?: string | null, website?: string | null, type: string, cardThumbnail?: string | null, archive?: boolean | null, adminUsernamesV1: Array<{ __typename?: 'UsernameAndName', username: string, nameOfTheUser: string }> } };
-
-export type UpsertProjectByteMutationVariables = Exact<{
-  projectId: Scalars['String'];
-  input: UpsertProjectByteInput;
-}>;
-
-
-export type UpsertProjectByteMutation = { __typename?: 'Mutation', upsertProjectByte: { __typename?: 'ProjectByte', admins: Array<string>, content: string, created: string, id: string, name: string, postSubmissionStepContent?: string | null, priority: number, tags: Array<string>, archive?: boolean | null, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> } };
-
-export type UpsertProjectByteCollectionMutationVariables = Exact<{
-  projectId: Scalars['String'];
-  input: UpsertProjectByteCollectionInput;
-}>;
-
-
-export type UpsertProjectByteCollectionMutation = { __typename?: 'Mutation', upsertProjectByteCollection: { __typename?: 'ProjectByteCollection', byteIds: Array<string>, description: string, id: string, name: string, order: number, status: string, archive?: boolean | null, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string }> } };
-
-export type UpsertProjectShortVideoMutationVariables = Exact<{
-  projectId: Scalars['String'];
-  input: ProjectShortVideoInput;
-}>;
-
-
-export type UpsertProjectShortVideoMutation = { __typename?: 'Mutation', upsertProjectShortVideo: { __typename?: 'ProjectShortVideo', id: string, title: string, description: string, thumbnail: string, videoUrl: string, priority: number, createdAt: string, updatedAt: string, archive?: boolean | null } };
-
-export type ShortVideoFragment = { __typename?: 'ShortVideo', id: string, title: string, description: string, thumbnail: string, videoUrl: string, priority: number, createdAt: string, updatedAt: string };
-
-export type UpsertShortVideoMutationVariables = Exact<{
-  spaceId: Scalars['String'];
-  shortVideo: ShortVideoInput;
-}>;
-
-
-export type UpsertShortVideoMutation = { __typename?: 'Mutation', upsertShortVideo: { __typename?: 'ShortVideo', id: string, title: string, description: string, thumbnail: string, videoUrl: string, priority: number, createdAt: string, updatedAt: string } };
-
-export type ShortVideosQueryVariables = Exact<{
-  spaceId: Scalars['String'];
-}>;
-
-
-export type ShortVideosQuery = { __typename?: 'Query', shortVideos?: Array<{ __typename?: 'ShortVideo', id: string, title: string, description: string, thumbnail: string, videoUrl: string, priority: number, createdAt: string, updatedAt: string }> | null };
-
-export type SimulationStepFragment = { __typename?: 'SimulationStep', content: string, iframeUrl?: string | null, name: string, uuid: string, order: number };
-
-export type SimulationDetailsFragment = { __typename?: 'Simulation', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, steps: Array<{ __typename?: 'SimulationStep', content: string, iframeUrl?: string | null, name: string, uuid: string, order: number }> };
-
-export type SimulationsQueryVariables = Exact<{
-  spaceId: Scalars['String'];
-}>;
-
-
-export type SimulationsQuery = { __typename?: 'Query', simulations: Array<{ __typename?: 'Simulation', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number }> };
-
-export type SimulationDetailsQueryVariables = Exact<{
-  spaceId: Scalars['String'];
-  simulationId: Scalars['String'];
-}>;
-
-
-export type SimulationDetailsQuery = { __typename?: 'Query', simulation: { __typename?: 'Simulation', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, steps: Array<{ __typename?: 'SimulationStep', content: string, iframeUrl?: string | null, name: string, uuid: string, order: number }> } };
-
-export type UpsertSimulationMutationVariables = Exact<{
-  spaceId: Scalars['String'];
-  input: UpsertSimulationInput;
-}>;
-
-
-export type UpsertSimulationMutation = { __typename?: 'Mutation', payload: { __typename?: 'Simulation', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, steps: Array<{ __typename?: 'SimulationStep', content: string, iframeUrl?: string | null, name: string, uuid: string, order: number }> } };
 
 export type DiscourseIndexRunFragmentFragment = { __typename?: 'DiscourseIndexRun', createdAt: any, id: string, runDate?: any | null, status: string };
 
@@ -3936,6 +3789,217 @@ export type UpsertSummaryOfDiscoursePostMutationVariables = Exact<{
 
 
 export type UpsertSummaryOfDiscoursePostMutation = { __typename?: 'Mutation', upsertSummaryOfDiscoursePost: { __typename?: 'DiscoursePost', id: string, spaceId: string, title: string, url: string, fullContent?: string | null, author?: string | null, datePublished: any, createdAt: any, indexedAt?: any | null, status: string, enacted?: boolean | null, discussed?: boolean | null, aiSummary?: string | null, aiSummaryDate?: any | null } };
+
+export type AskCompletionAiMutationVariables = Exact<{
+  input: CompletionAiInput;
+}>;
+
+
+export type AskCompletionAiMutation = { __typename?: 'Mutation', askCompletionAI: { __typename?: 'OpenAICompletionResponse', created: number, id: string, model: string, object: string, choices: Array<{ __typename?: 'CreateCompletionResponseChoice', finish_reason?: string | null, index?: number | null, text?: string | null, logprobs?: { __typename?: 'OpenAIChoiceLogprobs', text?: string | null, text_offset?: Array<number> | null, token_logprobs?: Array<number> | null, tokens?: Array<string> | null } | null }>, usage?: { __typename?: 'OpenAIUsage', completion_tokens: number, prompt_tokens: number, total_tokens: number } | null } };
+
+export type AskChatCompletionAiMutationVariables = Exact<{
+  input: ChatCompletionAiInput;
+}>;
+
+
+export type AskChatCompletionAiMutation = { __typename?: 'Mutation', askChatCompletionAI: { __typename?: 'OpenAIChatCompletionResponse', created: number, id: string, model: string, object: string, choices: Array<{ __typename?: 'OpenAIChatCompletionChoice', finish_reason?: string | null, index?: number | null, message?: { __typename?: 'OpenAIMessage', content?: string | null, role: string } | null }>, usage?: { __typename?: 'OpenAIUsage', completion_tokens: number, prompt_tokens: number, total_tokens: number } | null } };
+
+export type CreateSummaryOfContentMutationVariables = Exact<{
+  input: Scalars['String'];
+}>;
+
+
+export type CreateSummaryOfContentMutation = { __typename?: 'Mutation', createSummaryOfContent: { __typename?: 'OpenAITextResponse', text: string, tokenCount: number } };
+
+export type ExtractRelevantTextForTopicMutationVariables = Exact<{
+  input: ExtractRelevantTextForTopicInput;
+}>;
+
+
+export type ExtractRelevantTextForTopicMutation = { __typename?: 'Mutation', extractRelevantTextForTopic: { __typename?: 'OpenAITextResponse', text: string, tokenCount: number } };
+
+export type DownloadAndCleanContentMutationVariables = Exact<{
+  input: Scalars['String'];
+}>;
+
+
+export type DownloadAndCleanContentMutation = { __typename?: 'Mutation', downloadAndCleanContent: { __typename?: 'DownloadAndCleanContentResponse', content: string, links: Array<{ __typename?: 'DownloadLinkInfo', downloadStatus: string, link: string, tokenCount: number }> } };
+
+export type GenerateImageMutationVariables = Exact<{
+  input: GenerateImageInput;
+}>;
+
+
+export type GenerateImageMutation = { __typename?: 'Mutation', generateImage: { __typename?: 'ImagesResponse', created: number, data: Array<{ __typename?: 'ImagesResponseDataInner', url?: string | null }> } };
+
+export type ProjectFragment = { __typename?: 'Project', adminUsernames: Array<string>, admins: Array<string>, archived: boolean, creator: string, details: string, discord?: string | null, docs?: string | null, excerpt: string, github?: string | null, id: string, logo?: string | null, name: string, telegram?: string | null, website?: string | null, type: string, cardThumbnail?: string | null, adminUsernamesV1: Array<{ __typename?: 'UsernameAndName', username: string, nameOfTheUser: string }> };
+
+export type ProjectsQueryVariables = Exact<{
+  type?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type ProjectsQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'Project', adminUsernames: Array<string>, admins: Array<string>, archived: boolean, creator: string, details: string, discord?: string | null, docs?: string | null, excerpt: string, github?: string | null, id: string, logo?: string | null, name: string, telegram?: string | null, website?: string | null, type: string, cardThumbnail?: string | null, adminUsernamesV1: Array<{ __typename?: 'UsernameAndName', username: string, nameOfTheUser: string }> }> };
+
+export type ProjectQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type ProjectQuery = { __typename?: 'Query', project: { __typename?: 'Project', adminUsernames: Array<string>, admins: Array<string>, archived: boolean, creator: string, details: string, discord?: string | null, docs?: string | null, excerpt: string, github?: string | null, id: string, logo?: string | null, name: string, telegram?: string | null, website?: string | null, type: string, cardThumbnail?: string | null, adminUsernamesV1: Array<{ __typename?: 'UsernameAndName', username: string, nameOfTheUser: string }> } };
+
+export type UpsertProjectMutationVariables = Exact<{
+  input: UpsertProjectInput;
+}>;
+
+
+export type UpsertProjectMutation = { __typename?: 'Mutation', upsertProject: { __typename?: 'Project', adminUsernames: Array<string>, admins: Array<string>, archived: boolean, creator: string, details: string, discord?: string | null, docs?: string | null, excerpt: string, github?: string | null, id: string, logo?: string | null, name: string, telegram?: string | null, website?: string | null, type: string, cardThumbnail?: string | null, adminUsernamesV1: Array<{ __typename?: 'UsernameAndName', username: string, nameOfTheUser: string }> } };
+
+export type UpdateArchivedStatusOfProjectMutationVariables = Exact<{
+  projectId: Scalars['String'];
+  archived: Scalars['Boolean'];
+}>;
+
+
+export type UpdateArchivedStatusOfProjectMutation = { __typename?: 'Mutation', updateArchivedStatusOfProject: { __typename?: 'Project', adminUsernames: Array<string>, admins: Array<string>, archived: boolean, creator: string, details: string, discord?: string | null, docs?: string | null, excerpt: string, github?: string | null, id: string, logo?: string | null, name: string, telegram?: string | null, website?: string | null, type: string, cardThumbnail?: string | null, adminUsernamesV1: Array<{ __typename?: 'UsernameAndName', username: string, nameOfTheUser: string }> } };
+
+export type ProjectByteFragment = { __typename?: 'ProjectByte', admins: Array<string>, content: string, created: string, id: string, name: string, postSubmissionStepContent?: string | null, priority: number, tags: Array<string>, archived: boolean, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> };
+
+export type ProjectBytesQueryVariables = Exact<{
+  projectId: Scalars['String'];
+}>;
+
+
+export type ProjectBytesQuery = { __typename?: 'Query', projectBytes: Array<{ __typename?: 'ProjectByte', admins: Array<string>, content: string, created: string, id: string, name: string, postSubmissionStepContent?: string | null, priority: number, tags: Array<string>, archived: boolean, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> }> };
+
+export type ProjectByteQueryVariables = Exact<{
+  projectId: Scalars['String'];
+  id: Scalars['String'];
+}>;
+
+
+export type ProjectByteQuery = { __typename?: 'Query', projectByte: { __typename?: 'ProjectByte', admins: Array<string>, content: string, created: string, id: string, name: string, postSubmissionStepContent?: string | null, priority: number, tags: Array<string>, archived: boolean, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> } };
+
+export type UpsertProjectByteMutationVariables = Exact<{
+  projectId: Scalars['String'];
+  input: UpsertProjectByteInput;
+}>;
+
+
+export type UpsertProjectByteMutation = { __typename?: 'Mutation', upsertProjectByte: { __typename?: 'ProjectByte', admins: Array<string>, content: string, created: string, id: string, name: string, postSubmissionStepContent?: string | null, priority: number, tags: Array<string>, archived: boolean, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> } };
+
+export type UpdateArchivedStatusOfProjectByteMutationVariables = Exact<{
+  projectId: Scalars['String'];
+  projectByteId: Scalars['String'];
+  archived: Scalars['Boolean'];
+}>;
+
+
+export type UpdateArchivedStatusOfProjectByteMutation = { __typename?: 'Mutation', updateArchivedStatusOfProjectByte: { __typename?: 'ProjectByte', admins: Array<string>, content: string, created: string, id: string, name: string, postSubmissionStepContent?: string | null, priority: number, tags: Array<string>, archived: boolean, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> } };
+
+export type ProjectByteCollectionFragment = { __typename?: 'ProjectByteCollection', byteIds: Array<string>, description: string, id: string, name: string, order: number, status: string, archived: boolean, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string }> };
+
+export type ProjectByteCollectionsQueryVariables = Exact<{
+  projectId: Scalars['String'];
+}>;
+
+
+export type ProjectByteCollectionsQuery = { __typename?: 'Query', projectByteCollections: Array<{ __typename?: 'ProjectByteCollection', byteIds: Array<string>, description: string, id: string, name: string, order: number, status: string, archived: boolean, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string }> }> };
+
+export type ProjectByteCollectionQueryVariables = Exact<{
+  projectId: Scalars['String'];
+  id: Scalars['String'];
+}>;
+
+
+export type ProjectByteCollectionQuery = { __typename?: 'Query', projectByteCollection: { __typename?: 'ProjectByteCollection', byteIds: Array<string>, description: string, id: string, name: string, order: number, status: string, archived: boolean, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string }> } };
+
+export type UpsertProjectByteCollectionMutationVariables = Exact<{
+  projectId: Scalars['String'];
+  input: UpsertProjectByteCollectionInput;
+}>;
+
+
+export type UpsertProjectByteCollectionMutation = { __typename?: 'Mutation', upsertProjectByteCollection: { __typename?: 'ProjectByteCollection', byteIds: Array<string>, description: string, id: string, name: string, order: number, status: string, archived: boolean, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string }> } };
+
+export type UpdateArchivedStatusOfProjectByteCollectionMutationVariables = Exact<{
+  projectId: Scalars['String'];
+  byteCollectionId: Scalars['String'];
+  archived: Scalars['Boolean'];
+}>;
+
+
+export type UpdateArchivedStatusOfProjectByteCollectionMutation = { __typename?: 'Mutation', updateArchivedStatusOfProjectByteCollection: { __typename?: 'ProjectByteCollection', byteIds: Array<string>, description: string, id: string, name: string, order: number, status: string, archived: boolean, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string }> } };
+
+export type ProjectShortVideoFragment = { __typename?: 'ProjectShortVideo', id: string, title: string, description: string, thumbnail: string, videoUrl: string, priority: number, createdAt: string, updatedAt: string, archived: boolean };
+
+export type ProjectShortVideosQueryVariables = Exact<{
+  projectId: Scalars['String'];
+}>;
+
+
+export type ProjectShortVideosQuery = { __typename?: 'Query', projectShortVideos: Array<{ __typename?: 'ProjectShortVideo', id: string, title: string, description: string, thumbnail: string, videoUrl: string, priority: number, createdAt: string, updatedAt: string, archived: boolean }> };
+
+export type UpsertProjectShortVideoMutationVariables = Exact<{
+  projectId: Scalars['String'];
+  input: ProjectShortVideoInput;
+}>;
+
+
+export type UpsertProjectShortVideoMutation = { __typename?: 'Mutation', upsertProjectShortVideo: { __typename?: 'ProjectShortVideo', id: string, title: string, description: string, thumbnail: string, videoUrl: string, priority: number, createdAt: string, updatedAt: string, archived: boolean } };
+
+export type UpdateArchivedStatusOfProjectShortVideoMutationVariables = Exact<{
+  projectId: Scalars['String'];
+  projectShortVideoId: Scalars['String'];
+  archived: Scalars['Boolean'];
+}>;
+
+
+export type UpdateArchivedStatusOfProjectShortVideoMutation = { __typename?: 'Mutation', updateArchivedStatusOfProjectShortVideo: { __typename?: 'ProjectShortVideo', id: string, title: string, description: string, thumbnail: string, videoUrl: string, priority: number, createdAt: string, updatedAt: string, archived: boolean } };
+
+export type ShortVideoFragment = { __typename?: 'ShortVideo', id: string, title: string, description: string, thumbnail: string, videoUrl: string, priority: number, createdAt: string, updatedAt: string };
+
+export type UpsertShortVideoMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+  shortVideo: ShortVideoInput;
+}>;
+
+
+export type UpsertShortVideoMutation = { __typename?: 'Mutation', upsertShortVideo: { __typename?: 'ShortVideo', id: string, title: string, description: string, thumbnail: string, videoUrl: string, priority: number, createdAt: string, updatedAt: string } };
+
+export type ShortVideosQueryVariables = Exact<{
+  spaceId: Scalars['String'];
+}>;
+
+
+export type ShortVideosQuery = { __typename?: 'Query', shortVideos?: Array<{ __typename?: 'ShortVideo', id: string, title: string, description: string, thumbnail: string, videoUrl: string, priority: number, createdAt: string, updatedAt: string }> | null };
+
+export type SimulationStepFragment = { __typename?: 'SimulationStep', content: string, iframeUrl?: string | null, name: string, uuid: string, order: number };
+
+export type SimulationDetailsFragment = { __typename?: 'Simulation', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, steps: Array<{ __typename?: 'SimulationStep', content: string, iframeUrl?: string | null, name: string, uuid: string, order: number }> };
+
+export type SimulationsQueryVariables = Exact<{
+  spaceId: Scalars['String'];
+}>;
+
+
+export type SimulationsQuery = { __typename?: 'Query', simulations: Array<{ __typename?: 'Simulation', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number }> };
+
+export type SimulationDetailsQueryVariables = Exact<{
+  spaceId: Scalars['String'];
+  simulationId: Scalars['String'];
+}>;
+
+
+export type SimulationDetailsQuery = { __typename?: 'Query', simulation: { __typename?: 'Simulation', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, steps: Array<{ __typename?: 'SimulationStep', content: string, iframeUrl?: string | null, name: string, uuid: string, order: number }> } };
+
+export type UpsertSimulationMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+  input: UpsertSimulationInput;
+}>;
+
+
+export type UpsertSimulationMutation = { __typename?: 'Mutation', payload: { __typename?: 'Simulation', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, publishStatus: string, admins: Array<string>, tags: Array<string>, priority: number, steps: Array<{ __typename?: 'SimulationStep', content: string, iframeUrl?: string | null, name: string, uuid: string, order: number }> } };
 
 export type GuideSettingsFragment = { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null };
 
@@ -4611,6 +4675,22 @@ export const GuideRatingFragmentDoc = gql`
   username
 }
     `;
+export const GuideSummaryFragmentDoc = gql`
+    fragment GuideSummary on Guide {
+  id
+  authors
+  name
+  categories
+  content
+  createdAt
+  guideSource
+  guideType
+  publishStatus
+  thumbnail
+  uuid
+  priority
+}
+    `;
 export const GuideQuestionFragmentDoc = gql`
     fragment GuideQuestion on GuideQuestion {
   answerKeys
@@ -4739,153 +4819,6 @@ export const GuideFragmentDoc = gql`
 }
     ${GuideIntegrationFragmentDoc}
 ${GuideStepFragmentDoc}`;
-export const GuideSummaryFragmentDoc = gql`
-    fragment GuideSummary on Guide {
-  id
-  authors
-  name
-  categories
-  content
-  createdAt
-  guideSource
-  guideType
-  publishStatus
-  thumbnail
-  uuid
-  priority
-}
-    `;
-export const ProjectFragmentDoc = gql`
-    fragment Project on Project {
-  adminUsernames
-  adminUsernamesV1 {
-    username
-    nameOfTheUser
-  }
-  admins
-  creator
-  details
-  discord
-  docs
-  github
-  id
-  logo
-  name
-  telegram
-  website
-  type
-  cardThumbnail
-  archive
-}
-    `;
-export const ProjectByteFragmentDoc = gql`
-    fragment ProjectByte on ProjectByte {
-  admins
-  content
-  created
-  id
-  name
-  postSubmissionStepContent
-  priority
-  steps {
-    content
-    stepItems {
-      __typename
-      ... on ByteQuestion {
-        answerKeys
-        choices {
-          content
-          key
-        }
-        content
-        type
-        uuid
-        explanation
-      }
-      ... on ByteUserInput {
-        label
-        required
-        type
-        uuid
-      }
-      ... on UserDiscordConnect {
-        type
-        uuid
-      }
-    }
-    name
-    uuid
-  }
-  tags
-  archive
-}
-    `;
-export const ProjectShortVideoFragmentDoc = gql`
-    fragment ProjectShortVideo on ProjectShortVideo {
-  id
-  title
-  description
-  thumbnail
-  videoUrl
-  priority
-  createdAt
-  updatedAt
-  archive
-}
-    `;
-export const ProjectByteCollectionFragmentDoc = gql`
-    fragment ProjectByteCollection on ProjectByteCollection {
-  byteIds
-  bytes {
-    byteId
-    name
-    content
-  }
-  description
-  id
-  name
-  order
-  status
-  archive
-}
-    `;
-export const ShortVideoFragmentDoc = gql`
-    fragment ShortVideo on ShortVideo {
-  id
-  title
-  description
-  thumbnail
-  videoUrl
-  priority
-  createdAt
-  updatedAt
-}
-    `;
-export const SimulationStepFragmentDoc = gql`
-    fragment SimulationStep on SimulationStep {
-  content
-  iframeUrl
-  name
-  uuid
-  order
-}
-    `;
-export const SimulationDetailsFragmentDoc = gql`
-    fragment SimulationDetails on Simulation {
-  postSubmissionStepContent
-  content
-  created
-  id
-  name
-  publishStatus
-  admins
-  tags
-  priority
-  steps {
-    ...SimulationStep
-  }
-}
-    ${SimulationStepFragmentDoc}`;
 export const DiscourseIndexRunFragmentFragmentDoc = gql`
     fragment DiscourseIndexRunFragment on DiscourseIndexRun {
   createdAt
@@ -4992,6 +4925,138 @@ export const DiscoursePostFragmentDoc = gql`
   aiSummaryDate
 }
     `;
+export const ProjectFragmentDoc = gql`
+    fragment Project on Project {
+  adminUsernames
+  adminUsernamesV1 {
+    username
+    nameOfTheUser
+  }
+  admins
+  archived
+  creator
+  details
+  discord
+  docs
+  excerpt
+  github
+  id
+  logo
+  name
+  telegram
+  website
+  type
+  cardThumbnail
+}
+    `;
+export const ProjectByteFragmentDoc = gql`
+    fragment ProjectByte on ProjectByte {
+  admins
+  content
+  created
+  id
+  name
+  postSubmissionStepContent
+  priority
+  steps {
+    content
+    stepItems {
+      __typename
+      ... on ByteQuestion {
+        answerKeys
+        choices {
+          content
+          key
+        }
+        content
+        type
+        uuid
+        explanation
+      }
+      ... on ByteUserInput {
+        label
+        required
+        type
+        uuid
+      }
+      ... on UserDiscordConnect {
+        type
+        uuid
+      }
+    }
+    name
+    uuid
+  }
+  tags
+  archived
+}
+    `;
+export const ProjectByteCollectionFragmentDoc = gql`
+    fragment ProjectByteCollection on ProjectByteCollection {
+  byteIds
+  bytes {
+    byteId
+    name
+    content
+  }
+  description
+  id
+  name
+  order
+  status
+  archived
+}
+    `;
+export const ProjectShortVideoFragmentDoc = gql`
+    fragment ProjectShortVideo on ProjectShortVideo {
+  id
+  title
+  description
+  thumbnail
+  videoUrl
+  priority
+  createdAt
+  updatedAt
+  archived
+}
+    `;
+export const ShortVideoFragmentDoc = gql`
+    fragment ShortVideo on ShortVideo {
+  id
+  title
+  description
+  thumbnail
+  videoUrl
+  priority
+  createdAt
+  updatedAt
+}
+    `;
+export const SimulationStepFragmentDoc = gql`
+    fragment SimulationStep on SimulationStep {
+  content
+  iframeUrl
+  name
+  uuid
+  order
+}
+    `;
+export const SimulationDetailsFragmentDoc = gql`
+    fragment SimulationDetails on Simulation {
+  postSubmissionStepContent
+  content
+  created
+  id
+  name
+  publishStatus
+  admins
+  tags
+  priority
+  steps {
+    ...SimulationStep
+  }
+}
+    ${SimulationStepFragmentDoc}`;
 export const GuideSettingsFragmentDoc = gql`
     fragment GuideSettings on GuideSettings {
   askForLoginToSubmit
@@ -5579,6 +5644,43 @@ export function useUpsertByteSocialShareMutation(baseOptions?: Apollo.MutationHo
 export type UpsertByteSocialShareMutationHookResult = ReturnType<typeof useUpsertByteSocialShareMutation>;
 export type UpsertByteSocialShareMutationResult = Apollo.MutationResult<UpsertByteSocialShareMutation>;
 export type UpsertByteSocialShareMutationOptions = Apollo.BaseMutationOptions<UpsertByteSocialShareMutation, UpsertByteSocialShareMutationVariables>;
+export const SubmitByteDocument = gql`
+    mutation SubmitByte($input: ByteSubmissionInput!) {
+  submitByte(submissionInput: $input) {
+    id
+    created
+    createdBy
+    byteId
+    spaceId
+  }
+}
+    `;
+export type SubmitByteMutationFn = Apollo.MutationFunction<SubmitByteMutation, SubmitByteMutationVariables>;
+
+/**
+ * __useSubmitByteMutation__
+ *
+ * To run a mutation, you first call `useSubmitByteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSubmitByteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [submitByteMutation, { data, loading, error }] = useSubmitByteMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useSubmitByteMutation(baseOptions?: Apollo.MutationHookOptions<SubmitByteMutation, SubmitByteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SubmitByteMutation, SubmitByteMutationVariables>(SubmitByteDocument, options);
+      }
+export type SubmitByteMutationHookResult = ReturnType<typeof useSubmitByteMutation>;
+export type SubmitByteMutationResult = Apollo.MutationResult<SubmitByteMutation>;
+export type SubmitByteMutationOptions = Apollo.BaseMutationOptions<SubmitByteMutation, SubmitByteMutationVariables>;
 export const QueryBytesDocument = gql`
     query QueryBytes($spaceId: String!) {
   bytes(spaceId: $spaceId) {
@@ -5691,43 +5793,6 @@ export function useUpsertByteMutation(baseOptions?: Apollo.MutationHookOptions<U
 export type UpsertByteMutationHookResult = ReturnType<typeof useUpsertByteMutation>;
 export type UpsertByteMutationResult = Apollo.MutationResult<UpsertByteMutation>;
 export type UpsertByteMutationOptions = Apollo.BaseMutationOptions<UpsertByteMutation, UpsertByteMutationVariables>;
-export const SubmitByteDocument = gql`
-    mutation SubmitByte($input: ByteSubmissionInput!) {
-  submitByte(submissionInput: $input) {
-    id
-    created
-    createdBy
-    byteId
-    spaceId
-  }
-}
-    `;
-export type SubmitByteMutationFn = Apollo.MutationFunction<SubmitByteMutation, SubmitByteMutationVariables>;
-
-/**
- * __useSubmitByteMutation__
- *
- * To run a mutation, you first call `useSubmitByteMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useSubmitByteMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [submitByteMutation, { data, loading, error }] = useSubmitByteMutation({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useSubmitByteMutation(baseOptions?: Apollo.MutationHookOptions<SubmitByteMutation, SubmitByteMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<SubmitByteMutation, SubmitByteMutationVariables>(SubmitByteDocument, options);
-      }
-export type SubmitByteMutationHookResult = ReturnType<typeof useSubmitByteMutation>;
-export type SubmitByteMutationResult = Apollo.MutationResult<SubmitByteMutation>;
-export type SubmitByteMutationOptions = Apollo.BaseMutationOptions<SubmitByteMutation, SubmitByteMutationVariables>;
 export const ChatbotCategoriesDocument = gql`
     query ChatbotCategories($spaceId: String!) {
   chatbotCategories(spaceId: $spaceId) {
@@ -7859,6 +7924,44 @@ export function useSubmitGuideMutation(baseOptions?: Apollo.MutationHookOptions<
 export type SubmitGuideMutationHookResult = ReturnType<typeof useSubmitGuideMutation>;
 export type SubmitGuideMutationResult = Apollo.MutationResult<SubmitGuideMutation>;
 export type SubmitGuideMutationOptions = Apollo.BaseMutationOptions<SubmitGuideMutation, SubmitGuideMutationVariables>;
+export const GuidesQueryDocument = gql`
+    query GuidesQuery($space: String!) {
+  guides(spaceId: $space) {
+    ...GuideSummary
+  }
+}
+    ${GuideSummaryFragmentDoc}`;
+
+/**
+ * __useGuidesQueryQuery__
+ *
+ * To run a query within a React component, call `useGuidesQueryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGuidesQueryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGuidesQueryQuery({
+ *   variables: {
+ *      space: // value for 'space'
+ *   },
+ * });
+ */
+export function useGuidesQueryQuery(baseOptions: Apollo.QueryHookOptions<GuidesQueryQuery, GuidesQueryQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GuidesQueryQuery, GuidesQueryQueryVariables>(GuidesQueryDocument, options);
+      }
+export function useGuidesQueryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GuidesQueryQuery, GuidesQueryQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GuidesQueryQuery, GuidesQueryQueryVariables>(GuidesQueryDocument, options);
+        }
+export type GuidesQueryQueryHookResult = ReturnType<typeof useGuidesQueryQuery>;
+export type GuidesQueryLazyQueryHookResult = ReturnType<typeof useGuidesQueryLazyQuery>;
+export type GuidesQueryQueryResult = Apollo.QueryResult<GuidesQueryQuery, GuidesQueryQueryVariables>;
+export function refetchGuidesQueryQuery(variables: GuidesQueryQueryVariables) {
+      return { query: GuidesQueryDocument, variables: variables }
+    }
 export const UpsertGuideDocument = gql`
     mutation UpsertGuide($spaceId: String!, $guideInput: GuideInput!) {
   payload: upsertGuide(spaceId: $spaceId, guideInput: $guideInput) {
@@ -7964,881 +8067,6 @@ export function useDeleteGuideMutation(baseOptions?: Apollo.MutationHookOptions<
 export type DeleteGuideMutationHookResult = ReturnType<typeof useDeleteGuideMutation>;
 export type DeleteGuideMutationResult = Apollo.MutationResult<DeleteGuideMutation>;
 export type DeleteGuideMutationOptions = Apollo.BaseMutationOptions<DeleteGuideMutation, DeleteGuideMutationVariables>;
-export const GuidesQueryDocument = gql`
-    query GuidesQuery($space: String!) {
-  guides(spaceId: $space) {
-    ...GuideSummary
-  }
-}
-    ${GuideSummaryFragmentDoc}`;
-
-/**
- * __useGuidesQueryQuery__
- *
- * To run a query within a React component, call `useGuidesQueryQuery` and pass it any options that fit your needs.
- * When your component renders, `useGuidesQueryQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGuidesQueryQuery({
- *   variables: {
- *      space: // value for 'space'
- *   },
- * });
- */
-export function useGuidesQueryQuery(baseOptions: Apollo.QueryHookOptions<GuidesQueryQuery, GuidesQueryQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GuidesQueryQuery, GuidesQueryQueryVariables>(GuidesQueryDocument, options);
-      }
-export function useGuidesQueryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GuidesQueryQuery, GuidesQueryQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GuidesQueryQuery, GuidesQueryQueryVariables>(GuidesQueryDocument, options);
-        }
-export type GuidesQueryQueryHookResult = ReturnType<typeof useGuidesQueryQuery>;
-export type GuidesQueryLazyQueryHookResult = ReturnType<typeof useGuidesQueryLazyQuery>;
-export type GuidesQueryQueryResult = Apollo.QueryResult<GuidesQueryQuery, GuidesQueryQueryVariables>;
-export function refetchGuidesQueryQuery(variables: GuidesQueryQueryVariables) {
-      return { query: GuidesQueryDocument, variables: variables }
-    }
-export const AskCompletionAiDocument = gql`
-    mutation AskCompletionAI($input: CompletionAIInput!) {
-  askCompletionAI(input: $input) {
-    choices {
-      finish_reason
-      index
-      logprobs {
-        text
-        text_offset
-        token_logprobs
-        tokens
-      }
-      text
-    }
-    created
-    id
-    model
-    object
-    usage {
-      completion_tokens
-      prompt_tokens
-      total_tokens
-    }
-  }
-}
-    `;
-export type AskCompletionAiMutationFn = Apollo.MutationFunction<AskCompletionAiMutation, AskCompletionAiMutationVariables>;
-
-/**
- * __useAskCompletionAiMutation__
- *
- * To run a mutation, you first call `useAskCompletionAiMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useAskCompletionAiMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [askCompletionAiMutation, { data, loading, error }] = useAskCompletionAiMutation({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useAskCompletionAiMutation(baseOptions?: Apollo.MutationHookOptions<AskCompletionAiMutation, AskCompletionAiMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<AskCompletionAiMutation, AskCompletionAiMutationVariables>(AskCompletionAiDocument, options);
-      }
-export type AskCompletionAiMutationHookResult = ReturnType<typeof useAskCompletionAiMutation>;
-export type AskCompletionAiMutationResult = Apollo.MutationResult<AskCompletionAiMutation>;
-export type AskCompletionAiMutationOptions = Apollo.BaseMutationOptions<AskCompletionAiMutation, AskCompletionAiMutationVariables>;
-export const AskChatCompletionAiDocument = gql`
-    mutation AskChatCompletionAI($input: ChatCompletionAIInput!) {
-  askChatCompletionAI(input: $input) {
-    choices {
-      message {
-        content
-        role
-      }
-      finish_reason
-      index
-    }
-    created
-    id
-    model
-    object
-    usage {
-      completion_tokens
-      prompt_tokens
-      total_tokens
-    }
-  }
-}
-    `;
-export type AskChatCompletionAiMutationFn = Apollo.MutationFunction<AskChatCompletionAiMutation, AskChatCompletionAiMutationVariables>;
-
-/**
- * __useAskChatCompletionAiMutation__
- *
- * To run a mutation, you first call `useAskChatCompletionAiMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useAskChatCompletionAiMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [askChatCompletionAiMutation, { data, loading, error }] = useAskChatCompletionAiMutation({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useAskChatCompletionAiMutation(baseOptions?: Apollo.MutationHookOptions<AskChatCompletionAiMutation, AskChatCompletionAiMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<AskChatCompletionAiMutation, AskChatCompletionAiMutationVariables>(AskChatCompletionAiDocument, options);
-      }
-export type AskChatCompletionAiMutationHookResult = ReturnType<typeof useAskChatCompletionAiMutation>;
-export type AskChatCompletionAiMutationResult = Apollo.MutationResult<AskChatCompletionAiMutation>;
-export type AskChatCompletionAiMutationOptions = Apollo.BaseMutationOptions<AskChatCompletionAiMutation, AskChatCompletionAiMutationVariables>;
-export const CreateSummaryOfContentDocument = gql`
-    mutation CreateSummaryOfContent($input: String!) {
-  createSummaryOfContent(input: $input) {
-    text
-    tokenCount
-  }
-}
-    `;
-export type CreateSummaryOfContentMutationFn = Apollo.MutationFunction<CreateSummaryOfContentMutation, CreateSummaryOfContentMutationVariables>;
-
-/**
- * __useCreateSummaryOfContentMutation__
- *
- * To run a mutation, you first call `useCreateSummaryOfContentMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateSummaryOfContentMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createSummaryOfContentMutation, { data, loading, error }] = useCreateSummaryOfContentMutation({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useCreateSummaryOfContentMutation(baseOptions?: Apollo.MutationHookOptions<CreateSummaryOfContentMutation, CreateSummaryOfContentMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateSummaryOfContentMutation, CreateSummaryOfContentMutationVariables>(CreateSummaryOfContentDocument, options);
-      }
-export type CreateSummaryOfContentMutationHookResult = ReturnType<typeof useCreateSummaryOfContentMutation>;
-export type CreateSummaryOfContentMutationResult = Apollo.MutationResult<CreateSummaryOfContentMutation>;
-export type CreateSummaryOfContentMutationOptions = Apollo.BaseMutationOptions<CreateSummaryOfContentMutation, CreateSummaryOfContentMutationVariables>;
-export const ExtractRelevantTextForTopicDocument = gql`
-    mutation ExtractRelevantTextForTopic($input: ExtractRelevantTextForTopicInput!) {
-  extractRelevantTextForTopic(input: $input) {
-    text
-    tokenCount
-  }
-}
-    `;
-export type ExtractRelevantTextForTopicMutationFn = Apollo.MutationFunction<ExtractRelevantTextForTopicMutation, ExtractRelevantTextForTopicMutationVariables>;
-
-/**
- * __useExtractRelevantTextForTopicMutation__
- *
- * To run a mutation, you first call `useExtractRelevantTextForTopicMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useExtractRelevantTextForTopicMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [extractRelevantTextForTopicMutation, { data, loading, error }] = useExtractRelevantTextForTopicMutation({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useExtractRelevantTextForTopicMutation(baseOptions?: Apollo.MutationHookOptions<ExtractRelevantTextForTopicMutation, ExtractRelevantTextForTopicMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<ExtractRelevantTextForTopicMutation, ExtractRelevantTextForTopicMutationVariables>(ExtractRelevantTextForTopicDocument, options);
-      }
-export type ExtractRelevantTextForTopicMutationHookResult = ReturnType<typeof useExtractRelevantTextForTopicMutation>;
-export type ExtractRelevantTextForTopicMutationResult = Apollo.MutationResult<ExtractRelevantTextForTopicMutation>;
-export type ExtractRelevantTextForTopicMutationOptions = Apollo.BaseMutationOptions<ExtractRelevantTextForTopicMutation, ExtractRelevantTextForTopicMutationVariables>;
-export const DownloadAndCleanContentDocument = gql`
-    mutation DownloadAndCleanContent($input: String!) {
-  downloadAndCleanContent(input: $input) {
-    content
-    links {
-      downloadStatus
-      link
-      tokenCount
-    }
-  }
-}
-    `;
-export type DownloadAndCleanContentMutationFn = Apollo.MutationFunction<DownloadAndCleanContentMutation, DownloadAndCleanContentMutationVariables>;
-
-/**
- * __useDownloadAndCleanContentMutation__
- *
- * To run a mutation, you first call `useDownloadAndCleanContentMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useDownloadAndCleanContentMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [downloadAndCleanContentMutation, { data, loading, error }] = useDownloadAndCleanContentMutation({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useDownloadAndCleanContentMutation(baseOptions?: Apollo.MutationHookOptions<DownloadAndCleanContentMutation, DownloadAndCleanContentMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<DownloadAndCleanContentMutation, DownloadAndCleanContentMutationVariables>(DownloadAndCleanContentDocument, options);
-      }
-export type DownloadAndCleanContentMutationHookResult = ReturnType<typeof useDownloadAndCleanContentMutation>;
-export type DownloadAndCleanContentMutationResult = Apollo.MutationResult<DownloadAndCleanContentMutation>;
-export type DownloadAndCleanContentMutationOptions = Apollo.BaseMutationOptions<DownloadAndCleanContentMutation, DownloadAndCleanContentMutationVariables>;
-export const GenerateImageDocument = gql`
-    mutation GenerateImage($input: GenerateImageInput!) {
-  generateImage(input: $input) {
-    created
-    data {
-      url
-    }
-  }
-}
-    `;
-export type GenerateImageMutationFn = Apollo.MutationFunction<GenerateImageMutation, GenerateImageMutationVariables>;
-
-/**
- * __useGenerateImageMutation__
- *
- * To run a mutation, you first call `useGenerateImageMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useGenerateImageMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [generateImageMutation, { data, loading, error }] = useGenerateImageMutation({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useGenerateImageMutation(baseOptions?: Apollo.MutationHookOptions<GenerateImageMutation, GenerateImageMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<GenerateImageMutation, GenerateImageMutationVariables>(GenerateImageDocument, options);
-      }
-export type GenerateImageMutationHookResult = ReturnType<typeof useGenerateImageMutation>;
-export type GenerateImageMutationResult = Apollo.MutationResult<GenerateImageMutation>;
-export type GenerateImageMutationOptions = Apollo.BaseMutationOptions<GenerateImageMutation, GenerateImageMutationVariables>;
-export const ProjectsDocument = gql`
-    query Projects($type: String) {
-  projects(type: $type) {
-    ...Project
-  }
-}
-    ${ProjectFragmentDoc}`;
-
-/**
- * __useProjectsQuery__
- *
- * To run a query within a React component, call `useProjectsQuery` and pass it any options that fit your needs.
- * When your component renders, `useProjectsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useProjectsQuery({
- *   variables: {
- *      type: // value for 'type'
- *   },
- * });
- */
-export function useProjectsQuery(baseOptions?: Apollo.QueryHookOptions<ProjectsQuery, ProjectsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<ProjectsQuery, ProjectsQueryVariables>(ProjectsDocument, options);
-      }
-export function useProjectsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProjectsQuery, ProjectsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<ProjectsQuery, ProjectsQueryVariables>(ProjectsDocument, options);
-        }
-export type ProjectsQueryHookResult = ReturnType<typeof useProjectsQuery>;
-export type ProjectsLazyQueryHookResult = ReturnType<typeof useProjectsLazyQuery>;
-export type ProjectsQueryResult = Apollo.QueryResult<ProjectsQuery, ProjectsQueryVariables>;
-export function refetchProjectsQuery(variables?: ProjectsQueryVariables) {
-      return { query: ProjectsDocument, variables: variables }
-    }
-export const ProjectDocument = gql`
-    query Project($id: String!) {
-  project(id: $id) {
-    ...Project
-  }
-}
-    ${ProjectFragmentDoc}`;
-
-/**
- * __useProjectQuery__
- *
- * To run a query within a React component, call `useProjectQuery` and pass it any options that fit your needs.
- * When your component renders, `useProjectQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useProjectQuery({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useProjectQuery(baseOptions: Apollo.QueryHookOptions<ProjectQuery, ProjectQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<ProjectQuery, ProjectQueryVariables>(ProjectDocument, options);
-      }
-export function useProjectLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProjectQuery, ProjectQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<ProjectQuery, ProjectQueryVariables>(ProjectDocument, options);
-        }
-export type ProjectQueryHookResult = ReturnType<typeof useProjectQuery>;
-export type ProjectLazyQueryHookResult = ReturnType<typeof useProjectLazyQuery>;
-export type ProjectQueryResult = Apollo.QueryResult<ProjectQuery, ProjectQueryVariables>;
-export function refetchProjectQuery(variables: ProjectQueryVariables) {
-      return { query: ProjectDocument, variables: variables }
-    }
-export const ProjectBytesDocument = gql`
-    query ProjectBytes($projectId: String!) {
-  projectBytes(projectId: $projectId) {
-    ...ProjectByte
-  }
-}
-    ${ProjectByteFragmentDoc}`;
-
-/**
- * __useProjectBytesQuery__
- *
- * To run a query within a React component, call `useProjectBytesQuery` and pass it any options that fit your needs.
- * When your component renders, `useProjectBytesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useProjectBytesQuery({
- *   variables: {
- *      projectId: // value for 'projectId'
- *   },
- * });
- */
-export function useProjectBytesQuery(baseOptions: Apollo.QueryHookOptions<ProjectBytesQuery, ProjectBytesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<ProjectBytesQuery, ProjectBytesQueryVariables>(ProjectBytesDocument, options);
-      }
-export function useProjectBytesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProjectBytesQuery, ProjectBytesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<ProjectBytesQuery, ProjectBytesQueryVariables>(ProjectBytesDocument, options);
-        }
-export type ProjectBytesQueryHookResult = ReturnType<typeof useProjectBytesQuery>;
-export type ProjectBytesLazyQueryHookResult = ReturnType<typeof useProjectBytesLazyQuery>;
-export type ProjectBytesQueryResult = Apollo.QueryResult<ProjectBytesQuery, ProjectBytesQueryVariables>;
-export function refetchProjectBytesQuery(variables: ProjectBytesQueryVariables) {
-      return { query: ProjectBytesDocument, variables: variables }
-    }
-export const ProjectShortVideosDocument = gql`
-    query ProjectShortVideos($projectId: String!) {
-  projectShortVideos(projectId: $projectId) {
-    ...ProjectShortVideo
-  }
-}
-    ${ProjectShortVideoFragmentDoc}`;
-
-/**
- * __useProjectShortVideosQuery__
- *
- * To run a query within a React component, call `useProjectShortVideosQuery` and pass it any options that fit your needs.
- * When your component renders, `useProjectShortVideosQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useProjectShortVideosQuery({
- *   variables: {
- *      projectId: // value for 'projectId'
- *   },
- * });
- */
-export function useProjectShortVideosQuery(baseOptions: Apollo.QueryHookOptions<ProjectShortVideosQuery, ProjectShortVideosQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<ProjectShortVideosQuery, ProjectShortVideosQueryVariables>(ProjectShortVideosDocument, options);
-      }
-export function useProjectShortVideosLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProjectShortVideosQuery, ProjectShortVideosQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<ProjectShortVideosQuery, ProjectShortVideosQueryVariables>(ProjectShortVideosDocument, options);
-        }
-export type ProjectShortVideosQueryHookResult = ReturnType<typeof useProjectShortVideosQuery>;
-export type ProjectShortVideosLazyQueryHookResult = ReturnType<typeof useProjectShortVideosLazyQuery>;
-export type ProjectShortVideosQueryResult = Apollo.QueryResult<ProjectShortVideosQuery, ProjectShortVideosQueryVariables>;
-export function refetchProjectShortVideosQuery(variables: ProjectShortVideosQueryVariables) {
-      return { query: ProjectShortVideosDocument, variables: variables }
-    }
-export const ProjectByteDocument = gql`
-    query ProjectByte($projectId: String!, $id: String!) {
-  projectByte(projectId: $projectId, projectByteId: $id) {
-    ...ProjectByte
-  }
-}
-    ${ProjectByteFragmentDoc}`;
-
-/**
- * __useProjectByteQuery__
- *
- * To run a query within a React component, call `useProjectByteQuery` and pass it any options that fit your needs.
- * When your component renders, `useProjectByteQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useProjectByteQuery({
- *   variables: {
- *      projectId: // value for 'projectId'
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useProjectByteQuery(baseOptions: Apollo.QueryHookOptions<ProjectByteQuery, ProjectByteQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<ProjectByteQuery, ProjectByteQueryVariables>(ProjectByteDocument, options);
-      }
-export function useProjectByteLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProjectByteQuery, ProjectByteQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<ProjectByteQuery, ProjectByteQueryVariables>(ProjectByteDocument, options);
-        }
-export type ProjectByteQueryHookResult = ReturnType<typeof useProjectByteQuery>;
-export type ProjectByteLazyQueryHookResult = ReturnType<typeof useProjectByteLazyQuery>;
-export type ProjectByteQueryResult = Apollo.QueryResult<ProjectByteQuery, ProjectByteQueryVariables>;
-export function refetchProjectByteQuery(variables: ProjectByteQueryVariables) {
-      return { query: ProjectByteDocument, variables: variables }
-    }
-export const ProjectByteCollectionsDocument = gql`
-    query ProjectByteCollections($projectId: String!) {
-  projectByteCollections(projectId: $projectId) {
-    ...ProjectByteCollection
-  }
-}
-    ${ProjectByteCollectionFragmentDoc}`;
-
-/**
- * __useProjectByteCollectionsQuery__
- *
- * To run a query within a React component, call `useProjectByteCollectionsQuery` and pass it any options that fit your needs.
- * When your component renders, `useProjectByteCollectionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useProjectByteCollectionsQuery({
- *   variables: {
- *      projectId: // value for 'projectId'
- *   },
- * });
- */
-export function useProjectByteCollectionsQuery(baseOptions: Apollo.QueryHookOptions<ProjectByteCollectionsQuery, ProjectByteCollectionsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<ProjectByteCollectionsQuery, ProjectByteCollectionsQueryVariables>(ProjectByteCollectionsDocument, options);
-      }
-export function useProjectByteCollectionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProjectByteCollectionsQuery, ProjectByteCollectionsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<ProjectByteCollectionsQuery, ProjectByteCollectionsQueryVariables>(ProjectByteCollectionsDocument, options);
-        }
-export type ProjectByteCollectionsQueryHookResult = ReturnType<typeof useProjectByteCollectionsQuery>;
-export type ProjectByteCollectionsLazyQueryHookResult = ReturnType<typeof useProjectByteCollectionsLazyQuery>;
-export type ProjectByteCollectionsQueryResult = Apollo.QueryResult<ProjectByteCollectionsQuery, ProjectByteCollectionsQueryVariables>;
-export function refetchProjectByteCollectionsQuery(variables: ProjectByteCollectionsQueryVariables) {
-      return { query: ProjectByteCollectionsDocument, variables: variables }
-    }
-export const ProjectByteCollectionDocument = gql`
-    query ProjectByteCollection($projectId: String!, $id: String!) {
-  projectByteCollection(projectId: $projectId, byteCollectionId: $id) {
-    ...ProjectByteCollection
-  }
-}
-    ${ProjectByteCollectionFragmentDoc}`;
-
-/**
- * __useProjectByteCollectionQuery__
- *
- * To run a query within a React component, call `useProjectByteCollectionQuery` and pass it any options that fit your needs.
- * When your component renders, `useProjectByteCollectionQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useProjectByteCollectionQuery({
- *   variables: {
- *      projectId: // value for 'projectId'
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useProjectByteCollectionQuery(baseOptions: Apollo.QueryHookOptions<ProjectByteCollectionQuery, ProjectByteCollectionQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<ProjectByteCollectionQuery, ProjectByteCollectionQueryVariables>(ProjectByteCollectionDocument, options);
-      }
-export function useProjectByteCollectionLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProjectByteCollectionQuery, ProjectByteCollectionQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<ProjectByteCollectionQuery, ProjectByteCollectionQueryVariables>(ProjectByteCollectionDocument, options);
-        }
-export type ProjectByteCollectionQueryHookResult = ReturnType<typeof useProjectByteCollectionQuery>;
-export type ProjectByteCollectionLazyQueryHookResult = ReturnType<typeof useProjectByteCollectionLazyQuery>;
-export type ProjectByteCollectionQueryResult = Apollo.QueryResult<ProjectByteCollectionQuery, ProjectByteCollectionQueryVariables>;
-export function refetchProjectByteCollectionQuery(variables: ProjectByteCollectionQueryVariables) {
-      return { query: ProjectByteCollectionDocument, variables: variables }
-    }
-export const UpsertProjectDocument = gql`
-    mutation UpsertProject($input: UpsertProjectInput!) {
-  upsertProject(input: $input) {
-    ...Project
-  }
-}
-    ${ProjectFragmentDoc}`;
-export type UpsertProjectMutationFn = Apollo.MutationFunction<UpsertProjectMutation, UpsertProjectMutationVariables>;
-
-/**
- * __useUpsertProjectMutation__
- *
- * To run a mutation, you first call `useUpsertProjectMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpsertProjectMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [upsertProjectMutation, { data, loading, error }] = useUpsertProjectMutation({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useUpsertProjectMutation(baseOptions?: Apollo.MutationHookOptions<UpsertProjectMutation, UpsertProjectMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpsertProjectMutation, UpsertProjectMutationVariables>(UpsertProjectDocument, options);
-      }
-export type UpsertProjectMutationHookResult = ReturnType<typeof useUpsertProjectMutation>;
-export type UpsertProjectMutationResult = Apollo.MutationResult<UpsertProjectMutation>;
-export type UpsertProjectMutationOptions = Apollo.BaseMutationOptions<UpsertProjectMutation, UpsertProjectMutationVariables>;
-export const UpsertProjectByteDocument = gql`
-    mutation UpsertProjectByte($projectId: String!, $input: UpsertProjectByteInput!) {
-  upsertProjectByte(projectId: $projectId, input: $input) {
-    ...ProjectByte
-  }
-}
-    ${ProjectByteFragmentDoc}`;
-export type UpsertProjectByteMutationFn = Apollo.MutationFunction<UpsertProjectByteMutation, UpsertProjectByteMutationVariables>;
-
-/**
- * __useUpsertProjectByteMutation__
- *
- * To run a mutation, you first call `useUpsertProjectByteMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpsertProjectByteMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [upsertProjectByteMutation, { data, loading, error }] = useUpsertProjectByteMutation({
- *   variables: {
- *      projectId: // value for 'projectId'
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useUpsertProjectByteMutation(baseOptions?: Apollo.MutationHookOptions<UpsertProjectByteMutation, UpsertProjectByteMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpsertProjectByteMutation, UpsertProjectByteMutationVariables>(UpsertProjectByteDocument, options);
-      }
-export type UpsertProjectByteMutationHookResult = ReturnType<typeof useUpsertProjectByteMutation>;
-export type UpsertProjectByteMutationResult = Apollo.MutationResult<UpsertProjectByteMutation>;
-export type UpsertProjectByteMutationOptions = Apollo.BaseMutationOptions<UpsertProjectByteMutation, UpsertProjectByteMutationVariables>;
-export const UpsertProjectByteCollectionDocument = gql`
-    mutation UpsertProjectByteCollection($projectId: String!, $input: UpsertProjectByteCollectionInput!) {
-  upsertProjectByteCollection(projectId: $projectId, input: $input) {
-    ...ProjectByteCollection
-  }
-}
-    ${ProjectByteCollectionFragmentDoc}`;
-export type UpsertProjectByteCollectionMutationFn = Apollo.MutationFunction<UpsertProjectByteCollectionMutation, UpsertProjectByteCollectionMutationVariables>;
-
-/**
- * __useUpsertProjectByteCollectionMutation__
- *
- * To run a mutation, you first call `useUpsertProjectByteCollectionMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpsertProjectByteCollectionMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [upsertProjectByteCollectionMutation, { data, loading, error }] = useUpsertProjectByteCollectionMutation({
- *   variables: {
- *      projectId: // value for 'projectId'
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useUpsertProjectByteCollectionMutation(baseOptions?: Apollo.MutationHookOptions<UpsertProjectByteCollectionMutation, UpsertProjectByteCollectionMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpsertProjectByteCollectionMutation, UpsertProjectByteCollectionMutationVariables>(UpsertProjectByteCollectionDocument, options);
-      }
-export type UpsertProjectByteCollectionMutationHookResult = ReturnType<typeof useUpsertProjectByteCollectionMutation>;
-export type UpsertProjectByteCollectionMutationResult = Apollo.MutationResult<UpsertProjectByteCollectionMutation>;
-export type UpsertProjectByteCollectionMutationOptions = Apollo.BaseMutationOptions<UpsertProjectByteCollectionMutation, UpsertProjectByteCollectionMutationVariables>;
-export const UpsertProjectShortVideoDocument = gql`
-    mutation UpsertProjectShortVideo($projectId: String!, $input: ProjectShortVideoInput!) {
-  upsertProjectShortVideo(projectId: $projectId, shortVideo: $input) {
-    ...ProjectShortVideo
-  }
-}
-    ${ProjectShortVideoFragmentDoc}`;
-export type UpsertProjectShortVideoMutationFn = Apollo.MutationFunction<UpsertProjectShortVideoMutation, UpsertProjectShortVideoMutationVariables>;
-
-/**
- * __useUpsertProjectShortVideoMutation__
- *
- * To run a mutation, you first call `useUpsertProjectShortVideoMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpsertProjectShortVideoMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [upsertProjectShortVideoMutation, { data, loading, error }] = useUpsertProjectShortVideoMutation({
- *   variables: {
- *      projectId: // value for 'projectId'
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useUpsertProjectShortVideoMutation(baseOptions?: Apollo.MutationHookOptions<UpsertProjectShortVideoMutation, UpsertProjectShortVideoMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpsertProjectShortVideoMutation, UpsertProjectShortVideoMutationVariables>(UpsertProjectShortVideoDocument, options);
-      }
-export type UpsertProjectShortVideoMutationHookResult = ReturnType<typeof useUpsertProjectShortVideoMutation>;
-export type UpsertProjectShortVideoMutationResult = Apollo.MutationResult<UpsertProjectShortVideoMutation>;
-export type UpsertProjectShortVideoMutationOptions = Apollo.BaseMutationOptions<UpsertProjectShortVideoMutation, UpsertProjectShortVideoMutationVariables>;
-export const UpsertShortVideoDocument = gql`
-    mutation UpsertShortVideo($spaceId: String!, $shortVideo: ShortVideoInput!) {
-  upsertShortVideo(spaceId: $spaceId, shortVideo: $shortVideo) {
-    ...ShortVideo
-  }
-}
-    ${ShortVideoFragmentDoc}`;
-export type UpsertShortVideoMutationFn = Apollo.MutationFunction<UpsertShortVideoMutation, UpsertShortVideoMutationVariables>;
-
-/**
- * __useUpsertShortVideoMutation__
- *
- * To run a mutation, you first call `useUpsertShortVideoMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpsertShortVideoMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [upsertShortVideoMutation, { data, loading, error }] = useUpsertShortVideoMutation({
- *   variables: {
- *      spaceId: // value for 'spaceId'
- *      shortVideo: // value for 'shortVideo'
- *   },
- * });
- */
-export function useUpsertShortVideoMutation(baseOptions?: Apollo.MutationHookOptions<UpsertShortVideoMutation, UpsertShortVideoMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpsertShortVideoMutation, UpsertShortVideoMutationVariables>(UpsertShortVideoDocument, options);
-      }
-export type UpsertShortVideoMutationHookResult = ReturnType<typeof useUpsertShortVideoMutation>;
-export type UpsertShortVideoMutationResult = Apollo.MutationResult<UpsertShortVideoMutation>;
-export type UpsertShortVideoMutationOptions = Apollo.BaseMutationOptions<UpsertShortVideoMutation, UpsertShortVideoMutationVariables>;
-export const ShortVideosDocument = gql`
-    query ShortVideos($spaceId: String!) {
-  shortVideos(spaceId: $spaceId) {
-    ...ShortVideo
-  }
-}
-    ${ShortVideoFragmentDoc}`;
-
-/**
- * __useShortVideosQuery__
- *
- * To run a query within a React component, call `useShortVideosQuery` and pass it any options that fit your needs.
- * When your component renders, `useShortVideosQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useShortVideosQuery({
- *   variables: {
- *      spaceId: // value for 'spaceId'
- *   },
- * });
- */
-export function useShortVideosQuery(baseOptions: Apollo.QueryHookOptions<ShortVideosQuery, ShortVideosQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<ShortVideosQuery, ShortVideosQueryVariables>(ShortVideosDocument, options);
-      }
-export function useShortVideosLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ShortVideosQuery, ShortVideosQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<ShortVideosQuery, ShortVideosQueryVariables>(ShortVideosDocument, options);
-        }
-export type ShortVideosQueryHookResult = ReturnType<typeof useShortVideosQuery>;
-export type ShortVideosLazyQueryHookResult = ReturnType<typeof useShortVideosLazyQuery>;
-export type ShortVideosQueryResult = Apollo.QueryResult<ShortVideosQuery, ShortVideosQueryVariables>;
-export function refetchShortVideosQuery(variables: ShortVideosQueryVariables) {
-      return { query: ShortVideosDocument, variables: variables }
-    }
-export const SimulationsDocument = gql`
-    query Simulations($spaceId: String!) {
-  simulations(spaceId: $spaceId) {
-    postSubmissionStepContent
-    content
-    created
-    id
-    name
-    publishStatus
-    admins
-    tags
-    priority
-  }
-}
-    `;
-
-/**
- * __useSimulationsQuery__
- *
- * To run a query within a React component, call `useSimulationsQuery` and pass it any options that fit your needs.
- * When your component renders, `useSimulationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useSimulationsQuery({
- *   variables: {
- *      spaceId: // value for 'spaceId'
- *   },
- * });
- */
-export function useSimulationsQuery(baseOptions: Apollo.QueryHookOptions<SimulationsQuery, SimulationsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<SimulationsQuery, SimulationsQueryVariables>(SimulationsDocument, options);
-      }
-export function useSimulationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SimulationsQuery, SimulationsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<SimulationsQuery, SimulationsQueryVariables>(SimulationsDocument, options);
-        }
-export type SimulationsQueryHookResult = ReturnType<typeof useSimulationsQuery>;
-export type SimulationsLazyQueryHookResult = ReturnType<typeof useSimulationsLazyQuery>;
-export type SimulationsQueryResult = Apollo.QueryResult<SimulationsQuery, SimulationsQueryVariables>;
-export function refetchSimulationsQuery(variables: SimulationsQueryVariables) {
-      return { query: SimulationsDocument, variables: variables }
-    }
-export const SimulationDetailsDocument = gql`
-    query SimulationDetails($spaceId: String!, $simulationId: String!) {
-  simulation(spaceId: $spaceId, simulationId: $simulationId) {
-    ...SimulationDetails
-  }
-}
-    ${SimulationDetailsFragmentDoc}`;
-
-/**
- * __useSimulationDetailsQuery__
- *
- * To run a query within a React component, call `useSimulationDetailsQuery` and pass it any options that fit your needs.
- * When your component renders, `useSimulationDetailsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useSimulationDetailsQuery({
- *   variables: {
- *      spaceId: // value for 'spaceId'
- *      simulationId: // value for 'simulationId'
- *   },
- * });
- */
-export function useSimulationDetailsQuery(baseOptions: Apollo.QueryHookOptions<SimulationDetailsQuery, SimulationDetailsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<SimulationDetailsQuery, SimulationDetailsQueryVariables>(SimulationDetailsDocument, options);
-      }
-export function useSimulationDetailsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SimulationDetailsQuery, SimulationDetailsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<SimulationDetailsQuery, SimulationDetailsQueryVariables>(SimulationDetailsDocument, options);
-        }
-export type SimulationDetailsQueryHookResult = ReturnType<typeof useSimulationDetailsQuery>;
-export type SimulationDetailsLazyQueryHookResult = ReturnType<typeof useSimulationDetailsLazyQuery>;
-export type SimulationDetailsQueryResult = Apollo.QueryResult<SimulationDetailsQuery, SimulationDetailsQueryVariables>;
-export function refetchSimulationDetailsQuery(variables: SimulationDetailsQueryVariables) {
-      return { query: SimulationDetailsDocument, variables: variables }
-    }
-export const UpsertSimulationDocument = gql`
-    mutation UpsertSimulation($spaceId: String!, $input: UpsertSimulationInput!) {
-  payload: upsertSimulation(spaceId: $spaceId, input: $input) {
-    ...SimulationDetails
-  }
-}
-    ${SimulationDetailsFragmentDoc}`;
-export type UpsertSimulationMutationFn = Apollo.MutationFunction<UpsertSimulationMutation, UpsertSimulationMutationVariables>;
-
-/**
- * __useUpsertSimulationMutation__
- *
- * To run a mutation, you first call `useUpsertSimulationMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpsertSimulationMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [upsertSimulationMutation, { data, loading, error }] = useUpsertSimulationMutation({
- *   variables: {
- *      spaceId: // value for 'spaceId'
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useUpsertSimulationMutation(baseOptions?: Apollo.MutationHookOptions<UpsertSimulationMutation, UpsertSimulationMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpsertSimulationMutation, UpsertSimulationMutationVariables>(UpsertSimulationDocument, options);
-      }
-export type UpsertSimulationMutationHookResult = ReturnType<typeof useUpsertSimulationMutation>;
-export type UpsertSimulationMutationResult = Apollo.MutationResult<UpsertSimulationMutation>;
-export type UpsertSimulationMutationOptions = Apollo.BaseMutationOptions<UpsertSimulationMutation, UpsertSimulationMutationVariables>;
 export const DiscourseIndexRunsDocument = gql`
     query DiscourseIndexRuns($spaceId: String!) {
   discourseIndexRuns(spaceId: $spaceId) {
@@ -9818,6 +9046,994 @@ export function useUpsertSummaryOfDiscoursePostMutation(baseOptions?: Apollo.Mut
 export type UpsertSummaryOfDiscoursePostMutationHookResult = ReturnType<typeof useUpsertSummaryOfDiscoursePostMutation>;
 export type UpsertSummaryOfDiscoursePostMutationResult = Apollo.MutationResult<UpsertSummaryOfDiscoursePostMutation>;
 export type UpsertSummaryOfDiscoursePostMutationOptions = Apollo.BaseMutationOptions<UpsertSummaryOfDiscoursePostMutation, UpsertSummaryOfDiscoursePostMutationVariables>;
+export const AskCompletionAiDocument = gql`
+    mutation AskCompletionAI($input: CompletionAIInput!) {
+  askCompletionAI(input: $input) {
+    choices {
+      finish_reason
+      index
+      logprobs {
+        text
+        text_offset
+        token_logprobs
+        tokens
+      }
+      text
+    }
+    created
+    id
+    model
+    object
+    usage {
+      completion_tokens
+      prompt_tokens
+      total_tokens
+    }
+  }
+}
+    `;
+export type AskCompletionAiMutationFn = Apollo.MutationFunction<AskCompletionAiMutation, AskCompletionAiMutationVariables>;
+
+/**
+ * __useAskCompletionAiMutation__
+ *
+ * To run a mutation, you first call `useAskCompletionAiMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAskCompletionAiMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [askCompletionAiMutation, { data, loading, error }] = useAskCompletionAiMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAskCompletionAiMutation(baseOptions?: Apollo.MutationHookOptions<AskCompletionAiMutation, AskCompletionAiMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AskCompletionAiMutation, AskCompletionAiMutationVariables>(AskCompletionAiDocument, options);
+      }
+export type AskCompletionAiMutationHookResult = ReturnType<typeof useAskCompletionAiMutation>;
+export type AskCompletionAiMutationResult = Apollo.MutationResult<AskCompletionAiMutation>;
+export type AskCompletionAiMutationOptions = Apollo.BaseMutationOptions<AskCompletionAiMutation, AskCompletionAiMutationVariables>;
+export const AskChatCompletionAiDocument = gql`
+    mutation AskChatCompletionAI($input: ChatCompletionAIInput!) {
+  askChatCompletionAI(input: $input) {
+    choices {
+      message {
+        content
+        role
+      }
+      finish_reason
+      index
+    }
+    created
+    id
+    model
+    object
+    usage {
+      completion_tokens
+      prompt_tokens
+      total_tokens
+    }
+  }
+}
+    `;
+export type AskChatCompletionAiMutationFn = Apollo.MutationFunction<AskChatCompletionAiMutation, AskChatCompletionAiMutationVariables>;
+
+/**
+ * __useAskChatCompletionAiMutation__
+ *
+ * To run a mutation, you first call `useAskChatCompletionAiMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAskChatCompletionAiMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [askChatCompletionAiMutation, { data, loading, error }] = useAskChatCompletionAiMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAskChatCompletionAiMutation(baseOptions?: Apollo.MutationHookOptions<AskChatCompletionAiMutation, AskChatCompletionAiMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AskChatCompletionAiMutation, AskChatCompletionAiMutationVariables>(AskChatCompletionAiDocument, options);
+      }
+export type AskChatCompletionAiMutationHookResult = ReturnType<typeof useAskChatCompletionAiMutation>;
+export type AskChatCompletionAiMutationResult = Apollo.MutationResult<AskChatCompletionAiMutation>;
+export type AskChatCompletionAiMutationOptions = Apollo.BaseMutationOptions<AskChatCompletionAiMutation, AskChatCompletionAiMutationVariables>;
+export const CreateSummaryOfContentDocument = gql`
+    mutation CreateSummaryOfContent($input: String!) {
+  createSummaryOfContent(input: $input) {
+    text
+    tokenCount
+  }
+}
+    `;
+export type CreateSummaryOfContentMutationFn = Apollo.MutationFunction<CreateSummaryOfContentMutation, CreateSummaryOfContentMutationVariables>;
+
+/**
+ * __useCreateSummaryOfContentMutation__
+ *
+ * To run a mutation, you first call `useCreateSummaryOfContentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateSummaryOfContentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createSummaryOfContentMutation, { data, loading, error }] = useCreateSummaryOfContentMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateSummaryOfContentMutation(baseOptions?: Apollo.MutationHookOptions<CreateSummaryOfContentMutation, CreateSummaryOfContentMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateSummaryOfContentMutation, CreateSummaryOfContentMutationVariables>(CreateSummaryOfContentDocument, options);
+      }
+export type CreateSummaryOfContentMutationHookResult = ReturnType<typeof useCreateSummaryOfContentMutation>;
+export type CreateSummaryOfContentMutationResult = Apollo.MutationResult<CreateSummaryOfContentMutation>;
+export type CreateSummaryOfContentMutationOptions = Apollo.BaseMutationOptions<CreateSummaryOfContentMutation, CreateSummaryOfContentMutationVariables>;
+export const ExtractRelevantTextForTopicDocument = gql`
+    mutation ExtractRelevantTextForTopic($input: ExtractRelevantTextForTopicInput!) {
+  extractRelevantTextForTopic(input: $input) {
+    text
+    tokenCount
+  }
+}
+    `;
+export type ExtractRelevantTextForTopicMutationFn = Apollo.MutationFunction<ExtractRelevantTextForTopicMutation, ExtractRelevantTextForTopicMutationVariables>;
+
+/**
+ * __useExtractRelevantTextForTopicMutation__
+ *
+ * To run a mutation, you first call `useExtractRelevantTextForTopicMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useExtractRelevantTextForTopicMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [extractRelevantTextForTopicMutation, { data, loading, error }] = useExtractRelevantTextForTopicMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useExtractRelevantTextForTopicMutation(baseOptions?: Apollo.MutationHookOptions<ExtractRelevantTextForTopicMutation, ExtractRelevantTextForTopicMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ExtractRelevantTextForTopicMutation, ExtractRelevantTextForTopicMutationVariables>(ExtractRelevantTextForTopicDocument, options);
+      }
+export type ExtractRelevantTextForTopicMutationHookResult = ReturnType<typeof useExtractRelevantTextForTopicMutation>;
+export type ExtractRelevantTextForTopicMutationResult = Apollo.MutationResult<ExtractRelevantTextForTopicMutation>;
+export type ExtractRelevantTextForTopicMutationOptions = Apollo.BaseMutationOptions<ExtractRelevantTextForTopicMutation, ExtractRelevantTextForTopicMutationVariables>;
+export const DownloadAndCleanContentDocument = gql`
+    mutation DownloadAndCleanContent($input: String!) {
+  downloadAndCleanContent(input: $input) {
+    content
+    links {
+      downloadStatus
+      link
+      tokenCount
+    }
+  }
+}
+    `;
+export type DownloadAndCleanContentMutationFn = Apollo.MutationFunction<DownloadAndCleanContentMutation, DownloadAndCleanContentMutationVariables>;
+
+/**
+ * __useDownloadAndCleanContentMutation__
+ *
+ * To run a mutation, you first call `useDownloadAndCleanContentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDownloadAndCleanContentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [downloadAndCleanContentMutation, { data, loading, error }] = useDownloadAndCleanContentMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useDownloadAndCleanContentMutation(baseOptions?: Apollo.MutationHookOptions<DownloadAndCleanContentMutation, DownloadAndCleanContentMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DownloadAndCleanContentMutation, DownloadAndCleanContentMutationVariables>(DownloadAndCleanContentDocument, options);
+      }
+export type DownloadAndCleanContentMutationHookResult = ReturnType<typeof useDownloadAndCleanContentMutation>;
+export type DownloadAndCleanContentMutationResult = Apollo.MutationResult<DownloadAndCleanContentMutation>;
+export type DownloadAndCleanContentMutationOptions = Apollo.BaseMutationOptions<DownloadAndCleanContentMutation, DownloadAndCleanContentMutationVariables>;
+export const GenerateImageDocument = gql`
+    mutation GenerateImage($input: GenerateImageInput!) {
+  generateImage(input: $input) {
+    created
+    data {
+      url
+    }
+  }
+}
+    `;
+export type GenerateImageMutationFn = Apollo.MutationFunction<GenerateImageMutation, GenerateImageMutationVariables>;
+
+/**
+ * __useGenerateImageMutation__
+ *
+ * To run a mutation, you first call `useGenerateImageMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useGenerateImageMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [generateImageMutation, { data, loading, error }] = useGenerateImageMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useGenerateImageMutation(baseOptions?: Apollo.MutationHookOptions<GenerateImageMutation, GenerateImageMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<GenerateImageMutation, GenerateImageMutationVariables>(GenerateImageDocument, options);
+      }
+export type GenerateImageMutationHookResult = ReturnType<typeof useGenerateImageMutation>;
+export type GenerateImageMutationResult = Apollo.MutationResult<GenerateImageMutation>;
+export type GenerateImageMutationOptions = Apollo.BaseMutationOptions<GenerateImageMutation, GenerateImageMutationVariables>;
+export const ProjectsDocument = gql`
+    query Projects($type: String) {
+  projects(type: $type) {
+    ...Project
+  }
+}
+    ${ProjectFragmentDoc}`;
+
+/**
+ * __useProjectsQuery__
+ *
+ * To run a query within a React component, call `useProjectsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProjectsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProjectsQuery({
+ *   variables: {
+ *      type: // value for 'type'
+ *   },
+ * });
+ */
+export function useProjectsQuery(baseOptions?: Apollo.QueryHookOptions<ProjectsQuery, ProjectsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ProjectsQuery, ProjectsQueryVariables>(ProjectsDocument, options);
+      }
+export function useProjectsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProjectsQuery, ProjectsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ProjectsQuery, ProjectsQueryVariables>(ProjectsDocument, options);
+        }
+export type ProjectsQueryHookResult = ReturnType<typeof useProjectsQuery>;
+export type ProjectsLazyQueryHookResult = ReturnType<typeof useProjectsLazyQuery>;
+export type ProjectsQueryResult = Apollo.QueryResult<ProjectsQuery, ProjectsQueryVariables>;
+export function refetchProjectsQuery(variables?: ProjectsQueryVariables) {
+      return { query: ProjectsDocument, variables: variables }
+    }
+export const ProjectDocument = gql`
+    query Project($id: String!) {
+  project(id: $id) {
+    ...Project
+  }
+}
+    ${ProjectFragmentDoc}`;
+
+/**
+ * __useProjectQuery__
+ *
+ * To run a query within a React component, call `useProjectQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProjectQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProjectQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useProjectQuery(baseOptions: Apollo.QueryHookOptions<ProjectQuery, ProjectQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ProjectQuery, ProjectQueryVariables>(ProjectDocument, options);
+      }
+export function useProjectLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProjectQuery, ProjectQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ProjectQuery, ProjectQueryVariables>(ProjectDocument, options);
+        }
+export type ProjectQueryHookResult = ReturnType<typeof useProjectQuery>;
+export type ProjectLazyQueryHookResult = ReturnType<typeof useProjectLazyQuery>;
+export type ProjectQueryResult = Apollo.QueryResult<ProjectQuery, ProjectQueryVariables>;
+export function refetchProjectQuery(variables: ProjectQueryVariables) {
+      return { query: ProjectDocument, variables: variables }
+    }
+export const UpsertProjectDocument = gql`
+    mutation UpsertProject($input: UpsertProjectInput!) {
+  upsertProject(input: $input) {
+    ...Project
+  }
+}
+    ${ProjectFragmentDoc}`;
+export type UpsertProjectMutationFn = Apollo.MutationFunction<UpsertProjectMutation, UpsertProjectMutationVariables>;
+
+/**
+ * __useUpsertProjectMutation__
+ *
+ * To run a mutation, you first call `useUpsertProjectMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertProjectMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertProjectMutation, { data, loading, error }] = useUpsertProjectMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpsertProjectMutation(baseOptions?: Apollo.MutationHookOptions<UpsertProjectMutation, UpsertProjectMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpsertProjectMutation, UpsertProjectMutationVariables>(UpsertProjectDocument, options);
+      }
+export type UpsertProjectMutationHookResult = ReturnType<typeof useUpsertProjectMutation>;
+export type UpsertProjectMutationResult = Apollo.MutationResult<UpsertProjectMutation>;
+export type UpsertProjectMutationOptions = Apollo.BaseMutationOptions<UpsertProjectMutation, UpsertProjectMutationVariables>;
+export const UpdateArchivedStatusOfProjectDocument = gql`
+    mutation UpdateArchivedStatusOfProject($projectId: String!, $archived: Boolean!) {
+  updateArchivedStatusOfProject(projectId: $projectId, archived: $archived) {
+    ...Project
+  }
+}
+    ${ProjectFragmentDoc}`;
+export type UpdateArchivedStatusOfProjectMutationFn = Apollo.MutationFunction<UpdateArchivedStatusOfProjectMutation, UpdateArchivedStatusOfProjectMutationVariables>;
+
+/**
+ * __useUpdateArchivedStatusOfProjectMutation__
+ *
+ * To run a mutation, you first call `useUpdateArchivedStatusOfProjectMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateArchivedStatusOfProjectMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateArchivedStatusOfProjectMutation, { data, loading, error }] = useUpdateArchivedStatusOfProjectMutation({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *      archived: // value for 'archived'
+ *   },
+ * });
+ */
+export function useUpdateArchivedStatusOfProjectMutation(baseOptions?: Apollo.MutationHookOptions<UpdateArchivedStatusOfProjectMutation, UpdateArchivedStatusOfProjectMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateArchivedStatusOfProjectMutation, UpdateArchivedStatusOfProjectMutationVariables>(UpdateArchivedStatusOfProjectDocument, options);
+      }
+export type UpdateArchivedStatusOfProjectMutationHookResult = ReturnType<typeof useUpdateArchivedStatusOfProjectMutation>;
+export type UpdateArchivedStatusOfProjectMutationResult = Apollo.MutationResult<UpdateArchivedStatusOfProjectMutation>;
+export type UpdateArchivedStatusOfProjectMutationOptions = Apollo.BaseMutationOptions<UpdateArchivedStatusOfProjectMutation, UpdateArchivedStatusOfProjectMutationVariables>;
+export const ProjectBytesDocument = gql`
+    query ProjectBytes($projectId: String!) {
+  projectBytes(projectId: $projectId) {
+    ...ProjectByte
+  }
+}
+    ${ProjectByteFragmentDoc}`;
+
+/**
+ * __useProjectBytesQuery__
+ *
+ * To run a query within a React component, call `useProjectBytesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProjectBytesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProjectBytesQuery({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *   },
+ * });
+ */
+export function useProjectBytesQuery(baseOptions: Apollo.QueryHookOptions<ProjectBytesQuery, ProjectBytesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ProjectBytesQuery, ProjectBytesQueryVariables>(ProjectBytesDocument, options);
+      }
+export function useProjectBytesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProjectBytesQuery, ProjectBytesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ProjectBytesQuery, ProjectBytesQueryVariables>(ProjectBytesDocument, options);
+        }
+export type ProjectBytesQueryHookResult = ReturnType<typeof useProjectBytesQuery>;
+export type ProjectBytesLazyQueryHookResult = ReturnType<typeof useProjectBytesLazyQuery>;
+export type ProjectBytesQueryResult = Apollo.QueryResult<ProjectBytesQuery, ProjectBytesQueryVariables>;
+export function refetchProjectBytesQuery(variables: ProjectBytesQueryVariables) {
+      return { query: ProjectBytesDocument, variables: variables }
+    }
+export const ProjectByteDocument = gql`
+    query ProjectByte($projectId: String!, $id: String!) {
+  projectByte(projectId: $projectId, projectByteId: $id) {
+    ...ProjectByte
+  }
+}
+    ${ProjectByteFragmentDoc}`;
+
+/**
+ * __useProjectByteQuery__
+ *
+ * To run a query within a React component, call `useProjectByteQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProjectByteQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProjectByteQuery({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useProjectByteQuery(baseOptions: Apollo.QueryHookOptions<ProjectByteQuery, ProjectByteQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ProjectByteQuery, ProjectByteQueryVariables>(ProjectByteDocument, options);
+      }
+export function useProjectByteLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProjectByteQuery, ProjectByteQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ProjectByteQuery, ProjectByteQueryVariables>(ProjectByteDocument, options);
+        }
+export type ProjectByteQueryHookResult = ReturnType<typeof useProjectByteQuery>;
+export type ProjectByteLazyQueryHookResult = ReturnType<typeof useProjectByteLazyQuery>;
+export type ProjectByteQueryResult = Apollo.QueryResult<ProjectByteQuery, ProjectByteQueryVariables>;
+export function refetchProjectByteQuery(variables: ProjectByteQueryVariables) {
+      return { query: ProjectByteDocument, variables: variables }
+    }
+export const UpsertProjectByteDocument = gql`
+    mutation UpsertProjectByte($projectId: String!, $input: UpsertProjectByteInput!) {
+  upsertProjectByte(projectId: $projectId, input: $input) {
+    ...ProjectByte
+  }
+}
+    ${ProjectByteFragmentDoc}`;
+export type UpsertProjectByteMutationFn = Apollo.MutationFunction<UpsertProjectByteMutation, UpsertProjectByteMutationVariables>;
+
+/**
+ * __useUpsertProjectByteMutation__
+ *
+ * To run a mutation, you first call `useUpsertProjectByteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertProjectByteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertProjectByteMutation, { data, loading, error }] = useUpsertProjectByteMutation({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpsertProjectByteMutation(baseOptions?: Apollo.MutationHookOptions<UpsertProjectByteMutation, UpsertProjectByteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpsertProjectByteMutation, UpsertProjectByteMutationVariables>(UpsertProjectByteDocument, options);
+      }
+export type UpsertProjectByteMutationHookResult = ReturnType<typeof useUpsertProjectByteMutation>;
+export type UpsertProjectByteMutationResult = Apollo.MutationResult<UpsertProjectByteMutation>;
+export type UpsertProjectByteMutationOptions = Apollo.BaseMutationOptions<UpsertProjectByteMutation, UpsertProjectByteMutationVariables>;
+export const UpdateArchivedStatusOfProjectByteDocument = gql`
+    mutation UpdateArchivedStatusOfProjectByte($projectId: String!, $projectByteId: String!, $archived: Boolean!) {
+  updateArchivedStatusOfProjectByte(
+    projectId: $projectId
+    projectByteId: $projectByteId
+    archived: $archived
+  ) {
+    ...ProjectByte
+  }
+}
+    ${ProjectByteFragmentDoc}`;
+export type UpdateArchivedStatusOfProjectByteMutationFn = Apollo.MutationFunction<UpdateArchivedStatusOfProjectByteMutation, UpdateArchivedStatusOfProjectByteMutationVariables>;
+
+/**
+ * __useUpdateArchivedStatusOfProjectByteMutation__
+ *
+ * To run a mutation, you first call `useUpdateArchivedStatusOfProjectByteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateArchivedStatusOfProjectByteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateArchivedStatusOfProjectByteMutation, { data, loading, error }] = useUpdateArchivedStatusOfProjectByteMutation({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *      projectByteId: // value for 'projectByteId'
+ *      archived: // value for 'archived'
+ *   },
+ * });
+ */
+export function useUpdateArchivedStatusOfProjectByteMutation(baseOptions?: Apollo.MutationHookOptions<UpdateArchivedStatusOfProjectByteMutation, UpdateArchivedStatusOfProjectByteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateArchivedStatusOfProjectByteMutation, UpdateArchivedStatusOfProjectByteMutationVariables>(UpdateArchivedStatusOfProjectByteDocument, options);
+      }
+export type UpdateArchivedStatusOfProjectByteMutationHookResult = ReturnType<typeof useUpdateArchivedStatusOfProjectByteMutation>;
+export type UpdateArchivedStatusOfProjectByteMutationResult = Apollo.MutationResult<UpdateArchivedStatusOfProjectByteMutation>;
+export type UpdateArchivedStatusOfProjectByteMutationOptions = Apollo.BaseMutationOptions<UpdateArchivedStatusOfProjectByteMutation, UpdateArchivedStatusOfProjectByteMutationVariables>;
+export const ProjectByteCollectionsDocument = gql`
+    query ProjectByteCollections($projectId: String!) {
+  projectByteCollections(projectId: $projectId) {
+    ...ProjectByteCollection
+  }
+}
+    ${ProjectByteCollectionFragmentDoc}`;
+
+/**
+ * __useProjectByteCollectionsQuery__
+ *
+ * To run a query within a React component, call `useProjectByteCollectionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProjectByteCollectionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProjectByteCollectionsQuery({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *   },
+ * });
+ */
+export function useProjectByteCollectionsQuery(baseOptions: Apollo.QueryHookOptions<ProjectByteCollectionsQuery, ProjectByteCollectionsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ProjectByteCollectionsQuery, ProjectByteCollectionsQueryVariables>(ProjectByteCollectionsDocument, options);
+      }
+export function useProjectByteCollectionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProjectByteCollectionsQuery, ProjectByteCollectionsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ProjectByteCollectionsQuery, ProjectByteCollectionsQueryVariables>(ProjectByteCollectionsDocument, options);
+        }
+export type ProjectByteCollectionsQueryHookResult = ReturnType<typeof useProjectByteCollectionsQuery>;
+export type ProjectByteCollectionsLazyQueryHookResult = ReturnType<typeof useProjectByteCollectionsLazyQuery>;
+export type ProjectByteCollectionsQueryResult = Apollo.QueryResult<ProjectByteCollectionsQuery, ProjectByteCollectionsQueryVariables>;
+export function refetchProjectByteCollectionsQuery(variables: ProjectByteCollectionsQueryVariables) {
+      return { query: ProjectByteCollectionsDocument, variables: variables }
+    }
+export const ProjectByteCollectionDocument = gql`
+    query ProjectByteCollection($projectId: String!, $id: String!) {
+  projectByteCollection(projectId: $projectId, byteCollectionId: $id) {
+    ...ProjectByteCollection
+  }
+}
+    ${ProjectByteCollectionFragmentDoc}`;
+
+/**
+ * __useProjectByteCollectionQuery__
+ *
+ * To run a query within a React component, call `useProjectByteCollectionQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProjectByteCollectionQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProjectByteCollectionQuery({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useProjectByteCollectionQuery(baseOptions: Apollo.QueryHookOptions<ProjectByteCollectionQuery, ProjectByteCollectionQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ProjectByteCollectionQuery, ProjectByteCollectionQueryVariables>(ProjectByteCollectionDocument, options);
+      }
+export function useProjectByteCollectionLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProjectByteCollectionQuery, ProjectByteCollectionQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ProjectByteCollectionQuery, ProjectByteCollectionQueryVariables>(ProjectByteCollectionDocument, options);
+        }
+export type ProjectByteCollectionQueryHookResult = ReturnType<typeof useProjectByteCollectionQuery>;
+export type ProjectByteCollectionLazyQueryHookResult = ReturnType<typeof useProjectByteCollectionLazyQuery>;
+export type ProjectByteCollectionQueryResult = Apollo.QueryResult<ProjectByteCollectionQuery, ProjectByteCollectionQueryVariables>;
+export function refetchProjectByteCollectionQuery(variables: ProjectByteCollectionQueryVariables) {
+      return { query: ProjectByteCollectionDocument, variables: variables }
+    }
+export const UpsertProjectByteCollectionDocument = gql`
+    mutation UpsertProjectByteCollection($projectId: String!, $input: UpsertProjectByteCollectionInput!) {
+  upsertProjectByteCollection(projectId: $projectId, input: $input) {
+    ...ProjectByteCollection
+  }
+}
+    ${ProjectByteCollectionFragmentDoc}`;
+export type UpsertProjectByteCollectionMutationFn = Apollo.MutationFunction<UpsertProjectByteCollectionMutation, UpsertProjectByteCollectionMutationVariables>;
+
+/**
+ * __useUpsertProjectByteCollectionMutation__
+ *
+ * To run a mutation, you first call `useUpsertProjectByteCollectionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertProjectByteCollectionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertProjectByteCollectionMutation, { data, loading, error }] = useUpsertProjectByteCollectionMutation({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpsertProjectByteCollectionMutation(baseOptions?: Apollo.MutationHookOptions<UpsertProjectByteCollectionMutation, UpsertProjectByteCollectionMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpsertProjectByteCollectionMutation, UpsertProjectByteCollectionMutationVariables>(UpsertProjectByteCollectionDocument, options);
+      }
+export type UpsertProjectByteCollectionMutationHookResult = ReturnType<typeof useUpsertProjectByteCollectionMutation>;
+export type UpsertProjectByteCollectionMutationResult = Apollo.MutationResult<UpsertProjectByteCollectionMutation>;
+export type UpsertProjectByteCollectionMutationOptions = Apollo.BaseMutationOptions<UpsertProjectByteCollectionMutation, UpsertProjectByteCollectionMutationVariables>;
+export const UpdateArchivedStatusOfProjectByteCollectionDocument = gql`
+    mutation UpdateArchivedStatusOfProjectByteCollection($projectId: String!, $byteCollectionId: String!, $archived: Boolean!) {
+  updateArchivedStatusOfProjectByteCollection(
+    projectId: $projectId
+    byteCollectionId: $byteCollectionId
+    archived: $archived
+  ) {
+    ...ProjectByteCollection
+  }
+}
+    ${ProjectByteCollectionFragmentDoc}`;
+export type UpdateArchivedStatusOfProjectByteCollectionMutationFn = Apollo.MutationFunction<UpdateArchivedStatusOfProjectByteCollectionMutation, UpdateArchivedStatusOfProjectByteCollectionMutationVariables>;
+
+/**
+ * __useUpdateArchivedStatusOfProjectByteCollectionMutation__
+ *
+ * To run a mutation, you first call `useUpdateArchivedStatusOfProjectByteCollectionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateArchivedStatusOfProjectByteCollectionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateArchivedStatusOfProjectByteCollectionMutation, { data, loading, error }] = useUpdateArchivedStatusOfProjectByteCollectionMutation({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *      byteCollectionId: // value for 'byteCollectionId'
+ *      archived: // value for 'archived'
+ *   },
+ * });
+ */
+export function useUpdateArchivedStatusOfProjectByteCollectionMutation(baseOptions?: Apollo.MutationHookOptions<UpdateArchivedStatusOfProjectByteCollectionMutation, UpdateArchivedStatusOfProjectByteCollectionMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateArchivedStatusOfProjectByteCollectionMutation, UpdateArchivedStatusOfProjectByteCollectionMutationVariables>(UpdateArchivedStatusOfProjectByteCollectionDocument, options);
+      }
+export type UpdateArchivedStatusOfProjectByteCollectionMutationHookResult = ReturnType<typeof useUpdateArchivedStatusOfProjectByteCollectionMutation>;
+export type UpdateArchivedStatusOfProjectByteCollectionMutationResult = Apollo.MutationResult<UpdateArchivedStatusOfProjectByteCollectionMutation>;
+export type UpdateArchivedStatusOfProjectByteCollectionMutationOptions = Apollo.BaseMutationOptions<UpdateArchivedStatusOfProjectByteCollectionMutation, UpdateArchivedStatusOfProjectByteCollectionMutationVariables>;
+export const ProjectShortVideosDocument = gql`
+    query ProjectShortVideos($projectId: String!) {
+  projectShortVideos(projectId: $projectId) {
+    ...ProjectShortVideo
+  }
+}
+    ${ProjectShortVideoFragmentDoc}`;
+
+/**
+ * __useProjectShortVideosQuery__
+ *
+ * To run a query within a React component, call `useProjectShortVideosQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProjectShortVideosQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProjectShortVideosQuery({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *   },
+ * });
+ */
+export function useProjectShortVideosQuery(baseOptions: Apollo.QueryHookOptions<ProjectShortVideosQuery, ProjectShortVideosQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ProjectShortVideosQuery, ProjectShortVideosQueryVariables>(ProjectShortVideosDocument, options);
+      }
+export function useProjectShortVideosLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProjectShortVideosQuery, ProjectShortVideosQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ProjectShortVideosQuery, ProjectShortVideosQueryVariables>(ProjectShortVideosDocument, options);
+        }
+export type ProjectShortVideosQueryHookResult = ReturnType<typeof useProjectShortVideosQuery>;
+export type ProjectShortVideosLazyQueryHookResult = ReturnType<typeof useProjectShortVideosLazyQuery>;
+export type ProjectShortVideosQueryResult = Apollo.QueryResult<ProjectShortVideosQuery, ProjectShortVideosQueryVariables>;
+export function refetchProjectShortVideosQuery(variables: ProjectShortVideosQueryVariables) {
+      return { query: ProjectShortVideosDocument, variables: variables }
+    }
+export const UpsertProjectShortVideoDocument = gql`
+    mutation UpsertProjectShortVideo($projectId: String!, $input: ProjectShortVideoInput!) {
+  upsertProjectShortVideo(projectId: $projectId, shortVideo: $input) {
+    ...ProjectShortVideo
+  }
+}
+    ${ProjectShortVideoFragmentDoc}`;
+export type UpsertProjectShortVideoMutationFn = Apollo.MutationFunction<UpsertProjectShortVideoMutation, UpsertProjectShortVideoMutationVariables>;
+
+/**
+ * __useUpsertProjectShortVideoMutation__
+ *
+ * To run a mutation, you first call `useUpsertProjectShortVideoMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertProjectShortVideoMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertProjectShortVideoMutation, { data, loading, error }] = useUpsertProjectShortVideoMutation({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpsertProjectShortVideoMutation(baseOptions?: Apollo.MutationHookOptions<UpsertProjectShortVideoMutation, UpsertProjectShortVideoMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpsertProjectShortVideoMutation, UpsertProjectShortVideoMutationVariables>(UpsertProjectShortVideoDocument, options);
+      }
+export type UpsertProjectShortVideoMutationHookResult = ReturnType<typeof useUpsertProjectShortVideoMutation>;
+export type UpsertProjectShortVideoMutationResult = Apollo.MutationResult<UpsertProjectShortVideoMutation>;
+export type UpsertProjectShortVideoMutationOptions = Apollo.BaseMutationOptions<UpsertProjectShortVideoMutation, UpsertProjectShortVideoMutationVariables>;
+export const UpdateArchivedStatusOfProjectShortVideoDocument = gql`
+    mutation UpdateArchivedStatusOfProjectShortVideo($projectId: String!, $projectShortVideoId: String!, $archived: Boolean!) {
+  updateArchivedStatusOfProjectShortVideo(
+    projectId: $projectId
+    projectShortVideoId: $projectShortVideoId
+    archived: $archived
+  ) {
+    ...ProjectShortVideo
+  }
+}
+    ${ProjectShortVideoFragmentDoc}`;
+export type UpdateArchivedStatusOfProjectShortVideoMutationFn = Apollo.MutationFunction<UpdateArchivedStatusOfProjectShortVideoMutation, UpdateArchivedStatusOfProjectShortVideoMutationVariables>;
+
+/**
+ * __useUpdateArchivedStatusOfProjectShortVideoMutation__
+ *
+ * To run a mutation, you first call `useUpdateArchivedStatusOfProjectShortVideoMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateArchivedStatusOfProjectShortVideoMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateArchivedStatusOfProjectShortVideoMutation, { data, loading, error }] = useUpdateArchivedStatusOfProjectShortVideoMutation({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *      projectShortVideoId: // value for 'projectShortVideoId'
+ *      archived: // value for 'archived'
+ *   },
+ * });
+ */
+export function useUpdateArchivedStatusOfProjectShortVideoMutation(baseOptions?: Apollo.MutationHookOptions<UpdateArchivedStatusOfProjectShortVideoMutation, UpdateArchivedStatusOfProjectShortVideoMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateArchivedStatusOfProjectShortVideoMutation, UpdateArchivedStatusOfProjectShortVideoMutationVariables>(UpdateArchivedStatusOfProjectShortVideoDocument, options);
+      }
+export type UpdateArchivedStatusOfProjectShortVideoMutationHookResult = ReturnType<typeof useUpdateArchivedStatusOfProjectShortVideoMutation>;
+export type UpdateArchivedStatusOfProjectShortVideoMutationResult = Apollo.MutationResult<UpdateArchivedStatusOfProjectShortVideoMutation>;
+export type UpdateArchivedStatusOfProjectShortVideoMutationOptions = Apollo.BaseMutationOptions<UpdateArchivedStatusOfProjectShortVideoMutation, UpdateArchivedStatusOfProjectShortVideoMutationVariables>;
+export const UpsertShortVideoDocument = gql`
+    mutation UpsertShortVideo($spaceId: String!, $shortVideo: ShortVideoInput!) {
+  upsertShortVideo(spaceId: $spaceId, shortVideo: $shortVideo) {
+    ...ShortVideo
+  }
+}
+    ${ShortVideoFragmentDoc}`;
+export type UpsertShortVideoMutationFn = Apollo.MutationFunction<UpsertShortVideoMutation, UpsertShortVideoMutationVariables>;
+
+/**
+ * __useUpsertShortVideoMutation__
+ *
+ * To run a mutation, you first call `useUpsertShortVideoMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertShortVideoMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertShortVideoMutation, { data, loading, error }] = useUpsertShortVideoMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      shortVideo: // value for 'shortVideo'
+ *   },
+ * });
+ */
+export function useUpsertShortVideoMutation(baseOptions?: Apollo.MutationHookOptions<UpsertShortVideoMutation, UpsertShortVideoMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpsertShortVideoMutation, UpsertShortVideoMutationVariables>(UpsertShortVideoDocument, options);
+      }
+export type UpsertShortVideoMutationHookResult = ReturnType<typeof useUpsertShortVideoMutation>;
+export type UpsertShortVideoMutationResult = Apollo.MutationResult<UpsertShortVideoMutation>;
+export type UpsertShortVideoMutationOptions = Apollo.BaseMutationOptions<UpsertShortVideoMutation, UpsertShortVideoMutationVariables>;
+export const ShortVideosDocument = gql`
+    query ShortVideos($spaceId: String!) {
+  shortVideos(spaceId: $spaceId) {
+    ...ShortVideo
+  }
+}
+    ${ShortVideoFragmentDoc}`;
+
+/**
+ * __useShortVideosQuery__
+ *
+ * To run a query within a React component, call `useShortVideosQuery` and pass it any options that fit your needs.
+ * When your component renders, `useShortVideosQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useShortVideosQuery({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *   },
+ * });
+ */
+export function useShortVideosQuery(baseOptions: Apollo.QueryHookOptions<ShortVideosQuery, ShortVideosQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ShortVideosQuery, ShortVideosQueryVariables>(ShortVideosDocument, options);
+      }
+export function useShortVideosLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ShortVideosQuery, ShortVideosQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ShortVideosQuery, ShortVideosQueryVariables>(ShortVideosDocument, options);
+        }
+export type ShortVideosQueryHookResult = ReturnType<typeof useShortVideosQuery>;
+export type ShortVideosLazyQueryHookResult = ReturnType<typeof useShortVideosLazyQuery>;
+export type ShortVideosQueryResult = Apollo.QueryResult<ShortVideosQuery, ShortVideosQueryVariables>;
+export function refetchShortVideosQuery(variables: ShortVideosQueryVariables) {
+      return { query: ShortVideosDocument, variables: variables }
+    }
+export const SimulationsDocument = gql`
+    query Simulations($spaceId: String!) {
+  simulations(spaceId: $spaceId) {
+    postSubmissionStepContent
+    content
+    created
+    id
+    name
+    publishStatus
+    admins
+    tags
+    priority
+  }
+}
+    `;
+
+/**
+ * __useSimulationsQuery__
+ *
+ * To run a query within a React component, call `useSimulationsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSimulationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSimulationsQuery({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *   },
+ * });
+ */
+export function useSimulationsQuery(baseOptions: Apollo.QueryHookOptions<SimulationsQuery, SimulationsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<SimulationsQuery, SimulationsQueryVariables>(SimulationsDocument, options);
+      }
+export function useSimulationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SimulationsQuery, SimulationsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<SimulationsQuery, SimulationsQueryVariables>(SimulationsDocument, options);
+        }
+export type SimulationsQueryHookResult = ReturnType<typeof useSimulationsQuery>;
+export type SimulationsLazyQueryHookResult = ReturnType<typeof useSimulationsLazyQuery>;
+export type SimulationsQueryResult = Apollo.QueryResult<SimulationsQuery, SimulationsQueryVariables>;
+export function refetchSimulationsQuery(variables: SimulationsQueryVariables) {
+      return { query: SimulationsDocument, variables: variables }
+    }
+export const SimulationDetailsDocument = gql`
+    query SimulationDetails($spaceId: String!, $simulationId: String!) {
+  simulation(spaceId: $spaceId, simulationId: $simulationId) {
+    ...SimulationDetails
+  }
+}
+    ${SimulationDetailsFragmentDoc}`;
+
+/**
+ * __useSimulationDetailsQuery__
+ *
+ * To run a query within a React component, call `useSimulationDetailsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSimulationDetailsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSimulationDetailsQuery({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      simulationId: // value for 'simulationId'
+ *   },
+ * });
+ */
+export function useSimulationDetailsQuery(baseOptions: Apollo.QueryHookOptions<SimulationDetailsQuery, SimulationDetailsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<SimulationDetailsQuery, SimulationDetailsQueryVariables>(SimulationDetailsDocument, options);
+      }
+export function useSimulationDetailsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SimulationDetailsQuery, SimulationDetailsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<SimulationDetailsQuery, SimulationDetailsQueryVariables>(SimulationDetailsDocument, options);
+        }
+export type SimulationDetailsQueryHookResult = ReturnType<typeof useSimulationDetailsQuery>;
+export type SimulationDetailsLazyQueryHookResult = ReturnType<typeof useSimulationDetailsLazyQuery>;
+export type SimulationDetailsQueryResult = Apollo.QueryResult<SimulationDetailsQuery, SimulationDetailsQueryVariables>;
+export function refetchSimulationDetailsQuery(variables: SimulationDetailsQueryVariables) {
+      return { query: SimulationDetailsDocument, variables: variables }
+    }
+export const UpsertSimulationDocument = gql`
+    mutation UpsertSimulation($spaceId: String!, $input: UpsertSimulationInput!) {
+  payload: upsertSimulation(spaceId: $spaceId, input: $input) {
+    ...SimulationDetails
+  }
+}
+    ${SimulationDetailsFragmentDoc}`;
+export type UpsertSimulationMutationFn = Apollo.MutationFunction<UpsertSimulationMutation, UpsertSimulationMutationVariables>;
+
+/**
+ * __useUpsertSimulationMutation__
+ *
+ * To run a mutation, you first call `useUpsertSimulationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertSimulationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertSimulationMutation, { data, loading, error }] = useUpsertSimulationMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpsertSimulationMutation(baseOptions?: Apollo.MutationHookOptions<UpsertSimulationMutation, UpsertSimulationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpsertSimulationMutation, UpsertSimulationMutationVariables>(UpsertSimulationDocument, options);
+      }
+export type UpsertSimulationMutationHookResult = ReturnType<typeof useUpsertSimulationMutation>;
+export type UpsertSimulationMutationResult = Apollo.MutationResult<UpsertSimulationMutation>;
+export type UpsertSimulationMutationOptions = Apollo.BaseMutationOptions<UpsertSimulationMutation, UpsertSimulationMutationVariables>;
 export const SpacesDocument = gql`
     query Spaces {
   spaces {

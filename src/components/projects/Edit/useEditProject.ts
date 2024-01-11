@@ -19,6 +19,7 @@ export default function useEditProject(projectId?: string): UseEditProjectHelper
   const { showNotification } = useNotificationContext();
   const [project, setProject] = useState<ProjectEditType>({
     details: '',
+    excerpt: '',
     discord: undefined,
     docs: undefined,
     github: undefined,
@@ -53,6 +54,7 @@ export default function useEditProject(projectId?: string): UseEditProjectHelper
           details: projectResponse.details,
           discord: projectResponse.discord,
           docs: projectResponse.docs,
+          excerpt: projectResponse.excerpt,
           github: projectResponse.github,
           telegram: projectResponse.telegram,
           type: projectResponse.type,
@@ -78,6 +80,7 @@ export default function useEditProject(projectId?: string): UseEditProjectHelper
       details: project.details,
       discord: project.discord,
       docs: project.docs,
+      excerpt: project.excerpt,
       github: project.github,
       telegram: project.telegram,
       type: project.type,

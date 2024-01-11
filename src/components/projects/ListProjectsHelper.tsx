@@ -1,6 +1,8 @@
+import DeleteConfirmationModal from '@/components/app/Modal/DeleteConfirmationModal';
+import { useNotificationContext } from '@/contexts/NotificationContext';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
-import { ProjectFragment } from '@/graphql/generated/generated-types';
+import { ProjectFragment, useUpdateArchivedStatusOfProjectMutation } from '@/graphql/generated/generated-types';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import styles from './ListProjectsHelper.module.scss';
@@ -12,8 +14,10 @@ type ListProjectsHelperProps = {
 };
 
 const ListProjectsHelper: React.FC<ListProjectsHelperProps> = ({ projects, onShowEditModal }) => {
-  const [projectID, setProjectID] = useState<string>();
+  const [deleteProjectId, setDeleteProjectId] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [updateArchivedStatusOfProjectMutation] = useUpdateArchivedStatusOfProjectMutation();
+  const { showNotification } = useNotificationContext();
 
   useEffect(() => {
     setLoading(true);
@@ -23,12 +27,39 @@ const ListProjectsHelper: React.FC<ListProjectsHelperProps> = ({ projects, onSho
     return () => clearTimeout(timer);
   }, []);
 
-  const threeDotItems = [
-    { label: 'Edit', key: 'edit' },
-    { label: 'Delete', key: 'delete' },
-  ];
+  const getThreeDotItems = (project: ProjectFragment) => {
+    if (project.archived) {
+      return [
+        { label: 'Edit', key: 'edit' },
+        { label: 'Unarchive', key: 'unarchive' },
+      ];
+    }
+    return [
+      { label: 'Edit', key: 'edit' },
+      { label: 'Archive', key: 'archive' },
+    ];
+  };
 
-  const handleDeletion = () => {};
+  const updateArchiveStatus = async (archived: boolean) => {
+    try {
+      if (deleteProjectId) {
+        await updateArchivedStatusOfProjectMutation({
+          variables: {
+            projectId: deleteProjectId,
+            archived: archived,
+          },
+          refetchQueries: ['Projects'],
+        });
+        if (archived) {
+          showNotification({ message: 'Project archived successfully', type: 'success' });
+        } else {
+          showNotification({ message: 'Project un-archived successfully', type: 'success' });
+        }
+      }
+    } catch (error) {
+      showNotification({ message: 'Something went wrong', type: 'error' });
+    }
+  };
 
   return (
     <div className="my-5">
@@ -56,13 +87,13 @@ const ListProjectsHelper: React.FC<ListProjectsHelperProps> = ({ projects, onSho
                       }}
                     >
                       <PrivateEllipsisDropdown
-                        items={threeDotItems}
+                        items={getThreeDotItems(proj)}
                         onSelect={async (key) => {
-                          setProjectID(proj.id);
+                          setDeleteProjectId(proj.id);
                           if (key === 'edit') {
                             onShowEditModal(proj);
-                          } else if (key === 'delete') {
-                            setProjectID(proj.id);
+                          } else if (key === 'archive') {
+                            setDeleteProjectId(proj.id);
                           }
                         }}
                       />
@@ -70,7 +101,7 @@ const ListProjectsHelper: React.FC<ListProjectsHelperProps> = ({ projects, onSho
                   </div>
                   <div className={`${styles.header} mx-2`}>
                     <div className="font-bold">{proj.name}</div>
-                    <div className={`text-sm ${styles.details}`}>Level 1</div>
+                    <div className={`text-sm ${styles.details}`}>{proj.details}</div>
                   </div>
                 </div>
               </Link>
@@ -78,6 +109,17 @@ const ListProjectsHelper: React.FC<ListProjectsHelperProps> = ({ projects, onSho
           </div>
         ))}
       </div>
+      {deleteProjectId && (
+        <DeleteConfirmationModal
+          title={'Delete Project'}
+          open={!!deleteProjectId}
+          onClose={() => setDeleteProjectId(null)}
+          onDelete={() => {
+            updateArchiveStatus(true);
+            setDeleteProjectId(null);
+          }}
+        />
+      )}
     </div>
   );
 };

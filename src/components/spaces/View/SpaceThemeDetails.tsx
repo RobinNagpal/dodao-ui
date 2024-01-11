@@ -29,6 +29,7 @@ export default function SpaceThemeDetails({ space }: SpaceDetailsProps) {
 
   const byteCollection: ProjectByteCollectionFragment = {
     id: 'b757246b-1b08-42ce-a8cb-a9ce19bc78b3',
+    archived: false,
     name: 'About DEX',
     description: 'This collection of Tidbits explains different exchange models and the benefits of AMM',
     status: 'DRAFT',

@@ -34,6 +34,7 @@ export const emptyProjectByte = (): Omit<ProjectByteFragment, 'id'> & { isPristi
   };
   return {
     id: byteUuid,
+    archived: false,
     admins: [],
     created: new Date().toISOString(),
     priority: 0,

@@ -1,0 +1,66 @@
+fragment ProjectByte on ProjectByte {
+  admins
+  content
+  created
+  id
+  name
+  postSubmissionStepContent
+  priority
+  steps {
+    content
+    stepItems {
+      __typename
+      ... on ByteQuestion {
+        answerKeys
+        choices {
+          content
+          key
+        }
+        content
+        type
+        uuid
+        explanation
+      }
+
+      ... on ByteUserInput {
+        label
+        required
+        type
+        uuid
+      }
+
+      ... on UserDiscordConnect {
+        type
+        uuid
+      }
+    }
+    name
+    uuid
+  }
+  tags
+  archived
+}
+
+query ProjectBytes($projectId: String!) {
+  projectBytes(projectId: $projectId) {
+    ...ProjectByte
+  }
+}
+
+query ProjectByte($projectId: String!, $id: String!) {
+  projectByte(projectId: $projectId, projectByteId: $id) {
+    ...ProjectByte
+  }
+}
+
+mutation UpsertProjectByte($projectId: String!, $input: UpsertProjectByteInput!) {
+  upsertProjectByte(projectId: $projectId, input: $input) {
+    ...ProjectByte
+  }
+}
+
+mutation UpdateArchivedStatusOfProjectByte($projectId: String!, $projectByteId: String!, $archived: Boolean!) {
+  updateArchivedStatusOfProjectByte(projectId: $projectId, projectByteId: $projectByteId, archived: $archived) {
+    ...ProjectByte
+  }
+}

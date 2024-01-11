@@ -1,0 +1,38 @@
+fragment ProjectByteCollection on ProjectByteCollection {
+  byteIds
+  bytes {
+    byteId
+    name
+    content
+  }
+  description
+  id
+  name
+  order
+  status
+  archived
+}
+
+query ProjectByteCollections($projectId: String!) {
+  projectByteCollections(projectId: $projectId) {
+    ...ProjectByteCollection
+  }
+}
+
+query ProjectByteCollection($projectId: String!, $id: String!) {
+  projectByteCollection(projectId: $projectId, byteCollectionId: $id) {
+    ...ProjectByteCollection
+  }
+}
+
+mutation UpsertProjectByteCollection($projectId: String!, $input: UpsertProjectByteCollectionInput!) {
+  upsertProjectByteCollection(projectId: $projectId, input: $input) {
+    ...ProjectByteCollection
+  }
+}
+
+mutation UpdateArchivedStatusOfProjectByteCollection($projectId: String!, $byteCollectionId: String!, $archived: Boolean!) {
+  updateArchivedStatusOfProjectByteCollection(projectId: $projectId, byteCollectionId: $byteCollectionId, archived: $archived) {
+    ...ProjectByteCollection
+  }
+}

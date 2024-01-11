@@ -1,0 +1,29 @@
+fragment ProjectShortVideo on ProjectShortVideo {
+  id
+  title
+  description
+  thumbnail
+  videoUrl
+  priority
+  createdAt
+  updatedAt
+  archived
+}
+
+query ProjectShortVideos($projectId: String!) {
+  projectShortVideos(projectId: $projectId) {
+    ...ProjectShortVideo
+  }
+}
+
+mutation UpsertProjectShortVideo($projectId: String!, $input: ProjectShortVideoInput!) {
+  upsertProjectShortVideo(projectId: $projectId, shortVideo: $input) {
+    ...ProjectShortVideo
+  }
+}
+
+mutation UpdateArchivedStatusOfProjectShortVideo($projectId: String!, $projectShortVideoId: String!, $archived: Boolean!) {
+  updateArchivedStatusOfProjectShortVideo(projectId: $projectId, projectShortVideoId: $projectShortVideoId, archived: $archived) {
+    ...ProjectShortVideo
+  }
+}
