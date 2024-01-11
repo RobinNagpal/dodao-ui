@@ -3,17 +3,13 @@ import ListProjects from '@/components/projects/ListProjects';
 import { ProjectTypes } from '@/types/deprecated/models/enums';
 import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
 
-export default async function ProjectListPage(props: {
-  params: {
-    projectType: string;
-  };
-}) {
+export default async function ProjectListPage(props: { params: { projectType: String }; searchParams: { [key: string]: string | string[] | undefined } }) {
   const space = await getSpaceServerSide();
   const type = Object.keys(ProjectTypes).find((key) => key.toLowerCase() === props.params.projectType.toLowerCase());
 
   return (
     <PageWrapper>
-      <ListProjects space={space!} type={type!} />
+      <ListProjects space={space!} type={type!} showArchived={props.searchParams?.['showArchived'] === 'true'} />
     </PageWrapper>
   );
 }
