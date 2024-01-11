@@ -59,14 +59,15 @@ export default function ByteCardAdminDropdown({ byte, byteType, project }: ByteC
     <>
       <PrivateEllipsisDropdown
         items={getThreeDotItems(byte)}
-        onSelect={async (key) => {
+        onSelect={async (key, e: React.MouseEvent<HTMLAnchorElement>) => {
+          e.preventDefault();
+          e.stopPropagation();
+
           if (key === 'edit') {
             router.push(`${baseBytesEditUrl}/${byte.id}`);
-          }
-          if (key === 'archive') {
+          } else if (key === 'archive') {
             setShowDeleteModal(true);
-          }
-          if (key === 'unarchive') {
+          } else if (key === 'unarchive') {
             onArchivedStatusChange(false);
           }
         }}

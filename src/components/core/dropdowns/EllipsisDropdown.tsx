@@ -1,7 +1,8 @@
-import { Fragment } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import { EllipsisVerticalIcon } from '@heroicons/react/20/solid';
+import React, { Fragment } from 'react';
 import styled from 'styled-components';
+
 export interface EllipsisDropdownItem {
   label: string;
   key: string;
@@ -11,7 +12,7 @@ export interface EllipsisDropdownItem {
 export interface EllipsisDropdownProps {
   items: EllipsisDropdownItem[];
   className?: string;
-  onSelect: (item: string) => void;
+  onSelect: (item: string, e: React.MouseEvent<HTMLAnchorElement>) => void;
 }
 
 const MenuButton = styled(Menu.Button)`
@@ -62,7 +63,7 @@ export default function EllipsisDropdown(props: EllipsisDropdownProps) {
           <div className="py-1">
             {props.items.map((item, index) => (
               <Menu.Item key={index}>
-                <DropdownItem className="block px-4 py-2 text-sm cursor-pointer" active={item.active} onClick={() => props.onSelect(item.key)}>
+                <DropdownItem className="block px-4 py-2 text-sm cursor-pointer" active={item.active} onClick={(e) => props.onSelect(item.key, e)}>
                   {item.label}
                 </DropdownItem>
               </Menu.Item>

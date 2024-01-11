@@ -3,11 +3,12 @@ import { useSpace } from '@/contexts/SpaceContext';
 import { Session } from '@/types/auth/Session';
 import { isAdmin } from '@/utils/auth/isAdmin';
 import { useSession } from 'next-auth/react';
+import React from 'react';
 
 export interface PrivateEllipsisDropdownProps {
   items: EllipsisDropdownItem[];
   className?: string;
-  onSelect: (item: string) => void;
+  onSelect: (item: string, e: React.MouseEvent<HTMLAnchorElement>) => void;
 }
 
 export default function PrivateEllipsisDropdown(props: PrivateEllipsisDropdownProps) {
