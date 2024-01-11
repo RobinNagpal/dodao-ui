@@ -87,7 +87,7 @@ const ListProjectsHelper: React.FC<ListProjectsHelperProps> = ({ projects, onSho
                 </div>
                 <div className={`${styles.header} mx-2`}>
                   <div className="font-bold">{proj.name}</div>
-                  <div className={`text-sm ${styles.details}`}>{proj.details}</div>
+                  <div className={`text-sm ${styles.details}`}>{proj.excerpt}</div>
                 </div>
               </div>
             </Link>
