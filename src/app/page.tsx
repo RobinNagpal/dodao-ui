@@ -1,14 +1,15 @@
+import ChatHome from '@/chatbot/home/home';
 import { OpenAIModelID } from '@/chatbot/types/openai';
 import { TOP_CRYPTO_PROJECTS_SPACE_ID } from '@/chatbot/utils/app/constants';
 import DefaultHome from '@/components/home/DefaultHome/DefaultHome';
 import DoDAOHome from '@/components/home/DoDAOHome/DoDAOHome';
 import LifeInsureHomePage from '@/components/home/LifeInsure/LifeInsureHomePage';
+import ListProjects from '@/components/projects/ListProjects';
 import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
 import { headers } from 'next/headers';
-import { redirect } from 'next/navigation';
 
 import React from 'react';
-import ChatHome from '@/chatbot/home/home';
+
 async function Home() {
   const headersList = headers();
   const host = headersList.get('host')?.split(':')?.[0];
@@ -19,7 +20,7 @@ async function Home() {
   }
 
   if (space?.id === TOP_CRYPTO_PROJECTS_SPACE_ID) {
-    redirect('/projects/type/all');
+    return <ListProjects space={space} type={'All'} />;
   }
 
   if (host === 'dodao-localhost.io' || host === 'academy.dodao.io' || host === 'dodao.io') {
