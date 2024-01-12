@@ -44,7 +44,7 @@ export default function ByteCollectionsGrid({
   const { refetch: fetchSpaceByte } = useQueryByteDetailsQuery({ skip: true });
 
   const fetchByteFn = async (byteId: string): Promise<ByteDetailsFragment | ProjectByteFragment> => {
-    if (byteCollectionType === 'byteCollection') {
+    if (byteCollectionType === 'projectByteCollection') {
       const response = await fetchProjectByte({
         projectId: project!.id,
         id: byteId,

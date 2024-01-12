@@ -1,9 +1,7 @@
 import ByteCollectionCardAdminDropdown from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCollectionCardAdminDropdown';
+import ByteCompletionCheckmark from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCompletionCheckmark';
 import { ByteCollectionFragment, ProjectByteCollectionFragment, ProjectFragment } from '@/graphql/generated/generated-types';
-import { LocalStorageKeys } from '@/types/deprecated/models/enums';
 import ArrowTopRightOnSquareIcon from '@heroicons/react/24/outline/ArrowTopRightOnSquareIcon';
-import Bars3BottomLeftIcon from '@heroicons/react/24/solid/Bars3BottomLeftIcon';
-import CheckIcon from '@heroicons/react/24/solid/CheckIcon';
 import React from 'react';
 import styles from './ByteCollectionsCard.module.scss';
 
@@ -31,7 +29,6 @@ export default function ByteCollectionsCard({ byteCollection, onSelectByte, isEd
       <div className="flow-root p-2">
         <ul role="list" className="-mb-8">
           {byteCollection.bytes.map((byte, eventIdx) => {
-            const isByteCompleted = JSON.parse(localStorage.getItem(LocalStorageKeys.COMPLETED_TIDBITS) || '[]')?.includes(byte.byteId);
             return (
               <li key={byte.byteId}>
                 <div className="relative pb-8">
@@ -40,17 +37,7 @@ export default function ByteCollectionsCard({ byteCollection, onSelectByte, isEd
                   ) : null}
                   <div className="relative flex space-x-3">
                     <div className="flex cursor-pointer" onClick={() => onSelectByte(byte.byteId)}>
-                      <div>
-                        {isByteCompleted ? (
-                          <div className={'bg-green-500 h-8 w-8 rounded-full flex items-center justify-center ring-5 ring-white'}>
-                            <CheckIcon className="h-5 w-5 text-white" aria-hidden="true" />
-                          </div>
-                        ) : (
-                          <span className={'h-8 w-8 rounded-full flex items-center justify-center ring-5 ring-white ' + styles.tidbitIconSpan}>
-                            <Bars3BottomLeftIcon className="h-5 w-5 text-white" aria-hidden="true" />
-                          </span>
-                        )}
-                      </div>
+                      <ByteCompletionCheckmark byteId={byte.byteId} />
                       <div className="flex min-w-0 flex-1 justify-between space-x-2 transform hover:scale-95 transition duration-300 ease-in-out">
                         <div className="ml-3 text-sm">
                           <div className="font-bold flex">
