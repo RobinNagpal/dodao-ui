@@ -1,13 +1,12 @@
+import { SpaceProps } from '@/app/withSpace';
 import Block from '@/components/app/Block';
-import { useSpace } from '@/contexts/SpaceContext';
 import React from 'react';
 
-const NoBytes = () => {
-  const { space } = useSpace();
+const NoBytes = (props: SpaceProps) => {
   return (
     <div className="mb-3 text-center">
       <Block className="pt-1">
-        <p className="mb-2">No tidbits present for {space?.name}</p>
+        <p className="mb-2">No tidbits present for {props.space.name}</p>
       </Block>
     </div>
   );

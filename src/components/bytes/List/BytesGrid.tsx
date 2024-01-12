@@ -1,42 +1,32 @@
-import Block from '@/components/app/Block';
-import ByteSummaryCard, { ByteSummaryType } from '@/components/bytes/Summary/ByteSummaryCard';
+import ByteSummaryCard from '@/components/bytes/Summary/ByteSummaryCard';
 import NoByte from '@/components/bytes/Summary/NoBytes';
 import { Grid4Cols } from '@/components/core/grids/Grid4Cols';
-import TidbitsSkeleton from '@/components/core/loaders/TidbitLoader';
-import { ByteSummaryFragment, ProjectByteFragment, ProjectFragment } from '@/graphql/generated/generated-types';
+import { ByteSummaryFragment, ProjectByteFragment, ProjectFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import React from 'react';
 
 export default function BytesGrid({
-  loading,
   bytes,
   baseByteViewUrl,
   byteType,
   project,
+  space,
 }: {
-  loading: boolean;
+  space: SpaceWithIntegrationsFragment;
   bytes?: ByteSummaryFragment[] | ProjectByteFragment[];
   baseByteViewUrl: string;
   byteType: 'byte' | 'projectByte';
   project?: ProjectFragment;
 }) {
   return (
-    <>
-      {loading ? (
-        <Block>
-          <TidbitsSkeleton />
-        </Block>
-      ) : (
-        <div className="flex justify-center items-center px-5 sm:px-0">
-          {!bytes?.length && <NoByte />}
-          {!!bytes?.length && (
-            <Grid4Cols>
-              {bytes?.map((byte, i) => (
-                <ByteSummaryCard key={i} byte={byte} baseByteViewUrl={baseByteViewUrl} byteType={byteType} project={project} />
-              ))}
-            </Grid4Cols>
-          )}
-        </div>
+    <div className="flex justify-center items-center px-5 sm:px-0">
+      {!bytes?.length && <NoByte space={space} />}
+      {!!bytes?.length && (
+        <Grid4Cols>
+          {bytes?.map((byte, i) => (
+            <ByteSummaryCard key={i} byte={byte} baseByteViewUrl={baseByteViewUrl} byteType={byteType} project={project} />
+          ))}
+        </Grid4Cols>
       )}
-    </>
+    </div>
   );
 }

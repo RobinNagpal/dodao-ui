@@ -1,18 +1,18 @@
-'use client';
-
-import withSpace, { SpaceProps } from '@/app/withSpace';
 import BytesGrid from '@/components/bytes/List/BytesGrid';
 import PageWrapper from '@/components/core/page/PageWrapper';
-import { useQueryBytesQuery } from '@/graphql/generated/generated-types';
+import { ByteSummaryFragment } from '@/graphql/generated/generated-types';
+import getApiResponse from '@/utils/api/getApiResponse';
+import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
 import React from 'react';
 
-function Byte({ space }: SpaceProps) {
-  const { data, error, loading, refetch: fetchBytes } = useQueryBytesQuery({ variables: { spaceId: space.id } });
+export default async function Byte() {
+  const space = (await getSpaceServerSide())!;
+
+  const bytes = await getApiResponse<ByteSummaryFragment[]>(space, 'bytes');
+
   return (
     <PageWrapper>
-      <BytesGrid loading={loading} bytes={data?.bytes} baseByteViewUrl={`/tidbits/view`} byteType={'byte'} />
+      <BytesGrid bytes={bytes} baseByteViewUrl={`/tidbits/view`} byteType={'byte'} space={space} />
     </PageWrapper>
   );
 }
-
-export default withSpace(Byte);

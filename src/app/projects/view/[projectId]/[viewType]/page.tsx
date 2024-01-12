@@ -1,75 +1,43 @@
-'use client';
-
-import WithSpace from '@/app/withSpace';
 import ByteCollectionsGrid from '@/components/byteCollection/View/ByteCollectionsGrid';
 import BytesGrid from '@/components/bytes/List/BytesGrid';
-import FullPageLoader from '@/components/core/loaders/FullPageLoading';
 import ProjectShortVideosGrid from '@/components/projects/projectShortVideo/List/ProjectShortVideosGrid';
-import {
-  SpaceWithIntegrationsFragment,
-  useProjectByteCollectionsQuery,
-  useProjectByteQuery,
-  useProjectBytesQuery,
-  useProjectQuery,
-} from '@/graphql/generated/generated-types';
+import { ProjectByteCollectionFragment, ProjectByteFragment, ProjectFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import getApiResponse from '@/utils/api/getApiResponse';
+import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
 import React from 'react';
 
-function CollectionsPage(props: { params: { projectId: string; viewType: string }; space: SpaceWithIntegrationsFragment }) {
-  const { data: project } = useProjectQuery({
-    variables: {
-      id: props.params.projectId,
-    },
-  });
+export default async function ProjectHomePage(props: { params: { projectId: string; viewType: string }; space: SpaceWithIntegrationsFragment }) {
+  const space = (await getSpaceServerSide())!;
 
-  const { loading: loadingByteCollections, data: byteCollectionsData } = useProjectByteCollectionsQuery({
-    variables: {
-      projectId: props.params.projectId,
-    },
-  });
+  const project = await getApiResponse<ProjectFragment>(space, `projects/${props.params.projectId}`);
 
-  const { loading: loadingByte, data: bytesData } = useProjectBytesQuery({
-    variables: {
-      projectId: props.params.projectId,
-    },
-  });
+  const byteCollections = await getApiResponse<ProjectByteCollectionFragment[]>(space, `projects/${props.params.projectId}/byte-collections`);
 
-  const { refetch } = useProjectByteQuery({
-    skip: true,
-  });
-
-  if (!project?.project) {
-    return <FullPageLoader />;
-  }
+  const bytes = await getApiResponse<ProjectByteFragment[]>(space, `projects/${props.params.projectId}/bytes`);
 
   if (props.params.viewType === 'tidbits') {
     return (
       <BytesGrid
-        loading={loadingByte}
-        bytes={bytesData?.projectBytes?.filter((byte) => !byte?.archived)}
-        baseByteViewUrl={`/projects/view/${project?.project.id}/tidbits`}
+        bytes={bytes?.filter((byte) => !byte?.archived)}
+        baseByteViewUrl={`/projects/view/${project.id}/tidbits`}
         byteType={'projectByte'}
-        project={project?.project}
+        project={project}
+        space={props.space}
       />
     );
   }
 
   if (props.params.viewType === 'shorts') {
-    return <ProjectShortVideosGrid space={props.space} project={project?.project} />;
+    return <ProjectShortVideosGrid space={props.space} project={project} />;
   }
 
   return (
     <ByteCollectionsGrid
-      loadingData={loadingByteCollections}
+      loadingData={false}
       space={props.space}
-      project={project?.project}
-      byteCollections={byteCollectionsData?.projectByteCollections?.filter((byteCollection) => !byteCollection?.archived)}
-      fetchByteFn={async (byteId: string) => {
-        const response = await refetch({ projectId: props.params.projectId, id: byteId });
-        return response.data.projectByte;
-      }}
+      project={project}
+      byteCollections={byteCollections?.filter((byteCollection) => !byteCollection?.archived)}
       byteCollectionType={'projectByteCollection'}
     />
   );
 }
-
-export default WithSpace(CollectionsPage);
