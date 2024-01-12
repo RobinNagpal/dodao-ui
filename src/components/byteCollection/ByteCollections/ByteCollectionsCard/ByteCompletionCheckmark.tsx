@@ -4,13 +4,18 @@ import styles from '@/components/byteCollection/ByteCollections/ByteCollectionsC
 import { LocalStorageKeys } from '@/types/deprecated/models/enums';
 import Bars3BottomLeftIcon from '@heroicons/react/24/solid/Bars3BottomLeftIcon';
 import CheckIcon from '@heroicons/react/24/solid/CheckIcon';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 export interface ByteCompletionCheckmarkProps {
   byteId: string;
 }
 export default function ByteCompletionCheckmark({ byteId }: ByteCompletionCheckmarkProps) {
-  const isByteCompleted = JSON.parse(localStorage.getItem(LocalStorageKeys.COMPLETED_TIDBITS) || '[]')?.includes(byteId);
+  const [isByteCompleted, setIsByteCompleted] = React.useState<boolean>(false);
+
+  useEffect(() => {
+    const byteCompleted = JSON.parse(localStorage.getItem(LocalStorageKeys.COMPLETED_TIDBITS) || '[]')?.includes(byteId);
+    setIsByteCompleted(byteCompleted);
+  }, [byteId]);
 
   return (
     <div>
