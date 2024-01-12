@@ -5,7 +5,7 @@ import Input from '@/components/core/input/Input';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import { useAuth } from '@/hooks/useAuth';
 import { useSession } from 'next-auth/react';
-import React, { ChangeEvent, useState } from 'react';
+import React, { useState } from 'react';
 
 function LoginPage() {
   const { data: session } = useSession();

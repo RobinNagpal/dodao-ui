@@ -23,6 +23,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useRouter } from 'next/navigation';
 
 const StyledDiv = styled.div`
   background-color: var(--bg-color);
@@ -129,11 +130,23 @@ function CreateOrLoginButton(props: {
   );
 }
 
+function CreateTidbitSiteButton(props: { session?: Session | undefined | null; space: Space | null | undefined; onClickCreate: () => void }) {
+  if (props.session && props.space) {
+    return (
+      <ButtonLarge type="button" variant="contained" primary onClick={props.onClickCreate}>
+        <PlusIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
+        Create Tidbit Site
+      </ButtonLarge>
+    );
+  }
+}
+
 export default function TopNav(props: { space?: SpaceWithIntegrationsFragment | null }) {
   const { data: session } = useSession();
   const { setShowLoginModal } = useLoginModalContext();
   const [showCreateModal, setShowCreateModal] = useState(false);
   const { space } = props;
+  const router = useRouter();
   return (
     <StyledDiv>
       <FullPageModal open={showCreateModal} onClose={() => setShowCreateModal(false)} title={'Create'} showCloseButton={false}>
@@ -184,6 +197,9 @@ export default function TopNav(props: { space?: SpaceWithIntegrationsFragment | 
                   {space && <DesktopNavLinks space={space} />}
                 </div>
                 <div className="flex items-center">
+                  <div className="mr-2">
+                    <CreateTidbitSiteButton session={session as Session} space={space} onClickCreate={() => router.push('/loginInfo')} />
+                  </div>
                   <div className="flex-shrink-0">
                     <CreateOrLoginButton
                       session={session as Session}
