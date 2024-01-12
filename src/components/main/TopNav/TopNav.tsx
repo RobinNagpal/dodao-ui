@@ -139,6 +139,7 @@ function CreateTidbitSiteButton(props: { session?: Session | undefined | null; s
       </ButtonLarge>
     );
   }
+  return null;
 }
 
 export default function TopNav(props: { space?: SpaceWithIntegrationsFragment | null }) {
