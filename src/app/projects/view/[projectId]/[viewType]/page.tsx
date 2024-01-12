@@ -1,12 +1,12 @@
 import ByteCollectionsGrid from '@/components/byteCollection/View/ByteCollectionsGrid';
 import BytesGrid from '@/components/bytes/List/BytesGrid';
 import ProjectShortVideosGrid from '@/components/projects/projectShortVideo/List/ProjectShortVideosGrid';
-import { ProjectByteCollectionFragment, ProjectByteFragment, ProjectFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { ProjectByteCollectionFragment, ProjectByteFragment, ProjectFragment } from '@/graphql/generated/generated-types';
 import getApiResponse from '@/utils/api/getApiResponse';
 import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
 import React from 'react';
 
-export default async function ProjectHomePage(props: { params: { projectId: string; viewType: string }; space: SpaceWithIntegrationsFragment }) {
+async function ProjectHomePage(props: { params: { projectId: string; viewType: string } }) {
   const space = (await getSpaceServerSide())!;
 
   const project = await getApiResponse<ProjectFragment>(space, `projects/${props.params.projectId}`);
@@ -22,22 +22,24 @@ export default async function ProjectHomePage(props: { params: { projectId: stri
         baseByteViewUrl={`/projects/view/${project.id}/tidbits`}
         byteType={'projectByte'}
         project={project}
-        space={props.space}
+        space={space}
       />
     );
   }
 
   if (props.params.viewType === 'shorts') {
-    return <ProjectShortVideosGrid space={props.space} project={project} />;
+    return <ProjectShortVideosGrid space={space} project={project} />;
   }
 
   return (
     <ByteCollectionsGrid
       loadingData={false}
-      space={props.space}
+      space={space}
       project={project}
       byteCollections={byteCollections?.filter((byteCollection) => !byteCollection?.archived)}
       byteCollectionType={'projectByteCollection'}
     />
   );
 }
+
+export default ProjectHomePage;
