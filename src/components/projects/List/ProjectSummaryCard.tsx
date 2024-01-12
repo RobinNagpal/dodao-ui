@@ -24,9 +24,9 @@ export default function ProjectSummaryCard({ space, project }: ProjectSummaryCar
               <ProjectSummaryCardAdminDropdown space={space} project={project} />
             </div>
           </div>
-          <div className={`${styles.header} mx-2`}>
+          <div className={`${styles.header} mx-2 text-center`}>
             <div className="font-bold">{project.name}</div>
-            <div className={`text-sm ${styles.details}`}>{project.excerpt}</div>
+            <div className="text-sm">{project.excerpt}</div>
           </div>
         </div>
       </Link>
