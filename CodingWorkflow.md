@@ -250,4 +250,4 @@ Here is a coding example of [Converting Client Side to Server Side Rendering](ht
 
 ## Application Architecture
 
-![DoDAO Architecture](https://github.com/RobinNagpal/dodao-ui/blob/main/public/Application_Architecture.png)
+![DoDAO Application Architecture](https://github.com/RobinNagpal/dodao-ui/blob/main/public/Application_Architecture.png)
