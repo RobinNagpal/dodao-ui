@@ -34,13 +34,7 @@ async function ProjectHomePage(props: { params: { projectId: string; viewType: s
   return (
     <>
       <ListTidbitsTopBar space={space} showArchived={showArchived} />
-      <ByteCollectionsGrid
-        loadingData={false}
-        space={space}
-        project={project}
-        byteCollections={tidbitsCollectionsToShow}
-        byteCollectionType={'projectByteCollection'}
-      />
+      <ByteCollectionsGrid space={space} project={project} byteCollections={tidbitsCollectionsToShow} byteCollectionType={'projectByteCollection'} />
     </>
   );
 }
