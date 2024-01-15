@@ -3,12 +3,10 @@
 import Button from '@/components/core/buttons/Button';
 import Input from '@/components/core/input/Input';
 import PageWrapper from '@/components/core/page/PageWrapper';
-import { useSession } from 'next-auth/react';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 function LoginPage() {
-  const { data: session, update } = useSession();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const router = useRouter();
@@ -21,27 +19,6 @@ function LoginPage() {
     setEmail(value as string);
   };
 
-  async function updateSession() {
-    if (!name || !email) {
-      console.log('Please enter both name and email.');
-      return;
-    }
-    const result = await update({
-      ...session,
-      user: {
-        name: name,
-        email: email,
-      },
-    });
-    if (result) {
-      console.log(session);
-      router.refresh();
-      router.push('/login');
-      setName('');
-      setEmail('');
-    }
-  }
-
   return (
     <PageWrapper>
       <div className="space-y-12 text-left p-6">
@@ -52,7 +29,7 @@ function LoginPage() {
           <Input label="Email" modelValue={email} onUpdate={handleEmailChange} />
         </div>
         <div className="flex items-center justify-start gap-x-6">
-          <Button variant="contained" primary onClick={updateSession}>
+          <Button variant="contained" primary onClick={() => {}}>
             Save
           </Button>
         </div>

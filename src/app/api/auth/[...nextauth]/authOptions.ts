@@ -147,11 +147,7 @@ export const authOptions: AuthOptions = {
         dodaoAccessToken: jwt.sign(doDaoJwtTokenPayload, process.env.DODAO_AUTH_SECRET!),
       };
     },
-    jwt: async ({ token, user, account, profile, isNewUser, trigger, session }) => {
-      if (trigger === 'update') {
-        return { ...token, ...session.user };
-      }
-
+    jwt: async ({ token, user, account, profile, isNewUser }) => {
       if (token.sub) {
         const dbUser: User | null = await prisma.user.findUnique({
           where: { id: token.sub },
