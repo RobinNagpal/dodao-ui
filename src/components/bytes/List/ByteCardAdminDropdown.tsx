@@ -1,3 +1,5 @@
+'use client';
+
 import DeleteConfirmationModal from '@/components/app/Modal/DeleteConfirmationModal';
 import { ByteSummaryType } from '@/components/bytes/Summary/ByteSummaryCard';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';

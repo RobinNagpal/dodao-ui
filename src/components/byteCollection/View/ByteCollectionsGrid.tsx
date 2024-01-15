@@ -1,10 +1,10 @@
-import Block from '@/components/app/Block';
+'use client';
+
 import ByteCollectionsCard from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCollectionsCard';
 import NoByteCollections from '@/components/byteCollection/ByteCollections/NoByteCollections';
 import ViewByteModal from '@/components/byteCollection/View/ViewByteModal';
 import { Grid2Cols } from '@/components/core/grids/Grid2Cols';
 import CardLoader, { CardLoaderType } from '@/components/core/loaders/CardLoader';
-import RowLoading from '@/components/core/loaders/RowLoading';
 import {
   ByteCollectionFragment,
   ByteDetailsFragment,
@@ -12,6 +12,8 @@ import {
   ProjectByteFragment,
   ProjectFragment,
   SpaceWithIntegrationsFragment,
+  useProjectByteQuery,
+  useQueryByteDetailsQuery,
 } from '@/graphql/generated/generated-types';
 import React from 'react';
 
@@ -20,7 +22,7 @@ export default function ByteCollectionsGrid({
   loadingData,
   space,
   project,
-  fetchByteFn,
+
   byteCollectionType,
 }: {
   loadingData: boolean;
@@ -28,12 +30,34 @@ export default function ByteCollectionsGrid({
   space: SpaceWithIntegrationsFragment;
   project?: ProjectFragment;
   byteCollectionType: 'byteCollection' | 'projectByteCollection';
-  fetchByteFn: (byteId: string) => Promise<ByteDetailsFragment | ProjectByteFragment>;
 }) {
   const [selectedByteId, setSelectedByteId] = React.useState<string | null>(null);
 
   const onSelectByte = (byteId: string) => {
     setSelectedByteId(byteId);
+  };
+
+  const { refetch: fetchProjectByte } = useProjectByteQuery({
+    skip: true,
+  });
+
+  const { refetch: fetchSpaceByte } = useQueryByteDetailsQuery({ skip: true });
+
+  const fetchByteFn = async (byteId: string): Promise<ByteDetailsFragment | ProjectByteFragment> => {
+    if (byteCollectionType === 'projectByteCollection') {
+      const response = await fetchProjectByte({
+        projectId: project!.id,
+        id: byteId,
+      });
+      return response.data.projectByte;
+    }
+
+    const response = await fetchSpaceByte({
+      byteId: byteId,
+      spaceId: space.id,
+    });
+
+    return response.data.byte;
   };
 
   return (
