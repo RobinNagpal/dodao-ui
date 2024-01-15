@@ -1,5 +1,6 @@
 import ByteCollectionsCard from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCollectionsCard';
 import NoByteCollections from '@/components/byteCollection/ByteCollections/NoByteCollections';
+import ViewByteModal from '@/components/byteCollection/View/ViewByteModal';
 import { Grid2Cols } from '@/components/core/grids/Grid2Cols';
 import { ByteCollectionFragment, ProjectByteCollectionFragment, ProjectFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import React from 'react';
@@ -9,11 +10,16 @@ export default function ByteCollectionsGrid({
   space,
   project,
   byteCollectionType,
+
+  selectedByteCollectionId,
+  selectedByteId,
 }: {
   byteCollections?: ByteCollectionFragment[] | ProjectByteCollectionFragment[];
   space: SpaceWithIntegrationsFragment;
   project?: ProjectFragment;
   byteCollectionType: 'byteCollection' | 'projectByteCollection';
+  selectedByteCollectionId?: string;
+  selectedByteId?: string;
 }) {
   return (
     <>
@@ -24,6 +30,15 @@ export default function ByteCollectionsGrid({
             <ByteCollectionsCard key={i} byteCollection={byteCollection} project={project} byteCollectionType={byteCollectionType} space={space} />
           ))}
         </Grid2Cols>
+      )}
+      {selectedByteCollectionId && selectedByteId && (
+        <ViewByteModal
+          space={space}
+          project={project}
+          byteCollectionType={byteCollectionType}
+          selectedByteCollectionId={selectedByteCollectionId}
+          selectedByteId={selectedByteId}
+        />
       )}
     </>
   );
