@@ -199,7 +199,7 @@ export default function TopNav(props: { space?: SpaceWithIntegrationsFragment | 
                 </div>
                 <div className="flex items-center">
                   <div className="mr-2">
-                    <CreateTidbitSiteButton session={session as Session} space={space} onClickCreate={() => router.push('/loginInfo')} />
+                    <CreateTidbitSiteButton session={session as Session} space={space} onClickCreate={() => router.push('/login-info')} />
                   </div>
                   <div className="flex-shrink-0">
                     <CreateOrLoginButton
