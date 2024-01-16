@@ -21,7 +21,6 @@ export function useAuth() {
   const [processingDiscord, setProcessingDiscord] = useState<boolean>(false);
   const [processingEmailPassword, setProcessingEmailPassword] = useState<boolean>(false);
   const [processingNear, setProcessingNear] = useState<boolean>(false);
-
   async function onSignInWithCrypto() {
     try {
       if (!window.ethereum) {
