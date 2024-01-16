@@ -7,21 +7,32 @@ import { ProjectFragment, SpaceWithIntegrationsFragment } from '@/graphql/genera
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { usePathname } from 'next/navigation';
+import { isAdmin } from '@/utils/auth/isAdmin';
+import { useSession } from 'next-auth/react';
+import { Session } from '@/types/auth/Session';
 
 export default function ListProjectsTopBar(props: { space: SpaceWithIntegrationsFragment; showArchived: boolean }) {
   const [showProjectAddModal, setShowProjectAddModal] = useState(false);
   const [project, setProject] = useState<ProjectFragment | null>(null);
   const router = useRouter();
   const pathname = usePathname();
+  const { data: session } = useSession();
+  const isAdminUser = isAdmin(session as Session, props.space);
 
   return (
     <div className="flex gap-2 sm:gap-7 justify-between items-center">
-      <ToggleWithIcon label={'Show Archived'} enabled={props.showArchived} setEnabled={(value) => router.push(`${pathname}?showArchived=${value}`)} />
-      <div className="mt-4 flex-none">
-        <Button variant="contained" primary onClick={() => setShowProjectAddModal(true)}>
-          Add Project
-        </Button>
-      </div>
+      {isAdminUser && (
+        <ToggleWithIcon label={'Show Archived'} enabled={props.showArchived} setEnabled={(value) => router.push(`${pathname}?showArchived=${value}`)} />
+      )}
+
+      {isAdminUser && (
+        <div className="mt-4 flex-none">
+          <Button variant="contained" primary onClick={() => setShowProjectAddModal(true)}>
+            Add Project
+          </Button>
+        </div>
+      )}
+
       {showProjectAddModal && (
         <UpsertProjectModal
           spaceId={props.space.id}
