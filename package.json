@@ -13,6 +13,9 @@
     "graphql:download": "graphql-codegen --config introspection.yml",
     "graphql:generate": "graphql-codegen --config codegen.yml"
   },
+  "engines" : {
+    "node" : ">=20.0.0"
+  },
   "dependencies": {
     "@apollo/client": "^3.7.12",
     "@apollo/react-hooks": "^4.0.0",
@@ -73,8 +76,8 @@
     "marked": "^4.3.0",
     "moment": "^2.29.4",
     "near-api-js": "^2.1.4",
-    "next": "13.4.19",
-    "next-auth": "^4.22.1",
+    "next": "14.0.4",
+    "next-auth": "^4.24.5",
     "next-i18next": "^14.0.0",
     "openai": "^3.2.1",
     "plyr": "^3.7.8",
