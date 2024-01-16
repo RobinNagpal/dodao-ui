@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import React from 'react';
 import { usePathname } from 'next/navigation';
 
-export default function ShowArchivedTidbitsToggle(props: { space: SpaceWithIntegrationsFragment; showArchived: boolean }) {
+export default function ShowArchivedToggle(props: { space: SpaceWithIntegrationsFragment; showArchived: boolean }) {
   const router = useRouter();
   const pathname = usePathname();
 

@@ -1,6 +1,6 @@
 import ByteCollectionsGrid from '@/components/byteCollection/View/ByteCollectionsGrid';
 import BytesGrid from '@/components/bytes/List/BytesGrid';
-import ShowArchivedTidbitsToggle from '@/components/bytes/List/ShowArchivedTidbitsToggle';
+import ShowArchivedToggle from '@/components/bytes/List/ShowArchivedToggle';
 import ProjectShortVideosGrid from '@/components/projects/projectShortVideo/List/ProjectShortVideosGrid';
 import { ProjectByteCollectionFragment, ProjectByteFragment, ProjectFragment } from '@/graphql/generated/generated-types';
 import getApiResponse from '@/utils/api/getApiResponse';
@@ -16,7 +16,7 @@ async function ProjectHomePage(props: { params: { projectId: string; viewType: s
 
   return (
     <>
-      <ShowArchivedTidbitsToggle space={space} showArchived={showArchived} />
+      <ShowArchivedToggle space={space} showArchived={showArchived} />
       <BytesGrid bytes={tidbitsToShow} baseByteViewUrl={`/projects/view/${project.id}/tidbits`} byteType={'projectByte'} project={project} space={space} />
     </>
   );
