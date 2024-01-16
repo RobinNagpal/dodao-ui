@@ -148,6 +148,7 @@ export default function TopNav(props: { space?: SpaceWithIntegrationsFragment | 
   const [showCreateModal, setShowCreateModal] = useState(false);
   const { space } = props;
   const router = useRouter();
+  const isAdminUser = isAdmin(session as Session, space!);
   return (
     <StyledDiv>
       <FullPageModal open={showCreateModal} onClose={() => setShowCreateModal(false)} title={'Create'} showCloseButton={false}>
@@ -198,9 +199,12 @@ export default function TopNav(props: { space?: SpaceWithIntegrationsFragment | 
                   {space && <DesktopNavLinks space={space} />}
                 </div>
                 <div className="flex items-center">
-                  <div className="mr-2">
-                    <CreateTidbitSiteButton session={session as Session} space={space} onClickCreate={() => router.push('/login-info')} />
-                  </div>
+                  {isAdminUser && (
+                    <div className="mr-2">
+                      <CreateTidbitSiteButton session={session as Session} space={space} onClickCreate={() => router.push('/login-info')} />
+                    </div>
+                  )}
+
                   <div className="flex-shrink-0">
                     <CreateOrLoginButton
                       session={session as Session}
