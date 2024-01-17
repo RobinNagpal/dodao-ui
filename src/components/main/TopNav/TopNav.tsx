@@ -12,6 +12,7 @@ import { Space, SpaceWithIntegrationsFragment } from '@/graphql/generated/genera
 import { Session } from '@/types/auth/Session';
 import { FeatureItem, FeatureName } from '@/types/features/spaceFeatures';
 import { isAdmin } from '@/utils/auth/isAdmin';
+import { isSuperAdmin } from '@/utils/auth/superAdmins';
 import { getSortedFeaturesArray } from '@/utils/features';
 import { getCDNImageUrl } from '@/utils/images/getCDNImageUrl';
 import { Disclosure } from '@headlessui/react';
@@ -130,16 +131,13 @@ function CreateOrLoginButton(props: {
   );
 }
 
-function CreateTidbitSiteButton(props: { session?: Session | undefined | null; space: Space | null | undefined; onClickCreate: () => void }) {
-  if (props.session && props.space) {
-    return (
-      <ButtonLarge type="button" variant="contained" primary onClick={props.onClickCreate}>
-        <PlusIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
-        Create Tidbit Site
-      </ButtonLarge>
-    );
-  }
-  return null;
+function CreateTidbitSiteButton(props: { onClickCreate: () => void }) {
+  return (
+    <ButtonLarge type="button" variant="contained" primary onClick={props.onClickCreate}>
+      <PlusIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
+      Create Tidbit Site
+    </ButtonLarge>
+  );
 }
 
 export default function TopNav(props: { space?: SpaceWithIntegrationsFragment | null }) {
@@ -148,7 +146,7 @@ export default function TopNav(props: { space?: SpaceWithIntegrationsFragment | 
   const [showCreateModal, setShowCreateModal] = useState(false);
   const { space } = props;
   const router = useRouter();
-  const isAdminUser = isAdmin(session as Session, space!);
+  const superAdmin = isSuperAdmin(session as Session);
   return (
     <StyledDiv>
       <FullPageModal open={showCreateModal} onClose={() => setShowCreateModal(false)} title={'Create'} showCloseButton={false}>
@@ -199,9 +197,9 @@ export default function TopNav(props: { space?: SpaceWithIntegrationsFragment | 
                   {space && <DesktopNavLinks space={space} />}
                 </div>
                 <div className="flex items-center">
-                  {isAdminUser && (
+                  {superAdmin && (
                     <div className="mr-2">
-                      <CreateTidbitSiteButton session={session as Session} space={space} onClickCreate={() => router.push('/login-info')} />
+                      <CreateTidbitSiteButton onClickCreate={() => router.push('/login-info')} />
                     </div>
                   )}
 
