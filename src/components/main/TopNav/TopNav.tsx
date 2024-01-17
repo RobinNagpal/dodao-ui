@@ -146,7 +146,7 @@ export default function TopNav(props: { space?: SpaceWithIntegrationsFragment | 
   const [showCreateModal, setShowCreateModal] = useState(false);
   const { space } = props;
   const router = useRouter();
-  const superAdmin = isSuperAdmin(session as Session);
+  const superAdmin = session && isSuperAdmin(session as Session);
   return (
     <StyledDiv>
       <FullPageModal open={showCreateModal} onClose={() => setShowCreateModal(false)} title={'Create'} showCloseButton={false}>
