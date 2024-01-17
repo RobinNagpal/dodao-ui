@@ -10,15 +10,6 @@ import { CSSProperties, ReactNode } from 'react';
 import 'tailwindcss/tailwind.css';
 import './globals.scss';
 import InternalLayout from './InternalLayout';
-import { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: {
-    template: '%s',
-    default: 'Dodao',
-  },
-  description: 'Educational Platform for BlockChain and related stuff',
-};
 
 interface RootLayoutProps {
   children: ReactNode;
