@@ -1,8 +1,6 @@
-import ByteCollectionsGrid from '@/components/byteCollection/View/ByteCollectionsGrid';
 import BytesGrid from '@/components/bytes/List/BytesGrid';
 import ShowArchivedToggle from '@/components/bytes/List/ShowArchivedToggle';
-import ProjectShortVideosGrid from '@/components/projects/projectShortVideo/List/ProjectShortVideosGrid';
-import { ProjectByteCollectionFragment, ProjectByteFragment, ProjectFragment } from '@/graphql/generated/generated-types';
+import { ProjectByteFragment, ProjectFragment } from '@/graphql/generated/generated-types';
 import getApiResponse from '@/utils/api/getApiResponse';
 import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
 import React from 'react';
