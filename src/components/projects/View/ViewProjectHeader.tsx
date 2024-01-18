@@ -49,19 +49,35 @@ export function ViewProjectHeader({ project, selectedViewType }: { project: Proj
             </div>
             <div className="hidden sm:block">
               <nav className="-mb-px flex space-x-8">
-                {tabs.map((tab) => (
-                  <Link
-                    key={tab.name}
-                    href={tab.href}
-                    className={classNames(
-                      tab.current ? styles.selectedHeaderTab : 'border-transparent text hover:border-gray-300 ',
-                      'whitespace-nowrap border-b-2 px-1 pb-4 text-sm font-medium'
-                    )}
-                    aria-current={tab.current ? 'page' : undefined}
-                  >
-                    {tab.name}
-                  </Link>
-                ))}
+                {tabs.map((tab) =>
+                  tab.name === 'Tidbits' ? (
+                    <PrivateComponent key={tab.name}>
+                      <Link
+                        key={tab.name}
+                        href={tab.href}
+                        className={classNames(
+                          tab.current ? styles.selectedHeaderTab : 'border-transparent text hover:border-gray-300 ',
+                          'whitespace-nowrap border-b-2 px-1 pb-4 text-sm font-medium'
+                        )}
+                        aria-current={tab.current ? 'page' : undefined}
+                      >
+                        {tab.name}
+                      </Link>
+                    </PrivateComponent>
+                  ) : (
+                    <Link
+                      key={tab.name}
+                      href={tab.href}
+                      className={classNames(
+                        tab.current ? styles.selectedHeaderTab : 'border-transparent text hover:border-gray-300 ',
+                        'whitespace-nowrap border-b-2 px-1 pb-4 text-sm font-medium'
+                      )}
+                      aria-current={tab.current ? 'page' : undefined}
+                    >
+                      {tab.name}
+                    </Link>
+                  )
+                )}
               </nav>
             </div>
           </div>
