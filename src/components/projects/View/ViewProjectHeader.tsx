@@ -36,9 +36,15 @@ export function ViewProjectHeader({ project, selectedViewType }: { project: Proj
                 className="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                 defaultValue={tabs.find((tab) => tab.current)?.name}
               >
-                {tabs.map((tab) => (
-                  <option key={tab.name}>{tab.name}</option>
-                ))}
+                {tabs.map((tab) =>
+                  tab.name === 'Tidbits' ? (
+                    <PrivateComponent>
+                      <option key={tab.name}>{tab.name}</option>
+                    </PrivateComponent>
+                  ) : (
+                    <option key={tab.name}>{tab.name}</option>
+                  )
+                )}
               </select>
             </div>
             <div className="hidden sm:block">
