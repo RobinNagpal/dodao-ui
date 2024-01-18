@@ -7,13 +7,11 @@ import ListProjectsHelper from './ListProjectsHelper';
 export default function ListProjects(props: { space: SpaceWithIntegrationsFragment; projects: ProjectFragment[]; showArchived: boolean }) {
   const projectsToShow = props.projects.filter((project) => project.archived === props.showArchived);
   return (
-    <PageWrapper>
-      <div className="px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col sm:flex-row justify-end">
-          <ListProjectsTopBar space={props.space} showArchived={props.showArchived} />
-        </div>
-        <ListProjectsHelper space={props.space} projects={projectsToShow} />
+    <div>
+      <div className="flex flex-col sm:flex-row justify-end">
+        <ListProjectsTopBar space={props.space} showArchived={props.showArchived} />
       </div>
-    </PageWrapper>
+      <ListProjectsHelper space={props.space} projects={projectsToShow} />
+    </div>
   );
 }
