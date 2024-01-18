@@ -1,3 +1,4 @@
+import PageWrapper from '@/components/core/page/PageWrapper';
 import ListProjects from '@/components/projects/List/ListProjects';
 import { ProjectFragment } from '@/graphql/generated/generated-types';
 import getApiResponse from '@/utils/api/getApiResponse';
@@ -7,5 +8,9 @@ export default async function ProjectListPage(props: { searchParams: { [key: str
   const space = await getSpaceServerSide();
   const projects = await getApiResponse<ProjectFragment[]>(space!, 'projects');
 
-  return <ListProjects space={space!} projects={projects} showArchived={props.searchParams?.['showArchived'] === 'true'} />;
+  return (
+    <PageWrapper>
+      <ListProjects space={space!} projects={projects} showArchived={props.searchParams?.['showArchived'] === 'true'} />
+    </PageWrapper>
+  );
 }

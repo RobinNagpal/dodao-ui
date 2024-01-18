@@ -14,28 +14,27 @@ import { useEffect } from 'react';
 import styles from './ViewProjectByte.module.scss';
 
 const ViewProjectByte = ({
-  params,
+  tidbitIdAndStep,
   space,
   project,
 }: {
-  params: { entityIdAndStep: string[] };
+  tidbitIdAndStep: string[];
   space: SpaceWithIntegrationsFragment;
   project: ProjectFragment;
 }) => {
   const { data, refetch, loading } = useProjectByteQuery({
     variables: {
-      id: params.entityIdAndStep[0],
+      id: tidbitIdAndStep[0],
       projectId: project.id,
     },
     skip: true,
   });
-  const { entityIdAndStep } = params;
 
-  const byteId = Array.isArray(entityIdAndStep) ? entityIdAndStep[0] : (entityIdAndStep as string);
+  const byteId = Array.isArray(tidbitIdAndStep) ? tidbitIdAndStep[0] : (tidbitIdAndStep as string);
 
   let stepOrder = 0;
-  if (Array.isArray(entityIdAndStep)) {
-    stepOrder = parseInt(entityIdAndStep[1]);
+  if (Array.isArray(tidbitIdAndStep)) {
+    stepOrder = parseInt(tidbitIdAndStep[1]);
   }
 
   const viewByteHelper = useGenericViewByte({
