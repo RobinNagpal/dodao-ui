@@ -1,4 +1,3 @@
-import ByteCollectionsGrid from '@/components/byteCollection/View/ByteCollectionsGrid';
 import BytesGrid from '@/components/bytes/List/BytesGrid';
 import PrivateArchivedToggle from '@/components/projects/List/PrivateArchivedToggle';
 import { ProjectByteFragment, ProjectFragment } from '@/graphql/generated/generated-types';
