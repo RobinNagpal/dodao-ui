@@ -38,7 +38,7 @@ export function ViewProjectHeader({ project, selectedViewType }: { project: Proj
               >
                 {tabs.map((tab) =>
                   tab.name === 'Tidbits' ? (
-                    <PrivateComponent>
+                    <PrivateComponent key={tab.name}>
                       <option key={tab.name}>{tab.name}</option>
                     </PrivateComponent>
                   ) : (
