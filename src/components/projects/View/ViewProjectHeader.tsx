@@ -5,19 +5,23 @@ import FullScreenModal from '@/components/core/modals/FullScreenModal';
 import PrivateComponent from '@/components/core/PrivateComponent';
 import CreateProjectContentModalContents from '@/components/projects/Nav/CreateProjectContentModalContents';
 import { ProjectFragment } from '@/graphql/generated/generated-types';
-import classNames from '@/utils/classNames';
-import Link from 'next/link';
 import React from 'react';
-import styles from './ViewProjectHeader.module.scss';
+import TabLink from './TabLink';
+import { isAdmin } from '@/utils/auth/isAdmin';
 
 export function ViewProjectHeader({ project, selectedViewType }: { project: ProjectFragment; selectedViewType: string }) {
   const [showCreateContentsModal, setShowCreateContentsModal] = React.useState(false);
-
-  const tabs = [
+  const isUserAdmin = isAdmin();
+  var tabs = [
     { name: 'Tidbits', href: `/projects/view/${project.id}/tidbits`, current: selectedViewType === 'tidbits' },
     { name: 'Tidbits Collections', href: `/projects/view/${project.id}/tidbit-collections`, current: selectedViewType === 'tidbit-collections' },
     { name: 'Shorts', href: `/projects/view/${project.id}/shorts`, current: selectedViewType === 'shorts' },
   ];
+
+  if (!isUserAdmin) {
+    tabs = tabs.filter((tab) => tab.name !== 'Tidbits');
+  }
+
   return (
     <div>
       <div className="relative border-b border-gray-200 pb-5 sm:pb-0 flex justify-between">
@@ -36,48 +40,16 @@ export function ViewProjectHeader({ project, selectedViewType }: { project: Proj
                 className="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                 defaultValue={tabs.find((tab) => tab.current)?.name}
               >
-                {tabs.map((tab) =>
-                  tab.name === 'Tidbits' ? (
-                    <PrivateComponent key={tab.name}>
-                      <option key={tab.name}>{tab.name}</option>
-                    </PrivateComponent>
-                  ) : (
-                    <option key={tab.name}>{tab.name}</option>
-                  )
-                )}
+                {tabs.map((tab) => (
+                  <option key={tab.name}>{tab.name}</option>
+                ))}
               </select>
             </div>
             <div className="hidden sm:block">
               <nav className="-mb-px flex space-x-8">
-                {tabs.map((tab) =>
-                  tab.name === 'Tidbits' ? (
-                    <PrivateComponent key={tab.name}>
-                      <Link
-                        key={tab.name}
-                        href={tab.href}
-                        className={classNames(
-                          tab.current ? styles.selectedHeaderTab : 'border-transparent text hover:border-gray-300 ',
-                          'whitespace-nowrap border-b-2 px-1 pb-4 text-sm font-medium'
-                        )}
-                        aria-current={tab.current ? 'page' : undefined}
-                      >
-                        {tab.name}
-                      </Link>
-                    </PrivateComponent>
-                  ) : (
-                    <Link
-                      key={tab.name}
-                      href={tab.href}
-                      className={classNames(
-                        tab.current ? styles.selectedHeaderTab : 'border-transparent text hover:border-gray-300 ',
-                        'whitespace-nowrap border-b-2 px-1 pb-4 text-sm font-medium'
-                      )}
-                      aria-current={tab.current ? 'page' : undefined}
-                    >
-                      {tab.name}
-                    </Link>
-                  )
-                )}
+                {tabs.map((tab) => (
+                  <TabLink tab={tab} />
+                ))}
               </nav>
             </div>
           </div>
