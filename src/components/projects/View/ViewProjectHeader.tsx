@@ -48,7 +48,7 @@ export function ViewProjectHeader({ project, selectedViewType }: { project: Proj
             <div className="hidden sm:block">
               <nav className="-mb-px flex space-x-8">
                 {tabs.map((tab) => (
-                  <TabLink tab={tab} />
+                  <TabLink key={tab.name} tab={tab} />
                 ))}
               </nav>
             </div>
