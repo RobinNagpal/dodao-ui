@@ -4,14 +4,17 @@ import Button from '@/components/core/buttons/Button';
 import FullScreenModal from '@/components/core/modals/FullScreenModal';
 import PrivateComponent from '@/components/core/PrivateComponent';
 import CreateProjectContentModalContents from '@/components/projects/Nav/CreateProjectContentModalContents';
-import { ProjectFragment } from '@/graphql/generated/generated-types';
+import { ProjectFragment, Space } from '@/graphql/generated/generated-types';
 import React from 'react';
 import TabLink from './TabLink';
 import { isAdmin } from '@/utils/auth/isAdmin';
+import { useSession } from 'next-auth/react';
+import { Session } from '@/types/auth/Session';
 
-export function ViewProjectHeader({ project, selectedViewType }: { project: ProjectFragment; selectedViewType: string }) {
+export function ViewProjectHeader({ project, selectedViewType, space }: { project: ProjectFragment; selectedViewType: string; space: Space }) {
   const [showCreateContentsModal, setShowCreateContentsModal] = React.useState(false);
-  const isUserAdmin = isAdmin();
+  const { data: session } = useSession();
+  const isUserAdmin = space && session && isAdmin(session as Session, space);
   var tabs = [
     { name: 'Tidbits', href: `/projects/view/${project.id}/tidbits`, current: selectedViewType === 'tidbits' },
     { name: 'Tidbits Collections', href: `/projects/view/${project.id}/tidbit-collections`, current: selectedViewType === 'tidbit-collections' },
