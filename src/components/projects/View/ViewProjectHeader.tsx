@@ -11,7 +11,7 @@ import { isAdmin } from '@/utils/auth/isAdmin';
 import { useSession } from 'next-auth/react';
 import { Session } from '@/types/auth/Session';
 
-export function ViewProjectHeader({ project, selectedViewType, space }: { project: ProjectFragment; selectedViewType: string; space: Space }) {
+export function ViewProjectHeader({ project, selectedViewType, space }: { project: ProjectFragment; selectedViewType: string; space?: Space }) {
   const [showCreateContentsModal, setShowCreateContentsModal] = React.useState(false);
   const { data: session } = useSession();
   const isUserAdmin = space && session && isAdmin(session as Session, space);
