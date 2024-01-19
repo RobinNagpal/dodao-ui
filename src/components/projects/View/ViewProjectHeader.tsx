@@ -10,11 +10,12 @@ import TabLink from './TabLink';
 import { isAdmin } from '@/utils/auth/isAdmin';
 import { useSession } from 'next-auth/react';
 import { Session } from '@/types/auth/Session';
+import { isSuperAdmin } from '@/utils/auth/superAdmins';
 
 export function ViewProjectHeader({ project, selectedViewType, space }: { project: ProjectFragment; selectedViewType: string; space?: Space }) {
   const [showCreateContentsModal, setShowCreateContentsModal] = React.useState(false);
   const { data: session } = useSession();
-  const isUserAdmin = space && session && isAdmin(session as Session, space);
+  const isUserAdmin = session && (isAdmin(session as Session, space) || isSuperAdmin(session as Session));
   var tabs = [
     { name: 'Tidbits', href: `/projects/view/${project.id}/tidbits`, current: selectedViewType === 'tidbits' },
     { name: 'Tidbits Collections', href: `/projects/view/${project.id}/tidbit-collections`, current: selectedViewType === 'tidbit-collections' },
