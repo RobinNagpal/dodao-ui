@@ -1,4 +1,11 @@
-import { editByteCommonFunctions, EditByteType, GeneratedByte, KeyOfByteInput, UpdateByteFunctions } from '@/components/bytes/Edit/editByteHelper';
+import {
+  editByteCommonFunctions,
+  EditByteStep,
+  EditByteType,
+  GeneratedByte,
+  KeyOfByteInput,
+  UpdateByteFunctions,
+} from '@/components/bytes/Edit/editByteHelper';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import { ByteDetailsFragment, SpaceWithIntegrationsFragment, useQueryByteDetailsQuery, useUpsertByteMutation } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
@@ -101,6 +108,13 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
     }));
   }, []);
 
+  const includeSteps = (newSteps: EditByteStep[]) => {
+    setByte((prevByte) => ({
+      ...prevByte,
+      steps: [...prevByte.steps, ...newSteps],
+    }));
+  };
+
   const updateByteFunctions: UpdateByteFunctions = {
     addStep,
     moveStepUp: moveStepUpFn,
@@ -110,6 +124,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
     updateByteField,
     updateStep: updateStepFn,
     setByte,
+    includeSteps,
   };
 
   const saveViaMutation = async (mutationFn: () => Promise<FetchResult<{ payload: ByteDetailsFragment | undefined }>>) => {

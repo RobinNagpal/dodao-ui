@@ -2,22 +2,19 @@
 
 import withSpace from '@/app/withSpace';
 import Block from '@/components/app/Block';
+import AddByteQuestionsUsingAIButton from '@/components/bytes/Create/AddByteQuestionsUsingAIButton';
 import { CreateByteUsingAIModal } from '@/components/bytes/Create/CreateByteUsingAIModal';
 import { EditByteType } from '@/components/bytes/Edit/editByteHelper';
 import EditByteStepper from '@/components/bytes/Edit/EditByteStepper';
 import { useEditByte } from '@/components/bytes/Edit/useEditByte';
 import Button from '@/components/core/buttons/Button';
-import EllipsisDropdown from '@/components/core/dropdowns/EllipsisDropdown';
 import Input from '@/components/core/input/Input';
 import PageLoading from '@/components/core/loaders/PageLoading';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import TextareaArray from '@/components/core/textarea/TextareaArray';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
-import { VisibilityEnum } from '@/types/deprecated/models/enums';
 import { ByteErrors } from '@/types/errors/byteErrors';
-import StatusBadge from '@/utils/byte/StatusBadge';
-import { visibilityOptions } from '@/utils/ui/statuses';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -47,7 +44,15 @@ function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteI
             <span className="mr-1 font-bold">&#8592;</span>
             {byteId ? byte.name : 'Back to Bytes'}
           </Link>
-          <div>{!byteId && <Button onClick={() => setShowAIGenerateModel(true)}>Create with AI</Button>}</div>
+          <div>
+            {!byteId && <Button onClick={() => setShowAIGenerateModel(true)}>Create with AI</Button>}
+            <AddByteQuestionsUsingAIButton
+              byte={byte}
+              onNewStepsWithQuestions={(newSteps) => {
+                updateByteFunctions.includeSteps(newSteps);
+              }}
+            />
+          </div>
         </div>
 
         {byteLoaded ? (

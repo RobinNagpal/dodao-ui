@@ -1,5 +1,6 @@
 import {
   editByteCommonFunctions,
+  EditByteStep,
   EditByteType,
   EditProjectByteType,
   GeneratedByte,
@@ -108,6 +109,13 @@ export function useEditProjectByte(space: SpaceWithIntegrationsFragment, project
     }));
   }, []);
 
+  const includeSteps = (newSteps: EditByteStep[]) => {
+    setByte((prevByte) => ({
+      ...prevByte,
+      steps: [...prevByte.steps, ...newSteps],
+    }));
+  };
+
   const updateByteFunctions: UpdateByteFunctions = {
     addStep,
     moveStepUp: moveStepUpFn,
@@ -117,6 +125,7 @@ export function useEditProjectByte(space: SpaceWithIntegrationsFragment, project
     updateByteField,
     updateStep: updateStepFn,
     setByte,
+    includeSteps,
   };
 
   const handleSubmit = async () => {

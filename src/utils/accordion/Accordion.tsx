@@ -30,6 +30,8 @@ export default function Accordion({ isOpen, label, onClick, children }: Accordio
         style={{
           maxHeight: isOpen ? '1000px' : '0',
           opacity: isOpen ? 1 : 0,
+          overflow: 'scroll',
+          padding: '0 1rem 1rem 1rem',
         }}
         className={styles.accordionContent}
       >

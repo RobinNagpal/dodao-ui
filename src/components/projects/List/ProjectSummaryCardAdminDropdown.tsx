@@ -54,7 +54,7 @@ export default function ProjectSummaryCardAdminDropdown({ space, project }: Proj
     <>
       <PrivateEllipsisDropdown
         items={getThreeDotItems(project)}
-        onSelect={async (key) => {
+        onSelect={async (key, e: React.MouseEvent<HTMLAnchorElement>) => {
           if (key === 'edit') {
             setEditProject(project);
           } else if (key === 'archive') {
@@ -64,6 +64,8 @@ export default function ProjectSummaryCardAdminDropdown({ space, project }: Proj
             console.log('unarchive');
             updateArchiveStatus(project.id, false);
           }
+          e.preventDefault();
+          e.stopPropagation();
         }}
       />
       {deleteProjectId && (

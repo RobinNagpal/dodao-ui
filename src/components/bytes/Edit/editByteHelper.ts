@@ -45,6 +45,7 @@ export type KeyOfByteInput = keyof EditByteType | keyof EditProjectByteType;
 export type UpdateByteFunctions = {
   moveStepDown: (stepUuid: string) => void;
   addStep: () => void;
+  includeSteps: (newSteps: EditByteStep[]) => void;
   updateByteErrorField: (field: KeyOfByteInput, value: any) => void;
   updateByteField: (field: KeyOfByteInput, value: any) => void;
   updateStep: (step: EditByteStep) => void;

@@ -1,14 +1,11 @@
-import { GeneratedQuestionInterface } from '@/components/ai/questions/GenerateQuestionsUsingAI';
-import { EditByteStep, EditByteType } from '@/components/bytes/Edit/editByteHelper';
+import { EditByteType } from '@/components/bytes/Edit/editByteHelper';
 import Button from '@/components/core/buttons/Button';
 import ErrorWithAccentBorder from '@/components/core/errors/ErrorWithAccentBorder';
 import FullPageModal from '@/components/core/modals/FullPageModal';
 import { NotificationProps } from '@/components/core/notify/Notification';
 import TextareaAutosize from '@/components/core/textarea/TextareaAutosize';
-import generateQuestionsPrompt from '@/components/guides/Edit/generateQuestionsPrompt';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import { ChatCompletionRequestMessageRoleEnum, useAskChatCompletionAiMutation, useDownloadAndCleanContentMutation } from '@/graphql/generated/generated-types';
-import { PublishStatus, QuestionType, VisibilityEnum } from '@/types/deprecated/models/enums';
 import { sum } from 'lodash';
 
 import { useState } from 'react';
@@ -83,55 +80,6 @@ export function CreateByteUsingAIModal(props: CreateByteUsingAIModalProps) {
     return data || undefined;
   };
 
-  const generateQuestionsContent = async (parsedData: GeneratedByte): Promise<string | undefined> => {
-    const questionsContent = `
-        ${parsedData.name}
-        ${parsedData.content}
-        
-        ${parsedData.steps.map((step) => `${step.name} \n ${step.content}`).join('\n')}
-      `;
-
-    const questionsPrompt = generateQuestionsPrompt(parsedData.name, 2, questionsContent);
-
-    const questionsResponse = await askChatCompletionAiMutation({
-      variables: {
-        input: {
-          messages: [{ role: ChatCompletionRequestMessageRoleEnum.User, content: questionsPrompt }],
-          temperature: 0.3,
-          model: 'gpt-3.5-turbo-16k',
-        },
-      },
-    });
-
-    const questionsData = questionsResponse?.data?.askChatCompletionAI?.choices?.[0]?.message?.content;
-
-    if (!questionsData) {
-      setLoading(false);
-      setError('Got no response from AI. Please try again.');
-      return;
-    }
-
-    return questionsData;
-  };
-
-  const addGeneratedQuestions = (steps: EditByteStep[], generatedQuestions: GeneratedQuestionInterface[]) => {
-    const questionsSteps: EditByteStep[] = generatedQuestions.map((generatedQuestion, index) => ({
-      uuid: uuidv4(),
-      name: 'Evaluation',
-      content: '',
-      stepItems: [
-        {
-          uuid: uuidv4(),
-          ...generatedQuestion,
-          type: QuestionType.SingleChoice,
-          order: 0,
-        },
-      ],
-    }));
-
-    return [...steps, ...questionsSteps];
-  };
-
   const generateResponse = async () => {
     setLoading(true);
     setError(null);
@@ -147,14 +95,6 @@ export function CreateByteUsingAIModal(props: CreateByteUsingAIModalProps) {
 
       const steps = parsedData.steps.map((step) => ({ ...step, uuid: uuidv4(), stepItems: [] }));
 
-      const questionsContent = await generateQuestionsContent(parsedData);
-
-      if (!questionsContent) {
-        return;
-      }
-
-      const stepsWithQuestions = addGeneratedQuestions(steps, JSON.parse(questionsContent) as GeneratedQuestionInterface[]);
-
       const editByteType: EditByteType = {
         ...parsedData,
         admins: [],
@@ -163,7 +103,7 @@ export function CreateByteUsingAIModal(props: CreateByteUsingAIModalProps) {
         isPristine: true,
         priority: 0,
         tags: [],
-        steps: stepsWithQuestions,
+        steps: steps,
       };
       setLoading(false);
 
