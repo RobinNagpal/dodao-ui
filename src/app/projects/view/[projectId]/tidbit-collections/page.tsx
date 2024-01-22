@@ -1,5 +1,5 @@
 import ByteCollectionsGrid from '@/components/byteCollection/View/ByteCollectionsGrid';
-import ShowArchivedToggle from '@/components/bytes/List/ShowArchivedToggle';
+import PrivateArchivedToggle from '@/components/projects/List/PrivateArchivedToggle';
 import { ProjectByteCollectionFragment, ProjectFragment } from '@/graphql/generated/generated-types';
 import getApiResponse from '@/utils/api/getApiResponse';
 import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
@@ -16,7 +16,9 @@ async function ProjectHomePage(props: { params: { projectId: string; viewType: s
 
   return (
     <>
-      <ShowArchivedToggle space={space} showArchived={showArchived} />
+      <div className="flex justify-end mb-4">
+        <PrivateArchivedToggle space={space} showArchived={showArchived} />
+      </div>
       <ByteCollectionsGrid space={space} project={project} byteCollections={tidbitsCollectionsToShow} byteCollectionType={'projectByteCollection'} />
     </>
   );
