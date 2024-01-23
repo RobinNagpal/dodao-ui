@@ -6,7 +6,7 @@ import UpsertProjectModal from '@/components/projects/Edit/UpsertProjectModal';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import { ProjectFragment, SpaceWithIntegrationsFragment, useUpdateArchivedStatusOfProjectMutation } from '@/graphql/generated/generated-types';
 import React, { useState } from 'react';
-import UpdateProjectSEO from '../Edit/UpdateProjectSEO';
+import UpdateProjectSEOModal from '../Edit/UpdateProjectSEOModal';
 
 export interface ProjectSummaryCardProps {
   space: SpaceWithIntegrationsFragment;
@@ -96,7 +96,7 @@ export default function ProjectSummaryCardAdminDropdown({ space, project }: Proj
       )}
 
       {editProjectSeo && (
-        <UpdateProjectSEO
+        <UpdateProjectSEOModal
           spaceId={space.id}
           project={project || undefined}
           open={!!editProjectSeo}
