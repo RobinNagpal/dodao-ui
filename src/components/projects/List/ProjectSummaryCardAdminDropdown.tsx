@@ -58,7 +58,7 @@ export default function ProjectSummaryCardAdminDropdown({ space, project }: Proj
     <>
       <PrivateEllipsisDropdown
         items={getThreeDotItems(project)}
-        onSelect={async (key) => {
+        onSelect={async (key, e: React.MouseEvent<HTMLAnchorElement>) => {
           if (key === 'edit') {
             setEditProject(project);
           } else if (key === 'archive') {
@@ -69,6 +69,8 @@ export default function ProjectSummaryCardAdminDropdown({ space, project }: Proj
           } else if (key === 'editSeo') {
             setEditProjectSeo(project);
           }
+          e.preventDefault();
+          e.stopPropagation();
         }}
       />
       {deleteProjectId && (

@@ -17,18 +17,20 @@ function LoginPage() {
       <div className="w-full flex justify-center break-all">
         <div>
           <div className="flex-col">
-            <p>Welcome - {session?.username}</p>
-            <p>Session - {session ? JSON.stringify(session, null, 2) : 'No session'}</p>
-            <p>Connected with Web3</p>
-            <ButtonLarge variant={'contained'} primary onClick={logout}>
-              Logout
-            </ButtonLarge>
+            {session?.username && <p>Welcome - {session?.username}</p>}
+            {session?.username && (
+              <ButtonLarge variant={'contained'} primary onClick={logout}>
+                Logout
+              </ButtonLarge>
+            )}
           </div>
-          <div className="mt-4">
-            <ButtonLarge onClick={() => setShowLoginModal(true)} primary>
-              Show Login Modal
-            </ButtonLarge>
-          </div>
+          {!session?.username && (
+            <div className="mt-4">
+              <ButtonLarge onClick={() => setShowLoginModal(true)} primary>
+                Show Login Modal
+              </ButtonLarge>
+            </div>
+          )}
         </div>
       </div>
     </PageWrapper>

@@ -321,7 +321,7 @@ export default function EditByteStepperItem({
 
   return (
     <StyledStepItemContainer className="w-full">
-      <div className={`p-4 w-full ${byteErrors?.steps?.[step.uuid] ? 'error-event-border' : ''}`}>
+      <div className={`${byteErrors?.steps?.[step.uuid] ? 'error-event-border' : ''}`}>
         <div style={{ minHeight: '20px' }}>
           <IconButton
             className="float-right ml-2"
@@ -363,7 +363,7 @@ export default function EditByteStepperItem({
         />
       </div>
       {stepItemsForStepper.map((stepItem, index) => (
-        <StepItemWrapper key={stepItem.uuid} className="ml-4 mt-2 w-full" hasError={!!stepErrors?.stepItems?.[stepItem.uuid]}>
+        <StepItemWrapper key={stepItem.uuid} className="mt-2" hasError={!!stepErrors?.stepItems?.[stepItem.uuid]}>
           {stepItem.isQuestion ? (
             <CreateQuestion
               addChoice={addChoice}

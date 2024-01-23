@@ -1,6 +1,7 @@
 'use client';
 
 import Block from '@/components/app/Block';
+import AddByteQuestionsUsingAIButton from '@/components/bytes/Create/AddByteQuestionsUsingAIButton';
 import { CreateByteUsingAIModal } from '@/components/bytes/Create/CreateByteUsingAIModal';
 import { EditByteType } from '@/components/bytes/Edit/editByteHelper';
 import EditByteStepper from '@/components/bytes/Edit/EditByteStepper';
@@ -52,7 +53,15 @@ export default function EditProjectByte(props: { space: SpaceWithIntegrationsFra
             <span className="mr-1 font-bold">&#8592;</span>
             {byteId ? byte.name : 'Back to Bytes'}
           </Link>
-          <div>{!byteId && <Button onClick={() => setShowAIGenerateModel(true)}>Create with AI</Button>}</div>
+          <div>
+            {!byteId && <Button onClick={() => setShowAIGenerateModel(true)}>Create with AI</Button>}{' '}
+            <AddByteQuestionsUsingAIButton
+              byte={byte}
+              onNewStepsWithQuestions={(newSteps) => {
+                updateByteFunctions.includeSteps(newSteps);
+              }}
+            />
+          </div>
         </div>
 
         {byteLoaded ? (
