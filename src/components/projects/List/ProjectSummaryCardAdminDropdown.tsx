@@ -1,5 +1,6 @@
 'use client';
 
+import UpdateSEOModal from '@/components/app/Common/UpdateSEOModal';
 import DeleteConfirmationModal from '@/components/app/Modal/DeleteConfirmationModal';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import UpsertProjectModal from '@/components/projects/Edit/UpsertProjectModal';
@@ -97,8 +98,7 @@ export default function ProjectSummaryCardAdminDropdown({ space, project }: Proj
 
       {editProjectSeo && (
         <UpdateProjectSEOModal
-          spaceId={space.id}
-          project={project || undefined}
+          project={project}
           open={!!editProjectSeo}
           onClose={() => {
             setEditProjectSeo(null);
