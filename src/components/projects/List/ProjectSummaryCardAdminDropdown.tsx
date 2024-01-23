@@ -6,6 +6,7 @@ import UpsertProjectModal from '@/components/projects/Edit/UpsertProjectModal';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import { ProjectFragment, SpaceWithIntegrationsFragment, useUpdateArchivedStatusOfProjectMutation } from '@/graphql/generated/generated-types';
 import React, { useState } from 'react';
+import UpdateProjectSEO from '../Edit/UpdateProjectSEO';
 
 export interface ProjectSummaryCardProps {
   space: SpaceWithIntegrationsFragment;
@@ -14,6 +15,7 @@ export interface ProjectSummaryCardProps {
 
 export default function ProjectSummaryCardAdminDropdown({ space, project }: ProjectSummaryCardProps) {
   const [editProject, setEditProject] = useState<ProjectFragment | null>(null);
+  const [editProjectSeo, setEditProjectSeo] = useState<ProjectFragment | null>(null);
   const [deleteProjectId, setDeleteProjectId] = useState<string | null>(null);
   const [updateArchivedStatusOfProjectMutation] = useUpdateArchivedStatusOfProjectMutation();
   const { showNotification } = useNotificationContext();
@@ -23,11 +25,13 @@ export default function ProjectSummaryCardAdminDropdown({ space, project }: Proj
       return [
         { label: 'Edit', key: 'edit' },
         { label: 'Unarchive', key: 'unarchive' },
+        { label: 'Edit SEO', key: 'editSeo' },
       ];
     }
     return [
       { label: 'Edit', key: 'edit' },
       { label: 'Archive', key: 'archive' },
+      { label: 'Edit SEO', key: 'editSeo' },
     ];
   };
 
@@ -61,8 +65,9 @@ export default function ProjectSummaryCardAdminDropdown({ space, project }: Proj
             setDeleteProjectId(project.id);
             setDeleteProjectId(project.id);
           } else if (key === 'unarchive') {
-            console.log('unarchive');
             updateArchiveStatus(project.id, false);
+          } else if (key === 'editSeo') {
+            setEditProjectSeo(project);
           }
         }}
       />
@@ -84,6 +89,17 @@ export default function ProjectSummaryCardAdminDropdown({ space, project }: Proj
           open={!!editProject}
           onClose={() => {
             setEditProject(null);
+          }}
+        />
+      )}
+
+      {editProjectSeo && (
+        <UpdateProjectSEO
+          spaceId={space.id}
+          project={project || undefined}
+          open={!!editProjectSeo}
+          onClose={() => {
+            setEditProjectSeo(null);
           }}
         />
       )}
