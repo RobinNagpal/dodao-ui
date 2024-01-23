@@ -19,6 +19,11 @@ fragment Project on Project {
   website
   type
   cardThumbnail
+  seoMeta {
+    title
+    description
+    keywords
+  }
 }
 
 query Projects($type: String) {
@@ -41,6 +46,12 @@ mutation UpsertProject($input: UpsertProjectInput!) {
 
 mutation UpdateArchivedStatusOfProject($projectId: String!, $archived: Boolean!) {
   updateArchivedStatusOfProject(projectId: $projectId, archived: $archived) {
+    ...Project
+  }
+}
+
+mutation UpdateSeoOfProject($projectId: String!, $seoMeta: SEOMetaInput) {
+  updateSeoOfProject(projectId: $projectId, seoMeta: $seoMeta) {
     ...Project
   }
 }
