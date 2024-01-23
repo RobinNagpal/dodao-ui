@@ -999,7 +999,13 @@ type Mutation {
   createSignedUrl(input: CreateSignedUrlInput!, spaceId: String!): String!
   createSpace(spaceInput: UpsertSpaceInput!): Space!
   createSummaryOfContent(input: String!): OpenAITextResponse!
-  createWebsiteScrapingInfo(baseUrl: String!, ignoreHashInUrl: Boolean!, ignoreQueryParams: Boolean!, scrapingStartUrl: String!, spaceId: String!): WebsiteScrapingInfo!
+  createWebsiteScrapingInfo(
+    baseUrl: String!
+    ignoreHashInUrl: Boolean!
+    ignoreQueryParams: Boolean!
+    scrapingStartUrl: String!
+    spaceId: String!
+  ): WebsiteScrapingInfo!
   deleteAndPullCourseRepo(courseKey: String!, spaceId: String!): GitCourse!
   deleteByteCollection(byteCollectionId: String!): Boolean!
   deleteChatbotCategory(id: String!, spaceId: String!): Boolean!
@@ -1015,7 +1021,14 @@ type Mutation {
   downloadAndCleanContent(input: String!): DownloadAndCleanContentResponse!
   dropPineconeNamespace(spaceId: String!): Boolean!
   editArticleIndexingInfo(articleIndexingInfoId: String!, articleUrl: String!, spaceId: String!): ArticleIndexingInfo!
-  editWebsiteScrapingInfo(baseUrl: String!, ignoreHashInUrl: Boolean!, ignoreQueryParams: Boolean!, scrapingStartUrl: String!, spaceId: String!, websiteScrapingInfoId: String!): WebsiteScrapingInfo!
+  editWebsiteScrapingInfo(
+    baseUrl: String!
+    ignoreHashInUrl: Boolean!
+    ignoreQueryParams: Boolean!
+    scrapingStartUrl: String!
+    spaceId: String!
+    websiteScrapingInfoId: String!
+  ): WebsiteScrapingInfo!
   extractRelevantTextForTopic(input: ExtractRelevantTextForTopicInput!): OpenAITextResponse!
   generateImage(input: GenerateImageInput!): ImagesResponse!
   generateImageEdit(input: GenerateImageEditInput!): GenerateImageResponse!
@@ -1053,6 +1066,7 @@ type Mutation {
   updateGuideSettings(input: GuideSettingsInput!, spaceId: String!): Space!
   updateIndexWithAllDiscordPosts(spaceId: String!): Boolean!
   updateIndexingOfDiscordChannel(channelId: String!, shouldIndex: Boolean!, spaceId: String!): DiscordChannel!
+  updateSeoOfProject(projectId: String!, seoMeta: SEOMetaInput): Project!
   updateSocialSettings(input: SocialSettingsInput!, spaceId: String!): Space!
   updateSpace(spaceInput: UpsertSpaceInput!): Space!
   updateThemeColors(spaceId: ID!, themeColors: ThemeColorsInput!): Space!
@@ -1161,6 +1175,7 @@ type Project {
   id: String!
   logo: String
   name: String!
+  seoMeta: SEOMeta
   telegram: String
   type: String!
   website: String
@@ -1175,6 +1190,7 @@ type ProjectByte {
   name: String!
   postSubmissionStepContent: String
   priority: Int!
+  seoMeta: SEOMeta
   steps: [ByteStep!]!
   tags: [String!]!
 }
@@ -1187,6 +1203,7 @@ type ProjectByteCollection {
   id: String!
   name: String!
   order: Int!
+  seoMeta: SEOMeta
   status: String!
 }
 
@@ -1196,6 +1213,7 @@ type ProjectShortVideo {
   description: String!
   id: ID!
   priority: Int!
+  seoMeta: SEOMeta
   thumbnail: String!
   title: String!
   updatedAt: String!
@@ -1206,6 +1224,7 @@ input ProjectShortVideoInput {
   description: String!
   id: ID!
   priority: Int!
+  seoMeta: SEOMetaInput
   thumbnail: String!
   title: String!
   videoUrl: String!
@@ -1296,6 +1315,18 @@ type Route53Record {
   records: [String]
   ttl: Int
   type: String
+}
+
+type SEOMeta {
+  description: String!
+  keywords: [String!]!
+  title: String!
+}
+
+input SEOMetaInput {
+  description: String!
+  keywords: [String!]!
+  title: String!
 }
 
 type ScrapedUrlInfo {
@@ -1731,6 +1762,7 @@ input UpsertProjectByteCollectionInput {
   name: String!
   order: Int!
   projectId: String!
+  seoMeta: SEOMetaInput
   status: String!
 }
 
@@ -1741,6 +1773,7 @@ input UpsertProjectByteInput {
   id: String!
   name: String!
   priority: Int!
+  seoMeta: SEOMetaInput
   steps: [ByteStepInput!]!
   tags: [String!]!
   thumbnail: String
@@ -1759,6 +1792,7 @@ input UpsertProjectInput {
   id: String!
   logo: String
   name: String!
+  seoMeta: SEOMetaInput
   telegram: String
   type: String!
   website: String

@@ -1121,6 +1121,7 @@ export interface Mutation {
   updateGuideSettings: Space;
   updateIndexWithAllDiscordPosts: Scalars['Boolean'];
   updateIndexingOfDiscordChannel: DiscordChannel;
+  updateSeoOfProject: Project;
   updateSocialSettings: Space;
   updateSpace: Space;
   updateThemeColors: Space;
@@ -1562,6 +1563,12 @@ export interface MutationUpdateIndexingOfDiscordChannelArgs {
 }
 
 
+export interface MutationUpdateSeoOfProjectArgs {
+  projectId: Scalars['String'];
+  seoMeta?: InputMaybe<SeoMetaInput>;
+}
+
+
 export interface MutationUpdateSocialSettingsArgs {
   input: SocialSettingsInput;
   spaceId: Scalars['String'];
@@ -1838,6 +1845,7 @@ export interface Project {
   id: Scalars['String'];
   logo?: Maybe<Scalars['String']>;
   name: Scalars['String'];
+  seoMeta?: Maybe<SeoMeta>;
   telegram?: Maybe<Scalars['String']>;
   type: Scalars['String'];
   website?: Maybe<Scalars['String']>;
@@ -1853,6 +1861,7 @@ export interface ProjectByte {
   name: Scalars['String'];
   postSubmissionStepContent?: Maybe<Scalars['String']>;
   priority: Scalars['Int'];
+  seoMeta?: Maybe<SeoMeta>;
   steps: Array<ByteStep>;
   tags: Array<Scalars['String']>;
 }
@@ -1866,6 +1875,7 @@ export interface ProjectByteCollection {
   id: Scalars['String'];
   name: Scalars['String'];
   order: Scalars['Int'];
+  seoMeta?: Maybe<SeoMeta>;
   status: Scalars['String'];
 }
 
@@ -1876,6 +1886,7 @@ export interface ProjectShortVideo {
   description: Scalars['String'];
   id: Scalars['ID'];
   priority: Scalars['Int'];
+  seoMeta?: Maybe<SeoMeta>;
   thumbnail: Scalars['String'];
   title: Scalars['String'];
   updatedAt: Scalars['String'];
@@ -1886,6 +1897,7 @@ export interface ProjectShortVideoInput {
   description: Scalars['String'];
   id: Scalars['ID'];
   priority: Scalars['Int'];
+  seoMeta?: InputMaybe<SeoMetaInput>;
   thumbnail: Scalars['String'];
   title: Scalars['String'];
   videoUrl: Scalars['String'];
@@ -2260,6 +2272,19 @@ export interface Route53Record {
   records?: Maybe<Array<Maybe<Scalars['String']>>>;
   ttl?: Maybe<Scalars['Int']>;
   type?: Maybe<Scalars['String']>;
+}
+
+export interface SeoMeta {
+  __typename?: 'SEOMeta';
+  description: Scalars['String'];
+  keywords: Array<Scalars['String']>;
+  title: Scalars['String'];
+}
+
+export interface SeoMetaInput {
+  description: Scalars['String'];
+  keywords: Array<Scalars['String']>;
+  title: Scalars['String'];
 }
 
 export interface ScrapedUrlInfo {
@@ -2714,6 +2739,7 @@ export interface UpsertProjectByteCollectionInput {
   name: Scalars['String'];
   order: Scalars['Int'];
   projectId: Scalars['String'];
+  seoMeta?: InputMaybe<SeoMetaInput>;
   status: Scalars['String'];
 }
 
@@ -2724,6 +2750,7 @@ export interface UpsertProjectByteInput {
   id: Scalars['String'];
   name: Scalars['String'];
   priority: Scalars['Int'];
+  seoMeta?: InputMaybe<SeoMetaInput>;
   steps: Array<ByteStepInput>;
   tags: Array<Scalars['String']>;
   thumbnail?: InputMaybe<Scalars['String']>;
@@ -2742,6 +2769,7 @@ export interface UpsertProjectInput {
   id: Scalars['String'];
   logo?: InputMaybe<Scalars['String']>;
   name: Scalars['String'];
+  seoMeta?: InputMaybe<SeoMetaInput>;
   telegram?: InputMaybe<Scalars['String']>;
   type: Scalars['String'];
   website?: InputMaybe<Scalars['String']>;
@@ -3832,28 +3860,28 @@ export type GenerateImageMutationVariables = Exact<{
 
 export type GenerateImageMutation = { __typename?: 'Mutation', generateImage: { __typename?: 'ImagesResponse', created: number, data: Array<{ __typename?: 'ImagesResponseDataInner', url?: string | null }> } };
 
-export type ProjectFragment = { __typename?: 'Project', adminUsernames: Array<string>, admins: Array<string>, archived: boolean, creator: string, details: string, discord?: string | null, docs?: string | null, excerpt: string, github?: string | null, id: string, logo?: string | null, name: string, telegram?: string | null, website?: string | null, type: string, cardThumbnail?: string | null, adminUsernamesV1: Array<{ __typename?: 'UsernameAndName', username: string, nameOfTheUser: string }> };
+export type ProjectFragment = { __typename?: 'Project', adminUsernames: Array<string>, admins: Array<string>, archived: boolean, creator: string, details: string, discord?: string | null, docs?: string | null, excerpt: string, github?: string | null, id: string, logo?: string | null, name: string, telegram?: string | null, website?: string | null, type: string, cardThumbnail?: string | null, adminUsernamesV1: Array<{ __typename?: 'UsernameAndName', username: string, nameOfTheUser: string }>, seoMeta?: { __typename?: 'SEOMeta', title: string, description: string, keywords: Array<string> } | null };
 
 export type ProjectsQueryVariables = Exact<{
   type?: InputMaybe<Scalars['String']>;
 }>;
 
 
-export type ProjectsQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'Project', adminUsernames: Array<string>, admins: Array<string>, archived: boolean, creator: string, details: string, discord?: string | null, docs?: string | null, excerpt: string, github?: string | null, id: string, logo?: string | null, name: string, telegram?: string | null, website?: string | null, type: string, cardThumbnail?: string | null, adminUsernamesV1: Array<{ __typename?: 'UsernameAndName', username: string, nameOfTheUser: string }> }> };
+export type ProjectsQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'Project', adminUsernames: Array<string>, admins: Array<string>, archived: boolean, creator: string, details: string, discord?: string | null, docs?: string | null, excerpt: string, github?: string | null, id: string, logo?: string | null, name: string, telegram?: string | null, website?: string | null, type: string, cardThumbnail?: string | null, adminUsernamesV1: Array<{ __typename?: 'UsernameAndName', username: string, nameOfTheUser: string }>, seoMeta?: { __typename?: 'SEOMeta', title: string, description: string, keywords: Array<string> } | null }> };
 
 export type ProjectQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
 
 
-export type ProjectQuery = { __typename?: 'Query', project: { __typename?: 'Project', adminUsernames: Array<string>, admins: Array<string>, archived: boolean, creator: string, details: string, discord?: string | null, docs?: string | null, excerpt: string, github?: string | null, id: string, logo?: string | null, name: string, telegram?: string | null, website?: string | null, type: string, cardThumbnail?: string | null, adminUsernamesV1: Array<{ __typename?: 'UsernameAndName', username: string, nameOfTheUser: string }> } };
+export type ProjectQuery = { __typename?: 'Query', project: { __typename?: 'Project', adminUsernames: Array<string>, admins: Array<string>, archived: boolean, creator: string, details: string, discord?: string | null, docs?: string | null, excerpt: string, github?: string | null, id: string, logo?: string | null, name: string, telegram?: string | null, website?: string | null, type: string, cardThumbnail?: string | null, adminUsernamesV1: Array<{ __typename?: 'UsernameAndName', username: string, nameOfTheUser: string }>, seoMeta?: { __typename?: 'SEOMeta', title: string, description: string, keywords: Array<string> } | null } };
 
 export type UpsertProjectMutationVariables = Exact<{
   input: UpsertProjectInput;
 }>;
 
 
-export type UpsertProjectMutation = { __typename?: 'Mutation', upsertProject: { __typename?: 'Project', adminUsernames: Array<string>, admins: Array<string>, archived: boolean, creator: string, details: string, discord?: string | null, docs?: string | null, excerpt: string, github?: string | null, id: string, logo?: string | null, name: string, telegram?: string | null, website?: string | null, type: string, cardThumbnail?: string | null, adminUsernamesV1: Array<{ __typename?: 'UsernameAndName', username: string, nameOfTheUser: string }> } };
+export type UpsertProjectMutation = { __typename?: 'Mutation', upsertProject: { __typename?: 'Project', adminUsernames: Array<string>, admins: Array<string>, archived: boolean, creator: string, details: string, discord?: string | null, docs?: string | null, excerpt: string, github?: string | null, id: string, logo?: string | null, name: string, telegram?: string | null, website?: string | null, type: string, cardThumbnail?: string | null, adminUsernamesV1: Array<{ __typename?: 'UsernameAndName', username: string, nameOfTheUser: string }>, seoMeta?: { __typename?: 'SEOMeta', title: string, description: string, keywords: Array<string> } | null } };
 
 export type UpdateArchivedStatusOfProjectMutationVariables = Exact<{
   projectId: Scalars['String'];
@@ -3861,7 +3889,15 @@ export type UpdateArchivedStatusOfProjectMutationVariables = Exact<{
 }>;
 
 
-export type UpdateArchivedStatusOfProjectMutation = { __typename?: 'Mutation', updateArchivedStatusOfProject: { __typename?: 'Project', adminUsernames: Array<string>, admins: Array<string>, archived: boolean, creator: string, details: string, discord?: string | null, docs?: string | null, excerpt: string, github?: string | null, id: string, logo?: string | null, name: string, telegram?: string | null, website?: string | null, type: string, cardThumbnail?: string | null, adminUsernamesV1: Array<{ __typename?: 'UsernameAndName', username: string, nameOfTheUser: string }> } };
+export type UpdateArchivedStatusOfProjectMutation = { __typename?: 'Mutation', updateArchivedStatusOfProject: { __typename?: 'Project', adminUsernames: Array<string>, admins: Array<string>, archived: boolean, creator: string, details: string, discord?: string | null, docs?: string | null, excerpt: string, github?: string | null, id: string, logo?: string | null, name: string, telegram?: string | null, website?: string | null, type: string, cardThumbnail?: string | null, adminUsernamesV1: Array<{ __typename?: 'UsernameAndName', username: string, nameOfTheUser: string }>, seoMeta?: { __typename?: 'SEOMeta', title: string, description: string, keywords: Array<string> } | null } };
+
+export type UpdateSeoOfProjectMutationVariables = Exact<{
+  projectId: Scalars['String'];
+  seoMeta?: InputMaybe<SeoMetaInput>;
+}>;
+
+
+export type UpdateSeoOfProjectMutation = { __typename?: 'Mutation', updateSeoOfProject: { __typename?: 'Project', adminUsernames: Array<string>, admins: Array<string>, archived: boolean, creator: string, details: string, discord?: string | null, docs?: string | null, excerpt: string, github?: string | null, id: string, logo?: string | null, name: string, telegram?: string | null, website?: string | null, type: string, cardThumbnail?: string | null, adminUsernamesV1: Array<{ __typename?: 'UsernameAndName', username: string, nameOfTheUser: string }>, seoMeta?: { __typename?: 'SEOMeta', title: string, description: string, keywords: Array<string> } | null } };
 
 export type ProjectByteFragment = { __typename?: 'ProjectByte', admins: Array<string>, content: string, created: string, id: string, name: string, postSubmissionStepContent?: string | null, priority: number, tags: Array<string>, archived: boolean, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> };
 
@@ -4947,6 +4983,11 @@ export const ProjectFragmentDoc = gql`
   website
   type
   cardThumbnail
+  seoMeta {
+    title
+    description
+    keywords
+  }
 }
     `;
 export const ProjectByteFragmentDoc = gql`
@@ -9432,6 +9473,40 @@ export function useUpdateArchivedStatusOfProjectMutation(baseOptions?: Apollo.Mu
 export type UpdateArchivedStatusOfProjectMutationHookResult = ReturnType<typeof useUpdateArchivedStatusOfProjectMutation>;
 export type UpdateArchivedStatusOfProjectMutationResult = Apollo.MutationResult<UpdateArchivedStatusOfProjectMutation>;
 export type UpdateArchivedStatusOfProjectMutationOptions = Apollo.BaseMutationOptions<UpdateArchivedStatusOfProjectMutation, UpdateArchivedStatusOfProjectMutationVariables>;
+export const UpdateSeoOfProjectDocument = gql`
+    mutation UpdateSeoOfProject($projectId: String!, $seoMeta: SEOMetaInput) {
+  updateSeoOfProject(projectId: $projectId, seoMeta: $seoMeta) {
+    ...Project
+  }
+}
+    ${ProjectFragmentDoc}`;
+export type UpdateSeoOfProjectMutationFn = Apollo.MutationFunction<UpdateSeoOfProjectMutation, UpdateSeoOfProjectMutationVariables>;
+
+/**
+ * __useUpdateSeoOfProjectMutation__
+ *
+ * To run a mutation, you first call `useUpdateSeoOfProjectMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateSeoOfProjectMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateSeoOfProjectMutation, { data, loading, error }] = useUpdateSeoOfProjectMutation({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *      seoMeta: // value for 'seoMeta'
+ *   },
+ * });
+ */
+export function useUpdateSeoOfProjectMutation(baseOptions?: Apollo.MutationHookOptions<UpdateSeoOfProjectMutation, UpdateSeoOfProjectMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateSeoOfProjectMutation, UpdateSeoOfProjectMutationVariables>(UpdateSeoOfProjectDocument, options);
+      }
+export type UpdateSeoOfProjectMutationHookResult = ReturnType<typeof useUpdateSeoOfProjectMutation>;
+export type UpdateSeoOfProjectMutationResult = Apollo.MutationResult<UpdateSeoOfProjectMutation>;
+export type UpdateSeoOfProjectMutationOptions = Apollo.BaseMutationOptions<UpdateSeoOfProjectMutation, UpdateSeoOfProjectMutationVariables>;
 export const ProjectBytesDocument = gql`
     query ProjectBytes($projectId: String!) {
   projectBytes(projectId: $projectId) {

@@ -32,6 +32,7 @@ export default function useEditProject(projectId?: string): UseEditProjectHelper
     logo: '',
     name: '',
     type: 'DeFi',
+    seoMeta: null,
   });
 
   const [upserting, setUpserting] = useState(false);
@@ -66,6 +67,7 @@ export default function useEditProject(projectId?: string): UseEditProjectHelper
           name: projectResponse.name,
           adminUsernamesV1: projectResponse.adminUsernamesV1 || [],
           cardThumbnail: projectResponse.cardThumbnail,
+          seoMeta: projectResponse.seoMeta,
         });
       }
     }
@@ -92,6 +94,7 @@ export default function useEditProject(projectId?: string): UseEditProjectHelper
       name: project.name,
       adminUsernamesV1: project.adminUsernamesV1 || [],
       cardThumbnail: project.cardThumbnail,
+      seoMeta: project.seoMeta,
     };
   }
 
