@@ -2175,8 +2175,8 @@ export interface QueryProjectBytesArgs {
 
 
 export interface QueryProjectShortVideoArgs {
-  projectByteId: Scalars['String'];
   projectId: Scalars['String'];
+  projectShortVideoId: Scalars['String'];
 }
 
 
@@ -4012,6 +4012,14 @@ export type ProjectShortVideosQueryVariables = Exact<{
 
 
 export type ProjectShortVideosQuery = { __typename?: 'Query', projectShortVideos: Array<{ __typename?: 'ProjectShortVideo', id: string, title: string, description: string, thumbnail: string, videoUrl: string, priority: number, createdAt: string, updatedAt: string, archived: boolean, seoMeta?: { __typename?: 'SEOMeta', title: string, description: string, keywords: Array<string> } | null }> };
+
+export type ProjectShortVideoQueryVariables = Exact<{
+  projectId: Scalars['String'];
+  id: Scalars['String'];
+}>;
+
+
+export type ProjectShortVideoQuery = { __typename?: 'Query', projectShortVideo: { __typename?: 'ProjectShortVideo', id: string, title: string, description: string, thumbnail: string, videoUrl: string, priority: number, createdAt: string, updatedAt: string, archived: boolean, seoMeta?: { __typename?: 'SEOMeta', title: string, description: string, keywords: Array<string> } | null } };
 
 export type UpsertProjectShortVideoMutationVariables = Exact<{
   projectId: Scalars['String'];
@@ -9972,6 +9980,45 @@ export type ProjectShortVideosLazyQueryHookResult = ReturnType<typeof useProject
 export type ProjectShortVideosQueryResult = Apollo.QueryResult<ProjectShortVideosQuery, ProjectShortVideosQueryVariables>;
 export function refetchProjectShortVideosQuery(variables: ProjectShortVideosQueryVariables) {
       return { query: ProjectShortVideosDocument, variables: variables }
+    }
+export const ProjectShortVideoDocument = gql`
+    query ProjectShortVideo($projectId: String!, $id: String!) {
+  projectShortVideo(projectId: $projectId, projectShortVideoId: $id) {
+    ...ProjectShortVideo
+  }
+}
+    ${ProjectShortVideoFragmentDoc}`;
+
+/**
+ * __useProjectShortVideoQuery__
+ *
+ * To run a query within a React component, call `useProjectShortVideoQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProjectShortVideoQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProjectShortVideoQuery({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useProjectShortVideoQuery(baseOptions: Apollo.QueryHookOptions<ProjectShortVideoQuery, ProjectShortVideoQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ProjectShortVideoQuery, ProjectShortVideoQueryVariables>(ProjectShortVideoDocument, options);
+      }
+export function useProjectShortVideoLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProjectShortVideoQuery, ProjectShortVideoQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ProjectShortVideoQuery, ProjectShortVideoQueryVariables>(ProjectShortVideoDocument, options);
+        }
+export type ProjectShortVideoQueryHookResult = ReturnType<typeof useProjectShortVideoQuery>;
+export type ProjectShortVideoLazyQueryHookResult = ReturnType<typeof useProjectShortVideoLazyQuery>;
+export type ProjectShortVideoQueryResult = Apollo.QueryResult<ProjectShortVideoQuery, ProjectShortVideoQueryVariables>;
+export function refetchProjectShortVideoQuery(variables: ProjectShortVideoQueryVariables) {
+      return { query: ProjectShortVideoDocument, variables: variables }
     }
 export const UpsertProjectShortVideoDocument = gql`
     mutation UpsertProjectShortVideo($projectId: String!, $input: ProjectShortVideoInput!) {
