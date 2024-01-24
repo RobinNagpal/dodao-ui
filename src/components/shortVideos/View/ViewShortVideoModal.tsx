@@ -12,6 +12,7 @@ import 'swiper/css/pagination';
 import { History, Keyboard, Mousewheel, Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import './styles.css';
+import UpdateProjectShortVideoSEOModal from '../Edit/UpdateProjectShortVideoSEOModal';
 
 interface ViewShortVideoModalProps {
   initialSlide: number;
@@ -23,6 +24,7 @@ export default function ViewShortVideoModal({ initialSlide, videos, onClose, onS
   const swiperRef = useRef<SwiperCore>(null);
   const videoRefs = useRef(videos.map(() => React.createRef<HTMLVideoElement>()));
   const [currentSlideIndex, setCurrentSlideIndex] = useState(initialSlide);
+  const [editProjecShortVideoSeo, setEditProjecShortVideoSeo] = React.useState<boolean>(false);
 
   const handleSlideChange = (swiper: SwiperCore) => {
     setCurrentSlideIndex(swiper.realIndex);
@@ -40,7 +42,10 @@ export default function ViewShortVideoModal({ initialSlide, videos, onClose, onS
     }
   };
   const currentVideoTitle = videos[currentSlideIndex]?.title || '';
-  const threeDotItems = [{ label: 'Edit', key: 'edit' }];
+  const threeDotItems = [
+    { label: 'Edit', key: 'edit' },
+    { label: 'Edit Seo', key: 'editSeo' },
+  ];
   return (
     <FullScreenModal title={currentVideoTitle} open={true} onClose={onClose} fullWidth={false}>
       <div className="flex justify-end">
@@ -49,6 +54,9 @@ export default function ViewShortVideoModal({ initialSlide, videos, onClose, onS
           onSelect={async (key) => {
             if (key === 'edit') {
               onShowEditModal();
+            }
+            if (key == 'editSeo') {
+              setEditProjecShortVideoSeo(true);
             }
           }}
           className="mt-2 mr-2"
@@ -91,6 +99,16 @@ export default function ViewShortVideoModal({ initialSlide, videos, onClose, onS
           ))}
         </Swiper>
       </div>
+
+      {editProjecShortVideoSeo && (
+        <UpdateProjectShortVideoSEOModal
+          projectShortVideo={videos[currentSlideIndex]}
+          open={!!editProjecShortVideoSeo}
+          onClose={() => {
+            setEditProjecShortVideoSeo(false);
+          }}
+        />
+      )}
     </FullScreenModal>
   );
 }
