@@ -1067,6 +1067,9 @@ type Mutation {
   updateIndexWithAllDiscordPosts(spaceId: String!): Boolean!
   updateIndexingOfDiscordChannel(channelId: String!, shouldIndex: Boolean!, spaceId: String!): DiscordChannel!
   updateSeoOfProject(projectId: String!, seoMeta: SEOMetaInput): Project!
+  updateSeoOfProjectByte(projectId: String!, seoMeta: SEOMetaInput): ProjectByte!
+  updateSeoOfProjectByteCollection(projectId: String!, seoMeta: SEOMetaInput): ProjectByteCollection!
+  updateSeoOfProjectShortVideo(projectId: String!, seoMeta: SEOMetaInput): ProjectShortVideo!
   updateSocialSettings(input: SocialSettingsInput!, spaceId: String!): Space!
   updateSpace(spaceInput: UpsertSpaceInput!): Space!
   updateThemeColors(spaceId: ID!, themeColors: ThemeColorsInput!): Space!
@@ -1175,6 +1178,7 @@ type Project {
   id: String!
   logo: String
   name: String!
+  priority: Int!
   seoMeta: SEOMeta
   telegram: String
   type: String!
@@ -1203,6 +1207,7 @@ type ProjectByteCollection {
   id: String!
   name: String!
   order: Int!
+  priority: Int!
   seoMeta: SEOMeta
   status: String!
 }
@@ -1761,6 +1766,7 @@ input UpsertProjectByteCollectionInput {
   id: String!
   name: String!
   order: Int!
+  priority: Int!
   projectId: String!
   seoMeta: SEOMetaInput
   status: String!
@@ -1792,6 +1798,7 @@ input UpsertProjectInput {
   id: String!
   logo: String
   name: String!
+  priority: Int!
   seoMeta: SEOMetaInput
   telegram: String
   type: String!
