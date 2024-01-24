@@ -1122,6 +1122,9 @@ export interface Mutation {
   updateIndexWithAllDiscordPosts: Scalars['Boolean'];
   updateIndexingOfDiscordChannel: DiscordChannel;
   updateSeoOfProject: Project;
+  updateSeoOfProjectByte: ProjectByte;
+  updateSeoOfProjectByteCollection: ProjectByteCollection;
+  updateSeoOfProjectShortVideo: ProjectShortVideo;
   updateSocialSettings: Space;
   updateSpace: Space;
   updateThemeColors: Space;
@@ -1564,6 +1567,24 @@ export interface MutationUpdateIndexingOfDiscordChannelArgs {
 
 
 export interface MutationUpdateSeoOfProjectArgs {
+  projectId: Scalars['String'];
+  seoMeta?: InputMaybe<SeoMetaInput>;
+}
+
+
+export interface MutationUpdateSeoOfProjectByteArgs {
+  projectId: Scalars['String'];
+  seoMeta?: InputMaybe<SeoMetaInput>;
+}
+
+
+export interface MutationUpdateSeoOfProjectByteCollectionArgs {
+  projectId: Scalars['String'];
+  seoMeta?: InputMaybe<SeoMetaInput>;
+}
+
+
+export interface MutationUpdateSeoOfProjectShortVideoArgs {
   projectId: Scalars['String'];
   seoMeta?: InputMaybe<SeoMetaInput>;
 }
@@ -3899,14 +3920,14 @@ export type UpdateSeoOfProjectMutationVariables = Exact<{
 
 export type UpdateSeoOfProjectMutation = { __typename?: 'Mutation', updateSeoOfProject: { __typename?: 'Project', adminUsernames: Array<string>, admins: Array<string>, archived: boolean, creator: string, details: string, discord?: string | null, docs?: string | null, excerpt: string, github?: string | null, id: string, logo?: string | null, name: string, telegram?: string | null, website?: string | null, type: string, cardThumbnail?: string | null, adminUsernamesV1: Array<{ __typename?: 'UsernameAndName', username: string, nameOfTheUser: string }>, seoMeta?: { __typename?: 'SEOMeta', title: string, description: string, keywords: Array<string> } | null } };
 
-export type ProjectByteFragment = { __typename?: 'ProjectByte', admins: Array<string>, content: string, created: string, id: string, name: string, postSubmissionStepContent?: string | null, priority: number, tags: Array<string>, archived: boolean, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> };
+export type ProjectByteFragment = { __typename?: 'ProjectByte', admins: Array<string>, content: string, created: string, id: string, name: string, postSubmissionStepContent?: string | null, priority: number, tags: Array<string>, archived: boolean, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }>, seoMeta?: { __typename?: 'SEOMeta', title: string, description: string, keywords: Array<string> } | null };
 
 export type ProjectBytesQueryVariables = Exact<{
   projectId: Scalars['String'];
 }>;
 
 
-export type ProjectBytesQuery = { __typename?: 'Query', projectBytes: Array<{ __typename?: 'ProjectByte', admins: Array<string>, content: string, created: string, id: string, name: string, postSubmissionStepContent?: string | null, priority: number, tags: Array<string>, archived: boolean, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> }> };
+export type ProjectBytesQuery = { __typename?: 'Query', projectBytes: Array<{ __typename?: 'ProjectByte', admins: Array<string>, content: string, created: string, id: string, name: string, postSubmissionStepContent?: string | null, priority: number, tags: Array<string>, archived: boolean, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }>, seoMeta?: { __typename?: 'SEOMeta', title: string, description: string, keywords: Array<string> } | null }> };
 
 export type ProjectByteQueryVariables = Exact<{
   projectId: Scalars['String'];
@@ -3914,7 +3935,7 @@ export type ProjectByteQueryVariables = Exact<{
 }>;
 
 
-export type ProjectByteQuery = { __typename?: 'Query', projectByte: { __typename?: 'ProjectByte', admins: Array<string>, content: string, created: string, id: string, name: string, postSubmissionStepContent?: string | null, priority: number, tags: Array<string>, archived: boolean, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> } };
+export type ProjectByteQuery = { __typename?: 'Query', projectByte: { __typename?: 'ProjectByte', admins: Array<string>, content: string, created: string, id: string, name: string, postSubmissionStepContent?: string | null, priority: number, tags: Array<string>, archived: boolean, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }>, seoMeta?: { __typename?: 'SEOMeta', title: string, description: string, keywords: Array<string> } | null } };
 
 export type UpsertProjectByteMutationVariables = Exact<{
   projectId: Scalars['String'];
@@ -3922,7 +3943,7 @@ export type UpsertProjectByteMutationVariables = Exact<{
 }>;
 
 
-export type UpsertProjectByteMutation = { __typename?: 'Mutation', upsertProjectByte: { __typename?: 'ProjectByte', admins: Array<string>, content: string, created: string, id: string, name: string, postSubmissionStepContent?: string | null, priority: number, tags: Array<string>, archived: boolean, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> } };
+export type UpsertProjectByteMutation = { __typename?: 'Mutation', upsertProjectByte: { __typename?: 'ProjectByte', admins: Array<string>, content: string, created: string, id: string, name: string, postSubmissionStepContent?: string | null, priority: number, tags: Array<string>, archived: boolean, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }>, seoMeta?: { __typename?: 'SEOMeta', title: string, description: string, keywords: Array<string> } | null } };
 
 export type UpdateArchivedStatusOfProjectByteMutationVariables = Exact<{
   projectId: Scalars['String'];
@@ -3931,16 +3952,24 @@ export type UpdateArchivedStatusOfProjectByteMutationVariables = Exact<{
 }>;
 
 
-export type UpdateArchivedStatusOfProjectByteMutation = { __typename?: 'Mutation', updateArchivedStatusOfProjectByte: { __typename?: 'ProjectByte', admins: Array<string>, content: string, created: string, id: string, name: string, postSubmissionStepContent?: string | null, priority: number, tags: Array<string>, archived: boolean, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> } };
+export type UpdateArchivedStatusOfProjectByteMutation = { __typename?: 'Mutation', updateArchivedStatusOfProjectByte: { __typename?: 'ProjectByte', admins: Array<string>, content: string, created: string, id: string, name: string, postSubmissionStepContent?: string | null, priority: number, tags: Array<string>, archived: boolean, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }>, seoMeta?: { __typename?: 'SEOMeta', title: string, description: string, keywords: Array<string> } | null } };
 
-export type ProjectByteCollectionFragment = { __typename?: 'ProjectByteCollection', byteIds: Array<string>, description: string, id: string, name: string, order: number, status: string, archived: boolean, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string }> };
+export type UpdateSeoOfProjectByteMutationVariables = Exact<{
+  projectId: Scalars['String'];
+  seoMeta?: InputMaybe<SeoMetaInput>;
+}>;
+
+
+export type UpdateSeoOfProjectByteMutation = { __typename?: 'Mutation', updateSeoOfProjectByte: { __typename?: 'ProjectByte', admins: Array<string>, content: string, created: string, id: string, name: string, postSubmissionStepContent?: string | null, priority: number, tags: Array<string>, archived: boolean, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }>, seoMeta?: { __typename?: 'SEOMeta', title: string, description: string, keywords: Array<string> } | null } };
+
+export type ProjectByteCollectionFragment = { __typename?: 'ProjectByteCollection', byteIds: Array<string>, description: string, id: string, name: string, order: number, status: string, archived: boolean, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string }>, seoMeta?: { __typename?: 'SEOMeta', title: string, description: string, keywords: Array<string> } | null };
 
 export type ProjectByteCollectionsQueryVariables = Exact<{
   projectId: Scalars['String'];
 }>;
 
 
-export type ProjectByteCollectionsQuery = { __typename?: 'Query', projectByteCollections: Array<{ __typename?: 'ProjectByteCollection', byteIds: Array<string>, description: string, id: string, name: string, order: number, status: string, archived: boolean, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string }> }> };
+export type ProjectByteCollectionsQuery = { __typename?: 'Query', projectByteCollections: Array<{ __typename?: 'ProjectByteCollection', byteIds: Array<string>, description: string, id: string, name: string, order: number, status: string, archived: boolean, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string }>, seoMeta?: { __typename?: 'SEOMeta', title: string, description: string, keywords: Array<string> } | null }> };
 
 export type ProjectByteCollectionQueryVariables = Exact<{
   projectId: Scalars['String'];
@@ -3948,7 +3977,7 @@ export type ProjectByteCollectionQueryVariables = Exact<{
 }>;
 
 
-export type ProjectByteCollectionQuery = { __typename?: 'Query', projectByteCollection: { __typename?: 'ProjectByteCollection', byteIds: Array<string>, description: string, id: string, name: string, order: number, status: string, archived: boolean, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string }> } };
+export type ProjectByteCollectionQuery = { __typename?: 'Query', projectByteCollection: { __typename?: 'ProjectByteCollection', byteIds: Array<string>, description: string, id: string, name: string, order: number, status: string, archived: boolean, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string }>, seoMeta?: { __typename?: 'SEOMeta', title: string, description: string, keywords: Array<string> } | null } };
 
 export type UpsertProjectByteCollectionMutationVariables = Exact<{
   projectId: Scalars['String'];
@@ -3956,7 +3985,7 @@ export type UpsertProjectByteCollectionMutationVariables = Exact<{
 }>;
 
 
-export type UpsertProjectByteCollectionMutation = { __typename?: 'Mutation', upsertProjectByteCollection: { __typename?: 'ProjectByteCollection', byteIds: Array<string>, description: string, id: string, name: string, order: number, status: string, archived: boolean, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string }> } };
+export type UpsertProjectByteCollectionMutation = { __typename?: 'Mutation', upsertProjectByteCollection: { __typename?: 'ProjectByteCollection', byteIds: Array<string>, description: string, id: string, name: string, order: number, status: string, archived: boolean, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string }>, seoMeta?: { __typename?: 'SEOMeta', title: string, description: string, keywords: Array<string> } | null } };
 
 export type UpdateArchivedStatusOfProjectByteCollectionMutationVariables = Exact<{
   projectId: Scalars['String'];
@@ -3965,16 +3994,24 @@ export type UpdateArchivedStatusOfProjectByteCollectionMutationVariables = Exact
 }>;
 
 
-export type UpdateArchivedStatusOfProjectByteCollectionMutation = { __typename?: 'Mutation', updateArchivedStatusOfProjectByteCollection: { __typename?: 'ProjectByteCollection', byteIds: Array<string>, description: string, id: string, name: string, order: number, status: string, archived: boolean, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string }> } };
+export type UpdateArchivedStatusOfProjectByteCollectionMutation = { __typename?: 'Mutation', updateArchivedStatusOfProjectByteCollection: { __typename?: 'ProjectByteCollection', byteIds: Array<string>, description: string, id: string, name: string, order: number, status: string, archived: boolean, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string }>, seoMeta?: { __typename?: 'SEOMeta', title: string, description: string, keywords: Array<string> } | null } };
 
-export type ProjectShortVideoFragment = { __typename?: 'ProjectShortVideo', id: string, title: string, description: string, thumbnail: string, videoUrl: string, priority: number, createdAt: string, updatedAt: string, archived: boolean };
+export type UpdateSeoOfProjectByteCollectionMutationVariables = Exact<{
+  projectId: Scalars['String'];
+  seoMeta?: InputMaybe<SeoMetaInput>;
+}>;
+
+
+export type UpdateSeoOfProjectByteCollectionMutation = { __typename?: 'Mutation', updateSeoOfProjectByteCollection: { __typename?: 'ProjectByteCollection', byteIds: Array<string>, description: string, id: string, name: string, order: number, status: string, archived: boolean, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string }>, seoMeta?: { __typename?: 'SEOMeta', title: string, description: string, keywords: Array<string> } | null } };
+
+export type ProjectShortVideoFragment = { __typename?: 'ProjectShortVideo', id: string, title: string, description: string, thumbnail: string, videoUrl: string, priority: number, createdAt: string, updatedAt: string, archived: boolean, seoMeta?: { __typename?: 'SEOMeta', title: string, description: string, keywords: Array<string> } | null };
 
 export type ProjectShortVideosQueryVariables = Exact<{
   projectId: Scalars['String'];
 }>;
 
 
-export type ProjectShortVideosQuery = { __typename?: 'Query', projectShortVideos: Array<{ __typename?: 'ProjectShortVideo', id: string, title: string, description: string, thumbnail: string, videoUrl: string, priority: number, createdAt: string, updatedAt: string, archived: boolean }> };
+export type ProjectShortVideosQuery = { __typename?: 'Query', projectShortVideos: Array<{ __typename?: 'ProjectShortVideo', id: string, title: string, description: string, thumbnail: string, videoUrl: string, priority: number, createdAt: string, updatedAt: string, archived: boolean, seoMeta?: { __typename?: 'SEOMeta', title: string, description: string, keywords: Array<string> } | null }> };
 
 export type UpsertProjectShortVideoMutationVariables = Exact<{
   projectId: Scalars['String'];
@@ -3982,7 +4019,7 @@ export type UpsertProjectShortVideoMutationVariables = Exact<{
 }>;
 
 
-export type UpsertProjectShortVideoMutation = { __typename?: 'Mutation', upsertProjectShortVideo: { __typename?: 'ProjectShortVideo', id: string, title: string, description: string, thumbnail: string, videoUrl: string, priority: number, createdAt: string, updatedAt: string, archived: boolean } };
+export type UpsertProjectShortVideoMutation = { __typename?: 'Mutation', upsertProjectShortVideo: { __typename?: 'ProjectShortVideo', id: string, title: string, description: string, thumbnail: string, videoUrl: string, priority: number, createdAt: string, updatedAt: string, archived: boolean, seoMeta?: { __typename?: 'SEOMeta', title: string, description: string, keywords: Array<string> } | null } };
 
 export type UpdateArchivedStatusOfProjectShortVideoMutationVariables = Exact<{
   projectId: Scalars['String'];
@@ -3991,7 +4028,15 @@ export type UpdateArchivedStatusOfProjectShortVideoMutationVariables = Exact<{
 }>;
 
 
-export type UpdateArchivedStatusOfProjectShortVideoMutation = { __typename?: 'Mutation', updateArchivedStatusOfProjectShortVideo: { __typename?: 'ProjectShortVideo', id: string, title: string, description: string, thumbnail: string, videoUrl: string, priority: number, createdAt: string, updatedAt: string, archived: boolean } };
+export type UpdateArchivedStatusOfProjectShortVideoMutation = { __typename?: 'Mutation', updateArchivedStatusOfProjectShortVideo: { __typename?: 'ProjectShortVideo', id: string, title: string, description: string, thumbnail: string, videoUrl: string, priority: number, createdAt: string, updatedAt: string, archived: boolean, seoMeta?: { __typename?: 'SEOMeta', title: string, description: string, keywords: Array<string> } | null } };
+
+export type UpdateSeoOfProjectShortVideoMutationVariables = Exact<{
+  projectId: Scalars['String'];
+  seoMeta?: InputMaybe<SeoMetaInput>;
+}>;
+
+
+export type UpdateSeoOfProjectShortVideoMutation = { __typename?: 'Mutation', updateSeoOfProjectShortVideo: { __typename?: 'ProjectShortVideo', id: string, title: string, description: string, thumbnail: string, videoUrl: string, priority: number, createdAt: string, updatedAt: string, archived: boolean, seoMeta?: { __typename?: 'SEOMeta', title: string, description: string, keywords: Array<string> } | null } };
 
 export type ShortVideoFragment = { __typename?: 'ShortVideo', id: string, title: string, description: string, thumbnail: string, videoUrl: string, priority: number, createdAt: string, updatedAt: string };
 
@@ -5030,6 +5075,11 @@ export const ProjectByteFragmentDoc = gql`
   }
   tags
   archived
+  seoMeta {
+    title
+    description
+    keywords
+  }
 }
     `;
 export const ProjectByteCollectionFragmentDoc = gql`
@@ -5046,6 +5096,11 @@ export const ProjectByteCollectionFragmentDoc = gql`
   order
   status
   archived
+  seoMeta {
+    title
+    description
+    keywords
+  }
 }
     `;
 export const ProjectShortVideoFragmentDoc = gql`
@@ -5059,6 +5114,11 @@ export const ProjectShortVideoFragmentDoc = gql`
   createdAt
   updatedAt
   archived
+  seoMeta {
+    title
+    description
+    keywords
+  }
 }
     `;
 export const ShortVideoFragmentDoc = gql`
@@ -9657,6 +9717,40 @@ export function useUpdateArchivedStatusOfProjectByteMutation(baseOptions?: Apoll
 export type UpdateArchivedStatusOfProjectByteMutationHookResult = ReturnType<typeof useUpdateArchivedStatusOfProjectByteMutation>;
 export type UpdateArchivedStatusOfProjectByteMutationResult = Apollo.MutationResult<UpdateArchivedStatusOfProjectByteMutation>;
 export type UpdateArchivedStatusOfProjectByteMutationOptions = Apollo.BaseMutationOptions<UpdateArchivedStatusOfProjectByteMutation, UpdateArchivedStatusOfProjectByteMutationVariables>;
+export const UpdateSeoOfProjectByteDocument = gql`
+    mutation UpdateSeoOfProjectByte($projectId: String!, $seoMeta: SEOMetaInput) {
+  updateSeoOfProjectByte(projectId: $projectId, seoMeta: $seoMeta) {
+    ...ProjectByte
+  }
+}
+    ${ProjectByteFragmentDoc}`;
+export type UpdateSeoOfProjectByteMutationFn = Apollo.MutationFunction<UpdateSeoOfProjectByteMutation, UpdateSeoOfProjectByteMutationVariables>;
+
+/**
+ * __useUpdateSeoOfProjectByteMutation__
+ *
+ * To run a mutation, you first call `useUpdateSeoOfProjectByteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateSeoOfProjectByteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateSeoOfProjectByteMutation, { data, loading, error }] = useUpdateSeoOfProjectByteMutation({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *      seoMeta: // value for 'seoMeta'
+ *   },
+ * });
+ */
+export function useUpdateSeoOfProjectByteMutation(baseOptions?: Apollo.MutationHookOptions<UpdateSeoOfProjectByteMutation, UpdateSeoOfProjectByteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateSeoOfProjectByteMutation, UpdateSeoOfProjectByteMutationVariables>(UpdateSeoOfProjectByteDocument, options);
+      }
+export type UpdateSeoOfProjectByteMutationHookResult = ReturnType<typeof useUpdateSeoOfProjectByteMutation>;
+export type UpdateSeoOfProjectByteMutationResult = Apollo.MutationResult<UpdateSeoOfProjectByteMutation>;
+export type UpdateSeoOfProjectByteMutationOptions = Apollo.BaseMutationOptions<UpdateSeoOfProjectByteMutation, UpdateSeoOfProjectByteMutationVariables>;
 export const ProjectByteCollectionsDocument = gql`
     query ProjectByteCollections($projectId: String!) {
   projectByteCollections(projectId: $projectId) {
@@ -9807,6 +9901,40 @@ export function useUpdateArchivedStatusOfProjectByteCollectionMutation(baseOptio
 export type UpdateArchivedStatusOfProjectByteCollectionMutationHookResult = ReturnType<typeof useUpdateArchivedStatusOfProjectByteCollectionMutation>;
 export type UpdateArchivedStatusOfProjectByteCollectionMutationResult = Apollo.MutationResult<UpdateArchivedStatusOfProjectByteCollectionMutation>;
 export type UpdateArchivedStatusOfProjectByteCollectionMutationOptions = Apollo.BaseMutationOptions<UpdateArchivedStatusOfProjectByteCollectionMutation, UpdateArchivedStatusOfProjectByteCollectionMutationVariables>;
+export const UpdateSeoOfProjectByteCollectionDocument = gql`
+    mutation UpdateSeoOfProjectByteCollection($projectId: String!, $seoMeta: SEOMetaInput) {
+  updateSeoOfProjectByteCollection(projectId: $projectId, seoMeta: $seoMeta) {
+    ...ProjectByteCollection
+  }
+}
+    ${ProjectByteCollectionFragmentDoc}`;
+export type UpdateSeoOfProjectByteCollectionMutationFn = Apollo.MutationFunction<UpdateSeoOfProjectByteCollectionMutation, UpdateSeoOfProjectByteCollectionMutationVariables>;
+
+/**
+ * __useUpdateSeoOfProjectByteCollectionMutation__
+ *
+ * To run a mutation, you first call `useUpdateSeoOfProjectByteCollectionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateSeoOfProjectByteCollectionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateSeoOfProjectByteCollectionMutation, { data, loading, error }] = useUpdateSeoOfProjectByteCollectionMutation({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *      seoMeta: // value for 'seoMeta'
+ *   },
+ * });
+ */
+export function useUpdateSeoOfProjectByteCollectionMutation(baseOptions?: Apollo.MutationHookOptions<UpdateSeoOfProjectByteCollectionMutation, UpdateSeoOfProjectByteCollectionMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateSeoOfProjectByteCollectionMutation, UpdateSeoOfProjectByteCollectionMutationVariables>(UpdateSeoOfProjectByteCollectionDocument, options);
+      }
+export type UpdateSeoOfProjectByteCollectionMutationHookResult = ReturnType<typeof useUpdateSeoOfProjectByteCollectionMutation>;
+export type UpdateSeoOfProjectByteCollectionMutationResult = Apollo.MutationResult<UpdateSeoOfProjectByteCollectionMutation>;
+export type UpdateSeoOfProjectByteCollectionMutationOptions = Apollo.BaseMutationOptions<UpdateSeoOfProjectByteCollectionMutation, UpdateSeoOfProjectByteCollectionMutationVariables>;
 export const ProjectShortVideosDocument = gql`
     query ProjectShortVideos($projectId: String!) {
   projectShortVideos(projectId: $projectId) {
@@ -9918,6 +10046,40 @@ export function useUpdateArchivedStatusOfProjectShortVideoMutation(baseOptions?:
 export type UpdateArchivedStatusOfProjectShortVideoMutationHookResult = ReturnType<typeof useUpdateArchivedStatusOfProjectShortVideoMutation>;
 export type UpdateArchivedStatusOfProjectShortVideoMutationResult = Apollo.MutationResult<UpdateArchivedStatusOfProjectShortVideoMutation>;
 export type UpdateArchivedStatusOfProjectShortVideoMutationOptions = Apollo.BaseMutationOptions<UpdateArchivedStatusOfProjectShortVideoMutation, UpdateArchivedStatusOfProjectShortVideoMutationVariables>;
+export const UpdateSeoOfProjectShortVideoDocument = gql`
+    mutation UpdateSeoOfProjectShortVideo($projectId: String!, $seoMeta: SEOMetaInput) {
+  updateSeoOfProjectShortVideo(projectId: $projectId, seoMeta: $seoMeta) {
+    ...ProjectShortVideo
+  }
+}
+    ${ProjectShortVideoFragmentDoc}`;
+export type UpdateSeoOfProjectShortVideoMutationFn = Apollo.MutationFunction<UpdateSeoOfProjectShortVideoMutation, UpdateSeoOfProjectShortVideoMutationVariables>;
+
+/**
+ * __useUpdateSeoOfProjectShortVideoMutation__
+ *
+ * To run a mutation, you first call `useUpdateSeoOfProjectShortVideoMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateSeoOfProjectShortVideoMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateSeoOfProjectShortVideoMutation, { data, loading, error }] = useUpdateSeoOfProjectShortVideoMutation({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *      seoMeta: // value for 'seoMeta'
+ *   },
+ * });
+ */
+export function useUpdateSeoOfProjectShortVideoMutation(baseOptions?: Apollo.MutationHookOptions<UpdateSeoOfProjectShortVideoMutation, UpdateSeoOfProjectShortVideoMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateSeoOfProjectShortVideoMutation, UpdateSeoOfProjectShortVideoMutationVariables>(UpdateSeoOfProjectShortVideoDocument, options);
+      }
+export type UpdateSeoOfProjectShortVideoMutationHookResult = ReturnType<typeof useUpdateSeoOfProjectShortVideoMutation>;
+export type UpdateSeoOfProjectShortVideoMutationResult = Apollo.MutationResult<UpdateSeoOfProjectShortVideoMutation>;
+export type UpdateSeoOfProjectShortVideoMutationOptions = Apollo.BaseMutationOptions<UpdateSeoOfProjectShortVideoMutation, UpdateSeoOfProjectShortVideoMutationVariables>;
 export const UpsertShortVideoDocument = gql`
     mutation UpsertShortVideo($spaceId: String!, $shortVideo: ShortVideoInput!) {
   upsertShortVideo(spaceId: $spaceId, shortVideo: $shortVideo) {
