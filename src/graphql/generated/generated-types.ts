@@ -1122,6 +1122,9 @@ export interface Mutation {
   updateIndexWithAllDiscordPosts: Scalars['Boolean'];
   updateIndexingOfDiscordChannel: DiscordChannel;
   updateSeoOfProject: Project;
+  updateSeoOfProjectByte: ProjectByte;
+  updateSeoOfProjectByteCollection: ProjectByteCollection;
+  updateSeoOfProjectShortVideo: ProjectShortVideo;
   updateSocialSettings: Space;
   updateSpace: Space;
   updateThemeColors: Space;
@@ -1569,6 +1572,24 @@ export interface MutationUpdateSeoOfProjectArgs {
 }
 
 
+export interface MutationUpdateSeoOfProjectByteArgs {
+  projectId: Scalars['String'];
+  seoMeta?: InputMaybe<SeoMetaInput>;
+}
+
+
+export interface MutationUpdateSeoOfProjectByteCollectionArgs {
+  projectId: Scalars['String'];
+  seoMeta?: InputMaybe<SeoMetaInput>;
+}
+
+
+export interface MutationUpdateSeoOfProjectShortVideoArgs {
+  projectId: Scalars['String'];
+  seoMeta?: InputMaybe<SeoMetaInput>;
+}
+
+
 export interface MutationUpdateSocialSettingsArgs {
   input: SocialSettingsInput;
   spaceId: Scalars['String'];
@@ -1845,6 +1866,7 @@ export interface Project {
   id: Scalars['String'];
   logo?: Maybe<Scalars['String']>;
   name: Scalars['String'];
+  priority: Scalars['Int'];
   seoMeta?: Maybe<SeoMeta>;
   telegram?: Maybe<Scalars['String']>;
   type: Scalars['String'];
@@ -1875,6 +1897,7 @@ export interface ProjectByteCollection {
   id: Scalars['String'];
   name: Scalars['String'];
   order: Scalars['Int'];
+  priority: Scalars['Int'];
   seoMeta?: Maybe<SeoMeta>;
   status: Scalars['String'];
 }
@@ -2738,6 +2761,7 @@ export interface UpsertProjectByteCollectionInput {
   id: Scalars['String'];
   name: Scalars['String'];
   order: Scalars['Int'];
+  priority: Scalars['Int'];
   projectId: Scalars['String'];
   seoMeta?: InputMaybe<SeoMetaInput>;
   status: Scalars['String'];
@@ -2769,6 +2793,7 @@ export interface UpsertProjectInput {
   id: Scalars['String'];
   logo?: InputMaybe<Scalars['String']>;
   name: Scalars['String'];
+  priority: Scalars['Int'];
   seoMeta?: InputMaybe<SeoMetaInput>;
   telegram?: InputMaybe<Scalars['String']>;
   type: Scalars['String'];
