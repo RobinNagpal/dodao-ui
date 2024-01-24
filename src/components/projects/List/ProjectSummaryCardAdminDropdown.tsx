@@ -24,14 +24,14 @@ export default function ProjectSummaryCardAdminDropdown({ space, project }: Proj
     if (project.archived) {
       return [
         { label: 'Edit', key: 'edit' },
-        { label: 'Unarchive', key: 'unarchive' },
         { label: 'Edit SEO', key: 'editSeo' },
+        { label: 'Unarchive', key: 'unarchive' },
       ];
     }
     return [
       { label: 'Edit', key: 'edit' },
-      { label: 'Archive', key: 'archive' },
       { label: 'Edit SEO', key: 'editSeo' },
+      { label: 'Archive', key: 'archive' },
     ];
   };
 

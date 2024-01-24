@@ -6,7 +6,7 @@ import { SeoMeta } from '@/graphql/generated/generated-types';
 import React, { useState } from 'react';
 
 interface UpdateSEOModalProps {
-  seoMeta?: SeoMeta;
+  seoMeta?: SeoMeta | null;
   open: boolean;
   onClose: () => void;
   onSeoMetaUpdate: (seoMeta: SeoMeta) => Promise<void>;
