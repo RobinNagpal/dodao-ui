@@ -19,8 +19,9 @@ interface ViewShortVideoModalProps {
   videos: (ShortVideo | ProjectShortVideo)[];
   onClose: () => void;
   onShowEditModal: () => void;
+  projectId?: string | undefined;
 }
-export default function ViewShortVideoModal({ initialSlide, videos, onClose, onShowEditModal }: ViewShortVideoModalProps) {
+export default function ViewShortVideoModal({ initialSlide, videos, onClose, onShowEditModal, projectId }: ViewShortVideoModalProps) {
   const swiperRef = useRef<SwiperCore>(null);
   const videoRefs = useRef(videos.map(() => React.createRef<HTMLVideoElement>()));
   const [currentSlideIndex, setCurrentSlideIndex] = useState(initialSlide);
@@ -104,6 +105,7 @@ export default function ViewShortVideoModal({ initialSlide, videos, onClose, onS
         <UpdateProjectShortVideoSEOModal
           projectShortVideo={videos[currentSlideIndex]}
           open={!!editProjecShortVideoSeo}
+          projectId={projectId}
           onClose={() => {
             setEditProjecShortVideoSeo(false);
           }}
