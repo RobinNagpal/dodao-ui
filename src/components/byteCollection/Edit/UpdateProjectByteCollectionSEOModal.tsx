@@ -1,15 +1,29 @@
 import UpdateSEOModal from '@/components/app/Common/UpdateSEOModal';
 import { useNotificationContext } from '@/contexts/NotificationContext';
-import { ByteCollectionFragment, ProjectByteCollectionFragment, useUpdateSeoOfProjectByteCollectionMutation } from '@/graphql/generated/generated-types';
+import {
+  ByteCollectionFragment,
+  ProjectByteCollectionFragment,
+  useProjectByteCollectionQuery,
+  useUpdateSeoOfProjectByteCollectionMutation,
+} from '@/graphql/generated/generated-types';
 import React from 'react';
 
 export default function UpdateProjectByteCollectionSEOModal(props: {
   projectByteCollection: ByteCollectionFragment | ProjectByteCollectionFragment;
   open: boolean;
   onClose: () => void;
+  projectId: string | undefined;
 }) {
   const [updateSeoOfProjectByteCollection] = useUpdateSeoOfProjectByteCollectionMutation();
   const { showNotification } = useNotificationContext();
+
+  const result = useProjectByteCollectionQuery({
+    variables: {
+      id: props.projectByteCollection.id,
+      projectId: props.projectId!,
+    },
+    fetchPolicy: 'no-cache',
+  });
 
   const updateSEOOfProjectByteCollection = async (title: string, description: string, keywords: string[]) => {
     try {
@@ -39,6 +53,7 @@ export default function UpdateProjectByteCollectionSEOModal(props: {
       onClose={() => {
         props.onClose();
       }}
+      seoMeta={result.data?.projectByteCollection.seoMeta}
       onSeoMetaUpdate={async (seoMeta) => {
         await updateSEOOfProjectByteCollection(seoMeta.title, seoMeta.description, seoMeta.keywords);
       }}
