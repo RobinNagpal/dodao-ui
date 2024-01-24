@@ -98,6 +98,7 @@ export default function ByteCardAdminDropdown({ byte, byteType, project }: ByteC
         <UpdateProjectByteSEOModal
           projectByte={byte}
           open={!!editProjecByteSeo}
+          projectId={project?.id}
           onClose={() => {
             setEditProjectByteSeo(false);
           }}
