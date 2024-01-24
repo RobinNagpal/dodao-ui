@@ -21,6 +21,12 @@ query ProjectShortVideos($projectId: String!) {
   }
 }
 
+query ProjectShortVideo($projectId: String!, $id: String!) {
+  projectShortVideo(projectId: $projectId, projectShortVideoId: $id) {
+    ...ProjectShortVideo
+  }
+}
+
 mutation UpsertProjectShortVideo($projectId: String!, $input: ProjectShortVideoInput!) {
   upsertProjectShortVideo(projectId: $projectId, shortVideo: $input) {
     ...ProjectShortVideo
