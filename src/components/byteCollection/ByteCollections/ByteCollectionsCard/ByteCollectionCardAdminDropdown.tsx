@@ -9,6 +9,7 @@ import {
 } from '@/graphql/generated/generated-types';
 import { useRouter } from 'next/navigation';
 import React from 'react';
+import UpdateProjectByteCollectionSEOModal from '../../Edit/UpdateProjectByteCollectionSEOModal';
 
 interface ByteCollectionCardAdminDropdownProps {
   byteCollection: ByteCollectionFragment | ProjectByteCollectionFragment;
@@ -19,6 +20,7 @@ export default function ByteCollectionCardAdminDropdown({ byteCollection, byteCo
   const router = useRouter();
   const { showNotification } = useNotificationContext();
   const [showDeleteModal, setShowDeleteModal] = React.useState<boolean>(false);
+  const [editProjecByteCollectionSeo, setEditProjectByteCollectionSeo] = React.useState<boolean>(false);
 
   const baseByteCollectionsEditUrl =
     byteCollectionType === 'projectByteCollection' ? `/projects/edit/${project?.id}/tidbit-collections` : '/tidbit-collections/edit';
@@ -28,15 +30,20 @@ export default function ByteCollectionCardAdminDropdown({ byteCollection, byteCo
         return [
           { label: 'Edit', key: 'edit' },
           { label: 'Unarchive', key: 'unarchive' },
+          { label: 'Edit Seo', key: 'editSeo' },
         ];
       }
       return [
         { label: 'Edit', key: 'edit' },
         { label: 'Archive', key: 'archive' },
+        { label: 'Edit Seo', key: 'editSeo' },
       ];
     }
 
-    return [{ label: 'Edit', key: 'edit' }];
+    return [
+      { label: 'Edit', key: 'edit' },
+      { label: 'Edit Seo', key: 'editSeo' },
+    ];
   };
 
   const [updateArchivedStatusOfProjectByteCollectionMutation] = useUpdateArchivedStatusOfProjectByteCollectionMutation();
@@ -75,6 +82,9 @@ export default function ByteCollectionCardAdminDropdown({ byteCollection, byteCo
           if (key === 'unarchive') {
             onArchivedStatusChange(false);
           }
+          if (key === 'editSeo') {
+            setEditProjectByteCollectionSeo(true);
+          }
         }}
       />
       {showDeleteModal && (
@@ -85,6 +95,17 @@ export default function ByteCollectionCardAdminDropdown({ byteCollection, byteCo
           onDelete={() => {
             onArchivedStatusChange(true);
             setShowDeleteModal(false);
+          }}
+        />
+      )}
+
+      {editProjecByteCollectionSeo && (
+        <UpdateProjectByteCollectionSEOModal
+          projectByteCollection={byteCollection}
+          projectId={project?.id}
+          open={!!editProjecByteCollectionSeo}
+          onClose={() => {
+            setEditProjectByteCollectionSeo(false);
           }}
         />
       )}

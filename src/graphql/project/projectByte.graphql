@@ -39,6 +39,11 @@ fragment ProjectByte on ProjectByte {
   }
   tags
   archived
+  seoMeta {
+    title
+    description
+    keywords
+  }
 }
 
 query ProjectBytes($projectId: String!) {
@@ -61,6 +66,12 @@ mutation UpsertProjectByte($projectId: String!, $input: UpsertProjectByteInput!)
 
 mutation UpdateArchivedStatusOfProjectByte($projectId: String!, $projectByteId: String!, $archived: Boolean!) {
   updateArchivedStatusOfProjectByte(projectId: $projectId, projectByteId: $projectByteId, archived: $archived) {
+    ...ProjectByte
+  }
+}
+
+mutation UpdateSeoOfProjectByte($projectId: String!, $seoMeta: SEOMetaInput) {
+  updateSeoOfProjectByte(projectId: $projectId, seoMeta: $seoMeta) {
     ...ProjectByte
   }
 }

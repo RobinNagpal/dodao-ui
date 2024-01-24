@@ -999,13 +999,7 @@ type Mutation {
   createSignedUrl(input: CreateSignedUrlInput!, spaceId: String!): String!
   createSpace(spaceInput: UpsertSpaceInput!): Space!
   createSummaryOfContent(input: String!): OpenAITextResponse!
-  createWebsiteScrapingInfo(
-    baseUrl: String!
-    ignoreHashInUrl: Boolean!
-    ignoreQueryParams: Boolean!
-    scrapingStartUrl: String!
-    spaceId: String!
-  ): WebsiteScrapingInfo!
+  createWebsiteScrapingInfo(baseUrl: String!, ignoreHashInUrl: Boolean!, ignoreQueryParams: Boolean!, scrapingStartUrl: String!, spaceId: String!): WebsiteScrapingInfo!
   deleteAndPullCourseRepo(courseKey: String!, spaceId: String!): GitCourse!
   deleteByteCollection(byteCollectionId: String!): Boolean!
   deleteChatbotCategory(id: String!, spaceId: String!): Boolean!
@@ -1021,14 +1015,7 @@ type Mutation {
   downloadAndCleanContent(input: String!): DownloadAndCleanContentResponse!
   dropPineconeNamespace(spaceId: String!): Boolean!
   editArticleIndexingInfo(articleIndexingInfoId: String!, articleUrl: String!, spaceId: String!): ArticleIndexingInfo!
-  editWebsiteScrapingInfo(
-    baseUrl: String!
-    ignoreHashInUrl: Boolean!
-    ignoreQueryParams: Boolean!
-    scrapingStartUrl: String!
-    spaceId: String!
-    websiteScrapingInfoId: String!
-  ): WebsiteScrapingInfo!
+  editWebsiteScrapingInfo(baseUrl: String!, ignoreHashInUrl: Boolean!, ignoreQueryParams: Boolean!, scrapingStartUrl: String!, spaceId: String!, websiteScrapingInfoId: String!): WebsiteScrapingInfo!
   extractRelevantTextForTopic(input: ExtractRelevantTextForTopicInput!): OpenAITextResponse!
   generateImage(input: GenerateImageInput!): ImagesResponse!
   generateImageEdit(input: GenerateImageEditInput!): GenerateImageResponse!
@@ -1067,6 +1054,9 @@ type Mutation {
   updateIndexWithAllDiscordPosts(spaceId: String!): Boolean!
   updateIndexingOfDiscordChannel(channelId: String!, shouldIndex: Boolean!, spaceId: String!): DiscordChannel!
   updateSeoOfProject(projectId: String!, seoMeta: SEOMetaInput): Project!
+  updateSeoOfProjectByte(projectId: String!, seoMeta: SEOMetaInput): ProjectByte!
+  updateSeoOfProjectByteCollection(projectId: String!, seoMeta: SEOMetaInput): ProjectByteCollection!
+  updateSeoOfProjectShortVideo(projectId: String!, seoMeta: SEOMetaInput): ProjectShortVideo!
   updateSocialSettings(input: SocialSettingsInput!, spaceId: String!): Space!
   updateSpace(spaceInput: UpsertSpaceInput!): Space!
   updateThemeColors(spaceId: ID!, themeColors: ThemeColorsInput!): Space!
@@ -1266,7 +1256,7 @@ type Query {
   projectByteCollection(byteCollectionId: String!, projectId: String!): ProjectByteCollection!
   projectByteCollections(projectId: String!): [ProjectByteCollection!]!
   projectBytes(projectId: String!): [ProjectByte!]!
-  projectShortVideo(projectByteId: String!, projectId: String!): ProjectShortVideo!
+  projectShortVideo(projectId: String!, projectShortVideoId: String!): ProjectShortVideo!
   projectShortVideos(projectId: String!): [ProjectShortVideo!]!
   projects(type: String): [Project!]!
   rawGitCourse(key: String!, spaceId: String!): RawGitCourse!

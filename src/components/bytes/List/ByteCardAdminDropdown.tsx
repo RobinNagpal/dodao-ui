@@ -7,6 +7,7 @@ import { useNotificationContext } from '@/contexts/NotificationContext';
 import { ProjectByteFragment, ProjectFragment, useUpdateArchivedStatusOfProjectByteMutation } from '@/graphql/generated/generated-types';
 import { useRouter } from 'next/navigation';
 import React from 'react';
+import UpdateProjectByteSEOModal from '../Edit/UpdateProjectByteSEOModal';
 
 interface ByteCardAdminDropdownProps {
   byte: ByteSummaryType | ProjectByteFragment;
@@ -17,6 +18,7 @@ export default function ByteCardAdminDropdown({ byte, byteType, project }: ByteC
   const router = useRouter();
   const { showNotification } = useNotificationContext();
   const [showDeleteModal, setShowDeleteModal] = React.useState<boolean>(false);
+  const [editProjecByteSeo, setEditProjectByteSeo] = React.useState<boolean>(false);
   const baseBytesEditUrl = byteType === 'projectByte' ? `/projects/edit/${project?.id}/tidbits` : '/tidbits/edit';
   const getThreeDotItems = (byte: ByteSummaryType | ProjectByteFragment) => {
     if (byte.hasOwnProperty('archived')) {
@@ -24,15 +26,20 @@ export default function ByteCardAdminDropdown({ byte, byteType, project }: ByteC
         return [
           { label: 'Edit', key: 'edit' },
           { label: 'Unarchive', key: 'unarchive' },
+          { label: 'Edit SEO', key: 'editSeo' },
         ];
       }
       return [
         { label: 'Edit', key: 'edit' },
         { label: 'Archive', key: 'archive' },
+        { label: 'Edit SEO', key: 'editSeo' },
       ];
     }
 
-    return [{ label: 'Edit', key: 'edit' }];
+    return [
+      { label: 'Edit', key: 'edit' },
+      { label: 'Edit SEO', key: 'editSeo' },
+    ];
   };
 
   const [updateArchivedStatusOfProjectByteMutation] = useUpdateArchivedStatusOfProjectByteMutation();
@@ -62,16 +69,17 @@ export default function ByteCardAdminDropdown({ byte, byteType, project }: ByteC
       <PrivateEllipsisDropdown
         items={getThreeDotItems(byte)}
         onSelect={async (key, e: React.MouseEvent<HTMLAnchorElement>) => {
-          e.preventDefault();
-          e.stopPropagation();
-
           if (key === 'edit') {
             router.push(`${baseBytesEditUrl}/${byte.id}`);
           } else if (key === 'archive') {
             setShowDeleteModal(true);
           } else if (key === 'unarchive') {
             onArchivedStatusChange(false);
+          } else if (key === 'editSeo') {
+            setEditProjectByteSeo(true);
           }
+          e.preventDefault();
+          e.stopPropagation();
         }}
       />
       {showDeleteModal && (
@@ -82,6 +90,17 @@ export default function ByteCardAdminDropdown({ byte, byteType, project }: ByteC
           onDelete={() => {
             onArchivedStatusChange(true);
             setShowDeleteModal(false);
+          }}
+        />
+      )}
+
+      {editProjecByteSeo && (
+        <UpdateProjectByteSEOModal
+          projectByte={byte}
+          open={!!editProjecByteSeo}
+          projectId={project?.id}
+          onClose={() => {
+            setEditProjectByteSeo(false);
           }}
         />
       )}

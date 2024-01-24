@@ -1,6 +1,5 @@
 'use client';
 
-import UpdateSEOModal from '@/components/app/Common/UpdateSEOModal';
 import DeleteConfirmationModal from '@/components/app/Modal/DeleteConfirmationModal';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import UpsertProjectModal from '@/components/projects/Edit/UpsertProjectModal';
