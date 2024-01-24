@@ -102,6 +102,7 @@ export default function ByteCollectionCardAdminDropdown({ byteCollection, byteCo
       {editProjecByteCollectionSeo && (
         <UpdateProjectByteCollectionSEOModal
           projectByteCollection={byteCollection}
+          projectId={project?.id}
           open={!!editProjecByteCollectionSeo}
           onClose={() => {
             setEditProjectByteCollectionSeo(false);
