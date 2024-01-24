@@ -1067,6 +1067,9 @@ type Mutation {
   updateIndexWithAllDiscordPosts(spaceId: String!): Boolean!
   updateIndexingOfDiscordChannel(channelId: String!, shouldIndex: Boolean!, spaceId: String!): DiscordChannel!
   updateSeoOfProject(projectId: String!, seoMeta: SEOMetaInput): Project!
+  updateSeoOfProjectByte(projectId: String!, seoMeta: SEOMetaInput): ProjectByte!
+  updateSeoOfProjectByteCollection(projectId: String!, seoMeta: SEOMetaInput): ProjectByteCollection!
+  updateSeoOfProjectShortVideo(projectId: String!, seoMeta: SEOMetaInput): ProjectShortVideo!
   updateSocialSettings(input: SocialSettingsInput!, spaceId: String!): Space!
   updateSpace(spaceInput: UpsertSpaceInput!): Space!
   updateThemeColors(spaceId: ID!, themeColors: ThemeColorsInput!): Space!
