@@ -55,10 +55,17 @@ function ByteCollectionEditor(props: ByteCollectionEditorProps) {
       />
 
       <Input
+        modelValue={byteCollection.priority}
+        number
+        onUpdate={(v) => helperFunctions.updateByteCollectionPriority(v ? parseInt(v.toString()) : 50)}
+        label="Byte Collection Priority"
+        required
+      />
+      <Input
         modelValue={byteCollection.order}
         number
         onUpdate={(v) => helperFunctions.updateByteCollectionOrder(v ? parseInt(v.toString()) : 50)}
-        label="Byte Collection Priority"
+        label="Byte Collection Order"
         required
       />
 
