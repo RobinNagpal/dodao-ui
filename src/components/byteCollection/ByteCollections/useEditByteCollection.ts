@@ -15,6 +15,7 @@ interface HelperFunctions {
   updateByteCollectionName: (name: string) => void;
   updateByteCollectionDescription: (description: string) => void;
   updateByteCollectionOrder: (order: number) => void;
+  updateByteCollectionPriority: (priority: number) => void;
   addByte: (byteId: string) => void;
   moveByteUp: (byteUuid: string) => void;
   moveByteDown: (byteUuid: string) => void;
@@ -131,6 +132,9 @@ export function useEditByteCollection({
   const updateByteCollectionOrder = (order: number) => {
     setByteCollection((prevByte) => ({ ...prevByte, order }));
   };
+  const updateByteCollectionPriority = (priority: number) => {
+    setByteCollection((prevByte) => ({ ...prevByte, priority }));
+  };
   const upsertByteCollection = async () => {
     setIsPrestine(false);
 
@@ -149,6 +153,7 @@ export function useEditByteCollection({
       updateByteCollectionName,
       updateByteCollectionDescription,
       updateByteCollectionOrder,
+      updateByteCollectionPriority,
       addByte,
       moveByteUp,
       moveByteDown,
