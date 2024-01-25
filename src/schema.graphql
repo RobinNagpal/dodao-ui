@@ -117,6 +117,7 @@ type ByteCollection {
   id: ID!
   name: String!
   order: Int!
+  priority: Int!
   status: String!
 }
 
@@ -999,7 +1000,13 @@ type Mutation {
   createSignedUrl(input: CreateSignedUrlInput!, spaceId: String!): String!
   createSpace(spaceInput: UpsertSpaceInput!): Space!
   createSummaryOfContent(input: String!): OpenAITextResponse!
-  createWebsiteScrapingInfo(baseUrl: String!, ignoreHashInUrl: Boolean!, ignoreQueryParams: Boolean!, scrapingStartUrl: String!, spaceId: String!): WebsiteScrapingInfo!
+  createWebsiteScrapingInfo(
+    baseUrl: String!
+    ignoreHashInUrl: Boolean!
+    ignoreQueryParams: Boolean!
+    scrapingStartUrl: String!
+    spaceId: String!
+  ): WebsiteScrapingInfo!
   deleteAndPullCourseRepo(courseKey: String!, spaceId: String!): GitCourse!
   deleteByteCollection(byteCollectionId: String!): Boolean!
   deleteChatbotCategory(id: String!, spaceId: String!): Boolean!
@@ -1015,7 +1022,14 @@ type Mutation {
   downloadAndCleanContent(input: String!): DownloadAndCleanContentResponse!
   dropPineconeNamespace(spaceId: String!): Boolean!
   editArticleIndexingInfo(articleIndexingInfoId: String!, articleUrl: String!, spaceId: String!): ArticleIndexingInfo!
-  editWebsiteScrapingInfo(baseUrl: String!, ignoreHashInUrl: Boolean!, ignoreQueryParams: Boolean!, scrapingStartUrl: String!, spaceId: String!, websiteScrapingInfoId: String!): WebsiteScrapingInfo!
+  editWebsiteScrapingInfo(
+    baseUrl: String!
+    ignoreHashInUrl: Boolean!
+    ignoreQueryParams: Boolean!
+    scrapingStartUrl: String!
+    spaceId: String!
+    websiteScrapingInfoId: String!
+  ): WebsiteScrapingInfo!
   extractRelevantTextForTopic(input: ExtractRelevantTextForTopicInput!): OpenAITextResponse!
   generateImage(input: GenerateImageInput!): ImagesResponse!
   generateImageEdit(input: GenerateImageEditInput!): GenerateImageResponse!
