@@ -54,6 +54,7 @@ export function useEditByteCollection({
     description: '',
     byteIds: [],
     status: 'DRAFT',
+    priority: 50,
   });
 
   const { data, loading } = useByteCollectionQuery({
