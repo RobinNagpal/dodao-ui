@@ -30,13 +30,13 @@ export default function ByteCollectionCardAdminDropdown({ byteCollection, byteCo
         return [
           { label: 'Edit', key: 'edit' },
           { label: 'Edit Seo', key: 'editSeo' },
-          { label: 'Unarchive', key: 'unarchive' }
+          { label: 'Unarchive', key: 'unarchive' },
         ];
       }
       return [
         { label: 'Edit', key: 'edit' },
         { label: 'Edit Seo', key: 'editSeo' },
-        { label: 'Archive', key: 'archive' }
+        { label: 'Archive', key: 'archive' },
       ];
     }
 
