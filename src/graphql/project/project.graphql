@@ -19,7 +19,7 @@ fragment Project on Project {
   website
   type
   cardThumbnail
-  priority  
+  priority
   seoMeta {
     title
     description
@@ -27,7 +27,7 @@ fragment Project on Project {
   }
 }
 
-query Projects($type: String) { 
+query Projects($type: String) {
   projects(type: $type) {
     ...Project
   }
