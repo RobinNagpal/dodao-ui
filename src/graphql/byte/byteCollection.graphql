@@ -5,6 +5,7 @@ fragment ByteCollection on ByteCollection {
   status
   byteIds
   order
+  priority
   bytes {
     byteId
     name
