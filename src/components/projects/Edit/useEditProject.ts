@@ -67,7 +67,11 @@ export default function useEditProject(projectId?: string): UseEditProjectHelper
           name: projectResponse.name,
           adminUsernamesV1: projectResponse.adminUsernamesV1 || [],
           cardThumbnail: projectResponse.cardThumbnail,
-          seoMeta: projectResponse.seoMeta,
+          seoMeta: {
+            description: projectResponse.seoMeta?.description || projectResponse.details,
+            keywords: projectResponse.seoMeta?.keywords || [],
+            title: projectResponse.seoMeta?.title || projectResponse.name,
+          },
         });
       }
     }
@@ -94,7 +98,11 @@ export default function useEditProject(projectId?: string): UseEditProjectHelper
       name: project.name,
       adminUsernamesV1: project.adminUsernamesV1 || [],
       cardThumbnail: project.cardThumbnail,
-      seoMeta: project.seoMeta,
+      seoMeta: {
+        description: project.seoMeta?.description || project.details,
+        keywords: project.seoMeta?.keywords || [],
+        title: project.seoMeta?.title || project.name,
+      },
     };
   }
 

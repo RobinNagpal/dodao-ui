@@ -36,6 +36,7 @@ export default function ProjectShortVideosGrid({ space, project }: ProjectShortV
         initialSlide={selectedVideoIndex}
         videos={queryResponse?.projectShortVideos || []}
         onClose={() => setSelectedVideoIndex(null)}
+        projectId={project.id}
         onShowEditModal={() => {
           setSelectedVideoIndex(null);
           setEditVideoIndex(selectedVideoIndex);

@@ -8,10 +8,21 @@ fragment ProjectShortVideo on ProjectShortVideo {
   createdAt
   updatedAt
   archived
+  seoMeta {
+    title
+    description
+    keywords
+  }
 }
 
 query ProjectShortVideos($projectId: String!) {
   projectShortVideos(projectId: $projectId) {
+    ...ProjectShortVideo
+  }
+}
+
+query ProjectShortVideo($projectId: String!, $id: String!) {
+  projectShortVideo(projectId: $projectId, projectShortVideoId: $id) {
     ...ProjectShortVideo
   }
 }
@@ -24,6 +35,12 @@ mutation UpsertProjectShortVideo($projectId: String!, $input: ProjectShortVideoI
 
 mutation UpdateArchivedStatusOfProjectShortVideo($projectId: String!, $projectShortVideoId: String!, $archived: Boolean!) {
   updateArchivedStatusOfProjectShortVideo(projectId: $projectId, projectShortVideoId: $projectShortVideoId, archived: $archived) {
+    ...ProjectShortVideo
+  }
+}
+
+mutation UpdateSeoOfProjectShortVideo($projectId: String!, $seoMeta: SEOMetaInput) {
+  updateSeoOfProjectShortVideo(projectId: $projectId, seoMeta: $seoMeta) {
     ...ProjectShortVideo
   }
 }

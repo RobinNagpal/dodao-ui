@@ -1,6 +1,5 @@
 'use client';
 
-import UpdateSEOModal from '@/components/app/Common/UpdateSEOModal';
 import DeleteConfirmationModal from '@/components/app/Modal/DeleteConfirmationModal';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import UpsertProjectModal from '@/components/projects/Edit/UpsertProjectModal';
@@ -25,14 +24,14 @@ export default function ProjectSummaryCardAdminDropdown({ space, project }: Proj
     if (project.archived) {
       return [
         { label: 'Edit', key: 'edit' },
-        { label: 'Unarchive', key: 'unarchive' },
         { label: 'Edit SEO', key: 'editSeo' },
+        { label: 'Unarchive', key: 'unarchive' },
       ];
     }
     return [
       { label: 'Edit', key: 'edit' },
-      { label: 'Archive', key: 'archive' },
       { label: 'Edit SEO', key: 'editSeo' },
+      { label: 'Archive', key: 'archive' },
     ];
   };
 
