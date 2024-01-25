@@ -29,14 +29,14 @@ export default function ByteCollectionCardAdminDropdown({ byteCollection, byteCo
       if ((byteCollection as ProjectByteCollectionFragment).archived) {
         return [
           { label: 'Edit', key: 'edit' },
-          { label: 'Unarchive', key: 'unarchive' },
           { label: 'Edit Seo', key: 'editSeo' },
+          { label: 'Unarchive', key: 'unarchive' }
         ];
       }
       return [
         { label: 'Edit', key: 'edit' },
-        { label: 'Archive', key: 'archive' },
         { label: 'Edit Seo', key: 'editSeo' },
+        { label: 'Archive', key: 'archive' }
       ];
     }
 
