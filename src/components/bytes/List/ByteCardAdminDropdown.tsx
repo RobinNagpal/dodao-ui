@@ -25,14 +25,14 @@ export default function ByteCardAdminDropdown({ byte, byteType, project }: ByteC
       if ((byte as ProjectByteFragment).archived) {
         return [
           { label: 'Edit', key: 'edit' },
-          { label: 'Unarchive', key: 'unarchive' },
           { label: 'Edit SEO', key: 'editSeo' },
+          { label: 'Unarchive', key: 'unarchive' },
         ];
       }
       return [
         { label: 'Edit', key: 'edit' },
-        { label: 'Archive', key: 'archive' },
         { label: 'Edit SEO', key: 'editSeo' },
+        { label: 'Archive', key: 'archive' },
       ];
     }
 
