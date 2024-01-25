@@ -33,6 +33,7 @@ export default function useEditProject(projectId?: string): UseEditProjectHelper
     name: '',
     type: 'DeFi',
     seoMeta: null,
+    priority: 50,
   });
 
   const [upserting, setUpserting] = useState(false);
@@ -67,6 +68,7 @@ export default function useEditProject(projectId?: string): UseEditProjectHelper
           name: projectResponse.name,
           adminUsernamesV1: projectResponse.adminUsernamesV1 || [],
           cardThumbnail: projectResponse.cardThumbnail,
+          priority: projectResponse.priority,
           seoMeta: {
             description: projectResponse.seoMeta?.description || projectResponse.details,
             keywords: projectResponse.seoMeta?.keywords || [],
@@ -98,6 +100,7 @@ export default function useEditProject(projectId?: string): UseEditProjectHelper
       name: project.name,
       adminUsernamesV1: project.adminUsernamesV1 || [],
       cardThumbnail: project.cardThumbnail,
+      priority: project.priority,
       seoMeta: {
         description: project.seoMeta?.description || project.details,
         keywords: project.seoMeta?.keywords || [],
