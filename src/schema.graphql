@@ -116,7 +116,7 @@ type ByteCollection {
   description: String!
   id: ID!
   name: String!
-  order: Int!
+  order: Int
   priority: Int!
   status: String!
 }
@@ -335,7 +335,7 @@ input CreateByteCollectionInput {
   byteIds: [String!]!
   description: String!
   name: String!
-  order: Int!
+  order: Int
   spaceId: String!
   status: String!
 }
@@ -1207,7 +1207,7 @@ type ProjectByteCollection {
   description: String!
   id: String!
   name: String!
-  order: Int!
+  order: Int
   priority: Int!
   seoMeta: SEOMeta
   status: String!
@@ -1623,7 +1623,7 @@ input UpdateByteCollectionInput {
   byteIds: [String!]!
   description: String!
   name: String!
-  order: Int!
+  order: Int
   spaceId: String!
   status: String!
 }
@@ -1766,7 +1766,7 @@ input UpsertProjectByteCollectionInput {
   description: String!
   id: String!
   name: String!
-  order: Int!
+  order: Int
   priority: Int!
   projectId: String!
   seoMeta: SEOMetaInput
