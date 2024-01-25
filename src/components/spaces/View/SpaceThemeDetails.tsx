@@ -35,6 +35,7 @@ export default function SpaceThemeDetails({ space }: SpaceDetailsProps) {
     status: 'DRAFT',
     byteIds: ['centralized-vs-decentralized-exchange-uniswap', 'amm-benefits-uniswap'],
     order: 100,
+    priority: 50,
     bytes: [
       {
         byteId: 'centralized-vs-decentralized-exchange-uniswap_1',
