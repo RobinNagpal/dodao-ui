@@ -69,6 +69,8 @@ export default function ByteCardAdminDropdown({ byte, byteType, project }: ByteC
       <PrivateEllipsisDropdown
         items={getThreeDotItems(byte)}
         onSelect={async (key, e: React.MouseEvent<HTMLAnchorElement>) => {
+          e.preventDefault();
+          e.stopPropagation();
           if (key === 'edit') {
             router.push(`${baseBytesEditUrl}/${byte.id}`);
           } else if (key === 'archive') {
@@ -78,8 +80,6 @@ export default function ByteCardAdminDropdown({ byte, byteType, project }: ByteC
           } else if (key === 'editSeo') {
             setEditProjectByteSeo(true);
           }
-          e.preventDefault();
-          e.stopPropagation();
         }}
       />
       {showDeleteModal && (
