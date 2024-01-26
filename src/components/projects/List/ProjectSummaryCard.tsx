@@ -12,7 +12,7 @@ export interface ProjectSummaryCardProps {
 export default function ProjectSummaryCard({ space, project }: ProjectSummaryCardProps) {
   return (
     <div key={project.id} className="rounded-lg overflow-hidden shadow-xl">
-      <Link href={`/projects/view/${project.id}/tidbit-collections`}>
+      <Link href={`/projects/view/${project.id}`}>
         <div className={`h-[250px] ${styles.card} px-1.5 pt-2 rounded-lg flex flex-col gap-2.5 shadow-xl`}>
           <div className="rounded relative">
             <img
