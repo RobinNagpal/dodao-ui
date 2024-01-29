@@ -8,7 +8,6 @@ fragment ProjectByteCollection on ProjectByteCollection {
   description
   id
   name
-  order
   status
   archived
   priority

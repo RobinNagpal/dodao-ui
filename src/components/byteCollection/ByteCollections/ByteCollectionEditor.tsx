@@ -61,13 +61,6 @@ function ByteCollectionEditor(props: ByteCollectionEditorProps) {
         label="Byte Collection Priority"
         required
       />
-      <Input
-        modelValue={byteCollection.order}
-        number
-        onUpdate={(v) => helperFunctions.updateByteCollectionOrder(v ? parseInt(v.toString()) : 50)}
-        label="Byte Collection Order"
-        required
-      />
 
       <div className="my-4">
         <div className="flow-root">

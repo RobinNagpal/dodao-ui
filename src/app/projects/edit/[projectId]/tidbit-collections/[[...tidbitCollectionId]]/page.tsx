@@ -26,7 +26,6 @@ function EditTidbitCollectionSpace(props: { space: SpaceWithIntegrationsFragment
           description: byteCollection.description,
           byteIds: byteCollection.bytes.map((byte) => byte.byteId),
           status: byteCollection.status,
-          order: byteCollection.order,
           priority: byteCollection.priority,
         },
       },
