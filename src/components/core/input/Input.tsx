@@ -20,6 +20,7 @@ interface TextInputProps extends PropsWithChildren {
   label?: React.ReactNode;
   info?: React.ReactNode;
   className?: string;
+  helpText?: string;
 }
 
 export default function Input({
@@ -38,6 +39,7 @@ export default function Input({
   info,
   children,
   className,
+  helpText,
 }: TextInputProps) {
   const [isFocus, setIsFocus] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -83,6 +85,7 @@ export default function Input({
           </div>
         )}
       </div>
+      {helpText && <p className="ml-1 mt-2 mb-2 text-sm">{helpText}</p>}
       {info && <p className="mt-1 text-xs">{info}</p>}
       {typeof error === 'string' && <p className="mt-2 text-sm text-red-600">{error}</p>}
     </div>
