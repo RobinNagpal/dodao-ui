@@ -13,6 +13,7 @@ export interface StyledSelectProps {
   items: StyledSelectItem[];
   setSelectedItemId: (id: string | null) => void;
   className?: string;
+  helpText?: string;
 }
 
 const StyledListboxButton = styled(Listbox.Button)`
@@ -77,6 +78,7 @@ export default function StyledSelect(props: StyledSelectProps) {
                     ))}
                   </StyledListboxOptions>
                 </Transition>
+                {props.helpText && <p className="ml-1 mt-2 mb-2 text-sm">{props.helpText}</p>}
               </div>
             </div>
           );
