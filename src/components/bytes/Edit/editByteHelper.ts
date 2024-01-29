@@ -20,7 +20,7 @@ const stepContentLimit = 14400;
 const byteExceptContentLimit = 64;
 const choiceContentLimit = 256;
 const nameLimit = 40;
-export interface EditByteStepItem extends Omit<StepItemInputGenericInput, 'order'> {}
+export interface EditByteStepItem extends Omit<StepItemInputGenericInput, 'order'> { }
 
 export interface EditByteStep extends Omit<ByteStepInput, 'stepItems'>, Omit<ByteStepFragment, 'stepItems'> {
   stepItems: EditByteStepItem[];
@@ -129,8 +129,13 @@ export function editByteCommonFunctions(setByte: (value: ((prevState: EditByteTy
     updatedByteErrors.steps = undefined;
     byte.steps.forEach((step: ByteStepInput) => {
       const stepError: StepError = {};
-      if (!step.name || step.name.length > nameLimit) {
+      if (!step.name) {
         stepError.name = true;
+      }
+
+      if (step.name.length > nameLimit) {
+        stepError.name = true;
+        stepError.message = "Name Length Exceeded!!"
       }
       if (step.content?.length > stepContentLimit) {
         stepError.content = true;
