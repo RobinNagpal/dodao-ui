@@ -13,6 +13,7 @@ export interface EllipsisDropdownProps {
   items: EllipsisDropdownItem[];
   className?: string;
   onSelect: (item: string, e: React.MouseEvent<HTMLAnchorElement>) => void;
+  blockMenuColor?: boolean;
 }
 
 const MenuButton = styled(Menu.Button)`
@@ -36,9 +37,9 @@ const DropdownItem = styled.a<{ active?: boolean }>`
   }
 `;
 
-const MenuItems = styled(Menu.Items)`
+const MenuItems = styled(Menu.Items)<{ blockMenuColor?: boolean }>`
   border: 1px solid var(--border-color);
-  background-color: var(--bg-color);
+  background-color: ${({ blockMenuColor }) => (blockMenuColor ? 'var(--block-bg)' : 'var(--bg-color)')};
 `;
 
 export default function EllipsisDropdown(props: EllipsisDropdownProps) {
@@ -59,7 +60,10 @@ export default function EllipsisDropdown(props: EllipsisDropdownProps) {
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <MenuItems className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+        <MenuItems
+          blockMenuColor={props.blockMenuColor}
+          className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+        >
           <div className="py-1">
             {props.items.map((item, index) => (
               <Menu.Item key={index}>
