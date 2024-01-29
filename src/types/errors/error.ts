@@ -19,6 +19,7 @@ export interface StepError {
   name?: boolean;
   content?: boolean;
   stepItems?: Record<string, QuestionError | UserInputError>;
+  message?: string
 }
 
 export type KeyOfGuideIntegration = keyof GuideIntegrationFragment;
