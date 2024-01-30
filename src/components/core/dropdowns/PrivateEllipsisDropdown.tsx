@@ -9,7 +9,6 @@ export interface PrivateEllipsisDropdownProps {
   items: EllipsisDropdownItem[];
   className?: string;
   onSelect: (item: string, e: React.MouseEvent<HTMLAnchorElement>) => void;
-  blockMenuColor?: boolean;
 }
 
 export default function PrivateEllipsisDropdown(props: PrivateEllipsisDropdownProps) {
