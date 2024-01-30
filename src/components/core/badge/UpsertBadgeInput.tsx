@@ -1,6 +1,4 @@
 import BadgeWithRemove from '@/components/core/badge/BadgeWithRemove';
-import Button from '@/components/core/buttons/Button';
-import Input from '@/components/core/input/Input';
 import { InputWithButton } from '@/components/core/input/InputWithButton';
 import React, { FormEvent, useState } from 'react';
 
@@ -15,6 +13,7 @@ export interface UpsertBadgeItemsProps {
   onAdd: (label: string) => void;
   onRemove: (id: string) => void;
   className?: string;
+  helpText?: string;
 }
 
 export default function UpsertBadgeInput(props: UpsertBadgeItemsProps) {
@@ -40,7 +39,7 @@ export default function UpsertBadgeInput(props: UpsertBadgeItemsProps) {
           inputModelValue={inputText}
         />
       </div>
-
+      {props.helpText && <p className="ml-1 mt-2 mb-2 text-sm">{props.helpText}</p>}
       {props.badges.map((badge) => (
         <BadgeWithRemove key={badge.id} id={badge.id} label={badge.label} onRemove={props.onRemove} />
       ))}
