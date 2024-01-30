@@ -129,13 +129,8 @@ export function editByteCommonFunctions(setByte: (value: ((prevState: EditByteTy
     updatedByteErrors.steps = undefined;
     byte.steps.forEach((step: ByteStepInput) => {
       const stepError: StepError = {};
-      if (!step.name) {
+      if (!step.name || step.name.length > nameLimit) {
         stepError.name = true;
-      }
-
-      if (step.name.length > nameLimit) {
-        stepError.name = true;
-        stepError.message = 'Name Length Exceeded!!';
       }
       if (step.content?.length > stepContentLimit) {
         stepError.content = true;
