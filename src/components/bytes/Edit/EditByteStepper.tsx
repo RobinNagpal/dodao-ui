@@ -51,7 +51,7 @@ function EditByteStepper({ space, byte, byteErrors, errorColor = '#d32f2f', succ
               label={`Step ${index + 1}: ${step.name}`}
               onClick={() => toggleAccordion(index)}
               hasError={Boolean(byteErrors?.steps?.[step.uuid])}
-              errorMessage={byteErrors?.steps?.[step.uuid]?.message}
+              errorMessage="This Step has an error!!"
             >
               <div className="w-full">
                 <EditByteStepperItem
