@@ -27,16 +27,14 @@ async function ProjectHomePage(props: ProjectHomePageProps) {
   const project = await getApiResponse<ProjectFragment>(space, `projects/${id}`);
 
   return (
-    <>
-      <div className="flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-3xl font-bold mb-4">{project.name}</h1>
-          <button className="bg-blue-500 text-white px-4 py-2 rounded">
-            <a href={`/projects/view/${project.id}/tidbit-collections`}>See More</a>
-          </button>
-        </div>
+    <div className="flex items-center justify-center">
+      <div className="text-center">
+        <h1 className="text-3xl font-bold mb-4">{project.name}</h1>
+        <button className="bg-blue-500 text-white px-4 py-2 rounded">
+          <a href={`/projects/view/${project.id}/tidbit-collections`}>See More</a>
+        </button>
       </div>
-    </>
+    </div>
   );
 }
 
