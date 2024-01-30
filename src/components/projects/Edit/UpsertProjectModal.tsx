@@ -44,6 +44,15 @@ export default function UpsertProjectModal(props: { spaceId: string; project?: P
             label={'One line description'}
             required
           />
+          <Input
+            label="Priority"
+            modelValue={project?.priority}
+            onUpdate={(value) => {
+              const priorityInteger = Number(value);
+              console.log(typeof priorityInteger);
+              setProjectField('priority', priorityInteger);
+            }}
+          />
 
           <UploadInput
             label="Logo"

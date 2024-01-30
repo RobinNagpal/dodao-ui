@@ -4,7 +4,7 @@ fragment ByteCollection on ByteCollection {
   description
   status
   byteIds
-  order
+  priority
   bytes {
     byteId
     name

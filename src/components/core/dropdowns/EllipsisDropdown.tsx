@@ -38,7 +38,7 @@ const DropdownItem = styled.a<{ active?: boolean }>`
 
 const MenuItems = styled(Menu.Items)`
   border: 1px solid var(--border-color);
-  background-color: var(--bg-color);
+  background-color: var(--block-bg);
 `;
 
 export default function EllipsisDropdown(props: EllipsisDropdownProps) {

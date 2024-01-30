@@ -45,7 +45,14 @@ function EditByteStepper({ space, byte, byteErrors, errorColor = '#d32f2f', succ
       <div className="w-full" style={styleObject}>
         <div id="accordion-collapse" data-accordion="collapse">
           {byte.steps.map((step, index) => (
-            <Accordion key={step.uuid} isOpen={openAccordionIndex === index} label={`Step ${index + 1}: ${step.name}`} onClick={() => toggleAccordion(index)}>
+            <Accordion
+              key={step.uuid}
+              isOpen={openAccordionIndex === index}
+              label={`Step ${index + 1}: ${step.name}`}
+              onClick={() => toggleAccordion(index)}
+              hasError={Boolean(byteErrors?.steps?.[step.uuid])}
+              errorMessage="This Step has an error!!"
+            >
               <div className="w-full">
                 <EditByteStepperItem
                   space={space}

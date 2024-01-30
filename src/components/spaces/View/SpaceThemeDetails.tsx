@@ -34,7 +34,7 @@ export default function SpaceThemeDetails({ space }: SpaceDetailsProps) {
     description: 'This collection of Tidbits explains different exchange models and the benefits of AMM',
     status: 'DRAFT',
     byteIds: ['centralized-vs-decentralized-exchange-uniswap', 'amm-benefits-uniswap'],
-    order: 100,
+    priority: 50,
     bytes: [
       {
         byteId: 'centralized-vs-decentralized-exchange-uniswap_1',

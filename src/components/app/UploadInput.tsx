@@ -29,6 +29,7 @@ interface UploadInputProps {
   placeholder?: string;
   allowedFileTypes?: string[];
   error?: any;
+  helpText?: string;
 }
 
 export default function UploadInput({
@@ -42,6 +43,7 @@ export default function UploadInput({
   placeholder = 'e.g. https://example.com/guide.png',
   allowedFileTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/svg+xml', 'image/svg+xml'],
   error,
+  helpText,
 }: UploadInputProps) {
   const inputId = uuidV4();
   return (
@@ -79,6 +81,7 @@ export default function UploadInput({
           </div>
         </FileUploader>
       </div>
+      {helpText && <p className="ml-1 mt-2 mb-2 text-sm">{helpText}</p>}
       {typeof error === 'string' && <p className="mt-2 text-sm text-left text-red-600">{error}</p>}
     </UploadWrapper>
   );

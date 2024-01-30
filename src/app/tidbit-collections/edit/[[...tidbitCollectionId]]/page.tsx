@@ -36,7 +36,7 @@ function EditTidbitCollectionSpace(props: { space: SpaceWithIntegrationsFragment
             description: byteCollection.description,
             byteIds: byteCollection.bytes.map((byte) => byte.byteId),
             status: byteCollection.status,
-            order: byteCollection.order,
+            priority: byteCollection.priority,
           },
         },
       });
@@ -50,7 +50,7 @@ function EditTidbitCollectionSpace(props: { space: SpaceWithIntegrationsFragment
             byteIds: byteCollection.bytes.map((byte) => byte.byteId),
             status: byteCollection.status,
             spaceId: props.space.id,
-            order: byteCollection.order,
+            priority: byteCollection.priority,
           },
         },
       });

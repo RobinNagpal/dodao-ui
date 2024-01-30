@@ -14,7 +14,7 @@ export type EditByteCollection = Omit<ByteCollectionFragment | ProjectByteCollec
 interface HelperFunctions {
   updateByteCollectionName: (name: string) => void;
   updateByteCollectionDescription: (description: string) => void;
-  updateByteCollectionOrder: (order: number) => void;
+  updateByteCollectionPriority: (priority: number) => void;
   addByte: (byteId: string) => void;
   moveByteUp: (byteUuid: string) => void;
   moveByteDown: (byteUuid: string) => void;
@@ -50,10 +50,10 @@ export function useEditByteCollection({
   const [byteCollection, setByteCollection] = useState<EditByteCollection>({
     bytes: [],
     name: '',
-    order: 50,
     description: '',
     byteIds: [],
     status: 'DRAFT',
+    priority: 50,
   });
 
   const { data, loading } = useByteCollectionQuery({
@@ -126,9 +126,8 @@ export function useEditByteCollection({
   const updateByteCollectionDescription = (description: string) => {
     setByteCollection((prevByte) => ({ ...prevByte, description }));
   };
-
-  const updateByteCollectionOrder = (order: number) => {
-    setByteCollection((prevByte) => ({ ...prevByte, order }));
+  const updateByteCollectionPriority = (priority: number) => {
+    setByteCollection((prevByte) => ({ ...prevByte, priority }));
   };
   const upsertByteCollection = async () => {
     setIsPrestine(false);
@@ -147,7 +146,7 @@ export function useEditByteCollection({
     helperFunctions: {
       updateByteCollectionName,
       updateByteCollectionDescription,
-      updateByteCollectionOrder,
+      updateByteCollectionPriority,
       addByte,
       moveByteUp,
       moveByteDown,
