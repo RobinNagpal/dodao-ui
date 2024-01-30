@@ -41,7 +41,7 @@ export default function Accordion({ isOpen, label, onClick, children, hasError =
           {children}
         </div>
       </div>
-      {hasError && errorMessage && <div className="text-red-500 ml-1 mt-1">{errorMessage}</div>}
+      {hasError && <div className="text-red-500 ml-1 mt-1">{errorMessage}</div>}
     </>
   );
 }
