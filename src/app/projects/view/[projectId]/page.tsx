@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: ProjectHomePageProps): Promis
   };
 }
 
-async function ProjectHomePage(props: { params: { projectId: string; viewType: string }; searchParams: { [key: string]: string | string[] | undefined } }) {
+async function ProjectHomePage(props: ProjectHomePageProps) {
   const id = props.params.projectId;
   const space = (await getSpaceServerSide())!;
   const project = await getApiResponse<ProjectFragment>(space, `projects/${id}`);
