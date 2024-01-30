@@ -67,7 +67,6 @@ export default function ByteCardAdminDropdown({ byte, byteType, project }: ByteC
   return (
     <>
       <PrivateEllipsisDropdown
-        blockMenuColor={true}
         items={getThreeDotItems(byte)}
         onSelect={async (key, e: React.MouseEvent<HTMLAnchorElement>) => {
           if (key === 'edit') {
