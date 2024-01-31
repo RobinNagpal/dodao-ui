@@ -22,11 +22,7 @@ export async function generateMetadata({ params }: GuideViewProps): Promise<Meta
 
 const GuideView = ({ params }: GuideViewProps) => {
   const { guideIdAndStep } = params;
-  return (
-    <div>
-      <GuideInformation guideIdAndStep={guideIdAndStep} />
-    </div>
-  );
+  return <GuideInformation guideIdAndStep={guideIdAndStep} />;
 };
 
 export default GuideView;
