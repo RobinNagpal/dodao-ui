@@ -3,6 +3,7 @@ import GuideInformation from './component/guideInfo';
 import type { Metadata } from 'next';
 import getApiResponse from '@/utils/api/getApiResponse';
 import { GuideFragment } from '@/graphql/generated/generated-types';
+import PageWrapper from '@/components/core/page/PageWrapper';
 
 type GuideViewProps = {
   params: { guideIdAndStep: string[] };
@@ -26,7 +27,11 @@ export async function generateMetadata({ params }: GuideViewProps): Promise<Meta
 
 const GuideView = ({ params }: GuideViewProps) => {
   const { guideIdAndStep } = params;
-  return <GuideInformation guideIdAndStep={guideIdAndStep} />;
+  return (
+    <PageWrapper className="pt-12">
+      <GuideInformation guideIdAndStep={guideIdAndStep} />;
+    </PageWrapper>
+  );
 };
 
 export default GuideView;
