@@ -15,13 +15,11 @@ type GuidesProps = {
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
-export async function generateMetadata(): Promise<Metadata> {
-  return {
-    title: 'Guides',
-    description: 'Guides about different Blockchain concepts.',
-    keywords: ['Guides', 'Blockchain'],
-  };
-}
+export const metadata: Metadata = {
+  title: 'Guides',
+  description: 'Guides about different Blockchain concepts.',
+  keywords: ['Guides', 'Blockchain'],
+};
 
 async function Guides({ searchParams }: GuidesProps) {
   const space = (await getSpaceServerSide())!;
