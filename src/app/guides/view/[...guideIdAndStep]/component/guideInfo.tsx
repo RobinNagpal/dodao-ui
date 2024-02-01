@@ -5,7 +5,6 @@ import Block from '@/components/app/Block';
 import DeleteGuideModal from '@/components/app/Modal/Guide/DeleteGuideModal';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import PageLoading from '@/components/core/loaders/PageLoading';
-import PageWrapper from '@/components/core/page/PageWrapper';
 import GuideStepper from '@/components/guides/View/GuideStepper';
 import { useViewGuide } from '@/components/guides/View/useViewGuide';
 import { SpaceWithIntegrationsFragment, useDeleteGuideMutation, useGuidesQueryQuery } from '@/graphql/generated/generated-types';
@@ -54,7 +53,7 @@ const GuideInformation = ({ guideIdAndStep, space }: GuideInformationProps) => {
 
   // JSX starts here
   return (
-    <PageWrapper className="pt-12">
+    <>
       <SingleCardLayout>
         {viewGuideHelper.guideLoaded ? (
           <>
@@ -127,7 +126,7 @@ const GuideInformation = ({ guideIdAndStep, space }: GuideInformationProps) => {
           }}
         />
       )}
-    </PageWrapper>
+    </>
   );
 };
 
