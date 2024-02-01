@@ -15,7 +15,7 @@ function TimelinesInformation({ space }: SpaceProps) {
 
   const loadingData = loading || !space;
   return (
-    <PageWrapper>
+    <>
       {!data?.timelines.length && !loadingData && <NoTimeline />}
       {!!data?.timelines?.length && (
         <Grid4Cols>
@@ -30,7 +30,7 @@ function TimelinesInformation({ space }: SpaceProps) {
           <RowLoading className="my-2" />
         </Block>
       )}
-    </PageWrapper>
+    </>
   );
 }
 
