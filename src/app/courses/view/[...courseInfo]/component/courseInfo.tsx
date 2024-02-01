@@ -6,7 +6,6 @@ import DeleteCourseSubmissionModal from '@/components/app/Modal/Course/DeleteCou
 import IconButton from '@/components/core/buttons/IconButton';
 import { IconTypes } from '@/components/core/icons/IconTypes';
 import RowLoading from '@/components/core/loaders/RowLoading';
-import PageWrapper from '@/components/core/page/PageWrapper';
 import AddNewCourseContentModal from '@/components/courses/Edit/AddNewCourseContentModal';
 import CourseNavigationNew from '@/components/courses/Edit/CourseNavigationNew';
 import BasicCourseConfigurations from '@/components/courses/View/BasicCourseConfigurations';
@@ -95,7 +94,7 @@ const CourseInformation = ({ courseInfo, space }: CourseInformationProps) => {
   };
 
   return (
-    <PageWrapper>
+    <>
       {course ? (
         <Block slim className="w-full">
           <div className="px-4 py-3 bg-skin-header-bg lg:rounded-2xl pb-3 flex justify-between w-full">
@@ -172,7 +171,7 @@ const CourseInformation = ({ courseInfo, space }: CourseInformationProps) => {
           }}
         />
       )}
-    </PageWrapper>
+    </>
   );
 };
 
