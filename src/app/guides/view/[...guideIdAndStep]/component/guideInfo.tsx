@@ -48,7 +48,6 @@ const GuideInformation = ({ guideIdAndStep, space }: GuideInformationProps) => {
   }, [guideId]);
 
   const renderer = getMarkedRenderer();
-
   const guideContents = useMemo((): string => {
     return guide ? marked.parse(guide.content, { renderer }) : '';
   }, [guide]);
