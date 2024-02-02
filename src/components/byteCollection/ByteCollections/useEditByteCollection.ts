@@ -56,17 +56,21 @@ export function useEditByteCollection({
     priority: byteCollectionProp?.priority || 50,
   });
 
-  const moveByteUp = useCallback((byteUuid: string) => {
-    setByteCollection((prevByte) => {
-      const bytes = prevByte.bytes;
-      const index = bytes.findIndex((byte) => byte.byteId === byteUuid);
-      if (index > 0) {
-        [bytes[index - 1], bytes[index]] = [bytes[index], bytes[index - 1]];
-      }
-
-      return { ...prevByte, bytes: [...bytes] };
-    });
-  }, []);
+  const moveByteUp = useCallback(
+    (byteUuid: string) => {
+      setByteCollection((prevByte) => {
+        const bytes = [...prevByte.bytes];
+        const index = bytes.findIndex((byte) => byte.byteId === byteUuid);
+        if (index > 0) {
+          const temp = bytes[index - 1];
+          bytes[index - 1] = bytes[index];
+          bytes[index] = temp;
+        }
+        return { ...prevByte, bytes: bytes };
+      });
+    },
+    [setByteCollection]
+  );
 
   const moveByteDown = useCallback((byteUuid: string) => {
     setByteCollection((prevByte) => {
@@ -123,6 +127,7 @@ export function useEditByteCollection({
     }
     await upsertByteCollectionFn(byteCollection, byteCollection.id || null);
     router.push(viewByteCollectionsUrl);
+    router.refresh();
   };
 
   return {
