@@ -7,7 +7,9 @@ import PageLoading from '@/components/core/loaders/PageLoading';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import {
   SpaceWithIntegrationsFragment,
+  useByteCollectionQuery,
   useCreateByteCollectionMutation,
+  useProjectByteCollectionQuery,
   useQueryBytesQuery,
   useUpdateByteCollectionMutation,
 } from '@/graphql/generated/generated-types';
@@ -25,6 +27,15 @@ function EditTidbitCollectionSpace(props: { space: SpaceWithIntegrationsFragment
   const [updateByteCollectionMutation] = useUpdateByteCollectionMutation();
 
   const [createByteCollectionMutation] = useCreateByteCollectionMutation();
+
+  const byteCollectionId = props.params.tidbitCollectionId?.[0] || null;
+  const { data } = useByteCollectionQuery({
+    variables: {
+      spaceId: props.space.id,
+      byteCollectionId: byteCollectionId!,
+    },
+    skip: !byteCollectionId,
+  });
 
   async function upsertByteCollectionFn(byteCollection: EditByteCollection, byteCollectionId: string | null) {
     if (!byteCollectionId) {
@@ -66,10 +77,10 @@ function EditTidbitCollectionSpace(props: { space: SpaceWithIntegrationsFragment
             {'Back to Tidbit collections'}
           </Link>
         </div>
-        {bytesResponse?.bytes ? (
+        {bytesResponse?.bytes && (!byteCollectionId || data) ? (
           <ByteCollectionEditor
             space={props.space}
-            byteCollectionId={props.params.tidbitCollectionId?.[0]}
+            byteCollection={data?.byteCollection}
             viewByteCollectionsUrl={'/tidbit-collections'}
             byteSummaries={bytesResponse?.bytes}
             upsertByteCollectionFn={upsertByteCollectionFn}

@@ -4,16 +4,29 @@ import withSpace from '@/app/withSpace';
 import ByteCollectionEditor from '@/components/byteCollection/ByteCollections/ByteCollectionEditor';
 import { EditByteCollection } from '@/components/byteCollection/ByteCollections/useEditByteCollection';
 import PageWrapper from '@/components/core/page/PageWrapper';
-import { SpaceWithIntegrationsFragment, useProjectBytesQuery, useUpsertProjectByteCollectionMutation } from '@/graphql/generated/generated-types';
+import {
+  SpaceWithIntegrationsFragment,
+  useProjectByteCollectionQuery,
+  useProjectBytesQuery,
+  useUpsertProjectByteCollectionMutation,
+} from '@/graphql/generated/generated-types';
 import { v4 } from 'uuid';
 
-function EditTidbitCollectionSpace(props: { space: SpaceWithIntegrationsFragment; params: { projectId: string; tidbitCollectionId?: string[] } }) {
+function EditTidbitCollectionProject(props: { space: SpaceWithIntegrationsFragment; params: { projectId: string; tidbitCollectionId?: string[] } }) {
   const { data: bytesResponse } = useProjectBytesQuery({
     variables: {
       projectId: props.params.projectId,
     },
   });
   const [upsertProjectByteCollectionMutation] = useUpsertProjectByteCollectionMutation();
+  const byteCollectionId = props.params.tidbitCollectionId?.[0] || null;
+  const { data } = useProjectByteCollectionQuery({
+    variables: {
+      projectId: props.params.projectId,
+      id: byteCollectionId!,
+    },
+    skip: !byteCollectionId,
+  });
 
   async function upsertByteCollectionFn(byteCollection: EditByteCollection, byteCollectionId: string | null) {
     await upsertProjectByteCollectionMutation({
@@ -33,10 +46,10 @@ function EditTidbitCollectionSpace(props: { space: SpaceWithIntegrationsFragment
   }
   return (
     <PageWrapper>
-      {bytesResponse?.projectBytes ? (
+      {bytesResponse?.projectBytes && (!byteCollectionId || data) ? (
         <ByteCollectionEditor
           space={props.space}
-          byteCollectionId={props.params.tidbitCollectionId?.[0]}
+          byteCollection={data?.projectByteCollection}
           viewByteCollectionsUrl={`/projects/view/${props.params.projectId}/tidbit-collections`}
           byteSummaries={bytesResponse?.projectBytes}
           upsertByteCollectionFn={upsertByteCollectionFn}
@@ -46,4 +59,4 @@ function EditTidbitCollectionSpace(props: { space: SpaceWithIntegrationsFragment
   );
 }
 
-export default withSpace(EditTidbitCollectionSpace);
+export default withSpace(EditTidbitCollectionProject);

@@ -22,7 +22,7 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
       <div className={`border border-gray-200 rounded-xl overflow-hidden p-4 w-full max-w-xl ` + styles.cardDiv}>
         {isEditingAllowed && (
           <div className="w-full flex justify-end">
-            <ByteCollectionCardAdminDropdown byteCollection={byteCollection} byteCollectionType={'byteCollection'} project={project} />
+            <ByteCollectionCardAdminDropdown byteCollection={byteCollection} byteCollectionType={byteCollectionType} project={project} />
           </div>
         )}
 
