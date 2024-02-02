@@ -5,7 +5,7 @@ import IconButton from '@/components/core/buttons/IconButton';
 import { IconTypes } from '@/components/core/icons/IconTypes';
 import Input from '@/components/core/input/Input';
 import TextareaAutosize from '@/components/core/textarea/TextareaAutosize';
-import { ByteSummaryFragment, ProjectByteFragment, Space } from '@/graphql/generated/generated-types';
+import { ByteCollectionFragment, ByteSummaryFragment, ProjectByteCollectionFragment, ProjectByteFragment, Space } from '@/graphql/generated/generated-types';
 import PlusCircle from '@heroicons/react/20/solid/PlusCircleIcon';
 import Bars3BottomLeftIcon from '@heroicons/react/24/solid/Bars3BottomLeftIcon';
 import React, { useState } from 'react';
@@ -14,7 +14,7 @@ import styled from 'styled-components';
 interface ByteCollectionEditorProps {
   byteSummaries: (ByteSummaryFragment | ProjectByteFragment)[];
   space: Space;
-  byteCollectionId?: string;
+  byteCollection?: ByteCollectionFragment | ProjectByteCollectionFragment;
   viewByteCollectionsUrl: string;
   upsertByteCollectionFn: (byteCollection: EditByteCollection, byteCollectionId: string | null) => Promise<void>;
 }
@@ -32,7 +32,7 @@ function ByteCollectionEditor(props: ByteCollectionEditorProps) {
   const { isPrestine, byteCollection, byteSummaries, helperFunctions } = useEditByteCollection({
     space: props.space,
     viewByteCollectionsUrl: props.viewByteCollectionsUrl,
-    byteCollectionId: props.byteCollectionId || null,
+    byteCollection: props.byteCollection,
     byteSummaries: props.byteSummaries,
     upsertByteCollectionFn: props.upsertByteCollectionFn,
   });

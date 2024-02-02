@@ -4,10 +4,9 @@ import {
   ProjectByteCollectionFragment,
   ProjectByteFragment,
   SpaceWithIntegrationsFragment,
-  useByteCollectionQuery,
 } from '@/graphql/generated/generated-types';
 import { useRouter } from 'next/navigation';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 export type EditByteCollection = Omit<ByteCollectionFragment | ProjectByteCollectionFragment, 'id'> & { id?: string };
 
@@ -32,7 +31,7 @@ interface UseEditByteCollectionType {
 export interface UseEditByteCollectionArgs {
   space: SpaceWithIntegrationsFragment;
   viewByteCollectionsUrl: string;
-  byteCollectionId: string | null;
+  byteCollection?: ByteCollectionFragment | ProjectByteCollectionFragment;
   byteSummaries: (ByteSummaryFragment | ProjectByteFragment)[];
   upsertByteCollectionFn: (byteCollection: EditByteCollection, byteCollectionId: string | null) => Promise<void>;
 }
@@ -40,7 +39,7 @@ export interface UseEditByteCollectionArgs {
 export function useEditByteCollection({
   space,
   viewByteCollectionsUrl,
-  byteCollectionId,
+  byteCollection: byteCollectionProp,
   byteSummaries,
   upsertByteCollectionFn,
 }: UseEditByteCollectionArgs): UseEditByteCollectionType {
@@ -48,27 +47,14 @@ export function useEditByteCollection({
   const router = useRouter();
 
   const [byteCollection, setByteCollection] = useState<EditByteCollection>({
-    bytes: [],
-    name: '',
-    description: '',
-    byteIds: [],
-    status: 'DRAFT',
-    priority: 50,
+    id: byteCollectionProp?.id,
+    bytes: byteCollectionProp?.bytes || [],
+    name: byteCollectionProp?.name || '',
+    description: byteCollectionProp?.description || '',
+    byteIds: byteCollectionProp?.bytes.map((byte) => byte.byteId) || [],
+    status: byteCollectionProp?.status || 'DRAFT',
+    priority: byteCollectionProp?.priority || 50,
   });
-
-  const { data, loading } = useByteCollectionQuery({
-    variables: {
-      spaceId: space.id,
-      byteCollectionId: byteCollectionId!,
-    },
-    skip: !byteCollectionId,
-  });
-
-  useEffect(() => {
-    if (data?.byteCollection) {
-      setByteCollection(data.byteCollection);
-    }
-  }, [data?.byteCollection]);
 
   const moveByteUp = useCallback((byteUuid: string) => {
     setByteCollection((prevByte) => {
@@ -135,7 +121,7 @@ export function useEditByteCollection({
     if (!byteCollection.name.trim() || !byteCollection.description.trim()) {
       return;
     }
-    await upsertByteCollectionFn(byteCollection, byteCollectionId);
+    await upsertByteCollectionFn(byteCollection, byteCollection.id || null);
     router.push(viewByteCollectionsUrl);
   };
 
