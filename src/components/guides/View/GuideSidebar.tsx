@@ -4,7 +4,7 @@ import { GuideFragment, GuideStepFragment } from '@/graphql/generated/generated-
 import classNames from '@/utils/classNames';
 import { useMemo } from 'react';
 import styles from './GuideSidebar.module.scss';
-
+import { useRouter } from 'next/navigation';
 export interface GuideSidebarProps {
   guide: GuideFragment;
   viewGuideHelper: UseViewGuideHelper;
@@ -12,12 +12,14 @@ export interface GuideSidebarProps {
 }
 
 export default function GuideSidebar({ activeStep, guide, viewGuideHelper }: GuideSidebarProps) {
+  const router = useRouter();
   const showError = useMemo(
     () => !viewGuideHelper.guideSubmission?.isPristine && !viewGuideHelper.isEveryQuestionAnsweredInStep(activeStep.uuid),
     [activeStep.uuid, viewGuideHelper.guideSubmission?.isPristine]
   );
 
   function goToStep(order: number) {
+    router.replace(`/guides/view/${guide.id}/${order}`);
     if (guide.steps.length - 1 === order) {
       // we don't want user to navigate to the complete/final step
       if (!viewGuideHelper.guideSubmission.isSubmitted) {
