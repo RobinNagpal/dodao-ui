@@ -1,5 +1,5 @@
 import PageWrapper from '@/components/core/page/PageWrapper';
-import TimelineInformation from './component/timelineInfo';
+import TimelineInformation from './TimelineInformation';
 import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
 import getApiResponse from '@/utils/api/getApiResponse';
 import { TimelineDetailsFragment } from '@/graphql/generated/generated-types';
