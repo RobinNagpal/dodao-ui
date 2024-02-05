@@ -20,10 +20,7 @@ export async function generateMetadata({ params }: GuideViewProps): Promise<Meta
   }
   const guideStep = guide.steps[stepOrder];
 
-  const description =
-    guideStep.name == 'Evaluation'
-      ? `\n\n${guide.name}\n\n${guide.content}\n\n${guideStep.name}`
-      : `\n\n${guide.name}\n\n${guide.content}\n\n${guideStep.name}\n\n${guideStep.content}`;
+  const description = `\n\n${guide.name}\n\n${guide.content}\n\n${guideStep.name}\n\n${guideStep.content}`;
   return {
     title: guide.name,
     description: description,
@@ -35,7 +32,7 @@ const GuideView = ({ params }: GuideViewProps) => {
   const { guideIdAndStep } = params;
   return (
     <PageWrapper className="pt-12">
-      <GuideInformation guideIdAndStep={guideIdAndStep} />;
+      <GuideInformation guideIdAndStep={guideIdAndStep} />
     </PageWrapper>
   );
 };
