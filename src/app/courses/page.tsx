@@ -1,7 +1,7 @@
 import PageWrapper from '@/components/core/page/PageWrapper';
 import MainContainer from '@/components/main/Container/MainContainer';
 import React from 'react';
-import CoursesInformation from './component/coursesInfo';
+import CoursesInformation from './CoursesGrid';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
