@@ -35,7 +35,6 @@ export interface GuideStepProps {
 
 const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, guide }) => {
   const [nextButtonClicked, setNextButtonClicked] = useState(false);
-
   const setUserInput = useCallback(
     (userInputUuid: string, userInput: string) => {
       viewGuideHelper.setUserInput(step.uuid, userInputUuid, userInput);
@@ -132,7 +131,6 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
           }
         }
       }
-
       viewGuideHelper.goToNextStep(step);
     }
   };
