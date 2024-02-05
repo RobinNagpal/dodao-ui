@@ -18,7 +18,7 @@ type GuidesProps = {
 export const metadata: Metadata = {
   title: 'Guides',
   description: 'Guides about different Blockchain concepts.',
-  keywords: ['Guides', 'Blockchain'],
+  keywords: [],
 };
 
 async function Guides({ searchParams }: GuidesProps) {
