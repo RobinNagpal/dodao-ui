@@ -14,13 +14,19 @@ export async function generateMetadata({ params }: GuideViewProps): Promise<Meta
   const guideId = Array.isArray(guideIdAndStep) ? guideIdAndStep[0] : (guideIdAndStep as string);
   const space = (await getSpaceServerSide())!;
   const guide = await getApiResponse<GuideFragment>(space, `guides/${guideId}`);
-  // let stepOrder = 0;
-  // if (Array.isArray(guideIdAndStep)) {
-  //   stepOrder = parseInt(guideIdAndStep[1]);
-  // }
+  let stepOrder = 0;
+  if (Array.isArray(guideIdAndStep)) {
+    stepOrder = parseInt(guideIdAndStep[1]);
+  }
+  const guideStep = guide.steps[stepOrder];
+
+  const description =
+    guideStep.name == 'Evaluation'
+      ? `\n\n${guide.name}\n\n${guide.content}\n\n${guideStep.name}`
+      : `\n\n${guide.name}\n\n${guide.content}\n\n${guideStep.name}\n\n${guideStep.content}`;
   return {
     title: guide.name,
-    description: guide.content,
+    description: description,
     keywords: [],
   };
 }
