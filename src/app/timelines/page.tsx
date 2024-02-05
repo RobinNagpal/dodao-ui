@@ -1,6 +1,6 @@
 import PageWrapper from '@/components/core/page/PageWrapper';
 import React from 'react';
-import TimelinesInformation from './component/timelinesInfo';
+import TimelinesInformation from './TimelinesGrid.';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
