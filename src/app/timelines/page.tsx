@@ -2,11 +2,16 @@ import PageWrapper from '@/components/core/page/PageWrapper';
 import React from 'react';
 import TimelinesInformation from './TimelinesGrid.';
 import { Metadata } from 'next';
+import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
 
-export const metadata: Metadata = {
-  title: 'Timelines',
-  description: 'Timelines about new trending things about Blockchain',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const space = (await getSpaceServerSide())!;
+  return {
+    title: 'Timelines',
+    description: `Timelines about new updates on ${space.name}`,
+    keywords: [],
+  };
+}
 
 function Timeline() {
   return (
