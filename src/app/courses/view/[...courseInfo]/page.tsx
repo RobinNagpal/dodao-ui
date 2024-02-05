@@ -1,5 +1,5 @@
 import PageWrapper from '@/components/core/page/PageWrapper';
-import CourseInformation from './component/courseInfo';
+import CourseInformation from './CourseInformation';
 import { Metadata } from 'next';
 import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
 import getApiResponse from '@/utils/api/getApiResponse';
