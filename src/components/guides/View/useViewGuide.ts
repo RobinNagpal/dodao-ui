@@ -20,6 +20,7 @@ import { GuideSubmissionError } from '@/types/errors/error';
 import { useSession } from 'next-auth/react';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import { useRouter } from 'next/navigation';
 
 export const LAST_STEP_UUID = 'LAST_STEP_UUID';
 
@@ -46,7 +47,7 @@ export interface UseViewGuideHelper {
 
 export function useViewGuide(space: Space, uuid: string, stepOrder: number): UseViewGuideHelper {
   const { $t: t } = useI18();
-
+  const router = useRouter();
   const { data: session } = useSession();
   const [guide, setGuide] = useState<GuideFragment | null>(null);
   const [guideStepsMap, setGuideStepsMap] = useState<{ [uuid: string]: GuideStepFragment }>({});
@@ -158,12 +159,14 @@ export function useViewGuide(space: Space, uuid: string, stepOrder: number): Use
     const newStepOrder = currentStep.order + 1;
     setActiveStepOrder(newStepOrder);
     history.replaceState(null, '', `/guides/view/${uuid}/${newStepOrder}`);
+    router.replace(`/guides/view/${uuid}/${newStepOrder}`);
   }
 
   function goToPreviousStep(currentStep: GuideStepFragment) {
     const newStepOrder = currentStep.order - 1;
     setActiveStepOrder(newStepOrder);
     history.replaceState(null, '', `/guides/view/${uuid}/${newStepOrder}`);
+    router.replace(`/guides/view/${uuid}/${newStepOrder}`);
   }
 
   function selectAnswer(stepUuid: string, questionUuid: string, selectedAnswers: string[]) {
