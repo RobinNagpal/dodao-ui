@@ -1,5 +1,5 @@
 import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
-import GuideInformation from './component/guideInfo';
+import GuideInformation from './GuideInformation';
 import type { Metadata } from 'next';
 import getApiResponse from '@/utils/api/getApiResponse';
 import { GuideFragment } from '@/graphql/generated/generated-types';
