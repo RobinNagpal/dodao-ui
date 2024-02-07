@@ -55,7 +55,6 @@ function LoginPage() {
 
       const updatedUser = await response.json();
       setUpdatedUser(updatedUser);
-      console.log('Updated User:', updatedUser);
     } catch (error) {
       console.error('Error updating user data:', error);
     }
