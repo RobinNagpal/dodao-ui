@@ -129,6 +129,7 @@ export interface Byte {
   showIncorrectOnCompletion: Scalars['Boolean'];
   steps: Array<ByteStep>;
   tags: Array<Scalars['String']>;
+  videoUrl?: Maybe<Scalars['String']>;
 }
 
 export interface ByteCollection {
@@ -138,7 +139,6 @@ export interface ByteCollection {
   description: Scalars['String'];
   id: Scalars['ID'];
   name: Scalars['String'];
-  order?: Maybe<Scalars['Int']>;
   priority: Scalars['Int'];
   status: Scalars['String'];
 }
@@ -374,7 +374,6 @@ export interface CreateByteCollectionInput {
   byteIds: Array<Scalars['String']>;
   description: Scalars['String'];
   name: Scalars['String'];
-  order?: InputMaybe<Scalars['Int']>;
   priority: Scalars['Int'];
   spaceId: Scalars['String'];
   status: Scalars['String'];
@@ -1888,6 +1887,7 @@ export interface ProjectByte {
   seoMeta?: Maybe<SeoMeta>;
   steps: Array<ByteStep>;
   tags: Array<Scalars['String']>;
+  videoUrl?: Maybe<Scalars['String']>;
 }
 
 export interface ProjectByteCollection {
@@ -1898,7 +1898,6 @@ export interface ProjectByteCollection {
   description: Scalars['String'];
   id: Scalars['String'];
   name: Scalars['String'];
-  order?: Maybe<Scalars['Int']>;
   priority: Scalars['Int'];
   seoMeta?: Maybe<SeoMeta>;
   status: Scalars['String'];
@@ -2619,7 +2618,6 @@ export interface UpdateByteCollectionInput {
   byteIds: Array<Scalars['String']>;
   description: Scalars['String'];
   name: Scalars['String'];
-  order?: InputMaybe<Scalars['Int']>;
   priority: Scalars['Int'];
   spaceId: Scalars['String'];
   status: Scalars['String'];
@@ -2693,6 +2691,7 @@ export interface UpsertByteInput {
   steps: Array<ByteStepInput>;
   tags: Array<Scalars['String']>;
   thumbnail?: InputMaybe<Scalars['String']>;
+  videoUrl?: InputMaybe<Scalars['String']>;
 }
 
 export interface UpsertByteSocialShareInput {
@@ -2763,7 +2762,6 @@ export interface UpsertProjectByteCollectionInput {
   description: Scalars['String'];
   id: Scalars['String'];
   name: Scalars['String'];
-  order?: InputMaybe<Scalars['Int']>;
   priority: Scalars['Int'];
   projectId: Scalars['String'];
   seoMeta?: InputMaybe<SeoMetaInput>;
@@ -2781,6 +2779,7 @@ export interface UpsertProjectByteInput {
   steps: Array<ByteStepInput>;
   tags: Array<Scalars['String']>;
   thumbnail?: InputMaybe<Scalars['String']>;
+  videoUrl?: InputMaybe<Scalars['String']>;
 }
 
 export interface UpsertProjectInput {
