@@ -5,11 +5,13 @@ import Input from '@/components/core/input/Input';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import React, { useState } from 'react';
 import { useSession } from 'next-auth/react';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 function LoginPage() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+  const [captcha, setCaptcha] = useState<string | null>('');
   const [updatedUser, setUpdatedUser] = useState(null);
   const { data: session } = useSession();
 
@@ -69,6 +71,7 @@ function LoginPage() {
           <Input className="mt-4" label="Name" modelValue={name} onUpdate={handleNameChange} />
           <Input label="Email" modelValue={email} onUpdate={handleEmailChange} />
           <Input label="Phone Number" modelValue={phone} onUpdate={handlePhoneChange} />
+          <ReCAPTCHA sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!} onChange={setCaptcha} className="mt-4" />
         </div>
         <div className="flex items-center justify-start gap-x-6">
           <Button variant="contained" primary onClick={handleSave}>
