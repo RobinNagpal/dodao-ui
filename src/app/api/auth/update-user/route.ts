@@ -15,10 +15,9 @@ export async function PUT(request: Request) {
   }
   try {
     const updatedUser = await prisma.user.update({
-      where: { username_spaceId: { username, spaceId } },
-      data: { name, email, phone_number },
+      where: { username_spaceId: { username: session.username, spaceId: session.spaceId } },
+      data: { name: name, email: email, phone_number: phone_number },
     });
-
     return NextResponse.json(updatedUser);
   } catch (error) {
     console.error('Error updating user:', error);
