@@ -27,6 +27,11 @@ export default function ByteSummaryCard({ byte, byteType, baseByteViewUrl, proje
               <h2 className="text-base font-bold whitespace-nowrap overflow-hidden text-ellipsis w-full">{shorten(byte.name, 32)}</h2>
             </div>
             <p className="break-words mb-2 text-sm h-65px text-ellipsis overflow-hidden">{shorten(byte.content, 300)}</p>
+            {byte?.videoUrl && (
+              <a href={byte.videoUrl} target="_blank">
+                Video URL
+              </a>
+            )}
           </div>
         </div>
       </Link>
