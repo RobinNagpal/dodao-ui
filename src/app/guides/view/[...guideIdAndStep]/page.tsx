@@ -28,11 +28,15 @@ export async function generateMetadata({ params }: GuideViewProps): Promise<Meta
   };
 }
 
-const GuideView = ({ params }: GuideViewProps) => {
+const GuideView = async ({ params }: GuideViewProps) => {
   const { guideIdAndStep } = params;
+  const space = (await getSpaceServerSide())!;
+
+  const guide = await getApiResponse<GuideFragment>(space, `guides/${params.guideIdAndStep[0]}`);
+
   return (
     <PageWrapper className="pt-12">
-      <GuideInformation guideIdAndStep={guideIdAndStep} />
+      <GuideInformation guideIdAndStep={guideIdAndStep} guide={guide} />
     </PageWrapper>
   );
 };

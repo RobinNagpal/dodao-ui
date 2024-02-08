@@ -7,7 +7,7 @@ import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsis
 import PageLoading from '@/components/core/loaders/PageLoading';
 import GuideStepper from '@/components/guides/View/GuideStepper';
 import { useViewGuide } from '@/components/guides/View/useViewGuide';
-import { SpaceWithIntegrationsFragment, useDeleteGuideMutation, useGuidesQueryQuery } from '@/graphql/generated/generated-types';
+import { GuideFragment, SpaceWithIntegrationsFragment, useDeleteGuideMutation, useGuidesQueryQuery } from '@/graphql/generated/generated-types';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
 import { getMarkedRenderer } from '@/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
@@ -18,9 +18,10 @@ import React, { useEffect, useMemo } from 'react';
 type GuideInformationProps = {
   guideIdAndStep: string[];
   space: SpaceWithIntegrationsFragment;
+  guide: GuideFragment;
 };
 
-const GuideInformation = ({ guideIdAndStep, space }: GuideInformationProps) => {
+const GuideInformation = ({ guideIdAndStep, space, guide: guideFragment }: GuideInformationProps) => {
   const [deleteGuideMutation] = useDeleteGuideMutation();
   const { refetch: refetchGuides } = useGuidesQueryQuery({ skip: true, fetchPolicy: 'no-cache' });
   const [showDeleteModal, setShowDeleteModal] = React.useState(false);
@@ -32,8 +33,8 @@ const GuideInformation = ({ guideIdAndStep, space }: GuideInformationProps) => {
     stepOrder = parseInt(guideIdAndStep[1]);
   }
 
-  const viewGuideHelper = useViewGuide(space, guideId, stepOrder);
-  const { guide: guide, guideLoaded, guideSubmission, initialize } = viewGuideHelper;
+  const viewGuideHelper = useViewGuide(space, guideFragment, stepOrder);
+  const { guide, guideLoaded, guideSubmission, initialize } = viewGuideHelper;
   const threeDotItems = [
     { label: 'Edit', key: 'edit' },
     { label: 'Submissions', key: 'submissions' },
