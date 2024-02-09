@@ -16,7 +16,6 @@ import { isQuestion, isUserDiscordConnect, isUserInput } from '@/types/deprecate
 import { StepItemSubmissionType } from '@/types/deprecated/models/enums';
 import { GuideSubmissionError } from '@/types/errors/error';
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -46,7 +45,6 @@ export interface UseViewGuideHelper {
 export function useViewGuide(space: Space, fetchedGuide: GuideFragment, stepOrder: number): UseViewGuideHelper {
   const uuid = fetchedGuide.uuid;
 
-  const router = useRouter();
   const { data: session } = useSession();
   const [guide, setGuide] = useState<GuideFragment | null>(null);
   const [guideStepsMap, setGuideStepsMap] = useState<{ [uuid: string]: GuideStepFragment }>({});
