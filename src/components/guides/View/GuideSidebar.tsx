@@ -4,7 +4,7 @@ import { GuideFragment, GuideStepFragment } from '@/graphql/generated/generated-
 import classNames from '@/utils/classNames';
 import { useMemo } from 'react';
 import styles from './GuideSidebar.module.scss';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 export interface GuideSidebarProps {
   guide: GuideFragment;
   viewGuideHelper: UseViewGuideHelper;
@@ -12,14 +12,12 @@ export interface GuideSidebarProps {
 }
 
 export default function GuideSidebar({ activeStep, guide, viewGuideHelper }: GuideSidebarProps) {
-  const router = useRouter();
   const showError = useMemo(
     () => !viewGuideHelper.guideSubmission?.isPristine && !viewGuideHelper.isEveryQuestionAnsweredInStep(activeStep.uuid),
     [activeStep.uuid, viewGuideHelper.guideSubmission?.isPristine]
   );
 
   function goToStep(order: number) {
-    router.replace(`/guides/view/${guide.id}/${order}`);
     if (guide.steps.length - 1 === order) {
       // we don't want user to navigate to the complete/final step
       if (!viewGuideHelper.guideSubmission.isSubmitted) {
@@ -43,6 +41,9 @@ export default function GuideSidebar({ activeStep, guide, viewGuideHelper }: Gui
             const showError = !viewGuideHelper.guideSubmission?.isPristine && !viewGuideHelper.isEveryQuestionAnsweredInStep(step.uuid);
             const showSuccess = viewGuideHelper.getStepSubmission(step.uuid)?.isCompleted;
             const showActive = stepIdx === viewGuideHelper.activeStepOrder;
+            const isLastStep = stepIdx === guide.steps.length - 1;
+            const allowNavigation = !isLastStep || viewGuideHelper.guideSubmission.isSubmitted;
+            const stepLink = `/guides/view/${guide.id}/${stepIdx}`;
 
             return (
               <li key={step.uuid}>
@@ -64,16 +65,17 @@ export default function GuideSidebar({ activeStep, guide, viewGuideHelper }: Gui
                       </span>
                     </div>
                     <div className="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
-                      <a
-                        className={classNames(
-                          `${styles.styledAnchor}`,
-                          showActive && `${styles.isActive}`,
-                          step.id === LAST_STEP_UUID || stepIdx === guide.steps.length - 1 ? `${styles.isDisabled}` : ''
-                        )}
-                        onClick={() => goToStep(stepIdx)}
-                      >
-                        {step.name}
-                      </a>
+                      {allowNavigation ? (
+                        <Link
+                          href={stepLink}
+                          passHref
+                          className={classNames(`${styles.styledAnchor}`, showActive && `${styles.isActive}`, isLastStep ? `${styles.isDisabled}` : '')}
+                        >
+                          {step.name}
+                        </Link>
+                      ) : (
+                        <div className={classNames(`${styles.styledAnchor}`, showActive && `${styles.isActive}`, `${styles.isDisabled}`)}>{step.name}</div>
+                      )}
                     </div>
                   </div>
                 </div>
