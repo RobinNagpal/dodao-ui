@@ -125,6 +125,7 @@ type ByteCollectionByte {
   byteId: String!
   content: String!
   name: String!
+  videoUrl: String
 }
 
 type ByteLinkedinPdfContent {

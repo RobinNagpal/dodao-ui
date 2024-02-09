@@ -35,7 +35,6 @@ function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteI
   }, [byteId]);
 
   const [showAIGenerateModel, setShowAIGenerateModel] = useState(false);
-  console.log('byte:', byte);
 
   return (
     <PageWrapper>

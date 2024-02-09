@@ -4,6 +4,7 @@ fragment ProjectByteCollection on ProjectByteCollection {
     byteId
     name
     content
+    videoUrl
   }
   description
   id
