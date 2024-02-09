@@ -159,14 +159,12 @@ export function useViewGuide(space: Space, uuid: string, stepOrder: number): Use
     const newStepOrder = currentStep.order + 1;
     setActiveStepOrder(newStepOrder);
     history.replaceState(null, '', `/guides/view/${uuid}/${newStepOrder}`);
-    router.replace(`/guides/view/${uuid}/${newStepOrder}`);
   }
 
   function goToPreviousStep(currentStep: GuideStepFragment) {
     const newStepOrder = currentStep.order - 1;
     setActiveStepOrder(newStepOrder);
     history.replaceState(null, '', `/guides/view/${uuid}/${newStepOrder}`);
-    router.replace(`/guides/view/${uuid}/${newStepOrder}`);
   }
 
   function selectAnswer(stepUuid: string, questionUuid: string, selectedAnswers: string[]) {
