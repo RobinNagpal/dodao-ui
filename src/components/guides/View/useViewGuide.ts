@@ -9,18 +9,16 @@ import {
   GuideSubmissionInput,
   GuideUserInputFragment,
   Space,
-  useGuideQueryQuery,
   UserDiscordInfoInput,
   useSubmitGuideMutation,
 } from '@/graphql/generated/generated-types';
-import { useI18 } from '@/hooks/useI18';
 import { isQuestion, isUserDiscordConnect, isUserInput } from '@/types/deprecated/helpers/stepItemTypes';
 import { StepItemSubmissionType } from '@/types/deprecated/models/enums';
 import { GuideSubmissionError } from '@/types/errors/error';
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { useRouter } from 'next/navigation';
 
 export const LAST_STEP_UUID = 'LAST_STEP_UUID';
 
@@ -45,8 +43,9 @@ export interface UseViewGuideHelper {
   setUserDiscord: (stepUuid: string, userDiscordUuid: string, userDiscordId: string) => void;
 }
 
-export function useViewGuide(space: Space, uuid: string, stepOrder: number): UseViewGuideHelper {
-  const { $t: t } = useI18();
+export function useViewGuide(space: Space, fetchedGuide: GuideFragment, stepOrder: number): UseViewGuideHelper {
+  const uuid = fetchedGuide.uuid;
+
   const router = useRouter();
   const { data: session } = useSession();
   const [guide, setGuide] = useState<GuideFragment | null>(null);
@@ -59,8 +58,8 @@ export function useViewGuide(space: Space, uuid: string, stepOrder: number): Use
     isSubmitted: false,
     stepResponsesMap: {},
   });
-  const [activeStepOrder, setActiveStepOrder] = useState<number>(0);
-  const { refetch } = useGuideQueryQuery({ skip: true });
+  const [activeStepOrder, setActiveStepOrder] = useState<number>(stepOrder);
+
   const [submitGuideMutation] = useSubmitGuideMutation();
   const { showNotification } = useNotificationContext();
   function getStepSubmission(stepUuid: string): StepResponse {
@@ -79,11 +78,6 @@ export function useViewGuide(space: Space, uuid: string, stepOrder: number): Use
     return getStepSubmission(stepUuid)?.itemResponsesMap?.[stepItemUuid];
   }
   async function initialize() {
-    setActiveStepOrder(stepOrder);
-    const result = await refetch({ uuid: uuid, spaceId: space.id });
-
-    const fetchedGuide = result.data?.guide!;
-
     setGuide({
       ...fetchedGuide,
       __typename: 'Guide',
