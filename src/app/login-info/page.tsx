@@ -37,7 +37,7 @@ function LoginPage() {
     }
 
     try {
-      const response = await fetch('/api/auth/update-user', {
+      const response = await fetch('/api/auth/updateUser', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
