@@ -18,6 +18,7 @@ export async function PUT(request: Request) {
       where: { username_spaceId: { username: session.username, spaceId: session.spaceId } },
       data: { name: name, email: email, phone_number: phone_number },
     });
+
     return NextResponse.json(updatedUser);
   } catch (error) {
     console.error('Error updating user:', error);
