@@ -161,7 +161,7 @@ export default function TopNav(props: { space?: SpaceWithIntegrationsFragment | 
         const user = await response.json();
         console.log('i am user from client: ', user);
         if (user.name != null && user.email != null && user.phone_number != null) {
-          router.push('/login');
+          router.push('/new-space');
         } else {
           router.push('/login-info');
         }
