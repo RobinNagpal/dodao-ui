@@ -6,6 +6,7 @@ import PageWrapper from '@/components/core/page/PageWrapper';
 import React, { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import ReCAPTCHA from 'react-google-recaptcha';
+import { useNotificationContext } from '@/contexts/NotificationContext';
 
 function LoginPage() {
   const [name, setName] = useState('');
@@ -14,6 +15,8 @@ function LoginPage() {
   const [captcha, setCaptcha] = useState<string | null>('');
   const [updatedUser, setUpdatedUser] = useState(null);
   const { data: session } = useSession();
+  const { showNotification } = useNotificationContext();
+  const captchaRef = React.useRef(null);
 
   const handleNameChange = (value: string | number | undefined) => {
     setName(value as string);
@@ -31,8 +34,13 @@ function LoginPage() {
     const username = session?.username;
     const spaceId = session?.spaceId;
 
+    if (!captcha) {
+      showNotification({ type: 'error', message: 'Please complete the reCAPTCHA to proceed.' });
+      return;
+    }
+
     if (!name.trim() || !email.trim()) {
-      console.error('Name and email cannot be empty');
+      showNotification({ type: 'error', message: 'Name and email cannot be empty' });
       return;
     }
 
@@ -57,6 +65,11 @@ function LoginPage() {
 
       const updatedUser = await response.json();
       setUpdatedUser(updatedUser);
+
+      setName('');
+      setEmail('');
+      setPhone('');
+      setCaptcha(null);
     } catch (error) {
       console.error('Error updating user data:', error);
     }
@@ -71,20 +84,13 @@ function LoginPage() {
           <Input className="mt-4" label="Name" modelValue={name} onUpdate={handleNameChange} />
           <Input label="Email" modelValue={email} onUpdate={handleEmailChange} />
           <Input label="Phone Number" modelValue={phone} onUpdate={handlePhoneChange} />
-          <ReCAPTCHA sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!} onChange={setCaptcha} className="mt-4" />
+          <ReCAPTCHA ref={captchaRef} sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!} onChange={setCaptcha} className="mt-4" />
         </div>
         <div className="flex items-center justify-start gap-x-6">
           <Button variant="contained" primary onClick={handleSave}>
             Save
           </Button>
         </div>
-        {updatedUser && (
-          <div className="mt-4">
-            <p>Name: {updatedUser['name']}</p>
-            <p>Email: {updatedUser['email']}</p>
-            <p>Phone: {updatedUser['phone_number']}</p>
-          </div>
-        )}
       </div>
     </PageWrapper>
   );
