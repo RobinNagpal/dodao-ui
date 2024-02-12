@@ -178,6 +178,7 @@ export function editByteCommonFunctions(setByte: (value: ((prevState: EditByteTy
       admins: byte.admins,
       tags: byte.tags,
       priority: byte.priority,
+      videoUrl: byte.videoUrl,
     };
   }
 

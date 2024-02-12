@@ -108,6 +108,7 @@ type Byte {
   showIncorrectOnCompletion: Boolean!
   steps: [ByteStep!]!
   tags: [String!]!
+  videoUrl: String
 }
 
 type ByteCollection {
@@ -116,7 +117,6 @@ type ByteCollection {
   description: String!
   id: ID!
   name: String!
-  order: Int
   priority: Int!
   status: String!
 }
@@ -125,6 +125,7 @@ type ByteCollectionByte {
   byteId: String!
   content: String!
   name: String!
+  videoUrl: String
 }
 
 type ByteLinkedinPdfContent {
@@ -335,7 +336,6 @@ input CreateByteCollectionInput {
   byteIds: [String!]!
   description: String!
   name: String!
-  order: Int
   priority: Int!
   spaceId: String!
   status: String!
@@ -1186,6 +1186,7 @@ type ProjectByte {
   seoMeta: SEOMeta
   steps: [ByteStep!]!
   tags: [String!]!
+  videoUrl: String
 }
 
 type ProjectByteCollection {
@@ -1195,7 +1196,6 @@ type ProjectByteCollection {
   description: String!
   id: String!
   name: String!
-  order: Int
   priority: Int!
   seoMeta: SEOMeta
   status: String!
@@ -1611,7 +1611,6 @@ input UpdateByteCollectionInput {
   byteIds: [String!]!
   description: String!
   name: String!
-  order: Int
   priority: Int!
   spaceId: String!
   status: String!
@@ -1685,6 +1684,7 @@ input UpsertByteInput {
   steps: [ByteStepInput!]!
   tags: [String!]!
   thumbnail: String
+  videoUrl: String
 }
 
 input UpsertByteSocialShareInput {
@@ -1755,7 +1755,6 @@ input UpsertProjectByteCollectionInput {
   description: String!
   id: String!
   name: String!
-  order: Int
   priority: Int!
   projectId: String!
   seoMeta: SEOMetaInput
@@ -1773,6 +1772,7 @@ input UpsertProjectByteInput {
   steps: [ByteStepInput!]!
   tags: [String!]!
   thumbnail: String
+  videoUrl: String
 }
 
 input UpsertProjectInput {

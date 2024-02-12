@@ -69,6 +69,7 @@ fragment ByteDetailsFragment on Byte {
   admins
   tags
   priority
+  videoUrl
   steps {
     content
     stepItems {
@@ -110,6 +111,7 @@ fragment ByteSummary on Byte {
   admins
   tags
   priority
+  videoUrl
 }
 
 query QueryBytes($spaceId: String!) {
