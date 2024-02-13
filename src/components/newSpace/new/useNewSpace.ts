@@ -2,8 +2,6 @@ import { useNotificationContext } from '@/contexts/NotificationContext';
 import { UpsertSpaceInput, useCreateSpaceMutation } from '@/graphql/generated/generated-types';
 import { useState } from 'react';
 
-
-
 export type UseEditSpaceHelper = {
   setSpaceIntegrationField: (field: keyof UpsertSpaceInput['spaceIntegrations'], value: any) => void;
   setSpaceField: (field: keyof UpsertSpaceInput, value: any) => void;
@@ -39,7 +37,6 @@ export default function useCreateSpace(): UseEditSpaceHelper {
   });
 
   const [upserting, setUpserting] = useState(false);
-
 
   const [createSpaceMutation] = useCreateSpaceMutation();
 
