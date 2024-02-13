@@ -6,6 +6,7 @@ fragment ProjectByte on ProjectByte {
   name
   postSubmissionStepContent
   priority
+  videoUrl
   steps {
     content
     stepItems {

@@ -9,6 +9,7 @@ fragment ByteCollection on ByteCollection {
     byteId
     name
     content
+    videoUrl
   }
 }
 

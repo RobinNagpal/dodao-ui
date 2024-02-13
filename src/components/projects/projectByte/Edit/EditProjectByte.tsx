@@ -81,6 +81,15 @@ export default function EditProjectByte(props: { space: SpaceWithIntegrationsFra
                   Excerpt *
                 </Input>
 
+                <Input
+                  modelValue={byte.videoUrl}
+                  placeholder="byte.create.videoUrl"
+                  maxLength={1024}
+                  onUpdate={(e) => updateByteFunctions.updateByteField('videoUrl', e)}
+                >
+                  Video URL
+                </Input>
+
                 <TextareaArray
                   label="Admins"
                   id="admins"

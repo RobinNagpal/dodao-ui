@@ -7,6 +7,8 @@ import ArrowTopRightOnSquareIcon from '@heroicons/react/24/outline/ArrowTopRight
 import Link from 'next/link';
 import React from 'react';
 import styles from './ByteCollectionsCard.module.scss';
+import FullScreenModal from '@/components/core/modals/FullScreenModal';
+import PlayCircleIcon from '@heroicons/react/24/outline/PlayCircleIcon';
 
 interface ByteCollectionCardProps {
   isEditingAllowed?: boolean;
@@ -17,6 +19,8 @@ interface ByteCollectionCardProps {
 }
 
 export default function ByteCollectionsCard({ byteCollection, isEditingAllowed = true, project, byteCollectionType, space }: ByteCollectionCardProps) {
+  const [watchVideo, setWatchVideo] = React.useState<boolean>(false);
+
   return (
     <>
       <div className={`border border-gray-200 rounded-xl overflow-hidden p-4 w-full max-w-xl ` + styles.cardDiv}>
@@ -33,6 +37,17 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
         <div className="flow-root p-2">
           <ul role="list" className="-mb-8">
             {byteCollection.bytes.map((byte, eventIdx) => {
+              if (watchVideo) {
+                return (
+                  <FullScreenModal key={byte.byteId} title={byte.name} open={true} onClose={() => setWatchVideo(false)} fullWidth={false}>
+                    <div className="flex justify-around">
+                      <div className="relative">
+                        <iframe width="100%" style={{ height: '90vh', width: '100vw' }} src={byte.videoUrl!}></iframe>
+                      </div>
+                    </div>
+                  </FullScreenModal>
+                );
+              }
               const byteViewUrl =
                 byteCollectionType === 'byteCollection'
                   ? `/tidbit-collections/view/${byteCollection.id}/${byte.byteId}`
@@ -49,13 +64,16 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
                         <div className="flex min-w-0 flex-1 justify-between space-x-2 transform hover:scale-95 transition duration-300 ease-in-out">
                           <div className="ml-3 text-sm">
                             <div className="font-bold flex">
-                              {`${byte.name}`} <ArrowTopRightOnSquareIcon className={'h-4 w-4 ml-2 ' + styles.openInPopupIcon} />
+                              {`${byte.name}`} <ArrowTopRightOnSquareIcon className={`h-4 w-4 ml-2 ${styles.openInPopupIcon}`} />
                             </div>
 
                             <div className="flex-wrap">{byte.content}</div>
                           </div>
                         </div>
                       </Link>
+                      {byte?.videoUrl && (
+                        <PlayCircleIcon className={`h-6 w-6 ml-2 ${styles.playVideoIcon} cursor-pointer`} onClick={() => setWatchVideo(true)} />
+                      )}
                     </div>
                   </div>
                 </li>
