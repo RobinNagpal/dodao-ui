@@ -1,37 +1,24 @@
-'use client';
-
-import withSpace, { SpaceProps } from '@/app/withSpace';
-import Block from '@/components/app/Block';
-import RowLoading from '@/components/core/loaders/RowLoading';
-import TimelineSummaryCard from '@/components/timelines/Timelines/TimelineSummaryCard';
-import NoTimeline from '@/components/timelines/Timelines/NoTimelines';
-import { Grid4Cols } from '@/components/core/grids/Grid4Cols';
 import PageWrapper from '@/components/core/page/PageWrapper';
-import { useTimelinesQuery } from '@/graphql/generated/generated-types';
 import React from 'react';
+import TimelinesInformation from './TimelinesGrid.';
+import { Metadata } from 'next';
+import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
 
-function Timeline({ space }: SpaceProps) {
-  const { data, error, loading, refetch: fetchTimelines } = useTimelinesQuery({ variables: { spaceId: space.id } });
+export async function generateMetadata(): Promise<Metadata> {
+  const space = (await getSpaceServerSide())!;
+  return {
+    title: 'Timelines',
+    description: `Timelines about new updates on ${space.name}`,
+    keywords: [],
+  };
+}
 
-  const loadingData = loading || !space;
+function Timeline() {
   return (
     <PageWrapper>
-      {!data?.timelines.length && !loadingData && <NoTimeline />}
-      {!!data?.timelines?.length && (
-        <Grid4Cols>
-          {data?.timelines?.map((timeline, i) => (
-            <TimelineSummaryCard key={i} timeline={timeline} />
-          ))}
-        </Grid4Cols>
-      )}
-      <div style={{ height: '10px', width: '10px', position: 'absolute' }} />
-      {loadingData && (
-        <Block slim={true}>
-          <RowLoading className="my-2" />
-        </Block>
-      )}
+      <TimelinesInformation />
     </PageWrapper>
   );
 }
 
-export default withSpace(Timeline);
+export default Timeline;

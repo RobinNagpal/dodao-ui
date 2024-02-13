@@ -81,6 +81,15 @@ function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteI
                   onUpdate={(e) => updateByteFunctions.updateByteField('admins', e)}
                 />
 
+                <Input
+                  modelValue={byte.videoUrl}
+                  placeholder="byte.create.videoURL"
+                  maxLength={1024}
+                  onUpdate={(e) => updateByteFunctions.updateByteField('videoUrl', e)}
+                >
+                  Video URL
+                </Input>
+
                 <TextareaArray
                   label="Tags"
                   id="tags"

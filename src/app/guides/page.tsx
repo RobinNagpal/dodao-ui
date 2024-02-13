@@ -8,9 +8,20 @@ import { PublishStatus } from '@/types/deprecated/models/enums';
 import getApiResponse from '@/utils/api/getApiResponse';
 import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
 import sortBy from 'lodash/sortBy';
+import { Metadata } from 'next';
 import React from 'react';
 
-async function Guides({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined } }) {
+type GuidesProps = {
+  searchParams: { [key: string]: string | string[] | undefined };
+};
+
+export const metadata: Metadata = {
+  title: 'Guides',
+  description: 'Guides about different Blockchain concepts.',
+  keywords: [],
+};
+
+async function Guides({ searchParams }: GuidesProps) {
   const space = (await getSpaceServerSide())!;
 
   const allGuides = await getApiResponse<GuideSummaryFragment[]>(space, 'guides');

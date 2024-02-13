@@ -32,24 +32,26 @@ NEXTAUTH_SECRET=
 DODAO_AUTH_SECRET=
 ```
 
-2. Generate graphql files
+2. Adjust the DATABASE_URL accordingly, you can find the port number from postgresql.conf file
+
+3. Generate graphql files
 
    `yarn graphql:generate`
 
-3. Generate prisma files
+4. Generate prisma files
 
    `npx prisma generate`
 
-4. Run Database: We run databse in a docker container. For that we use docker compose. To run it, open a new terminal
+5. Run Database: We run databse in a docker container. For that we use docker compose. To run it, open a new terminal
    and run docker-compose up. Make sure to keep that terminal running
 
    `docker-compose up`
 
-5. Generate database tables
+6. Generate database tables
 
    `npx prisma db push`
 
-6. Make sure tables are created. Install a postgres client and make sure a new DB is created `next_app_localhost_db` and
+7. Make sure tables are created. Install a postgres client and make sure a new DB is created `next_app_localhost_db` and
    tables are also created in it.
 
 ## Run the code
