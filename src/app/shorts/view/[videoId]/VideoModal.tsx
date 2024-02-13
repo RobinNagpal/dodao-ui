@@ -1,8 +1,11 @@
-import Shorts from '@/components/shortVideos/View/Shorts';
-import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
+'use client';
 
-const MainShortsComponent = async () => {
-  const space = (await getSpaceServerSide())!;
+import ViewShortVideoModal from '@/components/shortVideos/View/ViewShortVideoModal';
+import { useRouter } from 'next/navigation';
+import React from 'react';
+
+export default function VideoModal({ params }: { params: { videoId: string } }) {
+  const router = useRouter();
   const videos = [
     {
       id: '23b50a5c-4648-4406-8b7b-62c315abf16b',
@@ -28,7 +31,14 @@ const MainShortsComponent = async () => {
     },
   ];
 
-  return <Shorts shortVideos={videos} />;
-};
-
-export default MainShortsComponent;
+  return (
+    <ViewShortVideoModal
+      initialSlide={videos.findIndex((video) => video.id === params.videoId)}
+      videos={videos}
+      onClose={() => router.push('/shorts')}
+      onShowEditModal={() => {
+        router.push(`/shorts/edit/${params.videoId}`);
+      }}
+    />
+  );
+}
