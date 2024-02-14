@@ -16,6 +16,8 @@ const UnsplashReact: React.ComponentType<any> = dynamic(() => import('unsplash-r
   ssr: false, // Disable server-side rendering for this component
 });
 
+const InsertIntoApplicationUploader = dynamic(() => import('unsplash-react').then((mod) => ({ default: mod.InsertIntoApplicationUploader })));
+
 const UploadWrapper = styled.div`
   background-color: var(--bg-color);
   color: var(--text-color);
@@ -66,7 +68,6 @@ export default function UploadInput({
     setUnsplashImage(true);
   }
 
-  const { InsertIntoApplicationUploader } = UnsplashReact as any;
   return (
     <UploadWrapper className="mt-2">
       <label htmlFor={inputId} className="block text-sm font-medium leading-6">
