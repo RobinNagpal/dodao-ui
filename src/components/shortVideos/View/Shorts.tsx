@@ -4,19 +4,20 @@ import { ProjectShortVideo, ShortVideo } from '@/graphql/generated/generated-typ
 import Image from 'next/image';
 import Link from 'next/link';
 import styles from './Shorts.module.scss';
+import blurDataURL from './BlurDataUrl';
 
 function ShortsThumbnail({ shortVideo }: { shortVideo: ShortVideo | ProjectShortVideo }) {
   const { thumbnail, title } = shortVideo;
   return (
     <Link href={`/shorts/view/${shortVideo.id}`} className="p-2 min-w-0 flex">
       <div className={styles.imageWrapper}>
-        <div className="relative">
+        <div className={'relative ' + styles.innerDiv}>
           <Image
             alt={title}
             src={thumbnail}
-            className={'rounded-lg ' + styles.imageDiv}
+            className="rounded-lg absolute top-0 left-0 w-full h-full"
             placeholder="blur"
-            blurDataURL={thumbnail}
+            blurDataURL={blurDataURL}
             fill={true}
             sizes="(max-width: 640px) 100vw, (max-width: 768px) 80vw, 250px"
           />
