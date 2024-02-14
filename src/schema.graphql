@@ -1281,6 +1281,7 @@ type Query {
   route53Records: [Route53Record!]!
   scrapedUrlInfos(spaceId: String!, websiteScrapingInfoId: String!): [ScrapedUrlInfo!]!
   searchChatbotFAQs(query: String!, spaceId: String!): [SearchedChatbotFAQ!]!
+  shortVideo(id: String!, spaceId: String!): ShortVideo!
   shortVideos(spaceId: String!): [ShortVideo!]
   simulation(simulationId: String!, spaceId: String!): Simulation!
   simulations(spaceId: String!): [Simulation!]!
