@@ -1,3 +1,7 @@
+'use client';
+
+import dynamic from 'next/dynamic';
+
 import React from 'react';
 import FileUploader from '@/components/app/FileUploader';
 import ArrowUpTrayIcon from '@heroicons/react/24/solid/ArrowUpTrayIcon';
@@ -5,8 +9,12 @@ import PhotoIcon from '@heroicons/react/24/solid/PhotoIcon';
 import styled from 'styled-components';
 import { v4 as uuidV4 } from 'uuid';
 import FullPageModal from '../core/modals/FullPageModal';
-import UnsplashReact, { InsertIntoApplicationUploader } from 'unsplash-react';
+
 import Button from '../core/buttons/Button';
+
+const UnsplashReact: React.ComponentType<any> = dynamic(() => import('unsplash-react'), {
+  ssr: false, // Disable server-side rendering for this component
+});
 
 const UploadWrapper = styled.div`
   background-color: var(--bg-color);
@@ -58,6 +66,7 @@ export default function UploadInput({
     setUnsplashImage(true);
   }
 
+  const { InsertIntoApplicationUploader } = UnsplashReact as any;
   return (
     <UploadWrapper className="mt-2">
       <label htmlFor={inputId} className="block text-sm font-medium leading-6">
@@ -120,7 +129,7 @@ export default function UploadInput({
               </Button>
             </div>
             <UnsplashReact
-              accessKey={process.env.NEXT_PUBLIC_UNSPLASH_API_KEY}
+              accessKey={process.env.NEXT_PUBLIC_UNSPLASH_API_KEY as string}
               Uploader={InsertIntoApplicationUploader}
               onFinishedUploading={handleFinishedUploading}
             />
