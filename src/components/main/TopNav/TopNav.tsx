@@ -149,32 +149,33 @@ export default function TopNav(props: { space?: SpaceWithIntegrationsFragment | 
   const superAdmin = session && isSuperAdmin(session as Session);
 
   const checkLoginInfo = async () => {
-    try {
-      const response = await fetch('/api/auth/getUser', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+    router.push('/new-tidbit-site');
+    // try {
+    //   const response = await fetch('/api/auth/getUser', {
+    //     method: 'GET',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //   });
 
-      if (response.ok) {
-        const user = await response.json();
-        console.log('i am user from client: ', user);
-        if (user.name != null && user.email != null && user.phone_number != null) {
-          router.push('/new-space');
-        } else {
-          router.push('/login-info');
-        }
-      } else if (response.status === 401) {
-        console.error('Unauthorized: No session or user not logged in');
-      } else if (response.status === 404) {
-        console.error('User not found');
-      } else {
-        throw new Error('Failed to fetch user info');
-      }
-    } catch (error) {
-      console.error('Failed to check user info:', error);
-    }
+    //   if (response.ok) {
+    //     const user = await response.json();
+    //     console.log('i am user from client: ', user);
+    //     if (user.name != null && user.email != null && user.phone_number != null) {
+    //       router.push('/new-space');
+    //     } else {
+    //       router.push('/login-info');
+    //     }
+    //   } else if (response.status === 401) {
+    //     console.error('Unauthorized: No session or user not logged in');
+    //   } else if (response.status === 404) {
+    //     console.error('User not found');
+    //   } else {
+    //     throw new Error('Failed to fetch user info');
+    //   }
+    // } catch (error) {
+    //   console.error('Failed to check user info:', error);
+    // }
   };
 
   return (
