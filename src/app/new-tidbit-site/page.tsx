@@ -4,8 +4,8 @@ import React, { useState } from 'react';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import StepperItem from '@/utils/stepper/Stepper';
 import Button from '@/components/core/buttons/Button';
-import NewSiteInformation from './component/newSiteInformation';
 import LoginInformation from './component/LoginInformation';
+import NewSiteInformation from './component/NewSiteInformation';
 
 type Step = {
   id: string;
