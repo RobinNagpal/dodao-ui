@@ -21,9 +21,9 @@ export default function NewSiteInformation() {
   }
   return (
     <>
-      <div className="space-y-12 text-left p-6">
-        <div className="border-b pb-12">
-          <h2 className="text-base font-semibold leading-7">Edit Space</h2>
+      <div className="space-y-12 text-left mt-8">
+        <div className="pb-12">
+          <h2 className="text-lg font-bold leading-7">Edit Space</h2>
           <p className="mt-1 text-sm leading-6">Update the details of Space</p>
 
           <Input label="Id" modelValue={space.id} onUpdate={(value) => setSpaceField('id', value?.toString() || '')} />
@@ -110,10 +110,11 @@ export default function NewSiteInformation() {
         </div>
       </div>
 
-      <div className="p-6 flex items-center justify-start gap-x-6">
+      <div className="flex items-center justify-start gap-x-6">
         <Button
           variant="contained"
           primary
+          removeBorder={true}
           loading={upserting}
           disabled={uploadThumbnailLoading || upserting}
           onClick={async () => {
