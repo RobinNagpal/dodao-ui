@@ -1,7 +1,6 @@
 interface Step {
   id: string;
   name: string;
-  href: string;
   status: 'complete' | 'current' | 'upcoming';
 }
 
@@ -12,8 +11,7 @@ interface StepperItemProps {
 const StepperItem: React.FC<StepperItemProps> = ({ step }) => {
   return (
     <li className="md:flex-1">
-      <a
-        href={step.href}
+      <span
         className={`group flex flex-col ${
           step.status === 'complete'
             ? 'border-indigo-600 hover:border-indigo-800'
@@ -35,7 +33,7 @@ const StepperItem: React.FC<StepperItemProps> = ({ step }) => {
           {step.id}
         </span>
         <span className="text-sm font-medium">{step.name}</span>
-      </a>
+      </span>
     </li>
   );
 };
