@@ -10,13 +10,14 @@ import NewSiteInformation from './component/NewSiteInformation';
 type Step = {
   id: string;
   name: string;
+  href: string;
   status: 'complete' | 'current' | 'upcoming';
 };
 
 const initialSteps: Step[] = [
-  { id: 'Step 1', name: 'Login Details', status: 'current' },
-  { id: 'Step 2', name: 'Tidbit Site Details', status: 'upcoming' },
-  { id: 'Step 3', name: 'Final Configuration', status: 'upcoming' },
+  { id: 'Step 1', name: 'Login Details', href: '#', status: 'current' },
+  { id: 'Step 2', name: 'Tidbit Site Details', href: '#', status: 'upcoming' },
+  { id: 'Step 3', name: 'Final Configuration', href: '#', status: 'upcoming' },
 ];
 
 export default function NewTidbitSite() {
@@ -67,7 +68,6 @@ export default function NewTidbitSite() {
         return null;
     }
   };
-
   return (
     <PageWrapper>
       <nav aria-label="Progress">
@@ -77,6 +77,7 @@ export default function NewTidbitSite() {
           ))}
         </ol>
       </nav>
+
       {getStepContent(currentStepId)}
       {currentStepId !== 'Step 1' && (
         <Button onClick={goToPreviousStep} variant="outlined" className="mt-4">
