@@ -2,7 +2,7 @@
 
 import Button from '@/components/core/buttons/Button';
 import Input from '@/components/core/input/Input';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { useNotificationContext } from '@/contexts/NotificationContext';
@@ -41,8 +41,8 @@ export default function LoginInfo({ onSuccessfulSave }: LoginInformationProps) {
       return;
     }
 
-    if (!name.trim() || !email.trim()) {
-      showNotification({ type: 'error', message: 'Name and email cannot be empty' });
+    if (!name.trim() || !email.trim() || !phone.trim()) {
+      showNotification({ type: 'error', message: 'Name, email and phone number cannot be empty' });
       return;
     }
 
@@ -74,6 +74,32 @@ export default function LoginInfo({ onSuccessfulSave }: LoginInformationProps) {
     }
   };
 
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const response = await fetch('/api/auth/getUser', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        if (!response.ok) {
+          throw new Error('Failed to fetch user data');
+        }
+        const userData = await response.json();
+        if (userData) {
+          setName(userData.name || '');
+          setEmail(userData.email || '');
+          setPhone(userData.phone_number || '');
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    fetchUserInfo();
+  }, []);
+
   return (
     <div className="space-y-12 text-left mt-8">
       <div>
@@ -85,7 +111,7 @@ export default function LoginInfo({ onSuccessfulSave }: LoginInformationProps) {
         <ReCAPTCHA ref={captchaRef} sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!} onChange={setCaptcha} className="mt-4" />
       </div>
       <div className="flex items-center justify-start gap-x-6">
-        <Button variant="contained" primary onClick={handleSave}>
+        <Button variant="contained" primary onClick={handleSave} disabled={!captcha}>
           Save
         </Button>
       </div>
