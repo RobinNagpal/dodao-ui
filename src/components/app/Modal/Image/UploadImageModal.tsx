@@ -28,6 +28,7 @@ export default function UploadImageModal(props: UploadImageModalProps) {
             setImageURL(url);
           }}
           onLoading={() => {}}
+          imageUploaded={imageUploaded}
         />
         <div className="mt-4">
           <Button onClick={onClose}>Cancel</Button>
