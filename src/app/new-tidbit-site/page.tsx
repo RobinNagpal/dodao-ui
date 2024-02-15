@@ -4,8 +4,8 @@ import React, { useState } from 'react';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import StepperItem from '@/utils/stepper/Stepper';
 import Button from '@/components/core/buttons/Button';
-import LoginInfo from './component/loginInfo';
 import NewSiteInformation from './component/newSiteInformation';
+import LoginInformation from './component/LoginInformation';
 
 type Step = {
   id: string;
@@ -60,7 +60,7 @@ export default function NewTidbitSite() {
   const getStepContent = (stepId: string) => {
     switch (stepId) {
       case 'Step 1':
-        return <LoginInfo onSuccessfulSave={goToNextStep} />;
+        return <LoginInformation onSuccessfulSave={goToNextStep} />;
       case 'Step 2':
         return <NewSiteInformation />;
       default:
