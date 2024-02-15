@@ -44,6 +44,7 @@ interface UploadInputProps {
   allowedFileTypes?: string[];
   error?: any;
   helpText?: string;
+  imageUploaded?: (url: string) => void;
 }
 
 export default function UploadInput({
@@ -58,6 +59,7 @@ export default function UploadInput({
   allowedFileTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/svg+xml', 'image/svg+xml'],
   error,
   helpText,
+  imageUploaded,
 }: UploadInputProps) {
   const inputId = uuidV4();
   const [uploadFromUnsplash, setUploadFromUnsplash] = React.useState(false);
@@ -99,7 +101,7 @@ export default function UploadInput({
         >
           <div className="flex">
             <ArrowUpTrayIcon className="-ml-0.5 h-5 w-5 text-gray-400" aria-hidden="true" />
-            <span className="mx-2">Upload from computer</span>
+            <span className="mx-2">Upload from Device</span>
           </div>
         </FileUploader>
         <div
@@ -114,7 +116,7 @@ export default function UploadInput({
       {typeof error === 'string' && <p className="mt-2 text-sm text-left text-red-600">{error}</p>}
       {uploadFromUnsplash && (
         <FullPageModal open={uploadFromUnsplash} onClose={() => setUploadFromUnsplash(false)} title={'Upload Image from Unsplash'}>
-          <div className="h-[80vh]">
+          <div className="h-[80vh] p-4">
             <div className="flex justify-end">
               <Button
                 disabled={!unsplashImage}
@@ -123,6 +125,7 @@ export default function UploadInput({
                 onClick={() => {
                   setUploadFromUnsplash(false);
                   setUnsplashImage(false);
+                  imageUploaded!(modelValue as string);
                 }}
                 className="mr-4 mt-2"
               >
