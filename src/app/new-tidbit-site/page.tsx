@@ -1,20 +1,73 @@
+'use client';
+
+import React, { useState } from 'react';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import StepperItem from '@/utils/stepper/Stepper';
+import Button from '@/components/core/buttons/Button';
+import LoginInfo from './component/loginInfo';
+import NewSiteInformation from './component/newSiteInformation';
 
 type Step = {
   id: string;
   name: string;
-  href: string;
   status: 'complete' | 'current' | 'upcoming';
 };
 
-const steps: Step[] = [
-  { id: 'Step 1', name: 'Job details', href: '#', status: 'complete' },
-  { id: 'Step 2', name: 'Application form', href: '#', status: 'current' },
-  { id: 'Step 3', name: 'Preview', href: '#', status: 'upcoming' },
+const initialSteps: Step[] = [
+  { id: 'Step 1', name: 'Login Details', status: 'current' },
+  { id: 'Step 2', name: 'Tidbit Site Details', status: 'upcoming' },
+  { id: 'Step 3', name: 'Final Configuration', status: 'upcoming' },
 ];
 
-export default function MyFunction() {
+export default function NewTidbitSite() {
+  const [steps, setSteps] = useState<Step[]>(initialSteps);
+  const [currentStepId, setCurrentStepId] = useState('Step 1');
+
+  const goToNextStep = () => {
+    const nextStepIndex = steps.findIndex((step) => step.id === currentStepId) + 1;
+    if (nextStepIndex < steps.length) {
+      const newSteps: Step[] = steps.map((step, index) => {
+        if (index === nextStepIndex - 1) {
+          return { ...step, status: 'complete' };
+        } else if (index === nextStepIndex) {
+          return { ...step, status: 'current' };
+        }
+        return step;
+      });
+
+      setSteps(newSteps);
+      setCurrentStepId(steps[nextStepIndex].id);
+    }
+  };
+
+  const goToPreviousStep = () => {
+    const prevStepIndex = steps.findIndex((step) => step.id === currentStepId) - 1;
+    if (prevStepIndex >= 0) {
+      const newSteps: Step[] = steps.map((step, index) => {
+        if (index === prevStepIndex) {
+          return { ...step, status: 'current' };
+        } else if (index === prevStepIndex + 1) {
+          return { ...step, status: 'upcoming' };
+        }
+        return step;
+      });
+
+      setSteps(newSteps);
+      setCurrentStepId(steps[prevStepIndex].id);
+    }
+  };
+
+  const getStepContent = (stepId: string) => {
+    switch (stepId) {
+      case 'Step 1':
+        return <LoginInfo onSuccessfulSave={goToNextStep} />;
+      case 'Step 2':
+        return <NewSiteInformation />;
+      default:
+        return null;
+    }
+  };
+
   return (
     <PageWrapper>
       <nav aria-label="Progress">
@@ -24,6 +77,12 @@ export default function MyFunction() {
           ))}
         </ol>
       </nav>
+      {getStepContent(currentStepId)}
+      {currentStepId !== 'Step 1' && (
+        <Button onClick={goToPreviousStep} variant="outlined" className="mt-4">
+          Previous
+        </Button>
+      )}
     </PageWrapper>
   );
 }
