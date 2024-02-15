@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { useNotificationContext } from '@/contexts/NotificationContext';
+import { isEmpty } from 'lodash';
 
 interface LoginInformationProps {
   onSuccessfulSave: () => void;
@@ -111,7 +112,7 @@ export default function LoginInfo({ onSuccessfulSave }: LoginInformationProps) {
         <ReCAPTCHA ref={captchaRef} sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!} onChange={setCaptcha} className="mt-4" />
       </div>
       <div className="flex items-center justify-start gap-x-6">
-        <Button variant="contained" primary onClick={handleSave} disabled={!captcha}>
+        <Button variant="contained" primary onClick={handleSave} disabled={!captcha || isEmpty(name) || isEmpty(email) || isEmpty(phone)}>
           Save
         </Button>
       </div>
