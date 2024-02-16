@@ -8,7 +8,7 @@ import { useState } from 'react';
 
 export default function NewSiteInformation() {
   const editSpaceHelper = useCreateSpace();
-  const { space, setSpaceField, setSpaceIntegrationField, upsertSpace, upserting } = editSpaceHelper;
+  const { space, setSpaceField, upsertSpace, upserting } = editSpaceHelper;
   const [uploadThumbnailLoading, setUploadThumbnailLoading] = useState(false);
   function inputError(avatar: string) {
     return null;
