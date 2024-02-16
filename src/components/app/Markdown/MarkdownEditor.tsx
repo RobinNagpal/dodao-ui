@@ -34,6 +34,7 @@ interface MarkdownEditorProps extends PropsWithChildren {
   label?: React.ReactNode;
   info?: React.ReactNode;
   className?: string;
+  byteStepName?: string;
 }
 
 const MainDiv = styled.div`
@@ -131,6 +132,7 @@ function MarkdownEditor({
   imageType,
   placeholder = '',
   modelValue = '',
+  byteStepName = '',
   error,
   editorClass,
   editorStyles,
@@ -245,6 +247,8 @@ function MarkdownEditor({
           imageType={imageType}
           objectId={objectId}
           spaceId={spaceId}
+          name={byteStepName}
+          content={modelValue}
           imageUploaded={(imageUrl) => {
             handleInputContent(
               modelValue +

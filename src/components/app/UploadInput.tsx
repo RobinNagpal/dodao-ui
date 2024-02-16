@@ -45,6 +45,8 @@ interface UploadInputProps {
   allowedFileTypes?: string[];
   error?: any;
   helpText?: string;
+  name?: string;
+  content?: string;
   imageUploaded?: (url: string) => void;
 }
 
@@ -61,6 +63,8 @@ export default function UploadInput({
   error,
   helpText,
   imageUploaded,
+  name,
+  content,
 }: UploadInputProps) {
   const inputId = uuidV4();
   const [uploadFromUnsplash, setUploadFromUnsplash] = React.useState(false);
@@ -152,7 +156,7 @@ export default function UploadInput({
       {generateFromDALLE && (
         <FullPageModal open={generateFromDALLE} onClose={() => setGenerateFromDALLE(false)} title={'Generate Image using DALL·E'}>
           <div className="h-[80vh] p-4 overflow-y-scroll">
-            <GenerateImage imageUploaded={imageUploaded} />
+            <GenerateImage imageUploaded={imageUploaded} topic={name} content={content} />
           </div>
         </FullPageModal>
       )}

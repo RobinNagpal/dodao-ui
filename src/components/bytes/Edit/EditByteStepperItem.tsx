@@ -354,6 +354,7 @@ export default function EditByteStepperItem({
         <MarkdownEditor
           id={step.uuid}
           modelValue={step.content}
+          byteStepName={step.name}
           placeholder={'Contents'}
           onUpdate={updateStepContent}
           spaceId={space.id}
