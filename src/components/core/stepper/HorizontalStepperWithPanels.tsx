@@ -1,11 +1,10 @@
 'use client';
 
-import PageWrapper from '@/components/core/page/PageWrapper';
 import classNames from '@/utils/classNames';
-import Link from 'next/link';
-import styled from 'styled-components';
 
 import { CheckIcon } from '@heroicons/react/24/solid';
+import Link from 'next/link';
+import styled from 'styled-components';
 
 const StyledNav = styled.nav`
   a {

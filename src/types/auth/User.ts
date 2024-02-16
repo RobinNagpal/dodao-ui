@@ -3,6 +3,7 @@ export interface User {
   name?: string | null;
   email?: string | null;
   emailVerified?: Date | null;
+  phoneNumber?: string | null;
   image?: string | null;
   publicAddress?: string | null;
   spaceId: string;
