@@ -63,5 +63,5 @@ export default function ProjectShortVideosGrid({ space, project }: ProjectShortV
     );
   }
 
-  return <Shorts onThumbnailClick={handleThumbnailClick} shortVideos={queryResponse?.projectShortVideos || []} />;
+  return <Shorts shortVideos={queryResponse?.projectShortVideos || []} />;
 }
