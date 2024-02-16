@@ -21,6 +21,10 @@ depicts DETAILS. Strictly ensure the following rules while generating the descri
 - The image should be visually appealing, avoiding overly bright or clashing colours.
 `;
 
+interface GenerateImageProps {
+  imageUploaded?: (url: string) => void;
+}
+
 interface GenerateImageForm {
   numberOfImages: number;
   contents: string;
@@ -39,7 +43,7 @@ ${form.openAIPrompt}
 `;
 }
 
-export default function GenerateImage() {
+export default function GenerateImage({ imageUploaded }: GenerateImageProps) {
   const generateImagesForm = localStorage.getItem('generate_images_form');
 
   const [form, setForm] = useState<GenerateImageForm>(
@@ -85,6 +89,11 @@ export default function GenerateImage() {
   const [generateImageMutation] = useGenerateImageMutation();
   const [imageUrls, setImageUrls] = useState<string[]>([]);
   const { showNotification } = useNotificationContext();
+  const [selectedImageUrl, setSelectedImageUrl] = useState<string>();
+
+  const handleImageClick = (imageUrl: string) => {
+    setSelectedImageUrl(imageUrl);
+  };
 
   const [askChatCompletionAiMutation] = useAskChatCompletionAiMutation();
   async function generateImage(prompt: string): Promise<string | undefined> {
@@ -216,12 +225,33 @@ export default function GenerateImage() {
         </>
       )}
       {imageUrls.length > 0 && (
-        <div className="w-full flex justify-start my-4">
-          {imageUrls.map((imageUrl) => (
-            <div className="mx-2" key={imageUrl}>
-              <img src={imageUrl} alt={'generated image'} width={512} />
-            </div>
-          ))}
+        <div className="flex flex-col">
+          <div className="w-full flex justify-start my-4">
+            {imageUrls.map((imageUrl) => (
+              <div className="mx-2" key={imageUrl} onClick={() => handleImageClick(imageUrl)}>
+                <img
+                  src={imageUrl}
+                  alt="generated image"
+                  width={256}
+                  height={256}
+                  className={`hover:border-2 hover:border-blue-300 ${
+                    selectedImageUrl === imageUrl ? 'border-2 border-neutral-500' : ''
+                  } transition-all duration-300 cursor-pointer`}
+                />
+              </div>
+            ))}
+          </div>
+          <Button
+            disabled={!selectedImageUrl}
+            variant="contained"
+            primary
+            onClick={() => {
+              imageUploaded!(selectedImageUrl as string);
+            }}
+            className="mr-4 mt-2 self-start"
+          >
+            Done
+          </Button>
         </div>
       )}
     </div>

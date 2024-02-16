@@ -11,6 +11,7 @@ import { v4 as uuidV4 } from 'uuid';
 import FullPageModal from '../core/modals/FullPageModal';
 
 import Button from '../core/buttons/Button';
+import GenerateImage from '../spaces/Image/GenerateImage';
 
 const UnsplashReact: React.ComponentType<any> = dynamic(() => import('unsplash-react'), {
   ssr: false, // Disable server-side rendering for this component
@@ -64,6 +65,7 @@ export default function UploadInput({
   const inputId = uuidV4();
   const [uploadFromUnsplash, setUploadFromUnsplash] = React.useState(false);
   const [unsplashImage, setUnsplashImage] = React.useState<boolean>(false);
+  const [generateFromDALLE, setGenerateFromDALLE] = React.useState(false);
 
   function handleFinishedUploading(imageUrl: string): void {
     onInput(imageUrl);
@@ -75,7 +77,7 @@ export default function UploadInput({
       <label htmlFor={inputId} className="block text-sm font-medium leading-6">
         {label || 'Image URL'}
       </label>
-      <div className="mt-2 flex rounded-md shadow-sm">
+      <div className="flex flex-col sm:flex-row mt-2 rounded-md shadow-sm">
         <div className="relative flex flex-grow items-stretch focus-within:z-10">
           <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
             <PhotoIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
@@ -111,6 +113,13 @@ export default function UploadInput({
           <PhotoIcon className="-ml-0.5 h-5 w-5 text-gray-400" aria-hidden="true" />
           <span className="mx-2">Upload from Unsplash</span>
         </div>
+        <div
+          className="relative -ml-px inline-flex items-center gap-x-1.5 rounded-r-md px-3 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 hover:bg-gray-50 cursor-pointer ml-2"
+          onClick={() => setGenerateFromDALLE(true)}
+        >
+          <PhotoIcon className="-ml-0.5 h-5 w-5 text-gray-400" aria-hidden="true" />
+          <span className="mx-2">Generate using DALL·E</span>
+        </div>
       </div>
       {helpText && <p className="ml-1 mt-2 mb-2 text-sm">{helpText}</p>}
       {typeof error === 'string' && <p className="mt-2 text-sm text-left text-red-600">{error}</p>}
@@ -137,6 +146,13 @@ export default function UploadInput({
               Uploader={InsertIntoApplicationUploader}
               onFinishedUploading={handleFinishedUploading}
             />
+          </div>
+        </FullPageModal>
+      )}
+      {generateFromDALLE && (
+        <FullPageModal open={generateFromDALLE} onClose={() => setGenerateFromDALLE(false)} title={'Generate Image using DALL·E'}>
+          <div className="h-[80vh] p-4 overflow-y-scroll">
+            <GenerateImage imageUploaded={imageUploaded} />
           </div>
         </FullPageModal>
       )}
