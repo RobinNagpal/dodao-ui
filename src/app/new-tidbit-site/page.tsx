@@ -2,10 +2,10 @@
 
 import React, { useState } from 'react';
 import PageWrapper from '@/components/core/page/PageWrapper';
-import StepperItem from '@/components/core/stepper/HorizontalStepperSimple';
 import Button from '@/components/core/buttons/Button';
 import LoginInformation from './component/LoginInformation';
 import NewSiteInformation from './component/NewSiteInformation';
+import HorizontalStepperSimple from '@/components/core/stepper/HorizontalStepperSimple';
 
 type Step = {
   id: string;
@@ -69,14 +69,7 @@ export default function NewTidbitSite() {
   };
   return (
     <PageWrapper>
-      <nav aria-label="Progress">
-        <ol role="list" className="space-y-4 md:flex md:space-x-8 md:space-y-0">
-          {steps.map((step) => (
-            <StepperItem key={step.id} step={step} />
-          ))}
-        </ol>
-      </nav>
-
+      <HorizontalStepperSimple steps={steps} />
       {getStepContent(currentStepId)}
       {currentStepId !== 'Step 1' && (
         <Button onClick={goToPreviousStep} variant="outlined" className="mt-4">
