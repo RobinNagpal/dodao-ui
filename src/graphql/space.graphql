@@ -19,6 +19,7 @@ fragment SpaceWithIntegrations on Space {
   creator
   features
   name
+  type
   skin
   avatar
   domains
