@@ -48,7 +48,7 @@ export default function LoginInfo({ onSuccessfulSave }: LoginInformationProps) {
     }
 
     try {
-      const response = await fetch('/api/auth/updateUser', {
+      const response = await fetch('/api/auth/user', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -78,7 +78,7 @@ export default function LoginInfo({ onSuccessfulSave }: LoginInformationProps) {
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        const response = await fetch('/api/auth/getUser', {
+        const response = await fetch('/api/auth/user', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
