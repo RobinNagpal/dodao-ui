@@ -1973,6 +1973,7 @@ export interface Query {
   route53Records: Array<Route53Record>;
   scrapedUrlInfos: Array<ScrapedUrlInfo>;
   searchChatbotFAQs: Array<SearchedChatbotFaq>;
+  shortVideo: ShortVideo;
   shortVideos?: Maybe<Array<ShortVideo>>;
   simulation: Simulation;
   simulations: Array<Simulation>;
@@ -2213,6 +2214,12 @@ export interface QueryScrapedUrlInfosArgs {
 
 export interface QuerySearchChatbotFaQsArgs {
   query: Scalars['String'];
+  spaceId: Scalars['String'];
+}
+
+
+export interface QueryShortVideoArgs {
+  id: Scalars['String'];
   spaceId: Scalars['String'];
 }
 
@@ -4069,6 +4076,14 @@ export type ShortVideosQueryVariables = Exact<{
 
 
 export type ShortVideosQuery = { __typename?: 'Query', shortVideos?: Array<{ __typename?: 'ShortVideo', id: string, title: string, description: string, thumbnail: string, videoUrl: string, priority: number, createdAt: string, updatedAt: string }> | null };
+
+export type ShortVideoQueryVariables = Exact<{
+  spaceId: Scalars['String'];
+  id: Scalars['String'];
+}>;
+
+
+export type ShortVideoQuery = { __typename?: 'Query', shortVideo: { __typename?: 'ShortVideo', id: string, title: string, description: string, thumbnail: string, videoUrl: string, priority: number, createdAt: string, updatedAt: string } };
 
 export type SimulationStepFragment = { __typename?: 'SimulationStep', content: string, iframeUrl?: string | null, name: string, uuid: string, order: number };
 
@@ -10211,6 +10226,45 @@ export type ShortVideosLazyQueryHookResult = ReturnType<typeof useShortVideosLaz
 export type ShortVideosQueryResult = Apollo.QueryResult<ShortVideosQuery, ShortVideosQueryVariables>;
 export function refetchShortVideosQuery(variables: ShortVideosQueryVariables) {
       return { query: ShortVideosDocument, variables: variables }
+    }
+export const ShortVideoDocument = gql`
+    query ShortVideo($spaceId: String!, $id: String!) {
+  shortVideo(spaceId: $spaceId, id: $id) {
+    ...ShortVideo
+  }
+}
+    ${ShortVideoFragmentDoc}`;
+
+/**
+ * __useShortVideoQuery__
+ *
+ * To run a query within a React component, call `useShortVideoQuery` and pass it any options that fit your needs.
+ * When your component renders, `useShortVideoQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useShortVideoQuery({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useShortVideoQuery(baseOptions: Apollo.QueryHookOptions<ShortVideoQuery, ShortVideoQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ShortVideoQuery, ShortVideoQueryVariables>(ShortVideoDocument, options);
+      }
+export function useShortVideoLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ShortVideoQuery, ShortVideoQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ShortVideoQuery, ShortVideoQueryVariables>(ShortVideoDocument, options);
+        }
+export type ShortVideoQueryHookResult = ReturnType<typeof useShortVideoQuery>;
+export type ShortVideoLazyQueryHookResult = ReturnType<typeof useShortVideoLazyQuery>;
+export type ShortVideoQueryResult = Apollo.QueryResult<ShortVideoQuery, ShortVideoQueryVariables>;
+export function refetchShortVideoQuery(variables: ShortVideoQueryVariables) {
+      return { query: ShortVideoDocument, variables: variables }
     }
 export const SimulationsDocument = gql`
     query Simulations($spaceId: String!) {
