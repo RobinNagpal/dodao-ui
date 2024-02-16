@@ -24,6 +24,7 @@ export default function useCreateSpace(): UseEditSpaceHelper {
     features: [],
     inviteLinks: {},
     name: '',
+    type: '',
     skin: 'dodao',
     domains: [],
     botDomains: [],
@@ -56,6 +57,7 @@ export default function useCreateSpace(): UseEditSpaceHelper {
     return {
       id: space.id,
       admins: space.admins,
+      type: space.type,
       adminUsernames: space.adminUsernames,
       adminUsernamesV1: space.adminUsernamesV1.map((admin) => ({ username: admin.username, nameOfTheUser: admin.nameOfTheUser })) || [],
       avatar: space.avatar,
