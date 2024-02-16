@@ -4,16 +4,40 @@ import UploadInput from '@/components/app/UploadInput';
 import Button from '@/components/core/buttons/Button';
 import Input from '@/components/core/input/Input';
 import useCreateSpace from '@/components/newSpace/new/useNewSpace';
+import { useExtendedSpaceQuery } from '@/graphql/generated/generated-types';
 import { slugify } from '@/utils/auth/slugify';
 import { useState } from 'react';
+import { useNotificationContext } from '@/contexts/NotificationContext';
+import { isEmpty } from 'lodash';
 
 export default function NewSiteInformation() {
   const editSpaceHelper = useCreateSpace();
   const { space, setSpaceField, upsertSpace, upserting } = editSpaceHelper;
+  const { showNotification } = useNotificationContext();
   const [uploadThumbnailLoading, setUploadThumbnailLoading] = useState(false);
+  const { data: extendedSpaceData, loading: extendedSpaceLoading } = useExtendedSpaceQuery({
+    variables: {
+      spaceId: space.id,
+    },
+    skip: !space.id,
+  });
   function inputError(avatar: string) {
     return null;
   }
+
+  const handleCreateClick = async () => {
+    if (extendedSpaceLoading) {
+      showNotification({ type: 'info', message: 'Checking space ID availability...' });
+      return;
+    }
+    if (extendedSpaceData && extendedSpaceData.space) {
+      showNotification({ type: 'error', message: 'Space id already exists. Please try again!!' });
+      return;
+    }
+
+    await upsertSpace();
+  };
+
   return (
     <>
       <div className="space-y-12 text-left mt-8">
@@ -49,10 +73,8 @@ export default function NewSiteInformation() {
           primary
           removeBorder={true}
           loading={upserting}
-          disabled={uploadThumbnailLoading || upserting}
-          onClick={async () => {
-            await upsertSpace();
-          }}
+          disabled={uploadThumbnailLoading || upserting || isEmpty(space.name) || isEmpty(space.avatar)}
+          onClick={handleCreateClick}
         >
           Create
         </Button>
