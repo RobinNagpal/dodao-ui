@@ -4,6 +4,7 @@ import UploadInput from '@/components/app/UploadInput';
 import Button from '@/components/core/buttons/Button';
 import Input from '@/components/core/input/Input';
 import useCreateSpace from '@/components/newSpace/new/useNewSpace';
+import { slugify } from '@/utils/auth/slugify';
 import { useState } from 'react';
 
 export default function NewSiteInformation() {
@@ -19,9 +20,16 @@ export default function NewSiteInformation() {
         <div className="pb-12">
           <h2 className="text-lg font-bold leading-7">Create Tidbits Site</h2>
           <p className="mt-1 text-sm leading-6">Add the details of Tidbits Site</p>
-
-          <Input label="Name" modelValue={space.name} onUpdate={(value) => setSpaceField('name', value?.toString() || '')} />
-          <Input label="Id" modelValue={space.id} onUpdate={(value) => setSpaceField('id', value?.toString() || '')} disabled={true} />
+          <Input
+            label="Name"
+            modelValue={space.name}
+            onUpdate={(value) => {
+              const slugifiedValue = slugify(value?.toString() || '');
+              setSpaceField('name', value?.toString() || '');
+              setSpaceField('id', slugifiedValue);
+            }}
+          />
+          <Input label="Id" modelValue={space.id} disabled={true} />
           <UploadInput
             label="Logo"
             error={inputError('avatar')}
