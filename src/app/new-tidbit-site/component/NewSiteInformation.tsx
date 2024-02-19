@@ -3,24 +3,26 @@
 import UploadInput from '@/components/app/UploadInput';
 import Button from '@/components/core/buttons/Button';
 import Input from '@/components/core/input/Input';
-import useCreateSpace from '@/components/newSpace/new/useNewSpace';
-import { useExtendedSpaceQuery } from '@/graphql/generated/generated-types';
+import { useExtendedSpaceQuery, useUpdateSpaceCreatorMutation } from '@/graphql/generated/generated-types';
 import { slugify } from '@/utils/auth/slugify';
 import { useState } from 'react';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import { isEmpty } from 'lodash';
+import useCreateSpace from '@/components/newSpace/new/useNewSpace';
 
 export default function NewSiteInformation() {
   const createSpaceHelper = useCreateSpace();
-  const { newSpace, setNewSpaceField, createSpace, upserting } = createSpaceHelper;
+  const { space, setSpaceField, createSpace, upserting } = createSpaceHelper;
   const { showNotification } = useNotificationContext();
   const [uploadThumbnailLoading, setUploadThumbnailLoading] = useState(false);
 
+  const [updateSpaceCreator] = useUpdateSpaceCreatorMutation();
+
   const { data: extendedSpaceData, loading: extendedSpaceLoading } = useExtendedSpaceQuery({
     variables: {
-      spaceId: newSpace.id,
+      spaceId: space.id,
     },
-    skip: !newSpace.id,
+    skip: !space.id,
   });
   function inputError(avatar: string) {
     return null;
@@ -38,7 +40,7 @@ export default function NewSiteInformation() {
 
     try {
       await createSpace();
-      const spaceId = newSpace.id;
+      const spaceId = space.id;
       const response = await fetch('/api/auth/user', {
         method: 'GET',
         headers: {
@@ -61,6 +63,15 @@ export default function NewSiteInformation() {
         }),
       });
 
+      const newUser = await createUserResponse.json();
+
+      const result = await updateSpaceCreator({
+        variables: {
+          spaceId: space.id,
+          id: newUser.user.id.toString(),
+        },
+      });
+
       if (!createUserResponse.ok) {
         throw new Error('Failed to create user in space');
       }
@@ -79,22 +90,22 @@ export default function NewSiteInformation() {
           <p className="mt-1 text-sm leading-6">Add the details of Tidbits Site</p>
           <Input
             label="Name"
-            modelValue={newSpace.name}
+            modelValue={space.name}
             onUpdate={(value) => {
               const slugifiedValue = slugify(value?.toString() || '');
-              setNewSpaceField('name', value?.toString() || '');
-              setNewSpaceField('id', slugifiedValue);
+              setSpaceField('name', value?.toString() || '');
+              setSpaceField('id', slugifiedValue);
             }}
           />
-          <Input label="Id" modelValue={newSpace.id} disabled={true} />
+          <Input label="Id" modelValue={space.id} disabled={true} />
           <UploadInput
             label="Logo"
             error={inputError('avatar')}
             imageType="AcademyLogo"
             spaceId={'new-space'}
-            modelValue={newSpace.avatar}
+            modelValue={space.avatar}
             objectId={'new-space'}
-            onInput={(value) => setNewSpaceField('avatar', value)}
+            onInput={(value) => setSpaceField('avatar', value)}
             onLoading={setUploadThumbnailLoading}
           />
         </div>
@@ -106,7 +117,7 @@ export default function NewSiteInformation() {
           primary
           removeBorder={true}
           loading={upserting}
-          disabled={uploadThumbnailLoading || upserting || isEmpty(newSpace.name) || isEmpty(newSpace.avatar)}
+          disabled={uploadThumbnailLoading || upserting || isEmpty(space.name) || isEmpty(space.avatar)}
           onClick={handleCreateClick}
         >
           Create
