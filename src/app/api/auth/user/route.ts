@@ -49,3 +49,32 @@ export async function PUT(request: Request) {
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
+
+export async function POST(request: Request) {
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+  const body = await request.json();
+  const { spaceId, ...userData } = body;
+  try {
+    const user = await prisma.user.create({
+      data: {
+        name: userData.name,
+        email: null,
+        emailVerified: null,
+        image: null,
+        publicAddress: userData.publicAddress,
+        spaceId: spaceId,
+        username: userData.username,
+        authProvider: userData.authProvider,
+        phone_number: userData.phone_number,
+      },
+    });
+
+    return NextResponse.json({ user: user });
+  } catch (error) {
+    console.error('Error handling user:', error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+  }
+}
