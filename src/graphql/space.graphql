@@ -217,3 +217,9 @@ mutation UpdateThemeColors($spaceId: ID!, $themeColors: ThemeColorsInput!) {
     ...SpaceWithIntegrations
   }
 }
+
+mutation UpdateSpaceCreator($spaceId: String!, $id: String!) {
+  updateSpaceCreator(spaceId: $spaceId, creator: $id) {
+    ...SpaceWithIntegrations
+  }
+}
