@@ -4,16 +4,16 @@ import { useState } from 'react';
 
 export type UseEditSpaceHelper = {
   setSpaceIntegrationField: (field: keyof UpsertSpaceInput['spaceIntegrations'], value: any) => void;
-  setNewSpaceField: (field: keyof UpsertSpaceInput, value: any) => void;
+  setSpaceField: (field: keyof UpsertSpaceInput, value: any) => void;
   setInviteLinkField: (field: keyof UpsertSpaceInput['inviteLinks'], value: any) => void;
-  newSpace: UpsertSpaceInput;
+  space: UpsertSpaceInput;
   createSpace: () => Promise<void>;
   upserting: boolean;
 };
 
 export default function useCreateSpace(): UseEditSpaceHelper {
   const { showNotification } = useNotificationContext();
-  const [newSpace, setSpace] = useState<UpsertSpaceInput>({
+  const [space, setSpace] = useState<UpsertSpaceInput>({
     id: '',
     admins: [],
     adminUsernames: [],
@@ -40,12 +40,12 @@ export default function useCreateSpace(): UseEditSpaceHelper {
 
   const [createSpaceMutation] = useCreateSpaceMutation();
 
-  function setNewSpaceField(field: keyof UpsertSpaceInput, value: any) {
+  function setSpaceField(field: keyof UpsertSpaceInput, value: any) {
     setSpace((prev) => ({ ...prev, [field]: value }));
   }
 
   function setSpaceIntegrationField(field: keyof UpsertSpaceInput['spaceIntegrations'], value: any) {
-    setSpace((prev) => ({ ...prev, newSpaceIntegrations: { ...prev.spaceIntegrations, [field]: value } }));
+    setSpace((prev) => ({ ...prev, spaceIntegrations: { ...prev.spaceIntegrations, [field]: value } }));
   }
 
   function setInviteLinkField(field: keyof UpsertSpaceInput['inviteLinks'], value: any) {
@@ -54,35 +54,35 @@ export default function useCreateSpace(): UseEditSpaceHelper {
 
   function getSpaceInput(): UpsertSpaceInput {
     return {
-      id: newSpace.id,
-      admins: newSpace.admins,
-      type: newSpace.type,
+      id: space.id,
+      admins: space.admins,
+      type: space.type,
       adminUsernames: [],
-      adminUsernamesV1: newSpace.adminUsernamesV1.map((admin) => ({ username: admin.username, nameOfTheUser: admin.nameOfTheUser })) || [],
-      avatar: newSpace.avatar,
-      creator: newSpace.creator,
-      features: newSpace.features,
-      name: newSpace.name,
-      skin: newSpace.skin,
-      domains: newSpace.domains,
-      botDomains: newSpace.botDomains || [],
+      adminUsernamesV1: space.adminUsernamesV1.map((admin) => ({ username: admin.username, nameOfTheUser: admin.nameOfTheUser })) || [],
+      avatar: space.avatar,
+      creator: space.creator,
+      features: space.features,
+      name: space.name,
+      skin: space.skin,
+      domains: space.domains,
+      botDomains: space.botDomains || [],
       inviteLinks: {
-        discordInviteLink: newSpace.inviteLinks.discordInviteLink,
-        showAnimatedButtonForDiscord: newSpace.inviteLinks.showAnimatedButtonForDiscord,
-        showAnimatedButtonForTelegram: newSpace.inviteLinks.showAnimatedButtonForTelegram,
-        telegramInviteLink: newSpace.inviteLinks.telegramInviteLink,
+        discordInviteLink: space.inviteLinks.discordInviteLink,
+        showAnimatedButtonForDiscord: space.inviteLinks.showAnimatedButtonForDiscord,
+        showAnimatedButtonForTelegram: space.inviteLinks.showAnimatedButtonForTelegram,
+        telegramInviteLink: space.inviteLinks.telegramInviteLink,
       },
       spaceIntegrations: {
-        academyRepository: newSpace.spaceIntegrations?.academyRepository || null,
-        discordGuildId: newSpace.spaceIntegrations?.discordGuildId || null,
+        academyRepository: space.spaceIntegrations?.academyRepository || null,
+        discordGuildId: space.spaceIntegrations?.discordGuildId || null,
         gitGuideRepositories:
-          newSpace.spaceIntegrations?.gitGuideRepositories?.map((repo) => ({
+          space.spaceIntegrations?.gitGuideRepositories?.map((repo) => ({
             authenticationToken: repo.authenticationToken,
             gitRepoType: repo.gitRepoType,
             repoUrl: repo.repoUrl,
           })) || [],
-        gnosisSafeWallets: newSpace.spaceIntegrations?.gnosisSafeWallets || [],
-        projectGalaxyTokenLastFour: newSpace.spaceIntegrations?.projectGalaxyTokenLastFour || null,
+        gnosisSafeWallets: space.spaceIntegrations?.gnosisSafeWallets || [],
+        projectGalaxyTokenLastFour: space.spaceIntegrations?.projectGalaxyTokenLastFour || null,
       },
     };
   }
@@ -99,11 +99,11 @@ export default function useCreateSpace(): UseEditSpaceHelper {
       if (response.data) {
         showNotification({ type: 'success', message: 'Space upserted successfully' });
       } else {
-        showNotification({ type: 'error', message: 'Error while upserting newSpace' });
+        showNotification({ type: 'error', message: 'Error while upserting space' });
       }
     } catch (error) {
       console.error(error);
-      showNotification({ type: 'error', message: 'Error while upserting newSpace' });
+      showNotification({ type: 'error', message: 'Error while upserting space' });
       setUpserting(false);
       throw error;
     }
@@ -111,8 +111,8 @@ export default function useCreateSpace(): UseEditSpaceHelper {
   }
 
   return {
-    newSpace,
-    setNewSpaceField,
+    space,
+    setSpaceField,
     setSpaceIntegrationField,
     setInviteLinkField,
     createSpace,
