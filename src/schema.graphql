@@ -1259,6 +1259,7 @@ type Query {
   discourseIndexRuns(spaceId: String!): [DiscourseIndexRun!]!
   discoursePostComments(postId: String!, spaceId: String!): [DiscoursePostComment!]!
   discoursePosts(spaceId: String!): [DiscoursePost!]!
+  getSpaceFromCreator(creatorId: String): Space
   gitCourse(courseKey: String!, spaceId: String!): GitCourse!
   gitCourseIntegrations(key: String!, spaceId: String!): CourseIntegrations
   gitCourseSubmission(courseKey: String!, spaceId: String!): GitCourseSubmission
