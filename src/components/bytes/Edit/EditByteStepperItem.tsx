@@ -355,6 +355,7 @@ export default function EditByteStepperItem({
           id={step.uuid}
           modelValue={step.content}
           byteStepName={step.name}
+          byte={byte}
           placeholder={'Contents'}
           onUpdate={updateStepContent}
           spaceId={space.id}

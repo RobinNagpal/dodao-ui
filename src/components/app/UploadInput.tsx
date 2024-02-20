@@ -12,6 +12,9 @@ import FullPageModal from '../core/modals/FullPageModal';
 
 import Button from '../core/buttons/Button';
 import GenerateImage from '../spaces/Image/GenerateImage';
+import { EditByteType } from '../bytes/Edit/editByteHelper';
+import { ChatCompletionRequestMessageRoleEnum, useAskChatCompletionAiMutation, useGenerateImageMutation } from '@/graphql/generated/generated-types';
+import LoadingSpinner from '../core/loaders/LoadingSpinner';
 
 const UnsplashReact: React.ComponentType<any> = dynamic(() => import('unsplash-react'), {
   ssr: false, // Disable server-side rendering for this component
@@ -47,6 +50,7 @@ interface UploadInputProps {
   helpText?: string;
   name?: string;
   content?: string;
+  byte?: EditByteType;
   imageUploaded?: (url: string) => void;
 }
 
@@ -64,17 +68,81 @@ export default function UploadInput({
   helpText,
   imageUploaded,
   name,
+  byte,
   content,
 }: UploadInputProps) {
   const inputId = uuidV4();
   const [uploadFromUnsplash, setUploadFromUnsplash] = React.useState(false);
   const [unsplashImage, setUnsplashImage] = React.useState<boolean>(false);
   const [generateFromDALLE, setGenerateFromDALLE] = React.useState(false);
+  const [generatingImage, setGeneratingImage] = React.useState(false);
+
+  const [askChatCompletionAiMutation] = useAskChatCompletionAiMutation();
+  const [generateImageMutation] = useGenerateImageMutation();
+
+  var nameAndContentOfSteps = '';
+
+  byte?.steps.forEach((step, index) => {
+    let name = step.name;
+    let content = step.content;
+    nameAndContentOfSteps += `Step ${index + 1}: ${name} \n ${content} \n`;
+  });
+  let promptForImagePrompt = `
+Let's create an image prompt based on a tidbit named "${byte?.name}". 
+Here's a brief overview:
+- Tidbit Name: ${byte?.name}
+- Tidbit Content: ${byte?.content}
+- Steps Overview: 
+  ${nameAndContentOfSteps}
+This overview provides a high-level insight into the tidbit.
+
+Now, focusing on a specific step:
+- Step Name: ${name}
+- Step Content: ${content}
+
+Based on the above details, especially the step's name and content, craft an image prompt that encapsulates the essence of this step. Consider incorporating elements that reflect its themes, emotions, or key points. The goal is to generate an image that visually represents this particular step in a meaningful way.
+`;
 
   function handleFinishedUploading(imageUrl: string): void {
     onInput(imageUrl);
     setUnsplashImage(true);
   }
+
+  async function generateImage(prompt: string): Promise<string | undefined> {
+    const response = await generateImageMutation({
+      variables: {
+        input: {
+          prompt: `${prompt} \n\n Generated image should be of the type of: ${imageType}`,
+        },
+      },
+    });
+
+    const imageUrl = response.data?.generateImage?.data?.map((d) => d.url).filter((url) => url)[0];
+    return imageUrl || undefined;
+  }
+
+  const generateImages = async (prompt: string) => {
+    const url = await generateImage(prompt);
+    return url;
+  };
+
+  const generateImagePrompts = async () => {
+    const response = await askChatCompletionAiMutation({
+      variables: {
+        input: {
+          messages: [
+            {
+              role: ChatCompletionRequestMessageRoleEnum.User,
+              content: promptForImagePrompt,
+            },
+          ],
+          n: 1,
+        },
+      },
+    });
+    const openAIGeneratedPrompts = response.data?.askChatCompletionAI.choices.map((choice) => choice.message?.content).filter((content) => content);
+    return openAIGeneratedPrompts![0];
+  };
 
   return (
     <UploadWrapper className="mt-2">
@@ -123,6 +191,26 @@ export default function UploadInput({
         >
           <PhotoIcon className="-ml-0.5 h-5 w-5 text-gray-400" aria-hidden="true" />
           <span className="mx-2">Generate using DALL·E</span>
+        </div>
+        <div
+          className={`relative -ml-px inline-flex items-center gap-x-1.5 rounded-r-md px-3 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 ${
+            generatingImage ? 'bg-gray-200 cursor-not-allowed' : 'hover:bg-gray-50 cursor-pointer'
+          } ml-2`}
+          onClick={async () => {
+            if (generatingImage) {
+              // Prevents the function from proceeding if images are already being generated
+              return;
+            }
+            setGeneratingImage(true);
+            let prompt = await generateImagePrompts();
+            let url = await generateImages(prompt!);
+            setGeneratingImage(false);
+            imageUploaded!(url!);
+          }}
+        >
+          {generatingImage && <LoadingSpinner />}
+          <PhotoIcon className="-ml-0.5 h-5 w-5 text-gray-400" aria-hidden="true" />
+          <span className="mx-2">Generate automatically using DALL·E</span>
         </div>
       </div>
       {helpText && <p className="ml-1 mt-2 mb-2 text-sm">{helpText}</p>}

@@ -13,6 +13,7 @@ import MDEditor, { commands } from '@uiw/react-md-editor';
 import React, { SetStateAction, useState } from 'react';
 import styled from 'styled-components';
 import { v4 as uuidV4 } from 'uuid';
+import { EditByteType } from '@/components/bytes/Edit/editByteHelper';
 
 const defaultGuidelines = `- The output should be in simple language and easy to understand.
 - The output should be in your own words and not copied from the content provided.
@@ -35,6 +36,7 @@ interface MarkdownEditorProps extends PropsWithChildren {
   info?: React.ReactNode;
   className?: string;
   byteStepName?: string;
+  byte?: EditByteType;
 }
 
 const MainDiv = styled.div`
@@ -133,6 +135,7 @@ function MarkdownEditor({
   placeholder = '',
   modelValue = '',
   byteStepName = '',
+  byte,
   error,
   editorClass,
   editorStyles,
@@ -249,6 +252,7 @@ function MarkdownEditor({
           spaceId={spaceId}
           name={byteStepName}
           content={modelValue}
+          byte={byte}
           imageUploaded={(imageUrl) => {
             handleInputContent(
               modelValue +

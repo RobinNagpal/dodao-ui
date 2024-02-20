@@ -1,4 +1,5 @@
 import UploadInput from '@/components/app/UploadInput';
+import { EditByteType } from '@/components/bytes/Edit/editByteHelper';
 import Button from '@/components/core/buttons/Button';
 import FullPageModal from '@/components/core/modals/FullPageModal';
 import { useState } from 'react';
@@ -10,11 +11,12 @@ export interface UploadImageModalProps {
   open: boolean;
   content?: string;
   name?: string;
+  byte?: EditByteType;
   onClose: () => void;
   imageUploaded: (url: string) => void;
 }
 export default function UploadImageModal(props: UploadImageModalProps) {
-  const { imageType, objectId, spaceId, open, onClose, imageUploaded, name, content } = props;
+  const { imageType, objectId, spaceId, open, onClose, imageUploaded, name, content, byte } = props;
   const [imageURL, setImageURL] = useState<string>();
 
   return (
@@ -29,6 +31,7 @@ export default function UploadImageModal(props: UploadImageModalProps) {
           spaceId={spaceId}
           name={name}
           content={content}
+          byte={byte}
           onInput={(url) => {
             setImageURL(url);
           }}
