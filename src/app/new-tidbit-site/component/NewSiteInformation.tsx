@@ -24,7 +24,7 @@ export default function NewSiteInformation({ onSuccessfulSave }: NewSiteInformat
 
   const { data, loading } = useGetSpaceFromCreatorQuery({
     variables: {
-      creatorId: session?.username!,
+      creatorUsername: session?.username!,
     },
   });
 
