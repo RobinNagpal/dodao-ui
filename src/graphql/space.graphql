@@ -114,6 +114,12 @@ query ExtendedSpace($spaceId: String!) {
   }
 }
 
+query GetSpaceFromCreator($creatorId: String!) {
+  getSpaceFromCreator(creatorId: $creatorId) {
+    ...SpaceWithIntegrations
+  }
+}
+
 query ExtendedSpaceByDomain($domain: String!) {
   space(domain: $domain) {
     ...SpaceWithIntegrations
