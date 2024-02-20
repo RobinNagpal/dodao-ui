@@ -32,11 +32,15 @@ export async function generateMetadata({ params }: CourseViewProps): Promise<Met
       switch (itemType) {
         case 'readings':
           const currentReading = topic.readings.find((r) => r.uuid == itemKey);
-          description += `\n\n${currentReading?.title}\n\n${currentReading?.details}`;
+          description = `\n\n${currentReading?.title}\n\n${currentReading?.details}`;
           break;
         case 'summaries':
           const currentSummary = topic.summaries.find((s) => s.key == itemKey);
-          description += `\n\n${currentSummary?.title}\n\n${currentSummary?.details}`;
+          description = `\n\n${currentSummary?.title}\n\n${currentSummary?.details}`;
+          break;
+        case 'explanations':
+          const currentExplanation = topic.explanations.find((s) => s.key == itemKey);
+          description = `\n\n${currentExplanation?.title}\n\n${currentExplanation?.details}`;
           break;
         default:
           break;
