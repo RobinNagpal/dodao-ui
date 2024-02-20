@@ -92,7 +92,7 @@ import { Adapter } from 'next-auth/adapters';
  * model User {
  *   id            String    @id @default(cuid())
  *   name          String?
- *   email         String?   
+ *   email         String?
  *   emailVerified DateTime?
  *   image         String?
  *   accounts      Account[]
@@ -200,7 +200,7 @@ import { Adapter } from 'next-auth/adapters';
  * model User {
  *   id            String    @id @default(cuid())
  *   name          String?
- *   email         String?   
+ *   email         String?
  *   emailVerified DateTime? @map("email_verified")
  *   image         String?
  *   accounts      Account[]
@@ -219,7 +219,7 @@ import { Adapter } from 'next-auth/adapters';
  * ```
  *
  **/
-export interface PrismaUser extends Omit<User, 'emailVerified' | 'email' | 'image' | 'name'>, AdapterUser { }
+export interface PrismaUser extends Omit<User, 'emailVerified' | 'email' | 'image' | 'name'>, AdapterUser {}
 
 export function CustomPrismaAdapter(p: PrismaClient): Adapter {
   return {
