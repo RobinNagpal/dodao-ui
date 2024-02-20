@@ -1,6 +1,7 @@
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import { UpsertSpaceInput, useCreateSpaceMutation } from '@/graphql/generated/generated-types';
 import { useState } from 'react';
+import { useSession } from 'next-auth/react';
 
 export type UseEditSpaceHelper = {
   setSpaceIntegrationField: (field: keyof UpsertSpaceInput['spaceIntegrations'], value: any) => void;
@@ -13,6 +14,7 @@ export type UseEditSpaceHelper = {
 
 export default function useCreateSpace(): UseEditSpaceHelper {
   const { showNotification } = useNotificationContext();
+  const { data: session } = useSession();
   const [space, setSpace] = useState<UpsertSpaceInput>({
     id: '',
     admins: [],
@@ -60,7 +62,7 @@ export default function useCreateSpace(): UseEditSpaceHelper {
       adminUsernames: [],
       adminUsernamesV1: space.adminUsernamesV1.map((admin) => ({ username: admin.username, nameOfTheUser: admin.nameOfTheUser })) || [],
       avatar: space.avatar,
-      creator: space.creator,
+      creator: session?.username!,
       features: space.features,
       name: space.name,
       skin: space.skin,
