@@ -1,33 +1,110 @@
 'use client';
 
 import UploadInput from '@/components/app/UploadInput';
-import Input from '@/components/core/input/Input';
-import StyledSelect from '@/components/core/select/StyledSelect';
-import { CssTheme } from '../../themes';
-import { themeSelect } from '@/utils/ui/statuses';
-import UpsertBadgeInput from '@/components/core/badge/UpsertBadgeInput';
-import UpsertKeyValueBadgeInput from '@/components/core/badge/UpsertKeyValueBadgeInput';
-import useCreateSpace from '@/components/newSpace/new/useNewSpace';
-import { useState } from 'react';
-import union from 'lodash/union';
 import Button from '@/components/core/buttons/Button';
+import Input from '@/components/core/input/Input';
+import { useExtendedSpaceQuery, useGetSpaceFromCreatorQuery } from '@/graphql/generated/generated-types';
+import { slugify } from '@/utils/auth/slugify';
+import { useEffect, useState } from 'react';
+import { useNotificationContext } from '@/contexts/NotificationContext';
+import { isEmpty } from 'lodash';
+import useCreateSpace from '@/components/newSpace/new/useNewSpace';
+import { useSession } from 'next-auth/react';
 
-export default function NewSiteInformation() {
-  const editSpaceHelper = useCreateSpace();
-  const { space, setSpaceField, setSpaceIntegrationField, upsertSpace, upserting } = editSpaceHelper;
+interface NewSiteInformationProps {
+  onSuccessfulSave: () => void;
+}
+
+export default function NewSiteInformation({ onSuccessfulSave }: NewSiteInformationProps) {
+  const createSpaceHelper = useCreateSpace();
+  const { space, setSpaceField, createSpace, upserting } = createSpaceHelper;
+  const { showNotification } = useNotificationContext();
+  const { data: session } = useSession();
   const [uploadThumbnailLoading, setUploadThumbnailLoading] = useState(false);
+
+  const { data, loading } = useGetSpaceFromCreatorQuery({
+    variables: {
+      creatorUsername: session?.username!,
+    },
+  });
+
+  useEffect(() => {
+    if (!loading && data) {
+      onSuccessfulSave();
+    }
+  }, [data, loading]);
+
+  const { data: extendedSpaceData, loading: extendedSpaceLoading } = useExtendedSpaceQuery({
+    variables: {
+      spaceId: space.id,
+    },
+    skip: !space.id,
+  });
   function inputError(avatar: string) {
     return null;
   }
+
+  const handleCreateClick = async () => {
+    if (extendedSpaceLoading) {
+      showNotification({ type: 'info', message: 'Checking space ID availability...' });
+      return;
+    }
+    if (extendedSpaceData && extendedSpaceData.space) {
+      showNotification({ type: 'error', message: 'Space id already exists. Please try again!!' });
+      return;
+    }
+
+    try {
+      await createSpace();
+      const spaceId = space.id;
+      const response = await fetch('/api/auth/user', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Failed to fetch user data');
+      }
+      const userData = await response.json();
+
+      const createUserResponse = await fetch('/api/auth/user', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...userData,
+          spaceId: spaceId,
+        }),
+      });
+
+      if (!createUserResponse.ok) {
+        throw new Error('Failed to create user in space');
+      }
+      showNotification({ type: 'success', message: 'Space created and user added successfully!' });
+    } catch (error) {
+      console.error('Error:', error);
+      showNotification({ type: 'error', message: 'Something went wrong' });
+    }
+  };
+
   return (
     <>
       <div className="space-y-12 text-left mt-8">
         <div className="pb-12">
-          <h2 className="text-lg font-bold leading-7">Edit Space</h2>
-          <p className="mt-1 text-sm leading-6">Update the details of Space</p>
-
-          <Input label="Id" modelValue={space.id} onUpdate={(value) => setSpaceField('id', value?.toString() || '')} />
-          <Input label="Name" modelValue={space.name} onUpdate={(value) => setSpaceField('name', value?.toString() || '')} />
+          <h2 className="text-lg font-bold leading-7">Create Tidbits Site</h2>
+          <p className="mt-1 text-sm leading-6">Add the details of Tidbits Site</p>
+          <Input
+            label="Name"
+            modelValue={space.name}
+            onUpdate={(value) => {
+              const slugifiedValue = slugify(value?.toString() || '');
+              setSpaceField('name', value?.toString() || '');
+              setSpaceField('id', slugifiedValue);
+            }}
+          />
+          <Input label="Id" modelValue={space.id} disabled={true} />
           <UploadInput
             label="Logo"
             error={inputError('avatar')}
@@ -38,75 +115,6 @@ export default function NewSiteInformation() {
             onInput={(value) => setSpaceField('avatar', value)}
             onLoading={setUploadThumbnailLoading}
           />
-          <Input
-            label="Academy Repo"
-            modelValue={space.spaceIntegrations.academyRepository}
-            placeholder={'https://github.com/DoDAO-io/dodao-academy'}
-            onUpdate={(value) => setSpaceIntegrationField('academyRepository', value?.toString() || '')}
-          />
-          <StyledSelect
-            label="Theme"
-            selectedItemId={Object.keys(CssTheme).includes(space.skin || '') ? space.skin : CssTheme.GlobalTheme}
-            items={themeSelect}
-            setSelectedItemId={(value) => setSpaceField('skin', value)}
-          />
-          <UpsertBadgeInput
-            label={'Domains'}
-            badges={space.domains.map((d) => ({ id: d, label: d }))}
-            onAdd={(d) => {
-              setSpaceField('domains', union(space.domains, [d]));
-            }}
-            onRemove={(d) => {
-              setSpaceField(
-                'domains',
-                space.domains.filter((domain) => domain !== d)
-              );
-            }}
-          />
-          <UpsertBadgeInput
-            label={'Bot Domains'}
-            badges={(space.botDomains || []).map((d) => ({ id: d, label: d }))}
-            onAdd={(d) => {
-              setSpaceField('botDomains', union(space.botDomains || [], [d]));
-            }}
-            onRemove={(d) => {
-              setSpaceField(
-                'botDomains',
-                (space.botDomains || []).filter((domain) => domain !== d)
-              );
-            }}
-          />
-          <UpsertBadgeInput
-            label={'Admins By Usernames'}
-            badges={space.adminUsernames.map((d) => ({ id: d, label: d }))}
-            onAdd={(admin) => {
-              setSpaceField('adminUsernames', union(space.adminUsernames, [admin]));
-            }}
-            onRemove={(d) => {
-              setSpaceField(
-                'adminUsernames',
-                space.adminUsernames.filter((domain) => domain !== d)
-              );
-            }}
-          />
-          <UpsertKeyValueBadgeInput
-            label={'Admins By Usernames & Names'}
-            badges={space.adminUsernamesV1.map((d) => ({ key: d.username, value: d.nameOfTheUser }))}
-            onAdd={(admin) => {
-              const string = admin.split(',');
-              const username = string[0].trim();
-              const nameOfTheUser = string.length > 1 ? string[1].trim() : '';
-              const newAdmin = { username, nameOfTheUser };
-              setSpaceField('adminUsernamesV1', union(space.adminUsernamesV1, [newAdmin]));
-            }}
-            labelFn={(badge) => `${badge.key} - ${badge.value}`}
-            onRemove={(d) => {
-              setSpaceField(
-                'adminUsernamesV1',
-                space.adminUsernamesV1.filter((domain) => domain.username !== d)
-              );
-            }}
-          />
         </div>
       </div>
 
@@ -116,10 +124,8 @@ export default function NewSiteInformation() {
           primary
           removeBorder={true}
           loading={upserting}
-          disabled={uploadThumbnailLoading || upserting}
-          onClick={async () => {
-            await upsertSpace();
-          }}
+          disabled={uploadThumbnailLoading || upserting || isEmpty(space.name) || isEmpty(space.avatar)}
+          onClick={handleCreateClick}
         >
           Create
         </Button>

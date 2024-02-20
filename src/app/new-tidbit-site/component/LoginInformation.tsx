@@ -71,7 +71,7 @@ export default function LoginInfo({ onSuccessfulSave }: LoginInformationProps) {
       setPhone('');
       setCaptcha(null);
     } catch (error) {
-      console.error('Error updating user data:', error);
+      showNotification({ type: 'error', message: 'Error updating user data' });
     }
   };
 
@@ -94,7 +94,7 @@ export default function LoginInfo({ onSuccessfulSave }: LoginInformationProps) {
           setPhone(userData.phone_number || '');
         }
       } catch (error) {
-        console.error('Error fetching user data:', error);
+        showNotification({ type: 'error', message: 'Error fetching user data' });
       }
     };
 

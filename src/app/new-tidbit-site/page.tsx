@@ -6,6 +6,7 @@ import Button from '@/components/core/buttons/Button';
 import LoginInformation from './component/LoginInformation';
 import NewSiteInformation from './component/NewSiteInformation';
 import HorizontalStepperSimple from '@/components/core/stepper/HorizontalStepperSimple';
+import Configuration from './component/Configuration';
 
 type Step = {
   id: string;
@@ -62,7 +63,9 @@ export default function NewTidbitSite() {
       case 'Step 1':
         return <LoginInformation onSuccessfulSave={goToNextStep} />;
       case 'Step 2':
-        return <NewSiteInformation />;
+        return <NewSiteInformation onSuccessfulSave={goToNextStep} />;
+      case 'Step 3':
+        return <Configuration />;
       default:
         return null;
     }
@@ -71,11 +74,12 @@ export default function NewTidbitSite() {
     <PageWrapper>
       <HorizontalStepperSimple steps={steps} />
       {getStepContent(currentStepId)}
-      {currentStepId !== 'Step 1' && (
-        <Button onClick={goToPreviousStep} variant="outlined" className="mt-4">
-          Previous
-        </Button>
-      )}
+      {currentStepId !== 'Step 1' ||
+        ('Step 3' && (
+          <Button onClick={goToPreviousStep} variant="outlined" className="mt-4">
+            Previous
+          </Button>
+        ))}
     </PageWrapper>
   );
 }

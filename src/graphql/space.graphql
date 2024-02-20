@@ -19,6 +19,7 @@ fragment SpaceWithIntegrations on Space {
   creator
   features
   name
+  type
   skin
   avatar
   domains
@@ -109,6 +110,12 @@ query Spaces {
 
 query ExtendedSpace($spaceId: String!) {
   space(id: $spaceId) {
+    ...SpaceWithIntegrations
+  }
+}
+
+query GetSpaceFromCreator($creatorUsername: String!) {
+  getSpaceFromCreator(creatorUsername: $creatorUsername) {
     ...SpaceWithIntegrations
   }
 }
@@ -213,6 +220,12 @@ mutation UpsertSpaceLoaderInfo($spaceId: String!, $input: SpaceLoadersInfoInput!
 
 mutation UpdateThemeColors($spaceId: ID!, $themeColors: ThemeColorsInput!) {
   payload: updateThemeColors(spaceId: $spaceId, themeColors: $themeColors) {
+    ...SpaceWithIntegrations
+  }
+}
+
+mutation UpdateSpaceCreator($spaceId: String!, $id: String!) {
+  updateSpaceCreator(spaceId: $spaceId, creator: $id) {
     ...SpaceWithIntegrations
   }
 }

@@ -1,19 +1,20 @@
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import { UpsertSpaceInput, useCreateSpaceMutation } from '@/graphql/generated/generated-types';
 import { useState } from 'react';
+import { useSession } from 'next-auth/react';
 
 export type UseEditSpaceHelper = {
   setSpaceIntegrationField: (field: keyof UpsertSpaceInput['spaceIntegrations'], value: any) => void;
   setSpaceField: (field: keyof UpsertSpaceInput, value: any) => void;
   setInviteLinkField: (field: keyof UpsertSpaceInput['inviteLinks'], value: any) => void;
   space: UpsertSpaceInput;
-  upsertSpace: () => Promise<void>;
+  createSpace: () => Promise<void>;
   upserting: boolean;
 };
 
 export default function useCreateSpace(): UseEditSpaceHelper {
   const { showNotification } = useNotificationContext();
-
+  const { data: session } = useSession();
   const [space, setSpace] = useState<UpsertSpaceInput>({
     id: '',
     admins: [],
@@ -24,6 +25,7 @@ export default function useCreateSpace(): UseEditSpaceHelper {
     features: [],
     inviteLinks: {},
     name: '',
+    type: '',
     skin: 'dodao',
     domains: [],
     botDomains: [],
@@ -56,10 +58,11 @@ export default function useCreateSpace(): UseEditSpaceHelper {
     return {
       id: space.id,
       admins: space.admins,
-      adminUsernames: space.adminUsernames,
+      type: space.type,
+      adminUsernames: [],
       adminUsernamesV1: space.adminUsernamesV1.map((admin) => ({ username: admin.username, nameOfTheUser: admin.nameOfTheUser })) || [],
       avatar: space.avatar,
-      creator: space.creator,
+      creator: session?.username!,
       features: space.features,
       name: space.name,
       skin: space.skin,
@@ -86,7 +89,7 @@ export default function useCreateSpace(): UseEditSpaceHelper {
     };
   }
 
-  async function upsertSpace() {
+  async function createSpace() {
     setUpserting(true);
     try {
       let response;
@@ -114,7 +117,7 @@ export default function useCreateSpace(): UseEditSpaceHelper {
     setSpaceField,
     setSpaceIntegrationField,
     setInviteLinkField,
-    upsertSpace,
+    createSpace,
     upserting,
   };
 }
