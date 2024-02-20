@@ -3,20 +3,36 @@
 import UploadInput from '@/components/app/UploadInput';
 import Button from '@/components/core/buttons/Button';
 import Input from '@/components/core/input/Input';
-import { useExtendedSpaceQuery, useUpdateSpaceCreatorMutation } from '@/graphql/generated/generated-types';
+import { useExtendedSpaceQuery, useGetSpaceFromCreatorQuery } from '@/graphql/generated/generated-types';
 import { slugify } from '@/utils/auth/slugify';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import { isEmpty } from 'lodash';
 import useCreateSpace from '@/components/newSpace/new/useNewSpace';
+import { useSession } from 'next-auth/react';
 
-export default function NewSiteInformation() {
+interface NewSiteInformationProps {
+  onSuccessfulSave: () => void;
+}
+
+export default function NewSiteInformation({ onSuccessfulSave }: NewSiteInformationProps) {
   const createSpaceHelper = useCreateSpace();
   const { space, setSpaceField, createSpace, upserting } = createSpaceHelper;
   const { showNotification } = useNotificationContext();
+  const { data: session } = useSession();
   const [uploadThumbnailLoading, setUploadThumbnailLoading] = useState(false);
 
-  const [updateSpaceCreator] = useUpdateSpaceCreatorMutation();
+  const { data, loading } = useGetSpaceFromCreatorQuery({
+    variables: {
+      creatorId: session?.username!,
+    },
+  });
+
+  useEffect(() => {
+    if (!loading && data) {
+      onSuccessfulSave();
+    }
+  }, [data, loading]);
 
   const { data: extendedSpaceData, loading: extendedSpaceLoading } = useExtendedSpaceQuery({
     variables: {
@@ -61,15 +77,6 @@ export default function NewSiteInformation() {
           ...userData,
           spaceId: spaceId,
         }),
-      });
-
-      const newUser = await createUserResponse.json();
-
-      const result = await updateSpaceCreator({
-        variables: {
-          spaceId: space.id,
-          id: newUser.user.id.toString(),
-        },
       });
 
       if (!createUserResponse.ok) {
