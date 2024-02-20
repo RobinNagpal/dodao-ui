@@ -5,7 +5,7 @@ export default function Configuration() {
   const { data: session } = useSession();
   const { data, loading } = useGetSpaceFromCreatorQuery({
     variables: {
-      creatorId: session?.username!,
+      creatorUsername: session?.username!,
     },
   });
 
