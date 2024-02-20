@@ -49,7 +49,7 @@ model Session {
 model User {
   id            String    @id @default(cuid())
   name          String?
-  email         String?   @unique
+  email         String?
   emailVerified DateTime? @map("email_verified")
   image         String?
   publicAddress String?   @map("public_address")
@@ -65,6 +65,7 @@ model User {
 
   @@unique([publicAddress, spaceId])
   @@unique([username, spaceId])
+  @@unique([email, spaceId])
   @@map("users")
 }
 
