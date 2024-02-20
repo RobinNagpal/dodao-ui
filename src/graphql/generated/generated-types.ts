@@ -2102,7 +2102,7 @@ export interface QueryDiscoursePostsArgs {
 
 
 export interface QueryGetSpaceFromCreatorArgs {
-  creatorId?: InputMaybe<Scalars['String']>;
+  creatorUsername?: InputMaybe<Scalars['String']>;
 }
 
 
@@ -4150,7 +4150,7 @@ export type ExtendedSpaceQueryVariables = Exact<{
 export type ExtendedSpaceQuery = { __typename?: 'Query', space?: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, type: string, skin: string, avatar?: string | null, domains: Array<string>, botDomains?: Array<string> | null, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, adminUsernamesV1: Array<{ __typename?: 'UsernameAndName', username: string, nameOfTheUser: string }>, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null, loadersInfo?: { __typename?: 'SpaceLoadersInfo', discourseUrl?: string | null, discordServerId?: string | null } | null } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null }, themeColors?: { __typename?: 'ThemeColors', primaryColor: string, bgColor: string, textColor: string, linkColor: string, headingColor: string, borderColor: string, blockBg: string } | null } | null };
 
 export type GetSpaceFromCreatorQueryVariables = Exact<{
-  creatorId: Scalars['String'];
+  creatorUsername: Scalars['String'];
 }>;
 
 
@@ -10492,8 +10492,8 @@ export function refetchExtendedSpaceQuery(variables: ExtendedSpaceQueryVariables
       return { query: ExtendedSpaceDocument, variables: variables }
     }
 export const GetSpaceFromCreatorDocument = gql`
-    query GetSpaceFromCreator($creatorId: String!) {
-  getSpaceFromCreator(creatorId: $creatorId) {
+    query GetSpaceFromCreator($creatorUsername: String!) {
+  getSpaceFromCreator(creatorUsername: $creatorUsername) {
     ...SpaceWithIntegrations
   }
 }
@@ -10511,7 +10511,7 @@ export const GetSpaceFromCreatorDocument = gql`
  * @example
  * const { data, loading, error } = useGetSpaceFromCreatorQuery({
  *   variables: {
- *      creatorId: // value for 'creatorId'
+ *      creatorUsername: // value for 'creatorUsername'
  *   },
  * });
  */
