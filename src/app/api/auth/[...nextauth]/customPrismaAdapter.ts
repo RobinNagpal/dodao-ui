@@ -92,7 +92,7 @@ import { Adapter } from 'next-auth/adapters';
  * model User {
  *   id            String    @id @default(cuid())
  *   name          String?
- *   email         String?   @unique
+ *   email         String?   
  *   emailVerified DateTime?
  *   image         String?
  *   accounts      Account[]
@@ -200,7 +200,7 @@ import { Adapter } from 'next-auth/adapters';
  * model User {
  *   id            String    @id @default(cuid())
  *   name          String?
- *   email         String?   @unique
+ *   email         String?   
  *   emailVerified DateTime? @map("email_verified")
  *   image         String?
  *   accounts      Account[]
@@ -225,7 +225,7 @@ export function CustomPrismaAdapter(p: PrismaClient): Adapter {
   return {
     createUser: (user: Omit<AdapterUser, 'id'>): Promise<PrismaUser> => p.user.create({ data: user as PrismaUser }) as Promise<PrismaUser>,
     getUser: (id: string) => p.user.findUnique({ where: { id } }) as Promise<PrismaUser>,
-    getUserByEmail: (email: string) => p.user.findUnique({ where: { email } }) as Promise<PrismaUser>,
+    getUserByEmail: (email: string) => p.user.findFirst({ where: { email } }) as Promise<PrismaUser>,
     async getUserByAccount(provider_providerAccountId: Pick<AdapterAccount, 'provider' | 'providerAccountId'>) {
       const account = await p.account.findUnique({
         where: { provider_providerAccountId },
