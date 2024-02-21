@@ -327,19 +327,19 @@ export default function EditByteStepperItem({
     nameAndContentOfSteps += `Step ${index + 1}: ${name} \n ${content} \n`;
   });
   const promptForImagePrompt = `
-Let's create an image prompt based on a tidbit named "${byte?.name}". 
-Here's a brief overview:
-- Tidbit Name: ${byte?.name}
-- Tidbit Content: ${byte?.content}
-- Steps Overview: 
+Let's create an image prompt based on the subject matter named "${byte?.name}". 
+Here's a concise summary:
+- Subject Name: ${byte?.name}
+- Subject Content: ${byte?.content}
+- Key Points Overview: 
   ${nameAndContentOfSteps}
-This overview provides a high-level insight into the tidbit.
+This summary provides a high-level understanding of the subject matter.
 
-Now, focusing on a specific step:
-- Step Name: ${step.name}
-- Step Content: ${step.content}
+Now, turning our attention to a specific detail:
+- Detail Name: ${step.name}
+- Detail Content: ${step.content}
 
-Based on the above details, especially the step's name and content, craft an image prompt that encapsulates the essence of this step. Consider incorporating elements that reflect its themes, emotions, or key points. The goal is to generate an image that visually represents this particular step in a meaningful way.
+Drawing from the detailed information provided, particularly the detail's name and content, create an image prompt that captures the essence of this detail. Aim to include elements that mirror its themes, emotions, or critical aspects. The objective is to produce an image that visually communicates this particular detail effectively.
 `;
 
   return (
@@ -378,6 +378,7 @@ Based on the above details, especially the step's name and content, craft an ima
           id={step.uuid}
           modelValue={step.content}
           generateImagePromptFn={() => promptForImagePrompt}
+          getCurrentStepNameAndContent={() => ({ name: step.name, content: step.content })}
           placeholder={'Contents'}
           onUpdate={updateStepContent}
           spaceId={space.id}

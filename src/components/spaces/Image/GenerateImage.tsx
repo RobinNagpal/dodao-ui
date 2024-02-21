@@ -4,6 +4,7 @@ import Input from '@/components/core/input/Input';
 import TextareaAutosize from '@/components/core/textarea/TextareaAutosize';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import { ChatCompletionRequestMessageRoleEnum, useAskChatCompletionAiMutation, useGenerateImageMutation } from '@/graphql/generated/generated-types';
+import { get } from 'lodash';
 import React, { useState } from 'react';
 
 const defaultPrompt = `
@@ -19,10 +20,14 @@ depicts DETAILS. Strictly ensure the following rules while generating the descri
 - The image should be visually appealing, avoiding overly bright or clashing colours.
 `;
 
+interface StepNameAndContent {
+  name: string;
+  content: string;
+}
+
 interface GenerateImageProps {
   imageUploaded?: (url: string) => void;
-  topic?: string;
-  content?: string;
+  getCurrentStepNameAndContent?: () => StepNameAndContent;
 }
 
 interface GenerateImageForm {
@@ -43,18 +48,25 @@ ${form.openAIPrompt}
 `;
 }
 
-export default function GenerateImage({ imageUploaded, topic, content }: GenerateImageProps) {
+export default function GenerateImage({ imageUploaded, getCurrentStepNameAndContent }: GenerateImageProps) {
   const generateImagesForm = localStorage.getItem('generate_images_form');
 
   const [form, setForm] = useState<GenerateImageForm>(
     generateImagesForm
       ? JSON.parse(generateImagesForm)
-      : {
+      : getCurrentStepNameAndContent !== undefined
+      ? {
           numberOfImages: 1,
-          contents: content,
-          topic: topic,
+          contents: getCurrentStepNameAndContent!().content,
+          topic: getCurrentStepNameAndContent!().name,
           openAIPrompt: defaultPrompt,
           imageType: 'Oil Painting',
+        }
+      : {
+          numberOfImages: 1,
+          contents: '',
+          topic: '',
+          openAIPrompt: defaultPrompt,
         }
   );
 

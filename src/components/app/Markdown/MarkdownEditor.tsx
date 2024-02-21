@@ -20,6 +20,11 @@ const defaultGuidelines = `- The output should be in simple language and easy to
 - The output should be between 4-8 paragraphs.
 - Don't create a conclusion or summary paragraph.`;
 
+interface StepNameAndContent {
+  name: string;
+  content: string;
+}
+
 interface MarkdownEditorProps extends PropsWithChildren {
   id?: string;
   spaceId: string;
@@ -36,6 +41,7 @@ interface MarkdownEditorProps extends PropsWithChildren {
   info?: React.ReactNode;
   className?: string;
   generateImagePromptFn?: () => string;
+  getCurrentStepNameAndContent?: () => StepNameAndContent;
 }
 
 const MainDiv = styled.div`
@@ -134,6 +140,7 @@ function MarkdownEditor({
   placeholder = '',
   modelValue = '',
   generateImagePromptFn,
+  getCurrentStepNameAndContent,
   error,
   editorClass,
   editorStyles,
@@ -249,6 +256,7 @@ function MarkdownEditor({
           objectId={objectId}
           spaceId={spaceId}
           generateImagePromptFn={generateImagePromptFn}
+          getCurrentStepNameAndContent={getCurrentStepNameAndContent}
           imageUploaded={(imageUrl) => {
             handleInputContent(
               modelValue +
