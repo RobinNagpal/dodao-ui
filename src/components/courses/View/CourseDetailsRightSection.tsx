@@ -3,13 +3,7 @@
 import ChapterSubmission from '@/components/courses/View/Details/ChapterSubmission';
 import CourseDetails from '@/components/courses/View/Details/CourseDetails';
 import CourseSubmission from '@/components/courses/View/Details/CourseSubmission';
-
-import dynamic from 'next/dynamic';
-
-const ExplanationDetails = dynamic(() => import('@/components/courses/View/Details/ExplanationDetails'), {
-  ssr: false,
-});
-
+import ExplanationDetails from './Details/ExplanationDetails';
 import QuestionDetails from '@/components/courses/View/Details/QuestionDetails';
 import SummaryDetails from '@/components/courses/View/Details/SummaryDetails';
 import TopicDetails from '@/components/courses/View/Details/TopicDetails';
