@@ -1153,6 +1153,7 @@ export interface Mutation {
   upsertProjectByteCollection: ProjectByteCollection;
   upsertProjectGalaxyAccessToken: Space;
   upsertProjectShortVideo: ProjectShortVideo;
+  upsertRoute53Record: Route53Record;
   upsertShortVideo: ShortVideo;
   upsertSimulation: Simulation;
   upsertSpaceAcademyRepository: Space;
@@ -1161,6 +1162,7 @@ export interface Mutation {
   upsertSpaceLoaderInfo: Space;
   upsertSummaryOfDiscoursePost: DiscoursePost;
   upsertTimeline: Timeline;
+  upsertVercelDomainRecord: VercelDomain;
 }
 
 
@@ -1747,6 +1749,11 @@ export interface MutationUpsertProjectShortVideoArgs {
 }
 
 
+export interface MutationUpsertRoute53RecordArgs {
+  spaceId: Scalars['String'];
+}
+
+
 export interface MutationUpsertShortVideoArgs {
   shortVideo: ShortVideoInput;
   spaceId: Scalars['String'];
@@ -1791,6 +1798,11 @@ export interface MutationUpsertSummaryOfDiscoursePostArgs {
 
 export interface MutationUpsertTimelineArgs {
   input: UpsertTimelineInput;
+  spaceId: Scalars['String'];
+}
+
+
+export interface MutationUpsertVercelDomainRecordArgs {
   spaceId: Scalars['String'];
 }
 
@@ -1978,7 +1990,7 @@ export interface Query {
   projects: Array<Project>;
   rawGitCourse: RawGitCourse;
   rawGitCourses: Array<RawGitCourse>;
-  route53Records: Array<Route53Record>;
+  route53Record?: Maybe<Route53Record>;
   scrapedUrlInfos: Array<ScrapedUrlInfo>;
   searchChatbotFAQs: Array<SearchedChatbotFaq>;
   shortVideo: ShortVideo;
@@ -1991,7 +2003,7 @@ export interface Query {
   spaces?: Maybe<Array<Space>>;
   timeline: Timeline;
   timelines: Array<Timeline>;
-  vercelDomainRecords: Array<VercelDomain>;
+  vercelDomainRecord?: Maybe<VercelDomain>;
   websiteScrapingInfos: Array<WebsiteScrapingInfo>;
 }
 
@@ -2219,6 +2231,11 @@ export interface QueryRawGitCoursesArgs {
 }
 
 
+export interface QueryRoute53RecordArgs {
+  spaceId: Scalars['String'];
+}
+
+
 export interface QueryScrapedUrlInfosArgs {
   spaceId: Scalars['String'];
   websiteScrapingInfoId: Scalars['String'];
@@ -2277,6 +2294,11 @@ export interface QueryTimelineArgs {
 
 
 export interface QueryTimelinesArgs {
+  spaceId: Scalars['String'];
+}
+
+
+export interface QueryVercelDomainRecordArgs {
   spaceId: Scalars['String'];
 }
 
@@ -2931,12 +2953,12 @@ export interface UsernameAndNameInput {
 export interface VercelDomain {
   __typename?: 'VercelDomain';
   apexName: Scalars['String'];
-  createdAt?: Maybe<Scalars['Int']>;
+  createdAt?: Maybe<Scalars['DateTimeISO']>;
   gitBranch?: Maybe<Scalars['String']>;
   name: Scalars['String'];
   projectId: Scalars['String'];
   redirect?: Maybe<Scalars['String']>;
-  updatedAt?: Maybe<Scalars['Int']>;
+  updatedAt?: Maybe<Scalars['DateTimeISO']>;
   verified: Scalars['Boolean'];
 }
 
@@ -4170,6 +4192,20 @@ export type SpaceDiscordGuildQueryVariables = Exact<{
 
 export type SpaceDiscordGuildQuery = { __typename?: 'Query', payload?: any | null };
 
+export type Route53RecordQueryVariables = Exact<{
+  spaceId: Scalars['String'];
+}>;
+
+
+export type Route53RecordQuery = { __typename?: 'Query', payload?: { __typename?: 'Route53Record', type?: string | null, name?: string | null, records?: Array<string | null> | null, ttl?: number | null } | null };
+
+export type VercelDomainRecordQueryVariables = Exact<{
+  spaceId: Scalars['String'];
+}>;
+
+
+export type VercelDomainRecordQuery = { __typename?: 'Query', vercelDomainRecord?: { __typename?: 'VercelDomain', apexName: string, createdAt?: any | null, gitBranch?: string | null, name: string, projectId: string, redirect?: string | null, updatedAt?: any | null, verified: boolean } | null };
+
 export type UpsertSpaceFeaturesMutationVariables = Exact<{
   spaceId: Scalars['String'];
   features: Array<Scalars['String']> | Scalars['String'];
@@ -4309,6 +4345,20 @@ export type UpdateSpaceCreatorMutationVariables = Exact<{
 
 
 export type UpdateSpaceCreatorMutation = { __typename?: 'Mutation', updateSpaceCreator: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, type: string, skin: string, avatar?: string | null, domains: Array<string>, botDomains?: Array<string> | null, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, adminUsernamesV1: Array<{ __typename?: 'UsernameAndName', username: string, nameOfTheUser: string }>, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null, loadersInfo?: { __typename?: 'SpaceLoadersInfo', discourseUrl?: string | null, discordServerId?: string | null } | null } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null }, themeColors?: { __typename?: 'ThemeColors', primaryColor: string, bgColor: string, textColor: string, linkColor: string, headingColor: string, borderColor: string, blockBg: string } | null } };
+
+export type UpsertRoute53RecordMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+}>;
+
+
+export type UpsertRoute53RecordMutation = { __typename?: 'Mutation', upsertRoute53Record: { __typename?: 'Route53Record', ttl?: number | null, records?: Array<string | null> | null, name?: string | null, type?: string | null } };
+
+export type UpsertVercelDomainRecordMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+}>;
+
+
+export type UpsertVercelDomainRecordMutation = { __typename?: 'Mutation', upsertVercelDomainRecord: { __typename?: 'VercelDomain', apexName: string, createdAt?: any | null, gitBranch?: string | null, name: string, projectId: string, redirect?: string | null, updatedAt?: any | null, verified: boolean } };
 
 export type TimelineEventFragment = { __typename?: 'TimelineEvent', title: string, uuid: string, date: any, summary: string, fullDetails?: string | null, moreLink?: string | null };
 
@@ -10603,6 +10653,92 @@ export type SpaceDiscordGuildQueryResult = Apollo.QueryResult<SpaceDiscordGuildQ
 export function refetchSpaceDiscordGuildQuery(variables: SpaceDiscordGuildQueryVariables) {
       return { query: SpaceDiscordGuildDocument, variables: variables }
     }
+export const Route53RecordDocument = gql`
+    query Route53Record($spaceId: String!) {
+  payload: route53Record(spaceId: $spaceId) {
+    type
+    name
+    records
+    ttl
+  }
+}
+    `;
+
+/**
+ * __useRoute53RecordQuery__
+ *
+ * To run a query within a React component, call `useRoute53RecordQuery` and pass it any options that fit your needs.
+ * When your component renders, `useRoute53RecordQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useRoute53RecordQuery({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *   },
+ * });
+ */
+export function useRoute53RecordQuery(baseOptions: Apollo.QueryHookOptions<Route53RecordQuery, Route53RecordQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<Route53RecordQuery, Route53RecordQueryVariables>(Route53RecordDocument, options);
+      }
+export function useRoute53RecordLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Route53RecordQuery, Route53RecordQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<Route53RecordQuery, Route53RecordQueryVariables>(Route53RecordDocument, options);
+        }
+export type Route53RecordQueryHookResult = ReturnType<typeof useRoute53RecordQuery>;
+export type Route53RecordLazyQueryHookResult = ReturnType<typeof useRoute53RecordLazyQuery>;
+export type Route53RecordQueryResult = Apollo.QueryResult<Route53RecordQuery, Route53RecordQueryVariables>;
+export function refetchRoute53RecordQuery(variables: Route53RecordQueryVariables) {
+      return { query: Route53RecordDocument, variables: variables }
+    }
+export const VercelDomainRecordDocument = gql`
+    query VercelDomainRecord($spaceId: String!) {
+  vercelDomainRecord(spaceId: $spaceId) {
+    apexName
+    createdAt
+    gitBranch
+    name
+    projectId
+    redirect
+    updatedAt
+    verified
+  }
+}
+    `;
+
+/**
+ * __useVercelDomainRecordQuery__
+ *
+ * To run a query within a React component, call `useVercelDomainRecordQuery` and pass it any options that fit your needs.
+ * When your component renders, `useVercelDomainRecordQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useVercelDomainRecordQuery({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *   },
+ * });
+ */
+export function useVercelDomainRecordQuery(baseOptions: Apollo.QueryHookOptions<VercelDomainRecordQuery, VercelDomainRecordQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<VercelDomainRecordQuery, VercelDomainRecordQueryVariables>(VercelDomainRecordDocument, options);
+      }
+export function useVercelDomainRecordLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<VercelDomainRecordQuery, VercelDomainRecordQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<VercelDomainRecordQuery, VercelDomainRecordQueryVariables>(VercelDomainRecordDocument, options);
+        }
+export type VercelDomainRecordQueryHookResult = ReturnType<typeof useVercelDomainRecordQuery>;
+export type VercelDomainRecordLazyQueryHookResult = ReturnType<typeof useVercelDomainRecordLazyQuery>;
+export type VercelDomainRecordQueryResult = Apollo.QueryResult<VercelDomainRecordQuery, VercelDomainRecordQueryVariables>;
+export function refetchVercelDomainRecordQuery(variables: VercelDomainRecordQueryVariables) {
+      return { query: VercelDomainRecordDocument, variables: variables }
+    }
 export const UpsertSpaceFeaturesDocument = gql`
     mutation UpsertSpaceFeatures($spaceId: String!, $features: [String!]!) {
   payload: upsertSpaceFeatures(spaceId: $spaceId, features: $features) {
@@ -11216,6 +11352,82 @@ export function useUpdateSpaceCreatorMutation(baseOptions?: Apollo.MutationHookO
 export type UpdateSpaceCreatorMutationHookResult = ReturnType<typeof useUpdateSpaceCreatorMutation>;
 export type UpdateSpaceCreatorMutationResult = Apollo.MutationResult<UpdateSpaceCreatorMutation>;
 export type UpdateSpaceCreatorMutationOptions = Apollo.BaseMutationOptions<UpdateSpaceCreatorMutation, UpdateSpaceCreatorMutationVariables>;
+export const UpsertRoute53RecordDocument = gql`
+    mutation UpsertRoute53Record($spaceId: String!) {
+  upsertRoute53Record(spaceId: $spaceId) {
+    ttl
+    records
+    name
+    type
+  }
+}
+    `;
+export type UpsertRoute53RecordMutationFn = Apollo.MutationFunction<UpsertRoute53RecordMutation, UpsertRoute53RecordMutationVariables>;
+
+/**
+ * __useUpsertRoute53RecordMutation__
+ *
+ * To run a mutation, you first call `useUpsertRoute53RecordMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertRoute53RecordMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertRoute53RecordMutation, { data, loading, error }] = useUpsertRoute53RecordMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *   },
+ * });
+ */
+export function useUpsertRoute53RecordMutation(baseOptions?: Apollo.MutationHookOptions<UpsertRoute53RecordMutation, UpsertRoute53RecordMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpsertRoute53RecordMutation, UpsertRoute53RecordMutationVariables>(UpsertRoute53RecordDocument, options);
+      }
+export type UpsertRoute53RecordMutationHookResult = ReturnType<typeof useUpsertRoute53RecordMutation>;
+export type UpsertRoute53RecordMutationResult = Apollo.MutationResult<UpsertRoute53RecordMutation>;
+export type UpsertRoute53RecordMutationOptions = Apollo.BaseMutationOptions<UpsertRoute53RecordMutation, UpsertRoute53RecordMutationVariables>;
+export const UpsertVercelDomainRecordDocument = gql`
+    mutation UpsertVercelDomainRecord($spaceId: String!) {
+  upsertVercelDomainRecord(spaceId: $spaceId) {
+    apexName
+    createdAt
+    gitBranch
+    name
+    projectId
+    redirect
+    updatedAt
+    verified
+  }
+}
+    `;
+export type UpsertVercelDomainRecordMutationFn = Apollo.MutationFunction<UpsertVercelDomainRecordMutation, UpsertVercelDomainRecordMutationVariables>;
+
+/**
+ * __useUpsertVercelDomainRecordMutation__
+ *
+ * To run a mutation, you first call `useUpsertVercelDomainRecordMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertVercelDomainRecordMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertVercelDomainRecordMutation, { data, loading, error }] = useUpsertVercelDomainRecordMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *   },
+ * });
+ */
+export function useUpsertVercelDomainRecordMutation(baseOptions?: Apollo.MutationHookOptions<UpsertVercelDomainRecordMutation, UpsertVercelDomainRecordMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpsertVercelDomainRecordMutation, UpsertVercelDomainRecordMutationVariables>(UpsertVercelDomainRecordDocument, options);
+      }
+export type UpsertVercelDomainRecordMutationHookResult = ReturnType<typeof useUpsertVercelDomainRecordMutation>;
+export type UpsertVercelDomainRecordMutationResult = Apollo.MutationResult<UpsertVercelDomainRecordMutation>;
+export type UpsertVercelDomainRecordMutationOptions = Apollo.BaseMutationOptions<UpsertVercelDomainRecordMutation, UpsertVercelDomainRecordMutationVariables>;
 export const TimelinesDocument = gql`
     query Timelines($spaceId: String!) {
   timelines(spaceId: $spaceId) {

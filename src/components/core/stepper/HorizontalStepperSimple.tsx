@@ -16,9 +16,6 @@ const getStepStatus = (stepId: string, currentStepId: string): StepStatus => {
   const currentStepIndex = initialSteps.findIndex((step) => step.id === currentStepId);
   const stepIndex = initialSteps.findIndex((step) => step.id === stepId);
 
-  console.log('currentStepIndex', currentStepIndex);
-  console.log('stepIndex', stepIndex);
-
   if (stepIndex < currentStepIndex) {
     return 'complete';
   } else if (stepIndex === currentStepIndex) {
@@ -35,10 +32,6 @@ const HorizontalStepperSimple: React.FC<StepperItemProps> = ({ currentStepId, st
         {steps.map((step) => {
           const index = steps.findIndex((s) => step.id === s.id) + 1;
           const status = getStepStatus(steps[0].id, currentStepId);
-
-          console.log('stepId', step.id);
-          console.log('currentStepId', currentStepId);
-          console.log('status', status);
           return (
             <li key={step.id} className="md:flex-1">
               {status === 'complete' ? (

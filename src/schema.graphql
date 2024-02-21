@@ -1094,6 +1094,7 @@ type Mutation {
   upsertSpaceLoaderInfo(input: SpaceLoadersInfoInput!, spaceId: String!): Space!
   upsertSummaryOfDiscoursePost(input: UpsertSummaryOfDiscoursePostInput!, spaceId: String!): DiscoursePost!
   upsertTimeline(input: UpsertTimelineInput!, spaceId: String!): Timeline!
+  upsertVercelDomainRecord(spaceId: String!): VercelDomain!
 }
 
 type OpenAIChatCompletionChoice {
@@ -1269,7 +1270,6 @@ type Query {
   rawGitCourse(key: String!, spaceId: String!): RawGitCourse!
   rawGitCourses(spaceId: String!): [RawGitCourse!]!
   route53Record(spaceId: String!): Route53Record
-  route53Records: [Route53Record!]!
   scrapedUrlInfos(spaceId: String!, websiteScrapingInfoId: String!): [ScrapedUrlInfo!]!
   searchChatbotFAQs(query: String!, spaceId: String!): [SearchedChatbotFAQ!]!
   shortVideo(id: String!, spaceId: String!): ShortVideo!
@@ -1282,7 +1282,7 @@ type Query {
   spaces: [Space!]
   timeline(spaceId: String!, timelineId: String!): Timeline!
   timelines(spaceId: String!): [Timeline!]!
-  vercelDomainRecords: [VercelDomain!]!
+  vercelDomainRecord(spaceId: String!): VercelDomain
   websiteScrapingInfos(spaceId: String!): [WebsiteScrapingInfo!]!
 }
 
@@ -1904,12 +1904,12 @@ input UsernameAndNameInput {
 
 type VercelDomain {
   apexName: String!
-  createdAt: Int
+  createdAt: DateTimeISO
   gitBranch: String
   name: String!
   projectId: String!
   redirect: String
-  updatedAt: Int
+  updatedAt: DateTimeISO
   verified: Boolean!
 }
 

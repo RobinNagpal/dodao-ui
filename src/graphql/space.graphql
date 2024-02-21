@@ -131,7 +131,25 @@ query SpaceDiscordGuild($spaceId: String!) {
 }
 
 query Route53Record($spaceId: String!) {
-  payload: route53Record(spaceId: $spaceId)
+  payload: route53Record(spaceId: $spaceId) {
+    type
+    name
+    records
+    ttl
+  }
+}
+
+query VercelDomainRecord($spaceId: String!) {
+  vercelDomainRecord(spaceId: $spaceId) {
+    apexName
+    createdAt
+    gitBranch
+    name
+    projectId
+    redirect
+    updatedAt
+    verified
+  }
 }
 
 mutation UpsertSpaceFeatures($spaceId: String!, $features: [String!]!) {
@@ -231,5 +249,27 @@ mutation UpdateThemeColors($spaceId: ID!, $themeColors: ThemeColorsInput!) {
 mutation UpdateSpaceCreator($spaceId: String!, $id: String!) {
   updateSpaceCreator(spaceId: $spaceId, creator: $id) {
     ...SpaceWithIntegrations
+  }
+}
+
+mutation UpsertRoute53Record($spaceId: String!) {
+  upsertRoute53Record(spaceId: $spaceId) {
+    ttl
+    records
+    name
+    type
+  }
+}
+
+mutation UpsertVercelDomainRecord($spaceId: String!) {
+  upsertVercelDomainRecord(spaceId: $spaceId) {
+    apexName
+    createdAt
+    gitBranch
+    name
+    projectId
+    redirect
+    updatedAt
+    verified
   }
 }
