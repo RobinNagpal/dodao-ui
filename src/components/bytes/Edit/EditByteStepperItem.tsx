@@ -378,7 +378,6 @@ Drawing from the detailed information provided, particularly the detail's name a
           id={step.uuid}
           modelValue={step.content}
           generateImagePromptFn={() => promptForImagePrompt}
-          getCurrentStepNameAndContent={() => ({ name: step.name, content: step.content })}
           placeholder={'Contents'}
           onUpdate={updateStepContent}
           spaceId={space.id}
