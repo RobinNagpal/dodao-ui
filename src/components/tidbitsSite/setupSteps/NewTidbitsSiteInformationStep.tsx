@@ -15,7 +15,7 @@ interface NewSiteInformationProps {
   onSuccessfulSave: () => void;
 }
 
-export default function NewSiteInformation({ onSuccessfulSave }: NewSiteInformationProps) {
+export default function NewTidbitsSiteInformationStep({ onSuccessfulSave }: NewSiteInformationProps) {
   const createSpaceHelper = useCreateSpace();
   const { space, setSpaceField, createSpace, upserting } = createSpaceHelper;
   const { showNotification } = useNotificationContext();

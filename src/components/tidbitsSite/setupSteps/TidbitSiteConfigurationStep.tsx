@@ -1,7 +1,7 @@
 import { useGetSpaceFromCreatorQuery } from '@/graphql/generated/generated-types';
 import { useSession } from 'next-auth/react';
 
-export default function Configuration() {
+export default function TidbitSiteConfigurationStep() {
   const { data: session } = useSession();
   const { data, loading } = useGetSpaceFromCreatorQuery({
     variables: {

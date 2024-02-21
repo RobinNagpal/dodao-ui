@@ -1085,6 +1085,7 @@ type Mutation {
   upsertProjectByteCollection(input: UpsertProjectByteCollectionInput!, projectId: String!): ProjectByteCollection!
   upsertProjectGalaxyAccessToken(accessToken: String!, spaceId: String!): Space!
   upsertProjectShortVideo(projectId: String!, shortVideo: ProjectShortVideoInput!): ProjectShortVideo!
+  upsertRoute53Record(spaceId: String!): Route53Record!
   upsertShortVideo(shortVideo: ShortVideoInput!, spaceId: String!): ShortVideo!
   upsertSimulation(input: UpsertSimulationInput!, spaceId: String!): Simulation!
   upsertSpaceAcademyRepository(academyRepository: String!, spaceId: String!): Space!
@@ -1267,6 +1268,7 @@ type Query {
   projects(type: String): [Project!]!
   rawGitCourse(key: String!, spaceId: String!): RawGitCourse!
   rawGitCourses(spaceId: String!): [RawGitCourse!]!
+  route53Record(spaceId: String!): Route53Record
   route53Records: [Route53Record!]!
   scrapedUrlInfos(spaceId: String!, websiteScrapingInfoId: String!): [ScrapedUrlInfo!]!
   searchChatbotFAQs(query: String!, spaceId: String!): [SearchedChatbotFAQ!]!
