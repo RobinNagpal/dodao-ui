@@ -8,7 +8,7 @@ import { slugify } from '@/utils/auth/slugify';
 import { useEffect, useState } from 'react';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import { isEmpty } from 'lodash';
-import useCreateSpace from '@/components/newSpace/new/useNewSpace';
+import useCreateSpace from '@/components/tidbitsSite/setupSteps/useNewSpace';
 import { useSession } from 'next-auth/react';
 
 interface NewSiteInformationProps {
