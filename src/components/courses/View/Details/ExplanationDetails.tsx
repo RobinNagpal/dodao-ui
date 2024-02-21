@@ -213,7 +213,6 @@ const ExplanationDetails: FC<CourseExplanationProps> = ({ course, isCourseAdmin,
       import('plyr').then(({ default: Plyr }) => {
         const players = Array.from(document.querySelectorAll('.play-js-player'));
         const plyrInstances = players.map((p: any) => new Plyr(p));
-
         return () => {
           plyrInstances.forEach((player) => player.destroy());
         };
