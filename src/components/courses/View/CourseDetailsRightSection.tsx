@@ -7,7 +7,7 @@ import CourseSubmission from '@/components/courses/View/Details/CourseSubmission
 import dynamic from 'next/dynamic';
 
 const ExplanationDetails = dynamic(() => import('@/components/courses/View/Details/ExplanationDetails'), {
-  ssr: false, // Disable server-side rendering for this component
+  ssr: false,
 });
 
 import QuestionDetails from '@/components/courses/View/Details/QuestionDetails';
