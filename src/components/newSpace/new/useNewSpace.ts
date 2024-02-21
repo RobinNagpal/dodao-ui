@@ -1,26 +1,22 @@
 import { useNotificationContext } from '@/contexts/NotificationContext';
-import { UpsertSpaceInput, useCreateSpaceMutation, useExtendedSpaceQuery, useUpdateSpaceMutation } from '@/graphql/generated/generated-types';
-import { slugify } from '@/utils/auth/slugify';
+import { UpsertSpaceInput, useCreateSpaceMutation } from '@/graphql/generated/generated-types';
 import { useState } from 'react';
-
-export interface SpaceEditType extends Omit<UpsertSpaceInput, 'id'> {
-  id?: string;
-}
+import { useSession } from 'next-auth/react';
 
 export type UseEditSpaceHelper = {
   setSpaceIntegrationField: (field: keyof UpsertSpaceInput['spaceIntegrations'], value: any) => void;
   setSpaceField: (field: keyof UpsertSpaceInput, value: any) => void;
   setInviteLinkField: (field: keyof UpsertSpaceInput['inviteLinks'], value: any) => void;
-  initialize: () => Promise<void>;
-  space: SpaceEditType;
-  upsertSpace: () => Promise<void>;
+  space: UpsertSpaceInput;
+  createSpace: () => Promise<void>;
   upserting: boolean;
 };
 
-export default function useEditSpace(spaceId?: string): UseEditSpaceHelper {
+export default function useCreateSpace(): UseEditSpaceHelper {
   const { showNotification } = useNotificationContext();
-  const [space, setSpace] = useState<SpaceEditType>({
-    id: spaceId,
+  const { data: session } = useSession();
+  const [space, setSpace] = useState<UpsertSpaceInput>({
+    id: '',
     admins: [],
     adminUsernames: [],
     adminUsernamesV1: [],
@@ -44,46 +40,7 @@ export default function useEditSpace(spaceId?: string): UseEditSpaceHelper {
 
   const [upserting, setUpserting] = useState(false);
 
-  const { refetch: querySpace } = useExtendedSpaceQuery({
-    variables: {
-      spaceId: spaceId!,
-    },
-    skip: true,
-  });
-
-  const [updateSpaceMutation] = useUpdateSpaceMutation();
   const [createSpaceMutation] = useCreateSpaceMutation();
-
-  async function initialize() {
-    if (spaceId) {
-      const response = await querySpace();
-      const spaceResponse = response.data.space;
-      if (spaceResponse) {
-        setSpace({
-          id: spaceResponse.id,
-          admins: spaceResponse.admins,
-          adminUsernames: spaceResponse.adminUsernames,
-          adminUsernamesV1: spaceResponse.adminUsernamesV1.map((admin) => ({ username: admin.username, nameOfTheUser: admin.nameOfTheUser })) || [],
-          avatar: spaceResponse.avatar || '',
-          creator: spaceResponse.creator,
-          features: spaceResponse.features,
-          inviteLinks: spaceResponse.inviteLinks || {},
-          name: spaceResponse.name,
-          type: space.type,
-          skin: spaceResponse.skin,
-          domains: spaceResponse.domains,
-          botDomains: spaceResponse.botDomains || [],
-          spaceIntegrations: {
-            academyRepository: spaceResponse.spaceIntegrations?.academyRepository || null,
-            discordGuildId: spaceResponse.spaceIntegrations?.discordGuildId || null,
-            gitGuideRepositories: spaceResponse.spaceIntegrations?.gitGuideRepositories || [],
-            gnosisSafeWallets: spaceResponse.spaceIntegrations?.gnosisSafeWallets || [],
-            projectGalaxyTokenLastFour: spaceResponse.spaceIntegrations?.projectGalaxyTokenLastFour || null,
-          },
-        });
-      }
-    }
-  }
 
   function setSpaceField(field: keyof UpsertSpaceInput, value: any) {
     setSpace((prev) => ({ ...prev, [field]: value }));
@@ -97,17 +54,17 @@ export default function useEditSpace(spaceId?: string): UseEditSpaceHelper {
     setSpace((prev) => ({ ...prev, inviteLinks: { ...prev.inviteLinks, [field]: value } }));
   }
 
-  function getSpaceInput(spaceId: string): UpsertSpaceInput {
+  function getSpaceInput(): UpsertSpaceInput {
     return {
-      id: spaceId,
+      id: space.id,
       admins: space.admins,
-      adminUsernames: space.adminUsernames,
+      type: space.type,
+      adminUsernames: [],
       adminUsernamesV1: space.adminUsernamesV1.map((admin) => ({ username: admin.username, nameOfTheUser: admin.nameOfTheUser })) || [],
       avatar: space.avatar,
-      creator: space.creator,
+      creator: session?.username!,
       features: space.features,
       name: space.name,
-      type: space.type,
       skin: space.skin,
       domains: space.domains,
       botDomains: space.botDomains || [],
@@ -132,24 +89,15 @@ export default function useEditSpace(spaceId?: string): UseEditSpaceHelper {
     };
   }
 
-  async function upsertSpace() {
+  async function createSpace() {
     setUpserting(true);
     try {
       let response;
-      if (spaceId?.trim()) {
-        response = await updateSpaceMutation({
-          variables: {
-            spaceInput: getSpaceInput(spaceId),
-          },
-        });
-      } else {
-        response = await createSpaceMutation({
-          variables: {
-            spaceInput: getSpaceInput(slugify(space.name)),
-          },
-        });
-      }
-
+      response = await createSpaceMutation({
+        variables: {
+          spaceInput: getSpaceInput(),
+        },
+      });
       if (response.data) {
         showNotification({ type: 'success', message: 'Space upserted successfully' });
       } else {
@@ -166,11 +114,10 @@ export default function useEditSpace(spaceId?: string): UseEditSpaceHelper {
 
   return {
     space,
-    initialize,
     setSpaceField,
     setSpaceIntegrationField,
     setInviteLinkField,
-    upsertSpace,
+    createSpace,
     upserting,
   };
 }

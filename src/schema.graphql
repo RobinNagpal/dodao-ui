@@ -1061,6 +1061,7 @@ type Mutation {
   updateSeoOfProjectShortVideo(projectId: String!, seoMeta: SEOMetaInput): ProjectShortVideo!
   updateSocialSettings(input: SocialSettingsInput!, spaceId: String!): Space!
   updateSpace(spaceInput: UpsertSpaceInput!): Space!
+  updateSpaceCreator(creator: String!, spaceId: String!): Space!
   updateThemeColors(spaceId: ID!, themeColors: ThemeColorsInput!): Space!
   updateTopicBasicInfo(spaceId: String!, topicInfo: UpdateTopicBasicInfoInput!): GitCourse!
   updateTopicExplanation(explanationInfo: UpdateTopicExplanationInput!, spaceId: String!): GitCourse!
@@ -1245,6 +1246,7 @@ type Query {
   discourseIndexRuns(spaceId: String!): [DiscourseIndexRun!]!
   discoursePostComments(postId: String!, spaceId: String!): [DiscoursePostComment!]!
   discoursePosts(spaceId: String!): [DiscoursePost!]!
+  getSpaceFromCreator(creatorUsername: String): Space
   gitCourse(courseKey: String!, spaceId: String!): GitCourse!
   gitCourseIntegrations(key: String!, spaceId: String!): CourseIntegrations
   gitCourseSubmission(courseKey: String!, spaceId: String!): GitCourseSubmission
@@ -1268,6 +1270,7 @@ type Query {
   route53Records: [Route53Record!]!
   scrapedUrlInfos(spaceId: String!, websiteScrapingInfoId: String!): [ScrapedUrlInfo!]!
   searchChatbotFAQs(query: String!, spaceId: String!): [SearchedChatbotFAQ!]!
+  shortVideo(id: String!, spaceId: String!): ShortVideo!
   shortVideos(spaceId: String!): [ShortVideo!]
   simulation(simulationId: String!, spaceId: String!): Simulation!
   simulations(spaceId: String!): [Simulation!]!
@@ -1441,6 +1444,7 @@ type Space {
   socialSettings: SocialSettings!
   spaceIntegrations: SpaceIntegrations
   themeColors: ThemeColors
+  type: String!
 }
 
 type SpaceFilters {
@@ -1822,6 +1826,7 @@ input UpsertSpaceInput {
   name: String!
   skin: String!
   spaceIntegrations: SpaceIntegrationsInput!
+  type: String!
 }
 
 input UpsertSummaryOfDiscoursePostInput {

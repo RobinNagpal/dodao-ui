@@ -20,3 +20,9 @@ query ShortVideos($spaceId: String!) {
     ...ShortVideo
   }
 }
+
+query ShortVideo($spaceId: String!, $id: String!) {
+  shortVideo(spaceId: $spaceId, id: $id){
+    ...ShortVideo
+  }
+}
