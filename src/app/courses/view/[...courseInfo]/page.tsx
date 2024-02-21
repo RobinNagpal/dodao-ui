@@ -20,10 +20,12 @@ export async function generateMetadata({ params }: CourseViewProps): Promise<Met
   const space = (await getSpaceServerSide())!;
   const course = await getApiResponse<CourseDetailsFragment>(space, `courses/${courseKey}`);
   let description = `\n\n${course.title}\n\n${course.details}`;
+  let keywords = [course.title];
   if (topicKey !== undefined) {
     const topic = course.topics.find((t) => t.key === topicKey);
     if (topic) {
       description += `\n\nTopic: ${topic.title}\nDetails: ${topic.details}`;
+      keywords.push(topic.title);
     }
   }
   if (itemType !== undefined) {
@@ -33,14 +35,17 @@ export async function generateMetadata({ params }: CourseViewProps): Promise<Met
         case 'readings':
           const currentReading = topic.readings.find((r) => r.uuid == itemKey);
           description = `\n\n${currentReading?.title}\n\n${currentReading?.details}`;
+          keywords.push(currentReading?.title!);
           break;
         case 'summaries':
           const currentSummary = topic.summaries.find((s) => s.key == itemKey);
           description = `\n\n${currentSummary?.title}\n\n${currentSummary?.details}`;
+          keywords.push(currentSummary?.title!);
           break;
         case 'explanations':
           const currentExplanation = topic.explanations.find((s) => s.key == itemKey);
           description = `\n\n${currentExplanation?.title}\n\n${currentExplanation?.details}`;
+          keywords.push(currentExplanation?.title!);
           break;
         default:
           break;
@@ -50,7 +55,7 @@ export async function generateMetadata({ params }: CourseViewProps): Promise<Met
   return {
     title: course.title,
     description: description,
-    keywords: [],
+    keywords: keywords,
   };
 }
 

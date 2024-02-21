@@ -37,7 +37,6 @@ import 'prismjs/components/prism-yaml';
 import { useRouter } from 'next/navigation';
 import React, { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import Plyr from 'plyr';
 import 'plyr/dist/plyr.css';
 
 const RightDiv = styled.div`
@@ -210,7 +209,15 @@ const ExplanationDetails: FC<CourseExplanationProps> = ({ course, isCourseAdmin,
 
   // Special case for not adding any dependencies to the use effect as we want this to run on every render.
   useEffect(() => {
-    Array.from(document.querySelectorAll('.play-js-player')).map((p: any) => new Plyr(p));
+    if (typeof window !== 'undefined') {
+      import('plyr').then(({ default: Plyr }) => {
+        const players = Array.from(document.querySelectorAll('.play-js-player'));
+        const plyrInstances = players.map((p: any) => new Plyr(p));
+        return () => {
+          plyrInstances.forEach((player) => player.destroy());
+        };
+      });
+    }
   });
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
