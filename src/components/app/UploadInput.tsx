@@ -48,10 +48,8 @@ interface UploadInputProps {
   allowedFileTypes?: string[];
   error?: any;
   helpText?: string;
-  name?: string;
-  content?: string;
-  byte?: EditByteType;
   imageUploaded?: (url: string) => void;
+  generateImagePromptFn?: () => string;
 }
 
 export default function UploadInput({
@@ -67,9 +65,7 @@ export default function UploadInput({
   error,
   helpText,
   imageUploaded,
-  name,
-  byte,
-  content,
+  generateImagePromptFn,
 }: UploadInputProps) {
   const inputId = uuidV4();
   const [uploadFromUnsplash, setUploadFromUnsplash] = React.useState(false);
@@ -79,29 +75,6 @@ export default function UploadInput({
 
   const [askChatCompletionAiMutation] = useAskChatCompletionAiMutation();
   const [generateImageMutation] = useGenerateImageMutation();
-
-  var nameAndContentOfSteps = '';
-
-  byte?.steps.forEach((step, index) => {
-    let name = step.name;
-    let content = step.content;
-    nameAndContentOfSteps += `Step ${index + 1}: ${name} \n ${content} \n`;
-  });
-  let promptForImagePrompt = `
-Let's create an image prompt based on a tidbit named "${byte?.name}". 
-Here's a brief overview:
-- Tidbit Name: ${byte?.name}
-- Tidbit Content: ${byte?.content}
-- Steps Overview: 
-  ${nameAndContentOfSteps}
-This overview provides a high-level insight into the tidbit.
-
-Now, focusing on a specific step:
-- Step Name: ${name}
-- Step Content: ${content}
-
-Based on the above details, especially the step's name and content, craft an image prompt that encapsulates the essence of this step. Consider incorporating elements that reflect its themes, emotions, or key points. The goal is to generate an image that visually represents this particular step in a meaningful way.
-`;
 
   function handleFinishedUploading(imageUrl: string): void {
     onInput(imageUrl);
@@ -133,7 +106,7 @@ Based on the above details, especially the step's name and content, craft an ima
           messages: [
             {
               role: ChatCompletionRequestMessageRoleEnum.User,
-              content: promptForImagePrompt,
+              content: generateImagePromptFn!(),
             },
           ],
           n: 1,

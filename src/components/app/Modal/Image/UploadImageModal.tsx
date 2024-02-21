@@ -11,12 +11,13 @@ export interface UploadImageModalProps {
   open: boolean;
   content?: string;
   name?: string;
-  byte?: EditByteType;
+
   onClose: () => void;
   imageUploaded: (url: string) => void;
+  generateImagePromptFn?: () => string;
 }
 export default function UploadImageModal(props: UploadImageModalProps) {
-  const { imageType, objectId, spaceId, open, onClose, imageUploaded, name, content, byte } = props;
+  const { imageType, objectId, spaceId, open, onClose, imageUploaded, name, content, generateImagePromptFn } = props;
   const [imageURL, setImageURL] = useState<string>();
 
   return (
@@ -29,9 +30,7 @@ export default function UploadImageModal(props: UploadImageModalProps) {
           objectId={objectId}
           error={null}
           spaceId={spaceId}
-          name={name}
-          content={content}
-          byte={byte}
+          generateImagePromptFn={generateImagePromptFn}
           onInput={(url) => {
             setImageURL(url);
           }}

@@ -319,6 +319,29 @@ export default function EditByteStepperItem({
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
+  let nameAndContentOfSteps = '';
+
+  byte?.steps.forEach((step, index) => {
+    let name = step.name;
+    let content = step.content;
+    nameAndContentOfSteps += `Step ${index + 1}: ${name} \n ${content} \n`;
+  });
+  const promptForImagePrompt = `
+Let's create an image prompt based on a tidbit named "${byte?.name}". 
+Here's a brief overview:
+- Tidbit Name: ${byte?.name}
+- Tidbit Content: ${byte?.content}
+- Steps Overview: 
+  ${nameAndContentOfSteps}
+This overview provides a high-level insight into the tidbit.
+
+Now, focusing on a specific step:
+- Step Name: ${step.name}
+- Step Content: ${step.content}
+
+Based on the above details, especially the step's name and content, craft an image prompt that encapsulates the essence of this step. Consider incorporating elements that reflect its themes, emotions, or key points. The goal is to generate an image that visually represents this particular step in a meaningful way.
+`;
+
   return (
     <StyledStepItemContainer className="w-full">
       <div className={`${byteErrors?.steps?.[step.uuid] ? 'error-event-border' : ''}`}>
@@ -354,8 +377,7 @@ export default function EditByteStepperItem({
         <MarkdownEditor
           id={step.uuid}
           modelValue={step.content}
-          byteStepName={step.name}
-          byte={byte}
+          generateImagePromptFn={() => promptForImagePrompt}
           placeholder={'Contents'}
           onUpdate={updateStepContent}
           spaceId={space.id}
