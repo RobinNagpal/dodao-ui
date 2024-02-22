@@ -1,9 +1,9 @@
+import SelectImageInputModal from '@/components/app/Image/SelectImageInputModal';
 import generateNewMarkdownContentPrompt from '@/components/app/Markdown/generateNewMarkdownContentPrompt';
 import { markdownAIRewriteCommandFacotry } from '@/components/app/Markdown/MarkdownAICommand';
 import rewriteMarkdownContentPrompt from '@/components/app/Markdown/rewriteMarkdownContentPrompt';
 import SelectAIGeneratorModal from '@/components/app/Markdown/SelectAIGeneratorModal';
 import GenerateContentUsingAIModal from '@/components/app/Modal/AI/GenerateContentUsingAIModal';
-import UploadImageModal from '@/components/app/Modal/Image/UploadImageModal';
 import PhotoIcon from '@heroicons/react/24/solid/PhotoIcon';
 import RobotIconSolid from '@/components/core/icons/RobotIconSolid';
 import { useNotificationContext } from '@/contexts/NotificationContext';
@@ -34,6 +34,7 @@ interface MarkdownEditorProps extends PropsWithChildren {
   label?: React.ReactNode;
   info?: React.ReactNode;
   className?: string;
+  generateImagePromptFn?: () => string;
 }
 
 const MainDiv = styled.div`
@@ -131,6 +132,7 @@ function MarkdownEditor({
   imageType,
   placeholder = '',
   modelValue = '',
+  generateImagePromptFn,
   error,
   editorClass,
   editorStyles,
@@ -144,7 +146,7 @@ function MarkdownEditor({
   const [showSelectAIModal, setShowSelectAIModal] = useState(false);
   const [showAddNewContentModal, setShowAddNewContentModal] = useState(false);
   const [showRewriteContentModal, setShowRewriteContentModal] = useState(false);
-  const [showImageUploadModal, setShowImageUploadModal] = useState(false);
+  const [selectImageUploadModal, setSelectImageUploadModal] = useState(false);
 
   const { showNotification } = useNotificationContext();
 
@@ -219,7 +221,7 @@ function MarkdownEditor({
               icon: <PhotoIcon />,
               buttonProps: { title: 'Upload Image' },
               execute: () => {
-                setShowImageUploadModal(true);
+                setSelectImageUploadModal(true);
               },
             },
             markdownAIRewriteCommandFacotry(rewriteContent),
@@ -238,13 +240,14 @@ function MarkdownEditor({
 
       {info && <p className="mt-1 text-xs">{info}</p>}
       {typeof error === 'string' && <p className="mt-2 text-sm text-red-600">{error}</p>}
-      {showImageUploadModal && (
-        <UploadImageModal
-          open={showImageUploadModal}
-          onClose={() => setShowImageUploadModal(false)}
+      {selectImageUploadModal && (
+        <SelectImageInputModal
+          open={selectImageUploadModal}
+          onClose={() => setSelectImageUploadModal(false)}
           imageType={imageType}
           objectId={objectId}
           spaceId={spaceId}
+          generateImagePromptFn={generateImagePromptFn}
           imageUploaded={(imageUrl) => {
             handleInputContent(
               modelValue +
@@ -256,7 +259,7 @@ function MarkdownEditor({
 
 `
             );
-            setShowImageUploadModal(false);
+            setSelectImageUploadModal(false);
           }}
         />
       )}

@@ -11,9 +11,10 @@ export interface UploadImageModalProps {
   onClose: () => void;
   imageUploaded: (url: string) => void;
 }
-export default function UploadImageModal(props: UploadImageModalProps) {
+export default function UploadImageFromDeviceModal(props: UploadImageModalProps) {
   const { imageType, objectId, spaceId, open, onClose, imageUploaded } = props;
   const [imageURL, setImageURL] = useState<string>();
+
   return (
     <FullPageModal open={open} onClose={onClose} title={'Upload Image'}>
       <div className="p-16 text-left">
@@ -28,7 +29,6 @@ export default function UploadImageModal(props: UploadImageModalProps) {
             setImageURL(url);
           }}
           onLoading={() => {}}
-          imageUploaded={imageUploaded}
         />
         <div className="mt-4">
           <Button onClick={onClose}>Cancel</Button>

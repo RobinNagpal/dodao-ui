@@ -1,11 +1,10 @@
 import Button from '@/components/core/buttons/Button';
 import ErrorWithAccentBorder from '@/components/core/errors/ErrorWithAccentBorder';
 import Input from '@/components/core/input/Input';
-import StyledSelect from '@/components/core/select/StyledSelect';
-import { Table, TableRow } from '@/components/core/table/Table';
 import TextareaAutosize from '@/components/core/textarea/TextareaAutosize';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import { ChatCompletionRequestMessageRoleEnum, useAskChatCompletionAiMutation, useGenerateImageMutation } from '@/graphql/generated/generated-types';
+import { get } from 'lodash';
 import React, { useState } from 'react';
 
 const defaultPrompt = `
@@ -46,7 +45,7 @@ export default function GenerateImage() {
     generateImagesForm
       ? JSON.parse(generateImagesForm)
       : {
-          numberOfImages: 4,
+          numberOfImages: 1,
           contents: '',
           topic: '',
           openAIPrompt: defaultPrompt,
@@ -75,16 +74,15 @@ export default function GenerateImage() {
     });
   };
 
-  const [imagePrompts, setImagePrompts] = useState<string[]>([]);
-
-  const [error, setError] = useState<string | null>(null);
+  const [imagePrompts, setImagePrompts] = useState<string>();
 
   const [generatingImagePrompts, setGeneratingImagePrompts] = useState(false);
+  const [regeneratingImagePrompts, setRegeneratingImagePrompts] = useState(false);
   const [generatingImages, setGeneratingImages] = useState(false);
 
   const [generateImageMutation] = useGenerateImageMutation();
-  const [imageUrls, setImageUrls] = useState<string[]>([]);
-  const { showNotification } = useNotificationContext();
+  const [imageUrls, setImageUrls] = useState<string>();
+  const [promptGenerated, setPromptGenerated] = useState(false);
 
   const [askChatCompletionAiMutation] = useAskChatCompletionAiMutation();
   async function generateImage(prompt: string): Promise<string | undefined> {
@@ -104,20 +102,14 @@ export default function GenerateImage() {
   }
 
   const generateImages = async () => {
-    const imageUrls: string[] = [];
-    for (const prompt of imagePrompts) {
-      const url = await generateImage(prompt);
-      if (url) {
-        imageUrls.push(url);
-        setImageUrls([...imageUrls]);
-      }
+    const url = await generateImage(imagePrompts!);
+    if (url) {
+      setImageUrls(url);
     }
-
-    setImageUrls(imageUrls);
   };
 
-  const generateImagePrompts = async () => {
-    setGeneratingImagePrompts(true);
+  const generateImagePrompts = async (regenerate: boolean = false) => {
+    regenerate ? setRegeneratingImagePrompts(true) : setGeneratingImagePrompts(true);
     const response = await askChatCompletionAiMutation({
       variables: {
         input: {
@@ -132,8 +124,9 @@ export default function GenerateImage() {
       },
     });
     const openAIGeneratedPrompts = response.data?.askChatCompletionAI.choices.map((choice) => choice.message?.content).filter((content) => content);
-    setImagePrompts((openAIGeneratedPrompts as string[]) || []);
-    setGeneratingImagePrompts(false);
+    setImagePrompts((openAIGeneratedPrompts![0] as string) || '');
+    regenerate ? setRegeneratingImagePrompts(false) : setGeneratingImagePrompts(false);
+    setPromptGenerated(true);
   };
 
   return (
@@ -157,17 +150,6 @@ export default function GenerateImage() {
         className="mt-6"
         placeholder={'Prompt that will be used to generate the image.'}
       />
-      <StyledSelect
-        label={'Number of Images'}
-        selectedItemId={form.numberOfImages.toString()}
-        items={[
-          { id: '1', label: '1' },
-          { id: '2', label: '2' },
-          { id: '3', label: '3' },
-          { id: '4', label: '4' },
-        ]}
-        setSelectedItemId={(value) => updateFormField('numberOfImages', value ? parseInt(value) : 2)}
-      />
       <TextareaAutosize
         label="Open AI Prompt"
         id="openAIPrompt"
@@ -186,42 +168,57 @@ export default function GenerateImage() {
       <Button
         loading={generatingImagePrompts}
         onClick={() => {
-          setImagePrompts([]);
+          setImagePrompts('');
           generateImagePrompts();
         }}
         variant="contained"
         primary
         className="mt-4"
       >
-        Generate Image Prompts
+        Generate Image Prompt
       </Button>
 
-      {imagePrompts.length > 0 && (
+      {promptGenerated && (
         <>
-          <Table
-            data={imagePrompts.map(
-              (ip, index): TableRow => ({
-                item: ip,
-                columns: [`${index}`, ip],
-                id: index.toString(),
-              })
-            )}
-            columnsHeadings={['S.No.', 'Prompt']}
-            columnsWidthPercents={[20, 80]}
+          <TextareaAutosize
+            label="Generated Prompt"
+            id="openAIPrompt"
+            autosize={true}
+            modelValue={imagePrompts}
+            minHeight={100}
+            onUpdate={(e) => {
+              const contents = e?.toString() || '';
+              setImagePrompts(contents);
+            }}
+            className="mt-6"
+            placeholder={'Prompt that will be used to generate the image.'}
+            infoText={'Prompt that will be used by Chat GPT to create image.'}
           />
+          <Button
+            loading={regeneratingImagePrompts}
+            onClick={() => {
+              setImagePrompts('');
+              generateImagePrompts(true);
+            }}
+            variant="contained"
+            primary
+            className="mt-4"
+          >
+            Regenerate Image Prompt
+          </Button>
           <Input label="Image Type" modelValue={form.imageType} onUpdate={(v) => updateFormField('imageType', v || '')} />
           <Button disabled={generatingImages} loading={generatingImages} onClick={generateImages} variant="contained" primary className="mt-4">
-            Generate Images
+            Generate Image
           </Button>
         </>
       )}
-      {imageUrls.length > 0 && (
-        <div className="w-full flex justify-start my-4">
-          {imageUrls.map((imageUrl) => (
-            <div className="mx-2" key={imageUrl}>
-              <img src={imageUrl} alt={'generated image'} width={512} />
+      {imageUrls && (
+        <div className="flex flex-col">
+          <div className="w-full flex justify-start my-4">
+            <div className="mx-2">
+              <img src={imageUrls} alt="generated image" width={256} height={256} />
             </div>
-          ))}
+          </div>
         </div>
       )}
     </div>

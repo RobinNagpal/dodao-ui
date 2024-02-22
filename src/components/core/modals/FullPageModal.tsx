@@ -36,7 +36,7 @@ export default function FullPageModal({ open, title, children, onClose, showClos
         </Transition.Child>
 
         <ModalContainer className={`fixed inset-0 z-10 overflow-y-auto`}>
-          <div className="flex min-h-full items-end justify-center text-center sm:items-center sm:p-0">
+          <div className="flex min-h-full items-end justify-center text-center sm:items-center sm:p-0 items-center">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
