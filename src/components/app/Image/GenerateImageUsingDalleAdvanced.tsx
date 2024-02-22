@@ -36,7 +36,6 @@ export default function GenerateImageUsingDalleAdvanced({ onInput, generateImage
 
     const imageUrl = response.data?.generateImage?.data?.map((d) => d.url).filter((url) => url)[0];
     setGeneratingImages(false);
-
     setImageUrl(imageUrl!);
   }
 
@@ -48,7 +47,7 @@ export default function GenerateImageUsingDalleAdvanced({ onInput, generateImage
           messages: [
             {
               role: ChatCompletionRequestMessageRoleEnum.User,
-              content: generateImagePromptFn!(),
+              content: imagePrompt,
             },
           ],
           n: 1,
@@ -62,7 +61,7 @@ export default function GenerateImageUsingDalleAdvanced({ onInput, generateImage
   };
 
   return (
-    <div className="text-left	">
+    <div className="text-left	p-4">
       <TextareaAutosize
         label="Open AI Prompt"
         id="openAIPrompt"
@@ -117,7 +116,7 @@ export default function GenerateImageUsingDalleAdvanced({ onInput, generateImage
           >
             Regenerate Image Prompt
           </Button>
-          <Button disabled={generatingImages} loading={generatingImages} onClick={() => generateImage()} variant="contained" primary className="mt-4">
+          <Button disabled={generatingImages} loading={generatingImages} onClick={() => generateImage()} variant="contained" primary className="mt-4 ml-2">
             Generate Image
           </Button>
         </>

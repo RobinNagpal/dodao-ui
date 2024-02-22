@@ -7,7 +7,7 @@ import ArrowUpTrayIcon from '@heroicons/react/24/solid/ArrowUpTrayIcon';
 import PhotoIcon from '@heroicons/react/24/solid/PhotoIcon';
 
 import React from 'react';
-import UploadImageFromDeviceModal from 'react-syntax-highlighter/dist/cjs/languages/prism/dart';
+import UploadImageFromDeviceModal from './UploadImageFromDeviceModal';
 import styled from 'styled-components';
 
 const UploadWrapper = styled.div`
@@ -36,15 +36,7 @@ export default function SelectImageInputModal({ imageType, objectId, spaceId, op
 
   if (imageUploadModalType === 'upload-from-device') {
     return (
-      <UploadImageFromDeviceModal
-        open={open}
-        onClose={onClose}
-        imageType={imageType}
-        objectId={objectId}
-        spaceId={spaceId}
-        generateImagePromptFn={generateImagePromptFn}
-        imageUploaded={imageUploaded}
-      />
+      <UploadImageFromDeviceModal open={open} onClose={onClose} imageType={imageType} objectId={objectId} spaceId={spaceId} imageUploaded={imageUploaded} />
     );
   }
 

@@ -46,6 +46,7 @@ export default function GenerateFromDalleModal({ open, onClose, onInput, generat
 
     const imageUrl = imageResponse.data?.generateImage?.data?.map((d) => d.url).filter((url) => url)[0];
     setGeneratedImageUrl(imageUrl!);
+    setGeneratingImage(false);
   }
 
   useEffect(() => {
@@ -55,7 +56,7 @@ export default function GenerateFromDalleModal({ open, onClose, onInput, generat
   return (
     <FullPageModal open={open} onClose={() => onClose()} title={'Generate Image using DALL·E'}>
       {enterManualPrompt ? (
-        <GenerateImageUsingDalleAdvanced onInput={onInput} generateImagePromptFn={() => ''} />
+        <GenerateImageUsingDalleAdvanced onInput={onInput} generateImagePromptFn={generateImagePromptFn} />
       ) : (
         <div className="h-[80vh] p-4 overflow-y-scroll flex flex-col space-y-4 justify-center items-center">
           <div className="relative" style={{ height: '450px', width: '450px' }}>

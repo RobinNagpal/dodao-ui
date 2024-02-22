@@ -20,16 +20,6 @@ depicts DETAILS. Strictly ensure the following rules while generating the descri
 - The image should be visually appealing, avoiding overly bright or clashing colours.
 `;
 
-interface StepNameAndContent {
-  name: string;
-  content: string;
-}
-
-interface GenerateImageProps {
-  imageUploaded?: (url: string) => void;
-  getCurrentStepNameAndContent?: () => StepNameAndContent;
-}
-
 interface GenerateImageForm {
   numberOfImages: number;
   contents: string;
@@ -48,25 +38,18 @@ ${form.openAIPrompt}
 `;
 }
 
-export default function GenerateImage({ imageUploaded, getCurrentStepNameAndContent }: GenerateImageProps) {
+export default function GenerateImage() {
   const generateImagesForm = localStorage.getItem('generate_images_form');
 
   const [form, setForm] = useState<GenerateImageForm>(
     generateImagesForm
       ? JSON.parse(generateImagesForm)
-      : getCurrentStepNameAndContent !== undefined
-      ? {
-          numberOfImages: 1,
-          contents: getCurrentStepNameAndContent!().content,
-          topic: getCurrentStepNameAndContent!().name,
-          openAIPrompt: defaultPrompt,
-          imageType: 'Oil Painting',
-        }
       : {
           numberOfImages: 1,
           contents: '',
           topic: '',
           openAIPrompt: defaultPrompt,
+          imageType: 'Oil Painting',
         }
   );
 
@@ -93,15 +76,12 @@ export default function GenerateImage({ imageUploaded, getCurrentStepNameAndCont
 
   const [imagePrompts, setImagePrompts] = useState<string>();
 
-  const [error, setError] = useState<string | null>(null);
-
   const [generatingImagePrompts, setGeneratingImagePrompts] = useState(false);
   const [regeneratingImagePrompts, setRegeneratingImagePrompts] = useState(false);
   const [generatingImages, setGeneratingImages] = useState(false);
 
   const [generateImageMutation] = useGenerateImageMutation();
   const [imageUrls, setImageUrls] = useState<string>();
-  const { showNotification } = useNotificationContext();
   const [promptGenerated, setPromptGenerated] = useState(false);
 
   const [askChatCompletionAiMutation] = useAskChatCompletionAiMutation();
@@ -239,17 +219,6 @@ export default function GenerateImage({ imageUploaded, getCurrentStepNameAndCont
               <img src={imageUrls} alt="generated image" width={256} height={256} />
             </div>
           </div>
-          <Button
-            disabled={!imageUrls}
-            variant="contained"
-            primary
-            onClick={() => {
-              imageUploaded!(imageUrls as string);
-            }}
-            className="mr-4 mt-2 self-start"
-          >
-            Select Image
-          </Button>
         </div>
       )}
     </div>
