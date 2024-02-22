@@ -505,6 +505,12 @@ export interface DiscoursePostComment {
   spaceId: Scalars['String'];
 }
 
+export interface DomainRecords {
+  __typename?: 'DomainRecords';
+  route53Record: Route53Record;
+  vercelDomainRecord: VercelDomain;
+}
+
 export interface DownloadAndCleanContentResponse {
   __typename?: 'DownloadAndCleanContentResponse';
   content: Scalars['String'];
@@ -1066,6 +1072,7 @@ export interface Mutation {
   copyAllBytesFromGitToDatabase: Scalars['Boolean'];
   createArticleIndexingInfo: ArticleIndexingInfo;
   createByteCollection: ByteCollection;
+  createNewTidbitSpace: Space;
   createSignedUrl: Scalars['String'];
   createSpace: Space;
   createSummaryOfContent: OpenAiTextResponse;
@@ -1143,6 +1150,7 @@ export interface Mutation {
   upsertChatbotFAQ: ChatbotFaq;
   upsertChatbotUserQuestion: ChatbotUserQuestion;
   upsertCourseIntegrations: CourseIntegrations;
+  upsertDomainRecords: DomainRecords;
   upsertGitCourse?: Maybe<SummarizedGitCourse>;
   upsertGitCourseTopicSubmission: GitCourseSubmission;
   upsertGnosisSafeWallets: Space;
@@ -1238,6 +1246,11 @@ export interface MutationCreateArticleIndexingInfoArgs {
 
 export interface MutationCreateByteCollectionArgs {
   input: CreateByteCollectionInput;
+}
+
+
+export interface MutationCreateNewTidbitSpaceArgs {
+  spaceInput: UpsertSpaceInput;
 }
 
 
@@ -1686,6 +1699,11 @@ export interface MutationUpsertChatbotUserQuestionArgs {
 
 export interface MutationUpsertCourseIntegrationsArgs {
   courseIntegrationInput: UpsertCourseIntegrationsInput;
+  spaceId: Scalars['String'];
+}
+
+
+export interface MutationUpsertDomainRecordsArgs {
   spaceId: Scalars['String'];
 }
 
@@ -2959,7 +2977,16 @@ export interface VercelDomain {
   projectId: Scalars['String'];
   redirect?: Maybe<Scalars['String']>;
   updatedAt?: Maybe<Scalars['DateTimeISO']>;
+  verification?: Maybe<Array<Maybe<VercelVerification>>>;
   verified: Scalars['Boolean'];
+}
+
+export interface VercelVerification {
+  __typename?: 'VercelVerification';
+  domain?: Maybe<Scalars['String']>;
+  reason?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']>;
 }
 
 export interface WebsiteScrapingInfo {
@@ -4159,6 +4186,10 @@ export type SpaceWithIntegrationsFragment = { __typename?: 'Space', id: string, 
 
 export type SpaceSummaryFragment = { __typename?: 'Space', id: string, admins: Array<string>, adminUsernames: Array<string>, avatar?: string | null, creator: string, name: string, skin: string, domains: Array<string> };
 
+export type VercelDomainRecordFragment = { __typename?: 'VercelDomain', apexName: string, createdAt?: any | null, gitBranch?: string | null, name: string, projectId: string, redirect?: string | null, updatedAt?: any | null, verified: boolean, verification?: Array<{ __typename?: 'VercelVerification', type?: string | null, domain?: string | null, reason?: string | null, value?: string | null } | null> | null };
+
+export type Route53RecordFragment = { __typename?: 'Route53Record', type?: string | null, name?: string | null, records?: Array<string | null> | null, ttl?: number | null };
+
 export type SpacesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -4204,7 +4235,7 @@ export type VercelDomainRecordQueryVariables = Exact<{
 }>;
 
 
-export type VercelDomainRecordQuery = { __typename?: 'Query', vercelDomainRecord?: { __typename?: 'VercelDomain', apexName: string, createdAt?: any | null, gitBranch?: string | null, name: string, projectId: string, redirect?: string | null, updatedAt?: any | null, verified: boolean } | null };
+export type VercelDomainRecordQuery = { __typename?: 'Query', vercelDomainRecord?: { __typename?: 'VercelDomain', apexName: string, createdAt?: any | null, gitBranch?: string | null, name: string, projectId: string, redirect?: string | null, updatedAt?: any | null, verified: boolean, verification?: Array<{ __typename?: 'VercelVerification', type?: string | null, domain?: string | null, reason?: string | null, value?: string | null } | null> | null } | null };
 
 export type UpsertSpaceFeaturesMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -4275,6 +4306,20 @@ export type CreateSpaceMutationVariables = Exact<{
 
 
 export type CreateSpaceMutation = { __typename?: 'Mutation', createSpace: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, type: string, skin: string, avatar?: string | null, domains: Array<string>, botDomains?: Array<string> | null, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, adminUsernamesV1: Array<{ __typename?: 'UsernameAndName', username: string, nameOfTheUser: string }>, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null, loadersInfo?: { __typename?: 'SpaceLoadersInfo', discourseUrl?: string | null, discordServerId?: string | null } | null } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null }, themeColors?: { __typename?: 'ThemeColors', primaryColor: string, bgColor: string, textColor: string, linkColor: string, headingColor: string, borderColor: string, blockBg: string } | null } };
+
+export type CreateNewTidbitSpaceMutationVariables = Exact<{
+  spaceInput: UpsertSpaceInput;
+}>;
+
+
+export type CreateNewTidbitSpaceMutation = { __typename?: 'Mutation', createNewTidbitSpace: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, type: string, skin: string, avatar?: string | null, domains: Array<string>, botDomains?: Array<string> | null, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, adminUsernamesV1: Array<{ __typename?: 'UsernameAndName', username: string, nameOfTheUser: string }>, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null, loadersInfo?: { __typename?: 'SpaceLoadersInfo', discourseUrl?: string | null, discordServerId?: string | null } | null } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null }, themeColors?: { __typename?: 'ThemeColors', primaryColor: string, bgColor: string, textColor: string, linkColor: string, headingColor: string, borderColor: string, blockBg: string } | null } };
+
+export type UpsertDomainRecordsMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+}>;
+
+
+export type UpsertDomainRecordsMutation = { __typename?: 'Mutation', upsertDomainRecords: { __typename?: 'DomainRecords', route53Record: { __typename?: 'Route53Record', type?: string | null, name?: string | null, records?: Array<string | null> | null, ttl?: number | null }, vercelDomainRecord: { __typename?: 'VercelDomain', apexName: string, createdAt?: any | null, gitBranch?: string | null, name: string, projectId: string, redirect?: string | null, updatedAt?: any | null, verified: boolean, verification?: Array<{ __typename?: 'VercelVerification', type?: string | null, domain?: string | null, reason?: string | null, value?: string | null } | null> | null } } };
 
 export type ReloadAcademyRepoMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -5378,6 +5423,32 @@ export const SpaceSummaryFragmentDoc = gql`
   name
   skin
   domains
+}
+    `;
+export const VercelDomainRecordFragmentDoc = gql`
+    fragment VercelDomainRecord on VercelDomain {
+  apexName
+  createdAt
+  gitBranch
+  name
+  projectId
+  redirect
+  updatedAt
+  verified
+  verification {
+    type
+    domain
+    reason
+    value
+  }
+}
+    `;
+export const Route53RecordFragmentDoc = gql`
+    fragment Route53Record on Route53Record {
+  type
+  name
+  records
+  ttl
 }
     `;
 export const TimelineEventFragmentDoc = gql`
@@ -10656,13 +10727,10 @@ export function refetchSpaceDiscordGuildQuery(variables: SpaceDiscordGuildQueryV
 export const Route53RecordDocument = gql`
     query Route53Record($spaceId: String!) {
   payload: route53Record(spaceId: $spaceId) {
-    type
-    name
-    records
-    ttl
+    ...Route53Record
   }
 }
-    `;
+    ${Route53RecordFragmentDoc}`;
 
 /**
  * __useRoute53RecordQuery__
@@ -10697,17 +10765,10 @@ export function refetchRoute53RecordQuery(variables: Route53RecordQueryVariables
 export const VercelDomainRecordDocument = gql`
     query VercelDomainRecord($spaceId: String!) {
   vercelDomainRecord(spaceId: $spaceId) {
-    apexName
-    createdAt
-    gitBranch
-    name
-    projectId
-    redirect
-    updatedAt
-    verified
+    ...VercelDomainRecord
   }
 }
-    `;
+    ${VercelDomainRecordFragmentDoc}`;
 
 /**
  * __useVercelDomainRecordQuery__
@@ -11052,6 +11113,78 @@ export function useCreateSpaceMutation(baseOptions?: Apollo.MutationHookOptions<
 export type CreateSpaceMutationHookResult = ReturnType<typeof useCreateSpaceMutation>;
 export type CreateSpaceMutationResult = Apollo.MutationResult<CreateSpaceMutation>;
 export type CreateSpaceMutationOptions = Apollo.BaseMutationOptions<CreateSpaceMutation, CreateSpaceMutationVariables>;
+export const CreateNewTidbitSpaceDocument = gql`
+    mutation CreateNewTidbitSpace($spaceInput: UpsertSpaceInput!) {
+  createNewTidbitSpace(spaceInput: $spaceInput) {
+    ...SpaceWithIntegrations
+  }
+}
+    ${SpaceWithIntegrationsFragmentDoc}`;
+export type CreateNewTidbitSpaceMutationFn = Apollo.MutationFunction<CreateNewTidbitSpaceMutation, CreateNewTidbitSpaceMutationVariables>;
+
+/**
+ * __useCreateNewTidbitSpaceMutation__
+ *
+ * To run a mutation, you first call `useCreateNewTidbitSpaceMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateNewTidbitSpaceMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createNewTidbitSpaceMutation, { data, loading, error }] = useCreateNewTidbitSpaceMutation({
+ *   variables: {
+ *      spaceInput: // value for 'spaceInput'
+ *   },
+ * });
+ */
+export function useCreateNewTidbitSpaceMutation(baseOptions?: Apollo.MutationHookOptions<CreateNewTidbitSpaceMutation, CreateNewTidbitSpaceMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateNewTidbitSpaceMutation, CreateNewTidbitSpaceMutationVariables>(CreateNewTidbitSpaceDocument, options);
+      }
+export type CreateNewTidbitSpaceMutationHookResult = ReturnType<typeof useCreateNewTidbitSpaceMutation>;
+export type CreateNewTidbitSpaceMutationResult = Apollo.MutationResult<CreateNewTidbitSpaceMutation>;
+export type CreateNewTidbitSpaceMutationOptions = Apollo.BaseMutationOptions<CreateNewTidbitSpaceMutation, CreateNewTidbitSpaceMutationVariables>;
+export const UpsertDomainRecordsDocument = gql`
+    mutation UpsertDomainRecords($spaceId: String!) {
+  upsertDomainRecords(spaceId: $spaceId) {
+    route53Record {
+      ...Route53Record
+    }
+    vercelDomainRecord {
+      ...VercelDomainRecord
+    }
+  }
+}
+    ${Route53RecordFragmentDoc}
+${VercelDomainRecordFragmentDoc}`;
+export type UpsertDomainRecordsMutationFn = Apollo.MutationFunction<UpsertDomainRecordsMutation, UpsertDomainRecordsMutationVariables>;
+
+/**
+ * __useUpsertDomainRecordsMutation__
+ *
+ * To run a mutation, you first call `useUpsertDomainRecordsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertDomainRecordsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertDomainRecordsMutation, { data, loading, error }] = useUpsertDomainRecordsMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *   },
+ * });
+ */
+export function useUpsertDomainRecordsMutation(baseOptions?: Apollo.MutationHookOptions<UpsertDomainRecordsMutation, UpsertDomainRecordsMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpsertDomainRecordsMutation, UpsertDomainRecordsMutationVariables>(UpsertDomainRecordsDocument, options);
+      }
+export type UpsertDomainRecordsMutationHookResult = ReturnType<typeof useUpsertDomainRecordsMutation>;
+export type UpsertDomainRecordsMutationResult = Apollo.MutationResult<UpsertDomainRecordsMutation>;
+export type UpsertDomainRecordsMutationOptions = Apollo.BaseMutationOptions<UpsertDomainRecordsMutation, UpsertDomainRecordsMutationVariables>;
 export const ReloadAcademyRepoDocument = gql`
     mutation ReloadAcademyRepo($spaceId: String!) {
   reloadAcademyRepository(spaceId: $spaceId)

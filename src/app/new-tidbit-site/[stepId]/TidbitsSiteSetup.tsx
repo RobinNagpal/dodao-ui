@@ -50,9 +50,9 @@ export default function TidbitsSiteSetup({ stepId }: { stepId: StepId }) {
   const getStepContent = (stepId: StepId) => {
     switch (stepId) {
       case 'user-details':
-        return <UserInformationStep onSuccessfulSave={goToNextStep} />;
+        return <UserInformationStep goToNextStep={goToNextStep} />;
       case 'tidbit-site-details':
-        return <NewTidbitsSiteInformationStep onSuccessfulSave={goToNextStep} />;
+        return <NewTidbitsSiteInformationStep goToNextStep={goToNextStep} />;
       case 'site-configuration':
         return <TidbitSiteConfigurationStep />;
       default:

@@ -5,6 +5,7 @@ import SpaceAuthDetails from '@/components/spaces/View/SpaceAuthDetails';
 import SpaceBasicDetails from '@/components/spaces/View/SpaceBasicDetails';
 import SpaceByteDetails from '@/components/spaces/View/SpaceByteDetails';
 import SpaceCourseDetails from '@/components/spaces/View/SpaceCoursesDetails';
+import SpaceDomaiDetails from '@/components/spaces/View/SpaceDomaiDetails';
 import SpaceGuideDetails from '@/components/spaces/View/SpaceGuideDetails';
 import SpaceSocialDetails from '@/components/spaces/View/SpaceSocialDetails';
 import SpaceThemeDetails from '@/components/spaces/View/SpaceThemeDetails';
@@ -48,6 +49,7 @@ export default function SpaceDetails(props: SpaceDetailsProps) {
         <div className="flex flex-col gap-y-28 divide-gray-300">
           <SpaceBasicDetails space={data.space} className="pt-6" />
           <SpaceAuthDetails space={data.space} />
+          <SpaceDomaiDetails space={data.space} />
           <SpaceSocialDetails space={data.space} />
           <SpaceThemeDetails space={data.space} />
         </div>

@@ -102,6 +102,30 @@ fragment SpaceSummary on Space {
   domains
 }
 
+fragment VercelDomainRecord on VercelDomain {
+  apexName
+  createdAt
+  gitBranch
+  name
+  projectId
+  redirect
+  updatedAt
+  verified
+  verification {
+    type
+    domain
+    reason
+    value
+  }
+}
+
+fragment Route53Record on Route53Record {
+  type
+  name
+  records
+  ttl
+}
+
 query Spaces {
   spaces {
     ...SpaceSummary
@@ -132,23 +156,13 @@ query SpaceDiscordGuild($spaceId: String!) {
 
 query Route53Record($spaceId: String!) {
   payload: route53Record(spaceId: $spaceId) {
-    type
-    name
-    records
-    ttl
+    ...Route53Record
   }
 }
 
 query VercelDomainRecord($spaceId: String!) {
   vercelDomainRecord(spaceId: $spaceId) {
-    apexName
-    createdAt
-    gitBranch
-    name
-    projectId
-    redirect
-    updatedAt
-    verified
+    ...VercelDomainRecord
   }
 }
 
@@ -199,6 +213,23 @@ mutation UpdateSpace($spaceInput: UpsertSpaceInput!) {
 mutation CreateSpace($spaceInput: UpsertSpaceInput!) {
   createSpace(spaceInput: $spaceInput) {
     ...SpaceWithIntegrations
+  }
+}
+
+mutation CreateNewTidbitSpace($spaceInput: UpsertSpaceInput!) {
+  createNewTidbitSpace(spaceInput: $spaceInput) {
+    ...SpaceWithIntegrations
+  }
+}
+
+mutation UpsertDomainRecords($spaceId: String!) {
+  upsertDomainRecords(spaceId: $spaceId) {
+    route53Record {
+      ...Route53Record
+    }
+    vercelDomainRecord {
+      ...VercelDomainRecord
+    }
   }
 }
 

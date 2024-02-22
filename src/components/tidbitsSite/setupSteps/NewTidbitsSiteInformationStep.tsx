@@ -3,7 +3,7 @@
 import UploadInput from '@/components/app/UploadInput';
 import Button from '@/components/core/buttons/Button';
 import Input from '@/components/core/input/Input';
-import { useExtendedSpaceQuery, useGetSpaceFromCreatorQuery } from '@/graphql/generated/generated-types';
+import { useExtendedSpaceQuery, useGetSpaceFromCreatorQuery, useUpsertDomainRecordsMutation } from '@/graphql/generated/generated-types';
 import { slugify } from '@/utils/auth/slugify';
 import { useEffect, useState } from 'react';
 import { useNotificationContext } from '@/contexts/NotificationContext';
@@ -12,27 +12,41 @@ import useCreateSpace from '@/components/tidbitsSite/setupSteps/useNewSpace';
 import { useSession } from 'next-auth/react';
 
 interface NewSiteInformationProps {
-  onSuccessfulSave: () => void;
+  goToNextStep: () => void;
 }
 
-export default function NewTidbitsSiteInformationStep({ onSuccessfulSave }: NewSiteInformationProps) {
+export default function NewTidbitsSiteInformationStep({ goToNextStep }: NewSiteInformationProps) {
   const createSpaceHelper = useCreateSpace();
-  const { space, setSpaceField, createSpace, upserting } = createSpaceHelper;
+  const { space, setSpaceField, createNewTidbitSpace, upserting } = createSpaceHelper;
   const { showNotification } = useNotificationContext();
   const { data: session } = useSession();
   const [uploadThumbnailLoading, setUploadThumbnailLoading] = useState(false);
 
-  const { data, loading } = useGetSpaceFromCreatorQuery({
+  const { data: spaceByUsername, loading } = useGetSpaceFromCreatorQuery({
     variables: {
       creatorUsername: session?.username!,
     },
   });
 
-  useEffect(() => {
-    if (!loading && data) {
-      onSuccessfulSave();
+  const [upsertDomainRecords] = useUpsertDomainRecordsMutation();
+
+  const checkSpaceAlreadyCreatedByUser = async () => {
+    const spaceByCreator = spaceByUsername?.getSpaceFromCreator;
+    if (spaceByCreator) {
+      if (spaceByCreator.domains.includes(`${space.id}.dodao.io`)) {
+        await upsertDomainRecords({
+          variables: {
+            spaceId: spaceByCreator.id,
+          },
+        });
+      }
+      goToNextStep();
     }
-  }, [data, loading]);
+  };
+
+  useEffect(() => {
+    checkSpaceAlreadyCreatedByUser();
+  }, [spaceByUsername, loading]);
 
   const { data: extendedSpaceData, loading: extendedSpaceLoading } = useExtendedSpaceQuery({
     variables: {
@@ -40,9 +54,6 @@ export default function NewTidbitsSiteInformationStep({ onSuccessfulSave }: NewS
     },
     skip: !space.id,
   });
-  function inputError(avatar: string) {
-    return null;
-  }
 
   const handleCreateClick = async () => {
     if (extendedSpaceLoading) {
@@ -55,7 +66,7 @@ export default function NewTidbitsSiteInformationStep({ onSuccessfulSave }: NewS
     }
 
     try {
-      await createSpace();
+      await createNewTidbitSpace();
       const spaceId = space.id;
       const response = await fetch('/api/auth/user', {
         method: 'GET',
@@ -107,7 +118,6 @@ export default function NewTidbitsSiteInformationStep({ onSuccessfulSave }: NewS
           <Input label="Id" modelValue={space.id} disabled={true} />
           <UploadInput
             label="Logo"
-            error={inputError('avatar')}
             imageType="AcademyLogo"
             spaceId={'new-space'}
             modelValue={space.avatar}
