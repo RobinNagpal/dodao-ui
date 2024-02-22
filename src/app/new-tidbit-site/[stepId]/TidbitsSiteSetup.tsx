@@ -20,7 +20,7 @@ export default function TidbitsSiteSetup({ stepId }: { stepId: StepId }) {
         if (index === nextStepIndex - 1) {
           return { ...step, status: 'complete' };
         } else if (index === nextStepIndex) {
-          return { ...step, status: 'current' };
+          return { ...step, status: 'upcoming' };
         }
         return step;
       });
@@ -63,7 +63,7 @@ export default function TidbitsSiteSetup({ stepId }: { stepId: StepId }) {
     <PageWrapper>
       <HorizontalStepperSimple steps={steps} currentStepId={stepId} />
       {getStepContent(stepId)}
-      {stepId !== 'user-details' ||
+      {stepId === 'user-details' ||
         ('Step 3' && (
           <Button onClick={goToPreviousStep} variant="outlined" className="mt-4">
             Previous
