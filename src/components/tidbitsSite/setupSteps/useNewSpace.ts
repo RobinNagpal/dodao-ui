@@ -1,5 +1,5 @@
 import { useNotificationContext } from '@/contexts/NotificationContext';
-import { UpsertSpaceInput, useCreateSpaceMutation } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsFragment, UpsertSpaceInput, useCreateNewTidbitSpaceMutation, useCreateSpaceMutation } from '@/graphql/generated/generated-types';
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 
@@ -8,7 +8,7 @@ export type UseEditSpaceHelper = {
   setSpaceField: (field: keyof UpsertSpaceInput, value: any) => void;
   setInviteLinkField: (field: keyof UpsertSpaceInput['inviteLinks'], value: any) => void;
   space: UpsertSpaceInput;
-  createSpace: () => Promise<void>;
+  createNewTidbitSpace: () => Promise<SpaceWithIntegrationsFragment>;
   upserting: boolean;
 };
 
@@ -40,7 +40,7 @@ export default function useCreateSpace(): UseEditSpaceHelper {
 
   const [upserting, setUpserting] = useState(false);
 
-  const [createSpaceMutation] = useCreateSpaceMutation();
+  const [CreateNewTidbitSpaceMutation] = useCreateNewTidbitSpaceMutation();
 
   function setSpaceField(field: keyof UpsertSpaceInput, value: any) {
     setSpace((prev) => ({ ...prev, [field]: value }));
@@ -89,11 +89,10 @@ export default function useCreateSpace(): UseEditSpaceHelper {
     };
   }
 
-  async function createSpace() {
+  async function createNewTidbitSpace(): Promise<SpaceWithIntegrationsFragment> {
     setUpserting(true);
     try {
-      let response;
-      response = await createSpaceMutation({
+      const response = await CreateNewTidbitSpaceMutation({
         variables: {
           spaceInput: getSpaceInput(),
         },
@@ -103,13 +102,15 @@ export default function useCreateSpace(): UseEditSpaceHelper {
       } else {
         showNotification({ type: 'error', message: 'Error while upserting space' });
       }
+      setUpserting(false);
+      return response?.data?.createNewTidbitSpace!;
     } catch (error) {
       console.error(error);
       showNotification({ type: 'error', message: 'Error while upserting space' });
       setUpserting(false);
+
       throw error;
     }
-    setUpserting(false);
   }
 
   return {
@@ -117,7 +118,7 @@ export default function useCreateSpace(): UseEditSpaceHelper {
     setSpaceField,
     setSpaceIntegrationField,
     setInviteLinkField,
-    createSpace,
+    createNewTidbitSpace,
     upserting,
   };
 }

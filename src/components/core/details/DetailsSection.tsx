@@ -1,18 +1,35 @@
+import { Fragment, ReactElement, ReactNode } from 'react';
 import { DetailsFieldProps } from '@/components/core/details/DetailsRow';
 import { DetailsHeaderProps } from '@/components/core/details/DetailsHeader';
-import { ReactElement } from 'react';
+
+// Define a type for the header component
+type HeaderType = ReactElement<DetailsHeaderProps>;
+
+// Define a generic type for any number of field components
+type FieldsType = ReactElement<DetailsFieldProps>[];
+
+// Use a generic tuple type for children
+type ChildrenType = [HeaderType, ...FieldsType];
+type ChildrenArray = [HeaderType, ReactElement<DetailsFieldProps>[]];
 
 interface DetailsSectionParams {
-  children: [a: ReactElement<DetailsHeaderProps>, b: Array<ReactElement<DetailsFieldProps>>];
+  children: ChildrenType | ChildrenArray;
   className?: string;
 }
 
-export default function DetailsSection(props: DetailsSectionParams) {
+export default function DetailsSection({ children, className = '' }: DetailsSectionParams) {
+  // Destructure the first child separately from the rest
+  const [header, ...fields] = children;
+
   return (
-    <div className={`${props.className || ''}`}>
-      {props.children[0]}
+    <div className={className}>
+      {header}
       <div>
-        <dl>{props.children[1]}</dl>
+        <dl>
+          {fields.map((field, index) => (
+            <Fragment key={index}>{field}</Fragment>
+          ))}
+        </dl>
       </div>
     </div>
   );

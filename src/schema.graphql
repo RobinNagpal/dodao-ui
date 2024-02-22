@@ -464,6 +464,11 @@ type DiscoursePostComment {
   spaceId: String!
 }
 
+type DomainRecords {
+  route53Record: Route53Record!
+  vercelDomainRecord: VercelDomain!
+}
+
 type DownloadAndCleanContentResponse {
   content: String!
   links: [DownloadLinkInfo!]!
@@ -998,6 +1003,7 @@ type Mutation {
   copyAllBytesFromGitToDatabase: Boolean!
   createArticleIndexingInfo(articleUrl: String!, spaceId: String!): ArticleIndexingInfo!
   createByteCollection(input: CreateByteCollectionInput!): ByteCollection!
+  createNewTidbitSpace(spaceInput: UpsertSpaceInput!): Space!
   createSignedUrl(input: CreateSignedUrlInput!, spaceId: String!): String!
   createSpace(spaceInput: UpsertSpaceInput!): Space!
   createSummaryOfContent(input: String!): OpenAITextResponse!
@@ -1075,6 +1081,7 @@ type Mutation {
   upsertChatbotFAQ(input: UpsertChatbotFAQInput!, spaceId: String!): ChatbotFAQ!
   upsertChatbotUserQuestion(input: UpsertChatbotUserQuestionInput!, spaceId: String!): ChatbotUserQuestion!
   upsertCourseIntegrations(courseIntegrationInput: UpsertCourseIntegrationsInput!, spaceId: String!): CourseIntegrations!
+  upsertDomainRecords(spaceId: String!): DomainRecords!
   upsertGitCourse(gitCourseInput: GitCourseInput!, spaceId: String!): SummarizedGitCourse
   upsertGitCourseTopicSubmission(gitCourseTopicSubmission: GitCourseTopicSubmissionInput!, spaceId: String!): GitCourseSubmission!
   upsertGnosisSafeWallets(spaceId: String!, wallets: [GnosisSafeWalletInput!]!): Space!
@@ -1085,6 +1092,7 @@ type Mutation {
   upsertProjectByteCollection(input: UpsertProjectByteCollectionInput!, projectId: String!): ProjectByteCollection!
   upsertProjectGalaxyAccessToken(accessToken: String!, spaceId: String!): Space!
   upsertProjectShortVideo(projectId: String!, shortVideo: ProjectShortVideoInput!): ProjectShortVideo!
+  upsertRoute53Record(spaceId: String!): Route53Record!
   upsertShortVideo(shortVideo: ShortVideoInput!, spaceId: String!): ShortVideo!
   upsertSimulation(input: UpsertSimulationInput!, spaceId: String!): Simulation!
   upsertSpaceAcademyRepository(academyRepository: String!, spaceId: String!): Space!
@@ -1093,6 +1101,7 @@ type Mutation {
   upsertSpaceLoaderInfo(input: SpaceLoadersInfoInput!, spaceId: String!): Space!
   upsertSummaryOfDiscoursePost(input: UpsertSummaryOfDiscoursePostInput!, spaceId: String!): DiscoursePost!
   upsertTimeline(input: UpsertTimelineInput!, spaceId: String!): Timeline!
+  upsertVercelDomainRecord(spaceId: String!): VercelDomain!
 }
 
 type OpenAIChatCompletionChoice {
@@ -1267,7 +1276,7 @@ type Query {
   projects(type: String): [Project!]!
   rawGitCourse(key: String!, spaceId: String!): RawGitCourse!
   rawGitCourses(spaceId: String!): [RawGitCourse!]!
-  route53Records: [Route53Record!]!
+  route53Record(spaceId: String!): Route53Record
   scrapedUrlInfos(spaceId: String!, websiteScrapingInfoId: String!): [ScrapedUrlInfo!]!
   searchChatbotFAQs(query: String!, spaceId: String!): [SearchedChatbotFAQ!]!
   shortVideo(id: String!, spaceId: String!): ShortVideo!
@@ -1280,7 +1289,7 @@ type Query {
   spaces: [Space!]
   timeline(spaceId: String!, timelineId: String!): Timeline!
   timelines(spaceId: String!): [Timeline!]!
-  vercelDomainRecords: [VercelDomain!]!
+  vercelDomainRecord(spaceId: String!): VercelDomain
   websiteScrapingInfos(spaceId: String!): [WebsiteScrapingInfo!]!
 }
 
@@ -1902,13 +1911,21 @@ input UsernameAndNameInput {
 
 type VercelDomain {
   apexName: String!
-  createdAt: Int
+  createdAt: DateTimeISO
   gitBranch: String
   name: String!
   projectId: String!
   redirect: String
-  updatedAt: Int
+  updatedAt: DateTimeISO
+  verification: [VercelVerification]
   verified: Boolean!
+}
+
+type VercelVerification {
+  domain: String
+  reason: String
+  type: String
+  value: String
 }
 
 type WebsiteScrapingInfo {

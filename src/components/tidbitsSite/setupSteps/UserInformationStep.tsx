@@ -9,10 +9,10 @@ import { useNotificationContext } from '@/contexts/NotificationContext';
 import { isEmpty } from 'lodash';
 
 interface LoginInformationProps {
-  onSuccessfulSave: () => void;
+  goToNextStep: () => void;
 }
 
-export default function LoginInfo({ onSuccessfulSave }: LoginInformationProps) {
+export default function LoginInfo({ goToNextStep }: LoginInformationProps) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -65,7 +65,7 @@ export default function LoginInfo({ onSuccessfulSave }: LoginInformationProps) {
       if (!response.ok) {
         throw new Error('Failed to update user data');
       }
-      onSuccessfulSave();
+      goToNextStep();
       setName('');
       setEmail('');
       setPhone('');

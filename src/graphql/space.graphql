@@ -102,6 +102,30 @@ fragment SpaceSummary on Space {
   domains
 }
 
+fragment VercelDomainRecord on VercelDomain {
+  apexName
+  createdAt
+  gitBranch
+  name
+  projectId
+  redirect
+  updatedAt
+  verified
+  verification {
+    type
+    domain
+    reason
+    value
+  }
+}
+
+fragment Route53Record on Route53Record {
+  type
+  name
+  records
+  ttl
+}
+
 query Spaces {
   spaces {
     ...SpaceSummary
@@ -128,6 +152,18 @@ query ExtendedSpaceByDomain($domain: String!) {
 
 query SpaceDiscordGuild($spaceId: String!) {
   payload: spaceDiscordGuild(spaceId: $spaceId)
+}
+
+query Route53Record($spaceId: String!) {
+  payload: route53Record(spaceId: $spaceId) {
+    ...Route53Record
+  }
+}
+
+query VercelDomainRecord($spaceId: String!) {
+  vercelDomainRecord(spaceId: $spaceId) {
+    ...VercelDomainRecord
+  }
 }
 
 mutation UpsertSpaceFeatures($spaceId: String!, $features: [String!]!) {
@@ -180,6 +216,23 @@ mutation CreateSpace($spaceInput: UpsertSpaceInput!) {
   }
 }
 
+mutation CreateNewTidbitSpace($spaceInput: UpsertSpaceInput!) {
+  createNewTidbitSpace(spaceInput: $spaceInput) {
+    ...SpaceWithIntegrations
+  }
+}
+
+mutation UpsertDomainRecords($spaceId: String!) {
+  upsertDomainRecords(spaceId: $spaceId) {
+    route53Record {
+      ...Route53Record
+    }
+    vercelDomainRecord {
+      ...VercelDomainRecord
+    }
+  }
+}
+
 mutation ReloadAcademyRepo($spaceId: String!) {
   reloadAcademyRepository(spaceId: $spaceId)
 }
@@ -227,5 +280,27 @@ mutation UpdateThemeColors($spaceId: ID!, $themeColors: ThemeColorsInput!) {
 mutation UpdateSpaceCreator($spaceId: String!, $id: String!) {
   updateSpaceCreator(spaceId: $spaceId, creator: $id) {
     ...SpaceWithIntegrations
+  }
+}
+
+mutation UpsertRoute53Record($spaceId: String!) {
+  upsertRoute53Record(spaceId: $spaceId) {
+    ttl
+    records
+    name
+    type
+  }
+}
+
+mutation UpsertVercelDomainRecord($spaceId: String!) {
+  upsertVercelDomainRecord(spaceId: $spaceId) {
+    apexName
+    createdAt
+    gitBranch
+    name
+    projectId
+    redirect
+    updatedAt
+    verified
   }
 }
