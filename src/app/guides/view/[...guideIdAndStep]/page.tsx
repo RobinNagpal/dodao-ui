@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: GuideViewProps): Promise<Meta
   return {
     title: guide.name,
     description: description,
-    keywords: [],
+    keywords: [guide.name, guideStep.name],
   };
 }
 

@@ -1,14 +1,10 @@
 import GuideEndRatingModal from '@/components/app/Modal/Guide/GuideEndRatingModal';
 import GuideSidebar from '@/components/guides/View/GuideSidebar';
-
-const GuideStepperItem = dynamic(() => import('@/components/guides/View/GuideStepperItem'), {
-  ssr: false, // Disable server-side rendering for this component
-});
+import GuideStepperItem from '@/components/guides/View/GuideStepperItem';
 
 import { useGuideRatings } from '@/components/guides/View/useGuideRatings';
 import { UseViewGuideHelper } from '@/components/guides/View/useViewGuide';
 import { GuideFragment, Space } from '@/graphql/generated/generated-types';
-import dynamic from 'next/dynamic';
 import React, { useMemo } from 'react';
 import styles from './GuideStepper.module.scss';
 

@@ -22,7 +22,6 @@ import flatten from 'lodash/flatten';
 import { marked } from 'marked';
 import { useSession } from 'next-auth/react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import Plyr from 'plyr';
 import 'plyr/dist/plyr.css';
 import styles from './GuideStepperItem.module.scss';
 
@@ -136,7 +135,15 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
   };
 
   useEffect(() => {
-    const plyrs = Array.from(document.querySelectorAll('.play-js-player')).map((p: any) => new Plyr(p));
+    if (typeof window !== 'undefined') {
+      import('plyr').then(({ default: Plyr }) => {
+        const players = Array.from(document.querySelectorAll('.play-js-player'));
+        const plyrInstances = players.map((p: any) => new Plyr(p));
+        return () => {
+          plyrInstances.forEach((player) => player.destroy());
+        };
+      });
+    }
   }, [stepContents]);
 
   return (
