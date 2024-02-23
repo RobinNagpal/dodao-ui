@@ -5,6 +5,7 @@ import PageWrapper from '@/components/core/page/PageWrapper';
 import DefaultHome from '@/components/home/DefaultHome/DefaultHome';
 import DoDAOHome from '@/components/home/DoDAOHome/DoDAOHome';
 import LifeInsureHomePage from '@/components/home/LifeInsure/LifeInsureHomePage';
+import TidbitsHubHome from '@/components/home/TidbitsHub/TidbitsHubHome';
 import ListProjects from '@/components/projects/List/ListProjects';
 import { ProjectFragment } from '@/graphql/generated/generated-types';
 import getApiResponse from '@/utils/api/getApiResponse';
@@ -34,6 +35,10 @@ async function Home(props: { searchParams: { [key: string]: string | string[] | 
 
   if (host === 'dodao-localhost.io' || host === 'academy.dodao.io' || host === 'dodao.io') {
     return <DoDAOHome />;
+  }
+
+  if (host === 'tidbitshub.org') {
+    return <TidbitsHubHome />;
   }
 
   if (space?.id === 'life-insurance-tips') {
