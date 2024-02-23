@@ -63,12 +63,11 @@ export default function TidbitsSiteSetup({ stepId }: { stepId: StepId }) {
     <PageWrapper>
       <HorizontalStepperSimple steps={steps} currentStepId={stepId} />
       {getStepContent(stepId)}
-      {stepId !== 'user-details' ||
-        ('Step 3' && (
-          <Button onClick={goToPreviousStep} variant="outlined" className="mt-4">
-            Previous
-          </Button>
-        ))}
+      {stepId !== 'user-details' && stepId !== 'site-configuration' && (
+        <Button onClick={goToPreviousStep} variant="outlined" className="mt-4">
+          Previous
+        </Button>
+      )}
     </PageWrapper>
   );
 }
