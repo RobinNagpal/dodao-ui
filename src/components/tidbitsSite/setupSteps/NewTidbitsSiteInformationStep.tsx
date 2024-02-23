@@ -10,6 +10,7 @@ import { useNotificationContext } from '@/contexts/NotificationContext';
 import { isEmpty } from 'lodash';
 import useCreateSpace from '@/components/tidbitsSite/setupSteps/useNewSpace';
 import { useSession } from 'next-auth/react';
+import LoadingSpinner from '@/components/core/loaders/LoadingSpinner';
 
 interface NewSiteInformationProps {
   goToNextStep: () => void;
@@ -21,32 +22,17 @@ export default function NewTidbitsSiteInformationStep({ goToNextStep }: NewSiteI
   const { showNotification } = useNotificationContext();
   const { data: session } = useSession();
   const [uploadThumbnailLoading, setUploadThumbnailLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [buttonText, setButtonText] = useState('Create');
 
   const { data: spaceByUsername, loading } = useGetSpaceFromCreatorQuery({
     variables: {
       creatorUsername: session?.username!,
     },
+    skip: !session?.username,
   });
 
   const [upsertDomainRecords] = useUpsertDomainRecordsMutation();
-
-  const checkSpaceAlreadyCreatedByUser = async () => {
-    const spaceByCreator = spaceByUsername?.getSpaceFromCreator;
-    if (spaceByCreator) {
-      if (spaceByCreator.domains.includes(`${space.id}.dodao.io`)) {
-        await upsertDomainRecords({
-          variables: {
-            spaceId: spaceByCreator.id,
-          },
-        });
-      }
-      goToNextStep();
-    }
-  };
-
-  useEffect(() => {
-    checkSpaceAlreadyCreatedByUser();
-  }, [spaceByUsername, loading]);
 
   const { data: extendedSpaceData, loading: extendedSpaceLoading } = useExtendedSpaceQuery({
     variables: {
@@ -54,6 +40,21 @@ export default function NewTidbitsSiteInformationStep({ goToNextStep }: NewSiteI
     },
     skip: !space.id,
   });
+
+  useEffect(() => {
+    const fetchSpaceData = async () => {
+      if (!loading && spaceByUsername?.getSpaceFromCreator) {
+        const existingSpace = spaceByUsername.getSpaceFromCreator;
+        setSpaceField('name', existingSpace.name);
+        setSpaceField('id', existingSpace.id);
+        setSpaceField('avatar', existingSpace.avatar);
+        setButtonText('Upsert');
+      }
+      setIsLoading(false);
+    };
+
+    fetchSpaceData();
+  }, [session?.username]);
 
   const handleCreateClick = async () => {
     if (extendedSpaceLoading) {
@@ -100,6 +101,17 @@ export default function NewTidbitsSiteInformationStep({ goToNextStep }: NewSiteI
     }
   };
 
+  const handleButtonClick = async () => {
+    if (buttonText === 'Create') {
+      await handleCreateClick();
+    } else {
+    }
+  };
+
+  if (isLoading || uploadThumbnailLoading || upserting) {
+    return <LoadingSpinner />;
+  }
+
   return (
     <>
       <div className="space-y-12 text-left mt-8">
@@ -129,15 +141,8 @@ export default function NewTidbitsSiteInformationStep({ goToNextStep }: NewSiteI
       </div>
 
       <div className="flex items-center justify-start gap-x-6">
-        <Button
-          variant="contained"
-          primary
-          removeBorder={true}
-          loading={upserting}
-          disabled={uploadThumbnailLoading || upserting || isEmpty(space.name) || isEmpty(space.avatar)}
-          onClick={handleCreateClick}
-        >
-          Create
+        <Button variant="contained" primary removeBorder={true} disabled={isEmpty(space.name) || isEmpty(space.avatar)} onClick={handleButtonClick}>
+          {buttonText}
         </Button>
       </div>
     </>
