@@ -20,7 +20,7 @@ export default function TidbitsSiteSetup({ stepId }: { stepId: StepId }) {
         if (index === nextStepIndex - 1) {
           return { ...step, status: 'complete' };
         } else if (index === nextStepIndex) {
-          return { ...step, status: 'current' };
+          return { ...step, status: 'upcoming' };
         }
         return step;
       });
