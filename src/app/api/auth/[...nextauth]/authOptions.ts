@@ -1,5 +1,6 @@
 // see: https://next-auth.js.org/configuration/options
 import { authorizeCrypto } from '@/app/api/auth/[...nextauth]/authorizeCrypto';
+import { headers } from 'next/headers';
 import { CustomPrismaAdapter } from './customPrismaAdapter';
 import { prisma } from '@/prisma';
 import { DoDaoJwtTokenPayload, Session } from '@/types/auth/Session';
@@ -12,10 +13,10 @@ import GoogleProvider from 'next-auth/providers/google';
 import TwitterProvider from 'next-auth/providers/twitter';
 import EmailProvider from 'next-auth/providers/email';
 import { Adapter } from 'next-auth/adapters';
-import AWS from 'aws-sdk';
+import { SES } from '@aws-sdk/client-ses';
 
 // Configure AWS SES
-const ses = new AWS.SES({
+const ses = new SES({
   region: process.env.AWS_REGION,
 });
 
@@ -120,14 +121,22 @@ export const authOptions: AuthOptions = {
         },
       },
       from: process.env.EMAIL_FROM,
-      // Custom send verification email function
-      sendVerificationRequest: ({ identifier: email, url, provider: { server, from } }) => {
-        const { host } = new URL(url);
-        const link = `${url}&utm_source=${host}`;
+      sendVerificationRequest: ({ identifier: email, url, provider }) => {
+        // Capture the hostname from the request
+        const headersList = headers();
+        const host = headersList.get('x-forwarded-host') || headersList.get('host');
+        const httpsProto = headersList.get('x-forwarded-proto');
+        // Do whatever you want here, before the request is passed down to `NextAuth`
+
+        const { from } = provider;
+        const baseUrl = `${httpsProto}://${host}`;
+        const customUrl = url.replace(/^http?:\/\/[^/]+/, baseUrl);
+        const link = `${customUrl}&utm_source=${host}`;
 
         // Email HTML body
         const emailBody = `Your sign in link is <a href="${link}">here</a>.`;
 
+        console.log('Sending email to', email, 'from', from, 'with body', emailBody);
         // Sending email via AWS SES
         ses.sendEmail(
           {
