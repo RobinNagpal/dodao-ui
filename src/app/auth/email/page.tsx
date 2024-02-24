@@ -11,12 +11,12 @@ const EmailAuthPage = () => {
   const [email, setEmail] = useState('');
   const [showVerificationInput, setShowVerificationInput] = useState(false);
   const [verificationCode, setVerificationCode] = useState('');
-
+  const origin = typeof window !== 'undefined' && window.location.origin ? window.location.origin : '';
   // Handle email submission to send the verification code
   const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     // Trigger Next-Auth sign-in flow for email
-    const result = await signIn('email', { email, redirect: false, callbackUrl: '/' });
+    const result = await signIn('email', { email, redirect: false, callbackUrl: '/', origin });
     if (result?.ok) {
       setShowVerificationInput(true);
     } else {

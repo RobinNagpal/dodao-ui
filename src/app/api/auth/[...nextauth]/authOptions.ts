@@ -12,10 +12,10 @@ import GoogleProvider from 'next-auth/providers/google';
 import TwitterProvider from 'next-auth/providers/twitter';
 import EmailProvider from 'next-auth/providers/email';
 import { Adapter } from 'next-auth/adapters';
-import AWS from 'aws-sdk';
+import { SES } from '@aws-sdk/client-ses';
 
 // Configure AWS SES
-const ses = new AWS.SES({
+const ses = new SES({
   region: process.env.AWS_REGION,
 });
 
@@ -120,40 +120,6 @@ export const authOptions: AuthOptions = {
         },
       },
       from: process.env.EMAIL_FROM,
-      // Custom send verification email function
-      sendVerificationRequest: ({ identifier: email, url, provider: { server, from } }) => {
-        const { host } = new URL(url);
-        const link = `${url}&utm_source=${host}`;
-
-        // Email HTML body
-        const emailBody = `Your sign in link is <a href="${link}">here</a>.`;
-
-        // Sending email via AWS SES
-        ses.sendEmail(
-          {
-            Source: from,
-            Destination: { ToAddresses: [email] },
-            Message: {
-              Subject: {
-                Data: 'Sign in to your account',
-              },
-              Body: {
-                Html: {
-                  Data: emailBody,
-                },
-              },
-            },
-          },
-          (err, info) => {
-            if (err) {
-              console.error(err);
-              throw new Error('Failed to send email');
-            } else {
-              console.log('Email sent: ', info);
-            }
-          }
-        );
-      },
     }),
   ],
   adapter: CustomPrismaAdapter(prisma) as Adapter,
