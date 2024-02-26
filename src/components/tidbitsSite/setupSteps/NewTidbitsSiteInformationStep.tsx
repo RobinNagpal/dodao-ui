@@ -3,13 +3,7 @@
 import UploadInput from '@/components/app/UploadInput';
 import Button from '@/components/core/buttons/Button';
 import Input from '@/components/core/input/Input';
-import {
-  useExtendedSpaceQuery,
-  useGetSpaceFromCreatorQuery,
-  useUpdateSpaceMutation,
-  useUpsertDomainRecordsMutation,
-  useUpsertSpaceFeaturesMutation,
-} from '@/graphql/generated/generated-types';
+import { useExtendedSpaceQuery, useGetSpaceFromCreatorQuery, useUpdateSpaceMutation } from '@/graphql/generated/generated-types';
 import { slugify } from '@/utils/auth/slugify';
 import { useEffect, useState } from 'react';
 import { useNotificationContext } from '@/contexts/NotificationContext';
@@ -131,7 +125,7 @@ export default function NewTidbitsSiteInformationStep({ goToNextStep }: NewSiteI
   }
 
   return (
-    <>
+    <div className='sm:px-0 px-4'>
       <div className="space-y-12 text-left mt-8">
         <div className="pb-12">
           <h2 className="text-lg font-bold leading-7">Create Tidbits Site</h2>
@@ -166,6 +160,6 @@ export default function NewTidbitsSiteInformationStep({ goToNextStep }: NewSiteI
           {buttonText}
         </Button>
       </div>
-    </>
+    </div>
   );
 }
