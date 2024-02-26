@@ -9,7 +9,7 @@ const ses = new SES({
   region: process.env.AWS_REGION,
 });
 /** Web compatible method to create a random string of a given length */
-export function randomString(size: number) {
+function randomString(size: number) {
   const i2hex = (i: number) => ('0' + i.toString(16)).slice(-2);
   const r = (a: string, i: number): string => a + i2hex(i);
   const bytes = crypto.getRandomValues(new Uint8Array(size));
@@ -143,8 +143,6 @@ async function POST(req: NextRequest, res: NextResponse) {
 
   const ONE_DAY_IN_SECONDS = 86400;
   const expires = new Date(Date.now() + ONE_DAY_IN_SECONDS * 1000 * 30); // 30 days
-
-  const secret = 'some-tidbitshub-secret';
 
   const headersList = headers();
 
