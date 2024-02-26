@@ -125,7 +125,7 @@ export default function NewTidbitsSiteInformationStep({ goToNextStep }: NewSiteI
   }
 
   return (
-    <div className='sm:px-0 px-4'>
+    <div className="sm:px-0 px-4">
       <div className="space-y-12 text-left mt-8">
         <div className="pb-12">
           <h2 className="text-lg font-bold leading-7">Create Tidbits Site</h2>
