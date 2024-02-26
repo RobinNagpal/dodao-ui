@@ -65,6 +65,7 @@ export default function TidbitsSiteSetup({ stepId }: { stepId: StepId }) {
       {getStepContent(stepId)}
       {stepId !== 'user-details' && (
         <Button onClick={goToPreviousStep} variant="outlined" className="mt-4">
+          <span className="font-bold mr-1">&#8592;</span>
           Previous
         </Button>
       )}
