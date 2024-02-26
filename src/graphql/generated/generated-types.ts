@@ -1137,6 +1137,7 @@ export interface Mutation {
   updateSocialSettings: Space;
   updateSpace: Space;
   updateSpaceCreator: Space;
+  updateSpaceNameAndAvatar: Space;
   updateThemeColors: Space;
   updateTopicBasicInfo: GitCourse;
   updateTopicExplanation: GitCourse;
@@ -1621,6 +1622,13 @@ export interface MutationUpdateSpaceArgs {
 
 export interface MutationUpdateSpaceCreatorArgs {
   creator: Scalars['String'];
+  spaceId: Scalars['String'];
+}
+
+
+export interface MutationUpdateSpaceNameAndAvatarArgs {
+  avatar: Scalars['String'];
+  name: Scalars['String'];
   spaceId: Scalars['String'];
 }
 
@@ -2977,16 +2985,16 @@ export interface VercelDomain {
   projectId: Scalars['String'];
   redirect?: Maybe<Scalars['String']>;
   updatedAt?: Maybe<Scalars['DateTimeISO']>;
-  verification?: Maybe<Array<Maybe<VercelVerification>>>;
+  verification?: Maybe<Array<VercelVerification>>;
   verified: Scalars['Boolean'];
 }
 
 export interface VercelVerification {
   __typename?: 'VercelVerification';
-  domain?: Maybe<Scalars['String']>;
-  reason?: Maybe<Scalars['String']>;
-  type?: Maybe<Scalars['String']>;
-  value?: Maybe<Scalars['String']>;
+  domain: Scalars['String'];
+  reason: Scalars['String'];
+  type: Scalars['String'];
+  value: Scalars['String'];
 }
 
 export interface WebsiteScrapingInfo {
@@ -4186,7 +4194,7 @@ export type SpaceWithIntegrationsFragment = { __typename?: 'Space', id: string, 
 
 export type SpaceSummaryFragment = { __typename?: 'Space', id: string, admins: Array<string>, adminUsernames: Array<string>, avatar?: string | null, creator: string, name: string, skin: string, domains: Array<string> };
 
-export type VercelDomainRecordFragment = { __typename?: 'VercelDomain', apexName: string, createdAt?: any | null, gitBranch?: string | null, name: string, projectId: string, redirect?: string | null, updatedAt?: any | null, verified: boolean, verification?: Array<{ __typename?: 'VercelVerification', type?: string | null, domain?: string | null, reason?: string | null, value?: string | null } | null> | null };
+export type VercelDomainRecordFragment = { __typename?: 'VercelDomain', apexName: string, createdAt?: any | null, gitBranch?: string | null, name: string, projectId: string, redirect?: string | null, updatedAt?: any | null, verified: boolean, verification?: Array<{ __typename?: 'VercelVerification', type: string, domain: string, reason: string, value: string }> | null };
 
 export type Route53RecordFragment = { __typename?: 'Route53Record', type?: string | null, name?: string | null, records?: Array<string | null> | null, ttl?: number | null };
 
@@ -4235,7 +4243,7 @@ export type VercelDomainRecordQueryVariables = Exact<{
 }>;
 
 
-export type VercelDomainRecordQuery = { __typename?: 'Query', vercelDomainRecord?: { __typename?: 'VercelDomain', apexName: string, createdAt?: any | null, gitBranch?: string | null, name: string, projectId: string, redirect?: string | null, updatedAt?: any | null, verified: boolean, verification?: Array<{ __typename?: 'VercelVerification', type?: string | null, domain?: string | null, reason?: string | null, value?: string | null } | null> | null } | null };
+export type VercelDomainRecordQuery = { __typename?: 'Query', vercelDomainRecord?: { __typename?: 'VercelDomain', apexName: string, createdAt?: any | null, gitBranch?: string | null, name: string, projectId: string, redirect?: string | null, updatedAt?: any | null, verified: boolean, verification?: Array<{ __typename?: 'VercelVerification', type: string, domain: string, reason: string, value: string }> | null } | null };
 
 export type UpsertSpaceFeaturesMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -4319,7 +4327,7 @@ export type UpsertDomainRecordsMutationVariables = Exact<{
 }>;
 
 
-export type UpsertDomainRecordsMutation = { __typename?: 'Mutation', upsertDomainRecords: { __typename?: 'DomainRecords', route53Record: { __typename?: 'Route53Record', type?: string | null, name?: string | null, records?: Array<string | null> | null, ttl?: number | null }, vercelDomainRecord: { __typename?: 'VercelDomain', apexName: string, createdAt?: any | null, gitBranch?: string | null, name: string, projectId: string, redirect?: string | null, updatedAt?: any | null, verified: boolean, verification?: Array<{ __typename?: 'VercelVerification', type?: string | null, domain?: string | null, reason?: string | null, value?: string | null } | null> | null } } };
+export type UpsertDomainRecordsMutation = { __typename?: 'Mutation', upsertDomainRecords: { __typename?: 'DomainRecords', route53Record: { __typename?: 'Route53Record', type?: string | null, name?: string | null, records?: Array<string | null> | null, ttl?: number | null }, vercelDomainRecord: { __typename?: 'VercelDomain', apexName: string, createdAt?: any | null, gitBranch?: string | null, name: string, projectId: string, redirect?: string | null, updatedAt?: any | null, verified: boolean, verification?: Array<{ __typename?: 'VercelVerification', type: string, domain: string, reason: string, value: string }> | null } } };
 
 export type ReloadAcademyRepoMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -4390,6 +4398,15 @@ export type UpdateSpaceCreatorMutationVariables = Exact<{
 
 
 export type UpdateSpaceCreatorMutation = { __typename?: 'Mutation', updateSpaceCreator: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, type: string, skin: string, avatar?: string | null, domains: Array<string>, botDomains?: Array<string> | null, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, adminUsernamesV1: Array<{ __typename?: 'UsernameAndName', username: string, nameOfTheUser: string }>, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null, loadersInfo?: { __typename?: 'SpaceLoadersInfo', discourseUrl?: string | null, discordServerId?: string | null } | null } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null }, themeColors?: { __typename?: 'ThemeColors', primaryColor: string, bgColor: string, textColor: string, linkColor: string, headingColor: string, borderColor: string, blockBg: string } | null } };
+
+export type UpdateSpaceNameAndAvatarMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+  name: Scalars['String'];
+  avatar: Scalars['String'];
+}>;
+
+
+export type UpdateSpaceNameAndAvatarMutation = { __typename?: 'Mutation', updateSpaceNameAndAvatar: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, type: string, skin: string, avatar?: string | null, domains: Array<string>, botDomains?: Array<string> | null, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, adminUsernamesV1: Array<{ __typename?: 'UsernameAndName', username: string, nameOfTheUser: string }>, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null, loadersInfo?: { __typename?: 'SpaceLoadersInfo', discourseUrl?: string | null, discordServerId?: string | null } | null } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null }, themeColors?: { __typename?: 'ThemeColors', primaryColor: string, bgColor: string, textColor: string, linkColor: string, headingColor: string, borderColor: string, blockBg: string } | null } };
 
 export type UpsertRoute53RecordMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -11485,6 +11502,41 @@ export function useUpdateSpaceCreatorMutation(baseOptions?: Apollo.MutationHookO
 export type UpdateSpaceCreatorMutationHookResult = ReturnType<typeof useUpdateSpaceCreatorMutation>;
 export type UpdateSpaceCreatorMutationResult = Apollo.MutationResult<UpdateSpaceCreatorMutation>;
 export type UpdateSpaceCreatorMutationOptions = Apollo.BaseMutationOptions<UpdateSpaceCreatorMutation, UpdateSpaceCreatorMutationVariables>;
+export const UpdateSpaceNameAndAvatarDocument = gql`
+    mutation UpdateSpaceNameAndAvatar($spaceId: String!, $name: String!, $avatar: String!) {
+  updateSpaceNameAndAvatar(spaceId: $spaceId, name: $name, avatar: $avatar) {
+    ...SpaceWithIntegrations
+  }
+}
+    ${SpaceWithIntegrationsFragmentDoc}`;
+export type UpdateSpaceNameAndAvatarMutationFn = Apollo.MutationFunction<UpdateSpaceNameAndAvatarMutation, UpdateSpaceNameAndAvatarMutationVariables>;
+
+/**
+ * __useUpdateSpaceNameAndAvatarMutation__
+ *
+ * To run a mutation, you first call `useUpdateSpaceNameAndAvatarMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateSpaceNameAndAvatarMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateSpaceNameAndAvatarMutation, { data, loading, error }] = useUpdateSpaceNameAndAvatarMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      name: // value for 'name'
+ *      avatar: // value for 'avatar'
+ *   },
+ * });
+ */
+export function useUpdateSpaceNameAndAvatarMutation(baseOptions?: Apollo.MutationHookOptions<UpdateSpaceNameAndAvatarMutation, UpdateSpaceNameAndAvatarMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateSpaceNameAndAvatarMutation, UpdateSpaceNameAndAvatarMutationVariables>(UpdateSpaceNameAndAvatarDocument, options);
+      }
+export type UpdateSpaceNameAndAvatarMutationHookResult = ReturnType<typeof useUpdateSpaceNameAndAvatarMutation>;
+export type UpdateSpaceNameAndAvatarMutationResult = Apollo.MutationResult<UpdateSpaceNameAndAvatarMutation>;
+export type UpdateSpaceNameAndAvatarMutationOptions = Apollo.BaseMutationOptions<UpdateSpaceNameAndAvatarMutation, UpdateSpaceNameAndAvatarMutationVariables>;
 export const UpsertRoute53RecordDocument = gql`
     mutation UpsertRoute53Record($spaceId: String!) {
   upsertRoute53Record(spaceId: $spaceId) {
