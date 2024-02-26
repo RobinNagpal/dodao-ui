@@ -1,9 +1,10 @@
 import { createHash } from '@/app/api/auth/custom-email/send-verification/createHash';
 import { prisma } from '@/prisma';
+import { SES } from '@aws-sdk/client-ses';
 import { User } from 'next-auth/core/types';
 import { headers } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
-import { SES } from '@aws-sdk/client-ses';
+
 const ses = new SES({
   region: process.env.AWS_REGION,
 });
@@ -15,13 +16,48 @@ export function randomString(size: number) {
   return Array.from(bytes).reduce(r, '');
 }
 
+const emailBody = (link: string) => `
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        a {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        h1 {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Sign In to Your Account</h1>
+        <p>Your sign-in link is below. Please click the button to proceed.</p>
+        <a href="${decodeURIComponent(link)}">Sign In</a>
+        <p>If you did not request this email, please ignore it.</p>
+    </div>
+</body>
+</html>
+`;
+
 const sendVerificationRequest = async (params: { identifier: string; url: string; expires: Date; token: string }) => {
   const { identifier: email, url } = params;
-
-  const link = url;
-
-  // Email HTML body
-  const emailBody = `Your sign in link is <a href="${decodeURIComponent(link)}">here</a>.`;
 
   const from = 'support@tidbitshub.org';
   console.log('Sending email to', email, 'from', from, 'with body', emailBody);
@@ -36,7 +72,7 @@ const sendVerificationRequest = async (params: { identifier: string; url: string
         },
         Body: {
           Html: {
-            Data: emailBody,
+            Data: emailBody(url),
           },
         },
       },
@@ -118,13 +154,11 @@ async function POST(req: NextRequest, res: NextResponse) {
 
   const baseUrl = `${httpsProto}://${host}`;
 
-  const url = `${baseUrl}/callback/custom-email?${new URLSearchParams({
-    callbackUrl: `${baseUrl}/`,
+  const url = `${baseUrl}/auth/email/verify?${new URLSearchParams({
     token,
-    email: userEmail,
   })}`;
   console.log('url', url);
-  const sendRequest = await sendVerificationRequest({
+  await sendVerificationRequest({
     identifier: userEmail,
     token,
     expires,
@@ -136,17 +170,9 @@ async function POST(req: NextRequest, res: NextResponse) {
     token: await createHash(`${token}${process.env.EMAIL_TOKEN_SECRET!}`),
     expires,
   };
-  const verificationToken = await prisma.verificationToken.create({ data });
+  await prisma.verificationToken.create({ data });
 
-  const aaa = {
-    redirect: `${baseUrl}/verify-request?${new URLSearchParams({
-      provider: 'custom-email',
-      type: 'credentials',
-    })}`,
-  };
-  return NextResponse.json({
-    token,
-  });
+  return NextResponse.json({});
 }
 
 function defaultNormalizer(email?: string) {
