@@ -283,6 +283,12 @@ mutation UpdateSpaceCreator($spaceId: String!, $id: String!) {
   }
 }
 
+mutation UpdateSpaceNameAndAvatar($spaceId: String!, $name: String!, $avatar: String!) {
+  updateSpaceNameAndAvatar(spaceId: $spaceId, name: $name, avatar: $avatar) {
+    ...SpaceWithIntegrations
+  }
+}
+
 mutation UpsertRoute53Record($spaceId: String!) {
   upsertRoute53Record(spaceId: $spaceId) {
     ttl
