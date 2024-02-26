@@ -3,7 +3,12 @@
 import UploadInput from '@/components/app/UploadInput';
 import Button from '@/components/core/buttons/Button';
 import Input from '@/components/core/input/Input';
-import { useExtendedSpaceQuery, useGetSpaceFromCreatorQuery, useUpdateSpaceMutation } from '@/graphql/generated/generated-types';
+import {
+  useExtendedSpaceQuery,
+  useGetSpaceFromCreatorQuery,
+  useUpdateSpaceMutation,
+  useUpdateSpaceNameAndAvatarMutation,
+} from '@/graphql/generated/generated-types';
 import { slugify } from '@/utils/auth/slugify';
 import { useEffect, useState } from 'react';
 import { useNotificationContext } from '@/contexts/NotificationContext';
@@ -25,7 +30,7 @@ export default function NewTidbitsSiteInformationStep({ goToNextStep }: NewSiteI
   const [isLoading, setIsLoading] = useState(true);
   const [buttonText, setButtonText] = useState('Create');
 
-  const [upsertSpace] = useUpdateSpaceMutation();
+  const [upsertSpace] = useUpdateSpaceNameAndAvatarMutation();
 
   const { data: spaceByUsername, loading } = useGetSpaceFromCreatorQuery({
     variables: {
@@ -89,7 +94,9 @@ export default function NewTidbitsSiteInformationStep({ goToNextStep }: NewSiteI
   const handleUpsertClick = async () => {
     await upsertSpace({
       variables: {
-        spaceInput: space,
+        spaceId: spaceByUsername?.getSpaceFromCreator?.id!,
+        name: space.name,
+        avatar: space.avatar,
       },
     });
     goToNextStep();
