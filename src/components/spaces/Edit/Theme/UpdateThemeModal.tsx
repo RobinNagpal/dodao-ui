@@ -58,7 +58,6 @@ export default function UpdateThemeModal({ space, open, onClose, byteCollection 
           message: 'Theme Updated',
           heading: 'Success 🎉',
         });
-        router.push(`/`);
         location.reload();
       } else {
         showNotification({ type: 'error', message: $t('notify.somethingWentWrong') });
