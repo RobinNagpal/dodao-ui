@@ -12,11 +12,23 @@ export async function middleware(request: NextRequest) {
     return NextResponse.json({}, { headers: corsHeaders });
   }
 
-  // You can also set request headers in NextResponse.rewrite
-  return NextResponse.next({
+  const params = new URL(decodeURIComponent(request.url)).searchParams;
+
+  const headers = new Headers(request.headers);
+  const spaceIdParam = params.get('spaceId');
+  if (spaceIdParam) {
+    headers.set('x-space-id', spaceIdParam);
+  }
+
+  const nextResponse = NextResponse.next({
     request: {
-      headers: new Headers(request.headers),
+      headers: headers,
     },
   });
+  // console.log('nextResponse.cookies', JSON.stringify(nextResponse.cookies.getAll()));
+  // console.log('nextResponse.headers', JSON.stringify(Array.from(nextResponse.headers.entries()), null, 2));
+
+  return nextResponse;
 }
+
 export const config = { matcher: ['/api/:path*'] };

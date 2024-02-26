@@ -1,5 +1,6 @@
 'use client';
 
+import withSpace, { SpaceProps } from '@/app/withSpace';
 import Button from '@/components/core/buttons/Button';
 import Input from '@/components/core/input/Input';
 import FullScreenModal from '@/components/core/modals/FullScreenModal';
@@ -8,21 +9,39 @@ import { signIn } from 'next-auth/react';
 // pages/auth.tsx
 import { useState } from 'react';
 
-export interface EmailLoginModalProps {
+export interface EmailLoginModalProps extends SpaceProps {
   open: boolean;
   onClose: () => void;
 }
-export default function EmailLoginModal({ open, onClose }: EmailLoginModalProps) {
+function EmailLoginModal({ open, onClose, space }: EmailLoginModalProps) {
   const [email, setEmail] = useState('');
   const [showVerificationInput, setShowVerificationInput] = useState(false);
   const [verificationCode, setVerificationCode] = useState('');
-  const origin = typeof window !== 'undefined' && window.location.origin ? window.location.origin : '';
+
   // Handle email submission to send the verification code
   const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     // Trigger Next-Auth sign-in flow for email
-    const result = await signIn('email', { email, redirect: false, callbackUrl: '/', origin });
-    if (result?.ok) {
+    const response = await fetch('/api/auth/custom-email/send-verification', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email,
+        spaceId: space.id,
+        authProvider: 'custom-email',
+      }),
+    });
+
+    if (response?.ok) {
+      const resp = await response.json();
+      await signIn('custom-email', {
+        token: resp.token,
+        callbackUrl: '/',
+        redirect: false,
+        spaceId: space.id,
+      });
       setShowVerificationInput(true);
     } else {
       // Handle error or show a message to the user
@@ -41,7 +60,7 @@ export default function EmailLoginModal({ open, onClose }: EmailLoginModalProps)
   return (
     <FullScreenModal open={open} onClose={onClose} title={'Login with Email'}>
       <PageWrapper>
-        <div>
+        <div className="text-left">
           {!showVerificationInput ? (
             // Email submission form
             <form onSubmit={handleEmailSubmit}>
@@ -70,3 +89,5 @@ export default function EmailLoginModal({ open, onClose }: EmailLoginModalProps)
     </FullScreenModal>
   );
 }
+
+export default withSpace(EmailLoginModal);

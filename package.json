@@ -17,10 +17,10 @@
     "node": ">=20.0.0"
   },
   "dependencies": {
-    "@aws-sdk/client-ses": "^3.515.0",
     "@apollo/client": "^3.7.12",
     "@apollo/react-hooks": "^4.0.0",
     "@auth/core": "^0.27.0",
+    "@aws-sdk/client-ses": "^3.515.0",
     "@ethersproject/bignumber": "^5.7.0",
     "@ethersproject/units": "^5.7.0",
     "@headlessui/react": "^1.7.14",
@@ -34,6 +34,7 @@
     "@types/katex": "^0.16.0",
     "@types/lodash": "^4.14.194",
     "@types/node": "18.16.3",
+    "@types/nodemailer": "^6.4.14",
     "@types/react": "18.2.0",
     "@types/react-dom": "18.2.1",
     "@types/react-google-recaptcha": "^2.1.9",
@@ -81,6 +82,7 @@
     "next": "14.1.0",
     "next-auth": "^4.24.6",
     "next-i18next": "^15.2.0",
+    "nodemailer": "^6.9.10",
     "openai": "^3.2.1",
     "plyr": "^3.7.8",
     "postcss": "8.4.35",
