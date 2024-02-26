@@ -102,7 +102,7 @@ export default function LoginInfo({ goToNextStep }: LoginInformationProps) {
   }, []);
 
   return (
-    <div className="space-y-12 text-left mt-8">
+    <div className="space-y-12 text-left mt-8 sm:px-0 px-4">
       <div>
         <h1 className="text-lg font-bold leading-7">Basic Login Credentials</h1>
         <p className="mt-1 text-sm leading-6">Please provide login data to proceed!</p>
