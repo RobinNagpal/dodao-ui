@@ -103,11 +103,11 @@ export default function NewTidbitsSiteInformationStep({ goToNextStep }: NewSiteI
   };
 
   const handleButtonClick = async () => {
-    if (buttonText === 'Create') {
-      await handleCreateClick();
-    } else {
-      console.log('I am space output: ', space);
+    const isEditing = !!spaceByUsername?.getSpaceFromCreator?.id;
+    if (isEditing) {
       await handleUpsertClick();
+    } else {
+      await handleCreateClick();
     }
   };
 
@@ -119,12 +119,10 @@ export default function NewTidbitsSiteInformationStep({ goToNextStep }: NewSiteI
       setSpaceField('name', name);
       setSpaceField('id', id);
       setSpaceField('avatar', avatar);
-      setButtonText('Upsert');
     } else {
       setSpaceField('name', '');
       setSpaceField('id', '');
       setSpaceField('avatar', '');
-      setButtonText('Create');
     }
   }, [spaceByUsername, loading]);
 
@@ -169,7 +167,8 @@ export default function NewTidbitsSiteInformationStep({ goToNextStep }: NewSiteI
 
       <div className="flex items-center justify-start gap-x-6">
         <Button variant="contained" primary removeBorder={true} disabled={isEmpty(space.name) || isEmpty(space.avatar)} onClick={handleButtonClick}>
-          {buttonText}
+          Next
+          <span className="ml-2 font-bold">&#8594;</span>
         </Button>
       </div>
     </div>
