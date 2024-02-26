@@ -1,5 +1,6 @@
 'use client';
 
+import EmailLoginModal from '@/app/login/components/EmailLoginModal';
 import withSpace from '@/app/withSpace';
 import ButtonLarge from '@/components/core/buttons/Button';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
@@ -28,10 +29,15 @@ function LoginButtonsFunction(props: { space: SpaceWithIntegrationsFragment }) {
   const isCoinbaseEnabled = !!space.authSettings.loginOptions?.includes(LoginProviders.Coinbase);
   const isGoogleEnabled = !!space.authSettings.loginOptions?.includes(LoginProviders.Google);
   const isDiscordEnabled = !!space.authSettings.loginOptions?.includes(LoginProviders.Discord);
-
   const isNearEnabled = !!space.authSettings.loginOptions?.includes(LoginProviders.Near);
+  const isEmailEnabled = !!space.authSettings.loginOptions?.includes(LoginProviders.Email);
+
+  const [showEmailModal, setShowEmailModal] = React.useState(false);
+  const loginWithEmail = () => {
+    setShowEmailModal(true);
+  };
   return (
-    <div className="flex-col">
+    <div className="flex-col max-w-md">
       {allOptionsEnabled || isMetamaskEnabled ? (
         <div className="mt-2 w-full">
           <ButtonLarge variant={'outlined'} primary onClick={loginWithMetamask} className="w-full" disabled={processing} loading={processingMetaMask}>
@@ -67,6 +73,14 @@ function LoginButtonsFunction(props: { space: SpaceWithIntegrationsFragment }) {
           </ButtonLarge>
         </div>
       ) : null}
+      {isEmailEnabled ? (
+        <div className="mt-2">
+          <ButtonLarge variant={'outlined'} primary onClick={loginWithEmail} className="w-full" disabled={processing} loading={processingNear}>
+            Login with Email
+          </ButtonLarge>
+        </div>
+      ) : null}
+      {showEmailModal && <EmailLoginModal open={showEmailModal} onClose={() => setShowEmailModal(false)} />}
     </div>
   );
 }

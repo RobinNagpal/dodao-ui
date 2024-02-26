@@ -72,6 +72,7 @@ export enum LoginProviders {
   Google = 'Google',
   Coinbase = 'Coinbase',
   Near = 'Near',
+  Email = 'Email',
 }
 
 export enum TidbitShareSteps {

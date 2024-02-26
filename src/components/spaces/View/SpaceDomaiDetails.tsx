@@ -1,38 +1,16 @@
-import DetailsRow, { DetailsFieldProps } from '@/components/core/details/DetailsRow';
 import DetailsHeader from '@/components/core/details/DetailsHeader';
+import DetailsRow from '@/components/core/details/DetailsRow';
 import DetailsSection from '@/components/core/details/DetailsSection';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import UpsertSpaceAuthSettingsModal from '@/components/spaces/Edit/Auth/UpsertSpaceAuthSettingsModal';
-import {
-  Space,
-  SpaceWithIntegrationsFragment,
-  useRoute53RecordQuery,
-  useUpsertDomainRecordsMutation,
-  useVercelDomainRecordQuery,
-} from '@/graphql/generated/generated-types';
-import React, { ReactElement, useState } from 'react';
+import { Space, useRoute53RecordQuery, useUpsertDomainRecordsMutation, useVercelDomainRecordQuery } from '@/graphql/generated/generated-types';
+import React, { useState } from 'react';
 
 export interface SpaceAuthDetailsProps {
   space: Space;
   className?: string;
 }
 
-function getSpaceDetailsFields(space: SpaceWithIntegrationsFragment): Array<{ label: string; value: string }> {
-  return [
-    {
-      label: 'EnableLogin',
-      value: (!!space.authSettings.enableLogin).toString(),
-    },
-    {
-      label: 'Allowed Login',
-      value: space.authSettings.loginOptions?.join(', ') || 'All',
-    },
-  ];
-}
-
-function DomainDetailRows({ space }: { space: SpaceWithIntegrationsFragment }): ReactElement<DetailsFieldProps> {
-  return <></>;
-}
 export default function SpaceDomaiDetails(props: SpaceAuthDetailsProps) {
   const threeDotItems = [{ label: 'Create Domain Records', key: 'create-domain-records' }];
   const [showAuthSettingsModal, setShowAuthSettingsModal] = useState(false);
@@ -47,6 +25,7 @@ export default function SpaceDomaiDetails(props: SpaceAuthDetailsProps) {
         variables: {
           spaceId: props.space.id,
         },
+        refetchQueries: ['Route53Record', 'VercelDomainRecord'],
       });
     }
   };
@@ -58,7 +37,7 @@ export default function SpaceDomaiDetails(props: SpaceAuthDetailsProps) {
           <DetailsHeader header={'Auth Details'} className="grow-1 w-full" />
           <PrivateEllipsisDropdown items={threeDotItems} onSelect={selectFromThreedotDropdown} className="ml-4 pt-4 grow-0 w-16" />
         </div>
-        <DetailsRow label={'Route 53 Record'} value={JSON.stringify(route53Response?.payload || {})} />
+        <DetailsRow label={'Route 53 Record'} value={route53Response?.payload ? JSON.stringify(route53Response?.payload) : 'No Route 53 Record'} />
         <DetailsRow
           label={'Vercel Domain Record'}
           value={vercelDomainResponse?.vercelDomainRecord ? JSON.stringify(vercelDomainResponse?.vercelDomainRecord) : 'No Vercel Domain Record'}

@@ -2,7 +2,9 @@
 
 // LoginModal.tsx
 import { LoginButtons } from '@/app/login/components/LoginButtons';
+import FullScreenModal from '@/components/core/modals/FullScreenModal';
 import SingleSectionModal from '@/components/core/modals/SingleSectionModal';
+import PageWrapper from '@/components/core/page/PageWrapper';
 import { useLoginModalContext } from '@/contexts/LoginModalContext';
 import { useSession } from 'next-auth/react';
 import React, { useEffect } from 'react';
@@ -22,9 +24,13 @@ const LoginModal: React.FC = () => {
   }
 
   return (
-    <SingleSectionModal open={showLoginModal} onClose={() => setShowLoginModal(false)} title={'Login'} showCloseButton={false}>
-      <LoginButtons />
-    </SingleSectionModal>
+    <FullScreenModal open={showLoginModal} onClose={() => setShowLoginModal(false)} title={'Login'} showCloseButton={false}>
+      <PageWrapper>
+        <div className="flex justify-center items-center h-full">
+          <LoginButtons />
+        </div>
+      </PageWrapper>
+    </FullScreenModal>
   );
 };
 
