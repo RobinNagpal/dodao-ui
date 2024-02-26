@@ -28,7 +28,7 @@ const HorizontalStepperSimple: React.FC<StepperItemProps> = ({ currentStepId, st
   console.log('Steps: ', steps);
   return (
     <nav aria-label="Progress">
-      <ol role="list" className="space-y-4 md:flex md:space-x-8 md:space-y-0">
+      <ol role="list" className="space-y-4 sm:px-0 px-4 md:flex md:space-x-8 md:space-y-0">
         {steps.map((step) => {
           const index = steps.findIndex((s) => step.id === s.id) + 1;
           const status = getStepStatus(step.id, currentStepId);
