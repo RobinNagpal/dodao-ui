@@ -10,13 +10,12 @@ import {
 } from '@/graphql/generated/generated-types';
 import { useSession } from 'next-auth/react';
 import UpdateThemeModal, { ColorLabels, ThemeColorsKeys } from '@/components/spaces/Edit/Theme/UpdateThemeModal';
-import React from 'react';
+import React, { CSSProperties } from 'react';
 import { CssTheme, ThemeKey, themes } from '@/app/themes';
 import ByteCollectionsCard from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCollectionsCard';
 
 export default function TidbitSiteConfigurationStep() {
   const [showThemeUpdateModal, setShowThemeUpdateModal] = React.useState(false);
-
   const { data: session } = useSession();
   const { data: spaceResponse } = useGetSpaceFromCreatorQuery({
     variables: {
@@ -28,6 +27,15 @@ export default function TidbitSiteConfigurationStep() {
   const skin = space?.skin;
   const theme: ThemeKey = space?.skin && Object.keys(CssTheme).includes(skin || '') ? (skin as CssTheme) : CssTheme.GlobalTheme;
   const themeColors: ThemeColors = space?.themeColors || themes[theme];
+  const style = {
+    '--primary-color': themeColors.primaryColor,
+    '--bg-color': themeColors.bgColor,
+    '--text-color': themeColors.textColor,
+    '--link-color': themeColors.linkColor,
+    '--heading-color': themeColors.headingColor,
+    '--border-color': themeColors.borderColor,
+    '--block-bg': themeColors.blockBg,
+  } as CSSProperties;
   const byteCollection: ProjectByteCollectionFragment = {
     id: 'b757246b-1b08-42ce-a8cb-a9ce19bc78b3',
     archived: false,
@@ -104,7 +112,7 @@ export default function TidbitSiteConfigurationStep() {
   };
 
   return (
-    <div className="flex justify-center items-center flex-col mt-16">
+    <div className="flex justify-center items-center flex-col mt-16 sm:px-0 px-4">
       <div className="flex flex-col md:flex-row w-full">
         <div className="md:flex-auto">
           <h1 className="font-semibold leading-6 text-lg md:text-2xl">Theme Details</h1>
@@ -133,7 +141,7 @@ export default function TidbitSiteConfigurationStep() {
             })}
           </div>
 
-          <div className="w-full md:mt-0 mt-4 md:w-1/2 p-2 md:p-4">
+          <div className="w-full md:mt-0 mt-4 md:w-1/2 p-2 md:p-4" style={style}>
             <ByteCollectionsCard byteCollection={byteCollection} byteCollectionType={'byteCollection'} isEditingAllowed={false} space={space!} />
           </div>
         </div>
