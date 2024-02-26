@@ -3,7 +3,13 @@
 import UploadInput from '@/components/app/UploadInput';
 import Button from '@/components/core/buttons/Button';
 import Input from '@/components/core/input/Input';
-import { useExtendedSpaceQuery, useGetSpaceFromCreatorQuery, useUpsertDomainRecordsMutation } from '@/graphql/generated/generated-types';
+import {
+  useExtendedSpaceQuery,
+  useGetSpaceFromCreatorQuery,
+  useUpdateSpaceMutation,
+  useUpsertDomainRecordsMutation,
+  useUpsertSpaceFeaturesMutation,
+} from '@/graphql/generated/generated-types';
 import { slugify } from '@/utils/auth/slugify';
 import { useEffect, useState } from 'react';
 import { useNotificationContext } from '@/contexts/NotificationContext';
@@ -25,6 +31,8 @@ export default function NewTidbitsSiteInformationStep({ goToNextStep }: NewSiteI
   const [isLoading, setIsLoading] = useState(true);
   const [buttonText, setButtonText] = useState('Create');
 
+  const [upsertSpace] = useUpdateSpaceMutation();
+
   const { data: spaceByUsername, loading } = useGetSpaceFromCreatorQuery({
     variables: {
       creatorUsername: session?.username!,
@@ -32,29 +40,12 @@ export default function NewTidbitsSiteInformationStep({ goToNextStep }: NewSiteI
     skip: !session?.username,
   });
 
-  const [upsertDomainRecords] = useUpsertDomainRecordsMutation();
-
   const { data: extendedSpaceData, loading: extendedSpaceLoading } = useExtendedSpaceQuery({
     variables: {
       spaceId: space.id,
     },
     skip: !space.id,
   });
-
-  useEffect(() => {
-    const fetchSpaceData = async () => {
-      if (!loading && spaceByUsername?.getSpaceFromCreator) {
-        const existingSpace = spaceByUsername.getSpaceFromCreator;
-        setSpaceField('name', existingSpace.name);
-        setSpaceField('id', existingSpace.id);
-        setSpaceField('avatar', existingSpace.avatar);
-        setButtonText('Upsert');
-      }
-      setIsLoading(false);
-    };
-
-    fetchSpaceData();
-  }, [session?.username]);
 
   const handleCreateClick = async () => {
     if (extendedSpaceLoading) {
@@ -101,12 +92,39 @@ export default function NewTidbitsSiteInformationStep({ goToNextStep }: NewSiteI
     }
   };
 
+  const handleUpsertClick = async () => {
+    await upsertSpace({
+      variables: {
+        spaceInput: space,
+      },
+    });
+    goToNextStep();
+  };
+
   const handleButtonClick = async () => {
     if (buttonText === 'Create') {
       await handleCreateClick();
     } else {
+      await handleUpsertClick();
     }
   };
+
+  useEffect(() => {
+    setIsLoading(loading);
+    const isEditing = !!spaceByUsername?.getSpaceFromCreator?.id;
+    if (isEditing) {
+      const { name, id, avatar } = spaceByUsername.getSpaceFromCreator!;
+      setSpaceField('name', name);
+      setSpaceField('id', id);
+      setSpaceField('avatar', avatar);
+      setButtonText('Upsert');
+    } else {
+      setSpaceField('name', '');
+      setSpaceField('id', '');
+      setSpaceField('avatar', '');
+      setButtonText('Create');
+    }
+  }, [spaceByUsername, loading]);
 
   if (isLoading || uploadThumbnailLoading || upserting) {
     return <LoadingSpinner />;
@@ -122,11 +140,14 @@ export default function NewTidbitsSiteInformationStep({ goToNextStep }: NewSiteI
             label="Name"
             modelValue={space.name}
             onUpdate={(value) => {
-              const slugifiedValue = slugify(value?.toString() || '');
               setSpaceField('name', value?.toString() || '');
-              setSpaceField('id', slugifiedValue);
+              if (!spaceByUsername?.getSpaceFromCreator?.id) {
+                const slugifiedValue = slugify(value?.toString() || '');
+                setSpaceField('id', slugifiedValue);
+              }
             }}
           />
+
           <Input label="Id" modelValue={space.id} disabled={true} />
           <UploadInput
             label="Logo"
