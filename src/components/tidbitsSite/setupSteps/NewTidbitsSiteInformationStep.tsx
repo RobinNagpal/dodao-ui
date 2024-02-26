@@ -99,6 +99,7 @@ export default function NewTidbitsSiteInformationStep({ goToNextStep }: NewSiteI
     if (buttonText === 'Create') {
       await handleCreateClick();
     } else {
+      console.log('I am space output: ', space);
       await handleUpsertClick();
     }
   };
@@ -121,7 +122,11 @@ export default function NewTidbitsSiteInformationStep({ goToNextStep }: NewSiteI
   }, [spaceByUsername, loading]);
 
   if (isLoading || uploadThumbnailLoading || upserting) {
-    return <LoadingSpinner />;
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <LoadingSpinner />
+      </div>
+    );
   }
 
   return (
