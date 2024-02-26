@@ -1068,6 +1068,7 @@ type Mutation {
   updateSocialSettings(input: SocialSettingsInput!, spaceId: String!): Space!
   updateSpace(spaceInput: UpsertSpaceInput!): Space!
   updateSpaceCreator(creator: String!, spaceId: String!): Space!
+  updateSpaceNameAndAvatar(avatar: String!, name: String!, spaceId: String!): Space!
   updateThemeColors(spaceId: ID!, themeColors: ThemeColorsInput!): Space!
   updateTopicBasicInfo(spaceId: String!, topicInfo: UpdateTopicBasicInfoInput!): GitCourse!
   updateTopicExplanation(explanationInfo: UpdateTopicExplanationInput!, spaceId: String!): GitCourse!
@@ -1917,15 +1918,15 @@ type VercelDomain {
   projectId: String!
   redirect: String
   updatedAt: DateTimeISO
-  verification: [VercelVerification]
+  verification: [VercelVerification!]
   verified: Boolean!
 }
 
 type VercelVerification {
-  domain: String
-  reason: String
-  type: String
-  value: String
+  domain: String!
+  reason: String!
+  type: String!
+  value: String!
 }
 
 type WebsiteScrapingInfo {
