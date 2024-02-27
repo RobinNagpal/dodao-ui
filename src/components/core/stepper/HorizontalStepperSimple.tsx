@@ -25,7 +25,6 @@ const getStepStatus = (stepId: string, currentStepId: string): StepStatus => {
 };
 
 const HorizontalStepperSimple: React.FC<StepperItemProps> = ({ currentStepId, steps }) => {
-  console.log('Steps: ', steps);
   return (
     <nav aria-label="Progress">
       <ol role="list" className="space-y-4 sm:px-0 px-4 md:flex md:space-x-8 md:space-y-0">

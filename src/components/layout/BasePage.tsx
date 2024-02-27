@@ -1,6 +1,6 @@
 'use client';
 
-import { TOP_CRYPTO_PROJECTS_SPACE_ID } from '@/chatbot/utils/app/constants';
+import { PredefinedSpaces } from '@/chatbot/utils/app/constants';
 import LoginModal from '@/components/auth/LoginModal';
 import FullPageLoader from '@/components/core/loaders/FullPageLoading';
 import TopNav from '@/components/main/TopNav/TopNav';
@@ -27,7 +27,7 @@ function PageTopNav(props: { space: SpaceWithIntegrationsFragment }) {
     return null;
   }
 
-  if (props.space?.id === TOP_CRYPTO_PROJECTS_SPACE_ID) {
+  if (props.space?.id === PredefinedSpaces.CRYPTO_GELATO) {
     return <TopCryptoTopNav space={props.space} />;
   }
 

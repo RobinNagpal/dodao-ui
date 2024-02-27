@@ -1,6 +1,6 @@
 import ChatHome from '@/chatbot/home/home';
 import { OpenAIModelID } from '@/chatbot/types/openai';
-import { TOP_CRYPTO_PROJECTS_SPACE_ID } from '@/chatbot/utils/app/constants';
+import { PredefinedSpaces } from '@/chatbot/utils/app/constants';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import DefaultHome from '@/components/home/DefaultHome/DefaultHome';
 import DoDAOHome from '@/components/home/DoDAOHome/DoDAOHome';
@@ -23,7 +23,7 @@ async function Home(props: { searchParams: { [key: string]: string | string[] | 
     return <ChatHome defaultModelId={OpenAIModelID.GPT_3_5} serverSideApiKeyIsSet={true} serverSidePluginKeysSet={false} isChatbotSite={true} />;
   }
 
-  if (space?.id === TOP_CRYPTO_PROJECTS_SPACE_ID) {
+  if (space?.id === PredefinedSpaces.CRYPTO_GELATO) {
     const projects = await getApiResponse<ProjectFragment[]>(space, 'projects');
     const showArchived = props.searchParams?.['showArchived'] === 'true';
     return (

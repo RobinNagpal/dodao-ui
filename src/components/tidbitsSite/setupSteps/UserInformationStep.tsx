@@ -112,8 +112,9 @@ export default function LoginInfo({ goToNextStep }: LoginInformationProps) {
         <ReCAPTCHA ref={captchaRef} sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!} onChange={setCaptcha} className="mt-4" />
       </div>
       <div className="flex items-center justify-start gap-x-6">
-        <Button variant="contained" primary onClick={handleSave} disabled={!captcha || isEmpty(name) || isEmpty(email) || isEmpty(phone)}>
-          Save
+        <Button variant="contained" primary removeBorder={true} disabled={!captcha || isEmpty(name) || isEmpty(email) || isEmpty(phone)} onClick={handleSave}>
+          Next
+          <span className="ml-2 font-bold">&#8594;</span>
         </Button>
       </div>
     </div>

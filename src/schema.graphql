@@ -1068,7 +1068,6 @@ type Mutation {
   updateSocialSettings(input: SocialSettingsInput!, spaceId: String!): Space!
   updateSpace(spaceInput: UpsertSpaceInput!): Space!
   updateSpaceCreator(creator: String!, spaceId: String!): Space!
-  updateSpaceNameAndAvatar(avatar: String!, name: String!, spaceId: String!): Space!
   updateThemeColors(spaceId: ID!, themeColors: ThemeColorsInput!): Space!
   updateTopicBasicInfo(spaceId: String!, topicInfo: UpdateTopicBasicInfoInput!): GitCourse!
   updateTopicExplanation(explanationInfo: UpdateTopicExplanationInput!, spaceId: String!): GitCourse!
@@ -1520,6 +1519,13 @@ type SpaceLoadersInfo {
 input SpaceLoadersInfoInput {
   discordServerId: String
   discourseUrl: String
+}
+
+enum SpaceTypes {
+  AcademySite
+  AiChatbotSite
+  CryptoGelatoSite
+  TidbitsSite
 }
 
 input SpaceWhere {

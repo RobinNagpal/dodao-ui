@@ -1,4 +1,4 @@
-import { TOP_CRYPTO_PROJECTS_SPACE_ID } from '@/chatbot/utils/app/constants';
+import { PredefinedSpaces } from '@/chatbot/utils/app/constants';
 import Button from '@/components/core/buttons/Button';
 import { Grid2Cols } from '@/components/core/grids/Grid2Cols';
 import UpsertProjectModal from '@/components/projects/Edit/UpsertProjectModal';
@@ -32,7 +32,7 @@ export default function CreateContentModalContents({ hideModal, space }: { hideM
           <Button variant="outlined" primary className="p-2 w-full" onClick={() => goToUrl('/shorts/create')}>
             Create Short Video
           </Button>
-          {space?.id === TOP_CRYPTO_PROJECTS_SPACE_ID && (
+          {space?.id === PredefinedSpaces.CRYPTO_GELATO && (
             <Button variant="outlined" primary className="p-2 w-full" onClick={() => setShowProjectAddModal(true)}>
               Create Project
             </Button>

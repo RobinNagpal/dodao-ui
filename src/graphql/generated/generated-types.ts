@@ -1137,7 +1137,6 @@ export interface Mutation {
   updateSocialSettings: Space;
   updateSpace: Space;
   updateSpaceCreator: Space;
-  updateSpaceNameAndAvatar: Space;
   updateThemeColors: Space;
   updateTopicBasicInfo: GitCourse;
   updateTopicExplanation: GitCourse;
@@ -1622,13 +1621,6 @@ export interface MutationUpdateSpaceArgs {
 
 export interface MutationUpdateSpaceCreatorArgs {
   creator: Scalars['String'];
-  spaceId: Scalars['String'];
-}
-
-
-export interface MutationUpdateSpaceNameAndAvatarArgs {
-  avatar: Scalars['String'];
-  name: Scalars['String'];
   spaceId: Scalars['String'];
 }
 
@@ -2577,6 +2569,13 @@ export interface SpaceLoadersInfo {
 export interface SpaceLoadersInfoInput {
   discordServerId?: InputMaybe<Scalars['String']>;
   discourseUrl?: InputMaybe<Scalars['String']>;
+}
+
+export enum SpaceTypes {
+  AcademySite = 'AcademySite',
+  AiChatbotSite = 'AiChatbotSite',
+  CryptoGelatoSite = 'CryptoGelatoSite',
+  TidbitsSite = 'TidbitsSite'
 }
 
 export interface SpaceWhere {
@@ -4398,15 +4397,6 @@ export type UpdateSpaceCreatorMutationVariables = Exact<{
 
 
 export type UpdateSpaceCreatorMutation = { __typename?: 'Mutation', updateSpaceCreator: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, type: string, skin: string, avatar?: string | null, domains: Array<string>, botDomains?: Array<string> | null, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, adminUsernamesV1: Array<{ __typename?: 'UsernameAndName', username: string, nameOfTheUser: string }>, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null, loadersInfo?: { __typename?: 'SpaceLoadersInfo', discourseUrl?: string | null, discordServerId?: string | null } | null } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null }, themeColors?: { __typename?: 'ThemeColors', primaryColor: string, bgColor: string, textColor: string, linkColor: string, headingColor: string, borderColor: string, blockBg: string } | null } };
-
-export type UpdateSpaceNameAndAvatarMutationVariables = Exact<{
-  spaceId: Scalars['String'];
-  name: Scalars['String'];
-  avatar: Scalars['String'];
-}>;
-
-
-export type UpdateSpaceNameAndAvatarMutation = { __typename?: 'Mutation', updateSpaceNameAndAvatar: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, type: string, skin: string, avatar?: string | null, domains: Array<string>, botDomains?: Array<string> | null, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, adminUsernamesV1: Array<{ __typename?: 'UsernameAndName', username: string, nameOfTheUser: string }>, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null, loadersInfo?: { __typename?: 'SpaceLoadersInfo', discourseUrl?: string | null, discordServerId?: string | null } | null } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null }, themeColors?: { __typename?: 'ThemeColors', primaryColor: string, bgColor: string, textColor: string, linkColor: string, headingColor: string, borderColor: string, blockBg: string } | null } };
 
 export type UpsertRoute53RecordMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -11502,41 +11492,6 @@ export function useUpdateSpaceCreatorMutation(baseOptions?: Apollo.MutationHookO
 export type UpdateSpaceCreatorMutationHookResult = ReturnType<typeof useUpdateSpaceCreatorMutation>;
 export type UpdateSpaceCreatorMutationResult = Apollo.MutationResult<UpdateSpaceCreatorMutation>;
 export type UpdateSpaceCreatorMutationOptions = Apollo.BaseMutationOptions<UpdateSpaceCreatorMutation, UpdateSpaceCreatorMutationVariables>;
-export const UpdateSpaceNameAndAvatarDocument = gql`
-    mutation UpdateSpaceNameAndAvatar($spaceId: String!, $name: String!, $avatar: String!) {
-  updateSpaceNameAndAvatar(spaceId: $spaceId, name: $name, avatar: $avatar) {
-    ...SpaceWithIntegrations
-  }
-}
-    ${SpaceWithIntegrationsFragmentDoc}`;
-export type UpdateSpaceNameAndAvatarMutationFn = Apollo.MutationFunction<UpdateSpaceNameAndAvatarMutation, UpdateSpaceNameAndAvatarMutationVariables>;
-
-/**
- * __useUpdateSpaceNameAndAvatarMutation__
- *
- * To run a mutation, you first call `useUpdateSpaceNameAndAvatarMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateSpaceNameAndAvatarMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [updateSpaceNameAndAvatarMutation, { data, loading, error }] = useUpdateSpaceNameAndAvatarMutation({
- *   variables: {
- *      spaceId: // value for 'spaceId'
- *      name: // value for 'name'
- *      avatar: // value for 'avatar'
- *   },
- * });
- */
-export function useUpdateSpaceNameAndAvatarMutation(baseOptions?: Apollo.MutationHookOptions<UpdateSpaceNameAndAvatarMutation, UpdateSpaceNameAndAvatarMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateSpaceNameAndAvatarMutation, UpdateSpaceNameAndAvatarMutationVariables>(UpdateSpaceNameAndAvatarDocument, options);
-      }
-export type UpdateSpaceNameAndAvatarMutationHookResult = ReturnType<typeof useUpdateSpaceNameAndAvatarMutation>;
-export type UpdateSpaceNameAndAvatarMutationResult = Apollo.MutationResult<UpdateSpaceNameAndAvatarMutation>;
-export type UpdateSpaceNameAndAvatarMutationOptions = Apollo.BaseMutationOptions<UpdateSpaceNameAndAvatarMutation, UpdateSpaceNameAndAvatarMutationVariables>;
 export const UpsertRoute53RecordDocument = gql`
     mutation UpsertRoute53Record($spaceId: String!) {
   upsertRoute53Record(spaceId: $spaceId) {

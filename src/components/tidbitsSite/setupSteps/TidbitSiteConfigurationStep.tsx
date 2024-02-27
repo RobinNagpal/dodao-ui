@@ -143,7 +143,7 @@ export default function TidbitSiteConfigurationStep({ goToPreviousStep }: Tidbit
   };
 
   return (
-    <div className="flex justify-center items-center flex-col mt-16 sm:px-0 px-4">
+    <div className="flex flex-col mt-16 sm:px-0 px-4">
       <div className="flex flex-col md:flex-row w-full">
         <div className="md:flex-auto">
           <h1 className="font-semibold leading-6 text-lg md:text-2xl">Theme Details</h1>
@@ -154,7 +154,7 @@ export default function TidbitSiteConfigurationStep({ goToPreviousStep }: Tidbit
         </Button>
       </div>
 
-      <div className={'mt-4'}>
+      <div className="mt-4">
         <div className="flex flex-col md:flex-row flex-wrap">
           <div className="w-full md:w-1/2 mt-4">
             {Object.entries(ColorLabels).map((e) => {
@@ -180,15 +180,8 @@ export default function TidbitSiteConfigurationStep({ goToPreviousStep }: Tidbit
       {showThemeUpdateModal && (
         <UpdateThemeModal byteCollection={byteCollection} space={space!} open={showThemeUpdateModal} onClose={() => setShowThemeUpdateModal(false)} />
       )}
-
-      <div className="flex">
-        <Button onClick={upsertRoute53Record} className="mt-4" variant="contained" primary>
-          Create Route 53 Record
-        </Button>
-        <Button onClick={upsertVercelDomainRecord} className="mt-4 ml-4" variant="contained" primary>
-          Create Vercel Domain Record
-        </Button>
-      </div>
+      {JSON.stringify(route53Record || {})}
+      {JSON.stringify(vercelDomainRecord || {})}
       <div className="flex items-center justify-start gap-x-4 mt-4">
         <Button onClick={goToPreviousStep} variant="outlined">
           <span className="font-bold mr-1">&#8592;</span>
@@ -199,10 +192,15 @@ export default function TidbitSiteConfigurationStep({ goToPreviousStep }: Tidbit
           primary
           removeBorder={true}
           disabled={!space?.id || !route53Record?.payload || !vercelDomainRecord?.vercelDomainRecord}
-          loading={!route53Record?.payload || !vercelDomainRecord?.vercelDomainRecord}
+          loading={
+            !route53Record?.payload ||
+            !vercelDomainRecord?.vercelDomainRecord ||
+            !vercelDomainRecord.vercelDomainRecord.verified ||
+            (vercelDomainRecord.vercelDomainRecord.verification?.length || 0) > 0
+          }
           onClick={() => {
             if (space?.id) {
-              router.push(`${space?.id}.tidbitshub.org`);
+              window.location.href = `https://${space?.id}.tidbitshub.org`;
             }
           }}
         >

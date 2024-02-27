@@ -3,19 +3,10 @@
 import UploadInput from '@/components/app/UploadInput';
 import Button from '@/components/core/buttons/Button';
 import Input from '@/components/core/input/Input';
-import {
-  useExtendedSpaceQuery,
-  useGetSpaceFromCreatorQuery,
-  useUpdateSpaceMutation,
-  useUpdateSpaceNameAndAvatarMutation,
-} from '@/graphql/generated/generated-types';
-import { slugify } from '@/utils/auth/slugify';
-import React, { useEffect, useState } from 'react';
-import { useNotificationContext } from '@/contexts/NotificationContext';
-import { isEmpty } from 'lodash';
-import useCreateSpace from '@/components/tidbitsSite/setupSteps/useNewSpace';
-import { useSession } from 'next-auth/react';
 import LoadingSpinner from '@/components/core/loaders/LoadingSpinner';
+import useCreateNewTidbitSpace from '@/components/tidbitsSite/setupSteps/useCreateNewTidbitSpace';
+import { isEmpty } from 'lodash';
+import React, { useState } from 'react';
 
 interface NewSiteInformationProps {
   goToNextStep: () => void;
@@ -23,110 +14,28 @@ interface NewSiteInformationProps {
 }
 
 export default function NewTidbitsSiteInformationStep({ goToNextStep, goToPreviousStep }: NewSiteInformationProps) {
-  const createSpaceHelper = useCreateSpace();
-  const { space, setSpaceField, createNewTidbitSpace, upserting } = createSpaceHelper;
-  const { showNotification } = useNotificationContext();
-  const { data: session } = useSession();
+  const createSpaceHelper = useCreateNewTidbitSpace();
+  const { tidbitSpace, setSpaceField, createNewTidbitSpace, upserting, existingSpace, loading, updateTidbitSpace } = createSpaceHelper;
+
   const [uploadThumbnailLoading, setUploadThumbnailLoading] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
 
-  const [upsertSpace] = useUpdateSpaceNameAndAvatarMutation();
-
-  const { data: spaceByUsername, loading } = useGetSpaceFromCreatorQuery({
-    variables: {
-      creatorUsername: session?.username!,
-    },
-    skip: !session?.username,
-  });
-
-  const { data: extendedSpaceData, loading: extendedSpaceLoading } = useExtendedSpaceQuery({
-    variables: {
-      spaceId: space.id,
-    },
-    skip: !space.id,
-  });
-
-  const handleCreateClick = async () => {
-    if (extendedSpaceLoading) {
-      showNotification({ type: 'info', message: 'Checking space ID availability...' });
-      return;
-    }
-    if (extendedSpaceData && extendedSpaceData.space) {
-      showNotification({ type: 'error', message: 'Space id already exists. Please try again!!' });
-      return;
-    }
-
-    try {
-      await createNewTidbitSpace();
-      const spaceId = space.id;
-      const response = await fetch('/api/auth/user', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
+  const handleNextButtonClick = async () => {
+    if (existingSpace) {
+      await updateTidbitSpace({
+        successCallback: () => {
+          goToNextStep();
         },
       });
-      if (!response.ok) {
-        throw new Error('Failed to fetch user data');
-      }
-      const userData = await response.json();
-
-      const createUserResponse = await fetch('/api/auth/user', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+    } else {
+      await createNewTidbitSpace({
+        successCallback: () => {
+          goToNextStep();
         },
-        body: JSON.stringify({
-          ...userData,
-          spaceId: spaceId,
-        }),
       });
-
-      if (!createUserResponse.ok) {
-        throw new Error('Failed to create user in space');
-      }
-      showNotification({ type: 'success', message: 'Space created and user added successfully!' });
-    } catch (error) {
-      console.error('Error:', error);
-      showNotification({ type: 'error', message: 'Something went wrong' });
     }
   };
 
-  const handleUpsertClick = async () => {
-    await upsertSpace({
-      variables: {
-        spaceId: spaceByUsername?.getSpaceFromCreator?.id!,
-        name: space.name,
-        avatar: space.avatar,
-      },
-    });
-    goToNextStep();
-  };
-
-  const handleButtonClick = async () => {
-    const isEditing = !!spaceByUsername?.getSpaceFromCreator?.id;
-    if (isEditing) {
-      await handleUpsertClick();
-    } else {
-      await handleCreateClick();
-    }
-  };
-
-  useEffect(() => {
-    setIsLoading(loading);
-    const isEditing = !!spaceByUsername?.getSpaceFromCreator?.id;
-    if (isEditing) {
-      const { name, id, avatar } = spaceByUsername.getSpaceFromCreator!;
-      setSpaceField('name', name);
-      setSpaceField('id', id);
-      setSpaceField('avatar', avatar);
-    } else {
-      setSpaceField('name', '');
-      setSpaceField('id', '');
-      setSpaceField('avatar', '');
-    }
-  }, [spaceByUsername, loading]);
-
-  if (isLoading || uploadThumbnailLoading || upserting) {
+  if (loading) {
     return (
       <div className="flex items-center justify-center h-screen">
         <LoadingSpinner />
@@ -142,22 +51,27 @@ export default function NewTidbitsSiteInformationStep({ goToNextStep, goToPrevio
           <p className="mt-1 text-sm leading-6">Add the details of Tidbits Site</p>
           <Input
             label="Name"
-            modelValue={space.name}
+            id={'name'}
+            modelValue={tidbitSpace.name}
             onUpdate={(value) => {
               setSpaceField('name', value?.toString() || '');
-              if (!spaceByUsername?.getSpaceFromCreator?.id) {
-                const slugifiedValue = slugify(value?.toString() || '');
-                setSpaceField('id', slugifiedValue);
-              }
             }}
           />
 
-          <Input label="Id" modelValue={space.id} disabled={true} />
+          <Input
+            label="Id"
+            id={'id'}
+            modelValue={tidbitSpace.id}
+            disabled={true}
+            onUpdate={() => {
+              // do nothing
+            }}
+          />
           <UploadInput
             label="Logo"
             imageType="AcademyLogo"
             spaceId={'new-space'}
-            modelValue={space.avatar}
+            modelValue={tidbitSpace.avatar}
             objectId={'new-space'}
             onInput={(value) => setSpaceField('avatar', value)}
             onLoading={setUploadThumbnailLoading}
@@ -171,7 +85,14 @@ export default function NewTidbitsSiteInformationStep({ goToNextStep, goToPrevio
           Previous
         </Button>
 
-        <Button variant="contained" primary removeBorder={true} disabled={isEmpty(space.name) || isEmpty(space.avatar)} onClick={handleButtonClick}>
+        <Button
+          variant="contained"
+          primary
+          removeBorder={true}
+          disabled={upserting || uploadThumbnailLoading || isEmpty(tidbitSpace.name) || isEmpty(tidbitSpace.avatar)}
+          onClick={handleNextButtonClick}
+          loading={upserting || uploadThumbnailLoading}
+        >
           Next
           <span className="ml-2 font-bold">&#8594;</span>
         </Button>
