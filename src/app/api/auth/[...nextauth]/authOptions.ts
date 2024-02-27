@@ -1,24 +1,20 @@
-// see: https://next-auth.js.org/configuration/options
 import { authorizeCrypto } from '@/app/api/auth/[...nextauth]/authorizeCrypto';
-import { headers } from 'next/headers';
-import { CustomPrismaAdapter } from './customPrismaAdapter';
+import { createHash } from '@/app/api/auth/custom-email/send-verification/createHash';
 import { prisma } from '@/prisma';
 import { DoDaoJwtTokenPayload, Session } from '@/types/auth/Session';
 import { User } from '@/types/auth/User';
+import { PrismaAdapter } from '@next-auth/prisma-adapter';
+import { PrismaClient } from '@prisma/client';
 import jwt from 'jsonwebtoken';
-import { AuthOptions } from 'next-auth';
+import { AuthOptions, RequestInternal } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import DiscordProvider from 'next-auth/providers/discord';
 import GoogleProvider from 'next-auth/providers/google';
 import TwitterProvider from 'next-auth/providers/twitter';
-import EmailProvider from 'next-auth/providers/email';
-import { Adapter } from 'next-auth/adapters';
-import { SES } from '@aws-sdk/client-ses';
+import { PrismaUser } from './customPrismaAdapter';
 
+const p = new PrismaClient();
 // Configure AWS SES
-const ses = new SES({
-  region: process.env.AWS_REGION,
-});
 
 export const authOptions: AuthOptions = {
   // Setting error and signin pages to our /auth custom page
@@ -38,6 +34,44 @@ export const authOptions: AuthOptions = {
       },
       authorize: authorizeCrypto,
     }),
+    CredentialsProvider({
+      id: 'custom-email',
+      name: 'Custom Email Auth',
+      credentials: {
+        token: { label: 'Token', type: 'text' },
+        spaceId: { label: 'Space Id', type: 'text' },
+      },
+      authorize: async function authorizeCrypto(
+        credentials: Record<'token' | 'spaceId', string> | undefined,
+        req: Pick<RequestInternal, 'body' | 'query' | 'headers' | 'method'>
+      ) {
+        const verificationToken = await p.verificationToken.delete({
+          where: { token: await createHash(`${credentials?.token}${process.env.EMAIL_TOKEN_SECRET!}`) },
+        });
+
+        if (!verificationToken) return null;
+
+        const expired = verificationToken.expires.valueOf() < Date.now();
+
+        if (expired) return null;
+
+        const user = await prisma.user.findUnique({
+          where: {
+            email_spaceId: {
+              email: verificationToken.identifier,
+              spaceId: credentials?.spaceId!,
+            },
+          },
+        });
+        if (!user) return null;
+
+        return {
+          id: user.id,
+          name: user.publicAddress,
+          username: user.publicAddress,
+        };
+      },
+    }),
     {
       id: 'near',
       name: 'Near Wallet Auth',
@@ -49,7 +83,7 @@ export const authOptions: AuthOptions = {
         const accountId = req.query?.accountId || '';
         const spaceId = req.query?.spaceId || '';
 
-        const user = await prisma.user.upsert({
+        const user = await p.user.upsert({
           where: { publicAddress_spaceId: { publicAddress: accountId, spaceId } },
           create: {
             publicAddress: accountId,
@@ -79,7 +113,6 @@ export const authOptions: AuthOptions = {
         };
       },
     }),
-
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
@@ -110,80 +143,19 @@ export const authOptions: AuthOptions = {
         };
       },
     }),
-    EmailProvider({
-      server: {
-        // AWS SES configuration
-        host: process.env.EMAIL_SERVER_HOST,
-        port: 587,
-        auth: {
-          user: process.env.EMAIL_SERVER_USER,
-          pass: process.env.EMAIL_SERVER_PASSWORD,
-        },
-      },
-      from: process.env.EMAIL_FROM,
-      sendVerificationRequest: ({ identifier: email, url, provider }) => {
-        // Capture the hostname from the request
-        const headersList = headers();
-        const host = headersList.get('x-forwarded-host') || headersList.get('host');
-        const httpsProto = headersList.get('x-forwarded-proto');
-        // Do whatever you want here, before the request is passed down to `NextAuth`
-
-        const { from } = provider;
-        const baseUrl = `${httpsProto}://${host}`;
-        const customUrl = url.replace(/^http?:\/\/[^/]+/, baseUrl);
-        const link = `${customUrl}&utm_source=${host}`;
-
-        // Email HTML body
-        const emailBody = `Your sign in link is <a href="${link}">here</a>.`;
-
-        console.log('Sending email to', email, 'from', from, 'with body', emailBody);
-        // Sending email via AWS SES
-        ses.sendEmail(
-          {
-            Source: from,
-            Destination: { ToAddresses: [email] },
-            Message: {
-              Subject: {
-                Data: 'Sign in to your account',
-              },
-              Body: {
-                Html: {
-                  Data: emailBody,
-                },
-              },
-            },
-          },
-          (err, info) => {
-            if (err) {
-              console.error(err);
-              throw new Error('Failed to send email');
-            } else {
-              console.log('Email sent: ', info);
-            }
-          }
-        );
-      },
-    }),
   ],
-  adapter: CustomPrismaAdapter(prisma) as Adapter,
-  // Due to a NextAuth bug, the default database strategy is no usable
-  //  with CredentialsProvider, so we need to set strategy to JWT
-  session: {
-    strategy: 'jwt',
-  },
-  logger: {
-    error(code, metadata) {
-      console.error(code, metadata);
-    },
-    warn(code) {
-      console.warn(code);
-    },
-    debug(code, metadata) {
-      console.debug(code, metadata);
+  adapter: {
+    ...PrismaAdapter(p),
+    getUserByEmail: async (email: string) => {
+      const user = (await p.user.findFirst({ where: { email } })) as PrismaUser;
+      console.log('getUserByEmail', user);
+      return user;
     },
   },
   callbacks: {
-    async session({ session, user, token }): Promise<Session> {
+    async session(params): Promise<Session> {
+      const { session, user, token } = params;
+
       let userInfo: any = {};
       if (token.sub) {
         const dbUser: User | null = await prisma.user.findUnique({
@@ -209,7 +181,10 @@ export const authOptions: AuthOptions = {
         dodaoAccessToken: jwt.sign(doDaoJwtTokenPayload, process.env.DODAO_AUTH_SECRET!),
       };
     },
-    jwt: async ({ token, user, account, profile, isNewUser }) => {
+
+    jwt: async (params) => {
+      const { token, user, account, profile, isNewUser } = params;
+
       if (token.sub) {
         const dbUser: User | null = await prisma.user.findUnique({
           where: { id: token.sub },
@@ -222,6 +197,22 @@ export const authOptions: AuthOptions = {
         }
       }
       return token;
+    },
+  },
+  // Due to a NextAuth bug, the default database strategy is no usable
+  //  with CredentialsProvider, so we need to set strategy to JWT
+  session: {
+    strategy: 'jwt',
+  },
+  logger: {
+    error(code, metadata) {
+      console.error(code, metadata);
+    },
+    warn(code) {
+      console.warn(code);
+    },
+    debug(code, metadata) {
+      console.debug(code, metadata);
     },
   },
 };

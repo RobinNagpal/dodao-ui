@@ -6,7 +6,7 @@ import ButtonLarge from '@/components/core/buttons/Button';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { useAuth } from '@/hooks/useAuth';
 import { LoginProviders } from '@/types/deprecated/models/enums';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 function LoginButtonsFunction(props: { space: SpaceWithIntegrationsFragment }) {
   const { space } = props;
@@ -36,6 +36,21 @@ function LoginButtonsFunction(props: { space: SpaceWithIntegrationsFragment }) {
   const loginWithEmail = () => {
     setShowEmailModal(true);
   };
+
+  const enabledOptions = [isMetamaskEnabled, isCoinbaseEnabled, isGoogleEnabled, isDiscordEnabled, isNearEnabled, isEmailEnabled];
+  const enabledOptionsCount = enabledOptions.filter((x) => x).length;
+
+  useEffect(() => {
+    if (enabledOptionsCount === 1) {
+      if (isMetamaskEnabled) loginWithMetamask();
+      if (isCoinbaseEnabled) loginWithCoinbase();
+      if (isGoogleEnabled) loginWithGoogle();
+      if (isDiscordEnabled) loginWithDiscord();
+      if (isNearEnabled) loginWithNear();
+      if (isEmailEnabled) loginWithEmail();
+    }
+  }, [enabledOptionsCount]);
+
   return (
     <div className="flex-col max-w-md">
       {allOptionsEnabled || isMetamaskEnabled ? (
