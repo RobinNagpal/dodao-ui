@@ -8,13 +8,20 @@ import {
   useUpsertVercelDomainRecordMutation,
   useVercelDomainRecordQuery,
 } from '@/graphql/generated/generated-types';
+import { useEffectOnce } from 'ag-grid-react/lib/reactUi/useEffectOnce';
+import { isEmpty } from 'lodash';
 import { useSession } from 'next-auth/react';
 import UpdateThemeModal, { ColorLabels, ThemeColorsKeys } from '@/components/spaces/Edit/Theme/UpdateThemeModal';
-import React, { CSSProperties } from 'react';
+import React, { CSSProperties, useEffect } from 'react';
 import { CssTheme, ThemeKey, themes } from '@/app/themes';
 import ByteCollectionsCard from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCollectionsCard';
+import { useRouter } from 'next/navigation';
 
-export default function TidbitSiteConfigurationStep() {
+export interface TidbitSiteConfigurationStepProps {
+  goToPreviousStep: () => void;
+}
+
+export default function TidbitSiteConfigurationStep({ goToPreviousStep }: TidbitSiteConfigurationStepProps) {
   const [showThemeUpdateModal, setShowThemeUpdateModal] = React.useState(false);
   const { data: session } = useSession();
   const { data: spaceResponse } = useGetSpaceFromCreatorQuery({
@@ -27,6 +34,7 @@ export default function TidbitSiteConfigurationStep() {
   const skin = space?.skin;
   const theme: ThemeKey = space?.skin && Object.keys(CssTheme).includes(skin || '') ? (skin as CssTheme) : CssTheme.GlobalTheme;
   const themeColors: ThemeColors = space?.themeColors || themes[theme];
+  const router = useRouter();
   const style = {
     '--primary-color': themeColors.primaryColor,
     '--bg-color': themeColors.bgColor,
@@ -67,18 +75,45 @@ export default function TidbitSiteConfigurationStep() {
     __typename: 'ProjectByteCollection',
   };
 
-  const { data: route53Record } = useRoute53RecordQuery({
+  const { data: route53Record, refetch: refetchRoute53Record } = useRoute53RecordQuery({
     variables: {
       spaceId: spaceResponse?.getSpaceFromCreator?.id!,
     },
     skip: !spaceResponse?.getSpaceFromCreator?.id,
   });
 
-  const { data: vercelDomainRecord } = useVercelDomainRecordQuery({
+  const { data: vercelDomainRecord, refetch: refetchVercelRecord } = useVercelDomainRecordQuery({
     variables: {
       spaceId: spaceResponse?.getSpaceFromCreator?.id!,
     },
     skip: !spaceResponse?.getSpaceFromCreator?.id,
+  });
+
+  useEffect(() => {
+    //  TODO - make sure to clear the intervals when we get the data or component gets unmounted
+
+    let route53Interval: NodeJS.Timeout;
+    if (isEmpty(route53Record?.payload)) {
+      route53Interval = setInterval(() => {
+        refetchRoute53Record();
+      }, 2000);
+    } else {
+      if (route53Interval) {
+        clearInterval(route53Interval);
+      }
+    }
+
+    let vercelInterval: NodeJS.Timeout;
+    if (isEmpty(vercelDomainRecord?.vercelDomainRecord)) {
+      vercelInterval = setInterval(() => {
+        refetchVercelRecord();
+      }, 2000);
+    }
+
+    return () => {
+      clearInterval(route53Interval);
+      clearInterval(vercelInterval);
+    };
   });
 
   const [upsertRoute53RecordMutation] = useUpsertRoute53RecordMutation();
@@ -156,6 +191,28 @@ export default function TidbitSiteConfigurationStep() {
         </Button>
         <Button onClick={upsertVercelDomainRecord} className="mt-4 ml-4" variant="contained" primary>
           Create Vercel Domain Record
+        </Button>
+      </div>
+      <div className="flex">
+        <Button onClick={goToPreviousStep} variant="outlined" className="mt-4">
+          <span className="font-bold mr-1">&#8592;</span>
+          Previous
+        </Button>
+
+        <Button
+          variant="contained"
+          primary
+          removeBorder={true}
+          disabled={!space?.id || !route53Record?.payload || !vercelDomainRecord?.vercelDomainRecord}
+          loading={!route53Record?.payload || !vercelDomainRecord?.vercelDomainRecord}
+          onClick={() => {
+            if (space?.id) {
+              router.push(`${space?.id}.tidbitshub.org`);
+            }
+          }}
+        >
+          Open my Tidbits Site
+          <span className="ml-2 font-bold">&#8594;</span>
         </Button>
       </div>
     </div>

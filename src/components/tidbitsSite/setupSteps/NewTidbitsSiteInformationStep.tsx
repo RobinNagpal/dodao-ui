@@ -10,7 +10,7 @@ import {
   useUpdateSpaceNameAndAvatarMutation,
 } from '@/graphql/generated/generated-types';
 import { slugify } from '@/utils/auth/slugify';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import { isEmpty } from 'lodash';
 import useCreateSpace from '@/components/tidbitsSite/setupSteps/useNewSpace';
@@ -19,9 +19,10 @@ import LoadingSpinner from '@/components/core/loaders/LoadingSpinner';
 
 interface NewSiteInformationProps {
   goToNextStep: () => void;
+  goToPreviousStep: () => void;
 }
 
-export default function NewTidbitsSiteInformationStep({ goToNextStep }: NewSiteInformationProps) {
+export default function NewTidbitsSiteInformationStep({ goToNextStep, goToPreviousStep }: NewSiteInformationProps) {
   const createSpaceHelper = useCreateSpace();
   const { space, setSpaceField, createNewTidbitSpace, upserting } = createSpaceHelper;
   const { showNotification } = useNotificationContext();
@@ -165,6 +166,11 @@ export default function NewTidbitsSiteInformationStep({ goToNextStep }: NewSiteI
       </div>
 
       <div className="flex items-center justify-start gap-x-6">
+        <Button onClick={goToPreviousStep} variant="outlined" className="mt-4">
+          <span className="font-bold mr-1">&#8592;</span>
+          Previous
+        </Button>
+
         <Button variant="contained" primary removeBorder={true} disabled={isEmpty(space.name) || isEmpty(space.avatar)} onClick={handleButtonClick}>
           Next
           <span className="ml-2 font-bold">&#8594;</span>
