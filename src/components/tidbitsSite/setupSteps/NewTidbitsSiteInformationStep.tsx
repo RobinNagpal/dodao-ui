@@ -28,7 +28,6 @@ export default function NewTidbitsSiteInformationStep({ goToNextStep }: NewSiteI
   const { data: session } = useSession();
   const [uploadThumbnailLoading, setUploadThumbnailLoading] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [buttonText, setButtonText] = useState('Create');
 
   const [upsertSpace] = useUpdateSpaceNameAndAvatarMutation();
 
