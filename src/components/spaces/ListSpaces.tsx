@@ -18,7 +18,7 @@ function getSpaceTableRows(spaceList?: SpaceSummaryFragment[]): TableRow[] {
   return (spaceList || []).map(
     (space): TableRow => ({
       id: space.id,
-      columns: [space.name, space.id, space.skin, space.admins.join(', ')],
+      columns: [space.name, space.id, space.skin, space.type],
       item: space,
     })
   );
@@ -71,7 +71,7 @@ export default function ListSpaces() {
         </div>
         <Table
           data={getSpaceTableRows(data?.spaces || [])}
-          columnsHeadings={['Name', 'Id', 'Skin', 'Admins']}
+          columnsHeadings={['Name', 'Id', 'Skin', 'Type']}
           columnsWidthPercents={[20, 20, 20, 20]}
           actions={tableActions}
         />

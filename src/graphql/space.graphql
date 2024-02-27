@@ -100,6 +100,7 @@ fragment SpaceSummary on Space {
   name
   skin
   domains
+  type
 }
 
 fragment VercelDomainRecord on VercelDomain {

@@ -6,8 +6,9 @@ import DefaultHome from '@/components/home/DefaultHome/DefaultHome';
 import DoDAOHome from '@/components/home/DoDAOHome/DoDAOHome';
 import LifeInsureHomePage from '@/components/home/LifeInsure/LifeInsureHomePage';
 import TidbitsHubHome from '@/components/home/TidbitsHub/TidbitsHubHome';
+import TidbitsSiteHome from '@/components/home/TidbitsSite/TidbitsSiteHome';
 import ListProjects from '@/components/projects/List/ListProjects';
-import { ProjectFragment } from '@/graphql/generated/generated-types';
+import { ProjectFragment, SpaceTypes } from '@/graphql/generated/generated-types';
 import getApiResponse from '@/utils/api/getApiResponse';
 import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
 import { headers } from 'next/headers';
@@ -31,6 +32,10 @@ async function Home(props: { searchParams: { [key: string]: string | string[] | 
         <ListProjects space={space} projects={projects} showArchived={showArchived} />
       </PageWrapper>
     );
+  }
+
+  if (space?.type === SpaceTypes.TidbitsSite) {
+    return <TidbitsSiteHome />;
   }
 
   if (host === 'dodao-localhost.io' || host === 'academy.dodao.io' || host === 'dodao.io') {

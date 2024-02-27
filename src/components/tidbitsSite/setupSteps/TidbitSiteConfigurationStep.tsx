@@ -1,21 +1,18 @@
+import { CssTheme, ThemeKey, themes } from '@/app/themes';
+import ByteCollectionsCard from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCollectionsCard';
 import Button from '@/components/core/buttons/Button';
+import UpdateThemeModal, { ColorLabels, ThemeColorsKeys } from '@/components/spaces/Edit/Theme/UpdateThemeModal';
 import {
   ProjectByteCollectionFragment,
   ThemeColors,
   useGetSpaceFromCreatorQuery,
   useRoute53RecordQuery,
-  useUpsertRoute53RecordMutation,
-  useUpsertVercelDomainRecordMutation,
   useVercelDomainRecordQuery,
 } from '@/graphql/generated/generated-types';
-import { useEffectOnce } from 'ag-grid-react/lib/reactUi/useEffectOnce';
 import { isEmpty } from 'lodash';
 import { useSession } from 'next-auth/react';
-import UpdateThemeModal, { ColorLabels, ThemeColorsKeys } from '@/components/spaces/Edit/Theme/UpdateThemeModal';
-import React, { CSSProperties, useEffect } from 'react';
-import { CssTheme, ThemeKey, themes } from '@/app/themes';
-import ByteCollectionsCard from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCollectionsCard';
 import { useRouter } from 'next/navigation';
+import React, { CSSProperties, useEffect } from 'react';
 
 export interface TidbitSiteConfigurationStepProps {
   goToPreviousStep: () => void;
@@ -111,36 +108,6 @@ export default function TidbitSiteConfigurationStep({ goToPreviousStep }: Tidbit
       }
     };
   });
-
-  const [upsertRoute53RecordMutation] = useUpsertRoute53RecordMutation();
-
-  const [upsertVercelDomainRecordMutation] = useUpsertVercelDomainRecordMutation();
-
-  const upsertRoute53Record = async () => {
-    try {
-      await upsertRoute53RecordMutation({
-        variables: {
-          spaceId: spaceResponse?.getSpaceFromCreator?.id!,
-        },
-        refetchQueries: ['Route53Record'],
-      });
-    } catch (e) {
-      console.error('Error upserting route53 record', e);
-    }
-  };
-
-  const upsertVercelDomainRecord = async () => {
-    try {
-      await upsertVercelDomainRecordMutation({
-        variables: {
-          spaceId: spaceResponse?.getSpaceFromCreator?.id!,
-        },
-        refetchQueries: ['VercelDomainRecord'],
-      });
-    } catch (e) {
-      console.error('Error upserting vercel domain record', e);
-    }
-  };
 
   return (
     <div className="flex flex-col mt-16 sm:px-0 px-4">
