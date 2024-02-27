@@ -1,5 +1,6 @@
 'use client';
 
+import { PredefinedSpaces } from '@/chatbot/utils/app/constants';
 import ButtonLarge from '@/components/core/buttons/Button';
 import FullPageModal from '@/components/core/modals/FullPageModal';
 import CreateContentModalContents from '@/components/main/TopNav/CreateContentModalContents';
@@ -131,15 +132,6 @@ function CreateOrLoginButton(props: {
   );
 }
 
-function CreateTidbitSiteButton(props: { onClickCreate: () => void }) {
-  return (
-    <ButtonLarge type="button" variant="contained" primary onClick={props.onClickCreate}>
-      <PlusIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
-      Create Tidbit Site
-    </ButtonLarge>
-  );
-}
-
 export default function TopNav(props: { space?: SpaceWithIntegrationsFragment | null }) {
   const { data: session } = useSession();
   const { setShowLoginModal } = useLoginModalContext();
@@ -147,36 +139,6 @@ export default function TopNav(props: { space?: SpaceWithIntegrationsFragment | 
   const { space } = props;
   const router = useRouter();
   const superAdmin = session && isSuperAdmin(session as Session);
-
-  const checkLoginInfo = async () => {
-    router.push('/new-tidbit-site');
-    // try {
-    //   const response = await fetch('/api/auth/getUser', {
-    //     method: 'GET',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //   });
-
-    //   if (response.ok) {
-    //     const user = await response.json();
-    //     console.log('i am user from client: ', user);
-    //     if (user.name != null && user.email != null && user.phone_number != null) {
-    //       router.push('/new-space');
-    //     } else {
-    //       router.push('/login-info');
-    //     }
-    //   } else if (response.status === 401) {
-    //     console.error('Unauthorized: No session or user not logged in');
-    //   } else if (response.status === 404) {
-    //     console.error('User not found');
-    //   } else {
-    //     throw new Error('Failed to fetch user info');
-    //   }
-    // } catch (error) {
-    //   console.error('Failed to check user info:', error);
-    // }
-  };
 
   return (
     <StyledDiv>
@@ -228,9 +190,23 @@ export default function TopNav(props: { space?: SpaceWithIntegrationsFragment | 
                   {space && <DesktopNavLinks space={space} />}
                 </div>
                 <div className="flex items-center">
-                  {superAdmin && (
+                  {PredefinedSpaces.TIDBITS_HUB === space?.id && (
                     <div className="mr-2">
-                      <CreateTidbitSiteButton onClickCreate={() => checkLoginInfo()} />
+                      <ButtonLarge
+                        type="button"
+                        variant="contained"
+                        primary
+                        onClick={() => {
+                          if (!session) {
+                            setShowLoginModal(true);
+                          } else {
+                            router.push('/new-tidbit-site/user-details');
+                          }
+                        }}
+                      >
+                        <PlusIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
+                        Create Tidbit Site
+                      </ButtonLarge>
                     </div>
                   )}
 

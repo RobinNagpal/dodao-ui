@@ -1521,6 +1521,13 @@ input SpaceLoadersInfoInput {
   discourseUrl: String
 }
 
+enum SpaceTypes {
+  AcademySite
+  AiChatbotSite
+  CryptoGelatoSite
+  TidbitsSite
+}
+
 input SpaceWhere {
   id: String
   id_in: [String]
@@ -1917,15 +1924,15 @@ type VercelDomain {
   projectId: String!
   redirect: String
   updatedAt: DateTimeISO
-  verification: [VercelVerification]
+  verification: [VercelVerification!]
   verified: Boolean!
 }
 
 type VercelVerification {
-  domain: String
-  reason: String
-  type: String
-  value: String
+  domain: String!
+  reason: String!
+  type: String!
+  value: String!
 }
 
 type WebsiteScrapingInfo {

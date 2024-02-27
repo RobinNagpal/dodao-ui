@@ -2571,6 +2571,13 @@ export interface SpaceLoadersInfoInput {
   discourseUrl?: InputMaybe<Scalars['String']>;
 }
 
+export enum SpaceTypes {
+  AcademySite = 'AcademySite',
+  AiChatbotSite = 'AiChatbotSite',
+  CryptoGelatoSite = 'CryptoGelatoSite',
+  TidbitsSite = 'TidbitsSite'
+}
+
 export interface SpaceWhere {
   id?: InputMaybe<Scalars['String']>;
   id_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
@@ -2977,16 +2984,16 @@ export interface VercelDomain {
   projectId: Scalars['String'];
   redirect?: Maybe<Scalars['String']>;
   updatedAt?: Maybe<Scalars['DateTimeISO']>;
-  verification?: Maybe<Array<Maybe<VercelVerification>>>;
+  verification?: Maybe<Array<VercelVerification>>;
   verified: Scalars['Boolean'];
 }
 
 export interface VercelVerification {
   __typename?: 'VercelVerification';
-  domain?: Maybe<Scalars['String']>;
-  reason?: Maybe<Scalars['String']>;
-  type?: Maybe<Scalars['String']>;
-  value?: Maybe<Scalars['String']>;
+  domain: Scalars['String'];
+  reason: Scalars['String'];
+  type: Scalars['String'];
+  value: Scalars['String'];
 }
 
 export interface WebsiteScrapingInfo {
@@ -4186,7 +4193,7 @@ export type SpaceWithIntegrationsFragment = { __typename?: 'Space', id: string, 
 
 export type SpaceSummaryFragment = { __typename?: 'Space', id: string, admins: Array<string>, adminUsernames: Array<string>, avatar?: string | null, creator: string, name: string, skin: string, domains: Array<string> };
 
-export type VercelDomainRecordFragment = { __typename?: 'VercelDomain', apexName: string, createdAt?: any | null, gitBranch?: string | null, name: string, projectId: string, redirect?: string | null, updatedAt?: any | null, verified: boolean, verification?: Array<{ __typename?: 'VercelVerification', type?: string | null, domain?: string | null, reason?: string | null, value?: string | null } | null> | null };
+export type VercelDomainRecordFragment = { __typename?: 'VercelDomain', apexName: string, createdAt?: any | null, gitBranch?: string | null, name: string, projectId: string, redirect?: string | null, updatedAt?: any | null, verified: boolean, verification?: Array<{ __typename?: 'VercelVerification', type: string, domain: string, reason: string, value: string }> | null };
 
 export type Route53RecordFragment = { __typename?: 'Route53Record', type?: string | null, name?: string | null, records?: Array<string | null> | null, ttl?: number | null };
 
@@ -4235,7 +4242,7 @@ export type VercelDomainRecordQueryVariables = Exact<{
 }>;
 
 
-export type VercelDomainRecordQuery = { __typename?: 'Query', vercelDomainRecord?: { __typename?: 'VercelDomain', apexName: string, createdAt?: any | null, gitBranch?: string | null, name: string, projectId: string, redirect?: string | null, updatedAt?: any | null, verified: boolean, verification?: Array<{ __typename?: 'VercelVerification', type?: string | null, domain?: string | null, reason?: string | null, value?: string | null } | null> | null } | null };
+export type VercelDomainRecordQuery = { __typename?: 'Query', vercelDomainRecord?: { __typename?: 'VercelDomain', apexName: string, createdAt?: any | null, gitBranch?: string | null, name: string, projectId: string, redirect?: string | null, updatedAt?: any | null, verified: boolean, verification?: Array<{ __typename?: 'VercelVerification', type: string, domain: string, reason: string, value: string }> | null } | null };
 
 export type UpsertSpaceFeaturesMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -4319,7 +4326,7 @@ export type UpsertDomainRecordsMutationVariables = Exact<{
 }>;
 
 
-export type UpsertDomainRecordsMutation = { __typename?: 'Mutation', upsertDomainRecords: { __typename?: 'DomainRecords', route53Record: { __typename?: 'Route53Record', type?: string | null, name?: string | null, records?: Array<string | null> | null, ttl?: number | null }, vercelDomainRecord: { __typename?: 'VercelDomain', apexName: string, createdAt?: any | null, gitBranch?: string | null, name: string, projectId: string, redirect?: string | null, updatedAt?: any | null, verified: boolean, verification?: Array<{ __typename?: 'VercelVerification', type?: string | null, domain?: string | null, reason?: string | null, value?: string | null } | null> | null } } };
+export type UpsertDomainRecordsMutation = { __typename?: 'Mutation', upsertDomainRecords: { __typename?: 'DomainRecords', route53Record: { __typename?: 'Route53Record', type?: string | null, name?: string | null, records?: Array<string | null> | null, ttl?: number | null }, vercelDomainRecord: { __typename?: 'VercelDomain', apexName: string, createdAt?: any | null, gitBranch?: string | null, name: string, projectId: string, redirect?: string | null, updatedAt?: any | null, verified: boolean, verification?: Array<{ __typename?: 'VercelVerification', type: string, domain: string, reason: string, value: string }> | null } } };
 
 export type ReloadAcademyRepoMutationVariables = Exact<{
   spaceId: Scalars['String'];

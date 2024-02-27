@@ -1,11 +1,8 @@
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import { UpsertSpaceInput, useCreateSpaceMutation, useExtendedSpaceQuery, useUpdateSpaceMutation } from '@/graphql/generated/generated-types';
 import { slugify } from '@/utils/auth/slugify';
+import { getEditSpaceType, getSpaceInput, SpaceEditType } from '@/utils/space/spaceUpdateUtils';
 import { useState } from 'react';
-
-export interface SpaceEditType extends Omit<UpsertSpaceInput, 'id'> {
-  id?: string;
-}
 
 export type UseEditSpaceHelper = {
   setSpaceIntegrationField: (field: keyof UpsertSpaceInput['spaceIntegrations'], value: any) => void;
@@ -59,28 +56,7 @@ export default function useEditSpace(spaceId?: string): UseEditSpaceHelper {
       const response = await querySpace();
       const spaceResponse = response.data.space;
       if (spaceResponse) {
-        setSpace({
-          id: spaceResponse.id,
-          admins: spaceResponse.admins,
-          adminUsernames: spaceResponse.adminUsernames,
-          adminUsernamesV1: spaceResponse.adminUsernamesV1.map((admin) => ({ username: admin.username, nameOfTheUser: admin.nameOfTheUser })) || [],
-          avatar: spaceResponse.avatar || '',
-          creator: spaceResponse.creator,
-          features: spaceResponse.features,
-          inviteLinks: spaceResponse.inviteLinks || {},
-          name: spaceResponse.name,
-          type: space.type,
-          skin: spaceResponse.skin,
-          domains: spaceResponse.domains,
-          botDomains: spaceResponse.botDomains || [],
-          spaceIntegrations: {
-            academyRepository: spaceResponse.spaceIntegrations?.academyRepository || null,
-            discordGuildId: spaceResponse.spaceIntegrations?.discordGuildId || null,
-            gitGuideRepositories: spaceResponse.spaceIntegrations?.gitGuideRepositories || [],
-            gnosisSafeWallets: spaceResponse.spaceIntegrations?.gnosisSafeWallets || [],
-            projectGalaxyTokenLastFour: spaceResponse.spaceIntegrations?.projectGalaxyTokenLastFour || null,
-          },
-        });
+        setSpace(getEditSpaceType(spaceResponse));
       }
     }
   }
@@ -97,41 +73,6 @@ export default function useEditSpace(spaceId?: string): UseEditSpaceHelper {
     setSpace((prev) => ({ ...prev, inviteLinks: { ...prev.inviteLinks, [field]: value } }));
   }
 
-  function getSpaceInput(spaceId: string): UpsertSpaceInput {
-    return {
-      id: spaceId,
-      admins: space.admins,
-      adminUsernames: space.adminUsernames,
-      adminUsernamesV1: space.adminUsernamesV1.map((admin) => ({ username: admin.username, nameOfTheUser: admin.nameOfTheUser })) || [],
-      avatar: space.avatar,
-      creator: space.creator,
-      features: space.features,
-      name: space.name,
-      type: space.type,
-      skin: space.skin,
-      domains: space.domains,
-      botDomains: space.botDomains || [],
-      inviteLinks: {
-        discordInviteLink: space.inviteLinks.discordInviteLink,
-        showAnimatedButtonForDiscord: space.inviteLinks.showAnimatedButtonForDiscord,
-        showAnimatedButtonForTelegram: space.inviteLinks.showAnimatedButtonForTelegram,
-        telegramInviteLink: space.inviteLinks.telegramInviteLink,
-      },
-      spaceIntegrations: {
-        academyRepository: space.spaceIntegrations?.academyRepository || null,
-        discordGuildId: space.spaceIntegrations?.discordGuildId || null,
-        gitGuideRepositories:
-          space.spaceIntegrations?.gitGuideRepositories?.map((repo) => ({
-            authenticationToken: repo.authenticationToken,
-            gitRepoType: repo.gitRepoType,
-            repoUrl: repo.repoUrl,
-          })) || [],
-        gnosisSafeWallets: space.spaceIntegrations?.gnosisSafeWallets || [],
-        projectGalaxyTokenLastFour: space.spaceIntegrations?.projectGalaxyTokenLastFour || null,
-      },
-    };
-  }
-
   async function upsertSpace() {
     setUpserting(true);
     try {
@@ -139,13 +80,13 @@ export default function useEditSpace(spaceId?: string): UseEditSpaceHelper {
       if (spaceId?.trim()) {
         response = await updateSpaceMutation({
           variables: {
-            spaceInput: getSpaceInput(spaceId),
+            spaceInput: getSpaceInput(spaceId, space),
           },
         });
       } else {
         response = await createSpaceMutation({
           variables: {
-            spaceInput: getSpaceInput(slugify(space.name)),
+            spaceInput: getSpaceInput(slugify(space.name), space),
           },
         });
       }

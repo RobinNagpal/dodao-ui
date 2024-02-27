@@ -1,33 +1,115 @@
 import Button from '@/components/core/buttons/Button';
 import {
+  ProjectByteCollectionFragment,
+  ThemeColors,
   useGetSpaceFromCreatorQuery,
   useRoute53RecordQuery,
   useUpsertRoute53RecordMutation,
   useUpsertVercelDomainRecordMutation,
   useVercelDomainRecordQuery,
 } from '@/graphql/generated/generated-types';
+import { useEffectOnce } from 'ag-grid-react/lib/reactUi/useEffectOnce';
+import { isEmpty } from 'lodash';
 import { useSession } from 'next-auth/react';
+import UpdateThemeModal, { ColorLabels, ThemeColorsKeys } from '@/components/spaces/Edit/Theme/UpdateThemeModal';
+import React, { CSSProperties, useEffect } from 'react';
+import { CssTheme, ThemeKey, themes } from '@/app/themes';
+import ByteCollectionsCard from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCollectionsCard';
+import { useRouter } from 'next/navigation';
 
-export default function TidbitSiteConfigurationStep() {
+export interface TidbitSiteConfigurationStepProps {
+  goToPreviousStep: () => void;
+}
+
+export default function TidbitSiteConfigurationStep({ goToPreviousStep }: TidbitSiteConfigurationStepProps) {
+  const [showThemeUpdateModal, setShowThemeUpdateModal] = React.useState(false);
   const { data: session } = useSession();
-  const { data: spaceResponse, loading } = useGetSpaceFromCreatorQuery({
+  const { data: spaceResponse } = useGetSpaceFromCreatorQuery({
     variables: {
       creatorUsername: session?.username!,
     },
   });
 
-  const { data: route53Record } = useRoute53RecordQuery({
+  const space = spaceResponse?.getSpaceFromCreator;
+  const skin = space?.skin;
+  const theme: ThemeKey = space?.skin && Object.keys(CssTheme).includes(skin || '') ? (skin as CssTheme) : CssTheme.GlobalTheme;
+  const themeColors: ThemeColors = space?.themeColors || themes[theme];
+  const router = useRouter();
+  const style = {
+    '--primary-color': themeColors.primaryColor,
+    '--bg-color': themeColors.bgColor,
+    '--text-color': themeColors.textColor,
+    '--link-color': themeColors.linkColor,
+    '--heading-color': themeColors.headingColor,
+    '--border-color': themeColors.borderColor,
+    '--block-bg': themeColors.blockBg,
+  } as CSSProperties;
+  const byteCollection: ProjectByteCollectionFragment = {
+    id: 'b757246b-1b08-42ce-a8cb-a9ce19bc78b3',
+    archived: false,
+    name: 'About DEX',
+    description: 'This collection of Tidbits explains different exchange models and the benefits of AMM',
+    status: 'DRAFT',
+    byteIds: ['centralized-vs-decentralized-exchange-uniswap', 'amm-benefits-uniswap'],
+    priority: 50,
+    bytes: [
+      {
+        byteId: 'centralized-vs-decentralized-exchange-uniswap_1',
+        name: 'Centralized vs Decentralized Exchange',
+        content: 'Centralized vs Decentralized Exchanges and AMMs',
+        __typename: 'ByteCollectionByte',
+      },
+      {
+        byteId: 'amm-benefits-uniswap',
+        name: 'AMM Benefits',
+        content: 'Benefits of Automated Market Maker over Order Book',
+        __typename: 'ByteCollectionByte',
+      },
+      {
+        byteId: 'centralized-vs-decentralized-exchange-uniswap_2',
+        name: 'Centralized vs Decentralized Exchange',
+        content: 'Centralized vs Decentralized Exchanges and AMMs',
+        __typename: 'ByteCollectionByte',
+      },
+    ],
+    __typename: 'ProjectByteCollection',
+  };
+
+  const { data: route53Record, refetch: refetchRoute53Record } = useRoute53RecordQuery({
     variables: {
       spaceId: spaceResponse?.getSpaceFromCreator?.id!,
     },
     skip: !spaceResponse?.getSpaceFromCreator?.id,
   });
 
-  const { data: vercelDomainRecord } = useVercelDomainRecordQuery({
+  const { data: vercelDomainRecord, refetch: refetchVercelRecord } = useVercelDomainRecordQuery({
     variables: {
       spaceId: spaceResponse?.getSpaceFromCreator?.id!,
     },
     skip: !spaceResponse?.getSpaceFromCreator?.id,
+  });
+
+  useEffect(() => {
+    let route53Interval: NodeJS.Timeout | undefined;
+    let vercelInterval: NodeJS.Timeout | undefined;
+    if (isEmpty(route53Record?.payload)) {
+      route53Interval = setInterval(() => {
+        refetchRoute53Record();
+      }, 2000);
+    }
+    if (isEmpty(vercelDomainRecord?.vercelDomainRecord)) {
+      vercelInterval = setInterval(() => {
+        refetchVercelRecord();
+      }, 2000);
+    }
+    return () => {
+      if (route53Interval) {
+        clearInterval(route53Interval);
+      }
+      if (vercelInterval) {
+        clearInterval(vercelInterval);
+      }
+    };
   });
 
   const [upsertRoute53RecordMutation] = useUpsertRoute53RecordMutation();
@@ -60,23 +142,72 @@ export default function TidbitSiteConfigurationStep() {
     }
   };
 
-  if (loading) return <div className="flex justify-center items-center">Loading...</div>;
-  if (!spaceResponse) return <div className="flex justify-center items-center">No data found</div>;
-
   return (
-    <div className="flex justify-center items-center flex-col mt-16">
-      <h1 className="text-3xl font-bold">{'You already have a space named ' + spaceResponse.getSpaceFromCreator?.name}</h1>
-      <p className="text-2xl mt-4">{'Space id is ' + spaceResponse.getSpaceFromCreator?.id}</p>
-      <p className="text-2xl mt-4">{'Route53 record is ' + JSON.stringify(route53Record || {})}</p>
-      <p className="text-2xl mt-4">{'Vercel domain record is ' + JSON.stringify(vercelDomainRecord || {})}</p>
+    <div className="flex flex-col mt-16 sm:px-0 px-4">
+      <div className="flex flex-col md:flex-row w-full">
+        <div className="md:flex-auto">
+          <h1 className="font-semibold leading-6 text-lg md:text-2xl">Theme Details</h1>
+          <p className="mt-2 text-sm md:text-base">Please provide theme details for your space.</p>
+        </div>
+        <Button onClick={() => setShowThemeUpdateModal(true)} className="mt-4" variant="contained" primary>
+          Edit
+        </Button>
+      </div>
 
-      <Button onClick={upsertRoute53Record} className="mt-4" variant="contained" primary>
-        Create Route 53 Record
-      </Button>
+      <div className="mt-4">
+        <div className="flex flex-col md:flex-row flex-wrap">
+          <div className="w-full md:w-1/2 mt-4">
+            {Object.entries(ColorLabels).map((e) => {
+              const [colorKey, label] = e as [ThemeColorsKeys, string];
+              const colorValue = themeColors[colorKey];
+              return (
+                <div key={colorKey} className="flex justify-between mb-2">
+                  <label className="ml-7">{label}</label>
+                  <div className="grid grid-cols-2	">
+                    <input type="color" className="w-12 h-8 mr-8" value={colorValue} disabled />
+                    <div>{colorValue}</div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
 
-      <Button onClick={upsertVercelDomainRecord} className="mt-4" variant="contained" primary>
-        Create Vercel Domain Record
-      </Button>
+          <div className="w-full md:mt-0 mt-4 md:w-1/2 p-2 md:p-4" style={style}>
+            <ByteCollectionsCard byteCollection={byteCollection} byteCollectionType={'byteCollection'} isEditingAllowed={false} space={space!} />
+          </div>
+        </div>
+      </div>
+      {showThemeUpdateModal && (
+        <UpdateThemeModal byteCollection={byteCollection} space={space!} open={showThemeUpdateModal} onClose={() => setShowThemeUpdateModal(false)} />
+      )}
+      {JSON.stringify(route53Record || {})}
+      {JSON.stringify(vercelDomainRecord || {})}
+      <div className="flex items-center justify-start gap-x-4 mt-4">
+        <Button onClick={goToPreviousStep} variant="outlined">
+          <span className="font-bold mr-1">&#8592;</span>
+          Previous
+        </Button>
+        <Button
+          variant="contained"
+          primary
+          removeBorder={true}
+          disabled={!space?.id || !route53Record?.payload || !vercelDomainRecord?.vercelDomainRecord}
+          loading={
+            !route53Record?.payload ||
+            !vercelDomainRecord?.vercelDomainRecord ||
+            !vercelDomainRecord.vercelDomainRecord.verified ||
+            (vercelDomainRecord.vercelDomainRecord.verification?.length || 0) > 0
+          }
+          onClick={() => {
+            if (space?.id) {
+              window.location.href = `https://${space?.id}.tidbitshub.org`;
+            }
+          }}
+        >
+          Open my Tidbits Site
+          <span className="ml-2 font-bold">&#8594;</span>
+        </Button>
+      </div>
     </div>
   );
 }

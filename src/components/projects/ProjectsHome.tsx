@@ -1,12 +1,9 @@
 'use client';
 
-import { TOP_CRYPTO_PROJECTS_SPACE_ID } from '@/chatbot/utils/app/constants';
+import { PredefinedSpaces } from '@/chatbot/utils/app/constants';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import { Table, TableActions, TableRow } from '@/components/core/table/Table';
-import TabsWithUnderline, { TabItem } from '@/components/core/tabs/TabsWithUnderline';
 import UpsertProjectModal from '@/components/projects/Edit/UpsertProjectModal';
-import TopCryptoTopNav from '@/components/projects/Nav/TopCryptoTopNav';
-import { ManageSpaceSubviews } from '@/components/spaces/manageSpaceSubviews';
 import { ProjectFragment, SpaceWithIntegrationsFragment, useProjectsQuery } from '@/graphql/generated/generated-types';
 import { ProjectTypes } from '@/types/deprecated/models/enums';
 import { useRouter } from 'next/navigation';
@@ -62,7 +59,7 @@ export default function ProjectsHome({ space }: { space: SpaceWithIntegrationsFr
           actions={tableActions}
         />
         {showProjectAddModal && (
-          <UpsertProjectModal spaceId={TOP_CRYPTO_PROJECTS_SPACE_ID} open={showProjectAddModal} onClose={() => setShowProjectAddModal(false)} />
+          <UpsertProjectModal spaceId={PredefinedSpaces.CRYPTO_GELATO} open={showProjectAddModal} onClose={() => setShowProjectAddModal(false)} />
         )}
       </PageWrapper>
     </div>

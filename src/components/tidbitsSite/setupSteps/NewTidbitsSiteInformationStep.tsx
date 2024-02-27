@@ -3,124 +3,75 @@
 import UploadInput from '@/components/app/UploadInput';
 import Button from '@/components/core/buttons/Button';
 import Input from '@/components/core/input/Input';
-import { useExtendedSpaceQuery, useGetSpaceFromCreatorQuery, useUpsertDomainRecordsMutation } from '@/graphql/generated/generated-types';
-import { slugify } from '@/utils/auth/slugify';
-import { useEffect, useState } from 'react';
-import { useNotificationContext } from '@/contexts/NotificationContext';
+import LoadingSpinner from '@/components/core/loaders/LoadingSpinner';
+import useCreateNewTidbitSpace from '@/components/tidbitsSite/setupSteps/useCreateNewTidbitSpace';
 import { isEmpty } from 'lodash';
-import useCreateSpace from '@/components/tidbitsSite/setupSteps/useNewSpace';
-import { useSession } from 'next-auth/react';
+import React, { useState } from 'react';
 
 interface NewSiteInformationProps {
   goToNextStep: () => void;
+  goToPreviousStep: () => void;
 }
 
-export default function NewTidbitsSiteInformationStep({ goToNextStep }: NewSiteInformationProps) {
-  const createSpaceHelper = useCreateSpace();
-  const { space, setSpaceField, createNewTidbitSpace, upserting } = createSpaceHelper;
-  const { showNotification } = useNotificationContext();
-  const { data: session } = useSession();
+export default function NewTidbitsSiteInformationStep({ goToNextStep, goToPreviousStep }: NewSiteInformationProps) {
+  const createSpaceHelper = useCreateNewTidbitSpace();
+  const { tidbitSpace, setSpaceField, createNewTidbitSpace, upserting, existingSpace, loading, updateTidbitSpace } = createSpaceHelper;
+
   const [uploadThumbnailLoading, setUploadThumbnailLoading] = useState(false);
 
-  const { data: spaceByUsername, loading } = useGetSpaceFromCreatorQuery({
-    variables: {
-      creatorUsername: session?.username!,
-    },
-  });
-
-  const [upsertDomainRecords] = useUpsertDomainRecordsMutation();
-
-  const checkSpaceAlreadyCreatedByUser = async () => {
-    const spaceByCreator = spaceByUsername?.getSpaceFromCreator;
-    if (spaceByCreator) {
-      if (spaceByCreator.domains.includes(`${space.id}.dodao.io`)) {
-        await upsertDomainRecords({
-          variables: {
-            spaceId: spaceByCreator.id,
-          },
-        });
-      }
-      goToNextStep();
+  const handleNextButtonClick = async () => {
+    if (existingSpace) {
+      await updateTidbitSpace({
+        successCallback: () => {
+          goToNextStep();
+        },
+      });
+    } else {
+      await createNewTidbitSpace({
+        successCallback: () => {
+          goToNextStep();
+        },
+      });
     }
   };
 
-  useEffect(() => {
-    checkSpaceAlreadyCreatedByUser();
-  }, [spaceByUsername, loading]);
-
-  const { data: extendedSpaceData, loading: extendedSpaceLoading } = useExtendedSpaceQuery({
-    variables: {
-      spaceId: space.id,
-    },
-    skip: !space.id,
-  });
-
-  const handleCreateClick = async () => {
-    if (extendedSpaceLoading) {
-      showNotification({ type: 'info', message: 'Checking space ID availability...' });
-      return;
-    }
-    if (extendedSpaceData && extendedSpaceData.space) {
-      showNotification({ type: 'error', message: 'Space id already exists. Please try again!!' });
-      return;
-    }
-
-    try {
-      await createNewTidbitSpace();
-      const spaceId = space.id;
-      const response = await fetch('/api/auth/user', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      if (!response.ok) {
-        throw new Error('Failed to fetch user data');
-      }
-      const userData = await response.json();
-
-      const createUserResponse = await fetch('/api/auth/user', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...userData,
-          spaceId: spaceId,
-        }),
-      });
-
-      if (!createUserResponse.ok) {
-        throw new Error('Failed to create user in space');
-      }
-      showNotification({ type: 'success', message: 'Space created and user added successfully!' });
-    } catch (error) {
-      console.error('Error:', error);
-      showNotification({ type: 'error', message: 'Something went wrong' });
-    }
-  };
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <LoadingSpinner />
+      </div>
+    );
+  }
 
   return (
-    <>
+    <div className="sm:px-0 px-4">
       <div className="space-y-12 text-left mt-8">
         <div className="pb-12">
           <h2 className="text-lg font-bold leading-7">Create Tidbits Site</h2>
           <p className="mt-1 text-sm leading-6">Add the details of Tidbits Site</p>
           <Input
             label="Name"
-            modelValue={space.name}
+            id={'name'}
+            modelValue={tidbitSpace.name}
             onUpdate={(value) => {
-              const slugifiedValue = slugify(value?.toString() || '');
               setSpaceField('name', value?.toString() || '');
-              setSpaceField('id', slugifiedValue);
             }}
           />
-          <Input label="Id" modelValue={space.id} disabled={true} />
+
+          <Input
+            label="Id"
+            id={'id'}
+            modelValue={tidbitSpace.id}
+            disabled={true}
+            onUpdate={() => {
+              // do nothing
+            }}
+          />
           <UploadInput
             label="Logo"
             imageType="AcademyLogo"
             spaceId={'new-space'}
-            modelValue={space.avatar}
+            modelValue={tidbitSpace.avatar}
             objectId={'new-space'}
             onInput={(value) => setSpaceField('avatar', value)}
             onLoading={setUploadThumbnailLoading}
@@ -128,18 +79,24 @@ export default function NewTidbitsSiteInformationStep({ goToNextStep }: NewSiteI
         </div>
       </div>
 
-      <div className="flex items-center justify-start gap-x-6">
+      <div className="flex items-center justify-start gap-x-4">
+        <Button onClick={goToPreviousStep} variant="outlined">
+          <span className="font-bold mr-1">&#8592;</span>
+          Previous
+        </Button>
+
         <Button
           variant="contained"
           primary
           removeBorder={true}
-          loading={upserting}
-          disabled={uploadThumbnailLoading || upserting || isEmpty(space.name) || isEmpty(space.avatar)}
-          onClick={handleCreateClick}
+          disabled={upserting || uploadThumbnailLoading || isEmpty(tidbitSpace.name) || isEmpty(tidbitSpace.avatar)}
+          onClick={handleNextButtonClick}
+          loading={upserting || uploadThumbnailLoading}
         >
-          Create
+          Next
+          <span className="ml-2 font-bold">&#8594;</span>
         </Button>
       </div>
-    </>
+    </div>
   );
 }

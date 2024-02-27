@@ -20,7 +20,7 @@ export default function TidbitsSiteSetup({ stepId }: { stepId: StepId }) {
         if (index === nextStepIndex - 1) {
           return { ...step, status: 'complete' };
         } else if (index === nextStepIndex) {
-          return { ...step, status: 'current' };
+          return { ...step, status: 'upcoming' };
         }
         return step;
       });
@@ -52,9 +52,9 @@ export default function TidbitsSiteSetup({ stepId }: { stepId: StepId }) {
       case 'user-details':
         return <UserInformationStep goToNextStep={goToNextStep} />;
       case 'tidbit-site-details':
-        return <NewTidbitsSiteInformationStep goToNextStep={goToNextStep} />;
+        return <NewTidbitsSiteInformationStep goToNextStep={goToNextStep} goToPreviousStep={goToPreviousStep} />;
       case 'site-configuration':
-        return <TidbitSiteConfigurationStep />;
+        return <TidbitSiteConfigurationStep goToPreviousStep={goToPreviousStep} />;
       default:
         return null;
     }
@@ -63,12 +63,6 @@ export default function TidbitsSiteSetup({ stepId }: { stepId: StepId }) {
     <PageWrapper>
       <HorizontalStepperSimple steps={steps} currentStepId={stepId} />
       {getStepContent(stepId)}
-      {stepId !== 'user-details' ||
-        ('Step 3' && (
-          <Button onClick={goToPreviousStep} variant="outlined" className="mt-4">
-            Previous
-          </Button>
-        ))}
     </PageWrapper>
   );
 }

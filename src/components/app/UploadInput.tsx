@@ -1,4 +1,5 @@
 import FileUploader from '@/components/app/FileUploader';
+import { slugify } from '@/utils/auth/slugify';
 import ArrowUpTrayIcon from '@heroicons/react/24/solid/ArrowUpTrayIcon';
 import PhotoIcon from '@heroicons/react/24/solid/PhotoIcon';
 import styled from 'styled-components';
@@ -45,7 +46,7 @@ export default function UploadInput({
   error,
   helpText,
 }: UploadInputProps) {
-  const inputId = uuidV4();
+  const inputId = spaceId + '-' + slugify(label || imageType || objectId);
   return (
     <UploadWrapper className="mt-2">
       <label htmlFor={inputId} className="block text-sm font-medium leading-6">
