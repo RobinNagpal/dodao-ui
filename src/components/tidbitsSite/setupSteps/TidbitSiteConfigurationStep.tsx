@@ -90,29 +90,25 @@ export default function TidbitSiteConfigurationStep({ goToPreviousStep }: Tidbit
   });
 
   useEffect(() => {
-    //  TODO - make sure to clear the intervals when we get the data or component gets unmounted
-
-    let route53Interval: NodeJS.Timeout;
+    let route53Interval: NodeJS.Timeout | undefined;
+    let vercelInterval: NodeJS.Timeout | undefined;
     if (isEmpty(route53Record?.payload)) {
       route53Interval = setInterval(() => {
         refetchRoute53Record();
       }, 2000);
-    } else {
-      if (route53Interval) {
-        clearInterval(route53Interval);
-      }
     }
-
-    let vercelInterval: NodeJS.Timeout;
     if (isEmpty(vercelDomainRecord?.vercelDomainRecord)) {
       vercelInterval = setInterval(() => {
         refetchVercelRecord();
       }, 2000);
     }
-
     return () => {
-      clearInterval(route53Interval);
-      clearInterval(vercelInterval);
+      if (route53Interval) {
+        clearInterval(route53Interval);
+      }
+      if (vercelInterval) {
+        clearInterval(vercelInterval);
+      }
     };
   });
 
@@ -193,12 +189,11 @@ export default function TidbitSiteConfigurationStep({ goToPreviousStep }: Tidbit
           Create Vercel Domain Record
         </Button>
       </div>
-      <div className="flex">
-        <Button onClick={goToPreviousStep} variant="outlined" className="mt-4">
+      <div className="flex items-center justify-start gap-x-4 mt-4">
+        <Button onClick={goToPreviousStep} variant="outlined">
           <span className="font-bold mr-1">&#8592;</span>
           Previous
         </Button>
-
         <Button
           variant="contained"
           primary
