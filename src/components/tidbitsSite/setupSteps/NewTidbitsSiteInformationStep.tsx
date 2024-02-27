@@ -165,8 +165,8 @@ export default function NewTidbitsSiteInformationStep({ goToNextStep, goToPrevio
         </div>
       </div>
 
-      <div className="flex items-center justify-start gap-x-6">
-        <Button onClick={goToPreviousStep} variant="outlined" className="mt-4">
+      <div className="flex items-center justify-start gap-x-4">
+        <Button onClick={goToPreviousStep} variant="outlined">
           <span className="font-bold mr-1">&#8592;</span>
           Previous
         </Button>
