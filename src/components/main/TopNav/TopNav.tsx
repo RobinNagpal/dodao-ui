@@ -9,7 +9,7 @@ import { DesktopProfileMenu } from '@/components/main/TopNav/DesktopProfileMenu'
 import { MobileNavLink } from '@/components/main/TopNav/MobileNavLink';
 import { MobileProfileMenu } from '@/components/main/TopNav/MobileProfileMenu';
 import { useLoginModalContext } from '@/contexts/LoginModalContext';
-import { Space, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { Space, SpaceTypes, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { Session } from '@/types/auth/Session';
 import { FeatureItem, FeatureName } from '@/types/features/spaceFeatures';
 import { isAdmin } from '@/utils/auth/isAdmin';
@@ -187,7 +187,7 @@ export default function TopNav(props: { space?: SpaceWithIntegrationsFragment | 
                       />
                     </Link>
                   </div>
-                  {space && <DesktopNavLinks space={space} />}
+                  {space && space.type !== SpaceTypes.TidbitsSite && <DesktopNavLinks space={space} />}
                 </div>
                 <div className="flex items-center">
                   {PredefinedSpaces.TIDBITS_HUB === space?.id && (
@@ -229,7 +229,7 @@ export default function TopNav(props: { space?: SpaceWithIntegrationsFragment | 
             </div>
 
             <Disclosure.Panel className="md:hidden">
-              {space && <MobileNavLinks space={space} />}
+              {space && space.type !== SpaceTypes.TidbitsSite && <MobileNavLinks space={space} />}
               {session && space && <MobileProfileMenu session={session as Session} space={space} />}
             </Disclosure.Panel>
           </>

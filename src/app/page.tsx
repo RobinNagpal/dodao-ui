@@ -8,7 +8,7 @@ import LifeInsureHomePage from '@/components/home/LifeInsure/LifeInsureHomePage'
 import TidbitsHubHome from '@/components/home/TidbitsHub/TidbitsHubHome';
 import TidbitsSiteHome from '@/components/home/TidbitsSite/TidbitsSiteHome';
 import ListProjects from '@/components/projects/List/ListProjects';
-import { ProjectFragment, SpaceTypes } from '@/graphql/generated/generated-types';
+import { ByteCollectionFragment, ProjectFragment, SpaceTypes } from '@/graphql/generated/generated-types';
 import getApiResponse from '@/utils/api/getApiResponse';
 import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
 import { headers } from 'next/headers';
@@ -35,7 +35,8 @@ async function Home(props: { searchParams: { [key: string]: string | string[] | 
   }
 
   if (space?.type === SpaceTypes.TidbitsSite) {
-    return <TidbitsSiteHome />;
+    const byteCollections = await getApiResponse<ByteCollectionFragment[]>(space, 'byte-collections');
+    return <TidbitsSiteHome byteCollections={byteCollections} space={space} />;
   }
 
   if (host === 'dodao-localhost.io' || host === 'academy.dodao.io' || host === 'dodao.io') {
