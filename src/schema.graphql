@@ -99,6 +99,7 @@ input AuthSettingsInput {
 
 type Byte {
   admins: [String!]!
+  byteStyle: String
   content: String!
   created: String!
   id: String!
@@ -184,6 +185,7 @@ type ByteSocialShare {
 
 type ByteStep {
   content: String!
+  imageUrl: String
   name: String!
   stepItems: [ByteStepItem!]!
   uuid: String!
@@ -191,12 +193,18 @@ type ByteStep {
 
 input ByteStepInput {
   content: String!
+  imageUrl: String
   name: String!
   stepItems: [StepItemInputGenericInput!]!
   uuid: String!
 }
 
 union ByteStepItem = ByteQuestion | ByteUserInput | UserDiscordConnect
+
+enum ByteStyle {
+  CardAndCircleProgress
+  CarouselWithProgressBars
+}
 
 type ByteSubmission {
   byteId: String!
@@ -1187,6 +1195,7 @@ type Project {
 type ProjectByte {
   admins: [String!]!
   archived: Boolean!
+  byteStyle: String
   content: String!
   created: String!
   id: String!
@@ -1696,6 +1705,7 @@ input UpsertAcademyTaskInput {
 
 input UpsertByteInput {
   admins: [String!]!
+  byteStyle: String
   content: String!
   created: String!
   id: String!
@@ -1783,6 +1793,7 @@ input UpsertProjectByteCollectionInput {
 
 input UpsertProjectByteInput {
   admins: [String!]!
+  byteStyle: String
   content: String!
   created: String!
   id: String!
