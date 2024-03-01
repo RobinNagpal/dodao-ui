@@ -23,6 +23,7 @@ import isEqual from 'lodash/isEqual';
 import { useState } from 'react';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
+import { predefinedColors } from '@/utils/colors/findClosestColor';
 
 interface EditByteStepperItemProps {
   space: SpaceWithIntegrationsFragment;
@@ -66,19 +67,6 @@ export default function EditByteStepperItem({
   updateStep,
 }: EditByteStepperItemProps) {
   const [modalByteInputOrQuestionOpen, setModalByteInputOrQuestionOpen] = useState(false);
-
-  const predefinedColors: Color[] = [
-    { name: 'White', hex: '#FFFFFF' },
-    { name: 'Black', hex: '#000000' },
-    { name: 'Grey', hex: '#808080' },
-    { name: 'Blue', hex: '#0000FF' },
-    { name: 'Red', hex: '#FF0000' },
-    { name: 'Green', hex: '#008000' },
-    { name: 'Orange', hex: '#FFA500' },
-    { name: 'Cyan', hex: '#00FFFF' },
-    { name: 'Magenta', hex: '#FF00FF' },
-    { name: 'Purple', hex: '#800080' },
-  ];
 
   function hexToRgb(hex: string): [number, number, number] {
     const r = parseInt(hex.slice(1, 3), 16);
