@@ -44,6 +44,7 @@ fragment ByteStep on ByteStep {
   }
   name
   uuid
+  imageUrl
 }
 
 fragment ByteDetails on Byte {
@@ -58,6 +59,7 @@ fragment ByteDetails on Byte {
   steps {
     ...ByteStep
   }
+  byteStyle
 }
 
 fragment ByteDetailsFragment on Byte {
@@ -70,6 +72,7 @@ fragment ByteDetailsFragment on Byte {
   tags
   priority
   videoUrl
+  byteStyle
   steps {
     content
     stepItems {
@@ -100,6 +103,7 @@ fragment ByteDetailsFragment on Byte {
     }
     name
     uuid
+    imageUrl
   }
 }
 
@@ -112,6 +116,7 @@ fragment ByteSummary on Byte {
   tags
   priority
   videoUrl
+  byteStyle
 }
 
 query QueryBytes($spaceId: String!) {
