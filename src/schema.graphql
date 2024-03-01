@@ -84,6 +84,7 @@ type ArticleIndexingInfo {
   status: String!
   text: String
   textLength: Int
+  textSample: String
   updatedAt: DateTimeISO!
 }
 
@@ -1238,6 +1239,7 @@ type Query {
   _empty: String
   academyTask(uuid: String!): AcademyTask!
   academyTasks(spaceId: String!, status: String): [AcademyTask!]
+  articleIndexingInfo(articleIndexingInfoId: String!, spaceId: String!): ArticleIndexingInfo!
   articleIndexingInfos(spaceId: String!): [ArticleIndexingInfo!]!
   byte(byteId: String!, includeDraft: Boolean, spaceId: String!): Byte!
   byteCollection(byteCollectionId: String!, spaceId: String!): ByteCollection!
@@ -1277,6 +1279,7 @@ type Query {
   rawGitCourse(key: String!, spaceId: String!): RawGitCourse!
   rawGitCourses(spaceId: String!): [RawGitCourse!]!
   route53Record(spaceId: String!): Route53Record
+  scrapedUrlInfo(scrapedUrlInfoId: String!, spaceId: String!): ScrapedUrlInfo!
   scrapedUrlInfos(spaceId: String!, websiteScrapingInfoId: String!): [ScrapedUrlInfo!]!
   searchChatbotFAQs(query: String!, spaceId: String!): [SearchedChatbotFAQ!]!
   shortVideo(id: String!, spaceId: String!): ShortVideo!
@@ -1341,9 +1344,9 @@ type ScrapedUrlInfo {
   spaceId: String!
   text: String!
   textLength: Int!
+  textSample: String!
   updatedAt: DateTimeISO!
   url: String!
-  websiteScrapingInfo: WebsiteScrapingInfo!
   websiteScrapingInfoId: String!
 }
 
