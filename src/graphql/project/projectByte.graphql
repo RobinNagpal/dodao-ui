@@ -7,7 +7,6 @@ fragment ProjectByte on ProjectByte {
   postSubmissionStepContent
   priority
   videoUrl
-  byteStyle
   steps {
     content
     stepItems {
