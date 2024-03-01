@@ -58,7 +58,6 @@ fragment ByteDetails on Byte {
   steps {
     ...ByteStep
   }
-  byteStyle
 }
 
 fragment ByteDetailsFragment on Byte {
@@ -71,7 +70,6 @@ fragment ByteDetailsFragment on Byte {
   tags
   priority
   videoUrl
-  byteStyle
   steps {
     content
     stepItems {
@@ -114,7 +112,6 @@ fragment ByteSummary on Byte {
   tags
   priority
   videoUrl
-  byteStyle
 }
 
 query QueryBytes($spaceId: String!) {
