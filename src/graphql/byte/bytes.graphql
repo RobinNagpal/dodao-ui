@@ -44,7 +44,6 @@ fragment ByteStep on ByteStep {
   }
   name
   uuid
-  imageUrl
 }
 
 fragment ByteDetails on Byte {
@@ -103,7 +102,6 @@ fragment ByteDetailsFragment on Byte {
     }
     name
     uuid
-    imageUrl
   }
 }
 
