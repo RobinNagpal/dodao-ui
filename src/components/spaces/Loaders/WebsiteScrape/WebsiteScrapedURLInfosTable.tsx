@@ -11,7 +11,7 @@ function getIndexRunRows(discordRuns: ScrapedUrlInfoFragmentFragment[]): TableRo
     const indexedAt = moment(new Date(comment.createdAt)).local().format('YYYY/MM/DD HH:mm');
     return {
       id: comment.id,
-      columns: [comment.id.substring(0, 6), comment.url, comment?.text.substring(0, 100), comment.textLength, indexedAt],
+      columns: [comment.id.substring(0, 6), comment.url, comment?.textSample, comment.textLength, indexedAt],
       item: {},
     };
   });

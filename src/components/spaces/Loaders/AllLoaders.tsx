@@ -103,7 +103,7 @@ export default function AllLoaders(props: { space: SpaceWithIntegrationsFragment
     return discoursePosts.map((post: ArticleIndexingInfoFragment): TableRow => {
       return {
         id: post.id,
-        columns: [post.id.substring(0, 6), post.articleUrl, post.text, post.textLength, post.status],
+        columns: [post.id.substring(0, 6), post.articleUrl, post.textSample, post.textLength, post.status],
         item: post,
       };
     });

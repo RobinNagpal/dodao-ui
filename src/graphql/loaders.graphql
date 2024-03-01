@@ -57,6 +57,7 @@ fragment ArticleIndexingInfo on ArticleIndexingInfo {
   status
   text
   textLength
+  textSample
 }
 
 fragment SiteScrapingRunFragment on SiteScrapingRun {
@@ -76,6 +77,7 @@ fragment ScrapedUrlInfoFragment on ScrapedUrlInfo {
   textLength
   createdAt
   updatedAt
+  textSample
 }
 
 fragment DiscoursePost on DiscoursePost {
