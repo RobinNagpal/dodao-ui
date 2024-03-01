@@ -7,6 +7,7 @@ fragment ProjectByte on ProjectByte {
   postSubmissionStepContent
   priority
   videoUrl
+  byteStyle
   steps {
     content
     stepItems {
@@ -37,6 +38,7 @@ fragment ProjectByte on ProjectByte {
     }
     name
     uuid
+    imageUrl
   }
   tags
   archived
