@@ -129,10 +129,9 @@ function ByteStyleWithCarouselAndProgress({ viewByteHelper, step, byte, space }:
       }
 
       setTransitionState('exit');
-    setTimeout(async () => {
-      viewByteHelper.goToNextStep(step);
-    }, 300); 
-
+      setTimeout(async () => {
+        viewByteHelper.goToNextStep(step);
+      }, 300);
     }
   };
 
@@ -141,7 +140,7 @@ function ByteStyleWithCarouselAndProgress({ viewByteHelper, step, byte, space }:
     active: 'transition-opacity transition-transform duration-300 ease-in-out opacity-100 translate-x-0',
     exit: 'transition-opacity transition-transform duration-300 ease-in-out opacity-0 -translate-x-4',
   };
-  
+
   const stepItems = step.stepItems;
 
   const stepContents = useMemo(() => marked.parse(step.content, { renderer }), [step.content]);
@@ -171,7 +170,7 @@ function ByteStyleWithCarouselAndProgress({ viewByteHelper, step, byte, space }:
   return (
     <div className={`px-2 lg:px-2 py-5 sm:px-6 flex flex-col justify-between w-full ${styles.stepContent} ${transitionClasses[transitionState]}`}>
       <div>
-      <StepIndicatorProgress steps={byte.steps.length} currentStep={activeStepOrder} />
+        <StepIndicatorProgress steps={byte.steps.length} currentStep={activeStepOrder} />
         <div className="flex justify-center">
           <div className="mt-6">
             <h1 className={`mb-2 text-4xl ${styles.styledH1}`}>{step.name || byte.name}</h1>
