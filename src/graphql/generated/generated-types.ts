@@ -103,6 +103,7 @@ export interface ArticleIndexingInfo {
   status: Scalars['String'];
   text?: Maybe<Scalars['String']>;
   textLength?: Maybe<Scalars['Int']>;
+  textSample?: Maybe<Scalars['String']>;
   updatedAt: Scalars['DateTimeISO'];
 }
 
@@ -1970,6 +1971,7 @@ export interface Query {
   _empty?: Maybe<Scalars['String']>;
   academyTask: AcademyTask;
   academyTasks?: Maybe<Array<AcademyTask>>;
+  articleIndexingInfo: ArticleIndexingInfo;
   articleIndexingInfos: Array<ArticleIndexingInfo>;
   byte: Byte;
   byteCollection: ByteCollection;
@@ -2009,6 +2011,7 @@ export interface Query {
   rawGitCourse: RawGitCourse;
   rawGitCourses: Array<RawGitCourse>;
   route53Record?: Maybe<Route53Record>;
+  scrapedUrlInfo: ScrapedUrlInfo;
   scrapedUrlInfos: Array<ScrapedUrlInfo>;
   searchChatbotFAQs: Array<SearchedChatbotFaq>;
   shortVideo: ShortVideo;
@@ -2034,6 +2037,12 @@ export interface QueryAcademyTaskArgs {
 export interface QueryAcademyTasksArgs {
   spaceId: Scalars['String'];
   status?: InputMaybe<Scalars['String']>;
+}
+
+
+export interface QueryArticleIndexingInfoArgs {
+  articleIndexingInfoId: Scalars['String'];
+  spaceId: Scalars['String'];
 }
 
 
@@ -2254,6 +2263,12 @@ export interface QueryRoute53RecordArgs {
 }
 
 
+export interface QueryScrapedUrlInfoArgs {
+  scrapedUrlInfoId: Scalars['String'];
+  spaceId: Scalars['String'];
+}
+
+
 export interface QueryScrapedUrlInfosArgs {
   spaceId: Scalars['String'];
   websiteScrapingInfoId: Scalars['String'];
@@ -2379,9 +2394,9 @@ export interface ScrapedUrlInfo {
   spaceId: Scalars['String'];
   text: Scalars['String'];
   textLength: Scalars['Int'];
+  textSample: Scalars['String'];
   updatedAt: Scalars['DateTimeISO'];
   url: Scalars['String'];
-  websiteScrapingInfo: WebsiteScrapingInfo;
   websiteScrapingInfoId: Scalars['String'];
 }
 
@@ -3709,11 +3724,11 @@ export type DiscordMessageFragmentFragment = { __typename?: 'DiscordMessage', id
 
 export type WebsiteScrapingInfoFragment = { __typename?: 'WebsiteScrapingInfo', id: string, baseUrl: string, scrapingStartUrl: string, ignoreHashInUrl: boolean, ignoreQueryParams: boolean, createdAt: any, updatedAt: any };
 
-export type ArticleIndexingInfoFragment = { __typename?: 'ArticleIndexingInfo', id: string, spaceId: string, articleUrl: string, createdAt: any, updatedAt: any, status: string, text?: string | null, textLength?: number | null };
+export type ArticleIndexingInfoFragment = { __typename?: 'ArticleIndexingInfo', id: string, spaceId: string, articleUrl: string, createdAt: any, updatedAt: any, status: string, text?: string | null, textLength?: number | null, textSample?: string | null };
 
 export type SiteScrapingRunFragmentFragment = { __typename?: 'SiteScrapingRun', id: string, websiteScrapingInfoId: string, scrapingRunDate: any, status: string, createdAt: any, updatedAt: any };
 
-export type ScrapedUrlInfoFragmentFragment = { __typename?: 'ScrapedUrlInfo', id: string, websiteScrapingInfoId: string, url: string, text: string, textLength: number, createdAt: any, updatedAt: any };
+export type ScrapedUrlInfoFragmentFragment = { __typename?: 'ScrapedUrlInfo', id: string, websiteScrapingInfoId: string, url: string, text: string, textLength: number, createdAt: any, updatedAt: any, textSample: string };
 
 export type DiscoursePostFragment = { __typename?: 'DiscoursePost', id: string, spaceId: string, title: string, url: string, fullContent?: string | null, author?: string | null, datePublished: any, createdAt: any, indexedAt?: any | null, status: string, enacted?: boolean | null, discussed?: boolean | null, aiSummary?: string | null, aiSummaryDate?: any | null };
 
@@ -3783,7 +3798,7 @@ export type ArticleIndexingInfosQueryVariables = Exact<{
 }>;
 
 
-export type ArticleIndexingInfosQuery = { __typename?: 'Query', articleIndexingInfos: Array<{ __typename?: 'ArticleIndexingInfo', id: string, spaceId: string, articleUrl: string, createdAt: any, updatedAt: any, status: string, text?: string | null, textLength?: number | null }> };
+export type ArticleIndexingInfosQuery = { __typename?: 'Query', articleIndexingInfos: Array<{ __typename?: 'ArticleIndexingInfo', id: string, spaceId: string, articleUrl: string, createdAt: any, updatedAt: any, status: string, text?: string | null, textLength?: number | null, textSample?: string | null }> };
 
 export type SiteScrapingRunsQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -3799,7 +3814,7 @@ export type ScrapedUrlInfosQueryVariables = Exact<{
 }>;
 
 
-export type ScrapedUrlInfosQuery = { __typename?: 'Query', scrapedUrlInfos: Array<{ __typename?: 'ScrapedUrlInfo', id: string, websiteScrapingInfoId: string, url: string, text: string, textLength: number, createdAt: any, updatedAt: any }> };
+export type ScrapedUrlInfosQuery = { __typename?: 'Query', scrapedUrlInfos: Array<{ __typename?: 'ScrapedUrlInfo', id: string, websiteScrapingInfoId: string, url: string, text: string, textLength: number, createdAt: any, updatedAt: any, textSample: string }> };
 
 export type TriggerNewDiscourseIndexRunMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -3897,7 +3912,7 @@ export type CreateArticleIndexingInfoMutationVariables = Exact<{
 }>;
 
 
-export type CreateArticleIndexingInfoMutation = { __typename?: 'Mutation', createArticleIndexingInfo: { __typename?: 'ArticleIndexingInfo', id: string, spaceId: string, articleUrl: string, createdAt: any, updatedAt: any, status: string, text?: string | null, textLength?: number | null } };
+export type CreateArticleIndexingInfoMutation = { __typename?: 'Mutation', createArticleIndexingInfo: { __typename?: 'ArticleIndexingInfo', id: string, spaceId: string, articleUrl: string, createdAt: any, updatedAt: any, status: string, text?: string | null, textLength?: number | null, textSample?: string | null } };
 
 export type EditArticleIndexingInfoMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -3906,7 +3921,7 @@ export type EditArticleIndexingInfoMutationVariables = Exact<{
 }>;
 
 
-export type EditArticleIndexingInfoMutation = { __typename?: 'Mutation', editArticleIndexingInfo: { __typename?: 'ArticleIndexingInfo', id: string, spaceId: string, articleUrl: string, createdAt: any, updatedAt: any, status: string, text?: string | null, textLength?: number | null } };
+export type EditArticleIndexingInfoMutation = { __typename?: 'Mutation', editArticleIndexingInfo: { __typename?: 'ArticleIndexingInfo', id: string, spaceId: string, articleUrl: string, createdAt: any, updatedAt: any, status: string, text?: string | null, textLength?: number | null, textSample?: string | null } };
 
 export type AnnotateDiscoursePostMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -5130,6 +5145,7 @@ export const ArticleIndexingInfoFragmentDoc = gql`
   status
   text
   textLength
+  textSample
 }
     `;
 export const SiteScrapingRunFragmentFragmentDoc = gql`
@@ -5151,6 +5167,7 @@ export const ScrapedUrlInfoFragmentFragmentDoc = gql`
   textLength
   createdAt
   updatedAt
+  textSample
 }
     `;
 export const DiscoursePostFragmentDoc = gql`
