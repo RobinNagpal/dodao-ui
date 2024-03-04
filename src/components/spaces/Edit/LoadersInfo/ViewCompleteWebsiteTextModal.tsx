@@ -1,3 +1,4 @@
+import FullPageLoader from '@/components/core/loaders/FullPageLoading';
 import FullPageModal from '@/components/core/modals/FullPageModal';
 import { useScrapedUrlInfoQuery } from '@/graphql/generated/generated-types';
 import React from 'react';
@@ -21,7 +22,7 @@ export default function ViewCompleteWebsiteTextModal({ open, onClose, indexingIn
   });
   return (
     <FullPageModal open={open} onClose={onClose} title={'Complete Text'}>
-      {loading && <div>Loading...</div>}
+      {loading && <FullPageLoader message="Loading..." />}
       <div className="text-justify p-4">{data && data.scrapedUrlInfo.text}</div>
     </FullPageModal>
   );

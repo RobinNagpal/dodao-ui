@@ -1,3 +1,4 @@
+import FullPageLoader from '@/components/core/loaders/FullPageLoading';
 import FullPageModal from '@/components/core/modals/FullPageModal';
 import { useArticleIndexingInfoQuery } from '@/graphql/generated/generated-types';
 import React from 'react';
@@ -22,7 +23,7 @@ export default function ViewCompleteTextModal({ open, onClose, indexingInfo }: V
 
   return (
     <FullPageModal open={open} onClose={onClose} title={'Complete Text'}>
-      {loading && <div>Loading...</div>}
+      {loading && <FullPageLoader message="Loading..." />}
       <div className="text-justify p-4">{data && data.articleIndexingInfo.text}</div>
     </FullPageModal>
   );
