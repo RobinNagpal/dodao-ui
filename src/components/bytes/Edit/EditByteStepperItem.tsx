@@ -23,6 +23,7 @@ import isEqual from 'lodash/isEqual';
 import { useState } from 'react';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
+import { findClosestColor } from '@/utils/colors/findClosestColor';
 
 interface EditByteStepperItemProps {
   space: SpaceWithIntegrationsFragment;
@@ -36,6 +37,11 @@ interface EditByteStepperItemProps {
   moveStepDown: (uuid: string) => void;
   removeStep: (uuid: string) => void;
   updateStep: (step: EditByteStep) => void;
+}
+
+interface Color {
+  name: string;
+  hex: string;
 }
 
 const StyledStepItemContainer = styled.div`
@@ -318,6 +324,7 @@ export default function EditByteStepperItem({
   };
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const colorTheme = findClosestColor(space.themeColors?.primaryColor || '#008000');
 
   let nameAndContentOfSteps = '';
 
@@ -340,6 +347,7 @@ Now, turning our attention to a specific detail:
 - Detail Content: ${step.content}
 
 Drawing from the detailed information provided, particularly the detail's name and content, create an image prompt that captures the essence of this detail. Aim to include elements that mirror its themes, emotions, or critical aspects. The objective is to produce an image that visually communicates this particular detail effectively.
+Maintain a color scheme that contrasts with ${colorTheme}, the current theme of the user's website.
 `;
 
   return (
