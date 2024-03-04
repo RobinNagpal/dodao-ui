@@ -6,7 +6,7 @@ import { ScrapedUrlInfoFragmentFragment, SpaceWithIntegrationsFragment, useScrap
 import moment from 'moment/moment';
 import Link from 'next/link';
 import React, { useState } from 'react';
-import ViewCompleteTextModal from '../../Edit/LoadersInfo/ViewCompleteTextModal';
+import ViewCompleteWebsiteTextModal from '../../Edit/LoadersInfo/ViewCompleteWebsiteTextModal';
 
 function getIndexRunRows(discordRuns: ScrapedUrlInfoFragmentFragment[]): TableRow[] {
   return discordRuns.map((comment: ScrapedUrlInfoFragmentFragment): TableRow => {
@@ -21,7 +21,7 @@ function getIndexRunRows(discordRuns: ScrapedUrlInfoFragmentFragment[]): TableRo
 
 export default function WebsiteScrapedURLInfosTable(props: { space: SpaceWithIntegrationsFragment; websiteScrapingInfoId: string }) {
   const [viewCompleteTextModal, setViewCompleteTextModal] = useState<boolean>(false);
-  const [editWebsiteScrappingInfo, setEditWebsiteScrappingInfo] = useState<ScrapedUrlInfoFragmentFragment | undefined>(undefined);
+  const [websiteIndexingSpaceAndInfoId, setWebsiteIndexingSpaceAndInfoId] = useState<{ spaceId: string; scrapedUrlInfoId: string } | undefined>(undefined);
   const { data, loading } = useScrapedUrlInfosQuery({
     variables: {
       spaceId: props.space.id,
@@ -57,18 +57,18 @@ export default function WebsiteScrapedURLInfosTable(props: { space: SpaceWithInt
           items: siteScrapingActionItems,
           onSelect: async (key: string, item: { id: string }) => {
             if (key === 'view') {
-              setEditWebsiteScrappingInfo(item as ScrapedUrlInfoFragmentFragment);
+              setWebsiteIndexingSpaceAndInfoId({ spaceId: props.space.id, scrapedUrlInfoId: item.id });
               setViewCompleteTextModal(true);
             }
           },
         }}
       />
       {viewCompleteTextModal && (
-        <ViewCompleteTextModal
-          indexingInfo={editWebsiteScrappingInfo}
+        <ViewCompleteWebsiteTextModal
+          indexingInfo={websiteIndexingSpaceAndInfoId}
           open={viewCompleteTextModal}
           onClose={() => {
-            setEditWebsiteScrappingInfo(undefined);
+            setWebsiteIndexingSpaceAndInfoId(undefined);
             setViewCompleteTextModal(false);
           }}
         />
