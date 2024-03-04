@@ -26,6 +26,7 @@ import {
 import moment from 'moment/moment';
 import { useRouter } from 'next/navigation';
 import React, { useMemo, useState } from 'react';
+import ViewCompleteTextModal from '../Edit/LoadersInfo/ViewCompleteTextModal';
 
 function getLoaderRows(): TableRow[] {
   const indexedAt = moment(new Date()).local().format('YYYY/MM/DD HH:mm');
@@ -58,6 +59,7 @@ export default function AllLoaders(props: { space: SpaceWithIntegrationsFragment
 
   const [editArticleIndexingInfo, setEditArticleIndexingInfo] = useState<ArticleIndexingInfoFragment | undefined>(undefined);
   const [showAddArticleIndexingInfoModal, setShowAddArticleIndexingInfoModal] = useState(false);
+  const [viewCompleteTextModal, setViewCompleteTextModal] = useState<boolean>(false);
 
   const { showNotification } = useNotificationContext();
   const { data: websiteInfos } = useWebsiteScrapingInfosQuery({
@@ -245,11 +247,18 @@ export default function AllLoaders(props: { space: SpaceWithIntegrationsFragment
                 key: 'edit',
                 label: 'Edit',
               },
+              {
+                key: 'view',
+                label: 'View Complete Text',
+              },
             ],
             onSelect: async (key: string, item: { id: string }) => {
               if (key === 'edit') {
                 setEditArticleIndexingInfo(item as ArticleIndexingInfoFragment);
                 setShowAddArticleIndexingInfoModal(true);
+              } else if (key === 'view') {
+                setEditArticleIndexingInfo(item as ArticleIndexingInfoFragment);
+                setViewCompleteTextModal(true);
               }
             },
           }}
@@ -275,6 +284,16 @@ export default function AllLoaders(props: { space: SpaceWithIntegrationsFragment
             setShowAddArticleIndexingInfoModal(false);
           }}
           spaceId={props.space.id}
+        />
+      )}
+      {viewCompleteTextModal && (
+        <ViewCompleteTextModal
+          indexingInfo={editArticleIndexingInfo}
+          open={viewCompleteTextModal}
+          onClose={() => {
+            setEditArticleIndexingInfo(undefined);
+            setViewCompleteTextModal(false);
+          }}
         />
       )}
     </div>
