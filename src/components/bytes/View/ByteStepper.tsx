@@ -2,7 +2,7 @@ import { UseGenericViewByteHelper } from '@/components/bytes/View/useGenericView
 import { ByteDetailsFragment, ByteStepFragment, ProjectByteFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { useMemo } from 'react';
 import styles from './ByteStepper.module.scss';
-import ByteStyleWithCarouselAndProgress1 from './NewByteStyles/ByteStyleWIthCarouselAndProgress1';
+import ByteStyleWithCarouselAndProgress1 from './NewByteStyles/style1/ByteStyleWIthCarouselAndProgress1';
 
 type Props = {
   viewByteHelper: UseGenericViewByteHelper;
