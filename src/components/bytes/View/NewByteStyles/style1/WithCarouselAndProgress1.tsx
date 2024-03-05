@@ -35,6 +35,7 @@ import 'prismjs/components/prism-yaml';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import styles from './WithCarouselAndProgress1.module.scss';
 import StepIndicatorProgress from '@/components/bytes/View/NewByteStyles/Progress/StepIndicatorProgress';
+import CustomGradientButton from '@/components/core/buttons/GradientButton';
 
 interface WithCarouselAndProgress1Props {
   byte: ByteDetailsFragment | ProjectByteFragment;
@@ -168,89 +169,87 @@ function WithCarouselAndProgress1({ viewByteHelper, step, byte, space }: WithCar
   const showQuestionsCompletionWarning = nextButtonClicked && (!isQuestionAnswered() || !isDiscordConnected() || !isUserInputComplete());
 
   return (
-    <div className={`px-2 lg:px-2 py-5 sm:px-6 flex flex-col justify-between w-full ${styles.stepContent} ${transitionClasses[transitionState]}`}>
-      <div>
-        <StepIndicatorProgress steps={byte.steps.length} currentStep={activeStepOrder} />
-        <div className="flex justify-center">
-          <div className="mt-6">
-            <h1 className={`mb-2 text-4xl ${styles.styledH1}`}>{step.name || byte.name}</h1>
+    <div>
+      <div className={`px-2 lg:px-2 py-5 sm:px-6 flex flex-col justify-between w-full ${styles.stepContent} ${transitionClasses[transitionState]}`}>
+        <div>
+          <StepIndicatorProgress steps={byte.steps.length} currentStep={activeStepOrder} />
+          <div className="flex justify-center">
+            <div className="mt-6">
+              <h1 className={`mb-2 text-4xl ${styles.styledH1}`}>{step.name || byte.name}</h1>
+            </div>
+          </div>
+
+          <div style={{ minHeight: '300px' }} className="mt-6">
+            <div dangerouslySetInnerHTML={{ __html: stepContents }} className="markdown-body" />
+            {stepItems.map((stepItem: ByteStepItemFragment, index) => {
+              if (isQuestion(stepItem)) {
+                return (
+                  <QuestionSection
+                    key={index}
+                    nextButtonClicked={nextButtonClicked}
+                    allQuestionsAnsweredCorrectly={questionsAnsweredCorrectly}
+                    allQuestionsAnswered={questionNotAnswered}
+                    stepItem={stepItem as ByteQuestionFragmentFragment}
+                    stepItemSubmission={viewByteHelper.getStepItemSubmission(step.uuid, stepItem.uuid)}
+                    onSelectAnswer={selectAnswer}
+                  />
+                );
+              }
+
+              if (isUserDiscordConnect(stepItem)) {
+                return (
+                  <UserDiscord
+                    key={index}
+                    userDiscord={stepItem as ByteUserDiscordConnectFragmentFragment}
+                    discordResponse={viewByteHelper.getStepItemSubmission(step.uuid, stepItem.uuid) as UserDiscordInfoInput}
+                    spaceId={space.id}
+                    guideUuid={byte.id}
+                    stepUuid={step.uuid}
+                    stepOrder={activeStepOrder}
+                  />
+                );
+              }
+
+              if (isUserInput(stepItem)) {
+                const inputFragment = stepItem as ByteUserInputFragmentFragment;
+                return (
+                  <UserInput
+                    key={index}
+                    modelValue={viewByteHelper.getStepItemSubmission(step.uuid, inputFragment.uuid) as string}
+                    label={inputFragment.label}
+                    required={inputFragment.required}
+                    setUserInput={(userInput: string) => setUserInput(inputFragment.uuid, userInput)}
+                  />
+                );
+              }
+
+              return null;
+            })}
+            {postSubmissionContent && <div className="mt-4 text-sm text-gray-500" dangerouslySetInnerHTML={{ __html: postSubmissionContent }} />}
           </div>
         </div>
-
-        <div style={{ minHeight: '300px' }} className="mt-6">
-          <div dangerouslySetInnerHTML={{ __html: stepContents }} className="markdown-body" />
-          {stepItems.map((stepItem: ByteStepItemFragment, index) => {
-            if (isQuestion(stepItem)) {
-              return (
-                <QuestionSection
-                  key={index}
-                  nextButtonClicked={nextButtonClicked}
-                  allQuestionsAnsweredCorrectly={questionsAnsweredCorrectly}
-                  allQuestionsAnswered={questionNotAnswered}
-                  stepItem={stepItem as ByteQuestionFragmentFragment}
-                  stepItemSubmission={viewByteHelper.getStepItemSubmission(step.uuid, stepItem.uuid)}
-                  onSelectAnswer={selectAnswer}
-                />
-              );
-            }
-
-            if (isUserDiscordConnect(stepItem)) {
-              return (
-                <UserDiscord
-                  key={index}
-                  userDiscord={stepItem as ByteUserDiscordConnectFragmentFragment}
-                  discordResponse={viewByteHelper.getStepItemSubmission(step.uuid, stepItem.uuid) as UserDiscordInfoInput}
-                  spaceId={space.id}
-                  guideUuid={byte.id}
-                  stepUuid={step.uuid}
-                  stepOrder={activeStepOrder}
-                />
-              );
-            }
-
-            if (isUserInput(stepItem)) {
-              const inputFragment = stepItem as ByteUserInputFragmentFragment;
-              return (
-                <UserInput
-                  key={index}
-                  modelValue={viewByteHelper.getStepItemSubmission(step.uuid, inputFragment.uuid) as string}
-                  label={inputFragment.label}
-                  required={inputFragment.required}
-                  setUserInput={(userInput: string) => setUserInput(inputFragment.uuid, userInput)}
-                />
-              );
-            }
-
-            return null;
-          })}
-          {postSubmissionContent && <div className="mt-4 text-sm text-gray-500" dangerouslySetInnerHTML={{ __html: postSubmissionContent }} />}
-        </div>
+        <ByteStepperItemWarnings
+          showUseInputCompletionWarning={incompleteUserInput}
+          showQuestionsCompletionWarning={showQuestionsCompletionWarning}
+          isUserInputComplete={isUserInputComplete}
+          isQuestionAnswered={isQuestionAnswered}
+          isDiscordConnected={isDiscordConnected}
+        />
       </div>
-      <ByteStepperItemWarnings
-        showUseInputCompletionWarning={incompleteUserInput}
-        showQuestionsCompletionWarning={showQuestionsCompletionWarning}
-        isUserInputComplete={isUserInputComplete}
-        isQuestionAnswered={isQuestionAnswered}
-        isDiscordConnected={isDiscordConnected}
-      />
       <div className="mt-2">
         {isNotFirstStep && !isByteCompletedStep && (
-          <Button onClick={() => viewByteHelper.goToPreviousStep(step)} className="float-left">
-            <span className="mr-2 font-bold">&#8592;</span>
+          <CustomGradientButton onClick={() => viewByteHelper.goToPreviousStep(step)} className="float-left" backgroundColor="gray">
             Back
-          </Button>
+          </CustomGradientButton>
         )}
         {!isByteCompletedStep && (
-          <Button
+          <CustomGradientButton
             onClick={navigateToNextStep}
             disabled={viewByteHelper.byteSubmitting || viewByteHelper.byteSubmission.isSubmitted}
-            variant="contained"
             className="float-right w-[150px]"
-            primary={true}
           >
-            <span className="sm:block">{isLastStep ? 'Complete' : 'Next'}</span>
-            <span className="ml-2 font-bold">&#8594;</span>
-          </Button>
+            <span className="sm:block">{isLastStep ? 'Complete' : 'Continue'}</span>
+          </CustomGradientButton>
         )}
       </div>
     </div>
