@@ -68,7 +68,6 @@ export function Hero() {
               and watch their trust in your services grow!
             </p>
             <div className="mt-8 flex flex-wrap gap-x-6 gap-y-4">
-              <AppStoreLink />
               <Button href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" variant="outline">
                 <PlayIcon className="h-6 w-6 flex-none" />
                 <span className="ml-2.5">Watch the video</span>
