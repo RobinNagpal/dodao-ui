@@ -103,6 +103,7 @@ export interface ArticleIndexingInfo {
   status: Scalars['String'];
   text?: Maybe<Scalars['String']>;
   textLength?: Maybe<Scalars['Int']>;
+  textSample?: Maybe<Scalars['String']>;
   updatedAt: Scalars['DateTimeISO'];
 }
 
@@ -120,8 +121,7 @@ export interface AuthSettingsInput {
 export interface Byte {
   __typename?: 'Byte';
   admins: Array<Scalars['String']>;
-  byteStyle?: Maybe<Scalars['String']>;
-  content: Scalars['String'];
+    content: Scalars['String'];
   created: Scalars['String'];
   id: Scalars['String'];
   name: Scalars['String'];
@@ -215,16 +215,14 @@ export interface ByteSocialShare {
 export interface ByteStep {
   __typename?: 'ByteStep';
   content: Scalars['String'];
-  imageUrl?: Maybe<Scalars['String']>;
-  name: Scalars['String'];
+    name: Scalars['String'];
   stepItems: Array<ByteStepItem>;
   uuid: Scalars['String'];
 }
 
 export interface ByteStepInput {
   content: Scalars['String'];
-  imageUrl?: InputMaybe<Scalars['String']>;
-  name: Scalars['String'];
+    name: Scalars['String'];
   stepItems: Array<StepItemInputGenericInput>;
   uuid: Scalars['String'];
 }
@@ -1924,8 +1922,7 @@ export interface ProjectByte {
   __typename?: 'ProjectByte';
   admins: Array<Scalars['String']>;
   archived: Scalars['Boolean'];
-  byteStyle?: Maybe<Scalars['String']>;
-  content: Scalars['String'];
+    content: Scalars['String'];
   created: Scalars['String'];
   id: Scalars['String'];
   name: Scalars['String'];
@@ -1979,6 +1976,7 @@ export interface Query {
   _empty?: Maybe<Scalars['String']>;
   academyTask: AcademyTask;
   academyTasks?: Maybe<Array<AcademyTask>>;
+  articleIndexingInfo: ArticleIndexingInfo;
   articleIndexingInfos: Array<ArticleIndexingInfo>;
   byte: Byte;
   byteCollection: ByteCollection;
@@ -2018,6 +2016,7 @@ export interface Query {
   rawGitCourse: RawGitCourse;
   rawGitCourses: Array<RawGitCourse>;
   route53Record?: Maybe<Route53Record>;
+  scrapedUrlInfo: ScrapedUrlInfo;
   scrapedUrlInfos: Array<ScrapedUrlInfo>;
   searchChatbotFAQs: Array<SearchedChatbotFaq>;
   shortVideo: ShortVideo;
@@ -2043,6 +2042,12 @@ export interface QueryAcademyTaskArgs {
 export interface QueryAcademyTasksArgs {
   spaceId: Scalars['String'];
   status?: InputMaybe<Scalars['String']>;
+}
+
+
+export interface QueryArticleIndexingInfoArgs {
+  articleIndexingInfoId: Scalars['String'];
+  spaceId: Scalars['String'];
 }
 
 
@@ -2263,6 +2268,12 @@ export interface QueryRoute53RecordArgs {
 }
 
 
+export interface QueryScrapedUrlInfoArgs {
+  scrapedUrlInfoId: Scalars['String'];
+  spaceId: Scalars['String'];
+}
+
+
 export interface QueryScrapedUrlInfosArgs {
   spaceId: Scalars['String'];
   websiteScrapingInfoId: Scalars['String'];
@@ -2388,9 +2399,9 @@ export interface ScrapedUrlInfo {
   spaceId: Scalars['String'];
   text: Scalars['String'];
   textLength: Scalars['Int'];
+  textSample: Scalars['String'];
   updatedAt: Scalars['DateTimeISO'];
   url: Scalars['String'];
-  websiteScrapingInfo: WebsiteScrapingInfo;
   websiteScrapingInfoId: Scalars['String'];
 }
 
@@ -2761,8 +2772,7 @@ export interface UpsertAcademyTaskInput {
 
 export interface UpsertByteInput {
   admins: Array<Scalars['String']>;
-  byteStyle?: InputMaybe<Scalars['String']>;
-  content: Scalars['String'];
+    content: Scalars['String'];
   created: Scalars['String'];
   id: Scalars['String'];
   name: Scalars['String'];
@@ -2849,8 +2859,7 @@ export interface UpsertProjectByteCollectionInput {
 
 export interface UpsertProjectByteInput {
   admins: Array<Scalars['String']>;
-  byteStyle?: InputMaybe<Scalars['String']>;
-  content: Scalars['String'];
+    content: Scalars['String'];
   created: Scalars['String'];
   id: Scalars['String'];
   name: Scalars['String'];
@@ -3720,11 +3729,15 @@ export type DiscordMessageFragmentFragment = { __typename?: 'DiscordMessage', id
 
 export type WebsiteScrapingInfoFragment = { __typename?: 'WebsiteScrapingInfo', id: string, baseUrl: string, scrapingStartUrl: string, ignoreHashInUrl: boolean, ignoreQueryParams: boolean, createdAt: any, updatedAt: any };
 
-export type ArticleIndexingInfoFragment = { __typename?: 'ArticleIndexingInfo', id: string, spaceId: string, articleUrl: string, createdAt: any, updatedAt: any, status: string, text?: string | null, textLength?: number | null };
+export type ArticleIndexingInfoFragmentFragment = { __typename?: 'ArticleIndexingInfo', id: string, spaceId: string, articleUrl: string, createdAt: any, updatedAt: any, status: string, textLength?: number | null, textSample?: string | null };
+
+export type ArticleIndexingInfoFragment = { __typename?: 'ArticleIndexingInfo', id: string, spaceId: string, articleUrl: string, createdAt: any, updatedAt: any, status: string, text?: string | null, textLength?: number | null, textSample?: string | null };
 
 export type SiteScrapingRunFragmentFragment = { __typename?: 'SiteScrapingRun', id: string, websiteScrapingInfoId: string, scrapingRunDate: any, status: string, createdAt: any, updatedAt: any };
 
-export type ScrapedUrlInfoFragmentFragment = { __typename?: 'ScrapedUrlInfo', id: string, websiteScrapingInfoId: string, url: string, text: string, textLength: number, createdAt: any, updatedAt: any };
+export type ScrapedUrlInfoFragmentFragment = { __typename?: 'ScrapedUrlInfo', id: string, websiteScrapingInfoId: string, url: string, textLength: number, createdAt: any, updatedAt: any, textSample: string };
+
+export type ScrapedUrlInfoFragment = { __typename?: 'ScrapedUrlInfo', id: string, websiteScrapingInfoId: string, url: string, text: string, textLength: number, createdAt: any, updatedAt: any };
 
 export type DiscoursePostFragment = { __typename?: 'DiscoursePost', id: string, spaceId: string, title: string, url: string, fullContent?: string | null, author?: string | null, datePublished: any, createdAt: any, indexedAt?: any | null, status: string, enacted?: boolean | null, discussed?: boolean | null, aiSummary?: string | null, aiSummaryDate?: any | null };
 
@@ -3794,7 +3807,15 @@ export type ArticleIndexingInfosQueryVariables = Exact<{
 }>;
 
 
-export type ArticleIndexingInfosQuery = { __typename?: 'Query', articleIndexingInfos: Array<{ __typename?: 'ArticleIndexingInfo', id: string, spaceId: string, articleUrl: string, createdAt: any, updatedAt: any, status: string, text?: string | null, textLength?: number | null }> };
+export type ArticleIndexingInfosQuery = { __typename?: 'Query', articleIndexingInfos: Array<{ __typename?: 'ArticleIndexingInfo', id: string, spaceId: string, articleUrl: string, createdAt: any, updatedAt: any, status: string, textLength?: number | null, textSample?: string | null }> };
+
+export type ArticleIndexingInfoQueryVariables = Exact<{
+  spaceId: Scalars['String'];
+  articleIndexingInfoId: Scalars['String'];
+}>;
+
+
+export type ArticleIndexingInfoQuery = { __typename?: 'Query', articleIndexingInfo: { __typename?: 'ArticleIndexingInfo', id: string, spaceId: string, articleUrl: string, createdAt: any, updatedAt: any, status: string, text?: string | null, textLength?: number | null, textSample?: string | null } };
 
 export type SiteScrapingRunsQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -3810,7 +3831,15 @@ export type ScrapedUrlInfosQueryVariables = Exact<{
 }>;
 
 
-export type ScrapedUrlInfosQuery = { __typename?: 'Query', scrapedUrlInfos: Array<{ __typename?: 'ScrapedUrlInfo', id: string, websiteScrapingInfoId: string, url: string, text: string, textLength: number, createdAt: any, updatedAt: any }> };
+export type ScrapedUrlInfosQuery = { __typename?: 'Query', scrapedUrlInfos: Array<{ __typename?: 'ScrapedUrlInfo', id: string, websiteScrapingInfoId: string, url: string, textLength: number, createdAt: any, updatedAt: any, textSample: string }> };
+
+export type ScrapedUrlInfoQueryVariables = Exact<{
+  spaceId: Scalars['String'];
+  scrapedUrlInfoId: Scalars['String'];
+}>;
+
+
+export type ScrapedUrlInfoQuery = { __typename?: 'Query', scrapedUrlInfo: { __typename?: 'ScrapedUrlInfo', id: string, websiteScrapingInfoId: string, url: string, text: string, textLength: number, createdAt: any, updatedAt: any } };
 
 export type TriggerNewDiscourseIndexRunMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -3908,7 +3937,7 @@ export type CreateArticleIndexingInfoMutationVariables = Exact<{
 }>;
 
 
-export type CreateArticleIndexingInfoMutation = { __typename?: 'Mutation', createArticleIndexingInfo: { __typename?: 'ArticleIndexingInfo', id: string, spaceId: string, articleUrl: string, createdAt: any, updatedAt: any, status: string, text?: string | null, textLength?: number | null } };
+export type CreateArticleIndexingInfoMutation = { __typename?: 'Mutation', createArticleIndexingInfo: { __typename?: 'ArticleIndexingInfo', id: string, spaceId: string, articleUrl: string, createdAt: any, updatedAt: any, status: string, textLength?: number | null, textSample?: string | null } };
 
 export type EditArticleIndexingInfoMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -3917,7 +3946,7 @@ export type EditArticleIndexingInfoMutationVariables = Exact<{
 }>;
 
 
-export type EditArticleIndexingInfoMutation = { __typename?: 'Mutation', editArticleIndexingInfo: { __typename?: 'ArticleIndexingInfo', id: string, spaceId: string, articleUrl: string, createdAt: any, updatedAt: any, status: string, text?: string | null, textLength?: number | null } };
+export type EditArticleIndexingInfoMutation = { __typename?: 'Mutation', editArticleIndexingInfo: { __typename?: 'ArticleIndexingInfo', id: string, spaceId: string, articleUrl: string, createdAt: any, updatedAt: any, status: string, textLength?: number | null, textSample?: string | null } };
 
 export type AnnotateDiscoursePostMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -5131,6 +5160,18 @@ export const WebsiteScrapingInfoFragmentDoc = gql`
   updatedAt
 }
     `;
+export const ArticleIndexingInfoFragmentFragmentDoc = gql`
+    fragment ArticleIndexingInfoFragment on ArticleIndexingInfo {
+  id
+  spaceId
+  articleUrl
+  createdAt
+  updatedAt
+  status
+  textLength
+  textSample
+}
+    `;
 export const ArticleIndexingInfoFragmentDoc = gql`
     fragment ArticleIndexingInfo on ArticleIndexingInfo {
   id
@@ -5141,6 +5182,7 @@ export const ArticleIndexingInfoFragmentDoc = gql`
   status
   text
   textLength
+  textSample
 }
     `;
 export const SiteScrapingRunFragmentFragmentDoc = gql`
@@ -5155,6 +5197,17 @@ export const SiteScrapingRunFragmentFragmentDoc = gql`
     `;
 export const ScrapedUrlInfoFragmentFragmentDoc = gql`
     fragment ScrapedUrlInfoFragment on ScrapedUrlInfo {
+  id
+  websiteScrapingInfoId
+  url
+  textLength
+  createdAt
+  updatedAt
+  textSample
+}
+    `;
+export const ScrapedUrlInfoFragmentDoc = gql`
+    fragment ScrapedUrlInfo on ScrapedUrlInfo {
   id
   websiteScrapingInfoId
   url
@@ -8703,10 +8756,10 @@ export function refetchWebsiteScrapingInfosQuery(variables: WebsiteScrapingInfos
 export const ArticleIndexingInfosDocument = gql`
     query ArticleIndexingInfos($spaceId: String!) {
   articleIndexingInfos(spaceId: $spaceId) {
-    ...ArticleIndexingInfo
+    ...ArticleIndexingInfoFragment
   }
 }
-    ${ArticleIndexingInfoFragmentDoc}`;
+    ${ArticleIndexingInfoFragmentFragmentDoc}`;
 
 /**
  * __useArticleIndexingInfosQuery__
@@ -8737,6 +8790,48 @@ export type ArticleIndexingInfosLazyQueryHookResult = ReturnType<typeof useArtic
 export type ArticleIndexingInfosQueryResult = Apollo.QueryResult<ArticleIndexingInfosQuery, ArticleIndexingInfosQueryVariables>;
 export function refetchArticleIndexingInfosQuery(variables: ArticleIndexingInfosQueryVariables) {
       return { query: ArticleIndexingInfosDocument, variables: variables }
+    }
+export const ArticleIndexingInfoDocument = gql`
+    query ArticleIndexingInfo($spaceId: String!, $articleIndexingInfoId: String!) {
+  articleIndexingInfo(
+    spaceId: $spaceId
+    articleIndexingInfoId: $articleIndexingInfoId
+  ) {
+    ...ArticleIndexingInfo
+  }
+}
+    ${ArticleIndexingInfoFragmentDoc}`;
+
+/**
+ * __useArticleIndexingInfoQuery__
+ *
+ * To run a query within a React component, call `useArticleIndexingInfoQuery` and pass it any options that fit your needs.
+ * When your component renders, `useArticleIndexingInfoQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useArticleIndexingInfoQuery({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      articleIndexingInfoId: // value for 'articleIndexingInfoId'
+ *   },
+ * });
+ */
+export function useArticleIndexingInfoQuery(baseOptions: Apollo.QueryHookOptions<ArticleIndexingInfoQuery, ArticleIndexingInfoQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ArticleIndexingInfoQuery, ArticleIndexingInfoQueryVariables>(ArticleIndexingInfoDocument, options);
+      }
+export function useArticleIndexingInfoLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ArticleIndexingInfoQuery, ArticleIndexingInfoQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ArticleIndexingInfoQuery, ArticleIndexingInfoQueryVariables>(ArticleIndexingInfoDocument, options);
+        }
+export type ArticleIndexingInfoQueryHookResult = ReturnType<typeof useArticleIndexingInfoQuery>;
+export type ArticleIndexingInfoLazyQueryHookResult = ReturnType<typeof useArticleIndexingInfoLazyQuery>;
+export type ArticleIndexingInfoQueryResult = Apollo.QueryResult<ArticleIndexingInfoQuery, ArticleIndexingInfoQueryVariables>;
+export function refetchArticleIndexingInfoQuery(variables: ArticleIndexingInfoQueryVariables) {
+      return { query: ArticleIndexingInfoDocument, variables: variables }
     }
 export const SiteScrapingRunsDocument = gql`
     query SiteScrapingRuns($spaceId: String!, $websiteScrapingInfoId: String!) {
@@ -8821,6 +8916,45 @@ export type ScrapedUrlInfosLazyQueryHookResult = ReturnType<typeof useScrapedUrl
 export type ScrapedUrlInfosQueryResult = Apollo.QueryResult<ScrapedUrlInfosQuery, ScrapedUrlInfosQueryVariables>;
 export function refetchScrapedUrlInfosQuery(variables: ScrapedUrlInfosQueryVariables) {
       return { query: ScrapedUrlInfosDocument, variables: variables }
+    }
+export const ScrapedUrlInfoDocument = gql`
+    query ScrapedUrlInfo($spaceId: String!, $scrapedUrlInfoId: String!) {
+  scrapedUrlInfo(spaceId: $spaceId, scrapedUrlInfoId: $scrapedUrlInfoId) {
+    ...ScrapedUrlInfo
+  }
+}
+    ${ScrapedUrlInfoFragmentDoc}`;
+
+/**
+ * __useScrapedUrlInfoQuery__
+ *
+ * To run a query within a React component, call `useScrapedUrlInfoQuery` and pass it any options that fit your needs.
+ * When your component renders, `useScrapedUrlInfoQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useScrapedUrlInfoQuery({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      scrapedUrlInfoId: // value for 'scrapedUrlInfoId'
+ *   },
+ * });
+ */
+export function useScrapedUrlInfoQuery(baseOptions: Apollo.QueryHookOptions<ScrapedUrlInfoQuery, ScrapedUrlInfoQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ScrapedUrlInfoQuery, ScrapedUrlInfoQueryVariables>(ScrapedUrlInfoDocument, options);
+      }
+export function useScrapedUrlInfoLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ScrapedUrlInfoQuery, ScrapedUrlInfoQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ScrapedUrlInfoQuery, ScrapedUrlInfoQueryVariables>(ScrapedUrlInfoDocument, options);
+        }
+export type ScrapedUrlInfoQueryHookResult = ReturnType<typeof useScrapedUrlInfoQuery>;
+export type ScrapedUrlInfoLazyQueryHookResult = ReturnType<typeof useScrapedUrlInfoLazyQuery>;
+export type ScrapedUrlInfoQueryResult = Apollo.QueryResult<ScrapedUrlInfoQuery, ScrapedUrlInfoQueryVariables>;
+export function refetchScrapedUrlInfoQuery(variables: ScrapedUrlInfoQueryVariables) {
+      return { query: ScrapedUrlInfoDocument, variables: variables }
     }
 export const TriggerNewDiscourseIndexRunDocument = gql`
     mutation TriggerNewDiscourseIndexRun($spaceId: String!) {
@@ -9216,10 +9350,10 @@ export type TriggerSiteScrapingRunMutationOptions = Apollo.BaseMutationOptions<T
 export const CreateArticleIndexingInfoDocument = gql`
     mutation CreateArticleIndexingInfo($spaceId: String!, $articleUrl: String!) {
   createArticleIndexingInfo(spaceId: $spaceId, articleUrl: $articleUrl) {
-    ...ArticleIndexingInfo
+    ...ArticleIndexingInfoFragment
   }
 }
-    ${ArticleIndexingInfoFragmentDoc}`;
+    ${ArticleIndexingInfoFragmentFragmentDoc}`;
 export type CreateArticleIndexingInfoMutationFn = Apollo.MutationFunction<CreateArticleIndexingInfoMutation, CreateArticleIndexingInfoMutationVariables>;
 
 /**
@@ -9254,10 +9388,10 @@ export const EditArticleIndexingInfoDocument = gql`
     articleIndexingInfoId: $articleIndexingInfoId
     articleUrl: $articleUrl
   ) {
-    ...ArticleIndexingInfo
+    ...ArticleIndexingInfoFragment
   }
 }
-    ${ArticleIndexingInfoFragmentDoc}`;
+    ${ArticleIndexingInfoFragmentFragmentDoc}`;
 export type EditArticleIndexingInfoMutationFn = Apollo.MutationFunction<EditArticleIndexingInfoMutation, EditArticleIndexingInfoMutationVariables>;
 
 /**

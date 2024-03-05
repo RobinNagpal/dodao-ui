@@ -26,6 +26,7 @@ import {
 import moment from 'moment/moment';
 import { useRouter } from 'next/navigation';
 import React, { useMemo, useState } from 'react';
+import ViewCompleteArticleTextModal from '../Edit/LoadersInfo/ViewCompleteArticleTextModal';
 
 function getLoaderRows(): TableRow[] {
   const indexedAt = moment(new Date()).local().format('YYYY/MM/DD HH:mm');
@@ -57,7 +58,9 @@ export default function AllLoaders(props: { space: SpaceWithIntegrationsFragment
   const [editWebsiteScrappingInfo, setEditWebsiteScrappingInfo] = useState<WebsiteScrapingInfoFragment | undefined>(undefined);
 
   const [editArticleIndexingInfo, setEditArticleIndexingInfo] = useState<ArticleIndexingInfoFragment | undefined>(undefined);
+  const [articleIndexingSpaceAndInfoId, setArticleIndexingSpaceAndInfoId] = useState<{ spaceId: string; articleIndexingInfoId: string } | undefined>(undefined);
   const [showAddArticleIndexingInfoModal, setShowAddArticleIndexingInfoModal] = useState(false);
+  const [viewCompleteTextModal, setViewCompleteTextModal] = useState<boolean>(false);
 
   const { showNotification } = useNotificationContext();
   const { data: websiteInfos } = useWebsiteScrapingInfosQuery({
@@ -103,7 +106,7 @@ export default function AllLoaders(props: { space: SpaceWithIntegrationsFragment
     return discoursePosts.map((post: ArticleIndexingInfoFragment): TableRow => {
       return {
         id: post.id,
-        columns: [post.id.substring(0, 6), post.articleUrl, post.text, post.textLength, post.status],
+        columns: [post.id.substring(0, 6), post.articleUrl, post.textSample, post.textLength, post.status],
         item: post,
       };
     });
@@ -245,11 +248,18 @@ export default function AllLoaders(props: { space: SpaceWithIntegrationsFragment
                 key: 'edit',
                 label: 'Edit',
               },
+              {
+                key: 'view',
+                label: 'View Complete Text',
+              },
             ],
             onSelect: async (key: string, item: { id: string }) => {
               if (key === 'edit') {
                 setEditArticleIndexingInfo(item as ArticleIndexingInfoFragment);
                 setShowAddArticleIndexingInfoModal(true);
+              } else if (key === 'view') {
+                setArticleIndexingSpaceAndInfoId({ spaceId: props.space.id, articleIndexingInfoId: item.id });
+                setViewCompleteTextModal(true);
               }
             },
           }}
@@ -275,6 +285,16 @@ export default function AllLoaders(props: { space: SpaceWithIntegrationsFragment
             setShowAddArticleIndexingInfoModal(false);
           }}
           spaceId={props.space.id}
+        />
+      )}
+      {viewCompleteTextModal && (
+        <ViewCompleteArticleTextModal
+          indexingInfo={articleIndexingSpaceAndInfoId}
+          open={viewCompleteTextModal}
+          onClose={() => {
+            setEditArticleIndexingInfo(undefined);
+            setViewCompleteTextModal(false);
+          }}
         />
       )}
     </div>

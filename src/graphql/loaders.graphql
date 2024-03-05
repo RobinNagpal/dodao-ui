@@ -48,6 +48,17 @@ fragment WebsiteScrapingInfo on WebsiteScrapingInfo {
   updatedAt
 }
 
+fragment ArticleIndexingInfoFragment on ArticleIndexingInfo {
+  id
+  spaceId
+  articleUrl
+  createdAt
+  updatedAt
+  status
+  textLength
+  textSample
+}
+
 fragment ArticleIndexingInfo on ArticleIndexingInfo {
   id
   spaceId
@@ -57,6 +68,7 @@ fragment ArticleIndexingInfo on ArticleIndexingInfo {
   status
   text
   textLength
+  textSample
 }
 
 fragment SiteScrapingRunFragment on SiteScrapingRun {
@@ -69,6 +81,16 @@ fragment SiteScrapingRunFragment on SiteScrapingRun {
 }
 
 fragment ScrapedUrlInfoFragment on ScrapedUrlInfo {
+  id
+  websiteScrapingInfoId
+  url
+  textLength
+  createdAt
+  updatedAt
+  textSample
+}
+
+fragment ScrapedUrlInfo on ScrapedUrlInfo {
   id
   websiteScrapingInfoId
   url
@@ -161,6 +183,12 @@ query WebsiteScrapingInfos($spaceId: String!) {
 
 query ArticleIndexingInfos($spaceId: String!) {
   articleIndexingInfos(spaceId: $spaceId) {
+    ...ArticleIndexingInfoFragment
+  }
+}
+
+query ArticleIndexingInfo($spaceId: String!, $articleIndexingInfoId: String!) {
+  articleIndexingInfo(spaceId: $spaceId, articleIndexingInfoId: $articleIndexingInfoId) {
     ...ArticleIndexingInfo
   }
 }
@@ -174,6 +202,12 @@ query SiteScrapingRuns($spaceId: String!, $websiteScrapingInfoId: String!) {
 query ScrapedUrlInfos($spaceId: String!, $websiteScrapingInfoId: String!) {
   scrapedUrlInfos(spaceId: $spaceId, websiteScrapingInfoId: $websiteScrapingInfoId) {
     ...ScrapedUrlInfoFragment
+  }
+}
+
+query ScrapedUrlInfo($spaceId: String!, $scrapedUrlInfoId: String!) {
+  scrapedUrlInfo(spaceId: $spaceId, scrapedUrlInfoId: $scrapedUrlInfoId) {
+    ...ScrapedUrlInfo
   }
 }
 
@@ -259,13 +293,13 @@ mutation TriggerSiteScrapingRun($spaceId: String!, $websiteScrapingInfoId: Strin
 
 mutation CreateArticleIndexingInfo($spaceId: String!, $articleUrl: String!) {
   createArticleIndexingInfo(spaceId: $spaceId, articleUrl: $articleUrl) {
-    ...ArticleIndexingInfo
+    ...ArticleIndexingInfoFragment
   }
 }
 
 mutation EditArticleIndexingInfo($spaceId: String!, $articleIndexingInfoId: String!, $articleUrl: String!) {
   editArticleIndexingInfo(spaceId: $spaceId, articleIndexingInfoId: $articleIndexingInfoId, articleUrl: $articleUrl) {
-    ...ArticleIndexingInfo
+    ...ArticleIndexingInfoFragment
   }
 }
 
