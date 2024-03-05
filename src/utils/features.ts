@@ -1,3 +1,5 @@
+import { PredefinedSpaces } from '@/chatbot/utils/app/constants';
+import { SpaceTypes, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { compoundFeatures } from '@/types/features/compoundFeatures';
 import { creditUnionAcademyFeatures } from '@/types/features/creditUnionAcademyFeatures';
 import { dodaoAcademyFeatures } from '@/types/features/dodaoAcademyFeatures';
@@ -52,7 +54,15 @@ export function getFeaturesArray(spaceId: string): FeatureItem[] {
   ];
 }
 
-export function getSortedFeaturesArray(spaceId: string): FeatureItem[] {
-  const features = getFeaturesArray(spaceId);
+export function getSortedFeaturesArray(space: SpaceWithIntegrationsFragment): FeatureItem[] {
+  if (space?.type === SpaceTypes.TidbitsSite) {
+    return [];
+  }
+
+  if (space?.id === PredefinedSpaces.TIDBITS_HUB) {
+    return [];
+  }
+
+  const features = getFeaturesArray(space.id);
   return sortBy(features, [(f1) => -f1.details.priority]);
 }
