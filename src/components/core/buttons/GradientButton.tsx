@@ -68,14 +68,7 @@ const shadeColor = (color: string, percent: number): string => {
 
 const CustomGradientButton = ({ backgroundColor, loading, type = 'button', disabled, style, children, onClick, className }: ButtonProps) => {
   return (
-    <GradientButton
-      type={type}
-      backgroundColor={backgroundColor} // Pass background color to styled component
-      disabled={disabled || loading}
-      style={style}
-      onClick={onClick}
-      className={className}
-    >
+    <GradientButton type={type} backgroundColor={backgroundColor} disabled={disabled || loading} style={style} onClick={onClick} className={className}>
       {loading && <LoadingSpinner />}
       {children}
     </GradientButton>
