@@ -11,7 +11,7 @@ import React from 'react';
 
 function DefaultHome({ space }: { space: SpaceWithIntegrationsFragment }) {
   const { $t } = useI18();
-  const sortedSpaceFeatures: FeatureItem[] = getSortedFeaturesArray(space.id);
+  const sortedSpaceFeatures: FeatureItem[] = getSortedFeaturesArray(space);
 
   return (
     <PageWrapper>

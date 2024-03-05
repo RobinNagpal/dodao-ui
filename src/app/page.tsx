@@ -43,7 +43,7 @@ async function Home(props: { searchParams: { [key: string]: string | string[] | 
     return <DoDAOHome />;
   }
 
-  if (space?.id === 'tidbitshub') {
+  if (space?.id === PredefinedSpaces.TIDBITS_HUB) {
     return <TidbitsHubHome />;
   }
 
