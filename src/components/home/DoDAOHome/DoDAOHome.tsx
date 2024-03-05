@@ -1019,9 +1019,6 @@ export function Footer() {
           </div>
           <p className="mt-6 text-sm text-slate-500 sm:mt-0">Copyright &copy; {new Date().getFullYear()} DoDAO. All rights reserved.</p>
         </div>
-        <div className="text-slate-500 flex justify-center pb-4">
-          <p>Crafted with Passion by DoDAO</p>
-        </div>
       </Container>
     </footer>
   );

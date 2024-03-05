@@ -2,7 +2,6 @@ import { Faqs } from './components/Faqs';
 import { Hero } from './components/Hero';
 import { PrimaryFeatures } from './components/PrimaryFeatures';
 import { SecondaryFeatures } from './components/SecondaryFeatures';
-import Footer from './components/Footer';
 
 export default function TidbitsHubHome() {
   return (
@@ -11,7 +10,6 @@ export default function TidbitsHubHome() {
       <PrimaryFeatures />
       <SecondaryFeatures />
       <Faqs />
-      <Footer />
     </>
   );
 }

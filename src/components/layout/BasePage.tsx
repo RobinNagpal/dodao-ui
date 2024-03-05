@@ -6,6 +6,7 @@ import FullPageLoader from '@/components/core/loaders/FullPageLoading';
 import TopNav from '@/components/main/TopNav/TopNav';
 import TopCryptoTopNav from '@/components/projects/Nav/TopCryptoTopNav';
 import { LoginModalProvider } from '@/contexts/LoginModalContext';
+import Footer from './Footer';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import React, { ReactNode, useEffect, useState } from 'react';
 import styled from 'styled-components';
@@ -40,6 +41,7 @@ export function BasePage(props: { space?: SpaceWithIntegrationsFragment | null; 
         <LoginModal />
         <PageTopNav space={props.space} />
         <StyledMain>{props.children}</StyledMain>
+        <Footer />
       </LoginModalProvider>
     );
   }
