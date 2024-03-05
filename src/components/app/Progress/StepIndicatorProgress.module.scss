@@ -1,17 +1,16 @@
 .stepIndicatorContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 7px;
-  }
-  
-  .stepDot {
-    width: 25px;
-    height: 3px;
-    background-color: #ccc;
-  }
-  
-  .activeStepDot {
-    background-color: #4caf50;
-  }
-  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+}
+
+.stepDot {
+  width: 45px;
+  height: 3px;
+  background-color: #ccc;
+}
+
+.activeStepDot {
+  background-color: #4caf50;
+}
