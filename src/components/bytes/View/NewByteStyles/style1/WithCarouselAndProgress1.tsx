@@ -169,18 +169,20 @@ function WithCarouselAndProgress1({ viewByteHelper, step, byte, space }: WithCar
   const showQuestionsCompletionWarning = nextButtonClicked && (!isQuestionAnswered() || !isDiscordConnected() || !isUserInputComplete());
 
   return (
-    <div>
+    <div className={styles.byteStepWrapper}>
       <div className={`px-2 lg:px-2 py-5 sm:px-6 flex flex-col justify-between w-full ${styles.stepContent} ${transitionClasses[transitionState]}`}>
         <div>
-          <StepIndicatorProgress steps={byte.steps.length} currentStep={activeStepOrder} />
-          <div className="flex justify-center">
+          <div className="flex justify-center w-full mt-14">
+            <img src="https://imagen.research.google/main_gallery_images/cactus.jpg" alt="byte" className={styles.byteImage + ' rounded-lg'} />
+          </div>
+          <div className="flex justify-center w-full">
             <div className="mt-6">
-              <h1 className={`mb-2 text-4xl ${styles.styledH1}`}>{step.name || byte.name}</h1>
+              <h1 className={`mb-2 text-6xl ${styles.styledH1}`}>{step.name || byte.name}</h1>
             </div>
           </div>
 
           <div style={{ minHeight: '300px' }} className="mt-6">
-            <div dangerouslySetInnerHTML={{ __html: stepContents }} className="markdown-body" />
+            <div dangerouslySetInnerHTML={{ __html: stepContents }} className="markdown-body text-2xl text-center" />
             {stepItems.map((stepItem: ByteStepItemFragment, index) => {
               if (isQuestion(stepItem)) {
                 return (
