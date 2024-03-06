@@ -4,7 +4,7 @@ import StepIndicatorProgress from '@/components/bytes/View/ByteStepperItem/Progr
 import ByteStepperItemWarnings from '@/components/bytes/View/ByteStepperItemWarnings';
 import { QuestionSection } from '@/components/bytes/View/QuestionSection';
 import { LAST_STEP_UUID, UseGenericViewByteHelper } from '@/components/bytes/View/useGenericViewByte';
-import CustomGradientButton from '@/components/core/buttons/GradientButton';
+import Button from '@/components/core/buttons/Button';
 import { useLoginModalContext } from '@/contexts/LoginModalContext';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import {
@@ -172,7 +172,7 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space }: W
       <div
         className={`h-full w-full grow-auto flex flex-col items-center justify-center ${styles.contentContainer} ${transitionClasses[transitionState]} ${styles.stepContent}`}
       >
-        {!stepItems.some(isQuestion) && (
+        {!stepItems.some(isQuestion) && false && (
           <div>
             <img src="https://imagen.research.google/main_gallery_images/cactus.jpg" alt="byte" className={'px-2 rounded-lg sm:px-0  ' + styles.byteImage} />
           </div>
@@ -242,18 +242,22 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space }: W
         <StepIndicatorProgress steps={viewByteHelper.byteRef?.steps?.length || 2} currentStep={activeStepOrder} className="py-4" />
         <div>
           {isNotFirstStep && !isByteCompletedStep && (
-            <CustomGradientButton onClick={() => viewByteHelper.goToPreviousStep(step)} className="float-left" backgroundColor="gray">
+            <Button onClick={() => viewByteHelper.goToPreviousStep(step)} className="float-left">
+              <span className="mr-2 font-bold">&#8592;</span>
               Back
-            </CustomGradientButton>
+            </Button>
           )}
           {!isByteCompletedStep && (
-            <CustomGradientButton
+            <Button
               onClick={navigateToNextStep}
               disabled={viewByteHelper.byteSubmitting || viewByteHelper.byteSubmission.isSubmitted}
-              className="float-right w-[130px] sm:w-[150px]"
+              variant="contained"
+              className="float-right w-[150px]"
+              primary={true}
             >
-              <span className="sm:block">{isLastStep ? 'Complete' : 'Continue'}</span>
-            </CustomGradientButton>
+              <span className="sm:block">{isLastStep ? 'Complete' : 'Next'}</span>
+              <span className="ml-2 font-bold">&#8594;</span>
+            </Button>
           )}
         </div>
       </div>
