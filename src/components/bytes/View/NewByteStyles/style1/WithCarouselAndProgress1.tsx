@@ -1,6 +1,7 @@
 import UserDiscord from '@/components/app/Form/UserDiscord';
 import UserInput from '@/components/app/Form/UserInput';
 import ByteStepperItemWarnings from '@/components/bytes/View/ByteStepperItemWarnings';
+import StepIndicatorProgress from '@/components/bytes/View/NewByteStyles/Progress/StepIndicatorProgress';
 import { QuestionSection } from '@/components/bytes/View/QuestionSection';
 import { LAST_STEP_UUID, UseGenericViewByteHelper } from '@/components/bytes/View/useGenericViewByte';
 import CustomGradientButton from '@/components/core/buttons/GradientButton';
@@ -167,7 +168,7 @@ function WithCarouselAndProgress1({ viewByteHelper, step, byte, space }: WithCar
   const showQuestionsCompletionWarning = nextButtonClicked && (!isQuestionAnswered() || !isDiscordConnected() || !isUserInputComplete());
 
   return (
-    <div className={styles.byteStepWrapper}>
+    <div className="h-full w-full">
       <div className={`px-2 lg:px-2 py-5 sm:px-6 flex flex-col justify-between w-full ${styles.stepContent} ${transitionClasses[transitionState]}`}>
         <div>
           <div className="flex justify-center w-full mt-14">
@@ -236,7 +237,8 @@ function WithCarouselAndProgress1({ viewByteHelper, step, byte, space }: WithCar
           isDiscordConnected={isDiscordConnected}
         />
       </div>
-      <div className="mt-2">
+      <StepIndicatorProgress steps={viewByteHelper.byteRef?.steps?.length || 2} currentStep={activeStepOrder} className="mt-4" />
+      <div className="mt-2 relative bottom-0">
         {isNotFirstStep && !isByteCompletedStep && (
           <CustomGradientButton onClick={() => viewByteHelper.goToPreviousStep(step)} className="float-left" backgroundColor="gray">
             Back
