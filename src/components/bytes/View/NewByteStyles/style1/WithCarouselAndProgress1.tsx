@@ -172,8 +172,8 @@ function WithCarouselAndProgress1({ viewByteHelper, step, byte, space }: WithCar
       <div className={'h-full w-full grow ' + styles.contentContainer}>
         <div className={`overflow-auto flex flex-col justify-between w-full ${styles.stepContent} ${transitionClasses[transitionState]}`}>
           {!stepItems.some(isQuestion) && (
-            <div className={styles.imageWrapper}>
-              <img src="https://imagen.research.google/main_gallery_images/cactus.jpg" alt="byte" className={styles.byteImage + ' rounded-lg'} />
+            <div>
+              <img src="https://imagen.research.google/main_gallery_images/cactus.jpg" alt="byte" className={'px-2 rounded-lg sm:px-0  ' + styles.byteImage} />
             </div>
           )}
           <div className="flex justify-center w-full mt-2">
@@ -250,7 +250,7 @@ function WithCarouselAndProgress1({ viewByteHelper, step, byte, space }: WithCar
             <CustomGradientButton
               onClick={navigateToNextStep}
               disabled={viewByteHelper.byteSubmitting || viewByteHelper.byteSubmission.isSubmitted}
-              className="float-right w-[150px]"
+              className="float-right w-[130px] sm:w-[150px]"
             >
               <span className="sm:block">{isLastStep ? 'Complete' : 'Continue'}</span>
             </CustomGradientButton>
