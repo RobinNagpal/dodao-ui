@@ -11,52 +11,9 @@
 }
 
 .byteImage {
-  width: 100%;
-  height: auto;
+  width: 400px;
+  height: 350px;
   margin: 0 auto;
-
-  @media (min-width: 1024px) {
-    max-width: 400px;
-  }
-
-  @media (max-width: 768px) {
-    max-width: 400px;
-  }
-
-  @media (max-width: 640px) {
-    max-width: 400px;
-  }
-
-  @media (max-width: 400px) {
-    max-width: 400px;
-  }
-}
-
-.styledH1 {
-  color: var(--heading-color);
-  font-size: 2.2rem;
-
-  @media (max-width: 600px) {
-    font-size: 2rem;
-  }
-}
-
-.styledContent {
-  color: var(--heading-color);
-  font-size: 1.2rem;
-  @media (max-width: 600px) {
-    font-size: 1rem;
-  }
-}
-
-@media (max-width: 600px) {
-  .stepContent {
-    padding: 10px;
-  }
-
-  .markdown-body {
-    font-size: 1rem;
-  }
 }
 
 .imageWrapper {
@@ -69,4 +26,11 @@
   position: absolute;
   left: 0;
   right: 0;
+}
+
+.contentContainer {
+  max-height: 68vh;
+  min-height: 68vh;
+  overflow: hidden;
+  overflow-y: auto;
 }
