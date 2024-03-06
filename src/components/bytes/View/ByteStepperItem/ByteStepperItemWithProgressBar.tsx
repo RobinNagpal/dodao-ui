@@ -169,74 +169,74 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space }: W
 
   return (
     <div className="h-full w-full flex flex-col justify-between overflow-auto py-4 lg:px-4 sm:px-2">
-      <div className={'h-full w-full grow ' + styles.contentContainer}>
-        <div className={`overflow-auto flex flex-col justify-between w-full ${styles.stepContent} ${transitionClasses[transitionState]}`}>
-          {!stepItems.some(isQuestion) && (
-            <div>
-              <img src="https://imagen.research.google/main_gallery_images/cactus.jpg" alt="byte" className={'px-2 rounded-lg sm:px-0  ' + styles.byteImage} />
-            </div>
-          )}
-          <div className="flex justify-center w-full mt-2">
-            <h1 className={`text-4xl lg:text-6xl`}>{step.name || byte.name}</h1>
+      <div
+        className={`h-full w-full grow-auto flex flex-col items-center justify-center ${styles.contentContainer} ${transitionClasses[transitionState]} ${styles.stepContent}`}
+      >
+        {!stepItems.some(isQuestion) && (
+          <div>
+            <img src="https://imagen.research.google/main_gallery_images/cactus.jpg" alt="byte" className={'px-2 rounded-lg sm:px-0  ' + styles.byteImage} />
           </div>
-
-          <div className="mt-2">
-            <div dangerouslySetInnerHTML={{ __html: stepContents }} className={`markdown-body text-lg lg:text-2xl px-2 sm:px-0`} />
-            {stepItems.map((stepItem: ByteStepItemFragment, index) => {
-              if (isQuestion(stepItem)) {
-                return (
-                  <QuestionSection
-                    key={index}
-                    nextButtonClicked={nextButtonClicked}
-                    allQuestionsAnsweredCorrectly={questionsAnsweredCorrectly}
-                    allQuestionsAnswered={questionNotAnswered}
-                    stepItem={stepItem as ByteQuestionFragmentFragment}
-                    stepItemSubmission={viewByteHelper.getStepItemSubmission(step.uuid, stepItem.uuid)}
-                    onSelectAnswer={selectAnswer}
-                  />
-                );
-              }
-
-              if (isUserDiscordConnect(stepItem)) {
-                return (
-                  <UserDiscord
-                    key={index}
-                    userDiscord={stepItem as ByteUserDiscordConnectFragmentFragment}
-                    discordResponse={viewByteHelper.getStepItemSubmission(step.uuid, stepItem.uuid) as UserDiscordInfoInput}
-                    spaceId={space.id}
-                    guideUuid={byte.id}
-                    stepUuid={step.uuid}
-                    stepOrder={activeStepOrder}
-                  />
-                );
-              }
-
-              if (isUserInput(stepItem)) {
-                const inputFragment = stepItem as ByteUserInputFragmentFragment;
-                return (
-                  <UserInput
-                    key={index}
-                    modelValue={viewByteHelper.getStepItemSubmission(step.uuid, inputFragment.uuid) as string}
-                    label={inputFragment.label}
-                    required={inputFragment.required}
-                    setUserInput={(userInput: string) => setUserInput(inputFragment.uuid, userInput)}
-                  />
-                );
-              }
-
-              return null;
-            })}
-            {postSubmissionContent && <div className="mt-4 text-sm text-gray-500" dangerouslySetInnerHTML={{ __html: postSubmissionContent }} />}
-          </div>
-
-          <ByteStepperItemWarnings
-            showUseInputCompletionWarning={incompleteUserInput}
-            showQuestionsCompletionWarning={showQuestionsCompletionWarning}
-            isUserInputComplete={isUserInputComplete}
-            isQuestionAnswered={isQuestionAnswered}
-            isDiscordConnected={isDiscordConnected}
-          />
+        )}
+        <div className="flex justify-center w-full mt-4">
+          <h1 className={`text-4xl lg:text-6xl`}>{step.name || byte.name}</h1>
         </div>
+
+        <div className="mt-4">
+          <div dangerouslySetInnerHTML={{ __html: stepContents }} className={`markdown-body text-lg lg:text-2xl px-2 sm:px-0`} />
+          {stepItems.map((stepItem: ByteStepItemFragment, index) => {
+            if (isQuestion(stepItem)) {
+              return (
+                <QuestionSection
+                  key={index}
+                  nextButtonClicked={nextButtonClicked}
+                  allQuestionsAnsweredCorrectly={questionsAnsweredCorrectly}
+                  allQuestionsAnswered={questionNotAnswered}
+                  stepItem={stepItem as ByteQuestionFragmentFragment}
+                  stepItemSubmission={viewByteHelper.getStepItemSubmission(step.uuid, stepItem.uuid)}
+                  onSelectAnswer={selectAnswer}
+                />
+              );
+            }
+
+            if (isUserDiscordConnect(stepItem)) {
+              return (
+                <UserDiscord
+                  key={index}
+                  userDiscord={stepItem as ByteUserDiscordConnectFragmentFragment}
+                  discordResponse={viewByteHelper.getStepItemSubmission(step.uuid, stepItem.uuid) as UserDiscordInfoInput}
+                  spaceId={space.id}
+                  guideUuid={byte.id}
+                  stepUuid={step.uuid}
+                  stepOrder={activeStepOrder}
+                />
+              );
+            }
+
+            if (isUserInput(stepItem)) {
+              const inputFragment = stepItem as ByteUserInputFragmentFragment;
+              return (
+                <UserInput
+                  key={index}
+                  modelValue={viewByteHelper.getStepItemSubmission(step.uuid, inputFragment.uuid) as string}
+                  label={inputFragment.label}
+                  required={inputFragment.required}
+                  setUserInput={(userInput: string) => setUserInput(inputFragment.uuid, userInput)}
+                />
+              );
+            }
+
+            return null;
+          })}
+          {postSubmissionContent && <div className="mt-4 text-sm text-gray-500" dangerouslySetInnerHTML={{ __html: postSubmissionContent }} />}
+        </div>
+
+        <ByteStepperItemWarnings
+          showUseInputCompletionWarning={incompleteUserInput}
+          showQuestionsCompletionWarning={showQuestionsCompletionWarning}
+          isUserInputComplete={isUserInputComplete}
+          isQuestionAnswered={isQuestionAnswered}
+          isDiscordConnected={isDiscordConnected}
+        />
       </div>
       <div>
         <StepIndicatorProgress steps={viewByteHelper.byteRef?.steps?.length || 2} currentStep={activeStepOrder} className="py-4" />
