@@ -168,7 +168,7 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space }: W
   const showQuestionsCompletionWarning = nextButtonClicked && (!isQuestionAnswered() || !isDiscordConnected() || !isUserInputComplete());
 
   return (
-    <div className="h-full w-full flex flex-col justify-between overflow-auto overflow-x-hidden py-4 lg:px-4 sm:px-2">
+    <div className="h-full w-full flex flex-col justify-between overflow-auto py-4 lg:px-4 sm:px-2">
       <div
         className={`h-full w-full flex flex-col flex-grow items-center justify-center ${styles.contentContainer} ${transitionClasses[transitionState]} ${styles.stepContent}`}
       >
