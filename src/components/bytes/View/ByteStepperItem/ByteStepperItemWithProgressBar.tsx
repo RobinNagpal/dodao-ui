@@ -168,9 +168,9 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space }: W
   const showQuestionsCompletionWarning = nextButtonClicked && (!isQuestionAnswered() || !isDiscordConnected() || !isUserInputComplete());
 
   return (
-    <div className="h-full w-full flex flex-col justify-between overflow-auto py-4 lg:px-4 sm:px-2">
+    <div className="h-full w-full flex flex-col justify-between overflow-auto overflow-x-hidden py-4 lg:px-4 sm:px-2">
       <div
-        className={`h-full w-full grow-auto flex flex-col items-center justify-center ${styles.contentContainer} ${transitionClasses[transitionState]} ${styles.stepContent}`}
+        className={`h-full w-full flex flex-col flex-grow items-center justify-center ${styles.contentContainer} ${transitionClasses[transitionState]} ${styles.stepContent}`}
       >
         {!stepItems.some(isQuestion) && false && (
           <div>
@@ -239,10 +239,10 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space }: W
         />
       </div>
       <div>
-        <StepIndicatorProgress steps={viewByteHelper.byteRef?.steps?.length || 2} currentStep={activeStepOrder} className="py-4" />
+        <StepIndicatorProgress steps={viewByteHelper.byteRef?.steps?.length || 2} currentStep={activeStepOrder} className="py-4 hidden sm:block" />
         <div>
           {isNotFirstStep && !isByteCompletedStep && (
-            <Button onClick={() => viewByteHelper.goToPreviousStep(step)} className="float-left">
+            <Button onClick={() => viewByteHelper.goToPreviousStep(step)} className="float-left ml-2 sm:ml-0">
               <span className="mr-2 font-bold">&#8592;</span>
               Back
             </Button>
@@ -252,7 +252,7 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space }: W
               onClick={navigateToNextStep}
               disabled={viewByteHelper.byteSubmitting || viewByteHelper.byteSubmission.isSubmitted}
               variant="contained"
-              className="float-right w-[150px]"
+              className="float-right w-[150px] mr-2 sm:mr-0"
               primary={true}
             >
               <span className="sm:block">{isLastStep ? 'Complete' : 'Next'}</span>
