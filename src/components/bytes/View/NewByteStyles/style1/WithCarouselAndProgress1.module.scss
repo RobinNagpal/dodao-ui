@@ -11,6 +11,62 @@
 }
 
 .byteImage {
-  max-width: 400px;
-  max-height: 400px;
+  width: 100%;
+  height: auto;
+  margin: 0 auto;
+
+  @media (min-width: 1024px) {
+    max-width: 220px;
+  }
+
+  @media (max-width: 768px) {
+    max-width: 200px;
+  }
+
+  @media (max-width: 640px) {
+    max-width: 180px;
+  }
+
+  @media (max-width: 400px) {
+    max-width: 150px;
+  }
+}
+
+.styledH1 {
+  color: var(--heading-color);
+  font-size: 2.2rem;
+
+  @media (max-width: 600px) {
+    font-size: 2rem;
+  }
+}
+
+.styledContent {
+  color: var(--heading-color);
+  font-size: 1.2rem;
+  @media (max-width: 600px) {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .stepContent {
+    padding: 10px;
+  }
+
+  .markdown-body {
+    font-size: 1rem;
+  }
+}
+
+.imageWrapper {
+  text-align: center;
+  overflow: hidden;
+  max-height: 40vh;
+}
+
+.stepIndicatorProgress {
+  position: absolute;
+  left: 0;
+  right: 0;
 }
