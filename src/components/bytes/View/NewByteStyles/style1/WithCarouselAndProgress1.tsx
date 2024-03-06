@@ -176,7 +176,7 @@ function WithCarouselAndProgress1({ viewByteHelper, step, byte, space }: WithCar
               <img src="https://imagen.research.google/main_gallery_images/cactus.jpg" alt="byte" className={styles.byteImage + ' rounded-lg'} />
             </div>
           )}
-          <div className="flex justify-center w-full">
+          <div className="flex justify-center w-full mt-2">
             <h1 className={`text-6xl`}>{step.name || byte.name}</h1>
           </div>
 
