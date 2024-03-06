@@ -35,7 +35,7 @@ import 'prismjs/components/prism-solidity';
 import 'prismjs/components/prism-toml';
 import 'prismjs/components/prism-yaml';
 import { useCallback, useMemo, useState } from 'react';
-import styles from './ByteStepperItem.module.scss';
+import styles from './ByteStepperItemWithDial.module.scss';
 
 interface ByteStepperItemProps {
   byte: ByteDetailsFragment | ProjectByteFragment;
@@ -44,7 +44,7 @@ interface ByteStepperItemProps {
   viewByteHelper: UseGenericViewByteHelper;
 }
 
-function ByteStepperItem({ viewByteHelper, step, byte, space }: ByteStepperItemProps) {
+function ByteStepperItemWithDial({ viewByteHelper, step, byte, space }: ByteStepperItemProps) {
   const { activeStepOrder } = viewByteHelper;
   const { $t: t } = useI18();
   const { showNotification } = useNotificationContext();
@@ -243,4 +243,4 @@ function ByteStepperItem({ viewByteHelper, step, byte, space }: ByteStepperItemP
   );
 }
 
-export default ByteStepperItem;
+export default ByteStepperItemWithDial;

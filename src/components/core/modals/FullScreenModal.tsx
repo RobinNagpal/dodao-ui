@@ -43,7 +43,7 @@ export default function FullScreenModal({ open, title, children, onClose, showCl
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className={'relative transform overflow-hidden text-left transition-all sm:my-8 w-full ' + styles.dialogMargin}>
+              <Dialog.Panel className={'relative transform overflow-hidden text-left transition-all w-full ' + styles.dialogMargin}>
                 <StyledModalWrapper className={'w-full'}>
                   <div className="text-center">
                     <Dialog.Title as="h3" className={'flex text-base font-semibold leading-6 justify-between p-2 ' + styles.modalTitle}>

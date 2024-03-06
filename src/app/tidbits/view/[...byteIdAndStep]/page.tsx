@@ -52,38 +52,32 @@ const ByteView = ({ params, space }: { params: { byteIdAndStep: string[] }; spac
 
   return (
     <PageWrapper>
-      <div className={`pt-4 flex flex-col justify-center items-center byte-container w-full ${styles.byteContainer}`}>
-        <div className={`sm:border sm:border-gray-200 rounded-xl sm:shadow-md p-2 lg:p-8 ${styles.styledByteCard}`}>
-          <div className="split-content integration-card-content">
+      <div className={`pt-4 flex flex-col items-center byte-container w-full ${styles.byteContainer}`}>
+        <div className="w-full flex justify-between items-center px-2 lg:px-8 mb-3">
+          <Link href="/tidbits" className="text-color hidden sm:block">
+            <div className="flex items-center font-bold">
+              <span className="mr-1">&#8592;</span>All Tidbits
+            </div>
+          </Link>
+          <PrivateEllipsisDropdown
+            items={threeDotItems}
+            onSelect={(key) => {
+              if (key === 'edit') {
+                router.push(`/tidbits/edit/${byteId}`);
+              } else if (key === 'generate-pdf') {
+                router.push(`/tidbits/share/${byteId}/${TidbitShareSteps.SelectSocial}`);
+              }
+            }}
+          />
+        </div>
+
+        <div className={`sm:shadow-md p-2 lg:p-8 w-full max-w-4xl ${styles.styledCarouselByteCard}`}>
+          <div className="integration-card-content">
             {byte && (
-              <div className="px-4 md:px-0 mb-3 flex justify-between">
-                <Link href="/tidbits" className="text-color">
-                  <span className="mr-1 font-bold">&#8592;</span>
-                  All Tidbits
-                </Link>
-                <div className="ml-3">
-                  <PrivateEllipsisDropdown
-                    items={threeDotItems}
-                    onSelect={(key) => {
-                      if (key === 'edit') {
-                        router.push(`/tidbits/edit/${byteId}`);
-                      } else if (key === 'generate-pdf') {
-                        router.push(`/tidbits/share/${byteId}/${TidbitShareSteps.SelectSocial}`);
-                      }
-                    }}
-                  />
-                </div>
+              <div className="h-max">
+                <ByteStepper viewByteHelper={viewByteHelper} byte={byte} space={space} />
               </div>
             )}
-
-            {byte && byte && (
-              <div className="px-2 lg:px-4 md:px-0 h-max">
-                <div className="mt-4">
-                  <ByteStepper viewByteHelper={viewByteHelper} byte={byte} space={space} />
-                </div>
-              </div>
-            )}
-
             {!byte && <PageLoading />}
           </div>
         </div>

@@ -1,8 +1,7 @@
+import ByteStepperItemWithProgressBar from '@/components/bytes/View/ByteStepperItem/ByteStepperItemWithProgressBar';
 import { UseGenericViewByteHelper } from '@/components/bytes/View/useGenericViewByte';
 import { ByteDetailsFragment, ByteStepFragment, ProjectByteFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { useMemo } from 'react';
-import ByteStepperItem from './ByteStepperItem';
-import styles from './ByteStepper.module.scss';
 
 type Props = {
   viewByteHelper: UseGenericViewByteHelper;
@@ -15,11 +14,7 @@ function ByteViewStepper({ viewByteHelper, byte, space }: Props) {
     return byte.steps?.[viewByteHelper.activeStepOrder] || byte.steps[0];
   }, [viewByteHelper.activeStepOrder, byte.steps]);
 
-  return (
-    <div className={styles.container}>
-      <ByteStepperItem viewByteHelper={viewByteHelper} byte={byte} step={activeStep} space={space} />
-    </div>
-  );
+  return <ByteStepperItemWithProgressBar viewByteHelper={viewByteHelper} byte={byte} step={activeStep} space={space} />;
 }
 
 export default ByteViewStepper;

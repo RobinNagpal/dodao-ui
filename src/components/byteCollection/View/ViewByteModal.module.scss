@@ -1,10 +1,11 @@
 .byteContainer {
-  min-height: calc(100vh - 200px);
+  height: calc(100vh - 54px);
 }
 
 .styledByteCard {
+  background-color: var(--block-bg);
   @media screen and (min-width: 767px) {
-    min-width: 647px;
-    max-width: 647px;
+    min-width: 767px;
+    max-width: 767px;
   }
 }

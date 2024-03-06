@@ -1,0 +1,24 @@
+.stepContent {
+  @media (min-width: 976px) {
+    .previous-text {
+      display: none;
+    }
+  }
+}
+
+.styledH1 {
+  color: var(--heading-color);
+}
+
+.byteImage {
+  width: 400px;
+  height: 350px;
+  margin: 0 auto;
+}
+
+.contentContainer {
+  max-height: 68vh;
+  min-height: 68vh;
+  overflow: hidden;
+  overflow-y: auto;
+}

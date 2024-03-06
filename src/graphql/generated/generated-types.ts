@@ -229,6 +229,11 @@ export interface ByteStepInput {
 
 export type ByteStepItem = ByteQuestion | ByteUserInput | UserDiscordConnect;
 
+export enum ByteStyle {
+  CardAndCircleProgress = 'CardAndCircleProgress',
+  CarouselWithProgressBars = 'CarouselWithProgressBars'
+}
+
 export interface ByteSubmission {
   __typename?: 'ByteSubmission';
   byteId: Scalars['String'];
