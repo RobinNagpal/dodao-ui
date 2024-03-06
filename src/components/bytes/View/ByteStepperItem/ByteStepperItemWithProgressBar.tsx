@@ -1,7 +1,7 @@
 import UserDiscord from '@/components/app/Form/UserDiscord';
 import UserInput from '@/components/app/Form/UserInput';
+import StepIndicatorProgress from '@/components/bytes/View/ByteStepperItem/Progress/StepIndicatorProgress';
 import ByteStepperItemWarnings from '@/components/bytes/View/ByteStepperItemWarnings';
-import StepIndicatorProgress from '@/components/bytes/View/NewByteStyles/Progress/StepIndicatorProgress';
 import { QuestionSection } from '@/components/bytes/View/QuestionSection';
 import { LAST_STEP_UUID, UseGenericViewByteHelper } from '@/components/bytes/View/useGenericViewByte';
 import CustomGradientButton from '@/components/core/buttons/GradientButton';
@@ -34,7 +34,7 @@ import 'prismjs/components/prism-solidity';
 import 'prismjs/components/prism-toml';
 import 'prismjs/components/prism-yaml';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import styles from './WithCarouselAndProgress1.module.scss';
+import styles from './ByteStepperItemWithProgressBar.module.scss';
 
 interface WithCarouselAndProgress1Props {
   byte: ByteDetailsFragment | ProjectByteFragment;
@@ -45,7 +45,7 @@ interface WithCarouselAndProgress1Props {
 
 type TransitionState = 'enter' | 'active' | 'exit';
 
-function WithCarouselAndProgress1({ viewByteHelper, step, byte, space }: WithCarouselAndProgress1Props) {
+function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space }: WithCarouselAndProgress1Props) {
   const { activeStepOrder } = viewByteHelper;
   const { $t: t } = useI18();
   const { showNotification } = useNotificationContext();
@@ -261,4 +261,4 @@ function WithCarouselAndProgress1({ viewByteHelper, step, byte, space }: WithCar
   );
 }
 
-export default WithCarouselAndProgress1;
+export default ByteStepperItemWithProgressBar;

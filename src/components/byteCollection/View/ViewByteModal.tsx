@@ -1,8 +1,7 @@
 'use client';
 
 import ByteStepper from '@/components/bytes/View/ByteStepper';
-import ContinuousStepIndicatorProgress from '@/components/bytes/View/NewByteStyles/Progress/ContinuousStepIndicatorProgress';
-import StepIndicatorProgress from '@/components/bytes/View/NewByteStyles/Progress/StepIndicatorProgress';
+import ContinuousStepIndicatorProgress from '@/components/bytes/View/ByteStepperItem/Progress/ContinuousStepIndicatorProgress';
 import { useViewByteInModal } from '@/components/bytes/View/useViewByteInModal';
 import PageLoading from '@/components/core/loaders/PageLoading';
 import FullScreenModal from '@/components/core/modals/FullScreenModal';
