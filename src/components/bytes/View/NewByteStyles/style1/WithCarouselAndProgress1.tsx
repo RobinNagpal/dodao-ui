@@ -169,7 +169,7 @@ function WithCarouselAndProgress1({ viewByteHelper, step, byte, space }: WithCar
 
   return (
     <div className="h-full w-full flex flex-col justify-between overflow-auto py-4 lg:px-4 sm:px-2">
-      <div className="h-full w-full grow">
+      <div className={"h-full w-full grow " + styles.contentContainer}>
         <div className={`overflow-auto flex flex-col justify-between w-full ${styles.stepContent} ${transitionClasses[transitionState]}`}>
           {!stepItems.some(isQuestion) && (
             <div className={styles.imageWrapper}>
@@ -181,9 +181,6 @@ function WithCarouselAndProgress1({ viewByteHelper, step, byte, space }: WithCar
           </div>
 
           <div className="mt-2">
-            <div dangerouslySetInnerHTML={{ __html: stepContents }} className={`markdown-body text-center text-2xl`} />
-            <div dangerouslySetInnerHTML={{ __html: stepContents }} className={`markdown-body text-center text-2xl`} />
-            <div dangerouslySetInnerHTML={{ __html: stepContents }} className={`markdown-body text-center text-2xl`} />
             <div dangerouslySetInnerHTML={{ __html: stepContents }} className={`markdown-body text-center text-2xl`} />
             {stepItems.map((stepItem: ByteStepItemFragment, index) => {
               if (isQuestion(stepItem)) {
