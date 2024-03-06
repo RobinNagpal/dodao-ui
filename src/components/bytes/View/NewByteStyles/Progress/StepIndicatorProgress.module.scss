@@ -6,11 +6,12 @@
 }
 
 .stepDot {
-  width: 45px;
-  height: 3px;
-  background-color: #ccc;
+  width: 8px;
+  border-radius: 8px;
+  height: 8px;
+  background-color: #555555;
 }
 
 .activeStepDot {
-  background-color: #4caf50;
+  background-color: var(--text-color);
 }

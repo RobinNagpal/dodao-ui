@@ -1,6 +1,8 @@
 'use client';
 
 import ByteStepper from '@/components/bytes/View/ByteStepper';
+import ContinuousStepIndicatorProgress from '@/components/bytes/View/NewByteStyles/Progress/ContinuousStepIndicatorProgress';
+import StepIndicatorProgress from '@/components/bytes/View/NewByteStyles/Progress/StepIndicatorProgress';
 import { useViewByteInModal } from '@/components/bytes/View/useViewByteInModal';
 import PageLoading from '@/components/core/loaders/PageLoading';
 import FullScreenModal from '@/components/core/modals/FullScreenModal';
@@ -40,21 +42,14 @@ export default function ViewByteModal({ space, project, byteCollectionType, sele
     viewByteHelper.initialize();
   }, [selectedByteId]);
 
+  const { activeStepOrder } = viewByteHelper;
+
   return (
     <FullScreenModal open={true} onClose={onClose} title={viewByteHelper.byteRef?.name || 'Tidbit Details'}>
-      <div className={`pt-4 flex flex-col justify-center items-center byte-container w-full ${styles.byteContainer}`}>
-        <div className={`sm:border sm:border-gray-200 rounded-xl sm:shadow-md p-2 lg:p-8 ${styles.styledByteCard}`}>
-          <div className="split-content integration-card-content">
-            {viewByteHelper.byteRef ? (
-              <div className="px-2 lg:px-4 md:px-0 h-max text-left">
-                <div className="mt-4">
-                  <ByteStepper viewByteHelper={viewByteHelper} byte={viewByteHelper.byteRef} space={space} />
-                </div>
-              </div>
-            ) : (
-              <PageLoading />
-            )}
-          </div>
+      <div id="byte-container" className={`flex flex-col  items-center w-full relative inset-0 ${styles.byteContainer} `}>
+        <ContinuousStepIndicatorProgress steps={viewByteHelper.byteRef?.steps?.length || 2} currentStep={activeStepOrder + 1} />
+        <div className={`${styles.styledByteCard} relative my-6 rounded-lg h-full`}>
+          {viewByteHelper.byteRef ? <ByteStepper viewByteHelper={viewByteHelper} byte={viewByteHelper.byteRef} space={space} /> : <PageLoading />}
         </div>
       </div>
     </FullScreenModal>

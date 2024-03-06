@@ -1,13 +1,16 @@
 .stepContent {
-    @media (min-width: 976px) {
-      .previous-text {
-        display: none;
-      }
-      border-radius: 0.5rem;
+  @media (min-width: 976px) {
+    .previous-text {
+      display: none;
     }
   }
-  
-  .styledH1 {
-    color: var(--heading-color);
-  }
-  
+}
+
+.styledH1 {
+  color: var(--heading-color);
+}
+
+.byteImage {
+  max-width: 400px;
+  max-height: 400px;
+}
