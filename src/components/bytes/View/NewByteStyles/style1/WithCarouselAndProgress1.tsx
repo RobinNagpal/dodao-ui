@@ -3,7 +3,7 @@ import UserInput from '@/components/app/Form/UserInput';
 import ByteStepperItemWarnings from '@/components/bytes/View/ByteStepperItemWarnings';
 import { QuestionSection } from '@/components/bytes/View/QuestionSection';
 import { LAST_STEP_UUID, UseGenericViewByteHelper } from '@/components/bytes/View/useGenericViewByte';
-import Button from '@/components/core/buttons/Button';
+import CustomGradientButton from '@/components/core/buttons/GradientButton';
 import { useLoginModalContext } from '@/contexts/LoginModalContext';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import {
@@ -34,8 +34,6 @@ import 'prismjs/components/prism-toml';
 import 'prismjs/components/prism-yaml';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import styles from './WithCarouselAndProgress1.module.scss';
-import StepIndicatorProgress from '@/components/bytes/View/NewByteStyles/Progress/StepIndicatorProgress';
-import CustomGradientButton from '@/components/core/buttons/GradientButton';
 
 interface WithCarouselAndProgress1Props {
   byte: ByteDetailsFragment | ProjectByteFragment;

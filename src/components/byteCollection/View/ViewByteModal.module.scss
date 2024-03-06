@@ -1,18 +1,16 @@
 .byteContainer {
-  min-height: calc(100vh - 200px);
+  min-height: calc(100vh - 100px);
 }
 
 .styledByteCard {
   background-color: var(--bg-color);
-  border-radius: 10px;
   @media screen and (min-width: 767px) {
-    min-width: 647px;
-    max-width: 647px;
+    min-width: 767px;
+    max-width: 767px;
   }
 }
 
 
 .styledCarouselByteCard {
   background-color: var(--block-bg);
-  border-radius: 10px;
 }
