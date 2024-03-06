@@ -177,11 +177,11 @@ function WithCarouselAndProgress1({ viewByteHelper, step, byte, space }: WithCar
             </div>
           )}
           <div className="flex justify-center w-full mt-2">
-            <h1 className={`text-6xl`}>{step.name || byte.name}</h1>
+            <h1 className={`text-4xl lg:text-6xl`}>{step.name || byte.name}</h1>
           </div>
 
           <div className="mt-2">
-            <div dangerouslySetInnerHTML={{ __html: stepContents }} className={`markdown-body text-center text-2xl`} />
+            <div dangerouslySetInnerHTML={{ __html: stepContents }} className={`markdown-body text-lg lg:text-2xl`} />
             {stepItems.map((stepItem: ByteStepItemFragment, index) => {
               if (isQuestion(stepItem)) {
                 return (
