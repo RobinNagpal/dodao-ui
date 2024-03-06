@@ -33,7 +33,7 @@ const StyledDiv = styled.div`
 `;
 
 function DesktopNavLinks({ space }: { space: Space }) {
-  const sortedSpaceFeatures: FeatureItem[] = getSortedFeaturesArray(space.id);
+  const sortedSpaceFeatures: FeatureItem[] = getSortedFeaturesArray(space);
 
   return (
     <div className="hidden md:ml-6 md:flex md:space-x-8">
@@ -70,7 +70,7 @@ function DesktopNavLinks({ space }: { space: Space }) {
 }
 
 function MobileNavLinks({ space }: { space: Space }) {
-  const sortedSpaceFeatures: FeatureItem[] = getSortedFeaturesArray(space.id);
+  const sortedSpaceFeatures: FeatureItem[] = getSortedFeaturesArray(space);
 
   return (
     <div className="space-y-1 pb-3 pt-2">
