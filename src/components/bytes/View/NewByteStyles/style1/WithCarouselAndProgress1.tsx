@@ -170,19 +170,21 @@ function WithCarouselAndProgress1({ viewByteHelper, step, byte, space }: WithCar
   return (
     <div className="h-full w-full overflow-auto lg:p-4">
       <div
-        className={`overflow-auto px-2 lg:px-2 py-5 sm:px-6 flex flex-col justify-between w-full ${styles.stepContent} ${transitionClasses[transitionState]}`}
+        className={`overflow-auto px-2 lg:px-2 py-3 sm:px-6 flex flex-col justify-between w-full ${styles.stepContent} ${transitionClasses[transitionState]}`}
       >
-        <div className="flex justify-center w-full mt-14">
-          <img src="https://imagen.research.google/main_gallery_images/cactus.jpg" alt="byte" className={styles.byteImage + ' rounded-lg'} />
-        </div>
+        {!stepItems.some(isQuestion) && (
+          <div className={styles.imageWrapper}>
+            <img src="https://imagen.research.google/main_gallery_images/cactus.jpg" alt="byte" className={styles.byteImage + ' rounded-lg'} />
+          </div>
+        )}
         <div className="flex justify-center w-full">
           <div className="mt-4">
             <h1 className={`mb-2 text-6xl ${styles.styledH1}`}>{step.name || byte.name}</h1>
           </div>
         </div>
 
-        <div style={{ minHeight: '300px' }} className="mt-6">
-          <div dangerouslySetInnerHTML={{ __html: stepContents }} className="markdown-body text-2xl text-center" />
+        <div style={{ minHeight: '300px' }} className="mt-3">
+          <div dangerouslySetInnerHTML={{ __html: stepContents }} className={`markdown-body text-center ` + styles.styledContent} />
           {stepItems.map((stepItem: ByteStepItemFragment, index) => {
             if (isQuestion(stepItem)) {
               return (
