@@ -9,10 +9,12 @@ type StepIndicatorProgressProps = {
 
 const StepIndicatorProgress = ({ className, steps, currentStep }: StepIndicatorProgressProps) => {
   return (
-    <div className={`${className || ''} ${styles.stepIndicatorContainer}`}>
-      {Array.from({ length: steps }).map((_, index) => (
-        <div key={index} className={`${styles.stepDot} ${index === currentStep ? styles.activeStepDot : ''}`} />
-      ))}
+    <div className={`${className || ''}`}>
+      <div className={styles.stepIndicatorContainer}>
+        {Array.from({ length: steps }).map((_, index) => (
+          <div key={index} className={`${styles.stepDot} ${index === currentStep ? styles.activeStepDot : ''}`} />
+        ))}
+      </div>
     </div>
   );
 };
