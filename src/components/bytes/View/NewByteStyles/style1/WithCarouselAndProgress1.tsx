@@ -181,7 +181,7 @@ function WithCarouselAndProgress1({ viewByteHelper, step, byte, space }: WithCar
           </div>
 
           <div className="mt-2">
-            <div dangerouslySetInnerHTML={{ __html: stepContents }} className={`markdown-body text-lg lg:text-2xl`} />
+            <div dangerouslySetInnerHTML={{ __html: stepContents }} className={`markdown-body text-lg lg:text-2xl px-2 sm:px-0`} />
             {stepItems.map((stepItem: ByteStepItemFragment, index) => {
               if (isQuestion(stepItem)) {
                 return (
