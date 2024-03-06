@@ -169,7 +169,7 @@ function WithCarouselAndProgress1({ viewByteHelper, step, byte, space }: WithCar
 
   return (
     <div className="h-full w-full flex flex-col justify-between overflow-auto py-4 lg:px-4 sm:px-2">
-      <div className={"h-full w-full grow " + styles.contentContainer}>
+      <div className={'h-full w-full grow ' + styles.contentContainer}>
         <div className={`overflow-auto flex flex-col justify-between w-full ${styles.stepContent} ${transitionClasses[transitionState]}`}>
           {!stepItems.some(isQuestion) && (
             <div className={styles.imageWrapper}>
