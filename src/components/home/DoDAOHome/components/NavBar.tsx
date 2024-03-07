@@ -47,11 +47,6 @@ export function NavBar() {
       let bodyRect = document.body.getBoundingClientRect();
       let offset = bodyRect.top + navBarRef.current.offsetHeight + 1;
 
-      if (window.scrollY >= Math.floor(bodyRect.height) - window.innerHeight) {
-        setActiveIndex(sections.length - 1);
-        return;
-      }
-
       for (let index = 0; index < elements.length; index++) {
         if (window.scrollY >= elements[index].getBoundingClientRect().top - offset) {
           newActiveIndex = index;
