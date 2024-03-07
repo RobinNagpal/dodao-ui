@@ -9,5 +9,5 @@ export function getCDNImageUrl(url: string | null) {
   if (url.includes('ipfs://')) {
     return url.replace('ipfs://', 'https://d31h13bdjwgzxs.cloudfront.net/');
   }
-  return `https://worker.snapshot.org/mirror?img=${encodeURIComponent(url)}`;
+  return url;
 }
