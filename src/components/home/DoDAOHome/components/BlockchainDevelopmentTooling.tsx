@@ -37,7 +37,7 @@ export function BlockchainDevelopmentTooling() {
                   </p>
 
                   <p className="mt-6 text-lg leading-8 text-gray-600">
-                    Leverage DoDAO's development tools to bring efficiency and transparency to your blockchain projects.
+                    Leverage DoDAO&apos;s development tools to bring efficiency and transparency to your blockchain projects.
                   </p>
                 </div>
               </div>
