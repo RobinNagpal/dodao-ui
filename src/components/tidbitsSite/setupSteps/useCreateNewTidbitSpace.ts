@@ -1,12 +1,15 @@
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import {
+  GuideSummaryFragment,
   Space,
   SpaceTypes,
+  SpaceWithIntegrationsFragment,
   useCreateNewTidbitSpaceMutation,
   useExtendedSpaceQuery,
   useGetSpaceFromCreatorQuery,
   useUpdateSpaceMutation,
 } from '@/graphql/generated/generated-types';
+import getApiResponse from '@/utils/api/getApiResponse';
 import { slugify } from '@/utils/auth/slugify';
 import { getEditSpaceType, getSpaceInput, SpaceEditType } from '@/utils/space/spaceUpdateUtils';
 import { useSession } from 'next-auth/react';
@@ -46,17 +49,6 @@ export default function useCreateNewTidbitSpace(): UseEditSpaceHelper {
     skip: !session?.username,
   });
 
-  const {
-    data: extendedSpaceData,
-    loading: loadingExtendedSpace,
-    refetch: refetchExtendedSpace,
-  } = useExtendedSpaceQuery({
-    variables: {
-      spaceId: spaceByUsername?.getSpaceFromCreator!.id!,
-    },
-    skip: !spaceByUsername?.getSpaceFromCreator?.id,
-  });
-
   const [tidbitSpace, setTidbitSpace] = useState<TidbitSpaceType>({
     name: '',
     avatar: '',
@@ -74,21 +66,16 @@ export default function useCreateNewTidbitSpace(): UseEditSpaceHelper {
   }, [session]);
 
   useEffect(() => {
-    if (spaceByUsername) {
-      refetchExtendedSpace();
+    if (spaceByUsername?.getSpaceFromCreator) {
+      const space = spaceByUsername.getSpaceFromCreator;
+      setExistingSpace(space);
+      setTidbitSpace({ id: space.id, name: space.name, avatar: space.avatar || '' });
     }
   }, [spaceByUsername]);
 
   useEffect(() => {
-    if (extendedSpaceData?.space) {
-      setExistingSpace(extendedSpaceData.space);
-      setTidbitSpace({ id: extendedSpaceData.space.id, name: extendedSpaceData.space.name, avatar: extendedSpaceData.space.avatar || '' });
-    }
-  }, [extendedSpaceData]);
-
-  useEffect(() => {
-    setLoading(loadingSpaceByUsername || loadingExtendedSpace);
-  }, [loadingSpaceByUsername, loadingExtendedSpace]);
+    setLoading(loadingSpaceByUsername);
+  }, [loadingSpaceByUsername]);
 
   function setSpaceField(field: keyof TidbitSpaceType, value: any) {
     if (field === 'name' && !existingSpace?.id) {

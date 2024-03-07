@@ -101,6 +101,7 @@ fragment ByteDetailsFragment on Byte {
     }
     name
     uuid
+    imageUrl
   }
 }
 
