@@ -1,20 +1,10 @@
+import { WatchVideoButton } from '@/components/home/TidbitsHub/components/WatchVideoButton';
 import { useId } from 'react';
-import Image from 'next/image';
-import clsx from 'clsx';
 
 import { AppDemo } from './AppDemo';
-import { AppStoreLink } from './AppStoreLink';
 import { Button } from './Button';
 import { Container } from './Container';
 import { PhoneFrame } from './PhoneFrame';
-import logoBbc from '@/images/lifeInsure/logos/bbc.svg';
-import logoCbs from '@/images/lifeInsure/logos/cbs.svg';
-import logoCnn from '@/images/lifeInsure/logos/cnn.svg';
-import logoFastCompany from '@/images/lifeInsure/logos/fast-company.svg';
-import logoForbes from '@/images/lifeInsure/logos/forbes.svg';
-import logoHuffpost from '@/images/lifeInsure/logos/huffpost.svg';
-import logoTechcrunch from '@/images/lifeInsure/logos/techcrunch.svg';
-import logoWired from '@/images/lifeInsure/logos/wired.svg';
 
 function BackgroundIllustration(props: React.ComponentPropsWithoutRef<'div'>) {
   let id = useId();
@@ -45,33 +35,19 @@ function BackgroundIllustration(props: React.ComponentPropsWithoutRef<'div'>) {
   );
 }
 
-function PlayIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" {...props}>
-      <circle cx="12" cy="12" r="11.5" stroke="#D4D4D4" />
-      <path d="M9.5 14.382V9.618a.5.5 0 0 1 .724-.447l4.764 2.382a.5.5 0 0 1 0 .894l-4.764 2.382a.5.5 0 0 1-.724-.447Z" fill="#A3A3A3" stroke="#A3A3A3" />
-    </svg>
-  );
-}
-
 export function Hero() {
   return (
     <div className="overflow-hidden py-20 sm:py-32 lg:pb-32 xl:pb-36">
       <Container>
         <div className="lg:grid lg:grid-cols-12 lg:gap-x-8 lg:gap-y-20">
           <div className="relative z-10 mx-auto max-w-2xl lg:col-span-7 lg:max-w-none lg:pt-6 xl:col-span-6">
-            <h1 className="text-4xl font-medium tracking-tight">
-              Unwind the Knots,<br></br>Spark Learning Thoughts
-            </h1>
+            <h1 className="text-4xl font-medium tracking-tight">Breaking Down Complex Concepts: The Tidbits Method</h1>
             <p className="mt-6 text-lg">
               We break down concepts into easily digestible information, guiding your customers to make empowered decisions. Equip your clients with knowledge
               and watch their trust in your services grow!
             </p>
             <div className="mt-8 flex flex-wrap gap-x-6 gap-y-4">
-              <Button href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" variant="outline">
-                <PlayIcon className="h-6 w-6 flex-none" />
-                <span className="ml-2.5">Watch the video</span>
-              </Button>
+              <WatchVideoButton />
             </div>
           </div>
           <div className="relative mt-10 sm:mt-20 lg:col-span-5 lg:row-span-2 lg:mt-0 xl:col-span-6">
