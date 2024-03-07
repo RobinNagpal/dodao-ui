@@ -5,21 +5,16 @@ import { Popover } from '@headlessui/react';
 import clsx from 'clsx';
 
 const sections = [
+  { id: 'tidibits-hub', title: 'Tidbits Hub' },
   {
     id: 'academy-sites',
     title: 'Academy Sites',
   },
-  { id: 'tidibits-hub', title: 'Tidbits Hub' },
   { id: 'ai-chatbot', title: 'AI Chatbot' },
   { id: 'blockchain-courses', title: 'Blockchain Courses' },
   {
     id: 'blockchain-development-tooling',
-    title: (
-      <div>
-        <span>Blockchain Development </span>
-        <span className="hidden lg:inline">Tooling</span>
-      </div>
-    ),
+    title: 'Development Services',
   },
 ];
 
@@ -51,11 +46,6 @@ export function NavBar() {
       let elements = sections.map(({ id }) => document.getElementById(id)).filter((el): el is HTMLElement => el !== null);
       let bodyRect = document.body.getBoundingClientRect();
       let offset = bodyRect.top + navBarRef.current.offsetHeight + 1;
-
-      if (window.scrollY >= Math.floor(bodyRect.height) - window.innerHeight) {
-        setActiveIndex(sections.length - 1);
-        return;
-      }
 
       for (let index = 0; index < elements.length; index++) {
         if (window.scrollY >= elements[index].getBoundingClientRect().top - offset) {
