@@ -27,7 +27,7 @@ const LoginModal: React.FC = () => {
     <FullScreenModal open={showLoginModal} onClose={() => setShowLoginModal(false)} title={'Login'} showCloseButton={false}>
       <PageWrapper>
         <div className="flex justify-center items-center h-full">
-          <LoginButtons />
+          <LoginButtons onCloseEmailModal={() => setShowLoginModal(false)} />
         </div>
       </PageWrapper>
     </FullScreenModal>

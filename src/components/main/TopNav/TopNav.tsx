@@ -138,7 +138,6 @@ export default function TopNav(props: { space?: SpaceWithIntegrationsFragment | 
   const [showCreateModal, setShowCreateModal] = useState(false);
   const { space } = props;
   const router = useRouter();
-  const superAdmin = session && isSuperAdmin(session as Session);
 
   return (
     <StyledDiv>

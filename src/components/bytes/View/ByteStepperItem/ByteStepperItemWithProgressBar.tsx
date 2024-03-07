@@ -176,10 +176,10 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space }: W
           </div>
         )}
         <div className="flex justify-center w-full mt-4">
-          <h1 className={`text-4xl lg:text-6xl`}>{step.name || byte.name}</h1>
+          <h1 className={`text-4xl lg:text-5xl`}>{step.name || byte.name}</h1>
         </div>
 
-        <div className="mt-4 text-left">
+        <div className="mt-4 lg:mt-8 text-left">
           <div dangerouslySetInnerHTML={{ __html: stepContents }} className={`markdown-body text-lg lg:text-2xl px-2 sm:px-0`} />
           {stepItems.map((stepItem: ByteStepItemFragment, index) => {
             if (isQuestion(stepItem)) {

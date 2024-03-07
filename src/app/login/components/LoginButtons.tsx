@@ -3,12 +3,12 @@
 import EmailLoginModal from '@/app/login/components/EmailLoginModal';
 import withSpace from '@/app/withSpace';
 import ButtonLarge from '@/components/core/buttons/Button';
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { SpaceTypes, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { useAuth } from '@/hooks/useAuth';
 import { LoginProviders } from '@/types/deprecated/models/enums';
 import React, { useEffect } from 'react';
 
-function LoginButtonsFunction(props: { space: SpaceWithIntegrationsFragment }) {
+function LoginButtonsFunction(props: { space: SpaceWithIntegrationsFragment; onCloseEmailModal: () => void }) {
   const { space } = props;
   const {
     loginWithMetamask,
@@ -24,13 +24,18 @@ function LoginButtonsFunction(props: { space: SpaceWithIntegrationsFragment }) {
     processingDiscord,
     processingNear,
   } = useAuth();
-  const allOptionsEnabled = (space.authSettings.loginOptions?.length || 0) === 0;
-  const isMetamaskEnabled = !!space.authSettings.loginOptions?.includes(LoginProviders.MetaMask);
-  const isCoinbaseEnabled = !!space.authSettings.loginOptions?.includes(LoginProviders.Coinbase);
-  const isGoogleEnabled = !!space.authSettings.loginOptions?.includes(LoginProviders.Google);
-  const isDiscordEnabled = !!space.authSettings.loginOptions?.includes(LoginProviders.Discord);
-  const isNearEnabled = !!space.authSettings.loginOptions?.includes(LoginProviders.Near);
-  const isEmailEnabled = !!space.authSettings.loginOptions?.includes(LoginProviders.Email);
+
+  const isTidbitSite = space?.type === SpaceTypes.TidbitsSite;
+
+  const allOptionsEnabled = !isTidbitSite && (space.authSettings.loginOptions?.length || 0) === 0;
+
+  const isMetamaskEnabled = !isTidbitSite && !!space.authSettings.loginOptions?.includes(LoginProviders.MetaMask);
+  const isCoinbaseEnabled = !isTidbitSite && !!space.authSettings.loginOptions?.includes(LoginProviders.Coinbase);
+  const isGoogleEnabled = !isTidbitSite && !!space.authSettings.loginOptions?.includes(LoginProviders.Google);
+  const isDiscordEnabled = !isTidbitSite && !!space.authSettings.loginOptions?.includes(LoginProviders.Discord);
+  const isNearEnabled = !isTidbitSite && !!space.authSettings.loginOptions?.includes(LoginProviders.Near);
+
+  const isEmailEnabled = isTidbitSite || !!space.authSettings.loginOptions?.includes(LoginProviders.Email);
 
   const [showEmailModal, setShowEmailModal] = React.useState(false);
   const loginWithEmail = () => {
@@ -51,6 +56,14 @@ function LoginButtonsFunction(props: { space: SpaceWithIntegrationsFragment }) {
     }
   }, [enabledOptionsCount]);
 
+  console.log({
+    isMetamaskEnabled,
+    isCoinbaseEnabled,
+    isGoogleEnabled,
+    isDiscordEnabled,
+    isNearEnabled,
+    isEmailEnabled,
+  });
   return (
     <div className="flex-col max-w-md">
       {allOptionsEnabled || isMetamaskEnabled ? (
@@ -95,7 +108,15 @@ function LoginButtonsFunction(props: { space: SpaceWithIntegrationsFragment }) {
           </ButtonLarge>
         </div>
       ) : null}
-      {showEmailModal && <EmailLoginModal open={showEmailModal} onClose={() => setShowEmailModal(false)} />}
+      {showEmailModal && (
+        <EmailLoginModal
+          open={showEmailModal}
+          onClose={() => {
+            setShowEmailModal(false);
+            props.onCloseEmailModal();
+          }}
+        />
+      )}
     </div>
   );
 }
