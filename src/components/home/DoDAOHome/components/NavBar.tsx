@@ -5,21 +5,16 @@ import { Popover } from '@headlessui/react';
 import clsx from 'clsx';
 
 const sections = [
+  { id: 'tidibits-hub', title: 'Tidbits Hub' },
   {
     id: 'academy-sites',
     title: 'Academy Sites',
   },
-  { id: 'tidibits-hub', title: 'Tidbits Hub' },
   { id: 'ai-chatbot', title: 'AI Chatbot' },
   { id: 'blockchain-courses', title: 'Blockchain Courses' },
   {
     id: 'blockchain-development-tooling',
-    title: (
-      <div>
-        <span>Blockchain Development </span>
-        <span className="hidden lg:inline">Tooling</span>
-      </div>
-    ),
+    title: 'Development Services',
   },
 ];
 
