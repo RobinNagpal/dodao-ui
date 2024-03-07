@@ -1,9 +1,8 @@
 import Input from '@/components/core/input/Input';
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
 import Button from '@/components/core/buttons/Button';
-import { CourseDetailsFragment, CourseExplanationFragment, Space, UpdateTopicExplanationInput } from '@/graphql/generated/generated-types';
+import { CourseDetailsFragment, CourseExplanationFragment, ImageType, Space, UpdateTopicExplanationInput } from '@/graphql/generated/generated-types';
 import React, { useState } from 'react';
-import styled from 'styled-components';
 import { minMaxValidation, minValidation } from './../courseValidations';
 
 interface UpdateTopicExplanationForm extends UpdateTopicExplanationInput {
@@ -87,7 +86,7 @@ export default function EditCourseExplanation({ course, space, topicKey, current
           onUpdate={(content) => updateField('details', content)}
           spaceId={space.id}
           objectId={`${course.key}/${topicKey}`}
-          imageType="Course"
+          imageType={ImageType.Course}
         />
       </div>
       <div className="flex justify-between mt-4 w-full">

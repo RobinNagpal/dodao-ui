@@ -1,15 +1,15 @@
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
 import Button from '@/components/core/buttons/Button';
 import FullPageModal from '@/components/core/modals/FullPageModal';
-import CategoryCheckboxes from '@/components/spaces/Loaders/Discourse/CategoryCheckboxes';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import {
   ChatbotUserQuestionFragment,
+  ImageType,
   SpaceWithIntegrationsFragment,
   useChatbotCategoriesQuery,
   useUpsertChatbotUserQuestionMutation,
 } from '@/graphql/generated/generated-types';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { v4 } from 'uuid';
 
 export default function UpsertChatbotUserQuestionModal({
@@ -68,7 +68,7 @@ export default function UpsertChatbotUserQuestionModal({
             onUpdate={(content) => setQuestion(content)}
             spaceId={space.id}
             objectId={`chatbot/userQuestions/question/${userQuestion?.id || 'new-userQuestion'}`}
-            imageType="UserQuestion"
+            imageType={ImageType.Space}
           />
         </div>
         <Button disabled={question.length < 5} onClick={() => upsertChatbotUserQuestion()} loading={upserting} variant="contained" primary className="mt-4">

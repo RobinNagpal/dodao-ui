@@ -7,7 +7,7 @@ import Input from '@/components/core/input/Input';
 import FullPageModal from '@/components/core/modals/FullPageModal';
 import StyledSelect from '@/components/core/select/StyledSelect';
 import useEditSpace from '@/components/spaces/Edit/Basic/useEditSpace';
-import { Space } from '@/graphql/generated/generated-types';
+import { ImageType, Space } from '@/graphql/generated/generated-types';
 import { slugify } from '@/utils/auth/slugify';
 import { themeSelect } from '@/utils/ui/statuses';
 import union from 'lodash/union';
@@ -39,7 +39,7 @@ export default function UpsertSpaceBasicSettingsModal(props: { space?: Space; op
           <UploadInput
             label="Logo"
             error={inputError('avatar')}
-            imageType="AcademyLogo"
+            imageType={ImageType.Space}
             spaceId={space?.id || 'new-space'}
             modelValue={space?.avatar}
             objectId={(space?.name && slugify(space?.name)) || space?.id || 'new-space'}

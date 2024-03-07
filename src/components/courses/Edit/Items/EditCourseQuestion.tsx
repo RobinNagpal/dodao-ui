@@ -1,7 +1,14 @@
 import CreateQuestion from '@/components/app/Common/CreateQuestion';
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
 import Button from '@/components/core/buttons/Button';
-import { CourseDetailsFragment, CourseQuestionFragment, Space, TopicQuestionChoiceInput, UpdateTopicQuestionInput } from '@/graphql/generated/generated-types';
+import {
+  CourseDetailsFragment,
+  CourseQuestionFragment,
+  ImageType,
+  Space,
+  TopicQuestionChoiceInput,
+  UpdateTopicQuestionInput,
+} from '@/graphql/generated/generated-types';
 import { QuestionType } from '@/types/deprecated/models/enums';
 import { QuestionError } from '@/types/errors/error';
 import isEqual from 'lodash/isEqual';
@@ -163,7 +170,7 @@ export const QuestionForm: React.FC<Props> = ({ course, space, topicKey, current
           onUpdate={(content) => updateField('hint', content)}
           spaceId={space.id}
           objectId={`${course.key}/${topicKey}`}
-          imageType="Course"
+          imageType={ImageType.Course}
         />
         {form.isPristine && (form.answerKeys?.length || 0) === 0 && (
           <div className="mb-2 text-red-500">

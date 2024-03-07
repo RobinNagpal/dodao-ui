@@ -12,11 +12,9 @@ import Input from '@/components/core/input/Input';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import StyledSelect from '@/components/core/select/StyledSelect';
 import TextareaAutosize from '@/components/core/textarea/TextareaAutosize';
-import { SpaceWithIntegrationsFragment, UpsertTimelineEventInput } from '@/graphql/generated/generated-types';
+import { ImageType, SpaceWithIntegrationsFragment, UpsertTimelineEventInput } from '@/graphql/generated/generated-types';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
-import { PublishStatus } from '@/types/deprecated/models/enums';
 import { TimelineStyles, timelineStyleSelect } from '@/utils/timeline/timelineStyles';
-import { publishStatusesSelect } from '@/utils/ui/statuses';
 import PlusCircle from '@heroicons/react/20/solid/PlusCircleIcon';
 import Link from 'next/link';
 import React, { useEffect } from 'react';
@@ -92,7 +90,7 @@ const EditTimeline = (props: { space: SpaceWithIntegrationsFragment; params: { t
             placeholder="Timeline content"
             onUpdate={(e) => updateTimelineField('content', e?.toString() || '')}
             error={timelineErrors.content}
-            imageType={'Timeline'}
+            imageType={ImageType.Space}
             objectId={timelineId || 'new-timeline'}
             spaceId={props.space.id}
             maxHeight={200}
@@ -133,7 +131,7 @@ const EditTimeline = (props: { space: SpaceWithIntegrationsFragment; params: { t
                   placeholder="Event content"
                   onUpdate={(e) => updateTimelineEventField(event.uuid, 'summary', e?.toString() || '')}
                   error={timelineErrors.events?.[event.uuid]?.content}
-                  imageType={'Timeline'}
+                  imageType={ImageType.Space}
                   objectId={timelineId || 'new-timeline'}
                   spaceId={props.space.id}
                   maxHeight={150}
@@ -145,7 +143,7 @@ const EditTimeline = (props: { space: SpaceWithIntegrationsFragment; params: { t
                   placeholder="Event content"
                   onUpdate={(e) => updateTimelineEventField(event.uuid, 'fullDetails', e?.toString() || '')}
                   error={timelineErrors.events?.[event.uuid]?.content}
-                  imageType={'Timeline'}
+                  imageType={ImageType.Space}
                   objectId={timelineId || 'new-timeline'}
                   spaceId={props.space.id}
                   maxHeight={200}

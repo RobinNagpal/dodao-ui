@@ -7,7 +7,7 @@ import GenerateContentUsingAIModal from '@/components/app/Modal/AI/GenerateConte
 import PhotoIcon from '@heroicons/react/24/solid/PhotoIcon';
 import RobotIconSolid from '@/components/core/icons/RobotIconSolid';
 import { useNotificationContext } from '@/contexts/NotificationContext';
-import { ChatCompletionRequestMessageRoleEnum, useAskChatCompletionAiMutation } from '@/graphql/generated/generated-types';
+import { ChatCompletionRequestMessageRoleEnum, ImageType, useAskChatCompletionAiMutation } from '@/graphql/generated/generated-types';
 import { PropsWithChildren } from '@/types/PropsWithChildren';
 import MDEditor, { commands } from '@uiw/react-md-editor';
 import React, { SetStateAction, useState } from 'react';
@@ -23,7 +23,7 @@ interface MarkdownEditorProps extends PropsWithChildren {
   id?: string;
   spaceId: string;
   objectId: string;
-  imageType: string;
+  imageType: ImageType;
   placeholder?: string;
   modelValue?: string;
   error?: string | boolean;

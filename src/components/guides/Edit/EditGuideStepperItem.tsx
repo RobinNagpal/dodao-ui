@@ -1,29 +1,29 @@
 import { GeneratedQuestionInterface } from '@/components/ai/questions/GenerateQuestionsUsingAI';
+import CreateConnectDiscord from '@/components/app/Common/CreateDiscordConnect';
+import CreateQuestion from '@/components/app/Common/CreateQuestion';
+import CreateUserInput from '@/components/app/Common/CreateUserInput';
+import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
 import AddContentOrQuestionAIModal from '@/components/app/Modal/AI/AddContentOrQuestionAIModal';
 import GenerateContentUsingAIModal from '@/components/app/Modal/AI/GenerateContentUsingAIModal';
 import GenerateQuestionUsingAIModal from '@/components/app/Modal/AI/GenerateQuestionUsingAIModal';
 import DeleteConfirmationModal from '@/components/app/Modal/DeleteConfirmationModal';
+import AddStepItemModal from '@/components/app/Modal/StepItem/AddStepItemModal';
 import IconButton from '@/components/core/buttons/IconButton';
-import CreateConnectDiscord from '@/components/app/Common/CreateDiscordConnect';
-import CreateQuestion from '@/components/app/Common/CreateQuestion';
-import CreateUserInput from '@/components/app/Common/CreateUserInput';
 import { IconTypes } from '@/components/core/icons/IconTypes';
 import Input from '@/components/core/input/Input';
-import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
-import AddStepItemModal from '@/components/app/Modal/StepItem/AddStepItemModal';
 import generateGuideContentPrompt from '@/components/guides/Edit/generateGuideContentPrompt';
 import generateQuestionsPrompt from '@/components/guides/Edit/generateQuestionsPrompt';
 import { UseEditGuideHelper } from '@/components/guides/Edit/useEditGuide';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import {
   GuideFragment,
-  GuideInput,
   GuideQuestion,
   GuideQuestionFragment,
   GuideStepFragment,
   GuideStepItemFragment,
   GuideUserDiscordConnectFragment,
   GuideUserInputFragment,
+  ImageType,
   Space,
   StepItemInputGenericInput,
 } from '@/graphql/generated/generated-types';
@@ -379,7 +379,7 @@ const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHas
         onUpdate={updateStepContent}
         spaceId={space.id}
         objectId={guide.uuid}
-        imageType="Guide"
+        imageType={ImageType.Guide}
         className="w-full"
       />
 

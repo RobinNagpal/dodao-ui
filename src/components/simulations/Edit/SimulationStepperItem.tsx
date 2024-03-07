@@ -4,7 +4,7 @@ import Input from '@/components/core/input/Input';
 import { IconTypes } from '@/components/core/icons/IconTypes';
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
 import { EditSimulationType } from '@/components/simulations/Edit/useEditSimulation';
-import { SimulationStepInput, Space } from '@/graphql/generated/generated-types';
+import { ImageType, SimulationStepInput, Space } from '@/graphql/generated/generated-types';
 import { StepError } from '@/types/errors/error';
 import { SimulationErrors } from '@/types/errors/simulationErrors';
 import styled from 'styled-components';
@@ -67,7 +67,7 @@ export default function Step({ space, simulation, simulationErrors, step, stepEr
           onUpdate={updateStepContent}
           spaceId={space.id}
           objectId={simulation.id || ''}
-          imageType="Simulation"
+          imageType={ImageType.Space}
           editorStyles={{ height: '200px' }}
         />
       </div>

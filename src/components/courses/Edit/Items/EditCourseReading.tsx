@@ -2,7 +2,7 @@ import Input from '@/components/core/input/Input';
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
 import Button from '@/components/core/buttons/Button';
 import { minMaxValidation, minValidation } from '@/components/courses/Edit/courseValidations';
-import { CourseDetailsFragment, GitCourseReading, Space, UpdateTopicVideoInput } from '@/graphql/generated/generated-types';
+import { CourseDetailsFragment, GitCourseReading, ImageType, Space, UpdateTopicVideoInput } from '@/graphql/generated/generated-types';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
@@ -100,7 +100,7 @@ export default function EditCourseReading({ course, space, topicKey, currentRead
             onUpdate={(content) => updateField('details', content)}
             spaceId={space.id}
             objectId={`${course.key}/${topicKey}`}
-            imageType="Course"
+            imageType={ImageType.Course}
           />
         </StyledDiv>
       </div>

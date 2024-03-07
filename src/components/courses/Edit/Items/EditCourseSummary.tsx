@@ -2,7 +2,7 @@ import Input from '@/components/core/input/Input';
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
 import Button from '@/components/core/buttons/Button';
 import { minMaxValidation, minValidation } from '@/components/courses/Edit/courseValidations';
-import { CourseDetailsFragment, CourseSummaryFragment, Space, UpdateTopicSummaryInput } from '@/graphql/generated/generated-types';
+import { CourseDetailsFragment, CourseSummaryFragment, ImageType, Space, UpdateTopicSummaryInput } from '@/graphql/generated/generated-types';
 import React, { useCallback, useMemo, useState } from 'react';
 import styled from 'styled-components';
 
@@ -86,7 +86,7 @@ export default function EditCourseSummary({ course, space, topicKey, currentSumm
             onUpdate={(content) => updateField('details', content)}
             spaceId={space.id}
             objectId={`${course.key}/${topicKey}`}
-            imageType="Course"
+            imageType={ImageType.Course}
           />
         </StyledDiv>
       </div>

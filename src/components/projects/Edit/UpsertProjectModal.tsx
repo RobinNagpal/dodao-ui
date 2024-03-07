@@ -1,17 +1,17 @@
 import UploadInput from '@/components/app/UploadInput';
 import UpsertBadgeInput from '@/components/core/badge/UpsertBadgeInput';
+import UpsertKeyValueBadgeInput from '@/components/core/badge/UpsertKeyValueBadgeInput';
 import Button from '@/components/core/buttons/Button';
 import Input from '@/components/core/input/Input';
 import FullPageModal from '@/components/core/modals/FullPageModal';
 import StyledSelect from '@/components/core/select/StyledSelect';
-import { Project } from '@/graphql/generated/generated-types';
+import { ImageType, Project } from '@/graphql/generated/generated-types';
 import { ProjectTypes } from '@/types/deprecated/models/enums';
 import { slugify } from '@/utils/auth/slugify';
 import { projectTypeSelect } from '@/utils/ui/statuses';
 import union from 'lodash/union';
 import React, { useEffect, useState } from 'react';
 import useEditProject from './useEditProject';
-import UpsertKeyValueBadgeInput from '@/components/core/badge/UpsertKeyValueBadgeInput';
 
 export default function UpsertProjectModal(props: { spaceId: string; project?: Project; open: boolean; onClose: () => void }) {
   const editProjectHelper = useEditProject(props.project?.id);
@@ -57,7 +57,7 @@ export default function UpsertProjectModal(props: { spaceId: string; project?: P
           <UploadInput
             label="Logo"
             error={inputError('logo')}
-            imageType="AcademyLogo"
+            imageType={ImageType.Space}
             spaceId={props.spaceId}
             modelValue={project?.logo}
             objectId={(project?.name && slugify(project?.name)) || project?.id || 'new-project'}
@@ -67,7 +67,7 @@ export default function UpsertProjectModal(props: { spaceId: string; project?: P
           <UploadInput
             label="Thumbnail"
             error={inputError('cardThumbnail')}
-            imageType="CryptoGelatoProjectThumbnail"
+            imageType={ImageType.CryptoGelato}
             spaceId={props.spaceId}
             modelValue={project?.cardThumbnail}
             objectId={(project?.name && slugify(project?.name)) || project?.id || 'new-project'}

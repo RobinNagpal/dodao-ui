@@ -1,3 +1,4 @@
+import SelectImageInputModal from '@/components/app/Image/SelectImageInputModal';
 import DeleteConfirmationModal from '@/components/app/Modal/DeleteConfirmationModal';
 import { EditByteStep, EditByteType } from '@/components/bytes/Edit/editByteHelper';
 import IconButton from '@/components/core/buttons/IconButton';
@@ -8,11 +9,13 @@ import { IconTypes } from '@/components/core/icons/IconTypes';
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
 import AddStepItemModal from '@/components/app/Modal/StepItem/AddStepItemModal';
 import Input from '@/components/core/input/Input';
+import { InputWithButton } from '@/components/core/input/InputWithButton';
 import {
   ByteQuestion,
   ByteQuestionFragmentFragment,
   ByteUserInputFragmentFragment,
   GuideQuestion,
+  ImageType,
   SpaceWithIntegrationsFragment,
   StepItemInputGenericInput,
 } from '@/graphql/generated/generated-types';
@@ -20,7 +23,7 @@ import { InputType, QuestionType, UserDiscordConnectType } from '@/types/depreca
 import { ByteErrors } from '@/types/errors/byteErrors';
 import { QuestionError, StepError } from '@/types/errors/error';
 import isEqual from 'lodash/isEqual';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
 import { findClosestColor } from '@/utils/colors/findClosestColor';
@@ -323,6 +326,10 @@ export default function EditByteStepperItem({
     updateStep({ ...step, name });
   };
 
+  const updateStepImageUrl = (imageUrl: string | null) => {
+    updateStep({ ...step, imageUrl });
+  };
+
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const colorTheme = findClosestColor(space.themeColors?.primaryColor || '#008000');
 
@@ -350,6 +357,7 @@ Drawing from the detailed information provided, particularly the detail's name a
 Maintain a color scheme that contrasts with ${colorTheme}, the current theme of the user's website.
 `;
 
+  const [selectImageUploadModal, setSelectImageUploadModal] = useState(false);
   return (
     <StyledStepItemContainer className="w-full">
       <div className={`${byteErrors?.steps?.[step.uuid] ? 'error-event-border' : ''}`}>
@@ -382,6 +390,16 @@ Maintain a color scheme that contrasts with ${colorTheme}, the current theme of 
             Name*
           </Input>
         </div>
+        <div className="w-full mb-4">
+          <InputWithButton
+            buttonLabel={'Set Image'}
+            inputLabel={'Image Url'}
+            onButtonClick={() => setSelectImageUploadModal(true)}
+            onInputUpdate={(e) => updateStepImageUrl(e?.toString() || '')}
+            inputModelValue={step.imageUrl || ''}
+          />
+        </div>
+
         <MarkdownEditor
           id={step.uuid}
           modelValue={step.content}
@@ -390,7 +408,7 @@ Maintain a color scheme that contrasts with ${colorTheme}, the current theme of 
           onUpdate={updateStepContent}
           spaceId={space.id}
           objectId={byte.id || 'unknown_byte_id'}
-          imageType="Byte"
+          imageType={ImageType.Tidbits}
           editorStyles={{ height: '200px' }}
         />
       </div>
@@ -443,6 +461,20 @@ Maintain a color scheme that contrasts with ${colorTheme}, the current theme of 
           onDelete={() => {
             removeStep(step.uuid);
             setShowDeleteModal(false);
+          }}
+        />
+      )}
+      {selectImageUploadModal && (
+        <SelectImageInputModal
+          open={selectImageUploadModal}
+          onClose={() => setSelectImageUploadModal(false)}
+          imageType={ImageType.Tidbits}
+          objectId={byte.id || 'unknown_byte_id'}
+          spaceId={space.id}
+          generateImagePromptFn={() => promptForImagePrompt}
+          imageUploaded={(imageUrl) => {
+            updateStepImageUrl(imageUrl);
+            setSelectImageUploadModal(false);
           }}
         />
       )}

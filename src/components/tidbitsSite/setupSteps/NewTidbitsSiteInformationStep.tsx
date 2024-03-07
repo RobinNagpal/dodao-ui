@@ -5,6 +5,7 @@ import Button from '@/components/core/buttons/Button';
 import Input from '@/components/core/input/Input';
 import LoadingSpinner from '@/components/core/loaders/LoadingSpinner';
 import useCreateNewTidbitSpace from '@/components/tidbitsSite/setupSteps/useCreateNewTidbitSpace';
+import { ImageType } from '@/graphql/generated/generated-types';
 import { isEmpty } from 'lodash';
 import React, { useState } from 'react';
 
@@ -69,7 +70,7 @@ export default function NewTidbitsSiteInformationStep({ goToNextStep, goToPrevio
           />
           <UploadInput
             label="Logo"
-            imageType="AcademyLogo"
+            imageType={ImageType.Space}
             spaceId={'new-space'}
             modelValue={tidbitSpace.avatar}
             objectId={'new-space'}

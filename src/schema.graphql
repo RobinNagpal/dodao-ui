@@ -938,6 +938,16 @@ type GuideUserInput {
   uuid: String!
 }
 
+enum ImageType {
+  Academy
+  Course
+  CryptoGelato
+  Guide
+  ShortVideo
+  Space
+  Tidbits
+}
+
 type ImagesResponse {
   created: Int!
   data: [ImagesResponseDataInner!]!

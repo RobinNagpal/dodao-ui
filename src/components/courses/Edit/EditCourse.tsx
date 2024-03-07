@@ -6,7 +6,7 @@ import StyledSelect from '@/components/core/select/StyledSelect';
 import TextareaArray from '@/components/core/textarea/TextareaArray';
 import TextareaAutosize from '@/components/core/textarea/TextareaAutosize';
 import ToggleWithIcon from '@/components/core/toggles/ToggleWithIcon';
-import { CourseBasicInfoInput, CourseFragment, SpaceWithIntegrationsFragment, TopicConfigInput } from '@/graphql/generated/generated-types';
+import { CourseBasicInfoInput, CourseFragment, ImageType, SpaceWithIntegrationsFragment, TopicConfigInput } from '@/graphql/generated/generated-types';
 import { PublishStatus } from '@/types/deprecated/models/enums';
 import { publishStatusesSelect } from '@/utils/ui/statuses';
 import React, { useState } from 'react';
@@ -55,7 +55,7 @@ export default function EditCourse(props: EditCourseProps) {
       <Input label="Title" modelValue={courseBasicInfo.title} onUpdate={(e) => updateCourseBasicInfoField('title', e?.toString() || '')} />
       <UploadInput
         error={courseErrors['thumbnail']}
-        imageType="Course"
+        imageType={ImageType.Course}
         spaceId={space.id}
         modelValue={courseBasicInfo.thumbnail}
         objectId={course.key + '-thumbnail'}
@@ -80,7 +80,7 @@ export default function EditCourse(props: EditCourseProps) {
         onUpdate={(e) => updateCourseBasicInfoField('details', e || '')}
         spaceId={space.id}
         objectId={course.key}
-        imageType="Course"
+        imageType={ImageType.Course}
       />
 
       <MarkdownEditor
@@ -92,7 +92,7 @@ export default function EditCourse(props: EditCourseProps) {
         spaceId={space.id}
         objectId={course.key}
         maxHeight={200}
-        imageType="Course"
+        imageType={ImageType.Course}
       />
       <MarkdownEditor
         label={'Course Fail Content'}
@@ -103,7 +103,7 @@ export default function EditCourse(props: EditCourseProps) {
         spaceId={space.id}
         objectId={course.key}
         maxHeight={200}
-        imageType="Course"
+        imageType={ImageType.Course}
       />
       <TextareaArray
         label={'Course Admin Usernames'}

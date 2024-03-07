@@ -1,6 +1,6 @@
 // Replace with your actual uploadImageToS3 import
 import LoadingSpinner from '@/components/core/loaders/LoadingSpinner';
-import { CreateSignedUrlInput, useCreateSignedUrlMutation } from '@/graphql/generated/generated-types';
+import { CreateSignedUrlInput, ImageType, useCreateSignedUrlMutation } from '@/graphql/generated/generated-types';
 import { getUploadedImageUrlFromSingedUrl } from '@/utils/upload/getUploadedImageUrlFromSingedUrl';
 import axios from 'axios';
 import React, { useRef, useState } from 'react';
@@ -9,7 +9,7 @@ import styled from 'styled-components';
 interface Props {
   spaceId: string;
   objectId: string;
-  imageType: string;
+  imageType: ImageType;
   onLoading?: (loading: boolean) => void;
   onInput?: (imageUrl: string) => void;
   children: React.ReactNode;

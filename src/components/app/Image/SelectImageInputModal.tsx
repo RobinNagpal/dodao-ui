@@ -3,6 +3,7 @@
 import GenerateFromDalleModal from '@/components/app/Image/GenerateFromDalleModal';
 import UploadFromUnsplashModal from '@/components/app/Image/UploadFromUnsplashModal';
 import FullPageModal from '@/components/core/modals/FullPageModal';
+import { ImageType } from '@/graphql/generated/generated-types';
 import ArrowUpTrayIcon from '@heroicons/react/24/solid/ArrowUpTrayIcon';
 import PhotoIcon from '@heroicons/react/24/solid/PhotoIcon';
 
@@ -16,7 +17,7 @@ const UploadWrapper = styled.div`
 `;
 
 interface UploadInputProps {
-  imageType: string;
+  imageType: ImageType;
   objectId: string;
   spaceId: string;
   open: boolean;

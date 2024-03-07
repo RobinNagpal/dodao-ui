@@ -1,10 +1,11 @@
 import UploadInput from '@/components/app/UploadInput';
 import Button from '@/components/core/buttons/Button';
 import FullPageModal from '@/components/core/modals/FullPageModal';
+import { ImageType } from '@/graphql/generated/generated-types';
 import { useState } from 'react';
 
 export interface UploadImageModalProps {
-  imageType: string;
+  imageType: ImageType;
   objectId: string;
   spaceId: string;
   open: boolean;

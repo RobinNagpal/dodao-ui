@@ -1013,6 +1013,16 @@ export interface GuideUserInput {
   uuid: Scalars['String'];
 }
 
+export enum ImageType {
+  Academy = 'Academy',
+  Course = 'Course',
+  CryptoGelato = 'CryptoGelato',
+  Guide = 'Guide',
+  ShortVideo = 'ShortVideo',
+  Space = 'Space',
+  Tidbits = 'Tidbits'
+}
+
 export interface ImagesResponse {
   __typename?: 'ImagesResponse';
   created: Scalars['Int'];

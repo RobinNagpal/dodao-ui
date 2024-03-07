@@ -2,10 +2,15 @@ import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
 import Button from '@/components/core/buttons/Button';
 import Input from '@/components/core/input/Input';
 import FullPageModal from '@/components/core/modals/FullPageModal';
-import CategoryCheckboxes from '@/components/spaces/Loaders/Discourse/CategoryCheckboxes';
 import { useNotificationContext } from '@/contexts/NotificationContext';
-import { ChatbotFaqFragment, SpaceWithIntegrationsFragment, useChatbotCategoriesQuery, useUpsertChatbotFaqMutation } from '@/graphql/generated/generated-types';
-import React, { useEffect, useState } from 'react';
+import {
+  ChatbotFaqFragment,
+  ImageType,
+  SpaceWithIntegrationsFragment,
+  useChatbotCategoriesQuery,
+  useUpsertChatbotFaqMutation,
+} from '@/graphql/generated/generated-types';
+import React, { useState } from 'react';
 import { v4 } from 'uuid';
 
 export default function UpsertChatbotFAQModal({
@@ -70,7 +75,7 @@ export default function UpsertChatbotFAQModal({
             onUpdate={(content) => setQuestion(content)}
             spaceId={space.id}
             objectId={`chatbot/faqs/question/${faq?.id || 'new-faq'}`}
-            imageType="FAQ"
+            imageType={ImageType.Space}
           />
           <MarkdownEditor
             id={faq?.id + '_answer'}
@@ -81,7 +86,7 @@ export default function UpsertChatbotFAQModal({
             onUpdate={(content) => setAnswer(content)}
             spaceId={space.id}
             objectId={`chatbot/faqs/answer/${faq?.id || 'new-faq'}`}
-            imageType="FAQ"
+            imageType={ImageType.Space}
           />
 
           <Input modelValue={url} onUpdate={(e) => setUrl(e?.toString() || '')} className="mb-4" label="Url" />

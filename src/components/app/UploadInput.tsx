@@ -1,4 +1,5 @@
 import FileUploader from '@/components/app/FileUploader';
+import { ImageType } from '@/graphql/generated/generated-types';
 import { slugify } from '@/utils/auth/slugify';
 import ArrowUpTrayIcon from '@heroicons/react/24/solid/ArrowUpTrayIcon';
 import PhotoIcon from '@heroicons/react/24/solid/PhotoIcon';
@@ -22,7 +23,7 @@ const StyledInput = styled.input`
 interface UploadInputProps {
   label?: string;
   modelValue?: string | null;
-  imageType: string;
+  imageType: ImageType;
   objectId: string;
   spaceId: string;
   onInput: (url: string) => void;

@@ -2,7 +2,7 @@ import UploadInput from '@/components/app/UploadInput';
 import Button from '@/components/core/buttons/Button';
 import FullPageModal from '@/components/core/modals/FullPageModal';
 import { useEditSpaceSocialSettings } from '@/components/spaces/Edit/Social/useEditSpaceSocialSettings';
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { ImageType, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import React, { useState } from 'react';
 
 export default function UpsertSpaceSocialSettingsModal(props: { space: SpaceWithIntegrationsFragment; open: boolean; onClose: () => void }) {
@@ -21,7 +21,7 @@ export default function UpsertSpaceSocialSettingsModal(props: { space: SpaceWith
             <UploadInput
               label="Linked Share PDF Background Image"
               error={inputError('avatar')}
-              imageType="Social/PdfBackground"
+              imageType={ImageType.Tidbits}
               spaceId={props.space.id}
               modelValue={socialSettings.linkedSharePdfBackgroundImage}
               objectId={'linkedSharePdfBackgroundImage'}

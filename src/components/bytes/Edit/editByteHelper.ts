@@ -171,6 +171,7 @@ export function editByteCommonFunctions(setByte: (value: ((prevState: EditByteTy
           required: si.required,
           explanation: si.explanation,
         })),
+        imageUrl: s.imageUrl,
         uuid: s.uuid,
       })),
       thumbnail: byte.thumbnail,

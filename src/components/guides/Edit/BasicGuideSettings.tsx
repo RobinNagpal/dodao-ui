@@ -9,7 +9,7 @@ import StyledSelect from '@/components/core/select/StyledSelect';
 import { EditGuideStepper } from '@/components/guides/Edit/EditGuideStepper';
 import { EditGuideType } from '@/components/guides/Edit/editGuideType';
 import { UseEditGuideHelper } from '@/components/guides/Edit/useEditGuide';
-import { Space } from '@/graphql/generated/generated-types';
+import { ImageType, Space } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
 import { GuideCategoryType, PublishStatus } from '@/types/deprecated/models/enums';
 import { GuideError } from '@/types/errors/error';
@@ -70,7 +70,7 @@ export default function BasicGuideSettings({ editGuideHelper, guide, guideErrors
 
           <UploadInput
             error={guideErrors['thumbnail']}
-            imageType="Guide"
+            imageType={ImageType.Guide}
             spaceId={space.id}
             modelValue={guide.thumbnail}
             objectId={guide.id || 'new-guide' + '-thumbnail'}

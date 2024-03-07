@@ -3,7 +3,7 @@ import UploadInput from '@/components/app/UploadInput';
 import Button from '@/components/core/buttons/Button';
 import Input from '@/components/core/input/Input';
 import { useNotificationContext } from '@/contexts/NotificationContext';
-import { ProjectShortVideo, ShortVideo, ShortVideoInput } from '@/graphql/generated/generated-types';
+import { ImageType, ProjectShortVideo, ShortVideo, ShortVideoInput } from '@/graphql/generated/generated-types';
 import React, { useEffect, useState } from 'react';
 import { v4 } from 'uuid';
 
@@ -111,7 +111,7 @@ export default function EditProjectShortVideoModal({ shortVideoToEdit, spaceId, 
         onUpdate={(v) => updateShortVideoField('description', v?.toString() || '')}
         spaceId={spaceId}
         objectId={shortVideo.id}
-        imageType="ShortVideo"
+        imageType={ImageType.ShortVideo}
         className="w-full"
         label={'Description'}
         error={shortVideoErrors['description']}
@@ -119,7 +119,7 @@ export default function EditProjectShortVideoModal({ shortVideoToEdit, spaceId, 
 
       <UploadInput
         error={shortVideoErrors['thumbnail']}
-        imageType="ShortVideo"
+        imageType={ImageType.ShortVideo}
         spaceId={spaceId}
         modelValue={shortVideo.thumbnail}
         objectId={shortVideo.id || 'new-short-video' + '-thumbnail'}
@@ -129,7 +129,7 @@ export default function EditProjectShortVideoModal({ shortVideoToEdit, spaceId, 
       />
       <UploadInput
         error={shortVideoErrors['videoUrl']}
-        imageType="ShortVideo"
+        imageType={ImageType.ShortVideo}
         spaceId={spaceId}
         modelValue={shortVideo.videoUrl}
         objectId={shortVideo.id || 'new-short-video' + '-short-video'}
