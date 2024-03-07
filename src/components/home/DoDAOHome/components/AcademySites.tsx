@@ -31,11 +31,6 @@ export function AcademySites() {
         'For those seeking depth, our courses combine texts, diagrams, videos, and interactive questions to provide a rich, 30-60 minute learning journey.',
     },
     {
-      name: 'Take responsibility',
-      description:
-        'Sit minus expedita quam in ullam molestiae dignissimos in harum. Tenetur dolorem iure. Non nesciunt dolorem veniam necessitatibus laboriosam voluptas perspiciatis error.',
-    },
-    {
       name: 'Timelines',
       description:
         'Stay up-to-date with our timelines that track and inform about the latest product developments and releases, keeping customers connected and informed.',
@@ -47,7 +42,7 @@ export function AcademySites() {
       {/* <div className="mx-auto max-w-6xl px-6 lg:px-8"> */}
       <Container size="lg">
         <div className="mx-auto lg:mx-0">
-          <SectionHeading number="1" id="academy-sites-title">
+          <SectionHeading number="2" id="academy-sites-title">
             Academy Sites
           </SectionHeading>
           <p className="mt-6 text-lg leading-8 text-gray-600">

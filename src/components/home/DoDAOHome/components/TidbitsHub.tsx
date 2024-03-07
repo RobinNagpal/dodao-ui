@@ -3,11 +3,11 @@ import { SectionHeading } from './SectionHeading';
 
 export function TidbitsHub() {
   return (
-    <section id="tidibits-hub" aria-labelledby="tidibits-hub-title" className="scroll-mt-14 py-16 sm:scroll-mt-32 sm:py-20 lg:py-32">
+    <section id="tidibits-hub" aria-labelledby="tidibits-hub-title" className="scroll-mt-14 py-16 sm:scroll-mt-32 sm:py-20 lg:py-32 text-left">
       <Container size="lg">
         <div className="mx-auto max-w-6xl px-6 lg:px-8">
-          <SectionHeading number="2" id="tidibits-hub-title">
-            Tidbits Hub
+          <SectionHeading number="1" id="tidibits-hub-title">
+            TidbitsHub
           </SectionHeading>
           <div className="overflow-hidden">
             <div className="mx-auto max-w-7xl pt-8">

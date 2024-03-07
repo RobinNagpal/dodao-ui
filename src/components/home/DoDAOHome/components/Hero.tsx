@@ -1,16 +1,12 @@
+import coverImage from '@/images/DoDAOHomePage/cover.png';
 import Image from 'next/image';
 
 import { Button } from './Button';
 import { GridPattern } from './GridPattern';
-import { StarRating } from './StarRating';
-import coverImage from '@/images/DoDAOHomePage/cover.png';
 
 function Testimonial() {
   return (
     <figure className="relative mx-auto max-w-md text-center lg:mx-0 lg:text-left">
-      <div className="flex justify-center text-blue-600 lg:justify-start">
-        <StarRating />
-      </div>
       <blockquote className="mt-2">
         <p className="font-display text-xl font-medium text-slate-900">“The more informed your customers are, the more empowered they feel.”</p>
       </blockquote>
