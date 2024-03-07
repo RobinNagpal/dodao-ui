@@ -168,10 +168,8 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space }: W
   const showQuestionsCompletionWarning = nextButtonClicked && (!isQuestionAnswered() || !isDiscordConnected() || !isUserInputComplete());
 
   return (
-    <div className="h-full w-full flex flex-col justify-between overflow-auto py-4 lg:px-4 sm:px-2">
-      <div
-        className={`h-full w-full flex flex-col flex-grow items-center justify-center ${styles.contentContainer} ${transitionClasses[transitionState]} ${styles.stepContent}`}
-      >
+    <div className="h-full w-full flex flex-col justify-between my-12 lg:px-4 sm:px-2">
+      <div className={`h-full w-full flex flex-col flex-grow items-center justify-center  ${transitionClasses[transitionState]} ${styles.stepContent}`}>
         {!stepItems.some(isQuestion) && false && (
           <div>
             <img src="https://imagen.research.google/main_gallery_images/cactus.jpg" alt="byte" className={'px-2 rounded-lg sm:px-0  ' + styles.byteImage} />
@@ -181,7 +179,7 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space }: W
           <h1 className={`text-4xl lg:text-6xl`}>{step.name || byte.name}</h1>
         </div>
 
-        <div className="mt-4">
+        <div className="mt-4 text-left">
           <div dangerouslySetInnerHTML={{ __html: stepContents }} className={`markdown-body text-lg lg:text-2xl px-2 sm:px-0`} />
           {stepItems.map((stepItem: ByteStepItemFragment, index) => {
             if (isQuestion(stepItem)) {
