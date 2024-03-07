@@ -16,9 +16,9 @@ export function AIChatbot() {
               <div className="lg:col-end-1 lg:w-full lg:max-w-lg lg:pb-8">
                 <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">AI Chatbot</h2>
                 <p className="mt-6 text-lg leading-8 text-gray-600">
-                  Enter a new dimension of support with our AI Chatbot, designed to be your customers' personal learning assistant. Ready to respond 24/7, this
-                  intelligent tool simplifies complicated subjects, providing immediate, accessible answers. For every question, our AI Chatbot stands by to
-                  enhance your customers' understanding, ensuring a continuous and effortless educational experience.
+                  Enter a new dimension of support with our AI Chatbot, designed to be your customers&apos; personal learning assistant. Ready to respond 24/7,
+                  this intelligent tool simplifies complicated subjects, providing immediate, accessible answers. For every question, our AI Chatbot stands by
+                  to enhance your customers&apos; understanding, ensuring a continuous and effortless educational experience.
                 </p>
               </div>
               <div className="flex flex-wrap items-start justify-end gap-6 sm:gap-8 lg:contents">

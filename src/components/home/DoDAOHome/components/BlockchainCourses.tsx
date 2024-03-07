@@ -35,7 +35,7 @@ export function BlockchainCourses() {
                     </p>
                     <p className="mt-6 text-lg leading-8 text-gray-600">
                       From understanding the basics to mastering advanced concepts, our educational journey is designed to empower enthusiasts, students, and
-                      organizations alike. With DoDAO's blockchain courses, you're stepping into a new era of digital innovation and opportunity.
+                      organizations alike. With DoDAO&apos;s blockchain courses, you&apos;re stepping into a new era of digital innovation and opportunity.
                     </p>
                   </div>
                 </div>

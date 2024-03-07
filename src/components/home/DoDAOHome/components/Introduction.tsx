@@ -7,9 +7,9 @@ export function Introduction() {
       <Container className="text-lg tracking-tight text-slate-700">
         <p className="font-display text-4xl font-bold tracking-tight text-slate-900">Welcome to DoDAO: Where Learning Meets Simplicity</p>
         <p className="mt-4">
-          In a world brimming with information, true learning lies in understanding. That's where DoDAO stands out. We’re not just a company; we’re educators at
-          heart, committed to clarifying the complicated. We have expertise in crafting educational experiences within the fintech domain Through years of
-          refining our approach, we have mastered the art of customer education.
+          In a world brimming with information, true learning lies in understanding. That&apos;s where DoDAO stands out. We’re not just a company; we’re
+          educators at heart, committed to clarifying the complicated. We have expertise in crafting educational experiences within the fintech domain Through
+          years of refining our approach, we have mastered the art of customer education.
         </p>
         <p className="mt-4">
           Our methods ensure that no matter the complexity of the topic, the learning remains engaging, memorable, and most importantly, understandable. Through
