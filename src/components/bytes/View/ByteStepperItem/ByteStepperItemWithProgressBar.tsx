@@ -168,9 +168,9 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space }: W
   const showQuestionsCompletionWarning = nextButtonClicked && (!isQuestionAnswered() || !isDiscordConnected() || !isUserInputComplete());
 
   return (
-    <div className="h-full w-full flex flex-col justify-between my-12 lg:px-4 sm:px-2">
+    <div className="h-full w-full flex flex-col justify-between py-12 lg:px-4 sm:px-2">
       <div className={`h-full w-full flex flex-col flex-grow items-center justify-center  ${transitionClasses[transitionState]} ${styles.stepContent}`}>
-        {!stepItems.some(isQuestion) && false && (
+        {!stepItems.some(isQuestion) && (
           <div>
             <img src="https://imagen.research.google/main_gallery_images/cactus.jpg" alt="byte" className={'px-2 rounded-lg sm:px-0  ' + styles.byteImage} />
           </div>

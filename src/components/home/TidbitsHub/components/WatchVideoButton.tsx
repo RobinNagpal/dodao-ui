@@ -30,7 +30,7 @@ function VideoFullScreenModal({ open, onClose }: VideoFullScreenModalProps) {
               autoPlay={true}
               style={{ maxHeight: '80vh', maxWidth: '100vw' }}
             >
-              <source src={'https://d31h13bdjwgzxs.cloudfront.net/tidbithub/Banks.mp4'} type="video/mp4" />
+              <source src={'https://d31h13bdjwgzxs.cloudfront.net/tidbithub/Tidbits_Hub-Banks.mp4'} type="video/mp4" />
             </video>
           </div>
         </div>

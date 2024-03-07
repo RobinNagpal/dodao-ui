@@ -121,7 +121,8 @@ export interface AuthSettingsInput {
 export interface Byte {
   __typename?: 'Byte';
   admins: Array<Scalars['String']>;
-    content: Scalars['String'];
+  byteStyle?: Maybe<Scalars['String']>;
+  content: Scalars['String'];
   created: Scalars['String'];
   id: Scalars['String'];
   name: Scalars['String'];
@@ -215,14 +216,16 @@ export interface ByteSocialShare {
 export interface ByteStep {
   __typename?: 'ByteStep';
   content: Scalars['String'];
-    name: Scalars['String'];
+  imageUrl?: Maybe<Scalars['String']>;
+  name: Scalars['String'];
   stepItems: Array<ByteStepItem>;
   uuid: Scalars['String'];
 }
 
 export interface ByteStepInput {
   content: Scalars['String'];
-    name: Scalars['String'];
+  imageUrl?: InputMaybe<Scalars['String']>;
+  name: Scalars['String'];
   stepItems: Array<StepItemInputGenericInput>;
   uuid: Scalars['String'];
 }
@@ -1922,7 +1925,8 @@ export interface ProjectByte {
   __typename?: 'ProjectByte';
   admins: Array<Scalars['String']>;
   archived: Scalars['Boolean'];
-    content: Scalars['String'];
+  byteStyle?: Maybe<Scalars['String']>;
+  content: Scalars['String'];
   created: Scalars['String'];
   id: Scalars['String'];
   name: Scalars['String'];
@@ -2772,7 +2776,8 @@ export interface UpsertAcademyTaskInput {
 
 export interface UpsertByteInput {
   admins: Array<Scalars['String']>;
-    content: Scalars['String'];
+  byteStyle?: InputMaybe<Scalars['String']>;
+  content: Scalars['String'];
   created: Scalars['String'];
   id: Scalars['String'];
   name: Scalars['String'];
@@ -2859,7 +2864,8 @@ export interface UpsertProjectByteCollectionInput {
 
 export interface UpsertProjectByteInput {
   admins: Array<Scalars['String']>;
-    content: Scalars['String'];
+  byteStyle?: InputMaybe<Scalars['String']>;
+  content: Scalars['String'];
   created: Scalars['String'];
   id: Scalars['String'];
   name: Scalars['String'];
@@ -3149,9 +3155,9 @@ type ByteStepItem_UserDiscordConnect_Fragment = { __typename: 'UserDiscordConnec
 
 export type ByteStepItemFragment = ByteStepItem_ByteQuestion_Fragment | ByteStepItem_ByteUserInput_Fragment | ByteStepItem_UserDiscordConnect_Fragment;
 
-export type ByteStepFragment = { __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> };
+export type ByteStepFragment = { __typename?: 'ByteStep', content: string, name: string, uuid: string, imageUrl?: string | null, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> };
 
-export type ByteDetailsFragment = { __typename?: 'Byte', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, admins: Array<string>, tags: Array<string>, priority: number, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> };
+export type ByteDetailsFragment = { __typename?: 'Byte', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, admins: Array<string>, tags: Array<string>, priority: number, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, imageUrl?: string | null, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> };
 
 export type ByteDetailsFragmentFragment = { __typename?: 'Byte', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, admins: Array<string>, tags: Array<string>, priority: number, videoUrl?: string | null, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> };
 
@@ -3179,7 +3185,7 @@ export type UpsertByteMutationVariables = Exact<{
 }>;
 
 
-export type UpsertByteMutation = { __typename?: 'Mutation', payload: { __typename?: 'Byte', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, admins: Array<string>, tags: Array<string>, priority: number, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> } };
+export type UpsertByteMutation = { __typename?: 'Mutation', payload: { __typename?: 'Byte', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, admins: Array<string>, tags: Array<string>, priority: number, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, imageUrl?: string | null, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> } };
 
 export type ChatbotSubCategoryFragment = { __typename?: 'ChatbotSubcategory', name: string, key: string, description: string };
 
@@ -4613,6 +4619,7 @@ export const ByteStepFragmentDoc = gql`
   }
   name
   uuid
+  imageUrl
 }
     ${ByteStepItemFragmentDoc}`;
 export const ByteDetailsFragmentDoc = gql`
