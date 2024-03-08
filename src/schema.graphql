@@ -1028,6 +1028,7 @@ type Mutation {
   createSummaryOfContent(input: String!): OpenAITextResponse!
   createWebsiteScrapingInfo(baseUrl: String!, ignoreHashInUrl: Boolean!, ignoreQueryParams: Boolean!, scrapingStartUrl: String!, spaceId: String!): WebsiteScrapingInfo!
   deleteAndPullCourseRepo(courseKey: String!, spaceId: String!): GitCourse!
+  deleteByte(byteId: String!, spaceId: String!): Boolean!
   deleteByteCollection(byteCollectionId: String!): Boolean!
   deleteChatbotCategory(id: String!, spaceId: String!): Boolean!
   deleteChatbotFAQ(id: String!, spaceId: String!): Boolean!

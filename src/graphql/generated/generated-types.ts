@@ -1097,6 +1097,7 @@ export interface Mutation {
   createSummaryOfContent: OpenAiTextResponse;
   createWebsiteScrapingInfo: WebsiteScrapingInfo;
   deleteAndPullCourseRepo: GitCourse;
+  deleteByte: Scalars['Boolean'];
   deleteByteCollection: Scalars['Boolean'];
   deleteChatbotCategory: Scalars['Boolean'];
   deleteChatbotFAQ: Scalars['Boolean'];
@@ -1300,6 +1301,12 @@ export interface MutationCreateWebsiteScrapingInfoArgs {
 
 export interface MutationDeleteAndPullCourseRepoArgs {
   courseKey: Scalars['String'];
+  spaceId: Scalars['String'];
+}
+
+
+export interface MutationDeleteByteArgs {
+  byteId: Scalars['String'];
   spaceId: Scalars['String'];
 }
 
@@ -3196,6 +3203,14 @@ export type UpsertByteMutationVariables = Exact<{
 
 
 export type UpsertByteMutation = { __typename?: 'Mutation', payload: { __typename?: 'Byte', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, admins: Array<string>, tags: Array<string>, priority: number, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, imageUrl?: string | null, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> } };
+
+export type DeleteByteMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+  byteId: Scalars['String'];
+}>;
+
+
+export type DeleteByteMutation = { __typename?: 'Mutation', payload: boolean };
 
 export type ChatbotSubCategoryFragment = { __typename?: 'ChatbotSubcategory', name: string, key: string, description: string };
 
@@ -6172,6 +6187,38 @@ export function useUpsertByteMutation(baseOptions?: Apollo.MutationHookOptions<U
 export type UpsertByteMutationHookResult = ReturnType<typeof useUpsertByteMutation>;
 export type UpsertByteMutationResult = Apollo.MutationResult<UpsertByteMutation>;
 export type UpsertByteMutationOptions = Apollo.BaseMutationOptions<UpsertByteMutation, UpsertByteMutationVariables>;
+export const DeleteByteDocument = gql`
+    mutation DeleteByte($spaceId: String!, $byteId: String!) {
+  payload: deleteByte(spaceId: $spaceId, byteId: $byteId)
+}
+    `;
+export type DeleteByteMutationFn = Apollo.MutationFunction<DeleteByteMutation, DeleteByteMutationVariables>;
+
+/**
+ * __useDeleteByteMutation__
+ *
+ * To run a mutation, you first call `useDeleteByteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteByteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteByteMutation, { data, loading, error }] = useDeleteByteMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      byteId: // value for 'byteId'
+ *   },
+ * });
+ */
+export function useDeleteByteMutation(baseOptions?: Apollo.MutationHookOptions<DeleteByteMutation, DeleteByteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteByteMutation, DeleteByteMutationVariables>(DeleteByteDocument, options);
+      }
+export type DeleteByteMutationHookResult = ReturnType<typeof useDeleteByteMutation>;
+export type DeleteByteMutationResult = Apollo.MutationResult<DeleteByteMutation>;
+export type DeleteByteMutationOptions = Apollo.BaseMutationOptions<DeleteByteMutation, DeleteByteMutationVariables>;
 export const ChatbotCategoriesDocument = gql`
     query ChatbotCategories($spaceId: String!) {
   chatbotCategories(spaceId: $spaceId) {

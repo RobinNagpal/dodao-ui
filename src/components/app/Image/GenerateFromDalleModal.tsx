@@ -1,5 +1,6 @@
 import GenerateImageUsingDalleAdvanced from '@/components/app/Image/GenerateImageUsingDalleAdvanced';
 import Button from '@/components/core/buttons/Button';
+import FullPageLoader from '@/components/core/loaders/FullPageLoading';
 import LoadingSpinner from '@/components/core/loaders/LoadingSpinner';
 import FullPageModal from '@/components/core/modals/FullPageModal';
 import { ChatCompletionRequestMessageRoleEnum, useAskChatCompletionAiMutation, useGenerateImageMutation } from '@/graphql/generated/generated-types';
@@ -68,12 +69,12 @@ export default function GenerateFromDalleModal({ open, onClose, onInput, generat
 
             {generatingImage && (
               <div className="h-[60vh] flex items-center justify-center">
-                <LoadingSpinner />
+                <FullPageLoader />
               </div>
             )}
-            {!generatingImage && <img src={generatedImageUrl} alt="Generated Image" className="h-full w-full" />}
+            {!generatingImage && <img src={generatedImageUrl} alt="Generated Image" className="h-full w-full my-4" />}
           </div>
-          <div>
+          <div className="mt-4 flex justify-between">
             <Button onClick={() => onClose()}>Cancel</Button>
             <Button disabled={!generatedImageUrl} variant="contained" primary onClick={() => onInput(generatedImageUrl as string)} className="ml-4">
               Use this image
