@@ -7,10 +7,12 @@ import { AIChatbot } from './components/AIChatbot';
 import { BlockchainCourses } from './components/BlockchainCourses';
 import { BlockchainDevelopmentTooling } from './components/BlockchainDevelopmentTooling';
 import { Footer } from './components/Footer';
+import DoDAOHelpButton from './components/DoDAOHelpButton';
 
 export default function DoDAOHome() {
   return (
     <>
+      <DoDAOHelpButton />
       <Hero />
       <Introduction />
       <NavBar />
