@@ -9,7 +9,6 @@ import { BlockchainCourses } from './components/BlockchainCourses';
 import { BlockchainDevelopmentTooling } from './components/BlockchainDevelopmentTooling';
 import { Footer } from './components/Footer';
 import HelpButton from 'tidbits-help-icon';
-import dynamic from 'next/dynamic';
 
 export default function DoDAOHome() {
   const url = 'https://dodao-tidbits.tidbitshub.org/tidbit-collections';
