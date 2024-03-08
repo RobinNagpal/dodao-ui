@@ -1,4 +1,3 @@
-'use client';
 import { Hero } from './components/Hero';
 import { Introduction } from './components/Introduction';
 import { NavBar } from './components/NavBar';
@@ -8,15 +7,12 @@ import { AIChatbot } from './components/AIChatbot';
 import { BlockchainCourses } from './components/BlockchainCourses';
 import { BlockchainDevelopmentTooling } from './components/BlockchainDevelopmentTooling';
 import { Footer } from './components/Footer';
-import HelpButton from 'tidbits-help-icon';
+import DoDAOHelpButton from './components/DoDAOHelpButton';
 
 export default function DoDAOHome() {
-  const url = 'https://dodao-tidbits.tidbitshub.org/tidbit-collections';
-  if (typeof Window !== 'undefined') {
-    HelpButton(url);
-  }
   return (
     <>
+      <DoDAOHelpButton />
       <Hero />
       <Introduction />
       <NavBar />
