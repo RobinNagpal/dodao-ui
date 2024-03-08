@@ -10948,10 +10948,10 @@ thread-stream@^0.15.1:
   resolved "https://registry.npmjs.org/through/-/through-2.3.8.tgz"
   integrity sha512-w89qg7PI8wAdvX60bMDP+bFoD5Dvhm9oLheFp5O4a2QF0cSBGsBX4qZmadPMvVqlLJBBci+WqGGOAPvcDeNSVg==
 
-tidbits-help-icon@^1.0.12:
-  version "1.0.12"
-  resolved "https://registry.yarnpkg.com/tidbits-help-icon/-/tidbits-help-icon-1.0.12.tgz#31481784c7d714d64d0eed050ac86c6f796673d7"
-  integrity sha512-wIQFbGDCRIzBCR6Mi9zlLR4dI54yaKnSjGH7/lzioYgnEACDOVvx1dSDS6vCIdb4h+RmM85OT9bEWb10Fr2FIw==
+tidbits-help-icon@^1.0.13:
+  version "1.0.13"
+  resolved "https://registry.yarnpkg.com/tidbits-help-icon/-/tidbits-help-icon-1.0.13.tgz#79a2ab4a610ca55dda4089890304c2ecf4ae04c2"
+  integrity sha512-MJsg2sjQBpm/mlczdNqbDmbBz1j2+t7APCptqNzHUH98gSRyGT9cvlTA2OnB2PDfn/t5W5rX4/yvlCDeGQRbyw==
 
 tiny-invariant@^1.0.6:
   version "1.3.1"
