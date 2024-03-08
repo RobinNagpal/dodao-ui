@@ -6,10 +6,10 @@ import FullPageLoader from '@/components/core/loaders/FullPageLoading';
 import TopNav from '@/components/main/TopNav/TopNav';
 import TopCryptoTopNav from '@/components/projects/Nav/TopCryptoTopNav';
 import { LoginModalProvider } from '@/contexts/LoginModalContext';
-import Footer from './Footer';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import React, { ReactNode, useEffect, useState } from 'react';
 import styled from 'styled-components';
+import dynamic from 'next/dynamic';
 
 const StyledMain = styled.main`
   background-color: var(--bg-color);
@@ -32,13 +32,30 @@ function PageTopNav(props: { space: SpaceWithIntegrationsFragment }) {
     return <TopCryptoTopNav space={props.space} />;
   }
 
-  // check here if the url starts with /embedded-tidbit-collections
+  //Checking if the url contains embedded-tidbit-collections
+  if (typeof window !== 'undefined') {
+    const currentUrl = window.location.href;
+    if (currentUrl.includes('embedded-tidbit-collections')) {
+      return null;
+    }
+  }
+
   return <TopNav space={props.space} />;
 }
 
 function PageFooter(props: { space: SpaceWithIntegrationsFragment }) {
-  // check here if the url starts with /embedded-tidbit-collections
-  return <Footer spaceType={props.space.type} />;
+  const Footer: React.ComponentType<any> = dynamic(() => import('./Footer'), {
+    ssr: false, // Disable server-side rendering for this component
+  });
+  //Checking if the url contains embedded-tidbit-collections
+  if (typeof window !== 'undefined') {
+    const currentUrl = window.location.href;
+    if (currentUrl.includes('embedded-tidbit-collections')) {
+      return null;
+    }
+  } else {
+    return <Footer spaceType={props.space.type} />;
+  }
 }
 export function BasePage(props: { space: SpaceWithIntegrationsFragment | null; children: ReactNode }) {
   if (props.space?.id) {
