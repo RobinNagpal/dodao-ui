@@ -11,6 +11,10 @@ import React, { ReactNode, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import dynamic from 'next/dynamic';
 
+const Footer: React.ComponentType<any> = dynamic(() => import('./Footer'), {
+  ssr: false, // Disable server-side rendering for this component
+});
+
 const StyledMain = styled.main`
   background-color: var(--bg-color);
   color: var(--text-color);
@@ -44,18 +48,14 @@ function PageTopNav(props: { space: SpaceWithIntegrationsFragment }) {
 }
 
 function PageFooter(props: { space: SpaceWithIntegrationsFragment }) {
-  const Footer: React.ComponentType<any> = dynamic(() => import('./Footer'), {
-    ssr: false, // Disable server-side rendering for this component
-  });
   //Checking if the url contains embedded-tidbit-collections
   if (typeof window !== 'undefined') {
     const currentUrl = window.location.href;
     if (currentUrl.includes('embedded-tidbit-collections')) {
       return null;
     }
-  } else {
-    return <Footer spaceType={props.space.type} />;
   }
+  return <Footer spaceType={props.space.type} />;
 }
 export function BasePage(props: { space: SpaceWithIntegrationsFragment | null; children: ReactNode }) {
   if (props.space?.id) {
