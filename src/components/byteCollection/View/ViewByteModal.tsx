@@ -7,9 +7,9 @@ import PageLoading from '@/components/core/loaders/PageLoading';
 import FullScreenModal from '@/components/core/modals/FullScreenModal';
 import { ByteDetailsFragment, ProjectByteFragment, ProjectFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import getApiResponse from '@/utils/api/getApiResponse';
-import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import styles from './ViewByteModal.module.scss';
+import { useRouter } from 'next/navigation';
 
 export interface ViewByteModalProps {
   space: SpaceWithIntegrationsFragment;
@@ -17,9 +17,16 @@ export interface ViewByteModalProps {
   byteCollectionType: 'byteCollection' | 'projectByteCollection';
   selectedByteCollectionId: string;
   selectedByteId: string;
+  byteCollectionsPageUrl: string;
 }
-export default function ViewByteModal({ space, project, byteCollectionType, selectedByteCollectionId, selectedByteId }: ViewByteModalProps) {
-  const router = useRouter();
+export default function ViewByteModal({
+  space,
+  project,
+  byteCollectionType,
+  selectedByteCollectionId,
+  selectedByteId,
+  byteCollectionsPageUrl,
+}: ViewByteModalProps) {
   const fetchByteFn = async (byteId: string): Promise<ByteDetailsFragment | ProjectByteFragment> => {
     if (byteCollectionType === 'projectByteCollection') {
       return await getApiResponse<ByteDetailsFragment>(space, `projects/${project?.id}/bytes/${byteId}`);
@@ -32,16 +39,18 @@ export default function ViewByteModal({ space, project, byteCollectionType, sele
 
   const viewByteHelper = useViewByteInModal({ space: space, byteId: selectedByteId, stepOrder: 0, fetchByteFn: fetchByteFn });
 
-  const onClose = () => {
-    const byteViewUrl = byteCollectionType === 'byteCollection' ? `/tidbit-collections` : `/projects/view/${project?.id}/tidbit-collections`;
-    router.push(byteViewUrl);
-  };
-
   useEffect(() => {
     viewByteHelper.initialize();
   }, [selectedByteId]);
 
   const { activeStepOrder } = viewByteHelper;
+
+  const router = useRouter();
+
+  function onClose() {
+    console.log('byteCollectionsPageUrl', byteCollectionsPageUrl);
+    router.push(byteCollectionsPageUrl);
+  }
 
   return (
     <FullScreenModal open={true} onClose={onClose} title={viewByteHelper.byteRef?.name || 'Tidbit Details'}>

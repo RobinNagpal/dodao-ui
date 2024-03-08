@@ -11,7 +11,12 @@ export default async function ByteCollections() {
 
   return (
     <PageWrapper>
-      <ByteCollectionsGrid byteCollections={byteCollections} space={space} byteCollectionType={'byteCollection'} />
+      <ByteCollectionsGrid
+        byteCollections={byteCollections}
+        space={space}
+        byteCollectionType={'byteCollection'}
+        byteCollectionsPageUrl={`/tidbit-collections`}
+      />
     </PageWrapper>
   );
 }

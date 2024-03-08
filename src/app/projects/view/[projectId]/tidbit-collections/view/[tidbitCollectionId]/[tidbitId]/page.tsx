@@ -9,7 +9,6 @@ export default async function ByteDetails(props: { params: { projectId: string; 
   const space = (await getSpaceServerSide())!;
   const byteCollections = await getApiResponse<ProjectByteCollectionFragment[]>(space, `projects/${props.params.projectId}/byte-collections`);
   const project = await getApiResponse<ProjectFragment>(space, `projects/${props.params.projectId}`);
-
   return (
     <PageWrapper>
       <ByteCollectionsGrid
@@ -19,6 +18,7 @@ export default async function ByteDetails(props: { params: { projectId: string; 
         project={project}
         selectedByteId={props.params.tidbitId}
         selectedByteCollectionId={props.params.tidbitCollectionId}
+        byteCollectionsPageUrl={`/projects/view/${project?.id}/tidbit-collections`}
       />
     </PageWrapper>
   );
