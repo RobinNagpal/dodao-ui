@@ -55,7 +55,7 @@ export function ChildLayout({ children, session, space, spaceError }: InternalLa
     <Web3ReactProviderWrapper>
       <ApolloProvider client={client}>
         <SessionProvider session={session}>
-          <BasePage space={space}>{children}</BasePage>
+          <BasePage space={space!}>{children}</BasePage>
         </SessionProvider>
         <NotificationWrapper />
       </ApolloProvider>
