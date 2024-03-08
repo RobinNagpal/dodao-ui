@@ -32,16 +32,22 @@ function PageTopNav(props: { space: SpaceWithIntegrationsFragment }) {
     return <TopCryptoTopNav space={props.space} />;
   }
 
+  // check here if the url starts with /embedded-tidbit-collections
   return <TopNav space={props.space} />;
 }
-export function BasePage(props: { space?: SpaceWithIntegrationsFragment | null; children: ReactNode }) {
+
+function PageFooter(props: { space: SpaceWithIntegrationsFragment }) {
+  // check here if the url starts with /embedded-tidbit-collections
+  return <Footer spaceType={props.space.type} />;
+}
+export function BasePage(props: { space: SpaceWithIntegrationsFragment | null; children: ReactNode }) {
   if (props.space?.id) {
     return (
       <LoginModalProvider>
         <LoginModal />
         <PageTopNav space={props.space} />
         <StyledMain>{props.children}</StyledMain>
-        <Footer spaceType={props.space.type} />
+        <PageFooter space={props.space} />
       </LoginModalProvider>
     );
   }
