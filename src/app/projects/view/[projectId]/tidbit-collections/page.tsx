@@ -3,7 +3,6 @@ import PrivateArchivedToggle from '@/components/projects/List/PrivateArchivedTog
 import { ProjectByteCollectionFragment, ProjectFragment } from '@/graphql/generated/generated-types';
 import getApiResponse from '@/utils/api/getApiResponse';
 import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
-import { useRouter } from 'next/navigation';
 import React from 'react';
 
 async function ProjectTidbitCollectionsPage(props: { params: { projectId: string }; searchParams: { [key: string]: string | string[] | undefined } }) {
@@ -15,12 +14,6 @@ async function ProjectTidbitCollectionsPage(props: { params: { projectId: string
 
   const tidbitsCollectionsToShow = byteCollections.filter((bytecollection) => bytecollection.archived === showArchived);
 
-  const router = useRouter();
-  const onViewByteModalClosed = () => {
-    const byteCollectionsViewUrl = `/projects/view/${project?.id}/tidbit-collections`;
-    router.push(byteCollectionsViewUrl);
-  };
-
   return (
     <>
       <div className="flex justify-end mb-4">
@@ -31,7 +24,7 @@ async function ProjectTidbitCollectionsPage(props: { params: { projectId: string
         project={project}
         byteCollections={tidbitsCollectionsToShow}
         byteCollectionType={'projectByteCollection'}
-        onViewByteModalClosed={onViewByteModalClosed}
+        byteCollectionsPageUrl={`/projects/view/${project?.id}/tidbit-collections`}
       />
     </>
   );

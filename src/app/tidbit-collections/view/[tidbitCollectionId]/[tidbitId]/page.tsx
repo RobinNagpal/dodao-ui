@@ -8,8 +8,6 @@ import React from 'react';
 export default async function ByteDetails(props: { params: { tidbitCollectionId?: string; tidbitId?: string } }) {
   const space = (await getSpaceServerSide())!;
   const byteCollections = await getApiResponse<ByteCollectionFragment[]>(space, 'byte-collections');
-  // const byteCollectionsViewUrl = space.type === 'TidbitsSite' ? `/embedded-tidbits-collections` : `/tidbit-collections`;
-  const byteCollectionsViewUrl = `/tidbit-collections`;
 
   return (
     <PageWrapper>
@@ -19,7 +17,7 @@ export default async function ByteDetails(props: { params: { tidbitCollectionId?
         byteCollectionType={'byteCollection'}
         selectedByteId={props.params.tidbitId}
         selectedByteCollectionId={props.params.tidbitCollectionId}
-        onViewByteModalClosedUrl={byteCollectionsViewUrl}
+        byteCollectionsPageUrl={'/tidbit-collections'}
       />
     </PageWrapper>
   );

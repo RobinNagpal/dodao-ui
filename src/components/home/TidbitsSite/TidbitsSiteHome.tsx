@@ -10,8 +10,6 @@ export interface TidbitsSiteHomeProps {
 }
 export default function TidbitsSiteHome(props: TidbitsSiteHomeProps) {
   const { space, byteCollections } = props;
-  const byteCollectionsViewUrl = `/embedded-tidbit-collections`;
-
   return (
     space && (
       <PageWrapper>
@@ -19,7 +17,7 @@ export default function TidbitsSiteHome(props: TidbitsSiteHomeProps) {
           byteCollections={byteCollections}
           space={space}
           byteCollectionType={'byteCollection'}
-          onViewByteModalClosedUrl={byteCollectionsViewUrl}
+          byteCollectionsPageUrl={`/tidbit-collections`}
         />
       </PageWrapper>
     )

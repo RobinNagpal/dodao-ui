@@ -3,7 +3,6 @@ import { ProjectByteCollectionFragment, ProjectFragment } from '@/graphql/genera
 import getApiResponse from '@/utils/api/getApiResponse';
 import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
 import { Metadata } from 'next';
-import { useRouter } from 'next/navigation';
 import React from 'react';
 
 type ProjectHomePageProps = {
@@ -31,19 +30,13 @@ async function ProjectHomePage(props: ProjectHomePageProps) {
 
   const tidbitsCollectionsToShow = byteCollections.filter((bytecollection) => !bytecollection.archived);
 
-  const router = useRouter();
-  const onViewByteModalClosed = () => {
-    const byteCollectionsViewUrl = `/projects/view/${project?.id}/tidbit-collections`;
-    router.push(byteCollectionsViewUrl);
-  };
-
   return (
     <ByteCollectionsGrid
       space={space}
       project={project}
       byteCollections={tidbitsCollectionsToShow}
       byteCollectionType={'projectByteCollection'}
-      onViewByteModalClosed={onViewByteModalClosed}
+      byteCollectionsPageUrl={`/projects/view/${project?.id}/tidbit-collections`}
     />
   );
 }

@@ -17,7 +17,7 @@ export interface ViewByteModalProps {
   byteCollectionType: 'byteCollection' | 'projectByteCollection';
   selectedByteCollectionId: string;
   selectedByteId: string;
-  onViewByteModalClosedUrl: string;
+  byteCollectionsPageUrl: string;
 }
 export default function ViewByteModal({
   space,
@@ -25,7 +25,7 @@ export default function ViewByteModal({
   byteCollectionType,
   selectedByteCollectionId,
   selectedByteId,
-  onViewByteModalClosedUrl,
+  byteCollectionsPageUrl,
 }: ViewByteModalProps) {
   const fetchByteFn = async (byteId: string): Promise<ByteDetailsFragment | ProjectByteFragment> => {
     if (byteCollectionType === 'projectByteCollection') {
@@ -48,7 +48,8 @@ export default function ViewByteModal({
   const router = useRouter();
 
   function onClose() {
-    router.push(onViewByteModalClosedUrl);
+    console.log('byteCollectionsPageUrl', byteCollectionsPageUrl);
+    router.push(byteCollectionsPageUrl);
   }
 
   return (

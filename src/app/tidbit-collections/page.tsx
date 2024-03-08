@@ -9,15 +9,13 @@ export default async function ByteCollections() {
   const space = (await getSpaceServerSide())!;
   const byteCollections = await getApiResponse<ByteCollectionFragment[]>(space, 'byte-collections');
 
-  const byteCollectionsViewUrl = `/tidbit-collections`;
-
   return (
     <PageWrapper>
       <ByteCollectionsGrid
         byteCollections={byteCollections}
         space={space}
         byteCollectionType={'byteCollection'}
-        onViewByteModalClosedUrl={byteCollectionsViewUrl}
+        byteCollectionsPageUrl={`/tidbit-collections`}
       />
     </PageWrapper>
   );
