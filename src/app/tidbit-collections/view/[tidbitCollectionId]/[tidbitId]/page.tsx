@@ -3,17 +3,13 @@ import PageWrapper from '@/components/core/page/PageWrapper';
 import { ByteCollectionFragment } from '@/graphql/generated/generated-types';
 import getApiResponse from '@/utils/api/getApiResponse';
 import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
-import { useRouter } from 'next/navigation';
 import React from 'react';
 
 export default async function ByteDetails(props: { params: { tidbitCollectionId?: string; tidbitId?: string } }) {
   const space = (await getSpaceServerSide())!;
   const byteCollections = await getApiResponse<ByteCollectionFragment[]>(space, 'byte-collections');
-  const router = useRouter();
-  const onViewByteModalClosed = () => {
-    const byteCollectionsViewUrl = `/tidbit-collections`;
-    router.push(byteCollectionsViewUrl);
-  };
+  // const byteCollectionsViewUrl = space.type === 'TidbitsSite' ? `/embedded-tidbits-collections` : `/tidbit-collections`;
+  const byteCollectionsViewUrl = `/tidbit-collections`;
 
   return (
     <PageWrapper>
@@ -23,7 +19,7 @@ export default async function ByteDetails(props: { params: { tidbitCollectionId?
         byteCollectionType={'byteCollection'}
         selectedByteId={props.params.tidbitId}
         selectedByteCollectionId={props.params.tidbitCollectionId}
-        onViewByteModalClosed={onViewByteModalClosed}
+        onViewByteModalClosedUrl={byteCollectionsViewUrl}
       />
     </PageWrapper>
   );

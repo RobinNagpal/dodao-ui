@@ -9,6 +9,7 @@ import { ByteDetailsFragment, ProjectByteFragment, ProjectFragment, SpaceWithInt
 import getApiResponse from '@/utils/api/getApiResponse';
 import { useEffect } from 'react';
 import styles from './ViewByteModal.module.scss';
+import { useRouter } from 'next/navigation';
 
 export interface ViewByteModalProps {
   space: SpaceWithIntegrationsFragment;
@@ -16,7 +17,7 @@ export interface ViewByteModalProps {
   byteCollectionType: 'byteCollection' | 'projectByteCollection';
   selectedByteCollectionId: string;
   selectedByteId: string;
-  onViewByteModalClosed: () => void;
+  onViewByteModalClosedUrl: string;
 }
 export default function ViewByteModal({
   space,
@@ -24,7 +25,7 @@ export default function ViewByteModal({
   byteCollectionType,
   selectedByteCollectionId,
   selectedByteId,
-  onViewByteModalClosed,
+  onViewByteModalClosedUrl,
 }: ViewByteModalProps) {
   const fetchByteFn = async (byteId: string): Promise<ByteDetailsFragment | ProjectByteFragment> => {
     if (byteCollectionType === 'projectByteCollection') {
@@ -44,8 +45,14 @@ export default function ViewByteModal({
 
   const { activeStepOrder } = viewByteHelper;
 
+  const router = useRouter();
+
+  function onClose() {
+    router.push(onViewByteModalClosedUrl);
+  }
+
   return (
-    <FullScreenModal open={true} onClose={onViewByteModalClosed} title={viewByteHelper.byteRef?.name || 'Tidbit Details'}>
+    <FullScreenModal open={true} onClose={onClose} title={viewByteHelper.byteRef?.name || 'Tidbit Details'}>
       <div id="byte-container" className={`flex flex-col  items-center w-full relative inset-0 ${styles.byteContainer} `}>
         <ContinuousStepIndicatorProgress steps={viewByteHelper.byteRef?.steps?.length || 2} currentStep={activeStepOrder + 1} />
         <div className={`${styles.styledByteCard} relative my-6 rounded-lg h-full overflow-scroll`}>
