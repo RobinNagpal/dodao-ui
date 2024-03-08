@@ -6,10 +6,14 @@ import FullPageLoader from '@/components/core/loaders/FullPageLoading';
 import TopNav from '@/components/main/TopNav/TopNav';
 import TopCryptoTopNav from '@/components/projects/Nav/TopCryptoTopNav';
 import { LoginModalProvider } from '@/contexts/LoginModalContext';
-import Footer from './Footer';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import React, { ReactNode, useEffect, useState } from 'react';
 import styled from 'styled-components';
+import dynamic from 'next/dynamic';
+
+const Footer: React.ComponentType<any> = dynamic(() => import('./Footer'), {
+  ssr: false, // Disable server-side rendering for this component
+});
 
 const StyledMain = styled.main`
   background-color: var(--bg-color);
@@ -32,16 +36,35 @@ function PageTopNav(props: { space: SpaceWithIntegrationsFragment }) {
     return <TopCryptoTopNav space={props.space} />;
   }
 
+  //Checking if the url contains embedded-tidbit-collections
+  if (typeof window !== 'undefined') {
+    const currentUrl = window.location.href;
+    if (currentUrl.includes('embedded-tidbit-collections')) {
+      return null;
+    }
+  }
+
   return <TopNav space={props.space} />;
 }
-export function BasePage(props: { space?: SpaceWithIntegrationsFragment | null; children: ReactNode }) {
+
+function PageFooter(props: { space: SpaceWithIntegrationsFragment }) {
+  //Checking if the url contains embedded-tidbit-collections
+  if (typeof window !== 'undefined') {
+    const currentUrl = window.location.href;
+    if (currentUrl.includes('embedded-tidbit-collections')) {
+      return null;
+    }
+  }
+  return <Footer spaceType={props.space.type} />;
+}
+export function BasePage(props: { space: SpaceWithIntegrationsFragment | null; children: ReactNode }) {
   if (props.space?.id) {
     return (
       <LoginModalProvider>
         <LoginModal />
         <PageTopNav space={props.space} />
         <StyledMain>{props.children}</StyledMain>
-        <Footer spaceType={props.space.type} />
+        <PageFooter space={props.space} />
       </LoginModalProvider>
     );
   }
