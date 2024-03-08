@@ -1,6 +1,7 @@
 import ByteCollectionsGrid from '@/components/byteCollection/View/ByteCollectionsGrid';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import { ByteCollectionFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 
 export interface TidbitsSiteHomeProps {
@@ -9,10 +10,20 @@ export interface TidbitsSiteHomeProps {
 }
 export default function TidbitsSiteHome(props: TidbitsSiteHomeProps) {
   const { space, byteCollections } = props;
+  const router = useRouter();
+  const onViewByteModalClosed = () => {
+    router.push('/');
+  };
+
   return (
     space && (
       <PageWrapper>
-        <ByteCollectionsGrid byteCollections={byteCollections} space={space} byteCollectionType={'byteCollection'} />
+        <ByteCollectionsGrid
+          byteCollections={byteCollections}
+          space={space}
+          byteCollectionType={'byteCollection'}
+          onViewByteModalClosed={onViewByteModalClosed}
+        />
       </PageWrapper>
     )
   );

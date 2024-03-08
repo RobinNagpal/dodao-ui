@@ -13,6 +13,7 @@ export default function ByteCollectionsGrid({
 
   selectedByteCollectionId,
   selectedByteId,
+  onViewByteModalClosed,
 }: {
   byteCollections?: ByteCollectionFragment[] | ProjectByteCollectionFragment[];
   space: SpaceWithIntegrationsFragment;
@@ -20,6 +21,7 @@ export default function ByteCollectionsGrid({
   byteCollectionType: 'byteCollection' | 'projectByteCollection';
   selectedByteCollectionId?: string;
   selectedByteId?: string;
+  onViewByteModalClosed: () => void;
 }) {
   return (
     <>
@@ -38,6 +40,7 @@ export default function ByteCollectionsGrid({
           byteCollectionType={byteCollectionType}
           selectedByteCollectionId={selectedByteCollectionId}
           selectedByteId={selectedByteId}
+          onViewByteModalClosed={onViewByteModalClosed}
         />
       )}
     </>

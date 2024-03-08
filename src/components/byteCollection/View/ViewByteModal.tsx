@@ -7,7 +7,6 @@ import PageLoading from '@/components/core/loaders/PageLoading';
 import FullScreenModal from '@/components/core/modals/FullScreenModal';
 import { ByteDetailsFragment, ProjectByteFragment, ProjectFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import getApiResponse from '@/utils/api/getApiResponse';
-import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import styles from './ViewByteModal.module.scss';
 
@@ -17,9 +16,16 @@ export interface ViewByteModalProps {
   byteCollectionType: 'byteCollection' | 'projectByteCollection';
   selectedByteCollectionId: string;
   selectedByteId: string;
+  onViewByteModalClosed: () => void;
 }
-export default function ViewByteModal({ space, project, byteCollectionType, selectedByteCollectionId, selectedByteId }: ViewByteModalProps) {
-  const router = useRouter();
+export default function ViewByteModal({
+  space,
+  project,
+  byteCollectionType,
+  selectedByteCollectionId,
+  selectedByteId,
+  onViewByteModalClosed,
+}: ViewByteModalProps) {
   const fetchByteFn = async (byteId: string): Promise<ByteDetailsFragment | ProjectByteFragment> => {
     if (byteCollectionType === 'projectByteCollection') {
       return await getApiResponse<ByteDetailsFragment>(space, `projects/${project?.id}/bytes/${byteId}`);
@@ -32,11 +38,6 @@ export default function ViewByteModal({ space, project, byteCollectionType, sele
 
   const viewByteHelper = useViewByteInModal({ space: space, byteId: selectedByteId, stepOrder: 0, fetchByteFn: fetchByteFn });
 
-  const onClose = () => {
-    const byteViewUrl = byteCollectionType === 'byteCollection' ? `/tidbit-collections` : `/projects/view/${project?.id}/tidbit-collections`;
-    router.push(byteViewUrl);
-  };
-
   useEffect(() => {
     viewByteHelper.initialize();
   }, [selectedByteId]);
@@ -44,7 +45,7 @@ export default function ViewByteModal({ space, project, byteCollectionType, sele
   const { activeStepOrder } = viewByteHelper;
 
   return (
-    <FullScreenModal open={true} onClose={onClose} title={viewByteHelper.byteRef?.name || 'Tidbit Details'}>
+    <FullScreenModal open={true} onClose={onViewByteModalClosed} title={viewByteHelper.byteRef?.name || 'Tidbit Details'}>
       <div id="byte-container" className={`flex flex-col  items-center w-full relative inset-0 ${styles.byteContainer} `}>
         <ContinuousStepIndicatorProgress steps={viewByteHelper.byteRef?.steps?.length || 2} currentStep={activeStepOrder + 1} />
         <div className={`${styles.styledByteCard} relative my-6 rounded-lg h-full overflow-scroll`}>
