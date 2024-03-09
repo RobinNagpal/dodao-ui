@@ -5,17 +5,19 @@ import getApiResponse from '@/utils/api/getApiResponse';
 import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
 import React from 'react';
 
-export default async function ByteCollections() {
+export default async function ByteDetails(props: { params: { tidbitCollectionId?: string; tidbitId?: string } }) {
   const space = (await getSpaceServerSide())!;
   const byteCollections = await getApiResponse<ByteCollectionFragment[]>(space, 'byte-collections');
 
   return (
     <PageWrapper>
       <ByteCollectionsGrid
-        byteCollections={byteCollections}
         space={space}
+        byteCollections={byteCollections}
         byteCollectionType={'byteCollection'}
-        byteCollectionsPageUrl={`/tidbit-collections`}
+        selectedByteId={props.params.tidbitId}
+        selectedByteCollectionId={props.params.tidbitCollectionId}
+        byteCollectionsPageUrl={'/embedded-tidbit-collections'}
       />
     </PageWrapper>
   );

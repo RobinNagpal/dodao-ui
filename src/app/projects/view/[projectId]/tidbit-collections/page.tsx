@@ -19,7 +19,13 @@ async function ProjectTidbitCollectionsPage(props: { params: { projectId: string
       <div className="flex justify-end mb-4">
         <PrivateArchivedToggle space={space} showArchived={showArchived} />
       </div>
-      <ByteCollectionsGrid space={space} project={project} byteCollections={tidbitsCollectionsToShow} byteCollectionType={'projectByteCollection'} />
+      <ByteCollectionsGrid
+        space={space}
+        project={project}
+        byteCollections={tidbitsCollectionsToShow}
+        byteCollectionType={'projectByteCollection'}
+        byteCollectionsPageUrl={`/projects/view/${project?.id}/tidbit-collections`}
+      />
     </>
   );
 }

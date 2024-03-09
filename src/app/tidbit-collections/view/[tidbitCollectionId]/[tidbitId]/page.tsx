@@ -17,6 +17,7 @@ export default async function ByteDetails(props: { params: { tidbitCollectionId?
         byteCollectionType={'byteCollection'}
         selectedByteId={props.params.tidbitId}
         selectedByteCollectionId={props.params.tidbitCollectionId}
+        byteCollectionsPageUrl={'/tidbit-collections'}
       />
     </PageWrapper>
   );

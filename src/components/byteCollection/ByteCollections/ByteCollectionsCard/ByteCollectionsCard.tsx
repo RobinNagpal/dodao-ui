@@ -16,11 +16,20 @@ interface ByteCollectionCardProps {
   byteCollection: ByteCollectionFragment | ProjectByteCollectionFragment;
   byteCollectionType: 'byteCollection' | 'projectByteCollection';
   space: SpaceWithIntegrationsFragment;
+  byteCollectionsPageUrl: string;
 }
 
-export default function ByteCollectionsCard({ byteCollection, isEditingAllowed = true, project, byteCollectionType, space }: ByteCollectionCardProps) {
+export default function ByteCollectionsCard({
+  byteCollection,
+  isEditingAllowed = true,
+  project,
+  byteCollectionType,
+  space,
+  byteCollectionsPageUrl,
+}: ByteCollectionCardProps) {
   const [watchVideo, setWatchVideo] = React.useState<boolean>(false);
 
+  console.log('byteCollectionPageUrl', byteCollectionsPageUrl);
   return (
     <>
       <div className={`border border-gray-200 rounded-xl overflow-hidden p-4 w-full max-w-xl ` + styles.cardDiv}>
@@ -48,10 +57,8 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
                   </FullScreenModal>
                 );
               }
-              const byteViewUrl =
-                byteCollectionType === 'byteCollection'
-                  ? `/tidbit-collections/view/${byteCollection.id}/${byte.byteId}`
-                  : `/projects/view/${project?.id}/tidbit-collections/view/${byteCollection.id}/${byte.byteId}`;
+              const byteViewUrl = `${byteCollectionsPageUrl}/view/${byteCollection.id}/${byte.byteId}`;
+
               return (
                 <li key={byte.byteId}>
                   <div className="relative pb-8">

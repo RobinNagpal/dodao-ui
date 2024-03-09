@@ -13,6 +13,7 @@ export default function ByteCollectionsGrid({
 
   selectedByteCollectionId,
   selectedByteId,
+  byteCollectionsPageUrl,
 }: {
   byteCollections?: ByteCollectionFragment[] | ProjectByteCollectionFragment[];
   space: SpaceWithIntegrationsFragment;
@@ -20,6 +21,7 @@ export default function ByteCollectionsGrid({
   byteCollectionType: 'byteCollection' | 'projectByteCollection';
   selectedByteCollectionId?: string;
   selectedByteId?: string;
+  byteCollectionsPageUrl: string;
 }) {
   return (
     <>
@@ -27,7 +29,14 @@ export default function ByteCollectionsGrid({
       {!!byteCollections?.length && (
         <Grid2Cols>
           {byteCollections?.map((byteCollection, i) => (
-            <ByteCollectionsCard key={i} byteCollection={byteCollection} project={project} byteCollectionType={byteCollectionType} space={space} />
+            <ByteCollectionsCard
+              key={i}
+              byteCollection={byteCollection}
+              project={project}
+              byteCollectionType={byteCollectionType}
+              space={space}
+              byteCollectionsPageUrl={byteCollectionsPageUrl}
+            />
           ))}
         </Grid2Cols>
       )}
@@ -38,6 +47,7 @@ export default function ByteCollectionsGrid({
           byteCollectionType={byteCollectionType}
           selectedByteCollectionId={selectedByteCollectionId}
           selectedByteId={selectedByteId}
+          byteCollectionsPageUrl={byteCollectionsPageUrl}
         />
       )}
     </>

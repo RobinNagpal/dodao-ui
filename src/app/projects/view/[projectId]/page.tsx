@@ -30,7 +30,15 @@ async function ProjectHomePage(props: ProjectHomePageProps) {
 
   const tidbitsCollectionsToShow = byteCollections.filter((bytecollection) => !bytecollection.archived);
 
-  return <ByteCollectionsGrid space={space} project={project} byteCollections={tidbitsCollectionsToShow} byteCollectionType={'projectByteCollection'} />;
+  return (
+    <ByteCollectionsGrid
+      space={space}
+      project={project}
+      byteCollections={tidbitsCollectionsToShow}
+      byteCollectionType={'projectByteCollection'}
+      byteCollectionsPageUrl={`/projects/view/${project?.id}/tidbit-collections`}
+    />
+  );
 }
 
 export default ProjectHomePage;
