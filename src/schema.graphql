@@ -130,6 +130,21 @@ type ByteCollectionByte {
   videoUrl: String
 }
 
+type ByteCollectionCategory {
+  byteCollectionIds: [String!]!
+  excerpt: String
+  id: String!
+  imageUrl: String
+  name: String!
+}
+
+type ByteCollectionWithBytes {
+  bytes: [ByteCollectionByte!]!
+  description: String!
+  id: ID!
+  name: String!
+}
+
 type ByteLinkedinPdfContent {
   excerpt: String!
   steps: [ByteLinkedinPdfContentStep!]!
@@ -1028,6 +1043,7 @@ type Mutation {
   createSummaryOfContent(input: String!): OpenAITextResponse!
   createWebsiteScrapingInfo(baseUrl: String!, ignoreHashInUrl: Boolean!, ignoreQueryParams: Boolean!, scrapingStartUrl: String!, spaceId: String!): WebsiteScrapingInfo!
   deleteAndPullCourseRepo(courseKey: String!, spaceId: String!): GitCourse!
+  deleteByte(byteId: String!, spaceId: String!): Boolean!
   deleteByteCollection(byteCollectionId: String!): Boolean!
   deleteChatbotCategory(id: String!, spaceId: String!): Boolean!
   deleteChatbotFAQ(id: String!, spaceId: String!): Boolean!
@@ -1095,6 +1111,7 @@ type Mutation {
   updateTopicVideo(spaceId: String!, videoInfo: UpdateTopicVideoInput!): GitCourse!
   upsertAcademyTask(spaceId: String!, task: UpsertAcademyTaskInput!): AcademyTask!
   upsertByte(input: UpsertByteInput!, spaceId: String!): Byte!
+  upsertByteCollectionCategory(input: upsertByteCollectionCategory!): ByteCollectionCategory!
   upsertByteSocialShare(input: UpsertByteSocialShareInput!, spaceId: String!): ByteSocialShare!
   upsertChatbotCategory(input: UpsertChatbotCategoryInput!, spaceId: String!): ChatbotCategory!
   upsertChatbotFAQ(input: UpsertChatbotFAQInput!, spaceId: String!): ChatbotFAQ!
@@ -1262,6 +1279,8 @@ type Query {
   articleIndexingInfos(spaceId: String!): [ArticleIndexingInfo!]!
   byte(byteId: String!, includeDraft: Boolean, spaceId: String!): Byte!
   byteCollection(byteCollectionId: String!, spaceId: String!): ByteCollection!
+  byteCollectionCategories(spaceId: String!): [ByteCollectionCategory!]!
+  byteCollectionCategoryWithByteCollections(categoryId: String!, spaceId: String!): [ByteCollectionWithBytes!]!
   byteCollections(spaceId: String!): [ByteCollection!]!
   byteSocialShare(byteId: String!, spaceId: String!): ByteSocialShare
   bytes(spaceId: String!): [Byte!]!
@@ -1970,4 +1989,14 @@ type WebsiteScrapingInfo {
   scrapingStartUrl: String!
   spaceId: String!
   updatedAt: DateTimeISO!
+}
+
+input upsertByteCollectionCategory {
+  byteCollectionIds: [String!]!
+  creator: String!
+  excerpt: String!
+  id: String!
+  imageUrl: String
+  name: String!
+  spaceId: String!
 }
