@@ -39,6 +39,13 @@ export interface AcademyTask {
   uuid: Scalars['String'];
 }
 
+export interface ActionButton {
+  __typename?: 'ActionButton';
+  label: Scalars['String'];
+  link: Scalars['String'];
+  uuid: Scalars['String'];
+}
+
 export interface AddTopicExplanationInput {
   courseKey: Scalars['String'];
   details: Scalars['String'];
@@ -122,6 +129,7 @@ export interface Byte {
   __typename?: 'Byte';
   admins: Array<Scalars['String']>;
   byteStyle?: Maybe<Scalars['String']>;
+  completionScreen?: Maybe<CompletionScreen>;
   content: Scalars['String'];
   created: Scalars['String'];
   id: Scalars['String'];
@@ -323,6 +331,31 @@ export interface CompletionAiInput {
   n?: InputMaybe<Scalars['Int']>;
   prompt: Scalars['String'];
   temperature?: InputMaybe<Scalars['Float']>;
+}
+
+export interface CompletionScreen {
+  __typename?: 'CompletionScreen';
+  content: Scalars['String'];
+  imageUrl?: Maybe<Scalars['String']>;
+  items: Array<CompletionScreenItem>;
+  name: Scalars['String'];
+  uuid: Scalars['String'];
+}
+
+export interface CompletionScreenInput {
+  content: Scalars['String'];
+  imageUrl?: InputMaybe<Scalars['String']>;
+  items: Array<CompletionScreenItemInput>;
+  name: Scalars['String'];
+  uuid: Scalars['String'];
+}
+
+export type CompletionScreenItem = ActionButton;
+
+export interface CompletionScreenItemInput {
+  label: Scalars['String'];
+  link: Scalars['String'];
+  uuid: Scalars['String'];
 }
 
 export interface ConsolidatedGuideRating {
@@ -1097,6 +1130,7 @@ export interface Mutation {
   createSummaryOfContent: OpenAiTextResponse;
   createWebsiteScrapingInfo: WebsiteScrapingInfo;
   deleteAndPullCourseRepo: GitCourse;
+  deleteByte: Scalars['Boolean'];
   deleteByteCollection: Scalars['Boolean'];
   deleteChatbotCategory: Scalars['Boolean'];
   deleteChatbotFAQ: Scalars['Boolean'];
@@ -1300,6 +1334,12 @@ export interface MutationCreateWebsiteScrapingInfoArgs {
 
 export interface MutationDeleteAndPullCourseRepoArgs {
   courseKey: Scalars['String'];
+  spaceId: Scalars['String'];
+}
+
+
+export interface MutationDeleteByteArgs {
+  byteId: Scalars['String'];
   spaceId: Scalars['String'];
 }
 
@@ -1936,6 +1976,7 @@ export interface ProjectByte {
   admins: Array<Scalars['String']>;
   archived: Scalars['Boolean'];
   byteStyle?: Maybe<Scalars['String']>;
+  completionScreen?: Maybe<CompletionScreen>;
   content: Scalars['String'];
   created: Scalars['String'];
   id: Scalars['String'];
@@ -2787,6 +2828,7 @@ export interface UpsertAcademyTaskInput {
 export interface UpsertByteInput {
   admins: Array<Scalars['String']>;
   byteStyle?: InputMaybe<Scalars['String']>;
+  completionScreen?: InputMaybe<CompletionScreenInput>;
   content: Scalars['String'];
   created: Scalars['String'];
   id: Scalars['String'];
@@ -2875,6 +2917,7 @@ export interface UpsertProjectByteCollectionInput {
 export interface UpsertProjectByteInput {
   admins: Array<Scalars['String']>;
   byteStyle?: InputMaybe<Scalars['String']>;
+  completionScreen?: InputMaybe<CompletionScreenInput>;
   content: Scalars['String'];
   created: Scalars['String'];
   id: Scalars['String'];
