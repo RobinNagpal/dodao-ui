@@ -6,7 +6,7 @@ import ByteCollectionsGrid from '@/components/byteCollection/View/ByteCollection
 import PageWrapper from '@/components/core/page/PageWrapper';
 import withSpace from '@/app/withSpace';
 
-function tidbitCollection(props: { space: SpaceWithIntegrationsFragment }) {
+function TidbitCollection(props: { space: SpaceWithIntegrationsFragment }) {
   const { space } = props;
   const { data } = useByteCollectionCategoriesQuery({
     variables: {
@@ -38,7 +38,7 @@ function tidbitCollection(props: { space: SpaceWithIntegrationsFragment }) {
       {data && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {data.byteCollectionCategories.map((category) => (
-            <div className="bg-white shadow-lg rounded-lg p-4 flex flex-col items-start">
+            <div key={category.id} className="bg-white shadow-lg rounded-lg p-4 flex flex-col items-start">
               <div className="flex items-center justify-center w-12 h-12">
                 <img src={category.imageUrl!} alt="category image" />
               </div>
@@ -58,4 +58,4 @@ function tidbitCollection(props: { space: SpaceWithIntegrationsFragment }) {
   );
 }
 
-export default withSpace(tidbitCollection);
+export default withSpace(TidbitCollection);

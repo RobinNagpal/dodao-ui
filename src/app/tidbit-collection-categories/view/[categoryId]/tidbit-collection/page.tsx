@@ -6,7 +6,7 @@ import { ByteCollectionFragment, SpaceWithIntegrationsFragment, useByteCollectio
 import ByteCollectionsGrid from '@/components/byteCollection/View/ByteCollectionsGrid';
 import PageWrapper from '@/components/core/page/PageWrapper';
 
-export function tidbitCollection(props: { space: SpaceWithIntegrationsFragment; params: { categoryId?: any } }) {
+export function TidbitCollection(props: { space: SpaceWithIntegrationsFragment; params: { categoryId?: any } }) {
   const { space } = props;
 
   const { data } = useByteCollectionCategoryWithByteCollectionsQuery({
@@ -30,4 +30,4 @@ export function tidbitCollection(props: { space: SpaceWithIntegrationsFragment; 
   );
 }
 
-export default withSpace(tidbitCollection);
+export default withSpace(TidbitCollection);
