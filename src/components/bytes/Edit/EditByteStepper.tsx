@@ -22,11 +22,17 @@ function EditByteStepper({ space, byte, byteErrors, errorColor = '#d32f2f', succ
   const [openAccordionIndex, setOpenAccordionIndex] = useState<number | null>(null);
   const [showCompletionScreen, setShowCompletionScreen] = useState<boolean>(false);
 
+  const showCompletionAccordion = () => {
+    setShowCompletionScreen(true);
+    setOpenAccordionIndex(byte.steps.length);
+  };
+
+  const removeCompletionScreen = () => {
+    setShowCompletionScreen(false);
+    setOpenAccordionIndex(null);
+  };
   const toggleAccordion = (index: number) => {
     setOpenAccordionIndex(() => (openAccordionIndex === index ? null : index));
-  };
-  const toggleCompletionScreen = () => {
-    setShowCompletionScreen(!showCompletionScreen);
   };
   const styleObject: CSSProperties = useMemo(() => {
     return {
@@ -91,16 +97,23 @@ function EditByteStepper({ space, byte, byteErrors, errorColor = '#d32f2f', succ
             hasError={false}
           >
             <div className="w-full">
-              <EditCompletionScreenStepperItem byte={byte} space={space} />
+              <EditCompletionScreenStepperItem
+                byte={byte}
+                space={space}
+                onRemoveCompletionScreen={removeCompletionScreen}
+                updateByteCompletionScreen={updateByteFunctions.updateCompletionScreen}
+              />
             </div>
           </Accordion>
         )}
 
-        <div className="mt-4 flex justify-end">
-          <Button className="" onClick={toggleCompletionScreen}>
-            Add Completion Screen
-          </Button>
-        </div>
+        {!showCompletionScreen && (
+          <div className="mt-4 flex justify-end">
+            <Button className="" onClick={showCompletionAccordion}>
+              Add Completion Screen
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );
