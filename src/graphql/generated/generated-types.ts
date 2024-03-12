@@ -162,14 +162,6 @@ export interface ByteCollectionCategory {
   name: Scalars['String'];
 }
 
-export interface ByteCollectionWithBytes {
-  __typename?: 'ByteCollectionWithBytes';
-  bytes: Array<ByteCollectionByte>;
-  description: Scalars['String'];
-  id: Scalars['ID'];
-  name: Scalars['String'];
-}
-
 export interface ByteLinkedinPdfContent {
   __typename?: 'ByteLinkedinPdfContent';
   excerpt: Scalars['String'];
@@ -2025,7 +2017,7 @@ export interface Query {
   byte: Byte;
   byteCollection: ByteCollection;
   byteCollectionCategories: Array<ByteCollectionCategory>;
-  byteCollectionCategoryWithByteCollections: Array<ByteCollectionWithBytes>;
+  byteCollectionCategoryWithByteCollections: Array<ByteCollection>;
   byteCollections: Array<ByteCollection>;
   byteSocialShare?: Maybe<ByteSocialShare>;
   bytes: Array<Byte>;
@@ -3169,8 +3161,6 @@ export type DeleteByteCollectionMutationVariables = Exact<{
 
 export type DeleteByteCollectionMutation = { __typename?: 'Mutation', deleteByteCollection: boolean };
 
-export type ByteCollectionWithBytesFragment = { __typename?: 'ByteCollectionWithBytes', id: string, name: string, description: string, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string, videoUrl?: string | null }> };
-
 export type ByteCollectionCategoryFragment = { __typename?: 'ByteCollectionCategory', id: string, name: string, excerpt?: string | null, imageUrl?: string | null, byteCollectionIds: Array<string> };
 
 export type ByteCollectionCategoryWithByteCollectionsQueryVariables = Exact<{
@@ -3179,7 +3169,7 @@ export type ByteCollectionCategoryWithByteCollectionsQueryVariables = Exact<{
 }>;
 
 
-export type ByteCollectionCategoryWithByteCollectionsQuery = { __typename?: 'Query', byteCollectionCategoryWithByteCollections: Array<{ __typename?: 'ByteCollectionWithBytes', id: string, name: string, description: string, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string, videoUrl?: string | null }> }> };
+export type ByteCollectionCategoryWithByteCollectionsQuery = { __typename?: 'Query', byteCollectionCategoryWithByteCollections: Array<{ __typename?: 'ByteCollection', id: string, name: string, description: string, status: string, byteIds: Array<string>, priority: number, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string, videoUrl?: string | null }> }> };
 
 export type ByteCollectionCategoriesQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -4635,19 +4625,6 @@ export const ByteCollectionFragmentDoc = gql`
   }
 }
     `;
-export const ByteCollectionWithBytesFragmentDoc = gql`
-    fragment ByteCollectionWithBytes on ByteCollectionWithBytes {
-  id
-  name
-  description
-  bytes {
-    byteId
-    name
-    content
-    videoUrl
-  }
-}
-    `;
 export const ByteCollectionCategoryFragmentDoc = gql`
     fragment ByteCollectionCategory on ByteCollectionCategory {
   id
@@ -5992,10 +5969,10 @@ export const ByteCollectionCategoryWithByteCollectionsDocument = gql`
     categoryId: $categoryId
     spaceId: $spaceId
   ) {
-    ...ByteCollectionWithBytes
+    ...ByteCollection
   }
 }
-    ${ByteCollectionWithBytesFragmentDoc}`;
+    ${ByteCollectionFragmentDoc}`;
 
 /**
  * __useByteCollectionCategoryWithByteCollectionsQuery__

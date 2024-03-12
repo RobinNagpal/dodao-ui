@@ -1,15 +1,3 @@
-fragment ByteCollectionWithBytes on ByteCollectionWithBytes {
-  id
-  name
-  description
-  bytes {
-    byteId
-    name
-    content
-    videoUrl
-  }
-}
-
 fragment ByteCollectionCategory on ByteCollectionCategory {
   id
   name
@@ -20,7 +8,7 @@ fragment ByteCollectionCategory on ByteCollectionCategory {
 
 query ByteCollectionCategoryWithByteCollections($categoryId: String!, $spaceId: String!) {
   byteCollectionCategoryWithByteCollections(categoryId: $categoryId, spaceId: $spaceId) {
-    ...ByteCollectionWithBytes
+    ...ByteCollection
   }
 }
 
