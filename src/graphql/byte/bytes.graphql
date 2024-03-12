@@ -47,6 +47,28 @@ fragment ByteStep on ByteStep {
   imageUrl
 }
 
+fragment ActionButtonFragment on ActionButton {
+  label
+  link
+  uuid
+}
+
+fragment CompletionScreenItem on CompletionScreenItem {
+  ... on ActionButton {
+    ...ActionButtonFragment
+  }
+}
+
+fragment CompletionScreen on CompletionScreen {
+  content
+  name
+  uuid
+  imageUrl
+  items {
+    ...CompletionScreenItem
+  }
+}
+
 fragment ByteDetails on Byte {
   postSubmissionStepContent
   content
