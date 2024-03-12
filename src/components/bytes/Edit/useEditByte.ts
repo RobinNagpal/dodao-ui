@@ -64,7 +64,8 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
     }
   }, [byteId, space]);
 
-  const { getByteInputFn, updateStepFn, moveStepUpFn, moveStepDownFn, removeStepFn, validateByteFn } = editByteCommonFunctions(setByte);
+  const { getByteInputFn, updateStepFn, moveStepUpFn, moveStepDownFn, removeStepFn, validateByteFn, updateCompletionScreenFn } =
+    editByteCommonFunctions(setByte);
   // Add other
 
   const addStep = useCallback(() => {
@@ -125,6 +126,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
     updateStep: updateStepFn,
     setByte,
     includeSteps,
+    updateCompletionScreen: updateCompletionScreenFn,
   };
 
   const saveViaMutation = async (mutationFn: () => Promise<FetchResult<{ payload: ByteDetailsFragment | undefined }>>) => {
