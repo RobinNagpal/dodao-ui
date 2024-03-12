@@ -3,7 +3,13 @@
 import GenerateFromDalleModal from '@/components/app/Image/GenerateFromDalleModal';
 import UploadFromUnsplashModal from '@/components/app/Image/UploadFromUnsplashModal';
 import FullPageModal from '@/components/core/modals/FullPageModal';
-import { CreateSignedUrlInput, ImageType, useCreateSignedUrlMutation } from '@/graphql/generated/generated-types';
+import {
+  CreateSignedUrlInput,
+  ImageSource,
+  ImageType,
+  useCreateSignedUrlMutation,
+  useUploadImageFromUrlToS3Mutation,
+} from '@/graphql/generated/generated-types';
 import { getUploadedImageUrlFromSingedUrl } from '@/utils/upload/getUploadedImageUrlFromSingedUrl';
 import ArrowUpTrayIcon from '@heroicons/react/24/solid/ArrowUpTrayIcon';
 import PhotoIcon from '@heroicons/react/24/solid/PhotoIcon';
@@ -33,6 +39,8 @@ type ImageModalSelectionType = 'upload-from-device' | 'upload-from-unsplash' | '
 export default function SelectImageInputModal({ imageType, objectId, spaceId, open, onClose, imageUploaded, generateImagePromptFn }: UploadInputProps) {
   const [imageUploadModalType, setImageUploadModalType] = React.useState<ImageModalSelectionType | null>(null);
   const [createSignedUrlMutation] = useCreateSignedUrlMutation();
+
+  const [uploadImageFromUrlToS3Mutation] = useUploadImageFromUrlToS3Mutation();
   async function uploadToS3AndReturnImgUrl(imageUrl: string) {
     const res = await fetch(imageUrl);
     const file = await res.blob();
@@ -59,8 +67,20 @@ export default function SelectImageInputModal({ imageType, objectId, spaceId, op
         open={open}
         onClose={onClose}
         onInput={async (imageUrl) => {
-          const s3Url = await uploadToS3AndReturnImgUrl(imageUrl);
-          imageUploaded(s3Url);
+          const payload = await uploadImageFromUrlToS3Mutation({
+            variables: {
+              spaceId,
+              input: {
+                imageSource: ImageSource.Unsplash,
+                imageUrl: imageUrl,
+                imageType,
+                objectId,
+                name: imageUrl.split('/').pop()!,
+              },
+            },
+          });
+          // const s3Url = await uploadToS3AndReturnImgUrl(imageUrl);
+          imageUploaded(payload?.data?.payload || 'empty');
         }}
       />
     );
@@ -79,8 +99,22 @@ export default function SelectImageInputModal({ imageType, objectId, spaceId, op
         onClose={onClose}
         generateImagePromptFn={generateImagePromptFn}
         onInput={async (imageUrl) => {
-          const s3Url = await uploadToS3AndReturnImgUrl(imageUrl);
-          imageUploaded(s3Url);
+          const payload = await uploadImageFromUrlToS3Mutation({
+            variables: {
+              spaceId,
+              input: {
+                imageSource: ImageSource.Dalle,
+                imageUrl: imageUrl,
+                imageType,
+                objectId,
+                name: imageUrl.split('/').pop()!,
+              },
+            },
+          });
+          // const s3Url = await uploadToS3AndReturnImgUrl(imageUrl);
+          imageUploaded(payload?.data?.payload || 'empty');
+          // const s3Url = await uploadToS3AndReturnImgUrl(imageUrl);
+          imageUploaded(payload?.data?.payload || 'empty');
         }}
       />
     );
