@@ -3210,6 +3210,12 @@ export type ByteStepItemFragment = ByteStepItem_ByteQuestion_Fragment | ByteStep
 
 export type ByteStepFragment = { __typename?: 'ByteStep', content: string, name: string, uuid: string, imageUrl?: string | null, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> };
 
+export type ActionButtonFragmentFragment = { __typename?: 'ActionButton', label: string, link: string, uuid: string };
+
+export type CompletionScreenItemFragment = { __typename?: 'ActionButton', label: string, link: string, uuid: string };
+
+export type CompletionScreenFragment = { __typename?: 'CompletionScreen', content: string, name: string, uuid: string, imageUrl?: string | null, items: Array<{ __typename?: 'ActionButton', label: string, link: string, uuid: string }> };
+
 export type ByteDetailsFragment = { __typename?: 'Byte', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, admins: Array<string>, tags: Array<string>, priority: number, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, imageUrl?: string | null, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> };
 
 export type ByteDetailsFragmentFragment = { __typename?: 'Byte', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, admins: Array<string>, tags: Array<string>, priority: number, videoUrl?: string | null, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, imageUrl?: string | null, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> };
@@ -4621,6 +4627,31 @@ export const ByteLinkedinPdfContentFragmentDoc = gql`
   title
 }
     ${ByteLinkedinPdfContentStepFragmentDoc}`;
+export const ActionButtonFragmentFragmentDoc = gql`
+    fragment ActionButtonFragment on ActionButton {
+  label
+  link
+  uuid
+}
+    `;
+export const CompletionScreenItemFragmentDoc = gql`
+    fragment CompletionScreenItem on CompletionScreenItem {
+  ... on ActionButton {
+    ...ActionButtonFragment
+  }
+}
+    ${ActionButtonFragmentFragmentDoc}`;
+export const CompletionScreenFragmentDoc = gql`
+    fragment CompletionScreen on CompletionScreen {
+  content
+  name
+  uuid
+  imageUrl
+  items {
+    ...CompletionScreenItem
+  }
+}
+    ${CompletionScreenItemFragmentDoc}`;
 export const ByteQuestionFragmentFragmentDoc = gql`
     fragment ByteQuestionFragment on ByteQuestion {
   answerKeys
