@@ -2,6 +2,7 @@ import {
   ByteQuestionFragmentFragment,
   ByteStepFragment,
   ByteStepInput,
+  CompletionScreen,
   StepItemInputGenericInput,
   UpsertByteInput,
   UpsertProjectByteInput,
@@ -52,6 +53,7 @@ export type UpdateByteFunctions = {
   removeStep: (stepUuid: string) => void;
   moveStepUp: (stepUuid: string) => void;
   setByte: (byte: EditByteType | EditProjectByteType) => void;
+  updateCompletionScreen: (field: keyof CompletionScreen, value: any) => void;
 };
 
 export interface GeneratedByte {
@@ -89,6 +91,26 @@ export function editByteCommonFunctions(setByte: (value: ((prevState: EditByteTy
       });
 
       return { ...prevByte, steps: updatedSteps };
+    });
+  };
+
+  const updateCompletionScreenFn = (field: keyof CompletionScreen, value: any) => {
+    setByte((prevByte) => {
+      const defaultCompletionScreen: CompletionScreen = {
+        content: '',
+        name: '',
+        imageUrl: '',
+        items: [],
+        uuid: '',
+      };
+      const currentCompletionScreen = prevByte.completionScreen || defaultCompletionScreen;
+
+      const updatedCompletionScreen = {
+        ...currentCompletionScreen,
+        [field]: value !== undefined ? value : defaultCompletionScreen[field],
+      };
+
+      return { ...prevByte, completionScreen: updatedCompletionScreen };
     });
   };
 
@@ -190,5 +212,6 @@ export function editByteCommonFunctions(setByte: (value: ((prevState: EditByteTy
     removeStepFn,
     validateByteFn,
     getByteInputFn,
+    updateCompletionScreenFn,
   };
 }
