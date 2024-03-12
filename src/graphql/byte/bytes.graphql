@@ -133,3 +133,7 @@ mutation UpsertByte($spaceId: String!, $input: UpsertByteInput!) {
     ...ByteDetails
   }
 }
+
+mutation DeleteByte($spaceId: String!, $byteId: String!) {
+  payload: deleteByte(spaceId: $spaceId, byteId: $byteId)
+}

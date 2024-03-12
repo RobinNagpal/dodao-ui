@@ -71,16 +71,13 @@ const ByteView = ({ params, space }: { params: { byteIdAndStep: string[] }; spac
           />
         </div>
 
-        <div className={`sm:shadow-md p-2 lg:p-8 w-full max-w-4xl ${styles.styledCarouselByteCard}`}>
-          <div className="integration-card-content">
-            {byte && (
-              <div className="h-max">
-                <ByteStepper viewByteHelper={viewByteHelper} byte={byte} space={space} />
-              </div>
-            )}
-            {!byte && <PageLoading />}
+        {byte ? (
+          <div className={`${styles.styledByteCard} relative my-6 rounded-lg h-full overflow-scroll`}>
+            <ByteStepper viewByteHelper={viewByteHelper} byte={byte} space={space} />
           </div>
-        </div>
+        ) : (
+          <PageLoading />
+        )}
       </div>
     </PageWrapper>
   );

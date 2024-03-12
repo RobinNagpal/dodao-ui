@@ -193,6 +193,10 @@ mutation CreateSignedUrl($spaceId: String!, $input: CreateSignedUrlInput!) {
   payload: createSignedUrl(spaceId: $spaceId, input: $input)
 }
 
+mutation UploadImageFromUrlToS3($spaceId: String!, $input: UploadImageFromUrlToS3Input!) {
+  payload: uploadImageFromUrlToS3(spaceId: $spaceId, input: $input)
+}
+
 mutation AddDiscordCredentials($spaceId: String!, $code: String!, $redirectUri: String!) {
   payload: addDiscordCredentials(spaceId: $spaceId, code: $code, redirectUri: $redirectUri) {
     id

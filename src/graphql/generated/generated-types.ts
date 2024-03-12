@@ -1013,6 +1013,12 @@ export interface GuideUserInput {
   uuid: Scalars['String'];
 }
 
+export enum ImageSource {
+  Dalle = 'Dalle',
+  LocalMachine = 'LocalMachine',
+  Unsplash = 'Unsplash'
+}
+
 export enum ImageType {
   Academy = 'Academy',
   Course = 'Course',
@@ -1097,6 +1103,7 @@ export interface Mutation {
   createSummaryOfContent: OpenAiTextResponse;
   createWebsiteScrapingInfo: WebsiteScrapingInfo;
   deleteAndPullCourseRepo: GitCourse;
+  deleteByte: Scalars['Boolean'];
   deleteByteCollection: Scalars['Boolean'];
   deleteChatbotCategory: Scalars['Boolean'];
   deleteChatbotFAQ: Scalars['Boolean'];
@@ -1162,6 +1169,7 @@ export interface Mutation {
   updateTopicQuestion: GitCourse;
   updateTopicSummary: GitCourse;
   updateTopicVideo: GitCourse;
+  uploadImageFromUrlToS3: Scalars['String'];
   upsertAcademyTask: AcademyTask;
   upsertByte: Byte;
   upsertByteSocialShare: ByteSocialShare;
@@ -1300,6 +1308,12 @@ export interface MutationCreateWebsiteScrapingInfoArgs {
 
 export interface MutationDeleteAndPullCourseRepoArgs {
   courseKey: Scalars['String'];
+  spaceId: Scalars['String'];
+}
+
+
+export interface MutationDeleteByteArgs {
+  byteId: Scalars['String'];
   spaceId: Scalars['String'];
 }
 
@@ -1677,6 +1691,12 @@ export interface MutationUpdateTopicSummaryArgs {
 export interface MutationUpdateTopicVideoArgs {
   spaceId: Scalars['String'];
   videoInfo: UpdateTopicVideoInput;
+}
+
+
+export interface MutationUploadImageFromUrlToS3Args {
+  input: UploadImageFromUrlToS3Input;
+  spaceId: Scalars['String'];
 }
 
 
@@ -2773,6 +2793,14 @@ export interface UpdateTopicVideoInput {
   videoUuid: Scalars['String'];
 }
 
+export interface UploadImageFromUrlToS3Input {
+  imageSource: Scalars['String'];
+  imageType: Scalars['String'];
+  imageUrl: Scalars['String'];
+  name: Scalars['String'];
+  objectId: Scalars['String'];
+}
+
 export interface UpsertAcademyTaskInput {
   details: Scalars['String'];
   excerpt: Scalars['String'];
@@ -3196,6 +3224,14 @@ export type UpsertByteMutationVariables = Exact<{
 
 
 export type UpsertByteMutation = { __typename?: 'Mutation', payload: { __typename?: 'Byte', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, admins: Array<string>, tags: Array<string>, priority: number, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, imageUrl?: string | null, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> } };
+
+export type DeleteByteMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+  byteId: Scalars['String'];
+}>;
+
+
+export type DeleteByteMutation = { __typename?: 'Mutation', payload: boolean };
 
 export type ChatbotSubCategoryFragment = { __typename?: 'ChatbotSubcategory', name: string, key: string, description: string };
 
@@ -4338,6 +4374,14 @@ export type CreateSignedUrlMutationVariables = Exact<{
 
 
 export type CreateSignedUrlMutation = { __typename?: 'Mutation', payload: string };
+
+export type UploadImageFromUrlToS3MutationVariables = Exact<{
+  spaceId: Scalars['String'];
+  input: UploadImageFromUrlToS3Input;
+}>;
+
+
+export type UploadImageFromUrlToS3Mutation = { __typename?: 'Mutation', payload: string };
 
 export type AddDiscordCredentialsMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -6172,6 +6216,38 @@ export function useUpsertByteMutation(baseOptions?: Apollo.MutationHookOptions<U
 export type UpsertByteMutationHookResult = ReturnType<typeof useUpsertByteMutation>;
 export type UpsertByteMutationResult = Apollo.MutationResult<UpsertByteMutation>;
 export type UpsertByteMutationOptions = Apollo.BaseMutationOptions<UpsertByteMutation, UpsertByteMutationVariables>;
+export const DeleteByteDocument = gql`
+    mutation DeleteByte($spaceId: String!, $byteId: String!) {
+  payload: deleteByte(spaceId: $spaceId, byteId: $byteId)
+}
+    `;
+export type DeleteByteMutationFn = Apollo.MutationFunction<DeleteByteMutation, DeleteByteMutationVariables>;
+
+/**
+ * __useDeleteByteMutation__
+ *
+ * To run a mutation, you first call `useDeleteByteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteByteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteByteMutation, { data, loading, error }] = useDeleteByteMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      byteId: // value for 'byteId'
+ *   },
+ * });
+ */
+export function useDeleteByteMutation(baseOptions?: Apollo.MutationHookOptions<DeleteByteMutation, DeleteByteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteByteMutation, DeleteByteMutationVariables>(DeleteByteDocument, options);
+      }
+export type DeleteByteMutationHookResult = ReturnType<typeof useDeleteByteMutation>;
+export type DeleteByteMutationResult = Apollo.MutationResult<DeleteByteMutation>;
+export type DeleteByteMutationOptions = Apollo.BaseMutationOptions<DeleteByteMutation, DeleteByteMutationVariables>;
 export const ChatbotCategoriesDocument = gql`
     query ChatbotCategories($spaceId: String!) {
   chatbotCategories(spaceId: $spaceId) {
@@ -11142,6 +11218,38 @@ export function useCreateSignedUrlMutation(baseOptions?: Apollo.MutationHookOpti
 export type CreateSignedUrlMutationHookResult = ReturnType<typeof useCreateSignedUrlMutation>;
 export type CreateSignedUrlMutationResult = Apollo.MutationResult<CreateSignedUrlMutation>;
 export type CreateSignedUrlMutationOptions = Apollo.BaseMutationOptions<CreateSignedUrlMutation, CreateSignedUrlMutationVariables>;
+export const UploadImageFromUrlToS3Document = gql`
+    mutation UploadImageFromUrlToS3($spaceId: String!, $input: UploadImageFromUrlToS3Input!) {
+  payload: uploadImageFromUrlToS3(spaceId: $spaceId, input: $input)
+}
+    `;
+export type UploadImageFromUrlToS3MutationFn = Apollo.MutationFunction<UploadImageFromUrlToS3Mutation, UploadImageFromUrlToS3MutationVariables>;
+
+/**
+ * __useUploadImageFromUrlToS3Mutation__
+ *
+ * To run a mutation, you first call `useUploadImageFromUrlToS3Mutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUploadImageFromUrlToS3Mutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [uploadImageFromUrlToS3Mutation, { data, loading, error }] = useUploadImageFromUrlToS3Mutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUploadImageFromUrlToS3Mutation(baseOptions?: Apollo.MutationHookOptions<UploadImageFromUrlToS3Mutation, UploadImageFromUrlToS3MutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UploadImageFromUrlToS3Mutation, UploadImageFromUrlToS3MutationVariables>(UploadImageFromUrlToS3Document, options);
+      }
+export type UploadImageFromUrlToS3MutationHookResult = ReturnType<typeof useUploadImageFromUrlToS3Mutation>;
+export type UploadImageFromUrlToS3MutationResult = Apollo.MutationResult<UploadImageFromUrlToS3Mutation>;
+export type UploadImageFromUrlToS3MutationOptions = Apollo.BaseMutationOptions<UploadImageFromUrlToS3Mutation, UploadImageFromUrlToS3MutationVariables>;
 export const AddDiscordCredentialsDocument = gql`
     mutation AddDiscordCredentials($spaceId: String!, $code: String!, $redirectUri: String!) {
   payload: addDiscordCredentials(

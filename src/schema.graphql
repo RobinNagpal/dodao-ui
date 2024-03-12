@@ -938,6 +938,12 @@ type GuideUserInput {
   uuid: String!
 }
 
+enum ImageSource {
+  Dalle
+  LocalMachine
+  Unsplash
+}
+
 enum ImageType {
   Academy
   Course
@@ -1028,6 +1034,7 @@ type Mutation {
   createSummaryOfContent(input: String!): OpenAITextResponse!
   createWebsiteScrapingInfo(baseUrl: String!, ignoreHashInUrl: Boolean!, ignoreQueryParams: Boolean!, scrapingStartUrl: String!, spaceId: String!): WebsiteScrapingInfo!
   deleteAndPullCourseRepo(courseKey: String!, spaceId: String!): GitCourse!
+  deleteByte(byteId: String!, spaceId: String!): Boolean!
   deleteByteCollection(byteCollectionId: String!): Boolean!
   deleteChatbotCategory(id: String!, spaceId: String!): Boolean!
   deleteChatbotFAQ(id: String!, spaceId: String!): Boolean!
@@ -1093,6 +1100,7 @@ type Mutation {
   updateTopicQuestion(questionInfo: UpdateTopicQuestionInput!, spaceId: String!): GitCourse!
   updateTopicSummary(spaceId: String!, summaryInfo: UpdateTopicSummaryInput!): GitCourse!
   updateTopicVideo(spaceId: String!, videoInfo: UpdateTopicVideoInput!): GitCourse!
+  uploadImageFromUrlToS3(input: UploadImageFromUrlToS3Input!, spaceId: String!): String!
   upsertAcademyTask(spaceId: String!, task: UpsertAcademyTaskInput!): AcademyTask!
   upsertByte(input: UpsertByteInput!, spaceId: String!): Byte!
   upsertByteSocialShare(input: UpsertByteSocialShareInput!, spaceId: String!): ByteSocialShare!
@@ -1703,6 +1711,14 @@ input UpdateTopicVideoInput {
   topicKey: String!
   url: String!
   videoUuid: String!
+}
+
+input UploadImageFromUrlToS3Input {
+  imageSource: String!
+  imageType: String!
+  imageUrl: String!
+  name: String!
+  objectId: String!
 }
 
 input UpsertAcademyTaskInput {

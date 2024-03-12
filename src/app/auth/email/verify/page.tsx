@@ -3,9 +3,11 @@
 import withSpace, { SpaceProps } from '@/app/withSpace';
 import FullPageLoader from '@/components/core/loaders/FullPageLoading';
 import PageWrapper from '@/components/core/page/PageWrapper';
+import { Session } from '@/types/auth/Session';
+import { setDoDAOTokenInLocalStorage } from '@/utils/auth/setDoDAOTokenInLocalStorage';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
-import { signIn, useSession } from 'next-auth/react';
+import { getSession, signIn, useSession } from 'next-auth/react';
 
 const CallbackPage = ({ space }: SpaceProps) => {
   const { push } = useRouter();
@@ -25,6 +27,8 @@ const CallbackPage = ({ space }: SpaceProps) => {
           spaceId: space.id,
         });
 
+        // const session = (await getSession()) as Session | undefined;
+        // setDoDAOTokenInLocalStorage(session);
         // Redirect to the home page or custom callback URL on success
         if (result?.url) {
           push(result.url);
