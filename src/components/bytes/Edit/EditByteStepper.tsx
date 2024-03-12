@@ -7,6 +7,8 @@ import Accordion from '@/utils/accordion/Accordion';
 import PlusCircle from '@heroicons/react/20/solid/PlusCircleIcon';
 import React, { CSSProperties, useMemo, useState } from 'react';
 import EditByteStepperItem from './EditByteStepperItem';
+import Button from '@/components/core/buttons/Button';
+import EditCompletionScreenStepperItem from './EditCompletionScreenStepperItem';
 
 interface EditByteStepperProps {
   space: SpaceWithIntegrationsFragment;
@@ -18,9 +20,13 @@ interface EditByteStepperProps {
 }
 function EditByteStepper({ space, byte, byteErrors, errorColor = '#d32f2f', successColor = '#00813a', updateByteFunctions }: EditByteStepperProps) {
   const [openAccordionIndex, setOpenAccordionIndex] = useState<number | null>(null);
+  const [showCompletionScreen, setShowCompletionScreen] = useState<boolean>(false);
 
   const toggleAccordion = (index: number) => {
     setOpenAccordionIndex(() => (openAccordionIndex === index ? null : index));
+  };
+  const toggleCompletionScreen = () => {
+    setShowCompletionScreen(!showCompletionScreen);
   };
   const styleObject: CSSProperties = useMemo(() => {
     return {
@@ -76,6 +82,25 @@ function EditByteStepper({ space, byte, byteErrors, errorColor = '#d32f2f', succ
             <PlusCircle height={40} width={40} />
           </SidebarButton>
         </li>
+        {showCompletionScreen && (
+          <Accordion
+            key="completion-screen"
+            isOpen={openAccordionIndex === byte.steps.length}
+            label="Completion Screen"
+            onClick={() => toggleAccordion(byte.steps.length)}
+            hasError={false}
+          >
+            <div className="w-full">
+              <EditCompletionScreenStepperItem byte={byte} space={space} />
+            </div>
+          </Accordion>
+        )}
+
+        <div className="mt-4 flex justify-end">
+          <Button className="" onClick={toggleCompletionScreen}>
+            Add Completion Screen
+          </Button>
+        </div>
       </div>
     </div>
   );
