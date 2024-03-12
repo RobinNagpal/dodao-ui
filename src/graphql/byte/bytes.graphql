@@ -78,6 +78,9 @@ fragment ByteDetails on Byte {
   admins
   tags
   priority
+  completionScreen {
+    ...CompletionScreen
+  }
   steps {
     ...ByteStep
   }
@@ -93,6 +96,9 @@ fragment ByteDetailsFragment on Byte {
   tags
   priority
   videoUrl
+  completionScreen {
+    ...CompletionScreen
+  }
   steps {
     content
     stepItems {
