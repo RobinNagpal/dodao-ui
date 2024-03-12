@@ -64,7 +64,8 @@ export function useEditProjectByte(space: SpaceWithIntegrationsFragment, project
     }
   }, [byteId, space]);
 
-  const { getByteInputFn, updateStepFn, moveStepUpFn, moveStepDownFn, removeStepFn, validateByteFn } = editByteCommonFunctions(setByte);
+  const { getByteInputFn, updateStepFn, moveStepUpFn, moveStepDownFn, removeStepFn, validateByteFn, updateCompletionScreenFn } =
+    editByteCommonFunctions(setByte);
   // Add other
 
   const addStep = useCallback(() => {
@@ -126,6 +127,7 @@ export function useEditProjectByte(space: SpaceWithIntegrationsFragment, project
     updateStep: updateStepFn,
     setByte,
     includeSteps,
+    updateCompletionScreen: updateCompletionScreenFn,
   };
 
   const handleSubmit = async () => {
