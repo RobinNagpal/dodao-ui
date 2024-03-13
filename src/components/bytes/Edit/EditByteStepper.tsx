@@ -34,6 +34,10 @@ function EditByteStepper({ space, byte, byteErrors, errorColor = '#d32f2f', succ
   const toggleAccordion = (index: number) => {
     setOpenAccordionIndex(() => (openAccordionIndex === index ? null : index));
   };
+
+  const shouldShowCompletionAccordion = useMemo(() => {
+    return showCompletionScreen || (byte.completionScreen !== null && byte.completionScreen !== undefined);
+  }, [showCompletionScreen, byte.completionScreen]);
   const styleObject: CSSProperties = useMemo(() => {
     return {
       '--error-color': errorColor,
@@ -88,7 +92,7 @@ function EditByteStepper({ space, byte, byteErrors, errorColor = '#d32f2f', succ
             <PlusCircle height={40} width={40} />
           </SidebarButton>
         </li>
-        {showCompletionScreen && (
+        {shouldShowCompletionAccordion && (
           <Accordion
             key="completion-screen"
             isOpen={openAccordionIndex === byte.steps.length}
@@ -107,7 +111,7 @@ function EditByteStepper({ space, byte, byteErrors, errorColor = '#d32f2f', succ
           </Accordion>
         )}
 
-        {!showCompletionScreen && (
+        {!shouldShowCompletionAccordion && (
           <div className="mt-4 flex justify-end">
             <Button className="" onClick={showCompletionAccordion}>
               Add Completion Screen
