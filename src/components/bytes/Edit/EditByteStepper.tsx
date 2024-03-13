@@ -27,10 +27,6 @@ function EditByteStepper({ space, byte, byteErrors, errorColor = '#d32f2f', succ
     setOpenAccordionIndex(byte.steps.length);
   };
 
-  const removeCompletionScreen = () => {
-    setShowCompletionScreen(false);
-    setOpenAccordionIndex(null);
-  };
   const toggleAccordion = (index: number) => {
     setOpenAccordionIndex(() => (openAccordionIndex === index ? null : index));
   };
@@ -104,8 +100,8 @@ function EditByteStepper({ space, byte, byteErrors, errorColor = '#d32f2f', succ
               <EditCompletionScreenStepperItem
                 byte={byte}
                 space={space}
-                onRemoveCompletionScreen={removeCompletionScreen}
                 updateByteCompletionScreen={updateByteFunctions.updateCompletionScreen}
+                removeCompletionScreen={updateByteFunctions.removeCompletionScreen}
               />
             </div>
           </Accordion>
