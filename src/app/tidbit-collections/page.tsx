@@ -43,9 +43,7 @@ function TidbitCollection(props: { space: SpaceWithIntegrationsFragment }) {
               <div className="w-full flex justify-end">
                 <ByteCollectionCategoryCardAdminDropdown categoryId={category.id} />
               </div>
-              <div className="flex items-center justify-center w-12 h-12">
-                <img src={category.imageUrl!} alt="category image" />
-              </div>
+              <div className="flex items-center justify-center w-12 h-12">{category.imageUrl && <img src={category.imageUrl} alt="category image" />}</div>
               <h3 className="text-lg font-semibold mb-2">{category.name}</h3>
               <p className="text-sm text-gray-600 mb-4">{category.excerpt}</p>
               <Link
