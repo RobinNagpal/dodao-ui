@@ -8,7 +8,6 @@ import { CompletionScreen, CompletionScreenItemInput, ImageType, SpaceWithIntegr
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import SelectImageInputModal from '@/components/app/Image/SelectImageInputModal';
-import { InputType } from '@/types/deprecated/models/enums';
 import CompletionScreenItemModal from '@/components/app/Modal/CompletionScreenItem/CompletionScreenItemModal';
 
 interface EditCompletionScreenStepperItemProps {
@@ -48,7 +47,7 @@ export default function EditCompletionScreenStepperItem({
       label: 'Button',
       link: 'google',
     };
-    updateByteCompletionScreen('items', [input]);
+    updateByteCompletionScreen('items', input);
   }
 
   return (
@@ -119,7 +118,6 @@ export default function EditCompletionScreenStepperItem({
           onClose={() => setModalAddButtonInput(false)}
           onAddButton={() => {
             addButton();
-            console.log('Button Added: ', byte.completionScreen);
           }}
         />
       )}
