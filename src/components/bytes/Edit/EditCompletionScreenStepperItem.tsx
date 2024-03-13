@@ -38,6 +38,7 @@ export default function EditCompletionScreenStepperItem({
         <div className="w-full mb-4">
           <Input
             modelValue={byte.completionScreen?.name}
+            required
             onUpdate={(e) => {
               updateByteCompletionScreen('name', e?.toString());
               console.log('I am byte completion screen: ', byte.completionScreen);
