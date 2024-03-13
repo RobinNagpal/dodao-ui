@@ -6,4 +6,5 @@ export enum IconTypes {
   GuideAddIcon = 'GuideAddIcon',
   RobotIconSolid = 'RobotIconSolid',
   ArrowDownTrayIcon = 'ArrowDownTrayIcon',
+  Reload = 'Reload',
 }
