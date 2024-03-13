@@ -47,6 +47,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
         created: new Date().toISOString(),
         priority: 50,
         tags: [],
+        completionScreen: null,
       };
       setByte(byte);
       setByteLoaded(true);
@@ -164,6 +165,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
   };
 
   const handleByteUpsert = async () => {
+    console.log('I am upserting byte: ', byte);
     await saveViaMutation(
       async () =>
         await upsertByteMutation({
