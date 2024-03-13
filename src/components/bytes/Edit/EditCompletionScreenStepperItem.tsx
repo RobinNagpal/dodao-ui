@@ -1,12 +1,13 @@
-import { EditByteType, KeyOfByteInput, UpdateByteFunctions } from '@/components/bytes/Edit/editByteHelper';
+import { EditByteType } from '@/components/bytes/Edit/editByteHelper';
 import IconButton from '@/components/core/buttons/IconButton';
 import { IconTypes } from '@/components/core/icons/IconTypes';
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
 import Input from '@/components/core/input/Input';
 import { InputWithButton } from '@/components/core/input/InputWithButton';
 import { CompletionScreen, ImageType, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import SelectImageInputModal from '@/components/app/Image/SelectImageInputModal';
 
 interface EditCompletionScreenStepperItemProps {
   space: SpaceWithIntegrationsFragment;
@@ -25,8 +26,17 @@ export default function EditCompletionScreenStepperItem({
   onRemoveCompletionScreen,
   updateByteCompletionScreen,
 }: EditCompletionScreenStepperItemProps) {
+  const [selectImageUploadModal, setSelectImageUploadModal] = useState(false);
   const handleDelete = () => {
     onRemoveCompletionScreen();
+  };
+
+  const updateCompletionScreenImageUrl = (imageUrl: string | null) => {
+    updateByteCompletionScreen('imageUrl', imageUrl);
+  };
+
+  const updateCompletionScreenContent = (content: string) => {
+    updateByteCompletionScreen('content', content);
   };
 
   return (
@@ -41,7 +51,6 @@ export default function EditCompletionScreenStepperItem({
             required
             onUpdate={(e) => {
               updateByteCompletionScreen('name', e?.toString());
-              console.log('I am byte completion screen: ', byte.completionScreen);
             }}
           >
             Name*
@@ -51,23 +60,39 @@ export default function EditCompletionScreenStepperItem({
           <InputWithButton
             buttonLabel={'Set Image'}
             inputLabel={'Image Url'}
-            onButtonClick={() => {}}
-            onInputUpdate={() => {}}
+            onButtonClick={() => setSelectImageUploadModal(true)}
+            onInputUpdate={(e) => {
+              updateCompletionScreenImageUrl(e?.toString() || '');
+            }}
             inputModelValue={byte.completionScreen?.imageUrl ?? ''}
           />
         </div>
 
         <MarkdownEditor
-          id={''}
+          id={byte.completionScreen?.uuid || byte.id}
           modelValue={byte.completionScreen?.content}
           placeholder={'Contents'}
-          onUpdate={() => {}}
+          onUpdate={updateCompletionScreenContent}
           spaceId={space.id}
           objectId={byte.id || 'unknown_byte_id'}
           imageType={ImageType.Tidbits}
           editorStyles={{ height: '200px' }}
         />
       </div>
+
+      {selectImageUploadModal && (
+        <SelectImageInputModal
+          open={selectImageUploadModal}
+          onClose={() => setSelectImageUploadModal(false)}
+          imageType={ImageType.Tidbits}
+          objectId={byte.id || 'unknown_byte_id'}
+          spaceId={space.id}
+          imageUploaded={(imageUrl) => {
+            updateCompletionScreenImageUrl(imageUrl);
+            setSelectImageUploadModal(false);
+          }}
+        />
+      )}
     </StyledStepItemContainer>
   );
 }
