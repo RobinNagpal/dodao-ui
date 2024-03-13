@@ -4673,9 +4673,7 @@ export const ActionButtonFragmentFragmentDoc = gql`
     `;
 export const CompletionScreenItemFragmentDoc = gql`
     fragment CompletionScreenItem on CompletionScreenItem {
-  ... on ActionButton {
-    ...ActionButtonFragment
-  }
+  ...ActionButtonFragment
 }
     ${ActionButtonFragmentFragmentDoc}`;
 export const CompletionScreenFragmentDoc = gql`
