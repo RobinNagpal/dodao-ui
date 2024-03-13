@@ -87,6 +87,12 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
     });
   }, []);
 
+  const removeCompletionScreen = useCallback(() => {
+    setByte((prevByte) => {
+      return { ...prevByte, completionScreen: null };
+    });
+  }, []);
+
   const validateByte = useCallback(
     (byte: EditByteType) => {
       const updatedByteErrors = validateByteFn(byte, byteErrors);
@@ -128,6 +134,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
     setByte,
     includeSteps,
     updateCompletionScreen: updateCompletionScreenFn,
+    removeCompletionScreen,
   };
 
   const saveViaMutation = async (mutationFn: () => Promise<FetchResult<{ payload: ByteDetailsFragment | undefined }>>) => {
