@@ -5,6 +5,7 @@ import Link from 'next/link';
 import ByteCollectionsGrid from '@/components/byteCollection/View/ByteCollectionsGrid';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import withSpace from '@/app/withSpace';
+import ByteCollectionCategoryCardAdminDropdown from '@/components/byteCategory/ByteCollectionCategoryCardAdminDropdown';
 
 function TidbitCollection(props: { space: SpaceWithIntegrationsFragment }) {
   const { space } = props;
@@ -39,6 +40,9 @@ function TidbitCollection(props: { space: SpaceWithIntegrationsFragment }) {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {data.byteCollectionCategories.map((category) => (
             <div key={category.id} className="bg-white shadow-lg rounded-lg p-4 flex flex-col items-start">
+              <div className="w-full flex justify-end">
+                <ByteCollectionCategoryCardAdminDropdown categoryId={category.id} />
+              </div>
               <div className="flex items-center justify-center w-12 h-12">
                 <img src={category.imageUrl!} alt="category image" />
               </div>

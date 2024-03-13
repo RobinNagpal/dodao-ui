@@ -138,6 +138,15 @@ type ByteCollectionCategory {
   name: String!
 }
 
+type ByteCollectionWithCategory {
+  ByteCollectionArr: [ByteCollection]
+  creator: String
+  excerpt: String
+  id: String!
+  imageUrl: String
+  name: String!
+}
+
 type ByteLinkedinPdfContent {
   excerpt: String!
   steps: [ByteLinkedinPdfContentStep!]!
@@ -1273,7 +1282,7 @@ type Query {
   byte(byteId: String!, includeDraft: Boolean, spaceId: String!): Byte!
   byteCollection(byteCollectionId: String!, spaceId: String!): ByteCollection!
   byteCollectionCategories(spaceId: String!): [ByteCollectionCategory!]!
-  byteCollectionCategoryWithByteCollections(categoryId: String!, spaceId: String!): [ByteCollection!]!
+  byteCollectionCategoryWithByteCollections(categoryId: String!, spaceId: String!): ByteCollectionWithCategory!
   byteCollections(spaceId: String!): [ByteCollection!]!
   byteSocialShare(byteId: String!, spaceId: String!): ByteSocialShare
   bytes(spaceId: String!): [Byte!]!
