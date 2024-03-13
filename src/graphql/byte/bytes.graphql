@@ -54,9 +54,7 @@ fragment ActionButtonFragment on ActionButton {
 }
 
 fragment CompletionScreenItem on CompletionScreenItem {
-  ... on ActionButton {
-    ...ActionButtonFragment
-  }
+  ...ActionButtonFragment
 }
 
 fragment CompletionScreen on CompletionScreen {
