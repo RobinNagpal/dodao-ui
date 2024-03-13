@@ -54,6 +54,7 @@ export type UpdateByteFunctions = {
   moveStepUp: (stepUuid: string) => void;
   setByte: (byte: EditByteType | EditProjectByteType) => void;
   updateCompletionScreen: (field: keyof CompletionScreen, value: any) => void;
+  removeCompletionScreen: () => void;
 };
 
 export interface GeneratedByte {
@@ -96,12 +97,13 @@ export function editByteCommonFunctions(setByte: (value: ((prevState: EditByteTy
 
   const updateCompletionScreenFn = (field: keyof CompletionScreen, value: any) => {
     setByte((prevByte) => {
+      const uuid = uuidv4();
       const defaultCompletionScreen: CompletionScreen = {
         content: '',
         name: '',
         imageUrl: '',
         items: [],
-        uuid: '',
+        uuid: uuid,
       };
       const currentCompletionScreen = prevByte.completionScreen || defaultCompletionScreen;
 
@@ -202,7 +204,20 @@ export function editByteCommonFunctions(setByte: (value: ((prevState: EditByteTy
       tags: byte.tags,
       priority: byte.priority,
       videoUrl: byte.videoUrl,
-      completionScreen: byte.completionScreen,
+      completionScreen:
+        byte.completionScreen != null
+          ? {
+              content: byte.completionScreen.content,
+              name: byte.completionScreen.name,
+              uuid: byte.completionScreen.uuid,
+              imageUrl: byte.completionScreen.imageUrl,
+              items: byte.completionScreen.items.map((i) => ({
+                uuid: i.uuid,
+                link: i.link,
+                label: i.label,
+              })),
+            }
+          : null,
     };
   }
 
