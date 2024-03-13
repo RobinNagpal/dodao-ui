@@ -4,7 +4,7 @@ import IconButton from '@/components/core/buttons/IconButton';
 import { IconTypes } from '@/components/core/icons/IconTypes';
 import Input from '@/components/core/input/Input';
 import TextareaAutosize from '@/components/core/textarea/TextareaAutosize';
-import { ByteCollectionFragment, ByteCollectionWithCategoryFragment, Space } from '@/graphql/generated/generated-types';
+import { ByteCollectionFragment, CategoryWithByteCollection, Space } from '@/graphql/generated/generated-types';
 import PlusCircle from '@heroicons/react/20/solid/PlusCircleIcon';
 import Bars3BottomLeftIcon from '@heroicons/react/24/solid/Bars3BottomLeftIcon';
 import React, { useState } from 'react';
@@ -12,10 +12,10 @@ import styled from 'styled-components';
 import SelectByteCollectionModal from './SelectByteCollectionModal';
 
 interface ByteCategoryEditorProps {
-  byteCategorySummary: ByteCollectionWithCategoryFragment;
+  byteCategorySummary: CategoryWithByteCollection;
   space: Space;
   viewByteCollectionsUrl: string;
-  upsertByteCategoryFn: (byteCollectionCategory: ByteCollectionWithCategoryFragment) => Promise<void>;
+  upsertByteCategoryFn: (byteCollectionCategory: CategoryWithByteCollection) => Promise<void>;
 }
 
 const AddByteButton = styled.button`
@@ -57,10 +57,10 @@ function ByteCategoryEditor(props: ByteCategoryEditorProps) {
       <div className="my-4">
         <div className="flow-root">
           <ul role="list" className="-mb-8">
-            {byteCategory.ByteCollectionArr!.map((byteCollection: any, byteIndex) => (
+            {byteCategory.byteCollectionArr!.map((byteCollection: ByteCollectionFragment, byteIndex: any) => (
               <li key={byteCollection.id}>
                 <div className="relative pb-8">
-                  {byteIndex !== byteCategory.ByteCollectionArr!.length - 1 ? (
+                  {byteIndex !== byteCategory.byteCollectionArr!.length - 1 ? (
                     <span className="absolute left-4 top-4 -ml-px h-full w-0.5 bg-gray-300" aria-hidden="true" />
                   ) : null}
                   <div className="relative flex space-x-3">
@@ -81,7 +81,7 @@ function ByteCategoryEditor(props: ByteCategoryEditorProps) {
                                 className="float-right ml-1"
                                 iconName={IconTypes.Trash}
                                 removeBorder
-                                disabled={byteCollection.length === 1}
+                                disabled={byteCategory.byteCollectionArr.length === 1}
                                 onClick={() => helperFunctions.removeByteCollection(byteCollection.id)}
                               />
                             </div>

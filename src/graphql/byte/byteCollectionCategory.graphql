@@ -6,31 +6,20 @@ fragment ByteCollectionCategory on ByteCollectionCategory {
   byteCollectionIds
 }
 
-fragment ByteCollectionWithCategory on ByteCollectionWithCategory {
+fragment CategoryWithByteCollection on CategoryWithByteCollection {
   id
   name
   excerpt
   imageUrl
   creator
-  ByteCollectionArr {
-    id
-    name
-    description
-    status
-    priority
-    byteIds
-    bytes {
-      byteId
-      name
-      content
-      videoUrl
-    }
+  byteCollectionArr {
+    ...ByteCollection
   }
 }
 
 query ByteCollectionCategoryWithByteCollections($categoryId: String!, $spaceId: String!) {
   byteCollectionCategoryWithByteCollections(categoryId: $categoryId, spaceId: $spaceId) {
-    ...ByteCollectionWithCategory
+    ...CategoryWithByteCollection
   }
 }
 

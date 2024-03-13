@@ -1,4 +1,4 @@
-import { ByteCollectionFragment, SpaceWithIntegrationsFragment, ByteCollectionWithCategoryFragment } from '@/graphql/generated/generated-types';
+import { ByteCollectionFragment, SpaceWithIntegrationsFragment, CategoryWithByteCollection } from '@/graphql/generated/generated-types';
 import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
 
@@ -12,15 +12,15 @@ interface HelperFunctions {
 }
 
 interface UseEditByteCategoryType {
-  byteCategory: ByteCollectionWithCategoryFragment;
+  byteCategory: CategoryWithByteCollection;
   helperFunctions: HelperFunctions;
 }
 
 export interface UseEditByteCollectionArgs {
   space: SpaceWithIntegrationsFragment;
   viewByteCollectionsUrl: string;
-  byteCategory?: ByteCollectionWithCategoryFragment;
-  upsertByteCollectionCategoryFn: (byteCollectionCategory: ByteCollectionWithCategoryFragment) => Promise<void>;
+  byteCategory?: CategoryWithByteCollection;
+  upsertByteCollectionCategoryFn: (byteCollectionCategory: CategoryWithByteCollection) => Promise<void>;
 }
 
 export function useEditByteCategory({
@@ -31,9 +31,9 @@ export function useEditByteCategory({
 }: UseEditByteCollectionArgs): UseEditByteCategoryType {
   const router = useRouter();
 
-  const [byteCategory, setByteCategory] = useState<ByteCollectionWithCategoryFragment>({
+  const [byteCategory, setByteCategory] = useState<CategoryWithByteCollection>({
     id: byteCategoryProp?.id || '',
-    ByteCollectionArr: byteCategoryProp?.ByteCollectionArr || [],
+    byteCollectionArr: byteCategoryProp?.byteCollectionArr || [],
     name: byteCategoryProp?.name || '',
     excerpt: byteCategoryProp?.excerpt || '',
     imageUrl: byteCategoryProp?.imageUrl || '',
@@ -42,22 +42,22 @@ export function useEditByteCategory({
 
   const removeByteCollection = useCallback((byteCollectionId: string) => {
     setByteCategory((prevByteCategory) => {
-      const updatedByteCollectionArr = prevByteCategory.ByteCollectionArr!.filter((byteCollection) => byteCollection!.id !== byteCollectionId);
+      const updatedByteCollectionArr = prevByteCategory.byteCollectionArr!.filter((byteCollection) => byteCollection!.id !== byteCollectionId);
 
-      return { ...prevByteCategory, ByteCollectionArr: updatedByteCollectionArr };
+      return { ...prevByteCategory, byteCollectionArr: updatedByteCollectionArr };
     });
   }, []);
 
   const addByteCollection = (byteCollection: ByteCollectionFragment) => {
     setByteCategory((prevByteCategory) => {
-      const newByte = prevByteCategory.ByteCollectionArr!.find(
+      const newByte = prevByteCategory.byteCollectionArr!.find(
         (byteCollectionFromArr: ByteCollectionFragment | any) => byteCollectionFromArr.id === byteCollection.id
       );
       if (newByte) {
         return prevByteCategory;
       }
       const newByteCollection = [
-        ...prevByteCategory.ByteCollectionArr!,
+        ...prevByteCategory.byteCollectionArr,
         {
           id: byteCollection.id,
           name: byteCollection.name,
@@ -69,7 +69,7 @@ export function useEditByteCategory({
         },
       ];
 
-      return { ...prevByteCategory, ByteCollectionArr: newByteCollection };
+      return { ...prevByteCategory, byteCollectionArr: newByteCollection };
     });
   };
 

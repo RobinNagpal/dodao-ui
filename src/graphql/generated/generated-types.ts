@@ -162,16 +162,6 @@ export interface ByteCollectionCategory {
   name: Scalars['String'];
 }
 
-export interface ByteCollectionWithCategory {
-  __typename?: 'ByteCollectionWithCategory';
-  ByteCollectionArr?: Maybe<Array<Maybe<ByteCollection>>>;
-  creator?: Maybe<Scalars['String']>;
-  excerpt?: Maybe<Scalars['String']>;
-  id: Scalars['String'];
-  imageUrl?: Maybe<Scalars['String']>;
-  name: Scalars['String'];
-}
-
 export interface ByteLinkedinPdfContent {
   __typename?: 'ByteLinkedinPdfContent';
   excerpt: Scalars['String'];
@@ -279,6 +269,16 @@ export interface ByteUserInput {
   required: Scalars['Boolean'];
   type: Scalars['String'];
   uuid: Scalars['String'];
+}
+
+export interface CategoryWithByteCollection {
+  __typename?: 'CategoryWithByteCollection';
+  byteCollectionArr: Array<ByteCollection>;
+  creator: Scalars['String'];
+  excerpt: Scalars['String'];
+  id: Scalars['String'];
+  imageUrl?: Maybe<Scalars['String']>;
+  name: Scalars['String'];
 }
 
 export interface ChatCompletionAiInput {
@@ -2027,7 +2027,7 @@ export interface Query {
   byte: Byte;
   byteCollection: ByteCollection;
   byteCollectionCategories: Array<ByteCollectionCategory>;
-  byteCollectionCategoryWithByteCollections: ByteCollectionWithCategory;
+  byteCollectionCategoryWithByteCollections: CategoryWithByteCollection;
   byteCollections: Array<ByteCollection>;
   byteSocialShare?: Maybe<ByteSocialShare>;
   bytes: Array<Byte>;
@@ -3173,7 +3173,7 @@ export type DeleteByteCollectionMutation = { __typename?: 'Mutation', deleteByte
 
 export type ByteCollectionCategoryFragment = { __typename?: 'ByteCollectionCategory', id: string, name: string, excerpt?: string | null, imageUrl?: string | null, byteCollectionIds: Array<string> };
 
-export type ByteCollectionWithCategoryFragment = { __typename?: 'ByteCollectionWithCategory', id: string, name: string, excerpt?: string | null, imageUrl?: string | null, creator?: string | null, ByteCollectionArr?: Array<{ __typename?: 'ByteCollection', id: string, name: string, description: string, status: string, priority: number, byteIds: Array<string>, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string, videoUrl?: string | null }> } | null> | null };
+export type CategoryWithByteCollectionFragment = { __typename?: 'CategoryWithByteCollection', id: string, name: string, excerpt: string, imageUrl?: string | null, creator: string, byteCollectionArr: Array<{ __typename?: 'ByteCollection', id: string, name: string, description: string, status: string, byteIds: Array<string>, priority: number, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string, videoUrl?: string | null }> }> };
 
 export type ByteCollectionCategoryWithByteCollectionsQueryVariables = Exact<{
   categoryId: Scalars['String'];
@@ -3181,7 +3181,7 @@ export type ByteCollectionCategoryWithByteCollectionsQueryVariables = Exact<{
 }>;
 
 
-export type ByteCollectionCategoryWithByteCollectionsQuery = { __typename?: 'Query', byteCollectionCategoryWithByteCollections: { __typename?: 'ByteCollectionWithCategory', id: string, name: string, excerpt?: string | null, imageUrl?: string | null, creator?: string | null, ByteCollectionArr?: Array<{ __typename?: 'ByteCollection', id: string, name: string, description: string, status: string, priority: number, byteIds: Array<string>, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string, videoUrl?: string | null }> } | null> | null } };
+export type ByteCollectionCategoryWithByteCollectionsQuery = { __typename?: 'Query', byteCollectionCategoryWithByteCollections: { __typename?: 'CategoryWithByteCollection', id: string, name: string, excerpt: string, imageUrl?: string | null, creator: string, byteCollectionArr: Array<{ __typename?: 'ByteCollection', id: string, name: string, description: string, status: string, byteIds: Array<string>, priority: number, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string, videoUrl?: string | null }> }> } };
 
 export type ByteCollectionCategoriesQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -4628,6 +4628,15 @@ export const AcademyTaskFragmentFragmentDoc = gql`
   updatedBy
 }
     `;
+export const ByteCollectionCategoryFragmentDoc = gql`
+    fragment ByteCollectionCategory on ByteCollectionCategory {
+  id
+  name
+  excerpt
+  imageUrl
+  byteCollectionIds
+}
+    `;
 export const ByteCollectionFragmentDoc = gql`
     fragment ByteCollection on ByteCollection {
   id
@@ -4644,38 +4653,18 @@ export const ByteCollectionFragmentDoc = gql`
   }
 }
     `;
-export const ByteCollectionCategoryFragmentDoc = gql`
-    fragment ByteCollectionCategory on ByteCollectionCategory {
-  id
-  name
-  excerpt
-  imageUrl
-  byteCollectionIds
-}
-    `;
-export const ByteCollectionWithCategoryFragmentDoc = gql`
-    fragment ByteCollectionWithCategory on ByteCollectionWithCategory {
+export const CategoryWithByteCollectionFragmentDoc = gql`
+    fragment CategoryWithByteCollection on CategoryWithByteCollection {
   id
   name
   excerpt
   imageUrl
   creator
-  ByteCollectionArr {
-    id
-    name
-    description
-    status
-    priority
-    byteIds
-    bytes {
-      byteId
-      name
-      content
-      videoUrl
-    }
+  byteCollectionArr {
+    ...ByteCollection
   }
 }
-    `;
+    ${ByteCollectionFragmentDoc}`;
 export const ByteLinkedinPdfContentStepFragmentDoc = gql`
     fragment ByteLinkedinPdfContentStep on ByteLinkedinPdfContentStep {
   content
@@ -6011,10 +6000,10 @@ export const ByteCollectionCategoryWithByteCollectionsDocument = gql`
     categoryId: $categoryId
     spaceId: $spaceId
   ) {
-    ...ByteCollectionWithCategory
+    ...CategoryWithByteCollection
   }
 }
-    ${ByteCollectionWithCategoryFragmentDoc}`;
+    ${CategoryWithByteCollectionFragmentDoc}`;
 
 /**
  * __useByteCollectionCategoryWithByteCollectionsQuery__

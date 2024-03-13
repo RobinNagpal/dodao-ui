@@ -8,7 +8,7 @@ import {
   SpaceWithIntegrationsFragment,
   useUpsertByteCollectionCategoryMutation,
   useByteCollectionCategoryWithByteCollectionsQuery,
-  ByteCollectionWithCategoryFragment,
+  CategoryWithByteCollection,
 } from '@/graphql/generated/generated-types';
 
 import SingleCardLayout from '@/layouts/SingleCardLayout';
@@ -26,7 +26,7 @@ function EditTidbitCategorySpace(props: { space: SpaceWithIntegrationsFragment; 
 
   const [upsertByteCollectionCategoryMutation] = useUpsertByteCollectionCategoryMutation();
 
-  async function upsertByteCategoryFn(byteCollectionCategory: ByteCollectionWithCategoryFragment) {
+  async function upsertByteCategoryFn(byteCollectionCategory: CategoryWithByteCollection) {
     await upsertByteCollectionCategoryMutation({
       variables: {
         input: {
@@ -37,7 +37,7 @@ function EditTidbitCategorySpace(props: { space: SpaceWithIntegrationsFragment; 
           creator: props.space.creator,
           imageUrl: byteCollectionCategory.imageUrl,
           byteCollectionIds:
-            byteCollectionCategory.ByteCollectionArr?.map((byteCollection) => byteCollection?.id).filter((id): id is string => id !== undefined) ?? [],
+            byteCollectionCategory.byteCollectionArr?.map((byteCollection) => byteCollection?.id).filter((id): id is string => id !== undefined) ?? [],
         },
       },
     });
