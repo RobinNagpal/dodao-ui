@@ -86,6 +86,14 @@ export function useEditProjectByte(space: SpaceWithIntegrationsFragment, project
     });
   }, []);
 
+
+  const removeCompletionScreen = useCallback(() => {
+    setByte((prevByte) => {
+      return { ...prevByte, completionScreen: undefined }
+    });
+  }, []);
+
+
   const validateByte = useCallback(
     (byte: EditProjectByteType) => {
       const updatedByteErrors = validateByteFn(byte, byteErrors);
@@ -128,6 +136,7 @@ export function useEditProjectByte(space: SpaceWithIntegrationsFragment, project
     setByte,
     includeSteps,
     updateCompletionScreen: updateCompletionScreenFn,
+    removeCompletionScreen,
   };
 
   const handleSubmit = async () => {
