@@ -90,20 +90,13 @@ const sendVerificationRequest = async (params: { identifier: string; url: string
 
 const createUser = async (user: User & { email: string }, spaceId: string) => {
   console.log('######### signIn - Creating new user #########');
-  await prisma.user.upsert({
+  const upsertedUser = await prisma.user.upsert({
     create: {
       spaceId,
       email: user.email,
       emailVerified: new Date(),
       authProvider: 'email',
       username: user.email,
-      accounts: {
-        create: {
-          provider: 'custom-email',
-          providerAccountId: user.email,
-          type: 'credentials',
-        },
-      },
     },
     update: {
       emailVerified: new Date(),
@@ -112,6 +105,22 @@ const createUser = async (user: User & { email: string }, spaceId: string) => {
       email_spaceId: {
         email: user.email,
         spaceId,
+      },
+    },
+  });
+
+  await prisma.account.upsert({
+    create: {
+      type: 'credentials',
+      provider: 'custom-email',
+      providerAccountId: user.email,
+      userId: upsertedUser.id,
+    },
+    update: {},
+    where: {
+      provider_providerAccountId: {
+        provider: 'custom-email',
+        providerAccountId: user.email,
       },
     },
   });

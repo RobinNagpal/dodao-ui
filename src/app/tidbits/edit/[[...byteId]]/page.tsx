@@ -2,20 +2,25 @@
 
 import withSpace from '@/app/withSpace';
 import Block from '@/components/app/Block';
+import DeleteConfirmationModal from '@/components/app/Modal/DeleteConfirmationModal';
 import AddByteQuestionsUsingAIButton from '@/components/bytes/Create/AddByteQuestionsUsingAIButton';
 import { CreateByteUsingAIModal } from '@/components/bytes/Create/CreateByteUsingAIModal';
 import { EditByteType } from '@/components/bytes/Edit/editByteHelper';
 import EditByteStepper from '@/components/bytes/Edit/EditByteStepper';
 import { useEditByte } from '@/components/bytes/Edit/useEditByte';
 import Button from '@/components/core/buttons/Button';
+import { EllipsisDropdownItem } from '@/components/core/dropdowns/EllipsisDropdown';
+import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import Input from '@/components/core/input/Input';
 import PageLoading from '@/components/core/loaders/PageLoading';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import TextareaArray from '@/components/core/textarea/TextareaArray';
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsFragment, useDeleteByteMutation } from '@/graphql/generated/generated-types';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
+import { TidbitShareSteps } from '@/types/deprecated/models/enums';
 import { ByteErrors } from '@/types/errors/byteErrors';
 import { useSession } from 'next-auth/react';
+import { router } from 'next/client';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
@@ -35,11 +40,16 @@ function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteI
   }, [byteId]);
 
   const [showAIGenerateModel, setShowAIGenerateModel] = useState(false);
+  const threeDotItems: EllipsisDropdownItem[] = [{ label: 'Delete', key: 'delete' }];
+
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+  const [deleteByteMutation] = useDeleteByteMutation();
 
   return (
     <PageWrapper>
       <SingleCardLayout>
-        <div className="px-4 mb-4 md:px-0 overflow-hidden flex justify-between">
+        <div className="px-4 mb-4 md:px-0 flex justify-between">
           <Link href={byteId ? `/tidbits/view/${byteId}/0` : `/tidbits`} className="text-color">
             <span className="mr-1 font-bold">&#8592;</span>
             {byteId ? byte.name : 'Back to Bytes'}
@@ -52,6 +62,17 @@ function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteI
                 updateByteFunctions.includeSteps(newSteps);
               }}
             />
+            {byteId && (
+              <PrivateEllipsisDropdown
+                items={threeDotItems}
+                onSelect={(key) => {
+                  if (key === 'delete') {
+                    setShowDeleteModal(true);
+                  }
+                }}
+                className="ml-4 z-50"
+              />
+            )}
           </div>
         </div>
 
@@ -142,6 +163,18 @@ function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteI
           updateByteFunctions.setByte(generated);
         }}
       />
+      {showDeleteModal && (
+        <DeleteConfirmationModal
+          title={'Delete Byte'}
+          open={showDeleteModal}
+          onClose={() => setShowDeleteModal(true)}
+          onDelete={async () => {
+            await deleteByteMutation({ variables: { spaceId: space.id, byteId: byteId! } });
+            setShowDeleteModal(false);
+            router.push(`/tidbits`);
+          }}
+        />
+      )}
     </PageWrapper>
   );
 }
