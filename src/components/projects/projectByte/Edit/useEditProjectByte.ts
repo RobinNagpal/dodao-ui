@@ -86,13 +86,11 @@ export function useEditProjectByte(space: SpaceWithIntegrationsFragment, project
     });
   }, []);
 
-
   const removeCompletionScreen = useCallback(() => {
     setByte((prevByte) => {
-      return { ...prevByte, completionScreen: undefined }
+      return { ...prevByte, completionScreen: undefined };
     });
   }, []);
-
 
   const validateByte = useCallback(
     (byte: EditProjectByteType) => {
