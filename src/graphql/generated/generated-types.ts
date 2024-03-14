@@ -273,7 +273,7 @@ export interface ByteUserInput {
 
 export interface CategoryWithByteCollection {
   __typename?: 'CategoryWithByteCollection';
-  byteCollectionArr: Array<ByteCollection>;
+  byteCollections: Array<ByteCollection>;
   creator: Scalars['String'];
   excerpt: Scalars['String'];
   id: Scalars['String'];
@@ -1721,6 +1721,7 @@ export interface MutationUpsertByteArgs {
 
 export interface MutationUpsertByteCollectionCategoryArgs {
   input: UpsertByteCollectionCategory;
+  spaceId: Scalars['String'];
 }
 
 
@@ -2829,6 +2830,15 @@ export interface UpsertAcademyTaskInput {
   uuid: Scalars['String'];
 }
 
+export interface UpsertByteCollectionCategory {
+  byteCollectionIds: Array<Scalars['String']>;
+  excerpt: Scalars['String'];
+  id: Scalars['String'];
+  imageUrl?: InputMaybe<Scalars['String']>;
+  name: Scalars['String'];
+  spaceId: Scalars['String'];
+}
+
 export interface UpsertByteInput {
   admins: Array<Scalars['String']>;
   byteStyle?: InputMaybe<Scalars['String']>;
@@ -3091,16 +3101,6 @@ export interface WebsiteScrapingInfo {
   updatedAt: Scalars['DateTimeISO'];
 }
 
-export interface UpsertByteCollectionCategory {
-  byteCollectionIds: Array<Scalars['String']>;
-  creator: Scalars['String'];
-  excerpt: Scalars['String'];
-  id: Scalars['String'];
-  imageUrl?: InputMaybe<Scalars['String']>;
-  name: Scalars['String'];
-  spaceId: Scalars['String'];
-}
-
 export type AcademyTaskFragmentFragment = { __typename?: 'AcademyTask', uuid: string, createdAt: number, createdBy: string, excerpt: string, spaceId: string, status: string, details: string, title: string, updatedAt: number, updatedBy: string, prerequisiteCourses: Array<{ __typename?: 'SummarizedGitCourse', uuid: string, key: string, title: string, thumbnail: string }>, prerequisiteGuides: Array<{ __typename?: 'Guide', uuid: string, name: string, content: string, thumbnail?: string | null, guideType: string }>, items: Array<{ __typename: 'GuideQuestion', answerKeys: Array<string>, content: string, order: number, type: string, uuid: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'GuideUserInput', label: string, order: number, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> };
 
 export type AcademyTasksQueryVariables = Exact<{
@@ -3173,15 +3173,15 @@ export type DeleteByteCollectionMutation = { __typename?: 'Mutation', deleteByte
 
 export type ByteCollectionCategoryFragment = { __typename?: 'ByteCollectionCategory', id: string, name: string, excerpt?: string | null, imageUrl?: string | null, byteCollectionIds: Array<string> };
 
-export type CategoryWithByteCollectionFragment = { __typename?: 'CategoryWithByteCollection', id: string, name: string, excerpt: string, imageUrl?: string | null, creator: string, byteCollectionArr: Array<{ __typename?: 'ByteCollection', id: string, name: string, description: string, status: string, byteIds: Array<string>, priority: number, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string, videoUrl?: string | null }> }> };
+export type CategoryWithByteCollectionFragment = { __typename?: 'CategoryWithByteCollection', id: string, name: string, excerpt: string, imageUrl?: string | null, creator: string, byteCollections: Array<{ __typename?: 'ByteCollection', id: string, name: string, description: string, status: string, byteIds: Array<string>, priority: number, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string, videoUrl?: string | null }> }> };
 
 export type ByteCollectionCategoryWithByteCollectionsQueryVariables = Exact<{
-  categoryId: Scalars['String'];
   spaceId: Scalars['String'];
+  categoryId: Scalars['String'];
 }>;
 
 
-export type ByteCollectionCategoryWithByteCollectionsQuery = { __typename?: 'Query', byteCollectionCategoryWithByteCollections: { __typename?: 'CategoryWithByteCollection', id: string, name: string, excerpt: string, imageUrl?: string | null, creator: string, byteCollectionArr: Array<{ __typename?: 'ByteCollection', id: string, name: string, description: string, status: string, byteIds: Array<string>, priority: number, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string, videoUrl?: string | null }> }> } };
+export type ByteCollectionCategoryWithByteCollectionsQuery = { __typename?: 'Query', byteCollectionCategoryWithByteCollections: { __typename?: 'CategoryWithByteCollection', id: string, name: string, excerpt: string, imageUrl?: string | null, creator: string, byteCollections: Array<{ __typename?: 'ByteCollection', id: string, name: string, description: string, status: string, byteIds: Array<string>, priority: number, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string, videoUrl?: string | null }> }> } };
 
 export type ByteCollectionCategoriesQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -3191,6 +3191,7 @@ export type ByteCollectionCategoriesQueryVariables = Exact<{
 export type ByteCollectionCategoriesQuery = { __typename?: 'Query', byteCollectionCategories: Array<{ __typename?: 'ByteCollectionCategory', id: string, name: string, excerpt?: string | null, imageUrl?: string | null, byteCollectionIds: Array<string> }> };
 
 export type UpsertByteCollectionCategoryMutationVariables = Exact<{
+  spaceId: Scalars['String'];
   input: UpsertByteCollectionCategory;
 }>;
 
@@ -4660,7 +4661,7 @@ export const CategoryWithByteCollectionFragmentDoc = gql`
   excerpt
   imageUrl
   creator
-  byteCollectionArr {
+  byteCollections {
     ...ByteCollection
   }
 }
@@ -5995,10 +5996,10 @@ export type DeleteByteCollectionMutationHookResult = ReturnType<typeof useDelete
 export type DeleteByteCollectionMutationResult = Apollo.MutationResult<DeleteByteCollectionMutation>;
 export type DeleteByteCollectionMutationOptions = Apollo.BaseMutationOptions<DeleteByteCollectionMutation, DeleteByteCollectionMutationVariables>;
 export const ByteCollectionCategoryWithByteCollectionsDocument = gql`
-    query ByteCollectionCategoryWithByteCollections($categoryId: String!, $spaceId: String!) {
+    query ByteCollectionCategoryWithByteCollections($spaceId: String!, $categoryId: String!) {
   byteCollectionCategoryWithByteCollections(
-    categoryId: $categoryId
     spaceId: $spaceId
+    categoryId: $categoryId
   ) {
     ...CategoryWithByteCollection
   }
@@ -6017,8 +6018,8 @@ export const ByteCollectionCategoryWithByteCollectionsDocument = gql`
  * @example
  * const { data, loading, error } = useByteCollectionCategoryWithByteCollectionsQuery({
  *   variables: {
- *      categoryId: // value for 'categoryId'
  *      spaceId: // value for 'spaceId'
+ *      categoryId: // value for 'categoryId'
  *   },
  * });
  */
@@ -6075,8 +6076,8 @@ export function refetchByteCollectionCategoriesQuery(variables: ByteCollectionCa
       return { query: ByteCollectionCategoriesDocument, variables: variables }
     }
 export const UpsertByteCollectionCategoryDocument = gql`
-    mutation UpsertByteCollectionCategory($input: upsertByteCollectionCategory!) {
-  payload: upsertByteCollectionCategory(input: $input) {
+    mutation UpsertByteCollectionCategory($spaceId: String!, $input: UpsertByteCollectionCategory!) {
+  payload: upsertByteCollectionCategory(spaceId: $spaceId, input: $input) {
     ...ByteCollectionCategory
   }
 }
@@ -6096,6 +6097,7 @@ export type UpsertByteCollectionCategoryMutationFn = Apollo.MutationFunction<Ups
  * @example
  * const [upsertByteCollectionCategoryMutation, { data, loading, error }] = useUpsertByteCollectionCategoryMutation({
  *   variables: {
+ *      spaceId: // value for 'spaceId'
  *      input: // value for 'input'
  *   },
  * });

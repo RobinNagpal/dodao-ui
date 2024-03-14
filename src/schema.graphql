@@ -239,7 +239,7 @@ type ByteUserInput {
 }
 
 type CategoryWithByteCollection {
-  byteCollectionArr: [ByteCollection!]!
+  byteCollections: [ByteCollection!]!
   creator: String!
   excerpt: String!
   id: String!
@@ -1113,7 +1113,7 @@ type Mutation {
   updateTopicVideo(spaceId: String!, videoInfo: UpdateTopicVideoInput!): GitCourse!
   upsertAcademyTask(spaceId: String!, task: UpsertAcademyTaskInput!): AcademyTask!
   upsertByte(input: UpsertByteInput!, spaceId: String!): Byte!
-  upsertByteCollectionCategory(input: upsertByteCollectionCategory!): ByteCollectionCategory!
+  upsertByteCollectionCategory(input: UpsertByteCollectionCategory!, spaceId: String!): ByteCollectionCategory!
   upsertByteSocialShare(input: UpsertByteSocialShareInput!, spaceId: String!): ByteSocialShare!
   upsertChatbotCategory(input: UpsertChatbotCategoryInput!, spaceId: String!): ChatbotCategory!
   upsertChatbotFAQ(input: UpsertChatbotFAQInput!, spaceId: String!): ChatbotFAQ!
@@ -1737,6 +1737,15 @@ input UpsertAcademyTaskInput {
   uuid: String!
 }
 
+input UpsertByteCollectionCategory {
+  byteCollectionIds: [String!]!
+  excerpt: String!
+  id: String!
+  imageUrl: String
+  name: String!
+  spaceId: String!
+}
+
 input UpsertByteInput {
   admins: [String!]!
   byteStyle: String
@@ -1991,14 +2000,4 @@ type WebsiteScrapingInfo {
   scrapingStartUrl: String!
   spaceId: String!
   updatedAt: DateTimeISO!
-}
-
-input upsertByteCollectionCategory {
-  byteCollectionIds: [String!]!
-  creator: String!
-  excerpt: String!
-  id: String!
-  imageUrl: String
-  name: String!
-  spaceId: String!
 }

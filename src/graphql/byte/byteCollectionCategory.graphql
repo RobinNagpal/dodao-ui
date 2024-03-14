@@ -12,13 +12,13 @@ fragment CategoryWithByteCollection on CategoryWithByteCollection {
   excerpt
   imageUrl
   creator
-  byteCollectionArr {
+  byteCollections {
     ...ByteCollection
   }
 }
 
-query ByteCollectionCategoryWithByteCollections($categoryId: String!, $spaceId: String!) {
-  byteCollectionCategoryWithByteCollections(categoryId: $categoryId, spaceId: $spaceId) {
+query ByteCollectionCategoryWithByteCollections($spaceId: String!, $categoryId: String!) {
+  byteCollectionCategoryWithByteCollections(spaceId: $spaceId, categoryId: $categoryId) {
     ...CategoryWithByteCollection
   }
 }
@@ -29,8 +29,8 @@ query ByteCollectionCategories($spaceId: String!) {
   }
 }
 
-mutation UpsertByteCollectionCategory($input: upsertByteCollectionCategory!) {
-  payload: upsertByteCollectionCategory(input: $input) {
+mutation UpsertByteCollectionCategory($spaceId: String!, $input: UpsertByteCollectionCategory!) {
+  payload: upsertByteCollectionCategory(spaceId: $spaceId, input: $input) {
     ...ByteCollectionCategory
   }
 }

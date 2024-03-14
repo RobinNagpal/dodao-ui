@@ -14,15 +14,13 @@ export default function ByteCollectionCardAdminDropdown({ categoryId }: ByteColl
   };
 
   return (
-    <>
-      <PrivateEllipsisDropdown
-        items={getThreeDotItems()}
-        onSelect={async (key) => {
-          if (key === 'edit') {
-            router.push(baseByteCollectionsCategoryEditUrl);
-          }
-        }}
-      />
-    </>
+    <PrivateEllipsisDropdown
+      items={getThreeDotItems()}
+      onSelect={async (key) => {
+        if (key === 'edit') {
+          router.push(baseByteCollectionsCategoryEditUrl);
+        }
+      }}
+    />
   );
 }

@@ -20,7 +20,7 @@ export function TidbitCollection(props: { space: SpaceWithIntegrationsFragment; 
     <PageWrapper>
       {data && (
         <ByteCollectionsGrid
-          byteCollections={data.byteCollectionCategoryWithByteCollections.byteCollectionArr as ByteCollectionFragment[]}
+          byteCollections={data.byteCollectionCategoryWithByteCollections.byteCollections as ByteCollectionFragment[]}
           space={space}
           byteCollectionType={'byteCollection'}
           byteCollectionsPageUrl={`/tidbit-collections`}

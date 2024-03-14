@@ -1,6 +1,13 @@
-import { ByteCollectionFragment, SpaceWithIntegrationsFragment, CategoryWithByteCollection } from '@/graphql/generated/generated-types';
+import {
+  ByteCollectionFragment,
+  SpaceWithIntegrationsFragment,
+  CategoryWithByteCollection,
+  useUpsertByteCollectionCategoryMutation,
+} from '@/graphql/generated/generated-types';
+import { slugify } from '@/utils/auth/slugify';
 import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
+import { v4 } from 'uuid';
 
 interface HelperFunctions {
   updateByteCategoryName: (name: string) => void;
@@ -20,20 +27,14 @@ export interface UseEditByteCollectionArgs {
   space: SpaceWithIntegrationsFragment;
   viewByteCollectionsUrl: string;
   byteCategory?: CategoryWithByteCollection;
-  upsertByteCollectionCategoryFn: (byteCollectionCategory: CategoryWithByteCollection) => Promise<void>;
 }
 
-export function useEditByteCategory({
-  space,
-  viewByteCollectionsUrl,
-  byteCategory: byteCategoryProp,
-  upsertByteCollectionCategoryFn,
-}: UseEditByteCollectionArgs): UseEditByteCategoryType {
+export function useEditByteCategory({ space, viewByteCollectionsUrl, byteCategory: byteCategoryProp }: UseEditByteCollectionArgs): UseEditByteCategoryType {
   const router = useRouter();
-
+  const [upsertByteCollectionCategoryMutation] = useUpsertByteCollectionCategoryMutation();
   const [byteCategory, setByteCategory] = useState<CategoryWithByteCollection>({
     id: byteCategoryProp?.id || '',
-    byteCollectionArr: byteCategoryProp?.byteCollectionArr || [],
+    byteCollections: byteCategoryProp?.byteCollections || [],
     name: byteCategoryProp?.name || '',
     excerpt: byteCategoryProp?.excerpt || '',
     imageUrl: byteCategoryProp?.imageUrl || '',
@@ -42,7 +43,7 @@ export function useEditByteCategory({
 
   const removeByteCollection = useCallback((byteCollectionId: string) => {
     setByteCategory((prevByteCategory) => {
-      const updatedByteCollectionArr = prevByteCategory.byteCollectionArr!.filter((byteCollection) => byteCollection!.id !== byteCollectionId);
+      const updatedByteCollectionArr = prevByteCategory.byteCollections!.filter((byteCollection) => byteCollection!.id !== byteCollectionId);
 
       return { ...prevByteCategory, byteCollectionArr: updatedByteCollectionArr };
     });
@@ -50,14 +51,14 @@ export function useEditByteCategory({
 
   const addByteCollection = (byteCollection: ByteCollectionFragment) => {
     setByteCategory((prevByteCategory) => {
-      const newByte = prevByteCategory.byteCollectionArr!.find(
+      const newByte = prevByteCategory.byteCollections!.find(
         (byteCollectionFromArr: ByteCollectionFragment | any) => byteCollectionFromArr.id === byteCollection.id
       );
       if (newByte) {
         return prevByteCategory;
       }
       const newByteCollection = [
-        ...prevByteCategory.byteCollectionArr,
+        ...prevByteCategory.byteCollections,
         {
           id: byteCollection.id,
           name: byteCollection.name,
@@ -83,8 +84,26 @@ export function useEditByteCategory({
   const updateByteCategoryImageUrl = (imageUrl: string) => {
     setByteCategory((prevByteCategory) => ({ ...prevByteCategory, imageUrl }));
   };
+
+  async function upsertByteCategoryFn(byteCollectionCategory: CategoryWithByteCollection) {
+    await upsertByteCollectionCategoryMutation({
+      variables: {
+        spaceId: space.id,
+        input: {
+          id: byteCollectionCategory.id || slugify(byteCollectionCategory.name) + '-' + v4().toString().substring(0, 4),
+          spaceId: space.id,
+          name: byteCollectionCategory.name,
+          excerpt: byteCollectionCategory.excerpt || '',
+          imageUrl: byteCollectionCategory.imageUrl,
+          byteCollectionIds:
+            byteCollectionCategory.byteCollections?.map((byteCollection) => byteCollection?.id).filter((id): id is string => id !== undefined) ?? [],
+        },
+      },
+    });
+  }
+
   const upsertByteCollectionCategory = async () => {
-    await upsertByteCollectionCategoryFn(byteCategory);
+    await upsertByteCategoryFn(byteCategory);
     router.push(viewByteCollectionsUrl);
     router.refresh();
   };
