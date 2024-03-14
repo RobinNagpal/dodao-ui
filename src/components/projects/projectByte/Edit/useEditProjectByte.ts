@@ -64,7 +64,7 @@ export function useEditProjectByte(space: SpaceWithIntegrationsFragment, project
     }
   }, [byteId, space]);
 
-  const { getByteInputFn, updateStepFn, moveStepUpFn, moveStepDownFn, removeStepFn, validateByteFn, updateCompletionScreenFn } =
+  const { getByteInputFn, updateStepFn, moveStepUpFn, moveStepDownFn, removeStepFn, validateByteFn, updateCompletionScreenFn, addButtonLabelFn, addButtonLinkFn, removeCompletionScreenItemButtonFn } =
     editByteCommonFunctions(setByte);
   // Add other
 
@@ -86,11 +86,13 @@ export function useEditProjectByte(space: SpaceWithIntegrationsFragment, project
     });
   }, []);
 
+
   const removeCompletionScreen = useCallback(() => {
     setByte((prevByte) => {
-      return { ...prevByte, completionScreen: undefined };
+      return { ...prevByte, completionScreen: undefined }
     });
   }, []);
+
 
   const validateByte = useCallback(
     (byte: EditProjectByteType) => {
@@ -135,6 +137,9 @@ export function useEditProjectByte(space: SpaceWithIntegrationsFragment, project
     includeSteps,
     updateCompletionScreen: updateCompletionScreenFn,
     removeCompletionScreen,
+    addButtonLabel: addButtonLabelFn,
+    addButtonLink: addButtonLinkFn,
+    removeCompletionScreenItemButton: removeCompletionScreenItemButtonFn
   };
 
   const handleSubmit = async () => {
