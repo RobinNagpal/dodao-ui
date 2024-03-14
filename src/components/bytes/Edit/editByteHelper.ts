@@ -9,7 +9,7 @@ import {
 } from '@/graphql/generated/generated-types';
 import { isQuestion, isUserInput } from '@/types/deprecated/helpers/stepItemTypes';
 import { UserInput } from '@/types/deprecated/models/GuideModel';
-import { ByteErrors } from '@/types/errors/byteErrors';
+import { ByteErrors, CompletionScreenErrors, CompletionScreenItemErrors } from '@/types/errors/byteErrors';
 import { StepError } from '@/types/errors/error';
 import { slugify } from '@/utils/auth/slugify';
 import { validateQuestion, validateUserInput } from '@/utils/stepItems/validateItems';
@@ -201,6 +201,37 @@ export function editByteCommonFunctions(setByte: (value: ((prevState: EditByteTy
     });
   };
 
+  function validateCompletionScreen(completionScreen?: CompletionScreen): CompletionScreenErrors {
+    let errors: CompletionScreenErrors = {};
+
+    if (completionScreen?.name == '' || completionScreen?.name == null) {
+      errors.name = true;
+    }
+    if (completionScreen?.content == '' || completionScreen?.content == null) {
+      errors.content = true;
+    }
+
+    let itemErrors: Record<string, CompletionScreenItemErrors> = {};
+    completionScreen?.items?.forEach((item) => {
+      let itemError: CompletionScreenItemErrors = {};
+      if (item.label == '' || item.label == null) {
+        itemError.label = true;
+      }
+      if (item.link == '' || item.label == null) {
+        itemError.link = true;
+      }
+      if (Object.keys(itemError).length > 0) {
+        itemErrors[item.uuid] = itemError;
+      }
+    });
+
+    if (Object.keys(itemErrors).length > 0) {
+      errors.items = itemErrors;
+    }
+
+    return errors;
+  }
+
   const validateByteFn = (byte: EditByteType, byteErrors: ByteErrors) => {
     const updatedByteErrors: ByteErrors = { ...byteErrors };
     updatedByteErrors.name = undefined;
@@ -234,6 +265,11 @@ export function editByteCommonFunctions(setByte: (value: ((prevState: EditByteTy
         updatedByteErrors.steps[step.uuid] = stepError;
       }
     });
+
+    const completionScreenErrors = validateCompletionScreen(byte.completionScreen || undefined);
+    if (Object.keys(completionScreenErrors).length > 0) {
+      updatedByteErrors.completionScreen = completionScreenErrors;
+    }
     return updatedByteErrors;
   };
 
