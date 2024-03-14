@@ -10,8 +10,7 @@
   color: var(--heading-color);
 }
 
-.byteImage {
-  width: 400px;
-  height: 350px;
-  margin: 0 auto;
+.stepContainer {
+  min-height: calc(100vh - 104px);
 }
+
