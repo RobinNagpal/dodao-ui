@@ -1,9 +1,10 @@
 import GenerateImageUsingDalleAdvanced from '@/components/app/Image/GenerateImageUsingDalleAdvanced';
 import Button from '@/components/core/buttons/Button';
-import FullPageLoader from '@/components/core/loaders/FullPageLoading';
-import LoadingSpinner from '@/components/core/loaders/LoadingSpinner';
+import IconButton from '@/components/core/buttons/IconButton';
+import { IconTypes } from '@/components/core/icons/IconTypes';
 import FullPageModal from '@/components/core/modals/FullPageModal';
 import { ChatCompletionRequestMessageRoleEnum, useAskChatCompletionAiMutation, useGenerateImageMutation } from '@/graphql/generated/generated-types';
+import ArrowPathRoundedSquareIcon from '@heroicons/react/24/outline/ArrowPathRoundedSquareIcon';
 import React, { useEffect } from 'react';
 
 export interface GenerateFromDalleModalProps {
@@ -51,29 +52,34 @@ export default function GenerateFromDalleModal({ open, onClose, onInput, generat
   }
 
   useEffect(() => {
-    generateImage();
-  }, []);
+    if (open) {
+      generateImage();
+    }
+  }, [open]); // Runs the effect when 'open' changes;
 
   return (
-    <FullPageModal open={open} onClose={() => onClose()} title={'Generate Image using DALL·E'}>
+    <FullPageModal open={open} onClose={() => onClose()} title={'Generate Image using DALL·E'} className={'min-h-128'}>
       {enterManualPrompt ? (
         <GenerateImageUsingDalleAdvanced onInput={onInput} generateImagePromptFn={generateImagePromptFn} />
       ) : (
-        <div className="h-[80vh] p-4 overflow-y-scroll flex flex-col space-y-4 justify-center items-center">
-          <div className="relative" style={{ height: '450px', width: '450px' }}>
-            {!generatingImage && (
-              <Button variant="contained" primary onClick={() => setEnterManualPrompt(true)} className="ml-4 absolute -top-10 right-0">
-                Enter prompt manually
-              </Button>
-            )}
-
-            {generatingImage && (
-              <div className="h-[60vh] flex items-center justify-center">
-                <FullPageLoader />
+        <div className="p-4 overflow-y-scroll flex flex-col space-y-4 justify-center items-center">
+          {generatingImage ? (
+            <div className="flex items-center justify-center" style={{ height: '450px', width: '450px' }}>
+              <ArrowPathRoundedSquareIcon className="w-12 h-12 animate-spin text-blue-500 mx-auto" />
+            </div>
+          ) : (
+            <div className="h-max" style={{ minHeight: '600px', paddingTop: '32px' }}>
+              <div className="relative" style={{ height: '450px', width: '450px' }}>
+                <div className="flex justify-end">
+                  <Button variant="contained" primary onClick={() => setEnterManualPrompt(true)}>
+                    Advanced
+                  </Button>
+                  <IconButton className="ml-2" iconName={IconTypes.Reload} removeBorder disabled={generatingImage} onClick={() => generateImage()} />
+                </div>
+                {!generatingImage && generatedImageUrl && <img src={generatedImageUrl} alt="Generated Image" className="h-full w-full my-4" />}
               </div>
-            )}
-            {!generatingImage && <img src={generatedImageUrl} alt="Generated Image" className="h-full w-full my-4" />}
-          </div>
+            </div>
+          )}
           <div className="mt-4 flex justify-between">
             <Button onClick={() => onClose()}>Cancel</Button>
             <Button disabled={!generatedImageUrl} variant="contained" primary onClick={() => onInput(generatedImageUrl as string)} className="ml-4">

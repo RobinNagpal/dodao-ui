@@ -1,17 +1,18 @@
-import { Hero } from './components/Hero';
-import { Introduction } from './components/Introduction';
-import { NavBar } from './components/NavBar';
+import PageWrapper from '@/components/core/page/PageWrapper';
 import { AcademySites } from './components/AcademySites';
-import { TidbitsHub } from './components/TidbitsHub';
 import { AIChatbot } from './components/AIChatbot';
 import { BlockchainCourses } from './components/BlockchainCourses';
 import { BlockchainDevelopmentTooling } from './components/BlockchainDevelopmentTooling';
-import { Footer } from './components/Footer';
 import DoDAOHelpButton from './components/DoDAOHelpButton';
+import { Footer } from './components/Footer';
+import { Introduction } from './components/Introduction';
+import { NavBar } from './components/NavBar';
+import { Hero } from './components/Hero';
+import { TidbitsHub } from './components/TidbitsHub';
 
 export default function DoDAOHome() {
   return (
-    <>
+    <PageWrapper>
       <DoDAOHelpButton />
       <Hero />
       <Introduction />
@@ -22,6 +23,6 @@ export default function DoDAOHome() {
       <BlockchainCourses />
       <BlockchainDevelopmentTooling />
       <Footer />
-    </>
+    </PageWrapper>
   );
 }

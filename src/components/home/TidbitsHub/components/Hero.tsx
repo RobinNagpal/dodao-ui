@@ -1,8 +1,7 @@
-import { WatchVideoButton } from '@/components/home/TidbitsHub/components/WatchVideoButton';
 import { useId } from 'react';
+import { WatchVideoButton } from './../../common/WatchVideoButton';
 
 import { AppDemo } from './AppDemo';
-import { Button } from './Button';
 import { Container } from './Container';
 import { PhoneFrame } from './PhoneFrame';
 
@@ -47,7 +46,7 @@ export function Hero() {
               and watch their trust in your services grow!
             </p>
             <div className="mt-8 flex flex-wrap gap-x-6 gap-y-4">
-              <WatchVideoButton />
+              <WatchVideoButton src={'https://d31h13bdjwgzxs.cloudfront.net/tidbithub/Tidbits_Hub-Banks.mp4'} />
             </div>
           </div>
           <div className="relative mt-10 sm:mt-20 lg:col-span-5 lg:row-span-2 lg:mt-0 xl:col-span-6">

@@ -10,6 +10,7 @@ export interface SingleSectionModalProps {
   children: React.ReactNode;
   showCloseButton?: boolean;
   fullWidth?: boolean;
+  className?: string;
 }
 
 const ModalContainer = styled.div`
@@ -19,7 +20,7 @@ const ModalContainer = styled.div`
 const StyledModalWrapper = styled.div`
   background-color: var(--bg-color);
 `;
-export default function FullPageModal({ open, title, children, onClose, showCloseButton = true, fullWidth = false }: SingleSectionModalProps) {
+export default function FullPageModal({ open, title, children, onClose, showCloseButton = true, fullWidth = false, className }: SingleSectionModalProps) {
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={onClose}>
@@ -36,7 +37,7 @@ export default function FullPageModal({ open, title, children, onClose, showClos
         </Transition.Child>
 
         <ModalContainer className={`fixed inset-0 z-10 overflow-y-auto`}>
-          <div className="flex min-h-full items-end justify-center text-center sm:items-center sm:p-0 items-center">
+          <div className="flex min-h-full justify-center text-center sm:items-center sm:p-0 items-center">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -46,9 +47,9 @@ export default function FullPageModal({ open, title, children, onClose, showClos
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="relative transform overflow-hidden text-left transition-all sm:my-8  w-full">
+              <Dialog.Panel className={`relative transform text-left transition-all sm:my-8  w-full ${className}`}>
                 <StyledModalWrapper className={fullWidth ? '' : 'mx-auto max-w-7xl rounded-lg pb-4 pt-2'}>
-                  <div className="text-center">
+                  <div className="text-center overflow-y-auto">
                     <Dialog.Title as="h3" className="flex text-base font-semibold leading-6 justify-between">
                       <div className="w-full align-center text-center">{title}</div>
                       {showCloseButton && (

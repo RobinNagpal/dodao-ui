@@ -15,8 +15,9 @@ function PlayIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
 interface VideoFullScreenModalProps {
   open: boolean;
   onClose: () => void;
+  src: string;
 }
-function VideoFullScreenModal({ open, onClose }: VideoFullScreenModalProps) {
+function VideoFullScreenModal({ open, onClose, src }: VideoFullScreenModalProps) {
   return (
     <FullScreenModal open={open} onClose={onClose} title="Breaking Down Complex Concepts: The Tidbits Method">
       <div className="w-full min-h-screen flex flex-col justify-center align-center">
@@ -30,7 +31,7 @@ function VideoFullScreenModal({ open, onClose }: VideoFullScreenModalProps) {
               autoPlay={true}
               style={{ maxHeight: '80vh', maxWidth: '100vw' }}
             >
-              <source src={'https://d31h13bdjwgzxs.cloudfront.net/tidbithub/Tidbits_Hub-Banks.mp4'} type="video/mp4" />
+              <source src={src} type="video/mp4" />
             </video>
           </div>
         </div>
@@ -38,7 +39,7 @@ function VideoFullScreenModal({ open, onClose }: VideoFullScreenModalProps) {
     </FullScreenModal>
   );
 }
-export function WatchVideoButton() {
+export function WatchVideoButton(props: { src: string }) {
   const [open, setOpen] = React.useState(false);
   return (
     <>
@@ -46,7 +47,7 @@ export function WatchVideoButton() {
         <PlayIcon className="h-6 w-6 flex-none" />
         <span className="ml-2.5">Watch the video</span>
       </Button>
-      <VideoFullScreenModal open={open} onClose={() => setOpen(false)} />
+      <VideoFullScreenModal open={open} onClose={() => setOpen(false)} src={props.src} />
     </>
   );
 }

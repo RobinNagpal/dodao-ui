@@ -1,3 +1,5 @@
+'use client';
+
 // Import required dependencies
 import LoadingSpinner from '@/components/core/loaders/LoadingSpinner';
 import React, { FormEvent } from 'react';

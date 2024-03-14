@@ -8,6 +8,7 @@ import ArrowDownTrayIcon from '@heroicons/react/24/outline/ArrowDownTrayIcon';
 import ArrowSmallUpIcon from '@heroicons/react/24/solid/ArrowSmallUpIcon';
 import DocumentPlusIcon from '@heroicons/react/24/solid/DocumentPlusIcon';
 import TrashIcon from '@heroicons/react/24/solid/TrashIcon';
+import ArrowPathIcon from '@heroicons/react/24/solid/ArrowPathIcon';
 import styled from 'styled-components';
 
 // Define component's props using TypeScript interfaces
@@ -60,6 +61,8 @@ function IconButton({
         return <DocumentPlusIcon width="20" height="20" />;
       case IconTypes.ArrowDownTrayIcon:
         return <ArrowDownTrayIcon width="20" height="20" />;
+      case IconTypes.Reload:
+        return <ArrowPathIcon width="20" height="20" />;
       case IconTypes.RobotIconSolid:
         return <RobotIconSolid />;
       default:

@@ -4,7 +4,7 @@ import { Container } from './Container';
 export function Introduction() {
   return (
     <section id="introduction" aria-label="Introduction" className="pb-16 pt-20 sm:pb-20 md:pt-36 lg:py-32">
-      <Container className="text-lg tracking-tight text-slate-700">
+      <div className="text-lg tracking-tight text-slate-700 w-full">
         <p className="font-display text-4xl font-bold tracking-tight text-slate-900">Welcome to DoDAO: Where Learning Meets Simplicity</p>
         <p className="mt-4">
           In a world brimming with information, true learning lies in understanding. That&apos;s where DoDAO stands out. We’re not just a company; we’re
@@ -25,7 +25,7 @@ export function Introduction() {
           ))}
         </ul>
         <p className="mt-8">Partner with DoDAO and let’s educate your customers together!</p>
-      </Container>
+      </div>
     </section>
   );
 }

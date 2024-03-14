@@ -331,7 +331,8 @@ export default function EditByteStepperItem({
   };
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const colorTheme = findClosestColor(space.themeColors?.primaryColor || '#008000');
+  const primaryColor = findClosestColor(space.themeColors?.primaryColor || '#000CCC');
+  const backgroundColor = findClosestColor(space.themeColors?.bgColor || '#FFFFFF');
 
   let nameAndContentOfSteps = '';
 
@@ -342,19 +343,29 @@ export default function EditByteStepperItem({
   });
   const promptForImagePrompt = `
 Let's create an image prompt based on the subject matter named "${byte?.name}". 
+
 Here's a concise summary:
 - Subject Name: ${byte?.name}
 - Subject Content: ${byte?.content}
-- Key Points Overview: 
-  ${nameAndContentOfSteps}
+
+
+- Here is the full details of the topic:  
+${nameAndContentOfSteps}
+
 This summary provides a high-level understanding of the subject matter.
 
 Now, turning our attention to a specific detail:
 - Detail Name: ${step.name}
 - Detail Content: ${step.content}
 
-Drawing from the detailed information provided, particularly the detail's name and content, create an image prompt that captures the essence of this detail. Aim to include elements that mirror its themes, emotions, or critical aspects. The objective is to produce an image that visually communicates this particular detail effectively.
-Maintain a color scheme that contrasts with ${colorTheme}, the current theme of the user's website.
+Drawing from the detailed information provided, particularly the detail's name and content, create an image prompt that captures the essence of this detail. 
+Aim to include elements that mirror its themes, emotions, or critical aspects. 
+
+The objective is to produce an image that visually communicates this particular detail effectively and should be minimalistic.
+
+The image should be a widescreen image.
+
+For background of the image, use the color ${backgroundColor} and for the primary color use ${primaryColor}.
 `;
 
   const [selectImageUploadModal, setSelectImageUploadModal] = useState(false);
