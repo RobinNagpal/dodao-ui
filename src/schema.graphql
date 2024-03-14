@@ -130,6 +130,14 @@ type ByteCollectionByte {
   videoUrl: String
 }
 
+type ByteCollectionCategory {
+  byteCollectionIds: [String!]!
+  excerpt: String
+  id: String!
+  imageUrl: String
+  name: String!
+}
+
 type ByteLinkedinPdfContent {
   excerpt: String!
   steps: [ByteLinkedinPdfContentStep!]!
@@ -228,6 +236,15 @@ type ByteUserInput {
   required: Boolean!
   type: String!
   uuid: String!
+}
+
+type CategoryWithByteCollection {
+  byteCollections: [ByteCollection!]!
+  creator: String!
+  excerpt: String!
+  id: String!
+  imageUrl: String
+  name: String!
 }
 
 input ChatCompletionAIInput {
@@ -1103,6 +1120,7 @@ type Mutation {
   uploadImageFromUrlToS3(input: UploadImageFromUrlToS3Input!, spaceId: String!): String!
   upsertAcademyTask(spaceId: String!, task: UpsertAcademyTaskInput!): AcademyTask!
   upsertByte(input: UpsertByteInput!, spaceId: String!): Byte!
+  upsertByteCollectionCategory(input: UpsertByteCollectionCategory!, spaceId: String!): ByteCollectionCategory!
   upsertByteSocialShare(input: UpsertByteSocialShareInput!, spaceId: String!): ByteSocialShare!
   upsertChatbotCategory(input: UpsertChatbotCategoryInput!, spaceId: String!): ChatbotCategory!
   upsertChatbotFAQ(input: UpsertChatbotFAQInput!, spaceId: String!): ChatbotFAQ!
@@ -1270,6 +1288,8 @@ type Query {
   articleIndexingInfos(spaceId: String!): [ArticleIndexingInfo!]!
   byte(byteId: String!, includeDraft: Boolean, spaceId: String!): Byte!
   byteCollection(byteCollectionId: String!, spaceId: String!): ByteCollection!
+  byteCollectionCategories(spaceId: String!): [ByteCollectionCategory!]!
+  byteCollectionCategoryWithByteCollections(categoryId: String!, spaceId: String!): CategoryWithByteCollection!
   byteCollections(spaceId: String!): [ByteCollection!]!
   byteSocialShare(byteId: String!, spaceId: String!): ByteSocialShare
   bytes(spaceId: String!): [Byte!]!
@@ -1730,6 +1750,15 @@ input UpsertAcademyTaskInput {
   status: String!
   title: String!
   uuid: String!
+}
+
+input UpsertByteCollectionCategory {
+  byteCollectionIds: [String!]!
+  excerpt: String!
+  id: String!
+  imageUrl: String
+  name: String!
+  spaceId: String!
 }
 
 input UpsertByteInput {

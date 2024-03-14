@@ -153,6 +153,15 @@ export interface ByteCollectionByte {
   videoUrl?: Maybe<Scalars['String']>;
 }
 
+export interface ByteCollectionCategory {
+  __typename?: 'ByteCollectionCategory';
+  byteCollectionIds: Array<Scalars['String']>;
+  excerpt?: Maybe<Scalars['String']>;
+  id: Scalars['String'];
+  imageUrl?: Maybe<Scalars['String']>;
+  name: Scalars['String'];
+}
+
 export interface ByteLinkedinPdfContent {
   __typename?: 'ByteLinkedinPdfContent';
   excerpt: Scalars['String'];
@@ -260,6 +269,16 @@ export interface ByteUserInput {
   required: Scalars['Boolean'];
   type: Scalars['String'];
   uuid: Scalars['String'];
+}
+
+export interface CategoryWithByteCollection {
+  __typename?: 'CategoryWithByteCollection';
+  byteCollections: Array<ByteCollection>;
+  creator: Scalars['String'];
+  excerpt: Scalars['String'];
+  id: Scalars['String'];
+  imageUrl?: Maybe<Scalars['String']>;
+  name: Scalars['String'];
 }
 
 export interface ChatCompletionAiInput {
@@ -1172,6 +1191,7 @@ export interface Mutation {
   uploadImageFromUrlToS3: Scalars['String'];
   upsertAcademyTask: AcademyTask;
   upsertByte: Byte;
+  upsertByteCollectionCategory: ByteCollectionCategory;
   upsertByteSocialShare: ByteSocialShare;
   upsertChatbotCategory: ChatbotCategory;
   upsertChatbotFAQ: ChatbotFaq;
@@ -1712,6 +1732,12 @@ export interface MutationUpsertByteArgs {
 }
 
 
+export interface MutationUpsertByteCollectionCategoryArgs {
+  input: UpsertByteCollectionCategory;
+  spaceId: Scalars['String'];
+}
+
+
 export interface MutationUpsertByteSocialShareArgs {
   input: UpsertByteSocialShareInput;
   spaceId: Scalars['String'];
@@ -2014,6 +2040,8 @@ export interface Query {
   articleIndexingInfos: Array<ArticleIndexingInfo>;
   byte: Byte;
   byteCollection: ByteCollection;
+  byteCollectionCategories: Array<ByteCollectionCategory>;
+  byteCollectionCategoryWithByteCollections: CategoryWithByteCollection;
   byteCollections: Array<ByteCollection>;
   byteSocialShare?: Maybe<ByteSocialShare>;
   bytes: Array<Byte>;
@@ -2099,6 +2127,17 @@ export interface QueryByteArgs {
 
 export interface QueryByteCollectionArgs {
   byteCollectionId: Scalars['String'];
+  spaceId: Scalars['String'];
+}
+
+
+export interface QueryByteCollectionCategoriesArgs {
+  spaceId: Scalars['String'];
+}
+
+
+export interface QueryByteCollectionCategoryWithByteCollectionsArgs {
+  categoryId: Scalars['String'];
   spaceId: Scalars['String'];
 }
 
@@ -2812,6 +2851,15 @@ export interface UpsertAcademyTaskInput {
   uuid: Scalars['String'];
 }
 
+export interface UpsertByteCollectionCategory {
+  byteCollectionIds: Array<Scalars['String']>;
+  excerpt: Scalars['String'];
+  id: Scalars['String'];
+  imageUrl?: InputMaybe<Scalars['String']>;
+  name: Scalars['String'];
+  spaceId: Scalars['String'];
+}
+
 export interface UpsertByteInput {
   admins: Array<Scalars['String']>;
   byteStyle?: InputMaybe<Scalars['String']>;
@@ -3143,6 +3191,33 @@ export type DeleteByteCollectionMutationVariables = Exact<{
 
 
 export type DeleteByteCollectionMutation = { __typename?: 'Mutation', deleteByteCollection: boolean };
+
+export type ByteCollectionCategoryFragment = { __typename?: 'ByteCollectionCategory', id: string, name: string, excerpt?: string | null, imageUrl?: string | null, byteCollectionIds: Array<string> };
+
+export type CategoryWithByteCollectionFragment = { __typename?: 'CategoryWithByteCollection', id: string, name: string, excerpt: string, imageUrl?: string | null, creator: string, byteCollections: Array<{ __typename?: 'ByteCollection', id: string, name: string, description: string, status: string, byteIds: Array<string>, priority: number, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string, videoUrl?: string | null }> }> };
+
+export type ByteCollectionCategoryWithByteCollectionsQueryVariables = Exact<{
+  spaceId: Scalars['String'];
+  categoryId: Scalars['String'];
+}>;
+
+
+export type ByteCollectionCategoryWithByteCollectionsQuery = { __typename?: 'Query', byteCollectionCategoryWithByteCollections: { __typename?: 'CategoryWithByteCollection', id: string, name: string, excerpt: string, imageUrl?: string | null, creator: string, byteCollections: Array<{ __typename?: 'ByteCollection', id: string, name: string, description: string, status: string, byteIds: Array<string>, priority: number, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string, videoUrl?: string | null }> }> } };
+
+export type ByteCollectionCategoriesQueryVariables = Exact<{
+  spaceId: Scalars['String'];
+}>;
+
+
+export type ByteCollectionCategoriesQuery = { __typename?: 'Query', byteCollectionCategories: Array<{ __typename?: 'ByteCollectionCategory', id: string, name: string, excerpt?: string | null, imageUrl?: string | null, byteCollectionIds: Array<string> }> };
+
+export type UpsertByteCollectionCategoryMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+  input: UpsertByteCollectionCategory;
+}>;
+
+
+export type UpsertByteCollectionCategoryMutation = { __typename?: 'Mutation', payload: { __typename?: 'ByteCollectionCategory', id: string, name: string, excerpt?: string | null, imageUrl?: string | null, byteCollectionIds: Array<string> } };
 
 export type ByteLinkedinPdfContentStepFragment = { __typename?: 'ByteLinkedinPdfContentStep', content: string, name: string };
 
@@ -4591,6 +4666,15 @@ export const AcademyTaskFragmentFragmentDoc = gql`
   updatedBy
 }
     `;
+export const ByteCollectionCategoryFragmentDoc = gql`
+    fragment ByteCollectionCategory on ByteCollectionCategory {
+  id
+  name
+  excerpt
+  imageUrl
+  byteCollectionIds
+}
+    `;
 export const ByteCollectionFragmentDoc = gql`
     fragment ByteCollection on ByteCollection {
   id
@@ -4607,6 +4691,18 @@ export const ByteCollectionFragmentDoc = gql`
   }
 }
     `;
+export const CategoryWithByteCollectionFragmentDoc = gql`
+    fragment CategoryWithByteCollection on CategoryWithByteCollection {
+  id
+  name
+  excerpt
+  imageUrl
+  creator
+  byteCollections {
+    ...ByteCollection
+  }
+}
+    ${ByteCollectionFragmentDoc}`;
 export const ByteLinkedinPdfContentStepFragmentDoc = gql`
     fragment ByteLinkedinPdfContentStep on ByteLinkedinPdfContentStep {
   content
@@ -5936,6 +6032,120 @@ export function useDeleteByteCollectionMutation(baseOptions?: Apollo.MutationHoo
 export type DeleteByteCollectionMutationHookResult = ReturnType<typeof useDeleteByteCollectionMutation>;
 export type DeleteByteCollectionMutationResult = Apollo.MutationResult<DeleteByteCollectionMutation>;
 export type DeleteByteCollectionMutationOptions = Apollo.BaseMutationOptions<DeleteByteCollectionMutation, DeleteByteCollectionMutationVariables>;
+export const ByteCollectionCategoryWithByteCollectionsDocument = gql`
+    query ByteCollectionCategoryWithByteCollections($spaceId: String!, $categoryId: String!) {
+  byteCollectionCategoryWithByteCollections(
+    spaceId: $spaceId
+    categoryId: $categoryId
+  ) {
+    ...CategoryWithByteCollection
+  }
+}
+    ${CategoryWithByteCollectionFragmentDoc}`;
+
+/**
+ * __useByteCollectionCategoryWithByteCollectionsQuery__
+ *
+ * To run a query within a React component, call `useByteCollectionCategoryWithByteCollectionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useByteCollectionCategoryWithByteCollectionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useByteCollectionCategoryWithByteCollectionsQuery({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      categoryId: // value for 'categoryId'
+ *   },
+ * });
+ */
+export function useByteCollectionCategoryWithByteCollectionsQuery(baseOptions: Apollo.QueryHookOptions<ByteCollectionCategoryWithByteCollectionsQuery, ByteCollectionCategoryWithByteCollectionsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ByteCollectionCategoryWithByteCollectionsQuery, ByteCollectionCategoryWithByteCollectionsQueryVariables>(ByteCollectionCategoryWithByteCollectionsDocument, options);
+      }
+export function useByteCollectionCategoryWithByteCollectionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ByteCollectionCategoryWithByteCollectionsQuery, ByteCollectionCategoryWithByteCollectionsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ByteCollectionCategoryWithByteCollectionsQuery, ByteCollectionCategoryWithByteCollectionsQueryVariables>(ByteCollectionCategoryWithByteCollectionsDocument, options);
+        }
+export type ByteCollectionCategoryWithByteCollectionsQueryHookResult = ReturnType<typeof useByteCollectionCategoryWithByteCollectionsQuery>;
+export type ByteCollectionCategoryWithByteCollectionsLazyQueryHookResult = ReturnType<typeof useByteCollectionCategoryWithByteCollectionsLazyQuery>;
+export type ByteCollectionCategoryWithByteCollectionsQueryResult = Apollo.QueryResult<ByteCollectionCategoryWithByteCollectionsQuery, ByteCollectionCategoryWithByteCollectionsQueryVariables>;
+export function refetchByteCollectionCategoryWithByteCollectionsQuery(variables: ByteCollectionCategoryWithByteCollectionsQueryVariables) {
+      return { query: ByteCollectionCategoryWithByteCollectionsDocument, variables: variables }
+    }
+export const ByteCollectionCategoriesDocument = gql`
+    query ByteCollectionCategories($spaceId: String!) {
+  byteCollectionCategories(spaceId: $spaceId) {
+    ...ByteCollectionCategory
+  }
+}
+    ${ByteCollectionCategoryFragmentDoc}`;
+
+/**
+ * __useByteCollectionCategoriesQuery__
+ *
+ * To run a query within a React component, call `useByteCollectionCategoriesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useByteCollectionCategoriesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useByteCollectionCategoriesQuery({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *   },
+ * });
+ */
+export function useByteCollectionCategoriesQuery(baseOptions: Apollo.QueryHookOptions<ByteCollectionCategoriesQuery, ByteCollectionCategoriesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ByteCollectionCategoriesQuery, ByteCollectionCategoriesQueryVariables>(ByteCollectionCategoriesDocument, options);
+      }
+export function useByteCollectionCategoriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ByteCollectionCategoriesQuery, ByteCollectionCategoriesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ByteCollectionCategoriesQuery, ByteCollectionCategoriesQueryVariables>(ByteCollectionCategoriesDocument, options);
+        }
+export type ByteCollectionCategoriesQueryHookResult = ReturnType<typeof useByteCollectionCategoriesQuery>;
+export type ByteCollectionCategoriesLazyQueryHookResult = ReturnType<typeof useByteCollectionCategoriesLazyQuery>;
+export type ByteCollectionCategoriesQueryResult = Apollo.QueryResult<ByteCollectionCategoriesQuery, ByteCollectionCategoriesQueryVariables>;
+export function refetchByteCollectionCategoriesQuery(variables: ByteCollectionCategoriesQueryVariables) {
+      return { query: ByteCollectionCategoriesDocument, variables: variables }
+    }
+export const UpsertByteCollectionCategoryDocument = gql`
+    mutation UpsertByteCollectionCategory($spaceId: String!, $input: UpsertByteCollectionCategory!) {
+  payload: upsertByteCollectionCategory(spaceId: $spaceId, input: $input) {
+    ...ByteCollectionCategory
+  }
+}
+    ${ByteCollectionCategoryFragmentDoc}`;
+export type UpsertByteCollectionCategoryMutationFn = Apollo.MutationFunction<UpsertByteCollectionCategoryMutation, UpsertByteCollectionCategoryMutationVariables>;
+
+/**
+ * __useUpsertByteCollectionCategoryMutation__
+ *
+ * To run a mutation, you first call `useUpsertByteCollectionCategoryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertByteCollectionCategoryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertByteCollectionCategoryMutation, { data, loading, error }] = useUpsertByteCollectionCategoryMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpsertByteCollectionCategoryMutation(baseOptions?: Apollo.MutationHookOptions<UpsertByteCollectionCategoryMutation, UpsertByteCollectionCategoryMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpsertByteCollectionCategoryMutation, UpsertByteCollectionCategoryMutationVariables>(UpsertByteCollectionCategoryDocument, options);
+      }
+export type UpsertByteCollectionCategoryMutationHookResult = ReturnType<typeof useUpsertByteCollectionCategoryMutation>;
+export type UpsertByteCollectionCategoryMutationResult = Apollo.MutationResult<UpsertByteCollectionCategoryMutation>;
+export type UpsertByteCollectionCategoryMutationOptions = Apollo.BaseMutationOptions<UpsertByteCollectionCategoryMutation, UpsertByteCollectionCategoryMutationVariables>;
 export const ByteSocialShareDocument = gql`
     query ByteSocialShare($spaceId: String!, $byteId: String!) {
   byteSocialShare(spaceId: $spaceId, byteId: $byteId) {
