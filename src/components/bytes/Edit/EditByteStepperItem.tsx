@@ -335,14 +335,11 @@ Let's create an image prompt based on the below details "${byte?.name}".
 - Topic: ${byte?.name} - ${byte?.content}
 - Details: ${step.name} - ${step.content}
 
-
 Create an image prompt that captures the essence of the detail, the topic is just provided for high level guidance. 
 
 Aim to include elements that mirror its themes, emotions, or critical aspects. 
 
 The objective is to produce an image that visually communicates this particular detail effectively and should be minimalistic.
-
-The image should be a widescreen image.
 
 For background of the image, use the color ${backgroundColor} and for the primary color use ${primaryColor}.
 `;
