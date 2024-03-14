@@ -19,6 +19,7 @@ interface EditCompletionScreenStepperItemProps {
   removeCompletionScreen: () => void;
   addButtonLink: (uuid: string, link: string) => void;
   addButtonLabel: (uuid: string, label: string) => void;
+  removeCompletionScreenItemButton: (uuid: string) => void;
 }
 
 const CompletionScreenItemContainer = styled.div`
@@ -38,6 +39,7 @@ export default function EditCompletionScreenStepperItem({
   removeCompletionScreen,
   addButtonLabel,
   addButtonLink,
+  removeCompletionScreenItemButton,
 }: EditCompletionScreenStepperItemProps) {
   const [selectImageUploadModal, setSelectImageUploadModal] = useState(false);
   const [modalAddButtonInput, setModalAddButtonInput] = useState(false);
@@ -108,7 +110,13 @@ export default function EditCompletionScreenStepperItem({
 
       {showButtonComponent &&
         byte.completionScreen?.items.map((item) => (
-          <UserButtonInput key={item.uuid} item={item} updateUserInputLabel={addButtonLabel} updateUserInputLink={addButtonLink} />
+          <UserButtonInput
+            key={item.uuid}
+            item={item}
+            updateUserInputLabel={addButtonLabel}
+            updateUserInputLink={addButtonLink}
+            removeButton={removeCompletionScreenItemButton}
+          />
         ))}
       {selectImageUploadModal && (
         <CompletionScreenItemWrapper>
