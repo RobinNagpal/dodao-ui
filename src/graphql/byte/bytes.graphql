@@ -47,14 +47,16 @@ fragment ByteStep on ByteStep {
   imageUrl
 }
 
-fragment ActionButtonFragment on ActionButton {
+# fragment ActionButtonFragment on ActionButton {
+#   label
+#   link
+#   uuid
+# }
+
+fragment CompletionScreenItem on CompletionScreenItem {
   label
   link
   uuid
-}
-
-fragment CompletionScreenItem on CompletionScreenItem {
-  ...ActionButtonFragment
 }
 
 fragment CompletionScreen on CompletionScreen {
