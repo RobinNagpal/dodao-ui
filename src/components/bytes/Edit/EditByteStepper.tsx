@@ -98,6 +98,7 @@ function EditByteStepper({ space, byte, byteErrors, errorColor = '#d32f2f', succ
           >
             <div className="w-full">
               <EditCompletionScreenStepperItem
+                byteErrors={byteErrors}
                 byte={byte}
                 space={space}
                 updateByteCompletionScreen={updateByteFunctions.updateCompletionScreen}
