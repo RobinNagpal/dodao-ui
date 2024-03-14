@@ -29,7 +29,11 @@ export interface UseEditByteCollectionCategoryArgs {
   byteCategory?: CategoryWithByteCollection;
 }
 
-export function useEditByteCollectionCategory({ space, viewByteCollectionsUrl, byteCategory: byteCategoryProp }: UseEditByteCollectionCategoryArgs): UseEditByteCollectionCategoryType {
+export function useEditByteCollectionCategory({
+  space,
+  viewByteCollectionsUrl,
+  byteCategory: byteCategoryProp,
+}: UseEditByteCollectionCategoryArgs): UseEditByteCollectionCategoryType {
   const router = useRouter();
   const [upsertByteCollectionCategoryMutation] = useUpsertByteCollectionCategoryMutation();
   const [byteCategory, setByteCategory] = useState<CategoryWithByteCollection>({
