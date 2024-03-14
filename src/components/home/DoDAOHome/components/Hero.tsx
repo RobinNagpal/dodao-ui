@@ -113,7 +113,7 @@ export function Hero() {
         Elevate Customer Satisfaction and Streamline Support Costs through an All-Inclusive Knowledge Hub.
       </p>
       <div className="mt-10 flex justify-center gap-x-6">
-        <WatchVideoButton src={'https://d31h13bdjwgzxs.cloudfront.net/dodao-io/DoDAO.mp4'} />
+        <WatchVideoButton src={'https://dodao-prod-public-assets.s3.us-east-1.amazonaws.com/dodao-io/DoDAO.mp4'} />
       </div>
       <div>
         <ContactUsLink />
