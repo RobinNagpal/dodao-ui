@@ -9,16 +9,26 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import SelectImageInputModal from '@/components/app/Image/SelectImageInputModal';
 import CompletionScreenItemModal from '@/components/app/Modal/CompletionScreenItem/CompletionScreenItemModal';
+import { v4 as uuidv4 } from 'uuid';
+import UserButtonInput from '@/components/app/Common/CreateButtonUserInput';
 
 interface EditCompletionScreenStepperItemProps {
   space: SpaceWithIntegrationsFragment;
   byte: EditByteType;
   updateByteCompletionScreen: (field: keyof CompletionScreen, value: any) => void;
   removeCompletionScreen: () => void;
+  addButtonLink: (uuid: string, link: string) => void;
+  addButtonLabel: (uuid: string, label: string) => void;
 }
 
-const StyledStepItemContainer = styled.div`
+const CompletionScreenItemContainer = styled.div`
   width: 100%;
+`;
+
+const CompletionScreenItemWrapper = styled.div`
+  border: '1px solid var(--border-color)';
+  border-radius: 0.5rem;
+  padding: 1rem;
 `;
 
 export default function EditCompletionScreenStepperItem({
@@ -26,9 +36,13 @@ export default function EditCompletionScreenStepperItem({
   byte,
   updateByteCompletionScreen,
   removeCompletionScreen,
+  addButtonLabel,
+  addButtonLink,
 }: EditCompletionScreenStepperItemProps) {
   const [selectImageUploadModal, setSelectImageUploadModal] = useState(false);
   const [modalAddButtonInput, setModalAddButtonInput] = useState(false);
+
+  const showButtonComponent = byte.completionScreen?.items && byte.completionScreen.items.length > 0;
 
   const updateCompletionScreenImageUrl = (imageUrl: string | null) => {
     updateByteCompletionScreen('imageUrl', imageUrl);
@@ -43,24 +57,18 @@ export default function EditCompletionScreenStepperItem({
   };
   function addButton() {
     const input: CompletionScreenItemInput = {
-      uuid: 'myinput',
-      label: 'Button',
-      link: 'google',
+      uuid: uuidv4(),
+      label: '',
+      link: '',
     };
     updateByteCompletionScreen('items', input);
   }
 
   return (
-    <StyledStepItemContainer className="w-full">
+    <CompletionScreenItemContainer className="w-full">
       <div>
         <div style={{ minHeight: '20px' }}>
-          <IconButton
-            className="float-right ml-2"
-            iconName={IconTypes.GuideAddIcon}
-            disabled={byte.completionScreen?.items.length != undefined ? byte.completionScreen?.items.length >= 1 : false}
-            removeBorder
-            onClick={() => setModalAddButtonInput(true)}
-          />
+          <IconButton className="float-right ml-2" iconName={IconTypes.GuideAddIcon} removeBorder onClick={() => setModalAddButtonInput(true)} />
           <IconButton className="float-right ml-2" iconName={IconTypes.Trash} removeBorder onClick={() => handleDelete()} />
         </div>
         <div className="w-full mb-4">
@@ -98,18 +106,24 @@ export default function EditCompletionScreenStepperItem({
         />
       </div>
 
+      {showButtonComponent &&
+        byte.completionScreen?.items.map((item) => (
+          <UserButtonInput key={item.uuid} item={item} updateUserInputLabel={addButtonLabel} updateUserInputLink={addButtonLink} />
+        ))}
       {selectImageUploadModal && (
-        <SelectImageInputModal
-          open={selectImageUploadModal}
-          onClose={() => setSelectImageUploadModal(false)}
-          imageType={ImageType.Tidbits}
-          objectId={byte.id || 'unknown_byte_id'}
-          spaceId={space.id}
-          imageUploaded={(imageUrl) => {
-            updateCompletionScreenImageUrl(imageUrl);
-            setSelectImageUploadModal(false);
-          }}
-        />
+        <CompletionScreenItemWrapper>
+          <SelectImageInputModal
+            open={selectImageUploadModal}
+            onClose={() => setSelectImageUploadModal(false)}
+            imageType={ImageType.Tidbits}
+            objectId={byte.id || 'unknown_byte_id'}
+            spaceId={space.id}
+            imageUploaded={(imageUrl) => {
+              updateCompletionScreenImageUrl(imageUrl);
+              setSelectImageUploadModal(false);
+            }}
+          />
+        </CompletionScreenItemWrapper>
       )}
 
       {modalAddButtonInput && (
@@ -121,9 +135,6 @@ export default function EditCompletionScreenStepperItem({
           }}
         />
       )}
-    </StyledStepItemContainer>
+    </CompletionScreenItemContainer>
   );
-}
-function uuidv4(): string {
-  throw new Error('Function not implemented.');
 }
