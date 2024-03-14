@@ -16,14 +16,15 @@ interface UserButtonProps {
   item: CompletionScreenItem;
   updateUserInputLabel: (uuid: string, label: string) => void;
   updateUserInputLink: (uuid: string, link: string) => void;
+  removeButton: (uuid: string) => void;
 }
 
 const EnabledInput = styled(Input)``;
 
-function UserButtonInput({ item, updateUserInputLabel, updateUserInputLink }: UserButtonProps) {
+function UserButtonInput({ item, updateUserInputLabel, updateUserInputLink, removeButton }: UserButtonProps) {
   return (
     <>
-      <IconButton className="float-right my-2 mr-4" onClick={() => {}} iconName={IconTypes.Trash} />
+      <IconButton className="float-right my-2 mr-4" onClick={() => removeButton(item.uuid)} iconName={IconTypes.Trash} />
       <InputWrapper className="flex">
         <Input
           label="Button Label"
