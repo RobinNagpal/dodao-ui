@@ -1,11 +1,12 @@
 import ByteCollectionsGrid from '@/components/byteCollection/View/ByteCollectionsGrid';
 import PageWrapper from '@/components/core/page/PageWrapper';
-import { ByteCollectionFragment, CategoryWithByteCollection, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { ByteCollectionFragment, CategoryWithByteCollection } from '@/graphql/generated/generated-types';
 import getApiResponse from '@/utils/api/getApiResponse';
+import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
 import React from 'react';
 
-async function TidbitCollection(props: { space: SpaceWithIntegrationsFragment; params: { categoryId?: any } }) {
-  const { space } = props;
+async function TidbitCollection(props: { params: { categoryId?: any } }) {
+  const space = (await getSpaceServerSide())!;
 
   const categoryWithByteCollection = await getApiResponse<CategoryWithByteCollection>(space, `byte-collection-categories/${props.params.categoryId}`);
 
