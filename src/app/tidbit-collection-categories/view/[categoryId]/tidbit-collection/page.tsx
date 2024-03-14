@@ -1,26 +1,21 @@
-'use client';
-
-import withSpace from '@/app/withSpace';
-import React from 'react';
-import { ByteCollectionFragment, SpaceWithIntegrationsFragment, useByteCollectionCategoryWithByteCollectionsQuery } from '@/graphql/generated/generated-types';
 import ByteCollectionsGrid from '@/components/byteCollection/View/ByteCollectionsGrid';
 import PageWrapper from '@/components/core/page/PageWrapper';
+import { ByteCollectionFragment, CategoryWithByteCollection, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import getApiResponse from '@/utils/api/getApiResponse';
+import React from 'react';
 
-export function TidbitCollection(props: { space: SpaceWithIntegrationsFragment; params: { categoryId?: any } }) {
+async function TidbitCollection(props: { space: SpaceWithIntegrationsFragment; params: { categoryId?: any } }) {
   const { space } = props;
 
-  const { data } = useByteCollectionCategoryWithByteCollectionsQuery({
-    variables: {
-      categoryId: props.params.categoryId,
-      spaceId: space.id,
-    },
-  });
+  const categoryWithByteCollection = await getApiResponse<CategoryWithByteCollection>(space, `byte-collection-categories/${props.params.categoryId}`);
 
   return (
     <PageWrapper>
-      {data && (
+      <h1 className="mb-8 text-3xl">{categoryWithByteCollection.name}</h1>
+      <p className="mb-8 text-xl">{categoryWithByteCollection.excerpt}</p>
+      {categoryWithByteCollection && (
         <ByteCollectionsGrid
-          byteCollections={data.byteCollectionCategoryWithByteCollections.byteCollections as ByteCollectionFragment[]}
+          byteCollections={categoryWithByteCollection.byteCollections as ByteCollectionFragment[]}
           space={space}
           byteCollectionType={'byteCollection'}
           byteCollectionsPageUrl={`/tidbit-collections`}
@@ -30,4 +25,4 @@ export function TidbitCollection(props: { space: SpaceWithIntegrationsFragment; 
   );
 }
 
-export default withSpace(TidbitCollection);
+export default TidbitCollection;
