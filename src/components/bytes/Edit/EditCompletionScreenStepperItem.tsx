@@ -11,8 +11,10 @@ import SelectImageInputModal from '@/components/app/Image/SelectImageInputModal'
 import CompletionScreenItemModal from '@/components/app/Modal/CompletionScreenItem/CompletionScreenItemModal';
 import { v4 as uuidv4 } from 'uuid';
 import UserButtonInput from '@/components/app/Common/CreateButtonUserInput';
+import { ByteErrors } from '@/types/errors/byteErrors';
 
 interface EditCompletionScreenStepperItemProps {
+  byteErrors?: ByteErrors;
   space: SpaceWithIntegrationsFragment;
   byte: EditByteType;
   updateByteCompletionScreen: (field: keyof CompletionScreen, value: any) => void;
@@ -40,6 +42,7 @@ export default function EditCompletionScreenStepperItem({
   addButtonLabel,
   addButtonLink,
   removeCompletionScreenItemButton,
+  byteErrors,
 }: EditCompletionScreenStepperItemProps) {
   const [selectImageUploadModal, setSelectImageUploadModal] = useState(false);
   const [modalAddButtonInput, setModalAddButtonInput] = useState(false);
