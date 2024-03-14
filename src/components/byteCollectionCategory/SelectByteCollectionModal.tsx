@@ -7,7 +7,7 @@ import { ByteCollectionFragment, Space, useByteCollectionsQuery } from '@/graphq
 import { shorten } from '@/utils/utils';
 import CheckCircleIcon from '@heroicons/react/20/solid/CheckCircleIcon';
 import React from 'react';
-import styled from 'styled-components';
+import styles from './SelectByteCollectionModal.module.scss';
 
 interface SelectByteCollectionModalProps {
   byteCollection?: ByteCollectionFragment;
@@ -16,11 +16,6 @@ interface SelectByteCollectionModalProps {
   addByteCollection: (byteCollections: ByteCollectionFragment[]) => void;
   space: Space;
 }
-
-const SelectedIcon = styled.button`
-  color: var(--primary-color);
-  background-color: white;
-`;
 
 export default function SelectByteCollectionModal(props: SelectByteCollectionModalProps) {
   const { addByteCollection, space } = props;
@@ -61,9 +56,11 @@ export default function SelectByteCollectionModal(props: SelectByteCollectionMod
                   </div>
                   {selectedByteIds.includes(byteCollection.id) && (
                     <div className="flex flex-wrap absolute justify-end top-1 right-1">
-                      <SelectedIcon className="m-auto rounded-full text-2xl bg-primary w-6 h-6 text-white flex items-center font-bold justify-center ">
+                      <div
+                        className={` m-auto rounded-full text-2xl bg-primary w-6 h-6 text-white flex items-center font-bold justify-center ${styles.selectedIcon}`}
+                      >
                         <CheckCircleIcon height={30} width={30} />
-                      </SelectedIcon>
+                      </div>
                     </div>
                   )}
                 </Card>

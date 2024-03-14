@@ -1,4 +1,4 @@
-import { useEditByteCategory } from './useEditByteCategory';
+import { useEditByteCollectionCategory } from './useEditByteCollectionCategory';
 import Button from '@/components/core/buttons/Button';
 import IconButton from '@/components/core/buttons/IconButton';
 import { IconTypes } from '@/components/core/icons/IconTypes';
@@ -11,7 +11,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import SelectByteCollectionModal from './SelectByteCollectionModal';
 
-interface ByteCategoryEditorProps {
+interface ByteCollectionCategoryEditorProps {
   byteCategorySummary?: CategoryWithByteCollection;
   space: Space;
   viewByteCollectionsUrl: string;
@@ -25,9 +25,9 @@ const TidBitIconSpan = styled.span`
   background-color: var(--primary-color);
 `;
 
-function ByteCategoryEditor(props: ByteCategoryEditorProps) {
+function ByteCollectionCategoryEditor(props: ByteCollectionCategoryEditorProps) {
   const [showSelectByteCollectionModal, setShowSelectByteCollectionModal] = useState(false);
-  const { byteCategory, helperFunctions } = useEditByteCategory({
+  const { byteCategory, helperFunctions } = useEditByteCollectionCategory({
     space: props.space,
     viewByteCollectionsUrl: props.viewByteCollectionsUrl,
     byteCategory: props.byteCategorySummary,
@@ -118,11 +118,11 @@ function ByteCategoryEditor(props: ByteCategoryEditorProps) {
 
       <div className="py-4">
         <Button variant="contained" primary onClick={() => helperFunctions.upsertByteCollectionCategory()}>
-          Upsert Byte Collection
+          Upsert Byte Collection Category
         </Button>
       </div>
     </div>
   );
 }
 
-export default ByteCategoryEditor;
+export default ByteCollectionCategoryEditor;

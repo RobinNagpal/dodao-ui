@@ -1,4 +1,4 @@
-import ByteCollectionCategoryCardAdminDropdown from '@/components/byteCategory/ByteCollectionCategoryCardAdminDropdown';
+import ByteCollectionCategoryCardAdminDropdown from '@/components/byteCollectionCategory/ByteCollectionCategoryCardAdminDropdown';
 import ByteCollectionsGrid from '@/components/byteCollection/View/ByteCollectionsGrid';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import { ByteCollectionCategory, ByteCollectionFragment } from '@/graphql/generated/generated-types';
@@ -26,7 +26,7 @@ async function TidbitCollection() {
   }
 
   return (
-    <div className="flex justify-center items-center min-h-[80vh]">
+    <div className="flex justify-center items-center min-h-[80vh] mt-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {byteCollectionCategories.map((category) => (
           <div key={category.id} className="bg-white shadow-lg rounded-lg p-4 flex flex-col items-start">

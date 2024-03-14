@@ -30,7 +30,7 @@ export default function CreateContentModalContents({ hideModal, space }: { hideM
             Create Tidbit Collection
           </Button>
           <Button variant="outlined" primary className="p-2 w-full" onClick={() => goToUrl('/tidbit-collection-categories/edit')}>
-            Create Tidbit Category
+            Create Tidbit Collection Category
           </Button>
           <Button variant="outlined" primary className="p-2 w-full" onClick={() => goToUrl('/shorts/create')}>
             Create Short Video

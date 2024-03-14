@@ -18,18 +18,18 @@ interface HelperFunctions {
   upsertByteCollectionCategory: () => void;
 }
 
-interface UseEditByteCategoryType {
+interface UseEditByteCollectionCategoryType {
   byteCategory: CategoryWithByteCollection;
   helperFunctions: HelperFunctions;
 }
 
-export interface UseEditByteCollectionArgs {
+export interface UseEditByteCollectionCategoryArgs {
   space: SpaceWithIntegrationsFragment;
   viewByteCollectionsUrl: string;
   byteCategory?: CategoryWithByteCollection;
 }
 
-export function useEditByteCategory({ space, viewByteCollectionsUrl, byteCategory: byteCategoryProp }: UseEditByteCollectionArgs): UseEditByteCategoryType {
+export function useEditByteCollectionCategory({ space, viewByteCollectionsUrl, byteCategory: byteCategoryProp }: UseEditByteCollectionCategoryArgs): UseEditByteCollectionCategoryType {
   const router = useRouter();
   const [upsertByteCollectionCategoryMutation] = useUpsertByteCollectionCategoryMutation();
   const [byteCategory, setByteCategory] = useState<CategoryWithByteCollection>({
@@ -45,7 +45,7 @@ export function useEditByteCategory({ space, viewByteCollectionsUrl, byteCategor
     setByteCategory((prevByteCategory) => {
       const updatedByteCollectionArr = prevByteCategory.byteCollections!.filter((byteCollection) => byteCollection!.id !== byteCollectionId);
 
-      return { ...prevByteCategory, byteCollectionArr: updatedByteCollectionArr };
+      return { ...prevByteCategory, byteCollections: updatedByteCollectionArr };
     });
   }, []);
 
@@ -70,7 +70,7 @@ export function useEditByteCategory({ space, viewByteCollectionsUrl, byteCategor
         },
       ];
 
-      return { ...prevByteCategory, byteCollectionArr: newByteCollection };
+      return { ...prevByteCategory, byteCollections: newByteCollection };
     });
   };
 

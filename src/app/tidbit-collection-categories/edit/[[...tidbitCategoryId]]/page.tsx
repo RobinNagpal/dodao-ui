@@ -1,7 +1,7 @@
 'use client';
 
 import withSpace from '@/app/withSpace';
-import ByteCategoryEditor from '@/components/byteCollectionCategory/ByteCategoryEditor';
+import ByteCategoryEditor from '@/components/byteCollectionCategory/ByteCollectionCategoryEditor';
 import PageLoading from '@/components/core/loaders/PageLoading';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import { SpaceWithIntegrationsFragment, useByteCollectionCategoryWithByteCollectionsQuery } from '@/graphql/generated/generated-types';
@@ -9,11 +9,11 @@ import { SpaceWithIntegrationsFragment, useByteCollectionCategoryWithByteCollect
 import SingleCardLayout from '@/layouts/SingleCardLayout';
 import Link from 'next/link';
 
-function EditTidbitCategorySpace(props: { space: SpaceWithIntegrationsFragment; params: { tidbitCategoryId?: string } }) {
+function EditTidbitCategorySpace(props: { space: SpaceWithIntegrationsFragment; params: { tidbitCategoryId?: string[] } }) {
   const { data, loading } = useByteCollectionCategoryWithByteCollectionsQuery({
     variables: {
       spaceId: props.space.id,
-      categoryId: props.params.tidbitCategoryId!,
+      categoryId: props.params.tidbitCategoryId![0],
     },
     skip: !props.params.tidbitCategoryId,
   });
