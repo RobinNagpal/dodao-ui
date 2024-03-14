@@ -380,6 +380,7 @@ For background of the image, use the color ${backgroundColor} and for the primar
             Name*
           </Input>
         </div>
+
         <div className="w-full mb-4">
           <InputWithButton
             buttonLabel={'Set Image'}
@@ -388,6 +389,7 @@ For background of the image, use the color ${backgroundColor} and for the primar
             onInputUpdate={(e) => updateStepImageUrl(e?.toString() || '')}
             inputModelValue={step.imageUrl || ''}
           />
+          {step.imageUrl && <img src={step.imageUrl} style={{ height: '150px', width: '150px' }} className="my-2" />}
         </div>
 
         <MarkdownEditor
