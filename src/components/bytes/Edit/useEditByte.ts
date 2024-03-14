@@ -185,7 +185,6 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
   };
 
   const handleByteUpsert = async () => {
-    console.log('I am upserting byte: ', byte);
     await saveViaMutation(
       async () =>
         await upsertByteMutation({
