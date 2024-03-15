@@ -10,6 +10,7 @@ import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-typ
 import React, { ReactNode, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import dynamic from 'next/dynamic';
+import BreadcrumbsWithChevrons from '../core/breadcrumbs/BreadcrumbsWithChevrons';
 
 const Footer: React.ComponentType<any> = dynamic(() => import('./Footer'), {
   ssr: false, // Disable server-side rendering for this component
@@ -63,6 +64,7 @@ export function BasePage(props: { space: SpaceWithIntegrationsFragment | null; c
       <LoginModalProvider>
         <LoginModal />
         <PageTopNav space={props.space} />
+        <BreadcrumbsWithChevrons />
         <StyledMain>{props.children}</StyledMain>
         <PageFooter space={props.space} />
       </LoginModalProvider>

@@ -18,7 +18,7 @@ export default function TidbitsSiteHome(props: TidbitsSiteHomeProps) {
   return (
     space && (
       <PageWrapper>
-        <TidbitsSiteTabs selectedTabId={props.selectedTabId} />
+        <TidbitsSiteTabs selectedTabId={props.selectedTabId!} />
         {props.selectedTabId === 'Tidbits' ? (
           <BytesGrid space={props.space} byteType={'byte'} bytes={props.bytes} baseByteViewUrl={`/tidbits/view`} />
         ) : (

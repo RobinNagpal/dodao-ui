@@ -4,11 +4,14 @@ import ByteCollectionCardAdminDropdown from '@/components/byteCollection/ByteCol
 import ByteCompletionCheckmark from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCompletionCheckmark';
 import { ByteCollectionFragment, ProjectByteCollectionFragment, ProjectFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import ArrowTopRightOnSquareIcon from '@heroicons/react/24/outline/ArrowTopRightOnSquareIcon';
+import EditByteModal from '@/components/byteCollection/Edit/EditByteModal';
 import Link from 'next/link';
 import React from 'react';
 import styles from './ByteCollectionsCard.module.scss';
 import FullScreenModal from '@/components/core/modals/FullScreenModal';
 import PlayCircleIcon from '@heroicons/react/24/outline/PlayCircleIcon';
+import PencilSquare from '@heroicons/react/24/outline/PencilSquareIcon';
+import PrivateComponent from '@/components/core/PrivateComponent';
 
 interface ByteCollectionCardProps {
   isEditingAllowed?: boolean;
@@ -28,8 +31,7 @@ export default function ByteCollectionsCard({
   byteCollectionsPageUrl,
 }: ByteCollectionCardProps) {
   const [watchVideo, setWatchVideo] = React.useState<boolean>(false);
-
-  console.log('byteCollectionPageUrl', byteCollectionsPageUrl);
+  const [showEditModal, setShowEditModal] = React.useState<boolean>(false);
   return (
     <>
       <div className={`border border-gray-200 rounded-xl overflow-hidden p-4 w-full max-w-xl ` + styles.cardDiv}>
@@ -79,10 +81,20 @@ export default function ByteCollectionsCard({
                         </div>
                       </Link>
                       {byte?.videoUrl && (
-                        <PlayCircleIcon className={`h-6 w-6 ml-2 ${styles.playVideoIcon} cursor-pointer`} onClick={() => setWatchVideo(true)} />
+                        <PlayCircleIcon
+                          className={`h-6 w-6 ml-2 ${styles.playVideoIcon} cursor-pointer transform hover:scale-85 transition duration-300 ease-in-out`}
+                          onClick={() => setWatchVideo(true)}
+                        />
                       )}
+                      <PrivateComponent>
+                        <PencilSquare
+                          className={`h-6 w-6 ml-2 ${styles.pencilSquareIcon} cursor-pointer transform hover:scale-85 transition duration-300 ease-in-out`}
+                          onClick={() => setShowEditModal(true)}
+                        />
+                      </PrivateComponent>
                     </div>
                   </div>
+                  {showEditModal && <EditByteModal space={space} byteId={byte.byteId} open={showEditModal} onClose={() => setShowEditModal(false)} />}
                 </li>
               );
             })}

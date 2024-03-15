@@ -2,15 +2,16 @@
 
 import PrivateComponent from '@/components/core/PrivateComponent';
 import TabsWithUnderline, { TabItem } from '@/components/core/tabs/TabsWithUnderline';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import React from 'react';
 
 export enum TabIds {
   Tidbits = 'Tidbits',
   TidbitCollections = 'TidbitCollections',
 }
-export default function TidbitsSiteTabs({ selectedTabId }: { selectedTabId?: string }) {
+export default function TidbitsSiteTabs({ selectedTabId }: { selectedTabId: string }) {
   const router = useRouter();
+  const pathname = usePathname();
 
   const tabs: TabItem[] = [
     {
@@ -29,7 +30,7 @@ export default function TidbitsSiteTabs({ selectedTabId }: { selectedTabId?: str
       <div className="w-full flex justify-end mb-6">
         <TabsWithUnderline
           selectedTabId={selectedTabId || TabIds.TidbitCollections}
-          setSelectedTabId={(id) => router.push('/?selectedTabId=' + id)}
+          setSelectedTabId={(id) => router.push(`${pathname}/?selectedTabId=` + id)}
           tabs={tabs}
           className="w-96"
         />
