@@ -12,6 +12,7 @@ import Optimism from '@/images/DAO/Optimism.png';
 
 export function Hero() {
   const standardLogoHeight = 80;
+  const standardLogoHeight2 = 100;
 
   const logosFirstLine = [
     { name: 'AAVE', logo: AAVE },
@@ -68,8 +69,8 @@ export function Hero() {
               <Image
                 src={company.logo}
                 alt={company.name}
-                height={standardLogoHeight}
-                width={company.logo.width * (standardLogoHeight / company.logo.height)}
+                height={standardLogoHeight2}
+                width={company.logo.width * (standardLogoHeight2 / company.logo.height)}
                 unoptimized
               />
             </li>
