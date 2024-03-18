@@ -7,8 +7,8 @@ import Compound from '@/images/DAO/Compound.png';
 import Harmony from '@/images/DAO/Harmony.png';
 import Near from '@/images/DAO/Near.png';
 import Uniswap from '@/images/DAO/Uniswap.png';
-import Arbitrum from '@/images/DAO/Arbitrum.png';
 import Optimism from '@/images/DAO/Optimism.png';
+import Arbitrum from '@/images/DAO/Arbitrum.png';
 
 export function Hero() {
   return (
