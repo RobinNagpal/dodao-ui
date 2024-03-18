@@ -8,9 +8,9 @@ export function TidbitsHub() {
               <div className="lg:max-w-lg">
                 <p className="text-3xl font-bold tracking-tight sm:text-4xl">Tidbits Hub</p>
                 <p className="mt-6 text-lg leading-8">
-                  At Tidbits Hub, we've tapped into understanding precisely what format and style of content resonate most with today's consumers. Using this
-                  platform you can craft short, straightforward bite sized pieces of information which we call "tidbits" with each piece containing 5-10
-                  sentences. It provides quick understanding within 5 minutes, without the need for users to go through extensive material.
+                  At Tidbits Hub, we&apos;ve tapped into understanding precisely what format and style of content resonate most with today&apos;s consumers.
+                  Using this platform you can craft short, straightforward bite sized pieces of information which we call &quot;tidbits&quot; with each piece
+                  containing 5-10 sentences. It provides quick understanding within 5 minutes, without the need for users to go through extensive material.
                 </p>
                 <dl className="mt-10 max-w-xl space-y-8 text-base leading-7 lg:max-w-none">
                   <div className="relative pl-9">
