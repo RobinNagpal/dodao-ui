@@ -11,22 +11,6 @@ import Arbitrum from '@/images/DAO/Arbitrum.png';
 import Optimism from '@/images/DAO/Optimism.png';
 
 export function Hero() {
-  const standardLogoHeight = 80;
-  const standardLogoHeight2 = 100;
-
-  const logosFirstLine = [
-    { name: 'AAVE', logo: AAVE },
-    { name: 'Compound', logo: Compound },
-    { name: 'Uniswap', logo: Uniswap },
-    { name: 'Balancer', logo: Balancer },
-    { name: 'Harmony', logo: Harmony },
-  ];
-
-  const logosSecondLine = [
-    { name: 'Near', logo: Near },
-    { name: 'Arbitrum', logo: Arbitrum },
-    { name: 'Optimism', logo: Optimism },
-  ];
   return (
     <div className="pb-16 pt-20 text-center lg:pt-32 w-full">
       <h1 className="mx-auto max-w-4xl font-display text-5xl font-medium tracking-tight text-slate-900 sm:text-7xl">
@@ -48,34 +32,70 @@ export function Hero() {
       <div>
         <ContactUsLink />
       </div>
-      <div className="mt-20 lg:mt-36">
-        <p className="font-display text-base">Trusted by the top blockchain companies</p>
-        <ul role="list" className="mt-8 flex items-center justify-center gap-x-8 sm:flex-col sm:gap-x-0 sm:gap-y-10 xl:flex-row xl:gap-x-12 xl:gap-y-0">
-          {logosFirstLine.map((company, index) => (
-            <li key={index} className="flex justify-center items-center">
-              <Image
-                src={company.logo}
-                alt={company.name}
-                height={standardLogoHeight}
-                width={company.logo.width * (standardLogoHeight / company.logo.height)}
-                unoptimized
-              />
-            </li>
-          ))}
-        </ul>
-        <ul role="list" className="mt-8 flex items-center justify-center gap-x-8 sm:flex-col sm:gap-x-0 sm:gap-y-10 xl:flex-row xl:gap-x-12 xl:gap-y-0">
-          {logosSecondLine.map((company, index) => (
-            <li key={index} className="flex justify-center items-center">
-              <Image
-                src={company.logo}
-                alt={company.name}
-                height={standardLogoHeight2}
-                width={company.logo.width * (standardLogoHeight2 / company.logo.height)}
-                unoptimized
-              />
-            </li>
-          ))}
-        </ul>
+
+      <div className="relative isolate mt-32 sm:mt-48">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <h2 className="text-center text-lg font-semibold leading-8 text-gray-900">Trusted by the top blockchain companies</h2>
+          <div className="mx-auto mt-10 grid max-w-lg grid-cols-4 items-center gap-x-8 gap-y-10 sm:max-w-xl sm:grid-cols-6 sm:gap-x-10 lg:mx-0 lg:max-w-none lg:grid-cols-6">
+            <Image
+              className="col-span-2 col-start-2 max-h-28 w-full object-contain sm:col-start-auto lg:col-span-1"
+              src={Near}
+              alt="Near"
+              width={158}
+              height={150}
+            />
+            <Image
+              className="col-span-2 col-start-2 max-h-24 w-full object-contain sm:col-start-auto lg:col-span-1"
+              src={Balancer}
+              alt="Balancer"
+              width={158}
+              height={150}
+            />
+
+            <Image
+              className="col-span-2 col-start-2 max-h-24 w-full object-contain sm:col-start-auto lg:col-span-1"
+              src={Harmony}
+              alt="Harmony"
+              width={158}
+              height={150}
+            />
+            <Image
+              className="col-span-2 col-start-2 max-h-24 w-full object-contain sm:col-start-auto lg:col-span-1"
+              src={Compound}
+              alt="Compound"
+              width={158}
+              height={150}
+            />
+            <Image
+              className="col-span-2 col-start-2 max-h-28 w-full object-contain sm:col-start-auto lg:col-span-1"
+              src={AAVE}
+              alt="AAVE"
+              width={158}
+              height={150}
+            />
+            <Image
+              className="col-span-2 col-start-2 max-h-28 w-full object-contain sm:col-start-auto lg:col-span-1"
+              src={Uniswap}
+              alt="Uniswap"
+              width={158}
+              height={150}
+            />
+            <Image
+              className="col-span-2 col-start-2 max-h-28 w-full object-contain sm:col-start-auto lg:col-span-1 lg:col-start-3"
+              src={Arbitrum}
+              alt="Arbitrum"
+              width={158}
+              height={150}
+            />
+            <Image
+              className="col-span-2 col-start-2 max-h-28 w-full object-contain sm:col-start-auto lg:col-span-1 lg:col-start-4"
+              src={Optimism}
+              alt="Optimism"
+              width={158}
+              height={150}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );
