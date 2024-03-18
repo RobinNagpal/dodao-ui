@@ -16,9 +16,11 @@ export function AIChatbot() {
               <div className="lg:col-end-1 lg:w-full lg:max-w-lg lg:pb-8">
                 <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">AI Chatbot</h2>
                 <p className="mt-6 text-lg leading-8 text-gray-600">
-                  Enter a new dimension of support with our AI Chatbot, designed to be your customers&apos; personal learning assistant. Ready to respond 24/7,
-                  this intelligent tool simplifies complicated subjects, providing immediate, accessible answers. For every question, our AI Chatbot stands by
-                  to enhance your customers&apos; understanding, ensuring a continuous and effortless educational experience.
+                  For blockchain projects, platforms like Discourse and Discord are inundated with new inquiries. Many newcomers hesitate to ask questions,
+                  fearing they might appear uninformed. Simultaneously, even long-standing members often struggle to locate specific information. We have
+                  designed an AI chatbot for blockchain projects which can be trained on governance forums and documentation. It can provide accurate
+                  information alongwith the links to sources, benefiting both new and experienced users. This AI chatbot is projected to save thousands of hours
+                  for community members monthly, showcasing its return on investment (ROI) within just the first month.
                 </p>
               </div>
               <div className="flex flex-wrap items-start justify-end gap-6 sm:gap-8 lg:contents">
