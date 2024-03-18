@@ -13,7 +13,7 @@ function EditTidbitCategorySpace(props: { space: SpaceWithIntegrationsFragment; 
   const { data, loading } = useByteCollectionCategoryWithByteCollectionsQuery({
     variables: {
       spaceId: props.space.id,
-      categoryId: props.params.tidbitCategoryId![0],
+      categoryId: props.params.tidbitCategoryId?.[0] ?? '',
     },
     skip: !props.params.tidbitCategoryId,
   });
