@@ -41,7 +41,7 @@ export function AcademySites() {
     },
   ];
   return (
-    <section id="academy-sites" aria-labelledby="academy-sites-title" className="scroll-mt-14 py-16 sm:scroll-mt-32 sm:py-20 lg:py-32">
+    <section id="academy-sites" aria-labelledby="academy-sites-title" className="scroll-mt-14 py-16 sm:scroll-mt-32 sm:py-20 lg:py-16">
       <Container size="lg">
         <div className="mx-auto lg:mx-0">
           <SectionHeading number="2" id="academy-sites-title">
