@@ -1,9 +1,12 @@
+import { useNotificationContext } from '@/contexts/NotificationContext';
 import {
   ByteCollectionFragment,
   SpaceWithIntegrationsFragment,
   CategoryWithByteCollection,
   useUpsertByteCollectionCategoryMutation,
 } from '@/graphql/generated/generated-types';
+import { useI18 } from '@/hooks/useI18';
+import { ByteCollectionCategoryError } from '@/types/errors/error';
 import { slugify } from '@/utils/auth/slugify';
 import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
@@ -16,10 +19,12 @@ interface HelperFunctions {
   addByteCollection: (byteCollection: ByteCollectionFragment) => void;
   removeByteCollection: (byteCollectionId: string) => void;
   upsertByteCollectionCategory: () => void;
+  validateCategory: () => boolean;
 }
 
 interface UseEditByteCollectionCategoryType {
   byteCategory: CategoryWithByteCollection;
+  categoryErrors: ByteCollectionCategoryError;
   helperFunctions: HelperFunctions;
 }
 
@@ -39,11 +44,30 @@ export function useEditByteCollectionCategory({
   const [byteCategory, setByteCategory] = useState<CategoryWithByteCollection>({
     id: byteCategoryProp?.id || '',
     byteCollections: byteCategoryProp?.byteCollections || [],
-    name: byteCategoryProp?.name || '',
-    excerpt: byteCategoryProp?.excerpt || '',
+    name: byteCategoryProp?.name || 'Byte Name',
+    excerpt: byteCategoryProp?.excerpt || 'Byte Excerpt',
     imageUrl: byteCategoryProp?.imageUrl || '',
     creator: space.creator,
   });
+  const [categoryErrors, setCategoryErrors] = useState<ByteCollectionCategoryError>({});
+  const { showNotification } = useNotificationContext();
+  const { $t } = useI18();
+
+  function validateCategory() {
+    const errors: ByteCollectionCategoryError = { ...categoryErrors };
+
+    errors.name = undefined;
+    if (!byteCategory.name) {
+      errors.name = true;
+    }
+    errors.excerpt = undefined;
+    if (!byteCategory.excerpt) {
+      errors.excerpt = true;
+    }
+
+    setCategoryErrors(errors);
+    return Object.values(errors).filter((v) => !!v).length === 0;
+  }
 
   const removeByteCollection = useCallback((byteCollectionId: string) => {
     setByteCategory((prevByteCategory) => {
@@ -107,6 +131,12 @@ export function useEditByteCollectionCategory({
   }
 
   const upsertByteCollectionCategory = async () => {
+    const valid = validateCategory();
+    if (!valid) {
+      console.log('Byte Collection Category invalid', categoryErrors);
+      showNotification({ type: 'error', message: $t('notify.validationFailed') });
+      return;
+    }
     await upsertByteCategoryFn(byteCategory);
     router.push(viewByteCollectionsUrl);
     router.refresh();
@@ -114,6 +144,7 @@ export function useEditByteCollectionCategory({
 
   return {
     byteCategory,
+    categoryErrors,
     helperFunctions: {
       updateByteCategoryName,
       updateByteCategoryExcerpt,
@@ -121,6 +152,7 @@ export function useEditByteCollectionCategory({
       addByteCollection,
       removeByteCollection,
       upsertByteCollectionCategory,
+      validateCategory,
     },
   };
 }

@@ -4,12 +4,13 @@ import IconButton from '@/components/core/buttons/IconButton';
 import { IconTypes } from '@/components/core/icons/IconTypes';
 import Input from '@/components/core/input/Input';
 import TextareaAutosize from '@/components/core/textarea/TextareaAutosize';
-import { ByteCollectionFragment, CategoryWithByteCollection, Space } from '@/graphql/generated/generated-types';
+import { ByteCollectionFragment, CategoryWithByteCollection, ImageType, Space } from '@/graphql/generated/generated-types';
 import PlusCircle from '@heroicons/react/20/solid/PlusCircleIcon';
 import Bars3BottomLeftIcon from '@heroicons/react/24/solid/Bars3BottomLeftIcon';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import SelectByteCollectionModal from './SelectByteCollectionModal';
+import UploadInput from '../app/UploadInput';
 
 interface ByteCollectionCategoryEditorProps {
   byteCategorySummary?: CategoryWithByteCollection;
@@ -27,7 +28,7 @@ const TidBitIconSpan = styled.span`
 
 function ByteCollectionCategoryEditor(props: ByteCollectionCategoryEditorProps) {
   const [showSelectByteCollectionModal, setShowSelectByteCollectionModal] = useState(false);
-  const { byteCategory, helperFunctions } = useEditByteCollectionCategory({
+  const { byteCategory, categoryErrors, helperFunctions } = useEditByteCollectionCategory({
     space: props.space,
     viewByteCollectionsUrl: props.viewByteCollectionsUrl,
     byteCategory: props.byteCategorySummary,
@@ -40,17 +41,25 @@ function ByteCollectionCategoryEditor(props: ByteCollectionCategoryEditorProps) 
         onUpdate={(v) => helperFunctions.updateByteCategoryName(v?.toString() || '')}
         label="Name"
         required
-        error={byteCategory.name.trim() ? false : 'Name is Required'}
+        onBlur={() => helperFunctions.validateCategory()}
+        error={categoryErrors['name'] ? 'Name is required' : false}
       />
 
       <TextareaAutosize
         label={'Excerpt'}
         modelValue={byteCategory.excerpt || ''}
         onUpdate={(v) => helperFunctions.updateByteCategoryExcerpt(v?.toString() || '')}
-        error={byteCategory.excerpt!.trim() ? false : 'Excerpt is Required'}
+        onBlur={() => helperFunctions.validateCategory()}
+        error={categoryErrors['excerpt'] ? 'Excerpt is Required' : false}
       />
 
-      <Input modelValue={byteCategory.imageUrl} onUpdate={(v) => helperFunctions.updateByteCategoryImageUrl(v?.toString() || '')} label="Image URL" />
+      <UploadInput
+        imageType={ImageType.Tidbits}
+        spaceId={props.space.id}
+        objectId={byteCategory.id || 'new-category' + '-thumbnail'}
+        onInput={(value) => helperFunctions.updateByteCategoryImageUrl(value?.toString() || '')}
+        modelValue={byteCategory.imageUrl || ''}
+      />
 
       <div className="my-4">
         <div className="flow-root">
