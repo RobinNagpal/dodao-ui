@@ -7,7 +7,7 @@ import getApiResponse from '@/utils/api/getApiResponse';
 import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
 import React from 'react';
 
-async function TidbitCollection(props: { params: { categoryId?: any }; searchParams: { [key: string]: string | string[] | undefined } }) {
+async function TidbitCollection(props: { params: { categoryId?: string }; searchParams: { [key: string]: string | string[] | undefined } }) {
   const space = (await getSpaceServerSide())!;
   const categoryWithByteCollection = await getApiResponse<CategoryWithByteCollection>(space, `byte-collection-categories/${props.params.categoryId}`);
   const bytes = await getApiResponse<ByteSummaryFragment[]>(space, 'bytes');
