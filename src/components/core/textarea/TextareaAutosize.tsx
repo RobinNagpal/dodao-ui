@@ -18,6 +18,7 @@ export interface TextareaAutosizeProps {
   className?: string;
   textAreaClassName?: string;
   infoText?: string;
+  onBlur?: () => void;
   rows?: number;
 }
 
@@ -48,6 +49,7 @@ export default function TextareaAutosize({
   textAreaClassName,
   label,
   infoText,
+  onBlur,
   rows = 3,
 }: TextareaAutosizeProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -121,6 +123,7 @@ export default function TextareaAutosize({
           error={!!error}
           onKeyDown={onKeyDown}
           rows={rows}
+          onBlur={onBlur}
         />
         {infoText && <p className="mt-1 text-xs">{infoText}</p>}
         {error && typeof error === 'string' && (

@@ -21,6 +21,7 @@ interface TextInputProps extends PropsWithChildren {
   info?: React.ReactNode;
   className?: string;
   helpText?: string;
+  onBlur?: () => void;
 }
 
 export default function Input({
@@ -40,6 +41,7 @@ export default function Input({
   children,
   className,
   helpText,
+  onBlur,
 }: TextInputProps) {
   const [isFocus, setIsFocus] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -77,7 +79,10 @@ export default function Input({
           min={min ? min : undefined}
           max={max ? max : undefined}
           onFocus={() => setIsFocus(true)}
-          onBlur={() => setIsFocus(false)}
+          onBlur={() => {
+            setIsFocus(false);
+            onBlur && onBlur();
+          }}
         />
         {error && (
           <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
