@@ -1,6 +1,8 @@
 import { SectionHeading } from './SectionHeading';
 import { Container } from './Container';
 import { ArrowPathIcon, CloudArrowUpIcon, Cog6ToothIcon, FingerPrintIcon, LockClosedIcon, ServerIcon } from '@heroicons/react/20/solid';
+import Academy_site from '@/images/Academy_site.gif';
+import Image from 'next/image';
 
 export function AcademySites() {
   const features = [
@@ -58,22 +60,13 @@ export function AcademySites() {
               </p>
             </div>
           </div>
-          <div className="relative overflow-hidden pt-16">
+          <div className="relative pt-16">
             <div className="mx-auto max-w-7xl px-6 lg:px-8">
-              <img
-                src="https://tailwindui.com/img/component-images/project-app-screenshot.png"
-                alt="App screenshot"
-                className="mb-[-12%] rounded-xl shadow-2xl ring-1 ring-gray-900/10"
-                width={2432}
-                height={1442}
-              />
-              <div className="relative" aria-hidden="true">
-                <div className="absolute -inset-x-20 bottom-0 bg-gradient-to-t from-white pt-[7%]" />
-              </div>
+              <Image src={Academy_site} alt="Academy Site Gif" className="mb-[-12%] rounded-xl ring-1 ring-gray-900/10" width={2432} height={1442} />
             </div>
           </div>
           <div className="mx-auto mt-16 max-w-7xl px-6 sm:mt-20 md:mt-24 lg:px-8">
-            <dl className="mx-auto grid max-w-2xl grid-cols-1 gap-x-6 gap-y-10 text-base leading-7 text-gray-600 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3 lg:gap-x-8 lg:gap-y-16">
+            <dl className="mt-44 mx-auto grid max-w-2xl grid-cols-1 gap-x-6 gap-y-10 text-base leading-7 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3 lg:gap-x-8 lg:gap-y-16">
               {features.map((feature) => (
                 <div key={feature.name} className="relative pl-9">
                   <dt className="inline font-semibold text-gray-900">
