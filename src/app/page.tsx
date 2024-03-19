@@ -1,3 +1,4 @@
+import { getTidbitsSiteHomepageContents } from '@/components/home/TidbitsSite/getTidbitsSiteHomepageContents';
 import ChatHome from '@/chatbot/home/home';
 import { OpenAIModelID } from '@/chatbot/types/openai';
 import { PredefinedSpaces } from '@/chatbot/utils/app/constants';
@@ -6,9 +7,8 @@ import DefaultHome from '@/components/home/DefaultHome/DefaultHome';
 import DoDAOHome from '@/components/home/DoDAOHome/DoDAOHome';
 import LifeInsureHomePage from '@/components/home/LifeInsure/LifeInsureHomePage';
 import TidbitsHubHome from '@/components/home/TidbitsHub/TidbitsHubHome';
-import TidbitsSiteHome from '@/components/home/TidbitsSite/TidbitsSiteHome';
 import ListProjects from '@/components/projects/List/ListProjects';
-import { ByteCollectionFragment, ByteSummaryFragment, ProjectFragment, SpaceTypes } from '@/graphql/generated/generated-types';
+import { ProjectFragment, SpaceTypes } from '@/graphql/generated/generated-types';
 import getApiResponse from '@/utils/api/getApiResponse';
 import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
 import { headers } from 'next/headers';
@@ -35,22 +35,7 @@ async function Home(props: { searchParams: { [key: string]: string | string[] | 
   }
 
   if (space?.type === SpaceTypes.TidbitsSite) {
-    console.log('searchParams', props.searchParams);
-    if (props.searchParams.selectedTabId === 'Tidbits') {
-      const byteCollections = await getApiResponse<ByteCollectionFragment[]>(space, 'byte-collections');
-      const bytes = await getApiResponse<ByteSummaryFragment[]>(space, 'bytes');
-      return <TidbitsSiteHome byteCollections={byteCollections} space={space} bytes={bytes} selectedTabId={props.searchParams.selectedTabId} />;
-    } else {
-      const byteCollections = await getApiResponse<ByteCollectionFragment[]>(space, 'byte-collections');
-      return (
-        <TidbitsSiteHome
-          byteCollections={byteCollections}
-          space={space}
-          bytes={[]}
-          selectedTabId={(props.searchParams.selectedTabId as string) || 'TidbitCollections'}
-        />
-      );
-    }
+    return await getTidbitsSiteHomepageContents(props, space);
   }
 
   if (host === 'dodao-localhost.io' || host === 'academy.dodao.io' || host === 'dodao.io') {
