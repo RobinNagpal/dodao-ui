@@ -1,4 +1,4 @@
-import { VideoCameraIcon, ShareIcon, BellIcon} from '@heroicons/react/20/solid';
+import { VideoCameraIcon, ShareIcon, BellIcon } from '@heroicons/react/20/solid';
 import tidbits_demo from '@/images/TidbitsHub/GIFs/tidbits_demo.gif';
 import Image from 'next/image';
 import { Container } from './Container';
