@@ -26,7 +26,7 @@ async function TidbitCollection() {
   }
 
   return (
-    <div className="flex justify-center items-center min-h-[80vh] mt-4">
+    <div className="flex justify-center items-center min-h-[80vh] mt-4 pb-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {byteCollectionCategories.map((category) => (
           <div key={category.id} className="bg-white shadow-lg rounded-lg p-4 flex flex-col items-start">
