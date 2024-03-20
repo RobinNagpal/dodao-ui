@@ -53,3 +53,9 @@ export interface TaskError {
   details?: boolean;
   items?: Record<string, QuestionError | UserInputError>;
 }
+
+export interface ByteCollectionCategoryError {
+  name?: boolean;
+  excerpt?: boolean;
+  byteCollections?: boolean;
+}

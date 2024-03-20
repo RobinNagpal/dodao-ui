@@ -28,7 +28,7 @@ export default function SelectByteCollectionModal(props: SelectByteCollectionMod
   const [selectedByteIds, setSelectedByteIds] = React.useState<string[]>([]);
   const [selectedByteCollection, setSelectedByteCollection] = React.useState<ByteCollectionFragment[]>([]);
   return (
-    <FullPageModal open={props.showSelectBytesModal} onClose={props.onClose} title={'Select Bytes'}>
+    <FullPageModal open={props.showSelectBytesModal} onClose={props.onClose} title={'Select Byte Collections'}>
       {loading ? (
         <FullPageLoader />
       ) : (
