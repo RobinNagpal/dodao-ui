@@ -60,6 +60,7 @@ function ByteCollectionCategoryEditor(props: ByteCollectionCategoryEditorProps) 
         onInput={(value) => helperFunctions.updateByteCategoryImageUrl(value?.toString() || '')}
         modelValue={byteCategory.imageUrl || ''}
       />
+      {byteCategory.imageUrl && <img src={byteCategory.imageUrl} style={{ height: '150px', width: '150px' }} className="my-2" />}
 
       <div className="my-4">
         <div className="flow-root">
