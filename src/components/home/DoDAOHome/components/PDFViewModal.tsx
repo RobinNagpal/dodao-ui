@@ -4,10 +4,9 @@ export interface PDFViewModalProps {
 }
 
 export const PDFViewModal = ({ onClose }: PDFViewModalProps) => {
-  const pdfPath = 'public/blockchain_pdf.pdf';
   return (
     <FullScreenModal open={true} onClose={onClose} title={'Blockchain BootCamp'}>
-      <iframe src={pdfPath} className="w-full h-full"></iframe>
+      <iframe src={'https://dodao-prod-public-assets.s3.amazonaws.com/dodao-io/bootcamp_pdf.pdf'} className="w-full h-screen" allowFullScreen={true}></iframe>
     </FullScreenModal>
   );
 };
