@@ -1,4 +1,4 @@
-import { CloudArrowUpIcon, LockClosedIcon, ServerIcon } from '@heroicons/react/20/solid';
+import { VideoCameraIcon, ShareIcon, BellIcon} from '@heroicons/react/20/solid';
 import tidbits_demo from '@/images/TidbitsHub/GIFs/tidbits_demo.gif';
 import Image from 'next/image';
 import { Container } from './Container';
@@ -8,17 +8,17 @@ const features = [
   {
     name: 'Short videos:',
     description: 'Users can watch concise, one-minute videos embedded within tidbits as we are aware that everyone has their own unique learning style.',
-    icon: CloudArrowUpIcon,
+    icon: VideoCameraIcon,
   },
   {
     name: 'Shareable Content:',
     description: 'These tidbits can then be published to social media or can be used to create printed materials like pamphlets.',
-    icon: LockClosedIcon,
+    icon: ShareIcon,
   },
   {
     name: 'Call to Actions:',
     description: 'We can embed CTAs within tidbits that lead customers directly to application forms etc.',
-    icon: ServerIcon,
+    icon: BellIcon,
   },
 ];
 
