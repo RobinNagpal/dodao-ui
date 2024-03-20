@@ -1,6 +1,6 @@
 import { SectionHeading } from './SectionHeading';
 import { Container } from './Container';
-import { ArrowPathIcon, CloudArrowUpIcon, Cog6ToothIcon, FingerPrintIcon, LockClosedIcon, ServerIcon } from '@heroicons/react/20/solid';
+import { ArrowPathIcon, CloudArrowUpIcon, Cog6ToothIcon, LockClosedIcon, FolderOpenIcon, BellAlertIcon } from '@heroicons/react/20/solid';
 import Academy_site from '@/images/Academy_site.gif';
 import Image from 'next/image';
 
@@ -16,7 +16,7 @@ export function AcademySites() {
       name: 'Simulations/Clickable Demos',
       description:
         "We've built simulations to confidently acquaint users with protocols without the risk. Interactive and secure, these demos teach without the fear of clicking wrong links.",
-      icon: LockClosedIcon,
+      icon: FolderOpenIcon,
     },
     {
       name: 'TidBits',
@@ -27,7 +27,7 @@ export function AcademySites() {
     {
       name: 'Advanced security.',
       description: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit aute id magna.',
-      icon: FingerPrintIcon,
+      icon: LockClosedIcon,
     },
     {
       name: 'Courses',
@@ -39,7 +39,7 @@ export function AcademySites() {
       name: 'Timelines',
       description:
         'Stay up-to-date with our timelines that track and inform about the latest product developments and releases, keeping customers connected and informed.',
-      icon: ServerIcon,
+      icon: BellAlertIcon,
     },
   ];
   return (
