@@ -40,7 +40,6 @@ export function BlockchainDevelopmentTooling() {
                     competitors.
                   </p>
                 </div>
-              
               </div>
             </div>
           </div>
