@@ -79,7 +79,7 @@ export function Introduction() {
                   set you apart in this rapidly evolving industry.
                 </dd>
               </div>
-              <div className="lg:col-start-1 lg:col-span-2">
+              <div className="lg:col-start-1 lg:col-span-2 lg:ml-64">
                 <div className="relative pl-16">
                   <dt className="text-base font-bold leading-7">
                     <div className="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600">
@@ -93,7 +93,7 @@ export function Introduction() {
                     </div>
                     Blockchain Development
                   </dt>
-                  <dd className="mt-2 text-base leading-7">
+                  <dd className="mt-2 text-base leading-7 lg:w-1/2">
                     If you are looking for experts who can help you accelerate your development, we provide specialized development services for strategic
                     projects.
                   </dd>
