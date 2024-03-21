@@ -54,14 +54,7 @@ export default function TidbitsHub() {
                 </div>
               </div>
               <div className="flex items-start justify-end lg:order-first">
-                <Image
-                  src={tidbits_demo}
-                  alt="Product screenshot"
-                  className="w-[48rem] max-w-none rounded-xl shadow-xl ring-1 ring-gray-400/10 sm:w-[57rem]"
-                  style={{
-                    width: 'auto',
-                  }}
-                />
+                <Image src={tidbits_demo} alt="Product screenshot" className="w-full max-w-none rounded-xl shadow-xl ring-1 ring-gray-400/10" />
               </div>
             </div>
           </div>
