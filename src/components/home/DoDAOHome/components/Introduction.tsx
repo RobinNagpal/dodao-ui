@@ -1,7 +1,7 @@
 export function Introduction() {
   return (
     <section id="introduction" aria-label="Introduction">
-      <div className="py-24 sm:py-32">
+      <div className="py-16 sm:py-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-4xl lg:text-center">
             <p className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Welcome to DoDAO: Where Learning Meets Simplicity</p>
@@ -11,7 +11,7 @@ export function Introduction() {
               blockchain companies.
             </p>
           </div>
-          <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-4xl">
+          <div className="mx-auto mt-16 max-w-2xl sm:mt-20 md:mt-16 lg:mt-16 lg:max-w-4xl">
             <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-10 lg:max-w-none lg:grid-cols-2 lg:gap-y-16">
               <div className="relative pl-16">
                 <dt className="text-base font-bold leading-7">

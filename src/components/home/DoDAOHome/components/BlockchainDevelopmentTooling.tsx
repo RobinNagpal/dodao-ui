@@ -27,7 +27,7 @@ export function BlockchainDevelopmentTooling() {
             </div>
             <div className="px-6 lg:contents">
               <div className="mx-auto max-w-2xl pb-24 pt-16 sm:pb-32 sm:pt-20 lg:ml-8 lg:mr-0 lg:w-full lg:max-w-lg lg:flex-none lg:pt-16 xl:w-1/2">
-                <h1 className="text-3xl font-bold sm:text-4xl">Blockchain Development Tooling</h1>
+                <h1 className="text-3xl font-bold sm:text-4xl">Blockchain Development</h1>
                 <p className="mt-6 text-lg leading-8">
                   With over five years of experience in blockchain development, we specialize in collaborating with strategic projects to speed up their growth.
                   Our focus is on crafting custom blockchain solutions designed specifically for your business requirements. By adopting a flexible approach, we
