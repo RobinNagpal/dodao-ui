@@ -35,7 +35,7 @@ const features = [
   {
     name: 'One-Minute Videos',
     description:
-      "Dive into essential life insurance concepts with our one-minute videos. Each piece distills complex information into easy-to-understand visuals, perfect for quick learning. It's an efficient way to grasp the basics, one sip of coffee at a time.",
+      "Dive into different concepts with our one-minute videos. Each piece distills complex information into easy-to-understand visuals, perfect for quick learning. It's an efficient way to grasp the basics, one sip of coffee at a time.",
     icon: DeviceNotificationIcon,
     screen: StocksScreen,
   },
