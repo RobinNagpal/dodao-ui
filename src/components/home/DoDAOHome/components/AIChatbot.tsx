@@ -27,7 +27,7 @@ export function AIChatbot() {
               </div>
               <div className="flex flex-wrap items-start justify-end gap-6 sm:gap-8">
                 <div className="w-0 flex-auto lg:ml-auto lg:w-auto lg:flex-none lg:self-end mb-9">
-                  <Image src={aichatbot} alt="" className="aspect-[7/5] w-[37rem] max-w-none rounded-2xl object-cover" />
+                  <Image src={aichatbot} alt="AI ChatBot Image" className="aspect-[7/5] w-[37rem] max-w-none rounded-2xl object-cover" />
                 </div>
               </div>
             </div>
