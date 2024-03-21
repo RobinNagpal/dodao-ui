@@ -23,7 +23,7 @@ export function BlockchainCourses() {
     <section
       id="blockchain-courses"
       aria-labelledby="blockchain-courses-title"
-      className="scroll-mt-14 pb-8 pt-16 sm:scroll-mt-32 sm:pb-10 sm:pt-20 lg:pb-16 lg:pt-16"
+      className="scroll-mt-14 pb-8 pt-4 sm:scroll-mt-32 sm:pb-10 sm:pt-20 lg:pb-16 lg:pt-16"
     >
       <Container size="lg">
         <SectionHeading number="4" id="blockchain-courses-title">
