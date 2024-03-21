@@ -321,8 +321,8 @@ function FeaturesMobile() {
               </PhoneFrame>
               <div className="absolute inset-x-0 bottom-0 bg-gray-800/95 p-6 backdrop-blur sm:p-10">
                 <feature.icon className="h-8 w-8" />
-                <h3 className="mt-6 text-sm font-semibold sm:text-lg">{feature.name}</h3>
-                <p className="mt-2 text-sm">{feature.description}</p>
+                <h3 className="mt-6 text-sm font-semibold sm:text-lg text-white">{feature.name}</h3>
+                <p className="mt-2 text-sm text-white">{feature.description}</p>
               </div>
             </div>
           </div>
@@ -355,10 +355,10 @@ export function PrimaryFeatures() {
     <section id="features" aria-label="Features for investing all your money" className="bg-gray-900 py-20 sm:py-32">
       <Container>
         <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-3xl">
-          <h2 className="text-3xl font-medium tracking-tight">
+          <h2 className="text-3xl font-medium tracking-tight text-white">
             Embrace Modern Learning. <br></br>Grasp Knowledge Effortlessly with Tidbits.
           </h2>
-          <p className="mt-2 text-lg">
+          <p className="mt-2 text-lg text-white">
             Step into a new era of learning with our platform. We have created the best of modern education content to make learning simple & fun! Where others
             stick to tradition, we innovate to educate.
           </p>
