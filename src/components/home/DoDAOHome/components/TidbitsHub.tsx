@@ -25,11 +25,11 @@ const features = [
 export default function TidbitsHub() {
   return (
     <section id="tidibits-hub" aria-labelledby="tidibits-hub-title" className="scroll-mt-14 sm:scroll-mt-32 sm:py-20 text-left">
-      <Container size="lg">
+      <Container size="lg" className='mt-6'>
         <SectionHeading number="1" id="tidibits-hub-title">
           TidbitsHub
         </SectionHeading>
-        <div className="overflow-hidden py-24 sm:py-16">
+        <div className="overflow-hidden py-16">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
               <div className="lg:ml-auto lg:pl-4">
