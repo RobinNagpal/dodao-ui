@@ -5,7 +5,7 @@ import { SectionHeading } from './SectionHeading';
 import aichatbot from '@/images/DoDAOHomePage/aichatbot.png';
 export function AIChatbot() {
   return (
-    <section id="ai-chatbot" aria-labelledby="ai-chatbot-title" className="scroll-mt-14 py-16 sm:scroll-mt-32 sm:py-20 lg:py-16">
+    <section id="ai-chatbot" aria-labelledby="ai-chatbot-title" className="scroll-mt-14 py-4 sm:scroll-mt-32 sm:py-20 lg:py-16">
       <Container size="lg">
         <SectionHeading number="3" id="ai-chatbot-title">
           AI Chatbot
