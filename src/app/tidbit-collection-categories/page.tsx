@@ -1,10 +1,12 @@
-import ByteCollectionCategoryCardAdminDropdown from '@/components/byteCollectionCategory/ByteCollectionCategoryCardAdminDropdown';
+import ByteCollectionCategoryCard from '@/components/byteCollectionCategory/ByteCollectionCategoryCard';
 import NoByteCollectionCategories from '@/components/byteCollectionCategory/NoByteCollectionCategory';
+import { Grid3Cols } from '@/components/core/grids/Grid3Cols';
 import PageWrapper from '@/components/core/page/PageWrapper';
-import { ByteCollectionCategory, ByteCollectionFragment } from '@/graphql/generated/generated-types';
+import { TidbitSiteTabIds } from '@/components/home/TidbitsSite/TidbitSiteTabIds';
+import TidbitsSiteTabs from '@/components/home/TidbitsSite/TidbitsSiteTabs';
+import { ByteCollectionCategory } from '@/graphql/generated/generated-types';
 import getApiResponse from '@/utils/api/getApiResponse';
 import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
-import Link from 'next/link';
 import React from 'react';
 
 async function TidbitCollectionCategories() {
@@ -20,26 +22,15 @@ async function TidbitCollectionCategories() {
   }
 
   return (
-    <div className="flex justify-center items-center min-h-[80vh] mt-4 pb-4">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <PageWrapper>
+      <TidbitsSiteTabs selectedTabId={TidbitSiteTabIds.TidbitCollectionCategories} />
+
+      <Grid3Cols>
         {byteCollectionCategories.map((category) => (
-          <div key={category.id} style={{ minWidth: '300px' }} className="shadow-lg rounded-lg p-4 flex flex-col items-start">
-            <div className="w-full flex justify-end">
-              <ByteCollectionCategoryCardAdminDropdown categoryId={category.id} />
-            </div>
-            <div className="flex items-center justify-center w-12 h-12">{category.imageUrl && <img src={category.imageUrl} alt="category image" />}</div>
-            <h3 className="text-lg font-semibold mb-2">{category.name}</h3>
-            <p className="text-sm text-gray-600 mb-4">{category.excerpt}</p>
-            <Link
-              href={`/tidbit-collection-categories/view/${category.id}/tidbit-collections/`}
-              className="mt-auto text-indigo-600 hover:text-indigo-800 transition duration-300"
-            >
-              See more
-            </Link>
-          </div>
+          <ByteCollectionCategoryCard space={space} category={category} key={category.id} />
         ))}
-      </div>
-    </div>
+      </Grid3Cols>
+    </PageWrapper>
   );
 }
 

@@ -9,7 +9,7 @@ export interface TabItem {
 }
 
 export interface TabsWithUnderlineProps {
-  selectedTabId: string;
+  selectedTabId?: string;
   setSelectedTabId: (id: string) => void;
   tabs: TabItem[];
   className?: string;

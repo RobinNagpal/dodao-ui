@@ -29,8 +29,16 @@ export default function TidbitsSiteTabs({ selectedTabId }: { selectedTabId?: str
     <PrivateComponent>
       <div className="w-full flex justify-end mb-6">
         <TabsWithUnderline
-          selectedTabId={selectedTabId || TidbitSiteTabIds.TidbitCollections}
-          setSelectedTabId={(id) => router.push('/?selectedTabId=' + id)}
+          selectedTabId={selectedTabId}
+          setSelectedTabId={(id) => {
+            if (id === TidbitSiteTabIds.Tidbits) {
+              router.push('/tidbits');
+            } else if (id === TidbitSiteTabIds.TidbitCollections) {
+              router.push('/tidbit-collections');
+            } else {
+              router.push('/tidbit-collection-categories');
+            }
+          }}
           tabs={tabs}
           className="w-96"
         />

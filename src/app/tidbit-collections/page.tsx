@@ -1,10 +1,10 @@
-import ByteCollectionCategoryCardAdminDropdown from '@/components/byteCollectionCategory/ByteCollectionCategoryCardAdminDropdown';
 import ByteCollectionsGrid from '@/components/byteCollection/View/ByteCollectionsGrid';
 import PageWrapper from '@/components/core/page/PageWrapper';
-import { ByteCollectionCategory, ByteCollectionFragment } from '@/graphql/generated/generated-types';
+import { TidbitSiteTabIds } from '@/components/home/TidbitsSite/TidbitSiteTabIds';
+import TidbitsSiteTabs from '@/components/home/TidbitsSite/TidbitsSiteTabs';
+import { ByteCollectionFragment } from '@/graphql/generated/generated-types';
 import getApiResponse from '@/utils/api/getApiResponse';
 import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
-import Link from 'next/link';
 import React from 'react';
 
 async function TidbitCollections() {
@@ -12,6 +12,7 @@ async function TidbitCollections() {
   const byteCollections = await getApiResponse<ByteCollectionFragment[]>(space, 'byte-collections');
   return (
     <PageWrapper>
+      <TidbitsSiteTabs selectedTabId={TidbitSiteTabIds.TidbitCollections} />
       <ByteCollectionsGrid
         byteCollections={byteCollections}
         space={space}

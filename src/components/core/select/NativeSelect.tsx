@@ -1,6 +1,6 @@
 export interface NativeSelectProps {
   showPleaseSelect?: boolean;
-  selectedItemId: string;
+  selectedItemId?: string;
   items: { id: string; label: string }[];
   setSelectedItemId: (id: string) => void;
 }
