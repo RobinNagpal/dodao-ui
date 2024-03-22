@@ -8,14 +8,13 @@ export interface BreadcrumbsOjbect {
   name: string;
   href: string;
   current: boolean;
-
 }
 
-interface BreadcrumbsWithChevronsProps{
+interface BreadcrumbsWithChevronsProps {
   breadcrumbs: BreadcrumbsOjbect[];
 }
 
-export default function BreadcrumbsWithChevrons({breadcrumbs}: BreadcrumbsWithChevronsProps) {
+export default function BreadcrumbsWithChevrons({ breadcrumbs }: BreadcrumbsWithChevronsProps) {
   const router = useRouter();
 
   return breadcrumbs.length === 0 ? null : (
@@ -32,7 +31,11 @@ export default function BreadcrumbsWithChevrons({breadcrumbs}: BreadcrumbsWithCh
             <li key={breadcrumb.name}>
               <div className="flex items-center">
                 <ChevronRightIcon className="h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
-                <Link href={breadcrumb.href} className="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700" aria-current={breadcrumb.current ? 'page' : undefined}>
+                <Link
+                  href={breadcrumb.href}
+                  className="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700"
+                  aria-current={breadcrumb.current ? 'page' : undefined}
+                >
                   {breadcrumb.name}
                 </Link>
               </div>
