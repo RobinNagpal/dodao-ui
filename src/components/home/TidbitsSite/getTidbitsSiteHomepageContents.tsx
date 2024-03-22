@@ -23,6 +23,10 @@ export async function getTidbitsSiteHomepageContents(
     return (
       <TidbitsSiteHome byteCollections={byteCollections} space={space} bytes={bytes} selectedTabId={props.searchParams.selectedTabId} categoriesArray={[]} />
     );
+  } else if (props.searchParams.selectedTabId === TidbitSiteTabIds.TidbitCollections) {
+    const byteCollections = await getApiResponse<ByteCollectionFragment[]>(space, 'byte-collections');
+
+    return <TidbitsSiteHome byteCollections={byteCollections} space={space} bytes={[]} categoriesArray={[]} selectedTabId={props.searchParams.selectedTabId} />;
   } else if (props.searchParams.selectedTabId === TidbitSiteTabIds.TidbitCollectionCategories) {
     const byteCollectionCategories = await getApiResponse<ByteCollectionCategory[]>(space, 'byte-collection-categories');
     const categoriesArray = [];

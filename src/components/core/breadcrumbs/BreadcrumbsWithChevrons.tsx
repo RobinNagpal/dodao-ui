@@ -18,7 +18,7 @@ export default function BreadcrumbsWithChevrons({ breadcrumbs }: BreadcrumbsWith
   const router = useRouter();
 
   return breadcrumbs.length === 0 ? null : (
-    <PageWrapper>
+    <PageWrapper className="pb-[0]">
       <nav className="flex -mt-4" aria-label="Breadcrumb">
         <ol role="list" className="flex items-center space-x-4">
           <li>
