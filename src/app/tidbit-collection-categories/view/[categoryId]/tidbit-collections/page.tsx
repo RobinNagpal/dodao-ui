@@ -1,5 +1,5 @@
 import ViewByteCollectionCategory from '@/components/byteCollectionCategory/ViewByteCollectionCategory';
-import PageWrapper from '@/components/core/page/PageWrapper';
+import BreadcrumbsWithChevrons, { BreadcrumbsOjbect } from '@/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import { CategoryWithByteCollection } from '@/graphql/generated/generated-types';
 import getApiResponse from '@/utils/api/getApiResponse';
 import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
@@ -10,10 +10,18 @@ async function TidbitCollection(props: { params: { categoryId?: string } }) {
 
   const categoryWithByteCollection = await getApiResponse<CategoryWithByteCollection>(space, `byte-collection-categories/${props.params.categoryId}`);
 
+  const breadcrumbs: BreadcrumbsOjbect[] = [
+    {
+      name: categoryWithByteCollection.name,
+      href: `/tidbit-collection-categories/view/${props.params.categoryId}/tidbit-collections`,
+      current: true,
+    },
+  ];
   return (
-    <PageWrapper className="pt-[0]">
+    <div className="pt-[0]">
+      <BreadcrumbsWithChevrons breadcrumbs={breadcrumbs} />
       <ViewByteCollectionCategory space={space} categoryWithByteCollection={categoryWithByteCollection} />{' '}
-    </PageWrapper>
+    </div>
   );
 }
 
