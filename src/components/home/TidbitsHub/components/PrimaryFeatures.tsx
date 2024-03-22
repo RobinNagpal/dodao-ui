@@ -35,7 +35,7 @@ const features = [
   {
     name: 'One-Minute Videos',
     description:
-      "Dive into essential life insurance concepts with our one-minute videos. Each piece distills complex information into easy-to-understand visuals, perfect for quick learning. It's an efficient way to grasp the basics, one sip of coffee at a time.",
+      "Dive into different concepts with our one-minute videos. Each piece distills complex information into easy-to-understand visuals, perfect for quick learning. It's an efficient way to grasp the basics, one sip of coffee at a time.",
     icon: DeviceNotificationIcon,
     screen: StocksScreen,
   },
@@ -236,12 +236,12 @@ function FeaturesDesktop() {
             <div className="relative z-10 p-8">
               <feature.icon className="h-8 w-8" />
               <h3 className="mt-6 text-lg font-semibold">
-                <Tab className="text-left ui-not-focus-visible:outline-none">
+                <Tab className="text-left ui-not-focus-visible:outline-none text-white">
                   <span className="absolute inset-0 rounded-2xl" />
                   {feature.name}
                 </Tab>
               </h3>
-              <p className="mt-2 text-sm">{feature.description}</p>
+              <p className="mt-2 text-sm text-white">{feature.description}</p>
             </div>
           </div>
         ))}
@@ -321,7 +321,7 @@ function FeaturesMobile() {
               </PhoneFrame>
               <div className="absolute inset-x-0 bottom-0 bg-gray-800/95 p-6 backdrop-blur sm:p-10">
                 <feature.icon className="h-8 w-8" />
-                <h3 className="mt-6 text-sm font-semibold sm:text-lg text-white">{feature.name}</h3>
+                <h3 className="mt-6 text-sm font-semibold text-white sm:text-lg">{feature.name}</h3>
                 <p className="mt-2 text-sm text-white">{feature.description}</p>
               </div>
             </div>
