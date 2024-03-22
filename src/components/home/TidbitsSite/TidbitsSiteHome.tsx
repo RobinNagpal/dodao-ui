@@ -27,7 +27,13 @@ function SelectedTab(props: TidbitsSiteHomeProps) {
       </div>
     );
   } else {
-    return (
+    return props.categoriesArray.length > 0 ? (
+      <div>
+        {props.categoriesArray.map((category) => (
+          <ViewByteCollectionCategory space={props.space} categoryWithByteCollection={category} key={category.id} />
+        ))}
+      </div>
+    ) : (
       <ByteCollectionsGrid
         byteCollections={props.byteCollections}
         space={props.space}

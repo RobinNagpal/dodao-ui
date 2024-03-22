@@ -11,7 +11,7 @@ async function TidbitCollection(props: { params: { categoryId?: string } }) {
   const categoryWithByteCollection = await getApiResponse<CategoryWithByteCollection>(space, `byte-collection-categories/${props.params.categoryId}`);
 
   return (
-    <PageWrapper>
+    <PageWrapper className="pt-[0]">
       <ViewByteCollectionCategory space={space} categoryWithByteCollection={categoryWithByteCollection} />{' '}
     </PageWrapper>
   );

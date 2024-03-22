@@ -23,6 +23,10 @@ export async function getTidbitsSiteHomepageContents(
     return (
       <TidbitsSiteHome byteCollections={byteCollections} space={space} bytes={bytes} selectedTabId={props.searchParams.selectedTabId} categoriesArray={[]} />
     );
+  } else if (props.searchParams.selectedTabId === TidbitSiteTabIds.TidbitCollections) {
+    const byteCollections = await getApiResponse<ByteCollectionFragment[]>(space, 'byte-collections');
+
+    return <TidbitsSiteHome byteCollections={byteCollections} space={space} bytes={[]} categoriesArray={[]} selectedTabId={props.searchParams.selectedTabId} />;
   } else if (props.searchParams.selectedTabId === TidbitSiteTabIds.TidbitCollectionCategories) {
     const byteCollectionCategories = await getApiResponse<ByteCollectionCategory[]>(space, 'byte-collection-categories');
     const categoriesArray = [];
@@ -34,13 +38,20 @@ export async function getTidbitsSiteHomepageContents(
     return <TidbitsSiteHome byteCollections={[]} space={space} bytes={[]} categoriesArray={categoriesArray} selectedTabId={props.searchParams.selectedTabId} />;
   } else {
     const byteCollections = await getApiResponse<ByteCollectionFragment[]>(space, 'byte-collections');
+
+    const categoriesArray = [];
+    const byteCollectionCategories = await getApiResponse<ByteCollectionCategory[]>(space, 'byte-collection-categories');
+    for (const category of byteCollectionCategories) {
+      const categoryWithByteCollection = await getApiResponse<CategoryWithByteCollection>(space, `byte-collection-categories/${category.id}`);
+      categoriesArray.push(categoryWithByteCollection);
+    }
     return (
       <TidbitsSiteHome
-        byteCollections={byteCollections}
+        byteCollections={byteCollectionCategories.length ? [] : byteCollections}
         space={space}
         bytes={[]}
-        categoriesArray={[]}
-        selectedTabId={(props.searchParams.selectedTabId as string) || TidbitSiteTabIds.TidbitCollections}
+        categoriesArray={byteCollectionCategories.length ? categoriesArray : []}
+        selectedTabId={byteCollectionCategories.length ? TidbitSiteTabIds.TidbitCollectionCategories : TidbitSiteTabIds.TidbitCollections}
       />
     );
   }
