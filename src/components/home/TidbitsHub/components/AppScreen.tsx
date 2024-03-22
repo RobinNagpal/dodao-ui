@@ -57,7 +57,7 @@ AppScreen.Header = forwardRef<React.ElementRef<'div'>, { children: React.ReactNo
 
 AppScreen.Title = forwardRef<React.ElementRef<'div'>, { children: React.ReactNode }>(function AppScreenTitle({ children }, ref) {
   return (
-    <div ref={ref} className="text-2xl">
+    <div ref={ref} className="text-2xl text-white">
       {children}
     </div>
   );
@@ -65,7 +65,7 @@ AppScreen.Title = forwardRef<React.ElementRef<'div'>, { children: React.ReactNod
 
 AppScreen.Subtitle = forwardRef<React.ElementRef<'div'>, { children: React.ReactNode }>(function AppScreenSubtitle({ children }, ref) {
   return (
-    <div ref={ref} className="text-sm">
+    <div ref={ref} className="text-sm text-white">
       {children}
     </div>
   );
