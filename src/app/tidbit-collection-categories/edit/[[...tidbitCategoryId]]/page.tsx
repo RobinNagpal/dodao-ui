@@ -30,11 +30,7 @@ function EditTidbitCategorySpace(props: { space: SpaceWithIntegrationsFragment; 
         {loading ? (
           <PageLoading />
         ) : (
-          <ByteCategoryEditor
-            space={props.space}
-            viewByteCollectionsUrl={'/tidbit-collections'}
-            byteCategorySummary={data?.byteCollectionCategoryWithByteCollections}
-          />
+          <ByteCategoryEditor space={props.space} viewByteCollectionsUrl={'/'} byteCategorySummary={data?.byteCollectionCategoryWithByteCollections} />
         )}
       </SingleCardLayout>
     </PageWrapper>

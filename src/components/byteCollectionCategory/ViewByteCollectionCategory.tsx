@@ -20,7 +20,7 @@ export default function ViewByteCollectionCategory(props: ViewByteCollectionCate
           byteCollections={categoryWithByteCollection.byteCollections as ByteCollectionFragment[]}
           space={space}
           byteCollectionType={'byteCollection'}
-          byteCollectionsPageUrl={`/tidbit-collections`}
+          byteCollectionsPageUrl={`/tidbit-collection-categories/view/${categoryWithByteCollection.id}/tidbit-collections`}
         />
       )}
     </PageWrapper>

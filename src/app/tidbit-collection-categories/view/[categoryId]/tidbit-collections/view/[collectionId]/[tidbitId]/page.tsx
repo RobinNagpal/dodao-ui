@@ -1,25 +1,24 @@
-import ByteCollectionCategoryCardAdminDropdown from '@/components/byteCollectionCategory/ByteCollectionCategoryCardAdminDropdown';
 import ByteCollectionsGrid from '@/components/byteCollection/View/ByteCollectionsGrid';
 import PageWrapper from '@/components/core/page/PageWrapper';
-import { ByteCollectionCategory, ByteCollectionFragment } from '@/graphql/generated/generated-types';
+import { ByteCollectionFragment } from '@/graphql/generated/generated-types';
 import getApiResponse from '@/utils/api/getApiResponse';
 import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
-import Link from 'next/link';
 import React from 'react';
 
-async function TidbitCollections() {
+export default async function ByteDetails(props: { params: { collectionId?: string; tidbitId?: string; categoryId: string } }) {
   const space = (await getSpaceServerSide())!;
   const byteCollections = await getApiResponse<ByteCollectionFragment[]>(space, 'byte-collections');
+
   return (
     <PageWrapper>
       <ByteCollectionsGrid
-        byteCollections={byteCollections}
         space={space}
+        byteCollections={byteCollections}
         byteCollectionType={'byteCollection'}
-        byteCollectionsPageUrl={`/tidbit-collections`}
+        selectedByteId={props.params.tidbitId}
+        selectedByteCollectionId={props.params.collectionId}
+        byteCollectionsPageUrl={`/tidbit-collection-categories/view/${props.params.categoryId}/tidbit-collections`}
       />
     </PageWrapper>
   );
 }
-
-export default TidbitCollections;
