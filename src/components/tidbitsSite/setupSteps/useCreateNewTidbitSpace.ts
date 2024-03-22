@@ -94,7 +94,7 @@ export default function useCreateNewTidbitSpace(): UseEditSpaceHelper {
             admins: [],
             adminUsernames: [],
             adminUsernamesV1: [],
-            avatar: tidbitSpace.name,
+            avatar: tidbitSpace.avatar,
             creator: session?.username!,
             features: [],
             inviteLinks: {},

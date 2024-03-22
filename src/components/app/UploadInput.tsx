@@ -43,7 +43,7 @@ export default function UploadInput({
   onInput,
   onLoading,
   placeholder = 'e.g. https://example.com/guide.png',
-  allowedFileTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/svg+xml', 'image/svg+xml'],
+  allowedFileTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/svg+xml', 'image/svg+xml', 'image/webp'],
   error,
   helpText,
 }: UploadInputProps) {
