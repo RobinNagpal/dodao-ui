@@ -59,3 +59,8 @@ export interface ByteCollectionCategoryError {
   excerpt?: boolean;
   byteCollections?: boolean;
 }
+
+export interface TidbitsHomepageError {
+  heading?: boolean;
+  shortDescription?: boolean;
+}
