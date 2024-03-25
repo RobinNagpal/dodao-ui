@@ -6,9 +6,8 @@ import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-typ
 import React from 'react';
 
 export default function UpdateTidbitsHomepageModal(props: { space: SpaceWithIntegrationsFragment; open: boolean; onClose: () => void }) {
-  const { tidbitsHomepage, updateHeading, updateShortDescription, updateTidbitsHomepage, updating, tidbitsHomepageErrors } = useEditTidbitsHomepage(
-    props.space
-  );
+  const { tidbitsHomepage, updateHeading, updateShortDescription, updateTidbitsHomepage, updating, tidbitsHomepageErrors, validateTidbitsHomepage } =
+    useEditTidbitsHomepage(props.space);
 
   return (
     <FullPageModal open={props.open} onClose={props.onClose} title="Tidbits Homepage">
@@ -36,6 +35,7 @@ export default function UpdateTidbitsHomepageModal(props: { space: SpaceWithInte
             variant="contained"
             primary
             loading={updating}
+            disabled={tidbitsHomepage.heading.length === 0 || tidbitsHomepage.shortDescription.length === 0}
             onClick={async () => {
               const bool = await updateTidbitsHomepage();
               if (bool) props.onClose();
