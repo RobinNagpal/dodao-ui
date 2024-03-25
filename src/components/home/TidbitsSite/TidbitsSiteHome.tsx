@@ -1,10 +1,9 @@
 import ByteCollectionsGrid from '@/components/byteCollection/View/ByteCollectionsGrid';
-import ByteCollectionCategoryCard from '@/components/byteCollectionCategory/ByteCollectionCategoryCard';
-import { Grid3Cols } from '@/components/core/grids/Grid3Cols';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import TidbitsSiteTabs from '@/components/home/TidbitsSite/TidbitsSiteTabs';
 import { ByteCollectionFragment, ByteSummaryFragment, CategoryWithByteCollection, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import React from 'react';
+import TidbitsSiteHomepage from './TidbitsSiteHomepage';
 
 export interface TidbitsSiteHomeProps {
   space: SpaceWithIntegrationsFragment;
@@ -16,13 +15,7 @@ export interface TidbitsSiteHomeProps {
 
 function SelectedTab(props: TidbitsSiteHomeProps) {
   if (props.categoriesArray.length > 0) {
-    return (
-      <Grid3Cols>
-        {props.categoriesArray.map((category) => (
-          <ByteCollectionCategoryCard space={props.space} category={category} key={category.id} />
-        ))}
-      </Grid3Cols>
-    );
+    return <TidbitsSiteHomepage space={props.space} categoriesArray={props.categoriesArray} />;
   } else {
     return (
       <ByteCollectionsGrid

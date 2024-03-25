@@ -89,6 +89,10 @@ fragment SpaceWithIntegrations on Space {
     borderColor
     blockBg
   }
+  tidbitsHomepage {
+    heading
+    shortDescription
+  }
 }
 
 fragment SpaceSummary on Space {
@@ -278,6 +282,12 @@ mutation UpsertSpaceLoaderInfo($spaceId: String!, $input: SpaceLoadersInfoInput!
 
 mutation UpdateThemeColors($spaceId: ID!, $themeColors: ThemeColorsInput!) {
   payload: updateThemeColors(spaceId: $spaceId, themeColors: $themeColors) {
+    ...SpaceWithIntegrations
+  }
+}
+
+mutation UpdateTidbitsHomepage($spaceId: ID!, $tidbitsHomepage: TidbitsHomepageInput!) {
+  payload: updateTidbitsHomepage(spaceId: $spaceId, tidbitsHomepage: $tidbitsHomepage) {
     ...SpaceWithIntegrations
   }
 }

@@ -1112,6 +1112,7 @@ type Mutation {
   updateSpace(spaceInput: UpsertSpaceInput!): Space!
   updateSpaceCreator(creator: String!, spaceId: String!): Space!
   updateThemeColors(spaceId: ID!, themeColors: ThemeColorsInput!): Space!
+  updateTidbitsHomepage(spaceId: ID!, tidbitsHomepage: TidbitsHomepageInput!): Space!
   updateTopicBasicInfo(spaceId: String!, topicInfo: UpdateTopicBasicInfoInput!): GitCourse!
   updateTopicExplanation(explanationInfo: UpdateTopicExplanationInput!, spaceId: String!): GitCourse!
   updateTopicQuestion(questionInfo: UpdateTopicQuestionInput!, spaceId: String!): GitCourse!
@@ -1503,6 +1504,7 @@ type Space {
   socialSettings: SocialSettings!
   spaceIntegrations: SpaceIntegrations
   themeColors: ThemeColors
+  tidbitsHomepage: TidbitsHomepage
   type: String!
 }
 
@@ -1634,6 +1636,16 @@ input ThemeColorsInput {
   linkColor: String!
   primaryColor: String!
   textColor: String!
+}
+
+type TidbitsHomepage {
+  heading: String!
+  shortDescription: String!
+}
+
+input TidbitsHomepageInput {
+  heading: String!
+  shortDescription: String!
 }
 
 type Timeline {

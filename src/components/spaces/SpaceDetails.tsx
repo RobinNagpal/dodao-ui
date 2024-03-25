@@ -8,6 +8,7 @@ import SpaceCourseDetails from '@/components/spaces/View/SpaceCoursesDetails';
 import SpaceDomaiDetails from '@/components/spaces/View/SpaceDomaiDetails';
 import SpaceGuideDetails from '@/components/spaces/View/SpaceGuideDetails';
 import SpaceSocialDetails from '@/components/spaces/View/SpaceSocialDetails';
+import SpaceTidbitsHomepageDetails from './View/SpaceTidbitsHomepageDetails';
 import SpaceThemeDetails from '@/components/spaces/View/SpaceThemeDetails';
 import { useExtendedSpaceQuery } from '@/graphql/generated/generated-types';
 import React, { useState } from 'react';
@@ -51,6 +52,7 @@ export default function SpaceDetails(props: SpaceDetailsProps) {
           <SpaceAuthDetails space={data.space} />
           <SpaceDomaiDetails space={data.space} />
           <SpaceSocialDetails space={data.space} />
+          <SpaceTidbitsHomepageDetails space={data.space} />
           <SpaceThemeDetails space={data.space} />
         </div>
       )}
