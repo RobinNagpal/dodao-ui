@@ -17,7 +17,8 @@ export default function ByteCollectionCategoryCardAdminDropdown({ categoryId }: 
   return (
     <PrivateEllipsisDropdown
       items={getThreeDotItems()}
-      onSelect={async (key) => {
+      onSelect={async (key, e) => {
+        e.preventDefault();
         if (key === 'edit') {
           router.push(baseByteCollectionsCategoryEditUrl);
         }

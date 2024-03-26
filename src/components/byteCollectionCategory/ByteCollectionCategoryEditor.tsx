@@ -4,18 +4,24 @@ import IconButton from '@/components/core/buttons/IconButton';
 import { IconTypes } from '@/components/core/icons/IconTypes';
 import Input from '@/components/core/input/Input';
 import TextareaAutosize from '@/components/core/textarea/TextareaAutosize';
-import { ByteCollectionFragment, CategoryWithByteCollection, ImageType, Space } from '@/graphql/generated/generated-types';
+import { ByteCollectionFragment, CategoryWithByteCollection, ImageType, Space, ByteCollectionCategoryStatus } from '@/graphql/generated/generated-types';
 import PlusCircle from '@heroicons/react/20/solid/PlusCircleIcon';
 import Bars3BottomLeftIcon from '@heroicons/react/24/solid/Bars3BottomLeftIcon';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import SelectByteCollectionModal from './SelectByteCollectionModal';
 import UploadInput from '../app/UploadInput';
+import NativeSelect from '@/components/core/select/NativeSelect';
 
 interface ByteCollectionCategoryEditorProps {
   byteCategorySummary?: CategoryWithByteCollection;
   space: Space;
   viewByteCollectionsUrl: string;
+}
+
+interface StatusItem {
+  id: string;
+  label: string;
 }
 
 const AddByteButton = styled.button`
@@ -33,6 +39,12 @@ function ByteCollectionCategoryEditor(props: ByteCollectionCategoryEditorProps) 
     viewByteCollectionsUrl: props.viewByteCollectionsUrl,
     byteCategory: props.byteCategorySummary,
   });
+
+  const options: StatusItem[] = [
+    { id: ByteCollectionCategoryStatus.Active, label: 'Active' },
+    { id: ByteCollectionCategoryStatus.Hidden, label: 'Hidden' },
+    { id: ByteCollectionCategoryStatus.ComingSoon, label: 'Coming Soon' },
+  ];
 
   return (
     <div>
@@ -61,6 +73,19 @@ function ByteCollectionCategoryEditor(props: ByteCollectionCategoryEditorProps) 
         modelValue={byteCategory.imageUrl || ''}
       />
       {byteCategory.imageUrl && <img src={byteCategory.imageUrl} style={{ height: '150px', width: '150px' }} className="my-2" />}
+
+      <div>
+        <label htmlFor="tabs" className="sr-only">
+          Select the status
+        </label>
+
+        <NativeSelect
+          label="Select the status"
+          items={options}
+          setSelectedItemId={helperFunctions.updateByteCategoryStatus}
+          selectedItemId={byteCategory.status || ByteCollectionCategoryStatus.Active}
+        />
+      </div>
 
       <div className="my-4">
         <div className="flow-root">

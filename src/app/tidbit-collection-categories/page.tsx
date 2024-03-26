@@ -1,17 +1,20 @@
-import ByteCollectionCategoryCard from '@/components/byteCollectionCategory/ByteCollectionCategoryCard';
 import NoByteCollectionCategories from '@/components/byteCollectionCategory/NoByteCollectionCategory';
-import { Grid3Cols } from '@/components/core/grids/Grid3Cols';
+import ByteCollectionCategoryGrid from '@/components/byteCollectionCategory/View/ByteCollectionCategoryGrid';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import { TidbitSiteTabIds } from '@/components/home/TidbitsSite/TidbitSiteTabIds';
 import TidbitsSiteTabs from '@/components/home/TidbitsSite/TidbitsSiteTabs';
-import { ByteCollectionCategory } from '@/graphql/generated/generated-types';
+import { CategoryWithByteCollection } from '@/graphql/generated/generated-types';
 import getApiResponse from '@/utils/api/getApiResponse';
 import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
+import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
+import { getServerSession } from 'next-auth';
+import { Session } from '@/types/auth/Session';
 import React from 'react';
 
 async function TidbitCollectionCategories() {
   const space = (await getSpaceServerSide())!;
-  const byteCollectionCategories = await getApiResponse<ByteCollectionCategory[]>(space, `byte-collection-categories`);
+  const session = (await getServerSession(authOptions)) as Session | null;
+  const byteCollectionCategories = await getApiResponse<CategoryWithByteCollection[]>(space, `byte-collection-categories`);
 
   if (byteCollectionCategories.length === 0) {
     return (
@@ -24,12 +27,7 @@ async function TidbitCollectionCategories() {
   return (
     <PageWrapper>
       <TidbitsSiteTabs selectedTabId={TidbitSiteTabIds.TidbitCollectionCategories} />
-
-      <Grid3Cols>
-        {byteCollectionCategories.map((category) => (
-          <ByteCollectionCategoryCard space={space} category={category} key={category.id} />
-        ))}
-      </Grid3Cols>
+      <ByteCollectionCategoryGrid space={space} categoriesArray={byteCollectionCategories} session={session!} />
     </PageWrapper>
   );
 }

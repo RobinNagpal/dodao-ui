@@ -3,6 +3,7 @@ fragment ByteCollectionCategory on ByteCollectionCategory {
   name
   excerpt
   imageUrl
+  status
   byteCollectionIds
 }
 
@@ -12,6 +13,7 @@ fragment CategoryWithByteCollection on CategoryWithByteCollection {
   excerpt
   imageUrl
   creator
+  status
   byteCollections {
     ...ByteCollection
   }

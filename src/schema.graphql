@@ -136,6 +136,13 @@ type ByteCollectionCategory {
   id: String!
   imageUrl: String
   name: String!
+  status: String!
+}
+
+enum ByteCollectionCategoryStatus {
+  Active
+  ComingSoon
+  Hidden
 }
 
 type ByteLinkedinPdfContent {
@@ -245,6 +252,7 @@ type CategoryWithByteCollection {
   id: String!
   imageUrl: String
   name: String!
+  status: String!
 }
 
 input ChatCompletionAIInput {
@@ -1771,6 +1779,7 @@ input UpsertByteCollectionCategory {
   imageUrl: String
   name: String!
   spaceId: String!
+  status: String!
 }
 
 input UpsertByteInput {

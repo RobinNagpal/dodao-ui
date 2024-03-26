@@ -16,6 +16,7 @@ interface HelperFunctions {
   updateByteCategoryName: (name: string) => void;
   updateByteCategoryExcerpt: (excerpt: string) => void;
   updateByteCategoryImageUrl: (imageUrl: string) => void;
+  updateByteCategoryStatus: (status: string) => void;
   addByteCollection: (byteCollection: ByteCollectionFragment) => void;
   removeByteCollection: (byteCollectionId: string) => void;
   upsertByteCollectionCategory: () => void;
@@ -48,6 +49,7 @@ export function useEditByteCollectionCategory({
     excerpt: byteCategoryProp?.excerpt || 'Byte Excerpt',
     imageUrl: byteCategoryProp?.imageUrl || '',
     creator: space.creator,
+    status: byteCategoryProp?.status || 'Active',
   });
   const [categoryErrors, setCategoryErrors] = useState<ByteCollectionCategoryError>({});
   const { showNotification } = useNotificationContext();
@@ -113,6 +115,10 @@ export function useEditByteCollectionCategory({
     setByteCategory((prevByteCategory) => ({ ...prevByteCategory, imageUrl }));
   };
 
+  const updateByteCategoryStatus = (status: string) => {
+    setByteCategory((prevByteCategory) => ({ ...prevByteCategory, status }));
+  };
+
   async function upsertByteCategoryFn(byteCollectionCategory: CategoryWithByteCollection) {
     await upsertByteCollectionCategoryMutation({
       variables: {
@@ -123,6 +129,7 @@ export function useEditByteCollectionCategory({
           name: byteCollectionCategory.name,
           excerpt: byteCollectionCategory.excerpt || '',
           imageUrl: byteCollectionCategory.imageUrl,
+          status: byteCollectionCategory.status,
           byteCollectionIds:
             byteCollectionCategory.byteCollections?.map((byteCollection) => byteCollection?.id).filter((id): id is string => id !== undefined) ?? [],
         },
@@ -149,6 +156,7 @@ export function useEditByteCollectionCategory({
       updateByteCategoryName,
       updateByteCategoryExcerpt,
       updateByteCategoryImageUrl,
+      updateByteCategoryStatus,
       addByteCollection,
       removeByteCollection,
       upsertByteCollectionCategory,

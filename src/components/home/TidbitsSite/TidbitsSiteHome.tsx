@@ -4,6 +4,7 @@ import TidbitsSiteTabs from '@/components/home/TidbitsSite/TidbitsSiteTabs';
 import { ByteCollectionFragment, ByteSummaryFragment, CategoryWithByteCollection, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import React from 'react';
 import TidbitsSiteHomepage from './TidbitsSiteHomepage';
+import { Session } from '@/types/auth/Session';
 
 export interface TidbitsSiteHomeProps {
   space: SpaceWithIntegrationsFragment;
@@ -11,11 +12,12 @@ export interface TidbitsSiteHomeProps {
   bytes: ByteSummaryFragment[];
   categoriesArray: CategoryWithByteCollection[];
   selectedTabId?: string;
+  session?: Session;
 }
 
 function SelectedTab(props: TidbitsSiteHomeProps) {
   if (props.categoriesArray.length > 0) {
-    return <TidbitsSiteHomepage space={props.space} categoriesArray={props.categoriesArray} />;
+    return <TidbitsSiteHomepage space={props.space} categoriesArray={props.categoriesArray} session={props.session!} />;
   } else {
     return (
       <ByteCollectionsGrid
@@ -41,6 +43,7 @@ export default function TidbitsSiteHome(props: TidbitsSiteHomeProps) {
           bytes={props.bytes}
           byteCollections={byteCollections}
           categoriesArray={props.categoriesArray}
+          session={props.session}
         />
       </PageWrapper>
     )
