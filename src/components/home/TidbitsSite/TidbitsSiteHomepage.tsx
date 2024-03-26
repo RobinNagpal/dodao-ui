@@ -1,9 +1,8 @@
 import { CategoryWithByteCollection, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
-import { Grid3Cols } from '@/components/core/grids/Grid3Cols';
-import ByteCollectionCategoryCard from '@/components/byteCollectionCategory/ByteCollectionCategoryCard';
 import Button from '@/components/core/buttons/Button';
 import Link from 'next/link';
 import styles from './TidbitsHomepage.module.scss';
+import ByteCollectionCategoryGrid from '@/components/byteCollectionCategory/View/ByteCollectionCategoryGrid';
 
 interface TidbitsSiteHomepageProps {
   space: SpaceWithIntegrationsFragment;
@@ -35,11 +34,7 @@ export default function TidbitsSiteHomepage({ space, categoriesArray }: TidbitsS
         </div>
       </div>
       <div className={`${styles.backgroundColor}`}>
-        <Grid3Cols>
-          {categoriesArray.map((category) => (
-            <ByteCollectionCategoryCard space={space} category={category} key={category.id} />
-          ))}
-        </Grid3Cols>
+        <ByteCollectionCategoryGrid space={space} categoriesArray={categoriesArray} />
       </div>
     </div>
   );
