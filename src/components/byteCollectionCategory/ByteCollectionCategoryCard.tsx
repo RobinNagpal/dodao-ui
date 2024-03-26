@@ -9,6 +9,7 @@ import {
 import Link from 'next/link';
 import React from 'react';
 import styles from './ByteCollectionCategoryCard.module.scss';
+import Badge, { BadgeColor, BadgeSize } from '@/components/core/badge/Badge';
 
 interface ByteCollectionCategoryCardProps {
   space: SpaceWithIntegrationsFragment;
@@ -26,9 +27,9 @@ export default function ByteCollectionCategoryCard(props: ByteCollectionCategory
         <div className="card blog-card w-full">
           <div className="p-6">
             <div className="w-full flex justify-end">
-              <span className="inline-flex items-center rounded-full bg-blue-50 px-2 py-1 mr-2 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10">
+              <Badge size={BadgeSize.md} color={BadgeColor.blue}>
                 Coming Soon
-              </span>
+              </Badge>
             </div>
             <div className="flex items-center justify-center w-12 h-12">
               {category.imageUrl && <img style={{ maxWidth: '50px' }} src={category.imageUrl} alt="category image" />}
@@ -46,14 +47,14 @@ export default function ByteCollectionCategoryCard(props: ByteCollectionCategory
         <div className="p-6">
           <div className="w-full flex justify-end">
             {isUserAdmin && category.status === ByteCollectionCategoryStatus.Hidden && (
-              <span className="inline-flex items-center rounded-full bg-green-50 px-2 py-1 mr-2 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
+              <Badge size={BadgeSize.md} color={BadgeColor.green}>
                 Hidden
-              </span>
+              </Badge>
             )}
             {isUserAdmin && category.status === ByteCollectionCategoryStatus.ComingSoon && (
-              <span className="inline-flex items-center rounded-full bg-blue-50 px-2 py-1 mr-2 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10">
+              <Badge size={BadgeSize.md} color={BadgeColor.blue}>
                 Coming Soon
-              </span>
+              </Badge>
             )}
             <ByteCollectionCategoryCardAdminDropdown categoryId={category.id} />
           </div>

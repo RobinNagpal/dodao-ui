@@ -16,7 +16,7 @@ export async function getTidbitsSiteHomepageContents(
     searchParams: { [p: string]: string | string[] | undefined };
   },
   space: SpaceWithIntegrationsFragment,
-  session: Session
+  session?: Session
 ) {
   if (props.searchParams.selectedTabId === TidbitSiteTabIds.Tidbits) {
     const byteCollections = await getApiResponse<ByteCollectionFragment[]>(space, 'byte-collections');

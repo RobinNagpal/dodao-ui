@@ -23,7 +23,7 @@ export default function TabsWithUnderline(props: TabsWithUnderlineProps) {
           Select a tab
         </label>
         {/* Use an "onChange" listener to redirect the user to the selected tab URL. */}
-        <NativeSelect label={''} selectedItemId={props.selectedTabId} items={props.tabs} setSelectedItemId={props.setSelectedTabId} />
+        <NativeSelect selectedItemId={props.selectedTabId} items={props.tabs} setSelectedItemId={props.setSelectedTabId} />
       </div>
       <div className="hidden sm:block">
         <nav className={`isolate flex divide-x divide-gray-200 rounded-lg shadow ${styles.styledNav}`} aria-label="Tabs">

@@ -22,7 +22,7 @@ async function Home(props: { searchParams: { [key: string]: string | string[] | 
   const host = headersList.get('host')?.split(':')?.[0];
 
   const space = await getSpaceServerSide();
-  const session = (await getServerSession(authOptions)) as Session | null;
+  const session = (await getServerSession(authOptions)) as Session;
   if (host && (space?.botDomains || [])?.includes(host)) {
     return <ChatHome defaultModelId={OpenAIModelID.GPT_3_5} serverSideApiKeyIsSet={true} serverSidePluginKeysSet={false} isChatbotSite={true} />;
   }
@@ -38,7 +38,7 @@ async function Home(props: { searchParams: { [key: string]: string | string[] | 
   }
 
   if (space?.type === SpaceTypes.TidbitsSite) {
-    return await getTidbitsSiteHomepageContents(props, space, session!);
+    return await getTidbitsSiteHomepageContents(props, space, session);
   }
 
   if (host === 'dodao-localhost.io' || host === 'academy.dodao.io' || host === 'dodao.io') {
