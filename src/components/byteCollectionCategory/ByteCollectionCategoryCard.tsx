@@ -26,7 +26,9 @@ export default function ByteCollectionCategoryCard(props: ByteCollectionCategory
         <div className="card blog-card w-full">
           <div className="p-6">
             <div className="w-full flex justify-end">
-              <span className="inline-flex items-center rounded-full bg-blue-100 px-2 py-1 mx-2 text-xs font-medium text-blue-600">Coming Soon</span>
+              <span className="inline-flex items-center rounded-full bg-blue-50 px-2 py-1 mr-2 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10">
+                Coming Soon
+              </span>
             </div>
             <div className="flex items-center justify-center w-12 h-12">
               {category.imageUrl && <img style={{ maxWidth: '50px' }} src={category.imageUrl} alt="category image" />}
