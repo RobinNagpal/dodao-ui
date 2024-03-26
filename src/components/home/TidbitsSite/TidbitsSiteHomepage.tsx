@@ -3,13 +3,15 @@ import Button from '@/components/core/buttons/Button';
 import Link from 'next/link';
 import styles from './TidbitsHomepage.module.scss';
 import ByteCollectionCategoryGrid from '@/components/byteCollectionCategory/View/ByteCollectionCategoryGrid';
+import { Session } from '@/types/auth/Session';
 
 interface TidbitsSiteHomepageProps {
   space: SpaceWithIntegrationsFragment;
   categoriesArray: CategoryWithByteCollection[];
+  session: Session;
 }
 
-export default function TidbitsSiteHomepage({ space, categoriesArray }: TidbitsSiteHomepageProps) {
+export default function TidbitsSiteHomepage({ space, categoriesArray, session }: TidbitsSiteHomepageProps) {
   return (
     <div className="flex flex-col">
       <div className={`${styles.backgroundColor} flex-1`}>
@@ -34,7 +36,7 @@ export default function TidbitsSiteHomepage({ space, categoriesArray }: TidbitsS
         </div>
       </div>
       <div className={`${styles.backgroundColor}`}>
-        <ByteCollectionCategoryGrid space={space} categoriesArray={categoriesArray} />
+        <ByteCollectionCategoryGrid space={space} categoriesArray={categoriesArray} session={session} />
       </div>
     </div>
   );

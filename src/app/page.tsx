@@ -11,8 +11,10 @@ import ListProjects from '@/components/projects/List/ListProjects';
 import { ProjectFragment, SpaceTypes } from '@/graphql/generated/generated-types';
 import getApiResponse from '@/utils/api/getApiResponse';
 import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
+import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
+import { getServerSession } from 'next-auth';
 import { headers } from 'next/headers';
-
+import { Session } from '@/types/auth/Session';
 import React from 'react';
 
 async function Home(props: { searchParams: { [key: string]: string | string[] | undefined } }) {
@@ -20,6 +22,7 @@ async function Home(props: { searchParams: { [key: string]: string | string[] | 
   const host = headersList.get('host')?.split(':')?.[0];
 
   const space = await getSpaceServerSide();
+  const session = (await getServerSession(authOptions)) as Session | null;
   if (host && (space?.botDomains || [])?.includes(host)) {
     return <ChatHome defaultModelId={OpenAIModelID.GPT_3_5} serverSideApiKeyIsSet={true} serverSidePluginKeysSet={false} isChatbotSite={true} />;
   }
@@ -35,7 +38,7 @@ async function Home(props: { searchParams: { [key: string]: string | string[] | 
   }
 
   if (space?.type === SpaceTypes.TidbitsSite) {
-    return await getTidbitsSiteHomepageContents(props, space);
+    return await getTidbitsSiteHomepageContents(props, space, session!);
   }
 
   if (host === 'dodao-localhost.io' || host === 'academy.dodao.io' || host === 'dodao.io') {

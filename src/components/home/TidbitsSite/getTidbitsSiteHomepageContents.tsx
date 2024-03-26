@@ -7,6 +7,7 @@ import {
   CategoryWithByteCollection,
   SpaceWithIntegrationsFragment,
 } from '@/graphql/generated/generated-types';
+import { Session } from '@/types/auth/Session';
 import getApiResponse from '@/utils/api/getApiResponse';
 import React from 'react';
 
@@ -14,7 +15,8 @@ export async function getTidbitsSiteHomepageContents(
   props: {
     searchParams: { [p: string]: string | string[] | undefined };
   },
-  space: SpaceWithIntegrationsFragment
+  space: SpaceWithIntegrationsFragment,
+  session: Session
 ) {
   if (props.searchParams.selectedTabId === TidbitSiteTabIds.Tidbits) {
     const byteCollections = await getApiResponse<ByteCollectionFragment[]>(space, 'byte-collections');
@@ -35,7 +37,16 @@ export async function getTidbitsSiteHomepageContents(
       const categoryWithByteCollection = await getApiResponse<CategoryWithByteCollection>(space, `byte-collection-categories/${category.id}`);
       categoriesArray.push(categoryWithByteCollection);
     }
-    return <TidbitsSiteHome byteCollections={[]} space={space} bytes={[]} categoriesArray={categoriesArray} selectedTabId={props.searchParams.selectedTabId} />;
+    return (
+      <TidbitsSiteHome
+        byteCollections={[]}
+        space={space}
+        bytes={[]}
+        categoriesArray={categoriesArray}
+        selectedTabId={props.searchParams.selectedTabId}
+        session={session}
+      />
+    );
   } else {
     const byteCollections = await getApiResponse<ByteCollectionFragment[]>(space, 'byte-collections');
 
@@ -52,6 +63,7 @@ export async function getTidbitsSiteHomepageContents(
         bytes={[]}
         categoriesArray={byteCollectionCategories.length ? categoriesArray : []}
         selectedTabId={byteCollectionCategories.length ? TidbitSiteTabIds.TidbitCollectionCategories : TidbitSiteTabIds.TidbitCollections}
+        session={session}
       />
     );
   }

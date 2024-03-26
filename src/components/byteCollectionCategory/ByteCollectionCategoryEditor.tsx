@@ -11,7 +11,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import SelectByteCollectionModal from './SelectByteCollectionModal';
 import UploadInput from '../app/UploadInput';
-import NativeSelect from '../core/select/NativeSelect';
+import NativeSelect from '@/components/core/select/NativeSelect';
 
 interface ByteCollectionCategoryEditorProps {
   byteCategorySummary?: CategoryWithByteCollection;
