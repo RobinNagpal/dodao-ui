@@ -3,7 +3,7 @@ export interface NativeSelectProps {
   selectedItemId?: string;
   items: { id: string; label: string }[];
   setSelectedItemId: (id: string) => void;
-  label: string;
+  label?: string;
 }
 
 export default function NativeSelect(props: NativeSelectProps) {
