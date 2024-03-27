@@ -4,6 +4,7 @@ fragment ByteCollectionCategory on ByteCollectionCategory {
   excerpt
   imageUrl
   status
+  priority
   byteCollectionIds
 }
 
@@ -14,6 +15,7 @@ fragment CategoryWithByteCollection on CategoryWithByteCollection {
   imageUrl
   creator
   status
+  priority
   byteCollections {
     ...ByteCollection
   }

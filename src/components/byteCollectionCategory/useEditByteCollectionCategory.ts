@@ -16,6 +16,7 @@ interface HelperFunctions {
   updateByteCategoryName: (name: string) => void;
   updateByteCategoryExcerpt: (excerpt: string) => void;
   updateByteCategoryImageUrl: (imageUrl: string) => void;
+  updateByteCollectionPriority: (priority: number) => void;
   updateByteCategoryStatus: (status: string) => void;
   addByteCollection: (byteCollection: ByteCollectionFragment) => void;
   removeByteCollection: (byteCollectionId: string) => void;
@@ -46,6 +47,7 @@ export function useEditByteCollectionCategory({ space, byteCategory: byteCategor
     imageUrl: byteCategoryProp?.imageUrl || '',
     creator: space.creator,
     status: byteCategoryProp?.status || 'Active',
+    priority: byteCategoryProp?.priority || 50,
   });
   const [categoryErrors, setCategoryErrors] = useState<ByteCollectionCategoryError>({});
   const { showNotification } = useNotificationContext();
@@ -63,6 +65,10 @@ export function useEditByteCollectionCategory({ space, byteCategory: byteCategor
     errors.excerpt = undefined;
     if (!byteCategory.excerpt) {
       errors.excerpt = true;
+    }
+    errors.priority = undefined;
+    if (!byteCategory.priority) {
+      errors.priority = true;
     }
 
     setCategoryErrors(errors);
@@ -112,19 +118,21 @@ export function useEditByteCollectionCategory({ space, byteCategory: byteCategor
   const updateByteCategoryImageUrl = (imageUrl: string) => {
     setByteCategory((prevByteCategory) => ({ ...prevByteCategory, imageUrl }));
   };
-
+  const updateByteCollectionPriority = (priority: number) => {
+    setByteCategory((prevByteCategory) => ({ ...prevByteCategory, priority }));
+  };
   const updateByteCategoryStatus = (status: string) => {
     setByteCategory((prevByteCategory) => ({ ...prevByteCategory, status }));
   };
 
   const upsertByteCollectionCategory = async () => {
-    setUpserting(true);
     const valid = validateCategory();
     if (!valid) {
       console.log('Byte Collection Category invalid', categoryErrors);
       showNotification({ type: 'error', message: $t('notify.validationFailed') });
       return;
     }
+    setUpserting(true);
     const response = await upsertByteCollectionCategoryMutation({
       variables: {
         spaceId: space.id,
@@ -136,6 +144,7 @@ export function useEditByteCollectionCategory({ space, byteCategory: byteCategor
           imageUrl: byteCategory.imageUrl,
           status: byteCategory.status,
           byteCollectionIds: byteCategory.byteCollections?.map((byteCollection) => byteCollection?.id).filter((id): id is string => id !== undefined) ?? [],
+          priority: byteCategory.priority,
         },
       },
     });
@@ -152,6 +161,7 @@ export function useEditByteCollectionCategory({ space, byteCategory: byteCategor
       updateByteCategoryExcerpt,
       updateByteCategoryImageUrl,
       updateByteCategoryStatus,
+      updateByteCollectionPriority,
       addByteCollection,
       removeByteCollection,
       upsertByteCollectionCategory,

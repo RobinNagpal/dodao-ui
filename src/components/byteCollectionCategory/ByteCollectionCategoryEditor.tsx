@@ -79,6 +79,15 @@ function ByteCollectionCategoryEditor(props: ByteCollectionCategoryEditorProps) 
         selectedItemId={byteCategory.status || ByteCollectionCategoryStatus.Active}
       />
 
+      <Input
+        modelValue={byteCategory.priority}
+        number
+        onUpdate={(v) => helperFunctions.updateByteCollectionPriority(parseInt(v?.toString() as string))}
+        label="Byte Collection Category Priority"
+        required
+        error={categoryErrors['priority'] ? 'Priority is Required' : false}
+      />
+
       <div className="my-4">
         <div className="flow-root">
           <ul role="list" className="-mb-8">
@@ -148,7 +157,7 @@ function ByteCollectionCategoryEditor(props: ByteCollectionCategoryEditorProps) 
           variant="contained"
           primary
           onClick={() => helperFunctions.upsertByteCollectionCategory()}
-          disabled={!byteCategory.name.trim() || !byteCategory.excerpt.trim() || upserting}
+          disabled={!byteCategory.name.trim() || !byteCategory.excerpt.trim() || !byteCategory.priority || upserting}
           loading={upserting}
         >
           Upsert Byte Collection Category
