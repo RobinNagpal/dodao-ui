@@ -168,20 +168,18 @@ export default function TopNav(props: { space?: SpaceWithIntegrationsFragment | 
                   </div>
                   <div className="flex flex-shrink-0 items-center">
                     <Link href="/">
-                      <Image
+                      <img
                         className="block h-8 w-auto lg:hidden"
                         src={space?.avatar ? getCDNImageUrl(space.avatar) : 'https://tailwindui.com/img/logos/mark.svg'}
                         alt="Your Company"
-                        width={50}
                         height={50}
                       />
                     </Link>
                     <Link href="/">
-                      <Image
+                      <img
                         className="hidden h-8 w-auto lg:block"
                         src={space?.avatar ? getCDNImageUrl(space.avatar) : 'https://tailwindui.com/img/logos/mark.svg'}
                         alt="Your Company"
-                        width={50}
                         height={50}
                       />
                     </Link>

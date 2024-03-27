@@ -1,8 +1,8 @@
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import {
   ByteCollectionFragment,
-  SpaceWithIntegrationsFragment,
   CategoryWithByteCollection,
+  SpaceWithIntegrationsFragment,
   useUpsertByteCollectionCategoryMutation,
 } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
@@ -26,27 +26,23 @@ interface HelperFunctions {
 interface UseEditByteCollectionCategoryType {
   byteCategory: CategoryWithByteCollection;
   categoryErrors: ByteCollectionCategoryError;
+  upserting: boolean;
   helperFunctions: HelperFunctions;
 }
 
 export interface UseEditByteCollectionCategoryArgs {
   space: SpaceWithIntegrationsFragment;
-  viewByteCollectionsUrl: string;
   byteCategory?: CategoryWithByteCollection;
 }
 
-export function useEditByteCollectionCategory({
-  space,
-  viewByteCollectionsUrl,
-  byteCategory: byteCategoryProp,
-}: UseEditByteCollectionCategoryArgs): UseEditByteCollectionCategoryType {
+export function useEditByteCollectionCategory({ space, byteCategory: byteCategoryProp }: UseEditByteCollectionCategoryArgs): UseEditByteCollectionCategoryType {
   const router = useRouter();
   const [upsertByteCollectionCategoryMutation] = useUpsertByteCollectionCategoryMutation();
   const [byteCategory, setByteCategory] = useState<CategoryWithByteCollection>({
     id: byteCategoryProp?.id || '',
     byteCollections: byteCategoryProp?.byteCollections || [],
-    name: byteCategoryProp?.name || 'Byte Name',
-    excerpt: byteCategoryProp?.excerpt || 'Byte Excerpt',
+    name: byteCategoryProp?.name || 'Category Name',
+    excerpt: byteCategoryProp?.excerpt || 'Category Excerpt',
     imageUrl: byteCategoryProp?.imageUrl || '',
     creator: space.creator,
     status: byteCategoryProp?.status || 'Active',
@@ -54,6 +50,8 @@ export function useEditByteCollectionCategory({
   const [categoryErrors, setCategoryErrors] = useState<ByteCollectionCategoryError>({});
   const { showNotification } = useNotificationContext();
   const { $t } = useI18();
+
+  const [upserting, setUpserting] = useState(false);
 
   function validateCategory() {
     const errors: ByteCollectionCategoryError = { ...categoryErrors };
@@ -119,39 +117,36 @@ export function useEditByteCollectionCategory({
     setByteCategory((prevByteCategory) => ({ ...prevByteCategory, status }));
   };
 
-  async function upsertByteCategoryFn(byteCollectionCategory: CategoryWithByteCollection) {
-    await upsertByteCollectionCategoryMutation({
-      variables: {
-        spaceId: space.id,
-        input: {
-          id: byteCollectionCategory.id || slugify(byteCollectionCategory.name) + '-' + v4().toString().substring(0, 4),
-          spaceId: space.id,
-          name: byteCollectionCategory.name,
-          excerpt: byteCollectionCategory.excerpt || '',
-          imageUrl: byteCollectionCategory.imageUrl,
-          status: byteCollectionCategory.status,
-          byteCollectionIds:
-            byteCollectionCategory.byteCollections?.map((byteCollection) => byteCollection?.id).filter((id): id is string => id !== undefined) ?? [],
-        },
-      },
-    });
-  }
-
   const upsertByteCollectionCategory = async () => {
+    setUpserting(true);
     const valid = validateCategory();
     if (!valid) {
       console.log('Byte Collection Category invalid', categoryErrors);
       showNotification({ type: 'error', message: $t('notify.validationFailed') });
       return;
     }
-    await upsertByteCategoryFn(byteCategory);
-    router.push(viewByteCollectionsUrl);
-    router.refresh();
+    const response = await upsertByteCollectionCategoryMutation({
+      variables: {
+        spaceId: space.id,
+        input: {
+          id: byteCategory.id || slugify(byteCategory.name) + '-' + v4().toString().substring(0, 4),
+          spaceId: space.id,
+          name: byteCategory.name,
+          excerpt: byteCategory.excerpt || '',
+          imageUrl: byteCategory.imageUrl,
+          status: byteCategory.status,
+          byteCollectionIds: byteCategory.byteCollections?.map((byteCollection) => byteCollection?.id).filter((id): id is string => id !== undefined) ?? [],
+        },
+      },
+    });
+    router.push(`/tidbit-collection-categories/view/${response.data?.payload?.id}/tidbit-collections`);
+    setUpserting(false);
   };
 
   return {
     byteCategory,
     categoryErrors,
+    upserting,
     helperFunctions: {
       updateByteCategoryName,
       updateByteCategoryExcerpt,
