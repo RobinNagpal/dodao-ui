@@ -38,6 +38,9 @@ fragment ProjectByte on ProjectByte {
     name
     uuid
   }
+  completionScreen {
+    ...CompletionScreen
+  }
   tags
   archived
   seoMeta {

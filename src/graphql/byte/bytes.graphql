@@ -47,6 +47,28 @@ fragment ByteStep on ByteStep {
   imageUrl
 }
 
+# fragment ActionButtonFragment on ActionButton {
+#   label
+#   link
+#   uuid
+# }
+
+fragment CompletionScreenItem on CompletionScreenItem {
+  label
+  link
+  uuid
+}
+
+fragment CompletionScreen on CompletionScreen {
+  content
+  name
+  uuid
+  imageUrl
+  items {
+    ...CompletionScreenItem
+  }
+}
+
 fragment ByteDetails on Byte {
   postSubmissionStepContent
   content
@@ -56,6 +78,9 @@ fragment ByteDetails on Byte {
   admins
   tags
   priority
+  completionScreen {
+    ...CompletionScreen
+  }
   steps {
     ...ByteStep
   }
@@ -71,6 +96,9 @@ fragment ByteDetailsFragment on Byte {
   tags
   priority
   videoUrl
+  completionScreen {
+    ...CompletionScreen
+  }
   steps {
     content
     stepItems {
