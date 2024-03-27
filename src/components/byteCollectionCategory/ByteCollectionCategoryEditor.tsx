@@ -16,7 +16,6 @@ import NativeSelect from '@/components/core/select/NativeSelect';
 interface ByteCollectionCategoryEditorProps {
   byteCategorySummary?: CategoryWithByteCollection;
   space: Space;
-  viewByteCollectionsUrl: string;
 }
 
 interface StatusItem {
@@ -34,9 +33,8 @@ const TidBitIconSpan = styled.span`
 
 function ByteCollectionCategoryEditor(props: ByteCollectionCategoryEditorProps) {
   const [showSelectByteCollectionModal, setShowSelectByteCollectionModal] = useState(false);
-  const { byteCategory, categoryErrors, helperFunctions } = useEditByteCollectionCategory({
+  const { byteCategory, categoryErrors, upserting, helperFunctions } = useEditByteCollectionCategory({
     space: props.space,
-    viewByteCollectionsUrl: props.viewByteCollectionsUrl,
     byteCategory: props.byteCategorySummary,
   });
 
@@ -74,18 +72,12 @@ function ByteCollectionCategoryEditor(props: ByteCollectionCategoryEditorProps) 
       />
       {byteCategory.imageUrl && <img src={byteCategory.imageUrl} style={{ height: '150px', width: '150px' }} className="my-2" />}
 
-      <div>
-        <label htmlFor="tabs" className="sr-only">
-          Select the status
-        </label>
-
-        <NativeSelect
-          label="Select the status"
-          items={options}
-          setSelectedItemId={helperFunctions.updateByteCategoryStatus}
-          selectedItemId={byteCategory.status || ByteCollectionCategoryStatus.Active}
-        />
-      </div>
+      <NativeSelect
+        label="Select the status"
+        items={options}
+        setSelectedItemId={helperFunctions.updateByteCategoryStatus}
+        selectedItemId={byteCategory.status || ByteCollectionCategoryStatus.Active}
+      />
 
       <div className="my-4">
         <div className="flow-root">
@@ -152,7 +144,12 @@ function ByteCollectionCategoryEditor(props: ByteCollectionCategoryEditorProps) 
       </div>
 
       <div className="py-4">
-        <Button variant="contained" primary onClick={() => helperFunctions.upsertByteCollectionCategory()}>
+        <Button
+          variant="contained"
+          primary
+          onClick={() => helperFunctions.upsertByteCollectionCategory()}
+          disabled={!byteCategory.name.trim() || !byteCategory.excerpt.trim() || upserting}
+        >
           Upsert Byte Collection Category
         </Button>
       </div>

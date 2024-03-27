@@ -12,9 +12,9 @@ export default function ViewByteCollectionCategory(props: ViewByteCollectionCate
   const { space, categoryWithByteCollection } = props;
 
   return (
-    <PageWrapper>
-      <h1 className="mb-8 text-3xl">{categoryWithByteCollection.name}</h1>
-      <p className="mb-8 text-xl">{categoryWithByteCollection.excerpt}</p>
+    <div>
+      <h1 className="pt-6 md:pt-8 lg:pt-12 text-2xl lg:text-3xl ">{categoryWithByteCollection.name}</h1>
+      <p className="pt-6 md:pt-8 lg:pt-12 text-lg lg:text-xl">{categoryWithByteCollection.excerpt}</p>
       {categoryWithByteCollection && (
         <ByteCollectionsGrid
           byteCollections={categoryWithByteCollection.byteCollections as ByteCollectionFragment[]}
@@ -23,6 +23,6 @@ export default function ViewByteCollectionCategory(props: ViewByteCollectionCate
           byteCollectionsPageUrl={`/tidbit-collection-categories/view/${categoryWithByteCollection.id}/tidbit-collections`}
         />
       )}
-    </PageWrapper>
+    </div>
   );
 }

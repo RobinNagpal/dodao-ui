@@ -49,11 +49,11 @@ export default function UploadInput({
 }: UploadInputProps) {
   const inputId = spaceId + '-' + slugify(label || imageType || objectId);
   return (
-    <UploadWrapper className="mt-2">
+    <div className="mt-2">
       <label htmlFor={inputId} className="block text-sm font-medium leading-6">
         {label || 'Image URL'}
       </label>
-      <div className="mt-2 flex rounded-md shadow-sm">
+      <UploadWrapper className="mt-2 flex rounded-md shadow-sm">
         <div className="relative flex flex-grow items-stretch focus-within:z-10">
           <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
             <PhotoIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
@@ -82,9 +82,9 @@ export default function UploadInput({
             <span className="mx-2">Upload</span>
           </div>
         </FileUploader>
-      </div>
+      </UploadWrapper>
       {helpText && <p className="ml-1 mt-2 mb-2 text-sm">{helpText}</p>}
       {typeof error === 'string' && <p className="mt-2 text-sm text-left text-red-600">{error}</p>}
-    </UploadWrapper>
+    </div>
   );
 }
