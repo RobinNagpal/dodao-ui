@@ -149,6 +149,7 @@ function ByteCollectionCategoryEditor(props: ByteCollectionCategoryEditorProps) 
           primary
           onClick={() => helperFunctions.upsertByteCollectionCategory()}
           disabled={!byteCategory.name.trim() || !byteCategory.excerpt.trim() || upserting}
+          loading={upserting}
         >
           Upsert Byte Collection Category
         </Button>
