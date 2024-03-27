@@ -160,6 +160,7 @@ export interface ByteCollectionCategory {
   id: Scalars['String'];
   imageUrl?: Maybe<Scalars['String']>;
   name: Scalars['String'];
+  priority: Scalars['Int'];
   status: Scalars['String'];
 }
 
@@ -286,6 +287,7 @@ export interface CategoryWithByteCollection {
   id: Scalars['String'];
   imageUrl?: Maybe<Scalars['String']>;
   name: Scalars['String'];
+  priority: Scalars['Int'];
   status: Scalars['String'];
 }
 
@@ -2884,6 +2886,7 @@ export interface UpsertByteCollectionCategory {
   id: Scalars['String'];
   imageUrl?: InputMaybe<Scalars['String']>;
   name: Scalars['String'];
+  priority: Scalars['Int'];
   spaceId: Scalars['String'];
   status: Scalars['String'];
 }
@@ -3220,9 +3223,9 @@ export type DeleteByteCollectionMutationVariables = Exact<{
 
 export type DeleteByteCollectionMutation = { __typename?: 'Mutation', deleteByteCollection: boolean };
 
-export type ByteCollectionCategoryFragment = { __typename?: 'ByteCollectionCategory', id: string, name: string, excerpt?: string | null, imageUrl?: string | null, status: string, byteCollectionIds: Array<string> };
+export type ByteCollectionCategoryFragment = { __typename?: 'ByteCollectionCategory', id: string, name: string, excerpt?: string | null, imageUrl?: string | null, status: string, priority: number, byteCollectionIds: Array<string> };
 
-export type CategoryWithByteCollectionFragment = { __typename?: 'CategoryWithByteCollection', id: string, name: string, excerpt: string, imageUrl?: string | null, creator: string, status: string, byteCollections: Array<{ __typename?: 'ByteCollection', id: string, name: string, description: string, status: string, byteIds: Array<string>, priority: number, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string, videoUrl?: string | null }> }> };
+export type CategoryWithByteCollectionFragment = { __typename?: 'CategoryWithByteCollection', id: string, name: string, excerpt: string, imageUrl?: string | null, creator: string, status: string, priority: number, byteCollections: Array<{ __typename?: 'ByteCollection', id: string, name: string, description: string, status: string, byteIds: Array<string>, priority: number, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string, videoUrl?: string | null }> }> };
 
 export type ByteCollectionCategoryWithByteCollectionsQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -3230,14 +3233,14 @@ export type ByteCollectionCategoryWithByteCollectionsQueryVariables = Exact<{
 }>;
 
 
-export type ByteCollectionCategoryWithByteCollectionsQuery = { __typename?: 'Query', byteCollectionCategoryWithByteCollections: { __typename?: 'CategoryWithByteCollection', id: string, name: string, excerpt: string, imageUrl?: string | null, creator: string, status: string, byteCollections: Array<{ __typename?: 'ByteCollection', id: string, name: string, description: string, status: string, byteIds: Array<string>, priority: number, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string, videoUrl?: string | null }> }> } };
+export type ByteCollectionCategoryWithByteCollectionsQuery = { __typename?: 'Query', byteCollectionCategoryWithByteCollections: { __typename?: 'CategoryWithByteCollection', id: string, name: string, excerpt: string, imageUrl?: string | null, creator: string, status: string, priority: number, byteCollections: Array<{ __typename?: 'ByteCollection', id: string, name: string, description: string, status: string, byteIds: Array<string>, priority: number, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string, videoUrl?: string | null }> }> } };
 
 export type ByteCollectionCategoriesQueryVariables = Exact<{
   spaceId: Scalars['String'];
 }>;
 
 
-export type ByteCollectionCategoriesQuery = { __typename?: 'Query', byteCollectionCategories: Array<{ __typename?: 'ByteCollectionCategory', id: string, name: string, excerpt?: string | null, imageUrl?: string | null, status: string, byteCollectionIds: Array<string> }> };
+export type ByteCollectionCategoriesQuery = { __typename?: 'Query', byteCollectionCategories: Array<{ __typename?: 'ByteCollectionCategory', id: string, name: string, excerpt?: string | null, imageUrl?: string | null, status: string, priority: number, byteCollectionIds: Array<string> }> };
 
 export type UpsertByteCollectionCategoryMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -3245,7 +3248,7 @@ export type UpsertByteCollectionCategoryMutationVariables = Exact<{
 }>;
 
 
-export type UpsertByteCollectionCategoryMutation = { __typename?: 'Mutation', payload: { __typename?: 'ByteCollectionCategory', id: string, name: string, excerpt?: string | null, imageUrl?: string | null, status: string, byteCollectionIds: Array<string> } };
+export type UpsertByteCollectionCategoryMutation = { __typename?: 'Mutation', payload: { __typename?: 'ByteCollectionCategory', id: string, name: string, excerpt?: string | null, imageUrl?: string | null, status: string, priority: number, byteCollectionIds: Array<string> } };
 
 export type ByteLinkedinPdfContentStepFragment = { __typename?: 'ByteLinkedinPdfContentStep', content: string, name: string };
 
@@ -4709,6 +4712,7 @@ export const ByteCollectionCategoryFragmentDoc = gql`
   excerpt
   imageUrl
   status
+  priority
   byteCollectionIds
 }
     `;
@@ -4736,6 +4740,7 @@ export const CategoryWithByteCollectionFragmentDoc = gql`
   imageUrl
   creator
   status
+  priority
   byteCollections {
     ...ByteCollection
   }

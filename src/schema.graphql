@@ -136,6 +136,7 @@ type ByteCollectionCategory {
   id: String!
   imageUrl: String
   name: String!
+  priority: Int!
   status: String!
 }
 
@@ -252,6 +253,7 @@ type CategoryWithByteCollection {
   id: String!
   imageUrl: String
   name: String!
+  priority: Int!
   status: String!
 }
 
@@ -1778,6 +1780,7 @@ input UpsertByteCollectionCategory {
   id: String!
   imageUrl: String
   name: String!
+  priority: Int!
   spaceId: String!
   status: String!
 }
