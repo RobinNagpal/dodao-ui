@@ -46,7 +46,7 @@ export default function FullScreenModal({ open, title, children, onClose, showCl
               <Dialog.Panel className={'relative transform overflow-hidden text-left transition-all w-full ' + styles.dialogMargin}>
                 <StyledModalWrapper className={'w-full'}>
                   <div className="text-center">
-                    <Dialog.Title as="h3" className={'flex text-base font-semibold leading-6 justify-between p-2 ' + styles.modalTitle}>
+                    <Dialog.Title as="h3" className={'flex text-base font-semibold leading-6 justify-between p-2 xs:p-1 ' + styles.modalTitle}>
                       <div className="w-full align-center text-center text-xl mt-1">{title}</div>
                       {showCloseButton && (
                         <div className="flex justify-end pr-2">
