@@ -137,9 +137,9 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space }: W
   };
 
   const transitionClasses: Record<TransitionState, string> = {
-    enter: 'opacity-0 translate-x-4 ease-in-out',
-    active: 'transition-opacity transition-transform duration-300 ease-in-out opacity-100 translate-x-0',
-    exit: 'transition-opacity transition-transform duration-300 ease-in-out opacity-0 -translate-x-4',
+    enter: 'opacity-0 ease-in-out',
+    active: 'transition-opacity transition-transform duration-300 ease-in-out opacity-100',
+    exit: 'transition-opacity transition-transform duration-300 ease-in-out opacity-0',
   };
 
   const stepItems = step.stepItems;
@@ -167,7 +167,7 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space }: W
 
   return (
     <div className={`h-full w-full flex flex-col justify-between py-12 lg:px-8 sm:px-2 ${styles.stepContainer}`}>
-      <div className={`h-full w-full flex flex-col flex-grow items-center justify-center  ${transitionClasses[transitionState]} ${styles.stepContent}`}>
+      <div className={`h-full w-full flex flex-col items-center justify-center ${transitionClasses[transitionState]}  ${styles.stepContent}`}>
         {!stepItems.some(isQuestion) && step.imageUrl && (
           <div
             style={{

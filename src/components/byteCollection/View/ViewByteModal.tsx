@@ -56,7 +56,7 @@ export default function ViewByteModal({
     <FullScreenModal open={true} onClose={onClose} title={viewByteHelper.byteRef?.name || 'Tidbit Details'}>
       <div id="byte-container" className={`flex flex-col  items-center w-full relative inset-0 ${styles.byteContainer} `}>
         <ContinuousStepIndicatorProgress steps={viewByteHelper.byteRef?.steps?.length || 2} currentStep={activeStepOrder + 1} />
-        <div className={`${styles.styledByteCard} relative my-6 rounded-lg h-full overflow-auto`}>
+        <div className={`${styles.styledByteCard} relative my-4 rounded-lg h-full overflow-y-auto`}>
           {viewByteHelper.byteRef ? <ByteStepper viewByteHelper={viewByteHelper} byte={viewByteHelper.byteRef} space={space} /> : <PageLoading />}
         </div>
       </div>
