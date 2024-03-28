@@ -24,7 +24,7 @@ function SelectedTab(props: TidbitsSiteHomeProps) {
         byteCollections={props.byteCollections}
         space={props.space}
         byteCollectionType={'byteCollection'}
-        byteCollectionsPageUrl={`/tidbit-collections`}
+        byteCollectionsBaseUrl={`/tidbit-collections`}
       />
     );
   }

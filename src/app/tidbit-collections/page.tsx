@@ -17,7 +17,7 @@ async function TidbitCollections() {
         byteCollections={byteCollections}
         space={space}
         byteCollectionType={'byteCollection'}
-        byteCollectionsPageUrl={`/tidbit-collections`}
+        byteCollectionsBaseUrl={`/tidbit-collections`}
       />
     </PageWrapper>
   );

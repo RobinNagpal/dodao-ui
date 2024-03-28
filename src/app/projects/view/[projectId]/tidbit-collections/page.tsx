@@ -24,7 +24,7 @@ async function ProjectTidbitCollectionsPage(props: { params: { projectId: string
         project={project}
         byteCollections={tidbitsCollectionsToShow}
         byteCollectionType={'projectByteCollection'}
-        byteCollectionsPageUrl={`/projects/view/${project?.id}/tidbit-collections`}
+        byteCollectionsBaseUrl={`/projects/view/${project?.id}/tidbit-collections`}
       />
     </>
   );

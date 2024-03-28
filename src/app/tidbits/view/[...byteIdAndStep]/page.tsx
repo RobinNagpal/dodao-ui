@@ -1,17 +1,20 @@
 'use client';
 
 import withSpace from '@/app/withSpace';
+import ViewByteModal from '@/components/byteCollection/View/ViewByteModal';
 import ByteStepper from '@/components/bytes/View/ByteStepper';
+import ContinuousStepIndicatorProgress from '@/components/bytes/View/ByteStepperItem/Progress/ContinuousStepIndicatorProgress';
 import { useGenericViewByte } from '@/components/bytes/View/useGenericViewByte';
 import { EllipsisDropdownItem } from '@/components/core/dropdowns/EllipsisDropdown';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import PageLoading from '@/components/core/loaders/PageLoading';
+import FullScreenModal from '@/components/core/modals/FullScreenModal';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import { SpaceWithIntegrationsFragment, useQueryByteDetailsQuery } from '@/graphql/generated/generated-types';
 import { TidbitShareSteps } from '@/types/deprecated/models/enums';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import styles from './ByteView.module.scss';
 
 const ByteView = ({ params, space }: { params: { byteIdAndStep: string[] }; space: SpaceWithIntegrationsFragment }) => {
@@ -72,9 +75,7 @@ const ByteView = ({ params, space }: { params: { byteIdAndStep: string[] }; spac
         </div>
 
         {byte ? (
-          <div className={`${styles.styledByteCard} relative my-6 rounded-lg h-full overflow-scroll`}>
-            <ByteStepper viewByteHelper={viewByteHelper} byte={byte} space={space} />
-          </div>
+          <ViewByteModal space={space} byteCollectionType={'byteCollection'} selectedByteId={byteId} onByteModalCloseUrl={`/tidbits`} />
         ) : (
           <PageLoading />
         )}

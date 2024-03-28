@@ -14,7 +14,7 @@ export default async function EmbeddedTidbitsPage() {
         byteCollections={byteCollections}
         space={space!}
         byteCollectionType={'byteCollection'}
-        byteCollectionsPageUrl={`/embedded-tidbit-collections`}
+        byteCollectionsBaseUrl={`/embedded-tidbit-collections`}
       />
     </PageWrapper>
   );
