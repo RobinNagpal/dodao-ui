@@ -1,3 +1,4 @@
+import { Footer } from '../DoDAOHome/components/Footer';
 import { Faqs } from './components/Faqs';
 import { Hero } from './components/Hero';
 import { PrimaryFeatures } from './components/PrimaryFeatures';
@@ -10,6 +11,7 @@ export default function TidbitsHubHome() {
       <PrimaryFeatures />
       <SecondaryFeatures />
       <Faqs />
+      <Footer />
     </>
   );
 }
