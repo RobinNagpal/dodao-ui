@@ -72,9 +72,9 @@ export function useEditProjectByte(space: SpaceWithIntegrationsFragment, project
     removeStepFn,
     validateByteFn,
     updateCompletionScreenFn,
-    addButtonLabelFn,
-    addButtonLinkFn,
-    removeCompletionScreenItemButtonFn,
+    addCallToActionButtonLabelFn,
+    addCallToActionButtonLinkFn,
+    removeCallToActionButtonFn,
   } = editByteCommonFunctions(setByte);
   // Add other
 
@@ -145,9 +145,9 @@ export function useEditProjectByte(space: SpaceWithIntegrationsFragment, project
     includeSteps,
     updateCompletionScreen: updateCompletionScreenFn,
     removeCompletionScreen,
-    addButtonLabel: addButtonLabelFn,
-    addButtonLink: addButtonLinkFn,
-    removeCompletionScreenItemButton: removeCompletionScreenItemButtonFn,
+    addCallToActionButtonLabel: addCallToActionButtonLabelFn,
+    addCallToActionButtonLink: addCallToActionButtonLinkFn,
+    removeCallToActionButton: removeCallToActionButtonFn,
   };
 
   const handleSubmit = async () => {
