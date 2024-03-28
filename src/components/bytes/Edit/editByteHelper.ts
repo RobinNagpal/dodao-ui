@@ -55,9 +55,9 @@ export type UpdateByteFunctions = {
   setByte: (byte: EditByteType | EditProjectByteType) => void;
   updateCompletionScreen: (field: keyof CompletionScreen, value: any) => void;
   removeCompletionScreen: () => void;
-  addButtonLink: (uuid: string, link: string) => void;
-  addButtonLabel: (uuid: string, label: string) => void;
-  removeCompletionScreenItemButton: (uuid: string) => void;
+  addCallToActionButtonLink: (uuid: string, link: string) => void;
+  addCallToActionButtonLabel: (uuid: string, label: string) => void;
+  removeCallToActionButton: (uuid: string) => void;
 };
 
 export interface GeneratedByte {
@@ -124,7 +124,7 @@ export function editByteCommonFunctions(setByte: (value: ((prevState: EditByteTy
     });
   };
 
-  const addButtonLabelFn = (uuid: string, label: string) => {
+  const addCallToActionButtonLabelFn = (uuid: string, label: string) => {
     setByte((prevByte) => {
       const currentCompletionScreen = prevByte.completionScreen!;
       const updatedCompletionScreen = {
@@ -141,7 +141,7 @@ export function editByteCommonFunctions(setByte: (value: ((prevState: EditByteTy
     });
   };
 
-  const addButtonLinkFn = (uuid: string, link: string) => {
+  const addCallToActionButtonLinkFn = (uuid: string, link: string) => {
     setByte((prevByte) => {
       const currentCompletionScreen = prevByte.completionScreen!;
 
@@ -159,7 +159,7 @@ export function editByteCommonFunctions(setByte: (value: ((prevState: EditByteTy
     });
   };
 
-  const removeCompletionScreenItemButtonFn = (buttonUuid: string) => {
+  const removeCallToActionButtonFn = (buttonUuid: string) => {
     setByte((prevByte) => {
       const currentCompletionScreen = prevByte.completionScreen ? { ...prevByte.completionScreen } : null;
       if (!currentCompletionScreen || !currentCompletionScreen.items) {
@@ -328,8 +328,8 @@ export function editByteCommonFunctions(setByte: (value: ((prevState: EditByteTy
     validateByteFn,
     getByteInputFn,
     updateCompletionScreenFn,
-    addButtonLabelFn,
-    addButtonLinkFn,
-    removeCompletionScreenItemButtonFn,
+    addCallToActionButtonLabelFn,
+    addCallToActionButtonLinkFn,
+    removeCallToActionButtonFn,
   };
 }
