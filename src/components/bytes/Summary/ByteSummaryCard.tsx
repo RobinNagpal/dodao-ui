@@ -17,7 +17,7 @@ interface ByteSummaryCardProps {
 export default function ByteSummaryCard({ byte, byteType, baseByteViewUrl, project }: ByteSummaryCardProps) {
   return (
     <Card>
-      <Link href={`${baseByteViewUrl}/${byte.id}/0`} className="card blog-card w-inline-block h-full w-full relative">
+      <Link href={`${baseByteViewUrl}/${byte.id}`} className="card blog-card w-inline-block h-full w-full relative">
         <div className="absolute top-0 right-0 m-2">
           <ByteCardAdminDropdown byte={byte} byteType={byteType} project={project} />
         </div>

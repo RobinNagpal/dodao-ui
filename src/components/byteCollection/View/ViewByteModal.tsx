@@ -1,6 +1,5 @@
 'use client';
 
-import EditByteView from '@/components/bytes/Edit/EditByteView';
 import ShareBytePage from '@/components/bytes/Share/ShareBytePage';
 import ByteStepper from '@/components/bytes/View/ByteStepper';
 import ContinuousStepIndicatorProgress from '@/components/bytes/View/ByteStepperItem/Progress/ContinuousStepIndicatorProgress';
@@ -12,9 +11,14 @@ import FullScreenModal from '@/components/core/modals/FullScreenModal';
 import EditProjectByte from '@/components/projects/projectByte/Edit/EditProjectByte';
 import { ByteDetailsFragment, ProjectByteFragment, ProjectFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import getApiResponse from '@/utils/api/getApiResponse';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
 import styles from './ViewByteModal.module.scss';
+
+const EditByteView: React.ComponentType<any> = dynamic(() => import('@/components/bytes/Edit/EditByteView'), {
+  ssr: false, // Disable server-side rendering for this component
+});
 
 export interface ViewByteModalProps {
   space: SpaceWithIntegrationsFragment;
@@ -99,19 +103,21 @@ export default function ViewByteModal({ space, project, byteCollectionType, sele
         <ContinuousStepIndicatorProgress steps={viewByteHelper.byteRef?.steps?.length || 2} currentStep={activeStepOrder + 1} />
         <div className={`${styles.styledByteCard} relative my-4 rounded-lg h-full overflow-y-auto`}>
           {viewByteHelper.byteRef ? (
-            <div>
-              <PrivateEllipsisDropdown
-                items={threeDotItems}
-                onSelect={(key) => {
-                  if (key === 'edit') {
-                    setEditByteModalOpen(true);
-                  } else if (key === 'generate-pdf') {
-                    setShareByteModalOpen(true);
-                  }
-                }}
-              />
+            <>
+              <div className="absolute top-4 right-4">
+                <PrivateEllipsisDropdown
+                  items={threeDotItems}
+                  onSelect={(key) => {
+                    if (key === 'edit') {
+                      setEditByteModalOpen(true);
+                    } else if (key === 'generate-pdf') {
+                      setShareByteModalOpen(true);
+                    }
+                  }}
+                />
+              </div>
               <ByteStepper viewByteHelper={viewByteHelper} byte={viewByteHelper.byteRef} space={space} />
-            </div>
+            </>
           ) : (
             <PageLoading />
           )}
