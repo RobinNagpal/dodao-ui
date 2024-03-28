@@ -1,17 +1,10 @@
-'use client';
-
-import withSpace from '@/app/withSpace';
 import ShareByteView from '@/components/bytes/Share/ShareByteView';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import HorizontalStepperWithPanels, { HorizontalStepperItem } from '@/components/core/stepper/HorizontalStepperWithPanels';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { TidbitShareSteps } from '@/types/deprecated/models/enums';
 
-const SharePage = ({ params, space }: { params: { byteIdAndStep: string[] }; space: SpaceWithIntegrationsFragment }) => {
-  const { byteIdAndStep } = params;
-
-  const byteId = Array.isArray(byteIdAndStep) ? byteIdAndStep[0] : (byteIdAndStep as string);
-
+export default function ShareBytePage({ space, byteId }: { byteId: string; space: SpaceWithIntegrationsFragment }) {
   const steps: HorizontalStepperItem[] = [
     {
       id: TidbitShareSteps.SelectSocial,
@@ -41,22 +34,22 @@ const SharePage = ({ params, space }: { params: { byteIdAndStep: string[] }; spa
 
   let currentStepId = TidbitShareSteps.ReviewContents;
 
-  if (Array.isArray(byteIdAndStep)) {
-    const stepId = byteIdAndStep[1] as TidbitShareSteps;
-    const currentStep = steps.find((s) => s.id.toString() === stepId);
+  const byteIdAndStep = [byteId, TidbitShareSteps.ReviewContents];
 
-    if (currentStep) {
-      currentStepId = stepId;
-      steps.forEach((s) => {
-        if (parseInt(s.number) < parseInt(currentStep.number)) {
-          s.status = 'complete';
-        } else if (parseInt(s.number) > parseInt(currentStep.number)) {
-          s.status = 'upcoming';
-        } else {
-          s.status = 'current';
-        }
-      });
-    }
+  const stepId = byteIdAndStep[1] as TidbitShareSteps;
+  const currentStep = steps.find((s) => s.id.toString() === stepId);
+
+  if (currentStep) {
+    currentStepId = stepId;
+    steps.forEach((s) => {
+      if (parseInt(s.number) < parseInt(currentStep.number)) {
+        s.status = 'complete';
+      } else if (parseInt(s.number) > parseInt(currentStep.number)) {
+        s.status = 'upcoming';
+      } else {
+        s.status = 'current';
+      }
+    });
   }
 
   return (
@@ -65,6 +58,4 @@ const SharePage = ({ params, space }: { params: { byteIdAndStep: string[] }; spa
       <ShareByteView byteId={byteId} currentStep={currentStepId} space={space} />
     </PageWrapper>
   );
-};
-
-export default withSpace(SharePage);
+}

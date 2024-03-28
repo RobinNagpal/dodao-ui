@@ -2,8 +2,11 @@
 
 import WithSpace from '@/app/withSpace';
 import FullPageLoader from '@/components/core/loaders/FullPageLoading';
+import FullScreenModal from '@/components/core/modals/FullScreenModal';
 import EditProjectByte from '@/components/projects/projectByte/Edit/EditProjectByte';
 import { SpaceWithIntegrationsFragment, useProjectQuery } from '@/graphql/generated/generated-types';
+import { useRouter } from 'next/navigation';
+import React from 'react';
 
 function EditTidbitPage(props: {
   params: {
@@ -24,11 +27,23 @@ function EditTidbitPage(props: {
       id: projectId,
     },
   });
+  const router = useRouter();
 
   if (loading || !projectResponse?.project) {
     return <FullPageLoader />;
   }
-  return <EditProjectByte space={props.space} project={projectResponse?.project} params={props.params} />;
+
+  function onClose() {
+    router.push(`/projects/view/${projectResponse?.project?.id}`);
+  }
+
+  return (
+    <FullScreenModal open={true} onClose={onClose} title={'Create Tidbit'}>
+      <div className="text-left">
+        <EditProjectByte space={props.space} project={projectResponse?.project} byteId={props.params.byteId?.[0]} />;
+      </div>
+    </FullScreenModal>
+  );
 }
 
 export default WithSpace(EditTidbitPage);
