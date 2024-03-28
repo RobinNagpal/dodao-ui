@@ -101,6 +101,7 @@ input AuthSettingsInput {
 type Byte {
   admins: [String!]!
   byteStyle: String
+  completionScreen: CompletionScreen
   content: String!
   created: String!
   id: String!
@@ -314,6 +315,34 @@ input CompletionAIInput {
   n: Int
   prompt: String!
   temperature: Float
+}
+
+type CompletionScreen {
+  content: String!
+  imageUrl: String
+  items: [CompletionScreenItem!]!
+  name: String!
+  uuid: String!
+}
+
+input CompletionScreenInput {
+  content: String!
+  imageUrl: String
+  items: [CompletionScreenItemInput!]!
+  name: String!
+  uuid: String!
+}
+
+type CompletionScreenItem {
+  label: String!
+  link: String!
+  uuid: String!
+}
+
+input CompletionScreenItemInput {
+  label: String!
+  link: String!
+  uuid: String!
 }
 
 type ConsolidatedGuideRating {
@@ -1059,7 +1088,13 @@ type Mutation {
   createSignedUrl(input: CreateSignedUrlInput!, spaceId: String!): String!
   createSpace(spaceInput: UpsertSpaceInput!): Space!
   createSummaryOfContent(input: String!): OpenAITextResponse!
-  createWebsiteScrapingInfo(baseUrl: String!, ignoreHashInUrl: Boolean!, ignoreQueryParams: Boolean!, scrapingStartUrl: String!, spaceId: String!): WebsiteScrapingInfo!
+  createWebsiteScrapingInfo(
+    baseUrl: String!
+    ignoreHashInUrl: Boolean!
+    ignoreQueryParams: Boolean!
+    scrapingStartUrl: String!
+    spaceId: String!
+  ): WebsiteScrapingInfo!
   deleteAndPullCourseRepo(courseKey: String!, spaceId: String!): GitCourse!
   deleteByte(byteId: String!, spaceId: String!): Boolean!
   deleteByteCollection(byteCollectionId: String!): Boolean!
@@ -1076,7 +1111,14 @@ type Mutation {
   downloadAndCleanContent(input: String!): DownloadAndCleanContentResponse!
   dropPineconeNamespace(spaceId: String!): Boolean!
   editArticleIndexingInfo(articleIndexingInfoId: String!, articleUrl: String!, spaceId: String!): ArticleIndexingInfo!
-  editWebsiteScrapingInfo(baseUrl: String!, ignoreHashInUrl: Boolean!, ignoreQueryParams: Boolean!, scrapingStartUrl: String!, spaceId: String!, websiteScrapingInfoId: String!): WebsiteScrapingInfo!
+  editWebsiteScrapingInfo(
+    baseUrl: String!
+    ignoreHashInUrl: Boolean!
+    ignoreQueryParams: Boolean!
+    scrapingStartUrl: String!
+    spaceId: String!
+    websiteScrapingInfoId: String!
+  ): WebsiteScrapingInfo!
   extractRelevantTextForTopic(input: ExtractRelevantTextForTopicInput!): OpenAITextResponse!
   generateImage(input: GenerateImageInput!): ImagesResponse!
   generateImageEdit(input: GenerateImageEditInput!): GenerateImageResponse!
@@ -1244,6 +1286,7 @@ type ProjectByte {
   admins: [String!]!
   archived: Boolean!
   byteStyle: String
+  completionScreen: CompletionScreen
   content: String!
   created: String!
   id: String!
@@ -1788,6 +1831,7 @@ input UpsertByteCollectionCategory {
 input UpsertByteInput {
   admins: [String!]!
   byteStyle: String
+  completionScreen: CompletionScreenInput
   content: String!
   created: String!
   id: String!
@@ -1876,6 +1920,7 @@ input UpsertProjectByteCollectionInput {
 input UpsertProjectByteInput {
   admins: [String!]!
   byteStyle: String
+  completionScreen: CompletionScreenInput
   content: String!
   created: String!
   id: String!

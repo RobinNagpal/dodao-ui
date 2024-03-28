@@ -7,6 +7,8 @@ import Accordion from '@/utils/accordion/Accordion';
 import PlusCircle from '@heroicons/react/20/solid/PlusCircleIcon';
 import React, { CSSProperties, useMemo, useState } from 'react';
 import EditByteStepperItem from './EditByteStepperItem';
+import Button from '@/components/core/buttons/Button';
+import EditCompletionScreenStepperItem from './EditCompletionScreenStepperItem';
 
 interface EditByteStepperProps {
   space: SpaceWithIntegrationsFragment;
@@ -18,10 +20,20 @@ interface EditByteStepperProps {
 }
 function EditByteStepper({ space, byte, byteErrors, errorColor = '#d32f2f', successColor = '#00813a', updateByteFunctions }: EditByteStepperProps) {
   const [openAccordionIndex, setOpenAccordionIndex] = useState<number | null>(null);
+  const [showCompletionScreen, setShowCompletionScreen] = useState<boolean>(false);
+
+  const showCompletionAccordion = () => {
+    setShowCompletionScreen(true);
+    setOpenAccordionIndex(byte.steps.length);
+  };
 
   const toggleAccordion = (index: number) => {
     setOpenAccordionIndex(() => (openAccordionIndex === index ? null : index));
   };
+
+  const shouldShowCompletionAccordion = useMemo(() => {
+    return showCompletionScreen || (byte.completionScreen !== null && byte.completionScreen !== undefined);
+  }, [showCompletionScreen, byte.completionScreen]);
   const styleObject: CSSProperties = useMemo(() => {
     return {
       '--error-color': errorColor,
@@ -76,6 +88,36 @@ function EditByteStepper({ space, byte, byteErrors, errorColor = '#d32f2f', succ
             <PlusCircle height={40} width={40} />
           </SidebarButton>
         </li>
+        {shouldShowCompletionAccordion && (
+          <Accordion
+            key="completion-screen"
+            isOpen={openAccordionIndex === byte.steps.length}
+            label="Completion Screen"
+            onClick={() => toggleAccordion(byte.steps.length)}
+            hasError={false}
+          >
+            <div className="w-full">
+              <EditCompletionScreenStepperItem
+                byteErrors={byteErrors}
+                byte={byte}
+                space={space}
+                updateByteCompletionScreen={updateByteFunctions.updateCompletionScreen}
+                removeCompletionScreen={updateByteFunctions.removeCompletionScreen}
+                addButtonLabel={updateByteFunctions.addCallToActionButtonLabel}
+                addButtonLink={updateByteFunctions.addCallToActionButtonLink}
+                removeCompletionScreenItemButton={updateByteFunctions.removeCallToActionButton}
+              />
+            </div>
+          </Accordion>
+        )}
+
+        {!shouldShowCompletionAccordion && (
+          <div className="mt-4 flex justify-end">
+            <Button className="" onClick={showCompletionAccordion}>
+              Add Completion Screen
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );

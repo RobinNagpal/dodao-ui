@@ -47,6 +47,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
         created: new Date().toISOString(),
         priority: 50,
         tags: [],
+        completionScreen: null,
       };
       setByte(byte);
       setByteLoaded(true);
@@ -64,7 +65,18 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
     }
   }, [byteId, space]);
 
-  const { getByteInputFn, updateStepFn, moveStepUpFn, moveStepDownFn, removeStepFn, validateByteFn } = editByteCommonFunctions(setByte);
+  const {
+    getByteInputFn,
+    updateStepFn,
+    moveStepUpFn,
+    moveStepDownFn,
+    removeStepFn,
+    validateByteFn,
+    updateCompletionScreenFn,
+    addCallToActionButtonLabelFn,
+    addCallToActionButtonLinkFn,
+    removeCallToActionButtonFn,
+  } = editByteCommonFunctions(setByte);
   // Add other
 
   const addStep = useCallback(() => {
@@ -82,6 +94,12 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
       ];
 
       return { ...prevByte, steps: updatedSteps };
+    });
+  }, []);
+
+  const removeCompletionScreen = useCallback(() => {
+    setByte((prevByte) => {
+      return { ...prevByte, completionScreen: null };
     });
   }, []);
 
@@ -125,6 +143,11 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
     updateStep: updateStepFn,
     setByte,
     includeSteps,
+    updateCompletionScreen: updateCompletionScreenFn,
+    removeCompletionScreen,
+    addCallToActionButtonLabel: addCallToActionButtonLabelFn,
+    addCallToActionButtonLink: addCallToActionButtonLinkFn,
+    removeCallToActionButton: removeCallToActionButtonFn,
   };
 
   const saveViaMutation = async (mutationFn: () => Promise<FetchResult<{ payload: ByteDetailsFragment | undefined }>>) => {
