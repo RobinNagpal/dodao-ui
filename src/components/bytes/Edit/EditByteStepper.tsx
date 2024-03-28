@@ -103,9 +103,9 @@ function EditByteStepper({ space, byte, byteErrors, errorColor = '#d32f2f', succ
                 space={space}
                 updateByteCompletionScreen={updateByteFunctions.updateCompletionScreen}
                 removeCompletionScreen={updateByteFunctions.removeCompletionScreen}
-                addButtonLabel={updateByteFunctions.addButtonLabel}
-                addButtonLink={updateByteFunctions.addButtonLink}
-                removeCompletionScreenItemButton={updateByteFunctions.removeCompletionScreenItemButton}
+                addButtonLabel={updateByteFunctions.addCallToActionButtonLabel}
+                addButtonLink={updateByteFunctions.addCallToActionButtonLink}
+                removeCompletionScreenItemButton={updateByteFunctions.removeCallToActionButton}
               />
             </div>
           </Accordion>
