@@ -131,6 +131,22 @@ type ByteCollectionByte {
   videoUrl: String
 }
 
+type ByteCollectionCategory {
+  byteCollectionIds: [String!]!
+  excerpt: String
+  id: String!
+  imageUrl: String
+  name: String!
+  priority: Int!
+  status: String!
+}
+
+enum ByteCollectionCategoryStatus {
+  Active
+  ComingSoon
+  Hidden
+}
+
 type ByteLinkedinPdfContent {
   excerpt: String!
   steps: [ByteLinkedinPdfContentStep!]!
@@ -229,6 +245,17 @@ type ByteUserInput {
   required: Boolean!
   type: String!
   uuid: String!
+}
+
+type CategoryWithByteCollection {
+  byteCollections: [ByteCollection!]!
+  creator: String!
+  excerpt: String!
+  id: String!
+  imageUrl: String
+  name: String!
+  priority: Int!
+  status: String!
 }
 
 input ChatCompletionAIInput {
@@ -1137,6 +1164,7 @@ type Mutation {
   updateSpace(spaceInput: UpsertSpaceInput!): Space!
   updateSpaceCreator(creator: String!, spaceId: String!): Space!
   updateThemeColors(spaceId: ID!, themeColors: ThemeColorsInput!): Space!
+  updateTidbitsHomepage(spaceId: ID!, tidbitsHomepage: TidbitsHomepageInput!): Space!
   updateTopicBasicInfo(spaceId: String!, topicInfo: UpdateTopicBasicInfoInput!): GitCourse!
   updateTopicExplanation(explanationInfo: UpdateTopicExplanationInput!, spaceId: String!): GitCourse!
   updateTopicQuestion(questionInfo: UpdateTopicQuestionInput!, spaceId: String!): GitCourse!
@@ -1145,6 +1173,7 @@ type Mutation {
   uploadImageFromUrlToS3(input: UploadImageFromUrlToS3Input!, spaceId: String!): String!
   upsertAcademyTask(spaceId: String!, task: UpsertAcademyTaskInput!): AcademyTask!
   upsertByte(input: UpsertByteInput!, spaceId: String!): Byte!
+  upsertByteCollectionCategory(input: UpsertByteCollectionCategory!, spaceId: String!): ByteCollectionCategory!
   upsertByteSocialShare(input: UpsertByteSocialShareInput!, spaceId: String!): ByteSocialShare!
   upsertChatbotCategory(input: UpsertChatbotCategoryInput!, spaceId: String!): ChatbotCategory!
   upsertChatbotFAQ(input: UpsertChatbotFAQInput!, spaceId: String!): ChatbotFAQ!
@@ -1313,6 +1342,8 @@ type Query {
   articleIndexingInfos(spaceId: String!): [ArticleIndexingInfo!]!
   byte(byteId: String!, includeDraft: Boolean, spaceId: String!): Byte!
   byteCollection(byteCollectionId: String!, spaceId: String!): ByteCollection!
+  byteCollectionCategories(spaceId: String!): [ByteCollectionCategory!]!
+  byteCollectionCategoryWithByteCollections(categoryId: String!, spaceId: String!): CategoryWithByteCollection!
   byteCollections(spaceId: String!): [ByteCollection!]!
   byteSocialShare(byteId: String!, spaceId: String!): ByteSocialShare
   bytes(spaceId: String!): [Byte!]!
@@ -1526,6 +1557,7 @@ type Space {
   socialSettings: SocialSettings!
   spaceIntegrations: SpaceIntegrations
   themeColors: ThemeColors
+  tidbitsHomepage: TidbitsHomepage
   type: String!
 }
 
@@ -1659,6 +1691,16 @@ input ThemeColorsInput {
   textColor: String!
 }
 
+type TidbitsHomepage {
+  heading: String!
+  shortDescription: String!
+}
+
+input TidbitsHomepageInput {
+  heading: String!
+  shortDescription: String!
+}
+
 type Timeline {
   admins: [String!]!
   content: String!
@@ -1773,6 +1815,17 @@ input UpsertAcademyTaskInput {
   status: String!
   title: String!
   uuid: String!
+}
+
+input UpsertByteCollectionCategory {
+  byteCollectionIds: [String!]!
+  excerpt: String!
+  id: String!
+  imageUrl: String
+  name: String!
+  priority: Int!
+  spaceId: String!
+  status: String!
 }
 
 input UpsertByteInput {

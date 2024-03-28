@@ -104,21 +104,23 @@ Here is an example of how it looks for me on my local machine (mac)
 127.0.0.1    kleros-localhost.academy empowerher-localhost.academy optimism-localhost.university
 127.0.0.1	 cryptogelato-localhost.com arbitrum-localhost.education lifeinsure-localhost.tips
 127.0.0.1	 opportunity-bank.tidbitshub-localhost.org dodao-tidbits.tidbitshub-localhost.org
+127.0.0.1	 test-tidbits.tidbitshub-localhost.org
 ```
 
 Here is the table with the mapping of the domains to the academy websites
 
-| Project           | Local Academy Website Domain              | Website URL                                           |
-|-------------------|-------------------------------------------|-------------------------------------------------------|
-| dodao             | dodao-localhost.academy                   | http://dodao-localhost.academy:3000                   |
-| compound          | compound-localhost.education              | http://compound-localhost.education:3000              |
-| uniswap           | uniswap-localhost.university              | http://uniswap-localhost.university:3000              |
-| arbitrum          | arbitrum-localhost.education              | http://arbitrum-localhost.education:3000              |
-| optimism          | optimism-localhost.university             | http://optimism-localhost.university:3000             |
-| cryptogelato      | cryptogelato-localhost.com                | http://cryptogelato-localhost.com:3000                |
-| lifeinsure        | lifeinsure-localhost.tips                 | http://lifeinsure-localhost.tips:3000                 |
-| Opportunity  Bank | opportunity-bank.tidbitshub-localhost.org | http://opportunity-bank.tidbitshub-localhost.org:3000 |
-| DoDAO Tidbits     | dodao-tidbits.tidbitshub-localhost.org    | http://dodao-tidbits.tidbitshub-localhost.org:3000    |
+| Project          | Local Academy Website Domain              | Website URL                                           |
+| ---------------- | ----------------------------------------- | ----------------------------------------------------- |
+| dodao            | dodao-localhost.academy                   | http://dodao-localhost.academy:3000                   |
+| compound         | compound-localhost.education              | http://compound-localhost.education:3000              |
+| uniswap          | uniswap-localhost.university              | http://uniswap-localhost.university:3000              |
+| arbitrum         | arbitrum-localhost.education              | http://arbitrum-localhost.education:3000              |
+| optimism         | optimism-localhost.university             | http://optimism-localhost.university:3000             |
+| cryptogelato     | cryptogelato-localhost.com                | http://cryptogelato-localhost.com:3000                |
+| lifeinsure       | lifeinsure-localhost.tips                 | http://lifeinsure-localhost.tips:3000                 |
+| Opportunity Bank | opportunity-bank.tidbitshub-localhost.org | http://opportunity-bank.tidbitshub-localhost.org:3000 |
+| DoDAO Tidbits    | dodao-tidbits.tidbitshub-localhost.org    | http://dodao-tidbits.tidbitshub-localhost.org:3000    |
+| Test Tidbits     | test-tidbits.tidbitshub-localhost.org     | http://test-tidbits.tidbitshub-localhost.org:3000     |
 
 ## Coding Workflow
 

@@ -42,11 +42,6 @@ interface EditByteStepperItemProps {
   updateStep: (step: EditByteStep) => void;
 }
 
-interface Color {
-  name: string;
-  hex: string;
-}
-
 const StyledStepItemContainer = styled.div`
   width: 100%;
 `;
@@ -334,36 +329,17 @@ export default function EditByteStepperItem({
   const primaryColor = findClosestColor(space.themeColors?.primaryColor || '#000CCC');
   const backgroundColor = findClosestColor(space.themeColors?.bgColor || '#FFFFFF');
 
-  let nameAndContentOfSteps = '';
-
-  byte?.steps.forEach((step, index) => {
-    let name = step.name;
-    let content = step.content;
-    nameAndContentOfSteps += `Step ${index + 1}: ${name} \n ${content} \n`;
-  });
   const promptForImagePrompt = `
-Let's create an image prompt based on the subject matter named "${byte?.name}". 
+Let's create an image prompt based on the below details "${byte?.name}". 
 
-Here's a concise summary:
-- Subject Name: ${byte?.name}
-- Subject Content: ${byte?.content}
+- Topic: ${byte?.name} - ${byte?.content}
+- Details: ${step.name} - ${step.content}
 
+Create an image prompt that captures the essence of the detail, the topic is just provided for high level guidance. 
 
-- Here is the full details of the topic:  
-${nameAndContentOfSteps}
-
-This summary provides a high-level understanding of the subject matter.
-
-Now, turning our attention to a specific detail:
-- Detail Name: ${step.name}
-- Detail Content: ${step.content}
-
-Drawing from the detailed information provided, particularly the detail's name and content, create an image prompt that captures the essence of this detail. 
 Aim to include elements that mirror its themes, emotions, or critical aspects. 
 
 The objective is to produce an image that visually communicates this particular detail effectively and should be minimalistic.
-
-The image should be a widescreen image.
 
 For background of the image, use the color ${backgroundColor} and for the primary color use ${primaryColor}.
 `;
@@ -401,6 +377,7 @@ For background of the image, use the color ${backgroundColor} and for the primar
             Name*
           </Input>
         </div>
+
         <div className="w-full mb-4">
           <InputWithButton
             buttonLabel={'Set Image'}
@@ -409,6 +386,7 @@ For background of the image, use the color ${backgroundColor} and for the primar
             onInputUpdate={(e) => updateStepImageUrl(e?.toString() || '')}
             inputModelValue={step.imageUrl || ''}
           />
+          {step.imageUrl && <img src={step.imageUrl} style={{ height: '150px', width: '150px' }} className="my-2" />}
         </div>
 
         <MarkdownEditor

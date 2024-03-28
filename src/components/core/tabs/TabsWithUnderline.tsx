@@ -9,7 +9,7 @@ export interface TabItem {
 }
 
 export interface TabsWithUnderlineProps {
-  selectedTabId: string;
+  selectedTabId?: string;
   setSelectedTabId: (id: string) => void;
   tabs: TabItem[];
   className?: string;
@@ -36,7 +36,9 @@ export default function TabsWithUnderline(props: TabsWithUnderlineProps) {
                 className={classNames(
                   tabIdx === 0 ? 'rounded-l-lg' : '',
                   tabIdx === props.tabs.length - 1 ? 'rounded-r-lg' : '',
-                  'group relative min-w-0 flex-1 overflow-hidden py-2 px-4 text-center text-sm font-medium focus:z-10'
+                  'group relative flex-grow overflow-hidden text-center text-sm font-medium focus:z-10 whitespace-nowrap',
+                  isSelected ? 'z-10' : 'z-0',
+                  'flex-basis-0 px-4 py-2'
                 )}
                 aria-current={isSelected ? 'page' : undefined}
                 onClick={() => props.setSelectedTabId(tab.id)}

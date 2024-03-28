@@ -57,12 +57,13 @@ export async function POST(request: Request) {
   }
   const body = await request.json();
   const { spaceId, ...userData } = body;
+
   try {
     const user = await prisma.user.create({
       data: {
         name: userData.name,
-        email: null,
-        emailVerified: null,
+        email: userData.email,
+        emailVerified: userData.emailVerified,
         image: null,
         publicAddress: userData.publicAddress,
         spaceId: spaceId,

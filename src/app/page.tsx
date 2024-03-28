@@ -1,3 +1,4 @@
+import { getTidbitsSiteHomepageContents } from '@/components/home/TidbitsSite/getTidbitsSiteHomepageContents';
 import ChatHome from '@/chatbot/home/home';
 import { OpenAIModelID } from '@/chatbot/types/openai';
 import { PredefinedSpaces } from '@/chatbot/utils/app/constants';
@@ -6,13 +7,14 @@ import DefaultHome from '@/components/home/DefaultHome/DefaultHome';
 import DoDAOHome from '@/components/home/DoDAOHome/DoDAOHome';
 import LifeInsureHomePage from '@/components/home/LifeInsure/LifeInsureHomePage';
 import TidbitsHubHome from '@/components/home/TidbitsHub/TidbitsHubHome';
-import TidbitsSiteHome from '@/components/home/TidbitsSite/TidbitsSiteHome';
 import ListProjects from '@/components/projects/List/ListProjects';
-import { ByteCollectionFragment, ProjectFragment, SpaceTypes } from '@/graphql/generated/generated-types';
+import { ProjectFragment, SpaceTypes } from '@/graphql/generated/generated-types';
 import getApiResponse from '@/utils/api/getApiResponse';
 import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
+import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
+import { getServerSession } from 'next-auth';
 import { headers } from 'next/headers';
-
+import { Session } from '@/types/auth/Session';
 import React from 'react';
 
 async function Home(props: { searchParams: { [key: string]: string | string[] | undefined } }) {
@@ -20,6 +22,7 @@ async function Home(props: { searchParams: { [key: string]: string | string[] | 
   const host = headersList.get('host')?.split(':')?.[0];
 
   const space = await getSpaceServerSide();
+  const session = (await getServerSession(authOptions)) as Session;
   if (host && (space?.botDomains || [])?.includes(host)) {
     return <ChatHome defaultModelId={OpenAIModelID.GPT_3_5} serverSideApiKeyIsSet={true} serverSidePluginKeysSet={false} isChatbotSite={true} />;
   }
@@ -35,8 +38,7 @@ async function Home(props: { searchParams: { [key: string]: string | string[] | 
   }
 
   if (space?.type === SpaceTypes.TidbitsSite) {
-    const byteCollections = await getApiResponse<ByteCollectionFragment[]>(space, 'byte-collections');
-    return <TidbitsSiteHome byteCollections={byteCollections} space={space} />;
+    return await getTidbitsSiteHomepageContents(props, space, session);
   }
 
   if (host === 'dodao-localhost.io' || host === 'academy.dodao.io' || host === 'dodao.io') {

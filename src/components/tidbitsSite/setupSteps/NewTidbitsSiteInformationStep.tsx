@@ -1,5 +1,6 @@
 'use client';
 
+import { PredefinedSpaces } from '@/chatbot/utils/app/constants';
 import UploadInput from '@/components/app/UploadInput';
 import Button from '@/components/core/buttons/Button';
 import Input from '@/components/core/input/Input';
@@ -71,7 +72,7 @@ export default function NewTidbitsSiteInformationStep({ goToNextStep, goToPrevio
           <UploadInput
             label="Logo"
             imageType={ImageType.Space}
-            spaceId={'new-space'}
+            spaceId={PredefinedSpaces.TIDBITS_HUB}
             modelValue={tidbitSpace.avatar}
             objectId={'new-space'}
             onInput={(value) => setSpaceField('avatar', value)}
