@@ -170,6 +170,17 @@ export enum ByteCollectionCategoryStatus {
   Hidden = 'Hidden'
 }
 
+export interface ByteFeedback {
+  __typename?: 'ByteFeedback';
+  content?: Maybe<Scalars['Boolean']>;
+  ux?: Maybe<Scalars['Boolean']>;
+}
+
+export interface ByteFeedbackInput {
+  content?: InputMaybe<Scalars['Boolean']>;
+  ux?: InputMaybe<Scalars['Boolean']>;
+}
+
 export interface ByteLinkedinPdfContent {
   __typename?: 'ByteLinkedinPdfContent';
   excerpt: Scalars['String'];
@@ -202,6 +213,28 @@ export interface ByteQuestion {
   explanation: Scalars['String'];
   type: Scalars['String'];
   uuid: Scalars['String'];
+}
+
+export interface ByteRating {
+  __typename?: 'ByteRating';
+  byteId: Scalars['String'];
+  createdAt: Scalars['DateTimeISO'];
+  ipAddress?: Maybe<Scalars['String']>;
+  negativeFeedback?: Maybe<ByteFeedback>;
+  positiveFeedback?: Maybe<ByteFeedback>;
+  rating?: Maybe<Scalars['Int']>;
+  ratingUuid: Scalars['String'];
+  skipRating?: Maybe<Scalars['Boolean']>;
+  spaceId: Scalars['String'];
+  updatedAt: Scalars['DateTimeISO'];
+  userId?: Maybe<Scalars['String']>;
+  username?: Maybe<Scalars['String']>;
+}
+
+export interface ByteRatingDistribution {
+  __typename?: 'ByteRatingDistribution';
+  content: Scalars['Float'];
+  ux: Scalars['Float'];
 }
 
 export interface ByteSettings {
@@ -352,6 +385,16 @@ export interface CompletionAiInput {
   n?: InputMaybe<Scalars['Int']>;
   prompt: Scalars['String'];
   temperature?: InputMaybe<Scalars['Float']>;
+}
+
+export interface ConsolidatedByteRating {
+  __typename?: 'ConsolidatedByteRating';
+  avgRating: Scalars['Float'];
+  negativeFeedbackCount: Scalars['Int'];
+  negativeRatingDistribution: ByteRatingDistribution;
+  positiveFeedbackCount: Scalars['Int'];
+  positiveRatingDistribution: ByteRatingDistribution;
+  ratingFeedbackCount: Scalars['Int'];
 }
 
 export interface ConsolidatedGuideRating {
@@ -1203,6 +1246,7 @@ export interface Mutation {
   upsertAcademyTask: AcademyTask;
   upsertByte: Byte;
   upsertByteCollectionCategory: ByteCollectionCategory;
+  upsertByteRating: ByteRating;
   upsertByteSocialShare: ByteSocialShare;
   upsertChatbotCategory: ChatbotCategory;
   upsertChatbotFAQ: ChatbotFaq;
@@ -1755,6 +1799,12 @@ export interface MutationUpsertByteCollectionCategoryArgs {
 }
 
 
+export interface MutationUpsertByteRatingArgs {
+  spaceId: Scalars['String'];
+  upsertByteRatingInput: UpsertByteRatingInput;
+}
+
+
 export interface MutationUpsertByteSocialShareArgs {
   input: UpsertByteSocialShareInput;
   spaceId: Scalars['String'];
@@ -2060,11 +2110,14 @@ export interface Query {
   byteCollectionCategories: Array<ByteCollectionCategory>;
   byteCollectionCategoryWithByteCollections: CategoryWithByteCollection;
   byteCollections: Array<ByteCollection>;
+  byteRating: Array<ByteRating>;
+  byteRatings: Array<ByteRating>;
   byteSocialShare?: Maybe<ByteSocialShare>;
   bytes: Array<Byte>;
   chatbotCategories: Array<ChatbotCategory>;
   chatbotFAQs: Array<ChatbotFaq>;
   chatbotUserQuestions: Array<ChatbotUserQuestion>;
+  consolidatedByteRating?: Maybe<ConsolidatedByteRating>;
   consolidatedGuideRating?: Maybe<ConsolidatedGuideRating>;
   courses: Array<GitCourse>;
   discordChannels: Array<DiscordChannel>;
@@ -2164,6 +2217,18 @@ export interface QueryByteCollectionsArgs {
 }
 
 
+export interface QueryByteRatingArgs {
+  ratingUuid: Scalars['String'];
+  spaceId?: InputMaybe<Scalars['String']>;
+}
+
+
+export interface QueryByteRatingsArgs {
+  byteId: Scalars['String'];
+  spaceId: Scalars['String'];
+}
+
+
 export interface QueryByteSocialShareArgs {
   byteId: Scalars['String'];
   spaceId: Scalars['String'];
@@ -2186,6 +2251,12 @@ export interface QueryChatbotFaQsArgs {
 
 
 export interface QueryChatbotUserQuestionsArgs {
+  spaceId: Scalars['String'];
+}
+
+
+export interface QueryConsolidatedByteRatingArgs {
+  byteId: Scalars['String'];
   spaceId: Scalars['String'];
 }
 
@@ -2905,6 +2976,17 @@ export interface UpsertByteInput {
   videoUrl?: InputMaybe<Scalars['String']>;
 }
 
+export interface UpsertByteRatingInput {
+  byteId: Scalars['String'];
+  negativeFeedback?: InputMaybe<ByteFeedbackInput>;
+  positiveFeedback?: InputMaybe<ByteFeedbackInput>;
+  rating?: InputMaybe<Scalars['Int']>;
+  ratingUuid: Scalars['String'];
+  skipRating?: InputMaybe<Scalars['Boolean']>;
+  spaceId: Scalars['String'];
+  userId?: InputMaybe<Scalars['String']>;
+}
+
 export interface UpsertByteSocialShareInput {
   byteId: Scalars['String'];
   linkedInImages?: InputMaybe<Array<Scalars['String']>>;
@@ -3307,6 +3389,8 @@ export type ByteDetailsFragmentFragment = { __typename?: 'Byte', postSubmissionS
 
 export type ByteSummaryFragment = { __typename?: 'Byte', content: string, created: string, id: string, name: string, admins: Array<string>, tags: Array<string>, priority: number, videoUrl?: string | null };
 
+export type ByteRatingFragment = { __typename?: 'ByteRating', ratingUuid: string, createdAt: any, rating?: number | null, byteId: string, ipAddress?: string | null, skipRating?: boolean | null, spaceId: string, updatedAt: any, userId?: string | null, username?: string | null, negativeFeedback?: { __typename?: 'ByteFeedback', content?: boolean | null, ux?: boolean | null } | null, positiveFeedback?: { __typename?: 'ByteFeedback', ux?: boolean | null, content?: boolean | null } | null };
+
 export type QueryBytesQueryVariables = Exact<{
   spaceId: Scalars['String'];
 }>;
@@ -3323,6 +3407,22 @@ export type QueryByteDetailsQueryVariables = Exact<{
 
 export type QueryByteDetailsQuery = { __typename?: 'Query', byte: { __typename?: 'Byte', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, admins: Array<string>, tags: Array<string>, priority: number, videoUrl?: string | null, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, imageUrl?: string | null, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> } };
 
+export type ByteRatingsQueryVariables = Exact<{
+  spaceId: Scalars['String'];
+  byteId: Scalars['String'];
+}>;
+
+
+export type ByteRatingsQuery = { __typename?: 'Query', byteRatings: Array<{ __typename?: 'ByteRating', ratingUuid: string, createdAt: any, rating?: number | null, byteId: string, ipAddress?: string | null, skipRating?: boolean | null, spaceId: string, updatedAt: any, userId?: string | null, username?: string | null, negativeFeedback?: { __typename?: 'ByteFeedback', content?: boolean | null, ux?: boolean | null } | null, positiveFeedback?: { __typename?: 'ByteFeedback', ux?: boolean | null, content?: boolean | null } | null }> };
+
+export type ConsolidatedByteRatingQueryVariables = Exact<{
+  spaceId: Scalars['String'];
+  byteId: Scalars['String'];
+}>;
+
+
+export type ConsolidatedByteRatingQuery = { __typename?: 'Query', consolidatedByteRating?: { __typename?: 'ConsolidatedByteRating', avgRating: number, ratingFeedbackCount: number, positiveFeedbackCount: number, negativeFeedbackCount: number, positiveRatingDistribution: { __typename?: 'ByteRatingDistribution', content: number, ux: number }, negativeRatingDistribution: { __typename?: 'ByteRatingDistribution', content: number, ux: number } } | null };
+
 export type UpsertByteMutationVariables = Exact<{
   spaceId: Scalars['String'];
   input: UpsertByteInput;
@@ -3338,6 +3438,14 @@ export type DeleteByteMutationVariables = Exact<{
 
 
 export type DeleteByteMutation = { __typename?: 'Mutation', payload: boolean };
+
+export type UpsertByteRatingsMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+  upsertByteRatingInput: UpsertByteRatingInput;
+}>;
+
+
+export type UpsertByteRatingsMutation = { __typename?: 'Mutation', payload: { __typename?: 'ByteRating', ratingUuid: string, createdAt: any, rating?: number | null, byteId: string, ipAddress?: string | null, skipRating?: boolean | null, spaceId: string, updatedAt: any, userId?: string | null, username?: string | null, negativeFeedback?: { __typename?: 'ByteFeedback', content?: boolean | null, ux?: boolean | null } | null, positiveFeedback?: { __typename?: 'ByteFeedback', ux?: boolean | null, content?: boolean | null } | null } };
 
 export type ChatbotSubCategoryFragment = { __typename?: 'ChatbotSubcategory', name: string, key: string, description: string };
 
@@ -4883,6 +4991,29 @@ export const ByteSummaryFragmentDoc = gql`
   tags
   priority
   videoUrl
+}
+    `;
+export const ByteRatingFragmentDoc = gql`
+    fragment ByteRating on ByteRating {
+  ratingUuid
+  createdAt
+  rating
+  byteId
+  ipAddress
+  negativeFeedback {
+    content
+    ux
+  }
+  positiveFeedback {
+    ux
+    content
+  }
+  ratingUuid
+  skipRating
+  spaceId
+  updatedAt
+  userId
+  username
 }
     `;
 export const ChatbotSubCategoryFragmentDoc = gql`
@@ -6439,6 +6570,95 @@ export type QueryByteDetailsQueryResult = Apollo.QueryResult<QueryByteDetailsQue
 export function refetchQueryByteDetailsQuery(variables: QueryByteDetailsQueryVariables) {
       return { query: QueryByteDetailsDocument, variables: variables }
     }
+export const ByteRatingsDocument = gql`
+    query ByteRatings($spaceId: String!, $byteId: String!) {
+  byteRatings(spaceId: $spaceId, byteId: $byteId) {
+    ...ByteRating
+  }
+}
+    ${ByteRatingFragmentDoc}`;
+
+/**
+ * __useByteRatingsQuery__
+ *
+ * To run a query within a React component, call `useByteRatingsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useByteRatingsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useByteRatingsQuery({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      byteId: // value for 'byteId'
+ *   },
+ * });
+ */
+export function useByteRatingsQuery(baseOptions: Apollo.QueryHookOptions<ByteRatingsQuery, ByteRatingsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ByteRatingsQuery, ByteRatingsQueryVariables>(ByteRatingsDocument, options);
+      }
+export function useByteRatingsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ByteRatingsQuery, ByteRatingsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ByteRatingsQuery, ByteRatingsQueryVariables>(ByteRatingsDocument, options);
+        }
+export type ByteRatingsQueryHookResult = ReturnType<typeof useByteRatingsQuery>;
+export type ByteRatingsLazyQueryHookResult = ReturnType<typeof useByteRatingsLazyQuery>;
+export type ByteRatingsQueryResult = Apollo.QueryResult<ByteRatingsQuery, ByteRatingsQueryVariables>;
+export function refetchByteRatingsQuery(variables: ByteRatingsQueryVariables) {
+      return { query: ByteRatingsDocument, variables: variables }
+    }
+export const ConsolidatedByteRatingDocument = gql`
+    query ConsolidatedByteRating($spaceId: String!, $byteId: String!) {
+  consolidatedByteRating(spaceId: $spaceId, byteId: $byteId) {
+    avgRating
+    ratingFeedbackCount
+    positiveFeedbackCount
+    negativeFeedbackCount
+    positiveRatingDistribution {
+      content
+      ux
+    }
+    negativeRatingDistribution {
+      content
+      ux
+    }
+  }
+}
+    `;
+
+/**
+ * __useConsolidatedByteRatingQuery__
+ *
+ * To run a query within a React component, call `useConsolidatedByteRatingQuery` and pass it any options that fit your needs.
+ * When your component renders, `useConsolidatedByteRatingQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useConsolidatedByteRatingQuery({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      byteId: // value for 'byteId'
+ *   },
+ * });
+ */
+export function useConsolidatedByteRatingQuery(baseOptions: Apollo.QueryHookOptions<ConsolidatedByteRatingQuery, ConsolidatedByteRatingQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ConsolidatedByteRatingQuery, ConsolidatedByteRatingQueryVariables>(ConsolidatedByteRatingDocument, options);
+      }
+export function useConsolidatedByteRatingLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ConsolidatedByteRatingQuery, ConsolidatedByteRatingQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ConsolidatedByteRatingQuery, ConsolidatedByteRatingQueryVariables>(ConsolidatedByteRatingDocument, options);
+        }
+export type ConsolidatedByteRatingQueryHookResult = ReturnType<typeof useConsolidatedByteRatingQuery>;
+export type ConsolidatedByteRatingLazyQueryHookResult = ReturnType<typeof useConsolidatedByteRatingLazyQuery>;
+export type ConsolidatedByteRatingQueryResult = Apollo.QueryResult<ConsolidatedByteRatingQuery, ConsolidatedByteRatingQueryVariables>;
+export function refetchConsolidatedByteRatingQuery(variables: ConsolidatedByteRatingQueryVariables) {
+      return { query: ConsolidatedByteRatingDocument, variables: variables }
+    }
 export const UpsertByteDocument = gql`
     mutation UpsertByte($spaceId: String!, $input: UpsertByteInput!) {
   payload: upsertByte(spaceId: $spaceId, input: $input) {
@@ -6505,6 +6725,43 @@ export function useDeleteByteMutation(baseOptions?: Apollo.MutationHookOptions<D
 export type DeleteByteMutationHookResult = ReturnType<typeof useDeleteByteMutation>;
 export type DeleteByteMutationResult = Apollo.MutationResult<DeleteByteMutation>;
 export type DeleteByteMutationOptions = Apollo.BaseMutationOptions<DeleteByteMutation, DeleteByteMutationVariables>;
+export const UpsertByteRatingsDocument = gql`
+    mutation UpsertByteRatings($spaceId: String!, $upsertByteRatingInput: UpsertByteRatingInput!) {
+  payload: upsertByteRating(
+    spaceId: $spaceId
+    upsertByteRatingInput: $upsertByteRatingInput
+  ) {
+    ...ByteRating
+  }
+}
+    ${ByteRatingFragmentDoc}`;
+export type UpsertByteRatingsMutationFn = Apollo.MutationFunction<UpsertByteRatingsMutation, UpsertByteRatingsMutationVariables>;
+
+/**
+ * __useUpsertByteRatingsMutation__
+ *
+ * To run a mutation, you first call `useUpsertByteRatingsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertByteRatingsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertByteRatingsMutation, { data, loading, error }] = useUpsertByteRatingsMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      upsertByteRatingInput: // value for 'upsertByteRatingInput'
+ *   },
+ * });
+ */
+export function useUpsertByteRatingsMutation(baseOptions?: Apollo.MutationHookOptions<UpsertByteRatingsMutation, UpsertByteRatingsMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpsertByteRatingsMutation, UpsertByteRatingsMutationVariables>(UpsertByteRatingsDocument, options);
+      }
+export type UpsertByteRatingsMutationHookResult = ReturnType<typeof useUpsertByteRatingsMutation>;
+export type UpsertByteRatingsMutationResult = Apollo.MutationResult<UpsertByteRatingsMutation>;
+export type UpsertByteRatingsMutationOptions = Apollo.BaseMutationOptions<UpsertByteRatingsMutation, UpsertByteRatingsMutationVariables>;
 export const ChatbotCategoriesDocument = gql`
     query ChatbotCategories($spaceId: String!) {
   chatbotCategories(spaceId: $spaceId) {

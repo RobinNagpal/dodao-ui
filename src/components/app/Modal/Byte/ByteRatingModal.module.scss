@@ -1,0 +1,17 @@
+.ModalContent{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.FeedbackOptionDiv{
+    :hover {
+            border-radius: 0.5rem;
+            border-color: var(--bg-color);
+            background-color: var(--primary-color);
+        }
+}
+
+.ModalHeading{
+    color: var(--heading-color);
+}

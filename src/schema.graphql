@@ -146,6 +146,16 @@ enum ByteCollectionCategoryStatus {
   Hidden
 }
 
+type ByteFeedback {
+  content: Boolean
+  ux: Boolean
+}
+
+input ByteFeedbackInput {
+  content: Boolean
+  ux: Boolean
+}
+
 type ByteLinkedinPdfContent {
   excerpt: String!
   steps: [ByteLinkedinPdfContentStep!]!
@@ -175,6 +185,26 @@ type ByteQuestion {
   explanation: String!
   type: String!
   uuid: String!
+}
+
+type ByteRating {
+  byteId: String!
+  createdAt: DateTimeISO!
+  ipAddress: String
+  negativeFeedback: ByteFeedback
+  positiveFeedback: ByteFeedback
+  rating: Int
+  ratingUuid: String!
+  skipRating: Boolean
+  spaceId: String!
+  updatedAt: DateTimeISO!
+  userId: String
+  username: String
+}
+
+type ByteRatingDistribution {
+  content: Float!
+  ux: Float!
 }
 
 type ByteSettings {
@@ -314,6 +344,15 @@ input CompletionAIInput {
   n: Int
   prompt: String!
   temperature: Float
+}
+
+type ConsolidatedByteRating {
+  avgRating: Float!
+  negativeFeedbackCount: Int!
+  negativeRatingDistribution: ByteRatingDistribution!
+  positiveFeedbackCount: Int!
+  positiveRatingDistribution: ByteRatingDistribution!
+  ratingFeedbackCount: Int!
 }
 
 type ConsolidatedGuideRating {
@@ -1132,6 +1171,7 @@ type Mutation {
   upsertAcademyTask(spaceId: String!, task: UpsertAcademyTaskInput!): AcademyTask!
   upsertByte(input: UpsertByteInput!, spaceId: String!): Byte!
   upsertByteCollectionCategory(input: UpsertByteCollectionCategory!, spaceId: String!): ByteCollectionCategory!
+  upsertByteRating(spaceId: String!, upsertByteRatingInput: UpsertByteRatingInput!): ByteRating!
   upsertByteSocialShare(input: UpsertByteSocialShareInput!, spaceId: String!): ByteSocialShare!
   upsertChatbotCategory(input: UpsertChatbotCategoryInput!, spaceId: String!): ChatbotCategory!
   upsertChatbotFAQ(input: UpsertChatbotFAQInput!, spaceId: String!): ChatbotFAQ!
@@ -1302,11 +1342,14 @@ type Query {
   byteCollectionCategories(spaceId: String!): [ByteCollectionCategory!]!
   byteCollectionCategoryWithByteCollections(categoryId: String!, spaceId: String!): CategoryWithByteCollection!
   byteCollections(spaceId: String!): [ByteCollection!]!
+  byteRating(ratingUuid: String!, spaceId: String): [ByteRating!]!
+  byteRatings(byteId: String!, spaceId: String!): [ByteRating!]!
   byteSocialShare(byteId: String!, spaceId: String!): ByteSocialShare
   bytes(spaceId: String!): [Byte!]!
   chatbotCategories(spaceId: String!): [ChatbotCategory!]!
   chatbotFAQs(spaceId: String!): [ChatbotFAQ!]!
   chatbotUserQuestions(spaceId: String!): [ChatbotUserQuestion!]!
+  consolidatedByteRating(byteId: String!, spaceId: String!): ConsolidatedByteRating
   consolidatedGuideRating(guideUuid: String!, spaceId: String!): ConsolidatedGuideRating
   courses(spaceId: String!): [GitCourse!]!
   discordChannels(serverId: String!, spaceId: String!): [DiscordChannel!]!
@@ -1797,6 +1840,17 @@ input UpsertByteInput {
   tags: [String!]!
   thumbnail: String
   videoUrl: String
+}
+
+input UpsertByteRatingInput {
+  byteId: String!
+  negativeFeedback: ByteFeedbackInput
+  positiveFeedback: ByteFeedbackInput
+  rating: Int
+  ratingUuid: String!
+  skipRating: Boolean
+  spaceId: String!
+  userId: String
 }
 
 input UpsertByteSocialShareInput {
