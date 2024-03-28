@@ -15,25 +15,16 @@ export interface ViewByteModalProps {
   space: SpaceWithIntegrationsFragment;
   project?: ProjectFragment;
   byteCollectionType: 'byteCollection' | 'projectByteCollection';
-  selectedByteCollectionId: string;
   selectedByteId: string;
-  byteCollectionsPageUrl: string;
+  onByteModalCloseUrl: string;
 }
-export default function ViewByteModal({
-  space,
-  project,
-  byteCollectionType,
-  selectedByteCollectionId,
-  selectedByteId,
-  byteCollectionsPageUrl,
-}: ViewByteModalProps) {
+export default function ViewByteModal({ space, project, byteCollectionType, selectedByteId, onByteModalCloseUrl }: ViewByteModalProps) {
   const fetchByteFn = async (byteId: string): Promise<ByteDetailsFragment | ProjectByteFragment> => {
     if (byteCollectionType === 'projectByteCollection') {
       return await getApiResponse<ByteDetailsFragment>(space, `projects/${project?.id}/bytes/${byteId}`);
     }
 
     const byteDetails = await getApiResponse<ByteDetailsFragment>(space, `bytes/${byteId}`);
-    console.log('byteDetails', byteDetails);
     return byteDetails;
   };
 
@@ -48,8 +39,7 @@ export default function ViewByteModal({
   const router = useRouter();
 
   function onClose() {
-    console.log('byteCollectionsPageUrl', byteCollectionsPageUrl);
-    router.push(byteCollectionsPageUrl);
+    router.push(onByteModalCloseUrl);
   }
 
   return (

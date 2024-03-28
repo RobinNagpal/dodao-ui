@@ -11,12 +11,11 @@ import FullScreenModal from '@/components/core/modals/FullScreenModal';
 import PlayCircleIcon from '@heroicons/react/24/outline/PlayCircleIcon';
 
 interface ByteCollectionCardProps {
+  byteCollection: ByteCollectionFragment | ProjectByteCollectionFragment;
   isEditingAllowed?: boolean;
   project?: ProjectFragment;
-  byteCollection: ByteCollectionFragment | ProjectByteCollectionFragment;
   byteCollectionType: 'byteCollection' | 'projectByteCollection';
-  space: SpaceWithIntegrationsFragment;
-  byteCollectionsPageUrl: string;
+  viewByteBaseUrl: string;
 }
 
 export default function ByteCollectionsCard({
@@ -24,12 +23,10 @@ export default function ByteCollectionsCard({
   isEditingAllowed = true,
   project,
   byteCollectionType,
-  space,
-  byteCollectionsPageUrl,
+  viewByteBaseUrl,
 }: ByteCollectionCardProps) {
   const [watchVideo, setWatchVideo] = React.useState<boolean>(false);
 
-  console.log('byteCollectionPageUrl', byteCollectionsPageUrl);
   return (
     <>
       <div className={`border border-gray-200 rounded-xl overflow-hidden p-4 w-full max-w-xl ` + styles.cardDiv}>
@@ -57,7 +54,7 @@ export default function ByteCollectionsCard({
                   </FullScreenModal>
                 );
               }
-              const byteViewUrl = `${byteCollectionsPageUrl}/view/${byteCollection.id}/${byte.byteId}`;
+              const byteViewUrl = `${viewByteBaseUrl}/${byte.byteId}`;
 
               return (
                 <li key={byte.byteId}>

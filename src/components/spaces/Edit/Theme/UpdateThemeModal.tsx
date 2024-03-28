@@ -105,11 +105,10 @@ export default function UpdateThemeModal({ space, open, onClose, byteCollection 
             </div>
             <div className="flex justify-center items-center w-full md:mt-0 md:w-1/2 p-2 md:p-4">
               <ByteCollectionsCard
-                space={space}
                 isEditingAllowed={false}
                 byteCollection={byteCollection}
                 byteCollectionType={'projectByteCollection'}
-                byteCollectionsPageUrl={'/'}
+                viewByteBaseUrl={'/'}
               />
             </div>
           </div>
