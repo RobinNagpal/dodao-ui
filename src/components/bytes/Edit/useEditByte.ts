@@ -73,9 +73,9 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
     removeStepFn,
     validateByteFn,
     updateCompletionScreenFn,
-    addButtonLabelFn,
-    addButtonLinkFn,
-    removeCompletionScreenItemButtonFn,
+    addCallToActionButtonLabelFn,
+    addCallToActionButtonLinkFn,
+    removeCallToActionButtonFn,
   } = editByteCommonFunctions(setByte);
   // Add other
 
@@ -145,9 +145,9 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
     includeSteps,
     updateCompletionScreen: updateCompletionScreenFn,
     removeCompletionScreen,
-    addButtonLabel: addButtonLabelFn,
-    addButtonLink: addButtonLinkFn,
-    removeCompletionScreenItemButton: removeCompletionScreenItemButtonFn,
+    addCallToActionButtonLabel: addCallToActionButtonLabelFn,
+    addCallToActionButtonLink: addCallToActionButtonLinkFn,
+    removeCallToActionButton: removeCallToActionButtonFn,
   };
 
   const saveViaMutation = async (mutationFn: () => Promise<FetchResult<{ payload: ByteDetailsFragment | undefined }>>) => {
