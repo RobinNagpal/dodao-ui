@@ -6,12 +6,12 @@ import Input from '@/components/core/input/Input';
 import { InputWithButton } from '@/components/core/input/InputWithButton';
 import { CompletionScreen, CompletionScreenItemInput, ImageType, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import React, { useState } from 'react';
-import styled from 'styled-components';
 import SelectImageInputModal from '@/components/app/Image/SelectImageInputModal';
-import CompletionScreenItemModal from '@/components/app/Modal/CompletionScreenItem/CompletionScreenItemModal';
+import AddCompletionScreenItemsModal from '@/components/app/Modal/CompletionScreenItem/AddCompletionScreenItemsModal';
 import { v4 as uuidv4 } from 'uuid';
-import UserButtonInput from '@/components/app/Common/CreateButtonUserInput';
+import CallToActionButtonForm from '@/components/app/Common/CallToActionButtonForm';
 import { ByteErrors } from '@/types/errors/byteErrors';
+import styles from './EditCompletionScreenStepperItem.module.scss';
 
 interface EditCompletionScreenStepperItemProps {
   byteErrors?: ByteErrors;
@@ -23,16 +23,6 @@ interface EditCompletionScreenStepperItemProps {
   addButtonLabel: (uuid: string, label: string) => void;
   removeCompletionScreenItemButton: (uuid: string) => void;
 }
-
-const CompletionScreenItemContainer = styled.div`
-  width: 100%;
-`;
-
-const CompletionScreenItemWrapper = styled.div`
-  border: '1px solid var(--border-color)';
-  border-radius: 0.5rem;
-  padding: 1rem;
-`;
 
 export default function EditCompletionScreenStepperItem({
   space,
@@ -70,7 +60,7 @@ export default function EditCompletionScreenStepperItem({
   }
 
   return (
-    <CompletionScreenItemContainer className="w-full">
+    <div className={'w-full ' + styles.CompletionScreenItemContainer}>
       <div>
         <div style={{ minHeight: '20px' }}>
           <IconButton className="float-right ml-2" iconName={IconTypes.GuideAddIcon} removeBorder onClick={() => setModalAddButtonInput(true)} />
@@ -113,7 +103,7 @@ export default function EditCompletionScreenStepperItem({
 
       {showButtonComponent &&
         byte.completionScreen?.items.map((item) => (
-          <UserButtonInput
+          <CallToActionButtonForm
             key={item.uuid}
             item={item}
             updateUserInputLabel={addButtonLabel}
@@ -122,7 +112,7 @@ export default function EditCompletionScreenStepperItem({
           />
         ))}
       {selectImageUploadModal && (
-        <CompletionScreenItemWrapper>
+        <div className={styles.CompletionScreenItemWrapper}>
           <SelectImageInputModal
             open={selectImageUploadModal}
             onClose={() => setSelectImageUploadModal(false)}
@@ -134,11 +124,11 @@ export default function EditCompletionScreenStepperItem({
               setSelectImageUploadModal(false);
             }}
           />
-        </CompletionScreenItemWrapper>
+        </div>
       )}
 
       {modalAddButtonInput && (
-        <CompletionScreenItemModal
+        <AddCompletionScreenItemsModal
           open={modalAddButtonInput}
           onClose={() => setModalAddButtonInput(false)}
           onAddButton={() => {
@@ -146,6 +136,6 @@ export default function EditCompletionScreenStepperItem({
           }}
         />
       )}
-    </CompletionScreenItemContainer>
+    </div>
   );
 }
