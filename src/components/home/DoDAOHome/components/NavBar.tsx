@@ -35,6 +35,17 @@ export function NavBar() {
   let navBarRef = useRef<React.ElementRef<'div'>>(null);
   let [activeIndex, setActiveIndex] = useState<number | null>(null);
   let mobileActiveIndex = activeIndex === null ? 0 : activeIndex;
+  const [isVisible, setIsVisible] = useState(true);
+
+  useEffect(() => {
+    const toggleNavBar = () => setIsVisible((prev) => !prev);
+
+    window.addEventListener('navbarToggle', toggleNavBar);
+
+    return () => {
+      window.removeEventListener('navbarToggle', toggleNavBar);
+    };
+  }, []);
 
   useEffect(() => {
     function updateActiveIndex() {
@@ -68,6 +79,10 @@ export function NavBar() {
       window.removeEventListener('scroll', updateActiveIndex);
     };
   }, []);
+
+  if (!isVisible) {
+    return null;
+  }
 
   return (
     <div ref={navBarRef} className="sticky top-0 z-50">

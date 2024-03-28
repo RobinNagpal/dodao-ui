@@ -1,0 +1,38 @@
+fragment ByteCollectionCategory on ByteCollectionCategory {
+  id
+  name
+  excerpt
+  imageUrl
+  status
+  byteCollectionIds
+}
+
+fragment CategoryWithByteCollection on CategoryWithByteCollection {
+  id
+  name
+  excerpt
+  imageUrl
+  creator
+  status
+  byteCollections {
+    ...ByteCollection
+  }
+}
+
+query ByteCollectionCategoryWithByteCollections($spaceId: String!, $categoryId: String!) {
+  byteCollectionCategoryWithByteCollections(spaceId: $spaceId, categoryId: $categoryId) {
+    ...CategoryWithByteCollection
+  }
+}
+
+query ByteCollectionCategories($spaceId: String!) {
+  byteCollectionCategories(spaceId: $spaceId) {
+    ...ByteCollectionCategory
+  }
+}
+
+mutation UpsertByteCollectionCategory($spaceId: String!, $input: UpsertByteCollectionCategory!) {
+  payload: upsertByteCollectionCategory(spaceId: $spaceId, input: $input) {
+    ...ByteCollectionCategory
+  }
+}

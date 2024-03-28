@@ -41,7 +41,7 @@ export default function GenerateFromDalleModal({ open, onClose, onInput, generat
     const imageResponse = await generateImageMutation({
       variables: {
         input: {
-          prompt: prompt,
+          prompt: `${prompt}\n\nMake sure not to add any text to the image.`,
         },
       },
     });

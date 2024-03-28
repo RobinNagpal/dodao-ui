@@ -8,7 +8,7 @@ import { Footer } from './components/Footer';
 import { Introduction } from './components/Introduction';
 import { NavBar } from './components/NavBar';
 import { Hero } from './components/Hero';
-import { TidbitsHub } from './components/TidbitsHub';
+import TidbitsHub from './components/TidbitsHub';
 
 export default function DoDAOHome() {
   return (

@@ -25,6 +25,7 @@ export default function TidbitSiteConfigurationStep({ goToPreviousStep }: Tidbit
     variables: {
       creatorUsername: session?.username!,
     },
+    skip: !session?.username,
   });
 
   const space = spaceResponse?.getSpaceFromCreator;
@@ -91,12 +92,16 @@ export default function TidbitSiteConfigurationStep({ goToPreviousStep }: Tidbit
     let vercelInterval: NodeJS.Timeout | undefined;
     if (isEmpty(route53Record?.payload)) {
       route53Interval = setInterval(() => {
-        refetchRoute53Record();
+        if (spaceResponse?.getSpaceFromCreator?.id) {
+          refetchRoute53Record();
+        }
       }, 2000);
     }
     if (isEmpty(vercelDomainRecord?.vercelDomainRecord)) {
       vercelInterval = setInterval(() => {
-        refetchVercelRecord();
+        if (spaceResponse?.getSpaceFromCreator?.id) {
+          refetchVercelRecord();
+        }
       }, 2000);
     }
     return () => {

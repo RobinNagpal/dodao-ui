@@ -1,115 +1,85 @@
 import { SectionHeading } from './SectionHeading';
-import Image from 'next/image';
-import AAVE from '@/images/DAO/AAVE.png';
-import Balancer from '@/images/DAO/Balancer.png';
-import Compound from '@/images/DAO/Compound.png';
-import Harmony from '@/images/DAO/Harmony.png';
-import Near from '@/images/DAO/Near.png';
-import Uniswap from '@/images/DAO/Uniswap.png';
 import { Container } from './Container';
+import { ArrowPathIcon, CloudArrowUpIcon, Cog6ToothIcon, LockClosedIcon, FolderOpenIcon, BellAlertIcon } from '@heroicons/react/20/solid';
+import Academy_site from '@/images/Academy_site.gif';
+import Image from 'next/image';
 
 export function AcademySites() {
-  const values = [
+  const features = [
     {
       name: 'Guides',
       description:
         'Our nano-courses offer focused learning on specific topics. In just 5-10 minutes, users can absorb information, test their knowledge with multiple-choice questions.',
+      icon: CloudArrowUpIcon,
     },
     {
       name: 'Simulations/Clickable Demos',
       description:
         "We've built simulations to confidently acquaint users with protocols without the risk. Interactive and secure, these demos teach without the fear of clicking wrong links.",
+      icon: FolderOpenIcon,
     },
     {
       name: 'TidBits',
       description:
         'Designed for efficiency, TidBits deliver crucial information in compact, easy-to-digest steps. These brief 5-10 sentence pieces allow for rapid understanding without the overwhelm of longer reads.',
+      icon: ArrowPathIcon,
+    },
+    {
+      name: 'Advanced security.',
+      description: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit aute id magna.',
+      icon: LockClosedIcon,
     },
     {
       name: 'Courses',
       description:
         'For those seeking depth, our courses combine texts, diagrams, videos, and interactive questions to provide a rich, 30-60 minute learning journey.',
+      icon: Cog6ToothIcon,
     },
     {
       name: 'Timelines',
       description:
         'Stay up-to-date with our timelines that track and inform about the latest product developments and releases, keeping customers connected and informed.',
+      icon: BellAlertIcon,
     },
   ];
-
   return (
-    <section id="academy-sites" aria-labelledby="academy-sites-title" className="scroll-mt-14 py-16 sm:scroll-mt-32 sm:py-20 lg:py-32">
-      {/* <div className="mx-auto max-w-6xl px-6 lg:px-8"> */}
+    <section id="academy-sites" aria-labelledby="academy-sites-title" className="scroll-mt-14 py-16 sm:scroll-mt-32 sm:py-20 lg:py-16">
       <Container size="lg">
         <div className="mx-auto lg:mx-0">
           <SectionHeading number="2" id="academy-sites-title">
             Academy Sites
           </SectionHeading>
-          <p className="mt-6 text-lg leading-8 text-gray-600">
-            Dive into tailored learning with our Academy sites, where we create educational experiences for companies. Our resources cater to diverse learning
-            preferences and schedules, ensuring everyone has access to the knowledge they need, when they need it.
-          </p>
         </div>
-        <dl className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 text-base leading-7 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3">
-          {values.map((value) => (
-            <div key={value.name}>
-              <dt className="font-semibold text-gray-900">{value.name}</dt>
-              <dd className="mt-1 text-gray-600">{value.description}</dd>
+        <div className="py-16 sm:py-12">
+          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+            <div className="mx-auto max-w-3xl sm:text-center">
+              <p className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Academy Sites</p>
+              <p className="mt-6 text-lg leading-8">
+                Companies rely heavily on extensive technical documentation that can be overwhelming and time-consuming for users to review and comprehend. We
+                have created academy sites which utilize a combination of different innovative formats for educating your users.
+              </p>
             </div>
-          ))}
-        </dl>
-      </Container>
-      {/* </sdiv> */}
-      <div className="relative isolate mt-32 sm:mt-48">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <h2 className="text-center text-lg font-semibold leading-8 text-gray-900">Serving Industry Leaders</h2>
-          <div className="mx-auto mt-10 grid max-w-lg grid-cols-4 items-center gap-x-8 gap-y-10 sm:max-w-xl sm:grid-cols-6 sm:gap-x-10 lg:mx-0 lg:max-w-none lg:grid-cols-6">
-            <Image
-              className="col-span-2 col-start-2 max-h-28 w-full object-contain sm:col-start-auto lg:col-span-1"
-              src={Near}
-              alt="Near"
-              width={158}
-              height={150}
-            />
-            <Image
-              className="col-span-2 col-start-2 max-h-24 w-full object-contain sm:col-start-auto lg:col-span-1"
-              src={Balancer}
-              alt="Balancer"
-              width={158}
-              height={150}
-            />
-
-            <Image
-              className="col-span-2 col-start-2 max-h-24 w-full object-contain sm:col-start-auto lg:col-span-1"
-              src={Harmony}
-              alt="Harmony"
-              width={158}
-              height={150}
-            />
-            <Image
-              className="col-span-2 col-start-2 max-h-24 w-full object-contain sm:col-start-auto lg:col-span-1"
-              src={Compound}
-              alt="Compound"
-              width={158}
-              height={150}
-            />
-            <Image
-              className="col-span-2 col-start-2 max-h-28 w-full object-contain sm:col-start-auto lg:col-span-1"
-              src={AAVE}
-              alt="AAVE"
-              width={158}
-              height={150}
-            />
-            <Image
-              className="col-span-2 col-start-2 max-h-28 w-full object-contain sm:col-start-auto lg:col-span-1"
-              src={Uniswap}
-              alt="Uniswap"
-              width={158}
-              height={150}
-            />
+          </div>
+          <div className="relative pt-16">
+            <div className="mx-auto max-w-7xl px-6 lg:px-8">
+              <Image src={Academy_site} alt="Academy Site Gif" className="mb-[-12%] rounded-xl ring-1 ring-gray-900/10" width={2432} height={1442} />
+            </div>
+          </div>
+          <div className="mx-auto mt-16 max-w-7xl px-6 sm:mt-28 md:mt-32 lg:mt-44 lg:px-8">
+            <dl className="mt-24 mx-auto grid max-w-2xl grid-cols-1 gap-x-6 gap-y-10 text-base leading-7 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3 lg:gap-x-8 lg:gap-y-16">
+              {features.map((feature) => (
+                <div key={feature.name} className="relative pl-9">
+                  <dt className="inline font-semibold text-gray-900">
+                    <feature.icon className="absolute left-1 top-1 h-5 w-5 text-indigo-600" aria-hidden="true" />
+                    {feature.name}
+                  </dt>{' '}
+                  <dd className="inline">{feature.description}</dd>
+                </div>
+              ))}
+            </dl>
           </div>
         </div>
-      </div>
+      </Container>
     </section>
   );
 }
