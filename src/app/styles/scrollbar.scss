@@ -1,20 +1,39 @@
-/* width */
+/* Base scrollbar styles for WebKit-based browsers */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 8px; /* Affects vertical scrollbar's width and horizontal scrollbar's height */
 }
 
-/* Track */
 ::-webkit-scrollbar-track {
-  background: var(--bg-color); 
+  background: #f0f0f0; /* Directly setting a light grey color for the track */
 }
 
-/* Handle */
 ::-webkit-scrollbar-thumb {
-  background: var(--primary-color); /* #888 */
+  background: var(--primary-color);
   border-radius: 5px;
 }
 
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: var(--primary-color);
+::-webkit-scrollbar-thumb:hover,
+::-webkit-scrollbar-thumb:active {
+  background: var(--primary-color); /* Darker on hover and active for feedback */
+}
+
+/* Scrollbar styling for Firefox */
+* {
+  scrollbar-width: thin; /* "auto" or "thin" for scrollbar width */
+  scrollbar-color: var(--primary-color) #f0f0f0; /* Thumb and track color, using direct color for track */
+}
+
+/* Media query for smaller devices */
+@media screen and (max-width: 768px) {
+  ::-webkit-scrollbar {
+    width: 5px; /* Thinner scrollbars on small devices */
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 2px;
+  }
+
+  * {
+    scrollbar-width: thin; /* Adjusts the scrollbar width in Firefox on small devices */
+  }
 }

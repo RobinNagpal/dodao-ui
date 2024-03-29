@@ -1,6 +1,6 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/20/solid';
-import { Fragment, useState } from 'react';
+import { Fragment } from 'react';
 import styled from 'styled-components';
 
 export interface SingleSectionModalProps {
@@ -16,7 +16,7 @@ const ModalContainer = styled.div`
   color: var(--text-color);
 `;
 
-export default function MobileModal({ open, title, children, onClose, showCloseButton = true }: SingleSectionModalProps) {
+export default function FullScreenByteModal({ open, title, children, onClose, showCloseButton = true }: SingleSectionModalProps) {
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={onClose}>
@@ -33,7 +33,7 @@ export default function MobileModal({ open, title, children, onClose, showCloseB
         </Transition.Child>
 
         <ModalContainer className="fixed inset-0 z-10 overflow-y-auto">
-          <div className="flex min-h-full items-end justify-center text-center sm:items-center">
+          <div className="flex items-end justify-center text-center sm:items-center">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -43,10 +43,10 @@ export default function MobileModal({ open, title, children, onClose, showCloseB
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="relative transform overflow-hidden text-left transition-all sm:w-full sm:max-w-screen-md">
+              <Dialog.Panel className="relative transform overflow-hidden text-left transition-all sm:w-full sm:max-w-screen-md min-h-screen">
                 <div>
                   {showCloseButton && (
-                    <div className="absolute right-4 top-4">
+                    <div className="absolute right-2 top-2">
                       <button
                         type="button"
                         className="inline-flex rounded-md hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
@@ -55,16 +55,16 @@ export default function MobileModal({ open, title, children, onClose, showCloseB
                         }}
                       >
                         <span className="sr-only">Close</span>
-                        <XMarkIcon className="h-8 w-8" aria-hidden="true" />
+                        <XMarkIcon className="h-10 w-10" aria-hidden="true" />
                       </button>
                     </div>
                   )}
 
-                  <div className="mt-3 text-center sm:mt-5">
-                    <Dialog.Title as="h3" className="text-base font-semibold leading-6">
+                  <div className="text-center">
+                    <Dialog.Title as="h3" className="text-xl font-semibold h-14 pt-4 ">
                       {title}
                     </Dialog.Title>
-                    <div className="mt-2">{children}</div>
+                    <div>{children}</div>
                   </div>
                 </div>
               </Dialog.Panel>
