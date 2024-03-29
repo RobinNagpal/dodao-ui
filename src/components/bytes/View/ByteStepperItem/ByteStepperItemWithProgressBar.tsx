@@ -162,7 +162,7 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space }: W
 
   return (
     <div className={`w-full flex flex-col justify-between py-12 ${styles.stepContainer}`}>
-      <div className={`w-full px-8 sm:px-4 overflow-scroll flex flex-col ${transitionClasses[transitionState]} ${styles.stepContents}`}>
+      <div className={`w-full px-4 md:px-8 overflow-scroll flex flex-col ${transitionClasses[transitionState]} ${styles.stepContents}`}>
         <div className="flex flex-col flex-grow justify-center align-center">
           {!stepItems.some(isQuestion) && step.imageUrl && (
             <div className="flex justify-center align-center ">
@@ -182,7 +182,7 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space }: W
             <h1 className={`text-4xl xl:text-5xl`}>{step.name || byte.name}</h1>
           </div>
           <div className="mt-4 lg:mt-8 text-left">
-            <div dangerouslySetInnerHTML={{ __html: stepContents }} className={`markdown-body text-lg xl:text-2xl px-2 sm:px-0`} />
+            <div dangerouslySetInnerHTML={{ __html: stepContents }} className={`markdown-body text-lg xl:text-2xl px-0 md:px-4 text-center`} />
             {stepItems.map((stepItem: ByteStepItemFragment, index) => {
               if (isQuestion(stepItem)) {
                 return (

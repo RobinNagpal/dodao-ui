@@ -7,4 +7,6 @@
     @media screen and (max-width: 768px) {
         min-width: 100vw;
     }
+
+  min-width: calc(768px - 4rem);
 }
