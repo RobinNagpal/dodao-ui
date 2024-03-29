@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 import { Container } from './Container';
 import { SectionHeading } from './SectionHeading';
-import aichatbot from '@/images/DoDAOHomePage/aichatbot.png';
+import aichatbot from '@/images/DoDAOHomePage/aichatbot.jpg';
 export function AIChatbot() {
   return (
     <section id="ai-chatbot" aria-labelledby="ai-chatbot-title" className="scroll-mt-14 py-4 sm:scroll-mt-32 sm:py-20 lg:py-16">
@@ -27,7 +27,7 @@ export function AIChatbot() {
               </div>
               <div className="flex flex-wrap items-start justify-end gap-6 sm:gap-8">
                 <div className="w-0 flex-auto lg:ml-auto lg:w-auto lg:flex-none lg:self-end mb-9">
-                  <Image src={aichatbot} alt="AI ChatBot Image" className="aspect-[7/5] w-[37rem] max-w-none rounded-2xl object-cover" />
+                  <Image src={aichatbot} alt="AI ChatBot Image" className="aspect-[7/5] w-full lg:w-[37rem] max-w-none rounded-2xl object-cover" />
                 </div>
               </div>
             </div>

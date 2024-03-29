@@ -34,7 +34,7 @@ import 'prismjs/components/prism-rust';
 import 'prismjs/components/prism-solidity';
 import 'prismjs/components/prism-toml';
 import 'prismjs/components/prism-yaml';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import styles from './ByteStepperItemWithProgressBar.module.scss';
 
 interface WithCarouselAndProgress1Props {
@@ -169,7 +169,7 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space, set
 
   return (
     <div className={`h-full w-full flex flex-col justify-between py-12 lg:px-8 sm:px-2 ${styles.stepContainer}`}>
-      <div className={`h-full w-full flex flex-col items-center justify-center ${transitionClasses[transitionState]}  ${styles.stepContent}`}>
+      <div className={`h-full w-full flex flex-col flex-grow items-center justify-center  ${transitionClasses[transitionState]} ${styles.stepContent}`}>
         {!stepItems.some(isQuestion) && step.imageUrl && (
           <div
             style={{

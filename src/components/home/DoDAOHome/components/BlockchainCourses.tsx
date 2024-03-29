@@ -27,7 +27,7 @@ export function BlockchainCourses() {
     >
       <Container size="lg">
         <SectionHeading number="4" id="blockchain-courses-title">
-          Blockchain-Courses
+          Blockchain Courses
         </SectionHeading>
         <div className="relative mt-8">
           <div className="mx-auto max-w-7xl lg:flex lg:justify-between lg:px-8 xl:justify-end">

@@ -122,6 +122,7 @@ export interface Byte {
   __typename?: 'Byte';
   admins: Array<Scalars['String']>;
   byteStyle?: Maybe<Scalars['String']>;
+  completionScreen?: Maybe<CompletionScreen>;
   content: Scalars['String'];
   created: Scalars['String'];
   id: Scalars['String'];
@@ -385,6 +386,36 @@ export interface CompletionAiInput {
   n?: InputMaybe<Scalars['Int']>;
   prompt: Scalars['String'];
   temperature?: InputMaybe<Scalars['Float']>;
+}
+
+export interface CompletionScreen {
+  __typename?: 'CompletionScreen';
+  content: Scalars['String'];
+  imageUrl?: Maybe<Scalars['String']>;
+  items: Array<CompletionScreenItem>;
+  name: Scalars['String'];
+  uuid: Scalars['String'];
+}
+
+export interface CompletionScreenInput {
+  content: Scalars['String'];
+  imageUrl?: InputMaybe<Scalars['String']>;
+  items: Array<CompletionScreenItemInput>;
+  name: Scalars['String'];
+  uuid: Scalars['String'];
+}
+
+export interface CompletionScreenItem {
+  __typename?: 'CompletionScreenItem';
+  label: Scalars['String'];
+  link: Scalars['String'];
+  uuid: Scalars['String'];
+}
+
+export interface CompletionScreenItemInput {
+  label: Scalars['String'];
+  link: Scalars['String'];
+  uuid: Scalars['String'];
 }
 
 export interface ConsolidatedByteRating {
@@ -2049,6 +2080,7 @@ export interface ProjectByte {
   admins: Array<Scalars['String']>;
   archived: Scalars['Boolean'];
   byteStyle?: Maybe<Scalars['String']>;
+  completionScreen?: Maybe<CompletionScreen>;
   content: Scalars['String'];
   created: Scalars['String'];
   id: Scalars['String'];
@@ -2965,6 +2997,7 @@ export interface UpsertByteCollectionCategory {
 export interface UpsertByteInput {
   admins: Array<Scalars['String']>;
   byteStyle?: InputMaybe<Scalars['String']>;
+  completionScreen?: InputMaybe<CompletionScreenInput>;
   content: Scalars['String'];
   created: Scalars['String'];
   id: Scalars['String'];
@@ -3064,6 +3097,7 @@ export interface UpsertProjectByteCollectionInput {
 export interface UpsertProjectByteInput {
   admins: Array<Scalars['String']>;
   byteStyle?: InputMaybe<Scalars['String']>;
+  completionScreen?: InputMaybe<CompletionScreenInput>;
   content: Scalars['String'];
   created: Scalars['String'];
   id: Scalars['String'];
@@ -3383,9 +3417,13 @@ export type ByteStepItemFragment = ByteStepItem_ByteQuestion_Fragment | ByteStep
 
 export type ByteStepFragment = { __typename?: 'ByteStep', content: string, name: string, uuid: string, imageUrl?: string | null, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> };
 
-export type ByteDetailsFragment = { __typename?: 'Byte', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, admins: Array<string>, tags: Array<string>, priority: number, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, imageUrl?: string | null, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> };
+export type CompletionScreenItemFragment = { __typename?: 'CompletionScreenItem', label: string, link: string, uuid: string };
 
-export type ByteDetailsFragmentFragment = { __typename?: 'Byte', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, admins: Array<string>, tags: Array<string>, priority: number, videoUrl?: string | null, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, imageUrl?: string | null, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> };
+export type CompletionScreenFragment = { __typename?: 'CompletionScreen', content: string, name: string, uuid: string, imageUrl?: string | null, items: Array<{ __typename?: 'CompletionScreenItem', label: string, link: string, uuid: string }> };
+
+export type ByteDetailsFragment = { __typename?: 'Byte', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, admins: Array<string>, tags: Array<string>, priority: number, completionScreen?: { __typename?: 'CompletionScreen', content: string, name: string, uuid: string, imageUrl?: string | null, items: Array<{ __typename?: 'CompletionScreenItem', label: string, link: string, uuid: string }> } | null, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, imageUrl?: string | null, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> };
+
+export type ByteDetailsFragmentFragment = { __typename?: 'Byte', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, admins: Array<string>, tags: Array<string>, priority: number, videoUrl?: string | null, completionScreen?: { __typename?: 'CompletionScreen', content: string, name: string, uuid: string, imageUrl?: string | null, items: Array<{ __typename?: 'CompletionScreenItem', label: string, link: string, uuid: string }> } | null, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, imageUrl?: string | null, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> };
 
 export type ByteSummaryFragment = { __typename?: 'Byte', content: string, created: string, id: string, name: string, admins: Array<string>, tags: Array<string>, priority: number, videoUrl?: string | null };
 
@@ -3405,7 +3443,7 @@ export type QueryByteDetailsQueryVariables = Exact<{
 }>;
 
 
-export type QueryByteDetailsQuery = { __typename?: 'Query', byte: { __typename?: 'Byte', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, admins: Array<string>, tags: Array<string>, priority: number, videoUrl?: string | null, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, imageUrl?: string | null, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> } };
+export type QueryByteDetailsQuery = { __typename?: 'Query', byte: { __typename?: 'Byte', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, admins: Array<string>, tags: Array<string>, priority: number, videoUrl?: string | null, completionScreen?: { __typename?: 'CompletionScreen', content: string, name: string, uuid: string, imageUrl?: string | null, items: Array<{ __typename?: 'CompletionScreenItem', label: string, link: string, uuid: string }> } | null, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, imageUrl?: string | null, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> } };
 
 export type ByteRatingsQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -3429,7 +3467,7 @@ export type UpsertByteMutationVariables = Exact<{
 }>;
 
 
-export type UpsertByteMutation = { __typename?: 'Mutation', payload: { __typename?: 'Byte', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, admins: Array<string>, tags: Array<string>, priority: number, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, imageUrl?: string | null, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> } };
+export type UpsertByteMutation = { __typename?: 'Mutation', payload: { __typename?: 'Byte', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, admins: Array<string>, tags: Array<string>, priority: number, completionScreen?: { __typename?: 'CompletionScreen', content: string, name: string, uuid: string, imageUrl?: string | null, items: Array<{ __typename?: 'CompletionScreenItem', label: string, link: string, uuid: string }> } | null, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, imageUrl?: string | null, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> } };
 
 export type DeleteByteMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -4311,14 +4349,14 @@ export type UpdateSeoOfProjectMutationVariables = Exact<{
 
 export type UpdateSeoOfProjectMutation = { __typename?: 'Mutation', updateSeoOfProject: { __typename?: 'Project', adminUsernames: Array<string>, admins: Array<string>, archived: boolean, creator: string, details: string, discord?: string | null, docs?: string | null, excerpt: string, github?: string | null, id: string, logo?: string | null, name: string, telegram?: string | null, website?: string | null, type: string, cardThumbnail?: string | null, priority: number, adminUsernamesV1: Array<{ __typename?: 'UsernameAndName', username: string, nameOfTheUser: string }>, seoMeta?: { __typename?: 'SEOMeta', title: string, description: string, keywords: Array<string> } | null } };
 
-export type ProjectByteFragment = { __typename?: 'ProjectByte', admins: Array<string>, content: string, created: string, id: string, name: string, postSubmissionStepContent?: string | null, priority: number, videoUrl?: string | null, tags: Array<string>, archived: boolean, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }>, seoMeta?: { __typename?: 'SEOMeta', title: string, description: string, keywords: Array<string> } | null };
+export type ProjectByteFragment = { __typename?: 'ProjectByte', admins: Array<string>, content: string, created: string, id: string, name: string, postSubmissionStepContent?: string | null, priority: number, videoUrl?: string | null, tags: Array<string>, archived: boolean, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }>, completionScreen?: { __typename?: 'CompletionScreen', content: string, name: string, uuid: string, imageUrl?: string | null, items: Array<{ __typename?: 'CompletionScreenItem', label: string, link: string, uuid: string }> } | null, seoMeta?: { __typename?: 'SEOMeta', title: string, description: string, keywords: Array<string> } | null };
 
 export type ProjectBytesQueryVariables = Exact<{
   projectId: Scalars['String'];
 }>;
 
 
-export type ProjectBytesQuery = { __typename?: 'Query', projectBytes: Array<{ __typename?: 'ProjectByte', admins: Array<string>, content: string, created: string, id: string, name: string, postSubmissionStepContent?: string | null, priority: number, videoUrl?: string | null, tags: Array<string>, archived: boolean, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }>, seoMeta?: { __typename?: 'SEOMeta', title: string, description: string, keywords: Array<string> } | null }> };
+export type ProjectBytesQuery = { __typename?: 'Query', projectBytes: Array<{ __typename?: 'ProjectByte', admins: Array<string>, content: string, created: string, id: string, name: string, postSubmissionStepContent?: string | null, priority: number, videoUrl?: string | null, tags: Array<string>, archived: boolean, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }>, completionScreen?: { __typename?: 'CompletionScreen', content: string, name: string, uuid: string, imageUrl?: string | null, items: Array<{ __typename?: 'CompletionScreenItem', label: string, link: string, uuid: string }> } | null, seoMeta?: { __typename?: 'SEOMeta', title: string, description: string, keywords: Array<string> } | null }> };
 
 export type ProjectByteQueryVariables = Exact<{
   projectId: Scalars['String'];
@@ -4326,7 +4364,7 @@ export type ProjectByteQueryVariables = Exact<{
 }>;
 
 
-export type ProjectByteQuery = { __typename?: 'Query', projectByte: { __typename?: 'ProjectByte', admins: Array<string>, content: string, created: string, id: string, name: string, postSubmissionStepContent?: string | null, priority: number, videoUrl?: string | null, tags: Array<string>, archived: boolean, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }>, seoMeta?: { __typename?: 'SEOMeta', title: string, description: string, keywords: Array<string> } | null } };
+export type ProjectByteQuery = { __typename?: 'Query', projectByte: { __typename?: 'ProjectByte', admins: Array<string>, content: string, created: string, id: string, name: string, postSubmissionStepContent?: string | null, priority: number, videoUrl?: string | null, tags: Array<string>, archived: boolean, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }>, completionScreen?: { __typename?: 'CompletionScreen', content: string, name: string, uuid: string, imageUrl?: string | null, items: Array<{ __typename?: 'CompletionScreenItem', label: string, link: string, uuid: string }> } | null, seoMeta?: { __typename?: 'SEOMeta', title: string, description: string, keywords: Array<string> } | null } };
 
 export type UpsertProjectByteMutationVariables = Exact<{
   projectId: Scalars['String'];
@@ -4334,7 +4372,7 @@ export type UpsertProjectByteMutationVariables = Exact<{
 }>;
 
 
-export type UpsertProjectByteMutation = { __typename?: 'Mutation', upsertProjectByte: { __typename?: 'ProjectByte', admins: Array<string>, content: string, created: string, id: string, name: string, postSubmissionStepContent?: string | null, priority: number, videoUrl?: string | null, tags: Array<string>, archived: boolean, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }>, seoMeta?: { __typename?: 'SEOMeta', title: string, description: string, keywords: Array<string> } | null } };
+export type UpsertProjectByteMutation = { __typename?: 'Mutation', upsertProjectByte: { __typename?: 'ProjectByte', admins: Array<string>, content: string, created: string, id: string, name: string, postSubmissionStepContent?: string | null, priority: number, videoUrl?: string | null, tags: Array<string>, archived: boolean, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }>, completionScreen?: { __typename?: 'CompletionScreen', content: string, name: string, uuid: string, imageUrl?: string | null, items: Array<{ __typename?: 'CompletionScreenItem', label: string, link: string, uuid: string }> } | null, seoMeta?: { __typename?: 'SEOMeta', title: string, description: string, keywords: Array<string> } | null } };
 
 export type UpdateArchivedStatusOfProjectByteMutationVariables = Exact<{
   projectId: Scalars['String'];
@@ -4343,7 +4381,7 @@ export type UpdateArchivedStatusOfProjectByteMutationVariables = Exact<{
 }>;
 
 
-export type UpdateArchivedStatusOfProjectByteMutation = { __typename?: 'Mutation', updateArchivedStatusOfProjectByte: { __typename?: 'ProjectByte', admins: Array<string>, content: string, created: string, id: string, name: string, postSubmissionStepContent?: string | null, priority: number, videoUrl?: string | null, tags: Array<string>, archived: boolean, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }>, seoMeta?: { __typename?: 'SEOMeta', title: string, description: string, keywords: Array<string> } | null } };
+export type UpdateArchivedStatusOfProjectByteMutation = { __typename?: 'Mutation', updateArchivedStatusOfProjectByte: { __typename?: 'ProjectByte', admins: Array<string>, content: string, created: string, id: string, name: string, postSubmissionStepContent?: string | null, priority: number, videoUrl?: string | null, tags: Array<string>, archived: boolean, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }>, completionScreen?: { __typename?: 'CompletionScreen', content: string, name: string, uuid: string, imageUrl?: string | null, items: Array<{ __typename?: 'CompletionScreenItem', label: string, link: string, uuid: string }> } | null, seoMeta?: { __typename?: 'SEOMeta', title: string, description: string, keywords: Array<string> } | null } };
 
 export type UpdateSeoOfProjectByteMutationVariables = Exact<{
   projectId: Scalars['String'];
@@ -4351,7 +4389,7 @@ export type UpdateSeoOfProjectByteMutationVariables = Exact<{
 }>;
 
 
-export type UpdateSeoOfProjectByteMutation = { __typename?: 'Mutation', updateSeoOfProjectByte: { __typename?: 'ProjectByte', admins: Array<string>, content: string, created: string, id: string, name: string, postSubmissionStepContent?: string | null, priority: number, videoUrl?: string | null, tags: Array<string>, archived: boolean, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }>, seoMeta?: { __typename?: 'SEOMeta', title: string, description: string, keywords: Array<string> } | null } };
+export type UpdateSeoOfProjectByteMutation = { __typename?: 'Mutation', updateSeoOfProjectByte: { __typename?: 'ProjectByte', admins: Array<string>, content: string, created: string, id: string, name: string, postSubmissionStepContent?: string | null, priority: number, videoUrl?: string | null, tags: Array<string>, archived: boolean, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }>, completionScreen?: { __typename?: 'CompletionScreen', content: string, name: string, uuid: string, imageUrl?: string | null, items: Array<{ __typename?: 'CompletionScreenItem', label: string, link: string, uuid: string }> } | null, seoMeta?: { __typename?: 'SEOMeta', title: string, description: string, keywords: Array<string> } | null } };
 
 export type ProjectByteCollectionFragment = { __typename?: 'ProjectByteCollection', byteIds: Array<string>, description: string, id: string, name: string, status: string, archived: boolean, priority: number, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string, videoUrl?: string | null }>, seoMeta?: { __typename?: 'SEOMeta', title: string, description: string, keywords: Array<string> } | null };
 
@@ -4869,6 +4907,24 @@ export const ByteLinkedinPdfContentFragmentDoc = gql`
   title
 }
     ${ByteLinkedinPdfContentStepFragmentDoc}`;
+export const CompletionScreenItemFragmentDoc = gql`
+    fragment CompletionScreenItem on CompletionScreenItem {
+  label
+  link
+  uuid
+}
+    `;
+export const CompletionScreenFragmentDoc = gql`
+    fragment CompletionScreen on CompletionScreen {
+  content
+  name
+  uuid
+  imageUrl
+  items {
+    ...CompletionScreenItem
+  }
+}
+    ${CompletionScreenItemFragmentDoc}`;
 export const ByteQuestionFragmentFragmentDoc = gql`
     fragment ByteQuestionFragment on ByteQuestion {
   answerKeys
@@ -4933,11 +4989,15 @@ export const ByteDetailsFragmentDoc = gql`
   admins
   tags
   priority
+  completionScreen {
+    ...CompletionScreen
+  }
   steps {
     ...ByteStep
   }
 }
-    ${ByteStepFragmentDoc}`;
+    ${CompletionScreenFragmentDoc}
+${ByteStepFragmentDoc}`;
 export const ByteDetailsFragmentFragmentDoc = gql`
     fragment ByteDetailsFragment on Byte {
   postSubmissionStepContent
@@ -4949,6 +5009,9 @@ export const ByteDetailsFragmentFragmentDoc = gql`
   tags
   priority
   videoUrl
+  completionScreen {
+    ...CompletionScreen
+  }
   steps {
     content
     stepItems {
@@ -4980,7 +5043,7 @@ export const ByteDetailsFragmentFragmentDoc = gql`
     imageUrl
   }
 }
-    `;
+    ${CompletionScreenFragmentDoc}`;
 export const ByteSummaryFragmentDoc = gql`
     fragment ByteSummary on Byte {
   content
@@ -5636,6 +5699,9 @@ export const ProjectByteFragmentDoc = gql`
     name
     uuid
   }
+  completionScreen {
+    ...CompletionScreen
+  }
   tags
   archived
   seoMeta {
@@ -5644,7 +5710,7 @@ export const ProjectByteFragmentDoc = gql`
     keywords
   }
 }
-    `;
+    ${CompletionScreenFragmentDoc}`;
 export const ProjectByteCollectionFragmentDoc = gql`
     fragment ProjectByteCollection on ProjectByteCollection {
   byteIds

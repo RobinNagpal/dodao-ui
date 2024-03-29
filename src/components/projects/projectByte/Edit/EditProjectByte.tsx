@@ -14,13 +14,11 @@ import { useEditProjectByte } from '@/components/projects/projectByte/Edit/useEd
 import { ProjectFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
 import { ByteErrors } from '@/types/errors/byteErrors';
-import StatusBadge from '@/utils/byte/StatusBadge';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
-export default function EditProjectByte(props: { space: SpaceWithIntegrationsFragment; project: ProjectFragment; params: { byteId?: string[] } }) {
-  const { space, project, params } = props;
-  const byteId = params.byteId ? params.byteId[0] : null;
+export default function EditProjectByte(props: { space: SpaceWithIntegrationsFragment; project: ProjectFragment; byteId?: string }) {
+  const { space, project, byteId } = props;
 
   const {
     byteUpserting,

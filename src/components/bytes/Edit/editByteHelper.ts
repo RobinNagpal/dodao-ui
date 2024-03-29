@@ -2,13 +2,14 @@ import {
   ByteQuestionFragmentFragment,
   ByteStepFragment,
   ByteStepInput,
+  CompletionScreen,
   StepItemInputGenericInput,
   UpsertByteInput,
   UpsertProjectByteInput,
 } from '@/graphql/generated/generated-types';
 import { isQuestion, isUserInput } from '@/types/deprecated/helpers/stepItemTypes';
 import { UserInput } from '@/types/deprecated/models/GuideModel';
-import { ByteErrors } from '@/types/errors/byteErrors';
+import { ByteErrors, CompletionScreenErrors, CompletionScreenItemErrors } from '@/types/errors/byteErrors';
 import { StepError } from '@/types/errors/error';
 import { slugify } from '@/utils/auth/slugify';
 import { validateQuestion, validateUserInput } from '@/utils/stepItems/validateItems';
@@ -52,6 +53,11 @@ export type UpdateByteFunctions = {
   removeStep: (stepUuid: string) => void;
   moveStepUp: (stepUuid: string) => void;
   setByte: (byte: EditByteType | EditProjectByteType) => void;
+  updateCompletionScreen: (field: keyof CompletionScreen, value: any) => void;
+  removeCompletionScreen: () => void;
+  addCallToActionButtonLink: (uuid: string, link: string) => void;
+  addCallToActionButtonLabel: (uuid: string, label: string) => void;
+  removeCallToActionButton: (uuid: string) => void;
 };
 
 export interface GeneratedByte {
@@ -92,6 +98,85 @@ export function editByteCommonFunctions(setByte: (value: ((prevState: EditByteTy
     });
   };
 
+  const updateCompletionScreenFn = (field: keyof CompletionScreen, value: any) => {
+    setByte((prevByte) => {
+      const uuid = uuidv4();
+      const defaultCompletionScreen: CompletionScreen = {
+        content: '',
+        name: '',
+        imageUrl: '',
+        items: [],
+        uuid: uuid,
+      };
+      const currentCompletionScreen = prevByte.completionScreen || defaultCompletionScreen;
+
+      if (field === 'items' && value !== undefined) {
+        const updatedItems = [...currentCompletionScreen.items, value];
+        return { ...prevByte, completionScreen: { ...currentCompletionScreen, items: updatedItems } };
+      }
+
+      const updatedCompletionScreen = {
+        ...currentCompletionScreen,
+        [field]: value !== undefined ? value : defaultCompletionScreen[field],
+      };
+
+      return { ...prevByte, completionScreen: updatedCompletionScreen };
+    });
+  };
+
+  const addCallToActionButtonLabelFn = (uuid: string, label: string) => {
+    setByte((prevByte) => {
+      const currentCompletionScreen = prevByte.completionScreen!;
+      const updatedCompletionScreen = {
+        ...currentCompletionScreen,
+        items: currentCompletionScreen?.items ? [...currentCompletionScreen.items] : [],
+      };
+
+      const itemIndex = updatedCompletionScreen.items.findIndex((item) => item.uuid === uuid);
+      if (itemIndex !== -1) {
+        updatedCompletionScreen.items[itemIndex] = { ...updatedCompletionScreen.items[itemIndex], label };
+      }
+
+      return { ...prevByte, completionScreen: updatedCompletionScreen };
+    });
+  };
+
+  const addCallToActionButtonLinkFn = (uuid: string, link: string) => {
+    setByte((prevByte) => {
+      const currentCompletionScreen = prevByte.completionScreen!;
+
+      const updatedCompletionScreen = {
+        ...currentCompletionScreen,
+        items: currentCompletionScreen.items ? [...currentCompletionScreen.items] : [],
+      };
+
+      const itemIndex = updatedCompletionScreen.items.findIndex((item) => item.uuid === uuid);
+      if (itemIndex !== -1) {
+        updatedCompletionScreen.items[itemIndex] = { ...updatedCompletionScreen.items[itemIndex], link };
+      }
+
+      return { ...prevByte, completionScreen: updatedCompletionScreen };
+    });
+  };
+
+  const removeCallToActionButtonFn = (buttonUuid: string) => {
+    setByte((prevByte) => {
+      const currentCompletionScreen = prevByte.completionScreen ? { ...prevByte.completionScreen } : null;
+      if (!currentCompletionScreen || !currentCompletionScreen.items) {
+        return prevByte;
+      }
+
+      const updatedItems = currentCompletionScreen.items.filter((item) => item.uuid !== buttonUuid);
+
+      const updatedCompletionScreen = {
+        ...currentCompletionScreen,
+        items: updatedItems,
+      };
+
+      return { ...prevByte, completionScreen: updatedCompletionScreen };
+    });
+  };
+
   const moveStepUpFn = (stepUuid: string) => {
     setByte((prevByte) => {
       const steps = prevByte.steps;
@@ -115,6 +200,37 @@ export function editByteCommonFunctions(setByte: (value: ((prevState: EditByteTy
       return { ...prevByte, steps: newSteps };
     });
   };
+
+  function validateCompletionScreen(completionScreen?: CompletionScreen): CompletionScreenErrors {
+    let errors: CompletionScreenErrors = {};
+
+    if (completionScreen?.name == '' || completionScreen?.name == null) {
+      errors.name = true;
+    }
+    if (completionScreen?.content == '' || completionScreen?.content == null) {
+      errors.content = true;
+    }
+
+    let itemErrors: Record<string, CompletionScreenItemErrors> = {};
+    completionScreen?.items?.forEach((item) => {
+      let itemError: CompletionScreenItemErrors = {};
+      if (item.label == '' || item.label == null) {
+        itemError.label = true;
+      }
+      if (item.link == '' || item.label == null) {
+        itemError.link = true;
+      }
+      if (Object.keys(itemError).length > 0) {
+        itemErrors[item.uuid] = itemError;
+      }
+    });
+
+    if (Object.keys(itemErrors).length > 0) {
+      errors.items = itemErrors;
+    }
+
+    return errors;
+  }
 
   const validateByteFn = (byte: EditByteType, byteErrors: ByteErrors) => {
     const updatedByteErrors: ByteErrors = { ...byteErrors };
@@ -149,6 +265,11 @@ export function editByteCommonFunctions(setByte: (value: ((prevState: EditByteTy
         updatedByteErrors.steps[step.uuid] = stepError;
       }
     });
+
+    const completionScreenErrors = validateCompletionScreen(byte.completionScreen || undefined);
+    if (Object.keys(completionScreenErrors).length > 0) {
+      updatedByteErrors.completionScreen = completionScreenErrors;
+    }
     return updatedByteErrors;
   };
 
@@ -180,6 +301,22 @@ export function editByteCommonFunctions(setByte: (value: ((prevState: EditByteTy
       tags: byte.tags,
       priority: byte.priority,
       videoUrl: byte.videoUrl,
+      completionScreen:
+        byte.completionScreen != null
+          ? {
+              content: byte.completionScreen.content,
+              name: byte.completionScreen.name,
+              uuid: byte.completionScreen.uuid,
+              imageUrl: byte.completionScreen.imageUrl,
+              items: Array.isArray(byte.completionScreen.items)
+                ? byte.completionScreen.items.map((i) => ({
+                    uuid: i.uuid,
+                    link: i.link,
+                    label: i.label,
+                  }))
+                : [],
+            }
+          : null,
     };
   }
 
@@ -190,5 +327,9 @@ export function editByteCommonFunctions(setByte: (value: ((prevState: EditByteTy
     removeStepFn,
     validateByteFn,
     getByteInputFn,
+    updateCompletionScreenFn,
+    addCallToActionButtonLabelFn,
+    addCallToActionButtonLinkFn,
+    removeCallToActionButtonFn,
   };
 }

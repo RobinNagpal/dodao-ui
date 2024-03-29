@@ -12,7 +12,7 @@ export function BlockchainDevelopmentTooling() {
     >
       <Container size="lg">
         <SectionHeading number="4" id="blockchain-development-tooling-title">
-          Blockchain-Development-Tooling
+          Blockchain Development
         </SectionHeading>
         <div className="relative mt-8">
           <div className="mx-auto max-w-7xl lg:flex lg:justify-between lg:px-8 xl:justify-end">

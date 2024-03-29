@@ -2,6 +2,7 @@ import { WatchVideoButton } from './../../common/WatchVideoButton';
 import { Container } from './Container';
 import Image from 'next/image';
 import tidbits from '@/images/TidbitsHub/GIFs/tidbits.gif';
+import ContactUsLink from '../../DoDAOHome/components/ContactUsLink';
 
 export function Hero() {
   return (
@@ -20,7 +21,12 @@ export function Hero() {
                 and watch their trust in your services grow!
               </p>
               <div className="mt-8 flex flex-wrap gap-x-6 gap-y-4">
-                <WatchVideoButton src={'https://dodao-prod-public-assets.s3.us-east-1.amazonaws.com/tidbithub/Tidbits_Hub-Banks.mp4'} />
+                <div>
+                  <WatchVideoButton src={'https://dodao-prod-public-assets.s3.us-east-1.amazonaws.com/tidbithub/Tidbits_Hub-Banks.mp4'} />
+                </div>
+                <div className="-mt-2">
+                  <ContactUsLink />
+                </div>
               </div>
             </div>
           </div>
