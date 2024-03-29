@@ -1,20 +1,30 @@
-/* width */
+/* Base scrollbar styles */
 ::-webkit-scrollbar {
   width: 10px;
+  /* Affects vertical scrollbar's width and horizontal scrollbar's height */
 }
 
-/* Track */
 ::-webkit-scrollbar-track {
-  background: var(--bg-color); 
+  background: var(--bg-color);
 }
 
-/* Handle */
 ::-webkit-scrollbar-thumb {
-  background: var(--primary-color); /* #888 */
+  background: var(--primary-color);
   border-radius: 5px;
 }
 
-/* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: var(--primary-color);
+}
+
+/* Media query for smaller devices */
+@media screen and (max-width: 768px) {
+  ::-webkit-scrollbar {
+    width: 5px;
+    /* Makes scrollbars thinner on small devices */
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 2px;
+  }
 }

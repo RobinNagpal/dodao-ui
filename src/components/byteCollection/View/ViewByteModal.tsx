@@ -15,6 +15,7 @@ import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
 import styles from './ViewByteModal.module.scss';
+import RatingByteView from '@/components/bytes/View/RatingByteView';
 
 const EditByteView: React.ComponentType<any> = dynamic(() => import('@/components/bytes/Edit/EditByteView'), {
   ssr: false, // Disable server-side rendering for this component
@@ -54,6 +55,7 @@ export default function ViewByteModal({
 
   const [editByteModalOpen, setEditByteModalOpen] = React.useState(false);
   const [shareByteModalOpen, setShareByteModalOpen] = React.useState(false);
+  const [ratingByteModalOpen, setRatingByteModalOpen] = React.useState(false);
 
   const { activeStepOrder } = viewByteHelper;
 
@@ -66,6 +68,7 @@ export default function ViewByteModal({
   const threeDotItems: EllipsisDropdownItem[] = [
     { label: 'Edit', key: 'edit' },
     { label: 'Generate Pdf', key: 'generate-pdf' },
+    { label: 'Rating', key: 'rating' },
   ];
 
   if (editByteModalOpen && viewByteHelper.byteRef && byteCollectionType === 'byteCollection') {
@@ -105,6 +108,16 @@ export default function ViewByteModal({
     );
   }
 
+  if (ratingByteModalOpen && viewByteHelper.byteRef) {
+    return (
+      <FullScreenModal open={true} onClose={onClose} title={'Ratings'}>
+        <div className="text-left">
+          <RatingByteView byteId={viewByteHelper.byteRef.id} space={space} />
+        </div>
+      </FullScreenModal>
+    );
+  }
+
   return (
     <FullScreenModal open={true} onClose={onClose} title={viewByteHelper.byteRef?.name || 'Tidbit Details'}>
       <div id="byte-container" className={`flex flex-col  items-center w-full relative inset-0 ${styles.byteContainer} `}>
@@ -120,6 +133,8 @@ export default function ViewByteModal({
                       setEditByteModalOpen(true);
                     } else if (key === 'generate-pdf') {
                       setShareByteModalOpen(true);
+                    } else if (key === 'rating') {
+                      setRatingByteModalOpen(true);
                     }
                   }}
                 />

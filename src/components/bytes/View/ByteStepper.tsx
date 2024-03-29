@@ -23,7 +23,12 @@ function ByteViewStepper({ viewByteHelper, byte, space }: Props) {
   return (
     <div>
       <ByteStepperItemWithProgressBar viewByteHelper={viewByteHelper} byte={byte} step={activeStep} space={space} setByteSubmitted={setByteSubmitted} />
-      <ByteRatingModal open={showRatingsModal} onClose={() => setShowRatingsModal(false)} skipByteRating={skipByteRating} setByteRating={setByteRating} />
+      <ByteRatingModal
+        open={showRatingsModal && (space.byteSettings.captureRating as boolean)}
+        onClose={() => setShowRatingsModal(false)}
+        skipByteRating={skipByteRating}
+        setByteRating={setByteRating}
+      />
     </div>
   );
 }

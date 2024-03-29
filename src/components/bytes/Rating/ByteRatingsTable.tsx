@@ -72,7 +72,7 @@ export default function ByteRatingsTable(props: ByteRatingsTableProps) {
   }
 
   if (!byteRatings || byteRatings.length === 0) {
-    return <div>No Guide Ratings</div>;
+    return <div>No Byte Ratings</div>;
   }
 
   const rowData = byteRatings.map((rating) => {
@@ -120,8 +120,8 @@ export default function ByteRatingsTable(props: ByteRatingsTableProps) {
           <div className={`text-center w-full flex flex-col justify-center items-center ${styles.reChartsWrapper}`}>
             <h2 className="text-xl font-bold w-full">What did you like the most?</h2>
             {ratingDistributions && (
-              <PieChart width={400} height={400}>
-                <Pie dataKey="value" isAnimationActive={false} data={ratingDistributions} cx={200} cy={200} outerRadius={120} fill="#8884d8" label>
+              <PieChart width={350} height={350}>
+                <Pie dataKey="value" isAnimationActive={false} data={ratingDistributions} cx={150} cy={150} outerRadius={120} fill="#8884d8" label>
                   {ratingDistributions.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}
