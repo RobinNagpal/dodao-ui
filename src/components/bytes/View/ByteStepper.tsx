@@ -1,9 +1,10 @@
-import ByteRatingModal from '@/components/app/Modal/Byte/ByteRatingModal';
 import ByteStepperItemWithProgressBar from '@/components/bytes/View/ByteStepperItem/ByteStepperItemWithProgressBar';
 import { UseGenericViewByteHelper } from '@/components/bytes/View/useGenericViewByte';
-import { ByteDetailsFragment, ByteStepFragment, ProjectByteFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { ByteDetailsFragment, ByteFeedback, ByteStepFragment, ProjectByteFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { useMemo, useState } from 'react';
 import { useByteRatings } from '@/components/bytes/Rating/useByteRating';
+import RatingModal, { FeedbackOptions } from '@/components/app/Modal/Rating/RatingModal';
+import { ClipboardDocumentListIcon, RocketLaunchIcon } from '@heroicons/react/24/outline';
 
 type Props = {
   viewByteHelper: UseGenericViewByteHelper;
@@ -19,15 +20,21 @@ function ByteViewStepper({ viewByteHelper, byte, space }: Props) {
   const [byteSubmitted, setByteSubmitted] = useState<boolean>(false);
 
   const { showRatingsModal, setShowRatingsModal, setByteRating, skipByteRating } = useByteRatings(space, byte as ByteDetailsFragment, byteSubmitted);
+  const feedbackOptions: FeedbackOptions[] = [
+    { name: 'content', label: 'Content', image: ClipboardDocumentListIcon },
+    { name: 'ux', label: 'User Experience', image: RocketLaunchIcon },
+  ];
 
   return (
     <div>
       <ByteStepperItemWithProgressBar viewByteHelper={viewByteHelper} byte={byte} step={activeStep} space={space} setByteSubmitted={setByteSubmitted} />
-      <ByteRatingModal
+      <RatingModal
+        ratingType="Byte"
         open={showRatingsModal && (space.byteSettings.captureRating as boolean)}
         onClose={() => setShowRatingsModal(false)}
-        skipByteRating={skipByteRating}
-        setByteRating={setByteRating}
+        skipRating={skipByteRating}
+        setRating={setByteRating as (rating: number, feedback?: ByteFeedback) => Promise<void>}
+        feedbackOptions={feedbackOptions}
       />
     </div>
   );

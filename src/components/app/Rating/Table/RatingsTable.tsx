@@ -1,11 +1,15 @@
+'use client';
 import { Grid2Cols } from '@/components/core/grids/Grid2Cols';
 import SpinnerWithText from '@/components/core/loaders/SpinnerWithText';
 import {
-  GuideRating,
+  ByteRating,
   SpaceWithIntegrationsFragment,
-  useConsolidatedGuideRatingQuery,
-  useGuideQueryQuery,
-  useGuideRatingsQuery,
+  ByteRatingsQuery,
+  ConsolidatedByteRatingQuery,
+  GuideRating,
+  GuideRatingsQuery,
+  ConsolidatedGuideRatingQuery,
+  RatingDistribution,
 } from '@/graphql/generated/generated-types';
 import { GridOptions, GridSizeChangedEvent } from 'ag-grid-community';
 import { FilterChangedEvent, FilterModifiedEvent, FilterOpenedEvent } from 'ag-grid-community/dist/lib/events';
@@ -15,53 +19,31 @@ import { AgGridReact } from 'ag-grid-react';
 import moment from 'moment';
 import React, { useCallback } from 'react';
 import { PieChart, Pie, Tooltip, Legend, Cell } from 'recharts';
-import styles from './GuideRatingsTable.module.scss';
+import styles from './RatingsTable.module.scss';
 
-interface RatingDistribution {
-  ux: number;
-  content: number;
-  questions: number;
-}
-
-interface Props {
-  distribution: RatingDistribution;
-}
-
-export interface GuideRatingsTableProps {
+export interface RatingsTableProps {
+  ratingType: 'Byte' | 'Guide';
   space: SpaceWithIntegrationsFragment;
-  guideId: string;
+  ratingsResponse: ByteRatingsQuery | GuideRatingsQuery;
+  consolidatedRatingsResponse: ConsolidatedByteRatingQuery | ConsolidatedGuideRatingQuery;
+  name: String;
+  content: String;
+  loadingRatings: boolean;
 }
 
-export default function GuideRatingsTable(props: GuideRatingsTableProps) {
-  const { data: guideRatingsResponse, loading: loadingGuideRatings } = useGuideRatingsQuery({
-    variables: {
-      spaceId: props.space.id,
-      guideUuid: props.guideId,
-    },
-  });
-
-  const { data: consolidatedRatingsResponse, loading: loadingConsolidatedRatings } = useConsolidatedGuideRatingQuery({
-    variables: {
-      spaceId: props.space.id,
-      guideUuid: props.guideId,
-    },
-  });
-
-  const positiveRatingDistribution = consolidatedRatingsResponse?.consolidatedGuideRating?.positiveRatingDistribution;
+export default function RatingsTable({ ratingType, ratingsResponse, consolidatedRatingsResponse, name, content, loadingRatings }: RatingsTableProps) {
+  const positiveRatingDistribution =
+    ratingType === 'Byte'
+      ? (consolidatedRatingsResponse as ConsolidatedByteRatingQuery)?.consolidatedByteRating?.positiveRatingDistribution
+      : (consolidatedRatingsResponse as ConsolidatedGuideRatingQuery)?.consolidatedGuideRating?.positiveRatingDistribution;
 
   const ratingDistributions = positiveRatingDistribution && [
     { name: 'UX', value: +positiveRatingDistribution.ux.toFixed(2) },
     { name: 'Content', value: +positiveRatingDistribution.content.toFixed(2) },
-    { name: 'Questions', value: +positiveRatingDistribution.questions.toFixed(2) },
+    ...(ratingType === 'Guide' ? [{ name: 'Questions', value: +(positiveRatingDistribution as RatingDistribution).questions.toFixed(2) }] : []),
   ];
-
-  const { data: guideResponse } = useGuideQueryQuery({
-    variables: {
-      spaceId: props.space.id,
-      uuid: props.guideId,
-    },
-  });
-  const guideRatings: GuideRating[] = guideRatingsResponse?.guideRatings || [];
+  const ratings: ByteRating[] | GuideRating[] =
+    ratingType === 'Byte' ? (ratingsResponse as ByteRatingsQuery)?.byteRatings : (ratingsResponse as GuideRatingsQuery)?.guideRatings || [];
 
   const onFilterOpened = useCallback((e: FilterOpenedEvent<any>) => {
     console.log('onFilterOpened', e);
@@ -77,20 +59,20 @@ export default function GuideRatingsTable(props: GuideRatingsTableProps) {
     console.log('filterInstance.getModel() =>', e.filterInstance.getModel());
   }, []);
 
-  if (loadingGuideRatings) {
-    return <SpinnerWithText message="Loading Guide Ratings" />;
+  if (loadingRatings) {
+    return <SpinnerWithText message={`Loading ${ratingType} Ratings`} />;
   }
 
-  if (!guideRatings || guideRatings.length === 0) {
-    return <div>No Guide Ratings</div>;
+  if (!ratings || ratings.length === 0) {
+    return <div>{`No ${ratingType} Ratings`}</div>;
   }
 
-  const rowData = guideRatings.map((rating) => {
+  const rowData = ratings.map((rating) => {
     return {
       id: rating.ratingUuid,
       createdAt: new Date(rating.createdAt),
       createdBy: rating.username || rating.userId || 'anonymous',
-      rating: rating.endRating,
+      rating: ratingType === 'Byte' ? (rating as ByteRating)?.rating : (rating as GuideRating)?.endRating,
       positiveFeedback: rating.positiveFeedback
         ? Object.entries(rating.positiveFeedback)
             .filter((e) => e?.[1] === true || e?.[1] === 'true')
@@ -107,21 +89,27 @@ export default function GuideRatingsTable(props: GuideRatingsTableProps) {
 
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28'];
 
-  const averageRating = consolidatedRatingsResponse?.consolidatedGuideRating?.avgRating?.toFixed(2);
+  const averageRating =
+    ratingType === 'Byte'
+      ? (consolidatedRatingsResponse as ConsolidatedByteRatingQuery)?.consolidatedByteRating?.avgRating?.toFixed(2)
+      : (consolidatedRatingsResponse as ConsolidatedGuideRatingQuery)?.consolidatedGuideRating?.avgRating?.toFixed(2);
   return (
     <div className="w-full">
-      <h1 className="text-center text-2xl">{guideResponse?.guide.name}</h1>
-      <p className="text-center text-xs">{guideResponse?.guide.content}</p>
-      {guideRatings && (
+      <h1 className="text-center text-2xl">{name}</h1>
+      <p className="text-center text-xs">{content}</p>
+      {ratings && (
         <Grid2Cols className="my-12">
           <div className="text-center w-full">
-            <h2 className="text-xl font-bold text-center w-full">Average Guide Ratings</h2>
+            <h2 className="text-xl font-bold text-center w-full">{`Average ${ratingType} Ratings`}</h2>
             <div className="py-24 sm:py-32">
               <div className="mx-auto max-w-7xl px-6 lg:px-8">
                 <dl>
                   <div className="mx-auto flex max-w-xs flex-col gap-y-4">
                     <dt className="text-base leading-7">
-                      {consolidatedRatingsResponse?.consolidatedGuideRating?.endRatingFeedbackCount || 0} Ratings Submitted
+                      {ratingType === 'Byte'
+                        ? (consolidatedRatingsResponse as ConsolidatedByteRatingQuery)?.consolidatedByteRating?.ratingFeedbackCount
+                        : (consolidatedRatingsResponse as ConsolidatedGuideRatingQuery).consolidatedGuideRating?.endRatingFeedbackCount || 0}{' '}
+                      Ratings Submitted
                     </dt>
                     <dd className="order-first text-3xl font-semibold tracking-tight sm:text-5xl">{averageRating ? `${averageRating} / 5` : 'N/A'}</dd>
                   </div>
@@ -129,11 +117,11 @@ export default function GuideRatingsTable(props: GuideRatingsTableProps) {
               </div>
             </div>
           </div>
-          <div className={`text-center w-full ${styles.reChartsWrapper}`}>
+          <div className={`text-center w-full flex flex-col justify-center items-center ${styles.reChartsWrapper}`}>
             <h2 className="text-xl font-bold w-full">What did you like the most?</h2>
             {ratingDistributions && (
-              <PieChart width={400} height={400}>
-                <Pie dataKey="value" isAnimationActive={false} data={ratingDistributions} cx={200} cy={200} outerRadius={120} fill="#8884d8" label>
+              <PieChart width={350} height={350}>
+                <Pie dataKey="value" isAnimationActive={false} data={ratingDistributions} cx={150} cy={150} outerRadius={120} fill="#8884d8" label>
                   {ratingDistributions.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}

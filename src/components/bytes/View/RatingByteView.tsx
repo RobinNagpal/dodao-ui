@@ -1,20 +1,46 @@
-import ByteRatingsTable from '@/components/bytes/Rating/ByteRatingsTable';
+import RatingsTable from '@/components/app/Rating/Table/RatingsTable';
 import PageWrapper from '@/components/core/page/PageWrapper';
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
-import Link from 'next/link';
+import {
+  SpaceWithIntegrationsFragment,
+  useByteRatingsQuery,
+  useConsolidatedByteRatingQuery,
+  useQueryByteDetailsQuery,
+} from '@/graphql/generated/generated-types';
 import React from 'react';
 
 export default function ByteRatingView(props: { space: SpaceWithIntegrationsFragment; byteId: string }) {
+  const { data: byteRatingsResponse, loading: loadingByteRatings } = useByteRatingsQuery({
+    variables: {
+      spaceId: props.space.id,
+      byteId: props.byteId,
+    },
+  });
+
+  const { data: consolidatedRatingsResponse, loading: loadingConsolidatedRatings } = useConsolidatedByteRatingQuery({
+    variables: {
+      spaceId: props.space.id,
+      byteId: props.byteId,
+    },
+  });
+
+  const { data: byteResponse } = useQueryByteDetailsQuery({
+    variables: {
+      spaceId: props.space.id,
+      byteId: props.byteId,
+    },
+  });
   return (
     <PageWrapper>
-      <div tw="px-4 md:px-0 overflow-hidden">
-        <Link href={`/tidbits/view/${props.byteId}/0`} className="text-color">
-          <span className="mr-1 font-bold">&#8592;</span>
-          Back to Tidbit
-        </Link>
-      </div>
       <div className="mt-4">
-        <ByteRatingsTable space={props.space!} byteId={props.byteId} />
+        <RatingsTable
+          ratingType="Byte"
+          space={props.space!}
+          ratingsResponse={byteRatingsResponse!}
+          consolidatedRatingsResponse={consolidatedRatingsResponse!}
+          name={byteResponse?.byte?.name!}
+          content={byteResponse?.byte?.content!}
+          loadingRatings={loadingByteRatings}
+        />
       </div>
     </PageWrapper>
   );

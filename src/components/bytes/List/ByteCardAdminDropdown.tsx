@@ -39,7 +39,6 @@ export default function ByteCardAdminDropdown({ byte, byteType, project }: ByteC
     return [
       { label: 'Edit', key: 'edit' },
       { label: 'Edit SEO', key: 'editSeo' },
-      { label: 'Ratings', key: 'ratings' },
     ];
   };
 
@@ -80,8 +79,6 @@ export default function ByteCardAdminDropdown({ byte, byteType, project }: ByteC
             onArchivedStatusChange(false);
           } else if (key === 'editSeo') {
             setEditProjectByteSeo(true);
-          } else if (key === 'ratings') {
-            router.push(`tidbits/rating/${byte.id}`);
           }
         }}
       />
