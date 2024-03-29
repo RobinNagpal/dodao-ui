@@ -3,8 +3,15 @@
 @import 'styles/katex';
 @import 'styles/markdown';
 @import 'styles/scrollbar';
+@import "styles/fonts";
+
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 @import '@uiw/react-md-editor/dist/mdeditor.css';
+
+
+body {
+  font-family: 'Inter', sans-serif;
+}
