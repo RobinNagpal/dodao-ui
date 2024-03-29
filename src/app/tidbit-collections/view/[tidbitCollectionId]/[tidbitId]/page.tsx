@@ -6,6 +6,12 @@ export default async function ByteDetails(props: { params: { tidbitCollectionId?
   const space = (await getSpaceServerSide())!;
 
   return (
-    <ViewByteModal space={space} byteCollectionType={'byteCollection'} selectedByteId={props.params.tidbitId!} onByteModalCloseUrl={`/tidbit-collections`} />
+    <ViewByteModal
+      space={space}
+      byteCollectionType={'byteCollection'}
+      selectedByteId={props.params.tidbitId!}
+      viewByteModalClosedUrl={`/tidbit-collections`}
+      afterUpsertByteModalClosedUrl={`/tidbit-collections/view/${props.params?.tidbitCollectionId}`}
+    />
   );
 }

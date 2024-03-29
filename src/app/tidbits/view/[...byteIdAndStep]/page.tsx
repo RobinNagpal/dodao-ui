@@ -10,7 +10,15 @@ const ByteView = ({ params, space }: { params: { byteIdAndStep: string[] }; spac
 
   const byteId = Array.isArray(byteIdAndStep) ? byteIdAndStep[0] : (byteIdAndStep as string);
 
-  return <ViewByteModal space={space} byteCollectionType={'byteCollection'} selectedByteId={byteId} onByteModalCloseUrl={`/tidbits`} />;
+  return (
+    <ViewByteModal
+      space={space}
+      byteCollectionType={'byteCollection'}
+      selectedByteId={byteId}
+      viewByteModalClosedUrl={`/tidbits`}
+      afterUpsertByteModalClosedUrl={'/tidbits/view'}
+    />
+  );
 };
 
 export default withSpace(ByteView);
