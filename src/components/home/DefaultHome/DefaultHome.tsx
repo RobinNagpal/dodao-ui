@@ -1,6 +1,6 @@
 import { Grid2Cols } from '@/components/core/grids/Grid2Cols';
 import PageWrapper from '@/components/core/page/PageWrapper';
-import { GetStartedButton } from './GetStartedButton';
+import { GetStartedButton } from '@/components/home/common/GetStartedButton';
 import { LottieAnimation } from './LottieAnimation';
 import HomeIcon from '@/components/main/HomeIcon';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';

@@ -27,7 +27,7 @@ export default function ByteCollectionCategoryCard(props: ByteCollectionCategory
         <div className="card blog-card w-full">
           <div className="p-6">
             <div className="w-full flex justify-end">
-              <Badge size={BadgeSize.md} color={BadgeColor.blue}>
+              <Badge size={BadgeSize.md} color={BadgeColor.base}>
                 Coming Soon
               </Badge>
             </div>
@@ -44,15 +44,15 @@ export default function ByteCollectionCategoryCard(props: ByteCollectionCategory
   return (
     <Card>
       <Link href={`/tidbit-collection-categories/view/${category.id}/tidbit-collections`} className="card blog-card w-inline-block h-full w-full">
-        <div className="p-6">
+        <div id="inside-link" className="p-6">
           <div className="w-full flex justify-end">
             {isUserAdmin && category.status === ByteCollectionCategoryStatus.Hidden && (
-              <Badge size={BadgeSize.md} color={BadgeColor.green}>
+              <Badge size={BadgeSize.md} color={BadgeColor.red}>
                 Hidden
               </Badge>
             )}
             {isUserAdmin && category.status === ByteCollectionCategoryStatus.ComingSoon && (
-              <Badge size={BadgeSize.md} color={BadgeColor.blue}>
+              <Badge size={BadgeSize.md} color={BadgeColor.base}>
                 Coming Soon
               </Badge>
             )}
