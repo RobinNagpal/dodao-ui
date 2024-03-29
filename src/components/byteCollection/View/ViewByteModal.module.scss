@@ -3,10 +3,6 @@
 }
 
 .styledByteCard {
-  @media screen and (min-width: 767px) {
-    background-color: var(--block-bg);
-    min-width: 767px;
-    max-width: 767px;
-  }
+  background-color: var(--block-bg);
   min-height: calc(100vh - 104px);
 }
