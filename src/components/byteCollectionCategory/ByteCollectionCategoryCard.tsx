@@ -45,7 +45,7 @@ export default function ByteCollectionCategoryCard(props: ByteCollectionCategory
     <Card>
       <Link href={`/tidbit-collection-categories/view/${category.id}/tidbit-collections`} className="card blog-card w-inline-block h-full w-full">
         <div id="inside-link" className="p-6">
-          <div className="w-full flex justify-end">
+          <div className="w-full flex justify-end h-8">
             {isUserAdmin && category.status === ByteCollectionCategoryStatus.Hidden && (
               <Badge size={BadgeSize.md} color={BadgeColor.red}>
                 Hidden
