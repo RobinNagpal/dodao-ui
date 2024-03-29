@@ -10,7 +10,8 @@ export default async function ByteDetails(props: { params: { collectionId?: stri
       space={space}
       byteCollectionType={'byteCollection'}
       selectedByteId={props.params.tidbitId!}
-      onByteModalCloseUrl={`/tidbit-collection-categories/view/${props.params.categoryId}/tidbit-collections`}
+      viewByteModalClosedUrl={`/tidbit-collection-categories/view/${props.params.categoryId}/tidbit-collections`}
+      afterUpsertByteModalClosedUrl={`/tidbit-collection-categories/view/${props.params.categoryId}/tidbit-collections`}
     />
   );
 }

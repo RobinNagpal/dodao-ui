@@ -12,7 +12,8 @@ export default async function ByteDetails(props: { params: { tidbitCollectionId?
         space={space}
         byteCollectionType={'byteCollection'}
         selectedByteId={props.params.tidbitId!}
-        onByteModalCloseUrl={'/embedded-tidbit-collections'}
+        viewByteModalClosedUrl={'/embedded-tidbit-collections'}
+        afterUpsertByteModalClosedUrl={`/embedded-tidbit-collections/view/${props.params?.tidbitCollectionId}`}
       />
     </PageWrapper>
   );

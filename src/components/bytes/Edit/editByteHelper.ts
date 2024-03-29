@@ -204,10 +204,10 @@ export function editByteCommonFunctions(setByte: (value: ((prevState: EditByteTy
   function validateCompletionScreen(completionScreen?: CompletionScreen): CompletionScreenErrors {
     let errors: CompletionScreenErrors = {};
 
-    if (completionScreen?.name == '' || completionScreen?.name == null) {
+    if (completionScreen && !completionScreen?.name?.trim()) {
       errors.name = true;
     }
-    if (completionScreen?.content == '' || completionScreen?.content == null) {
+    if (completionScreen && !completionScreen?.content?.trim()) {
       errors.content = true;
     }
 

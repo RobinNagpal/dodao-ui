@@ -25,10 +25,18 @@ export interface ViewByteModalProps {
   project?: ProjectFragment;
   byteCollectionType: 'byteCollection' | 'projectByteCollection';
   selectedByteId: string;
-  onByteModalCloseUrl: string;
+  viewByteModalClosedUrl: string;
+  afterUpsertByteModalClosedUrl: string;
 }
 
-export default function ViewByteModal({ space, project, byteCollectionType, selectedByteId, onByteModalCloseUrl }: ViewByteModalProps) {
+export default function ViewByteModal({
+  space,
+  project,
+  byteCollectionType,
+  selectedByteId,
+  viewByteModalClosedUrl,
+  afterUpsertByteModalClosedUrl,
+}: ViewByteModalProps) {
   const fetchByteFn = async (byteId: string): Promise<ByteDetailsFragment | ProjectByteFragment> => {
     if (byteCollectionType === 'projectByteCollection') {
       return await getApiResponse<ByteDetailsFragment>(space, `projects/${project?.id}/bytes/${byteId}`);
@@ -52,7 +60,7 @@ export default function ViewByteModal({ space, project, byteCollectionType, sele
   const router = useRouter();
 
   function onClose() {
-    router.push(onByteModalCloseUrl);
+    router.push(viewByteModalClosedUrl);
   }
 
   const threeDotItems: EllipsisDropdownItem[] = [
@@ -69,7 +77,7 @@ export default function ViewByteModal({ space, project, byteCollectionType, sele
             byteId={viewByteHelper.byteRef.id}
             onUpsert={async () => {
               setEditByteModalOpen(false);
-              router.push(`${onByteModalCloseUrl}/view/${viewByteHelper.byteRef.id}`);
+              router.push(`${afterUpsertByteModalClosedUrl}/${viewByteHelper.byteRef.id}`);
             }}
           />
         </div>

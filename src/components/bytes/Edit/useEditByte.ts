@@ -17,8 +17,7 @@ import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string | null) {
-  const router = useRouter();
+export function useEditByte(space: SpaceWithIntegrationsFragment, onUpsert: (byteId: string) => Promise<void>, byteId: string | null) {
   const emptyByteModel = emptyByte();
   const [byte, setByte] = useState<EditByteType>({
     ...emptyByteModel,
@@ -172,7 +171,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, byteId: string
       if (payload) {
         showNotification({ type: 'success', message: 'Byte Saved', heading: 'Success 🎉' });
 
-        router.push(`/tidbits/view/${payload.id}/0`);
+        await onUpsert(response?.data?.payload?.id!);
       } else {
         showNotification({ type: 'error', message: $t('notify.somethingWentWrong') });
         console.error(response.errors);

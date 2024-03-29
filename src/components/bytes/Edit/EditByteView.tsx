@@ -17,16 +17,22 @@ import TextareaArray from '@/components/core/textarea/TextareaArray';
 import { SpaceWithIntegrationsFragment, useDeleteByteMutation } from '@/graphql/generated/generated-types';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
 import { ByteErrors } from '@/types/errors/byteErrors';
-import { useSession } from 'next-auth/react';
 import { router } from 'next/client';
-import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 export default function EditByteView(props: { space: SpaceWithIntegrationsFragment; onUpsert: (byteId: string) => Promise<void>; byteId?: string }) {
   const { space, byteId } = props;
 
-  const { byteUpserting, byteLoaded, byteRef: byte, byteErrors, handleByteUpsert, initialize, updateByteFunctions } = useEditByte(space, byteId || null);
-  const { data: session } = useSession();
+  const {
+    byteUpserting,
+    byteLoaded,
+    byteRef: byte,
+    byteErrors,
+    handleByteUpsert,
+    initialize,
+    updateByteFunctions,
+  } = useEditByte(space, props.onUpsert, byteId || null);
+
   const inputError = (field: keyof ByteErrors): string => {
     const error = byteErrors?.[field];
     return error ? error.toString() : '';
@@ -47,10 +53,6 @@ export default function EditByteView(props: { space: SpaceWithIntegrationsFragme
     <PageWrapper>
       <SingleCardLayout>
         <div className="px-4 mb-4 md:px-0 flex justify-between">
-          <Link href={byteId ? `/tidbits/view/${byteId}/0` : `/tidbits`} className="text-color">
-            <span className="mr-1 font-bold">&#8592;</span>
-            {byteId ? byte.name : 'Back to Bytes'}
-          </Link>
           <div>
             {!byteId && <Button onClick={() => setShowAIGenerateModel(true)}>Create with AI</Button>}
             <AddByteQuestionsUsingAIButton
