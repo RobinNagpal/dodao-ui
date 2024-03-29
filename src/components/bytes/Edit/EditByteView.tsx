@@ -17,7 +17,6 @@ import TextareaArray from '@/components/core/textarea/TextareaArray';
 import { SpaceWithIntegrationsFragment, useDeleteByteMutation } from '@/graphql/generated/generated-types';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
 import { ByteErrors } from '@/types/errors/byteErrors';
-import { useSession } from 'next-auth/react';
 import { router } from 'next/client';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -26,7 +25,7 @@ export default function EditByteView(props: { space: SpaceWithIntegrationsFragme
   const { space, byteId } = props;
 
   const { byteUpserting, byteLoaded, byteRef: byte, byteErrors, handleByteUpsert, initialize, updateByteFunctions } = useEditByte(space, byteId || null);
-  const { data: session } = useSession();
+
   const inputError = (field: keyof ByteErrors): string => {
     const error = byteErrors?.[field];
     return error ? error.toString() : '';
