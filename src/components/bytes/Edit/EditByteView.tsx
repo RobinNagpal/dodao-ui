@@ -1,37 +1,32 @@
 'use client';
 
 import Block from '@/components/app/Block';
+import DeleteConfirmationModal from '@/components/app/Modal/DeleteConfirmationModal';
 import AddByteQuestionsUsingAIButton from '@/components/bytes/Create/AddByteQuestionsUsingAIButton';
 import { CreateByteUsingAIModal } from '@/components/bytes/Create/CreateByteUsingAIModal';
 import { EditByteType } from '@/components/bytes/Edit/editByteHelper';
 import EditByteStepper from '@/components/bytes/Edit/EditByteStepper';
+import { useEditByte } from '@/components/bytes/Edit/useEditByte';
 import Button from '@/components/core/buttons/Button';
+import { EllipsisDropdownItem } from '@/components/core/dropdowns/EllipsisDropdown';
+import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import Input from '@/components/core/input/Input';
 import PageLoading from '@/components/core/loaders/PageLoading';
 import PageWrapper from '@/components/core/page/PageWrapper';
 import TextareaArray from '@/components/core/textarea/TextareaArray';
-import { useEditProjectByte } from '@/components/projects/projectByte/Edit/useEditProjectByte';
-import { ProjectFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsFragment, useDeleteByteMutation } from '@/graphql/generated/generated-types';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
 import { ByteErrors } from '@/types/errors/byteErrors';
+import { useSession } from 'next-auth/react';
+import { router } from 'next/client';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
-export default function EditProjectByte(props: { space: SpaceWithIntegrationsFragment; project: ProjectFragment; byteId?: string }) {
-  const { space, project, byteId } = props;
+export default function EditByteView(props: { space: SpaceWithIntegrationsFragment; onUpsert: (byteId: string) => Promise<void>; byteId?: string }) {
+  const { space, byteId } = props;
 
-  const {
-    byteUpserting,
-
-    byteLoaded,
-    byteRef: byte,
-    byteErrors,
-    handleSubmit,
-
-    initialize,
-    updateByteFunctions,
-  } = useEditProjectByte(space, project.id, byteId || null);
-
+  const { byteUpserting, byteLoaded, byteRef: byte, byteErrors, handleByteUpsert, initialize, updateByteFunctions } = useEditByte(space, byteId || null);
+  const { data: session } = useSession();
   const inputError = (field: keyof ByteErrors): string => {
     const error = byteErrors?.[field];
     return error ? error.toString() : '';
@@ -42,23 +37,39 @@ export default function EditProjectByte(props: { space: SpaceWithIntegrationsFra
   }, [byteId]);
 
   const [showAIGenerateModel, setShowAIGenerateModel] = useState(false);
+  const threeDotItems: EllipsisDropdownItem[] = [{ label: 'Delete', key: 'delete' }];
+
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+  const [deleteByteMutation] = useDeleteByteMutation();
 
   return (
     <PageWrapper>
       <SingleCardLayout>
-        <div className="px-4 mb-4 md:px-0 overflow-hidden flex justify-between">
-          <Link href={byteId ? `/projects/view/${project.id}/tidbits/${byteId}/0` : `/projects/view/${project.id}/tidbits`} className="text-color">
+        <div className="px-4 mb-4 md:px-0 flex justify-between">
+          <Link href={byteId ? `/tidbits/view/${byteId}/0` : `/tidbits`} className="text-color">
             <span className="mr-1 font-bold">&#8592;</span>
             {byteId ? byte.name : 'Back to Bytes'}
           </Link>
           <div>
-            {!byteId && <Button onClick={() => setShowAIGenerateModel(true)}>Create with AI</Button>}{' '}
+            {!byteId && <Button onClick={() => setShowAIGenerateModel(true)}>Create with AI</Button>}
             <AddByteQuestionsUsingAIButton
               byte={byte}
               onNewStepsWithQuestions={(newSteps) => {
                 updateByteFunctions.includeSteps(newSteps);
               }}
             />
+            {byteId && (
+              <PrivateEllipsisDropdown
+                items={threeDotItems}
+                onSelect={(key) => {
+                  if (key === 'delete') {
+                    setShowDeleteModal(true);
+                  }
+                }}
+                className="ml-4 z-50"
+              />
+            )}
           </div>
         </div>
 
@@ -79,15 +90,6 @@ export default function EditProjectByte(props: { space: SpaceWithIntegrationsFra
                   Excerpt *
                 </Input>
 
-                <Input
-                  modelValue={byte.videoUrl}
-                  placeholder="byte.create.videoUrl"
-                  maxLength={1024}
-                  onUpdate={(e) => updateByteFunctions.updateByteField('videoUrl', e)}
-                >
-                  Video URL
-                </Input>
-
                 <TextareaArray
                   label="Admins"
                   id="admins"
@@ -96,6 +98,15 @@ export default function EditProjectByte(props: { space: SpaceWithIntegrationsFra
                   className="input w-full text-left"
                   onUpdate={(e) => updateByteFunctions.updateByteField('admins', e)}
                 />
+
+                <Input
+                  modelValue={byte.videoUrl}
+                  placeholder="byte.create.videoURL"
+                  maxLength={1024}
+                  onUpdate={(e) => updateByteFunctions.updateByteField('videoUrl', e)}
+                >
+                  Video URL
+                </Input>
 
                 <TextareaArray
                   label="Tags"
@@ -126,7 +137,14 @@ export default function EditProjectByte(props: { space: SpaceWithIntegrationsFra
             </Block>
 
             <div className="flex">
-              <Button onClick={handleSubmit} loading={byteUpserting} disabled={!byteLoaded || byteUpserting} className="block w-full mr-2" primary>
+              <Button
+                onClick={handleByteUpsert}
+                loading={byteUpserting}
+                disabled={!byteLoaded || byteUpserting}
+                className="ml-2 block w-full"
+                variant="contained"
+                primary
+              >
                 Upsert
               </Button>
             </div>
@@ -142,6 +160,18 @@ export default function EditProjectByte(props: { space: SpaceWithIntegrationsFra
           updateByteFunctions.setByte(generated);
         }}
       />
+      {showDeleteModal && (
+        <DeleteConfirmationModal
+          title={'Delete Byte'}
+          open={showDeleteModal}
+          onClose={() => setShowDeleteModal(true)}
+          onDelete={async () => {
+            await deleteByteMutation({ variables: { spaceId: space.id, byteId: byteId! } });
+            setShowDeleteModal(false);
+            router.push(`/tidbits`);
+          }}
+        />
+      )}
     </PageWrapper>
   );
 }

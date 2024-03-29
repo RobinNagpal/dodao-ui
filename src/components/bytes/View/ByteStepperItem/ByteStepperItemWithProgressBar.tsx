@@ -167,7 +167,7 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space }: W
 
   return (
     <div className={`h-full w-full flex flex-col justify-between py-12 lg:px-8 sm:px-2 ${styles.stepContainer}`}>
-      <div className={`h-full w-full flex flex-col items-center justify-center ${transitionClasses[transitionState]}  ${styles.stepContent}`}>
+      <div className={`h-full w-full flex flex-col flex-grow items-center justify-center  ${transitionClasses[transitionState]} ${styles.stepContent}`}>
         {!stepItems.some(isQuestion) && step.imageUrl && (
           <div
             style={{
