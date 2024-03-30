@@ -1,16 +1,14 @@
-.stepContent {
-  @media (min-width: 976px) {
-    .previous-text {
-      display: none;
-    }
-  }
-}
-
 .styledH1 {
   color: var(--heading-color);
 }
 
 .stepContainer {
-  min-height: calc(100vh - 104px);
+  height: calc(100vh - 4rem);
 }
 
+.stepContents {
+  height: calc(100% - 4rem);
+  @media screen and (max-width: 768px) {
+    height: calc(100% - 1rem);
+  }
+}

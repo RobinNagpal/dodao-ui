@@ -15,7 +15,7 @@ export default function ByteCollectionCategoryGrid({ space, categoriesArray, ses
   return (
     <Grid3Cols>
       {categoriesArray.map((category) => (
-        <ByteCollectionCategoryCard space={space} category={category} key={category.id} isUserAdmin={isUserAdmin as boolean} />
+        <ByteCollectionCategoryCard space={space} category={category} key={category.id} isUserAdmin={!!isUserAdmin} />
       ))}
     </Grid3Cols>
   );
