@@ -16,6 +16,7 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
 import styles from './ViewByteModal.module.scss';
 import RatingByteView from '@/components/bytes/View/RatingByteView';
+import FullScreenByteModal from '@/components/bytes/View/FullScreenByteModal';
 
 const EditByteView: React.ComponentType<any> = dynamic(() => import('@/components/bytes/Edit/EditByteView'), {
   ssr: false, // Disable server-side rendering for this component
@@ -119,10 +120,10 @@ export default function ViewByteModal({
   }
 
   return (
-    <FullScreenModal open={true} onClose={onClose} title={viewByteHelper.byteRef?.name || 'Tidbit Details'}>
-      <div id="byte-container" className={`flex flex-col  items-center w-full relative inset-0 ${styles.byteContainer} `}>
+    <FullScreenByteModal open={true} onClose={onClose} title={viewByteHelper.byteRef?.name || 'Tidbit Details'}>
+      <div id="byte-container" className={`flex flex-col items-center w-full relative inset-0`}>
         <ContinuousStepIndicatorProgress steps={viewByteHelper.byteRef?.steps?.length || 2} currentStep={activeStepOrder + 1} />
-        <div className={`${styles.styledByteCard} relative my-4 rounded-lg h-full overflow-y-auto`}>
+        <div className={`${styles.styledByteCard} relative rounded-lg h-full overflow-y-auto`}>
           {viewByteHelper.byteRef ? (
             <>
               <div className="absolute top-4 right-4">
@@ -146,6 +147,6 @@ export default function ViewByteModal({
           )}
         </div>
       </div>
-    </FullScreenModal>
+    </FullScreenByteModal>
   );
 }

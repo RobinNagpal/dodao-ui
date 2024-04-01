@@ -13,16 +13,18 @@ export default function ViewByteCollectionCategory(props: ViewByteCollectionCate
 
   return (
     <div>
-      <h1 className="pt-6 md:pt-8 lg:pt-12 text-2xl lg:text-3xl ">{categoryWithByteCollection.name}</h1>
-      <p className="pt-6 md:pt-8 lg:pt-12 text-lg lg:text-xl">{categoryWithByteCollection.excerpt}</p>
-      {categoryWithByteCollection && (
-        <ByteCollectionsGrid
-          byteCollections={categoryWithByteCollection.byteCollections as ByteCollectionFragment[]}
-          space={space}
-          byteCollectionType={'byteCollection'}
-          byteCollectionsBaseUrl={`/tidbit-collection-categories/view/${categoryWithByteCollection.id}/tidbit-collections`}
-        />
-      )}
+      <h1 className="pt-4 md:pt-6 text-2xl lg:text-3xl ">{categoryWithByteCollection.name}</h1>
+      <p className="pt-4 md:pt-6 text-lg lg:text-xl">{categoryWithByteCollection.excerpt}</p>
+      <div className="pt-4 md:pt-6">
+        {categoryWithByteCollection && (
+          <ByteCollectionsGrid
+            byteCollections={categoryWithByteCollection.byteCollections as ByteCollectionFragment[]}
+            space={space}
+            byteCollectionType={'byteCollection'}
+            byteCollectionsBaseUrl={`/tidbit-collection-categories/view/${categoryWithByteCollection.id}/tidbit-collections`}
+          />
+        )}
+      </div>
     </div>
   );
 }
