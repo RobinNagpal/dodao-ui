@@ -20,11 +20,11 @@ export async function generateMetadata({ params }: GuideViewProps): Promise<Meta
   }
   const guideStep = guide.steps[stepOrder];
 
-  const description = `\n\n${guide.name}\n\n${guide.content}\n\n${guideStep.name}\n\n${guideStep.content}`;
+  const description = `\n\n${guide.name}\n\n${guide.content}\n\n${guideStep?.name}\n\n${guideStep?.content}`;
   return {
     title: guide.name,
     description: description,
-    keywords: [guide.name, guideStep.name],
+    keywords: [guide.name, guideStep?.name],
   };
 }
 

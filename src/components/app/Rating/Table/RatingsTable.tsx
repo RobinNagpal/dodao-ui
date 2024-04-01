@@ -108,7 +108,7 @@ export default function RatingsTable({ ratingType, ratingsResponse, consolidated
                     <dt className="text-base leading-7">
                       {ratingType === 'Byte'
                         ? (consolidatedRatingsResponse as ConsolidatedByteRatingQuery)?.consolidatedByteRating?.ratingFeedbackCount
-                        : (consolidatedRatingsResponse as ConsolidatedGuideRatingQuery).consolidatedGuideRating?.endRatingFeedbackCount || 0}{' '}
+                        : (consolidatedRatingsResponse as ConsolidatedGuideRatingQuery)?.consolidatedGuideRating?.endRatingFeedbackCount || 0}{' '}
                       Ratings Submitted
                     </dt>
                     <dd className="order-first text-3xl font-semibold tracking-tight sm:text-5xl">{averageRating ? `${averageRating} / 5` : 'N/A'}</dd>

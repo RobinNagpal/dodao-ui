@@ -80,7 +80,7 @@ export default function RatingModal<T extends GuideFeedback | ByteFeedback | und
               </div>
             )}
 
-            <div className="grid grid-cols-2 gap-4 mt-8">
+            <div className={`grid ${feedbackOptions.length === 3 ? 'grid-cols-3' : 'grid-cols-2'} gap-4 mt-8`}>
               {feedbackOptions.map((option) => (
                 <div key={option.name} className={`${styles.FeedbackOptionDiv}`}>
                   <div className={`flex flex-col items-center cursor-pointer p-2 hover:rounded-lg`} onClick={() => handleFeedbackSelection(option.name)}>
