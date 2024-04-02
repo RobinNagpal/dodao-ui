@@ -3,3 +3,17 @@
   background-color: var(--block-bg);
   border: 1px solid var(--primary-color);
 }
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.2;
+  }
+}
+
+.blink {
+  animation: blink 2s ease-in-out infinite;
+}

@@ -56,6 +56,11 @@ export default function ByteCollectionCategoryCard(props: ByteCollectionCategory
                 Coming Soon
               </Badge>
             )}
+            {category.status === ByteCollectionCategoryStatus.TryItOut && (
+              <Badge size={BadgeSize.md} color={BadgeColor.base} blink>
+                Try It Out
+              </Badge>
+            )}
             <ByteCollectionCategoryCardAdminDropdown categoryId={category.id} />
           </div>
           <div className="flex items-center justify-center w-12 h-12">

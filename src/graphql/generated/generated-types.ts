@@ -168,7 +168,19 @@ export interface ByteCollectionCategory {
 export enum ByteCollectionCategoryStatus {
   Active = 'Active',
   ComingSoon = 'ComingSoon',
-  Hidden = 'Hidden'
+  Hidden = 'Hidden',
+  TryItOut = 'TryItOut'
+}
+
+export interface ByteFeedback {
+  __typename?: 'ByteFeedback';
+  content?: Maybe<Scalars['Boolean']>;
+  ux?: Maybe<Scalars['Boolean']>;
+}
+
+export interface ByteFeedbackInput {
+  content?: InputMaybe<Scalars['Boolean']>;
+  ux?: InputMaybe<Scalars['Boolean']>;
 }
 
 export interface ByteLinkedinPdfContent {
@@ -203,6 +215,28 @@ export interface ByteQuestion {
   explanation: Scalars['String'];
   type: Scalars['String'];
   uuid: Scalars['String'];
+}
+
+export interface ByteRating {
+  __typename?: 'ByteRating';
+  byteId: Scalars['String'];
+  createdAt: Scalars['DateTimeISO'];
+  ipAddress?: Maybe<Scalars['String']>;
+  negativeFeedback?: Maybe<ByteFeedback>;
+  positiveFeedback?: Maybe<ByteFeedback>;
+  rating?: Maybe<Scalars['Int']>;
+  ratingUuid: Scalars['String'];
+  skipRating?: Maybe<Scalars['Boolean']>;
+  spaceId: Scalars['String'];
+  updatedAt: Scalars['DateTimeISO'];
+  userId?: Maybe<Scalars['String']>;
+  username?: Maybe<Scalars['String']>;
+}
+
+export interface ByteRatingDistribution {
+  __typename?: 'ByteRatingDistribution';
+  content: Scalars['Float'];
+  ux: Scalars['Float'];
 }
 
 export interface ByteSettings {
@@ -383,6 +417,16 @@ export interface CompletionScreenItemInput {
   label: Scalars['String'];
   link: Scalars['String'];
   uuid: Scalars['String'];
+}
+
+export interface ConsolidatedByteRating {
+  __typename?: 'ConsolidatedByteRating';
+  avgRating: Scalars['Float'];
+  negativeFeedbackCount: Scalars['Int'];
+  negativeRatingDistribution: ByteRatingDistribution;
+  positiveFeedbackCount: Scalars['Int'];
+  positiveRatingDistribution: ByteRatingDistribution;
+  ratingFeedbackCount: Scalars['Int'];
 }
 
 export interface ConsolidatedGuideRating {
@@ -1234,6 +1278,7 @@ export interface Mutation {
   upsertAcademyTask: AcademyTask;
   upsertByte: Byte;
   upsertByteCollectionCategory: ByteCollectionCategory;
+  upsertByteRating: ByteRating;
   upsertByteSocialShare: ByteSocialShare;
   upsertChatbotCategory: ChatbotCategory;
   upsertChatbotFAQ: ChatbotFaq;
@@ -1786,6 +1831,12 @@ export interface MutationUpsertByteCollectionCategoryArgs {
 }
 
 
+export interface MutationUpsertByteRatingArgs {
+  spaceId: Scalars['String'];
+  upsertByteRatingInput: UpsertByteRatingInput;
+}
+
+
 export interface MutationUpsertByteSocialShareArgs {
   input: UpsertByteSocialShareInput;
   spaceId: Scalars['String'];
@@ -2092,11 +2143,14 @@ export interface Query {
   byteCollectionCategories: Array<ByteCollectionCategory>;
   byteCollectionCategoryWithByteCollections: CategoryWithByteCollection;
   byteCollections: Array<ByteCollection>;
+  byteRating: Array<ByteRating>;
+  byteRatings: Array<ByteRating>;
   byteSocialShare?: Maybe<ByteSocialShare>;
   bytes: Array<Byte>;
   chatbotCategories: Array<ChatbotCategory>;
   chatbotFAQs: Array<ChatbotFaq>;
   chatbotUserQuestions: Array<ChatbotUserQuestion>;
+  consolidatedByteRating?: Maybe<ConsolidatedByteRating>;
   consolidatedGuideRating?: Maybe<ConsolidatedGuideRating>;
   courses: Array<GitCourse>;
   discordChannels: Array<DiscordChannel>;
@@ -2196,6 +2250,18 @@ export interface QueryByteCollectionsArgs {
 }
 
 
+export interface QueryByteRatingArgs {
+  ratingUuid: Scalars['String'];
+  spaceId?: InputMaybe<Scalars['String']>;
+}
+
+
+export interface QueryByteRatingsArgs {
+  byteId: Scalars['String'];
+  spaceId: Scalars['String'];
+}
+
+
 export interface QueryByteSocialShareArgs {
   byteId: Scalars['String'];
   spaceId: Scalars['String'];
@@ -2218,6 +2284,12 @@ export interface QueryChatbotFaQsArgs {
 
 
 export interface QueryChatbotUserQuestionsArgs {
+  spaceId: Scalars['String'];
+}
+
+
+export interface QueryConsolidatedByteRatingArgs {
+  byteId: Scalars['String'];
   spaceId: Scalars['String'];
 }
 
@@ -2936,6 +3008,17 @@ export interface UpsertByteInput {
   tags: Array<Scalars['String']>;
   thumbnail?: InputMaybe<Scalars['String']>;
   videoUrl?: InputMaybe<Scalars['String']>;
+}
+
+export interface UpsertByteRatingInput {
+  byteId: Scalars['String'];
+  negativeFeedback?: InputMaybe<ByteFeedbackInput>;
+  positiveFeedback?: InputMaybe<ByteFeedbackInput>;
+  rating?: InputMaybe<Scalars['Int']>;
+  ratingUuid: Scalars['String'];
+  skipRating?: InputMaybe<Scalars['Boolean']>;
+  spaceId: Scalars['String'];
+  userId?: InputMaybe<Scalars['String']>;
 }
 
 export interface UpsertByteSocialShareInput {

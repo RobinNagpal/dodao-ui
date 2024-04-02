@@ -12,6 +12,7 @@ import styled from 'styled-components';
 import SelectByteCollectionModal from './SelectByteCollectionModal';
 import UploadInput from '../app/UploadInput';
 import NativeSelect from '@/components/core/select/NativeSelect';
+import Image from 'next/image';
 
 interface ByteCollectionCategoryEditorProps {
   byteCategorySummary?: CategoryWithByteCollection;
@@ -42,6 +43,7 @@ function ByteCollectionCategoryEditor(props: ByteCollectionCategoryEditorProps) 
     { id: ByteCollectionCategoryStatus.Active, label: 'Active' },
     { id: ByteCollectionCategoryStatus.Hidden, label: 'Hidden' },
     { id: ByteCollectionCategoryStatus.ComingSoon, label: 'Coming Soon' },
+    { id: ByteCollectionCategoryStatus.TryItOut, label: 'Try It Out' },
   ];
 
   return (
@@ -70,7 +72,8 @@ function ByteCollectionCategoryEditor(props: ByteCollectionCategoryEditorProps) 
         onInput={(value) => helperFunctions.updateByteCategoryImageUrl(value?.toString() || '')}
         modelValue={byteCategory.imageUrl || ''}
       />
-      {byteCategory.imageUrl && <img src={byteCategory.imageUrl} style={{ height: '150px', width: '150px' }} className="my-2" />}
+
+      {byteCategory.imageUrl && <Image src={byteCategory.imageUrl} alt="Byte Collection Category Image" height={150} width={150} className="my-2" />}
 
       <NativeSelect
         label="Select the status"
