@@ -40,7 +40,7 @@ export default function TidbitsSiteTabs({ selectedTabId }: { selectedTabId?: str
             }
           }}
           tabs={tabs}
-          className="w-96"
+          className="w-[26]"
         />
       </div>
     </PrivateComponent>
