@@ -25,17 +25,15 @@ function LoginButtonsFunction(props: { space: SpaceWithIntegrationsFragment; onC
     processingNear,
   } = useAuth();
 
-  const isTidbitSite = space?.type === SpaceTypes.TidbitsSite;
+  const allOptionsEnabled = (space.authSettings.loginOptions?.length || 0) === 0;
 
-  const allOptionsEnabled = !isTidbitSite && (space.authSettings.loginOptions?.length || 0) === 0;
+  const isMetamaskEnabled = !!space.authSettings.loginOptions?.includes(LoginProviders.MetaMask);
+  const isCoinbaseEnabled = !!space.authSettings.loginOptions?.includes(LoginProviders.Coinbase);
+  const isGoogleEnabled = !!space.authSettings.loginOptions?.includes(LoginProviders.Google);
+  const isDiscordEnabled = !!space.authSettings.loginOptions?.includes(LoginProviders.Discord);
+  const isNearEnabled = !!space.authSettings.loginOptions?.includes(LoginProviders.Near);
 
-  const isMetamaskEnabled = !isTidbitSite && !!space.authSettings.loginOptions?.includes(LoginProviders.MetaMask);
-  const isCoinbaseEnabled = !isTidbitSite && !!space.authSettings.loginOptions?.includes(LoginProviders.Coinbase);
-  const isGoogleEnabled = !isTidbitSite && !!space.authSettings.loginOptions?.includes(LoginProviders.Google);
-  const isDiscordEnabled = !isTidbitSite && !!space.authSettings.loginOptions?.includes(LoginProviders.Discord);
-  const isNearEnabled = !isTidbitSite && !!space.authSettings.loginOptions?.includes(LoginProviders.Near);
-
-  const isEmailEnabled = isTidbitSite || !!space.authSettings.loginOptions?.includes(LoginProviders.Email);
+  const isEmailEnabled = !!space.authSettings.loginOptions?.includes(LoginProviders.Email);
 
   const [showEmailModal, setShowEmailModal] = React.useState(false);
   const loginWithEmail = () => {
