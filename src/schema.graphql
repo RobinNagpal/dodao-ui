@@ -158,6 +158,16 @@ input ByteFeedbackInput {
   ux: Boolean
 }
 
+type ByteFeedback {
+  content: Boolean
+  ux: Boolean
+}
+
+input ByteFeedbackInput {
+  content: Boolean
+  ux: Boolean
+}
+
 type ByteLinkedinPdfContent {
   excerpt: String!
   steps: [ByteLinkedinPdfContentStep!]!

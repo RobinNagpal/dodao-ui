@@ -1,12 +1,13 @@
-import GuideEndRatingModal from '@/components/app/Modal/Guide/GuideEndRatingModal';
 import GuideSidebar from '@/components/guides/View/GuideSidebar';
 import GuideStepperItem from '@/components/guides/View/GuideStepperItem';
 
 import { useGuideRatings } from '@/components/guides/View/useGuideRatings';
 import { UseViewGuideHelper } from '@/components/guides/View/useViewGuide';
-import { GuideFragment, Space } from '@/graphql/generated/generated-types';
+import { GuideFeedback, GuideFragment, Space } from '@/graphql/generated/generated-types';
 import React, { useMemo } from 'react';
 import styles from './GuideStepper.module.scss';
+import RatingModal, { FeedbackOptions } from '@/components/app/Modal/Rating/RatingModal';
+import { ClipboardDocumentListIcon, QuestionMarkCircleIcon, RocketLaunchIcon } from '@heroicons/react/24/outline';
 
 interface GuideProps {
   viewGuideHelper: UseViewGuideHelper;
@@ -22,6 +23,12 @@ const Guide: React.FC<GuideProps> = ({ viewGuideHelper, guide, space }) => {
 
   const { showEndRatingsModal, setShowEndRatingsModal, setGuideRating, skipGuideRating } = useGuideRatings(space, guide, viewGuideHelper.guideSubmission);
 
+  const feedbackOptions: FeedbackOptions[] = [
+    { name: 'content', label: 'Content', image: ClipboardDocumentListIcon },
+    { name: 'questions', label: 'Questions', image: QuestionMarkCircleIcon },
+    { name: 'ux', label: 'User Experience', image: RocketLaunchIcon },
+  ];
+
   return (
     <div className="flex">
       <div className={`hidden lg:flex grow flex-col gap-y-5 overflow-hidden px-6 p-4 ${styles.navWrapperDiv}`}>
@@ -31,11 +38,13 @@ const Guide: React.FC<GuideProps> = ({ viewGuideHelper, guide, space }) => {
         <GuideStepperItem space={space} viewGuideHelper={viewGuideHelper} guide={guide} step={activeStep} />
       </div>
 
-      <GuideEndRatingModal
+      <RatingModal
+        ratingType="Guide"
         open={showEndRatingsModal}
         onClose={() => setShowEndRatingsModal(false)}
-        skipGuideRating={skipGuideRating}
-        setGuideRating={setGuideRating}
+        skipRating={skipGuideRating}
+        setRating={setGuideRating as (rating: number, feedback?: GuideFeedback) => Promise<void>}
+        feedbackOptions={feedbackOptions}
       />
     </div>
   );

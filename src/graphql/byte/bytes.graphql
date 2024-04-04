@@ -144,6 +144,28 @@ fragment ByteSummary on Byte {
   videoUrl
 }
 
+fragment ByteRating on ByteRating {
+  ratingUuid
+  createdAt
+  rating
+  byteId
+  ipAddress
+  negativeFeedback {
+    content
+    ux
+  }
+  positiveFeedback {
+    ux
+    content
+  }
+  ratingUuid
+  skipRating
+  spaceId
+  updatedAt
+  userId
+  username
+}
+
 query QueryBytes($spaceId: String!) {
   bytes(spaceId: $spaceId) {
     ...ByteSummary
@@ -156,6 +178,29 @@ query QueryByteDetails($spaceId: String!, $byteId: String!, $includeDraft: Boole
   }
 }
 
+query ByteRatings($spaceId: String!, $byteId: String!) {
+  byteRatings(spaceId: $spaceId, byteId: $byteId) {
+    ...ByteRating
+  }
+}
+
+query ConsolidatedByteRating($spaceId: String!, $byteId: String!) {
+  consolidatedByteRating(spaceId: $spaceId, byteId: $byteId) {
+    avgRating
+    ratingFeedbackCount
+    positiveFeedbackCount
+    negativeFeedbackCount
+    positiveRatingDistribution {
+      content
+      ux
+    }
+    negativeRatingDistribution {
+      content
+      ux
+    }
+  }
+}
+
 mutation UpsertByte($spaceId: String!, $input: UpsertByteInput!) {
   payload: upsertByte(spaceId: $spaceId, input: $input) {
     ...ByteDetails
@@ -164,4 +209,10 @@ mutation UpsertByte($spaceId: String!, $input: UpsertByteInput!) {
 
 mutation DeleteByte($spaceId: String!, $byteId: String!) {
   payload: deleteByte(spaceId: $spaceId, byteId: $byteId)
+}
+
+mutation UpsertByteRatings($spaceId: String!, $upsertByteRatingInput: UpsertByteRatingInput!) {
+  payload: upsertByteRating(spaceId: $spaceId, upsertByteRatingInput: $upsertByteRatingInput) {
+    ...ByteRating
+  }
 }

@@ -41,11 +41,12 @@ interface WithCarouselAndProgress1Props {
   step: ByteStepFragment;
   space: SpaceWithIntegrationsFragment;
   viewByteHelper: UseGenericViewByteHelper;
+  setByteSubmitted: (submitted: boolean) => void;
 }
 
 type TransitionState = 'enter' | 'active' | 'exit';
 
-function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space }: WithCarouselAndProgress1Props) {
+function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space, setByteSubmitted }: WithCarouselAndProgress1Props) {
   const { activeStepOrder } = viewByteHelper;
   const { $t: t } = useI18();
   const { showNotification } = useNotificationContext();
@@ -126,6 +127,7 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space }: W
             return;
           }
         }
+        setByteSubmitted(true);
       }
 
       setTransitionState('exit');
