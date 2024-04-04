@@ -60,9 +60,11 @@ export default function UpdateThemeModal({ space, open, onClose, byteCollection 
         });
         location.reload();
       } else {
+        console.log('Error updating theme colors', response.errors);
         showNotification({ type: 'error', message: $t('notify.somethingWentWrong') });
       }
     } catch (e) {
+      console.error('Error updating theme colors', e);
       showNotification({ type: 'error', message: $t('notify.somethingWentWrong') });
     }
   }
