@@ -37,15 +37,3 @@
     scrollbar-width: thin; /* Adjusts the scrollbar width in Firefox on small devices */
   }
 }
-
-/* Media query for smaller devices */
-@media screen and (max-width: 768px) {
-  ::-webkit-scrollbar {
-    width: 5px;
-    /* Makes scrollbars thinner on small devices */
-  }
-
-  ::-webkit-scrollbar-thumb {
-    border-radius: 2px;
-  }
-}
