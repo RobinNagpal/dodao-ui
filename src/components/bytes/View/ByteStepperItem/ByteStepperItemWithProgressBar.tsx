@@ -19,6 +19,7 @@ import {
   UserDiscordInfoInput,
 } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
+import useWindowDimensions from '@/hooks/useWindowDimensions';
 import { isQuestion, isUserDiscordConnect, isUserInput } from '@/types/deprecated/helpers/stepItemTypes';
 import { getMarkedRenderer } from '@/utils/ui/getMarkedRenderer';
 import isEqual from 'lodash/isEqual';
@@ -162,11 +163,21 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space, set
 
   const showQuestionsCompletionWarning = nextButtonClicked && (!isQuestionAnswered() || !isDiscordConnected() || !isUserInputComplete());
 
+  const { height } = useWindowDimensions();
+
+  const isShortScreen = height <= 690;
+  const isLongScreen = height >= 900;
+
+  const stepClasses = {
+    headingClasses: isShortScreen ? 'text-3xl' : isLongScreen ? 'text-4xl xl:text-5xl' : 'text-3xl',
+    contentClasses: isShortScreen ? 'text-lg' : isLongScreen ? 'text-lg xl:text-2xl' : 'text-lg',
+  };
+
   return (
-    <div className={`w-full flex flex-col justify-between py-12 ${styles.stepContainer}`}>
-      <div className={`w-full px-4 md:px-8 overflow-scroll flex flex-col ${transitionClasses[transitionState]} ${styles.stepContents}`}>
+    <div className={`w-full flex flex-col justify-between py-12 px-4 md:px-8  ${styles.stepContainer}`}>
+      <div className={`w-full overflow-scroll flex flex-col ${transitionClasses[transitionState]} ${styles.stepContents}`}>
         <div className="flex flex-col flex-grow justify-center align-center">
-          {!stepItems.some(isQuestion) && step.imageUrl && (
+          {!stepItems.some(isQuestion) && !isShortScreen && step.imageUrl && (
             <div className="flex justify-center align-center ">
               <img
                 src={step.imageUrl}
@@ -181,10 +192,10 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space, set
             </div>
           )}
           <div className="flex justify-center w-full mt-4">
-            <h1 className={`text-4xl xl:text-5xl`}>{step.name || byte.name}</h1>
+            <h1 className={stepClasses.headingClasses}>{step.name || byte.name}</h1>
           </div>
           <div className="mt-4 lg:mt-8 text-left">
-            <div dangerouslySetInnerHTML={{ __html: stepContents }} className={`markdown-body text-lg xl:text-2xl px-0 md:px-4 text-center`} />
+            <div dangerouslySetInnerHTML={{ __html: stepContents }} className={`markdown-body text-center ` + stepClasses.contentClasses} />
             {stepItems.map((stepItem: ByteStepItemFragment, index) => {
               if (isQuestion(stepItem)) {
                 return (
@@ -241,8 +252,10 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space, set
           />
         </div>
       </div>
-      <div className="absolute bottom-6 w-full px-4">
-        <StepIndicatorProgress steps={viewByteHelper.byteRef?.steps?.length || 2} currentStep={activeStepOrder} className="py-4 hidden md:block sm:hidden" />
+      <div className="absolute bottom-6 w-full -mx-8 px-4">
+        {!isShortScreen && (
+          <StepIndicatorProgress steps={viewByteHelper.byteRef?.steps?.length || 2} currentStep={activeStepOrder} className="py-4 hidden md:block sm:hidden" />
+        )}
         <div className="w-full">
           {isNotFirstStep && !isByteCompletedStep && (
             <Button onClick={() => viewByteHelper.goToPreviousStep(step)} className="float-left ml-2 sm:ml-0">
