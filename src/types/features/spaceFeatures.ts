@@ -7,6 +7,7 @@ export enum FeatureName {
   Shorts = 'Shorts',
   Simulations = 'Simulations',
   Timelines = 'Timelines',
+  ClickableDemos = 'ClickableDemos',
 }
 
 export interface FeatureItem {

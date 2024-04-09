@@ -30,6 +30,13 @@ export const testAcademyFeatures: FeatureItem[] = [
     },
   },
   {
+    featureName: FeatureName.ClickableDemos,
+    enabled: true,
+    details: {
+      priority: 65,
+    },
+  },
+  {
     featureName: FeatureName.Timelines,
     enabled: true,
     details: {
