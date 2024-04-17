@@ -1168,7 +1168,8 @@ export enum ImageType {
   Guide = 'Guide',
   ShortVideo = 'ShortVideo',
   Space = 'Space',
-  Tidbits = 'Tidbits'
+  Tidbits = 'Tidbits',
+  ClickableDemos = 'ClickableDemos'
 }
 
 export interface ImagesResponse {

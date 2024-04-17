@@ -112,7 +112,7 @@ export default function Step({
           <UploadInput
             label="HTML File"
             error={inputError('url') ? 'URL is required' : ''}
-            imageType={ImageType.Space}
+            imageType={ImageType.ClickableDemos}
             spaceId={space?.id || 'new-space'}
             modelValue={step.url}
             objectId={(space?.name && slugify(space?.name)) || space?.id || 'new-space'}

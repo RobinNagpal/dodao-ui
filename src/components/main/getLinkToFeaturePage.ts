@@ -33,5 +33,9 @@ export const getLinkToFeaturePage = (featureName: FeatureName): string => {
     return '/shorts';
   }
 
+  if (featureName === FeatureName.ClickableDemos) {
+    return '/clickable-demos';
+  }
+
   throw Error('Invalid feature name' + featureName);
 };
