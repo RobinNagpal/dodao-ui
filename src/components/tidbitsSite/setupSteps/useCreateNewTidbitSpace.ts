@@ -1,16 +1,8 @@
 import { useNotificationContext } from '@/contexts/NotificationContext';
-import {
-  GuideSummaryFragment,
-  Space,
-  SpaceTypes,
-  SpaceWithIntegrationsFragment,
-  useCreateNewTidbitSpaceMutation,
-  useExtendedSpaceQuery,
-  useGetSpaceFromCreatorQuery,
-  useUpdateSpaceMutation,
-} from '@/graphql/generated/generated-types';
-import getApiResponse from '@/utils/api/getApiResponse';
+import { Space, SpaceTypes, useCreateNewTidbitSpaceMutation, useGetSpaceFromCreatorQuery, useUpdateSpaceMutation } from '@/graphql/generated/generated-types';
+import { Session } from '@/types/auth/Session';
 import { slugify } from '@/utils/auth/slugify';
+import { isSuperAdmin } from '@/utils/auth/superAdmins';
 import { getEditSpaceType, getSpaceInput, SpaceEditType } from '@/utils/space/spaceUpdateUtils';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
@@ -37,6 +29,7 @@ export default function useCreateNewTidbitSpace(): UseEditSpaceHelper {
 
   const [loading, setLoading] = useState(false);
   const [existingSpace, setExistingSpace] = useState<Space | null>(null);
+  const superAdmin = !!(session && isSuperAdmin(session as Session));
 
   const {
     data: spaceByUsername,
@@ -66,7 +59,7 @@ export default function useCreateNewTidbitSpace(): UseEditSpaceHelper {
   }, [session]);
 
   useEffect(() => {
-    if (spaceByUsername?.getSpaceFromCreator) {
+    if (spaceByUsername?.getSpaceFromCreator && !superAdmin) {
       const space = spaceByUsername.getSpaceFromCreator;
       setExistingSpace(space);
       setTidbitSpace({ id: space.id, name: space.name, avatar: space.avatar || '' });

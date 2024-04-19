@@ -16,8 +16,7 @@ interface NewSiteInformationProps {
 }
 
 export default function NewTidbitsSiteInformationStep({ goToNextStep, goToPreviousStep }: NewSiteInformationProps) {
-  const createSpaceHelper = useCreateNewTidbitSpace();
-  const { tidbitSpace, setSpaceField, createNewTidbitSpace, upserting, existingSpace, loading, updateTidbitSpace } = createSpaceHelper;
+  const { tidbitSpace, setSpaceField, createNewTidbitSpace, upserting, existingSpace, loading, updateTidbitSpace } = useCreateNewTidbitSpace();
 
   const [uploadThumbnailLoading, setUploadThumbnailLoading] = useState(false);
 

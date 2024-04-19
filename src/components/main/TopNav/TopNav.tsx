@@ -21,7 +21,6 @@ import PlusIcon from '@heroicons/react/20/solid/PlusIcon';
 import Bars3Icon from '@heroicons/react/24/outline/Bars3Icon';
 import XMarkIcon from '@heroicons/react/24/outline/XMarkIcon';
 import { useSession } from 'next-auth/react';
-import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import styled from 'styled-components';
@@ -125,6 +124,10 @@ function CreateOrLoginButton(props: {
     return null;
   }
 
+  if (props.space?.type === SpaceTypes.TidbitsSite) {
+    return null;
+  }
+
   return (
     <ButtonLarge variant="contained" primary onClick={props.onClickLogin}>
       Login
@@ -138,6 +141,8 @@ export default function TopNav(props: { space?: SpaceWithIntegrationsFragment | 
   const [showCreateModal, setShowCreateModal] = useState(false);
   const { space } = props;
   const router = useRouter();
+
+  const superAdmin = !!(session && isSuperAdmin(session as Session));
 
   return (
     <StyledDiv>
@@ -187,7 +192,7 @@ export default function TopNav(props: { space?: SpaceWithIntegrationsFragment | 
                   {space && space.type !== SpaceTypes.TidbitsSite && <DesktopNavLinks space={space} />}
                 </div>
                 <div className="flex items-center">
-                  {PredefinedSpaces.TIDBITS_HUB === space?.id && (
+                  {PredefinedSpaces.TIDBITS_HUB === space?.id && superAdmin && (
                     <div className="mr-2">
                       <ButtonLarge
                         type="button"

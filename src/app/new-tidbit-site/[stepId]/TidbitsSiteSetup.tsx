@@ -6,13 +6,19 @@ import HorizontalStepperSimple from '@/components/core/stepper/HorizontalStepper
 import NewTidbitsSiteInformationStep from '@/components/tidbitsSite/setupSteps/NewTidbitsSiteInformationStep';
 import TidbitSiteConfigurationStep from '@/components/tidbitsSite/setupSteps/TidbitSiteConfigurationStep';
 import UserInformationStep from '@/components/tidbitsSite/setupSteps/UserInformationStep';
+import { Session } from '@/types/auth/Session';
+import { isSuperAdmin } from '@/utils/auth/superAdmins';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { initialSteps, Step, StepId } from './../steps';
 
 export default function TidbitsSiteSetup({ stepId }: { stepId: StepId }) {
   const [steps, setSteps] = useState<Step[]>(initialSteps);
   const router = useRouter();
+  const { data: session } = useSession();
+  const superAdmin = !!(session && isSuperAdmin(session as Session));
+
   const goToNextStep = () => {
     const nextStepIndex = steps.findIndex((step) => step.id === stepId) + 1;
     if (nextStepIndex < steps.length) {
@@ -59,6 +65,12 @@ export default function TidbitsSiteSetup({ stepId }: { stepId: StepId }) {
         return null;
     }
   };
+
+  useEffect(() => {
+    if (stepId === 'user-details' && superAdmin) {
+      router.push('/new-tidbit-site/tidbit-site-details');
+    }
+  }, []);
   return (
     <PageWrapper>
       <HorizontalStepperSimple steps={steps} currentStepId={stepId} />
