@@ -183,7 +183,6 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space, set
                 src={step.imageUrl}
                 alt="byte"
                 style={{
-                  height: '450px',
                   maxHeight: '35vh',
                 }}
               />
