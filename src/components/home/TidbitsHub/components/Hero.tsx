@@ -22,7 +22,7 @@ export function Hero() {
               </p>
               <div className="mt-8 flex flex-wrap gap-x-6 gap-y-4">
                 <div>
-                  <WatchVideoButton src={'https://dodao-prod-public-assets.s3.us-east-1.amazonaws.com/tidbithub/Tidbits_Hub-Banks.mp4'} />
+                  <WatchVideoButton src={'https://dodao-prod-public-assets.s3.us-east-1.amazonaws.com/tidbithub/Updated_Tidbits_Hub-Crypto.mp4'} />
                 </div>
                 <div className="-mt-2">
                   <ContactUsLink />
