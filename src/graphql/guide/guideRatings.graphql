@@ -24,8 +24,7 @@ fragment GuideRating on GuideRating {
   username
 }
 
-
-mutation UpsertGuideRatings($spaceId: String!, $upsertGuideRatingInput: UpsertGuideRatingInput!){
+mutation UpsertGuideRatings($spaceId: String!, $upsertGuideRatingInput: UpsertGuideRatingInput!) {
   payload: upsertGuideRating(spaceId: $spaceId, upsertGuideRatingInput: $upsertGuideRatingInput) {
     ...GuideRating
   }
@@ -39,6 +38,25 @@ query GuideRatings($spaceId: String!, $guideUuid: String!) {
 
 query ConsolidatedGuideRating($spaceId: String!, $guideUuid: String!) {
   consolidatedGuideRating(spaceId: $spaceId, guideUuid: $guideUuid) {
+    avgRating
+    endRatingFeedbackCount
+    positiveFeedbackCount
+    negativeFeedbackCount
+    positiveRatingDistribution {
+      content
+      questions
+      ux
+    }
+    negativeRatingDistribution {
+      content
+      questions
+      ux
+    }
+  }
+}
+
+query ConsolidatedGuideRatingsForSpace($spaceId: String!) {
+  consolidatedGuideRatingsForSpace(spaceId: $spaceId) {
     avgRating
     endRatingFeedbackCount
     positiveFeedbackCount

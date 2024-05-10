@@ -183,17 +183,6 @@ export interface ByteFeedbackInput {
   ux?: InputMaybe<Scalars['Boolean']>;
 }
 
-export interface ByteFeedback {
-  __typename?: 'ByteFeedback';
-  content?: Maybe<Scalars['Boolean']>;
-  ux?: Maybe<Scalars['Boolean']>;
-}
-
-export interface ByteFeedbackInput {
-  content?: InputMaybe<Scalars['Boolean']>;
-  ux?: InputMaybe<Scalars['Boolean']>;
-}
-
 export interface ByteLinkedinPdfContent {
   __typename?: 'ByteLinkedinPdfContent';
   excerpt: Scalars['String'];
@@ -391,6 +380,44 @@ export interface ChatbotUserQuestion {
   id: Scalars['String'];
   question: Scalars['String'];
   spaceId: Scalars['String'];
+}
+
+export interface ClickableDemo {
+  __typename?: 'ClickableDemo';
+  createdAt: Scalars['DateTimeISO'];
+  excerpt: Scalars['String'];
+  id: Scalars['String'];
+  spaceId: Scalars['String'];
+  title: Scalars['String'];
+  updatedAt: Scalars['DateTimeISO'];
+}
+
+export interface ClickableDemoStep {
+  __typename?: 'ClickableDemoStep';
+  id: Scalars['String'];
+  order: Scalars['Int'];
+  selector: Scalars['String'];
+  tooltipInfo: Scalars['String'];
+  url: Scalars['String'];
+}
+
+export interface ClickableDemoStepInput {
+  id: Scalars['String'];
+  order: Scalars['Int'];
+  selector: Scalars['String'];
+  tooltipInfo: Scalars['String'];
+  url: Scalars['String'];
+}
+
+export interface ClickableDemoWithSteps {
+  __typename?: 'ClickableDemoWithSteps';
+  createdAt: Scalars['DateTimeISO'];
+  excerpt: Scalars['String'];
+  id: Scalars['String'];
+  spaceId: Scalars['String'];
+  steps: Array<ClickableDemoStep>;
+  title: Scalars['String'];
+  updatedAt: Scalars['DateTimeISO'];
 }
 
 export interface CompletionAiInput {
@@ -1294,6 +1321,7 @@ export interface Mutation {
   upsertChatbotCategory: ChatbotCategory;
   upsertChatbotFAQ: ChatbotFaq;
   upsertChatbotUserQuestion: ChatbotUserQuestion;
+  upsertClickableDemo: ClickableDemoWithSteps;
   upsertCourseIntegrations: CourseIntegrations;
   upsertDomainRecords: DomainRecords;
   upsertGitCourse?: Maybe<SummarizedGitCourse>;
@@ -1872,6 +1900,12 @@ export interface MutationUpsertChatbotUserQuestionArgs {
 }
 
 
+export interface MutationUpsertClickableDemoArgs {
+  input: UpsertClickableDemoInput;
+  spaceId: Scalars['String'];
+}
+
+
 export interface MutationUpsertCourseIntegrationsArgs {
   courseIntegrationInput: UpsertCourseIntegrationsInput;
   spaceId: Scalars['String'];
@@ -2161,8 +2195,12 @@ export interface Query {
   chatbotCategories: Array<ChatbotCategory>;
   chatbotFAQs: Array<ChatbotFaq>;
   chatbotUserQuestions: Array<ChatbotUserQuestion>;
+  clickableDemoWithSteps: ClickableDemoWithSteps;
+  clickableDemos: Array<ClickableDemo>;
   consolidatedByteRating?: Maybe<ConsolidatedByteRating>;
+  consolidatedByteRatingsForSpace?: Maybe<ConsolidatedByteRating>;
   consolidatedGuideRating?: Maybe<ConsolidatedGuideRating>;
+  consolidatedGuideRatingsForSpace?: Maybe<ConsolidatedGuideRating>;
   courses: Array<GitCourse>;
   discordChannels: Array<DiscordChannel>;
   discordMessages: Array<DiscordMessage>;
@@ -2299,14 +2337,35 @@ export interface QueryChatbotUserQuestionsArgs {
 }
 
 
+export interface QueryClickableDemoWithStepsArgs {
+  demoId: Scalars['String'];
+  spaceId: Scalars['String'];
+}
+
+
+export interface QueryClickableDemosArgs {
+  spaceId: Scalars['String'];
+}
+
+
 export interface QueryConsolidatedByteRatingArgs {
   byteId: Scalars['String'];
   spaceId: Scalars['String'];
 }
 
 
+export interface QueryConsolidatedByteRatingsForSpaceArgs {
+  spaceId: Scalars['String'];
+}
+
+
 export interface QueryConsolidatedGuideRatingArgs {
   guideUuid: Scalars['String'];
+  spaceId: Scalars['String'];
+}
+
+
+export interface QueryConsolidatedGuideRatingsForSpaceArgs {
   spaceId: Scalars['String'];
 }
 
@@ -3071,6 +3130,13 @@ export interface UpsertChatbotUserQuestionInput {
   spaceId: Scalars['String'];
 }
 
+export interface UpsertClickableDemoInput {
+  excerpt: Scalars['String'];
+  id: Scalars['String'];
+  steps: Array<ClickableDemoStepInput>;
+  title: Scalars['String'];
+}
+
 export interface UpsertCourseIntegrationsInput {
   courseKey: Scalars['String'];
   discordRoleIds: Array<Scalars['String']>;
@@ -3377,6 +3443,13 @@ export type UpsertByteCollectionCategoryMutationVariables = Exact<{
 
 
 export type UpsertByteCollectionCategoryMutation = { __typename?: 'Mutation', payload: { __typename?: 'ByteCollectionCategory', id: string, name: string, excerpt?: string | null, imageUrl?: string | null, status: string, priority: number, byteCollectionIds: Array<string> } };
+
+export type ConsolidatedByteRatingsForSpaceQueryVariables = Exact<{
+  spaceId: Scalars['String'];
+}>;
+
+
+export type ConsolidatedByteRatingsForSpaceQuery = { __typename?: 'Query', consolidatedByteRatingsForSpace?: { __typename?: 'ConsolidatedByteRating', avgRating: number, positiveFeedbackCount: number, negativeFeedbackCount: number, ratingFeedbackCount: number, positiveRatingDistribution: { __typename?: 'ByteRatingDistribution', content: number, ux: number }, negativeRatingDistribution: { __typename?: 'ByteRatingDistribution', content: number, ux: number } } | null };
 
 export type ByteLinkedinPdfContentStepFragment = { __typename?: 'ByteLinkedinPdfContentStep', content: string, name: string };
 
@@ -3965,6 +4038,13 @@ export type ConsolidatedGuideRatingQueryVariables = Exact<{
 
 
 export type ConsolidatedGuideRatingQuery = { __typename?: 'Query', consolidatedGuideRating?: { __typename?: 'ConsolidatedGuideRating', avgRating: number, endRatingFeedbackCount: number, positiveFeedbackCount: number, negativeFeedbackCount: number, positiveRatingDistribution: { __typename?: 'RatingDistribution', content: number, questions: number, ux: number }, negativeRatingDistribution: { __typename?: 'RatingDistribution', content: number, questions: number, ux: number } } | null };
+
+export type ConsolidatedGuideRatingsForSpaceQueryVariables = Exact<{
+  spaceId: Scalars['String'];
+}>;
+
+
+export type ConsolidatedGuideRatingsForSpaceQuery = { __typename?: 'Query', consolidatedGuideRatingsForSpace?: { __typename?: 'ConsolidatedGuideRating', avgRating: number, endRatingFeedbackCount: number, positiveFeedbackCount: number, negativeFeedbackCount: number, positiveRatingDistribution: { __typename?: 'RatingDistribution', content: number, questions: number, ux: number }, negativeRatingDistribution: { __typename?: 'RatingDistribution', content: number, questions: number, ux: number } } | null };
 
 export type GuideSubmissionsQueryQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -6402,6 +6482,55 @@ export function useUpsertByteCollectionCategoryMutation(baseOptions?: Apollo.Mut
 export type UpsertByteCollectionCategoryMutationHookResult = ReturnType<typeof useUpsertByteCollectionCategoryMutation>;
 export type UpsertByteCollectionCategoryMutationResult = Apollo.MutationResult<UpsertByteCollectionCategoryMutation>;
 export type UpsertByteCollectionCategoryMutationOptions = Apollo.BaseMutationOptions<UpsertByteCollectionCategoryMutation, UpsertByteCollectionCategoryMutationVariables>;
+export const ConsolidatedByteRatingsForSpaceDocument = gql`
+    query ConsolidatedByteRatingsForSpace($spaceId: String!) {
+  consolidatedByteRatingsForSpace(spaceId: $spaceId) {
+    avgRating
+    positiveFeedbackCount
+    negativeFeedbackCount
+    positiveRatingDistribution {
+      content
+      ux
+    }
+    negativeRatingDistribution {
+      content
+      ux
+    }
+    ratingFeedbackCount
+  }
+}
+    `;
+
+/**
+ * __useConsolidatedByteRatingsForSpaceQuery__
+ *
+ * To run a query within a React component, call `useConsolidatedByteRatingsForSpaceQuery` and pass it any options that fit your needs.
+ * When your component renders, `useConsolidatedByteRatingsForSpaceQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useConsolidatedByteRatingsForSpaceQuery({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *   },
+ * });
+ */
+export function useConsolidatedByteRatingsForSpaceQuery(baseOptions: Apollo.QueryHookOptions<ConsolidatedByteRatingsForSpaceQuery, ConsolidatedByteRatingsForSpaceQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ConsolidatedByteRatingsForSpaceQuery, ConsolidatedByteRatingsForSpaceQueryVariables>(ConsolidatedByteRatingsForSpaceDocument, options);
+      }
+export function useConsolidatedByteRatingsForSpaceLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ConsolidatedByteRatingsForSpaceQuery, ConsolidatedByteRatingsForSpaceQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ConsolidatedByteRatingsForSpaceQuery, ConsolidatedByteRatingsForSpaceQueryVariables>(ConsolidatedByteRatingsForSpaceDocument, options);
+        }
+export type ConsolidatedByteRatingsForSpaceQueryHookResult = ReturnType<typeof useConsolidatedByteRatingsForSpaceQuery>;
+export type ConsolidatedByteRatingsForSpaceLazyQueryHookResult = ReturnType<typeof useConsolidatedByteRatingsForSpaceLazyQuery>;
+export type ConsolidatedByteRatingsForSpaceQueryResult = Apollo.QueryResult<ConsolidatedByteRatingsForSpaceQuery, ConsolidatedByteRatingsForSpaceQueryVariables>;
+export function refetchConsolidatedByteRatingsForSpaceQuery(variables: ConsolidatedByteRatingsForSpaceQueryVariables) {
+      return { query: ConsolidatedByteRatingsForSpaceDocument, variables: variables }
+    }
 export const ByteSocialShareDocument = gql`
     query ByteSocialShare($spaceId: String!, $byteId: String!) {
   byteSocialShare(spaceId: $spaceId, byteId: $byteId) {
@@ -8871,6 +9000,57 @@ export type ConsolidatedGuideRatingLazyQueryHookResult = ReturnType<typeof useCo
 export type ConsolidatedGuideRatingQueryResult = Apollo.QueryResult<ConsolidatedGuideRatingQuery, ConsolidatedGuideRatingQueryVariables>;
 export function refetchConsolidatedGuideRatingQuery(variables: ConsolidatedGuideRatingQueryVariables) {
       return { query: ConsolidatedGuideRatingDocument, variables: variables }
+    }
+export const ConsolidatedGuideRatingsForSpaceDocument = gql`
+    query ConsolidatedGuideRatingsForSpace($spaceId: String!) {
+  consolidatedGuideRatingsForSpace(spaceId: $spaceId) {
+    avgRating
+    endRatingFeedbackCount
+    positiveFeedbackCount
+    negativeFeedbackCount
+    positiveRatingDistribution {
+      content
+      questions
+      ux
+    }
+    negativeRatingDistribution {
+      content
+      questions
+      ux
+    }
+  }
+}
+    `;
+
+/**
+ * __useConsolidatedGuideRatingsForSpaceQuery__
+ *
+ * To run a query within a React component, call `useConsolidatedGuideRatingsForSpaceQuery` and pass it any options that fit your needs.
+ * When your component renders, `useConsolidatedGuideRatingsForSpaceQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useConsolidatedGuideRatingsForSpaceQuery({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *   },
+ * });
+ */
+export function useConsolidatedGuideRatingsForSpaceQuery(baseOptions: Apollo.QueryHookOptions<ConsolidatedGuideRatingsForSpaceQuery, ConsolidatedGuideRatingsForSpaceQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ConsolidatedGuideRatingsForSpaceQuery, ConsolidatedGuideRatingsForSpaceQueryVariables>(ConsolidatedGuideRatingsForSpaceDocument, options);
+      }
+export function useConsolidatedGuideRatingsForSpaceLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ConsolidatedGuideRatingsForSpaceQuery, ConsolidatedGuideRatingsForSpaceQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ConsolidatedGuideRatingsForSpaceQuery, ConsolidatedGuideRatingsForSpaceQueryVariables>(ConsolidatedGuideRatingsForSpaceDocument, options);
+        }
+export type ConsolidatedGuideRatingsForSpaceQueryHookResult = ReturnType<typeof useConsolidatedGuideRatingsForSpaceQuery>;
+export type ConsolidatedGuideRatingsForSpaceLazyQueryHookResult = ReturnType<typeof useConsolidatedGuideRatingsForSpaceLazyQuery>;
+export type ConsolidatedGuideRatingsForSpaceQueryResult = Apollo.QueryResult<ConsolidatedGuideRatingsForSpaceQuery, ConsolidatedGuideRatingsForSpaceQueryVariables>;
+export function refetchConsolidatedGuideRatingsForSpaceQuery(variables: ConsolidatedGuideRatingsForSpaceQueryVariables) {
+      return { query: ConsolidatedGuideRatingsForSpaceDocument, variables: variables }
     }
 export const GuideSubmissionsQueryDocument = gql`
     query GuideSubmissionsQuery($spaceId: String!, $guideUuid: String!, $filters: GuideSubmissionFiltersInput!) {

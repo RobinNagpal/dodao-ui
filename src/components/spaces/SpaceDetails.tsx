@@ -1,6 +1,7 @@
-import { ThemeValue } from '@/app/themes';
 import PageLoading from '@/components/core/loaders/PageLoading';
 import TabsWithUnderline, { TabItem } from '@/components/core/tabs/TabsWithUnderline';
+import ConsolidatedByteRatings from '@/components/spaces/Ratings/ConsolidatedByteRatings';
+import ConsolidatedGuideRatings from '@/components/spaces/Ratings/ConsolidatedGuideRatings';
 import SpaceAuthDetails from '@/components/spaces/View/SpaceAuthDetails';
 import SpaceBasicDetails from '@/components/spaces/View/SpaceBasicDetails';
 import SpaceByteDetails from '@/components/spaces/View/SpaceByteDetails';
@@ -8,10 +9,10 @@ import SpaceCourseDetails from '@/components/spaces/View/SpaceCoursesDetails';
 import SpaceDomaiDetails from '@/components/spaces/View/SpaceDomaiDetails';
 import SpaceGuideDetails from '@/components/spaces/View/SpaceGuideDetails';
 import SpaceSocialDetails from '@/components/spaces/View/SpaceSocialDetails';
-import SpaceTidbitsHomepageDetails from './View/SpaceTidbitsHomepageDetails';
 import SpaceThemeDetails from '@/components/spaces/View/SpaceThemeDetails';
 import { useExtendedSpaceQuery } from '@/graphql/generated/generated-types';
 import React, { useState } from 'react';
+import SpaceTidbitsHomepageDetails from './View/SpaceTidbitsHomepageDetails';
 
 interface SpaceDetailsProps {
   spaceId: string;
@@ -54,6 +55,8 @@ export default function SpaceDetails(props: SpaceDetailsProps) {
           <SpaceSocialDetails space={data.space} />
           <SpaceTidbitsHomepageDetails space={data.space} />
           <SpaceThemeDetails space={data.space} />
+          <ConsolidatedGuideRatings space={data.space} />
+          <ConsolidatedByteRatings space={data.space} />
         </div>
       )}
       {selectedTabId === TabIds.Content && (

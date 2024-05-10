@@ -1,0 +1,16 @@
+query ConsolidatedByteRatingsForSpace($spaceId: String!) {
+  consolidatedByteRatingsForSpace(spaceId: $spaceId) {
+    avgRating
+    positiveFeedbackCount
+    negativeFeedbackCount
+    positiveRatingDistribution {
+      content
+      ux
+    }
+    negativeRatingDistribution {
+      content
+      ux
+    }
+    ratingFeedbackCount
+  }
+}

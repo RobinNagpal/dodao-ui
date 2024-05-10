@@ -158,16 +158,6 @@ input ByteFeedbackInput {
   ux: Boolean
 }
 
-type ByteFeedback {
-  content: Boolean
-  ux: Boolean
-}
-
-input ByteFeedbackInput {
-  content: Boolean
-  ux: Boolean
-}
-
 type ByteLinkedinPdfContent {
   excerpt: String!
   steps: [ByteLinkedinPdfContentStep!]!
@@ -349,6 +339,41 @@ type ChatbotUserQuestion {
   id: String!
   question: String!
   spaceId: String!
+}
+
+type ClickableDemo {
+  createdAt: DateTimeISO!
+  excerpt: String!
+  id: String!
+  spaceId: String!
+  title: String!
+  updatedAt: DateTimeISO!
+}
+
+type ClickableDemoStep {
+  id: String!
+  order: Int!
+  selector: String!
+  tooltipInfo: String!
+  url: String!
+}
+
+input ClickableDemoStepInput {
+  id: String!
+  order: Int!
+  selector: String!
+  tooltipInfo: String!
+  url: String!
+}
+
+type ClickableDemoWithSteps {
+  createdAt: DateTimeISO!
+  excerpt: String!
+  id: String!
+  spaceId: String!
+  steps: [ClickableDemoStep!]!
+  title: String!
+  updatedAt: DateTimeISO!
 }
 
 input CompletionAIInput {
@@ -1216,6 +1241,7 @@ type Mutation {
   upsertChatbotCategory(input: UpsertChatbotCategoryInput!, spaceId: String!): ChatbotCategory!
   upsertChatbotFAQ(input: UpsertChatbotFAQInput!, spaceId: String!): ChatbotFAQ!
   upsertChatbotUserQuestion(input: UpsertChatbotUserQuestionInput!, spaceId: String!): ChatbotUserQuestion!
+  upsertClickableDemo(input: UpsertClickableDemoInput!, spaceId: String!): ClickableDemoWithSteps!
   upsertCourseIntegrations(courseIntegrationInput: UpsertCourseIntegrationsInput!, spaceId: String!): CourseIntegrations!
   upsertDomainRecords(spaceId: String!): DomainRecords!
   upsertGitCourse(gitCourseInput: GitCourseInput!, spaceId: String!): SummarizedGitCourse
@@ -1390,8 +1416,12 @@ type Query {
   chatbotCategories(spaceId: String!): [ChatbotCategory!]!
   chatbotFAQs(spaceId: String!): [ChatbotFAQ!]!
   chatbotUserQuestions(spaceId: String!): [ChatbotUserQuestion!]!
+  clickableDemoWithSteps(demoId: String!, spaceId: String!): ClickableDemoWithSteps!
+  clickableDemos(spaceId: String!): [ClickableDemo!]!
   consolidatedByteRating(byteId: String!, spaceId: String!): ConsolidatedByteRating
+  consolidatedByteRatingsForSpace(spaceId: String!): ConsolidatedByteRating
   consolidatedGuideRating(guideUuid: String!, spaceId: String!): ConsolidatedGuideRating
+  consolidatedGuideRatingsForSpace(spaceId: String!): ConsolidatedGuideRating
   courses(spaceId: String!): [GitCourse!]!
   discordChannels(serverId: String!, spaceId: String!): [DiscordChannel!]!
   discordMessages(channelId: String!, spaceId: String!): [DiscordMessage!]!
@@ -1932,6 +1962,13 @@ input UpsertChatbotUserQuestionInput {
   id: String!
   question: String!
   spaceId: String!
+}
+
+input UpsertClickableDemoInput {
+  excerpt: String!
+  id: String!
+  steps: [ClickableDemoStepInput!]!
+  title: String!
 }
 
 input UpsertCourseIntegrationsInput {
