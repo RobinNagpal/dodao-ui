@@ -2,11 +2,11 @@ import IconButton from '@/components/core/buttons/IconButton';
 import Input from '@/components/core/input/Input';
 import { IconTypes } from '@/components/core/icons/IconTypes';
 import { ClickableDemoStepInput, ImageType, Space, UpsertClickableDemoInput } from '@/graphql/generated/generated-types';
-import styled from 'styled-components';
 import { ClickableDemoErrors, ClickableDemoStepError } from '@/types/errors/clickableDemoErrors';
 import UploadInput from '@/components/app/UploadInput';
 import { slugify } from '@/utils/auth/slugify';
 import { useState } from 'react';
+import styles from './ClickableDemoStepperItem.module.scss';
 
 interface StepProps {
   space: Space;
@@ -20,21 +20,6 @@ interface StepProps {
   removeStep?: (stepUuid: string) => void;
   onUpdateStep: (step: ClickableDemoStepInput) => void;
 }
-
-const StyledStepContainer = styled.div<{ error: boolean }>`
-  border: ${(props) => (props.error ? '1px solid red' : 'none')};
-  border-radius: 0.375rem;
-  padding: 1rem;
-  margin-bottom: 1rem;
-  margin-left: 1rem;
-  width: 100%;
-`;
-
-const ActionsContainer = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  min-height: 40px;
-`;
 
 // Export the styled-components
 
@@ -71,7 +56,7 @@ export default function Step({
   };
 
   return (
-    <StyledStepContainer error={!!clickableDemoErrors?.steps?.[step.id]}>
+    <div className={`${styles.StyledStepContainer}`} style={{ border: !!clickableDemoErrors?.steps?.[step.id] === true ? '1px solid red' : 'none' }}>
       <h3>Step {step.order + 1}</h3>
       <div className="flex justify-end min-h-10">
         <IconButton onClick={() => moveStepUp?.(step.id)} iconName={IconTypes.MoveUp} removeBorder disabled={step.order === 0} />
@@ -121,8 +106,6 @@ export default function Step({
           />
         </div>
       </div>
-    </StyledStepContainer>
+    </div>
   );
 }
-
-export { StyledStepContainer, ActionsContainer };

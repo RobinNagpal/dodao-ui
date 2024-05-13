@@ -8,24 +8,7 @@ interface ClickableDemoModalProps {
 }
 
 function ClickableDemoModal({ clickableDemoWithSteps, onClose }: ClickableDemoModalProps) {
-  const tooltipArray = [
-    {
-      id: '2',
-      order: 2,
-      url: 'https://d31h13bdjwgzxs.cloudfront.net/academy/test-academy-eth/ClickableDemos/the_test_academy/1714657919760_arbitrum.html',
-      selector: '/html/body/div[1]/nav/div/div/div[2]/div/button',
-      tooltipInfo: 'Login Button from Arbitrum!',
-    },
-    {
-      id: '3',
-      order: 3,
-      url: 'https://d31h13bdjwgzxs.cloudfront.net/academy/test-academy-eth/ClickableDemos/the_test_academy/1714657991837_uniswap.html',
-      selector: '/html/body/footer/div/p',
-      tooltipInfo: 'This is the Footer tooltip!',
-    },
-  ];
-  const [tooltipObj, setTooltipObj] = useState<ClickableDemoStep>(tooltipArray[0]);
-  // const [tooltipObj, setTooltipObj] = useState<ClickableDemoStep>(clickableDemoWithSteps.steps[0]);
+  const [tooltipObj, setTooltipObj] = useState<ClickableDemoStep>(clickableDemoWithSteps.steps[0]);
   const [currentTooltipIndex, setCurrentTooltipIndex] = useState(0);
 
   useEffect(() => {

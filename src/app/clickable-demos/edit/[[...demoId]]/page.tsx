@@ -15,35 +15,6 @@ import { ClickableDemoErrors } from '@/types/errors/clickableDemoErrors';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import styled from 'styled-components';
-
-const Wrapper = styled.div`
-  .wrapper {
-    min-height: 484px;
-  }
-
-  .gear-icon {
-    svg {
-      fill: var(--link-color);
-      width: 24px;
-      height: 24px;
-    }
-  }
-
-  .status-wrapper {
-    border-bottom: 1px solid var(--border-color);
-  }
-
-  .forceFloat {
-    transform: translatey(-44px);
-    @apply text-xs;
-    transition: transform 0.1s linear, font-size 0.1s linear;
-  }
-
-  .status-drop-down {
-    color: var(--link-color);
-  }
-`;
 
 function EditClickableDemo(props: { space: SpaceWithIntegrationsFragment; params: { demoId?: string[] } }) {
   const router = useRouter();
@@ -76,7 +47,7 @@ function EditClickableDemo(props: { space: SpaceWithIntegrationsFragment; params
   return (
     <PageWrapper>
       <SingleCardLayout>
-        <Wrapper>
+        <div>
           <div className="px-4 mb-4 md:px-0 overflow-hidden">
             <Link href={demoId ? `/simulations/view/${demoId}/0` : `/tidbits`} className="text-color">
               <span className="mr-1 font-bold">&#8592;</span>
@@ -128,7 +99,7 @@ function EditClickableDemo(props: { space: SpaceWithIntegrationsFragment; params
           ) : (
             <PageLoading />
           )}
-        </Wrapper>
+        </div>
       </SingleCardLayout>
     </PageWrapper>
   );

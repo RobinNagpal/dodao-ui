@@ -12,17 +12,15 @@ export default function ClickableDemoAdminDropdown({ clickableDemo }: ClickableD
   const getThreeDotItems = [{ label: 'Edit', key: 'edit' }];
 
   return (
-    <>
-      <PrivateEllipsisDropdown
-        items={getThreeDotItems}
-        onSelect={async (key, e: React.MouseEvent<HTMLAnchorElement>) => {
-          e.preventDefault();
-          e.stopPropagation();
-          if (key === 'edit') {
-            router.push(`clickable-demos/edit/${clickableDemo.id}`);
-          }
-        }}
-      />
-    </>
+    <PrivateEllipsisDropdown
+      items={getThreeDotItems}
+      onSelect={async (key, e: React.MouseEvent<HTMLAnchorElement>) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (key === 'edit') {
+          router.push(`clickable-demos/edit/${clickableDemo.id}`);
+        }
+      }}
+    />
   );
 }
