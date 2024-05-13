@@ -35,6 +35,9 @@ export default function CreateContentModalContents({ hideModal, space }: { hideM
           <Button variant="outlined" primary className="p-2 w-full" onClick={() => goToUrl('/shorts/create')}>
             Create Short Video
           </Button>
+          <Button variant="outlined" primary className="p-2 w-full" onClick={() => goToUrl('/clickable-demos/edit')}>
+            Create Clickable Demo
+          </Button>
           {space?.id === PredefinedSpaces.CRYPTO_GELATO && (
             <Button variant="outlined" primary className="p-2 w-full" onClick={() => setShowProjectAddModal(true)}>
               Create Project

@@ -1168,7 +1168,8 @@ export enum ImageType {
   Guide = 'Guide',
   ShortVideo = 'ShortVideo',
   Space = 'Space',
-  Tidbits = 'Tidbits'
+  Tidbits = 'Tidbits',
+  ClickableDemos = 'ClickableDemos'
 }
 
 export interface ImagesResponse {
@@ -3664,6 +3665,33 @@ export type DeleteChatbotUserQuestionMutationVariables = Exact<{
 
 export type DeleteChatbotUserQuestionMutation = { __typename?: 'Mutation', deleteChatbotUserQuestion: boolean };
 
+export type ClickableDemoWithStepsFragment = { __typename?: 'ClickableDemoWithSteps', id: string, spaceId: string, title: string, excerpt: string, createdAt: any, updatedAt: any, steps: Array<{ __typename?: 'ClickableDemoStep', id: string, url: string, selector: string, tooltipInfo: string, order: number }> };
+
+export type ClickableDemoFragment = { __typename?: 'ClickableDemo', id: string, spaceId: string, title: string, excerpt: string, createdAt: any, updatedAt: any };
+
+export type ClickableDemoWithStepsQueryVariables = Exact<{
+  spaceId: Scalars['String'];
+  demoId: Scalars['String'];
+}>;
+
+
+export type ClickableDemoWithStepsQuery = { __typename?: 'Query', clickableDemoWithSteps: { __typename?: 'ClickableDemoWithSteps', id: string, spaceId: string, title: string, excerpt: string, createdAt: any, updatedAt: any, steps: Array<{ __typename?: 'ClickableDemoStep', id: string, url: string, selector: string, tooltipInfo: string, order: number }> } };
+
+export type ClickableDemosQueryVariables = Exact<{
+  spaceId: Scalars['String'];
+}>;
+
+
+export type ClickableDemosQuery = { __typename?: 'Query', clickableDemos: Array<{ __typename?: 'ClickableDemo', id: string, spaceId: string, title: string, excerpt: string, createdAt: any, updatedAt: any }> };
+
+export type UpsertClickableDemoMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+  input: UpsertClickableDemoInput;
+}>;
+
+
+export type UpsertClickableDemoMutation = { __typename?: 'Mutation', payload: { __typename?: 'ClickableDemoWithSteps', id: string, spaceId: string, title: string, excerpt: string, createdAt: any, updatedAt: any, steps: Array<{ __typename?: 'ClickableDemoStep', id: string, url: string, selector: string, tooltipInfo: string, order: number }> } };
+
 export type TopicSubmissionJsonFragment = { __typename?: 'GitCourseTopicSubmissionJson', uuid: string, topicKey: string, status: string, explanations?: Array<{ __typename?: 'GitCourseExplanationsSubmission', key: string, status: string }> | null, questions?: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, status: string, answers: Array<string> }> | null, readings?: Array<{ __typename?: 'GitCourseReadingsSubmission', uuid: string, status: string, questions?: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, answers: Array<string>, status: string }> | null }> | null, summaries?: Array<{ __typename?: 'GitCourseSummariesSubmission', key: string, status: string }> | null };
 
 export type TopicCorrectAnswersFragment = { __typename?: 'GitCourseTopicCorrectAnswer', uuid: string, answerKeys: Array<string> };
@@ -5218,6 +5246,33 @@ export const ChatbotUserQuestionFragmentDoc = gql`
   id
   spaceId
   question
+}
+    `;
+export const ClickableDemoWithStepsFragmentDoc = gql`
+    fragment ClickableDemoWithSteps on ClickableDemoWithSteps {
+  id
+  spaceId
+  title
+  excerpt
+  steps {
+    id
+    url
+    selector
+    tooltipInfo
+    order
+  }
+  createdAt
+  updatedAt
+}
+    `;
+export const ClickableDemoFragmentDoc = gql`
+    fragment ClickableDemo on ClickableDemo {
+  id
+  spaceId
+  title
+  excerpt
+  createdAt
+  updatedAt
 }
     `;
 export const TopicCorrectAnswersFragmentDoc = gql`
@@ -7351,6 +7406,117 @@ export function useDeleteChatbotUserQuestionMutation(baseOptions?: Apollo.Mutati
 export type DeleteChatbotUserQuestionMutationHookResult = ReturnType<typeof useDeleteChatbotUserQuestionMutation>;
 export type DeleteChatbotUserQuestionMutationResult = Apollo.MutationResult<DeleteChatbotUserQuestionMutation>;
 export type DeleteChatbotUserQuestionMutationOptions = Apollo.BaseMutationOptions<DeleteChatbotUserQuestionMutation, DeleteChatbotUserQuestionMutationVariables>;
+export const ClickableDemoWithStepsDocument = gql`
+    query ClickableDemoWithSteps($spaceId: String!, $demoId: String!) {
+  clickableDemoWithSteps(spaceId: $spaceId, demoId: $demoId) {
+    ...ClickableDemoWithSteps
+  }
+}
+    ${ClickableDemoWithStepsFragmentDoc}`;
+
+/**
+ * __useClickableDemoWithStepsQuery__
+ *
+ * To run a query within a React component, call `useClickableDemoWithStepsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useClickableDemoWithStepsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useClickableDemoWithStepsQuery({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      demoId: // value for 'demoId'
+ *   },
+ * });
+ */
+export function useClickableDemoWithStepsQuery(baseOptions: Apollo.QueryHookOptions<ClickableDemoWithStepsQuery, ClickableDemoWithStepsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ClickableDemoWithStepsQuery, ClickableDemoWithStepsQueryVariables>(ClickableDemoWithStepsDocument, options);
+      }
+export function useClickableDemoWithStepsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ClickableDemoWithStepsQuery, ClickableDemoWithStepsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ClickableDemoWithStepsQuery, ClickableDemoWithStepsQueryVariables>(ClickableDemoWithStepsDocument, options);
+        }
+export type ClickableDemoWithStepsQueryHookResult = ReturnType<typeof useClickableDemoWithStepsQuery>;
+export type ClickableDemoWithStepsLazyQueryHookResult = ReturnType<typeof useClickableDemoWithStepsLazyQuery>;
+export type ClickableDemoWithStepsQueryResult = Apollo.QueryResult<ClickableDemoWithStepsQuery, ClickableDemoWithStepsQueryVariables>;
+export function refetchClickableDemoWithStepsQuery(variables: ClickableDemoWithStepsQueryVariables) {
+      return { query: ClickableDemoWithStepsDocument, variables: variables }
+    }
+export const ClickableDemosDocument = gql`
+    query ClickableDemos($spaceId: String!) {
+  clickableDemos(spaceId: $spaceId) {
+    ...ClickableDemo
+  }
+}
+    ${ClickableDemoFragmentDoc}`;
+
+/**
+ * __useClickableDemosQuery__
+ *
+ * To run a query within a React component, call `useClickableDemosQuery` and pass it any options that fit your needs.
+ * When your component renders, `useClickableDemosQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useClickableDemosQuery({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *   },
+ * });
+ */
+export function useClickableDemosQuery(baseOptions: Apollo.QueryHookOptions<ClickableDemosQuery, ClickableDemosQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ClickableDemosQuery, ClickableDemosQueryVariables>(ClickableDemosDocument, options);
+      }
+export function useClickableDemosLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ClickableDemosQuery, ClickableDemosQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ClickableDemosQuery, ClickableDemosQueryVariables>(ClickableDemosDocument, options);
+        }
+export type ClickableDemosQueryHookResult = ReturnType<typeof useClickableDemosQuery>;
+export type ClickableDemosLazyQueryHookResult = ReturnType<typeof useClickableDemosLazyQuery>;
+export type ClickableDemosQueryResult = Apollo.QueryResult<ClickableDemosQuery, ClickableDemosQueryVariables>;
+export function refetchClickableDemosQuery(variables: ClickableDemosQueryVariables) {
+      return { query: ClickableDemosDocument, variables: variables }
+    }
+export const UpsertClickableDemoDocument = gql`
+    mutation UpsertClickableDemo($spaceId: String!, $input: UpsertClickableDemoInput!) {
+  payload: upsertClickableDemo(spaceId: $spaceId, input: $input) {
+    ...ClickableDemoWithSteps
+  }
+}
+    ${ClickableDemoWithStepsFragmentDoc}`;
+export type UpsertClickableDemoMutationFn = Apollo.MutationFunction<UpsertClickableDemoMutation, UpsertClickableDemoMutationVariables>;
+
+/**
+ * __useUpsertClickableDemoMutation__
+ *
+ * To run a mutation, you first call `useUpsertClickableDemoMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertClickableDemoMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertClickableDemoMutation, { data, loading, error }] = useUpsertClickableDemoMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpsertClickableDemoMutation(baseOptions?: Apollo.MutationHookOptions<UpsertClickableDemoMutation, UpsertClickableDemoMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpsertClickableDemoMutation, UpsertClickableDemoMutationVariables>(UpsertClickableDemoDocument, options);
+      }
+export type UpsertClickableDemoMutationHookResult = ReturnType<typeof useUpsertClickableDemoMutation>;
+export type UpsertClickableDemoMutationResult = Apollo.MutationResult<UpsertClickableDemoMutation>;
+export type UpsertClickableDemoMutationOptions = Apollo.BaseMutationOptions<UpsertClickableDemoMutation, UpsertClickableDemoMutationVariables>;
 export const GitCourseSubmissionDocument = gql`
     query GitCourseSubmission($spaceId: String!, $courseKey: String!) {
   payload: gitCourseSubmission(spaceId: $spaceId, courseKey: $courseKey) {

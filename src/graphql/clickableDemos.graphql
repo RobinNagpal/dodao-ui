@@ -1,0 +1,42 @@
+fragment ClickableDemoWithSteps on ClickableDemoWithSteps {
+  id
+  spaceId
+  title
+  excerpt
+  steps {
+    id
+    url
+    selector
+    tooltipInfo
+    order
+  }
+  createdAt
+  updatedAt
+}
+
+fragment ClickableDemo on ClickableDemo {
+  id
+  spaceId
+  title
+  excerpt
+  createdAt
+  updatedAt
+}
+
+query ClickableDemoWithSteps($spaceId: String!, $demoId: String!) {
+  clickableDemoWithSteps(spaceId: $spaceId, demoId: $demoId) {
+    ...ClickableDemoWithSteps
+  }
+}
+
+query ClickableDemos($spaceId: String!) {
+  clickableDemos(spaceId: $spaceId) {
+    ...ClickableDemo
+  }
+}
+
+mutation UpsertClickableDemo($spaceId: String!, $input: UpsertClickableDemoInput!) {
+  payload: upsertClickableDemo(spaceId: $spaceId, input: $input) {
+    ...ClickableDemoWithSteps
+  }
+}
