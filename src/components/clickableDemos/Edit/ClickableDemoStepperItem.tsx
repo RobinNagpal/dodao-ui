@@ -3,7 +3,7 @@ import Input from '@/components/core/input/Input';
 import { IconTypes } from '@/components/core/icons/IconTypes';
 import { ClickableDemoStepInput, ImageType, Space, UpsertClickableDemoInput } from '@/graphql/generated/generated-types';
 import { ClickableDemoErrors, ClickableDemoStepError } from '@/types/errors/clickableDemoErrors';
-import UploadInput from '@/components/app/UploadInput';
+import UploadInput from '@/components/clickableDemos/FileUpload/UploadInput';
 import { slugify } from '@/utils/auth/slugify';
 import { useState } from 'react';
 import styles from './ClickableDemoStepperItem.module.scss';
