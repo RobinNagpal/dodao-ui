@@ -116,6 +116,7 @@ export default function FileUploader({ spaceId, objectId, imageType, onLoading, 
       textElement.style.fontSize = "1rem";
       textElement.style.fontFamily = "sans-serif";
       textElement.style.fontWeight = "300";
+      textElement.style.textAlign = "center";
 
       tooltipContent.style.display = "flex";
       tooltipContent.style.flexDirection = "column";
@@ -123,6 +124,7 @@ export default function FileUploader({ spaceId, objectId, imageType, onLoading, 
       tooltipContent.style.minHeight = "130px"; // Set a minimum height for the tooltip
       tooltipContent.style.minWidth = "300px"; // Set a minimum width for the tooltip
       tooltipContent.style.padding = "3px 12px"; // Add padding to the tooltip
+      tooltipContent.style.zIndex = "9999"; // Set a high z-index to ensure the tooltip is on top
       tooltipContent.appendChild(textElement);
 
       // textElement.style.marginBottom = "8px"; // Add some space below the text content
@@ -152,9 +154,9 @@ export default function FileUploader({ spaceId, objectId, imageType, onLoading, 
       backButton.style.padding = "5px 10px"; // Padding for a larger click area
       backButton.style.border = "none"; // Remove default border
       backButton.style.borderRadius = "5px"; // Rounded corners
-      backButton.style.backgroundImage =
-        "linear-gradient(to right, #6e85b7, #b8c0ff)"; // Gradient background
-      backButton.style.color = "white"; // Text color
+      backButton.style.backgroundColor =
+       event.data.buttonColor;
+      backButton.style.color = event.data.buttonTextColor; // Text color
       backButton.style.fontWeight = "bold"; // Make the text bold
       backButton.style.cursor = "pointer"; // Cursor on hover
       backButton.style.boxShadow = "0 2px 4px rgba(0,0,0,0.2)"; // Box shadow for depth
@@ -167,13 +169,13 @@ export default function FileUploader({ spaceId, objectId, imageType, onLoading, 
 
       // Hover effect
       backButton.onmouseover = () => {
-        backButton.style.backgroundImage =
-          "linear-gradient(to right, #b8c0ff, #6e85b7)";
-      };
-      backButton.onmouseout = () => {
-        backButton.style.backgroundImage =
-          "linear-gradient(to right, #6e85b7, #b8c0ff)";
-      };
+        backButton.style.opacity = "0.7"; // Set opacity to 0.7 on hover
+        };
+
+        backButton.onmouseout = () => {
+            backButton.style.opacity = "1"; // Reset opacity to 1 when not hovering
+        };
+
       if (event.data.currentTooltipIndex === 0) backButton.style.visibility = "hidden";
 
       // Append the button to the container
@@ -196,23 +198,39 @@ export default function FileUploader({ spaceId, objectId, imageType, onLoading, 
       nextButton.textContent =
         event.data.currentTooltipIndex === event.data.tooltipArrayLen - 1 ? "Complete" : "Next";
       nextButton.onclick = async () => {
+        if(nextButton.textContent === "Next"){
           event.source.postMessage(
           { nextButton: true},
           event.origin,
         );
+        }
+        else {
+            event.source.postMessage(
+            { completeButton: true},
+            event.origin,
+            );
+        }
       };
 
       // Style the 'Next' button
       nextButton.style.padding = "5px 10px"; // Padding for a larger click area
       nextButton.style.border = "none"; // Remove default border
       nextButton.style.borderRadius = "5px"; // Rounded corners
-      nextButton.style.backgroundImage =
-        "linear-gradient(to left, #FFB6C1, #FF69B4)"; // Gradient background, pink hues
-      nextButton.style.color = "white"; // Text color
+      nextButton.style.backgroundColor =
+        event.data.buttonColor;
+      nextButton.style.color = event.data.buttonTextColor; // Text color
       nextButton.style.fontWeight = "bold"; // Make the text bold
       nextButton.style.cursor = "pointer"; // Cursor on hover
       nextButton.style.boxShadow = "0 2px 4px rgba(0,0,0,0.2)"; // Box shadow for depth
       nextButton.style.transition = "all 0.3s ease"; // Transition for smooth hover effect
+      if(nextButton.textContent === "Complete") {
+        nextButton.style.maxWidth = "30%";
+        backButton.style.maxWidth = "30%";
+      }
+      else {
+        nextButton.style.maxWidth = "20%";
+        backButton.style.maxWidth = "20%";
+      }
 
       // Align the button at the bottom right
       nextButton.style.marginTop = "auto";
@@ -223,17 +241,13 @@ export default function FileUploader({ spaceId, objectId, imageType, onLoading, 
       });
 
       // Hover effect
-      nextButton.onmouseover = () => {
-        nextButton.style.backgroundImage =
-          "linear-gradient(to left, #FF69B4, #FFB6C1)";
-      };
-      nextButton.onmouseout = () => {
-        nextButton.style.backgroundImage =
-          "linear-gradient(to left, #FFB6C1, #FF69B4)";
-      };
+        nextButton.onmouseover = () => {
+            nextButton.style.opacity = "0.7"; // Set opacity to 0.7 on hover
+        };
 
-      if (event.data.currentTooltipIndex === event.data.tooltipArrayLen - 1)
-        nextButton.disabled = true;
+        nextButton.onmouseout = () => {
+            nextButton.style.opacity = "1"; // Reset opacity to 1 when not hovering
+        };
 
       // Append the button to the container
       buttonsRow.appendChild(nextButton);
@@ -250,7 +264,7 @@ export default function FileUploader({ spaceId, objectId, imageType, onLoading, 
 
        tippy(target, {
         allowHTML: true,
-        placement: "top",
+        placement: event.data.placement,
         offset: [0, 10],
         animation: "shift-toward", // Use the 'scale' animation
         interactive: true,

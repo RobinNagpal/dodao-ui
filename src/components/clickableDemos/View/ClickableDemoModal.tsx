@@ -1,15 +1,19 @@
 import FullScreenModal from '@/components/core/modals/FullScreenModal';
-import { ClickableDemoStep, ClickableDemoWithSteps } from '@/graphql/generated/generated-types';
+import { ClickableDemoStep, ClickableDemoWithSteps, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 interface ClickableDemoModalProps {
   clickableDemoWithSteps: ClickableDemoWithSteps;
+  space: SpaceWithIntegrationsFragment;
   onClose: () => void;
 }
 
-function ClickableDemoModal({ clickableDemoWithSteps, onClose }: ClickableDemoModalProps) {
+function ClickableDemoModal({ clickableDemoWithSteps, space, onClose }: ClickableDemoModalProps) {
   const [tooltipObj, setTooltipObj] = useState<ClickableDemoStep>(clickableDemoWithSteps.steps[0]);
   const [currentTooltipIndex, setCurrentTooltipIndex] = useState(0);
+
+  const router = useRouter();
 
   useEffect(() => {
     function receiveMessage(event: any) {
@@ -30,7 +34,7 @@ function ClickableDemoModal({ clickableDemoWithSteps, onClose }: ClickableDemoMo
       }
 
       if (event.data.completeButton) {
-        console.log('Complete button clicked!');
+        router.push(`/clickable-demos`);
       }
     }
 
@@ -42,6 +46,9 @@ function ClickableDemoModal({ clickableDemoWithSteps, onClose }: ClickableDemoMo
           tooltipContent: tooltipObj.tooltipInfo,
           tooltipArrayLen: clickableDemoWithSteps.steps.length,
           currentTooltipIndex,
+          buttonColor: space?.themeColors?.primaryColor,
+          buttonTextColor: space?.themeColors?.textColor,
+          placement: tooltipObj.placement,
         },
         '*'
       );

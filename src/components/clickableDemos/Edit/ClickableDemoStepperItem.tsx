@@ -1,12 +1,13 @@
 import IconButton from '@/components/core/buttons/IconButton';
 import Input from '@/components/core/input/Input';
 import { IconTypes } from '@/components/core/icons/IconTypes';
-import { ClickableDemoStepInput, ImageType, Space, UpsertClickableDemoInput } from '@/graphql/generated/generated-types';
+import { ClickableDemoStepInput, ImageType, Space, UpsertClickableDemoInput, TooltipPlacement } from '@/graphql/generated/generated-types';
 import { ClickableDemoErrors, ClickableDemoStepError } from '@/types/errors/clickableDemoErrors';
 import UploadInput from '@/components/clickableDemos/FileUpload/UploadInput';
 import { slugify } from '@/utils/auth/slugify';
 import { useState } from 'react';
 import styles from './ClickableDemoStepperItem.module.scss';
+import StyledSelect, { StyledSelectItem } from '@/components/core/select/StyledSelect';
 
 interface StepProps {
   space: Space;
@@ -21,7 +22,16 @@ interface StepProps {
   onUpdateStep: (step: ClickableDemoStepInput) => void;
 }
 
-// Export the styled-components
+const tooltipStyleSelect: StyledSelectItem[] = [
+  {
+    label: TooltipPlacement.Top,
+    id: 'top',
+  },
+  {
+    label: TooltipPlacement.Bottom,
+    id: 'bottom',
+  },
+];
 
 export default function Step({
   space,
@@ -47,6 +57,10 @@ export default function Step({
 
   const updateStepTooltipInfo = (tooltipInfo: string | number | undefined) => {
     onUpdateStep({ ...step, tooltipInfo: tooltipInfo?.toString() || '' });
+  };
+
+  const updateStepTooltipPlacement = (tooltipPlacement: string | number | undefined) => {
+    onUpdateStep({ ...step, placement: tooltipPlacement?.toString() || '' });
   };
 
   const errors = clickableDemoErrors;
@@ -89,6 +103,16 @@ export default function Step({
             onUpdate={updateStepSelector}
             label="Selector"
             error={inputError('selector') ? 'Selector is required' : ''}
+          />
+        </div>
+      </div>
+      <div className="w-full">
+        <div className="mt-4">
+          <StyledSelect
+            label="Tooltip Position *"
+            selectedItemId={step.placement}
+            items={tooltipStyleSelect}
+            setSelectedItemId={(value) => updateStepTooltipPlacement(value!)}
           />
         </div>
       </div>

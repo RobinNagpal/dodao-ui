@@ -353,6 +353,7 @@ type ClickableDemo {
 type ClickableDemoStep {
   id: String!
   order: Int!
+  placement: String!
   selector: String!
   tooltipInfo: String!
   url: String!
@@ -361,6 +362,7 @@ type ClickableDemoStep {
 input ClickableDemoStepInput {
   id: String!
   order: Int!
+  placement: String!
   selector: String!
   tooltipInfo: String!
   url: String!
@@ -1077,6 +1079,7 @@ enum ImageSource {
 
 enum ImageType {
   Academy
+  ClickableDemos
   Course
   CryptoGelato
   Guide
@@ -1419,7 +1422,9 @@ type Query {
   clickableDemoWithSteps(demoId: String!, spaceId: String!): ClickableDemoWithSteps!
   clickableDemos(spaceId: String!): [ClickableDemo!]!
   consolidatedByteRating(byteId: String!, spaceId: String!): ConsolidatedByteRating
+  consolidatedByteRatingsForSpace(spaceId: String!): ConsolidatedByteRating
   consolidatedGuideRating(guideUuid: String!, spaceId: String!): ConsolidatedGuideRating
+  consolidatedGuideRatingsForSpace(spaceId: String!): ConsolidatedGuideRating
   courses(spaceId: String!): [GitCourse!]!
   discordChannels(serverId: String!, spaceId: String!): [DiscordChannel!]!
   discordMessages(channelId: String!, spaceId: String!): [DiscordMessage!]!
@@ -1793,6 +1798,11 @@ type TimelineEvent {
   summary: String!
   title: String!
   uuid: String!
+}
+
+enum TooltipPlacement {
+  Bottom
+  Top
 }
 
 type TopicConfig {

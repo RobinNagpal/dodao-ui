@@ -15,6 +15,7 @@ export const emptyClickableDemo = (): UpsertClickableDemoInput => {
         selector: `XPath to be used to select element`,
         tooltipInfo: `Text to be displayed on tooltip`,
         order: 0,
+        placement: 'top',
       },
     ],
   };

@@ -71,7 +71,7 @@ function EditClickableDemo(props: { space: SpaceWithIntegrationsFragment; params
                   <Input
                     modelValue={clickableDemo.excerpt}
                     error={inputError('excerpt') ? 'Excerpt is required' : ''}
-                    maxLength={32}
+                    maxLength={64}
                     onUpdate={(newValue) => updateClickableDemoFunctions.updateClickableDemoField('excerpt', newValue)}
                   >
                     <div>Excerpt*</div>
