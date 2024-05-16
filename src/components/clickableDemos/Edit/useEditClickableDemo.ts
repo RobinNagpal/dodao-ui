@@ -16,7 +16,7 @@ import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 const titleLimit = 32;
-const excerptLimit = 32;
+const excerptLimit = 64;
 
 type KeyOfClickableDemoInput = keyof UpsertClickableDemoInput;
 
@@ -123,6 +123,7 @@ export function useEditClickableDemo(space: Space, demoId: string | null) {
           tooltipInfo: ``,
           selector: '',
           order: prevClickableDemo.steps.length,
+          placement: 'top',
         },
       ],
     }));
@@ -171,6 +172,7 @@ export function useEditClickableDemo(space: Space, demoId: string | null) {
         tooltipInfo: s.tooltipInfo,
         id: s.id,
         order: s.order,
+        placement: s.placement,
       })),
     };
   }

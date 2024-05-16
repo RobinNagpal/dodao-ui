@@ -396,6 +396,7 @@ export interface ClickableDemoStep {
   __typename?: 'ClickableDemoStep';
   id: Scalars['String'];
   order: Scalars['Int'];
+  placement: Scalars['String'];
   selector: Scalars['String'];
   tooltipInfo: Scalars['String'];
   url: Scalars['String'];
@@ -404,6 +405,7 @@ export interface ClickableDemoStep {
 export interface ClickableDemoStepInput {
   id: Scalars['String'];
   order: Scalars['Int'];
+  placement: Scalars['String'];
   selector: Scalars['String'];
   tooltipInfo: Scalars['String'];
   url: Scalars['String'];
@@ -1163,13 +1165,13 @@ export enum ImageSource {
 
 export enum ImageType {
   Academy = 'Academy',
+  ClickableDemos = 'ClickableDemos',
   Course = 'Course',
   CryptoGelato = 'CryptoGelato',
   Guide = 'Guide',
   ShortVideo = 'ShortVideo',
   Space = 'Space',
-  Tidbits = 'Tidbits',
-  ClickableDemos = 'ClickableDemos'
+  Tidbits = 'Tidbits'
 }
 
 export interface ImagesResponse {
@@ -2963,6 +2965,11 @@ export interface TimelineEvent {
   uuid: Scalars['String'];
 }
 
+export enum TooltipPlacement {
+  Bottom = 'Bottom',
+  Top = 'Top'
+}
+
 export interface TopicConfig {
   __typename?: 'TopicConfig';
   showExplanations: Scalars['Boolean'];
@@ -3665,7 +3672,7 @@ export type DeleteChatbotUserQuestionMutationVariables = Exact<{
 
 export type DeleteChatbotUserQuestionMutation = { __typename?: 'Mutation', deleteChatbotUserQuestion: boolean };
 
-export type ClickableDemoWithStepsFragment = { __typename?: 'ClickableDemoWithSteps', id: string, spaceId: string, title: string, excerpt: string, createdAt: any, updatedAt: any, steps: Array<{ __typename?: 'ClickableDemoStep', id: string, url: string, selector: string, tooltipInfo: string, order: number }> };
+export type ClickableDemoWithStepsFragment = { __typename?: 'ClickableDemoWithSteps', id: string, spaceId: string, title: string, excerpt: string, createdAt: any, updatedAt: any, steps: Array<{ __typename?: 'ClickableDemoStep', id: string, url: string, selector: string, tooltipInfo: string, placement: string, order: number }> };
 
 export type ClickableDemoFragment = { __typename?: 'ClickableDemo', id: string, spaceId: string, title: string, excerpt: string, createdAt: any, updatedAt: any };
 
@@ -3675,7 +3682,7 @@ export type ClickableDemoWithStepsQueryVariables = Exact<{
 }>;
 
 
-export type ClickableDemoWithStepsQuery = { __typename?: 'Query', clickableDemoWithSteps: { __typename?: 'ClickableDemoWithSteps', id: string, spaceId: string, title: string, excerpt: string, createdAt: any, updatedAt: any, steps: Array<{ __typename?: 'ClickableDemoStep', id: string, url: string, selector: string, tooltipInfo: string, order: number }> } };
+export type ClickableDemoWithStepsQuery = { __typename?: 'Query', clickableDemoWithSteps: { __typename?: 'ClickableDemoWithSteps', id: string, spaceId: string, title: string, excerpt: string, createdAt: any, updatedAt: any, steps: Array<{ __typename?: 'ClickableDemoStep', id: string, url: string, selector: string, tooltipInfo: string, placement: string, order: number }> } };
 
 export type ClickableDemosQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -3690,7 +3697,7 @@ export type UpsertClickableDemoMutationVariables = Exact<{
 }>;
 
 
-export type UpsertClickableDemoMutation = { __typename?: 'Mutation', payload: { __typename?: 'ClickableDemoWithSteps', id: string, spaceId: string, title: string, excerpt: string, createdAt: any, updatedAt: any, steps: Array<{ __typename?: 'ClickableDemoStep', id: string, url: string, selector: string, tooltipInfo: string, order: number }> } };
+export type UpsertClickableDemoMutation = { __typename?: 'Mutation', payload: { __typename?: 'ClickableDemoWithSteps', id: string, spaceId: string, title: string, excerpt: string, createdAt: any, updatedAt: any, steps: Array<{ __typename?: 'ClickableDemoStep', id: string, url: string, selector: string, tooltipInfo: string, placement: string, order: number }> } };
 
 export type TopicSubmissionJsonFragment = { __typename?: 'GitCourseTopicSubmissionJson', uuid: string, topicKey: string, status: string, explanations?: Array<{ __typename?: 'GitCourseExplanationsSubmission', key: string, status: string }> | null, questions?: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, status: string, answers: Array<string> }> | null, readings?: Array<{ __typename?: 'GitCourseReadingsSubmission', uuid: string, status: string, questions?: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, answers: Array<string>, status: string }> | null }> | null, summaries?: Array<{ __typename?: 'GitCourseSummariesSubmission', key: string, status: string }> | null };
 
@@ -5259,6 +5266,7 @@ export const ClickableDemoWithStepsFragmentDoc = gql`
     url
     selector
     tooltipInfo
+    placement
     order
   }
   createdAt
