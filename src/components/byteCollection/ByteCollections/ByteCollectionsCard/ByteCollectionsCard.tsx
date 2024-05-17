@@ -2,7 +2,7 @@
 
 import ByteCollectionCardAdminDropdown from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCollectionCardAdminDropdown';
 import ByteCompletionCheckmark from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCompletionCheckmark';
-import { ByteCollectionFragment, ProjectByteCollectionFragment, ProjectFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { ByteCollectionFragment, ProjectByteCollectionFragment, ProjectFragment } from '@/graphql/generated/generated-types';
 import ArrowTopRightOnSquareIcon from '@heroicons/react/24/outline/ArrowTopRightOnSquareIcon';
 import Link from 'next/link';
 import React from 'react';
@@ -18,6 +18,12 @@ interface ByteCollectionCardProps {
   viewByteBaseUrl: string;
 }
 
+interface VideoModalProps {
+  key: string;
+  title: string;
+  src: string;
+}
+
 export default function ByteCollectionsCard({
   byteCollection,
   isEditingAllowed = true,
@@ -26,6 +32,7 @@ export default function ByteCollectionsCard({
   viewByteBaseUrl,
 }: ByteCollectionCardProps) {
   const [watchVideo, setWatchVideo] = React.useState<boolean>(false);
+  const [videoModal, setVideoModal] = React.useState<VideoModalProps>();
 
   return (
     <>
@@ -37,7 +44,18 @@ export default function ByteCollectionsCard({
         )}
 
         <div className="mt-3 ml-2 text-xl">
-          <div className={styles.headingColor}>{byteCollection.name}</div>
+          <div className="flex space-x-3">
+            <div className={styles.headingColor}>{byteCollection.name}</div>
+            {byteCollection?.videoUrl && (
+              <PlayCircleIcon
+                className={`h-6 w-6 ml-2 ${styles.playVideoIcon} cursor-pointer mt-1`}
+                onClick={() => {
+                  setWatchVideo(true);
+                  setVideoModal({ key: byteCollection.id, title: byteCollection.name, src: byteCollection.videoUrl! });
+                }}
+              />
+            )}
+          </div>
           <div className="my-3 text-sm">{byteCollection.description}</div>
         </div>
         <div className="flow-root p-2">
@@ -45,10 +63,16 @@ export default function ByteCollectionsCard({
             {byteCollection.bytes.map((byte, eventIdx) => {
               if (watchVideo) {
                 return (
-                  <FullScreenModal key={byte.byteId} title={byte.name} open={true} onClose={() => setWatchVideo(false)} fullWidth={false}>
+                  <FullScreenModal
+                    key={videoModal?.key?.concat((Math.random() + 1).toString(36).substring(7))}
+                    title={videoModal?.title!}
+                    open={true}
+                    onClose={() => setWatchVideo(false)}
+                    fullWidth={false}
+                  >
                     <div className="flex justify-around">
                       <div className="relative">
-                        <iframe width="100%" style={{ height: '90vh', width: '100vw' }} src={byte.videoUrl!}></iframe>
+                        <iframe width="100%" style={{ height: '90vh', width: '100vw' }} src={videoModal?.src}></iframe>
                       </div>
                     </div>
                   </FullScreenModal>
@@ -76,7 +100,13 @@ export default function ByteCollectionsCard({
                         </div>
                       </Link>
                       {byte?.videoUrl && (
-                        <PlayCircleIcon className={`h-6 w-6 ml-2 ${styles.playVideoIcon} cursor-pointer`} onClick={() => setWatchVideo(true)} />
+                        <PlayCircleIcon
+                          className={`h-6 w-6 ml-2 ${styles.playVideoIcon} cursor-pointer`}
+                          onClick={() => {
+                            setWatchVideo(true);
+                            setVideoModal({ key: byte.byteId, title: byte.name, src: byte.videoUrl! });
+                          }}
+                        />
                       )}
                     </div>
                   </div>
