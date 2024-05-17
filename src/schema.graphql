@@ -111,6 +111,7 @@ type Byte {
   showIncorrectOnCompletion: Boolean!
   steps: [ByteStep!]!
   tags: [String!]!
+  videoAspectRatio: String
   videoUrl: String
 }
 
@@ -122,6 +123,8 @@ type ByteCollection {
   name: String!
   priority: Int!
   status: String!
+  videoAspectRatio: String
+  videoUrl: String
 }
 
 type ByteCollectionByte {
@@ -481,6 +484,8 @@ input CreateByteCollectionInput {
   priority: Int!
   spaceId: String!
   status: String!
+  videoAspectRatio: String
+  videoUrl: String
 }
 
 type CreateCompletionResponseChoice {
@@ -1363,6 +1368,7 @@ type ProjectByte {
   seoMeta: SEOMeta
   steps: [ByteStep!]!
   tags: [String!]!
+  videoAspectRatio: String
   videoUrl: String
 }
 
@@ -1376,6 +1382,8 @@ type ProjectByteCollection {
   priority: Int!
   seoMeta: SEOMeta
   status: String!
+  videoAspectRatio: String
+  videoUrl: String
 }
 
 type ProjectShortVideo {
@@ -1828,6 +1836,8 @@ input UpdateByteCollectionInput {
   priority: Int!
   spaceId: String!
   status: String!
+  videoAspectRatio: String
+  videoUrl: String
 }
 
 input UpdateTopicBasicInfoInput {
@@ -1919,6 +1929,7 @@ input UpsertByteInput {
   steps: [ByteStepInput!]!
   tags: [String!]!
   thumbnail: String
+  videoAspectRatio: String
   videoUrl: String
 }
 
@@ -2012,6 +2023,8 @@ input UpsertProjectByteCollectionInput {
   projectId: String!
   seoMeta: SEOMetaInput
   status: String!
+  videoAspectRatio: String
+  videoUrl: String
 }
 
 input UpsertProjectByteInput {
@@ -2027,6 +2040,7 @@ input UpsertProjectByteInput {
   steps: [ByteStepInput!]!
   tags: [String!]!
   thumbnail: String
+  videoAspectRatio: String
   videoUrl: String
 }
 
@@ -2168,6 +2182,11 @@ type VercelVerification {
   reason: String!
   type: String!
   value: String!
+}
+
+enum VideoAspectRatio {
+  Landscape
+  Portrait
 }
 
 type WebsiteScrapingInfo {

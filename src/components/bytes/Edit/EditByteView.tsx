@@ -13,12 +13,24 @@ import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsis
 import Input from '@/components/core/input/Input';
 import PageLoading from '@/components/core/loaders/PageLoading';
 import PageWrapper from '@/components/core/page/PageWrapper';
+import StyledSelect, { StyledSelectItem } from '@/components/core/select/StyledSelect';
 import TextareaArray from '@/components/core/textarea/TextareaArray';
-import { SpaceWithIntegrationsFragment, useDeleteByteMutation } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsFragment, useDeleteByteMutation, VideoAspectRatio } from '@/graphql/generated/generated-types';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
 import { ByteErrors } from '@/types/errors/byteErrors';
 import { router } from 'next/client';
 import { useEffect, useState } from 'react';
+
+const videoAspectRatioStyleSelect: StyledSelectItem[] = [
+  {
+    label: VideoAspectRatio.Landscape,
+    id: 'landscape',
+  },
+  {
+    label: VideoAspectRatio.Portrait,
+    id: 'portrait',
+  },
+];
 
 export default function EditByteView(props: { space: SpaceWithIntegrationsFragment; onUpsert: (byteId: string) => Promise<void>; byteId?: string }) {
   const { space, byteId } = props;
@@ -109,6 +121,13 @@ export default function EditByteView(props: { space: SpaceWithIntegrationsFragme
                 >
                   Video URL
                 </Input>
+
+                <StyledSelect
+                  label="Video Aspect Ratio"
+                  selectedItemId={byte.videoAspectRatio}
+                  items={videoAspectRatioStyleSelect}
+                  setSelectedItemId={(e) => updateByteFunctions.updateByteField('videoAspectRatio', e)}
+                />
 
                 <TextareaArray
                   label="Tags"

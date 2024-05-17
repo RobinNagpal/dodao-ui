@@ -13,6 +13,8 @@ export type EditByteCollection = Omit<ByteCollectionFragment | ProjectByteCollec
 interface HelperFunctions {
   updateByteCollectionName: (name: string) => void;
   updateByteCollectionDescription: (description: string) => void;
+  updateByteCollectionVideoUrl: (videoUrl: string) => void;
+  updateByteCollectionVideoAspectRatio: (videoAspectRatio: string) => void;
   updateByteCollectionPriority: (priority: number) => void;
   addByte: (byteId: string) => void;
   moveByteUp: (byteUuid: string) => void;
@@ -54,6 +56,8 @@ export function useEditByteCollection({
     byteIds: byteCollectionProp?.bytes.map((byte) => byte.byteId) || [],
     status: byteCollectionProp?.status || 'DRAFT',
     priority: byteCollectionProp?.priority || 50,
+    videoUrl: byteCollectionProp?.videoUrl || '',
+    videoAspectRatio: byteCollectionProp?.videoAspectRatio || '',
   });
 
   const moveByteUp = useCallback(
@@ -116,6 +120,15 @@ export function useEditByteCollection({
   const updateByteCollectionDescription = (description: string) => {
     setByteCollection((prevByte) => ({ ...prevByte, description }));
   };
+
+  const updateByteCollectionVideoUrl = (videoUrl: string) => {
+    setByteCollection((prevByte) => ({ ...prevByte, videoUrl }));
+  };
+
+  const updateByteCollectionVideoAspectRatio = (videoAspectRatio: string) => {
+    setByteCollection((prevByte) => ({ ...prevByte, videoAspectRatio }));
+  };
+
   const updateByteCollectionPriority = (priority: number) => {
     setByteCollection((prevByte) => ({ ...prevByte, priority }));
   };
@@ -137,6 +150,8 @@ export function useEditByteCollection({
     helperFunctions: {
       updateByteCollectionName,
       updateByteCollectionDescription,
+      updateByteCollectionVideoUrl,
+      updateByteCollectionVideoAspectRatio,
       updateByteCollectionPriority,
       addByte,
       moveByteUp,
