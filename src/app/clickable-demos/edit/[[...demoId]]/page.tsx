@@ -49,9 +49,9 @@ function EditClickableDemo(props: { space: SpaceWithIntegrationsFragment; params
       <SingleCardLayout>
         <div>
           <div className="px-4 mb-4 md:px-0 overflow-hidden">
-            <Link href={demoId ? `/simulations/view/${demoId}/0` : `/tidbits`} className="text-color">
+            <Link href={demoId ? `/clickable-demos/view/${demoId}/0` : `/clickable-demos`} className="text-color">
               <span className="mr-1 font-bold">&#8592;</span>
-              {demoId ? clickableDemo.title : 'Back to Bytes'}
+              {demoId ? clickableDemo.title : 'Back to Clickable Demos'}
             </Link>
           </div>
           {clickableDemoLoaded ? (
