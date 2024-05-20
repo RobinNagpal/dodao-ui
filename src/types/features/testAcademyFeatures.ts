@@ -23,24 +23,31 @@ export const testAcademyFeatures: FeatureItem[] = [
     },
   },
   {
-    featureName: FeatureName.Simulations,
+    featureName: FeatureName.ByteCollectionCategories,
     enabled: true,
     details: {
       priority: 70,
     },
   },
   {
-    featureName: FeatureName.ClickableDemos,
+    featureName: FeatureName.Simulations,
     enabled: true,
     details: {
       priority: 65,
     },
   },
   {
-    featureName: FeatureName.Timelines,
+    featureName: FeatureName.ClickableDemos,
     enabled: true,
     details: {
       priority: 60,
+    },
+  },
+  {
+    featureName: FeatureName.Timelines,
+    enabled: true,
+    details: {
+      priority: 55,
     },
   },
   {

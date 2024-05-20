@@ -13,6 +13,10 @@ export const getLinkToFeaturePage = (featureName: FeatureName): string => {
     return '/tidbits';
   }
 
+  if (featureName === FeatureName.ByteCollectionCategories) {
+    return '/tidbit-categories';
+  }
+
   if (featureName === FeatureName.Timelines) {
     return '/timelines';
   }

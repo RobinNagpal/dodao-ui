@@ -9,6 +9,13 @@ export const compoundFeatures: FeatureItem[] = [
     },
   },
   {
+    featureName: FeatureName.ByteCollectionCategories,
+    enabled: true,
+    details: {
+      priority: 75,
+    },
+  },
+  {
     featureName: FeatureName.Guides,
     enabled: true,
     details: {
