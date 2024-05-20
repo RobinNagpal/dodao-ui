@@ -14,7 +14,7 @@ export const getLinkToFeaturePage = (featureName: FeatureName): string => {
   }
 
   if (featureName === FeatureName.ByteCollectionCategories) {
-    return '/tidbit-categories';
+    return '/tidbit-collection-categories';
   }
 
   if (featureName === FeatureName.Timelines) {
