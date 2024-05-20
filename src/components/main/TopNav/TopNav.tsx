@@ -60,7 +60,7 @@ function DesktopNavLinks({ space }: { space: Space }) {
           return <DesktopNavLink key="simulations" href="/simulations" label="Simulations" />;
         }
         if (feature.featureName === FeatureName.ClickableDemos) {
-          return <DesktopNavLink key="clickableDemos" href="/clickable-demos" label="Simulations" />;
+          return <DesktopNavLink key="clickableDemos" href="/clickable-demos" label="Clickable Demos" />;
         }
         if (feature.featureName === FeatureName.Timelines) {
           return <DesktopNavLink key="timelines" href="/timelines" label="Timelines" />;
