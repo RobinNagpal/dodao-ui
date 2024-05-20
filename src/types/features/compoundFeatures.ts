@@ -2,26 +2,20 @@ import { FeatureItem, FeatureName } from '@/types/features/spaceFeatures';
 
 export const compoundFeatures: FeatureItem[] = [
   {
+    featureName: FeatureName.ByteCollections,
+    enabled: true,
+    details: {
+      priority: 80,
+    },
+  },
+  {
     featureName: FeatureName.Guides,
     enabled: true,
     details: {
       priority: 90,
     },
   },
-  {
-    featureName: FeatureName.Chatbot,
-    enabled: true,
-    details: {
-      priority: 85,
-    },
-  },
-  {
-    featureName: FeatureName.Bytes,
-    enabled: true,
-    details: {
-      priority: 80,
-    },
-  },
+
   {
     featureName: FeatureName.Simulations,
     enabled: true,
@@ -37,10 +31,10 @@ export const compoundFeatures: FeatureItem[] = [
     },
   },
   {
-    featureName: FeatureName.Courses,
+    featureName: FeatureName.Chatbot,
     enabled: true,
     details: {
-      priority: 50,
+      priority: 85,
     },
   },
 ];

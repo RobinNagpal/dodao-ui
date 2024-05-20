@@ -3,6 +3,7 @@ export enum FeatureName {
   Chatbot = 'Chatbot',
   Bytes = 'Bytes',
   ByteCollections = 'ByteCollections',
+  ByteCollectionCategories = 'ByteCollectionCategories',
   Guides = 'Guides',
   Shorts = 'Shorts',
   Simulations = 'Simulations',
