@@ -59,8 +59,19 @@ function HomeIcon({ space, feature }: HomeIconProps) {
           featureName={feature.featureName}
         />
       )}
+      {feature.featureName === FeatureName.ByteCollectionCategories && (
+        <Card space={space} heading={'Tidbits'} details={'If you want to know the most important details within 2 minutes'} featureName={feature.featureName} />
+      )}
       {feature.featureName === FeatureName.Simulations && (
         <Card space={space} heading={'Simulations'} details={'Simulations that help you understand the protocol better'} featureName={feature.featureName} />
+      )}
+      {feature.featureName === FeatureName.ClickableDemos && (
+        <Card
+          space={space}
+          heading={'Clickable Demos'}
+          details={'Clickable Demos that help you understand the protocol better'}
+          featureName={feature.featureName}
+        />
       )}
       {feature.featureName === FeatureName.Timelines && (
         <Card space={space} heading={'Timelines'} details={'All the updates captured at one place'} featureName={feature.featureName} />

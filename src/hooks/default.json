@@ -213,9 +213,11 @@
       "academyText": "We know crypto can be a confusing place and Compound Academy has your back.",
       "projectName": "Compound",
       "bytesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/compound/compound_bytes.png",
+      "bytecollectioncategoriesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/compound/compound_bytes.png",
       "coursesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/compound/compound_courses.png",
       "guidesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/compound/compound_guides.png",
       "simulationsThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/compound/compound_demos.png",
+      "clickabledemosThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/compound/compound_demos.png",
       "timelinesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/compound/compound_timelines.png",
       "chatbotThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/compound/Nema.png"
     },
