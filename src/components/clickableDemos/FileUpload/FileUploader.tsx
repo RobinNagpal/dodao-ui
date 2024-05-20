@@ -120,7 +120,7 @@ export default function FileUploader({ spaceId, objectId, imageType, onLoading, 
 
       tooltipContent.style.display = "flex";
       tooltipContent.style.flexDirection = "column";
-      tooltipContent.style.justifyContent = "space-around";
+      tooltipContent.style.justifyContent = "space-evenly";
       tooltipContent.style.minHeight = "130px"; // Set a minimum height for the tooltip
       tooltipContent.style.minWidth = "300px"; // Set a minimum width for the tooltip
       tooltipContent.style.padding = "3px 12px"; // Add padding to the tooltip
@@ -236,9 +236,6 @@ export default function FileUploader({ spaceId, objectId, imageType, onLoading, 
       nextButton.style.marginTop = "auto";
       nextButton.style.alignSelf = "flex-end";
       nextButton.style.marginLeft = "auto";
-      nextButton.addEventListener('click', () => {
-        console.log("next button clicked");
-      });
 
       // Hover effect
         nextButton.onmouseover = () => {
@@ -269,9 +266,10 @@ export default function FileUploader({ spaceId, objectId, imageType, onLoading, 
         animation: "shift-toward", // Use the 'scale' animation
         interactive: true,
         inertia: true,
-        duration: [2000, 250],
-        delay: [500, 200],
+        duration: 500,
+        delay: [200, 0],
         content: tooltipContent,
+        appendTo: document.body,
         showOnCreate: true,
         hideOnClick: false,
         trigger: "manual",
