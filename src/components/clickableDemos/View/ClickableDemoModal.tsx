@@ -1,6 +1,6 @@
 import FullScreenModal from '@/components/core/modals/FullScreenModal';
-import { ClickableDemoStep, ClickableDemoWithSteps, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
-import React, { useEffect, useState } from 'react';
+import { ClickableDemoWithSteps, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 interface ClickableDemoModalProps {
@@ -10,72 +10,79 @@ interface ClickableDemoModalProps {
 }
 
 function ClickableDemoModal({ clickableDemoWithSteps, space, onClose }: ClickableDemoModalProps) {
-  const [tooltipObj, setTooltipObj] = useState<ClickableDemoStep>(clickableDemoWithSteps.steps[0]);
-  const [currentTooltipIndex, setCurrentTooltipIndex] = useState(0);
-
   const router = useRouter();
+  var indexCount = 0;
 
   useEffect(() => {
     function receiveMessage(event: any) {
       if (event.data.nextButton) {
-        setCurrentTooltipIndex((prevIndex) => {
-          const newIndex = prevIndex + 1;
-          setTooltipObj(clickableDemoWithSteps.steps[newIndex]);
-          return newIndex;
-        });
+        iframeArr[indexCount].style.height = '0vh';
+        indexCount++;
+        iframeArr[indexCount].style.height = '93vh';
+        handleLoad(indexCount);
       }
 
       if (event.data.backButton) {
-        setCurrentTooltipIndex((prevIndex) => {
-          const newIndex = prevIndex - 1;
-          setTooltipObj(clickableDemoWithSteps.steps[newIndex]);
-          return newIndex;
-        });
+        iframeArr[indexCount].style.height = '0vh';
+        indexCount--;
+        iframeArr[indexCount].style.height = '93vh';
+        handleLoad(indexCount);
       }
 
       if (event.data.completeButton) {
         router.push(`/clickable-demos`);
       }
     }
+    const handleLoad = (index: number) => {
+      if (!iframeArr[index]) return; // Ensure the iframe ref is set
 
-    const handleLoad = () => {
-      if (!iframe) return; // Ensure the iframe ref is set
-      iframe.contentWindow!.postMessage(
+      iframeArr[index].contentWindow!.postMessage(
         {
-          elementXPath: tooltipObj.selector,
-          tooltipContent: tooltipObj.tooltipInfo,
+          elementXPath: clickableDemoWithSteps.steps[index].selector,
+          tooltipContent: clickableDemoWithSteps.steps[index].tooltipInfo,
           tooltipArrayLen: clickableDemoWithSteps.steps.length,
-          currentTooltipIndex,
+          currentTooltipIndex: index,
           buttonColor: space?.themeColors?.primaryColor,
           buttonTextColor: space?.themeColors?.textColor,
-          placement: tooltipObj.placement,
+          placement: clickableDemoWithSteps.steps[index].placement,
         },
         '*'
       );
     };
 
     window.addEventListener('message', receiveMessage);
-    const iframe = document.createElement('iframe');
-    iframe.src = tooltipObj.url;
-    iframe.width = '100%';
-    iframe.style.height = '93vh';
-    iframe.onload = handleLoad;
 
-    // Container where the iframe will be appended
+    // Container where all the iframes will be appended
     const container = document.getElementById('iframe-container');
 
-    // Append the iframe to the container
-    container!.appendChild(iframe);
+    const iframeArr: HTMLIFrameElement[] = [];
+
+    for (let i = 0; i < clickableDemoWithSteps.steps.length; i++) {
+      iframeArr[i] = document.createElement('iframe');
+      iframeArr[i].src = clickableDemoWithSteps.steps[i].url;
+      iframeArr[i].width = '100%';
+      iframeArr[i].style.height = i === 0 ? '93vh' : '0vh';
+      i === 0
+        ? (iframeArr[i].onload = function () {
+            handleLoad(i);
+          })
+        : null;
+
+      // Append the iframe to the container
+      container!.appendChild(iframeArr[i]);
+    }
 
     // Cleanup function to remove the iframe
     return () => {
       // Checks if the iframe still exists in the document before attempting to remove it
-      if (container!.contains(iframe)) {
-        container!.removeChild(iframe);
+      for (let i = 0; i < iframeArr.length; i++) {
+        if (container!.contains(iframeArr[i])) {
+          container!.removeChild(iframeArr[i]);
+        }
       }
       window.removeEventListener('message', receiveMessage);
     };
-  }, [currentTooltipIndex, tooltipObj]);
+  });
 
   return (
     <FullScreenModal open={true} onClose={onClose} title={clickableDemoWithSteps.title}>
