@@ -144,6 +144,8 @@ export default function FileUploader({ spaceId, objectId, imageType, onLoading, 
       const backButton = document.createElement("button");
       backButton.textContent = "Back";
       backButton.onclick = () => {
+          const instance = target._tippy;
+          instance.destroy();
           event.source.postMessage(
           { backButton: true},
           event.origin,
@@ -199,6 +201,8 @@ export default function FileUploader({ spaceId, objectId, imageType, onLoading, 
         event.data.currentTooltipIndex === event.data.tooltipArrayLen - 1 ? "Complete" : "Next";
       nextButton.onclick = async () => {
         if(nextButton.textContent === "Next"){
+          const instance = target._tippy;
+          instance.destroy();
           event.source.postMessage(
           { nextButton: true},
           event.origin,
@@ -254,7 +258,7 @@ export default function FileUploader({ spaceId, objectId, imageType, onLoading, 
       if(target){
         target.scrollIntoView({
           behavior: "smooth", // Optional: defines the transition animation
-          block: "center", // Vertical alignment: options are 'start', 'center', 'end', or 'nearest'
+          block: "nearest", // Vertical alignment: options are 'start', 'center', 'end', or 'nearest'
           inline: "nearest", // Horizontal alignment: options are 'start', 'center', 'end', or 'nearest'
         });
       }
