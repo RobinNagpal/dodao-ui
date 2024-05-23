@@ -97,6 +97,7 @@ export default function FileUploader({ spaceId, objectId, imageType, onLoading, 
       <script defer>
       window.addEventListener('message', (event) => {
 
+      setInterval(() => {
         const xpathResult = document.evaluate(
         event.data.elementXPath,
         document,
@@ -104,7 +105,10 @@ export default function FileUploader({ spaceId, objectId, imageType, onLoading, 
         XPathResult.FIRST_ORDERED_NODE_TYPE,
         null
       );
-      const target = xpathResult.singleNodeValue;
+        const target = xpathResult.singleNodeValue;
+
+        console.log('target: ', target)
+            }, 500);
 
       const tooltipContent = document.createElement("div");
 
