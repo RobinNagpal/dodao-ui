@@ -4,6 +4,7 @@ import { IconTypes } from '@/components/core/icons/IconTypes';
 import { ClickableDemoStepInput, ImageType, Space, UpsertClickableDemoInput, TooltipPlacement } from '@/graphql/generated/generated-types';
 import { ClickableDemoErrors, ClickableDemoStepError } from '@/types/errors/clickableDemoErrors';
 import UploadInput from '@/components/clickableDemos/FileUpload/UploadInput';
+import SelectElementInput from '@/components/clickableDemos/ElementSelector/SelectElement';
 import { slugify } from '@/utils/auth/slugify';
 import { useState } from 'react';
 import styles from './ClickableDemoStepperItem.module.scss';
@@ -46,6 +47,7 @@ export default function Step({
   onUpdateStep,
 }: StepProps) {
   const [uploadHTMLFileLoading, setUploadHTMLFileLoading] = useState(false);
+  const [fileBlob, setFileBlob] = useState<File | null>(null);
 
   const updateStepSelector = (selector: string | number | undefined) => {
     onUpdateStep({ ...step, selector: selector?.toString() || '' });
@@ -96,18 +98,6 @@ export default function Step({
       </div>
       <div className="w-full">
         <div className="mt-4">
-          <Input
-            modelValue={step.selector}
-            placeholder="Selector"
-            maxLength={500}
-            onUpdate={updateStepSelector}
-            label="Selector"
-            error={inputError('selector') ? 'Selector is required' : ''}
-          />
-        </div>
-      </div>
-      <div className="w-full">
-        <div className="mt-4">
           <StyledSelect
             label="Tooltip Position *"
             selectedItemId={step.placement}
@@ -126,6 +116,21 @@ export default function Step({
             modelValue={step.url}
             objectId={(space?.name && slugify(space?.name)) || space?.id || 'new-space'}
             onInput={updateStepUrl}
+            onLoading={setUploadHTMLFileLoading}
+            setFileBlob={setFileBlob}
+          />
+        </div>
+      </div>
+      <div className="w-full">
+        <div className="mt-4">
+          <SelectElementInput
+            label="Selector"
+            error={inputError('selector') ? 'Selector is required' : ''}
+            fileBlob={fileBlob!}
+            space={space}
+            modelValue={step.selector}
+            objectId={(space?.name && slugify(space?.name)) || space?.id || 'new-space'}
+            onInput={updateStepSelector}
             onLoading={setUploadHTMLFileLoading}
           />
         </div>

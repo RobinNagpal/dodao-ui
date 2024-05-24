@@ -15,9 +15,10 @@ interface Props {
   children: React.ReactNode;
   className?: string;
   allowedFileTypes: string[];
+  setFileBlob?: (file: File) => void;
 }
 
-export default function FileUploader({ spaceId, objectId, imageType, onLoading, onInput, children, className, allowedFileTypes }: Props) {
+export default function FileUploader({ spaceId, objectId, imageType, onLoading, onInput, setFileBlob, children, className, allowedFileTypes }: Props) {
   const [loading, setLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const [createSignedUrlMutation] = useCreateSignedUrlMutation();
@@ -305,6 +306,7 @@ export default function FileUploader({ spaceId, objectId, imageType, onLoading, 
     setLoading(true);
     onLoading && onLoading(true);
     const file = e.target.files![0];
+    setFileBlob && setFileBlob(file);
     const reader = new FileReader();
     reader.onload = async (e) => {
       const htmlContent = e.target!.result as string; // Cast the result to string
