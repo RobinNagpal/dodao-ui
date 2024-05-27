@@ -4,7 +4,7 @@ import { IconTypes } from '@/components/core/icons/IconTypes';
 import { ClickableDemoStepInput, ImageType, Space, UpsertClickableDemoInput, TooltipPlacement } from '@/graphql/generated/generated-types';
 import { ClickableDemoErrors, ClickableDemoStepError } from '@/types/errors/clickableDemoErrors';
 import UploadInput from '@/components/clickableDemos/FileUpload/UploadInput';
-import SelectElementInput from '@/components/clickableDemos/ElementSelector/SelectElement';
+import SelectElementInput from '@/components/clickableDemos/ElementSelector/SelectElementInput';
 import { slugify } from '@/utils/auth/slugify';
 import { useState } from 'react';
 import styles from './ClickableDemoStepperItem.module.scss';
@@ -47,7 +47,6 @@ export default function Step({
   onUpdateStep,
 }: StepProps) {
   const [uploadHTMLFileLoading, setUploadHTMLFileLoading] = useState(false);
-  const [fileBlob, setFileBlob] = useState<File | null>(null);
 
   const updateStepSelector = (selector: string | number | undefined) => {
     onUpdateStep({ ...step, selector: selector?.toString() || '' });
@@ -117,7 +116,6 @@ export default function Step({
             objectId={(space?.name && slugify(space?.name)) || space?.id || 'new-space'}
             onInput={updateStepUrl}
             onLoading={setUploadHTMLFileLoading}
-            setFileBlob={setFileBlob}
           />
         </div>
       </div>
@@ -126,10 +124,10 @@ export default function Step({
           <SelectElementInput
             label="Selector"
             error={inputError('selector') ? 'Selector is required' : ''}
-            fileBlob={fileBlob!}
             space={space}
             modelValue={step.selector}
             objectId={(space?.name && slugify(space?.name)) || space?.id || 'new-space'}
+            fileUrl={step.url}
             onInput={updateStepSelector}
             onLoading={setUploadHTMLFileLoading}
           />

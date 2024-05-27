@@ -15,15 +15,14 @@ interface Props {
   children: React.ReactNode;
   className?: string;
   allowedFileTypes: string[];
-  setFileBlob?: (file: File) => void;
 }
 
-export default function FileUploader({ spaceId, objectId, imageType, onLoading, onInput, setFileBlob, children, className, allowedFileTypes }: Props) {
+export default function FileUploader({ spaceId, objectId, imageType, onLoading, onInput, children, className, allowedFileTypes }: Props) {
   const [loading, setLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const [createSignedUrlMutation] = useCreateSignedUrlMutation();
 
-  async function uploadToS3AndReturnImgUrl(imageType: string, file: File, objectId: string) {
+  async function uploadToS3AndReturnFileUrl(imageType: string, file: File, objectId: string) {
     const input: CreateSignedUrlInput = {
       imageType,
       contentType: file.type,
@@ -306,7 +305,6 @@ export default function FileUploader({ spaceId, objectId, imageType, onLoading, 
     setLoading(true);
     onLoading && onLoading(true);
     const file = e.target.files![0];
-    setFileBlob && setFileBlob(file);
     const reader = new FileReader();
     reader.onload = async (e) => {
       const htmlContent = e.target!.result as string; // Cast the result to string
@@ -324,9 +322,9 @@ export default function FileUploader({ spaceId, objectId, imageType, onLoading, 
       }
 
       try {
-        const imageUrl = await uploadToS3AndReturnImgUrl(imageType, editedFile, objectId.replace(/[^a-z0-9]/gi, '_'));
+        const fileUrl = await uploadToS3AndReturnFileUrl(imageType, editedFile, objectId.replace(/[^a-z0-9]/gi, '_'));
 
-        onInput && onInput(imageUrl);
+        onInput && onInput(fileUrl);
         setLoading(false);
         onLoading && onLoading(false);
       } catch (error) {

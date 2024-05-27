@@ -1,16 +1,17 @@
 import { Space } from '@/graphql/generated/generated-types';
 import { slugify } from '@/utils/auth/slugify';
 import ArrowUpTrayIcon from '@heroicons/react/24/solid/ArrowUpTrayIcon';
-import ElementSelector from '@/components/clickableDemos/ElementSelector/ElementSelectorModal';
+import ElementSelectorModal from '@/components/clickableDemos/ElementSelector/ElementSelectorModal';
 import PhotoIcon from '@heroicons/react/24/solid/PhotoIcon';
-import styles from './SelectElement.module.scss';
+import styles from './SelectElementInput.module.scss';
+import { useState } from 'react';
 
 interface SelectElementInputProps {
   label?: string;
   modelValue?: string | null;
-  fileBlob?: File;
   objectId: string;
   space: Space;
+  fileUrl?: string;
   onInput: (url: string) => void;
   onLoading?: (value: ((prevState: boolean) => boolean) | boolean) => void;
   placeholder?: string;
@@ -22,9 +23,9 @@ interface SelectElementInputProps {
 export default function SelectElementInput({
   label,
   modelValue,
-  fileBlob,
   objectId,
   space,
+  fileUrl,
   onInput,
   onLoading,
   placeholder = '/html/body/',
@@ -33,6 +34,7 @@ export default function SelectElementInput({
   helpText,
 }: SelectElementInputProps) {
   const inputId = space.id + '-' + slugify(label || objectId);
+  const [showModal, setShowModal] = useState(false);
 
   return (
     <div className="mt-2">
@@ -54,23 +56,26 @@ export default function SelectElementInput({
             onChange={(e) => onInput(e.target.value)}
           />
         </div>
-        <ElementSelector
-          className="relative -ml-px inline-flex items-center gap-x-1.5 rounded-r-md px-3 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-          space={space}
-          onInput={onInput}
-          fileBlob={fileBlob}
-          objectId={objectId}
-          onLoading={onLoading}
-          allowedFileTypes={allowedFileTypes}
+        <div
+          onClick={() => setShowModal(true)}
+          className="flex relative -ml-px inline-flex items-center gap-x-1.5 rounded-r-md px-3 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 hover:bg-gray-50 cursor-pointer"
         >
-          <div className="flex">
-            <ArrowUpTrayIcon className="-ml-0.5 h-5 w-5 text-gray-400" aria-hidden="true" />
-            <span className="mx-2">Select</span>
-          </div>
-        </ElementSelector>
+          <ArrowUpTrayIcon className="-ml-0.5 h-5 w-5 text-gray-400" aria-hidden="true" />
+          <span className="mx-2">Select</span>
+        </div>
       </div>
       {helpText && <p className="ml-1 mt-2 mb-2 text-sm">{helpText}</p>}
       {typeof error === 'string' && <p className="mt-2 text-sm text-left text-red-600">{error}</p>}
+      {showModal && (
+        <ElementSelectorModal
+          space={space}
+          onInput={onInput}
+          showModal={showModal}
+          fileUrl={fileUrl!}
+          onLoading={onLoading}
+          setShowModal={setShowModal}
+        ></ElementSelectorModal>
+      )}
     </div>
   );
 }

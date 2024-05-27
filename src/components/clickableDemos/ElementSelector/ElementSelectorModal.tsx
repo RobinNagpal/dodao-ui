@@ -1,28 +1,21 @@
-import LoadingSpinner from '@/components/core/loaders/LoadingSpinner';
-import React, { useEffect, useState } from 'react';
-import styles from './ElementSelectorModal.module.scss';
+import React, { useEffect } from 'react';
 import FullScreenModal from '@/components/core/modals/FullScreenModal';
 import { Space } from '@/graphql/generated/generated-types';
+import axios from 'axios';
 
 interface Props {
   space: Space;
-  objectId: string;
-  fileBlob?: File;
+  showModal: boolean;
+  fileUrl: string;
   onLoading?: (loading: boolean) => void;
   onInput?: (imageUrl: string) => void;
-  children: React.ReactNode;
-  className?: string;
-  allowedFileTypes: string[];
+  setShowModal: (showModal: boolean) => void;
 }
 
-export default function ElementSelector({ space, objectId, fileBlob, onLoading, onInput, children, className, allowedFileTypes }: Props) {
-  const [loading, setLoading] = useState(false);
-  const [showModal, setShowModal] = useState(false);
-  const [iframeSrc, setIframeSrc] = useState<string | null>(null);
-
+export default function ElementSelectorModal({ space, showModal, fileUrl, onInput, setShowModal }: Props) {
   useEffect(() => {
     function receiveMessage(event: any) {
-      setShowModal(false);
+      if (event.data.xpath) setShowModal(false);
       onInput!(event.data.xpath);
     }
 
@@ -40,41 +33,41 @@ export default function ElementSelector({ space, objectId, fileBlob, onLoading, 
       );
     };
 
-    if (fileBlob) {
-      const reader = new FileReader();
+    const modifyHTMLFile = async () => {
+      const newBaseUrl = 'https://dodao-prod-public-assets.s3.amazonaws.com';
 
-      reader.onload = (event) => {
-        const htmlContent = event?.target?.result as string;
+      // Changing the base URL
+      const url = new URL(fileUrl);
+      const newUrl = `${newBaseUrl}${url.pathname}`;
+      const htmlContent = await axios.get(newUrl, { responseType: 'text' });
 
-        // // Manipulate the HTML
-        const modifiedHtml = injectScriptTag(htmlContent);
+      // Manipulate the HTML
+      const modifiedHtml = injectScriptTag(htmlContent.data);
 
-        // Create a Blob with the HTML content
-        const blob = new Blob([modifiedHtml], { type: 'text/html' });
-        const blobUrl = URL.createObjectURL(blob);
+      // Create a Blob with the HTML content
+      const blob = new Blob([modifiedHtml], { type: 'text/html' });
+      const blobUrl = URL.createObjectURL(blob);
 
-        // Set the Blob URL as the src of the iframe
-        setIframeSrc(blobUrl);
+      window.addEventListener('message', receiveMessage);
 
-        window.addEventListener('message', receiveMessage);
+      // Container where the iframe will be appended
+      const container = document.getElementById('iframe-container');
 
-        // Container where the iframe will be appended
-        const container = document.getElementById('iframe-container');
-
-        const iframe = document.createElement('iframe');
-        iframe.src = iframeSrc!;
-        iframe.width = '100%';
-        iframe.style.height = '93vh';
-        iframe.onload = function () {
-          handleLoad(iframe);
-        };
-
-        container?.append(iframe);
+      const iframe = document.createElement('iframe');
+      iframe.src = blobUrl;
+      iframe.width = '100%';
+      iframe.style.height = '93vh';
+      iframe.onload = function () {
+        handleLoad(iframe);
       };
 
-      reader.readAsText(fileBlob);
+      container?.append(iframe);
+    };
+
+    if (fileUrl) {
+      modifyHTMLFile();
     }
-  }, [fileBlob, showModal]);
+  }, [showModal, fileUrl]);
 
   function injectScriptTag(htmlContent: string): string {
     // Regular expression for matching the closing head tag
@@ -91,6 +84,11 @@ export default function ElementSelector({ space, objectId, fileBlob, onLoading, 
 
         let selectedElement = null;
         let final_xpath = null;
+        document.body.style.cursor = 'pointer';
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.style.cursor = 'pointer';
+        });
         const button = document.createElement('button');
 
         // Set the button's text
@@ -106,7 +104,7 @@ export default function ElementSelector({ space, objectId, fileBlob, onLoading, 
                     button.style.border = 'none';
                     button.style.borderRadius = '5px';
                     button.style.cursor = 'pointer';
-                    button.style.zIndex = '1000';
+                    button.style.zIndex = '9999999';
                     button.style.transition = "all 0.3s ease"; // Transition for smooth hover effect
                     button.disabled = selectedElement === null;
                     button.style.opacity = button.disabled ? "0.5" : "1"; // Dim button if disabled
@@ -225,19 +223,10 @@ export default function ElementSelector({ space, objectId, fileBlob, onLoading, 
   }
 
   return (
-    <div className={className}>
-      {loading ? (
-        <LoadingSpinner />
-      ) : (
-        <label className={styles.file_select} onClick={() => setShowModal(true)}>
-          {children}
-        </label>
-      )}
-      {showModal && (
-        <FullScreenModal open={true} onClose={() => setShowModal(false)} title={'Element Selector'}>
-          <div id="iframe-container"></div>
-        </FullScreenModal>
-      )}
+    <div>
+      <FullScreenModal open={true} onClose={() => setShowModal(false)} title={'Element Selector'}>
+        <div id="iframe-container" style={{ height: '93vh' }}></div>
+      </FullScreenModal>
     </div>
   );
 }

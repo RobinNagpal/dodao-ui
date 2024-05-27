@@ -13,7 +13,6 @@ interface UploadInputProps {
   spaceId: string;
   onInput: (url: string) => void;
   onLoading?: (value: ((prevState: boolean) => boolean) | boolean) => void;
-  setFileBlob?: (file: File) => void;
   placeholder?: string;
   allowedFileTypes?: string[];
   error?: any;
@@ -28,7 +27,6 @@ export default function UploadInput({
   spaceId,
   onInput,
   onLoading,
-  setFileBlob,
   placeholder = 'e.g. https://example.com/guide.png',
   allowedFileTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/svg+xml', 'image/svg+xml', 'image/webp', 'text/html'],
   error,
@@ -62,7 +60,6 @@ export default function UploadInput({
           imageType={imageType}
           objectId={objectId}
           onLoading={onLoading}
-          setFileBlob={setFileBlob}
           allowedFileTypes={allowedFileTypes}
         >
           <div className="flex">
