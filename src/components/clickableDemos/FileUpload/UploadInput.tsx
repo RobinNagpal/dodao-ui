@@ -1,4 +1,4 @@
-import FileUploader from '@/components/clickableDemos/FileUpload/FileUploader';
+import ClickableDemoFileUploader from '@/components/clickableDemos/FileUpload/ClickableDemoFileUploader';
 import { ImageType } from '@/graphql/generated/generated-types';
 import { slugify } from '@/utils/auth/slugify';
 import ArrowUpTrayIcon from '@heroicons/react/24/solid/ArrowUpTrayIcon';
@@ -53,7 +53,7 @@ export default function UploadInput({
             onChange={(e) => onInput(e.target.value)}
           />
         </div>
-        <FileUploader
+        <ClickableDemoFileUploader
           className="relative -ml-px inline-flex items-center gap-x-1.5 rounded-r-md px-3 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
           spaceId={spaceId}
           onInput={onInput}
@@ -66,7 +66,7 @@ export default function UploadInput({
             <ArrowUpTrayIcon className="-ml-0.5 h-5 w-5 text-gray-400" aria-hidden="true" />
             <span className="mx-2">Upload</span>
           </div>
-        </FileUploader>
+        </ClickableDemoFileUploader>
       </div>
       {helpText && <p className="ml-1 mt-2 mb-2 text-sm">{helpText}</p>}
       {typeof error === 'string' && <p className="mt-2 text-sm text-left text-red-600">{error}</p>}

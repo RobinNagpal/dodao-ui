@@ -4,7 +4,7 @@ import { CreateSignedUrlInput, ImageType, useCreateSignedUrlMutation } from '@/g
 import { getUploadedImageUrlFromSingedUrl } from '@/utils/upload/getUploadedImageUrlFromSingedUrl';
 import axios from 'axios';
 import React, { useRef, useState } from 'react';
-import styles from './FileUploader.module.scss';
+import styles from 'src/components/clickableDemos/FileUpload/ClickableDemoFileUploader.module.scss';
 
 interface Props {
   spaceId: string;
@@ -17,7 +17,7 @@ interface Props {
   allowedFileTypes: string[];
 }
 
-export default function FileUploader({ spaceId, objectId, imageType, onLoading, onInput, children, className, allowedFileTypes }: Props) {
+export default function ClickableDemoFileUploader({ spaceId, objectId, imageType, onLoading, onInput, children, className, allowedFileTypes }: Props) {
   const [loading, setLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const [createSignedUrlMutation] = useCreateSignedUrlMutation();
