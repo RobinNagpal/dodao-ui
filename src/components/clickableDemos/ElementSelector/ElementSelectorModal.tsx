@@ -48,21 +48,19 @@ export default function ElementSelectorModal({ space, showModal, fileUrl, onInpu
       const blob = new Blob([modifiedHtml], { type: 'text/html' });
       const blobUrl = URL.createObjectURL(blob);
 
-      window.addEventListener('message', receiveMessage);
+      if (!iframe) return;
 
-      // Container where the iframe will be appended
-      const container = document.getElementById('iframe-container');
-
-      const iframe = document.createElement('iframe');
       iframe.src = blobUrl;
       iframe.width = '100%';
       iframe.style.height = '93vh';
       iframe.onload = function () {
         handleLoad(iframe);
       };
-
-      container?.append(iframe);
     };
+
+    window.addEventListener('message', receiveMessage);
+
+    const iframe = document.getElementById('iframe') as HTMLIFrameElement;
 
     if (fileUrl) {
       modifyHTMLFile();
@@ -225,7 +223,9 @@ export default function ElementSelectorModal({ space, showModal, fileUrl, onInpu
   return (
     <div>
       <FullScreenModal open={true} onClose={() => setShowModal(false)} title={'Element Selector'}>
-        <div id="iframe-container" style={{ height: '93vh' }}></div>
+        <div id="iframe-container" style={{ height: '93vh' }}>
+          <iframe id="iframe" src="about:blank"></iframe>
+        </div>
       </FullScreenModal>
     </div>
   );
