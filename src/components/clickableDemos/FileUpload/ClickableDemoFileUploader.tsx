@@ -4,7 +4,7 @@ import { CreateSignedUrlInput, ImageType, useCreateSignedUrlMutation } from '@/g
 import { getUploadedImageUrlFromSingedUrl } from '@/utils/upload/getUploadedImageUrlFromSingedUrl';
 import axios from 'axios';
 import React, { useRef, useState } from 'react';
-import styles from 'src/components/clickableDemos/FileUpload/ClickableDemoFileUploader.module.scss';
+import styles from './ClickableDemoFileUploader.module.scss';
 
 interface Props {
   spaceId: string;
