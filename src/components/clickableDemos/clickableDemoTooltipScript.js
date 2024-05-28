@@ -149,4 +149,4 @@ function showClickableDemoTooltip(event) {
   });
 }
 
-global.showClickableDemoTooltip = showClickableDemoTooltip;
+window.showClickableDemoTooltip = showClickableDemoTooltip;
