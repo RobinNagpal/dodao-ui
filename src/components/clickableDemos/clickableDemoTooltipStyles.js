@@ -1,7 +1,14 @@
 // tooltipScript.js
-window.addEventListener('message', (event) => {
+
+function showClickableDemoTooltip(event) {
+  console.log('event.data.elementXPath', event.data.elementXPath);
+
   const xpathResult = document.evaluate(event.data.elementXPath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+  console.log('xpathResult', xpathResult);
+
   const target = xpathResult.singleNodeValue;
+
+  console.log('target', target);
 
   const tooltipContent = document.createElement('div');
 
@@ -140,4 +147,4 @@ window.addEventListener('message', (event) => {
     trigger: 'manual',
     theme: 'material',
   });
-});
+}

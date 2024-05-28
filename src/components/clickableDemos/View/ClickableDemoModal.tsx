@@ -34,20 +34,31 @@ function ClickableDemoModal({ clickableDemoWithSteps, space, onClose }: Clickabl
       }
     }
     const handleLoad = (index: number) => {
-      if (!iframeArr[index]) return; // Ensure the iframe ref is set
+      console.log('iframe loaded', index);
+      const iframeArrElement = iframeArr[index];
+      const iframeNotPresent = !iframeArrElement;
+      console.error('iframe not present at index', index);
+      if (iframeNotPresent) return; // Ensure the iframe ref is set
 
-      iframeArr[index].contentWindow!.postMessage(
-        {
-          elementXPath: clickableDemoWithSteps.steps[index].selector,
-          tooltipContent: clickableDemoWithSteps.steps[index].tooltipInfo,
-          tooltipArrayLen: clickableDemoWithSteps.steps.length,
-          currentTooltipIndex: index,
-          buttonColor: space?.themeColors?.primaryColor,
-          buttonTextColor: space?.themeColors?.textColor,
-          placement: clickableDemoWithSteps.steps[index].placement,
-        },
-        '*'
-      );
+      const contentWindow = iframeArrElement.contentWindow;
+      console.log('iframeArr[index].contentWindow', contentWindow);
+      console.log('iframeArr[index] src', iframeArrElement.src);
+
+      setTimeout(() => {
+        contentWindow!.postMessage(
+          {
+            elementXPath: clickableDemoWithSteps.steps[index].selector,
+            tooltipContent: clickableDemoWithSteps.steps[index].tooltipInfo,
+            tooltipArrayLen: clickableDemoWithSteps.steps.length,
+            currentTooltipIndex: index,
+            buttonColor: space?.themeColors?.primaryColor,
+            buttonTextColor: space?.themeColors?.textColor,
+            placement: clickableDemoWithSteps.steps[index].placement,
+          },
+          '*'
+        );
+        console.log('message sent', index);
+      }, 2000);
     };
 
     window.addEventListener('message', receiveMessage);

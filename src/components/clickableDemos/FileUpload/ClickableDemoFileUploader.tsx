@@ -42,29 +42,55 @@ export default function ClickableDemoFileUploader({ spaceId, objectId, imageType
   }
 
   function injectScriptLinkTags(htmlContent: string): string {
-    // Regular expression for matching the closing head tag
+    // Regular expression for matching the opening style tag
     const closingHeadRegex = /<style>/i;
 
-    // Find the position to insert the tags (after the opening head tag)
+    // Find the position to insert the tags (before the opening style tag)
     const headEndTagIndex = closingHeadRegex.exec(htmlContent)?.index;
 
     if (headEndTagIndex) {
-      // Construct the script and link tags
+      // Construct the script and link tags with a timestamp
+      const timestamp = new Date().getTime();
+      const linkTag2 = `<link rel="stylesheet" href="https://unpkg.com/tippy.js@6/animations/shift-toward.css?t=${timestamp}" />`;
+      const linkTag3 = `<link rel="stylesheet" href="https://unpkg.com/tippy.js@6/themes/material.css?t=${timestamp}" />`;
+      const scriptTag1 = `<script src="https://unpkg.com/@popperjs/core@2?t=${timestamp}"></script>`;
+      const scriptTag2 = `<script src="https://unpkg.com/tippy.js@6?t=${timestamp}"></script>`;
 
-      const linkTag2 = `<link rel="stylesheet" href="https://unpkg.com/tippy.js@6/animations/shift-toward.css" />`;
-      const linkTag3 = `<link rel="stylesheet" href="https://unpkg.com/tippy.js@6/themes/material.css" />`;
-      const scriptTag1 = `<script src="https://unpkg.com/@popperjs/core@2"></script>`;
-      const scriptTag2 = `<script src="https://unpkg.com/tippy.js@6"></script>`;
-      const linkTagCustom = `<link rel="stylesheet" href="https://raw.githubusercontent.com/RobinNagpal/dodao-ui/main/src/components/clickableDemos/clickableDemoTooltipStyles.css">`;
-      const scriptTagCustom = `<script src="https://raw.githubusercontent.com/RobinNagpal/dodao-ui/main/src/components/clickableDemos/clickableDemoTooltipStyles.js"></script>`;
+      // Script to programmatically load resources from raw.githubusercontent.com
+      const scriptContent = `
+      (function() {
+        const timestamp = new Date().getTime();
 
-      // Insert the tags after the opening head tag
+        function loadScript(url) {
+          const script = document.createElement('script');
+          script.src = url + '?t=' + timestamp;
+          document.head.appendChild(script);
+        }
+
+        function loadStylesheet(url) {
+          const link = document.createElement('link');
+          link.rel = 'stylesheet';
+          link.href = url + '?t=' + timestamp;
+          document.head.appendChild(link);
+        }
+        console.log('Loading resources from raw.githubusercontent.com');
+        loadStylesheet('https://raw.githubusercontent.com/RobinNagpal/dodao-ui/main/src/components/clickableDemos/clickableDemoTooltipStyles.css');
+        loadScript('https://raw.githubusercontent.com/RobinNagpal/dodao-ui/main/src/components/clickableDemos/clickableDemoTooltipStyles.js');
+        
+        window.addEventListener('message', (event) => {
+          console.log('Received message from parent', event.data);
+          showClickableDemoTooltip(event);
+        });
+
+      })();
+    `;
+      const scriptTagCustom = `<script>${scriptContent}</script>`;
+
+      // Insert the tags before the opening style tag
       const modifiedHtml = [
         htmlContent.slice(0, headEndTagIndex),
-
         linkTag2,
         linkTag3,
-        linkTagCustom,
         scriptTag1,
         scriptTag2,
         scriptTagCustom,
@@ -73,8 +99,8 @@ export default function ClickableDemoFileUploader({ spaceId, objectId, imageType
 
       return modifiedHtml;
     } else {
-      console.warn('Unable to find closing head tag in HTML content');
-      return htmlContent; // Return unmodified content if head tag not found
+      console.warn('Unable to find opening style tag in HTML content');
+      return htmlContent; // Return unmodified content if the style tag is not found
     }
   }
 
