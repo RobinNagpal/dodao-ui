@@ -148,3 +148,8 @@ function showClickableDemoTooltip(event) {
     theme: 'material',
   });
 }
+
+window.showClickableDemoTooltip = showClickableDemoTooltip;
+
+console.log('showClickableDemoTooltip loaded', showClickableDemoTooltip);
+console.log('window.showClickableDemoTooltip', window.showClickableDemoTooltip);

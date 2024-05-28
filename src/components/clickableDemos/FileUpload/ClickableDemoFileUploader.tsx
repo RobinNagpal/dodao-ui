@@ -56,33 +56,21 @@ export default function ClickableDemoFileUploader({ spaceId, objectId, imageType
       const scriptTag1 = `<script src="https://unpkg.com/@popperjs/core@2?t=${timestamp}"></script>`;
       const scriptTag2 = `<script src="https://unpkg.com/tippy.js@6?t=${timestamp}"></script>`;
 
+      const customLinkTag = `<link rel="stylesheet" href="https://raw.githubusercontent.com/RobinNagpal/dodao-ui/main/src/components/clickableDemos/clickableDemoTooltipStyles.css?t=${timestamp}" />`;
+      // const customScriptTag = `<script src="https://raw.githubusercontent.com/RobinNagpal/dodao-ui/main/src/components/clickableDemos/clickableDemoTooltipScript.js?t=${timestamp}"></script>`;
+      const customScriptTag = `<script src="https://raw.githubusercontent.com/RobinNagpal/dodao-ui/load_from_url/src/components/clickableDemos/clickableDemoTooltipStyles.js?t=${timestamp}"></script>`;
+
       // Script to programmatically load resources from raw.githubusercontent.com
       const scriptContent = `
-      (function() {
-        const timestamp = new Date().getTime();
-
-        function loadScript(url) {
-          const script = document.createElement('script');
-          script.src = url + '?t=' + timestamp;
-          document.head.appendChild(script);
+      console.log('Injecting event listener for clickable demo tooltip');
+      window.addEventListener('message', (event) => {
+        console.log('Received message from parent', event.data);
+        if (typeof window.showClickableDemoTooltip === 'function') {
+          window.showClickableDemoTooltip(event);
+        } else {
+          console.error('showClickableDemoTooltip is not defined');
         }
-
-        function loadStylesheet(url) {
-          const link = document.createElement('link');
-          link.rel = 'stylesheet';
-          link.href = url + '?t=' + timestamp;
-          document.head.appendChild(link);
-        }
-        console.log('Loading resources from raw.githubusercontent.com');
-        loadStylesheet('https://raw.githubusercontent.com/RobinNagpal/dodao-ui/main/src/components/clickableDemos/clickableDemoTooltipStyles.css');
-        loadScript('https://raw.githubusercontent.com/RobinNagpal/dodao-ui/main/src/components/clickableDemos/clickableDemoTooltipStyles.js');
-        
-        window.addEventListener('message', (event) => {
-          console.log('Received message from parent', event.data);
-          showClickableDemoTooltip(event);
-        });
-
-      })();
+      });
     `;
       const scriptTagCustom = `<script>${scriptContent}</script>`;
 
@@ -93,6 +81,8 @@ export default function ClickableDemoFileUploader({ spaceId, objectId, imageType
         linkTag3,
         scriptTag1,
         scriptTag2,
+        customLinkTag,
+        customScriptTag,
         scriptTagCustom,
         htmlContent.slice(headEndTagIndex),
       ].join('');
