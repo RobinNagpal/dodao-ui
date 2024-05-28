@@ -58,7 +58,7 @@ export default function ClickableDemoFileUploader({ spaceId, objectId, imageType
 
       const customLinkTag = `<link rel="stylesheet" href="https://raw.githubusercontent.com/RobinNagpal/dodao-ui/main/src/components/clickableDemos/clickableDemoTooltipStyles.css?t=${timestamp}" />`;
       // const customScriptTag = `<script src="https://raw.githubusercontent.com/RobinNagpal/dodao-ui/main/src/components/clickableDemos/clickableDemoTooltipScript.js?t=${timestamp}"></script>`;
-      const customScriptTag = `<script src="https://raw.githubusercontent.com/RobinNagpal/dodao-ui/load_from_url/src/components/clickableDemos/clickableDemoTooltipStyles.js?t=${timestamp}"></script>`;
+      const customScriptTag = `<script src="https://raw.githubusercontent.com/RobinNagpal/dodao-ui/load_from_url/src/components/clickableDemos/clickableDemoTooltipScript.js?t=${timestamp}"></script>`;
 
       // Script to programmatically load resources from raw.githubusercontent.com
       const scriptContent = `
