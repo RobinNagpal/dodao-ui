@@ -150,3 +150,6 @@ function showClickableDemoTooltip(event) {
 }
 
 window.showClickableDemoTooltip = showClickableDemoTooltip;
+
+console.log('showClickableDemoTooltip is defined on window', window.showClickableDemoTooltip);
+
