@@ -56,11 +56,9 @@ export default function ClickableDemoFileUploader({ spaceId, objectId, imageType
       const scriptTag1 = `<script src="https://unpkg.com/@popperjs/core@2?t=${timestamp}"></script>`;
       const scriptTag2 = `<script src="https://unpkg.com/tippy.js@6?t=${timestamp}"></script>`;
 
-      const customLinkTag = `<link rel="stylesheet" href="https://raw.githubusercontent.com/RobinNagpal/dodao-ui/main/src/components/clickableDemos/clickableDemoTooltipStyles.css?t=${timestamp}" />`;
-      // const customScriptTag = `<script src="https://raw.githubusercontent.com/RobinNagpal/dodao-ui/main/src/components/clickableDemos/clickableDemoTooltipScript.js?t=${timestamp}"></script>`;
-      const customScriptTag = `<script src="https://raw.githubusercontent.com/RobinNagpal/dodao-ui/load_from_url/src/components/clickableDemos/clickableDemoTooltipScript.js?t=${timestamp}"></script>`;
+      const customLinkTag = `<link rel="stylesheet" href="https://dodao-prod-public-assets.s3.amazonaws.com/clickable-demos-prod-files/clickableDemoTooltipStyles.css" />`;
+      const customScriptTag = `<script src="https://dodao-prod-public-assets.s3.amazonaws.com/clickable-demos-prod-files/clickableDemoTooltipScript.js"></script>`;
 
-      // Script to programmatically load resources from raw.githubusercontent.com
       const scriptContent = `
       console.log('Injecting event listener for clickable demo tooltip');
       window.addEventListener('message', (event) => {

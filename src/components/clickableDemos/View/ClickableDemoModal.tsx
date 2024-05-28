@@ -34,15 +34,11 @@ function ClickableDemoModal({ clickableDemoWithSteps, space, onClose }: Clickabl
       }
     }
     const handleLoad = (index: number) => {
-      console.log('iframe loaded', index);
       const iframeArrElement = iframeArr[index];
       const iframeNotPresent = !iframeArrElement;
-      console.error('iframe not present at index', index);
       if (iframeNotPresent) return; // Ensure the iframe ref is set
 
       const contentWindow = iframeArrElement.contentWindow;
-      console.log('iframeArr[index].contentWindow', contentWindow);
-      console.log('iframeArr[index] src', iframeArrElement.src);
 
       setTimeout(() => {
         contentWindow!.postMessage(
