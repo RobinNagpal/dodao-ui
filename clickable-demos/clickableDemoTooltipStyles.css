@@ -1,3 +1,6 @@
+:root {
+    --bg-color: #555; /* or any other color you prefer */
+}
 /* tooltipStyles.css */
 .tippy-box[data-theme~='material'] {
     border-radius: 0.7rem;
@@ -33,4 +36,8 @@
     top: 16px;
     left: -1px;
     rotate: 180deg;
+}
+
+.tippy-content {
+    background: var(--bg-color, #555);
 }

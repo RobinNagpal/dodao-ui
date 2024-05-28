@@ -51,26 +51,47 @@ export default function ClickableDemoFileUploader({ spaceId, objectId, imageType
     if (headEndTagIndex) {
       // Construct the script and link tags with a timestamp
       const timestamp = new Date().getTime();
-      const linkTag2 = `<link rel="stylesheet" href="https://unpkg.com/tippy.js@6/animations/shift-toward.css?t=${timestamp}" />`;
-      const linkTag3 = `<link rel="stylesheet" href="https://unpkg.com/tippy.js@6/themes/material.css?t=${timestamp}" />`;
-      const scriptTag1 = `<script src="https://unpkg.com/@popperjs/core@2?t=${timestamp}"></script>`;
-      const scriptTag2 = `<script src="https://unpkg.com/tippy.js@6?t=${timestamp}"></script>`;
+      const linkTag2 = `<link rel="stylesheet" href="https://unpkg.com/tippy.js@6/animations/shift-toward.css" />`;
+      const linkTag3 = `<link rel="stylesheet" href="https://unpkg.com/tippy.js@6/themes/material.css" />`;
+      const scriptTag1 = `<script src="https://unpkg.com/@popperjs/core@2"></script>`;
+      const scriptTag2 = `<script src="https://unpkg.com/tippy.js@6"></script>`;
 
       const customLinkTag = `<link rel="stylesheet" href="https://dodao-prod-public-assets.s3.amazonaws.com/clickable-demos-prod-files/clickableDemoTooltipStyles.css" />`;
       const customScriptTag = `<script src="https://dodao-prod-public-assets.s3.amazonaws.com/clickable-demos-prod-files/clickableDemoTooltipScript.js"></script>`;
 
-      const scriptContent = `
-      console.log('Injecting event listener for clickable demo tooltip');
-      window.addEventListener('message', (event) => {
-        console.log('Received message from parent', event.data);
-        if (typeof window.showClickableDemoTooltip === 'function') {
-          window.showClickableDemoTooltip(event);
+      const scriptTagCustom = `<script>
+      console.log("Injecting event listener for clickable demo tooltip");
+      window.addEventListener("message", (event) => {
+        console.log("Received message from parent", event.data);
+        if (typeof window.handleDoDAOParentWindowEvent === "function") {
+          window.handleDoDAOParentWindowEvent(event);
         } else {
-          console.error('showClickableDemoTooltip is not defined');
+          console.error("handleDoDAOParentWindowEvent is not defined");
         }
       });
-    `;
-      const scriptTagCustom = `<script>${scriptContent}</script>`;
+      
+      if ("serviceWorker" in navigator) {
+          navigator.serviceWorker.register("/clickable-demos-prod-files/clickableDemoServiceWorker.js")
+          .then(registration => {
+              console.log("Service Worker registered with scope:", registration.scope);
+      
+              // After registration, send URLs to cache to the Service Worker
+              window.addEventListener("load", () => {
+                  const urlsToCache = Array.from(document.querySelectorAll("link[rel=\'stylesheet\'], script[src]"))
+                      .map(tag => tag.href || tag.src);
+      
+                  const filteredUrls = urlsToCache.filter(url => !url.includes("dodao-prod-public-assets"));
+                  
+                  console.log("Sending URLs to cache to Service Worker:", filteredUrls);
+                  if (navigator.serviceWorker.controller) {
+                      navigator.serviceWorker.controller.postMessage({ type: "CACHE_URLS", payload: filteredUrls });
+                  }
+              });
+          }).catch(error => {
+              console.log("Service Worker registration failed:", error);
+          });
+      }
+    </script>`;
 
       // Insert the tags before the opening style tag
       const modifiedHtml = [

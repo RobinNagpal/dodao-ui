@@ -1,6 +1,6 @@
 // tooltipScript.js
 
-function showClickableDemoTooltip(event) {
+function showTooltip(event) {
   console.log('event.data.elementXPath', event.data.elementXPath);
 
   const xpathResult = document.evaluate(event.data.elementXPath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
@@ -28,7 +28,6 @@ function showClickableDemoTooltip(event) {
   tooltipContent.style.minHeight = '130px'; // Set a minimum height for the tooltip
   tooltipContent.style.minWidth = '300px'; // Set a minimum width for the tooltip
   tooltipContent.style.padding = '3px 12px'; // Add padding to the tooltip
-  tooltipContent.style.zIndex = '9999'; // Set a high z-index to ensure the tooltip is on top
   tooltipContent.appendChild(textElement);
 
   // Add an <hr> element to serve as a horizontal line
@@ -149,7 +148,19 @@ function showClickableDemoTooltip(event) {
   });
 }
 
-window.showClickableDemoTooltip = showClickableDemoTooltip;
+function handleDoDAOParentWindowEvent(event) {
+  if (event.data.type === 'showTooltip') {
+    showTooltip(event);
+  }
 
-console.log('showClickableDemoTooltip is defined on window', window.showClickableDemoTooltip);
+  if (event.data.type === 'setCssVariables') {
+    const cssValues = event.data.cssValues;
+    for (const variable in cssValues) {
+      document.documentElement.style.setProperty(variable, cssValues[variable]);
+    }
+  }
+}
 
+window.handleDoDAOParentWindowEvent = handleDoDAOParentWindowEvent;
+
+console.log('handleDoDAOParentWindowEvent is defined on window', window.handleDoDAOParentWindowEvent);
