@@ -131,6 +131,9 @@ function showTooltip(event) {
     });
   }
 
+  const tooltipWrapper = document.createElement('div');
+  tooltipWrapper.append(tooltipContent);
+
   tippy(target, {
     allowHTML: true,
     placement: event.data.placement,
@@ -140,7 +143,7 @@ function showTooltip(event) {
     inertia: true,
     duration: [2000, 250],
     delay: [500, 200],
-    content: tooltipContent,
+    content: tooltipWrapper,
     showOnCreate: true,
     hideOnClick: false,
     trigger: 'manual',
