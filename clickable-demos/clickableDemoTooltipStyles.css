@@ -1,19 +1,18 @@
-/* tooltipStyles.css */
 .tippy-box {
     z-index: 99999;
 }
 .tippy-box[data-theme~='material'] {
     border-radius: 0.7rem;
-    border: 1px solid rgb(224, 224, 224);
+    border: 1px solid rgb(244, 244, 244);
     box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.2);
     z-index: 99999;
-    background: var(--bg-color, #555);
+    background: var(--bg-color, #0c0d0c);
     background-color: var(--bg-color, #555);
     opacity: 1.0;
 
 }
 .tippy-box[data-theme~="material"][data-placement^="bottom"] > .tippy-arrow::before {
-    border-bottom-color: #212429;
+    border-bottom-color: var(--bg-color, #555);
 }
 .tippy-box[data-theme~="material"][data-placement^="bottom"] > .tippy-arrow::after {
     content: "";
@@ -24,9 +23,10 @@
     border-bottom-color: rgb(224, 224, 224);
     top: -18px;
     left: -1px;
+    z-index: -1;
 }
 .tippy-box[data-theme~="material"][data-placement^="top"] > .tippy-arrow::before {
-    border-top-color: #212429;
+    border-top-color: var(--bg-color, #555);
 }
 .tippy-box[data-theme~="material"][data-placement^="top"] > .tippy-arrow::after {
     content: "";
@@ -38,10 +38,12 @@
     top: 16px;
     left: -1px;
     rotate: 180deg;
+    z-index: -1;
 }
 
 .tippy-content {
     background: var(--bg-color, #555);
     background-color: var(--bg-color, #555);
     opacity: 1.0;
+    border-radius: 0.7rem;
 }
