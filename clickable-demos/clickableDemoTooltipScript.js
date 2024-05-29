@@ -2,7 +2,9 @@
 
 function showTooltip(event) {
   console.log('event.data.elementXPath', event.data.elementXPath);
-
+  document.addEventListener('click', function(event) {
+    event.preventDefault();
+  });
   const xpathResult = document.evaluate(event.data.elementXPath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
   console.log('xpathResult', xpathResult);
 
@@ -44,6 +46,8 @@ function showTooltip(event) {
   const backButton = document.createElement('button');
   backButton.textContent = 'Back';
   backButton.onclick = () => {
+    const instance = target._tippy;
+    instance.destroy();
     event.source.postMessage({ backButton: true }, event.origin);
   };
 
@@ -85,6 +89,8 @@ function showTooltip(event) {
   nextButton.textContent = event.data.currentTooltipIndex === event.data.tooltipArrayLen - 1 ? 'Complete' : 'Next';
   nextButton.onclick = async () => {
     if (nextButton.textContent === 'Next') {
+      const instance = target._tippy;
+      instance.destroy();
       event.source.postMessage({ nextButton: true }, event.origin);
     } else {
       event.source.postMessage({ completeButton: true }, event.origin);

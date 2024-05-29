@@ -19,6 +19,7 @@ function ClickableDemoModal({ clickableDemoWithSteps, space, onClose }: Clickabl
         iframeArr[indexCount].style.height = '0vh';
         indexCount++;
         iframeArr[indexCount].style.height = '93vh';
+        iframeArr[indexCount].focus();
         handleLoad(indexCount);
       }
 
@@ -26,6 +27,7 @@ function ClickableDemoModal({ clickableDemoWithSteps, space, onClose }: Clickabl
         iframeArr[indexCount].style.height = '0vh';
         indexCount--;
         iframeArr[indexCount].style.height = '93vh';
+        iframeArr[indexCount].focus();
         handleLoad(indexCount);
       }
 
