@@ -11,7 +11,7 @@ interface ClickableDemoModalProps {
 
 function ClickableDemoModal({ clickableDemoWithSteps, space, onClose }: ClickableDemoModalProps) {
   const router = useRouter();
-  var indexCount = 0;
+  let indexCount = 0;
 
   useEffect(() => {
     function receiveMessage(event: any) {
@@ -19,6 +19,7 @@ function ClickableDemoModal({ clickableDemoWithSteps, space, onClose }: Clickabl
         iframeArr[indexCount].style.height = '0vh';
         indexCount++;
         iframeArr[indexCount].style.height = '93vh';
+        iframeArr[indexCount].focus();
         handleLoad(indexCount);
       }
 
@@ -26,6 +27,7 @@ function ClickableDemoModal({ clickableDemoWithSteps, space, onClose }: Clickabl
         iframeArr[indexCount].style.height = '0vh';
         indexCount--;
         iframeArr[indexCount].style.height = '93vh';
+        iframeArr[indexCount].focus();
         handleLoad(indexCount);
       }
 
@@ -34,10 +36,14 @@ function ClickableDemoModal({ clickableDemoWithSteps, space, onClose }: Clickabl
       }
     }
     const handleLoad = (index: number) => {
-      if (!iframeArr[index]) return; // Ensure the iframe ref is set
+      const iframeArrElement = iframeArr[index];
+      const iframeNotPresent = !iframeArrElement;
+      if (iframeNotPresent) return; // Ensure the iframe ref is set
 
-      iframeArr[index].contentWindow!.postMessage(
+      const contentWindow = iframeArrElement.contentWindow;
+      contentWindow!.postMessage(
         {
+          type: 'showTooltip',
           elementXPath: clickableDemoWithSteps.steps[index].selector,
           tooltipContent: clickableDemoWithSteps.steps[index].tooltipInfo,
           tooltipArrayLen: clickableDemoWithSteps.steps.length,
@@ -48,6 +54,20 @@ function ClickableDemoModal({ clickableDemoWithSteps, space, onClose }: Clickabl
         },
         '*'
       );
+
+      // Set the CSS variables in the iframe
+      const parentStyles = window.getComputedStyle(document.body);
+
+      // Collect CSS variables
+      const cssVariables = ['--primary-color', '--bg-color', '--text-color', '--link-color', '--heading-color', '--border-color', '--block-bg'];
+
+      const cssValues: any = {};
+      cssVariables.forEach((variable) => {
+        cssValues[variable] = parentStyles.getPropertyValue(variable);
+      });
+
+      // Send the CSS variables to the iframe
+      contentWindow!.postMessage({ type: 'setCssVariables', cssValues }, '*');
     };
 
     window.addEventListener('message', receiveMessage);
