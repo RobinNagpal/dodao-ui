@@ -47,3 +47,10 @@
     opacity: 1.0;
     border-radius: 0.7rem;
 }
+
+.reset-styles {
+    all: initial; /* Reset all styles */
+    font-family: inherit; /* Inherit font family from parent */
+    font-weight: inherit; /* Inherit font weight from parent */
+    font-size: inherit; /* Inherit font size from parent */
+}

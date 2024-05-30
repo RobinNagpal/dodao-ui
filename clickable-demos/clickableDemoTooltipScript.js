@@ -157,8 +157,29 @@ function showTooltip(event) {
   });
 }
 
+function replaceIframeWithDiv() {
+  const iframeArr = document.getElementsByTagName('iframe');
+
+  for (const iframe of iframeArr) {
+    if (iframe && iframe.srcdoc) {
+        const srcdocContent = iframe.srcdoc;
+
+        // Create a new div element
+        const div = document.createElement('div');
+        div.innerHTML = srcdocContent;
+
+        // Apply classes to reset and adjust styles
+        div.classList.add('reset-styles');
+
+        // Replace the iframe with the new div
+        iframe.parentNode.replaceChild(div, iframe);
+    }
+  }
+}
+
 function handleDoDAOParentWindowEvent(event) {
   if (event.data.type === 'showTooltip') {
+    replaceIframeWithDiv();
     showTooltip(event);
   }
 
