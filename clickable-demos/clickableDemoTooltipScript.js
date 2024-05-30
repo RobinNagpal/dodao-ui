@@ -23,6 +23,7 @@ function showTooltip(event) {
   textElement.style.fontFamily = 'sans-serif';
   textElement.style.fontWeight = '300';
   textElement.style.textAlign = 'center';
+  textElement.style.color = getComputedStyle(document.documentElement).getPropertyValue('--text-color').trim();
 
   tooltipContent.style.display = 'flex';
   tooltipContent.style.flexDirection = 'column';

@@ -41,19 +41,6 @@ function ClickableDemoModal({ clickableDemoWithSteps, space, onClose }: Clickabl
       if (iframeNotPresent) return; // Ensure the iframe ref is set
 
       const contentWindow = iframeArrElement.contentWindow;
-      contentWindow!.postMessage(
-        {
-          type: 'showTooltip',
-          elementXPath: clickableDemoWithSteps.steps[index].selector,
-          tooltipContent: clickableDemoWithSteps.steps[index].tooltipInfo,
-          tooltipArrayLen: clickableDemoWithSteps.steps.length,
-          currentTooltipIndex: index,
-          buttonColor: space?.themeColors?.primaryColor,
-          buttonTextColor: space?.themeColors?.textColor,
-          placement: clickableDemoWithSteps.steps[index].placement,
-        },
-        '*'
-      );
 
       // Set the CSS variables in the iframe
       const parentStyles = window.getComputedStyle(document.body);
@@ -68,6 +55,20 @@ function ClickableDemoModal({ clickableDemoWithSteps, space, onClose }: Clickabl
 
       // Send the CSS variables to the iframe
       contentWindow!.postMessage({ type: 'setCssVariables', cssValues }, '*');
+
+      contentWindow!.postMessage(
+        {
+          type: 'showTooltip',
+          elementXPath: clickableDemoWithSteps.steps[index].selector,
+          tooltipContent: clickableDemoWithSteps.steps[index].tooltipInfo,
+          tooltipArrayLen: clickableDemoWithSteps.steps.length,
+          currentTooltipIndex: index,
+          buttonColor: space?.themeColors?.primaryColor,
+          buttonTextColor: space?.themeColors?.textColor,
+          placement: clickableDemoWithSteps.steps[index].placement,
+        },
+        '*'
+      );
     };
 
     window.addEventListener('message', receiveMessage);
