@@ -17,31 +17,18 @@ function showTooltip(event) {
   // Add text content or any other elements to your tooltip as needed
   const textElement = document.createElement('p');
   textElement.textContent = event.data.tooltipContent;
-  textElement.style.display = 'inline';
-  textElement.style.margin = '0 auto';
-  textElement.style.fontSize = '1rem';
-  textElement.style.fontFamily = 'sans-serif';
-  textElement.style.fontWeight = '300';
-  textElement.style.textAlign = 'center';
-  textElement.style.color = getComputedStyle(document.documentElement).getPropertyValue('--text-color').trim();
+  textElement.classList.add('dodao-text-element');
 
-  tooltipContent.style.display = 'flex';
-  tooltipContent.style.flexDirection = 'column';
-  tooltipContent.style.justifyContent = 'space-around';
-  tooltipContent.style.minHeight = '130px'; // Set a minimum height for the tooltip
-  tooltipContent.style.minWidth = '300px'; // Set a minimum width for the tooltip
-  tooltipContent.style.padding = '3px 12px'; // Add padding to the tooltip
+  tooltipContent.classList.add('dodao-tooltip-content');
   tooltipContent.appendChild(textElement);
 
   // Add an <hr> element to serve as a horizontal line
   const horizontalLine = document.createElement('hr');
-  horizontalLine.style.borderTop = '1px solid #808080'; // Style the line as needed
-  horizontalLine.style.margin = '2px 0'; // Add some space around the line
+  horizontalLine.classList.add('dodao-horizontal-line');
   tooltipContent.appendChild(horizontalLine);
 
   const buttonsRow = document.createElement('div');
-  buttonsRow.style.display = 'flex';
-  buttonsRow.style.justifyContent = 'space-between';
+  buttonsRow.classList.add('dodao-buttons-row');
 
   // Create the 'Back' button
   const backButton = document.createElement('button');
@@ -52,19 +39,8 @@ function showTooltip(event) {
     event.source.postMessage({ backButton: true }, event.origin);
   };
 
-  // Style the 'Back' button
-  backButton.style.padding = '5px 10px';
-  backButton.style.border = 'none';
-  backButton.style.borderRadius = '5px';
-  backButton.style.backgroundColor = event.data.buttonColor;
-  backButton.style.color = event.data.buttonTextColor;
-  backButton.style.fontWeight = 'bold';
-  backButton.style.cursor = 'pointer';
-  backButton.style.boxShadow = '0 2px 4px rgba(0,0,0,0.2)';
-  backButton.style.transition = 'all 0.3s ease';
-  backButton.style.marginTop = 'auto';
-  backButton.style.alignSelf = 'flex-start';
-  backButton.style.marginRight = 'auto';
+  // Add class to the 'Back' button
+  backButton.classList.add('dodao-tooltip-button', 'dodao-back-button');
 
   backButton.onmouseover = () => {
     backButton.style.opacity = '0.7';
@@ -79,10 +55,7 @@ function showTooltip(event) {
 
   const indices = document.createElement('span');
   indices.textContent = `${event.data.currentTooltipIndex + 1} of ${event.data.tooltipArrayLen}`;
-  indices.style.color = '#84868a';
-  indices.style.margin = 'auto';
-  indices.style.fontSize = 'small';
-  indices.style.fontWeight = '300';
+  indices.classList.add('dodao-indices');
   buttonsRow.appendChild(indices);
 
   // Create the 'Next' button
@@ -99,15 +72,7 @@ function showTooltip(event) {
   };
 
   // Style the 'Next' button
-  nextButton.style.padding = '5px 10px';
-  nextButton.style.border = 'none';
-  nextButton.style.borderRadius = '5px';
-  nextButton.style.backgroundColor = event.data.buttonColor;
-  nextButton.style.color = event.data.buttonTextColor;
-  nextButton.style.fontWeight = 'bold';
-  nextButton.style.cursor = 'pointer';
-  nextButton.style.boxShadow = '0 2px 4px rgba(0,0,0,0.2)';
-  nextButton.style.transition = 'all 0.3s ease';
+  nextButton.classList.add('dodao-tooltip-button', 'dodao-next-button');
   if (nextButton.textContent === 'Complete') {
     nextButton.style.maxWidth = '30%';
     backButton.style.maxWidth = '30%';
@@ -116,9 +81,6 @@ function showTooltip(event) {
     backButton.style.maxWidth = '20%';
   }
 
-  nextButton.style.marginTop = 'auto';
-  nextButton.style.alignSelf = 'flex-end';
-  nextButton.style.marginLeft = 'auto';
   nextButton.onmouseover = () => {
     nextButton.style.opacity = '0.7';
   };
