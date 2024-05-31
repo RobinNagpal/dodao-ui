@@ -8,6 +8,7 @@ import { slugify } from '@/utils/auth/slugify';
 import { useState } from 'react';
 import styles from './ClickableDemoStepperItem.module.scss';
 import StyledSelect, { StyledSelectItem } from '@/components/core/select/StyledSelect';
+import SelectElementInput from '@/components/clickableDemos/ElementSelector/SelectElementInput';
 
 interface StepProps {
   space: Space;
@@ -96,18 +97,6 @@ export default function Step({
       </div>
       <div className="w-full">
         <div className="mt-4">
-          <Input
-            modelValue={step.selector}
-            placeholder="Selector"
-            maxLength={500}
-            onUpdate={updateStepSelector}
-            label="Selector"
-            error={inputError('selector') ? 'Selector is required' : ''}
-          />
-        </div>
-      </div>
-      <div className="w-full">
-        <div className="mt-4">
           <StyledSelect
             label="Tooltip Position *"
             selectedItemId={step.placement}
@@ -126,6 +115,20 @@ export default function Step({
             modelValue={step.url}
             objectId={(space?.name && slugify(space?.name)) || space?.id || 'new-space'}
             onInput={updateStepUrl}
+            onLoading={setUploadHTMLFileLoading}
+          />
+        </div>
+      </div>
+      <div className="w-full">
+        <div className="mt-4">
+          <SelectElementInput
+            label="Selector"
+            error={inputError('selector') ? 'Selector is required' : ''}
+            space={space}
+            modelValue={step.selector}
+            objectId={(space?.name && slugify(space?.name)) || space?.id || 'new-space'}
+            fileUrl={step.url}
+            onInput={updateStepSelector}
             onLoading={setUploadHTMLFileLoading}
           />
         </div>

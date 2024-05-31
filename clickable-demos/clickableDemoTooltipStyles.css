@@ -113,3 +113,17 @@
     align-self: flex-end;
     margin-left: auto;
 }
+
+.dodao-select-element-button {
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    padding: 10px 20px;
+    background-color: var(--primary-color, #007bff);
+    color: var(--text-color, #fff);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 9999999;
+    transition: all 0.3s ease;
+}
