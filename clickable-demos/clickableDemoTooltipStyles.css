@@ -55,7 +55,7 @@
     font-size: inherit; /* Inherit font size from parent */
 }
 
-.text-element {
+.dodao-text-element {
     display: inline !important;
     margin: 0 auto !important;
     font-size: 1rem !important;
@@ -65,7 +65,7 @@
     color: var(--text-color, #fff) !important;
 }
 
-.tooltip-content {
+.dodao-tooltip-content {
     display: flex !important;
     flex-direction: column !important;
     justify-content: space-around !important;
@@ -74,7 +74,7 @@
     padding: 3px 12px !important;
 }
 
-.tooltip-button {
+.dodao-tooltip-button {
     padding: 5px 10px;
     border: none;
     border-radius: 5px;
@@ -87,29 +87,29 @@
     margin-top: auto;
 }
 
-.indices {
+.dodao-indices {
     color: #84868a;
     margin: auto;
     font-size: small;
     font-weight: 300;
 }
 
-.horizontal-line {
+.dodao-horizontal-line {
     border-top: 1px solid #808080;
     margin: 2px 0;
 }
 
-.buttons-row {
+.dodao-buttons-row {
     display: flex;
     justify-content: space-between;
 }
 
-.back-button {
+.dodao-back-button {
     align-self: flex-start;
     margin-right: auto;
 }
 
-.next-button {
+.dodao-next-button {
     align-self: flex-end;
     margin-left: auto;
 }

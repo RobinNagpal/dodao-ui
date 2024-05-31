@@ -17,18 +17,18 @@ function showTooltip(event) {
   // Add text content or any other elements to your tooltip as needed
   const textElement = document.createElement('p');
   textElement.textContent = event.data.tooltipContent;
-  textElement.classList.add('text-element');
+  textElement.classList.add('dodao-text-element');
 
-  tooltipContent.classList.add('tooltip-content');
+  tooltipContent.classList.add('dodao-tooltip-content');
   tooltipContent.appendChild(textElement);
 
   // Add an <hr> element to serve as a horizontal line
   const horizontalLine = document.createElement('hr');
-  horizontalLine.classList.add('horizontal-line');
+  horizontalLine.classList.add('dodao-horizontal-line');
   tooltipContent.appendChild(horizontalLine);
 
   const buttonsRow = document.createElement('div');
-  buttonsRow.classList.add('buttons-row');
+  buttonsRow.classList.add('dodao-buttons-row');
 
   // Create the 'Back' button
   const backButton = document.createElement('button');
@@ -40,7 +40,7 @@ function showTooltip(event) {
   };
 
   // Add class to the 'Back' button
-  backButton.classList.add('tooltip-button', 'back-button');
+  backButton.classList.add('dodao-tooltip-button', 'dodao-back-button');
 
   backButton.onmouseover = () => {
     backButton.style.opacity = '0.7';
@@ -55,7 +55,7 @@ function showTooltip(event) {
 
   const indices = document.createElement('span');
   indices.textContent = `${event.data.currentTooltipIndex + 1} of ${event.data.tooltipArrayLen}`;
-  indices.classList.add('indices');
+  indices.classList.add('dodao-indices');
   buttonsRow.appendChild(indices);
 
   // Create the 'Next' button
@@ -72,7 +72,7 @@ function showTooltip(event) {
   };
 
   // Style the 'Next' button
-  nextButton.classList.add('tooltip-button', 'next-button');
+  nextButton.classList.add('dodao-tooltip-button', 'dodao-next-button');
   if (nextButton.textContent === 'Complete') {
     nextButton.style.maxWidth = '30%';
     backButton.style.maxWidth = '30%';
