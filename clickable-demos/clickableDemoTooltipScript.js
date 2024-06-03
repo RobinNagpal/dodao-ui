@@ -151,7 +151,7 @@ function elementSelector(event) {
         const button = document.createElement('button');
         // Set the button's text
         button.textContent = 'Select';
-        button.classList.add('dodao-element-selector-button');
+        button.classList.add('dodao-select-element-button');
         button.disabled = selectedElement === null;
         button.style.opacity = button.disabled ? "0.5" : "1"; // Dim button if disabled
         button.onmouseover = () => {
