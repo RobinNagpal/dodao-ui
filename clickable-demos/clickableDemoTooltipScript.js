@@ -106,6 +106,7 @@ function showTooltip(event) {
   tippy(target, {
     allowHTML: true,
     placement: event.data.placement,
+    appendTo: document.body,
     offset: [0, 10],
     animation: 'shift-toward',
     interactive: true,
