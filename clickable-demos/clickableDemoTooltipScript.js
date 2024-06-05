@@ -10,7 +10,7 @@ function showTooltip(event) {
 
   const target = xpathResult.singleNodeValue;
 
-  console.log('target', target);
+  target.classList.add('dodao-target-element');
 
   const tooltipContent = document.createElement('div');
 
@@ -185,16 +185,17 @@ function elementSelector(event) {
             removeBorder(hoveredElement);
         });
         function addBorder(element) {
-            element.style.outline = `2px solid ${event.data.hoverColor}`;
+            element.classList.add('dodao-hovered-element');
         }
         function removeBorder(element) {
-            element.style.outline = 'none';
+            element.classList.remove('dodao-hovered-element');
         }
         function addSelectedBorder(element) {
-            element.style.outline = `3px solid ${event.data.selectedColor}`;
+            element.classList.add('dodao-target-element');
         }
         function removeSelectedBorder(element) {
-            element.style.outline = 'none';
+            element.classList.remove('dodao-target-element');
+            element.classList.remove('dodao-hovered-element');
         }
         document.addEventListener('click', function(event) {
             event.preventDefault();

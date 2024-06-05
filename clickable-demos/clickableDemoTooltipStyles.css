@@ -1,5 +1,8 @@
 .tippy-box {
-    z-index: 99999;
+    z-index: 9999999999;
+}
+#tippy-1 {
+    z-index: 9999999999 !important;
 }
 .tippy-box[data-theme~='material'] {
     border-radius: 0.7rem;
@@ -126,4 +129,14 @@
     cursor: pointer;
     z-index: 9999999;
     transition: all 0.3s ease;
+}
+
+.dodao-hovered-element {
+    outline: 2px solid var(--primary-color, #007bff);
+}
+
+.dodao-target-element {
+    border: 3px solid var(--primary-color, #007bff);
+    position: relative;
+    z-index: 999999;
 }
