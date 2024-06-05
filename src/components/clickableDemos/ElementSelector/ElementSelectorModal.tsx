@@ -21,6 +21,20 @@ export default function ElementSelectorModal({ space, showModal, fileUrl, onInpu
     const handleLoad = (iframe: HTMLIFrameElement) => {
       if (!iframe) return;
 
+      // Set the CSS variables in the iframe
+      const parentStyles = window.getComputedStyle(document.body);
+
+      // Collect CSS variables
+      const cssVariables = ['--primary-color', '--bg-color', '--text-color', '--link-color', '--heading-color', '--border-color', '--block-bg'];
+
+      const cssValues: any = {};
+      cssVariables.forEach((variable) => {
+        cssValues[variable] = parentStyles.getPropertyValue(variable);
+      });
+
+      // Send the CSS variables to the iframe
+      iframe.contentWindow!.postMessage({ type: 'setCssVariables', cssValues }, '*');
+
       iframe.contentWindow!.postMessage(
         {
           type: 'elementSelector',
