@@ -15,7 +15,7 @@ export default function ElementSelectorModal({ space, showModal, fileUrl, onInpu
   useEffect(() => {
     function receiveMessage(event: any) {
       if (event.data.xpath) setShowModal(false);
-      onInput!(event.data.xpath);
+      onInput && onInput(event.data.xpath);
     }
 
     const handleLoad = (iframe: HTMLIFrameElement) => {
@@ -41,6 +41,10 @@ export default function ElementSelectorModal({ space, showModal, fileUrl, onInpu
     iframe.style.height = '93vh';
     iframe.onload = function () {
       handleLoad(iframe);
+    };
+
+    return () => {
+      window.removeEventListener('message', receiveMessage);
     };
   }, [showModal, fileUrl]);
 
