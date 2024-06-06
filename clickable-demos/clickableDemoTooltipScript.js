@@ -111,7 +111,7 @@ function showTooltip(event) {
     animation: 'shift-toward',
     interactive: true,
     inertia: true,
-    duration: [2000, 250],
+    duration: [500, 250],
     delay: [500, 200],
     content: tooltipWrapper,
     showOnCreate: true,
