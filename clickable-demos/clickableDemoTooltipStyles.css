@@ -132,11 +132,12 @@
 }
 
 .dodao-hovered-element {
-    outline: 2px solid var(--primary-color, #007bff);
+    border: 2px solid var(--primary-color, #007bff) !important;
 }
 
 .dodao-target-element {
-    border: 3px solid var(--primary-color, #007bff);
+    border: 3px solid var(--primary-color, #007bff) !important;
+    border-radius: 5px;
     position: relative;
     z-index: 999999;
 }
