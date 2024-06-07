@@ -1,6 +1,6 @@
 {
-  "name": "dodao-ui",
-  "version": "0.1.0",
+  "name": "academy-ui",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "prisma generate && next dev",

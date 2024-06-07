@@ -1,0 +1,7 @@
+{
+  "name": "referral-ui",
+  "version": "1.0.0",
+  "dependencies": {
+    "@dodao/web-core": "^1.0.0"
+  }
+}

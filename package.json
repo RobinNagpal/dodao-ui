@@ -1,0 +1,9 @@
+{
+  "name": "dodao-ui",
+  "private": true,
+  "workspaces": [
+    "academy-ui",
+    "referral-ui",
+    "shared/web-core"
+  ]
+}
