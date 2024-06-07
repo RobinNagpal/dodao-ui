@@ -1,4 +1,4 @@
-import { Grid3Cols } from '@/components/core/grids/Grid3Cols';
+import { Grid3Cols } from '@dodao/web-core/components/core/grids/Grid3Cols';
 import ByteCollectionCategoryCard from '../ByteCollectionCategoryCard';
 import { CategoryWithByteCollection, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { isAdmin } from '@/utils/auth/isAdmin';

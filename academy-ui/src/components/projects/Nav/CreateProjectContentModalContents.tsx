@@ -1,5 +1,5 @@
 import Button from '@dodao/web-core/components/core/buttons/Button';
-import { Grid2Cols } from '@/components/core/grids/Grid2Cols';
+import { Grid2Cols } from '@dodao/web-core/components/core/grids/Grid2Cols';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 

@@ -1,4 +1,4 @@
-import { Grid4Cols } from '@/components/core/grids/Grid4Cols';
+import { Grid4Cols } from '@dodao/web-core/components/core/grids/Grid4Cols';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import ShowDraftsToggle from '@/components/guides/List/ShowDraftsToggle';
 import GuideSummaryCard from '@/components/guides/Summary/GuideSummaryCard';
