@@ -5,5 +5,11 @@
     "academy-ui",
     "referral-ui",
     "shared/web-core"
-  ]
+  ],
+  "resolutions": {
+    "@types/react": "18.2.0",
+    "@types/react-dom": "18.2.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
+  }
 }
