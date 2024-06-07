@@ -124,7 +124,7 @@ Here is the table with the mapping of the domains to the academy websites
 
 ## Coding Workflow
 
-See [CodingWorkflow.md](./CodingWorkflow.md) to learn about how to start contributing to the project.
+See [CodingWorkflow.md](CodingWorkflow.md) to learn about how to start contributing to the project.
 
 ## Making yourself admin
 

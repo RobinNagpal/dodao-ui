@@ -22,7 +22,7 @@
 # debug
 npm-debug.log*
 yarn-debug.log*
-academy-ui/yarn-error.log
+yarn-error.log*
 
 # local env files
 .env*.local
@@ -42,5 +42,5 @@ academy-ui/.env
 data
 
 # Sentry Config File
-academy-ui/.sentryclirc
+.sentryclirc
 .envrc

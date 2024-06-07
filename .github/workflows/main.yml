@@ -22,13 +22,13 @@ jobs:
           node-version: 20
 
       - name: Install dependencies
-        run: yarn
+        run: cd academy-ui && yarn
 
       - name: Run ESLint
-        run: yarn lint
+        run: cd academy-ui && yarn lint
 
       - name: Run Prettier
-        run: yarn prettier-check
+        run: cd academy-ui && yarn prettier-check
 
       - name: TSC
-        run: yarn tsc
+        run: cd academy-ui && yarn tsc
