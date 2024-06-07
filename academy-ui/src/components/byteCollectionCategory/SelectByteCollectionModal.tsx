@@ -1,6 +1,6 @@
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Card from '@dodao/web-core/components/core/card/Card';
-import { Grid4Cols } from '@/components/core/grids/Grid4Cols';
+import { Grid4Cols } from '@dodao/web-core/components/core/grids/Grid4Cols';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import { ByteCollectionFragment, Space, useByteCollectionsQuery } from '@/graphql/generated/generated-types';
