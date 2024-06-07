@@ -56,8 +56,8 @@ export default function ClickableDemoFileUploader({ spaceId, objectId, imageType
       const scriptTag1 = `<script src="https://unpkg.com/@popperjs/core@2"></script>`;
       const scriptTag2 = `<script src="https://unpkg.com/tippy.js@6"></script>`;
 
-      const customLinkTag = `<link rel="stylesheet" href="https://dodao-prod-public-assets.s3.amazonaws.com/clickable-demos-prod-files/clickableDemoTooltipStyles.css" />`;
-      const customScriptTag = `<script src="https://dodao-prod-public-assets.s3.amazonaws.com/clickable-demos-prod-files/clickableDemoTooltipScript.js"></script>`;
+      const customLinkTag = `<link rel="stylesheet" href="http://localhost:3002/clickableDemoTooltipStyles.css" />`;
+      const customScriptTag = `<script src="http://localhost:3002/clickableDemoTooltipScript.js"></script>`;
 
       const scriptTagCustom = `<script>
       console.log("Injecting event listener for clickable demo tooltip");
