@@ -1,6 +1,6 @@
 import { PredefinedSpaces } from '@/chatbot/utils/app/constants';
 import Button from '@dodao/web-core/components/core/buttons/Button';
-import { Grid2Cols } from '@dodao/web-core/components/core/grids/Grid2Cols';
+import { Grid2Cols } from '@/components/core/grids/Grid2Cols';
 import UpsertProjectModal from '@/components/projects/Edit/UpsertProjectModal';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { useRouter } from 'next/navigation';

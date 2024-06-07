@@ -1,6 +1,6 @@
 import ByteCollectionsCard from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCollectionsCard';
 import NoByteCollections from '@/components/byteCollection/ByteCollections/NoByteCollections';
-import { Grid2Cols } from '@dodao/web-core/components/core/grids/Grid2Cols';
+import { Grid2Cols } from '@/components/core/grids/Grid2Cols';
 import { ByteCollectionFragment, ProjectByteCollectionFragment, ProjectFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import React from 'react';
 

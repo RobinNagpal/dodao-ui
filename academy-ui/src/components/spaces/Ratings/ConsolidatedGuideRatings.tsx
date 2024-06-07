@@ -2,7 +2,7 @@
 
 import withSpace from '@/app/withSpace';
 import styles from '@/components/app/Rating/Table/RatingsTable.module.scss';
-import { Grid2Cols } from '@dodao/web-core/components/core/grids/Grid2Cols';
+import { Grid2Cols } from '@/components/core/grids/Grid2Cols';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import {
   ConsolidatedGuideRating,

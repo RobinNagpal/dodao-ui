@@ -2,7 +2,7 @@
 
 import withSpace, { SpaceProps } from '@/app/withSpace';
 import Block from '@dodao/web-core/components/app/Block';
-import { Grid3Cols } from '@dodao/web-core/components/core/grids/Grid3Cols';
+import { Grid3Cols } from '@/components/core/grids/Grid3Cols';
 import RowLoading from '@dodao/web-core/components/core/loaders/RowLoading';
 import CourseSummaryCard from '@/components/courses/Summary/CourseSummaryCard';
 import NoCourses from '@/components/courses/Summary/NoCourses';

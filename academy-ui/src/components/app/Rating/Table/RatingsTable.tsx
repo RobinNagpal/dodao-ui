@@ -1,5 +1,5 @@
 'use client';
-import { Grid2Cols } from '@dodao/web-core/components/core/grids/Grid2Cols';
+import { Grid2Cols } from '@/components/core/grids/Grid2Cols';
 import SpinnerWithText from '@dodao/web-core/components/core/loaders/SpinnerWithText';
 import {
   ByteRating,

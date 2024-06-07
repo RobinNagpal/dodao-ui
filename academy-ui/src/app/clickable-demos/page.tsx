@@ -1,6 +1,6 @@
 import ClickableDemosSummaryCard from '@/components/clickableDemos/ClickableDemos/ClickableDemosSummaryCard';
 import NoClickableDemos from '@/components/clickableDemos/ClickableDemos/NoClickableDemos';
-import { Grid4Cols } from '@dodao/web-core/components/core/grids/Grid4Cols';
+import { Grid4Cols } from '@/components/core/grids/Grid4Cols';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import React from 'react';
 import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';

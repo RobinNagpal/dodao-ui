@@ -1,4 +1,4 @@
-import Grid5Cols from '@dodao/web-core/components/core/grids/Grid5Cols';
+import Grid5Cols from '@/components/core/grids/Grid5Cols';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { ProjectShortVideo, ShortVideo } from '@/graphql/generated/generated-types';
 import Image from 'next/image';

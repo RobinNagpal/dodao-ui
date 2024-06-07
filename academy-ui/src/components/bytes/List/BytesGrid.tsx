@@ -1,6 +1,6 @@
 import ByteSummaryCard from '@/components/bytes/Summary/ByteSummaryCard';
 import NoByte from '@/components/bytes/Summary/NoBytes';
-import { Grid4Cols } from '@dodao/web-core/components/core/grids/Grid4Cols';
+import { Grid4Cols } from '@/components/core/grids/Grid4Cols';
 import { ByteSummaryFragment, ProjectByteFragment, ProjectFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import React from 'react';
 
