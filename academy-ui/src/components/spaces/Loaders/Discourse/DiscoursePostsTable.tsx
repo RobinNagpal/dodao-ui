@@ -1,6 +1,6 @@
-import { EllipsisDropdownItem } from '@/components/core/dropdowns/EllipsisDropdown';
-import SectionLoader from '@/components/core/loaders/SectionLoader';
-import { Table, TableRow } from '@/components/core/table/Table';
+import { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
+import SectionLoader from '@dodao/web-core/components/core/loaders/SectionLoader';
+import { Table, TableRow } from '@dodao/web-core/components/core/table/Table';
 import AnnotateDiscoursePostModal from '@/components/spaces/Loaders/Discourse/AnnotateDiscoursePostModal';
 import UpdateSummaryDiscoursePostModal from '@/components/spaces/Loaders/Discourse/UpdateSummaryDiscoursePostModal';
 import { ChatbotSubView, ChatbotView, getChatbotSubviewUrl } from '@/components/spaces/manageSpaceSubviews';

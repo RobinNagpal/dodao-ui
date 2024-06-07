@@ -1,7 +1,7 @@
 'use client';
 
-import Button from '@/components/core/buttons/Button';
-import PageWrapper from '@/components/core/page/PageWrapper';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import styled from 'styled-components';
 import Image from 'next/image';
 import NemaLogo from '@/images/logos/nema_logo.png';

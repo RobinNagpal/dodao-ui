@@ -2,7 +2,7 @@
 
 import withSpace from '@/app/withSpace';
 import EditByteView from '@/components/bytes/Edit/EditByteView';
-import FullScreenModal from '@/components/core/modals/FullScreenModal';
+import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { useRouter } from 'next/navigation';
 import React from 'react';

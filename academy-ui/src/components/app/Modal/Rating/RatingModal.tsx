@@ -1,5 +1,5 @@
 import EmojiRatings from '@/components/app/Rating/EmojiRatings';
-import FullPageModal from '@/components/core/modals/FullPageModal';
+import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import { ByteFeedback, GuideFeedback, GuideRating } from '@/graphql/generated/generated-types';
 import { useState } from 'react';
 import styles from './RatingModal.module.scss';

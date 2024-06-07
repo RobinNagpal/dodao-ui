@@ -1,6 +1,6 @@
-import { CssTheme, ThemeKey, themes } from '@/app/themes';
+import { CssTheme, ThemeKey, themes } from '@dodao/web-core/src/components/app/themes';
 import ByteCollectionsCard from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCollectionsCard';
-import Button from '@/components/core/buttons/Button';
+import Button from '@dodao/web-core/components/core/buttons/Button';
 import UpdateThemeModal, { ColorLabels, ThemeColorsKeys } from '@/components/spaces/Edit/Theme/UpdateThemeModal';
 import {
   ProjectByteCollectionFragment,
@@ -9,6 +9,7 @@ import {
   useRoute53RecordQuery,
   useVercelDomainRecordQuery,
 } from '@/graphql/generated/generated-types';
+import { Session } from '@dodao/web-core/types/auth/Session';
 import { isEmpty } from 'lodash';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -20,7 +21,8 @@ export interface TidbitSiteConfigurationStepProps {
 
 export default function TidbitSiteConfigurationStep({ goToPreviousStep }: TidbitSiteConfigurationStepProps) {
   const [showThemeUpdateModal, setShowThemeUpdateModal] = React.useState(false);
-  const { data: session } = useSession();
+  const { data: sessionData } = useSession();
+  const session: Session | null = sessionData as Session | null;
   const { data: spaceResponse } = useGetSpaceFromCreatorQuery({
     variables: {
       creatorUsername: session?.username!,

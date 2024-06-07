@@ -1,5 +1,5 @@
 import ByteCollectionCategoryCardAdminDropdown from '@/components/byteCollectionCategory/ByteCollectionCategoryCardAdminDropdown';
-import Card from '@/components/core/card/Card';
+import Card from '@dodao/web-core/components/core/card/Card';
 import {
   ByteCollectionCategory,
   CategoryWithByteCollection,
@@ -9,7 +9,7 @@ import {
 import Link from 'next/link';
 import React from 'react';
 import styles from './ByteCollectionCategoryCard.module.scss';
-import Badge, { BadgeColor, BadgeSize } from '@/components/core/badge/Badge';
+import Badge, { BadgeColor, BadgeSize } from '@dodao/web-core/components/core/badge/Badge';
 
 interface ByteCollectionCategoryCardProps {
   space: SpaceWithIntegrationsFragment;

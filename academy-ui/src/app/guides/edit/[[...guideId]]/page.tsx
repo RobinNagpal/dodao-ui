@@ -2,10 +2,10 @@
 
 import BasicGuideSettings from '@/components/guides/Edit/BasicGuideSettings';
 import withSpace from '@/app/withSpace';
-import PageLoading from '@/components/core/loaders/PageLoading';
-import Button from '@/components/core/buttons/Button';
-import PageWrapper from '@/components/core/page/PageWrapper';
-import TabsWithUnderline, { TabItem } from '@/components/core/tabs/TabsWithUnderline';
+import PageLoading from '@dodao/web-core/components/core/loaders/PageLoading';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import TabsWithUnderline, { TabItem } from '@dodao/web-core/components/core/tabs/TabsWithUnderline';
 import AdvancedSettings from '@/components/guides/Edit/AdvancedSettings';
 import { useEditGuide } from '@/components/guides/Edit/useEditGuide';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';

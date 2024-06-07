@@ -1,5 +1,5 @@
-import PageLoading from '@/components/core/loaders/PageLoading';
-import TabsWithUnderline, { TabItem } from '@/components/core/tabs/TabsWithUnderline';
+import PageLoading from '@dodao/web-core/components/core/loaders/PageLoading';
+import TabsWithUnderline, { TabItem } from '@dodao/web-core/components/core/tabs/TabsWithUnderline';
 import ConsolidatedByteRatings from '@/components/spaces/Ratings/ConsolidatedByteRatings';
 import ConsolidatedGuideRatings from '@/components/spaces/Ratings/ConsolidatedGuideRatings';
 import SpaceAuthDetails from '@/components/spaces/View/SpaceAuthDetails';

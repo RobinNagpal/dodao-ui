@@ -2,9 +2,9 @@
 
 import { PredefinedSpaces } from '@/chatbot/utils/app/constants';
 import UploadInput from '@/components/app/UploadInput';
-import Button from '@/components/core/buttons/Button';
-import Input from '@/components/core/input/Input';
-import LoadingSpinner from '@/components/core/loaders/LoadingSpinner';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import Input from '@dodao/web-core/components/core/input/Input';
+import LoadingSpinner from '@dodao/web-core/components/core/loaders/LoadingSpinner';
 import useCreateNewTidbitSpace from '@/components/tidbitsSite/setupSteps/useCreateNewTidbitSpace';
 import { ImageType } from '@/graphql/generated/generated-types';
 import { isEmpty } from 'lodash';

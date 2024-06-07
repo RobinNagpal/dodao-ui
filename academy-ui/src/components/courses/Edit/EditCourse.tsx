@@ -1,14 +1,14 @@
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
 import UploadInput from '@/components/app/UploadInput';
-import Button from '@/components/core/buttons/Button';
-import Input from '@/components/core/input/Input';
-import StyledSelect from '@/components/core/select/StyledSelect';
-import TextareaArray from '@/components/core/textarea/TextareaArray';
-import TextareaAutosize from '@/components/core/textarea/TextareaAutosize';
-import ToggleWithIcon from '@/components/core/toggles/ToggleWithIcon';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import Input from '@dodao/web-core/components/core/input/Input';
+import StyledSelect from '@dodao/web-core/components/core/select/StyledSelect';
+import TextareaArray from '@dodao/web-core/components/core/textarea/TextareaArray';
+import TextareaAutosize from '@dodao/web-core/components/core/textarea/TextareaAutosize';
+import ToggleWithIcon from '@dodao/web-core/components/core/toggles/ToggleWithIcon';
 import { CourseBasicInfoInput, CourseFragment, ImageType, SpaceWithIntegrationsFragment, TopicConfigInput } from '@/graphql/generated/generated-types';
-import { PublishStatus } from '@/types/deprecated/models/enums';
-import { publishStatusesSelect } from '@/utils/ui/statuses';
+import { PublishStatus } from '@dodao/web-core/types/deprecated/models/enums';
+import { publishStatusesSelect } from '@dodao/web-core/utils/ui/statuses';
 import React, { useState } from 'react';
 
 export interface EditCourseProps {

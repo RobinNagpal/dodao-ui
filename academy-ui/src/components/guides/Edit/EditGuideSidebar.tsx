@@ -2,8 +2,8 @@ import { EditGuideType } from '@/components/guides/Edit/editGuideType';
 import { UseEditGuideHelper } from '@/components/guides/Edit/useEditGuide';
 import { getGuideSidebarIcon } from '@/components/guides/View/GetGuideSidebarIcon';
 import { GuideStepFragment } from '@/graphql/generated/generated-types';
-import { StepError } from '@/types/errors/error';
-import classNames from '@/utils/classNames';
+import { StepError } from '@dodao/web-core/types/errors/error';
+import classNames from '@dodao/web-core/utils/classNames';
 import PlusCircleIcon from '@heroicons/react/24/outline/PlusCircleIcon';
 import styled, { css } from 'styled-components';
 

@@ -1,5 +1,5 @@
-import { StyledSelectItem } from '@/components/core/select/StyledSelect';
-import { PublishStatus } from '@/types/deprecated/models/enums';
+import { StyledSelectItem } from '@dodao/web-core/components/core/select/StyledSelect';
+import { PublishStatus } from '@dodao/web-core/types/deprecated/models/enums';
 
 export enum TimelineStyles {
   V1_Default = 'V1_Default',

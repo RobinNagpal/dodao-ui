@@ -1,7 +1,7 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
-import { CssTheme, ThemeKey, themes } from '@/app/themes';
-import { Session } from '@/types/auth/Session';
-import { getGTagId } from '@/utils/analytics/getGTagId';
+import { CssTheme, ThemeKey, themes } from '@dodao/web-core/src/components/app/themes';
+import { Session } from '@dodao/web-core/types/auth/Session';
+import { getGTagId } from '@dodao/web-core/utils/analytics/getGTagId';
 import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
 import { Analytics } from '@vercel/analytics/react';
 import { getServerSession } from 'next-auth';

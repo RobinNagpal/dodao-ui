@@ -1,11 +1,11 @@
-import { Grid2Cols } from '@/components/core/grids/Grid2Cols';
-import PageWrapper from '@/components/core/page/PageWrapper';
+import { Grid2Cols } from '@dodao/web-core/components/core/grids/Grid2Cols';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { GetStartedButton } from '@/components/home/common/GetStartedButton';
 import { LottieAnimation } from './LottieAnimation';
 import HomeIcon from '@/components/main/HomeIcon';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
-import { FeatureItem } from '@/types/features/spaceFeatures';
+import { FeatureItem } from '@dodao/web-core/types/features/spaceFeatures';
 import { getSortedFeaturesArray } from '@/utils/features';
 import React from 'react';
 

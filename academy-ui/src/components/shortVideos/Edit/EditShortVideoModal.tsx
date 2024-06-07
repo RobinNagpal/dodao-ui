@@ -1,4 +1,4 @@
-import FullPageModal from '@/components/core/modals/FullPageModal';
+import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import EditShortVideoView from '@/components/shortVideos/Edit/EditShortVideoView';
 import { ShortVideo, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import React from 'react';

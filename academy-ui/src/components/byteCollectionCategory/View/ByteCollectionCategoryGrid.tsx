@@ -1,9 +1,9 @@
-import { Grid3Cols } from '@/components/core/grids/Grid3Cols';
+import { Grid3Cols } from '@dodao/web-core/components/core/grids/Grid3Cols';
 import ByteCollectionCategoryCard from '../ByteCollectionCategoryCard';
 import { CategoryWithByteCollection, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { isAdmin } from '@/utils/auth/isAdmin';
-import { Session } from '@/types/auth/Session';
-import { isSuperAdmin } from '@/utils/auth/superAdmins';
+import { Session } from '@dodao/web-core/types/auth/Session';
+import { isSuperAdmin } from '@dodao/web-core/utils/auth/superAdmins';
 interface ByteCollectionCategoryGridProps {
   space: SpaceWithIntegrationsFragment;
   categoriesArray: CategoryWithByteCollection[];

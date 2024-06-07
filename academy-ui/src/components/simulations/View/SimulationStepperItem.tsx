@@ -1,7 +1,7 @@
-import Button from '@/components/core/buttons/Button';
+import Button from '@dodao/web-core/components/core/buttons/Button';
 import SimulationModal from '@/components/simulations/View/SimulationModal';
 import { SimulationDetailsFragment, SimulationStepFragment } from '@/graphql/generated/generated-types';
-import { getMarkedRenderer } from '@/utils/ui/getMarkedRenderer';
+import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
 import 'prismjs';
 import 'prismjs/components/prism-css';

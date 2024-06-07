@@ -1,14 +1,16 @@
 'use client';
 
-import ButtonLarge from '@/components/core/buttons/Button';
-import PageWrapper from '@/components/core/page/PageWrapper';
+import ButtonLarge from '@dodao/web-core/components/core/buttons/Button';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { useLoginModalContext } from '@/contexts/LoginModalContext';
 import { useAuth } from '@/hooks/useAuth';
+import { Session } from '@dodao/web-core/types/auth/Session';
 import { useSession } from 'next-auth/react';
 import React from 'react';
 
 function LoginPage() {
-  const { data: session } = useSession();
+  const { data: sessionData } = useSession();
+  const session: Session | null = sessionData as Session | null;
   const { logout, active } = useAuth();
   const { setShowLoginModal } = useLoginModalContext();
 

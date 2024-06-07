@@ -1,8 +1,8 @@
 import ShareByteView from '@/components/bytes/Share/ShareByteView';
-import PageWrapper from '@/components/core/page/PageWrapper';
-import HorizontalStepperWithPanels, { HorizontalStepperItem } from '@/components/core/stepper/HorizontalStepperWithPanels';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import HorizontalStepperWithPanels, { HorizontalStepperItem } from '@dodao/web-core/components/core/stepper/HorizontalStepperWithPanels';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
-import { TidbitShareSteps } from '@/types/deprecated/models/enums';
+import { TidbitShareSteps } from '@dodao/web-core/types/deprecated/models/enums';
 
 export default function ShareBytePage({ space, byteId }: { byteId: string; space: SpaceWithIntegrationsFragment }) {
   const steps: HorizontalStepperItem[] = [

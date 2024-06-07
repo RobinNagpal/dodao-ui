@@ -9,7 +9,7 @@ import {
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import { ByteDetailsFragment, SpaceWithIntegrationsFragment, useQueryByteDetailsQuery, useUpsertByteMutation } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
-import { ByteErrors } from '@/types/errors/byteErrors';
+import { ByteErrors } from '@dodao/web-core/types/errors/byteErrors';
 import { emptyByte } from '@/utils/byte/EmptyByte';
 import { validateQuestion, validateUserInput } from '@/utils/stepItems/validateItems';
 import { FetchResult } from '@apollo/client';

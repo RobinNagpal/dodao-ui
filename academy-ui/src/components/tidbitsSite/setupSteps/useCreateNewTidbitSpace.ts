@@ -1,8 +1,8 @@
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import { Space, SpaceTypes, useCreateNewTidbitSpaceMutation, useGetSpaceFromCreatorQuery, useUpdateSpaceMutation } from '@/graphql/generated/generated-types';
-import { Session } from '@/types/auth/Session';
-import { slugify } from '@/utils/auth/slugify';
-import { isSuperAdmin } from '@/utils/auth/superAdmins';
+import { Session } from '@dodao/web-core/types/auth/Session';
+import { slugify } from '@dodao/web-core/utils/auth/slugify';
+import { isSuperAdmin } from '@dodao/web-core/utils/auth/superAdmins';
 import { getEditSpaceType, getSpaceInput, SpaceEditType } from '@/utils/space/spaceUpdateUtils';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
@@ -25,7 +25,8 @@ export type UseEditSpaceHelper = {
 
 export default function useCreateNewTidbitSpace(): UseEditSpaceHelper {
   const { showNotification } = useNotificationContext();
-  const { data: session } = useSession();
+  const { data: sessionData } = useSession();
+  const session: Session | null = sessionData as Session | null;
 
   const [loading, setLoading] = useState(false);
   const [existingSpace, setExistingSpace] = useState<Space | null>(null);

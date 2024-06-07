@@ -3,7 +3,7 @@ import { MemoizedReactMarkdown } from '@/chatbot/components/Markdown/MemoizedRea
 
 import HomeContext from '@/chatbot/home/home.context';
 import { ConversationMessage } from '@/chatbot/types/chat';
-import FAQs from '@/components/app/Faq/FAQs';
+import FAQs from '@dodao/web-core/components/app/Faq/FAQs';
 import CommandLineIcon from '@heroicons/react/24/outline/CommandLineIcon';
 import QuestionMarkCircleIcon from '@heroicons/react/24/outline/QuestionMarkCircleIcon';
 import { IconUser } from '@tabler/icons-react';

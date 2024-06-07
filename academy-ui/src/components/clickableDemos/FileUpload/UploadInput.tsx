@@ -1,6 +1,6 @@
 import ClickableDemoFileUploader from '@/components/clickableDemos/FileUpload/ClickableDemoFileUploader';
 import { ImageType } from '@/graphql/generated/generated-types';
-import { slugify } from '@/utils/auth/slugify';
+import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import ArrowUpTrayIcon from '@heroicons/react/24/solid/ArrowUpTrayIcon';
 import PhotoIcon from '@heroicons/react/24/solid/PhotoIcon';
 import styles from './UploadInput.module.scss';

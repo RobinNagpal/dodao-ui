@@ -1,5 +1,5 @@
-import Button from '@/components/core/buttons/Button';
-import FullPageModal from '@/components/core/modals/FullPageModal';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import { SendEmailInput, useSendEmailMutation } from '@/graphql/generated/generated-types';
 import clsx from 'clsx';

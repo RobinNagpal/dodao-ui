@@ -1,14 +1,14 @@
 'use client';
 
-import SidebarButton from '@/components/core/buttons/SidebarButton';
-import EditIcon from '@/components/core/icons/EditIcon';
-import Button from '@/components/core/buttons/Button';
-import FullPageLoader from '@/components/core/loaders/FullPageLoading';
+import SidebarButton from '@dodao/web-core/components/core/buttons/SidebarButton';
+import EditIcon from '@dodao/web-core/components/core/icons/EditIcon';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import EditCourse from '@/components/courses/Edit/EditCourse';
 import { CourseSubmissionHelper } from '@/components/courses/View/useCourseSubmission';
 import { CourseHelper } from '@/components/courses/View/useViewCourse';
 import { CourseBasicInfoInput, CourseDetailsFragment, Space } from '@/graphql/generated/generated-types';
-import { getMarkedRenderer } from '@/utils/ui/getMarkedRenderer';
+import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
 import Link from 'next/link';
 

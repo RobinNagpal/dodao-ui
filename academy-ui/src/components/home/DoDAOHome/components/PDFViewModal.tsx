@@ -1,4 +1,4 @@
-import FullScreenModal from '@/components/core/modals/FullScreenModal';
+import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 export interface PDFViewModalProps {
   onClose: () => void;
 }

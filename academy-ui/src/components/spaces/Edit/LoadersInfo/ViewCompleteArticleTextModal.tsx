@@ -1,5 +1,5 @@
-import FullPageLoader from '@/components/core/loaders/FullPageLoading';
-import FullPageModal from '@/components/core/modals/FullPageModal';
+import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
+import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import { useArticleIndexingInfoQuery } from '@/graphql/generated/generated-types';
 import React from 'react';
 

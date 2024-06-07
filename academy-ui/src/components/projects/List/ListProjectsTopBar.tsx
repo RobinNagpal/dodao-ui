@@ -1,6 +1,6 @@
 'use client';
 
-import Button from '@/components/core/buttons/Button';
+import Button from '@dodao/web-core/components/core/buttons/Button';
 import UpsertProjectModal from '@/components/projects/Edit/UpsertProjectModal';
 import { ProjectFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import React, { useState } from 'react';

@@ -1,6 +1,6 @@
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import { SpaceWithIntegrationsFragment, useUpdateTidbitsHomepageMutation, TidbitsHomepage } from '@/graphql/generated/generated-types';
-import { TidbitsHomepageError } from '@/types/errors/error';
+import { TidbitsHomepageError } from '@dodao/web-core/types/errors/error';
 import { useI18 } from '@/hooks/useI18';
 import { useState } from 'react';
 

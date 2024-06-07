@@ -1,4 +1,4 @@
-import PageWrapper from '@/components/core/page/PageWrapper';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import TimelineInformation from './TimelineInformation';
 import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
 import getApiResponse from '@/utils/api/getApiResponse';

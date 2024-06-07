@@ -1,5 +1,5 @@
-import Button from '@/components/core/buttons/Button';
-import TextareaAutosize from '@/components/core/textarea/TextareaAutosize';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import TextareaAutosize from '@dodao/web-core/components/core/textarea/TextareaAutosize';
 import { ChatCompletionRequestMessageRoleEnum, useAskChatCompletionAiMutation, useGenerateImageMutation } from '@/graphql/generated/generated-types';
 import React, { useState } from 'react';
 

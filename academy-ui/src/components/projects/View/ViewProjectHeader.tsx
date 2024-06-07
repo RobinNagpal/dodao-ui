@@ -1,18 +1,18 @@
 'use client';
 
-import Button from '@/components/core/buttons/Button';
-import FullScreenModal from '@/components/core/modals/FullScreenModal';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import PrivateComponent from '@/components/core/PrivateComponent';
 import CreateProjectContentModalContents from '@/components/projects/Nav/CreateProjectContentModalContents';
 import styles from '@/components/projects/View/TabLink.module.scss';
 import { ProjectFragment, Space } from '@/graphql/generated/generated-types';
-import classNames from '@/utils/classNames';
+import classNames from '@dodao/web-core/utils/classNames';
 import Link from 'next/link';
 import React from 'react';
 import { isAdmin } from '@/utils/auth/isAdmin';
 import { useSession } from 'next-auth/react';
-import { Session } from '@/types/auth/Session';
-import { isSuperAdmin } from '@/utils/auth/superAdmins';
+import { Session } from '@dodao/web-core/types/auth/Session';
+import { isSuperAdmin } from '@dodao/web-core/utils/auth/superAdmins';
 
 export function ViewProjectHeader({ project, selectedViewType, space }: { project: ProjectFragment; selectedViewType: string; space?: Space }) {
   const [showCreateContentsModal, setShowCreateContentsModal] = React.useState(false);

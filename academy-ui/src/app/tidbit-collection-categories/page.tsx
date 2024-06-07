@@ -1,6 +1,6 @@
 import NoByteCollectionCategories from '@/components/byteCollectionCategory/NoByteCollectionCategory';
 import ByteCollectionCategoryGrid from '@/components/byteCollectionCategory/View/ByteCollectionCategoryGrid';
-import PageWrapper from '@/components/core/page/PageWrapper';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { TidbitSiteTabIds } from '@/components/home/TidbitsSite/TidbitSiteTabIds';
 import TidbitsSiteTabs from '@/components/home/TidbitsSite/TidbitsSiteTabs';
 import { CategoryWithByteCollection } from '@/graphql/generated/generated-types';
@@ -8,7 +8,7 @@ import getApiResponse from '@/utils/api/getApiResponse';
 import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import { getServerSession } from 'next-auth';
-import { Session } from '@/types/auth/Session';
+import { Session } from '@dodao/web-core/types/auth/Session';
 import React from 'react';
 
 async function TidbitCollectionCategories() {

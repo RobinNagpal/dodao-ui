@@ -3,7 +3,7 @@ import ArrowRightIcon from '@heroicons/react/24/solid/ArrowRightIcon';
 import ArrowTopRightOnSquareIcon from '@heroicons/react/24/solid/ArrowTopRightOnSquareIcon';
 import React, { useState } from 'react';
 import { Space, TimelineDetailsFragment, TimelineEventFragment } from '@/graphql/generated/generated-types';
-import { getMarkedRenderer } from '@/utils/ui/getMarkedRenderer';
+import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
 import moment from 'moment';
 import styles from './V2SideBySideTimelineView.module.scss';

@@ -1,11 +1,11 @@
 'use client';
 
 import { PredefinedSpaces } from '@/chatbot/utils/app/constants';
-import PageWrapper from '@/components/core/page/PageWrapper';
-import { Table, TableActions, TableRow } from '@/components/core/table/Table';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import { Table, TableActions, TableRow } from '@dodao/web-core/components/core/table/Table';
 import UpsertProjectModal from '@/components/projects/Edit/UpsertProjectModal';
 import { ProjectFragment, SpaceWithIntegrationsFragment, useProjectsQuery } from '@/graphql/generated/generated-types';
-import { ProjectTypes } from '@/types/deprecated/models/enums';
+import { ProjectTypes } from '@dodao/web-core/types/deprecated/models/enums';
 import { useRouter } from 'next/navigation';
 import React, { useMemo, useState } from 'react';
 

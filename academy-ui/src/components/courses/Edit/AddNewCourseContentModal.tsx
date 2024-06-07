@@ -1,6 +1,6 @@
 import GenerateQuestionsUsingAI, { GeneratedQuestionInterface } from '@/components/ai/questions/GenerateQuestionsUsingAI';
-import Button from '@/components/core/buttons/Button';
-import FullPageModal from '@/components/core/modals/FullPageModal';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import EditCourseExplanation from '@/components/courses/Edit/Items/EditCourseExplanation';
 import EditCourseQuestion from '@/components/courses/Edit/Items/EditCourseQuestion';
 import EditTopic from '@/components/courses/Edit/Items/EditTopic';
@@ -18,7 +18,7 @@ import {
   UpdateTopicSummaryInput,
   UpdateTopicVideoInput,
 } from '@/graphql/generated/generated-types';
-import { QuestionType } from '@/types/deprecated/models/enums';
+import { QuestionType } from '@dodao/web-core/types/deprecated/models/enums';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 

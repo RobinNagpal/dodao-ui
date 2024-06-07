@@ -1,9 +1,9 @@
 'use client';
 
 import withSpace from '@/app/withSpace';
-import FullPageLoader from '@/components/core/loaders/FullPageLoading';
+import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
-import { LocalStorageKeys } from '@/types/deprecated/models/enums';
+import { LocalStorageKeys } from '@dodao/web-core/types/deprecated/models/enums';
 import { signIn } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';

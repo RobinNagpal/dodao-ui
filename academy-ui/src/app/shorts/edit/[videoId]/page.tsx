@@ -1,7 +1,7 @@
 'use client';
 
 import withSpace, { SpaceProps } from '@/app/withSpace';
-import PageWrapper from '@/components/core/page/PageWrapper';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import EditShortVideoView from '@/components/shortVideos/Edit/EditShortVideoView';
 import { useShortVideoQuery } from '@/graphql/generated/generated-types';
 import { useRouter } from 'next/navigation';

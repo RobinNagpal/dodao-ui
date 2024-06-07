@@ -15,7 +15,7 @@ import {
   useUpsertGitCourseTopicSubmissionMutation,
 } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
-import { GitCourseSubmissionModel } from '@/types/deprecated/models/course/GitCourseSubmissionModel';
+import { GitCourseSubmissionModel } from '@dodao/web-core/types/deprecated/models/course/GitCourseSubmissionModel';
 import isEqual from 'lodash/isEqual';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';

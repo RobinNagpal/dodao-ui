@@ -1,7 +1,7 @@
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
 import UploadInput from '@/components/app/UploadInput';
-import Button from '@/components/core/buttons/Button';
-import Input from '@/components/core/input/Input';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import Input from '@dodao/web-core/components/core/input/Input';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import { ImageType, ProjectShortVideo, ShortVideo, ShortVideoInput } from '@/graphql/generated/generated-types';
 import React, { useEffect, useState } from 'react';

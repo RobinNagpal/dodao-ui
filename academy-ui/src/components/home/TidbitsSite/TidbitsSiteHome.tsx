@@ -1,10 +1,10 @@
 import ByteCollectionsGrid from '@/components/byteCollection/View/ByteCollectionsGrid';
-import PageWrapper from '@/components/core/page/PageWrapper';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import TidbitsSiteTabs from '@/components/home/TidbitsSite/TidbitsSiteTabs';
 import { ByteCollectionFragment, ByteSummaryFragment, CategoryWithByteCollection, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import React from 'react';
 import TidbitsSiteHomepage from './TidbitsSiteHomepage';
-import { Session } from '@/types/auth/Session';
+import { Session } from '@dodao/web-core/types/auth/Session';
 
 export interface TidbitsSiteHomeProps {
   space: SpaceWithIntegrationsFragment;

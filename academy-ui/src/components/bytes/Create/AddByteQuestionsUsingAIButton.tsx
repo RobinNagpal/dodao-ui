@@ -1,11 +1,11 @@
 import { GeneratedQuestionInterface } from '@/components/ai/questions/GenerateQuestionsUsingAI';
 import { GeneratedByte } from '@/components/bytes/Create/CreateByteUsingAIModal';
 import { EditByteStep } from '@/components/bytes/Edit/editByteHelper';
-import Button from '@/components/core/buttons/Button';
+import Button from '@dodao/web-core/components/core/buttons/Button';
 import generateQuestionsPrompt from '@/components/guides/Edit/generateQuestionsPrompt';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import { ChatCompletionRequestMessageRoleEnum, useAskChatCompletionAiMutation } from '@/graphql/generated/generated-types';
-import { QuestionType } from '@/types/deprecated/models/enums';
+import { QuestionType } from '@dodao/web-core/types/deprecated/models/enums';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 

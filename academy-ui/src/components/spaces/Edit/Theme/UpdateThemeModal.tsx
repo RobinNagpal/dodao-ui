@@ -1,8 +1,8 @@
-import { CssTheme, ThemeKey, themes } from '@/app/themes';
+import { CssTheme, ThemeKey, themes } from '@dodao/web-core/src/components/app/themes';
 import ByteCollectionsCard from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCollectionsCard';
-import Button from '@/components/core/buttons/Button';
-import FullScreenModal from '@/components/core/modals/FullScreenModal';
-import PageWrapper from '@/components/core/page/PageWrapper';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import { ProjectByteCollectionFragment, SpaceWithIntegrationsFragment, ThemeColors, useUpdateThemeColorsMutation } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';

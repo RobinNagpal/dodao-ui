@@ -1,4 +1,4 @@
-import TextareaAutosize from '@/components/core/textarea/TextareaAutosize';
+import TextareaAutosize from '@dodao/web-core/components/core/textarea/TextareaAutosize';
 import React, { FC, KeyboardEvent, useCallback, useEffect, useRef, useState } from 'react';
 
 import { useTranslation } from 'next-i18next';

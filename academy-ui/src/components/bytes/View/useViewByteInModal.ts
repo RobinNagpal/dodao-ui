@@ -8,8 +8,9 @@ import {
   SpaceWithIntegrationsFragment,
   useSubmitByteMutation,
 } from '@/graphql/generated/generated-types';
-import { LocalStorageKeys } from '@/types/deprecated/models/enums';
-import { ByteSubmissionError } from '@/types/errors/error';
+import { Session } from '@dodao/web-core/types/auth/Session';
+import { LocalStorageKeys } from '@dodao/web-core/types/deprecated/models/enums';
+import { ByteSubmissionError } from '@dodao/web-core/types/errors/error';
 import { StepItemResponse, StepResponse, TempByteSubmission } from '@/utils/byte/TempByteSubmission';
 import union from 'lodash/union';
 import { useSession } from 'next-auth/react';
@@ -25,7 +26,8 @@ export interface UseViewByteInModalArgs {
   fetchByteFn: (byteId: string) => Promise<ByteDetailsFragment | ProjectByteFragment>;
 }
 export function useViewByteInModal({ space, byteId, stepOrder, fetchByteFn }: UseViewByteInModalArgs): UseViewByteHelper {
-  const { data: session } = useSession();
+  const { data: sessionData } = useSession();
+  const session: Session | null = sessionData as Session | null;
   // Replace Vue reactive refs with React state
   const [activeStepOrder, setActiveStepOrder] = useState<number>(0);
   const [byteLoaded, setByteLoaded] = useState<boolean>(false);

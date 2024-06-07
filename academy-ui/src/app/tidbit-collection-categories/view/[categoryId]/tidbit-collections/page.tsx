@@ -1,6 +1,6 @@
 import ViewByteCollectionCategory from '@/components/byteCollectionCategory/ViewByteCollectionCategory';
-import BreadcrumbsWithChevrons, { BreadcrumbsOjbect } from '@/components/core/breadcrumbs/BreadcrumbsWithChevrons';
-import PageWrapper from '@/components/core/page/PageWrapper';
+import BreadcrumbsWithChevrons, { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { CategoryWithByteCollection } from '@/graphql/generated/generated-types';
 import getApiResponse from '@/utils/api/getApiResponse';
 import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';

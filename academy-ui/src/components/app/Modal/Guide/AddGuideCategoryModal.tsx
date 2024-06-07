@@ -1,8 +1,8 @@
-import Button from '@/components/core/buttons/Button';
+import Button from '@dodao/web-core/components/core/buttons/Button';
 import React, { useState } from 'react';
-import Modal from '@/components/app/Modal';
+import Modal from '@dodao/web-core/components/app/Modal';
 import styled from 'styled-components';
-import { GuideCategoryType } from '@/types/deprecated/models/enums';
+import { GuideCategoryType } from '@dodao/web-core/types/deprecated/models/enums';
 import { CheckCircleIcon } from '@heroicons/react/24/outline';
 
 const ModalHeader = styled.h3`

@@ -1,4 +1,4 @@
-import PageWrapper from '@/components/core/page/PageWrapper';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 
 export default function CloseSimulation() {
   return (

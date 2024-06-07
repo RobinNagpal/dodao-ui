@@ -4,14 +4,14 @@ import { useEditTimeline } from '@/app/timelines/edit/[[...timelineId]]/useEditT
 
 import withSpace from '@/app/withSpace';
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
-import Button from '@/components/core/buttons/Button';
-import IconButton from '@/components/core/buttons/IconButton';
-import Datepicker from '@/components/core/datepicker/Datepicker';
-import { IconTypes } from '@/components/core/icons/IconTypes';
-import Input from '@/components/core/input/Input';
-import PageWrapper from '@/components/core/page/PageWrapper';
-import StyledSelect from '@/components/core/select/StyledSelect';
-import TextareaAutosize from '@/components/core/textarea/TextareaAutosize';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
+import Datepicker from '@dodao/web-core/components/core/datepicker/Datepicker';
+import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
+import Input from '@dodao/web-core/components/core/input/Input';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import StyledSelect from '@dodao/web-core/components/core/select/StyledSelect';
+import TextareaAutosize from '@dodao/web-core/components/core/textarea/TextareaAutosize';
 import { ImageType, SpaceWithIntegrationsFragment, UpsertTimelineEventInput } from '@/graphql/generated/generated-types';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
 import { TimelineStyles, timelineStyleSelect } from '@/utils/timeline/timelineStyles';

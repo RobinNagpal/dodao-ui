@@ -1,23 +1,23 @@
 'use client';
 
-import Block from '@/components/app/Block';
-import DeleteConfirmationModal from '@/components/app/Modal/DeleteConfirmationModal';
+import Block from '@dodao/web-core/components/app/Block';
+import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
 import AddByteQuestionsUsingAIButton from '@/components/bytes/Create/AddByteQuestionsUsingAIButton';
 import { CreateByteUsingAIModal } from '@/components/bytes/Create/CreateByteUsingAIModal';
 import { EditByteType } from '@/components/bytes/Edit/editByteHelper';
 import EditByteStepper from '@/components/bytes/Edit/EditByteStepper';
 import { useEditByte } from '@/components/bytes/Edit/useEditByte';
-import Button from '@/components/core/buttons/Button';
-import { EllipsisDropdownItem } from '@/components/core/dropdowns/EllipsisDropdown';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
-import Input from '@/components/core/input/Input';
-import PageLoading from '@/components/core/loaders/PageLoading';
-import PageWrapper from '@/components/core/page/PageWrapper';
-import StyledSelect, { StyledSelectItem } from '@/components/core/select/StyledSelect';
-import TextareaArray from '@/components/core/textarea/TextareaArray';
+import Input from '@dodao/web-core/components/core/input/Input';
+import PageLoading from '@dodao/web-core/components/core/loaders/PageLoading';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import StyledSelect, { StyledSelectItem } from '@dodao/web-core/components/core/select/StyledSelect';
+import TextareaArray from '@dodao/web-core/components/core/textarea/TextareaArray';
 import { SpaceWithIntegrationsFragment, useDeleteByteMutation, VideoAspectRatio } from '@/graphql/generated/generated-types';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
-import { ByteErrors } from '@/types/errors/byteErrors';
+import { ByteErrors } from '@dodao/web-core/types/errors/byteErrors';
 import { router } from 'next/client';
 import { useEffect, useState } from 'react';
 

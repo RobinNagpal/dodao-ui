@@ -1,16 +1,16 @@
 import { GeneratedQuestionInterface } from '@/components/ai/questions/GenerateQuestionsUsingAI';
-import CreateConnectDiscord from '@/components/app/Common/CreateDiscordConnect';
+import CreateConnectDiscord from '@dodao/web-core/components/app/Common/CreateDiscordConnect';
 import CreateQuestion from '@/components/app/Common/CreateQuestion';
-import CreateUserInput from '@/components/app/Common/CreateUserInput';
+import CreateUserInput from '@dodao/web-core/components/app/Common/CreateUserInput';
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
 import AddContentOrQuestionAIModal from '@/components/app/Modal/AI/AddContentOrQuestionAIModal';
 import GenerateContentUsingAIModal from '@/components/app/Modal/AI/GenerateContentUsingAIModal';
 import GenerateQuestionUsingAIModal from '@/components/app/Modal/AI/GenerateQuestionUsingAIModal';
-import DeleteConfirmationModal from '@/components/app/Modal/DeleteConfirmationModal';
-import AddStepItemModal from '@/components/app/Modal/StepItem/AddStepItemModal';
-import IconButton from '@/components/core/buttons/IconButton';
-import { IconTypes } from '@/components/core/icons/IconTypes';
-import Input from '@/components/core/input/Input';
+import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
+import AddStepItemModal from '@dodao/web-core/components/app/Modal/StepItem/AddStepItemModal';
+import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
+import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
+import Input from '@dodao/web-core/components/core/input/Input';
 import generateGuideContentPrompt from '@/components/guides/Edit/generateGuideContentPrompt';
 import generateQuestionsPrompt from '@/components/guides/Edit/generateQuestionsPrompt';
 import { UseEditGuideHelper } from '@/components/guides/Edit/useEditGuide';
@@ -28,8 +28,8 @@ import {
   StepItemInputGenericInput,
 } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
-import { InputType, QuestionType, UserDiscordConnectType } from '@/types/deprecated/models/enums';
-import { QuestionError, StepError } from '@/types/errors/error';
+import { InputType, QuestionType, UserDiscordConnectType } from '@dodao/web-core/types/deprecated/models/enums';
+import { QuestionError, StepError } from '@dodao/web-core/types/errors/error';
 import isEqual from 'lodash/isEqual';
 import { useMemo, useState } from 'react';
 import styled from 'styled-components';

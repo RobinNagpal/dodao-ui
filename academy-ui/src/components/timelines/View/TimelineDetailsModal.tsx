@@ -1,6 +1,6 @@
-import FullPageModal from '@/components/core/modals/FullPageModal';
+import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import { TimelineEventFragment } from '@/graphql/generated/generated-types';
-import { getMarkedRenderer } from '@/utils/ui/getMarkedRenderer';
+import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
 import React from 'react';
 

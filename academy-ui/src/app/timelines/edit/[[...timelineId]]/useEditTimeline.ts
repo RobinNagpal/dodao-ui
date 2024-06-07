@@ -2,9 +2,9 @@ import { useNotificationContext } from '@/contexts/NotificationContext';
 import { Space, UpsertTimelineEventInput, UpsertTimelineInput, useTimelineDetailsQuery, useUpsertTimelineMutation } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
 
-import { TimelineErrors, TimelineEventsError } from '@/types/errors/timelineErrors';
+import { TimelineErrors, TimelineEventsError } from '@dodao/web-core/types/errors/timelineErrors';
 import { TimelineStyles } from '@/utils/timeline/timelineStyles';
-import { isValidURL } from '@/utils/validator';
+import { isValidURL } from '@dodao/web-core/utils/validator';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';

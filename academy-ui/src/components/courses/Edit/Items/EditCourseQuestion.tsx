@@ -1,6 +1,6 @@
 import CreateQuestion from '@/components/app/Common/CreateQuestion';
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
-import Button from '@/components/core/buttons/Button';
+import Button from '@dodao/web-core/components/core/buttons/Button';
 import {
   CourseDetailsFragment,
   CourseQuestionFragment,
@@ -9,8 +9,8 @@ import {
   TopicQuestionChoiceInput,
   UpdateTopicQuestionInput,
 } from '@/graphql/generated/generated-types';
-import { QuestionType } from '@/types/deprecated/models/enums';
-import { QuestionError } from '@/types/errors/error';
+import { QuestionType } from '@dodao/web-core/types/deprecated/models/enums';
+import { QuestionError } from '@dodao/web-core/types/errors/error';
 import isEqual from 'lodash/isEqual';
 import React, { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';

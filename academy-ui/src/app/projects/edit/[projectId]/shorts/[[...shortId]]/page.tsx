@@ -1,8 +1,8 @@
 'use client';
 
 import WithSpace from '@/app/withSpace';
-import FullPageLoader from '@/components/core/loaders/FullPageLoading';
-import PageWrapper from '@/components/core/page/PageWrapper';
+import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import EditProjectShortVideoView from '@/components/projects/projectShortVideo/Edit/EditProjectShortVideoView';
 import { SpaceWithIntegrationsFragment, useProjectQuery } from '@/graphql/generated/generated-types';
 import { useRouter } from 'next/navigation';

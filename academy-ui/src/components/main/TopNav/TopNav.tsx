@@ -1,8 +1,8 @@
 'use client';
 
 import { PredefinedSpaces } from '@/chatbot/utils/app/constants';
-import ButtonLarge from '@/components/core/buttons/Button';
-import FullPageModal from '@/components/core/modals/FullPageModal';
+import ButtonLarge from '@dodao/web-core/components/core/buttons/Button';
+import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import CreateContentModalContents from '@/components/main/TopNav/CreateContentModalContents';
 import { DesktopNavLink } from '@/components/main/TopNav/DesktopNavLink';
 import { DesktopProfileMenu } from '@/components/main/TopNav/DesktopProfileMenu';
@@ -10,12 +10,12 @@ import { MobileNavLink } from '@/components/main/TopNav/MobileNavLink';
 import { MobileProfileMenu } from '@/components/main/TopNav/MobileProfileMenu';
 import { useLoginModalContext } from '@/contexts/LoginModalContext';
 import { Space, SpaceTypes, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
-import { Session } from '@/types/auth/Session';
-import { FeatureItem, FeatureName } from '@/types/features/spaceFeatures';
+import { Session } from '@dodao/web-core/types/auth/Session';
+import { FeatureItem, FeatureName } from '@dodao/web-core/types/features/spaceFeatures';
 import { isAdmin } from '@/utils/auth/isAdmin';
-import { isSuperAdmin } from '@/utils/auth/superAdmins';
+import { isSuperAdmin } from '@dodao/web-core/utils/auth/superAdmins';
 import { getSortedFeaturesArray } from '@/utils/features';
-import { getCDNImageUrl } from '@/utils/images/getCDNImageUrl';
+import { getCDNImageUrl } from '@dodao/web-core/utils/images/getCDNImageUrl';
 import { Disclosure } from '@headlessui/react';
 import PlusIcon from '@heroicons/react/20/solid/PlusIcon';
 import Bars3Icon from '@heroicons/react/24/outline/Bars3Icon';

@@ -1,5 +1,5 @@
 import { useSpace } from '@/contexts/SpaceContext';
-import { Session } from '@/types/auth/Session';
+import { Session } from '@dodao/web-core/types/auth/Session';
 import { isAdmin } from '@/utils/auth/isAdmin';
 import { useSession } from 'next-auth/react';
 import { PropsWithChildren } from 'react';

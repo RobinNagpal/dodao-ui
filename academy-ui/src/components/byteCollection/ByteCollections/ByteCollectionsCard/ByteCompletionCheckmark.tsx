@@ -1,7 +1,7 @@
 'use client';
 
 import styles from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCollectionsCard.module.scss';
-import { LocalStorageKeys } from '@/types/deprecated/models/enums';
+import { LocalStorageKeys } from '@dodao/web-core/types/deprecated/models/enums';
 import Bars3BottomLeftIcon from '@heroicons/react/24/solid/Bars3BottomLeftIcon';
 import CheckIcon from '@heroicons/react/24/solid/CheckIcon';
 import React, { useEffect } from 'react';

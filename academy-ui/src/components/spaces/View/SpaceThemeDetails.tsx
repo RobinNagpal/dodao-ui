@@ -1,4 +1,4 @@
-import { CssTheme, ThemeKey, ThemeValue, themes } from '@/app/themes';
+import { CssTheme, ThemeKey, ThemeValue, themes } from '@dodao/web-core/src/components/app/themes';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import UpdateThemeModal, { ColorLabels, ThemeColorsKeys } from '@/components/spaces/Edit/Theme/UpdateThemeModal';
 import { ProjectByteCollectionFragment, SpaceWithIntegrationsFragment, ThemeColors } from '@/graphql/generated/generated-types';

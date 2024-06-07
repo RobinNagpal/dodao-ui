@@ -1,6 +1,6 @@
-import Input from '@/components/core/input/Input';
+import Input from '@dodao/web-core/components/core/input/Input';
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
-import Button from '@/components/core/buttons/Button';
+import Button from '@dodao/web-core/components/core/buttons/Button';
 import { minMaxValidation, minValidation } from '@/components/courses/Edit/courseValidations';
 import { CourseDetailsFragment, CourseSummaryFragment, ImageType, Space, UpdateTopicSummaryInput } from '@/graphql/generated/generated-types';
 import React, { useCallback, useMemo, useState } from 'react';

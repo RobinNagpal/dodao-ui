@@ -1,5 +1,5 @@
 import { ProjectByteCollectionFragment } from '@/graphql/generated/generated-types';
-import { getUsingApi } from '@/utils/api/getUsingApi';
+import { getUsingApi } from '@dodao/web-core/utils/api/getUsingApi';
 
 export async function getProjectByteCollectionsUsingApi(projectId: string) {
   return await getUsingApi<ProjectByteCollectionFragment[]>({

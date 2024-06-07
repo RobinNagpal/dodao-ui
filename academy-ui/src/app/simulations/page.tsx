@@ -1,12 +1,12 @@
 'use client';
 
 import withSpace, { SpaceProps } from '@/app/withSpace';
-import Block from '@/components/app/Block';
-import RowLoading from '@/components/core/loaders/RowLoading';
+import Block from '@dodao/web-core/components/app/Block';
+import RowLoading from '@dodao/web-core/components/core/loaders/RowLoading';
 import SimulationSummaryCard from '@/components/simulations/Simulations/SimulationSummaryCard';
 import NoSimulation from '@/components/simulations/Simulations/NoSimulations';
-import { Grid4Cols } from '@/components/core/grids/Grid4Cols';
-import PageWrapper from '@/components/core/page/PageWrapper';
+import { Grid4Cols } from '@dodao/web-core/components/core/grids/Grid4Cols';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { useSimulationsQuery } from '@/graphql/generated/generated-types';
 import React from 'react';
 

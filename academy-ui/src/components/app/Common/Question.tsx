@@ -1,14 +1,14 @@
-import Checkbox from '@/components/app/Form/Checkbox';
-import RadioOption from '@/components/app/Form/Radio/RadioOption';
-import HintIcon from '@/components/core/icons/HintIcon';
+import Checkbox from '@dodao/web-core/components/app/Form/Checkbox';
+import RadioOption from '@dodao/web-core/components/app/Form/Radio/RadioOption';
+import HintIcon from '@dodao/web-core/components/core/icons/HintIcon';
 import {
   ByteQuestionFragmentFragment,
   CourseQuestionFragment,
   CourseReadingQuestionFragment,
   GuideQuestionFragment,
 } from '@/graphql/generated/generated-types';
-import { QuestionType } from '@/types/deprecated/models/enums';
-import { getMarkedRenderer } from '@/utils/ui/getMarkedRenderer';
+import { QuestionType } from '@dodao/web-core/types/deprecated/models/enums';
+import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
 import { RadioGroup } from '@headlessui/react';
 import isEqual from 'lodash/isEqual';
 import { marked } from 'marked';

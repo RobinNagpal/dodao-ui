@@ -1,7 +1,7 @@
-import Button from '@/components/core/buttons/Button';
-import Datepicker from '@/components/core/datepicker/Datepicker';
-import FullPageModal from '@/components/core/modals/FullPageModal';
-import TextareaAutosize from '@/components/core/textarea/TextareaAutosize';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import Datepicker from '@dodao/web-core/components/core/datepicker/Datepicker';
+import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
+import TextareaAutosize from '@dodao/web-core/components/core/textarea/TextareaAutosize';
 import { DiscoursePost, SpaceWithIntegrationsFragment, useUpsertSummaryOfDiscoursePostMutation } from '@/graphql/generated/generated-types';
 import React, { useEffect, useState } from 'react';
 import styles from './UpdateSummaryDiscoursePostModal.module.scss';

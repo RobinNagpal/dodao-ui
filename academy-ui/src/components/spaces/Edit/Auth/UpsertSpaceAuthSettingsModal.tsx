@@ -1,10 +1,10 @@
-import Button from '@/components/core/buttons/Button';
-import Checkboxes from '@/components/core/checkboxes/Checkboxes';
-import FullPageModal from '@/components/core/modals/FullPageModal';
-import ToggleWithIcon from '@/components/core/toggles/ToggleWithIcon';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import Checkboxes from '@dodao/web-core/components/core/checkboxes/Checkboxes';
+import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
+import ToggleWithIcon from '@dodao/web-core/components/core/toggles/ToggleWithIcon';
 import { useEditSpaceAuthSettings } from '@/components/spaces/Edit/Auth/useEditSpaceAuthSettings';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
-import { LoginProviders } from '@/types/deprecated/models/enums';
+import { LoginProviders } from '@dodao/web-core/types/deprecated/models/enums';
 import React from 'react';
 
 export default function UpsertSpaceAuthSettingsModal(props: { space: SpaceWithIntegrationsFragment; open: boolean; onClose: () => void }) {

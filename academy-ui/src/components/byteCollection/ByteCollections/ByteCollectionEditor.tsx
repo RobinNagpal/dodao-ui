@@ -1,11 +1,11 @@
 import SelectBytesModal from '@/components/byteCollection/ByteCollections/SelectBytesModal';
 import { EditByteCollection, useEditByteCollection } from '@/components/byteCollection/ByteCollections/useEditByteCollection';
-import Button from '@/components/core/buttons/Button';
-import IconButton from '@/components/core/buttons/IconButton';
-import { IconTypes } from '@/components/core/icons/IconTypes';
-import Input from '@/components/core/input/Input';
-import StyledSelect, { StyledSelectItem } from '@/components/core/select/StyledSelect';
-import TextareaAutosize from '@/components/core/textarea/TextareaAutosize';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
+import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
+import Input from '@dodao/web-core/components/core/input/Input';
+import StyledSelect, { StyledSelectItem } from '@dodao/web-core/components/core/select/StyledSelect';
+import TextareaAutosize from '@dodao/web-core/components/core/textarea/TextareaAutosize';
 import {
   ByteCollectionFragment,
   ByteSummaryFragment,

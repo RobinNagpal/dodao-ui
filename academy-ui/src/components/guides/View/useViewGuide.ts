@@ -12,9 +12,10 @@ import {
   UserDiscordInfoInput,
   useSubmitGuideMutation,
 } from '@/graphql/generated/generated-types';
-import { isQuestion, isUserDiscordConnect, isUserInput } from '@/types/deprecated/helpers/stepItemTypes';
-import { StepItemSubmissionType } from '@/types/deprecated/models/enums';
-import { GuideSubmissionError } from '@/types/errors/error';
+import { Session } from '@dodao/web-core/types/auth/Session';
+import { isQuestion, isUserDiscordConnect, isUserInput } from '@dodao/web-core/types/deprecated/helpers/stepItemTypes';
+import { StepItemSubmissionType } from '@dodao/web-core/types/deprecated/models/enums';
+import { GuideSubmissionError } from '@dodao/web-core/types/errors/error';
 import { useSession } from 'next-auth/react';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
@@ -45,7 +46,8 @@ export interface UseViewGuideHelper {
 export function useViewGuide(space: Space, fetchedGuide: GuideFragment, stepOrder: number): UseViewGuideHelper {
   const uuid = fetchedGuide.uuid;
 
-  const { data: session } = useSession();
+  const { data: sessionData } = useSession();
+  const session: Session | null = sessionData as Session | null;
   const [guide, setGuide] = useState<GuideFragment | null>(null);
   const [guideStepsMap, setGuideStepsMap] = useState<{ [uuid: string]: GuideStepFragment }>({});
   const [errors, setErrors] = useState<GuideSubmissionError>({});

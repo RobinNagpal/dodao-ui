@@ -3,7 +3,7 @@
 import withSpace from '@/app/withSpace';
 import ByteCollectionEditor from '@/components/byteCollection/ByteCollections/ByteCollectionEditor';
 import { EditByteCollection } from '@/components/byteCollection/ByteCollections/useEditByteCollection';
-import PageWrapper from '@/components/core/page/PageWrapper';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import {
   SpaceWithIntegrationsFragment,
   useProjectByteCollectionQuery,

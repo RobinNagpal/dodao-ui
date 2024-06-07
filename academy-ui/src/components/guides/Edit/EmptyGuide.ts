@@ -1,7 +1,7 @@
 import { EditGuideType } from '@/components/guides/Edit/editGuideType';
 import { GuideInput, Space } from '@/graphql/generated/generated-types';
-import { InputType, PublishStatus, QuestionType } from '@/types/deprecated/models/enums';
-import { GuideSource } from '@/types/deprecated/models/GuideModel';
+import { InputType, PublishStatus, QuestionType } from '@dodao/web-core/types/deprecated/models/enums';
+import { GuideSource } from '@dodao/web-core/types/deprecated/models/GuideModel';
 import { v4 as uuidv4 } from 'uuid';
 
 export const emptyGuide = (from: string, space: Space, guideType: string): EditGuideType => {

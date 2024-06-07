@@ -1,7 +1,7 @@
-import EllipsisDropdown, { EllipsisDropdownItem } from '@/components/core/dropdowns/EllipsisDropdown';
-import SectionLoader from '@/components/core/loaders/SectionLoader';
-import { Table, TableRow } from '@/components/core/table/Table';
-import TabsWithUnderline, { TabItem } from '@/components/core/tabs/TabsWithUnderline';
+import EllipsisDropdown, { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
+import SectionLoader from '@dodao/web-core/components/core/loaders/SectionLoader';
+import { Table, TableRow } from '@dodao/web-core/components/core/table/Table';
+import TabsWithUnderline, { TabItem } from '@dodao/web-core/components/core/tabs/TabsWithUnderline';
 import DiscoursePostsTable from '@/components/spaces/Loaders/Discourse/DiscoursePostsTable';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import {

@@ -1,5 +1,5 @@
 import ViewByteModal from '@/components/byteCollection/View/ViewByteModal';
-import PageWrapper from '@/components/core/page/PageWrapper';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
 import React from 'react';
 

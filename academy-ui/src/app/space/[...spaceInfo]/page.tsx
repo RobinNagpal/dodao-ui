@@ -2,7 +2,7 @@
 
 import SidebarLayout from '@/app/SidebarLayout';
 import WithSpace from '@/app/withSpace';
-import PageWrapper from '@/components/core/page/PageWrapper';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import GenerateImage from '@/components/spaces/Image/GenerateImage';
 import ListSpaces from '@/components/spaces/ListSpaces';
 import AllLoaders from '@/components/spaces/Loaders/AllLoaders';
@@ -10,7 +10,7 @@ import { ChatbotSubView, ChatbotView, getBaseUrlForSpaceSubview, ManageSpaceSubv
 import SpaceDetails from '@/components/spaces/SpaceDetails';
 import GenerateStoryBoard from '@/components/spaces/StoryBoard/GenerateStoryBoard';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
-import classNames from '@/utils/classNames';
+import classNames from '@dodao/web-core/utils/classNames';
 import BuildingOffice2Icon from '@heroicons/react/24/outline/BuildingOffice2Icon';
 import CircleStackIcon from '@heroicons/react/24/outline/CircleStackIcon';
 import HomeIcon from '@heroicons/react/24/outline/HomeIcon';

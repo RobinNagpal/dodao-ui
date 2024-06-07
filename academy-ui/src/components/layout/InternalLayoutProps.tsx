@@ -1,5 +1,5 @@
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
-import { Session } from '@/types/auth/Session';
+import { Session } from '@dodao/web-core/types/auth/Session';
 
 export interface InternalLayoutProps {
   children: React.ReactNode;

@@ -1,6 +1,6 @@
 import { ByteUserDiscordConnectFragmentFragment, GuideUserDiscordConnectFragment, UserDiscordInfoInput } from '@/graphql/generated/generated-types';
-import { GuideType } from '@/types/deprecated/models/GuideModel';
-import { shorten } from '@/utils/utils';
+import { GuideType } from '@dodao/web-core/types/deprecated/models/GuideModel';
+import { shorten } from '@dodao/web-core/utils/utils';
 import { useMemo } from 'react';
 import styled from 'styled-components';
 

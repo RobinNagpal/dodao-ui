@@ -1,6 +1,6 @@
 'use client';
 
-import ToggleWithIcon from '@/components/core/toggles/ToggleWithIcon';
+import ToggleWithIcon from '@dodao/web-core/components/core/toggles/ToggleWithIcon';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { useRouter } from 'next/navigation';
 import React from 'react';

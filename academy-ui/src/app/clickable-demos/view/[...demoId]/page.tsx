@@ -2,7 +2,7 @@
 
 import withSpace from '@/app/withSpace';
 import ClickableDemoModal from '@/components/clickableDemos/View/ClickableDemoModal';
-import FullPageLoader from '@/components/core/loaders/FullPageLoading';
+import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import { SpaceWithIntegrationsFragment, useClickableDemoWithStepsQuery } from '@/graphql/generated/generated-types';
 import { useRouter } from 'next/navigation';
 

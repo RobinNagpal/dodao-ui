@@ -1,15 +1,15 @@
 import SelectImageInputModal from '@/components/app/Image/SelectImageInputModal';
-import DeleteConfirmationModal from '@/components/app/Modal/DeleteConfirmationModal';
+import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
 import { EditByteStep, EditByteType } from '@/components/bytes/Edit/editByteHelper';
-import IconButton from '@/components/core/buttons/IconButton';
-import CreateConnectDiscord from '@/components/app/Common/CreateDiscordConnect';
+import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
+import CreateConnectDiscord from '@dodao/web-core/components/app/Common/CreateDiscordConnect';
 import CreateQuestion from '@/components/app/Common/CreateQuestion';
-import CreateUserInput from '@/components/app/Common/CreateUserInput';
-import { IconTypes } from '@/components/core/icons/IconTypes';
+import CreateUserInput from '@dodao/web-core/components/app/Common/CreateUserInput';
+import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
-import AddStepItemModal from '@/components/app/Modal/StepItem/AddStepItemModal';
-import Input from '@/components/core/input/Input';
-import { InputWithButton } from '@/components/core/input/InputWithButton';
+import AddStepItemModal from '@dodao/web-core/components/app/Modal/StepItem/AddStepItemModal';
+import Input from '@dodao/web-core/components/core/input/Input';
+import { InputWithButton } from '@dodao/web-core/components/core/input/InputWithButton';
 import {
   ByteQuestion,
   ByteQuestionFragmentFragment,
@@ -19,14 +19,14 @@ import {
   SpaceWithIntegrationsFragment,
   StepItemInputGenericInput,
 } from '@/graphql/generated/generated-types';
-import { InputType, QuestionType, UserDiscordConnectType } from '@/types/deprecated/models/enums';
-import { ByteErrors } from '@/types/errors/byteErrors';
-import { QuestionError, StepError } from '@/types/errors/error';
+import { InputType, QuestionType, UserDiscordConnectType } from '@dodao/web-core/types/deprecated/models/enums';
+import { ByteErrors } from '@dodao/web-core/types/errors/byteErrors';
+import { QuestionError, StepError } from '@dodao/web-core/types/errors/error';
 import isEqual from 'lodash/isEqual';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
-import { findClosestColor } from '@/utils/colors/findClosestColor';
+import { findClosestColor } from '@dodao/web-core/utils/colors/findClosestColor';
 
 interface EditByteStepperItemProps {
   space: SpaceWithIntegrationsFragment;

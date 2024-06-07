@@ -1,5 +1,5 @@
-import SectionLoader from '@/components/core/loaders/SectionLoader';
-import { Table, TableRow } from '@/components/core/table/Table';
+import SectionLoader from '@dodao/web-core/components/core/loaders/SectionLoader';
+import { Table, TableRow } from '@dodao/web-core/components/core/table/Table';
 import { ManageSpaceSubviews } from '@/components/spaces/manageSpaceSubviews';
 import { DiscoursePostComment, SpaceWithIntegrationsFragment, useDiscoursePostCommentsQuery } from '@/graphql/generated/generated-types';
 import moment from 'moment/moment';

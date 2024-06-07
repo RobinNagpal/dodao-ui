@@ -1,7 +1,7 @@
-import Thumbnail from '@/components/app/Thumbnail';
-import Card from '@/components/core/card/Card';
+import Thumbnail from '@dodao/web-core/components/app/Thumbnail';
+import Card from '@dodao/web-core/components/core/card/Card';
 import { CourseFragment } from '@/graphql/generated/generated-types';
-import { shorten } from '@/utils/utils';
+import { shorten } from '@dodao/web-core/utils/utils';
 import Link from 'next/link';
 import React from 'react';
 import styled from 'styled-components';

@@ -1,6 +1,6 @@
 import { TempGuideSubmission } from '@/components/guides/View/TempGuideSubmission';
 import { UserDiscordInfoInput } from '@/graphql/generated/generated-types';
-import { LocalStorageKeys } from '@/types/deprecated/models/enums';
+import { LocalStorageKeys } from '@dodao/web-core/types/deprecated/models/enums';
 
 const ANONYMOUS = 'ANONYMOUS';
 const account = ANONYMOUS;

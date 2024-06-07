@@ -1,6 +1,6 @@
-import Input from '@/components/core/input/Input';
-import Button from '@/components/core/buttons/Button';
-import FullPageModal from '@/components/core/modals/FullPageModal';
+import Input from '@dodao/web-core/components/core/input/Input';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import { useEditTidbitsHomepage } from './useEditTidbitsHomepage';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import React from 'react';

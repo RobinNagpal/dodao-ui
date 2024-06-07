@@ -1,13 +1,13 @@
 'use client';
 
-import FullPageModal from '@/components/core/modals/FullPageModal';
+import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import CreateContentModalContents from '@/components/main/TopNav/CreateContentModalContents';
 import { DesktopNavLink } from '@/components/main/TopNav/DesktopNavLink';
 import { MobileNavLink } from '@/components/main/TopNav/MobileNavLink';
 import { Project, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
-import { ProjectTypes } from '@/types/deprecated/models/enums';
-import { FeatureItem, FeatureName } from '@/types/features/spaceFeatures';
-import { getCDNImageUrl } from '@/utils/images/getCDNImageUrl';
+import { ProjectTypes } from '@dodao/web-core/types/deprecated/models/enums';
+import { FeatureItem, FeatureName } from '@dodao/web-core/types/features/spaceFeatures';
+import { getCDNImageUrl } from '@dodao/web-core/utils/images/getCDNImageUrl';
 import { Disclosure } from '@headlessui/react';
 import Bars3Icon from '@heroicons/react/24/outline/Bars3Icon';
 import XMarkIcon from '@heroicons/react/24/outline/XMarkIcon';

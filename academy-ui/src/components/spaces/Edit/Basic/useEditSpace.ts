@@ -1,6 +1,6 @@
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import { UpsertSpaceInput, useCreateSpaceMutation, useExtendedSpaceQuery, useUpdateSpaceMutation } from '@/graphql/generated/generated-types';
-import { slugify } from '@/utils/auth/slugify';
+import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { getEditSpaceType, getSpaceInput, SpaceEditType } from '@/utils/space/spaceUpdateUtils';
 import { useState } from 'react';
 

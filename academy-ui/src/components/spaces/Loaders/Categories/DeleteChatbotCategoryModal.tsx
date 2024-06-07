@@ -1,4 +1,4 @@
-import DeleteConfirmationModal from '@/components/app/Modal/DeleteConfirmationModal';
+import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
 import { useEditChatbotCategory } from '@/components/spaces/Loaders/Categories/useEditChatbotCategory';
 import React from 'react';
 

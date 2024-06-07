@@ -1,9 +1,9 @@
-import Button from '@/components/core/buttons/Button';
-import ErrorWithAccentBorder from '@/components/core/errors/ErrorWithAccentBorder';
-import Input from '@/components/core/input/Input';
-import StyledSelect from '@/components/core/select/StyledSelect';
-import TextareaAutosize from '@/components/core/textarea/TextareaAutosize';
-import WarningWithAccentBorder from '@/components/core/warnings/WarningWithAccentBorder';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import ErrorWithAccentBorder from '@dodao/web-core/components/core/errors/ErrorWithAccentBorder';
+import Input from '@dodao/web-core/components/core/input/Input';
+import StyledSelect from '@dodao/web-core/components/core/select/StyledSelect';
+import TextareaAutosize from '@dodao/web-core/components/core/textarea/TextareaAutosize';
+import WarningWithAccentBorder from '@dodao/web-core/components/core/warnings/WarningWithAccentBorder';
 import { ChatCompletionRequestMessageRoleEnum, useAskChatCompletionAiMutation } from '@/graphql/generated/generated-types';
 
 import React, { useState } from 'react';

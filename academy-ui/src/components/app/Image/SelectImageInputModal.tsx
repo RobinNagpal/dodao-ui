@@ -2,7 +2,7 @@
 
 import GenerateFromDalleModal from '@/components/app/Image/GenerateFromDalleModal';
 import UploadFromUnsplashModal from '@/components/app/Image/UploadFromUnsplashModal';
-import FullPageModal from '@/components/core/modals/FullPageModal';
+import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import { ImageSource, ImageType, useUploadImageFromUrlToS3Mutation } from '@/graphql/generated/generated-types';
 import ArrowUpTrayIcon from '@heroicons/react/24/solid/ArrowUpTrayIcon';
 import PhotoIcon from '@heroicons/react/24/solid/PhotoIcon';

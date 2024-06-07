@@ -1,10 +1,10 @@
-import Button from '@/components/core/buttons/Button';
-import Input from '@/components/core/input/Input';
-import FullPageModal from '@/components/core/modals/FullPageModal';
-import StyledSelect from '@/components/core/select/StyledSelect';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import Input from '@dodao/web-core/components/core/input/Input';
+import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
+import StyledSelect from '@dodao/web-core/components/core/select/StyledSelect';
 import { RawGitCourse } from '@/graphql/generated/generated-types';
-import { PublishStatus } from '@/types/deprecated/models/enums';
-import { publishStatusesSelect } from '@/utils/ui/statuses';
+import { PublishStatus } from '@dodao/web-core/types/deprecated/models/enums';
+import { publishStatusesSelect } from '@dodao/web-core/utils/ui/statuses';
 import React, { useState } from 'react';
 
 export interface AddRawCourseModalProps {

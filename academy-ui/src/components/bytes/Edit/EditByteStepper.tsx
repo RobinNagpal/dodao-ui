@@ -1,13 +1,13 @@
 import { EditByteType, UpdateByteFunctions } from '@/components/bytes/Edit/editByteHelper';
-import SidebarButton from '@/components/core/buttons/SidebarButton';
+import SidebarButton from '@dodao/web-core/components/core/buttons/SidebarButton';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
-import { UserDiscordConnectType } from '@/types/deprecated/models/enums';
-import { ByteErrors } from '@/types/errors/byteErrors';
-import Accordion from '@/utils/accordion/Accordion';
+import { UserDiscordConnectType } from '@dodao/web-core/types/deprecated/models/enums';
+import { ByteErrors } from '@dodao/web-core/types/errors/byteErrors';
+import Accordion from '@dodao/web-core/utils/accordion/Accordion';
 import PlusCircle from '@heroicons/react/20/solid/PlusCircleIcon';
 import React, { CSSProperties, useMemo, useState } from 'react';
 import EditByteStepperItem from './EditByteStepperItem';
-import Button from '@/components/core/buttons/Button';
+import Button from '@dodao/web-core/components/core/buttons/Button';
 import EditCompletionScreenStepperItem from './EditCompletionScreenStepperItem';
 
 interface EditByteStepperProps {

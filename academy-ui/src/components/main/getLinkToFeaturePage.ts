@@ -1,4 +1,4 @@
-import { FeatureName } from '@/types/features/spaceFeatures';
+import { FeatureName } from '@dodao/web-core/types/features/spaceFeatures';
 
 export const getLinkToFeaturePage = (featureName: FeatureName): string => {
   if (featureName === FeatureName.Guides) {

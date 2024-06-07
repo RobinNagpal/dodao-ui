@@ -1,5 +1,5 @@
-import Button from '@/components/core/buttons/Button';
-import Input from '@/components/core/input/Input';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import Input from '@dodao/web-core/components/core/input/Input';
 import { ChatbotSubCategoriesTable } from '@/components/spaces/Loaders/Categories/ChatbotSubCategoriesTable';
 import { useEditChatbotCategory } from '@/components/spaces/Loaders/Categories/useEditChatbotCategory';
 import { ChatbotSubView, ChatbotView, getChatbotSubviewUrl } from '@/components/spaces/manageSpaceSubviews';

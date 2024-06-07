@@ -2,10 +2,10 @@
 
 import EmailLoginModal from '@/app/login/components/EmailLoginModal';
 import withSpace from '@/app/withSpace';
-import ButtonLarge from '@/components/core/buttons/Button';
+import ButtonLarge from '@dodao/web-core/components/core/buttons/Button';
 import { SpaceTypes, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { useAuth } from '@/hooks/useAuth';
-import { LoginProviders } from '@/types/deprecated/models/enums';
+import { LoginProviders } from '@dodao/web-core/types/deprecated/models/enums';
 import React, { useEffect } from 'react';
 
 function LoginButtonsFunction(props: { space: SpaceWithIntegrationsFragment; onCloseEmailModal: () => void }) {

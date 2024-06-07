@@ -1,6 +1,6 @@
-import DetailsRow from '@/components/core/details/DetailsRow';
-import DetailsHeader from '@/components/core/details/DetailsHeader';
-import DetailsSection from '@/components/core/details/DetailsSection';
+import DetailsRow from '@dodao/web-core/components/core/details/DetailsRow';
+import DetailsHeader from '@dodao/web-core/components/core/details/DetailsHeader';
+import DetailsSection from '@dodao/web-core/components/core/details/DetailsSection';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import UpsertSpaceBasicSettingsModal from '@/components/spaces/Edit/Basic/UpsertSpaceBasicSettingsModal';
 import { useNotificationContext } from '@/contexts/NotificationContext';
