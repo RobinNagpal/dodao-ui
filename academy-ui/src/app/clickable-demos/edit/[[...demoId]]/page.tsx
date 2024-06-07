@@ -1,17 +1,17 @@
 'use client';
 
 import withSpace from '@/app/withSpace';
-import Block from '@/components/app/Block';
-import Input from '@/components/core/input/Input';
-import PageLoading from '@/components/core/loaders/PageLoading';
-import Button from '@/components/core/buttons/Button';
-import PageWrapper from '@/components/core/page/PageWrapper';
+import Block from '@dodao/web-core/components/app/Block';
+import Input from '@dodao/web-core/components/core/input/Input';
+import PageLoading from '@dodao/web-core/components/core/loaders/PageLoading';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import Stepper from '@/components/clickableDemos/Edit/ClickableDemoStepper';
 import { useEditClickableDemo } from '@/components/clickableDemos/Edit/useEditClickableDemo';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
-import { ClickableDemoErrors } from '@/types/errors/clickableDemoErrors';
+import { ClickableDemoErrors } from '@dodao/web-core/types/errors/clickableDemoErrors';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';

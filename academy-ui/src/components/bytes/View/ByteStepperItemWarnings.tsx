@@ -1,4 +1,4 @@
-import ErrorWithAccentBorder from '@/components/core/errors/ErrorWithAccentBorder';
+import ErrorWithAccentBorder from '@dodao/web-core/components/core/errors/ErrorWithAccentBorder';
 
 interface ByteStepperItemWarningsProps {
   showUseInputCompletionWarning: boolean;

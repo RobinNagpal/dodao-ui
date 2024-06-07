@@ -1,4 +1,4 @@
-import Checkboxes, { CheckboxItem } from '@/components/core/checkboxes/Checkboxes';
+import Checkboxes, { CheckboxItem } from '@dodao/web-core/components/core/checkboxes/Checkboxes';
 import { ChatbotCategoryFragment } from '@/graphql/generated/generated-types';
 import React from 'react';
 

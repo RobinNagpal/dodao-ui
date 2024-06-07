@@ -1,7 +1,7 @@
-import Button from '@/components/core/buttons/Button';
-import ErrorWithAccentBorder from '@/components/core/errors/ErrorWithAccentBorder';
-import Input from '@/components/core/input/Input';
-import TextareaAutosize from '@/components/core/textarea/TextareaAutosize';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import ErrorWithAccentBorder from '@dodao/web-core/components/core/errors/ErrorWithAccentBorder';
+import Input from '@dodao/web-core/components/core/input/Input';
+import TextareaAutosize from '@dodao/web-core/components/core/textarea/TextareaAutosize';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import { ChatCompletionRequestMessageRoleEnum, useAskChatCompletionAiMutation, useGenerateImageMutation } from '@/graphql/generated/generated-types';
 import { get } from 'lodash';

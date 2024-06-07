@@ -1,6 +1,6 @@
 'use client';
-import Button from '@/components/core/buttons/Button';
-import FullScreenModal from '@/components/core/modals/FullScreenModal';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import React from 'react';
 
 function PlayIcon(props: React.ComponentPropsWithoutRef<'svg'>) {

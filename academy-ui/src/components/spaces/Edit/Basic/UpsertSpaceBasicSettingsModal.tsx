@@ -1,15 +1,15 @@
-import { CssTheme } from '@/app/themes';
+import { CssTheme } from '@dodao/web-core/src/components/app/themes';
 import UploadInput from '@/components/app/UploadInput';
-import UpsertBadgeInput from '@/components/core/badge/UpsertBadgeInput';
-import UpsertKeyValueBadgeInput from '@/components/core/badge/UpsertKeyValueBadgeInput';
-import Button from '@/components/core/buttons/Button';
-import Input from '@/components/core/input/Input';
-import FullPageModal from '@/components/core/modals/FullPageModal';
-import StyledSelect from '@/components/core/select/StyledSelect';
+import UpsertBadgeInput from '@dodao/web-core/components/core/badge/UpsertBadgeInput';
+import UpsertKeyValueBadgeInput from '@dodao/web-core/components/core/badge/UpsertKeyValueBadgeInput';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import Input from '@dodao/web-core/components/core/input/Input';
+import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
+import StyledSelect from '@dodao/web-core/components/core/select/StyledSelect';
 import useEditSpace from '@/components/spaces/Edit/Basic/useEditSpace';
 import { ImageType, Space } from '@/graphql/generated/generated-types';
-import { slugify } from '@/utils/auth/slugify';
-import { themeSelect } from '@/utils/ui/statuses';
+import { slugify } from '@dodao/web-core/utils/auth/slugify';
+import { themeSelect } from '@dodao/web-core/utils/ui/statuses';
 import union from 'lodash/union';
 import React, { useEffect, useState } from 'react';
 

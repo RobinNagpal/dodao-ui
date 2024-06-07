@@ -2,7 +2,7 @@
 
 import withSpace from '@/app/withSpace';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
-import PageWrapper from '@/components/core/page/PageWrapper';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import SimulationViewStepper from '@/components/simulations/View/SimulationStepper';
 import { useViewSimulation } from '@/components/simulations/View/useViewSimulation';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';

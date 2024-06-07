@@ -1,4 +1,4 @@
-import FullPageLoader from '@/components/core/loaders/FullPageLoading';
+import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import { useSpace } from '@/contexts/SpaceContext';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import React, { FC } from 'react';

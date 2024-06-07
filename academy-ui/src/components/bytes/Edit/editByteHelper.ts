@@ -7,11 +7,11 @@ import {
   UpsertByteInput,
   UpsertProjectByteInput,
 } from '@/graphql/generated/generated-types';
-import { isQuestion, isUserInput } from '@/types/deprecated/helpers/stepItemTypes';
-import { UserInput } from '@/types/deprecated/models/GuideModel';
-import { ByteErrors, CompletionScreenErrors, CompletionScreenItemErrors } from '@/types/errors/byteErrors';
-import { StepError } from '@/types/errors/error';
-import { slugify } from '@/utils/auth/slugify';
+import { isQuestion, isUserInput } from '@dodao/web-core/types/deprecated/helpers/stepItemTypes';
+import { UserInput } from '@dodao/web-core/types/deprecated/models/GuideModel';
+import { ByteErrors, CompletionScreenErrors, CompletionScreenItemErrors } from '@dodao/web-core/types/errors/byteErrors';
+import { StepError } from '@dodao/web-core/types/errors/error';
+import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { validateQuestion, validateUserInput } from '@/utils/stepItems/validateItems';
 import { v4 as uuidv4 } from 'uuid';
 

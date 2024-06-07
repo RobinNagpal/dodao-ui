@@ -2,7 +2,7 @@ import { getTidbitsSiteHomepageContents } from '@/components/home/TidbitsSite/ge
 import ChatHome from '@/chatbot/home/home';
 import { OpenAIModelID } from '@/chatbot/types/openai';
 import { PredefinedSpaces } from '@/chatbot/utils/app/constants';
-import PageWrapper from '@/components/core/page/PageWrapper';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import DefaultHome from '@/components/home/DefaultHome/DefaultHome';
 import DoDAOHome from '@/components/home/DoDAOHome/DoDAOHome';
 import LifeInsureHomePage from '@/components/home/LifeInsure/LifeInsureHomePage';
@@ -14,7 +14,7 @@ import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import { getServerSession } from 'next-auth';
 import { headers } from 'next/headers';
-import { Session } from '@/types/auth/Session';
+import { Session } from '@dodao/web-core/types/auth/Session';
 import React from 'react';
 
 async function Home(props: { searchParams: { [key: string]: string | string[] | undefined } }) {

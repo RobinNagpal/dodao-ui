@@ -1,7 +1,7 @@
-import DeleteConfirmationModal from '@/components/app/Modal/DeleteConfirmationModal';
-import Button from '@/components/core/buttons/Button';
-import { EllipsisDropdownItem } from '@/components/core/dropdowns/EllipsisDropdown';
-import { Table, TableRow } from '@/components/core/table/Table';
+import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
+import { Table, TableRow } from '@dodao/web-core/components/core/table/Table';
 import UpsertChatbotFAQModal from '@/components/spaces/Loaders/FAQs/UpsertChatbotFAQModal';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import {

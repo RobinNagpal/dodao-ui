@@ -1,7 +1,7 @@
-import Button from '@/components/core/buttons/Button';
-import Input from '@/components/core/input/Input';
-import FullPageModal from '@/components/core/modals/FullPageModal';
-import StyledSelect from '@/components/core/select/StyledSelect';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import Input from '@dodao/web-core/components/core/input/Input';
+import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
+import StyledSelect from '@dodao/web-core/components/core/select/StyledSelect';
 import { DiscordServer, SpaceLoadersInfo, SpaceLoadersInfoInput, useReFetchDiscordServersMutation } from '@/graphql/generated/generated-types';
 import React, { useEffect, useState } from 'react';
 

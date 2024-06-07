@@ -1,6 +1,6 @@
-import DeleteConfirmationModal from '@/components/app/Modal/DeleteConfirmationModal';
-import Button from '@/components/core/buttons/Button';
-import { Table, TableActions, TableRow } from '@/components/core/table/Table';
+import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import { Table, TableActions, TableRow } from '@dodao/web-core/components/core/table/Table';
 import UpsertSpaceBasicSettingsModal from '@/components/spaces/Edit/Basic/UpsertSpaceBasicSettingsModal';
 import { ManageSpaceSubviews } from '@/components/spaces/manageSpaceSubviews';
 import { useNotificationContext } from '@/contexts/NotificationContext';

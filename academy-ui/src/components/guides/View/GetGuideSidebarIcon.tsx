@@ -1,5 +1,5 @@
 import { GuideStepFragment } from '@/graphql/generated/generated-types';
-import { isQuestion, isUserInput } from '@/types/deprecated/helpers/stepItemTypes';
+import { isQuestion, isUserInput } from '@dodao/web-core/types/deprecated/helpers/stepItemTypes';
 import { ClipboardDocumentCheckIcon, DocumentDuplicateIcon, PencilSquareIcon } from '@heroicons/react/24/outline';
 import React from 'react';
 

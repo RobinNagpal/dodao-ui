@@ -2,9 +2,9 @@
 
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { useAuth } from '@/hooks/useAuth';
-import { Session } from '@/types/auth/Session';
-import { isSuperAdmin } from '@/utils/auth/superAdmins';
-import classNames from '@/utils/classNames';
+import { Session } from '@dodao/web-core/types/auth/Session';
+import { isSuperAdmin } from '@dodao/web-core/utils/auth/superAdmins';
+import classNames from '@dodao/web-core/utils/classNames';
 import { Menu, Transition } from '@headlessui/react';
 import Image from 'next/image';
 import Link from 'next/link';

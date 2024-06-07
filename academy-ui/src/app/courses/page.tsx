@@ -1,5 +1,5 @@
-import PageWrapper from '@/components/core/page/PageWrapper';
-import MainContainer from '@/components/main/Container/MainContainer';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import MainContainer from '@dodao/web-core/components/main/Container/MainContainer';
 import React from 'react';
 import CoursesInformation from './CoursesGrid';
 import { Metadata } from 'next';

@@ -1,9 +1,9 @@
-import Button from '@/components/core/buttons/Button';
-import WarningWithAccentBorder from '@/components/core/warnings/WarningWithAccentBorder';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import WarningWithAccentBorder from '@dodao/web-core/components/core/warnings/WarningWithAccentBorder';
 import { useLoginModalContext } from '@/contexts/LoginModalContext';
 import { CourseDetailsFragment, CourseTopicFragment } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
-import { CourseStatus } from '@/types/deprecated/models/course/GitCourseTopicSubmission';
+import { CourseStatus } from '@dodao/web-core/types/deprecated/models/course/GitCourseTopicSubmission';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import React, { useMemo } from 'react';

@@ -1,6 +1,6 @@
-import { EllipsisDropdownItem } from '@/components/core/dropdowns/EllipsisDropdown';
+import { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
-import { Table, TableActions, TableRow } from '@/components/core/table/Table';
+import { Table, TableActions, TableRow } from '@dodao/web-core/components/core/table/Table';
 import UpsertArticleIndexingInfoModal from '@/components/spaces/Edit/LoadersInfo/UpsertArticleIndexingInfoModal';
 import UpsertWebsiteScrapingInfoModal from '@/components/spaces/Edit/LoadersInfo/UpsertWebsiteScrapingInfoModal';
 import { ChatbotCategoriesTable } from '@/components/spaces/Loaders/Categories/ChatbotCategoriesTable';

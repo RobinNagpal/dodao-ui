@@ -1,5 +1,5 @@
 import UpsertRawCourseModal from '@/components/app/Modal/Course/UpsertRawCourseModal';
-import EllipsisDropdown from '@/components/core/dropdowns/EllipsisDropdown';
+import EllipsisDropdown from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import {
   SpaceWithIntegrationsFragment,
@@ -7,9 +7,9 @@ import {
   useRefreshGitCourseMutation,
   useUpsertGitCourseMutation,
 } from '@/graphql/generated/generated-types';
-import { Session } from '@/types/auth/Session';
-import { PublishStatus } from '@/types/deprecated/models/enums';
-import { isSuperAdmin } from '@/utils/auth/superAdmins';
+import { Session } from '@dodao/web-core/types/auth/Session';
+import { PublishStatus } from '@dodao/web-core/types/deprecated/models/enums';
+import { isSuperAdmin } from '@dodao/web-core/utils/auth/superAdmins';
 import { useSession } from 'next-auth/react';
 import { useState } from 'react';
 

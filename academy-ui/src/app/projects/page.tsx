@@ -1,4 +1,4 @@
-import PageWrapper from '@/components/core/page/PageWrapper';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import ListProjects from '@/components/projects/List/ListProjects';
 import { ProjectFragment } from '@/graphql/generated/generated-types';
 import getApiResponse from '@/utils/api/getApiResponse';

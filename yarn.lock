@@ -11282,7 +11282,7 @@ unsplash-js@^7.0.4:
 
 unsplash-react@^0.3.0:
   version "0.3.0"
-  resolved "https://registry.npmjs.org/unsplash-react/-/unsplash-react-0.3.0.tgz"
+  resolved "https://registry.yarnpkg.com/unsplash-react/-/unsplash-react-0.3.0.tgz#86e0a3392d016d76aed45ff41350d678a207ec4b"
   integrity sha512-4BaoaZOnG0Rnvn7ZUauwu5zjGma829FujnyqG3Y4NYY7NG6c8NJlgVRRJGZWmhOqlyYBQ8UAmJr8N4pAX3g+5w==
   dependencies:
     intersection-observer "^0.5.0"

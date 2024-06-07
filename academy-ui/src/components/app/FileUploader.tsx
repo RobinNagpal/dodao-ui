@@ -1,7 +1,7 @@
 // Replace with your actual uploadImageToS3 import
-import LoadingSpinner from '@/components/core/loaders/LoadingSpinner';
+import LoadingSpinner from '@dodao/web-core/components/core/loaders/LoadingSpinner';
 import { CreateSignedUrlInput, ImageType, useCreateSignedUrlMutation } from '@/graphql/generated/generated-types';
-import { getUploadedImageUrlFromSingedUrl } from '@/utils/upload/getUploadedImageUrlFromSingedUrl';
+import { getUploadedImageUrlFromSingedUrl } from '@dodao/web-core/utils/upload/getUploadedImageUrlFromSingedUrl';
 import axios from 'axios';
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components';

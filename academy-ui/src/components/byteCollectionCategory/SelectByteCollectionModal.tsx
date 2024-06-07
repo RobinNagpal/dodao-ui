@@ -1,10 +1,10 @@
-import Button from '@/components/core/buttons/Button';
-import Card from '@/components/core/card/Card';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import Card from '@dodao/web-core/components/core/card/Card';
 import { Grid4Cols } from '@/components/core/grids/Grid4Cols';
-import FullPageLoader from '@/components/core/loaders/FullPageLoading';
-import FullPageModal from '@/components/core/modals/FullPageModal';
+import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
+import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import { ByteCollectionFragment, Space, useByteCollectionsQuery } from '@/graphql/generated/generated-types';
-import { shorten } from '@/utils/utils';
+import { shorten } from '@dodao/web-core/utils/utils';
 import CheckCircleIcon from '@heroicons/react/20/solid/CheckCircleIcon';
 import React from 'react';
 import styles from './SelectByteCollectionModal.module.scss';

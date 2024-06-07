@@ -1,10 +1,10 @@
 'use client';
 
 import withSpace, { SpaceProps } from '@/app/withSpace';
-import Button from '@/components/core/buttons/Button';
-import Input from '@/components/core/input/Input';
-import FullScreenModal from '@/components/core/modals/FullScreenModal';
-import PageWrapper from '@/components/core/page/PageWrapper';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import Input from '@dodao/web-core/components/core/input/Input';
+import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { useState } from 'react';
 
 export interface EmailLoginModalProps extends SpaceProps {

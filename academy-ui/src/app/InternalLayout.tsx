@@ -4,7 +4,7 @@ import { InternalLayoutProps } from '@/components/layout/InternalLayoutProps';
 
 import { NotificationProvider } from '@/contexts/NotificationContext';
 import { SpaceProvider } from '@/contexts/SpaceContext';
-import StyledComponentsRegistry from '@/utils/StyledComponentsRegistry';
+import StyledComponentsRegistry from '@dodao/web-core/utils/StyledComponentsRegistry';
 import './globals.scss';
 
 // Based on - https://tailwindui.com/components/application-ui/page-examples/home-screens

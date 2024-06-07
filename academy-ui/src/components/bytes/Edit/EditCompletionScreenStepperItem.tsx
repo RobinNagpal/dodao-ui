@@ -1,16 +1,16 @@
 import { EditByteType } from '@/components/bytes/Edit/editByteHelper';
-import IconButton from '@/components/core/buttons/IconButton';
-import { IconTypes } from '@/components/core/icons/IconTypes';
+import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
+import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
-import Input from '@/components/core/input/Input';
-import { InputWithButton } from '@/components/core/input/InputWithButton';
+import Input from '@dodao/web-core/components/core/input/Input';
+import { InputWithButton } from '@dodao/web-core/components/core/input/InputWithButton';
 import { CompletionScreen, CompletionScreenItemInput, ImageType, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import React, { useState } from 'react';
 import SelectImageInputModal from '@/components/app/Image/SelectImageInputModal';
-import AddCompletionScreenItemsModal from '@/components/app/Modal/CompletionScreenItem/AddCompletionScreenItemsModal';
+import AddCompletionScreenItemsModal from '@dodao/web-core/components/app/Modal/CompletionScreenItem/AddCompletionScreenItemsModal';
 import { v4 as uuidv4 } from 'uuid';
-import CallToActionButtonForm from '@/components/app/Common/CallToActionButtonForm';
-import { ByteErrors } from '@/types/errors/byteErrors';
+import CallToActionButtonForm from '@dodao/web-core/components/app/Common/CallToActionButtonForm';
+import { ByteErrors } from '@dodao/web-core/types/errors/byteErrors';
 import styles from './EditCompletionScreenStepperItem.module.scss';
 
 interface EditCompletionScreenStepperItemProps {

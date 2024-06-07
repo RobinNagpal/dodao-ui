@@ -6,8 +6,8 @@ import {
   useUpsertByteCollectionCategoryMutation,
 } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
-import { ByteCollectionCategoryError } from '@/types/errors/error';
-import { slugify } from '@/utils/auth/slugify';
+import { ByteCollectionCategoryError } from '@dodao/web-core/types/errors/error';
+import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
 import { v4 } from 'uuid';

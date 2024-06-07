@@ -1,4 +1,4 @@
-import LoadingSpinner from '@/components/core/loaders/LoadingSpinner';
+import LoadingSpinner from '@dodao/web-core/components/core/loaders/LoadingSpinner';
 import CommandLineIcon from '@heroicons/react/24/outline/CommandLineIcon';
 import { FC } from 'react';
 

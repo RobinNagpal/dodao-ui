@@ -1,6 +1,6 @@
 import { Space, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
-import { Session } from '@/types/auth/Session';
-import { isSuperAdmin } from '@/utils/auth/superAdmins';
+import { Session } from '@dodao/web-core/types/auth/Session';
+import { isSuperAdmin } from '@dodao/web-core/utils/auth/superAdmins';
 import { Disclosure } from '@headlessui/react';
 import Image from 'next/image';
 import Link from 'next/link';

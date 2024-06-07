@@ -1,6 +1,6 @@
-import DetailsHeader from '@/components/core/details/DetailsHeader';
-import DetailsRow from '@/components/core/details/DetailsRow';
-import DetailsSection from '@/components/core/details/DetailsSection';
+import DetailsHeader from '@dodao/web-core/components/core/details/DetailsHeader';
+import DetailsRow from '@dodao/web-core/components/core/details/DetailsRow';
+import DetailsSection from '@dodao/web-core/components/core/details/DetailsSection';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import UpsertSpaceAuthSettingsModal from '@/components/spaces/Edit/Auth/UpsertSpaceAuthSettingsModal';
 import { Space, useRoute53RecordQuery, useUpsertDomainRecordsMutation, useVercelDomainRecordQuery } from '@/graphql/generated/generated-types';

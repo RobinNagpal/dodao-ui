@@ -1,9 +1,9 @@
-import IconButton from '@/components/core/buttons/IconButton';
-import { IconTypes } from '@/components/core/icons/IconTypes';
-import SpinnerWithText from '@/components/core/loaders/SpinnerWithText';
+import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
+import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
+import SpinnerWithText from '@dodao/web-core/components/core/loaders/SpinnerWithText';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import { SpaceWithIntegrationsFragment, useGuideSubmissionsQueryQuery } from '@/graphql/generated/generated-types';
-import { DODAO_ACCESS_TOKEN_KEY } from '@/types/deprecated/models/enums';
+import { DODAO_ACCESS_TOKEN_KEY } from '@dodao/web-core/types/deprecated/models/enums';
 import { GridOptions, GridSizeChangedEvent } from 'ag-grid-community';
 import { FilterChangedEvent, FilterModifiedEvent, FilterOpenedEvent } from 'ag-grid-community/dist/lib/events';
 import 'ag-grid-community/styles/ag-grid.css';

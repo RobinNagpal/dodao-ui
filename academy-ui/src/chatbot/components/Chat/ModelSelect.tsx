@@ -1,5 +1,5 @@
-import StyledSelect, { StyledSelectItem } from '@/components/core/select/StyledSelect';
-import { PublishStatus } from '@/types/deprecated/models/enums';
+import StyledSelect, { StyledSelectItem } from '@dodao/web-core/components/core/select/StyledSelect';
+import { PublishStatus } from '@dodao/web-core/types/deprecated/models/enums';
 import { IconExternalLink } from '@tabler/icons-react';
 import React, { useContext } from 'react';
 

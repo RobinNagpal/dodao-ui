@@ -1,4 +1,4 @@
-import Notification from '@/components/core/notify/Notification';
+import Notification from '@dodao/web-core/components/core/notify/Notification';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 
 export const NotificationWrapper = () => {

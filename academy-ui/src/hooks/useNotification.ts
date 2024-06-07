@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { NotificationProps } from '@/components/core/notify/Notification';
+import { NotificationProps } from '@dodao/web-core/components/core/notify/Notification';
 
 export type ShowNotificationOptions = Omit<NotificationProps, 'onClose'>;
 export interface UseNotificationType {

@@ -1,5 +1,5 @@
-import Button from '@/components/core/buttons/Button';
-import AddIcon from '@/components/core/icons/AddIcon';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import AddIcon from '@dodao/web-core/components/core/icons/AddIcon';
 import { ItemTypes } from '@/components/courses/View/CourseDetailsRightSection';
 import { CourseSubmissionHelper, QuestionStatus, TopicItemStatus, TopicStatus } from '@/components/courses/View/useCourseSubmission';
 import { CourseHelper } from '@/components/courses/View/useViewCourse';

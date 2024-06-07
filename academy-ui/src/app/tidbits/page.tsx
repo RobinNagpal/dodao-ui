@@ -1,5 +1,5 @@
 import BytesGrid from '@/components/bytes/List/BytesGrid';
-import PageWrapper from '@/components/core/page/PageWrapper';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { TidbitSiteTabIds } from '@/components/home/TidbitsSite/TidbitSiteTabIds';
 import TidbitsSiteTabs from '@/components/home/TidbitsSite/TidbitsSiteTabs';
 import { ByteSummaryFragment } from '@/graphql/generated/generated-types';

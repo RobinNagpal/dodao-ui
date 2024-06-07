@@ -1,10 +1,10 @@
 import UserDiscord from '@/components/app/Form/UserDiscord';
-import UserInput from '@/components/app/Form/UserInput';
+import UserInput from '@dodao/web-core/components/app/Form/UserInput';
 import StepIndicatorProgress from '@/components/bytes/View/ByteStepperItem/Progress/StepIndicatorProgress';
 import ByteStepperItemWarnings from '@/components/bytes/View/ByteStepperItemWarnings';
 import { QuestionSection } from '@/components/bytes/View/QuestionSection';
 import { LAST_STEP_UUID, UseGenericViewByteHelper } from '@/components/bytes/View/useGenericViewByte';
-import Button from '@/components/core/buttons/Button';
+import Button from '@dodao/web-core/components/core/buttons/Button';
 import { useLoginModalContext } from '@/contexts/LoginModalContext';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import {
@@ -20,8 +20,9 @@ import {
 } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
 import useWindowDimensions from '@/hooks/useWindowDimensions';
-import { isQuestion, isUserDiscordConnect, isUserInput } from '@/types/deprecated/helpers/stepItemTypes';
-import { getMarkedRenderer } from '@/utils/ui/getMarkedRenderer';
+import { Session } from '@dodao/web-core/types/auth/Session';
+import { isQuestion, isUserDiscordConnect, isUserInput } from '@dodao/web-core/types/deprecated/helpers/stepItemTypes';
+import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
 import isEqual from 'lodash/isEqual';
 import { marked } from 'marked';
 import { useSession } from 'next-auth/react';
@@ -52,7 +53,8 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space, set
   const { $t: t } = useI18();
   const { showNotification } = useNotificationContext();
 
-  const { data: session } = useSession();
+  const { data: sessionData } = useSession();
+  const session: Session | null = sessionData as Session | null;
   const renderer = getMarkedRenderer();
 
   const isNotFirstStep = activeStepOrder !== 0;

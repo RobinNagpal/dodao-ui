@@ -1,6 +1,6 @@
 'use client';
 
-import DeleteConfirmationModal from '@/components/app/Modal/DeleteConfirmationModal';
+import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import UpsertProjectModal from '@/components/projects/Edit/UpsertProjectModal';
 import { useNotificationContext } from '@/contexts/NotificationContext';

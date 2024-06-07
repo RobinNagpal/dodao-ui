@@ -1,6 +1,6 @@
 import { ByteQuestionFragmentFragment, CourseQuestionFragment, GuideQuestionFragment, StepItemInputGenericInput } from '@/graphql/generated/generated-types';
-import { UserInput } from '@/types/deprecated/models/GuideModel';
-import { ChoiceError, QuestionError, StepError, UserInputError } from '@/types/errors/error';
+import { UserInput } from '@dodao/web-core/types/deprecated/models/GuideModel';
+import { ChoiceError, QuestionError, StepError, UserInputError } from '@dodao/web-core/types/errors/error';
 
 const questionContentLimit = 1024;
 const inputLabelLimit = 32;

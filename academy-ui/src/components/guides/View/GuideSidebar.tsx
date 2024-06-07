@@ -1,7 +1,7 @@
 import { getGuideSidebarIcon } from '@/components/guides/View/GetGuideSidebarIcon';
 import { LAST_STEP_UUID, UseViewGuideHelper } from '@/components/guides/View/useViewGuide';
 import { GuideFragment, GuideStepFragment } from '@/graphql/generated/generated-types';
-import classNames from '@/utils/classNames';
+import classNames from '@dodao/web-core/utils/classNames';
 import { useMemo } from 'react';
 import styles from './GuideSidebar.module.scss';
 

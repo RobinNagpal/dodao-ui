@@ -1,5 +1,5 @@
-import { EllipsisDropdownItem } from '@/components/core/dropdowns/EllipsisDropdown';
-import { Table, TableRow } from '@/components/core/table/Table';
+import { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
+import { Table, TableRow } from '@dodao/web-core/components/core/table/Table';
 import DeleteChatbotCategoryModal from '@/components/spaces/Loaders/Categories/DeleteChatbotCategoryModal';
 import { ChatbotSubView, ChatbotView, getChatbotSubviewUrl } from '@/components/spaces/manageSpaceSubviews';
 import {

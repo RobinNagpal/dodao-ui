@@ -1,5 +1,5 @@
 import { ByteDetailsFragment, ByteQuestionFragmentFragment } from '@/graphql/generated/generated-types';
-import { PublishStatus, QuestionType } from '@/types/deprecated/models/enums';
+import { PublishStatus, QuestionType } from '@dodao/web-core/types/deprecated/models/enums';
 import { v4 as uuidv4 } from 'uuid';
 
 export const emptyByte = (): Omit<ByteDetailsFragment, 'id'> & { isPristine: boolean; id: string } => {

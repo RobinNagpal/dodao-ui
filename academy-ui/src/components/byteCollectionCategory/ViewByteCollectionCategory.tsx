@@ -1,5 +1,5 @@
 import ByteCollectionsGrid from '@/components/byteCollection/View/ByteCollectionsGrid';
-import PageWrapper from '@/components/core/page/PageWrapper';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { ByteCollectionFragment, CategoryWithByteCollection, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import React from 'react';
 

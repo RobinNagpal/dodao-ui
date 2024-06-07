@@ -1,8 +1,8 @@
 'use client';
 
 import WithSpace from '@/app/withSpace';
-import FullPageLoader from '@/components/core/loaders/FullPageLoading';
-import FullScreenModal from '@/components/core/modals/FullScreenModal';
+import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
+import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import EditProjectByte from '@/components/projects/projectByte/Edit/EditProjectByte';
 import { SpaceWithIntegrationsFragment, useProjectQuery } from '@/graphql/generated/generated-types';
 import { useRouter } from 'next/navigation';

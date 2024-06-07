@@ -1,8 +1,8 @@
 'use client';
 
-import Block from '@/components/app/Block';
-import CardLoader from '@/components/core/loaders/CardLoader';
-import PageWrapper from '@/components/core/page/PageWrapper';
+import Block from '@dodao/web-core/components/app/Block';
+import CardLoader from '@dodao/web-core/components/core/loaders/CardLoader';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import EditProjectShortVideoModal from '@/components/projects/projectShortVideo/Edit/EditProjectShortVideoModal';
 import Shorts from '@/components/shortVideos/View/Shorts';
 import ViewShortVideoModal from '@/components/shortVideos/View/ViewShortVideoModal';

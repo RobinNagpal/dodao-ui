@@ -3,7 +3,7 @@ import GuideInformation from './GuideInformation';
 import type { Metadata } from 'next';
 import getApiResponse from '@/utils/api/getApiResponse';
 import { GuideFragment } from '@/graphql/generated/generated-types';
-import PageWrapper from '@/components/core/page/PageWrapper';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 
 type GuideViewProps = {
   params: { guideIdAndStep: string[] };

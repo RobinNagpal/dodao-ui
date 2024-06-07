@@ -1,5 +1,5 @@
-import Modal from '@/components/app/Modal';
-import Button from '@/components/core/buttons/Button';
+import Modal from '@dodao/web-core/components/app/Modal';
+import Button from '@dodao/web-core/components/core/buttons/Button';
 
 interface AddStepItemModalProps {
   open: boolean;

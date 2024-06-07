@@ -1,10 +1,10 @@
 import { Grid4Cols } from '@/components/core/grids/Grid4Cols';
-import PageWrapper from '@/components/core/page/PageWrapper';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import ShowDraftsToggle from '@/components/guides/List/ShowDraftsToggle';
 import GuideSummaryCard from '@/components/guides/Summary/GuideSummaryCard';
 import NoGuide from '@/components/guides/Summary/NoGuides';
 import { GuideSummaryFragment } from '@/graphql/generated/generated-types';
-import { PublishStatus } from '@/types/deprecated/models/enums';
+import { PublishStatus } from '@dodao/web-core/types/deprecated/models/enums';
 import getApiResponse from '@/utils/api/getApiResponse';
 import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
 import sortBy from 'lodash/sortBy';

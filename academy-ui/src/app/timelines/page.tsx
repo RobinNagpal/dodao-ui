@@ -1,4 +1,4 @@
-import PageWrapper from '@/components/core/page/PageWrapper';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import React from 'react';
 import TimelinesInformation from './TimelinesGrid.';
 import { Metadata } from 'next';

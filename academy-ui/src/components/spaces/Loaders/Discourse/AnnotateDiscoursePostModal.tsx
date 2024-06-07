@@ -1,6 +1,6 @@
-import Button from '@/components/core/buttons/Button';
-import FullPageModal from '@/components/core/modals/FullPageModal';
-import ToggleWithIcon from '@/components/core/toggles/ToggleWithIcon';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
+import ToggleWithIcon from '@dodao/web-core/components/core/toggles/ToggleWithIcon';
 import CategoryCheckboxes from '@/components/spaces/Loaders/Discourse/CategoryCheckboxes';
 import { DiscoursePost, SpaceWithIntegrationsFragment, useAnnotateDiscoursePostMutation, useChatbotCategoriesQuery } from '@/graphql/generated/generated-types';
 import React, { useEffect, useState } from 'react';

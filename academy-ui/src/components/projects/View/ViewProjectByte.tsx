@@ -3,10 +3,10 @@
 import withSpace from '@/app/withSpace';
 import ByteStepper from '@/components/bytes/View/ByteStepper';
 import { useGenericViewByte } from '@/components/bytes/View/useGenericViewByte';
-import { EllipsisDropdownItem } from '@/components/core/dropdowns/EllipsisDropdown';
+import { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
-import PageLoading from '@/components/core/loaders/PageLoading';
-import PageWrapper from '@/components/core/page/PageWrapper';
+import PageLoading from '@dodao/web-core/components/core/loaders/PageLoading';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { ProjectFragment, SpaceWithIntegrationsFragment, useProjectByteQuery } from '@/graphql/generated/generated-types';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';

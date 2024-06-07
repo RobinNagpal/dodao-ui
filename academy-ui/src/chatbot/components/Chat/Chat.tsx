@@ -10,8 +10,8 @@ import { Conversation, ConversationMessage } from '@/chatbot/types/chat';
 
 import { saveConversation, saveConversations } from '@/chatbot/utils/app/conversation';
 import { throttle } from '@/chatbot/utils/throttle/throttle';
-import PageWrapper from '@/components/core/page/PageWrapper';
-import ToggleWithIcon from '@/components/core/toggles/ToggleWithIcon';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import ToggleWithIcon from '@dodao/web-core/components/core/toggles/ToggleWithIcon';
 import { useSearchChatbotFaQsQuery } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
 import { IconArrowDown } from '@tabler/icons-react';

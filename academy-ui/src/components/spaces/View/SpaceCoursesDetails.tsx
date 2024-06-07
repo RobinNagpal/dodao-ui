@@ -1,6 +1,6 @@
 import UpsertRawCourseModal from '@/components/app/Modal/Course/UpsertRawCourseModal';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
-import { Table, TableActions, TableRow } from '@/components/core/table/Table';
+import { Table, TableActions, TableRow } from '@dodao/web-core/components/core/table/Table';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import {
   RawGitCourse,
@@ -9,7 +9,7 @@ import {
   useRawGitCoursesQuery,
   useUpsertGitCourseMutation,
 } from '@/graphql/generated/generated-types';
-import { PublishStatus } from '@/types/deprecated/models/enums';
+import { PublishStatus } from '@dodao/web-core/types/deprecated/models/enums';
 import React, { useMemo, useState } from 'react';
 import soryBy from 'lodash/sortBy';
 

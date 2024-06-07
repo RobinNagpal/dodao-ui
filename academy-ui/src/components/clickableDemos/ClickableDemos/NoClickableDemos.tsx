@@ -1,5 +1,5 @@
 'use client';
-import Block from '@/components/app/Block';
+import Block from '@dodao/web-core/components/app/Block';
 import { useSpace } from '@/contexts/SpaceContext';
 import React from 'react';
 

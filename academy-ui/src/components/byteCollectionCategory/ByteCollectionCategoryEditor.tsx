@@ -1,9 +1,9 @@
 import { useEditByteCollectionCategory } from './useEditByteCollectionCategory';
-import Button from '@/components/core/buttons/Button';
-import IconButton from '@/components/core/buttons/IconButton';
-import { IconTypes } from '@/components/core/icons/IconTypes';
-import Input from '@/components/core/input/Input';
-import TextareaAutosize from '@/components/core/textarea/TextareaAutosize';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
+import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
+import Input from '@dodao/web-core/components/core/input/Input';
+import TextareaAutosize from '@dodao/web-core/components/core/textarea/TextareaAutosize';
 import { ByteCollectionFragment, CategoryWithByteCollection, ImageType, Space, ByteCollectionCategoryStatus } from '@/graphql/generated/generated-types';
 import PlusCircle from '@heroicons/react/20/solid/PlusCircleIcon';
 import Bars3BottomLeftIcon from '@heroicons/react/24/solid/Bars3BottomLeftIcon';
@@ -11,7 +11,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import SelectByteCollectionModal from './SelectByteCollectionModal';
 import UploadInput from '../app/UploadInput';
-import NativeSelect from '@/components/core/select/NativeSelect';
+import NativeSelect from '@dodao/web-core/components/core/select/NativeSelect';
 import Image from 'next/image';
 
 interface ByteCollectionCategoryEditorProps {

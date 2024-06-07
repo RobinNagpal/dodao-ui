@@ -7,7 +7,7 @@ import ArrowTopRightOnSquareIcon from '@heroicons/react/24/outline/ArrowTopRight
 import Link from 'next/link';
 import React from 'react';
 import styles from './ByteCollectionsCard.module.scss';
-import FullScreenModal from '@/components/core/modals/FullScreenModal';
+import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import PlayCircleIcon from '@heroicons/react/24/outline/PlayCircleIcon';
 
 interface ByteCollectionCardProps {

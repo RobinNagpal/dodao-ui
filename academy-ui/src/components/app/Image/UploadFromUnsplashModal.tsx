@@ -1,9 +1,9 @@
-import Button from '@/components/core/buttons/Button';
-import FullPageModal from '@/components/core/modals/FullPageModal';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
-const UnsplashReact: React.ComponentType<any> = dynamic(() => import('unsplash-react'), {
+const UnsplashReact: any = dynamic(() => import('unsplash-react'), {
   ssr: false, // Disable server-side rendering for this component
 });
 

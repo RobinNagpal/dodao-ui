@@ -1,5 +1,5 @@
 import { Space, ByteFeedback, useUpsertByteRatingsMutation, ByteRating, ByteDetailsFragment } from '@/graphql/generated/generated-types';
-import { UserIdKey } from '@/types/auth/User';
+import { UserIdKey } from '@dodao/web-core/types/auth/User';
 import { useEffect, useState } from 'react';
 import { v4 } from 'uuid';
 

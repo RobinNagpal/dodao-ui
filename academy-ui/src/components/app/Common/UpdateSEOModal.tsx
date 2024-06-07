@@ -1,6 +1,6 @@
-import Button from '@/components/core/buttons/Button';
-import Input from '@/components/core/input/Input';
-import FullPageModal from '@/components/core/modals/FullPageModal';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import Input from '@dodao/web-core/components/core/input/Input';
+import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import { SeoMeta } from '@/graphql/generated/generated-types';
 import React, { useState } from 'react';

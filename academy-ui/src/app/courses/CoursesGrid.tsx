@@ -1,9 +1,9 @@
 'use client';
 
 import withSpace, { SpaceProps } from '@/app/withSpace';
-import Block from '@/components/app/Block';
+import Block from '@dodao/web-core/components/app/Block';
 import { Grid3Cols } from '@/components/core/grids/Grid3Cols';
-import RowLoading from '@/components/core/loaders/RowLoading';
+import RowLoading from '@dodao/web-core/components/core/loaders/RowLoading';
 import CourseSummaryCard from '@/components/courses/Summary/CourseSummaryCard';
 import NoCourses from '@/components/courses/Summary/NoCourses';
 import { CourseFragment, useCoursesQueryQuery } from '@/graphql/generated/generated-types';

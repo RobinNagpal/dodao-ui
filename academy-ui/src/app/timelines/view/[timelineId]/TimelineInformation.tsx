@@ -1,10 +1,10 @@
 'use client';
 
 import withSpace from '@/app/withSpace';
-import Block from '@/components/app/Block';
+import Block from '@dodao/web-core/components/app/Block';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
-import FullPageLoader from '@/components/core/loaders/FullPageLoading';
-import RowLoading from '@/components/core/loaders/RowLoading';
+import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
+import RowLoading from '@dodao/web-core/components/core/loaders/RowLoading';
 import TimelineDetails from '@/components/timelines/View/TimelineDetailView';
 import { SpaceWithIntegrationsFragment, useTimelineDetailsQuery } from '@/graphql/generated/generated-types';
 import Link from 'next/link';

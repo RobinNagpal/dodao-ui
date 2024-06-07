@@ -1,11 +1,11 @@
 'use client';
 
 import withSpace from '@/app/withSpace';
-import Block from '@/components/app/Block';
+import Block from '@dodao/web-core/components/app/Block';
 import DeleteCourseSubmissionModal from '@/components/app/Modal/Course/DeleteCourseSubmissionModal';
-import IconButton from '@/components/core/buttons/IconButton';
-import { IconTypes } from '@/components/core/icons/IconTypes';
-import RowLoading from '@/components/core/loaders/RowLoading';
+import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
+import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
+import RowLoading from '@dodao/web-core/components/core/loaders/RowLoading';
 import AddNewCourseContentModal from '@/components/courses/Edit/AddNewCourseContentModal';
 import CourseNavigationNew from '@/components/courses/Edit/CourseNavigationNew';
 import BasicCourseConfigurations from '@/components/courses/View/BasicCourseConfigurations';
@@ -13,9 +13,9 @@ import CourseDetailsRightSection, { ItemTypes } from '@/components/courses/View/
 import { useCourseSubmission } from '@/components/courses/View/useCourseSubmission';
 import useViewCourse from '@/components/courses/View/useViewCourse';
 import { SpaceWithIntegrationsFragment, useDeleteGitCourseSubmissionMutation } from '@/graphql/generated/generated-types';
-import { Session } from '@/types/auth/Session';
+import { Session } from '@dodao/web-core/types/auth/Session';
 import { isAdmin } from '@/utils/auth/isAdmin';
-import { isSuperAdmin } from '@/utils/auth/superAdmins';
+import { isSuperAdmin } from '@dodao/web-core/utils/auth/superAdmins';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -63,7 +63,8 @@ const DeleteButton = styled(IconButton)`
 `;
 
 const CourseInformation = ({ courseInfo, space }: CourseInformationProps) => {
-  const { data: session } = useSession();
+  const { data: sessionData } = useSession();
+  const session: Session | null = sessionData as Session | null;
 
   // urls - /courses/view/${course.key}/${topic.key}/[readings/summaries/questions/submission]/[summaryKey/readingKey/questionKey]
   const courseKey = Array.isArray(courseInfo) ? courseInfo[0] : (courseInfo as string);

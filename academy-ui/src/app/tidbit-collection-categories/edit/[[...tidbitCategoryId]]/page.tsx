@@ -2,8 +2,8 @@
 
 import withSpace from '@/app/withSpace';
 import ByteCategoryEditor from '@/components/byteCollectionCategory/ByteCollectionCategoryEditor';
-import PageLoading from '@/components/core/loaders/PageLoading';
-import PageWrapper from '@/components/core/page/PageWrapper';
+import PageLoading from '@dodao/web-core/components/core/loaders/PageLoading';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { SpaceWithIntegrationsFragment, useByteCollectionCategoryWithByteCollectionsQuery } from '@/graphql/generated/generated-types';
 
 import SingleCardLayout from '@/layouts/SingleCardLayout';

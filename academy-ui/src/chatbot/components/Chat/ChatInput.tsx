@@ -5,7 +5,7 @@ import HomeContext from '@/chatbot/home/home.context';
 
 import { ConversationMessage } from '@/chatbot/types/chat';
 import { Prompt } from '@/chatbot/types/prompt';
-import TextareaAutosize from '@/components/core/textarea/TextareaAutosize';
+import TextareaAutosize from '@dodao/web-core/components/core/textarea/TextareaAutosize';
 import { IconBolt, IconPlayerStop, IconRepeat, IconSend } from '@tabler/icons-react';
 
 import { useTranslation } from 'next-i18next';

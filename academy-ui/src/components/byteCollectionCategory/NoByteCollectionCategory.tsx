@@ -1,5 +1,5 @@
 import { SpaceProps } from '@/app/withSpace';
-import Block from '@/components/app/Block';
+import Block from '@dodao/web-core/components/app/Block';
 import React from 'react';
 
 const NoByteCollectionCategories = (props: SpaceProps) => {

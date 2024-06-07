@@ -1,10 +1,10 @@
 'use client';
 
 import withSpace, { SpaceProps } from '@/app/withSpace';
-import FullPageLoader from '@/components/core/loaders/FullPageLoading';
-import PageWrapper from '@/components/core/page/PageWrapper';
-import { Session } from '@/types/auth/Session';
-import { setDoDAOTokenInLocalStorage } from '@/utils/auth/setDoDAOTokenInLocalStorage';
+import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import { Session } from '@dodao/web-core/types/auth/Session';
+import { setDoDAOTokenInLocalStorage } from '@dodao/web-core/utils/auth/setDoDAOTokenInLocalStorage';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 import { getSession, signIn, useSession } from 'next-auth/react';

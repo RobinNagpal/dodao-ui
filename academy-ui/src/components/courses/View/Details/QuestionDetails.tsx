@@ -1,9 +1,9 @@
-import DeleteConfirmationModal from '@/components/app/Modal/DeleteConfirmationModal';
-import IconButton from '@/components/core/buttons/IconButton';
+import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
+import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
 import Question from '@/components/app/Common/Question';
-import ErrorWithAccentBorder from '@/components/core/errors/ErrorWithAccentBorder';
-import { IconTypes } from '@/components/core/icons/IconTypes';
-import Button from '@/components/core/buttons/Button';
+import ErrorWithAccentBorder from '@dodao/web-core/components/core/errors/ErrorWithAccentBorder';
+import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
+import Button from '@dodao/web-core/components/core/buttons/Button';
 import EditCourseQuestion from '@/components/courses/Edit/Items/EditCourseQuestion';
 import { useDeleteCourseItem } from '@/components/courses/Edit/useDeleteCourseItem';
 import { useEditCourseDetails } from '@/components/courses/Edit/useEditCourseDetails';
@@ -12,8 +12,8 @@ import { CourseSubmissionHelper, QuestionStatus } from '@/components/courses/Vie
 import { CourseHelper } from '@/components/courses/View/useViewCourse';
 import { useLoginModalContext } from '@/contexts/LoginModalContext';
 import { CourseDetailsFragment, DeleteTopicQuestionInput, MoveTopicQuestionInput, Space, UpdateTopicQuestionInput } from '@/graphql/generated/generated-types';
-import { MoveCourseItemDirection } from '@/types/deprecated/models/enums';
-import { getMarkedRenderer } from '@/utils/ui/getMarkedRenderer';
+import { MoveCourseItemDirection } from '@dodao/web-core/types/deprecated/models/enums';
+import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
 import isEqual from 'lodash/isEqual';
 import { marked } from 'marked';
 import { useSession } from 'next-auth/react';

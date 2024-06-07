@@ -3,8 +3,8 @@
 import withSpace from '@/app/withSpace';
 import ByteCollectionEditor from '@/components/byteCollection/ByteCollections/ByteCollectionEditor';
 import { EditByteCollection } from '@/components/byteCollection/ByteCollections/useEditByteCollection';
-import PageLoading from '@/components/core/loaders/PageLoading';
-import PageWrapper from '@/components/core/page/PageWrapper';
+import PageLoading from '@dodao/web-core/components/core/loaders/PageLoading';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import {
   SpaceWithIntegrationsFragment,
   useByteCollectionQuery,

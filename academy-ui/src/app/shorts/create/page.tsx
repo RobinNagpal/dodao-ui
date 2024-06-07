@@ -1,7 +1,7 @@
 'use client';
 
 import withSpace, { SpaceProps } from '@/app/withSpace';
-import PageWrapper from '@/components/core/page/PageWrapper';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import EditShortVideoView from '@/components/shortVideos/Edit/EditShortVideoView';
 import { useRouter } from 'next/navigation';
 import React from 'react';

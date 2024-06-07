@@ -1,6 +1,6 @@
 import { LAST_STEP_UUID } from '@/components/bytes/View/useGenericViewByte';
 import { ByteStepFragment, ByteUserInputFragmentFragment } from '@/graphql/generated/generated-types';
-import { isQuestion, isUserInput } from '@/types/deprecated/helpers/stepItemTypes';
+import { isQuestion, isUserInput } from '@dodao/web-core/types/deprecated/helpers/stepItemTypes';
 import { StepResponse, TempByteSubmission } from '@/utils/byte/TempByteSubmission';
 
 export function checkIfUserInputIsComplete(

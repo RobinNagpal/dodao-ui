@@ -2,9 +2,9 @@
 
 import { coinbaseWallet } from '@/app/login/connectors/coinbaseWallet';
 import { metaMask } from '@/app/login/connectors/metaMask';
-import { Session } from '@/types/auth/Session';
-import { LocalStorageKeys } from '@/types/deprecated/models/enums';
-import { setDoDAOTokenInLocalStorage } from '@/utils/auth/setDoDAOTokenInLocalStorage';
+import { Session } from '@dodao/web-core/types/auth/Session';
+import { LocalStorageKeys } from '@dodao/web-core/types/deprecated/models/enums';
+import { setDoDAOTokenInLocalStorage } from '@dodao/web-core/utils/auth/setDoDAOTokenInLocalStorage';
 import { Connector } from '@web3-react/types';
 import { ethers } from 'ethers';
 import * as nearAPI from 'near-api-js';

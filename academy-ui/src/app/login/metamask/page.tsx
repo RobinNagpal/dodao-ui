@@ -1,13 +1,15 @@
 'use client';
 
-import ButtonLarge from '@/components/core/buttons/Button';
-import PageWrapper from '@/components/core/page/PageWrapper';
+import ButtonLarge from '@dodao/web-core/components/core/buttons/Button';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { useAuth } from '@/hooks/useAuth';
+import { Session } from '@dodao/web-core/types/auth/Session';
 import { useSession } from 'next-auth/react';
 import React from 'react';
 
 export default function LoginWithMetamask() {
-  const { data: session } = useSession();
+  const { data: sessionData } = useSession();
+  const session: Session | null = sessionData as Session | null;
   const { loginWithMetamask, processing, processingMetaMask, logout } = useAuth();
   return (
     <PageWrapper>

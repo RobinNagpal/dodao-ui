@@ -1,10 +1,10 @@
 import ClickableDemoStepperItem from '@/components/clickableDemos/Edit/ClickableDemoStepperItem';
 import { Space, UpsertClickableDemoInput } from '@/graphql/generated/generated-types';
 import { UpdateClickableDemoFunctions } from '@/components/clickableDemos/Edit/useEditClickableDemo';
-import { ClickableDemoErrors } from '@/types/errors/clickableDemoErrors';
-import Accordion from '@/utils/accordion/Accordion';
+import { ClickableDemoErrors } from '@dodao/web-core/types/errors/clickableDemoErrors';
+import Accordion from '@dodao/web-core/utils/accordion/Accordion';
 import { CSSProperties, useMemo, useState } from 'react';
-import SidebarButton from '@/components/core/buttons/SidebarButton';
+import SidebarButton from '@dodao/web-core/components/core/buttons/SidebarButton';
 import PlusCircle from '@heroicons/react/20/solid/PlusCircleIcon';
 
 interface ClickableDemoCreateStepperProps {

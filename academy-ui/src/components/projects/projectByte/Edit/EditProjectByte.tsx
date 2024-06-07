@@ -1,19 +1,19 @@
 'use client';
 
-import Block from '@/components/app/Block';
+import Block from '@dodao/web-core/components/app/Block';
 import AddByteQuestionsUsingAIButton from '@/components/bytes/Create/AddByteQuestionsUsingAIButton';
 import { CreateByteUsingAIModal } from '@/components/bytes/Create/CreateByteUsingAIModal';
 import { EditByteType } from '@/components/bytes/Edit/editByteHelper';
 import EditByteStepper from '@/components/bytes/Edit/EditByteStepper';
-import Button from '@/components/core/buttons/Button';
-import Input from '@/components/core/input/Input';
-import PageLoading from '@/components/core/loaders/PageLoading';
-import PageWrapper from '@/components/core/page/PageWrapper';
-import TextareaArray from '@/components/core/textarea/TextareaArray';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import Input from '@dodao/web-core/components/core/input/Input';
+import PageLoading from '@dodao/web-core/components/core/loaders/PageLoading';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import TextareaArray from '@dodao/web-core/components/core/textarea/TextareaArray';
 import { useEditProjectByte } from '@/components/projects/projectByte/Edit/useEditProjectByte';
 import { ProjectFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
-import { ByteErrors } from '@/types/errors/byteErrors';
+import { ByteErrors } from '@dodao/web-core/types/errors/byteErrors';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 

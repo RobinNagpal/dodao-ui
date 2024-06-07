@@ -1,6 +1,6 @@
 import UploadInput from '@/components/app/UploadInput';
-import Button from '@/components/core/buttons/Button';
-import FullPageModal from '@/components/core/modals/FullPageModal';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import { useEditSpaceSocialSettings } from '@/components/spaces/Edit/Social/useEditSpaceSocialSettings';
 import { ImageType, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import React, { useState } from 'react';

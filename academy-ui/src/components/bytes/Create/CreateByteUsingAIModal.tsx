@@ -1,9 +1,9 @@
 import { EditByteType } from '@/components/bytes/Edit/editByteHelper';
-import Button from '@/components/core/buttons/Button';
-import ErrorWithAccentBorder from '@/components/core/errors/ErrorWithAccentBorder';
-import FullPageModal from '@/components/core/modals/FullPageModal';
-import { NotificationProps } from '@/components/core/notify/Notification';
-import TextareaAutosize from '@/components/core/textarea/TextareaAutosize';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import ErrorWithAccentBorder from '@dodao/web-core/components/core/errors/ErrorWithAccentBorder';
+import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
+import { NotificationProps } from '@dodao/web-core/components/core/notify/Notification';
+import TextareaAutosize from '@dodao/web-core/components/core/textarea/TextareaAutosize';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import { ChatCompletionRequestMessageRoleEnum, useAskChatCompletionAiMutation, useDownloadAndCleanContentMutation } from '@/graphql/generated/generated-types';
 import { sum } from 'lodash';

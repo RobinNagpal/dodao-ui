@@ -1,6 +1,6 @@
-import { EllipsisDropdownItem } from '@/components/core/dropdowns/EllipsisDropdown';
-import SectionLoader from '@/components/core/loaders/SectionLoader';
-import { Table, TableRow } from '@/components/core/table/Table';
+import { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
+import SectionLoader from '@dodao/web-core/components/core/loaders/SectionLoader';
+import { Table, TableRow } from '@dodao/web-core/components/core/table/Table';
 import { ManageSpaceSubviews } from '@/components/spaces/manageSpaceSubviews';
 import { ScrapedUrlInfoFragmentFragment, SpaceWithIntegrationsFragment, useScrapedUrlInfosQuery } from '@/graphql/generated/generated-types';
 import moment from 'moment/moment';

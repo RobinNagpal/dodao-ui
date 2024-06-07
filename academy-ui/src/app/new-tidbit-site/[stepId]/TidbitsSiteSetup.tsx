@@ -1,13 +1,13 @@
 'use client';
 
-import Button from '@/components/core/buttons/Button';
-import PageWrapper from '@/components/core/page/PageWrapper';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import HorizontalStepperSimple from '@/components/core/stepper/HorizontalStepperSimple';
 import NewTidbitsSiteInformationStep from '@/components/tidbitsSite/setupSteps/NewTidbitsSiteInformationStep';
 import TidbitSiteConfigurationStep from '@/components/tidbitsSite/setupSteps/TidbitSiteConfigurationStep';
 import UserInformationStep from '@/components/tidbitsSite/setupSteps/UserInformationStep';
-import { Session } from '@/types/auth/Session';
-import { isSuperAdmin } from '@/utils/auth/superAdmins';
+import { Session } from '@dodao/web-core/types/auth/Session';
+import { isSuperAdmin } from '@dodao/web-core/utils/auth/superAdmins';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';

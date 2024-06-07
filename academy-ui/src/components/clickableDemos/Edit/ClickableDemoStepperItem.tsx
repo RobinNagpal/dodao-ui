@@ -1,13 +1,13 @@
-import IconButton from '@/components/core/buttons/IconButton';
-import Input from '@/components/core/input/Input';
-import { IconTypes } from '@/components/core/icons/IconTypes';
+import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
+import Input from '@dodao/web-core/components/core/input/Input';
+import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import { ClickableDemoStepInput, ImageType, Space, UpsertClickableDemoInput, TooltipPlacement } from '@/graphql/generated/generated-types';
-import { ClickableDemoErrors, ClickableDemoStepError } from '@/types/errors/clickableDemoErrors';
+import { ClickableDemoErrors, ClickableDemoStepError } from '@dodao/web-core/types/errors/clickableDemoErrors';
 import UploadInput from '@/components/clickableDemos/FileUpload/UploadInput';
-import { slugify } from '@/utils/auth/slugify';
+import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { useState } from 'react';
 import styles from './ClickableDemoStepperItem.module.scss';
-import StyledSelect, { StyledSelectItem } from '@/components/core/select/StyledSelect';
+import StyledSelect, { StyledSelectItem } from '@dodao/web-core/components/core/select/StyledSelect';
 import SelectElementInput from '@/components/clickableDemos/ElementSelector/SelectElementInput';
 
 interface StepProps {

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import FullScreenModal from '@/components/core/modals/FullScreenModal';
+import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import { Space } from '@/graphql/generated/generated-types';
 
 interface Props {

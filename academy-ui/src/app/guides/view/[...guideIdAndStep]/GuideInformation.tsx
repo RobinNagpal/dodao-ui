@@ -1,15 +1,15 @@
 'use client';
 
 import withSpace from '@/app/withSpace';
-import Block from '@/components/app/Block';
+import Block from '@dodao/web-core/components/app/Block';
 import DeleteGuideModal from '@/components/app/Modal/Guide/DeleteGuideModal';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
-import PageLoading from '@/components/core/loaders/PageLoading';
+import PageLoading from '@dodao/web-core/components/core/loaders/PageLoading';
 import GuideStepper from '@/components/guides/View/GuideStepper';
 import { useViewGuide } from '@/components/guides/View/useViewGuide';
 import { GuideFragment, SpaceWithIntegrationsFragment, useDeleteGuideMutation, useGuidesQueryQuery } from '@/graphql/generated/generated-types';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
-import { getMarkedRenderer } from '@/utils/ui/getMarkedRenderer';
+import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';

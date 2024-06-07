@@ -1,16 +1,16 @@
 'use client';
 
-import ErrorPage from '@/components/app/ErrorPage';
+import ErrorPage from '@dodao/web-core/components/app/ErrorPage';
 import { BasePage } from '@/components/layout/BasePage';
 import { InternalLayoutProps } from '@/components/layout/InternalLayoutProps';
 import { NotificationWrapper } from '@/components/layout/NotificationWrapper';
 import { useSpace } from '@/contexts/SpaceContext';
 import Web3ReactProviderWrapper from '@/contexts/Web3ReactContext';
-import { UserIdKey } from '@/types/auth/User';
-import { getGTagId } from '@/utils/analytics/getGTagId';
-import { useNavigationEvent } from '@/utils/analytics/useNavigationEvent';
-import { getAuthenticatedApolloClient } from '@/utils/apolloClient';
-import { setDoDAOTokenInLocalStorage } from '@/utils/auth/setDoDAOTokenInLocalStorage';
+import { UserIdKey } from '@dodao/web-core/types/auth/User';
+import { getGTagId } from '@dodao/web-core/utils/analytics/getGTagId';
+import { useNavigationEvent } from '@dodao/web-core/utils/analytics/useNavigationEvent';
+import { getAuthenticatedApolloClient } from '@dodao/web-core/utils/apolloClient';
+import { setDoDAOTokenInLocalStorage } from '@dodao/web-core/utils/auth/setDoDAOTokenInLocalStorage';
 import { ApolloProvider } from '@apollo/client';
 import { SessionProvider } from 'next-auth/react';
 import { useEffect, useMemo } from 'react';

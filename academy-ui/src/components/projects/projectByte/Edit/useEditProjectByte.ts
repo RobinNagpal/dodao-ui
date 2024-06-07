@@ -11,7 +11,7 @@ import { emptyProjectByte } from '@/components/projects/projectByte/Edit/EmptyPr
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import { ProjectByteFragment, SpaceWithIntegrationsFragment, useProjectByteQuery, useUpsertProjectByteMutation } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
-import { ByteErrors } from '@/types/errors/byteErrors';
+import { ByteErrors } from '@dodao/web-core/types/errors/byteErrors';
 import { validateQuestion, validateUserInput } from '@/utils/stepItems/validateItems';
 import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';

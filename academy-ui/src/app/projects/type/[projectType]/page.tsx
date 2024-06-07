@@ -1,7 +1,7 @@
-import PageWrapper from '@/components/core/page/PageWrapper';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import ListProjects from '@/components/projects/List/ListProjects';
 import { ProjectFragment } from '@/graphql/generated/generated-types';
-import { ProjectTypes } from '@/types/deprecated/models/enums';
+import { ProjectTypes } from '@dodao/web-core/types/deprecated/models/enums';
 import getApiResponse from '@/utils/api/getApiResponse';
 import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
 

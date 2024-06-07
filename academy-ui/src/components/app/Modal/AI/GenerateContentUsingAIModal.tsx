@@ -1,8 +1,8 @@
-import Button from '@/components/core/buttons/Button';
-import ErrorWithAccentBorder from '@/components/core/errors/ErrorWithAccentBorder';
-import Input from '@/components/core/input/Input';
-import FullPageModal from '@/components/core/modals/FullPageModal';
-import TextareaAutosize from '@/components/core/textarea/TextareaAutosize';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import ErrorWithAccentBorder from '@dodao/web-core/components/core/errors/ErrorWithAccentBorder';
+import Input from '@dodao/web-core/components/core/input/Input';
+import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
+import TextareaAutosize from '@dodao/web-core/components/core/textarea/TextareaAutosize';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import { ChatCompletionRequestMessageRoleEnum, useAskChatCompletionAiMutation, useDownloadAndCleanContentMutation } from '@/graphql/generated/generated-types';
 import { sum } from 'lodash';

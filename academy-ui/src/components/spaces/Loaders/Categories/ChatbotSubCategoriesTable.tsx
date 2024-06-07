@@ -1,6 +1,6 @@
-import DeleteConfirmationModal from '@/components/app/Modal/DeleteConfirmationModal';
-import { EllipsisDropdownItem } from '@/components/core/dropdowns/EllipsisDropdown';
-import { Table, TableRow } from '@/components/core/table/Table';
+import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
+import { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
+import { Table, TableRow } from '@dodao/web-core/components/core/table/Table';
 import UpsertChatbotSubCategoryModal from '@/components/spaces/Loaders/Categories/UpsertChatbotSubCategoryModal';
 import { ChatbotSubCategoryHelperFunctions } from '@/components/spaces/Loaders/Categories/useEditChatbotCategory';
 import { ChatbotSubCategoryFragment } from '@/graphql/generated/generated-types';

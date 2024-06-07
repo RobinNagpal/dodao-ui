@@ -1,8 +1,8 @@
 import Question from '@/components/app/Common/Question';
 import UserDiscord from '@/components/app/Form/UserDiscord';
-import UserInput from '@/components/app/Form/UserInput';
-import Button from '@/components/core/buttons/Button';
-import ErrorWithAccentBorder from '@/components/core/errors/ErrorWithAccentBorder';
+import UserInput from '@dodao/web-core/components/app/Form/UserInput';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import ErrorWithAccentBorder from '@dodao/web-core/components/core/errors/ErrorWithAccentBorder';
 import { LAST_STEP_UUID, UseViewGuideHelper } from '@/components/guides/View/useViewGuide';
 import { useLoginModalContext } from '@/contexts/LoginModalContext';
 import { useNotificationContext } from '@/contexts/NotificationContext';
@@ -16,8 +16,9 @@ import {
   UserDiscordInfoInput,
 } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
-import { isQuestion, isUserDiscordConnect, isUserInput } from '@/types/deprecated/helpers/stepItemTypes';
-import { getMarkedRenderer } from '@/utils/ui/getMarkedRenderer';
+import { Session } from '@dodao/web-core/types/auth/Session';
+import { isQuestion, isUserDiscordConnect, isUserInput } from '@dodao/web-core/types/deprecated/helpers/stepItemTypes';
+import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
 import flatten from 'lodash/flatten';
 import { marked } from 'marked';
 import { useSession } from 'next-auth/react';
@@ -101,7 +102,8 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
     [guide, guideSubmission]
   );
 
-  const { data: session } = useSession();
+  const { data: sessionData } = useSession();
+  const session: Session | null = sessionData as Session | null;
   const { setShowLoginModal } = useLoginModalContext();
   const { showNotification } = useNotificationContext();
   const { $t } = useI18();

@@ -1,7 +1,8 @@
 'use client';
 
-import Button from '@/components/core/buttons/Button';
-import Input from '@/components/core/input/Input';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import Input from '@dodao/web-core/components/core/input/Input';
+import { Session } from '@dodao/web-core/types/auth/Session';
 import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import ReCAPTCHA from 'react-google-recaptcha';
@@ -17,7 +18,8 @@ export default function LoginInfo({ goToNextStep }: LoginInformationProps) {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [captcha, setCaptcha] = useState<string | null>('');
-  const { data: session } = useSession();
+  const { data: sessionData } = useSession();
+  const session: Session | null = sessionData as Session | null;
   const { showNotification } = useNotificationContext();
   const captchaRef = React.useRef(null);
 

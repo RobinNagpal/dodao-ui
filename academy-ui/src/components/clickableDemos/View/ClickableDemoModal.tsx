@@ -1,4 +1,4 @@
-import FullScreenModal from '@/components/core/modals/FullScreenModal';
+import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import { ClickableDemoWithSteps, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';

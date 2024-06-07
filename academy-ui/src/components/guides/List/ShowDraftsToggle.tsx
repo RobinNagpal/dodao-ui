@@ -1,8 +1,8 @@
 'use client';
 
-import ToggleWithIcon from '@/components/core/toggles/ToggleWithIcon';
+import ToggleWithIcon from '@dodao/web-core/components/core/toggles/ToggleWithIcon';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
-import { Session } from '@/types/auth/Session';
+import { Session } from '@dodao/web-core/types/auth/Session';
 import { isAdmin } from '@/utils/auth/isAdmin';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';

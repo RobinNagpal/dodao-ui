@@ -1,12 +1,12 @@
 'use client';
 
 import withSpace, { SpaceProps } from '@/app/withSpace';
-import Block from '@/components/app/Block';
-import RowLoading from '@/components/core/loaders/RowLoading';
+import Block from '@dodao/web-core/components/app/Block';
+import RowLoading from '@dodao/web-core/components/core/loaders/RowLoading';
 import TimelineSummaryCard from '@/components/timelines/Timelines/TimelineSummaryCard';
 import NoTimeline from '@/components/timelines/Timelines/NoTimelines';
 import { Grid4Cols } from '@/components/core/grids/Grid4Cols';
-import PageWrapper from '@/components/core/page/PageWrapper';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { useTimelinesQuery } from '@/graphql/generated/generated-types';
 import React from 'react';
 

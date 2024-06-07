@@ -1,6 +1,6 @@
-import Button from '@/components/core/buttons/Button';
-import Input from '@/components/core/input/Input';
-import SingleSectionModal from '@/components/core/modals/SingleSectionModal';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import Input from '@dodao/web-core/components/core/input/Input';
+import SingleSectionModal from '@dodao/web-core/components/core/modals/SingleSectionModal';
 import { useState } from 'react';
 
 export interface DeleteCourseSubmissionModalProps {

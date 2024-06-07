@@ -1,8 +1,8 @@
 import GenerateImageUsingDalleAdvanced from '@/components/app/Image/GenerateImageUsingDalleAdvanced';
-import Button from '@/components/core/buttons/Button';
-import IconButton from '@/components/core/buttons/IconButton';
-import { IconTypes } from '@/components/core/icons/IconTypes';
-import FullPageModal from '@/components/core/modals/FullPageModal';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
+import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
+import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import { ChatCompletionRequestMessageRoleEnum, useAskChatCompletionAiMutation, useGenerateImageMutation } from '@/graphql/generated/generated-types';
 import ArrowPathRoundedSquareIcon from '@heroicons/react/24/outline/ArrowPathRoundedSquareIcon';
 import React, { useEffect } from 'react';

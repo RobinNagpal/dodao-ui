@@ -1,5 +1,5 @@
 import { Space } from '@/graphql/generated/generated-types';
-import { slugify } from '@/utils/auth/slugify';
+import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import ArrowUpTrayIcon from '@heroicons/react/24/solid/ArrowUpTrayIcon';
 import ElementSelectorModal from '@/components/clickableDemos/ElementSelector/ElementSelectorModal';
 import PhotoIcon from '@heroicons/react/24/solid/PhotoIcon';

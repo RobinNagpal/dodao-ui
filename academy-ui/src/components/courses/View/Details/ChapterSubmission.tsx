@@ -1,4 +1,4 @@
-import Button from '@/components/core/buttons/Button';
+import Button from '@dodao/web-core/components/core/buttons/Button';
 import { CourseSubmissionHelper, TopicItemStatus } from '@/components/courses/View/useCourseSubmission';
 import { CourseHelper } from '@/components/courses/View/useViewCourse';
 import { useLoginModalContext } from '@/contexts/LoginModalContext';

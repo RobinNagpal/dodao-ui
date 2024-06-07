@@ -1,7 +1,7 @@
-import DeleteConfirmationModal from '@/components/app/Modal/DeleteConfirmationModal';
-import Button from '@/components/core/buttons/Button';
-import IconButton from '@/components/core/buttons/IconButton';
-import { IconTypes } from '@/components/core/icons/IconTypes';
+import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
+import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import EditCourseSummary from '@/components/courses/Edit/Items/EditCourseSummary';
 import { useDeleteCourseItem } from '@/components/courses/Edit/useDeleteCourseItem';
 import { useEditCourseDetails } from '@/components/courses/Edit/useEditCourseDetails';
@@ -18,8 +18,8 @@ import {
   Space,
   UpdateTopicSummaryInput,
 } from '@/graphql/generated/generated-types';
-import { MoveCourseItemDirection } from '@/types/deprecated/models/enums';
-import { getMarkedRenderer } from '@/utils/ui/getMarkedRenderer';
+import { MoveCourseItemDirection } from '@dodao/web-core/types/deprecated/models/enums';
+import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';

@@ -1,6 +1,6 @@
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
-import Button from '@/components/core/buttons/Button';
-import FullPageModal from '@/components/core/modals/FullPageModal';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import {
   ChatbotUserQuestionFragment,

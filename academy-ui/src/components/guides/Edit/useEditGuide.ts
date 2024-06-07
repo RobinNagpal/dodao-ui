@@ -13,9 +13,10 @@ import {
   useUpsertGuideMutation,
 } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
-import { isQuestion, isUserInput } from '@/types/deprecated/helpers/stepItemTypes';
-import { GuideType } from '@/types/deprecated/models/GuideModel';
-import { GuideError, KeyOfGuideIntegration, StepError } from '@/types/errors/error';
+import { Session } from '@dodao/web-core/types/auth/Session';
+import { isQuestion, isUserInput } from '@dodao/web-core/types/deprecated/helpers/stepItemTypes';
+import { GuideType } from '@dodao/web-core/types/deprecated/models/GuideModel';
+import { GuideError, KeyOfGuideIntegration, StepError } from '@dodao/web-core/types/errors/error';
 import { validateQuestion, validateUserInput } from '@/utils/stepItems/validateItems';
 import orderBy from 'lodash/orderBy';
 import { useSession } from 'next-auth/react';
@@ -55,7 +56,8 @@ export interface UseEditGuideHelper {
 }
 
 export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHelper {
-  const { data: session } = useSession();
+  const { data: sessionData } = useSession();
+  const session: Session | null = sessionData as Session | null;
   const emptyGuideModel = emptyGuide(session?.username || '', space, GuideType.Onboarding);
   const initialState: EditGuideType = { ...emptyGuideModel, guideExists: false };
   const [guide, setGuide] = useState<EditGuideType>(initialState);

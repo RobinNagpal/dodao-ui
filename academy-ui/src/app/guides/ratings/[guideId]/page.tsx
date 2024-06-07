@@ -2,7 +2,7 @@
 
 import withSpace from '@/app/withSpace';
 import RatingsTable from '@/components/app/Rating/Table/RatingsTable';
-import PageWrapper from '@/components/core/page/PageWrapper';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { SpaceWithIntegrationsFragment, useConsolidatedGuideRatingQuery, useGuideQueryQuery, useGuideRatingsQuery } from '@/graphql/generated/generated-types';
 import Link from 'next/link';
 import React from 'react';

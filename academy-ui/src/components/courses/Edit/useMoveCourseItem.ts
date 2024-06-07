@@ -1,6 +1,6 @@
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import { useI18 } from '@/hooks/useI18';
-import { MoveCourseItemDirection } from '@/types/deprecated/models/enums';
+import { MoveCourseItemDirection } from '@dodao/web-core/types/deprecated/models/enums';
 import { useState } from 'react';
 
 export function useMoveCourseItem<

@@ -1,7 +1,7 @@
 'use client';
 
 import PrivateComponent from '@/components/core/PrivateComponent';
-import TabsWithUnderline, { TabItem } from '@/components/core/tabs/TabsWithUnderline';
+import TabsWithUnderline, { TabItem } from '@dodao/web-core/components/core/tabs/TabsWithUnderline';
 import { TidbitSiteTabIds } from '@/components/home/TidbitsSite/TidbitSiteTabIds';
 import { useRouter } from 'next/navigation';
 import React from 'react';

@@ -1,5 +1,5 @@
-import FullPageModal from '@/components/core/modals/FullPageModal';
-import FullScreenModal from '@/components/core/modals/FullScreenModal';
+import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
+import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 

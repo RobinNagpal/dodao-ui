@@ -1,4 +1,4 @@
-import PageWrapper from '@/components/core/page/PageWrapper';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { AcademySites } from './components/AcademySites';
 import { AIChatbot } from './components/AIChatbot';
 import { BlockchainCourses } from './components/BlockchainCourses';

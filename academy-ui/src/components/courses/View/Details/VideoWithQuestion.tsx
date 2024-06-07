@@ -1,5 +1,5 @@
 import Question from '@/components/app/Common/Question';
-import Button from '@/components/core/buttons/Button';
+import Button from '@dodao/web-core/components/core/buttons/Button';
 import { CourseSubmissionHelper, QuestionStatus } from '@/components/courses/View/useCourseSubmission';
 import CourseVideoContainer from '@/components/courses/View/Video/CourseVideoContainer';
 import { useNotificationContext } from '@/contexts/NotificationContext';

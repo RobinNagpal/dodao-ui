@@ -1,6 +1,6 @@
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import { UpsertProjectInput, useProjectQuery, useUpsertProjectMutation } from '@/graphql/generated/generated-types';
-import { slugify } from '@/utils/auth/slugify';
+import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { useState } from 'react';
 
 export interface ProjectEditType extends Omit<UpsertProjectInput, 'id'> {

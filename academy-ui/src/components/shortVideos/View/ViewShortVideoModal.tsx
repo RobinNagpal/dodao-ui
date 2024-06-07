@@ -1,7 +1,7 @@
 'use client';
 
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
-import FullScreenModal from '@/components/core/modals/FullScreenModal';
+import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import { ProjectShortVideo, ShortVideo } from '@/graphql/generated/generated-types';
 // import { videos } from '../sampleVideos';
 import React, { useRef, useState } from 'react';

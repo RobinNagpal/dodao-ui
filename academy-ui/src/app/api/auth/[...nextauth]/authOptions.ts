@@ -1,8 +1,8 @@
 import { authorizeCrypto } from '@/app/api/auth/[...nextauth]/authorizeCrypto';
 import { createHash } from '@/app/api/auth/custom-email/send-verification/createHash';
 import { prisma } from '@/prisma';
-import { DoDaoJwtTokenPayload, Session } from '@/types/auth/Session';
-import { User } from '@/types/auth/User';
+import { DoDaoJwtTokenPayload, Session } from '@dodao/web-core/types/auth/Session';
+import { User } from '@dodao/web-core/types/auth/User';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { PrismaClient } from '@prisma/client';
 import jwt from 'jsonwebtoken';
