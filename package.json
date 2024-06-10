@@ -4,6 +4,7 @@
   "workspaces": [
     "academy-ui",
     "referral-ui",
+    "base-ui",
     "shared/web-core"
   ],
   "resolutions": {
