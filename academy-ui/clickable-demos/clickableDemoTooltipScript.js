@@ -143,97 +143,154 @@ function replaceIframeWithDiv() {
 
 function elementSelector(event) {
   let selectedElement = null;
-        let final_xpath = null;
-        document.body.style.cursor = 'pointer';
-        const inputs = document.querySelectorAll('input');
-        inputs.forEach(input => {
-            input.style.cursor = 'pointer';
-        });
-        const button = document.createElement('button');
-        // Set the button's text
-        button.textContent = 'Select';
-        button.classList.add('dodao-select-element-button');
-        button.disabled = selectedElement === null;
-        button.style.opacity = button.disabled ? "0.5" : "1"; // Dim button if disabled
-        button.onmouseover = () => {
-            if(button.disabled) return;
-            button.style.opacity = "0.7"; // Set opacity to 0.7 on hover
-        };
-        button.onmouseout = () => {
-            if(button.disabled) return;
-            button.style.opacity = "1"; // Reset opacity to 1 when not hovering
-        };
-        // Optionally, add an event listener for click events
-        button.addEventListener('click', () => {
-            event.source.postMessage(
-                { xpath: final_xpath},
-                event.origin,
-            );
-        });
-        // Append the button to the body
-        document.body.appendChild(button);
-        document.addEventListener('mouseover', function(event) {
-            var hoveredElement = event.target;
-            if(hoveredElement == button) return;
-            if(hoveredElement === selectedElement) return;
-            addBorder(hoveredElement);
-        });
-        document.addEventListener('mouseout', function(event) {
-            var hoveredElement = event.target;
-            if(hoveredElement == button) return;
-            if(hoveredElement === selectedElement) return;
-            removeBorder(hoveredElement);
-        });
-        function addBorder(element) {
-            element.classList.add('dodao-hovered-element');
+  let final_xpath = null;
+  document.body.style.cursor = 'pointer';
+  const inputs = document.querySelectorAll('input');
+  inputs.forEach(input => {
+      input.style.cursor = 'pointer';
+  });
+
+  const UpDownButtons = document.createElement('div');
+  UpDownButtons.classList.add('dodao-up-down-buttons');
+
+  const minusButton = document.createElement('button');
+  minusButton.textContent = "-"
+  minusButton.onclick = () => {
+    if(!selectedElement || !selectedElement.parentNode) return;
+
+    removeSelectedBorder(selectedElement);
+    selectedElement = selectedElement.parentNode;
+    addSelectedBorder(selectedElement);
+    final_xpath = getXPath(selectedElement);
+  }
+
+  UpDownButtons.appendChild(minusButton);
+
+  const plusButton = document.createElement('button');
+  plusButton.textContent = "+";
+  plusButton.onclick = () => {
+    if(!selectedElement || !selectedElement.firstElementChild) return;
+    removeSelectedBorder(selectedElement);
+    selectedElement = selectedElement.firstElementChild;
+    addSelectedBorder(selectedElement);
+    final_xpath = getXPath(selectedElement);
+  }
+
+  UpDownButtons.appendChild(plusButton);
+
+  document.body.appendChild(UpDownButtons);
+
+  const button = document.createElement('button');
+  // Set the button's text
+  button.textContent = 'Select';
+  button.classList.add('dodao-select-element-button');
+  button.disabled = selectedElement === null;
+  button.style.opacity = button.disabled ? "0.5" : "1"; // Dim button if disabled
+  button.onmouseover = () => {
+      if(button.disabled) return;
+      button.style.opacity = "0.7"; // Set opacity to 0.7 on hover
+  };
+  button.onmouseout = () => {
+      if(button.disabled) return;
+      button.style.opacity = "1"; // Reset opacity to 1 when not hovering
+  };
+  // Optionally, add an event listener for click events
+  button.addEventListener('click', () => {
+      event.source.postMessage(
+          { xpath: final_xpath},
+          event.origin,
+      );
+  });
+  // Append the button to the body
+  document.body.appendChild(button);
+  document.addEventListener('mouseover', function(event) {
+      var hoveredElement = event.target;
+      if(hoveredElement == button || hoveredElement == minusButton || hoveredElement == plusButton) return;
+      if(hoveredElement === selectedElement) return;
+      addBorder(hoveredElement);
+  });
+  document.addEventListener('mouseout', function(event) {
+      var hoveredElement = event.target;
+      if(hoveredElement == button || hoveredElement == minusButton || hoveredElement == plusButton) return;
+      if(hoveredElement === selectedElement) return;
+      removeBorder(hoveredElement);
+  });
+  function addBorder(element) {
+      element.classList.add('dodao-hovered-element');
+  }
+  function removeBorder(element) {
+      element.classList.remove('dodao-hovered-element');
+  }
+  function addSelectedBorder(element) {
+      element.classList.add('dodao-target-element');
+  }
+  function removeSelectedBorder(element) {
+      element.classList.remove('dodao-target-element');
+      element.classList.remove('dodao-hovered-element');
+  }
+  document.addEventListener('click', function(event) {
+      event.preventDefault();
+
+      // Commenting out the overlay code, will pick it up later
+
+      /*// Check if the overlay already exists
+      const existingOverlay = document.getElementById('dimming-overlay');
+      if (existingOverlay) {
+          // Remove the existing overlay from the document
+          document.body.removeChild(existingOverlay);
         }
-        function removeBorder(element) {
-            element.classList.remove('dodao-hovered-element');
-        }
-        function addSelectedBorder(element) {
-            element.classList.add('dodao-target-element');
-        }
-        function removeSelectedBorder(element) {
-            element.classList.remove('dodao-target-element');
-            element.classList.remove('dodao-hovered-element');
-        }
-        document.addEventListener('click', function(event) {
-            event.preventDefault();
-            var clickedElement = event.target;
-            if (selectedElement) {
-                removeSelectedBorder(selectedElement);
-            }
-            selectedElement = clickedElement;
-            button.disabled = false;
-            button.style.opacity = "1"; 
-            addSelectedBorder(clickedElement);
-            final_xpath = getXPath(clickedElement);
-        });
-        function getXPath(element) {
-            if (!element) return '';
-            var xpath = '';
-            var currentElement = element;
-            while (currentElement !== document.body) {
-                var tagName = currentElement.tagName.toLowerCase();
-                var index = getIndex(currentElement);
-                xpath = '/' + tagName + '[' + index + ']' + xpath;
-                currentElement = currentElement.parentElement;
-            }
-            xpath = '/html/body' + xpath;
-            return xpath;
-        }
-        function getIndex(element) {
-            var index = 1;
-            var sibling = element.previousSibling;
-            while (sibling) {
-                if (sibling.nodeType === Node.ELEMENT_NODE && sibling.tagName === element.tagName) {
-                    index++;
-                }
-                sibling = sibling.previousSibling;
-            }
-            return index;
-        }
+
+        // Create an overlay
+        const overlay = document.createElement('div');
+        overlay.id = 'dimming-overlay';
+        overlay.style.position = 'absolute';
+        overlay.style.top = '0';
+        overlay.style.left = '0';
+        overlay.style.width = '100%';
+        overlay.style.height = document.body.scrollHeight + 'px';
+        console.log(document.body.scrollHeight)
+        overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.7)'; // Semi-transparent overlay
+        overlay.style.zIndex = '1'; // Ensure it's above other content but below the target
+        overlay.style.pointerEvents = 'none'; // Allow click events to "fall through" to the target
+        document.body.appendChild(overlay);
+      */
+
+      var clickedElement = event.target;
+      if(clickedElement == minusButton || clickedElement == plusButton) return;
+      if (selectedElement) {
+          removeSelectedBorder(selectedElement);
       }
+      selectedElement = clickedElement;
+      button.disabled = false;
+      button.style.opacity = "1"; 
+      addSelectedBorder(clickedElement);
+      final_xpath = getXPath(clickedElement);
+  });
+  function getXPath(element) {
+      if (!element) return '';
+      var xpath = '';
+      var currentElement = element;
+      while (currentElement !== document.body) {
+          var tagName = currentElement.tagName.toLowerCase();
+          var index = getIndex(currentElement);
+          xpath = '/' + tagName + '[' + index + ']' + xpath;
+          currentElement = currentElement.parentElement;
+      }
+      xpath = '/html/body' + xpath;
+      return xpath;
+  }
+  function getIndex(element) {
+      var index = 1;
+      var sibling = element.previousSibling;
+      while (sibling) {
+          if (sibling.nodeType === Node.ELEMENT_NODE && sibling.tagName === element.tagName) {
+              index++;
+          }
+          sibling = sibling.previousSibling;
+      }
+      return index;
+  }
+}
 
 function handleDoDAOParentWindowEvent(event) {
   if (event.data.type === 'showTooltip') {
