@@ -20,8 +20,12 @@ import Link from 'next/link';
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
-const EventContainer = styled.div`
-  border: ${(props: { hasError: boolean }) => (props.hasError ? 'red solid 1px' : 'none')} !important;
+interface EventContainerProps {
+  hasError: boolean;
+}
+
+const EventContainer = styled.div<EventContainerProps>`
+  border: ${(props) => (props.hasError ? 'red solid 1px' : 'none')} !important;
 `;
 
 const AddEventButton = styled.button`
