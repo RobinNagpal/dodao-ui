@@ -1,14 +1,14 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import { ChildLayout } from '@/components/layout/ChildLayout';
+import { getSpaceServerSide } from '@dodao/web-core/api/auth/getSpaceServerSide';
 import { CssTheme, ThemeKey, themes } from '@dodao/web-core/src/components/app/themes';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { NotificationProvider } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { SpaceProvider } from '@dodao/web-core/ui/contexts/SpaceContext';
 import { getGTagId } from '@dodao/web-core/utils/analytics/getGTagId';
-import { getSpaceServerSide } from '@dodao/web-core/api/auth/getSpaceServerSide';
 import StyledComponentsRegistry from '@dodao/web-core/utils/StyledComponentsRegistry';
 import { Analytics } from '@vercel/analytics/react';
-import { AuthOptions, getServerSession } from 'next-auth';
+import { getServerSession } from 'next-auth';
 import Script from 'next/script';
 import { CSSProperties, ReactNode } from 'react';
 import 'tailwindcss/tailwind.css';
@@ -16,11 +16,6 @@ import './globals.scss';
 
 interface RootLayoutProps {
   children: ReactNode;
-}
-
-export interface CreateRootLayoutOptions {
-  authOptions: AuthOptions;
-  getChildLayout: (props: { session: Session | null; space: any; spaceError: boolean }) => ReactNode;
 }
 
 export default async function RootLayout({ children }: RootLayoutProps) {
