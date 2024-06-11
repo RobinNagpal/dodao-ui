@@ -1,9 +1,32 @@
 // Authorization function for crypto login
-import { prisma } from '@/prisma';
+import { PrismaClient } from '@prisma/client';
 import { ethers } from 'ethers';
 //  takes publicAdress and signature from credentials and returns
 //  either a user object on success or null on failure
 import { RequestInternal } from 'next-auth';
+
+export const prisma = new PrismaClient({
+  log: [
+    /*
+    {
+      emit: 'stdout',
+      level: 'query',
+    },
+    {
+      emit: 'stdout',
+      level: 'error',
+    },
+    {
+      emit: 'stdout',
+      level: 'info',
+    },
+    {
+      emit: 'stdout',
+      level: 'warn',
+    },
+*/
+  ],
+});
 
 export async function authorizeCrypto(
   credentials: Record<'publicAddress' | 'signedNonce' | 'spaceId', string> | undefined,

@@ -1,4 +1,4 @@
-import { authorizeCrypto } from '@/app/api/auth/[...nextauth]/authorizeCrypto';
+import { authorizeCrypto } from '@dodao/web-core/api/auth/authorizeCrypto';
 import { getAuthOptions } from '@dodao/web-core/api/auth/authOptions';
 import { createHash } from '@dodao/web-core/api/auth/createHash';
 import { DoDaoJwtTokenPayload, Session } from '@dodao/web-core/types/auth/Session';

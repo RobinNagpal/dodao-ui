@@ -1,4 +1,4 @@
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsFragment } from '@dodao/web-core/types/space';
 import { Session } from '@dodao/web-core/types/auth/Session';
 
 export interface InternalLayoutProps {
