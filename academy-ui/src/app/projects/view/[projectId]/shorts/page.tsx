@@ -1,7 +1,7 @@
 import ProjectShortVideosGrid from '@/components/projects/projectShortVideo/List/ProjectShortVideosGrid';
 import { ProjectFragment } from '@/graphql/generated/generated-types';
 import getApiResponse from '@/utils/api/getApiResponse';
-import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
+import { getSpaceServerSide } from '@dodao/web-core/api/auth/getSpaceServerSide';
 import React from 'react';
 
 async function ProjectHomePage(props: { params: { projectId: string; viewType: string }; searchParams: { [key: string]: string | string[] | undefined } }) {

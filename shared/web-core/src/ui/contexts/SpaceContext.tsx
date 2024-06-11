@@ -1,3 +1,5 @@
+'use client';
+
 // SpaceContext.tsx
 import { SpaceWithIntegrationsFragment } from '@dodao/web-core/types/space';
 import React, { createContext, useContext, useState } from 'react';

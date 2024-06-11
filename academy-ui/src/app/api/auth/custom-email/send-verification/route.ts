@@ -1,4 +1,4 @@
-import { createHash } from '@/app/api/auth/custom-email/send-verification/createHash';
+import { createHash } from '@dodao/web-core/api/auth/createHash';
 import { prisma } from '@/prisma';
 import { SES } from '@aws-sdk/client-ses';
 import { User } from 'next-auth/core/types';

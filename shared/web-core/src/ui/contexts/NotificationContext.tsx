@@ -1,3 +1,5 @@
+'use client';
+
 import { createContext, useContext, ReactNode, Context } from 'react';
 import useNotification, { UseNotificationType } from '@dodao/web-core/ui/hooks/useNotification';
 

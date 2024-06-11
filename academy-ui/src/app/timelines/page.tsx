@@ -2,7 +2,7 @@ import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import React from 'react';
 import TimelinesInformation from './TimelinesGrid.';
 import { Metadata } from 'next';
-import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
+import { getSpaceServerSide } from '@dodao/web-core/api/auth/getSpaceServerSide';
 
 export async function generateMetadata(): Promise<Metadata> {
   const space = (await getSpaceServerSide())!;

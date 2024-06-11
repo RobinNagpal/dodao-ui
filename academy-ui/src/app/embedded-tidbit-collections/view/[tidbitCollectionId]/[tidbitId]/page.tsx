@@ -1,6 +1,6 @@
 import ViewByteModal from '@/components/byteCollection/View/ViewByteModal';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
+import { getSpaceServerSide } from '@dodao/web-core/api/auth/getSpaceServerSide';
 import React from 'react';
 
 export default async function ByteDetails(props: { params: { tidbitCollectionId?: string; tidbitId?: string } }) {

@@ -1,7 +1,7 @@
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import CourseInformation from './CourseInformation';
 import { Metadata } from 'next';
-import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
+import { getSpaceServerSide } from '@dodao/web-core/api/auth/getSpaceServerSide';
 import getApiResponse from '@/utils/api/getApiResponse';
 import { CourseDetailsFragment } from '@/graphql/generated/generated-types';
 

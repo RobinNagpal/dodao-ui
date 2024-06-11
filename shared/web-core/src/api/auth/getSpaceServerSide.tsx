@@ -1,4 +1,4 @@
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsFragment } from '@dodao/web-core/types/space';
 import axios from 'axios';
 import { headers } from 'next/headers';
 

@@ -1,15 +1,18 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
+import { ChildLayout } from '@/components/layout/ChildLayout';
+import { getSpaceServerSide } from '@dodao/web-core/api/auth/getSpaceServerSide';
 import { CssTheme, ThemeKey, themes } from '@dodao/web-core/src/components/app/themes';
 import { Session } from '@dodao/web-core/types/auth/Session';
+import { NotificationProvider } from '@dodao/web-core/ui/contexts/NotificationContext';
+import { SpaceProvider } from '@dodao/web-core/ui/contexts/SpaceContext';
 import { getGTagId } from '@dodao/web-core/utils/analytics/getGTagId';
-import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
+import StyledComponentsRegistry from '@dodao/web-core/utils/StyledComponentsRegistry';
 import { Analytics } from '@vercel/analytics/react';
 import { getServerSession } from 'next-auth';
 import Script from 'next/script';
 import { CSSProperties, ReactNode } from 'react';
 import 'tailwindcss/tailwind.css';
 import './globals.scss';
-import InternalLayout from './InternalLayout';
 
 interface RootLayoutProps {
   children: ReactNode;
@@ -50,11 +53,15 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           });
         `}
         </Script>
-
-        <InternalLayout session={session as Session} space={space} spaceError={!space}>
-          {children}
-        </InternalLayout>
-
+        <StyledComponentsRegistry>
+          <SpaceProvider>
+            <NotificationProvider>
+              <ChildLayout session={session} space={space} spaceError={!space}>
+                {children}
+              </ChildLayout>
+            </NotificationProvider>
+          </SpaceProvider>
+        </StyledComponentsRegistry>
         <Analytics />
       </body>
     </html>
