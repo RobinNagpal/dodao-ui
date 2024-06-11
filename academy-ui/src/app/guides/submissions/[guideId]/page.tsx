@@ -1,6 +1,6 @@
 'use client';
 
-import withSpace from '@/app/withSpace';
+import withSpace from '@dodao/web-core/ui/auth/withSpace';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import GuideSubmissionsTable from '@/components/guides/Submissions/GuideSubmissionsTable';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';

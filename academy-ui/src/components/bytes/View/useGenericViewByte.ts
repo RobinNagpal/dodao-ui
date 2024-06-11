@@ -1,5 +1,5 @@
 import { checkIfQuestionIsComplete, checkIfUserInputIsComplete, updateItemValue } from '@/components/bytes/View/viewByteHelper';
-import { useNotificationContext } from '@/contexts/NotificationContext';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import {
   ByteDetailsFragment,
   ByteStepFragment,

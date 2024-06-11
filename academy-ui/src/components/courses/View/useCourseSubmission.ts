@@ -1,4 +1,4 @@
-import { useNotificationContext } from '@/contexts/NotificationContext';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import {
   CourseDetailsFragment,
   CourseSubmissionFragment,

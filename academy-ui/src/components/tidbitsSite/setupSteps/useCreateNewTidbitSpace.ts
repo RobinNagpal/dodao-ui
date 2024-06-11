@@ -1,4 +1,4 @@
-import { useNotificationContext } from '@/contexts/NotificationContext';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { Space, SpaceTypes, useCreateNewTidbitSpaceMutation, useGetSpaceFromCreatorQuery, useUpdateSpaceMutation } from '@/graphql/generated/generated-types';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';

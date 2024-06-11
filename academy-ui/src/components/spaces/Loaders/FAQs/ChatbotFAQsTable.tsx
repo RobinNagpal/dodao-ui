@@ -3,7 +3,7 @@ import Button from '@dodao/web-core/components/core/buttons/Button';
 import { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
 import { Table, TableRow } from '@dodao/web-core/components/core/table/Table';
 import UpsertChatbotFAQModal from '@/components/spaces/Loaders/FAQs/UpsertChatbotFAQModal';
-import { useNotificationContext } from '@/contexts/NotificationContext';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import {
   ChatbotFaqFragment,
   SpaceWithIntegrationsFragment,

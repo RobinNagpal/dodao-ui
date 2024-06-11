@@ -14,7 +14,7 @@ import Input from '@dodao/web-core/components/core/input/Input';
 import generateGuideContentPrompt from '@/components/guides/Edit/generateGuideContentPrompt';
 import generateQuestionsPrompt from '@/components/guides/Edit/generateQuestionsPrompt';
 import { UseEditGuideHelper } from '@/components/guides/Edit/useEditGuide';
-import { useNotificationContext } from '@/contexts/NotificationContext';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import {
   GuideFragment,
   GuideQuestion,

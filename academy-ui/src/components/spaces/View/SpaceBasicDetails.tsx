@@ -3,7 +3,7 @@ import DetailsHeader from '@dodao/web-core/components/core/details/DetailsHeader
 import DetailsSection from '@dodao/web-core/components/core/details/DetailsSection';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import UpsertSpaceBasicSettingsModal from '@/components/spaces/Edit/Basic/UpsertSpaceBasicSettingsModal';
-import { useNotificationContext } from '@/contexts/NotificationContext';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { Space, SpaceWithIntegrationsFragment, useReloadAcademyRepoMutation } from '@/graphql/generated/generated-types';
 import React from 'react';
 

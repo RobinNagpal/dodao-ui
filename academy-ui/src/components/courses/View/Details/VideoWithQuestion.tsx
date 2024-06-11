@@ -2,7 +2,7 @@ import Question from '@/components/app/Common/Question';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import { CourseSubmissionHelper, QuestionStatus } from '@/components/courses/View/useCourseSubmission';
 import CourseVideoContainer from '@/components/courses/View/Video/CourseVideoContainer';
-import { useNotificationContext } from '@/contexts/NotificationContext';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { CourseReadingFragment, CourseReadingQuestionFragment } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
 import { get } from 'lodash';

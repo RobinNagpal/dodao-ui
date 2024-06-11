@@ -1,6 +1,6 @@
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
-import { useNotificationContext } from '@/contexts/NotificationContext';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { SendEmailInput, useSendEmailMutation } from '@/graphql/generated/generated-types';
 import clsx from 'clsx';
 import { useState } from 'react';

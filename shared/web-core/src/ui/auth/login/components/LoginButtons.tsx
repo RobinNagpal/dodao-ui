@@ -1,10 +1,10 @@
 'use client';
 
-import EmailLoginModal from '@/app/login/components/EmailLoginModal';
-import withSpace from '@/app/withSpace';
+import { SpaceWithIntegrationsFragment } from '@dodao/web-core/types/space';
+import EmailLoginModal from '@dodao/web-core/ui/auth/login/components/EmailLoginModal';
+import withSpace from '@dodao/web-core/ui/auth/withSpace';
 import ButtonLarge from '@dodao/web-core/components/core/buttons/Button';
-import { SpaceTypes, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@dodao/web-core/ui/auth/useAuth';
 import { LoginProviders } from '@dodao/web-core/types/deprecated/models/enums';
 import React, { useEffect } from 'react';
 

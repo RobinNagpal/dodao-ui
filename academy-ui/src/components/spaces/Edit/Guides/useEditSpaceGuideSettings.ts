@@ -1,4 +1,4 @@
-import { useNotificationContext } from '@/contexts/NotificationContext';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { GuideSettings, SpaceWithIntegrationsFragment, useUpdateSpaceGuideSettingsMutation } from '@/graphql/generated/generated-types';
 import { useState } from 'react';
 

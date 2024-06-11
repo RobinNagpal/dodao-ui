@@ -1,6 +1,6 @@
 'use client';
 
-import withSpace, { SpaceProps } from '@/app/withSpace';
+import withSpace, { SpaceProps } from '@dodao/web-core/ui/auth/withSpace';
 import Block from '@dodao/web-core/components/app/Block';
 import RowLoading from '@dodao/web-core/components/core/loaders/RowLoading';
 import SimulationSummaryCard from '@/components/simulations/Simulations/SimulationSummaryCard';

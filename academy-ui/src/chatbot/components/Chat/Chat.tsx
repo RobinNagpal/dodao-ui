@@ -1,4 +1,4 @@
-import { SpaceProps } from '@/app/withSpace';
+import { SpaceProps } from '@dodao/web-core/ui/auth/withSpace';
 import { ChatInput } from '@/chatbot/components/Chat/ChatInput';
 import { ChatLoader } from '@/chatbot/components/Chat/ChatLoader';
 import { ErrorMessageDiv } from '@/chatbot/components/Chat/ErrorMessageDiv';

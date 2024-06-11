@@ -1,7 +1,7 @@
 'use client';
 
-import { coinbaseWallet } from '@/app/login/connectors/coinbaseWallet';
-import { metaMask } from '@/app/login/connectors/metaMask';
+import { coinbaseWallet } from '@dodao/web-core/ui/auth/login/connectors/coinbaseWallet';
+import { metaMask } from '@dodao/web-core/ui/auth/login/connectors/metaMask';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { LocalStorageKeys } from '@dodao/web-core/types/deprecated/models/enums';
 import { setDoDAOTokenInLocalStorage } from '@dodao/web-core/utils/auth/setDoDAOTokenInLocalStorage';

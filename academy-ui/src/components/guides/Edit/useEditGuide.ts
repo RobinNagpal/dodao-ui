@@ -1,5 +1,5 @@
 import { EditGuideType } from '@/components/guides/Edit/editGuideType';
-import { useNotificationContext } from '@/contexts/NotificationContext';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import {
   GuideInput,
   GuideQuestionFragment,

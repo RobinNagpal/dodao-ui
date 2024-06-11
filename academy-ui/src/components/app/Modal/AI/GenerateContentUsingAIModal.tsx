@@ -3,7 +3,7 @@ import ErrorWithAccentBorder from '@dodao/web-core/components/core/errors/ErrorW
 import Input from '@dodao/web-core/components/core/input/Input';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import TextareaAutosize from '@dodao/web-core/components/core/textarea/TextareaAutosize';
-import { useNotificationContext } from '@/contexts/NotificationContext';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { ChatCompletionRequestMessageRoleEnum, useAskChatCompletionAiMutation, useDownloadAndCleanContentMutation } from '@/graphql/generated/generated-types';
 import { sum } from 'lodash';
 

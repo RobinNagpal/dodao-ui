@@ -1,6 +1,6 @@
 'use client';
 
-import EmailLoginModal from '@/app/login/components/EmailLoginModal';
+import EmailLoginModal from '@dodao/web-core/ui/auth/login/components/EmailLoginModal';
 
 const EmailAuthPage = () => {
   return (

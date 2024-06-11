@@ -6,7 +6,7 @@ import { Session } from '@dodao/web-core/types/auth/Session';
 import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import ReCAPTCHA from 'react-google-recaptcha';
-import { useNotificationContext } from '@/contexts/NotificationContext';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { isEmpty } from 'lodash';
 
 interface LoginInformationProps {

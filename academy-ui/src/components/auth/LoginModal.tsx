@@ -1,11 +1,11 @@
 'use client';
 
 // LoginModal.tsx
-import { LoginButtons } from '@/app/login/components/LoginButtons';
+import { LoginButtons } from '@dodao/web-core/ui/auth/login/components/LoginButtons';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import SingleSectionModal from '@dodao/web-core/components/core/modals/SingleSectionModal';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import { useLoginModalContext } from '@/contexts/LoginModalContext';
+import { useLoginModalContext } from '@dodao/web-core/ui/contexts/LoginModalContext';
 import { useSession } from 'next-auth/react';
 import React, { useEffect } from 'react';
 

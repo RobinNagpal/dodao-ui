@@ -1,7 +1,7 @@
 import SectionLoader from '@dodao/web-core/components/core/loaders/SectionLoader';
 import { Table, TableRow } from '@dodao/web-core/components/core/table/Table';
 import { ManageSpaceSubviews } from '@/components/spaces/manageSpaceSubviews';
-import { useNotificationContext } from '@/contexts/NotificationContext';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { DiscordMessage, SpaceWithIntegrationsFragment, useDiscordMessagesQuery, useReFetchDiscordMessagesMutation } from '@/graphql/generated/generated-types';
 import moment from 'moment';
 import Link from 'next/link';

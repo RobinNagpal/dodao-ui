@@ -1,5 +1,5 @@
 import { emptySimulation } from '@/components/simulations/Edit/EmptySimulation';
-import { useNotificationContext } from '@/contexts/NotificationContext';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { SimulationStepInput, Space, UpsertSimulationInput, useSimulationDetailsQuery, useUpsertSimulationMutation } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
 import { StepError } from '@dodao/web-core/types/errors/error';

@@ -5,7 +5,7 @@ import LoginModal from '@/components/auth/LoginModal';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import TopNav from '@/components/main/TopNav/TopNav';
 import TopCryptoTopNav from '@/components/projects/Nav/TopCryptoTopNav';
-import { LoginModalProvider } from '@/contexts/LoginModalContext';
+import { LoginModalProvider } from '@dodao/web-core/ui/contexts/LoginModalContext';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import React, { ReactNode, useEffect, useState } from 'react';
 import styled from 'styled-components';

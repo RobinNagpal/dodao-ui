@@ -4,7 +4,7 @@ import Input from '@dodao/web-core/components/core/input/Input';
 import StyledSelect from '@dodao/web-core/components/core/select/StyledSelect';
 import { Table, TableRow } from '@dodao/web-core/components/core/table/Table';
 import TextareaAutosize from '@dodao/web-core/components/core/textarea/TextareaAutosize';
-import { useNotificationContext } from '@/contexts/NotificationContext';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { ChatCompletionRequestMessageRoleEnum, useAskChatCompletionAiMutation, useGenerateImageMutation } from '@/graphql/generated/generated-types';
 import React, { useEffect, useState } from 'react';
 

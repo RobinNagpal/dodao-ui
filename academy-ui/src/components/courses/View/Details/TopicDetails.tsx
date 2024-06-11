@@ -8,7 +8,7 @@ import { useEditCourseDetails } from '@/components/courses/Edit/useEditCourseDet
 import { useMoveCourseItem } from '@/components/courses/Edit/useMoveCourseItem';
 import { CourseSubmissionHelper } from '@/components/courses/View/useCourseSubmission';
 import { CourseHelper } from '@/components/courses/View/useViewCourse';
-import { useLoginModalContext } from '@/contexts/LoginModalContext';
+import { useLoginModalContext } from '@dodao/web-core/ui/contexts/LoginModalContext';
 import {
   CourseDetailsFragment,
   CourseTopicFragment,

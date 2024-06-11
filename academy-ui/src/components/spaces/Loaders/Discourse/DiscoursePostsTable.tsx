@@ -4,7 +4,7 @@ import { Table, TableRow } from '@dodao/web-core/components/core/table/Table';
 import AnnotateDiscoursePostModal from '@/components/spaces/Loaders/Discourse/AnnotateDiscoursePostModal';
 import UpdateSummaryDiscoursePostModal from '@/components/spaces/Loaders/Discourse/UpdateSummaryDiscoursePostModal';
 import { ChatbotSubView, ChatbotView, getChatbotSubviewUrl } from '@/components/spaces/manageSpaceSubviews';
-import { useNotificationContext } from '@/contexts/NotificationContext';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { DiscoursePost, SpaceWithIntegrationsFragment, useDiscoursePostsQuery, useIndexDiscoursePostMutation } from '@/graphql/generated/generated-types';
 import moment from 'moment/moment';
 import { useRouter } from 'next/navigation';

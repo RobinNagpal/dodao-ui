@@ -8,7 +8,7 @@ import { DesktopNavLink } from '@/components/main/TopNav/DesktopNavLink';
 import { DesktopProfileMenu } from '@/components/main/TopNav/DesktopProfileMenu';
 import { MobileNavLink } from '@/components/main/TopNav/MobileNavLink';
 import { MobileProfileMenu } from '@/components/main/TopNav/MobileProfileMenu';
-import { useLoginModalContext } from '@/contexts/LoginModalContext';
+import { useLoginModalContext } from '@dodao/web-core/ui/contexts/LoginModalContext';
 import { Space, SpaceTypes, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { FeatureItem, FeatureName } from '@dodao/web-core/types/features/spaceFeatures';

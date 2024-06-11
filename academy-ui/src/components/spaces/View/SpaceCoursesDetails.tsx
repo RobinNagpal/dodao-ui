@@ -1,7 +1,7 @@
 import UpsertRawCourseModal from '@/components/app/Modal/Course/UpsertRawCourseModal';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import { Table, TableActions, TableRow } from '@dodao/web-core/components/core/table/Table';
-import { useNotificationContext } from '@/contexts/NotificationContext';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import {
   RawGitCourse,
   Space,

@@ -3,10 +3,10 @@ import { useWeb3React, Web3ReactHooks, Web3ReactProvider } from '@web3-react/cor
 import type { MetaMask } from '@web3-react/metamask';
 import type { Network } from '@web3-react/network';
 
-import { coinbaseWallet, hooks as coinbaseWalletHooks } from '@/app/login/connectors/coinbaseWallet';
-import { hooks as metaMaskHooks, metaMask } from '@/app/login/connectors/metaMask';
-import { hooks as networkHooks, network } from '@/app/login/connectors/network';
-import { getName } from '@/app/login/utils';
+import { coinbaseWallet, hooks as coinbaseWalletHooks } from '@dodao/web-core/ui/auth/login/connectors/coinbaseWallet';
+import { hooks as metaMaskHooks, metaMask } from '@dodao/web-core/ui/auth/login/connectors/metaMask';
+import { hooks as networkHooks, network } from '@dodao/web-core/ui/auth/login/connectors/network';
+import { getName } from '@dodao/web-core/ui/auth/login/utils';
 
 const connectors: [MetaMask | CoinbaseWallet | Network, Web3ReactHooks][] = [
   [metaMask, metaMaskHooks],
