@@ -1,5 +1,3 @@
-import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
-import { ChildLayout } from '@/components/layout/ChildLayout';
 import { CssTheme, ThemeKey, themes } from '@dodao/web-core/src/components/app/themes';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { NotificationProvider } from '@dodao/web-core/ui/contexts/NotificationContext';
@@ -23,7 +21,7 @@ export interface CreateRootLayoutOptions {
   getChildLayout: (props: { session: Session | null; space: any; spaceError: boolean }) => ReactNode;
 }
 
-export default async function RootLayout({ children }: RootLayoutProps) {
+export default async function RootLayout({ children, authOptions, getChildLayout }: RootLayoutProps & CreateRootLayoutOptions) {
   const session = (await getServerSession(authOptions)) as Session | null;
   const space = await getSpaceServerSide();
   const gtag = getGTagId(space);
@@ -43,6 +41,8 @@ export default async function RootLayout({ children }: RootLayoutProps) {
     '--block-bg': themeValue.blockBg,
   } as CSSProperties;
 
+  const ChildLayout = getChildLayout({ session, space, spaceError: false });
+
   return (
     <html lang="en" className="h-full">
       <body className={'max-h-screen ' + theme} style={{ ...style, backgroundColor: 'var(--bg-color)' }}>
@@ -60,11 +60,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
         </Script>
         <StyledComponentsRegistry>
           <SpaceProvider>
-            <NotificationProvider>
-              <ChildLayout session={session} space={space} spaceError={!space}>
-                {children}
-              </ChildLayout>
-            </NotificationProvider>
+            <NotificationProvider>{getChildLayout({ session, space, spaceError: false })}</NotificationProvider>
           </SpaceProvider>
         </StyledComponentsRegistry>
         <Analytics />

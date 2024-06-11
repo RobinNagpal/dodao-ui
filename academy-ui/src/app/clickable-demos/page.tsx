@@ -3,7 +3,7 @@ import NoClickableDemos from '@/components/clickableDemos/ClickableDemos/NoClick
 import { Grid4Cols } from '@dodao/web-core/components/core/grids/Grid4Cols';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import React from 'react';
-import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
+import { getSpaceServerSide } from '@dodao/web-core/api/auth/getSpaceServerSide';
 import getApiResponse from '@/utils/api/getApiResponse';
 import { ClickableDemo } from '@/graphql/generated/generated-types';
 

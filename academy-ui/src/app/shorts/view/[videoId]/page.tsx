@@ -1,7 +1,7 @@
 import VideoModal from '@/app/shorts/view/[videoId]/VideoModal';
 import { ProjectShortVideo, ShortVideo } from '@/graphql/generated/generated-types';
 import getApiResponse from '@/utils/api/getApiResponse';
-import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
+import { getSpaceServerSide } from '@dodao/web-core/api/auth/getSpaceServerSide';
 import { Metadata } from 'next';
 import React from 'react';
 

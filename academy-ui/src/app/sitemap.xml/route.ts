@@ -1,5 +1,5 @@
 import { CourseDetailsFragment, CourseTopicFragment, GuideFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
-import { getSpaceBasedOnHostHeader } from '@/utils/api/getSpaceServerSide';
+import { getSpaceBasedOnHostHeader } from '@dodao/web-core/api/auth/getSpaceServerSide';
 import axios from 'axios';
 import { NextRequest, NextResponse } from 'next/server';
 import { SitemapStream, streamToPromise } from 'sitemap';

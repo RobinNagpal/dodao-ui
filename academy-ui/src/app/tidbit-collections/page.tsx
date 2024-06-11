@@ -4,7 +4,7 @@ import { TidbitSiteTabIds } from '@/components/home/TidbitsSite/TidbitSiteTabIds
 import TidbitsSiteTabs from '@/components/home/TidbitsSite/TidbitsSiteTabs';
 import { ByteCollectionFragment } from '@/graphql/generated/generated-types';
 import getApiResponse from '@/utils/api/getApiResponse';
-import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
+import { getSpaceServerSide } from '@dodao/web-core/api/auth/getSpaceServerSide';
 import React from 'react';
 
 async function TidbitCollections() {

@@ -1,7 +1,7 @@
 import ViewByteModal from '@/components/byteCollection/View/ViewByteModal';
 import { ProjectFragment } from '@/graphql/generated/generated-types';
 import getApiResponse from '@/utils/api/getApiResponse';
-import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
+import { getSpaceServerSide } from '@dodao/web-core/api/auth/getSpaceServerSide';
 import React from 'react';
 
 export default async function ByteDetails(props: { params: { projectId: string; tidbitCollectionId?: string; tidbitId?: string } }) {

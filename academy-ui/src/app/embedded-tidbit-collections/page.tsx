@@ -2,7 +2,7 @@ import ByteCollectionsGrid from '@/components/byteCollection/View/ByteCollection
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { ByteCollectionFragment } from '@/graphql/generated/generated-types';
 import getApiResponse from '@/utils/api/getApiResponse';
-import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
+import { getSpaceServerSide } from '@dodao/web-core/api/auth/getSpaceServerSide';
 import React from 'react';
 
 export default async function EmbeddedTidbitsPage() {

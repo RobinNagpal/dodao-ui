@@ -1,7 +1,7 @@
 import ViewProjectByte from '@/components/projects/View/ViewProjectByte';
 import { ProjectFragment } from '@/graphql/generated/generated-types';
 import getApiResponse from '@/utils/api/getApiResponse';
-import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
+import { getSpaceServerSide } from '@dodao/web-core/api/auth/getSpaceServerSide';
 
 export default async function EntityDetailsPage(props: { params: { projectId: string; viewType: string; tidbitIdAndStep: string[] } }) {
   const space = (await getSpaceServerSide())!;

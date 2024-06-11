@@ -3,7 +3,7 @@ import ListProjects from '@/components/projects/List/ListProjects';
 import { ProjectFragment } from '@/graphql/generated/generated-types';
 import { ProjectTypes } from '@dodao/web-core/types/deprecated/models/enums';
 import getApiResponse from '@/utils/api/getApiResponse';
-import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
+import { getSpaceServerSide } from '@dodao/web-core/api/auth/getSpaceServerSide';
 
 export default async function ProjectListPage(props: {
   params: {

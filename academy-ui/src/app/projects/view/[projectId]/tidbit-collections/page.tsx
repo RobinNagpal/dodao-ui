@@ -2,7 +2,7 @@ import ByteCollectionsGrid from '@/components/byteCollection/View/ByteCollection
 import PrivateArchivedToggle from '@/components/projects/List/PrivateArchivedToggle';
 import { ProjectByteCollectionFragment, ProjectFragment } from '@/graphql/generated/generated-types';
 import getApiResponse from '@/utils/api/getApiResponse';
-import { getSpaceServerSide } from '@/utils/api/getSpaceServerSide';
+import { getSpaceServerSide } from '@dodao/web-core/api/auth/getSpaceServerSide';
 import React from 'react';
 
 async function ProjectTidbitCollectionsPage(props: { params: { projectId: string }; searchParams: { [key: string]: string | string[] | undefined } }) {
