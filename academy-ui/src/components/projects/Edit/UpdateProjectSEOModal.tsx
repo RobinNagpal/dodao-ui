@@ -1,5 +1,5 @@
 import UpdateSEOModal from '@/components/app/Common/UpdateSEOModal';
-import { useNotificationContext } from '@/contexts/NotificationContext';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { Project, useProjectQuery, useUpdateSeoOfProjectMutation } from '@/graphql/generated/generated-types';
 import React from 'react';
 

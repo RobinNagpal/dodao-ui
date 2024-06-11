@@ -6,7 +6,7 @@ import SelectAIGeneratorModal from '@dodao/web-core/components/app/Markdown/Sele
 import GenerateContentUsingAIModal from '@/components/app/Modal/AI/GenerateContentUsingAIModal';
 import PhotoIcon from '@heroicons/react/24/solid/PhotoIcon';
 import RobotIconSolid from '@dodao/web-core/components/core/icons/RobotIconSolid';
-import { useNotificationContext } from '@/contexts/NotificationContext';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { ChatCompletionRequestMessageRoleEnum, ImageType, useAskChatCompletionAiMutation } from '@/graphql/generated/generated-types';
 import { PropsWithChildren } from '@dodao/web-core/types/PropsWithChildren';
 import MDEditor, { commands } from '@uiw/react-md-editor';

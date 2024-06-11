@@ -1,4 +1,4 @@
-import { useNotificationContext } from '@/contexts/NotificationContext';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { Space, UpsertTimelineEventInput, UpsertTimelineInput, useTimelineDetailsQuery, useUpsertTimelineMutation } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
 

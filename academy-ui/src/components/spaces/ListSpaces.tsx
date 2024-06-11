@@ -3,7 +3,7 @@ import Button from '@dodao/web-core/components/core/buttons/Button';
 import { Table, TableActions, TableRow } from '@dodao/web-core/components/core/table/Table';
 import UpsertSpaceBasicSettingsModal from '@/components/spaces/Edit/Basic/UpsertSpaceBasicSettingsModal';
 import { ManageSpaceSubviews } from '@/components/spaces/manageSpaceSubviews';
-import { useNotificationContext } from '@/contexts/NotificationContext';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { SpaceSummaryFragment, useDropPineconeNamespaceMutation, useSpacesQuery } from '@/graphql/generated/generated-types';
 import { useRouter } from 'next/navigation';
 import React, { useMemo, useState } from 'react';

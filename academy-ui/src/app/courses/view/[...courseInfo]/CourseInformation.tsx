@@ -1,6 +1,6 @@
 'use client';
 
-import withSpace from '@/app/withSpace';
+import withSpace from '@dodao/web-core/ui/auth/withSpace';
 import Block from '@dodao/web-core/components/app/Block';
 import DeleteCourseSubmissionModal from '@/components/app/Modal/Course/DeleteCourseSubmissionModal';
 import IconButton from '@dodao/web-core/components/core/buttons/IconButton';

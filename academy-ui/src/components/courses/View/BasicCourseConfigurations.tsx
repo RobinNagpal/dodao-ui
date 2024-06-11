@@ -1,6 +1,6 @@
 import UpsertRawCourseModal from '@/components/app/Modal/Course/UpsertRawCourseModal';
 import EllipsisDropdown from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
-import { useNotificationContext } from '@/contexts/NotificationContext';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import {
   SpaceWithIntegrationsFragment,
   useRawGitCourseQuery,

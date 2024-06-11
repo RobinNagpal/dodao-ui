@@ -4,7 +4,7 @@ import ErrorWithAccentBorder from '@dodao/web-core/components/core/errors/ErrorW
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import { NotificationProps } from '@dodao/web-core/components/core/notify/Notification';
 import TextareaAutosize from '@dodao/web-core/components/core/textarea/TextareaAutosize';
-import { useNotificationContext } from '@/contexts/NotificationContext';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { ChatCompletionRequestMessageRoleEnum, useAskChatCompletionAiMutation, useDownloadAndCleanContentMutation } from '@/graphql/generated/generated-types';
 import { sum } from 'lodash';
 

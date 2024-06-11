@@ -1,4 +1,4 @@
-import { useNotificationContext } from '@/contexts/NotificationContext';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { SpaceWithIntegrationsFragment, useUpdateTidbitsHomepageMutation, TidbitsHomepage } from '@/graphql/generated/generated-types';
 import { TidbitsHomepageError } from '@dodao/web-core/types/errors/error';
 import { useI18 } from '@/hooks/useI18';

@@ -2,8 +2,8 @@
 
 import ButtonLarge from '@dodao/web-core/components/core/buttons/Button';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import { useLoginModalContext } from '@/contexts/LoginModalContext';
-import { useAuth } from '@/hooks/useAuth';
+import { useLoginModalContext } from '@dodao/web-core/ui/contexts/LoginModalContext';
+import { useAuth } from '@dodao/web-core/ui/auth/useAuth';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { useSession } from 'next-auth/react';
 import React from 'react';

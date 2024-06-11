@@ -1,5 +1,5 @@
 // SpaceContext.tsx
-import { ExtendedSpaceByDomainQuery, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsFragment } from '@dodao/web-core/types/space';
 import React, { createContext, useContext, useState } from 'react';
 
 type Space = SpaceWithIntegrationsFragment;

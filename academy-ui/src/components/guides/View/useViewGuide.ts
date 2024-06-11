@@ -1,6 +1,6 @@
 import guideSubmissionCache from '@/components/guides/View/guideSubmissionCache';
 import { StepItemResponse, StepResponse, TempGuideSubmission } from '@/components/guides/View/TempGuideSubmission';
-import { useNotificationContext } from '@/contexts/NotificationContext';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import {
   GuideFragment,
   GuideStepFragment,

@@ -1,10 +1,10 @@
 'use client';
-import withSpace from '@/app/withSpace';
+import withSpace from '@dodao/web-core/ui/auth/withSpace';
 import Block from '@dodao/web-core/components/app/Block';
 import Input from '@dodao/web-core/components/core/input/Input';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import { useNotificationContext } from '@/contexts/NotificationContext';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { GitCourseInput, Space, SpaceWithIntegrationsFragment, useUpsertGitCourseMutation } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
 import SingleCardLayout from '@/layouts/SingleCardLayout';

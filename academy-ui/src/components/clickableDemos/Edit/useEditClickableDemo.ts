@@ -1,5 +1,5 @@
 import { emptyClickableDemo } from '@/components/clickableDemos/Edit/EmptyClickableDemo';
-import { useNotificationContext } from '@/contexts/NotificationContext';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import {
   ClickableDemoStepInput,
   Space,

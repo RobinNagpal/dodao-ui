@@ -3,7 +3,7 @@
 import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import UpsertProjectModal from '@/components/projects/Edit/UpsertProjectModal';
-import { useNotificationContext } from '@/contexts/NotificationContext';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { ProjectFragment, SpaceWithIntegrationsFragment, useUpdateArchivedStatusOfProjectMutation } from '@/graphql/generated/generated-types';
 import React, { useState } from 'react';
 import UpdateProjectSEOModal from '../Edit/UpdateProjectSEOModal';

@@ -19,6 +19,7 @@
     "@heroicons/react": "2.0.17",
     "@uiw/react-markdown-preview": "^4.1.13",
     "@uiw/react-md-editor": "^3.20.10",
+    "ethers": "^6.3.0",
     "react": "18.2.0",
     "react-datepicker": "^4.12.0",
     "react-dom": "18.2.0",

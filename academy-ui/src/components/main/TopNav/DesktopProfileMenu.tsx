@@ -1,7 +1,7 @@
 'use client';
 
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@dodao/web-core/ui/auth/useAuth';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { isSuperAdmin } from '@dodao/web-core/utils/auth/superAdmins';
 import classNames from '@dodao/web-core/utils/classNames';

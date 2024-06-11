@@ -4,8 +4,8 @@ import UserInput from '@dodao/web-core/components/app/Form/UserInput';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import ErrorWithAccentBorder from '@dodao/web-core/components/core/errors/ErrorWithAccentBorder';
 import { LAST_STEP_UUID, UseViewGuideHelper } from '@/components/guides/View/useViewGuide';
-import { useLoginModalContext } from '@/contexts/LoginModalContext';
-import { useNotificationContext } from '@/contexts/NotificationContext';
+import { useLoginModalContext } from '@dodao/web-core/ui/contexts/LoginModalContext';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import {
   GuideFragment,
   GuideQuestionFragment,

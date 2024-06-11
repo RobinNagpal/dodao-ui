@@ -5,8 +5,8 @@ import ByteStepperItemWarnings from '@/components/bytes/View/ByteStepperItemWarn
 import { QuestionSection } from '@/components/bytes/View/QuestionSection';
 import { LAST_STEP_UUID, UseGenericViewByteHelper } from '@/components/bytes/View/useGenericViewByte';
 import Button from '@dodao/web-core/components/core/buttons/Button';
-import { useLoginModalContext } from '@/contexts/LoginModalContext';
-import { useNotificationContext } from '@/contexts/NotificationContext';
+import { useLoginModalContext } from '@dodao/web-core/ui/contexts/LoginModalContext';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import {
   ByteDetailsFragment,
   ByteQuestionFragmentFragment,

@@ -1,6 +1,6 @@
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import WarningWithAccentBorder from '@dodao/web-core/components/core/warnings/WarningWithAccentBorder';
-import { useLoginModalContext } from '@/contexts/LoginModalContext';
+import { useLoginModalContext } from '@dodao/web-core/ui/contexts/LoginModalContext';
 import { CourseDetailsFragment, CourseTopicFragment } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
 import { CourseStatus } from '@dodao/web-core/types/deprecated/models/course/GitCourseTopicSubmission';

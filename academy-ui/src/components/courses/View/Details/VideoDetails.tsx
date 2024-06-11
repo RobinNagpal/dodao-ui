@@ -9,7 +9,7 @@ import { useMoveCourseItem } from '@/components/courses/Edit/useMoveCourseItem';
 import VideoWithQuestions from '@/components/courses/View/Details/VideoWithQuestion';
 import { CourseSubmissionHelper } from '@/components/courses/View/useCourseSubmission';
 import { CourseHelper } from '@/components/courses/View/useViewCourse';
-import { useLoginModalContext } from '@/contexts/LoginModalContext';
+import { useLoginModalContext } from '@dodao/web-core/ui/contexts/LoginModalContext';
 import {
   CourseDetailsFragment,
   CourseReadingFragment,

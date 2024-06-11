@@ -3,7 +3,7 @@ import SectionLoader from '@dodao/web-core/components/core/loaders/SectionLoader
 import { Table, TableRow } from '@dodao/web-core/components/core/table/Table';
 import TabsWithUnderline, { TabItem } from '@dodao/web-core/components/core/tabs/TabsWithUnderline';
 import DiscoursePostsTable from '@/components/spaces/Loaders/Discourse/DiscoursePostsTable';
-import { useNotificationContext } from '@/contexts/NotificationContext';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import {
   DiscourseIndexRunFragmentFragment,
   SpaceWithIntegrationsFragment,

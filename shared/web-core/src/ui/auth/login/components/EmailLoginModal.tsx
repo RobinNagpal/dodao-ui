@@ -1,6 +1,6 @@
 'use client';
 
-import withSpace, { SpaceProps } from '@/app/withSpace';
+import withSpace, { SpaceProps } from '@dodao/web-core/ui/auth/withSpace';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Input from '@dodao/web-core/components/core/input/Input';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';

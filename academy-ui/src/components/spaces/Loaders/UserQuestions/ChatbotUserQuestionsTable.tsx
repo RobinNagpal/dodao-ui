@@ -9,7 +9,7 @@ import {
   useDeleteChatbotUserQuestionMutation,
 } from '@/graphql/generated/generated-types';
 import React, { useState } from 'react';
-import { useNotificationContext } from '@/contexts/NotificationContext';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 
 function getUserQuestionsTable(faqs: ChatbotUserQuestionFragment[]): TableRow[] {
   return faqs.map((faq: ChatbotUserQuestionFragment): TableRow => {

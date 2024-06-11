@@ -1,5 +1,5 @@
 import { createContext, useContext, ReactNode, Context } from 'react';
-import useNotification, { UseNotificationType } from '../hooks/useNotification';
+import useNotification, { UseNotificationType } from '@dodao/web-core/ui/hooks/useNotification';
 
 interface NotificationProviderProps {
   children: ReactNode;

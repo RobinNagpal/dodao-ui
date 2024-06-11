@@ -8,7 +8,7 @@ import {
   UpdateByteFunctions,
 } from '@/components/bytes/Edit/editByteHelper';
 import { emptyProjectByte } from '@/components/projects/projectByte/Edit/EmptyProjectByte';
-import { useNotificationContext } from '@/contexts/NotificationContext';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { ProjectByteFragment, SpaceWithIntegrationsFragment, useProjectByteQuery, useUpsertProjectByteMutation } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
 import { ByteErrors } from '@dodao/web-core/types/errors/byteErrors';

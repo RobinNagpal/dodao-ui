@@ -1,7 +1,7 @@
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import { CourseSubmissionHelper, TopicItemStatus } from '@/components/courses/View/useCourseSubmission';
 import { CourseHelper } from '@/components/courses/View/useViewCourse';
-import { useLoginModalContext } from '@/contexts/LoginModalContext';
+import { useLoginModalContext } from '@dodao/web-core/ui/contexts/LoginModalContext';
 import { CourseDetailsFragment, Space } from '@/graphql/generated/generated-types';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';

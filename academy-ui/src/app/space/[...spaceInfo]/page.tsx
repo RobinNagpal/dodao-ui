@@ -1,7 +1,7 @@
 'use client';
 
 import SidebarLayout from '@/app/SidebarLayout';
-import WithSpace from '@/app/withSpace';
+import WithSpace from '@dodao/web-core/ui/auth/withSpace';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import GenerateImage from '@/components/spaces/Image/GenerateImage';
 import ListSpaces from '@/components/spaces/ListSpaces';

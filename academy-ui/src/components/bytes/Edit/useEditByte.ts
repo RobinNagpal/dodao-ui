@@ -6,7 +6,7 @@ import {
   KeyOfByteInput,
   UpdateByteFunctions,
 } from '@/components/bytes/Edit/editByteHelper';
-import { useNotificationContext } from '@/contexts/NotificationContext';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { ByteDetailsFragment, SpaceWithIntegrationsFragment, useQueryByteDetailsQuery, useUpsertByteMutation } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
 import { ByteErrors } from '@dodao/web-core/types/errors/byteErrors';

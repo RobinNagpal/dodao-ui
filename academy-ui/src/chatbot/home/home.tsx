@@ -1,6 +1,6 @@
 'use client';
 
-import withSpace, { SpaceProps } from '@/app/withSpace';
+import withSpace, { SpaceProps } from '@dodao/web-core/ui/auth/withSpace';
 import { Chat } from '@/chatbot/components/Chat/Chat';
 import { Chatbar } from '@/chatbot/components/Chatbar/Chatbar';
 import { Navbar } from '@/chatbot/components/Mobile/Navbar';

@@ -1,5 +1,5 @@
 import Notification from '@dodao/web-core/components/core/notify/Notification';
-import { useNotificationContext } from '@/contexts/NotificationContext';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 
 export const NotificationWrapper = () => {
   const { notification, hideNotification } = useNotificationContext();

@@ -14,7 +14,7 @@ import { ChatbotFAQsTable } from '@/components/spaces/Loaders/FAQs/ChatbotFAQsTa
 import { ChatbotUserQuestionsTable } from '@/components/spaces/Loaders/UserQuestions/ChatbotUserQuestionsTable';
 import WebsiteScrapedURLInfosTable from '@/components/spaces/Loaders/WebsiteScrape/WebsiteScrapedURLInfosTable';
 import { ChatbotSubView, ChatbotView, getChatbotSubviewUrl, ManageSpaceSubviews } from '@/components/spaces/manageSpaceSubviews';
-import { useNotificationContext } from '@/contexts/NotificationContext';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import {
   ArticleIndexingInfoFragment,
   SpaceWithIntegrationsFragment,

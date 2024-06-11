@@ -2,8 +2,8 @@
 import { ChildLayout } from '@/components/layout/ChildLayout';
 import { InternalLayoutProps } from '@/components/layout/InternalLayoutProps';
 
-import { NotificationProvider } from '@/contexts/NotificationContext';
-import { SpaceProvider } from '@/contexts/SpaceContext';
+import { NotificationProvider } from '@dodao/web-core/ui/contexts/NotificationContext';
+import { SpaceProvider } from '@dodao/web-core/ui/contexts/SpaceContext';
 import StyledComponentsRegistry from '@dodao/web-core/utils/StyledComponentsRegistry';
 import './globals.scss';
 

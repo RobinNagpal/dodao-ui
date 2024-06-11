@@ -1,6 +1,6 @@
 'use client';
 
-import withSpace from '@/app/withSpace';
+import withSpace from '@dodao/web-core/ui/auth/withSpace';
 import RatingsTable from '@/components/app/Rating/Table/RatingsTable';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { SpaceWithIntegrationsFragment, useConsolidatedGuideRatingQuery, useGuideQueryQuery, useGuideRatingsQuery } from '@/graphql/generated/generated-types';
