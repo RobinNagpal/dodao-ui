@@ -19,26 +19,13 @@ import FullPageLoader from "@dodao/web-core/components/core/loaders/FullPageLoad
 import TopNav from "@/components/main/TopNav/TopNav";
 import { LoginModalProvider } from "@dodao/web-core/ui/contexts/LoginModalContext";
 import { SpaceWithIntegrationsFragment } from "@dodao/web-core/types/space";
-import styled from "styled-components";
-
-const StyledMain = styled.main`
-  background-color: var(--bg-color);
-  color: var(--text-color);
-  min-height: calc(100vh - 64px);
-`;
+import styles from "./ChildLayout.module.scss";
 
 function PageTopNav(props: { space: SpaceWithIntegrationsFragment }) {
   return <TopNav space={props.space} />;
 }
 
 function PageFooter(props: { space: SpaceWithIntegrationsFragment }) {
-  //Checking if the url contains embedded-tidbit-collections
-  if (typeof window !== "undefined") {
-    const currentUrl = window.location.href;
-    if (currentUrl.includes("embedded-tidbit-collections")) {
-      return null;
-    }
-  }
   return <div>Footer</div>;
 }
 
@@ -92,7 +79,7 @@ export function ChildLayout({
           <LoginModalProvider>
             <LoginModal />
             <PageTopNav space={space!} />
-            <StyledMain>{children}</StyledMain>
+            <div className={styles.main}>{children}</div>
             <PageFooter space={space!} />
           </LoginModalProvider>
         </SessionProvider>

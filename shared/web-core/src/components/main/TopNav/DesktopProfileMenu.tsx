@@ -1,6 +1,6 @@
 'use client';
 
-import { SpaceWithIntegrationsFragment } from "@dodao/web-core/types/space";
+import { SpaceWithIntegrationsFragment } from '@dodao/web-core/types/space';
 import { useAuth } from '@dodao/web-core/ui/auth/useAuth';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { isSuperAdmin } from '@dodao/web-core/utils/auth/superAdmins';
@@ -10,6 +10,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Fragment } from 'react';
 import styled from 'styled-components';
+import styles from './DesktopProfileMenu.module.scss';
 
 interface ProfileMenuProps {
   session: Session;
@@ -59,11 +60,13 @@ export function DesktopProfileMenu({ session, space }: ProfileMenuProps) {
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <StyledMenuItems className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+        <Menu.Items
+          className={`${styles.menuItems} absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none`}
+        >
           {isSuperAdmin(session) && <ProfileMenuItem label="Your Profile" />}
           {isSuperAdmin(session) && <ProfileMenuItem label="Manage Space" href={'/space/manage'} />}
           <ProfileMenuItem label="Sign out" onClick={() => logout()} />
-        </StyledMenuItems>
+        </Menu.Items>
       </Transition>
     </Menu>
   );

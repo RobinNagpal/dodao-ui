@@ -2,11 +2,10 @@
 
 import ButtonLarge from "@dodao/web-core/components/core/buttons/Button";
 import FullPageModal from "@dodao/web-core/components/core/modals/FullPageModal";
-import CreateContentModalContents from "@/components/main/TopNav/CreateContentModalContents";
-import { DesktopNavLink } from "@/components/main/TopNav/DesktopNavLink";
-import { DesktopProfileMenu } from "@/components/main/TopNav/DesktopProfileMenu";
-import { MobileNavLink } from "@/components/main/TopNav/MobileNavLink";
-import { MobileProfileMenu } from "@/components/main/TopNav/MobileProfileMenu";
+import { DesktopNavLink } from "@dodao/web-core/components/main/TopNav/DesktopNavLink";
+import { DesktopProfileMenu } from "@dodao/web-core/components/main/TopNav/DesktopProfileMenu";
+import { MobileNavLink } from "@dodao/web-core/components/main/TopNav/MobileNavLink";
+import { MobileProfileMenu } from "@dodao/web-core/components/main/TopNav/MobileProfileMenu";
 import { useLoginModalContext } from "@dodao/web-core/ui/contexts/LoginModalContext";
 import { SpaceWithIntegrationsFragment } from "@dodao/web-core/types/space";
 import { Session } from "@dodao/web-core/types/auth/Session";
@@ -22,13 +21,8 @@ import XMarkIcon from "@heroicons/react/24/outline/XMarkIcon";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import React, { useState } from "react";
-import styled from "styled-components";
 import { useRouter } from "next/navigation";
-
-const StyledDiv = styled.div`
-  background-color: var(--bg-color);
-  color: var(--text-color);
-`;
+import styles from "./TopNav.module.scss";
 
 const sortedSpaceFeatures: FeatureItem[] = [
   {
@@ -243,18 +237,7 @@ export default function TopNav(props: {
   const superAdmin = !!(session && isSuperAdmin(session as Session));
 
   return (
-    <StyledDiv>
-      <FullPageModal
-        open={showCreateModal}
-        onClose={() => setShowCreateModal(false)}
-        title={"Create"}
-        showCloseButton={false}
-      >
-        <CreateContentModalContents
-          space={props.space}
-          hideModal={() => setShowCreateModal(false)}
-        />
-      </FullPageModal>
+    <div className={styles.main}>
       <Disclosure
         as="nav"
         className="shadow"
@@ -346,6 +329,6 @@ export default function TopNav(props: {
           </>
         )}
       </Disclosure>
-    </StyledDiv>
+    </div>
   );
 }
