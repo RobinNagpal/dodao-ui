@@ -2,8 +2,8 @@
 
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import CreateContentModalContents from '@/components/main/TopNav/CreateContentModalContents';
-import { DesktopNavLink } from '@/components/main/TopNav/DesktopNavLink';
-import { MobileNavLink } from '@/components/main/TopNav/MobileNavLink';
+import { DesktopNavLink } from '@dodao/web-core/components/main/TopNav/DesktopNavLink';
+import { MobileNavLink } from '@dodao/web-core/components/main/TopNav/MobileNavLink';
 import { Project, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { ProjectTypes } from '@dodao/web-core/types/deprecated/models/enums';
 import { FeatureItem, FeatureName } from '@dodao/web-core/types/features/spaceFeatures';
