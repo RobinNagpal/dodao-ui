@@ -1,4 +1,4 @@
-import { Space, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsFragment } from '@dodao/web-core/types/space';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { isSuperAdmin } from '@dodao/web-core/utils/auth/superAdmins';
 import { Disclosure } from '@headlessui/react';

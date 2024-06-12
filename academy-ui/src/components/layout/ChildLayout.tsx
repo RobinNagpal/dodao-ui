@@ -2,8 +2,8 @@
 
 import ErrorPage from '@dodao/web-core/components/app/ErrorPage';
 import { BasePage } from '@/components/layout/BasePage';
-import { InternalLayoutProps } from '@/components/layout/InternalLayoutProps';
-import { NotificationWrapper } from '@/components/layout/NotificationWrapper';
+import { InternalLayoutProps } from '@dodao/web-core/components/layout/InternalLayoutProps';
+import { NotificationWrapper } from '@dodao/web-core/components/layout/NotificationWrapper';
 import { useSpace } from '@dodao/web-core/ui/contexts/SpaceContext';
 import Web3ReactProviderWrapper from '@dodao/web-core/ui/contexts/Web3ReactContext';
 import { UserIdKey } from '@dodao/web-core/types/auth/User';

@@ -1,7 +1,7 @@
 'use client';
 
 import { PredefinedSpaces } from '@/chatbot/utils/app/constants';
-import LoginModal from '@/components/auth/LoginModal';
+import LoginModal from '@dodao/web-core/components/auth/LoginModal';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import TopNav from '@/components/main/TopNav/TopNav';
 import TopCryptoTopNav from '@/components/projects/Nav/TopCryptoTopNav';
