@@ -1,7 +1,5 @@
-import { PrismaClient } from "@prisma/client";
 import { getAuthOptions } from "@dodao/web-core/api/auth/authOptions";
 import { authorizeCrypto } from "@dodao/web-core/api/auth/authorizeCrypto";
-import { ChildLayout } from "./ChildLayout";
 import { getSpaceServerSide } from "@dodao/web-core/api/auth/getSpaceServerSide";
 import {
   CssTheme,
@@ -9,16 +7,20 @@ import {
   themes,
 } from "@dodao/web-core/src/components/app/themes";
 import { Session } from "@dodao/web-core/types/auth/Session";
+import { User } from "@dodao/web-core/types/auth/User";
 import { NotificationProvider } from "@dodao/web-core/ui/contexts/NotificationContext";
 import { SpaceProvider } from "@dodao/web-core/ui/contexts/SpaceContext";
 import { getGTagId } from "@dodao/web-core/utils/analytics/getGTagId";
 import StyledComponentsRegistry from "@dodao/web-core/utils/StyledComponentsRegistry";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import { PrismaClient } from "@prisma/client";
 import { Analytics } from "@vercel/analytics/react";
 import { getServerSession } from "next-auth";
 import Script from "next/script";
 import { CSSProperties, ReactNode } from "react";
 import "tailwindcss/tailwind.css";
 import "./globals.scss";
+import { ChildLayout } from "./ChildLayout";
 
 interface RootLayoutProps {
   children: ReactNode;
@@ -27,7 +29,27 @@ interface RootLayoutProps {
 export default async function RootLayout({ children }: RootLayoutProps) {
   const p = new PrismaClient();
   const session = (await getServerSession(
-    getAuthOptions(p, authorizeCrypto)
+    getAuthOptions(
+      {
+        user: {
+          findUnique: p.user.findUnique,
+          findFirst: p.user.findFirst,
+          upsert: p.user.upsert,
+        },
+        verificationToken: {
+          delete: p.verificationToken.delete,
+        },
+        adapter: {
+          ...PrismaAdapter(p),
+          getUserByEmail: async (email: string) => {
+            const user = (await p.user.findFirst({ where: { email } })) as User;
+            console.log("getUserByEmail", user);
+            return user as any;
+          },
+        },
+      },
+      authorizeCrypto
+    )
   )) as Session | null;
   const space = await getSpaceServerSide();
   const gtag = getGTagId(space);
