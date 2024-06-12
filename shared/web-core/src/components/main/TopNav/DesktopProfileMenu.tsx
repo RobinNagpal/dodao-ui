@@ -9,18 +9,12 @@ import { Menu, Transition } from '@headlessui/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Fragment } from 'react';
-import styled from 'styled-components';
 import styles from './DesktopProfileMenu.module.scss';
 
 interface ProfileMenuProps {
   session: Session;
   space: SpaceWithIntegrationsFragment;
 }
-
-const StyledMenuItems = styled(Menu.Items)`
-  background-color: var(--bg-color);
-  border: 1px solid var(--border-color);
-`;
 
 function ProfileMenuItem({ label, href, onClick }: { label: string; href?: string; onClick?: () => void }) {
   return (
