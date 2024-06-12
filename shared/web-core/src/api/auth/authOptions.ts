@@ -1,19 +1,39 @@
 import { createHash } from '@dodao/web-core/api/auth/createHash';
 import { DoDaoJwtTokenPayload, Session } from '@dodao/web-core/types/auth/Session';
 import { User } from '@dodao/web-core/types/auth/User';
-import { PrismaAdapter } from '@next-auth/prisma-adapter';
-import { PrismaClient } from '@prisma/client';
+import { VerificationToken } from '@dodao/web-core/types/auth/VerificationToken';
 import jwt from 'jsonwebtoken';
 import { AuthOptions, RequestInternal } from 'next-auth';
+import { Adapter } from 'next-auth/adapters';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import DiscordProvider from 'next-auth/providers/discord';
 import GoogleProvider from 'next-auth/providers/google';
 import TwitterProvider from 'next-auth/providers/twitter';
-import { PrismaUser } from './customPrismaAdapter';
+
+export type PrismaUserHelper = {
+  user: {
+    findUnique: (args: {
+      where: {
+        id?: string;
+        email_spaceId?: { email: string; spaceId: string };
+      };
+    }) => Promise<User | null>;
+    findFirst: (args: { where: { email: string } }) => Promise<any>;
+    upsert: (args: {
+      where: { publicAddress_spaceId: { publicAddress: string; spaceId: string } };
+      create: { publicAddress: string; username: string; name: string; authProvider: string; spaceId: string };
+      update: {};
+    }) => Promise<User>;
+  };
+  verificationToken: {
+    delete: (args: { where: { token: string } }) => Promise<VerificationToken | null>;
+  };
+  adapter: Adapter;
+};
 
 // Configure AWS SES
 export function getAuthOptions(
-  p: PrismaClient<any>,
+  p: PrismaUserHelper,
   authorizeCrypto: (
     credentials: Record<'publicAddress' | 'signedNonce' | 'spaceId', string> | undefined,
     req: Pick<RequestInternal, 'body' | 'headers' | 'method' | 'query'>
@@ -152,14 +172,7 @@ export function getAuthOptions(
         },
       }),
     ],
-    adapter: {
-      ...PrismaAdapter(p),
-      getUserByEmail: async (email: string) => {
-        const user = (await p.user.findFirst({ where: { email } })) as PrismaUser;
-        console.log('getUserByEmail', user);
-        return user;
-      },
-    },
+    adapter: p.adapter,
     callbacks: {
       async session(params): Promise<Session> {
         const { session, user, token } = params;

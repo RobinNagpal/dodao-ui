@@ -1,19 +1,32 @@
-import { authorizeCrypto } from '@dodao/web-core/api/auth/authorizeCrypto';
 import { getAuthOptions } from '@dodao/web-core/api/auth/authOptions';
-import { createHash } from '@dodao/web-core/api/auth/createHash';
-import { DoDaoJwtTokenPayload, Session } from '@dodao/web-core/types/auth/Session';
+import { authorizeCrypto } from '@dodao/web-core/api/auth/authorizeCrypto';
 import { User } from '@dodao/web-core/types/auth/User';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { PrismaClient } from '@prisma/client';
-import jwt from 'jsonwebtoken';
-import { AuthOptions, RequestInternal } from 'next-auth';
-import CredentialsProvider from 'next-auth/providers/credentials';
-import DiscordProvider from 'next-auth/providers/discord';
-import GoogleProvider from 'next-auth/providers/google';
-import TwitterProvider from 'next-auth/providers/twitter';
-import { PrismaUser } from '@dodao/web-core/api/auth/customPrismaAdapter';
+import { AuthOptions } from 'next-auth';
 
 const p = new PrismaClient();
 // Configure AWS SES
 
-export const authOptions: AuthOptions = getAuthOptions(p, authorizeCrypto);
+p.verificationToken;
+export const authOptions: AuthOptions = getAuthOptions(
+  {
+    user: {
+      findUnique: p.user.findUnique,
+      findFirst: p.user.findFirst,
+      upsert: p.user.upsert,
+    },
+    verificationToken: {
+      delete: p.verificationToken.delete,
+    },
+    adapter: {
+      ...PrismaAdapter(p),
+      getUserByEmail: async (email: string) => {
+        const user = (await p.user.findFirst({ where: { email } })) as User;
+        console.log('getUserByEmail', user);
+        return user as any;
+      },
+    },
+  },
+  authorizeCrypto
+);
