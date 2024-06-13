@@ -21,14 +21,26 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install dependencies
+      - name: Academy - Install dependencies
         run: cd academy-ui && yarn
 
-      - name: Run ESLint
+      - name: Academy - Run ESLint
         run: cd academy-ui && yarn lint
 
-      - name: Run Prettier
+      - name: Academy - Run Prettier
         run: cd academy-ui && yarn prettier-check
 
-      - name: TSC
+      - name: Academy - TSC
         run: cd academy-ui && yarn tsc
+
+      - name: Base UI - Install dependencies
+        run: cd base-ui && yarn
+
+      - name: Base UI - Run ESLint
+        run: cd base-ui && yarn lint
+
+      - name: Base UI - Run Prettier
+        run: cd base-ui && yarn prettier-check
+
+      - name: Base UI - TSC
+        run: cd base-ui && yarn tsc
