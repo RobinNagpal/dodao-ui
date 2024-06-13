@@ -1,6 +1,6 @@
-import { prisma } from "@/prisma";
-import crypto from "crypto";
-import { NextRequest, NextResponse } from "next/server";
+import { prisma } from '@/prisma';
+import crypto from 'crypto';
+import { NextRequest, NextResponse } from 'next/server';
 
 interface CryptoNonceResponse {
   nonce: string;
@@ -21,7 +21,7 @@ async function POST(req: NextRequest, res: NextResponse) {
   // Note: this nonce is displayed in the user's wallet for them to sign
   //  you can use any other representation of the nonce that you want
   //  but make sure to keep it a true random number with enough length.
-  const nonce = crypto.randomBytes(32).toString("hex");
+  const nonce = crypto.randomBytes(32).toString('hex');
 
   // Set the expiry of the nonce to 1 hour
   const expires = new Date(new Date().getTime() + 1000 * 60 * 60);
@@ -38,8 +38,8 @@ async function POST(req: NextRequest, res: NextResponse) {
           expires,
         },
       },
-      spaceId: spaceId || "dodao-eth-1",
-      authProvider: "crypto",
+      spaceId: spaceId || 'dodao-eth-1',
+      authProvider: 'crypto',
       username: publicAddress!,
     },
     update: {

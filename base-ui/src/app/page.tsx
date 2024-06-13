@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 async function Home() {
   return <div>Hello!!!</div>;
