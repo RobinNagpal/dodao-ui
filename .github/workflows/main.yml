@@ -33,6 +33,9 @@ jobs:
       - name: Academy - TSC
         run: cd academy-ui && yarn tsc
 
+      - name: Academy - NEXT Build
+        run: cd academy-ui && next build
+
       - name: Base UI - Install dependencies
         run: cd base-ui && yarn
 
@@ -44,3 +47,7 @@ jobs:
 
       - name: Base UI - TSC
         run: cd base-ui && yarn tsc
+
+      - name: BASE UI - NEXT Build
+        run: cd base-ui && next build
+
