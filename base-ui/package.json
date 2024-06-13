@@ -3,10 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "dev": "prisma generate && next dev",
+    "build": "prisma generate && next build",
+    "start": "prisma generate && next start",
+    "lint": "next lint",
+    "lint-fix": "eslint . --ext .ts,.js,.tsx --fix",
+    "prettier-fix": "prettier --config .prettierrc 'src/**/*.{js,ts,tsx,json}' --write",
+    "prettier-check": "prettier --check 'src/**/*.{js,ts,tsx,json}'",
+    "graphql:download": "graphql-codegen --config introspection.yml",
+    "graphql:generate": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
     "@dodao/web-core": "1.0.0",
