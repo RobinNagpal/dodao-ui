@@ -55,8 +55,6 @@
     "axios": "^1.6.7",
     "dayjs": "^1.11.7",
     "discord-oauth2": "^2.11.0",
-    "eslint": "8.39.0",
-    "eslint-config-next": "13.3.4",
     "ethereum-blockies-base64": "^1.0.2",
     "ethers": "^6.3.0",
     "eventsource-parser": "^1.0.0",
@@ -133,6 +131,8 @@
     "@types/uuid": "^9.0.1",
     "@types/youtube": "^0.0.47",
     "encoding": "^0.1.13",
+    "eslint": "8.39.0",
+    "eslint-config-next": "13.3.4",
     "prettier": "^2.8.8",
     "prisma": "^4.13.0"
   }

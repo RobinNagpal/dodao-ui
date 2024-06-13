@@ -1,25 +1,25 @@
-"use client";
+'use client';
 
-import ErrorPage from "@dodao/web-core/components/app/ErrorPage";
-import { InternalLayoutProps } from "@dodao/web-core/components/layout/InternalLayoutProps";
-import { NotificationWrapper } from "@dodao/web-core/components/layout/NotificationWrapper";
-import { useSpace } from "@dodao/web-core/ui/contexts/SpaceContext";
-import Web3ReactProviderWrapper from "@dodao/web-core/ui/contexts/Web3ReactContext";
-import { UserIdKey } from "@dodao/web-core/types/auth/User";
-import { getGTagId } from "@dodao/web-core/utils/analytics/getGTagId";
-import { useNavigationEvent } from "@dodao/web-core/utils/analytics/useNavigationEvent";
-import { getAuthenticatedApolloClient } from "@dodao/web-core/utils/apolloClient";
-import { setDoDAOTokenInLocalStorage } from "@dodao/web-core/utils/auth/setDoDAOTokenInLocalStorage";
-import { ApolloProvider } from "@apollo/client";
-import { SessionProvider } from "next-auth/react";
-import { useEffect, useMemo, ReactNode } from "react";
-import ReactGA from "react-ga4";
-import LoginModal from "@dodao/web-core/components/auth/LoginModal";
-import FullPageLoader from "@dodao/web-core/components/core/loaders/FullPageLoading";
-import TopNav from "@/components/main/TopNav/TopNav";
-import { LoginModalProvider } from "@dodao/web-core/ui/contexts/LoginModalContext";
-import { SpaceWithIntegrationsFragment } from "@dodao/web-core/types/space";
-import styles from "./ChildLayout.module.scss";
+import ErrorPage from '@dodao/web-core/components/app/ErrorPage';
+import { InternalLayoutProps } from '@dodao/web-core/components/layout/InternalLayoutProps';
+import { NotificationWrapper } from '@dodao/web-core/components/layout/NotificationWrapper';
+import { useSpace } from '@dodao/web-core/ui/contexts/SpaceContext';
+import Web3ReactProviderWrapper from '@dodao/web-core/ui/contexts/Web3ReactContext';
+import { UserIdKey } from '@dodao/web-core/types/auth/User';
+import { getGTagId } from '@dodao/web-core/utils/analytics/getGTagId';
+import { useNavigationEvent } from '@dodao/web-core/utils/analytics/useNavigationEvent';
+import { getAuthenticatedApolloClient } from '@dodao/web-core/utils/apolloClient';
+import { setDoDAOTokenInLocalStorage } from '@dodao/web-core/utils/auth/setDoDAOTokenInLocalStorage';
+import { ApolloProvider } from '@apollo/client';
+import { SessionProvider } from 'next-auth/react';
+import { useEffect, useMemo, ReactNode } from 'react';
+import ReactGA from 'react-ga4';
+import LoginModal from '@dodao/web-core/components/auth/LoginModal';
+import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
+import TopNav from '@/components/main/TopNav/TopNav';
+import { LoginModalProvider } from '@dodao/web-core/ui/contexts/LoginModalContext';
+import { SpaceWithIntegrationsFragment } from '@dodao/web-core/types/space';
+import styles from './ChildLayout.module.scss';
 
 function PageTopNav(props: { space: SpaceWithIntegrationsFragment }) {
   return <TopNav space={props.space} />;
@@ -29,16 +29,8 @@ function PageFooter(props: { space: SpaceWithIntegrationsFragment }) {
   return <div>Footer</div>;
 }
 
-export function ChildLayout({
-  children,
-  session,
-  space,
-  spaceError,
-}: InternalLayoutProps) {
-  const client = useMemo(
-    () => getAuthenticatedApolloClient(session),
-    [session]
-  );
+export function ChildLayout({ children, session, space, spaceError }: InternalLayoutProps) {
+  const client = useMemo(() => getAuthenticatedApolloClient(session), [session]);
 
   const { setSpace } = useSpace();
 
@@ -50,19 +42,19 @@ export function ChildLayout({
   }, [space]);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    if (typeof window !== 'undefined') {
       if (session?.userId) {
         localStorage.setItem(UserIdKey, session?.userId);
         setDoDAOTokenInLocalStorage(session);
       } else {
-        localStorage.setItem(UserIdKey, "anonymous");
+        localStorage.setItem(UserIdKey, 'anonymous');
       }
     }
   }, [session]);
 
   useNavigationEvent((url: string) => {
-    console.log("page_view", url);
-    ReactGA.event("page_view", {
+    console.log('page_view', url);
+    ReactGA.event('page_view', {
       page_title: url,
       page_location: url,
     });
