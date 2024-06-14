@@ -1,4 +1,4 @@
-import { SpaceWithIntegrationsFragment } from '@dodao/web-core/types/space';
+import { WebCoreSpace } from '@dodao/web-core/types/space';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { isSuperAdmin } from '@dodao/web-core/utils/auth/superAdmins';
 import { Disclosure } from '@headlessui/react';
@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 interface ProfileMenuProps {
   session: Session;
-  space: SpaceWithIntegrationsFragment;
+  space: WebCoreSpace;
 }
 
 function ProfileActionButton({ label, href }: { label: string; href?: string }) {

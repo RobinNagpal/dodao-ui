@@ -1,6 +1,6 @@
 'use client';
 
-import withSpace from '@dodao/web-core/ui/auth/withSpace';
+import withSpace from '@/contexts/withSpace';
 import EditByteView from '@/components/bytes/Edit/EditByteView';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';

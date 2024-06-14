@@ -2,7 +2,7 @@ import BytesGrid from '@/components/bytes/List/BytesGrid';
 import PrivateArchivedToggle from '@/components/projects/List/PrivateArchivedToggle';
 import { ProjectByteFragment, ProjectFragment } from '@/graphql/generated/generated-types';
 import getApiResponse from '@/utils/api/getApiResponse';
-import { getSpaceServerSide } from '@dodao/web-core/api/auth/getSpaceServerSide';
+import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
 import React from 'react';
 
 async function ProjectHomePage(props: { params: { projectId: string; viewType: string }; searchParams: { [key: string]: string | string[] | undefined } }) {

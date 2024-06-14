@@ -1,4 +1,4 @@
-import { SpaceProps } from '@dodao/web-core/ui/auth/withSpace';
+import { SpaceProps } from '@/contexts/withSpace';
 import Block from '@dodao/web-core/components/app/Block';
 import React from 'react';
 

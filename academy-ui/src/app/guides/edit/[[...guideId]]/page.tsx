@@ -1,7 +1,7 @@
 'use client';
 
 import BasicGuideSettings from '@/components/guides/Edit/BasicGuideSettings';
-import withSpace from '@dodao/web-core/ui/auth/withSpace';
+import withSpace from '@/contexts/withSpace';
 import PageLoading from '@dodao/web-core/components/core/loaders/PageLoading';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';

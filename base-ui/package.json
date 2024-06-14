@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "compile": "prisma generate && tsc",
     "dev": "prisma generate && next dev -p 3003",
     "build": "prisma generate && next build",
     "start": "prisma generate && next start -p 3003",
@@ -31,6 +32,7 @@
     "eslint-config-next": "13.3.4",
     "postcss": "8.4.35",
     "prisma": "^4.13.0",
-    "prettier": "^2.8.8"
+    "prettier": "^2.8.8",
+    "prisma-json-types-generator": "2.4.0"
   }
 }

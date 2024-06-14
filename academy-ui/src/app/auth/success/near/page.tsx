@@ -1,6 +1,6 @@
 'use client';
 
-import withSpace from '@dodao/web-core/ui/auth/withSpace';
+import withSpace from '@/contexts/withSpace';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { LocalStorageKeys } from '@dodao/web-core/types/deprecated/models/enums';

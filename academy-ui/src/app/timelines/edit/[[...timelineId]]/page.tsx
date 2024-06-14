@@ -2,7 +2,7 @@
 
 import { useEditTimeline } from '@/app/timelines/edit/[[...timelineId]]/useEditTimeline';
 
-import withSpace from '@dodao/web-core/ui/auth/withSpace';
+import withSpace from '@/contexts/withSpace';
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import IconButton from '@dodao/web-core/components/core/buttons/IconButton';

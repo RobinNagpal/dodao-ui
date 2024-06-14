@@ -1,11 +1,11 @@
 import { getAuthOptions } from '@dodao/web-core/api/auth/authOptions';
 import { authorizeCrypto } from '@dodao/web-core/api/auth/authorizeCrypto';
-import { getSpaceServerSide } from '@dodao/web-core/api/auth/getSpaceServerSide';
+import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
 import { CssTheme, ThemeKey, themes } from '@dodao/web-core/src/components/app/themes';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { User } from '@dodao/web-core/types/auth/User';
 import { NotificationProvider } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { SpaceProvider } from '@dodao/web-core/ui/contexts/SpaceContext';
+import { SpaceProvider } from '@/contexts/SpaceContext';
 import { getGTagId } from '@dodao/web-core/utils/analytics/getGTagId';
 import StyledComponentsRegistry from '@dodao/web-core/utils/StyledComponentsRegistry';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
@@ -50,8 +50,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
   const space = await getSpaceServerSide();
   const gtag = getGTagId(space);
 
-  const skin = space?.skin;
-  const theme: ThemeKey = space?.skin && Object.keys(CssTheme).includes(skin || '') ? (skin as CssTheme) : CssTheme.GlobalTheme;
+  const theme: ThemeKey = CssTheme.GlobalTheme;
 
   const themeValue = space?.themeColors || themes[theme];
 

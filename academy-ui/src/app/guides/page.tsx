@@ -6,7 +6,7 @@ import NoGuide from '@/components/guides/Summary/NoGuides';
 import { GuideSummaryFragment } from '@/graphql/generated/generated-types';
 import { PublishStatus } from '@dodao/web-core/types/deprecated/models/enums';
 import getApiResponse from '@/utils/api/getApiResponse';
-import { getSpaceServerSide } from '@dodao/web-core/api/auth/getSpaceServerSide';
+import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
 import sortBy from 'lodash/sortBy';
 import { Metadata } from 'next';
 import React from 'react';

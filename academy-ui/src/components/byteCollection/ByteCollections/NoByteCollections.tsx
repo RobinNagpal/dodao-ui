@@ -1,5 +1,5 @@
 import Block from '@dodao/web-core/components/app/Block';
-import { useSpace } from '@dodao/web-core/ui/contexts/SpaceContext';
+import { useSpace } from '@/contexts/SpaceContext';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import React from 'react';
 

@@ -1,4 +1,4 @@
-import { getSpaceServerSide } from '@dodao/web-core/api/auth/getSpaceServerSide';
+import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
 import GuideInformation from './GuideInformation';
 import type { Metadata } from 'next';
 import getApiResponse from '@/utils/api/getApiResponse';

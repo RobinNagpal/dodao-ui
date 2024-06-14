@@ -1,6 +1,6 @@
 'use client';
 
-import WithSpace from '@dodao/web-core/ui/auth/withSpace';
+import WithSpace from '@/contexts/withSpace';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import EditProjectByte from '@/components/projects/projectByte/Edit/EditProjectByte';

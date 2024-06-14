@@ -3,7 +3,7 @@ import BreadcrumbsWithChevrons, { BreadcrumbsOjbect } from '@dodao/web-core/comp
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { CategoryWithByteCollection } from '@/graphql/generated/generated-types';
 import getApiResponse from '@/utils/api/getApiResponse';
-import { getSpaceServerSide } from '@dodao/web-core/api/auth/getSpaceServerSide';
+import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
 import React from 'react';
 
 async function TidbitCollection(props: { params: { categoryId?: string } }) {

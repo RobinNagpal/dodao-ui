@@ -1,7 +1,7 @@
 'use client';
 
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
-import { useSpace } from '@dodao/web-core/ui/contexts/SpaceContext';
+import { useSpace } from '@/contexts/SpaceContext';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 
 export default function PageWithSpace({ children }: { children: (space: SpaceWithIntegrationsFragment) => JSX.Element }): JSX.Element {

@@ -46,7 +46,7 @@ jobs:
         run: cd base-ui && yarn prettier-check
 
       - name: Base UI - TSC
-        run: cd base-ui && yarn tsc
+        run: cd base-ui && yarn compile
 
       - name: BASE UI - NEXT Build
         run: cd base-ui && yarn build

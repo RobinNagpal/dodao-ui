@@ -1,6 +1,6 @@
 'use client';
 
-import withSpace, { SpaceProps } from '@dodao/web-core/ui/auth/withSpace';
+import withSpace, { SpaceProps } from '@/contexts/withSpace';
 import Block from '@dodao/web-core/components/app/Block';
 import RowLoading from '@dodao/web-core/components/core/loaders/RowLoading';
 import TimelineSummaryCard from '@/components/timelines/Timelines/TimelineSummaryCard';

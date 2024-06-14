@@ -1,11 +1,11 @@
 import ClickableDemosSummaryCard from '@/components/clickableDemos/ClickableDemos/ClickableDemosSummaryCard';
 import NoClickableDemos from '@/components/clickableDemos/ClickableDemos/NoClickableDemos';
+import { ClickableDemo } from '@/graphql/generated/generated-types';
+import getApiResponse from '@/utils/api/getApiResponse';
+import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
 import { Grid4Cols } from '@dodao/web-core/components/core/grids/Grid4Cols';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import React from 'react';
-import { getSpaceServerSide } from '@dodao/web-core/api/auth/getSpaceServerSide';
-import getApiResponse from '@/utils/api/getApiResponse';
-import { ClickableDemo } from '@/graphql/generated/generated-types';
 
 export default async function ClickableDemos() {
   const space = (await getSpaceServerSide())!;
