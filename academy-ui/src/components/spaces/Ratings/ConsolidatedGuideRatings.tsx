@@ -1,6 +1,6 @@
 'use client';
 
-import withSpace from '@dodao/web-core/ui/auth/withSpace';
+import withSpace from '@/contexts/withSpace';
 import styles from '@/components/app/Rating/Table/RatingsTable.module.scss';
 import { Grid2Cols } from '@dodao/web-core/components/core/grids/Grid2Cols';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';

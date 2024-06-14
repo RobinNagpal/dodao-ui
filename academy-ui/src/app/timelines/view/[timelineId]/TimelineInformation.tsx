@@ -1,6 +1,6 @@
 'use client';
 
-import withSpace from '@dodao/web-core/ui/auth/withSpace';
+import withSpace from '@/contexts/withSpace';
 import Block from '@dodao/web-core/components/app/Block';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';

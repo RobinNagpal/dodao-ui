@@ -61,7 +61,7 @@ export function BasePage(props: { space: SpaceWithIntegrationsFragment | null; c
   if (props.space?.id) {
     return (
       <LoginModalProvider>
-        <LoginModal />
+        <LoginModal space={props.space} />
         <PageTopNav space={props.space} />
         <StyledMain>{props.children}</StyledMain>
         <PageFooter space={props.space} />

@@ -1,6 +1,6 @@
 'use client';
 
-import WithSpace from '@dodao/web-core/ui/auth/withSpace';
+import WithSpace from '@/contexts/withSpace';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import EditProjectShortVideoView from '@/components/projects/projectShortVideo/Edit/EditProjectShortVideoView';

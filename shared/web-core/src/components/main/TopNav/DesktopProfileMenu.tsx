@@ -1,6 +1,6 @@
 'use client';
 
-import { SpaceWithIntegrationsFragment } from '@dodao/web-core/types/space';
+import { WebCoreSpace } from '@dodao/web-core/types/space';
 import { useAuth } from '@dodao/web-core/ui/auth/useAuth';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { isSuperAdmin } from '@dodao/web-core/utils/auth/superAdmins';
@@ -13,7 +13,7 @@ import styles from './DesktopProfileMenu.module.scss';
 
 interface ProfileMenuProps {
   session: Session;
-  space: SpaceWithIntegrationsFragment;
+  space: WebCoreSpace;
 }
 
 function ProfileMenuItem({ label, href, onClick }: { label: string; href?: string; onClick?: () => void }) {

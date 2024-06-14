@@ -1,6 +1,6 @@
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import TimelineInformation from './TimelineInformation';
-import { getSpaceServerSide } from '@dodao/web-core/api/auth/getSpaceServerSide';
+import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
 import getApiResponse from '@/utils/api/getApiResponse';
 import { TimelineDetailsFragment } from '@/graphql/generated/generated-types';
 import { Metadata } from 'next';

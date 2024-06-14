@@ -1,6 +1,6 @@
 'use client';
 
-import withSpace from '@dodao/web-core/ui/auth/withSpace';
+import withSpace from '@/contexts/withSpace';
 import ViewByteModal from '@/components/byteCollection/View/ViewByteModal';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import React from 'react';

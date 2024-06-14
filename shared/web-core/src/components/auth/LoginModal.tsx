@@ -1,5 +1,6 @@
 'use client';
 
+import { WebCoreSpace } from '@dodao/web-core/types/space';
 // LoginModal.tsx
 import { LoginButtons } from '@dodao/web-core/ui/auth/login/components/LoginButtons';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
@@ -9,7 +10,7 @@ import { useLoginModalContext } from '@dodao/web-core/ui/contexts/LoginModalCont
 import { useSession } from 'next-auth/react';
 import React, { useEffect } from 'react';
 
-const LoginModal: React.FC = () => {
+const LoginModal = ({ space }: { space: WebCoreSpace }) => {
   const { showLoginModal, setShowLoginModal } = useLoginModalContext();
   const { data } = useSession();
 
@@ -27,7 +28,7 @@ const LoginModal: React.FC = () => {
     <FullScreenModal open={showLoginModal} onClose={() => setShowLoginModal(false)} title={'Login'} showCloseButton={true}>
       <PageWrapper>
         <div className="flex justify-center items-center h-full">
-          <LoginButtons onCloseEmailModal={() => setShowLoginModal(false)} />
+          <LoginButtons space={space} onCloseEmailModal={() => setShowLoginModal(false)} />
         </div>
       </PageWrapper>
     </FullScreenModal>

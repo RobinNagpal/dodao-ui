@@ -7,7 +7,7 @@ import { DesktopProfileMenu } from '@dodao/web-core/components/main/TopNav/Deskt
 import { MobileNavLink } from '@dodao/web-core/components/main/TopNav/MobileNavLink';
 import { MobileProfileMenu } from '@dodao/web-core/components/main/TopNav/MobileProfileMenu';
 import { useLoginModalContext } from '@dodao/web-core/ui/contexts/LoginModalContext';
-import { SpaceWithIntegrationsFragment } from '@dodao/web-core/types/space';
+import { WebCoreSpace } from '@dodao/web-core/types/space';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { FeatureItem, FeatureName } from '@dodao/web-core/types/features/spaceFeatures';
 import { isSuperAdmin } from '@dodao/web-core/utils/auth/superAdmins';
@@ -52,7 +52,7 @@ const sortedSpaceFeatures: FeatureItem[] = [
   },
 ];
 
-function DesktopNavLinks({ space }: { space: SpaceWithIntegrationsFragment }) {
+function DesktopNavLinks({ space }: { space: WebCoreSpace }) {
   return (
     <div className="hidden md:ml-6 md:flex md:space-x-8">
       {sortedSpaceFeatures.map((feature) => {
@@ -95,7 +95,7 @@ function DesktopNavLinks({ space }: { space: SpaceWithIntegrationsFragment }) {
   );
 }
 
-function MobileNavLinks({ space }: { space: SpaceWithIntegrationsFragment }) {
+function MobileNavLinks({ space }: { space: WebCoreSpace }) {
   return (
     <div className="space-y-1 pb-3 pt-2">
       {sortedSpaceFeatures.map((feature) => {
@@ -137,7 +137,7 @@ function MobileNavLinks({ space }: { space: SpaceWithIntegrationsFragment }) {
 
 function CreateOrLoginButton(props: {
   session?: Session | undefined | null;
-  space: SpaceWithIntegrationsFragment | null | undefined;
+  space: WebCoreSpace | null | undefined;
   onClickCreate: () => void;
   onClickLogin: () => void;
 }) {
@@ -152,7 +152,7 @@ function CreateOrLoginButton(props: {
   );
 }
 
-export default function TopNav(props: { space?: SpaceWithIntegrationsFragment | null }) {
+export default function TopNav(props: { space?: WebCoreSpace | null }) {
   const { data: session } = useSession();
   const { setShowLoginModal } = useLoginModalContext();
   const [showCreateModal, setShowCreateModal] = useState(false);

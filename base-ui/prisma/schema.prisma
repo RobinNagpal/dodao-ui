@@ -5,6 +5,11 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator json {
+  provider  = "prisma-json-types-generator"
+  namespace = "PrismaJson"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -97,25 +102,15 @@ model Space {
   name             String   @db.VarChar(255)
   updatedAt        DateTime @updatedAt @map("updated_at")
   avatar           String?  @db.VarChar(255)
-  admins           String[]
-  adminUsernames   String[] @default(dbgenerated("(ARRAY[]::character varying[])::character varying(255)[]")) @map("admin_usernames") @db.VarChar(255)
   /// [UsernameAndName]
   adminUsernamesV1 Json[]   @map("admin_usernames_v1") @db.JsonB
   domains          String[] @default([])
-  skin             String   @default("dodao") @db.VarChar(128)
-  discordInvite    String?  @map("discord_invite") @db.VarChar(1024)
-  telegramInvite   String?  @map("telegram_invite") @db.VarChar(1024)
-  /// [SpaceInviteLinks]
-  inviteLinks      Json?    @map("invite_links") @db.Json
   /// [AuthSettings]
   authSettings     Json     @default("{}") @map("auth_settings") @db.Json
-  /// [SocialSettings]
-  socialSettings   Json     @default("{}") @map("social_settings") @db.Json
   features         String[]
-  botDomains       String[] @default([])
+
   /// [ThemeColors]
-  themeColors      Json?    @map("theme_colors") @db.Json
-  type             String   @default("ACADEMY_SITE") @db.VarChar(255)
+  themeColors Json? @map("theme_colors") @db.Json
 
   @@map("spaces")
 }

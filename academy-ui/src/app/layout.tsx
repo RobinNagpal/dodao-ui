@@ -1,10 +1,10 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import { ChildLayout } from '@/components/layout/ChildLayout';
-import { getSpaceServerSide } from '@dodao/web-core/api/auth/getSpaceServerSide';
+import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
 import { CssTheme, ThemeKey, themes } from '@dodao/web-core/src/components/app/themes';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { NotificationProvider } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { SpaceProvider } from '@dodao/web-core/ui/contexts/SpaceContext';
+import { SpaceProvider } from '@/contexts/SpaceContext';
 import { getGTagId } from '@dodao/web-core/utils/analytics/getGTagId';
 import StyledComponentsRegistry from '@dodao/web-core/utils/StyledComponentsRegistry';
 import { Analytics } from '@vercel/analytics/react';

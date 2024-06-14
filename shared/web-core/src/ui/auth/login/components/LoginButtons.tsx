@@ -1,14 +1,13 @@
 'use client';
 
-import { SpaceWithIntegrationsFragment } from '@dodao/web-core/types/space';
-import EmailLoginModal from '@dodao/web-core/ui/auth/login/components/EmailLoginModal';
-import withSpace from '@dodao/web-core/ui/auth/withSpace';
 import ButtonLarge from '@dodao/web-core/components/core/buttons/Button';
-import { useAuth } from '@dodao/web-core/ui/auth/useAuth';
 import { LoginProviders } from '@dodao/web-core/types/deprecated/models/enums';
+import { WebCoreSpace } from '@dodao/web-core/types/space';
+import EmailLoginModal from '@dodao/web-core/ui/auth/login/components/EmailLoginModal';
+import { useAuth } from '@dodao/web-core/ui/auth/useAuth';
 import React, { useEffect } from 'react';
 
-function LoginButtonsFunction(props: { space: SpaceWithIntegrationsFragment; onCloseEmailModal: () => void }) {
+function LoginButtonsFunction(props: { space: WebCoreSpace; onCloseEmailModal: () => void }) {
   const { space } = props;
   const {
     loginWithMetamask,
@@ -108,6 +107,7 @@ function LoginButtonsFunction(props: { space: SpaceWithIntegrationsFragment; onC
       ) : null}
       {showEmailModal && (
         <EmailLoginModal
+          space={space}
           open={showEmailModal}
           onClose={() => {
             setShowEmailModal(false);
@@ -119,4 +119,4 @@ function LoginButtonsFunction(props: { space: SpaceWithIntegrationsFragment; onC
   );
 }
 
-export const LoginButtons = withSpace(LoginButtonsFunction);
+export const LoginButtons = LoginButtonsFunction;

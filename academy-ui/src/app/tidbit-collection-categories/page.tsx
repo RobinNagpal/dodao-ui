@@ -5,7 +5,7 @@ import { TidbitSiteTabIds } from '@/components/home/TidbitsSite/TidbitSiteTabIds
 import TidbitsSiteTabs from '@/components/home/TidbitsSite/TidbitsSiteTabs';
 import { CategoryWithByteCollection } from '@/graphql/generated/generated-types';
 import getApiResponse from '@/utils/api/getApiResponse';
-import { getSpaceServerSide } from '@dodao/web-core/api/auth/getSpaceServerSide';
+import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import { getServerSession } from 'next-auth';
 import { Session } from '@dodao/web-core/types/auth/Session';

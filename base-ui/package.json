@@ -31,6 +31,7 @@
     "eslint-config-next": "13.3.4",
     "postcss": "8.4.35",
     "prisma": "^4.13.0",
-    "prettier": "^2.8.8"
+    "prettier": "^2.8.8",
+    "prisma-json-types-generator": "2.4.0"
   }
 }

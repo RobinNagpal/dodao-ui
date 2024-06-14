@@ -1,5 +1,5 @@
 'use client';
-import withSpace from '@dodao/web-core/ui/auth/withSpace';
+import withSpace from '@/contexts/withSpace';
 import Block from '@dodao/web-core/components/app/Block';
 import Input from '@dodao/web-core/components/core/input/Input';
 import Button from '@dodao/web-core/components/core/buttons/Button';

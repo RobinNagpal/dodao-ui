@@ -1,6 +1,6 @@
 'use client';
 
-import withSpace, { SpaceProps } from '@dodao/web-core/ui/auth/withSpace';
+import withSpace, { SpaceProps } from '@/contexts/withSpace';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import EditShortVideoView from '@/components/shortVideos/Edit/EditShortVideoView';
 import { useRouter } from 'next/navigation';

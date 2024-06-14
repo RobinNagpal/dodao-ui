@@ -1,6 +1,6 @@
-import { SpaceWithIntegrationsFragment } from '@dodao/web-core/types/space';
+import { useSpace } from '@/contexts/SpaceContext';
+import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
-import { useSpace } from '@dodao/web-core/ui/contexts/SpaceContext';
 import React, { FC } from 'react';
 
 export interface SpaceProps {

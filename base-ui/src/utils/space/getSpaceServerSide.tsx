@@ -1,4 +1,4 @@
-import { SpaceWithIntegrationsFragment } from '@dodao/web-core/types/space';
+import { Space } from '@prisma/client';
 import axios from 'axios';
 import { headers } from 'next/headers';
 
@@ -11,11 +11,11 @@ export async function getSpaceBasedOnHostHeader(reqHeaders: Headers) {
     },
   });
 
-  const space = response?.data as SpaceWithIntegrationsFragment;
+  const space = response?.data as Space;
   return response.status === 200 ? space : null;
 }
 
-export async function getSpaceServerSide(): Promise<SpaceWithIntegrationsFragment | null> {
+export async function getSpaceServerSide(): Promise<Space | null> {
   const reqHeaders = headers();
   return await getSpaceBasedOnHostHeader(reqHeaders);
 }

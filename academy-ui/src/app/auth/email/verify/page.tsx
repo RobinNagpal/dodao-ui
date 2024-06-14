@@ -1,6 +1,6 @@
 'use client';
 
-import withSpace, { SpaceProps } from '@dodao/web-core/ui/auth/withSpace';
+import withSpace, { SpaceProps } from '@/contexts/withSpace';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Session } from '@dodao/web-core/types/auth/Session';

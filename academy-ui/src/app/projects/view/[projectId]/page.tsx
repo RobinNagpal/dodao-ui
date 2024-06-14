@@ -1,7 +1,7 @@
 import ByteCollectionsGrid from '@/components/byteCollection/View/ByteCollectionsGrid';
 import { ProjectByteCollectionFragment, ProjectFragment } from '@/graphql/generated/generated-types';
 import getApiResponse from '@/utils/api/getApiResponse';
-import { getSpaceServerSide } from '@dodao/web-core/api/auth/getSpaceServerSide';
+import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
 import { Metadata } from 'next';
 import React from 'react';
 
