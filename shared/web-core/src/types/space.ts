@@ -27,5 +27,5 @@ export type WebCoreSpace = {
   domains: string[];
   adminUsernamesV1: UsernameAndName[];
   authSettings: AuthSettings;
-  themeColors: ThemeColors | null;
+  themeColors?: ThemeColors | null;
 };
