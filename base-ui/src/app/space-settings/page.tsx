@@ -16,9 +16,9 @@ import union from 'lodash/union';
 import { ThemeColors } from '@dodao/web-core/types/space';
 import React, { useEffect, useState, CSSProperties } from 'react';
 
-export type ThemeColorsKeys = 'bgColor' | 'blockBg' | 'borderColor' | 'headingColor' | 'linkColor' | 'primaryColor' | 'textColor';
+type ThemeColorsKeys = 'bgColor' | 'blockBg' | 'borderColor' | 'headingColor' | 'linkColor' | 'primaryColor' | 'textColor';
 
-export const ColorLabels: Record<ThemeColorsKeys, string> = {
+const ColorLabels: Record<ThemeColorsKeys, string> = {
   primaryColor: 'Primary Color',
   bgColor: 'Background Color',
   textColor: 'Text Color',
