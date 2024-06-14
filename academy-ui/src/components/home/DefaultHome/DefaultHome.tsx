@@ -1,6 +1,6 @@
 import { Grid2Cols } from '@dodao/web-core/components/core/grids/Grid2Cols';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import { GetStartedButton } from '@/components/home/common/GetStartedButton';
+import { GetStartedButton } from '@dodao/web-core/components/home/common/GetStartedButton';
 import { LottieAnimation } from './LottieAnimation';
 import HomeIcon from '@/components/main/HomeIcon';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
