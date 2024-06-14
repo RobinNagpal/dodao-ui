@@ -23,7 +23,7 @@ export type WebCoreSpace = {
   creator: string;
   features: string[];
   name: string;
-  avatar: string | null;
+  avatar?: string | null;
   domains: string[];
   adminUsernamesV1: UsernameAndName[];
   authSettings: AuthSettings;
