@@ -16,7 +16,7 @@ export const uniswapFeatures: FeatureItem[] = [
     },
   },
   {
-    featureName: FeatureName.Simulations,
+    featureName: FeatureName.ClickableDemos,
     enabled: true,
     details: {
       priority: 70,
