@@ -1,3 +1,5 @@
+import { Scalars, Maybe } from './scalars';
+
 export type SpaceWithIntegrationsFragment = {
   id: string;
   creator: string;
@@ -74,4 +76,40 @@ export type SpaceWithIntegrationsFragment = {
     heading: string;
     shortDescription: string;
   } | null;
+};
+
+export type UsernameAndName = {
+  nameOfTheUser: Scalars['String'];
+  username: Scalars['String'];
+};
+
+export type UsernameAndNameInput = {
+  nameOfTheUser: Scalars['String'];
+  username: Scalars['String'];
+};
+
+export interface SpaceInviteLinks {
+  discordInviteLink?: string | null;
+  showAnimatedButtonForDiscord?: boolean | null;
+  showAnimatedButtonForTelegram?: boolean | null;
+  telegramInviteLink?: string | null;
+}
+
+export type AuthSettings = {
+  enableLogin?: Maybe<Scalars['Boolean']>;
+  loginOptions?: Maybe<Array<Scalars['String']>>;
+};
+
+export type SocialSettings = {
+  linkedSharePdfBackgroundImage?: Maybe<Scalars['String']>;
+};
+
+export type ThemeColors = {
+  bgColor: Scalars['String'];
+  blockBg: Scalars['String'];
+  borderColor: Scalars['String'];
+  headingColor: Scalars['String'];
+  linkColor: Scalars['String'];
+  primaryColor: Scalars['String'];
+  textColor: Scalars['String'];
 };
