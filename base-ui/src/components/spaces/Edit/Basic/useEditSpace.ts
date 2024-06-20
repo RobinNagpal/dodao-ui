@@ -84,7 +84,7 @@ export default function useEditSpace(): UseEditSpaceHelper {
 
       if (response.ok) {
         showNotification({ type: 'success', message: 'Space upserted successfully' });
-        router.push('/'); // Redirect to the Home page
+        router.push('/homepage'); // Redirect to the Home page
       } else {
         showNotification({ type: 'error', message: 'Error while upserting space' });
       }

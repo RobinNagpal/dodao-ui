@@ -5,7 +5,7 @@ async function Home() {
   return (
     <div>
       <div className="mt-10 flex items-center justify-center gap-x-6">
-        <GetStartedButton href={`/space-settings`}>
+        <GetStartedButton href={`/space-settings/edit`}>
           Get started <span aria-hidden="true">→</span>
         </GetStartedButton>
       </div>

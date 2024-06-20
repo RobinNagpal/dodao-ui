@@ -4,17 +4,13 @@ import UpsertBadgeInput from '@dodao/web-core/components/core/badge/UpsertBadgeI
 import UpsertKeyValueBadgeInput from '@dodao/web-core/components/core/badge/UpsertKeyValueBadgeInput';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Input from '@dodao/web-core/components/core/input/Input';
-import StyledSelect from '@dodao/web-core/components/core/select/StyledSelect';
 import ToggleWithIcon from '@dodao/web-core/components/core/toggles/ToggleWithIcon';
 import Checkboxes from '@dodao/web-core/components/core/checkboxes/Checkboxes';
 import { LoginProviders } from '@dodao/web-core/types/deprecated/models/enums';
 import useEditSpace from '@/components/spaces/Edit/Basic/useEditSpace';
-import { WebCoreSpace } from '@dodao/web-core/types/space';
-import { slugify } from '@dodao/web-core/utils/auth/slugify';
-import { themeSelect } from '@dodao/web-core/utils/ui/statuses';
 import union from 'lodash/union';
 import { ThemeColors } from '@dodao/web-core/types/space';
-import React, { useEffect, useState, CSSProperties } from 'react';
+import React, { useState, CSSProperties } from 'react';
 
 type ThemeColorsKeys = 'bgColor' | 'blockBg' | 'borderColor' | 'headingColor' | 'linkColor' | 'primaryColor' | 'textColor';
 
@@ -30,7 +26,6 @@ const ColorLabels: Record<ThemeColorsKeys, string> = {
 
 export default function UpsertSpaceBasicSettingsModal() {
   const editSpaceHelper = useEditSpace();
-  const [uploadThumbnailLoading, setUploadThumbnailLoading] = useState(false);
 
   const { space, setSpaceField, setAuthSettingsField, upsertSpace, upserting } = editSpaceHelper;
   const theme: ThemeKey = CssTheme.GlobalTheme;
@@ -39,7 +34,6 @@ export default function UpsertSpaceBasicSettingsModal() {
   const handleColorChange = (colorKey: ThemeColorsKeys, colorValue: string) => {
     setThemeColors({ ...themeColors, [colorKey]: colorValue });
     setSpaceField('themeColors', themeColors);
-    // space.themeColors = themeColors;
   };
 
   const themeStyles = {
@@ -144,7 +138,7 @@ export default function UpsertSpaceBasicSettingsModal() {
           variant="contained"
           primary
           loading={upserting}
-          disabled={uploadThumbnailLoading || upserting}
+          disabled={upserting}
           onClick={async () => {
             await upsertSpace();
           }}
