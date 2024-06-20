@@ -30,11 +30,4 @@ export const compoundFeatures: FeatureItem[] = [
       priority: 60,
     },
   },
-  {
-    featureName: FeatureName.Chatbot,
-    enabled: true,
-    details: {
-      priority: 50,
-    },
-  },
 ];
