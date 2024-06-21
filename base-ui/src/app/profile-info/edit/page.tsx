@@ -13,7 +13,7 @@ export default function UpsertUserSettingsModal() {
 
   useEffect(() => {
     initialize();
-  }, [session]);
+  }, []);
 
   return (
     <div className="p-6">

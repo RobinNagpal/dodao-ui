@@ -60,7 +60,7 @@ export function DesktopProfileMenu({ session, space }: ProfileMenuProps) {
         >
           {isSuperAdmin(session) && <ProfileMenuItem label="Your Profile" />}
           {isSuperAdmin(session) && <ProfileMenuItem label="Manage Space" href={'/space/manage'} />}
-          {isAdmin(session, space) && <ProfileMenuItem label="Edit Space" href={'/space-settings'} />}
+          {isAdmin(session, space) && <ProfileMenuItem label="Edit Space" href={'/space-settings/edit'} />}
           {isAdmin(session, space) && <ProfileMenuItem label="Edit Profile" href={'/profile-info/edit'} />}
           <ProfileMenuItem label="Sign out" onClick={() => logout()} />
         </Menu.Items>

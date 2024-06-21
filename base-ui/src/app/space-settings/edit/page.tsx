@@ -10,7 +10,7 @@ import { LoginProviders } from '@dodao/web-core/types/deprecated/models/enums';
 import useEditSpace from '@/components/spaces/Edit/Basic/useEditSpace';
 import union from 'lodash/union';
 import { ThemeColors } from '@dodao/web-core/types/space';
-import React, { useState, CSSProperties } from 'react';
+import React, { useState, CSSProperties, useEffect } from 'react';
 
 type ThemeColorsKeys = 'bgColor' | 'blockBg' | 'borderColor' | 'headingColor' | 'linkColor' | 'primaryColor' | 'textColor';
 
@@ -27,14 +27,9 @@ const ColorLabels: Record<ThemeColorsKeys, string> = {
 export default function UpsertSpaceBasicSettingsModal() {
   const editSpaceHelper = useEditSpace();
 
-  const { space, setSpaceField, setAuthSettingsField, upsertSpace, upserting } = editSpaceHelper;
+  const { space, setSpaceField, setAuthSettingsField, upsertSpace, initialize, upserting } = editSpaceHelper;
   const theme: ThemeKey = CssTheme.GlobalTheme;
   const [themeColors, setThemeColors] = useState<ThemeColors>(space?.themeColors || themes[theme]);
-
-  const handleColorChange = (colorKey: ThemeColorsKeys, colorValue: string) => {
-    setThemeColors({ ...themeColors, [colorKey]: colorValue });
-    setSpaceField('themeColors', themeColors);
-  };
 
   const themeStyles = {
     '--primary-color': themeColors.primaryColor,
@@ -45,6 +40,15 @@ export default function UpsertSpaceBasicSettingsModal() {
     '--border-color': themeColors.borderColor,
     '--block-bg': themeColors.blockBg,
   } as CSSProperties;
+
+  useEffect(() => {
+    initialize();
+  }, []);
+
+  const handleColorChange = (colorKey: ThemeColorsKeys, colorValue: string) => {
+    setThemeColors({ ...themeColors, [colorKey]: colorValue });
+    setSpaceField('themeColors', { ...themeColors, [colorKey]: colorValue });
+  };
 
   return (
     <div className="p-6">

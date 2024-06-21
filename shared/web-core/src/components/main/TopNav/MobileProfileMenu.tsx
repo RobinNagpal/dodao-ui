@@ -1,6 +1,7 @@
 import { WebCoreSpace } from '@dodao/web-core/types/space';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { isSuperAdmin } from '@dodao/web-core/utils/auth/superAdmins';
+import { isAdmin } from '@dodao/web-core/utils/auth/isAdmin';
 import { Disclosure } from '@headlessui/react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -31,6 +32,8 @@ export function MobileProfileMenu({ session, space }: ProfileMenuProps) {
       <div className="mt-3 space-y-1">
         {isSuperAdmin(session) && <ProfileActionButton label="Your Profile" />}
         {isSuperAdmin(session) && <ProfileActionButton label="Manage Space" href={'/space/manage'} />}
+        {isAdmin(session, space) && <ProfileActionButton label="Edit Space" href={'/space-settings/edit'} />}
+        {isAdmin(session, space) && <ProfileActionButton label="Edit Profile" href={'/profile-info/edit'} />}
         <ProfileActionButton label="Sign out" />
       </div>
     </div>
