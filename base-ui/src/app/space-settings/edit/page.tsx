@@ -4,17 +4,13 @@ import UpsertBadgeInput from '@dodao/web-core/components/core/badge/UpsertBadgeI
 import UpsertKeyValueBadgeInput from '@dodao/web-core/components/core/badge/UpsertKeyValueBadgeInput';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Input from '@dodao/web-core/components/core/input/Input';
-import StyledSelect from '@dodao/web-core/components/core/select/StyledSelect';
 import ToggleWithIcon from '@dodao/web-core/components/core/toggles/ToggleWithIcon';
 import Checkboxes from '@dodao/web-core/components/core/checkboxes/Checkboxes';
 import { LoginProviders } from '@dodao/web-core/types/deprecated/models/enums';
 import useEditSpace from '@/components/spaces/Edit/Basic/useEditSpace';
-import { WebCoreSpace } from '@dodao/web-core/types/space';
-import { slugify } from '@dodao/web-core/utils/auth/slugify';
-import { themeSelect } from '@dodao/web-core/utils/ui/statuses';
 import union from 'lodash/union';
 import { ThemeColors } from '@dodao/web-core/types/space';
-import React, { useEffect, useState, CSSProperties } from 'react';
+import React, { useState, CSSProperties, useEffect } from 'react';
 
 type ThemeColorsKeys = 'bgColor' | 'blockBg' | 'borderColor' | 'headingColor' | 'linkColor' | 'primaryColor' | 'textColor';
 
@@ -30,17 +26,10 @@ const ColorLabels: Record<ThemeColorsKeys, string> = {
 
 export default function UpsertSpaceBasicSettingsModal() {
   const editSpaceHelper = useEditSpace();
-  const [uploadThumbnailLoading, setUploadThumbnailLoading] = useState(false);
 
-  const { space, setSpaceField, setAuthSettingsField, upsertSpace, upserting } = editSpaceHelper;
+  const { space, setSpaceField, setAuthSettingsField, upsertSpace, initialize, upserting } = editSpaceHelper;
   const theme: ThemeKey = CssTheme.GlobalTheme;
   const [themeColors, setThemeColors] = useState<ThemeColors>(space?.themeColors || themes[theme]);
-
-  const handleColorChange = (colorKey: ThemeColorsKeys, colorValue: string) => {
-    setThemeColors({ ...themeColors, [colorKey]: colorValue });
-    setSpaceField('themeColors', themeColors);
-    // space.themeColors = themeColors;
-  };
 
   const themeStyles = {
     '--primary-color': themeColors.primaryColor,
@@ -52,6 +41,15 @@ export default function UpsertSpaceBasicSettingsModal() {
     '--block-bg': themeColors.blockBg,
   } as CSSProperties;
 
+  useEffect(() => {
+    initialize();
+  }, []);
+
+  const handleColorChange = (colorKey: ThemeColorsKeys, colorValue: string) => {
+    setThemeColors({ ...themeColors, [colorKey]: colorValue });
+    setSpaceField('themeColors', { ...themeColors, [colorKey]: colorValue });
+  };
+
   return (
     <div className="p-6">
       <div className="space-y-12 text-left p-6">
@@ -59,7 +57,7 @@ export default function UpsertSpaceBasicSettingsModal() {
           <h2 className="font-semibold leading-7 text-3xl">Edit Space</h2>
           <p className="mt-1 text-sm leading-6">Update the details of Space</p>
 
-          <Input label="Id" modelValue={space?.id} onUpdate={(value) => setSpaceField('id', value?.toString() || '')} />
+          <Input label="Id" modelValue={space?.id} onUpdate={(value) => setSpaceField('id', value?.toString() || '')} disabled />
           <Input label="Name" modelValue={space?.name} onUpdate={(value) => setSpaceField('name', value?.toString() || '')} />
           <Input label="Creator" modelValue={space?.creator} onUpdate={(value) => setSpaceField('creator', value?.toString() || '')} />
 
@@ -144,7 +142,7 @@ export default function UpsertSpaceBasicSettingsModal() {
           variant="contained"
           primary
           loading={upserting}
-          disabled={uploadThumbnailLoading || upserting}
+          disabled={upserting}
           onClick={async () => {
             await upsertSpace();
           }}

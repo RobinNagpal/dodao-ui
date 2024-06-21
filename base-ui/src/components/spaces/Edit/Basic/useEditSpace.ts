@@ -1,10 +1,10 @@
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { Space } from '@prisma/client';
-import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { ThemeColors } from '@dodao/web-core/types/space';
 import { useRouter } from 'next/navigation';
-
 import { useState } from 'react';
+import { useSession } from 'next-auth/react';
+import { Session } from '@dodao/web-core/types/auth/Session';
 
 type adminUsernamesV1Type = {
   username: string;
@@ -33,12 +33,14 @@ export type UseEditSpaceHelper = {
   setAuthSettingsField: (field: keyof AuthSettingsType, value: any) => void;
   upsertSpace: () => Promise<void>;
   upserting: boolean;
+  initialize: () => Promise<void>;
 };
 
 export default function useEditSpace(): UseEditSpaceHelper {
   const { showNotification } = useNotificationContext();
+  const { data: session } = useSession() as { data: Session | null };
   const [space, setSpace] = useState<SpaceEditType>({
-    id: '',
+    id: session?.spaceId || '',
     adminUsernamesV1: [{ username: 'John', nameOfTheUser: 'Doe' }],
     avatar: '',
     creator: '',
@@ -59,6 +61,28 @@ export default function useEditSpace(): UseEditSpaceHelper {
   const [upserting, setUpserting] = useState(false);
   const router = useRouter();
 
+  async function initialize() {
+    if (session?.spaceId) {
+      try {
+        let response = await fetch(`/api/space/${session.spaceId}`, {
+          method: 'GET',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        if (response.ok) {
+          const spaceResponse = await response.json();
+          setSpace(spaceResponse.space);
+        }
+      } catch (error) {
+        console.error(error);
+        showNotification({ type: 'error', message: 'Error while getting user' });
+        throw error;
+      }
+    }
+  }
+
   function setSpaceField(field: keyof Space, value: any) {
     setSpace((prev: any) => ({ ...prev, [field]: value }));
   }
@@ -70,7 +94,7 @@ export default function useEditSpace(): UseEditSpaceHelper {
   async function upsertSpace() {
     setUpserting(true);
     try {
-      let response = await fetch(`/api/space/create`, {
+      let response = await fetch(`/api/space/upsert`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -78,13 +102,12 @@ export default function useEditSpace(): UseEditSpaceHelper {
         },
         body: JSON.stringify({
           ...space,
-          id: slugify(space.id),
         }),
       });
 
       if (response.ok) {
         showNotification({ type: 'success', message: 'Space upserted successfully' });
-        router.push('/'); // Redirect to the Home page
+        router.push('/homepage'); // Redirect to the Home page
       } else {
         showNotification({ type: 'error', message: 'Error while upserting space' });
       }
@@ -103,5 +126,6 @@ export default function useEditSpace(): UseEditSpaceHelper {
     setAuthSettingsField,
     upsertSpace,
     upserting,
+    initialize,
   };
 }

@@ -4,6 +4,7 @@ import { WebCoreSpace } from '@dodao/web-core/types/space';
 import { useAuth } from '@dodao/web-core/ui/auth/useAuth';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { isSuperAdmin } from '@dodao/web-core/utils/auth/superAdmins';
+import { isAdmin } from '@dodao/web-core/utils/auth/isAdmin';
 import classNames from '@dodao/web-core/utils/classNames';
 import { Menu, Transition } from '@headlessui/react';
 import Image from 'next/image';
@@ -59,6 +60,8 @@ export function DesktopProfileMenu({ session, space }: ProfileMenuProps) {
         >
           {isSuperAdmin(session) && <ProfileMenuItem label="Your Profile" />}
           {isSuperAdmin(session) && <ProfileMenuItem label="Manage Space" href={'/space/manage'} />}
+          {isAdmin(session, space) && <ProfileMenuItem label="Edit Space" href={'/space-settings/edit'} />}
+          {isAdmin(session, space) && <ProfileMenuItem label="Edit Profile" href={'/profile-info/edit'} />}
           <ProfileMenuItem label="Sign out" onClick={() => logout()} />
         </Menu.Items>
       </Transition>

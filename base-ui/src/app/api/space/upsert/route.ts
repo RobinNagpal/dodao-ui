@@ -20,8 +20,10 @@ export async function POST(req: Request) {
     themeColors: themeColors,
   };
 
-  const space = await prisma.space.create({
-    data: { ...spaceInput, themeColors },
+  const space = await prisma.space.upsert({
+    where: { id },
+    update: { ...spaceInput, themeColors },
+    create: { ...spaceInput, themeColors },
   });
 
   return NextResponse.json({ space }, { status: 200 });
