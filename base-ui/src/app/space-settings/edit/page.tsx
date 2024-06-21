@@ -57,7 +57,7 @@ export default function UpsertSpaceBasicSettingsModal() {
           <h2 className="font-semibold leading-7 text-3xl">Edit Space</h2>
           <p className="mt-1 text-sm leading-6">Update the details of Space</p>
 
-          <Input label="Id" modelValue={space?.id} onUpdate={(value) => setSpaceField('id', value?.toString() || '')} />
+          <Input label="Id" modelValue={space?.id} onUpdate={(value) => setSpaceField('id', value?.toString() || '')} disabled />
           <Input label="Name" modelValue={space?.name} onUpdate={(value) => setSpaceField('name', value?.toString() || '')} />
           <Input label="Creator" modelValue={space?.creator} onUpdate={(value) => setSpaceField('creator', value?.toString() || '')} />
 

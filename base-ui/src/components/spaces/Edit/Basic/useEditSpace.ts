@@ -3,6 +3,8 @@ import { Space } from '@prisma/client';
 import { ThemeColors } from '@dodao/web-core/types/space';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { useSession } from 'next-auth/react';
+import { Session } from '@dodao/web-core/types/auth/Session';
 
 type adminUsernamesV1Type = {
   username: string;
@@ -36,8 +38,9 @@ export type UseEditSpaceHelper = {
 
 export default function useEditSpace(): UseEditSpaceHelper {
   const { showNotification } = useNotificationContext();
+  const { data: session } = useSession() as { data: Session | null };
   const [space, setSpace] = useState<SpaceEditType>({
-    id: '',
+    id: session?.spaceId || '',
     adminUsernamesV1: [{ username: 'John', nameOfTheUser: 'Doe' }],
     avatar: '',
     creator: '',
@@ -59,11 +62,9 @@ export default function useEditSpace(): UseEditSpaceHelper {
   const router = useRouter();
 
   async function initialize() {
-    const spaceId = sessionStorage.getItem('spaceId');
-
-    if (spaceId) {
+    if (session?.spaceId) {
       try {
-        let response = await fetch(`/api/space/${spaceId}`, {
+        let response = await fetch(`/api/space/${session.spaceId}`, {
           method: 'GET',
           credentials: 'include',
           headers: {
@@ -105,7 +106,6 @@ export default function useEditSpace(): UseEditSpaceHelper {
       });
 
       if (response.ok) {
-        sessionStorage.setItem('spaceId', space.id);
         showNotification({ type: 'success', message: 'Space upserted successfully' });
         router.push('/homepage'); // Redirect to the Home page
       } else {
