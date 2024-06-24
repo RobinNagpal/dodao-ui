@@ -83,8 +83,10 @@ This setup ensures that all new projects start with a solid foundation, adhering
     ```bash
     yarn install
     ```
-
-3. Navigate to a specific project and start the development server:
+3. Migrate prisma database using Yarn:
+```yarn prisma migrate dev
+```
+4. Navigate to a specific project and start the development server:
     ```bash
     cd academy-ui
     yarn dev
