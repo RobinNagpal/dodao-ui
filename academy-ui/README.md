@@ -132,4 +132,3 @@ Create a new key `DODAO_SUPERADMINS` and set its value to your own MetaMask key 
 
 For example: `DODAO_SUPERADMINS = 0x0000000000000000000000000000000000000000,johndoe@gmail.com`
 
-.
