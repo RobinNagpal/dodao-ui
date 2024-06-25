@@ -60,11 +60,17 @@ export default function EditByteView(props: { space: SpaceWithIntegrationsFragme
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const [deleteByteMutation] = useDeleteByteMutation();
+  //video upload button
+  const [videoUrl, setVideoUrl] = useState(byte.videoUrl);
 
+  const handleFileChange = () => {
+    console.log("Handle video upload");
+    
+  };
   return (
     <PageWrapper>
       <SingleCardLayout>
-        <div className="px-4 mb-4 md:px-0 flex justify-between">
+        <div className="px-4 md:px-0 flex justify-end">
           <div>
             {!byteId && <Button onClick={() => setShowAIGenerateModel(true)}>Create with AI</Button>}
             <AddByteQuestionsUsingAIButton
@@ -89,8 +95,8 @@ export default function EditByteView(props: { space: SpaceWithIntegrationsFragme
 
         {byteLoaded ? (
           <div className="pb-10">
-            <Block title="Basic Info" className="mt-4">
-              <div className="mb-2">
+            <Block title="Basic Info" >
+              <div className="mb-8">
                 <Input modelValue={byte.name} error={inputError('name')} maxLength={32} onUpdate={(e) => updateByteFunctions.updateByteField('name', e)}>
                   Name *
                 </Input>
@@ -113,21 +119,31 @@ export default function EditByteView(props: { space: SpaceWithIntegrationsFragme
                   onUpdate={(e) => updateByteFunctions.updateByteField('admins', e)}
                 />
 
-                <Input
-                  modelValue={byte.videoUrl}
-                  placeholder="byte.create.videoURL"
-                  maxLength={1024}
-                  onUpdate={(e) => updateByteFunctions.updateByteField('videoUrl', e)}
-                >
-                  Video URL
-                </Input>
-
-                <StyledSelect
-                  label="Video Aspect Ratio"
-                  selectedItemId={byte.videoAspectRatio}
-                  items={videoAspectRatioStyleSelect}
-                  setSelectedItemId={(e) => updateByteFunctions.updateByteField('videoAspectRatio', e)}
-                />
+<div className="flex items-center justify-between">
+      <Input
+        modelValue={videoUrl}
+        placeholder="byte.create.videoURL"
+        maxLength={1024}
+       
+        className="flex-1 mr-2" 
+      >
+        Video URL
+      </Input>
+      <button
+  type="button"
+  className="px-2 sm:px-4 mt-9 py-2 sm:py-2 bg-blue-600 text-white rounded h-9"
+ 
+>
+  Upload from computer
+</button>
+      <input
+        type="file"
+        id="videoUpload"
+        className="hidden"
+        accept="video/*"
+        onChange={handleFileChange}
+      />
+    </div>
 
                 <TextareaArray
                   label="Tags"

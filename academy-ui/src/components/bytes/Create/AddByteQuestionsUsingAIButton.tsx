@@ -79,7 +79,7 @@ export default function AddByteQuestionsUsingAIButton(props: AddByteQuestionsUsi
     setLoading(false);
   };
   return (
-    <Button loading={loading} disabled={loading || props.byte.steps.length < 3} onClick={() => generateQuestionSteps()} className="ml-2">
+    <Button loading={loading} disabled={loading || props.byte.steps.length < 3} onClick={() => generateQuestionSteps()} >
       Add Questions with AI
     </Button>
   );

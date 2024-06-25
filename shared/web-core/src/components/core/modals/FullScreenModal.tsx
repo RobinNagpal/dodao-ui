@@ -17,6 +17,9 @@ const StyledModalWrapper = styled.div`
   background-color: var(--bg-color);
 `;
 export default function FullScreenModal({ open, title, children, onClose, showCloseButton = true }: SingleSectionModalProps) {
+
+
+  
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={onClose}>
