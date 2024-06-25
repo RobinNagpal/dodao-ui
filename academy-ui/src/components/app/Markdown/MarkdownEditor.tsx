@@ -46,8 +46,8 @@ const MainDiv = styled.div`
         font-size: 16px;
         svg {
           color: var(--text-color);
-          width: 20px;
-          height: 20px;
+          width: 16px;
+          height: 16px;
         }
       }
       font-size: 16px;
