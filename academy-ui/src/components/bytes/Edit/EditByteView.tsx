@@ -115,7 +115,7 @@ export default function EditByteView(props: { space: SpaceWithIntegrationsFragme
 
                 <Input
                   modelValue={byte.videoUrl}
-                  placeholder="byte.create.videoURL"
+                  placeholder="Video URL for the Byte"
                   maxLength={1024}
                   onUpdate={(e) => updateByteFunctions.updateByteField('videoUrl', e)}
                 >
