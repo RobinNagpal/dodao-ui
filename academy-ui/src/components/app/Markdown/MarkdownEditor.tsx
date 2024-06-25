@@ -46,8 +46,8 @@ const MainDiv = styled.div`
         font-size: 16px;
         svg {
           color: var(--text-color);
-          width: 20px;
-          height: 20px;
+          width: 16px;
+          height: 16px;
         }
       }
       font-size: 16px;
@@ -193,9 +193,9 @@ function MarkdownEditor({
           className={'w-full ' + editorClass}
           preview={'edit'}
           commands={[
-            { ...commands.title1, icon: <div style={{ fontSize: 24, textAlign: 'left' }}>H1</div> },
-            { ...commands.title2, icon: <div style={{ fontSize: 24, textAlign: 'left' }}>H2</div> },
-            { ...commands.title3, icon: <div style={{ fontSize: 24, textAlign: 'left' }}>H3</div> },
+            { ...commands.title1, icon: <div style={{ fontSize: 20, textAlign: 'left' }}>H1</div> },
+            { ...commands.title2, icon: <div style={{ fontSize: 20, textAlign: 'left' }}>H2</div> },
+            { ...commands.title3, icon: <div style={{ fontSize: 20, textAlign: 'left' }}>H3</div> },
             commands.divider,
             commands.bold,
             commands.italic,
