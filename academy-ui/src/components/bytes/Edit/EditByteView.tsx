@@ -145,6 +145,8 @@ export default function EditByteView(props: { space: SpaceWithIntegrationsFragme
       />
     </div>
 
+           
+
                 <TextareaArray
                   label="Tags"
                   id="tags"
