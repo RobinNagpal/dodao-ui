@@ -43,14 +43,14 @@ const MainDiv = styled.div`
     border-color: var(--block-bg);
     li {
       button {
-        font-size: 16px;
+        height: 24px;
         svg {
           color: var(--text-color);
           width: 16px;
           height: 16px;
         }
       }
-      font-size: 16px;
+      height: 24px;
     }
   }
 
