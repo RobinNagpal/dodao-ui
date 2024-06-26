@@ -198,7 +198,7 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space, set
             {stepItems.map((stepItem: ByteStepItemFragment, index) => {
               if (isQuestion(stepItem)) {
                 return (
-                  <div className="border-2 rounded-lg p-4 border-transparent ">
+                  <div key={index} className="border-2 rounded-lg p-4 border-transparent ">
                     <QuestionSection
                       key={index}
                       nextButtonClicked={nextButtonClicked}
