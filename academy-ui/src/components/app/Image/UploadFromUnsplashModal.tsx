@@ -37,11 +37,13 @@ export default function UploadFromUnsplashModal({ open, onClose, onInput }: Uplo
             Done
           </Button>
         </div>
-        <UnsplashReact
-          accessKey={process.env.NEXT_PUBLIC_UNSPLASH_API_KEY as string}
-          Uploader={InsertIntoApplicationUploader}
-          onFinishedUploading={handleFinishedUploading}
-        />
+        <div className="h-5/6">
+          <UnsplashReact
+            accessKey={process.env.NEXT_PUBLIC_UNSPLASH_API_KEY as string}
+            Uploader={InsertIntoApplicationUploader}
+            onFinishedUploading={handleFinishedUploading}
+          />
+        </div>
       </div>
     </FullPageModal>
   );

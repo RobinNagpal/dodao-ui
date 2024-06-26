@@ -59,7 +59,6 @@ The **Base UI** project serves as a starting template for new projects. It is a 
 - **Tailwind CSS**: Pre-configured for rapid styling.
 - **Project Structure**: Basic file and folder setup to kickstart development.
 
-
 [//]: <> (Todo: Add more concrete description of what's contained in this folder.)
 
 This setup ensures that all new projects start with a solid foundation, adhering to best practices and consistency.
@@ -73,20 +72,51 @@ This setup ensures that all new projects start with a solid foundation, adhering
 
 ### Installation
 
-1. Clone the repository:
+1. **Clone the repository:**
+
+   ```bash
+   git clone https://github.com/RobinNagpal/dodao-ui.git
+   cd dodao-ui
+   ```
+
+2. **Install dependencies using Yarn:**
+
+   ```bash
+   yarn install
+   ```
+
+3. **Navigate to a specific project folder**
+
+   ```bash
+   cd academy-ui
+   ```
+
+4. **Setup environment variables**
+
+    - Rename the `.env.example` file to `.env` and modify the keys as mentioned below.
+    - Make sure to update `DATABASE_URL` according to your own postgres username and password:
+
     ```bash
-    git clone https://github.com/RobinNagpal/dodao-ui.git
-    cd dodao-ui
+        postgresql://<username>:<password>@localhost:5432/dodao_api_localhost_db?sslmode=verify-full
     ```
 
-2. Install dependencies using Yarn:
+    - Uncomment the V2_API_SERVER_URL set to localhost:8000 (line: 16) and comment out the V2_API_SERVER_URL set to v2-api.dodao.io (line: 17).
+
+    -Replace the value of the DODAO_SUPERADMINS key with your MetaMask wallet's public address.
+
+5. **Generate Prisma Migrations**
+
+    Run the following command to generate your Prisma Migrations:
+
     ```bash
-    yarn install
+    yarn prisma migrate dev
     ```
 
-3. Navigate to a specific project and start the development server:
+6. **Start the development server**
+
+    Now you're ready to start the development server:
+
     ```bash
-    cd academy-ui
     yarn dev
     ```
 
@@ -98,16 +128,16 @@ To contribute, please follow these steps:
 
 1. **Clone the repository**: Clone the repository on your local machine.
 2. **Create a branch**: Create a new branch for your changes.
-    ```bash
-    git checkout -b your-name/my-feature-branch
-    ```
+   ```bash
+   git checkout -b your-name/my-feature-branch
+   ```
 3. **Make changes**: Implement your changes.
 4. **Commit changes**: Commit your changes with a descriptive message.
-    ```bash
-    git commit -m "Add new feature X"
-    ```
+   ```bash
+   git commit -m "Add new feature X"
+   ```
 5. **Push to GitHub**: Push your changes to your forked repository.
-    ```bash
-    git push origin your-name/my-feature-branch
-    ```
+   ```bash
+   git push origin your-name/my-feature-branch
+   ```
 6. **Create a pull request**: Submit a pull request to the main repository.
