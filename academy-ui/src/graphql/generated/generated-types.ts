@@ -145,7 +145,6 @@ export interface ByteCollection {
   name: Scalars['String'];
   priority: Scalars['Int'];
   status: Scalars['String'];
-  videoAspectRatio?: Maybe<Scalars['String']>;
   videoUrl?: Maybe<Scalars['String']>;
 }
 
@@ -534,7 +533,6 @@ export interface CreateByteCollectionInput {
   priority: Scalars['Int'];
   spaceId: Scalars['String'];
   status: Scalars['String'];
-  videoAspectRatio?: InputMaybe<Scalars['String']>;
   videoUrl?: InputMaybe<Scalars['String']>;
 }
 
@@ -3002,7 +3000,6 @@ export interface UpdateByteCollectionInput {
   priority: Scalars['Int'];
   spaceId: Scalars['String'];
   status: Scalars['String'];
-  videoAspectRatio?: InputMaybe<Scalars['String']>;
   videoUrl?: InputMaybe<Scalars['String']>;
 }
 
@@ -3355,11 +3352,6 @@ export interface VercelVerification {
   value: Scalars['String'];
 }
 
-export enum VideoAspectRatio {
-  Landscape = 'Landscape',
-  Portrait = 'Portrait'
-}
-
 export interface WebsiteScrapingInfo {
   __typename?: 'WebsiteScrapingInfo';
   baseUrl: Scalars['String'];
@@ -3406,14 +3398,14 @@ export type AuthenticateWithUnstoppableMutationVariables = Exact<{
 
 export type AuthenticateWithUnstoppableMutation = { __typename?: 'Mutation', payload: { __typename?: 'JwtResponse', jwt: string } };
 
-export type ByteCollectionFragment = { __typename?: 'ByteCollection', id: string, name: string, description: string, status: string, byteIds: Array<string>, priority: number, videoUrl?: string | null, videoAspectRatio?: string | null, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string, videoUrl?: string | null }> };
+export type ByteCollectionFragment = { __typename?: 'ByteCollection', id: string, name: string, description: string, status: string, byteIds: Array<string>, priority: number, videoUrl?: string | null, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string, videoUrl?: string | null }> };
 
 export type ByteCollectionsQueryVariables = Exact<{
   spaceId: Scalars['String'];
 }>;
 
 
-export type ByteCollectionsQuery = { __typename?: 'Query', byteCollections: Array<{ __typename?: 'ByteCollection', id: string, name: string, description: string, status: string, byteIds: Array<string>, priority: number, videoUrl?: string | null, videoAspectRatio?: string | null, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string, videoUrl?: string | null }> }> };
+export type ByteCollectionsQuery = { __typename?: 'Query', byteCollections: Array<{ __typename?: 'ByteCollection', id: string, name: string, description: string, status: string, byteIds: Array<string>, priority: number, videoUrl?: string | null, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string, videoUrl?: string | null }> }> };
 
 export type ByteCollectionQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -3421,21 +3413,21 @@ export type ByteCollectionQueryVariables = Exact<{
 }>;
 
 
-export type ByteCollectionQuery = { __typename?: 'Query', byteCollection: { __typename?: 'ByteCollection', id: string, name: string, description: string, status: string, byteIds: Array<string>, priority: number, videoUrl?: string | null, videoAspectRatio?: string | null, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string, videoUrl?: string | null }> } };
+export type ByteCollectionQuery = { __typename?: 'Query', byteCollection: { __typename?: 'ByteCollection', id: string, name: string, description: string, status: string, byteIds: Array<string>, priority: number, videoUrl?: string | null, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string, videoUrl?: string | null }> } };
 
 export type CreateByteCollectionMutationVariables = Exact<{
   input: CreateByteCollectionInput;
 }>;
 
 
-export type CreateByteCollectionMutation = { __typename?: 'Mutation', createByteCollection: { __typename?: 'ByteCollection', id: string, name: string, description: string, status: string, byteIds: Array<string>, priority: number, videoUrl?: string | null, videoAspectRatio?: string | null, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string, videoUrl?: string | null }> } };
+export type CreateByteCollectionMutation = { __typename?: 'Mutation', createByteCollection: { __typename?: 'ByteCollection', id: string, name: string, description: string, status: string, byteIds: Array<string>, priority: number, videoUrl?: string | null, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string, videoUrl?: string | null }> } };
 
 export type UpdateByteCollectionMutationVariables = Exact<{
   input: UpdateByteCollectionInput;
 }>;
 
 
-export type UpdateByteCollectionMutation = { __typename?: 'Mutation', updateByteCollection: { __typename?: 'ByteCollection', id: string, name: string, description: string, status: string, byteIds: Array<string>, priority: number, videoUrl?: string | null, videoAspectRatio?: string | null, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string, videoUrl?: string | null }> } };
+export type UpdateByteCollectionMutation = { __typename?: 'Mutation', updateByteCollection: { __typename?: 'ByteCollection', id: string, name: string, description: string, status: string, byteIds: Array<string>, priority: number, videoUrl?: string | null, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string, videoUrl?: string | null }> } };
 
 export type DeleteByteCollectionMutationVariables = Exact<{
   byteCollectionId: Scalars['String'];
@@ -3446,7 +3438,7 @@ export type DeleteByteCollectionMutation = { __typename?: 'Mutation', deleteByte
 
 export type ByteCollectionCategoryFragment = { __typename?: 'ByteCollectionCategory', id: string, name: string, excerpt?: string | null, imageUrl?: string | null, status: string, priority: number, byteCollectionIds: Array<string> };
 
-export type CategoryWithByteCollectionFragment = { __typename?: 'CategoryWithByteCollection', id: string, name: string, excerpt: string, imageUrl?: string | null, creator: string, status: string, priority: number, byteCollections: Array<{ __typename?: 'ByteCollection', id: string, name: string, description: string, status: string, byteIds: Array<string>, priority: number, videoUrl?: string | null, videoAspectRatio?: string | null, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string, videoUrl?: string | null }> }> };
+export type CategoryWithByteCollectionFragment = { __typename?: 'CategoryWithByteCollection', id: string, name: string, excerpt: string, imageUrl?: string | null, creator: string, status: string, priority: number, byteCollections: Array<{ __typename?: 'ByteCollection', id: string, name: string, description: string, status: string, byteIds: Array<string>, priority: number, videoUrl?: string | null, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string, videoUrl?: string | null }> }> };
 
 export type ByteCollectionCategoryWithByteCollectionsQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -3454,7 +3446,7 @@ export type ByteCollectionCategoryWithByteCollectionsQueryVariables = Exact<{
 }>;
 
 
-export type ByteCollectionCategoryWithByteCollectionsQuery = { __typename?: 'Query', byteCollectionCategoryWithByteCollections: { __typename?: 'CategoryWithByteCollection', id: string, name: string, excerpt: string, imageUrl?: string | null, creator: string, status: string, priority: number, byteCollections: Array<{ __typename?: 'ByteCollection', id: string, name: string, description: string, status: string, byteIds: Array<string>, priority: number, videoUrl?: string | null, videoAspectRatio?: string | null, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string, videoUrl?: string | null }> }> } };
+export type ByteCollectionCategoryWithByteCollectionsQuery = { __typename?: 'Query', byteCollectionCategoryWithByteCollections: { __typename?: 'CategoryWithByteCollection', id: string, name: string, excerpt: string, imageUrl?: string | null, creator: string, status: string, priority: number, byteCollections: Array<{ __typename?: 'ByteCollection', id: string, name: string, description: string, status: string, byteIds: Array<string>, priority: number, videoUrl?: string | null, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string, videoUrl?: string | null }> }> } };
 
 export type ByteCollectionCategoriesQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -5017,7 +5009,6 @@ export const ByteCollectionFragmentDoc = gql`
   byteIds
   priority
   videoUrl
-  videoAspectRatio
   bytes {
     byteId
     name

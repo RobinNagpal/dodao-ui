@@ -6,7 +6,6 @@ fragment ByteCollection on ByteCollection {
   byteIds
   priority
   videoUrl
-  videoAspectRatio
   bytes {
     byteId
     name
