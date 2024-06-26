@@ -198,15 +198,17 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space, set
             {stepItems.map((stepItem: ByteStepItemFragment, index) => {
               if (isQuestion(stepItem)) {
                 return (
-                  <QuestionSection
-                    key={index}
-                    nextButtonClicked={nextButtonClicked}
-                    allQuestionsAnsweredCorrectly={questionsAnsweredCorrectly}
-                    allQuestionsAnswered={questionNotAnswered}
-                    stepItem={stepItem as ByteQuestionFragmentFragment}
-                    stepItemSubmission={viewByteHelper.getStepItemSubmission(step.uuid, stepItem.uuid)}
-                    onSelectAnswer={selectAnswer}
-                  />
+                  <div className="border-2 rounded-lg p-4 border-transparent ">
+                    <QuestionSection
+                      key={index}
+                      nextButtonClicked={nextButtonClicked}
+                      allQuestionsAnsweredCorrectly={questionsAnsweredCorrectly}
+                      allQuestionsAnswered={questionNotAnswered}
+                      stepItem={stepItem as ByteQuestionFragmentFragment}
+                      stepItemSubmission={viewByteHelper.getStepItemSubmission(step.uuid, stepItem.uuid)}
+                      onSelectAnswer={selectAnswer}
+                    />
+                  </div>
                 );
               }
 
