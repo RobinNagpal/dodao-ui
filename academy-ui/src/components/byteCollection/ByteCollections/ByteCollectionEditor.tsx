@@ -12,7 +12,6 @@ import {
   ProjectByteCollectionFragment,
   ProjectByteFragment,
   Space,
-  VideoAspectRatio,
 } from '@/graphql/generated/generated-types';
 import PlusCircle from '@heroicons/react/20/solid/PlusCircleIcon';
 import Bars3BottomLeftIcon from '@heroicons/react/24/solid/Bars3BottomLeftIcon';
@@ -26,17 +25,6 @@ interface ByteCollectionEditorProps {
   viewByteCollectionsUrl: string;
   upsertByteCollectionFn: (byteCollection: EditByteCollection, byteCollectionId: string | null) => Promise<void>;
 }
-
-const videoAspectRatioStyleSelect: StyledSelectItem[] = [
-  {
-    label: VideoAspectRatio.Landscape,
-    id: 'landscape',
-  },
-  {
-    label: VideoAspectRatio.Portrait,
-    id: 'portrait',
-  },
-];
 
 const AddByteButton = styled.button`
   color: var(--primary-color);
@@ -80,13 +68,6 @@ function ByteCollectionEditor(props: ByteCollectionEditorProps) {
       >
         Video URL
       </Input>
-
-      <StyledSelect
-        label="Video Aspect Ratio"
-        selectedItemId={byteCollection.videoAspectRatio}
-        items={videoAspectRatioStyleSelect}
-        setSelectedItemId={(v) => helperFunctions.updateByteCollectionVideoAspectRatio(v?.toString() || '')}
-      />
 
       <Input
         modelValue={byteCollection.priority}

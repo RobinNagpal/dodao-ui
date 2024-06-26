@@ -24,7 +24,7 @@ function EditTidbitCategorySpace(props: { space: SpaceWithIntegrationsFragment; 
         <div tw="px-4 md:px-0 overflow-hidden">
           <Link href="/tidbit-collections" className="text-color">
             <span className="mr-1 font-bold">&#8592;</span>
-            {'Back to Tidbit collections'}
+            {'Back to Tidbit Collection Category'}
           </Link>
         </div>
         {loading ? <PageLoading /> : <ByteCategoryEditor space={props.space} byteCategorySummary={data?.byteCollectionCategoryWithByteCollections} />}

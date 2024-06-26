@@ -123,7 +123,6 @@ type ByteCollection {
   name: String!
   priority: Int!
   status: String!
-  videoAspectRatio: String
   videoUrl: String
 }
 
