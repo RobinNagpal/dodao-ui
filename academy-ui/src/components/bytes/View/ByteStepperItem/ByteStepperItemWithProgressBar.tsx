@@ -181,13 +181,7 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space, set
         <div className="flex flex-col flex-grow justify-center align-center">
           {!stepItems.some(isQuestion) && !isShortScreen && step.imageUrl && (
             <div className="flex justify-center align-center ">
-              <img
-                src={step.imageUrl}
-                alt="byte"
-                style={{
-                  maxHeight: '35vh',
-                }}
-              />
+              <img src={step.imageUrl} alt="byte" className={`max-h-[35vh] rounded ${styles.imgContainer}`} />
             </div>
           )}
           <div className="flex justify-center w-full mt-4">
