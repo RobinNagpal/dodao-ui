@@ -3,11 +3,12 @@ import Button from '@dodao/web-core/components/core/buttons/Button';
 import Input from '@dodao/web-core/components/core/input/Input';
 import useEditUser from '@/components/user/Edit/useEditUser';
 import { useSession } from 'next-auth/react';
+import { Session } from '@dodao/web-core/types/auth/Session';
 import React, { useEffect } from 'react';
 
-export default function UpsertUserSettingsModal() {
-  const { data: session, update } = useSession();
-  const editUserHelper = useEditUser(session?.user?.name!, update);
+export default function UpsertUserProfileInfo() {
+  const { data: session, update } = useSession() as { data: Session | null; update: any };
+  const editUserHelper = useEditUser(session?.username!, update);
 
   const { user, setUserField, upsertUser, upserting, initialize } = editUserHelper;
 

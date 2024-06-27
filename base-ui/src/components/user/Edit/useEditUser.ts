@@ -25,6 +25,7 @@ export default function useEditUser(userName: string, update: () => void): UseEd
     publicAddress: '',
     spaceId: '',
     username: '',
+    password: '',
   });
 
   const [upserting, setUpserting] = useState(false);

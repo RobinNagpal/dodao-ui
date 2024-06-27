@@ -24,7 +24,7 @@ const ColorLabels: Record<ThemeColorsKeys, string> = {
   blockBg: 'Block Background Color',
 };
 
-export default function UpsertSpaceBasicSettingsModal() {
+export default function UpsertSpaceBasicSettings() {
   const editSpaceHelper = useEditSpace();
 
   const { space, setSpaceField, setAuthSettingsField, upsertSpace, initialize, upserting } = editSpaceHelper;

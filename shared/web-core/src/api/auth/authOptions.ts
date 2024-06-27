@@ -76,13 +76,9 @@ export function getAuthOptions(
           const verificationToken = await p.verificationToken.delete({
             where: { token: await createHash(`${credentials?.token}${process.env.EMAIL_TOKEN_SECRET!}`) },
           });
-
           if (!verificationToken) return null;
-
           const expired = verificationToken.expires.valueOf() < Date.now();
-
           if (expired) return null;
-
           const user = await p.user.findUnique({
             where: {
               email_spaceId: {
@@ -92,12 +88,39 @@ export function getAuthOptions(
             },
           });
           if (!user) return null;
-
           return {
             id: user.id,
             name: user.publicAddress,
             username: user.publicAddress,
           };
+        },
+      }),
+      CredentialsProvider({
+        // The name to display on the sign in form (e.g. 'Sign in with...')
+        name: 'email-login',
+        // The credentials is used to generate a suitable form on the sign in page.
+        // You can specify whatever fields you are expecting to be submitted.
+        // e.g. domain, username, password, 2FA token, etc.
+        // You can pass any HTML attribute to the <input> tag through the object.
+        credentials: {
+          email: {},
+          password: {},
+          spaceId: {},
+        },
+        async authorize(credentials, req) {
+          const user = await p.user.findUnique({
+            where: {
+              email_spaceId: {
+                email: credentials?.email!,
+                spaceId: credentials?.spaceId!,
+              },
+            },
+          });
+          const hashedPassword = await createHash(credentials?.password!);
+          if (user && user.password === hashedPassword) {
+            return user;
+          }
+          return null;
         },
       }),
       {
@@ -107,10 +130,8 @@ export function getAuthOptions(
         credentials: {},
         authorize: async (credentials, req) => {
           console.log('req', req.query);
-
           const accountId = req.query?.accountId || '';
           const spaceId = req.query?.spaceId || '';
-
           const user = await p.user.upsert({
             where: { publicAddress_spaceId: { publicAddress: accountId, spaceId } },
             create: {
@@ -122,7 +143,6 @@ export function getAuthOptions(
             },
             update: {},
           });
-
           console.log('user', user);
           return Promise.resolve(user);
         },
