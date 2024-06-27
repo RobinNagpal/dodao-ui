@@ -171,7 +171,7 @@ export function useViewByteInModal({ space, byteId, stepOrder, fetchByteFn }: Us
       if (result) {
         showNotification({
           type: 'success',
-          message: 'Tidbit Submitted',
+          message: "You've successfully submitted this tidbit. Ready for the next one?",
           heading: 'Success 🎉',
         });
 
