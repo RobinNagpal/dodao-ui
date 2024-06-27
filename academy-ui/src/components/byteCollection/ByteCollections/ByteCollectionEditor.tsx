@@ -48,13 +48,13 @@ function ByteCollectionEditor(props: ByteCollectionEditorProps) {
       <Input
         modelValue={byteCollection.name}
         onUpdate={(v) => helperFunctions.updateByteCollectionName(v?.toString() || '')}
-        label="Name"
+        label="Name *"
         required
         error={isPrestine || byteCollection.name.trim() ? false : 'Name is Required'}
       />
 
       <TextareaAutosize
-        label={'Description'}
+        label={'Description *'}
         modelValue={byteCollection.description}
         onUpdate={(v) => helperFunctions.updateByteCollectionDescription(v?.toString() || '')}
         error={isPrestine || byteCollection.description.trim() ? false : 'Description is Required'}
@@ -62,7 +62,7 @@ function ByteCollectionEditor(props: ByteCollectionEditorProps) {
 
       <Input
         modelValue={byteCollection.videoUrl}
-        placeholder="byte.create.videoURL"
+        placeholder="Enter VideoURL"
         maxLength={1024}
         onUpdate={(v) => helperFunctions.updateByteCollectionVideoUrl(v?.toString() || '')}
       >
@@ -73,7 +73,7 @@ function ByteCollectionEditor(props: ByteCollectionEditorProps) {
         modelValue={byteCollection.priority}
         number
         onUpdate={(v) => helperFunctions.updateByteCollectionPriority(v ? parseInt(v.toString()) : 50)}
-        label="Byte Collection Priority"
+        label="Byte Collection Priority *"
         required
       />
 
