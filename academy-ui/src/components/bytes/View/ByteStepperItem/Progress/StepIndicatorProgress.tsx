@@ -11,7 +11,7 @@ const StepIndicatorProgress = ({ className, steps, currentStep }: StepIndicatorP
   return (
     <div className={`${className || ''}`}>
       <div className={styles.stepIndicatorContainer}>
-        {Array.from({ length: steps }).map((_, index) => (
+        {Array.from({ length: steps - 1 }).map((_, index) => (
           <div key={index} className={`${styles.stepDot} ${index === currentStep ? styles.activeStepDot : ''}`} />
         ))}
       </div>

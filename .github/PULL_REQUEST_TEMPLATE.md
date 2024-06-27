@@ -25,3 +25,14 @@ Please provide a brief description of the tests you have performed to verify you
 - Example test 1: Tested feature X by uploading the image
 - Example test 2: Tested feature X by doing these things.
 
+# Demo Video
+Please provide a demo video of your changes. This helps reviewers understand the changes and verify the functionality.
+
+You can record the video using tools like Loom(https://www.loom.com/), Clip by ClickUp(https://clickup.com/features/clips), Sendspark(https://www.sendspark.com/), etc.
+
+Include the link to the video below and make sure the video covers
+- [ ] Explain the task/bug you are solving
+- [ ] Show the changes in the UI
+- [ ] Show the changes in the codebase
+- [ ] Show the changes you tested to make sure it works
+- [ ] Show the changes in various screen sizes

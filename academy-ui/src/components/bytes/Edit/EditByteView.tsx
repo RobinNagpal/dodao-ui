@@ -118,32 +118,24 @@ export default function EditByteView(props: { space: SpaceWithIntegrationsFragme
                   className="input w-full text-left"
                   onUpdate={(e) => updateByteFunctions.updateByteField('admins', e)}
                 />
+                
+                
+                <Input
+                  modelValue={byte.videoUrl}
+                  placeholder="Video URL for the byte"
+                  maxLength={1024}
+                  onUpdate={(e) => updateByteFunctions.updateByteField('videoUrl', e)}
+                >
+                  Video URL
+                </Input>
 
-<div className="flex items-center justify-between">
-      <Input
-        modelValue={videoUrl}
-        placeholder="byte.create.videoURL"
-        maxLength={1024}
-       
-        className="flex-1 mr-2" 
-      >
-        Video URL
-      </Input>
-      <button
-  type="button"
-  className="px-2 sm:px-4 mt-9 py-2 sm:py-2 bg-blue-600 text-white rounded h-9"
- 
->
-  Upload from computer
-</button>
-      <input
-        type="file"
-        id="videoUpload"
-        className="hidden"
-        accept="video/*"
-        onChange={handleFileChange}
-      />
-    </div>
+                <StyledSelect
+                  label="Video Aspect Ratio"
+                  selectedItemId={byte.videoAspectRatio}
+                  items={videoAspectRatioStyleSelect}
+                  setSelectedItemId={(e) => updateByteFunctions.updateByteField('videoAspectRatio', e)}
+                />
+
 
                 <TextareaArray
                   label="Tags"
