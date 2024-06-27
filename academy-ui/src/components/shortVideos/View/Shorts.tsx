@@ -23,39 +23,39 @@ function ShortsThumbnail({ shortVideo }: { shortVideo: ShortVideo | ProjectShort
           open={showDeleteModal}
           onClose={() => setShowDeleteModal(false)}
           onDelete={async () => {
-            // await deleteByteMutation({ variables: { spaceId: space.id, byteId: byteId! } });
             setShowDeleteModal(false);
-            // router.push(`/tidbits`);
           }}
         />
       )}
-      <Link href={`/shorts/view/${shortVideo.id}`} className="p-2 min-w-0 flex">
-        <div className={styles.imageWrapper}>
-          <div className={'relative ' + styles.innerDiv}>
-            <div className="absolute top-0 right-0 z-150 ">
-              <PrivateEllipsisDropdown
-                items={threeDotItems}
-                className="z-150 "
-                onSelect={(key) => {
-                  if (key === 'delete') {
-                    setShowDeleteModal(true);
-                  }
-                }}
+      <Link href={`/shorts/view/${shortVideo.id}`} className="p-2 min-w-0 flex flex-col">
+        <div className="flex justify-between items-start">
+          <div className={styles.imageWrapper + ' flex-grow'}>
+            <div className={'relative ' + styles.innerDiv}>
+              <Image
+                alt={title}
+                src={thumbnail}
+                className="rounded-lg w-full h-full "
+                placeholder="blur"
+                blurDataURL={blurDataURL}
+                fill={true}
+                sizes="(max-width: 640px) 100vw, (max-width: 768px) 80vw, 250px"
               />
             </div>
-            <Image
-              alt={title}
-              src={thumbnail}
-              className="rounded-lg absolute top-0 left-0 w-full h-full "
-              placeholder="blur"
-              blurDataURL={blurDataURL}
-              fill={true}
-              sizes="(max-width: 640px) 100vw, (max-width: 768px) 80vw, 250px"
+          </div>
+          <div className="ml-2">
+            <PrivateEllipsisDropdown
+              items={threeDotItems}
+              className="z-150"
+              onSelect={(key) => {
+                if (key === 'delete') {
+                  setShowDeleteModal(true);
+                }
+              }}
             />
           </div>
-          <div className="title-wrapper">
-            <h1>{title}</h1>
-          </div>
+        </div>
+        <div className="title-wrapper mt-2">
+          <h1>{title}</h1>
         </div>
       </Link>
     </div>
