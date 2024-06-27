@@ -5,7 +5,7 @@ import { User } from '@prisma/client';
 export async function POST(req: Request) {
   const { authProvider, email, username, name, phone_number, id, spaceId, image, publicAddress } = await req.json();
 
-  const UserInput: Omit<User, 'id'> = {
+  const UserInput: Omit<User, 'id' | 'password'> = {
     authProvider,
     email,
     username,
@@ -17,10 +17,10 @@ export async function POST(req: Request) {
     image,
   };
 
-  const space = await prisma.user.update({
+  const user = await prisma.user.update({
     where: { id },
     data: { ...UserInput },
   });
 
-  return NextResponse.json({ space }, { status: 200 });
+  return NextResponse.json({ user }, { status: 200 });
 }

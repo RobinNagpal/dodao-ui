@@ -15,6 +15,7 @@ interface TextInputProps extends PropsWithChildren {
   min?: number | string;
   max?: number | string;
   number?: boolean;
+  password?: boolean;
   required?: boolean;
   onUpdate?: (value: string | number | undefined) => void;
   label?: React.ReactNode;
@@ -30,6 +31,7 @@ export default function Input({
   id,
   error,
   number,
+  password,
   disabled,
   maxLength,
   min,
@@ -72,7 +74,7 @@ export default function Input({
           value={modelValue || ''}
           onChange={handleInput}
           placeholder={placeholder}
-          type={number ? 'number' : 'text'}
+          type={number ? 'number' : password ? 'password' : 'text'}
           disabled={disabled}
           required={required}
           maxLength={maxLength ? maxLength : undefined}
