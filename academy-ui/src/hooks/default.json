@@ -830,7 +830,7 @@
     "gnosisTransactionsQueued": "Payments have been queued to Gnosis Wallet. Please reload gnosis wallet in a couple of mins to see the transactions.",
     "guideCreated": "Guide Created",
     "bytePublished": "Tidbit Published",
-    "byteResponseSubmitted": "Tidbit Submitted",
+    "byteResponseSubmitted": "You've successfully submitted this tidbit. Ready for the next one?",
     "guideResponseSubmitted": "Guide Submitted",
     "guideCourseCreated": "Guide Bundle Created",
     "proposalDeleted": "Proposal deleted",

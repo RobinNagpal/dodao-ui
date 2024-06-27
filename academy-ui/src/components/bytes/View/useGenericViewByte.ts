@@ -188,7 +188,7 @@ export function useGenericViewByte({ space, fetchByte, byteDetailsUrl, byteId, s
       if (result) {
         showNotification({
           type: 'success',
-          message: 'Tidbit Submitted',
+          message: "You've successfully submitted this tidbit. Ready for the next one?",
           heading: 'Success 🎉',
         });
 

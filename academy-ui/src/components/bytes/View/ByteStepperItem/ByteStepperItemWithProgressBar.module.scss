@@ -12,3 +12,8 @@
     height: calc(100% - 1rem);
   }
 }
+.imgContainer {
+  border: 1px solid;
+  border-color: var(--border-color);
+  box-shadow: 0 2px 4px var(--primary-color);
+}

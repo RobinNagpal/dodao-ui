@@ -13,7 +13,7 @@ export function QuestionSection(props: {
   console.log('QuestionSection props', props);
   return (
     <div>
-      <h2 className="text-2xl font-semibold mb-4">Question</h2>
+      <h2 className="text-2xl font-semibold mb-4 text-center">Question</h2>
       <div
         className={
           props.nextButtonClicked && !props.allQuestionsAnsweredCorrectly && props.allQuestionsAnswered ? 'border-2 rounded-lg p-4 border-red-500' : ''
