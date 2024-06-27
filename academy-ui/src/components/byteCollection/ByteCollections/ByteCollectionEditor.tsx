@@ -6,13 +6,7 @@ import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import Input from '@dodao/web-core/components/core/input/Input';
 import StyledSelect, { StyledSelectItem } from '@dodao/web-core/components/core/select/StyledSelect';
 import TextareaAutosize from '@dodao/web-core/components/core/textarea/TextareaAutosize';
-import {
-  ByteCollectionFragment,
-  ByteSummaryFragment,
-  ProjectByteCollectionFragment,
-  ProjectByteFragment,
-  Space,
-} from '@/graphql/generated/generated-types';
+import { ByteCollectionFragment, ByteSummaryFragment, ProjectByteCollectionFragment, ProjectByteFragment, Space } from '@/graphql/generated/generated-types';
 import PlusCircle from '@heroicons/react/20/solid/PlusCircleIcon';
 import Bars3BottomLeftIcon from '@heroicons/react/24/solid/Bars3BottomLeftIcon';
 import React, { useState } from 'react';
