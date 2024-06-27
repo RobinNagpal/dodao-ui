@@ -49,7 +49,6 @@ function EditTidbitCollectionSpace(props: { space: SpaceWithIntegrationsFragment
             status: byteCollection.status,
             priority: byteCollection.priority,
             videoUrl: byteCollection.videoUrl,
-            videoAspectRatio: byteCollection.videoAspectRatio,
           },
         },
       });
@@ -65,7 +64,6 @@ function EditTidbitCollectionSpace(props: { space: SpaceWithIntegrationsFragment
             spaceId: props.space.id,
             priority: byteCollection.priority,
             videoUrl: byteCollection.videoUrl,
-            videoAspectRatio: byteCollection.videoAspectRatio,
           },
         },
       });

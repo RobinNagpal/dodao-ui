@@ -301,7 +301,6 @@ export function editByteCommonFunctions(setByte: (value: ((prevState: EditByteTy
       tags: byte.tags,
       priority: byte.priority,
       videoUrl: byte.videoUrl,
-      videoAspectRatio: byte.videoAspectRatio,
       completionScreen:
         byte.completionScreen != null
           ? {

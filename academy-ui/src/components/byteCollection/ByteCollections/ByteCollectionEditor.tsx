@@ -6,14 +6,7 @@ import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import Input from '@dodao/web-core/components/core/input/Input';
 import StyledSelect, { StyledSelectItem } from '@dodao/web-core/components/core/select/StyledSelect';
 import TextareaAutosize from '@dodao/web-core/components/core/textarea/TextareaAutosize';
-import {
-  ByteCollectionFragment,
-  ByteSummaryFragment,
-  ProjectByteCollectionFragment,
-  ProjectByteFragment,
-  Space,
-  VideoAspectRatio,
-} from '@/graphql/generated/generated-types';
+import { ByteCollectionFragment, ByteSummaryFragment, ProjectByteCollectionFragment, ProjectByteFragment, Space } from '@/graphql/generated/generated-types';
 import PlusCircle from '@heroicons/react/20/solid/PlusCircleIcon';
 import Bars3BottomLeftIcon from '@heroicons/react/24/solid/Bars3BottomLeftIcon';
 import React, { useState } from 'react';
@@ -26,17 +19,6 @@ interface ByteCollectionEditorProps {
   viewByteCollectionsUrl: string;
   upsertByteCollectionFn: (byteCollection: EditByteCollection, byteCollectionId: string | null) => Promise<void>;
 }
-
-const videoAspectRatioStyleSelect: StyledSelectItem[] = [
-  {
-    label: VideoAspectRatio.Landscape,
-    id: 'landscape',
-  },
-  {
-    label: VideoAspectRatio.Portrait,
-    id: 'portrait',
-  },
-];
 
 const AddByteButton = styled.button`
   color: var(--primary-color);
@@ -60,13 +42,13 @@ function ByteCollectionEditor(props: ByteCollectionEditorProps) {
       <Input
         modelValue={byteCollection.name}
         onUpdate={(v) => helperFunctions.updateByteCollectionName(v?.toString() || '')}
-        label="Name"
+        label="Name *"
         required
         error={isPrestine || byteCollection.name.trim() ? false : 'Name is Required'}
       />
 
       <TextareaAutosize
-        label={'Description'}
+        label={'Description *'}
         modelValue={byteCollection.description}
         onUpdate={(v) => helperFunctions.updateByteCollectionDescription(v?.toString() || '')}
         error={isPrestine || byteCollection.description.trim() ? false : 'Description is Required'}
@@ -74,25 +56,18 @@ function ByteCollectionEditor(props: ByteCollectionEditorProps) {
 
       <Input
         modelValue={byteCollection.videoUrl}
-        placeholder="byte.create.videoURL"
+        placeholder="Enter VideoURL"
         maxLength={1024}
         onUpdate={(v) => helperFunctions.updateByteCollectionVideoUrl(v?.toString() || '')}
       >
         Video URL
       </Input>
 
-      <StyledSelect
-        label="Video Aspect Ratio"
-        selectedItemId={byteCollection.videoAspectRatio}
-        items={videoAspectRatioStyleSelect}
-        setSelectedItemId={(v) => helperFunctions.updateByteCollectionVideoAspectRatio(v?.toString() || '')}
-      />
-
       <Input
         modelValue={byteCollection.priority}
         number
         onUpdate={(v) => helperFunctions.updateByteCollectionPriority(v ? parseInt(v.toString()) : 50)}
-        label="Byte Collection Priority"
+        label="Byte Collection Priority *"
         required
       />
 
