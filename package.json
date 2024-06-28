@@ -5,6 +5,7 @@
     "academy-ui",
     "referral-ui",
     "base-ui",
+    "rubrics-ui",
     "shared/web-core"
   ],
   "resolutions": {
