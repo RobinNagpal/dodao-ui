@@ -1260,6 +1260,7 @@ export interface Mutation {
   deleteChatbotUserQuestion: Scalars['Boolean'];
   deleteGitCourseSubmission: Scalars['Boolean'];
   deleteGuide: Scalars['Boolean'];
+  deleteShortVideo: ShortVideo;
   deleteTopic: GitCourse;
   deleteTopicExplanation: GitCourse;
   deleteTopicQuestion: GitCourse;
@@ -1504,6 +1505,12 @@ export interface MutationDeleteGitCourseSubmissionArgs {
 export interface MutationDeleteGuideArgs {
   spaceId: Scalars['String'];
   uuid: Scalars['String'];
+}
+
+
+export interface MutationDeleteShortVideoArgs {
+  shortVideoId: Scalars['String'];
+  spaceId: Scalars['String'];
 }
 
 
@@ -4630,6 +4637,14 @@ export type UpsertShortVideoMutationVariables = Exact<{
 
 
 export type UpsertShortVideoMutation = { __typename?: 'Mutation', upsertShortVideo: { __typename?: 'ShortVideo', id: string, title: string, description: string, thumbnail: string, videoUrl: string, priority: number, createdAt: string, updatedAt: string } };
+
+export type DeleteShortVideoMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+  shortVideoId: Scalars['String'];
+}>;
+
+
+export type DeleteShortVideoMutation = { __typename?: 'Mutation', deleteShortVideo: { __typename?: 'ShortVideo', id: string, title: string, description: string, thumbnail: string, videoUrl: string, priority: number, createdAt: string, updatedAt: string } };
 
 export type ShortVideosQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -11560,6 +11575,40 @@ export function useUpsertShortVideoMutation(baseOptions?: Apollo.MutationHookOpt
 export type UpsertShortVideoMutationHookResult = ReturnType<typeof useUpsertShortVideoMutation>;
 export type UpsertShortVideoMutationResult = Apollo.MutationResult<UpsertShortVideoMutation>;
 export type UpsertShortVideoMutationOptions = Apollo.BaseMutationOptions<UpsertShortVideoMutation, UpsertShortVideoMutationVariables>;
+export const DeleteShortVideoDocument = gql`
+    mutation DeleteShortVideo($spaceId: String!, $shortVideoId: String!) {
+  deleteShortVideo(spaceId: $spaceId, shortVideoId: $shortVideoId) {
+    ...ShortVideo
+  }
+}
+    ${ShortVideoFragmentDoc}`;
+export type DeleteShortVideoMutationFn = Apollo.MutationFunction<DeleteShortVideoMutation, DeleteShortVideoMutationVariables>;
+
+/**
+ * __useDeleteShortVideoMutation__
+ *
+ * To run a mutation, you first call `useDeleteShortVideoMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteShortVideoMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteShortVideoMutation, { data, loading, error }] = useDeleteShortVideoMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      shortVideoId: // value for 'shortVideoId'
+ *   },
+ * });
+ */
+export function useDeleteShortVideoMutation(baseOptions?: Apollo.MutationHookOptions<DeleteShortVideoMutation, DeleteShortVideoMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteShortVideoMutation, DeleteShortVideoMutationVariables>(DeleteShortVideoDocument, options);
+      }
+export type DeleteShortVideoMutationHookResult = ReturnType<typeof useDeleteShortVideoMutation>;
+export type DeleteShortVideoMutationResult = Apollo.MutationResult<DeleteShortVideoMutation>;
+export type DeleteShortVideoMutationOptions = Apollo.BaseMutationOptions<DeleteShortVideoMutation, DeleteShortVideoMutationVariables>;
 export const ShortVideosDocument = gql`
     query ShortVideos($spaceId: String!) {
   shortVideos(spaceId: $spaceId) {

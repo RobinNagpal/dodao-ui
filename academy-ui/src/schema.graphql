@@ -1180,6 +1180,7 @@ type Mutation {
   deleteChatbotUserQuestion(id: String!, spaceId: String!): Boolean!
   deleteGitCourseSubmission(courseKey: String!, spaceId: String!): Boolean!
   deleteGuide(spaceId: String!, uuid: String!): Boolean!
+  deleteShortVideo(shortVideoId: String!, spaceId: String!): ShortVideo!
   deleteTopic(spaceId: String!, topicInfo: DeleteTopicInput!): GitCourse!
   deleteTopicExplanation(explanationInfo: DeleteTopicExplanationInput!, spaceId: String!): GitCourse!
   deleteTopicQuestion(questionInfo: DeleteTopicQuestionInput!, spaceId: String!): GitCourse!

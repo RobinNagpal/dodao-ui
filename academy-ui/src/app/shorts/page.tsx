@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 const MainShortsComponent = async () => {
   const space = (await getSpaceServerSide())!;
   const videos = await getApiResponse<ShortVideo[] | ProjectShortVideo[]>(space, 'short-videos');
-  return <Shorts shortVideos={videos} />;
+  return <Shorts shortVideos={videos} space={space} />;
 };
 
 export default MainShortsComponent;
