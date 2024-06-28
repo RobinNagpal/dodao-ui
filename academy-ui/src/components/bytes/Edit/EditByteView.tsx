@@ -22,16 +22,6 @@ import { router } from 'next/client';
 import { useEffect, useState } from 'react';
 import UploadInput from '@/components/app/UploadInput';
 import { ImageType } from '@/graphql/generated/generated-types';
-const videoAspectRatioStyleSelect: StyledSelectItem[] = [
-  {
-    label: VideoAspectRatio.Landscape,
-    id: 'landscape',
-  },
-  {
-    label: VideoAspectRatio.Portrait,
-    id: 'portrait',
-  },
-];
 
 export default function EditByteView(props: { space: SpaceWithIntegrationsFragment; onUpsert: (byteId: string) => Promise<void>; byteId?: string }) {
   const { space, byteId } = props;
@@ -61,15 +51,6 @@ export default function EditByteView(props: { space: SpaceWithIntegrationsFragme
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const [deleteByteMutation] = useDeleteByteMutation();
-  //video upload button
-
-  const handleVideoUploadButtonClick = () => {
-    const fileInput = document.getElementById('videoUpload');
-    if (fileInput) {
-      fileInput.click();
-    }
-    // Todo Additional logic can be added here, such as uploading the file
-  };
 
   return (
     <PageWrapper>
@@ -125,7 +106,7 @@ export default function EditByteView(props: { space: SpaceWithIntegrationsFragme
 
                 <UploadInput
                   error=""
-                  spaceId=""
+                  spaceId={space?.id || 'new-space'}
                   imageType={ImageType.ShortVideo}
                   modelValue={byte.videoUrl}
                   objectId={'new-byte-video'}
