@@ -46,7 +46,6 @@ export default function Login({ space }: LoginProps) {
       <div className="space-y-12 text-left p-6">
         <div className="">
           <h2 className="font-semibold leading-7 text-3xl text-center pb-8">Signup using Email</h2>
-
           <Input label="Email" modelValue={email} onUpdate={(value) => setEmail(value?.toString() || '')} />
           <Input label="Password" modelValue={password} onUpdate={(value) => setPassword(value?.toString() || '')} password />
         </div>

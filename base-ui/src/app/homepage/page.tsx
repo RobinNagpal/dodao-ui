@@ -1,6 +1,6 @@
 import React from 'react';
 
-async function Home() {
+function Home() {
   return (
     <div>
       <div className="mt-10 flex items-center justify-center gap-x-6">
