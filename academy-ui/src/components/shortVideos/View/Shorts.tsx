@@ -72,7 +72,7 @@ function ShortsThumbnail({ shortVideo, space }: ShortsThumbnailProps) {
           open={showDeleteModal}
           onClose={() => setShowDeleteModal(false)}
           onDelete={async () => {
-            await deleteShortVideoMutation({ variables: { shortVideoId: shortVideo.id, spaceId: space!.id }, refetchQueries: ['ShortVideos'] });
+            await deleteShortVideoMutation({ variables: { shortVideoId: shortVideo.id, spaceId: space!.id } });
             setShowDeleteModal(false);
             router.refresh();
           }}
