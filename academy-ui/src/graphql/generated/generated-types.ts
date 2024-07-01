@@ -1253,6 +1253,7 @@ export interface Mutation {
   deleteAndPullCourseRepo: GitCourse;
   deleteByte: Scalars['Boolean'];
   deleteByteCollection: Scalars['Boolean'];
+  deleteByteCollectionCategory: Scalars['Boolean'];
   deleteChatbotCategory: Scalars['Boolean'];
   deleteChatbotFAQ: Scalars['Boolean'];
   deleteChatbotUserQuestion: Scalars['Boolean'];
@@ -1472,6 +1473,12 @@ export interface MutationDeleteByteArgs {
 
 export interface MutationDeleteByteCollectionArgs {
   byteCollectionId: Scalars['String'];
+}
+
+
+export interface MutationDeleteByteCollectionCategoryArgs {
+  categoryId: Scalars['String'];
+  spaceId: Scalars['String'];
 }
 
 
@@ -3462,6 +3469,14 @@ export type UpsertByteCollectionCategoryMutationVariables = Exact<{
 
 
 export type UpsertByteCollectionCategoryMutation = { __typename?: 'Mutation', payload: { __typename?: 'ByteCollectionCategory', id: string, name: string, excerpt?: string | null, imageUrl?: string | null, status: string, priority: number, byteCollectionIds: Array<string> } };
+
+export type DeleteByteCollectionCategoryMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+  categoryId: Scalars['String'];
+}>;
+
+
+export type DeleteByteCollectionCategoryMutation = { __typename?: 'Mutation', payload: boolean };
 
 export type ConsolidatedByteRatingsForSpaceQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -6562,6 +6577,41 @@ export function useUpsertByteCollectionCategoryMutation(baseOptions?: Apollo.Mut
 export type UpsertByteCollectionCategoryMutationHookResult = ReturnType<typeof useUpsertByteCollectionCategoryMutation>;
 export type UpsertByteCollectionCategoryMutationResult = Apollo.MutationResult<UpsertByteCollectionCategoryMutation>;
 export type UpsertByteCollectionCategoryMutationOptions = Apollo.BaseMutationOptions<UpsertByteCollectionCategoryMutation, UpsertByteCollectionCategoryMutationVariables>;
+export const DeleteByteCollectionCategoryDocument = gql`
+    mutation DeleteByteCollectionCategory($spaceId: String!, $categoryId: String!) {
+  payload: deleteByteCollectionCategory(
+    spaceId: $spaceId
+    categoryId: $categoryId
+  )
+}
+    `;
+export type DeleteByteCollectionCategoryMutationFn = Apollo.MutationFunction<DeleteByteCollectionCategoryMutation, DeleteByteCollectionCategoryMutationVariables>;
+
+/**
+ * __useDeleteByteCollectionCategoryMutation__
+ *
+ * To run a mutation, you first call `useDeleteByteCollectionCategoryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteByteCollectionCategoryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteByteCollectionCategoryMutation, { data, loading, error }] = useDeleteByteCollectionCategoryMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      categoryId: // value for 'categoryId'
+ *   },
+ * });
+ */
+export function useDeleteByteCollectionCategoryMutation(baseOptions?: Apollo.MutationHookOptions<DeleteByteCollectionCategoryMutation, DeleteByteCollectionCategoryMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteByteCollectionCategoryMutation, DeleteByteCollectionCategoryMutationVariables>(DeleteByteCollectionCategoryDocument, options);
+      }
+export type DeleteByteCollectionCategoryMutationHookResult = ReturnType<typeof useDeleteByteCollectionCategoryMutation>;
+export type DeleteByteCollectionCategoryMutationResult = Apollo.MutationResult<DeleteByteCollectionCategoryMutation>;
+export type DeleteByteCollectionCategoryMutationOptions = Apollo.BaseMutationOptions<DeleteByteCollectionCategoryMutation, DeleteByteCollectionCategoryMutationVariables>;
 export const ConsolidatedByteRatingsForSpaceDocument = gql`
     query ConsolidatedByteRatingsForSpace($spaceId: String!) {
   consolidatedByteRatingsForSpace(spaceId: $spaceId) {

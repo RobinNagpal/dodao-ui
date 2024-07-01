@@ -38,3 +38,7 @@ mutation UpsertByteCollectionCategory($spaceId: String!, $input: UpsertByteColle
     ...ByteCollectionCategory
   }
 }
+
+mutation DeleteByteCollectionCategory($spaceId: String!, $categoryId: String!) {
+  payload: deleteByteCollectionCategory(spaceId: $spaceId, categoryId: $categoryId)
+}

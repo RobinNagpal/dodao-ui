@@ -49,16 +49,16 @@ function ByteCollectionCategoryEditor(props: ByteCollectionCategoryEditorProps) 
   return (
     <div>
       <Input
+        label="Name *"
         modelValue={byteCategory.name}
         onUpdate={(v) => helperFunctions.updateByteCategoryName(v?.toString() || '')}
-        label="Name"
         required
         onBlur={() => helperFunctions.validateCategory()}
         error={categoryErrors['name'] ? 'Name is required' : false}
       />
 
       <TextareaAutosize
-        label={'Excerpt'}
+        label={'Excerpt *'}
         modelValue={byteCategory.excerpt || ''}
         onUpdate={(v) => helperFunctions.updateByteCategoryExcerpt(v?.toString() || '')}
         onBlur={() => helperFunctions.validateCategory()}
