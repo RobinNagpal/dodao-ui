@@ -123,7 +123,6 @@ type ByteCollection {
   name: String!
   priority: Int!
   status: String!
-  videoAspectRatio: String
   videoUrl: String
 }
 
@@ -484,7 +483,6 @@ input CreateByteCollectionInput {
   priority: Int!
   spaceId: String!
   status: String!
-  videoAspectRatio: String
   videoUrl: String
 }
 
@@ -1837,7 +1835,6 @@ input UpdateByteCollectionInput {
   priority: Int!
   spaceId: String!
   status: String!
-  videoAspectRatio: String
   videoUrl: String
 }
 
@@ -2183,11 +2180,6 @@ type VercelVerification {
   reason: String!
   type: String!
   value: String!
-}
-
-enum VideoAspectRatio {
-  Landscape
-  Portrait
 }
 
 type WebsiteScrapingInfo {

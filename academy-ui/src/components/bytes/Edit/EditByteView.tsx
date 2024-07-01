@@ -15,7 +15,7 @@ import PageLoading from '@dodao/web-core/components/core/loaders/PageLoading';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import StyledSelect, { StyledSelectItem } from '@dodao/web-core/components/core/select/StyledSelect';
 import TextareaArray from '@dodao/web-core/components/core/textarea/TextareaArray';
-import { SpaceWithIntegrationsFragment, useDeleteByteMutation, VideoAspectRatio } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsFragment, useDeleteByteMutation } from '@/graphql/generated/generated-types';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
 import { ByteErrors } from '@dodao/web-core/types/errors/byteErrors';
 import { router } from 'next/client';

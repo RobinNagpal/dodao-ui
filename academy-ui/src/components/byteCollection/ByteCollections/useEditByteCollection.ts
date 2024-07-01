@@ -14,7 +14,6 @@ interface HelperFunctions {
   updateByteCollectionName: (name: string) => void;
   updateByteCollectionDescription: (description: string) => void;
   updateByteCollectionVideoUrl: (videoUrl: string) => void;
-  updateByteCollectionVideoAspectRatio: (videoAspectRatio: string) => void;
   updateByteCollectionPriority: (priority: number) => void;
   addByte: (byteId: string) => void;
   moveByteUp: (byteUuid: string) => void;
@@ -57,7 +56,6 @@ export function useEditByteCollection({
     status: byteCollectionProp?.status || 'DRAFT',
     priority: byteCollectionProp?.priority || 50,
     videoUrl: byteCollectionProp?.videoUrl || '',
-    videoAspectRatio: byteCollectionProp?.videoAspectRatio || '',
   });
 
   const moveByteUp = useCallback(
@@ -125,10 +123,6 @@ export function useEditByteCollection({
     setByteCollection((prevByte) => ({ ...prevByte, videoUrl }));
   };
 
-  const updateByteCollectionVideoAspectRatio = (videoAspectRatio: string) => {
-    setByteCollection((prevByte) => ({ ...prevByte, videoAspectRatio }));
-  };
-
   const updateByteCollectionPriority = (priority: number) => {
     setByteCollection((prevByte) => ({ ...prevByte, priority }));
   };
@@ -151,7 +145,6 @@ export function useEditByteCollection({
       updateByteCollectionName,
       updateByteCollectionDescription,
       updateByteCollectionVideoUrl,
-      updateByteCollectionVideoAspectRatio,
       updateByteCollectionPriority,
       addByte,
       moveByteUp,

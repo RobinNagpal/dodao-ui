@@ -12,3 +12,16 @@
     height: calc(100% - 1rem);
   }
 }
+.imgContainer {
+  border: 1px solid;
+  border-color: var(--border-color);
+  box-shadow: 0 2px 4px var(--primary-color);
+}
+.hideScrollbar {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+.hideScrollbar::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
+}

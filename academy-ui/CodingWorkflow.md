@@ -60,7 +60,7 @@ The `DoDAO-ui` uses the generated schema file to generate types and hooks. These
 
 Here is an illustration of the DoDAO's system architecture:
 
-![DoDAO Architecture](https://github.com/RobinNagpal/dodao-ui/blob/main/public/DoDAO_System_Architecture.png)
+![DoDAO Architecture](https://github.com/RobinNagpal/dodao-ui/blob/main/academy-ui/public/DoDAO_System_Architecture.png)
 
 ### Adding new queries in Graphql
 
@@ -279,4 +279,4 @@ Here is a coding example of [Converting Client Side to Server Side Rendering](ht
 
 ## Application Architecture
 
-![DoDAO Application Architecture](https://github.com/RobinNagpal/dodao-ui/blob/main/public/Application_Architecture.png)
+![DoDAO Application Architecture](https://github.com/RobinNagpal/dodao-ui/blob/main/academy-ui/public/Application_Architecture.png)

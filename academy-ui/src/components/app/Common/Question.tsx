@@ -76,7 +76,7 @@ function Question({ answerClass = '', question, questionResponse, readonly, show
   return (
     <div className="bg-skin-block-bg">
       <div className="flex justify-between items-center content-center">
-        <div className="markdown-body mb-2 text-l" dangerouslySetInnerHTML={{ __html: questionContent }}></div>
+        <div className="markdown-body mb-2 text-l text-center w-full" dangerouslySetInnerHTML={{ __html: questionContent }}></div>
         {showHint && question.hint && question.hint.toLowerCase() !== 'nohint' && (
           <div className={styles.hintIconWrapper} onClick={() => setDisplayHint(!displayHint)}>
             <HintIcon height="30px" />
