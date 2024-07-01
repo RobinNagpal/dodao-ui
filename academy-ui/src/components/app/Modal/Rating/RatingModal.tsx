@@ -10,7 +10,7 @@ export interface RatingModalProps<T extends GuideFeedback | ByteFeedback | undef
   feedbackOptions: FeedbackOptions[];
   onClose: () => void;
   skipRating: () => void;
-  setRating: (rating: number, feedback?: T) => Promise<void>;
+  setRating: (rating: number, feedback?: T, suggestion?: string) => Promise<void>;
 }
 
 export interface FeedbackOptions {
@@ -28,6 +28,8 @@ export default function RatingModal<T extends GuideFeedback | ByteFeedback | und
   setRating,
 }: RatingModalProps<T>) {
   const [selectedRating, setSelectedRating] = useState<number>();
+  const [selectedFeedback, setSelectedFeedback] = useState<GuideFeedback | ByteFeedback>({});
+  const [textareaValue, setTextareaValue] = useState('');
   const skipOrCloseModal = async () => {
     if (selectedRating !== undefined) {
       await setRating(selectedRating!);
@@ -45,8 +47,8 @@ export default function RatingModal<T extends GuideFeedback | ByteFeedback | und
     } else if (optionName === 'ux') {
       feedback.ux = true;
     }
-
-    await setRating(selectedRating!, feedback as T);
+    setSelectedFeedback(feedback);
+    await setRating(selectedRating!, feedback as T, textareaValue);
     onClose();
   };
 
@@ -69,21 +71,29 @@ export default function RatingModal<T extends GuideFeedback | ByteFeedback | und
         </div>
 
         {selectedRating && (
-          <div className="flex flex-col  items-center mt-8">
+          <div className="flex flex-col items-center mt-8">
+            <div className="mt-8 w-full max-w-md">
+              <textarea
+                className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+                placeholder="Please provide your feedback here..."
+                onChange={(e) => setTextareaValue(e.target.value)}
+                value={textareaValue}
+              />
+            </div>
             {selectedRating > 2 ? (
-              <div className="flex flex-row items-center justify-center ">
-                <h2 className="text-xl mr-2  font-semibold leading-6 ">What did you like the most?</h2>
+              <div className="flex flex-row items-center justify-center">
+                <h2 className="text-xl mr-2 font-semibold leading-6">What did you like the most?</h2>
               </div>
             ) : (
-              <div className="flex flex-row items-center justify-center ">
-                <h2 className="text-xl  mr-2 font-semibold leading-6">What do you want us to improve upon?</h2>
+              <div className="flex flex-row items-center justify-center">
+                <h2 className="text-xl mr-2 font-semibold leading-6">What do you want us to improve upon?</h2>
               </div>
             )}
 
             <div className={`grid ${feedbackOptions.length === 3 ? 'grid-cols-3' : 'grid-cols-2'} gap-4 mt-8`}>
               {feedbackOptions.map((option) => (
                 <div key={option.name} className={`${styles.FeedbackOptionDiv}`}>
-                  <div className={`flex flex-col items-center cursor-pointer p-2 hover:rounded-lg`} onClick={() => handleFeedbackSelection(option.name)}>
+                  <div className="flex flex-col items-center cursor-pointer p-2 hover:rounded-lg" onClick={() => handleFeedbackSelection(option.name)}>
                     <option.image height={40} width={40} />
                     <h2 className="text-md">{option.label}</h2>
                   </div>
@@ -92,7 +102,6 @@ export default function RatingModal<T extends GuideFeedback | ByteFeedback | und
             </div>
           </div>
         )}
-
         <div className="mt-4">
           <a className="text-md cursor-pointer underline" onClick={() => skipOrCloseModal()}>
             Skip
