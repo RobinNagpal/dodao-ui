@@ -6,6 +6,7 @@ fragment ByteCollectionCategory on ByteCollectionCategory {
   status
   priority
   byteCollectionIds
+  archive
 }
 
 fragment CategoryWithByteCollection on CategoryWithByteCollection {
@@ -19,6 +20,7 @@ fragment CategoryWithByteCollection on CategoryWithByteCollection {
   byteCollections {
     ...ByteCollection
   }
+  archive
 }
 
 query ByteCollectionCategoryWithByteCollections($spaceId: String!, $categoryId: String!) {
@@ -40,5 +42,7 @@ mutation UpsertByteCollectionCategory($spaceId: String!, $input: UpsertByteColle
 }
 
 mutation DeleteByteCollectionCategory($spaceId: String!, $categoryId: String!) {
-  payload: deleteByteCollectionCategory(spaceId: $spaceId, categoryId: $categoryId)
+  payload: deleteByteCollectionCategory(spaceId: $spaceId, categoryId: $categoryId) {
+    ...ByteCollectionCategory
+  }
 }

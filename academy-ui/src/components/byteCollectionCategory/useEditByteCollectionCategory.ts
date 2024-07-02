@@ -48,6 +48,7 @@ export function useEditByteCollectionCategory({ space, byteCategory: byteCategor
     creator: space.creator,
     status: byteCategoryProp?.status || 'Active',
     priority: byteCategoryProp?.priority || 50,
+    archive: byteCategoryProp?.archive ?? false,
   });
   const [categoryErrors, setCategoryErrors] = useState<ByteCollectionCategoryError>({});
   const { showNotification } = useNotificationContext();
@@ -145,6 +146,7 @@ export function useEditByteCollectionCategory({ space, byteCategory: byteCategor
           status: byteCategory.status,
           byteCollectionIds: byteCategory.byteCollections?.map((byteCollection) => byteCollection?.id).filter((id): id is string => id !== undefined) ?? [],
           priority: byteCategory.priority,
+          archive: byteCategory.archive,
         },
       },
     });
