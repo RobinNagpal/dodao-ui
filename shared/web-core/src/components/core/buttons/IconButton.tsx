@@ -78,7 +78,7 @@ function IconButton({
       loading={loading}
       removeBorder={removeBorder}
       size="sm"
-      onClick={onClick}
+      onClick={disabled ? undefined : onClick}
       className={className}
     >
       {renderIcon()}
