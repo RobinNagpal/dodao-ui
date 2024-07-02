@@ -7,7 +7,7 @@ export type ByteRatingsHelper = {
   skipByteRating: () => void;
   showRatingsModal: boolean;
   setShowRatingsModal: (show: boolean) => void;
-  setByteRating: (rating: number, feedback?: ByteFeedback) => Promise<void>;
+  setByteRating: (rating: number, feedback?: ByteFeedback, suggestion?: string) => Promise<void>;
 };
 
 export function useByteRatings(space: Space, byte: ByteDetailsFragment, byteSubmission: boolean): ByteRatingsHelper {
@@ -22,7 +22,7 @@ export function useByteRatings(space: Space, byte: ByteDetailsFragment, byteSubm
     }
   }, [byteSubmission]);
 
-  const setByteRating = async (rating: number, feedback?: ByteFeedback) => {
+  const setByteRating = async (rating: number, feedback?: ByteFeedback, suggestion?: string) => {
     const byteRating: ByteRating = {
       byteId: byte.id,
       negativeFeedback: null,
@@ -34,6 +34,7 @@ export function useByteRatings(space: Space, byte: ByteDetailsFragment, byteSubm
       rating: rating,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
+      suggestion: suggestion,
     };
 
     if (feedback) {
@@ -58,6 +59,7 @@ export function useByteRatings(space: Space, byte: ByteDetailsFragment, byteSubm
           skipRating: byteRating.skipRating,
           spaceId: byteRating.spaceId,
           userId: byteRating.userId,
+          suggestion: byteRating.suggestion,
         },
       },
       refetchQueries: ['ByteRatings', 'ConsolidatedByteRating'],

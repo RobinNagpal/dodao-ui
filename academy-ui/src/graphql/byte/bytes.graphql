@@ -166,6 +166,7 @@ fragment ByteRating on ByteRating {
   updatedAt
   userId
   username
+  suggestion
 }
 
 query QueryBytes($spaceId: String!) {
