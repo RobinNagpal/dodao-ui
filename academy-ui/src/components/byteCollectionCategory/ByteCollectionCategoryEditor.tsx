@@ -138,11 +138,13 @@ function ByteCollectionCategoryEditor(props: ByteCollectionCategoryEditorProps) 
               onClose={() => setShowSelectByteCollectionModal(false)}
               addByteCollection={(byteCollections: ByteCollectionFragment[]) => {
                 byteCollections.forEach((byteColl) => {
-                  helperFunctions.addByteCollection(byteColl);
+                  if (!byteCategory.byteCollections.some((existingByte) => existingByte.id === byteColl.id)) {
+                    helperFunctions.addByteCollection(byteColl);
+                  }
                 });
-
                 setShowSelectByteCollectionModal(false);
               }}
+              byteCollectionSummaries={byteCategory.byteCollections}
               space={props.space}
             />
           )}
