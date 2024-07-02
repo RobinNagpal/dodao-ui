@@ -74,7 +74,7 @@ export default function RatingModal<T extends GuideFeedback | ByteFeedback | und
           <div className="flex flex-col items-center mt-8">
             <div className="mt-8 w-full max-w-md">
               <textarea
-                className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+                className={`w-full p-4 border rounded-lg ${styles.TextArea}`}
                 placeholder="Please provide your feedback here..."
                 onChange={(e) => setTextareaValue(e.target.value)}
                 value={textareaValue}
