@@ -12,10 +12,16 @@ import {
   useProjectByteCollectionQuery,
   useQueryBytesQuery,
   useUpdateByteCollectionMutation,
+  useDeleteByteCollectionMutation,
 } from '@/graphql/generated/generated-types';
 
 import SingleCardLayout from '@/layouts/SingleCardLayout';
 import Link from 'next/link';
+import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
+import { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
+import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 function EditTidbitCollectionSpace(props: { space: SpaceWithIntegrationsFragment; params: { tidbitCollectionId?: string[] } }) {
   const { data: bytesResponse } = useQueryBytesQuery({
@@ -69,6 +75,10 @@ function EditTidbitCollectionSpace(props: { space: SpaceWithIntegrationsFragment
       });
     }
   }
+  const threeDotItems: EllipsisDropdownItem[] = [{ label: 'Delete', key: 'delete' }];
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteByteCollectionMutation] = useDeleteByteCollectionMutation();
+  const router = useRouter();
 
   return (
     <PageWrapper>
@@ -78,6 +88,32 @@ function EditTidbitCollectionSpace(props: { space: SpaceWithIntegrationsFragment
             <span className="mr-1 font-bold">&#8592;</span>
             {'Back to Tidbit collections'}
           </Link>
+
+          {byteCollectionId && (
+            <PrivateEllipsisDropdown
+              items={threeDotItems}
+              onSelect={(key) => {
+                if (key === 'delete') {
+                  setShowDeleteModal(true);
+                }
+              }}
+              className="float-right mr-0 z-5"
+            />
+          )}
+
+          {showDeleteModal && (
+            <DeleteConfirmationModal
+              title={'Delete Byte Collection'}
+              open={showDeleteModal}
+              onClose={() => setShowDeleteModal(false)}
+              onDelete={async () => {
+                await deleteByteCollectionMutation({ variables: { byteCollectionId: byteCollectionId! } });
+                setShowDeleteModal(false);
+                router.push(`/tidbit-collections`);
+                router.refresh();
+              }}
+            />
+          )}
         </div>
         {bytesResponse?.bytes && (!byteCollectionId || data) ? (
           <ByteCollectionEditor

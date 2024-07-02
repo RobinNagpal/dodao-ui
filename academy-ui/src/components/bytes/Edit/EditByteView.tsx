@@ -167,7 +167,7 @@ export default function EditByteView(props: { space: SpaceWithIntegrationsFragme
         <DeleteConfirmationModal
           title={'Delete Byte'}
           open={showDeleteModal}
-          onClose={() => setShowDeleteModal(true)}
+          onClose={() => setShowDeleteModal(false)}
           onDelete={async () => {
             await deleteByteMutation({ variables: { spaceId: space.id, byteId: byteId! } });
             setShowDeleteModal(false);

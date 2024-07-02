@@ -130,7 +130,9 @@ function ByteCollectionEditor(props: ByteCollectionEditorProps) {
             <SelectBytesModal
               showSelectBytesModal={showSelectBytesModal}
               onClose={() => setShowSelectBytesModal(false)}
-              byteSummaries={byteSummaries}
+              byteSummaries={props.byteSummaries.filter((byte) => {
+                return !byteCollection?.bytes?.some((b) => b.byteId === byte.id);
+              })}
               addBytes={(byteIds: string[]) => {
                 byteIds.forEach((byteId) => {
                   helperFunctions.addByte(byteId);

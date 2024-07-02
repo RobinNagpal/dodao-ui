@@ -49,16 +49,16 @@ function ByteCollectionCategoryEditor(props: ByteCollectionCategoryEditorProps) 
   return (
     <div>
       <Input
+        label="Name *"
         modelValue={byteCategory.name}
         onUpdate={(v) => helperFunctions.updateByteCategoryName(v?.toString() || '')}
-        label="Name"
         required
         onBlur={() => helperFunctions.validateCategory()}
         error={categoryErrors['name'] ? 'Name is required' : false}
       />
 
       <TextareaAutosize
-        label={'Excerpt'}
+        label={'Excerpt *'}
         modelValue={byteCategory.excerpt || ''}
         onUpdate={(v) => helperFunctions.updateByteCategoryExcerpt(v?.toString() || '')}
         onBlur={() => helperFunctions.validateCategory()}
@@ -138,11 +138,13 @@ function ByteCollectionCategoryEditor(props: ByteCollectionCategoryEditorProps) 
               onClose={() => setShowSelectByteCollectionModal(false)}
               addByteCollection={(byteCollections: ByteCollectionFragment[]) => {
                 byteCollections.forEach((byteColl) => {
-                  helperFunctions.addByteCollection(byteColl);
+                  if (!byteCategory.byteCollections.some((existingByte) => existingByte.id === byteColl.id)) {
+                    helperFunctions.addByteCollection(byteColl);
+                  }
                 });
-
                 setShowSelectByteCollectionModal(false);
               }}
+              byteCollectionSummaries={byteCategory.byteCollections}
               space={props.space}
             />
           )}
