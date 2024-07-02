@@ -16,11 +16,23 @@ export function useByteRatings(space: Space, byte: ByteDetailsFragment, byteSubm
   const [shownByteRatingsModal, setShownByteRatingsModal] = useState(false);
 
   useEffect(() => {
-    if (byteSubmission && !shownByteRatingsModal) {
-      setShownByteRatingsModal(true);
-      setShowRatingsModal(true);
+    const lastShownString = localStorage.getItem('lastRatingModalShown');
+    const lastShown = lastShownString ? new Date(parseInt(lastShownString)) : null;
+    const now = new Date().getTime();
+    const oneDay = 60 * 60 * 1000; // One hour in milliseconds
+
+    function showRatingModalIfDue() {
+      if (!lastShown || now - lastShown.getTime() > oneDay) {
+        setShownByteRatingsModal(true);
+        setShowRatingsModal(true);
+        localStorage.setItem('lastRatingModalShown', now.toString());
+      }
     }
-  }, [byteSubmission]);
+
+    if (byteSubmission && !shownByteRatingsModal) {
+      showRatingModalIfDue();
+    }
+  }, [byteSubmission, shownByteRatingsModal]);
 
   const setByteRating = async (rating: number, feedback?: ByteFeedback) => {
     const byteRating: ByteRating = {
