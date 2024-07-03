@@ -201,6 +201,7 @@ type ByteRating {
   ratingUuid: String!
   skipRating: Boolean
   spaceId: String!
+  suggestion: String
   updatedAt: DateTimeISO!
   userId: String
   username: String
@@ -959,6 +960,7 @@ type GuideRating {
   skipStartRating: Boolean
   spaceId: String!
   startRating: Int
+  suggestion: String
   updatedAt: DateTimeISO!
   userId: String
   username: String
@@ -1938,6 +1940,7 @@ input UpsertByteRatingInput {
   ratingUuid: String!
   skipRating: Boolean
   spaceId: String!
+  suggestion: String
   userId: String
 }
 
@@ -2008,6 +2011,7 @@ input UpsertGuideRatingInput {
   skipStartRating: Boolean
   spaceId: String!
   startRating: Int
+  suggestion: String
   userId: String
 }
 
