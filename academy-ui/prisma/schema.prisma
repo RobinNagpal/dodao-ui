@@ -99,6 +99,8 @@ model Space {
   name             String            @db.VarChar(255)
   updatedAt        DateTime          @updatedAt @map("updated_at")
   avatar           String?           @db.VarChar(255)
+  admins           String[]
+  adminUsernames   String[]          @default(dbgenerated("(ARRAY[]::character varying[])::character varying(255)[]")) @map("admin_usernames") @db.VarChar(255)
   /// [UsernameAndName]
   adminUsernamesV1 Json[]            @map("admin_usernames_v1") @db.JsonB
   domains          String[]          @default([])
