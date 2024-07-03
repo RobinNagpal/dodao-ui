@@ -1,4 +1,4 @@
-import { getSpaceWithIntegrations } from '@/app/api/space/getSpaceWithIntegration/route';
+import { getSpaceWithIntegrations } from '@/app/api/helpers/space';
 import { NextResponse } from 'next/server';
 
 export async function GET(req: Request, res: Response) {
