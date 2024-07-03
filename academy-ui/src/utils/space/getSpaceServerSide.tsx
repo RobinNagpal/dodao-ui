@@ -5,13 +5,13 @@ import { headers } from 'next/headers';
 export async function getSpaceBasedOnHostHeader(reqHeaders: Headers) {
   const host = reqHeaders.get('host')?.split(':')?.[0];
 
-  const response = await axios.get(process.env.ACADEMY_UI_SERVER_URL + '/api/space/extendedSpaceByDomain', {
+  const response = await axios.get(process.env.ACADEMY_UI_SERVER_URL + '/api/spaces', {
     params: {
       domain: host!,
     },
   });
 
-  const space = response?.data.body as SpaceWithIntegrationsFragment;
+  const space = response?.data.body[0] as SpaceWithIntegrationsFragment;
   return response.status === 200 ? space : null;
 }
 

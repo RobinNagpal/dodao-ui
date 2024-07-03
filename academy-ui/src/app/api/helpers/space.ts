@@ -35,3 +35,31 @@ export async function getSpaceIdForDomain(domain: string): Promise<string> {
 
   return 'test-academy-eth';
 }
+
+export async function getAllSpaceIdsForDomain(domain: string): Promise<string[]> {
+  const spaces = await prisma.space.findMany({
+    where: {
+      OR: [
+        {
+          domains: {
+            has: domain,
+          },
+        },
+        {
+          botDomains: {
+            has: domain,
+          },
+        },
+      ],
+    },
+  });
+  if (spaces.length) {
+    return spaces.map((space) => space.id);
+  }
+
+  if (domain === 'dodao-ui-robinnagpal.vercel.app' || domain === 'localhost') {
+    return ['test-academy-eth'];
+  }
+
+  return ['test-academy-eth'];
+}
