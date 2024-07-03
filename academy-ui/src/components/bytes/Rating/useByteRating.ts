@@ -16,23 +16,25 @@ export function useByteRatings(space: Space, byte: ByteDetailsFragment, byteSubm
   const [shownByteRatingsModal, setShownByteRatingsModal] = useState(false);
 
   useEffect(() => {
+    if (byteSubmission && !shownByteRatingsModal) {
+      setShownByteRatingsModal(true);
+      setShowRatingsModal(true);
+    }
+  }, [byteSubmission]);
+
+  const showRatingsModalIfNotShownRecently = (showModal: boolean) => {
     const lastShownString = localStorage.getItem('lastRatingModalShown');
     const lastShown = lastShownString ? new Date(parseInt(lastShownString)) : null;
     const now = new Date().getTime();
     const oneHour = 60 * 60 * 1000; // One hour in milliseconds
 
-    function showRatingsModal() {
-      if (!lastShown || now - lastShown.getTime() > oneHour) {
-        setShownByteRatingsModal(true);
-        setShowRatingsModal(true);
-        localStorage.setItem('lastRatingModalShown', now.toString());
-      }
+    if (showModal && (!lastShown || now - lastShown.getTime() > oneHour)) {
+      setShownByteRatingsModal(showModal);
+    } else {
+      // no need to do anything as the ratings modal was recently shown
+      setShownByteRatingsModal(showModal);
     }
-
-    if (byteSubmission && !shownByteRatingsModal) {
-      showRatingsModal();
-    }
-  }, [byteSubmission, shownByteRatingsModal]);
+  };
 
   const setByteRating = async (rating: number, feedback?: ByteFeedback, suggestion?: string) => {
     const byteRating: ByteRating = {
@@ -100,7 +102,7 @@ export function useByteRatings(space: Space, byte: ByteDetailsFragment, byteSubm
 
   return {
     showRatingsModal,
-    setShowRatingsModal,
+    setShowRatingsModal: showRatingsModalIfNotShownRecently,
     setByteRating,
     skipByteRating,
   };
