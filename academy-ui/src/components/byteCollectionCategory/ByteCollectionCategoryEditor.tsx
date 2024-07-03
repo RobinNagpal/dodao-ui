@@ -94,10 +94,10 @@ function ByteCollectionCategoryEditor(props: ByteCollectionCategoryEditorProps) 
       <div className="my-4">
         <div className="flow-root">
           <ul role="list" className="-mb-8">
-            {byteCategory.byteCollections.map((byteCollection: ByteCollectionFragment, byteIndex: any) => (
+            {byteCategory.byteCollections.map((byteCollection: ByteCollectionFragment, categoryIndex) => (
               <li key={byteCollection.id}>
                 <div className="relative pb-8">
-                  {byteIndex !== byteCategory.byteCollections.length - 1 ? (
+                  {categoryIndex !== byteCategory.byteCollections.length - 1 ? (
                     <span className="absolute left-4 top-4 -ml-px h-full w-0.5 bg-gray-300" aria-hidden="true" />
                   ) : null}
                   <div className="relative flex space-x-3">
@@ -121,6 +121,20 @@ function ByteCollectionCategoryEditor(props: ByteCollectionCategoryEditorProps) 
                                 disabled={byteCategory.byteCollections.length === 1}
                                 onClick={() => helperFunctions.removeByteCollection(byteCollection.id)}
                               />
+                              <IconButton
+                                className="float-right ml-1"
+                                iconName={IconTypes.MoveUp}
+                                removeBorder
+                                disabled={categoryIndex === 0}
+                                onClick={() => helperFunctions.moveCategoryUp(byteCollection.id)}
+                              />
+                              <IconButton
+                                className="float-right ml-1"
+                                iconName={IconTypes.MoveDown}
+                                removeBorder
+                                disabled={categoryIndex + 1 === byteCategory.byteCollections.length}
+                                onClick={() => helperFunctions.moveCategoryDown(byteCollection.id)}
+                              />
                             </div>
                           </div>
                         </p>
@@ -138,9 +152,7 @@ function ByteCollectionCategoryEditor(props: ByteCollectionCategoryEditorProps) 
               onClose={() => setShowSelectByteCollectionModal(false)}
               addByteCollection={(byteCollections: ByteCollectionFragment[]) => {
                 byteCollections.forEach((byteColl) => {
-                  if (!byteCategory.byteCollections.some((existingByte) => existingByte.id === byteColl.id)) {
-                    helperFunctions.addByteCollection(byteColl);
-                  }
+                  helperFunctions.addByteCollection(byteColl);
                 });
                 setShowSelectByteCollectionModal(false);
               }}

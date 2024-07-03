@@ -17,10 +17,10 @@ fragment CategoryWithByteCollection on CategoryWithByteCollection {
   creator
   status
   priority
+  archive
   byteCollections {
     ...ByteCollection
   }
-  archive
 }
 
 query ByteCollectionCategoryWithByteCollections($spaceId: String!, $categoryId: String!) {
