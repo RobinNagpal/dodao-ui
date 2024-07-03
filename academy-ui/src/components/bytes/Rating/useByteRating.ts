@@ -19,10 +19,10 @@ export function useByteRatings(space: Space, byte: ByteDetailsFragment, byteSubm
     const lastShownString = localStorage.getItem('lastRatingModalShown');
     const lastShown = lastShownString ? new Date(parseInt(lastShownString)) : null;
     const now = new Date().getTime();
-    const oneDay = 60 * 60 * 1000; // One hour in milliseconds
+    const oneHour = 60 * 60 * 1000; // One hour in milliseconds
 
-    function showRatingModalIfDue() {
-      if (!lastShown || now - lastShown.getTime() > oneDay) {
+    function showRatingsModal() {
+      if (!lastShown || now - lastShown.getTime() > oneHour) {
         setShownByteRatingsModal(true);
         setShowRatingsModal(true);
         localStorage.setItem('lastRatingModalShown', now.toString());
@@ -30,7 +30,7 @@ export function useByteRatings(space: Space, byte: ByteDetailsFragment, byteSubm
     }
 
     if (byteSubmission && !shownByteRatingsModal) {
-      showRatingModalIfDue();
+      showRatingsModal();
     }
   }, [byteSubmission, shownByteRatingsModal]);
 
