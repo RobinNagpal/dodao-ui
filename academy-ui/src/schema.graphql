@@ -134,6 +134,7 @@ type ByteCollectionByte {
 }
 
 type ByteCollectionCategory {
+  archive: Boolean!
   byteCollectionIds: [String!]!
   excerpt: String
   id: String!
@@ -282,6 +283,7 @@ type ByteUserInput {
 }
 
 type CategoryWithByteCollection {
+  archive: Boolean!
   byteCollections: [ByteCollection!]!
   creator: String!
   excerpt: String!
@@ -1175,6 +1177,7 @@ type Mutation {
   deleteAndPullCourseRepo(courseKey: String!, spaceId: String!): GitCourse!
   deleteByte(byteId: String!, spaceId: String!): Boolean!
   deleteByteCollection(byteCollectionId: String!): Boolean!
+  deleteByteCollectionCategory(categoryId: String!, spaceId: String!): ByteCollectionCategory!
   deleteChatbotCategory(id: String!, spaceId: String!): Boolean!
   deleteChatbotFAQ(id: String!, spaceId: String!): Boolean!
   deleteChatbotUserQuestion(id: String!, spaceId: String!): Boolean!
@@ -1382,7 +1385,6 @@ type ProjectByteCollection {
   priority: Int!
   seoMeta: SEOMeta
   status: String!
-  videoAspectRatio: String
   videoUrl: String
 }
 
@@ -1906,6 +1908,7 @@ input UpsertAcademyTaskInput {
 }
 
 input UpsertByteCollectionCategory {
+  archive: Boolean!
   byteCollectionIds: [String!]!
   excerpt: String!
   id: String!
@@ -2024,7 +2027,6 @@ input UpsertProjectByteCollectionInput {
   projectId: String!
   seoMeta: SEOMetaInput
   status: String!
-  videoAspectRatio: String
   videoUrl: String
 }
 
