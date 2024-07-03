@@ -68,6 +68,7 @@ model User {
   accounts         Account[]
   sessions         Session[]
   cryptoLoginNonce CryptoLoginNonce?
+  RubricRating     RubricRating[]
 
   @@unique([publicAddress, spaceId])
   @@unique([username, spaceId])
@@ -114,4 +115,44 @@ model Space {
   themeColors Json? @map("theme_colors") @db.Json
 
   @@map("spaces")
+}
+
+model Program {
+  id      String   @id @db.VarChar(255)
+  name    String
+  details String?
+  rating  Int
+  rubrics Rubric[]
+}
+
+model Rubric {
+  id          String   @id @db.VarChar(255)
+  name        String
+  summary     String
+  description String?
+  criteria    String[]
+  programId   String
+  program     Program  @relation(fields: [programId], references: [id])
+  spaceId     String   @relation(fields: [spaceId], references: [id])
+}
+
+model RubricEvaluationParameter {
+  id          String @id @db.VarChar(255)
+  rubricId    String @relation(fields: [rubricId], references: [id])
+  spaceId     String @relation(fields: [spaceId], references: [id])
+  title       String
+  description String
+}
+
+model RubricEvaluationParameterRating {
+  id                          String                    @id @db.VarChar(255)
+  rubricId                    String                    @db.VarChar(255)
+  rubric                      Rubric                    @relation(fields: [rubricId], references: [id])
+  rubricEvaluationParameterId String                    @db.VarChar(255)
+  rubticEvaluationParameter   RubricEvaluationParameter @relation(fields: [rubricEvaluationParameterId], references: [id])
+  spaceId                     String                    @db.VarChar(255)
+  space                       Space                     @relation(fields: [spaceId], references: [id])
+
+  description String
+  rating      Int
 }
