@@ -68,7 +68,6 @@ model User {
   accounts         Account[]
   sessions         Session[]
   cryptoLoginNonce CryptoLoginNonce?
-  RubricRating     RubricRating[]
 
   @@unique([publicAddress, spaceId])
   @@unique([username, spaceId])
@@ -126,22 +125,25 @@ model Program {
 }
 
 model Rubric {
-  id          String   @id @db.VarChar(255)
-  name        String
-  summary     String
-  description String?
-  criteria    String[]
-  programId   String   @id @db.VarChar(255)
-  program     Program  @relation(fields: [programId], references: [id])
+  id                              String                            @id @db.VarChar(255)
+  name                            String
+  summary                         String
+  description                     String?
+  criteria                        String[]
+  programId                       String                            @db.VarChar(255)
+  program                         Program                           @relation(fields: [programId], references: [id])
+  RubricEvaluationParameter       RubricEvaluationParameter[]
+  RubricEvaluationParameterRating RubricEvaluationParameterRating[]
 }
 
 model RubricEvaluationParameter {
   id       String @id @db.VarChar(255)
-  rubricId String @id @db.VarChar(255)
+  rubricId String @db.VarChar(255)
   rubric   Rubric @relation(fields: [rubricId], references: [id])
 
-  title       String
-  description String
+  title                           String
+  description                     String
+  RubricEvaluationParameterRating RubricEvaluationParameterRating[]
 }
 
 model RubricEvaluationParameterRating {
