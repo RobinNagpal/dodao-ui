@@ -28,7 +28,6 @@ export default function RatingModal<T extends GuideFeedback | ByteFeedback | und
   setRating,
 }: RatingModalProps<T>) {
   const [selectedRating, setSelectedRating] = useState<number>();
-  const [selectedFeedback, setSelectedFeedback] = useState<GuideFeedback | ByteFeedback>({});
   const [textareaValue, setTextareaValue] = useState('');
   const skipOrCloseModal = async () => {
     if (selectedRating !== undefined) {
@@ -47,7 +46,6 @@ export default function RatingModal<T extends GuideFeedback | ByteFeedback | und
     } else if (optionName === 'ux') {
       feedback.ux = true;
     }
-    setSelectedFeedback(feedback);
     await setRating(selectedRating!, feedback as T, textareaValue);
     onClose();
   };
