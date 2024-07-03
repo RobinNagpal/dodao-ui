@@ -14,7 +14,7 @@ mutation UpsertShortVideo($spaceId: String!, $shortVideo: ShortVideoInput!) {
     ...ShortVideo
   }
 }
-mutation DeleteShortVideo($spaceId: String!, $shortVideoId: ShortVideoInput!) {
+mutation DeleteShortVideo($spaceId: String!, $shortVideoId: String!) {
   deleteShortVideo(spaceId: $spaceId, shortVideoId: $shortVideoId) {
     ...ShortVideo
   }

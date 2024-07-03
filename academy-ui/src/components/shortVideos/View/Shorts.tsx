@@ -29,9 +29,7 @@ function ShortsThumbnail({ shortVideo, space }: ShortsThumbnailProps) {
   const threeDotItems: EllipsisDropdownItem[] = [{ label: 'Delete', key: 'delete' }];
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteShortVideoMutation] = useDeleteShortVideoMutation();
-  const { data, loading, error } = useShortVideosQuery({
-    variables: { spaceId: space!.id },
-  });
+
   const router = useRouter();
   return (
     <div className="flex justify-between justify-items-end">
@@ -89,11 +87,7 @@ interface ShortsUIProps {
 export default function Shorts({ shortVideos, space }: ShortsUIProps) {
   return (
     <PageWrapper>
-      <Grid5Cols>
-        {shortVideos.map((video, index) => (
-          <ShortsThumbnail key={index} shortVideo={video} space={space} />
-        ))}
-      </Grid5Cols>
+      <Grid5Cols>{shortVideos.map((video, index) => !video.archive && <ShortsThumbnail key={index} shortVideo={video} space={space} />)}</Grid5Cols>
     </PageWrapper>
   );
 }

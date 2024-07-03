@@ -134,6 +134,7 @@ type ByteCollectionByte {
 }
 
 type ByteCollectionCategory {
+  archive: Boolean!
   byteCollectionIds: [String!]!
   excerpt: String
   id: String!
@@ -201,6 +202,7 @@ type ByteRating {
   ratingUuid: String!
   skipRating: Boolean
   spaceId: String!
+  suggestion: String
   updatedAt: DateTimeISO!
   userId: String
   username: String
@@ -281,6 +283,7 @@ type ByteUserInput {
 }
 
 type CategoryWithByteCollection {
+  archive: Boolean!
   byteCollections: [ByteCollection!]!
   creator: String!
   excerpt: String!
@@ -959,6 +962,7 @@ type GuideRating {
   skipStartRating: Boolean
   spaceId: String!
   startRating: Int
+  suggestion: String
   updatedAt: DateTimeISO!
   userId: String
   username: String
@@ -1173,6 +1177,7 @@ type Mutation {
   deleteAndPullCourseRepo(courseKey: String!, spaceId: String!): GitCourse!
   deleteByte(byteId: String!, spaceId: String!): Boolean!
   deleteByteCollection(byteCollectionId: String!): Boolean!
+  deleteByteCollectionCategory(categoryId: String!, spaceId: String!): ByteCollectionCategory!
   deleteChatbotCategory(id: String!, spaceId: String!): Boolean!
   deleteChatbotFAQ(id: String!, spaceId: String!): Boolean!
   deleteChatbotUserQuestion(id: String!, spaceId: String!): Boolean!
@@ -1381,11 +1386,11 @@ type ProjectByteCollection {
   priority: Int!
   seoMeta: SEOMeta
   status: String!
-  videoAspectRatio: String
   videoUrl: String
 }
 
 type ProjectShortVideo {
+  archive: Boolean
   archived: Boolean!
   createdAt: String!
   description: String!
@@ -1399,6 +1404,7 @@ type ProjectShortVideo {
 }
 
 input ProjectShortVideoInput {
+  archive: Boolean
   description: String!
   id: ID!
   priority: Int!
@@ -1550,6 +1556,7 @@ input SendEmailInput {
 }
 
 type ShortVideo {
+  archive: Boolean
   createdAt: String!
   description: String!
   id: ID!
@@ -1561,6 +1568,7 @@ type ShortVideo {
 }
 
 input ShortVideoInput {
+  archive: Boolean
   description: String!
   id: ID!
   priority: Int!
@@ -1905,6 +1913,7 @@ input UpsertAcademyTaskInput {
 }
 
 input UpsertByteCollectionCategory {
+  archive: Boolean!
   byteCollectionIds: [String!]!
   excerpt: String!
   id: String!
@@ -1939,6 +1948,7 @@ input UpsertByteRatingInput {
   ratingUuid: String!
   skipRating: Boolean
   spaceId: String!
+  suggestion: String
   userId: String
 }
 
@@ -2009,6 +2019,7 @@ input UpsertGuideRatingInput {
   skipStartRating: Boolean
   spaceId: String!
   startRating: Int
+  suggestion: String
   userId: String
 }
 
@@ -2021,7 +2032,6 @@ input UpsertProjectByteCollectionInput {
   projectId: String!
   seoMeta: SEOMetaInput
   status: String!
-  videoAspectRatio: String
   videoUrl: String
 }
 
