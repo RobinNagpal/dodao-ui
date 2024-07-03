@@ -8,8 +8,6 @@ export async function GET(req: Request) {
   if (domain) {
     spaceId = await getSpaceIdForDomain(domain);
   }
-  if (!spaceId) {
-    throw new Error('No spaceId or domain provided');
-  }
+  if (!spaceId) return NextResponse.json({ status: 400, body: 'No spaceId or domain provided' });
   return NextResponse.json({ status: 200, body: await getSpaceWithIntegrations(spaceId) });
 }
