@@ -3562,7 +3562,7 @@ export type ByteDetailsFragmentFragment = { __typename?: 'Byte', postSubmissionS
 
 export type ByteSummaryFragment = { __typename?: 'Byte', content: string, created: string, id: string, name: string, admins: Array<string>, tags: Array<string>, priority: number, videoUrl?: string | null, videoAspectRatio?: string | null };
 
-export type ByteRatingFragment = { __typename?: 'ByteRating', ratingUuid: string, createdAt: any, rating?: number | null, byteId: string, ipAddress?: string | null, skipRating?: boolean | null, spaceId: string, updatedAt: any, userId?: string | null, username?: string | null, negativeFeedback?: { __typename?: 'ByteFeedback', content?: boolean | null, ux?: boolean | null } | null, positiveFeedback?: { __typename?: 'ByteFeedback', ux?: boolean | null, content?: boolean | null } | null };
+export type ByteRatingFragment = { __typename?: 'ByteRating', ratingUuid: string, createdAt: any, rating?: number | null, byteId: string, ipAddress?: string | null, skipRating?: boolean | null, spaceId: string, updatedAt: any, userId?: string | null, username?: string | null, suggestion?: string | null, negativeFeedback?: { __typename?: 'ByteFeedback', content?: boolean | null, ux?: boolean | null } | null, positiveFeedback?: { __typename?: 'ByteFeedback', ux?: boolean | null, content?: boolean | null } | null };
 
 export type QueryBytesQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -3586,7 +3586,7 @@ export type ByteRatingsQueryVariables = Exact<{
 }>;
 
 
-export type ByteRatingsQuery = { __typename?: 'Query', byteRatings: Array<{ __typename?: 'ByteRating', ratingUuid: string, createdAt: any, rating?: number | null, byteId: string, ipAddress?: string | null, skipRating?: boolean | null, spaceId: string, updatedAt: any, userId?: string | null, username?: string | null, negativeFeedback?: { __typename?: 'ByteFeedback', content?: boolean | null, ux?: boolean | null } | null, positiveFeedback?: { __typename?: 'ByteFeedback', ux?: boolean | null, content?: boolean | null } | null }> };
+export type ByteRatingsQuery = { __typename?: 'Query', byteRatings: Array<{ __typename?: 'ByteRating', ratingUuid: string, createdAt: any, rating?: number | null, byteId: string, ipAddress?: string | null, skipRating?: boolean | null, spaceId: string, updatedAt: any, userId?: string | null, username?: string | null, suggestion?: string | null, negativeFeedback?: { __typename?: 'ByteFeedback', content?: boolean | null, ux?: boolean | null } | null, positiveFeedback?: { __typename?: 'ByteFeedback', ux?: boolean | null, content?: boolean | null } | null }> };
 
 export type ConsolidatedByteRatingQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -3618,7 +3618,7 @@ export type UpsertByteRatingsMutationVariables = Exact<{
 }>;
 
 
-export type UpsertByteRatingsMutation = { __typename?: 'Mutation', payload: { __typename?: 'ByteRating', ratingUuid: string, createdAt: any, rating?: number | null, byteId: string, ipAddress?: string | null, skipRating?: boolean | null, spaceId: string, updatedAt: any, userId?: string | null, username?: string | null, negativeFeedback?: { __typename?: 'ByteFeedback', content?: boolean | null, ux?: boolean | null } | null, positiveFeedback?: { __typename?: 'ByteFeedback', ux?: boolean | null, content?: boolean | null } | null } };
+export type UpsertByteRatingsMutation = { __typename?: 'Mutation', payload: { __typename?: 'ByteRating', ratingUuid: string, createdAt: any, rating?: number | null, byteId: string, ipAddress?: string | null, skipRating?: boolean | null, spaceId: string, updatedAt: any, userId?: string | null, username?: string | null, suggestion?: string | null, negativeFeedback?: { __typename?: 'ByteFeedback', content?: boolean | null, ux?: boolean | null } | null, positiveFeedback?: { __typename?: 'ByteFeedback', ux?: boolean | null, content?: boolean | null } | null } };
 
 export type ChatbotSubCategoryFragment = { __typename?: 'ChatbotSubcategory', name: string, key: string, description: string };
 
@@ -4090,7 +4090,7 @@ export type UpsertGnosisSafeWalletsMutationVariables = Exact<{
 
 export type UpsertGnosisSafeWalletsMutation = { __typename?: 'Mutation', payload: { __typename?: 'Space', id: string } };
 
-export type GuideRatingFragment = { __typename?: 'GuideRating', ratingUuid: string, createdAt: any, endRating?: number | null, guideUuid: string, ipAddress?: string | null, skipEndRating?: boolean | null, skipStartRating?: boolean | null, spaceId: string, startRating?: number | null, updatedAt: any, userId?: string | null, username?: string | null, negativeFeedback?: { __typename?: 'GuideFeedback', content?: boolean | null, questions?: boolean | null, ux?: boolean | null } | null, positiveFeedback?: { __typename?: 'GuideFeedback', ux?: boolean | null, questions?: boolean | null, content?: boolean | null } | null };
+export type GuideRatingFragment = { __typename?: 'GuideRating', ratingUuid: string, createdAt: any, endRating?: number | null, guideUuid: string, ipAddress?: string | null, skipEndRating?: boolean | null, skipStartRating?: boolean | null, spaceId: string, startRating?: number | null, updatedAt: any, userId?: string | null, username?: string | null, suggestion?: string | null, negativeFeedback?: { __typename?: 'GuideFeedback', content?: boolean | null, questions?: boolean | null, ux?: boolean | null } | null, positiveFeedback?: { __typename?: 'GuideFeedback', ux?: boolean | null, questions?: boolean | null, content?: boolean | null } | null };
 
 export type UpsertGuideRatingsMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -4098,7 +4098,7 @@ export type UpsertGuideRatingsMutationVariables = Exact<{
 }>;
 
 
-export type UpsertGuideRatingsMutation = { __typename?: 'Mutation', payload: { __typename?: 'GuideRating', ratingUuid: string, createdAt: any, endRating?: number | null, guideUuid: string, ipAddress?: string | null, skipEndRating?: boolean | null, skipStartRating?: boolean | null, spaceId: string, startRating?: number | null, updatedAt: any, userId?: string | null, username?: string | null, negativeFeedback?: { __typename?: 'GuideFeedback', content?: boolean | null, questions?: boolean | null, ux?: boolean | null } | null, positiveFeedback?: { __typename?: 'GuideFeedback', ux?: boolean | null, questions?: boolean | null, content?: boolean | null } | null } };
+export type UpsertGuideRatingsMutation = { __typename?: 'Mutation', payload: { __typename?: 'GuideRating', ratingUuid: string, createdAt: any, endRating?: number | null, guideUuid: string, ipAddress?: string | null, skipEndRating?: boolean | null, skipStartRating?: boolean | null, spaceId: string, startRating?: number | null, updatedAt: any, userId?: string | null, username?: string | null, suggestion?: string | null, negativeFeedback?: { __typename?: 'GuideFeedback', content?: boolean | null, questions?: boolean | null, ux?: boolean | null } | null, positiveFeedback?: { __typename?: 'GuideFeedback', ux?: boolean | null, questions?: boolean | null, content?: boolean | null } | null } };
 
 export type GuideRatingsQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -4106,7 +4106,7 @@ export type GuideRatingsQueryVariables = Exact<{
 }>;
 
 
-export type GuideRatingsQuery = { __typename?: 'Query', guideRatings: Array<{ __typename?: 'GuideRating', ratingUuid: string, createdAt: any, endRating?: number | null, guideUuid: string, ipAddress?: string | null, skipEndRating?: boolean | null, skipStartRating?: boolean | null, spaceId: string, startRating?: number | null, updatedAt: any, userId?: string | null, username?: string | null, negativeFeedback?: { __typename?: 'GuideFeedback', content?: boolean | null, questions?: boolean | null, ux?: boolean | null } | null, positiveFeedback?: { __typename?: 'GuideFeedback', ux?: boolean | null, questions?: boolean | null, content?: boolean | null } | null }> };
+export type GuideRatingsQuery = { __typename?: 'Query', guideRatings: Array<{ __typename?: 'GuideRating', ratingUuid: string, createdAt: any, endRating?: number | null, guideUuid: string, ipAddress?: string | null, skipEndRating?: boolean | null, skipStartRating?: boolean | null, spaceId: string, startRating?: number | null, updatedAt: any, userId?: string | null, username?: string | null, suggestion?: string | null, negativeFeedback?: { __typename?: 'GuideFeedback', content?: boolean | null, questions?: boolean | null, ux?: boolean | null } | null, positiveFeedback?: { __typename?: 'GuideFeedback', ux?: boolean | null, questions?: boolean | null, content?: boolean | null } | null }> };
 
 export type ConsolidatedGuideRatingQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -5066,10 +5066,10 @@ export const CategoryWithByteCollectionFragmentDoc = gql`
   creator
   status
   priority
+  archive
   byteCollections {
     ...ByteCollection
   }
-  archive
 }
     ${ByteCollectionFragmentDoc}`;
 export const ByteLinkedinPdfContentStepFragmentDoc = gql`
@@ -5259,6 +5259,7 @@ export const ByteRatingFragmentDoc = gql`
   updatedAt
   userId
   username
+  suggestion
 }
     `;
 export const ChatbotSubCategoryFragmentDoc = gql`
@@ -5564,6 +5565,7 @@ export const GuideRatingFragmentDoc = gql`
   updatedAt
   userId
   username
+  suggestion
 }
     `;
 export const GuideSummaryFragmentDoc = gql`

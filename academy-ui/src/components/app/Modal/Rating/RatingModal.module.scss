@@ -8,3 +8,10 @@
 .ModalHeading {
   color: var(--heading-color);
 }
+
+.TextArea {
+  border-color: var(--border-color);
+}
+.TextArea:focus {
+  border-color: var(--primary-color);
+}

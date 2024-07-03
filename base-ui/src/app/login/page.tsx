@@ -13,7 +13,7 @@ export default async function RegisterPage() {
   }
 
   return (
-    <section className="h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--bg-color)' }}>
+    <section className="h-full flex items-center justify-center pt-36" style={{ backgroundColor: 'var(--bg-color)' }}>
       <div className="w-[600px]">
         <LoginForm space={space!} />
       </div>

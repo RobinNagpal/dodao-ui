@@ -22,6 +22,7 @@ fragment GuideRating on GuideRating {
   updatedAt
   userId
   username
+  suggestion
 }
 
 mutation UpsertGuideRatings($spaceId: String!, $upsertGuideRatingInput: UpsertGuideRatingInput!) {
