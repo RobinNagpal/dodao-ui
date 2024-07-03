@@ -34,8 +34,7 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
   @@map("accounts")
@@ -52,21 +51,19 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?
-  emailVerified DateTime? @map("email_verified")
-  image         String?
-  publicAddress String?   @map("public_address")
-  phone_number  String?   @map("phone_number")
-
-  spaceId      String @map("space_id")
-  username     String @map("username")
-  authProvider String @map("auth_provider")
-
+  id               String            @id @default(cuid())
+  name             String?
+  email            String?
+  emailVerified    DateTime?         @map("email_verified")
+  image            String?
+  publicAddress    String?           @map("public_address")
+  spaceId          String            @map("space_id")
+  username         String            @map("username")
+  authProvider     String            @map("auth_provider")
+  phone_number     String?           @map("phone_number")
   accounts         Account[]
-  sessions         Session[]
   cryptoLoginNonce CryptoLoginNonce?
+  sessions         Session[]
 
   @@unique([publicAddress, spaceId])
   @@unique([username, spaceId])
