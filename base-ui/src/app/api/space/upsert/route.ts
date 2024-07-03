@@ -3,21 +3,21 @@ import { prisma } from '@/prisma';
 import { Space } from '@prisma/client';
 
 export async function POST(req: Request) {
-  const { adminUsernamesV1, avatar, creator, features, id, name, domains, authSettings, themeColors } = await req.json();
+  const { adminUsernamesV1, avatar, creator, features, id, name, domains, authSettings, themeColors, verified, createdAt } = await req.json();
 
   const spaceInput: Space = {
-    adminUsernamesV1,
-    avatar,
-    creator,
-    features: features || [],
     id,
     name,
-    createdAt: new Date(),
-    verified: true,
-    updatedAt: new Date(),
+    creator,
+    avatar,
+    features,
     domains,
-    authSettings: authSettings,
-    themeColors: themeColors,
+    authSettings,
+    adminUsernamesV1,
+    themeColors,
+    verified,
+    createdAt,
+    updatedAt: new Date(),
   };
 
   const space = await prisma.space.upsert({

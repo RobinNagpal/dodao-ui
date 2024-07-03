@@ -32,7 +32,7 @@ export default function FullScreenModal({ open, title, children, onClose, showCl
           <div className="h-screen bg-gray-500 bg-opacity-75 transition-opacity" />
         </Transition.Child>
 
-        <div className={`fixed inset-0 z-10 overflow-y-auto ${styles.modalContainer}`}>
+        <div className={`fixed inset-0 z-10${styles.modalContainer}`}>
           <div className="flex min--hflul items-end justify-center text-center sm:items-center sm:p-0">
             <Transition.Child
               as={Fragment}
@@ -63,7 +63,7 @@ export default function FullScreenModal({ open, title, children, onClose, showCl
                         </div>
                       )}
                     </Dialog.Title>
-                    {children}
+                    <div className="overflow-y-auto max-h-[calc(100vh-4rem)]">{children}</div>
                   </div>
                 </StyledModalWrapper>
               </Dialog.Panel>

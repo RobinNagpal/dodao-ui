@@ -63,10 +63,6 @@ export default function RatingsTable({ ratingType, ratingsResponse, consolidated
     return <SpinnerWithText message={`Loading ${ratingType} Ratings`} />;
   }
 
-  if (!ratings || ratings.length === 0) {
-    return <div>{`No ${ratingType} Ratings`}</div>;
-  }
-
   const rowData = ratings.map((rating) => {
     return {
       id: rating.ratingUuid,
