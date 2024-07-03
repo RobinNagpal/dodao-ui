@@ -131,15 +131,15 @@ model Rubric {
   summary     String
   description String?
   criteria    String[]
-  programId   String
+  programId   String   @id @db.VarChar(255)
   program     Program  @relation(fields: [programId], references: [id])
-  spaceId     String   @relation(fields: [spaceId], references: [id])
 }
 
 model RubricEvaluationParameter {
-  id          String @id @db.VarChar(255)
-  rubricId    String @relation(fields: [rubricId], references: [id])
-  spaceId     String @relation(fields: [spaceId], references: [id])
+  id       String @id @db.VarChar(255)
+  rubricId String @id @db.VarChar(255)
+  rubric   Rubric @relation(fields: [rubricId], references: [id])
+
   title       String
   description String
 }
@@ -150,8 +150,6 @@ model RubricEvaluationParameterRating {
   rubric                      Rubric                    @relation(fields: [rubricId], references: [id])
   rubricEvaluationParameterId String                    @db.VarChar(255)
   rubticEvaluationParameter   RubricEvaluationParameter @relation(fields: [rubricEvaluationParameterId], references: [id])
-  spaceId                     String                    @db.VarChar(255)
-  space                       Space                     @relation(fields: [spaceId], references: [id])
 
   description String
   rating      Int
