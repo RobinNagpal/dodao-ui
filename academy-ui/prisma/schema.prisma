@@ -95,175 +95,40 @@ model CryptoLoginNonce {
 }
 
 model Space {
-  id                     String                   @id @db.VarChar(64)
-  verified               Boolean                  @default(false)
-  createdAt              DateTime                 @default(now()) @map("created_at")
-  creator                String                   @db.VarChar(64)
-  name                   String                   @db.VarChar(255)
-  updatedAt              DateTime                 @updatedAt @map("updated_at")
-  avatar                 String?                  @db.VarChar(255)
-  admins                 String[]
-  adminUsernames         String[]                 @default(dbgenerated("(ARRAY[]::character varying[])::character varying(255)[]")) @map("admin_usernames") @db.VarChar(255)
+  id               String            @id @db.VarChar(64)
+  verified         Boolean           @default(false)
+  createdAt        DateTime          @default(now()) @map("created_at")
+  creator          String            @db.VarChar(64)
+  name             String            @db.VarChar(255)
+  updatedAt        DateTime          @updatedAt @map("updated_at")
+  avatar           String?           @db.VarChar(255)
   /// [UsernameAndName]
-  adminUsernamesV1       Json[]                   @map("admin_usernames_v1") @db.JsonB
-  domains                String[]                 @default([])
-  skin                   String                   @default("dodao") @db.VarChar(128)
-  discordInvite          String?                  @map("discord_invite") @db.VarChar(1024)
-  telegramInvite         String?                  @map("telegram_invite") @db.VarChar(1024)
+  adminUsernamesV1 Json[]            @map("admin_usernames_v1") @db.JsonB
+  domains          String[]          @default([])
+  skin             String            @default("dodao") @db.VarChar(128)
+  discordInvite    String?           @map("discord_invite") @db.VarChar(1024)
+  telegramInvite   String?           @map("telegram_invite") @db.VarChar(1024)
   /// [SpaceInviteLinks]
-  inviteLinks            Json?                    @map("invite_links") @db.Json
+  inviteLinks      Json?             @map("invite_links") @db.Json
   /// [AuthSettings]
-  authSettings           Json                     @default("{}") @map("auth_settings") @db.Json
+  authSettings     Json              @default("{}") @map("auth_settings") @db.Json
   /// [GuideSettings]
-  guideSettings          Json                     @default("{}") @map("guide_settings") @db.Json
+  guideSettings    Json              @default("{}") @map("guide_settings") @db.Json
   /// [SocialSettings]
-  socialSettings         Json                     @default("{}") @map("social_settings") @db.Json
+  socialSettings   Json              @default("{}") @map("social_settings") @db.Json
   /// [ByteSettings]
-  byteSettings           Json                     @default("{}") @map("byte_settings") @db.Json
-  features               String[]
-  botDomains             String[]                 @default([])
-  Byte                   Byte[]
-  CourseIntegration      CourseIntegration[]
-  GitCourse              GitCourse[]
-  GuideIntegration       GuideIntegration[]
-  GuideStep              GuideStep[]
-  GuideSubmission        GuideSubmission[]
-  GuidesGuideStep        GuidesGuideStep[]
-  SpaceDiscord           SpaceDiscord[]
-  SpaceIntegration       SpaceIntegration?
+  byteSettings     Json              @default("{}") @map("byte_settings") @db.Json
+  features         String[]
+  botDomains       String[]          @default([])
+  SpaceDiscord     SpaceDiscord[]
+  SpaceIntegration SpaceIntegration?
   /// [ThemeColors]
-  themeColors            Json?                    @map("theme_colors") @db.Json
-  type                   String                   @default("ACADEMY_SITE") @db.VarChar(255)
-  ByteCollectionCategory ByteCollectionCategory[]
+  themeColors      Json?             @map("theme_colors") @db.Json
+  type             String            @default("ACADEMY_SITE") @db.VarChar(255)
   /// [TidbitsHomepage]
-  tidbitsHomepage        Json?                    @map("tidbits_homepage") @db.Json
+  tidbitsHomepage  Json?             @map("tidbits_homepage") @db.Json
 
   @@map("spaces")
-}
-
-model Byte {
-  id               String   @id @unique @db.VarChar(255)
-  name             String   @db.VarChar(255)
-  content          String
-  created          String   @db.VarChar(255)
-  admins           String[]
-  tags             String[]
-  priority         Int      @default(50) @map("priority")
-  /// [ByteStep]
-  steps            Json[]
-  spaceId          String   @map("space_id") @db.VarChar(255)
-  Space            Space    @relation(fields: [spaceId], references: [id])
-  videoUrl         String?  @map("video_url") @db.VarChar(1024)
-  videoAspectRatio String?  @map("video_aspect_ratio") @db.VarChar(255)
-  byteStyle        String?  @default("CardAndCircleProgress") @map("byte_style") @db.VarChar(255)
-  /// [CompletionScreen]
-  completionScreen Json?    @map("completion_screen") @db.Json
-
-  @@map("bytes")
-}
-
-model CourseIntegration {
-  id                            String   @id @db.VarChar(255)
-  spaceId                       String   @map("space_id") @db.VarChar(255)
-  courseKey                     String   @map("course_key") @db.VarChar(255)
-  createdAt                     DateTime @default(now()) @map("created_at")
-  createdBy                     String?  @map("created_by") @db.VarChar(256)
-  discordRoleIds                Json?    @map("discord_role_ids") @db.Json
-  discordRolePassingCount       Int?     @map("discord_role_passing_count")
-  discordWebhook                String?  @map("discord_webhook") @db.VarChar(1024)
-  projectGalaxyCredentialId     String?  @map("project_galaxy_credential_id") @db.VarChar(255)
-  projectGalaxyOatMintUrl       String?  @map("project_galaxy_oat_mint_url") @db.VarChar(255)
-  projectGalaxyOatPassingCount  Int?     @map("project_galaxy_oat_passing_count")
-  updatedAt                     DateTime @updatedAt @map("updated_at")
-  updatedBy                     String?  @map("updated_by") @db.VarChar(256)
-  projectGalaxyOatMintedContent String?  @map("project_galaxy_oat_minted_content")
-  space                         Space    @relation(fields: [spaceId], references: [id])
-
-  @@unique([spaceId, courseKey])
-  @@map("course_integrations")
-}
-
-model GitCourse {
-  id            String   @id @db.VarChar(255)
-  courseKey     String   @map("course_key") @db.VarChar(255)
-  spaceId       String   @map("space_id") @db.VarChar(66)
-  createdAt     DateTime @default(now()) @map("created_at")
-  createdBy     String?  @map("created_by") @db.VarChar(256)
-  weight        Int      @default(20) @map("weight")
-  updatedAt     DateTime @updatedAt @map("updated_at")
-  updatedBy     String?  @map("updated_by") @db.VarChar(256)
-  courseRepoUrl String   @map("course_repo_url") @db.VarChar(1024)
-  publishStatus String   @default("Live") @map("publish_status") @db.VarChar(128)
-  courseAdmins  Json     @map("course_admins") @db.Json
-  space         Space    @relation(fields: [spaceId], references: [id])
-
-  @@unique([spaceId, courseKey])
-  @@map("git_courses")
-}
-
-model GuideIntegration {
-  id                           String   @id @db.VarChar(255)
-  spaceId                      String   @map("space_id") @db.VarChar(255)
-  guideUuid                    String   @map("guide_uuid") @db.VarChar(255)
-  createdAt                    DateTime @default(now()) @map("created_at")
-  createdBy                    String?  @map("created_by") @db.VarChar(256)
-  discordRoleIds               Json?    @map("discord_role_ids") @db.Json
-  discordRolePassingCount      Int?     @map("discord_role_passing_count")
-  discordWebhook               String?  @map("discord_webhook") @db.VarChar(1024)
-  projectGalaxyCredentialId    String?  @map("project_galaxy_credential_id") @db.VarChar(255)
-  projectGalaxyOatMintUrl      String?  @map("project_galaxy_oat_mint_url") @db.VarChar(255)
-  updatedAt                    DateTime @updatedAt @map("updated_at")
-  updatedBy                    String?  @map("updated_by") @db.VarChar(256)
-  projectGalaxyOatPassingCount Int?     @map("project_galaxy_oat_passing_count")
-  Space                        Space    @relation(fields: [spaceId], references: [id])
-
-  @@unique([spaceId, guideUuid])
-  @@map("guide_integrations")
-}
-
-model GuideStep {
-  id        String   @id @db.VarChar(66)
-  uuid      String   @db.VarChar(66)
-  createdAt DateTime @default(now()) @map("created_at")
-  stepName  String   @map("step_name") @db.VarChar(255)
-  content   String
-  stepItems Json     @map("step_items") @db.Json
-  stepOrder Int      @map("step_order")
-  spaceId   String   @map("space_id") @db.VarChar(64)
-  space     Space    @relation(fields: [spaceId], references: [id])
-
-  @@map("guide_steps")
-}
-
-model GuideSubmission {
-  id                    String   @id @db.VarChar(66)
-  createdAt             DateTime @default(now()) @map("created_at")
-  createdBy             String   @map("created_by") @db.VarChar(64)
-  createdByUsername     String   @map("created_by_username") @db.VarChar(128)
-  guideId               String   @map("guide_id") @db.VarChar(64)
-  guideUuid             String   @map("guide_uuid") @db.VarChar(255)
-  /// [GuideSubmissionResult]
-  result                Json     @db.Json
-  spaceId               String   @map("space_id") @db.VarChar(64)
-  /// [GuideStepSubmissionArray]
-  steps                 Json     @db.Json
-  uuid                  String   @db.VarChar(255)
-  ipAddress             String?  @map("ip_address") @db.VarChar(64)
-  correctQuestionsCount Int      @map("correct_questions_count")
-  space                 Space    @relation(fields: [spaceId], references: [id])
-
-  @@map("guide_submissions")
-}
-
-model GuidesGuideStep {
-  id          String   @id @db.VarChar(255)
-  guideStepId String   @map("guide_step_id") @db.VarChar(66)
-  guideId     String   @map("guide_id") @db.VarChar(66)
-  createdAt   DateTime @default(now()) @map("created_at")
-  spaceId     String   @map("space_id") @db.VarChar(64)
-  space       Space    @relation(fields: [spaceId], references: [id])
-
-  @@map("guides_guide_steps")
 }
 
 model SpaceIntegration {
@@ -285,23 +150,6 @@ model SpaceIntegration {
   space                      Space    @relation(fields: [spaceId], references: [id])
 
   @@map("space_integrations")
-}
-
-model ByteCollectionCategory {
-  id                String   @id @db.VarChar(255)
-  createdAt         DateTime @default(now()) @map("created_at")
-  updatedAt         DateTime @updatedAt @map("updated_at")
-  name              String   @db.VarChar(255)
-  excerpt           String   @db.VarChar(255)
-  imageUrl          String?  @map("image_url") @db.VarChar(1024)
-  byteCollectionIds String[] @map("byte_collection_ids") @db.VarChar(255)
-  creator           String   @db.VarChar(64)
-  spaceId           String   @map("space_id") @db.VarChar(66)
-  Space             Space    @relation(fields: [spaceId], references: [id])
-  status            String   @default("Active") @db.VarChar(255)
-  priority          Int      @default(50)
-
-  @@map("byte_collections_category")
 }
 
 model SpaceDiscord {
