@@ -3,7 +3,7 @@ import { logError } from '@/app/api/helpers/adapters/errorLogger';
 import { PredefinedSpaces } from '@/app/api/helpers/constants/constants';
 import { presignedUrlCreator } from '@/app/api/helpers/s3/getPresignedUrl';
 import { checkEditSpacePermission } from '@/app/api/helpers/space/checkEditSpacePermission';
-import { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
   try {
@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
       await checkEditSpacePermission(spaceById, req);
     }
 
-    return await presignedUrlCreator.createSignedUrl(spaceById.id, input);
+    return NextResponse.json({ status: 200, body: await presignedUrlCreator.createSignedUrl(spaceById.id, input) });
   } catch (e) {
     await logError((e as any)?.response?.data || 'Error in createSignedUrlMutation', {}, e as any, null, null);
     throw e;
