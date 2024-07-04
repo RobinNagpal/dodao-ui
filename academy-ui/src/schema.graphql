@@ -1183,6 +1183,7 @@ type Mutation {
   deleteChatbotUserQuestion(id: String!, spaceId: String!): Boolean!
   deleteGitCourseSubmission(courseKey: String!, spaceId: String!): Boolean!
   deleteGuide(spaceId: String!, uuid: String!): Boolean!
+  deleteShortVideo(shortVideoId: String!, spaceId: String!): ShortVideo!
   deleteTopic(spaceId: String!, topicInfo: DeleteTopicInput!): GitCourse!
   deleteTopicExplanation(explanationInfo: DeleteTopicExplanationInput!, spaceId: String!): GitCourse!
   deleteTopicQuestion(questionInfo: DeleteTopicQuestionInput!, spaceId: String!): GitCourse!
@@ -1389,6 +1390,7 @@ type ProjectByteCollection {
 }
 
 type ProjectShortVideo {
+  archive: Boolean
   archived: Boolean!
   createdAt: String!
   description: String!
@@ -1402,6 +1404,7 @@ type ProjectShortVideo {
 }
 
 input ProjectShortVideoInput {
+  archive: Boolean
   description: String!
   id: ID!
   priority: Int!
@@ -1553,6 +1556,7 @@ input SendEmailInput {
 }
 
 type ShortVideo {
+  archive: Boolean
   createdAt: String!
   description: String!
   id: ID!
@@ -1564,6 +1568,7 @@ type ShortVideo {
 }
 
 input ShortVideoInput {
+  archive: Boolean
   description: String!
   id: ID!
   priority: Int!

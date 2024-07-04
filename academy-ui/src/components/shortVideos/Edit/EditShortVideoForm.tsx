@@ -44,6 +44,7 @@ export default function EditProjectShortVideoModal({ shortVideoToEdit, spaceId, 
     priority: null,
     thumbnail: null,
     videoUrl: null,
+    archive: false,
   });
 
   const { showNotification } = useNotificationContext();
@@ -55,6 +56,7 @@ export default function EditProjectShortVideoModal({ shortVideoToEdit, spaceId, 
       priority: null,
       thumbnail: null,
       videoUrl: null,
+      archive: false,
     };
     if (!shortVideo.title || shortVideo.title.length < 3) {
       errors['title'] = 'Add a proper title';
