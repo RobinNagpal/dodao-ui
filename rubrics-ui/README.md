@@ -2,7 +2,16 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-First, run the development server:
+If you are inside ruberics-ui directory run
+
+```bash
+npm prisma migrate dev
+
+```
+
+Then copy code inside init.sql and run all queries on next_app_localhost_db_rubrics_ui database
+
+Then, run the development server:
 
 ```bash
 npm run dev

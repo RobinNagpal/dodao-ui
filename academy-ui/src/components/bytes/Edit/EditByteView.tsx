@@ -20,6 +20,8 @@ import SingleCardLayout from '@/layouts/SingleCardLayout';
 import { ByteErrors } from '@dodao/web-core/types/errors/byteErrors';
 import { router } from 'next/client';
 import { useEffect, useState } from 'react';
+import UploadInput from '@/components/app/UploadInput';
+import { ImageType } from '@/graphql/generated/generated-types';
 
 export default function EditByteView(props: { space: SpaceWithIntegrationsFragment; onUpsert: (byteId: string) => Promise<void>; byteId?: string }) {
   const { space, byteId } = props;
@@ -53,7 +55,7 @@ export default function EditByteView(props: { space: SpaceWithIntegrationsFragme
   return (
     <PageWrapper>
       <SingleCardLayout>
-        <div className="px-4 mb-4 md:px-0 flex justify-between">
+        <div className="px-4 md:px-0 flex justify-end">
           <div>
             {!byteId && <Button onClick={() => setShowAIGenerateModel(true)}>Create with AI</Button>}
             <AddByteQuestionsUsingAIButton
@@ -78,8 +80,8 @@ export default function EditByteView(props: { space: SpaceWithIntegrationsFragme
 
         {byteLoaded ? (
           <div className="pb-10">
-            <Block title="Basic Info" className="mt-4">
-              <div className="mb-2">
+            <Block title="Basic Info">
+              <div className="mb-8">
                 <Input modelValue={byte.name} error={inputError('name')} maxLength={32} onUpdate={(e) => updateByteFunctions.updateByteField('name', e)}>
                   Name *
                 </Input>
@@ -102,15 +104,17 @@ export default function EditByteView(props: { space: SpaceWithIntegrationsFragme
                   onUpdate={(e) => updateByteFunctions.updateByteField('admins', e)}
                 />
 
-                <Input
+                <UploadInput
+                  error=""
+                  spaceId={space?.id || 'new-space'}
+                  imageType={ImageType.ShortVideo}
                   modelValue={byte.videoUrl}
-                  placeholder="Video URL for the byte"
-                  maxLength={1024}
-                  onUpdate={(e) => updateByteFunctions.updateByteField('videoUrl', e)}
-                >
-                  Video URL
-                </Input>
-
+                  objectId={'new-byte-video'}
+                  allowedFileTypes={['video/mp4', 'video/x-m4v', 'video/*']}
+                  label={'Video URL'}
+                  onInput={(e) => updateByteFunctions.updateByteField('videoUrl', e)}
+                  placeholder="e.g. https://example.com/video.mp4"
+                />
                 <TextareaArray
                   label="Tags"
                   id="tags"

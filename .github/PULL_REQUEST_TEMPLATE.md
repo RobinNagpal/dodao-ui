@@ -36,3 +36,4 @@ Include the link to the video below and make sure the video covers
 - [ ] Show the changes in the codebase
 - [ ] Show the changes you tested to make sure it works
 - [ ] Show the changes in various screen sizes
+- [ ] Show the changes in both light and dark themes

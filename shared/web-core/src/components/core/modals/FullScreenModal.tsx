@@ -33,7 +33,7 @@ export default function FullScreenModal({ open, title, children, onClose, showCl
         </Transition.Child>
 
         <div className={`fixed inset-0 z-10${styles.modalContainer}`}>
-          <div className="flex min--hflul items-end justify-center text-center sm:items-center sm:p-0">
+          <div className="flex min--hflul items-end justify-center text-center sm:items-center sm:p-0 h-full">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -43,8 +43,8 @@ export default function FullScreenModal({ open, title, children, onClose, showCl
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className={'relative transform overflow-hidden text-left transition-all w-full ' + styles.dialogMargin}>
-                <StyledModalWrapper className={'w-full'}>
+              <Dialog.Panel className={'relative transform overflow-hidden text-left transition-all w-full h-full ' + styles.dialogMargin}>
+                <StyledModalWrapper className={'w-full h-full'}>
                   <div className="text-center">
                     <Dialog.Title as="h3" className={'flex text-base font-semibold leading-6 justify-between p-2 ' + styles.modalTitle}>
                       <div className="w-full align-center text-center text-xl mt-1">{title}</div>
