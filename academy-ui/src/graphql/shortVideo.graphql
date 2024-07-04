@@ -14,7 +14,11 @@ mutation UpsertShortVideo($spaceId: String!, $shortVideo: ShortVideoInput!) {
     ...ShortVideo
   }
 }
-
+mutation DeleteShortVideo($spaceId: String!, $shortVideoId: String!) {
+  deleteShortVideo(spaceId: $spaceId, shortVideoId: $shortVideoId) {
+    ...ShortVideo
+  }
+}
 query ShortVideos($spaceId: String!) {
   shortVideos(spaceId: $spaceId) {
     ...ShortVideo
@@ -22,7 +26,7 @@ query ShortVideos($spaceId: String!) {
 }
 
 query ShortVideo($spaceId: String!, $id: String!) {
-  shortVideo(spaceId: $spaceId, id: $id){
+  shortVideo(spaceId: $spaceId, id: $id) {
     ...ShortVideo
   }
 }
