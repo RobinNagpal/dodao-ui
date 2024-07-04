@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    return spaceById;
+    return NextResponse.json({ status: 200, body: spaceById });
   } catch (e) {
     console.error((e as any)?.response?.data);
     throw e;
