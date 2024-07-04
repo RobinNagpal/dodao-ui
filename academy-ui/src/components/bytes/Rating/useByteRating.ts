@@ -10,17 +10,17 @@ export type ByteRatingsHelper = {
   setByteRating: (rating: number, feedback?: ByteFeedback, suggestion?: string) => Promise<void>;
 };
 
-export function useByteRatings(space: Space, byte: ByteDetailsFragment, byteSubmission: boolean): ByteRatingsHelper {
+export function useByteRatings(space: Space, byte: ByteDetailsFragment, byteSubmitted: boolean): ByteRatingsHelper {
   const [showRatingsModal, setShowRatingsModal] = useState(false);
   const [upsertByteRatingsMutation] = useUpsertByteRatingsMutation();
   const [shownByteRatingsModal, setShownByteRatingsModal] = useState(false);
 
   useEffect(() => {
-    if (byteSubmission && !shownByteRatingsModal) {
+    if (byteSubmitted && !shownByteRatingsModal) {
       setShownByteRatingsModal(true);
-      setShowRatingsModal(true);
+      showRatingsModalIfNotShownRecently(true);
     }
-  }, [byteSubmission]);
+  }, [byteSubmitted]);
 
   const showRatingsModalIfNotShownRecently = (showModal: boolean) => {
     const lastShownString = localStorage.getItem('lastRatingModalShown');
@@ -28,11 +28,18 @@ export function useByteRatings(space: Space, byte: ByteDetailsFragment, byteSubm
     const now = new Date().getTime();
     const oneHour = 60 * 60 * 1000; // One hour in milliseconds
 
-    if (showModal && (!lastShown || now - lastShown.getTime() > oneHour)) {
-      setShownByteRatingsModal(showModal);
-    } else {
+    const shownInLastOneHour = lastShown && now - lastShown.getTime() < oneHour;
+
+    if (showModal && !shownInLastOneHour) {
+      setShownByteRatingsModal(true);
+      setShowRatingsModal(true);
+      localStorage.setItem('lastRatingModalShown', now.toString());
+    } else if (showModal && shownInLastOneHour) {
       // no need to do anything as the ratings modal was recently shown
-      setShownByteRatingsModal(showModal);
+      setShowRatingsModal(false);
+      setShownByteRatingsModal(true);
+    } else {
+      setShowRatingsModal(showModal);
     }
   };
 
@@ -78,6 +85,7 @@ export function useByteRatings(space: Space, byte: ByteDetailsFragment, byteSubm
       },
       refetchQueries: ['ByteRatings', 'ConsolidatedByteRating'],
     });
+    showRatingsModalIfNotShownRecently(false);
   };
 
   const skipByteRating = async () => {

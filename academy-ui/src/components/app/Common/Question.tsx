@@ -96,7 +96,7 @@ function Question({ answerClass = '', question, questionResponse, readonly, show
               <div key={choice.key} className={`leading-loose items-center py-2 sm:py-0 -ml-2`}>
                 <div className="mt-2">
                   <RadioOption
-                    key={question.uuid + choice.key}
+                    optionKey={question.uuid + choice.key}
                     value={choice.key}
                     content={choice.content}
                     isSelected={isSelected}
