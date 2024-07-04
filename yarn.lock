@@ -3054,6 +3054,13 @@
   resolved "https://registry.npmjs.org/@pedrouid/environment/-/environment-1.0.1.tgz"
   integrity sha512-HaW78NszGzRZd9SeoI3JD11JqY+lubnaOx7Pewj5pfjqWXOEATpeKIFb9Z4t2WBUK2iryiXX3lzWwmYWgUL0Ug==
 
+"@pinecone-database/pinecone@0.1.6":
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/@pinecone-database/pinecone/-/pinecone-0.1.6.tgz#13374ae9462c8eea0dc26683cafeddc4e7c0375f"
+  integrity sha512-tCnVc28udecthhgSBTdcMhYEW+xsR++AdZasp+ZE/AvUD1hOR2IR3edjk9m0sDxZyvXbno2KeqUbLIOZr7sCTw==
+  dependencies:
+    cross-fetch "^3.1.5"
+
 "@popperjs/core@^2.11.8", "@popperjs/core@^2.9.2":
   version "2.11.8"
   resolved "https://registry.npmjs.org/@popperjs/core/-/core-2.11.8.tgz"
