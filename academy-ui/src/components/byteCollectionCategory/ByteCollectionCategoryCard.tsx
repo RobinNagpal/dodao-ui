@@ -43,8 +43,8 @@ export default function ByteCollectionCategoryCard(props: ByteCollectionCategory
   }
   return (
     <Card>
-      <Link href={`/tidbit-collection-categories/view/${category.id}/tidbit-collections`} className="card blog-card w-inline-block h-full w-full">
-        <div id="inside-link" className="p-6">
+      <div className="card blog-card w-full h-full">
+        <Link href={`/tidbit-collection-categories/view/${category.id}/tidbit-collections`} className="block p-6">
           <div className="w-full flex justify-end h-8">
             {isUserAdmin && category.status === ByteCollectionCategoryStatus.Hidden && (
               <Badge size={BadgeSize.md} color={BadgeColor.red}>
@@ -61,18 +61,20 @@ export default function ByteCollectionCategoryCard(props: ByteCollectionCategory
                 Try It Out
               </Badge>
             )}
-            <ByteCollectionCategoryCardAdminDropdown categoryId={category.id} />
           </div>
           <div className="flex items-center justify-center w-12 h-12">
             {category.imageUrl && <img style={{ maxWidth: '50px' }} src={category.imageUrl} alt="category image" />}
           </div>
           <h3 className="text-xl font-semibold mt-6">{category.name}</h3>
           <p className="text-md mt-2 mb-4">{category.excerpt}</p>
-          <Link href={`/tidbit-collection-categories/view/${category.id}/tidbit-collections`} className={`fixed bottom-3 ${styles.learnMoreLink}`}>
-            Learn more &#x2192;
-          </Link>
+        </Link>
+        <div className="absolute top-2 right-2">
+          <ByteCollectionCategoryCardAdminDropdown categoryId={category.id} />
         </div>
-      </Link>
+        <Link href={`/tidbit-collection-categories/view/${category.id}/tidbit-collections`} className={`fixed bottom-3 pl-6 ${styles.learnMoreLink}`}>
+          Learn more &#x2192;
+        </Link>
+      </div>
     </Card>
   );
 }
