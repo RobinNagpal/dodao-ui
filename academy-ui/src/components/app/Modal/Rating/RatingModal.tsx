@@ -70,14 +70,18 @@ export default function RatingModal<T extends GuideFeedback | ByteFeedback | und
 
         {selectedRating && (
           <div className="flex flex-col items-center mt-8">
-            <div className="mt-8 w-full max-w-md">
-              <textarea
-                className={`w-full p-4 border rounded-lg ${styles.TextArea}`}
-                placeholder="Please provide your feedback here..."
-                onChange={(e) => setTextareaValue(e.target.value)}
-                value={textareaValue}
-              />
-            </div>
+            {selectedRating < 4 ? (
+              <div className="mb-8 w-full max-w-md">
+                <textarea
+                  className={`w-full p-4 border rounded-lg ${styles.TextArea}`}
+                  placeholder="Please provide your feedback here..."
+                  onChange={(e) => setTextareaValue(e.target.value)}
+                  value={textareaValue}
+                />
+              </div>
+            ) : (
+              <div></div>
+            )}
             {selectedRating > 2 ? (
               <div className="flex flex-row items-center justify-center">
                 <h2 className="text-xl mr-2 font-semibold leading-6">What did you like the most?</h2>
