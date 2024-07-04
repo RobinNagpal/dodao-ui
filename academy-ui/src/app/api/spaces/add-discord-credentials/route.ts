@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
     if (!spaceId) return NextResponse.json({ status: 400, body: 'No Space ID provided' });
     const spaceById = await getSpaceById(spaceId);
 
-    checkEditSpacePermission(spaceById, req);
+    await checkEditSpacePermission(spaceById, req);
 
     const params = {
       client_id: process.env.DISCORD_CLIENT_ID!,
