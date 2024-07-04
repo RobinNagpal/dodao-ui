@@ -117,7 +117,7 @@ model Space {
 }
 
 model Program {
-  id      String   @id @db.VarChar(255)
+  id      String   @id @default(uuid()) @db.VarChar(255)
   name    String
   details String?
   rating  Int
@@ -125,7 +125,7 @@ model Program {
 }
 
 model Rubric {
-  id                              String                            @id @db.VarChar(255)
+  id                              String                            @id @default(uuid()) @db.VarChar(255)
   name                            String
   summary                         String
   description                     String?
@@ -137,7 +137,7 @@ model Rubric {
 }
 
 model RubricEvaluationParameter {
-  id       String @id @db.VarChar(255)
+  id       String @id @default(uuid()) @db.VarChar(255)
   rubricId String @db.VarChar(255)
   rubric   Rubric @relation(fields: [rubricId], references: [id])
 
@@ -147,11 +147,11 @@ model RubricEvaluationParameter {
 }
 
 model RubricEvaluationParameterRating {
-  id                          String                    @id @db.VarChar(255)
+  id                          String                    @id @default(uuid()) @db.VarChar(255)
   rubricId                    String                    @db.VarChar(255)
   rubric                      Rubric                    @relation(fields: [rubricId], references: [id])
   rubricEvaluationParameterId String                    @db.VarChar(255)
-  rubticEvaluationParameter   RubricEvaluationParameter @relation(fields: [rubricEvaluationParameterId], references: [id])
+  rubricEvaluationParameter   RubricEvaluationParameter @relation(fields: [rubricEvaluationParameterId], references: [id])
 
   description String
   rating      Int
