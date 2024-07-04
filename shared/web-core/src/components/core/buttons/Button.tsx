@@ -45,7 +45,7 @@ const CustomButton = ({
   ].join(' ');
 
   return (
-    <button onClick={() => onClick?.()} className={classNames}>
+    <button onClick={() => (disabled ? undefined : onClick?.())} className={classNames}>
       {loading && <LoadingSpinner />}
       {children}
     </button>
