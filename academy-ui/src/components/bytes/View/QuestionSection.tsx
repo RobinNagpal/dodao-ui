@@ -10,7 +10,6 @@ export function QuestionSection(props: {
   stepItemSubmission: StepItemResponse | undefined;
   onSelectAnswer: (questionId: string, selectedAnswers: string[]) => void;
 }) {
-  console.log('QuestionSection props', props);
   return (
     <div>
       <h2 className="text-2xl font-semibold mb-4 text-center">Question</h2>

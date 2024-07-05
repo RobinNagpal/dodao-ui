@@ -183,7 +183,6 @@ export function useEditByteCollectionCategory({ space, byteCategory: byteCategor
       },
     });
     router.push(`/tidbit-collection-categories/view/${response.data?.payload?.id}/tidbit-collections`);
-    setUpserting(false);
   };
 
   return {
