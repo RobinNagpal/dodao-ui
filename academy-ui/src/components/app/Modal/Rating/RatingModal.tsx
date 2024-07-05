@@ -3,6 +3,7 @@ import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal'
 import { ByteFeedback, GuideFeedback, GuideRating } from '@/graphql/generated/generated-types';
 import { useState } from 'react';
 import styles from './RatingModal.module.scss';
+import Button from '@dodao/web-core/components/core/buttons/Button';
 
 export interface RatingModalProps<T extends GuideFeedback | ByteFeedback | undefined> {
   ratingType: 'Guide' | 'Byte';
@@ -87,9 +88,9 @@ export default function RatingModal<T extends GuideFeedback | ByteFeedback | und
                     value={textareaValue}
                   />
                 </div>
-                <button className={styles.button} onClick={handleSuggestion}>
-                  Submit
-                </button>
+                <Button onClick={handleSuggestion} variant="contained" primary={true}>
+                  <span className="sm:block">Submit</span>
+                </Button>
               </div>
             ) : (
               <div>
