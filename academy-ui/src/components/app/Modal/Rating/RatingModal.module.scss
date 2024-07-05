@@ -17,16 +17,3 @@
 .TextArea:focus {
   border-color: var(--primary-color);
 }
-.button {
-  background-color: var(--primary-color);
-  color: var(--bg-color);
-  padding: 10px 20px;
-  border-radius: 5px;
-  border: solid 1px;
-  border-color: var(--primary-color);
-  cursor: pointer;
-  font-size: 16px;
-}
-.button:hover {
-  border-color: var(--border-color);
-}
