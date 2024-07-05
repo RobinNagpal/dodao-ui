@@ -1,5 +1,5 @@
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { UpsertSpaceInput, useCreateSpaceMutation, useExtendedSpaceQuery, useUpdateSpaceMutation } from '@/graphql/generated/generated-types';
+import { UpsertSpaceInput, useExtendedSpaceQuery } from '@/graphql/generated/generated-types';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { getEditSpaceType, getSpaceInput, SpaceEditType } from '@/utils/space/spaceUpdateUtils';
 import { useState } from 'react';
@@ -48,15 +48,18 @@ export default function useEditSpace(spaceId?: string): UseEditSpaceHelper {
     skip: true,
   });
 
-  const [updateSpaceMutation] = useUpdateSpaceMutation();
-  const [createSpaceMutation] = useCreateSpaceMutation();
-
   async function initialize() {
     if (spaceId) {
-      const response = await querySpace();
-      const spaceResponse = response.data.space;
-      if (spaceResponse) {
-        setSpace(getEditSpaceType(spaceResponse));
+      const response = await fetch(`/api/spaces/${spaceId}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        const res = await response.json();
+        setSpace(getEditSpaceType(res.space));
       }
     }
   }
@@ -78,20 +81,24 @@ export default function useEditSpace(spaceId?: string): UseEditSpaceHelper {
     try {
       let response;
       if (spaceId?.trim()) {
-        response = await updateSpaceMutation({
-          variables: {
-            spaceInput: getSpaceInput(spaceId, space),
+        response = await fetch(`/api/spaces/update-space`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
           },
+          body: JSON.stringify({ spaceInput: getSpaceInput(spaceId, space) }),
         });
       } else {
-        response = await createSpaceMutation({
-          variables: {
-            spaceInput: getSpaceInput(slugify(space.name), space),
+        response = await fetch(`/api/spaces/create-space`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
           },
+          body: JSON.stringify({ spaceInput: getSpaceInput(slugify(space.name), space) }),
         });
       }
 
-      if (response.data) {
+      if (response?.ok) {
         showNotification({ type: 'success', message: 'Space upserted successfully' });
       } else {
         showNotification({ type: 'error', message: 'Error while upserting space' });

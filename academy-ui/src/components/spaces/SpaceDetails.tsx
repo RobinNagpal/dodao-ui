@@ -10,10 +10,9 @@ import SpaceDomaiDetails from '@/components/spaces/View/SpaceDomaiDetails';
 import SpaceGuideDetails from '@/components/spaces/View/SpaceGuideDetails';
 import SpaceSocialDetails from '@/components/spaces/View/SpaceSocialDetails';
 import SpaceThemeDetails from '@/components/spaces/View/SpaceThemeDetails';
-import { useExtendedSpaceQuery } from '@/graphql/generated/generated-types';
-import React, { useState } from 'react';
+import { Space } from '@/graphql/generated/generated-types';
+import React, { useEffect, useRef, useState } from 'react';
 import SpaceTidbitsHomepageDetails from './View/SpaceTidbitsHomepageDetails';
-
 interface SpaceDetailsProps {
   spaceId: string;
 }
@@ -23,13 +22,12 @@ enum TabIds {
   Content = 'Courses',
 }
 
-export default function SpaceDetails(props: SpaceDetailsProps) {
-  const { data } = useExtendedSpaceQuery({
-    variables: {
-      spaceId: props.spaceId,
-    },
-  });
+interface SpaceDetails {
+  space: Space;
+  status: string;
+}
 
+export default function SpaceDetails(props: SpaceDetailsProps) {
   const tabs: TabItem[] = [
     {
       id: TabIds.Basic,
@@ -41,7 +39,26 @@ export default function SpaceDetails(props: SpaceDetailsProps) {
       label: 'Content',
     },
   ];
+  const [data, setData] = useState<SpaceDetails | null>(null);
+  useEffect(() => {
+    async function getSpaceById() {
+      const response = await fetch(`/api/spaces/${props.spaceId}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        const res = await response.json();
+        setData(res);
+      }
+    }
+    getSpaceById();
+  }, [props.spaceId]);
+
   const [selectedTabId, setSelectedTabId] = useState(TabIds.Basic);
+
   return data?.space ? (
     <div>
       <div className="flex justify-end">

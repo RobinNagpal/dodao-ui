@@ -10,27 +10,27 @@ export async function POST(req: NextRequest) {
   if (!doDAOSuperAdmin) {
     throw new Error('Space not found');
   }
-  const { input } = await req.json();
+  const { spaceInput } = await req.json();
 
-  const spaceInput: Space = {
-    admins: input.admins,
-    adminUsernames: input.adminUsernames,
-    adminUsernamesV1: input.adminUsernamesV1,
-    avatar: input.avatar,
-    creator: input.creator,
-    features: input.features || [],
-    id: input.id,
-    type: input.type,
-    inviteLinks: input.inviteLinks || {},
-    name: input.name,
-    skin: input.skin,
+  const spaceInputArgs: Space = {
+    admins: spaceInput.admins,
+    adminUsernames: spaceInput.adminUsernames,
+    adminUsernamesV1: spaceInput.adminUsernamesV1,
+    avatar: spaceInput.avatar,
+    creator: spaceInput.creator,
+    features: spaceInput.features || [],
+    id: spaceInput.id,
+    type: spaceInput.type,
+    inviteLinks: spaceInput.inviteLinks || {},
+    name: spaceInput.name,
+    skin: spaceInput.skin,
     createdAt: new Date(),
     verified: true,
     updatedAt: new Date(),
     discordInvite: null,
     telegramInvite: null,
-    domains: input.domains,
-    botDomains: input.botDomains || [],
+    domains: spaceInput.domains,
+    botDomains: spaceInput.botDomains || [],
     guideSettings: {},
     authSettings: {},
     socialSettings: {},
@@ -41,14 +41,14 @@ export async function POST(req: NextRequest) {
 
   await prisma.space.create({
     data: {
-      ...spaceInput,
+      ...spaceInputArgs,
       inviteLinks: spaceInput.inviteLinks || {},
       themeColors: undefined,
       tidbitsHomepage: undefined,
     },
   });
 
-  await upsertSpaceIntegrations(input, doDAOSuperAdmin);
+  await upsertSpaceIntegrations(spaceInput, doDAOSuperAdmin);
 
-  return NextResponse.json({ status: 200, body: await getSpaceWithIntegrations(spaceInput.id) });
+  return NextResponse.json({ status: 200, space: await getSpaceWithIntegrations(spaceInput.id) });
 }
