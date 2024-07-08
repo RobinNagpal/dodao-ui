@@ -5,7 +5,8 @@ import { headers } from 'next/headers';
 export async function getSpaceBasedOnHostHeader(reqHeaders: Headers) {
   const host = reqHeaders.get('host')?.split(':')?.[0];
 
-  const response = await axios.get(process.env.NEXT_PUBLIC_VERCEL_URL + '/api/spaces', {
+  const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` : '';
+  const response = await axios.get(baseUrl + '/api/spaces', {
     params: {
       domain: host!,
     },
