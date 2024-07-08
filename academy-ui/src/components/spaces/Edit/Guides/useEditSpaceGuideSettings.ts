@@ -1,5 +1,5 @@
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { GuideSettings, SpaceWithIntegrationsFragment, useUpdateSpaceGuideSettingsMutation } from '@/graphql/generated/generated-types';
+import { GuideSettings, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { useState } from 'react';
 
 export type UpdateSpaceGuideSettingsHelper = {
@@ -11,7 +11,6 @@ export type UpdateSpaceGuideSettingsHelper = {
 
 export function useEditSpaceGuideSettings(space: SpaceWithIntegrationsFragment): UpdateSpaceGuideSettingsHelper {
   const [guideSettings, setGuideSettings] = useState<GuideSettings>(space.guideSettings || {});
-  const [updateSpaceGuideSettingsMutation] = useUpdateSpaceGuideSettingsMutation();
   const [updating, setUpdating] = useState(false);
   const { showNotification } = useNotificationContext();
 
@@ -25,8 +24,9 @@ export function useEditSpaceGuideSettings(space: SpaceWithIntegrationsFragment):
   async function updateGuideSettings() {
     try {
       setUpdating(true);
-      const updatedSpace = await updateSpaceGuideSettingsMutation({
-        variables: {
+      const response = await fetch('/api/spaces/update-guide-settings', {
+        method: 'POST',
+        body: JSON.stringify({
           spaceId: space.id,
           input: {
             askForLoginToSubmit: guideSettings.askForLoginToSubmit,
@@ -35,11 +35,13 @@ export function useEditSpaceGuideSettings(space: SpaceWithIntegrationsFragment):
             showIncorrectAfterEachStep: guideSettings.showIncorrectAfterEachStep,
             showIncorrectOnCompletion: guideSettings.showIncorrectOnCompletion,
           },
-        },
+        }),
       });
-      if (updatedSpace.data?.payload) {
+
+      if (response.ok) {
+        const updatedSpace: SpaceWithIntegrationsFragment = (await response.json()).space;
         setGuideSettings({
-          ...updatedSpace.data?.payload.guideSettings,
+          ...updatedSpace.guideSettings,
         });
         showNotification({ type: 'success', message: 'Guide settings updated' });
       } else {

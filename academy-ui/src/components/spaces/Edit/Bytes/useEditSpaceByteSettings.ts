@@ -1,5 +1,5 @@
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { ByteSettings, SpaceWithIntegrationsFragment, useUpdateSpaceByteSettingsMutation } from '@/graphql/generated/generated-types';
+import { ByteSettings, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { useState } from 'react';
 
 export type UpdateSpaceByteSettingsHelper = {
@@ -11,7 +11,6 @@ export type UpdateSpaceByteSettingsHelper = {
 
 export function useEditSpaceByteSettings(space: SpaceWithIntegrationsFragment): UpdateSpaceByteSettingsHelper {
   const [byteSettings, setByteSettings] = useState<ByteSettings>(space.byteSettings || {});
-  const [updateSpaceByteSettingsMutation] = useUpdateSpaceByteSettingsMutation();
   const [updating, setUpdating] = useState(false);
   const { showNotification } = useNotificationContext();
 
@@ -25,19 +24,21 @@ export function useEditSpaceByteSettings(space: SpaceWithIntegrationsFragment): 
   async function updateByteSettings() {
     try {
       setUpdating(true);
-      const updatedSpace = await updateSpaceByteSettingsMutation({
-        variables: {
+      const response = await fetch('/api/spaces/update-byte-settings', {
+        method: 'POST',
+        body: JSON.stringify({
           spaceId: space.id,
           input: {
             askForLoginToSubmit: byteSettings.askForLoginToSubmit,
             captureRating: byteSettings.captureRating,
             showCategoriesInSidebar: byteSettings.showCategoriesInSidebar,
           },
-        },
+        }),
       });
-      if (updatedSpace.data?.payload) {
+      if (response.ok) {
+        const updatedSpace: SpaceWithIntegrationsFragment = (await response.json()).space;
         setByteSettings({
-          ...updatedSpace.data?.payload.byteSettings,
+          ...updatedSpace.byteSettings,
         });
         showNotification({ type: 'success', message: 'Byte settings updated' });
       } else {
