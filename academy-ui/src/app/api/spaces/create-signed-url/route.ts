@@ -1,3 +1,4 @@
+import { MutationCreateSignedUrlArgs } from '@/graphql/generated/generated-types';
 import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
 import { logError } from '@/app/api/helpers/adapters/errorLogger';
 import { PredefinedSpaces } from '@/app/api/helpers/constants/constants';
@@ -7,7 +8,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
   try {
-    const { spaceId, input } = await req.json();
+    const { spaceId, input } = (await req.json()) as MutationCreateSignedUrlArgs;
     const spaceById = await getSpaceById(spaceId);
 
     // Check if the space is not TIDBITS_HUB as it is used to add logos for new tidbit sites

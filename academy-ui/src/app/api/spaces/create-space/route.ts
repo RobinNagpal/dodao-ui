@@ -1,3 +1,4 @@
+import { MutationCreateSpaceArgs } from '@/graphql/generated/generated-types';
 import { upsertSpaceIntegrations } from '@/app/api/helpers/space/upsertSpaceIntegrations';
 import { getSpaceWithIntegrations } from '@/app/api/helpers/space';
 import { isDoDAOSuperAdmin } from '@/app/api/helpers/space/isSuperAdmin';
@@ -10,7 +11,7 @@ export async function POST(req: NextRequest) {
   if (!doDAOSuperAdmin) {
     throw new Error('Space not found');
   }
-  const { spaceInput } = await req.json();
+  const { spaceInput } = (await req.json()) as MutationCreateSpaceArgs;
 
   const spaceInputArgs: Space = {
     admins: spaceInput.admins,

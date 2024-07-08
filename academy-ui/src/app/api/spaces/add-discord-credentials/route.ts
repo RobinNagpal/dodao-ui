@@ -1,4 +1,4 @@
-// import { MutationAddDiscordCredentialsArgs } from '@/graphql/generated/graphql';
+import { MutationAddDiscordCredentialsArgs } from '@/graphql/generated/generated-types';
 import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
 import { checkEditSpacePermission } from '@/app/api/helpers/space/checkEditSpacePermission';
 import { prisma } from '@/prisma';
@@ -9,7 +9,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 export async function POST(req: NextRequest) {
   try {
-    const { spaceId, code, redirectUri } = await req.json();
+    const { spaceId, code, redirectUri } = (await req.json()) as MutationAddDiscordCredentialsArgs;
     if (!spaceId) return NextResponse.json({ status: 400, body: 'No Space ID provided' });
     const spaceById = await getSpaceById(spaceId);
 
