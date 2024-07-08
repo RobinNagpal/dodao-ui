@@ -105,11 +105,13 @@ export function useEditClickableDemo(space: Space, demoId: string | null) {
   function removeStep(stepUuid: string) {
     setClickableDemo((prevClickableDemo) => {
       const updatedSteps = prevClickableDemo.steps.filter((s) => s.id !== stepUuid);
+      const updatedStepsWithOrder = updatedSteps.map((step, index) => ({
+        ...step,
+        order: index,
+      }));
       return {
-        ...prevClickableDemo,
-        steps: updatedSteps.map((step, index) => ({
-          ...step,
-        })),
+        ...prevClickableDemo, // Copy all other properties from previous state
+        steps: updatedStepsWithOrder,
       };
     });
   }
