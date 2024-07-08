@@ -26,6 +26,9 @@ export function useEditSpaceSocialSettings(space: SpaceWithIntegrationsFragment)
       setUpdating(true);
       const response = await fetch('/api/spaces/update-social-settings', {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify({
           spaceId: space.id,
           input: {

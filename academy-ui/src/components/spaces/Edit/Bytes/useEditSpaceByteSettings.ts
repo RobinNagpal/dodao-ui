@@ -26,6 +26,9 @@ export function useEditSpaceByteSettings(space: SpaceWithIntegrationsFragment): 
       setUpdating(true);
       const response = await fetch('/api/spaces/update-byte-settings', {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify({
           spaceId: space.id,
           input: {

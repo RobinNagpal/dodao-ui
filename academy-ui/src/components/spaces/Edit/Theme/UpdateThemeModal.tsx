@@ -4,7 +4,7 @@ import Button from '@dodao/web-core/components/core/buttons/Button';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { ProjectByteCollectionFragment, SpaceWithIntegrationsFragment, ThemeColors, useUpdateThemeColorsMutation } from '@/graphql/generated/generated-types';
+import { ProjectByteCollectionFragment, SpaceWithIntegrationsFragment, ThemeColors } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
 import { useRouter } from 'next/navigation';
 import React, { CSSProperties, useState } from 'react';
@@ -34,12 +34,15 @@ export default function UpdateThemeModal({ space, open, onClose, byteCollection 
   const { showNotification } = useNotificationContext();
   const router = useRouter();
   const { $t } = useI18();
-  const [updateThemeColorsMutation] = useUpdateThemeColorsMutation();
 
   async function upsertThemeColors() {
     try {
-      const response = await updateThemeColorsMutation({
-        variables: {
+      const response = await fetch('/api/spaces/update-theme-colors', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
           spaceId: space.id,
           themeColors: {
             bgColor: themeColors.bgColor,
@@ -50,10 +53,10 @@ export default function UpdateThemeModal({ space, open, onClose, byteCollection 
             headingColor: themeColors.headingColor,
             linkColor: themeColors.linkColor,
           },
-        },
+        }),
       });
 
-      if (!response.errors) {
+      if (response.ok) {
         showNotification({
           type: 'success',
           message: 'Theme Updated',
@@ -61,7 +64,8 @@ export default function UpdateThemeModal({ space, open, onClose, byteCollection 
         });
         location.reload();
       } else {
-        console.log('Error updating theme colors', response.errors);
+        const errorData = await response.json();
+        console.log('Error updating theme colors', errorData);
         showNotification({ type: 'error', message: $t('notify.somethingWentWrong') });
       }
     } catch (e) {
