@@ -32,6 +32,14 @@ const tooltipStyleSelect: StyledSelectItem[] = [
     label: TooltipPlacement.Bottom,
     id: 'bottom',
   },
+  {
+    label: TooltipPlacement.Right,
+    id: 'right',
+  },
+  {
+    label: TooltipPlacement.Left,
+    id: 'left',
+  },
 ];
 
 export default function Step({

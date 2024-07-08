@@ -1817,6 +1817,8 @@ type TimelineEvent {
 
 enum TooltipPlacement {
   Bottom
+  Left
+  Right
   Top
 }
 
