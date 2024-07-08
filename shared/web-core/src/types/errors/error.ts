@@ -66,6 +66,7 @@ export interface ByteCollectionCategoryError {
   excerpt?: boolean;
   byteCollections?: boolean;
   priority?: boolean;
+  archive?: boolean;
 }
 
 export interface TidbitsHomepageError {

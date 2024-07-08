@@ -21,7 +21,12 @@ function ProfileMenuItem({ label, href, onClick }: { label: string; href?: strin
   return (
     <Menu.Item>
       {({ active }) => (
-        <Link href={href || '#'} onClick={onClick} className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm')}>
+        <Link
+          href={href || '#'}
+          onClick={onClick}
+          style={{ backgroundColor: active ? 'var(--block-bg)' : '' }}
+          className={classNames('block px-4 py-2 text-sm')}
+        >
           {label}
         </Link>
       )}

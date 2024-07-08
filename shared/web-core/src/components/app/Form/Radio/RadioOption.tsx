@@ -3,17 +3,17 @@ import { RadioGroup } from '@headlessui/react';
 import styles from './RadioOption.module.scss';
 
 export interface CustomRadioOptionProps {
-  key: string;
+  optionKey: string;
   value: string;
   content: string;
   isSelected: boolean;
   onSelect: (value: string) => void;
 }
 
-export default function RadioOption({ key, value, content, isSelected, onSelect }: CustomRadioOptionProps) {
+export default function RadioOption({ optionKey, value, content, isSelected, onSelect }: CustomRadioOptionProps) {
   return (
     <RadioGroup.Option
-      key={key}
+      key={optionKey}
       value={value}
       className={({ active }) =>
         classNames(
@@ -21,7 +21,7 @@ export default function RadioOption({ key, value, content, isSelected, onSelect 
           `relative block cursor-pointer rounded-lg border px-6 py-4 shadow-sm focus:outline-none`
         )
       }
-      onClick={() => onSelect(key)}
+      onClick={() => onSelect(optionKey)}
     >
       <>
         <span className="flex items-center">

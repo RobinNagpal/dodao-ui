@@ -12,9 +12,11 @@ interface ByteCollectionCategoryGridProps {
 
 export default function ByteCollectionCategoryGrid({ space, categoriesArray, session }: ByteCollectionCategoryGridProps) {
   const isUserAdmin = session && (isAdmin(session as Session, space) || isSuperAdmin(session as Session));
+  const notArchivedCategoriesArray = categoriesArray.filter((category) => category.archive !== true);
+
   return (
     <Grid3Cols>
-      {categoriesArray.map((category) => (
+      {notArchivedCategoriesArray.map((category) => (
         <ByteCollectionCategoryCard space={space} category={category} key={category.id} isUserAdmin={!!isUserAdmin} />
       ))}
     </Grid3Cols>

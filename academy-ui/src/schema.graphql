@@ -134,6 +134,7 @@ type ByteCollectionByte {
 }
 
 type ByteCollectionCategory {
+  archive: Boolean!
   byteCollectionIds: [String!]!
   excerpt: String
   id: String!
@@ -282,6 +283,7 @@ type ByteUserInput {
 }
 
 type CategoryWithByteCollection {
+  archive: Boolean!
   byteCollections: [ByteCollection!]!
   creator: String!
   excerpt: String!
@@ -1175,11 +1177,13 @@ type Mutation {
   deleteAndPullCourseRepo(courseKey: String!, spaceId: String!): GitCourse!
   deleteByte(byteId: String!, spaceId: String!): Boolean!
   deleteByteCollection(byteCollectionId: String!): Boolean!
+  deleteByteCollectionCategory(categoryId: String!, spaceId: String!): ByteCollectionCategory!
   deleteChatbotCategory(id: String!, spaceId: String!): Boolean!
   deleteChatbotFAQ(id: String!, spaceId: String!): Boolean!
   deleteChatbotUserQuestion(id: String!, spaceId: String!): Boolean!
   deleteGitCourseSubmission(courseKey: String!, spaceId: String!): Boolean!
   deleteGuide(spaceId: String!, uuid: String!): Boolean!
+  deleteShortVideo(shortVideoId: String!, spaceId: String!): ShortVideo!
   deleteTopic(spaceId: String!, topicInfo: DeleteTopicInput!): GitCourse!
   deleteTopicExplanation(explanationInfo: DeleteTopicExplanationInput!, spaceId: String!): GitCourse!
   deleteTopicQuestion(questionInfo: DeleteTopicQuestionInput!, spaceId: String!): GitCourse!
@@ -1382,11 +1386,11 @@ type ProjectByteCollection {
   priority: Int!
   seoMeta: SEOMeta
   status: String!
-  videoAspectRatio: String
   videoUrl: String
 }
 
 type ProjectShortVideo {
+  archive: Boolean
   archived: Boolean!
   createdAt: String!
   description: String!
@@ -1400,6 +1404,7 @@ type ProjectShortVideo {
 }
 
 input ProjectShortVideoInput {
+  archive: Boolean
   description: String!
   id: ID!
   priority: Int!
@@ -1551,6 +1556,7 @@ input SendEmailInput {
 }
 
 type ShortVideo {
+  archive: Boolean
   createdAt: String!
   description: String!
   id: ID!
@@ -1562,6 +1568,7 @@ type ShortVideo {
 }
 
 input ShortVideoInput {
+  archive: Boolean
   description: String!
   id: ID!
   priority: Int!
@@ -1810,6 +1817,8 @@ type TimelineEvent {
 
 enum TooltipPlacement {
   Bottom
+  Left
+  Right
   Top
 }
 
@@ -1906,6 +1915,7 @@ input UpsertAcademyTaskInput {
 }
 
 input UpsertByteCollectionCategory {
+  archive: Boolean!
   byteCollectionIds: [String!]!
   excerpt: String!
   id: String!
@@ -2024,7 +2034,6 @@ input UpsertProjectByteCollectionInput {
   projectId: String!
   seoMeta: SEOMetaInput
   status: String!
-  videoAspectRatio: String
   videoUrl: String
 }
 

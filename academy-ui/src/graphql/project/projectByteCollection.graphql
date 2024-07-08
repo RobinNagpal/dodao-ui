@@ -13,7 +13,6 @@ fragment ProjectByteCollection on ProjectByteCollection {
   archived
   priority
   videoUrl
-  videoAspectRatio
   seoMeta {
     title
     description

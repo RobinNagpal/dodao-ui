@@ -20,6 +20,8 @@ interface HelperFunctions {
   updateByteCategoryStatus: (status: string) => void;
   addByteCollection: (byteCollection: ByteCollectionFragment) => void;
   removeByteCollection: (byteCollectionId: string) => void;
+  moveCategoryUp: (byteCollectionId: string) => void;
+  moveCategoryDown: (byteCollectionId: string) => void;
   upsertByteCollectionCategory: () => void;
   validateCategory: () => boolean;
 }
@@ -48,6 +50,7 @@ export function useEditByteCollectionCategory({ space, byteCategory: byteCategor
     creator: space.creator,
     status: byteCategoryProp?.status || 'Active',
     priority: byteCategoryProp?.priority || 50,
+    archive: byteCategoryProp?.archive ?? false,
   });
   const [categoryErrors, setCategoryErrors] = useState<ByteCollectionCategoryError>({});
   const { showNotification } = useNotificationContext();
@@ -108,6 +111,36 @@ export function useEditByteCollectionCategory({ space, byteCategory: byteCategor
     });
   };
 
+  //-------------------------------------------------------
+  const moveCategoryUp = useCallback(
+    (byteCollectionId: string) => {
+      setByteCategory((prevCategory) => {
+        const categories = [...prevCategory.byteCollections];
+        const index = categories.findIndex((category) => category.id === byteCollectionId);
+        if (index > 0) {
+          const temp = categories[index - 1];
+          categories[index - 1] = categories[index];
+          categories[index] = temp;
+        }
+        return { ...prevCategory, byteCollections: categories };
+      });
+    },
+    [setByteCategory]
+  );
+
+  const moveCategoryDown = useCallback((byteCollectionId: string) => {
+    setByteCategory((prevCategory) => {
+      console.log('moveCategoryDown function called');
+      const newCategories = [...prevCategory.byteCollections];
+      const index = newCategories.findIndex((category) => category.id === byteCollectionId);
+      if (index >= 0 && index < newCategories.length - 1) {
+        [newCategories[index], newCategories[index + 1]] = [newCategories[index + 1], newCategories[index]];
+      }
+
+      return { ...prevCategory, byteCollections: newCategories };
+    });
+  }, []);
+
   const updateByteCategoryName = (name: string) => {
     setByteCategory((prevByteCategory) => ({ ...prevByteCategory, name }));
   };
@@ -145,11 +178,11 @@ export function useEditByteCollectionCategory({ space, byteCategory: byteCategor
           status: byteCategory.status,
           byteCollectionIds: byteCategory.byteCollections?.map((byteCollection) => byteCollection?.id).filter((id): id is string => id !== undefined) ?? [],
           priority: byteCategory.priority,
+          archive: byteCategory.archive,
         },
       },
     });
     router.push(`/tidbit-collection-categories/view/${response.data?.payload?.id}/tidbit-collections`);
-    setUpserting(false);
   };
 
   return {
@@ -164,6 +197,8 @@ export function useEditByteCollectionCategory({ space, byteCategory: byteCategor
       updateByteCollectionPriority,
       addByteCollection,
       removeByteCollection,
+      moveCategoryUp,
+      moveCategoryDown,
       upsertByteCollectionCategory,
       validateCategory,
     },

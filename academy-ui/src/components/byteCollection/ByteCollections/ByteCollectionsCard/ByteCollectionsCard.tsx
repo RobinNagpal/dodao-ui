@@ -37,9 +37,9 @@ export default function ByteCollectionsCard({
   if (watchVideo) {
     return (
       <FullScreenModal key={selectedVideo?.key} title={selectedVideo?.title!} open={true} onClose={() => setWatchVideo(false)} fullWidth={false}>
-        <div className="flex justify-around">
-          <div className="relative">
-            <iframe allow="autoplay" width="100%" style={{ height: '90vh', width: '100vw' }} src={selectedVideo?.src}></iframe>
+        <div className="flex justify-around overflow-hidden">
+          <div className="relative w-fit h-fit">
+            <iframe className="xs:h-[94.7vh] s:h-[95vh] sm:h-[89.6vh] lg:h-[90.6vh] w-[100vw]" allow="autoplay" src={selectedVideo?.src}></iframe>
           </div>
         </div>
       </FullScreenModal>
