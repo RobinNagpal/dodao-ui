@@ -1,5 +1,5 @@
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { AuthSettings, SpaceWithIntegrationsFragment, useUpdateSpaceAuthSettingsMutation } from '@/graphql/generated/generated-types';
+import { AuthSettings, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { useState } from 'react';
 
 export type UpdateSpaceAuthSettingsHelper = {
@@ -11,7 +11,6 @@ export type UpdateSpaceAuthSettingsHelper = {
 
 export function useEditSpaceAuthSettings(space: SpaceWithIntegrationsFragment): UpdateSpaceAuthSettingsHelper {
   const [authSettings, setAuthSettings] = useState<AuthSettings>(space.authSettings || {});
-  const [updateSpaceAuthSettingsMutation] = useUpdateSpaceAuthSettingsMutation();
   const [updating, setUpdating] = useState(false);
   const { showNotification } = useNotificationContext();
 
@@ -25,18 +24,23 @@ export function useEditSpaceAuthSettings(space: SpaceWithIntegrationsFragment): 
   async function updateAuthSettings() {
     try {
       setUpdating(true);
-      const updatedSpace = await updateSpaceAuthSettingsMutation({
-        variables: {
+      const response = await fetch('/api/spaces/update-auth-settings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
           spaceId: space.id,
           input: {
             enableLogin: !!authSettings.enableLogin,
             loginOptions: authSettings.loginOptions || [],
           },
-        },
+        }),
       });
-      if (updatedSpace.data?.payload) {
+      if (response.ok) {
+        const updatedSpace: SpaceWithIntegrationsFragment = await response.json();
         setAuthSettings({
-          ...updatedSpace.data?.payload.authSettings,
+          ...updatedSpace.authSettings,
         });
         showNotification({ type: 'success', message: 'Auth settings updated' });
       } else {
