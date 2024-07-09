@@ -26,6 +26,7 @@ import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
 import isEqual from 'lodash/isEqual';
 import { marked } from 'marked';
 import { useSession } from 'next-auth/react';
+import Image from 'next/image';
 import 'prismjs';
 import 'prismjs/components/prism-css';
 import 'prismjs/components/prism-javascript';
@@ -181,7 +182,7 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space, set
         <div className="flex flex-col flex-grow justify-center align-center">
           {!stepItems.some(isQuestion) && !isShortScreen && step.imageUrl && (
             <div className="flex justify-center align-center ">
-              <img
+              <Image
                 src={step.imageUrl}
                 alt="byte"
                 style={{
@@ -267,7 +268,7 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space, set
               onClick={navigateToNextStep}
               disabled={viewByteHelper.byteSubmitting || viewByteHelper.byteSubmission.isSubmitted}
               variant="contained"
-              className="float-right w-[150px] mr-2 sm:mr-0"
+              className={isLastStep ? 'float-right w-[150px] mr-2 sm:mr-0' : 'float-right sm:mr-0'}
               primary={true}
             >
               <span className="sm:block">{isLastStep ? 'Complete' : 'Next'}</span>

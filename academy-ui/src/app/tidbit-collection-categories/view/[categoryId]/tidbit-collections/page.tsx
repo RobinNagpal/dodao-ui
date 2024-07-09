@@ -20,7 +20,7 @@ async function TidbitCollection(props: { params: { categoryId?: string } }) {
   ];
   return (
     <PageWrapper>
-      <BreadcrumbsWithChevrons breadcrumbs={breadcrumbs} />
+      <BreadcrumbsWithChevrons breadcrumbs={breadcrumbs} space={space} />
       <ViewByteCollectionCategory space={space} categoryWithByteCollection={categoryWithByteCollection} />{' '}
     </PageWrapper>
   );
