@@ -72,7 +72,7 @@ export default function SelectElementInput({
           onInput={onInput}
           showModal={showModal}
           fileUrl={fileUrl!}
-          value={modelValue || ''}
+          xPath={modelValue || ''}
           onLoading={onLoading}
           setShowModal={setShowModal}
         ></ElementSelectorModal>
