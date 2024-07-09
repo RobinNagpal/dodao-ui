@@ -96,12 +96,14 @@ export default function UpdateThemeModal({ space, open, onClose, byteCollection 
           <div className="mt-4">
             <div className="flex flex-col md:flex-row flex-wrap">
               <div className="w-full md:w-1/2 mt-4">
-                <h1 className="font-bold text-2xl mb-4">Theme Details</h1>
+                <h1 style={{ color: 'var(--heading-color)' }} className="font-bold text-2xl mb-4">
+                  Theme Details
+                </h1>
                 {Object.entries(ColorLabels).map((e) => {
                   const [colorKey, label] = e as [ThemeColorsKeys, string];
                   const colorValue = themeColors[colorKey];
                   return (
-                    <div key={colorKey} className="flex justify-between mb-2">
+                    <div style={{ color: 'var(--text-color)' }} key={colorKey} className="flex justify-between mb-2">
                       <label className="ml-7">{label}</label>
                       <div className="grid grid-cols-2	">
                         <input type="color" className="w-12 h-8 mr-8" value={colorValue} onChange={(e) => handleColorChange(colorKey, e.target.value)} />
