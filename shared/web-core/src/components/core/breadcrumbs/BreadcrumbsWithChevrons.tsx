@@ -20,8 +20,6 @@ interface BreadcrumbsWithChevronsProps {
 export default function BreadcrumbsWithChevrons({ space, breadcrumbs }: BreadcrumbsWithChevronsProps) {
   const router = useRouter();
 
-  console.log('Categorys Space is : ', space);
-
   return breadcrumbs.length === 0 ? null : (
     <nav className="flex" aria-label="Breadcrumb">
       <ol role="list" className="flex items-center space-x-4">
@@ -29,7 +27,7 @@ export default function BreadcrumbsWithChevrons({ space, breadcrumbs }: Breadcru
           <div
             className="cursor-pointer"
             onClick={() => {
-              if (space.type === SpaceTypes.AcademySite) {
+              if (space.type === SpaceTypes.AcademySite || space.type === 'ACADEMY_SITE') {
                 router.push('/tidbit-collection-categories');
               } else {
                 router.push('/');
