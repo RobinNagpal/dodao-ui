@@ -235,6 +235,7 @@ export function getAuthOptions(
             token.spaceId = dbUser.spaceId;
             token.username = dbUser.username;
             token.authProvider = dbUser.authProvider;
+            token.accountId = dbUser.id;
           }
         }
         return token;
