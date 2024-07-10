@@ -1,5 +1,6 @@
 import { isUserAdminOfSpace } from '@/app/api/helpers/space/checkEditSpacePermission';
 import { isDoDAOSuperAdmin } from '@/app/api/helpers/space/isSuperAdmin';
+import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
 import { getAuthOptions } from '@dodao/web-core/api/auth/authOptions';
 import { authorizeCrypto } from '@dodao/web-core/api/auth/authorizeCrypto';
 import { User } from '@dodao/web-core/types/auth/User';
@@ -41,9 +42,7 @@ export const authOptions: AuthOptions = getAuthOptions(
             where: { id: token.sub },
           });
 
-          const space: Space | null = await p.space.findUnique({
-            where: { id: dbUser?.spaceId },
-          });
+          const space = (await getSpaceServerSide()) as Space;
 
           if (dbUser) {
             token.spaceId = dbUser.spaceId;
