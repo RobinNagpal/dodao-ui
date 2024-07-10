@@ -1,15 +1,22 @@
-'use client';
-import React, { useState } from 'react';
-import { RubricsPageProps } from '@/types/rubricsTypes/types';
+import React, { useEffect, useState } from 'react';
 
-interface Rubrics {
-  Content: string[];
-  Comprehensibility: string[];
-  Fluency: string[];
-  Accuracy: string[];
+interface RubricCell {
+  columnName: string;
+  description: string;
+  score: number;
 }
 
-const initialRubrics: Rubrics = {
+interface Rubric {
+  criteria: string;
+  description: string;
+  cells: RubricCell[];
+}
+
+interface RubricsPageProps {
+  selectedProgramId: string | null;
+}
+
+const initialRubrics: Record<string, string[]> = {
   Content: [
     'Complete. The speaker clearly conveys the main idea and provides details that are relevant and...',
     'Generally complete. The speaker conveys the main idea, but does not provide adequate relevant details to...',
@@ -22,52 +29,84 @@ const initialRubrics: Rubrics = {
     'Somewhat incomprehensible. The message could only be understood by a sympathetic native speaker. The...',
     'Incomprehensible.',
   ],
-  Fluency: [
-    'The student speaks very clearly without hesitation. Pronunciation and intonation sound natural.',
-    'The student speaks with some hesitation. Problems with pronunciation and intonation do not prevent...',
-    'The student hesitates frequently. Problems with pronunciation and intonation distort meaning or disable...',
-    'Frequent hesitations and extreme problems with pronunciation cause communication to break down.',
-  ],
-  Accuracy: [
-    'Functions, grammar, and vocabulary are...',
-    'Minor problems in usage do not distort...',
-    'Problems in usage significantly distort...',
-    'Problems in usage completely distort...',
-  ],
 };
 
-interface EditState {
-  type: 'rubric' | 'header';
-  category: keyof Rubrics | number;
-  index: number;
-  value: string;
-}
-
-const RubricsPage: React.FC<RubricsPageProps> = () => {
-  const [rubrics, setRubrics] = useState<Rubrics>(initialRubrics);
-  const [ratingHeaders, setRatingHeaders] = useState<string[]>(['Excellent', 'Good', 'Fair', 'Needs Improvement']);
+const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId }) => {
+  const [rubrics, setRubrics] = useState<Record<string, string[]>>(initialRubrics);
+  const [ratingHeaders, setRatingHeaders] = useState<string[]>(['Excellent', 'Good', 'Fair', 'Improvement']);
+  const [criteriaOrder, setCriteriaOrder] = useState<string[]>(Object.keys(initialRubrics));
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentEdit, setCurrentEdit] = useState<EditState>({
+  const [currentEdit, setCurrentEdit] = useState<{ type: 'rubric' | 'header' | 'criteria'; criteria: string | number; index: number; value: string }>({
     type: 'rubric',
-    category: 'Content',
+    criteria: 'Content',
     index: -1,
     value: '',
   });
+  const [columnScores, setColumnScores] = useState<number[]>(Array(ratingHeaders.length).fill(0));
 
-  const handleEditClick = (type: 'rubric' | 'header', category: keyof Rubrics | number, index: number) => {
+  useEffect(() => {
+    const formattedRubrics: Rubric[] = criteriaOrder.map((criteria) => ({
+      criteria: criteria, // Changed from 'category' to 'criteria'
+      description: '',
+      cells: rubrics[criteria].map((description, index) => ({
+        columnName: ratingHeaders[index],
+        description,
+        score: columnScores[index],
+      })),
+    }));
+
+    const data = {
+      programId: selectedProgramId,
+      rubrics: formattedRubrics,
+    };
+
+    if (selectedProgramId) {
+      console.log('Sending data:', data);
+      handleSubmit(data);
+    }
+  }, [rubrics, ratingHeaders, criteriaOrder, selectedProgramId, columnScores]);
+
+  const handleSubmit = async (data: any) => {
+    try {
+      const response = await fetch('http://localhost:3004/api/ruberics/create-rubrics', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        console.log('Rubrics submitted successfully', response);
+      } else {
+        throw new Error('Failed to submit rubrics');
+      }
+    } catch (error) {
+      console.error('Error submitting rubrics:', error);
+    }
+  };
+
+  const handleEditClick = (type: 'rubric' | 'header' | 'criteria', criteria: string | number, index: number) => {
     if (type === 'header') {
       setCurrentEdit({
         type,
-        category,
+        criteria,
         index,
-        value: ratingHeaders[category as number],
+        value: ratingHeaders[criteria as number],
+      });
+    } else if (type === 'criteria') {
+      setCurrentEdit({
+        type,
+        criteria,
+        index,
+        value: criteria as string,
       });
     } else {
       setCurrentEdit({
         type,
-        category,
+        criteria,
         index,
-        value: rubrics[category as keyof Rubrics][index],
+        value: rubrics[criteria as string][index],
       });
     }
     setIsModalOpen(true);
@@ -82,20 +121,61 @@ const RubricsPage: React.FC<RubricsPageProps> = () => {
 
   const handleSave = () => {
     if (currentEdit.type === 'header') {
-      setRatingHeaders((prevHeaders) => prevHeaders.map((header, index) => (index === currentEdit.category ? currentEdit.value : header)));
+      setRatingHeaders((prevHeaders) => prevHeaders.map((header, index) => (index === currentEdit.criteria ? currentEdit.value : header)));
+    } else if (currentEdit.type === 'criteria') {
+      const updatedRubrics = { ...rubrics };
+      const currentCriteriaName = currentEdit.criteria as string;
+      const newCriteriaName = currentEdit.value;
+
+      if (currentCriteriaName !== newCriteriaName) {
+        const updatedCriteria = updatedRubrics[currentCriteriaName];
+        delete updatedRubrics[currentCriteriaName];
+        updatedRubrics[newCriteriaName] = updatedCriteria;
+
+        setCriteriaOrder((prevOrder) => prevOrder.map((criteria) => (criteria === currentCriteriaName ? newCriteriaName : criteria)));
+      }
+
+      setRubrics(updatedRubrics);
     } else {
-      setRubrics((prevRubrics) => ({
-        ...prevRubrics,
-        [currentEdit.category as keyof Rubrics]: prevRubrics[currentEdit.category as keyof Rubrics].map((cell, cellIndex) =>
-          cellIndex === currentEdit.index ? currentEdit.value : cell
-        ),
-      }));
+      setRubrics((prevRubrics) => {
+        const updatedCriteria = [...prevRubrics[currentEdit.criteria as string]];
+        updatedCriteria[currentEdit.index] = currentEdit.value;
+        return {
+          ...prevRubrics,
+          [currentEdit.criteria as string]: updatedCriteria,
+        };
+      });
     }
     setIsModalOpen(false);
   };
 
   const handleCancel = () => {
     setIsModalOpen(false);
+  };
+
+  const handleAddCriteria = () => {
+    const newCriteriaName = `New Criteria ${Object.keys(rubrics).length + 1}`;
+    setRubrics((prevRubrics) => ({
+      ...prevRubrics,
+      [newCriteriaName]: [
+        'Functions, grammar, and vocabulary are...',
+        'Minor problems in usage do not distort...',
+        'Problems in usage significantly distort...',
+        'Problems in usage completely distort...',
+      ],
+    }));
+    setCriteriaOrder((prevOrder) => [...prevOrder, newCriteriaName]);
+  };
+
+  const handleDeleteCriteria = (criteria: string) => {
+    const updatedRubrics = { ...rubrics };
+    delete updatedRubrics[criteria];
+    setRubrics(updatedRubrics);
+    setCriteriaOrder((prevOrder) => prevOrder.filter((crit) => crit !== criteria));
+  };
+
+  const handleScoreChange = (index: number, score: number) => {
+    setColumnScores((prevScores) => [...prevScores.slice(0, index), score, ...prevScores.slice(index + 1)]);
   };
 
   const getHeaderColorClass = (index: number) => {
@@ -116,7 +196,23 @@ const RubricsPage: React.FC<RubricsPageProps> = () => {
   return (
     <div className="container mx-auto py-8 p-6">
       <h1 className="text-3xl text-center font-bold mb-8">Create Rubrics</h1>
-      <div className="overflow-x-auto">
+      <div className="flex justify-center">
+        {ratingHeaders.map((header, index) => (
+          <div key={index} className="flex flex-col items-center">
+            <h3 className="text-lg font-bold mb-4">{header}</h3>
+            <input
+              type="number"
+              min={0}
+              max={10}
+              className="w-16 border rounded p-2 text-center mb-2"
+              placeholder="Score"
+              value={columnScores[index]}
+              onChange={(e) => handleScoreChange(index, parseInt(e.target.value))}
+            />
+          </div>
+        ))}
+      </div>
+      <div className="overflow-x-auto mt-4">
         <table className="min-w-full bg-white border-collapse border">
           <thead>
             <tr>
@@ -130,26 +226,28 @@ const RubricsPage: React.FC<RubricsPageProps> = () => {
                   <div className="overflow-auto max-h-24">
                     {header}
                     <br />
-                    {4 - index}
+                    {columnScores[index]}
                   </div>
                 </th>
               ))}
             </tr>
           </thead>
           <tbody>
-            {Object.keys(rubrics).map((category) => (
-              <tr key={category}>
-                <td
-                  className="py-2 px-4 border-r border-b font-bold cursor-pointer max-w-xs break-words"
-                  onClick={() => handleEditClick('rubric', category as keyof Rubrics, -1)}
-                >
-                  <div className="overflow-y-auto max-h-24">{category}</div>
+            {criteriaOrder.map((criteria) => (
+              <tr key={criteria}>
+                <td className="py-2 px-4 border-r border-b font-bold cursor-pointer max-w-xs break-words relative">
+                  <div onClick={() => handleEditClick('criteria', criteria, -1)} className="overflow-y-auto max-h-24">
+                    {criteria}
+                  </div>
+                  <button onClick={() => handleDeleteCriteria(criteria)} className="absolute top-0 right-0 bg-red-500 text-white p-1 rounded-full">
+                    &times;
+                  </button>
                 </td>
-                {rubrics[category as keyof Rubrics].map((cell, cellIndex) => (
+                {rubrics[criteria].map((cell, cellIndex) => (
                   <td
                     key={cellIndex}
                     className="py-2 px-4 border-r border-b cursor-pointer max-w-xs break-words"
-                    onClick={() => handleEditClick('rubric', category as keyof Rubrics, cellIndex)}
+                    onClick={() => handleEditClick('rubric', criteria, cellIndex)}
                   >
                     <div className="overflow-y-auto max-h-24">{cell}</div>
                   </td>
@@ -158,6 +256,11 @@ const RubricsPage: React.FC<RubricsPageProps> = () => {
             ))}
           </tbody>
         </table>
+      </div>
+      <div className="flex justify-center">
+        <button className="bg-blue-500 mt-2 text-white py-2 px-4 rounded-full flex items-center justify-center" onClick={handleAddCriteria}>
+          +
+        </button>
       </div>
       {isModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">

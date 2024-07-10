@@ -5,6 +5,10 @@ export interface Program {
   rating: number;
   rubrics: Rubric[];
 }
+export interface ServerResponse {
+  status: number;
+  body: Program[];
+}
 
 export interface Rubric {
   id: string;
@@ -81,4 +85,10 @@ export interface RubricEvaluationParameterRating {
 }
 export interface RubricsPageProps {
   programs?: Program[];
+}
+
+export interface ProgramDropDownProps {
+  onSelectProgram: (id: string) => void;
+  serverResponse: ServerResponse;
+  setServerResponse: React.Dispatch<React.SetStateAction<ServerResponse>>;
 }

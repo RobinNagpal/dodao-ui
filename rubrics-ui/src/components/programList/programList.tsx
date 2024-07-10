@@ -1,15 +1,16 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import Input from '@dodao/web-core/components/core/input/Input';
-import { ProgramListProps } from '../../types/rubricsTypes/types';
-import { useState } from 'react';
 import Button from '@dodao/web-core/components/core/buttons/Button';
+import { ProgramListProps } from '@/types/rubricsTypes/types';
+import { useRouter } from 'next/navigation';
 const ProgramList: React.FC<ProgramListProps> = () => {
   const [newProgram, setNewProgram] = useState<{ name: string; details: string }>({
     name: '',
     details: '',
   });
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
   const handleInputChange = (field: keyof typeof newProgram, value: string | number) => {
     setNewProgram((prevProgram) => ({
       ...prevProgram,
@@ -41,7 +42,7 @@ const ProgramList: React.FC<ProgramListProps> = () => {
   };
 
   return (
-    <div className="flex justify-center">
+    <div className="flex flex-col items-center">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
         <Input
           modelValue={newProgram.name}
