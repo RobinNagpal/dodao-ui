@@ -13,4 +13,6 @@ export interface DoDaoJwtTokenPayload {
   userId: string;
   username: string;
   accountId: string;
+  isAdminOfSpace?: boolean;
+  isSuperAdminOfDoDAO?: boolean;
 }
