@@ -2994,6 +2994,8 @@ export interface TimelineEvent {
 
 export enum TooltipPlacement {
   Bottom = 'Bottom',
+  Left = 'Left',
+  Right = 'Right',
   Top = 'Top'
 }
 

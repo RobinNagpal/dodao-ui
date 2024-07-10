@@ -3,6 +3,7 @@ import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal'
 import { ByteFeedback, GuideFeedback, GuideRating } from '@/graphql/generated/generated-types';
 import { useState } from 'react';
 import styles from './RatingModal.module.scss';
+import Button from '@dodao/web-core/components/core/buttons/Button';
 
 export interface RatingModalProps<T extends GuideFeedback | ByteFeedback | undefined> {
   ratingType: 'Guide' | 'Byte';
@@ -49,6 +50,10 @@ export default function RatingModal<T extends GuideFeedback | ByteFeedback | und
     await setRating(selectedRating!, feedback as T, textareaValue);
     onClose();
   };
+  const handleSuggestion = async () => {
+    await setRating(selectedRating!, undefined, textareaValue);
+    onClose();
+  };
 
   return (
     <FullPageModal open={open} onClose={skipOrCloseModal} title={''}>
@@ -70,34 +75,40 @@ export default function RatingModal<T extends GuideFeedback | ByteFeedback | und
 
         {selectedRating && (
           <div className="flex flex-col items-center mt-8">
-            <div className="mt-8 w-full max-w-md">
-              <textarea
-                className={`w-full p-4 border rounded-lg ${styles.TextArea}`}
-                placeholder="Please provide your feedback here..."
-                onChange={(e) => setTextareaValue(e.target.value)}
-                value={textareaValue}
-              />
-            </div>
-            {selectedRating > 2 ? (
-              <div className="flex flex-row items-center justify-center">
-                <h2 className="text-xl mr-2 font-semibold leading-6">What did you like the most?</h2>
+            {selectedRating < 4 ? (
+              <div>
+                <div className="mb-8 w-full max-w-md">
+                  <h2 className="text-xl mr-2 font-semibold leading-6">Any suggestions to improve upon?</h2>
+                </div>
+                <div className="mb-8 w-full max-w-md">
+                  <textarea
+                    className={`w-full p-4 border rounded-lg ${styles.TextArea}`}
+                    placeholder="Please provide your valueable feedback here..."
+                    onChange={(e) => setTextareaValue(e.target.value)}
+                    value={textareaValue}
+                  />
+                </div>
+                <Button onClick={handleSuggestion} variant="contained" primary={true}>
+                  <span className="sm:block">Submit</span>
+                </Button>
               </div>
             ) : (
-              <div className="flex flex-row items-center justify-center">
-                <h2 className="text-xl mr-2 font-semibold leading-6">What do you want us to improve upon?</h2>
+              <div>
+                <div className="mb-8 w-full max-w-md">
+                  <h2 className="text-xl mr-2 font-semibold leading-6">What did you like the most?</h2>
+                </div>
+                <div className={`grid ${feedbackOptions.length === 3 ? 'grid-cols-3' : 'grid-cols-2'} gap-4 mt-8`}>
+                  {feedbackOptions.map((option) => (
+                    <div key={option.name} className={`${styles.FeedbackOptionDiv}`}>
+                      <div className="flex flex-col items-center cursor-pointer p-2 hover:rounded-lg" onClick={() => handleFeedbackSelection(option.name)}>
+                        <option.image height={40} width={40} />
+                        <h2 className="text-md">{option.label}</h2>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
-
-            <div className={`grid ${feedbackOptions.length === 3 ? 'grid-cols-3' : 'grid-cols-2'} gap-4 mt-8`}>
-              {feedbackOptions.map((option) => (
-                <div key={option.name} className={`${styles.FeedbackOptionDiv}`}>
-                  <div className="flex flex-col items-center cursor-pointer p-2 hover:rounded-lg" onClick={() => handleFeedbackSelection(option.name)}>
-                    <option.image height={40} width={40} />
-                    <h2 className="text-md">{option.label}</h2>
-                  </div>
-                </div>
-              ))}
-            </div>
           </div>
         )}
         <div className="mt-4">

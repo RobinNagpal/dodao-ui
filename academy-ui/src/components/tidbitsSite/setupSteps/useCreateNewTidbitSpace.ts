@@ -1,5 +1,5 @@
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { Space, SpaceTypes, useCreateNewTidbitSpaceMutation, useGetSpaceFromCreatorQuery, useUpdateSpaceMutation } from '@/graphql/generated/generated-types';
+import { Space, SpaceTypes, useCreateNewTidbitSpaceMutation, useGetSpaceFromCreatorQuery } from '@/graphql/generated/generated-types';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { isSuperAdmin } from '@dodao/web-core/utils/auth/superAdmins';
@@ -51,7 +51,6 @@ export default function useCreateNewTidbitSpace(): UseEditSpaceHelper {
   const [upserting, setUpserting] = useState(false);
 
   const [createNewTidbitSpaceMutation] = useCreateNewTidbitSpaceMutation();
-  const [updateSpaceMutation] = useUpdateSpaceMutation();
 
   useEffect(() => {
     if (session) {
@@ -164,14 +163,16 @@ export default function useCreateNewTidbitSpace(): UseEditSpaceHelper {
       avatar: tidbitSpace.avatar,
       type: SpaceTypes.TidbitsSite,
     };
-    const response = await updateSpaceMutation({
-      variables: {
-        spaceInput: getSpaceInput(tidbitSpace.id!, spaceToUpdate),
+    const response = await fetch('/api/spaces/update-space', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
       },
+      body: JSON.stringify({ spaceInput: getSpaceInput(tidbitSpace.id!, spaceToUpdate) }),
     });
-    if (response.data) {
+    if (response.ok) {
       setUpserting(false);
-      successCallback(response.data.updateSpace);
+      successCallback((await response.json()).space);
     } else {
       setUpserting(false);
       showNotification({ type: 'error', message: 'Error while updating space' });

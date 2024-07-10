@@ -75,8 +75,10 @@ export function useEditClickableDemo(space: Space, demoId: string | null) {
     setClickableDemo((prevClickableDemo) => {
       const stepIndex = prevClickableDemo.steps.findIndex((s) => s.id === stepUuid);
       const updatedSteps = [...prevClickableDemo.steps];
-      updatedSteps[stepIndex - 1].order = stepIndex;
-      updatedSteps[stepIndex].order = stepIndex - 1;
+      const stepMovingDown = { ...updatedSteps[stepIndex - 1], order: stepIndex };
+      const stepMovingUp = { ...updatedSteps[stepIndex], order: stepIndex - 1 };
+      updatedSteps[stepIndex - 1] = stepMovingDown;
+      updatedSteps[stepIndex] = stepMovingUp;
 
       return {
         ...prevClickableDemo,
@@ -89,9 +91,10 @@ export function useEditClickableDemo(space: Space, demoId: string | null) {
     setClickableDemo((prevClickableDemo) => {
       const stepIndex = prevClickableDemo.steps.findIndex((s) => s.id === stepUuid);
       const updatedSteps = [...prevClickableDemo.steps];
-      updatedSteps[stepIndex + 1].order = stepIndex;
-      updatedSteps[stepIndex].order = stepIndex + 1;
-
+      const stepMovingDown = { ...updatedSteps[stepIndex], order: stepIndex + 1 };
+      const stepMovingUp = { ...updatedSteps[stepIndex + 1], order: stepIndex };
+      updatedSteps[stepIndex + 1] = stepMovingDown;
+      updatedSteps[stepIndex] = stepMovingUp;
       return {
         ...prevClickableDemo,
         steps: orderBy(updatedSteps, 'order'),
@@ -102,11 +105,13 @@ export function useEditClickableDemo(space: Space, demoId: string | null) {
   function removeStep(stepUuid: string) {
     setClickableDemo((prevClickableDemo) => {
       const updatedSteps = prevClickableDemo.steps.filter((s) => s.id !== stepUuid);
+      const updatedStepsWithOrder = updatedSteps.map((step, index) => ({
+        ...step,
+        order: index,
+      }));
       return {
-        ...prevClickableDemo,
-        steps: updatedSteps.map((step, index) => ({
-          ...step,
-        })),
+        ...prevClickableDemo, // Copy all other properties from previous state
+        steps: updatedStepsWithOrder,
       };
     });
   }

@@ -1,5 +1,5 @@
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { SpaceWithIntegrationsFragment, useUpdateTidbitsHomepageMutation, TidbitsHomepage } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsFragment, TidbitsHomepage } from '@/graphql/generated/generated-types';
 import { TidbitsHomepageError } from '@dodao/web-core/types/errors/error';
 import { useI18 } from '@/hooks/useI18';
 import { useState } from 'react';
@@ -21,7 +21,6 @@ const tidbitHP: TidbitsHomepage = {
 
 export function useEditTidbitsHomepage(space: SpaceWithIntegrationsFragment): UpdateTidbitsHompageHelper {
   const [tidbitsHomepage, setTidbitsHomepage] = useState<TidbitsHomepage>(space.tidbitsHomepage || tidbitHP);
-  const [updateTidbitsHomepageMutation] = useUpdateTidbitsHomepageMutation();
   const [updating, setUpdating] = useState(false);
 
   const [tidbitsHomepageErrors, setTidbitsHomepageErrors] = useState<TidbitsHomepageError>({});
@@ -59,21 +58,25 @@ export function useEditTidbitsHomepage(space: SpaceWithIntegrationsFragment): Up
       return false;
     }
     try {
-      console.log('here: ', tidbitsHomepage);
       setUpdating(true);
-      const updatedSpace = await updateTidbitsHomepageMutation({
-        variables: {
+      const response = await fetch('/api/spaces/update-tidbits-homepage', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
           spaceId: space.id,
-          tidbitsHomepage: {
+          input: {
             heading: tidbitsHomepage.heading,
             shortDescription: tidbitsHomepage.shortDescription,
           },
-        },
-        refetchQueries: ['ExtendedSpace'],
+        }),
       });
-      if (updatedSpace.data?.payload) {
+
+      if (response.ok) {
+        const updatedSpace = await response.json();
         setTidbitsHomepage({
-          ...updatedSpace.data?.payload.tidbitsHomepage!,
+          ...updatedSpace.tidbitsHomepage!,
         });
         showNotification({ type: 'success', message: 'Tidbits Homepage updated' });
       } else {

@@ -1,172 +1,200 @@
 .tippy-box {
-    z-index: 9999999999;
+  z-index: 9999999999;
 }
 #tippy-1 {
-    z-index: 9999999999 !important;
+  z-index: 9999999999 !important;
 }
 .tippy-box[data-theme~='material'] {
-    border-radius: 0.7rem;
-    border: 1px solid rgb(244, 244, 244);
-    box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.2);
-    z-index: 99999;
-    background: var(--bg-color, #0c0d0c);
-    background-color: var(--bg-color, #555);
-    opacity: 1.0;
+  border-radius: 0.7rem;
+  border: 1px solid rgb(244, 244, 244);
+  box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.2);
+  z-index: 99999;
+  background: var(--bg-color, #0c0d0c);
+  background-color: var(--bg-color, #555);
+  opacity: 1;
+}
+.tippy-box[data-theme~='material'][data-placement^='bottom'] > .tippy-arrow::before {
+  border-bottom-color: var(--bg-color, #555);
+}
+.tippy-box[data-theme~='material'][data-placement^='bottom'] > .tippy-arrow::after {
+  content: '';
+  position: absolute;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 9px;
+  border-bottom-color: rgb(224, 224, 224);
+  top: -18px;
+  left: -1px;
+  z-index: -1;
+}
+.tippy-box[data-theme~='material'][data-placement^='top'] > .tippy-arrow::before {
+  border-top-color: var(--bg-color, #555);
+}
+.tippy-box[data-theme~='material'][data-placement^='top'] > .tippy-arrow::after {
+  content: '';
+  position: absolute;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 9px;
+  border-bottom-color: rgb(224, 224, 224);
+  top: 16px;
+  left: -1px;
+  rotate: 180deg;
+  z-index: -1;
+}
 
+.tippy-box[data-theme~='material'][data-placement^='right'] > .tippy-arrow::before {
+  border-right-color: var(--bg-color, #555);
 }
-.tippy-box[data-theme~="material"][data-placement^="bottom"] > .tippy-arrow::before {
-    border-bottom-color: var(--bg-color, #555);
+.tippy-box[data-theme~='material'][data-placement^='right'] > .tippy-arrow::after {
+  content: '';
+  position: absolute;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 9px;
+  border-right-color: rgb(224, 224, 224);
+  left: -18px;
+  top: -1px;
+  z-index: -1;
 }
-.tippy-box[data-theme~="material"][data-placement^="bottom"] > .tippy-arrow::after {
-    content: "";
-    position: absolute;
-    border-color: transparent;
-    border-style: solid;
-    border-width: 9px;
-    border-bottom-color: rgb(224, 224, 224);
-    top: -18px;
-    left: -1px;
-    z-index: -1;
+.tippy-box[data-theme~='material'][data-placement^='left'] > .tippy-arrow::before {
+  border-left-color: var(--bg-color, #555);
 }
-.tippy-box[data-theme~="material"][data-placement^="top"] > .tippy-arrow::before {
-    border-top-color: var(--bg-color, #555);
-}
-.tippy-box[data-theme~="material"][data-placement^="top"] > .tippy-arrow::after {
-    content: "";
-    position: absolute;
-    border-color: transparent;
-    border-style: solid;
-    border-width: 9px;
-    border-bottom-color: rgb(224, 224, 224);
-    top: 16px;
-    left: -1px;
-    rotate: 180deg;
-    z-index: -1;
+.tippy-box[data-theme~='material'][data-placement^='left'] > .tippy-arrow::after {
+  content: '';
+  position: absolute;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 9px;
+  border-left-color: rgb(224, 224, 224);
+  right: -18px;
+  top: -1px;
+  z-index: -1;
 }
 
 .tippy-content {
-    background: var(--bg-color, #555);
-    background-color: var(--bg-color, #555);
-    opacity: 1.0;
-    border-radius: 0.7rem;
+  background: var(--bg-color, #555);
+  background-color: var(--bg-color, #555);
+  opacity: 1;
+  border-radius: 0.7rem;
 }
 
 .reset-styles {
-    all: initial; /* Reset all styles */
-    font-family: inherit; /* Inherit font family from parent */
-    font-weight: inherit; /* Inherit font weight from parent */
-    font-size: inherit; /* Inherit font size from parent */
+  all: initial; /* Reset all styles */
+  font-family: inherit; /* Inherit font family from parent */
+  font-weight: inherit; /* Inherit font weight from parent */
+  font-size: inherit; /* Inherit font size from parent */
 }
 
 .dodao-text-element {
-    display: inline !important;
-    margin: 0 auto !important;
-    font-size: 1rem !important;
-    font-family: sans-serif !important;
-    font-weight: 300 !important;
-    text-align: center !important;
-    color: var(--text-color, #fff) !important;
+  display: inline !important;
+  margin: 0 auto !important;
+  font-size: 1rem !important;
+  font-family: sans-serif !important;
+  font-weight: 300 !important;
+  text-align: center !important;
+  color: var(--text-color, #fff) !important;
 }
 
 .dodao-tooltip-content {
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: space-around !important;
-    min-height: 130px !important;
-    min-width: 300px !important;
-    padding: 3px 12px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-around !important;
+  min-height: 130px !important;
+  min-width: 300px !important;
+  padding: 3px 12px !important;
 }
 
 .dodao-tooltip-button {
-    padding: 5px 10px;
-    border: none;
-    border-radius: 5px;
-    background-color: var(--primary-color, #007bff);
-    color: var(--text-color, #fff);
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    transition: all 0.3s ease;
-    margin-top: auto;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: var(--primary-color, #007bff);
+  color: var(--text-color, #fff);
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  margin-top: auto;
 }
 
 .dodao-indices {
-    color: #84868a;
-    margin: auto;
-    font-size: small;
-    font-weight: 300;
+  color: #84868a;
+  margin: auto;
+  font-size: small;
+  font-weight: 300;
 }
 
 .dodao-horizontal-line {
-    border-top: 1px solid #808080;
-    margin: 2px 0;
+  border-top: 1px solid #808080;
+  margin: 2px 0;
 }
 
 .dodao-buttons-row {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 .dodao-back-button {
-    align-self: flex-start;
-    margin-right: auto;
+  align-self: flex-start;
+  margin-right: auto;
 }
 
 .dodao-next-button {
-    align-self: flex-end;
-    margin-left: auto;
+  align-self: flex-end;
+  margin-left: auto;
 }
 
 .dodao-select-element-button {
-    position: fixed;
-    bottom: 10px;
-    left: 10px;
-    padding: 10px 20px;
-    background-color: var(--primary-color, #007bff);
-    color: var(--text-color, #fff);
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    z-index: 9999999;
-    transition: all 0.3s ease;
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+  padding: 10px 20px;
+  background-color: var(--primary-color, #007bff);
+  color: var(--text-color, #fff);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 9999999;
+  transition: all 0.3s ease;
 }
 
 .dodao-hovered-element {
-    border: 2px solid var(--primary-color, #007bff) !important;
+  border: 2px solid var(--primary-color, #007bff) !important;
 }
 
 .dodao-target-element {
-    border: 3px solid var(--primary-color, #007bff) !important;
-    border-radius: 5px;
-    position: relative;
-    z-index: 999999;
+  border: 3px solid var(--primary-color, #007bff) !important;
+  border-radius: 5px;
+  position: relative;
+  z-index: 999999;
 }
 
 .dodao-up-down-buttons {
-    display: flex;
-    position: fixed;
-    bottom: 10px;
-    right: 10px;
-    justify-content: center;
-    gap: 10px;
-    border: none !important;
-    z-index: 99999999;
+  display: flex;
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  justify-content: center;
+  gap: 10px;
+  border: none !important;
+  z-index: 99999999;
 }
 
 .dodao-up-down-buttons button {
-    font-size: 16px;
-    background-color: var(--primary-color); 
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    padding: 5px 20px;
-    transition: background-color 0.3s, transform 0.2s; /* Smooth transition for background color and transform */
+  font-size: 16px;
+  background-color: var(--primary-color);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 5px 20px;
+  transition: background-color 0.3s, transform 0.2s; /* Smooth transition for background color and transform */
 }
 
 .dodao-up-down-buttons button:hover {
-    transform: translateY(-2px); /* Slightly raise the button */
+  transform: translateY(-2px); /* Slightly raise the button */
 }
 
 .dodao-up-down-buttons button:active {
-    transform: translateY(1px); /* Push the button down when clicked */
+  transform: translateY(1px); /* Push the button down when clicked */
 }

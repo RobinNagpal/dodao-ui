@@ -4,7 +4,7 @@ import Button from '@dodao/web-core/components/core/buttons/Button';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { ProjectByteCollectionFragment, SpaceWithIntegrationsFragment, ThemeColors, useUpdateThemeColorsMutation } from '@/graphql/generated/generated-types';
+import { ProjectByteCollectionFragment, SpaceWithIntegrationsFragment, ThemeColors } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
 import { useRouter } from 'next/navigation';
 import React, { CSSProperties, useState } from 'react';
@@ -34,12 +34,15 @@ export default function UpdateThemeModal({ space, open, onClose, byteCollection 
   const { showNotification } = useNotificationContext();
   const router = useRouter();
   const { $t } = useI18();
-  const [updateThemeColorsMutation] = useUpdateThemeColorsMutation();
 
   async function upsertThemeColors() {
     try {
-      const response = await updateThemeColorsMutation({
-        variables: {
+      const response = await fetch('/api/spaces/update-theme-colors', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
           spaceId: space.id,
           themeColors: {
             bgColor: themeColors.bgColor,
@@ -50,10 +53,10 @@ export default function UpdateThemeModal({ space, open, onClose, byteCollection 
             headingColor: themeColors.headingColor,
             linkColor: themeColors.linkColor,
           },
-        },
+        }),
       });
 
-      if (!response.errors) {
+      if (response.ok) {
         showNotification({
           type: 'success',
           message: 'Theme Updated',
@@ -61,7 +64,8 @@ export default function UpdateThemeModal({ space, open, onClose, byteCollection 
         });
         location.reload();
       } else {
-        console.log('Error updating theme colors', response.errors);
+        const errorData = await response.json();
+        console.log('Error updating theme colors', errorData);
         showNotification({ type: 'error', message: $t('notify.somethingWentWrong') });
       }
     } catch (e) {
@@ -92,12 +96,14 @@ export default function UpdateThemeModal({ space, open, onClose, byteCollection 
           <div className="mt-4">
             <div className="flex flex-col md:flex-row flex-wrap">
               <div className="w-full md:w-1/2 mt-4">
-                <h1 className="font-bold text-2xl mb-4">Theme Details</h1>
+                <h1 style={{ color: 'var(--heading-color)' }} className="font-bold text-2xl mb-4">
+                  Theme Details
+                </h1>
                 {Object.entries(ColorLabels).map((e) => {
                   const [colorKey, label] = e as [ThemeColorsKeys, string];
                   const colorValue = themeColors[colorKey];
                   return (
-                    <div key={colorKey} className="flex justify-between mb-2">
+                    <div style={{ color: 'var(--text-color)' }} key={colorKey} className="flex justify-between mb-2">
                       <label className="ml-7">{label}</label>
                       <div className="grid grid-cols-2	">
                         <input type="color" className="w-12 h-8 mr-8" value={colorValue} onChange={(e) => handleColorChange(colorKey, e.target.value)} />

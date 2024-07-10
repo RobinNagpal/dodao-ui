@@ -1,5 +1,5 @@
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { SocialSettings, SpaceWithIntegrationsFragment, useUpdateSpaceSocialSettingsMutation } from '@/graphql/generated/generated-types';
+import { SocialSettings, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { useState } from 'react';
 
 export type UpdateSpaceSocialSettingsHelper = {
@@ -11,7 +11,6 @@ export type UpdateSpaceSocialSettingsHelper = {
 
 export function useEditSpaceSocialSettings(space: SpaceWithIntegrationsFragment): UpdateSpaceSocialSettingsHelper {
   const [socialSettings, setSocialSettings] = useState<SocialSettings>(space.socialSettings || {});
-  const [updateSpaceSocialSettingsMutation] = useUpdateSpaceSocialSettingsMutation();
   const [updating, setUpdating] = useState(false);
   const { showNotification } = useNotificationContext();
 
@@ -25,17 +24,23 @@ export function useEditSpaceSocialSettings(space: SpaceWithIntegrationsFragment)
   async function updateSocialSettings() {
     try {
       setUpdating(true);
-      const updatedSpace = await updateSpaceSocialSettingsMutation({
-        variables: {
+      const response = await fetch('/api/spaces/update-social-settings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
           spaceId: space.id,
           input: {
             linkedSharePdfBackgroundImage: socialSettings.linkedSharePdfBackgroundImage,
           },
-        },
+        }),
       });
-      if (updatedSpace.data?.payload) {
+
+      if (response.ok) {
+        const updatedSpace: SpaceWithIntegrationsFragment = (await response.json()).space;
         setSocialSettings({
-          ...updatedSpace.data?.payload.socialSettings,
+          ...updatedSpace.socialSettings,
         });
         showNotification({ type: 'success', message: 'Social settings updated' });
       } else {
