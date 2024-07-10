@@ -2,7 +2,6 @@ import { dodaoTeamMates, getDecodedJwtFromContext } from '@/app/api/helpers/perm
 import { isDoDAOSuperAdmin, isSuperAdminOfDoDAO } from '@/app/api/helpers/space/isSuperAdmin';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { Space } from '@prisma/client';
-import { IncomingMessage } from 'http';
 import { JwtPayload } from 'jsonwebtoken';
 import { NextRequest } from 'next/server';
 
@@ -20,21 +19,15 @@ async function isDoDAOMember(context: NextRequest): Promise<(JwtPayload & DoDaoJ
   return null;
 }
 
-export function isUserAdminOfSpace(decodedJWT: DoDaoJwtTokenPayload, space: Space) {
-  const user = decodedJWT.accountId.toLowerCase();
+export function isUserAdminOfSpace(username: string, space: Space) {
+  const spaceAdmins = [space.creator?.toLowerCase(), ...space.admins.map((admin) => admin.toLowerCase())];
 
-  if (!user) {
-    throw Error('No accountId present in JWT');
-  }
-  const spaceAdmins = [space.creator.toLowerCase(), ...space.admins.map((admin) => admin.toLowerCase())];
+  const isAdminOfSpace: boolean = spaceAdmins.includes(username.toLowerCase());
 
-  const isAdminOfSpace: boolean = spaceAdmins.includes(user.toLowerCase());
+  const isAdminOfSpaceByUserName: boolean = space.adminUsernames.map((u) => u.toLowerCase()).includes(username.toLowerCase());
+  const isAdminOfSpaceByUserNameByName: boolean = space.adminUsernamesV1.map((u) => u.username.toLowerCase()).includes(username.toLowerCase());
 
-  const isAdminOfSpaceByUserName: boolean = space.adminUsernames.map((u) => u.toLowerCase()).includes(decodedJWT.username.toLowerCase());
-  const isAdminOfSpaceByUserNameByName: boolean = space.adminUsernamesV1.map((u) => u.username.toLowerCase()).includes(decodedJWT.username.toLowerCase());
-
-  const canEditSpace = isAdminOfSpace || isAdminOfSpaceByUserName || isSuperAdminOfDoDAO(user) || isAdminOfSpaceByUserNameByName;
-  return { decodedJWT, canEditSpace, user };
+  return isAdminOfSpace || isAdminOfSpaceByUserName || isSuperAdminOfDoDAO(username) || isAdminOfSpaceByUserNameByName;
 }
 
 export async function canEditGitSpace(context: NextRequest, space: Space) {
@@ -56,15 +49,16 @@ export async function canEditGitSpace(context: NextRequest, space: Space) {
     };
   }
 
-  const doDAOAdmin = await isDoDAOSuperAdmin(context);
+  const decoded = await getDecodedJwtFromContext(context);
+  const doDAOAdmin = isDoDAOSuperAdmin(decoded!.username);
 
   if (doDAOAdmin) {
-    return { decodedJWT: doDAOAdmin, canEditSpace: true, user: doDAOAdmin.accountId.toLowerCase() };
+    return { decodedJWT: decoded, canEditSpace: true, user: decoded?.accountId.toLowerCase() };
   }
 
   const decodedJWT = await getDecodedJwtFromContext(context);
 
-  return isUserAdminOfSpace(decodedJWT!, space);
+  return { decodedJWT, canEditSpace: isUserAdminOfSpace(decodedJWT!.username, space), username: decodedJWT?.accountId.toLowerCase() };
 }
 
 export async function checkEditSpacePermission(space: Space, req: NextRequest): Promise<(JwtPayload & DoDaoJwtTokenPayload) | null> {

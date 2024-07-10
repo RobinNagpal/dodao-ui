@@ -42,7 +42,8 @@ export function getAuthOptions(
     name: string | null;
     username: string | null;
     publicAddress: string | null;
-  } | null>
+  } | null>,
+  overrides?: Partial<AuthOptions>
 ): AuthOptions {
   const authOptions: AuthOptions = {
     // Setting error and signin pages to our /auth custom page
@@ -240,6 +241,7 @@ export function getAuthOptions(
         }
         return token;
       },
+      ...(overrides?.callbacks || {}),
     },
     // Due to a NextAuth bug, the default database strategy is no usable
     //  with CredentialsProvider, so we need to set strategy to JWT

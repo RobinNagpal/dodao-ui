@@ -5,9 +5,11 @@ import { isDoDAOSuperAdmin } from '@/app/api/helpers/space/isSuperAdmin';
 import { prisma } from '@/prisma';
 import { Space } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
+import { getDecodedJwtFromContext } from '@/app/api/helpers/permissions/getJwtFromContext';
 
 export async function POST(req: NextRequest) {
-  const doDAOSuperAdmin = await isDoDAOSuperAdmin(req);
+  const decodedJWT = await getDecodedJwtFromContext(req);
+  const doDAOSuperAdmin = isDoDAOSuperAdmin(decodedJWT!.username);
   if (!doDAOSuperAdmin) {
     throw new Error('Space not found');
   }
@@ -49,7 +51,7 @@ export async function POST(req: NextRequest) {
     },
   });
 
-  await upsertSpaceIntegrations(spaceInput, doDAOSuperAdmin);
+  await upsertSpaceIntegrations(spaceInput, decodedJWT!);
 
   return NextResponse.json({ status: 200, space: await getSpaceWithIntegrations(spaceInput.id) });
 }
