@@ -2,7 +2,6 @@ import { createHash } from '@dodao/web-core/api/auth/createHash';
 import { DoDaoJwtTokenPayload, Session } from '@dodao/web-core/types/auth/Session';
 import { User } from '@dodao/web-core/types/auth/User';
 import { VerificationToken } from '@dodao/web-core/types/auth/VerificationToken';
-import { isUserAdminOfSpace } from 'academy-ui/src/app/api/helpers/auth/checkEditSpacePermission';
 import jwt from 'jsonwebtoken';
 import { AuthOptions, RequestInternal } from 'next-auth';
 import { Adapter } from 'next-auth/adapters';
@@ -238,8 +237,6 @@ export function getAuthOptions(
             token.username = dbUser.username;
             token.authProvider = dbUser.authProvider;
             token.accountId = dbUser.id;
-            token.isAdminOfSpace = isUserAdminOfSpace(dbUser.username); // here we can check if the user is an admin from space or not
-            token.isSuperAdminOfDoDAO = false; // here we can check if the user is a super admin or not. We can have array of usernames as super admins and this can be set as env variable
           }
         }
         return token;
