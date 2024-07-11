@@ -13,6 +13,7 @@ fragment ClickableDemoWithSteps on ClickableDemoWithSteps {
   }
   createdAt
   updatedAt
+  archive
 }
 
 fragment ClickableDemo on ClickableDemo {
@@ -22,6 +23,7 @@ fragment ClickableDemo on ClickableDemo {
   excerpt
   createdAt
   updatedAt
+  archive
 }
 
 query ClickableDemoWithSteps($spaceId: String!, $demoId: String!) {
@@ -38,6 +40,12 @@ query ClickableDemos($spaceId: String!) {
 
 mutation UpsertClickableDemo($spaceId: String!, $input: UpsertClickableDemoInput!) {
   payload: upsertClickableDemo(spaceId: $spaceId, input: $input) {
+    ...ClickableDemoWithSteps
+  }
+}
+
+mutation DeleteClickableDemo($spaceId: String!, $demoId: String!) {
+  payload: deleteClickableDemo(spaceId: $spaceId, demoId: $demoId) {
     ...ClickableDemoWithSteps
   }
 }

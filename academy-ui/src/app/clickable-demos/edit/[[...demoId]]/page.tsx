@@ -8,25 +8,30 @@ import Button from '@dodao/web-core/components/core/buttons/Button';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import Stepper from '@/components/clickableDemos/Edit/ClickableDemoStepper';
 import { useEditClickableDemo } from '@/components/clickableDemos/Edit/useEditClickableDemo';
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { useDeleteClickableDemo } from '@/components/clickableDemos/Edit/useDeleteClickableDemo';
+import { SpaceWithIntegrationsFragment, useDeleteClickableDemoMutation } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
 import { ClickableDemoErrors } from '@dodao/web-core/types/errors/clickableDemoErrors';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
+import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
+import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
 
 function EditClickableDemo(props: { space: SpaceWithIntegrationsFragment; params: { demoId?: string[] } }) {
-  const router = useRouter();
-
   const { space, params } = props;
-  const demoId = params.demoId ? params.demoId[0] : null;
+  const demoId = params.demoId ? params.demoId[0] : '';
+  const spaceId = space.id;
 
   const { clickableDemoCreating, clickableDemoLoaded, clickableDemo, clickableDemoErrors, handleSubmit, updateClickableDemoFunctions } = useEditClickableDemo(
     space,
     demoId
   );
+  const { handleDeletion } = useDeleteClickableDemo(space, demoId);
+  const threeDotItems: EllipsisDropdownItem[] = [{ label: 'Delete', key: 'delete' }];
 
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const errors = clickableDemoErrors;
 
   const inputError = (field: keyof ClickableDemoErrors): string => {
@@ -48,11 +53,26 @@ function EditClickableDemo(props: { space: SpaceWithIntegrationsFragment; params
     <PageWrapper>
       <SingleCardLayout>
         <div>
-          <div className="px-4 mb-4 md:px-0 overflow-hidden">
-            <Link href={demoId ? `/clickable-demos/view/${demoId}/0` : `/clickable-demos`} className="text-color">
-              <span className="mr-1 font-bold">&#8592;</span>
-              {demoId ? clickableDemo.title : 'Back to Clickable Demos'}
-            </Link>
+          <div className="py-4 my-4">
+            <div className="px-4 mb-4 md:px-0 overflow-hidden float-left">
+              <Link href={demoId ? `/clickable-demos/view/${demoId}/0` : `/clickable-demos`} className="text-color">
+                <span className="mr-1 font-bold">&#8592;</span>
+                {demoId ? clickableDemo.title : 'Back to Clickable Demos'}
+              </Link>
+            </div>
+            <div className="px-4 mb-4 md:px-0 float-right">
+              {demoId && (
+                <PrivateEllipsisDropdown
+                  items={threeDotItems}
+                  onSelect={(key) => {
+                    if (key === 'delete') {
+                      setShowDeleteModal(true);
+                    }
+                  }}
+                  className="ml-4 z-50"
+                />
+              )}
+            </div>
           </div>
           {clickableDemoLoaded ? (
             <>
@@ -101,6 +121,17 @@ function EditClickableDemo(props: { space: SpaceWithIntegrationsFragment; params
           )}
         </div>
       </SingleCardLayout>
+      {showDeleteModal && (
+        <DeleteConfirmationModal
+          title={'Delete Demo'}
+          open={showDeleteModal}
+          onClose={() => setShowDeleteModal(false)}
+          onDelete={async () => {
+            handleDeletion();
+            setShowDeleteModal(false);
+          }}
+        />
+      )}
     </PageWrapper>
   );
 }
