@@ -1,7 +1,7 @@
 import { GitGuideModel } from '@/app/api/helpers/gitGuides/model/GitGuideModel';
 import { GitGuideStep } from '@/app/api/helpers/gitGuides/model/GitGuideStep';
 import { Space } from '@prisma/client';
-import { isQuestion } from '@/app/api/helpers/stepItemTypes';
+import { isQuestion } from '@/app/api/helpers/deprecatedSchemas/helpers/stepItemTypes';
 import { GuideModel, GuideQuestion, GuideSource, GuideStep, UserDiscordConnect, UserInput } from './../GuideModel';
 
 export function transformGitGuideIntoGuide(guide: GitGuideModel, space: Space, guideSource: GuideSource): GuideModel {

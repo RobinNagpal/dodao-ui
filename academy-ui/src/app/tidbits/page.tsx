@@ -3,14 +3,20 @@ import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { TidbitSiteTabIds } from '@/components/home/TidbitsSite/TidbitSiteTabIds';
 import TidbitsSiteTabs from '@/components/home/TidbitsSite/TidbitsSiteTabs';
 import { ByteSummaryFragment } from '@/graphql/generated/generated-types';
-import getApiResponse from '@/utils/api/getApiResponse';
 import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
 import React from 'react';
+import axios from 'axios';
+import getBaseUrl from '@/utils/api/getBaseURL';
 
 export default async function Byte() {
   const space = (await getSpaceServerSide())!;
+  const response = await axios.get(getBaseUrl() + '/api/byte/bytes', {
+    params: {
+      spaceId: space.id,
+    },
+  });
 
-  const bytes = await getApiResponse<ByteSummaryFragment[]>(space, 'bytes');
+  const bytes: ByteSummaryFragment[] = response.data.bytes;
 
   return (
     <PageWrapper>
