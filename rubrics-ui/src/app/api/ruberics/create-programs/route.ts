@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest, res: NextResponse) {
   try {
-    const { name, details }: { name: string; details?: string } = await req.json();
+    const { name, details }: { name: string; details: string } = await req.json();
 
     const newProgram = await prisma.program.create({
       data: {

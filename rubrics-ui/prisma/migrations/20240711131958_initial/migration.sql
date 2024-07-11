@@ -77,52 +77,51 @@ CREATE TABLE "spaces" (
 
 -- CreateTable
 CREATE TABLE "Program" (
-    "id" VARCHAR(255) NOT NULL,
-    "name" TEXT,
-    "details" TEXT,
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+    "details" TEXT NOT NULL,
 
     CONSTRAINT "Program_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Rubric" (
-    "id" VARCHAR(255) NOT NULL,
-    "name" TEXT,
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
     "summary" TEXT,
     "description" TEXT,
-    "programId" VARCHAR(255) NOT NULL,
+    "programId" INTEGER NOT NULL,
 
     CONSTRAINT "Rubric_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "RubricLevel" (
-    "id" VARCHAR(255) NOT NULL,
-    "rubricId" VARCHAR(255) NOT NULL,
+    "id" SERIAL NOT NULL,
     "columnName" TEXT NOT NULL,
     "description" TEXT,
-    "score" INTEGER NOT NULL,
+    "score" INTEGER,
+    "rubricId" INTEGER NOT NULL,
 
     CONSTRAINT "RubricLevel_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "RubricCriteria" (
-    "id" VARCHAR(255) NOT NULL,
-    "rubricId" VARCHAR(255) NOT NULL,
+    "id" SERIAL NOT NULL,
     "title" TEXT NOT NULL,
-    "description" TEXT,
+    "rubricId" INTEGER NOT NULL,
 
     CONSTRAINT "RubricCriteria_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "RubricCell" (
-    "id" VARCHAR(255) NOT NULL,
-    "rubricId" VARCHAR(255) NOT NULL,
-    "levelId" VARCHAR(255),
-    "criteriaId" VARCHAR(255),
-    "description" TEXT,
+    "id" SERIAL NOT NULL,
+    "description" TEXT NOT NULL,
+    "levelId" INTEGER,
+    "criteriaId" INTEGER,
+    "rubricId" INTEGER NOT NULL,
 
     CONSTRAINT "RubricCell_pkey" PRIMARY KEY ("id")
 );
@@ -150,6 +149,18 @@ CREATE UNIQUE INDEX "verification_tokens_identifier_token_key" ON "verification_
 
 -- CreateIndex
 CREATE UNIQUE INDEX "crypto_login_nonce_user_id_key" ON "crypto_login_nonce"("user_id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Rubric_programId_name_key" ON "Rubric"("programId", "name");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "RubricLevel_rubricId_columnName_key" ON "RubricLevel"("rubricId", "columnName");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "RubricCriteria_rubricId_title_key" ON "RubricCriteria"("rubricId", "title");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "RubricCell_rubricId_levelId_criteriaId_key" ON "RubricCell"("rubricId", "levelId", "criteriaId");
 
 -- AddForeignKey
 ALTER TABLE "accounts" ADD CONSTRAINT "accounts_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;

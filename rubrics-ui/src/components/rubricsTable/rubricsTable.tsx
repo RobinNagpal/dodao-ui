@@ -1,20 +1,5 @@
 import React, { useEffect, useState } from 'react';
-
-interface RubricCell {
-  columnName: string;
-  description: string;
-  score: number;
-}
-
-interface Rubric {
-  criteria: string;
-  description: string;
-  cells: RubricCell[];
-}
-
-interface RubricsPageProps {
-  selectedProgramId: string | null;
-}
+import { Rubric, RubricCell, RubricsPageProps } from '@/types/rubricsTypes/types';
 
 const initialRubrics: Record<string, string[]> = {
   Content: [
@@ -46,34 +31,32 @@ const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId }) => {
 
   useEffect(() => {
     const formattedRubrics: Rubric[] = criteriaOrder.map((criteria) => ({
-      criteria: criteria, // Changed from 'category' to 'criteria'
-      description: '',
-      cells: rubrics[criteria].map((description, index) => ({
-        columnName: ratingHeaders[index],
-        description,
+      name: 'Test',
+      levels: ratingHeaders.map((header, index) => ({
+        columnName: header,
+        description: rubrics[criteria][index],
         score: columnScores[index],
       })),
+      criteria: criteria,
     }));
 
-    const data = {
-      programId: selectedProgramId,
-      rubrics: formattedRubrics,
-    };
-
     if (selectedProgramId) {
-      console.log('Sending data:', data);
-      handleSubmit(data);
+      console.log('Sending data:', formattedRubrics);
+      handleSubmit(formattedRubrics);
     }
   }, [rubrics, ratingHeaders, criteriaOrder, selectedProgramId, columnScores]);
 
-  const handleSubmit = async (data: any) => {
+  const handleSubmit = async (data: Rubric[]) => {
     try {
       const response = await fetch('http://localhost:3004/api/ruberics/create-rubrics', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          programId: selectedProgramId,
+          rubrics: data,
+        }),
       });
 
       if (response.ok) {
@@ -194,40 +177,30 @@ const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId }) => {
   };
 
   return (
-    <div className="container mx-auto py-8 p-6">
-      <h1 className="text-3xl text-center font-bold mb-8">Create Rubrics</h1>
-      <div className="flex justify-center">
-        {ratingHeaders.map((header, index) => (
-          <div key={index} className="flex flex-col items-center">
-            <h3 className="text-lg font-bold mb-4">{header}</h3>
-            <input
-              type="number"
-              min={0}
-              max={10}
-              className="w-16 border rounded p-2 text-center mb-2"
-              placeholder="Score"
-              value={columnScores[index]}
-              onChange={(e) => handleScoreChange(index, parseInt(e.target.value))}
-            />
-          </div>
-        ))}
-      </div>
+    <div className="container mx-auto py-8 p-4">
+      <h1 className="text-3xl text-center font-bold mb-4">Create Rubrics</h1>
+
       <div className="overflow-x-auto mt-4">
         <table className="min-w-full bg-white border-collapse border">
           <thead>
             <tr>
               <th className="py-2 px-4 border-b"></th>
               {ratingHeaders.map((header, index) => (
-                <th
-                  key={index}
-                  className={`py-2 px-4 border-b cursor-pointer text-white ${getHeaderColorClass(index)}`}
-                  onClick={() => handleEditClick('header', index, -1)}
-                >
-                  <div className="overflow-auto max-h-24">
+                <th key={index} className={`py-2 px-4 border-b cursor-pointer text-white ${getHeaderColorClass(index)}`}>
+                  <div className="overflow-auto max-h-24" onClick={() => handleEditClick('header', index, -1)}>
                     {header}
                     <br />
-                    {columnScores[index]}
                   </div>
+
+                  <input
+                    type="number"
+                    min={0}
+                    max={10}
+                    className="w-14 border rounded p-2 text-center mb-2 text-black"
+                    placeholder="Score"
+                    value={columnScores[index]}
+                    onChange={(e) => handleScoreChange(index, parseInt(e.target.value))}
+                  />
                 </th>
               ))}
             </tr>

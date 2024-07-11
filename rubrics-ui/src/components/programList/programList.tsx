@@ -10,6 +10,7 @@ const ProgramList: React.FC<ProgramListProps> = () => {
     details: '',
   });
   const [error, setError] = useState<string | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
   const router = useRouter();
   const handleInputChange = (field: keyof typeof newProgram, value: string | number) => {
     setNewProgram((prevProgram) => ({
