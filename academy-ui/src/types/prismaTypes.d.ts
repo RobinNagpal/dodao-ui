@@ -14,8 +14,8 @@ import {
   TidbitsHomepage as TidbitsHomepageType,
   ByteFeedback as ByteFeedbackType,
   ClickableDemoStep as ClickableDemoStepType,
-} from '@/graphql/generated/graphql';
-import { ByteLinkedinPdfContent as ByteLinkedinPdfContentType } from '@/graphql/generated/graphql';
+} from '@/graphql/generated/generated-types';
+import { ByteLinkedinPdfContent as ByteLinkedinPdfContentType } from '@/graphql/generated/generated-types';
 import { TempTopicSubmissionModel as TempTopicSubmissionModelInterface } from '@/types/course/submission';
 import { GuideSubmissionResult as GuideSubmissionResultInterface } from '@/types/guide/GuideSubmissionResult';
 import { GuidesGitRepository as GuidesGitRepositoryInterface } from '@/types/space/GuidesGitRepository';
