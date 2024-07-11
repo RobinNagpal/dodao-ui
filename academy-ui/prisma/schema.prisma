@@ -186,3 +186,52 @@ model Byte {
 
   @@map("bytes")
 }
+
+model ByteRating {
+  ratingUuid       String   @id @map("rating_uuid") @db.VarChar(255)
+  byteId           String   @map("byte_id") @db.VarChar(255)
+  spaceId          String   @map("space_id") @db.VarChar(255)
+  userId           String?  @map("user_id") @db.VarChar(255)
+  ipAddress        String?  @map("ip_address") @db.VarChar(64)
+  skipRating       Boolean? @map("skip_rating")
+  rating           Int?     @map("rating")
+  /// [ByteFeedback]
+  positiveFeedback Json?    @map("positive_feedback") @db.Json
+  /// [ByteFeedback]
+  negativeFeedback Json?    @map("negative_feedback") @db.Json
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+  username         String?  @map("username") @db.VarChar(1024)
+  suggestion       String?  @map("suggestion") @db.VarChar(1024)
+
+  @@map("byte_ratings")
+}
+
+model ByteSocialShare {
+  uuid               String   @id @default(uuid()) @db.VarChar(255)
+  byteId             String   @unique @map("byte_id") @db.VarChar(255)
+  spaceId            String   @map("space_id") @db.VarChar(255)
+  /// [ByteLinkedPdfContent]
+  linkedinPdfContent Json?    @map("linkedin_pdf_content") @db.Json
+  linkedInImages     String[] @default([]) @map("linked_in_images")
+  linkedInPdf        String?  @map("linked_in_pdf") @db.VarChar(1024)
+  twitterImage       String?  @map("twitter_image") @db.VarChar(1024)
+  createdAt          DateTime @default(now()) @map("created_at")
+  createdBy          String?  @map("created_by") @db.VarChar(256)
+  updatedAt          DateTime @updatedAt @map("updated_at")
+  updatedBy          String?  @map("updated_by") @db.VarChar(256)
+
+  @@unique([byteId, spaceId])
+  @@map("byte_social_shares")
+}
+
+model ByteSubmission {
+  id        String   @id @db.VarChar(66)
+  created   DateTime @default(now()) @map("created_at")
+  createdBy String   @map("created_by") @db.VarChar(64)
+  byteId    String   @map("byte_id") @db.VarChar(64)
+  spaceId   String   @map("space_id") @db.VarChar(64)
+  ipAddress String?  @map("ip_address") @db.VarChar(64)
+
+  @@map("byte_submissions")
+}
