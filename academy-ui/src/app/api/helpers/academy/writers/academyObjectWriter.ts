@@ -1,14 +1,12 @@
+import { AcademyObjectTypes } from '@/app/api/helpers/academy/academyObjectTypes';
+import { getAcademyRepoInfo } from '@/app/api/helpers/academy/gitAcademyRepoWrapper';
 import { ByteModel, ByteStep, ByteStepItem } from '@/app/api/helpers/deprecatedSchemas/models/byte/ByteModel';
 import { TimelineModel } from '@/app/api/helpers/deprecatedSchemas/models/timeline/TimelineModel';
-import { Space } from '@prisma/client';
-import fs from 'fs';
-import { AcademyObjectTypes } from '@/app/api/helpers/academy/academyObjectTypes';
-import { getAcademyRepoInfo, getRedisKeyForAcademyObject, getRedisKeyForAcademyObjects } from '@/app/api/helpers/academy/gitAcademyRepoWrapper';
-import { getAcademyObjectKeysFromRedis } from '@/app/api/helpers/academy/readers/academyObjectReader';
 import { writeToFile } from '@/app/api/helpers/fileWriter';
 import { getAuthor } from '@/app/api/helpers/getAuthor';
-import { setRedisValue } from '@/app/api/helpers/redis';
 import { slugify } from '@/app/api/helpers/space/slugify';
+import { Space } from '@prisma/client';
+import fs from 'fs';
 import { add, commit, push } from 'isomorphic-git';
 import http from 'isomorphic-git/http/node';
 import yaml from 'js-yaml';
@@ -57,24 +55,6 @@ function transformGitObjectIntoModel<T extends AcademyObject>(t: T, objectType: 
   }
 
   return t;
-}
-export async function setAcademyObjectInRedis<T extends AcademyObject>(space: Space, gitObjectModel: T, objectType: AcademyObjectTypes) {
-  const objectModel = transformGitObjectIntoModel(gitObjectModel, objectType, space);
-  const redisObjectKey = getRedisKeyForAcademyObject(space.id, objectType, gitObjectModel.id);
-  await setRedisValue(redisObjectKey, JSON.stringify(objectModel));
-}
-
-export async function setAcademyObjectsArrayInRedis(spaceId: string, objectKeysArray: string[], objectType: AcademyObjectTypes) {
-  const objectKey = getRedisKeyForAcademyObjects(spaceId, objectType);
-  await setRedisValue(objectKey, JSON.stringify(union(objectKeysArray)));
-}
-
-export async function setAcademyObjectsInRedis<T extends AcademyObject>(space: Space, gitObjectModels: T[], objectType: AcademyObjectTypes) {
-  const keys = gitObjectModels.map((g) => g.id);
-  await setAcademyObjectsArrayInRedis(space.id, keys, objectType);
-  for (const gitObjectModel of gitObjectModels) {
-    await setAcademyObjectInRedis(space, gitObjectModel, objectType);
-  }
 }
 
 interface WriteObjectToRepoParams {
@@ -162,10 +142,6 @@ async function appendToAcademyObjects<T extends AcademyObject>({
       2
     )
   );
-
-  const objectKeys = await getAcademyObjectKeysFromRedis(space.id, objectType);
-  objectKeys.push(slugifiedObjectName);
-  await setAcademyObjectsArrayInRedis(space.id, objectKeys, objectType);
 }
 
 export async function writeObjectToAcademyRepo<T extends AcademyObject>(
@@ -212,8 +188,6 @@ export async function writeObjectToAcademyRepo<T extends AcademyObject>(
   }
 
   await writeObjectToRepo(writeParams);
-
-  await setAcademyObjectInRedis(space, objectModel, objectType);
 
   return transformGitObjectIntoModel(objectModel as any, objectType, space);
 }

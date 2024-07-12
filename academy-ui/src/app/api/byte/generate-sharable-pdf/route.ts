@@ -1,17 +1,16 @@
-import { MutationGenerateSharablePdfArgs } from '@/graphql/generated/generated-types';
+import { AcademyObjectTypes } from '@/app/api/helpers/academy/academyObjectTypes';
+import { uploadFileToS3 } from '@/app/api/helpers/s3/uploadFileToS3';
 import downloadImageToTempLocation from '@/app/api/helpers/share/downloadImageToTempLocation';
 import { writeByteLinkedinContentToPdf } from '@/app/api/helpers/share/textOnImage';
-import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
-import { AcademyObjectTypes } from '@/app/api/helpers/academy/academyObjectTypes';
-import { getAcademyObjectFromRedis } from '@/app/api/helpers/academy/readers/academyObjectReader';
-import { uploadFileToS3 } from '@/app/api/helpers/s3/uploadFileToS3';
 import { checkEditSpacePermission } from '@/app/api/helpers/space/checkEditSpacePermission';
+import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
 import { slugify } from '@/app/api/helpers/space/slugify';
+import { MutationGenerateSharablePdfArgs } from '@/graphql/generated/generated-types';
 import { prisma } from '@/prisma';
-import { Byte, Space } from '@prisma/client';
+import { Space } from '@prisma/client';
+import { NextRequest, NextResponse } from 'next/server';
 import os from 'os';
 import path from 'path';
-import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
   const args: MutationGenerateSharablePdfArgs = await req.json();
@@ -21,11 +20,12 @@ export async function POST(req: NextRequest) {
   if (!spaceById.socialSettings.linkedSharePdfBackgroundImage) {
     throw new Error('No background image set for this space');
   }
-  const byte = (await getAcademyObjectFromRedis(args.spaceId, AcademyObjectTypes.bytes, args.byteId)) as Byte | undefined;
 
-  if (!byte) {
-    throw new Error('Byte not found');
-  }
+  const byte = await prisma.byte.findUniqueOrThrow({
+    where: {
+      id: args.byteId,
+    },
+  });
 
   const byteSocialshare = await prisma.byteSocialShare.findUniqueOrThrow({
     where: {
