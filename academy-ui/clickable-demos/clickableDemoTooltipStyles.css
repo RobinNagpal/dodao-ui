@@ -160,7 +160,8 @@
 }
 
 .dodao-hovered-element {
-  border: 2px solid var(--primary-color, #007bff) !important;
+  border: 0.1px solid var(--primary-color, #007bff) !important;
+  border-radius: 5px;
 }
 
 .dodao-target-element {

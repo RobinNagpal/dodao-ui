@@ -150,6 +150,7 @@ function elementSelector(event) {
     selectedElement = preSelectedElement;
     final_xpath = event.data.xpath;
     addSelectedBorder(selectedElement);
+    createOrUpdateOverlay(selectedElement);
 
     // Scroll to the selected element
     if (selectedElement) {
@@ -159,6 +160,70 @@ function elementSelector(event) {
         inline: 'center', // Optional: align the element to the center horizontally
       });
     }
+  }
+  function createOrUpdateOverlay(selectedElement) {
+    // Remove any existing overlay
+    const existingOverlay = document.getElementById('dimming-overlay');
+    if (existingOverlay) {
+      document.body.removeChild(existingOverlay);
+    }
+    // Check if there's a selected element
+    if (!selectedElement) return;
+
+    // Get the bounding rectangle of the selected element
+    const rect = selectedElement.getBoundingClientRect();
+    const scrollHeight = document.body.scrollHeight;
+
+    // Create the overlay container
+    const overlayContainer = document.createElement('div');
+    overlayContainer.id = 'dimming-overlay';
+    overlayContainer.style.position = 'absolute';
+    overlayContainer.style.top = '0';
+    overlayContainer.style.left = '0';
+    overlayContainer.style.width = '100%';
+    overlayContainer.style.height = scrollHeight + 'px';
+    overlayContainer.style.pointerEvents = 'none'; // Allow click events to "fall through" to the target
+    overlayContainer.style.zIndex = '99999'; // Ensure it's above other content
+
+    // Create four overlay parts
+    const topOverlay = document.createElement('div');
+    topOverlay.style.position = 'absolute';
+    topOverlay.style.top = '0';
+    topOverlay.style.left = '0';
+    topOverlay.style.width = '100%';
+    topOverlay.style.height = rect.top + window.scrollY + 'px'; // Adjust for scroll position
+    topOverlay.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+
+    const leftOverlay = document.createElement('div');
+    leftOverlay.style.position = 'absolute';
+    leftOverlay.style.top = rect.top + window.scrollY + 'px'; // Adjust for scroll position
+    leftOverlay.style.left = '0';
+    leftOverlay.style.width = rect.left + 'px';
+    leftOverlay.style.height = rect.height + 'px';
+    leftOverlay.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+
+    const rightOverlay = document.createElement('div');
+    rightOverlay.style.position = 'absolute';
+    rightOverlay.style.top = rect.top + window.scrollY + 'px'; // Adjust for scroll position
+    rightOverlay.style.left = rect.right + 'px';
+    rightOverlay.style.width = `calc(100% - ${rect.right}px)`;
+    rightOverlay.style.height = rect.height + 'px';
+    rightOverlay.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+
+    const bottomOverlay = document.createElement('div');
+    bottomOverlay.style.position = 'absolute';
+    bottomOverlay.style.top = rect.bottom + window.scrollY + 'px'; // Adjust for scroll position
+    bottomOverlay.style.left = '0';
+    bottomOverlay.style.width = '100%';
+    bottomOverlay.style.height = scrollHeight - (rect.bottom + window.scrollY) + 'px';
+    bottomOverlay.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+
+    // Append overlay parts to the main overlay container
+    overlayContainer.appendChild(topOverlay);
+    overlayContainer.appendChild(leftOverlay);
+    overlayContainer.appendChild(rightOverlay);
+    overlayContainer.appendChild(bottomOverlay);
+    document.body.appendChild(overlayContainer);
   }
   document.body.style.cursor = 'pointer';
   const inputs = document.querySelectorAll('input');
@@ -177,6 +242,7 @@ function elementSelector(event) {
     removeSelectedBorder(selectedElement);
     selectedElement = selectedElement.parentNode;
     addSelectedBorder(selectedElement);
+    createOrUpdateOverlay(selectedElement);
     final_xpath = getXPath(selectedElement);
   };
 
@@ -189,6 +255,7 @@ function elementSelector(event) {
     removeSelectedBorder(selectedElement);
     selectedElement = selectedElement.firstElementChild;
     addSelectedBorder(selectedElement);
+    createOrUpdateOverlay(selectedElement);
     final_xpath = getXPath(selectedElement);
   };
 
@@ -228,6 +295,7 @@ function elementSelector(event) {
     if (hoveredElement === selectedElement) return;
     removeBorder(hoveredElement);
   });
+
   function addBorder(element) {
     element.classList.add('dodao-hovered-element');
   }
@@ -244,43 +312,51 @@ function elementSelector(event) {
   document.addEventListener('click', function (event) {
     event.preventDefault();
 
-    // Commenting out the overlay code, will pick it up later
+    // Remove any existing overlay
+    const existingOverlay = document.getElementById('dimming-overlay');
+    if (existingOverlay) {
+      document.body.removeChild(existingOverlay);
+    }
 
-    /*// Check if the overlay already exists
-      const existingOverlay = document.getElementById('dimming-overlay');
-      if (existingOverlay) {
-          // Remove the existing overlay from the document
-          document.body.removeChild(existingOverlay);
-        }
-
-        // Create an overlay
-        const overlay = document.createElement('div');
-        overlay.id = 'dimming-overlay';
-        overlay.style.position = 'absolute';
-        overlay.style.top = '0';
-        overlay.style.left = '0';
-        overlay.style.width = '100%';
-        overlay.style.height = document.body.scrollHeight + 'px';
-        console.log(document.body.scrollHeight)
-        overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.7)'; // Semi-transparent overlay
-        overlay.style.zIndex = '1'; // Ensure it's above other content but below the target
-        overlay.style.pointerEvents = 'none'; // Allow click events to "fall through" to the target
-        document.body.appendChild(overlay);
-      */
-
+    // Handle the clicked element
     var clickedElement = event.target;
-    if (clickedElement == minusButton || clickedElement == plusButton) return;
+    console.log(selectedElement);
+    if (clickedElement === minusButton || clickedElement === plusButton) {
+      if (clickedElement === minusButton) {
+        if (!selectedElement || !selectedElement.parentNode) return;
+
+        removeSelectedBorder(selectedElement);
+        selectedElement = selectedElement.parentNode;
+        addSelectedBorder(selectedElement);
+        createOrUpdateOverlay(selectedElement);
+        console.log(selectedElement);
+        final_xpath = getXPath(selectedElement);
+        return;
+      }
+      if (clickedElement === plusButton) {
+        if (!selectedElement || !selectedElement.firstElementChild) return;
+        removeSelectedBorder(selectedElement);
+        selectedElement = selectedElement.firstElementChild;
+        addSelectedBorder(selectedElement);
+        createOrUpdateOverlay(selectedElement);
+        console.log(selectedElement);
+        final_xpath = getXPath(selectedElement);
+        return;
+      }
+    }
+
     if (selectedElement) {
       removeSelectedBorder(selectedElement);
     }
-    if (clickedElement) {
-      selectedElement = clickedElement;
-      button.disabled = false;
-      button.style.opacity = '1';
-      addSelectedBorder(clickedElement);
-      final_xpath = getXPath(clickedElement);
-    }
+
+    selectedElement = clickedElement;
+    button.disabled = false;
+    button.style.opacity = '1';
+    addSelectedBorder(clickedElement);
+    createOrUpdateOverlay(clickedElement);
+    final_xpath = getXPath(clickedElement);
   });
+
   function getXPath(element) {
     if (!element) return '';
     var xpath = '';
