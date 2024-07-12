@@ -6,12 +6,13 @@ interface Props {
   space: Space;
   showModal: boolean;
   fileUrl: string;
+  xPath: string;
   onLoading?: (loading: boolean) => void;
   onInput?: (imageUrl: string) => void;
   setShowModal: (showModal: boolean) => void;
 }
 
-export default function ElementSelectorModal({ space, showModal, fileUrl, onInput, setShowModal }: Props) {
+export default function ElementSelectorModal({ space, showModal, fileUrl, xPath, onInput, setShowModal }: Props) {
   useEffect(() => {
     function receiveMessage(event: any) {
       if (event.data.xpath) setShowModal(false);
@@ -42,6 +43,7 @@ export default function ElementSelectorModal({ space, showModal, fileUrl, onInpu
           buttonTextColor: space?.themeColors?.textColor,
           hoverColor: space?.themeColors?.bgColor,
           selectedColor: space?.themeColors?.primaryColor,
+          xpath: xPath,
         },
         '*'
       );

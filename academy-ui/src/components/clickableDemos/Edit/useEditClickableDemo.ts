@@ -128,7 +128,7 @@ export function useEditClickableDemo(space: Space, demoId: string | null) {
           tooltipInfo: ``,
           selector: '',
           order: prevClickableDemo.steps.length,
-          placement: 'top',
+          placement: 'bottom',
         },
       ],
     }));
