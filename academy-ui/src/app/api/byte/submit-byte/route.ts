@@ -5,18 +5,18 @@ import { getByte } from '@/app/api/helpers/byte/getByte';
 import { postByteSubmission } from '@/app/api/helpers/discord/webhookMessage';
 import { getDecodedJwtFromContext } from '@/app/api/helpers/permissions/getJwtFromContext';
 import { prisma } from '@/prisma';
-import { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
-  const byteInput: MutationSubmitByteArgs = await req.json();
-  const space = await getSpaceById(byteInput.submissionInput.space);
+  const { submissionInput }: MutationSubmitByteArgs = await req.json();
+  const space = await getSpaceById(submissionInput.space);
   const decodedJWT = await getDecodedJwtFromContext(req);
   const user = decodedJWT?.username.toLowerCase();
 
-  const byte: ByteModel | undefined = await getByte(space.id, byteInput.submissionInput.byteId);
+  const byte: ByteModel | undefined = await getByte(space.id, submissionInput.byteId);
 
   if (!byte) {
-    throw new Error(`No byte found with uuid ${byteInput.submissionInput.byteId}`);
+    throw new Error(`No byte found with uuid ${submissionInput.byteId}`);
   }
 
   const xForwardedFor = req.headers.get('x-forwarded-for');
@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
 
   const submission = await prisma.byteSubmission.create({
     data: {
-      id: byteInput.submissionInput.uuid,
+      id: submissionInput.uuid,
       createdBy: user || 'anonymous',
       byteId: byte.id,
       spaceId: space.id,
@@ -34,8 +34,8 @@ export async function POST(req: NextRequest) {
   });
 
   if (process.env.ALL_GUIDE_SUBMISSIONS_WEBHOOK) {
-    postByteSubmission(process.env.ALL_GUIDE_SUBMISSIONS_WEBHOOK, byte, byteInput.submissionInput);
+    postByteSubmission(process.env.ALL_GUIDE_SUBMISSIONS_WEBHOOK, byte, submissionInput);
   }
 
-  return submission;
+  return NextResponse.json({ status: 200, submitByte: submission });
 }

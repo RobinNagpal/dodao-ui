@@ -6,7 +6,7 @@ import { prisma } from '@/prisma';
 import { ByteRating } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
 
-export default async function consolidatedByteRating(req: NextRequest) {
+export async function POST(req: NextRequest) {
   const { spaceId, byteId }: QueryConsolidatedByteRatingArgs = await req.json();
   const spaceById = await getSpaceById(spaceId);
   await checkEditSpacePermission(spaceById, req);
