@@ -17,6 +17,7 @@ import React, { useEffect } from 'react';
 import styles from './ViewByteModal.module.scss';
 import RatingByteView from '@/components/bytes/View/RatingByteView';
 import FullScreenByteModal from '@/components/bytes/View/FullScreenByteModal';
+import axios from 'axios';
 
 const EditByteView: React.ComponentType<any> = dynamic(() => import('@/components/bytes/Edit/EditByteView'), {
   ssr: false, // Disable server-side rendering for this component
@@ -44,7 +45,13 @@ export default function ViewByteModal({
       return await getApiResponse<ByteDetailsFragment>(space, `projects/${project?.id}/bytes/${byteId}`);
     }
 
-    const byteDetails = await getApiResponse<ByteDetailsFragment>(space, `bytes/${byteId}`);
+    const response = await axios.get('/api/byte/byte', {
+      params: {
+        byteId: byteId,
+        spaceId: space.id,
+      },
+    });
+    const byteDetails = response.data.byte;
     return byteDetails;
   };
 
