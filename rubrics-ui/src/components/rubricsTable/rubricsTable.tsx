@@ -8,12 +8,6 @@ const initialRubrics: Record<string, string[]> = {
     'Somewhat incomplete. The main idea is unclear. Much of the detail is irrelevant.',
     'Incomplete. The main idea is unclear. Details are non-existent or random and irrelevant.',
   ],
-  Comprehensibility: [
-    'Comprehensible. The speaker uses appropriate language to convey the main idea of this item clearly.',
-    'Generally comprehensible. The message is unclear in places. The language used is adequate to...',
-    'Somewhat incomprehensible. The message could only be understood by a sympathetic native speaker. The...',
-    'Incomprehensible.',
-  ],
 };
 
 const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId }) => {
@@ -21,6 +15,7 @@ const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId }) => {
   const [ratingHeaders, setRatingHeaders] = useState<string[]>(['Excellent', 'Good', 'Fair', 'Improvement']);
   const [criteriaOrder, setCriteriaOrder] = useState<string[]>(Object.keys(initialRubrics));
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDeleteConfirm, setIsDeleteConfirm] = useState(false);
   const [currentEdit, setCurrentEdit] = useState<{ type: 'rubric' | 'header' | 'criteria'; criteria: string | number; index: number; value: string }>({
     type: 'rubric',
     criteria: 'Content',
@@ -28,6 +23,7 @@ const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId }) => {
     value: '',
   });
   const [columnScores, setColumnScores] = useState<number[]>(Array(ratingHeaders.length).fill(0));
+  const [criteriaToDelete, setCriteriaToDelete] = useState<string | null>(null);
 
   useEffect(() => {
     const formattedRubrics: Rubric[] = criteriaOrder.map((criteria) => ({
@@ -41,14 +37,13 @@ const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId }) => {
     }));
 
     if (selectedProgramId) {
-      console.log('Sending data:', formattedRubrics);
       handleSubmit(formattedRubrics);
     }
   }, [rubrics, ratingHeaders, criteriaOrder, selectedProgramId, columnScores]);
 
   const handleSubmit = async (data: Rubric[]) => {
     try {
-      const response = await fetch('http://localhost:3004/api/ruberics/create-rubrics', {
+      const response = await fetch('/api/ruberics/create-rubrics', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -58,12 +53,6 @@ const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId }) => {
           rubrics: data,
         }),
       });
-
-      if (response.ok) {
-        console.log('Rubrics submitted successfully', response);
-      } else {
-        throw new Error('Failed to submit rubrics');
-      }
     } catch (error) {
       console.error('Error submitting rubrics:', error);
     }
@@ -151,10 +140,24 @@ const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId }) => {
   };
 
   const handleDeleteCriteria = (criteria: string) => {
-    const updatedRubrics = { ...rubrics };
-    delete updatedRubrics[criteria];
-    setRubrics(updatedRubrics);
-    setCriteriaOrder((prevOrder) => prevOrder.filter((crit) => crit !== criteria));
+    setCriteriaToDelete(criteria);
+    setIsDeleteConfirm(true);
+  };
+
+  const confirmDeleteCriteria = () => {
+    if (criteriaToDelete) {
+      const updatedRubrics = { ...rubrics };
+      delete updatedRubrics[criteriaToDelete];
+      setRubrics(updatedRubrics);
+      setCriteriaOrder((prevOrder) => prevOrder.filter((crit) => crit !== criteriaToDelete));
+    }
+    setIsDeleteConfirm(false);
+    setCriteriaToDelete(null);
+  };
+
+  const cancelDelete = () => {
+    setIsDeleteConfirm(false);
+    setCriteriaToDelete(null);
   };
 
   const handleScoreChange = (index: number, score: number) => {
@@ -212,7 +215,7 @@ const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId }) => {
                   <div onClick={() => handleEditClick('criteria', criteria, -1)} className="overflow-y-auto max-h-24">
                     {criteria}
                   </div>
-                  <button onClick={() => handleDeleteCriteria(criteria)} className="absolute top-0 right-0 bg-red-500 text-white p-1 rounded-full">
+                  <button onClick={() => handleDeleteCriteria(criteria)} className="absolute top-0 right-0 bg-red-500 text-white p-0.5 rounded-half">
                     &times;
                   </button>
                 </td>
@@ -230,22 +233,43 @@ const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId }) => {
           </tbody>
         </table>
       </div>
+
       <div className="flex justify-center">
         <button className="bg-blue-500 mt-2 text-white py-2 px-4 rounded-full flex items-center justify-center" onClick={handleAddCriteria}>
           +
         </button>
       </div>
+
       {isModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
-          <div className="bg-white p-4 rounded shadow-lg max-w-md w-full">
-            <h2 className="text-xl font-bold mb-4">Edit Text</h2>
-            <textarea className="w-full border rounded p-2 mb-4" value={currentEdit.value} onChange={(e) => handleInputChange(e.target.value)} rows={4} />
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div className="absolute inset-0 bg-gray-900 opacity-50"></div>
+          <div className="bg-white p-4 rounded shadow-md relative z-10">
+            <h2 className="text-2xl font-bold mb-4">Edit Rubric</h2>
+            <textarea className="border p-2 w-full h-40 mb-4" value={currentEdit.value} onChange={(e) => handleInputChange(e.target.value)}></textarea>
             <div className="flex justify-end">
-              <button className="bg-red-500 text-white py-2 px-4 rounded mr-2" onClick={handleCancel}>
+              <button onClick={handleSave} className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-700 mr-2">
+                Save
+              </button>
+              <button onClick={handleCancel} className="bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded hover:bg-gray-400">
                 Cancel
               </button>
-              <button className="bg-blue-500 text-white py-2 px-4 rounded" onClick={handleSave}>
-                Save
+            </div>
+          </div>
+        </div>
+      )}
+
+      {isDeleteConfirm && (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div className="absolute inset-0 bg-gray-900 opacity-50"></div>
+          <div className="bg-white p-4 rounded shadow-md relative z-10">
+            <h2 className="text-2xl font-bold mb-4">Confirm Delete</h2>
+            <p>Are you sure you want to delete this criteria?</p>
+            <div className="flex justify-end mt-4">
+              <button onClick={confirmDeleteCriteria} className="bg-red-500 text-white font-semibold py-2 px-4 rounded hover:bg-red-700 mr-2">
+                Delete
+              </button>
+              <button onClick={cancelDelete} className="bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded hover:bg-gray-400">
+                Cancel
               </button>
             </div>
           </div>

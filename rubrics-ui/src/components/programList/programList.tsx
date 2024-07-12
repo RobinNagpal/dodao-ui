@@ -10,7 +10,6 @@ const ProgramList: React.FC<ProgramListProps> = () => {
     details: '',
   });
   const [error, setError] = useState<string | null>(null);
-  const [isDeleting, setIsDeleting] = useState(false);
   const router = useRouter();
   const handleInputChange = (field: keyof typeof newProgram, value: string | number) => {
     setNewProgram((prevProgram) => ({
@@ -28,7 +27,7 @@ const ProgramList: React.FC<ProgramListProps> = () => {
     setError(null);
 
     try {
-      const response = await fetch('http://localhost:3004/api/ruberics/create-programs', {
+      const response = await fetch('/api/ruberics/create-programs', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -37,6 +36,8 @@ const ProgramList: React.FC<ProgramListProps> = () => {
       });
 
       setNewProgram({ name: '', details: '' });
+      router.push('/edit-rubrics');
+      router.refresh();
     } catch (error) {
       console.error('Error creating new program:', error);
     }

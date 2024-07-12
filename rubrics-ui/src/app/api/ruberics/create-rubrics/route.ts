@@ -32,7 +32,6 @@ interface Rubric {
 
 export async function POST(req: NextRequest, res: NextResponse) {
   const { programId, rubrics } = await req.json();
-  console.log(programId, rubrics);
   const parsedProgramId = parseInt(programId, 10);
   try {
     await prisma.rubricCell.deleteMany({
@@ -71,13 +70,13 @@ export async function POST(req: NextRequest, res: NextResponse) {
       const newRubric = await prisma.rubric.upsert({
         where: { programId_name: { programId: parsedProgramId, name } },
         update: {
-          summary: summary || '',
-          description: description || '',
+          summary: summary,
+          description: description,
         },
         create: {
           name: name,
-          summary: summary || '',
-          description: description || '',
+          summary: summary,
+          description: description,
           programId: parsedProgramId,
         },
       });
@@ -92,20 +91,19 @@ export async function POST(req: NextRequest, res: NextResponse) {
             },
           },
           update: {
-            description: level.description || '',
-            score: level.score || 0,
+            description: level.description,
+            score: level.score,
           },
           create: {
             rubricId: newRubric.id,
             columnName: level.columnName,
-            description: level.description || '',
-            score: level.score || 0,
+            description: level.description,
+            score: level.score,
           },
         });
         levelIds[level.columnName] = upsertedLevel.id;
       }
 
-      // Upsert criteria for the rubric
       const newCriteria = await prisma.rubricCriteria.upsert({
         where: {
           rubricId_title: {
@@ -122,7 +120,6 @@ export async function POST(req: NextRequest, res: NextResponse) {
         },
       });
 
-      // Upsert cells for the rubric
       for (const level of levels) {
         await prisma.rubricCell.upsert({
           where: {
@@ -133,12 +130,12 @@ export async function POST(req: NextRequest, res: NextResponse) {
             },
           },
           update: {
-            description: level.description || '',
+            description: level.description,
           },
           create: {
             rubricId: newRubric.id,
-            description: level.description || '',
-            levelId: levelIds[level.columnName] || null,
+            description: level.description,
+            levelId: levelIds[level.columnName],
             criteriaId: newCriteria.id,
           },
         });

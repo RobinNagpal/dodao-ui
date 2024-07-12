@@ -11,7 +11,7 @@ const ProgramDropDown: React.FC<ProgramDropDownProps> = ({ onSelectProgram, serv
   useEffect(() => {
     const fetchPrograms = async () => {
       try {
-        const response = await fetch('http://localhost:3004/api/ruberics/get-programs');
+        const response = await fetch('/api/ruberics/get-programs');
         if (!response.ok) {
           throw new Error('Failed to fetch programs');
         }

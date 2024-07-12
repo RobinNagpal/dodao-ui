@@ -1,5 +1,5 @@
 export interface Program {
-  id: string;
+  id: number;
   name: string;
   details?: string | null;
   rating: number;
