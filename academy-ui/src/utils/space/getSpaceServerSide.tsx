@@ -1,12 +1,12 @@
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import axios from 'axios';
 import { headers } from 'next/headers';
+import getBaseUrl from '@/utils/api/getBaseURL';
 
 export async function getSpaceBasedOnHostHeader(reqHeaders: Headers) {
   const host = reqHeaders.get('host')?.split(':')?.[0];
 
-  const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` : '';
-  const response = await axios.get(baseUrl + '/api/spaces', {
+  const response = await axios.get(getBaseUrl() + '/api/spaces', {
     params: {
       domain: host!,
     },

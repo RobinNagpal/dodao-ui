@@ -10,6 +10,8 @@ import {
 import { Session } from '@dodao/web-core/types/auth/Session';
 import getApiResponse from '@/utils/api/getApiResponse';
 import React from 'react';
+import axios from 'axios';
+import getBaseUrl from '@/utils/api/getBaseURL';
 
 export async function getTidbitsSiteHomepageContents(
   props: {
@@ -20,7 +22,12 @@ export async function getTidbitsSiteHomepageContents(
 ) {
   if (props.searchParams.selectedTabId === TidbitSiteTabIds.Tidbits) {
     const byteCollections = await getApiResponse<ByteCollectionFragment[]>(space, 'byte-collections');
-    const bytes = await getApiResponse<ByteSummaryFragment[]>(space, 'bytes');
+    const response = await axios.get(getBaseUrl() + '/api/byte/bytes', {
+      params: {
+        spaceId: space.id,
+      },
+    });
+    const bytes: ByteSummaryFragment[] = response.data.bytes;
 
     return (
       <TidbitsSiteHome byteCollections={byteCollections} space={space} bytes={bytes} selectedTabId={props.searchParams.selectedTabId} categoriesArray={[]} />

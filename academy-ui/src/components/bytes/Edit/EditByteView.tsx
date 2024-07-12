@@ -18,7 +18,7 @@ import TextareaArray from '@dodao/web-core/components/core/textarea/TextareaArra
 import { SpaceWithIntegrationsFragment, useDeleteByteMutation } from '@/graphql/generated/generated-types';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
 import { ByteErrors } from '@dodao/web-core/types/errors/byteErrors';
-import { router } from 'next/client';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import UploadInput from '@/components/app/UploadInput';
 import { ImageType } from '@/graphql/generated/generated-types';
@@ -50,7 +50,7 @@ export default function EditByteView(props: { space: SpaceWithIntegrationsFragme
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-  const [deleteByteMutation] = useDeleteByteMutation();
+  const router = useRouter();
 
   return (
     <PageWrapper>
@@ -173,7 +173,16 @@ export default function EditByteView(props: { space: SpaceWithIntegrationsFragme
           open={showDeleteModal}
           onClose={() => setShowDeleteModal(false)}
           onDelete={async () => {
-            await deleteByteMutation({ variables: { spaceId: space.id, byteId: byteId! } });
+            await fetch('/api/byte/delete-byte', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                byteId: byteId,
+                spaceId: space.id,
+              }),
+            });
             setShowDeleteModal(false);
             router.push(`/tidbits`);
           }}
