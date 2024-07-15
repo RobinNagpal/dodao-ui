@@ -77,51 +77,52 @@ CREATE TABLE "spaces" (
 
 -- CreateTable
 CREATE TABLE "Program" (
-    "id" SERIAL NOT NULL,
-    "name" TEXT NOT NULL,
-    "details" TEXT NOT NULL,
+    "id" TEXT NOT NULL,
+    "name" TEXT,
+    "details" TEXT,
+    "summary" TEXT,
 
     CONSTRAINT "Program_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Rubric" (
-    "id" SERIAL NOT NULL,
-    "name" TEXT NOT NULL,
+    "id" TEXT NOT NULL,
+    "name" TEXT,
     "summary" TEXT,
     "description" TEXT,
-    "programId" INTEGER NOT NULL,
+    "programId" TEXT NOT NULL,
 
     CONSTRAINT "Rubric_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "RubricLevel" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "columnName" TEXT NOT NULL,
     "description" TEXT,
     "score" INTEGER,
-    "rubricId" INTEGER NOT NULL,
+    "rubricId" TEXT NOT NULL,
 
     CONSTRAINT "RubricLevel_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "RubricCriteria" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "title" TEXT NOT NULL,
-    "rubricId" INTEGER NOT NULL,
+    "rubricId" TEXT NOT NULL,
 
     CONSTRAINT "RubricCriteria_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "RubricCell" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "description" TEXT NOT NULL,
-    "levelId" INTEGER,
-    "criteriaId" INTEGER,
-    "rubricId" INTEGER NOT NULL,
+    "levelId" TEXT,
+    "criteriaId" TEXT,
+    "rubricId" TEXT NOT NULL,
 
     CONSTRAINT "RubricCell_pkey" PRIMARY KEY ("id")
 );

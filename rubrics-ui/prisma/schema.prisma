@@ -109,25 +109,26 @@ model Space {
   /// [AuthSettings]
   authSettings     Json     @default("{}") @map("auth_settings") @db.Json
   features         String[]
-
-  themeColors Json? @map("theme_colors") @db.Json
+  /// [ThemeColors]
+  themeColors      Json?    @map("theme_colors") @db.Json
 
   @@map("spaces")
 }
 
 model Program {
-  id      Int      @id @default(autoincrement())
-  name    String
-  details String
+  id      String   @id @default(uuid())
+  name    String?
+  details String?
+  summary String?
   rubrics Rubric[]
 }
 
 model Rubric {
-  id          Int              @id @default(autoincrement())
-  name        String
+  id          String           @id @default(uuid())
+  name        String?
   summary     String?
   description String?
-  programId   Int
+  programId   String
   program     Program          @relation(fields: [programId], references: [id])
   levels      RubricLevel[]
   criteria    RubricCriteria[]
@@ -137,11 +138,11 @@ model Rubric {
 }
 
 model RubricLevel {
-  id          Int          @id @default(autoincrement())
+  id          String       @id @default(uuid())
   columnName  String
   description String?
   score       Int?
-  rubricId    Int
+  rubricId    String
   rubric      Rubric       @relation(fields: [rubricId], references: [id])
   RubricCell  RubricCell[]
 
@@ -149,9 +150,9 @@ model RubricLevel {
 }
 
 model RubricCriteria {
-  id         Int          @id @default(autoincrement())
+  id         String       @id @default(uuid())
   title      String
-  rubricId   Int
+  rubricId   String
   rubric     Rubric       @relation(fields: [rubricId], references: [id])
   RubricCell RubricCell[]
 
@@ -159,11 +160,11 @@ model RubricCriteria {
 }
 
 model RubricCell {
-  id          Int             @id @default(autoincrement())
+  id          String          @id @default(uuid())
   description String
-  levelId     Int?
-  criteriaId  Int?
-  rubricId    Int
+  levelId     String?
+  criteriaId  String?
+  rubricId    String
   rubric      Rubric          @relation(fields: [rubricId], references: [id])
   level       RubricLevel?    @relation(fields: [levelId], references: [id])
   criteria    RubricCriteria? @relation(fields: [criteriaId], references: [id])
