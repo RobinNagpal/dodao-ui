@@ -24,5 +24,5 @@ export async function GET(req: NextRequest) {
     take: 200,
   });
 
-  return NextResponse.json({ status: 200, ratings });
+  return NextResponse.json({ status: 200, byteRatings: ratings });
 }

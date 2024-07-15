@@ -3,9 +3,10 @@
 import styles from '@/components/app/Rating/Table/RatingsTable.module.scss';
 import { Grid2Cols } from '@dodao/web-core/components/core/grids/Grid2Cols';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import { ConsolidatedByteRating, SpaceWithIntegrationsFragment, useConsolidatedByteRatingsForSpaceQuery } from '@/graphql/generated/generated-types';
-import React from 'react';
+import { ConsolidatedByteRating, ConsolidatedByteRatingsForSpaceQuery, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import React, { useEffect } from 'react';
 import { Cell, Legend, Pie, PieChart, Tooltip } from 'recharts';
+import axios from 'axios';
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28'];
 
@@ -47,18 +48,27 @@ function ConsolidatedRatings(props: { consolidatedRatings: ConsolidatedByteRatin
 }
 
 export default function ConsolidatedByteRatings(props: { space: SpaceWithIntegrationsFragment }) {
-  const { data: consolidatedRatingsResponse, loading: loadingConsolidatedRatings } = useConsolidatedByteRatingsForSpaceQuery({
-    variables: {
-      spaceId: props.space.id,
-    },
-  });
+  const [consolidatedRatingsResponse, setConsolidatedRatingsResponse] = React.useState<ConsolidatedByteRatingsForSpaceQuery>();
+
+  useEffect(() => {
+    async function fetchData() {
+      const response = await axios.get('/api/byte/consolidate-byte-ratings-for-space', {
+        params: {
+          spaceId: props.space.id,
+        },
+      });
+      setConsolidatedRatingsResponse(response.data);
+    }
+    fetchData();
+  }, [props.space.id]);
 
   const consolidatedByteRatingsForSpace = consolidatedRatingsResponse?.consolidatedByteRatingsForSpace;
   const positiveRatingDistribution = consolidatedByteRatingsForSpace?.positiveRatingDistribution;
+  console.log('consolidatedByteRatingsForSpace', consolidatedRatingsResponse);
 
   const ratingDistributions = positiveRatingDistribution && [
-    { name: 'UX', value: +positiveRatingDistribution.ux.toFixed(2) },
-    { name: 'Content', value: +positiveRatingDistribution.content.toFixed(2) },
+    { name: 'UX', value: +positiveRatingDistribution.ux?.toFixed(2) },
+    { name: 'Content', value: +positiveRatingDistribution.content?.toFixed(2) },
   ];
   return (
     <PageWrapper>

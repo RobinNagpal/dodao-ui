@@ -176,15 +176,19 @@ export function useGenericViewByte({ space, fetchByte, byteDetailsUrl, byteId, s
     };
 
     try {
-      const response = await submitByteMutation({
-        variables: {
-          input: byteSubmissionInput,
+      const response = await fetch('/api/byte/submit-byte', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-      });
+        body: JSON.stringify({
+          submissionInput: byteSubmissionInput,
+        }),
+      }).then((res) => res.json());
       setByteSubmitting(false);
       setByteSubmission((prevByteSubmission) => ({ ...prevByteSubmission, isSubmitted: true }));
 
-      const result = response?.data?.submitByte.id;
+      const result = response?.submitByte.id;
       if (result) {
         showNotification({
           type: 'success',
