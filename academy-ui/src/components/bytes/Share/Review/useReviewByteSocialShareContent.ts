@@ -1,16 +1,8 @@
-import {
-  ByteLinkedinPdfContent,
-  ByteLinkedinPdfContentStep,
-  ByteSocialShare,
-  useAskCompletionAiMutation,
-  useByteSocialShareQuery,
-  useGenerateSharablePdfForByteMutation,
-  useQueryByteDetailsQuery,
-  useUpsertByteSocialShareMutation,
-} from '@/graphql/generated/generated-types';
+import { ByteLinkedinPdfContent, ByteLinkedinPdfContentStep, ByteSocialShare, useAskCompletionAiMutation } from '@/graphql/generated/generated-types';
 import { rewriteToCharacterLengthUsingAi, rewriteToWordsCountUsingAi } from '@/utils/ai/rewriteUsingAi';
+import { Byte } from '@prisma/client';
+import axios from 'axios';
 import { useState } from 'react';
-import { v4 } from 'uuid';
 
 export type EditByteLinkedinPdfContentStep = ByteLinkedinPdfContentStep & { order: number };
 export interface EditByteLinkedinPdfContent extends ByteLinkedinPdfContent {
@@ -38,22 +30,10 @@ export default function useReviewByteSocialShareContent(spaceId: string, byteId:
   const [generatingContent, setGeneratingContent] = useState<boolean>(false);
   const [generatingAiContent, setGeneratingAiContent] = useState<boolean>(false);
   const [askCompletionAiMutation] = useAskCompletionAiMutation();
-  const [upsertByteSocialShareMutation] = useUpsertByteSocialShareMutation();
-  const [generateSharablePdfForByteMutation] = useGenerateSharablePdfForByteMutation();
-
-  const { data, refetch: fetchByteSocialShare } = useByteSocialShareQuery({
-    variables: {
-      spaceId: spaceId,
-      byteId: byteId,
-    },
-  });
 
   function cleanUpString(str: string) {
     return str.replace(/[\n\t\r]/g, '').trim();
   }
-  const { refetch: fetchByte } = useQueryByteDetailsQuery({
-    skip: true,
-  });
 
   function isInvalidTitle(str: string): boolean {
     return str.length > 24;
@@ -122,19 +102,21 @@ export default function useReviewByteSocialShareContent(spaceId: string, byteId:
   }
 
   async function initializeByteSocialShare() {
-    const byteShareQueryResponse = await fetchByteSocialShare();
+    const byteShareQueryResponse = await axios.get('/api/byte/byte-social-share', { params: { spaceId, byteId } });
     const socialShare = byteShareQueryResponse.data?.byteSocialShare;
     let linkedinPdfContent: ByteLinkedinPdfContent | undefined = undefined;
     if (socialShare?.linkedinPdfContent) {
       linkedinPdfContent = socialShare.linkedinPdfContent;
       setSocialShareDetails(socialShare);
     } else {
-      const byteResponse = await fetchByte({
-        spaceId: spaceId,
-        byteId: byteId,
+      const byteResponse = await axios.get('/api/byte/byte', {
+        params: {
+          spaceId,
+          byteId,
+        },
       });
 
-      const byte = byteResponse.data?.byte;
+      const byte: Byte = byteResponse.data?.byte;
       if (byte) {
         const relevantSteps = byte.steps
           .filter((s) => s.content.length > 15)
@@ -142,24 +124,37 @@ export default function useReviewByteSocialShareContent(spaceId: string, byteId:
             name: step.name,
             content: step.content,
           }));
-        const upsertResponse = await upsertByteSocialShareMutation({
-          variables: {
-            spaceId: spaceId,
-            input: {
-              byteId: byteId,
-              spaceId: spaceId,
-              linkedinPdfContent: {
-                title: byte.name,
-                excerpt: byte.content,
-                steps: relevantSteps,
-              },
+
+        try {
+          const upsertResponse = await fetch('/api/byte/upsert-byte-social-share', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
             },
-          },
-        });
-        if (upsertResponse.data) {
-          setSocialShareDetails(upsertResponse.data.payload);
+            body: JSON.stringify({
+              spaceId: spaceId,
+              input: {
+                byteId: byteId,
+                spaceId: spaceId,
+                linkedinPdfContent: {
+                  title: byte.name,
+                  excerpt: byte.content,
+                  steps: relevantSteps,
+                },
+              },
+            }),
+          });
+          if (!upsertResponse.ok) {
+            throw new Error('Failed to upsert byte social share');
+          }
+          const responseData = await upsertResponse.json();
+
+          setSocialShareDetails(responseData.byteSocialShare);
+
+          linkedinPdfContent = responseData.byteSocialShare.linkedinPdfContent || undefined;
+        } catch (e) {
+          console.error(e);
         }
-        linkedinPdfContent = upsertResponse?.data?.payload.linkedinPdfContent || undefined;
       }
     }
 
@@ -210,8 +205,12 @@ export default function useReviewByteSocialShareContent(spaceId: string, byteId:
   }
 
   async function generatePdf() {
-    await upsertByteSocialShareMutation({
-      variables: {
+    await fetch('/api/byte/upsert-byte-social-share', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
         spaceId: spaceId,
         input: {
           byteId: byteId,
@@ -226,16 +225,25 @@ export default function useReviewByteSocialShareContent(spaceId: string, byteId:
               })) || [],
           },
         },
-      },
+      }),
     });
-    const response = await generateSharablePdfForByteMutation({
-      variables: {
+
+    const response = await fetch('/api/byte/generate-sharable-pdf', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
         spaceId,
         byteId,
-      },
+      }),
     });
-    if (response.data?.payload) {
-      window.open(response.data.payload, '_blank');
+    if (!response.ok) {
+      throw new Error('Failed to generate pdf');
+    }
+    const responseData = await response.json();
+    if (responseData.outputLocation) {
+      window.open(responseData.outputLocation, '_blank');
     }
   }
 

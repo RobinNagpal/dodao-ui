@@ -1,4 +1,3 @@
-import { QueryConsolidatedByteRatingsForSpaceArgs } from '@/graphql/generated/generated-types';
 import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
 import { consolidateByteRatings } from '@/app/api/helpers/byte/consolidateByteRatings';
 import { checkEditSpacePermission } from '@/app/api/helpers/space/checkEditSpacePermission';
@@ -6,8 +5,10 @@ import { prisma } from '@/prisma';
 import { ByteRating } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST(req: NextRequest) {
-  const { spaceId }: QueryConsolidatedByteRatingsForSpaceArgs = await req.json();
+export async function GET(req: NextRequest) {
+  const { searchParams } = new URL(req.url);
+  const spaceId = searchParams.get('spaceId');
+  if (!spaceId) return NextResponse.json({ status: 400, body: 'No spaceId provided' });
   const spaceById = await getSpaceById(spaceId);
   await checkEditSpacePermission(spaceById, req);
 
@@ -24,5 +25,5 @@ export async function POST(req: NextRequest) {
       negativeFeedback: true,
     },
   });
-  return NextResponse.json({ status: 200, consolidatedByteRatings: consolidateByteRatings(ratings) });
+  return NextResponse.json({ status: 200, consolidatedByteRatingsForSpace: consolidateByteRatings(ratings) });
 }

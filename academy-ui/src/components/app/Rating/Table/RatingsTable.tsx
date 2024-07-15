@@ -38,12 +38,15 @@ export default function RatingsTable({ ratingType, ratingsResponse, consolidated
       : (consolidatedRatingsResponse as ConsolidatedGuideRatingQuery)?.consolidatedGuideRating?.positiveRatingDistribution;
 
   const ratingDistributions = positiveRatingDistribution && [
-    { name: 'UX', value: +positiveRatingDistribution.ux.toFixed(2) },
-    { name: 'Content', value: +positiveRatingDistribution.content.toFixed(2) },
-    ...(ratingType === 'Guide' ? [{ name: 'Questions', value: +(positiveRatingDistribution as RatingDistribution).questions.toFixed(2) }] : []),
+    { name: 'UX', value: +positiveRatingDistribution.ux?.toFixed(2) },
+    { name: 'Content', value: +positiveRatingDistribution.content?.toFixed(2) },
+    ...(ratingType === 'Guide' ? [{ name: 'Questions', value: +(positiveRatingDistribution as RatingDistribution).questions?.toFixed(2) }] : []),
   ];
-  const ratings: ByteRating[] | GuideRating[] =
-    ratingType === 'Byte' ? (ratingsResponse as ByteRatingsQuery)?.byteRatings : (ratingsResponse as GuideRatingsQuery)?.guideRatings || [];
+  const ratings: ByteRating[] | GuideRating[] = ratingsResponse
+    ? ratingType === 'Byte'
+      ? (ratingsResponse as ByteRatingsQuery)?.byteRatings
+      : (ratingsResponse as GuideRatingsQuery)?.guideRatings || []
+    : [];
 
   const onFilterOpened = useCallback((e: FilterOpenedEvent<any>) => {
     console.log('onFilterOpened', e);
