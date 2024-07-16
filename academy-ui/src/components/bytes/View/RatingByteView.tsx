@@ -31,7 +31,7 @@ export default function ByteRatingView(props: { space: SpaceWithIntegrationsFrag
   });
   return (
     <PageWrapper>
-      <div style={{ color: 'var(--heading-color)' }} className="mt-4">
+      <div className=" heading-color mt-4">
         <RatingsTable
           ratingType="Byte"
           space={props.space!}

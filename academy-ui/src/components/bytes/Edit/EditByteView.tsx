@@ -79,7 +79,7 @@ export default function EditByteView(props: { space: SpaceWithIntegrationsFragme
         </div>
 
         {byteLoaded ? (
-          <div style={{ color: 'var(--heading-color)' }} className="pb-10">
+          <div className="text-color pb-10">
             <Block title="Basic Info">
               <div className="mb-8">
                 <Input modelValue={byte.name} error={inputError('name')} maxLength={32} onUpdate={(e) => updateByteFunctions.updateByteField('name', e)}>
