@@ -77,32 +77,40 @@ CREATE TABLE "spaces" (
 
 -- CreateTable
 CREATE TABLE "Program" (
-    "id" TEXT NOT NULL,
-    "name" TEXT,
-    "details" TEXT,
-    "summary" TEXT,
+    "id" VARCHAR(64) NOT NULL,
+    "name" VARCHAR(64),
+    "details" VARCHAR(64),
+    "summary" VARCHAR(64),
 
     CONSTRAINT "Program_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Rubric" (
-    "id" TEXT NOT NULL,
-    "name" TEXT,
-    "summary" TEXT,
-    "description" TEXT,
-    "programId" TEXT NOT NULL,
+    "id" VARCHAR(64) NOT NULL,
+    "name" VARCHAR(64),
+    "summary" VARCHAR(64),
+    "description" VARCHAR(64),
 
     CONSTRAINT "Rubric_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
+CREATE TABLE "ProgramRubricMapping" (
+    "id" VARCHAR(64) NOT NULL,
+    "programId" VARCHAR(64) NOT NULL,
+    "rubricId" VARCHAR(64) NOT NULL,
+
+    CONSTRAINT "ProgramRubricMapping_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "RubricLevel" (
-    "id" TEXT NOT NULL,
-    "columnName" TEXT NOT NULL,
-    "description" TEXT,
+    "id" VARCHAR(64) NOT NULL,
+    "columnName" VARCHAR(64) NOT NULL,
+    "description" VARCHAR(64),
     "score" INTEGER,
-    "rubricId" TEXT NOT NULL,
+    "rubricId" VARCHAR(64) NOT NULL,
 
     CONSTRAINT "RubricLevel_pkey" PRIMARY KEY ("id")
 );
@@ -110,19 +118,19 @@ CREATE TABLE "RubricLevel" (
 -- CreateTable
 CREATE TABLE "RubricCriteria" (
     "id" TEXT NOT NULL,
-    "title" TEXT NOT NULL,
-    "rubricId" TEXT NOT NULL,
+    "title" VARCHAR(64) NOT NULL,
+    "rubricId" VARCHAR(64) NOT NULL,
 
     CONSTRAINT "RubricCriteria_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "RubricCell" (
-    "id" TEXT NOT NULL,
-    "description" TEXT NOT NULL,
-    "levelId" TEXT,
-    "criteriaId" TEXT,
-    "rubricId" TEXT NOT NULL,
+    "id" VARCHAR(64) NOT NULL,
+    "description" VARCHAR(64) NOT NULL,
+    "levelId" VARCHAR(64),
+    "criteriaId" VARCHAR(64),
+    "rubricId" VARCHAR(64) NOT NULL,
 
     CONSTRAINT "RubricCell_pkey" PRIMARY KEY ("id")
 );
@@ -152,7 +160,7 @@ CREATE UNIQUE INDEX "verification_tokens_identifier_token_key" ON "verification_
 CREATE UNIQUE INDEX "crypto_login_nonce_user_id_key" ON "crypto_login_nonce"("user_id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Rubric_programId_name_key" ON "Rubric"("programId", "name");
+CREATE UNIQUE INDEX "ProgramRubricMapping_programId_rubricId_key" ON "ProgramRubricMapping"("programId", "rubricId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "RubricLevel_rubricId_columnName_key" ON "RubricLevel"("rubricId", "columnName");
@@ -173,7 +181,10 @@ ALTER TABLE "sessions" ADD CONSTRAINT "sessions_user_id_fkey" FOREIGN KEY ("user
 ALTER TABLE "crypto_login_nonce" ADD CONSTRAINT "crypto_login_nonce_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Rubric" ADD CONSTRAINT "Rubric_programId_fkey" FOREIGN KEY ("programId") REFERENCES "Program"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "ProgramRubricMapping" ADD CONSTRAINT "ProgramRubricMapping_programId_fkey" FOREIGN KEY ("programId") REFERENCES "Program"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ProgramRubricMapping" ADD CONSTRAINT "ProgramRubricMapping_rubricId_fkey" FOREIGN KEY ("rubricId") REFERENCES "Rubric"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "RubricLevel" ADD CONSTRAINT "RubricLevel_rubricId_fkey" FOREIGN KEY ("rubricId") REFERENCES "Rubric"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

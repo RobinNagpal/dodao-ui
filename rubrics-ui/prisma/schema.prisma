@@ -116,33 +116,40 @@ model Space {
 }
 
 model Program {
-  id      String   @id @default(uuid())
-  name    String?
-  details String?
-  summary String?
-  rubrics Rubric[]
+  id      String                 @id @default(uuid()) @db.VarChar(64)
+  name    String?                @db.VarChar(64)
+  details String?                @db.VarChar(64)
+  summary String?                @db.VarChar(64)
+  rubrics ProgramRubricMapping[]
 }
 
 model Rubric {
-  id          String           @id @default(uuid())
-  name        String?
-  summary     String?
-  description String?
-  programId   String
-  program     Program          @relation(fields: [programId], references: [id])
+  id          String                 @id @default(uuid()) @db.VarChar(64)
+  name        String?                @db.VarChar(64)
+  summary     String?                @db.VarChar(64)
+  description String?                @db.VarChar(64)
   levels      RubricLevel[]
   criteria    RubricCriteria[]
   RubricCell  RubricCell[]
+  programs    ProgramRubricMapping[]
+}
 
-  @@unique([programId, name])
+model ProgramRubricMapping {
+  id        String  @id @default(uuid()) @db.VarChar(64)
+  programId String  @db.VarChar(64)
+  rubricId  String  @db.VarChar(64)
+  program   Program @relation(fields: [programId], references: [id])
+  rubric    Rubric  @relation(fields: [rubricId], references: [id])
+
+  @@unique([programId, rubricId])
 }
 
 model RubricLevel {
-  id          String       @id @default(uuid())
-  columnName  String
-  description String?
+  id          String       @id @default(uuid()) @db.VarChar(64)
+  columnName  String       @db.VarChar(64)
+  description String?      @db.VarChar(64)
   score       Int?
-  rubricId    String
+  rubricId    String       @db.VarChar(64)
   rubric      Rubric       @relation(fields: [rubricId], references: [id])
   RubricCell  RubricCell[]
 
@@ -151,8 +158,8 @@ model RubricLevel {
 
 model RubricCriteria {
   id         String       @id @default(uuid())
-  title      String
-  rubricId   String
+  title      String       @db.VarChar(64)
+  rubricId   String       @db.VarChar(64)
   rubric     Rubric       @relation(fields: [rubricId], references: [id])
   RubricCell RubricCell[]
 
@@ -160,11 +167,11 @@ model RubricCriteria {
 }
 
 model RubricCell {
-  id          String          @id @default(uuid())
-  description String
-  levelId     String?
-  criteriaId  String?
-  rubricId    String
+  id          String          @id @default(uuid()) @db.VarChar(64)
+  description String          @db.VarChar(64)
+  levelId     String?         @db.VarChar(64)
+  criteriaId  String?         @db.VarChar(64)
+  rubricId    String          @db.VarChar(64)
   rubric      Rubric          @relation(fields: [rubricId], references: [id])
   level       RubricLevel?    @relation(fields: [levelId], references: [id])
   criteria    RubricCriteria? @relation(fields: [criteriaId], references: [id])

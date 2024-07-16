@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Rubric, RubricCell, RubricsPageProps } from '@/types/rubricsTypes/types';
+import { Rubric, RubricsPageProps } from '@/types/rubricsTypes/types';
 
 const initialRubrics: Record<string, string[]> = {
   Content: [
@@ -10,7 +10,7 @@ const initialRubrics: Record<string, string[]> = {
   ],
 };
 
-const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId }) => {
+const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId, isEditAccess }) => {
   const [rubrics, setRubrics] = useState<Record<string, string[]>>(initialRubrics);
   const [ratingHeaders, setRatingHeaders] = useState<string[]>(['Excellent', 'Good', 'Fair', 'Improvement']);
   const [criteriaOrder, setCriteriaOrder] = useState<string[]>(Object.keys(initialRubrics));
@@ -36,7 +36,7 @@ const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId }) => {
       criteria: criteria,
     }));
 
-    if (selectedProgramId) {
+    if (selectedProgramId && isEditAccess) {
       handleSubmit(formattedRubrics);
     }
   }, [rubrics, ratingHeaders, criteriaOrder, selectedProgramId, columnScores]);
@@ -59,29 +59,31 @@ const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId }) => {
   };
 
   const handleEditClick = (type: 'rubric' | 'header' | 'criteria', criteria: string | number, index: number) => {
-    if (type === 'header') {
-      setCurrentEdit({
-        type,
-        criteria,
-        index,
-        value: ratingHeaders[criteria as number],
-      });
-    } else if (type === 'criteria') {
-      setCurrentEdit({
-        type,
-        criteria,
-        index,
-        value: criteria as string,
-      });
-    } else {
-      setCurrentEdit({
-        type,
-        criteria,
-        index,
-        value: rubrics[criteria as string][index],
-      });
+    if (isEditAccess) {
+      if (type === 'header') {
+        setCurrentEdit({
+          type,
+          criteria,
+          index,
+          value: ratingHeaders[criteria as number],
+        });
+      } else if (type === 'criteria') {
+        setCurrentEdit({
+          type,
+          criteria,
+          index,
+          value: criteria as string,
+        });
+      } else {
+        setCurrentEdit({
+          type,
+          criteria,
+          index,
+          value: rubrics[criteria as string][index],
+        });
+      }
+      setIsModalOpen(true);
     }
-    setIsModalOpen(true);
   };
 
   const handleInputChange = (value: string) => {
@@ -126,22 +128,26 @@ const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId }) => {
   };
 
   const handleAddCriteria = () => {
-    const newCriteriaName = `New Criteria ${Object.keys(rubrics).length + 1}`;
-    setRubrics((prevRubrics) => ({
-      ...prevRubrics,
-      [newCriteriaName]: [
-        'Functions, grammar, and vocabulary are...',
-        'Minor problems in usage do not distort...',
-        'Problems in usage significantly distort...',
-        'Problems in usage completely distort...',
-      ],
-    }));
-    setCriteriaOrder((prevOrder) => [...prevOrder, newCriteriaName]);
+    if (isEditAccess) {
+      const newCriteriaName = `New Criteria ${Object.keys(rubrics).length + 1}`;
+      setRubrics((prevRubrics) => ({
+        ...prevRubrics,
+        [newCriteriaName]: [
+          'Functions, grammar, and vocabulary are...',
+          'Minor problems in usage do not distort...',
+          'Problems in usage significantly distort...',
+          'Problems in usage completely distort...',
+        ],
+      }));
+      setCriteriaOrder((prevOrder) => [...prevOrder, newCriteriaName]);
+    }
   };
 
   const handleDeleteCriteria = (criteria: string) => {
-    setCriteriaToDelete(criteria);
-    setIsDeleteConfirm(true);
+    if (isEditAccess) {
+      setCriteriaToDelete(criteria);
+      setIsDeleteConfirm(true);
+    }
   };
 
   const confirmDeleteCriteria = () => {
@@ -160,8 +166,23 @@ const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId }) => {
     setCriteriaToDelete(null);
   };
 
-  const handleScoreChange = (index: number, score: number) => {
+  const handleScoreChange = async (index: number, score: number) => {
     setColumnScores((prevScores) => [...prevScores.slice(0, index), score, ...prevScores.slice(index + 1)]);
+    if (!isEditAccess) {
+      const formattedRubrics: Rubric[] = criteriaOrder.map((criteria) => ({
+        name: 'Test',
+        levels: ratingHeaders.map((header, idx) => ({
+          columnName: header,
+          description: rubrics[criteria][idx],
+          score: columnScores[idx],
+        })),
+        criteria: criteria,
+      }));
+
+      if (selectedProgramId) {
+        await handleSubmit(formattedRubrics);
+      }
+    }
   };
 
   const getHeaderColorClass = (index: number) => {
@@ -190,7 +211,7 @@ const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId }) => {
               <th className="py-2 px-4 border-b"></th>
               {ratingHeaders.map((header, index) => (
                 <th key={index} className={`py-2 px-4 border-b cursor-pointer text-white ${getHeaderColorClass(index)}`}>
-                  <div className="overflow-auto max-h-24" onClick={() => handleEditClick('header', index, -1)}>
+                  <div className="overflow-auto max-h-24" onClick={() => isEditAccess && handleEditClick('header', index, -1)}>
                     {header}
                     <br />
                   </div>
@@ -203,6 +224,7 @@ const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId }) => {
                     placeholder="Score"
                     value={columnScores[index]}
                     onChange={(e) => handleScoreChange(index, parseInt(e.target.value))}
+                    disabled={!isEditAccess}
                   />
                 </th>
               ))}
@@ -212,18 +234,20 @@ const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId }) => {
             {criteriaOrder.map((criteria) => (
               <tr key={criteria}>
                 <td className="py-2 px-4 border-r border-b font-bold cursor-pointer max-w-xs break-words relative">
-                  <div onClick={() => handleEditClick('criteria', criteria, -1)} className="overflow-y-auto max-h-24">
+                  <div onClick={() => isEditAccess && handleEditClick('criteria', criteria, -1)} className="overflow-y-auto max-h-24">
                     {criteria}
                   </div>
-                  <button onClick={() => handleDeleteCriteria(criteria)} className="absolute top-0 right-0 bg-red-500 text-white p-0.5 rounded-half">
-                    &times;
-                  </button>
+                  {isEditAccess && (
+                    <button onClick={() => handleDeleteCriteria(criteria)} className="absolute top-0 right-0 bg-red-500 text-white p-0.5 rounded-half">
+                      &times;
+                    </button>
+                  )}
                 </td>
                 {rubrics[criteria].map((cell, cellIndex) => (
                   <td
                     key={cellIndex}
                     className="py-2 px-4 border-r border-b cursor-pointer max-w-xs break-words"
-                    onClick={() => handleEditClick('rubric', criteria, cellIndex)}
+                    onClick={() => isEditAccess && handleEditClick('rubric', criteria, cellIndex)}
                   >
                     <div className="overflow-y-auto max-h-24">{cell}</div>
                   </td>
@@ -234,11 +258,13 @@ const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId }) => {
         </table>
       </div>
 
-      <div className="flex justify-center">
-        <button className="bg-blue-500 mt-2 text-white py-2 px-4 rounded-full flex items-center justify-center" onClick={handleAddCriteria}>
-          +
-        </button>
-      </div>
+      {isEditAccess && (
+        <div className="flex justify-center">
+          <button className="bg-blue-500 mt-2 text-white py-2 px-4 rounded-full flex items-center justify-center" onClick={handleAddCriteria}>
+            +
+          </button>
+        </div>
+      )}
 
       {isModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center z-50">

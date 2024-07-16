@@ -1,43 +1,13 @@
 import { prisma } from '@/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 
-interface RubricLevel {
-  id?: number;
-  columnName: string;
-  description?: string;
-  score?: number;
-}
-
-interface RubricCriteria {
-  id?: number;
-  title: string;
-  description?: string;
-}
-
-interface RubricCell {
-  id?: number;
-  levelId?: number | null;
-  criteriaId?: number | null;
-  description: string;
-}
-
-interface Rubric {
-  id?: number;
-  name: string;
-  summary?: string;
-  description?: string;
-  levels: RubricLevel[];
-  criteria: string;
-}
-
 export async function POST(req: NextRequest, res: NextResponse) {
   const { programId, rubrics } = await req.json();
-  const parsedProgramId = parseInt(programId, 10);
   try {
     await prisma.rubricCell.deleteMany({
       where: {
         rubric: {
-          programId: parsedProgramId,
+          programId: programId,
         },
       },
     });
@@ -45,7 +15,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
     await prisma.rubricLevel.deleteMany({
       where: {
         rubric: {
-          programId: parsedProgramId,
+          programId: programId,
         },
       },
     });
@@ -53,14 +23,14 @@ export async function POST(req: NextRequest, res: NextResponse) {
     await prisma.rubricCriteria.deleteMany({
       where: {
         rubric: {
-          programId: parsedProgramId,
+          programId: programId,
         },
       },
     });
 
     await prisma.rubric.deleteMany({
       where: {
-        programId: parsedProgramId,
+        programId: programId,
       },
     });
 
@@ -68,7 +38,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
       const { name, summary, description, levels, criteria } = rubric;
 
       const newRubric = await prisma.rubric.upsert({
-        where: { programId_name: { programId: parsedProgramId, name } },
+        where: { programId_name: { programId: programId, name } },
         update: {
           summary: summary,
           description: description,
@@ -77,7 +47,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
           name: name,
           summary: summary,
           description: description,
-          programId: parsedProgramId,
+          programId: programId,
         },
       });
 

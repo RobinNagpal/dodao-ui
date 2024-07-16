@@ -1,8 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import ProgramList from '@/components/programList/programList';
-import RubricsPage from '@/components/rubricsTable/rubricsTable';
-import ProgramDropDown from '@/components/programDropDown/programDropDown';
+import RubricsPage from '@/components/RubricsTable/RubricsTable';
 import { ServerResponse } from '@/types/rubricsTypes/types';
 
 function EditRuberics() {
@@ -16,9 +14,7 @@ function EditRuberics() {
   return (
     <div>
       <div className="mt-10 p-2 flex-col items-center justify-center gap-x-6">
-        <ProgramList />
-        <ProgramDropDown onSelectProgram={handleSelectProgram} serverResponse={serverResponse} setServerResponse={setServerResponse} />
-        <RubricsPage selectedProgramId={selectedProgramId} />
+        <RubricsPage selectedProgramId={selectedProgramId} isEditAccess={true} />
       </div>
     </div>
   );

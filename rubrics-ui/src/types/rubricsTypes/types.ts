@@ -3,9 +3,10 @@ export interface Program {
   name: string;
   details?: string | null;
   rating: number;
+  summary: string;
   rubrics: Rubric[];
 }
-export interface ServerResponse {
+export interface ProgramServerResponse {
   status: number;
   body: Program[];
 }
@@ -26,18 +27,26 @@ export interface Rubric {
 
 export interface RubricsPageProps {
   selectedProgramId: string | null;
+  isEditAccess?: boolean;
 }
 
 export interface ProgramListProps {
   programs?: Program[];
 }
 
-export interface RubricsPageProps {
-  programs?: Program[];
-}
-
 export interface ProgramDropDownProps {
   onSelectProgram: (id: string) => void;
-  serverResponse: ServerResponse;
-  setServerResponse: React.Dispatch<React.SetStateAction<ServerResponse>>;
+  serverResponse: ProgramServerResponse;
+  setServerResponse: React.Dispatch<React.SetStateAction<ProgramServerResponse>>;
+}
+
+export interface EditProgramRubricProps {
+  id: string;
+  name: string;
+  summary: string;
+}
+export interface ProgramForm {
+  name: string;
+  details: string;
+  summary: string;
 }
