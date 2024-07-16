@@ -15,7 +15,7 @@ function EditRuberics() {
     <div>
       <div className="mt-10 p-2 flex-col items-center justify-center gap-x-6">
         <ProgramDropDown serverResponse={serverResponse} setServerResponse={setServerResponse} onSelectProgram={handleSelectProgram} />
-        <RubricsTable selectedProgramId={selectedProgramId} isEditAccess={true} />
+        <RubricsTable selectedProgramId={selectedProgramId} />
       </div>
     </div>
   );
