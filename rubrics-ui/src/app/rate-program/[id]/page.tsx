@@ -2,7 +2,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import RubricsPage from '@/components/RubricsTable/RubricsTable';
-import { ServerResponse } from '@/types/rubricsTypes/types';
+import { ProgramServerResponse } from '@/types/rubricsTypes/types';
 
 // Define props interface for RateProgram component
 interface RateProgramProps {
@@ -13,7 +13,7 @@ interface RateProgramProps {
 
 const RateProgram: React.FC<RateProgramProps> = ({ params }) => {
   const [selectedProgramId, setSelectedProgramId] = useState<string | null>(null);
-  const [serverResponse, setServerResponse] = useState<ServerResponse>({ status: -1, body: [] });
+  const [serverResponse, setServerResponse] = useState<ProgramServerResponse>({ status: -1, body: [] });
 
   useEffect(() => {
     const { id } = params;
@@ -21,7 +21,7 @@ const RateProgram: React.FC<RateProgramProps> = ({ params }) => {
     if (id) {
       const fetchProgramData = async () => {
         try {
-          const response = await fetch(`http://localhost:3004/api/ruberics/get-rubric?programId=${id}`);
+          const response = await fetch(`/api/rubrics/get-rubric?programId=${id}`);
           const data = await response.json();
           console.log(data);
 

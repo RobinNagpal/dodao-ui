@@ -10,7 +10,7 @@ const ProgramsList: React.FC = () => {
 
   const fetchPrograms = async () => {
     try {
-      const response = await fetch('http://localhost:3004/api/ruberics/get-programs');
+      const response = await fetch('/api/ruberics/get-programs');
       const data = await response.json();
 
       if (response.ok) {

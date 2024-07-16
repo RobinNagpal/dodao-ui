@@ -1,11 +1,11 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import RubricsPage from '@/components/RubricsTable/RubricsTable';
-import { ServerResponse } from '@/types/rubricsTypes/types';
+import { ProgramServerResponse } from '@/types/rubricsTypes/types';
 
 function EditRuberics() {
   const [selectedProgramId, setSelectedProgramId] = useState<string | null>(null);
-  const [serverResponse, setServerResponse] = useState<ServerResponse>({ status: -1, body: [] });
+  const [serverResponse, setServerResponse] = useState<ProgramServerResponse>({ status: -1, body: [] });
 
   const handleSelectProgram = (id: string) => {
     setSelectedProgramId(id);
