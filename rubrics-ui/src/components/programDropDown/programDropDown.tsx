@@ -33,7 +33,6 @@ const ProgramDropDown: React.FC<ProgramDropDownProps> = ({ onSelectProgram, serv
     id: program.id.toString(),
     label: program.name,
   }));
-  console.log(selectedProgramId);
 
   return (
     <div className="flex align-center justify-center p-4">

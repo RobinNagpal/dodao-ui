@@ -38,8 +38,6 @@ const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId, isEditAcce
     })),
   }));
 
-  console.log(formattedRubrics);
-
   const handleSubmit = async (data: Rubric[]) => {
     try {
       const response = await fetch('/api/rubrics/create-rubrics', {
