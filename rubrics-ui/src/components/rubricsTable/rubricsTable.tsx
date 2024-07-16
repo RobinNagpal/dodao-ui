@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Rubric, RubricsPageProps } from '@/types/rubricsTypes/types';
+import { Rubric, RubricCell, RubricsPageProps } from '@/types/rubricsTypes/types';
+import RubricCriteria from '@/components/RubricCriteria/RubricCriteria';
+import RubricLevel from '@/components/RubricLevel/RubricLevel';
 
 const initialRubrics: Record<string, string[]> = {
   Content: [
@@ -10,7 +12,7 @@ const initialRubrics: Record<string, string[]> = {
   ],
 };
 
-const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId, isEditAccess }) => {
+const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId, isEditAccess = true }) => {
   const [rubrics, setRubrics] = useState<Record<string, string[]>>(initialRubrics);
   const [ratingHeaders, setRatingHeaders] = useState<string[]>(['Excellent', 'Good', 'Fair', 'Improvement']);
   const [criteriaOrder, setCriteriaOrder] = useState<string[]>(Object.keys(initialRubrics));
@@ -22,28 +24,25 @@ const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId, isEditAcce
     index: -1,
     value: '',
   });
+
   const [columnScores, setColumnScores] = useState<number[]>(Array(ratingHeaders.length).fill(0));
   const [criteriaToDelete, setCriteriaToDelete] = useState<string | null>(null);
 
-  useEffect(() => {
-    const formattedRubrics: Rubric[] = criteriaOrder.map((criteria) => ({
-      name: 'Test',
-      levels: ratingHeaders.map((header, index) => ({
-        columnName: header,
-        description: rubrics[criteria][index],
-        score: columnScores[index],
-      })),
-      criteria: criteria,
-    }));
+  const formattedRubrics: Rubric[] = criteriaOrder.map((criteria) => ({
+    name: 'Hardcoded Test Name for Rubric',
+    criteria: criteria,
+    levels: ratingHeaders.map((header, index) => ({
+      columnName: header,
+      description: rubrics[criteria][index],
+      score: columnScores[index],
+    })),
+  }));
 
-    if (selectedProgramId && isEditAccess) {
-      handleSubmit(formattedRubrics);
-    }
-  }, [rubrics, ratingHeaders, criteriaOrder, selectedProgramId, columnScores]);
+  console.log(formattedRubrics);
 
   const handleSubmit = async (data: Rubric[]) => {
     try {
-      const response = await fetch('/api/ruberics/create-rubrics', {
+      const response = await fetch('/api/rubrics/create-rubrics', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -178,25 +177,10 @@ const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId, isEditAcce
         })),
         criteria: criteria,
       }));
-
+      console.log(formattedRubrics);
       if (selectedProgramId) {
         await handleSubmit(formattedRubrics);
       }
-    }
-  };
-
-  const getHeaderColorClass = (index: number) => {
-    switch (index) {
-      case 0:
-        return 'bg-green-500';
-      case 1:
-        return 'bg-yellow-400';
-      case 2:
-        return 'bg-yellow-600';
-      case 3:
-        return 'bg-red-500';
-      default:
-        return 'bg-gray-400';
     }
   };
 
@@ -210,49 +194,28 @@ const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId, isEditAcce
             <tr>
               <th className="py-2 px-4 border-b"></th>
               {ratingHeaders.map((header, index) => (
-                <th key={index} className={`py-2 px-4 border-b cursor-pointer text-white ${getHeaderColorClass(index)}`}>
-                  <div className="overflow-auto max-h-24" onClick={() => isEditAccess && handleEditClick('header', index, -1)}>
-                    {header}
-                    <br />
-                  </div>
-
-                  <input
-                    type="number"
-                    min={0}
-                    max={10}
-                    className="w-14 border rounded p-2 text-center mb-2 text-black"
-                    placeholder="Score"
-                    value={columnScores[index]}
-                    onChange={(e) => handleScoreChange(index, parseInt(e.target.value))}
-                    disabled={!isEditAccess}
-                  />
-                </th>
+                <RubricLevel
+                  key={index}
+                  header={header}
+                  index={index}
+                  score={columnScores[index]}
+                  isEditAccess={isEditAccess}
+                  onScoreChange={handleScoreChange}
+                  onEditClick={handleEditClick}
+                />
               ))}
             </tr>
           </thead>
           <tbody>
             {criteriaOrder.map((criteria) => (
-              <tr key={criteria}>
-                <td className="py-2 px-4 border-r border-b font-bold cursor-pointer max-w-xs break-words relative">
-                  <div onClick={() => isEditAccess && handleEditClick('criteria', criteria, -1)} className="overflow-y-auto max-h-24">
-                    {criteria}
-                  </div>
-                  {isEditAccess && (
-                    <button onClick={() => handleDeleteCriteria(criteria)} className="absolute top-0 right-0 bg-red-500 text-white p-0.5 rounded-half">
-                      &times;
-                    </button>
-                  )}
-                </td>
-                {rubrics[criteria].map((cell, cellIndex) => (
-                  <td
-                    key={cellIndex}
-                    className="py-2 px-4 border-r border-b cursor-pointer max-w-xs break-words"
-                    onClick={() => isEditAccess && handleEditClick('rubric', criteria, cellIndex)}
-                  >
-                    <div className="overflow-y-auto max-h-24">{cell}</div>
-                  </td>
-                ))}
-              </tr>
+              <RubricCriteria
+                key={criteria}
+                criteria={criteria}
+                rubrics={rubrics}
+                isEditAccess={isEditAccess}
+                onEditClick={handleEditClick}
+                onDeleteCriteria={handleDeleteCriteria}
+              />
             ))}
           </tbody>
         </table>
