@@ -50,3 +50,26 @@ export interface ProgramForm {
   details: string;
   summary: string;
 }
+
+export interface RubricCellProps {
+  cell: string;
+  criteria: string;
+  cellIndex: number;
+  isEditAccess: boolean;
+  onEditClick: (type: 'rubric', criteria: string, index: number) => void;
+}
+export interface RubricLevelProps {
+  header: string;
+  index: number;
+  score: number;
+  isEditAccess: boolean;
+  onScoreChange: (index: number, score: number) => void;
+  onEditClick: (type: 'header', criteria: number, index: number) => void;
+}
+export interface RubricCriteriaProps {
+  criteria: string;
+  rubrics: Record<string, string[]>;
+  isEditAccess: boolean;
+  onEditClick: (type: 'rubric' | 'header' | 'criteria', criteria: string | number, index: number) => void;
+  onDeleteCriteria: (criteria: string) => void;
+}

@@ -1,40 +1,42 @@
-import React, { useEffect } from 'react';
-import { ServerResponse, ProgramDropDownProps } from '@/types/rubricsTypes/types';
+import React, { useEffect, useState } from 'react';
+import { ProgramServerResponse, ProgramDropDownProps } from '@/types/rubricsTypes/types';
+import StyledSelect, { StyledSelectItem } from '@dodao/web-core/components/core/select/StyledSelect';
+
 const ProgramDropDown: React.FC<ProgramDropDownProps> = ({ onSelectProgram, serverResponse, setServerResponse }) => {
   const { body: programs } = serverResponse;
+  const [selectedProgramId, setSelectedProgramId] = useState<string | null>(null);
+  const fetchPrograms = async () => {
+    try {
+      const response = await fetch('/api/rubrics/get-programs');
 
-  const handleProgramSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const id = event.target.value;
-    onSelectProgram(id);
-  };
-
-  useEffect(() => {
-    const fetchPrograms = async () => {
-      try {
-        const response = await fetch('/api/ruberics/get-programs');
-        if (!response.ok) {
-          throw new Error('Failed to fetch programs');
-        }
-        const data: ServerResponse = await response.json();
-        setServerResponse(data);
-      } catch (error) {
-        console.error('Error fetching programs:', error);
+      if (!response.ok) {
+        throw new Error('Failed to fetch programs');
       }
-    };
-
+      const data: ProgramServerResponse = await response.json();
+      setServerResponse(data);
+    } catch (error) {
+      console.error('Error fetching programs:', error);
+    }
+  };
+  useEffect(() => {
     fetchPrograms();
   }, [setServerResponse]);
 
+  const handleProgramSelect = (id: string | null) => {
+    setSelectedProgramId(id);
+    if (id) {
+      onSelectProgram(id);
+    }
+  };
+
+  const programItems: StyledSelectItem[] = programs.map((program) => ({
+    id: program.id.toString(),
+    label: program.name,
+  }));
+
   return (
-    <div className="flex  align-center justify-center p-4">
-      <select onChange={handleProgramSelect}>
-        <option value="">Select a program</option>
-        {programs.map((program) => (
-          <option key={program.id} value={program.id}>
-            {program.name}
-          </option>
-        ))}
-      </select>
+    <div className="flex align-center justify-center p-4">
+      <StyledSelect label="Select a program" items={programItems} selectedItemId={selectedProgramId} setSelectedItemId={handleProgramSelect} />
     </div>
   );
 };
