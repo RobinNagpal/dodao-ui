@@ -50,7 +50,7 @@ const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId, isEditAcce
 
   const handleSubmit = async (data: Rubric[]) => {
     try {
-      const response = await fetch('/api/rubrics/', {
+      const response = await fetch(process.env.RUBRICS!, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
