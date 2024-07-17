@@ -7,7 +7,7 @@ const ProgramDropDown: React.FC<ProgramDropDownProps> = ({ onSelectProgram, serv
   const [selectedProgramId, setSelectedProgramId] = useState<string | null>(null);
   const fetchPrograms = async () => {
     try {
-      const response = await fetch('http://localhost:3004/api/programs');
+      const response = await fetch('/api/programs');
 
       if (!response.ok) {
         throw new Error('Failed to fetch programs');
