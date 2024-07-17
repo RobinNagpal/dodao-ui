@@ -124,21 +124,80 @@ function showTooltip(event) {
 function replaceIframeWithDiv() {
   const iframeArr = document.getElementsByTagName('iframe');
 
+  // Check if there are any iframes present
+  if (iframeArr.length === 0) {
+    console.log('No iframes found. Exiting function.');
+    return;
+  }
+
+  const elements = document.querySelectorAll('*');
+  const styles = [];
+
+  // Capture current styles, excluding tooltips and specific classes
+  elements.forEach((element) => {
+    const computedStyle = window.getComputedStyle(element);
+    const styleObj = {};
+
+    for (let i = 0; i < computedStyle.length; i++) {
+      const property = computedStyle[i];
+      styleObj[property] = computedStyle.getPropertyValue(property);
+    }
+
+    styles.push({
+      element,
+      style: styleObj,
+    });
+  });
+
+  // Replace iframes with divs
   for (const iframe of iframeArr) {
+    const iframeStyle = window.getComputedStyle(iframe);
+    if (iframeStyle.display === 'none') {
+      console.log(`Iframe with id: ${iframe.id} and src: ${iframe.src} is set to display: none. Skipping replacement.`);
+      return;
+    }
+
     if (iframe && iframe.srcdoc) {
       const srcdocContent = iframe.srcdoc;
+
+      // Save original attributes and styles
+      const originalAttributes = {
+        class: iframe.className,
+        id: iframe.id,
+        style: {
+          width: iframe.style.width,
+          height: iframe.style.height,
+        },
+        dataset: {
+          src: iframe.src,
+        },
+      };
 
       // Create a new div element
       const div = document.createElement('div');
       div.innerHTML = srcdocContent;
 
-      // Apply classes to reset and adjust styles
+      // Apply saved attributes and styles to the div
+      div.className = originalAttributes.class;
+      div.id = originalAttributes.id;
+      div.style.width = originalAttributes.style.width;
+      div.style.height = originalAttributes.style.height;
+      div.dataset.src = originalAttributes.dataset.src;
       div.classList.add('reset-styles');
 
       // Replace the iframe with the new div
       iframe.parentNode.replaceChild(div, iframe);
     }
   }
+
+  // Reapply the captured styles, excluding tooltips and specific classes
+  styles.forEach((styleObj) => {
+    const { element, style } = styleObj;
+
+    for (let property in style) {
+      element.style[property] = style[property];
+    }
+  });
 }
 
 function elementSelector(event) {
@@ -191,7 +250,7 @@ function elementSelector(event) {
       topOverlay.style.left = '0';
       topOverlay.style.width = '100%';
       topOverlay.style.height = rect.top + window.scrollY + 'px';
-      topOverlay.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+      topOverlay.style.backgroundColor = 'rgba(128, 128, 128, 0.6) ';
       topOverlay.style.transition = 'all 0.3s ease';
 
       const leftOverlay = document.createElement('div');
@@ -201,7 +260,7 @@ function elementSelector(event) {
       leftOverlay.style.left = '0';
       leftOverlay.style.width = rect.left + 'px';
       leftOverlay.style.height = scrollHeight - rect.top - window.scrollY + 'px';
-      leftOverlay.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+      leftOverlay.style.backgroundColor = 'rgba(128, 128, 128, 0.6) ';
       leftOverlay.style.transition = 'all 0.3s ease';
 
       const rightOverlay = document.createElement('div');
@@ -211,7 +270,7 @@ function elementSelector(event) {
       rightOverlay.style.left = rect.right + 'px';
       rightOverlay.style.width = `calc(100% - ${rect.right}px)`;
       rightOverlay.style.height = scrollHeight - rect.top - window.scrollY + 'px';
-      rightOverlay.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+      rightOverlay.style.backgroundColor = 'rgba(128, 128, 128, 0.6) ';
       rightOverlay.style.transition = 'all 0.3s ease';
 
       const bottomOverlay = document.createElement('div');
@@ -221,7 +280,7 @@ function elementSelector(event) {
       bottomOverlay.style.left = rect.left + 'px';
       bottomOverlay.style.width = rect.width + 'px';
       bottomOverlay.style.height = scrollHeight - (rect.bottom + window.scrollY) + 'px';
-      bottomOverlay.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+      bottomOverlay.style.backgroundColor = 'rgba(128, 128, 128, 0.6) ';
       bottomOverlay.style.transition = 'all 0.3s ease';
 
       // Append overlay parts to the main overlay container
@@ -285,32 +344,7 @@ function elementSelector(event) {
   });
   // Append the button to the body
   document.body.appendChild(button);
-  document.addEventListener('mouseover', function (event) {
-    var hoveredElement = event.target;
-    if (hoveredElement == button || hoveredElement == minusButton || hoveredElement == plusButton) return;
-    if (hoveredElement === selectedElement) return;
-    addBorder(hoveredElement);
-  });
-  document.addEventListener('mouseout', function (event) {
-    var hoveredElement = event.target;
-    if (hoveredElement == button || hoveredElement == minusButton || hoveredElement == plusButton) return;
-    if (hoveredElement === selectedElement) return;
-    removeBorder(hoveredElement);
-  });
-
-  function addBorder(element) {
-    element.classList.add('dodao-hovered-element');
-  }
-  function removeBorder(element) {
-    element.classList.remove('dodao-hovered-element');
-  }
-  function addSelectedBorder(element) {
-    element.classList.add('dodao-target-element');
-  }
-  function removeSelectedBorder(element) {
-    element.classList.remove('dodao-target-element');
-    element.classList.remove('dodao-hovered-element');
-  }
+  
   let hoverTimer;
   let hoverEnabled = true;
   document.addEventListener('mouseover', function (event) {
