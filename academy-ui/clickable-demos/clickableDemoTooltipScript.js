@@ -344,42 +344,7 @@ function elementSelector(event) {
   });
   // Append the button to the body
   document.body.appendChild(button);
-  // document.addEventListener("mouseover", function (event) {
-  //   var hoveredElement = event.target;
-  //   if (
-  //     hoveredElement == button ||
-  //     hoveredElement == minusButton ||
-  //     hoveredElement == plusButton
-  //   )
-  //     return;
-  //   if (hoveredElement === selectedElement) return;
-  //   addBorder(hoveredElement);
-  // });
-  // document.addEventListener("mouseout", function (event) {
-  //   var hoveredElement = event.target;
-  //   if (
-  //     hoveredElement == button ||
-  //     hoveredElement == minusButton ||
-  //     hoveredElement == plusButton
-  //   )
-  //     return;
-  //   if (hoveredElement === selectedElement) return;
-  //   removeBorder(hoveredElement);
-  // });
-
-  // function addBorder(element) {
-  //   element.classList.add("dodao-hovered-element");
-  // }
-  // function removeBorder(element) {
-  //   element.classList.remove("dodao-hovered-element");
-  // }
-  // function addSelectedBorder(element) {
-  //   element.classList.add("dodao-target-element");
-  // }
-  // function removeSelectedBorder(element) {
-  //   element.classList.remove("dodao-target-element");
-  //   element.classList.remove("dodao-hovered-element");
-  // }
+  
   let hoverTimer;
   let hoverEnabled = true;
   document.addEventListener('mouseover', function (event) {
