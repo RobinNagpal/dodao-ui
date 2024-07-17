@@ -69,7 +69,7 @@ function EditClickableDemo(props: { space: SpaceWithIntegrationsFragment; params
                       setShowDeleteModal(true);
                     }
                   }}
-                  className="ml-4 z-50"
+                  className="ml-4"
                 />
               )}
             </div>
