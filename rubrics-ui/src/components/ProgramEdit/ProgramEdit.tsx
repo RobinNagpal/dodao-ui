@@ -37,7 +37,7 @@ function EditProgram() {
       rubricIds: selectedRubrics,
     };
 
-    fetch('http://localhost:3004/api/programs', {
+    fetch(process.env.PROGRAMS!, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
