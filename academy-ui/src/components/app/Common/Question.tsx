@@ -1,4 +1,3 @@
-import Checkbox from '@dodao/web-core/components/app/Form/Checkbox';
 import RadioOption from '@dodao/web-core/components/app/Form/Radio/RadioOption';
 import HintIcon from '@dodao/web-core/components/core/icons/HintIcon';
 import {
@@ -24,6 +23,7 @@ import 'prismjs/components/prism-toml';
 import 'prismjs/components/prism-yaml';
 import { useEffect, useState } from 'react';
 import styles from './Question.module.scss';
+import CheckboxView from '@dodao/web-core/src/components/app/Form/CheckboxView';
 
 export interface LocalQuestionType
   extends Omit<CourseQuestionFragment | GuideQuestionFragment | ByteQuestionFragmentFragment | CourseReadingQuestionFragment, 'hint' | 'explanation'> {
@@ -83,6 +83,11 @@ function Question({ answerClass = '', question, questionResponse, readonly, show
           </div>
         )}
       </div>
+      {question.type !== QuestionType.SingleChoice && (
+        <div className="w-full text-right mb-2">
+          <span className="primary-color mr-3">Select Multiple choices</span>
+        </div>
+      )}
       {question.type === QuestionType.SingleChoice ? (
         <RadioGroup
           value={questionResponse.length > 0 ? questionResponse[0] : null}
@@ -112,7 +117,7 @@ function Question({ answerClass = '', question, questionResponse, readonly, show
           const isSelected = questionResponse.includes(choice.key);
           return (
             <div key={choice.key} className={`flex leading-loose items-center py-2 sm:py-0`}>
-              <Checkbox
+              <CheckboxView
                 id={question.uuid + choice.key}
                 labelContent={choice.content}
                 onChange={(event: boolean) => selectMultipleChoice(choice.key, event)}
