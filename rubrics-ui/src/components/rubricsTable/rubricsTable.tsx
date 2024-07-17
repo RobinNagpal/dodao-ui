@@ -5,10 +5,10 @@ import RubricLevel from '@/components/RubricLevel/RubricLevel';
 
 const initialRubrics: Record<string, string[]> = {
   Content: [
-    'Complete. The speaker clearly conveys the main idea and provides details that are relevant and...',
-    'Generally complete. The speaker conveys the main idea, but does not provide adequate relevant details to...',
-    'Somewhat incomplete. The main idea is unclear. Much of the detail is irrelevant.',
-    'Incomplete. The main idea is unclear. Details are non-existent or random and irrelevant.',
+    'Complete. The speaker clearly conveys the main idea',
+    'Generally complete. The speaker conveys the main idea,',
+    'Somewhat incomplete. The main idea is unclear',
+    'Incomplete. The main idea is unclear. ',
   ],
 };
 
@@ -28,19 +28,29 @@ const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId, isEditAcce
   const [columnScores, setColumnScores] = useState<number[]>(Array(ratingHeaders.length).fill(0));
   const [criteriaToDelete, setCriteriaToDelete] = useState<string | null>(null);
 
-  const formattedRubrics: Rubric[] = criteriaOrder.map((criteria) => ({
-    name: 'Hardcoded Test Name for Rubric',
-    criteria: criteria,
-    levels: ratingHeaders.map((header, index) => ({
-      columnName: header,
-      description: rubrics[criteria][index],
-      score: columnScores[index],
-    })),
-  }));
+  useEffect(() => {
+    const formattedRubrics: Rubric[] = criteriaOrder.map((criteria) => ({
+      name: 'Test',
+      summary: '',
+      description: '',
+      levels: ratingHeaders.map((header, idx) => ({
+        columnName: header,
+        description: rubrics[criteria][idx],
+        score: columnScores[idx],
+      })),
+      criteria: criteria,
+    }));
+    console.log(formattedRubrics);
+
+    if (selectedProgramId) {
+      console.log('Sending data:', formattedRubrics);
+      handleSubmit(formattedRubrics);
+    }
+  }, [rubrics, ratingHeaders, criteriaOrder, selectedProgramId, columnScores]);
 
   const handleSubmit = async (data: Rubric[]) => {
     try {
-      const response = await fetch('/api/rubrics/create-rubrics', {
+      const response = await fetch('/api/rubrics/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -50,6 +60,7 @@ const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId, isEditAcce
           rubrics: data,
         }),
       });
+      console.log(response);
     } catch (error) {
       console.error('Error submitting rubrics:', error);
     }
@@ -167,7 +178,7 @@ const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId, isEditAcce
     setColumnScores((prevScores) => [...prevScores.slice(0, index), score, ...prevScores.slice(index + 1)]);
     if (!isEditAccess) {
       const formattedRubrics: Rubric[] = criteriaOrder.map((criteria) => ({
-        name: 'Test',
+        name: 'Tested',
         levels: ratingHeaders.map((header, idx) => ({
           columnName: header,
           description: rubrics[criteria][idx],
