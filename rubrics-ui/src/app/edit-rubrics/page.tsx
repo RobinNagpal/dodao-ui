@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import RubricsTable from '@/components/RubricsTable/rubricsTable';
+import RubricsTable from '@/components/RubricsTable/RubricsTable';
 import { ProgramServerResponse } from '@/types/rubricsTypes/types';
 import ProgramDropDown from '@/components/ProgramDropDown/ProgramDropDown';
 function EditRuberics() {
