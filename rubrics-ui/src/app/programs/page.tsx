@@ -1,6 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Card from '@dodao/web-core/components/core/card/Card';
 
 const ProgramsList: React.FC = () => {
   const [programs, setPrograms] = useState<{ id: string; name: string; details: string }[]>([]);
@@ -10,7 +11,7 @@ const ProgramsList: React.FC = () => {
 
   const fetchPrograms = async () => {
     try {
-      const response = await fetch('/api/ruberics/get-programs');
+      const response = await fetch('http://localhost:3004/api/programs');
       const data = await response.json();
 
       if (response.ok) {
@@ -30,15 +31,11 @@ const ProgramsList: React.FC = () => {
   }, []);
 
   const handleProgramClick = (id: string) => {
-    router.push(`/rate-program/${id}`);
+    router.push(`/program-details/`);
   };
 
   if (loading) {
     return <p className="text-center mt-4">Loading...</p>;
-  }
-
-  if (error) {
-    return <p className="text-center text-red-500 mt-4">{error}</p>;
   }
 
   return (
@@ -46,16 +43,14 @@ const ProgramsList: React.FC = () => {
       <h1 className="text-4xl text-center font-extrabold mb-10">Programs</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {programs.map((program) => (
-          <div
-            key={program.id}
-            className="bg-white cursor-pointer shadow-lg rounded-lg overflow-hidden transform transition-all hover:scale-105 hover:shadow-2xl"
-            onClick={() => handleProgramClick(program.id)}
-          >
+          <Card key={program.id} className="cursor-pointer" onClick={() => handleProgramClick(program.id)}>
             <div className="p-6">
-              <h2 className="text-2xl font-semibold mb-3 text-blue-700">{program.name}</h2>
-              <p className="text-gray-600">{program.details}</p>
+              <h2 className="text-2xl font-semibold mb-3 " style={{ color: 'var(--primary-color)' }}>
+                {program.name}
+              </h2>
+              <p>{program.details}</p>
             </div>
-          </div>
+          </Card>
         ))}
       </div>
     </div>
