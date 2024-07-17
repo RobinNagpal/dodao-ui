@@ -1,0 +1,24 @@
+.checkboxOption {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin: 5px;
+  box-shadow: inset 0 0 0 2px transparent;
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+
+  &.checked {
+    background-color: rgba(127, 127, 127, 0.5);
+    border: 1px solid var(--primary-color);
+    box-shadow: inset 0 0 0 2px var(--primary-color);
+  }
+}
+
+.label {
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+  height: 16px;
+  line-height: 16px;
+}
