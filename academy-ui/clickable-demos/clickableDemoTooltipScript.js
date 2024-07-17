@@ -407,26 +407,3 @@ function handleDoDAOParentWindowEvent(event) {
 window.handleDoDAOParentWindowEvent = handleDoDAOParentWindowEvent;
 
 console.log('handleDoDAOParentWindowEvent is defined on window', window.handleDoDAOParentWindowEvent);
-
-function handleDoDAOParentWindowEvent(event) {
-  if (event.data.type === 'showTooltip') {
-    replaceIframeWithDiv();
-    showTooltip(event);
-  }
-
-  if (event.data.type === 'setCssVariables') {
-    const cssValues = event.data.cssValues;
-    for (const variable in cssValues) {
-      document.documentElement.style.setProperty(variable, cssValues[variable]);
-    }
-  }
-
-  if (event.data.type === 'elementSelector') {
-    replaceIframeWithDiv();
-    elementSelector(event);
-  }
-}
-
-window.handleDoDAOParentWindowEvent = handleDoDAOParentWindowEvent;
-
-console.log('handleDoDAOParentWindowEvent is defined on window', window.handleDoDAOParentWindowEvent);
