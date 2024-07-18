@@ -5,48 +5,52 @@ import ByteCollectionEditor from '@/components/byteCollection/ByteCollections/By
 import { EditByteCollection } from '@/components/byteCollection/ByteCollections/useEditByteCollection';
 import PageLoading from '@dodao/web-core/components/core/loaders/PageLoading';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import {
-  SpaceWithIntegrationsFragment,
-  useByteCollectionQuery,
-  useCreateByteCollectionMutation,
-  useProjectByteCollectionQuery,
-  useQueryBytesQuery,
-  useUpdateByteCollectionMutation,
-  useDeleteByteCollectionMutation,
-} from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsFragment, ByteCollectionFragment, Byte } from '@/graphql/generated/generated-types';
 
 import SingleCardLayout from '@/layouts/SingleCardLayout';
 import Link from 'next/link';
 import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
 import { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import axios from 'axios';
 
 function EditTidbitCollectionSpace(props: { space: SpaceWithIntegrationsFragment; params: { tidbitCollectionId?: string[] } }) {
-  const { data: bytesResponse } = useQueryBytesQuery({
-    variables: {
-      spaceId: props.space.id,
-    },
-  });
+  const [data, setData] = useState<{ byteCollection?: ByteCollectionFragment }>({});
+  const [bytesResponse, setBytesResponse] = useState<{ bytes: Byte[] } | null>(null);
 
-  const [updateByteCollectionMutation] = useUpdateByteCollectionMutation();
-
-  const [createByteCollectionMutation] = useCreateByteCollectionMutation();
+  useEffect(() => {
+    async function fetchData() {
+      let response = await axios.get('/api/byte/bytes', {
+        params: {
+          spaceId: props.space.id,
+        },
+      });
+      setBytesResponse(response.data);
+      if (byteCollectionId) {
+        const response = await axios.get('/api/byte-collection/byte-collection', {
+          params: {
+            spaceId: props.space.id,
+            byteCollectionId: byteCollectionId,
+          },
+        });
+        setData(response.data);
+      }
+    }
+    fetchData();
+  }, [props.space.id]);
 
   const byteCollectionId = props.params.tidbitCollectionId?.[0] || null;
-  const { data } = useByteCollectionQuery({
-    variables: {
-      spaceId: props.space.id,
-      byteCollectionId: byteCollectionId!,
-    },
-    skip: !byteCollectionId,
-  });
 
   async function upsertByteCollectionFn(byteCollection: EditByteCollection, byteCollectionId: string | null) {
     if (!byteCollectionId) {
-      await createByteCollectionMutation({
-        variables: {
+      await fetch('/api/byte-collection/create-byte-collection', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
           input: {
             spaceId: props.space.id,
             name: byteCollection.name,
@@ -56,11 +60,15 @@ function EditTidbitCollectionSpace(props: { space: SpaceWithIntegrationsFragment
             priority: byteCollection.priority,
             videoUrl: byteCollection.videoUrl,
           },
-        },
+        }),
       });
     } else {
-      await updateByteCollectionMutation({
-        variables: {
+      await fetch('/api/byte-collection/update-byte-collection', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
           input: {
             byteCollectionId,
             name: byteCollection.name,
@@ -71,13 +79,12 @@ function EditTidbitCollectionSpace(props: { space: SpaceWithIntegrationsFragment
             priority: byteCollection.priority,
             videoUrl: byteCollection.videoUrl,
           },
-        },
+        }),
       });
     }
   }
   const threeDotItems: EllipsisDropdownItem[] = [{ label: 'Delete', key: 'delete' }];
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [deleteByteCollectionMutation] = useDeleteByteCollectionMutation();
   const router = useRouter();
 
   return (
@@ -107,7 +114,15 @@ function EditTidbitCollectionSpace(props: { space: SpaceWithIntegrationsFragment
               open={showDeleteModal}
               onClose={() => setShowDeleteModal(false)}
               onDelete={async () => {
-                await deleteByteCollectionMutation({ variables: { byteCollectionId: byteCollectionId! } });
+                await fetch('/api/byte-collection/delete-byte-collection', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({
+                    byteCollectionId: byteCollectionId!,
+                  }),
+                });
                 setShowDeleteModal(false);
                 router.push(`/tidbit-collections`);
                 router.refresh();
@@ -118,7 +133,7 @@ function EditTidbitCollectionSpace(props: { space: SpaceWithIntegrationsFragment
         {bytesResponse?.bytes && (!byteCollectionId || data) ? (
           <ByteCollectionEditor
             space={props.space}
-            byteCollection={data?.byteCollection}
+            byteCollection={data!.byteCollection}
             viewByteCollectionsUrl={'/tidbit-collections'}
             byteSummaries={bytesResponse?.bytes}
             upsertByteCollectionFn={upsertByteCollectionFn}

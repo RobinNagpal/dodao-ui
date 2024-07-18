@@ -1,14 +1,29 @@
 import { getSpaceWithIntegrations, getAllSpaceIdsForDomain } from '@/app/api/helpers/space';
+import { prisma } from '@/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const domain = searchParams.get('domain');
   if (!domain) return NextResponse.json({ status: 400, body: 'No domain provided' });
-  const spaceIds = await getAllSpaceIdsForDomain(domain as string);
-  if (!spaceIds) return NextResponse.json({ status: 400, body: 'No space found for domain' });
+  let space = await prisma.space.findFirst({
+    where: {
+      domains: {
+        has: domain,
+      },
+    },
+  });
 
-  const spaces = await Promise.all(spaceIds.map((spaceId) => getSpaceWithIntegrations(spaceId)));
+  if (!space && domain.includes('.tidbitshub.org')) {
+    const idFromDomain = domain.split('.')[0];
+    space = await prisma.space.findFirst({
+      where: {
+        id: idFromDomain,
+      },
+    });
+  }
 
-  return NextResponse.json({ status: 200, body: spaces });
+  if (!space) return NextResponse.json({ status: 400, body: 'No space found for domain' });
+
+  return NextResponse.json({ status: 200, body: [space] });
 }
