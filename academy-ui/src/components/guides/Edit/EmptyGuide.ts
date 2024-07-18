@@ -17,7 +17,7 @@ export const emptyGuide = (from: string, space: Space, guideType: string): EditG
     id: guideUuid,
     isPristine: true,
     uuid: guideUuid,
-    name: 'Guide Name',
+    guideName: 'Guide Name',
     categories: [],
     content: 'New Guide',
     guideIntegrations: {
@@ -34,11 +34,11 @@ export const emptyGuide = (from: string, space: Space, guideType: string): EditG
       {
         id: step1Uuid,
         uuid: step1Uuid,
-        name: 'Introduction',
+        stepName: 'Introduction',
         content: `
 Introduction Comments 
         `,
-        order: 0,
+        stepOrder: 0,
         stepItems: [
           {
             __typename: 'GuideUserInput',
@@ -53,9 +53,9 @@ Introduction Comments
       {
         id: step2Uuid,
         uuid: step2Uuid,
-        name: 'Introduction Evaluation',
+        stepName: 'Introduction Evaluation',
         content: ``,
-        order: 1,
+        stepOrder: 1,
         stepItems: [
           {
             __typename: 'GuideUserInput',
