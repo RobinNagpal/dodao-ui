@@ -1,15 +1,13 @@
 'use client';
 
 import ButtonLarge from '@dodao/web-core/components/core/buttons/Button';
-import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import { DesktopNavLink } from '@dodao/web-core/components/main/TopNav/DesktopNavLink';
 import { DesktopProfileMenu } from '@dodao/web-core/components/main/TopNav/DesktopProfileMenu';
 import { MobileNavLink } from '@dodao/web-core/components/main/TopNav/MobileNavLink';
 import { MobileProfileMenu } from '@dodao/web-core/components/main/TopNav/MobileProfileMenu';
-import { useLoginModalContext } from '@dodao/web-core/ui/contexts/LoginModalContext';
-import { WebCoreSpace } from '@dodao/web-core/types/space';
 import { Session } from '@dodao/web-core/types/auth/Session';
-import { FeatureItem, FeatureName } from '@dodao/web-core/types/features/spaceFeatures';
+import { WebCoreSpace } from '@dodao/web-core/types/space';
+import { useLoginModalContext } from '@dodao/web-core/ui/contexts/LoginModalContext';
 import { isSuperAdmin } from '@dodao/web-core/utils/auth/superAdmins';
 import { getCDNImageUrl } from '@dodao/web-core/utils/images/getCDNImageUrl';
 import { Disclosure } from '@headlessui/react';
@@ -17,38 +15,15 @@ import Bars3Icon from '@heroicons/react/24/outline/Bars3Icon';
 import XMarkIcon from '@heroicons/react/24/outline/XMarkIcon';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
-import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
 import styles from './TopNav.module.scss';
-
-const sortedSpaceFeatures: FeatureItem[] = [
-  {
-    featureName: FeatureName.Programs,
-    enabled: true,
-    details: {
-      priority: 90,
-    },
-  },
-  {
-    featureName: FeatureName.Rubrics,
-    enabled: true,
-    details: {
-      priority: 80,
-    },
-  },
-];
 
 function DesktopNavLinks({ space }: { space: WebCoreSpace }) {
   return (
     <div className="hidden md:ml-6 md:flex md:space-x-8">
-      {sortedSpaceFeatures.map((feature) => {
-        if (feature.featureName === FeatureName.Rubrics) {
-          return <DesktopNavLink key="rubrics" href="/rubrics" label="Rubrics" />;
-        }
-        if (feature.featureName === FeatureName.Programs) {
-          return <DesktopNavLink key="programs" href="/programs" label="Programs" />;
-        }
-      })}
+      <DesktopNavLink key="programs" href="/programs" label="Programs" />
+      <DesktopNavLink key="rubrics" href="/rubrics" label="Rubrics" />
     </div>
   );
 }
@@ -56,14 +31,8 @@ function DesktopNavLinks({ space }: { space: WebCoreSpace }) {
 function MobileNavLinks({ space }: { space: WebCoreSpace }) {
   return (
     <div className="space-y-1 pb-3 pt-2">
-      {sortedSpaceFeatures.map((feature) => {
-        if (feature.featureName === FeatureName.Rubrics) {
-          return <MobileNavLink key="rubrics" href="/rubrics" label="Rubrics" />;
-        }
-        if (feature.featureName === FeatureName.Programs) {
-          return <MobileNavLink key="programs" href="/programs" label="Programs" />;
-        }
-      })}
+      <MobileNavLink key="programs" href="/programs" label="Programs" />
+      <MobileNavLink key="rubrics" href="/rubrics" label="Rubrics" />
     </div>
   );
 }
