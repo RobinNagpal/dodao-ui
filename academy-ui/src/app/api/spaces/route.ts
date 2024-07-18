@@ -23,6 +23,17 @@ export async function GET(req: NextRequest) {
     });
   }
 
+  if (!space && (domain === 'dodao-ui-robinnagpal.vercel.app' || domain === 'localhost')) {
+    let space = await prisma.space.findFirst({
+      where: {
+        id: {
+          equals: 'test-academy-eth',
+        },
+      },
+    });
+    return NextResponse.json({ status: 200, body: [space] });
+  }
+
   if (!space) return NextResponse.json({ status: 400, body: 'No space found for domain' });
 
   return NextResponse.json({ status: 200, body: [space] });
