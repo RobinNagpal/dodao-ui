@@ -10,7 +10,7 @@ const RubricsList = () => {
   useEffect(() => {
     const fetchRubrics = async () => {
       try {
-        const response = await fetch('http://localhost:3004/api/rubrics');
+        const response = await fetch('/api/rubrics');
         const data = await response.json();
 
         if (response.ok) {
