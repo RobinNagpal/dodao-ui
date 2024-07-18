@@ -84,7 +84,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
       }
     }
 
-    return NextResponse.json({ status: 200, body: 'Rubrics submitted successfully' });
+    return NextResponse.json({ status: 200, body: rubric });
   } catch (error) {
     console.error(error);
     return NextResponse.json({ status: 500, body: 'An error occurred' });
