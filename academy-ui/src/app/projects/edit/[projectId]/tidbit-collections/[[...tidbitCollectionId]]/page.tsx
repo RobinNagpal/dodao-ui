@@ -37,7 +37,6 @@ function EditTidbitCollectionProject(props: { space: SpaceWithIntegrationsFragme
           projectId: props.params.projectId,
           name: byteCollection.name,
           description: byteCollection.description,
-          byteIds: byteCollection.bytes.map((byte) => byte.byteId),
           status: byteCollection.status,
           priority: byteCollection.priority,
         },

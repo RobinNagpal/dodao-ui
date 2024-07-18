@@ -183,17 +183,21 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, onUpsert: (byt
     setByteUpserting(false);
   };
 
-  const handleByteUpsert = async () => {
+  // if null byteCollectionId, then following process
+  // if !null byteCollectionId, then following process + add byte to that collection id
+
+  const handleByteUpsert = async (byteCollectionId: string) => {
     await saveViaMutation(
       async () =>
         await upsertByteMutation({
           variables: {
             spaceId: space.id,
-            input: getByteInputFn(byte),
+            input: getByteInputFn(byteCollectionId, byte),
           },
           errorPolicy: 'all',
         })
     );
+    console.log('byteCollectionId : ', byteCollectionId);
   };
 
   return {

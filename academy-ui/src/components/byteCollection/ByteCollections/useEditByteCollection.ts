@@ -52,7 +52,6 @@ export function useEditByteCollection({
     bytes: byteCollectionProp?.bytes || [],
     name: byteCollectionProp?.name || '',
     description: byteCollectionProp?.description || '',
-    byteIds: byteCollectionProp?.bytes.map((byte) => byte.byteId) || [],
     status: byteCollectionProp?.status || 'DRAFT',
     priority: byteCollectionProp?.priority || 50,
     videoUrl: byteCollectionProp?.videoUrl || '',

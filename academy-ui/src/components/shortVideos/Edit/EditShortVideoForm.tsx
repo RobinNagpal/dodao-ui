@@ -31,6 +31,17 @@ export default function EditProjectShortVideoModal({ shortVideoToEdit, spaceId, 
     }
   }, [shortVideoToEdit]);
 
+  const [byteCollectionId, setByteCollectionId] = useState<string | null>(null);
+
+  useEffect(() => {
+    const storedByteCollectionId = sessionStorage.getItem('byteCollectionId');
+    if (storedByteCollectionId) {
+      setByteCollectionId(storedByteCollectionId);
+    }
+
+    console.log('byteCollectionId : ', byteCollectionId);
+  }, [byteCollectionId]);
+
   const updateShortVideoField = (field: keyof ShortVideoInput, value: any) => {
     setShortVideo((prev) => ({ ...prev, [field]: value }));
   };

@@ -100,6 +100,7 @@ input AuthSettingsInput {
 
 type Byte {
   admins: [String!]!
+  byteCollectionId: String!
   byteStyle: String
   completionScreen: CompletionScreen
   content: String!
@@ -116,7 +117,6 @@ type Byte {
 }
 
 type ByteCollection {
-  byteIds: [String!]!
   bytes: [ByteCollectionByte!]!
   description: String!
   id: ID!
@@ -479,7 +479,6 @@ input CourseSubmissionInput {
 }
 
 input CreateByteCollectionInput {
-  byteIds: [String!]!
   description: String!
   name: String!
   priority: Int!
@@ -1375,7 +1374,6 @@ type ProjectByte {
 
 type ProjectByteCollection {
   archived: Boolean!
-  byteIds: [String!]!
   bytes: [ByteCollectionByte!]!
   description: String!
   id: String!
@@ -1830,7 +1828,6 @@ input TopicQuestionChoiceInput {
 
 input UpdateByteCollectionInput {
   byteCollectionId: String!
-  byteIds: [String!]!
   description: String!
   name: String!
   priority: Int!
@@ -1919,6 +1916,7 @@ input UpsertByteCollectionCategory {
 
 input UpsertByteInput {
   admins: [String!]!
+  byteCollectionId: String!
   byteStyle: String
   completionScreen: CompletionScreenInput
   content: String!
@@ -2015,7 +2013,6 @@ input UpsertGuideRatingInput {
 }
 
 input UpsertProjectByteCollectionInput {
-  byteIds: [String!]!
   description: String!
   id: String!
   name: String!

@@ -23,6 +23,16 @@ import { useEffect, useState } from 'react';
 
 export default function EditByteView(props: { space: SpaceWithIntegrationsFragment; onUpsert: (byteId: string) => Promise<void>; byteId?: string }) {
   const { space, byteId } = props;
+  const [byteCollectionId, setByteCollectionId] = useState<string | null>(null);
+
+  useEffect(() => {
+    const storedByteCollectionId = sessionStorage.getItem('byteCollectionId');
+    if (storedByteCollectionId) {
+      setByteCollectionId(storedByteCollectionId);
+    }
+
+    console.log('byteCollectionId : ', byteCollectionId);
+  }, [byteCollectionId]);
 
   const {
     byteUpserting,
@@ -38,7 +48,6 @@ export default function EditByteView(props: { space: SpaceWithIntegrationsFragme
     const error = byteErrors?.[field];
     return error ? error.toString() : '';
   };
-
   useEffect(() => {
     initialize();
   }, [byteId]);
@@ -141,7 +150,7 @@ export default function EditByteView(props: { space: SpaceWithIntegrationsFragme
 
             <div className="flex">
               <Button
-                onClick={handleByteUpsert}
+                onClick={() => handleByteUpsert(byteCollectionId!)}
                 loading={byteUpserting}
                 disabled={!byteLoaded || byteUpserting}
                 className="ml-2 block w-full"

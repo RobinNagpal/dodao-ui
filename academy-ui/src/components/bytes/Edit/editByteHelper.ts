@@ -32,6 +32,7 @@ export interface EditByteType extends UpsertByteInput {
   isPristine: boolean;
   byteExists: boolean;
   steps: EditByteStep[];
+  byteCollectionId: string;
 }
 
 export interface EditProjectByteType extends UpsertProjectByteInput {
@@ -273,11 +274,12 @@ export function editByteCommonFunctions(setByte: (value: ((prevState: EditByteTy
     return updatedByteErrors;
   };
 
-  function getByteInputFn(byte: EditByteType): UpsertByteInput {
+  function getByteInputFn(byteCollectionId: string, byte: EditByteType): UpsertByteInput {
     return {
       content: byte.content,
       id: byte.id || slugify(byte.name) + '-' + uuidv4().toString().substring(0, 4),
       name: byte.name,
+      byteCollectionId: byteCollectionId,
       steps: byte.steps.map((s) => ({
         content: s.content,
         name: s.name,

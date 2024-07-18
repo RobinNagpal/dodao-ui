@@ -7,7 +7,7 @@ import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-typ
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
-function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteId?: string[] } }) {
+function EditByte(props: { space: SpaceWithIntegrationsFragment; params: { byteId?: string[] }}) {
   const { space, params } = props;
   const byteId = params.byteId ? params.byteId[0] : null;
 

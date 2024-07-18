@@ -50,7 +50,6 @@ export default function TidbitSiteConfigurationStep({ goToPreviousStep }: Tidbit
     name: 'About DEX',
     description: 'This collection of Tidbits explains different exchange models and the benefits of AMM',
     status: 'DRAFT',
-    byteIds: ['centralized-vs-decentralized-exchange-uniswap', 'amm-benefits-uniswap'],
     priority: 50,
     bytes: [
       {

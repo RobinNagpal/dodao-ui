@@ -3,7 +3,6 @@ fragment ByteCollection on ByteCollection {
   name
   description
   status
-  byteIds
   priority
   videoUrl
   bytes {

@@ -1,5 +1,4 @@
 fragment ProjectByteCollection on ProjectByteCollection {
-  byteIds
   bytes {
     byteId
     name

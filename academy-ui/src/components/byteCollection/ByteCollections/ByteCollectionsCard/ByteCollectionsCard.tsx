@@ -9,6 +9,9 @@ import React from 'react';
 import styles from './ByteCollectionsCard.module.scss';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import PlayCircleIcon from '@heroicons/react/24/outline/PlayCircleIcon';
+import CreateByteCollectionItemModal from '@/components/byteCollection/ByteCollections/CreateByteCollectionItemModal';
+import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 
 interface ByteCollectionCardProps {
   byteCollection: ByteCollectionFragment | ProjectByteCollectionFragment;
@@ -16,6 +19,8 @@ interface ByteCollectionCardProps {
   project?: ProjectFragment;
   byteCollectionType: 'byteCollection' | 'projectByteCollection';
   viewByteBaseUrl: string;
+  byteCollectionId?: string;
+  space: SpaceWithIntegrationsFragment;
 }
 
 interface VideoModalProps {
@@ -30,9 +35,13 @@ export default function ByteCollectionsCard({
   project,
   byteCollectionType,
   viewByteBaseUrl,
+  byteCollectionId,
+  space,
 }: ByteCollectionCardProps) {
   const [watchVideo, setWatchVideo] = React.useState<boolean>(false);
   const [selectedVideo, setSelectedVideo] = React.useState<VideoModalProps>();
+  const [addNewItemModal, setaddNewItemModal] = React.useState<boolean>(false);
+  sessionStorage.setItem('byteCollectionId', byteCollectionId!);
 
   if (watchVideo) {
     return (
@@ -107,8 +116,21 @@ export default function ByteCollectionsCard({
               </li>
             );
           })}
+          <li>
+            <button
+              className="bg-none border-dotted border-2 text-gray-400 mx-4 mb-6 p-2 rounded-xl hover:bg-gray-200 hover:text-gray-400 transition"
+              onClick={() => setaddNewItemModal(true)}
+            >
+              + Add New Item
+            </button>
+          </li>
         </ul>
       </div>
+      {addNewItemModal && (
+        <FullPageModal open={addNewItemModal} onClose={() => setaddNewItemModal(false)} title={'Create'} className="w-1/2" showCloseButton={false}>
+          <CreateByteCollectionItemModal space={space} hideModal={() => setaddNewItemModal(false)} byteCollectionId={byteCollectionId} />
+        </FullPageModal>
+      )}
     </div>
   );
 }
