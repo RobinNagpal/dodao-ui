@@ -6,7 +6,6 @@ import {
   ByteSubmissionInput,
   ProjectByteFragment,
   SpaceWithIntegrationsFragment,
-  useSubmitByteMutation,
 } from '@/graphql/generated/generated-types';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { LocalStorageKeys } from '@dodao/web-core/types/deprecated/models/enums';
@@ -43,8 +42,6 @@ export function useViewByteInModal({ space, byteId, stepOrder, fetchByteFn }: Us
   });
 
   const { showNotification } = useNotificationContext();
-
-  const [submitByteMutation] = useSubmitByteMutation();
 
   async function initialize() {
     setActiveStepOrder(stepOrder);
@@ -159,15 +156,19 @@ export function useViewByteInModal({ space, byteId, stepOrder, fetchByteFn }: Us
     };
 
     try {
-      const response = await submitByteMutation({
-        variables: {
-          input: byteSubmissionInput,
+      const response = await fetch('/api/byte/submit-byte', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-      });
+        body: JSON.stringify({
+          submissionInput: byteSubmissionInput,
+        }),
+      }).then((res) => res.json());
       setByteSubmitting(false);
       setByteSubmission((prevByteSubmission) => ({ ...prevByteSubmission, isSubmitted: true }));
 
-      const result = response?.data?.submitByte.id;
+      const result = response?.submitByte.id;
       if (result) {
         showNotification({
           type: 'success',

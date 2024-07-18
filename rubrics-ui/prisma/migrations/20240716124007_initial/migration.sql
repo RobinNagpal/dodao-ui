@@ -35,6 +35,7 @@ CREATE TABLE "users" (
     "image" TEXT,
     "public_address" TEXT,
     "phone_number" TEXT,
+    "password" TEXT,
     "space_id" TEXT NOT NULL,
     "username" TEXT NOT NULL,
     "auth_provider" TEXT NOT NULL,
@@ -74,6 +75,66 @@ CREATE TABLE "spaces" (
     CONSTRAINT "spaces_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "Program" (
+    "id" VARCHAR(64) NOT NULL,
+    "name" VARCHAR(64),
+    "details" VARCHAR(64),
+    "summary" VARCHAR(64),
+
+    CONSTRAINT "Program_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Rubric" (
+    "id" VARCHAR(64) NOT NULL,
+    "name" VARCHAR(64),
+    "summary" VARCHAR(64),
+    "description" VARCHAR(64),
+
+    CONSTRAINT "Rubric_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "ProgramRubricMapping" (
+    "id" VARCHAR(64) NOT NULL,
+    "programId" VARCHAR(64) NOT NULL,
+    "rubricId" VARCHAR(64) NOT NULL,
+
+    CONSTRAINT "ProgramRubricMapping_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "RubricLevel" (
+    "id" VARCHAR(64) NOT NULL,
+    "columnName" VARCHAR(64) NOT NULL,
+    "description" VARCHAR(64),
+    "score" INTEGER,
+    "rubricId" VARCHAR(64) NOT NULL,
+
+    CONSTRAINT "RubricLevel_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "RubricCriteria" (
+    "id" TEXT NOT NULL,
+    "title" VARCHAR(64) NOT NULL,
+    "rubricId" VARCHAR(64) NOT NULL,
+
+    CONSTRAINT "RubricCriteria_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "RubricCell" (
+    "id" VARCHAR(64) NOT NULL,
+    "description" VARCHAR(64) NOT NULL,
+    "levelId" VARCHAR(64),
+    "criteriaId" VARCHAR(64),
+    "rubricId" VARCHAR(64) NOT NULL,
+
+    CONSTRAINT "RubricCell_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "accounts_provider_provider_account_id_key" ON "accounts"("provider", "provider_account_id");
 
@@ -98,6 +159,18 @@ CREATE UNIQUE INDEX "verification_tokens_identifier_token_key" ON "verification_
 -- CreateIndex
 CREATE UNIQUE INDEX "crypto_login_nonce_user_id_key" ON "crypto_login_nonce"("user_id");
 
+-- CreateIndex
+CREATE UNIQUE INDEX "ProgramRubricMapping_programId_rubricId_key" ON "ProgramRubricMapping"("programId", "rubricId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "RubricLevel_rubricId_columnName_key" ON "RubricLevel"("rubricId", "columnName");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "RubricCriteria_rubricId_title_key" ON "RubricCriteria"("rubricId", "title");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "RubricCell_rubricId_levelId_criteriaId_key" ON "RubricCell"("rubricId", "levelId", "criteriaId");
+
 -- AddForeignKey
 ALTER TABLE "accounts" ADD CONSTRAINT "accounts_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
@@ -106,3 +179,24 @@ ALTER TABLE "sessions" ADD CONSTRAINT "sessions_user_id_fkey" FOREIGN KEY ("user
 
 -- AddForeignKey
 ALTER TABLE "crypto_login_nonce" ADD CONSTRAINT "crypto_login_nonce_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ProgramRubricMapping" ADD CONSTRAINT "ProgramRubricMapping_programId_fkey" FOREIGN KEY ("programId") REFERENCES "Program"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ProgramRubricMapping" ADD CONSTRAINT "ProgramRubricMapping_rubricId_fkey" FOREIGN KEY ("rubricId") REFERENCES "Rubric"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "RubricLevel" ADD CONSTRAINT "RubricLevel_rubricId_fkey" FOREIGN KEY ("rubricId") REFERENCES "Rubric"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "RubricCriteria" ADD CONSTRAINT "RubricCriteria_rubricId_fkey" FOREIGN KEY ("rubricId") REFERENCES "Rubric"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "RubricCell" ADD CONSTRAINT "RubricCell_rubricId_fkey" FOREIGN KEY ("rubricId") REFERENCES "Rubric"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "RubricCell" ADD CONSTRAINT "RubricCell_levelId_fkey" FOREIGN KEY ("levelId") REFERENCES "RubricLevel"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "RubricCell" ADD CONSTRAINT "RubricCell_criteriaId_fkey" FOREIGN KEY ("criteriaId") REFERENCES "RubricCriteria"("id") ON DELETE SET NULL ON UPDATE CASCADE;

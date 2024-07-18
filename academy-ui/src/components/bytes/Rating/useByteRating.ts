@@ -1,4 +1,4 @@
-import { Space, ByteFeedback, useUpsertByteRatingsMutation, ByteRating, ByteDetailsFragment } from '@/graphql/generated/generated-types';
+import { Space, ByteFeedback, ByteRating, ByteDetailsFragment } from '@/graphql/generated/generated-types';
 import { UserIdKey } from '@dodao/web-core/types/auth/User';
 import { useEffect, useState } from 'react';
 import { v4 } from 'uuid';
@@ -12,7 +12,6 @@ export type ByteRatingsHelper = {
 
 export function useByteRatings(space: Space, byte: ByteDetailsFragment, byteSubmitted: boolean): ByteRatingsHelper {
   const [showRatingsModal, setShowRatingsModal] = useState(false);
-  const [upsertByteRatingsMutation] = useUpsertByteRatingsMutation();
   const [shownByteRatingsModal, setShownByteRatingsModal] = useState(false);
 
   useEffect(() => {
@@ -68,8 +67,12 @@ export function useByteRatings(space: Space, byte: ByteDetailsFragment, byteSubm
       }
     }
 
-    await upsertByteRatingsMutation({
-      variables: {
+    await fetch('/api/byte/upsert-byte-rating', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
         spaceId: space.id,
         upsertByteRatingInput: {
           rating: byteRating.rating,
@@ -82,15 +85,18 @@ export function useByteRatings(space: Space, byte: ByteDetailsFragment, byteSubm
           userId: byteRating.userId,
           suggestion: byteRating.suggestion,
         },
-      },
-      refetchQueries: ['ByteRatings', 'ConsolidatedByteRating'],
+      }),
     });
     showRatingsModalIfNotShownRecently(false);
   };
 
   const skipByteRating = async () => {
-    await upsertByteRatingsMutation({
-      variables: {
+    await fetch('/api/byte/upsert-byte-rating', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
         spaceId: space.id,
         upsertByteRatingInput: {
           rating: null,
@@ -102,8 +108,7 @@ export function useByteRatings(space: Space, byte: ByteDetailsFragment, byteSubm
           spaceId: space.id,
           userId: localStorage.getItem(UserIdKey)!,
         },
-      },
-      refetchQueries: ['ByteRatings', 'ConsolidatedByteRating'],
+      }),
     });
     setShowRatingsModal(false);
   };
