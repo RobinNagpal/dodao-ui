@@ -6,7 +6,7 @@ import {
   SpaceWithIntegrationsFragment,
 } from '@/graphql/generated/generated-types';
 import { useRouter } from 'next/navigation';
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 
 export type EditByteCollection = Omit<ByteCollectionFragment | ProjectByteCollectionFragment, 'id'> & { id?: string };
 
@@ -57,6 +57,19 @@ export function useEditByteCollection({
     priority: byteCollectionProp?.priority || 50,
     videoUrl: byteCollectionProp?.videoUrl || '',
   });
+
+  useEffect(() => {
+    setByteCollection({
+      id: byteCollectionProp?.id,
+      bytes: byteCollectionProp?.bytes || [],
+      name: byteCollectionProp?.name || '',
+      description: byteCollectionProp?.description || '',
+      byteIds: byteCollectionProp?.bytes.map((byte) => byte.byteId) || [],
+      status: byteCollectionProp?.status || 'DRAFT',
+      priority: byteCollectionProp?.priority || 50,
+      videoUrl: byteCollectionProp?.videoUrl || '',
+    });
+  }, [byteCollectionProp]);
 
   const moveByteUp = useCallback(
     (byteUuid: string) => {
