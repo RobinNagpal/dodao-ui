@@ -1,9 +1,9 @@
 import { Space } from '@prisma/client';
 import { headers } from 'next/headers';
-
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 export async function getSpaceBasedOnHostHeader(reqHeaders: Headers) {
   const host = reqHeaders.get('host')?.split(':')?.[0];
-  let response = await fetch(process.env.RUBRICS_UI_URL + '/api/space', {
+  let response = await fetch(getBaseUrl() + '/api/space', {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -23,5 +23,6 @@ export async function getSpaceBasedOnHostHeader(reqHeaders: Headers) {
 
 export async function getSpaceServerSide(): Promise<Space | null> {
   const reqHeaders = headers();
+
   return await getSpaceBasedOnHostHeader(reqHeaders);
 }
