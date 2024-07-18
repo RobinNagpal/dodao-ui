@@ -159,7 +159,7 @@ body.theme-compact {
 
 ## Questions options for small screens
 
-![Questionaire](https://ibb.co/nzLYy9D)
+![Questionaire](https://drive.google.com/file/d/1mrwK1qCHtKH70pYGYePrNmDbNYhVn-O4/view?usp=sharing)
 
 - possible solution: less margin
 
