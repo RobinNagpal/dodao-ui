@@ -347,6 +347,7 @@ type ChatbotUserQuestion {
 }
 
 type ClickableDemo {
+  archive: Boolean
   createdAt: DateTimeISO!
   excerpt: String!
   id: String!
@@ -374,6 +375,7 @@ input ClickableDemoStepInput {
 }
 
 type ClickableDemoWithSteps {
+  archive: Boolean
   createdAt: DateTimeISO!
   excerpt: String!
   id: String!
@@ -1181,6 +1183,7 @@ type Mutation {
   deleteChatbotCategory(id: String!, spaceId: String!): Boolean!
   deleteChatbotFAQ(id: String!, spaceId: String!): Boolean!
   deleteChatbotUserQuestion(id: String!, spaceId: String!): Boolean!
+  deleteClickableDemo(demoId: String!, spaceId: String!): ClickableDemoWithSteps!
   deleteGitCourseSubmission(courseKey: String!, spaceId: String!): Boolean!
   deleteGuide(spaceId: String!, uuid: String!): Boolean!
   deleteShortVideo(shortVideoId: String!, spaceId: String!): ShortVideo!
@@ -1994,6 +1997,7 @@ input UpsertChatbotUserQuestionInput {
 }
 
 input UpsertClickableDemoInput {
+  archive: Boolean
   excerpt: String!
   id: String!
   steps: [ClickableDemoStepInput!]!

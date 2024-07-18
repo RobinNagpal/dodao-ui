@@ -12,7 +12,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
   const { spaceInput } = (await req.json()) as MutationUpdateSpaceArgs;
   const { decodedJwt, space } = await verifySpaceEditPermissions(req, spaceInput.id);
 
-  const doDAOSuperAdmin = await isDoDAOSuperAdmin(req);
+  const doDAOSuperAdmin = isDoDAOSuperAdmin(decodedJwt!.username);
 
   const user: DoDaoJwtTokenPayload = decodedJwt!;
 

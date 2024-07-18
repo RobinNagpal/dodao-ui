@@ -389,6 +389,7 @@ export interface ChatbotUserQuestion {
 
 export interface ClickableDemo {
   __typename?: 'ClickableDemo';
+  archive?: Maybe<Scalars['Boolean']>;
   createdAt: Scalars['DateTimeISO'];
   excerpt: Scalars['String'];
   id: Scalars['String'];
@@ -418,6 +419,7 @@ export interface ClickableDemoStepInput {
 
 export interface ClickableDemoWithSteps {
   __typename?: 'ClickableDemoWithSteps';
+  archive?: Maybe<Scalars['Boolean']>;
   createdAt: Scalars['DateTimeISO'];
   excerpt: Scalars['String'];
   id: Scalars['String'];
@@ -1261,6 +1263,7 @@ export interface Mutation {
   deleteChatbotCategory: Scalars['Boolean'];
   deleteChatbotFAQ: Scalars['Boolean'];
   deleteChatbotUserQuestion: Scalars['Boolean'];
+  deleteClickableDemo: ClickableDemoWithSteps;
   deleteGitCourseSubmission: Scalars['Boolean'];
   deleteGuide: Scalars['Boolean'];
   deleteShortVideo: ShortVideo;
@@ -1501,6 +1504,12 @@ export interface MutationDeleteChatbotFaqArgs {
 
 export interface MutationDeleteChatbotUserQuestionArgs {
   id: Scalars['String'];
+  spaceId: Scalars['String'];
+}
+
+
+export interface MutationDeleteClickableDemoArgs {
+  demoId: Scalars['String'];
   spaceId: Scalars['String'];
 }
 
@@ -3172,6 +3181,7 @@ export interface UpsertChatbotUserQuestionInput {
 }
 
 export interface UpsertClickableDemoInput {
+  archive?: InputMaybe<Scalars['Boolean']>;
   excerpt: Scalars['String'];
   id: Scalars['String'];
   steps: Array<ClickableDemoStepInput>;
@@ -3716,9 +3726,9 @@ export type DeleteChatbotUserQuestionMutationVariables = Exact<{
 
 export type DeleteChatbotUserQuestionMutation = { __typename?: 'Mutation', deleteChatbotUserQuestion: boolean };
 
-export type ClickableDemoWithStepsFragment = { __typename?: 'ClickableDemoWithSteps', id: string, spaceId: string, title: string, excerpt: string, createdAt: any, updatedAt: any, steps: Array<{ __typename?: 'ClickableDemoStep', id: string, url: string, selector: string, tooltipInfo: string, placement: string, order: number }> };
+export type ClickableDemoWithStepsFragment = { __typename?: 'ClickableDemoWithSteps', id: string, spaceId: string, title: string, excerpt: string, createdAt: any, updatedAt: any, archive?: boolean | null, steps: Array<{ __typename?: 'ClickableDemoStep', id: string, url: string, selector: string, tooltipInfo: string, placement: string, order: number }> };
 
-export type ClickableDemoFragment = { __typename?: 'ClickableDemo', id: string, spaceId: string, title: string, excerpt: string, createdAt: any, updatedAt: any };
+export type ClickableDemoFragment = { __typename?: 'ClickableDemo', id: string, spaceId: string, title: string, excerpt: string, createdAt: any, updatedAt: any, archive?: boolean | null };
 
 export type ClickableDemoWithStepsQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -3726,14 +3736,14 @@ export type ClickableDemoWithStepsQueryVariables = Exact<{
 }>;
 
 
-export type ClickableDemoWithStepsQuery = { __typename?: 'Query', clickableDemoWithSteps: { __typename?: 'ClickableDemoWithSteps', id: string, spaceId: string, title: string, excerpt: string, createdAt: any, updatedAt: any, steps: Array<{ __typename?: 'ClickableDemoStep', id: string, url: string, selector: string, tooltipInfo: string, placement: string, order: number }> } };
+export type ClickableDemoWithStepsQuery = { __typename?: 'Query', clickableDemoWithSteps: { __typename?: 'ClickableDemoWithSteps', id: string, spaceId: string, title: string, excerpt: string, createdAt: any, updatedAt: any, archive?: boolean | null, steps: Array<{ __typename?: 'ClickableDemoStep', id: string, url: string, selector: string, tooltipInfo: string, placement: string, order: number }> } };
 
 export type ClickableDemosQueryVariables = Exact<{
   spaceId: Scalars['String'];
 }>;
 
 
-export type ClickableDemosQuery = { __typename?: 'Query', clickableDemos: Array<{ __typename?: 'ClickableDemo', id: string, spaceId: string, title: string, excerpt: string, createdAt: any, updatedAt: any }> };
+export type ClickableDemosQuery = { __typename?: 'Query', clickableDemos: Array<{ __typename?: 'ClickableDemo', id: string, spaceId: string, title: string, excerpt: string, createdAt: any, updatedAt: any, archive?: boolean | null }> };
 
 export type UpsertClickableDemoMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -3741,7 +3751,15 @@ export type UpsertClickableDemoMutationVariables = Exact<{
 }>;
 
 
-export type UpsertClickableDemoMutation = { __typename?: 'Mutation', payload: { __typename?: 'ClickableDemoWithSteps', id: string, spaceId: string, title: string, excerpt: string, createdAt: any, updatedAt: any, steps: Array<{ __typename?: 'ClickableDemoStep', id: string, url: string, selector: string, tooltipInfo: string, placement: string, order: number }> } };
+export type UpsertClickableDemoMutation = { __typename?: 'Mutation', payload: { __typename?: 'ClickableDemoWithSteps', id: string, spaceId: string, title: string, excerpt: string, createdAt: any, updatedAt: any, archive?: boolean | null, steps: Array<{ __typename?: 'ClickableDemoStep', id: string, url: string, selector: string, tooltipInfo: string, placement: string, order: number }> } };
+
+export type DeleteClickableDemoMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+  demoId: Scalars['String'];
+}>;
+
+
+export type DeleteClickableDemoMutation = { __typename?: 'Mutation', payload: { __typename?: 'ClickableDemoWithSteps', id: string, spaceId: string, title: string, excerpt: string, createdAt: any, updatedAt: any, archive?: boolean | null, steps: Array<{ __typename?: 'ClickableDemoStep', id: string, url: string, selector: string, tooltipInfo: string, placement: string, order: number }> } };
 
 export type TopicSubmissionJsonFragment = { __typename?: 'GitCourseTopicSubmissionJson', uuid: string, topicKey: string, status: string, explanations?: Array<{ __typename?: 'GitCourseExplanationsSubmission', key: string, status: string }> | null, questions?: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, status: string, answers: Array<string> }> | null, readings?: Array<{ __typename?: 'GitCourseReadingsSubmission', uuid: string, status: string, questions?: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, answers: Array<string>, status: string }> | null }> | null, summaries?: Array<{ __typename?: 'GitCourseSummariesSubmission', key: string, status: string }> | null };
 
@@ -5329,6 +5347,7 @@ export const ClickableDemoWithStepsFragmentDoc = gql`
   }
   createdAt
   updatedAt
+  archive
 }
     `;
 export const ClickableDemoFragmentDoc = gql`
@@ -5339,6 +5358,7 @@ export const ClickableDemoFragmentDoc = gql`
   excerpt
   createdAt
   updatedAt
+  archive
 }
     `;
 export const TopicCorrectAnswersFragmentDoc = gql`
@@ -7623,6 +7643,40 @@ export function useUpsertClickableDemoMutation(baseOptions?: Apollo.MutationHook
 export type UpsertClickableDemoMutationHookResult = ReturnType<typeof useUpsertClickableDemoMutation>;
 export type UpsertClickableDemoMutationResult = Apollo.MutationResult<UpsertClickableDemoMutation>;
 export type UpsertClickableDemoMutationOptions = Apollo.BaseMutationOptions<UpsertClickableDemoMutation, UpsertClickableDemoMutationVariables>;
+export const DeleteClickableDemoDocument = gql`
+    mutation DeleteClickableDemo($spaceId: String!, $demoId: String!) {
+  payload: deleteClickableDemo(spaceId: $spaceId, demoId: $demoId) {
+    ...ClickableDemoWithSteps
+  }
+}
+    ${ClickableDemoWithStepsFragmentDoc}`;
+export type DeleteClickableDemoMutationFn = Apollo.MutationFunction<DeleteClickableDemoMutation, DeleteClickableDemoMutationVariables>;
+
+/**
+ * __useDeleteClickableDemoMutation__
+ *
+ * To run a mutation, you first call `useDeleteClickableDemoMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteClickableDemoMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteClickableDemoMutation, { data, loading, error }] = useDeleteClickableDemoMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      demoId: // value for 'demoId'
+ *   },
+ * });
+ */
+export function useDeleteClickableDemoMutation(baseOptions?: Apollo.MutationHookOptions<DeleteClickableDemoMutation, DeleteClickableDemoMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteClickableDemoMutation, DeleteClickableDemoMutationVariables>(DeleteClickableDemoDocument, options);
+      }
+export type DeleteClickableDemoMutationHookResult = ReturnType<typeof useDeleteClickableDemoMutation>;
+export type DeleteClickableDemoMutationResult = Apollo.MutationResult<DeleteClickableDemoMutation>;
+export type DeleteClickableDemoMutationOptions = Apollo.BaseMutationOptions<DeleteClickableDemoMutation, DeleteClickableDemoMutationVariables>;
 export const GitCourseSubmissionDocument = gql`
     query GitCourseSubmission($spaceId: String!, $courseKey: String!) {
   payload: gitCourseSubmission(spaceId: $spaceId, courseKey: $courseKey) {

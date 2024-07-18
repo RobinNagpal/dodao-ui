@@ -7,7 +7,7 @@ import {
   UpdateByteFunctions,
 } from '@/components/bytes/Edit/editByteHelper';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { ByteDetailsFragment, SpaceWithIntegrationsFragment, useQueryByteDetailsQuery, useUpsertByteMutation } from '@/graphql/generated/generated-types';
+import { ByteDetailsFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
 import { ByteErrors } from '@dodao/web-core/types/errors/byteErrors';
 import { emptyByte } from '@/utils/byte/EmptyByte';
@@ -16,6 +16,7 @@ import { FetchResult } from '@apollo/client';
 import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import axios from 'axios';
 
 export function useEditByte(space: SpaceWithIntegrationsFragment, onUpsert: (byteId: string) => Promise<void>, byteId: string | null) {
   const emptyByteModel = emptyByte();
@@ -28,8 +29,6 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, onUpsert: (byt
 
   const [byteUpserting, setByteUpserting] = useState<boolean>(false);
 
-  const { refetch: queryByteDetails } = useQueryByteDetailsQuery({ skip: true });
-  const [upsertByteMutation] = useUpsertByteMutation();
   const { showNotification } = useNotificationContext();
   const { $t } = useI18();
 
@@ -51,7 +50,12 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, onUpsert: (byt
       setByte(byte);
       setByteLoaded(true);
     } else if (byteId) {
-      const result = await queryByteDetails({ byteId: byteId, spaceId: space.id, includeDraft: true });
+      const result = await axios.get(`/api/byte/byte`, {
+        params: {
+          byteId,
+          spaceId: space.id,
+        },
+      });
       const byte: ByteDetailsFragment = result.data.byte;
       setByte({
         ...byte,
@@ -149,7 +153,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, onUpsert: (byt
     removeCallToActionButton: removeCallToActionButtonFn,
   };
 
-  const saveViaMutation = async (mutationFn: () => Promise<FetchResult<{ payload: ByteDetailsFragment | undefined }>>) => {
+  const saveViaMutation = async (mutationFn: () => Promise<Response>) => {
     setByteUpserting(true);
     try {
       const valid = validateByte(byte);
@@ -167,14 +171,13 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, onUpsert: (byt
       }
       const response = await mutationFn();
 
-      const payload = response?.data?.payload;
-      if (payload) {
+      if (response.ok) {
+        const byte = (await response.json()).upsertedByte as ByteDetailsFragment;
         showNotification({ type: 'success', message: 'Byte Saved', heading: 'Success 🎉' });
-
-        await onUpsert(response?.data?.payload?.id!);
+        await onUpsert(byte.id!);
       } else {
         showNotification({ type: 'error', message: $t('notify.somethingWentWrong') });
-        console.error(response.errors);
+        console.error(response.body);
       }
     } catch (e) {
       showNotification({ type: 'error', message: $t('notify.somethingWentWrong') });
@@ -184,16 +187,18 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, onUpsert: (byt
   };
 
   const handleByteUpsert = async () => {
-    await saveViaMutation(
-      async () =>
-        await upsertByteMutation({
-          variables: {
-            spaceId: space.id,
-            input: getByteInputFn(byte),
-          },
-          errorPolicy: 'all',
-        })
-    );
+    await saveViaMutation(async () => {
+      return await fetch('/api/byte/upsert-byte', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          spaceId: space.id,
+          input: getByteInputFn(byte),
+        }),
+      });
+    });
   };
 
   return {

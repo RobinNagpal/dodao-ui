@@ -16,17 +16,17 @@ function ClickableDemoModal({ clickableDemoWithSteps, space, onClose }: Clickabl
   useEffect(() => {
     function receiveMessage(event: any) {
       if (event.data.nextButton) {
-        iframeArr[indexCount].style.height = '0vh';
+        setIframeOpacity(indexCount, false);
         indexCount++;
-        iframeArr[indexCount].style.height = '93vh';
+        setIframeOpacity(indexCount, true);
         iframeArr[indexCount].focus();
         handleLoad(indexCount);
       }
 
       if (event.data.backButton) {
-        iframeArr[indexCount].style.height = '0vh';
+        setIframeOpacity(indexCount, false);
         indexCount--;
-        iframeArr[indexCount].style.height = '93vh';
+        setIframeOpacity(indexCount, true);
         iframeArr[indexCount].focus();
         handleLoad(indexCount);
       }
@@ -35,6 +35,7 @@ function ClickableDemoModal({ clickableDemoWithSteps, space, onClose }: Clickabl
         router.push(`/clickable-demos`);
       }
     }
+
     const handleLoad = (index: number) => {
       const iframeArrElement = iframeArr[index];
       const iframeNotPresent = !iframeArrElement;
@@ -71,6 +72,15 @@ function ClickableDemoModal({ clickableDemoWithSteps, space, onClose }: Clickabl
       );
     };
 
+    // Function to set iframe opacity
+    const setIframeOpacity = (index: number, visible: boolean) => {
+      const iframe = iframeArr[index];
+      if (iframe) {
+        iframe.style.opacity = visible ? '1' : '0';
+        iframe.style.pointerEvents = visible ? 'auto' : 'none';
+      }
+    };
+
     window.addEventListener('message', receiveMessage);
 
     // Container where all the iframes will be appended
@@ -82,7 +92,13 @@ function ClickableDemoModal({ clickableDemoWithSteps, space, onClose }: Clickabl
       iframeArr[i] = document.createElement('iframe');
       iframeArr[i].src = clickableDemoWithSteps.steps[i].url;
       iframeArr[i].width = '100%';
-      iframeArr[i].style.height = i === 0 ? '93vh' : '0vh';
+      iframeArr[i].style.opacity = i === 0 ? '1' : '0';
+      iframeArr[i].style.pointerEvents = i === 0 ? 'auto' : 'none';
+      iframeArr[i].style.transition = 'opacity 0.3s ease-in-out'; // Smooth transition for opacity
+      iframeArr[i].style.position = 'absolute'; // Position all iframes on top of each other
+      iframeArr[i].style.top = '0';
+      iframeArr[i].style.left = '0';
+      iframeArr[i].style.height = '93vh';
       i === 0
         ? (iframeArr[i].onload = function () {
             handleLoad(i);
@@ -107,7 +123,7 @@ function ClickableDemoModal({ clickableDemoWithSteps, space, onClose }: Clickabl
 
   return (
     <FullScreenModal open={true} onClose={onClose} title={clickableDemoWithSteps.title}>
-      <div id="iframe-container"></div>
+      <div id="iframe-container" style={{ position: 'relative', width: '100%', height: '93vh' }}></div>
     </FullScreenModal>
   );
 }

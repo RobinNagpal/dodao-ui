@@ -109,50 +109,72 @@ model Space {
   /// [AuthSettings]
   authSettings     Json     @default("{}") @map("auth_settings") @db.Json
   features         String[]
-
   /// [ThemeColors]
-  themeColors Json? @map("theme_colors") @db.Json
+  themeColors      Json?    @map("theme_colors") @db.Json
 
   @@map("spaces")
 }
 
 model Program {
-  id      String   @id @db.VarChar(255)
-  name    String
-  details String?
-  rating  Int
-  rubrics Rubric[]
+  id      String                 @id @default(uuid()) @db.VarChar(64)
+  name    String?                @db.VarChar(64)
+  details String?                @db.VarChar(64)
+  summary String?                @db.VarChar(64)
+  rubrics ProgramRubricMapping[]
 }
 
 model Rubric {
-  id                              String                            @id @db.VarChar(255)
-  name                            String
-  summary                         String
-  description                     String?
-  criteria                        String[]
-  programId                       String                            @db.VarChar(255)
-  program                         Program                           @relation(fields: [programId], references: [id])
-  RubricEvaluationParameter       RubricEvaluationParameter[]
-  RubricEvaluationParameterRating RubricEvaluationParameterRating[]
+  id          String                 @id @default(uuid()) @db.VarChar(64)
+  name        String?                @db.VarChar(64)
+  summary     String?                @db.VarChar(64)
+  description String?                @db.VarChar(64)
+  levels      RubricLevel[]
+  criteria    RubricCriteria[]
+  RubricCell  RubricCell[]
+  programs    ProgramRubricMapping[]
 }
 
-model RubricEvaluationParameter {
-  id       String @id @db.VarChar(255)
-  rubricId String @db.VarChar(255)
-  rubric   Rubric @relation(fields: [rubricId], references: [id])
+model ProgramRubricMapping {
+  id        String  @id @default(uuid()) @db.VarChar(64)
+  programId String  @db.VarChar(64)
+  rubricId  String  @db.VarChar(64)
+  program   Program @relation(fields: [programId], references: [id])
+  rubric    Rubric  @relation(fields: [rubricId], references: [id])
 
-  title                           String
-  description                     String
-  RubricEvaluationParameterRating RubricEvaluationParameterRating[]
+  @@unique([programId, rubricId])
 }
 
-model RubricEvaluationParameterRating {
-  id                          String                    @id @db.VarChar(255)
-  rubricId                    String                    @db.VarChar(255)
-  rubric                      Rubric                    @relation(fields: [rubricId], references: [id])
-  rubricEvaluationParameterId String                    @db.VarChar(255)
-  rubticEvaluationParameter   RubricEvaluationParameter @relation(fields: [rubricEvaluationParameterId], references: [id])
+model RubricLevel {
+  id          String       @id @default(uuid()) @db.VarChar(64)
+  columnName  String       @db.VarChar(64)
+  description String?      @db.VarChar(64)
+  score       Int?
+  rubricId    String       @db.VarChar(64)
+  rubric      Rubric       @relation(fields: [rubricId], references: [id])
+  RubricCell  RubricCell[]
 
-  description String
-  rating      Int
+  @@unique([rubricId, columnName])
+}
+
+model RubricCriteria {
+  id         String       @id @default(uuid())
+  title      String       @db.VarChar(64)
+  rubricId   String       @db.VarChar(64)
+  rubric     Rubric       @relation(fields: [rubricId], references: [id])
+  RubricCell RubricCell[]
+
+  @@unique([rubricId, title])
+}
+
+model RubricCell {
+  id          String          @id @default(uuid()) @db.VarChar(64)
+  description String          @db.VarChar(64)
+  levelId     String?         @db.VarChar(64)
+  criteriaId  String?         @db.VarChar(64)
+  rubricId    String          @db.VarChar(64)
+  rubric      Rubric          @relation(fields: [rubricId], references: [id])
+  level       RubricLevel?    @relation(fields: [levelId], references: [id])
+  criteria    RubricCriteria? @relation(fields: [criteriaId], references: [id])
+
+  @@unique([rubricId, levelId, criteriaId])
 }
