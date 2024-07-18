@@ -3,11 +3,12 @@ import Card from '@dodao/web-core/components/core/card/Card';
 import { Grid4Cols } from '@dodao/web-core/components/core/grids/Grid4Cols';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
-import { ByteCollectionFragment, Space, useByteCollectionsQuery } from '@/graphql/generated/generated-types';
+import { ByteCollectionFragment, Space } from '@/graphql/generated/generated-types';
 import { shorten } from '@dodao/web-core/utils/utils';
 import CheckCircleIcon from '@heroicons/react/20/solid/CheckCircleIcon';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './SelectByteCollectionModal.module.scss';
+import axios from 'axios';
 
 interface SelectByteCollectionModalProps {
   byteCollection?: ByteCollectionFragment;
@@ -20,18 +21,28 @@ interface SelectByteCollectionModalProps {
 
 export default function SelectByteCollectionModal(props: SelectByteCollectionModalProps) {
   const { addByteCollection, space, byteCollectionSummaries, showSelectBytesModal, onClose } = props;
-
-  const { data: byteCollectionsResponse, loading } = useByteCollectionsQuery({
-    variables: {
-      spaceId: space.id,
-    },
-  });
+  const [byteCollectionsResponse, setByteCollectionsResponse] = useState<{ byteCollections?: ByteCollectionFragment[] }>({});
+  const [loading, setLoading] = useState<boolean>(true);
 
   const [tempSelectedByteIds, setTempSelectedByteIds] = useState<string[]>([]);
   const [tempSelectedByteCollections, setTempSelectedByteCollections] = useState<ByteCollectionFragment[]>([]);
 
+  useEffect(() => {
+    async function fetchData() {
+      setLoading(true);
+      const response = await axios.get('/api/byte-collection/byte-collections', {
+        params: {
+          spaceId: props.space.id,
+        },
+      });
+      setByteCollectionsResponse(response.data);
+      setLoading(false);
+    }
+    fetchData();
+  }, [props.space.id]);
+
   const availableByteCollections =
-    byteCollectionsResponse?.byteCollections.filter((byteCollection) => !byteCollectionSummaries.some((summary) => summary.id === byteCollection.id)) || [];
+    byteCollectionsResponse?.byteCollections?.filter((byteCollection) => !byteCollectionSummaries.some((summary) => summary.id === byteCollection.id)) || [];
 
   const handleCardClick = (byteCollection: ByteCollectionFragment) => {
     if (tempSelectedByteIds.includes(byteCollection.id)) {

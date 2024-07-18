@@ -235,3 +235,18 @@ model ByteSubmission {
 
   @@map("byte_submissions")
 }
+
+model ByteCollection {
+  id          String   @id @db.VarChar(255)
+  spaceId     String   @map("space_id") @db.VarChar(66)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  name        String   @db.VarChar(255)
+  description String
+  byteIds     String[] @map("byte_ids") @db.VarChar(255)
+  status      String   @db.VarChar(255)
+  priority    Int      @default(50) @map("priority")
+  videoUrl    String?  @map("video_url") @db.VarChar(1024)
+
+  @@map("byte_collections")
+}

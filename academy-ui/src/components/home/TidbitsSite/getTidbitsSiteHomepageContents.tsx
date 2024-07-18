@@ -21,8 +21,14 @@ export async function getTidbitsSiteHomepageContents(
   session?: Session
 ) {
   if (props.searchParams.selectedTabId === TidbitSiteTabIds.Tidbits) {
-    const byteCollections = await getApiResponse<ByteCollectionFragment[]>(space, 'byte-collections');
-    const response = await axios.get(getBaseUrl() + '/api/byte/bytes', {
+    let response = await axios.get(`${getBaseUrl()}/api/byte-collection/byte-collections`, {
+      params: {
+        spaceId: space.id,
+      },
+    });
+    const byteCollections: ByteCollectionFragment[] = response.data.byteCollections;
+
+    response = await axios.get(getBaseUrl() + '/api/byte/bytes', {
       params: {
         spaceId: space.id,
       },
@@ -33,7 +39,12 @@ export async function getTidbitsSiteHomepageContents(
       <TidbitsSiteHome byteCollections={byteCollections} space={space} bytes={bytes} selectedTabId={props.searchParams.selectedTabId} categoriesArray={[]} />
     );
   } else if (props.searchParams.selectedTabId === TidbitSiteTabIds.TidbitCollections) {
-    const byteCollections = await getApiResponse<ByteCollectionFragment[]>(space, 'byte-collections');
+    const response = await axios.get(`${getBaseUrl()}/api/byte-collection/byte-collections`, {
+      params: {
+        spaceId: space.id,
+      },
+    });
+    const byteCollections: ByteCollectionFragment[] = response.data.byteCollections;
 
     return <TidbitsSiteHome byteCollections={byteCollections} space={space} bytes={[]} categoriesArray={[]} selectedTabId={props.searchParams.selectedTabId} />;
   } else if (props.searchParams.selectedTabId === TidbitSiteTabIds.TidbitCollectionCategories) {
@@ -55,7 +66,13 @@ export async function getTidbitsSiteHomepageContents(
       />
     );
   } else {
-    const byteCollections = await getApiResponse<ByteCollectionFragment[]>(space, 'byte-collections');
+    const response = await axios.get(`${getBaseUrl()}/api/byte-collection/byte-collections`, {
+      params: {
+        spaceId: space.id,
+      },
+    });
+
+    const byteCollections: ByteCollectionFragment[] = response.data.byteCollections;
 
     const categoriesArray = [];
     const byteCollectionCategories = await getApiResponse<ByteCollectionCategory[]>(space, 'byte-collection-categories');
