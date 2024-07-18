@@ -147,31 +147,31 @@ body.theme-compact {
 
 ## Tidbit Collection View
 
-![Tidbit Colection View Page](https://ibb.co/6y8W9qF)
+![Tidbit Colection View Page](tidbit-collection-view.png)
 
 - possible solution: decrease margin
 
 ## Edit pages
 
-![Edit Page](https://ibb.co/Gprr2ry)
+![Edit Page](tidbit-edit.png)
 
 - possible solution: we can increase margins for normal theme
 
 ## Questions options for small screens
 
-![Questionaire](https://drive.google.com/file/d/1mrwK1qCHtKH70pYGYePrNmDbNYhVn-O4/view?usp=sharing)
+![Questionaire](questionaire.png)
 
 - possible solution: less margin
 
 ## tidbit card needs spacing
 
-![Tidbit Card](https://ibb.co/N3Jc6ht)
+![Tidbit Card](tidbit-card.png)
 
 - possible solution: need some padding
 
 ## nav
 
-![Nav](https://ibb.co/HTM28ws)
+![Nav](nav.jpeg)
 
 - possible solution: use equal spacing
 
