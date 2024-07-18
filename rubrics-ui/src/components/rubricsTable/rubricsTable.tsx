@@ -8,7 +8,7 @@ const initialRubrics: Record<string, string[]> = {
     'Complete. The speaker clearly conveys the main idea',
     'Generally complete. The speaker conveys the main idea,',
     'Somewhat incomplete. The main idea is unclear',
-    'Incomplete. The main idea is unclear. ',
+    'Incomplete. The main idea is unclear. and ',
   ],
 };
 
