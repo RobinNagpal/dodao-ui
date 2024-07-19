@@ -69,17 +69,7 @@ const insertGuide = async (guide: any, spaceId: string, guideSource: string) => 
             stepItems: step.stepItems,
             stepOrder: index, // Use the index as the stepOrder
             spaceId: spaceId,
-          },
-        });
-
-        // Create the relation in GuidesGuideStep
-        await prisma.guidesGuideStep.create({
-          data: {
-            id: v4(), // You can generate a unique ID for this relation
-            guideStepId: stepId,
             guideId: guideId,
-            createdAt: new Date(),
-            spaceId: spaceId,
           },
         });
       }

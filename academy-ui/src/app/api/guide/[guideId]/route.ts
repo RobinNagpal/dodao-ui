@@ -5,9 +5,9 @@ export async function GET(req: NextRequest, { params: { guideId } }: { params: {
   const guide = await prisma.guide.findUnique({
     where: { id: guideId },
     include: {
-      GuidesGuideStep: {
-        select: {
-          guideStep: true,
+      GuideStep: {
+        orderBy: {
+          stepOrder: 'asc',
         },
       },
     },
@@ -17,12 +17,12 @@ export async function GET(req: NextRequest, { params: { guideId } }: { params: {
     return NextResponse.json({ status: 404, message: 'Guide not found' });
   }
 
-  const guideStepsArr = guide.GuidesGuideStep.map((gs) => gs.guideStep);
+  const transformedGuide = {
+    ...guide,
+    steps: guide.GuideStep,
+  };
+  // delete transformedGuide?.GuideStep;
+  delete (transformedGuide as { GuideStep?: any }).GuideStep;
 
-  // Sort the array based on stepOrder in ascending order
-  guideStepsArr.sort((a, b) => a.stepOrder - b.stepOrder);
-
-  const newGuide = { ...guide, steps: guideStepsArr };
-
-  return NextResponse.json({ status: 200, guide: newGuide });
+  return NextResponse.json({ status: 200, guide: transformedGuide });
 }

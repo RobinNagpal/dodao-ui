@@ -127,7 +127,6 @@ model Space {
   /// [TidbitsHomepage]
   tidbitsHomepage  Json?             @map("tidbits_homepage") @db.Json
   Byte             Byte[]
-  GuidesGuideStep  GuidesGuideStep[]
   GuideStep        GuideStep[]
 
   @@map("spaces")
@@ -254,56 +253,44 @@ model ByteCollection {
 }
 
 model Guide {
-  id                        String            @id @db.VarChar(66)
+  id                        String      @id @db.VarChar(66)
   content                   String
-  previousId                String?           @map("previous_id") @db.VarChar(66)
-  uuid                      String            @db.VarChar(255)
+  previousId                String?     @map("previous_id") @db.VarChar(66)
+  uuid                      String      @db.VarChar(255)
   authors                   Json
-  createdAt                 DateTime          @default(now()) @map("created_at")
-  spaceId                   String            @map("space_id") @db.VarChar(64)
-  guideName                 String            @map("guide_name") @db.VarChar(255)
-  guideSource               String            @map("guide_source") @db.VarChar(255)
-  status                    String            @db.VarChar(255)
+  createdAt                 DateTime    @default(now()) @map("created_at")
+  spaceId                   String      @map("space_id") @db.VarChar(64)
+  guideName                 String      @map("guide_name") @db.VarChar(255)
+  guideSource               String      @map("guide_source") @db.VarChar(255)
+  status                    String      @db.VarChar(255)
   version                   Int
-  thumbnail                 String?           @db.VarChar(255)
-  categories                String[]          @default([])
-  discordWebhook            String?           @map("discord_webhook") @db.VarChar(1024)
-  guideType                 String            @default("onboarding") @map("guide_type") @db.VarChar(128)
-  publishStatus             String            @default("Live") @map("publish_status") @db.VarChar(128)
-  socialShareImage          String?           @map("social_share_image") @db.VarChar(2048)
-  discordRoleIds            Json              @map("discord_role_ids")
-  discordRolePassingCount   Int?              @map("discord_role_passing_count")
-  showIncorrectOnCompletion Boolean           @default(true) @map("show_incorrect_on_completion")
-  postSubmissionStepContent String            @map("post_submission_step_content")
-  GuidesGuideStep           GuidesGuideStep[]
+  thumbnail                 String?     @db.VarChar(255)
+  categories                String[]    @default([])
+  discordWebhook            String?     @map("discord_webhook") @db.VarChar(1024)
+  guideType                 String      @default("onboarding") @map("guide_type") @db.VarChar(128)
+  publishStatus             String      @default("Live") @map("publish_status") @db.VarChar(128)
+  socialShareImage          String?     @map("social_share_image") @db.VarChar(2048)
+  discordRoleIds            Json        @map("discord_role_ids")
+  discordRolePassingCount   Int?        @map("discord_role_passing_count")
+  showIncorrectOnCompletion Boolean     @default(true) @map("show_incorrect_on_completion")
+  postSubmissionStepContent String      @map("post_submission_step_content")
+  GuideStep                 GuideStep[]
 
   @@map("guides")
 }
 
 model GuideStep {
-  id              String            @id @db.VarChar(66)
-  uuid            String            @db.VarChar(66)
-  createdAt       DateTime          @default(now()) @map("created_at")
-  stepName        String            @map("step_name") @db.VarChar(255)
-  content         String
-  stepItems       Json              @map("step_items") @db.Json
-  stepOrder       Int               @map("step_order")
-  spaceId         String            @map("space_id") @db.VarChar(64)
-  space           Space             @relation(fields: [spaceId], references: [id])
-  GuidesGuideStep GuidesGuideStep[]
+  id        String   @id @db.VarChar(66)
+  uuid      String   @db.VarChar(66)
+  createdAt DateTime @default(now()) @map("created_at")
+  stepName  String   @map("step_name") @db.VarChar(255)
+  content   String
+  stepItems Json     @map("step_items") @db.Json
+  stepOrder Int      @map("step_order")
+  spaceId   String   @map("space_id") @db.VarChar(64)
+  space     Space    @relation(fields: [spaceId], references: [id])
+  guideId   String   @map("guide_id") @db.VarChar(66)
+  guide     Guide    @relation(fields: [guideId], references: [id])
 
   @@map("guide_steps")
-}
-
-model GuidesGuideStep {
-  id          String    @id @db.VarChar(255)
-  guideStepId String    @map("guide_step_id") @db.VarChar(66)
-  guideId     String    @map("guide_id") @db.VarChar(66)
-  createdAt   DateTime  @default(now()) @map("created_at")
-  spaceId     String    @map("space_id") @db.VarChar(64)
-  space       Space     @relation(fields: [spaceId], references: [id])
-  guide       Guide     @relation(fields: [guideId], references: [id])
-  guideStep   GuideStep @relation(fields: [guideStepId], references: [id])
-
-  @@map("guides_guide_steps")
 }
