@@ -1,5 +1,5 @@
-import { prisma } from '@/prisma';
-import { v4 } from 'uuid';
+import { prisma } from '../src/prisma';
+import { v4 as uuidv4 } from 'uuid';
 
 async function assignByteCollections(spaceId: string) {
   try {
@@ -9,6 +9,12 @@ async function assignByteCollections(spaceId: string) {
       },
       orderBy: {
         priority: 'desc',
+      },
+    });
+
+    const allBytes = await prisma.byte.findMany({
+      where: {
+        spaceId,
       },
     });
 
@@ -25,18 +31,38 @@ async function assignByteCollections(spaceId: string) {
       });
     }
 
+    const byteIdToCollectionMap = new Map();
+
     for (const collection of byteCollections) {
-      collection.byteIds.forEach(async (byteId, index) => {
+      for (const byteId of collection.byteIds) {
+        const byte = allBytes.find((b) => b.id === byteId);
+        const bytePriority = byte?.priority || 50;
+
         await prisma.byteCollectionItemMappings.create({
           data: {
-            id: v4(),
+            id: uuidv4(),
             byteCollectionId: collection.id,
             itemId: byteId,
             itemType: 'Byte',
-            order: index,
+            order: bytePriority,
           },
         });
-      });
+        byteIdToCollectionMap.set(byteId, collection.id);
+      }
+    }
+
+    for (const byte of allBytes) {
+      if (!byteIdToCollectionMap.has(byte.id)) {
+        await prisma.byteCollectionItemMappings.create({
+          data: {
+            id: uuidv4(),
+            byteCollectionId: ungroupedCollection.id,
+            itemId: byte.id,
+            itemType: 'Byte',
+            order: byte.priority,
+          },
+        });
+      }
     }
   } catch (error) {
     console.error('Error assigning byte collections:', error);
