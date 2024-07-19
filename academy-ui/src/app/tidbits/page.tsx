@@ -6,7 +6,7 @@ import { ByteSummaryFragment } from '@/graphql/generated/generated-types';
 import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
 import React from 'react';
 import axios from 'axios';
-import getBaseUrl from '@/utils/api/getBaseURL';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 
 export default async function Byte() {
   const space = (await getSpaceServerSide())!;
