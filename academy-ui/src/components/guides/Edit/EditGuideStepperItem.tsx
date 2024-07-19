@@ -72,8 +72,8 @@ const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHas
     return stepErrors?.[field];
   };
 
-  const updateStepName = (name: string) => {
-    updateStep({ ...step, name });
+  const updateStepName = (stepName: string) => {
+    updateStep({ ...step, stepName });
   };
 
   const updateStepContent = (content: string) => {
@@ -345,7 +345,7 @@ const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHas
   return (
     <div className="w-full p-4 flex flex-col justify-center items-center">
       <StepContainer className="h-10 mb-4 flex justify-between items-center w-full">
-        <h3 className="text-2xl font-bold">Step {step.order + 1}</h3>
+        <h3 className="text-2xl font-bold">Step {step.stepOrder + 1}</h3>
         <div className="h-10" style={{ minHeight: '40px' }}>
           <IconButton
             className="float-right ml-2"
@@ -354,12 +354,18 @@ const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHas
             disabled={guide.steps.length === 1}
             onClick={() => setShowDeleteModal(true)}
           />
-          <IconButton className="float-right ml-2" iconName={IconTypes.MoveUp} removeBorder disabled={step.order === 0} onClick={() => moveStepUp(step.uuid)} />
+          <IconButton
+            className="float-right ml-2"
+            iconName={IconTypes.MoveUp}
+            removeBorder
+            disabled={step.stepOrder === 0}
+            onClick={() => moveStepUp(step.uuid)}
+          />
           <IconButton
             className="float-right ml-2"
             iconName={IconTypes.MoveDown}
             removeBorder
-            disabled={step.order + 1 === guide.steps.length}
+            disabled={step.stepOrder + 1 === guide.steps.length}
             onClick={() => moveStepDown(step.uuid)}
           />
           <IconButton className="float-right ml-2" iconName={IconTypes.RobotIconSolid} removeBorder onClick={() => setModalGenerateAIOpen(true)} />
@@ -368,7 +374,7 @@ const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHas
       </StepContainer>
 
       <div className="w-full mb-4">
-        <Input modelValue={step.name} error={!!inputError('name')} maxLength={32} onUpdate={(e) => updateStepName(e?.toString() || '')}>
+        <Input modelValue={step.stepName} error={!!inputError('name')} maxLength={32} onUpdate={(e) => updateStepName(e?.toString() || '')}>
           Name*
         </Input>
       </div>

@@ -11,7 +11,7 @@ fragment AcademyTaskFragment on AcademyTask {
   }
   prerequisiteGuides {
     uuid
-    name
+    guideName
     content
     thumbnail
     guideType

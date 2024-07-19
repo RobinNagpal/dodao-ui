@@ -1,7 +1,7 @@
 fragment GuideSummary on Guide {
   id
   authors
-  name
+  guideName
   categories
   content
   createdAt
@@ -105,8 +105,8 @@ fragment GuideStep on GuideStep {
     }
   }
   id
-  name
-  order
+  stepName
+  stepOrder
   uuid
 }
 
@@ -132,7 +132,7 @@ fragment Guide on Guide {
   }
   guideSource
   guideType
-  name
+  guideName
   steps {
     ...GuideStep
   }

@@ -942,10 +942,10 @@ export interface Guide {
   content: Scalars['String'];
   createdAt: Scalars['DateTimeISO'];
   guideIntegrations: GuideIntegrations;
+  guideName: Scalars['String'];
   guideSource: Scalars['String'];
   guideType: Scalars['String'];
   id: Scalars['String'];
-  name: Scalars['String'];
   postSubmissionStepContent?: Maybe<Scalars['String']>;
   previousId?: Maybe<Scalars['String']>;
   priority?: Maybe<Scalars['Int']>;
@@ -1072,18 +1072,18 @@ export interface GuideStep {
   content: Scalars['String'];
   created: Scalars['Int'];
   id: Scalars['String'];
-  name: Scalars['String'];
-  order: Scalars['Int'];
   stepItems: Array<GuideStepItem>;
+  stepName: Scalars['String'];
+  stepOrder: Scalars['Int'];
   uuid: Scalars['String'];
 }
 
 export interface GuideStepInput {
   content: Scalars['String'];
   id: Scalars['String'];
-  name: Scalars['String'];
-  order: Scalars['Int'];
   stepItems: Array<StepItemInputGenericInput>;
+  stepName: Scalars['String'];
+  stepOrder: Scalars['Int'];
   uuid: Scalars['String'];
 }
 
@@ -3401,7 +3401,7 @@ export interface WebsiteScrapingInfo {
   updatedAt: Scalars['DateTimeISO'];
 }
 
-export type AcademyTaskFragmentFragment = { __typename?: 'AcademyTask', uuid: string, createdAt: number, createdBy: string, excerpt: string, spaceId: string, status: string, details: string, title: string, updatedAt: number, updatedBy: string, prerequisiteCourses: Array<{ __typename?: 'SummarizedGitCourse', uuid: string, key: string, title: string, thumbnail: string }>, prerequisiteGuides: Array<{ __typename?: 'Guide', uuid: string, name: string, content: string, thumbnail?: string | null, guideType: string }>, items: Array<{ __typename: 'GuideQuestion', answerKeys: Array<string>, content: string, order: number, type: string, uuid: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'GuideUserInput', label: string, order: number, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> };
+export type AcademyTaskFragmentFragment = { __typename?: 'AcademyTask', uuid: string, createdAt: number, createdBy: string, excerpt: string, spaceId: string, status: string, details: string, title: string, updatedAt: number, updatedBy: string, prerequisiteCourses: Array<{ __typename?: 'SummarizedGitCourse', uuid: string, key: string, title: string, thumbnail: string }>, prerequisiteGuides: Array<{ __typename?: 'Guide', uuid: string, guideName: string, content: string, thumbnail?: string | null, guideType: string }>, items: Array<{ __typename: 'GuideQuestion', answerKeys: Array<string>, content: string, order: number, type: string, uuid: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'GuideUserInput', label: string, order: number, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> };
 
 export type AcademyTasksQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -3409,14 +3409,14 @@ export type AcademyTasksQueryVariables = Exact<{
 }>;
 
 
-export type AcademyTasksQuery = { __typename?: 'Query', academyTasks?: Array<{ __typename?: 'AcademyTask', uuid: string, createdAt: number, createdBy: string, excerpt: string, spaceId: string, status: string, details: string, title: string, updatedAt: number, updatedBy: string, prerequisiteCourses: Array<{ __typename?: 'SummarizedGitCourse', uuid: string, key: string, title: string, thumbnail: string }>, prerequisiteGuides: Array<{ __typename?: 'Guide', uuid: string, name: string, content: string, thumbnail?: string | null, guideType: string }>, items: Array<{ __typename: 'GuideQuestion', answerKeys: Array<string>, content: string, order: number, type: string, uuid: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'GuideUserInput', label: string, order: number, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> | null };
+export type AcademyTasksQuery = { __typename?: 'Query', academyTasks?: Array<{ __typename?: 'AcademyTask', uuid: string, createdAt: number, createdBy: string, excerpt: string, spaceId: string, status: string, details: string, title: string, updatedAt: number, updatedBy: string, prerequisiteCourses: Array<{ __typename?: 'SummarizedGitCourse', uuid: string, key: string, title: string, thumbnail: string }>, prerequisiteGuides: Array<{ __typename?: 'Guide', uuid: string, guideName: string, content: string, thumbnail?: string | null, guideType: string }>, items: Array<{ __typename: 'GuideQuestion', answerKeys: Array<string>, content: string, order: number, type: string, uuid: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'GuideUserInput', label: string, order: number, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> | null };
 
 export type AcademyTaskQueryVariables = Exact<{
   uuid: Scalars['String'];
 }>;
 
 
-export type AcademyTaskQuery = { __typename?: 'Query', academyTask: { __typename?: 'AcademyTask', uuid: string, createdAt: number, createdBy: string, excerpt: string, spaceId: string, status: string, details: string, title: string, updatedAt: number, updatedBy: string, prerequisiteCourses: Array<{ __typename?: 'SummarizedGitCourse', uuid: string, key: string, title: string, thumbnail: string }>, prerequisiteGuides: Array<{ __typename?: 'Guide', uuid: string, name: string, content: string, thumbnail?: string | null, guideType: string }>, items: Array<{ __typename: 'GuideQuestion', answerKeys: Array<string>, content: string, order: number, type: string, uuid: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'GuideUserInput', label: string, order: number, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> } };
+export type AcademyTaskQuery = { __typename?: 'Query', academyTask: { __typename?: 'AcademyTask', uuid: string, createdAt: number, createdBy: string, excerpt: string, spaceId: string, status: string, details: string, title: string, updatedAt: number, updatedBy: string, prerequisiteCourses: Array<{ __typename?: 'SummarizedGitCourse', uuid: string, key: string, title: string, thumbnail: string }>, prerequisiteGuides: Array<{ __typename?: 'Guide', uuid: string, guideName: string, content: string, thumbnail?: string | null, guideType: string }>, items: Array<{ __typename: 'GuideQuestion', answerKeys: Array<string>, content: string, order: number, type: string, uuid: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'GuideUserInput', label: string, order: number, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> } };
 
 export type UpsertAcademyTaskMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -3424,7 +3424,7 @@ export type UpsertAcademyTaskMutationVariables = Exact<{
 }>;
 
 
-export type UpsertAcademyTaskMutation = { __typename?: 'Mutation', upsertAcademyTask: { __typename?: 'AcademyTask', uuid: string, createdAt: number, createdBy: string, excerpt: string, spaceId: string, status: string, details: string, title: string, updatedAt: number, updatedBy: string, prerequisiteCourses: Array<{ __typename?: 'SummarizedGitCourse', uuid: string, key: string, title: string, thumbnail: string }>, prerequisiteGuides: Array<{ __typename?: 'Guide', uuid: string, name: string, content: string, thumbnail?: string | null, guideType: string }>, items: Array<{ __typename: 'GuideQuestion', answerKeys: Array<string>, content: string, order: number, type: string, uuid: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'GuideUserInput', label: string, order: number, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> } };
+export type UpsertAcademyTaskMutation = { __typename?: 'Mutation', upsertAcademyTask: { __typename?: 'AcademyTask', uuid: string, createdAt: number, createdBy: string, excerpt: string, spaceId: string, status: string, details: string, title: string, updatedAt: number, updatedBy: string, prerequisiteCourses: Array<{ __typename?: 'SummarizedGitCourse', uuid: string, key: string, title: string, thumbnail: string }>, prerequisiteGuides: Array<{ __typename?: 'Guide', uuid: string, guideName: string, content: string, thumbnail?: string | null, guideType: string }>, items: Array<{ __typename: 'GuideQuestion', answerKeys: Array<string>, content: string, order: number, type: string, uuid: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'GuideUserInput', label: string, order: number, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> } };
 
 export type AuthenticateWithUnstoppableMutationVariables = Exact<{
   idToken: Scalars['String'];
@@ -4159,14 +4159,14 @@ export type SubmitGuideMutationVariables = Exact<{
 
 export type SubmitGuideMutation = { __typename?: 'Mutation', payload: { __typename?: 'GuideSubmission', galaxyCredentialsUpdated?: boolean | null, result: { __typename?: 'GuideSubmissionResult', wrongQuestions: Array<string>, correctQuestions: Array<string>, allQuestions: Array<string> } } };
 
-export type GuideSummaryFragment = { __typename?: 'Guide', id: string, authors: Array<string>, name: string, categories: Array<string>, content: string, createdAt: any, guideSource: string, guideType: string, publishStatus: string, thumbnail?: string | null, uuid: string, priority?: number | null };
+export type GuideSummaryFragment = { __typename?: 'Guide', id: string, authors: Array<string>, guideName: string, categories: Array<string>, content: string, createdAt: any, guideSource: string, guideType: string, publishStatus: string, thumbnail?: string | null, uuid: string, priority?: number | null };
 
 export type GuidesQueryQueryVariables = Exact<{
   space: Scalars['String'];
 }>;
 
 
-export type GuidesQueryQuery = { __typename?: 'Query', guides: Array<{ __typename?: 'Guide', id: string, authors: Array<string>, name: string, categories: Array<string>, content: string, createdAt: any, guideSource: string, guideType: string, publishStatus: string, thumbnail?: string | null, uuid: string, priority?: number | null }> };
+export type GuidesQueryQuery = { __typename?: 'Query', guides: Array<{ __typename?: 'Guide', id: string, authors: Array<string>, guideName: string, categories: Array<string>, content: string, createdAt: any, guideSource: string, guideType: string, publishStatus: string, thumbnail?: string | null, uuid: string, priority?: number | null }> };
 
 export type GuideQuestionFragment = { __typename?: 'GuideQuestion', answerKeys: Array<string>, content: string, order: number, type: string, uuid: string, explanation?: string | null, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> };
 
@@ -4182,11 +4182,11 @@ type GuideStepItem_UserDiscordConnect_Fragment = { __typename: 'UserDiscordConne
 
 export type GuideStepItemFragment = GuideStepItem_GuideQuestion_Fragment | GuideStepItem_GuideUserInput_Fragment | GuideStepItem_UserDiscordConnect_Fragment;
 
-export type GuideStepFragment = { __typename?: 'GuideStep', content: string, id: string, name: string, order: number, uuid: string, stepItems: Array<{ __typename: 'GuideQuestion', answerKeys: Array<string>, content: string, order: number, type: string, uuid: string, explanation?: string | null, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'GuideUserInput', label: string, order: number, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> };
+export type GuideStepFragment = { __typename?: 'GuideStep', content: string, id: string, stepName: string, stepOrder: number, uuid: string, stepItems: Array<{ __typename: 'GuideQuestion', answerKeys: Array<string>, content: string, order: number, type: string, uuid: string, explanation?: string | null, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'GuideUserInput', label: string, order: number, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> };
 
 export type GuideIntegrationFragment = { __typename?: 'GuideIntegrations', discordRoleIds?: Array<string> | null, discordRolePassingCount?: number | null, discordWebhook?: string | null, projectGalaxyCredentialId?: string | null, projectGalaxyOatMintUrl?: string | null, projectGalaxyOatPassingCount?: number | null };
 
-export type GuideFragment = { __typename?: 'Guide', authors: Array<string>, categories: Array<string>, postSubmissionStepContent?: string | null, content: string, createdAt: any, id: string, guideSource: string, guideType: string, name: string, publishStatus: string, priority?: number | null, thumbnail?: string | null, uuid: string, version: number, guideIntegrations: { __typename?: 'GuideIntegrations', discordRoleIds?: Array<string> | null, discordRolePassingCount?: number | null, discordWebhook?: string | null, projectGalaxyCredentialId?: string | null, projectGalaxyOatMintUrl?: string | null, projectGalaxyOatPassingCount?: number | null }, steps: Array<{ __typename?: 'GuideStep', content: string, id: string, name: string, order: number, uuid: string, stepItems: Array<{ __typename: 'GuideQuestion', answerKeys: Array<string>, content: string, order: number, type: string, uuid: string, explanation?: string | null, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'GuideUserInput', label: string, order: number, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> };
+export type GuideFragment = { __typename?: 'Guide', authors: Array<string>, categories: Array<string>, postSubmissionStepContent?: string | null, content: string, createdAt: any, id: string, guideSource: string, guideType: string, guideName: string, publishStatus: string, priority?: number | null, thumbnail?: string | null, uuid: string, version: number, guideIntegrations: { __typename?: 'GuideIntegrations', discordRoleIds?: Array<string> | null, discordRolePassingCount?: number | null, discordWebhook?: string | null, projectGalaxyCredentialId?: string | null, projectGalaxyOatMintUrl?: string | null, projectGalaxyOatPassingCount?: number | null }, steps: Array<{ __typename?: 'GuideStep', content: string, id: string, stepName: string, stepOrder: number, uuid: string, stepItems: Array<{ __typename: 'GuideQuestion', answerKeys: Array<string>, content: string, order: number, type: string, uuid: string, explanation?: string | null, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'GuideUserInput', label: string, order: number, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> };
 
 export type UpsertGuideMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -4194,7 +4194,7 @@ export type UpsertGuideMutationVariables = Exact<{
 }>;
 
 
-export type UpsertGuideMutation = { __typename?: 'Mutation', payload: { __typename?: 'Guide', authors: Array<string>, categories: Array<string>, postSubmissionStepContent?: string | null, content: string, createdAt: any, id: string, guideSource: string, guideType: string, name: string, publishStatus: string, priority?: number | null, thumbnail?: string | null, uuid: string, version: number, guideIntegrations: { __typename?: 'GuideIntegrations', discordRoleIds?: Array<string> | null, discordRolePassingCount?: number | null, discordWebhook?: string | null, projectGalaxyCredentialId?: string | null, projectGalaxyOatMintUrl?: string | null, projectGalaxyOatPassingCount?: number | null }, steps: Array<{ __typename?: 'GuideStep', content: string, id: string, name: string, order: number, uuid: string, stepItems: Array<{ __typename: 'GuideQuestion', answerKeys: Array<string>, content: string, order: number, type: string, uuid: string, explanation?: string | null, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'GuideUserInput', label: string, order: number, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> } };
+export type UpsertGuideMutation = { __typename?: 'Mutation', payload: { __typename?: 'Guide', authors: Array<string>, categories: Array<string>, postSubmissionStepContent?: string | null, content: string, createdAt: any, id: string, guideSource: string, guideType: string, guideName: string, publishStatus: string, priority?: number | null, thumbnail?: string | null, uuid: string, version: number, guideIntegrations: { __typename?: 'GuideIntegrations', discordRoleIds?: Array<string> | null, discordRolePassingCount?: number | null, discordWebhook?: string | null, projectGalaxyCredentialId?: string | null, projectGalaxyOatMintUrl?: string | null, projectGalaxyOatPassingCount?: number | null }, steps: Array<{ __typename?: 'GuideStep', content: string, id: string, stepName: string, stepOrder: number, uuid: string, stepItems: Array<{ __typename: 'GuideQuestion', answerKeys: Array<string>, content: string, order: number, type: string, uuid: string, explanation?: string | null, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'GuideUserInput', label: string, order: number, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> } };
 
 export type GuideQueryQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -4202,7 +4202,7 @@ export type GuideQueryQueryVariables = Exact<{
 }>;
 
 
-export type GuideQueryQuery = { __typename?: 'Query', guide: { __typename?: 'Guide', authors: Array<string>, categories: Array<string>, postSubmissionStepContent?: string | null, content: string, createdAt: any, id: string, guideSource: string, guideType: string, name: string, publishStatus: string, priority?: number | null, thumbnail?: string | null, uuid: string, version: number, guideIntegrations: { __typename?: 'GuideIntegrations', discordRoleIds?: Array<string> | null, discordRolePassingCount?: number | null, discordWebhook?: string | null, projectGalaxyCredentialId?: string | null, projectGalaxyOatMintUrl?: string | null, projectGalaxyOatPassingCount?: number | null }, steps: Array<{ __typename?: 'GuideStep', content: string, id: string, name: string, order: number, uuid: string, stepItems: Array<{ __typename: 'GuideQuestion', answerKeys: Array<string>, content: string, order: number, type: string, uuid: string, explanation?: string | null, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'GuideUserInput', label: string, order: number, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> } };
+export type GuideQueryQuery = { __typename?: 'Query', guide: { __typename?: 'Guide', authors: Array<string>, categories: Array<string>, postSubmissionStepContent?: string | null, content: string, createdAt: any, id: string, guideSource: string, guideType: string, guideName: string, publishStatus: string, priority?: number | null, thumbnail?: string | null, uuid: string, version: number, guideIntegrations: { __typename?: 'GuideIntegrations', discordRoleIds?: Array<string> | null, discordRolePassingCount?: number | null, discordWebhook?: string | null, projectGalaxyCredentialId?: string | null, projectGalaxyOatMintUrl?: string | null, projectGalaxyOatPassingCount?: number | null }, steps: Array<{ __typename?: 'GuideStep', content: string, id: string, stepName: string, stepOrder: number, uuid: string, stepItems: Array<{ __typename: 'GuideQuestion', answerKeys: Array<string>, content: string, order: number, type: string, uuid: string, explanation?: string | null, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'GuideUserInput', label: string, order: number, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> } };
 
 export type DeleteGuideMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -5010,7 +5010,7 @@ export const AcademyTaskFragmentFragmentDoc = gql`
   }
   prerequisiteGuides {
     uuid
-    name
+    guideName
     content
     thumbnail
     guideType
@@ -5594,7 +5594,7 @@ export const GuideSummaryFragmentDoc = gql`
     fragment GuideSummary on Guide {
   id
   authors
-  name
+  guideName
   categories
   content
   createdAt
@@ -5703,8 +5703,8 @@ export const GuideStepFragmentDoc = gql`
     }
   }
   id
-  name
-  order
+  stepName
+  stepOrder
   uuid
 }
     `;
@@ -5722,7 +5722,7 @@ export const GuideFragmentDoc = gql`
   }
   guideSource
   guideType
-  name
+  guideName
   steps {
     ...GuideStep
   }

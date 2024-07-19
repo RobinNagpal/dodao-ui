@@ -868,10 +868,10 @@ type Guide {
   content: String!
   createdAt: DateTimeISO!
   guideIntegrations: GuideIntegrations!
+  guideName: String!
   guideSource: String!
   guideType: String!
   id: String!
-  name: String!
   postSubmissionStepContent: String
   previousId: String
   priority: Int
@@ -991,18 +991,18 @@ type GuideStep {
   content: String!
   created: Int!
   id: String!
-  name: String!
-  order: Int!
   stepItems: [GuideStepItem!]!
+  stepName: String!
+  stepOrder: Int!
   uuid: String!
 }
 
 input GuideStepInput {
   content: String!
   id: String!
-  name: String!
-  order: Int!
   stepItems: [StepItemInputGenericInput!]!
+  stepName: String!
+  stepOrder: Int!
   uuid: String!
 }
 
