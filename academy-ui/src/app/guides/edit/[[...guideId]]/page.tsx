@@ -55,7 +55,7 @@ const EditGuide = (props: { space: SpaceWithIntegrationsFragment; params: { guid
         <div tw="px-4 md:px-0 overflow-hidden">
           <Link href={guideId ? `/guides/view/${guideId}/0` : `/guides`} className="text-color">
             <span className="mr-1 font-bold">&#8592;</span>
-            {guideId ? guide.name : 'Back to Guides'}
+            {guideId ? guide.guideName : 'Back to Guides'}
           </Link>
         </div>
 

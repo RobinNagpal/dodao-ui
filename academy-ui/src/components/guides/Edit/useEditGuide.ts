@@ -85,8 +85,8 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
         thumbnail: guide.thumbnail || undefined,
         guideIntegrations: { ...guide.guideIntegrations, discordRoleIds: guide.guideIntegrations.discordRoleIds || [] },
       });
-      const minOrder = Math.min(...guide.steps.map((step: GuideStepFragment) => step.order));
-      setActiveStepId(guide.steps.find((step: GuideStepFragment) => step.order === minOrder)?.uuid);
+      const minOrder = Math.min(...guide.steps.map((step: GuideStepFragment) => step.stepOrder));
+      setActiveStepId(guide.steps.find((step: GuideStepFragment) => step.stepOrder === minOrder)?.uuid);
       setGuideLoaded(true);
     } else {
       setActiveStepId(emptyGuideModel.steps[0].uuid);
@@ -116,8 +116,8 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
   function moveStepUp(stepUuid: string) {
     const stepIndex = guide.steps.findIndex((s) => s.uuid === stepUuid);
     const steps = guide.steps.map((s) => ({ ...s }));
-    steps[stepIndex - 1].order = stepIndex;
-    steps[stepIndex].order = stepIndex - 1;
+    steps[stepIndex - 1].stepOrder = stepIndex;
+    steps[stepIndex].stepOrder = stepIndex - 1;
     setGuide((prevGuide: EditGuideType) => ({
       ...prevGuide,
       steps: orderBy(steps, 'order'),
@@ -127,8 +127,8 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
   function moveStepDown(stepUuid: string) {
     const stepIndex = guide.steps.findIndex((s) => s.uuid === stepUuid);
     const steps = [...guide.steps];
-    steps[stepIndex + 1].order = stepIndex;
-    steps[stepIndex].order = stepIndex + 1;
+    steps[stepIndex + 1].stepOrder = stepIndex;
+    steps[stepIndex].stepOrder = stepIndex + 1;
     setGuide((prevGuide: EditGuideType) => ({
       ...prevGuide,
       steps: orderBy(steps, 'order'),
@@ -166,10 +166,10 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
         {
           id: uuid,
           uuid: uuid,
-          name: `Step ${guide.steps.length + 1}`,
+          stepName: `Step ${guide.steps.length + 1}`,
           content: '',
           stepItems: [],
-          order: guide.steps.length,
+          stepOrder: guide.steps.length,
         },
       ],
     }));
@@ -179,7 +179,7 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
     const errors: GuideError = { ...guideErrors };
 
     errors.name = undefined;
-    if (!guide.name || guide.name.length > nameLimit) {
+    if (!guide.guideName || guide.guideName.length > nameLimit) {
       errors.name = true;
     }
     errors.content = undefined;
@@ -189,7 +189,7 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
     errors.steps = undefined;
     guide.steps.forEach((step: GuideStepInput) => {
       const stepError: StepError = {};
-      if (!step.name || step.name.length > nameLimit) {
+      if (!step.stepOrder || step.stepName.length > nameLimit) {
         stepError.name = true;
       }
       if (step.content?.length > stepContentLimit) {
@@ -230,7 +230,7 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
       },
       guideSource: model.guideSource,
       guideType: model.guideType,
-      name: model.name,
+      name: model.guideName,
       postSubmissionStepContent: model.postSubmissionStepContent,
       space: space.id,
       priority: model.priority,
@@ -238,8 +238,8 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
         return {
           id: step.id,
           content: step.content,
-          name: step.name,
-          order: step.order,
+          stepName: step.stepName,
+          stepOrder: step.stepOrder,
           stepItems: step.stepItems.map((item, index) => {
             const stepItem = item as StepItemInputGenericInput;
             return {

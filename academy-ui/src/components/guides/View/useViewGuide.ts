@@ -86,8 +86,8 @@ export function useViewGuide(space: Space, fetchedGuide: GuideFragment, stepOrde
         {
           __typename: 'GuideStep',
           content: 'The guide has been completed successfully!',
-          name: 'Completed',
-          order: fetchedGuide.steps.length,
+          stepName: 'Completed',
+          stepOrder: fetchedGuide.steps.length,
           uuid: LAST_STEP_UUID,
           stepItems: [],
           id: 'some_id',
@@ -150,13 +150,13 @@ export function useViewGuide(space: Space, fetchedGuide: GuideFragment, stepOrde
       };
     });
 
-    const newStepOrder = currentStep.order + 1;
+    const newStepOrder = currentStep.stepOrder + 1;
     setActiveStepOrder(newStepOrder);
     history.replaceState(null, '', `/guides/view/${uuid}/${newStepOrder}`);
   }
 
   function goToPreviousStep(currentStep: GuideStepFragment) {
-    const newStepOrder = currentStep.order - 1;
+    const newStepOrder = currentStep.stepOrder - 1;
     setActiveStepOrder(newStepOrder);
     history.replaceState(null, '', `/guides/view/${uuid}/${newStepOrder}`);
   }
@@ -283,8 +283,8 @@ export function useViewGuide(space: Space, fetchedGuide: GuideFragment, stepOrde
               {
                 __typename: 'GuideStep',
                 content: lastStepContent,
-                name: 'Completed',
-                order: stepsWithoutLastOne.length,
+                stepName: 'Completed',
+                stepOrder: stepsWithoutLastOne.length,
                 uuid: LAST_STEP_UUID,
                 stepItems: [],
                 id: 'some_id',

@@ -10,6 +10,8 @@ import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
 import sortBy from 'lodash/sortBy';
 import { Metadata } from 'next';
 import React from 'react';
+import axios from 'axios';
+import getBaseUrl from '@/utils/api/getBaseURL';
 
 type GuidesProps = {
   searchParams: { [key: string]: string | string[] | undefined };
@@ -24,7 +26,12 @@ export const metadata: Metadata = {
 async function Guides({ searchParams }: GuidesProps) {
   const space = (await getSpaceServerSide())!;
 
-  const allGuides = await getApiResponse<GuideSummaryFragment[]>(space, 'guides');
+  const response = await axios.get(`${getBaseUrl()}/api/guide/guides`, {
+    params: {
+      spaceId: space.id,
+    },
+  });
+  const allGuides: GuideSummaryFragment[] = response.data.guides;
 
   const showDrafts = searchParams?.['showDrafts'] === 'true';
 

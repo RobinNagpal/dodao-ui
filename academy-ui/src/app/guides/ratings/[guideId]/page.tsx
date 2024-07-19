@@ -44,7 +44,7 @@ function GuideSubmissionsPage(props: { space: SpaceWithIntegrationsFragment; par
           ratingsResponse={guideRatingsResponse!}
           consolidatedRatingsResponse={consolidatedRatingsResponse!}
           loadingRatings={loadingGuideRatings}
-          name={guideResponse?.guide?.name!}
+          name={guideResponse?.guide?.guideName!}
           content={guideResponse?.guide?.content!}
         />
       </div>
