@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs';
 import path from 'path';
 import { parse } from 'yaml';
-import { prisma } from '../../../prisma';
+import { prisma } from '../../prisma';
 import { v4 } from 'uuid';
 
 // Function to read and parse a single YAML file
@@ -91,9 +91,9 @@ const insertGuide = async (guide: any, spaceId: string, guideSource: string) => 
 
 const main = async () => {
   // Get the folder path and space ID from command line arguments
-  const folderPath = process.argv[2];
-  const spaceId = process.argv[3];
-  const guideSource = process.argv[4];
+  const folderPath = '/Users/robintc/projects/dodao-academies/aave-academy';
+  const spaceId = 'aave-eth-1';
+  const guideSource = 'Database';
 
   if (!folderPath || !spaceId) {
     console.error('Please provide the absolute path of the folder containing guides.yaml and the space ID.');
