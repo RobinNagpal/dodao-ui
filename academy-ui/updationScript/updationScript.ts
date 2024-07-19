@@ -27,6 +27,7 @@ async function assignByteCollections(spaceId: string) {
           spaceId: spaceId,
           description: '',
           status: 'ACTIVE',
+          byteIds: [],
         },
       });
     }
@@ -62,6 +63,22 @@ async function assignByteCollections(spaceId: string) {
             order: byte.priority,
           },
         });
+
+        const updatedUngroupedCollection = await prisma.byteCollection.findUnique({
+          where: { id: ungroupedCollection.id },
+          select: { byteIds: true },
+        });
+
+        if (updatedUngroupedCollection && !updatedUngroupedCollection.byteIds.includes(byte.id)) {
+          await prisma.byteCollection.update({
+            where: { id: ungroupedCollection.id },
+            data: {
+              byteIds: {
+                set: [...updatedUngroupedCollection.byteIds, byte.id],
+              },
+            },
+          });
+        }
       }
     }
   } catch (error) {
