@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { ProgramServerResponse, ProgramDropDownProps } from '@/types/rubricsTypes/types';
 import StyledSelect, { StyledSelectItem } from '@dodao/web-core/components/core/select/StyledSelect';
-
 const ProgramDropDown: React.FC<ProgramDropDownProps> = ({ onSelectProgram, serverResponse, setServerResponse }) => {
   const { body: programs } = serverResponse;
   const [selectedProgramId, setSelectedProgramId] = useState<string | null>(null);
+
   const fetchPrograms = async () => {
     try {
       const response = await fetch('/api/programs');

@@ -85,3 +85,16 @@ export interface RubricListProps {
   name: string;
   summary: string;
 }
+
+export interface SessionProps {
+  userId: string;
+  user: {
+    name: string;
+  };
+  expires: string; // ISO 8601 date string
+  username: string;
+  authProvider: string;
+  spaceId: string;
+  id: string;
+  dodaoAccessToken: string;
+}
