@@ -3,8 +3,6 @@ import { QuestionType } from '@/app/api/helpers/deprecatedSchemas/models/enums';
 import { ByteStep, MutationUpsertByteArgs, UpsertByteInput } from '@/graphql/generated/generated-types';
 import { transformByteInputSteps } from '@/app/api/helpers/byte/transformByteInputSteps';
 import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
-import { AcademyObjectTypes } from '@/app/api/helpers/academy/academyObjectTypes';
-import { writeObjectToAcademyRepo } from '@/app/api/helpers/academy/writers/academyObjectWriter';
 import { logError } from '@/app/api/helpers/adapters/errorLogger';
 import { checkEditSpacePermission } from '@/app/api/helpers/space/checkEditSpacePermission';
 import { slugify } from '@/app/api/helpers/space/slugify';
@@ -42,12 +40,7 @@ export async function POST(req: NextRequest) {
   try {
     const { spaceId, input }: MutationUpsertByteArgs = await req.json();
     const spaceById = await getSpaceById(spaceId);
-    const spaceIntegration = await prisma.spaceIntegration.findFirst({
-      where: {
-        spaceId: spaceId,
-      },
-    });
-    const jwt = await checkEditSpacePermission(spaceById, req);
+    await checkEditSpacePermission(spaceById, req);
     const transformedByte = await transformInput(spaceId, input);
     const steps: ByteStep[] = transformByteInputSteps(input);
     const id = input.id || slugify(input.name);
@@ -68,10 +61,6 @@ export async function POST(req: NextRequest) {
         id: id,
       },
     });
-
-    if (spaceIntegration?.academyRepository) {
-      await writeObjectToAcademyRepo(spaceById, upsertedByte, AcademyObjectTypes.bytes, jwt!.username);
-    }
 
     return NextResponse.json({ status: 200, upsertedByte });
   } catch (e) {
