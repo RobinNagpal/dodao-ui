@@ -70,7 +70,7 @@ export default function GuideSidebar({ activeStep, guide, viewGuideHelper }: Gui
                         )}
                         onClick={() => goToStep(stepIdx)}
                       >
-                        {step.name}
+                        {step.stepName}
                       </a>
                     </div>
                   </div>

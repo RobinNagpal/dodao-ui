@@ -91,7 +91,7 @@ export default function EditGuideSidebar({ activeStep, guide, editGuideHelper, e
                     </div>
                     <div className="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
                       <StyledAnchor onClick={() => editGuideHelper.updateGuideFunctions.setActiveStep(step.uuid)} isActive={showActive}>
-                        {step.name}
+                        {step.stepName}
                       </StyledAnchor>
                     </div>
                   </div>

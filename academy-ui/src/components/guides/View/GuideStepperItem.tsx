@@ -88,9 +88,9 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
     return nextButtonClicked && (!isEveryQuestionAnswered() || !isDiscordConnected());
   }, [nextButtonClicked, step]);
 
-  const isNotFirstStep = step.order !== 0;
+  const isNotFirstStep = step.stepOrder !== 0;
 
-  const isLastStep = guide.steps.length - 2 === step.order;
+  const isLastStep = guide.steps.length - 2 === step.stepOrder;
 
   const isGuideCompletedStep = step.uuid === LAST_STEP_UUID;
 
@@ -152,7 +152,7 @@ const GuideStep: React.FC<GuideStepProps> = ({ viewGuideHelper, space, step, gui
     <div className="guide-stepper-content w-full sm:px-3 lg:px-4 flex flex-col justify-between">
       <div style={{ minHeight: '300px' }}>
         <h2 className="mb-8 pb-4 text-2xl">
-          Step {step.order + 1} - {step.name}
+          Step {step.stepOrder + 1} - {step.stepName}
         </h2>
         <div className="step-content markdown-body" dangerouslySetInnerHTML={{ __html: stepContents }} />
         {isGuideCompletedStep && <div className="step-content markdown-body pt-6" dangerouslySetInnerHTML={{ __html: postSubmissionContent || '' }} />}

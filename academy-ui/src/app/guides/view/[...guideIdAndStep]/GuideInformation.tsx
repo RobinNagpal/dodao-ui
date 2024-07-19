@@ -85,7 +85,7 @@ const GuideInformation = ({ guideIdAndStep, space, guide: guideFragment }: Guide
 
             <div>
               <div className="mt-5 ml-3 lg:ml-12">
-                <h1 className="mb-2 text-3xl">{guide?.name}</h1>
+                <h1 className="mb-2 text-3xl">{guide?.guideName}</h1>
                 <div className="mb-4 text-xl">
                   <div className="flex justify-between">
                     <div dangerouslySetInnerHTML={{ __html: guideContents }} className="markdown-body mb-6 lg:w-[80%]" />
@@ -108,7 +108,7 @@ const GuideInformation = ({ guideIdAndStep, space, guide: guideFragment }: Guide
       {showDeleteModal && (
         <DeleteGuideModal
           open={showDeleteModal}
-          guideName={guide?.name || ''}
+          guideName={guide?.guideName || ''}
           onClose={() => setShowDeleteModal(false)}
           deleting={deletingGuide}
           onDelete={async () => {
