@@ -25,10 +25,10 @@ async function TidbitCollections() {
 
   if (session?.isAdminOfSpace) {
     filteredCollections = byteCollections.filter(
-      (collection) => !(collection.id === 'UNGROUPED_TIDBITS' && Array.isArray(collection.bytes) && collection.bytes.length === 0)
+      (collection) => !(collection.id === `UNGROUPED-TIDBITS-${space.id}` && Array.isArray(collection.bytes) && collection.bytes.length === 0)
     );
   } else {
-    filteredCollections = byteCollections.filter((collection) => collection.id !== 'UNGROUPED_TIDBITS');
+    filteredCollections = byteCollections.filter((collection) => collection.id !== `UNGROUPED-TIDBITS-${space.id}`);
   }
 
   return (
