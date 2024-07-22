@@ -1,19 +1,16 @@
-import SelectBytesModal from '@/components/byteCollection/ByteCollections/SelectBytesModal';
 import { EditByteCollection, useEditByteCollection } from '@/components/byteCollection/ByteCollections/useEditByteCollection';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
 import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import Input from '@dodao/web-core/components/core/input/Input';
-import StyledSelect, { StyledSelectItem } from '@dodao/web-core/components/core/select/StyledSelect';
 import TextareaAutosize from '@dodao/web-core/components/core/textarea/TextareaAutosize';
-import { ByteCollectionFragment, ByteSummaryFragment, ProjectByteCollectionFragment, ProjectByteFragment, Space } from '@/graphql/generated/generated-types';
+import { ByteCollectionFragment, ProjectByteCollectionFragment, ProjectByteFragment, Space } from '@/graphql/generated/generated-types';
 import PlusCircle from '@heroicons/react/20/solid/PlusCircleIcon';
 import Bars3BottomLeftIcon from '@heroicons/react/24/solid/Bars3BottomLeftIcon';
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 interface ByteCollectionEditorProps {
-  byteSummaries: (ByteSummaryFragment | ProjectByteFragment)[];
   space: Space;
   byteCollection?: ByteCollectionFragment | ProjectByteCollectionFragment;
   viewByteCollectionsUrl: string;
@@ -29,12 +26,10 @@ const TidBitIconSpan = styled.span`
 `;
 
 function ByteCollectionEditor(props: ByteCollectionEditorProps) {
-  const [showSelectBytesModal, setShowSelectBytesModal] = useState(false);
-  const { isPrestine, byteCollection, byteSummaries, helperFunctions } = useEditByteCollection({
+  const { isPrestine, byteCollection, helperFunctions } = useEditByteCollection({
     space: props.space,
     viewByteCollectionsUrl: props.viewByteCollectionsUrl,
     byteCollection: props.byteCollection,
-    byteSummaries: props.byteSummaries,
     upsertByteCollectionFn: props.upsertByteCollectionFn,
   });
   return (
@@ -125,32 +120,8 @@ function ByteCollectionEditor(props: ByteCollectionEditorProps) {
               </li>
             ))}
           </ul>
-
-          {showSelectBytesModal && (
-            <SelectBytesModal
-              showSelectBytesModal={showSelectBytesModal}
-              onClose={() => setShowSelectBytesModal(false)}
-              byteSummaries={props.byteSummaries.filter((byte) => {
-                return !byteCollection?.bytes?.some((b) => b.byteId === byte.id);
-              })}
-              addBytes={(byteIds: string[]) => {
-                byteIds.forEach((byteId) => {
-                  helperFunctions.addByte(byteId);
-                });
-
-                setShowSelectBytesModal(false);
-              }}
-            />
-          )}
         </div>
       </div>
-      <div className="flex py-2 cursor-pointer" onClick={() => setShowSelectBytesModal(true)}>
-        <AddByteButton className="rounded-full text-2xl bg-primary text-white mr-2">
-          <PlusCircle height={25} width={25} />
-        </AddByteButton>
-        <div>Add Bytes</div>
-      </div>
-
       <div className="py-4">
         <Button variant="contained" primary onClick={() => helperFunctions.upsertByteCollection()}>
           Upsert Byte Collection

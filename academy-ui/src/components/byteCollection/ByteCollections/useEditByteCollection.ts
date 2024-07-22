@@ -24,7 +24,6 @@ interface HelperFunctions {
 
 interface UseEditByteCollectionType {
   isPrestine: boolean;
-  byteSummaries: (ByteSummaryFragment | ProjectByteFragment)[];
   byteCollection: EditByteCollection;
   helperFunctions: HelperFunctions;
 }
@@ -33,7 +32,6 @@ export interface UseEditByteCollectionArgs {
   space: SpaceWithIntegrationsFragment;
   viewByteCollectionsUrl: string;
   byteCollection?: ByteCollectionFragment | ProjectByteCollectionFragment;
-  byteSummaries: (ByteSummaryFragment | ProjectByteFragment)[];
   upsertByteCollectionFn: (byteCollection: EditByteCollection, byteCollectionId: string | null) => Promise<void>;
 }
 
@@ -41,7 +39,6 @@ export function useEditByteCollection({
   space,
   viewByteCollectionsUrl,
   byteCollection: byteCollectionProp,
-  byteSummaries,
   upsertByteCollectionFn,
 }: UseEditByteCollectionArgs): UseEditByteCollectionType {
   const [isPrestine, setIsPrestine] = useState<boolean>(true);
@@ -113,15 +110,14 @@ export function useEditByteCollection({
   }, []);
 
   const addByte = (byteId: string) => {
-    setByteCollection((prevByte) => {
-      const newByte = byteSummaries.find((byte: ByteSummaryFragment | ProjectByteFragment) => byte.id === byteId);
-      if (!newByte) {
-        return prevByte;
-      }
-      const newBytes: ByteCollectionFragment['bytes'] = [...prevByte.bytes, { byteId: newByte.id, name: newByte.name, content: newByte.content }];
-
-      return { ...prevByte, bytes: newBytes };
-    });
+    // setByteCollection((prevByte) => {
+    //   const newByte = byteSummaries.find((byte: ByteSummaryFragment | ProjectByteFragment) => byte.id === byteId);
+    //   if (!newByte) {
+    //     return prevByte;
+    //   }
+    //   const newBytes: ByteCollectionFragment['bytes'] = [...prevByte.bytes, { byteId: newByte.id, name: newByte.name, content: newByte.content }];
+    //   return { ...prevByte, bytes: newBytes };
+    // });
   };
 
   const updateByteCollectionName = (name: string) => {
@@ -153,7 +149,6 @@ export function useEditByteCollection({
   return {
     isPrestine,
     byteCollection,
-    byteSummaries,
     helperFunctions: {
       updateByteCollectionName,
       updateByteCollectionDescription,
