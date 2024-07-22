@@ -34,24 +34,24 @@
 
 ## Tidbit Collection View
 
-![Tidbit Colection View Page](tidbit-collection-view.png)
+![Tidbit Colection View Page](https://github.com/RobinNagpal/dodao-ui/blob/main/academy-ui/public/tidbit-collection-view.png)
 
 - solution: use 16px of spacing between the elements vertically and horizontally.
 
 ## Edit pages
 
-![Edit Page](tidbit-edit.png)
+![Edit Page](https://github.com/RobinNagpal/dodao-ui/blob/main/academy-ui/public/tidbit-edit.png)
 
 - solution: use 16px vertical spacing between every following input.
 
 ## Questions options for small screens
 
-![Questionaire](questionaire.png)
+![Questionaire](https://github.com/RobinNagpal/dodao-ui/blob/main/academy-ui/public/questionaire.png)
 
 - solution: use max of 4px spacing between options
 
 ## TidbitTab
 
-![Nav](nav.jpeg)
+![Nav](https://github.com/RobinNagpal/dodao-ui/blob/main/academy-ui/public/nav.jpeg)
 
 - solution: use 32 px spacing above and below for consistency
