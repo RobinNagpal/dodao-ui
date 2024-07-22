@@ -1,6 +1,11 @@
+import { getServerSession } from 'next-auth';
 import React from 'react';
+import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
+import { Session } from '@dodao/web-core/types/auth/Session';
 
 async function Home() {
+  const session = (await getServerSession(authOptions)) as Session | null;
+  console.log('session', session);
   return (
     <div>
       <div className="mt-10 flex items-center justify-center gap-x-6">

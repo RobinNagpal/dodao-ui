@@ -8,6 +8,7 @@ import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { PrismaClient, Space } from '@prisma/client';
 import { AuthOptions } from 'next-auth';
 import jwt from 'jsonwebtoken';
+import { DoDaoJwtTokenPayload, Session } from '@dodao/web-core/types/auth/Session';
 
 const p = new PrismaClient();
 // Configure AWS SES
@@ -35,6 +36,38 @@ export const authOptions: AuthOptions = getAuthOptions(
   authorizeCrypto,
   {
     callbacks: {
+      async session(params): Promise<Session> {
+        const { session, user, token } = params;
+
+        let userInfo: any = {};
+        if (token.sub) {
+          const dbUser: User | null = await p.user.findUnique({
+            where: { id: token.sub },
+          });
+          if (dbUser) {
+            userInfo.username = dbUser.username;
+            userInfo.authProvider = dbUser.authProvider;
+            userInfo.spaceId = dbUser.spaceId;
+            userInfo.id = dbUser.id;
+          }
+        }
+        const doDaoJwtTokenPayload: DoDaoJwtTokenPayload = {
+          userId: userInfo.id,
+          spaceId: userInfo.spaceId,
+          username: userInfo.username,
+          accountId: userInfo.id,
+          isAdminOfSpace: isUserAdminOfSpace(userInfo.username, (await getSpaceServerSide()) as Space),
+          isSuperAdminOfDoDAO: isDoDAOSuperAdmin(userInfo.username),
+        };
+        return {
+          userId: userInfo.id,
+          ...session,
+          ...userInfo,
+          isAdminOfSpace: isUserAdminOfSpace(userInfo.username, (await getSpaceServerSide()) as Space),
+          isSuperAdminOfDoDAO: isDoDAOSuperAdmin(userInfo.username),
+          dodaoAccessToken: jwt.sign(doDaoJwtTokenPayload, process.env.DODAO_AUTH_SECRET!),
+        };
+      },
       jwt: async (params) => {
         const { token, user, account, profile, isNewUser } = params;
 
