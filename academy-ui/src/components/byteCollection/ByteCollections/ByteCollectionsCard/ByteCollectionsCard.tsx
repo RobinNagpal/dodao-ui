@@ -47,7 +47,7 @@ export default function ByteCollectionsCard({
   }
 
   return (
-    <div className={`border border-gray-200 rounded-xl overflow-hidden p-4 w-full max-w-xl ` + styles.cardDiv}>
+    <div className={`border border-gray-200 rounded-xl overflow-hidden p-4 w-full ` + styles.cardDiv}>
       {isEditingAllowed && (
         <div className="w-full flex justify-end">
           <ByteCollectionCardAdminDropdown byteCollection={byteCollection} byteCollectionType={byteCollectionType} project={project} />

@@ -8,7 +8,7 @@ const initialRubrics: Record<string, string[]> = {
     'Complete. The speaker clearly conveys the main idea',
     'Generally complete. The speaker conveys the main idea,',
     'Somewhat incomplete. The main idea is unclear',
-    'Incomplete. The main idea is unclear. ',
+    'Incomplete. The main idea is unclear. and ',
   ],
 };
 
@@ -40,7 +40,6 @@ const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId, isEditAcce
       })),
       criteria: criteria,
     }));
-    console.log(formattedRubrics);
 
     if (selectedProgramId) {
       console.log('Sending data:', formattedRubrics);
@@ -50,14 +49,14 @@ const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId, isEditAcce
 
   const handleSubmit = async (data: Rubric[]) => {
     try {
-      const response = await fetch(process.env.RUBRICS!, {
+      const response = await fetch('/api/rubrics', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           programId: selectedProgramId,
-          rubrics: data,
+          rubric: data,
         }),
       });
       console.log(response);
@@ -178,7 +177,7 @@ const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId, isEditAcce
     setColumnScores((prevScores) => [...prevScores.slice(0, index), score, ...prevScores.slice(index + 1)]);
     if (!isEditAccess) {
       const formattedRubrics: Rubric[] = criteriaOrder.map((criteria) => ({
-        name: 'Tested',
+        name: 'Test',
         levels: ratingHeaders.map((header, idx) => ({
           columnName: header,
           description: rubrics[criteria][idx],

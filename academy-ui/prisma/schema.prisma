@@ -185,6 +185,7 @@ model Byte {
   byteStyle        String?  @default("CardAndCircleProgress") @map("byte_style") @db.VarChar(255)
   /// [CompletionScreen]
   completionScreen Json?    @map("completion_screen") @db.Json
+  mappings ByteCollectionItemMappings[]
 
   @@map("bytes")
 }
@@ -249,6 +250,7 @@ model ByteCollection {
   status      String   @db.VarChar(255)
   priority    Int      @default(50) @map("priority")
   videoUrl    String?  @map("video_url") @db.VarChar(1024)
+  items ByteCollectionItemMappings[]
 
   @@map("byte_collections")
 }
@@ -337,4 +339,17 @@ model GuideRating {
   suggestion       String?  @map("suggestion") @db.VarChar(1024)
 
   @@map("guide_ratings")
+}
+
+model ByteCollectionItemMappings {
+  id               String   @id @db.VarChar(64)
+  byteCollectionId String  @map("byte_collection_id")
+  itemId           String   @db.VarChar(64)
+  itemType         String   @db.VarChar(255)
+  order            Int
+  ByteCollection   ByteCollection?   @relation(fields: [byteCollectionId], references: [id], map: "FK_ByteCollection")
+  Byte             Byte?             @relation(fields: [itemId], references: [id], map: "FK_Byte")
+  // ShortVideo       ShortVideo?       @relation(fields: [itemId], references: [id], map: "FK_ShortVideo")
+  // ClickableDemos   ClickableDemos?   @relation(fields: [itemId], references: [id], map: "FK_ClickableDemos")
+  @@map("byte_collections_items_mappings")
 }

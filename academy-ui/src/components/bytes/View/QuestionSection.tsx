@@ -15,7 +15,7 @@ export function QuestionSection(props: {
       <h2 className="text-2xl font-semibold mb-4 text-center">Question</h2>
       <div
         className={
-          props.nextButtonClicked && !props.allQuestionsAnsweredCorrectly && props.allQuestionsAnswered ? 'border-2 rounded-lg p-4 border-red-500' : ''
+          props.nextButtonClicked && !props.allQuestionsAnsweredCorrectly && props.allQuestionsAnswered ? 'border-2 rounded-lg p-4 border-red-500 mb-8' : ''
         }
       >
         <Question
@@ -27,8 +27,8 @@ export function QuestionSection(props: {
       </div>
       {props.nextButtonClicked && !props.allQuestionsAnsweredCorrectly && props.allQuestionsAnswered && (
         <div>
-          <h3 className="text-xl font-semibold mb-2 mt-2">Correct Answer</h3> {/* Move the "Correct Answer" heading outside the green border */}
-          <div className="border-2 rounded-lg border-green-500 p-4 mt-4">
+          <h3 className="text-xl font-semibold sm:mb-2 mt-2">Correct Answer</h3> {/* Move the "Correct Answer" heading outside the green border */}
+          <div className="border-2 rounded-lg border-green-500 p-4 mt-2">
             <Question
               question={{
                 ...props.stepItem,

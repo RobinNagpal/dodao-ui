@@ -73,3 +73,15 @@ export interface RubricCriteriaProps {
   onEditClick: (type: 'rubric' | 'header' | 'criteria', criteria: string | number, index: number) => void;
   onDeleteCriteria: (criteria: string) => void;
 }
+
+export interface ProgramListProps {
+  id: string;
+  name: string;
+  details: string;
+}
+
+export interface RubricListProps {
+  id: string;
+  name: string;
+  summary: string;
+}

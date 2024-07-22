@@ -17,7 +17,7 @@ function EditProgram() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch(process.env.RUBRICS!)
+    fetch(process.env.PROGRAMS!)
       .then((res) => res.json())
       .then((data) => setRubrics(data.body))
       .catch((error) => console.error('Error fetching rubrics:', error));
@@ -37,7 +37,7 @@ function EditProgram() {
       rubricIds: selectedRubrics,
     };
 
-    fetch(process.env.PROGRAMS!, {
+    fetch('/api/programs', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
