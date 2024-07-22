@@ -3,12 +3,7 @@
 import withSpace from '@/contexts/withSpace';
 import RatingsTable from '@/components/app/Rating/Table/RatingsTable';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import {
-  SpaceWithIntegrationsFragment,
-  GuideFragment,
-  ConsolidatedGuideRatingQuery,
-  ConsolidatedByteRatingQuery,
-} from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsFragment, GuideFragment, ConsolidatedGuideRatingQuery, ConsolidatedByteRatingQuery } from '@/graphql/generated/generated-types';
 import Link from 'next/link';
 import React, { useEffect } from 'react';
 import axios from 'axios';
@@ -42,7 +37,6 @@ function GuideSubmissionsPage(props: { space: SpaceWithIntegrationsFragment; par
     }
     fetchGuideRatings();
   }, [props.params.guideId]);
-
 
   return (
     <PageWrapper>
