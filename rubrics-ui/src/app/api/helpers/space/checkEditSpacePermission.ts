@@ -21,7 +21,6 @@ async function isDoDAOMember(context: NextRequest): Promise<(JwtPayload & DoDaoJ
 
 export function isUserAdminOfSpace(username: string, space: Space) {
   const spaceAdmins = [space.creator?.toLowerCase()];
-  // const spaceAdmins = '0xE1eD81e508F3F901Cf55eD05729016f5A1D93A3A';
   const isAdminOfSpace: boolean = spaceAdmins.includes(username.toLowerCase());
 
   const isAdminOfSpaceByUserName: boolean = space.adminUsernamesV1?.map((u) => u.toLowerCase()).includes(username.toLowerCase());
