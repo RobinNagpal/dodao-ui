@@ -5,7 +5,6 @@ import { Space } from '@prisma/client';
 import fs from 'fs';
 import { clone, listRemotes } from 'isomorphic-git';
 import http from 'isomorphic-git/http/node';
-
 export interface AcademyRepoInfo {
   academyRepository: string;
   repositoryFolderName: string;

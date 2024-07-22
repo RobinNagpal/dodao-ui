@@ -11,7 +11,7 @@ import { Session } from '@dodao/web-core/types/auth/Session';
 import getApiResponse from '@/utils/api/getApiResponse';
 import React from 'react';
 import axios from 'axios';
-import getBaseUrl from '@/utils/api/getBaseURL';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 
 export async function getTidbitsSiteHomepageContents(
   props: {

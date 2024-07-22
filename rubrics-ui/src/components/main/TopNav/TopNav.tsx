@@ -1,15 +1,13 @@
 'use client';
 
 import ButtonLarge from '@dodao/web-core/components/core/buttons/Button';
-import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import { DesktopNavLink } from '@dodao/web-core/components/main/TopNav/DesktopNavLink';
 import { DesktopProfileMenu } from '@dodao/web-core/components/main/TopNav/DesktopProfileMenu';
 import { MobileNavLink } from '@dodao/web-core/components/main/TopNav/MobileNavLink';
 import { MobileProfileMenu } from '@dodao/web-core/components/main/TopNav/MobileProfileMenu';
-import { useLoginModalContext } from '@dodao/web-core/ui/contexts/LoginModalContext';
-import { WebCoreSpace } from '@dodao/web-core/types/space';
 import { Session } from '@dodao/web-core/types/auth/Session';
-import { FeatureItem, FeatureName } from '@dodao/web-core/types/features/spaceFeatures';
+import { WebCoreSpace } from '@dodao/web-core/types/space';
+import { useLoginModalContext } from '@dodao/web-core/ui/contexts/LoginModalContext';
 import { isSuperAdmin } from '@dodao/web-core/utils/auth/superAdmins';
 import { getCDNImageUrl } from '@dodao/web-core/utils/images/getCDNImageUrl';
 import { Disclosure } from '@headlessui/react';
@@ -17,80 +15,15 @@ import Bars3Icon from '@heroicons/react/24/outline/Bars3Icon';
 import XMarkIcon from '@heroicons/react/24/outline/XMarkIcon';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
-import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
 import styles from './TopNav.module.scss';
-
-const sortedSpaceFeatures: FeatureItem[] = [
-  {
-    featureName: FeatureName.Guides,
-    enabled: true,
-    details: {
-      priority: 90,
-    },
-  },
-  {
-    featureName: FeatureName.Courses,
-    enabled: true,
-    details: {
-      priority: 80,
-    },
-  },
-  {
-    featureName: FeatureName.Bytes,
-    enabled: true,
-    details: {
-      priority: 70,
-    },
-  },
-  {
-    featureName: FeatureName.Timelines,
-    enabled: true,
-    details: {
-      priority: 60,
-    },
-  },
-];
 
 function DesktopNavLinks({ space }: { space: WebCoreSpace }) {
   return (
     <div className="hidden md:ml-6 md:flex md:space-x-8">
-      {sortedSpaceFeatures.map((feature) => {
-        if (feature.featureName === FeatureName.Courses) {
-          return <DesktopNavLink key="courses" href="/courses" label="Courses" />;
-        }
-        if (feature.featureName === FeatureName.Guides) {
-          return <DesktopNavLink key="guides" href="/guides" label="Guides" />;
-        }
-
-        if (feature.featureName === FeatureName.Bytes) {
-          return <DesktopNavLink key="tidbits" href="/tidbits" label="Tidbits" />;
-        }
-
-        if (feature.featureName === FeatureName.ByteCollections) {
-          return <DesktopNavLink key="tidbitCollections" href="/tidbit-collections" label="Tidbits" />;
-        }
-
-        if (feature.featureName === FeatureName.ByteCollectionCategories) {
-          return <DesktopNavLink key="byteCollectionCategories" href="/tidbit-collection-categories" label="Tidbits" />;
-        }
-
-        if (feature.featureName === FeatureName.Simulations) {
-          return <DesktopNavLink key="simulations" href="/simulations" label="Simulations" />;
-        }
-        if (feature.featureName === FeatureName.ClickableDemos) {
-          return <DesktopNavLink key="clickableDemos" href="/clickable-demos" label="Clickable Demos" />;
-        }
-        if (feature.featureName === FeatureName.Timelines) {
-          return <DesktopNavLink key="timelines" href="/timelines" label="Timelines" />;
-        }
-        if (feature.featureName === FeatureName.Chatbot) {
-          return <DesktopNavLink key="ai_chatbot" href="/nema" label="Chatbot" />;
-        }
-        if (feature.featureName === FeatureName.Shorts) {
-          return <DesktopNavLink key="shorts" href="/shorts" label="Short Videos" />;
-        }
-      })}
+      <DesktopNavLink key="programs" href="/programs" label="Programs" />
+      <DesktopNavLink key="rubrics" href="/rubrics" label="Rubrics" />
     </div>
   );
 }
@@ -98,39 +31,8 @@ function DesktopNavLinks({ space }: { space: WebCoreSpace }) {
 function MobileNavLinks({ space }: { space: WebCoreSpace }) {
   return (
     <div className="space-y-1 pb-3 pt-2">
-      {sortedSpaceFeatures.map((feature) => {
-        if (feature.featureName === FeatureName.Courses) {
-          return <MobileNavLink key="courses" href="/courses" label="Courses" />;
-        }
-        if (feature.featureName === FeatureName.Guides) {
-          return <MobileNavLink key="guides" href="/guides" label="Guides" />;
-        }
-
-        if (feature.featureName === FeatureName.Bytes) {
-          return <MobileNavLink key="tidbits" href="/tidbits" label="Tidbits" />;
-        }
-
-        if (feature.featureName === FeatureName.ByteCollections) {
-          return <MobileNavLink key="tidbitCollections" href="/tidbit-collections" label="Tidbits" />;
-        }
-
-        if (feature.featureName === FeatureName.ByteCollectionCategories) {
-          return <MobileNavLink key="tidbitCollectionCategories" href="/tidbit-collection-categories" label="Tidbits" />;
-        }
-
-        if (feature.featureName === FeatureName.Simulations) {
-          return <MobileNavLink key="simulations" href="/simulations" label="Simulations" />;
-        }
-        if (feature.featureName === FeatureName.Timelines) {
-          return <MobileNavLink key="timelines" href="/timelines" label="Timelines" />;
-        }
-        if (feature.featureName === FeatureName.Chatbot) {
-          return <MobileNavLink key="ai_chatbot" href="/nema" label="Chatbot" />;
-        }
-        if (feature.featureName === FeatureName.Shorts) {
-          return <MobileNavLink key="shorts" href="/shorts" label="Short Videos" />;
-        }
-      })}
+      <MobileNavLink key="programs" href="/programs" label="Programs" />
+      <MobileNavLink key="rubrics" href="/rubrics" label="Rubrics" />
     </div>
   );
 }

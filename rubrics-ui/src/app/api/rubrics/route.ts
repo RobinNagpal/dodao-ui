@@ -2,98 +2,89 @@ import { prisma } from '@/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest, res: NextResponse) {
-  const { programId, rubrics } = await req.json();
+  const { programId, rubric } = await req.json();
   try {
-    const existingRubricMappings = await prisma.programRubricMapping.findMany({
-      where: { programId },
-      select: { rubricId: true },
+    const previousRubrics = await prisma.rubric.findMany({
+      where: {
+        programs: {
+          some: {
+            programId: programId,
+          },
+        },
+      },
     });
 
-    const existingRubricIdList = existingRubricMappings.map((mapping) => mapping.rubricId);
+    for (const previousRubric of previousRubrics) {
+      const rubricId = previousRubric.id;
 
-    if (existingRubricIdList.length > 0) {
-      await prisma.rubricCell.deleteMany({
-        where: {
-          rubricId: { in: existingRubricIdList },
-        },
-      });
-
-      await prisma.rubricLevel.deleteMany({
-        where: {
-          rubricId: { in: existingRubricIdList },
-        },
-      });
-
-      await prisma.rubricCriteria.deleteMany({
-        where: {
-          rubricId: { in: existingRubricIdList },
-        },
-      });
-
-      await prisma.programRubricMapping.deleteMany({
-        where: {
-          programId,
-        },
-      });
-
-      await prisma.rubric.deleteMany({
-        where: {
-          id: { in: existingRubricIdList },
-        },
-      });
+      await prisma.rubricCell.deleteMany({ where: { rubricId } });
+      await prisma.rubricLevel.deleteMany({ where: { rubricId } });
+      await prisma.rubricCriteria.deleteMany({ where: { rubricId } });
     }
 
-    for (const rubric of rubrics) {
-      const { name, summary, description, levels, criteria } = rubric;
+    await prisma.programRubricMapping.deleteMany({
+      where: {
+        programId: programId,
+      },
+    });
 
-      const newRubric = await prisma.rubric.create({
-        data: {
-          name,
-          summary,
-          description,
+    await prisma.rubric.deleteMany({
+      where: {
+        id: {
+          in: previousRubrics.map((rubric) => rubric.id),
         },
-      });
+      },
+    });
 
-      await prisma.programRubricMapping.create({
+    // Create a new rubric
+    const newRubric = await prisma.rubric.create({
+      data: {
+        name: rubric[0].name,
+        summary: rubric[0].summary,
+        description: rubric[0].description,
+        programs: {
+          create: { programId },
+        },
+      },
+    });
+
+    // Create levels for the rubric
+    const levelIds: { [key: string]: string } = {};
+    for (const level of rubric[0].levels) {
+      const newLevel = await prisma.rubricLevel.create({
         data: {
-          programId,
+          columnName: level.columnName,
+          description: level.description,
+          score: level.score,
           rubricId: newRubric.id,
         },
       });
+      levelIds[level.columnName] = newLevel.id;
+    }
 
-      const levelIds: { [key: string]: string } = {};
-      for (const level of levels) {
-        const newLevel = await prisma.rubricLevel.create({
-          data: {
-            rubricId: newRubric.id,
-            columnName: level.columnName,
-            description: level.description,
-            score: level.score,
-          },
-        });
-        levelIds[level.columnName] = newLevel.id;
-      }
+    for (const subRubric of rubric) {
+      const { criteria, levels } = subRubric;
 
       const newCriteria = await prisma.rubricCriteria.create({
         data: {
-          rubricId: newRubric.id,
           title: criteria,
+          rubricId: newRubric.id,
         },
       });
 
       for (const level of levels) {
         await prisma.rubricCell.create({
           data: {
-            rubricId: newRubric.id,
             description: level.description,
             levelId: levelIds[level.columnName],
             criteriaId: newCriteria.id,
+            rubricId: newRubric.id,
           },
         });
       }
     }
 
-    return NextResponse.json({ status: 200, body: rubrics });
+    return NextResponse.json({ status: 200, body: rubric });
   } catch (error) {
     console.error(error);
     return NextResponse.json({ status: 500, body: 'An error occurred' });

@@ -133,7 +133,7 @@ export default function ViewByteModal({
         <div className={`${styles.styledByteCard} overflow-x-hidden h-full overflow-y-auto w-full`}>
           {viewByteHelper.byteRef ? (
             <>
-              <div className="absolute top-4 right-4">
+              <div className="absolute my-2 top-4 right-4">
                 <PrivateEllipsisDropdown
                   items={threeDotItems}
                   onSelect={(key) => {

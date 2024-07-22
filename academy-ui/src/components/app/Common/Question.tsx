@@ -84,7 +84,7 @@ function Question({ answerClass = '', question, questionResponse, readonly, show
         )}
       </div>
       {question.type !== QuestionType.SingleChoice && (
-        <div className="w-full text-right mb-2">
+        <div className="w-full text-right ">
           <span className="primary-color mr-3">Select Multiple choices</span>
         </div>
       )}
@@ -98,7 +98,7 @@ function Question({ answerClass = '', question, questionResponse, readonly, show
           {questionWithFormattedChoices.choices.map((choice) => {
             const isSelected = questionResponse.includes(choice.key);
             return (
-              <div key={choice.key} className={`leading-loose items-center py-2 sm:py-0 -ml-2`}>
+              <div key={choice.key} className={`leading-loose items-center`}>
                 <div className="mt-2">
                   <RadioOption
                     optionKey={question.uuid + choice.key}
@@ -116,7 +116,7 @@ function Question({ answerClass = '', question, questionResponse, readonly, show
         questionWithFormattedChoices.choices.map((choice) => {
           const isSelected = questionResponse.includes(choice.key);
           return (
-            <div key={choice.key} className={`flex leading-loose items-center py-2 sm:py-0`}>
+            <div key={choice.key} className={`flex leading-loose items-center `}>
               <CheckboxView
                 id={question.uuid + choice.key}
                 labelContent={choice.content}
