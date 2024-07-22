@@ -27,7 +27,7 @@ export default function TidbitsSiteTabs({ selectedTabId }: { selectedTabId?: str
 
   return (
     <PrivateComponent>
-      <div className="w-full flex justify-end mb-6">
+      <div className="w-full flex justify-end mb-6 md:mb-8 ">
         <TabsWithUnderline
           selectedTabId={selectedTabId}
           setSelectedTabId={(id) => {
