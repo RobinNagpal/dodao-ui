@@ -139,7 +139,7 @@ export function useEditSimulation(space: Space, simulationId: string | null) {
     newSimulationErrors.steps = simulation.steps.reduce((acc: any, step: SimulationStepInput) => {
       const stepError: StepError = {};
       if (!step.name || step.name.length > nameLimit) {
-        stepError.name = true;
+        stepError.stepName = true;
       }
       if (!step.iframeUrl?.trim() && !step.content?.trim()?.length) {
         stepError.content = true;
