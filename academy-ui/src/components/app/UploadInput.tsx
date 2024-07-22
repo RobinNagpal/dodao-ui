@@ -49,7 +49,7 @@ export default function UploadInput({
 }: UploadInputProps) {
   const inputId = spaceId + '-' + slugify(label || imageType || objectId);
   return (
-    <div className="mt-2">
+    <div className="my-4">
       <label htmlFor={inputId} className="block text-sm font-medium leading-6">
         {label || 'Image URL'}
       </label>
