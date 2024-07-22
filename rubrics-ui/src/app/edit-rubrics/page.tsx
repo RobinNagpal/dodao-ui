@@ -30,6 +30,7 @@ function EditRubrics() {
   useEffect(() => {
     isUserLoggedIn();
   }, [showLoginModal]);
+  console.log(session);
 
   return (
     <div>
