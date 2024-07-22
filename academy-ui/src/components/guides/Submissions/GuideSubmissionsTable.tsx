@@ -2,7 +2,7 @@ import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
 import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import SpinnerWithText from '@dodao/web-core/components/core/loaders/SpinnerWithText';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { SpaceWithIntegrationsFragment, useGuideSubmissionsQueryQuery } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsFragment, GuideSubmission } from '@/graphql/generated/generated-types';
 import { DODAO_ACCESS_TOKEN_KEY } from '@dodao/web-core/types/deprecated/models/enums';
 import { GridOptions, GridSizeChangedEvent } from 'ag-grid-community';
 import { FilterChangedEvent, FilterModifiedEvent, FilterOpenedEvent } from 'ag-grid-community/dist/lib/events';
@@ -11,7 +11,7 @@ import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { AgGridReact } from 'ag-grid-react';
 import axios from 'axios';
 import moment from 'moment';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styles from './GuideSubmissionsTable.module.scss';
 
 export interface GuideSubmissionsTableProps {
@@ -21,6 +21,8 @@ export interface GuideSubmissionsTableProps {
 
 export default function GuideSubmissionsTable(props: GuideSubmissionsTableProps) {
   const [csvDownloading, setCsvDownloading] = useState(false);
+  const [data, setData] = useState<{ guideSubmissions?: GuideSubmission[] }>();
+  const [loading, setLoading] = useState(false);
 
   const { showNotification } = useNotificationContext();
   const downloadCSV = async () => {
@@ -54,16 +56,29 @@ export default function GuideSubmissionsTable(props: GuideSubmissionsTableProps)
       setCsvDownloading(false);
     }
   };
-  const { data, loading } = useGuideSubmissionsQueryQuery({
-    variables: {
-      spaceId: props.space.id,
-      guideUuid: props.guideId,
-      filters: {
-        page: 0,
-        itemsPerPage: 2000,
-      },
-    },
-  });
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        setLoading(true);
+        const response = await axios.get('/api/guide/guide-submit', {
+          params: {
+            spaceId: props.space.id,
+            guideId: props.guideId,
+            filters: JSON.stringify({
+              page: 0,
+              itemsPerPage: 2000,
+            }),
+          },
+        });
+        setData(response.data);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching guide submissions:', error);
+      }
+    }
+    fetchData();
+  }, [props.space.id, props.guideId]);
 
   const guideSubmissions = data?.guideSubmissions || [];
 

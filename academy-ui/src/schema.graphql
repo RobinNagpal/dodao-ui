@@ -1059,6 +1059,7 @@ input GuideSubmissionFiltersInput {
 
 input GuideSubmissionInput {
   from: String!
+  guideId: String!
   guideUuid: String!
   space: String!
   steps: [GuideStepSubmissionInput!]!
