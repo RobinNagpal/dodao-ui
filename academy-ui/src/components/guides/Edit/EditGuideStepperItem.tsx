@@ -374,7 +374,7 @@ const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHas
       </StepContainer>
 
       <div className="w-full mb-4">
-        <Input modelValue={step.stepName} error={!!inputError('name')} maxLength={32} onUpdate={(e) => updateStepName(e?.toString() || '')}>
+        <Input modelValue={step.stepName} error={!!inputError('stepName')} maxLength={32} onUpdate={(e) => updateStepName(e?.toString() || '')}>
           Name*
         </Input>
       </div>

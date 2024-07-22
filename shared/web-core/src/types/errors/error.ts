@@ -23,7 +23,7 @@ export interface UserInputError {
 }
 
 export interface StepError {
-  name?: boolean;
+  stepName?: boolean;
   content?: boolean;
   stepItems?: Record<string, QuestionError | UserInputError>;
 }
@@ -31,7 +31,7 @@ export interface StepError {
 export type KeyOfGuideIntegration = keyof GuideIntegrationFragment;
 
 export interface GuideError {
-  name?: boolean;
+  guideName?: boolean;
   content?: boolean;
   priority?: boolean;
   thumbnail?: boolean;

@@ -24,6 +24,7 @@ import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { emptyGuide } from './EmptyGuide';
+import axios from 'axios';
 
 const stepContentLimit = 14400;
 const guideExceptContentLimit = 64;
@@ -75,15 +76,15 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
 
   const initialize = async () => {
     if (uuid) {
-      const result = await queryGuideDetails({ uuid, spaceId: space.id });
-      const guide = result.data.guide;
+      const response = await axios.get('/api/guide/' + uuid);
+      const guide = response.data.guide;
       setGuide({
         ...guide,
         guideExists: true,
         isPristine: true,
         postSubmissionStepContent: guide.postSubmissionStepContent || undefined,
         thumbnail: guide.thumbnail || undefined,
-        guideIntegrations: { ...guide.guideIntegrations, discordRoleIds: guide.guideIntegrations.discordRoleIds || [] },
+        guideIntegrations: { discordRoleIds: guide.discordRoleIds || [] },
       });
       const minOrder = Math.min(...guide.steps.map((step: GuideStepFragment) => step.stepOrder));
       setActiveStepId(guide.steps.find((step: GuideStepFragment) => step.stepOrder === minOrder)?.uuid);
@@ -178,9 +179,9 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
   function validateGuide(guide: EditGuideType) {
     const errors: GuideError = { ...guideErrors };
 
-    errors.name = undefined;
+    errors.guideName = undefined;
     if (!guide.guideName || guide.guideName.length > nameLimit) {
-      errors.name = true;
+      errors.guideName = true;
     }
     errors.content = undefined;
     if (!guide.content || guide.content?.length > guideExceptContentLimit) {
@@ -189,8 +190,8 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
     errors.steps = undefined;
     guide.steps.forEach((step: GuideStepInput) => {
       const stepError: StepError = {};
-      if (!step.stepOrder || step.stepName.length > nameLimit) {
-        stepError.name = true;
+      if (!(step.stepOrder + 1) || step.stepName.length > nameLimit) {
+        stepError.stepName = true;
       }
       if (step.content?.length > stepContentLimit) {
         stepError.content = true;
@@ -208,7 +209,6 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
         }
         errors.steps[step.uuid] = stepError;
       }
-
       return errors;
     });
 
@@ -283,20 +283,23 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
         setGuideCreating(false);
         return;
       }
-      const response = await upsertGuideMutation({
-        variables: {
+      const response = await fetch('/api/guide/upsert-guide', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
           spaceId: space.id,
           guideInput: convertToGuideInput(guide),
-        },
-        refetchQueries: ['GuidesQuery'],
+        }),
       });
 
-      const payload = response?.data?.payload;
+      const payload = (await response.json()).guide;
       if (payload) {
         showNotification({ type: 'success', message: 'Guide Saved', heading: 'Success 🎉' });
         router.push(`/guides/view/${payload.id}/0`);
       } else {
-        console.error(response.errors);
+        console.error(response.body);
         showNotification({ type: 'error', message: $t('notify.somethingWentWrong') });
       }
     } catch (e) {

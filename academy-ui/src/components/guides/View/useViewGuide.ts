@@ -222,6 +222,7 @@ export function useViewGuide(space: Space, fetchedGuide: GuideFragment, stepOrde
       uuid: uuidv4(),
       guideUuid: uuid,
       from: session?.username || 'anonymous',
+      guideId: guide?.id!,
       steps: Object.keys(responses).map((stepUuid): GuideStepSubmissionInput => {
         const stepResponse: undefined | StepResponse = responses[stepUuid];
 
@@ -255,10 +256,17 @@ export function useViewGuide(space: Space, fetchedGuide: GuideFragment, stepOrde
     };
 
     try {
-      const response = await submitGuideMutation({ variables: { input: guideSubmissionInput }, errorPolicy: 'all' });
+      const submissionInputObj = { submissionInput: { ...guideSubmissionInput } };
+      const response = fetch('/api/guide/guide-submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(submissionInputObj),
+      }).then((res) => res.json());
 
       setGuideSubmittingRef(false);
-      const result = response?.data?.payload.result;
+      const result = (await response).submitGuide.result;
       if (result) {
         showNotification({
           type: 'success',
@@ -299,7 +307,6 @@ export function useViewGuide(space: Space, fetchedGuide: GuideFragment, stepOrde
             ...prev,
             isSubmitted: true,
             submissionResult: result,
-            galaxyCredentialsUpdated: !!response?.data?.payload?.galaxyCredentialsUpdated,
           };
         });
 

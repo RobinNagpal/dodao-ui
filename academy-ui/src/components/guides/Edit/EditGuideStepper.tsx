@@ -27,8 +27,9 @@ export function EditGuideStepper(props: EditGuideStepperProps) {
     return false;
   }, [guide]);
 
-  const activeStepI = editGuideHelper.activeStepId;
-  const activeStep: GuideStepFragment = guide.steps.find((step) => step.uuid === activeStepI)!;
+  const minOrder = Math.min(...guide.steps.map((step: GuideStepFragment) => step.stepOrder));
+  const activeStepId = guide.steps.find((step: GuideStepFragment) => step.stepOrder === minOrder)?.uuid;
+  const activeStep: GuideStepFragment = guide.steps.find((step) => step.uuid === activeStepId)!;
   return (
     <div className="flex">
       <div className="flex grow flex-col gap-y-5 overflow-y-auto  px-6 p-4">
