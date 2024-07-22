@@ -7,7 +7,7 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const spaceId = searchParams.get('spaceId');
-  if (!spaceId) return { status: 400, body: 'No spaceId provided' };
+  if (!spaceId) return NextResponse.json({ status: 400, body: 'No spaceId provided' });
 
   const spaceById = await getSpaceById(spaceId);
   await checkEditSpacePermission(spaceById, req);
