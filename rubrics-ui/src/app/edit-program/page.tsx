@@ -1,5 +1,4 @@
-import React from 'react';
-import ProgramEdit from '@/components/ProgramEdit/ProgramEdit';
+import ProgramEdit from '@/components/EditProgram/EditProgram';
 function EditProgram() {
   return (
     <div>

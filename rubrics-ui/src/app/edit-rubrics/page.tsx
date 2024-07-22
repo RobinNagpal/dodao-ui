@@ -1,24 +1,10 @@
-'use client';
-import React, { useState, useEffect } from 'react';
-import RubricsTable from '@/components/RubricsTable/RubricsTable';
-import { ProgramServerResponse } from '@/types/rubricsTypes/types';
-import ProgramDropDown from '@/components/ProgramDropDown/ProgramDropDown';
-function EditRuberics() {
-  const [selectedProgramId, setSelectedProgramId] = useState<string | null>(null);
-  const [serverResponse, setServerResponse] = useState<ProgramServerResponse>({ status: -1, body: [] });
-
-  const handleSelectProgram = (id: string) => {
-    setSelectedProgramId(id);
-  };
-
+import RubricEdit from '@/components/EditRubric/EditRubric';
+function EditRubrics() {
   return (
     <div>
-      <div className="mt-10 p-2 flex-col items-center justify-center gap-x-6">
-        <ProgramDropDown serverResponse={serverResponse} setServerResponse={setServerResponse} onSelectProgram={handleSelectProgram} />
-        <RubricsTable selectedProgramId={selectedProgramId} />
-      </div>
+      <RubricEdit />
     </div>
   );
 }
 
-export default EditRuberics;
+export default EditRubrics;

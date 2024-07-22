@@ -12,7 +12,7 @@ const initialRubrics: Record<string, string[]> = {
   ],
 };
 
-const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId, isEditAccess = true }) => {
+const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId, isEditAccess }) => {
   const [rubrics, setRubrics] = useState<Record<string, string[]>>(initialRubrics);
   const [ratingHeaders, setRatingHeaders] = useState<string[]>(['Excellent', 'Good', 'Fair', 'Improvement']);
   const [criteriaOrder, setCriteriaOrder] = useState<string[]>(Object.keys(initialRubrics));
@@ -194,7 +194,7 @@ const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId, isEditAcce
 
   return (
     <div className="container mx-auto py-8 p-4">
-      <h1 className="text-3xl text-center font-bold mb-4">Create Rubrics</h1>
+      <h1 className="text-3xl text-center font-bold mb-4"> {isEditAccess ? 'Edit Rubrics' : 'Give Feedback'}</h1>
 
       <div className="overflow-x-auto mt-4">
         <table className="min-w-full bg-white border-collapse border">

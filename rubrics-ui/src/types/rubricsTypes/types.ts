@@ -55,21 +55,21 @@ export interface RubricCellProps {
   cell: string;
   criteria: string;
   cellIndex: number;
-  isEditAccess: boolean;
+  isEditAccess: boolean | undefined;
   onEditClick: (type: 'rubric', criteria: string, index: number) => void;
 }
 export interface RubricLevelProps {
   header: string;
   index: number;
   score: number;
-  isEditAccess: boolean;
+  isEditAccess: boolean | undefined;
   onScoreChange: (index: number, score: number) => void;
   onEditClick: (type: 'header', criteria: number, index: number) => void;
 }
 export interface RubricCriteriaProps {
   criteria: string;
   rubrics: Record<string, string[]>;
-  isEditAccess: boolean;
+  isEditAccess: boolean | undefined;
   onEditClick: (type: 'rubric' | 'header' | 'criteria', criteria: string | number, index: number) => void;
   onDeleteCriteria: (criteria: string) => void;
 }
@@ -84,4 +84,24 @@ export interface RubricListProps {
   id: string;
   name: string;
   summary: string;
+}
+
+export interface SessionProps {
+  userId: string;
+  user: {
+    name: string;
+  };
+  expires: string;
+  username: string;
+  authProvider: string;
+  spaceId: string;
+  id: string;
+  dodaoAccessToken: string;
+  isAdminOfSpace: boolean | null;
+}
+
+export interface RateRubricProps {
+  params: {
+    id: string;
+  };
 }

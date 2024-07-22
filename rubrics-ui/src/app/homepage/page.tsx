@@ -1,4 +1,7 @@
+import { getServerSession } from 'next-auth';
 import React from 'react';
+import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
+import { Session } from '@dodao/web-core/types/auth/Session';
 
 async function Home() {
   return (

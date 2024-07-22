@@ -1,17 +1,10 @@
-// Import necessary modules and types
 'use client';
 import React, { useState, useEffect } from 'react';
-import RubricsPage from '@/components/RubricsTable/RubricsTable';
+import RubricsPage from '@/components/RubricsTable/rubricsTable';
 import { ProgramServerResponse } from '@/types/rubricsTypes/types';
+import { RateRubricProps } from '@/types/rubricsTypes/types';
 
-// Define props interface for RateProgram component
-interface RateProgramProps {
-  params: {
-    id: string;
-  };
-}
-
-const RateProgram: React.FC<RateProgramProps> = ({ params }) => {
+const RateRubric: React.FC<RateRubricProps> = ({ params }) => {
   const [selectedProgramId, setSelectedProgramId] = useState<string | null>(null);
   const [serverResponse, setServerResponse] = useState<ProgramServerResponse>({ status: -1, body: [] });
 
@@ -21,9 +14,8 @@ const RateProgram: React.FC<RateProgramProps> = ({ params }) => {
     if (id) {
       const fetchProgramData = async () => {
         try {
-          const response = await fetch(`/api/rubrics/get-rubric?programId=${id}`);
+          const response = await fetch(`/api/rubrics?rubricId=${id}`);
           const data = await response.json();
-          console.log(data);
 
           if (response.ok) {
             setServerResponse(data);
@@ -49,4 +41,4 @@ const RateProgram: React.FC<RateProgramProps> = ({ params }) => {
   );
 };
 
-export default RateProgram;
+export default RateRubric;
