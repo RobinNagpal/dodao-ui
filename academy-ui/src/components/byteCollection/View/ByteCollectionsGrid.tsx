@@ -12,6 +12,7 @@ import SingleCardLayout from '@/layouts/SingleCardLayout';
 import PageLoading from '@dodao/web-core/components/core/loaders/PageLoading';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import { useRouter } from 'next/navigation';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 
 export default function ByteCollectionsGrid({
   byteCollections,
@@ -19,31 +20,43 @@ export default function ByteCollectionsGrid({
   project,
   byteCollectionType,
   byteCollectionsBaseUrl,
+  isAdmin,
 }: {
   byteCollections?: ByteCollectionFragment[] | ProjectByteCollectionFragment[];
   space: SpaceWithIntegrationsFragment;
   project?: ProjectFragment;
   byteCollectionType: 'byteCollection' | 'projectByteCollection';
   byteCollectionsBaseUrl: string;
+  isAdmin: boolean | undefined;
 }) {
+  const { showNotification } = useNotificationContext();
   async function upsertByteCollectionFn(byteCollection: EditByteCollection) {
-    await fetch('/api/byte-collection/create-byte-collection', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        input: {
-          spaceId: space.id,
-          name: byteCollection.name,
-          description: byteCollection.description,
-          byteIds: [],
-          status: byteCollection.status,
-          priority: byteCollection.priority,
-          videoUrl: byteCollection.videoUrl,
+    try {
+      const result = await fetch('/api/byte-collection/create-byte-collection', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-      }),
-    });
+        body: JSON.stringify({
+          input: {
+            spaceId: space.id,
+            name: byteCollection.name,
+            description: byteCollection.description,
+            byteIds: [],
+            status: byteCollection.status,
+            priority: byteCollection.priority,
+            videoUrl: byteCollection.videoUrl,
+          },
+        }),
+      });
+
+      if (result.ok) {
+        showNotification({ message: 'Collection Created Successfully', type: 'success' });
+        setShowAddCollectionModal(false);
+      }
+    } catch (error) {
+      showNotification({ message: 'Something went wrong', type: 'error' });
+    }
   }
   const [showAddCollectionModal, setShowAddCollectionModal] = React.useState(false);
   const router = useRouter();
@@ -51,6 +64,7 @@ export default function ByteCollectionsGrid({
   function onClose() {
     setShowAddCollectionModal(false);
     router.push(`/tidbit-collections`);
+    router.refresh();
   }
 
   return (
@@ -68,14 +82,17 @@ export default function ByteCollectionsGrid({
               space={space}
             />
           ))}
-          <div className="w-full flex items-center justify-center">
-            <button
-              className="h-40 w-full border-2 border-gray-300 border-dotted tracking-wider rounded-lg bg-white hover:bg-gray-100 hover:border-gray-300 text-gray-600 "
-              onClick={() => setShowAddCollectionModal(true)}
-            >
-              + Add Tidbit Collection
-            </button>
-          </div>
+
+          {isAdmin && (
+            <div className="w-full flex items-center justify-center">
+              <button
+                className="h-40 w-full border-2 border-gray-300 border-dotted tracking-wider rounded-lg bg-white hover:bg-gray-100 hover:border-gray-300 text-gray-600 "
+                onClick={() => setShowAddCollectionModal(true)}
+              >
+                + Add Tidbit Collection
+              </button>
+            </div>
+          )}
         </Grid2Cols>
       )}
 

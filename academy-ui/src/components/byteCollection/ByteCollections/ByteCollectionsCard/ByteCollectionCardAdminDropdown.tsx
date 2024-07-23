@@ -33,6 +33,7 @@ export default function ByteCollectionCardAdminDropdown({ byteCollection, byteCo
   function onClose() {
     setShowEditCollectionModal(false);
     router.push(`/tidbit-collections`);
+    router.refresh();
   }
 
   async function upsertByteCollectionFn(byteCollectionn: EditByteCollection) {
@@ -57,7 +58,8 @@ export default function ByteCollectionCardAdminDropdown({ byteCollection, byteCo
       });
 
       if (result.ok) {
-        showNotification({ message: 'Values Updated Successfully', type: 'success' });
+        showNotification({ message: 'Collection Updated Successfully', type: 'success' });
+        setShowEditCollectionModal(false);
       }
     } catch (error) {
       showNotification({ message: 'Something went wrong', type: 'error' });
