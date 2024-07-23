@@ -1,42 +1,36 @@
 import { Container } from './Container';
 
 const faqs = [
-  [
-    {
-      question: 'How can you help me save on support costs?',
-      answer:
-        'By offering a robust platform where customers can easily access all the information they need, our platform reduces the reliance on customer support teams. This means lower overhead costs for your business and faster, more efficient customer service.',
-    },
-    {
-      question: 'What insights can I gain about my customers through your platform?',
-      answer:
-        "We provide valuable insights into your customers' behaviors and preferences through their interactions with the platform's educational content. This data can be used to personalize customer experiences and further enhance satisfaction and loyalty.",
-    },
-  ],
-  [
-    {
-      question: 'How do you empower customers?',
-      answer:
-        'We empower customers by providing them with the tools and resources they need to fully understand and appreciate your products or services. It helps customers to become more confident and capable, which enhances their overall experience with your brand.',
-    },
-    {
-      question: 'How does your platform help to reduce churn rates?',
-      answer:
-        'By providing engaging, user-friendly educational content, we keep customers invested in your brand. This high level of engagement reduces churn rates by promoting customer loyalty and satisfaction.',
-    },
-  ],
-  [
-    {
-      question: 'How do you engage and educate customers?',
-      answer:
-        'We offer a variety of interactive features in our Tidbits including quizzes and short videos. These engaging tools make learning about your products and services both fun and effective for your customers.',
-    },
-    {
-      question: 'How do you help create long-term customer relationships?',
-      answer:
-        'By providing comprehensive and accessible knowledge, our platform fosters trust and satisfaction among your customers. This, combined with continuous learning opportunities, helps to build strong, lasting relationships.',
-    },
-  ],
+  {
+    question: 'How can you help me save on support costs?',
+    answer:
+      'By offering a robust platform where customers can easily access all the information they need, our platform reduces the reliance on customer support teams. This means lower overhead costs for your business and faster, more efficient customer service.',
+  },
+  {
+    question: 'What insights can I gain about my customers through your platform?',
+    answer:
+      "We provide valuable insights into your customers' behaviors and preferences through their interactions with the platform's educational content. This data can be used to personalize customer experiences and further enhance satisfaction and loyalty.",
+  },
+  {
+    question: 'How do you empower customers?',
+    answer:
+      'We empower customers by providing them with the tools and resources they need to fully understand and appreciate your products or services. It helps customers to become more confident and capable, which enhances their overall experience with your brand.',
+  },
+  {
+    question: 'How does your platform help to reduce churn rates?',
+    answer:
+      'By providing engaging, user-friendly educational content, we keep customers invested in your brand. This high level of engagement reduces churn rates by promoting customer loyalty and satisfaction.',
+  },
+  {
+    question: 'How do you engage and educate customers?',
+    answer:
+      'We offer a variety of interactive features in our Tidbits including quizzes and short videos. These engaging tools make learning about your products and services both fun and effective for your customers.',
+  },
+  {
+    question: 'How do you help create long-term customer relationships?',
+    answer:
+      'By providing comprehensive and accessible knowledge, our platform fosters trust and satisfaction among your customers. This, combined with continuous learning opportunities, helps to build strong, lasting relationships.',
+  },
 ];
 
 export function Faqs() {
@@ -56,14 +50,10 @@ export function Faqs() {
           </p>
         </div>
         <ul role="list" className="mx-auto mt-16 grid max-w-2xl gap-12 sm:mt-20 lg:max-w-none lg:grid-cols-3">
-          {faqs.map((column, columnIndex) => (
-            <li key={columnIndex} className="grid grid-cols-1 gap-8">
-              {column.map((faq, faqIndex) => (
-                <div key={faqIndex} className="space-y-4">
-                  <h3 className="text-xl font-semibold leading-tight">{faq.question}</h3>
-                  <p className="text-base">{faq.answer}</p>
-                </div>
-              ))}
+          {faqs.map((faq, index) => (
+            <li key={index} className="space-y-4">
+              <h3 className="text-xl font-semibold leading-tight">{faq.question}</h3>
+              <p className="text-base">{faq.answer}</p>
             </li>
           ))}
         </ul>
