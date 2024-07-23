@@ -17,6 +17,7 @@ interface HelperFunctions {
 
 interface UseEditByteCollectionType {
   isPrestine: boolean;
+  loading: boolean;
   byteCollection: EditByteCollection;
   helperFunctions: HelperFunctions;
 }
@@ -36,6 +37,7 @@ export function useEditByteCollection({
 }: UseEditByteCollectionArgs): UseEditByteCollectionType {
   const [isPrestine, setIsPrestine] = useState<boolean>(true);
   const router = useRouter();
+  const [loading, setloading] = useState<boolean>(false);
 
   const [byteCollection, setByteCollection] = useState<EditByteCollection>({
     id: byteCollectionProp?.id,
@@ -118,18 +120,21 @@ export function useEditByteCollection({
     setByteCollection((prevByte) => ({ ...prevByte, priority }));
   };
   const upsertByteCollection = async () => {
+    setloading(true);
     setIsPrestine(false);
 
     if (!byteCollection.name.trim() || !byteCollection.description.trim()) {
       return;
     }
     await upsertByteCollectionFn(byteCollection, byteCollection.id || null);
+    setloading(false);
     router.push(viewByteCollectionsUrl);
     router.refresh();
   };
 
   return {
     isPrestine,
+    loading,
     byteCollection,
     helperFunctions: {
       updateByteCollectionName,

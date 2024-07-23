@@ -32,7 +32,6 @@ export default function ByteCollectionCardAdminDropdown({ byteCollection, byteCo
 
   function onClose() {
     setShowEditCollectionModal(false);
-    router.push(`/tidbit-collections`);
     router.refresh();
   }
 

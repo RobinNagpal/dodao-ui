@@ -21,12 +21,13 @@ const TidBitIconSpan = styled.span`
 `;
 
 function ByteCollectionEditor(props: ByteCollectionEditorProps) {
-  const { isPrestine, byteCollection, helperFunctions } = useEditByteCollection({
+  const { isPrestine, loading, byteCollection, helperFunctions } = useEditByteCollection({
     space: props.space,
     viewByteCollectionsUrl: props.viewByteCollectionsUrl,
     byteCollection: props.byteCollection,
     upsertByteCollectionFn: props.upsertByteCollectionFn,
   });
+
   return (
     <div>
       <Input
@@ -118,7 +119,7 @@ function ByteCollectionEditor(props: ByteCollectionEditorProps) {
         </div>
       </div>
       <div className="py-4">
-        <Button variant="contained" primary onClick={() => helperFunctions.upsertByteCollection()}>
+        <Button variant="contained" primary loading={loading} disabled={loading} onClick={() => helperFunctions.upsertByteCollection()}>
           Upsert Byte Collection
         </Button>
       </div>

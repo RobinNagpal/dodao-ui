@@ -63,7 +63,6 @@ export default function ByteCollectionsGrid({
 
   function onClose() {
     setShowAddCollectionModal(false);
-    router.push(`/tidbit-collections`);
     router.refresh();
   }
 
