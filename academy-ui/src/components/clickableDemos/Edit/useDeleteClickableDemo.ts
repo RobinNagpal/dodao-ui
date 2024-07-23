@@ -9,8 +9,8 @@ export function useDeleteClickableDemo(space: Space, demoId: string) {
   const { $t } = useI18();
   async function handleDeletion() {
     try {
-      const response = await fetch('/api/clickable-demo/delete-clickable-demo', {
-        method: 'POST',
+      const response = await fetch(`/api/clickable-demos/${demoId}`, {
+        method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
         },

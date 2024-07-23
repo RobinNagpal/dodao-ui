@@ -10,7 +10,11 @@ import React from 'react';
 
 export default async function ClickableDemos() {
   const space = (await getSpaceServerSide())!;
-  const response = await axios.get(`${getBaseUrl()}/api/clickable-demo/${space.id}`);
+  const response = await axios.get(`${getBaseUrl()}/api/clickable-demos`, {
+    params: {
+      spaceId: space.id,
+    },
+  });
   const demos: ClickableDemo[] = response.data.clickableDemos;
 
   return (

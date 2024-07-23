@@ -41,7 +41,7 @@ export function useEditClickableDemo(space: Space, demoId: string | null) {
 
   async function initialize() {
     if (demoId) {
-      const response = await axios.get('/api/clickable-demo/clickable-demo-with-steps', {
+      const response = await axios.get(`/api/clickable-demos/${demoId}`, {
         params: {
           spaceId: space.id,
           demoId,
@@ -191,14 +191,15 @@ export function useEditClickableDemo(space: Space, demoId: string | null) {
         setClickableDemoCreating(false);
         return;
       }
-      const response = await fetch('/api/clickable-demo/upsert-clickable-demo', {
-        method: 'POST',
+      const input = getClickableDemoInput();
+      const response = await fetch(`/api/clickable-demos/${input.id}`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           spaceId: space.id,
-          input: getClickableDemoInput(),
+          input,
         }),
       });
 
