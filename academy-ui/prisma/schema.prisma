@@ -129,6 +129,7 @@ model Space {
   Byte             Byte[]
   GuideStep        GuideStep[]
   GuideSubmission  GuideSubmission[]
+  GitCourse        GitCourse[]
 
   @@map("spaces")
 }
@@ -367,4 +368,64 @@ model ClickableDemos {
   archive   Boolean? @default(false)
 
   @@map("clickable_demos")
+}
+
+model GitCourse {
+  id            String   @id @db.VarChar(255)
+  courseKey     String   @map("course_key") @db.VarChar(255)
+  spaceId       String   @map("space_id") @db.VarChar(66)
+  createdAt     DateTime @default(now()) @map("created_at")
+  createdBy     String?  @map("created_by") @db.VarChar(256)
+  weight        Int      @default(20) @map("weight")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+  updatedBy     String?  @map("updated_by") @db.VarChar(256)
+  courseRepoUrl String   @map("course_repo_url") @db.VarChar(1024)
+  publishStatus String   @default("Live") @map("publish_status") @db.VarChar(128)
+  courseAdmins  Json     @map("course_admins") @db.Json
+  space         Space    @relation(fields: [spaceId], references: [id])
+
+  @@unique([spaceId, courseKey])
+  @@map("git_courses")
+}
+
+model GitCourseSubmission {
+  uuid                     String                     @id @db.VarChar(66)
+  courseKey                String                     @map("course_key") @db.VarChar(128)
+  createdAt                DateTime                   @default(now()) @map("created_at")
+  createdBy                String                     @map("created_by") @db.VarChar(64)
+  isLatestSubmission       Boolean                    @map("is_latest_submission")
+  questionsAttempted       Int?                       @map("questions_attempted")
+  questionsCorrect         Int?                       @map("questions_correct")
+  questionsIncorrect       Int?                       @map("questions_incorrect")
+  questionsSkipped         Int?                       @map("questions_skipped")
+  spaceId                  String                     @map("space_id") @db.VarChar(64)
+  updatedAt                DateTime                   @updatedAt @map("updated_at")
+  status                   String                     @default("InProgress") @db.VarChar(64)
+  galaxyCredentialsUpdated Boolean?                   @map("galaxy_credentials_updated")
+  GitCourseTopicSubmission GitCourseTopicSubmission[]
+
+  @@map("git_course_submissions")
+}
+
+model GitCourseTopicSubmission {
+  uuid                 String              @id @db.VarChar(66)
+  courseKey            String              @map("course_key") @db.VarChar(128)
+  courseSubmissionUuid String              @map("course_submission_uuid") @db.VarChar(66)
+  createdAt            DateTime            @default(now()) @map("created_at")
+  createdBy            String              @map("created_by") @db.VarChar(64)
+  isLatestSubmission   Boolean             @map("is_latest_submission")
+  questionsAttempted   Int?                @map("questions_attempted")
+  questionsCorrect     Int?                @map("questions_correct")
+  questionsIncorrect   Int?                @map("questions_incorrect")
+  questionsSkipped     Int?                @map("questions_skipped")
+  /// [TempTopicSubmissionModel]
+  submission           Json                @db.Json
+  spaceId              String              @map("space_id") @db.VarChar(64)
+  topicKey             String              @map("topic_key") @db.VarChar(128)
+  updatedAt            DateTime            @updatedAt @map("updated_at")
+  status               String              @default("InProgress") @db.VarChar(64)
+  correctAnswers       Json?               @map("correct_answers")
+  courseSubmission     GitCourseSubmission @relation(fields: [courseSubmissionUuid], references: [uuid])
+
+  @@map("git_course_topic_submissions")
 }
