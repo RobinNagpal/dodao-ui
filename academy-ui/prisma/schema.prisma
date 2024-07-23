@@ -429,3 +429,22 @@ model GitCourseTopicSubmission {
 
   @@map("git_course_topic_submissions")
 }
+
+model Timeline {
+  id            String   @id @db.VarChar(255)
+  name          String   @db.VarChar(255)
+  excerpt       String   @db.VarChar(256)
+  content       String
+  thumbnail     String?  @db.VarChar(255)
+  spaceId       String   @map("space_id") @db.VarChar(66)
+  created       String   @db.VarChar(255)
+  publishStatus String
+  /// [TimelineEvent]
+  events        Json[]
+  admins        String[]
+  tags          String[]
+  priority      Int      @default(50) @map("priority")
+  timelineStyle String?  @db.VarChar(255)
+
+  @@map("timelines")
+}

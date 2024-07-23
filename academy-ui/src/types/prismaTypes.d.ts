@@ -14,6 +14,7 @@ import {
   TidbitsHomepage as TidbitsHomepageType,
   ByteFeedback as ByteFeedbackType,
   ClickableDemoStep as ClickableDemoStepType,
+  TimelineEvent as TimelineEventType,
 } from '@/graphql/generated/generated-types';
 import { ByteLinkedinPdfContent as ByteLinkedinPdfContentType } from '@/graphql/generated/generated-types';
 import { TempTopicSubmissionModel as TempTopicSubmissionModelInterface } from '@/types/course/submission';
@@ -46,5 +47,6 @@ declare global {
     type TidbitsHomepage = TidbitsHomepageType;
     type ByteFeedback = ByteFeedbackType;
     type ClickableDemoStep = ClickableDemoStepType;
+    type TimelineEvent = TimelineEventType;
   }
 }

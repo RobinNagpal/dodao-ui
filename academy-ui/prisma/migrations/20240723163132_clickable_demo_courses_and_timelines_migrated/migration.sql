@@ -70,6 +70,25 @@ CREATE TABLE "git_course_topic_submissions" (
     CONSTRAINT "git_course_topic_submissions_pkey" PRIMARY KEY ("uuid")
 );
 
+-- CreateTable
+CREATE TABLE "timelines" (
+    "id" VARCHAR(255) NOT NULL,
+    "name" VARCHAR(255) NOT NULL,
+    "excerpt" VARCHAR(256) NOT NULL,
+    "content" TEXT NOT NULL,
+    "thumbnail" VARCHAR(255),
+    "space_id" VARCHAR(66) NOT NULL,
+    "created" VARCHAR(255) NOT NULL,
+    "publishStatus" TEXT NOT NULL,
+    "events" JSONB[],
+    "admins" TEXT[],
+    "tags" TEXT[],
+    "priority" INTEGER NOT NULL DEFAULT 50,
+    "timelineStyle" VARCHAR(255),
+
+    CONSTRAINT "timelines_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "git_courses_space_id_course_key_key" ON "git_courses"("space_id", "course_key");
 
