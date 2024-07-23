@@ -27,7 +27,7 @@ export default function ByteCollectionsGrid({
   project?: ProjectFragment;
   byteCollectionType: 'byteCollection' | 'projectByteCollection';
   byteCollectionsBaseUrl: string;
-  isAdmin: boolean | undefined;
+  isAdmin?: boolean | undefined;
 }) {
   const { showNotification } = useNotificationContext();
   async function upsertByteCollectionFn(byteCollection: EditByteCollection) {
@@ -83,7 +83,7 @@ export default function ByteCollectionsGrid({
             />
           ))}
 
-          {isAdmin && (
+          {isAdmin! && (
             <div className="w-full flex items-center justify-center">
               <button
                 className="h-40 w-full border-2 border-gray-300 border-dotted tracking-wider rounded-lg bg-white hover:bg-gray-100 hover:border-gray-300 text-gray-600 "
