@@ -63,6 +63,8 @@ export const authOptions: AuthOptions = getAuthOptions(
           userId: userInfo.id,
           ...session,
           ...userInfo,
+          isAdminOfSpace: isUserAdminOfSpace(userInfo.username, (await getSpaceServerSide()) as Space),
+          isSuperAdminOfDoDAO: isDoDAOSuperAdmin(userInfo.username),
           dodaoAccessToken: jwt.sign(doDaoJwtTokenPayload, process.env.DODAO_AUTH_SECRET!),
         };
       },

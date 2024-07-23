@@ -49,8 +49,12 @@ export function useGuideRatings(space: Space, guide: GuideFragment, guideSubmiss
       }
     }
 
-    await upsertGuideRatingsMutation({
-      variables: {
+    await fetch('/api/guide/upsert-guide-rating', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
         spaceId: space.id,
         upsertGuideRatingInput: {
           endRating: guideRating.endRating,
@@ -64,13 +68,17 @@ export function useGuideRatings(space: Space, guide: GuideFragment, guideSubmiss
           startRating: guideRating.startRating,
           userId: guideRating.userId,
         },
-      },
+      }),
     });
   };
 
   const skipGuideRating = async () => {
-    await upsertGuideRatingsMutation({
-      variables: {
+    await fetch('/api/guide/upsert-guide-rating', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
         spaceId: space.id,
         upsertGuideRatingInput: {
           endRating: null,
@@ -84,7 +92,7 @@ export function useGuideRatings(space: Space, guide: GuideFragment, guideSubmiss
           startRating: null,
           userId: localStorage.getItem(UserIdKey)!,
         },
-      },
+      }),
     });
     setShowEndRatingsModal(false);
   };

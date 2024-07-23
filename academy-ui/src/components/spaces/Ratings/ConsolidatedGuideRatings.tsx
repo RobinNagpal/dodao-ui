@@ -1,17 +1,12 @@
 'use client';
 
-import withSpace from '@/contexts/withSpace';
 import styles from '@/components/app/Rating/Table/RatingsTable.module.scss';
 import { Grid2Cols } from '@dodao/web-core/components/core/grids/Grid2Cols';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import {
-  ConsolidatedGuideRating,
-  RatingDistribution,
-  SpaceWithIntegrationsFragment,
-  useConsolidatedGuideRatingsForSpaceQuery,
-} from '@/graphql/generated/generated-types';
+import { ConsolidatedGuideRating, RatingDistribution, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import React from 'react';
 import { Cell, Legend, Pie, PieChart, Tooltip } from 'recharts';
+import axios from 'axios';
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28'];
 
@@ -53,11 +48,18 @@ function ConsolidatedRatings(props: { consolidatedRatings: ConsolidatedGuideRati
 }
 
 export default function ConsolidatedGuideRatings(props: { space: SpaceWithIntegrationsFragment }) {
-  const { data: consolidatedRatingsResponse, loading: loadingConsolidatedRatings } = useConsolidatedGuideRatingsForSpaceQuery({
-    variables: {
-      spaceId: props.space.id,
-    },
-  });
+  const [consolidatedRatingsResponse, setConsolidatedRatingsResponse] = React.useState<any>();
+  React.useEffect(() => {
+    async function fetchConsolidatedRatings() {
+      let response = await axios.get('/api/guide/consolidated-guide-ratings-for-space', {
+        params: {
+          spaceId: props.space.id,
+        },
+      });
+      setConsolidatedRatingsResponse(response.data);
+    }
+    fetchConsolidatedRatings();
+  }, [props.space.id]);
 
   const consolidatedGuideRatingsForSpace = consolidatedRatingsResponse?.consolidatedGuideRatingsForSpace;
   const positiveRatingDistribution = consolidatedGuideRatingsForSpace?.positiveRatingDistribution;

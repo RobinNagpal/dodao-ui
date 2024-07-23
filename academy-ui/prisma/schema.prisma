@@ -128,6 +128,7 @@ model Space {
   tidbitsHomepage  Json?             @map("tidbits_homepage") @db.Json
   Byte             Byte[]
   GuideStep        GuideStep[]
+  GuideSubmission  GuideSubmission[]
 
   @@map("spaces")
 }
@@ -276,6 +277,7 @@ model Guide {
   discordRolePassingCount   Int?        @map("discord_role_passing_count")
   showIncorrectOnCompletion Boolean     @default(true) @map("show_incorrect_on_completion")
   postSubmissionStepContent String      @map("post_submission_step_content")
+  archive                   Boolean     @default(false)
   GuideStep                 GuideStep[]
 
   @@map("guides")
@@ -295,6 +297,48 @@ model GuideStep {
   guide     Guide    @relation(fields: [guideId], references: [id])
 
   @@map("guide_steps")
+}
+
+model GuideSubmission {
+  id                    String   @id @db.VarChar(66)
+  createdAt             DateTime @default(now()) @map("created_at")
+  createdBy             String   @map("created_by") @db.VarChar(64)
+  createdByUsername     String   @map("created_by_username") @db.VarChar(128)
+  guideId               String   @map("guide_id") @db.VarChar(64)
+  guideUuid             String   @map("guide_uuid") @db.VarChar(255)
+  /// [GuideSubmissionResult]
+  result                Json     @db.Json
+  spaceId               String   @map("space_id") @db.VarChar(64)
+  /// [GuideStepSubmissionArray]
+  steps                 Json     @db.Json
+  uuid                  String   @db.VarChar(255)
+  ipAddress             String?  @map("ip_address") @db.VarChar(64)
+  correctQuestionsCount Int      @map("correct_questions_count")
+  space                 Space    @relation(fields: [spaceId], references: [id])
+
+  @@map("guide_submissions")
+}
+
+model GuideRating {
+  ratingUuid       String   @id @map("rating_uuid") @db.VarChar(255)
+  guideUuid        String   @map("guide_uuid") @db.VarChar(255)
+  spaceId          String   @map("space_id") @db.VarChar(255)
+  userId           String?  @map("user_id") @db.VarChar(255)
+  ipAddress        String?  @map("ip_address") @db.VarChar(64)
+  skipStartRating  Boolean? @map("skip_start_rating")
+  skipEndRating    Boolean? @map("skip_end_rating")
+  startRating      Int?     @map("start_rating")
+  endRating        Int?     @map("end_rating")
+  /// [GuideFeedback]
+  positiveFeedback Json?    @map("positive_feedback") @db.Json
+  /// [GuideFeedback]
+  negativeFeedback Json?    @map("negative_feedback") @db.Json
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+  username         String?  @map("username") @db.VarChar(1024)
+  suggestion       String?  @map("suggestion") @db.VarChar(1024)
+
+  @@map("guide_ratings")
 }
 
 model ByteCollectionItemMappings {

@@ -246,7 +246,7 @@ export function editByteCommonFunctions(setByte: (value: ((prevState: EditByteTy
     byte.steps.forEach((step: ByteStepInput) => {
       const stepError: StepError = {};
       if (!step.name || step.name.length > nameLimit) {
-        stepError.name = true;
+        stepError.stepName = true;
       }
       if (step.content?.length > stepContentLimit) {
         stepError.content = true;
