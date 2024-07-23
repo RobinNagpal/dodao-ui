@@ -5,7 +5,6 @@ import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import Input from '@dodao/web-core/components/core/input/Input';
 import TextareaAutosize from '@dodao/web-core/components/core/textarea/TextareaAutosize';
 import { ByteCollectionFragment, ProjectByteCollectionFragment, ProjectByteFragment, Space } from '@/graphql/generated/generated-types';
-import PlusCircle from '@heroicons/react/20/solid/PlusCircleIcon';
 import Bars3BottomLeftIcon from '@heroicons/react/24/solid/Bars3BottomLeftIcon';
 import React from 'react';
 import styled from 'styled-components';
@@ -16,10 +15,6 @@ interface ByteCollectionEditorProps {
   viewByteCollectionsUrl: string;
   upsertByteCollectionFn: (byteCollection: EditByteCollection, byteCollectionId: string | null) => Promise<void>;
 }
-
-const AddByteButton = styled.button`
-  color: var(--primary-color);
-`;
 
 const TidBitIconSpan = styled.span`
   background-color: var(--primary-color);

@@ -2,7 +2,7 @@
 
 import ByteCollectionCardAdminDropdown from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCollectionCardAdminDropdown';
 import ByteCompletionCheckmark from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCompletionCheckmark';
-import { ByteCollectionFragment, ProjectByteCollectionFragment, ProjectFragment } from '@/graphql/generated/generated-types';
+import { ByteCollectionFragment, ProjectByteCollectionFragment, ProjectFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import ArrowTopRightOnSquareIcon from '@heroicons/react/24/outline/ArrowTopRightOnSquareIcon';
 import Link from 'next/link';
 import React from 'react';
@@ -16,6 +16,7 @@ interface ByteCollectionCardProps {
   project?: ProjectFragment;
   byteCollectionType: 'byteCollection' | 'projectByteCollection';
   viewByteBaseUrl: string;
+  space: SpaceWithIntegrationsFragment;
 }
 
 interface VideoModalProps {
@@ -30,6 +31,7 @@ export default function ByteCollectionsCard({
   project,
   byteCollectionType,
   viewByteBaseUrl,
+  space,
 }: ByteCollectionCardProps) {
   const [watchVideo, setWatchVideo] = React.useState<boolean>(false);
   const [selectedVideo, setSelectedVideo] = React.useState<VideoModalProps>();
@@ -50,7 +52,7 @@ export default function ByteCollectionsCard({
     <div className={`border border-gray-200 rounded-xl overflow-hidden p-4 w-full ` + styles.cardDiv}>
       {isEditingAllowed && (
         <div className="w-full flex justify-end">
-          <ByteCollectionCardAdminDropdown byteCollection={byteCollection} byteCollectionType={byteCollectionType} project={project} />
+          <ByteCollectionCardAdminDropdown byteCollection={byteCollection} byteCollectionType={byteCollectionType} project={project} space={space} />
         </div>
       )}
 

@@ -11,6 +11,7 @@ import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
 import PageLoading from '@dodao/web-core/components/core/loaders/PageLoading';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
+import { useRouter } from 'next/navigation';
 
 export default function ByteCollectionsGrid({
   byteCollections,
@@ -25,7 +26,7 @@ export default function ByteCollectionsGrid({
   byteCollectionType: 'byteCollection' | 'projectByteCollection';
   byteCollectionsBaseUrl: string;
 }) {
-  async function upsertByteCollectionFn(byteCollection: EditByteCollection, byteCollectionId: string | null) {
+  async function upsertByteCollectionFn(byteCollection: EditByteCollection) {
     await fetch('/api/byte-collection/create-byte-collection', {
       method: 'POST',
       headers: {
@@ -45,9 +46,11 @@ export default function ByteCollectionsGrid({
     });
   }
   const [showAddCollectionModal, setShowAddCollectionModal] = React.useState(false);
+  const router = useRouter();
 
   function onClose() {
     setShowAddCollectionModal(false);
+    router.push(`/tidbit-collections`);
   }
 
   return (
@@ -62,6 +65,7 @@ export default function ByteCollectionsGrid({
               project={project}
               byteCollectionType={byteCollectionType}
               viewByteBaseUrl={`${byteCollectionsBaseUrl}/view/${byteCollection.id}/`}
+              space={space}
             />
           ))}
           <div className="w-full flex items-center justify-center">

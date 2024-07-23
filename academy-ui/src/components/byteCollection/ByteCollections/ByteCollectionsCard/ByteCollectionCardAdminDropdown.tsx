@@ -5,25 +5,65 @@ import {
   ByteCollectionFragment,
   ProjectByteCollectionFragment,
   ProjectFragment,
+  SpaceWithIntegrationsFragment,
   useUpdateArchivedStatusOfProjectByteCollectionMutation,
 } from '@/graphql/generated/generated-types';
-import { useRouter } from 'next/navigation';
 import React from 'react';
 import UpdateProjectByteCollectionSEOModal from '../../Edit/UpdateProjectByteCollectionSEOModal';
+import ByteCollectionEditor from '@/components/byteCollection/ByteCollections/ByteCollectionEditor';
+import { EditByteCollection } from '@/components/byteCollection/ByteCollections/useEditByteCollection';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import SingleCardLayout from '@/layouts/SingleCardLayout';
+import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
+import { useRouter } from 'next/navigation';
 
 interface ByteCollectionCardAdminDropdownProps {
   byteCollection: ByteCollectionFragment | ProjectByteCollectionFragment;
   byteCollectionType: 'byteCollection' | 'projectByteCollection';
   project?: ProjectFragment;
+  space: SpaceWithIntegrationsFragment;
 }
-export default function ByteCollectionCardAdminDropdown({ byteCollection, byteCollectionType, project }: ByteCollectionCardAdminDropdownProps) {
-  const router = useRouter();
+export default function ByteCollectionCardAdminDropdown({ byteCollection, byteCollectionType, project, space }: ByteCollectionCardAdminDropdownProps) {
   const { showNotification } = useNotificationContext();
   const [showDeleteModal, setShowDeleteModal] = React.useState<boolean>(false);
   const [editProjecByteCollectionSeo, setEditProjectByteCollectionSeo] = React.useState<boolean>(false);
+  const [showEditCollectionModal, setShowEditCollectionModal] = React.useState<boolean>(false);
+  const router = useRouter();
 
-  const baseByteCollectionsEditUrl =
-    byteCollectionType === 'projectByteCollection' ? `/projects/edit/${project?.id}/tidbit-collections` : '/tidbit-collections/edit';
+  function onClose() {
+    setShowEditCollectionModal(false);
+    router.push(`/tidbit-collections`);
+  }
+
+  async function upsertByteCollectionFn(byteCollectionn: EditByteCollection) {
+    try {
+      const result = await fetch('/api/byte-collection/update-byte-collection', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          input: {
+            byteCollectionId: byteCollectionn.id,
+            name: byteCollectionn.name,
+            description: byteCollectionn.description,
+            byteIds: byteCollectionn.bytes.map((byte) => byte.byteId),
+            status: byteCollectionn.status,
+            spaceId: space.id,
+            priority: byteCollectionn.priority,
+            videoUrl: byteCollectionn.videoUrl,
+          },
+        }),
+      });
+
+      if (result.ok) {
+        showNotification({ message: 'Values Updated Successfully', type: 'success' });
+      }
+    } catch (error) {
+      showNotification({ message: 'Something went wrong', type: 'error' });
+    }
+  }
+
   const getThreeDotItems = (byteCollection: ByteCollectionFragment | ProjectByteCollectionFragment) => {
     if (byteCollection.hasOwnProperty('archived')) {
       if ((byteCollection as ProjectByteCollectionFragment).archived) {
@@ -74,7 +114,7 @@ export default function ByteCollectionCardAdminDropdown({ byteCollection, byteCo
         items={getThreeDotItems(byteCollection)}
         onSelect={async (key) => {
           if (key === 'edit') {
-            router.push(`${baseByteCollectionsEditUrl}/${byteCollection.id}`);
+            setShowEditCollectionModal(true);
           }
           if (key === 'archive') {
             setShowDeleteModal(true);
@@ -108,6 +148,23 @@ export default function ByteCollectionCardAdminDropdown({ byteCollection, byteCo
             setEditProjectByteCollectionSeo(false);
           }}
         />
+      )}
+
+      {showEditCollectionModal && (
+        <FullScreenModal open={true} onClose={onClose} title={'Edit Tidbit Collection'}>
+          <div className="text-left">
+            <PageWrapper>
+              <SingleCardLayout>
+                <ByteCollectionEditor
+                  space={space}
+                  byteCollection={byteCollection}
+                  viewByteCollectionsUrl={'/tidbit-collections'}
+                  upsertByteCollectionFn={upsertByteCollectionFn}
+                />
+              </SingleCardLayout>
+            </PageWrapper>
+          </div>
+        </FullScreenModal>
       )}
     </>
   );
