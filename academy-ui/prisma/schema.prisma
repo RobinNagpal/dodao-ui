@@ -168,23 +168,23 @@ model SpaceDiscord {
 }
 
 model Byte {
-  id               String   @id @unique @db.VarChar(255)
-  name             String   @db.VarChar(255)
+  id               String                       @id @unique @db.VarChar(255)
+  name             String                       @db.VarChar(255)
   content          String
-  created          String   @db.VarChar(255)
+  created          String                       @db.VarChar(255)
   admins           String[]
   tags             String[]
-  priority         Int      @default(50) @map("priority")
+  priority         Int                          @default(50) @map("priority")
   /// [ByteStep]
   steps            Json[]
-  spaceId          String   @map("space_id") @db.VarChar(255)
-  Space            Space    @relation(fields: [spaceId], references: [id])
-  videoUrl         String?  @map("video_url") @db.VarChar(1024)
-  videoAspectRatio String?  @map("video_aspect_ratio") @db.VarChar(255)
-  byteStyle        String?  @default("CardAndCircleProgress") @map("byte_style") @db.VarChar(255)
+  spaceId          String                       @map("space_id") @db.VarChar(255)
+  Space            Space                        @relation(fields: [spaceId], references: [id])
+  videoUrl         String?                      @map("video_url") @db.VarChar(1024)
+  videoAspectRatio String?                      @map("video_aspect_ratio") @db.VarChar(255)
+  byteStyle        String?                      @default("CardAndCircleProgress") @map("byte_style") @db.VarChar(255)
   /// [CompletionScreen]
-  completionScreen Json?    @map("completion_screen") @db.Json
-  mappings ByteCollectionItemMappings[]
+  completionScreen Json?                        @map("completion_screen") @db.Json
+  mappings         ByteCollectionItemMappings[]
 
   @@map("bytes")
 }
@@ -239,17 +239,17 @@ model ByteSubmission {
 }
 
 model ByteCollection {
-  id          String   @id @db.VarChar(255)
-  spaceId     String   @map("space_id") @db.VarChar(66)
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
-  name        String   @db.VarChar(255)
+  id          String                       @id @db.VarChar(255)
+  spaceId     String                       @map("space_id") @db.VarChar(66)
+  createdAt   DateTime                     @default(now()) @map("created_at")
+  updatedAt   DateTime                     @updatedAt @map("updated_at")
+  name        String                       @db.VarChar(255)
   description String
-  byteIds     String[] @map("byte_ids") @db.VarChar(255)
-  status      String   @db.VarChar(255)
-  priority    Int      @default(50) @map("priority")
-  videoUrl    String?  @map("video_url") @db.VarChar(1024)
-  items ByteCollectionItemMappings[]
+  byteIds     String[]                     @map("byte_ids") @db.VarChar(255)
+  status      String                       @db.VarChar(255)
+  priority    Int                          @default(50) @map("priority")
+  videoUrl    String?                      @map("video_url") @db.VarChar(1024)
+  items       ByteCollectionItemMappings[]
 
   @@map("byte_collections")
 }
@@ -298,14 +298,29 @@ model GuideStep {
 }
 
 model ByteCollectionItemMappings {
-  id               String   @id @db.VarChar(64)
-  byteCollectionId String  @map("byte_collection_id")
-  itemId           String   @db.VarChar(64)
-  itemType         String   @db.VarChar(255)
+  id               String          @id @db.VarChar(64)
+  byteCollectionId String          @map("byte_collection_id")
+  itemId           String          @db.VarChar(64)
+  itemType         String          @db.VarChar(255)
   order            Int
-  ByteCollection   ByteCollection?   @relation(fields: [byteCollectionId], references: [id], map: "FK_ByteCollection")
-  Byte             Byte?             @relation(fields: [itemId], references: [id], map: "FK_Byte")
+  ByteCollection   ByteCollection? @relation(fields: [byteCollectionId], references: [id], map: "FK_ByteCollection")
+  Byte             Byte?           @relation(fields: [itemId], references: [id], map: "FK_Byte")
+
   // ShortVideo       ShortVideo?       @relation(fields: [itemId], references: [id], map: "FK_ShortVideo")
   // ClickableDemos   ClickableDemos?   @relation(fields: [itemId], references: [id], map: "FK_ClickableDemos")
   @@map("byte_collections_items_mappings")
+}
+
+model ClickableDemos {
+  id        String   @id @db.VarChar(255)
+  spaceId   String   @map("space_id") @db.VarChar(66)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  title     String
+  excerpt   String   @db.VarChar(256)
+  /// [ClickableDemoStep]
+  steps     Json[]
+  archive   Boolean? @default(false)
+
+  @@map("clickable_demos")
 }
