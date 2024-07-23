@@ -1,10 +1,4 @@
-import {
-  ByteCollectionFragment,
-  ByteSummaryFragment,
-  ProjectByteCollectionFragment,
-  ProjectByteFragment,
-  SpaceWithIntegrationsFragment,
-} from '@/graphql/generated/generated-types';
+import { ByteCollectionFragment, ProjectByteCollectionFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { useRouter } from 'next/navigation';
 import { useCallback, useState, useEffect } from 'react';
 
@@ -15,7 +9,6 @@ interface HelperFunctions {
   updateByteCollectionDescription: (description: string) => void;
   updateByteCollectionVideoUrl: (videoUrl: string) => void;
   updateByteCollectionPriority: (priority: number) => void;
-  addByte: (byteId: string) => void;
   moveByteUp: (byteUuid: string) => void;
   moveByteDown: (byteUuid: string) => void;
   removeByte: (byteUuid: string) => void;
@@ -109,17 +102,6 @@ export function useEditByteCollection({
     });
   }, []);
 
-  const addByte = (byteId: string) => {
-    // setByteCollection((prevByte) => {
-    //   const newByte = byteSummaries.find((byte: ByteSummaryFragment | ProjectByteFragment) => byte.id === byteId);
-    //   if (!newByte) {
-    //     return prevByte;
-    //   }
-    //   const newBytes: ByteCollectionFragment['bytes'] = [...prevByte.bytes, { byteId: newByte.id, name: newByte.name, content: newByte.content }];
-    //   return { ...prevByte, bytes: newBytes };
-    // });
-  };
-
   const updateByteCollectionName = (name: string) => {
     setByteCollection((prevByte) => ({ ...prevByte, name }));
   };
@@ -154,7 +136,6 @@ export function useEditByteCollection({
       updateByteCollectionDescription,
       updateByteCollectionVideoUrl,
       updateByteCollectionPriority,
-      addByte,
       moveByteUp,
       moveByteDown,
       removeByte,
