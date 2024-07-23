@@ -14,6 +14,7 @@ export interface RubricCell {
   columnName: string;
   description: string;
   score: number;
+  criteriaId?: string;
 }
 
 export interface Rubric {
@@ -28,6 +29,7 @@ export interface Rubric {
 export interface RubricsPageProps {
   selectedProgramId: string | null;
   isEditAccess?: boolean;
+  rateRubricsFormatted?: RubricServerData;
 }
 
 export interface ProgramListProps {
@@ -52,7 +54,7 @@ export interface ProgramForm {
 }
 
 export interface RubricCellProps {
-  cell: string;
+  cell?: string;
   criteria: string;
   cellIndex: number;
   isEditAccess: boolean | undefined;
@@ -68,10 +70,11 @@ export interface RubricLevelProps {
 }
 export interface RubricCriteriaProps {
   criteria: string;
-  rubrics: Record<string, string[]>;
+  rubrics?: Record<string, string[]>;
   isEditAccess: boolean | undefined;
   onEditClick: (type: 'rubric' | 'header' | 'criteria', criteria: string | number, index: number) => void;
   onDeleteCriteria: (criteria: string) => void;
+  rubricCell?: RubricCell[];
 }
 
 export interface ProgramListProps {
@@ -104,4 +107,51 @@ export interface RateRubricProps {
   params: {
     id: string;
   };
+}
+
+export interface Level {
+  id: string;
+  columnName: string;
+  description: string;
+  score: number;
+}
+
+export interface Criterion {
+  id: string;
+  title: string;
+}
+
+export interface RubricServerData {
+  id: string;
+  description: string;
+  levelId: string;
+  criteriaId: string;
+  criteriaOrder: [];
+}
+
+export interface ProgramServerProps {
+  id: string;
+  name: string;
+  summary: string;
+}
+
+export interface RubricServerData {
+  id: string;
+  name: string;
+  summary: string;
+  description: string;
+  levels: Level[];
+  rubric: Record<string, string[]>;
+  rubricCell: RubricCell[];
+  programs: ProgramDetails[];
+
+  ratingHeaders: RatingHeader[] | undefined;
+}
+export interface RatingHeader {
+  header: string;
+  score: number;
+}
+export interface ProgramDetails {
+  name: string; // The name of the program
+  summary: string; // A summary of the program
 }

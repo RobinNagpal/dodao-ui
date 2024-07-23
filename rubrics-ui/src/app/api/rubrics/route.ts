@@ -91,18 +91,83 @@ export async function POST(req: NextRequest, res: NextResponse) {
   }
 }
 
-export async function GET(req: NextRequest, res: NextResponse) {
+// export async function GET(req: NextRequest, res: NextResponse) {
+//   try {
+//     const rubrics = await prisma.rubric.findMany({
+//       select: {
+//         id: true,
+//         name: true,
+//         summary: true,
+//       },
+//     });
+//     return NextResponse.json({ status: 200, body: rubrics });
+//   } catch (error) {
+//     console.error('Error getting Rubrics:', error);
+//     return NextResponse.json({ status: 500, body: 'Failed to get Rubrics' });
+//   }
+// }
+
+export async function GET(req: NextRequest) {
+  const url = new URL(req.url);
+  const rubricId = url.searchParams.get('rubricId');
+
+  if (!rubricId) {
+    return NextResponse.json({ status: 400, body: 'Missing rubricId' });
+  }
+
   try {
-    const rubrics = await prisma.rubric.findMany({
-      select: {
-        id: true,
-        name: true,
-        summary: true,
+    const rubric = await prisma.rubric.findUnique({
+      where: { id: rubricId },
+      include: {
+        levels: true,
+        criteria: true,
+        RubricCell: true,
+        programs: {
+          include: {
+            program: true,
+          },
+        },
       },
     });
-    return NextResponse.json({ status: 200, body: rubrics });
+
+    if (!rubric) {
+      return NextResponse.json({ status: 404, body: 'Rubric not found' });
+    }
+
+    if (!rubric.programs || rubric.programs.length === 0) {
+      return NextResponse.json({ status: 404, body: 'No associated program found' });
+    }
+
+    const criteriaOrder: string[] = rubric.criteria.map((criteria) => criteria.title ?? '').filter((title): title is string => title !== '');
+
+    const criteriaMap: Record<string, string[]> = rubric.criteria.reduce((acc, criteria) => {
+      if (criteria.title) {
+        acc[criteria.title] = rubric.levels.map((level) => level.description ?? '');
+      }
+      return acc;
+    }, {} as Record<string, string[]>);
+
+    const ratingHeadersWithScores = rubric.levels.map((level) => ({
+      header: level.columnName,
+      score: level.score ?? 0, // Provide a default value if score is undefined
+    }));
+
+    // Extract program details
+    const programDetails = rubric.programs.map((mapping) => ({
+      name: mapping.program.name,
+      summary: mapping.program.summary,
+    }));
+
+    const formattedRubric = {
+      criteriaOrder: criteriaOrder,
+      rubric: criteriaMap,
+      ratingHeaders: ratingHeadersWithScores,
+      programs: programDetails, // Include program details in the response
+    };
+
+    return NextResponse.json({ status: 200, body: formattedRubric });
   } catch (error) {
-    console.error('Error getting Rubrics:', error);
-    return NextResponse.json({ status: 500, body: 'Failed to get Rubrics' });
+    console.error(error);
+    return NextResponse.json({ status: 500, body: 'An error occurred' });
   }
 }

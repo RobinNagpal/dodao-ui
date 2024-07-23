@@ -17,7 +17,7 @@ function EditProgram() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch('/api/rubrics')
+    fetch('http://localhost:3004/api/rubrics')
       .then((res) => res.json())
       .then((data) => setRubrics(data.body))
       .catch((error) => console.error('Error fetching rubrics:', error));

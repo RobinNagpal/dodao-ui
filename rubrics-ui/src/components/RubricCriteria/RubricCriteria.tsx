@@ -1,9 +1,9 @@
 import React from 'react';
 import RubricCell from '@/components/RubricCell/RubricCell';
-import { RubricCriteriaProps } from '@/types/rubricsTypes/types';
+import { RubricCriteriaProps, Criterion } from '@/types/rubricsTypes/types';
 import TrashIcon from '@heroicons/react/24/outline/TrashIcon';
 
-const RubricCriteria: React.FC<RubricCriteriaProps> = ({ criteria, rubrics, isEditAccess, onEditClick, onDeleteCriteria }) => {
+const RubricCriteria: React.FC<RubricCriteriaProps> = ({ criteria, rubrics, isEditAccess, onEditClick, onDeleteCriteria, rubricCell }) => {
   return (
     <tr>
       <td className="py-2 px-4 border-r border-b font-bold cursor-pointer max-w-xs break-words relative">
@@ -11,7 +11,7 @@ const RubricCriteria: React.FC<RubricCriteriaProps> = ({ criteria, rubrics, isEd
           {criteria}
         </div>
       </td>
-      {rubrics[criteria].map((cell, cellIndex) => (
+      {rubrics![criteria].map((cell, cellIndex) => (
         <RubricCell key={cellIndex} cell={cell} criteria={criteria} cellIndex={cellIndex} isEditAccess={isEditAccess} onEditClick={onEditClick} />
       ))}
       <td>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Rubric, RubricCell, RubricsPageProps } from '@/types/rubricsTypes/types';
+import { Rubric, RubricCell, RubricsPageProps, RatingHeader } from '@/types/rubricsTypes/types';
 import RubricCriteria from '@/components/RubricCriteria/RubricCriteria';
 import RubricLevel from '@/components/RubricLevel/RubricLevel';
 
@@ -12,7 +12,7 @@ const initialRubrics: Record<string, string[]> = {
   ],
 };
 
-const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId, isEditAccess }) => {
+const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId, isEditAccess, rateRubricsFormatted }) => {
   const [rubrics, setRubrics] = useState<Record<string, string[]>>(initialRubrics);
   const [ratingHeaders, setRatingHeaders] = useState<string[]>(['Excellent', 'Good', 'Fair', 'Improvement']);
   const [criteriaOrder, setCriteriaOrder] = useState<string[]>(Object.keys(initialRubrics));
@@ -41,7 +41,7 @@ const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId, isEditAcce
       criteria: criteria,
     }));
 
-    if (selectedProgramId) {
+    if (selectedProgramId && isEditAccess) {
       console.log('Sending data:', formattedRubrics);
       handleSubmit(formattedRubrics);
     }
@@ -185,50 +185,76 @@ const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId, isEditAcce
         })),
         criteria: criteria,
       }));
-      console.log(formattedRubrics);
+
       if (selectedProgramId) {
         await handleSubmit(formattedRubrics);
       }
     }
   };
+  const rateRubric = rateRubricsFormatted?.rubric;
+  const rateCriteriaOrder = rateRubricsFormatted?.criteriaOrder;
+  const rateRatingHeaders: RatingHeader[] = rateRubricsFormatted?.ratingHeaders ?? [];
+  console.log(rateRubricsFormatted);
 
   return (
     <div className="container mx-auto py-8 p-4">
-      <h1 className="text-3xl text-center font-bold mb-4"> {isEditAccess ? 'Edit Rubrics' : 'Give Feedback'}</h1>
-
+      <h1 className="text-3xl text-center font-bold mb-4"> {isEditAccess ? 'Edit Rubrics' : 'Give Feedback on'}</h1>
       <div className="overflow-x-auto mt-4">
+        <h1 className="text-2xl  p-2 text-center mb-2">Program Name:{rateRubricsFormatted?.programs[0].name}</h1>
         <table className="min-w-full bg-white border-collapse border">
           <thead>
             <tr>
               <th className="py-2 px-4 border-b"></th>
-              {ratingHeaders.map((header, index) => (
-                <RubricLevel
-                  key={index}
-                  header={header}
-                  index={index}
-                  score={columnScores[index]}
-                  isEditAccess={isEditAccess}
-                  onScoreChange={handleScoreChange}
-                  onEditClick={handleEditClick}
-                />
-              ))}
+              {!isEditAccess
+                ? rateRatingHeaders?.map((header, index) => (
+                    <RubricLevel
+                      key={index}
+                      header={header.header}
+                      index={index}
+                      score={header.score}
+                      isEditAccess={isEditAccess}
+                      onScoreChange={handleScoreChange}
+                      onEditClick={handleEditClick}
+                    />
+                  ))
+                : ratingHeaders?.map((header, index) => (
+                    <RubricLevel
+                      key={index}
+                      header={header}
+                      index={index}
+                      score={columnScores[index]}
+                      isEditAccess={isEditAccess}
+                      onScoreChange={handleScoreChange}
+                      onEditClick={handleEditClick}
+                    />
+                  ))}
             </tr>
           </thead>
           <tbody>
-            {criteriaOrder.map((criteria) => (
-              <RubricCriteria
-                key={criteria}
-                criteria={criteria}
-                rubrics={rubrics}
-                isEditAccess={isEditAccess}
-                onEditClick={handleEditClick}
-                onDeleteCriteria={handleDeleteCriteria}
-              />
-            ))}
+            {!isEditAccess
+              ? rateCriteriaOrder?.map((criteria) => (
+                  <RubricCriteria
+                    key={criteria}
+                    criteria={criteria}
+                    rubrics={rateRubric}
+                    isEditAccess={isEditAccess}
+                    onEditClick={handleEditClick}
+                    onDeleteCriteria={handleDeleteCriteria}
+                  />
+                ))
+              : criteriaOrder?.map((criteria) => (
+                  <RubricCriteria
+                    key={criteria}
+                    criteria={criteria}
+                    rubrics={rubrics}
+                    isEditAccess={isEditAccess}
+                    onEditClick={handleEditClick}
+                    onDeleteCriteria={handleDeleteCriteria}
+                  />
+                ))}
           </tbody>
         </table>
       </div>
-
       {isEditAccess && (
         <div className="flex justify-center">
           <button className="bg-blue-500 mt-2 text-white py-2 px-4 rounded-full flex items-center justify-center" onClick={handleAddCriteria}>
