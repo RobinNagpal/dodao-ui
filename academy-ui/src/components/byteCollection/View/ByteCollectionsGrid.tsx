@@ -2,8 +2,8 @@ import ByteCollectionsCard from '@/components/byteCollection/ByteCollections/Byt
 import NoByteCollections from '@/components/byteCollection/ByteCollections/NoByteCollections';
 import { Grid2Cols } from '@dodao/web-core/components/core/grids/Grid2Cols';
 import { ByteCollectionFragment, ProjectByteCollectionFragment, ProjectFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import AddByteCollection from '@/components/byteCollection/ByteCollections/AddByteCollection';
 import React from 'react';
-import AddByteCollection from '@/components/byteCollection/View/AddByteCollection';
 
 export default function ByteCollectionsGrid({
   byteCollections,
