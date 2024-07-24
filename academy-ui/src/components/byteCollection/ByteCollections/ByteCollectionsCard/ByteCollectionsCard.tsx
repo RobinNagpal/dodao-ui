@@ -9,6 +9,7 @@ import ArrowTopRightOnSquareIcon from '@heroicons/react/24/outline/ArrowTopRight
 import Link from 'next/link';
 import React from 'react';
 import styles from './ByteCollectionsCard.module.scss';
+import Button from '@dodao/web-core/components/core/buttons/Button';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import PlayCircleIcon from '@heroicons/react/24/outline/PlayCircleIcon';
 
@@ -115,21 +116,19 @@ export default function ByteCollectionsCard({
           })}
           {isAdmin && (
             <li>
-              <button
+              <Button
                 className="mb-5 p-2 border-2 border-gray-300 border-dotted tracking-wider rounded-lg bg-white hover:bg-gray-100 hover:border-gray-300 text-gray-600"
                 onClick={() => setShowCreateModal(true)}
               >
                 + Add New Item
-              </button>
+              </Button>
             </li>
           )}
         </ul>
       </div>
-      <div className="w-1/2">
-        <FullPageModal open={showCreateModal} onClose={() => setShowCreateModal(false)} title={'Create New Item'} showCloseButton={false}>
-          <ByteCollectionCardAddItem space={space} hideModal={() => setShowCreateModal(false)} />
-        </FullPageModal>
-      </div>
+      <FullPageModal className={'w-1/2'} open={showCreateModal} onClose={() => setShowCreateModal(false)} title={'Create New Item'} showCloseButton={false}>
+        <ByteCollectionCardAddItem space={space} hideModal={() => setShowCreateModal(false)} />
+      </FullPageModal>
     </div>
   );
 }
