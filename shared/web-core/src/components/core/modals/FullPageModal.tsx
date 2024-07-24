@@ -47,7 +47,7 @@ export default function FullPageModal({ open, title, children, onClose, showClos
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className={`relative transform text-left transition-all sm:my-8  w-full ${className}`}>
+              <Dialog.Panel className={`relative transform text-left transition-all sm:my-8 ${className || 'w-full'}`}>
                 <StyledModalWrapper className={fullWidth ? '' : 'mx-auto max-w-7xl rounded-lg pb-4 pt-2'}>
                   <div className="text-center overflow-y-auto">
                     <Dialog.Title as="h3" className="flex text-base font-semibold leading-6 justify-between">
