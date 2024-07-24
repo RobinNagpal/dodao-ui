@@ -1,21 +1,44 @@
+'use client';
+
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import React, { useState } from 'react';
+import EditByteView from '@/components/bytes/Edit/EditByteView';
+import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 
-export default function CreateContentModalContents({ hideModal, space }: { hideModal: () => void; space?: SpaceWithIntegrationsFragment | null }) {
+export default function CreateContentModalContents({ hideModal, space }: { hideModal: () => void; space?: SpaceWithIntegrationsFragment | null}) {
+  const [showCreateTidbitModal, setShowCreateTidbitModal] = useState<boolean>(false);
+  const [showCreateVideoModal, setShowCreateVideoModal] = useState<boolean>(false);
+  const [showCreateDemoModal, setShowCreateDemoModal] = useState<boolean>(false);
+
   return (
-    <div className="pt-4 flex flex-col justify-center items-center w-full h-max">
-      <div className="p-4 mb-[100%] sm:mb-0">
-        <Button variant="outlined" primary className="p-2 w-2/3 mb-2">
-          Create Tidbit
-        </Button>
-        <Button variant="outlined" primary className="p-2 w-2/3 mb-2">
-          Create Short Video
-        </Button>
-        <Button variant="outlined" primary className="p-2 w-2/3">
-          Create Clickable Demo
-        </Button>
+    <>
+      <div className="pt-4 flex flex-col justify-center items-center w-full h-max">
+        <div className="p-4 mb-[100%] sm:mb-0">
+          <Button variant="outlined" primary className="p-2 w-2/3 mb-2" onClick={() => setShowCreateTidbitModal(true)}>
+            Create Tidbit
+          </Button>
+          <Button variant="outlined" primary className="p-2 w-2/3 mb-2" onClick={() => setShowCreateVideoModal(true)}>
+            Create Short Video
+          </Button>
+          <Button variant="outlined" primary className="p-2 w-2/3" onClick={() => setShowCreateDemoModal(true)}>
+            Create Clickable Demo
+          </Button>
+        </div>
       </div>
-    </div>
+      {showCreateTidbitModal ? (
+        <FullScreenModal open={true} onClose={onClose} title={'Create Tidbit'}>
+          <div className="text-left">
+            <EditByteView
+              space={space}
+              byteId={byteId || undefined}
+              // onUpsert={async (byteId) => {
+              //   router.push(`/tidbits/view/${byteId}`);
+              }}
+            />
+          </div>
+        </FullScreenModal>
+      ) : null}
+    </>
   );
 }
