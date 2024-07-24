@@ -1813,7 +1813,6 @@ type TimelineEvent {
   date: DateTimeISO!
   fullDetails: String
   moreLink: String
-  order: Int!
   summary: String!
   title: String!
   uuid: String!
@@ -2121,6 +2120,7 @@ input UpsertTimelineEventInput {
   moreLink: String
   summary: String!
   title: String!
+  order: Int!
   uuid: String!
 }
 

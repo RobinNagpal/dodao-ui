@@ -1,5 +1,5 @@
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { Space, UpsertTimelineEventInput, UpsertTimelineInput, useTimelineDetailsQuery, useUpsertTimelineMutation } from '@/graphql/generated/generated-types';
+import { Space, Timeline, UpsertTimelineEventInput, UpsertTimelineInput } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
 
 import { TimelineErrors, TimelineEventsError } from '@dodao/web-core/types/errors/timelineErrors';
@@ -8,6 +8,8 @@ import { isValidURL } from '@dodao/web-core/utils/validator';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import axios from 'axios';
+import { slugify } from '@dodao/web-core/utils/auth/slugify';
 
 interface EditTimelineEventType extends Omit<UpsertTimelineEventInput, 'date'> {
   order: number;
@@ -63,10 +65,8 @@ export function useEditTimeline(timelineId: string | null, space: Space): EditTi
   const [timelineCreating, setTimelineCreating] = useState(false);
   const [timelineErrors, setTimelineErrors] = useState<TimelineErrors>({});
   const [loadingTimeline, setLoadingTimeline] = useState(false);
-  const [upsertTimelineMutation] = useUpsertTimelineMutation();
   const { showNotification } = useNotificationContext();
   const router = useRouter();
-  const { refetch } = useTimelineDetailsQuery({ skip: true });
 
   const addNewEvent = (): void => {
     setEditTimelineRef((prevTimeline) => ({
@@ -196,11 +196,13 @@ export function useEditTimeline(timelineId: string | null, space: Space): EditTi
   const handleSubmit = async () => {
     setTimelineCreating(true);
     setTimelineErrors({});
-
     if (validateTimeline(editTimelineRef)) {
       try {
-        const response = await upsertTimelineMutation({
-          variables: {
+        const timelineId = editTimelineRef.id?.trim() ? editTimelineRef.id : slugify(editTimelineRef.name);
+
+        const response = await fetch(`/api/timelines/${timelineId}`, {
+          method: 'POST',
+          body: JSON.stringify({
             spaceId: space.id,
             input: {
               id: editTimelineRef.id,
@@ -223,10 +225,13 @@ export function useEditTimeline(timelineId: string | null, space: Space): EditTi
               created: new Date(editTimelineRef.created).toISOString(),
               timelineStyle: editTimelineRef.timelineStyle,
             },
+          }),
+          headers: {
+            'Content-Type': 'application/json',
           },
         });
 
-        const payload = response?.data?.upsertTimeline;
+        const payload = (await response.json()).timeline;
         if (payload) {
           showNotification({
             type: 'success',
@@ -236,7 +241,7 @@ export function useEditTimeline(timelineId: string | null, space: Space): EditTi
 
           router.push(`/timelines/view/${payload.id}`);
         } else {
-          console.error(response.errors);
+          console.error(response.body);
           showNotification({ type: 'error', message: $t('notify.somethingWentWrong') });
         }
       } catch (e) {
@@ -254,12 +259,9 @@ export function useEditTimeline(timelineId: string | null, space: Space): EditTi
     setLoadingTimeline(true);
     try {
       if (!timelineId) return;
-      const response = await refetch({
-        spaceId: space.id,
-        timelineId: timelineId,
-      });
+      const response = await axios.get(`/api/timelines/${timelineId}`);
 
-      const payload = response?.data?.timeline;
+      const payload = response?.data?.timeline as Timeline;
       if (payload) {
         const timelineResponse: EditTimelineType = {
           ...payload,
@@ -268,7 +270,7 @@ export function useEditTimeline(timelineId: string | null, space: Space): EditTi
         };
         setEditTimelineRef(timelineResponse);
       } else {
-        console.error(response.errors);
+        console.error(response.data);
         showNotification({ type: 'error', message: $t('notify.somethingWentWrong') });
       }
     } catch (e) {

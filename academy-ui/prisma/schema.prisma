@@ -130,6 +130,7 @@ model Space {
   GuideStep        GuideStep[]
   GuideSubmission  GuideSubmission[]
   GitCourse        GitCourse[]
+  Course           Course[]
 
   @@map("spaces")
 }
@@ -447,4 +448,25 @@ model Timeline {
   timelineStyle String?  @db.VarChar(255)
 
   @@map("timelines")
+}
+
+model Course {
+  id                Int      @id @default(autoincrement())
+  key               String
+  spaceId           String
+  title             String
+  summary           String
+  details           String
+  duration          String
+  highlights        String[]
+  publishStatus     String
+  thumbnail         String
+  courseAdmins      Json?
+  coursePassContent String
+  topicConfig       Json
+  /// [CourseTopics]
+  topics            Json[]
+  space             Space    @relation(fields: [spaceId], references: [id])
+
+  @@map("courses")
 }
