@@ -8,6 +8,7 @@ import SingleCardLayout from '@/layouts/SingleCardLayout';
 import PageLoading from '@dodao/web-core/components/core/loaders/PageLoading';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import { useRouter } from 'next/navigation';
+import Button from '@dodao/web-core/components/core/buttons/Button';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 
 export default function AddByteCollection({ space }: { space: SpaceWithIntegrationsFragment }) {
@@ -52,12 +53,12 @@ export default function AddByteCollection({ space }: { space: SpaceWithIntegrati
   return (
     <>
       <div className="w-full flex items-center justify-center">
-        <button
+        <Button
           className="h-40 w-full border-2 border-gray-300 border-dotted tracking-wider rounded-lg bg-white hover:bg-gray-100 hover:border-gray-300 text-gray-600 "
           onClick={() => setShowAddCollectionModal(true)}
         >
           + Add Tidbit Collection
-        </button>
+        </Button>
       </div>
 
       {showAddCollectionModal ? (
