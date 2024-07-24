@@ -33,6 +33,7 @@ export default function ByteCollectionsGrid({
               byteCollectionType={byteCollectionType}
               viewByteBaseUrl={`${byteCollectionsBaseUrl}/view/${byteCollection.id}/`}
               space={space}
+              isAdmin={isAdmin}
             />
           ))}
 

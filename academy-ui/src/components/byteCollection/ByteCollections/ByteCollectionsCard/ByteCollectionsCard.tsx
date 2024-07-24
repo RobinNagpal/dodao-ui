@@ -2,6 +2,8 @@
 
 import ByteCollectionCardAdminDropdown from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCollectionCardAdminDropdown';
 import ByteCompletionCheckmark from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCompletionCheckmark';
+import ByteCollectionCardAddItem from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCollectionCardAddItem';
+import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import { ByteCollectionFragment, ProjectByteCollectionFragment, ProjectFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import ArrowTopRightOnSquareIcon from '@heroicons/react/24/outline/ArrowTopRightOnSquareIcon';
 import Link from 'next/link';
@@ -17,6 +19,7 @@ interface ByteCollectionCardProps {
   byteCollectionType: 'byteCollection' | 'projectByteCollection';
   viewByteBaseUrl: string;
   space: SpaceWithIntegrationsFragment;
+  isAdmin?: boolean | undefined;
 }
 
 interface VideoModalProps {
@@ -32,10 +35,11 @@ export default function ByteCollectionsCard({
   byteCollectionType,
   viewByteBaseUrl,
   space,
+  isAdmin,
 }: ByteCollectionCardProps) {
   const [watchVideo, setWatchVideo] = React.useState<boolean>(false);
   const [selectedVideo, setSelectedVideo] = React.useState<VideoModalProps>();
-
+  const [showCreateModal, setShowCreateModal] = React.useState<boolean>(false);
   if (watchVideo) {
     return (
       <FullScreenModal key={selectedVideo?.key} title={selectedVideo?.title!} open={true} onClose={() => setWatchVideo(false)} fullWidth={false}>
@@ -109,7 +113,22 @@ export default function ByteCollectionsCard({
               </li>
             );
           })}
+          {isAdmin && (
+            <li>
+              <button
+                className="mb-5 p-2 border-2 border-gray-300 border-dotted tracking-wider rounded-lg bg-white hover:bg-gray-100 hover:border-gray-300 text-gray-600"
+                onClick={() => setShowCreateModal(true)}
+              >
+                + Add New Item
+              </button>
+            </li>
+          )}
         </ul>
+      </div>
+      <div className="w-1/2">
+        <FullPageModal open={showCreateModal} onClose={() => setShowCreateModal(false)} title={'Create New Item'} showCloseButton={false}>
+          <ByteCollectionCardAddItem space={space} hideModal={() => setShowCreateModal(false)} />
+        </FullPageModal>
       </div>
     </div>
   );
