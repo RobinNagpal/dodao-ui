@@ -55,6 +55,7 @@ export default function AddByteCollection({ space }: { space: SpaceWithIntegrati
       <div className="w-full flex items-center justify-center">
         <Button
           className="h-40 w-full border-2 border-gray-300 border-dotted tracking-wider rounded-lg bg-white hover:bg-gray-100 hover:border-gray-300 text-gray-600 "
+          style={{ border: '2px dotted' }}
           onClick={() => setShowAddCollectionModal(true)}
         >
           + Add Tidbit Collection
