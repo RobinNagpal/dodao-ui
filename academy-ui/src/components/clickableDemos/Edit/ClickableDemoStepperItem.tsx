@@ -72,6 +72,9 @@ export default function Step({
     onUpdateStep({ ...step, placement: tooltipPlacement?.toString() || '' });
   };
 
+  const updateStepCaptureUrl = (captureUrl: string | undefined) => {
+    onUpdateStep({ ...step, captureUrl: captureUrl?.toString() || '' });
+  };
   const errors = clickableDemoErrors;
   const inputError = (field: keyof ClickableDemoStepError): string => {
     const error = errors?.steps?.[stepIndex]?.[field];
@@ -123,9 +126,15 @@ export default function Step({
             modelValue={step.url}
             objectId={(space?.name && slugify(space?.name)) || space?.id || 'new-space'}
             onInput={updateStepUrl}
+            onCapture={updateStepCaptureUrl}
             onLoading={setUploadHTMLFileLoading}
           />
         </div>
+        {step.captureUrl && ( // Assuming `step.captureUrl` holds the URL of the screenshot image
+          <div className="mt-4">
+            <img src={step.captureUrl} alt="Screenshot" className="rounded-lg shadow-md max-w-full h-auto" />
+          </div>
+        )}
       </div>
       <div className="w-full">
         <div className="mt-4">
