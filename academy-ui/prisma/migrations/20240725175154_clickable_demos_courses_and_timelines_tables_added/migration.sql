@@ -13,24 +13,7 @@ CREATE TABLE "clickable_demos" (
 );
 
 -- CreateTable
-CREATE TABLE "git_courses" (
-    "id" VARCHAR(255) NOT NULL,
-    "course_key" VARCHAR(255) NOT NULL,
-    "space_id" VARCHAR(66) NOT NULL,
-    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "created_by" VARCHAR(256),
-    "weight" INTEGER NOT NULL DEFAULT 20,
-    "updated_at" TIMESTAMP(3) NOT NULL,
-    "updated_by" VARCHAR(256),
-    "course_repo_url" VARCHAR(1024) NOT NULL,
-    "publish_status" VARCHAR(128) NOT NULL DEFAULT 'Live',
-    "course_admins" JSON NOT NULL,
-
-    CONSTRAINT "git_courses_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "git_course_submissions" (
+CREATE TABLE "course_submissions" (
     "uuid" VARCHAR(66) NOT NULL,
     "course_key" VARCHAR(128) NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -45,11 +28,11 @@ CREATE TABLE "git_course_submissions" (
     "status" VARCHAR(64) NOT NULL DEFAULT 'InProgress',
     "galaxy_credentials_updated" BOOLEAN,
 
-    CONSTRAINT "git_course_submissions_pkey" PRIMARY KEY ("uuid")
+    CONSTRAINT "course_submissions_pkey" PRIMARY KEY ("uuid")
 );
 
 -- CreateTable
-CREATE TABLE "git_course_topic_submissions" (
+CREATE TABLE "course_topic_submissions" (
     "uuid" VARCHAR(66) NOT NULL,
     "course_key" VARCHAR(128) NOT NULL,
     "course_submission_uuid" VARCHAR(66) NOT NULL,
@@ -67,7 +50,7 @@ CREATE TABLE "git_course_topic_submissions" (
     "status" VARCHAR(64) NOT NULL DEFAULT 'InProgress',
     "correct_answers" JSONB,
 
-    CONSTRAINT "git_course_topic_submissions_pkey" PRIMARY KEY ("uuid")
+    CONSTRAINT "course_topic_submissions_pkey" PRIMARY KEY ("uuid")
 );
 
 -- CreateTable
@@ -89,11 +72,34 @@ CREATE TABLE "timelines" (
     CONSTRAINT "timelines_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "courses" (
+    "id" VARCHAR(255) NOT NULL,
+    "key" TEXT NOT NULL,
+    "space_id" VARCHAR(256) NOT NULL,
+    "title" VARCHAR(256) NOT NULL,
+    "summary" TEXT NOT NULL,
+    "details" TEXT NOT NULL,
+    "duration" VARCHAR(256) NOT NULL,
+    "highlights" TEXT[],
+    "publish_status" VARCHAR(66) NOT NULL,
+    "thumbnail" TEXT NOT NULL,
+    "course_admins" TEXT[],
+    "course_pass_content" TEXT,
+    "course_fail_content" TEXT,
+    "course_pass_count" INTEGER,
+    "prority" INTEGER DEFAULT 50,
+    "topic_config" JSONB NOT NULL,
+    "topics" JSONB[],
+
+    CONSTRAINT "courses_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
-CREATE UNIQUE INDEX "git_courses_space_id_course_key_key" ON "git_courses"("space_id", "course_key");
+CREATE UNIQUE INDEX "courses_id_key" ON "courses"("id");
 
 -- AddForeignKey
-ALTER TABLE "git_courses" ADD CONSTRAINT "git_courses_space_id_fkey" FOREIGN KEY ("space_id") REFERENCES "spaces"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "course_topic_submissions" ADD CONSTRAINT "course_topic_submissions_course_submission_uuid_fkey" FOREIGN KEY ("course_submission_uuid") REFERENCES "course_submissions"("uuid") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "git_course_topic_submissions" ADD CONSTRAINT "git_course_topic_submissions_course_submission_uuid_fkey" FOREIGN KEY ("course_submission_uuid") REFERENCES "git_course_submissions"("uuid") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "courses" ADD CONSTRAINT "courses_space_id_fkey" FOREIGN KEY ("space_id") REFERENCES "spaces"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
