@@ -1,15 +1,30 @@
 'use client';
 
 import Button from '@dodao/web-core/components/core/buttons/Button';
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsFragment, ByteCollectionFragment } from '@/graphql/generated/generated-types';
 import React, { useState } from 'react';
 import EditByteView from '@/components/bytes/Edit/EditByteView';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
+import { useRouter } from 'next/navigation';
 
-export default function CreateContentModalContents({ hideModal, space }: { hideModal: () => void; space?: SpaceWithIntegrationsFragment | null}) {
+export default function CreateContentModalContents({
+  hideModal,
+  space,
+  byteCollection,
+}: {
+  hideModal: () => void;
+  space: SpaceWithIntegrationsFragment;
+  byteCollection: ByteCollectionFragment;
+}) {
   const [showCreateTidbitModal, setShowCreateTidbitModal] = useState<boolean>(false);
   const [showCreateVideoModal, setShowCreateVideoModal] = useState<boolean>(false);
   const [showCreateDemoModal, setShowCreateDemoModal] = useState<boolean>(false);
+  const router = useRouter();
+
+  function onClose() {
+    setShowCreateTidbitModal(false);
+    router.refresh();
+  }
 
   return (
     <>
@@ -31,9 +46,9 @@ export default function CreateContentModalContents({ hideModal, space }: { hideM
           <div className="text-left">
             <EditByteView
               space={space}
-              byteId={byteId || undefined}
-              // onUpsert={async (byteId) => {
-              //   router.push(`/tidbits/view/${byteId}`);
+              byteCollection={byteCollection}
+              onUpsert={async (byteId) => {
+                router.push(`/tidbits/view/${byteId}`);
               }}
             />
           </div>

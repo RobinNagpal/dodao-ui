@@ -14,7 +14,7 @@ import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenMo
 import PlayCircleIcon from '@heroicons/react/24/outline/PlayCircleIcon';
 
 interface ByteCollectionCardProps {
-  byteCollection: ByteCollectionFragment | ProjectByteCollectionFragment;
+  byteCollection: ByteCollectionFragment;
   isEditingAllowed?: boolean;
   project?: ProjectFragment;
   byteCollectionType: 'byteCollection' | 'projectByteCollection';
@@ -117,7 +117,16 @@ export default function ByteCollectionsCard({
           {isAdmin && (
             <li>
               <Button
-                className="mb-5 p-2 border-2 border-gray-300 border-dotted tracking-wider rounded-lg bg-white hover:bg-gray-100 hover:border-gray-300 text-gray-600"
+                className="rounded-lg bg-white"
+                style={{
+                  border: '2px dotted',
+                  padding: '0.5rem',
+                  marginBottom: '1.25rem',
+                  borderColor: '#d1d5db',
+                  color: '#4b5563',
+                  letterSpacing: '0.05em',
+                  borderRadius: '0.5rem',
+                }}
                 onClick={() => setShowCreateModal(true)}
               >
                 + Add New Item
@@ -127,7 +136,7 @@ export default function ByteCollectionsCard({
         </ul>
       </div>
       <FullPageModal className={'w-1/2'} open={showCreateModal} onClose={() => setShowCreateModal(false)} title={'Create New Item'} showCloseButton={false}>
-        <ByteCollectionCardAddItem space={space} hideModal={() => setShowCreateModal(false)} />
+        <ByteCollectionCardAddItem space={space} hideModal={() => setShowCreateModal(false)} byteCollection={byteCollection} />
       </FullPageModal>
     </div>
   );
