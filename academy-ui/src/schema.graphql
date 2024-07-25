@@ -357,6 +357,7 @@ type ClickableDemo {
 }
 
 type ClickableDemoStep {
+  captureUrl: String
   id: String!
   order: Int!
   placement: String!
@@ -366,6 +367,7 @@ type ClickableDemoStep {
 }
 
 input ClickableDemoStepInput {
+  captureUrl: String
   id: String!
   order: Int!
   placement: String!
@@ -1059,7 +1061,6 @@ input GuideSubmissionFiltersInput {
 
 input GuideSubmissionInput {
   from: String!
-  guideId: String!
   guideUuid: String!
   space: String!
   steps: [GuideStepSubmissionInput!]!
