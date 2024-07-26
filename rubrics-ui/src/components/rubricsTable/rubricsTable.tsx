@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Rubric, RubricCell, RubricsPageProps, RatingHeader } from '@/types/rubricsTypes/types';
+import { Rubric, RubricCell, RubricsPageProps, rubricRatingHeader } from '@/types/rubricsTypes/types';
 import RubricCriteria from '@/components/RubricCriteria/RubricCriteria';
 import RubricLevel from '@/components/RubricLevel/RubricLevel';
 
@@ -27,7 +27,7 @@ const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId, isEditAcce
 
   const [columnScores, setColumnScores] = useState<number[]>(Array(ratingHeaders.length).fill(0));
   const [criteriaToDelete, setCriteriaToDelete] = useState<string | null>(null);
-
+  const [userComments, setUserComments] = useState({});
   useEffect(() => {
     const formattedRubrics: Rubric[] = criteriaOrder.map((criteria) => ({
       name: 'Test',
@@ -193,20 +193,20 @@ const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId, isEditAcce
   };
   const rateRubric = rateRubricsFormatted?.rubric;
   const rateCriteriaOrder = rateRubricsFormatted?.criteriaOrder;
-  const rateRatingHeaders: RatingHeader[] = rateRubricsFormatted?.ratingHeaders ?? [];
+  const rubricRatingHeaders: rubricRatingHeader[] = rateRubricsFormatted?.ratingHeaders ?? [];
   console.log(rateRubricsFormatted);
-
+  const rubricId = rateRubricsFormatted?.rubricId;
   return (
     <div className="container mx-auto py-8 p-4">
-      <h1 className="text-3xl text-center font-bold mb-4"> {isEditAccess ? 'Edit Rubrics' : 'Give Feedback on'}</h1>
+      <h1 className="text-3xl text-center font-bold mb-4"> {isEditAccess ? 'Edit Rubrics' : 'Giving Feedback on'}</h1>
+      <h1 className="text-2xl  p-2 text-center mb-2">{isEditAccess ? '' : rateRubricsFormatted?.programs[0].name}</h1>
       <div className="overflow-x-auto mt-4">
-        <h1 className="text-2xl  p-2 text-center mb-2">Program Name:{rateRubricsFormatted?.programs[0].name}</h1>
         <table className="min-w-full bg-white border-collapse border">
           <thead>
             <tr>
               <th className="py-2 px-4 border-b"></th>
               {!isEditAccess
-                ? rateRatingHeaders?.map((header, index) => (
+                ? rubricRatingHeaders?.map((header, index) => (
                     <RubricLevel
                       key={index}
                       header={header.header}
@@ -240,6 +240,8 @@ const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId, isEditAcce
                     isEditAccess={isEditAccess}
                     onEditClick={handleEditClick}
                     onDeleteCriteria={handleDeleteCriteria}
+                    rubricRatingHeaders={rubricRatingHeaders}
+                    rubricId={rubricId}
                   />
                 ))
               : criteriaOrder?.map((criteria) => (

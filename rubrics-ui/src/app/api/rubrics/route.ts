@@ -36,7 +36,6 @@ export async function POST(req: NextRequest, res: NextResponse) {
       },
     });
 
-    // Create a new rubric
     const newRubric = await prisma.rubric.create({
       data: {
         name: rubric[0].name,
@@ -48,7 +47,6 @@ export async function POST(req: NextRequest, res: NextResponse) {
       },
     });
 
-    // Create levels for the rubric
     const levelIds: { [key: string]: string } = {};
     for (const level of rubric[0].levels) {
       const newLevel = await prisma.rubricLevel.create({
@@ -91,22 +89,6 @@ export async function POST(req: NextRequest, res: NextResponse) {
   }
 }
 
-// export async function GET(req: NextRequest, res: NextResponse) {
-//   try {
-//     const rubrics = await prisma.rubric.findMany({
-//       select: {
-//         id: true,
-//         name: true,
-//         summary: true,
-//       },
-//     });
-//     return NextResponse.json({ status: 200, body: rubrics });
-//   } catch (error) {
-//     console.error('Error getting Rubrics:', error);
-//     return NextResponse.json({ status: 500, body: 'Failed to get Rubrics' });
-//   }
-// }
-
 export async function GET(req: NextRequest) {
   const url = new URL(req.url);
   const rubricId = url.searchParams.get('rubricId');
@@ -138,31 +120,49 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ status: 404, body: 'No associated program found' });
     }
 
-    const criteriaOrder: string[] = rubric.criteria.map((criteria) => criteria.title ?? '').filter((title): title is string => title !== '');
-
-    const criteriaMap: Record<string, string[]> = rubric.criteria.reduce((acc, criteria) => {
-      if (criteria.title) {
-        acc[criteria.title] = rubric.levels.map((level) => level.description ?? '');
-      }
-      return acc;
-    }, {} as Record<string, string[]>);
-
-    const ratingHeadersWithScores = rubric.levels.map((level) => ({
+    const ratingHeaders = rubric.levels.map((level) => ({
+      id: level.id,
       header: level.columnName,
-      score: level.score ?? 0, // Provide a default value if score is undefined
+      score: level.score,
     }));
 
-    // Extract program details
+    const sortedRatingHeaders = ratingHeaders.sort((a: any, b: any) => b.score - a.score);
+
+    const ratingHeaderIndexMap: Record<string, number> = sortedRatingHeaders.reduce((map, header, index) => {
+      map[header.id] = index;
+      return map;
+    }, {} as Record<string, number>);
+
+    const criteriaMap: Record<string, Array<{ cellId: string; description: string | null }>> = rubric.criteria.reduce((acc, criteria) => {
+      if (criteria.title) {
+        const cellsForCriteria = rubric.RubricCell.filter((cell) => cell.criteriaId === criteria.id)
+          .sort((a, b) => {
+            const aIndex = ratingHeaderIndexMap[a.levelId!];
+            const bIndex = ratingHeaderIndexMap[b.levelId!];
+            return aIndex - bIndex;
+          })
+          .map((cell) => ({ cellId: cell.id, description: cell.description ?? '' }));
+        acc[criteria.title] = cellsForCriteria;
+      }
+      return acc;
+    }, {} as Record<string, Array<{ cellId: string; description: string | null }>>);
+
+    const ratingHeadersWithScores = sortedRatingHeaders.map((header) => ({
+      header: header.header,
+      score: header.score,
+    }));
+
     const programDetails = rubric.programs.map((mapping) => ({
       name: mapping.program.name,
       summary: mapping.program.summary,
     }));
 
     const formattedRubric = {
-      criteriaOrder: criteriaOrder,
+      rubricId: rubricId,
+      criteriaOrder: rubric.criteria.map((criteria) => criteria.title ?? '').filter((title) => title !== ''),
       rubric: criteriaMap,
       ratingHeaders: ratingHeadersWithScores,
-      programs: programDetails, // Include program details in the response
+      programs: programDetails,
     };
 
     return NextResponse.json({ status: 200, body: formattedRubric });

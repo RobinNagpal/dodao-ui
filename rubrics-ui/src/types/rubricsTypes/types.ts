@@ -54,12 +54,19 @@ export interface ProgramForm {
 }
 
 export interface RubricCellProps {
-  cell?: string;
+  cell: string;
   criteria: string;
   cellIndex: number;
   isEditAccess: boolean | undefined;
   onEditClick: (type: 'rubric', criteria: string, index: number) => void;
+  handleCommentModal: (cellIndex: number) => void;
+  rubricRatingHeaders?: rubricRatingHeader[];
+  className: string;
+  onClick: () => void;
+  isClicked: boolean;
+  cellIds?: cellIds[];
 }
+
 export interface RubricLevelProps {
   header: string;
   index: number;
@@ -75,6 +82,9 @@ export interface RubricCriteriaProps {
   onEditClick: (type: 'rubric' | 'header' | 'criteria', criteria: string | number, index: number) => void;
   onDeleteCriteria: (criteria: string) => void;
   rubricCell?: RubricCell[];
+  rubricRatingHeaders?: rubricRatingHeader[];
+  cellIds?: cellIds[];
+  rubricId?: string;
 }
 
 export interface ProgramListProps {
@@ -120,13 +130,20 @@ export interface Criterion {
   id: string;
   title: string;
 }
-
+export interface cellIds {
+  criteriaId: string;
+  levelId: string;
+  cellId: string;
+  description: string;
+}
 export interface RubricServerData {
   id: string;
   description: string;
   levelId: string;
   criteriaId: string;
   criteriaOrder: [];
+  cellIds: cellIds[];
+  rubricId: string;
 }
 
 export interface ProgramServerProps {
@@ -145,13 +162,29 @@ export interface RubricServerData {
   rubricCell: RubricCell[];
   programs: ProgramDetails[];
 
-  ratingHeaders: RatingHeader[] | undefined;
+  ratingHeaders: rubricRatingHeader[] | undefined;
 }
-export interface RatingHeader {
+export interface rubricRatingHeader {
   header: string;
   score: number;
 }
 export interface ProgramDetails {
-  name: string; // The name of the program
-  summary: string; // A summary of the program
+  name: string;
+  summary: string;
+}
+
+export interface CommentModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  comment: string;
+  setComment: (comment: string) => void;
+  handleSave: () => void;
+  criteria: string;
+}
+
+export interface ConfirmationModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+  message: string;
 }
