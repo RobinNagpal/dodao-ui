@@ -7,7 +7,7 @@ import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsis
 import PageLoading from '@dodao/web-core/components/core/loaders/PageLoading';
 import GuideStepper from '@/components/guides/View/GuideStepper';
 import { useViewGuide } from '@/components/guides/View/useViewGuide';
-import { GuideFragment, SpaceWithIntegrationsFragment, useDeleteGuideMutation, useGuidesQueryQuery } from '@/graphql/generated/generated-types';
+import { GuideFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
 import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
@@ -22,8 +22,6 @@ type GuideInformationProps = {
 };
 
 const GuideInformation = ({ guideIdAndStep, space, guide: guideFragment }: GuideInformationProps) => {
-  const [deleteGuideMutation] = useDeleteGuideMutation();
-  const { refetch: refetchGuides } = useGuidesQueryQuery({ skip: true, fetchPolicy: 'no-cache' });
   const [showDeleteModal, setShowDeleteModal] = React.useState(false);
   const [deletingGuide, setDeletingGuide] = React.useState(false);
 
@@ -113,13 +111,13 @@ const GuideInformation = ({ guideIdAndStep, space, guide: guideFragment }: Guide
           deleting={deletingGuide}
           onDelete={async () => {
             setDeletingGuide(true);
-            await deleteGuideMutation({
-              variables: {
-                spaceId: space.id,
-                uuid: guideId,
+            await fetch(`/api/guide/delete-guide`, {
+              method: 'POST',
+              body: JSON.stringify({ spaceId: space.id, uuid: guideId }),
+              headers: {
+                'Content-Type': 'application/json',
               },
             });
-            await refetchGuides({ space: space.id });
             setDeletingGuide(false);
             setShowDeleteModal(false);
             router.push(`/guides`);

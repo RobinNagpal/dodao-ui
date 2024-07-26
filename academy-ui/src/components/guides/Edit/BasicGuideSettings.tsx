@@ -51,7 +51,7 @@ export default function BasicGuideSettings({ editGuideHelper, guide, guideErrors
             onUpdate={(v) => updateGuideField('guideName', v?.toString() || '')}
             label="Name"
             required
-            error={guideErrors['name']}
+            error={guideErrors['guideName']}
           />
 
           <Input

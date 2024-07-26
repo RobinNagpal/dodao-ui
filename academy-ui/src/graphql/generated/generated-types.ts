@@ -1143,6 +1143,7 @@ export interface GuideSubmissionFiltersInput {
 
 export interface GuideSubmissionInput {
   from: Scalars['String'];
+  guideId: Scalars['String'];
   guideUuid: Scalars['String'];
   space: Scalars['String'];
   steps: Array<GuideStepSubmissionInput>;
