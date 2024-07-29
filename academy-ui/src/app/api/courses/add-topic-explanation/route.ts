@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
     const course = await prisma.course.findUnique({
       where: { id: args.explanationInfo.courseKey },
       select: { topics: true },
-    }); 
+    });
     if (!course) {
       throw new Error('Course not found');
     }
