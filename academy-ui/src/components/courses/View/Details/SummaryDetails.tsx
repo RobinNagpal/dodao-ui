@@ -158,11 +158,25 @@ const SummaryDetails: FC<CourseSummaryProps> = ({ course, isCourseAdmin, space, 
   const details = currentSummary?.details && marked.parse(currentSummary.details, { renderer });
 
   const { editMode, cancel, showEdit, save } = useEditCourseDetails<UpdateTopicSummaryInput>(
-    async (updates: UpdateTopicSummaryInput) => await courseHelper.updateTopicSummary(updates)
+    async (updates: UpdateTopicSummaryInput) =>
+      await fetch(`/api/courses/${updates.courseKey}/topics/${updates.topicKey}/summary`, {
+        method: 'PUT',
+        body: JSON.stringify({
+          spaceId: space.id,
+          summaryInfo: updates,
+        }),
+      })
   );
 
   const { deleting, deleteItem } = useDeleteCourseItem<DeleteTopicSummaryInput>(
-    async (updates: DeleteTopicSummaryInput) => await courseHelper.deleteTopicSummary(updates)
+    async (updates: DeleteTopicSummaryInput) =>
+      await fetch(`/api/courses/${updates.courseKey}/topics/${updates.topicKey}/summary`, {
+        method: 'DELETE',
+        body: JSON.stringify({
+          spaceId: space.id,
+          summaryInfo: updates,
+        }),
+      })
   );
 
   function doDelete() {
@@ -172,7 +186,14 @@ const SummaryDetails: FC<CourseSummaryProps> = ({ course, isCourseAdmin, space, 
   }
 
   const { movingUp, movingDown, moveItem } = useMoveCourseItem<MoveTopicSummaryInput>(
-    async (updates: MoveTopicSummaryInput) => await courseHelper.moveTopicSummary(updates)
+    async (updates: MoveTopicSummaryInput) =>
+      await fetch(`/api/courses/${updates.courseKey}/topics/${updates.topicKey}/summary`, {
+        method: 'PATCH',
+        body: JSON.stringify({
+          spaceId: space.id,
+          summaryInfo: updates,
+        }),
+      })
   );
 
   function doMove(direction: MoveCourseItemDirection) {

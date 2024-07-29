@@ -7,10 +7,21 @@ import RowLoading from '@dodao/web-core/components/core/loaders/RowLoading';
 import CourseSummaryCard from '@/components/courses/Summary/CourseSummaryCard';
 import NoCourses from '@/components/courses/Summary/NoCourses';
 import { CourseFragment, useCoursesQueryQuery } from '@/graphql/generated/generated-types';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
 function CoursesGrid({ space }: SpaceProps) {
-  const { data, loading } = useCoursesQueryQuery({ variables: { spaceId: space.id } });
+  const [data, setData] = useState<{ courses?: CourseFragment[] }>();
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    async function fetchData() {
+      setLoading(true);
+      const { data } = await axios.get(`/api/courses/?spaceId=${space.id}`);
+      setData(data);
+      setLoading(false);
+    }
+    fetchData();
+  }, [space]);
 
   const loadingData = loading || !space;
   return (
