@@ -39,17 +39,12 @@ const RubricCriteria: React.FC<RubricCriteriaProps> = ({ criteria, rubrics, isEd
             score: entry.score,
           }));
 
-          console.log('Fetched comments:', comments);
-
           setRowScoresAndComments((prev) => [...prev.filter((entry) => entry.criteria !== criteria), ...comments]);
 
-          // Set selected cells based on fetched comments
           const fetchedSelectedCells = comments.reduce((acc: { [key: string]: number }, entry: any) => {
             acc[entry.cellId] = rubricRatingHeaders?.findIndex((header) => header.score === entry.score) ?? 0;
             return acc;
           }, {});
-
-          console.log('Fetched selected cells:', fetchedSelectedCells);
 
           setSelectedCells(fetchedSelectedCells);
         } catch (error) {
@@ -192,7 +187,6 @@ const RubricCriteria: React.FC<RubricCriteriaProps> = ({ criteria, rubrics, isEd
   };
 
   const selectedComment = rowScoresAndComments.find((entry) => entry.criteria === criteria && entry.cellId === clickedCellId)?.comment || 'No comment';
-  console.log('Selected Comment:', selectedComment);
 
   return (
     <>
