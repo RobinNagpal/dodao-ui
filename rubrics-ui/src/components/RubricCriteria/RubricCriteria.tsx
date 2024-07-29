@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import RubricCell from '@/components/RubricCell/RubricCell';
-import { RubricCriteriaProps, CommentModalProps } from '@/types/rubricsTypes/types';
+import { RubricCriteriaProps } from '@/types/rubricsTypes/types';
 import TrashIcon from '@heroicons/react/24/outline/TrashIcon';
 import { SessionProps } from '@/types/rubricsTypes/types';
 import { getSession } from 'next-auth/react';
@@ -21,6 +21,50 @@ const RubricCriteria: React.FC<RubricCriteriaProps> = ({ criteria, rubrics, isEd
   const { showNotification } = useNotificationContext();
 
   const userId = session?.userId;
+
+  // Fetch comments and selected cells
+  useEffect(() => {
+    const fetchData = async () => {
+      if (userId) {
+        try {
+          const response = await fetch(`http://localhost:3004/api/rubric-rating?userId=${userId}`);
+          if (!response.ok) {
+            throw new Error('Failed to fetch comments');
+          }
+
+          const data = await response.json();
+          const comments = data.body.map((entry: any) => ({
+            criteria,
+            comment: entry.comment,
+            cellId: entry.rubricCellId,
+            score: entry.score,
+          }));
+
+          console.log('Fetched comments:', comments);
+
+          setRowScoresAndComments((prev) => [...prev.filter((entry) => entry.criteria !== criteria), ...comments]);
+
+          // Set selected cells based on fetched comments
+          const fetchedSelectedCells = comments.reduce((acc: { [key: string]: number }, entry: any) => {
+            acc[entry.cellId] = rubricRatingHeaders?.findIndex((header) => header.score === entry.score) ?? 0;
+            return acc;
+          }, {});
+
+          console.log('Fetched selected cells:', fetchedSelectedCells);
+
+          setSelectedCells(fetchedSelectedCells);
+        } catch (error) {
+          showNotification({
+            type: 'error',
+            message: 'Error fetching comments',
+          });
+          console.error('Error fetching comments:', error);
+        }
+      }
+    };
+
+    fetchData();
+  }, [userId, criteria]);
 
   const formattedRateRubrics = rowScoresAndComments
     .filter((entry) => entry.criteria === criteria)
@@ -76,7 +120,12 @@ const RubricCriteria: React.FC<RubricCriteriaProps> = ({ criteria, rubrics, isEd
     setClickedCellId(cellId);
 
     const existingEntry = rowScoresAndComments.find((entry) => entry.criteria === criteria && entry.cellId === cellId);
-    setCurrentComment(existingEntry ? existingEntry.comment : '');
+    if (existingEntry) {
+      console.log('Existing comment:', existingEntry.comment);
+      setCurrentComment(existingEntry.comment);
+    } else {
+      setCurrentComment('');
+    }
     setIsModalOpen(true);
   };
 
@@ -90,7 +139,7 @@ const RubricCriteria: React.FC<RubricCriteriaProps> = ({ criteria, rubrics, isEd
     const selectedScore = rubricRatingHeaders![clickedCellIndex].score;
 
     setRowScoresAndComments((prev) => {
-      const filteredEntries = prev.filter((entry) => entry.criteria !== criteria);
+      const filteredEntries = prev.filter((entry) => entry.criteria !== criteria || entry.cellId !== clickedCellId);
       const updatedEntry = { criteria, score: selectedScore, comment: currentComment, cellId: clickedCellId };
 
       return [...filteredEntries, updatedEntry];
@@ -100,13 +149,26 @@ const RubricCriteria: React.FC<RubricCriteriaProps> = ({ criteria, rubrics, isEd
       ...prev,
       [criteria]: clickedCellIndex,
     }));
+
+    handleCloseModal();
   };
 
   const handleCellClick = (criteria: string, cellIndex: number, cellId: string) => {
-    if (selectedCells[criteria] !== undefined && selectedCells[criteria] !== cellIndex) {
+    const isCellAlreadySelected = selectedCells[criteria] === cellIndex;
+    const isAnyCellSelected = selectedCells[criteria] !== undefined;
+
+    if (isCellAlreadySelected) {
+      setClickedCellIndex(cellIndex);
+      setClickedCellId(cellId);
+      setIsConfirmationOpen(false);
+      handleCommentModal(cellIndex, cellId);
+      return;
+    }
+
+    if (isAnyCellSelected) {
       showNotification({
         type: 'error',
-        message: 'Value has already been selected for this criteria.',
+        message: 'Only one cell can be selected per criteria. Please edit the existing selection.',
       });
       return;
     }
@@ -131,6 +193,7 @@ const RubricCriteria: React.FC<RubricCriteriaProps> = ({ criteria, rubrics, isEd
   };
 
   const selectedComment = rowScoresAndComments.find((entry) => entry.criteria === criteria && entry.cellId === clickedCellId)?.comment || 'No comment';
+  console.log('Selected Comment:', selectedComment);
 
   return (
     <>
@@ -150,7 +213,7 @@ const RubricCriteria: React.FC<RubricCriteriaProps> = ({ criteria, rubrics, isEd
               onEditClick={onEditClick}
               handleCommentModal={() => handleCommentModal(cellIndex, cell.cellId)}
               onClick={() => handleCellClick(criteria, cellIndex, cell.cellId)}
-              isClicked={selectedCells[criteria] === cellIndex}
+              isClicked={selectedCells[criteria] === cellIndex || rowScoresAndComments.some((entry) => entry.cellId === cell.cellId)}
               className={selectedCells[criteria] === cellIndex ? 'border-2 border-blue-500' : ''}
             />
           </React.Fragment>

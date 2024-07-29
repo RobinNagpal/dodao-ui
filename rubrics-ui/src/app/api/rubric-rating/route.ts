@@ -49,3 +49,25 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ status: 500, body: 'An error occurred' });
   }
 }
+
+export async function GET(req: NextRequest) {
+  const url = new URL(req.url);
+  const userId = url.searchParams.get('userId');
+
+  try {
+    const comments = await prisma.ratingCellSelection.findMany({
+      where: {
+        userId: userId,
+      },
+      select: {
+        comment: true,
+        rubricCellId: true,
+      },
+    });
+
+    return NextResponse.json({ status: 200, body: comments });
+  } catch (error) {
+    console.error('Error fetching comments:', error);
+    return NextResponse.json({ status: 500, body: 'Internal server error' });
+  }
+}
