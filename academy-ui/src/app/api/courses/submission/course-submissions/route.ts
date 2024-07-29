@@ -7,7 +7,7 @@ export async function GET(req: NextRequest) {
   const spaceId = searchParams.get('spaceId');
   const courseKey = searchParams.get('courseKey');
   if (!spaceId || !courseKey) {
-    return { status: 400, message: 'Space ID and course key are required' };
+    return NextResponse.json({ status: 400, message: 'Space ID and course key are required' });
   }
   const decodedJWT = await getDecodedJwtFromContext(req);
   const submissions = await prisma.courseTopicSubmission.findMany({
