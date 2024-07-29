@@ -113,8 +113,8 @@ const Topic = ({ course, isCourseAdmin, space, topicKey, courseHelper }: TopicPr
 
   const { editMode, cancel, showEdit, save } = useEditCourseDetails<UpdateTopicBasicInfoInput>(
     async (updates: UpdateTopicBasicInfoInput) =>
-      await fetch('/api/courses/update-topic', {
-        method: 'POST',
+      await fetch(`/api/courses/${updates.courseKey}/topics/${updates.topicKey}`, {
+        method: 'PUT',
         body: JSON.stringify({
           spaceId: space.id,
           topicInfo: updates,
@@ -127,8 +127,8 @@ const Topic = ({ course, isCourseAdmin, space, topicKey, courseHelper }: TopicPr
 
   const { deleting, deleteItem } = useDeleteCourseItem<DeleteTopicInput>(
     async (updates: DeleteTopicInput) =>
-      await fetch('/api/courses/delete-topic', {
-        method: 'POST',
+      await fetch(`/api/courses/${updates.courseKey}/topics/${updates.topicKey}`, {
+        method: 'DELETE',
         body: JSON.stringify({
           spaceId: space.id,
           topicInfo: updates,
@@ -145,8 +145,8 @@ const Topic = ({ course, isCourseAdmin, space, topicKey, courseHelper }: TopicPr
 
   const { movingUp, movingDown, moveItem } = useMoveCourseItem<MoveTopicInput>(
     async (updates: MoveTopicInput) =>
-      await fetch('/api/courses/move-topic', {
-        method: 'POST',
+      await fetch(`/api/courses/${updates.courseKey}/topics/${updates.topicKey}`, {
+        method: 'PATCH',
         body: JSON.stringify({
           spaceId: space.id,
           topicInfo: updates,

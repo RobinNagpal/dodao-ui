@@ -176,8 +176,8 @@ const ExplanationDetails: FC<CourseExplanationProps> = ({ course, isCourseAdmin,
 
   const { editMode, cancel, showEdit, save } = useEditCourseDetails<UpdateTopicExplanationInput>(
     async (updates: UpdateTopicExplanationInput) =>
-      await fetch('/api/courses/update-topic-explanation', {
-        method: 'POST',
+      await fetch(`/api/courses/${updates.courseKey}/topics/${updates.topicKey}/explanation`, {
+        method: 'PUT',
         body: JSON.stringify({
           spaceId: space.id,
           explanationInfo: updates,
@@ -187,8 +187,8 @@ const ExplanationDetails: FC<CourseExplanationProps> = ({ course, isCourseAdmin,
 
   const { deleting, deleteItem } = useDeleteCourseItem<DeleteTopicExplanationInput>(
     async (updates: DeleteTopicExplanationInput) =>
-      await fetch('/api/courses/delete-topic-explanation', {
-        method: 'POST',
+      await fetch(`/api/courses/${updates.courseKey}/topics/${updates.topicKey}/explanation`, {
+        method: 'DELETE',
         body: JSON.stringify({
           spaceId: space.id,
           explanationInfo: updates,
@@ -208,8 +208,8 @@ const ExplanationDetails: FC<CourseExplanationProps> = ({ course, isCourseAdmin,
 
   const { movingUp, movingDown, moveItem } = useMoveCourseItem<MoveTopicExplanationInput>(
     async (updates: MoveTopicExplanationInput) =>
-      await fetch('/api/courses/move-topic-explanation', {
-        method: 'POST',
+      await fetch(`/api/courses/${updates.courseKey}/topics/${updates.topicKey}/explanation`, {
+        method: 'PATCH',
         body: JSON.stringify({
           spaceId: space.id,
           explanationInfo: updates,

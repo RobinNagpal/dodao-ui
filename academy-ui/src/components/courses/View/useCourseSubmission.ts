@@ -212,8 +212,6 @@ export const useCourseSubmission = (space: Space, courseKey: string): CourseSubm
 
     const loadedSubmission = submission.body;
 
-    console.log('loadedSubmission', loadedSubmission);
-    console.log('loadingCourseSubmission', loadingSubmission);
     if (loadedSubmission && Object.keys(loadedSubmission).length !== 0) {
       const submission = transformCourseSubmissionResponse(loadedSubmission!, course);
       setCourseSubmission(submission);

@@ -3,7 +3,7 @@ import { checkEditSpacePermission } from '@/app/api/helpers/space/checkEditSpace
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/prisma';
 
-export async function POST(req: NextRequest, { params: { courseId } }: { params: { courseId: string } }) {
+export async function POST(req: NextRequest, { params: { courseKey } }: { params: { courseKey: string } }) {
   const args = await req.json();
   const spaceById = await getSpaceById(args.spaceId);
 
@@ -11,10 +11,10 @@ export async function POST(req: NextRequest, { params: { courseId } }: { params:
 
   const course = await prisma.course.upsert({
     where: {
-      id: courseId,
+      id: courseKey,
     },
     create: {
-      id: courseId,
+      id: courseKey,
       spaceId: args.space.id,
       courseKey: args.course.key,
       createdBy: decodedJWT!.accountId,
@@ -28,10 +28,10 @@ export async function POST(req: NextRequest, { params: { courseId } }: { params:
   return NextResponse.json({ status: 200, course });
 }
 
-export async function GET(req: NextRequest, { params: { courseId } }: { params: { courseId: string } }) {
+export async function GET(req: NextRequest, { params: { courseKey } }: { params: { courseKey: string } }) {
   const course = await prisma.course.findUnique({
     where: {
-      id: courseId,
+      id: courseKey,
     },
   });
 

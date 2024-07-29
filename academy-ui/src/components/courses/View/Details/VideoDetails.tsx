@@ -185,8 +185,8 @@ const CourseVideo: React.FC<CourseVideoProps> = ({ course, isCourseAdmin, space,
 
   const { editMode, cancel, showEdit, save } = useEditCourseDetails<UpdateTopicVideoInput>(
     async (updates: UpdateTopicVideoInput) =>
-      await fetch('/api/courses/update-topic-video', {
-        method: 'POST',
+      await fetch(`/api/courses/${updates.courseKey}/topics/${updates.topicKey}/video`, {
+        method: 'PUT',
         body: JSON.stringify({
           spaceId: space.id,
           videoInfo: updates,
@@ -196,8 +196,8 @@ const CourseVideo: React.FC<CourseVideoProps> = ({ course, isCourseAdmin, space,
 
   const { deleting, deleteItem } = useDeleteCourseItem<DeleteTopicVideoInput>(
     async (updates: DeleteTopicVideoInput) =>
-      await fetch('/api/courses/delete-topic-video', {
-        method: 'POST',
+      await fetch(`/api/courses/${updates.courseKey}/topics/${updates.topicKey}/video`, {
+        method: 'DELETE',
         body: JSON.stringify({
           spaceId: space.id,
           videoInfo: updates,
@@ -213,8 +213,8 @@ const CourseVideo: React.FC<CourseVideoProps> = ({ course, isCourseAdmin, space,
 
   const { movingUp, movingDown, moveItem } = useMoveCourseItem<MoveTopicVideoInput>(
     async (updates: MoveTopicVideoInput) =>
-      await fetch('/api/courses/move-topic-video', {
-        method: 'POST',
+      await fetch(`/api/courses/${updates.courseKey}/topics/${updates.topicKey}/video`, {
+        method: 'PATCH',
         body: JSON.stringify({
           spaceId: space.id,
           videoInfo: updates,

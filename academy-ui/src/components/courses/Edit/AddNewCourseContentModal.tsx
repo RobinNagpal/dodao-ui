@@ -21,6 +21,7 @@ import {
 import { QuestionType } from '@dodao/web-core/types/deprecated/models/enums';
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { slugify } from '@dodao/web-core/utils/auth/slugify';
 
 enum AddActions {
   Topic = 'Topic',
@@ -84,7 +85,7 @@ const AddNewCourseContentModal: React.FC<ModalCourseNewItemProps> = ({ course, s
   }
 
   const addTopic = async (topicInfo: UpdateTopicBasicInfoInput): Promise<void> => {
-    await fetch('/api/courses/add-topic', {
+    await fetch(`/api/courses/${course.key}/topics/${slugify(topicInfo.title)}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -101,7 +102,7 @@ const AddNewCourseContentModal: React.FC<ModalCourseNewItemProps> = ({ course, s
     closeModal();
   };
   const addExplanation = async (input: UpdateTopicExplanationInput) => {
-    await fetch('/api/courses/add-topic-explanation', {
+    await fetch(`/api/courses/${course.key}/topics/${input.topicKey}/explanation`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -120,7 +121,7 @@ const AddNewCourseContentModal: React.FC<ModalCourseNewItemProps> = ({ course, s
     closeModal();
   };
   const addSummary = async (input: UpdateTopicSummaryInput) => {
-    await fetch('/api/courses/add-topic-summary', {
+    await fetch(`/api/courses/${course.key}/topics/${input.topicKey}/summary`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -139,7 +140,7 @@ const AddNewCourseContentModal: React.FC<ModalCourseNewItemProps> = ({ course, s
     closeModal();
   };
   const addReading = async (input: UpdateTopicVideoInput) => {
-    await fetch('/api/courses/add-topic-video', {
+    await fetch(`/api/courses/${course.key}/topics/${input.topicKey}/video`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -159,7 +160,7 @@ const AddNewCourseContentModal: React.FC<ModalCourseNewItemProps> = ({ course, s
     closeModal();
   };
   const addQuestion = async (question: UpdateTopicQuestionInput) => {
-    await fetch('/api/courses/add-topic-question', {
+    await fetch(`/api/courses/${course.key}/topics/${question.topicKey}/question`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -198,7 +199,7 @@ const AddNewCourseContentModal: React.FC<ModalCourseNewItemProps> = ({ course, s
         })
       ),
     };
-    await fetch('/api/courses/add-topic-questions', {
+    await fetch(`/api/courses/${course.key}/topics/${input.topicKey}/question`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
