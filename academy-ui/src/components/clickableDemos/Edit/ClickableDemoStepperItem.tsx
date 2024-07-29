@@ -60,8 +60,8 @@ export default function Step({
     onUpdateStep({ ...step, selector: selector?.toString() || '' });
   };
 
-  const updateStepUrl = (url: string | number | undefined) => {
-    onUpdateStep({ ...step, url: url?.toString() || '' });
+  const updateStepUrl = (url: string | number | undefined, captureUrl: string | undefined) => {
+    onUpdateStep({ ...step, url: url?.toString() || '', captureUrl: captureUrl?.toString() || '' });
   };
 
   const updateStepTooltipInfo = (tooltipInfo: string | number | undefined) => {
@@ -72,9 +72,6 @@ export default function Step({
     onUpdateStep({ ...step, placement: tooltipPlacement?.toString() || '' });
   };
 
-  const updateStepCaptureUrl = (captureUrl: string | undefined) => {
-    onUpdateStep({ ...step, captureUrl: captureUrl?.toString() || '' });
-  };
   const errors = clickableDemoErrors;
   const inputError = (field: keyof ClickableDemoStepError): string => {
     const error = errors?.steps?.[stepIndex]?.[field];
@@ -126,7 +123,6 @@ export default function Step({
             modelValue={step.url}
             objectId={(space?.name && slugify(space?.name)) || space?.id || 'new-space'}
             onInput={updateStepUrl}
-            onCapture={updateStepCaptureUrl}
             onLoading={setUploadHTMLFileLoading}
           />
         </div>

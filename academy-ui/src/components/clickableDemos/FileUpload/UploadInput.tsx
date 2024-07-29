@@ -11,8 +11,7 @@ interface UploadInputProps {
   imageType: ImageType;
   objectId: string;
   spaceId: string;
-  onInput: (url: string) => void;
-  onCapture: (captureUrl: string) => void;
+  onInput: (url: string, captureUrl: string) => void;
   onLoading?: (value: ((prevState: boolean) => boolean) | boolean) => void;
   placeholder?: string;
   allowedFileTypes?: string[];
@@ -27,7 +26,6 @@ export default function UploadInput({
   objectId,
   spaceId,
   onInput,
-  onCapture,
   onLoading,
   placeholder = 'e.g. https://example.com/guide.png',
   allowedFileTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/svg+xml', 'image/svg+xml', 'image/webp', 'text/html'],
@@ -52,14 +50,13 @@ export default function UploadInput({
             aria-invalid="true"
             aria-describedby="email-error"
             value={modelValue || ''}
-            onChange={(e) => onInput(e.target.value)}
+            onChange={(e) => onInput(e.target.value, '')}
           />
         </div>
         <ClickableDemoFileUploader
           className="relative -ml-px inline-flex items-center gap-x-1.5 rounded-r-md px-3 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
           spaceId={spaceId}
           onInput={onInput}
-          onCapture={onCapture}
           imageType={imageType}
           objectId={objectId}
           onLoading={onLoading}

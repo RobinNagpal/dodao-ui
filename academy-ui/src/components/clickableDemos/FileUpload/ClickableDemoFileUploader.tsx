@@ -11,24 +11,13 @@ interface Props {
   objectId: string;
   imageType: ImageType;
   onLoading?: (loading: boolean) => void;
-  onInput?: (imageUrl: string) => void;
-  onCapture?: (captureUrl: string) => void;
+  onInput: (url: string, captureUrl: string) => void;
   children: React.ReactNode;
   className?: string;
   allowedFileTypes: string[];
 }
 
-export default function ClickableDemoFileUploader({
-  spaceId,
-  objectId,
-  imageType,
-  onLoading,
-  onInput,
-  onCapture,
-  children,
-  className,
-  allowedFileTypes,
-}: Props) {
+export default function ClickableDemoFileUploader({ spaceId, objectId, imageType, onLoading, onInput, children, className, allowedFileTypes }: Props) {
   const [loading, setLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -86,10 +75,9 @@ export default function ClickableDemoFileUploader({
       const linkTag3 = `<link rel="stylesheet" href="https://unpkg.com/tippy.js@6/themes/material.css" />`;
       const scriptTag1 = `<script src="https://unpkg.com/@popperjs/core@2"></script>`;
       const scriptTag2 = `<script src="https://unpkg.com/tippy.js@6"></script>`;
-
-      const customLinkTag = `<link rel="stylesheet" href="https://dodao-prod-public-assets.s3.amazonaws.com/clickable-demos-prod-files/clickableDemoTooltipStyles.css" />`;
-      const customScriptTag = `<script src="https://dodao-prod-public-assets.s3.amazonaws.com/clickable-demos-prod-files/clickableDemoTooltipScript.js"></script>`;
-
+      const html2CanvasScript = ` <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>`;
+      const customLinkTag = `<link rel="stylesheet" href="http://localhost:3002/clickableDemoTooltipStyles.css" />`;
+      const customScriptTag = `<script src="http://localhost:3002/clickableDemoTooltipScript.js"></script>`;
       const scriptTagCustom = `<script>
       console.log("Injecting event listener for clickable demo tooltip");
       window.addEventListener("message", (event) => {
@@ -134,6 +122,7 @@ export default function ClickableDemoFileUploader({
         customLinkTag,
         customScriptTag,
         scriptTagCustom,
+        html2CanvasScript,
         htmlContent.slice(headEndTagIndex),
       ].join('');
 
@@ -182,10 +171,9 @@ export default function ClickableDemoFileUploader({
                 if (blob) {
                   const screenshotFile = new File([blob], `${file.name}_screenshot.png`, { type: 'image/png' });
                   const screenshotUrl = await uploadScreenshotToS3AndReturnImgUrl(screenshotFile, objectId.replace(/[^a-z0-9]/gi, '_'));
-                  onCapture && onCapture(screenshotUrl);
 
                   const imageUrl = await uploadToS3AndReturnImgUrl(imageType, editedFile, objectId.replace(/[^a-z0-9]/gi, '_'));
-                  onInput && onInput(imageUrl);
+                  onInput && onInput(imageUrl, screenshotUrl);
                   setLoading(false);
                   onLoading && onLoading(false);
                 } else {
