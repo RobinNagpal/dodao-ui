@@ -1,11 +1,35 @@
 import { CourseStatus, TopicStatus } from '@/app/api/helpers/deprecatedSchemas/models/course/GitCourseTopicSubmission';
-import { prisma } from '@/prisma';
+import { MutationDeleteGitCourseSubmissionArgs } from '@/graphql/generated/generated-types';
+import { verifyJwtForRequest } from '@/app/api/helpers/permissions/verifyJwtForRequest';
 import { CourseSubmission, CourseTopicSubmission } from '@prisma/client';
 import { MutationSubmitGitCourseArgs } from '@/graphql/generated/generated-types';
-import { verifyJwtForRequest } from '@/app/api/helpers/permissions/verifyJwtForRequest';
+import { prisma } from '@/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST(req: NextRequest) {
+export async function DELETE(req: NextRequest, { params: { courseKey } }: { params: { courseKey: string } }) {
+  const args: MutationDeleteGitCourseSubmissionArgs = await req.json();
+  const { decodedJwt } = await verifyJwtForRequest(req, args.spaceId);
+
+  await prisma.courseTopicSubmission.deleteMany({
+    where: {
+      createdBy: decodedJwt.username,
+      courseKey: courseKey,
+      spaceId: args.spaceId,
+    },
+  });
+
+  await prisma.courseSubmission.deleteMany({
+    where: {
+      createdBy: decodedJwt.username,
+      courseKey: courseKey,
+      spaceId: args.spaceId,
+    },
+  });
+
+  return NextResponse.json({ status: 200, body: true });
+}
+
+export async function POST(req: NextRequest, { params: { courseKey } }: { params: { courseKey: string } }) {
   try {
     const args: MutationSubmitGitCourseArgs = await req.json();
     const spaceId = args.spaceId;

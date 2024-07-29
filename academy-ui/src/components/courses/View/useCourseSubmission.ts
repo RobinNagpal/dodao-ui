@@ -554,7 +554,7 @@ export const useCourseSubmission = (space: Space, courseKey: string): CourseSubm
     }
 
     try {
-      const response = await fetch('/api/courses/submission/submit-course', {
+      const response = await fetch(`/api/courses/submission/course-submissions/${submission.courseKey}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

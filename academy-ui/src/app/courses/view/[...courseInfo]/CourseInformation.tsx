@@ -159,8 +159,8 @@ const CourseInformation = ({ courseInfo, space }: CourseInformationProps) => {
           open={showDeleteSubmissionModal}
           onClose={() => setShowDeleteSubmissionModal(false)}
           onDelete={async () => {
-            await fetch('/api/courses/submission/delete-course-submission', {
-              method: 'POST',
+            await fetch(`/api/courses/submission/course-submissions/${courseKey}`, {
+              method: 'DELETE',
               headers: {
                 'Content-Type': 'application/json',
               },
