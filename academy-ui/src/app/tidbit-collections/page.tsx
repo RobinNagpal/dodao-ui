@@ -39,6 +39,7 @@ async function TidbitCollections() {
         space={space}
         byteCollectionType={'byteCollection'}
         byteCollectionsBaseUrl={`/tidbit-collections`}
+        isAdmin={session?.isAdminOfSpace}
       />
     </PageWrapper>
   );

@@ -129,6 +129,7 @@ model Space {
   Byte             Byte[]
   GuideStep        GuideStep[]
   GuideSubmission  GuideSubmission[]
+  Course           Course[]
 
   @@map("spaces")
 }
@@ -169,23 +170,23 @@ model SpaceDiscord {
 }
 
 model Byte {
-  id               String   @id @unique @db.VarChar(255)
-  name             String   @db.VarChar(255)
+  id               String                       @id @unique @db.VarChar(255)
+  name             String                       @db.VarChar(255)
   content          String
-  created          String   @db.VarChar(255)
+  created          String                       @db.VarChar(255)
   admins           String[]
   tags             String[]
-  priority         Int      @default(50) @map("priority")
+  priority         Int                          @default(50) @map("priority")
   /// [ByteStep]
   steps            Json[]
-  spaceId          String   @map("space_id") @db.VarChar(255)
-  Space            Space    @relation(fields: [spaceId], references: [id])
-  videoUrl         String?  @map("video_url") @db.VarChar(1024)
-  videoAspectRatio String?  @map("video_aspect_ratio") @db.VarChar(255)
-  byteStyle        String?  @default("CardAndCircleProgress") @map("byte_style") @db.VarChar(255)
+  spaceId          String                       @map("space_id") @db.VarChar(255)
+  Space            Space                        @relation(fields: [spaceId], references: [id])
+  videoUrl         String?                      @map("video_url") @db.VarChar(1024)
+  videoAspectRatio String?                      @map("video_aspect_ratio") @db.VarChar(255)
+  byteStyle        String?                      @default("CardAndCircleProgress") @map("byte_style") @db.VarChar(255)
   /// [CompletionScreen]
-  completionScreen Json?    @map("completion_screen") @db.Json
-  mappings ByteCollectionItemMappings[]
+  completionScreen Json?                        @map("completion_screen") @db.Json
+  mappings         ByteCollectionItemMappings[]
 
   @@map("bytes")
 }
@@ -240,17 +241,17 @@ model ByteSubmission {
 }
 
 model ByteCollection {
-  id          String   @id @db.VarChar(255)
-  spaceId     String   @map("space_id") @db.VarChar(66)
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
-  name        String   @db.VarChar(255)
+  id          String                       @id @db.VarChar(255)
+  spaceId     String                       @map("space_id") @db.VarChar(66)
+  createdAt   DateTime                     @default(now()) @map("created_at")
+  updatedAt   DateTime                     @updatedAt @map("updated_at")
+  name        String                       @db.VarChar(255)
   description String
-  byteIds     String[] @map("byte_ids") @db.VarChar(255)
-  status      String   @db.VarChar(255)
-  priority    Int      @default(50) @map("priority")
-  videoUrl    String?  @map("video_url") @db.VarChar(1024)
-  items ByteCollectionItemMappings[]
+  byteIds     String[]                     @map("byte_ids") @db.VarChar(255)
+  status      String                       @db.VarChar(255)
+  priority    Int                          @default(50) @map("priority")
+  videoUrl    String?                      @map("video_url") @db.VarChar(1024)
+  items       ByteCollectionItemMappings[]
 
   @@map("byte_collections")
 }
@@ -342,14 +343,114 @@ model GuideRating {
 }
 
 model ByteCollectionItemMappings {
-  id               String   @id @db.VarChar(64)
-  byteCollectionId String  @map("byte_collection_id")
-  itemId           String   @db.VarChar(64)
-  itemType         String   @db.VarChar(255)
+  id               String          @id @db.VarChar(64)
+  byteCollectionId String          @map("byte_collection_id")
+  itemId           String          @db.VarChar(64)
+  itemType         String          @db.VarChar(255)
   order            Int
-  ByteCollection   ByteCollection?   @relation(fields: [byteCollectionId], references: [id], map: "FK_ByteCollection")
-  Byte             Byte?             @relation(fields: [itemId], references: [id], map: "FK_Byte")
+  ByteCollection   ByteCollection? @relation(fields: [byteCollectionId], references: [id], map: "FK_ByteCollection")
+  Byte             Byte?           @relation(fields: [itemId], references: [id], map: "FK_Byte")
+
   // ShortVideo       ShortVideo?       @relation(fields: [itemId], references: [id], map: "FK_ShortVideo")
   // ClickableDemos   ClickableDemos?   @relation(fields: [itemId], references: [id], map: "FK_ClickableDemos")
   @@map("byte_collections_items_mappings")
+}
+
+model ClickableDemos {
+  id        String   @id @db.VarChar(255)
+  spaceId   String   @map("space_id") @db.VarChar(66)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  title     String
+  excerpt   String   @db.VarChar(256)
+  /// [ClickableDemoStep]
+  steps     Json[]
+  archive   Boolean? @default(false)
+
+  @@map("clickable_demos")
+}
+
+model CourseSubmission {
+  uuid                     String                  @id @db.VarChar(66)
+  courseKey                String                  @map("course_key") @db.VarChar(128)
+  createdAt                DateTime                @default(now()) @map("created_at")
+  createdBy                String                  @map("created_by") @db.VarChar(64)
+  isLatestSubmission       Boolean                 @map("is_latest_submission")
+  questionsAttempted       Int?                    @map("questions_attempted")
+  questionsCorrect         Int?                    @map("questions_correct")
+  questionsIncorrect       Int?                    @map("questions_incorrect")
+  questionsSkipped         Int?                    @map("questions_skipped")
+  spaceId                  String                  @map("space_id") @db.VarChar(64)
+  updatedAt                DateTime                @updatedAt @map("updated_at")
+  status                   String                  @default("InProgress") @db.VarChar(64)
+  galaxyCredentialsUpdated Boolean?                @map("galaxy_credentials_updated")
+  GitCourseTopicSubmission CourseTopicSubmission[]
+
+  @@map("course_submissions")
+}
+
+model CourseTopicSubmission {
+  uuid                 String           @id @db.VarChar(66)
+  courseKey            String           @map("course_key") @db.VarChar(128)
+  courseSubmissionUuid String           @map("course_submission_uuid") @db.VarChar(66)
+  createdAt            DateTime         @default(now()) @map("created_at")
+  createdBy            String           @map("created_by") @db.VarChar(64)
+  isLatestSubmission   Boolean          @map("is_latest_submission")
+  questionsAttempted   Int?             @map("questions_attempted")
+  questionsCorrect     Int?             @map("questions_correct")
+  questionsIncorrect   Int?             @map("questions_incorrect")
+  questionsSkipped     Int?             @map("questions_skipped")
+  /// [TempTopicSubmissionModel]
+  submission           Json             @db.Json
+  spaceId              String           @map("space_id") @db.VarChar(64)
+  topicKey             String           @map("topic_key") @db.VarChar(128)
+  updatedAt            DateTime         @updatedAt @map("updated_at")
+  status               String           @default("InProgress") @db.VarChar(64)
+  correctAnswers       Json?            @map("correct_answers")
+  courseSubmission     CourseSubmission @relation(fields: [courseSubmissionUuid], references: [uuid])
+
+  @@map("course_topic_submissions")
+}
+
+model Timeline {
+  id            String   @id @db.VarChar(255)
+  name          String   @db.VarChar(255)
+  excerpt       String   @db.VarChar(256)
+  content       String
+  thumbnail     String?  @db.VarChar(255)
+  spaceId       String   @map("space_id") @db.VarChar(66)
+  created       String   @db.VarChar(255)
+  publishStatus String
+  /// [TimelineEvent]
+  events        Json[]
+  admins        String[]
+  tags          String[]
+  priority      Int      @default(50) @map("priority")
+  timelineStyle String?  @db.VarChar(255)
+
+  @@map("timelines")
+}
+
+model Course {
+  id                String   @id @unique @db.VarChar(255)
+  key               String
+  spaceId           String   @map("space_id") @db.VarChar(256)
+  title             String   @db.VarChar(256)
+  summary           String
+  details           String
+  duration          String   @db.VarChar(256)
+  highlights        String[]
+  publishStatus     String   @map("publish_status") @db.VarChar(66)
+  thumbnail         String
+  courseAdmins      String[] @map("course_admins")
+  coursePassContent String?  @map("course_pass_content")
+  courseFailContent String?  @map("course_fail_content")
+  coursePassCount   Int?     @map("course_pass_count")
+  prority           Int?     @default(50) @map("prority")
+  topicConfig       Json     @map("topic_config")
+  /// [CourseTopics]
+  topics            Json[]
+  space             Space    @relation(fields: [spaceId], references: [id])
+
+  @@map("courses")
 }

@@ -147,7 +147,13 @@ export default function TidbitSiteConfigurationStep({ goToPreviousStep }: Tidbit
           </div>
 
           <div className="w-full md:mt-0 mt-4 md:w-1/2 p-2 md:p-4" style={style}>
-            <ByteCollectionsCard byteCollection={byteCollection} byteCollectionType={'byteCollection'} isEditingAllowed={false} viewByteBaseUrl={'/'} />
+            <ByteCollectionsCard
+              byteCollection={byteCollection}
+              byteCollectionType={'byteCollection'}
+              isEditingAllowed={false}
+              viewByteBaseUrl={'/'}
+              space={space!}
+            />
           </div>
         </div>
       </div>

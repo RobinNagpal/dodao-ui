@@ -1,10 +1,4 @@
-import {
-  ByteCollectionFragment,
-  ByteSummaryFragment,
-  ProjectByteCollectionFragment,
-  ProjectByteFragment,
-  SpaceWithIntegrationsFragment,
-} from '@/graphql/generated/generated-types';
+import { ByteCollectionFragment, ProjectByteCollectionFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { useRouter } from 'next/navigation';
 import { useCallback, useState, useEffect } from 'react';
 
@@ -15,7 +9,6 @@ interface HelperFunctions {
   updateByteCollectionDescription: (description: string) => void;
   updateByteCollectionVideoUrl: (videoUrl: string) => void;
   updateByteCollectionPriority: (priority: number) => void;
-  addByte: (byteId: string) => void;
   moveByteUp: (byteUuid: string) => void;
   moveByteDown: (byteUuid: string) => void;
   removeByte: (byteUuid: string) => void;
@@ -24,7 +17,7 @@ interface HelperFunctions {
 
 interface UseEditByteCollectionType {
   isPrestine: boolean;
-  byteSummaries: (ByteSummaryFragment | ProjectByteFragment)[];
+  loading: boolean;
   byteCollection: EditByteCollection;
   helperFunctions: HelperFunctions;
 }
@@ -33,7 +26,6 @@ export interface UseEditByteCollectionArgs {
   space: SpaceWithIntegrationsFragment;
   viewByteCollectionsUrl: string;
   byteCollection?: ByteCollectionFragment | ProjectByteCollectionFragment;
-  byteSummaries: (ByteSummaryFragment | ProjectByteFragment)[];
   upsertByteCollectionFn: (byteCollection: EditByteCollection, byteCollectionId: string | null) => Promise<void>;
 }
 
@@ -41,11 +33,11 @@ export function useEditByteCollection({
   space,
   viewByteCollectionsUrl,
   byteCollection: byteCollectionProp,
-  byteSummaries,
   upsertByteCollectionFn,
 }: UseEditByteCollectionArgs): UseEditByteCollectionType {
   const [isPrestine, setIsPrestine] = useState<boolean>(true);
   const router = useRouter();
+  const [loading, setloading] = useState<boolean>(false);
 
   const [byteCollection, setByteCollection] = useState<EditByteCollection>({
     id: byteCollectionProp?.id,
@@ -112,18 +104,6 @@ export function useEditByteCollection({
     });
   }, []);
 
-  const addByte = (byteId: string) => {
-    setByteCollection((prevByte) => {
-      const newByte = byteSummaries.find((byte: ByteSummaryFragment | ProjectByteFragment) => byte.id === byteId);
-      if (!newByte) {
-        return prevByte;
-      }
-      const newBytes: ByteCollectionFragment['bytes'] = [...prevByte.bytes, { byteId: newByte.id, name: newByte.name, content: newByte.content }];
-
-      return { ...prevByte, bytes: newBytes };
-    });
-  };
-
   const updateByteCollectionName = (name: string) => {
     setByteCollection((prevByte) => ({ ...prevByte, name }));
   };
@@ -140,26 +120,27 @@ export function useEditByteCollection({
     setByteCollection((prevByte) => ({ ...prevByte, priority }));
   };
   const upsertByteCollection = async () => {
+    setloading(true);
     setIsPrestine(false);
 
     if (!byteCollection.name.trim() || !byteCollection.description.trim()) {
       return;
     }
     await upsertByteCollectionFn(byteCollection, byteCollection.id || null);
+    setloading(false);
     router.push(viewByteCollectionsUrl);
     router.refresh();
   };
 
   return {
     isPrestine,
+    loading,
     byteCollection,
-    byteSummaries,
     helperFunctions: {
       updateByteCollectionName,
       updateByteCollectionDescription,
       updateByteCollectionVideoUrl,
       updateByteCollectionPriority,
-      addByte,
       moveByteUp,
       moveByteDown,
       removeByte,
