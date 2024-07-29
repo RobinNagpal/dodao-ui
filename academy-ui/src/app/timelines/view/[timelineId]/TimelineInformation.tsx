@@ -6,14 +6,26 @@ import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsis
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import RowLoading from '@dodao/web-core/components/core/loaders/RowLoading';
 import TimelineDetails from '@/components/timelines/View/TimelineDetailView';
-import { SpaceWithIntegrationsFragment, useTimelineDetailsQuery } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsFragment, TimelineDetailsFragment } from '@/graphql/generated/generated-types';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const TimelineInformation = ({ timelineId, space }: { timelineId: string; space: SpaceWithIntegrationsFragment }) => {
   const threeDotItems = [{ label: 'Edit', key: 'edit' }];
   const router = useRouter();
-  const { data, loading } = useTimelineDetailsQuery({ variables: { timelineId: timelineId, spaceId: space.id } });
+  const [data, setData] = useState<{ timeline?: TimelineDetailsFragment }>();
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    async function fetchData() {
+      const { data } = await axios.get(`/api/timelines/${timelineId}`);
+      setData(data);
+      setLoading(false);
+    }
+    fetchData();
+  }, [timelineId]);
 
   return (
     <div className="pt-12">

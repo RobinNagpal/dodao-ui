@@ -175,11 +175,25 @@ const ExplanationDetails: FC<CourseExplanationProps> = ({ course, isCourseAdmin,
   const details = currentExplanation?.details && marked.parse(currentExplanation.details, { renderer });
 
   const { editMode, cancel, showEdit, save } = useEditCourseDetails<UpdateTopicExplanationInput>(
-    async (updates: UpdateTopicExplanationInput) => await courseHelper.updateTopicExplanation(updates)
+    async (updates: UpdateTopicExplanationInput) =>
+      await fetch(`/api/courses/${updates.courseKey}/topics/${updates.topicKey}/explanation`, {
+        method: 'PUT',
+        body: JSON.stringify({
+          spaceId: space.id,
+          explanationInfo: updates,
+        }),
+      })
   );
 
   const { deleting, deleteItem } = useDeleteCourseItem<DeleteTopicExplanationInput>(
-    async (updates: DeleteTopicExplanationInput) => await courseHelper.deleteTopicExplanation(updates)
+    async (updates: DeleteTopicExplanationInput) =>
+      await fetch(`/api/courses/${updates.courseKey}/topics/${updates.topicKey}/explanation`, {
+        method: 'DELETE',
+        body: JSON.stringify({
+          spaceId: space.id,
+          explanationInfo: updates,
+        }),
+      })
   );
 
   function doDelete() {
@@ -193,7 +207,14 @@ const ExplanationDetails: FC<CourseExplanationProps> = ({ course, isCourseAdmin,
   }, []);
 
   const { movingUp, movingDown, moveItem } = useMoveCourseItem<MoveTopicExplanationInput>(
-    async (updates: MoveTopicExplanationInput) => await courseHelper.moveTopicExplanation(updates)
+    async (updates: MoveTopicExplanationInput) =>
+      await fetch(`/api/courses/${updates.courseKey}/topics/${updates.topicKey}/explanation`, {
+        method: 'PATCH',
+        body: JSON.stringify({
+          spaceId: space.id,
+          explanationInfo: updates,
+        }),
+      })
   );
 
   function doMove(direction: MoveCourseItemDirection) {

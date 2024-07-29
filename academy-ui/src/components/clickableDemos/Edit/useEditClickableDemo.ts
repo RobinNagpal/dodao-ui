@@ -1,12 +1,6 @@
 import { emptyClickableDemo } from '@/components/clickableDemos/Edit/EmptyClickableDemo';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import {
-  ClickableDemoStepInput,
-  Space,
-  useClickableDemoWithStepsQuery,
-  UpsertClickableDemoInput,
-  useUpsertClickableDemoMutation,
-} from '@/graphql/generated/generated-types';
+import { ClickableDemoStepInput, Space, UpsertClickableDemoInput } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
 import { ClickableDemoErrors, ClickableDemoStepError } from '@dodao/web-core/types/errors/clickableDemoErrors';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
@@ -14,6 +8,7 @@ import orderBy from 'lodash/orderBy';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import axios from 'axios';
 
 const titleLimit = 32;
 const excerptLimit = 64;
@@ -43,13 +38,16 @@ export function useEditClickableDemo(space: Space, demoId: string | null) {
   const [clickableDemoErrors, setClickableDemoErrors] = useState<ClickableDemoErrors>({});
   const [clickableDemoLoaded, setClickableDemoLoaded] = useState<boolean>(false);
   const [clickableDemoCreating, setClickableDemoCreating] = useState<boolean>(false);
-  const { refetch: queryClickableDemoWithSteps } = useClickableDemoWithStepsQuery({ skip: true });
-  const [upsertClickableDemoMutation] = useUpsertClickableDemoMutation();
 
   async function initialize() {
     if (demoId) {
-      const result = await queryClickableDemoWithSteps({ demoId: demoId, spaceId: space.id });
-      const fetchedClickableDemo = result.data.clickableDemoWithSteps;
+      const response = await axios.get(`/api/clickable-demos/${demoId}`, {
+        params: {
+          spaceId: space.id,
+          demoId,
+        },
+      });
+      const fetchedClickableDemo = response.data.clickableDemoWithSteps;
       setClickableDemo({
         ...fetchedClickableDemo,
       });
@@ -194,25 +192,28 @@ export function useEditClickableDemo(space: Space, demoId: string | null) {
         setClickableDemoCreating(false);
         return;
       }
-
-      const response = await upsertClickableDemoMutation({
-        variables: {
-          spaceId: space.id,
-          input: getClickableDemoInput(),
+      const input = getClickableDemoInput();
+      const response = await fetch(`/api/clickable-demos/${input.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
         },
-        errorPolicy: 'all',
+        body: JSON.stringify({
+          spaceId: space.id,
+          input,
+        }),
       });
 
-      const payload = response?.data?.payload;
-      if (payload) {
+      const payload = await response.json();
+      if (response.ok) {
         showNotification({
           type: 'success',
           message: 'Clickable Demo saved successfully!',
         });
 
-        router.push(`/clickable-demos/view/${payload.id}`);
+        router.push(`/clickable-demos/view/${payload.clickableDemo.id}`);
       } else {
-        console.error(response.errors);
+        console.error(response.body);
         showNotification({ type: 'error', message: $t('notify.somethingWentWrong') });
       }
     } catch (e) {

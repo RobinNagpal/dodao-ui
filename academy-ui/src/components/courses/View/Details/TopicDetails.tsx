@@ -112,16 +112,50 @@ const Topic = ({ course, isCourseAdmin, space, topicKey, courseHelper }: TopicPr
   const details = marked.parse(currentTopic.details, { renderer });
 
   const { editMode, cancel, showEdit, save } = useEditCourseDetails<UpdateTopicBasicInfoInput>(
-    async (updates: UpdateTopicBasicInfoInput) => await courseHelper.updateTopic(updates)
+    async (updates: UpdateTopicBasicInfoInput) =>
+      await fetch(`/api/courses/${updates.courseKey}/topics/${updates.topicKey}`, {
+        method: 'PUT',
+        body: JSON.stringify({
+          spaceId: space.id,
+          topicInfo: updates,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
   );
 
-  const { deleting, deleteItem } = useDeleteCourseItem<DeleteTopicInput>(async (updates: DeleteTopicInput) => await courseHelper.deleteTopic(updates));
+  const { deleting, deleteItem } = useDeleteCourseItem<DeleteTopicInput>(
+    async (updates: DeleteTopicInput) =>
+      await fetch(`/api/courses/${updates.courseKey}/topics/${updates.topicKey}`, {
+        method: 'DELETE',
+        body: JSON.stringify({
+          spaceId: space.id,
+          topicInfo: updates,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+  );
 
   const doDelete = () => {
     deleteItem({ courseKey: course.key, topicKey: topicKey });
   };
 
-  const { movingUp, movingDown, moveItem } = useMoveCourseItem<MoveTopicInput>(async (updates: MoveTopicInput) => await courseHelper.moveTopic(updates));
+  const { movingUp, movingDown, moveItem } = useMoveCourseItem<MoveTopicInput>(
+    async (updates: MoveTopicInput) =>
+      await fetch(`/api/courses/${updates.courseKey}/topics/${updates.topicKey}`, {
+        method: 'PATCH',
+        body: JSON.stringify({
+          spaceId: space.id,
+          topicInfo: updates,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+  );
 
   const doMove = (direction: MoveCourseItemDirection) => {
     moveItem({

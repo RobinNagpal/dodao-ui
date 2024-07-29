@@ -12,7 +12,7 @@
     "prettier-check": "prettier --check 'src/**/*.{js,ts,tsx,json}'",
     "graphql:download": "graphql-codegen --config introspection.yml",
     "graphql:generate": "graphql-codegen --config codegen.yml",
-    "run-script": "ts-node src/scripts/guides/guideMigrate.ts"
+    "run-script": "ts-node src/scripts/courses/coursesMigrate.ts"
   },
   "engines": {
     "node": ">=20.0.0"

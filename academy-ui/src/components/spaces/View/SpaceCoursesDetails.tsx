@@ -2,15 +2,9 @@ import UpsertRawCourseModal from '@/components/app/Modal/Course/UpsertRawCourseM
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import { Table, TableActions, TableRow } from '@dodao/web-core/components/core/table/Table';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import {
-  RawGitCourse,
-  Space,
-  useDeleteAndPullCourseRepoMutation,
-  useRawGitCoursesQuery,
-  useUpsertGitCourseMutation,
-} from '@/graphql/generated/generated-types';
+import { RawGitCourse, Space } from '@/graphql/generated/generated-types';
 import { PublishStatus } from '@dodao/web-core/types/deprecated/models/enums';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import soryBy from 'lodash/sortBy';
 
 export interface SpaceAuthDetailsProps {
@@ -21,10 +15,19 @@ export interface SpaceAuthDetailsProps {
 export default function SpaceCourseDetails(props: SpaceAuthDetailsProps) {
   const [showUpsertRawCourseModal, setShowUpsertRawCourseModal] = useState(false);
   const threeDotItems = [{ label: 'Add New', key: 'add' }];
-  const [upsertGitCourseMutation] = useUpsertGitCourseMutation();
-  const [deleteAndPullCourseRepoMutation] = useDeleteAndPullCourseRepoMutation();
   const { showNotification } = useNotificationContext();
   const [courseToEdit, setCourseToEdit] = useState<RawGitCourse | null>(null);
+  const [coursesResponse, setCoursesResponse] = useState<{ rawGitCourses?: RawGitCourse[] }>();
+
+  useEffect(() => {
+    async function fetchData() {
+      const response = await fetch(`/api/courses/${props.space.id}`);
+      const data = await response.json();
+      setCoursesResponse(data);
+    }
+    // This logic won't work as we don't have raw courses now
+    fetchData();
+  }, [props.space.id]);
 
   const selectFromThreedotDropdown = async (e: string) => {
     setShowUpsertRawCourseModal(true);
@@ -58,11 +61,16 @@ export default function SpaceCourseDetails(props: SpaceAuthDetailsProps) {
           setCourseToEdit(course);
           setShowUpsertRawCourseModal(true);
         } else if (key === 'deleteAndPull') {
-          await deleteAndPullCourseRepoMutation({
-            variables: {
+          // This call won't work as the logic is not implemented in the backend
+          await fetch(`/api/courses/delete-and-pull-course-repo`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
               spaceId: props.space.id,
               courseKey: course.courseKey,
-            },
+            }),
           });
 
           showNotification({ type: 'success', message: 'Course deleted and pulled successfully' });
@@ -73,32 +81,29 @@ export default function SpaceCourseDetails(props: SpaceAuthDetailsProps) {
 
   const upsertRawCourse = async (repoUrl: string, publishStatus: PublishStatus, weight: number) => {
     setShowUpsertRawCourseModal(false);
-    const result = await upsertGitCourseMutation({
-      variables: {
+    // This logic won't work as the backend logic isn't implemented
+    const response = await fetch(`/api/courses/${courseToEdit?.courseKey}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
         spaceId: props.space.id,
         gitCourseInput: {
           courseRepoUrl: repoUrl,
           publishStatus,
           weight,
         },
-      },
+      }),
     });
 
-    const payload = result.data?.payload;
-    if (payload) {
+    if (response.ok) {
       showNotification({ type: 'success', message: 'Course upserted successfully' });
     } else {
       showNotification({ type: 'error', message: 'Failed to upserted course' });
     }
     setCourseToEdit(null);
-    await refetch();
   };
-
-  const { data: coursesResponse, refetch } = useRawGitCoursesQuery({
-    variables: {
-      spaceId: props.space.id,
-    },
-  });
 
   return (
     <div className="mt-8">
@@ -107,7 +112,7 @@ export default function SpaceCourseDetails(props: SpaceAuthDetailsProps) {
         <PrivateEllipsisDropdown items={threeDotItems} onSelect={selectFromThreedotDropdown} />
       </div>
       <Table
-        data={getCourseTableRows(coursesResponse?.payload)}
+        data={getCourseTableRows(coursesResponse?.rawGitCourses)}
         columnsHeadings={['Key', 'Repo URL', 'Weight']}
         columnsWidthPercents={[20, 50, 20, 10]}
         actions={tableActions}

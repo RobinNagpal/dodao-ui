@@ -5,7 +5,7 @@ import Input from '@dodao/web-core/components/core/input/Input';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { GitCourseInput, Space, SpaceWithIntegrationsFragment, useUpsertGitCourseMutation } from '@/graphql/generated/generated-types';
+import { GitCourseInput, Space, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
 import { PublishStatus } from '@dodao/web-core/types/deprecated/models/enums';
@@ -23,21 +23,27 @@ const AddCourse = (props: { space: SpaceWithIntegrationsFragment }) => {
   const router = useRouter();
   const { $t: t } = useI18();
 
-  const [upsertGitCourseMutation] = useUpsertGitCourseMutation();
   const { showNotification } = useNotificationContext();
 
   const publishCourse = async () => {
     setGitCourseUpserting(true);
     try {
-      const result = await upsertGitCourseMutation({
-        variables: {
+      // This logic won't work, need to implement the backend correctly
+      const response = await fetch(`/api/courses/some-course-id`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
           spaceId: props.space.id,
           gitCourseInput: form,
-        },
+        }),
       });
 
-      if (result.data?.payload?.title) {
-        showNotification({ type: 'success', message: 'Curse Added', heading: 'Success 🎉' });
+      const result = await response.json();
+
+      if (result.data?.course?.title) {
+        showNotification({ type: 'success', message: 'Course Added', heading: 'Success 🎉' });
         router.push(`/courses/view/${result.data?.payload.key}`);
       }
     } catch {

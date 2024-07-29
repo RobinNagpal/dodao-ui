@@ -1,9 +1,9 @@
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import TimelineInformation from './TimelineInformation';
 import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
-import getApiResponse from '@/utils/api/getApiResponse';
-import { TimelineDetailsFragment } from '@/graphql/generated/generated-types';
 import { Metadata } from 'next';
+import axios from 'axios';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 
 type TimelinePageProps = {
   params: { timelineId: string };
@@ -12,7 +12,8 @@ type TimelinePageProps = {
 export async function generateMetadata(props: TimelinePageProps): Promise<Metadata> {
   const timelineKey = props.params.timelineId;
   const space = (await getSpaceServerSide())!;
-  const timeline = await getApiResponse<TimelineDetailsFragment>(space, `timelines/${timelineKey}`);
+  const response = await axios.get(`${getBaseUrl()}/api/timelines/${timelineKey}`);
+  const timeline = response.data.timeline;
   return {
     title: timeline.name,
     description: timeline.excerpt,

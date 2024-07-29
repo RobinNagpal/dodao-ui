@@ -135,7 +135,6 @@ function EditTidbitCollectionSpace(props: { space: SpaceWithIntegrationsFragment
             space={props.space}
             byteCollection={data!.byteCollection}
             viewByteCollectionsUrl={'/tidbit-collections'}
-            byteSummaries={bytesResponse?.bytes}
             upsertByteCollectionFn={upsertByteCollectionFn}
           />
         ) : (

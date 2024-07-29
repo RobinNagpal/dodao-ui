@@ -7,11 +7,6 @@ import {
   Space,
   TopicCorrectAnswersFragment,
   TopicSubmissionFragment,
-  useGitCourseQueryQuery,
-  useGitCourseSubmissionQuery,
-  useInitializeGitCourseSubmissionMutation,
-  useSubmitGitCourseMutation,
-  useSubmitGitCourseTopicMutation,
   useUpsertGitCourseTopicSubmissionMutation,
 } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
@@ -130,7 +125,7 @@ function transformTopicSubmissionResponse(sub: TopicSubmissionFragment): TempTop
 
 function transformCourseSubmissionResponse(courseSubmissionResponse: CourseSubmissionFragment, course: CourseDetailsFragment): TempCourseSubmission {
   const topicSubmissionsMap: Record<string, TopicSubmissionFragment> =
-    Object.fromEntries(courseSubmissionResponse.topicSubmissions?.map((t) => [t.topicKey, t])) || {};
+    Object.fromEntries((courseSubmissionResponse.topicSubmissions || []).map((t) => [t.topicKey, t])) || {};
   const courseSubmission = {
     uuid: courseSubmissionResponse.uuid,
     courseKey: courseSubmissionResponse.courseKey,
@@ -192,47 +187,48 @@ export const useCourseSubmission = (space: Space, courseKey: string): CourseSubm
   const [courseSubmission, setCourseSubmission] = useState<TempCourseSubmission | undefined>();
   const { data: session } = useSession();
 
-  const { data: courseResponse } = useGitCourseQueryQuery({ variables: { spaceId: space.id, courseKey: courseKey }, fetchPolicy: 'cache-only' });
-
-  const { data: submissionResponse, loading: loadingSubmission } = useGitCourseSubmissionQuery({
-    variables: { courseKey: courseKey, spaceId: space.id },
-  });
+  const [submissionResponse, setSubmissionResponse] = useState<{ body?: CourseSubmissionFragment | null | undefined }>();
+  const [courseResponse, setCourseResponse] = useState<{ course?: CourseDetailsFragment }>();
+  const [loadingSubmission, setLoadingSubmission] = useState<boolean>(false);
   const { showNotification } = useNotificationContext();
   const { $t } = useI18();
   const [upsertGitCourseTopicSubmissionMutation] = useUpsertGitCourseTopicSubmissionMutation();
-  const [submitGitCourseTopicMutation] = useSubmitGitCourseTopicMutation();
-  const [submitGitCourseMutation] = useSubmitGitCourseMutation();
-  const [initializeGitCourseSubmissionMutation] = useInitializeGitCourseSubmissionMutation();
 
   const initialize = async () => {
+    const courseResp = await fetch(`/api/courses/${courseKey}`);
+    const courseResponse = await courseResp.json();
+    setCourseResponse(courseResponse);
+    const submissionResp = await fetch(`/api/courses/submission/course-submission?spaceId=${space.id}&courseKey=${courseKey}`);
+    const submission = await submissionResp.json();
+    setSubmissionResponse(submission.body);
     const course = courseResponse?.course;
     if (!course) return;
 
-    if (!submissionResponse || loadingSubmission) return;
+    if (!submission.body || loadingSubmission) return;
 
     if (!session) return;
 
     if (courseSubmission || loadingSubmission) return;
 
-    const loadedSubmission = submissionResponse?.payload;
+    const loadedSubmission = submission.body;
 
-    console.log('submissionResponse', submissionResponse);
-    console.log('loadedSubmission', loadedSubmission);
-    console.log('loadingCourseSubmission', loadingSubmission);
-    if (loadedSubmission) {
+    if (loadedSubmission && Object.keys(loadedSubmission).length !== 0) {
       const submission = transformCourseSubmissionResponse(loadedSubmission!, course);
       setCourseSubmission(submission);
     } else {
       try {
-        const initializationResponse = await initializeGitCourseSubmissionMutation({
-          variables: { courseKey: courseKey, spaceId: space.id },
-          updateQueries: {
-            GitCourseSubmission: (prev, { mutationResult }) => {
-              return mutationResult.data!;
-            },
+        const response = await fetch('/api/courses/submission/initialize-course-submission', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
           },
+          body: JSON.stringify({
+            spaceId: space.id,
+            courseKey: courseKey,
+          }),
         });
-        const initialedSubmission = initializationResponse.data?.payload;
+        const initializationResponse = await response.json();
+        const initialedSubmission = initializationResponse.data?.body;
         const submission = transformCourseSubmissionResponse(initialedSubmission!, course);
         setCourseSubmission(submission);
       } catch {
@@ -242,7 +238,7 @@ export const useCourseSubmission = (space: Space, courseKey: string): CourseSubm
   };
   useEffect(() => {
     initialize();
-  }, [submissionResponse?.payload, courseResponse?.course, session]);
+  }, [session]);
 
   const isAllReadingsComplete = (topic: CourseTopicFragment) => {
     if (!topic?.readings) return false;
@@ -351,19 +347,18 @@ export const useCourseSubmission = (space: Space, courseKey: string): CourseSubm
     }
 
     try {
-      const topicSubmission = await upsertGitCourseTopicSubmissionMutation({
-        variables: {
+      const response = await fetch('/api/courses/submission/upsert-course-topic-submission', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
           spaceId: space.id,
           gitCourseTopicSubmission: request,
-        },
-        updateQueries: {
-          GitCourseSubmission: (prev, { mutationResult }) => {
-            console.log('mutationResult', mutationResult);
-            return { ...mutationResult.data! };
-          },
-        },
+        }),
       });
-      setCourseSubmission(transformCourseSubmissionResponse(topicSubmission.data?.payload!, courseResponse?.course!));
+      const topicSubmission = await response.json();
+      setCourseSubmission(transformCourseSubmissionResponse(topicSubmission.body, courseResponse?.course!));
     } catch (e) {
       showNotification({ type: 'error', message: $t('notify.somethingWentWrong') });
       throw e;
@@ -517,18 +512,19 @@ export const useCourseSubmission = (space: Space, courseKey: string): CourseSubm
     }
 
     try {
-      const submitTopicResponse = await submitGitCourseTopicMutation({
-        variables: {
+      const response = await fetch('/api/courses/submission/submit-course-topic', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
           spaceId: space.id,
           gitCourseTopicSubmission: request,
-        },
-        updateQueries: {
-          GitCourseSubmission: (prev, { mutationResult }) => {
-            return mutationResult.data!;
-          },
-        },
+        }),
       });
-      const topicSubmitResponse = submitTopicResponse.data?.payload;
+
+      const submitTopicResponse = await response.json();
+      const topicSubmitResponse = submitTopicResponse.body;
       if (topicSubmitResponse) {
         setCourseSubmission(transformCourseSubmissionResponse(topicSubmitResponse, courseResponse?.course!));
       } else {
@@ -558,22 +554,22 @@ export const useCourseSubmission = (space: Space, courseKey: string): CourseSubm
     }
 
     try {
-      const result = await submitGitCourseMutation({
-        variables: {
+      const response = await fetch(`/api/courses/submission/course-submissions/${submission.courseKey}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
           spaceId: space.id,
           input: {
             uuid: submission.uuid,
             courseKey: submission.courseKey,
           },
-        },
-        updateQueries: {
-          GitCourseSubmission: (prev, { mutationResult }) => {
-            return mutationResult.data!;
-          },
-        },
+        }),
       });
+      const result = await response.json();
 
-      const submissionResponse = result.data?.payload;
+      const submissionResponse = result.data?.body;
       if (submissionResponse) {
         setCourseSubmission(transformCourseSubmissionResponse(submissionResponse, courseResponse?.course!));
 
