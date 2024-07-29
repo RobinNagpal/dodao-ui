@@ -20,9 +20,13 @@ const insertCourse = async (course: any, spaceId: string) => {
   try {
     await prisma.course.create({
       data: {
-        id: course.id,
+        id: course.id || course.key,
         coursePassContent: course.coursePassContent,
-        spaceId: spaceId,
+        space: {
+          connect: {
+            id: spaceId,
+          },
+        },
         thumbnail: course.thumbnail,
         publishStatus: course.publishStatus || 'Live',
         details: course.details,
@@ -42,7 +46,7 @@ const insertCourse = async (course: any, spaceId: string) => {
 };
 const main = async () => {
   // Get the folder path and space ID from command line arguments
-  const folderPath = 'C:\\dodaoRepos\\uniswap-liquidity-provider-course\\generated';
+  const folderPath = '/Users/robintc/projects/dodao-courses/raising-funds-using-defi/generated';
   const spaceId = 'test-academy-eth';
   if (!folderPath || !spaceId) {
     console.error('Please provide the absolute path of the folder containing course.json and the space ID.');
