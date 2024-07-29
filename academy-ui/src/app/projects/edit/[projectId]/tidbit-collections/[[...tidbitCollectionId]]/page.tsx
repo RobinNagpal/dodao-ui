@@ -51,7 +51,6 @@ function EditTidbitCollectionProject(props: { space: SpaceWithIntegrationsFragme
           space={props.space}
           byteCollection={data?.projectByteCollection}
           viewByteCollectionsUrl={`/projects/view/${props.params.projectId}/tidbit-collections`}
-          byteSummaries={bytesResponse?.projectBytes}
           upsertByteCollectionFn={upsertByteCollectionFn}
         />
       ) : null}

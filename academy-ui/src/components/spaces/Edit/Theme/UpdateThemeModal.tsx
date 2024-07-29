@@ -119,6 +119,7 @@ export default function UpdateThemeModal({ space, open, onClose, byteCollection 
                   byteCollection={byteCollection}
                   byteCollectionType={'projectByteCollection'}
                   viewByteBaseUrl={'/'}
+                  space={space}
                 />
               </div>
             </div>
