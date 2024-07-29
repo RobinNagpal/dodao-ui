@@ -22,12 +22,11 @@ const RubricCriteria: React.FC<RubricCriteriaProps> = ({ criteria, rubrics, isEd
 
   const userId = session?.userId;
 
-  // Fetch comments and selected cells
   useEffect(() => {
     const fetchData = async () => {
       if (userId) {
         try {
-          const response = await fetch(`http://localhost:3004/api/rubric-rating?userId=${userId}`);
+          const response = await fetch(`/api/rubric-rating?userId=${userId}`);
           if (!response.ok) {
             throw new Error('Failed to fetch comments');
           }
