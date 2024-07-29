@@ -14,9 +14,11 @@ import {
   TidbitsHomepage as TidbitsHomepageType,
   ByteFeedback as ByteFeedbackType,
   ClickableDemoStep as ClickableDemoStepType,
+  TimelineEvent as TimelineEventType,
 } from '@/graphql/generated/generated-types';
 import { ByteLinkedinPdfContent as ByteLinkedinPdfContentType } from '@/graphql/generated/generated-types';
 import { TempTopicSubmissionModel as TempTopicSubmissionModelInterface } from '@/types/course/submission';
+import { CourseTopic as CourseTopicInterface } from '@/types/course/topic';
 import { GuideSubmissionResult as GuideSubmissionResultInterface } from '@/types/guide/GuideSubmissionResult';
 import { GuidesGitRepository as GuidesGitRepositoryInterface } from '@/types/space/GuidesGitRepository';
 import { SpaceInviteLinks as SpaceInviteLinksInterface } from '@/types/space/SpaceInviteLinks';
@@ -46,5 +48,7 @@ declare global {
     type TidbitsHomepage = TidbitsHomepageType;
     type ByteFeedback = ByteFeedbackType;
     type ClickableDemoStep = ClickableDemoStepType;
+    type TimelineEvent = TimelineEventType;
+    type CourseTopics = CourseTopicInterface;
   }
 }

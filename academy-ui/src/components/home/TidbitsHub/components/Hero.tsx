@@ -8,15 +8,15 @@ export function Hero() {
   return (
     <div className="overflow-hidden py-20 sm:py-12 lg:pb-32 xl:pb-36">
       <Container>
-        <div className="md:flex lg:gap-x-8 lg:gap-y-20 md:space-y-0 space-y-10">
+        <div className="lg:flex lg:gap-x-8 lg:gap-y-20 md:space-y-0 space-y-10">
           <div className="flex-1 relative z-10 mx-auto max-w-2xl lg:max-w-none lg:pt-16">
             <div className="md:max-w-[75%] w-full">
-              <h1 className="text-4xl font-medium tracking-tight">
+              <h1 className="text-4xl font-medium tracking-tight xl:text-5xl ">
                 Breaking Down Complex Concepts:
                 <br />
                 The Tidbits Method
               </h1>
-              <p className="mt-6 text-lg">
+              <p className="mt-6 text-lg xl:text-xl">
                 We break down concepts into easily digestible information, guiding your customers to make empowered decisions. Equip your clients with knowledge
                 and watch their trust in your services grow!
               </p>
