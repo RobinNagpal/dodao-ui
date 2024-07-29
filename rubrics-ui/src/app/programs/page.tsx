@@ -5,7 +5,7 @@ import { ProgramListProps } from '@/types/rubricsTypes/types';
 
 const fetchPrograms = async (): Promise<ProgramListProps[]> => {
   try {
-    const response = await fetch('/api/programs');
+    const response = await fetch('http://localhost:3004/api/programs');
     const data = await response.json();
     return data.body;
   } catch (error) {
