@@ -2,7 +2,7 @@ import { useNotificationContext } from '@dodao/web-core/ui/contexts/Notification
 import { useI18 } from '@/hooks/useI18';
 import { useState } from 'react';
 
-export function useDeleteCourseItem<T>(doDelete: (form: T) => Promise<boolean>) {
+export function useDeleteCourseItem<T>(doDelete: (form: T) => Promise<Response>) {
   const { showNotification } = useNotificationContext();
   const [deleting, setDeleting] = useState(false);
   const { $t } = useI18();

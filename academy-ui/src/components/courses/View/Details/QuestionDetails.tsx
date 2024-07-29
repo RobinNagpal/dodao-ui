@@ -134,11 +134,25 @@ export default function QuestionDetails(props: QuestionDetailsProps) {
   }
 
   const { editMode, cancel, showEdit, save } = useEditCourseDetails<UpdateTopicQuestionInput>(
-    async (updates: UpdateTopicQuestionInput) => await props.courseHelper.updateTopicQuestion(updates)
+    async (updates: UpdateTopicQuestionInput) =>
+      await fetch('/api/courses/update-topic-question', {
+        method: 'POST',
+        body: JSON.stringify({
+          spaceId: space.id,
+          questionInfo: updates,
+        }),
+      })
   );
 
   const { deleting, deleteItem } = useDeleteCourseItem<DeleteTopicQuestionInput>(
-    async (updates: DeleteTopicQuestionInput) => await props.courseHelper.deleteTopicQuestion(updates)
+    async (updates: DeleteTopicQuestionInput) =>
+      await fetch('/api/courses/delete-topic-question', {
+        method: 'POST',
+        body: JSON.stringify({
+          spaceId: space.id,
+          questionInfo: updates,
+        }),
+      })
   );
 
   function doDelete() {
@@ -148,7 +162,14 @@ export default function QuestionDetails(props: QuestionDetailsProps) {
   }
 
   const { movingUp, movingDown, moveItem } = useMoveCourseItem<MoveTopicQuestionInput>(
-    async (updates: MoveTopicQuestionInput) => await props.courseHelper.moveTopicQuestion(updates)
+    async (updates: MoveTopicQuestionInput) =>
+      await fetch('/api/courses/move-topic-question', {
+        method: 'POST',
+        body: JSON.stringify({
+          spaceId: space.id,
+          questionInfo: updates,
+        }),
+      })
   );
 
   function doMove(direction: MoveCourseItemDirection) {

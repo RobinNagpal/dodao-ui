@@ -184,11 +184,25 @@ const CourseVideo: React.FC<CourseVideoProps> = ({ course, isCourseAdmin, space,
   const details = currentReading?.details && marked.parse(currentReading.details, { renderer });
 
   const { editMode, cancel, showEdit, save } = useEditCourseDetails<UpdateTopicVideoInput>(
-    async (updates: UpdateTopicVideoInput) => await courseHelper.updateTopicVideo(updates)
+    async (updates: UpdateTopicVideoInput) =>
+      await fetch('/api/courses/update-topic-video', {
+        method: 'POST',
+        body: JSON.stringify({
+          spaceId: space.id,
+          videoInfo: updates,
+        }),
+      })
   );
 
   const { deleting, deleteItem } = useDeleteCourseItem<DeleteTopicVideoInput>(
-    async (updates: DeleteTopicVideoInput) => await courseHelper.deleteTopicVideo(updates)
+    async (updates: DeleteTopicVideoInput) =>
+      await fetch('/api/courses/delete-topic-video', {
+        method: 'POST',
+        body: JSON.stringify({
+          spaceId: space.id,
+          videoInfo: updates,
+        }),
+      })
   );
 
   function doDelete() {
@@ -198,7 +212,14 @@ const CourseVideo: React.FC<CourseVideoProps> = ({ course, isCourseAdmin, space,
   }
 
   const { movingUp, movingDown, moveItem } = useMoveCourseItem<MoveTopicVideoInput>(
-    async (updates: MoveTopicVideoInput) => await courseHelper.moveTopicVideo(updates)
+    async (updates: MoveTopicVideoInput) =>
+      await fetch('/api/courses/move-topic-video', {
+        method: 'POST',
+        body: JSON.stringify({
+          spaceId: space.id,
+          videoInfo: updates,
+        }),
+      })
   );
 
   function doMove(direction: MoveCourseItemDirection) {

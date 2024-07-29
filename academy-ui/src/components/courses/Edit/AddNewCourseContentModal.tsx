@@ -84,54 +84,99 @@ const AddNewCourseContentModal: React.FC<ModalCourseNewItemProps> = ({ course, s
   }
 
   const addTopic = async (topicInfo: UpdateTopicBasicInfoInput): Promise<void> => {
-    await courseHelper.addTopic({
-      courseKey: course.key,
-      details: topicInfo.details,
-      title: topicInfo.title,
+    await fetch('/api/courses/add-topic', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        spaceId: space.id,
+        topicInfo: {
+          courseKey: course.key,
+          details: topicInfo.details,
+          title: topicInfo.title,
+        },
+      }),
     });
     closeModal();
   };
   const addExplanation = async (input: UpdateTopicExplanationInput) => {
-    await courseHelper.addTopicExplanation({
-      courseKey: input.courseKey,
-      details: input.details,
-      shortTitle: input.shortTitle,
-      title: input.title,
-      topicKey: input.topicKey,
+    await fetch('/api/courses/add-topic-explanation', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        spaceId: space.id,
+        explanationInfo: {
+          courseKey: input.courseKey,
+          details: input.details,
+          shortTitle: input.shortTitle,
+          title: input.title,
+          topicKey: input.topicKey,
+        },
+      }),
     });
     closeModal();
   };
   const addSummary = async (input: UpdateTopicSummaryInput) => {
-    await courseHelper.addTopicSummary({
-      courseKey: input.courseKey,
-      details: input.details,
-      shortTitle: input.shortTitle,
-      title: input.title,
-      topicKey: input.topicKey,
+    await fetch('/api/courses/add-topic-summary', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        spaceId: space.id,
+        summaryInfo: {
+          courseKey: input.courseKey,
+          details: input.details,
+          shortTitle: input.shortTitle,
+          title: input.title,
+          topicKey: input.topicKey,
+        },
+      }),
     });
     closeModal();
   };
   const addReading = async (input: UpdateTopicVideoInput) => {
-    await courseHelper.addTopicVideo({
-      courseKey: input.courseKey,
-      details: input.details,
-      shortTitle: input.shortTitle,
-      title: input.title,
-      topicKey: input.topicKey,
-      url: input.url,
+    await fetch('/api/courses/add-topic-video', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        spaceId: space.id,
+        videoInfo: {
+          courseKey: input.courseKey,
+          details: input.details,
+          shortTitle: input.shortTitle,
+          title: input.title,
+          topicKey: input.topicKey,
+          url: input.url,
+        },
+      }),
     });
     closeModal();
   };
   const addQuestion = async (question: UpdateTopicQuestionInput) => {
-    await courseHelper.addTopicQuestion({
-      answerKeys: question.answerKeys,
-      choices: question.choices,
-      content: question.content,
-      courseKey: question.courseKey,
-      explanation: question.explanation,
-      hint: question.hint,
-      questionType: question.questionType,
-      topicKey: question.topicKey,
+    await fetch('/api/courses/add-topic-question', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        spaceId: space.id,
+        questionInfo: {
+          answerKeys: question.answerKeys,
+          choices: question.choices,
+          content: question.content,
+          courseKey: question.courseKey,
+          explanation: question.explanation,
+          hint: question.hint,
+          questionType: question.questionType,
+          topicKey: question.topicKey,
+        },
+      }),
     });
     closeModal();
   };
@@ -153,7 +198,16 @@ const AddNewCourseContentModal: React.FC<ModalCourseNewItemProps> = ({ course, s
         })
       ),
     };
-    await courseHelper.addTopicQuestions(input!);
+    await fetch('/api/courses/add-topic-questions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        spaceId: space.id,
+        questionsInfo: input,
+      }),
+    });
     closeModal();
   };
 
