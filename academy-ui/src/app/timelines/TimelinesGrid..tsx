@@ -7,16 +7,27 @@ import TimelineSummaryCard from '@/components/timelines/Timelines/TimelineSummar
 import NoTimeline from '@/components/timelines/Timelines/NoTimelines';
 import { Grid4Cols } from '@dodao/web-core/components/core/grids/Grid4Cols';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import { useTimelinesQuery } from '@/graphql/generated/generated-types';
-import React from 'react';
+import { Timeline } from '@/graphql/generated/generated-types';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
 function TimelinesInformation({ space }: SpaceProps) {
-  const { data, error, loading, refetch: fetchTimelines } = useTimelinesQuery({ variables: { spaceId: space.id } });
+  const [data, setData] = useState<{ timelines?: Timeline[] }>();
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    async function fetchData() {
+      setLoading(true);
+      const { data } = await axios.get(`/api/timelines/?spaceId=${space.id}`);
+      setData(data);
+      setLoading(false);
+    }
+    fetchData();
+  }, [space]);
 
   const loadingData = loading || !space;
   return (
     <>
-      {!data?.timelines.length && !loadingData && <NoTimeline />}
+      {!data?.timelines?.length && !loadingData && <NoTimeline />}
       {!!data?.timelines?.length && (
         <Grid4Cols>
           {data?.timelines?.map((timeline, i) => (
