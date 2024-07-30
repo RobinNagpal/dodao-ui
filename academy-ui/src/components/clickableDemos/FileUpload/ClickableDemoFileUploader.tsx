@@ -11,7 +11,7 @@ interface Props {
   objectId: string;
   imageType: ImageType;
   onLoading?: (loading: boolean) => void;
-  onInput: (url: string, captureUrl: string) => void;
+  onInput: (url: string, screenImgUrl: string) => void;
   children: React.ReactNode;
   className?: string;
   allowedFileTypes: string[];
