@@ -1154,6 +1154,7 @@ export interface GuideSubmissionFiltersInput {
 
 export interface GuideSubmissionInput {
   from: Scalars['String'];
+  guideId: Scalars['String'];
   guideUuid: Scalars['String'];
   space: Scalars['String'];
   steps: Array<GuideStepSubmissionInput>;
@@ -3006,7 +3007,6 @@ export interface TimelineEvent {
   date: Scalars['DateTimeISO'];
   fullDetails?: Maybe<Scalars['String']>;
   moreLink?: Maybe<Scalars['String']>;
-  order: Scalars['Int'];
   summary: Scalars['String'];
   title: Scalars['String'];
   uuid: Scalars['String'];
@@ -3313,6 +3313,7 @@ export interface UpsertTimelineEventInput {
   date: Scalars['DateTimeISO'];
   fullDetails?: InputMaybe<Scalars['String']>;
   moreLink?: InputMaybe<Scalars['String']>;
+  order: Scalars['Int'];
   summary: Scalars['String'];
   title: Scalars['String'];
   uuid: Scalars['String'];
