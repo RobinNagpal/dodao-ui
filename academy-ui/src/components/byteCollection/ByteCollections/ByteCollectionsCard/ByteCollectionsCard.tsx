@@ -4,7 +4,7 @@ import ByteCollectionCardAdminDropdown from '@/components/byteCollection/ByteCol
 import ByteCompletionCheckmark from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCompletionCheckmark';
 import ByteCollectionCardAddItem from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCollectionCardAddItem';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
-import { ByteCollectionFragment, ProjectByteCollectionFragment, ProjectFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { ByteCollectionFragment, ProjectFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import ArrowTopRightOnSquareIcon from '@heroicons/react/24/outline/ArrowTopRightOnSquareIcon';
 import Link from 'next/link';
 import React from 'react';
@@ -41,6 +41,7 @@ export default function ByteCollectionsCard({
   const [watchVideo, setWatchVideo] = React.useState<boolean>(false);
   const [selectedVideo, setSelectedVideo] = React.useState<VideoModalProps>();
   const [showCreateModal, setShowCreateModal] = React.useState<boolean>(false);
+
   if (watchVideo) {
     return (
       <FullScreenModal key={selectedVideo?.key} title={selectedVideo?.title!} open={true} onClose={() => setWatchVideo(false)} fullWidth={false}>
@@ -109,6 +110,33 @@ export default function ByteCollectionsCard({
                         }}
                       />
                     )}
+                  </div>
+                </div>
+              </li>
+            );
+          })}
+          {byteCollection.demos.map((demo, eventIdx) => {
+            const demoViewUrl = `clickable-demos/view/${demo.demoId}`;
+
+            return (
+              <li key={demo.demoId}>
+                <div className="relative pb-8">
+                  {eventIdx !== byteCollection.demos.length - 1 ? (
+                    <span className="absolute left-4 top-4 -ml-px h-full w-0.5 bg-gray-200" aria-hidden="true" />
+                  ) : null}
+                  <div className="relative flex space-x-3">
+                    <Link className="flex cursor-pointer" href={demoViewUrl}>
+                      <ByteCompletionCheckmark byteId={demo.demoId} />
+                      <div className="flex min-w-0 flex-1 justify-between space-x-2 transform hover:scale-95 transition duration-300 ease-in-out">
+                        <div className="ml-3 text-sm">
+                          <div className="font-bold flex">
+                            {`${demo.title}`} <ArrowTopRightOnSquareIcon className={`h-4 w-4 ml-2 ${styles.openInPopupIcon}`} />
+                          </div>
+
+                          <div className="flex-wrap">{demo.excerpt}</div>
+                        </div>
+                      </div>
+                    </Link>
                   </div>
                 </div>
               </li>

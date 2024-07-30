@@ -24,6 +24,7 @@ export default function CreateContentModalContents({
 
   function onClose() {
     setShowCreateTidbitModal(false);
+    setShowCreateDemoModal(false);
     router.refresh();
   }
 
