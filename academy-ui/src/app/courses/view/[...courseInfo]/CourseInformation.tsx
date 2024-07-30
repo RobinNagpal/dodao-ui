@@ -12,7 +12,7 @@ import BasicCourseConfigurations from '@/components/courses/View/BasicCourseConf
 import CourseDetailsRightSection, { ItemTypes } from '@/components/courses/View/CourseDetailsRightSection';
 import { useCourseSubmission } from '@/components/courses/View/useCourseSubmission';
 import useViewCourse from '@/components/courses/View/useViewCourse';
-import { SpaceWithIntegrationsFragment, useDeleteGitCourseSubmissionMutation } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { isAdmin } from '@/utils/auth/isAdmin';
 import { isSuperAdmin } from '@dodao/web-core/utils/auth/superAdmins';
@@ -82,8 +82,6 @@ const CourseInformation = ({ courseInfo, space }: CourseInformationProps) => {
 
   const courseHelper = useViewCourse(space, courseKey);
   const submissionHelper = useCourseSubmission(space, courseKey);
-
-  const [deleteGitCourseSubmissionMutation] = useDeleteGitCourseSubmissionMutation();
 
   const { course, loading } = courseHelper;
 
@@ -161,11 +159,15 @@ const CourseInformation = ({ courseInfo, space }: CourseInformationProps) => {
           open={showDeleteSubmissionModal}
           onClose={() => setShowDeleteSubmissionModal(false)}
           onDelete={async () => {
-            await deleteGitCourseSubmissionMutation({
-              variables: {
+            await fetch(`/api/courses/submission/course-submissions/${courseKey}`, {
+              method: 'DELETE',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
                 spaceId: space.id,
                 courseKey: courseKey,
-              },
+              }),
             });
 
             window.location.reload();

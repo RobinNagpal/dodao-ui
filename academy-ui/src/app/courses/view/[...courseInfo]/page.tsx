@@ -2,8 +2,9 @@ import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import CourseInformation from './CourseInformation';
 import { Metadata } from 'next';
 import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
-import getApiResponse from '@/utils/api/getApiResponse';
 import { CourseDetailsFragment } from '@/graphql/generated/generated-types';
+import axios from 'axios';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 
 type CourseViewProps = {
   params: { courseInfo: string[] };
@@ -18,7 +19,8 @@ export async function generateMetadata({ params }: CourseViewProps): Promise<Met
   const itemType = Array.isArray(courseInfo) && courseInfo.length > 2 ? courseInfo[2] : undefined;
   const itemKey = Array.isArray(courseInfo) && courseInfo.length > 3 ? courseInfo[3] : undefined;
   const space = (await getSpaceServerSide())!;
-  const course = await getApiResponse<CourseDetailsFragment>(space, `courses/${courseKey}`);
+  const response = await axios.get(`${getBaseUrl()}/api/courses/${courseKey}`);
+  const course: CourseDetailsFragment = response.data.course;
   let description = `\n\n${course.title}\n\n${course.details}`;
   let keywords = [course.title];
   if (topicKey !== undefined) {

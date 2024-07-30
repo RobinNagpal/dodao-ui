@@ -10,11 +10,11 @@ export interface EditShortVideoModalProps {
 }
 
 export default function EditShortVideoView({ shortVideoToEdit, space, onAfterSave, onCancel }: EditShortVideoModalProps) {
-  const [upsertShortVideoMutation] = useUpsertShortVideoMutation();
-
   const upsertShortVideo = async (shortVideo: ShortVideoInput) => {
-    await upsertShortVideoMutation({
-      variables: {
+    await fetch(`/api/short-videos/${shortVideo.id}`, {
+      method: 'POST',
+      body: JSON.stringify({
+        spaceId: space.id,
         shortVideo: {
           id: shortVideo.id,
           title: shortVideo.title,
@@ -23,9 +23,7 @@ export default function EditShortVideoView({ shortVideoToEdit, space, onAfterSav
           videoUrl: shortVideo.videoUrl,
           thumbnail: shortVideo.thumbnail,
         },
-        spaceId: space.id,
-      },
-      refetchQueries: ['ShortVideos'],
+      }),
     });
   };
 
