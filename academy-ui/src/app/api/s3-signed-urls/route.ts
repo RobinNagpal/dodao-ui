@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ status: 200, url: await presignedUrlCreator.createSignedUrl(spaceById.id, args.input) });
   } catch (e) {
-    await logError((e as any)?.response?.data || 'Error in createSignedUrlMutation', {}, e as any, null, null);
+    await logError((e as any)?.response?.data || 'Error in createSignedUrls', {}, e as any, null, null);
     throw e;
   }
 }
