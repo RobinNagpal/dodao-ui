@@ -56,12 +56,12 @@ export default function Step({
 }: StepProps) {
   const [uploadHTMLFileLoading, setUploadHTMLFileLoading] = useState(false);
 
-  const updateStepSelector = (selector: string | number | undefined) => {
-    onUpdateStep({ ...step, selector: selector?.toString() || '' });
+  const updateStepSelector = (selector: string | number | undefined, selectedElementImgUrl: string | undefined) => {
+    onUpdateStep({ ...step, selector: selector?.toString() || '', selectedElementImgUrl: selectedElementImgUrl?.toString() || '' });
   };
 
-  const updateStepUrl = (url: string | number | undefined, captureUrl: string | undefined) => {
-    onUpdateStep({ ...step, url: url?.toString() || '', captureUrl: captureUrl?.toString() || '' });
+  const updateStepUrl = (url: string | number | undefined, screenImgUrl: string | undefined) => {
+    onUpdateStep({ ...step, url: url?.toString() || '', screenImgUrl: screenImgUrl?.toString() || '' });
   };
 
   const updateStepTooltipInfo = (tooltipInfo: string | number | undefined) => {
@@ -126,9 +126,9 @@ export default function Step({
             onLoading={setUploadHTMLFileLoading}
           />
         </div>
-        {step.captureUrl && ( // Assuming `step.captureUrl` holds the URL of the screenshot image
+        {step.screenImgUrl && ( // Assuming `step.screenImgUrl` holds the URL of the screenshot image
           <div className="mt-4">
-            <img src={step.captureUrl} alt="Screenshot" className="rounded-lg shadow-md max-w-full h-auto" />
+            <img src={step.screenImgUrl} alt="Screenshot" className="rounded-lg shadow-md max-w-full h-auto" />
           </div>
         )}
       </div>
@@ -139,11 +139,17 @@ export default function Step({
             error={inputError('selector') ? 'Selector is required' : ''}
             space={space}
             modelValue={step.selector}
+            selectedElementImgUrl={step.selectedElementImgUrl}
             objectId={(space?.name && slugify(space?.name)) || space?.id || 'new-space'}
             fileUrl={step.url}
             onInput={updateStepSelector}
             onLoading={setUploadHTMLFileLoading}
           />
+          {step.selectedElementImgUrl && ( // Assuming `step.screenImgUrl` holds the URL of the screenshot image
+            <div className="mt-4">
+              <img src={step.selectedElementImgUrl} alt="Screenshot" className="rounded-lg shadow-md max-w-full h-auto" />
+            </div>
+          )}
         </div>
       </div>
     </div>
