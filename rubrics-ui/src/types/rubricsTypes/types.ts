@@ -14,6 +14,7 @@ export interface RubricCell {
   columnName: string;
   description: string;
   score: number;
+  criteriaId?: string;
 }
 
 export interface Rubric {
@@ -28,6 +29,7 @@ export interface Rubric {
 export interface RubricsPageProps {
   selectedProgramId: string | null;
   isEditAccess?: boolean;
+  rateRubricsFormatted?: RubricServerData;
 }
 
 export interface ProgramListProps {
@@ -57,7 +59,14 @@ export interface RubricCellProps {
   cellIndex: number;
   isEditAccess: boolean | undefined;
   onEditClick: (type: 'rubric', criteria: string, index: number) => void;
+  handleCommentModal: (cellIndex: number) => void;
+  rubricRatingHeaders?: rubricRatingHeader[];
+  className: string;
+  onClick: () => void;
+  isClicked: boolean;
+  cellIds?: cellIds[];
 }
+
 export interface RubricLevelProps {
   header: string;
   index: number;
@@ -68,10 +77,14 @@ export interface RubricLevelProps {
 }
 export interface RubricCriteriaProps {
   criteria: string;
-  rubrics: Record<string, string[]>;
+  rubrics?: Record<string, string[]>;
   isEditAccess: boolean | undefined;
   onEditClick: (type: 'rubric' | 'header' | 'criteria', criteria: string | number, index: number) => void;
   onDeleteCriteria: (criteria: string) => void;
+  rubricCell?: RubricCell[];
+  rubricRatingHeaders?: rubricRatingHeader[];
+  cellIds?: cellIds[];
+  rubricId?: string;
 }
 
 export interface ProgramListProps {
@@ -104,4 +117,74 @@ export interface RateRubricProps {
   params: {
     id: string;
   };
+}
+
+export interface Level {
+  id: string;
+  columnName: string;
+  description: string;
+  score: number;
+}
+
+export interface Criterion {
+  id: string;
+  title: string;
+}
+export interface cellIds {
+  criteriaId: string;
+  levelId: string;
+  cellId: string;
+  description: string;
+}
+export interface RubricServerData {
+  id: string;
+  description: string;
+  levelId: string;
+  criteriaId: string;
+  criteriaOrder: [];
+  cellIds: cellIds[];
+  rubricId: string;
+}
+
+export interface ProgramServerProps {
+  id: string;
+  name: string;
+  summary: string;
+}
+
+export interface RubricServerData {
+  id: string;
+  name: string;
+  summary: string;
+  description: string;
+  levels: Level[];
+  rubric: Record<string, string[]>;
+  rubricCell: RubricCell[];
+  programs: ProgramDetails[];
+
+  ratingHeaders: rubricRatingHeader[] | undefined;
+}
+export interface rubricRatingHeader {
+  header: string;
+  score: number;
+}
+export interface ProgramDetails {
+  name: string;
+  summary: string;
+}
+
+export interface CommentModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  comment: string;
+  setComment: (comment: string) => void;
+  handleSave: () => void;
+  criteria: string;
+}
+
+export interface ConfirmationModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+  message: string;
 }

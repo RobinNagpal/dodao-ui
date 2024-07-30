@@ -1,9 +1,9 @@
-// Replace with your actual uploadImageToS3 import
 import LoadingSpinner from '@dodao/web-core/components/core/loaders/LoadingSpinner';
 import { CreateSignedUrlInput, ImageType, useCreateSignedUrlMutation } from '@/graphql/generated/generated-types';
 import { getUploadedImageUrlFromSingedUrl } from '@dodao/web-core/utils/upload/getUploadedImageUrlFromSingedUrl';
 import axios from 'axios';
 import React, { useRef, useState } from 'react';
+import html2canvas from 'html2canvas';
 import styles from './ClickableDemoFileUploader.module.scss';
 
 interface Props {
@@ -11,7 +11,7 @@ interface Props {
   objectId: string;
   imageType: ImageType;
   onLoading?: (loading: boolean) => void;
-  onInput?: (imageUrl: string) => void;
+  onInput: (url: string, captureUrl: string) => void;
   children: React.ReactNode;
   className?: string;
   allowedFileTypes: string[];
@@ -20,6 +20,7 @@ interface Props {
 export default function ClickableDemoFileUploader({ spaceId, objectId, imageType, onLoading, onInput, children, className, allowedFileTypes }: Props) {
   const [loading, setLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
   const [createSignedUrlMutation] = useCreateSignedUrlMutation();
 
   async function uploadToS3AndReturnImgUrl(imageType: string, file: File, objectId: string) {
@@ -41,6 +42,25 @@ export default function ClickableDemoFileUploader({ spaceId, objectId, imageType
     return imageUrl;
   }
 
+  async function uploadScreenshotToS3AndReturnImgUrl(file: File, objectId: string) {
+    const input: CreateSignedUrlInput = {
+      imageType: 'ClickableDemos/SCREENSHOT_CAPTURE', // Change as necessary
+      contentType: file.type,
+      objectId,
+      name: file.name.replace(' ', '_').toLowerCase(),
+    };
+
+    const response = await createSignedUrlMutation({ variables: { spaceId, input } });
+
+    const signedUrl = response?.data?.payload!;
+    await axios.put(signedUrl, file, {
+      headers: { 'Content-Type': file.type },
+    });
+
+    const screenshotUrl = getUploadedImageUrlFromSingedUrl(signedUrl);
+    return screenshotUrl;
+  }
+
   function injectScriptLinkTags(htmlContent: string): string {
     // Regular expression for matching the opening style tag
     const closingHeadRegex = /<style>/i;
@@ -55,10 +75,9 @@ export default function ClickableDemoFileUploader({ spaceId, objectId, imageType
       const linkTag3 = `<link rel="stylesheet" href="https://unpkg.com/tippy.js@6/themes/material.css" />`;
       const scriptTag1 = `<script src="https://unpkg.com/@popperjs/core@2"></script>`;
       const scriptTag2 = `<script src="https://unpkg.com/tippy.js@6"></script>`;
-
+      const html2CanvasScript = ` <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>`;
       const customLinkTag = `<link rel="stylesheet" href="https://dodao-prod-public-assets.s3.amazonaws.com/clickable-demos-prod-files/clickableDemoTooltipStyles.css" />`;
       const customScriptTag = `<script src="https://dodao-prod-public-assets.s3.amazonaws.com/clickable-demos-prod-files/clickableDemoTooltipScript.js"></script>`;
-
       const scriptTagCustom = `<script>
       console.log("Injecting event listener for clickable demo tooltip");
       window.addEventListener("message", (event) => {
@@ -103,6 +122,7 @@ export default function ClickableDemoFileUploader({ spaceId, objectId, imageType
         customLinkTag,
         customScriptTag,
         scriptTagCustom,
+        html2CanvasScript,
         htmlContent.slice(headEndTagIndex),
       ].join('');
 
@@ -133,20 +153,57 @@ export default function ClickableDemoFileUploader({ spaceId, objectId, imageType
         return;
       }
 
-      try {
-        const imageUrl = await uploadToS3AndReturnImgUrl(imageType, editedFile, objectId.replace(/[^a-z0-9]/gi, '_'));
+      const iframe = iframeRef.current;
+      if (iframe) {
+        iframe.onload = async () => {
+          await new Promise((resolve) => setTimeout(resolve, 1000)); // Adjust the timeout as necessary
 
-        onInput && onInput(imageUrl);
+          const iframeDocument = iframe.contentDocument || iframe.contentWindow?.document;
+          if (iframeDocument) {
+            const canvas = await html2canvas(iframeDocument.documentElement, {
+              useCORS: true,
+              width: 1920,
+              height: 1080,
+            });
+
+            if (canvas.width > 0 && canvas.height > 0) {
+              canvas.toBlob(async (blob) => {
+                if (blob) {
+                  const screenshotFile = new File([blob], `${file.name}_screenshot.png`, { type: 'image/png' });
+                  const screenshotUrl = await uploadScreenshotToS3AndReturnImgUrl(screenshotFile, objectId.replace(/[^a-z0-9]/gi, '_'));
+
+                  const imageUrl = await uploadToS3AndReturnImgUrl(imageType, editedFile, objectId.replace(/[^a-z0-9]/gi, '_'));
+                  onInput && onInput(imageUrl, screenshotUrl);
+                  setLoading(false);
+                  onLoading && onLoading(false);
+                } else {
+                  console.error('Blob generation failed');
+                  setLoading(false);
+                  onLoading && onLoading(false);
+                }
+              });
+            } else {
+              console.error('Canvas has zero width or height');
+              setLoading(false);
+              onLoading && onLoading(false);
+            }
+          } else {
+            console.error('Failed to get iframe document');
+            setLoading(false);
+            onLoading && onLoading(false);
+          }
+        };
+
+        iframe.src = URL.createObjectURL(editedFile);
+        iframe.style.display = 'block'; // Ensure iframe is displayed before capturing
+      } else {
         setLoading(false);
         onLoading && onLoading(false);
-      } catch (error) {
-        setLoading(false);
-        onLoading && onLoading(false);
-        console.log(error);
+        console.error('Iframe not found');
       }
     };
 
-    reader.readAsText(file); // Read the file content as text
+    reader.readAsText(file);
   };
 
   return (
@@ -159,6 +216,17 @@ export default function ClickableDemoFileUploader({ spaceId, objectId, imageType
           {children}
         </label>
       )}
+      <iframe
+        ref={iframeRef}
+        style={{
+          width: '1920px',
+          height: '1080px',
+          border: 'none',
+          position: 'absolute',
+          left: '-9999px',
+          top: '-9999px',
+        }}
+      />
     </div>
   );
 }
