@@ -21,7 +21,6 @@ export default function ClickableDemoFileUploader({ spaceId, objectId, imageType
   const [loading, setLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
-  const [createSignedUrlMutation] = useCreateSignedUrlMutation();
 
   async function uploadToS3AndReturnImgUrl(imageType: string, file: File, objectId: string) {
     const input: CreateSignedUrlInput = {
@@ -50,9 +49,9 @@ export default function ClickableDemoFileUploader({ spaceId, objectId, imageType
       name: file.name.replace(' ', '_').toLowerCase(),
     };
 
-    const response = await createSignedUrlMutation({ variables: { spaceId, input } });
+    const response = await axios.post('/api/upload-file/create-signed-url', { spaceId, input });
 
-    const signedUrl = response?.data?.payload!;
+    const signedUrl = response?.data?.url!;
     await axios.put(signedUrl, file, {
       headers: { 'Content-Type': file.type },
     });
