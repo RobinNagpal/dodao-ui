@@ -73,7 +73,7 @@ export default function SelectImageInputModal({ imageType, objectId, spaceId, op
         onClose={onClose}
         generateImagePromptFn={generateImagePromptFn!}
         onInput={async (imageUrl) => {
-          const payload = await axios.post('/api/upload-file/s3-files', {
+          const payload = await axios.post('/api/s3-files', {
             spaceId,
             input: { imageUrl, imageType, objectId, name: imageUrl.split('/').pop()!, imageSource: ImageSource.Dalle },
           });

@@ -39,7 +39,7 @@ export default function FileUploader({ spaceId, objectId, imageType, onLoading, 
       name: file.name.replace(' ', '_').toLowerCase(),
     };
 
-    const response = await axios.post('/api/upload-file/s3-signed-urls', { spaceId, input });
+    const response = await axios.post('/api/s3-signed-urls', { spaceId, input });
 
     const signedUrl = response?.data?.url!;
     await axios.put(signedUrl, file, {
