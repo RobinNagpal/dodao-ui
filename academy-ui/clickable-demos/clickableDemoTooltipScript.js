@@ -203,6 +203,7 @@ function replaceIframeWithDiv() {
 function elementSelector(event) {
   let selectedElement = null;
   let final_xpath = null;
+  let dataURL;
   function createOrUpdateOverlay(selectedElement) {
     // Remove any existing overlay
     // Check if there's a selected element
@@ -293,6 +294,82 @@ function elementSelector(event) {
 
     // Get the bounding rectangle of the selected element
   }
+
+  function captureScreenshotWithOverlay(element) {
+    function checkScrollBar(element) {
+      let res = !!element.scrollTop;
+      if (!res) {
+        element.scrollTop = 1;
+        res = !!element.scrollTop;
+        element.scrollTop = 0;
+      }
+      return res;
+    }
+
+    function isScrollable(element) {
+      const hasVerticalScroll = checkScrollBar(element);
+
+      return hasVerticalScroll;
+    }
+    const margin = 30;
+    let parent = element.parentElement;
+
+    // Calculate total scroll offsets from all scrollable ancestors
+    let scrollOffsetX = 0;
+    let scrollOffsetY = 0;
+    let noOfScrolls = 0;
+
+    while (parent) {
+      isScrollable(parent) && noOfScrolls++;
+      // console.log(parent);
+      scrollOffsetX += parent.scrollLeft;
+      if (parent.scrollTop != 0) {
+        scrollOffsetY += parent.scrollTop;
+      }
+      // console.log(scrollOffsetY);
+      parent = parent.parentElement;
+    }
+    let y_scroll = scrollOffsetY;
+    // console.log(window.scrollY);
+    if (scrollOffsetY === window.scrollY && noOfScrolls > 0) {
+      y_scroll = noOfScrolls * scrollOffsetY;
+    } else {
+      y_scroll += window.scrollY;
+    }
+    // console.log(y_scroll);
+    // console.log(noOfScrolls);
+    // Calculate the area to capture, considering all scroll offsets and window scroll position
+    let rect = element.getBoundingClientRect();
+    const captureArea = {
+      x: Math.max(0, rect.left + scrollOffsetX - margin),
+      y: Math.max(0, rect.top + y_scroll - margin),
+      width: rect.width + margin * 2,
+      height: rect.height + margin * 2,
+    };
+    html2canvas(document.body, {
+      x: captureArea.x,
+      y: captureArea.y,
+      width: captureArea.width,
+      height: captureArea.height,
+      windowWidth: document.documentElement.scrollWidth,
+      scrollY: scrollOffsetY,
+      useCORS: true,
+      backgroundColor: null,
+      logging: true,
+    })
+      .then((canvas) => {
+        // Convert the canvas to a data URL
+        dataURL = canvas.toDataURL('image/png');
+        // console.log("Data URL created:", dataURL);
+        // dataURL = canvas;
+        // Create an image element to preview the screenshot
+      })
+      .catch((error) => {
+        console.error('Error capturing screenshot:', error);
+      });
+    console.log('Function execution ended.');
+  }
+
   document.body.style.cursor = 'pointer';
   const inputs = document.querySelectorAll('input');
   inputs.forEach((input) => {
@@ -340,11 +417,17 @@ function elementSelector(event) {
   };
   // Optionally, add an event listener for click events
   button.addEventListener('click', () => {
-    event.source.postMessage({ xpath: final_xpath }, event.origin);
+    captureScreenshotWithOverlay(selectedElement);
+    setTimeout(() => {
+      selectedElementImgUrl = dataURL;
+    }, 200);
+    setTimeout(() => {
+      event.source.postMessage({ xpath: final_xpath, selectedElementImgUrl: selectedElementImgUrl }, event.origin);
+    }, 200);
   });
   // Append the button to the body
   document.body.appendChild(button);
-  
+
   let hoverTimer;
   let hoverEnabled = true;
   document.addEventListener('mouseover', function (event) {
@@ -367,6 +450,9 @@ function elementSelector(event) {
 
     var clickedElement = event.target;
     // Handle your logic based on the clicked element (minusButton, plusButton, etc.)
+    if (clickedElement === button) {
+      return;
+    }
     if (clickedElement === minusButton) {
       // Handle minusButton logic
       if (!selectedElement || !selectedElement.parentNode) return;
