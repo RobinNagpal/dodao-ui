@@ -199,11 +199,6 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, onUpsert: (byt
         }),
       });
 
-      // if (!upsertResponse.ok) {
-      //   throw new Error('Failed to upsert byte');
-      // }
-      // console.log('upsert Response: ', upsertResponse);
-
       const { upsertedByte } = await upsertResponse.json();
 
       const mappingResponse = await fetch('/api/mapping/upsertByteMapping', {
@@ -218,10 +213,6 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, onUpsert: (byt
           order: byteCollection.bytes.length + 1,
         }),
       });
-
-      // if (!mappingResponse.ok) {
-      //   throw new Error('Failed to create mapping item');
-      // }
 
       return upsertedByte;
     });

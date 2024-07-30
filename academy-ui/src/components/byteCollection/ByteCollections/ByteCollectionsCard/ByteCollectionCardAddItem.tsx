@@ -4,6 +4,7 @@ import Button from '@dodao/web-core/components/core/buttons/Button';
 import { SpaceWithIntegrationsFragment, ByteCollectionFragment } from '@/graphql/generated/generated-types';
 import React, { useState } from 'react';
 import EditByteView from '@/components/bytes/Edit/EditByteView';
+import EditClickableDemo from '@/components/clickableDemos/Create/EditClickableDemo';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import { useRouter } from 'next/navigation';
 
@@ -41,7 +42,7 @@ export default function CreateContentModalContents({
           </Button>
         </div>
       </div>
-      {showCreateTidbitModal ? (
+      {showCreateTidbitModal && (
         <FullScreenModal open={true} onClose={onClose} title={'Create Tidbit'}>
           <div className="text-left">
             <EditByteView
@@ -53,7 +54,15 @@ export default function CreateContentModalContents({
             />
           </div>
         </FullScreenModal>
-      ) : null}
+      )}
+
+      {showCreateDemoModal && (
+        <FullScreenModal open={true} onClose={onClose} title={'Create Clickable Demo'}>
+          <div className="text-left">
+            <EditClickableDemo demoId={null} byteCollection={byteCollection} />
+          </div>
+        </FullScreenModal>
+      )}
     </>
   );
 }

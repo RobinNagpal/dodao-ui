@@ -12,6 +12,19 @@ fragment ByteCollection on ByteCollection {
     content
     videoUrl
   }
+  demos {
+    demoId
+    title
+    excerpt
+    steps {
+      id
+      url
+      selector
+      tooltipInfo
+      placement
+      order
+    }
+  }
 }
 
 query ByteCollections($spaceId: String!) {
