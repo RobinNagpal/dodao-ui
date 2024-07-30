@@ -3,13 +3,14 @@
 import GenerateFromDalleModal from '@/components/app/Image/GenerateFromDalleModal';
 import UploadFromUnsplashModal from '@/components/app/Image/UploadFromUnsplashModal';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
-import { ImageSource, ImageType, useUploadImageFromUrlToS3Mutation } from '@/graphql/generated/generated-types';
+import { ImageSource, ImageType } from '@/graphql/generated/generated-types';
 import ArrowUpTrayIcon from '@heroicons/react/24/solid/ArrowUpTrayIcon';
 import PhotoIcon from '@heroicons/react/24/solid/PhotoIcon';
 
 import React from 'react';
 import styled from 'styled-components';
 import UploadImageFromDeviceModal from './UploadImageFromDeviceModal';
+import axios from 'axios';
 
 const UploadWrapper = styled.div`
   background-color: var(--bg-color);
@@ -35,27 +36,17 @@ enum ImageModalSelectionType {
 export default function SelectImageInputModal({ imageType, objectId, spaceId, open, onClose, imageUploaded, generateImagePromptFn }: UploadInputProps) {
   const [imageUploadModalType, setImageUploadModalType] = React.useState<ImageModalSelectionType | null>(null);
 
-  const [uploadImageFromUrlToS3Mutation] = useUploadImageFromUrlToS3Mutation();
-
   if (imageUploadModalType === ImageModalSelectionType.UploadFromUnsplash) {
     return (
       <UploadFromUnsplashModal
         open={imageUploadModalType === ImageModalSelectionType.UploadFromUnsplash}
         onClose={onClose}
         onInput={async (imageUrl) => {
-          const payload = await uploadImageFromUrlToS3Mutation({
-            variables: {
-              spaceId,
-              input: {
-                imageSource: ImageSource.Unsplash,
-                imageUrl: imageUrl,
-                imageType,
-                objectId,
-                name: imageUrl.split('/').pop()!,
-              },
-            },
+          const payload = await axios.post('/api/s3-files', {
+            spaceId,
+            input: { imageUrl, imageType, objectId, name: imageUrl.split('/').pop()!, imageSource: ImageSource.Unsplash },
           });
-          imageUploaded(payload?.data?.payload || 'empty');
+          imageUploaded(payload?.data?.imageUrl || 'empty');
         }}
       />
     );
@@ -82,22 +73,14 @@ export default function SelectImageInputModal({ imageType, objectId, spaceId, op
         onClose={onClose}
         generateImagePromptFn={generateImagePromptFn!}
         onInput={async (imageUrl) => {
-          const payload = await uploadImageFromUrlToS3Mutation({
-            variables: {
-              spaceId,
-              input: {
-                imageSource: ImageSource.Dalle,
-                imageUrl: imageUrl,
-                imageType,
-                objectId,
-                name: imageUrl.split('/').pop()!,
-              },
-            },
+          const payload = await axios.post('/api/s3-files', {
+            spaceId,
+            input: { imageUrl, imageType, objectId, name: imageUrl.split('/').pop()!, imageSource: ImageSource.Dalle },
           });
           // const s3Url = await uploadToS3AndReturnImgUrl(imageUrl);
-          imageUploaded(payload?.data?.payload || 'empty');
+          imageUploaded(payload?.data?.imageUrl || 'empty');
           // const s3Url = await uploadToS3AndReturnImgUrl(imageUrl);
-          imageUploaded(payload?.data?.payload || 'empty');
+          imageUploaded(payload?.data?.imageUrl || 'empty');
         }}
       />
       <FullPageModal open={!imageUploadModalType && open} onClose={onClose} title={'Upload Image'}>
