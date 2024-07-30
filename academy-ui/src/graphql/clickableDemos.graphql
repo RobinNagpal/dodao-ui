@@ -8,9 +8,10 @@ fragment ClickableDemoWithSteps on ClickableDemoWithSteps {
     url
     selector
     tooltipInfo
-    captureUrl
     placement
     order
+    screenImgUrl
+    selectedElementImgUrl
   }
   createdAt
   updatedAt

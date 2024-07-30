@@ -357,23 +357,25 @@ type ClickableDemo {
 }
 
 type ClickableDemoStep {
-  captureUrl: String
   id: String!
   order: Int!
   placement: String!
   selector: String!
   tooltipInfo: String!
   url: String!
+  screenImgUrl: String
+  selectedElementImgUrl: String
 }
 
 input ClickableDemoStepInput {
-  captureUrl: String
   id: String!
   order: Int!
   placement: String!
   selector: String!
   tooltipInfo: String!
   url: String!
+  screenImgUrl: String
+  selectedElementImgUrl: String
 }
 
 type ClickableDemoWithSteps {
