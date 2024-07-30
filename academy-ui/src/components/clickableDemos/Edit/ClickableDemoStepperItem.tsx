@@ -60,8 +60,8 @@ export default function Step({
     onUpdateStep({ ...step, selector: selector?.toString() || '' });
   };
 
-  const updateStepUrl = (url: string | number | undefined) => {
-    onUpdateStep({ ...step, url: url?.toString() || '' });
+  const updateStepUrl = (url: string | number | undefined, captureUrl: string | undefined) => {
+    onUpdateStep({ ...step, url: url?.toString() || '', captureUrl: captureUrl?.toString() || '' });
   };
 
   const updateStepTooltipInfo = (tooltipInfo: string | number | undefined) => {
@@ -126,6 +126,11 @@ export default function Step({
             onLoading={setUploadHTMLFileLoading}
           />
         </div>
+        {step.captureUrl && ( // Assuming `step.captureUrl` holds the URL of the screenshot image
+          <div className="mt-4">
+            <img src={step.captureUrl} alt="Screenshot" className="rounded-lg shadow-md max-w-full h-auto" />
+          </div>
+        )}
       </div>
       <div className="w-full">
         <div className="mt-4">

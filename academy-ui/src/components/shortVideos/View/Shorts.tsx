@@ -10,7 +10,7 @@ import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsis
 import { useState } from 'react';
 import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
 import { useRouter } from 'next/navigation';
-import { ShortVideo, SpaceWithIntegrationsFragment, useDeleteShortVideoMutation, ProjectShortVideo } from '@/graphql/generated/generated-types';
+import { ShortVideo, SpaceWithIntegrationsFragment, ProjectShortVideo } from '@/graphql/generated/generated-types';
 
 interface ShortsThumbnailProps {
   shortVideo: ShortVideo | ProjectShortVideo;
@@ -21,7 +21,6 @@ function ShortsThumbnail({ shortVideo, space }: ShortsThumbnailProps) {
   const { thumbnail, title } = shortVideo;
   const threeDotItems: EllipsisDropdownItem[] = [{ label: 'Delete', key: 'delete' }];
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [deleteShortVideoMutation] = useDeleteShortVideoMutation();
 
   const router = useRouter();
   return (
@@ -63,7 +62,10 @@ function ShortsThumbnail({ shortVideo, space }: ShortsThumbnailProps) {
           open={showDeleteModal}
           onClose={() => setShowDeleteModal(false)}
           onDelete={async () => {
-            await deleteShortVideoMutation({ variables: { shortVideoId: shortVideo.id, spaceId: space!.id } });
+            await fetch(`/api/short-videos/${shortVideo.id}`, {
+              method: 'DELETE',
+              body: JSON.stringify({ spaceId: space!.id }),
+            });
             setShowDeleteModal(false);
             router.refresh();
           }}

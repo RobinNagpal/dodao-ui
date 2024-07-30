@@ -2,7 +2,7 @@ import { useNotificationContext } from '@dodao/web-core/ui/contexts/Notification
 import { useI18 } from '@/hooks/useI18';
 import { useState } from 'react';
 
-export function useEditCourseDetails<T>(doSave: (form: T) => Promise<boolean>) {
+export function useEditCourseDetails<T>(doSave: (form: T) => Promise<Response>) {
   const { showNotification } = useNotificationContext();
   const [editMode, setEditMode] = useState(false);
   const [upserting, setUpserting] = useState(false);
