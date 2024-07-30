@@ -357,6 +357,7 @@ type ClickableDemo {
 }
 
 type ClickableDemoStep {
+  captureUrl: String
   id: String!
   order: Int!
   placement: String!
@@ -366,6 +367,7 @@ type ClickableDemoStep {
 }
 
 input ClickableDemoStepInput {
+  captureUrl: String
   id: String!
   order: Int!
   placement: String!
@@ -1176,7 +1178,13 @@ type Mutation {
   createSignedUrl(input: CreateSignedUrlInput!, spaceId: String!): String!
   createSpace(spaceInput: UpsertSpaceInput!): Space!
   createSummaryOfContent(input: String!): OpenAITextResponse!
-  createWebsiteScrapingInfo(baseUrl: String!, ignoreHashInUrl: Boolean!, ignoreQueryParams: Boolean!, scrapingStartUrl: String!, spaceId: String!): WebsiteScrapingInfo!
+  createWebsiteScrapingInfo(
+    baseUrl: String!
+    ignoreHashInUrl: Boolean!
+    ignoreQueryParams: Boolean!
+    scrapingStartUrl: String!
+    spaceId: String!
+  ): WebsiteScrapingInfo!
   deleteAndPullCourseRepo(courseKey: String!, spaceId: String!): GitCourse!
   deleteByte(byteId: String!, spaceId: String!): Boolean!
   deleteByteCollection(byteCollectionId: String!): Boolean!
@@ -1196,7 +1204,14 @@ type Mutation {
   downloadAndCleanContent(input: String!): DownloadAndCleanContentResponse!
   dropPineconeNamespace(spaceId: String!): Boolean!
   editArticleIndexingInfo(articleIndexingInfoId: String!, articleUrl: String!, spaceId: String!): ArticleIndexingInfo!
-  editWebsiteScrapingInfo(baseUrl: String!, ignoreHashInUrl: Boolean!, ignoreQueryParams: Boolean!, scrapingStartUrl: String!, spaceId: String!, websiteScrapingInfoId: String!): WebsiteScrapingInfo!
+  editWebsiteScrapingInfo(
+    baseUrl: String!
+    ignoreHashInUrl: Boolean!
+    ignoreQueryParams: Boolean!
+    scrapingStartUrl: String!
+    spaceId: String!
+    websiteScrapingInfoId: String!
+  ): WebsiteScrapingInfo!
   extractRelevantTextForTopic(input: ExtractRelevantTextForTopicInput!): OpenAITextResponse!
   generateImage(input: GenerateImageInput!): ImagesResponse!
   generateImageEdit(input: GenerateImageEditInput!): GenerateImageResponse!

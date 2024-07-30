@@ -454,3 +454,18 @@ model Course {
 
   @@map("courses")
 }
+
+model ShortVideo {
+  id          String   @id @db.VarChar(255)
+  spaceId     String   @map("space_id") @db.VarChar(64)
+  priority    Int      @default(20) @map("priority")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  title       String   @db.VarChar(255)
+  description String
+  videoUrl    String   @map("video_url") @db.VarChar(1024)
+  thumbnail   String   @db.VarChar(1024)
+  archive     Boolean? @default(false)
+
+  @@map("short_videos")
+}
