@@ -126,7 +126,6 @@ export default function ByteCollectionsCard({
                   ) : null}
                   <div className="relative flex space-x-3">
                     <Link className="flex cursor-pointer" href={demoViewUrl}>
-                      <ByteCompletionCheckmark byteId={demo.demoId} />
                       <div className="flex min-w-0 flex-1 justify-between space-x-2 transform hover:scale-95 transition duration-300 ease-in-out">
                         <div className="ml-3 text-sm">
                           <div className="font-bold flex">
