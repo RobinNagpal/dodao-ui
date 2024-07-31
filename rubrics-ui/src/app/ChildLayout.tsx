@@ -20,13 +20,17 @@ import { SessionProvider } from 'next-auth/react';
 import { useEffect, useMemo } from 'react';
 import ReactGA from 'react-ga4';
 import styles from './ChildLayout.module.scss';
-
+import { Footer } from '@/components/Footer/Footer';
 function PageTopNav(props: { space: WebCoreSpace }) {
   return <TopNav space={props.space} />;
 }
 
 function PageFooter(props: { space: WebCoreSpace }) {
-  return <div>Footer</div>;
+  return (
+    <div>
+      <Footer />
+    </div>
+  );
 }
 
 export function ChildLayout({
