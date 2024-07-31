@@ -7,7 +7,7 @@ import {
   UpdateByteFunctions,
 } from '@/components/bytes/Edit/editByteHelper';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { ByteDetailsFragment, SpaceWithIntegrationsFragment, ByteCollectionFragment } from '@/graphql/generated/generated-types';
+import { ByteDetailsFragment, SpaceWithIntegrationsFragment, ByteCollectionFragment, ProjectByteCollectionFragment } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
 import { ByteErrors } from '@dodao/web-core/types/errors/byteErrors';
 import { emptyByte } from '@/utils/byte/EmptyByte';
@@ -186,7 +186,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, onUpsert: (byt
     setByteUpserting(false);
   };
 
-  const handleByteUpsert = async (byteCollection: ByteCollectionFragment) => {
+  const handleByteUpsert = async (byteCollection: ByteCollectionFragment | ProjectByteCollectionFragment) => {
     await saveViaMutation(async () => {
       const upsertResponse = await fetch('/api/byte/upsert-byte', {
         method: 'POST',

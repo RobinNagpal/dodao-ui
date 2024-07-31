@@ -1,6 +1,6 @@
 // Replace with your actual uploadImageToS3 import
 import LoadingSpinner from '@dodao/web-core/components/core/loaders/LoadingSpinner';
-import { CreateSignedUrlInput, ImageType, useCreateSignedUrlMutation } from '@/graphql/generated/generated-types';
+import { CreateSignedUrlInput, ImageType } from '@/graphql/generated/generated-types';
 import { getUploadedImageUrlFromSingedUrl } from '@dodao/web-core/utils/upload/getUploadedImageUrlFromSingedUrl';
 import axios from 'axios';
 import React, { useRef, useState } from 'react';
@@ -30,7 +30,6 @@ const FileSelect = styled.label`
 export default function FileUploader({ spaceId, objectId, imageType, onLoading, onInput, children, className, allowedFileTypes }: Props) {
   const [loading, setLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  const [createSignedUrlMutation] = useCreateSignedUrlMutation();
 
   async function uploadToS3AndReturnImgUrl(imageType: string, file: File, objectId: string) {
     const input: CreateSignedUrlInput = {
@@ -40,9 +39,9 @@ export default function FileUploader({ spaceId, objectId, imageType, onLoading, 
       name: file.name.replace(' ', '_').toLowerCase(),
     };
 
-    const response = await createSignedUrlMutation({ variables: { spaceId, input } });
+    const response = await axios.post('/api/s3-signed-urls', { spaceId, input });
 
-    const signedUrl = response?.data?.payload!;
+    const signedUrl = response?.data?.url!;
     await axios.put(signedUrl, file, {
       headers: { 'Content-Type': file.type },
     });

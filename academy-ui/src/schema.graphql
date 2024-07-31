@@ -1069,6 +1069,7 @@ input GuideSubmissionFiltersInput {
 
 input GuideSubmissionInput {
   from: String!
+  guideId: String!
   guideUuid: String!
   space: String!
   steps: [GuideStepSubmissionInput!]!
@@ -1406,6 +1407,7 @@ type ProjectByteCollection {
   archived: Boolean!
   byteIds: [String!]!
   bytes: [ByteCollectionByte!]!
+  demos: [ByteCollectionDemo!]!
   description: String!
   id: String!
   name: String!
@@ -1835,7 +1837,6 @@ type TimelineEvent {
   date: DateTimeISO!
   fullDetails: String
   moreLink: String
-  order: Int!
   summary: String!
   title: String!
   uuid: String!
@@ -2143,6 +2144,7 @@ input UpsertTimelineEventInput {
   moreLink: String
   summary: String!
   title: String!
+  order: Int!
   uuid: String!
 }
 
