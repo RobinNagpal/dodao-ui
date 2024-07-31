@@ -9,7 +9,7 @@ import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import Stepper from '@/components/clickableDemos/Edit/ClickableDemoStepper';
 import { useEditClickableDemo } from '@/components/clickableDemos/Edit/useEditClickableDemo';
 import { useDeleteClickableDemo } from '@/components/clickableDemos/Edit/useDeleteClickableDemo';
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsFragment, ByteCollectionFragment, ProjectByteCollectionFragment } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
 import { ClickableDemoErrors } from '@dodao/web-core/types/errors/clickableDemoErrors';
@@ -19,8 +19,12 @@ import { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
 
-function EditClickableDemo(props: { space: SpaceWithIntegrationsFragment; params: { demoId?: string[] } }) {
-  const { space, params } = props;
+function EditClickableDemo(props: {
+  space: SpaceWithIntegrationsFragment;
+  byteCollection: ByteCollectionFragment | ProjectByteCollectionFragment;
+  params: { demoId?: string[] };
+}) {
+  const { space, byteCollection, params } = props;
   const demoId = params.demoId ? params.demoId[0] : '';
   const spaceId = space.id;
 
@@ -46,7 +50,7 @@ function EditClickableDemo(props: { space: SpaceWithIntegrationsFragment; params
   }, [demoId]);
 
   function clickSubmit() {
-    handleSubmit();
+    handleSubmit(byteCollection);
   }
 
   return (

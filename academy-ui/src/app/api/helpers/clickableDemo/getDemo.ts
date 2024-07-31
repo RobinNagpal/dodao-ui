@@ -8,7 +8,7 @@ export async function getDemo(spaceId: string, demoId: string): Promise<Clickabl
     },
   });
 
-  // If byte is still not found, throw an error or handle it appropriately
+  // If demo is still not found, throw an error or handle it appropriately
   if (!clickableDemo) {
     throw new Error('Clickable Demo not found');
   }
