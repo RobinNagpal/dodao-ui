@@ -1,7 +1,7 @@
 'use client';
 
 import Button from '@dodao/web-core/components/core/buttons/Button';
-import { SpaceWithIntegrationsFragment, ByteCollectionFragment } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsFragment, ByteCollectionFragment, ProjectByteCollectionFragment } from '@/graphql/generated/generated-types';
 import React, { useState } from 'react';
 import EditByteView from '@/components/bytes/Edit/EditByteView';
 import EditClickableDemo from '@/components/clickableDemos/Create/EditClickableDemo';
@@ -15,7 +15,7 @@ export default function CreateContentModalContents({
 }: {
   hideModal: () => void;
   space: SpaceWithIntegrationsFragment;
-  byteCollection: ByteCollectionFragment;
+  byteCollection: ByteCollectionFragment | ProjectByteCollectionFragment;
 }) {
   const [showCreateTidbitModal, setShowCreateTidbitModal] = useState<boolean>(false);
   const [showCreateVideoModal, setShowCreateVideoModal] = useState<boolean>(false);

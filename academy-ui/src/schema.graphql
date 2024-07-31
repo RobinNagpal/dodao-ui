@@ -1407,6 +1407,7 @@ type ProjectByteCollection {
   archived: Boolean!
   byteIds: [String!]!
   bytes: [ByteCollectionByte!]!
+  demos: [ByteCollectionDemo!]!
   description: String!
   id: String!
   name: String!

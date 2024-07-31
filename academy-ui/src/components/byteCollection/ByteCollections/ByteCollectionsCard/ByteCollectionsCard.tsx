@@ -4,7 +4,7 @@ import ByteCollectionCardAdminDropdown from '@/components/byteCollection/ByteCol
 import ByteCompletionCheckmark from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCompletionCheckmark';
 import ByteCollectionCardAddItem from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCollectionCardAddItem';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
-import { ByteCollectionFragment, ProjectFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { ByteCollectionFragment, ProjectByteCollectionFragment, ProjectFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import ArrowTopRightOnSquareIcon from '@heroicons/react/24/outline/ArrowTopRightOnSquareIcon';
 import Link from 'next/link';
 import React from 'react';
@@ -14,7 +14,7 @@ import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenMo
 import PlayCircleIcon from '@heroicons/react/24/outline/PlayCircleIcon';
 
 interface ByteCollectionCardProps {
-  byteCollection: ByteCollectionFragment;
+  byteCollection: ByteCollectionFragment | ProjectByteCollectionFragment;
   isEditingAllowed?: boolean;
   project?: ProjectFragment;
   byteCollectionType: 'byteCollection' | 'projectByteCollection';

@@ -9,7 +9,7 @@ import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import Stepper from '@/components/clickableDemos/Edit/ClickableDemoStepper';
 import { useEditClickableDemo } from '@/components/clickableDemos/Edit/useEditClickableDemo';
 import { useDeleteClickableDemo } from '@/components/clickableDemos/Edit/useDeleteClickableDemo';
-import { SpaceWithIntegrationsFragment, ByteCollectionFragment } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsFragment, ByteCollectionFragment, ProjectByteCollectionFragment } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
 import { ClickableDemoErrors } from '@dodao/web-core/types/errors/clickableDemoErrors';
@@ -22,7 +22,7 @@ import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/Delete
 interface EditClickableDemoProps {
   space: SpaceWithIntegrationsFragment;
   demoId?: string | null;
-  byteCollection: ByteCollectionFragment;
+  byteCollection: ByteCollectionFragment | ProjectByteCollectionFragment;
 }
 
 function EditClickableDemo({ space, demoId, byteCollection }: EditClickableDemoProps) {
@@ -49,7 +49,7 @@ function EditClickableDemo({ space, demoId, byteCollection }: EditClickableDemoP
     updateClickableDemoFunctions.initialize();
   }, [demoId]);
 
-  function clickSubmit(byteCollection: ByteCollectionFragment) {
+  function clickSubmit(byteCollection: ByteCollectionFragment | ProjectByteCollectionFragment) {
     handleSubmit(byteCollection);
   }
 
