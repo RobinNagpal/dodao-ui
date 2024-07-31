@@ -10,15 +10,15 @@ interface Props {
   objectId: string;
   fileUrl: string;
   xPath: string;
-  selectedElementImgUrl: string;
+  elementImgUrl: string;
   onLoading?: (loading: boolean) => void;
-  onInput?: (imageUrl: string, selectedElementImgUrl: string) => void;
+  onInput?: (imageUrl: string, elementImgUrl: string) => void;
   setShowModal: (showModal: boolean) => void;
 }
 
-export default function ElementSelectorModal({ space, showModal, objectId, fileUrl, xPath, selectedElementImgUrl, onInput, setShowModal }: Props) {
+export default function ElementSelectorModal({ space, showModal, objectId, fileUrl, xPath, elementImgUrl, onInput, setShowModal }: Props) {
   const [currentXpath, setCurrenXpath] = useState(xPath);
-  const [currentCapture, setCurrentCapture] = useState(selectedElementImgUrl);
+  const [currentCapture, setCurrentCapture] = useState(elementImgUrl);
   const [createSignedUrlMutation] = useCreateSignedUrlMutation();
   const spaceId = space.id;
 
@@ -71,8 +71,8 @@ export default function ElementSelectorModal({ space, showModal, objectId, fileU
   const filename = getFileName(fileUrl);
   useEffect(() => {
     async function receiveMessage(event: any) {
-      if (event.data.xpath && event.data.selectedElementImgUrl) {
-        let screenshotFile = base64ToFile(event.data.selectedElementImgUrl, filename);
+      if (event.data.xpath && event.data.elementImgUrl) {
+        let screenshotFile = base64ToFile(event.data.elementImgUrl, filename);
         let screenshotURL: string | undefined;
         screenshotURL = await uploadToS3AndReturnScreenshotUrl(screenshotFile, objectId.replace(/[^a-z0-9]/gi, '_'));
         if (event.data.xpath && screenshotURL) {

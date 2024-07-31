@@ -56,8 +56,8 @@ export default function Step({
 }: StepProps) {
   const [uploadHTMLFileLoading, setUploadHTMLFileLoading] = useState(false);
 
-  const updateStepSelector = (selector: string | number | undefined, selectedElementImgUrl: string | undefined) => {
-    onUpdateStep({ ...step, selector: selector?.toString() || '', selectedElementImgUrl: selectedElementImgUrl?.toString() || '' });
+  const updateStepSelector = (selector: string | number | undefined, elementImgUrl: string | undefined) => {
+    onUpdateStep({ ...step, selector: selector?.toString() || '', elementImgUrl: elementImgUrl?.toString() || '' });
   };
 
   const updateStepUrl = (url: string | number | undefined, screenImgUrl: string | undefined) => {
@@ -139,15 +139,15 @@ export default function Step({
             error={inputError('selector') ? 'Selector is required' : ''}
             space={space}
             modelValue={step.selector}
-            selectedElementImgUrl={step.selectedElementImgUrl}
+            elementImgUrl={step.elementImgUrl}
             objectId={(space?.name && slugify(space?.name)) || space?.id || 'new-space'}
             fileUrl={step.url}
             onInput={updateStepSelector}
             onLoading={setUploadHTMLFileLoading}
           />
-          {step.selectedElementImgUrl && ( // Assuming `step.screenImgUrl` holds the URL of the screenshot image
+          {step.elementImgUrl && ( // Assuming `step.screenImgUrl` holds the URL of the screenshot image
             <div className="mt-4">
-              <img src={step.selectedElementImgUrl} alt="Screenshot" className="rounded-lg shadow-md max-w-full h-auto" />
+              <img src={step.elementImgUrl} alt="Screenshot" className="rounded-lg shadow-md max-w-full h-auto" />
             </div>
           )}
         </div>

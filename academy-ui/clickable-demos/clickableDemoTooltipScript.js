@@ -419,10 +419,10 @@ function elementSelector(event) {
   button.addEventListener('click', () => {
     captureScreenshotWithOverlay(selectedElement);
     setTimeout(() => {
-      selectedElementImgUrl = dataURL;
+      elementImgUrl = dataURL;
     }, 200);
     setTimeout(() => {
-      event.source.postMessage({ xpath: final_xpath, selectedElementImgUrl: selectedElementImgUrl }, event.origin);
+      event.source.postMessage({ xpath: final_xpath, elementImgUrl: elementImgUrl }, event.origin);
     }, 200);
   });
   // Append the button to the body

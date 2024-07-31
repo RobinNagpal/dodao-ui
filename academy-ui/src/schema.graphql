@@ -364,7 +364,7 @@ type ClickableDemoStep {
   tooltipInfo: String!
   url: String!
   screenImgUrl: String
-  selectedElementImgUrl: String
+  elementImgUrl: String
 }
 
 input ClickableDemoStepInput {
@@ -375,7 +375,7 @@ input ClickableDemoStepInput {
   tooltipInfo: String!
   url: String!
   screenImgUrl: String
-  selectedElementImgUrl: String
+  elementImgUrl: String
 }
 
 type ClickableDemoWithSteps {

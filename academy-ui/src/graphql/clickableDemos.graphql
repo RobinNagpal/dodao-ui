@@ -11,7 +11,7 @@ fragment ClickableDemoWithSteps on ClickableDemoWithSteps {
     placement
     order
     screenImgUrl
-    selectedElementImgUrl
+    elementImgUrl
   }
   createdAt
   updatedAt

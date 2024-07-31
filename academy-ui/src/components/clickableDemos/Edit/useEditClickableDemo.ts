@@ -174,7 +174,7 @@ export function useEditClickableDemo(space: Space, demoId: string | null) {
         selector: s.selector,
         tooltipInfo: s.tooltipInfo,
         screenImgUrl: s.screenImgUrl,
-        selectedElementImgUrl: s.selectedElementImgUrl,
+        elementImgUrl: s.elementImgUrl,
         id: s.id,
         order: s.order,
         placement: s.placement,

@@ -9,11 +9,11 @@ import { useState } from 'react';
 interface SelectElementInputProps {
   label?: string;
   modelValue?: string | null;
-  selectedElementImgUrl?: string | null;
+  elementImgUrl?: string | null;
   objectId: string;
   space: Space;
   fileUrl?: string;
-  onInput: (url: string, selectedElementImgUrl: string) => void;
+  onInput: (url: string, elementImgUrl: string) => void;
   onLoading?: (value: ((prevState: boolean) => boolean) | boolean) => void;
   placeholder?: string;
   allowedFileTypes?: string[];
@@ -24,7 +24,7 @@ interface SelectElementInputProps {
 export default function SelectElementInput({
   label,
   modelValue,
-  selectedElementImgUrl,
+  elementImgUrl,
   objectId,
   space,
   fileUrl,
@@ -76,7 +76,7 @@ export default function SelectElementInput({
           objectId={objectId}
           fileUrl={fileUrl!}
           xPath={modelValue || ''}
-          selectedElementImgUrl={selectedElementImgUrl || ''}
+          elementImgUrl={elementImgUrl || ''}
           onLoading={onLoading}
           setShowModal={setShowModal}
         ></ElementSelectorModal>
