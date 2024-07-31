@@ -19,20 +19,20 @@ import { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
 
-function EditClickableDemo(props: {
+interface EditClickableDemoProps {
   space: SpaceWithIntegrationsFragment;
+  demoId?: string | null;
   byteCollection: ByteCollectionFragment | ProjectByteCollectionFragment;
-  params: { demoId?: string[] };
-}) {
-  const { space, byteCollection, params } = props;
-  const demoId = params.demoId ? params.demoId[0] : '';
+}
+
+function EditClickableDemo({ space, demoId, byteCollection }: EditClickableDemoProps) {
   const spaceId = space.id;
 
   const { clickableDemoCreating, clickableDemoLoaded, clickableDemo, clickableDemoErrors, handleSubmit, updateClickableDemoFunctions } = useEditClickableDemo(
     space,
-    demoId
+    demoId!
   );
-  const { handleDeletion } = useDeleteClickableDemo(space, demoId);
+  const { handleDeletion } = useDeleteClickableDemo(space, demoId!);
   const threeDotItems: EllipsisDropdownItem[] = [{ label: 'Delete', key: 'delete' }];
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -49,7 +49,7 @@ function EditClickableDemo(props: {
     updateClickableDemoFunctions.initialize();
   }, [demoId]);
 
-  function clickSubmit() {
+  function clickSubmit(byteCollection: ByteCollectionFragment | ProjectByteCollectionFragment) {
     handleSubmit(byteCollection);
   }
 
@@ -116,7 +116,13 @@ function EditClickableDemo(props: {
                 </Block>
               ) : null}
 
-              <Button onClick={clickSubmit} loading={!clickableDemoLoaded || clickableDemoCreating} className="block w-full" variant="contained" primary>
+              <Button
+                onClick={() => clickSubmit(byteCollection)}
+                loading={!clickableDemoLoaded || clickableDemoCreating}
+                className="block w-full"
+                variant="contained"
+                primary
+              >
                 Publish
               </Button>
             </>

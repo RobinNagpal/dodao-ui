@@ -1,12 +1,14 @@
-import { ByteCollection as ByteCollectionGraphql, ByteCollectionByte } from '@/graphql/generated/generated-types';
+import { ByteCollection as ByteCollectionGraphql, ByteCollectionByte, ByteCollectionDemo } from '@/graphql/generated/generated-types';
 import { getByte } from '@/app/api/helpers/byte/getByte';
+import { getDemo } from '@/app/api/helpers/clickableDemo/getDemo';
 import { prisma } from '@/prisma';
-import { Byte, ByteCollection } from '@prisma/client';
+import { Byte, ClickableDemos, ByteCollection } from '@prisma/client';
 
-export async function getByteCollectionWithBytes(byteCollection: ByteCollection): Promise<ByteCollectionGraphql> {
+export async function getByteCollectionWithItems(byteCollection: ByteCollection): Promise<ByteCollectionGraphql> {
   const bytes: ByteCollectionByte[] = [];
+  const demos: ByteCollectionDemo[] = [];
 
-  const allByteCollectionItems = await prisma.byteCollectionItemMappings.findMany({
+  const allByteCollectionItemsBytes = await prisma.byteCollectionItemMappings.findMany({
     where: {
       byteCollectionId: byteCollection.id,
       itemType: 'Byte',
@@ -16,7 +18,17 @@ export async function getByteCollectionWithBytes(byteCollection: ByteCollection)
     },
   });
 
-  for (const item of allByteCollectionItems) {
+  const allByteCollectionItemsDemos = await prisma.byteCollectionItemMappings.findMany({
+    where: {
+      byteCollectionId: byteCollection.id,
+      itemType: 'Demo',
+    },
+    orderBy: {
+      order: 'desc',
+    },
+  });
+
+  for (const item of allByteCollectionItemsBytes) {
     const byte = (await getByte(byteCollection.spaceId, item.itemId)) as Byte;
     bytes.push({
       byteId: byte.id,
@@ -25,8 +37,20 @@ export async function getByteCollectionWithBytes(byteCollection: ByteCollection)
       videoUrl: byte.videoUrl,
     });
   }
+
+  for (const item of allByteCollectionItemsDemos) {
+    const demo = (await getDemo(byteCollection.spaceId, item.itemId)) as ClickableDemos;
+    demos.push({
+      demoId: demo.id,
+      title: demo.title,
+      excerpt: demo.excerpt,
+      steps: demo.steps,
+    });
+  }
+
   return {
     ...byteCollection,
     bytes: bytes,
+    demos: demos,
   };
 }

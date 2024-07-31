@@ -12,9 +12,10 @@ import styles from './ByteCollectionsCard.module.scss';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import PlayCircleIcon from '@heroicons/react/24/outline/PlayCircleIcon';
+import Bars3BottomLeftIcon from '@heroicons/react/24/solid/Bars3BottomLeftIcon';
 
 interface ByteCollectionCardProps {
-  byteCollection: ByteCollectionFragment;
+  byteCollection: ByteCollectionFragment | ProjectByteCollectionFragment;
   isEditingAllowed?: boolean;
   project?: ProjectFragment;
   byteCollectionType: 'byteCollection' | 'projectByteCollection';
@@ -41,6 +42,7 @@ export default function ByteCollectionsCard({
   const [watchVideo, setWatchVideo] = React.useState<boolean>(false);
   const [selectedVideo, setSelectedVideo] = React.useState<VideoModalProps>();
   const [showCreateModal, setShowCreateModal] = React.useState<boolean>(false);
+
   if (watchVideo) {
     return (
       <FullScreenModal key={selectedVideo?.key} title={selectedVideo?.title!} open={true} onClose={() => setWatchVideo(false)} fullWidth={false}>
@@ -109,6 +111,35 @@ export default function ByteCollectionsCard({
                         }}
                       />
                     )}
+                  </div>
+                </div>
+              </li>
+            );
+          })}
+          {byteCollection.demos.map((demo, eventIdx) => {
+            const demoViewUrl = `clickable-demos/view/${demo.demoId}`;
+
+            return (
+              <li key={demo.demoId}>
+                <div className="relative pb-8">
+                  {eventIdx !== byteCollection.demos.length - 1 ? (
+                    <span className="absolute left-4 top-4 -ml-px h-full w-0.5 bg-gray-200" aria-hidden="true" />
+                  ) : null}
+                  <div className="relative flex space-x-3">
+                    <Link className="flex cursor-pointer" href={demoViewUrl}>
+                      <span className={'h-8 w-8 rounded-full flex items-center justify-center ring-5 ring-white ' + styles.tidbitIconSpan}>
+                        <Bars3BottomLeftIcon className="h-5 w-5 text-white" aria-hidden="true" />
+                      </span>
+                      <div className="flex min-w-0 flex-1 justify-between space-x-2 transform hover:scale-95 transition duration-300 ease-in-out">
+                        <div className="ml-3 text-sm">
+                          <div className="font-bold flex">
+                            {`${demo.title}`} <ArrowTopRightOnSquareIcon className={`h-4 w-4 ml-2 ${styles.openInPopupIcon}`} />
+                          </div>
+
+                          <div className="flex-wrap">{demo.excerpt}</div>
+                        </div>
+                      </div>
+                    </Link>
                   </div>
                 </div>
               </li>

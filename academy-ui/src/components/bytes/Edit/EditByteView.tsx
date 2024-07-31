@@ -15,7 +15,12 @@ import PageLoading from '@dodao/web-core/components/core/loaders/PageLoading';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import StyledSelect, { StyledSelectItem } from '@dodao/web-core/components/core/select/StyledSelect';
 import TextareaArray from '@dodao/web-core/components/core/textarea/TextareaArray';
-import { SpaceWithIntegrationsFragment, ByteCollectionFragment, useDeleteByteMutation } from '@/graphql/generated/generated-types';
+import {
+  SpaceWithIntegrationsFragment,
+  ByteCollectionFragment,
+  ProjectByteCollectionFragment,
+  useDeleteByteMutation,
+} from '@/graphql/generated/generated-types';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
 import { ByteErrors } from '@dodao/web-core/types/errors/byteErrors';
 import { useRouter } from 'next/navigation';
@@ -27,7 +32,7 @@ export default function EditByteView(props: {
   space: SpaceWithIntegrationsFragment;
   onUpsert: (byteId: string) => Promise<void>;
   byteId?: string;
-  byteCollection: ByteCollectionFragment;
+  byteCollection: ByteCollectionFragment | ProjectByteCollectionFragment;
 }) {
   const { space, byteId, byteCollection } = props;
 

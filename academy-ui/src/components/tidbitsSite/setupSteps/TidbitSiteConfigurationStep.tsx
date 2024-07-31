@@ -72,6 +72,7 @@ export default function TidbitSiteConfigurationStep({ goToPreviousStep }: Tidbit
         __typename: 'ByteCollectionByte',
       },
     ],
+    demos: [],
     __typename: 'ProjectByteCollection',
   };
 

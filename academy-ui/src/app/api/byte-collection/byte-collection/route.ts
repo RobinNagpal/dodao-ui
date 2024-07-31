@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getByteCollectionWithBytes } from '@/app/api/helpers/byteCollection/byteCollectionHelper';
+import { getByteCollectionWithItems } from '@/app/api/helpers/byteCollection/byteCollectionHelper';
 import { prisma } from '@/prisma';
 
 export async function GET(req: NextRequest) {
@@ -20,5 +20,5 @@ export async function GET(req: NextRequest) {
     },
   });
 
-  return NextResponse.json({ status: 200, byteCollection: await getByteCollectionWithBytes(byteCollection) });
+  return NextResponse.json({ status: 200, byteCollection: await getByteCollectionWithItems(byteCollection) });
 }

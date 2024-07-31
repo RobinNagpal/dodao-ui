@@ -104,6 +104,7 @@ export function useEditByteCollectionCategory({ space, byteCategory: byteCategor
           status: byteCollection.status,
           byteIds: byteCollection.byteIds,
           bytes: byteCollection.bytes,
+          demos: byteCollection.demos,
         },
       ];
 

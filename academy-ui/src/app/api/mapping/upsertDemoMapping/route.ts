@@ -5,6 +5,7 @@ import { logError } from '@/app/api/helpers/adapters/errorLogger';
 
 export async function POST(req: NextRequest) {
   const { byteCollectionId, itemId, itemType, order } = await req.json();
+
   try {
     const mappingItem = await prisma.byteCollectionItemMappings.create({
       data: {
@@ -19,6 +20,7 @@ export async function POST(req: NextRequest) {
     });
     return NextResponse.json({ status: 200, mappingItem });
   } catch (e) {
+    console.error('Error creating mapping:', e); // Log the error for debugging
     await logError((e as any)?.response?.data || 'Error in creating Mapping', {}, e as any, null, null);
   }
 }

@@ -30,32 +30,37 @@ export async function DELETE(req: NextRequest, { params: { demoId } }: { params:
 }
 
 export async function PUT(req: NextRequest, { params: { demoId } }: { params: { demoId: string } }) {
-  const args: MutationUpsertClickableDemoArgs = await req.json();
-  const spaceById = await getSpaceById(args.spaceId);
+  try {
+    const args: MutationUpsertClickableDemoArgs = await req.json();
+    const spaceById = await getSpaceById(args.spaceId);
 
-  checkSpaceIdAndSpaceInEntityAreSame(args.spaceId, args.spaceId);
-  await checkEditSpacePermission(spaceById, req);
+    checkSpaceIdAndSpaceInEntityAreSame(args.spaceId, args.spaceId);
+    await checkEditSpacePermission(spaceById, req);
 
-  const clickableDemo = await prisma.clickableDemos.upsert({
-    where: {
-      id: demoId,
-    },
-    create: {
-      id: args.input.id,
-      title: args.input.title,
-      excerpt: args.input.excerpt,
-      spaceId: args.spaceId,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      steps: args.input.steps,
-    },
-    update: {
-      title: args.input.title,
-      excerpt: args.input.excerpt,
-      updatedAt: new Date(),
-      steps: args.input.steps,
-    },
-  });
+    const clickableDemo = await prisma.clickableDemos.upsert({
+      where: {
+        id: demoId,
+      },
+      create: {
+        id: args.input.id,
+        title: args.input.title,
+        excerpt: args.input.excerpt,
+        spaceId: args.spaceId,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        steps: args.input.steps,
+      },
+      update: {
+        title: args.input.title,
+        excerpt: args.input.excerpt,
+        updatedAt: new Date(),
+        steps: args.input.steps,
+      },
+    });
 
-  return NextResponse.json({ status: 200, clickableDemo });
+    return NextResponse.json({ status: 200, clickableDemo });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({ status: 500, message: 'Internal Server Error' }, { status: 500 });
+  }
 }
