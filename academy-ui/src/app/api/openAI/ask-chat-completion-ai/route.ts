@@ -1,4 +1,4 @@
-import { MutationAskChatCompletionAiArgs } from '@/graphql/generated/generated-types';
+import { MutationAskChatCompletionAiArgs, OpenAiChatCompletionResponse } from '@/graphql/generated/generated-types';
 
 import { formatAxiosError } from '@/app/api/helpers/adapters/formatAxiosError';
 import OpenAI from 'openai';
@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
   return NextResponse.json({ status: 200, completion });
 }
 
-async function askChatCompletionAI(args: MutationAskChatCompletionAiArgs & { retryCount?: number }) {
+async function askChatCompletionAI(args: MutationAskChatCompletionAiArgs & { retryCount?: number }): Promise<OpenAiChatCompletionResponse> {
   try {
     const createCompletionRequest: ChatCompletionCreateParamsNonStreaming = {
       model: args.input.model || 'gpt-3.5-turbo',
