@@ -13,6 +13,7 @@ import MDEditor, { commands } from '@uiw/react-md-editor';
 import React, { SetStateAction, useState } from 'react';
 import styled from 'styled-components';
 import { v4 as uuidV4 } from 'uuid';
+import axios from 'axios';
 
 const defaultGuidelines = `- The output should be in simple language and easy to understand.
 - The output should be in your own words and not copied from the content provided.
@@ -150,25 +151,22 @@ function MarkdownEditor({
 
   const { showNotification } = useNotificationContext();
 
-  const [askChatCompletetionAI] = useAskChatCompletionAiMutation();
   const handleInputContent = (value: SetStateAction<string | undefined>) => {
     onUpdate && onUpdate(value?.toString() || '');
   };
 
   const rewriteContent = async (text: string) => {
-    const response = await askChatCompletetionAI({
-      variables: {
-        input: {
-          messages: [
-            {
-              role: ChatCompletionRequestMessageRoleEnum.User,
-              content: `Rewrite this content and maintain the same word length: \n ${text}`,
-            },
-          ],
-        },
+    const response = await axios.post('/api/openAI/ask-chat-completion-ai', {
+      input: {
+        messages: [
+          {
+            role: ChatCompletionRequestMessageRoleEnum.User,
+            content: `Rewrite this content and maintain the same word length: \n ${text}`,
+          },
+        ],
       },
     });
-    const rewrittenText = response.data?.askChatCompletionAI?.choices[0]?.message?.content;
+    const rewrittenText = response.data?.completion?.choices[0]?.message?.content;
     if (rewrittenText) {
       return rewrittenText;
     } else {
