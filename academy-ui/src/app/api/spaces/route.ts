@@ -23,7 +23,7 @@ export async function GET(req: NextRequest) {
     });
   }
 
-  if (!space && (domain === 'dodao-ui-robinnagpal.vercel.app' || domain === 'localhost')) {
+  if ((!space && (domain === 'dodao-ui-robinnagpal.vercel.app' || domain === 'localhost')) || domain.includes('.vercel.app')) {
     let space = await prisma.space.findFirst({
       where: {
         id: {
