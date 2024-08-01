@@ -31,7 +31,7 @@ import { ImageType } from '@/graphql/generated/generated-types';
 export default function EditByteView(props: {
   space: SpaceWithIntegrationsFragment;
   onUpsert: (byteId: string) => Promise<void>;
-  byteId?: string;
+  byteId?: string | null;
   byteCollection: ByteCollectionFragment | ProjectByteCollectionFragment;
 }) {
   const { space, byteId, byteCollection } = props;

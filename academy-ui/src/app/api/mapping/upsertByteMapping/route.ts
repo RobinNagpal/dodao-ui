@@ -5,7 +5,20 @@ import { logError } from '@/app/api/helpers/adapters/errorLogger';
 
 export async function POST(req: NextRequest) {
   const { byteCollectionId, itemId, itemType, order } = await req.json();
+
   try {
+    const existingMapping = await prisma.byteCollectionItemMappings.findFirst({
+      where: {
+        itemId,
+        byteCollectionId,
+        itemType: 'Byte',
+      },
+    });
+
+    if (existingMapping) {
+      return NextResponse.json({ status: 200, message: 'Item already exists in the mapping' });
+    }
+
     const mappingItem = await prisma.byteCollectionItemMappings.create({
       data: {
         id: uuidv4(),
@@ -17,8 +30,10 @@ export async function POST(req: NextRequest) {
         },
       },
     });
+
     return NextResponse.json({ status: 200, mappingItem });
   } catch (e) {
     await logError((e as any)?.response?.data || 'Error in creating Mapping', {}, e as any, null, null);
+    return NextResponse.json({ status: 500, message: 'Internal Server Error' });
   }
 }

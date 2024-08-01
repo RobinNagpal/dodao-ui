@@ -13,6 +13,9 @@ import Button from '@dodao/web-core/components/core/buttons/Button';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import PlayCircleIcon from '@heroicons/react/24/outline/PlayCircleIcon';
 import Bars3BottomLeftIcon from '@heroicons/react/24/solid/Bars3BottomLeftIcon';
+import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
+import { useRouter } from 'next/navigation';
+import EditByteView from '@/components/bytes/Edit/EditByteView';
 
 interface ByteCollectionCardProps {
   byteCollection: ByteCollectionFragment | ProjectByteCollectionFragment;
@@ -30,6 +33,11 @@ interface VideoModalProps {
   src: string;
 }
 
+interface EditByteModalState {
+  isVisible: boolean;
+  byteId: string | null;
+}
+
 export default function ByteCollectionsCard({
   byteCollection,
   isEditingAllowed = true,
@@ -42,6 +50,17 @@ export default function ByteCollectionsCard({
   const [watchVideo, setWatchVideo] = React.useState<boolean>(false);
   const [selectedVideo, setSelectedVideo] = React.useState<VideoModalProps>();
   const [showCreateModal, setShowCreateModal] = React.useState<boolean>(false);
+  const [editByteModalState, setEditModalState] = React.useState<EditByteModalState>({ isVisible: false, byteId: null });
+  const threeDotItems = [{ label: 'Edit', key: 'edit' }];
+
+  function openByteEditModal(byteId: string) {
+    setEditModalState({ isVisible: true, byteId: byteId });
+  }
+
+  function closeByteEditModal() {
+    setEditModalState({ isVisible: false, byteId: null });
+  }
+  const router = useRouter();
 
   if (watchVideo) {
     return (
@@ -111,6 +130,11 @@ export default function ByteCollectionsCard({
                         }}
                       />
                     )}
+                    {byte.byteId && (
+                      <div className="z-10">
+                        <PrivateEllipsisDropdown items={threeDotItems} onSelect={() => openByteEditModal(byte.byteId)} />
+                      </div>
+                    )}
                   </div>
                 </div>
               </li>
@@ -169,6 +193,22 @@ export default function ByteCollectionsCard({
       <FullPageModal className={'w-1/2'} open={showCreateModal} onClose={() => setShowCreateModal(false)} title={'Create New Item'} showCloseButton={false}>
         <ByteCollectionCardAddItem space={space} hideModal={() => setShowCreateModal(false)} byteCollection={byteCollection} />
       </FullPageModal>
+
+      {editByteModalState.isVisible && (
+        <FullScreenModal open={true} onClose={closeByteEditModal} title={'Edit Byte'}>
+          <div className="text-left">
+            <EditByteView
+              space={space}
+              byteCollection={byteCollection}
+              byteId={editByteModalState.byteId}
+              onUpsert={async () => {
+                closeByteEditModal();
+                router.push(`/tidbit-collections`);
+              }}
+            />
+          </div>
+        </FullScreenModal>
+      )}
     </div>
   );
 }
