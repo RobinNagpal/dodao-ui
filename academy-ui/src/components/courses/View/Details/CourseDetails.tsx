@@ -35,7 +35,16 @@ const CourseDetails = ({ course, space, isCourseAdmin, courseHelper, submissionH
   const saveUpdates = async (updates: CourseBasicInfoInput) => {
     setUpdating(true);
     try {
-      await courseHelper.updateCourseBasicInfo(updates);
+      await fetch(`/api/courses/update-basic-info`, {
+        method: 'POST',
+        body: JSON.stringify({
+          spaceId: space.id,
+          courseBasicInfo: updates,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
       setEditMode(false);
     } catch (e) {
       console.error(e);

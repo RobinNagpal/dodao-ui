@@ -7,7 +7,7 @@ export function useMoveCourseItem<
   T extends {
     direction: MoveCourseItemDirection | string;
   }
->(doMove: (form: T) => Promise<boolean>) {
+>(doMove: (form: T) => Promise<Response>) {
   const { showNotification } = useNotificationContext();
   const [movingUp, setMovingUp] = useState(false);
   const [movingDown, setMovingDown] = useState(false);

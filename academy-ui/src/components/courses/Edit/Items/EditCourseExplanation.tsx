@@ -16,7 +16,7 @@ interface EditCourseExplanationProps {
   space: Space;
   topicKey: string;
   currentExplanation?: CourseExplanationFragment;
-  saveExplanation: (form: UpdateTopicExplanationInput) => void;
+  saveExplanation: (form: UpdateTopicExplanationInput) => Promise<void>;
   cancel: () => void;
 }
 

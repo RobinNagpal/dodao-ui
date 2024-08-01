@@ -4,10 +4,11 @@ import Input from '@dodao/web-core/components/core/input/Input';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import TextareaAutosize from '@dodao/web-core/components/core/textarea/TextareaAutosize';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { ChatCompletionRequestMessageRoleEnum, useAskChatCompletionAiMutation, useDownloadAndCleanContentMutation } from '@/graphql/generated/generated-types';
+import { ChatCompletionRequestMessageRoleEnum, DownloadAndCleanContentResponse } from '@/graphql/generated/generated-types';
 import { sum } from 'lodash';
 
 import { useState } from 'react';
+import axios from 'axios';
 
 export interface GenerateContentUsingAIModalProps {
   open: boolean;
@@ -23,8 +24,6 @@ export default function GenerateContentUsingAIModal(props: GenerateContentUsingA
   const { open, onClose } = props;
 
   const [loading, setLoading] = useState(false);
-  const [askChatCompletionAiMutation] = useAskChatCompletionAiMutation();
-  const [downloadAndCleanContentMutation] = useDownloadAndCleanContentMutation();
 
   const [topic, setTopic] = useState<string>('');
   const [contents, setContents] = useState<string>('');
@@ -44,13 +43,11 @@ export default function GenerateContentUsingAIModal(props: GenerateContentUsingA
         return;
       }
 
-      const cleanContents = await downloadAndCleanContentMutation({
-        variables: {
-          input: contents,
-        },
+      const cleanContents = await axios.post('/api/openAI/download-and-clean-content', {
+        input: contents,
       });
 
-      const cleanContentResponse = cleanContents.data?.downloadAndCleanContent;
+      const cleanContentResponse: DownloadAndCleanContentResponse = cleanContents.data?.downloadAndCleanContent;
       const links = cleanContentResponse?.links;
       const tokenCount = (links?.length || 0) > 0 ? sum(links?.map((link) => link?.tokenCount || 0)) : 0;
       const cleanedContentText = cleanContentResponse?.content!;
@@ -69,17 +66,15 @@ export default function GenerateContentUsingAIModal(props: GenerateContentUsingA
 
       const inputContent = props.generatePrompt(topic, guidelines, cleanedContentText);
 
-      const response = await askChatCompletionAiMutation({
-        variables: {
-          input: {
-            messages: [{ role: ChatCompletionRequestMessageRoleEnum.User, content: inputContent }],
-            model: 'gpt-3.5-turbo-16k',
-            temperature: 0.2,
-          },
+      const response = await axios.post('/api/openAI/ask-chat-completion-ai', {
+        input: {
+          messages: [{ role: ChatCompletionRequestMessageRoleEnum.User, content: inputContent }],
+          model: 'gpt-3.5-turbo-16k',
+          temperature: 0.2,
         },
       });
 
-      const data = await response?.data?.askChatCompletionAI?.choices?.[0]?.message?.content;
+      const data = await response?.data?.completion?.choices?.[0]?.message?.content;
 
       setLoading(false);
       props.onGenerateContent(data);
@@ -107,17 +102,14 @@ export default function GenerateContentUsingAIModal(props: GenerateContentUsingA
 
       const inputContent = props.generatePrompt(topic, guidelines, '');
 
-      const response = await askChatCompletionAiMutation({
-        variables: {
-          input: {
-            messages: [{ role: ChatCompletionRequestMessageRoleEnum.User, content: inputContent }],
-            model: 'gpt-3.5-turbo-16k',
-            temperature: 0.2,
-          },
+      const response = await axios.post('/api/openAI/ask-chat-completion-ai', {
+        input: {
+          messages: [{ role: ChatCompletionRequestMessageRoleEnum.User, content: inputContent }],
+          model: 'gpt-3.5-turbo-16k',
+          temperature: 0.2,
         },
       });
-
-      const data = await response?.data?.askChatCompletionAI?.choices?.[0]?.message?.content;
+      const data = response?.data?.completion?.choices?.[0]?.message?.content;
 
       setLoading(false);
       props.onGenerateContent(data);

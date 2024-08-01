@@ -11,7 +11,7 @@ interface UploadInputProps {
   imageType: ImageType;
   objectId: string;
   spaceId: string;
-  onInput: (url: string) => void;
+  onInput: (url: string, captureUrl: string) => void;
   onLoading?: (value: ((prevState: boolean) => boolean) | boolean) => void;
   placeholder?: string;
   allowedFileTypes?: string[];
@@ -50,7 +50,7 @@ export default function UploadInput({
             aria-invalid="true"
             aria-describedby="email-error"
             value={modelValue || ''}
-            onChange={(e) => onInput(e.target.value)}
+            onChange={(e) => onInput(e.target.value, '')}
           />
         </div>
         <ClickableDemoFileUploader

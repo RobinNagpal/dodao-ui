@@ -1,4 +1,4 @@
-import { ByteLinkedinPdfContent, ByteLinkedinPdfContentStep, ByteSocialShare, useAskCompletionAiMutation } from '@/graphql/generated/generated-types';
+import { ByteLinkedinPdfContent, ByteLinkedinPdfContentStep, ByteSocialShare } from '@/graphql/generated/generated-types';
 import { rewriteToCharacterLengthUsingAi, rewriteToWordsCountUsingAi } from '@/utils/ai/rewriteUsingAi';
 import { Byte } from '@prisma/client';
 import axios from 'axios';
@@ -29,7 +29,6 @@ export default function useReviewByteSocialShareContent(spaceId: string, byteId:
   const [byteSocialShare, setByteSocialShare] = useState<EditByteSocialShare>();
   const [generatingContent, setGeneratingContent] = useState<boolean>(false);
   const [generatingAiContent, setGeneratingAiContent] = useState<boolean>(false);
-  const [askCompletionAiMutation] = useAskCompletionAiMutation();
 
   function cleanUpString(str: string) {
     return str.replace(/[\n\t\r]/g, '').trim();
@@ -51,12 +50,12 @@ export default function useReviewByteSocialShareContent(spaceId: string, byteId:
 
   async function generateContentIfInvalid(linkedinPdfContent: ByteLinkedinPdfContent) {
     if (isInvalidTitle(linkedinPdfContent.title)) {
-      const title = await rewriteToCharacterLengthUsingAi(askCompletionAiMutation, linkedinPdfContent.title, 18);
+      const title = await rewriteToCharacterLengthUsingAi(linkedinPdfContent.title, 18);
       updateLinkedInPdfContentField('title', cleanUpString(title));
     }
 
     if (isInvalidExcerpt(linkedinPdfContent.excerpt)) {
-      const excerpt = await rewriteToWordsCountUsingAi(askCompletionAiMutation, linkedinPdfContent.excerpt, 14);
+      const excerpt = await rewriteToWordsCountUsingAi(linkedinPdfContent.excerpt, 14);
       updateLinkedInPdfContentField('excerpt', cleanUpString(excerpt));
     }
 
@@ -67,12 +66,12 @@ export default function useReviewByteSocialShareContent(spaceId: string, byteId:
       };
 
       if (isInvalidContent(step.content)) {
-        const content = await rewriteToWordsCountUsingAi(askCompletionAiMutation, step.content, 40);
+        const content = await rewriteToWordsCountUsingAi(step.content, 40);
         stepCopy.content = cleanUpString(content);
       }
 
       if (isInvalidTitle(step.name)) {
-        const name = await rewriteToCharacterLengthUsingAi(askCompletionAiMutation, step.name, 18);
+        const name = await rewriteToCharacterLengthUsingAi(step.name, 18);
         stepCopy.name = cleanUpString(name);
       }
       steps.push(stepCopy);

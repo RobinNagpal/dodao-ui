@@ -1,12 +1,11 @@
 import Button from '@dodao/web-core/components/core/buttons/Button';
-import ErrorWithAccentBorder from '@dodao/web-core/components/core/errors/ErrorWithAccentBorder';
 import Input from '@dodao/web-core/components/core/input/Input';
-import StyledSelect from '@dodao/web-core/components/core/select/StyledSelect';
 import { Table, TableRow } from '@dodao/web-core/components/core/table/Table';
 import TextareaAutosize from '@dodao/web-core/components/core/textarea/TextareaAutosize';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { ChatCompletionRequestMessageRoleEnum, useAskChatCompletionAiMutation, useGenerateImageMutation } from '@/graphql/generated/generated-types';
+import { ChatCompletionRequestMessageRoleEnum, ImagesResponse } from '@/graphql/generated/generated-types';
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
 interface StoryBoardInterface {
   panels: { dialogues: { text: string; user: string }[]; scene: string }[];
@@ -148,23 +147,21 @@ export default function GenerateStoryBoard() {
   const [generatingImagePrompts, setGeneratingImagePrompts] = useState(false);
   const [generatingImages, setGeneratingImages] = useState(false);
 
-  const [generateImageMutation] = useGenerateImageMutation();
   const [imageUrls, setImageUrls] = useState<string[]>([]);
   const { showNotification } = useNotificationContext();
 
-  const [askChatCompletionAiMutation] = useAskChatCompletionAiMutation();
   async function generateImage(prompt: string): Promise<string | undefined> {
     setGeneratingImages(true);
 
-    const response = await generateImageMutation({
-      variables: {
-        input: {
-          prompt: `${prompt} \n\n Generated image should be of the type of: ${form.imageType}`,
-        },
+    const response = await axios.post('/api/openAI/generate-image', {
+      input: {
+        prompt: `${prompt} \n\n Generated image should be of the type of: ${form.imageType}`,
       },
     });
 
-    const imageUrl = response.data?.generateImage?.data?.map((d) => d.url).filter((url) => url)[0];
+    const result = response.data.response as ImagesResponse;
+
+    const imageUrl = result.data?.map((d) => d.url).filter((url) => url)[0];
     setGeneratingImages(false);
     return imageUrl || undefined;
   }
@@ -184,21 +181,18 @@ export default function GenerateStoryBoard() {
 
   const generateStoryboardScriptPrompt = async () => {
     setGeneratingStoryboard(true);
-    const response = await askChatCompletionAiMutation({
-      variables: {
-        input: {
-          messages: [
-            {
-              role: ChatCompletionRequestMessageRoleEnum.User,
-              content: getGenerateStoryboardPrompt(form),
-            },
-          ],
-          n: 1,
-        },
+    const response = await axios.post('/api/openAI/ask-chat-completion-ai', {
+      input: {
+        messages: [
+          {
+            role: ChatCompletionRequestMessageRoleEnum.User,
+            content: getGenerateStoryboardPrompt(form),
+          },
+        ],
+        n: 1,
       },
-      errorPolicy: 'all',
     });
-    const script = response.data?.askChatCompletionAI.choices?.[0]?.message?.content;
+    const script = response.data?.completion.choices?.[0]?.message?.content;
     setStoryboardScript(script ? JSON.parse(script) : undefined);
     localStorage.setItem(GENERATE_STORYBOOK_SCRIPT_KEY, script || '');
     setGeneratingStoryboard(false);
@@ -208,21 +202,18 @@ export default function GenerateStoryBoard() {
     setGeneratingImagePrompts(true);
     const imagePrompts: string[] = [];
     for (const panel of storyboardScript?.panels || []) {
-      const response = await askChatCompletionAiMutation({
-        variables: {
-          input: {
-            messages: [
-              {
-                role: ChatCompletionRequestMessageRoleEnum.User,
-                content: getGenerateImagesPrompt(JSON.stringify(panel), form.openAIImagePrompt),
-              },
-            ],
-            n: 1,
-          },
+      const response = await axios.post('/api/openAI/ask-chat-completion-ai', {
+        input: {
+          messages: [
+            {
+              role: ChatCompletionRequestMessageRoleEnum.User,
+              content: getGenerateImagesPrompt(JSON.stringify(panel), form.openAIImagePrompt),
+            },
+          ],
+          n: 1,
         },
-        errorPolicy: 'all',
       });
-      const openAIGeneratedPrompt = response.data?.askChatCompletionAI.choices?.[0]?.message?.content;
+      const openAIGeneratedPrompt = response.data?.completion.choices?.[0]?.message?.content;
       imagePrompts.push(openAIGeneratedPrompt || '');
       setImagePrompts((prev) => (openAIGeneratedPrompt ? [...prev, openAIGeneratedPrompt] : [...prev]));
     }
