@@ -4,34 +4,35 @@ import withSpace from '@/contexts/withSpace';
 import ByteCategoryEditor from '@/components/byteCollectionCategory/ByteCollectionCategoryEditor';
 import PageLoading from '@dodao/web-core/components/core/loaders/PageLoading';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import {
-  SpaceWithIntegrationsFragment,
-  useByteCollectionCategoryWithByteCollectionsQuery,
-  useDeleteByteCollectionCategoryMutation,
-} from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsFragment, CategoryWithByteCollection } from '@/graphql/generated/generated-types';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
 import { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
+import axios from 'axios';
 
 function EditTidbitCategorySpace(props: { space: SpaceWithIntegrationsFragment; params: { tidbitCategoryId?: string[] } }) {
-  const { data, loading } = useByteCollectionCategoryWithByteCollectionsQuery({
-    variables: {
-      spaceId: props.space.id,
-      categoryId: props.params.tidbitCategoryId?.[0] ?? '',
-    },
-    skip: !props.params.tidbitCategoryId,
-  });
+  const [data, setData] = useState<CategoryWithByteCollection | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  useEffect(() => {
+    async function fetchData() {
+      if (!props.params.tidbitCategoryId) return;
+      setLoading(true);
+      const response = await axios.get(`/api/byte-collection-categories/${props.params.tidbitCategoryId![0]}?spaceId=${props.space.id}`);
+      setData(response.data.byteCollectionCategoryWithByteCollections);
+      setLoading(false);
+    }
+    fetchData();
+  }, [props.params.tidbitCategoryId, props.space.id]);
 
   const categoryCollectionId = props.params.tidbitCategoryId?.[0] || null;
 
   const router = useRouter();
   const threeDotItems: EllipsisDropdownItem[] = [{ label: 'Delete', key: 'delete' }];
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [deleteByteCollectionCategory] = useDeleteByteCollectionCategoryMutation();
 
   return (
     <PageWrapper>
@@ -60,7 +61,11 @@ function EditTidbitCategorySpace(props: { space: SpaceWithIntegrationsFragment; 
               open={showDeleteModal}
               onClose={() => setShowDeleteModal(false)}
               onDelete={async () => {
-                await deleteByteCollectionCategory({ variables: { spaceId: props.space.id, categoryId: categoryCollectionId! } });
+                await axios.delete(`/api/byte-collection-categories/${categoryCollectionId}`, {
+                  data: {
+                    spaceId: props.space.id,
+                  },
+                });
                 setShowDeleteModal(false);
                 router.push(`/tidbit-collection-categories`);
                 router.refresh();
@@ -68,7 +73,7 @@ function EditTidbitCategorySpace(props: { space: SpaceWithIntegrationsFragment; 
             />
           )}
         </div>
-        {loading ? <PageLoading /> : <ByteCategoryEditor space={props.space} byteCategorySummary={data?.byteCollectionCategoryWithByteCollections} />}
+        {loading ? <PageLoading /> : <ByteCategoryEditor space={props.space} byteCategorySummary={data!} />}
       </SingleCardLayout>
     </PageWrapper>
   );
