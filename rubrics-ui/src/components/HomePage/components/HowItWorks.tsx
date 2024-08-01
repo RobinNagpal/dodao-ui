@@ -1,9 +1,9 @@
 import Image from 'next/image';
 
 import { Container } from '@/components/Container/Container';
-import createCustomRubricImage from '@/images/create-custom-rubric.png';
-import gatherFeedbackImage from '@/images/gather-feedback.png';
-import analyticsImage from '@/images/analytics.png';
+import createCustomRubricImage from '@/components/HomePage/images/create-custom-rubric.png';
+import gatherFeedbackImage from '@/components/HomePage/images/gather-feedback.png';
+import analyticsImage from '@/components/HomePage/images/analytics.png';
 
 const resources = [
   {

@@ -1,6 +1,5 @@
 import { Container } from '@/components/Container/Container';
-import { ArrowPathIcon, CloudArrowUpIcon, Cog6ToothIcon, LockClosedIcon, FolderOpenIcon, BellAlertIcon } from '@heroicons/react/20/solid';
-import RubricVideo from '@/images/rubric-video.gif';
+import RubricVideo from '@/components/HomePage/images/rubric-video.gif';
 import Image from 'next/image';
 
 export default function HowItWorksVideo() {

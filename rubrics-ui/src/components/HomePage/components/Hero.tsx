@@ -1,6 +1,4 @@
-import Image from 'next/image';
-
-import { Button } from '@/components/Button/Button';
+import { Button } from '@/components/HomePage/components/Button';
 import { Container } from '@/components/Container/Container';
 
 export function Hero() {

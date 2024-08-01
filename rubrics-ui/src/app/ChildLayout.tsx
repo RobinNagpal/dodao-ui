@@ -20,7 +20,7 @@ import { SessionProvider } from 'next-auth/react';
 import { useEffect, useMemo } from 'react';
 import ReactGA from 'react-ga4';
 import styles from './ChildLayout.module.scss';
-import { Footer } from '@/components/Footer/Footer';
+import { Footer } from '@/components/HomePage/components/Footer';
 function PageTopNav(props: { space: WebCoreSpace }) {
   return <TopNav space={props.space} />;
 }
