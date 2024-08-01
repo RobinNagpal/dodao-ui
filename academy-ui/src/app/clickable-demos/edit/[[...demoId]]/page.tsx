@@ -19,12 +19,8 @@ import { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
 
-function EditClickableDemo(props: {
-  space: SpaceWithIntegrationsFragment;
-  byteCollection: ByteCollectionFragment | ProjectByteCollectionFragment;
-  params: { demoId?: string[] };
-}) {
-  const { space, byteCollection, params } = props;
+function EditClickableDemo(props: { space: SpaceWithIntegrationsFragment; params: { demoId?: string[] } }) {
+  const { space, params } = props;
   const demoId = params.demoId ? params.demoId[0] : '';
   const spaceId = space.id;
 
@@ -50,7 +46,7 @@ function EditClickableDemo(props: {
   }, [demoId]);
 
   function clickSubmit() {
-    handleSubmit(byteCollection);
+    // handleSubmit(byteCollection);
   }
 
   return (
