@@ -1,6 +1,7 @@
 'use client';
 
 import styles from '@/components/app/Rating/Table/RatingsTable.module.scss';
+import getBaseUrl from '@/utils/api/getBaseURL';
 import { Grid2Cols } from '@dodao/web-core/components/core/grids/Grid2Cols';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { ConsolidatedGuideRating, RatingDistribution, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
@@ -51,7 +52,7 @@ export default function ConsolidatedGuideRatings(props: { space: SpaceWithIntegr
   const [consolidatedRatingsResponse, setConsolidatedRatingsResponse] = React.useState<any>();
   React.useEffect(() => {
     async function fetchConsolidatedRatings() {
-      let response = await axios.get('/api/guide/consolidated-guide-ratings-for-space', {
+      let response = await axios.get(`${getBaseUrl()}/api/guide/consolidated-guide-ratings-for-space`, {
         params: {
           spaceId: props.space.id,
         },

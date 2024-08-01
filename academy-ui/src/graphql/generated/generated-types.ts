@@ -400,20 +400,22 @@ export interface ClickableDemo {
 
 export interface ClickableDemoStep {
   __typename?: 'ClickableDemoStep';
-  captureUrl?: Maybe<Scalars['String']>;
+  elementImgUrl?: Maybe<Scalars['String']>;
   id: Scalars['String'];
   order: Scalars['Int'];
   placement: Scalars['String'];
+  screenImgUrl?: Maybe<Scalars['String']>;
   selector: Scalars['String'];
   tooltipInfo: Scalars['String'];
   url: Scalars['String'];
 }
 
 export interface ClickableDemoStepInput {
-  captureUrl?: InputMaybe<Scalars['String']>;
+  elementImgUrl?: InputMaybe<Scalars['String']>;
   id: Scalars['String'];
   order: Scalars['Int'];
   placement: Scalars['String'];
+  screenImgUrl?: InputMaybe<Scalars['String']>;
   selector: Scalars['String'];
   tooltipInfo: Scalars['String'];
   url: Scalars['String'];
@@ -3729,7 +3731,7 @@ export type DeleteChatbotUserQuestionMutationVariables = Exact<{
 
 export type DeleteChatbotUserQuestionMutation = { __typename?: 'Mutation', deleteChatbotUserQuestion: boolean };
 
-export type ClickableDemoWithStepsFragment = { __typename?: 'ClickableDemoWithSteps', id: string, spaceId: string, title: string, excerpt: string, createdAt: any, updatedAt: any, archive?: boolean | null, steps: Array<{ __typename?: 'ClickableDemoStep', id: string, url: string, selector: string, tooltipInfo: string, captureUrl?: string | null, placement: string, order: number }> };
+export type ClickableDemoWithStepsFragment = { __typename?: 'ClickableDemoWithSteps', id: string, spaceId: string, title: string, excerpt: string, createdAt: any, updatedAt: any, archive?: boolean | null, steps: Array<{ __typename?: 'ClickableDemoStep', id: string, url: string, selector: string, tooltipInfo: string, placement: string, order: number, screenImgUrl?: string | null, elementImgUrl?: string | null }> };
 
 export type ClickableDemoFragment = { __typename?: 'ClickableDemo', id: string, spaceId: string, title: string, excerpt: string, createdAt: any, updatedAt: any, archive?: boolean | null };
 
@@ -3739,7 +3741,7 @@ export type ClickableDemoWithStepsQueryVariables = Exact<{
 }>;
 
 
-export type ClickableDemoWithStepsQuery = { __typename?: 'Query', clickableDemoWithSteps: { __typename?: 'ClickableDemoWithSteps', id: string, spaceId: string, title: string, excerpt: string, createdAt: any, updatedAt: any, archive?: boolean | null, steps: Array<{ __typename?: 'ClickableDemoStep', id: string, url: string, selector: string, tooltipInfo: string, captureUrl?: string | null, placement: string, order: number }> } };
+export type ClickableDemoWithStepsQuery = { __typename?: 'Query', clickableDemoWithSteps: { __typename?: 'ClickableDemoWithSteps', id: string, spaceId: string, title: string, excerpt: string, createdAt: any, updatedAt: any, archive?: boolean | null, steps: Array<{ __typename?: 'ClickableDemoStep', id: string, url: string, selector: string, tooltipInfo: string, placement: string, order: number, screenImgUrl?: string | null, elementImgUrl?: string | null }> } };
 
 export type ClickableDemosQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -3754,7 +3756,7 @@ export type UpsertClickableDemoMutationVariables = Exact<{
 }>;
 
 
-export type UpsertClickableDemoMutation = { __typename?: 'Mutation', payload: { __typename?: 'ClickableDemoWithSteps', id: string, spaceId: string, title: string, excerpt: string, createdAt: any, updatedAt: any, archive?: boolean | null, steps: Array<{ __typename?: 'ClickableDemoStep', id: string, url: string, selector: string, tooltipInfo: string, captureUrl?: string | null, placement: string, order: number }> } };
+export type UpsertClickableDemoMutation = { __typename?: 'Mutation', payload: { __typename?: 'ClickableDemoWithSteps', id: string, spaceId: string, title: string, excerpt: string, createdAt: any, updatedAt: any, archive?: boolean | null, steps: Array<{ __typename?: 'ClickableDemoStep', id: string, url: string, selector: string, tooltipInfo: string, placement: string, order: number, screenImgUrl?: string | null, elementImgUrl?: string | null }> } };
 
 export type DeleteClickableDemoMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -3762,7 +3764,7 @@ export type DeleteClickableDemoMutationVariables = Exact<{
 }>;
 
 
-export type DeleteClickableDemoMutation = { __typename?: 'Mutation', payload: { __typename?: 'ClickableDemoWithSteps', id: string, spaceId: string, title: string, excerpt: string, createdAt: any, updatedAt: any, archive?: boolean | null, steps: Array<{ __typename?: 'ClickableDemoStep', id: string, url: string, selector: string, tooltipInfo: string, captureUrl?: string | null, placement: string, order: number }> } };
+export type DeleteClickableDemoMutation = { __typename?: 'Mutation', payload: { __typename?: 'ClickableDemoWithSteps', id: string, spaceId: string, title: string, excerpt: string, createdAt: any, updatedAt: any, archive?: boolean | null, steps: Array<{ __typename?: 'ClickableDemoStep', id: string, url: string, selector: string, tooltipInfo: string, placement: string, order: number, screenImgUrl?: string | null, elementImgUrl?: string | null }> } };
 
 export type TopicSubmissionJsonFragment = { __typename?: 'GitCourseTopicSubmissionJson', uuid: string, topicKey: string, status: string, explanations?: Array<{ __typename?: 'GitCourseExplanationsSubmission', key: string, status: string }> | null, questions?: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, status: string, answers: Array<string> }> | null, readings?: Array<{ __typename?: 'GitCourseReadingsSubmission', uuid: string, status: string, questions?: Array<{ __typename?: 'GitCourseQuestionsSubmission', uuid: string, answers: Array<string>, status: string }> | null }> | null, summaries?: Array<{ __typename?: 'GitCourseSummariesSubmission', key: string, status: string }> | null };
 
@@ -5345,9 +5347,10 @@ export const ClickableDemoWithStepsFragmentDoc = gql`
     url
     selector
     tooltipInfo
-    captureUrl
     placement
     order
+    screenImgUrl
+    elementImgUrl
   }
   createdAt
   updatedAt

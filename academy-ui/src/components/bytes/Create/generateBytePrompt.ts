@@ -9,7 +9,7 @@ export default function generateBytePrompt(topic: string, contents: string) {
   6. Each paragraph should have at least 1-2 sentences. 
      
   This is the JSON template I have given you the new content and you have to create me the one just like below
-  JSON Template:
+  JSON Template (This is a JSON object with 4 fields, id, content, name, and steps. The steps is an array of objects with name and content fields, make sure to follow that same pattern):
   {
 
     "content": "Benefits of Automated Market Maker over Order Book",

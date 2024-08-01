@@ -8,6 +8,7 @@ import { ChatCompletionRequestMessageRoleEnum, useAskChatCompletionAiMutation } 
 import { QuestionType } from '@dodao/web-core/types/deprecated/models/enums';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import axios from 'axios';
 
 export interface AddByteQuestionsUsingAIButtonProps {
   byte: GeneratedByte;
@@ -16,7 +17,6 @@ export interface AddByteQuestionsUsingAIButtonProps {
 export default function AddByteQuestionsUsingAIButton(props: AddByteQuestionsUsingAIButtonProps) {
   const [loading, setLoading] = useState(false);
   const { showNotification } = useNotificationContext();
-  const [askChatCompletionAiMutation] = useAskChatCompletionAiMutation();
   const generateQuestionsContent = async (byte: GeneratedByte): Promise<string | undefined> => {
     const questionsContent = `
         ${byte.name}
@@ -27,17 +27,13 @@ export default function AddByteQuestionsUsingAIButton(props: AddByteQuestionsUsi
 
     const questionsPrompt = generateQuestionsPrompt(byte.name, 2, questionsContent);
 
-    const questionsResponse = await askChatCompletionAiMutation({
-      variables: {
-        input: {
-          messages: [{ role: ChatCompletionRequestMessageRoleEnum.User, content: questionsPrompt }],
-          temperature: 0.3,
-          model: 'gpt-4',
-        },
-      },
+    const questionsResponse = await axios.post('/api/openAI/ask-chat-completion-ai', {
+      input: { messages: [{ role: ChatCompletionRequestMessageRoleEnum.User, content: questionsPrompt }] },
+      temperature: 0.3,
+      model: 'gpt-4',
     });
 
-    const questionsData = questionsResponse?.data?.askChatCompletionAI?.choices?.[0]?.message?.content;
+    const questionsData = questionsResponse?.data?.completion?.choices?.[0]?.message?.content;
 
     if (!questionsData) {
       setLoading(false);

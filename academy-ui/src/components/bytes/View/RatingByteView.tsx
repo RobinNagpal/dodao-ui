@@ -1,4 +1,5 @@
 import RatingsTable from '@/components/app/Rating/Table/RatingsTable';
+import getBaseUrl from '@/utils/api/getBaseURL';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import {
   ConsolidatedByteRating,
@@ -20,7 +21,7 @@ export default function ByteRatingView(props: { space: SpaceWithIntegrationsFrag
   useEffect(() => {
     async function fetchData() {
       setLoadingByteRatings(true);
-      const response = await axios.get('/api/byte/consolidate-byte-rating', {
+      const response = await axios.get(`${getBaseUrl()}/api/byte/consolidate-byte-rating`, {
         params: {
           byteId: props.byteId,
           spaceId: props.space.id,
@@ -28,7 +29,7 @@ export default function ByteRatingView(props: { space: SpaceWithIntegrationsFrag
       });
       setConsolidatedRatingsResponse(response.data.consolidatedByteRating);
 
-      const byteResponse = await axios.get('/api/byte/byte', {
+      const byteResponse = await axios.get(`${getBaseUrl()}/api/byte/byte`, {
         params: {
           byteId: props.byteId,
           spaceId: props.space.id,
@@ -36,7 +37,7 @@ export default function ByteRatingView(props: { space: SpaceWithIntegrationsFrag
       });
       setByteResponse(byteResponse.data.byte);
 
-      const byteRatingresponse = await axios.get('/api/byte/byte-ratings', {
+      const byteRatingresponse = await axios.get(`${getBaseUrl()}/api/byte/byte-ratings`, {
         params: {
           byteId: props.byteId,
           spaceId: props.space.id,
