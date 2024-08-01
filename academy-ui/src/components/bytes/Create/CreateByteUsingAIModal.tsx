@@ -5,12 +5,13 @@ import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal'
 import { NotificationProps } from '@dodao/web-core/components/core/notify/Notification';
 import TextareaAutosize from '@dodao/web-core/components/core/textarea/TextareaAutosize';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { ChatCompletionRequestMessageRoleEnum, useAskChatCompletionAiMutation, useDownloadAndCleanContentMutation } from '@/graphql/generated/generated-types';
+import { ChatCompletionRequestMessageRoleEnum, DownloadAndCleanContentResponse } from '@/graphql/generated/generated-types';
 import { sum } from 'lodash';
 
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import geneateBytePrompt from './generateBytePrompt';
+import axios from 'axios';
 
 export interface CreateByteUsingAIModalProps {
   open: boolean;
@@ -29,8 +30,6 @@ export function CreateByteUsingAIModal(props: CreateByteUsingAIModalProps) {
   const [error, setError] = useState<string | null>(null);
 
   const [loading, setLoading] = useState(false);
-  const [askChatCompletionAiMutation] = useAskChatCompletionAiMutation();
-  const [downloadAndCleanContentMutation] = useDownloadAndCleanContentMutation();
 
   const [topic, setTopic] = useState<string>();
   const [contents, setContents] = useState<string>();
@@ -41,13 +40,11 @@ export function CreateByteUsingAIModal(props: CreateByteUsingAIModalProps) {
   };
 
   const generateByteContent = async (): Promise<string | undefined> => {
-    const cleanContents = await downloadAndCleanContentMutation({
-      variables: {
-        input: contents!,
-      },
+    const cleanContents = await axios.post('/api/openAI/download-and-clean-content', {
+      input: contents,
     });
 
-    const cleanContentResponse = cleanContents.data?.downloadAndCleanContent;
+    const cleanContentResponse: DownloadAndCleanContentResponse = cleanContents.data?.downloadAndCleanContent;
     const links = cleanContentResponse?.links;
     const tokenCount = (links?.length || 0) > 0 ? sum(links?.map((link) => link?.tokenCount || 0)) : 0;
     const cleanedContentText = cleanContentResponse?.content!;
@@ -66,16 +63,14 @@ export function CreateByteUsingAIModal(props: CreateByteUsingAIModalProps) {
 
     const inputContent = geneateBytePrompt(topic!, cleanedContentText);
 
-    const response = await askChatCompletionAiMutation({
-      variables: {
-        input: {
-          messages: [{ role: ChatCompletionRequestMessageRoleEnum.User, content: inputContent }],
-          model: 'gpt-4',
-        },
+    const response = await axios.post('/api/openAI/ask-chat-completion-ai', {
+      input: {
+        messages: [{ role: ChatCompletionRequestMessageRoleEnum.User, content: inputContent }],
       },
+      model: 'gpt-4',
     });
 
-    const data = await response?.data?.askChatCompletionAI?.choices?.[0]?.message?.content;
+    const data = await response?.data?.completion?.choices?.[0]?.message?.content;
 
     return data || undefined;
   };
@@ -91,7 +86,8 @@ export function CreateByteUsingAIModal(props: CreateByteUsingAIModalProps) {
         return;
       }
 
-      const parsedData = JSON.parse(data) as GeneratedByte;
+      const parsedArray = JSON.parse(data) as GeneratedByte[];
+      const parsedData = parsedArray[0];
 
       const steps = parsedData.steps.map((step) => ({ ...step, uuid: uuidv4(), stepItems: [] }));
 

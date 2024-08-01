@@ -2,10 +2,9 @@ import Button from '@dodao/web-core/components/core/buttons/Button';
 import ErrorWithAccentBorder from '@dodao/web-core/components/core/errors/ErrorWithAccentBorder';
 import Input from '@dodao/web-core/components/core/input/Input';
 import TextareaAutosize from '@dodao/web-core/components/core/textarea/TextareaAutosize';
-import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { ChatCompletionRequestMessageRoleEnum, useAskChatCompletionAiMutation, useGenerateImageMutation } from '@/graphql/generated/generated-types';
-import { get } from 'lodash';
+import { ChatCompletionRequestMessageRoleEnum, ImagesResponse, OpenAiChatCompletionResponse } from '@/graphql/generated/generated-types';
 import React, { useState } from 'react';
+import axios from 'axios';
 
 const defaultPrompt = `
 Generate an image description (within 100 words) with the theme as TOPIC and image
@@ -80,23 +79,21 @@ export default function GenerateImage() {
   const [regeneratingImagePrompts, setRegeneratingImagePrompts] = useState(false);
   const [generatingImages, setGeneratingImages] = useState(false);
 
-  const [generateImageMutation] = useGenerateImageMutation();
   const [imageUrls, setImageUrls] = useState<string>();
   const [promptGenerated, setPromptGenerated] = useState(false);
 
-  const [askChatCompletionAiMutation] = useAskChatCompletionAiMutation();
   async function generateImage(prompt: string): Promise<string | undefined> {
     setGeneratingImages(true);
 
-    const response = await generateImageMutation({
-      variables: {
-        input: {
-          prompt: `${prompt} \n\n Generated image should be of the type of: ${form.imageType}`,
-        },
+    const response = await axios.post('/api/openAI/generate-image', {
+      input: {
+        prompt: `${prompt} \n\n Generated image should be of the type of: ${form.imageType}`,
       },
     });
 
-    const imageUrl = response.data?.generateImage?.data?.map((d) => d.url).filter((url) => url)[0];
+    const result = response.data.response as ImagesResponse;
+
+    const imageUrl = result.data?.map((d) => d.url).filter((url) => url)[0];
     setGeneratingImages(false);
     return imageUrl || undefined;
   }
@@ -110,20 +107,20 @@ export default function GenerateImage() {
 
   const generateImagePrompts = async (regenerate: boolean = false) => {
     regenerate ? setRegeneratingImagePrompts(true) : setGeneratingImagePrompts(true);
-    const response = await askChatCompletionAiMutation({
-      variables: {
-        input: {
-          messages: [
-            {
-              role: ChatCompletionRequestMessageRoleEnum.User,
-              content: getGenerateImagesPrompt(form),
-            },
-          ],
-          n: form.numberOfImages,
-        },
+
+    const response = await axios.post('/api/openAI/ask-chat-completion-ai', {
+      input: {
+        messages: [
+          {
+            role: ChatCompletionRequestMessageRoleEnum.User,
+            content: getGenerateImagesPrompt(form),
+          },
+        ],
+        n: form.numberOfImages,
       },
     });
-    const openAIGeneratedPrompts = response.data?.askChatCompletionAI.choices.map((choice) => choice.message?.content).filter((content) => content);
+    const result = response.data.completion as OpenAiChatCompletionResponse;
+    const openAIGeneratedPrompts = result.choices.map((choice) => choice.message?.content).filter((content) => content);
     setImagePrompts((openAIGeneratedPrompts![0] as string) || '');
     regenerate ? setRegeneratingImagePrompts(false) : setGeneratingImagePrompts(false);
     setPromptGenerated(true);
