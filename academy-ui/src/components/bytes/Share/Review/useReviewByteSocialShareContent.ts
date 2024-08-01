@@ -109,7 +109,7 @@ export default function useReviewByteSocialShareContent(spaceId: string, byteId:
       linkedinPdfContent = socialShare.linkedinPdfContent;
       setSocialShareDetails(socialShare);
     } else {
-      const byteResponse = await axios.get('/api/byte/byte', {
+      const byteResponse = await axios.get(`${getBaseUrl()}/api/byte/byte`, {
         params: {
           spaceId,
           byteId,

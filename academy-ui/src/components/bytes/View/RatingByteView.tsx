@@ -29,7 +29,7 @@ export default function ByteRatingView(props: { space: SpaceWithIntegrationsFrag
       });
       setConsolidatedRatingsResponse(response.data.consolidatedByteRating);
 
-      const byteResponse = await axios.get('/api/byte/byte', {
+      const byteResponse = await axios.get(`${getBaseUrl()}//api/byte/byte`, {
         params: {
           byteId: props.byteId,
           spaceId: props.space.id,
@@ -37,7 +37,7 @@ export default function ByteRatingView(props: { space: SpaceWithIntegrationsFrag
       });
       setByteResponse(byteResponse.data.byte);
 
-      const byteRatingresponse = await axios.get('/api/byte/byte-ratings', {
+      const byteRatingresponse = await axios.get(`${getBaseUrl()}//api/byte/byte-ratings`, {
         params: {
           byteId: props.byteId,
           spaceId: props.space.id,
