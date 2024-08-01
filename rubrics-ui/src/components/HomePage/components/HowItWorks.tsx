@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import { Container } from '@/components/Container/Container';
+import { Container } from '@/components/HomePage/components/Container';
 import createCustomRubricImage from '@/components/HomePage/images/create-custom-rubric.png';
 import gatherFeedbackImage from '@/components/HomePage/images/gather-feedback.png';
 import analyticsImage from '@/components/HomePage/images/analytics.png';

@@ -1,4 +1,4 @@
-import { Container } from '@/components/Container/Container';
+import { Container } from '@/components/HomePage/components/Container';
 import RubricVideo from '@/components/HomePage/images/rubric-video.gif';
 import Image from 'next/image';
 
