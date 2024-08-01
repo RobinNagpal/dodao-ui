@@ -73,7 +73,7 @@ const RubricCriteria: React.FC<RubricCriteriaProps> = ({ criteria, rubrics, isEd
 
   const sendRatedRubricsToServer = async () => {
     try {
-      const response = await fetch('/api/rubric-rating', {
+      const response = await fetch('http://localhost:3004/api/rubric-rating', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formattedRateRubrics),
@@ -100,12 +100,6 @@ const RubricCriteria: React.FC<RubricCriteriaProps> = ({ criteria, rubrics, isEd
       setSession(session as SessionProps | null);
     })();
   }, []);
-
-  useEffect(() => {
-    if (formattedRateRubrics.length > 0) {
-      sendRatedRubricsToServer();
-    }
-  }, [rowScoresAndComments, formattedRateRubrics]);
 
   const handleCommentModal = (cellIndex: number, cellId: string) => {
     if (isEditAccess) return;
@@ -145,6 +139,7 @@ const RubricCriteria: React.FC<RubricCriteriaProps> = ({ criteria, rubrics, isEd
     }));
 
     handleCloseModal();
+    sendRatedRubricsToServer(); // Send data when saving comment
   };
 
   const handleCellClick = (criteria: string, cellIndex: number, cellId: string) => {
@@ -152,9 +147,9 @@ const RubricCriteria: React.FC<RubricCriteriaProps> = ({ criteria, rubrics, isEd
     const isAnyCellSelected = selectedCells[criteria] !== undefined;
 
     if (isCellAlreadySelected) {
+      // If the cell is already selected, allow editing
       setClickedCellIndex(cellIndex);
       setClickedCellId(cellId);
-      setIsConfirmationOpen(false);
       handleCommentModal(cellIndex, cellId);
       return;
     }
