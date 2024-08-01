@@ -4,7 +4,7 @@ import { getDemo } from '@/app/api/helpers/clickableDemo/getDemo';
 import { prisma } from '@/prisma';
 import { Byte, ClickableDemos, ByteCollection } from '@prisma/client';
 
-export async function getByteCollectionWithItems(byteCollection: ByteCollection): Promise<ByteCollectionGraphql> {
+export async function getByteCollectionWithItem(byteCollection: ByteCollection): Promise<ByteCollectionGraphql> {
   const bytes: ByteCollectionByte[] = [];
   const demos: ByteCollectionDemo[] = [];
 
