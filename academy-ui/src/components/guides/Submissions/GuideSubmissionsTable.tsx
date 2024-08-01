@@ -1,3 +1,4 @@
+import getBaseUrl from '@/utils/api/getBaseURL';
 import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
 import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import SpinnerWithText from '@dodao/web-core/components/core/loaders/SpinnerWithText';
@@ -61,7 +62,7 @@ export default function GuideSubmissionsTable(props: GuideSubmissionsTableProps)
     async function fetchData() {
       try {
         setLoading(true);
-        const response = await axios.get('/api/guide/guide-submit', {
+        const response = await axios.get(`${getBaseUrl()}/api/guide/guide-submit`, {
           params: {
             spaceId: props.space.id,
             guideId: props.guideId,

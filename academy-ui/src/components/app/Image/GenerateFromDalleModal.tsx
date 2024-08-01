@@ -3,9 +3,10 @@ import Button from '@dodao/web-core/components/core/buttons/Button';
 import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
 import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
-import { ChatCompletionRequestMessageRoleEnum, useAskChatCompletionAiMutation, useGenerateImageMutation } from '@/graphql/generated/generated-types';
+import { ChatCompletionRequestMessageRoleEnum, ImagesResponse, OpenAiChatCompletionResponse } from '@/graphql/generated/generated-types';
 import ArrowPathRoundedSquareIcon from '@heroicons/react/24/outline/ArrowPathRoundedSquareIcon';
 import React, { useEffect } from 'react';
+import axios from 'axios';
 
 export interface GenerateFromDalleModalProps {
   open: boolean;
@@ -18,35 +19,31 @@ export default function GenerateFromDalleModal({ open, onClose, onInput, generat
   const [generatedImageUrl, setGeneratedImageUrl] = React.useState<string>();
   const [enterManualPrompt, setEnterManualPrompt] = React.useState(false);
 
-  const [askChatCompletionAiMutation] = useAskChatCompletionAiMutation();
-  const [generateImageMutation] = useGenerateImageMutation();
   async function generateImage() {
     setGeneratingImage(true);
-    const response = await askChatCompletionAiMutation({
-      variables: {
-        input: {
-          messages: [
-            {
-              role: ChatCompletionRequestMessageRoleEnum.User,
-              content: generateImagePromptFn!(),
-            },
-          ],
-          n: 1,
-        },
+    const response = await axios.post('/api/openAI/ask-chat-completion-ai', {
+      input: {
+        messages: [
+          {
+            role: ChatCompletionRequestMessageRoleEnum.User,
+            content: generateImagePromptFn!(),
+          },
+        ],
+        n: 1,
       },
     });
-    const openAIGeneratedPrompts = response.data?.askChatCompletionAI.choices.map((choice) => choice.message?.content).filter((content) => content);
+    const result = response.data.completion as OpenAiChatCompletionResponse;
+    const openAIGeneratedPrompts = result.choices.map((choice) => choice.message?.content).filter((content) => content);
     const prompt = (openAIGeneratedPrompts![0] as string) || '';
 
-    const imageResponse = await generateImageMutation({
-      variables: {
-        input: {
-          prompt: `${prompt}\n\nMake sure not to add any text to the image.`,
-        },
+    const imageResponse = await axios.post('/api/openAI/generate-image', {
+      input: {
+        prompt: `${prompt}\n\nMake sure not to add any text to the image.`,
       },
     });
+    const imageResp: ImagesResponse = imageResponse.data.response;
 
-    const imageUrl = imageResponse.data?.generateImage?.data?.map((d) => d.url).filter((url) => url)[0];
+    const imageUrl = imageResp?.data?.map((d) => d.url).filter((url) => url)[0];
     setGeneratedImageUrl(imageUrl!);
     setGeneratingImage(false);
   }

@@ -92,44 +92,45 @@ model CryptoLoginNonce {
 }
 
 model Space {
-  id               String            @id @db.VarChar(64)
-  verified         Boolean           @default(false)
-  createdAt        DateTime          @default(now()) @map("created_at")
-  creator          String            @db.VarChar(64)
-  name             String            @db.VarChar(255)
-  updatedAt        DateTime          @updatedAt @map("updated_at")
-  avatar           String?           @db.VarChar(255)
-  admins           String[]
-  adminUsernames   String[]          @default(dbgenerated("(ARRAY[]::character varying[])::character varying(255)[]")) @map("admin_usernames") @db.VarChar(255)
+  id                     String                   @id @db.VarChar(64)
+  verified               Boolean                  @default(false)
+  createdAt              DateTime                 @default(now()) @map("created_at")
+  creator                String                   @db.VarChar(64)
+  name                   String                   @db.VarChar(255)
+  updatedAt              DateTime                 @updatedAt @map("updated_at")
+  avatar                 String?                  @db.VarChar(255)
+  admins                 String[]
+  adminUsernames         String[]                 @default(dbgenerated("(ARRAY[]::character varying[])::character varying(255)[]")) @map("admin_usernames") @db.VarChar(255)
   /// [UsernameAndName]
-  adminUsernamesV1 Json[]            @map("admin_usernames_v1") @db.JsonB
-  domains          String[]          @default([])
-  skin             String            @default("dodao") @db.VarChar(128)
-  discordInvite    String?           @map("discord_invite") @db.VarChar(1024)
-  telegramInvite   String?           @map("telegram_invite") @db.VarChar(1024)
+  adminUsernamesV1       Json[]                   @map("admin_usernames_v1") @db.JsonB
+  domains                String[]                 @default([])
+  skin                   String                   @default("dodao") @db.VarChar(128)
+  discordInvite          String?                  @map("discord_invite") @db.VarChar(1024)
+  telegramInvite         String?                  @map("telegram_invite") @db.VarChar(1024)
   /// [SpaceInviteLinks]
-  inviteLinks      Json?             @map("invite_links") @db.Json
+  inviteLinks            Json?                    @map("invite_links") @db.Json
   /// [AuthSettings]
-  authSettings     Json              @default("{}") @map("auth_settings") @db.Json
+  authSettings           Json                     @default("{}") @map("auth_settings") @db.Json
   /// [GuideSettings]
-  guideSettings    Json              @default("{}") @map("guide_settings") @db.Json
+  guideSettings          Json                     @default("{}") @map("guide_settings") @db.Json
   /// [SocialSettings]
-  socialSettings   Json              @default("{}") @map("social_settings") @db.Json
+  socialSettings         Json                     @default("{}") @map("social_settings") @db.Json
   /// [ByteSettings]
-  byteSettings     Json              @default("{}") @map("byte_settings") @db.Json
-  features         String[]
-  botDomains       String[]          @default([])
-  SpaceDiscord     SpaceDiscord[]
-  SpaceIntegration SpaceIntegration?
+  byteSettings           Json                     @default("{}") @map("byte_settings") @db.Json
+  features               String[]
+  botDomains             String[]                 @default([])
+  SpaceDiscord           SpaceDiscord[]
+  SpaceIntegration       SpaceIntegration?
   /// [ThemeColors]
-  themeColors      Json?             @map("theme_colors") @db.Json
-  type             String            @default("ACADEMY_SITE") @db.VarChar(255)
+  themeColors            Json?                    @map("theme_colors") @db.Json
+  type                   String                   @default("ACADEMY_SITE") @db.VarChar(255)
   /// [TidbitsHomepage]
-  tidbitsHomepage  Json?             @map("tidbits_homepage") @db.Json
-  Byte             Byte[]
-  GuideStep        GuideStep[]
-  GuideSubmission  GuideSubmission[]
-  Course           Course[]
+  tidbitsHomepage        Json?                    @map("tidbits_homepage") @db.Json
+  Byte                   Byte[]
+  GuideStep              GuideStep[]
+  GuideSubmission        GuideSubmission[]
+  Course                 Course[]
+  ByteCollectionCategory ByteCollectionCategory[]
 
   @@map("spaces")
 }
@@ -464,4 +465,22 @@ model ShortVideo {
   archive     Boolean? @default(false)
 
   @@map("short_videos")
+}
+
+model ByteCollectionCategory {
+  id                String   @id @db.VarChar(255)
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+  name              String   @db.VarChar(255)
+  excerpt           String   @db.VarChar(255)
+  imageUrl          String?  @map("image_url") @db.VarChar(1024)
+  byteCollectionIds String[] @map("byte_collection_ids") @db.VarChar(255)
+  creator           String   @db.VarChar(64)
+  spaceId           String   @map("space_id") @db.VarChar(66)
+  Space             Space    @relation(fields: [spaceId], references: [id])
+  status            String   @default("Active") @db.VarChar(255)
+  priority          Int      @default(50)
+  archive           Boolean? @default(false)
+
+  @@map("byte_collection_categories")
 }

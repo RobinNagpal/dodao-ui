@@ -2,8 +2,17 @@ import { prisma } from '@/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(req: NextRequest, { params: { guideId } }: { params: { guideId: string } }) {
-  const guide = await prisma.guide.findUnique({
-    where: { id: guideId },
+  const guide = await prisma.guide.findFirst({
+    where: {
+      OR: [
+        {
+          id: guideId,
+        },
+        {
+          uuid: guideId,
+        },
+      ],
+    },
     include: {
       GuideStep: {
         orderBy: {

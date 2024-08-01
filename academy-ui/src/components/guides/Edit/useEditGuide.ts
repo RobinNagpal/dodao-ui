@@ -1,4 +1,5 @@
 import { EditGuideType } from '@/components/guides/Edit/editGuideType';
+import getBaseUrl from '@/utils/api/getBaseURL';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import {
   GuideInput,
@@ -76,7 +77,7 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
 
   const initialize = async () => {
     if (uuid) {
-      const response = await axios.get('/api/guide/' + uuid);
+      const response = await axios.get(`${getBaseUrl()}/api/guide/` + uuid);
       const guide = response.data.guide;
       setGuide({
         ...guide,

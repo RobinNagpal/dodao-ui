@@ -4,9 +4,10 @@ import Input from '@dodao/web-core/components/core/input/Input';
 import StyledSelect from '@dodao/web-core/components/core/select/StyledSelect';
 import TextareaAutosize from '@dodao/web-core/components/core/textarea/TextareaAutosize';
 import WarningWithAccentBorder from '@dodao/web-core/components/core/warnings/WarningWithAccentBorder';
-import { ChatCompletionRequestMessageRoleEnum, useAskChatCompletionAiMutation } from '@/graphql/generated/generated-types';
+import { ChatCompletionRequestMessageRoleEnum } from '@/graphql/generated/generated-types';
 
 import React, { useState } from 'react';
+import axios from 'axios';
 
 export interface GenerateQuestionUsingAIProps {
   onGenerateContent: (questions: GeneratedQuestionInterface[]) => void;
@@ -27,7 +28,6 @@ function containsURL(str: string): boolean {
 
 export default function GenerateQuestionsUsingAI(props: GenerateQuestionUsingAIProps) {
   const [loading, setLoading] = useState(false);
-  const [askChatCompletionAiMutation] = useAskChatCompletionAiMutation();
 
   const [topic, setTopic] = useState<string>('');
   const [contents, setContents] = useState<string>('');
@@ -48,18 +48,14 @@ export default function GenerateQuestionsUsingAI(props: GenerateQuestionUsingAIP
       }
       const inputContent = props.generatePrompt(topic, numberOfQuestions, contents);
 
-      const response = await askChatCompletionAiMutation({
-        variables: {
-          input: {
-            messages: [{ role: ChatCompletionRequestMessageRoleEnum.User, content: inputContent }],
-            temperature: 0.3,
-            model: 'gpt-4',
-          },
-        },
+      const response = await axios.post('/api/openAI/ask-chat-completion-ai', {
+        input: { messages: [{ role: ChatCompletionRequestMessageRoleEnum.User, content: inputContent }] },
+        temperature: 0.3,
+        model: 'gpt-4',
       });
 
       try {
-        const data = response?.data?.askChatCompletionAI?.choices?.[0]?.message?.content;
+        const data = response?.data?.completion?.choices?.[0]?.message?.content;
 
         if (!data) {
           setLoading(false);

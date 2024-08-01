@@ -14,14 +14,30 @@ const nextConfig = {
     V2_API_SERVER_URL: process.env.V2_API_SERVER_URL,
     DODAO_SUPERADMINS: process.env.DODAO_SUPERADMINS,
   },
+  async headers() {
+    return [
+      {
+        // matching all API routes
+        source: '/api/:path*',
+        headers: [
+          { key: 'Access-Control-Allow-Credentials', value: 'true' },
+          { key: 'Access-Control-Allow-Origin', value: '*' },
+          { key: 'Access-Control-Allow-Methods', value: 'GET,OPTIONS,PATCH,DELETE,POST,PUT' },
+          {
+            key: 'Access-Control-Allow-Headers',
+            value: 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version',
+          },
+        ],
+      },
+    ];
+  },
 };
 
 module.exports = nextConfig;
 
-
 // Injected content via Sentry wizard below
 
-const { withSentryConfig } = require("@sentry/nextjs");
+const { withSentryConfig } = require('@sentry/nextjs');
 
 module.exports = withSentryConfig(
   module.exports,
@@ -31,8 +47,8 @@ module.exports = withSentryConfig(
 
     // Suppresses source map uploading logs during build
     silent: true,
-    org: "robin-nagpal",
-    project: "javascript-nextjs",
+    org: 'robin-nagpal',
+    project: 'javascript-nextjs',
   },
   {
     // For all available options, see:
@@ -45,7 +61,7 @@ module.exports = withSentryConfig(
     transpileClientSDK: true,
 
     // Routes browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers (increases server load)
-    tunnelRoute: "/monitoring",
+    tunnelRoute: '/monitoring',
 
     // Hides source maps from generated client bundles
     hideSourceMaps: true,
