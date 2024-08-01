@@ -50,10 +50,8 @@ export default function ElementSelectorModal({ space, showModal, objectId, fileU
 
     if (headEndTagIndex) {
       const html2CanvasScript = `<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>`;
-      const customLinkTag = `<link rel="stylesheet" href="http://localhost:3002/clickableDemoTooltipStyles.css" />`;
-      const customScriptTag = `<script src="http://localhost:3002/clickableDemoTooltipScript.js"></script>`;
 
-      return [htmlContent.slice(0, headEndTagIndex), customScriptTag, customLinkTag, html2CanvasScript, htmlContent.slice(headEndTagIndex)].join('');
+      return [htmlContent.slice(0, headEndTagIndex), html2CanvasScript, htmlContent.slice(headEndTagIndex)].join('');
     } else {
       console.warn('Unable to find opening style tag in HTML content');
       return htmlContent; // Return unmodified content if the style tag is not found
