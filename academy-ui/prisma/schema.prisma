@@ -187,8 +187,6 @@ model Byte {
   byteStyle        String?                      @default("CardAndCircleProgress") @map("byte_style") @db.VarChar(255)
   /// [CompletionScreen]
   completionScreen Json?                        @map("completion_screen") @db.Json
-  mappings         ByteCollectionItemMappings[]
-
   @@map("bytes")
 }
 
@@ -343,20 +341,6 @@ model GuideRating {
   @@map("guide_ratings")
 }
 
-model ByteCollectionItemMappings {
-  id               String          @id @db.VarChar(64)
-  byteCollectionId String          @map("byte_collection_id")
-  itemId           String          @db.VarChar(64)
-  itemType         String          @db.VarChar(255)
-  order            Int
-  ByteCollection   ByteCollection? @relation(fields: [byteCollectionId], references: [id], map: "FK_ByteCollection")
-  Byte             Byte?           @relation(fields: [itemId], references: [id], map: "FK_Byte")
-
-  // ShortVideo       ShortVideo?       @relation(fields: [itemId], references: [id], map: "FK_ShortVideo")
-  // ClickableDemos   ClickableDemos?   @relation(fields: [itemId], references: [id], map: "FK_ClickableDemos")
-  @@map("byte_collections_items_mappings")
-}
-
 model ClickableDemos {
   id        String   @id @db.VarChar(255)
   spaceId   String   @map("space_id") @db.VarChar(66)
@@ -370,6 +354,18 @@ model ClickableDemos {
 
   @@map("clickable_demos")
 }
+
+model ByteCollectionItemMappings {
+  id               String          @id @db.VarChar(64)
+  byteCollectionId String          @map("byte_collection_id")
+  itemId           String          @db.VarChar(64)
+  itemType         String          @db.VarChar(255)
+  order            Int
+  ByteCollection   ByteCollection? @relation(fields: [byteCollectionId], references: [id], map: "FK_ByteCollection")
+
+  @@map("byte_collections_items_mappings")
+}
+
 
 model CourseSubmission {
   uuid                     String                  @id @db.VarChar(66)

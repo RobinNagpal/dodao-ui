@@ -7,7 +7,7 @@ import {
   UpdateByteFunctions,
 } from '@/components/bytes/Edit/editByteHelper';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { ByteDetailsFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { ByteDetailsFragment, SpaceWithIntegrationsFragment, ByteCollectionFragment, ProjectByteCollectionFragment } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
 import { ByteErrors } from '@dodao/web-core/types/errors/byteErrors';
 import { emptyByte } from '@/utils/byte/EmptyByte';
@@ -17,6 +17,7 @@ import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
+import { Byte } from '@prisma/client';
 
 export function useEditByte(space: SpaceWithIntegrationsFragment, onUpsert: (byteId: string) => Promise<void>, byteId: string | null) {
   const emptyByteModel = emptyByte();
@@ -153,7 +154,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, onUpsert: (byt
     removeCallToActionButton: removeCallToActionButtonFn,
   };
 
-  const saveViaMutation = async (mutationFn: () => Promise<Response>) => {
+  const saveViaMutation = async (mutationFn: () => Promise<Byte>) => {
     setByteUpserting(true);
     try {
       const valid = validateByte(byte);
@@ -171,13 +172,12 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, onUpsert: (byt
       }
       const response = await mutationFn();
 
-      if (response.ok) {
-        const byte = (await response.json()).upsertedByte as ByteDetailsFragment;
+      if (response) {
         showNotification({ type: 'success', message: 'Byte Saved', heading: 'Success 🎉' });
-        await onUpsert(byte.id!);
+        await onUpsert(response.id!);
       } else {
         showNotification({ type: 'error', message: $t('notify.somethingWentWrong') });
-        console.error(response.body);
+        console.error('Failed to save byte');
       }
     } catch (e) {
       showNotification({ type: 'error', message: $t('notify.somethingWentWrong') });
@@ -186,9 +186,9 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, onUpsert: (byt
     setByteUpserting(false);
   };
 
-  const handleByteUpsert = async () => {
+  const handleByteUpsert = async (byteCollection: ByteCollectionFragment | ProjectByteCollectionFragment) => {
     await saveViaMutation(async () => {
-      return await fetch('/api/byte/upsert-byte', {
+      const upsertResponse = await fetch('/api/byte/upsert-byte', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -198,6 +198,23 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, onUpsert: (byt
           input: getByteInputFn(byte),
         }),
       });
+
+      const { upsertedByte } = await upsertResponse.json();
+
+      const mappingResponse = await fetch('/api/mapping/upsertByteMapping', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          byteCollectionId: byteCollection.id,
+          itemId: upsertedByte.id,
+          itemType: 'Byte',
+          order: byteCollection.bytes.length + 1,
+        }),
+      });
+
+      return upsertedByte;
     });
   };
 

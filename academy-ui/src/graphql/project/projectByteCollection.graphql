@@ -6,6 +6,19 @@ fragment ProjectByteCollection on ProjectByteCollection {
     content
     videoUrl
   }
+  demos {
+    demoId
+    title
+    excerpt
+    steps {
+      id
+      url
+      selector
+      tooltipInfo
+      placement
+      order
+    }
+  }
   description
   id
   name
