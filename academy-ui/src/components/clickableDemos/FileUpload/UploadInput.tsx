@@ -11,7 +11,7 @@ interface UploadInputProps {
   imageType: ImageType;
   objectId: string;
   spaceId: string;
-  onInput: (url: string, captureUrl: string) => void;
+  onInput: (url: string, screenImgUrl: string) => void;
   onLoading?: (value: ((prevState: boolean) => boolean) | boolean) => void;
   placeholder?: string;
   allowedFileTypes?: string[];
