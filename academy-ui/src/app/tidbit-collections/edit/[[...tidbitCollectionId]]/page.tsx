@@ -3,6 +3,7 @@
 import withSpace from '@/contexts/withSpace';
 import ByteCollectionEditor from '@/components/byteCollection/ByteCollections/ByteCollectionEditor';
 import { EditByteCollection } from '@/components/byteCollection/ByteCollections/useEditByteCollection';
+import getBaseUrl from '@/utils/api/getBaseURL';
 import PageLoading from '@dodao/web-core/components/core/loaders/PageLoading';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { SpaceWithIntegrationsFragment, ByteCollectionFragment, Byte } from '@/graphql/generated/generated-types';
@@ -22,14 +23,14 @@ function EditTidbitCollectionSpace(props: { space: SpaceWithIntegrationsFragment
 
   useEffect(() => {
     async function fetchData() {
-      let response = await axios.get('/api/byte/bytes', {
+      let response = await axios.get(`${getBaseUrl()}/api/byte/bytes`, {
         params: {
           spaceId: props.space.id,
         },
       });
       setBytesResponse(response.data);
       if (byteCollectionId) {
-        const response = await axios.get('/api/byte-collection/byte-collection', {
+        const response = await axios.get(`${getBaseUrl()}/api/byte-collection/byte-collection`, {
           params: {
             spaceId: props.space.id,
             byteCollectionId: byteCollectionId,

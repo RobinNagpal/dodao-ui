@@ -1,3 +1,4 @@
+import getBaseUrl from '@/utils/api/getBaseURL';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Card from '@dodao/web-core/components/core/card/Card';
 import { Grid4Cols } from '@dodao/web-core/components/core/grids/Grid4Cols';
@@ -30,7 +31,7 @@ export default function SelectByteCollectionModal(props: SelectByteCollectionMod
   useEffect(() => {
     async function fetchData() {
       setLoading(true);
-      const response = await axios.get('/api/byte-collection/byte-collections', {
+      const response = await axios.get(`${getBaseUrl()}/api/byte-collection/byte-collections`, {
         params: {
           spaceId: props.space.id,
         },
