@@ -1,5 +1,5 @@
 import { Button } from '@/components/HomePage/components/Button';
-import { Container } from '@/components/Container/Container';
+import { Container } from '@/components/HomePage/components/Container';
 
 export function Hero() {
   return (
