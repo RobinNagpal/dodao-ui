@@ -4,6 +4,7 @@ import ShareBytePage from '@/components/bytes/Share/ShareBytePage';
 import ByteStepper from '@/components/bytes/View/ByteStepper';
 import ContinuousStepIndicatorProgress from '@/components/bytes/View/ByteStepperItem/Progress/ContinuousStepIndicatorProgress';
 import { useViewByteInModal } from '@/components/bytes/View/useViewByteInModal';
+import getBaseUrl from '@/utils/api/getBaseURL';
 import { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import PageLoading from '@dodao/web-core/components/core/loaders/PageLoading';
@@ -45,7 +46,7 @@ export default function ViewByteModal({
       return await getApiResponse<ByteDetailsFragment>(space, `projects/${project?.id}/bytes/${byteId}`);
     }
 
-    const response = await axios.get('/api/byte/byte', {
+    const response = await axios.get(`${getBaseUrl()}/api/byte/byte`, {
       params: {
         byteId: byteId,
         spaceId: space.id,

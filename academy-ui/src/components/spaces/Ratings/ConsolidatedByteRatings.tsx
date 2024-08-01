@@ -1,6 +1,7 @@
 'use client';
 
 import styles from '@/components/app/Rating/Table/RatingsTable.module.scss';
+import getBaseUrl from '@/utils/api/getBaseURL';
 import { Grid2Cols } from '@dodao/web-core/components/core/grids/Grid2Cols';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { ConsolidatedByteRating, ConsolidatedByteRatingsForSpaceQuery, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
@@ -52,7 +53,7 @@ export default function ConsolidatedByteRatings(props: { space: SpaceWithIntegra
 
   useEffect(() => {
     async function fetchData() {
-      const response = await axios.get('/api/byte/consolidate-byte-ratings-for-space', {
+      const response = await axios.get(`${getBaseUrl()}/api/byte/consolidate-byte-ratings-for-space`, {
         params: {
           spaceId: props.space.id,
         },
