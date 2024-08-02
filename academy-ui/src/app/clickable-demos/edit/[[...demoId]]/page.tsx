@@ -38,6 +38,7 @@ function EditClickableDemo(props: { space: SpaceWithIntegrationsFragment; params
     space,
     demoId
   );
+
   const { handleDeletion } = useDeleteClickableDemo(space, demoId);
   const threeDotItems: EllipsisDropdownItem[] = [
     { label: 'Delete', key: 'delete' },
