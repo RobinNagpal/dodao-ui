@@ -22,12 +22,13 @@ import axios from 'axios';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { getUploadedImageUrlFromSingedUrl } from '@dodao/web-core/utils/upload/getUploadedImageUrlFromSingedUrl';
 import html2canvas from 'html2canvas';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 
 function EditClickableDemo(props: { space: SpaceWithIntegrationsFragment; params: { demoId?: string[] } }) {
   const { space, params } = props;
   const demoId = params.demoId ? params.demoId[0] : '';
   const spaceId = space.id;
-
+  const { showNotification } = useNotificationContext();
   const { clickableDemoCreating, clickableDemoLoaded, clickableDemo, clickableDemoErrors, handleSubmit, updateClickableDemoFunctions } = useEditClickableDemo(
     space,
     demoId
@@ -103,6 +104,7 @@ function EditClickableDemo(props: { space: SpaceWithIntegrationsFragment; params
     iframe.style.left = '-9999px';
     iframe.style.top = '-9999px';
     document.body.appendChild(iframe);
+    let stepNo = 1;
     for (const step of clickableDemo.steps) {
       try {
         // Fetch the HTML content from the URL
@@ -139,13 +141,17 @@ function EditClickableDemo(props: { space: SpaceWithIntegrationsFragment; params
               const objectId = (space?.name && slugify(space?.name)) || space?.id || 'new-space';
               screenshotURL = await uploadToS3AndReturnScreenshotUrl(screenshotFile, objectId.replace(/[^a-z0-9]/gi, '_'));
               step.screenImgUrl = screenshotURL;
+              showNotification({ message: `Image generated for step ${stepNo} successfully`, type: 'success' });
+              stepNo += 1;
             }
           }
         }
       } catch {
         console.error('Error fetching or processing the URL:');
+        showNotification({ message: 'Some Error occurred', type: 'error' });
       }
     }
+    showNotification({ message: 'All images Generated Successfully', type: 'success' });
     document.body.removeChild(iframe);
   }
   useEffect(() => {
