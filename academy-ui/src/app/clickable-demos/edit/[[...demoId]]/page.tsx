@@ -9,7 +9,12 @@ import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import Stepper from '@/components/clickableDemos/Edit/ClickableDemoStepper';
 import { useEditClickableDemo } from '@/components/clickableDemos/Edit/useEditClickableDemo';
 import { useDeleteClickableDemo } from '@/components/clickableDemos/Edit/useDeleteClickableDemo';
-import { CreateSignedUrlInput, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import {
+  CreateSignedUrlInput,
+  SpaceWithIntegrationsFragment,
+  ByteCollectionFragment,
+  ProjectByteCollectionFragment,
+} from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
 import { ClickableDemoErrors } from '@dodao/web-core/types/errors/clickableDemoErrors';
