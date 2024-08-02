@@ -129,10 +129,11 @@ function EditClickableDemo(props: { space: SpaceWithIntegrationsFragment; params
 
           const iframeDocument = iframe.contentDocument || iframe.contentWindow?.document;
           if (iframeDocument) {
-            const canvas = await html2canvas(iframeDocument.body, {
+            const canvas = await html2canvas(iframeDocument.documentElement, {
               useCORS: true,
               width: 1920,
               height: 1080,
+              backgroundColor: null,
             });
             if (canvas.width > 0 && canvas.height > 0) {
               let dataUrl = canvas.toDataURL('image/png');
