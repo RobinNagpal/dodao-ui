@@ -4,7 +4,6 @@ import {
   ByteDetailsFragment,
   ByteStepFragment,
   ByteSubmissionInput,
-  ProjectByteFragment,
   SpaceWithIntegrationsFragment,
   useSubmitByteMutation,
 } from '@/graphql/generated/generated-types';
@@ -19,7 +18,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 export const LAST_STEP_UUID = 'LAST_STEP_UUID';
 
-type GenericByteType = ProjectByteFragment | ByteDetailsFragment;
+type GenericByteType = ByteDetailsFragment;
 
 export interface UseGenericViewByteParams {
   space: SpaceWithIntegrationsFragment;

@@ -1,8 +1,8 @@
-import { ByteCollectionFragment, ProjectByteCollectionFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { ByteCollectionFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { useRouter } from 'next/navigation';
-import { useCallback, useState, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
-export type EditByteCollection = Omit<ByteCollectionFragment | ProjectByteCollectionFragment, 'id'> & { id?: string };
+export type EditByteCollection = Omit<ByteCollectionFragment, 'id'> & { id?: string };
 
 interface HelperFunctions {
   updateByteCollectionName: (name: string) => void;
@@ -25,7 +25,7 @@ interface UseEditByteCollectionType {
 export interface UseEditByteCollectionArgs {
   space: SpaceWithIntegrationsFragment;
   viewByteCollectionsUrl: string;
-  byteCollection?: ByteCollectionFragment | ProjectByteCollectionFragment;
+  byteCollection?: ByteCollectionFragment;
   upsertByteCollectionFn: (byteCollection: EditByteCollection, byteCollectionId: string | null) => Promise<void>;
 }
 

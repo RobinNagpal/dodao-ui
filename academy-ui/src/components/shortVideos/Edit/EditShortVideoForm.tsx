@@ -1,21 +1,21 @@
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
 import UploadInput from '@/components/app/UploadInput';
+import { ImageType, ShortVideo, ShortVideoInput } from '@/graphql/generated/generated-types';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Input from '@dodao/web-core/components/core/input/Input';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { ImageType, ProjectShortVideo, ShortVideo, ShortVideoInput } from '@/graphql/generated/generated-types';
 import React, { useEffect, useState } from 'react';
 import { v4 } from 'uuid';
 
-export interface EditProjectShortVideoModalProps {
-  shortVideoToEdit?: ShortVideo | ProjectShortVideo;
+export interface EditShortVideoModalProps {
+  shortVideoToEdit?: ShortVideo;
   spaceId: string;
   saveShortVideoFn: (video: ShortVideoInput) => Promise<void>;
   onCancel: () => void;
   onAfterSave: () => void;
 }
 
-export default function EditProjectShortVideoModal({ shortVideoToEdit, spaceId, saveShortVideoFn, onCancel, onAfterSave }: EditProjectShortVideoModalProps) {
+export default function EditShortVideoModal({ shortVideoToEdit, spaceId, saveShortVideoFn, onCancel, onAfterSave }: EditShortVideoModalProps) {
   const [shortVideo, setShortVideo] = React.useState<ShortVideoInput>({
     id: shortVideoToEdit?.id || v4(),
     title: shortVideoToEdit?.title || '',

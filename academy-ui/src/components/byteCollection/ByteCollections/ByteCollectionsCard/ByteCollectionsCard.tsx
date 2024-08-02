@@ -4,7 +4,7 @@ import ByteCollectionCardAdminDropdown from '@/components/byteCollection/ByteCol
 import ByteCompletionCheckmark from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCompletionCheckmark';
 import ByteCollectionCardAddItem from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCollectionCardAddItem';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
-import { ByteCollectionFragment, ProjectByteCollectionFragment, ProjectFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { ByteCollectionFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import ArrowTopRightOnSquareIcon from '@heroicons/react/24/outline/ArrowTopRightOnSquareIcon';
 import Link from 'next/link';
 import React from 'react';
@@ -15,10 +15,8 @@ import PlayCircleIcon from '@heroicons/react/24/outline/PlayCircleIcon';
 import Bars3BottomLeftIcon from '@heroicons/react/24/solid/Bars3BottomLeftIcon';
 
 interface ByteCollectionCardProps {
-  byteCollection: ByteCollectionFragment | ProjectByteCollectionFragment;
+  byteCollection: ByteCollectionFragment;
   isEditingAllowed?: boolean;
-  project?: ProjectFragment;
-  byteCollectionType: 'byteCollection' | 'projectByteCollection';
   viewByteBaseUrl: string;
   space: SpaceWithIntegrationsFragment;
   isAdmin?: boolean | undefined;
@@ -30,15 +28,7 @@ interface VideoModalProps {
   src: string;
 }
 
-export default function ByteCollectionsCard({
-  byteCollection,
-  isEditingAllowed = true,
-  project,
-  byteCollectionType,
-  viewByteBaseUrl,
-  space,
-  isAdmin,
-}: ByteCollectionCardProps) {
+export default function ByteCollectionsCard({ byteCollection, isEditingAllowed = true, viewByteBaseUrl, space, isAdmin }: ByteCollectionCardProps) {
   const [watchVideo, setWatchVideo] = React.useState<boolean>(false);
   const [selectedVideo, setSelectedVideo] = React.useState<VideoModalProps>();
   const [showCreateModal, setShowCreateModal] = React.useState<boolean>(false);
@@ -59,7 +49,7 @@ export default function ByteCollectionsCard({
     <div className={`border border-gray-200 rounded-xl overflow-hidden p-4 w-full ` + styles.cardDiv}>
       {isEditingAllowed && (
         <div className="w-full flex justify-end">
-          <ByteCollectionCardAdminDropdown byteCollection={byteCollection} byteCollectionType={byteCollectionType} project={project} space={space} />
+          <ByteCollectionCardAdminDropdown byteCollection={byteCollection} space={space} />
         </div>
       )}
 

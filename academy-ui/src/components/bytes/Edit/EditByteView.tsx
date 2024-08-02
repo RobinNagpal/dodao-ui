@@ -1,38 +1,31 @@
 'use client';
 
-import Block from '@dodao/web-core/components/app/Block';
-import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
+import UploadInput from '@/components/app/UploadInput';
 import AddByteQuestionsUsingAIButton from '@/components/bytes/Create/AddByteQuestionsUsingAIButton';
 import { CreateByteUsingAIModal } from '@/components/bytes/Create/CreateByteUsingAIModal';
 import { EditByteType } from '@/components/bytes/Edit/editByteHelper';
 import EditByteStepper from '@/components/bytes/Edit/EditByteStepper';
 import { useEditByte } from '@/components/bytes/Edit/useEditByte';
+import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
+import { ByteCollectionFragment, ImageType, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import SingleCardLayout from '@/layouts/SingleCardLayout';
+import Block from '@dodao/web-core/components/app/Block';
+import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
-import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import Input from '@dodao/web-core/components/core/input/Input';
 import PageLoading from '@dodao/web-core/components/core/loaders/PageLoading';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import StyledSelect, { StyledSelectItem } from '@dodao/web-core/components/core/select/StyledSelect';
 import TextareaArray from '@dodao/web-core/components/core/textarea/TextareaArray';
-import {
-  SpaceWithIntegrationsFragment,
-  ByteCollectionFragment,
-  ProjectByteCollectionFragment,
-  useDeleteByteMutation,
-} from '@/graphql/generated/generated-types';
-import SingleCardLayout from '@/layouts/SingleCardLayout';
 import { ByteErrors } from '@dodao/web-core/types/errors/byteErrors';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import UploadInput from '@/components/app/UploadInput';
-import { ImageType } from '@/graphql/generated/generated-types';
 
 export default function EditByteView(props: {
   space: SpaceWithIntegrationsFragment;
   onUpsert: (byteId: string) => Promise<void>;
   byteId?: string;
-  byteCollection: ByteCollectionFragment | ProjectByteCollectionFragment;
+  byteCollection: ByteCollectionFragment;
 }) {
   const { space, byteId, byteCollection } = props;
 

@@ -1,8 +1,8 @@
 'use client';
 
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
+import { ShortVideo } from '@/graphql/generated/generated-types';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
-import { ProjectShortVideo, ShortVideo } from '@/graphql/generated/generated-types';
 // import { videos } from '../sampleVideos';
 import React, { useRef, useState } from 'react';
 import SwiperCore from 'swiper';
@@ -12,11 +12,10 @@ import 'swiper/css/pagination';
 import { History, Keyboard, Mousewheel, Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import './styles.css';
-import UpdateProjectShortVideoSEOModal from '../Edit/UpdateProjectShortVideoSEOModal';
 
 interface ViewShortVideoModalProps {
   initialSlide: number;
-  videos: (ShortVideo | ProjectShortVideo)[];
+  videos: ShortVideo[];
   onClose: () => void;
   onShowEditModal: () => void;
   projectId?: string | undefined;
@@ -25,7 +24,6 @@ export default function ViewShortVideoModal({ initialSlide, videos, onClose, onS
   const swiperRef = useRef<SwiperCore>(null);
   const videoRefs = useRef(videos.map(() => React.createRef<HTMLVideoElement>()));
   const [currentSlideIndex, setCurrentSlideIndex] = useState(initialSlide);
-  const [editProjecShortVideoSeo, setEditProjecShortVideoSeo] = React.useState<boolean>(false);
 
   const handleSlideChange = (swiper: SwiperCore) => {
     setCurrentSlideIndex(swiper.realIndex);
@@ -55,9 +53,6 @@ export default function ViewShortVideoModal({ initialSlide, videos, onClose, onS
           onSelect={async (key) => {
             if (key === 'edit') {
               onShowEditModal();
-            }
-            if (key == 'editSeo') {
-              setEditProjecShortVideoSeo(true);
             }
           }}
           className="mt-2 mr-2"
@@ -100,17 +95,6 @@ export default function ViewShortVideoModal({ initialSlide, videos, onClose, onS
           ))}
         </Swiper>
       </div>
-
-      {editProjecShortVideoSeo && (
-        <UpdateProjectShortVideoSEOModal
-          projectShortVideo={videos[currentSlideIndex]}
-          open={!!editProjecShortVideoSeo}
-          projectId={projectId}
-          onClose={() => {
-            setEditProjecShortVideoSeo(false);
-          }}
-        />
-      )}
     </FullScreenModal>
   );
 }

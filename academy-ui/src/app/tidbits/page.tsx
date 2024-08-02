@@ -21,7 +21,7 @@ export default async function Byte() {
   return (
     <PageWrapper>
       <TidbitsSiteTabs selectedTabId={TidbitSiteTabIds.Tidbits} />
-      <BytesGrid bytes={bytes} baseByteViewUrl={`/tidbits/view`} byteType={'byte'} space={space} />
+      <BytesGrid bytes={bytes} baseByteViewUrl={`/tidbits/view`} space={space} />
     </PageWrapper>
   );
 }

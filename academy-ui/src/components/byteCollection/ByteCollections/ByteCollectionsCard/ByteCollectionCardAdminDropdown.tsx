@@ -1,32 +1,22 @@
-import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
-import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
-import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import {
-  ByteCollectionFragment,
-  ProjectByteCollectionFragment,
-  ProjectFragment,
-  SpaceWithIntegrationsFragment,
-  useUpdateArchivedStatusOfProjectByteCollectionMutation,
-} from '@/graphql/generated/generated-types';
-import React from 'react';
-import UpdateProjectByteCollectionSEOModal from '../../Edit/UpdateProjectByteCollectionSEOModal';
 import ByteCollectionEditor from '@/components/byteCollection/ByteCollections/ByteCollectionEditor';
 import { EditByteCollection } from '@/components/byteCollection/ByteCollections/useEditByteCollection';
-import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
+import { ByteCollectionFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
+import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { useRouter } from 'next/navigation';
+import React from 'react';
 
 interface ByteCollectionCardAdminDropdownProps {
-  byteCollection: ByteCollectionFragment | ProjectByteCollectionFragment;
-  byteCollectionType: 'byteCollection' | 'projectByteCollection';
-  project?: ProjectFragment;
+  byteCollection: ByteCollectionFragment;
   space: SpaceWithIntegrationsFragment;
 }
-export default function ByteCollectionCardAdminDropdown({ byteCollection, byteCollectionType, project, space }: ByteCollectionCardAdminDropdownProps) {
+export default function ByteCollectionCardAdminDropdown({ byteCollection, space }: ByteCollectionCardAdminDropdownProps) {
   const { showNotification } = useNotificationContext();
   const [showDeleteModal, setShowDeleteModal] = React.useState<boolean>(false);
-  const [editProjecByteCollectionSeo, setEditProjectByteCollectionSeo] = React.useState<boolean>(false);
   const [showEditCollectionModal, setShowEditCollectionModal] = React.useState<boolean>(false);
   const router = useRouter();
 
@@ -65,15 +55,8 @@ export default function ByteCollectionCardAdminDropdown({ byteCollection, byteCo
     }
   }
 
-  const getThreeDotItems = (byteCollection: ByteCollectionFragment | ProjectByteCollectionFragment) => {
+  const getThreeDotItems = (byteCollection: ByteCollectionFragment) => {
     if (byteCollection.hasOwnProperty('archived')) {
-      if ((byteCollection as ProjectByteCollectionFragment).archived) {
-        return [
-          { label: 'Edit', key: 'edit' },
-          { label: 'Edit Seo', key: 'editSeo' },
-          { label: 'Unarchive', key: 'unarchive' },
-        ];
-      }
       return [
         { label: 'Edit', key: 'edit' },
         { label: 'Edit Seo', key: 'editSeo' },
@@ -87,18 +70,8 @@ export default function ByteCollectionCardAdminDropdown({ byteCollection, byteCo
     ];
   };
 
-  const [updateArchivedStatusOfProjectByteCollectionMutation] = useUpdateArchivedStatusOfProjectByteCollectionMutation();
-
   const onArchivedStatusChange = async (archived: boolean) => {
     try {
-      await updateArchivedStatusOfProjectByteCollectionMutation({
-        variables: {
-          projectId: project!.id,
-          byteCollectionId: byteCollection.id,
-          archived: archived,
-        },
-        refetchQueries: ['ProjectByteCollections'],
-      });
       if (archived) {
         showNotification({ message: 'ByteCollection archived successfully', type: 'success' });
       } else {
@@ -123,9 +96,6 @@ export default function ByteCollectionCardAdminDropdown({ byteCollection, byteCo
           if (key === 'unarchive') {
             onArchivedStatusChange(false);
           }
-          if (key === 'editSeo') {
-            setEditProjectByteCollectionSeo(true);
-          }
         }}
       />
       {showDeleteModal && (
@@ -136,17 +106,6 @@ export default function ByteCollectionCardAdminDropdown({ byteCollection, byteCo
           onDelete={() => {
             onArchivedStatusChange(true);
             setShowDeleteModal(false);
-          }}
-        />
-      )}
-
-      {editProjecByteCollectionSeo && (
-        <UpdateProjectByteCollectionSEOModal
-          projectByteCollection={byteCollection}
-          projectId={project?.id}
-          open={!!editProjecByteCollectionSeo}
-          onClose={() => {
-            setEditProjectByteCollectionSeo(false);
           }}
         />
       )}
