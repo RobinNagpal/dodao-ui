@@ -4,7 +4,7 @@ import Button from '@dodao/web-core/components/core/buttons/Button';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { ProjectByteCollectionFragment, SpaceWithIntegrationsFragment, ThemeColors } from '@/graphql/generated/generated-types';
+import { ByteCollectionFragment, SpaceWithIntegrationsFragment, ThemeColors } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
 import { useRouter } from 'next/navigation';
 import React, { CSSProperties, useState } from 'react';
@@ -13,7 +13,7 @@ export interface UpdateThemeModalProps {
   space: SpaceWithIntegrationsFragment;
   open: boolean;
   onClose: () => void;
-  byteCollection: ProjectByteCollectionFragment;
+  byteCollection: ByteCollectionFragment;
 }
 
 export type ThemeColorsKeys = 'bgColor' | 'blockBg' | 'borderColor' | 'headingColor' | 'linkColor' | 'primaryColor' | 'textColor';
@@ -114,13 +114,7 @@ export default function UpdateThemeModal({ space, open, onClose, byteCollection 
                 })}
               </div>
               <div className="flex justify-center items-center w-full md:mt-0 md:w-1/2 p-2 md:p-4">
-                <ByteCollectionsCard
-                  isEditingAllowed={false}
-                  byteCollection={byteCollection}
-                  byteCollectionType={'projectByteCollection'}
-                  viewByteBaseUrl={'/'}
-                  space={space}
-                />
+                <ByteCollectionsCard isEditingAllowed={false} byteCollection={byteCollection} viewByteBaseUrl={'/'} space={space} />
               </div>
             </div>
           </div>

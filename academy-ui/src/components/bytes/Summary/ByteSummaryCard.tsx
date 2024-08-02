@@ -1,6 +1,6 @@
 import ByteCardAdminDropdown from '@/components/bytes/List/ByteCardAdminDropdown';
+import { QueryBytesQuery } from '@/graphql/generated/generated-types';
 import Card from '@dodao/web-core/components/core/card/Card';
-import { ProjectByteFragment, ProjectFragment, QueryBytesQuery } from '@/graphql/generated/generated-types';
 import { shorten } from '@dodao/web-core/utils/utils';
 import Link from 'next/link';
 import React from 'react';
@@ -8,18 +8,16 @@ import React from 'react';
 export type ByteSummaryType = QueryBytesQuery['bytes'][0];
 
 interface ByteSummaryCardProps {
-  byte: ByteSummaryType | ProjectByteFragment;
-  byteType: 'byte' | 'projectByte';
+  byte: ByteSummaryType;
   baseByteViewUrl: string;
-  project?: ProjectFragment;
 }
 
-export default function ByteSummaryCard({ byte, byteType, baseByteViewUrl, project }: ByteSummaryCardProps) {
+export default function ByteSummaryCard({ byte, baseByteViewUrl }: ByteSummaryCardProps) {
   return (
     <Card>
       <Link href={`${baseByteViewUrl}/${byte.id}`} className="card blog-card w-inline-block h-full w-full relative">
         <div className="absolute top-0 right-0 m-2">
-          <ByteCardAdminDropdown byte={byte} byteType={byteType} project={project} />
+          <ByteCardAdminDropdown byte={byte} />
         </div>
         <div>
           <div className="p-4 text-center w-full">

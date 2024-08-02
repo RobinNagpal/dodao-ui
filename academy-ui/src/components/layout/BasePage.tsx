@@ -4,7 +4,6 @@ import { PredefinedSpaces } from '@/chatbot/utils/app/constants';
 import LoginModal from '@dodao/web-core/components/auth/LoginModal';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import TopNav from '@/components/main/TopNav/TopNav';
-import TopCryptoTopNav from '@/components/projects/Nav/TopCryptoTopNav';
 import { LoginModalProvider } from '@dodao/web-core/ui/contexts/LoginModalContext';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import React, { ReactNode, useEffect, useState } from 'react';
@@ -30,10 +29,6 @@ function PageTopNav(props: { space: SpaceWithIntegrationsFragment }) {
 
   if (isBotSite) {
     return null;
-  }
-
-  if (props.space?.id === PredefinedSpaces.CRYPTO_GELATO) {
-    return <TopCryptoTopNav space={props.space} />;
   }
 
   //Checking if the url contains embedded-tidbit-collections

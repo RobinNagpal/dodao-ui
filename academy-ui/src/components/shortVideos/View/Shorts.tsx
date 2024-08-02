@@ -10,10 +10,10 @@ import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsis
 import { useState } from 'react';
 import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
 import { useRouter } from 'next/navigation';
-import { ShortVideo, SpaceWithIntegrationsFragment, ProjectShortVideo } from '@/graphql/generated/generated-types';
+import { ShortVideo, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 
 interface ShortsThumbnailProps {
-  shortVideo: ShortVideo | ProjectShortVideo;
+  shortVideo: ShortVideo;
   space?: SpaceWithIntegrationsFragment;
 }
 
@@ -75,7 +75,7 @@ function ShortsThumbnail({ shortVideo, space }: ShortsThumbnailProps) {
   );
 }
 interface ShortsUIProps {
-  shortVideos: (ShortVideo | ProjectShortVideo)[];
+  shortVideos: ShortVideo[];
   space?: SpaceWithIntegrationsFragment;
 }
 

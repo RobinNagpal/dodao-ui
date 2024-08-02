@@ -1,23 +1,23 @@
 'use client';
 
-import withSpace from '@/contexts/withSpace';
-import Block from '@dodao/web-core/components/app/Block';
-import Input from '@dodao/web-core/components/core/input/Input';
-import PageLoading from '@dodao/web-core/components/core/loaders/PageLoading';
-import Button from '@dodao/web-core/components/core/buttons/Button';
-import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import Stepper from '@/components/clickableDemos/Edit/ClickableDemoStepper';
-import { useEditClickableDemo } from '@/components/clickableDemos/Edit/useEditClickableDemo';
 import { useDeleteClickableDemo } from '@/components/clickableDemos/Edit/useDeleteClickableDemo';
-import { SpaceWithIntegrationsFragment, ByteCollectionFragment, ProjectByteCollectionFragment } from '@/graphql/generated/generated-types';
+import { useEditClickableDemo } from '@/components/clickableDemos/Edit/useEditClickableDemo';
+import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
+import withSpace from '@/contexts/withSpace';
+import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
+import Block from '@dodao/web-core/components/app/Block';
+import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
+import Input from '@dodao/web-core/components/core/input/Input';
+import PageLoading from '@dodao/web-core/components/core/loaders/PageLoading';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { ClickableDemoErrors } from '@dodao/web-core/types/errors/clickableDemoErrors';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
-import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
-import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
 
 function EditClickableDemo(props: { space: SpaceWithIntegrationsFragment; params: { demoId?: string[] } }) {
   const { space, params } = props;

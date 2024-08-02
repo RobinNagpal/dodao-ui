@@ -37,7 +37,6 @@ async function TidbitCollections() {
       <ByteCollectionsGrid
         byteCollections={filteredCollections}
         space={space}
-        byteCollectionType={'byteCollection'}
         byteCollectionsBaseUrl={`/tidbit-collections`}
         isAdmin={session?.isAdminOfSpace}
       />
