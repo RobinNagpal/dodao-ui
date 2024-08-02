@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/prisma';
 import { ByteCollection as ByteCollectionGraphql } from '@/graphql/generated/generated-types';
-import { getByteCollectionWithBytes } from '@/app/api/helpers/byteCollection/byteCollectionHelper';
+import { getByteCollectionWithItem } from '@/app/api/helpers/byteCollection/byteCollectionHelper';
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
@@ -24,7 +24,7 @@ export async function GET(req: NextRequest) {
   const byteCollectionsWithBytes: ByteCollectionGraphql[] = [];
 
   for (const byteCollection of byteCollections) {
-    byteCollectionsWithBytes.push(await getByteCollectionWithBytes(byteCollection));
+    byteCollectionsWithBytes.push(await getByteCollectionWithItem(byteCollection));
   }
 
   return NextResponse.json({ status: 200, byteCollections: byteCollectionsWithBytes });

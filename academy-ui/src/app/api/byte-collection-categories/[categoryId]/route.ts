@@ -3,7 +3,7 @@ import {
   MutationUpsertByteCollectionCategoryArgs,
   QueryByteCollectionCategoryWithByteCollectionsArgs,
 } from '@/graphql/generated/generated-types';
-import { getByteCollectionWithBytes } from '@/app/api/helpers/byteCollection/byteCollectionHelper';
+import { getByteCollectionWithItem } from '@/app/api/helpers/byteCollection/byteCollectionHelper';
 import { prisma } from '@/prisma';
 import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
 import { checkEditSpacePermission, checkSpaceIdAndSpaceInEntityAreSame } from '@/app/api/helpers/space/checkEditSpacePermission';
@@ -33,7 +33,7 @@ export async function GET(req: NextRequest, { params: { categoryId } }: { params
       },
     });
 
-    byteCollectionArr.push(await getByteCollectionWithBytes(byteCollection));
+    byteCollectionArr.push(await getByteCollectionWithItem(byteCollection));
   }
 
   return NextResponse.json({
