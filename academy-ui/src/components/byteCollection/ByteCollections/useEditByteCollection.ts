@@ -42,6 +42,7 @@ export function useEditByteCollection({
   const [byteCollection, setByteCollection] = useState<EditByteCollection>({
     id: byteCollectionProp?.id,
     bytes: byteCollectionProp?.bytes || [],
+    demos: byteCollectionProp?.demos || [],
     name: byteCollectionProp?.name || '',
     description: byteCollectionProp?.description || '',
     byteIds: byteCollectionProp?.bytes.map((byte) => byte.byteId) || [],
@@ -54,6 +55,7 @@ export function useEditByteCollection({
     setByteCollection({
       id: byteCollectionProp?.id,
       bytes: byteCollectionProp?.bytes || [],
+      demos: byteCollectionProp?.demos || [],
       name: byteCollectionProp?.name || '',
       description: byteCollectionProp?.description || '',
       byteIds: byteCollectionProp?.bytes.map((byte) => byte.byteId) || [],

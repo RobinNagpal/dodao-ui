@@ -1,5 +1,5 @@
 import { MutationCreateByteCollectionArgs } from '@/graphql/generated/generated-types';
-import { getByteCollectionWithBytes } from '@/app/api/helpers/byteCollection/byteCollectionHelper';
+import { getByteCollectionWithItem } from '@/app/api/helpers/byteCollection/byteCollectionHelper';
 import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
 import { logError } from '@/app/api/helpers/adapters/errorLogger';
 import { checkEditSpacePermission } from '@/app/api/helpers/space/checkEditSpacePermission';
@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    const byteCollectionWithBytes = await getByteCollectionWithBytes(byteCollection);
+    const byteCollectionWithBytes = await getByteCollectionWithItem(byteCollection);
 
     return NextResponse.json({ status: 200, byteCollectionWithBytes });
   } catch (e) {

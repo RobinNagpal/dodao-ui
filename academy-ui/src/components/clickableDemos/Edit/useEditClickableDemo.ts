@@ -1,6 +1,12 @@
 import { emptyClickableDemo } from '@/components/clickableDemos/Edit/EmptyClickableDemo';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { ClickableDemoStepInput, Space, UpsertClickableDemoInput } from '@/graphql/generated/generated-types';
+import {
+  ClickableDemoStepInput,
+  Space,
+  UpsertClickableDemoInput,
+  ByteCollectionFragment,
+  ProjectByteCollectionFragment,
+} from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
 import { ClickableDemoErrors, ClickableDemoStepError } from '@dodao/web-core/types/errors/clickableDemoErrors';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
@@ -182,7 +188,7 @@ export function useEditClickableDemo(space: Space, demoId: string | null) {
     };
   }
 
-  async function handleSubmit() {
+  async function handleSubmit(byteCollection: ByteCollectionFragment | ProjectByteCollectionFragment) {
     setClickableDemoCreating(true);
     try {
       const valid = validateClickableDemo(clickableDemo);
@@ -206,6 +212,21 @@ export function useEditClickableDemo(space: Space, demoId: string | null) {
       });
 
       const payload = await response.json();
+      const clickableDemoo = payload.clickableDemo;
+
+      const mappingResponse = await fetch('/api/mapping/upsertDemoMapping', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          byteCollectionId: byteCollection.id,
+          itemId: clickableDemoo.id,
+          itemType: 'Demo',
+          order: byteCollection.demos.length + 1,
+        }),
+      });
+
       if (response.ok) {
         showNotification({
           type: 'success',
@@ -219,7 +240,6 @@ export function useEditClickableDemo(space: Space, demoId: string | null) {
       }
     } catch (e) {
       console.error(e);
-
       showNotification({ type: 'error', message: $t('notify.somethingWentWrong') });
     }
     setClickableDemoCreating(false);

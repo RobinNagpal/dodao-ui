@@ -39,7 +39,7 @@ function ViewClickableDemo({ params, space }: { params: { demoId: string[] }; sp
         clickableDemoWithSteps={data!.clickableDemoWithSteps}
         space={space}
         onClose={() => {
-          router.push(`/clickable-demos`);
+          router.push(`/tidbit-collections`);
         }}
       />
     );

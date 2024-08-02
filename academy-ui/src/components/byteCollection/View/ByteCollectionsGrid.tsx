@@ -13,7 +13,7 @@ export default function ByteCollectionsGrid({
   byteCollectionsBaseUrl,
   isAdmin,
 }: {
-  byteCollections?: ByteCollectionFragment[] | ProjectByteCollectionFragment[];
+  byteCollections?: ByteCollectionFragment[];
   space: SpaceWithIntegrationsFragment;
   project?: ProjectFragment;
   byteCollectionType: 'byteCollection' | 'projectByteCollection';
@@ -33,6 +33,7 @@ export default function ByteCollectionsGrid({
               byteCollectionType={byteCollectionType}
               viewByteBaseUrl={`${byteCollectionsBaseUrl}/view/${byteCollection.id}/`}
               space={space}
+              isAdmin={isAdmin}
             />
           ))}
 
