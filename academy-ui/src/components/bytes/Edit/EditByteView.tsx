@@ -24,7 +24,7 @@ import { useEffect, useState } from 'react';
 export default function EditByteView(props: {
   space: SpaceWithIntegrationsFragment;
   onUpsert: (byteId: string) => Promise<void>;
-  byteId?: string;
+  byteId?: string | null;
   byteCollection: ByteCollectionFragment;
 }) {
   const { space, byteId, byteCollection } = props;
