@@ -1,7 +1,7 @@
 import { getTokenCount } from '@/app/api/helpers/ai/getTokenCount';
 import { cleanupContent } from '@/app/api/helpers/ai/text/cleanupContent';
 // import getContentsUsingPuppeteer from '@/app/api/helpers/ai/text/getContentsUsingPuppeteer';
-import { getImportantContentUsingCheerio } from '@/app/api/helpers/ai/text/getImportantContentUsingCheerio';
+// import { getImportantContentUsingCheerio } from '@/app/api/helpers/ai/text/getImportantContentUsingCheerio';
 
 import { formatAxiosError } from '@//app/api/helpers/adapters/formatAxiosError';
 
@@ -24,7 +24,7 @@ export default async function downloadFromAllLinks(content: string): Promise<Dow
     const linkInfo: LinkInfo = { link: url, downloadStatus: 'success', tokenCount: 0 };
     try {
       try {
-        importantContent = await getImportantContentUsingCheerio(url, { timeout: 10000 });
+        // importantContent = await getImportantContentUsingCheerio(url, { timeout: 10000 });
       } catch (e) {
         const formattedAxiosError = formatAxiosError(e);
         console.log('Error while getting content from url', url, formattedAxiosError);
