@@ -1,6 +1,6 @@
 import ByteStepperItemWithProgressBar from '@/components/bytes/View/ByteStepperItem/ByteStepperItemWithProgressBar';
 import { UseGenericViewByteHelper } from '@/components/bytes/View/useGenericViewByte';
-import { ByteDetailsFragment, ByteFeedback, ByteStepFragment, ProjectByteFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { ByteDetailsFragment, ByteFeedback, ByteStepFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { useMemo, useState } from 'react';
 import { useByteRatings } from '@/components/bytes/Rating/useByteRating';
 import RatingModal, { FeedbackOptions } from '@/components/app/Modal/Rating/RatingModal';
@@ -8,7 +8,7 @@ import { ClipboardDocumentListIcon, RocketLaunchIcon } from '@heroicons/react/24
 
 type Props = {
   viewByteHelper: UseGenericViewByteHelper;
-  byte: ByteDetailsFragment | ProjectByteFragment;
+  byte: ByteDetailsFragment;
   space: SpaceWithIntegrationsFragment;
 };
 

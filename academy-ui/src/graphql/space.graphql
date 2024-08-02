@@ -187,12 +187,6 @@ mutation UpsertSpaceInviteLinks($spaceId: String!, $spaceInviteArgs: SpaceInvite
   }
 }
 
-mutation UpsertProjectGalaxyAccessToken($spaceId: String!, $accessToken: String!) {
-  payload: upsertProjectGalaxyAccessToken(spaceId: $spaceId, accessToken: $accessToken) {
-    id
-  }
-}
-
 mutation CreateSignedUrl($spaceId: String!, $input: CreateSignedUrlInput!) {
   payload: createSignedUrl(spaceId: $spaceId, input: $input)
 }

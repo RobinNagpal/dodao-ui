@@ -14,7 +14,6 @@ import {
   ByteStepItemFragment,
   ByteUserDiscordConnectFragmentFragment,
   ByteUserInputFragmentFragment,
-  ProjectByteFragment,
   SpaceWithIntegrationsFragment,
   UserDiscordInfoInput,
 } from '@/graphql/generated/generated-types';
@@ -39,7 +38,7 @@ import { useEffect, useMemo, useState } from 'react';
 import styles from './ByteStepperItemWithProgressBar.module.scss';
 
 interface WithCarouselAndProgress1Props {
-  byte: ByteDetailsFragment | ProjectByteFragment;
+  byte: ByteDetailsFragment;
   step: ByteStepFragment;
   space: SpaceWithIntegrationsFragment;
   viewByteHelper: UseGenericViewByteHelper;

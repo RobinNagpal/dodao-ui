@@ -7,8 +7,7 @@ import DefaultHome from '@/components/home/DefaultHome/DefaultHome';
 import DoDAOHome from '@/components/home/DoDAOHome/DoDAOHome';
 import LifeInsureHomePage from '@/components/home/LifeInsure/LifeInsureHomePage';
 import TidbitsHubHome from '@/components/home/TidbitsHub/TidbitsHubHome';
-import ListProjects from '@/components/projects/List/ListProjects';
-import { ProjectFragment, SpaceTypes } from '@/graphql/generated/generated-types';
+import { SpaceTypes } from '@/graphql/generated/generated-types';
 import getApiResponse from '@/utils/api/getApiResponse';
 import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
@@ -25,16 +24,6 @@ async function Home(props: { searchParams: { [key: string]: string | string[] | 
   const session = (await getServerSession(authOptions)) as Session;
   if (host && (space?.botDomains || [])?.includes(host)) {
     return <ChatHome defaultModelId={OpenAIModelID.GPT_3_5} serverSideApiKeyIsSet={true} serverSidePluginKeysSet={false} isChatbotSite={true} />;
-  }
-
-  if (space?.id === PredefinedSpaces.CRYPTO_GELATO) {
-    const projects = await getApiResponse<ProjectFragment[]>(space, 'projects');
-    const showArchived = props.searchParams?.['showArchived'] === 'true';
-    return (
-      <PageWrapper>
-        <ListProjects space={space} projects={projects} showArchived={showArchived} />
-      </PageWrapper>
-    );
   }
 
   if (space?.type === SpaceTypes.TidbitsSite) {

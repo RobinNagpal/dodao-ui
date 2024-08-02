@@ -1,12 +1,6 @@
 import { checkIfQuestionIsComplete, checkIfUserInputIsComplete, updateItemValue } from '@/components/bytes/View/viewByteHelper';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import {
-  ByteDetailsFragment,
-  ByteStepFragment,
-  ByteSubmissionInput,
-  ProjectByteFragment,
-  SpaceWithIntegrationsFragment,
-} from '@/graphql/generated/generated-types';
+import { ByteDetailsFragment, ByteStepFragment, ByteSubmissionInput, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { LocalStorageKeys } from '@dodao/web-core/types/deprecated/models/enums';
 import { ByteSubmissionError } from '@dodao/web-core/types/errors/error';
@@ -22,7 +16,7 @@ export interface UseViewByteInModalArgs {
   space: SpaceWithIntegrationsFragment;
   byteId: string;
   stepOrder: number;
-  fetchByteFn: (byteId: string) => Promise<ByteDetailsFragment | ProjectByteFragment>;
+  fetchByteFn: (byteId: string) => Promise<ByteDetailsFragment>;
 }
 export function useViewByteInModal({ space, byteId, stepOrder, fetchByteFn }: UseViewByteInModalArgs): UseViewByteHelper {
   const { data: sessionData } = useSession();

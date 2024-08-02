@@ -10,12 +10,7 @@ export default async function EmbeddedTidbitsPage() {
   const byteCollections = await getApiResponse<ByteCollectionFragment[]>(space!, 'byte-collections');
   return (
     <PageWrapper>
-      <ByteCollectionsGrid
-        byteCollections={byteCollections}
-        space={space!}
-        byteCollectionType={'byteCollection'}
-        byteCollectionsBaseUrl={`/embedded-tidbit-collections`}
-      />
+      <ByteCollectionsGrid byteCollections={byteCollections} space={space!} byteCollectionsBaseUrl={`/embedded-tidbit-collections`} />
     </PageWrapper>
   );
 }
