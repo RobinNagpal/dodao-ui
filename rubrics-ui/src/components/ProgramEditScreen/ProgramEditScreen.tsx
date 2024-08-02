@@ -1,14 +1,16 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import ProgramList from '@/components/ProgramInput/ProgramInput';
+import ProgramInput from '@/components/ProgramInput/ProgramInput';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import { EditProgramRubricProps } from '@/types/rubricsTypes/types';
-
+import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
+import MarkdownEditor from '@/components/MarkdownEditor/MarkdownEditor';
 function EditProgram() {
   const [rubrics, setRubrics] = useState<EditProgramRubricProps[]>([]);
   const [showSelectRubricsModal, setShowSelectRubricsModal] = useState<boolean>(false);
   const [selectedRubrics, setSelectedRubrics] = useState<string[]>([]);
+  // const space = (await getSpaceServerSide())!;
   const [newProgram, setNewProgram] = useState<{ name: string; details: string; summary: string }>({
     name: '',
     details: '',
@@ -17,7 +19,7 @@ function EditProgram() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch('/api/rubrics-program')
+    fetch('http://localhost:3004/api/rubrics-program')
       .then((res) => res.json())
       .then((data) => setRubrics(data.body))
       .catch((error) => console.error('Error fetching rubrics:', error));
@@ -37,7 +39,7 @@ function EditProgram() {
       rubricIds: selectedRubrics,
     };
 
-    fetch('/api/programs', {
+    fetch('http://localhost:3004/api/programs', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -53,7 +55,7 @@ function EditProgram() {
 
   return (
     <div className="mt-10 p-2 flex flex-col items-center justify-center gap-6">
-      <ProgramList newProgram={newProgram} setNewProgram={setNewProgram} error={error} setError={setError} />
+      <ProgramInput newProgram={newProgram} setNewProgram={setNewProgram} error={error} setError={setError} />
 
       <Button variant="contained" primary onClick={() => setShowSelectRubricsModal(true)} className="mt-2">
         Select Rubrics

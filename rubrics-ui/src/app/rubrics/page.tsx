@@ -5,7 +5,7 @@ import { RubricListProps } from '@/types/rubricsTypes/types';
 
 const fetchRubrics = async (): Promise<RubricListProps[]> => {
   try {
-    const response = await fetch('/api/rubrics-program');
+    const response = await fetch('http://localhost:3004/api/rubrics-program');
     const data = await response.json();
     return data.body;
   } catch (error) {

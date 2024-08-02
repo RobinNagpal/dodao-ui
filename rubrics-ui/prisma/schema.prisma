@@ -119,9 +119,9 @@ model Space {
 
 model Program {
   id      String                 @id @default(uuid()) @db.VarChar(64)
-  name    String?
+  name    String
   details String?
-  summary String?
+  summary String
   rubrics ProgramRubricMapping[]
 
   @@map("program")
@@ -129,8 +129,8 @@ model Program {
 
 model Rubric {
   id           String                 @id @default(uuid()) @db.VarChar(64)
-  name         String?                @db.VarChar(64)
-  summary      String?
+  name         String                 @db.VarChar(64)
+  summary      String
   description  String?
   levels       RubricLevel[]
   criteria     RubricCriteria[]

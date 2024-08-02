@@ -78,9 +78,9 @@ CREATE TABLE "spaces" (
 -- CreateTable
 CREATE TABLE "program" (
     "id" VARCHAR(64) NOT NULL,
-    "name" TEXT,
+    "name" TEXT NOT NULL,
     "details" TEXT,
-    "summary" TEXT,
+    "summary" TEXT NOT NULL,
 
     CONSTRAINT "program_pkey" PRIMARY KEY ("id")
 );
@@ -88,8 +88,8 @@ CREATE TABLE "program" (
 -- CreateTable
 CREATE TABLE "rubric" (
     "id" VARCHAR(64) NOT NULL,
-    "name" VARCHAR(64),
-    "summary" TEXT,
+    "name" VARCHAR(64) NOT NULL,
+    "summary" TEXT NOT NULL,
     "description" TEXT,
 
     CONSTRAINT "rubric_pkey" PRIMARY KEY ("id")

@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Rubric, RubricCell, RubricsPageProps, rubricRatingHeader } from '@/types/rubricsTypes/types';
 import RubricCriteria from '@/components/RubricCriteria/RubricCriteria';
 import RubricLevel from '@/components/RubricLevel/RubricLevel';
-
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
+import RubricDetails from '@/components/RubricDetails/RubricDetails';
 const initialRubrics: Record<string, string[]> = {
   Content: [
     'Complete. The speaker clearly conveys the main idea',
@@ -27,12 +28,24 @@ const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId, isEditAcce
 
   const [columnScores, setColumnScores] = useState<number[]>(Array(ratingHeaders.length).fill(0));
   const [criteriaToDelete, setCriteriaToDelete] = useState<string | null>(null);
-  const [userComments, setUserComments] = useState({});
+  const [rubricDetails, setRubricDetails] = useState<{
+    name: string;
+    summary: string;
+    description: string;
+  }>({
+    name: '',
+    summary: '',
+    description: '',
+  });
+  const { showNotification } = useNotificationContext();
   useEffect(() => {
+    if (!rubricDetails.name || !rubricDetails.summary) {
+      return;
+    }
     const formattedRubrics: Rubric[] = criteriaOrder.map((criteria) => ({
-      name: 'Test',
-      summary: '',
-      description: '',
+      name: rubricDetails.name,
+      summary: rubricDetails.summary,
+      description: rubricDetails.description,
       levels: ratingHeaders.map((header, idx) => ({
         columnName: header,
         description: rubrics[criteria][idx],
@@ -194,12 +207,13 @@ const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId, isEditAcce
   const rateRubric = rateRubricsFormatted?.rubric;
   const rateCriteriaOrder = rateRubricsFormatted?.criteriaOrder;
   const rubricRatingHeaders: rubricRatingHeader[] = rateRubricsFormatted?.ratingHeaders ?? [];
-  console.log(rateRubricsFormatted);
   const rubricId = rateRubricsFormatted?.rubricId;
   return (
     <div className="container mx-auto py-8 p-4">
-      <h1 className="text-3xl text-center font-bold mb-4"> {isEditAccess ? 'Edit Rubrics' : 'Giving Feedback on'}</h1>
+      {/* <h1 className="text-3xl text-center font-bold mb-4"> {isEditAccess ? 'Edit Rubrics' : 'Giving Feedback on'}</h1> */}
       <h1 className="text-2xl  p-2 text-center mb-2">{isEditAccess ? '' : rateRubricsFormatted?.programs[0].name}</h1>
+      <RubricDetails rubricDetails={rubricDetails} setRubricDetails={setRubricDetails} isEditAccess={isEditAccess} />
+
       <div className="overflow-x-auto mt-4">
         <table className="min-w-full bg-white border-collapse border">
           <thead>

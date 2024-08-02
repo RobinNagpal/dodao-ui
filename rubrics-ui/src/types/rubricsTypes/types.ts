@@ -34,6 +34,7 @@ export interface RubricsPageProps {
 
 export interface ProgramListProps {
   programs?: Program[];
+  summary?: string;
 }
 
 export interface ProgramDropDownProps {
