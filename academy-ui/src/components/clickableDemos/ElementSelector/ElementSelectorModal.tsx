@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
-import { CreateSignedUrlInput, Space, useCreateSignedUrlMutation } from '@/graphql/generated/generated-types';
+import { CreateSignedUrlInput, Space } from '@/graphql/generated/generated-types';
 import { getUploadedImageUrlFromSingedUrl } from '@dodao/web-core/utils/upload/getUploadedImageUrlFromSingedUrl';
 import axios from 'axios';
 
@@ -19,7 +19,6 @@ interface Props {
 export default function ElementSelectorModal({ space, showModal, objectId, fileUrl, xPath, elementImgUrl, onInput, setShowModal }: Props) {
   const [currentXpath, setCurrenXpath] = useState(xPath);
   const [currentCapture, setCurrentCapture] = useState(elementImgUrl);
-  const [createSignedUrlMutation] = useCreateSignedUrlMutation();
   const spaceId = space.id;
   async function modifyHTML(url: string) {
     try {
