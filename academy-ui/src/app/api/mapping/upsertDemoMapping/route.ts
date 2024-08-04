@@ -7,6 +7,18 @@ export async function POST(req: NextRequest) {
   const { byteCollectionId, itemId, itemType, order } = await req.json();
 
   try {
+    const existingMapping = await prisma.byteCollectionItemMappings.findFirst({
+      where: {
+        itemId,
+        byteCollectionId,
+        itemType: 'Demo',
+      },
+    });
+
+    if (existingMapping) {
+      return NextResponse.json({ status: 200, message: 'Item already exists in the mapping' });
+    }
+
     const mappingItem = await prisma.byteCollectionItemMappings.create({
       data: {
         id: uuidv4(),
