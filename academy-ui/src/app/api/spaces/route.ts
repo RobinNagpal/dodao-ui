@@ -1,4 +1,3 @@
-import { getSpaceWithIntegrations, getAllSpaceIdsForDomain } from '@/app/api/helpers/space';
 import { prisma } from '@/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 
