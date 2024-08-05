@@ -9,9 +9,7 @@ import React from 'react';
 const MainShortsComponent = ({ space }: SpaceProps) => {
   const router = useRouter();
   return (
-    <PageWrapper>
-      {/* <EditShortVideoView space={space} onAfterSave={() => router.push('/shorts')} onCancel={() => router.push('/shorts')} /> */}
-    </PageWrapper>
+    <PageWrapper>{/* <EditShortVideoView space={space} onAfterSave={() => router.push('/shorts')} onCancel={() => router.push('/shorts')} /> */}</PageWrapper>
   );
 };
 
