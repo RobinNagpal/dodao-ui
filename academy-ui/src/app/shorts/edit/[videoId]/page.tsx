@@ -22,12 +22,12 @@ const MainShortsComponent = ({ space, params }: SpaceProps & { params?: { videoI
 
   return (
     <PageWrapper>
-      <EditShortVideoView
+      {/* <EditShortVideoView
         space={space}
         onAfterSave={() => router.push('/shorts')}
         onCancel={() => router.push('/shorts')}
         shortVideoToEdit={videoResponse?.shortVideo}
-      />
+      /> */}
     </PageWrapper>
   );
 };

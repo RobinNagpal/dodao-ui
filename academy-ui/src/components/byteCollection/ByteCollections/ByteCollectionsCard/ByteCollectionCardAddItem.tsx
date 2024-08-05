@@ -2,10 +2,12 @@
 
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import { SpaceWithIntegrationsFragment, ByteCollectionFragment } from '@/graphql/generated/generated-types';
-import React, { useState } from 'react';
 import EditByteView from '@/components/bytes/Edit/EditByteView';
 import EditClickableDemo from '@/components/clickableDemos/Create/EditClickableDemo';
+import EditShortVideoView from '@/components/shortVideos/Edit/EditShortVideoView';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function CreateContentModalContents({
@@ -25,6 +27,7 @@ export default function CreateContentModalContents({
   function onClose() {
     setShowCreateTidbitModal(false);
     setShowCreateDemoModal(false);
+    setShowCreateVideoModal(false);
     router.refresh();
   }
 
@@ -61,6 +64,27 @@ export default function CreateContentModalContents({
         <FullScreenModal open={true} onClose={onClose} title={'Create Clickable Demo'}>
           <div className="text-left">
             <EditClickableDemo demoId={null} byteCollection={byteCollection} />
+          </div>
+        </FullScreenModal>
+      )}
+
+      {showCreateVideoModal && (
+        <FullScreenModal open={true} onClose={onClose} title={'Create Short Video'}>
+          <div className="text-left">
+            <PageWrapper>
+              <EditShortVideoView
+                space={space}
+                byteCollection={byteCollection}
+                onAfterSave={() => {
+                  router.push('/tidbit-collections');
+                  setShowCreateVideoModal(false);
+                }}
+                onCancel={() => {
+                  router.push('/tidbit-collections');
+                  setShowCreateVideoModal(false);
+                }}
+              />
+            </PageWrapper>
           </div>
         </FullScreenModal>
       )}

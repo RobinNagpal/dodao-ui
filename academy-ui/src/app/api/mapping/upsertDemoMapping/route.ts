@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
     });
     return NextResponse.json({ status: 200, mappingItem });
   } catch (e) {
-    console.error('Error creating mapping:', e); // Log the error for debugging
+    console.error('Error creating mapping:', e);
     await logError((e as any)?.response?.data || 'Error in creating Mapping', {}, e as any, null, null);
   }
 }

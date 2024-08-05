@@ -55,6 +55,7 @@ export default function SpaceThemeDetails({ space }: SpaceDetailsProps) {
       },
     ],
     demos: [],
+    shorts: [],
     __typename: 'ByteCollection',
   };
 

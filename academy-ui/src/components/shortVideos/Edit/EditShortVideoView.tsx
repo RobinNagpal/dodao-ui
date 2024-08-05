@@ -1,17 +1,24 @@
 import EditShortVideoForm from '@/components/shortVideos/Edit/EditShortVideoForm';
-import { ShortVideo, ShortVideoInput, SpaceWithIntegrationsFragment, useUpsertShortVideoMutation } from '@/graphql/generated/generated-types';
+import {
+  ShortVideo,
+  ShortVideoInput,
+  SpaceWithIntegrationsFragment,
+  ByteCollectionFragment,
+  useUpsertShortVideoMutation,
+} from '@/graphql/generated/generated-types';
 import React from 'react';
 
 export interface EditShortVideoModalProps {
   shortVideoToEdit?: ShortVideo;
   space: SpaceWithIntegrationsFragment;
+  byteCollection: ByteCollectionFragment;
   onAfterSave: () => void;
   onCancel: () => void;
 }
 
-export default function EditShortVideoView({ shortVideoToEdit, space, onAfterSave, onCancel }: EditShortVideoModalProps) {
+export default function EditShortVideoView({ shortVideoToEdit, space, byteCollection, onAfterSave, onCancel }: EditShortVideoModalProps) {
   const upsertShortVideo = async (shortVideo: ShortVideoInput) => {
-    await fetch(`/api/short-videos/${shortVideo.id}`, {
+    const response = await fetch(`/api/short-videos/${shortVideo.id}`, {
       method: 'POST',
       body: JSON.stringify({
         spaceId: space.id,
@@ -23,6 +30,21 @@ export default function EditShortVideoView({ shortVideoToEdit, space, onAfterSav
           videoUrl: shortVideo.videoUrl,
           thumbnail: shortVideo.thumbnail,
         },
+      }),
+    });
+
+    const { upsertedShortVideo } = await response.json();
+
+    const mappingResponse = await fetch('/api/mapping/upsertShortVideoMapping', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        byteCollectionId: byteCollection.id,
+        itemId: upsertedShortVideo.id,
+        itemType: 'Short',
+        order: byteCollection.shorts.length + 1,
       }),
     });
   };

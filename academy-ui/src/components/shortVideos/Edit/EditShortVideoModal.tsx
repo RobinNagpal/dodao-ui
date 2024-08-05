@@ -14,7 +14,7 @@ export default function EditShortVideoModal({ onClose, shortVideoToEdit, space, 
   return (
     <FullPageModal title="Edit Video" open={true} onClose={onClose} fullWidth={false}>
       <div className="p-8">
-        <EditShortVideoView shortVideoToEdit={shortVideoToEdit} space={space} onAfterSave={onSave} onCancel={() => onClose()} />
+        {/* <EditShortVideoView shortVideoToEdit={shortVideoToEdit} space={space} onAfterSave={onSave} onCancel={() => onClose()} /> */}
       </div>
     </FullPageModal>
   );

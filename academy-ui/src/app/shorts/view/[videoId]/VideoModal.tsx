@@ -9,9 +9,15 @@ import withSpace from '@/contexts/withSpace';
 
 function VideoModal(props: { space: SpaceWithIntegrationsFragment; params: { videoId: string } }) {
   const [videos, setVideos] = React.useState<ShortVideo[]>([]);
+  const [initialSlideIndex, setInitialSlideIndex] = React.useState<number>(-1);
+
   useEffect(() => {
-    axios.get(`/api/short-videos?spaceId=${props.space.id}`).then((response) => setVideos(response.data.shortVideos));
-  }, [props.space.id]);
+    axios.get(`/api/short-videos?spaceId=${props.space.id}`).then((response) => {
+      setVideos(response.data.shortVideos);
+      const index = response.data.shortVideos.findIndex((video: ShortVideo) => video.id === props.params.videoId);
+      setInitialSlideIndex(index);
+    });
+  }, [props.space.id, props.params.videoId]);
 
   const router = useRouter();
   // const videos = [
@@ -41,7 +47,8 @@ function VideoModal(props: { space: SpaceWithIntegrationsFragment; params: { vid
 
   return (
     <ViewShortVideoModal
-      initialSlide={videos.findIndex((video) => video.id === props.params.videoId)}
+      key={initialSlideIndex}
+      initialSlide={initialSlideIndex}
       videos={videos}
       onClose={() => router.push('/shorts')}
       onShowEditModal={() => {
