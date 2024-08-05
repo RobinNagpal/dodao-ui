@@ -1,5 +1,5 @@
 import React from 'react';
-import ProgramScreenModalClient from '@/components/ProgramFullScreenModal/ProgramFullScreenModal';
+import ProgramScreenModalClient from '@/components/ProgramFullScreenModalView/ProgramFullScreenModalView';
 
 const Page = async ({ params }: { params: { programId: string } }) => {
   const { programId } = params;
@@ -16,7 +16,7 @@ const Page = async ({ params }: { params: { programId: string } }) => {
 
     return (
       <>
-        <ProgramScreenModalClient programName={programName} programDetails={programDetails} open={true} />
+        <ProgramScreenModalClient programName={programName} programDetails={programDetails} open={true} programId={programId} />
       </>
     );
   } catch (error) {
@@ -27,7 +27,7 @@ const Page = async ({ params }: { params: { programId: string } }) => {
         <div className="text-center mb-6">
           <h1 className="text-3xl font-bold text-gray-900">Error</h1>
         </div>
-        <p className="text-gray-700 text-base">Error fetching API data.</p>
+        <p className="text-base">Error fetching API data.</p>
       </div>
     );
   }

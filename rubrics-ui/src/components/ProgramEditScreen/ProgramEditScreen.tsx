@@ -1,16 +1,21 @@
 'use client';
+
 import React, { useEffect, useState } from 'react';
 import ProgramInput from '@/components/ProgramInput/ProgramInput';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import { EditProgramRubricProps } from '@/types/rubricsTypes/types';
-import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
 import MarkdownEditor from '@/components/MarkdownEditor/MarkdownEditor';
-function EditProgram() {
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext'; // Import your notification context
+
+interface EditProgramProps {
+  programId?: string;
+}
+
+function EditProgram({ programId }: EditProgramProps) {
   const [rubrics, setRubrics] = useState<EditProgramRubricProps[]>([]);
   const [showSelectRubricsModal, setShowSelectRubricsModal] = useState<boolean>(false);
   const [selectedRubrics, setSelectedRubrics] = useState<string[]>([]);
-  // const space = (await getSpaceServerSide())!;
   const [newProgram, setNewProgram] = useState<{ name: string; details: string; summary: string }>({
     name: '',
     details: '',
@@ -18,12 +23,28 @@ function EditProgram() {
   });
   const [error, setError] = useState<string | null>(null);
 
+  const { showNotification } = useNotificationContext();
+
   useEffect(() => {
+    // Fetch rubrics
     fetch('http://localhost:3004/api/rubrics-program')
       .then((res) => res.json())
       .then((data) => setRubrics(data.body))
       .catch((error) => console.error('Error fetching rubrics:', error));
   }, []);
+
+  useEffect(() => {
+    if (programId) {
+      fetch(`http://localhost:3004/api/program?programId=${programId}`)
+        .then((res) => res.json())
+        .then((data) => {
+          const { name, details, summary, rubricIds } = data.body;
+          setNewProgram({ name, details, summary });
+          setSelectedRubrics(rubricIds || []);
+        })
+        .catch((error) => console.error('Error fetching program details:', error));
+    }
+  }, [programId]);
 
   const handleRubricSelect = (rubricId: string) => {
     if (selectedRubrics.includes(rubricId)) {
@@ -33,14 +54,18 @@ function EditProgram() {
     }
   };
 
-  const sendSelectedRubrics = () => {
+  const handleSaveProgram = () => {
     const requestData = {
       ...newProgram,
       rubricIds: selectedRubrics,
     };
 
-    fetch('http://localhost:3004/api/programs', {
-      method: 'POST',
+    const url = programId ? `http://localhost:3004/api/program/${programId}` : 'http://localhost:3004/api/programs';
+
+    const method = programId ? 'PUT' : 'POST';
+
+    fetch(url, {
+      method,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -48,9 +73,19 @@ function EditProgram() {
     })
       .then((res) => res.json())
       .then((data) => {
-        setNewProgram({ name: '', details: '', summary: '' });
+        showNotification({
+          message: programId ? 'Program updated successfully!' : 'Program created successfully!',
+          type: 'success',
+        });
       })
-      .catch((error) => console.error('Error sending data to backend:', error));
+      .catch((error) => {
+        console.error('Error sending data to backend:', error);
+
+        showNotification({
+          message: 'Failed to save program. Please try again.',
+          type: 'error',
+        });
+      });
   };
 
   return (
@@ -66,9 +101,9 @@ function EditProgram() {
         className="mt-2"
         primary
         disabled={!newProgram.name || !newProgram.details || !newProgram.summary}
-        onClick={sendSelectedRubrics}
+        onClick={handleSaveProgram}
       >
-        Create Program
+        {programId ? 'Update Program' : 'Create Program'}
       </Button>
 
       <FullPageModal open={showSelectRubricsModal} onClose={() => setShowSelectRubricsModal(false)} title="Select Rubrics">
