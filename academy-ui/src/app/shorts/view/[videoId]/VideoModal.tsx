@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
 import { ShortVideo, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import withSpace from '@/contexts/withSpace';
-import getBaseUrl from '@/utils/api/getBaseURL';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 
 function VideoModal(props: { space: SpaceWithIntegrationsFragment; params: { videoId: string } }) {
   const [videos, setVideos] = React.useState<ShortVideo[]>([]);
