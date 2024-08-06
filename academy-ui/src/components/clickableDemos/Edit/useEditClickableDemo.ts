@@ -202,7 +202,7 @@ export function useEditClickableDemo(space: Space, demoId: string | null) {
         body: JSON.stringify({
           spaceId: space.id,
           input,
-          byteCollection: byteCollection,
+          byteCollectionId: byteCollection.id,
         }),
       });
 

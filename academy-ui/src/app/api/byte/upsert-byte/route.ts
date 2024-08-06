@@ -1,6 +1,6 @@
 import { ByteModel, ByteQuestion, ByteStepItem } from '@/app/api/helpers/deprecatedSchemas/models/byte/ByteModel';
 import { QuestionType } from '@/app/api/helpers/deprecatedSchemas/models/enums';
-import { ByteStep, MutationUpsertByteArgs, UpsertByteInput } from '@/graphql/generated/generated-types';
+import { ByteStep, UpsertByteInput } from '@/graphql/generated/generated-types';
 import { transformByteInputSteps } from '@/app/api/helpers/byte/transformByteInputSteps';
 import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
 import { logError } from '@/app/api/helpers/adapters/errorLogger';
@@ -40,7 +40,7 @@ async function transformInput(spaceId: string, message: UpsertByteInput): Promis
 
 export async function POST(req: NextRequest) {
   try {
-    const { spaceId, input, byteCollection } = await req.json();
+    const { spaceId, input, byteCollectionId } = await req.json();
     const spaceById = await getSpaceById(spaceId);
     await checkEditSpacePermission(spaceById, req);
     const transformedByte = await transformInput(spaceId, input);
@@ -67,20 +67,36 @@ export async function POST(req: NextRequest) {
     const existingMapping = await prisma.byteCollectionItemMappings.findFirst({
       where: {
         itemId: upsertedByte.id,
-        byteCollectionId: byteCollection.id,
+        byteCollectionId,
         itemType: ByteCollectionItemType.Byte,
       },
     });
 
     if (!existingMapping) {
-      const mappingItem = await prisma.byteCollectionItemMappings.create({
+      const byteCollection = await prisma.byteCollection.findUnique({
+        where: {
+          id: byteCollectionId,
+        },
+        select: {
+          items: true,
+        },
+      });
+      const items = byteCollection?.items;
+      let highestOrderNumber = 0;
+      if (items && items?.length > 0) {
+        const byteItems = items?.filter((item) => item.itemType === ByteCollectionItemType.Byte);
+        const orderNumbers = byteItems.map((item) => item.order);
+        highestOrderNumber = orderNumbers.length > 0 ? Math.max(...orderNumbers) : 0;
+      }
+
+      await prisma.byteCollectionItemMappings.create({
         data: {
           id: uuidv4(),
           itemType: ByteCollectionItemType.Byte,
-          order: byteCollection.bytes.length + 1,
+          order: highestOrderNumber + 1,
           itemId: upsertedByte.id,
           ByteCollection: {
-            connect: { id: byteCollection.id },
+            connect: { id: byteCollectionId },
           },
         },
       });

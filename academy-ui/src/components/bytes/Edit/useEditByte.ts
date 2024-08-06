@@ -194,7 +194,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, onUpsert: (byt
         body: JSON.stringify({
           spaceId: space.id,
           input: getByteInputFn(byte),
-          byteCollection: byteCollection,
+          byteCollectionId: byteCollection.id,
         }),
       });
 

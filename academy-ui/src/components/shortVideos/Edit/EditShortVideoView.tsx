@@ -30,7 +30,7 @@ export default function EditShortVideoView({ shortVideoToEdit, space, byteCollec
           videoUrl: shortVideo.videoUrl,
           thumbnail: shortVideo.thumbnail,
         },
-        byteCollection: byteCollection,
+        byteCollectionId: byteCollection.id,
       }),
     });
   };

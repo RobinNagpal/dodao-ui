@@ -22,7 +22,7 @@ export async function GET(req: NextRequest, { params: { videoId } }: { params: {
 }
 
 export async function POST(req: NextRequest, { params: { videoId } }: { params: { videoId: string } }) {
-  const { spaceId, shortVideo, byteCollection } = await req.json();
+  const { spaceId, shortVideo, byteCollectionId } = await req.json();
   try {
     const spaceById = await prisma.space.findUniqueOrThrow({ where: { id: spaceId } });
     if (!spaceById) throw new Error(`No space found: ${spaceId}`);
@@ -57,20 +57,35 @@ export async function POST(req: NextRequest, { params: { videoId } }: { params: 
     const existingMapping = await prisma.byteCollectionItemMappings.findFirst({
       where: {
         itemId: upsertedShortVideo.id,
-        byteCollectionId: byteCollection.id,
+        byteCollectionId,
         itemType: ByteCollectionItemType.ShortVideo,
       },
     });
 
     if (!existingMapping) {
-      const mappingItem = await prisma.byteCollectionItemMappings.create({
+      const byteCollection = await prisma.byteCollection.findUnique({
+        where: {
+          id: byteCollectionId,
+        },
+        select: {
+          items: true,
+        },
+      });
+      const items = byteCollection?.items;
+      let highestOrderNumber = 0;
+      if (items && items?.length > 0) {
+        const byteItems = items?.filter((item) => item.itemType === ByteCollectionItemType.ShortVideo);
+        const orderNumbers = byteItems.map((item) => item.order);
+        highestOrderNumber = orderNumbers.length > 0 ? Math.max(...orderNumbers) : 0;
+      }
+      await prisma.byteCollectionItemMappings.create({
         data: {
           id: uuidv4(),
           itemType: ByteCollectionItemType.ShortVideo,
-          order: byteCollection.shorts.length + 1,
+          order: highestOrderNumber + 1,
           itemId: upsertedShortVideo.id,
           ByteCollection: {
-            connect: { id: byteCollection.id },
+            connect: { id: byteCollectionId },
           },
         },
       });

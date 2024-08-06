@@ -35,7 +35,6 @@ export async function POST(req: NextRequest, { params }: { params: { demoId: str
   const { demoId } = params;
   try {
     const args = await req.json();
-    const byteCollection: ByteCollectionFragment = args.byteCollection;
     const spaceById = await getSpaceById(args.spaceId);
 
     checkSpaceIdAndSpaceInEntityAreSame(args.spaceId, args.spaceId);
@@ -65,20 +64,35 @@ export async function POST(req: NextRequest, { params }: { params: { demoId: str
     const existingMapping = await prisma.byteCollectionItemMappings.findFirst({
       where: {
         itemId: clickableDemo.id,
-        byteCollectionId: byteCollection.id,
+        byteCollectionId: args.byteCollectionId,
         itemType: ByteCollectionItemType.ClickableDemo,
       },
     });
 
     if (!existingMapping) {
-      const mappingItem = await prisma.byteCollectionItemMappings.create({
+      const byteCollection = await prisma.byteCollection.findUnique({
+        where: {
+          id: args.byteCollectionId,
+        },
+        select: {
+          items: true,
+        },
+      });
+      const items = byteCollection?.items;
+      let highestOrderNumber = 0;
+      if (items && items?.length > 0) {
+        const byteItems = items?.filter((item) => item.itemType === ByteCollectionItemType.ClickableDemo);
+        const orderNumbers = byteItems.map((item) => item.order);
+        highestOrderNumber = orderNumbers.length > 0 ? Math.max(...orderNumbers) : 0;
+      }
+      await prisma.byteCollectionItemMappings.create({
         data: {
           id: uuidv4(),
           itemType: ByteCollectionItemType.ClickableDemo,
-          order: byteCollection.demos.length + 1,
+          order: highestOrderNumber + 1,
           itemId: clickableDemo.id,
           ByteCollection: {
-            connect: { id: byteCollection.id },
+            connect: { id: args.byteCollectionId },
           },
         },
       });
