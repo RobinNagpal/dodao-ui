@@ -34,7 +34,7 @@ const ProgramInput: React.FC<{
           label="Program Name"
           required
           placeholder="Enter program name"
-          className="mb-3 text-center"
+          className="mb-3 text-left"
         />
         <div className="w-full mb-3">
           <MarkdownEditor placeholder="Enter program details..." modelValue={newProgram.details} onUpdate={handleDetailsChange} label="Program Details" />

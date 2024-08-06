@@ -6,7 +6,6 @@ import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenMo
 import EllipsisDropdown from '@dodao/web-core/src/components/core/dropdowns/EllipsisDropdown';
 import { ChevronLeftIcon } from '@heroicons/react/24/outline';
 import { getSession } from 'next-auth/react';
-import { useLoginModalContext } from '@dodao/web-core/ui/contexts/LoginModalContext';
 import { SessionProps } from '@/types/rubricsTypes/types';
 
 interface ProgramScreenModalProps {
@@ -19,7 +18,6 @@ interface ProgramScreenModalProps {
 
 const ProgramScreenModalClient: React.FC<ProgramScreenModalProps> = ({ programName, programDetails, programId, open, onClose }) => {
   const [isOpen, setIsOpen] = useState(open ?? false);
-  const { showLoginModal, setShowLoginModal } = useLoginModalContext();
   const [session, setSession] = useState<SessionProps | null>(null);
   const router = useRouter();
 
@@ -63,8 +61,8 @@ const ProgramScreenModalClient: React.FC<ProgramScreenModalProps> = ({ programNa
           </button>
           {session?.isAdminOfSpace && <EllipsisDropdown items={dropdownItems} onSelect={handleDropdownSelect} />}
         </div>
-        <h1 className="text-4xl p-4">Program Details</h1>
-        <p className="text-lg text-left leading-relaxed">{programDetails}</p>
+        <h1 className="text-4xl p-4 text-left">Program Details</h1>
+        <p className="text-md p-2 text-left leading-relaxed">{programDetails}</p>
       </div>
     </FullScreenModal>
   );

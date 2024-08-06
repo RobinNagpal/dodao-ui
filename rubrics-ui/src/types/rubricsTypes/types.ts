@@ -27,9 +27,12 @@ export interface Rubric {
 }
 
 export interface RubricsPageProps {
-  selectedProgramId: string | null;
+  selectedProgramId?: string | null;
   isEditAccess?: boolean;
   rateRubricsFormatted?: RubricServerData;
+  writeAccess?: boolean;
+  rubricName?: string;
+  handleDropdownSelect?: (key: string) => void;
 }
 
 export interface ProgramListProps {
@@ -86,6 +89,7 @@ export interface RubricCriteriaProps {
   rubricRatingHeaders?: rubricRatingHeader[];
   cellIds?: cellIds[];
   rubricId?: string;
+  writeAccess?: boolean;
 }
 
 export interface ProgramListProps {

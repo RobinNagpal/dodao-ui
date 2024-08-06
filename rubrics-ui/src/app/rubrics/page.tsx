@@ -21,7 +21,7 @@ const RubricsList = async () => {
       <h1 className="text-4xl text-center font-extrabold mb-10">Rubrics</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {rubrics.map((rubric: RubricListProps) => (
-          <Link href={`/rate-rubric/${rubric.id}`} key={rubric.id}>
+          <Link href={`/rubrics/view/${rubric.id}`} key={rubric.id}>
             <Card className="cursor-pointer">
               <div className="p-4">
                 <h2 className="text-xl font-semibold mb-2" style={{ color: 'var(--primary-color)' }}>

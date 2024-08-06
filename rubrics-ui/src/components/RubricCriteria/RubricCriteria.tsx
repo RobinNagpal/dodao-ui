@@ -8,7 +8,16 @@ import { useNotificationContext } from '@dodao/web-core/ui/contexts/Notification
 import ConfirmationModal from '@/components/ConfirmationModal/ConfirmationModal';
 import CommentModal from '@/components/CommentModal/CommentModal';
 
-const RubricCriteria: React.FC<RubricCriteriaProps> = ({ criteria, rubrics, isEditAccess, onEditClick, onDeleteCriteria, rubricRatingHeaders, rubricId }) => {
+const RubricCriteria: React.FC<RubricCriteriaProps> = ({
+  criteria,
+  rubrics,
+  isEditAccess,
+  onEditClick,
+  onDeleteCriteria,
+  rubricRatingHeaders,
+  rubricId,
+  writeAccess,
+}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
   const [currentComment, setCurrentComment] = useState('');
@@ -139,32 +148,33 @@ const RubricCriteria: React.FC<RubricCriteriaProps> = ({ criteria, rubrics, isEd
     }));
 
     handleCloseModal();
-    sendRatedRubricsToServer(); // Send data when saving comment
+    sendRatedRubricsToServer();
   };
 
   const handleCellClick = (criteria: string, cellIndex: number, cellId: string) => {
-    const isCellAlreadySelected = selectedCells[criteria] === cellIndex;
-    const isAnyCellSelected = selectedCells[criteria] !== undefined;
+    if (writeAccess) {
+      const isCellAlreadySelected = selectedCells[criteria] === cellIndex;
+      const isAnyCellSelected = selectedCells[criteria] !== undefined;
 
-    if (isCellAlreadySelected) {
-      // If the cell is already selected, allow editing
+      if (isCellAlreadySelected) {
+        setClickedCellIndex(cellIndex);
+        setClickedCellId(cellId);
+        handleCommentModal(cellIndex, cellId);
+        return;
+      }
+
+      if (isAnyCellSelected) {
+        showNotification({
+          type: 'error',
+          message: 'Only one cell can be selected per criteria. Please edit the existing selection.',
+        });
+        return;
+      }
+
       setClickedCellIndex(cellIndex);
       setClickedCellId(cellId);
-      handleCommentModal(cellIndex, cellId);
-      return;
+      setIsConfirmationOpen(true);
     }
-
-    if (isAnyCellSelected) {
-      showNotification({
-        type: 'error',
-        message: 'Only one cell can be selected per criteria. Please edit the existing selection.',
-      });
-      return;
-    }
-
-    setClickedCellIndex(cellIndex);
-    setClickedCellId(cellId);
-    setIsConfirmationOpen(true);
   };
 
   const handleConfirmSelection = () => {

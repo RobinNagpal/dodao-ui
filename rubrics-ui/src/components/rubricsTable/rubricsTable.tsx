@@ -4,6 +4,8 @@ import RubricCriteria from '@/components/RubricCriteria/RubricCriteria';
 import RubricLevel from '@/components/RubricLevel/RubricLevel';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import RubricDetails from '@/components/RubricDetails/RubricDetails';
+import EllipsisDropdown, { EllipsisDropdownItem } from '@dodao/web-core/src/components/core/dropdowns/EllipsisDropdown';
+import { useRouter } from 'next/navigation';
 const initialRubrics: Record<string, string[]> = {
   Content: [
     'Complete. The speaker clearly conveys the main idea',
@@ -13,7 +15,7 @@ const initialRubrics: Record<string, string[]> = {
   ],
 };
 
-const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId, isEditAccess, rateRubricsFormatted }) => {
+const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId, isEditAccess, rateRubricsFormatted, writeAccess, rubricName }) => {
   const [rubrics, setRubrics] = useState<Record<string, string[]>>(initialRubrics);
   const [ratingHeaders, setRatingHeaders] = useState<string[]>(['Excellent', 'Good', 'Fair', 'Improvement']);
   const [criteriaOrder, setCriteriaOrder] = useState<string[]>(Object.keys(initialRubrics));
@@ -28,6 +30,10 @@ const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId, isEditAcce
 
   const [columnScores, setColumnScores] = useState<number[]>(Array(ratingHeaders.length).fill(0));
   const [criteriaToDelete, setCriteriaToDelete] = useState<string | null>(null);
+  const dropdownItems: EllipsisDropdownItem[] = [
+    { label: 'Edit', key: 'edit' },
+    { label: 'Rate', key: 'rate' },
+  ];
   const [rubricDetails, setRubricDetails] = useState<{
     name: string;
     summary: string;
@@ -38,6 +44,7 @@ const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId, isEditAcce
     description: '',
   });
   const { showNotification } = useNotificationContext();
+  const router = useRouter();
   useEffect(() => {
     if (!rubricDetails.name || !rubricDetails.summary) {
       return;
@@ -208,10 +215,20 @@ const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId, isEditAcce
   const rateCriteriaOrder = rateRubricsFormatted?.criteriaOrder;
   const rubricRatingHeaders: rubricRatingHeader[] = rateRubricsFormatted?.ratingHeaders ?? [];
   const rubricId = rateRubricsFormatted?.rubricId;
+
+  const handleDropdownSelect = (key: string) => {
+    if (key === 'rate') {
+      router.push(`/rate-rubric/${rubricId}`);
+    }
+  };
   return (
     <div className="container mx-auto py-8 p-4">
-      {/* <h1 className="text-3xl text-center font-bold mb-4"> {isEditAccess ? 'Edit Rubrics' : 'Giving Feedback on'}</h1> */}
-      <h1 className="text-2xl  p-2 text-center mb-2">{isEditAccess ? '' : rateRubricsFormatted?.programs[0].name}</h1>
+      <div className="flex items-center pb-8 align-center justify-center">
+        {!writeAccess && <h1 className="text-3xl text-center font-bold p-2">{rubricName}</h1>}
+        {!writeAccess && <EllipsisDropdown items={dropdownItems} onSelect={handleDropdownSelect} />}
+      </div>
+      <h1 className="text-3xl text-center font-bold mb-4">{writeAccess ? (isEditAccess ? 'Edit Rubrics' : 'Giving Feedback on') : ''}</h1>
+      <h1 className="text-2xl  p-2 text-center mb-2">{writeAccess ? (isEditAccess ? '' : rateRubricsFormatted?.programs[0].name) : ''}</h1>
       <RubricDetails rubricDetails={rubricDetails} setRubricDetails={setRubricDetails} isEditAccess={isEditAccess} />
 
       <div className="overflow-x-auto mt-4">
@@ -256,6 +273,7 @@ const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId, isEditAcce
                     onDeleteCriteria={handleDeleteCriteria}
                     rubricRatingHeaders={rubricRatingHeaders}
                     rubricId={rubricId}
+                    writeAccess={writeAccess}
                   />
                 ))
               : criteriaOrder?.map((criteria) => (

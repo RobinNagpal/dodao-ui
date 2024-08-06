@@ -50,7 +50,7 @@ const RubricDetails: React.FC<RubricDetailsProps> = ({ rubricDetails, setRubricD
   return (
     <div className="relative">
       <div className="flex items-center pb-8 align-center justify-center">
-        <h1 className="text-3xl font-bold text-center p-2">{isEditAccess ? 'Edit Rubric' : 'Giving Feedback on'}</h1>
+        {/* <h1 className="text-3xl font-bold text-center p-2">{isEditAccess ? 'Edit Rubric' : 'Giving Feedback on'}</h1> */}
         {isEditAccess && <EllipsisDropdown items={dropdownItems} onSelect={handleSelect} />}
       </div>
 

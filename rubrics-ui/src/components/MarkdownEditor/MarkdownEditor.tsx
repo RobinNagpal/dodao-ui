@@ -149,43 +149,45 @@ function MarkdownEditor({
   const fieldId = uuidV4();
   return (
     <div className="mt-2 w-full flex flex-col items-center">
-      <label htmlFor={id || fieldId} className="block text-sm font-medium leading-6 mb-1">
-        {label} {children}
-      </label>
-
-      <MainDiv className="w-full flex justify-center items-center bg-transparent">
-        <MDEditor
-          value={modelValue}
-          onChange={handleInputContent}
-          height={250}
-          textareaProps={{
-            placeholder: 'Edit text',
-          }}
-          className={`w-full ${editorClass}`}
-          preview="edit"
-          commands={[
-            { ...commands.title1, icon: <div style={{ fontSize: 24, textAlign: 'left' }}>H1</div> },
-            { ...commands.title2, icon: <div style={{ fontSize: 24, textAlign: 'left' }}>H2</div> },
-            { ...commands.title3, icon: <div style={{ fontSize: 24, textAlign: 'left' }}>H3</div> },
-            commands.divider,
-            commands.bold,
-            commands.italic,
-            commands.divider,
-            commands.hr,
-            commands.link,
-            commands.quote,
-            commands.divider,
-            commands.unorderedListCommand,
-            commands.orderedListCommand,
-            commands.checkedListCommand,
-            commands.divider,
-            commands.codePreview,
-            commands.fullscreen,
-          ]}
-          extraCommands={[]}
-        />
-      </MainDiv>
-
+      <div className="w-full flex flex-col items-start text-left">
+        <label htmlFor={id || fieldId} className="block text-sm font-medium leading-6 mb-1">
+          {label} {children}
+        </label>
+      </div>
+      <div className="w-full flex justify-center">
+        <MainDiv className="w-full max-w-4xl flex justify-center items-center bg-transparent">
+          <MDEditor
+            value={modelValue}
+            onChange={handleInputContent}
+            height={250}
+            textareaProps={{
+              placeholder: 'Edit text',
+            }}
+            className={`w-full ${editorClass}`}
+            preview="edit"
+            commands={[
+              { ...commands.title1, icon: <div style={{ fontSize: 24, textAlign: 'left' }}>H1</div> },
+              { ...commands.title2, icon: <div style={{ fontSize: 24, textAlign: 'left' }}>H2</div> },
+              { ...commands.title3, icon: <div style={{ fontSize: 24, textAlign: 'left' }}>H3</div> },
+              commands.divider,
+              commands.bold,
+              commands.italic,
+              commands.divider,
+              commands.hr,
+              commands.link,
+              commands.quote,
+              commands.divider,
+              commands.unorderedListCommand,
+              commands.orderedListCommand,
+              commands.checkedListCommand,
+              commands.divider,
+              commands.codePreview,
+              commands.fullscreen,
+            ]}
+            extraCommands={[]}
+          />
+        </MainDiv>
+      </div>
       {info && <p className="mt-1 text-xs">{info}</p>}
       {typeof error === 'string' && <p className="mt-2 text-sm text-red-600">{error}</p>}
     </div>

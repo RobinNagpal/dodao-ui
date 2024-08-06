@@ -6,7 +6,7 @@ import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal'
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import { EditProgramRubricProps } from '@/types/rubricsTypes/types';
 import MarkdownEditor from '@/components/MarkdownEditor/MarkdownEditor';
-import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext'; // Import your notification context
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 
 interface EditProgramProps {
   programId?: string;

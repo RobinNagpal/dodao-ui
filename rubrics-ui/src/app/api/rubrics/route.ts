@@ -158,6 +158,7 @@ export async function GET(req: NextRequest) {
     }));
 
     const formattedRubric = {
+      name: rubric.name,
       rubricId: rubricId,
       criteriaOrder: rubric.criteria.map((criteria) => criteria.title ?? '').filter((title) => title !== ''),
       rubric: criteriaMap,
