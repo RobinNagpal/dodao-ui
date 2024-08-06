@@ -100,6 +100,7 @@ export function useEditByteCollectionCategory({ space, byteCategory: byteCategor
           byteIds: byteCollection.byteIds,
           bytes: byteCollection.bytes,
           demos: byteCollection.demos,
+          shorts: byteCollection.shorts,
         },
       ];
 

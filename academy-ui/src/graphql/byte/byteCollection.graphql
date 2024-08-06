@@ -25,6 +25,12 @@ fragment ByteCollection on ByteCollection {
       order
     }
   }
+  shorts {
+    shortId
+    title
+    description
+    videoUrl
+  }
 }
 
 query ByteCollections($spaceId: String!) {

@@ -1,17 +1,20 @@
-import { ByteCollection as ByteCollectionGraphql, ByteCollectionByte, ByteCollectionDemo } from '@/graphql/generated/generated-types';
+import { ByteCollection as ByteCollectionGraphql, ByteCollectionByte, ByteCollectionDemo, ByteCollectionShort } from '@/graphql/generated/generated-types';
+import { ByteCollectionItemType } from '@/app/api/helpers/byteCollection/byteCollectionItemType';
 import { getByte } from '@/app/api/helpers/byte/getByte';
 import { getDemo } from '@/app/api/helpers/clickableDemo/getDemo';
+import { getShort } from '@/app/api/helpers/shortVideo/getShort';
 import { prisma } from '@/prisma';
-import { Byte, ClickableDemos, ByteCollection } from '@prisma/client';
+import { Byte, ClickableDemos, ByteCollection, ShortVideo } from '@prisma/client';
 
 export async function getByteCollectionWithItem(byteCollection: ByteCollection): Promise<ByteCollectionGraphql> {
   const bytes: ByteCollectionByte[] = [];
   const demos: ByteCollectionDemo[] = [];
+  const shorts: ByteCollectionShort[] = [];
 
   const allByteCollectionItemsBytes = await prisma.byteCollectionItemMappings.findMany({
     where: {
       byteCollectionId: byteCollection.id,
-      itemType: 'Byte',
+      itemType: ByteCollectionItemType.Byte,
     },
     orderBy: {
       order: 'desc',
@@ -21,7 +24,17 @@ export async function getByteCollectionWithItem(byteCollection: ByteCollection):
   const allByteCollectionItemsDemos = await prisma.byteCollectionItemMappings.findMany({
     where: {
       byteCollectionId: byteCollection.id,
-      itemType: 'Demo',
+      itemType: ByteCollectionItemType.ClickableDemo,
+    },
+    orderBy: {
+      order: 'desc',
+    },
+  });
+
+  const allByteCollectionItemsShorts = await prisma.byteCollectionItemMappings.findMany({
+    where: {
+      byteCollectionId: byteCollection.id,
+      itemType: ByteCollectionItemType.ShortVideo,
     },
     orderBy: {
       order: 'desc',
@@ -48,9 +61,20 @@ export async function getByteCollectionWithItem(byteCollection: ByteCollection):
     });
   }
 
+  for (const item of allByteCollectionItemsShorts) {
+    const short = (await getShort(byteCollection.spaceId, item.itemId)) as ShortVideo;
+    shorts.push({
+      shortId: short.id,
+      title: short.title,
+      description: short.description,
+      videoUrl: short.videoUrl,
+    });
+  }
+
   return {
     ...byteCollection,
     bytes: bytes,
     demos: demos,
+    shorts: shorts,
   };
 }
