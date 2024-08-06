@@ -22,7 +22,7 @@ function LoginButtonsFunction(props: { space: WebCoreSpace; onCloseEmailModal: (
     processingGoogle,
     processingDiscord,
     processingNear,
-  } = useAuth();
+  } = useAuth(space.id);
 
   const allOptionsEnabled = (space.authSettings.loginOptions?.length || 0) === 0;
 

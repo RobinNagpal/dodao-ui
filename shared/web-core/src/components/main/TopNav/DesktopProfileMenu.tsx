@@ -35,7 +35,7 @@ function ProfileMenuItem({ label, href, onClick }: { label: string; href?: strin
 }
 
 export function DesktopProfileMenu({ session, space }: ProfileMenuProps) {
-  const { logout } = useAuth();
+  const { logout } = useAuth(space.id);
   return (
     <Menu as="div" className="relative ml-3">
       <div>

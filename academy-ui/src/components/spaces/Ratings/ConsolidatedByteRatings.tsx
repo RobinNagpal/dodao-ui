@@ -1,10 +1,10 @@
 'use client';
 
 import styles from '@/components/app/Rating/Table/RatingsTable.module.scss';
-import getBaseUrl from '@/utils/api/getBaseURL';
 import { Grid2Cols } from '@dodao/web-core/components/core/grids/Grid2Cols';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { ConsolidatedByteRating, ConsolidatedByteRatingsForSpaceQuery, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import React, { useEffect } from 'react';
 import { Cell, Legend, Pie, PieChart, Tooltip } from 'recharts';
 import axios from 'axios';

@@ -11,7 +11,7 @@ import * as nearAPI from 'near-api-js';
 import { getSession, signIn, signOut } from 'next-auth/react';
 import { useCallback, useState } from 'react';
 
-export function useAuth() {
+export function useAuth(spaceId: string) {
   const [web3Selection, setWeb3Selection] = useState<{ connector: Connector } | undefined>(); // ['metamask', 'walletconnect', 'coinbase'
   const [active, setActive] = useState<boolean>(false);
   const [processing, setProcessing] = useState<boolean>(false);
@@ -41,7 +41,7 @@ export function useAuth() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          spaceId: 'dodao-eth-1',
+          spaceId: spaceId,
           authProvider: 'crypto',
           publicAddress,
         }),
@@ -55,7 +55,7 @@ export function useAuth() {
       const signinResponse = await signIn('crypto', {
         publicAddress,
         signedNonce,
-        spaceId: 'dodao-eth-1',
+        spaceId: spaceId,
         redirect: false,
       });
       console.log('signinResponse', signinResponse);

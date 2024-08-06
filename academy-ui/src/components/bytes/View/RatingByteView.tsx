@@ -1,16 +1,10 @@
 import RatingsTable from '@/components/app/Rating/Table/RatingsTable';
-import getBaseUrl from '@/utils/api/getBaseURL';
+import { ConsolidatedByteRatingQuery, ConsolidatedGuideRatingQuery, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import {
-  ConsolidatedByteRating,
-  ConsolidatedByteRatingQuery,
-  SpaceWithIntegrationsFragment,
-  ConsolidatedGuideRatingQuery,
-  ByteRatingsQuery,
-} from '@/graphql/generated/generated-types';
-import React, { useEffect } from 'react';
-import axios from 'axios';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Byte } from '@prisma/client';
+import axios from 'axios';
+import React, { useEffect } from 'react';
 
 export default function ByteRatingView(props: { space: SpaceWithIntegrationsFragment; byteId: string }) {
   const [consolidatedRatingsResponse, setConsolidatedRatingsResponse] = React.useState<ConsolidatedByteRatingQuery | ConsolidatedGuideRatingQuery>();

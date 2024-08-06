@@ -1,3 +1,5 @@
+'use client';
+
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Input from '@dodao/web-core/components/core/input/Input';
 import { Table, TableRow } from '@dodao/web-core/components/core/table/Table';

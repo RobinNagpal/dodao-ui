@@ -1,8 +1,8 @@
 import { canEditGitSpace } from '@/app/api/helpers/space/checkEditSpacePermission';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Space } from '@prisma/client';
 import { NextRequest } from 'next/server';
-import getBaseUrl from '@/utils/api/getBaseURL';
 import axios from 'axios';
 
 export async function checkEditCoursePermission(space: Space, context: NextRequest, courseKey: string): Promise<DoDaoJwtTokenPayload> {
