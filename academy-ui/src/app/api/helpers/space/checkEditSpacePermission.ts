@@ -76,6 +76,11 @@ export async function checkEditSpacePermission(space: Space, req: NextRequest): 
   return decodedJWT;
 }
 
+export async function isRequestUserSuperAdmin(req: NextRequest): Promise<boolean> {
+  const decoded = await getDecodedJwtFromContext(req);
+  return !!(decoded?.username && isDoDAOSuperAdmin(decoded.username));
+}
+
 export function checkSpaceIdAndSpaceInEntityAreSame(spaceId: string, entitySpaceId: string) {
   if (entitySpaceId !== spaceId) {
     throw new Error('Space id and entity space id are not same - ' + spaceId + ' - ' + entitySpaceId);

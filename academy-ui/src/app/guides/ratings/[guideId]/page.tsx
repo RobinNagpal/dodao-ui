@@ -2,9 +2,9 @@
 
 import withSpace from '@/contexts/withSpace';
 import RatingsTable from '@/components/app/Rating/Table/RatingsTable';
-import getBaseUrl from '@/utils/api/getBaseURL';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { SpaceWithIntegrationsFragment, GuideFragment, ConsolidatedGuideRatingQuery, ConsolidatedByteRatingQuery } from '@/graphql/generated/generated-types';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import Link from 'next/link';
 import React, { useEffect } from 'react';
 import axios from 'axios';

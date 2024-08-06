@@ -1,3 +1,5 @@
+'use client';
+
 import PageLoading from '@dodao/web-core/components/core/loaders/PageLoading';
 import TabsWithUnderline, { TabItem } from '@dodao/web-core/components/core/tabs/TabsWithUnderline';
 import ConsolidatedByteRatings from '@/components/spaces/Ratings/ConsolidatedByteRatings';
