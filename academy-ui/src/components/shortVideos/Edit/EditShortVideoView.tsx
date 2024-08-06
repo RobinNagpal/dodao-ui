@@ -30,21 +30,7 @@ export default function EditShortVideoView({ shortVideoToEdit, space, byteCollec
           videoUrl: shortVideo.videoUrl,
           thumbnail: shortVideo.thumbnail,
         },
-      }),
-    });
-
-    const { upsertedShortVideo } = await response.json();
-
-    const mappingResponse = await fetch('/api/mapping/upsertShortVideoMapping', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        byteCollectionId: byteCollection.id,
-        itemId: upsertedShortVideo.id,
-        itemType: 'Short',
-        order: byteCollection.shorts.length + 1,
+        byteCollection: byteCollection,
       }),
     });
   };

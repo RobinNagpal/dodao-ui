@@ -202,24 +202,11 @@ export function useEditClickableDemo(space: Space, demoId: string | null) {
         body: JSON.stringify({
           spaceId: space.id,
           input,
+          byteCollection: byteCollection,
         }),
       });
 
       const payload = await response.json();
-      const clickableDemoo = payload.clickableDemo;
-
-      const mappingResponse = await fetch('/api/mapping/upsertDemoMapping', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          byteCollectionId: byteCollection.id,
-          itemId: clickableDemoo.id,
-          itemType: 'Demo',
-          order: byteCollection.demos.length + 1,
-        }),
-      });
 
       if (response.ok) {
         showNotification({

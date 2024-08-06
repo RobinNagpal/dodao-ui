@@ -6,13 +6,14 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
 import { ShortVideo, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import withSpace from '@/contexts/withSpace';
+import getBaseUrl from '@/utils/api/getBaseURL';
 
 function VideoModal(props: { space: SpaceWithIntegrationsFragment; params: { videoId: string } }) {
   const [videos, setVideos] = React.useState<ShortVideo[]>([]);
   const [initialSlideIndex, setInitialSlideIndex] = React.useState<number>(-1);
 
   useEffect(() => {
-    axios.get(`/api/short-videos?spaceId=${props.space.id}`).then((response) => {
+    axios.get(`${getBaseUrl()}/api/short-videos?spaceId=${props.space.id}`).then((response) => {
       setVideos(response.data.shortVideos);
       const index = response.data.shortVideos.findIndex((video: ShortVideo) => video.id === props.params.videoId);
       setInitialSlideIndex(index);

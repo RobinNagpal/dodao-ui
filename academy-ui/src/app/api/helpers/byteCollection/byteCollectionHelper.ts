@@ -1,4 +1,5 @@
 import { ByteCollection as ByteCollectionGraphql, ByteCollectionByte, ByteCollectionDemo, ByteCollectionShort } from '@/graphql/generated/generated-types';
+import { ByteCollectionItemType } from '@/app/api/helpers/byteCollection/byteCollectionItemType';
 import { getByte } from '@/app/api/helpers/byte/getByte';
 import { getDemo } from '@/app/api/helpers/clickableDemo/getDemo';
 import { getShort } from '@/app/api/helpers/shortVideo/getShort';
@@ -13,7 +14,7 @@ export async function getByteCollectionWithItem(byteCollection: ByteCollection):
   const allByteCollectionItemsBytes = await prisma.byteCollectionItemMappings.findMany({
     where: {
       byteCollectionId: byteCollection.id,
-      itemType: 'Byte',
+      itemType: ByteCollectionItemType.Byte,
     },
     orderBy: {
       order: 'desc',
@@ -23,7 +24,7 @@ export async function getByteCollectionWithItem(byteCollection: ByteCollection):
   const allByteCollectionItemsDemos = await prisma.byteCollectionItemMappings.findMany({
     where: {
       byteCollectionId: byteCollection.id,
-      itemType: 'Demo',
+      itemType: ByteCollectionItemType.ClickableDemo,
     },
     orderBy: {
       order: 'desc',
@@ -33,7 +34,7 @@ export async function getByteCollectionWithItem(byteCollection: ByteCollection):
   const allByteCollectionItemsShorts = await prisma.byteCollectionItemMappings.findMany({
     where: {
       byteCollectionId: byteCollection.id,
-      itemType: 'Short',
+      itemType: ByteCollectionItemType.ShortVideo,
     },
     orderBy: {
       order: 'desc',

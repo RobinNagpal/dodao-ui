@@ -1,8 +1,10 @@
 import { checkEditSpacePermission, checkSpaceIdAndSpaceInEntityAreSame } from '@/app/api/helpers/space/checkEditSpacePermission';
-import { MutationDeleteClickableDemoArgs, MutationUpsertClickableDemoArgs } from '@/graphql/generated/generated-types';
+import { MutationDeleteClickableDemoArgs, ByteCollectionFragment, MutationUpsertClickableDemoArgs } from '@/graphql/generated/generated-types';
 import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
 import { NextRequest, NextResponse } from 'next/server';
+import { ByteCollectionItemType } from '@/app/api/helpers/byteCollection/byteCollectionItemType';
 import { prisma } from '@/prisma';
+import { v4 as uuidv4 } from 'uuid';
 
 export async function GET(req: NextRequest, { params: { demoId } }: { params: { demoId: string } }) {
   const clickableDemoWithSteps = await prisma.clickableDemos.findUniqueOrThrow({
@@ -29,9 +31,11 @@ export async function DELETE(req: NextRequest, { params: { demoId } }: { params:
   return NextResponse.json({ status: 200, updatedClickableDemo });
 }
 
-export async function PUT(req: NextRequest, { params: { demoId } }: { params: { demoId: string } }) {
+export async function PUT(req: NextRequest, { params }: { params: { demoId: string } }) {
+  const { demoId } = params;
   try {
-    const args: MutationUpsertClickableDemoArgs = await req.json();
+    const args = await req.json();
+    const byteCollection: ByteCollectionFragment = args.byteCollection;
     const spaceById = await getSpaceById(args.spaceId);
 
     checkSpaceIdAndSpaceInEntityAreSame(args.spaceId, args.spaceId);
@@ -57,6 +61,28 @@ export async function PUT(req: NextRequest, { params: { demoId } }: { params: { 
         steps: args.input.steps,
       },
     });
+
+    const existingMapping = await prisma.byteCollectionItemMappings.findFirst({
+      where: {
+        itemId: clickableDemo.id,
+        byteCollectionId: byteCollection.id,
+        itemType: ByteCollectionItemType.ClickableDemo,
+      },
+    });
+
+    if (!existingMapping) {
+      const mappingItem = await prisma.byteCollectionItemMappings.create({
+        data: {
+          id: uuidv4(),
+          itemType: ByteCollectionItemType.ClickableDemo,
+          order: byteCollection.demos.length + 1,
+          itemId: clickableDemo.id,
+          ByteCollection: {
+            connect: { id: byteCollection.id },
+          },
+        },
+      });
+    }
 
     return NextResponse.json({ status: 200, clickableDemo });
   } catch (error) {

@@ -2,6 +2,8 @@ import { MutationUpsertShortVideoArgs, MutationDeleteShortVideoArgs } from '@/gr
 import { checkEditSpacePermission } from '@/app/api/helpers/space/checkEditSpacePermission';
 import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
 import { NextRequest, NextResponse } from 'next/server';
+import { ByteCollectionItemType } from '@/app/api/helpers/byteCollection/byteCollectionItemType';
+import { v4 as uuidv4 } from 'uuid';
 import { prisma } from '@/prisma';
 
 export async function GET(req: NextRequest, { params: { videoId } }: { params: { videoId: string } }) {
@@ -20,7 +22,7 @@ export async function GET(req: NextRequest, { params: { videoId } }: { params: {
 }
 
 export async function POST(req: NextRequest, { params: { videoId } }: { params: { videoId: string } }) {
-  const { spaceId, shortVideo }: MutationUpsertShortVideoArgs = await req.json();
+  const { spaceId, shortVideo, byteCollection } = await req.json();
   try {
     const spaceById = await prisma.space.findUniqueOrThrow({ where: { id: spaceId } });
     if (!spaceById) throw new Error(`No space found: ${spaceId}`);
@@ -51,6 +53,29 @@ export async function POST(req: NextRequest, { params: { videoId } }: { params: 
         id: videoId,
       },
     });
+
+    const existingMapping = await prisma.byteCollectionItemMappings.findFirst({
+      where: {
+        itemId: upsertedShortVideo.id,
+        byteCollectionId: byteCollection.id,
+        itemType: ByteCollectionItemType.ShortVideo,
+      },
+    });
+
+    if (!existingMapping) {
+      const mappingItem = await prisma.byteCollectionItemMappings.create({
+        data: {
+          id: uuidv4(),
+          itemType: ByteCollectionItemType.ShortVideo,
+          order: byteCollection.shorts.length + 1,
+          itemId: upsertedShortVideo.id,
+          ByteCollection: {
+            connect: { id: byteCollection.id },
+          },
+        },
+      });
+    }
+
     return NextResponse.json({ status: 200, upsertedShortVideo });
   } catch (error) {
     console.log(error);

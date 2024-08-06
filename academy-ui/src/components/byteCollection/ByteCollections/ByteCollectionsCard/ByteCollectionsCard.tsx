@@ -19,6 +19,7 @@ import { useRouter } from 'next/navigation';
 import EditByteView from '@/components/bytes/Edit/EditByteView';
 import EditClickableDemo from '@/components/clickableDemos/Create/EditClickableDemo';
 import EditShortVideoView from '@/components/shortVideos/Edit/EditShortVideoView';
+import getBaseUrl from '@/utils/api/getBaseURL';
 import axios from 'axios';
 
 interface ByteCollectionCardProps {
@@ -61,7 +62,7 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
   const threeDotItems = [{ label: 'Edit', key: 'edit' }];
 
   async function fetchData(shortId: string) {
-    const response = await axios.get(`/api/short-videos/${shortId}?spaceId=${space.id}`);
+    const response = await axios.get(`${getBaseUrl()}/api/short-videos/${shortId}?spaceId=${space.id}`);
     setVideoResponse(response.data);
   }
 
@@ -294,10 +295,9 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
               <EditShortVideoView
                 space={space}
                 byteCollection={byteCollection}
-                // shortVideoId={editShortModalState.shortId}
                 shortVideoToEdit={videoResponse?.shortVideo}
                 onAfterSave={() => {
-                  router.push('/tidbit-collections');
+                  router.push(`/shorts/view/${videoResponse?.shortVideo?.id}`);
                 }}
                 onCancel={() => {
                   router.push('/tidbit-collections');

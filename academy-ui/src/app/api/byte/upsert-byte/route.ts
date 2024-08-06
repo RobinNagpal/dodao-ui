@@ -8,7 +8,9 @@ import { checkEditSpacePermission } from '@/app/api/helpers/space/checkEditSpace
 import { slugify } from '@/app/api/helpers/space/slugify';
 import { prisma } from '@/prisma';
 import { Byte } from '@prisma/client';
+import { ByteCollectionItemType } from '@/app/api/helpers/byteCollection/byteCollectionItemType';
 import { NextRequest, NextResponse } from 'next/server';
+import { v4 as uuidv4 } from 'uuid';
 
 async function transformInput(spaceId: string, message: UpsertByteInput): Promise<ByteModel> {
   // remove the order and add id if needed
@@ -38,7 +40,7 @@ async function transformInput(spaceId: string, message: UpsertByteInput): Promis
 
 export async function POST(req: NextRequest) {
   try {
-    const { spaceId, input }: MutationUpsertByteArgs = await req.json();
+    const { spaceId, input, byteCollection } = await req.json();
     const spaceById = await getSpaceById(spaceId);
     await checkEditSpacePermission(spaceById, req);
     const transformedByte = await transformInput(spaceId, input);
@@ -61,6 +63,28 @@ export async function POST(req: NextRequest) {
         id: id,
       },
     });
+
+    const existingMapping = await prisma.byteCollectionItemMappings.findFirst({
+      where: {
+        itemId: upsertedByte.id,
+        byteCollectionId: byteCollection.id,
+        itemType: ByteCollectionItemType.Byte,
+      },
+    });
+
+    if (!existingMapping) {
+      const mappingItem = await prisma.byteCollectionItemMappings.create({
+        data: {
+          id: uuidv4(),
+          itemType: ByteCollectionItemType.Byte,
+          order: byteCollection.bytes.length + 1,
+          itemId: upsertedByte.id,
+          ByteCollection: {
+            connect: { id: byteCollection.id },
+          },
+        },
+      });
+    }
 
     return NextResponse.json({ status: 200, upsertedByte });
   } catch (e) {
