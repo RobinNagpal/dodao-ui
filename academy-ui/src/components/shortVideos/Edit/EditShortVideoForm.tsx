@@ -108,6 +108,7 @@ export default function EditShortVideoModal({ shortVideoToEdit, spaceId, saveSho
         onUpdate={(v) => updateShortVideoField('title', v?.toString() || '')}
         label="Title"
         required
+        className="text-color"
         error={shortVideoErrors['title']}
       />
 
@@ -153,6 +154,7 @@ export default function EditShortVideoModal({ shortVideoToEdit, spaceId, saveSho
           updateShortVideoField('priority', parseInt(priorityString));
         }}
         label={'Priority'}
+        className="text-color"
         number
         required
         error={shortVideoErrors['priority']}

@@ -177,7 +177,7 @@ function MarkdownEditor({
   const fieldId = uuidV4();
   return (
     <div className="mt-2 w-full">
-      <label htmlFor={id || fieldId} className="block text-sm font-medium leading-6 mb-1">
+      <label htmlFor={id || fieldId} className="block text-sm font-medium leading-6 mb-1 text-color">
         {label} {children}
       </label>
       <MainDiv className="w-full bg-transparent flex">
