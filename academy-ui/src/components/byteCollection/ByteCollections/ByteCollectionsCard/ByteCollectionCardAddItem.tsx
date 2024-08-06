@@ -75,10 +75,6 @@ export default function CreateContentModalContents({
               <EditShortVideoView
                 space={space}
                 byteCollection={byteCollection}
-                onAfterSave={() => {
-                  router.push('/tidbit-collections');
-                  setShowCreateVideoModal(false);
-                }}
                 onCancel={() => {
                   router.push('/tidbit-collections');
                   setShowCreateVideoModal(false);

@@ -272,8 +272,7 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
               byteCollection={byteCollection}
               byteId={editByteModalState.byteId}
               onUpsert={async () => {
-                closeByteEditModal();
-                router.push(`/tidbit-collections`);
+                router.push(`/tidbits/view/${editByteModalState.byteId}`);
               }}
             />
           </div>

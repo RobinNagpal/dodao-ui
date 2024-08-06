@@ -51,7 +51,7 @@ function VideoModal(props: { space: SpaceWithIntegrationsFragment; params: { vid
       key={initialSlideIndex}
       initialSlide={initialSlideIndex}
       videos={videos}
-      onClose={() => router.push('/shorts')}
+      onClose={() => router.push('/tidbit-collections')}
       onShowEditModal={() => {
         router.push(`/shorts/edit/${props.params.videoId}`);
       }}
