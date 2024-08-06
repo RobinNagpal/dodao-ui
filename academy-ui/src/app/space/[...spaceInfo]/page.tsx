@@ -1,7 +1,5 @@
-'use client';
-
 import SidebarLayout from '@/app/SidebarLayout';
-import WithSpace from '@/contexts/withSpace';
+import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import GenerateImage from '@/components/spaces/Image/GenerateImage';
 import ListSpaces from '@/components/spaces/ListSpaces';
@@ -118,16 +116,9 @@ const getNavigation = (space: SpaceWithIntegrationsFragment, subView?: string, s
 function GetSubview(props: { spaceInfo: string[]; space: SpaceWithIntegrationsFragment }) {
   const { spaceInfo } = props;
 
-  console.log('manageInfo', spaceInfo);
-
-  // urls - /manage
-  const isHome = spaceInfo.length === 1 && spaceInfo[0] === 'manage';
-
   const subView = spaceInfo?.[1];
 
   const entityId = spaceInfo?.[2];
-
-  console.log('subView === ManageSpaceSubviews.SpaceDetails', subView === ManageSpaceSubviews.ViewSpace);
 
   if (subView === ManageSpaceSubviews.SpacesList) {
     return <ListSpaces />;
@@ -149,10 +140,11 @@ function GetSubview(props: { spaceInfo: string[]; space: SpaceWithIntegrationsFr
 
   return <SpaceDetails spaceId={props.space.id} />;
 }
-function ManageSpace({ params, space }: { params: { spaceInfo: string[] }; space: SpaceWithIntegrationsFragment }) {
+async function ManageSpace({ params }: { params: { spaceInfo: string[] }; space: SpaceWithIntegrationsFragment }) {
   const { spaceInfo } = params;
   const subView = spaceInfo?.[1];
   const subSubView = spaceInfo?.[2];
+  const space = (await getSpaceServerSide())!;
   return (
     <SidebarLayout>
       <ul role="list" className="-mx-2 space-y-1">
@@ -181,4 +173,4 @@ function ManageSpace({ params, space }: { params: { spaceInfo: string[] }; space
   );
 }
 
-export default WithSpace(ManageSpace);
+export default ManageSpace;

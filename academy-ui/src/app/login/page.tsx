@@ -1,5 +1,6 @@
 'use client';
 
+import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
 import ButtonLarge from '@dodao/web-core/components/core/buttons/Button';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { useLoginModalContext } from '@dodao/web-core/ui/contexts/LoginModalContext';
@@ -8,10 +9,11 @@ import { Session } from '@dodao/web-core/types/auth/Session';
 import { useSession } from 'next-auth/react';
 import React from 'react';
 
-function LoginPage() {
+async function LoginPage() {
+  const space = await getSpaceServerSide();
   const { data: sessionData } = useSession();
   const session: Session | null = sessionData as Session | null;
-  const { logout, active } = useAuth();
+  const { logout, active } = useAuth(space!.id);
   const { setShowLoginModal } = useLoginModalContext();
 
   return (

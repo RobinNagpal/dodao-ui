@@ -1,10 +1,13 @@
+'use client';
+
 import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import { Table, TableActions, TableRow } from '@dodao/web-core/components/core/table/Table';
 import UpsertSpaceBasicSettingsModal from '@/components/spaces/Edit/Basic/UpsertSpaceBasicSettingsModal';
 import { ManageSpaceSubviews } from '@/components/spaces/manageSpaceSubviews';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { SpaceSummaryFragment, useDropPineconeNamespaceMutation, useSpacesQuery } from '@/graphql/generated/generated-types';
+import { SpaceSummaryFragment, SpaceWithIntegrationsFragment, useDropPineconeNamespaceMutation, useSpacesQuery } from '@/graphql/generated/generated-types';
+import useQuery from '@dodao/web-core/utils/api/useQuery';
 import { useRouter } from 'next/navigation';
 import React, { useMemo, useState } from 'react';
 import styled from 'styled-components';
@@ -25,7 +28,7 @@ function getSpaceTableRows(spaceList?: SpaceSummaryFragment[]): TableRow[] {
 }
 
 export default function ListSpaces() {
-  const { data } = useSpacesQuery();
+  const { data } = useQuery<SpaceWithIntegrationsFragment[]>('/api/spaces');
   const [showSpaceAddModal, setShowSpaceAddModal] = useState(false);
   const [dropPineconeNamespaceMutation] = useDropPineconeNamespaceMutation();
   const router = useRouter();
@@ -70,7 +73,7 @@ export default function ListSpaces() {
           </div>
         </div>
         <Table
-          data={getSpaceTableRows(data?.spaces || [])}
+          data={getSpaceTableRows(data || [])}
           columnsHeadings={['Name', 'Id', 'Skin', 'Type']}
           columnsWidthPercents={[20, 20, 20, 20]}
           actions={tableActions}

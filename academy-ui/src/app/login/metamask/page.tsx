@@ -1,5 +1,6 @@
 'use client';
 
+import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
 import ButtonLarge from '@dodao/web-core/components/core/buttons/Button';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { useAuth } from '@dodao/web-core/ui/auth/useAuth';
@@ -7,10 +8,11 @@ import { Session } from '@dodao/web-core/types/auth/Session';
 import { useSession } from 'next-auth/react';
 import React from 'react';
 
-export default function LoginWithMetamask() {
+export default async function LoginWithMetamask() {
+  const space = await getSpaceServerSide();
   const { data: sessionData } = useSession();
   const session: Session | null = sessionData as Session | null;
-  const { loginWithMetamask, processing, processingMetaMask, logout } = useAuth();
+  const { loginWithMetamask, processing, processingMetaMask, logout } = useAuth(space!.id);
   return (
     <PageWrapper>
       <div className="flex justify-center align-center w-full min-h-screen">

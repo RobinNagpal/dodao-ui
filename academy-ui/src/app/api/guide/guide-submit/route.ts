@@ -11,13 +11,13 @@ import { getDecodedJwtFromContext } from '@/app/api/helpers/permissions/getJwtFr
 import { SubmissionItemInfo, UserGuideQuestionSubmission, UserGuideStepSubmission } from '@/app/api/helpers/types/guideSubmisstion';
 import { prisma } from '@/prisma';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { GuideSubmission } from '@prisma/client';
 import { JwtPayload } from 'jsonwebtoken';
 import intersection from 'lodash/intersection';
 import isEqual from 'lodash/isEqual';
 import { NextRequest, NextResponse } from 'next/server';
 import axios from 'axios';
-import getBaseUrl from '@/utils/api/getBaseURL';
 
 function getGuideStepSubmissionMap(msg: GuideSubmissionInput) {
   const stepEntries = msg.steps.map((step) => {

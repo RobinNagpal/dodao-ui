@@ -3,12 +3,12 @@
 import withSpace from '@/contexts/withSpace';
 import ByteCollectionEditor from '@/components/byteCollection/ByteCollections/ByteCollectionEditor';
 import { EditByteCollection } from '@/components/byteCollection/ByteCollections/useEditByteCollection';
-import getBaseUrl from '@/utils/api/getBaseURL';
 import PageLoading from '@dodao/web-core/components/core/loaders/PageLoading';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { SpaceWithIntegrationsFragment, ByteCollectionFragment, Byte } from '@/graphql/generated/generated-types';
 
 import SingleCardLayout from '@/layouts/SingleCardLayout';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import Link from 'next/link';
 import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
 import { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';

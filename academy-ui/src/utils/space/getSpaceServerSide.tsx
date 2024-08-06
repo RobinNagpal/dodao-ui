@@ -11,7 +11,7 @@ export async function getSpaceBasedOnHostHeader(reqHeaders: Headers) {
     },
   });
 
-  const space = response?.data.body[0] as SpaceWithIntegrationsFragment;
+  const space = response?.data?.[0] as SpaceWithIntegrationsFragment;
   return response.status === 200 ? space : null;
 }
 

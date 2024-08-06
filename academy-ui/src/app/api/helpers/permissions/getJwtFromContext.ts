@@ -1,6 +1,6 @@
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
-import { NextRequest } from 'next/server';
 import { getToken } from 'next-auth/jwt';
+import { NextRequest } from 'next/server';
 
 export const dodaoTeamMates = [
   '0x470579d16401a36BF63b1428eaA7189FBdE5Fee9', // Robin

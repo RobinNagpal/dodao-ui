@@ -1,17 +1,16 @@
-import { Grid4Cols } from '@dodao/web-core/components/core/grids/Grid4Cols';
-import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import ShowDraftsToggle from '@/components/guides/List/ShowDraftsToggle';
 import GuideSummaryCard from '@/components/guides/Summary/GuideSummaryCard';
 import NoGuide from '@/components/guides/Summary/NoGuides';
 import { GuideSummaryFragment } from '@/graphql/generated/generated-types';
-import { PublishStatus } from '@dodao/web-core/types/deprecated/models/enums';
-import getApiResponse from '@/utils/api/getApiResponse';
 import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
+import { Grid4Cols } from '@dodao/web-core/components/core/grids/Grid4Cols';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import { PublishStatus } from '@dodao/web-core/types/deprecated/models/enums';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import axios from 'axios';
 import sortBy from 'lodash/sortBy';
 import { Metadata } from 'next';
 import React from 'react';
-import axios from 'axios';
-import getBaseUrl from '@/utils/api/getBaseURL';
 
 type GuidesProps = {
   searchParams: { [key: string]: string | string[] | undefined };
