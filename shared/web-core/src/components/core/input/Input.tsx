@@ -61,7 +61,7 @@ export default function Input({
 
   return (
     <div className={'my-4 ' + className || ''}>
-      <label htmlFor={id || inputId} className="block text-sm font-medium leading-6">
+      <label htmlFor={id || inputId} className="block text-sm font-medium leading-6 text-color">
         {label} {children}
       </label>
       <div className="relative mt-2 rounded-md shadow-sm">
