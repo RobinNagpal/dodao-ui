@@ -1,10 +1,10 @@
-import getBaseUrl from '@/utils/api/getBaseURL';
 import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
 import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import SpinnerWithText from '@dodao/web-core/components/core/loaders/SpinnerWithText';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { SpaceWithIntegrationsFragment, GuideSubmission } from '@/graphql/generated/generated-types';
 import { DODAO_ACCESS_TOKEN_KEY } from '@dodao/web-core/types/deprecated/models/enums';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { GridOptions, GridSizeChangedEvent } from 'ag-grid-community';
 import { FilterChangedEvent, FilterModifiedEvent, FilterOpenedEvent } from 'ag-grid-community/dist/lib/events';
 import 'ag-grid-community/styles/ag-grid.css';

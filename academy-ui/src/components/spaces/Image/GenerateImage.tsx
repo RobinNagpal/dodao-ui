@@ -1,10 +1,11 @@
+'use client';
+
+import { ChatCompletionRequestMessageRoleEnum, ImagesResponse, OpenAiChatCompletionResponse } from '@/graphql/generated/generated-types';
 import Button from '@dodao/web-core/components/core/buttons/Button';
-import ErrorWithAccentBorder from '@dodao/web-core/components/core/errors/ErrorWithAccentBorder';
 import Input from '@dodao/web-core/components/core/input/Input';
 import TextareaAutosize from '@dodao/web-core/components/core/textarea/TextareaAutosize';
-import { ChatCompletionRequestMessageRoleEnum, ImagesResponse, OpenAiChatCompletionResponse } from '@/graphql/generated/generated-types';
-import React, { useState } from 'react';
 import axios from 'axios';
+import React, { useState } from 'react';
 
 const defaultPrompt = `
 Generate an image description (within 100 words) with the theme as TOPIC and image

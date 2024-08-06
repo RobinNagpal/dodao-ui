@@ -19,7 +19,7 @@ import { useRouter } from 'next/navigation';
 import EditByteView from '@/components/bytes/Edit/EditByteView';
 import EditClickableDemo from '@/components/clickableDemos/Create/EditClickableDemo';
 import EditShortVideoView from '@/components/shortVideos/Edit/EditShortVideoView';
-import getBaseUrl from '@/utils/api/getBaseURL';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import axios from 'axios';
 
 interface ByteCollectionCardProps {
