@@ -195,7 +195,7 @@ export function useEditClickableDemo(space: Space, demoId: string | null) {
       }
       const input = getClickableDemoInput();
       const response = await fetch(`/api/clickable-demos/${input.id}`, {
-        method: 'PUT',
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },

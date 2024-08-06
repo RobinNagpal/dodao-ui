@@ -31,7 +31,7 @@ export async function DELETE(req: NextRequest, { params: { demoId } }: { params:
   return NextResponse.json({ status: 200, updatedClickableDemo });
 }
 
-export async function PUT(req: NextRequest, { params }: { params: { demoId: string } }) {
+export async function POST(req: NextRequest, { params }: { params: { demoId: string } }) {
   const { demoId } = params;
   try {
     const args = await req.json();
