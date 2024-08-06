@@ -1,4 +1,4 @@
-import { LoginLogoutButtons } from '@/app/login/loginLogoutButtons';
+import LoginLogoutButtons from '@/app/login/LoginLogoutButtons';
 import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Session } from '@dodao/web-core/types/auth/Session';

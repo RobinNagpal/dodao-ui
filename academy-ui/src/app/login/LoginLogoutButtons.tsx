@@ -7,7 +7,7 @@ import { useAuth } from '@dodao/web-core/ui/auth/useAuth';
 import { useLoginModalContext } from '@dodao/web-core/ui/contexts/LoginModalContext';
 import React from 'react';
 
-export function LoginLogoutButtons(props: { session: Session | null; space: SpaceWithIntegrationsFragment }) {
+export default function LoginLogoutButtons(props: { session: Session | null; space: SpaceWithIntegrationsFragment }) {
   const { logout, active } = useAuth(props.space!.id);
   const { setShowLoginModal } = useLoginModalContext();
 
