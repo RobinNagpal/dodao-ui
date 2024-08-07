@@ -9,7 +9,7 @@ import { useViewByteInModal } from '@/components/bytes/View/useViewByteInModal';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import { ByteDetailsFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
-import PageLoading from '@dodao/web-core/components/core/loaders/PageLoading';
+import TidbitDetailsLoader from '@dodao/web-core/components/core/loaders/TidbitDetailsLoader';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import axios from 'axios';
@@ -126,7 +126,7 @@ export default function ViewByteModal({ space, selectedByteId, viewByteModalClos
               <ByteStepper viewByteHelper={viewByteHelper} byte={viewByteHelper.byteRef} space={space} />
             </>
           ) : (
-            <PageLoading />
+            <TidbitDetailsLoader />
           )}
         </div>
       </div>
