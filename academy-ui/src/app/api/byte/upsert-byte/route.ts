@@ -1,6 +1,6 @@
 import { ByteModel, ByteQuestion, ByteStepItem } from '@/app/api/helpers/deprecatedSchemas/models/byte/ByteModel';
 import { QuestionType } from '@/app/api/helpers/deprecatedSchemas/models/enums';
-import { ByteStep, MutationUpsertByteArgs, UpsertByteInput } from '@/graphql/generated/generated-types';
+import { ByteStep, UpsertByteInput } from '@/graphql/generated/generated-types';
 import { transformByteInputSteps } from '@/app/api/helpers/byte/transformByteInputSteps';
 import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
 import { logError } from '@/app/api/helpers/adapters/errorLogger';
@@ -8,7 +8,9 @@ import { checkEditSpacePermission } from '@/app/api/helpers/space/checkEditSpace
 import { slugify } from '@/app/api/helpers/space/slugify';
 import { prisma } from '@/prisma';
 import { Byte } from '@prisma/client';
+import { ByteCollectionItemType } from '@/app/api/helpers/byteCollection/byteCollectionItemType';
 import { NextRequest, NextResponse } from 'next/server';
+import { v4 as uuidv4 } from 'uuid';
 
 async function transformInput(spaceId: string, message: UpsertByteInput): Promise<ByteModel> {
   // remove the order and add id if needed
@@ -38,7 +40,7 @@ async function transformInput(spaceId: string, message: UpsertByteInput): Promis
 
 export async function POST(req: NextRequest) {
   try {
-    const { spaceId, input }: MutationUpsertByteArgs = await req.json();
+    const { spaceId, input, byteCollectionId } = await req.json();
     const spaceById = await getSpaceById(spaceId);
     await checkEditSpacePermission(spaceById, req);
     const transformedByte = await transformInput(spaceId, input);
@@ -62,7 +64,45 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    return NextResponse.json({ status: 200, upsertedByte });
+    const existingMapping = await prisma.byteCollectionItemMappings.findFirst({
+      where: {
+        itemId: upsertedByte.id,
+        byteCollectionId,
+        itemType: ByteCollectionItemType.Byte,
+      },
+    });
+
+    if (!existingMapping) {
+      const byteCollection = await prisma.byteCollection.findUnique({
+        where: {
+          id: byteCollectionId,
+        },
+        select: {
+          items: true,
+        },
+      });
+      const items = byteCollection?.items;
+      let highestOrderNumber = 0;
+      if (items && items?.length > 0) {
+        const byteItems = items?.filter((item) => item.itemType === ByteCollectionItemType.Byte);
+        const orderNumbers = byteItems.map((item) => item.order);
+        highestOrderNumber = orderNumbers.length > 0 ? Math.max(...orderNumbers) : 0;
+      }
+
+      await prisma.byteCollectionItemMappings.create({
+        data: {
+          id: uuidv4(),
+          itemType: ByteCollectionItemType.Byte,
+          order: highestOrderNumber + 1,
+          itemId: upsertedByte.id,
+          ByteCollection: {
+            connect: { id: byteCollectionId },
+          },
+        },
+      });
+    }
+
+    return NextResponse.json({ upsertedByte }, { status: 200 });
   } catch (e) {
     await logError((e as any)?.response?.data || 'Error in upsertByte', {}, e as any, null, null);
     throw e;

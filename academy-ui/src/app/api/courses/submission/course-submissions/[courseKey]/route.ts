@@ -26,7 +26,7 @@ export async function DELETE(req: NextRequest, { params: { courseKey } }: { para
     },
   });
 
-  return NextResponse.json({ status: 200, body: true });
+  return NextResponse.json({ body: true }, { status: 200 });
 }
 
 export async function POST(req: NextRequest, { params: { courseKey } }: { params: { courseKey: string } }) {
@@ -107,7 +107,7 @@ export async function POST(req: NextRequest, { params: { courseKey } }: { params
       },
     });
 
-    return NextResponse.json({ status: 200, body: { ...savedSubmission, topicSubmissions } });
+    return NextResponse.json({ body: { ...savedSubmission, topicSubmissions } }, { status: 200 });
   } catch (e) {
     console.error((e as any)?.response?.data);
     throw e;

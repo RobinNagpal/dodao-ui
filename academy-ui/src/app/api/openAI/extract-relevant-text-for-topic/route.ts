@@ -6,5 +6,5 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function POST(req: NextRequest) {
   const args: MutationExtractRelevantTextForTopicArgs = await req.json();
   const text = await extractInformationForTopic(args.input.content, args.input.topic);
-  return NextResponse.json({ status: 200, body: { text, tokenCount: getTokenCount(text) } });
+  return NextResponse.json({ body: { text, tokenCount: getTokenCount(text) } }, { status: 200 });
 }

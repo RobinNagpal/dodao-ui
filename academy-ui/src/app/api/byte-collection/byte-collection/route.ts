@@ -5,10 +5,10 @@ import { prisma } from '@/prisma';
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const byteCollectionId = searchParams.get('byteCollectionId');
-  if (!byteCollectionId) return NextResponse.json({ status: 400, body: 'No byteCollectionId provided' });
+  if (!byteCollectionId) return NextResponse.json({ body: 'No byteCollectionId provided' }, { status: 400 });
 
   const spaceId = searchParams.get('spaceId');
-  if (!spaceId) return NextResponse.json({ status: 400, body: 'No spaceId provided' });
+  if (!spaceId) return NextResponse.json({ body: 'No spaceId provided' }, { status: 400 });
 
   const byteCollection = await prisma.byteCollection.findFirstOrThrow({
     where: {
@@ -20,5 +20,5 @@ export async function GET(req: NextRequest) {
     },
   });
 
-  return NextResponse.json({ status: 200, byteCollection: await getByteCollectionWithItem(byteCollection) });
+  return NextResponse.json({ byteCollection: await getByteCollectionWithItem(byteCollection) }, { status: 200 });
 }

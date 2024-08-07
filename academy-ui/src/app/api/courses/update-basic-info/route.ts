@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    return NextResponse.json({ status: 200, course });
+    return NextResponse.json({ course }, { status: 200 });
   } catch (e) {
     console.error((e as any)?.response?.data);
     throw e;

@@ -89,7 +89,7 @@ export async function POST(req: NextRequest) {
       headers: { 'Content-Type': contentType },
     });
 
-    return NextResponse.json({ status: 200, imageUrl: getUploadedImageUrlFromSingedUrl(signedUrl) });
+    return NextResponse.json({ imageUrl: getUploadedImageUrlFromSingedUrl(signedUrl) }, { status: 200 });
   } catch (e) {
     await logError((e as any)?.response?.data || 'Error in createSignedUrlMutation', {}, e as any, null, null);
     throw e;

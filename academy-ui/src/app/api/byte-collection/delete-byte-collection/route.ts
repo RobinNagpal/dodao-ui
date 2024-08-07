@@ -25,5 +25,5 @@ export async function POST(req: NextRequest) {
     },
   });
 
-  return NextResponse.json({ status: 200, byteCollection: updatedByteCollection });
+  return NextResponse.json({ byteCollection: updatedByteCollection }, { status: 200 });
 }
