@@ -54,6 +54,13 @@ export default function EditShortVideoModal({ shortVideoToEdit, spaceId, saveSho
     archive: false,
   });
 
+  async function handleDelete() {
+    const response = await fetch(`/api/short-videos/${shortVideo.id}`, {
+      method: 'DELETE',
+      body: JSON.stringify({ spaceId }),
+    });
+  }
+
   const { showNotification } = useNotificationContext();
   const upsertShortVideo = async () => {
     const errors: Record<keyof ShortVideoInput, any> = {
@@ -182,23 +189,19 @@ export default function EditShortVideoModal({ shortVideoToEdit, spaceId, saveSho
         <Button onClick={() => onCancel()} className="ml-2" variant="contained">
           Cancel
         </Button>
+        {showDeleteModal && (
+          <DeleteConfirmationModal
+            title={'Delete Short Video'}
+            open={showDeleteModal}
+            onClose={() => setShowDeleteModal(false)}
+            onDelete={() => {
+              handleDelete();
+              router.push('/shorts');
+              setShowDeleteModal(false);
+            }}
+          />
+        )}
       </div>
-      {showDeleteModal && (
-        <DeleteConfirmationModal
-          title={'Delete Short Video'}
-          open={showDeleteModal}
-          onClose={() => setShowDeleteModal(false)}
-          onDelete={async () => {
-            await fetch(`/api/short-videos/${shortVideo.id}`, {
-              method: 'DELETE',
-              body: JSON.stringify({ spaceId }),
-            });
-            setShowDeleteModal(false);
-            router.push('/tidbit-collections');
-            router.refresh();
-          }}
-        />
-      )}
     </div>
   );
 }
