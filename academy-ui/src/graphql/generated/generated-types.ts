@@ -152,6 +152,7 @@ export interface ByteCollection {
 
 export interface ByteCollectionByte {
   __typename?: 'ByteCollectionByte';
+  archive: Scalars['Boolean'];
   byteId: Scalars['String'];
   content: Scalars['String'];
   name: Scalars['String'];
@@ -179,6 +180,7 @@ export enum ByteCollectionCategoryStatus {
 
 export interface ByteCollectionDemo {
   __typename?: 'ByteCollectionDemo';
+  archive: Scalars['Boolean'];
   demoId: Scalars['String'];
   excerpt: Scalars['String'];
   steps: Array<ClickableDemoStep>;
@@ -187,6 +189,7 @@ export interface ByteCollectionDemo {
 
 export interface ByteCollectionShort {
   __typename?: 'ByteCollectionShort';
+  archive: Scalars['Boolean'];
   description: Scalars['String'];
   shortId: Scalars['String'];
   title: Scalars['String'];
@@ -3181,14 +3184,14 @@ export type AuthenticateWithUnstoppableMutationVariables = Exact<{
 
 export type AuthenticateWithUnstoppableMutation = { __typename?: 'Mutation', payload: { __typename?: 'JwtResponse', jwt: string } };
 
-export type ByteCollectionFragment = { __typename?: 'ByteCollection', id: string, name: string, description: string, status: string, byteIds: Array<string>, priority: number, videoUrl?: string | null, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string, videoUrl?: string | null }>, demos: Array<{ __typename?: 'ByteCollectionDemo', demoId: string, title: string, excerpt: string, steps: Array<{ __typename?: 'ClickableDemoStep', id: string, url: string, selector: string, tooltipInfo: string, placement: string, order: number }> }>, shorts: Array<{ __typename?: 'ByteCollectionShort', shortId: string, title: string, description: string, videoUrl: string }> };
+export type ByteCollectionFragment = { __typename?: 'ByteCollection', id: string, name: string, description: string, status: string, byteIds: Array<string>, priority: number, videoUrl?: string | null, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string, videoUrl?: string | null, archive: boolean }>, demos: Array<{ __typename?: 'ByteCollectionDemo', demoId: string, title: string, excerpt: string, archive: boolean, steps: Array<{ __typename?: 'ClickableDemoStep', id: string, url: string, selector: string, tooltipInfo: string, placement: string, order: number }> }>, shorts: Array<{ __typename?: 'ByteCollectionShort', shortId: string, title: string, description: string, videoUrl: string, archive: boolean }> };
 
 export type ByteCollectionsQueryVariables = Exact<{
   spaceId: Scalars['String'];
 }>;
 
 
-export type ByteCollectionsQuery = { __typename?: 'Query', byteCollections: Array<{ __typename?: 'ByteCollection', id: string, name: string, description: string, status: string, byteIds: Array<string>, priority: number, videoUrl?: string | null, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string, videoUrl?: string | null }>, demos: Array<{ __typename?: 'ByteCollectionDemo', demoId: string, title: string, excerpt: string, steps: Array<{ __typename?: 'ClickableDemoStep', id: string, url: string, selector: string, tooltipInfo: string, placement: string, order: number }> }>, shorts: Array<{ __typename?: 'ByteCollectionShort', shortId: string, title: string, description: string, videoUrl: string }> }> };
+export type ByteCollectionsQuery = { __typename?: 'Query', byteCollections: Array<{ __typename?: 'ByteCollection', id: string, name: string, description: string, status: string, byteIds: Array<string>, priority: number, videoUrl?: string | null, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string, videoUrl?: string | null, archive: boolean }>, demos: Array<{ __typename?: 'ByteCollectionDemo', demoId: string, title: string, excerpt: string, archive: boolean, steps: Array<{ __typename?: 'ClickableDemoStep', id: string, url: string, selector: string, tooltipInfo: string, placement: string, order: number }> }>, shorts: Array<{ __typename?: 'ByteCollectionShort', shortId: string, title: string, description: string, videoUrl: string, archive: boolean }> }> };
 
 export type ByteCollectionQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -3196,21 +3199,21 @@ export type ByteCollectionQueryVariables = Exact<{
 }>;
 
 
-export type ByteCollectionQuery = { __typename?: 'Query', byteCollection: { __typename?: 'ByteCollection', id: string, name: string, description: string, status: string, byteIds: Array<string>, priority: number, videoUrl?: string | null, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string, videoUrl?: string | null }>, demos: Array<{ __typename?: 'ByteCollectionDemo', demoId: string, title: string, excerpt: string, steps: Array<{ __typename?: 'ClickableDemoStep', id: string, url: string, selector: string, tooltipInfo: string, placement: string, order: number }> }>, shorts: Array<{ __typename?: 'ByteCollectionShort', shortId: string, title: string, description: string, videoUrl: string }> } };
+export type ByteCollectionQuery = { __typename?: 'Query', byteCollection: { __typename?: 'ByteCollection', id: string, name: string, description: string, status: string, byteIds: Array<string>, priority: number, videoUrl?: string | null, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string, videoUrl?: string | null, archive: boolean }>, demos: Array<{ __typename?: 'ByteCollectionDemo', demoId: string, title: string, excerpt: string, archive: boolean, steps: Array<{ __typename?: 'ClickableDemoStep', id: string, url: string, selector: string, tooltipInfo: string, placement: string, order: number }> }>, shorts: Array<{ __typename?: 'ByteCollectionShort', shortId: string, title: string, description: string, videoUrl: string, archive: boolean }> } };
 
 export type CreateByteCollectionMutationVariables = Exact<{
   input: CreateByteCollectionInput;
 }>;
 
 
-export type CreateByteCollectionMutation = { __typename?: 'Mutation', createByteCollection: { __typename?: 'ByteCollection', id: string, name: string, description: string, status: string, byteIds: Array<string>, priority: number, videoUrl?: string | null, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string, videoUrl?: string | null }>, demos: Array<{ __typename?: 'ByteCollectionDemo', demoId: string, title: string, excerpt: string, steps: Array<{ __typename?: 'ClickableDemoStep', id: string, url: string, selector: string, tooltipInfo: string, placement: string, order: number }> }>, shorts: Array<{ __typename?: 'ByteCollectionShort', shortId: string, title: string, description: string, videoUrl: string }> } };
+export type CreateByteCollectionMutation = { __typename?: 'Mutation', createByteCollection: { __typename?: 'ByteCollection', id: string, name: string, description: string, status: string, byteIds: Array<string>, priority: number, videoUrl?: string | null, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string, videoUrl?: string | null, archive: boolean }>, demos: Array<{ __typename?: 'ByteCollectionDemo', demoId: string, title: string, excerpt: string, archive: boolean, steps: Array<{ __typename?: 'ClickableDemoStep', id: string, url: string, selector: string, tooltipInfo: string, placement: string, order: number }> }>, shorts: Array<{ __typename?: 'ByteCollectionShort', shortId: string, title: string, description: string, videoUrl: string, archive: boolean }> } };
 
 export type UpdateByteCollectionMutationVariables = Exact<{
   input: UpdateByteCollectionInput;
 }>;
 
 
-export type UpdateByteCollectionMutation = { __typename?: 'Mutation', updateByteCollection: { __typename?: 'ByteCollection', id: string, name: string, description: string, status: string, byteIds: Array<string>, priority: number, videoUrl?: string | null, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string, videoUrl?: string | null }>, demos: Array<{ __typename?: 'ByteCollectionDemo', demoId: string, title: string, excerpt: string, steps: Array<{ __typename?: 'ClickableDemoStep', id: string, url: string, selector: string, tooltipInfo: string, placement: string, order: number }> }>, shorts: Array<{ __typename?: 'ByteCollectionShort', shortId: string, title: string, description: string, videoUrl: string }> } };
+export type UpdateByteCollectionMutation = { __typename?: 'Mutation', updateByteCollection: { __typename?: 'ByteCollection', id: string, name: string, description: string, status: string, byteIds: Array<string>, priority: number, videoUrl?: string | null, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string, videoUrl?: string | null, archive: boolean }>, demos: Array<{ __typename?: 'ByteCollectionDemo', demoId: string, title: string, excerpt: string, archive: boolean, steps: Array<{ __typename?: 'ClickableDemoStep', id: string, url: string, selector: string, tooltipInfo: string, placement: string, order: number }> }>, shorts: Array<{ __typename?: 'ByteCollectionShort', shortId: string, title: string, description: string, videoUrl: string, archive: boolean }> } };
 
 export type DeleteByteCollectionMutationVariables = Exact<{
   byteCollectionId: Scalars['String'];
@@ -3221,7 +3224,7 @@ export type DeleteByteCollectionMutation = { __typename?: 'Mutation', deleteByte
 
 export type ByteCollectionCategoryFragment = { __typename?: 'ByteCollectionCategory', id: string, name: string, excerpt?: string | null, imageUrl?: string | null, status: string, priority: number, byteCollectionIds: Array<string>, archive: boolean };
 
-export type CategoryWithByteCollectionFragment = { __typename?: 'CategoryWithByteCollection', id: string, name: string, excerpt: string, imageUrl?: string | null, creator: string, status: string, priority: number, archive: boolean, byteCollections: Array<{ __typename?: 'ByteCollection', id: string, name: string, description: string, status: string, byteIds: Array<string>, priority: number, videoUrl?: string | null, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string, videoUrl?: string | null }>, demos: Array<{ __typename?: 'ByteCollectionDemo', demoId: string, title: string, excerpt: string, steps: Array<{ __typename?: 'ClickableDemoStep', id: string, url: string, selector: string, tooltipInfo: string, placement: string, order: number }> }>, shorts: Array<{ __typename?: 'ByteCollectionShort', shortId: string, title: string, description: string, videoUrl: string }> }> };
+export type CategoryWithByteCollectionFragment = { __typename?: 'CategoryWithByteCollection', id: string, name: string, excerpt: string, imageUrl?: string | null, creator: string, status: string, priority: number, archive: boolean, byteCollections: Array<{ __typename?: 'ByteCollection', id: string, name: string, description: string, status: string, byteIds: Array<string>, priority: number, videoUrl?: string | null, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string, videoUrl?: string | null, archive: boolean }>, demos: Array<{ __typename?: 'ByteCollectionDemo', demoId: string, title: string, excerpt: string, archive: boolean, steps: Array<{ __typename?: 'ClickableDemoStep', id: string, url: string, selector: string, tooltipInfo: string, placement: string, order: number }> }>, shorts: Array<{ __typename?: 'ByteCollectionShort', shortId: string, title: string, description: string, videoUrl: string, archive: boolean }> }> };
 
 export type ByteCollectionCategoryWithByteCollectionsQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -3229,7 +3232,7 @@ export type ByteCollectionCategoryWithByteCollectionsQueryVariables = Exact<{
 }>;
 
 
-export type ByteCollectionCategoryWithByteCollectionsQuery = { __typename?: 'Query', byteCollectionCategoryWithByteCollections: { __typename?: 'CategoryWithByteCollection', id: string, name: string, excerpt: string, imageUrl?: string | null, creator: string, status: string, priority: number, archive: boolean, byteCollections: Array<{ __typename?: 'ByteCollection', id: string, name: string, description: string, status: string, byteIds: Array<string>, priority: number, videoUrl?: string | null, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string, videoUrl?: string | null }>, demos: Array<{ __typename?: 'ByteCollectionDemo', demoId: string, title: string, excerpt: string, steps: Array<{ __typename?: 'ClickableDemoStep', id: string, url: string, selector: string, tooltipInfo: string, placement: string, order: number }> }>, shorts: Array<{ __typename?: 'ByteCollectionShort', shortId: string, title: string, description: string, videoUrl: string }> }> } };
+export type ByteCollectionCategoryWithByteCollectionsQuery = { __typename?: 'Query', byteCollectionCategoryWithByteCollections: { __typename?: 'CategoryWithByteCollection', id: string, name: string, excerpt: string, imageUrl?: string | null, creator: string, status: string, priority: number, archive: boolean, byteCollections: Array<{ __typename?: 'ByteCollection', id: string, name: string, description: string, status: string, byteIds: Array<string>, priority: number, videoUrl?: string | null, bytes: Array<{ __typename?: 'ByteCollectionByte', byteId: string, name: string, content: string, videoUrl?: string | null, archive: boolean }>, demos: Array<{ __typename?: 'ByteCollectionDemo', demoId: string, title: string, excerpt: string, archive: boolean, steps: Array<{ __typename?: 'ClickableDemoStep', id: string, url: string, selector: string, tooltipInfo: string, placement: string, order: number }> }>, shorts: Array<{ __typename?: 'ByteCollectionShort', shortId: string, title: string, description: string, videoUrl: string, archive: boolean }> }> } };
 
 export type ByteCollectionCategoriesQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -4649,11 +4652,13 @@ export const ByteCollectionFragmentDoc = gql`
     name
     content
     videoUrl
+    archive
   }
   demos {
     demoId
     title
     excerpt
+    archive
     steps {
       id
       url
@@ -4668,6 +4673,7 @@ export const ByteCollectionFragmentDoc = gql`
     title
     description
     videoUrl
+    archive
   }
 }
     `;
