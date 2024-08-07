@@ -41,5 +41,5 @@ export async function GET(req: NextRequest, { params: { timelineId } }: { params
     },
   });
 
-  return NextResponse.json({ timeline }, { status:200 });
+  return NextResponse.json({ timeline }, { status: 200 });
 }

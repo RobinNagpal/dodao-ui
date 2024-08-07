@@ -4,7 +4,7 @@ import { getByte } from '@/app/api/helpers/byte/getByte';
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const byteId = searchParams.get('byteId');
-  if (!byteId) return NextResponse.json({body: 'No byteId provided' }, { status: 400 });
+  if (!byteId) return NextResponse.json({ body: 'No byteId provided' }, { status: 400 });
 
   const spaceId = searchParams.get('spaceId');
   if (!spaceId) return NextResponse.json({ body: 'No spaceId provided' }, { status: 400 });
