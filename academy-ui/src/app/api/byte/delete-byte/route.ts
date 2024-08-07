@@ -12,6 +12,11 @@ export async function POST(req: NextRequest) {
       id: args.byteId,
     },
   });
+  await prisma.byteCollectionItemMappings.deleteMany({
+    where: {
+      itemId: args.byteId,
+    },
+  });
 
   return NextResponse.json({ status: 200, deleted: !!deleted });
 }

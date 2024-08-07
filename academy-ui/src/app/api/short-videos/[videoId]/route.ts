@@ -110,6 +110,12 @@ export async function DELETE(req: NextRequest, { params: { videoId } }: { params
       data: { archive: true },
     });
 
+    await prisma.byteCollectionItemMappings.deleteMany({
+      where: {
+        itemId: videoId,
+      },
+    });
+
     return NextResponse.json({ status: 200, archivedShortVideo });
   } catch (error) {
     console.log(error);
