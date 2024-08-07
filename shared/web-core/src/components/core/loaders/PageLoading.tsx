@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Line = styled.div`
-  background-color: var(--skin-text);
+  background-color: var(--bg-color);
   border-radius: 0.375rem;
   animation: pulse-fast 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   margin-bottom: 0.75rem;
