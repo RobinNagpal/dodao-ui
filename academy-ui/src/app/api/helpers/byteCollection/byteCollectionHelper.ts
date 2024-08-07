@@ -48,6 +48,7 @@ export async function getByteCollectionWithItem(byteCollection: ByteCollection):
       name: byte.name,
       content: byte.content,
       videoUrl: byte.videoUrl,
+      archive: byte.archive ?? false,
     });
   }
 
@@ -58,6 +59,7 @@ export async function getByteCollectionWithItem(byteCollection: ByteCollection):
       title: demo.title,
       excerpt: demo.excerpt,
       steps: demo.steps,
+      archive: demo.archive ?? false,
     });
   }
 
@@ -68,6 +70,7 @@ export async function getByteCollectionWithItem(byteCollection: ByteCollection):
       title: short.title,
       description: short.description,
       videoUrl: short.videoUrl,
+      archive: short.archive ?? false,
     });
   }
 

@@ -110,9 +110,12 @@ export async function DELETE(req: NextRequest, { params: { videoId } }: { params
       data: { archive: true },
     });
 
-    await prisma.byteCollectionItemMappings.deleteMany({
+    await prisma.byteCollectionItemMappings.updateMany({
       where: {
         itemId: videoId,
+      },
+      data: {
+        archive: true,
       },
     });
 

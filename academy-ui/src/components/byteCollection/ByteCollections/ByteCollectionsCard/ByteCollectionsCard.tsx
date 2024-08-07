@@ -61,6 +61,10 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
   const [editShortModalState, setEditShortModalState] = React.useState<EditShortModalState>({ isVisible: false, shortId: null });
   const threeDotItems = [{ label: 'Edit', key: 'edit' }];
 
+  const nonArchivedBytes = byteCollection.bytes.filter((byte) => !byte.archive);
+  const nonArchivedDemos = byteCollection.demos.filter((demo) => !demo.archive);
+  const nonArchivedShorts = byteCollection.shorts.filter((short) => !short.archive);
+
   async function fetchData(shortId: string) {
     const response = await axios.get(`${getBaseUrl()}/api/short-videos/${shortId}?spaceId=${space.id}`);
     setVideoResponse(response.data);
@@ -129,13 +133,13 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
       </div>
       <div className="flow-root p-2">
         <ul role="list" className="-mb-8">
-          {byteCollection.bytes.map((byte, eventIdx) => {
+          {nonArchivedBytes.map((byte, eventIdx) => {
             const byteViewUrl = `${viewByteBaseUrl}/${byte.byteId}`;
 
             return (
               <li key={byte.byteId}>
                 <div className="relative pb-8">
-                  {eventIdx !== byteCollection.bytes.length - 1 ? (
+                  {eventIdx !== nonArchivedBytes.length - 1 ? (
                     <span className="absolute left-4 top-4 -ml-px h-full w-0.5 bg-gray-200" aria-hidden="true" />
                   ) : null}
                   <div className="relative flex space-x-3">
@@ -171,12 +175,12 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
             );
           })}
 
-          {byteCollection.demos.map((demo, eventIdx) => {
+          {nonArchivedDemos.map((demo, eventIdx) => {
             const demoViewUrl = `clickable-demos/view/${demo.demoId}`;
             return (
               <li key={demo.demoId}>
                 <div className="relative pb-8">
-                  {eventIdx !== byteCollection.demos.length - 1 ? (
+                  {eventIdx !== nonArchivedDemos.length - 1 ? (
                     <span className="absolute left-4 top-4 -ml-px h-full w-0.5 bg-gray-200" aria-hidden="true" />
                   ) : null}
                   <div className="relative flex space-x-3">
@@ -205,12 +209,12 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
             );
           })}
 
-          {byteCollection.shorts.map((short, eventIdx) => {
+          {nonArchivedShorts.map((short, eventIdx) => {
             const shortViewUrl = `shorts/view/${short.shortId}`;
             return (
               <li key={short.shortId}>
                 <div className="relative pb-8">
-                  {eventIdx !== byteCollection.shorts.length - 1 ? (
+                  {eventIdx !== nonArchivedShorts.length - 1 ? (
                     <span className="absolute left-4 top-4 -ml-px h-full w-0.5 bg-gray-200" aria-hidden="true" />
                   ) : null}
                   <div className="relative flex space-x-3">

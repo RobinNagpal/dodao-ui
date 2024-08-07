@@ -28,9 +28,12 @@ export async function DELETE(req: NextRequest, { params: { demoId } }: { params:
       archive: true,
     },
   });
-  await prisma.byteCollectionItemMappings.deleteMany({
+  await prisma.byteCollectionItemMappings.updateMany({
     where: {
       itemId: demoId,
+    },
+    data: {
+      archive: true,
     },
   });
   return NextResponse.json({ status: 200, updatedClickableDemo });
