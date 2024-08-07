@@ -62,7 +62,7 @@ export default function AddByteCollection({ space }: { space: SpaceWithIntegrati
         </Button>
       </div>
 
-      {showAddCollectionModal ? (
+      {showAddCollectionModal && (
         <FullScreenModal open={true} onClose={onClose} title={'Create Tidbit Collection'}>
           <div className="text-left">
             <PageWrapper>
@@ -77,8 +77,6 @@ export default function AddByteCollection({ space }: { space: SpaceWithIntegrati
             </PageWrapper>
           </div>
         </FullScreenModal>
-      ) : (
-        <PageLoading />
       )}
     </>
   );
