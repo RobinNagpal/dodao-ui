@@ -36,10 +36,6 @@ import 'prismjs/components/prism-toml';
 import 'prismjs/components/prism-yaml';
 import { useEffect, useMemo, useState } from 'react';
 import styles from './ByteStepperItemWithProgressBar.module.scss';
-import ImageSkeleton from '../../Skeletons/ImageSkeleton';
-import QuestionSkeleton from '../../Skeletons/QuestionSkeleton';
-import HeadingSkeleton from '../../Skeletons/HeadingSkeleton';
-import TextSkeleton from '../../Skeletons/TextSkeleton';
 
 interface WithCarouselAndProgress1Props {
   byte: ByteDetailsFragment;
@@ -70,17 +66,10 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space, set
   const [incompleteUserInput, setIncompleteUserInput] = useState(false);
   const [questionNotAnswered, setQuestionNotAnswered] = useState(false);
   const [transitionState, setTransitionState] = useState<TransitionState>('enter');
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setLoading(true); // Show skeletons when the step changes
-    const timeoutId = setTimeout(() => {
-      setLoading(false); // Hide skeletons after a delay
-    }, 1000); // Adjust the delay as needed
-
     setTransitionState('enter');
     setTimeout(() => setTransitionState('active'), 100);
-    return () => clearTimeout(timeoutId);
   }, [activeStepOrder]);
 
   const [questionsAnsweredCorrectly, setQuestionsAnsweredCorrectly] = useState(false);
@@ -196,39 +185,27 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space, set
         <div className="flex flex-col flex-grow justify-center align-center">
           {!stepItems.some(isQuestion) && !isShortScreen && step.imageUrl && (
             <div className="flex justify-center align-center ">
-              {!loading ? <img src={step.imageUrl} alt="byte" className={`max-h-[35vh] rounded ${styles.imgContainer}`} /> : <ImageSkeleton />}
+              <img src={step.imageUrl} alt="byte" className={`max-h-[35vh] rounded ${styles.imgContainer}`} />
             </div>
           )}
-          {loading ? (
-            <HeadingSkeleton />
-          ) : (
-            <div className="flex justify-center w-full mt-4">
-              <h1 className={stepClasses.headingClasses}>{step.name || byte.name}</h1>
-            </div>
-          )}
+          <div className="flex justify-center w-full mt-4">
+            <h1 className={stepClasses.headingClasses}>{step.name || byte.name}</h1>
+          </div>
           <div className="mt-4 lg:mt-8 text-left">
-            {loading ? (
-              <TextSkeleton />
-            ) : (
-              <div dangerouslySetInnerHTML={{ __html: stepContents }} className={`markdown-body text-center ` + stepClasses.contentClasses} />
-            )}
+            <div dangerouslySetInnerHTML={{ __html: stepContents }} className={`markdown-body text-center ` + stepClasses.contentClasses} />
             {stepItems.map((stepItem: ByteStepItemFragment, index) => {
               if (isQuestion(stepItem)) {
                 return (
                   <div key={index} className="border-2 rounded-lg p-4 border-transparent ">
-                    {loading ? (
-                      <QuestionSkeleton />
-                    ) : (
-                      <QuestionSection
-                        key={index}
-                        nextButtonClicked={nextButtonClicked}
-                        allQuestionsAnsweredCorrectly={questionsAnsweredCorrectly}
-                        allQuestionsAnswered={questionNotAnswered}
-                        stepItem={stepItem as ByteQuestionFragmentFragment}
-                        stepItemSubmission={viewByteHelper.getStepItemSubmission(step.uuid, stepItem.uuid)}
-                        onSelectAnswer={selectAnswer}
-                      />
-                    )}
+                    <QuestionSection
+                      key={index}
+                      nextButtonClicked={nextButtonClicked}
+                      allQuestionsAnsweredCorrectly={questionsAnsweredCorrectly}
+                      allQuestionsAnswered={questionNotAnswered}
+                      stepItem={stepItem as ByteQuestionFragmentFragment}
+                      stepItemSubmission={viewByteHelper.getStepItemSubmission(step.uuid, stepItem.uuid)}
+                      onSelectAnswer={selectAnswer}
+                    />
                   </div>
                 );
               }
