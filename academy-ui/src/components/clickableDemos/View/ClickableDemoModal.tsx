@@ -1,7 +1,8 @@
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import { ClickableDemoWithSteps, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 
 interface ClickableDemoModalProps {
   clickableDemoWithSteps: ClickableDemoWithSteps;
@@ -11,6 +12,7 @@ interface ClickableDemoModalProps {
 
 function ClickableDemoModal({ clickableDemoWithSteps, space, onClose }: ClickableDemoModalProps) {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true); // Loading state
   let indexCount = 0;
 
   useEffect(() => {
@@ -41,6 +43,7 @@ function ClickableDemoModal({ clickableDemoWithSteps, space, onClose }: Clickabl
       const iframeNotPresent = !iframeArrElement;
       if (iframeNotPresent) return; // Ensure the iframe ref is set
 
+      setIsLoading(false); // Hide loader when the iframe is loaded
       const contentWindow = iframeArrElement.contentWindow;
 
       // Set the CSS variables in the iframe
@@ -119,11 +122,13 @@ function ClickableDemoModal({ clickableDemoWithSteps, space, onClose }: Clickabl
       }
       window.removeEventListener('message', receiveMessage);
     };
-  });
+  }, [clickableDemoWithSteps.steps, router, space]);
 
   return (
     <FullScreenModal open={true} onClose={onClose} title={clickableDemoWithSteps.title}>
-      <div id="iframe-container" style={{ position: 'relative', width: '100%', height: '93vh' }}></div>
+      <div id="iframe-container" className="relative w-full h-[93vh]">
+        {isLoading && <FullPageLoader></FullPageLoader>}
+      </div>
     </FullScreenModal>
   );
 }
