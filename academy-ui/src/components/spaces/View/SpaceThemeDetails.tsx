@@ -39,22 +39,26 @@ export default function SpaceThemeDetails({ space }: SpaceDetailsProps) {
         byteId: 'centralized-vs-decentralized-exchange-uniswap_1',
         name: 'Centralized vs Decentralized Exchange',
         content: 'Centralized vs Decentralized Exchanges and AMMs',
+        archive: false,
         __typename: 'ByteCollectionByte',
       },
       {
         byteId: 'amm-benefits-uniswap',
         name: 'AMM Benefits',
         content: 'Benefits of Automated Market Maker over Order Book',
+        archive: false,
         __typename: 'ByteCollectionByte',
       },
       {
         byteId: 'centralized-vs-decentralized-exchange-uniswap_2',
         name: 'Centralized vs Decentralized Exchange',
         content: 'Centralized vs Decentralized Exchanges and AMMs',
+        archive: false,
         __typename: 'ByteCollectionByte',
       },
     ],
     demos: [],
+    shorts: [],
     __typename: 'ByteCollection',
   };
 

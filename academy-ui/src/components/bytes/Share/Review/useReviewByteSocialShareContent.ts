@@ -1,6 +1,6 @@
 import { ByteLinkedinPdfContent, ByteLinkedinPdfContentStep, ByteSocialShare } from '@/graphql/generated/generated-types';
 import { rewriteToCharacterLengthUsingAi, rewriteToWordsCountUsingAi } from '@/utils/ai/rewriteUsingAi';
-import getBaseUrl from '@/utils/api/getBaseURL';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Byte } from '@prisma/client';
 import axios from 'axios';
 import { useState } from 'react';

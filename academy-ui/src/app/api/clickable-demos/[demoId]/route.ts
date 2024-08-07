@@ -28,12 +28,16 @@ export async function DELETE(req: NextRequest, { params: { demoId } }: { params:
       archive: true,
     },
   });
-  await prisma.byteCollectionItemMappings.deleteMany({
+
+  await prisma.byteCollectionItemMappings.updateMany({
     where: {
       itemId: demoId,
     },
+    data: {
+      archive: true,
+    },
   });
-  return NextResponse.json({ updatedClickableDemo }, { status: 200 });
+  return NextResponse.json({ status: 200, updatedClickableDemo });
 }
 
 export async function POST(req: NextRequest, { params }: { params: { demoId: string } }) {
@@ -102,7 +106,6 @@ export async function POST(req: NextRequest, { params }: { params: { demoId: str
         },
       });
     }
-
     return NextResponse.json({ clickableDemo }, { status: 200 });
   } catch (error) {
     console.error(error);

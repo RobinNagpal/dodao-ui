@@ -7,9 +7,20 @@ export async function POST(req: NextRequest) {
   const args: MutationDeleteByteArgs = await req.json();
   validateSuperAdmin(req);
 
-  const deleted = await prisma.byte.delete({
+  const deleted = await prisma.byte.update({
     where: {
       id: args.byteId,
+    },
+    data: {
+      archive: true,
+    },
+  });
+  await prisma.byteCollectionItemMappings.updateMany({
+    where: {
+      itemId: args.byteId,
+    },
+    data: {
+      archive: true,
     },
   });
 

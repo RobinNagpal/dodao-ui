@@ -11,11 +11,13 @@ fragment ByteCollection on ByteCollection {
     name
     content
     videoUrl
+    archive
   }
   demos {
     demoId
     title
     excerpt
+    archive
     steps {
       id
       url
@@ -24,6 +26,13 @@ fragment ByteCollection on ByteCollection {
       placement
       order
     }
+  }
+  shorts {
+    shortId
+    title
+    description
+    videoUrl
+    archive
   }
 }
 

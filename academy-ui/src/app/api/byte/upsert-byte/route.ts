@@ -101,7 +101,6 @@ export async function POST(req: NextRequest) {
         },
       });
     }
-
     return NextResponse.json({ upsertedByte }, { status: 200 });
   } catch (e) {
     await logError((e as any)?.response?.data || 'Error in upsertByte', {}, e as any, null, null);

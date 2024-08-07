@@ -1,10 +1,10 @@
 import ClickableDemosSummaryCard from '@/components/clickableDemos/ClickableDemos/ClickableDemosSummaryCard';
 import NoClickableDemos from '@/components/clickableDemos/ClickableDemos/NoClickableDemos';
 import { ClickableDemo } from '@/graphql/generated/generated-types';
-import getBaseUrl from '@/utils/api/getBaseURL';
 import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
 import { Grid4Cols } from '@dodao/web-core/components/core/grids/Grid4Cols';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import axios from 'axios';
 import React from 'react';
 

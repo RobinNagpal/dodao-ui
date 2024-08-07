@@ -123,6 +123,7 @@ type ByteCollection {
   id: ID!
   name: String!
   priority: Int!
+  shorts: [ByteCollectionShort!]!
   status: String!
   videoUrl: String
 }
@@ -132,6 +133,7 @@ type ByteCollectionByte {
   content: String!
   name: String!
   videoUrl: String
+  archive: Boolean!
 }
 
 type ByteCollectionCategory {
@@ -157,6 +159,15 @@ type ByteCollectionDemo {
   excerpt: String!
   steps: [ClickableDemoStep!]!
   title: String!
+  archive: Boolean!
+}
+
+type ByteCollectionShort {
+  description: String!
+  shortId: String!
+  title: String!
+  videoUrl: String!
+  archive: Boolean!
 }
 
 type ByteFeedback {

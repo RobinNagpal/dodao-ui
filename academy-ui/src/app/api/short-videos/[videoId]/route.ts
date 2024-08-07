@@ -90,7 +90,6 @@ export async function POST(req: NextRequest, { params: { videoId } }: { params: 
         },
       });
     }
-
     return NextResponse.json({ upsertedShortVideo }, { status: 200 });
   } catch (error) {
     console.log(error);
@@ -110,13 +109,16 @@ export async function DELETE(req: NextRequest, { params: { videoId } }: { params
       data: { archive: true },
     });
 
-    await prisma.byteCollectionItemMappings.deleteMany({
+    await prisma.byteCollectionItemMappings.updateMany({
       where: {
         itemId: videoId,
       },
+      data: {
+        archive: true,
+      },
     });
 
-    return NextResponse.json({ archivedShortVideo }, { status: 200 });
+    return NextResponse.json({ status: 200, archivedShortVideo });
   } catch (error) {
     console.log(error);
   }
