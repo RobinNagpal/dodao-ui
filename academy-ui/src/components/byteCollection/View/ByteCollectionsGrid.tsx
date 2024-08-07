@@ -18,7 +18,7 @@ export default function ByteCollectionsGrid({
 }) {
   return (
     <>
-      {!byteCollections?.length && <NoByteCollections spaceName={space.name} />}
+      {!byteCollections?.length && <NoByteCollections space={space} isAdmin={isAdmin} />}
       {!!byteCollections?.length && (
         <Grid2Cols>
           {byteCollections?.map((byteCollection, i) => (

@@ -1,10 +1,9 @@
 'use client';
 
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
-import { ShortVideo } from '@/graphql/generated/generated-types';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
-// import { videos } from '../sampleVideos';
-import React, { useRef, useState } from 'react';
+import { ShortVideo } from '@/graphql/generated/generated-types';
+import React, { useRef, useState, useEffect } from 'react';
 import SwiperCore from 'swiper';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -24,6 +23,9 @@ export default function ViewShortVideoModal({ initialSlide, videos, onClose, onS
   const swiperRef = useRef<SwiperCore>(null);
   const videoRefs = useRef(videos.map(() => React.createRef<HTMLVideoElement>()));
   const [currentSlideIndex, setCurrentSlideIndex] = useState(initialSlide);
+  useEffect(() => {
+    setCurrentSlideIndex(initialSlide);
+  }, [initialSlide]);
 
   const handleSlideChange = (swiper: SwiperCore) => {
     setCurrentSlideIndex(swiper.realIndex);

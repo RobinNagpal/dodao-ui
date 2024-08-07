@@ -194,23 +194,11 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, onUpsert: (byt
         body: JSON.stringify({
           spaceId: space.id,
           input: getByteInputFn(byte),
+          byteCollectionId: byteCollection.id,
         }),
       });
 
       const { upsertedByte } = await upsertResponse.json();
-
-      const mappingResponse = await fetch('/api/mapping/upsertByteMapping', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          byteCollectionId: byteCollection.id,
-          itemId: upsertedByte.id,
-          itemType: 'Byte',
-          order: byteCollection.bytes.length + 1,
-        }),
-      });
 
       return upsertedByte;
     });

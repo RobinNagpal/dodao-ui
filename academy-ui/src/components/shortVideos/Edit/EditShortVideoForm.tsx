@@ -5,6 +5,7 @@ import Button from '@dodao/web-core/components/core/buttons/Button';
 import Input from '@dodao/web-core/components/core/input/Input';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { v4 } from 'uuid';
 
 export interface EditShortVideoModalProps {
@@ -12,7 +13,7 @@ export interface EditShortVideoModalProps {
   spaceId: string;
   saveShortVideoFn: (video: ShortVideoInput) => Promise<void>;
   onCancel: () => void;
-  onAfterSave: () => void;
+  onAfterSave?: () => void;
 }
 
 export default function EditShortVideoModal({ shortVideoToEdit, spaceId, saveShortVideoFn, onCancel, onAfterSave }: EditShortVideoModalProps) {
@@ -35,6 +36,7 @@ export default function EditShortVideoModal({ shortVideoToEdit, spaceId, saveSho
     setShortVideo((prev) => ({ ...prev, [field]: value }));
   };
 
+  const router = useRouter();
   const [shortVideoUpserting, setShortVideoUpserting] = useState(false);
 
   const [shortVideoErrors, setshortVideoErrors] = useState<Record<keyof ShortVideoInput, any>>({
@@ -88,12 +90,15 @@ export default function EditShortVideoModal({ shortVideoToEdit, spaceId, saveSho
     try {
       await saveShortVideoFn(shortVideo);
       showNotification({ message: 'Short video saved', type: 'success' });
+      router.push(`/shorts/view/${shortVideo?.id}`);
     } catch (e) {
       showNotification({ message: 'Something went wrong', type: 'error' });
     }
 
     setShortVideoUpserting(false);
-    onAfterSave();
+    if (onAfterSave) {
+      onAfterSave();
+    }
   };
 
   return (
