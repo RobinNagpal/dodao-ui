@@ -145,8 +145,8 @@ function EditClickableDemo({ space, demoId, byteCollection }: EditClickableDemoP
               let screenshotFile = base64ToFile(dataUrl, filename);
               let screenshotURL: string | undefined;
               const objectId = (space?.name && slugify(space?.name)) || space?.id || 'new-space';
-              // screenshotURL = await uploadToS3AndReturnScreenshotUrl(screenshotFile, objectId.replace(/[^a-z0-9]/gi, '_'));
-              step.screenImgUrl = dataUrl;
+              screenshotURL = await uploadToS3AndReturnScreenshotUrl(screenshotFile, objectId.replace(/[^a-z0-9]/gi, '_'));
+              step.screenImgUrl = screenshotURL;
               showNotification({ message: `Image generated for step ${stepNo} successfully`, type: 'success' });
               stepNo += 1;
             }
