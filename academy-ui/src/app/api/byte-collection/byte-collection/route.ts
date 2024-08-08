@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getByteCollectionWithItem } from '@/app/api/helpers/byteCollection/byteCollectionHelper';
+import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { prisma } from '@/prisma';
 
-export async function GET(req: NextRequest) {
+async function getHandler(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const byteCollectionId = searchParams.get('byteCollectionId');
   if (!byteCollectionId) return NextResponse.json({ status: 400, body: 'No byteCollectionId provided' });
@@ -22,3 +23,5 @@ export async function GET(req: NextRequest) {
 
   return NextResponse.json({ status: 200, byteCollection: await getByteCollectionWithItem(byteCollection) });
 }
+
+export const GET = withErrorHandling(getHandler);

@@ -1,7 +1,8 @@
+import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/prisma';
 
-export async function GET(req: NextRequest) {
+async function getHandler(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const spaceId = searchParams.get('spaceId');
   if (!spaceId) return NextResponse.json({ status: 400, message: 'Space ID is required' });
@@ -14,3 +15,5 @@ export async function GET(req: NextRequest) {
 
   return NextResponse.json({ status: 200, courses });
 }
+
+export const GET = withErrorHandling(getHandler);

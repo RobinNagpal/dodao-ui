@@ -1,11 +1,11 @@
-import { wrapToCatchError } from '@/app/api/helpers/response/apiResponseWrapper';
+import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { prisma } from '@/prisma';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../[...nextauth]/authOptions';
 import { NextResponse } from 'next/server';
 
-export async function GET() {
+async function getHandler() {
   const session: Session | null = await getServerSession(authOptions);
   if (!session) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -29,7 +29,7 @@ export async function GET() {
   }
 }
 
-export async function PUT(request: Request) {
+async function putHandler(request: Request) {
   const session: Session | null = await getServerSession(authOptions);
   if (!session) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -82,4 +82,6 @@ async function POST1(request: Request) {
   }
 }
 
-export const POST = wrapToCatchError((request: Request) => POST1(request));
+export const POST = withErrorHandling(POST1);
+export const GET = withErrorHandling(getHandler);
+export const PUT = withErrorHandling(putHandler);

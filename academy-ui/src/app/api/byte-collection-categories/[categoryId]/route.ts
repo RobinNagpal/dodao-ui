@@ -7,9 +7,10 @@ import { getByteCollectionWithItem } from '@/app/api/helpers/byteCollection/byte
 import { prisma } from '@/prisma';
 import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
 import { checkEditSpacePermission, checkSpaceIdAndSpaceInEntityAreSame } from '@/app/api/helpers/space/checkEditSpacePermission';
+import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET(req: NextRequest, { params: { categoryId } }: { params: { categoryId: string } }) {
+async function getHandler(req: NextRequest, { params: { categoryId } }: { params: { categoryId: string } }) {
   const { searchParams } = new URL(req.url);
   const spaceId = searchParams.get('spaceId');
   if (!spaceId) return NextResponse.json({ status: 400, message: 'Space ID is required' });
@@ -52,7 +53,7 @@ export async function GET(req: NextRequest, { params: { categoryId } }: { params
   });
 }
 
-export async function POST(req: NextRequest, { params: { categoryId } }: { params: { categoryId: string } }) {
+async function postHandler(req: NextRequest, { params: { categoryId } }: { params: { categoryId: string } }) {
   const args: MutationUpsertByteCollectionCategoryArgs = await req.json();
   const spaceById = await getSpaceById(args.input.spaceId);
 
@@ -90,7 +91,7 @@ export async function POST(req: NextRequest, { params: { categoryId } }: { param
   return NextResponse.json({ status: 200, byteCollectionCategory });
 }
 
-export async function DELETE(req: NextRequest, { params: { categoryId } }: { params: { categoryId: string } }) {
+async function deleteHandler(req: NextRequest, { params: { categoryId } }: { params: { categoryId: string } }) {
   const args: QueryByteCollectionCategoryWithByteCollectionsArgs = await req.json();
   const spaceById = await getSpaceById(args.spaceId);
 
@@ -112,3 +113,7 @@ export async function DELETE(req: NextRequest, { params: { categoryId } }: { par
     throw e;
   }
 }
+
+export const GET = withErrorHandling(getHandler);
+export const POST = withErrorHandling(postHandler);
+export const DELETE = withErrorHandling(deleteHandler);

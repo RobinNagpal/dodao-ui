@@ -7,13 +7,14 @@ import {
 } from '@/graphql/generated/generated-types';
 import { verifyCourseEditPermissions } from '@/app/api/helpers/permissions/verifyCourseEditPermissions';
 import { TopicSummaryModel } from '@/app/api/helpers/deprecatedSchemas/models/course/TopicSummaryModel';
+import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { MoveCourseItemDirection } from '@/app/api/helpers/deprecatedSchemas/models/enums';
 import { getRandomInt } from '@/app/api/helpers/space/getRandomInt';
 import { slugify } from '@/app/api/helpers/space/slugify';
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/prisma';
 
-export async function POST(req: NextRequest, { params: { courseKey, topicKey } }: { params: { courseKey: string; topicKey: string } }) {
+async function postHandler(req: NextRequest, { params: { courseKey, topicKey } }: { params: { courseKey: string; topicKey: string } }) {
   try {
     const args: MutationAddTopicSummaryArgs = await req.json();
     await verifyCourseEditPermissions(req, args.spaceId, courseKey);
@@ -59,7 +60,7 @@ export async function POST(req: NextRequest, { params: { courseKey, topicKey } }
   }
 }
 
-export async function DELETE(req: NextRequest, { params: { courseKey, topicKey } }: { params: { courseKey: string; topicKey: string } }) {
+async function deleteHandler(req: NextRequest, { params: { courseKey, topicKey } }: { params: { courseKey: string; topicKey: string } }) {
   try {
     const args: MutationDeleteTopicSummaryArgs = await req.json();
     await verifyCourseEditPermissions(req, args.spaceId, courseKey);
@@ -93,7 +94,7 @@ export async function DELETE(req: NextRequest, { params: { courseKey, topicKey }
   }
 }
 
-export async function PUT(req: NextRequest, { params: { courseKey, topicKey } }: { params: { courseKey: string; topicKey: string } }) {
+async function putHander(req: NextRequest, { params: { courseKey, topicKey } }: { params: { courseKey: string; topicKey: string } }) {
   try {
     const args: MutationUpdateTopicSummaryArgs = await req.json();
     await verifyCourseEditPermissions(req, args.spaceId, courseKey);
@@ -136,7 +137,7 @@ export async function PUT(req: NextRequest, { params: { courseKey, topicKey } }:
   }
 }
 
-export async function PATCH(req: NextRequest, { params: { courseKey, topicKey } }: { params: { courseKey: string; topicKey: string } }) {
+async function patchHandler(req: NextRequest, { params: { courseKey, topicKey } }: { params: { courseKey: string; topicKey: string } }) {
   try {
     const args: MutationMoveTopicSummaryArgs = await req.json();
     await verifyCourseEditPermissions(req, args.spaceId, courseKey);
@@ -194,3 +195,8 @@ function doMoveSummaries(summaries: TopicSummaryModel[], input: MoveTopicSummary
   }
   return summaries;
 }
+
+export const POST = withErrorHandling(postHandler);
+export const DELETE = withErrorHandling(deleteHandler);
+export const PUT = withErrorHandling(putHander);
+export const PATCH = withErrorHandling(patchHandler);

@@ -3,9 +3,10 @@ import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
 import { logError } from '@/app/api/helpers/adapters/errorLogger';
 import { presignedUrlCreator } from '@/app/api/helpers/s3/getPresignedUrl';
 import { checkEditSpacePermission } from '@/app/api/helpers/space/checkEditSpacePermission';
+import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST(req: NextRequest) {
+async function postHandler(req: NextRequest) {
   const args: MutationCreateSignedUrlArgs = await req.json();
   try {
     const spaceById = await getSpaceById(args.spaceId);
@@ -21,3 +22,5 @@ export async function POST(req: NextRequest) {
     throw e;
   }
 }
+
+export const POST = withErrorHandling(postHandler);

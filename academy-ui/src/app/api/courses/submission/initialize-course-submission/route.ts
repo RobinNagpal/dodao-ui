@@ -1,10 +1,11 @@
 import { prisma } from '@/prisma';
 import { MutationInitializeGitCourseSubmissionArgs } from '@/graphql/generated/generated-types';
 import { verifyJwtForRequest } from '@/app/api/helpers/permissions/verifyJwtForRequest';
+import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { v4 as uuid } from 'uuid';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST(req: NextRequest) {
+async function postHandler(req: NextRequest) {
   try {
     const args: MutationInitializeGitCourseSubmissionArgs = await req.json();
     const spaceId = args.spaceId;
@@ -57,3 +58,5 @@ export async function POST(req: NextRequest) {
     throw e;
   }
 }
+
+export const POST = withErrorHandling(postHandler);

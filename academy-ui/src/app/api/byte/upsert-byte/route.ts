@@ -11,6 +11,7 @@ import { Byte } from '@prisma/client';
 import { ByteCollectionItemType } from '@/app/api/helpers/byteCollection/byteCollectionItemType';
 import { NextRequest, NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
+import { withErrorHandling } from '../../helpers/middlewares/withErrorHandling';
 
 async function transformInput(spaceId: string, message: UpsertByteInput): Promise<ByteModel> {
   // remove the order and add id if needed
@@ -38,73 +39,71 @@ async function transformInput(spaceId: string, message: UpsertByteInput): Promis
   return byteModel;
 }
 
-export async function POST(req: NextRequest) {
-  try {
-    const { spaceId, input, byteCollectionId } = await req.json();
-    const spaceById = await getSpaceById(spaceId);
-    await checkEditSpacePermission(spaceById, req);
-    const transformedByte = await transformInput(spaceId, input);
-    const steps: ByteStep[] = transformByteInputSteps(input);
-    const id = input.id || slugify(input.name);
-    const upsertedByte: Byte = await prisma.byte.upsert({
-      create: {
-        ...transformedByte,
-        steps: steps,
-        id: id,
-        spaceId: spaceId,
-        completionScreen: input.completionScreen || undefined,
-      },
-      update: {
-        ...input,
-        steps: steps,
-        completionScreen: input.completionScreen || undefined,
-      },
+async function post_handler(req: NextRequest) {
+  const { spaceId, input, byteCollectionId } = await req.json();
+  const spaceById = await getSpaceById(spaceId);
+  await checkEditSpacePermission(spaceById, req);
+  const transformedByte = await transformInput(spaceId, input);
+  const steps: ByteStep[] = transformByteInputSteps(input);
+  const id = input.id || slugify(input.name);
+  const upsertedByte: Byte = await prisma.byte.upsert({
+    create: {
+      ...transformedByte,
+      steps: steps,
+      id: id,
+      spaceId: spaceId,
+      completionScreen: input.completionScreen || undefined,
+    },
+    update: {
+      ...input,
+      steps: steps,
+      completionScreen: input.completionScreen || undefined,
+    },
+    where: {
+      id: id,
+    },
+  });
+
+  const existingMapping = await prisma.byteCollectionItemMappings.findFirst({
+    where: {
+      itemId: upsertedByte.id,
+      byteCollectionId,
+      itemType: ByteCollectionItemType.Byte,
+    },
+  });
+
+  if (!existingMapping) {
+    const byteCollection = await prisma.byteCollection.findUnique({
       where: {
-        id: id,
+        id: byteCollectionId,
+      },
+      select: {
+        items: true,
       },
     });
-
-    const existingMapping = await prisma.byteCollectionItemMappings.findFirst({
-      where: {
-        itemId: upsertedByte.id,
-        byteCollectionId,
-        itemType: ByteCollectionItemType.Byte,
-      },
-    });
-
-    if (!existingMapping) {
-      const byteCollection = await prisma.byteCollection.findUnique({
-        where: {
-          id: byteCollectionId,
-        },
-        select: {
-          items: true,
-        },
-      });
-      const items = byteCollection?.items;
-      let highestOrderNumber = 0;
-      if (items && items?.length > 0) {
-        const byteItems = items?.filter((item) => item.itemType === ByteCollectionItemType.Byte);
-        const orderNumbers = byteItems.map((item) => item.order);
-        highestOrderNumber = orderNumbers.length > 0 ? Math.max(...orderNumbers) : 0;
-      }
-
-      await prisma.byteCollectionItemMappings.create({
-        data: {
-          id: uuidv4(),
-          itemType: ByteCollectionItemType.Byte,
-          order: highestOrderNumber + 1,
-          itemId: upsertedByte.id,
-          ByteCollection: {
-            connect: { id: byteCollectionId },
-          },
-        },
-      });
+    const items = byteCollection?.items;
+    let highestOrderNumber = 0;
+    if (items && items?.length > 0) {
+      const byteItems = items?.filter((item) => item.itemType === ByteCollectionItemType.Byte);
+      const orderNumbers = byteItems.map((item) => item.order);
+      highestOrderNumber = orderNumbers.length > 0 ? Math.max(...orderNumbers) : 0;
     }
 
-    return NextResponse.json({ status: 200, upsertedByte });
-  } catch (e) {
-    await logError((e as any)?.response?.data || 'Error in upsertByte', {}, e as any, null, null);
-    throw e;
+    await prisma.byteCollectionItemMappings.create({
+      data: {
+        id: uuidv4(),
+        itemType: ByteCollectionItemType.Byte,
+        order: highestOrderNumber + 1,
+        itemId: upsertedByte.id,
+        ByteCollection: {
+          connect: { id: byteCollectionId },
+        },
+      },
+    });
   }
+
+  return NextResponse.json({ status: 200, upsertedByte });
 }
+
+/// Wrapping handle in withErrorHandling
+export const POST = withErrorHandling(post_handler);

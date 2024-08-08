@@ -1,9 +1,10 @@
 import { MutationAskCompletionAiArgs } from '@/graphql/generated/generated-types';
+import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { NextRequest, NextResponse } from 'next/server';
 import OpenAI from 'openai';
 import { CompletionCreateParamsNonStreaming } from 'openai/resources';
 
-export async function POST(req: NextRequest) {
+async function postHandler(req: NextRequest) {
   const args: MutationAskCompletionAiArgs = await req.json();
   const createCompletionRequest: CompletionCreateParamsNonStreaming = {
     model: 'gpt-3.5-turbo-instruct',
@@ -23,3 +24,5 @@ export async function POST(req: NextRequest) {
   const completion = await openai.completions.create(createCompletionRequest, { timeout: 5 * 60 * 1000 });
   return NextResponse.json({ status: 200, completion });
 }
+
+export const POST = withErrorHandling(postHandler);

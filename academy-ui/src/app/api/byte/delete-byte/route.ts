@@ -1,9 +1,10 @@
 import { MutationDeleteByteArgs } from '@/graphql/generated/generated-types';
 import { validateSuperAdmin } from '@/app/api/helpers/space/isSuperAdmin';
+import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { prisma } from '@/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST(req: NextRequest) {
+async function postHandler(req: NextRequest) {
   const args: MutationDeleteByteArgs = await req.json();
   validateSuperAdmin(req);
 
@@ -26,3 +27,5 @@ export async function POST(req: NextRequest) {
 
   return NextResponse.json({ status: 200, deleted: !!deleted });
 }
+
+export const POST = withErrorHandling(postHandler);

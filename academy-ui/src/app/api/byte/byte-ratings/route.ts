@@ -1,8 +1,9 @@
 import { QueryByteRatingsArgs } from '@/graphql/generated/generated-types';
+import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { prisma } from '@/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET(req: NextRequest) {
+async function getHandler(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const args: QueryByteRatingsArgs = {
     byteId: searchParams.get('byteId')!,
@@ -26,3 +27,5 @@ export async function GET(req: NextRequest) {
 
   return NextResponse.json({ status: 200, byteRatings: ratings });
 }
+
+export const GET = withErrorHandling(getHandler);

@@ -2,10 +2,11 @@ import { MutationUpdateByteCollectionArgs } from '@/graphql/generated/generated-
 import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
 import { checkEditSpacePermission } from '@/app/api/helpers/space/checkEditSpacePermission';
 import { getByteCollectionWithItem } from '@/app/api/helpers/byteCollection/byteCollectionHelper';
+import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { prisma } from '@/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST(req: NextRequest) {
+async function postHandler(req: NextRequest) {
   const args: MutationUpdateByteCollectionArgs = await req.json();
   const byteCollection = await prisma.byteCollection.findUniqueOrThrow({
     where: {
@@ -36,3 +37,5 @@ export async function POST(req: NextRequest) {
 
   return NextResponse.json({ status: 200, byteCollection: byteCollectionsWithBytes });
 }
+
+export const POST = withErrorHandling(postHandler);

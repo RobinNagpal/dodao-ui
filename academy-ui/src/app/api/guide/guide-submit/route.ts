@@ -9,6 +9,7 @@ import {
 import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
 import { getDecodedJwtFromContext } from '@/app/api/helpers/permissions/getJwtFromContext';
 import { SubmissionItemInfo, UserGuideQuestionSubmission, UserGuideStepSubmission } from '@/app/api/helpers/types/guideSubmisstion';
+import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { prisma } from '@/prisma';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -139,7 +140,7 @@ async function doSubmitGuide(
   return { ...submission };
 }
 
-export async function GET(req: NextRequest) {
+async function getHandler(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const filters = searchParams.get('filters');
   const spaceId = searchParams.get('spaceId');
@@ -170,7 +171,7 @@ export async function GET(req: NextRequest) {
   return NextResponse.json({ status: 200, guideSubmissions: submissions });
 }
 
-export async function POST(req: NextRequest) {
+async function postHandler(req: NextRequest) {
   const guideInput = (await req.json()) as MutationSubmitGuideArgs;
   const space = await getSpaceById(guideInput.submissionInput.space);
   const decodedJWT = await getDecodedJwtFromContext(req);
@@ -184,3 +185,6 @@ export async function POST(req: NextRequest) {
 
   return NextResponse.json({ status: 200, submitGuide });
 }
+
+export const GET = withErrorHandling(getHandler);
+export const POST = withErrorHandling(postHandler);

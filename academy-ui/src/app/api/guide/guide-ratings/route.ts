@@ -1,7 +1,8 @@
 import { prisma } from '@/prisma';
 import { NextRequest, NextResponse } from 'next/server';
+import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 
-export async function GET(req: NextRequest) {
+async function getHandler(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const guideUuid = searchParams.get('guideUuid');
   const spaceId = searchParams.get('spaceId');
@@ -24,3 +25,5 @@ export async function GET(req: NextRequest) {
 
   return NextResponse.json({ status: 200, guideRatings });
 }
+
+export const GET = withErrorHandling(getHandler);

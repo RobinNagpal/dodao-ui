@@ -8,11 +8,12 @@ import {
 import { verifyCourseEditPermissions } from '@/app/api/helpers/permissions/verifyCourseEditPermissions';
 import { TopicReadingModel } from '@/app/api/helpers/deprecatedSchemas/models/course/TopicReadingModel';
 import { MoveCourseItemDirection } from '@/app/api/helpers/deprecatedSchemas/models/enums';
+import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { v4 as uuidv4 } from 'uuid';
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/prisma';
 
-export async function POST(req: NextRequest, { params: { courseKey, topicKey } }: { params: { courseKey: string; topicKey: string } }) {
+async function postHandler(req: NextRequest, { params: { courseKey, topicKey } }: { params: { courseKey: string; topicKey: string } }) {
   try {
     const args: MutationAddTopicVideoArgs = await req.json();
     await verifyCourseEditPermissions(req, args.spaceId, courseKey);
@@ -56,7 +57,7 @@ export async function POST(req: NextRequest, { params: { courseKey, topicKey } }
   }
 }
 
-export async function DELETE(req: NextRequest, { params: { courseKey, topicKey } }: { params: { courseKey: string; topicKey: string } }) {
+async function deleteHandler(req: NextRequest, { params: { courseKey, topicKey } }: { params: { courseKey: string; topicKey: string } }) {
   try {
     const args: MutationDeleteTopicVideoArgs = await req.json();
     await verifyCourseEditPermissions(req, args.spaceId, courseKey);
@@ -90,7 +91,7 @@ export async function DELETE(req: NextRequest, { params: { courseKey, topicKey }
   }
 }
 
-export async function PUT(req: NextRequest, { params: { courseKey, topicKey } }: { params: { courseKey: string; topicKey: string } }) {
+async function putHandler(req: NextRequest, { params: { courseKey, topicKey } }: { params: { courseKey: string; topicKey: string } }) {
   try {
     const args: MutationUpdateTopicVideoArgs = await req.json();
     await verifyCourseEditPermissions(req, args.spaceId, courseKey);
@@ -136,7 +137,7 @@ export async function PUT(req: NextRequest, { params: { courseKey, topicKey } }:
   }
 }
 
-export async function PATCH(req: NextRequest, { params: { courseKey, topicKey } }: { params: { courseKey: string; topicKey: string } }) {
+async function patchHandler(req: NextRequest, { params: { courseKey, topicKey } }: { params: { courseKey: string; topicKey: string } }) {
   try {
     const args: MutationMoveTopicVideoArgs = await req.json();
     await verifyCourseEditPermissions(req, args.spaceId, courseKey);
@@ -194,3 +195,8 @@ function doMoveReadings(readings: TopicReadingModel[], input: MoveTopicVideoInpu
   }
   return readings;
 }
+
+export const POST = withErrorHandling(postHandler);
+export const DELETE = withErrorHandling(deleteHandler);
+export const PUT = withErrorHandling(putHandler);
+export const PATCH = withErrorHandling(patchHandler);

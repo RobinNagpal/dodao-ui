@@ -1,7 +1,8 @@
 import { prisma } from '@/prisma';
 import { NextRequest, NextResponse } from 'next/server';
+import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 
-export async function GET(req: NextRequest) {
+async function getHandler(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const ratingUuid = searchParams.get('ratingUuid');
   if (!ratingUuid) return NextResponse.json({ status: 400, body: 'No ratingUuid provided' });
@@ -13,3 +14,5 @@ export async function GET(req: NextRequest) {
 
   return NextResponse.json({ status: 200, rating });
 }
+
+export const handler = withErrorHandling(getHandler);

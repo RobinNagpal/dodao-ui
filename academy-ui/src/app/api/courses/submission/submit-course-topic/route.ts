@@ -4,6 +4,7 @@ import { prisma } from '@/prisma';
 import { MutationSubmitGitCourseTopicArgs } from '@/graphql/generated/generated-types';
 import { verifyJwtForRequest } from '@/app/api/helpers/permissions/verifyJwtForRequest';
 import { CourseStatus, TempTopicSubmissionModel, TopicStatus } from '@/types/course/submission';
+import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { JwtPayload } from 'jsonwebtoken';
 import intersection from 'lodash/intersection';
@@ -12,7 +13,7 @@ import partition from 'lodash/partition';
 import { v4 } from 'uuid';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST(req: NextRequest) {
+async function postHandler(req: NextRequest) {
   const args: MutationSubmitGitCourseTopicArgs = await req.json();
   async function createNewEmptyTopicSubmission(spaceId: string, courseKey: string, decodedJwt: JwtPayload & DoDaoJwtTokenPayload, topicKey: string) {
     const existingCourseSubmission = await prisma.courseSubmission.findFirstOrThrow({
@@ -148,3 +149,5 @@ export async function POST(req: NextRequest) {
     throw e;
   }
 }
+
+export const POST = withErrorHandling(postHandler);
