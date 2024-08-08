@@ -2,8 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/prisma';
 import { ByteCollection as ByteCollectionGraphql } from '@/graphql/generated/generated-types';
 import { getByteCollectionWithItem } from '@/app/api/helpers/byteCollection/byteCollectionHelper';
+import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 
-export async function GET(req: NextRequest) {
+async function getHandler(req: NextRequest) {
   const { searchParams } = new URL(req.url);
 
   const spaceId = searchParams.get('spaceId');
@@ -29,3 +30,5 @@ export async function GET(req: NextRequest) {
 
   return NextResponse.json({ byteCollections: byteCollectionsWithBytes }, { status: 200 });
 }
+
+export const GET = withErrorHandling(getHandler);

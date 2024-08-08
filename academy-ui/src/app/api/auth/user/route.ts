@@ -1,10 +1,11 @@
+import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { prisma } from '@/prisma';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../[...nextauth]/authOptions';
 import { NextResponse } from 'next/server';
 
-export async function GET() {
+async function getHandler() {
   const session: Session | null = await getServerSession(authOptions);
   if (!session) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -28,7 +29,7 @@ export async function GET() {
   }
 }
 
-export async function PUT(request: Request) {
+async function putHandler(request: Request) {
   const session: Session | null = await getServerSession(authOptions);
   if (!session) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -51,7 +52,7 @@ export async function PUT(request: Request) {
   }
 }
 
-export async function POST(request: Request) {
+async function postHandler(request: Request) {
   const session = await getServerSession(authOptions);
   if (!session) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -80,3 +81,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
+
+export const POST = withErrorHandling(postHandler);
+export const GET = withErrorHandling(getHandler);
+export const PUT = withErrorHandling(putHandler);

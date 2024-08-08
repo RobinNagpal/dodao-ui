@@ -2,11 +2,12 @@ import { TimelineModel } from '@/app/api/helpers/deprecatedSchemas/models/timeli
 import { MutationUpsertTimelineArgs } from '@/graphql/generated/generated-types';
 import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
 import { checkEditSpacePermission } from '@/app/api/helpers/space/checkEditSpacePermission';
+import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { slugify } from '@/app/api/helpers/space/slugify';
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/prisma';
 
-export async function POST(req: NextRequest) {
+async function postHandler(req: NextRequest) {
   const args: MutationUpsertTimelineArgs = await req.json();
   const spaceById = await getSpaceById(args.spaceId);
 
@@ -34,7 +35,7 @@ export async function POST(req: NextRequest) {
   return NextResponse.json({ timeline }, { status: 200 });
 }
 
-export async function GET(req: NextRequest, { params: { timelineId } }: { params: { timelineId: string } }) {
+async function getHandler(req: NextRequest, { params: { timelineId } }: { params: { timelineId: string } }) {
   const timeline = await prisma.timeline.findUnique({
     where: {
       id: timelineId,
@@ -43,3 +44,6 @@ export async function GET(req: NextRequest, { params: { timelineId } }: { params
 
   return NextResponse.json({ timeline }, { status: 200 });
 }
+
+export const POST = withErrorHandling(postHandler);
+export const GET = withErrorHandling(getHandler);

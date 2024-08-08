@@ -1,10 +1,11 @@
 import { MutationUpsertGuideRatingArgs } from '@/graphql/generated/generated-types';
 import { getDecodedJwtFromContext } from '@/app/api/helpers/permissions/getJwtFromContext';
+import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { prisma } from '@/prisma';
 import { GuideRating } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST(req: NextRequest) {
+async function postHandler(req: NextRequest) {
   const decodedJWT = await getDecodedJwtFromContext(req);
   const args = (await req.json()) as MutationUpsertGuideRatingArgs;
 
@@ -43,3 +44,5 @@ export async function POST(req: NextRequest) {
   });
   return NextResponse.json({ guideRating }, { status: 200 });
 }
+
+export const POST = withErrorHandling(postHandler);

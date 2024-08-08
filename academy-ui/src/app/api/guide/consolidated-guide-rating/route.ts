@@ -1,11 +1,12 @@
 import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
 import { consolidateGuideRatings } from '@/app/api/helpers/guide/consolidateGuideRatings';
 import { checkEditSpacePermission } from '@/app/api/helpers/space/checkEditSpacePermission';
+import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { prisma } from '@/prisma';
 import { GuideRating } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET(req: NextRequest) {
+async function getHandler(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const guideUuid = searchParams.get('guideUuid');
   const spaceId = searchParams.get('spaceId');
@@ -31,3 +32,5 @@ export async function GET(req: NextRequest) {
   });
   return NextResponse.json({ consolidatedGuideRating: consolidateGuideRatings(ratings) }, { status: 200 });
 }
+
+export const GET = withErrorHandling(getHandler);

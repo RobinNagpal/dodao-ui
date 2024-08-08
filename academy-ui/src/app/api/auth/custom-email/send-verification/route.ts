@@ -1,4 +1,5 @@
 import { createHash } from '@dodao/web-core/api/auth/createHash';
+import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { prisma } from '@/prisma';
 import { User } from 'next-auth/core/types';
 import { headers } from 'next/headers';
@@ -47,7 +48,7 @@ const createUser = async (user: User & { email: string }, spaceId: string) => {
  * and sending it to the user's e-mail (with the help of a DB adapter).
  * At the end, it returns a redirect to the `verify-request` page.
  */
-async function POST(req: NextRequest, res: NextResponse) {
+async function postHandler(req: NextRequest, res: NextResponse) {
   const reqBody = await req.json();
   const { spaceId, provider, email } = reqBody;
 
@@ -99,4 +100,4 @@ async function POST(req: NextRequest, res: NextResponse) {
   return NextResponse.json({});
 }
 
-export { POST };
+export const POST = withErrorHandling(postHandler);

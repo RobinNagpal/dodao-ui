@@ -5,8 +5,9 @@ import { checkEditSpacePermission } from '@/app/api/helpers/space/checkEditSpace
 import { prisma } from '@/prisma';
 import { ByteRating } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
+import { withErrorHandling } from '../../helpers/middlewares/withErrorHandling';
 
-export async function GET(req: NextRequest) {
+async function getHandler(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const byteId = searchParams.get('byteId');
   if (!byteId) return NextResponse.json({ body: 'No byteId provided' }, { status: 400 });
@@ -33,3 +34,5 @@ export async function GET(req: NextRequest) {
   });
   return NextResponse.json({ consolidatedByteRating: { consolidatedByteRating: consolidateByteRatings(ratings) } }, { status: 200 });
 }
+
+export const GET = withErrorHandling(getHandler);

@@ -4,10 +4,11 @@ import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
 import { getByte } from '@/app/api/helpers/byte/getByte';
 import { postByteSubmission } from '@/app/api/helpers/discord/webhookMessage';
 import { getDecodedJwtFromContext } from '@/app/api/helpers/permissions/getJwtFromContext';
+import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { prisma } from '@/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST(req: NextRequest) {
+async function postHandler(req: NextRequest) {
   const { submissionInput }: MutationSubmitByteArgs = await req.json();
   const space = await getSpaceById(submissionInput.space);
   const decodedJWT = await getDecodedJwtFromContext(req);
@@ -39,3 +40,5 @@ export async function POST(req: NextRequest) {
 
   return NextResponse.json({ submitByte: submission }, { status: 200 });
 }
+
+export const POST = withErrorHandling(postHandler);

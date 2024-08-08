@@ -1,7 +1,8 @@
 import { prisma } from '@/prisma';
 import { NextRequest, NextResponse } from 'next/server';
+import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 
-export async function GET(req: NextRequest, { params: { guideId } }: { params: { guideId: string } }) {
+async function getHandler(req: NextRequest, { params: { guideId } }: { params: { guideId: string } }) {
   const guide = await prisma.guide.findFirst({
     where: {
       OR: [
@@ -35,3 +36,5 @@ export async function GET(req: NextRequest, { params: { guideId } }: { params: {
 
   return NextResponse.json({ guide: transformedGuide }, { status: 200 });
 }
+
+export const GET = withErrorHandling(getHandler);
