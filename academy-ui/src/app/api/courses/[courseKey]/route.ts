@@ -25,7 +25,7 @@ export async function POST(req: NextRequest, { params: { courseKey } }: { params
       ...args.course,
     },
   });
-  return NextResponse.json({ status: 200, course });
+  return NextResponse.json({ course }, { status: 200 });
 }
 
 export async function GET(req: NextRequest, { params: { courseKey } }: { params: { courseKey: string } }) {
@@ -35,5 +35,5 @@ export async function GET(req: NextRequest, { params: { courseKey } }: { params:
     },
   });
 
-  return NextResponse.json({ status: 200, course });
+  return NextResponse.json({ course }, { status: 200 });
 }

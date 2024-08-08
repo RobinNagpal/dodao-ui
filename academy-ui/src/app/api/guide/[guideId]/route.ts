@@ -23,7 +23,7 @@ export async function GET(req: NextRequest, { params: { guideId } }: { params: {
   });
 
   if (!guide) {
-    return NextResponse.json({ status: 404, message: 'Guide not found' });
+    return NextResponse.json({ message: 'Guide not found' }, { status: 404 });
   }
 
   const transformedGuide = {
@@ -33,5 +33,5 @@ export async function GET(req: NextRequest, { params: { guideId } }: { params: {
   // delete transformedGuide?.GuideStep;
   delete (transformedGuide as { GuideStep?: any }).GuideStep;
 
-  return NextResponse.json({ status: 200, guide: transformedGuide });
+  return NextResponse.json({ guide: transformedGuide }, { status: 200 });
 }

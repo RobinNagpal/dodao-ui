@@ -9,10 +9,10 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const byteId = searchParams.get('byteId');
-  if (!byteId) return NextResponse.json({ status: 400, body: 'No byteId provided' });
+  if (!byteId) return NextResponse.json({ body: 'No byteId provided' }, { status: 400 });
 
   const spaceId = searchParams.get('spaceId');
-  if (!spaceId) return NextResponse.json({ status: 400, body: 'No spaceId provided' });
+  if (!spaceId) return NextResponse.json({ body: 'No spaceId provided' }, { status: 400 });
 
   const spaceById = await getSpaceById(spaceId);
   await checkEditSpacePermission(spaceById, req);
@@ -31,5 +31,5 @@ export async function GET(req: NextRequest) {
       negativeFeedback: true,
     },
   });
-  return NextResponse.json({ status: 200, consolidatedByteRating: { consolidatedByteRating: consolidateByteRatings(ratings) } });
+  return NextResponse.json({ consolidatedByteRating: { consolidatedByteRating: consolidateByteRatings(ratings) } }, { status: 200 });
 }

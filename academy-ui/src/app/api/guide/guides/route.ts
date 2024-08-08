@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const spaceId = searchParams.get('spaceId');
-  if (!spaceId) return NextResponse.json({ status: 400, body: 'No spaceId provided' });
+  if (!spaceId) return NextResponse.json({ body: 'No spaceId provided' }, { status: 400 });
   const guides = await prisma.guide.findMany({ where: { spaceId: spaceId, archive: false } });
-  return NextResponse.json({ status: 200, guides });
+  return NextResponse.json({ guides }, { status: 200 });
 }

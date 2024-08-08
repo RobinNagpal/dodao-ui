@@ -39,7 +39,7 @@ export async function POST(req: NextRequest, { params: { courseKey, topicKey } }
       data: { topics: updatedTopics },
     });
 
-    return NextResponse.json({ status: 200, updatedCourse });
+    return NextResponse.json({ updatedCourse }, { status: 200 });
   } catch (e) {
     console.error((e as any)?.response?.data);
     throw e;
@@ -70,7 +70,7 @@ export async function DELETE(req: NextRequest, { params: { courseKey, topicKey }
       data: { topics: updatedTopics },
     });
 
-    return NextResponse.json({ status: 200, updatedTopic });
+    return NextResponse.json({ updatedTopic }, { status: 200 });
   } catch (e) {
     console.error((e as any)?.response?.data);
     throw e;
@@ -106,7 +106,7 @@ export async function PUT(req: NextRequest, { params: { courseKey, topicKey } }:
       data: { topics: updatedTopics },
     });
 
-    return NextResponse.json({ status: 200, updatedTopic });
+    return NextResponse.json({ updatedTopic }, { status: 200 });
   } catch (e) {
     console.error((e as any)?.response?.data);
     throw e;
@@ -159,7 +159,7 @@ export async function PATCH(req: NextRequest, { params: { courseKey, topicKey } 
       data: { topics },
     });
 
-    return NextResponse.json({ status: 200, updatedCourse });
+    return NextResponse.json({ updatedCourse }, { status: 200 });
   } catch (e) {
     console.error((e as any)?.response?.data);
     throw e;

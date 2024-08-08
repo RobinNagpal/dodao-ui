@@ -94,5 +94,5 @@ export async function POST(req: NextRequest) {
   const courseSubmission = await prisma.courseSubmission.findFirstOrThrow({ where: { spaceId, courseKey, createdBy: decodedJWT?.username } });
   const topicSubmissions = await prisma.courseTopicSubmission.findMany({ where: { spaceId, courseKey, createdBy: decodedJWT?.username } });
 
-  return NextResponse.json({ status: 200, body: { ...courseSubmission, topicSubmissions } });
+  return NextResponse.json({ body: { ...courseSubmission, topicSubmissions } }, { status: 200 });
 }

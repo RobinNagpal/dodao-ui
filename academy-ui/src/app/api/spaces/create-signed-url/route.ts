@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
       await checkEditSpacePermission(spaceById, req);
     }
 
-    return NextResponse.json({ status: 200, body: await presignedUrlCreator.createSignedUrl(spaceById.id, input) });
+    return NextResponse.json({ body: await presignedUrlCreator.createSignedUrl(spaceById.id, input) }, { status: 200 });
   } catch (e) {
     await logError((e as any)?.response?.data || 'Error in createSignedUrlMutation', {}, e as any, null, null);
     throw e;

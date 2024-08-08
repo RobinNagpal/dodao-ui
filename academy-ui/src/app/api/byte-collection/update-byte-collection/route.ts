@@ -34,5 +34,5 @@ export async function POST(req: NextRequest) {
 
   const byteCollectionsWithBytes = await getByteCollectionWithItem(updatedByteCollection);
 
-  return NextResponse.json({ status: 200, byteCollection: byteCollectionsWithBytes });
+  return NextResponse.json({ byteCollection: byteCollectionsWithBytes }, { status: 200 });
 }
