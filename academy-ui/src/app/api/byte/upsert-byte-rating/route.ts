@@ -5,7 +5,7 @@ import { prisma } from '@/prisma';
 import { ByteRating } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function postHandler(req: NextRequest) {
+async function postHandler(req: NextRequest) {
   const args: MutationUpsertByteRatingArgs = await req.json();
   const decodedJWT = await getDecodedJwtFromContext(req);
   const xForwardedFor = req.headers.get('x-forwarded-for');
