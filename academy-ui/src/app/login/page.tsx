@@ -1,14 +1,14 @@
+import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import LoginLogoutButtons from '@/app/login/LoginLogoutButtons';
 import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Session } from '@dodao/web-core/types/auth/Session';
-import { useSession } from 'next-auth/react';
+import { getServerSession } from 'next-auth';
 import React from 'react';
 
 async function LoginPage() {
-  const { data: sessionData } = useSession();
-  const session: Session | null = sessionData as Session | null;
   const space = await getSpaceServerSide();
+  const session = (await getServerSession(authOptions)) as Session | null;
 
   return (
     <PageWrapper>

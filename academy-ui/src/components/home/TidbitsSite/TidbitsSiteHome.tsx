@@ -19,7 +19,14 @@ function SelectedTab(props: TidbitsSiteHomeProps) {
   if (props.categoriesArray.length > 0) {
     return <TidbitsSiteHomepage space={props.space} categoriesArray={props.categoriesArray} session={props.session!} />;
   } else {
-    return <ByteCollectionsGrid byteCollections={props.byteCollections} space={props.space} byteCollectionsBaseUrl={`/tidbit-collections`} />;
+    return (
+      <ByteCollectionsGrid
+        byteCollections={props.byteCollections}
+        space={props.space}
+        byteCollectionsBaseUrl={`/tidbit-collections`}
+        isAdmin={props.session?.isAdminOfSpace || props.session?.isSuperAdminOfDoDAO}
+      />
+    );
   }
 }
 

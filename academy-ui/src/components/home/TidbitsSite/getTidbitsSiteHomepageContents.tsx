@@ -1,13 +1,6 @@
 import { TidbitSiteTabIds } from '@/components/home/TidbitsSite/TidbitSiteTabIds';
 import TidbitsSiteHome from '@/components/home/TidbitsSite/TidbitsSiteHome';
-import {
-  ByteCollectionCategory,
-  ByteCollectionFragment,
-  ByteSummaryFragment,
-  CategoryWithByteCollection,
-  SpaceWithIntegrationsFragment,
-} from '@/graphql/generated/generated-types';
-import getApiResponse from '@/utils/api/getApiResponse';
+import { ByteCollectionFragment, ByteSummaryFragment, CategoryWithByteCollection, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import axios from 'axios';
@@ -77,10 +70,12 @@ export async function getTidbitsSiteHomepageContents(
     const byteCollections: ByteCollectionFragment[] = response.data.byteCollections;
 
     const categoriesArray = [];
-    const byteCollectionCategories = await getApiResponse<ByteCollectionCategory[]>(space, 'byte-collection-categories');
+    const responseCategories = await axios.get(`${getBaseUrl()}/api/byte-collection-categories?spaceId=${space.id}`);
+    const byteCollectionCategories = responseCategories.data.byteCollectionCategories;
+
     for (const category of byteCollectionCategories) {
-      const categoryWithByteCollection = await getApiResponse<CategoryWithByteCollection>(space, `byte-collection-categories/${category.id}`);
-      categoriesArray.push(categoryWithByteCollection);
+      const categoryResponse = await axios.get(`${getBaseUrl()}/api/byte-collection-categories/${category.id}?spaceId=${space.id}`);
+      categoriesArray.push(categoryResponse.data.byteCollectionCategoryWithByteCollections);
     }
     return (
       <TidbitsSiteHome
