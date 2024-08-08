@@ -61,7 +61,13 @@ const RateRubric: React.FC<RateRubricProps> = ({ params }) => {
             <ChevronLeftIcon className="h-5 w-5 ml-4" />
             View Rubric
           </button>
-          <RubricsPage selectedProgramId={selectedProgramId} isEditAccess={false} rateRubricsFormatted={serverResponse} writeAccess={true} />
+          <RubricsPage
+            selectedProgramId={selectedProgramId}
+            isEditAccess={false}
+            rateRubricsFormatted={serverResponse}
+            writeAccess={true}
+            isGlobalAccess={false}
+          />
         </div>
       )}
     </div>

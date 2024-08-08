@@ -17,6 +17,8 @@ const RubricCriteria: React.FC<RubricCriteriaProps> = ({
   rubricRatingHeaders,
   rubricId,
   writeAccess,
+  isGlobalAccess,
+  editCriteriaIds,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
@@ -33,20 +35,23 @@ const RubricCriteria: React.FC<RubricCriteriaProps> = ({
 
   useEffect(() => {
     const fetchData = async () => {
-      if (userId) {
+      if (userId && writeAccess) {
         try {
-          const response = await fetch(`/api/rubric-rating?userId=${userId}`);
+          const response = await fetch(`http://localhost:3004/api/rubric-rating?userId=${userId}`);
           if (!response.ok) {
             throw new Error('Failed to fetch comments');
           }
 
           const data = await response.json();
+
           const comments = data.body.map((entry: any) => ({
             criteria,
             comment: entry.comment,
             cellId: entry.rubricCellId,
             score: entry.score,
           }));
+
+          const comment = comments.map((item: any) => item.comment);
 
           setRowScoresAndComments((prev) => [...prev.filter((entry) => entry.criteria !== criteria), ...comments]);
 
@@ -61,7 +66,6 @@ const RubricCriteria: React.FC<RubricCriteriaProps> = ({
             type: 'error',
             message: 'Error fetching comments',
           });
-          console.error('Error fetching comments:', error);
         }
       }
     };
@@ -190,14 +194,23 @@ const RubricCriteria: React.FC<RubricCriteriaProps> = ({
   const handleCloseConfirmation = () => {
     setIsConfirmationOpen(false);
   };
-
+  // console.log(clickedCellId);
+  // rubrics![criteria].map((cell: any, cellIndex) => {
+  //   console.log(criteria);
+  // });
   const selectedComment = rowScoresAndComments.find((entry) => entry.criteria === criteria && entry.cellId === clickedCellId)?.comment || 'No comment';
-
   return (
     <>
       <tr>
         <td className="py-2 px-4 border-r border-b font-bold cursor-pointer max-w-xs break-words relative">
-          <div onClick={() => isEditAccess && onEditClick('criteria', criteria, -1)} className="overflow-y-auto max-h-24">
+          <div
+            onClick={() => {
+              if (isEditAccess) {
+                onEditClick('criteria', criteria, -1);
+              }
+            }}
+            className="overflow-y-auto max-h-24"
+          >
             {criteria}
           </div>
         </td>
@@ -216,16 +229,16 @@ const RubricCriteria: React.FC<RubricCriteriaProps> = ({
             />
           </React.Fragment>
         ))}
+        {/* {isGlobalAccess && (
+          <td className="py-2 px-4 border-r border-b overflow-hidden">
+            <div className="flex-grow max-h-24 overflow-y-auto whitespace-pre-wrap">{selectedComment}</div>
+          </td>
+        )} */}
         {isEditAccess && (
           <td>
             <button onClick={() => onDeleteCriteria(criteria)}>
               <TrashIcon className="w-8 h-8 text-red-500 mx-auto" />
             </button>
-          </td>
-        )}
-        {!isEditAccess && (
-          <td className="py-2 px-4 border-r border-b overflow-hidden">
-            <div className="flex-grow max-h-24 overflow-y-auto whitespace-pre-wrap">{selectedComment}</div>
           </td>
         )}
       </tr>

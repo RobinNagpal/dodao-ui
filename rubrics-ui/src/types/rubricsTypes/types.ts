@@ -26,13 +26,29 @@ export interface Rubric {
   cells?: any[];
 }
 
-export interface RubricsPageProps {
+// export interface RubricsPageProps {
+//   selectedProgramId?: string | null;
+//   isEditAccess?: boolean;
+//   rateRubricsFormatted?: RubricServerData;
+//   writeAccess?: boolean;
+//   rubricName?: string;
+//   handleDropdownSelect?: (key: string) => void;
+// }
+export interface RubricsPageProps extends EditRubricsProps {
   selectedProgramId?: string | null;
   isEditAccess?: boolean;
-  rateRubricsFormatted?: RubricServerData;
+  rateRubricsFormatted?: any;
   writeAccess?: boolean;
   rubricName?: string;
   handleDropdownSelect?: (key: string) => void;
+  rubricId?: string;
+  editRubricsFormatted?: RubricServerData;
+  isGlobalAccess?: boolean;
+  editRubrics?: any;
+  editCriteriaOrder?: any;
+  editRatingHeaders?: any;
+  editColumnScores?: number[];
+  editCriteriaIds?: any;
 }
 
 export interface ProgramListProps {
@@ -69,6 +85,7 @@ export interface RubricCellProps {
   onClick: () => void;
   isClicked: boolean;
   cellIds?: cellIds[];
+  isGlobalAccess?: boolean;
 }
 
 export interface RubricLevelProps {
@@ -78,6 +95,7 @@ export interface RubricLevelProps {
   isEditAccess: boolean | undefined;
   onScoreChange: (index: number, score: number) => void;
   onEditClick: (type: 'header', criteria: number, index: number) => void;
+  isGlobalAccess?: boolean;
 }
 export interface RubricCriteriaProps {
   criteria: string;
@@ -90,6 +108,8 @@ export interface RubricCriteriaProps {
   cellIds?: cellIds[];
   rubricId?: string;
   writeAccess?: boolean;
+  isGlobalAccess?: boolean;
+  editCriteriaIds?: any;
 }
 
 export interface ProgramListProps {
@@ -192,4 +212,33 @@ export interface ConfirmationModalProps {
   onClose: () => void;
   onConfirm: () => void;
   message: string;
+}
+export interface EditRubricsProps {
+  rubricDetails?: {
+    name: string;
+    summary: string;
+    description: string;
+  };
+
+  writeAccess?: boolean;
+}
+export interface EditRubricCell {
+  cellId: string;
+  description: string;
+}
+
+export interface RubricMap {
+  [key: string]: EditRubricCell[];
+}
+
+export interface SampleData {
+  name: string;
+  rubricId: string;
+  criteriaOrder: string[];
+  rubric: RubricMap;
+  ratingHeaders: { header: string; score: number }[];
+  programs: { name: string; summary: string }[];
+  details?: string;
+  summary?: string;
+  criteriaIds?: string[];
 }

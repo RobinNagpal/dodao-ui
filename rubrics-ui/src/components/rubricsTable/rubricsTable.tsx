@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Rubric, RubricCell, RubricsPageProps, rubricRatingHeader } from '@/types/rubricsTypes/types';
 import RubricCriteria from '@/components/RubricCriteria/RubricCriteria';
 import RubricLevel from '@/components/RubricLevel/RubricLevel';
-import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import RubricDetails from '@/components/RubricDetails/RubricDetails';
 import EllipsisDropdown, { EllipsisDropdownItem } from '@dodao/web-core/src/components/core/dropdowns/EllipsisDropdown';
 import { useRouter } from 'next/navigation';
 const initialRubrics: Record<string, string[]> = {
@@ -15,10 +13,25 @@ const initialRubrics: Record<string, string[]> = {
   ],
 };
 
-const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId, isEditAccess, rateRubricsFormatted, writeAccess, rubricName }) => {
-  const [rubrics, setRubrics] = useState<Record<string, string[]>>(initialRubrics);
-  const [ratingHeaders, setRatingHeaders] = useState<string[]>(['Excellent', 'Good', 'Fair', 'Improvement']);
-  const [criteriaOrder, setCriteriaOrder] = useState<string[]>(Object.keys(initialRubrics));
+const RubricsPage: React.FC<RubricsPageProps> = ({
+  selectedProgramId,
+  isEditAccess,
+  rateRubricsFormatted,
+  writeAccess,
+  rubricName,
+  rubricDetails,
+  rubricId,
+  editRubricsFormatted,
+  isGlobalAccess,
+  editRubrics,
+  editCriteriaOrder,
+  editRatingHeaders,
+  editColumnScores,
+  editCriteriaIds,
+}) => {
+  const [rubrics, setRubrics] = useState<Record<string, string[]>>(editRubrics || initialRubrics);
+  const [ratingHeaders, setRatingHeaders] = useState<string[]>(editRatingHeaders || ['Excellent', 'Good', 'Fair', 'Improvement']);
+  const [criteriaOrder, setCriteriaOrder] = useState<string[]>(Object.keys(editRubrics || initialRubrics));
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteConfirm, setIsDeleteConfirm] = useState(false);
   const [currentEdit, setCurrentEdit] = useState<{ type: 'rubric' | 'header' | 'criteria'; criteria: string | number; index: number; value: string }>({
@@ -28,25 +41,16 @@ const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId, isEditAcce
     value: '',
   });
 
-  const [columnScores, setColumnScores] = useState<number[]>(Array(ratingHeaders.length).fill(0));
+  const [columnScores, setColumnScores] = useState<number[]>(editColumnScores || Array(ratingHeaders.length).fill(0));
   const [criteriaToDelete, setCriteriaToDelete] = useState<string | null>(null);
   const dropdownItems: EllipsisDropdownItem[] = [
     { label: 'Edit', key: 'edit' },
     { label: 'Rate', key: 'rate' },
   ];
-  const [rubricDetails, setRubricDetails] = useState<{
-    name: string;
-    summary: string;
-    description: string;
-  }>({
-    name: '',
-    summary: '',
-    description: '',
-  });
-  const { showNotification } = useNotificationContext();
+
   const router = useRouter();
   useEffect(() => {
-    if (!rubricDetails.name || !rubricDetails.summary) {
+    if (!rubricDetails?.name || !rubricDetails?.summary) {
       return;
     }
     const formattedRubrics: Rubric[] = criteriaOrder.map((criteria) => ({
@@ -60,8 +64,9 @@ const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId, isEditAcce
       })),
       criteria: criteria,
     }));
+    console.log(formattedRubrics);
 
-    if (selectedProgramId && isEditAccess) {
+    if ((selectedProgramId && isEditAccess) || rubricId) {
       console.log('Sending data:', formattedRubrics);
       handleSubmit(formattedRubrics);
     }
@@ -79,7 +84,7 @@ const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId, isEditAcce
           rubric: data,
         }),
       });
-      console.log(response);
+      console.log(response.body);
     } catch (error) {
       console.error('Error submitting rubrics:', error);
     }
@@ -177,7 +182,11 @@ const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId, isEditAcce
     }
   };
 
-  const confirmDeleteCriteria = () => {
+  const confirmDeleteCriteria = async () => {
+    const isTrue = true;
+    // console.log(criteriaToDelete);
+    // console.log(editCriteriaIds);
+
     if (criteriaToDelete) {
       const updatedRubrics = { ...rubrics };
       delete updatedRubrics[criteriaToDelete];
@@ -186,6 +195,41 @@ const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId, isEditAcce
     }
     setIsDeleteConfirm(false);
     setCriteriaToDelete(null);
+    // if (isTrue) {
+    //   if (criteriaToDelete) {
+    //     const criteriaId = editCriteriaIds[criteriaToDelete];
+    //     if (criteriaId) {
+    //       console.log(`Deleted: ${criteriaId}`);
+
+    //       try {
+    //         const response = await fetch('/api/rubrics', {
+    //           method: 'PUT',
+    //           headers: {
+    //             'Content-Type': 'application/json',
+    //           },
+    //           body: JSON.stringify({ criteriaId }),
+    //         });
+
+    //         if (response.ok) {
+    //           const result = await response.json();
+    //           console.log(result.body.message);
+    //         } else {
+    //           console.error('Failed to archive criteria');
+    //         }
+    //       } catch (error) {
+    //         console.error('An error occurred while archiving criteria:', error);
+    //       }
+
+    //       const updatedRubrics = { ...rubrics };
+    //       delete updatedRubrics[criteriaToDelete];
+    //       setRubrics(updatedRubrics);
+    //       setCriteriaOrder((prevOrder) => prevOrder.filter((crit) => crit !== criteriaToDelete));
+    //     }
+    //   }
+
+    //   setIsDeleteConfirm(false);
+    //   setCriteriaToDelete(null);
+    // }
   };
 
   const cancelDelete = () => {
@@ -214,28 +258,31 @@ const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId, isEditAcce
   const rateRubric = rateRubricsFormatted?.rubric;
   const rateCriteriaOrder = rateRubricsFormatted?.criteriaOrder;
   const rubricRatingHeaders: rubricRatingHeader[] = rateRubricsFormatted?.ratingHeaders ?? [];
-  const rubricId = rateRubricsFormatted?.rubricId;
+  const raterubricId = rateRubricsFormatted?.rubricId;
 
   const handleDropdownSelect = (key: string) => {
     if (key === 'rate') {
-      router.push(`/rate-rubric/${rubricId}`);
+      router.push(`/rate-rubric/${raterubricId}`);
+    } else if (key === 'edit') {
+      router.push(`/rubrics/edit/${raterubricId}`);
     }
   };
+
   return (
     <div className="container mx-auto py-8 p-4">
       <div className="flex items-center pb-8 align-center justify-center">
         {!writeAccess && <h1 className="text-3xl text-center font-bold p-2">{rubricName}</h1>}
         {!writeAccess && <EllipsisDropdown items={dropdownItems} onSelect={handleDropdownSelect} />}
       </div>
-      <h1 className="text-3xl text-center font-bold mb-4">{writeAccess ? (isEditAccess ? 'Edit Rubrics' : 'Giving Feedback on') : ''}</h1>
+      <h1 className="text-3xl text-center font-bold mb-4">{writeAccess ? (isEditAccess ? 'Edit Rubric' : 'Giving Feedback on') : ''}</h1>
       <h1 className="text-2xl  p-2 text-center mb-2">{writeAccess ? (isEditAccess ? '' : rateRubricsFormatted?.programs[0].name) : ''}</h1>
-      <RubricDetails rubricDetails={rubricDetails} setRubricDetails={setRubricDetails} isEditAccess={isEditAccess} />
 
       <div className="overflow-x-auto mt-4">
         <table className="min-w-full bg-white border-collapse border">
           <thead>
             <tr>
               <th className="py-2 px-4 border-b"></th>
+
               {!isEditAccess
                 ? rubricRatingHeaders?.map((header, index) => (
                     <RubricLevel
@@ -263,7 +310,7 @@ const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId, isEditAcce
           </thead>
           <tbody>
             {!isEditAccess
-              ? rateCriteriaOrder?.map((criteria) => (
+              ? rateCriteriaOrder?.map((criteria: any) => (
                   <RubricCriteria
                     key={criteria}
                     criteria={criteria}
@@ -272,8 +319,9 @@ const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId, isEditAcce
                     onEditClick={handleEditClick}
                     onDeleteCriteria={handleDeleteCriteria}
                     rubricRatingHeaders={rubricRatingHeaders}
-                    rubricId={rubricId}
+                    rubricId={raterubricId}
                     writeAccess={writeAccess}
+                    isGlobalAccess={true}
                   />
                 ))
               : criteriaOrder?.map((criteria) => (
@@ -284,6 +332,7 @@ const RubricsPage: React.FC<RubricsPageProps> = ({ selectedProgramId, isEditAcce
                     isEditAccess={isEditAccess}
                     onEditClick={handleEditClick}
                     onDeleteCriteria={handleDeleteCriteria}
+                    editCriteriaIds={editCriteriaIds}
                   />
                 ))}
           </tbody>

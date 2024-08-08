@@ -4,83 +4,144 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function POST(req: NextRequest, res: NextResponse) {
   const { programId, rubric } = await req.json();
   try {
-    const previousRubrics = await prisma.rubric.findMany({
-      where: {
-        programs: {
-          some: {
-            programId: programId,
+    await prisma.$transaction(async (tx) => {
+      const existingRubric = await tx.rubric.findFirst({
+        where: {
+          programs: {
+            some: {
+              programId: programId,
+            },
           },
         },
-      },
-    });
-
-    for (const previousRubric of previousRubrics) {
-      const rubricId = previousRubric.id;
-
-      await prisma.rubricCell.deleteMany({ where: { rubricId } });
-      await prisma.rubricLevel.deleteMany({ where: { rubricId } });
-      await prisma.rubricCriteria.deleteMany({ where: { rubricId } });
-    }
-
-    await prisma.programRubricMapping.deleteMany({
-      where: {
-        programId: programId,
-      },
-    });
-
-    await prisma.rubric.deleteMany({
-      where: {
-        id: {
-          in: previousRubrics.map((rubric) => rubric.id),
-        },
-      },
-    });
-
-    const newRubric = await prisma.rubric.create({
-      data: {
-        name: rubric[0].name,
-        summary: rubric[0].summary,
-        description: rubric[0].description,
-        programs: {
-          create: { programId },
-        },
-      },
-    });
-
-    const levelIds: { [key: string]: string } = {};
-    for (const level of rubric[0].levels) {
-      const newLevel = await prisma.rubricLevel.create({
-        data: {
-          columnName: level.columnName,
-          description: level.description,
-          score: level.score,
-          rubricId: newRubric.id,
-        },
-      });
-      levelIds[level.columnName] = newLevel.id;
-    }
-
-    for (const subRubric of rubric) {
-      const { criteria, levels } = subRubric;
-
-      const newCriteria = await prisma.rubricCriteria.create({
-        data: {
-          title: criteria,
-          rubricId: newRubric.id,
-        },
       });
 
-      for (const level of levels) {
-        await prisma.rubricCell.create({
+      let rubricId = existingRubric ? existingRubric.id : null;
+
+      if (rubricId) {
+        await tx.rubric.update({
+          where: { id: rubricId },
           data: {
-            description: level.description,
-            levelId: levelIds[level.columnName],
-            criteriaId: newCriteria.id,
-            rubricId: newRubric.id,
+            name: rubric[0].name,
+            summary: rubric[0].summary,
+            description: rubric[0].description,
           },
         });
+
+        await tx.rubricCell.deleteMany({
+          where: { rubricId },
+        });
+        await tx.rubricLevel.deleteMany({
+          where: { rubricId },
+        });
+        await tx.rubricCriteria.deleteMany({
+          where: { rubricId },
+        });
+      } else {
+        const newRubric = await tx.rubric.create({
+          data: {
+            name: rubric[0].name,
+            summary: rubric[0].summary,
+            description: rubric[0].description,
+            programs: {
+              create: { programId },
+            },
+          },
+        });
+        rubricId = newRubric.id;
       }
-    }
+
+      const levelIds: { [key: string]: string } = {};
+
+      for (const level of rubric[0].levels) {
+        const existingLevel = await tx.rubricLevel.findUnique({
+          where: {
+            rubricId_columnName: {
+              rubricId: rubricId,
+              columnName: level.columnName,
+            },
+          },
+        });
+
+        if (existingLevel) {
+          await tx.rubricLevel.update({
+            where: { id: existingLevel.id },
+            data: {
+              description: level.description,
+              score: level.score,
+            },
+          });
+          levelIds[level.columnName] = existingLevel.id;
+        } else {
+          const newLevel = await tx.rubricLevel.create({
+            data: {
+              columnName: level.columnName,
+              description: level.description,
+              score: level.score,
+              rubricId: rubricId,
+            },
+          });
+          levelIds[level.columnName] = newLevel.id;
+        }
+      }
+
+      for (const subRubric of rubric) {
+        const { criteria, levels } = subRubric;
+
+        const existingCriteria = await tx.rubricCriteria.findFirst({
+          where: {
+            rubricId: rubricId,
+            title: criteria,
+          },
+        });
+
+        let criteriaId = existingCriteria ? existingCriteria.id : null;
+
+        if (criteriaId) {
+          await tx.rubricCriteria.update({
+            where: { id: criteriaId },
+            data: {
+              title: criteria,
+            },
+          });
+        } else {
+          const newCriteria = await tx.rubricCriteria.create({
+            data: {
+              title: criteria,
+              rubricId: rubricId,
+            },
+          });
+          criteriaId = newCriteria.id;
+        }
+
+        for (const level of levels) {
+          const existingCell = await tx.rubricCell.findFirst({
+            where: {
+              rubricId: rubricId,
+              criteriaId: criteriaId,
+              levelId: levelIds[level.columnName],
+            },
+          });
+
+          if (existingCell) {
+            await tx.rubricCell.update({
+              where: { id: existingCell.id },
+              data: {
+                description: level.description,
+              },
+            });
+          } else {
+            await tx.rubricCell.create({
+              data: {
+                description: level.description,
+                levelId: levelIds[level.columnName],
+                criteriaId: criteriaId,
+                rubricId: rubricId,
+              },
+            });
+          }
+        }
+      }
+    });
 
     return NextResponse.json({ status: 200, body: rubric });
   } catch (error) {
@@ -102,8 +163,12 @@ export async function GET(req: NextRequest) {
       where: { id: rubricId },
       include: {
         levels: true,
-        criteria: true,
-        RubricCell: true,
+        criteria: {
+          where: { isArchived: false },
+        },
+        RubricCell: {
+          where: { isArchived: false },
+        },
         programs: {
           include: {
             program: true,
@@ -159,11 +224,14 @@ export async function GET(req: NextRequest) {
 
     const formattedRubric = {
       name: rubric.name,
+      summary: rubric.summary,
+      details: rubric.description,
       rubricId: rubricId,
       criteriaOrder: rubric.criteria.map((criteria) => criteria.title ?? '').filter((title) => title !== ''),
       rubric: criteriaMap,
       ratingHeaders: ratingHeadersWithScores,
       programs: programDetails,
+      criteriaIds: Object.fromEntries(rubric.criteria.map((criteria) => [criteria.title, criteria.id]).filter(([title, id]) => title && id)),
     };
 
     return NextResponse.json({ status: 200, body: formattedRubric });
@@ -172,3 +240,159 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ status: 500, body: 'An error occurred' });
   }
 }
+
+export async function PUT(req: NextRequest) {
+  const { criteriaId } = await req.json();
+
+  try {
+    await prisma.$transaction(async (tx) => {
+      await tx.rubricCriteria.update({
+        where: { id: criteriaId },
+        data: { isArchived: true },
+      });
+
+      await tx.rubricCell.updateMany({
+        where: { criteriaId: criteriaId },
+        data: { isArchived: true },
+      });
+    });
+
+    return NextResponse.json({ status: 200, body: { message: 'Criteria and associated cells archived successfully' } });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({ status: 500, body: 'An error occurred' });
+  }
+}
+// export async function POST(req: NextRequest, res: NextResponse) {
+//   const { programId, rubric } = await req.json();
+
+//   try {
+//     await prisma.$transaction(async (tx) => {
+//       const [rubricData] = rubric;
+//       const existingRubric = await tx.rubric.findFirst({
+//         where: {
+//           programs: {
+//             some: {
+//               programId: programId,
+//             },
+//           },
+//         },
+//       });
+
+//       let rubricId = existingRubric ? existingRubric.id : null;
+
+//       if (rubricId) {
+//         await tx.rubric.update({
+//           where: { id: rubricId },
+//           data: {
+//             name: rubric[0].name,
+//             summary: rubric[0].summary,
+//             description: rubric[0].description,
+//           },
+//         });
+
+//         await tx.rubricCell.deleteMany({
+//           where: { rubricId },
+//         });
+//         await tx.rubricLevel.deleteMany({
+//           where: { rubricId },
+//         });
+//         await tx.rubricCriteria.deleteMany({
+//           where: { rubricId },
+//         });
+//       }
+
+//       const { id: upsertedRubricId } = await tx.rubric.upsert({
+//         where: {
+//           id: existingRubric ? existingRubric.id : '',
+//         },
+//         update: {
+//           name: rubricData.name,
+//           summary: rubricData.summary,
+//           description: rubricData.description,
+//         },
+//         create: {
+//           name: rubricData.name,
+//           summary: rubricData.summary,
+//           description: rubricData.description,
+//           programs: {
+//             create: { programId },
+//           },
+//         },
+//       });
+
+//       // Upsert rubric levels
+//       const levelIds: { [key: string]: string } = {};
+
+//       for (const level of rubricData.levels) {
+//         const { id: levelId } = await tx.rubricLevel.upsert({
+//           where: {
+//             rubricId_columnName: {
+//               rubricId: upsertedRubricId,
+//               columnName: level.columnName,
+//             },
+//           },
+//           update: {
+//             description: level.description,
+//             score: level.score,
+//           },
+//           create: {
+//             columnName: level.columnName,
+//             description: level.description,
+//             score: level.score,
+//             rubricId: upsertedRubricId,
+//           },
+//         });
+
+//         levelIds[level.columnName] = levelId;
+//       }
+
+//       // Upsert rubric criteria and cells
+//       for (const subRubric of rubric) {
+//         const { criteria, levels } = subRubric;
+
+//         const { id: criteriaId } = await tx.rubricCriteria.upsert({
+//           where: {
+//             rubricId_title: {
+//               rubricId: upsertedRubricId,
+//               title: criteria,
+//             },
+//           },
+//           update: {
+//             title: criteria,
+//           },
+//           create: {
+//             title: criteria,
+//             rubricId: upsertedRubricId,
+//           },
+//         });
+
+//         for (const level of levels) {
+//           await tx.rubricCell.upsert({
+//             where: {
+//               rubricId_levelId_criteriaId: {
+//                 rubricId: upsertedRubricId,
+//                 levelId: levelIds[level.columnName],
+//                 criteriaId: criteriaId,
+//               },
+//             },
+//             update: {
+//               description: level.description,
+//             },
+//             create: {
+//               description: level.description,
+//               levelId: levelIds[level.columnName],
+//               criteriaId: criteriaId,
+//               rubricId: upsertedRubricId,
+//             },
+//           });
+//         }
+//       }
+//     });
+
+//     return NextResponse.json({ status: 200, body: rubric });
+//   } catch (error) {
+//     console.error(error);
+//     return NextResponse.json({ status: 500, body: 'An error occurred' });
+//   }
+// }

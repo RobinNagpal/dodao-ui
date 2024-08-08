@@ -1,13 +1,12 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import RubricsTable from '@/components/RubricsTable/rubricsTable';
-import { ProgramServerResponse } from '@/types/rubricsTypes/types';
 import ProgramDropDown from '@/components/ProgramDropDown/programDropDown';
 import { getSession } from 'next-auth/react';
 import { useLoginModalContext } from '@dodao/web-core/ui/contexts/LoginModalContext';
-import { SessionProps } from '@/types/rubricsTypes/types';
+import { ProgramServerResponse, SessionProps, EditRubricsProps } from '@/types/rubricsTypes/types';
 
-function EditRubrics() {
+function EditRubrics({ rubricDetails, writeAccess }: EditRubricsProps) {
   const [selectedProgramId, setSelectedProgramId] = useState<string | null>(null);
   const [serverResponse, setServerResponse] = useState<ProgramServerResponse>({ status: -1, body: [] });
   const { showLoginModal, setShowLoginModal } = useLoginModalContext();
@@ -37,7 +36,7 @@ function EditRubrics() {
         session.isAdminOfSpace ? (
           <div className="mt-10 p-2 flex-col items-center justify-center gap-x-6">
             <ProgramDropDown serverResponse={serverResponse} setServerResponse={setServerResponse} onSelectProgram={handleSelectProgram} />
-            <RubricsTable selectedProgramId={selectedProgramId} isEditAccess={true} />
+            <RubricsTable selectedProgramId={selectedProgramId} isEditAccess={true} rubricDetails={rubricDetails} writeAccess={writeAccess} />
           </div>
         ) : (
           <div>You are not allowed to edit rubrics.</div>

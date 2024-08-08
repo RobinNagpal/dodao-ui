@@ -111,6 +111,7 @@ CREATE TABLE "rubric_level" (
     "description" VARCHAR(64),
     "score" INTEGER,
     "rubricId" VARCHAR(64) NOT NULL,
+    "isArchived" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "rubric_level_pkey" PRIMARY KEY ("id")
 );
@@ -120,6 +121,7 @@ CREATE TABLE "rubric_criteria" (
     "id" TEXT NOT NULL,
     "title" VARCHAR(64) NOT NULL,
     "rubricId" VARCHAR(64) NOT NULL,
+    "isArchived" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "rubric_criteria_pkey" PRIMARY KEY ("id")
 );
@@ -131,6 +133,7 @@ CREATE TABLE "rubric_cell" (
     "levelId" VARCHAR(64),
     "criteriaId" VARCHAR(64),
     "rubricId" VARCHAR(64) NOT NULL,
+    "isArchived" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "rubric_cell_pkey" PRIMARY KEY ("id")
 );

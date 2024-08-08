@@ -26,7 +26,7 @@ function EditProgram({ programId }: EditProgramProps) {
   const { showNotification } = useNotificationContext();
 
   useEffect(() => {
-    // Fetch rubrics
+    // Fetch rubrics to create mapping
     fetch('http://localhost:3004/api/rubrics-program')
       .then((res) => res.json())
       .then((data) => setRubrics(data.body))
