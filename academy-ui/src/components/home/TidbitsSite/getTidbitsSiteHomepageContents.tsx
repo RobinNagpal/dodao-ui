@@ -7,11 +7,11 @@ import {
   CategoryWithByteCollection,
   SpaceWithIntegrationsFragment,
 } from '@/graphql/generated/generated-types';
-import { Session } from '@dodao/web-core/types/auth/Session';
 import getApiResponse from '@/utils/api/getApiResponse';
-import React from 'react';
-import axios from 'axios';
+import { Session } from '@dodao/web-core/types/auth/Session';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import axios from 'axios';
+import React from 'react';
 
 export async function getTidbitsSiteHomepageContents(
   props: {
@@ -48,7 +48,9 @@ export async function getTidbitsSiteHomepageContents(
 
     return <TidbitsSiteHome byteCollections={byteCollections} space={space} bytes={[]} categoriesArray={[]} selectedTabId={props.searchParams.selectedTabId} />;
   } else if (props.searchParams.selectedTabId === TidbitSiteTabIds.TidbitCollectionCategories) {
-    const byteCollectionCategories = await getApiResponse<ByteCollectionCategory[]>(space, 'byte-collection-categories');
+    const response = await axios.get(`${getBaseUrl()}/api/byte-collection-categories?spaceId=${space.id}`);
+    const byteCollectionCategories = response.data.byteCollectionCategories;
+
     const categoriesArray = [];
 
     for (const category of byteCollectionCategories) {

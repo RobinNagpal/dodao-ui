@@ -1,19 +1,17 @@
-import { getTidbitsSiteHomepageContents } from '@/components/home/TidbitsSite/getTidbitsSiteHomepageContents';
+import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import ChatHome from '@/chatbot/home/home';
 import { OpenAIModelID } from '@/chatbot/types/openai';
 import { PredefinedSpaces } from '@/chatbot/utils/app/constants';
-import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import DefaultHome from '@/components/home/DefaultHome/DefaultHome';
 import DoDAOHome from '@/components/home/DoDAOHome/DoDAOHome';
 import LifeInsureHomePage from '@/components/home/LifeInsure/LifeInsureHomePage';
 import TidbitsHubHome from '@/components/home/TidbitsHub/TidbitsHubHome';
+import { getTidbitsSiteHomepageContents } from '@/components/home/TidbitsSite/getTidbitsSiteHomepageContents';
 import { SpaceTypes } from '@/graphql/generated/generated-types';
-import getApiResponse from '@/utils/api/getApiResponse';
 import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
-import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
+import { Session } from '@dodao/web-core/types/auth/Session';
 import { getServerSession } from 'next-auth';
 import { headers } from 'next/headers';
-import { Session } from '@dodao/web-core/types/auth/Session';
 import React from 'react';
 
 async function Home(props: { searchParams: { [key: string]: string | string[] | undefined } }) {
