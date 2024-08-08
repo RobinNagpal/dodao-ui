@@ -16,7 +16,7 @@ export const optimismFeatures: FeatureItem[] = [
     },
   },
   {
-    featureName: FeatureName.Simulations,
+    featureName: FeatureName.ClickableDemos,
     enabled: true,
     details: {
       priority: 60,
