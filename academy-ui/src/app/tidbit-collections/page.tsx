@@ -5,11 +5,12 @@ import TidbitsSiteTabs from '@/components/home/TidbitsSite/TidbitsSiteTabs';
 import { ByteCollectionFragment } from '@/graphql/generated/generated-types';
 import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import React from 'react';
+import React, { Suspense } from 'react';
 import axios from 'axios';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import { Session } from '@dodao/web-core/types/auth/Session';
+import CollectionPageLoading from '@dodao/web-core/src/components/core/loaders/CollectionPageLoading';
 
 async function TidbitCollections() {
   const space = (await getSpaceServerSide())!;
@@ -32,15 +33,17 @@ async function TidbitCollections() {
   }
 
   return (
-    <PageWrapper>
-      <TidbitsSiteTabs selectedTabId={TidbitSiteTabIds.TidbitCollections} />
-      <ByteCollectionsGrid
-        byteCollections={filteredCollections}
-        space={space}
-        byteCollectionsBaseUrl={`/tidbit-collections`}
-        isAdmin={session?.isAdminOfSpace}
-      />
-    </PageWrapper>
+    <Suspense fallback={<CollectionPageLoading />}>
+      <PageWrapper>
+        <TidbitsSiteTabs selectedTabId={TidbitSiteTabIds.TidbitCollections} />
+        <ByteCollectionsGrid
+          byteCollections={filteredCollections}
+          space={space}
+          byteCollectionsBaseUrl={`/tidbit-collections`}
+          isAdmin={session?.isAdminOfSpace}
+        />
+      </PageWrapper>
+    </Suspense>
   );
 }
 
