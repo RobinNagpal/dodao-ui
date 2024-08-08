@@ -47,7 +47,7 @@ export async function getTidbitsSiteHomepageContents(
     const categoriesArray = [];
 
     for (const category of byteCollectionCategories) {
-      const categoryWithByteCollection = await getApiResponse<CategoryWithByteCollection>(space, `byte-collection-categories/${category.id}`);
+      const categoryWithByteCollection = await axios.get(`${getBaseUrl()}/api/byte-collection-categories/${category.id}?spaceId=${space.id}`);
       categoriesArray.push(categoryWithByteCollection);
     }
     return (
