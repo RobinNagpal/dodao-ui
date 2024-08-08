@@ -1,10 +1,11 @@
 import { MutationUpsertByteRatingArgs } from '@/graphql/generated/generated-types';
 import { getDecodedJwtFromContext } from '@/app/api/helpers/permissions/getJwtFromContext';
+import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { prisma } from '@/prisma';
 import { ByteRating } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST(req: NextRequest) {
+async function postHandler(req: NextRequest) {
   const args: MutationUpsertByteRatingArgs = await req.json();
   const decodedJWT = await getDecodedJwtFromContext(req);
   const xForwardedFor = req.headers.get('x-forwarded-for');
@@ -37,3 +38,5 @@ export async function POST(req: NextRequest) {
   });
   return NextResponse.json({ byteRating }, { status: 200 });
 }
+
+export const POST = withErrorHandling(postHandler);

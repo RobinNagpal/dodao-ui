@@ -1,8 +1,9 @@
 import { getDecodedJwtFromContext } from '@/app/api/helpers/permissions/getJwtFromContext';
 import { prisma } from '@/prisma';
 import { NextRequest, NextResponse } from 'next/server';
+import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 
-export async function GET(req: NextRequest) {
+async function getHandler(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const spaceId = searchParams.get('spaceId');
   const courseKey = searchParams.get('courseKey');
@@ -20,3 +21,5 @@ export async function GET(req: NextRequest) {
 
   return NextResponse.json({ submissions }, { status: 200 });
 }
+
+export const GET = withErrorHandling(getHandler);

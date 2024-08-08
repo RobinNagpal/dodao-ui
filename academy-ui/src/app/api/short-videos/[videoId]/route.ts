@@ -3,10 +3,11 @@ import { checkEditSpacePermission } from '@/app/api/helpers/space/checkEditSpace
 import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
 import { NextRequest, NextResponse } from 'next/server';
 import { ByteCollectionItemType } from '@/app/api/helpers/byteCollection/byteCollectionItemType';
+import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { v4 as uuidv4 } from 'uuid';
 import { prisma } from '@/prisma';
 
-export async function GET(req: NextRequest, { params: { videoId } }: { params: { videoId: string } }) {
+async function getHandler(req: NextRequest, { params: { videoId } }: { params: { videoId: string } }) {
   const { searchParams } = new URL(req.url);
   const spaceId = searchParams.get('spaceId');
   if (!spaceId) return NextResponse.json({ message: 'spaceId is required' }, { status: 400 });
@@ -21,7 +22,7 @@ export async function GET(req: NextRequest, { params: { videoId } }: { params: {
   return NextResponse.json({ shortVideo }, { status: 200 });
 }
 
-export async function POST(req: NextRequest, { params: { videoId } }: { params: { videoId: string } }) {
+async function postHandler(req: NextRequest, { params: { videoId } }: { params: { videoId: string } }) {
   const { spaceId, shortVideo, byteCollectionId } = await req.json();
   try {
     const spaceById = await prisma.space.findUniqueOrThrow({ where: { id: spaceId } });
@@ -97,7 +98,7 @@ export async function POST(req: NextRequest, { params: { videoId } }: { params: 
   }
 }
 
-export async function DELETE(req: NextRequest, { params: { videoId } }: { params: { videoId: string } }) {
+async function deleteHandler(req: NextRequest, { params: { videoId } }: { params: { videoId: string } }) {
   const { spaceId }: MutationDeleteShortVideoArgs = await req.json();
   const spaceById = await getSpaceById(spaceId);
 
@@ -123,3 +124,7 @@ export async function DELETE(req: NextRequest, { params: { videoId } }: { params
     console.log(error);
   }
 }
+
+export const GET = withErrorHandling(getHandler);
+export const POST = withErrorHandling(postHandler);
+export const DELETE = withErrorHandling(deleteHandler);

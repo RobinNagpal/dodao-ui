@@ -3,11 +3,12 @@ import { GuideType } from '@/app/api/helpers/deprecatedSchemas/models/GuideModel
 import { MutationUpsertGuideArgs } from '@/graphql/generated/generated-types';
 import { logError } from '@/app/api/helpers/adapters/errorLogger';
 import { checkEditSpacePermission } from '@/app/api/helpers/space/checkEditSpacePermission';
+import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { prisma } from '@/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 import { v4 } from 'uuid';
 
-export async function POST(req: NextRequest) {
+async function postHandler(req: NextRequest) {
   try {
     const { guideInput, spaceId } = (await req.json()) as MutationUpsertGuideArgs;
     const spaceById = await prisma.space.findUniqueOrThrow({ where: { id: spaceId } });
@@ -126,3 +127,5 @@ export async function POST(req: NextRequest) {
     throw e;
   }
 }
+
+export const POST = withErrorHandling(postHandler);

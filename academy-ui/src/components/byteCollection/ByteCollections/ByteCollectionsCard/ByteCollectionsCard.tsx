@@ -246,13 +246,13 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
           {isAdmin && (
             <li>
               <Button
-                className="rounded-lg bg-white"
+                className="rounded-lg text-color"
+                variant="outlined"
+                primary
                 style={{
                   border: '2px dotted',
                   padding: '0.5rem',
                   marginBottom: '1.25rem',
-                  borderColor: '#d1d5db',
-                  color: '#4b5563',
                   letterSpacing: '0.05em',
                   borderRadius: '0.5rem',
                 }}

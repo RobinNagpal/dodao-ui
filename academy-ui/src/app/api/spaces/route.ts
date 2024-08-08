@@ -1,8 +1,9 @@
 import { isRequestUserSuperAdmin } from '@/app/api/helpers/space/checkEditSpacePermission';
 import { prisma } from '@/prisma';
 import { NextRequest, NextResponse } from 'next/server';
+import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 
-export async function GET(req: NextRequest) {
+async function getHandler(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const domain = searchParams.get('domain');
 
@@ -48,3 +49,5 @@ export async function GET(req: NextRequest) {
 
   return NextResponse.json([space]);
 }
+
+export const GET = withErrorHandling(getHandler);

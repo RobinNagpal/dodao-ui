@@ -1,8 +1,9 @@
 import { QueryByteSocialShareArgs } from '@/graphql/generated/generated-types';
+import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { prisma } from '@/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET(req: NextRequest) {
+async function getHandler(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const args: QueryByteSocialShareArgs = {
     byteId: searchParams.get('byteId')!,
@@ -22,3 +23,5 @@ export async function GET(req: NextRequest) {
 
   return NextResponse.json({ byteSocialShare }, { status: 200 });
 }
+
+export const GET = withErrorHandling(getHandler);

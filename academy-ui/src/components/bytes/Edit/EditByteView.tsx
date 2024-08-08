@@ -90,12 +90,12 @@ export default function EditByteView(props: {
                 </Input>
                 <Input
                   modelValue={byte.content}
-                  error={inputError('content') ? 'Excerpt is required and should be less than 64 characters long' : ''}
-                  placeholder="byte.create.excerpt"
+                  error={inputError('content') ? 'Summary is required and should be less than 64 characters long' : ''}
+                  placeholder="byte.create.summary"
                   maxLength={64}
                   onUpdate={(e) => updateByteFunctions.updateByteField('content', e)}
                 >
-                  Excerpt *
+                  Summary *
                 </Input>
 
                 <TextareaArray
