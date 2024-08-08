@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
       ...timelineObject,
     },
   });
-  return NextResponse.json({ status: 200, timeline });
+  return NextResponse.json({ timeline }, { status: 200 });
 }
 
 export async function GET(req: NextRequest, { params: { timelineId } }: { params: { timelineId: string } }) {
@@ -41,5 +41,5 @@ export async function GET(req: NextRequest, { params: { timelineId } }: { params
     },
   });
 
-  return NextResponse.json({ status: 200, timeline });
+  return NextResponse.json({ timeline }, { status: 200 });
 }

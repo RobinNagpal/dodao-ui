@@ -4,7 +4,7 @@ import { prisma } from '@/prisma';
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const spaceId = searchParams.get('spaceId');
-  if (!spaceId) return NextResponse.json({ status: 400, message: 'Space ID is required' });
+  if (!spaceId) return NextResponse.json({ message: 'Space ID is required' }, { status: 400 });
 
   const timelines = await prisma.timeline.findMany({
     where: {
@@ -12,5 +12,5 @@ export async function GET(req: NextRequest) {
     },
   });
 
-  return NextResponse.json({ status: 200, timelines });
+  return NextResponse.json({ timelines }, { status: 200 });
 }

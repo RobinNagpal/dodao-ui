@@ -41,5 +41,5 @@ export async function POST(req: NextRequest) {
       username: decodedJWT?.username,
     },
   });
-  return NextResponse.json({ status: 200, guideRating });
+  return NextResponse.json({ guideRating }, { status: 200 });
 }

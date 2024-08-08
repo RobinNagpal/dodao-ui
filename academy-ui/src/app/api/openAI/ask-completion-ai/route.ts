@@ -21,5 +21,5 @@ export async function POST(req: NextRequest) {
   });
 
   const completion = await openai.completions.create(createCompletionRequest, { timeout: 5 * 60 * 1000 });
-  return NextResponse.json({ status: 200, completion });
+  return NextResponse.json({ completion }, { status: 200 });
 }

@@ -41,5 +41,5 @@ export async function POST(req: NextRequest) {
     },
   });
 
-  return NextResponse.json({ status: 200, byteSocialShare: savedObject });
+  return NextResponse.json({ byteSocialShare: savedObject }, { status: 200 });
 }

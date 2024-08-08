@@ -83,7 +83,7 @@ export async function POST(req: NextRequest) {
     });
 
     if (!topicSubmission && course.topics.find((t) => t.key === topicKey)?.questions?.length === 0) {
-      return NextResponse.json({ status: 200, body: await createNewEmptyTopicSubmission(spaceId, courseKey, decodedJwt, topicKey) });
+      return NextResponse.json({ body: await createNewEmptyTopicSubmission(spaceId, courseKey, decodedJwt, topicKey) }, { status: 200 });
     }
 
     if (!topicSubmission) {
@@ -142,7 +142,7 @@ export async function POST(req: NextRequest) {
     const courseSubmission = await prisma.courseSubmission.findFirstOrThrow({ where: { spaceId, courseKey, createdBy: decodedJwt.username } });
     const topicSubmissions = await prisma.courseTopicSubmission.findMany({ where: { spaceId, courseKey, createdBy: decodedJwt.username } });
 
-    return NextResponse.json({ status: 200, body: { ...courseSubmission, topicSubmissions } });
+    return NextResponse.json({ body: { ...courseSubmission, topicSubmissions } }, { status: 200 });
   } catch (e) {
     console.error((e as any)?.response?.data);
     throw e;

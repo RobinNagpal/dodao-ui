@@ -9,7 +9,7 @@ import { prisma } from '@/prisma';
 export async function GET(req: NextRequest, { params: { videoId } }: { params: { videoId: string } }) {
   const { searchParams } = new URL(req.url);
   const spaceId = searchParams.get('spaceId');
-  if (!spaceId) return NextResponse.json({ status: 400, message: 'spaceId is required' });
+  if (!spaceId) return NextResponse.json({ message: 'spaceId is required' }, { status: 400 });
 
   const shortVideo = await prisma.shortVideo.findFirstOrThrow({
     where: {
@@ -18,7 +18,7 @@ export async function GET(req: NextRequest, { params: { videoId } }: { params: {
     },
   });
 
-  return NextResponse.json({ status: 200, shortVideo });
+  return NextResponse.json({ shortVideo }, { status: 200 });
 }
 
 export async function POST(req: NextRequest, { params: { videoId } }: { params: { videoId: string } }) {
@@ -90,8 +90,7 @@ export async function POST(req: NextRequest, { params: { videoId } }: { params: 
         },
       });
     }
-
-    return NextResponse.json({ status: 200, upsertedShortVideo });
+    return NextResponse.json({ upsertedShortVideo }, { status: 200 });
   } catch (error) {
     console.log(error);
     throw error;

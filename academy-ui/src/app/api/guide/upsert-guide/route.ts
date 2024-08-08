@@ -120,7 +120,7 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    return NextResponse.json({ status: 200, guide });
+    return NextResponse.json({ guide }, { status: 200 });
   } catch (e) {
     await logError((e as any)?.response?.data || 'Error in upsertGuide', {}, e as any, null, null);
     throw e;

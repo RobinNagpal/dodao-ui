@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    return NextResponse.json({ status: 200, body: { ...courseSubmissionModel, topicSubmissions: [] } });
+    return NextResponse.json({ body: { ...courseSubmissionModel, topicSubmissions: [] } }, { status: 200 });
   } catch (e) {
     console.error((e as any)?.response?.data);
     throw e;

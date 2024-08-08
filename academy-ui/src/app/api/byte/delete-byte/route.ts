@@ -24,5 +24,5 @@ export async function POST(req: NextRequest) {
     },
   });
 
-  return NextResponse.json({ status: 200, deleted: !!deleted });
+  return NextResponse.json({ deleted: !!deleted }, { status: 200 });
 }

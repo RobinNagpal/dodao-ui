@@ -13,7 +13,7 @@ export async function GET(req: NextRequest, { params: { demoId } }: { params: { 
     },
   });
 
-  return NextResponse.json({ status: 200, clickableDemoWithSteps });
+  return NextResponse.json({ clickableDemoWithSteps }, { status: 200 });
 }
 
 export async function DELETE(req: NextRequest, { params: { demoId } }: { params: { demoId: string } }) {
@@ -28,6 +28,7 @@ export async function DELETE(req: NextRequest, { params: { demoId } }: { params:
       archive: true,
     },
   });
+
   await prisma.byteCollectionItemMappings.updateMany({
     where: {
       itemId: demoId,
@@ -105,10 +106,9 @@ export async function POST(req: NextRequest, { params }: { params: { demoId: str
         },
       });
     }
-
-    return NextResponse.json({ status: 200, clickableDemo });
+    return NextResponse.json({ clickableDemo }, { status: 200 });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ status: 500, message: 'Internal Server Error' }, { status: 500 });
+    return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
   }
 }

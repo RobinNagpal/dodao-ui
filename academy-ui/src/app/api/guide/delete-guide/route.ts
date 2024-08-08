@@ -6,7 +6,7 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function POST(req: NextRequest) {
   const { spaceId, uuid }: MutationDeleteGuideArgs = await req.json();
   const spaceById = await prisma.space.findUniqueOrThrow({ where: { id: spaceId } });
-  if (!spaceById) return NextResponse.json({ status: 200, body: `No space found: ${spaceId}` });
+  if (!spaceById) return NextResponse.json({ body: `No space found: ${spaceId}` }, { status: 400 });
 
   await checkEditSpacePermission(spaceById, req);
   const guide = await prisma.guide.update({
@@ -15,5 +15,5 @@ export async function POST(req: NextRequest) {
       archive: true,
     },
   });
-  return NextResponse.json({ status: 200, guide });
+  return NextResponse.json({ guide }, { status: 200 });
 }

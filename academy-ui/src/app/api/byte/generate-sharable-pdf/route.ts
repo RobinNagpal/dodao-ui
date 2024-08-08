@@ -45,5 +45,5 @@ export async function POST(req: NextRequest) {
 
   const s3Key = `academy/${spaceById.id}/Social/${AcademyObjectTypes.bytes}/${filename}`;
 
-  return NextResponse.json({ status: 200, outputLocation: await uploadFileToS3(s3Key, 'application/pdf', tmpPdfFilePath) });
+  return NextResponse.json({ outputLocation: await uploadFileToS3(s3Key, 'application/pdf', tmpPdfFilePath) }, { status: 200 });
 }
