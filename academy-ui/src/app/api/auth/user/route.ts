@@ -1,4 +1,3 @@
-import { wrapToCatchError } from '@/app/api/helpers/response/apiResponseWrapper';
 import { prisma } from '@/prisma';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { getServerSession } from 'next-auth/next';
@@ -52,7 +51,7 @@ export async function PUT(request: Request) {
   }
 }
 
-async function POST1(request: Request) {
+export async function POST(request: Request) {
   const session = await getServerSession(authOptions);
   if (!session) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -81,5 +80,3 @@ async function POST1(request: Request) {
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
-
-export const POST = wrapToCatchError((request: Request) => POST1(request));
