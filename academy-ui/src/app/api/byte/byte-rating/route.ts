@@ -15,4 +15,4 @@ async function getHandler(req: NextRequest) {
   return NextResponse.json({ rating }, { status: 200 });
 }
 
-export const handler = withErrorHandling(getHandler);
+export const GET = withErrorHandling(getHandler);
