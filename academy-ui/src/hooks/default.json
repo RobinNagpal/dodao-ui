@@ -160,6 +160,7 @@
       "coursesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/arbitrum-university/HomeIcons/Courses.png",
       "guidesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/arbitrum-university/HomeIcons/Guides.png",
       "simulationsThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/arbitrum-university/HomeIcons/Simulations.png",
+      "clickabledemosThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/arbitrum-university/HomeIcons/Simulations.png",
       "timelinesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/arbitrum-university/HomeIcons/Timelines.png"
     },
 
@@ -292,6 +293,7 @@
       "coursesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/optimism-university/HomeIcons/Courses.png",
       "guidesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/optimism-university/HomeIcons/Guides.png",
       "simulationsThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/optimism-university/HomeIcons/optimism_simulations.png",
+      "clickabledemosThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/optimism-university/HomeIcons/optimism_simulations.png",
       "timelinesThumbnail": "https://d31h13bdjwgzxs.cloudfront.net/academy/optimism-university/HomeIcons/Timelines.png"
     },
     "serum-sol-mainnet": {
