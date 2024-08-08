@@ -44,10 +44,12 @@ export async function getTidbitsSiteHomepageContents(
     const response = await axios.get(`${getBaseUrl()}/api/byte-collection-categories?spaceId=${space.id}`);
     const byteCollectionCategories = response.data.byteCollectionCategories;
 
-    const categoriesArray = [];
+    const categoriesArray: CategoryWithByteCollection[] = [];
 
     for (const category of byteCollectionCategories) {
-      const categoryWithByteCollection = await axios.get(`${getBaseUrl()}/api/byte-collection-categories/${category.id}?spaceId=${space.id}`);
+      const categoryWithByteCollection = (await axios.get(
+        `${getBaseUrl()}/api/byte-collection-categories/${category.id}?spaceId=${space.id}`
+      )) as CategoryWithByteCollection;
       categoriesArray.push(categoryWithByteCollection);
     }
     return (
