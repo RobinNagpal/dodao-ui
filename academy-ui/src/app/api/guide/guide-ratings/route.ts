@@ -6,8 +6,8 @@ async function getHandler(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const guideUuid = searchParams.get('guideUuid');
   const spaceId = searchParams.get('spaceId');
-  if (!guideUuid) return NextResponse.json({ status: 400, body: 'No guideUuid provided' });
-  if (!spaceId) return NextResponse.json({ status: 400, body: 'No spaceId provided' });
+  if (!guideUuid) return NextResponse.json({ body: 'No guideUuid provided' }, { status: 400 });
+  if (!spaceId) return NextResponse.json({ body: 'No spaceId provided' }, { status: 400 });
 
   const guideRatings = await prisma.guideRating.findMany({
     where: {
@@ -23,7 +23,7 @@ async function getHandler(req: NextRequest) {
     take: 200,
   });
 
-  return NextResponse.json({ status: 200, guideRatings });
+  return NextResponse.json({ guideRatings }, { status: 200 });
 }
 
 export const GET = withErrorHandling(getHandler);

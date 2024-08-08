@@ -8,7 +8,7 @@ async function getHandler(req: NextRequest) {
   const spaceId = searchParams.get('spaceId');
   const courseKey = searchParams.get('courseKey');
   if (!spaceId || !courseKey) {
-    return NextResponse.json({ status: 400, message: 'Space ID and course key are required' });
+    return NextResponse.json({ message: 'Space ID and course key are required' }, { status: 400 });
   }
   const decodedJWT = await getDecodedJwtFromContext(req);
   const submissions = await prisma.courseTopicSubmission.findMany({
@@ -19,7 +19,7 @@ async function getHandler(req: NextRequest) {
     },
   });
 
-  return NextResponse.json({ status: 200, submissions });
+  return NextResponse.json({ submissions }, { status: 200 });
 }
 
 export const GET = withErrorHandling(getHandler);

@@ -7,7 +7,7 @@ import { NextRequest, NextResponse } from 'next/server';
 async function postHandler(req: NextRequest) {
   const args: MutationCreateSummaryOfContentArgs = await req.json();
   const text = await generateSummaryOfContent(args.input);
-  return NextResponse.json({ status: 200, body: { text, tokenCount: getTokenCount(text) } });
+  return NextResponse.json({ body: { text, tokenCount: getTokenCount(text) } }, { status: 200 });
 }
 
 export const POST = withErrorHandling(postHandler);

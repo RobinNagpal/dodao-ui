@@ -19,7 +19,7 @@ async function getHandler(req: NextRequest) {
     return NextResponse.json([space]);
   }
 
-  if (domain?.includes('.tidbitshub.org')) {
+  if (domain?.includes('.tidbitshub.org') || domain?.includes('.tidbitshub-localhost.org')) {
     const idFromDomain = domain.split('.')[0];
     const space = await prisma.space.findFirst({
       where: {

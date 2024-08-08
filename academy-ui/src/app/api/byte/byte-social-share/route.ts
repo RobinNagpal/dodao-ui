@@ -9,8 +9,8 @@ async function getHandler(req: NextRequest) {
     byteId: searchParams.get('byteId')!,
     spaceId: searchParams.get('spaceId')!,
   };
-  if (!args.byteId) return NextResponse.json({ status: 400, body: 'No byteId provided' });
-  if (!args.spaceId) return NextResponse.json({ status: 400, body: 'No spaceId provided' });
+  if (!args.byteId) return NextResponse.json({ body: 'No byteId provided' }, { status: 400 });
+  if (!args.spaceId) return NextResponse.json({ body: 'No spaceId provided' }, { status: 400 });
 
   const byteSocialShare = await prisma.byteSocialShare.findUnique({
     where: {
@@ -21,7 +21,7 @@ async function getHandler(req: NextRequest) {
     },
   });
 
-  return NextResponse.json({ status: 200, byteSocialShare });
+  return NextResponse.json({ byteSocialShare }, { status: 200 });
 }
 
 export const GET = withErrorHandling(getHandler);

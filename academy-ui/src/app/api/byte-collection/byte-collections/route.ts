@@ -8,7 +8,7 @@ async function getHandler(req: NextRequest) {
   const { searchParams } = new URL(req.url);
 
   const spaceId = searchParams.get('spaceId');
-  if (!spaceId) return NextResponse.json({ status: 400, body: 'No spaceId provided' });
+  if (!spaceId) return NextResponse.json({ body: 'No spaceId provided' }, { status: 400 });
 
   const byteCollections = await prisma.byteCollection.findMany({
     where: {
@@ -28,7 +28,7 @@ async function getHandler(req: NextRequest) {
     byteCollectionsWithBytes.push(await getByteCollectionWithItem(byteCollection));
   }
 
-  return NextResponse.json({ status: 200, byteCollections: byteCollectionsWithBytes });
+  return NextResponse.json({ byteCollections: byteCollectionsWithBytes }, { status: 200 });
 }
 
 export const GET = withErrorHandling(getHandler);

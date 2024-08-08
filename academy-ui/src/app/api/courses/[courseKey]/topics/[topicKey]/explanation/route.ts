@@ -53,7 +53,7 @@ async function postHandler(req: NextRequest, { params: { courseKey, topicKey } }
       data: { topics },
     });
 
-    return NextResponse.json({ status: 200, updatedCourse });
+    return NextResponse.json({ updatedCourse }, { status: 200 });
   } catch (e) {
     console.error((e as any)?.response?.data);
     throw e;
@@ -87,7 +87,7 @@ async function deleteHandler(req: NextRequest, { params: { courseKey, topicKey }
       data: { topics },
     });
 
-    return NextResponse.json({ status: 200, updatedCourse });
+    return NextResponse.json({ updatedCourse }, { status: 200 });
   } catch (e) {
     console.error((e as any)?.response?.data);
     throw e;
@@ -130,7 +130,7 @@ async function putHandler(req: NextRequest, { params: { courseKey, topicKey } }:
       data: { topics },
     });
 
-    return NextResponse.json({ status: 200, updatedCourse });
+    return NextResponse.json({ updatedCourse }, { status: 200 });
   } catch (e) {
     console.error((e as any)?.response?.data);
     throw e;
@@ -167,7 +167,7 @@ async function patchHandler(req: NextRequest, { params: { courseKey, topicKey } 
       data: { topics },
     });
 
-    return NextResponse.json({ status: 200, updatedCourse });
+    return NextResponse.json({ updatedCourse }, { status: 200 });
   } catch (e) {
     console.error((e as any)?.response?.data);
     throw e;

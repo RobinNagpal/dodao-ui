@@ -13,7 +13,7 @@ import { NextRequest, NextResponse } from 'next/server';
 async function getHandler(req: NextRequest, { params: { categoryId } }: { params: { categoryId: string } }) {
   const { searchParams } = new URL(req.url);
   const spaceId = searchParams.get('spaceId');
-  if (!spaceId) return NextResponse.json({ status: 400, message: 'Space ID is required' });
+  if (!spaceId) return NextResponse.json({ message: 'Space ID is required' }, { status: 400 });
 
   const byteCollectionCategory = await prisma.byteCollectionCategory.findUniqueOrThrow({
     where: {
@@ -37,20 +37,22 @@ async function getHandler(req: NextRequest, { params: { categoryId } }: { params
     byteCollectionArr.push(await getByteCollectionWithItem(byteCollection));
   }
 
-  return NextResponse.json({
-    status: 200,
-    byteCollectionCategoryWithByteCollections: {
-      id: byteCollectionCategory.id,
-      name: byteCollectionCategory.name,
-      excerpt: byteCollectionCategory.excerpt,
-      imageUrl: byteCollectionCategory.imageUrl,
-      byteCollections: byteCollectionArr,
-      creator: byteCollectionCategory.creator,
-      status: byteCollectionCategory.status,
-      priority: byteCollectionCategory.priority,
-      archive: !!byteCollectionCategory.archive!,
+  return NextResponse.json(
+    {
+      byteCollectionCategoryWithByteCollections: {
+        id: byteCollectionCategory.id,
+        name: byteCollectionCategory.name,
+        excerpt: byteCollectionCategory.excerpt,
+        imageUrl: byteCollectionCategory.imageUrl,
+        byteCollections: byteCollectionArr,
+        creator: byteCollectionCategory.creator,
+        status: byteCollectionCategory.status,
+        priority: byteCollectionCategory.priority,
+        archive: !!byteCollectionCategory.archive!,
+      },
     },
-  });
+    { status: 200 }
+  );
 }
 
 async function postHandler(req: NextRequest, { params: { categoryId } }: { params: { categoryId: string } }) {
@@ -88,7 +90,7 @@ async function postHandler(req: NextRequest, { params: { categoryId } }: { param
     },
   });
 
-  return NextResponse.json({ status: 200, byteCollectionCategory });
+  return NextResponse.json({ byteCollectionCategory }, { status: 200 });
 }
 
 async function deleteHandler(req: NextRequest, { params: { categoryId } }: { params: { categoryId: string } }) {
@@ -107,7 +109,7 @@ async function deleteHandler(req: NextRequest, { params: { categoryId } }: { par
       },
     });
 
-    return NextResponse.json({ status: 200, updatedbyteCollectionCategory });
+    return NextResponse.json({ updatedbyteCollectionCategory }, { status: 200 });
   } catch (e) {
     console.log(e);
     throw e;

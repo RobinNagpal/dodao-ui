@@ -17,7 +17,7 @@ async function postHandler(req: NextRequest) {
     },
   });
 
-  return NextResponse.json({ status: 200, success: true });
+  return NextResponse.json({ success: true }, { status: 200 });
 }
 
 export const POST = withErrorHandling(postHandler);

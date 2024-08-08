@@ -32,7 +32,7 @@ async function postHandler(req: NextRequest) {
 
     const byteCollectionWithBytes = await getByteCollectionWithItem(byteCollection);
 
-    return NextResponse.json({ status: 200, byteCollectionWithBytes });
+    return NextResponse.json({ byteCollectionWithBytes }, { status: 200 });
   } catch (e) {
     await logError((e as any)?.response?.data || 'Error in creatByte', {}, e as any, null, null);
     throw e;

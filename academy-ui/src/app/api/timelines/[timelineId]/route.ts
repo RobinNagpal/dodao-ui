@@ -32,7 +32,7 @@ async function postHandler(req: NextRequest) {
       ...timelineObject,
     },
   });
-  return NextResponse.json({ status: 200, timeline });
+  return NextResponse.json({ timeline }, { status: 200 });
 }
 
 async function getHandler(req: NextRequest, { params: { timelineId } }: { params: { timelineId: string } }) {
@@ -42,7 +42,7 @@ async function getHandler(req: NextRequest, { params: { timelineId } }: { params
     },
   });
 
-  return NextResponse.json({ status: 200, timeline });
+  return NextResponse.json({ timeline }, { status: 200 });
 }
 
 export const POST = withErrorHandling(postHandler);

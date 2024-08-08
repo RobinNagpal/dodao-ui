@@ -95,7 +95,7 @@ async function postHandler(req: NextRequest) {
   const courseSubmission = await prisma.courseSubmission.findFirstOrThrow({ where: { spaceId, courseKey, createdBy: decodedJWT?.username } });
   const topicSubmissions = await prisma.courseTopicSubmission.findMany({ where: { spaceId, courseKey, createdBy: decodedJWT?.username } });
 
-  return NextResponse.json({ status: 200, body: { ...courseSubmission, topicSubmissions } });
+  return NextResponse.json({ body: { ...courseSubmission, topicSubmissions } }, { status: 200 });
 }
 
 export const POST = withErrorHandling(postHandler);

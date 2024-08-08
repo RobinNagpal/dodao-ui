@@ -22,7 +22,7 @@ async function postHandler(req: NextRequest) {
   });
 
   const completion = await openai.completions.create(createCompletionRequest, { timeout: 5 * 60 * 1000 });
-  return NextResponse.json({ status: 200, completion });
+  return NextResponse.json({ completion }, { status: 200 });
 }
 
 export const POST = withErrorHandling(postHandler);

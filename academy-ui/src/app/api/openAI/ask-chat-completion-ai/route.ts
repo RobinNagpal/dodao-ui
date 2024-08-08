@@ -8,7 +8,7 @@ async function postHandler(req: NextRequest) {
   const args: MutationAskChatCompletionAiArgs & { retryCount?: number } = await req.json();
   const completion = await askChatCompletionAI(args);
 
-  return NextResponse.json({ status: 200, completion });
+  return NextResponse.json({ completion }, { status: 200 });
 }
 
 async function askChatCompletionAI(args: MutationAskChatCompletionAiArgs & { retryCount?: number }): Promise<OpenAiChatCompletionResponse> {

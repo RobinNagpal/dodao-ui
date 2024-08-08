@@ -52,7 +52,7 @@ async function putHandler(request: Request) {
   }
 }
 
-async function POST1(request: Request) {
+async function postHandler(request: Request) {
   const session = await getServerSession(authOptions);
   if (!session) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -82,6 +82,6 @@ async function POST1(request: Request) {
   }
 }
 
-export const POST = withErrorHandling(POST1);
+export const POST = withErrorHandling(postHandler);
 export const GET = withErrorHandling(getHandler);
 export const PUT = withErrorHandling(putHandler);

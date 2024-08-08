@@ -70,7 +70,7 @@ async function postHandler(req: NextRequest, res: NextResponse) {
     console.error(e);
     throw e;
   }
-  return NextResponse.json({ status: 200, space: getSpaceWithIntegrations(spaceInput.id) });
+  return NextResponse.json({ space: getSpaceWithIntegrations(spaceInput.id) }, { status: 200 });
 }
 
 export const POST = withErrorHandling(postHandler);

@@ -35,7 +35,7 @@ async function postHandler(req: NextRequest) {
 
   const byteCollectionsWithBytes = await getByteCollectionWithItem(updatedByteCollection);
 
-  return NextResponse.json({ status: 200, byteCollection: byteCollectionsWithBytes });
+  return NextResponse.json({ byteCollection: byteCollectionsWithBytes }, { status: 200 });
 }
 
 export const POST = withErrorHandling(postHandler);

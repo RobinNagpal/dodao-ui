@@ -11,7 +11,7 @@ import { v4 as uuidv4 } from 'uuid';
 async function postHandler(req: NextRequest) {
   try {
     const { spaceId, code, redirectUri } = (await req.json()) as MutationAddDiscordCredentialsArgs;
-    if (!spaceId) return NextResponse.json({ status: 400, body: 'No Space ID provided' });
+    if (!spaceId) return NextResponse.json({ body: 'No Space ID provided' }, { status: 400 });
     const spaceById = await getSpaceById(spaceId);
 
     await checkEditSpacePermission(spaceById, req);
@@ -52,7 +52,7 @@ async function postHandler(req: NextRequest) {
       },
     });
 
-    return NextResponse.json({ status: 200, body: spaceById });
+    return NextResponse.json({ body: spaceById }, { status: 200 });
   } catch (e) {
     console.error((e as any)?.response?.data);
     throw e;

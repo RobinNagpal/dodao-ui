@@ -5,9 +5,9 @@ import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandli
 export async function get_handler(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const spaceId = searchParams.get('spaceId');
-  if (!spaceId) return NextResponse.json({ status: 400, body: 'No spaceId provided' });
+  if (!spaceId) return NextResponse.json({ body: 'No spaceId provided' }, { status: 400 });
   const bytes = await prisma.byte.findMany({ where: { spaceId: spaceId } });
-  return NextResponse.json({ status: 200, bytes });
+  return NextResponse.json({ bytes }, { status: 200 });
 }
 
 /// Wrapping handle in withErrorHandling

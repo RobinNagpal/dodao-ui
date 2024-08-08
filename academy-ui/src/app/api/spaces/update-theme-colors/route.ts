@@ -27,7 +27,7 @@ async function postHandler(req: NextRequest) {
     },
   });
 
-  return NextResponse.json({ status: 200, space });
+  return NextResponse.json({ space }, { status: 200 });
 }
 
 export const POST = withErrorHandling(postHandler);

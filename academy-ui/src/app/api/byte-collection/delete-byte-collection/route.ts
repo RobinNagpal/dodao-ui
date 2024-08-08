@@ -26,7 +26,7 @@ async function postHandler(req: NextRequest) {
     },
   });
 
-  return NextResponse.json({ status: 200, byteCollection: updatedByteCollection });
+  return NextResponse.json({ byteCollection: updatedByteCollection }, { status: 200 });
 }
 
 export const POST = withErrorHandling(postHandler);

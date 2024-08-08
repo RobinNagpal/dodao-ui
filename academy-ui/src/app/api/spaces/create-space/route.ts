@@ -54,7 +54,7 @@ async function postHandler(req: NextRequest) {
 
   await upsertSpaceIntegrations(spaceInput, decodedJWT!);
 
-  return NextResponse.json({ status: 200, space: await getSpaceWithIntegrations(spaceInput.id) });
+  return NextResponse.json({ space: await getSpaceWithIntegrations(spaceInput.id) }, { status: 200 });
 }
 
 export const POST = withErrorHandling(postHandler);

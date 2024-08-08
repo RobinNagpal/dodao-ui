@@ -3,7 +3,6 @@ import { QuestionType } from '@/app/api/helpers/deprecatedSchemas/models/enums';
 import { ByteStep, UpsertByteInput } from '@/graphql/generated/generated-types';
 import { transformByteInputSteps } from '@/app/api/helpers/byte/transformByteInputSteps';
 import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
-import { logError } from '@/app/api/helpers/adapters/errorLogger';
 import { checkEditSpacePermission } from '@/app/api/helpers/space/checkEditSpacePermission';
 import { slugify } from '@/app/api/helpers/space/slugify';
 import { prisma } from '@/prisma';
@@ -101,8 +100,7 @@ async function post_handler(req: NextRequest) {
       },
     });
   }
-
-  return NextResponse.json({ status: 200, upsertedByte });
+  return NextResponse.json({ upsertedByte }, { status: 200 });
 }
 
 /// Wrapping handle in withErrorHandling

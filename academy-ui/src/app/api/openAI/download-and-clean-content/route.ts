@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 async function postHandler(req: NextRequest) {
   const args: MutationDownloadAndCleanContentArgs = await req.json();
-  return NextResponse.json({ status: 200, downloadAndCleanContent: await downloadFromAllLinks(args.input) });
+  return NextResponse.json({ downloadAndCleanContent: await downloadFromAllLinks(args.input) }, { status: 200 });
 }
 
 export const POST = withErrorHandling(postHandler);

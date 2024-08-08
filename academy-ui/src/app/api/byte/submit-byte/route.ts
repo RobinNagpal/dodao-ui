@@ -38,7 +38,7 @@ async function postHandler(req: NextRequest) {
     postByteSubmission(process.env.ALL_GUIDE_SUBMISSIONS_WEBHOOK, byte, submissionInput);
   }
 
-  return NextResponse.json({ status: 200, submitByte: submission });
+  return NextResponse.json({ submitByte: submission }, { status: 200 });
 }
 
 export const POST = withErrorHandling(postHandler);

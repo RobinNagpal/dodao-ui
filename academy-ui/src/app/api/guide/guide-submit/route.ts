@@ -145,9 +145,9 @@ async function getHandler(req: NextRequest) {
   const filters = searchParams.get('filters');
   const spaceId = searchParams.get('spaceId');
   const guideId = searchParams.get('guideId');
-  if (!spaceId) return NextResponse.json({ status: 400, message: 'Space ID is required' });
-  if (!guideId) return NextResponse.json({ status: 400, message: 'Guide UUID is required' });
-  if (!filters) return NextResponse.json({ status: 400, message: 'Filters are required' });
+  if (!spaceId) return NextResponse.json({ message: 'Space ID is required' }, { status: 400 });
+  if (!guideId) return NextResponse.json({ message: 'Guide UUID is required' }, { status: 400 });
+  if (!filters) return NextResponse.json({ message: 'Filters are required' }, { status: 400 });
   const { page, itemsPerPage, createdByUsername, createdAt, correctQuestionsCount } = JSON.parse(filters) || {};
   const submissions = await prisma.guideSubmission.findMany({
     skip: page * itemsPerPage,
@@ -168,7 +168,7 @@ async function getHandler(req: NextRequest) {
       createdAt: 'desc',
     },
   });
-  return NextResponse.json({ status: 200, guideSubmissions: submissions });
+  return NextResponse.json({ guideSubmissions: submissions }, { status: 200 });
 }
 
 async function postHandler(req: NextRequest) {
@@ -183,7 +183,7 @@ async function postHandler(req: NextRequest) {
 
   const submitGuide = await doSubmitGuide(decodedJWT!, guideInput.submissionInput, req);
 
-  return NextResponse.json({ status: 200, submitGuide });
+  return NextResponse.json({ submitGuide }, { status: 200 });
 }
 
 export const GET = withErrorHandling(getHandler);

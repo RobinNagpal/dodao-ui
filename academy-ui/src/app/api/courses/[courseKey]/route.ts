@@ -26,7 +26,7 @@ async function postHandler(req: NextRequest, { params: { courseKey } }: { params
       ...args.course,
     },
   });
-  return NextResponse.json({ status: 200, course });
+  return NextResponse.json({ course }, { status: 200 });
 }
 
 async function getHandler(req: NextRequest, { params: { courseKey } }: { params: { courseKey: string } }) {
@@ -36,7 +36,7 @@ async function getHandler(req: NextRequest, { params: { courseKey } }: { params:
     },
   });
 
-  return NextResponse.json({ status: 200, course });
+  return NextResponse.json({ course }, { status: 200 });
 }
 
 export const POST = withErrorHandling(postHandler);

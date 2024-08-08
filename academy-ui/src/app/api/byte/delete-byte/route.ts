@@ -25,7 +25,7 @@ async function postHandler(req: NextRequest) {
     },
   });
 
-  return NextResponse.json({ status: 200, deleted: !!deleted });
+  return NextResponse.json({ deleted: !!deleted }, { status: 200 });
 }
 
 export const POST = withErrorHandling(postHandler);

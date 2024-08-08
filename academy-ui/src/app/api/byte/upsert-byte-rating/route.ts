@@ -36,7 +36,7 @@ export async function postHandler(req: NextRequest) {
       username: decodedJWT?.username,
     },
   });
-  return NextResponse.json({ status: 200, byteRating });
+  return NextResponse.json({ byteRating }, { status: 200 });
 }
 
 export const POST = withErrorHandling(postHandler);

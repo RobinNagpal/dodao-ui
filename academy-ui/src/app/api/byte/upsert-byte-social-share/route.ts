@@ -42,7 +42,7 @@ async function postHandler(req: NextRequest) {
     },
   });
 
-  return NextResponse.json({ status: 200, byteSocialShare: savedObject });
+  return NextResponse.json({ byteSocialShare: savedObject }, { status: 200 });
 }
 
 export const POST = withErrorHandling(postHandler);

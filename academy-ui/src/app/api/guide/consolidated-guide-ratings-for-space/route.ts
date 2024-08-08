@@ -8,7 +8,7 @@ import { NextRequest, NextResponse } from 'next/server';
 async function getHandler(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const spaceId = searchParams.get('spaceId');
-  if (!spaceId) return NextResponse.json({ status: 400, body: 'No spaceId provided' });
+  if (!spaceId) return NextResponse.json({ body: 'No spaceId provided' }, { status: 400 });
 
   const spaceById = await getSpaceById(spaceId);
   await checkEditSpacePermission(spaceById, req);
@@ -26,7 +26,7 @@ async function getHandler(req: NextRequest) {
       negativeFeedback: true,
     },
   });
-  return NextResponse.json({ status: 200, consolidatedGuideRatingsForSpace: consolidateGuideRatings(ratings) });
+  return NextResponse.json({ consolidatedGuideRatingsForSpace: consolidateGuideRatings(ratings) }, { status: 200 });
 }
 
 export const GET = withErrorHandling(getHandler);
