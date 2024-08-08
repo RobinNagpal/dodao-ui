@@ -1,23 +1,28 @@
 'use client';
 
-import withSpace from '@/contexts/withSpace';
-import Block from '@dodao/web-core/components/app/Block';
-import Input from '@dodao/web-core/components/core/input/Input';
-import PageLoading from '@dodao/web-core/components/core/loaders/PageLoading';
-import Button from '@dodao/web-core/components/core/buttons/Button';
-import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import Stepper from '@/components/clickableDemos/Edit/ClickableDemoStepper';
-import { useEditClickableDemo } from '@/components/clickableDemos/Edit/useEditClickableDemo';
 import { useDeleteClickableDemo } from '@/components/clickableDemos/Edit/useDeleteClickableDemo';
-import { SpaceWithIntegrationsFragment, ByteCollectionFragment } from '@/graphql/generated/generated-types';
+import { useEditClickableDemo } from '@/components/clickableDemos/Edit/useEditClickableDemo';
+import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
+import withSpace from '@/contexts/withSpace';
 import { useI18 } from '@/hooks/useI18';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
+import Block from '@dodao/web-core/components/app/Block';
+import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
+import Input from '@dodao/web-core/components/core/input/Input';
+import PageLoading from '@dodao/web-core/components/core/loaders/PageLoading';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import { ByteCollectionFragment, CreateSignedUrlInput, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { ClickableDemoErrors } from '@dodao/web-core/types/errors/clickableDemoErrors';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
-import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
-import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
+import axios from 'axios';
+import { slugify } from '@dodao/web-core/utils/auth/slugify';
+import { getUploadedImageUrlFromSingedUrl } from '@dodao/web-core/utils/upload/getUploadedImageUrlFromSingedUrl';
+import html2canvas from 'html2canvas';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 
 interface EditClickableDemoProps {
   space: SpaceWithIntegrationsFragment;
@@ -33,7 +38,11 @@ function EditClickableDemo({ space, demoId, byteCollection }: EditClickableDemoP
     demoId!
   );
   const { handleDeletion } = useDeleteClickableDemo(space, demoId!);
-  const threeDotItems: EllipsisDropdownItem[] = [{ label: 'Delete', key: 'delete' }];
+  const { showNotification } = useNotificationContext();
+  const threeDotItems: EllipsisDropdownItem[] = [
+    { label: 'Delete', key: 'delete' },
+    { label: 'Genarate Images', key: 'generate_images' },
+  ];
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const errors = clickableDemoErrors;
@@ -44,7 +53,113 @@ function EditClickableDemo({ space, demoId, byteCollection }: EditClickableDemoP
   };
 
   const { $t } = useI18();
+  async function uploadToS3AndReturnScreenshotUrl(file: File | null, objectId: string) {
+    if (!file) return;
+    const input: CreateSignedUrlInput = {
+      imageType: 'ClickableDemos/SCREENSHOT_CAPTURE',
+      contentType: 'image/png',
+      objectId,
+      name: file.name.replace(' ', '_').toLowerCase(),
+    };
 
+    const response = await axios.post('/api/s3-signed-urls', { spaceId, input });
+
+    const signedUrl = response?.data?.url!;
+    await axios.put(signedUrl, file, {
+      headers: { 'Content-Type': 'image/png' },
+    });
+    const screenshotUrl = getUploadedImageUrlFromSingedUrl(signedUrl);
+    return screenshotUrl;
+  }
+  function getFileName(url: string): string {
+    const segments = url.split('/');
+    return segments[segments.length - 1] + '_screenshot.png';
+  }
+  function base64ToFile(base64String: string | undefined, filename: string): File | null {
+    if (!base64String) {
+      console.error('Invalid Base64 string');
+      return null;
+    }
+
+    const arr = base64String.split(',');
+    if (arr.length !== 2) {
+      console.error('Invalid Base64 string format');
+      return null;
+    }
+
+    const mimeTypeMatch = arr[0].match(/:(.*?);/);
+    const mimeType = mimeTypeMatch ? mimeTypeMatch[1] : '';
+
+    const byteString = atob(arr[1]);
+    const byteNumbers = new Uint8Array(byteString.length);
+
+    for (let i = 0; i < byteString.length; i++) {
+      byteNumbers[i] = byteString.charCodeAt(i);
+    }
+
+    return new File([byteNumbers], filename, { type: mimeType });
+  }
+  async function generate_images() {
+    const iframe = document.createElement('iframe') as HTMLIFrameElement;
+    iframe.id = 'iframe';
+    iframe.style.width = '1920px';
+    iframe.style.height = '1080px';
+    iframe.style.border = 'none';
+    iframe.style.position = 'absolute';
+    iframe.style.left = '-9999px';
+    iframe.style.top = '-9999px';
+    document.body.appendChild(iframe);
+    let stepNo = 1;
+    for (const step of clickableDemo.steps) {
+      try {
+        // Fetch the HTML content from the URL
+        const response = await axios.get(step.url);
+        if (response.status !== 200) {
+          throw new Error('Network response was not ok');
+        }
+        const htmlContent = response.data;
+        const blob = new Blob([htmlContent], { type: 'text/html' });
+        const iframe = document.getElementById('iframe') as HTMLIFrameElement;
+        if (iframe) {
+          const iframeSrc = URL.createObjectURL(blob); // Create a URL from the blob
+          iframe.src = iframeSrc; // Set the iframe src to the blob URL
+
+          // Optionally wait for the iframe to load
+          await new Promise<void>((resolve) => {
+            iframe.onload = () => {
+              resolve();
+            };
+          });
+
+          const iframeDocument = iframe.contentDocument || iframe.contentWindow?.document;
+          if (iframeDocument) {
+            const canvas = await html2canvas(iframeDocument.documentElement, {
+              useCORS: true,
+              width: 1920,
+              height: 1080,
+              backgroundColor: null,
+            });
+            if (canvas.width > 0 && canvas.height > 0) {
+              let dataUrl = canvas.toDataURL('image/png');
+              const filename = getFileName(step.url);
+              let screenshotFile = base64ToFile(dataUrl, filename);
+              let screenshotURL: string | undefined;
+              const objectId = (space?.name && slugify(space?.name)) || space?.id || 'new-space';
+              // screenshotURL = await uploadToS3AndReturnScreenshotUrl(screenshotFile, objectId.replace(/[^a-z0-9]/gi, '_'));
+              step.screenImgUrl = dataUrl;
+              showNotification({ message: `Image generated for step ${stepNo} successfully`, type: 'success' });
+              stepNo += 1;
+            }
+          }
+        }
+      } catch {
+        console.error('Error fetching or processing the URL:');
+        showNotification({ message: 'Some Error occurred', type: 'error' });
+      }
+    }
+    showNotification({ message: 'All images Generated Successfully', type: 'success' });
+    document.body.removeChild(iframe);
+  }
   useEffect(() => {
     updateClickableDemoFunctions.initialize();
   }, [demoId]);
@@ -71,6 +186,9 @@ function EditClickableDemo({ space, demoId, byteCollection }: EditClickableDemoP
                   onSelect={(key) => {
                     if (key === 'delete') {
                       setShowDeleteModal(true);
+                    }
+                    if (key === 'generate_images') {
+                      generate_images();
                     }
                   }}
                   className="ml-4"
