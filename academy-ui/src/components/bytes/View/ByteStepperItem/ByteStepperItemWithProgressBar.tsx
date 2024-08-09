@@ -173,6 +173,7 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space, set
 
   const isShortScreen = height <= 690;
   const isLongScreen = height >= 900;
+  const isFullScreen = true;
 
   const stepClasses = {
     headingClasses: isShortScreen ? 'text-3xl' : isLongScreen ? 'text-4xl xl:text-5xl' : 'text-3xl',
@@ -183,7 +184,7 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space, set
     <div className={`w-full flex flex-col justify-between py-12 px-4 md:px-8  ${styles.stepContainer}`}>
       <div className={`w-full overflow-y-auto flex flex-col ${transitionClasses[transitionState]} ${styles.stepContents} ${styles.hideScrollbar}`}>
         <div className="flex flex-col flex-grow justify-center align-center">
-          {!stepItems.some(isQuestion) && step.imageUrl && (
+          {!stepItems.some(isQuestion) && (!isShortScreen || isFullScreen) && step.imageUrl && (
             <div className="flex justify-center align-center ">
               <img src={step.imageUrl} alt="byte" className={`max-h-[35vh] rounded ${styles.imgContainer}`} />
             </div>
