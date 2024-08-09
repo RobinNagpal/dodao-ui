@@ -49,7 +49,7 @@ export default function FullScreenByteModal({ open, title, children, onClose, sh
                     <div className="absolute right-2 top-2">
                       <button
                         type="button"
-                        className="inline-flex rounded-md hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        className="inline-flex rounded-md hover:text-gray-500 focus:outline-none"
                         onClick={() => {
                           onClose();
                         }}
