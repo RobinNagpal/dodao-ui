@@ -89,6 +89,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, onUpsert: (byt
         {
           uuid: uuid,
           name: `Step ${prevByte.steps.length + 1}`,
+          displayMode: 'portrait',
           content: '',
           stepItems: [],
           order: prevByte.steps.length,

@@ -27,6 +27,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
 import { findClosestColor } from '@dodao/web-core/utils/colors/findClosestColor';
+import StyledSelect, { StyledSelectItem } from '@dodao/web-core/components/core/select/StyledSelect';
 
 interface EditByteStepperItemProps {
   space: SpaceWithIntegrationsFragment;
@@ -65,7 +66,16 @@ export default function EditByteStepperItem({
   updateStep,
 }: EditByteStepperItemProps) {
   const [modalByteInputOrQuestionOpen, setModalByteInputOrQuestionOpen] = useState(false);
-
+  const displayModeSelect: StyledSelectItem[] = [
+    {
+      label: 'Portrait',
+      id: 'portrait',
+    },
+    {
+      label: 'Full Screen',
+      id: 'fullScreen',
+    },
+  ];
   const updateStepContent = (content: string) => {
     updateStep({ ...step, content });
   };
@@ -324,6 +334,9 @@ export default function EditByteStepperItem({
   const updateStepImageUrl = (imageUrl: string | null) => {
     updateStep({ ...step, imageUrl });
   };
+  const updateStepDisplayMode = (displayMode: string | null) => {
+    updateStep({ ...step, displayMode: displayMode?.toString() || 'portrait' });
+  };
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const primaryColor = findClosestColor(space.themeColors?.primaryColor || '#000CCC');
@@ -388,7 +401,14 @@ For background of the image, use the color ${backgroundColor} and for the primar
           />
           {step.imageUrl && <img src={step.imageUrl} style={{ height: '150px', width: '150px' }} className="my-2" />}
         </div>
-
+        <div className="w-full mb-4">
+          <StyledSelect
+            label="Image Display Mode"
+            selectedItemId={step.displayMode}
+            items={displayModeSelect}
+            setSelectedItemId={(value) => updateStepDisplayMode(value!)}
+          />
+        </div>
         <MarkdownEditor
           id={step.uuid}
           modelValue={step.content}
