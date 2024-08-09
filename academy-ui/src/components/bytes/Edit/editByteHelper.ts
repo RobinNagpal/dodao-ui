@@ -273,7 +273,7 @@ export function editByteCommonFunctions(setByte: (value: ((prevState: EditByteTy
       steps: byte.steps.map((s) => ({
         content: s.content,
         name: s.name,
-        displayMode: s.displayMode || 'portrait',
+        displayMode: s.displayMode || 'normal',
         stepItems: s.stepItems.map((si) => ({
           type: si.type,
           uuid: si.uuid,

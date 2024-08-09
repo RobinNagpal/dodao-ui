@@ -1194,6 +1194,11 @@ export interface GuideUserInput {
   uuid: Scalars['String'];
 }
 
+export enum ImageDisplayMode {
+  FullScreenImage = 'FullScreenImage',
+  Normal = 'Normal'
+}
+
 export enum ImageSource {
   Dalle = 'Dalle',
   LocalMachine = 'LocalMachine',

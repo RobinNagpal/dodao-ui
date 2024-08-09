@@ -1764,6 +1764,10 @@ enum TooltipPlacement {
   Top
 }
 
+enum ImageDisplayMode {
+  Normal
+  FullScreenImage
+}
 type TopicConfig {
   showExplanations: Boolean!
   showHints: Boolean!

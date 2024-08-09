@@ -18,6 +18,7 @@ import {
   ImageType,
   SpaceWithIntegrationsFragment,
   StepItemInputGenericInput,
+  ImageDisplayMode,
 } from '@/graphql/generated/generated-types';
 import { InputType, QuestionType, UserDiscordConnectType } from '@dodao/web-core/types/deprecated/models/enums';
 import { ByteErrors } from '@dodao/web-core/types/errors/byteErrors';
@@ -68,12 +69,12 @@ export default function EditByteStepperItem({
   const [modalByteInputOrQuestionOpen, setModalByteInputOrQuestionOpen] = useState(false);
   const displayModeSelect: StyledSelectItem[] = [
     {
-      label: 'Portrait',
-      id: 'portrait',
+      label: ImageDisplayMode.Normal,
+      id: 'normal',
     },
     {
-      label: 'Full Screen',
-      id: 'fullScreen',
+      label: ImageDisplayMode.FullScreenImage,
+      id: 'fullScreenImage',
     },
   ];
   const updateStepContent = (content: string) => {
@@ -335,7 +336,7 @@ export default function EditByteStepperItem({
     updateStep({ ...step, imageUrl });
   };
   const updateStepDisplayMode = (displayMode: string | null) => {
-    updateStep({ ...step, displayMode: displayMode?.toString() || 'portrait' });
+    updateStep({ ...step, displayMode: displayMode?.toString() || 'normal' });
   };
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);

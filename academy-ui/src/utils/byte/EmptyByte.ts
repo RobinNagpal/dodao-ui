@@ -45,7 +45,7 @@ export const emptyByte = (): Omit<ByteDetailsFragment, 'id'> & { isPristine: boo
       {
         uuid: step1Uuid,
         name: 'Introduction',
-        displayMode: 'portrait',
+        displayMode: 'normal',
         content: `
 Introduction Comments 
         `,
@@ -54,7 +54,7 @@ Introduction Comments
       {
         uuid: step2Uuid,
         name: 'Introduction Evaluation',
-        displayMode: 'portrait',
+        displayMode: 'normal',
         content: ``,
         stepItems: [stepItem],
       },
