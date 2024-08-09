@@ -258,6 +258,7 @@ type ByteSocialShare {
 type ByteStep {
   content: String!
   imageUrl: String
+  displayMode: String
   name: String!
   stepItems: [ByteStepItem!]!
   uuid: String!
@@ -266,6 +267,7 @@ type ByteStep {
 input ByteStepInput {
   content: String!
   imageUrl: String
+  displayMode: String
   name: String!
   stepItems: [StepItemInputGenericInput!]!
   uuid: String!
