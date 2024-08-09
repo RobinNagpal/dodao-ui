@@ -36,6 +36,7 @@ import 'prismjs/components/prism-toml';
 import 'prismjs/components/prism-yaml';
 import { useEffect, useMemo, useState } from 'react';
 import styles from './ByteStepperItemWithProgressBar.module.scss';
+import Image from 'next/image';
 
 interface WithCarouselAndProgress1Props {
   byte: ByteDetailsFragment;
@@ -171,7 +172,7 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space, set
 
   const { height } = useWindowDimensions();
 
-  const isShortScreen = height <= 690;
+  const isShortScreen = height <= 490;
   const isLongScreen = height >= 900;
 
   const stepClasses = {
