@@ -145,12 +145,9 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
                   <div className="relative flex space-x-3">
                     <Link className="flex cursor-pointer" href={byteViewUrl}>
                       <ByteCompletionCheckmark byteId={byte.byteId} />
-                      <div className="flex min-w-0 flex-1 justify-between space-x-2 transform hover:scale-95 transition duration-300 ease-in-out">
-                        <div className="ml-3 text-sm">
-                          <div className="font-bold flex">
-                            {`${byte.name}`} <ArrowTopRightOnSquareIcon className={`h-4 w-4 ml-2 ${styles.openInPopupIcon}`} />
-                          </div>
-
+                      <div className="flex min-w-0 flex-1 justify-between space-x-2 duration-300 ease-in-out">
+                        <div className="ml-3 text-sm group">
+                          <div className="font-bold flex group-hover:underline">{`${byte.name}`}</div>
                           <div className="flex-wrap">{byte.content}</div>
                         </div>
                       </div>
@@ -188,12 +185,9 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
                       <span className={'h-8 w-8 rounded-full flex items-center justify-center ring-5 ring-white ' + styles.tidbitIconSpan}>
                         <Bars3BottomLeftIcon className="h-5 w-5 text-white" aria-hidden="true" />
                       </span>
-                      <div className="flex min-w-0 flex-1 justify-between space-x-2 transform hover:scale-95 transition duration-300 ease-in-out">
-                        <div className="ml-3 text-sm">
-                          <div className="font-bold flex">
-                            {`${demo.title}`} <ArrowTopRightOnSquareIcon className={`h-4 w-4 ml-2 ${styles.openInPopupIcon}`} />
-                          </div>
-
+                      <div className="flex min-w-0 flex-1 justify-between space-x-2 duration-300 ease-in-out">
+                        <div className="ml-3 text-sm group">
+                          <div className="font-bold flex group-hover:underline">{`${demo.title}`}</div>
                           <div className="flex-wrap">{demo.excerpt}</div>
                         </div>
                       </div>
@@ -222,12 +216,9 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
                       <span className={'h-8 w-8 rounded-full flex items-center justify-center ring-5 ring-white ' + styles.tidbitIconSpan}>
                         <Bars3BottomLeftIcon className="h-5 w-5 text-white" aria-hidden="true" />
                       </span>
-                      <div className="flex min-w-0 flex-1 justify-between space-x-2 transform hover:scale-95 transition duration-300 ease-in-out">
-                        <div className="ml-3 text-sm">
-                          <div className="font-bold flex">
-                            {`${short.title}`} <ArrowTopRightOnSquareIcon className={`h-4 w-4 ml-2 ${styles.openInPopupIcon}`} />
-                          </div>
-
+                      <div className="flex min-w-0 flex-1 justify-between space-x-2 duration-300 ease-in-out">
+                        <div className="ml-3 text-sm group">
+                          <div className="font-bold flex group-hover:underline">{`${short.title}`}</div>
                           <div className="flex-wrap">{short.description}</div>
                         </div>
                       </div>
