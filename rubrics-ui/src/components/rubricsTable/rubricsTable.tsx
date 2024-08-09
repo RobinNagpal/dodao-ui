@@ -5,7 +5,7 @@ import RubricLevel from '@/components/RubricLevel/RubricLevel';
 import EllipsisDropdown, { EllipsisDropdownItem } from '@dodao/web-core/src/components/core/dropdowns/EllipsisDropdown';
 import { useRouter } from 'next/navigation';
 const initialRubrics: Record<string, string[]> = {
-  Content: [
+  Criteria: [
     'Complete. The speaker clearly conveys the main idea',
     'Generally complete. The speaker conveys the main idea,',
     'Somewhat incomplete. The main idea is unclear',
@@ -174,49 +174,50 @@ const RubricsPage: React.FC<RubricsPageProps> = ({
     // console.log(criteriaToDelete);
     // console.log(editCriteriaIds);
 
-    if (criteriaToDelete) {
-      const updatedRubrics = { ...rubrics };
-      delete updatedRubrics[criteriaToDelete];
-      setRubrics(updatedRubrics);
-      setCriteriaOrder((prevOrder) => prevOrder.filter((crit) => crit !== criteriaToDelete));
-    }
-    setIsDeleteConfirm(false);
-    setCriteriaToDelete(null);
-    // if (isTrue) {
-    //   if (criteriaToDelete) {
-    //     const criteriaId = editCriteriaIds[criteriaToDelete];
-    //     if (criteriaId) {
-    //       console.log(`Deleted: ${criteriaId}`);
-
-    //       try {
-    //         const response = await fetch('/api/rubrics', {
-    //           method: 'PUT',
-    //           headers: {
-    //             'Content-Type': 'application/json',
-    //           },
-    //           body: JSON.stringify({ criteriaId }),
-    //         });
-
-    //         if (response.ok) {
-    //           const result = await response.json();
-    //           console.log(result.body.message);
-    //         } else {
-    //           console.error('Failed to archive criteria');
-    //         }
-    //       } catch (error) {
-    //         console.error('An error occurred while archiving criteria:', error);
-    //       }
-
-    //       const updatedRubrics = { ...rubrics };
-    //       delete updatedRubrics[criteriaToDelete];
-    //       setRubrics(updatedRubrics);
-    //       setCriteriaOrder((prevOrder) => prevOrder.filter((crit) => crit !== criteriaToDelete));
-    //     }
-    //   }
-
-    //   setIsDeleteConfirm(false);
-    //   setCriteriaToDelete(null);
+    // if (criteriaToDelete) {
+    //   const updatedRubrics = { ...rubrics };
+    //   delete updatedRubrics[criteriaToDelete];
+    //   setRubrics(updatedRubrics);
+    //   setCriteriaOrder((prevOrder) => prevOrder.filter((crit) => crit !== criteriaToDelete));
     // }
+    // setIsDeleteConfirm(false);
+    // setCriteriaToDelete(null);
+    if (isTrue) {
+      if (criteriaToDelete) {
+        const criteriaId = editCriteriaIds[criteriaToDelete];
+        if (criteriaId) {
+          console.log(`Deleted: ${criteriaId}`);
+
+          try {
+            const response = await fetch('/api/rubrics', {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ criteriaId }),
+            });
+
+            if (response.ok) {
+              const result = await response.json();
+              console.log(result.body.message);
+            } else {
+              console.error('Failed to archive criteria');
+            }
+          } catch (error) {
+            console.error('An error occurred while archiving criteria:', error);
+          }
+
+          const updatedRubrics = { ...rubrics };
+          delete updatedRubrics[criteriaToDelete];
+          Object.keys(rubrics).length + 1;
+          setRubrics(updatedRubrics);
+          setCriteriaOrder((prevOrder) => prevOrder.filter((crit) => crit !== criteriaToDelete));
+        }
+      }
+
+      setIsDeleteConfirm(false);
+      setCriteriaToDelete(null);
+    }
   };
 
   const cancelDelete = () => {
@@ -284,11 +285,11 @@ const RubricsPage: React.FC<RubricsPageProps> = ({
       const updatedRubricData = result.body;
 
       const formattedRubrics = formatRubricData(updatedRubricData);
-      // setRubrics(formattedRubrics.rubrics);
-      // setCriteriaOrder(formattedRubrics.criteriaOrder);
-      // setRatingHeaders(formattedRubrics.ratingHeaders);
+      setRubrics(formattedRubrics.rubrics);
+      setCriteriaOrder(formattedRubrics.criteriaOrder);
+      setRatingHeaders(formattedRubrics.ratingHeaders);
 
-      // router.push(`/rubrics/edit/${updatedRubricData.id}`);
+      router.push(`/rubrics/edit/${updatedRubricData.id}`);
 
       if (updatedRubricData.latestRowData) {
         // Handle additional state updates for the latest row data if needed
