@@ -214,7 +214,7 @@ const RubricCriteria: React.FC<RubricCriteriaProps> = ({
             {criteria}
           </div>
         </td>
-        {rubrics![criteria].map((cell: any, cellIndex) => (
+        {rubrics![criteria]?.map((cell: any, cellIndex) => (
           <React.Fragment key={cellIndex}>
             <RubricCell
               cell={isEditAccess ? cell : cell.description}

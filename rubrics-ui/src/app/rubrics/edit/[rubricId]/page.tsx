@@ -5,10 +5,10 @@ import { EditRubricCell, SampleData } from '@/types/rubricsTypes/types';
 import RubricDetails from '@/components/RubricDetails/RubricDetails';
 import { getSession } from 'next-auth/react';
 import { useLoginModalContext } from '@dodao/web-core/ui/contexts/LoginModalContext';
-import { SessionProps } from '@/types/rubricsTypes/types';
+import { SessionProps, ProgramServerResponse } from '@/types/rubricsTypes/types';
 const Page = ({ params }: { params: { rubricId: string } }) => {
   const { rubricId } = params;
-
+  const [selectedProgramId, setSelectedProgramId] = useState<string | null>(null);
   const [serverResponse, setServerResponse] = useState<SampleData | null>(null);
   const [rubricDetails, setRubricDetails] = useState<{
     name: string;
@@ -19,6 +19,7 @@ const Page = ({ params }: { params: { rubricId: string } }) => {
     summary: '',
     description: '',
   });
+  const [programResponse, setProgramResponse] = useState<ProgramServerResponse>({ status: -1, body: [] });
   const { showLoginModal, setShowLoginModal } = useLoginModalContext();
   const [session, setSession] = useState<SessionProps | null>(null);
   const isUserLoggedIn = async () => {
@@ -83,13 +84,23 @@ const Page = ({ params }: { params: { rubricId: string } }) => {
   if (!serverResponse) {
     return <div className="flex items-center justify-center">Loading...</div>;
   }
-
+  const handleSelectProgram = (id: string) => {
+    setSelectedProgramId(id);
+  };
   return (
     <div>
       {session ? (
         session.isAdminOfSpace ? (
           <div className="mt-10 p-2 flex-col items-center justify-center gap-x-6">
-            <RubricDetails editRubricDetails={rubricDetails} rubricDetails={rubricDetails} setRubricDetails={setRubricDetails} isEditAccess={true} />
+            <RubricDetails
+              editRubricDetails={rubricDetails}
+              rubricDetails={rubricDetails}
+              setRubricDetails={setRubricDetails}
+              isEditAccess={true}
+              onSelectProgram={handleSelectProgram}
+              programs={programResponse}
+              setPrograms={setProgramResponse}
+            />
             <RubricsPage
               isEditAccess={true}
               writeAccess={true}
@@ -102,6 +113,7 @@ const Page = ({ params }: { params: { rubricId: string } }) => {
               editColumnScores={columnScores}
               rubricDetails={rubricDetails}
               editCriteriaIds={editCriteriaIds}
+              selectedProgramId={selectedProgramId}
             />
           </div>
         ) : (

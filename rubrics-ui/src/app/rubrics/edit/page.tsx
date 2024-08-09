@@ -2,12 +2,12 @@
 import React, { useState, useEffect } from 'react';
 import RubricEdit from '@/components/EditRubric/EditRubric';
 import RubricDetails from '@/components/RubricDetails/RubricDetails';
-import ProgramInput from '@/components/ProgramInput/ProgramInput';
 import { getSession } from 'next-auth/react';
 import { useLoginModalContext } from '@dodao/web-core/ui/contexts/LoginModalContext';
-import { SessionProps } from '@/types/rubricsTypes/types';
+import { ProgramServerResponse, SessionProps } from '@/types/rubricsTypes/types';
 
 const Page = () => {
+  const [selectedProgramId, setSelectedProgramId] = useState<string | null>(null);
   const [rubricDetails, setRubricDetails] = useState<{
     name: string;
     summary: string;
@@ -17,10 +17,12 @@ const Page = () => {
     summary: '',
     description: '',
   });
-
+  const [serverResponse, setServerResponse] = useState<ProgramServerResponse>({ status: -1, body: [] });
   const { showLoginModal, setShowLoginModal } = useLoginModalContext();
   const [session, setSession] = useState<SessionProps | null>(null);
-
+  const handleSelectProgram = (id: string) => {
+    setSelectedProgramId(id);
+  };
   const isUserLoggedIn = async () => {
     const session = await getSession();
     setSession(session as SessionProps | null);
@@ -47,8 +49,15 @@ const Page = () => {
     <div>
       {session.isAdminOfSpace ? (
         <div>
-          <RubricEdit rubricDetails={rubricDetails} writeAccess={true} />
-          <RubricDetails rubricDetails={rubricDetails} setRubricDetails={setRubricDetails} isEditAccess={true} />
+          <RubricEdit rubricDetails={rubricDetails} writeAccess={true} selectedProgramId={selectedProgramId} />
+          <RubricDetails
+            rubricDetails={rubricDetails}
+            setRubricDetails={setRubricDetails}
+            isEditAccess={true}
+            programs={serverResponse}
+            setPrograms={setServerResponse}
+            onSelectProgram={handleSelectProgram}
+          />
         </div>
       ) : (
         <div>You are not allowed to edit rubrics.</div>

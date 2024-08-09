@@ -7,6 +7,7 @@ import { useNotificationContext } from '@dodao/web-core/ui/contexts/Notification
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import { ChevronLeftIcon } from '@heroicons/react/24/outline';
 import { useRouter } from 'next/navigation';
+import ProgramDropDown from '@/components/ProgramDropDown/programDropDown';
 interface RubricDetails {
   name: string;
   summary: string;
@@ -22,9 +23,20 @@ interface RubricDetailsProps {
     summary: string | undefined;
     description: string | undefined;
   };
+  programs?: any;
+  setPrograms?: any;
+  onSelectProgram?: any;
 }
 
-const RubricDetails: React.FC<RubricDetailsProps> = ({ rubricDetails, setRubricDetails, isEditAccess, editRubricDetails }) => {
+const RubricDetails: React.FC<RubricDetailsProps> = ({
+  rubricDetails,
+  setRubricDetails,
+  isEditAccess,
+  editRubricDetails,
+  programs,
+  setPrograms,
+  onSelectProgram,
+}) => {
   const [isModalOpen, setIsModalOpen] = useState(true);
   const { showNotification } = useNotificationContext();
   const router = useRouter();
@@ -66,6 +78,7 @@ const RubricDetails: React.FC<RubricDetailsProps> = ({ rubricDetails, setRubricD
         </button>
         <div className="flex flex-col items-center">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-2 w-full max-w-4xl p-4">
+            <ProgramDropDown serverResponse={programs} setServerResponse={setPrograms} onSelectProgram={onSelectProgram} />
             <Input
               modelValue={rubricDetails.name}
               onUpdate={(value) => setRubricDetails((prev) => ({ ...prev, name: value as string }))}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Rubric, RubricCell, RubricsPageProps, rubricRatingHeader } from '@/types/rubricsTypes/types';
+import { Rubric, NewRubric, RubricsPageProps, rubricRatingHeader, RubricRow } from '@/types/rubricsTypes/types';
 import RubricCriteria from '@/components/RubricCriteria/RubricCriteria';
 import RubricLevel from '@/components/RubricLevel/RubricLevel';
 import EllipsisDropdown, { EllipsisDropdownItem } from '@dodao/web-core/src/components/core/dropdowns/EllipsisDropdown';
@@ -43,53 +43,39 @@ const RubricsPage: React.FC<RubricsPageProps> = ({
 
   const [columnScores, setColumnScores] = useState<number[]>(editColumnScores || Array(ratingHeaders.length).fill(0));
   const [criteriaToDelete, setCriteriaToDelete] = useState<string | null>(null);
+  const [latestRowData, setLatestRowData] = useState<NewRubric | null>(null);
   const dropdownItems: EllipsisDropdownItem[] = [
     { label: 'Edit', key: 'edit' },
     { label: 'Rate', key: 'rate' },
   ];
 
   const router = useRouter();
+
   useEffect(() => {
     if (!rubricDetails?.name || !rubricDetails?.summary) {
       return;
     }
-    const formattedRubrics: Rubric[] = criteriaOrder.map((criteria) => ({
+
+    const formattedRubrics: any = criteriaOrder.map((criteria) => ({
       name: rubricDetails.name,
       summary: rubricDetails.summary,
       description: rubricDetails.description,
+      criteria: criteria,
       levels: ratingHeaders.map((header, idx) => ({
         columnName: header,
         description: rubrics[criteria][idx],
         score: columnScores[idx],
       })),
-      criteria: criteria,
     }));
-    console.log(formattedRubrics);
 
-    if ((selectedProgramId && isEditAccess) || rubricId) {
-      console.log('Sending data:', formattedRubrics);
-      handleSubmit(formattedRubrics);
+    setLatestRowData(formattedRubrics[formattedRubrics.length - 1]);
+  }, [rubrics, ratingHeaders, criteriaOrder, columnScores, rubricDetails]);
+
+  useEffect(() => {
+    if (latestRowData && selectedProgramId) {
+      sendRowToServer(latestRowData);
     }
-  }, [rubrics, ratingHeaders, criteriaOrder, selectedProgramId, columnScores]);
-
-  const handleSubmit = async (data: Rubric[]) => {
-    try {
-      const response = await fetch('/api/rubrics', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          programId: selectedProgramId,
-          rubric: data,
-        }),
-      });
-      console.log(response.body);
-    } catch (error) {
-      console.error('Error submitting rubrics:', error);
-    }
-  };
-
+  }, [latestRowData, selectedProgramId]);
   const handleEditClick = (type: 'rubric' | 'header' | 'criteria', criteria: string | number, index: number) => {
     if (isEditAccess) {
       if (type === 'header') {
@@ -172,6 +158,7 @@ const RubricsPage: React.FC<RubricsPageProps> = ({
         ],
       }));
       setCriteriaOrder((prevOrder) => [...prevOrder, newCriteriaName]);
+      setLatestRowData(null);
     }
   };
 
@@ -236,25 +223,101 @@ const RubricsPage: React.FC<RubricsPageProps> = ({
     setIsDeleteConfirm(false);
     setCriteriaToDelete(null);
   };
+  function formatRubricData(data: any) {
+    const { levels, criteria, RubricCell } = data;
 
+    // Create a map for easy access to levels by their ID
+    const levelMap = levels.reduce((acc: any, level: any) => {
+      acc[level.id] = level;
+      return acc;
+    }, {});
+
+    // Create a map for criteria with their respective RubricCells
+    const criteriaMap = criteria.reduce((acc: any, crit: any) => {
+      acc[crit.id] = {
+        title: crit.title,
+        cells: [],
+      };
+      return acc;
+    }, {});
+
+    // Populate the criteria map with RubricCells
+    RubricCell.forEach((cell: any) => {
+      const level = levelMap[cell.levelId];
+      if (level) {
+        criteriaMap[cell.criteriaId].cells.push({
+          description: cell.description,
+          level: level.columnName,
+        });
+      }
+    });
+
+    const formattedCriteria = Object.values(criteriaMap).sort((a: any, b: any) => a.title.localeCompare(b.title));
+
+    return {
+      rubrics: Object.fromEntries(formattedCriteria.map((criterion: any) => [criterion.title, criterion.cells.map((cell: any) => cell.description)])),
+      ratingHeaders: levels.map((level: any) => level.columnName),
+      criteriaOrder: formattedCriteria.map((criterion: any) => criterion.title),
+    };
+  }
+
+  const sendRowToServer = async (rowData: NewRubric) => {
+    try {
+      const response = await fetch('/api/rubrics', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          programId: selectedProgramId,
+          rubric: rowData,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to send row data');
+      }
+
+      const result = await response.json();
+      console.log('Row data sent successfully:', result.body);
+
+      const updatedRubricData = result.body;
+
+      const formattedRubrics = formatRubricData(updatedRubricData);
+      // setRubrics(formattedRubrics.rubrics);
+      // setCriteriaOrder(formattedRubrics.criteriaOrder);
+      // setRatingHeaders(formattedRubrics.ratingHeaders);
+
+      // router.push(`/rubrics/edit/${updatedRubricData.id}`);
+
+      if (updatedRubricData.latestRowData) {
+        // Handle additional state updates for the latest row data if needed
+        setLatestRowData(updatedRubricData.latestRowData || null);
+      }
+    } catch (error) {
+      console.error('Error sending row data:', error);
+    }
+  };
   const handleScoreChange = async (index: number, score: number) => {
-    setColumnScores((prevScores) => [...prevScores.slice(0, index), score, ...prevScores.slice(index + 1)]);
-    if (!isEditAccess) {
-      const formattedRubrics: Rubric[] = criteriaOrder.map((criteria) => ({
+    const updatedScores = [...columnScores.slice(0, index), score, ...columnScores.slice(index + 1)];
+    setColumnScores(updatedScores);
+
+    if (true) {
+      const formattedRubric: any = criteriaOrder.map((criteria) => ({
         name: 'Test',
         levels: ratingHeaders.map((header, idx) => ({
           columnName: header,
           description: rubrics[criteria][idx],
-          score: columnScores[idx],
+          score: updatedScores[idx],
         })),
         criteria: criteria,
       }));
 
-      if (selectedProgramId) {
-        await handleSubmit(formattedRubrics);
-      }
+      // Track the latest row data
+      setLatestRowData(formattedRubric[formattedRubric.length - 1]);
     }
   };
+
   const rateRubric = rateRubricsFormatted?.rubric;
   const rateCriteriaOrder = rateRubricsFormatted?.criteriaOrder;
   const rubricRatingHeaders: rubricRatingHeader[] = rateRubricsFormatted?.ratingHeaders ?? [];

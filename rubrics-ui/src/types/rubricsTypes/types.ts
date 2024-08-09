@@ -26,6 +26,31 @@ export interface Rubric {
   cells?: any[];
 }
 
+export interface NewRubric {
+  name: string;
+  summary?: string;
+  description?: string;
+  rows: {
+    criteria: string;
+    levels: {
+      columnName: string;
+      description: string;
+      score: number;
+    }[];
+    cells?: any[]; // Optional, for additional data if needed
+  }[];
+}
+export interface RubricLevel {
+  columnName: string;
+  description: string;
+  score: number;
+}
+
+export interface RubricRow {
+  criteria: string;
+  levels: RubricLevel[];
+  cells?: any[]; // Add this if you need additional cell-level data
+}
 // export interface RubricsPageProps {
 //   selectedProgramId?: string | null;
 //   isEditAccess?: boolean;
@@ -221,6 +246,7 @@ export interface EditRubricsProps {
   };
 
   writeAccess?: boolean;
+  selectedProgramId?: any;
 }
 export interface EditRubricCell {
   cellId: string;

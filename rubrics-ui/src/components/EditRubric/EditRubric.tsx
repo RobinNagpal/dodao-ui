@@ -6,16 +6,9 @@ import { getSession } from 'next-auth/react';
 import { useLoginModalContext } from '@dodao/web-core/ui/contexts/LoginModalContext';
 import { ProgramServerResponse, SessionProps, EditRubricsProps } from '@/types/rubricsTypes/types';
 
-function EditRubrics({ rubricDetails, writeAccess }: EditRubricsProps) {
-  const [selectedProgramId, setSelectedProgramId] = useState<string | null>(null);
-  const [serverResponse, setServerResponse] = useState<ProgramServerResponse>({ status: -1, body: [] });
+function EditRubrics({ rubricDetails, writeAccess, selectedProgramId }: EditRubricsProps) {
   const { showLoginModal, setShowLoginModal } = useLoginModalContext();
   const [session, setSession] = useState<SessionProps | null>(null);
-
-  const handleSelectProgram = (id: string) => {
-    setSelectedProgramId(id);
-  };
-
   const isUserLoggedIn = async () => {
     const session = await getSession();
     setSession(session as SessionProps | null);
@@ -35,7 +28,6 @@ function EditRubrics({ rubricDetails, writeAccess }: EditRubricsProps) {
       {session ? (
         session.isAdminOfSpace ? (
           <div className="mt-10 p-2 flex-col items-center justify-center gap-x-6">
-            <ProgramDropDown serverResponse={serverResponse} setServerResponse={setServerResponse} onSelectProgram={handleSelectProgram} />
             <RubricsTable selectedProgramId={selectedProgramId} isEditAccess={true} rubricDetails={rubricDetails} writeAccess={writeAccess} />
           </div>
         ) : (

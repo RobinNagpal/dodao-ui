@@ -3,8 +3,15 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest, res: NextResponse) {
   const { programId, rubric } = await req.json();
+
   try {
-    await prisma.$transaction(async (tx) => {
+    // Validate rubricData
+    if (!Array.isArray(rubric.levels)) {
+      return NextResponse.json({ status: 400, body: 'Invalid levels data' });
+    }
+
+    const result = await prisma.$transaction(async (tx) => {
+      // Find or create the rubric
       const existingRubric = await tx.rubric.findFirst({
         where: {
           programs: {
@@ -18,30 +25,27 @@ export async function POST(req: NextRequest, res: NextResponse) {
       let rubricId = existingRubric ? existingRubric.id : null;
 
       if (rubricId) {
+        // Update existing rubric
         await tx.rubric.update({
           where: { id: rubricId },
           data: {
-            name: rubric[0].name,
-            summary: rubric[0].summary,
-            description: rubric[0].description,
+            name: rubric.name,
+            summary: rubric.summary,
+            description: rubric.description,
           },
         });
 
-        await tx.rubricCell.deleteMany({
-          where: { rubricId },
-        });
-        await tx.rubricLevel.deleteMany({
-          where: { rubricId },
-        });
-        await tx.rubricCriteria.deleteMany({
-          where: { rubricId },
-        });
+        // Delete existing rubric cells, levels, and criteria
+        // await tx.rubricCell.deleteMany({ where: { rubricId } });
+        // await tx.rubricLevel.deleteMany({ where: { rubricId } });
+        // await tx.rubricCriteria.deleteMany({ where: { rubricId } });
       } else {
+        // Create new rubric
         const newRubric = await tx.rubric.create({
           data: {
-            name: rubric[0].name,
-            summary: rubric[0].summary,
-            description: rubric[0].description,
+            name: rubric.name,
+            summary: rubric.summary,
+            description: rubric.description,
             programs: {
               create: { programId },
             },
@@ -52,7 +56,12 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
       const levelIds: { [key: string]: string } = {};
 
-      for (const level of rubric[0].levels) {
+      // Process levels
+      for (const level of rubric.levels) {
+        if (!level.columnName || typeof level.score !== 'number') {
+          return NextResponse.json({ status: 400, body: 'Invalid level data' });
+        }
+
         const existingLevel = await tx.rubricLevel.findUnique({
           where: {
             rubricId_columnName: {
@@ -84,66 +93,90 @@ export async function POST(req: NextRequest, res: NextResponse) {
         }
       }
 
-      for (const subRubric of rubric) {
-        const { criteria, levels } = subRubric;
+      // Process criteria and cells
+      if (!rubric.criteria) {
+        return NextResponse.json({ status: 400, body: 'Missing criteria data' });
+      }
 
-        const existingCriteria = await tx.rubricCriteria.findFirst({
+      const existingCriteria = await tx.rubricCriteria.findFirst({
+        where: {
+          rubricId: rubricId,
+          title: rubric.criteria,
+        },
+      });
+
+      let criteriaId = existingCriteria ? existingCriteria.id : null;
+
+      if (criteriaId) {
+        await tx.rubricCriteria.update({
+          where: { id: criteriaId },
+          data: {
+            title: rubric.criteria,
+          },
+        });
+      } else {
+        const newCriteria = await tx.rubricCriteria.create({
+          data: {
+            title: rubric.criteria,
+            rubricId: rubricId,
+          },
+        });
+        criteriaId = newCriteria.id;
+      }
+
+      // Process cells
+      for (const level of rubric.levels) {
+        const existingCell = await tx.rubricCell.findFirst({
           where: {
             rubricId: rubricId,
-            title: criteria,
+            criteriaId: criteriaId,
+            levelId: levelIds[level.columnName],
           },
         });
 
-        let criteriaId = existingCriteria ? existingCriteria.id : null;
-
-        if (criteriaId) {
-          await tx.rubricCriteria.update({
-            where: { id: criteriaId },
+        if (existingCell) {
+          await tx.rubricCell.update({
+            where: { id: existingCell.id },
             data: {
-              title: criteria,
+              description: level.description,
             },
           });
         } else {
-          const newCriteria = await tx.rubricCriteria.create({
+          await tx.rubricCell.create({
             data: {
-              title: criteria,
-              rubricId: rubricId,
-            },
-          });
-          criteriaId = newCriteria.id;
-        }
-
-        for (const level of levels) {
-          const existingCell = await tx.rubricCell.findFirst({
-            where: {
-              rubricId: rubricId,
-              criteriaId: criteriaId,
+              description: level.description,
               levelId: levelIds[level.columnName],
+              criteriaId: criteriaId,
+              rubricId: rubricId,
             },
           });
-
-          if (existingCell) {
-            await tx.rubricCell.update({
-              where: { id: existingCell.id },
-              data: {
-                description: level.description,
-              },
-            });
-          } else {
-            await tx.rubricCell.create({
-              data: {
-                description: level.description,
-                levelId: levelIds[level.columnName],
-                criteriaId: criteriaId,
-                rubricId: rubricId,
-              },
-            });
-          }
         }
       }
+
+      // Fetch the complete rubric with related entities
+      const fullRubric = await tx.rubric.findUnique({
+        where: { id: rubricId },
+        include: {
+          levels: true, // Include RubricLevel
+          criteria: {
+            include: {
+              RubricCell: true, // Include RubricCell related to RubricCriteria
+            },
+          },
+          RubricCell: {
+            include: {
+              level: true, // Include RubricLevel related to RubricCell
+              criteria: true, // Include RubricCriteria related to RubricCell
+            },
+          },
+          programs: true,
+        },
+      });
+
+      return fullRubric;
     });
 
-    return NextResponse.json({ status: 200, body: rubric });
+    return NextResponse.json({ status: 200, body: result });
   } catch (error) {
     console.error(error);
     return NextResponse.json({ status: 500, body: 'An error occurred' });
