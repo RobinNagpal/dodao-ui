@@ -1,13 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/prisma';
 import { ByteCollection as ByteCollectionGraphql } from '@/graphql/generated/generated-types';
-import { getByteCollectionWithBytes } from '@/app/api/helpers/byteCollection/byteCollectionHelper';
+import { getByteCollectionWithItem } from '@/app/api/helpers/byteCollection/byteCollectionHelper';
+import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 
-export async function GET(req: NextRequest) {
+async function getHandler(req: NextRequest) {
   const { searchParams } = new URL(req.url);
 
   const spaceId = searchParams.get('spaceId');
-  if (!spaceId) return NextResponse.json({ status: 400, body: 'No spaceId provided' });
+  if (!spaceId) return NextResponse.json({ body: 'No spaceId provided' }, { status: 400 });
 
   const byteCollections = await prisma.byteCollection.findMany({
     where: {
@@ -24,8 +25,10 @@ export async function GET(req: NextRequest) {
   const byteCollectionsWithBytes: ByteCollectionGraphql[] = [];
 
   for (const byteCollection of byteCollections) {
-    byteCollectionsWithBytes.push(await getByteCollectionWithBytes(byteCollection));
+    byteCollectionsWithBytes.push(await getByteCollectionWithItem(byteCollection));
   }
 
-  return NextResponse.json({ status: 200, byteCollections: byteCollectionsWithBytes });
+  return NextResponse.json({ byteCollections: byteCollectionsWithBytes }, { status: 200 });
 }
+
+export const GET = withErrorHandling(getHandler);

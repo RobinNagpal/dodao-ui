@@ -1,13 +1,14 @@
 import { getDecodedJwtFromContext } from '@/app/api/helpers/permissions/getJwtFromContext';
 import { prisma } from '@/prisma';
 import { NextRequest, NextResponse } from 'next/server';
+import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 
-export async function GET(req: NextRequest) {
+async function getHandler(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const spaceId = searchParams.get('spaceId');
   const courseKey = searchParams.get('courseKey');
   if (!spaceId || !courseKey) {
-    return NextResponse.json({ status: 400, message: 'Space ID and course key are required' });
+    return NextResponse.json({ message: 'Space ID and course key are required' }, { status: 400 });
   }
   const decodedJWT = await getDecodedJwtFromContext(req);
   const submissions = await prisma.courseTopicSubmission.findMany({
@@ -18,5 +19,7 @@ export async function GET(req: NextRequest) {
     },
   });
 
-  return NextResponse.json({ status: 200, submissions });
+  return NextResponse.json({ submissions }, { status: 200 });
 }
+
+export const GET = withErrorHandling(getHandler);

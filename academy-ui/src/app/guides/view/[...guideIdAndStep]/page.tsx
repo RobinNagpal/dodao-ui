@@ -1,11 +1,10 @@
 import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import GuideInformation from './GuideInformation';
 import type { Metadata } from 'next';
-import getApiResponse from '@/utils/api/getApiResponse';
 import { GuideFragment } from '@/graphql/generated/generated-types';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import axios from 'axios';
-import getBaseUrl from '@/utils/api/getBaseURL';
 
 type GuideViewProps = {
   params: { guideIdAndStep: string[] };
@@ -13,8 +12,6 @@ type GuideViewProps = {
 
 export async function generateMetadata({ params }: GuideViewProps): Promise<Metadata> {
   const guideIdAndStep = params.guideIdAndStep;
-  const guideId = Array.isArray(guideIdAndStep) ? guideIdAndStep[0] : (guideIdAndStep as string);
-  const space = (await getSpaceServerSide())!;
   const response = await axios.get(`${getBaseUrl()}/api/guide/${guideIdAndStep[0]}`);
   const guide = response.data.guide;
   let stepOrder = 0;

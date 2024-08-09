@@ -10,7 +10,6 @@ export default async function ByteDetails(props: { params: { tidbitCollectionId?
     <PageWrapper>
       <ViewByteModal
         space={space}
-        byteCollectionType={'byteCollection'}
         selectedByteId={props.params.tidbitId!}
         viewByteModalClosedUrl={'/embedded-tidbit-collections'}
         afterUpsertByteModalClosedUrl={`/embedded-tidbit-collections/view/${props.params?.tidbitCollectionId}`}

@@ -1,11 +1,12 @@
 import { MutationAddTopicArgs, MutationDeleteTopicArgs, MutationUpdateTopicBasicInfoArgs, MutationMoveTopicArgs } from '@/graphql/generated/generated-types';
 import { verifyCourseEditPermissions } from '@/app/api/helpers/permissions/verifyCourseEditPermissions';
+import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/prisma';
 import { CourseTopic } from '@/types/course/topic';
 import { MoveCourseItemDirection } from '@/app/api/helpers/deprecatedSchemas/models/enums';
 
-export async function POST(req: NextRequest, { params: { courseKey, topicKey } }: { params: { courseKey: string; topicKey: string } }) {
+async function postHandler(req: NextRequest, { params: { courseKey, topicKey } }: { params: { courseKey: string; topicKey: string } }) {
   try {
     const args: MutationAddTopicArgs = await req.json();
     await verifyCourseEditPermissions(req, args.spaceId, courseKey);
@@ -39,14 +40,14 @@ export async function POST(req: NextRequest, { params: { courseKey, topicKey } }
       data: { topics: updatedTopics },
     });
 
-    return NextResponse.json({ status: 200, updatedCourse });
+    return NextResponse.json({ updatedCourse }, { status: 200 });
   } catch (e) {
     console.error((e as any)?.response?.data);
     throw e;
   }
 }
 
-export async function DELETE(req: NextRequest, { params: { courseKey, topicKey } }: { params: { courseKey: string; topicKey: string } }) {
+async function deleteHandler(req: NextRequest, { params: { courseKey, topicKey } }: { params: { courseKey: string; topicKey: string } }) {
   try {
     const args: MutationDeleteTopicArgs = await req.json();
     await verifyCourseEditPermissions(req, args.spaceId, courseKey);
@@ -70,14 +71,14 @@ export async function DELETE(req: NextRequest, { params: { courseKey, topicKey }
       data: { topics: updatedTopics },
     });
 
-    return NextResponse.json({ status: 200, updatedTopic });
+    return NextResponse.json({ updatedTopic }, { status: 200 });
   } catch (e) {
     console.error((e as any)?.response?.data);
     throw e;
   }
 }
 
-export async function PUT(req: NextRequest, { params: { courseKey, topicKey } }: { params: { courseKey: string; topicKey: string } }) {
+async function putHandler(req: NextRequest, { params: { courseKey, topicKey } }: { params: { courseKey: string; topicKey: string } }) {
   try {
     const args: MutationUpdateTopicBasicInfoArgs = await req.json();
     await verifyCourseEditPermissions(req, args.spaceId, courseKey);
@@ -106,14 +107,14 @@ export async function PUT(req: NextRequest, { params: { courseKey, topicKey } }:
       data: { topics: updatedTopics },
     });
 
-    return NextResponse.json({ status: 200, updatedTopic });
+    return NextResponse.json({ updatedTopic }, { status: 200 });
   } catch (e) {
     console.error((e as any)?.response?.data);
     throw e;
   }
 }
 
-export async function PATCH(req: NextRequest, { params: { courseKey, topicKey } }: { params: { courseKey: string; topicKey: string } }) {
+async function patchHandler(req: NextRequest, { params: { courseKey, topicKey } }: { params: { courseKey: string; topicKey: string } }) {
   try {
     const args: MutationMoveTopicArgs = await req.json();
     await verifyCourseEditPermissions(req, args.spaceId, topicKey);
@@ -159,9 +160,14 @@ export async function PATCH(req: NextRequest, { params: { courseKey, topicKey } 
       data: { topics },
     });
 
-    return NextResponse.json({ status: 200, updatedCourse });
+    return NextResponse.json({ updatedCourse }, { status: 200 });
   } catch (e) {
     console.error((e as any)?.response?.data);
     throw e;
   }
 }
+
+export const POST = withErrorHandling(postHandler);
+export const DELETE = withErrorHandling(deleteHandler);
+export const PUT = withErrorHandling(putHandler);
+export const PATCH = withErrorHandling(patchHandler);

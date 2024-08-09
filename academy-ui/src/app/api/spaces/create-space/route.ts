@@ -6,8 +6,9 @@ import { prisma } from '@/prisma';
 import { Space } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
 import { getDecodedJwtFromContext } from '@/app/api/helpers/permissions/getJwtFromContext';
+import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 
-export async function POST(req: NextRequest) {
+async function postHandler(req: NextRequest) {
   const decodedJWT = await getDecodedJwtFromContext(req);
   const doDAOSuperAdmin = isDoDAOSuperAdmin(decodedJWT!.username);
   if (!doDAOSuperAdmin) {
@@ -53,5 +54,7 @@ export async function POST(req: NextRequest) {
 
   await upsertSpaceIntegrations(spaceInput, decodedJWT!);
 
-  return NextResponse.json({ status: 200, space: await getSpaceWithIntegrations(spaceInput.id) });
+  return NextResponse.json({ space: await getSpaceWithIntegrations(spaceInput.id) }, { status: 200 });
 }
+
+export const POST = withErrorHandling(postHandler);

@@ -1,10 +1,11 @@
 import { CourseBasicInfoInput, MutationUpdateCourseBasicInfoArgs } from '@/graphql/generated/generated-types';
 import { verifyCourseEditPermissions } from '@/app/api/helpers/permissions/verifyCourseEditPermissions';
+import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { NextRequest, NextResponse } from 'next/server';
 import { Space } from '@prisma/client';
 import { prisma } from '@/prisma';
 
-export async function POST(req: NextRequest) {
+async function postHandler(req: NextRequest) {
   try {
     const args: MutationUpdateCourseBasicInfoArgs = await req.json();
     const { courseBasicInfo } = args;
@@ -28,7 +29,7 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    return NextResponse.json({ status: 200, course });
+    return NextResponse.json({ course }, { status: 200 });
   } catch (e) {
     console.error((e as any)?.response?.data);
     throw e;
@@ -54,3 +55,5 @@ async function updateCourseBasicInfo(accountId: string, space: Space, courseBasi
     },
   });
 }
+
+export const POST = withErrorHandling(postHandler);

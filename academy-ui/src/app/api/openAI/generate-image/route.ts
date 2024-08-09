@@ -18,5 +18,5 @@ export async function POST(req: NextRequest) {
 
   const response = await openai.images.generate(createCompletionRequest, { timeout: 5 * 60 * 1000 });
 
-  return NextResponse.json({ status: 200, response });
+  return NextResponse.json({ response }, { status: 200 });
 }

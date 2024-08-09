@@ -3,21 +3,20 @@
 import ShareBytePage from '@/components/bytes/Share/ShareBytePage';
 import ByteStepper from '@/components/bytes/View/ByteStepper';
 import ContinuousStepIndicatorProgress from '@/components/bytes/View/ByteStepperItem/Progress/ContinuousStepIndicatorProgress';
+import FullScreenByteModal from '@/components/bytes/View/FullScreenByteModal';
+import RatingByteView from '@/components/bytes/View/RatingByteView';
 import { useViewByteInModal } from '@/components/bytes/View/useViewByteInModal';
-import { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
-import PageLoading from '@dodao/web-core/components/core/loaders/PageLoading';
+import { ByteDetailsFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
+import TidbitDetailsLoader from '@dodao/web-core/components/core/loaders/TidbitDetailsLoader';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
-import EditProjectByte from '@/components/projects/projectByte/Edit/EditProjectByte';
-import { ByteDetailsFragment, ProjectByteFragment, ProjectFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
-import getApiResponse from '@/utils/api/getApiResponse';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import axios from 'axios';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
 import styles from './ViewByteModal.module.scss';
-import RatingByteView from '@/components/bytes/View/RatingByteView';
-import FullScreenByteModal from '@/components/bytes/View/FullScreenByteModal';
-import axios from 'axios';
 
 const EditByteView: React.ComponentType<any> = dynamic(() => import('@/components/bytes/Edit/EditByteView'), {
   ssr: false, // Disable server-side rendering for this component
@@ -25,27 +24,14 @@ const EditByteView: React.ComponentType<any> = dynamic(() => import('@/component
 
 export interface ViewByteModalProps {
   space: SpaceWithIntegrationsFragment;
-  project?: ProjectFragment;
-  byteCollectionType: 'byteCollection' | 'projectByteCollection';
   selectedByteId: string;
   viewByteModalClosedUrl: string;
   afterUpsertByteModalClosedUrl: string;
 }
 
-export default function ViewByteModal({
-  space,
-  project,
-  byteCollectionType,
-  selectedByteId,
-  viewByteModalClosedUrl,
-  afterUpsertByteModalClosedUrl,
-}: ViewByteModalProps) {
-  const fetchByteFn = async (byteId: string): Promise<ByteDetailsFragment | ProjectByteFragment> => {
-    if (byteCollectionType === 'projectByteCollection') {
-      return await getApiResponse<ByteDetailsFragment>(space, `projects/${project?.id}/bytes/${byteId}`);
-    }
-
-    const response = await axios.get('/api/byte/byte', {
+export default function ViewByteModal({ space, selectedByteId, viewByteModalClosedUrl, afterUpsertByteModalClosedUrl }: ViewByteModalProps) {
+  const fetchByteFn = async (byteId: string): Promise<ByteDetailsFragment> => {
+    const response = await axios.get(`${getBaseUrl()}/api/byte/byte`, {
       params: {
         byteId: byteId,
         spaceId: space.id,
@@ -79,7 +65,7 @@ export default function ViewByteModal({
     { label: 'Rating', key: 'rating' },
   ];
 
-  if (editByteModalOpen && viewByteHelper.byteRef && byteCollectionType === 'byteCollection') {
+  if (editByteModalOpen && viewByteHelper.byteRef) {
     return (
       <FullScreenModal open={true} onClose={onClose} title={viewByteHelper.byteRef?.name || 'Tidbit Details'}>
         <div className="text-left">
@@ -91,16 +77,6 @@ export default function ViewByteModal({
               router.push(`${afterUpsertByteModalClosedUrl}/${viewByteHelper.byteRef.id}`);
             }}
           />
-        </div>
-      </FullScreenModal>
-    );
-  }
-
-  if (editByteModalOpen && viewByteHelper.byteRef && project && byteCollectionType === 'projectByteCollection') {
-    return (
-      <FullScreenModal open={true} onClose={onClose} title={viewByteHelper.byteRef?.name || 'Tidbit Details'}>
-        <div className="text-left">
-          <EditProjectByte space={space} project={project} byteId={viewByteHelper.byteRef.id} />
         </div>
       </FullScreenModal>
     );
@@ -150,7 +126,7 @@ export default function ViewByteModal({
               <ByteStepper viewByteHelper={viewByteHelper} byte={viewByteHelper.byteRef} space={space} />
             </>
           ) : (
-            <PageLoading />
+            <TidbitDetailsLoader />
           )}
         </div>
       </div>

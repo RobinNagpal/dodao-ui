@@ -81,9 +81,7 @@ async function GET(req: NextRequest, res: NextResponse) {
   const space = await getSpaceBasedOnHostHeader(req.headers);
 
   if (!space) {
-    return new NextResponse(`Space Not found`, {
-      status: 500,
-    });
+    return new NextResponse(`Space Not found`, { status: 500 });
   }
 
   const smStream = new SitemapStream({ hostname: 'https://' + host });

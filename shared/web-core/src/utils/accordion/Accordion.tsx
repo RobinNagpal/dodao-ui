@@ -23,7 +23,7 @@ export default function Accordion({ isOpen, label, onClick, children, hasError =
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 10 6"
-              style={{ transform: `rotate(${isOpen ? '180deg' : '0deg'})` }}
+              style={{ transform: `rotate(${isOpen ? '0deg' : '180deg'})` }}
             >
               <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5 5 1 1 5" />
             </svg>

@@ -1,14 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getByteCollectionWithBytes } from '@/app/api/helpers/byteCollection/byteCollectionHelper';
+import { getByteCollectionWithItem } from '@/app/api/helpers/byteCollection/byteCollectionHelper';
+import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { prisma } from '@/prisma';
 
-export async function GET(req: NextRequest) {
+async function getHandler(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const byteCollectionId = searchParams.get('byteCollectionId');
-  if (!byteCollectionId) return NextResponse.json({ status: 400, body: 'No byteCollectionId provided' });
+  if (!byteCollectionId) return NextResponse.json({ body: 'No byteCollectionId provided' }, { status: 400 });
 
   const spaceId = searchParams.get('spaceId');
-  if (!spaceId) return NextResponse.json({ status: 400, body: 'No spaceId provided' });
+  if (!spaceId) return NextResponse.json({ body: 'No spaceId provided' }, { status: 400 });
 
   const byteCollection = await prisma.byteCollection.findFirstOrThrow({
     where: {
@@ -20,5 +21,7 @@ export async function GET(req: NextRequest) {
     },
   });
 
-  return NextResponse.json({ status: 200, byteCollection: await getByteCollectionWithBytes(byteCollection) });
+  return NextResponse.json({ byteCollection: await getByteCollectionWithItem(byteCollection) }, { status: 200 });
 }
+
+export const GET = withErrorHandling(getHandler);

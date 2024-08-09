@@ -4,6 +4,7 @@ import { prisma } from '@/prisma';
 import { MutationSubmitGitCourseTopicArgs } from '@/graphql/generated/generated-types';
 import { verifyJwtForRequest } from '@/app/api/helpers/permissions/verifyJwtForRequest';
 import { CourseStatus, TempTopicSubmissionModel, TopicStatus } from '@/types/course/submission';
+import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { JwtPayload } from 'jsonwebtoken';
 import intersection from 'lodash/intersection';
@@ -12,7 +13,7 @@ import partition from 'lodash/partition';
 import { v4 } from 'uuid';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST(req: NextRequest) {
+async function postHandler(req: NextRequest) {
   const args: MutationSubmitGitCourseTopicArgs = await req.json();
   async function createNewEmptyTopicSubmission(spaceId: string, courseKey: string, decodedJwt: JwtPayload & DoDaoJwtTokenPayload, topicKey: string) {
     const existingCourseSubmission = await prisma.courseSubmission.findFirstOrThrow({
@@ -83,7 +84,7 @@ export async function POST(req: NextRequest) {
     });
 
     if (!topicSubmission && course.topics.find((t) => t.key === topicKey)?.questions?.length === 0) {
-      return NextResponse.json({ status: 200, body: await createNewEmptyTopicSubmission(spaceId, courseKey, decodedJwt, topicKey) });
+      return NextResponse.json({ body: await createNewEmptyTopicSubmission(spaceId, courseKey, decodedJwt, topicKey) }, { status: 200 });
     }
 
     if (!topicSubmission) {
@@ -142,9 +143,11 @@ export async function POST(req: NextRequest) {
     const courseSubmission = await prisma.courseSubmission.findFirstOrThrow({ where: { spaceId, courseKey, createdBy: decodedJwt.username } });
     const topicSubmissions = await prisma.courseTopicSubmission.findMany({ where: { spaceId, courseKey, createdBy: decodedJwt.username } });
 
-    return NextResponse.json({ status: 200, body: { ...courseSubmission, topicSubmissions } });
+    return NextResponse.json({ body: { ...courseSubmission, topicSubmissions } }, { status: 200 });
   } catch (e) {
     console.error((e as any)?.response?.data);
     throw e;
   }
 }
+
+export const POST = withErrorHandling(postHandler);

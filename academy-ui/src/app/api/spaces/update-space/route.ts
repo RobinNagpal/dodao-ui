@@ -2,13 +2,14 @@ import { MutationUpdateSpaceArgs } from '@/graphql/generated/generated-types';
 import { upsertSpaceIntegrations } from '@/app/api/helpers/space/upsertSpaceIntegrations';
 import { getSpaceWithIntegrations } from '@/app/api/helpers/space';
 import { verifySpaceEditPermissions } from '@/app/api/helpers/permissions/verifySpaceEditPermissions';
+import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { isDoDAOSuperAdmin } from '@/app/api/helpers/space/isSuperAdmin';
 import { prisma } from '@/prisma';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { Space } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST(req: NextRequest, res: NextResponse) {
+async function postHandler(req: NextRequest, res: NextResponse) {
   const { spaceInput } = (await req.json()) as MutationUpdateSpaceArgs;
   const { decodedJwt, space } = await verifySpaceEditPermissions(req, spaceInput.id);
 
@@ -69,5 +70,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
     console.error(e);
     throw e;
   }
-  return NextResponse.json({ status: 200, space: getSpaceWithIntegrations(spaceInput.id) });
+  return NextResponse.json({ space: getSpaceWithIntegrations(spaceInput.id) }, { status: 200 });
 }
+
+export const POST = withErrorHandling(postHandler);

@@ -1,5 +1,6 @@
 import { MutationUpsertGitCourseTopicSubmissionArgs } from '@/graphql/generated/generated-types';
 import { getDecodedJwtFromContext } from '@/app/api/helpers/permissions/getJwtFromContext';
+import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { prisma } from '@/prisma';
 import {
   CourseQuestionSubmission,
@@ -12,7 +13,7 @@ import {
 } from '@/types/course/submission';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST(req: NextRequest) {
+async function postHandler(req: NextRequest) {
   const args: MutationUpsertGitCourseTopicSubmissionArgs = await req.json();
   const {
     spaceId,
@@ -94,5 +95,7 @@ export async function POST(req: NextRequest) {
   const courseSubmission = await prisma.courseSubmission.findFirstOrThrow({ where: { spaceId, courseKey, createdBy: decodedJWT?.username } });
   const topicSubmissions = await prisma.courseTopicSubmission.findMany({ where: { spaceId, courseKey, createdBy: decodedJWT?.username } });
 
-  return NextResponse.json({ status: 200, body: { ...courseSubmission, topicSubmissions } });
+  return NextResponse.json({ body: { ...courseSubmission, topicSubmissions } }, { status: 200 });
 }
+
+export const POST = withErrorHandling(postHandler);

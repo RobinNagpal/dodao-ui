@@ -1,5 +1,4 @@
 import ByteCollectionsGrid from '@/components/byteCollection/View/ByteCollectionsGrid';
-import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { ByteCollectionFragment, CategoryWithByteCollection, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import React from 'react';
 
@@ -20,7 +19,6 @@ export default function ViewByteCollectionCategory(props: ViewByteCollectionCate
           <ByteCollectionsGrid
             byteCollections={categoryWithByteCollection.byteCollections as ByteCollectionFragment[]}
             space={space}
-            byteCollectionType={'byteCollection'}
             byteCollectionsBaseUrl={`/tidbit-collection-categories/view/${categoryWithByteCollection.id}/tidbit-collections`}
           />
         )}

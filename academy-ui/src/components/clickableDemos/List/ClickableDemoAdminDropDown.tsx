@@ -1,6 +1,6 @@
 'use client';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
-import { ClickableDemo, ProjectByteFragment, ProjectFragment, useUpdateArchivedStatusOfProjectByteMutation } from '@/graphql/generated/generated-types';
+import { ClickableDemo } from '@/graphql/generated/generated-types';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 

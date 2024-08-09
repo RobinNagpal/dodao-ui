@@ -1,15 +1,10 @@
 import RatingsTable from '@/components/app/Rating/Table/RatingsTable';
+import { ConsolidatedByteRatingQuery, ConsolidatedGuideRatingQuery, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import {
-  ConsolidatedByteRating,
-  ConsolidatedByteRatingQuery,
-  SpaceWithIntegrationsFragment,
-  ConsolidatedGuideRatingQuery,
-  ByteRatingsQuery,
-} from '@/graphql/generated/generated-types';
-import React, { useEffect } from 'react';
-import axios from 'axios';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Byte } from '@prisma/client';
+import axios from 'axios';
+import React, { useEffect } from 'react';
 
 export default function ByteRatingView(props: { space: SpaceWithIntegrationsFragment; byteId: string }) {
   const [consolidatedRatingsResponse, setConsolidatedRatingsResponse] = React.useState<ConsolidatedByteRatingQuery | ConsolidatedGuideRatingQuery>();
@@ -20,7 +15,7 @@ export default function ByteRatingView(props: { space: SpaceWithIntegrationsFrag
   useEffect(() => {
     async function fetchData() {
       setLoadingByteRatings(true);
-      const response = await axios.get('/api/byte/consolidate-byte-rating', {
+      const response = await axios.get(`${getBaseUrl()}/api/byte/consolidate-byte-rating`, {
         params: {
           byteId: props.byteId,
           spaceId: props.space.id,
@@ -28,7 +23,7 @@ export default function ByteRatingView(props: { space: SpaceWithIntegrationsFrag
       });
       setConsolidatedRatingsResponse(response.data.consolidatedByteRating);
 
-      const byteResponse = await axios.get('/api/byte/byte', {
+      const byteResponse = await axios.get(`${getBaseUrl()}/api/byte/byte`, {
         params: {
           byteId: props.byteId,
           spaceId: props.space.id,
@@ -36,7 +31,7 @@ export default function ByteRatingView(props: { space: SpaceWithIntegrationsFrag
       });
       setByteResponse(byteResponse.data.byte);
 
-      const byteRatingresponse = await axios.get('/api/byte/byte-ratings', {
+      const byteRatingresponse = await axios.get(`${getBaseUrl()}/api/byte/byte-ratings`, {
         params: {
           byteId: props.byteId,
           spaceId: props.space.id,

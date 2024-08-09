@@ -1,8 +1,8 @@
-import { ByteCollectionFragment, ProjectByteCollectionFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { ByteCollectionFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { useRouter } from 'next/navigation';
-import { useCallback, useState, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
-export type EditByteCollection = Omit<ByteCollectionFragment | ProjectByteCollectionFragment, 'id'> & { id?: string };
+export type EditByteCollection = Omit<ByteCollectionFragment, 'id'> & { id?: string };
 
 interface HelperFunctions {
   updateByteCollectionName: (name: string) => void;
@@ -25,7 +25,7 @@ interface UseEditByteCollectionType {
 export interface UseEditByteCollectionArgs {
   space: SpaceWithIntegrationsFragment;
   viewByteCollectionsUrl: string;
-  byteCollection?: ByteCollectionFragment | ProjectByteCollectionFragment;
+  byteCollection?: ByteCollectionFragment;
   upsertByteCollectionFn: (byteCollection: EditByteCollection, byteCollectionId: string | null) => Promise<void>;
 }
 
@@ -42,6 +42,8 @@ export function useEditByteCollection({
   const [byteCollection, setByteCollection] = useState<EditByteCollection>({
     id: byteCollectionProp?.id,
     bytes: byteCollectionProp?.bytes || [],
+    demos: byteCollectionProp?.demos || [],
+    shorts: byteCollectionProp?.shorts || [],
     name: byteCollectionProp?.name || '',
     description: byteCollectionProp?.description || '',
     byteIds: byteCollectionProp?.bytes.map((byte) => byte.byteId) || [],
@@ -54,6 +56,8 @@ export function useEditByteCollection({
     setByteCollection({
       id: byteCollectionProp?.id,
       bytes: byteCollectionProp?.bytes || [],
+      demos: byteCollectionProp?.demos || [],
+      shorts: byteCollectionProp?.shorts || [],
       name: byteCollectionProp?.name || '',
       description: byteCollectionProp?.description || '',
       byteIds: byteCollectionProp?.bytes.map((byte) => byte.byteId) || [],

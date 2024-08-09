@@ -1,13 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getByte } from '@/app/api/helpers/byte/getByte';
+import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 
-export async function GET(req: NextRequest) {
+async function getHandler(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const byteId = searchParams.get('byteId');
-  if (!byteId) return NextResponse.json({ status: 400, body: 'No byteId provided' });
+
+  if (!byteId) return NextResponse.json({ body: 'No byteId provided' }, { status: 400 });
 
   const spaceId = searchParams.get('spaceId');
-  if (!spaceId) return NextResponse.json({ status: 400, body: 'No spaceId provided' });
+  if (!spaceId) return NextResponse.json({ body: 'No spaceId provided' }, { status: 400 });
 
-  return NextResponse.json({ status: 200, byte: await getByte(spaceId, byteId) });
+  return NextResponse.json({ byte: await getByte(spaceId, byteId) }, { status: 200 });
 }
+
+/// Wrapping handle in withErrorHandling
+export const GET = withErrorHandling(getHandler);

@@ -11,6 +11,28 @@ fragment ByteCollection on ByteCollection {
     name
     content
     videoUrl
+    archive
+  }
+  demos {
+    demoId
+    title
+    excerpt
+    archive
+    steps {
+      id
+      url
+      selector
+      tooltipInfo
+      placement
+      order
+    }
+  }
+  shorts {
+    shortId
+    title
+    description
+    videoUrl
+    archive
   }
 }
 

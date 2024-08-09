@@ -1,11 +1,12 @@
 import { MutationUpdateByteCollectionArgs } from '@/graphql/generated/generated-types';
 import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
 import { checkEditSpacePermission } from '@/app/api/helpers/space/checkEditSpacePermission';
-import { getByteCollectionWithBytes } from '@/app/api/helpers/byteCollection/byteCollectionHelper';
+import { getByteCollectionWithItem } from '@/app/api/helpers/byteCollection/byteCollectionHelper';
+import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { prisma } from '@/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST(req: NextRequest) {
+async function postHandler(req: NextRequest) {
   const args: MutationUpdateByteCollectionArgs = await req.json();
   const byteCollection = await prisma.byteCollection.findUniqueOrThrow({
     where: {
@@ -32,7 +33,9 @@ export async function POST(req: NextRequest) {
     },
   });
 
-  const byteCollectionsWithBytes = await getByteCollectionWithBytes(updatedByteCollection);
+  const byteCollectionsWithBytes = await getByteCollectionWithItem(updatedByteCollection);
 
-  return NextResponse.json({ status: 200, byteCollection: byteCollectionsWithBytes });
+  return NextResponse.json({ byteCollection: byteCollectionsWithBytes }, { status: 200 });
 }
+
+export const POST = withErrorHandling(postHandler);

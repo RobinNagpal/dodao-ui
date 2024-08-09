@@ -18,6 +18,7 @@ import { isQuestion, isUserInput } from '@dodao/web-core/types/deprecated/helper
 import { GuideType } from '@dodao/web-core/types/deprecated/models/GuideModel';
 import { GuideError, KeyOfGuideIntegration, StepError } from '@dodao/web-core/types/errors/error';
 import { validateQuestion, validateUserInput } from '@/utils/stepItems/validateItems';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import orderBy from 'lodash/orderBy';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -76,7 +77,7 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
 
   const initialize = async () => {
     if (uuid) {
-      const response = await axios.get('/api/guide/' + uuid);
+      const response = await axios.get(`${getBaseUrl()}/api/guide/` + uuid);
       const guide = response.data.guide;
       setGuide({
         ...guide,

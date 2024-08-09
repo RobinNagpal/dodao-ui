@@ -4,14 +4,14 @@ import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
 import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import Input from '@dodao/web-core/components/core/input/Input';
 import TextareaAutosize from '@dodao/web-core/components/core/textarea/TextareaAutosize';
-import { ByteCollectionFragment, ProjectByteCollectionFragment, ProjectByteFragment, Space } from '@/graphql/generated/generated-types';
+import { ByteCollectionFragment, Space } from '@/graphql/generated/generated-types';
 import Bars3BottomLeftIcon from '@heroicons/react/24/solid/Bars3BottomLeftIcon';
 import React from 'react';
 import styled from 'styled-components';
 
 interface ByteCollectionEditorProps {
   space: Space;
-  byteCollection?: ByteCollectionFragment | ProjectByteCollectionFragment;
+  byteCollection?: ByteCollectionFragment;
   viewByteCollectionsUrl: string;
   upsertByteCollectionFn: (byteCollection: EditByteCollection, byteCollectionId: string | null) => Promise<void>;
 }

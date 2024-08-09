@@ -23,8 +23,8 @@ function SelectedTab(props: TidbitsSiteHomeProps) {
       <ByteCollectionsGrid
         byteCollections={props.byteCollections}
         space={props.space}
-        byteCollectionType={'byteCollection'}
         byteCollectionsBaseUrl={`/tidbit-collections`}
+        isAdmin={props.session?.isAdminOfSpace || props.session?.isSuperAdminOfDoDAO}
       />
     );
   }

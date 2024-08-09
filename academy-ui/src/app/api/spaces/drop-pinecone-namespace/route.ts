@@ -1,9 +1,10 @@
 import { verifySpaceEditPermissions } from '@/app/api/helpers/permissions/verifySpaceEditPermissions';
 import { validateSuperAdmin } from '@/app/api/helpers/space/isSuperAdmin';
 import { initPineconeClient } from '@/app/api/helpers/vectorIndexers/pineconeHelper';
+import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST(req: NextRequest) {
+async function postHandler(req: NextRequest) {
   const { spaceId } = await req.json();
   const { space } = await verifySpaceEditPermissions(req, spaceId);
 
@@ -16,5 +17,7 @@ export async function POST(req: NextRequest) {
     },
   });
 
-  return NextResponse.json({ status: 200, success: true });
+  return NextResponse.json({ success: true }, { status: 200 });
 }
+
+export const POST = withErrorHandling(postHandler);

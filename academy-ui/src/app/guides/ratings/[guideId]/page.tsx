@@ -4,6 +4,7 @@ import withSpace from '@/contexts/withSpace';
 import RatingsTable from '@/components/app/Rating/Table/RatingsTable';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { SpaceWithIntegrationsFragment, GuideFragment, ConsolidatedGuideRatingQuery, ConsolidatedByteRatingQuery } from '@/graphql/generated/generated-types';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import Link from 'next/link';
 import React, { useEffect } from 'react';
 import axios from 'axios';
@@ -19,14 +20,14 @@ function GuideSubmissionsPage(props: { space: SpaceWithIntegrationsFragment; par
       let response = await axios.get(`/api/guide/${props.params.guideId}`);
       const guideUuid = response.data.guide.uuid;
       setGuideResponse(response.data);
-      response = await axios.get('/api/guide/guide-ratings', {
+      response = await axios.get(`${getBaseUrl()}/api/guide/guide-ratings`, {
         params: {
           guideUuid: guideUuid,
           spaceId: props.space.id,
         },
       });
       setGuideRatingsResponse(response.data);
-      response = await axios.get('/api/guide/consolidated-guide-rating', {
+      response = await axios.get(`${getBaseUrl()}/api/guide/consolidated-guide-rating`, {
         params: {
           guideUuid: guideUuid,
           spaceId: props.space.id,

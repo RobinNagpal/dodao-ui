@@ -5,14 +5,15 @@ import { checkEditSpacePermission } from '@/app/api/helpers/space/checkEditSpace
 import { prisma } from '@/prisma';
 import { ByteRating } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
+import { withErrorHandling } from '../../helpers/middlewares/withErrorHandling';
 
-export async function GET(req: NextRequest) {
+async function getHandler(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const byteId = searchParams.get('byteId');
-  if (!byteId) return NextResponse.json({ status: 400, body: 'No byteId provided' });
+  if (!byteId) return NextResponse.json({ body: 'No byteId provided' }, { status: 400 });
 
   const spaceId = searchParams.get('spaceId');
-  if (!spaceId) return NextResponse.json({ status: 400, body: 'No spaceId provided' });
+  if (!spaceId) return NextResponse.json({ body: 'No spaceId provided' }, { status: 400 });
 
   const spaceById = await getSpaceById(spaceId);
   await checkEditSpacePermission(spaceById, req);
@@ -31,5 +32,7 @@ export async function GET(req: NextRequest) {
       negativeFeedback: true,
     },
   });
-  return NextResponse.json({ status: 200, consolidatedByteRating: { consolidatedByteRating: consolidateByteRatings(ratings) } });
+  return NextResponse.json({ consolidatedByteRating: { consolidatedByteRating: consolidateByteRatings(ratings) } }, { status: 200 });
 }
+
+export const GET = withErrorHandling(getHandler);

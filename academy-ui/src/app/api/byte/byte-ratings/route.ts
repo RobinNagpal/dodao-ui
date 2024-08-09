@@ -1,15 +1,16 @@
 import { QueryByteRatingsArgs } from '@/graphql/generated/generated-types';
+import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { prisma } from '@/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET(req: NextRequest) {
+async function getHandler(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const args: QueryByteRatingsArgs = {
     byteId: searchParams.get('byteId')!,
     spaceId: searchParams.get('spaceId')!,
   };
-  if (!args.byteId) return NextResponse.json({ status: 400, body: 'No byteId provided' });
-  if (!args.spaceId) return NextResponse.json({ status: 400, body: 'No spaceId provided' });
+  if (!args.byteId) return NextResponse.json({ body: 'No byteId provided' }, { status: 400 });
+  if (!args.spaceId) return NextResponse.json({ body: 'No spaceId provided' }, { status: 400 });
   const ratings = await prisma.byteRating.findMany({
     where: {
       NOT: {
@@ -24,5 +25,7 @@ export async function GET(req: NextRequest) {
     take: 200,
   });
 
-  return NextResponse.json({ status: 200, byteRatings: ratings });
+  return NextResponse.json({ byteRatings: ratings }, { status: 200 });
 }
+
+export const GET = withErrorHandling(getHandler);

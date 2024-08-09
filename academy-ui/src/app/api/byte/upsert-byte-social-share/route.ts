@@ -1,12 +1,13 @@
 import { MutationUpsertByteSocialShareArgs } from '@/graphql/generated/generated-types';
 import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
 import { checkEditSpacePermission } from '@/app/api/helpers/space/checkEditSpacePermission';
+import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { prisma } from '@/prisma';
 import { ByteSocialShare } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
 import { v4 } from 'uuid';
 
-export async function POST(req: NextRequest) {
+async function postHandler(req: NextRequest) {
   const { spaceId, input }: MutationUpsertByteSocialShareArgs = await req.json();
   const spaceById = await getSpaceById(spaceId);
   const decodedJwt = await checkEditSpacePermission(spaceById, req);
@@ -41,5 +42,7 @@ export async function POST(req: NextRequest) {
     },
   });
 
-  return NextResponse.json({ status: 200, byteSocialShare: savedObject });
+  return NextResponse.json({ byteSocialShare: savedObject }, { status: 200 });
 }
+
+export const POST = withErrorHandling(postHandler);

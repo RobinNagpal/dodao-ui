@@ -1,6 +1,6 @@
 import { emptyClickableDemo } from '@/components/clickableDemos/Edit/EmptyClickableDemo';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { ClickableDemoStepInput, Space, UpsertClickableDemoInput } from '@/graphql/generated/generated-types';
+import { ClickableDemoStepInput, Space, UpsertClickableDemoInput, ByteCollectionFragment } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
 import { ClickableDemoErrors, ClickableDemoStepError } from '@dodao/web-core/types/errors/clickableDemoErrors';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
@@ -173,7 +173,8 @@ export function useEditClickableDemo(space: Space, demoId: string | null) {
         url: s.url,
         selector: s.selector,
         tooltipInfo: s.tooltipInfo,
-        captureUrl: s.captureUrl,
+        screenImgUrl: s.screenImgUrl,
+        elementImgUrl: s.elementImgUrl,
         id: s.id,
         order: s.order,
         placement: s.placement,
@@ -181,7 +182,7 @@ export function useEditClickableDemo(space: Space, demoId: string | null) {
     };
   }
 
-  async function handleSubmit() {
+  async function handleSubmit(byteCollection: ByteCollectionFragment) {
     setClickableDemoCreating(true);
     try {
       const valid = validateClickableDemo(clickableDemo);
@@ -194,17 +195,19 @@ export function useEditClickableDemo(space: Space, demoId: string | null) {
       }
       const input = getClickableDemoInput();
       const response = await fetch(`/api/clickable-demos/${input.id}`, {
-        method: 'PUT',
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           spaceId: space.id,
           input,
+          byteCollectionId: byteCollection.id,
         }),
       });
 
       const payload = await response.json();
+
       if (response.ok) {
         showNotification({
           type: 'success',
@@ -218,7 +221,6 @@ export function useEditClickableDemo(space: Space, demoId: string | null) {
       }
     } catch (e) {
       console.error(e);
-
       showNotification({ type: 'error', message: $t('notify.somethingWentWrong') });
     }
     setClickableDemoCreating(false);

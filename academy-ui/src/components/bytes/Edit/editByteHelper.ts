@@ -5,7 +5,6 @@ import {
   CompletionScreen,
   StepItemInputGenericInput,
   UpsertByteInput,
-  UpsertProjectByteInput,
 } from '@/graphql/generated/generated-types';
 import { isQuestion, isUserInput } from '@dodao/web-core/types/deprecated/helpers/stepItemTypes';
 import { UserInput } from '@dodao/web-core/types/deprecated/models/GuideModel';
@@ -34,14 +33,7 @@ export interface EditByteType extends UpsertByteInput {
   steps: EditByteStep[];
 }
 
-export interface EditProjectByteType extends UpsertProjectByteInput {
-  id: string;
-  isPristine: boolean;
-  byteExists: boolean;
-  steps: EditByteStep[];
-}
-
-export type KeyOfByteInput = keyof EditByteType | keyof EditProjectByteType;
+export type KeyOfByteInput = keyof EditByteType;
 
 export type UpdateByteFunctions = {
   moveStepDown: (stepUuid: string) => void;
@@ -52,7 +44,7 @@ export type UpdateByteFunctions = {
   updateStep: (step: EditByteStep) => void;
   removeStep: (stepUuid: string) => void;
   moveStepUp: (stepUuid: string) => void;
-  setByte: (byte: EditByteType | EditProjectByteType) => void;
+  setByte: (byte: EditByteType) => void;
   updateCompletionScreen: (field: keyof CompletionScreen, value: any) => void;
   removeCompletionScreen: () => void;
   addCallToActionButtonLink: (uuid: string, link: string) => void;
@@ -281,6 +273,7 @@ export function editByteCommonFunctions(setByte: (value: ((prevState: EditByteTy
       steps: byte.steps.map((s) => ({
         content: s.content,
         name: s.name,
+        displayMode: s.displayMode || 'normal',
         stepItems: s.stepItems.map((si) => ({
           type: si.type,
           uuid: si.uuid,

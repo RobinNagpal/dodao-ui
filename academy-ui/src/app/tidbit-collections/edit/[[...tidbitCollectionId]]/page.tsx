@@ -8,6 +8,7 @@ import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { SpaceWithIntegrationsFragment, ByteCollectionFragment, Byte } from '@/graphql/generated/generated-types';
 
 import SingleCardLayout from '@/layouts/SingleCardLayout';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import Link from 'next/link';
 import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
 import { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
@@ -22,14 +23,14 @@ function EditTidbitCollectionSpace(props: { space: SpaceWithIntegrationsFragment
 
   useEffect(() => {
     async function fetchData() {
-      let response = await axios.get('/api/byte/bytes', {
+      let response = await axios.get(`${getBaseUrl()}/api/byte/bytes`, {
         params: {
           spaceId: props.space.id,
         },
       });
       setBytesResponse(response.data);
       if (byteCollectionId) {
-        const response = await axios.get('/api/byte-collection/byte-collection', {
+        const response = await axios.get(`${getBaseUrl()}/api/byte-collection/byte-collection`, {
           params: {
             spaceId: props.space.id,
             byteCollectionId: byteCollectionId,

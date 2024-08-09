@@ -1,16 +1,12 @@
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import {
-  ByteCollectionFragment,
-  CategoryWithByteCollection,
-  SpaceWithIntegrationsFragment,
-  useUpsertByteCollectionCategoryMutation,
-} from '@/graphql/generated/generated-types';
+import { ByteCollectionFragment, CategoryWithByteCollection, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
 import { ByteCollectionCategoryError } from '@dodao/web-core/types/errors/error';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
 import { v4 } from 'uuid';
+import axios from 'axios';
 
 interface HelperFunctions {
   updateByteCategoryName: (name: string) => void;
@@ -40,7 +36,6 @@ export interface UseEditByteCollectionCategoryArgs {
 
 export function useEditByteCollectionCategory({ space, byteCategory: byteCategoryProp }: UseEditByteCollectionCategoryArgs): UseEditByteCollectionCategoryType {
   const router = useRouter();
-  const [upsertByteCollectionCategoryMutation] = useUpsertByteCollectionCategoryMutation();
   const [byteCategory, setByteCategory] = useState<CategoryWithByteCollection>({
     id: byteCategoryProp?.id || '',
     byteCollections: byteCategoryProp?.byteCollections || [],
@@ -104,6 +99,8 @@ export function useEditByteCollectionCategory({ space, byteCategory: byteCategor
           status: byteCollection.status,
           byteIds: byteCollection.byteIds,
           bytes: byteCollection.bytes,
+          demos: byteCollection.demos,
+          shorts: byteCollection.shorts,
         },
       ];
 
@@ -166,23 +163,22 @@ export function useEditByteCollectionCategory({ space, byteCategory: byteCategor
       return;
     }
     setUpserting(true);
-    const response = await upsertByteCollectionCategoryMutation({
-      variables: {
+    const byteCollectionCategoryId = byteCategory.id || slugify(byteCategory.name) + '-' + v4().toString().substring(0, 4);
+    const response = await axios.post(`/api/byte-collection-categories/${byteCollectionCategoryId}`, {
+      spaceId: space.id,
+      input: {
+        id: byteCollectionCategoryId,
         spaceId: space.id,
-        input: {
-          id: byteCategory.id || slugify(byteCategory.name) + '-' + v4().toString().substring(0, 4),
-          spaceId: space.id,
-          name: byteCategory.name,
-          excerpt: byteCategory.excerpt || '',
-          imageUrl: byteCategory.imageUrl,
-          status: byteCategory.status,
-          byteCollectionIds: byteCategory.byteCollections?.map((byteCollection) => byteCollection?.id).filter((id): id is string => id !== undefined) ?? [],
-          priority: byteCategory.priority,
-          archive: byteCategory.archive,
-        },
+        name: byteCategory.name,
+        excerpt: byteCategory.excerpt || '',
+        imageUrl: byteCategory.imageUrl,
+        status: byteCategory.status,
+        byteCollectionIds: byteCategory.byteCollections?.map((byteCollection) => byteCollection?.id).filter((id): id is string => id !== undefined) ?? [],
+        priority: byteCategory.priority,
+        archive: byteCategory.archive,
       },
     });
-    router.push(`/tidbit-collection-categories/view/${response.data?.payload?.id}/tidbit-collections`);
+    router.push(`/tidbit-collection-categories/view/${response.data?.byteCollectionCategory?.id}/tidbit-collections`);
   };
 
   return {

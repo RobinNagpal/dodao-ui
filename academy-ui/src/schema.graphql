@@ -118,10 +118,12 @@ type Byte {
 type ByteCollection {
   byteIds: [String!]!
   bytes: [ByteCollectionByte!]!
+  demos: [ByteCollectionDemo!]!
   description: String!
   id: ID!
   name: String!
   priority: Int!
+  shorts: [ByteCollectionShort!]!
   status: String!
   videoUrl: String
 }
@@ -131,6 +133,7 @@ type ByteCollectionByte {
   content: String!
   name: String!
   videoUrl: String
+  archive: Boolean!
 }
 
 type ByteCollectionCategory {
@@ -149,6 +152,22 @@ enum ByteCollectionCategoryStatus {
   ComingSoon
   Hidden
   TryItOut
+}
+
+type ByteCollectionDemo {
+  demoId: String!
+  excerpt: String!
+  steps: [ClickableDemoStep!]!
+  title: String!
+  archive: Boolean!
+}
+
+type ByteCollectionShort {
+  description: String!
+  shortId: String!
+  title: String!
+  videoUrl: String!
+  archive: Boolean!
 }
 
 type ByteFeedback {
@@ -239,6 +258,7 @@ type ByteSocialShare {
 type ByteStep {
   content: String!
   imageUrl: String
+  displayMode: String
   name: String!
   stepItems: [ByteStepItem!]!
   uuid: String!
@@ -247,6 +267,7 @@ type ByteStep {
 input ByteStepInput {
   content: String!
   imageUrl: String
+  displayMode: String
   name: String!
   stepItems: [StepItemInputGenericInput!]!
   uuid: String!
@@ -357,23 +378,25 @@ type ClickableDemo {
 }
 
 type ClickableDemoStep {
-  captureUrl: String
   id: String!
   order: Int!
   placement: String!
   selector: String!
   tooltipInfo: String!
   url: String!
+  screenImgUrl: String
+  elementImgUrl: String
 }
 
 input ClickableDemoStepInput {
-  captureUrl: String
   id: String!
   order: Int!
   placement: String!
   selector: String!
   tooltipInfo: String!
   url: String!
+  screenImgUrl: String
+  elementImgUrl: String
 }
 
 type ClickableDemoWithSteps {
@@ -1238,10 +1261,6 @@ type Mutation {
   submitGuide(submissionInput: GuideSubmissionInput!): GuideSubmission!
   triggerNewDiscourseIndexRun(spaceId: String!): DiscourseIndexRun!
   triggerSiteScrapingRun(spaceId: String!, websiteScrapingInfoId: String!): SiteScrapingRun!
-  updateArchivedStatusOfProject(archived: Boolean!, projectId: String!): Project!
-  updateArchivedStatusOfProjectByte(archived: Boolean!, projectByteId: String!, projectId: String!): ProjectByte!
-  updateArchivedStatusOfProjectByteCollection(archived: Boolean!, byteCollectionId: String!, projectId: String!): ProjectByteCollection!
-  updateArchivedStatusOfProjectShortVideo(archived: Boolean!, projectId: String!, projectShortVideoId: String!): ProjectShortVideo!
   updateAuthSettings(input: AuthSettingsInput!, spaceId: String!): Space!
   updateByteCollection(input: UpdateByteCollectionInput!): ByteCollection!
   updateByteSettings(input: ByteSettingsInput!, spaceId: String!): Space!
@@ -1249,10 +1268,6 @@ type Mutation {
   updateGuideSettings(input: GuideSettingsInput!, spaceId: String!): Space!
   updateIndexWithAllDiscordPosts(spaceId: String!): Boolean!
   updateIndexingOfDiscordChannel(channelId: String!, shouldIndex: Boolean!, spaceId: String!): DiscordChannel!
-  updateSeoOfProject(projectId: String!, seoMeta: SEOMetaInput): Project!
-  updateSeoOfProjectByte(projectId: String!, seoMeta: SEOMetaInput): ProjectByte!
-  updateSeoOfProjectByteCollection(projectId: String!, seoMeta: SEOMetaInput): ProjectByteCollection!
-  updateSeoOfProjectShortVideo(projectId: String!, seoMeta: SEOMetaInput): ProjectShortVideo!
   updateSocialSettings(input: SocialSettingsInput!, spaceId: String!): Space!
   updateSpace(spaceInput: UpsertSpaceInput!): Space!
   updateSpaceCreator(creator: String!, spaceId: String!): Space!
@@ -1280,11 +1295,6 @@ type Mutation {
   upsertGnosisSafeWallets(spaceId: String!, wallets: [GnosisSafeWalletInput!]!): Space!
   upsertGuide(guideInput: GuideInput!, spaceId: String!): Guide!
   upsertGuideRating(spaceId: String!, upsertGuideRatingInput: UpsertGuideRatingInput!): GuideRating!
-  upsertProject(input: UpsertProjectInput!): Project!
-  upsertProjectByte(input: UpsertProjectByteInput!, projectId: String!): ProjectByte!
-  upsertProjectByteCollection(input: UpsertProjectByteCollectionInput!, projectId: String!): ProjectByteCollection!
-  upsertProjectGalaxyAccessToken(accessToken: String!, spaceId: String!): Space!
-  upsertProjectShortVideo(projectId: String!, shortVideo: ProjectShortVideoInput!): ProjectShortVideo!
   upsertRoute53Record(spaceId: String!): Route53Record!
   upsertShortVideo(shortVideo: ShortVideoInput!, spaceId: String!): ShortVideo!
   upsertSimulation(input: UpsertSimulationInput!, spaceId: String!): Simulation!
@@ -1355,84 +1365,6 @@ enum OrderDirection {
   desc
 }
 
-type Project {
-  adminUsernames: [String!]!
-  adminUsernamesV1: [UsernameAndName!]!
-  admins: [String!]!
-  archived: Boolean!
-  cardThumbnail: String
-  creator: String!
-  details: String!
-  discord: String
-  docs: String
-  excerpt: String!
-  github: String
-  id: String!
-  logo: String
-  name: String!
-  priority: Int!
-  seoMeta: SEOMeta
-  telegram: String
-  type: String!
-  website: String
-}
-
-type ProjectByte {
-  admins: [String!]!
-  archived: Boolean!
-  byteStyle: String
-  completionScreen: CompletionScreen
-  content: String!
-  created: String!
-  id: String!
-  name: String!
-  postSubmissionStepContent: String
-  priority: Int!
-  seoMeta: SEOMeta
-  steps: [ByteStep!]!
-  tags: [String!]!
-  videoAspectRatio: String
-  videoUrl: String
-}
-
-type ProjectByteCollection {
-  archived: Boolean!
-  byteIds: [String!]!
-  bytes: [ByteCollectionByte!]!
-  description: String!
-  id: String!
-  name: String!
-  priority: Int!
-  seoMeta: SEOMeta
-  status: String!
-  videoUrl: String
-}
-
-type ProjectShortVideo {
-  archive: Boolean
-  archived: Boolean!
-  createdAt: String!
-  description: String!
-  id: ID!
-  priority: Int!
-  seoMeta: SEOMeta
-  thumbnail: String!
-  title: String!
-  updatedAt: String!
-  videoUrl: String!
-}
-
-input ProjectShortVideoInput {
-  archive: Boolean
-  description: String!
-  id: ID!
-  priority: Int!
-  seoMeta: SEOMetaInput
-  thumbnail: String!
-  title: String!
-  videoUrl: String!
-}
-
 type Query {
   _empty: String
   academyTask(uuid: String!): AcademyTask!
@@ -1475,14 +1407,6 @@ type Query {
   guideRatings(guideUuid: String!, spaceId: String!): [GuideRating!]!
   guideSubmissions(filters: GuideSubmissionFiltersInput!, guideUuid: String!, spaceId: String!): [GuideSubmission!]!
   guides(spaceId: String!): [Guide!]!
-  project(id: String!): Project!
-  projectByte(projectByteId: String!, projectId: String!): ProjectByte!
-  projectByteCollection(byteCollectionId: String!, projectId: String!): ProjectByteCollection!
-  projectByteCollections(projectId: String!): [ProjectByteCollection!]!
-  projectBytes(projectId: String!): [ProjectByte!]!
-  projectShortVideo(projectId: String!, projectShortVideoId: String!): ProjectShortVideo!
-  projectShortVideos(projectId: String!): [ProjectShortVideo!]!
-  projects(type: String): [Project!]!
   rawGitCourse(key: String!, spaceId: String!): RawGitCourse!
   rawGitCourses(spaceId: String!): [RawGitCourse!]!
   route53Record(spaceId: String!): Route53Record
@@ -1840,6 +1764,10 @@ enum TooltipPlacement {
   Top
 }
 
+enum ImageDisplayMode {
+  Normal
+  FullScreenImage
+}
 type TopicConfig {
   showExplanations: Boolean!
   showHints: Boolean!
@@ -2042,55 +1970,6 @@ input UpsertGuideRatingInput {
   startRating: Int
   suggestion: String
   userId: String
-}
-
-input UpsertProjectByteCollectionInput {
-  byteIds: [String!]!
-  description: String!
-  id: String!
-  name: String!
-  priority: Int!
-  projectId: String!
-  seoMeta: SEOMetaInput
-  status: String!
-  videoUrl: String
-}
-
-input UpsertProjectByteInput {
-  admins: [String!]!
-  byteStyle: String
-  completionScreen: CompletionScreenInput
-  content: String!
-  created: String!
-  id: String!
-  name: String!
-  priority: Int!
-  seoMeta: SEOMetaInput
-  steps: [ByteStepInput!]!
-  tags: [String!]!
-  thumbnail: String
-  videoAspectRatio: String
-  videoUrl: String
-}
-
-input UpsertProjectInput {
-  adminUsernames: [String!]!
-  adminUsernamesV1: [UsernameAndNameInput!]!
-  admins: [String!]!
-  cardThumbnail: String
-  details: String!
-  discord: String
-  docs: String
-  excerpt: String!
-  github: String
-  id: String!
-  logo: String
-  name: String!
-  priority: Int!
-  seoMeta: SEOMetaInput
-  telegram: String
-  type: String!
-  website: String
 }
 
 input UpsertSimulationInput {

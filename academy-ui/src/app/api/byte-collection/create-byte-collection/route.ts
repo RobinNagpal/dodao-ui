@@ -1,5 +1,6 @@
 import { MutationCreateByteCollectionArgs } from '@/graphql/generated/generated-types';
-import { getByteCollectionWithBytes } from '@/app/api/helpers/byteCollection/byteCollectionHelper';
+import { getByteCollectionWithItem } from '@/app/api/helpers/byteCollection/byteCollectionHelper';
+import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
 import { logError } from '@/app/api/helpers/adapters/errorLogger';
 import { checkEditSpacePermission } from '@/app/api/helpers/space/checkEditSpacePermission';
@@ -7,7 +8,7 @@ import { prisma } from '@/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 import { v4 } from 'uuid';
 
-export async function POST(req: NextRequest) {
+async function postHandler(req: NextRequest) {
   try {
     const args: MutationCreateByteCollectionArgs = await req.json();
     const spaceById = await getSpaceById(args.input.spaceId);
@@ -29,11 +30,13 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    const byteCollectionWithBytes = await getByteCollectionWithBytes(byteCollection);
+    const byteCollectionWithBytes = await getByteCollectionWithItem(byteCollection);
 
-    return NextResponse.json({ status: 200, byteCollectionWithBytes });
+    return NextResponse.json({ byteCollectionWithBytes }, { status: 200 });
   } catch (e) {
     await logError((e as any)?.response?.data || 'Error in creatByte', {}, e as any, null, null);
     throw e;
   }
 }
+
+export const POST = withErrorHandling(postHandler);

@@ -1,12 +1,13 @@
-import { getSpaceWithIntegrations, getAllSpaceIdsForDomain } from '@/app/api/helpers/space';
+import { isRequestUserSuperAdmin } from '@/app/api/helpers/space/checkEditSpacePermission';
 import { prisma } from '@/prisma';
 import { NextRequest, NextResponse } from 'next/server';
+import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 
-export async function GET(req: NextRequest) {
+async function getHandler(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const domain = searchParams.get('domain');
-  if (!domain) return NextResponse.json({ status: 400, body: 'No domain provided' });
-  let space = await prisma.space.findFirst({
+
+  const space = await prisma.space.findFirst({
     where: {
       domains: {
         has: domain,
@@ -14,27 +15,39 @@ export async function GET(req: NextRequest) {
     },
   });
 
-  if (!space && domain.includes('.tidbitshub.org')) {
+  if (space) {
+    return NextResponse.json([space]);
+  }
+
+  if (domain?.includes('.tidbitshub.org') || domain?.includes('.tidbitshub-localhost.org')) {
     const idFromDomain = domain.split('.')[0];
-    space = await prisma.space.findFirst({
+    const space = await prisma.space.findFirst({
       where: {
         id: idFromDomain,
       },
     });
+    return NextResponse.json([space]);
   }
 
-  if ((!space && (domain === 'dodao-ui-robinnagpal.vercel.app' || domain === 'localhost')) || domain.includes('.vercel.app')) {
-    let space = await prisma.space.findFirst({
+  if (domain === 'dodao-ui-robinnagpal.vercel.app' || domain === 'localhost' || domain?.includes('.vercel.app')) {
+    const space = await prisma.space.findFirst({
       where: {
         id: {
           equals: 'test-academy-eth',
         },
       },
     });
-    return NextResponse.json({ status: 200, body: [space] });
+    return NextResponse.json([space]);
+  }
+  const isUserSuperAdmin = await isRequestUserSuperAdmin(req);
+  if (isUserSuperAdmin) {
+    return NextResponse.json(await prisma.space.findMany());
   }
 
-  if (!space) return NextResponse.json({ status: 400, body: 'No space found for domain' });
+  if (!domain) return NextResponse.json('No domain passed', { status: 400 });
+  if (!space) return NextResponse.json('No space found for domain', { status: 404 });
 
-  return NextResponse.json({ status: 200, body: [space] });
+  return NextResponse.json([space]);
 }
+
+export const GET = withErrorHandling(getHandler);

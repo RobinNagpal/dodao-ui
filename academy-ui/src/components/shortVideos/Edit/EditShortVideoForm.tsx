@@ -1,21 +1,25 @@
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
 import UploadInput from '@/components/app/UploadInput';
+import { ImageType, ShortVideo, ShortVideoInput } from '@/graphql/generated/generated-types';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Input from '@dodao/web-core/components/core/input/Input';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { ImageType, ProjectShortVideo, ShortVideo, ShortVideoInput } from '@/graphql/generated/generated-types';
 import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { v4 } from 'uuid';
+import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
+import { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
+import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
 
-export interface EditProjectShortVideoModalProps {
-  shortVideoToEdit?: ShortVideo | ProjectShortVideo;
+export interface EditShortVideoModalProps {
+  shortVideoToEdit?: ShortVideo;
   spaceId: string;
   saveShortVideoFn: (video: ShortVideoInput) => Promise<void>;
   onCancel: () => void;
-  onAfterSave: () => void;
+  onAfterSave?: () => void;
 }
 
-export default function EditProjectShortVideoModal({ shortVideoToEdit, spaceId, saveShortVideoFn, onCancel, onAfterSave }: EditProjectShortVideoModalProps) {
+export default function EditShortVideoModal({ shortVideoToEdit, spaceId, saveShortVideoFn, onCancel, onAfterSave }: EditShortVideoModalProps) {
   const [shortVideo, setShortVideo] = React.useState<ShortVideoInput>({
     id: shortVideoToEdit?.id || v4(),
     title: shortVideoToEdit?.title || '',
@@ -35,7 +39,10 @@ export default function EditProjectShortVideoModal({ shortVideoToEdit, spaceId, 
     setShortVideo((prev) => ({ ...prev, [field]: value }));
   };
 
+  const router = useRouter();
   const [shortVideoUpserting, setShortVideoUpserting] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const threeDotItems: EllipsisDropdownItem[] = [{ label: 'Delete', key: 'delete' }];
 
   const [shortVideoErrors, setshortVideoErrors] = useState<Record<keyof ShortVideoInput, any>>({
     id: null,
@@ -46,6 +53,13 @@ export default function EditProjectShortVideoModal({ shortVideoToEdit, spaceId, 
     videoUrl: null,
     archive: false,
   });
+
+  async function handleDelete() {
+    const response = await fetch(`/api/short-videos/${shortVideo.id}`, {
+      method: 'DELETE',
+      body: JSON.stringify({ spaceId }),
+    });
+  }
 
   const { showNotification } = useNotificationContext();
   const upsertShortVideo = async () => {
@@ -88,16 +102,32 @@ export default function EditProjectShortVideoModal({ shortVideoToEdit, spaceId, 
     try {
       await saveShortVideoFn(shortVideo);
       showNotification({ message: 'Short video saved', type: 'success' });
+      router.push(`/shorts/view/${shortVideo?.id}`);
     } catch (e) {
       showNotification({ message: 'Something went wrong', type: 'error' });
     }
 
     setShortVideoUpserting(false);
-    onAfterSave();
+    if (onAfterSave) {
+      onAfterSave();
+    }
   };
 
   return (
     <div className="text-left">
+      <div className="px-4 mb-4 md:px-0 float-right">
+        {shortVideoToEdit && (
+          <PrivateEllipsisDropdown
+            items={threeDotItems}
+            onSelect={(key) => {
+              if (key === 'delete') {
+                setShowDeleteModal(true);
+              }
+            }}
+            className="ml-4"
+          />
+        )}
+      </div>
       <Input
         modelValue={shortVideo.title}
         onUpdate={(v) => updateShortVideoField('title', v?.toString() || '')}
@@ -159,6 +189,18 @@ export default function EditProjectShortVideoModal({ shortVideoToEdit, spaceId, 
         <Button onClick={() => onCancel()} className="ml-2" variant="contained">
           Cancel
         </Button>
+        {showDeleteModal && (
+          <DeleteConfirmationModal
+            title={'Delete Short Video'}
+            open={showDeleteModal}
+            onClose={() => setShowDeleteModal(false)}
+            onDelete={() => {
+              handleDelete();
+              router.push('/shorts');
+              setShowDeleteModal(false);
+            }}
+          />
+        )}
       </div>
     </div>
   );

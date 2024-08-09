@@ -9,15 +9,16 @@ import {
 import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
 import { getDecodedJwtFromContext } from '@/app/api/helpers/permissions/getJwtFromContext';
 import { SubmissionItemInfo, UserGuideQuestionSubmission, UserGuideStepSubmission } from '@/app/api/helpers/types/guideSubmisstion';
+import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { prisma } from '@/prisma';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { GuideSubmission } from '@prisma/client';
 import { JwtPayload } from 'jsonwebtoken';
 import intersection from 'lodash/intersection';
 import isEqual from 'lodash/isEqual';
 import { NextRequest, NextResponse } from 'next/server';
 import axios from 'axios';
-import getBaseUrl from '@/utils/api/getBaseURL';
 
 function getGuideStepSubmissionMap(msg: GuideSubmissionInput) {
   const stepEntries = msg.steps.map((step) => {
@@ -139,14 +140,14 @@ async function doSubmitGuide(
   return { ...submission };
 }
 
-export async function GET(req: NextRequest) {
+async function getHandler(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const filters = searchParams.get('filters');
   const spaceId = searchParams.get('spaceId');
   const guideId = searchParams.get('guideId');
-  if (!spaceId) return NextResponse.json({ status: 400, message: 'Space ID is required' });
-  if (!guideId) return NextResponse.json({ status: 400, message: 'Guide UUID is required' });
-  if (!filters) return NextResponse.json({ status: 400, message: 'Filters are required' });
+  if (!spaceId) return NextResponse.json({ message: 'Space ID is required' }, { status: 400 });
+  if (!guideId) return NextResponse.json({ message: 'Guide UUID is required' }, { status: 400 });
+  if (!filters) return NextResponse.json({ message: 'Filters are required' }, { status: 400 });
   const { page, itemsPerPage, createdByUsername, createdAt, correctQuestionsCount } = JSON.parse(filters) || {};
   const submissions = await prisma.guideSubmission.findMany({
     skip: page * itemsPerPage,
@@ -167,10 +168,10 @@ export async function GET(req: NextRequest) {
       createdAt: 'desc',
     },
   });
-  return NextResponse.json({ status: 200, guideSubmissions: submissions });
+  return NextResponse.json({ guideSubmissions: submissions }, { status: 200 });
 }
 
-export async function POST(req: NextRequest) {
+async function postHandler(req: NextRequest) {
   const guideInput = (await req.json()) as MutationSubmitGuideArgs;
   const space = await getSpaceById(guideInput.submissionInput.space);
   const decodedJWT = await getDecodedJwtFromContext(req);
@@ -182,5 +183,8 @@ export async function POST(req: NextRequest) {
 
   const submitGuide = await doSubmitGuide(decodedJWT!, guideInput.submissionInput, req);
 
-  return NextResponse.json({ status: 200, submitGuide });
+  return NextResponse.json({ submitGuide }, { status: 200 });
 }
+
+export const GET = withErrorHandling(getHandler);
+export const POST = withErrorHandling(postHandler);

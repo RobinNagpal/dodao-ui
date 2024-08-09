@@ -8,6 +8,7 @@ services:
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin
+      POSTGRES_DB: next_app_localhost_db
     ports:
       - "5432:5432"
     volumes:

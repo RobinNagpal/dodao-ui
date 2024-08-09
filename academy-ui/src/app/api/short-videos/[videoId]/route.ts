@@ -2,12 +2,15 @@ import { MutationUpsertShortVideoArgs, MutationDeleteShortVideoArgs } from '@/gr
 import { checkEditSpacePermission } from '@/app/api/helpers/space/checkEditSpacePermission';
 import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
 import { NextRequest, NextResponse } from 'next/server';
+import { ByteCollectionItemType } from '@/app/api/helpers/byteCollection/byteCollectionItemType';
+import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
+import { v4 as uuidv4 } from 'uuid';
 import { prisma } from '@/prisma';
 
-export async function GET(req: NextRequest, { params: { videoId } }: { params: { videoId: string } }) {
+async function getHandler(req: NextRequest, { params: { videoId } }: { params: { videoId: string } }) {
   const { searchParams } = new URL(req.url);
   const spaceId = searchParams.get('spaceId');
-  if (!spaceId) return NextResponse.json({ status: 400, message: 'spaceId is required' });
+  if (!spaceId) return NextResponse.json({ message: 'spaceId is required' }, { status: 400 });
 
   const shortVideo = await prisma.shortVideo.findFirstOrThrow({
     where: {
@@ -16,11 +19,11 @@ export async function GET(req: NextRequest, { params: { videoId } }: { params: {
     },
   });
 
-  return NextResponse.json({ status: 200, shortVideo });
+  return NextResponse.json({ shortVideo }, { status: 200 });
 }
 
-export async function POST(req: NextRequest, { params: { videoId } }: { params: { videoId: string } }) {
-  const { spaceId, shortVideo }: MutationUpsertShortVideoArgs = await req.json();
+async function postHandler(req: NextRequest, { params: { videoId } }: { params: { videoId: string } }) {
+  const { spaceId, shortVideo, byteCollectionId } = await req.json();
   try {
     const spaceById = await prisma.space.findUniqueOrThrow({ where: { id: spaceId } });
     if (!spaceById) throw new Error(`No space found: ${spaceId}`);
@@ -51,14 +54,51 @@ export async function POST(req: NextRequest, { params: { videoId } }: { params: 
         id: videoId,
       },
     });
-    return NextResponse.json({ status: 200, upsertedShortVideo });
+
+    const existingMapping = await prisma.byteCollectionItemMappings.findFirst({
+      where: {
+        itemId: upsertedShortVideo.id,
+        byteCollectionId,
+        itemType: ByteCollectionItemType.ShortVideo,
+      },
+    });
+
+    if (!existingMapping) {
+      const byteCollection = await prisma.byteCollection.findUnique({
+        where: {
+          id: byteCollectionId,
+        },
+        select: {
+          items: true,
+        },
+      });
+      const items = byteCollection?.items;
+      let highestOrderNumber = 0;
+      if (items && items?.length > 0) {
+        const byteItems = items?.filter((item) => item.itemType === ByteCollectionItemType.ShortVideo);
+        const orderNumbers = byteItems.map((item) => item.order);
+        highestOrderNumber = orderNumbers.length > 0 ? Math.max(...orderNumbers) : 0;
+      }
+      await prisma.byteCollectionItemMappings.create({
+        data: {
+          id: uuidv4(),
+          itemType: ByteCollectionItemType.ShortVideo,
+          order: highestOrderNumber + 1,
+          itemId: upsertedShortVideo.id,
+          ByteCollection: {
+            connect: { id: byteCollectionId },
+          },
+        },
+      });
+    }
+    return NextResponse.json({ upsertedShortVideo }, { status: 200 });
   } catch (error) {
     console.log(error);
     throw error;
   }
 }
 
-export async function DELETE(req: NextRequest, { params: { videoId } }: { params: { videoId: string } }) {
+async function deleteHandler(req: NextRequest, { params: { videoId } }: { params: { videoId: string } }) {
   const { spaceId }: MutationDeleteShortVideoArgs = await req.json();
   const spaceById = await getSpaceById(spaceId);
 
@@ -70,8 +110,21 @@ export async function DELETE(req: NextRequest, { params: { videoId } }: { params
       data: { archive: true },
     });
 
+    await prisma.byteCollectionItemMappings.updateMany({
+      where: {
+        itemId: videoId,
+      },
+      data: {
+        archive: true,
+      },
+    });
+
     return NextResponse.json({ status: 200, archivedShortVideo });
   } catch (error) {
     console.log(error);
   }
 }
+
+export const GET = withErrorHandling(getHandler);
+export const POST = withErrorHandling(postHandler);
+export const DELETE = withErrorHandling(deleteHandler);

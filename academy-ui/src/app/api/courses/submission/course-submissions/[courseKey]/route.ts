@@ -3,10 +3,11 @@ import { MutationDeleteGitCourseSubmissionArgs } from '@/graphql/generated/gener
 import { verifyJwtForRequest } from '@/app/api/helpers/permissions/verifyJwtForRequest';
 import { CourseSubmission, CourseTopicSubmission } from '@prisma/client';
 import { MutationSubmitGitCourseArgs } from '@/graphql/generated/generated-types';
+import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { prisma } from '@/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function DELETE(req: NextRequest, { params: { courseKey } }: { params: { courseKey: string } }) {
+async function deleteHandler(req: NextRequest, { params: { courseKey } }: { params: { courseKey: string } }) {
   const args: MutationDeleteGitCourseSubmissionArgs = await req.json();
   const { decodedJwt } = await verifyJwtForRequest(req, args.spaceId);
 
@@ -26,10 +27,10 @@ export async function DELETE(req: NextRequest, { params: { courseKey } }: { para
     },
   });
 
-  return NextResponse.json({ status: 200, body: true });
+  return NextResponse.json({ body: true }, { status: 200 });
 }
 
-export async function POST(req: NextRequest, { params: { courseKey } }: { params: { courseKey: string } }) {
+async function postHandler(req: NextRequest, { params: { courseKey } }: { params: { courseKey: string } }) {
   try {
     const args: MutationSubmitGitCourseArgs = await req.json();
     const spaceId = args.spaceId;
@@ -107,9 +108,12 @@ export async function POST(req: NextRequest, { params: { courseKey } }: { params
       },
     });
 
-    return NextResponse.json({ status: 200, body: { ...savedSubmission, topicSubmissions } });
+    return NextResponse.json({ body: { ...savedSubmission, topicSubmissions } }, { status: 200 });
   } catch (e) {
     console.error((e as any)?.response?.data);
     throw e;
   }
 }
+
+export const POST = withErrorHandling(postHandler);
+export const DELETE = withErrorHandling(deleteHandler);

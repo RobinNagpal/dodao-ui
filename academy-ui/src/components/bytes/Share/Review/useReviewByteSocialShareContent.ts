@@ -1,5 +1,6 @@
 import { ByteLinkedinPdfContent, ByteLinkedinPdfContentStep, ByteSocialShare } from '@/graphql/generated/generated-types';
 import { rewriteToCharacterLengthUsingAi, rewriteToWordsCountUsingAi } from '@/utils/ai/rewriteUsingAi';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Byte } from '@prisma/client';
 import axios from 'axios';
 import { useState } from 'react';
@@ -101,14 +102,14 @@ export default function useReviewByteSocialShareContent(spaceId: string, byteId:
   }
 
   async function initializeByteSocialShare() {
-    const byteShareQueryResponse = await axios.get('/api/byte/byte-social-share', { params: { spaceId, byteId } });
+    const byteShareQueryResponse = await axios.get(`${getBaseUrl()}/api/byte/byte-social-share`, { params: { spaceId, byteId } });
     const socialShare = byteShareQueryResponse.data?.byteSocialShare;
     let linkedinPdfContent: ByteLinkedinPdfContent | undefined = undefined;
     if (socialShare?.linkedinPdfContent) {
       linkedinPdfContent = socialShare.linkedinPdfContent;
       setSocialShareDetails(socialShare);
     } else {
-      const byteResponse = await axios.get('/api/byte/byte', {
+      const byteResponse = await axios.get(`${getBaseUrl()}/api/byte/byte`, {
         params: {
           spaceId,
           byteId,

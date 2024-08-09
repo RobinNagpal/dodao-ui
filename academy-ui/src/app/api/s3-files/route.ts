@@ -3,6 +3,7 @@ import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
 import { logError } from '@/app/api/helpers/adapters/errorLogger';
 import { presignedUrlCreator } from '@/app/api/helpers/s3/getPresignedUrl';
 import { checkEditSpacePermission } from '@/app/api/helpers/space/checkEditSpacePermission';
+import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 import axios from 'axios';
 import fs from 'fs';
 import mime from 'mime-types';
@@ -49,7 +50,7 @@ function getFileExtensionAndContentType(args: MutationUploadImageFromUrlToS3Args
   }
 }
 
-export async function POST(req: NextRequest) {
+async function postHandler(req: NextRequest) {
   const args: MutationUploadImageFromUrlToS3Args = await req.json();
   try {
     const spaceById = await getSpaceById(args.spaceId);
@@ -89,9 +90,11 @@ export async function POST(req: NextRequest) {
       headers: { 'Content-Type': contentType },
     });
 
-    return NextResponse.json({ status: 200, imageUrl: getUploadedImageUrlFromSingedUrl(signedUrl) });
+    return NextResponse.json({ imageUrl: getUploadedImageUrlFromSingedUrl(signedUrl) }, { status: 200 });
   } catch (e) {
     await logError((e as any)?.response?.data || 'Error in createSignedUrlMutation', {}, e as any, null, null);
     throw e;
   }
 }
+
+export const POST = withErrorHandling(postHandler);

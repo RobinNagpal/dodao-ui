@@ -4,6 +4,7 @@ import SpinnerWithText from '@dodao/web-core/components/core/loaders/SpinnerWith
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { SpaceWithIntegrationsFragment, GuideSubmission } from '@/graphql/generated/generated-types';
 import { DODAO_ACCESS_TOKEN_KEY } from '@dodao/web-core/types/deprecated/models/enums';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { GridOptions, GridSizeChangedEvent } from 'ag-grid-community';
 import { FilterChangedEvent, FilterModifiedEvent, FilterOpenedEvent } from 'ag-grid-community/dist/lib/events';
 import 'ag-grid-community/styles/ag-grid.css';
@@ -61,7 +62,7 @@ export default function GuideSubmissionsTable(props: GuideSubmissionsTableProps)
     async function fetchData() {
       try {
         setLoading(true);
-        const response = await axios.get('/api/guide/guide-submit', {
+        const response = await axios.get(`${getBaseUrl()}/api/guide/guide-submit`, {
           params: {
             spaceId: props.space.id,
             guideId: props.guideId,
