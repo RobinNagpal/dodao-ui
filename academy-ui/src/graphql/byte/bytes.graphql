@@ -42,6 +42,7 @@ fragment ByteStep on ByteStep {
   stepItems {
     ...ByteStepItem
   }
+  displayMode
   name
   uuid
   imageUrl

@@ -293,6 +293,7 @@ export interface ByteSocialShare {
 export interface ByteStep {
   __typename?: 'ByteStep';
   content: Scalars['String'];
+  displayMode?: Maybe<Scalars['String']>;
   imageUrl?: Maybe<Scalars['String']>;
   name: Scalars['String'];
   stepItems: Array<ByteStepItem>;
@@ -301,6 +302,7 @@ export interface ByteStep {
 
 export interface ByteStepInput {
   content: Scalars['String'];
+  displayMode?: InputMaybe<Scalars['String']>;
   imageUrl?: InputMaybe<Scalars['String']>;
   name: Scalars['String'];
   stepItems: Array<StepItemInputGenericInput>;
@@ -1190,6 +1192,11 @@ export interface GuideUserInput {
   required: Scalars['Boolean'];
   type: Scalars['String'];
   uuid: Scalars['String'];
+}
+
+export enum ImageDisplayMode {
+  FullScreenImage = 'FullScreenImage',
+  Normal = 'Normal'
 }
 
 export enum ImageSource {
@@ -3313,13 +3320,13 @@ type ByteStepItem_UserDiscordConnect_Fragment = { __typename: 'UserDiscordConnec
 
 export type ByteStepItemFragment = ByteStepItem_ByteQuestion_Fragment | ByteStepItem_ByteUserInput_Fragment | ByteStepItem_UserDiscordConnect_Fragment;
 
-export type ByteStepFragment = { __typename?: 'ByteStep', content: string, name: string, uuid: string, imageUrl?: string | null, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> };
+export type ByteStepFragment = { __typename?: 'ByteStep', content: string, displayMode?: string | null, name: string, uuid: string, imageUrl?: string | null, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> };
 
 export type CompletionScreenItemFragment = { __typename?: 'CompletionScreenItem', label: string, link: string, uuid: string };
 
 export type CompletionScreenFragment = { __typename?: 'CompletionScreen', content: string, name: string, uuid: string, imageUrl?: string | null, items: Array<{ __typename?: 'CompletionScreenItem', label: string, link: string, uuid: string }> };
 
-export type ByteDetailsFragment = { __typename?: 'Byte', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, admins: Array<string>, tags: Array<string>, priority: number, completionScreen?: { __typename?: 'CompletionScreen', content: string, name: string, uuid: string, imageUrl?: string | null, items: Array<{ __typename?: 'CompletionScreenItem', label: string, link: string, uuid: string }> } | null, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, imageUrl?: string | null, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> };
+export type ByteDetailsFragment = { __typename?: 'Byte', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, admins: Array<string>, tags: Array<string>, priority: number, completionScreen?: { __typename?: 'CompletionScreen', content: string, name: string, uuid: string, imageUrl?: string | null, items: Array<{ __typename?: 'CompletionScreenItem', label: string, link: string, uuid: string }> } | null, steps: Array<{ __typename?: 'ByteStep', content: string, displayMode?: string | null, name: string, uuid: string, imageUrl?: string | null, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> };
 
 export type ByteDetailsFragmentFragment = { __typename?: 'Byte', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, admins: Array<string>, tags: Array<string>, priority: number, videoUrl?: string | null, videoAspectRatio?: string | null, completionScreen?: { __typename?: 'CompletionScreen', content: string, name: string, uuid: string, imageUrl?: string | null, items: Array<{ __typename?: 'CompletionScreenItem', label: string, link: string, uuid: string }> } | null, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, imageUrl?: string | null, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> };
 
@@ -3365,7 +3372,7 @@ export type UpsertByteMutationVariables = Exact<{
 }>;
 
 
-export type UpsertByteMutation = { __typename?: 'Mutation', payload: { __typename?: 'Byte', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, admins: Array<string>, tags: Array<string>, priority: number, completionScreen?: { __typename?: 'CompletionScreen', content: string, name: string, uuid: string, imageUrl?: string | null, items: Array<{ __typename?: 'CompletionScreenItem', label: string, link: string, uuid: string }> } | null, steps: Array<{ __typename?: 'ByteStep', content: string, name: string, uuid: string, imageUrl?: string | null, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> } };
+export type UpsertByteMutation = { __typename?: 'Mutation', payload: { __typename?: 'Byte', postSubmissionStepContent?: string | null, content: string, created: string, id: string, name: string, admins: Array<string>, tags: Array<string>, priority: number, completionScreen?: { __typename?: 'CompletionScreen', content: string, name: string, uuid: string, imageUrl?: string | null, items: Array<{ __typename?: 'CompletionScreenItem', label: string, link: string, uuid: string }> } | null, steps: Array<{ __typename?: 'ByteStep', content: string, displayMode?: string | null, name: string, uuid: string, imageUrl?: string | null, stepItems: Array<{ __typename: 'ByteQuestion', answerKeys: Array<string>, content: string, type: string, uuid: string, explanation: string, choices: Array<{ __typename?: 'QuestionChoice', content: string, key: string }> } | { __typename: 'ByteUserInput', label: string, required: boolean, type: string, uuid: string } | { __typename: 'UserDiscordConnect', type: string, uuid: string }> }> } };
 
 export type DeleteByteMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -4774,6 +4781,7 @@ export const ByteStepFragmentDoc = gql`
   stepItems {
     ...ByteStepItem
   }
+  displayMode
   name
   uuid
   imageUrl
