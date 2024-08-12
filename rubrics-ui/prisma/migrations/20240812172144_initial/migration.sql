@@ -186,9 +186,6 @@ CREATE UNIQUE INDEX "crypto_login_nonce_user_id_key" ON "crypto_login_nonce"("us
 CREATE UNIQUE INDEX "program_rubric_mapping_programId_rubricId_key" ON "program_rubric_mapping"("programId", "rubricId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "rubric_level_rubricId_columnName_key" ON "rubric_level"("rubricId", "columnName");
-
--- CreateIndex
 CREATE UNIQUE INDEX "rubric_criteria_rubricId_title_key" ON "rubric_criteria"("rubricId", "title");
 
 -- CreateIndex

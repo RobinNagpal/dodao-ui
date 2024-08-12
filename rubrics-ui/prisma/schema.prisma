@@ -261,7 +261,6 @@ model RubricLevel {
   RubricCell  RubricCell[]
   isArchived  Boolean      @default(false)
 
-  @@unique([rubricId, columnName])
   @@map("rubric_level")
 }
 

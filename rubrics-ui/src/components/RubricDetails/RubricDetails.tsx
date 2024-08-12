@@ -8,6 +8,7 @@ import Button from '@dodao/web-core/components/core/buttons/Button';
 import { ChevronLeftIcon } from '@heroicons/react/24/outline';
 import { useRouter } from 'next/navigation';
 import ProgramDropDown from '@/components/ProgramDropDown/programDropDown';
+
 interface RubricDetails {
   name: string;
   summary: string;
@@ -26,6 +27,9 @@ interface RubricDetailsProps {
   programs?: any;
   setPrograms?: any;
   onSelectProgram?: any;
+  selectedProgramId?: string | null;
+  isGlobalAccess?: boolean;
+  rubricId?: string;
 }
 
 const RubricDetails: React.FC<RubricDetailsProps> = ({
@@ -36,6 +40,9 @@ const RubricDetails: React.FC<RubricDetailsProps> = ({
   programs,
   setPrograms,
   onSelectProgram,
+  selectedProgramId,
+  isGlobalAccess,
+  rubricId,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(true);
   const { showNotification } = useNotificationContext();
@@ -54,17 +61,108 @@ const RubricDetails: React.FC<RubricDetailsProps> = ({
   };
 
   const handleSave = async () => {
-    const { name, summary } = rubricDetails;
+    const { name, summary, description } = rubricDetails;
+    console.log(name, summary, description);
 
-    if (!name || !summary) {
-      showNotification({
-        type: 'error',
-        message: 'Name and Summary are required.',
-      });
-      return;
+    if (isGlobalAccess) {
+      if (!name || !summary) {
+        showNotification({
+          type: 'error',
+          message: 'Name and Summary are required.',
+        });
+        return;
+      }
+
+      const programId = selectedProgramId;
+      const rubric = {
+        name: name,
+        summary: summary,
+        description: description,
+        levels: [
+          {
+            columnName: 'Excellent',
+            description: 'The performance is outstanding.',
+            score: 5,
+          },
+          {
+            columnName: 'Good',
+            description: 'The performance is above average.',
+            score: 4,
+          },
+          {
+            columnName: 'Fair',
+            description: 'The performance meets the minimum requirements.',
+            score: 3,
+          },
+          {
+            columnName: 'Improvement Needed',
+            description: 'The performance is below expectations.',
+            score: 2,
+          },
+        ],
+        criteria: 'Content',
+      };
+
+      const sendInitialRubricToServer = async () => {
+        try {
+          const response = await fetch('/api/rubrics', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ programId, rubric }),
+          });
+
+          if (response.ok) {
+            const result = await response.json();
+            console.log('Rubric sent successfully:', result.body);
+            showNotification({
+              type: 'success',
+              message: 'Rubric created',
+            });
+            router.push(`/rubrics/edit/${result.body.id}`);
+          } else {
+            console.error('Failed to send rubric:', response.statusText);
+          }
+        } catch (error) {
+          console.error('Error sending rubric:', error);
+        }
+      };
+
+      sendInitialRubricToServer();
+    } else if (!isGlobalAccess) {
+      const updateRubricDetails = async () => {
+        try {
+          const response = await fetch(`/api/rubrics/${rubricId}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              name: name,
+              summary: summary,
+              description: description,
+            }),
+          });
+
+          if (response.ok) {
+            const result = await response.json();
+            console.log('Rubric details updated successfully:', result.body);
+            showNotification({
+              type: 'success',
+              message: 'Rubric updated',
+            });
+            setIsModalOpen(false);
+          } else {
+            console.error('Failed to update rubric details:', response.statusText);
+          }
+        } catch (error) {
+          console.error('Error updating rubric details:', error);
+        }
+      };
+
+      updateRubricDetails();
     }
-
-    setIsModalOpen(false);
   };
 
   const dropdownItems: EllipsisDropdownItem[] = [{ label: 'Edit', key: 'edit' }];
@@ -78,7 +176,7 @@ const RubricDetails: React.FC<RubricDetailsProps> = ({
         </button>
         <div className="flex flex-col items-center">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-2 w-full max-w-4xl p-4">
-            <ProgramDropDown serverResponse={programs} setServerResponse={setPrograms} onSelectProgram={onSelectProgram} />
+            {isGlobalAccess && <ProgramDropDown serverResponse={programs} setServerResponse={setPrograms} onSelectProgram={onSelectProgram} />}
             <Input
               modelValue={rubricDetails.name}
               onUpdate={(value) => setRubricDetails((prev) => ({ ...prev, name: value as string }))}

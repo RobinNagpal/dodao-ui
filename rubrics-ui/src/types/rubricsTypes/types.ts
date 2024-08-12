@@ -74,6 +74,7 @@ export interface RubricsPageProps extends EditRubricsProps {
   editRatingHeaders?: any;
   editColumnScores?: number[];
   editCriteriaIds?: any;
+  rubricCellIds?: any;
 }
 
 export interface ProgramListProps {
@@ -103,7 +104,7 @@ export interface RubricCellProps {
   criteria: string;
   cellIndex: number;
   isEditAccess: boolean | undefined;
-  onEditClick: (type: 'rubric', criteria: string, index: number) => void;
+  onEditClick: (type: 'rubric', criteria: string, index: number, newValue?: string) => void;
   handleCommentModal: (cellIndex: number) => void;
   rubricRatingHeaders?: rubricRatingHeader[];
   className: string;
@@ -111,6 +112,7 @@ export interface RubricCellProps {
   isClicked: boolean;
   cellIds?: cellIds[];
   isGlobalAccess?: boolean;
+  onCellValueChange?: any;
 }
 
 export interface RubricLevelProps {
@@ -135,6 +137,7 @@ export interface RubricCriteriaProps {
   writeAccess?: boolean;
   isGlobalAccess?: boolean;
   editCriteriaIds?: any;
+  rubricCellIds?: any;
 }
 
 export interface ProgramListProps {
@@ -262,9 +265,41 @@ export interface SampleData {
   rubricId: string;
   criteriaOrder: string[];
   rubric: RubricMap;
-  ratingHeaders: { header: string; score: number }[];
+  ratingHeaders: { header: string; score: number; id: string }[];
   programs: { name: string; summary: string }[];
   details?: string;
   summary?: string;
   criteriaIds?: string[];
+}
+export interface NewCell {
+  description: string;
+  ratingHeaderId: string;
+}
+
+export interface NewCriteriaRequest {
+  rubricId: string;
+  title: string;
+  cells: NewCell[];
+}
+export type RubricLevels = {
+  columnName: string;
+  description: string;
+  score: number;
+};
+export interface RatingHeader {
+  id: string;
+  header: string;
+  score: number;
+}
+export interface CriteriaMapping {
+  [key: string]: string;
+}
+
+export interface CriteriaChange {
+  id: string;
+  oldValue: string;
+  newValue: string;
+}
+export interface EditRubricProps {
+  rubricId: string;
 }

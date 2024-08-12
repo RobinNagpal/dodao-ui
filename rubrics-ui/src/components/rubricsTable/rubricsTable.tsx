@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Rubric, NewRubric, RubricsPageProps, rubricRatingHeader, RubricRow } from '@/types/rubricsTypes/types';
+import { Rubric, NewRubric, RubricsPageProps, rubricRatingHeader, RubricRow, RatingHeader, CriteriaMapping, CriteriaChange } from '@/types/rubricsTypes/types';
 import RubricCriteria from '@/components/RubricCriteria/RubricCriteria';
 import RubricLevel from '@/components/RubricLevel/RubricLevel';
 import EllipsisDropdown, { EllipsisDropdownItem } from '@dodao/web-core/src/components/core/dropdowns/EllipsisDropdown';
 import { useRouter } from 'next/navigation';
+
 const initialRubrics: Record<string, string[]> = {
   Criteria: [
     'Complete. The speaker clearly conveys the main idea',
@@ -28,9 +29,9 @@ const RubricsPage: React.FC<RubricsPageProps> = ({
   editRatingHeaders,
   editColumnScores,
   editCriteriaIds,
+  rubricCellIds,
 }) => {
   const [rubrics, setRubrics] = useState<Record<string, string[]>>(editRubrics || initialRubrics);
-  const [ratingHeaders, setRatingHeaders] = useState<string[]>(editRatingHeaders || ['Excellent', 'Good', 'Fair', 'Improvement']);
   const [criteriaOrder, setCriteriaOrder] = useState<string[]>(Object.keys(editRubrics || initialRubrics));
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteConfirm, setIsDeleteConfirm] = useState(false);
@@ -40,50 +41,64 @@ const RubricsPage: React.FC<RubricsPageProps> = ({
     index: -1,
     value: '',
   });
-
-  const [columnScores, setColumnScores] = useState<number[]>(editColumnScores || Array(ratingHeaders.length).fill(0));
+  const [changedHeaderId, setChangedHeaderId] = useState<string | null>(null);
+  const [ratingHeaders, setRatingHeaders] = useState<RatingHeader[]>(editRatingHeaders);
   const [criteriaToDelete, setCriteriaToDelete] = useState<string | null>(null);
-  const [latestRowData, setLatestRowData] = useState<NewRubric | null>(null);
+  const [editCriteria, setEditCriteria] = useState<{ name: string; id: string }[]>(
+    isGlobalAccess
+      ? Object.entries(editCriteriaOrder).map(([name, id]) => ({
+          name,
+          id: id as string,
+        }))
+      : [
+          { name: 'Criteria 1', id: 'id-1' },
+          { name: 'Criteria 2', id: 'id-2' },
+        ]
+  );
+
   const dropdownItems: EllipsisDropdownItem[] = [
     { label: 'Edit', key: 'edit' },
     { label: 'Rate', key: 'rate' },
   ];
+  const updateRubricLevel = async () => {
+    try {
+      if (changedHeaderId !== null) {
+        const updatedLevel = ratingHeaders.find((header) => header.id === changedHeaderId);
+
+        if (updatedLevel) {
+          await fetch(`/api/rubrics/${rubricId}/level/${changedHeaderId}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              columnName: updatedLevel.header,
+              score: updatedLevel.score,
+              description: `Description for ${updatedLevel.header}`,
+            }),
+          });
+
+          console.log(`Rubric level with ID ${changedHeaderId} updated successfully`);
+        }
+      }
+    } catch (error) {
+      console.error('Failed to update rubric level', error);
+    }
+  };
 
   const router = useRouter();
-
   useEffect(() => {
-    if (!rubricDetails?.name || !rubricDetails?.summary) {
-      return;
-    }
+    updateRubricLevel();
+  }, [ratingHeaders, rubricId, changedHeaderId]);
 
-    const formattedRubrics: any = criteriaOrder.map((criteria) => ({
-      name: rubricDetails.name,
-      summary: rubricDetails.summary,
-      description: rubricDetails.description,
-      criteria: criteria,
-      levels: ratingHeaders.map((header, idx) => ({
-        columnName: header,
-        description: rubrics[criteria][idx],
-        score: columnScores[idx],
-      })),
-    }));
-
-    setLatestRowData(formattedRubrics[formattedRubrics.length - 1]);
-  }, [rubrics, ratingHeaders, criteriaOrder, columnScores, rubricDetails]);
-
-  useEffect(() => {
-    if (latestRowData && selectedProgramId) {
-      sendRowToServer(latestRowData);
-    }
-  }, [latestRowData, selectedProgramId]);
-  const handleEditClick = (type: 'rubric' | 'header' | 'criteria', criteria: string | number, index: number) => {
+  const handleEditClick = (type: 'rubric' | 'header' | 'criteria', criteria: string | number, index: number, newValue?: string) => {
     if (isEditAccess) {
       if (type === 'header') {
         setCurrentEdit({
           type,
           criteria,
           index,
-          value: ratingHeaders[criteria as number],
+          value: ratingHeaders[criteria as number].header,
         });
       } else if (type === 'criteria') {
         setCurrentEdit({
@@ -110,55 +125,172 @@ const RubricsPage: React.FC<RubricsPageProps> = ({
       value,
     }));
   };
+  const [changedCriteriaDetails, setChangedCriteriaDetails] = useState<{
+    id: string;
+    newValue: string;
+  }>({
+    id: '',
+    newValue: '',
+  });
 
-  const handleSave = () => {
-    if (currentEdit.type === 'header') {
-      setRatingHeaders((prevHeaders) => prevHeaders.map((header, index) => (index === currentEdit.criteria ? currentEdit.value : header)));
-    } else if (currentEdit.type === 'criteria') {
-      const updatedRubrics = { ...rubrics };
-      const currentCriteriaName = currentEdit.criteria as string;
-      const newCriteriaName = currentEdit.value;
+  const [criteriaToId, setCriteriaToId] = useState<CriteriaMapping>(
+    editCriteria.reduce((acc, { name, id }) => {
+      acc[name] = id;
+      return acc;
+    }, {} as CriteriaMapping)
+  );
+  const handleSave = async () => {
+    try {
+      if (currentEdit.type === 'header') {
+        const newHeaderId = ratingHeaders[currentEdit.criteria as number].id;
 
-      if (currentCriteriaName !== newCriteriaName) {
-        const updatedCriteria = updatedRubrics[currentCriteriaName];
-        delete updatedRubrics[currentCriteriaName];
-        updatedRubrics[newCriteriaName] = updatedCriteria;
+        setRatingHeaders((prevHeaders) =>
+          prevHeaders.map((header, index) => (index === currentEdit.criteria ? { ...header, header: currentEdit.value as string } : header))
+        );
 
-        setCriteriaOrder((prevOrder) => prevOrder.map((criteria) => (criteria === currentCriteriaName ? newCriteriaName : criteria)));
+        setChangedHeaderId(newHeaderId);
+      } else if (currentEdit.type === 'criteria') {
+        const updatedEditCriteria = [...editCriteria];
+        const currentCriteriaName = currentEdit.criteria as string;
+        const newCriteriaName = currentEdit.value as string;
+
+        const criteriaIndex = updatedEditCriteria.findIndex((criterion) => criterion.name === currentCriteriaName);
+
+        if (criteriaIndex !== -1 && currentCriteriaName !== newCriteriaName) {
+          updatedEditCriteria[criteriaIndex] = {
+            ...updatedEditCriteria[criteriaIndex],
+            name: newCriteriaName,
+          };
+
+          const updatedCriteriaOrder = criteriaOrder.map((name) => (name === currentCriteriaName ? newCriteriaName : name));
+
+          setRubrics((prevRubrics) => {
+            const { [currentCriteriaName]: criteriaValues, ...rest } = prevRubrics;
+            return {
+              ...rest,
+              [newCriteriaName]: criteriaValues,
+            };
+          });
+
+          setEditCriteria(updatedEditCriteria);
+          setCriteriaOrder(updatedCriteriaOrder);
+
+          const criteriaId = updatedEditCriteria[criteriaIndex]?.id;
+
+          if (criteriaId) {
+            setChangedCriteriaDetails({
+              id: criteriaId,
+              newValue: newCriteriaName,
+            });
+
+            await fetch(`/api/rubrics/${rubricId}/criteria/${criteriaId}`, {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                newContent: newCriteriaName,
+              }),
+            });
+            setIsModalOpen(false);
+            console.log(`Criteria with ID ${criteriaId} updated successfully`);
+          }
+        }
+      } else if (currentEdit.type === 'rubric') {
+        setRubrics((prevRubrics) => {
+          const updatedRubrics = { ...prevRubrics };
+
+          if (updatedRubrics[currentEdit.criteria]) {
+            updatedRubrics[currentEdit.criteria][currentEdit.index] = currentEdit.value;
+
+            const cellId = rubricCellIds[currentEdit.criteria]?.[currentEdit.index]?.cellId;
+
+            if (cellId) {
+              console.log(`Cell ID of changed cell: ${cellId}`);
+              updateRubricCell(rubricId, cellId, currentEdit.value);
+            } else {
+              console.error(`Cell ID not found for criteria "${currentEdit.criteria}" at index ${currentEdit.index}.`);
+            }
+          } else {
+            console.error(`Criteria "${currentEdit.criteria}" not found in rubrics.`);
+          }
+
+          return updatedRubrics;
+        });
       }
 
-      setRubrics(updatedRubrics);
-    } else {
-      setRubrics((prevRubrics) => {
-        const updatedCriteria = [...prevRubrics[currentEdit.criteria as string]];
-        updatedCriteria[currentEdit.index] = currentEdit.value;
-        return {
-          ...prevRubrics,
-          [currentEdit.criteria as string]: updatedCriteria,
-        };
-      });
+      setIsModalOpen(false);
+    } catch (error) {
+      console.error('Failed to save changes', error);
     }
-    setIsModalOpen(false);
   };
+  async function updateRubricCell(rubricId: string | undefined, cellId: string, value: string) {
+    try {
+      const response = await fetch(`/api/rubrics/${rubricId}/cell/${cellId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ value }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update rubric cell');
+      }
+
+      const updatedCell = await response.json();
+      console.log('Updated cell:', updatedCell);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
 
   const handleCancel = () => {
     setIsModalOpen(false);
   };
 
-  const handleAddCriteria = () => {
+  const handleAddCriteria = async () => {
     if (isEditAccess) {
       const newCriteriaName = `New Criteria ${Object.keys(rubrics).length + 1}`;
-      setRubrics((prevRubrics) => ({
-        ...prevRubrics,
-        [newCriteriaName]: [
-          'Functions, grammar, and vocabulary are...',
-          'Minor problems in usage do not distort...',
-          'Problems in usage significantly distort...',
-          'Problems in usage completely distort...',
-        ],
-      }));
-      setCriteriaOrder((prevOrder) => [...prevOrder, newCriteriaName]);
-      setLatestRowData(null);
+      const newCells = [
+        { description: 'Functions, grammar, and vocabulary are...', ratingHeaderId: ratingHeaders[0]?.id },
+        { description: 'Minor problems in usage do not distort...', ratingHeaderId: ratingHeaders[1]?.id },
+        { description: 'Problems in usage significantly distort...', ratingHeaderId: ratingHeaders[2]?.id },
+        { description: 'Problems in usage completely distort...', ratingHeaderId: ratingHeaders[3]?.id },
+      ];
+
+      try {
+        const response = await fetch('/api/rubrics/', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            rubricId: rubricId,
+            title: newCriteriaName,
+            cells: newCells,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to add new criteria');
+        }
+
+        const result = await response.json();
+        const { newCriteria, createdCells } = result;
+        setRubrics((prevRubrics) => ({
+          ...prevRubrics,
+          [newCriteriaName]: createdCells.map((cell: any) => cell.description),
+        }));
+
+        setCriteriaOrder((prevOrder) => [...prevOrder, newCriteriaName]);
+
+        setEditCriteria((prevEditCriteria) => [...prevEditCriteria, { name: newCriteriaName, id: newCriteria.id }]);
+
+        console.log(`New criteria added successfully with ID ${newCriteria.id}`);
+      } catch (error) {
+        console.error('Failed to add new criteria', error);
+      }
     }
   };
 
@@ -170,153 +302,53 @@ const RubricsPage: React.FC<RubricsPageProps> = ({
   };
 
   const confirmDeleteCriteria = async () => {
-    const isTrue = true;
-    // console.log(criteriaToDelete);
-    // console.log(editCriteriaIds);
+    if (criteriaToDelete) {
+      const criteriaId = editCriteriaIds[criteriaToDelete];
+      if (criteriaId) {
+        console.log(`Archived: ${criteriaId}`);
+        try {
+          const response = await fetch(`/api/rubrics/${rubricId}/criteria/${criteriaId}`, {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ criteriaId }),
+          });
 
-    // if (criteriaToDelete) {
-    //   const updatedRubrics = { ...rubrics };
-    //   delete updatedRubrics[criteriaToDelete];
-    //   setRubrics(updatedRubrics);
-    //   setCriteriaOrder((prevOrder) => prevOrder.filter((crit) => crit !== criteriaToDelete));
-    // }
-    // setIsDeleteConfirm(false);
-    // setCriteriaToDelete(null);
-    if (isTrue) {
-      if (criteriaToDelete) {
-        const criteriaId = editCriteriaIds[criteriaToDelete];
-        if (criteriaId) {
-          console.log(`Deleted: ${criteriaId}`);
-
-          try {
-            const response = await fetch('/api/rubrics', {
-              method: 'PUT',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({ criteriaId }),
-            });
-
-            if (response.ok) {
-              const result = await response.json();
-              console.log(result.body.message);
-            } else {
-              console.error('Failed to archive criteria');
-            }
-          } catch (error) {
-            console.error('An error occurred while archiving criteria:', error);
+          if (response.ok) {
+            const result = await response.json();
+            console.log(result.body.message);
+          } else {
+            console.error('Failed to archive criteria');
           }
-
-          const updatedRubrics = { ...rubrics };
-          delete updatedRubrics[criteriaToDelete];
-          Object.keys(rubrics).length + 1;
-          setRubrics(updatedRubrics);
-          setCriteriaOrder((prevOrder) => prevOrder.filter((crit) => crit !== criteriaToDelete));
+        } catch (error) {
+          console.error('An error occurred while archiving criteria:', error);
         }
-      }
 
-      setIsDeleteConfirm(false);
-      setCriteriaToDelete(null);
+        const updatedRubrics = { ...rubrics };
+        delete updatedRubrics[criteriaToDelete];
+        Object.keys(rubrics).length + 1;
+        setRubrics(updatedRubrics);
+        setCriteriaOrder((prevOrder) => prevOrder.filter((crit) => crit !== criteriaToDelete));
+      }
     }
+
+    setIsDeleteConfirm(false);
+    setCriteriaToDelete(null);
   };
 
   const cancelDelete = () => {
     setIsDeleteConfirm(false);
     setCriteriaToDelete(null);
   };
-  function formatRubricData(data: any) {
-    const { levels, criteria, RubricCell } = data;
 
-    // Create a map for easy access to levels by their ID
-    const levelMap = levels.reduce((acc: any, level: any) => {
-      acc[level.id] = level;
-      return acc;
-    }, {});
+  const handleScoreChange = (index: number, score: number) => {
+    const updatedHeaders = ratingHeaders.map((header, idx) => (idx === index ? { ...header, score } : header));
 
-    // Create a map for criteria with their respective RubricCells
-    const criteriaMap = criteria.reduce((acc: any, crit: any) => {
-      acc[crit.id] = {
-        title: crit.title,
-        cells: [],
-      };
-      return acc;
-    }, {});
+    setRatingHeaders(updatedHeaders);
 
-    // Populate the criteria map with RubricCells
-    RubricCell.forEach((cell: any) => {
-      const level = levelMap[cell.levelId];
-      if (level) {
-        criteriaMap[cell.criteriaId].cells.push({
-          description: cell.description,
-          level: level.columnName,
-        });
-      }
-    });
-
-    const formattedCriteria = Object.values(criteriaMap).sort((a: any, b: any) => a.title.localeCompare(b.title));
-
-    return {
-      rubrics: Object.fromEntries(formattedCriteria.map((criterion: any) => [criterion.title, criterion.cells.map((cell: any) => cell.description)])),
-      ratingHeaders: levels.map((level: any) => level.columnName),
-      criteriaOrder: formattedCriteria.map((criterion: any) => criterion.title),
-    };
-  }
-
-  const sendRowToServer = async (rowData: NewRubric) => {
-    try {
-      const response = await fetch('/api/rubrics', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          programId: selectedProgramId,
-          rubric: rowData,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to send row data');
-      }
-
-      const result = await response.json();
-      console.log('Row data sent successfully:', result.body);
-
-      const updatedRubricData = result.body;
-
-      const formattedRubrics = formatRubricData(updatedRubricData);
-      setRubrics(formattedRubrics.rubrics);
-      setCriteriaOrder(formattedRubrics.criteriaOrder);
-      setRatingHeaders(formattedRubrics.ratingHeaders);
-
-      router.push(`/rubrics/edit/${updatedRubricData.id}`);
-
-      if (updatedRubricData.latestRowData) {
-        // Handle additional state updates for the latest row data if needed
-        setLatestRowData(updatedRubricData.latestRowData || null);
-      }
-    } catch (error) {
-      console.error('Error sending row data:', error);
-    }
-  };
-  const handleScoreChange = async (index: number, score: number) => {
-    const updatedScores = [...columnScores.slice(0, index), score, ...columnScores.slice(index + 1)];
-    setColumnScores(updatedScores);
-
-    if (true) {
-      const formattedRubric: any = criteriaOrder.map((criteria) => ({
-        name: 'Test',
-        levels: ratingHeaders.map((header, idx) => ({
-          columnName: header,
-          description: rubrics[criteria][idx],
-          score: updatedScores[idx],
-        })),
-        criteria: criteria,
-      }));
-
-      // Track the latest row data
-      setLatestRowData(formattedRubric[formattedRubric.length - 1]);
-    }
+    const updatedHeader = updatedHeaders[index];
+    setChangedHeaderId(updatedHeader.id);
   };
 
   const rateRubric = rateRubricsFormatted?.rubric;
@@ -362,9 +394,9 @@ const RubricsPage: React.FC<RubricsPageProps> = ({
                 : ratingHeaders?.map((header, index) => (
                     <RubricLevel
                       key={index}
-                      header={header}
+                      header={header.header}
                       index={index}
-                      score={columnScores[index]}
+                      score={ratingHeaders[index]?.score || 0}
                       isEditAccess={isEditAccess}
                       onScoreChange={handleScoreChange}
                       onEditClick={handleEditClick}
@@ -397,6 +429,8 @@ const RubricsPage: React.FC<RubricsPageProps> = ({
                     onEditClick={handleEditClick}
                     onDeleteCriteria={handleDeleteCriteria}
                     editCriteriaIds={editCriteriaIds}
+                    isGlobalAccess={isGlobalAccess}
+                    rubricCellIds={rubricCellIds}
                   />
                 ))}
           </tbody>

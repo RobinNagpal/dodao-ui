@@ -33,7 +33,7 @@ const RateRubric: React.FC<RateRubricProps> = ({ params }) => {
     if (id) {
       const fetchProgramData = async () => {
         try {
-          const response = await fetch(`http://localhost:3004/api/rubrics?rubricId=${id}`);
+          const response = await fetch(`http://localhost:3004/api/rubrics/${id}`);
           const data = await response.json();
 
           if (response.ok) {

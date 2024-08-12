@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, use } from 'react';
 import RubricCell from '@/components/RubricCell/RubricCell';
 import { RubricCriteriaProps } from '@/types/rubricsTypes/types';
 import TrashIcon from '@heroicons/react/24/outline/TrashIcon';
@@ -19,6 +19,7 @@ const RubricCriteria: React.FC<RubricCriteriaProps> = ({
   writeAccess,
   isGlobalAccess,
   editCriteriaIds,
+  rubricCellIds,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
@@ -28,7 +29,7 @@ const RubricCriteria: React.FC<RubricCriteriaProps> = ({
   const [clickedCellIndex, setClickedCellIndex] = useState<number | null>(null);
   const [clickedCellId, setClickedCellId] = useState<string | null>(null);
   const [session, setSession] = useState<SessionProps | null>(null);
-
+  const [formattedRateRubrics, setFormattedRateRubrics] = useState<Array<any>>([]);
   const { showNotification } = useNotificationContext();
 
   const userId = session?.userId;
@@ -73,16 +74,21 @@ const RubricCriteria: React.FC<RubricCriteriaProps> = ({
     fetchData();
   }, [userId, criteria]);
 
-  const formattedRateRubrics = rowScoresAndComments
-    .filter((entry) => entry.criteria === criteria)
-    .map((entry) => ({
-      criteria: entry.criteria,
-      score: entry.score,
-      comment: entry.comment,
-      cellId: entry.cellId,
-      userId: userId,
-      rubricId: rubricId,
-    }));
+  useEffect(() => {
+    const newFormattedRateRubrics = rowScoresAndComments
+      .filter((entry) => entry.criteria === criteria)
+      .map((entry) => ({
+        criteria: entry.criteria,
+        score: entry.score,
+        comment: entry.comment,
+        cellId: entry.cellId,
+        userId: userId,
+        rubricId: rubricId,
+      }));
+    console.log(newFormattedRateRubrics, 'new');
+
+    setFormattedRateRubrics(newFormattedRateRubrics);
+  }, [rowScoresAndComments]);
 
   const sendRatedRubricsToServer = async () => {
     try {
@@ -97,7 +103,7 @@ const RubricCriteria: React.FC<RubricCriteriaProps> = ({
       }
 
       const result = await response.json();
-      console.log('Successfully sent data to the server:', result);
+      console.log('Successfully sent data to the server:', formattedRateRubrics);
     } catch (error) {
       showNotification({
         type: 'error',
@@ -152,6 +158,7 @@ const RubricCriteria: React.FC<RubricCriteriaProps> = ({
     }));
 
     handleCloseModal();
+
     sendRatedRubricsToServer();
   };
 
@@ -195,9 +202,9 @@ const RubricCriteria: React.FC<RubricCriteriaProps> = ({
     setIsConfirmationOpen(false);
   };
   // console.log(clickedCellId);
-  // rubrics![criteria].map((cell: any, cellIndex) => {
-  //   console.log(criteria);
-  // });
+  // console.log(rubrics);
+  // console.log(criteria);
+
   const selectedComment = rowScoresAndComments.find((entry) => entry.criteria === criteria && entry.cellId === clickedCellId)?.comment || 'No comment';
   return (
     <>

@@ -8,7 +8,7 @@ const RubricCell: React.FC<RubricCellProps> = ({ cell, criteria, cellIndex, isEd
       <div
         onClick={() => {
           if (isEditAccess) {
-            onEditClick('rubric', criteria, cellIndex);
+            onEditClick('rubric', criteria, cellIndex, cell);
           }
         }}
         className="flex items-center overflow-y-auto max-h-26"
