@@ -51,6 +51,7 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space, set
   const { activeStepOrder } = viewByteHelper;
   const { $t: t } = useI18();
   const { showNotification } = useNotificationContext();
+  const [imageHeight, setImageHeight] = useState('0px');
 
   const { data: sessionData } = useSession();
   const session: Session | null = sessionData as Session | null;
@@ -70,6 +71,27 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space, set
   useEffect(() => {
     setTransitionState('enter');
     setTimeout(() => setTransitionState('active'), 100);
+    function handleResize() {
+      const viewportHeight = window.innerHeight;
+      const bottomButtonsHeight = document.getElementById('bottom-buttons')!.clientHeight; // Adjust selector as needed
+      const summaryHeight = document.getElementById('summary')!.clientHeight; // Adjust selector as needed
+      const headingHeight = document.getElementById('heading')!.clientHeight;
+      const topBarHeight = document.getElementById('topBar')!.clientHeight;
+
+      // Calculate available height
+      const availableHeight = viewportHeight - (bottomButtonsHeight + bottomButtonsHeight + topBarHeight + headingHeight + summaryHeight);
+
+      // Set image height
+      setImageHeight(`${availableHeight}px`);
+    }
+
+    // Call once to set initial height and set up event listener for resizing
+    if (step.displayMode === 'fullScreenImage' && !isShortScreen) {
+      handleResize();
+    }
+    window.addEventListener('resize', handleResize);
+    // Cleanup listener on component unmount
+    return () => window.removeEventListener('resize', handleResize);
   }, [activeStepOrder]);
 
   const [questionsAnsweredCorrectly, setQuestionsAnsweredCorrectly] = useState(false);
@@ -169,11 +191,10 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space, set
 
   const showQuestionsCompletionWarning = nextButtonClicked && (!isQuestionAnswered() || !isDiscordConnected() || !isUserInputComplete());
 
-  const { height } = useWindowDimensions();
+  const { width, height } = useWindowDimensions();
 
   const isShortScreen = height <= 690;
   const isLongScreen = height >= 900;
-  const isFullScreen = true;
 
   const stepClasses = {
     headingClasses: isShortScreen ? 'text-3xl' : isLongScreen ? 'text-4xl xl:text-5xl' : 'text-3xl',
@@ -182,18 +203,35 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space, set
 
   return (
     <div className={`w-full flex flex-col justify-between py-12 px-4 md:px-8  ${styles.stepContainer}`}>
-      <div className={`w-full overflow-y-auto flex flex-col ${transitionClasses[transitionState]} ${styles.stepContents} ${styles.hideScrollbar}`}>
-        <div className="flex flex-col flex-grow justify-center align-center">
-          {!stepItems.some(isQuestion) && (!isShortScreen || isFullScreen) && step.imageUrl && (
+      <div className={`w-full overflow-y-auto flex flex-col  ${transitionClasses[transitionState]} ${styles.stepContents} ${styles.hideScrollbar}`}>
+        <div className="flex flex-col flex-grow justify-center align-center ">
+          {!stepItems.some(isQuestion) && !isShortScreen && step.imageUrl && step.displayMode === 'fullScreenImage' && (
+            <div className="absolute left-1/2  top-12 transform -translate-x-1/2 w-[100vw] rounded mx-auto">
+              {width > height ? (
+                <img src={step.imageUrl} alt="byte" style={{ height: imageHeight }} className={`rounded mx-auto ${styles.imgContainer}`} />
+              ) : (
+                <img src={step.imageUrl} alt="byte" style={{ maxHeight: imageHeight }} className={`rounded mx-auto ${styles.imgContainer}`} />
+              )}
+              <div id="heading" className="flex justify-center w-full mt-4">
+                <h1 className={stepClasses.headingClasses}>{step.name || byte.name}</h1>
+              </div>
+              <div id="summary" dangerouslySetInnerHTML={{ __html: stepContents }} className={`markdown-body text-center ` + stepClasses.contentClasses} />
+            </div>
+          )}
+          {!stepItems.some(isQuestion) && !isShortScreen && step.imageUrl && step.displayMode === ('normal' || '') && (
             <div className="flex justify-center align-center ">
               <img src={step.imageUrl} alt="byte" className={`max-h-[35vh] rounded ${styles.imgContainer}`} />
             </div>
           )}
-          <div className="flex justify-center w-full mt-4">
-            <h1 className={stepClasses.headingClasses}>{step.name || byte.name}</h1>
-          </div>
+          {(step.displayMode === ('normal' || '') || (isShortScreen && step.displayMode === 'fullScreenImage')) && (
+            <div id="heading" className="flex justify-center w-full mt-4">
+              <h1 className={stepClasses.headingClasses}>{step.name || byte.name}</h1>
+            </div>
+          )}
           <div className="mt-4 lg:mt-8 text-left">
-            <div dangerouslySetInnerHTML={{ __html: stepContents }} className={`markdown-body text-center ` + stepClasses.contentClasses} />
+            {(step.displayMode === ('normal' || '') || (isShortScreen && step.displayMode === 'fullScreenImage')) && (
+              <div id="summary" dangerouslySetInnerHTML={{ __html: stepContents }} className={`markdown-body text-center ` + stepClasses.contentClasses} />
+            )}
             {stepItems.map((stepItem: ByteStepItemFragment, index) => {
               if (isQuestion(stepItem)) {
                 return (
@@ -242,7 +280,6 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space, set
             })}
             {postSubmissionContent && <div className="mt-4 text-sm text-gray-500" dangerouslySetInnerHTML={{ __html: postSubmissionContent }} />}
           </div>
-
           <ByteStepperItemWarnings
             showUseInputCompletionWarning={incompleteUserInput}
             showQuestionsCompletionWarning={showQuestionsCompletionWarning}
@@ -252,7 +289,7 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space, set
           />
         </div>
       </div>
-      <div className="absolute bottom-6 w-full -mx-4 px-4 sm:-mx-8 ">
+      <div id="bottom-buttons" className="absolute bottom-6 w-full -mx-4 px-4 sm:-mx-8 ">
         {!isShortScreen && (
           <StepIndicatorProgress steps={viewByteHelper.byteRef?.steps?.length || 2} currentStep={activeStepOrder} className="py-4 hidden md:block sm:hidden" />
         )}
