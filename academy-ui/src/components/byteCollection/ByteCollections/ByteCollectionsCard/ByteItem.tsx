@@ -31,15 +31,12 @@ export default function ByteItem(props: ByteItemProps) {
     <li key={byte.byteId}>
       <div className="relative pb-8">
         {eventIdx !== itemLength - 1 ? <span className="absolute left-4 top-4 -ml-px h-full w-0.5 bg-gray-200" aria-hidden="true" /> : null}
-        <div className="relative flex space-x-3">
+        <div className="relative flex space-x-3 justify-between">
           <Link className="flex cursor-pointer" href={byteViewUrl}>
             <ByteCompletionCheckmark byteId={byte.byteId} />
-            <div className="flex min-w-0 flex-1 justify-between space-x-2 transform hover:scale-95 transition duration-300 ease-in-out">
-              <div className="ml-3 text-sm">
-                <div className="font-bold flex">
-                  {`${byte.name}`} <ArrowTopRightOnSquareIcon className={`h-4 w-4 ml-2 ${styles.openInPopupIcon}`} />
-                </div>
-
+            <div className="flex min-w-0 flex-1 justify-between space-x-2 duration-300 ease-in-out">
+              <div className="ml-3 text-sm group">
+                <div className="font-bold flex group-hover:underline">{`${byte.name}`}</div>
                 <div className="flex-wrap">{byte.content}</div>
               </div>
             </div>
