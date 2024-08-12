@@ -85,13 +85,19 @@ export default function EditByteView(props: {
           <div className="text-color pb-10">
             <Block title="Basic Info">
               <div className="mb-8">
-                <Input modelValue={byte.name} error={inputError('name')} maxLength={32} onUpdate={(e) => updateByteFunctions.updateByteField('name', e)}>
+                <Input
+                  modelValue={byte.name}
+                  error={inputError('name')}
+                  placeholder="byte.create.name (only 64 characters)"
+                  maxLength={32}
+                  onUpdate={(e) => updateByteFunctions.updateByteField('name', e)}
+                >
                   Name *
                 </Input>
                 <Input
                   modelValue={byte.content}
                   error={inputError('content') ? 'Summary is required and should be less than 64 characters long' : ''}
-                  placeholder="byte.create.summary"
+                  placeholder="byte.create.summary (only 64 characters)"
                   maxLength={64}
                   onUpdate={(e) => updateByteFunctions.updateByteField('content', e)}
                 >
