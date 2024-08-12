@@ -7,7 +7,7 @@ import { useNotificationContext } from '@dodao/web-core/ui/contexts/Notification
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import { ChevronLeftIcon } from '@heroicons/react/24/outline';
 import { useRouter } from 'next/navigation';
-import ProgramDropDown from '@/components/ProgramDropDown/programDropDown';
+import ProgramDropDown from '@/components/programDropDown/programDropDown';
 
 interface RubricDetails {
   name: string;
