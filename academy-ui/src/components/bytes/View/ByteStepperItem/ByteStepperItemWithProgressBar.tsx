@@ -229,9 +229,7 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space, set
             </div>
           )}
           <div className="mt-4 lg:mt-8 text-left">
-            {(step.displayMode === ('normal' || '') || (isShortScreen && step.displayMode === 'fullScreenImage')) && (
-              <div id="summary" dangerouslySetInnerHTML={{ __html: stepContents }} className={`markdown-body text-center ` + stepClasses.contentClasses} />
-            )}
+            <div dangerouslySetInnerHTML={{ __html: stepContents }} className={`markdown-body text-center ` + stepClasses.contentClasses} />
             {stepItems.map((stepItem: ByteStepItemFragment, index) => {
               if (isQuestion(stepItem)) {
                 return (
