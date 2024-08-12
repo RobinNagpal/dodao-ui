@@ -204,6 +204,7 @@ function EditClickableDemo({ space, demoId, byteCollection }: EditClickableDemoP
                     modelValue={clickableDemo.title}
                     error={inputError('title') ? 'Title is required' : ''}
                     maxLength={32}
+                    placeholder="only 64 characters"
                     onUpdate={(newValue) => updateClickableDemoFunctions.updateClickableDemoField('title', newValue)}
                   >
                     <div>Title*</div>
@@ -214,9 +215,10 @@ function EditClickableDemo({ space, demoId, byteCollection }: EditClickableDemoP
                     modelValue={clickableDemo.excerpt}
                     error={inputError('excerpt') ? 'Excerpt is required' : ''}
                     maxLength={64}
+                    placeholder="only 64 characters"
                     onUpdate={(newValue) => updateClickableDemoFunctions.updateClickableDemoField('excerpt', newValue)}
                   >
-                    <div>Excerpt*</div>
+                    <div>Summary*</div>
                   </Input>
                 </div>
               </Block>
