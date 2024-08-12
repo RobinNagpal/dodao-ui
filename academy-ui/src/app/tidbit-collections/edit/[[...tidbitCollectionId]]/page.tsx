@@ -13,12 +13,13 @@ import Link from 'next/link';
 import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
 import { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
+import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 
 function EditTidbitCollectionSpace(props: { space: SpaceWithIntegrationsFragment; params: { tidbitCollectionId?: string[] } }) {
-  const [data, setData] = useState<{ byteCollection?: ByteCollectionFragment }>({});
+  const [data, setData] = useState<{ byteCollection?: ByteCollectionSummary }>({});
   const [bytesResponse, setBytesResponse] = useState<{ bytes: Byte[] } | null>(null);
 
   useEffect(() => {
@@ -56,7 +57,7 @@ function EditTidbitCollectionSpace(props: { space: SpaceWithIntegrationsFragment
             spaceId: props.space.id,
             name: byteCollection.name,
             description: byteCollection.description,
-            byteIds: byteCollection.bytes.map((byte) => byte.byteId),
+            byteIds: byteCollection.bytes?.map((byte) => byte.byteId),
             status: byteCollection.status,
             priority: byteCollection.priority,
             videoUrl: byteCollection.videoUrl,
@@ -74,7 +75,7 @@ function EditTidbitCollectionSpace(props: { space: SpaceWithIntegrationsFragment
             byteCollectionId,
             name: byteCollection.name,
             description: byteCollection.description,
-            byteIds: byteCollection.bytes.map((byte) => byte.byteId),
+            byteIds: byteCollection.bytes?.map((byte) => byte.byteId),
             status: byteCollection.status,
             spaceId: props.space.id,
             priority: byteCollection.priority,

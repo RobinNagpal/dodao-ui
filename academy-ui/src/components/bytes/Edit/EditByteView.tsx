@@ -18,6 +18,7 @@ import PageLoading from '@dodao/web-core/components/core/loaders/PageLoading';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import TextareaArray from '@dodao/web-core/components/core/textarea/TextareaArray';
 import { ByteErrors } from '@dodao/web-core/types/errors/byteErrors';
+import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -25,7 +26,7 @@ export default function EditByteView(props: {
   space: SpaceWithIntegrationsFragment;
   onUpsert: (byteId: string) => Promise<void>;
   byteId?: string | null;
-  byteCollection: ByteCollectionFragment;
+  byteCollection: ByteCollectionSummary;
 }) {
   const { space, byteId, byteCollection } = props;
 

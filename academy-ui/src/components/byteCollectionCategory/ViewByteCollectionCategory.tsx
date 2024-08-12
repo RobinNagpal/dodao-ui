@@ -1,5 +1,6 @@
 import ByteCollectionsGrid from '@/components/byteCollection/View/ByteCollectionsGrid';
-import { ByteCollectionFragment, CategoryWithByteCollection, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { CategoryWithByteCollection, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import React from 'react';
 
 interface ViewByteCollectionCategoryProps {
@@ -17,7 +18,7 @@ export default function ViewByteCollectionCategory(props: ViewByteCollectionCate
       <div className="pt-4 md:pt-6">
         {categoryWithByteCollection && (
           <ByteCollectionsGrid
-            byteCollections={categoryWithByteCollection.byteCollections as ByteCollectionFragment[]}
+            byteCollections={categoryWithByteCollection.byteCollections as unknown as ByteCollectionSummary[]}
             space={space}
             byteCollectionsBaseUrl={`/tidbit-collection-categories/view/${categoryWithByteCollection.id}/tidbit-collections`}
           />

@@ -4,7 +4,8 @@ import Button from '@dodao/web-core/components/core/buttons/Button';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { ByteCollectionFragment, SpaceWithIntegrationsFragment, ThemeColors } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsFragment, ThemeColors } from '@/graphql/generated/generated-types';
+import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import { useI18 } from '@/hooks/useI18';
 import { useRouter } from 'next/navigation';
 import React, { CSSProperties, useState } from 'react';
@@ -13,7 +14,7 @@ export interface UpdateThemeModalProps {
   space: SpaceWithIntegrationsFragment;
   open: boolean;
   onClose: () => void;
-  byteCollection: ByteCollectionFragment;
+  byteCollection: ByteCollectionSummary;
 }
 
 export type ThemeColorsKeys = 'bgColor' | 'blockBg' | 'borderColor' | 'headingColor' | 'linkColor' | 'primaryColor' | 'textColor';

@@ -91,8 +91,7 @@ async function postHandler(req: NextRequest, { params }: { params: { demoId: str
       const items = byteCollection?.items;
       let highestOrderNumber = 0;
       if (items && items?.length > 0) {
-        const byteItems = items?.filter((item) => item.itemType === ByteCollectionItemType.ClickableDemo);
-        const orderNumbers = byteItems.map((item) => item.order);
+        const orderNumbers = items.map((item) => item.order);
         highestOrderNumber = orderNumbers.length > 0 ? Math.max(...orderNumbers) : 0;
       }
       await prisma.byteCollectionItemMappings.create({

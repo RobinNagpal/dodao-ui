@@ -7,6 +7,7 @@ import EditClickableDemo from '@/components/clickableDemos/Create/EditClickableD
 import EditShortVideoView from '@/components/shortVideos/Edit/EditShortVideoView';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
@@ -17,7 +18,7 @@ export default function CreateContentModalContents({
 }: {
   hideModal: () => void;
   space: SpaceWithIntegrationsFragment;
-  byteCollection: ByteCollectionFragment;
+  byteCollection: ByteCollectionSummary;
 }) {
   const [showCreateTidbitModal, setShowCreateTidbitModal] = useState<boolean>(false);
   const [showCreateVideoModal, setShowCreateVideoModal] = useState<boolean>(false);

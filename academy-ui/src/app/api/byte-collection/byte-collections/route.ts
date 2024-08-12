@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/prisma';
-import { ByteCollection as ByteCollectionGraphql } from '@/graphql/generated/generated-types';
 import { getByteCollectionWithItem } from '@/app/api/helpers/byteCollection/byteCollectionHelper';
+import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 
 async function getHandler(req: NextRequest) {
@@ -22,7 +22,7 @@ async function getHandler(req: NextRequest) {
     },
   });
 
-  const byteCollectionsWithBytes: ByteCollectionGraphql[] = [];
+  const byteCollectionsWithBytes: ByteCollectionSummary[] = [];
 
   for (const byteCollection of byteCollections) {
     byteCollectionsWithBytes.push(await getByteCollectionWithItem(byteCollection));

@@ -1,6 +1,7 @@
 import ByteCollectionsGrid from '@/components/byteCollection/View/ByteCollectionsGrid';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import TidbitsSiteTabs from '@/components/home/TidbitsSite/TidbitsSiteTabs';
+import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import { ByteCollectionFragment, ByteSummaryFragment, CategoryWithByteCollection, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import React from 'react';
 import TidbitsSiteHomepage from './TidbitsSiteHomepage';
@@ -8,7 +9,7 @@ import { Session } from '@dodao/web-core/types/auth/Session';
 
 export interface TidbitsSiteHomeProps {
   space: SpaceWithIntegrationsFragment;
-  byteCollections: ByteCollectionFragment[];
+  byteCollections: ByteCollectionSummary[];
   bytes: ByteSummaryFragment[];
   categoriesArray: CategoryWithByteCollection[];
   selectedTabId?: string;

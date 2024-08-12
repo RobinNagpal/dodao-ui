@@ -8,6 +8,7 @@ import { prisma } from '@/prisma';
 import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
 import { checkEditSpacePermission, checkSpaceIdAndSpaceInEntityAreSame } from '@/app/api/helpers/space/checkEditSpacePermission';
 import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
+import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import { NextRequest, NextResponse } from 'next/server';
 
 async function getHandler(req: NextRequest, { params: { categoryId } }: { params: { categoryId: string } }) {
@@ -21,7 +22,7 @@ async function getHandler(req: NextRequest, { params: { categoryId } }: { params
     },
   });
 
-  const byteCollectionArr: ByteCollectionGraphql[] = [];
+  const byteCollectionArr: ByteCollectionSummary[] = [];
 
   for (const byteCollectionId of byteCollectionCategory.byteCollectionIds) {
     const byteCollection = await prisma.byteCollection.findFirstOrThrow({
