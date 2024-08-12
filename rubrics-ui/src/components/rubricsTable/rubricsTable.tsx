@@ -27,7 +27,6 @@ const RubricsPage: React.FC<RubricsPageProps> = ({
   editRubrics,
   editCriteriaOrder,
   editRatingHeaders,
-  editColumnScores,
   editCriteriaIds,
   rubricCellIds,
 }) => {
