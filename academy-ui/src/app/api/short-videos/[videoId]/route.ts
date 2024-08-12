@@ -75,8 +75,7 @@ async function postHandler(req: NextRequest, { params: { videoId } }: { params: 
       const items = byteCollection?.items;
       let highestOrderNumber = 0;
       if (items && items?.length > 0) {
-        const byteItems = items?.filter((item) => item.itemType === ByteCollectionItemType.ShortVideo);
-        const orderNumbers = byteItems.map((item) => item.order);
+        const orderNumbers = items.map((item) => item.order);
         highestOrderNumber = orderNumbers.length > 0 ? Math.max(...orderNumbers) : 0;
       }
       await prisma.byteCollectionItemMappings.create({

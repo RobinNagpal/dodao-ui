@@ -4,14 +4,15 @@ import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
 import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import Input from '@dodao/web-core/components/core/input/Input';
 import TextareaAutosize from '@dodao/web-core/components/core/textarea/TextareaAutosize';
-import { ByteCollectionFragment, Space } from '@/graphql/generated/generated-types';
+import { Space } from '@/graphql/generated/generated-types';
 import Bars3BottomLeftIcon from '@heroicons/react/24/solid/Bars3BottomLeftIcon';
+import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import React from 'react';
 import styled from 'styled-components';
 
 interface ByteCollectionEditorProps {
   space: Space;
-  byteCollection?: ByteCollectionFragment;
+  byteCollection?: ByteCollectionSummary;
   viewByteCollectionsUrl: string;
   upsertByteCollectionFn: (byteCollection: EditByteCollection, byteCollectionId: string | null) => Promise<void>;
 }
@@ -65,10 +66,10 @@ function ByteCollectionEditor(props: ByteCollectionEditorProps) {
       <div className="my-4">
         <div className="flow-root">
           <ul role="list" className="-mb-8">
-            {byteCollection.bytes.map((byte, byteIndex) => (
+            {byteCollection.bytes?.map((byte, byteIndex) => (
               <li key={byte.byteId}>
                 <div className="relative pb-8">
-                  {byteIndex !== byteCollection.bytes.length - 1 ? (
+                  {byteIndex !== byteCollection.bytes!.length - 1 ? (
                     <span className="absolute left-4 top-4 -ml-px h-full w-0.5 bg-gray-300" aria-hidden="true" />
                   ) : null}
                   <div className="relative flex space-x-3">
@@ -89,7 +90,7 @@ function ByteCollectionEditor(props: ByteCollectionEditorProps) {
                                 className="float-right ml-1"
                                 iconName={IconTypes.Trash}
                                 removeBorder
-                                disabled={byteCollection.bytes.length === 1}
+                                disabled={byteCollection.bytes!.length === 1}
                                 onClick={() => helperFunctions.removeByte(byte.byteId)}
                               />
                               <IconButton
@@ -103,7 +104,7 @@ function ByteCollectionEditor(props: ByteCollectionEditorProps) {
                                 className="float-right ml-1"
                                 iconName={IconTypes.MoveDown}
                                 removeBorder
-                                disabled={byteIndex + 1 === byteCollection.bytes.length}
+                                disabled={byteIndex + 1 === byteCollection.bytes!.length}
                                 onClick={() => helperFunctions.moveByteDown(byte.byteId)}
                               />
                             </div>

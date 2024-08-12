@@ -1,17 +1,18 @@
 import ByteCollectionEditor from '@/components/byteCollection/ByteCollections/ByteCollectionEditor';
 import { EditByteCollection } from '@/components/byteCollection/ByteCollections/useEditByteCollection';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
-import { ByteCollectionFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
 import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
+import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
 interface ByteCollectionCardAdminDropdownProps {
-  byteCollection: ByteCollectionFragment;
+  byteCollection: ByteCollectionSummary;
   space: SpaceWithIntegrationsFragment;
 }
 export default function ByteCollectionCardAdminDropdown({ byteCollection, space }: ByteCollectionCardAdminDropdownProps) {
@@ -37,7 +38,7 @@ export default function ByteCollectionCardAdminDropdown({ byteCollection, space 
             byteCollectionId: byteCollectionn.id,
             name: byteCollectionn.name,
             description: byteCollectionn.description,
-            byteIds: byteCollectionn.bytes.map((byte) => byte.byteId),
+            byteIds: byteCollectionn.bytes?.map((byte) => byte.byteId),
             status: byteCollectionn.status,
             spaceId: space.id,
             priority: byteCollectionn.priority,
@@ -55,7 +56,7 @@ export default function ByteCollectionCardAdminDropdown({ byteCollection, space 
     }
   }
 
-  const getThreeDotItems = (byteCollection: ByteCollectionFragment) => {
+  const getThreeDotItems = (byteCollection: ByteCollectionSummary) => {
     if (byteCollection.hasOwnProperty('archived')) {
       return [
         { label: 'Edit', key: 'edit' },

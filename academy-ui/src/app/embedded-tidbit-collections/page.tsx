@@ -1,5 +1,5 @@
 import ByteCollectionsGrid from '@/components/byteCollection/View/ByteCollectionsGrid';
-import { ByteCollectionFragment } from '@/graphql/generated/generated-types';
+import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -13,7 +13,7 @@ export default async function EmbeddedTidbitsPage() {
       spaceId: space!.id,
     },
   });
-  const byteCollections: ByteCollectionFragment[] = response.data.byteCollections;
+  const byteCollections: ByteCollectionSummary[] = response.data.byteCollections;
   return (
     <PageWrapper>
       <ByteCollectionsGrid byteCollections={byteCollections} space={space!} byteCollectionsBaseUrl={`/embedded-tidbit-collections`} />

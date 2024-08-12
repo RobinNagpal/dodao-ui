@@ -1,6 +1,7 @@
 import { TidbitSiteTabIds } from '@/components/home/TidbitsSite/TidbitSiteTabIds';
 import TidbitsSiteHome from '@/components/home/TidbitsSite/TidbitsSiteHome';
-import { ByteCollectionFragment, ByteSummaryFragment, CategoryWithByteCollection, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { ByteSummaryFragment, CategoryWithByteCollection, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import axios from 'axios';
@@ -19,7 +20,7 @@ export async function getTidbitsSiteHomepageContents(
         spaceId: space.id,
       },
     });
-    const byteCollections: ByteCollectionFragment[] = response.data.byteCollections;
+    const byteCollections: ByteCollectionSummary[] = response.data.byteCollections;
 
     response = await axios.get(getBaseUrl() + '/api/byte/bytes', {
       params: {
@@ -37,7 +38,7 @@ export async function getTidbitsSiteHomepageContents(
         spaceId: space.id,
       },
     });
-    const byteCollections: ByteCollectionFragment[] = response.data.byteCollections;
+    const byteCollections: ByteCollectionSummary[] = response.data.byteCollections;
 
     return <TidbitsSiteHome byteCollections={byteCollections} space={space} bytes={[]} categoriesArray={[]} selectedTabId={props.searchParams.selectedTabId} />;
   } else if (props.searchParams.selectedTabId === TidbitSiteTabIds.TidbitCollectionCategories) {
@@ -69,7 +70,7 @@ export async function getTidbitsSiteHomepageContents(
       },
     });
 
-    const byteCollections: ByteCollectionFragment[] = response.data.byteCollections;
+    const byteCollections: ByteCollectionSummary[] = response.data.byteCollections;
 
     const categoriesArray = [];
     const responseCategories = await axios.get(`${getBaseUrl()}/api/byte-collection-categories?spaceId=${space.id}`);
