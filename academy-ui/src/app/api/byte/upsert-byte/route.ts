@@ -83,8 +83,7 @@ async function post_handler(req: NextRequest) {
     const items = byteCollection?.items;
     let highestOrderNumber = 0;
     if (items && items?.length > 0) {
-      const byteItems = items?.filter((item) => item.itemType === ByteCollectionItemType.Byte);
-      const orderNumbers = byteItems.map((item) => item.order);
+      const orderNumbers = items.map((item) => item.order);
       highestOrderNumber = orderNumbers.length > 0 ? Math.max(...orderNumbers) : 0;
     }
 

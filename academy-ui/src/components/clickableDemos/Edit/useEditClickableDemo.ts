@@ -1,6 +1,7 @@
 import { emptyClickableDemo } from '@/components/clickableDemos/Edit/EmptyClickableDemo';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { ClickableDemoStepInput, Space, UpsertClickableDemoInput, ByteCollectionFragment } from '@/graphql/generated/generated-types';
+import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import { useI18 } from '@/hooks/useI18';
 import { ClickableDemoErrors, ClickableDemoStepError } from '@dodao/web-core/types/errors/clickableDemoErrors';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
@@ -182,7 +183,7 @@ export function useEditClickableDemo(space: Space, demoId: string | null) {
     };
   }
 
-  async function handleSubmit(byteCollection: ByteCollectionFragment) {
+  async function handleSubmit(byteCollection: ByteCollectionSummary) {
     setClickableDemoCreating(true);
     try {
       const valid = validateClickableDemo(clickableDemo);

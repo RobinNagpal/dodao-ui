@@ -1,8 +1,9 @@
-import { CssTheme, ThemeKey, ThemeValue, themes } from '@dodao/web-core/src/components/app/themes';
+import { CssTheme, ThemeKey, themes } from '@dodao/web-core/src/components/app/themes';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import UpdateThemeModal, { ColorLabels, ThemeColorsKeys } from '@/components/spaces/Edit/Theme/UpdateThemeModal';
-import { ByteCollectionFragment, SpaceWithIntegrationsFragment, ThemeColors } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsFragment, ThemeColors } from '@/graphql/generated/generated-types';
 import ByteCollectionsCard from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCollectionsCard';
+import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import React from 'react';
 
 export interface SpaceDetailsProps {
@@ -27,7 +28,7 @@ export default function SpaceThemeDetails({ space }: SpaceDetailsProps) {
     }
   };
 
-  const byteCollection: ByteCollectionFragment = {
+  const byteCollection: ByteCollectionSummary = {
     id: 'b757246b-1b08-42ce-a8cb-a9ce19bc78b3',
     name: 'About DEX',
     description: 'This collection of Tidbits explains different exchange models and the benefits of AMM',
@@ -40,26 +41,23 @@ export default function SpaceThemeDetails({ space }: SpaceDetailsProps) {
         name: 'Centralized vs Decentralized Exchange',
         content: 'Centralized vs Decentralized Exchanges and AMMs',
         archive: false,
-        __typename: 'ByteCollectionByte',
       },
       {
         byteId: 'amm-benefits-uniswap',
         name: 'AMM Benefits',
         content: 'Benefits of Automated Market Maker over Order Book',
         archive: false,
-        __typename: 'ByteCollectionByte',
       },
       {
         byteId: 'centralized-vs-decentralized-exchange-uniswap_2',
         name: 'Centralized vs Decentralized Exchange',
         content: 'Centralized vs Decentralized Exchanges and AMMs',
         archive: false,
-        __typename: 'ByteCollectionByte',
       },
     ],
     demos: [],
     shorts: [],
-    __typename: 'ByteCollection',
+    items: [],
   };
 
   return (

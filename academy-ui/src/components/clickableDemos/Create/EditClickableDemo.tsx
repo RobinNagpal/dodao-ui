@@ -15,6 +15,7 @@ import Input from '@dodao/web-core/components/core/input/Input';
 import PageLoading from '@dodao/web-core/components/core/loaders/PageLoading';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { ByteCollectionFragment, CreateSignedUrlInput, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import { ClickableDemoErrors } from '@dodao/web-core/types/errors/clickableDemoErrors';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -27,7 +28,7 @@ import { useNotificationContext } from '@dodao/web-core/ui/contexts/Notification
 interface EditClickableDemoProps {
   space: SpaceWithIntegrationsFragment;
   demoId?: string | null;
-  byteCollection: ByteCollectionFragment;
+  byteCollection: ByteCollectionSummary;
 }
 
 function EditClickableDemo({ space, demoId, byteCollection }: EditClickableDemoProps) {
@@ -164,7 +165,7 @@ function EditClickableDemo({ space, demoId, byteCollection }: EditClickableDemoP
     updateClickableDemoFunctions.initialize();
   }, [demoId]);
 
-  function clickSubmit(byteCollection: ByteCollectionFragment) {
+  function clickSubmit(byteCollection: ByteCollectionSummary) {
     handleSubmit(byteCollection);
   }
 
@@ -204,6 +205,7 @@ function EditClickableDemo({ space, demoId, byteCollection }: EditClickableDemoP
                     modelValue={clickableDemo.title}
                     error={inputError('title') ? 'Title is required' : ''}
                     maxLength={32}
+                    placeholder="only 64 characters"
                     onUpdate={(newValue) => updateClickableDemoFunctions.updateClickableDemoField('title', newValue)}
                   >
                     <div>Title*</div>
@@ -214,9 +216,10 @@ function EditClickableDemo({ space, demoId, byteCollection }: EditClickableDemoP
                     modelValue={clickableDemo.excerpt}
                     error={inputError('excerpt') ? 'Excerpt is required' : ''}
                     maxLength={64}
+                    placeholder="only 64 characters"
                     onUpdate={(newValue) => updateClickableDemoFunctions.updateClickableDemoField('excerpt', newValue)}
                   >
-                    <div>Excerpt*</div>
+                    <div>Summary*</div>
                   </Input>
                 </div>
               </Block>

@@ -1,8 +1,9 @@
-import { ByteCollectionFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 
-export type EditByteCollection = Omit<ByteCollectionFragment, 'id'> & { id?: string };
+export type EditByteCollection = Omit<ByteCollectionSummary, 'id' | 'items'> & { id?: string };
 
 interface HelperFunctions {
   updateByteCollectionName: (name: string) => void;
@@ -25,7 +26,7 @@ interface UseEditByteCollectionType {
 export interface UseEditByteCollectionArgs {
   space: SpaceWithIntegrationsFragment;
   viewByteCollectionsUrl: string;
-  byteCollection?: ByteCollectionFragment;
+  byteCollection?: ByteCollectionSummary;
   upsertByteCollectionFn: (byteCollection: EditByteCollection, byteCollectionId: string | null) => Promise<void>;
 }
 
@@ -46,7 +47,7 @@ export function useEditByteCollection({
     shorts: byteCollectionProp?.shorts || [],
     name: byteCollectionProp?.name || '',
     description: byteCollectionProp?.description || '',
-    byteIds: byteCollectionProp?.bytes.map((byte) => byte.byteId) || [],
+    byteIds: byteCollectionProp?.bytes?.map((byte) => byte.byteId) || [],
     status: byteCollectionProp?.status || 'DRAFT',
     priority: byteCollectionProp?.priority || 50,
     videoUrl: byteCollectionProp?.videoUrl || '',
@@ -60,7 +61,7 @@ export function useEditByteCollection({
       shorts: byteCollectionProp?.shorts || [],
       name: byteCollectionProp?.name || '',
       description: byteCollectionProp?.description || '',
-      byteIds: byteCollectionProp?.bytes.map((byte) => byte.byteId) || [],
+      byteIds: byteCollectionProp?.bytes?.map((byte) => byte.byteId) || [],
       status: byteCollectionProp?.status || 'DRAFT',
       priority: byteCollectionProp?.priority || 50,
       videoUrl: byteCollectionProp?.videoUrl || '',
@@ -70,7 +71,7 @@ export function useEditByteCollection({
   const moveByteUp = useCallback(
     (byteUuid: string) => {
       setByteCollection((prevByte) => {
-        const bytes = [...prevByte.bytes];
+        const bytes = [...prevByte.bytes!];
         const index = bytes.findIndex((byte) => byte.byteId === byteUuid);
         if (index > 0) {
           const temp = bytes[index - 1];
@@ -85,7 +86,7 @@ export function useEditByteCollection({
 
   const moveByteDown = useCallback((byteUuid: string) => {
     setByteCollection((prevByte) => {
-      const newBytes = [...prevByte.bytes];
+      const newBytes = [...prevByte.bytes!];
       const index = newBytes.findIndex((byte) => byte.byteId === byteUuid);
       if (index >= 0 && index < newBytes.length - 1) {
         [newBytes[index], newBytes[index + 1]] = [newBytes[index + 1], newBytes[index]];
@@ -97,8 +98,8 @@ export function useEditByteCollection({
 
   const removeByte = useCallback((byteUuid: string) => {
     setByteCollection((prevByte) => {
-      const updatedBytes = prevByte.bytes
-        .filter((s) => s.byteId !== byteUuid)
+      const updatedBytes = prevByte
+        .bytes!.filter((s) => s.byteId !== byteUuid)
         .map((byte, index) => ({
           ...byte,
           order: index,

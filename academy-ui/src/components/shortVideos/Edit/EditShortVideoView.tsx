@@ -1,17 +1,12 @@
 import EditShortVideoForm from '@/components/shortVideos/Edit/EditShortVideoForm';
-import {
-  ShortVideo,
-  ShortVideoInput,
-  SpaceWithIntegrationsFragment,
-  ByteCollectionFragment,
-  useUpsertShortVideoMutation,
-} from '@/graphql/generated/generated-types';
+import { ShortVideo, ShortVideoInput, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import React from 'react';
 
 export interface EditShortVideoModalProps {
   shortVideoToEdit?: ShortVideo;
   space: SpaceWithIntegrationsFragment;
-  byteCollection: ByteCollectionFragment;
+  byteCollection: ByteCollectionSummary;
   onAfterSave?: () => void;
   onCancel: () => void;
 }

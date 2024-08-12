@@ -6,7 +6,8 @@ import {
   KeyOfByteInput,
   UpdateByteFunctions,
 } from '@/components/bytes/Edit/editByteHelper';
-import { ByteCollectionFragment, ByteDetailsFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { ByteDetailsFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import { useI18 } from '@/hooks/useI18';
 import { emptyByte } from '@/utils/byte/EmptyByte';
 import { validateQuestion, validateUserInput } from '@/utils/stepItems/validateItems';
@@ -185,7 +186,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, onUpsert: (byt
     setByteUpserting(false);
   };
 
-  const handleByteUpsert = async (byteCollection: ByteCollectionFragment) => {
+  const handleByteUpsert = async (byteCollection: ByteCollectionSummary) => {
     await saveViaMutation(async () => {
       const upsertResponse = await fetch('/api/byte/upsert-byte', {
         method: 'POST',

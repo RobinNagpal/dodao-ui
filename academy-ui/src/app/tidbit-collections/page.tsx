@@ -11,6 +11,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import CollectionPageLoading from '@dodao/web-core/src/components/core/loaders/CollectionPageLoading';
+import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 
 async function TidbitCollections() {
   const space = (await getSpaceServerSide())!;
@@ -21,7 +22,7 @@ async function TidbitCollections() {
       spaceId: space.id,
     },
   });
-  const byteCollections: ByteCollectionFragment[] = response.data.byteCollections;
+  const byteCollections: ByteCollectionSummary[] = response.data.byteCollections;
   let filteredCollections;
 
   if (session?.isAdminOfSpace) {

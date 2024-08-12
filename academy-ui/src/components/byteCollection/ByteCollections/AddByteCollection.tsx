@@ -52,7 +52,7 @@ export default function AddByteCollection({ space }: { space: SpaceWithIntegrati
 
   return (
     <>
-      <div className="w-full flex items-center justify-center">
+      <div className="w-full flex justify-center">
         <Button
           className="w-full rounded-lg bg-white text-color"
           variant="outlined"
