@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import RubricsPage from '@/components/RubricsTable/rubricsTable';
+import RubricsPage from '@/components/rubricsTable/rubricsTable';
 import { RubricServerData } from '@/types/rubricsTypes/types';
 import { ChevronLeftIcon } from '@heroicons/react/24/outline';
 import { useRouter } from 'next/navigation';

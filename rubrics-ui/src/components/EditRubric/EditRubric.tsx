@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import RubricsPage from '@/components/RubricsTable/rubricsTable';
+import RubricsPage from '@/components/rubricsTable/rubricsTable';
 import { EditRubricCell, SampleData } from '@/types/rubricsTypes/types';
 import RubricDetails from '@/components/RubricDetails/RubricDetails';
 import { getSession } from 'next-auth/react';
