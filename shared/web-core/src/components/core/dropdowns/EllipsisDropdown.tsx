@@ -16,7 +16,6 @@ export interface EllipsisDropdownProps {
 }
 
 const MenuButton = styled(Menu.Button)`
-  background-color: var(--bg-color);
   color: var(--text-color);
   &:hover {
     color: var(--primary-color);
