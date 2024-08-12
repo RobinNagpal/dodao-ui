@@ -78,9 +78,9 @@ CREATE TABLE "spaces" (
 -- CreateTable
 CREATE TABLE "program" (
     "id" VARCHAR(64) NOT NULL,
-    "name" TEXT,
+    "name" TEXT NOT NULL,
     "details" TEXT,
-    "summary" TEXT,
+    "summary" TEXT NOT NULL,
 
     CONSTRAINT "program_pkey" PRIMARY KEY ("id")
 );
@@ -88,8 +88,8 @@ CREATE TABLE "program" (
 -- CreateTable
 CREATE TABLE "rubric" (
     "id" VARCHAR(64) NOT NULL,
-    "name" VARCHAR(64),
-    "summary" TEXT,
+    "name" VARCHAR(64) NOT NULL,
+    "summary" TEXT NOT NULL,
     "description" TEXT,
 
     CONSTRAINT "rubric_pkey" PRIMARY KEY ("id")
@@ -111,6 +111,7 @@ CREATE TABLE "rubric_level" (
     "description" VARCHAR(64),
     "score" INTEGER,
     "rubricId" VARCHAR(64) NOT NULL,
+    "isArchived" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "rubric_level_pkey" PRIMARY KEY ("id")
 );
@@ -120,6 +121,7 @@ CREATE TABLE "rubric_criteria" (
     "id" TEXT NOT NULL,
     "title" VARCHAR(64) NOT NULL,
     "rubricId" VARCHAR(64) NOT NULL,
+    "isArchived" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "rubric_criteria_pkey" PRIMARY KEY ("id")
 );
@@ -131,6 +133,7 @@ CREATE TABLE "rubric_cell" (
     "levelId" VARCHAR(64),
     "criteriaId" VARCHAR(64),
     "rubricId" VARCHAR(64) NOT NULL,
+    "isArchived" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "rubric_cell_pkey" PRIMARY KEY ("id")
 );
@@ -181,9 +184,6 @@ CREATE UNIQUE INDEX "crypto_login_nonce_user_id_key" ON "crypto_login_nonce"("us
 
 -- CreateIndex
 CREATE UNIQUE INDEX "program_rubric_mapping_programId_rubricId_key" ON "program_rubric_mapping"("programId", "rubricId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "rubric_level_rubricId_columnName_key" ON "rubric_level"("rubricId", "columnName");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "rubric_criteria_rubricId_title_key" ON "rubric_criteria"("rubricId", "title");

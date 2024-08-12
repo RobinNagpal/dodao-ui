@@ -21,13 +21,13 @@ const ProgramsList = async () => {
       <h1 className="text-4xl text-center font-extrabold mb-10">Programs</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {programs?.map((program: ProgramListProps) => (
-          <Link key={program.id} href={`/program-details/${program.id}`} passHref>
+          <Link key={program.id} href={`/programs/view/${program.id}`} passHref>
             <Card className="cursor-pointer">
               <div className="p-6">
                 <h2 className="text-2xl font-semibold mb-3" style={{ color: 'var(--primary-color)' }}>
                   {program.name}
                 </h2>
-                <p>{program.details}</p>
+                <p>{program.summary}</p>
               </div>
             </Card>
           </Link>

@@ -119,9 +119,9 @@ model Space {
 
 model Program {
   id      String                 @id @default(uuid()) @db.VarChar(64)
-  name    String?
+  name    String
   details String?
-  summary String?
+  summary String
   rubrics ProgramRubricMapping[]
 
   @@map("program")
@@ -129,8 +129,8 @@ model Program {
 
 model Rubric {
   id           String                 @id @default(uuid()) @db.VarChar(64)
-  name         String?                @db.VarChar(64)
-  summary      String?
+  name         String                 @db.VarChar(64)
+  summary      String
   description  String?
   levels       RubricLevel[]
   criteria     RubricCriteria[]
@@ -160,8 +160,8 @@ model RubricLevel {
   rubricId    String       @db.VarChar(64)
   rubric      Rubric       @relation(fields: [rubricId], references: [id])
   RubricCell  RubricCell[]
+  isArchived  Boolean      @default(false)
 
-  @@unique([rubricId, columnName])
   @@map("rubric_level")
 }
 
@@ -171,6 +171,7 @@ model RubricCriteria {
   rubricId   String       @db.VarChar(64)
   rubric     Rubric       @relation(fields: [rubricId], references: [id])
   RubricCell RubricCell[]
+  isArchived Boolean      @default(false)
 
   @@unique([rubricId, title])
   @@map("rubric_criteria")
@@ -186,6 +187,7 @@ model RubricCell {
   level       RubricLevel?          @relation(fields: [levelId], references: [id])
   criteria    RubricCriteria?       @relation(fields: [criteriaId], references: [id])
   ratings     RatingCellSelection[]
+  isArchived  Boolean               @default(false)
 
   @@unique([rubricId, levelId, criteriaId])
   @@map("rubric_cell")

@@ -1,173 +1,210 @@
 import { prisma } from '@/prisma';
 import { NextRequest, NextResponse } from 'next/server';
-
+import { NewCriteriaRequest } from '@/types/rubricsTypes/types';
 export async function POST(req: NextRequest, res: NextResponse) {
   const { programId, rubric } = await req.json();
+
   try {
-    const previousRubrics = await prisma.rubric.findMany({
-      where: {
-        programs: {
-          some: {
-            programId: programId,
+    if (!Array.isArray(rubric.levels)) {
+      return NextResponse.json({ status: 400, body: 'Invalid levels data' });
+    }
+
+    const result = await prisma.$transaction(async (tx) => {
+      const existingRubric = await tx.rubric.findFirst({
+        where: {
+          programs: {
+            some: {
+              programId: programId,
+            },
           },
         },
-      },
-    });
-
-    for (const previousRubric of previousRubrics) {
-      const rubricId = previousRubric.id;
-
-      await prisma.rubricCell.deleteMany({ where: { rubricId } });
-      await prisma.rubricLevel.deleteMany({ where: { rubricId } });
-      await prisma.rubricCriteria.deleteMany({ where: { rubricId } });
-    }
-
-    await prisma.programRubricMapping.deleteMany({
-      where: {
-        programId: programId,
-      },
-    });
-
-    await prisma.rubric.deleteMany({
-      where: {
-        id: {
-          in: previousRubrics.map((rubric) => rubric.id),
-        },
-      },
-    });
-
-    const newRubric = await prisma.rubric.create({
-      data: {
-        name: rubric[0].name,
-        summary: rubric[0].summary,
-        description: rubric[0].description,
-        programs: {
-          create: { programId },
-        },
-      },
-    });
-
-    const levelIds: { [key: string]: string } = {};
-    for (const level of rubric[0].levels) {
-      const newLevel = await prisma.rubricLevel.create({
-        data: {
-          columnName: level.columnName,
-          description: level.description,
-          score: level.score,
-          rubricId: newRubric.id,
-        },
-      });
-      levelIds[level.columnName] = newLevel.id;
-    }
-
-    for (const subRubric of rubric) {
-      const { criteria, levels } = subRubric;
-
-      const newCriteria = await prisma.rubricCriteria.create({
-        data: {
-          title: criteria,
-          rubricId: newRubric.id,
-        },
       });
 
-      for (const level of levels) {
-        await prisma.rubricCell.create({
+      let rubricId = existingRubric ? existingRubric.id : null;
+
+      if (rubricId) {
+        await tx.rubric.update({
+          where: { id: rubricId },
           data: {
-            description: level.description,
-            levelId: levelIds[level.columnName],
-            criteriaId: newCriteria.id,
-            rubricId: newRubric.id,
+            name: rubric.name,
+            summary: rubric.summary,
+            description: rubric.description,
           },
         });
+      } else {
+        const newRubric = await tx.rubric.create({
+          data: {
+            name: rubric.name,
+            summary: rubric.summary,
+            description: rubric.description,
+            programs: {
+              create: { programId },
+            },
+          },
+        });
+        rubricId = newRubric.id;
       }
-    }
 
-    return NextResponse.json({ status: 200, body: rubric });
+      const levelIds: { [key: string]: string } = {};
+
+      for (const level of rubric.levels) {
+        if (!level.columnName || typeof level.score !== 'number') {
+          return NextResponse.json({ status: 400, body: 'Invalid level data' });
+        }
+
+        const existingLevel = await tx.rubricLevel.findFirst({
+          where: {
+            rubricId: rubricId,
+            columnName: level.columnName,
+          },
+        });
+
+        if (existingLevel) {
+          await tx.rubricLevel.update({
+            where: { id: existingLevel.id },
+            data: {
+              description: level.description,
+              score: level.score,
+            },
+          });
+          levelIds[level.columnName] = existingLevel.id;
+        } else {
+          const newLevel = await tx.rubricLevel.create({
+            data: {
+              columnName: level.columnName,
+              description: level.description,
+              score: level.score,
+              rubricId: rubricId,
+            },
+          });
+          levelIds[level.columnName] = newLevel.id;
+        }
+      }
+
+      if (!rubric.criteria) {
+        return NextResponse.json({ status: 400, body: 'Missing criteria data' });
+      }
+
+      const existingCriteria = await tx.rubricCriteria.findFirst({
+        where: {
+          rubricId: rubricId,
+          title: rubric.criteria,
+        },
+      });
+
+      let criteriaId = existingCriteria ? existingCriteria.id : null;
+
+      if (criteriaId) {
+        await tx.rubricCriteria.update({
+          where: { id: criteriaId },
+          data: {
+            title: rubric.criteria,
+          },
+        });
+      } else {
+        const newCriteria = await tx.rubricCriteria.create({
+          data: {
+            title: rubric.criteria,
+            rubricId: rubricId,
+          },
+        });
+        criteriaId = newCriteria.id;
+      }
+
+      for (const level of rubric.levels) {
+        const existingCell = await tx.rubricCell.findFirst({
+          where: {
+            rubricId: rubricId,
+            criteriaId: criteriaId,
+            levelId: levelIds[level.columnName],
+          },
+        });
+
+        if (existingCell) {
+          await tx.rubricCell.update({
+            where: { id: existingCell.id },
+            data: {
+              description: level.description,
+            },
+          });
+        } else {
+          await tx.rubricCell.create({
+            data: {
+              description: level.description,
+              levelId: levelIds[level.columnName],
+              criteriaId: criteriaId,
+              rubricId: rubricId,
+            },
+          });
+        }
+      }
+
+      const fullRubric = await tx.rubric.findUnique({
+        where: { id: rubricId },
+        include: {
+          levels: true,
+          criteria: {
+            include: {
+              RubricCell: true,
+            },
+          },
+          RubricCell: {
+            include: {
+              level: true,
+              criteria: true,
+            },
+          },
+          programs: true,
+        },
+      });
+
+      return fullRubric;
+    });
+
+    return NextResponse.json({ status: 200, body: result });
   } catch (error) {
     console.error(error);
     return NextResponse.json({ status: 500, body: 'An error occurred' });
   }
 }
 
-export async function GET(req: NextRequest) {
-  const url = new URL(req.url);
-  const rubricId = url.searchParams.get('rubricId');
-
-  if (!rubricId) {
-    return NextResponse.json({ status: 400, body: 'Missing rubricId' });
-  }
-
+export async function PUT(request: Request) {
   try {
-    const rubric = await prisma.rubric.findUnique({
-      where: { id: rubricId },
-      include: {
-        levels: true,
-        criteria: true,
-        RubricCell: true,
-        programs: {
-          include: {
-            program: true,
-          },
-        },
+    const data: NewCriteriaRequest = await request.json();
+
+    const existingRubric = await prisma.rubric.findUnique({
+      where: { id: data.rubricId },
+    });
+
+    if (!existingRubric) {
+      return NextResponse.json({ error: 'Rubric not found' }, { status: 404 });
+    }
+
+    const newCriteria = await prisma.rubricCriteria.create({
+      data: {
+        title: data.title,
+        rubricId: data.rubricId,
       },
     });
 
-    if (!rubric) {
-      return NextResponse.json({ status: 404, body: 'Rubric not found' });
-    }
-
-    if (!rubric.programs || rubric.programs.length === 0) {
-      return NextResponse.json({ status: 404, body: 'No associated program found' });
-    }
-
-    const ratingHeaders = rubric.levels.map((level) => ({
-      id: level.id,
-      header: level.columnName,
-      score: level.score,
+    const cells = data.cells.map((cell) => ({
+      description: cell.description,
+      levelId: cell.ratingHeaderId,
+      criteriaId: newCriteria.id,
+      rubricId: data.rubricId,
     }));
 
-    const sortedRatingHeaders = ratingHeaders.sort((a: any, b: any) => b.score - a.score);
+    await prisma.rubricCell.createMany({
+      data: cells,
+    });
 
-    const ratingHeaderIndexMap: Record<string, number> = sortedRatingHeaders.reduce((map, header, index) => {
-      map[header.id] = index;
-      return map;
-    }, {} as Record<string, number>);
+    const createdCells = await prisma.rubricCell.findMany({
+      where: { criteriaId: newCriteria.id },
+    });
 
-    const criteriaMap: Record<string, Array<{ cellId: string; description: string | null }>> = rubric.criteria.reduce((acc, criteria) => {
-      if (criteria.title) {
-        const cellsForCriteria = rubric.RubricCell.filter((cell) => cell.criteriaId === criteria.id)
-          .sort((a, b) => {
-            const aIndex = ratingHeaderIndexMap[a.levelId!];
-            const bIndex = ratingHeaderIndexMap[b.levelId!];
-            return aIndex - bIndex;
-          })
-          .map((cell) => ({ cellId: cell.id, description: cell.description ?? '' }));
-        acc[criteria.title] = cellsForCriteria;
-      }
-      return acc;
-    }, {} as Record<string, Array<{ cellId: string; description: string | null }>>);
-
-    const ratingHeadersWithScores = sortedRatingHeaders.map((header) => ({
-      header: header.header,
-      score: header.score,
-    }));
-
-    const programDetails = rubric.programs.map((mapping) => ({
-      name: mapping.program.name,
-      summary: mapping.program.summary,
-    }));
-
-    const formattedRubric = {
-      rubricId: rubricId,
-      criteriaOrder: rubric.criteria.map((criteria) => criteria.title ?? '').filter((title) => title !== ''),
-      rubric: criteriaMap,
-      ratingHeaders: ratingHeadersWithScores,
-      programs: programDetails,
-    };
-
-    return NextResponse.json({ status: 200, body: formattedRubric });
+    return NextResponse.json({ newCriteria, createdCells }, { status: 201 });
   } catch (error) {
-    console.error(error);
-    return NextResponse.json({ status: 500, body: 'An error occurred' });
+    console.error('Error adding criteria:', error);
+    return NextResponse.json({ error: 'Failed to add criteria' }, { status: 500 });
   }
 }
