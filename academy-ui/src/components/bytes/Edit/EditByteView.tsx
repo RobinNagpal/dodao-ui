@@ -155,7 +155,7 @@ export default function EditByteView(props: {
                 variant="contained"
                 primary
               >
-                Upsert
+                Upload
               </Button>
             </div>
           </div>

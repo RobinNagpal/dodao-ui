@@ -64,10 +64,7 @@ export default function ByteCollectionCardAdminDropdown({ byteCollection, space 
       ];
     }
 
-    return [
-      { label: 'Edit', key: 'edit' },
-      { label: 'Edit Seo', key: 'editSeo' },
-    ];
+    return [{ label: 'Edit', key: 'edit' }];
   };
 
   const onArchivedStatusChange = async (archived: boolean) => {

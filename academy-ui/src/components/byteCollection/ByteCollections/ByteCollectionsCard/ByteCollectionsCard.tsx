@@ -142,7 +142,7 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
                   {eventIdx !== nonArchivedBytes.length - 1 ? (
                     <span className="absolute left-4 top-4 -ml-px h-full w-0.5 bg-gray-200" aria-hidden="true" />
                   ) : null}
-                  <div className="relative flex space-x-3">
+                  <div className="relative flex space-x-3 justify-between">
                     <Link className="flex cursor-pointer" href={byteViewUrl}>
                       <ByteCompletionCheckmark byteId={byte.byteId} />
                       <div className="flex min-w-0 flex-1 justify-between space-x-2 duration-300 ease-in-out">
