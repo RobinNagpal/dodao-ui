@@ -32,6 +32,7 @@ interface ByteStepperItemContentProps {
   width: number;
   height: number;
   isShortScreen: boolean;
+  imageHeight: any;
 }
 
 export default function ByteStepperItemContent({
@@ -47,8 +48,8 @@ export default function ByteStepperItemContent({
   width,
   height,
   isShortScreen,
+  imageHeight,
 }: ByteStepperItemContentProps) {
-  const [imageHeight, setImageHeight] = useState('0px');
   const stepItems = step.stepItems;
 
   const stepContents = useMemo(() => marked.parse(step.content, { renderer }), [step.content]);
