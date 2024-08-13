@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/prisma';
 import { getByteCollectionWithItem } from '@/app/api/helpers/byteCollection/byteCollectionHelper';

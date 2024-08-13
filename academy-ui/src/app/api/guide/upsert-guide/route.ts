@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { PublishStatus } from '@/app/api/helpers/deprecatedSchemas/models/enums';
 import { GuideType } from '@/app/api/helpers/deprecatedSchemas/models/GuideModel';
 import { MutationUpsertGuideArgs } from '@/graphql/generated/generated-types';
