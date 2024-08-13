@@ -2,6 +2,7 @@ import { useNotificationContext } from '@dodao/web-core/ui/contexts/Notification
 import { SpaceWithIntegrationsFragment, TidbitsHomepage } from '@/graphql/generated/generated-types';
 import { TidbitsHomepageError } from '@dodao/web-core/types/errors/error';
 import { useI18 } from '@/hooks/useI18';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useState } from 'react';
 
 export type UpdateTidbitsHompageHelper = {
@@ -59,7 +60,7 @@ export function useEditTidbitsHomepage(space: SpaceWithIntegrationsFragment): Up
     }
     try {
       setUpdating(true);
-      const response = await fetch('/api/spaces/update-tidbits-homepage', {
+      const response = await fetch(`${getBaseUrl()}/api/spaces/update-tidbits-homepage`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -6,13 +6,14 @@ import {
   KeyOfByteInput,
   UpdateByteFunctions,
 } from '@/components/bytes/Edit/editByteHelper';
-import { ByteDetailsFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { ByteDetailsFragment, ImageDisplayMode, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import { useI18 } from '@/hooks/useI18';
 import { emptyByte } from '@/utils/byte/EmptyByte';
 import { validateQuestion, validateUserInput } from '@/utils/stepItems/validateItems';
 import { ByteErrors } from '@dodao/web-core/types/errors/byteErrors';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Byte } from '@prisma/client';
 import axios from 'axios';
 import { useCallback, useState } from 'react';
@@ -50,7 +51,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, onUpsert: (byt
       setByte(byte);
       setByteLoaded(true);
     } else if (byteId) {
-      const result = await axios.get(`/api/byte/byte`, {
+      const result = await axios.get(`${getBaseUrl()}/api/byte/byte`, {
         params: {
           byteId,
           spaceId: space.id,
@@ -90,7 +91,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, onUpsert: (byt
         {
           uuid: uuid,
           name: `Step ${prevByte.steps.length + 1}`,
-          displayMode: 'normal',
+          displayMode: ImageDisplayMode.Normal,
           content: '',
           stepItems: [],
           order: prevByte.steps.length,
@@ -188,7 +189,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, onUpsert: (byt
 
   const handleByteUpsert = async (byteCollection: ByteCollectionSummary) => {
     await saveViaMutation(async () => {
-      const upsertResponse = await fetch('/api/byte/upsert-byte', {
+      const upsertResponse = await fetch(`${getBaseUrl()}/api/byte/upsert-byte`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

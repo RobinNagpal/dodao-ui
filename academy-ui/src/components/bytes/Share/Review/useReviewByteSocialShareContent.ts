@@ -126,7 +126,7 @@ export default function useReviewByteSocialShareContent(spaceId: string, byteId:
           }));
 
         try {
-          const upsertResponse = await fetch('/api/byte/upsert-byte-social-share', {
+          const upsertResponse = await fetch(`${getBaseUrl()}/api/byte/upsert-byte-social-share`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -205,7 +205,7 @@ export default function useReviewByteSocialShareContent(spaceId: string, byteId:
   }
 
   async function generatePdf() {
-    await fetch('/api/byte/upsert-byte-social-share', {
+    await fetch(`${getBaseUrl()}/api/byte/upsert-byte-social-share`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -228,7 +228,7 @@ export default function useReviewByteSocialShareContent(spaceId: string, byteId:
       }),
     });
 
-    const response = await fetch('/api/byte/generate-sharable-pdf', {
+    const response = await fetch(`${getBaseUrl()}/api/byte/generate-sharable-pdf`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

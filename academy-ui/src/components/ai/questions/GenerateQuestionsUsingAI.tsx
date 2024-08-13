@@ -5,6 +5,7 @@ import StyledSelect from '@dodao/web-core/components/core/select/StyledSelect';
 import TextareaAutosize from '@dodao/web-core/components/core/textarea/TextareaAutosize';
 import WarningWithAccentBorder from '@dodao/web-core/components/core/warnings/WarningWithAccentBorder';
 import { ChatCompletionRequestMessageRoleEnum } from '@/graphql/generated/generated-types';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 
 import React, { useState } from 'react';
 import axios from 'axios';
@@ -48,7 +49,7 @@ export default function GenerateQuestionsUsingAI(props: GenerateQuestionUsingAIP
       }
       const inputContent = props.generatePrompt(topic, numberOfQuestions, contents);
 
-      const response = await axios.post('/api/openAI/ask-chat-completion-ai', {
+      const response = await axios.post(`${getBaseUrl()}/api/openAI/ask-chat-completion-ai`, {
         input: { messages: [{ role: ChatCompletionRequestMessageRoleEnum.User, content: inputContent }] },
         temperature: 0.3,
         model: 'gpt-4',

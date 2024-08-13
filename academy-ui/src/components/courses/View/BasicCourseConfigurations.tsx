@@ -4,6 +4,7 @@ import { useNotificationContext } from '@dodao/web-core/ui/contexts/Notification
 import { SpaceWithIntegrationsFragment, RawGitCourse } from '@/graphql/generated/generated-types';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { PublishStatus } from '@dodao/web-core/types/deprecated/models/enums';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { isSuperAdmin } from '@dodao/web-core/utils/auth/superAdmins';
 import { useSession } from 'next-auth/react';
 import { useState, useEffect } from 'react';
@@ -37,7 +38,7 @@ export default function BasicCourseConfigurations({ space, courseKey }: BasicCou
 
   async function refreshCourse() {
     // This call won't work as the backend logic isn't implemented
-    await fetch('/api/courses/refresh-course', {
+    await fetch(`${getBaseUrl()}/api/courses/refresh-course`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

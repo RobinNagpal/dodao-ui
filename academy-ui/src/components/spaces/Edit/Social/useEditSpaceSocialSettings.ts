@@ -1,5 +1,6 @@
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { SocialSettings, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useState } from 'react';
 
 export type UpdateSpaceSocialSettingsHelper = {
@@ -24,7 +25,7 @@ export function useEditSpaceSocialSettings(space: SpaceWithIntegrationsFragment)
   async function updateSocialSettings() {
     try {
       setUpdating(true);
-      const response = await fetch('/api/spaces/update-social-settings', {
+      const response = await fetch(`${getBaseUrl()}/api/spaces/update-social-settings`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

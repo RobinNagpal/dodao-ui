@@ -1,5 +1,6 @@
 import { Space, ByteFeedback, ByteRating, ByteDetailsFragment } from '@/graphql/generated/generated-types';
 import { UserIdKey } from '@dodao/web-core/types/auth/User';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useEffect, useState } from 'react';
 import { v4 } from 'uuid';
 
@@ -67,7 +68,7 @@ export function useByteRatings(space: Space, byte: ByteDetailsFragment, byteSubm
       }
     }
 
-    await fetch('/api/byte/upsert-byte-rating', {
+    await fetch(`${getBaseUrl()}/api/byte/upsert-byte-rating`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

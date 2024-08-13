@@ -3,6 +3,7 @@ import {
   ByteStepFragment,
   ByteStepInput,
   CompletionScreen,
+  ImageDisplayMode,
   StepItemInputGenericInput,
   UpsertByteInput,
 } from '@/graphql/generated/generated-types';
@@ -273,7 +274,7 @@ export function editByteCommonFunctions(setByte: (value: ((prevState: EditByteTy
       steps: byte.steps.map((s) => ({
         content: s.content,
         name: s.name,
-        displayMode: s.displayMode || 'normal',
+        displayMode: s.displayMode || ImageDisplayMode.Normal,
         stepItems: s.stepItems.map((si) => ({
           type: si.type,
           uuid: si.uuid,
