@@ -110,10 +110,6 @@ function MobileNavLinks({ space }: { space: WebCoreSpace }) {
           return <MobileNavLink key="tidbitCollections" href="/tidbit-collections" label="Tidbits" />;
         }
 
-        if (feature.featureName === FeatureName.ByteCollectionCategories) {
-          return <MobileNavLink key="tidbitCollectionCategories" href="/tidbit-collection-categories" label="Tidbits" />;
-        }
-
         if (feature.featureName === FeatureName.Simulations) {
           return <MobileNavLink key="simulations" href="/simulations" label="Simulations" />;
         }
