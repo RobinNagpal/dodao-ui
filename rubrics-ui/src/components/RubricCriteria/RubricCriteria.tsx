@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, use } from 'react';
 import RubricCell from '@/components/RubricCell/RubricCell';
 import { RubricCriteriaProps } from '@/types/rubricsTypes/types';
 import TrashIcon from '@heroicons/react/24/outline/TrashIcon';
@@ -8,7 +8,19 @@ import { useNotificationContext } from '@dodao/web-core/ui/contexts/Notification
 import ConfirmationModal from '@/components/ConfirmationModal/ConfirmationModal';
 import CommentModal from '@/components/CommentModal/CommentModal';
 
-const RubricCriteria: React.FC<RubricCriteriaProps> = ({ criteria, rubrics, isEditAccess, onEditClick, onDeleteCriteria, rubricRatingHeaders, rubricId }) => {
+const RubricCriteria: React.FC<RubricCriteriaProps> = ({
+  criteria,
+  rubrics,
+  isEditAccess,
+  onEditClick,
+  onDeleteCriteria,
+  rubricRatingHeaders,
+  rubricId,
+  writeAccess,
+  isGlobalAccess,
+  editCriteriaIds,
+  rubricCellIds,
+}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
   const [currentComment, setCurrentComment] = useState('');
@@ -17,27 +29,30 @@ const RubricCriteria: React.FC<RubricCriteriaProps> = ({ criteria, rubrics, isEd
   const [clickedCellIndex, setClickedCellIndex] = useState<number | null>(null);
   const [clickedCellId, setClickedCellId] = useState<string | null>(null);
   const [session, setSession] = useState<SessionProps | null>(null);
-
+  const [formattedRateRubrics, setFormattedRateRubrics] = useState<Array<any>>([]);
   const { showNotification } = useNotificationContext();
 
   const userId = session?.userId;
 
   useEffect(() => {
     const fetchData = async () => {
-      if (userId) {
+      if (userId && writeAccess) {
         try {
-          const response = await fetch(`/api/rubric-rating?userId=${userId}`);
+          const response = await fetch(`http://localhost:3004/api/rubric-rating?userId=${userId}`);
           if (!response.ok) {
             throw new Error('Failed to fetch comments');
           }
 
           const data = await response.json();
+
           const comments = data.body.map((entry: any) => ({
             criteria,
             comment: entry.comment,
             cellId: entry.rubricCellId,
             score: entry.score,
           }));
+
+          const comment = comments.map((item: any) => item.comment);
 
           setRowScoresAndComments((prev) => [...prev.filter((entry) => entry.criteria !== criteria), ...comments]);
 
@@ -52,7 +67,6 @@ const RubricCriteria: React.FC<RubricCriteriaProps> = ({ criteria, rubrics, isEd
             type: 'error',
             message: 'Error fetching comments',
           });
-          console.error('Error fetching comments:', error);
         }
       }
     };
@@ -60,16 +74,21 @@ const RubricCriteria: React.FC<RubricCriteriaProps> = ({ criteria, rubrics, isEd
     fetchData();
   }, [userId, criteria]);
 
-  const formattedRateRubrics = rowScoresAndComments
-    .filter((entry) => entry.criteria === criteria)
-    .map((entry) => ({
-      criteria: entry.criteria,
-      score: entry.score,
-      comment: entry.comment,
-      cellId: entry.cellId,
-      userId: userId,
-      rubricId: rubricId,
-    }));
+  useEffect(() => {
+    const newFormattedRateRubrics = rowScoresAndComments
+      .filter((entry) => entry.criteria === criteria)
+      .map((entry) => ({
+        criteria: entry.criteria,
+        score: entry.score,
+        comment: entry.comment,
+        cellId: entry.cellId,
+        userId: userId,
+        rubricId: rubricId,
+      }));
+    console.log(newFormattedRateRubrics, 'new');
+
+    setFormattedRateRubrics(newFormattedRateRubrics);
+  }, [rowScoresAndComments]);
 
   const sendRatedRubricsToServer = async () => {
     try {
@@ -84,7 +103,7 @@ const RubricCriteria: React.FC<RubricCriteriaProps> = ({ criteria, rubrics, isEd
       }
 
       const result = await response.json();
-      console.log('Successfully sent data to the server:', result);
+      console.log('Successfully sent data to the server:', formattedRateRubrics);
     } catch (error) {
       showNotification({
         type: 'error',
@@ -139,32 +158,34 @@ const RubricCriteria: React.FC<RubricCriteriaProps> = ({ criteria, rubrics, isEd
     }));
 
     handleCloseModal();
-    sendRatedRubricsToServer(); // Send data when saving comment
+
+    sendRatedRubricsToServer();
   };
 
   const handleCellClick = (criteria: string, cellIndex: number, cellId: string) => {
-    const isCellAlreadySelected = selectedCells[criteria] === cellIndex;
-    const isAnyCellSelected = selectedCells[criteria] !== undefined;
+    if (writeAccess) {
+      const isCellAlreadySelected = selectedCells[criteria] === cellIndex;
+      const isAnyCellSelected = selectedCells[criteria] !== undefined;
 
-    if (isCellAlreadySelected) {
-      // If the cell is already selected, allow editing
+      if (isCellAlreadySelected) {
+        setClickedCellIndex(cellIndex);
+        setClickedCellId(cellId);
+        handleCommentModal(cellIndex, cellId);
+        return;
+      }
+
+      if (isAnyCellSelected) {
+        showNotification({
+          type: 'error',
+          message: 'Only one cell can be selected per criteria. Please edit the existing selection.',
+        });
+        return;
+      }
+
       setClickedCellIndex(cellIndex);
       setClickedCellId(cellId);
-      handleCommentModal(cellIndex, cellId);
-      return;
+      setIsConfirmationOpen(true);
     }
-
-    if (isAnyCellSelected) {
-      showNotification({
-        type: 'error',
-        message: 'Only one cell can be selected per criteria. Please edit the existing selection.',
-      });
-      return;
-    }
-
-    setClickedCellIndex(cellIndex);
-    setClickedCellId(cellId);
-    setIsConfirmationOpen(true);
   };
 
   const handleConfirmSelection = () => {
@@ -180,18 +201,27 @@ const RubricCriteria: React.FC<RubricCriteriaProps> = ({ criteria, rubrics, isEd
   const handleCloseConfirmation = () => {
     setIsConfirmationOpen(false);
   };
+  // console.log(clickedCellId);
+  // console.log(rubrics);
+  // console.log(criteria);
 
   const selectedComment = rowScoresAndComments.find((entry) => entry.criteria === criteria && entry.cellId === clickedCellId)?.comment || 'No comment';
-
   return (
     <>
       <tr>
         <td className="py-2 px-4 border-r border-b font-bold cursor-pointer max-w-xs break-words relative">
-          <div onClick={() => isEditAccess && onEditClick('criteria', criteria, -1)} className="overflow-y-auto max-h-24">
+          <div
+            onClick={() => {
+              if (isEditAccess) {
+                onEditClick('criteria', criteria, -1);
+              }
+            }}
+            className="overflow-y-auto max-h-24"
+          >
             {criteria}
           </div>
         </td>
-        {rubrics![criteria].map((cell: any, cellIndex) => (
+        {rubrics![criteria]?.map((cell: any, cellIndex) => (
           <React.Fragment key={cellIndex}>
             <RubricCell
               cell={isEditAccess ? cell : cell.description}
@@ -206,16 +236,16 @@ const RubricCriteria: React.FC<RubricCriteriaProps> = ({ criteria, rubrics, isEd
             />
           </React.Fragment>
         ))}
+        {/* {isGlobalAccess && (
+          <td className="py-2 px-4 border-r border-b overflow-hidden">
+            <div className="flex-grow max-h-24 overflow-y-auto whitespace-pre-wrap">{selectedComment}</div>
+          </td>
+        )} */}
         {isEditAccess && (
           <td>
             <button onClick={() => onDeleteCriteria(criteria)}>
               <TrashIcon className="w-8 h-8 text-red-500 mx-auto" />
             </button>
-          </td>
-        )}
-        {!isEditAccess && (
-          <td className="py-2 px-4 border-r border-b overflow-hidden">
-            <div className="flex-grow max-h-24 overflow-y-auto whitespace-pre-wrap">{selectedComment}</div>
           </td>
         )}
       </tr>

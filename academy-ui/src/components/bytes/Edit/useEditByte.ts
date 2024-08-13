@@ -6,7 +6,7 @@ import {
   KeyOfByteInput,
   UpdateByteFunctions,
 } from '@/components/bytes/Edit/editByteHelper';
-import { ByteDetailsFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { ByteDetailsFragment, ImageDisplayMode, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import { useI18 } from '@/hooks/useI18';
 import { emptyByte } from '@/utils/byte/EmptyByte';
@@ -91,7 +91,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, onUpsert: (byt
         {
           uuid: uuid,
           name: `Step ${prevByte.steps.length + 1}`,
-          displayMode: 'normal',
+          displayMode: ImageDisplayMode.Normal,
           content: '',
           stepItems: [],
           order: prevByte.steps.length,

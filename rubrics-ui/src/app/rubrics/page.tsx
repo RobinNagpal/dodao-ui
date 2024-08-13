@@ -5,7 +5,7 @@ import { RubricListProps } from '@/types/rubricsTypes/types';
 
 const fetchRubrics = async (): Promise<RubricListProps[]> => {
   try {
-    const response = await fetch('/api/rubrics-program');
+    const response = await fetch('http://localhost:3004/api/rubrics-program');
     const data = await response.json();
     return data.body;
   } catch (error) {
@@ -21,7 +21,7 @@ const RubricsList = async () => {
       <h1 className="text-4xl text-center font-extrabold mb-10">Rubrics</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {rubrics.map((rubric: RubricListProps) => (
-          <Link href={`/rate-rubric/${rubric.id}`} key={rubric.id}>
+          <Link href={`/rubrics/view/${rubric.id}`} key={rubric.id}>
             <Card className="cursor-pointer">
               <div className="p-4">
                 <h2 className="text-xl font-semibold mb-2" style={{ color: 'var(--primary-color)' }}>

@@ -5,7 +5,14 @@ import { CheckCircleIcon } from '@heroicons/react/24/solid';
 const RubricCell: React.FC<RubricCellProps> = ({ cell, criteria, cellIndex, isEditAccess, onEditClick, handleCommentModal, className, onClick, isClicked }) => {
   return (
     <td className={`py-2 px-4 border-r border-b cursor-pointer ${isClicked ? 'border-[var(--primary-color)] border-2' : ''}`} onClick={onClick}>
-      <div onClick={() => isEditAccess && onEditClick('rubric', criteria, cellIndex)} className="flex items-center overflow-y-auto max-h-26">
+      <div
+        onClick={() => {
+          if (isEditAccess) {
+            onEditClick('rubric', criteria, cellIndex, cell);
+          }
+        }}
+        className="flex items-center overflow-y-auto max-h-26"
+      >
         <span className="flex-grow">{cell}</span>
         {isClicked && (
           <CheckCircleIcon

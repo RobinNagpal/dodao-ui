@@ -23,7 +23,7 @@ export function isUserAdminOfSpace(username: string, space: Space) {
   const spaceAdmins = [space.creator?.toLowerCase()];
   const isAdminOfSpace: boolean = spaceAdmins.includes(username.toLowerCase());
 
-  const isAdminOfSpaceByUserName: boolean = space.adminUsernamesV1?.map((u) => u.toLowerCase()).includes(username.toLowerCase());
+  const isAdminOfSpaceByUserName: boolean = space.adminUsernamesV1?.map((u: any) => u.toLowerCase()).includes(username.toLowerCase());
   const isAdminOfSpaceByUserNameByName: boolean = space.adminUsernamesV1?.map((u) => u.username.toLowerCase()).includes(username.toLowerCase());
 
   return isAdminOfSpace || isAdminOfSpaceByUserName || isSuperAdminOfDoDAO(username) || isAdminOfSpaceByUserNameByName;

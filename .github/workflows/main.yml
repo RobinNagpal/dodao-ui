@@ -51,3 +51,18 @@ jobs:
       - name: BASE UI - NEXT Build
         run: cd base-ui && yarn build
 
+      - name: Rubrics UI - Install dependencies
+        run: cd rubrics-ui && yarn
+
+      - name: Rubrics UI - Run ESLint
+        run: cd rubrics-ui && yarn lint
+
+      - name: Rubrics UI - Run Prettier
+        run: cd rubrics-ui && yarn prettier-check
+
+      - name: Rubrics UI - TSC
+        run: cd rubrics-ui && yarn compile
+
+      - name: Rubrics UI - NEXT Build
+        run: cd rubrics-ui && yarn build
+
