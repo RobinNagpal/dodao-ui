@@ -1,12 +1,13 @@
 'use client';
 
-import withSpace from '@/contexts/withSpace';
 import ClickableDemoModal from '@/components/clickableDemos/View/ClickableDemoModal';
+import withSpace from '@/contexts/withSpace';
+import { ClickableDemoWithSteps, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
-import { SpaceWithIntegrationsFragment, ClickableDemoWithSteps } from '@/graphql/generated/generated-types';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 
 function ViewClickableDemo({ params, space }: { params: { demoId: string[] }; space: SpaceWithIntegrationsFragment }) {
   const demoId = params.demoId[0];
@@ -15,7 +16,7 @@ function ViewClickableDemo({ params, space }: { params: { demoId: string[] }; sp
   useEffect(() => {
     async function fetchData() {
       setLoading(true);
-      const response = await axios.get(`/api/clickable-demos/${demoId}`, {
+      const response = await axios.get(`${getBaseUrl()}/api/clickable-demos/${demoId}`, {
         params: {
           spaceId: space.id,
           demoId,

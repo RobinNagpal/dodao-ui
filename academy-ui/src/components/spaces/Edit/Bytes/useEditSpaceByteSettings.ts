@@ -1,5 +1,6 @@
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { ByteSettings, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useState } from 'react';
 
 export type UpdateSpaceByteSettingsHelper = {
@@ -24,7 +25,7 @@ export function useEditSpaceByteSettings(space: SpaceWithIntegrationsFragment): 
   async function updateByteSettings() {
     try {
       setUpdating(true);
-      const response = await fetch('/api/spaces/update-byte-settings', {
+      const response = await fetch(`${getBaseUrl()}/api/spaces/update-byte-settings`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

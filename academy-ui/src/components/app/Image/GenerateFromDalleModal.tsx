@@ -4,6 +4,7 @@ import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
 import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import { ChatCompletionRequestMessageRoleEnum, ImagesResponse, OpenAiChatCompletionResponse } from '@/graphql/generated/generated-types';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import ArrowPathRoundedSquareIcon from '@heroicons/react/24/outline/ArrowPathRoundedSquareIcon';
 import React, { useEffect } from 'react';
 import axios from 'axios';
@@ -21,7 +22,7 @@ export default function GenerateFromDalleModal({ open, onClose, onInput, generat
 
   async function generateImage() {
     setGeneratingImage(true);
-    const response = await axios.post('/api/openAI/ask-chat-completion-ai', {
+    const response = await axios.post(`${getBaseUrl()}/api/openAI/ask-chat-completion-ai`, {
       input: {
         messages: [
           {

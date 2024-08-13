@@ -19,6 +19,7 @@ import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import TextareaArray from '@dodao/web-core/components/core/textarea/TextareaArray';
 import { ByteErrors } from '@dodao/web-core/types/errors/byteErrors';
 import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -183,7 +184,7 @@ export default function EditByteView(props: {
           open={showDeleteModal}
           onClose={() => setShowDeleteModal(false)}
           onDelete={async () => {
-            await fetch('/api/byte/delete-byte', {
+            await fetch(`${getBaseUrl()}/api/byte/delete-byte`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',

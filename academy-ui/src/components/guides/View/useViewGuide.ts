@@ -16,6 +16,7 @@ import { Session } from '@dodao/web-core/types/auth/Session';
 import { isQuestion, isUserDiscordConnect, isUserInput } from '@dodao/web-core/types/deprecated/helpers/stepItemTypes';
 import { StepItemSubmissionType } from '@dodao/web-core/types/deprecated/models/enums';
 import { GuideSubmissionError } from '@dodao/web-core/types/errors/error';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useSession } from 'next-auth/react';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
@@ -257,7 +258,7 @@ export function useViewGuide(space: Space, fetchedGuide: GuideFragment, stepOrde
 
     try {
       const submissionInputObj = { submissionInput: { ...guideSubmissionInput } };
-      const response = fetch('/api/guide/guide-submit', {
+      const response = fetch(`${getBaseUrl()}/api/guide/guide-submit`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
