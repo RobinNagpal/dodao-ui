@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/prisma';
 import { isRequestUserSuperAdmin } from '@/app/api/helpers/space/checkEditSpacePermission';
 import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
-export async function getHandler(req: NextRequest) {
+export async function POST(req: NextRequest) {
   const { domain } = await req.json();
 
   const space = await prisma.space.findFirst({
@@ -45,4 +45,3 @@ export async function getHandler(req: NextRequest) {
 
   return NextResponse.json({ space: null }, { status: 200 });
 }
-export const POST = withErrorHandling(getHandler);
