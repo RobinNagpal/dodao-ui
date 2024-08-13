@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { NextRequest, NextResponse } from 'next/server';
 import { getByte } from '@/app/api/helpers/byte/getByte';
 import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';

@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { MutationDeleteGuideArgs } from '@/graphql/generated/generated-types';
 import { checkEditSpacePermission } from '@/app/api/helpers/space/checkEditSpacePermission';
 import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';

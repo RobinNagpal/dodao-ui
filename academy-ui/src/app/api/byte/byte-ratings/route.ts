@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { QueryByteRatingsArgs } from '@/graphql/generated/generated-types';
 import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { prisma } from '@/prisma';

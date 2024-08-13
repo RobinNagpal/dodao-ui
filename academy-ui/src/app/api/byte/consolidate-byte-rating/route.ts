@@ -1,4 +1,5 @@
-import { QueryConsolidatedByteRatingArgs } from '@/graphql/generated/generated-types';
+export const dynamic = 'force-dynamic';
+
 import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
 import { consolidateByteRatings } from '@/app/api/helpers/byte/consolidateByteRatings';
 import { checkEditSpacePermission } from '@/app/api/helpers/space/checkEditSpacePermission';
