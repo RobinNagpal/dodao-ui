@@ -179,7 +179,7 @@ const RubricDetails: React.FC<RubricDetailsProps> = ({
         </button>
         <div className="flex flex-col items-center">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-2 w-full max-w-4xl p-4">
-            {isGlobalAccess && <ProgramDropDown serverResponse={programs} setServerResponse={setPrograms} onSelectProgram={onSelectProgram} />}
+            {isGlobalAccess && <ProgramDropDown serverResponse={programs} setServerResponse={setPrograms} onSelectProgram={onSelectProgram} space={space} />}
             <Input
               modelValue={rubricDetails.name}
               onUpdate={(value) => setRubricDetails((prev) => ({ ...prev, name: value as string }))}

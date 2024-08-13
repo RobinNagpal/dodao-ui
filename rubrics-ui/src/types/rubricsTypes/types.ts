@@ -86,6 +86,7 @@ export interface ProgramDropDownProps {
   onSelectProgram: (id: string) => void;
   serverResponse: ProgramServerResponse;
   setServerResponse: React.Dispatch<React.SetStateAction<ProgramServerResponse>>;
+  space: SpaceWithIntegrationsFragment;
 }
 
 export interface EditProgramRubricProps {
