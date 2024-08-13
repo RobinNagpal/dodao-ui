@@ -51,7 +51,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, onUpsert: (byt
       setByte(byte);
       setByteLoaded(true);
     } else if (byteId) {
-      const result = await axios.get(`/api/byte/byte`, {
+      const result = await axios.get(`${getBaseUrl()}/api/byte/byte`, {
         params: {
           byteId,
           spaceId: space.id,
