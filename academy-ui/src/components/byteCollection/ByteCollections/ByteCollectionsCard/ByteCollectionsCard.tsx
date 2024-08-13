@@ -119,7 +119,23 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
   return (
     <div className={`border border-gray-200 rounded-xl overflow-hidden p-4 w-full ` + styles.cardDiv}>
       {isEditingAllowed && (
-        <div className="w-full flex justify-end">
+        <div className="w-full flex justify-end items-center flex-row gap-4">
+          {isAdmin && (
+            <Button
+              className="rounded-lg text-color"
+              variant="outlined"
+              primary
+              style={{
+                border: '2px dotted',
+                padding: '0.5rem',
+                letterSpacing: '0.05em',
+                borderRadius: '0.5rem',
+              }}
+              onClick={() => setShowCreateModal(true)}
+            >
+              + Add New Item
+            </Button>
+          )}
           <ByteCollectionCardAdminDropdown byteCollection={byteCollection} space={space} />
         </div>
       )}
@@ -183,26 +199,6 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
                 return null;
             }
           })}
-
-          {isAdmin && (
-            <li>
-              <Button
-                className="rounded-lg text-color"
-                variant="outlined"
-                primary
-                style={{
-                  border: '2px dotted',
-                  padding: '0.5rem',
-                  marginBottom: '1.25rem',
-                  letterSpacing: '0.05em',
-                  borderRadius: '0.5rem',
-                }}
-                onClick={() => setShowCreateModal(true)}
-              >
-                + Add New Item
-              </Button>
-            </li>
-          )}
         </ul>
       </div>
       <FullPageModal className={'w-1/2'} open={showCreateModal} onClose={() => setShowCreateModal(false)} title={'Create New Item'} showCloseButton={false}>
