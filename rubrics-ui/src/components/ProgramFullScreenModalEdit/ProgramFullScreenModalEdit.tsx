@@ -5,11 +5,13 @@ import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenMo
 import ProgramEditScreen from '@/components/ProgramEditScreen/ProgramEditScreen';
 import { ChevronLeftIcon } from '@heroicons/react/24/outline';
 import { useRouter } from 'next/navigation';
+import { SpaceWithIntegrationsFragment } from '@/types/rubricsTypes/types';
 interface EditProgramProps {
   programId: string;
+  space: SpaceWithIntegrationsFragment;
 }
 
-const EditProgram: React.FC<EditProgramProps> = ({ programId }) => {
+const EditProgram: React.FC<EditProgramProps> = ({ programId, space }) => {
   const router = useRouter();
 
   const handleBack = () => {
@@ -23,7 +25,7 @@ const EditProgram: React.FC<EditProgramProps> = ({ programId }) => {
           <ChevronLeftIcon className="h-5 w-5 mr-2" />
           View Program
         </button>
-        <ProgramEditScreen programId={programId} />
+        <ProgramEditScreen programId={programId} space={space} />
       </div>
     </FullScreenModal>
   );

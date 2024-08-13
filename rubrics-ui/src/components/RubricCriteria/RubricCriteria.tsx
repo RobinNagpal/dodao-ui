@@ -85,10 +85,15 @@ const RubricCriteria: React.FC<RubricCriteriaProps> = ({
         userId: userId,
         rubricId: rubricId,
       }));
-    console.log(newFormattedRateRubrics, 'new');
 
     setFormattedRateRubrics(newFormattedRateRubrics);
-  }, [rowScoresAndComments]);
+  }, [rowScoresAndComments, criteria, userId, rubricId]);
+
+  useEffect(() => {
+    if (formattedRateRubrics.length > 0) {
+      sendRatedRubricsToServer();
+    }
+  }, [formattedRateRubrics]);
 
   const sendRatedRubricsToServer = async () => {
     try {
@@ -158,8 +163,6 @@ const RubricCriteria: React.FC<RubricCriteriaProps> = ({
     }));
 
     handleCloseModal();
-
-    sendRatedRubricsToServer();
   };
 
   const handleCellClick = (criteria: string, cellIndex: number, cellId: string) => {
@@ -201,6 +204,7 @@ const RubricCriteria: React.FC<RubricCriteriaProps> = ({
   const handleCloseConfirmation = () => {
     setIsConfirmationOpen(false);
   };
+
   // console.log(clickedCellId);
   // console.log(rubrics);
   // console.log(criteria);

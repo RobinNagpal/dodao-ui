@@ -2,7 +2,7 @@ import { prisma } from '@/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 export async function PUT(req: NextRequest, { params }: { params: { programId: string } }) {
   const programId = params.programId;
-  const { name, details, summary, rubricIds } = await req.json();
+  const { name, details, summary, rubricIds, spaceId } = await req.json();
 
   if (!programId) {
     return NextResponse.json({ status: 400, body: 'Missing programId' });
@@ -15,6 +15,7 @@ export async function PUT(req: NextRequest, { params }: { params: { programId: s
         name,
         details,
         summary,
+        spaceId,
         rubrics: {
           set: rubricIds.map((id: string) => ({ id })),
         },

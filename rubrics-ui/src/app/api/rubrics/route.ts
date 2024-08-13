@@ -2,7 +2,7 @@ import { prisma } from '@/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 import { NewCriteriaRequest } from '@/types/rubricsTypes/types';
 export async function POST(req: NextRequest, res: NextResponse) {
-  const { programId, rubric } = await req.json();
+  const { programId, rubric, spaceId } = await req.json();
 
   try {
     if (!Array.isArray(rubric.levels)) {
@@ -29,6 +29,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
             name: rubric.name,
             summary: rubric.summary,
             description: rubric.description,
+            spaceId: spaceId,
           },
         });
       } else {
@@ -40,6 +41,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
             programs: {
               create: { programId },
             },
+            spaceId: spaceId,
           },
         });
         rubricId = newRubric.id;
@@ -206,5 +208,29 @@ export async function PUT(request: Request) {
   } catch (error) {
     console.error('Error adding criteria:', error);
     return NextResponse.json({ error: 'Failed to add criteria' }, { status: 500 });
+  }
+}
+
+export async function GET(req: NextRequest, res: NextResponse) {
+  try {
+    const spaceId = req.nextUrl.searchParams.get('spaceId');
+
+    if (!spaceId) {
+      return NextResponse.json({ status: 400, body: 'Missing spaceId parameter' });
+    }
+    const rubrics = await prisma.rubric.findMany({
+      where: {
+        spaceId: spaceId,
+      },
+      select: {
+        id: true,
+        name: true,
+        summary: true,
+      },
+    });
+    return NextResponse.json({ status: 200, body: rubrics });
+  } catch (error) {
+    console.error('Error getting Rubrics:', error);
+    return NextResponse.json({ status: 500, body: 'Failed to get Rubrics' });
   }
 }

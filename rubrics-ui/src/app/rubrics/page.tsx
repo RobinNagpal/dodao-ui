@@ -2,10 +2,12 @@ import React from 'react';
 import Link from 'next/link';
 import Card from '@dodao/web-core/components/core/card/Card';
 import { RubricListProps } from '@/types/rubricsTypes/types';
-
+import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
 const fetchRubrics = async (): Promise<RubricListProps[]> => {
+  const space = (await getSpaceServerSide())!;
+
   try {
-    const response = await fetch('http://localhost:3004/api/rubrics-program');
+    const response = await fetch(`http://localhost:3004/api/rubrics?spaceId=${space.id}`);
     const data = await response.json();
     return data.body;
   } catch (error) {
@@ -15,7 +17,6 @@ const fetchRubrics = async (): Promise<RubricListProps[]> => {
 
 const RubricsList = async () => {
   const rubrics = await fetchRubrics();
-
   return (
     <div className="container mx-auto py-8 px-4">
       <h1 className="text-4xl text-center font-extrabold mb-10">Rubrics</h1>

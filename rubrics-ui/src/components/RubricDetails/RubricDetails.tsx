@@ -8,6 +8,7 @@ import Button from '@dodao/web-core/components/core/buttons/Button';
 import { ChevronLeftIcon } from '@heroicons/react/24/outline';
 import { useRouter } from 'next/navigation';
 import ProgramDropDown from '@/components/programDropDown/programDropDown';
+import { SpaceWithIntegrationsFragment } from '@/types/rubricsTypes/types';
 
 interface RubricDetails {
   name: string;
@@ -30,6 +31,7 @@ interface RubricDetailsProps {
   selectedProgramId?: string | null;
   isGlobalAccess?: boolean;
   rubricId?: string;
+  space: SpaceWithIntegrationsFragment;
 }
 
 const RubricDetails: React.FC<RubricDetailsProps> = ({
@@ -43,6 +45,7 @@ const RubricDetails: React.FC<RubricDetailsProps> = ({
   selectedProgramId,
   isGlobalAccess,
   rubricId,
+  space,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(true);
   const { showNotification } = useNotificationContext();
@@ -62,8 +65,7 @@ const RubricDetails: React.FC<RubricDetailsProps> = ({
 
   const handleSave = async () => {
     const { name, summary, description } = rubricDetails;
-    console.log(name, summary, description);
-
+    const spaceId = space.id;
     if (isGlobalAccess) {
       if (!name || !summary) {
         showNotification({
@@ -110,7 +112,7 @@ const RubricDetails: React.FC<RubricDetailsProps> = ({
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ programId, rubric }),
+            body: JSON.stringify({ programId, rubric, spaceId }),
           });
 
           if (response.ok) {
@@ -142,6 +144,7 @@ const RubricDetails: React.FC<RubricDetailsProps> = ({
               name: name,
               summary: summary,
               description: description,
+              spaceId: spaceId,
             }),
           });
 

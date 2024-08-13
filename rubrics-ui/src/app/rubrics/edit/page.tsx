@@ -1,9 +1,12 @@
 import React from 'react';
 import CreateRubric from '@/components/CreateRubric/CreateRubric';
-const Page = () => {
+import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
+const Page = async () => {
+  const space = (await getSpaceServerSide())!;
+
   return (
     <div>
-      <CreateRubric />
+      <CreateRubric space={space} />
     </div>
   );
 };

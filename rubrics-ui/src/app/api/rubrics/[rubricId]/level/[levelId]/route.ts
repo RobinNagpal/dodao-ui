@@ -20,7 +20,7 @@ export async function PUT(request: Request, { params }: { params: { rubricId: st
         columnName,
         score,
         description,
-        isArchived: false, // or whatever default you want
+        isArchived: false,
       },
     });
 

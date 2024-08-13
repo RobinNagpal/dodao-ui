@@ -1,7 +1,8 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/prisma';
-
-export async function POST(req: Request) {
+import { isRequestUserSuperAdmin } from '@/app/api/helpers/space/checkEditSpacePermission';
+import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
+export async function getHandler(req: NextRequest) {
   const { domain } = await req.json();
 
   const space = await prisma.space.findFirst({
@@ -15,16 +16,33 @@ export async function POST(req: Request) {
   if (space) {
     return NextResponse.json({ space }, { status: 200 });
   }
-
-  if (domain === 'localhost') {
+  if (domain?.includes('.myrubrics.com') || domain?.includes('.myrubrics-localhost.com')) {
+    const idFromDomain = domain.split('.')[0];
     const space = await prisma.space.findFirst({
       where: {
-        id: 'test-academy-eth',
+        id: idFromDomain,
       },
     });
+    return NextResponse.json({ space });
+  }
 
+  if (domain === 'dodao-ui-robinnagpal.vercel.app' || domain === 'localhost' || domain?.includes('.vercel.app')) {
+    const space = await prisma.space.findFirst({
+      where: {
+        id: {
+          equals: 'test-academy-eth',
+        },
+      },
+    });
     return NextResponse.json({ space }, { status: 200 });
   }
+  const isUserSuperAdmin = await isRequestUserSuperAdmin(req);
+  if (isUserSuperAdmin) {
+    return NextResponse.json(await prisma.space.findMany());
+  }
+  if (!domain) return NextResponse.json('No domain passed', { status: 400 });
+  if (!space) return NextResponse.json('No space found for domain', { status: 404 });
 
   return NextResponse.json({ space: null }, { status: 200 });
 }
+export const POST = withErrorHandling(getHandler);

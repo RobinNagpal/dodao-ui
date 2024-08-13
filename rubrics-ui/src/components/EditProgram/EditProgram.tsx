@@ -3,9 +3,13 @@ import React, { useEffect, useState } from 'react';
 import ProgramEdit from '@/components/ProgramEditScreen/ProgramEditScreen';
 import { getSession } from 'next-auth/react';
 import { useLoginModalContext } from '@dodao/web-core/ui/contexts/LoginModalContext';
-import { SessionProps } from '@/types/rubricsTypes/types';
+import { SessionProps, SpaceWithIntegrationsFragment } from '@/types/rubricsTypes/types';
 
-function EditProgram() {
+interface EditUIProps {
+  space: SpaceWithIntegrationsFragment;
+}
+
+function EditProgram({ space }: EditUIProps) {
   const { showLoginModal, setShowLoginModal } = useLoginModalContext();
   const [session, setSession] = useState<SessionProps | null>(null);
 
@@ -27,7 +31,7 @@ function EditProgram() {
     <div>
       {session ? (
         session.isAdminOfSpace ? (
-          <ProgramEdit />
+          <ProgramEdit space={space} />
         ) : (
           <div>You are not allowed to edit programs.</div>
         )
