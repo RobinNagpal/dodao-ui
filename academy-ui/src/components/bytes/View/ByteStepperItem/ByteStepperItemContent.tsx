@@ -18,7 +18,7 @@ import { isQuestion, isUserDiscordConnect, isUserInput } from '@dodao/web-core/t
 import { marked } from 'marked';
 import { useMemo, useState } from 'react';
 
-interface ByteStepperContentProps {
+interface ByteStepperItemContentProps {
   byte: ByteDetailsFragment;
   step: ByteStepFragment;
   space: SpaceWithIntegrationsFragment;
@@ -34,7 +34,7 @@ interface ByteStepperContentProps {
   isShortScreen: boolean;
 }
 
-export function ByteStepperContent({
+export default function ByteStepperItemContent({
   step,
   viewByteHelper,
   space,
@@ -47,7 +47,7 @@ export function ByteStepperContent({
   width,
   height,
   isShortScreen,
-}: ByteStepperContentProps) {
+}: ByteStepperItemContentProps) {
   const [imageHeight, setImageHeight] = useState('0px');
   const stepItems = step.stepItems;
 
