@@ -302,6 +302,7 @@ export interface CriteriaChange {
 }
 export interface EditRubricProps {
   rubricId: string;
+  space: SpaceWithIntegrationsFragment;
 }
 export type SpaceWithIntegrationsFragment = {
   __typename?: 'Space';
