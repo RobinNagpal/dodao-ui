@@ -336,7 +336,7 @@ export default function EditByteStepperItem({
     updateStep({ ...step, imageUrl });
   };
   const updateStepDisplayMode = (displayMode: string | null) => {
-    updateStep({ ...step, displayMode: displayMode?.toString() || 'normal' });
+    updateStep({ ...step, displayMode: displayMode?.toString() || ImageDisplayMode.Normal });
   };
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
