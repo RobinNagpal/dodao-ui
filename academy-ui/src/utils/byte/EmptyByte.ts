@@ -1,4 +1,4 @@
-import { ByteDetailsFragment, ByteQuestionFragmentFragment } from '@/graphql/generated/generated-types';
+import { ByteDetailsFragment, ByteQuestionFragmentFragment, ImageDisplayMode } from '@/graphql/generated/generated-types';
 import { PublishStatus, QuestionType } from '@dodao/web-core/types/deprecated/models/enums';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -45,7 +45,7 @@ export const emptyByte = (): Omit<ByteDetailsFragment, 'id'> & { isPristine: boo
       {
         uuid: step1Uuid,
         name: 'Introduction',
-        displayMode: 'normal',
+        displayMode: ImageDisplayMode.Normal,
         content: `
 Introduction Comments 
         `,
@@ -54,7 +54,7 @@ Introduction Comments
       {
         uuid: step2Uuid,
         name: 'Introduction Evaluation',
-        displayMode: 'normal',
+        displayMode: ImageDisplayMode.Normal,
         content: ``,
         stepItems: [stepItem],
       },
