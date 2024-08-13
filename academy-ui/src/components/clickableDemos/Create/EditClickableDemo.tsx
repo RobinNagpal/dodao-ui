@@ -14,7 +14,7 @@ import { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/
 import Input from '@dodao/web-core/components/core/input/Input';
 import PageLoading from '@dodao/web-core/components/core/loaders/PageLoading';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import { ByteCollectionFragment, CreateSignedUrlInput, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { CreateSignedUrlInput, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import { ClickableDemoErrors } from '@dodao/web-core/types/errors/clickableDemoErrors';
 import Link from 'next/link';
@@ -24,14 +24,17 @@ import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { getUploadedImageUrlFromSingedUrl } from '@dodao/web-core/utils/upload/getUploadedImageUrlFromSingedUrl';
 import html2canvas from 'html2canvas';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
+import { revalidateTidbitCollections } from '@/revalidateTags';
+import { useRouter } from 'next/navigation';
 
 interface EditClickableDemoProps {
   space: SpaceWithIntegrationsFragment;
   demoId?: string | null;
   byteCollection: ByteCollectionSummary;
+  closeDemoEditModal?: () => void;
 }
 
-function EditClickableDemo({ space, demoId, byteCollection }: EditClickableDemoProps) {
+function EditClickableDemo({ space, demoId, byteCollection, closeDemoEditModal }: EditClickableDemoProps) {
   const spaceId = space.id;
 
   const { clickableDemoCreating, clickableDemoLoaded, clickableDemo, clickableDemoErrors, handleSubmit, updateClickableDemoFunctions } = useEditClickableDemo(
@@ -47,6 +50,7 @@ function EditClickableDemo({ space, demoId, byteCollection }: EditClickableDemoP
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const errors = clickableDemoErrors;
+  const router = useRouter();
 
   const inputError = (field: keyof ClickableDemoErrors): string => {
     const error = errors?.[field];
@@ -166,6 +170,7 @@ function EditClickableDemo({ space, demoId, byteCollection }: EditClickableDemoP
   }, [demoId]);
 
   function clickSubmit(byteCollection: ByteCollectionSummary) {
+    revalidateTidbitCollections();
     handleSubmit(byteCollection);
   }
 
@@ -260,6 +265,9 @@ function EditClickableDemo({ space, demoId, byteCollection }: EditClickableDemoP
           onDelete={async () => {
             handleDeletion();
             setShowDeleteModal(false);
+            const timestamp = new Date().getTime();
+            router.push(`/tidbit-collections?update=${timestamp}`);
+            setTimeout(() => closeDemoEditModal?.(), 3000);
           }}
         />
       )}

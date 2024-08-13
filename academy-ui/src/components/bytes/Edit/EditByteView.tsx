@@ -7,7 +7,7 @@ import { EditByteType } from '@/components/bytes/Edit/editByteHelper';
 import EditByteStepper from '@/components/bytes/Edit/EditByteStepper';
 import { useEditByte } from '@/components/bytes/Edit/useEditByte';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
-import { ByteCollectionFragment, ImageType, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { ImageType, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
 import Block from '@dodao/web-core/components/app/Block';
 import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
@@ -21,14 +21,16 @@ import { ByteErrors } from '@dodao/web-core/types/errors/byteErrors';
 import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { revalidateTidbitCollections } from '@/revalidateTags';
 
 export default function EditByteView(props: {
   space: SpaceWithIntegrationsFragment;
   onUpsert: (byteId: string) => Promise<void>;
+  closeEditByteModal?: () => void;
   byteId?: string | null;
   byteCollection: ByteCollectionSummary;
 }) {
-  const { space, byteId, byteCollection } = props;
+  const { space, byteId, byteCollection, closeEditByteModal } = props;
 
   const {
     byteUpserting,
@@ -183,6 +185,7 @@ export default function EditByteView(props: {
           open={showDeleteModal}
           onClose={() => setShowDeleteModal(false)}
           onDelete={async () => {
+            revalidateTidbitCollections();
             await fetch('/api/byte/delete-byte', {
               method: 'POST',
               headers: {
@@ -194,7 +197,9 @@ export default function EditByteView(props: {
               }),
             });
             setShowDeleteModal(false);
-            router.push(`/tidbits`);
+            const timestamp = new Date().getTime();
+            router.push(`/tidbit-collections?update=${timestamp}`);
+            setTimeout(() => closeEditByteModal?.(), 1000);
           }}
         />
       )}

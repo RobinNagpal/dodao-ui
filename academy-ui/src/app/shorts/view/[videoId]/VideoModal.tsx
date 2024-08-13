@@ -4,7 +4,7 @@ import ViewShortVideoModal from '@/components/shortVideos/View/ViewShortVideoMod
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
-import { ShortVideo, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { ShortVideo, SpaceWithIntegrationsFragment, SpaceTypes } from '@/graphql/generated/generated-types';
 import withSpace from '@/contexts/withSpace';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 
@@ -51,7 +51,7 @@ function VideoModal(props: { space: SpaceWithIntegrationsFragment; params: { vid
       key={initialSlideIndex}
       initialSlide={initialSlideIndex}
       videos={videos}
-      onClose={() => router.push('/tidbit-collections')}
+      onClose={() => (props.space.type === SpaceTypes.TidbitsSite ? router.push('/') : router.push('/tidbit-collections'))}
       onShowEditModal={() => {
         router.push(`/shorts/edit/${props.params.videoId}`);
       }}

@@ -18,6 +18,7 @@ import EditByteView from '@/components/bytes/Edit/EditByteView';
 import EditClickableDemo from '@/components/clickableDemos/Create/EditClickableDemo';
 import EditShortVideoView from '@/components/shortVideos/Edit/EditShortVideoView';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { revalidateTidbitCollections } from '@/revalidateTags';
 import axios from 'axios';
 import ByteItem from './ByteItem';
 import DemoItem from './DemoItem';
@@ -217,8 +218,10 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
               byteCollection={byteCollection}
               byteId={editByteModalState.byteId}
               onUpsert={async () => {
+                revalidateTidbitCollections();
                 router.push(`/tidbits/view/${editByteModalState.byteId}`);
               }}
+              closeEditByteModal={closeByteEditModal}
             />
           </div>
         </FullScreenModal>
@@ -227,7 +230,7 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
       {editDemoModalState.isVisible && (
         <FullScreenModal open={true} onClose={closeDemoEditModal} title={'Edit Clickable Demo'}>
           <div className="text-left">
-            <EditClickableDemo demoId={editDemoModalState.demoId} byteCollection={byteCollection} />
+            <EditClickableDemo demoId={editDemoModalState.demoId} byteCollection={byteCollection} closeDemoEditModal={closeDemoEditModal} />
           </div>
         </FullScreenModal>
       )}
@@ -246,6 +249,7 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
                 onCancel={() => {
                   router.push('/tidbit-collections');
                 }}
+                closeEditShortModal={closeShortEditModal}
               />
             </PageWrapper>
           </div>
