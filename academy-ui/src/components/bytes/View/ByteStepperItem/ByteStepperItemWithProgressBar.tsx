@@ -110,6 +110,11 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space, set
     setNextButtonClicked(true);
     setIncompleteUserInput(false);
 
+    if (!isQuestionAnswered()) {
+      document.getElementById('questionSection')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return;
+    }
+
     if (isQuestionAnswered() && isDiscordConnected() && isUserInputComplete()) {
       setQuestionNotAnswered(true);
 
@@ -193,13 +198,15 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space, set
             isShortScreen={isShortScreen}
             imageHeight={imageHeight}
           />
-          <ByteStepperItemWarnings
-            showUseInputCompletionWarning={incompleteUserInput}
-            showQuestionsCompletionWarning={showQuestionsCompletionWarning}
-            isUserInputComplete={isUserInputComplete}
-            isQuestionAnswered={isQuestionAnswered}
-            isDiscordConnected={isDiscordConnected}
-          />
+          <div id="questionSection">
+            <ByteStepperItemWarnings
+              showUseInputCompletionWarning={incompleteUserInput}
+              showQuestionsCompletionWarning={showQuestionsCompletionWarning}
+              isUserInputComplete={isUserInputComplete}
+              isQuestionAnswered={isQuestionAnswered}
+              isDiscordConnected={isDiscordConnected}
+            />
+          </div>
         </div>
       </div>
       <div id="bottom-buttons" className="absolute bottom-6 w-full -mx-4 px-4 sm:-mx-8 ">
@@ -207,7 +214,7 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space, set
           <StepIndicatorProgress steps={viewByteHelper.byteRef?.steps?.length || 2} currentStep={activeStepOrder} className="py-4 hidden md:block sm:hidden" />
         )}
         <div className="w-full">
-          {isNotFirstStep && !isByteCompletedStep && (
+          {isNotFirstStep && (
             <Button onClick={() => viewByteHelper.goToPreviousStep(step)} className="float-left ml-2 sm:ml-0">
               <span className="mr-2 font-bold">&#8592;</span>
               Back
@@ -216,7 +223,7 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space, set
           {!isByteCompletedStep && (
             <Button
               onClick={navigateToNextStep}
-              disabled={viewByteHelper.byteSubmitting || viewByteHelper.byteSubmission.isSubmitted}
+              disabled={viewByteHelper.byteSubmitting}
               variant="contained"
               className="float-right w-[150px] mr-2 sm:mr-0"
               primary={true}
