@@ -1,3 +1,4 @@
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import axios from 'axios';
 
 export async function rewriteToCharacterLengthUsingAi(text: string, length: number) {
@@ -20,7 +21,7 @@ export async function rewriteToCharacterLengthUsingAi(text: string, length: numb
 }
 
 export async function rewriteToWordsCountUsingAi(text: string, length: number) {
-  const response = await axios.post('/api/openAI/ask-completion-ai', {
+  const response = await axios.post(`${getBaseUrl()}/api/openAI/ask-completion-ai`, {
     input: {
       prompt: `
         Rewrite or reword this to less than ${length} words:

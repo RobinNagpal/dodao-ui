@@ -9,6 +9,7 @@ import GuideStepper from '@/components/guides/View/GuideStepper';
 import { useViewGuide } from '@/components/guides/View/useViewGuide';
 import { GuideFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
 import Link from 'next/link';
@@ -111,7 +112,7 @@ const GuideInformation = ({ guideIdAndStep, space, guide: guideFragment }: Guide
           deleting={deletingGuide}
           onDelete={async () => {
             setDeletingGuide(true);
-            await fetch(`/api/guide/delete-guide`, {
+            await fetch(`${getBaseUrl()}/api/guide/delete-guide`, {
               method: 'POST',
               body: JSON.stringify({ spaceId: space.id, uuid: guideId }),
               headers: {

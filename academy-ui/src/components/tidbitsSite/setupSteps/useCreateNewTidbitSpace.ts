@@ -1,6 +1,7 @@
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { Space, SpaceTypes, useCreateNewTidbitSpaceMutation, useGetSpaceFromCreatorQuery } from '@/graphql/generated/generated-types';
 import { Session } from '@dodao/web-core/types/auth/Session';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { isSuperAdmin } from '@dodao/web-core/utils/auth/superAdmins';
 import { getEditSpaceType, getSpaceInput, SpaceEditType } from '@/utils/space/spaceUpdateUtils';
@@ -163,7 +164,7 @@ export default function useCreateNewTidbitSpace(): UseEditSpaceHelper {
       avatar: tidbitSpace.avatar,
       type: SpaceTypes.TidbitsSite,
     };
-    const response = await fetch('/api/spaces/update-space', {
+    const response = await fetch(`${getBaseUrl()}/api/spaces/update-space`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

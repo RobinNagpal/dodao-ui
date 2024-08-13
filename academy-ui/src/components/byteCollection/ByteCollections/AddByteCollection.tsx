@@ -1,11 +1,11 @@
 'use client';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import React from 'react';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import ByteCollectionEditor from '@/components/byteCollection/ByteCollections/ByteCollectionEditor';
 import { EditByteCollection } from '@/components/byteCollection/ByteCollections/useEditByteCollection';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
-import PageLoading from '@dodao/web-core/components/core/loaders/PageLoading';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import { useRouter } from 'next/navigation';
 import Button from '@dodao/web-core/components/core/buttons/Button';
@@ -23,7 +23,7 @@ export default function AddByteCollection({ space }: { space: SpaceWithIntegrati
 
   async function upsertByteCollectionFn(byteCollection: EditByteCollection) {
     try {
-      const result = await fetch('/api/byte-collection/create-byte-collection', {
+      const result = await fetch(`${getBaseUrl()}/api/byte-collection/create-byte-collection`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

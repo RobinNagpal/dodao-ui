@@ -1,14 +1,15 @@
 'use client';
 import withSpace from '@/contexts/withSpace';
-import Block from '@dodao/web-core/components/app/Block';
-import Input from '@dodao/web-core/components/core/input/Input';
-import Button from '@dodao/web-core/components/core/buttons/Button';
-import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { GitCourseInput, Space, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { GitCourseInput, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
+import Block from '@dodao/web-core/components/app/Block';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import Input from '@dodao/web-core/components/core/input/Input';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { PublishStatus } from '@dodao/web-core/types/deprecated/models/enums';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
@@ -29,7 +30,7 @@ const AddCourse = (props: { space: SpaceWithIntegrationsFragment }) => {
     setGitCourseUpserting(true);
     try {
       // This logic won't work, need to implement the backend correctly
-      const response = await fetch(`/api/courses/some-course-id`, {
+      const response = await fetch(`${getBaseUrl()}/api/courses/some-course-id`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

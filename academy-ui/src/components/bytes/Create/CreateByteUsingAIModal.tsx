@@ -6,6 +6,7 @@ import { NotificationProps } from '@dodao/web-core/components/core/notify/Notifi
 import TextareaAutosize from '@dodao/web-core/components/core/textarea/TextareaAutosize';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { ChatCompletionRequestMessageRoleEnum, DownloadAndCleanContentResponse } from '@/graphql/generated/generated-types';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { sum } from 'lodash';
 
 import { useState } from 'react';
@@ -40,7 +41,7 @@ export function CreateByteUsingAIModal(props: CreateByteUsingAIModalProps) {
   };
 
   const generateByteContent = async (): Promise<string | undefined> => {
-    const cleanContents = await axios.post('/api/openAI/download-and-clean-content', {
+    const cleanContents = await axios.post(`${getBaseUrl()}/api/openAI/download-and-clean-content`, {
       input: contents,
     });
 

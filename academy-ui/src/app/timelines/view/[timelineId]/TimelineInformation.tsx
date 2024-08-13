@@ -7,6 +7,7 @@ import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoad
 import RowLoading from '@dodao/web-core/components/core/loaders/RowLoading';
 import TimelineDetails from '@/components/timelines/View/TimelineDetailView';
 import { SpaceWithIntegrationsFragment, TimelineDetailsFragment } from '@/graphql/generated/generated-types';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -20,7 +21,7 @@ const TimelineInformation = ({ timelineId, space }: { timelineId: string; space:
 
   useEffect(() => {
     async function fetchData() {
-      const { data } = await axios.get(`/api/timelines/${timelineId}`);
+      const { data } = await axios.get(`${getBaseUrl()}/api/timelines/${timelineId}`);
       setData(data);
       setLoading(false);
     }

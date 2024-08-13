@@ -7,6 +7,7 @@ import { useNotificationContext } from '@dodao/web-core/ui/contexts/Notification
 import { SpaceWithIntegrationsFragment, ThemeColors } from '@/graphql/generated/generated-types';
 import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import { useI18 } from '@/hooks/useI18';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useRouter } from 'next/navigation';
 import React, { CSSProperties, useState } from 'react';
 
@@ -38,7 +39,7 @@ export default function UpdateThemeModal({ space, open, onClose, byteCollection 
 
   async function upsertThemeColors() {
     try {
-      const response = await fetch('/api/spaces/update-theme-colors', {
+      const response = await fetch(`${getBaseUrl()}/api/spaces/update-theme-colors`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

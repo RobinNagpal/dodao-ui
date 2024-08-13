@@ -4,6 +4,7 @@ import { useI18 } from '@/hooks/useI18';
 
 import { TimelineErrors, TimelineEventsError } from '@dodao/web-core/types/errors/timelineErrors';
 import { TimelineStyles } from '@/utils/timeline/timelineStyles';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { isValidURL } from '@dodao/web-core/utils/validator';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -200,7 +201,7 @@ export function useEditTimeline(timelineId: string | null, space: Space): EditTi
       try {
         const timelineId = editTimelineRef.id?.trim() ? editTimelineRef.id : slugify(editTimelineRef.name);
 
-        const response = await fetch(`/api/timelines/${timelineId}`, {
+        const response = await fetch(`${getBaseUrl()}/api/timelines/${timelineId}`, {
           method: 'POST',
           body: JSON.stringify({
             spaceId: space.id,

@@ -1,3 +1,4 @@
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import React, { useEffect, useState } from 'react';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import { CreateSignedUrlInput, Space } from '@/graphql/generated/generated-types';
@@ -65,7 +66,7 @@ export default function ElementSelectorModal({ space, showModal, objectId, fileU
       name: file.name.replace(' ', '_').toLowerCase(),
     };
 
-    const response = await axios.post('/api/s3-signed-urls', { spaceId, input });
+    const response = await axios.post(`${getBaseUrl()}/api/s3-signed-urls`, { spaceId, input });
 
     const signedUrl = response?.data?.url!;
     await axios.put(signedUrl, file, {
