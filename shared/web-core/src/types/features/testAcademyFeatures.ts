@@ -23,7 +23,7 @@ export const testAcademyFeatures: FeatureItem[] = [
     },
   },
   {
-    featureName: FeatureName.ByteCollectionCategories,
+    featureName: FeatureName.ByteCollections,
     enabled: true,
     details: {
       priority: 70,
