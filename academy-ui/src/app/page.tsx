@@ -25,7 +25,7 @@ async function Home(props: { searchParams: { [key: string]: string | string[] | 
   }
 
   if (space?.type === SpaceTypes.TidbitsSite) {
-    return await getTidbitsSiteHomepageContents(props, space, session);
+    return await getTidbitsSiteHomepageContents(space, session);
   }
 
   if (host === 'dodao-localhost.io' || host === 'academy.dodao.io' || host === 'dodao.io') {
