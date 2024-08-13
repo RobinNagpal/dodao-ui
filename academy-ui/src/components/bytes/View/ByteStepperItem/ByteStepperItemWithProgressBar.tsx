@@ -52,6 +52,14 @@ interface ByteStepperContentProps {
   width: number;
   height: number;
   isShortScreen: boolean;
+  imageHeight: any;
+}
+interface ByteStepperItemWithProgressBar {
+  byte: ByteDetailsFragment;
+  step: ByteStepFragment;
+  space: SpaceWithIntegrationsFragment;
+  viewByteHelper: UseGenericViewByteHelper;
+  setByteSubmitted: (submitted: boolean) => void;
 }
 
 type TransitionState = 'enter' | 'active' | 'exit';
@@ -69,8 +77,8 @@ function ByteStepperContent({
   width,
   height,
   isShortScreen,
+  imageHeight,
 }: ByteStepperContentProps) {
-  const [imageHeight, setImageHeight] = useState('0px');
   const stepItems = step.stepItems;
 
   const stepContents = useMemo(() => marked.parse(step.content, { renderer }), [step.content]);
@@ -174,7 +182,7 @@ function ByteStepperContent({
   );
 }
 
-function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space, setByteSubmitted }: ByteStepperContentProps) {
+function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space, setByteSubmitted }: ByteStepperItemWithProgressBar) {
   const { activeStepOrder } = viewByteHelper;
   const { $t: t } = useI18();
   const { showNotification } = useNotificationContext();
@@ -323,6 +331,7 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space, set
             width={width}
             height={height}
             isShortScreen={isShortScreen}
+            imageHeight={imageHeight}
           />
           <ByteStepperItemWarnings
             showUseInputCompletionWarning={incompleteUserInput}
