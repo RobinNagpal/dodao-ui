@@ -52,10 +52,6 @@ function DesktopNavLinks({ space }: { space: Space }) {
           return <DesktopNavLink key="tidbitCollections" href="/tidbit-collections" label="Tidbits" />;
         }
 
-        if (feature.featureName === FeatureName.ByteCollectionCategories) {
-          return <DesktopNavLink key="byteCollectionCategories" href="/tidbit-collection-categories" label="Tidbits" />;
-        }
-
         if (feature.featureName === FeatureName.Simulations) {
           return <DesktopNavLink key="simulations" href="/simulations" label="Simulations" />;
         }
@@ -95,10 +91,6 @@ function MobileNavLinks({ space }: { space: Space }) {
 
         if (feature.featureName === FeatureName.ByteCollections) {
           return <MobileNavLink key="tidbitCollections" href="/tidbit-collections" label="Tidbits" />;
-        }
-
-        if (feature.featureName === FeatureName.ByteCollectionCategories) {
-          return <MobileNavLink key="tidbitCollectionCategories" href="/tidbit-collection-categories" label="Tidbits" />;
         }
 
         if (feature.featureName === FeatureName.Simulations) {

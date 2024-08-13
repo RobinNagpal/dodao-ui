@@ -2,7 +2,7 @@ import { FeatureItem, FeatureName } from '@dodao/web-core/types/features/spaceFe
 
 export const compoundFeatures: FeatureItem[] = [
   {
-    featureName: FeatureName.ByteCollectionCategories,
+    featureName: FeatureName.ByteCollections,
     enabled: true,
     details: {
       priority: 90,

@@ -3,7 +3,7 @@ const CommentModal: React.FC<CommentModalProps> = ({ isOpen, onClose, comment, s
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-center">
+    <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white p-4 rounded shadow-lg">
         <h2 className="text-xl mb-2">Edit Comment for {criteria}</h2>
         <textarea value={comment} onChange={(e) => setComment(e.target.value)} className="w-full h-24 p-2 border rounded" />

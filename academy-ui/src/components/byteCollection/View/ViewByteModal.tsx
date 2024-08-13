@@ -105,7 +105,7 @@ export default function ViewByteModal({ space, selectedByteId, viewByteModalClos
   return (
     <FullScreenByteModal open={true} onClose={onClose} title={viewByteHelper.byteRef?.name || 'Tidbit Details'}>
       <div id="byte-container" className={`flex flex-col items-center w-full relative inset-0`}>
-        <ContinuousStepIndicatorProgress steps={viewByteHelper.byteRef?.steps?.length || 2} currentStep={activeStepOrder + 1} />
+        <ContinuousStepIndicatorProgress steps={viewByteHelper.byteRef?.steps?.length || 0} currentStep={activeStepOrder + 1} />
         <div className={`${styles.styledByteCard} overflow-x-hidden h-full overflow-y-auto w-full`}>
           {viewByteHelper.byteRef ? (
             <>
