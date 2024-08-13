@@ -69,12 +69,12 @@ export default function EditByteStepperItem({
   const [modalByteInputOrQuestionOpen, setModalByteInputOrQuestionOpen] = useState(false);
   const displayModeSelect: StyledSelectItem[] = [
     {
-      label: ImageDisplayMode.Normal,
-      id: 'normal',
+      label: 'Normal',
+      id: ImageDisplayMode.Normal,
     },
     {
-      label: ImageDisplayMode.FullScreenImage,
-      id: 'fullScreenImage',
+      label: 'Full Screen Image',
+      id: ImageDisplayMode.FullScreenImage,
     },
   ];
   const updateStepContent = (content: string) => {
