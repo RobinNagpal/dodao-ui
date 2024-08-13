@@ -1,6 +1,7 @@
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import TextareaAutosize from '@dodao/web-core/components/core/textarea/TextareaAutosize';
 import { ChatCompletionRequestMessageRoleEnum, ImagesResponse, OpenAiChatCompletionResponse } from '@/graphql/generated/generated-types';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import React, { useState } from 'react';
 import axios from 'axios';
 
@@ -25,7 +26,7 @@ export default function GenerateImageUsingDalleAdvanced({ onInput, generateImage
   async function generateImage(): Promise<void> {
     setGeneratingImages(true);
 
-    const response = await axios.post('/api/openAI/generate-image', {
+    const response = await axios.post(`${getBaseUrl()}/api/openAI/generate-image`, {
       input: {
         prompt: `${generatedImagePrompt}`,
       },

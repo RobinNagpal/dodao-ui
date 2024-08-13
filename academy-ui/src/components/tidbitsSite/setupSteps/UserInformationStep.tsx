@@ -3,6 +3,7 @@
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Input from '@dodao/web-core/components/core/input/Input';
 import { Session } from '@dodao/web-core/types/auth/Session';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import ReCAPTCHA from 'react-google-recaptcha';
@@ -80,7 +81,7 @@ export default function LoginInfo({ goToNextStep }: LoginInformationProps) {
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        const response = await fetch('/api/auth/user', {
+        const response = await fetch(`${getBaseUrl()}/api/auth/user`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

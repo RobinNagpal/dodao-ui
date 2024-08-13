@@ -47,7 +47,7 @@ function EditTidbitCollectionSpace(props: { space: SpaceWithIntegrationsFragment
 
   async function upsertByteCollectionFn(byteCollection: EditByteCollection, byteCollectionId: string | null) {
     if (!byteCollectionId) {
-      await fetch('/api/byte-collection/create-byte-collection', {
+      await fetch(`${getBaseUrl()}/api/byte-collection/create-byte-collection`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -65,7 +65,7 @@ function EditTidbitCollectionSpace(props: { space: SpaceWithIntegrationsFragment
         }),
       });
     } else {
-      await fetch('/api/byte-collection/update-byte-collection', {
+      await fetch(`${getBaseUrl()}/api/byte-collection/update-byte-collection`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -116,7 +116,7 @@ function EditTidbitCollectionSpace(props: { space: SpaceWithIntegrationsFragment
               open={showDeleteModal}
               onClose={() => setShowDeleteModal(false)}
               onDelete={async () => {
-                await fetch('/api/byte-collection/delete-byte-collection', {
+                await fetch(`${getBaseUrl()}/api/byte-collection/delete-byte-collection`, {
                   method: 'POST',
                   headers: {
                     'Content-Type': 'application/json',

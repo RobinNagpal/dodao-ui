@@ -16,6 +16,7 @@ import PageLoading from '@dodao/web-core/components/core/loaders/PageLoading';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { CreateSignedUrlInput, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { ClickableDemoErrors } from '@dodao/web-core/types/errors/clickableDemoErrors';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
@@ -58,7 +59,7 @@ function EditClickableDemo(props: { space: SpaceWithIntegrationsFragment; params
       name: file.name.replace(' ', '_').toLowerCase(),
     };
 
-    const response = await axios.post('/api/s3-signed-urls', { spaceId, input });
+    const response = await axios.post(`${getBaseUrl()}/api/s3-signed-urls`, { spaceId, input });
 
     const signedUrl = response?.data?.url!;
     await axios.put(signedUrl, file, {

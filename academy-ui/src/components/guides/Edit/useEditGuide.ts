@@ -284,7 +284,7 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
         setGuideCreating(false);
         return;
       }
-      const response = await fetch('/api/guide/upsert-guide', {
+      const response = await fetch(`${getBaseUrl()}/api/guide/upsert-guide`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -4,8 +4,9 @@ import { EditByteStep } from '@/components/bytes/Edit/editByteHelper';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import generateQuestionsPrompt from '@/components/guides/Edit/generateQuestionsPrompt';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { ChatCompletionRequestMessageRoleEnum, useAskChatCompletionAiMutation } from '@/graphql/generated/generated-types';
+import { ChatCompletionRequestMessageRoleEnum } from '@/graphql/generated/generated-types';
 import { QuestionType } from '@dodao/web-core/types/deprecated/models/enums';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
@@ -27,7 +28,7 @@ export default function AddByteQuestionsUsingAIButton(props: AddByteQuestionsUsi
 
     const questionsPrompt = generateQuestionsPrompt(byte.name, 2, questionsContent);
 
-    const questionsResponse = await axios.post('/api/openAI/ask-chat-completion-ai', {
+    const questionsResponse = await axios.post(`${getBaseUrl()}/api/openAI/ask-chat-completion-ai`, {
       input: { messages: [{ role: ChatCompletionRequestMessageRoleEnum.User, content: questionsPrompt }] },
       temperature: 0.3,
       model: 'gpt-4',

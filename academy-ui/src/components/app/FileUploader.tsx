@@ -1,6 +1,7 @@
 // Replace with your actual uploadImageToS3 import
 import LoadingSpinner from '@dodao/web-core/components/core/loaders/LoadingSpinner';
 import { CreateSignedUrlInput, ImageType } from '@/graphql/generated/generated-types';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { getUploadedImageUrlFromSingedUrl } from '@dodao/web-core/utils/upload/getUploadedImageUrlFromSingedUrl';
 import axios from 'axios';
 import React, { useRef, useState } from 'react';
@@ -39,7 +40,7 @@ export default function FileUploader({ spaceId, objectId, imageType, onLoading, 
       name: file.name.replace(' ', '_').toLowerCase(),
     };
 
-    const response = await axios.post('/api/s3-signed-urls', { spaceId, input });
+    const response = await axios.post(`${getBaseUrl()}/api/s3-signed-urls`, { spaceId, input });
 
     const signedUrl = response?.data?.url!;
     await axios.put(signedUrl, file, {

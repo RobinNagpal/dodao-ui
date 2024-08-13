@@ -1,6 +1,7 @@
 import { TempGuideSubmission } from '@/components/guides/View/TempGuideSubmission';
 import { GuideFeedback, GuideFragment, GuideRating, Space, useUpsertGuideRatingsMutation } from '@/graphql/generated/generated-types';
 import { UserIdKey } from '@dodao/web-core/types/auth/User';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useEffect, useState } from 'react';
 import { v4 } from 'uuid';
 
@@ -49,7 +50,7 @@ export function useGuideRatings(space: Space, guide: GuideFragment, guideSubmiss
       }
     }
 
-    await fetch('/api/guide/upsert-guide-rating', {
+    await fetch(`${getBaseUrl()}/api/guide/upsert-guide-rating`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

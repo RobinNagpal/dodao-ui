@@ -1,17 +1,14 @@
+import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import ByteCollectionsGrid from '@/components/byteCollection/View/ByteCollectionsGrid';
-import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import { TidbitSiteTabIds } from '@/components/home/TidbitsSite/TidbitSiteTabIds';
-import TidbitsSiteTabs from '@/components/home/TidbitsSite/TidbitsSiteTabs';
-import { ByteCollectionFragment } from '@/graphql/generated/generated-types';
+import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import CollectionPageLoading from '@dodao/web-core/src/components/core/loaders/CollectionPageLoading';
+import { Session } from '@dodao/web-core/types/auth/Session';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import React, { Suspense } from 'react';
 import axios from 'axios';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
-import { Session } from '@dodao/web-core/types/auth/Session';
-import CollectionPageLoading from '@dodao/web-core/src/components/core/loaders/CollectionPageLoading';
-import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
+import React, { Suspense } from 'react';
 
 async function TidbitCollections() {
   const space = (await getSpaceServerSide())!;
@@ -34,17 +31,16 @@ async function TidbitCollections() {
   }
 
   return (
-    <Suspense fallback={<CollectionPageLoading />}>
-      <PageWrapper>
-        <TidbitsSiteTabs selectedTabId={TidbitSiteTabIds.TidbitCollections} />
+    <PageWrapper>
+      <Suspense fallback={<CollectionPageLoading />}>
         <ByteCollectionsGrid
           byteCollections={filteredCollections}
           space={space}
           byteCollectionsBaseUrl={`/tidbit-collections`}
           isAdmin={session?.isAdminOfSpace}
         />
-      </PageWrapper>
-    </Suspense>
+      </Suspense>
+    </PageWrapper>
   );
 }
 

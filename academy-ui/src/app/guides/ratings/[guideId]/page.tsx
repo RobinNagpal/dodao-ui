@@ -17,7 +17,7 @@ function GuideSubmissionsPage(props: { space: SpaceWithIntegrationsFragment; par
   useEffect(() => {
     async function fetchGuideRatings() {
       setLoadingGuideRatings(true);
-      let response = await axios.get(`/api/guide/${props.params.guideId}`);
+      let response = await axios.get(`${getBaseUrl()}/api/guide/${props.params.guideId}`);
       const guideUuid = response.data.guide.uuid;
       setGuideResponse(response.data);
       response = await axios.get(`${getBaseUrl()}/api/guide/guide-ratings`, {
