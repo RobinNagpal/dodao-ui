@@ -1,5 +1,3 @@
-export const dynamic = 'force-dynamic';
-
 import { isQuestion, isUserDiscordConnect, isUserInput } from '@/app/api/helpers/deprecatedSchemas/helpers/stepItemTypes';
 import { GuideModel, GuideQuestion, UserInput } from '@/app/api/helpers/deprecatedSchemas/models/GuideModel';
 import {

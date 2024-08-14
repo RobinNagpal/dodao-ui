@@ -1,5 +1,3 @@
-export const dynamic = 'force-dynamic';
-
 import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
 import { consolidateGuideRatings } from '@/app/api/helpers/guide/consolidateGuideRatings';
 import { checkEditSpacePermission } from '@/app/api/helpers/space/checkEditSpacePermission';

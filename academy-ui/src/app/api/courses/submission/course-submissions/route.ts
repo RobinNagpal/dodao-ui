@@ -1,5 +1,3 @@
-export const dynamic = 'force-dynamic';
-
 import { getDecodedJwtFromContext } from '@/app/api/helpers/permissions/getJwtFromContext';
 import { prisma } from '@/prisma';
 import { NextRequest, NextResponse } from 'next/server';
