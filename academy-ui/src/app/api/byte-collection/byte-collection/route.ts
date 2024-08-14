@@ -1,5 +1,3 @@
-export const dynamic = 'force-dynamic';
-
 import { NextRequest, NextResponse } from 'next/server';
 import { getByteCollectionWithItem } from '@/app/api/helpers/byteCollection/byteCollectionHelper';
 import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';

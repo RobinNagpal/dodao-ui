@@ -1,5 +1,3 @@
-export const dynamic = 'force-dynamic';
-
 import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/prisma';

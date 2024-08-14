@@ -1,5 +1,3 @@
-export const dynamic = 'force-dynamic';
-
 import { isRequestUserSuperAdmin } from '@/app/api/helpers/space/checkEditSpacePermission';
 import { prisma } from '@/prisma';
 import { NextRequest, NextResponse } from 'next/server';

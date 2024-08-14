@@ -1,8 +1,7 @@
-export const dynamic = 'force-dynamic';
-
 import { prisma } from '@/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
+import exp from 'constants';
 
 async function getHandler(req: NextRequest) {
   const { searchParams } = new URL(req.url);
