@@ -114,6 +114,8 @@ database and tables.
 
 Note: To create database from scratch, you can delete the `./data` folder and restart the docker-compose.
 
+Here is a video explanation of the database setup [Setup Database using Docker](https://drive.google.com/file/d/1Gg-KWR_OqEPLIjDMUIZmslXuZ0CUpAnZ/view?usp=sharing):
+
 ## Testing different Academy websites on local
 
 The tidbits and academy websites are mapped to different domains. To test the websites on local, you need to map the
