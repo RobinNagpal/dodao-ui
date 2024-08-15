@@ -2,8 +2,9 @@ import { isRequestUserSuperAdmin } from '@/app/api/helpers/space/checkEditSpaceP
 import { prisma } from '@/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST(req: NextRequest) {
-  const { domain } = await req.json();
+export async function GET(req: NextRequest) {
+  const { searchParams } = new URL(req.url);
+  const domain = searchParams.get('domain');
 
   const space = await prisma.space.findFirst({
     where: {
