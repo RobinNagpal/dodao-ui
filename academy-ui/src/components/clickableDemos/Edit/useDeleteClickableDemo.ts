@@ -10,7 +10,7 @@ export function useDeleteClickableDemo(space: Space, demoId: string) {
   const { $t } = useI18();
   async function handleDeletion() {
     try {
-      revalidateTidbitCollections();
+      await revalidateTidbitCollections();
       const response = await fetch(`/api/clickable-demos/${demoId}`, {
         method: 'DELETE',
         headers: {

@@ -186,7 +186,7 @@ export default function EditByteView(props: {
           open={showDeleteModal}
           onClose={() => setShowDeleteModal(false)}
           onDelete={async () => {
-            revalidateTidbitCollections();
+            await revalidateTidbitCollections();
             await fetch(`${getBaseUrl()}/api/byte/delete-byte`, {
               method: 'POST',
               headers: {

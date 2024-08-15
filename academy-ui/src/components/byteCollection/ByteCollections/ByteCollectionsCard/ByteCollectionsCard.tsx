@@ -18,7 +18,6 @@ import EditByteView from '@/components/bytes/Edit/EditByteView';
 import EditClickableDemo from '@/components/clickableDemos/Create/EditClickableDemo';
 import EditShortVideoView from '@/components/shortVideos/Edit/EditShortVideoView';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { revalidateTidbitCollections } from '@/revalidateTags';
 import axios from 'axios';
 import ByteItem from './ByteItem';
 import DemoItem from './DemoItem';
@@ -214,7 +213,6 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
               byteCollection={byteCollection}
               byteId={editByteModalState.byteId}
               onUpsert={async () => {
-                revalidateTidbitCollections();
                 router.push(`/tidbits/view/${editByteModalState.byteId}`);
               }}
               closeEditByteModal={closeByteEditModal}

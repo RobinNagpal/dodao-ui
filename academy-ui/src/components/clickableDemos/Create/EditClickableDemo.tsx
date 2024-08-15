@@ -170,8 +170,8 @@ function EditClickableDemo({ space, demoId, byteCollection, closeDemoEditModal }
     updateClickableDemoFunctions.initialize();
   }, [demoId]);
 
-  function clickSubmit(byteCollection: ByteCollectionSummary) {
-    revalidateTidbitCollections();
+  async function clickSubmit(byteCollection: ByteCollectionSummary) {
+    await revalidateTidbitCollections();
     handleSubmit(byteCollection);
   }
 

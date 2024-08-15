@@ -176,7 +176,6 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, onUpsert: (byt
 
       if (response) {
         showNotification({ type: 'success', message: 'Byte Saved', heading: 'Success 🎉' });
-        await onUpsert(response.id!);
       } else {
         showNotification({ type: 'error', message: $t('notify.somethingWentWrong') });
         console.error('Failed to save byte');
@@ -190,7 +189,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, onUpsert: (byt
 
   const handleByteUpsert = async (byteCollection: ByteCollectionSummary) => {
     await saveViaMutation(async () => {
-      revalidateTidbitCollections();
+      await revalidateTidbitCollections();
       const upsertResponse = await fetch(`${getBaseUrl()}/api/byte/upsert-byte`, {
         method: 'POST',
         headers: {

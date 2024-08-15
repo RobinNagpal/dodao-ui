@@ -64,7 +64,7 @@ export default function EditShortVideoModal({
   });
 
   async function handleDelete() {
-    revalidateTidbitCollections();
+    await revalidateTidbitCollections();
     const response = await fetch(`/api/short-videos/${shortVideo.id}`, {
       method: 'DELETE',
       body: JSON.stringify({ spaceId }),
@@ -110,7 +110,7 @@ export default function EditShortVideoModal({
     setShortVideoUpserting(true);
 
     try {
-      revalidateTidbitCollections();
+      await revalidateTidbitCollections();
       await saveShortVideoFn(shortVideo);
       showNotification({ message: 'Short video saved', type: 'success' });
       router.push(`/shorts/view/${shortVideo?.id}`);
