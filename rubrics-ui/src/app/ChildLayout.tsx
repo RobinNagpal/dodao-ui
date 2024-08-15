@@ -32,17 +32,7 @@ function PageFooter(props: { space: WebCoreSpace }) {
   );
 }
 
-export function ChildLayout({
-  children,
-  session,
-  space,
-  spaceError,
-}: {
-  children: React.ReactNode;
-  session: Session | null;
-  space?: Space | null;
-  spaceError: boolean;
-}) {
+export function ChildLayout({ children, session, space }: { children: React.ReactNode; session: Session | null; space: Space; spaceError: boolean }) {
   const { setSpace } = useSpace();
 
   useEffect(() => {
@@ -71,16 +61,12 @@ export function ChildLayout({
     });
   });
 
-  if (spaceError) {
-    return <ErrorPage />;
-  }
-
   return (
     <Web3ReactProviderWrapper>
       <SessionProvider session={session}>
         <LoginModalProvider>
-          <LoginModal space={space!} />
-          <PageTopNav space={space!} />
+          <LoginModal space={space} />
+          <PageTopNav space={space} />
           <div className={styles.main}>{children}</div>
           <PageFooter space={space!} />
         </LoginModalProvider>

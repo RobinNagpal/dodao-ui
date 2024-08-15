@@ -1,6 +1,7 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import { SpaceProvider } from '@/contexts/SpaceContext';
 import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
+import ErrorPage from '@dodao/web-core/components/app/ErrorPage';
 import { CssTheme, ThemeKey, themes } from '@dodao/web-core/src/components/app/themes';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { NotificationProvider } from '@dodao/web-core/ui/contexts/NotificationContext';
@@ -37,6 +38,10 @@ export default async function RootLayout({ children }: RootLayoutProps) {
     '--border-color': themeValue.borderColor,
     '--block-bg': themeValue.blockBg,
   } as CSSProperties;
+
+  if (!space) {
+    return <ErrorPage />;
+  }
 
   return (
     <html lang="en" className="h-full">
