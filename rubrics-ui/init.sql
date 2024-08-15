@@ -40,15 +40,16 @@ SET default_table_access_method = heap;
 -- Name: _prisma_migrations; Type: TABLE; Schema: public; Owner: admin
 --
 
+
 CREATE TABLE public._prisma_migrations (
-                                           id character varying(36) NOT NULL,
-                                           checksum character varying(64) NOT NULL,
-                                           finished_at timestamp with time zone,
-                                           migration_name character varying(255) NOT NULL,
-                                           logs text,
-                                           rolled_back_at timestamp with time zone,
-                                           started_at timestamp with time zone DEFAULT now() NOT NULL,
-                                           applied_steps_count integer DEFAULT 0 NOT NULL
+    id character varying(36) NOT NULL,
+    checksum character varying(64) NOT NULL,
+    finished_at timestamp with time zone,
+    migration_name character varying(255) NOT NULL,
+    logs text,
+    rolled_back_at timestamp with time zone,
+    started_at timestamp with time zone DEFAULT now() NOT NULL,
+    applied_steps_count integer DEFAULT 0 NOT NULL
 );
 
 
@@ -59,18 +60,18 @@ ALTER TABLE public._prisma_migrations OWNER TO admin;
 --
 
 CREATE TABLE public.accounts (
-                                 id text NOT NULL,
-                                 user_id text NOT NULL,
-                                 type text NOT NULL,
-                                 provider text NOT NULL,
-                                 provider_account_id text NOT NULL,
-                                 refresh_token text,
-                                 access_token text,
-                                 expires_at integer,
-                                 token_type text,
-                                 scope text,
-                                 id_token text,
-                                 session_state text
+    id text NOT NULL,
+    user_id text NOT NULL,
+    type text NOT NULL,
+    provider text NOT NULL,
+    provider_account_id text NOT NULL,
+    refresh_token text,
+    access_token text,
+    expires_at integer,
+    token_type text,
+    scope text,
+    id_token text,
+    session_state text
 );
 
 
@@ -81,9 +82,9 @@ ALTER TABLE public.accounts OWNER TO admin;
 --
 
 CREATE TABLE public.crypto_login_nonce (
-                                           user_id text NOT NULL,
-                                           nonce text NOT NULL,
-                                           expires timestamp(3) without time zone NOT NULL
+    user_id text NOT NULL,
+    nonce text NOT NULL,
+    expires timestamp(3) without time zone NOT NULL
 );
 
 
@@ -94,9 +95,9 @@ ALTER TABLE public.crypto_login_nonce OWNER TO admin;
 --
 
 CREATE TABLE public.program_rubric_mappings (
-                                                id character varying(64) NOT NULL,
-                                                program_id character varying(64) NOT NULL,
-                                                rubric_id character varying(64) NOT NULL
+    id character varying(64) NOT NULL,
+    program_id character varying(64) NOT NULL,
+    rubric_id character varying(64) NOT NULL
 );
 
 
@@ -107,11 +108,11 @@ ALTER TABLE public.program_rubric_mappings OWNER TO admin;
 --
 
 CREATE TABLE public.programs (
-                                 id character varying(64) NOT NULL,
-                                 name text NOT NULL,
-                                 details text,
-                                 summary text NOT NULL,
-                                 space_id character varying(255) NOT NULL
+    id character varying(64) NOT NULL,
+    name text NOT NULL,
+    details text,
+    summary text NOT NULL,
+    space_id character varying(255) NOT NULL
 );
 
 
@@ -122,11 +123,11 @@ ALTER TABLE public.programs OWNER TO admin;
 --
 
 CREATE TABLE public.rating_cell_selections (
-                                               id character varying(64) NOT NULL,
-                                               rubric_cell_id character varying(64) NOT NULL,
-                                               rubric_rating_id character varying(64) NOT NULL,
-                                               comment text NOT NULL,
-                                               user_id text NOT NULL
+    id character varying(64) NOT NULL,
+    rubric_cell_id character varying(64) NOT NULL,
+    rubric_rating_id character varying(64) NOT NULL,
+    comment text NOT NULL,
+    user_id text NOT NULL
 );
 
 
@@ -137,12 +138,12 @@ ALTER TABLE public.rating_cell_selections OWNER TO admin;
 --
 
 CREATE TABLE public.rubric_cells (
-                                     id character varying(64) NOT NULL,
-                                     description character varying(64) NOT NULL,
-                                     level_id character varying(64) NOT NULL,
-                                     criteria_id character varying(64) NOT NULL,
-                                     rubric_id character varying(64) NOT NULL,
-                                     is_archived boolean DEFAULT false NOT NULL
+    id character varying(64) NOT NULL,
+    description character varying(64) NOT NULL,
+    level_id character varying(64) NOT NULL,
+    criteria_id character varying(64) NOT NULL,
+    rubric_id character varying(64) NOT NULL,
+    is_archived boolean DEFAULT false NOT NULL
 );
 
 
@@ -153,10 +154,10 @@ ALTER TABLE public.rubric_cells OWNER TO admin;
 --
 
 CREATE TABLE public.rubric_criterias (
-                                         id text NOT NULL,
-                                         title character varying(64) NOT NULL,
-                                         rubric_id character varying(64) NOT NULL,
-                                         is_archived boolean DEFAULT false NOT NULL
+    id text NOT NULL,
+    title character varying(64) NOT NULL,
+    rubric_id character varying(64) NOT NULL,
+    is_archived boolean DEFAULT false NOT NULL
 );
 
 
@@ -167,12 +168,12 @@ ALTER TABLE public.rubric_criterias OWNER TO admin;
 --
 
 CREATE TABLE public.rubric_levels (
-                                      id character varying(64) NOT NULL,
-                                      column_name character varying(64) NOT NULL,
-                                      description character varying(64),
-                                      score integer NOT NULL,
-                                      rubric_id character varying(64) NOT NULL,
-                                      is_archived boolean DEFAULT false NOT NULL
+    id character varying(64) NOT NULL,
+    column_name character varying(64) NOT NULL,
+    description character varying(64),
+    score integer NOT NULL,
+    rubric_id character varying(64) NOT NULL,
+    is_archived boolean DEFAULT false NOT NULL
 );
 
 
@@ -183,9 +184,9 @@ ALTER TABLE public.rubric_levels OWNER TO admin;
 --
 
 CREATE TABLE public.rubric_ratings (
-                                       id character varying(64) NOT NULL,
-                                       rubric_id character varying(64) NOT NULL,
-                                       user_id text NOT NULL
+    id character varying(64) NOT NULL,
+    rubric_id character varying(64) NOT NULL,
+    user_id text NOT NULL
 );
 
 
@@ -196,11 +197,11 @@ ALTER TABLE public.rubric_ratings OWNER TO admin;
 --
 
 CREATE TABLE public.rubrics (
-                                id character varying(64) NOT NULL,
-                                name character varying(64) NOT NULL,
-                                summary text NOT NULL,
-                                description text,
-                                space_id character varying(255) NOT NULL
+    id character varying(64) NOT NULL,
+    name character varying(64) NOT NULL,
+    summary text NOT NULL,
+    description text,
+    space_id character varying(255) NOT NULL
 );
 
 
@@ -211,10 +212,10 @@ ALTER TABLE public.rubrics OWNER TO admin;
 --
 
 CREATE TABLE public.sessions (
-                                 id text NOT NULL,
-                                 session_token text NOT NULL,
-                                 user_id text NOT NULL,
-                                 expires timestamp(3) without time zone NOT NULL
+    id text NOT NULL,
+    session_token text NOT NULL,
+    user_id text NOT NULL,
+    expires timestamp(3) without time zone NOT NULL
 );
 
 
@@ -225,18 +226,18 @@ ALTER TABLE public.sessions OWNER TO admin;
 --
 
 CREATE TABLE public.spaces (
-                               id character varying(64) NOT NULL,
-                               verified boolean DEFAULT false NOT NULL,
-                               created_at timestamp(3) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
-                               creator character varying(64) NOT NULL,
-                               name character varying(255) NOT NULL,
-                               updated_at timestamp(3) without time zone NOT NULL,
-                               avatar character varying(255),
-                               admin_usernames_v1 jsonb[],
-                               domains text[] DEFAULT ARRAY[]::text[],
-                               auth_settings json DEFAULT '{}'::json NOT NULL,
-                               features text[],
-                               theme_colors json
+    id character varying(64) NOT NULL,
+    verified boolean DEFAULT false NOT NULL,
+    created_at timestamp(3) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    creator character varying(64) NOT NULL,
+    name character varying(255) NOT NULL,
+    updated_at timestamp(3) without time zone NOT NULL,
+    avatar character varying(255),
+    admin_usernames_v1 jsonb[],
+    domains text[] DEFAULT ARRAY[]::text[],
+    auth_settings json DEFAULT '{}'::json NOT NULL,
+    features text[],
+    theme_colors json
 );
 
 
@@ -247,17 +248,17 @@ ALTER TABLE public.spaces OWNER TO admin;
 --
 
 CREATE TABLE public.users (
-                              id text NOT NULL,
-                              name text,
-                              email text,
-                              email_verified timestamp(3) without time zone,
-                              image text,
-                              public_address text,
-                              phone_number text,
-                              password text,
-                              space_id text NOT NULL,
-                              username text NOT NULL,
-                              auth_provider text NOT NULL
+    id text NOT NULL,
+    name text,
+    email text,
+    email_verified timestamp(3) without time zone,
+    image text,
+    public_address text,
+    phone_number text,
+    password text,
+    space_id text NOT NULL,
+    username text NOT NULL,
+    auth_provider text NOT NULL
 );
 
 
@@ -268,9 +269,9 @@ ALTER TABLE public.users OWNER TO admin;
 --
 
 CREATE TABLE public.verification_tokens (
-                                            identifier text NOT NULL,
-                                            token text NOT NULL,
-                                            expires timestamp(3) without time zone NOT NULL
+    identifier text NOT NULL,
+    token text NOT NULL,
+    expires timestamp(3) without time zone NOT NULL
 );
 
 
@@ -396,6 +397,7 @@ COPY public.sessions (id, session_token, user_id, expires) FROM stdin;
 
 COPY public.spaces (id, verified, created_at, creator, name, updated_at, avatar, admin_usernames_v1, domains, auth_settings, features, theme_colors) FROM stdin;
 test-academy-eth	t	2023-07-08 19:19:16.998	clhjfyne00000mc08gc4wsqs0	The Test Academy	2023-08-10 20:04:43.664	https://d31h13bdjwgzxs.cloudfront.net/academy/daocubator/daocubator_logo.jpg	{}	{}	{"enableLogin":false,"loginOptions":["Discord","MetaMask","Google","Coinbase","Near"]}	{}	{"primaryColor":"#384aff","bgColor":"#ffffff","textColor":"#57606a","linkColor":"#111111","headingColor":"#111111","borderColor":"#d0d7de","blockBg":"#F5F9FF"}
+my-rubrics-home	t	2023-07-08 19:19:16.998	clhjfyne00000mc08gc4wsqs0	My Rubrics Home	2023-08-10 20:04:43.664	https://d31h13bdjwgzxs.cloudfront.net/academy/daocubator/daocubator_logo.jpg	{}	{}	{"enableLogin":false,"loginOptions":["Discord","MetaMask","Google","Coinbase","Near"]}	{}	{"primaryColor":"#384aff","bgColor":"#ffffff","textColor":"#57606a","linkColor":"#111111","headingColor":"#111111","borderColor":"#d0d7de","blockBg":"#F5F9FF"}
 \.
 
 
@@ -404,6 +406,7 @@ test-academy-eth	t	2023-07-08 19:19:16.998	clhjfyne00000mc08gc4wsqs0	The Test Ac
 --
 
 COPY public.users (id, name, email, email_verified, image, public_address, phone_number, password, space_id, username, auth_provider) FROM stdin;
+clzvcgzej0000s94lgmjkdbfo	\N	\N	\N	\N	0x470579d16401a36BF63b1428eaA7189FBdE5Fee9	\N	\N	test-academy-eth	0x470579d16401a36BF63b1428eaA7189FBdE5Fee9	crypto
 \.
 
 
