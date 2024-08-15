@@ -16,6 +16,7 @@ export async function getSpaceBasedOnHostHeader(reqHeaders: Headers) {
 
   if (response.ok) {
     const spaceResponse = await response.json();
+
     return spaceResponse.space;
   }
   return null;

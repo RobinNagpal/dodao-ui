@@ -28,7 +28,10 @@ export function isUserAdminOfSpace(username: string, space: Space) {
 
   return isAdminOfSpace || isAdminOfSpaceByUserName || isSuperAdminOfDoDAO(username) || isAdminOfSpaceByUserNameByName;
 }
-
+export async function isRequestUserSuperAdmin(req: NextRequest): Promise<boolean> {
+  const decoded = await getDecodedJwtFromContext(req);
+  return !!(decoded?.username && isDoDAOSuperAdmin(decoded.username));
+}
 export async function canEditGitSpace(context: NextRequest, space: Space) {
   const doDAOMember = await isDoDAOMember(context);
 

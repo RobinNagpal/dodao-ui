@@ -1,8 +1,14 @@
 import { prisma } from '@/prisma';
 import { NextRequest, NextResponse } from 'next/server';
+
 export async function GET(req: NextRequest, res: NextResponse) {
   try {
+    const spaceId = req.nextUrl.searchParams.get('spaceId');
+
     const rubrics = await prisma.rubric.findMany({
+      where: {
+        spaceId: spaceId,
+      },
       select: {
         id: true,
         name: true,

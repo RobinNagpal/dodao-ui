@@ -1,20 +1,22 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import RubricsPage from '@/components/rubricsTable/rubricsTable';
-import { RubricServerData } from '@/types/rubricsTypes/types';
+import { RubricServerData, SpaceWithIntegrationsFragment } from '@/types/rubricsTypes/types';
 import { ChevronLeftIcon } from '@heroicons/react/24/outline';
 import { useRouter } from 'next/navigation';
 
 interface ViewRubricProps {
   rubricId: string;
+  space: SpaceWithIntegrationsFragment;
 }
 
-const ViewRubric: React.FC<ViewRubricProps> = ({ rubricId }) => {
+const ViewRubric: React.FC<ViewRubricProps> = ({ rubricId, space }) => {
   const [serverResponse, setServerResponse] = useState<RubricServerData>();
   const router = useRouter();
-  const fetchProgramData = async () => {
+  const spaceId = space.id;
+  const fetchRubricData = async () => {
     try {
-      const response = await fetch(`http://localhost:3004/api/rubrics/${rubricId}`);
+      const response = await fetch(`http://localhost:3004/api/rubrics/${rubricId}?spaceId=${spaceId}`);
       const data = await response.json();
 
       if (response.ok) {
@@ -28,7 +30,7 @@ const ViewRubric: React.FC<ViewRubricProps> = ({ rubricId }) => {
   };
   useEffect(() => {
     if (rubricId) {
-      fetchProgramData();
+      fetchRubricData();
     }
   }, [rubricId]);
 

@@ -2,6 +2,8 @@ import { prisma } from '@/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 export async function GET(req: NextRequest, { params }: { params: { rubricId: string } }) {
   const rubricId = params.rubricId;
+  const url = new URL(req.url);
+  const spaceId = url.searchParams.get('spaceId');
 
   if (!rubricId) {
     return NextResponse.json({ status: 400, body: 'Missing rubricId' });
@@ -93,10 +95,10 @@ export async function GET(req: NextRequest, { params }: { params: { rubricId: st
 export async function PUT(request: Request, { params }: { params: { rubricId: string } }) {
   try {
     const { rubricId } = params;
-    const { name, summary, description } = await request.json();
+    const { name, summary, description, spaceId } = await request.json();
 
-    if (!rubricId || !name || !summary) {
-      return NextResponse.json({ error: 'Rubric ID, name, and summary are required' }, { status: 400 });
+    if (!rubricId || !name || !summary || !spaceId) {
+      return NextResponse.json({ error: 'Rubric ID, name, and summary,spaceId are required' }, { status: 400 });
     }
 
     const updatedRubric = await prisma.rubric.update({
@@ -105,6 +107,7 @@ export async function PUT(request: Request, { params }: { params: { rubricId: st
         name: name,
         summary: summary,
         description: description,
+        spaceId: spaceId,
       },
     });
 
