@@ -22,7 +22,7 @@ function ByteStepperItemWarnings({
     if (!isQuestionAnswered()) {
       myDivRef.current?.scrollIntoView({ behavior: 'smooth' });
     }
-  }, [isQuestionAnswered]); 
+  }, [isQuestionAnswered]);
 
   return (
     <div className="mb-4">
