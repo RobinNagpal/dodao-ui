@@ -128,7 +128,7 @@ model Program {
   spaceId String                 @map("space_id") @db.VarChar(255)
   Space   Space                  @relation(fields: [spaceId], references: [id])
 
-  @@map("program")
+  @@map("programs")
 }
 
 model Rubric {
@@ -144,7 +144,7 @@ model Rubric {
   spaceId      String?                @map("space_id") @db.VarChar(255)
   Space        Space?                 @relation(fields: [spaceId], references: [id])
 
-  @@map("rubric")
+  @@map("rubrics")
 }
 
 model ProgramRubricMapping {
@@ -155,7 +155,7 @@ model ProgramRubricMapping {
   rubric    Rubric  @relation(fields: [rubricId], references: [id])
 
   @@unique([programId, rubricId])
-  @@map("program_rubric_mapping")
+  @@map("program_rubric_mappings")
 }
 
 model RubricLevel {
@@ -168,7 +168,7 @@ model RubricLevel {
   RubricCell  RubricCell[]
   isArchived  Boolean      @default(false)
 
-  @@map("rubric_level")
+  @@map("rubric_levels")
 }
 
 model RubricCriteria {
@@ -180,7 +180,7 @@ model RubricCriteria {
   isArchived Boolean      @default(false)
 
   @@unique([rubricId, title])
-  @@map("rubric_criteria")
+  @@map("rubric_criterias")
 }
 
 model RubricCell {
@@ -196,7 +196,7 @@ model RubricCell {
   isArchived  Boolean               @default(false)
 
   @@unique([rubricId, levelId, criteriaId])
-  @@map("rubric_cell")
+  @@map("rubric_cells")
 }
 
 model RubricRating {
@@ -208,7 +208,7 @@ model RubricRating {
   userId     String?
 
   @@unique([rubricId, userId])
-  @@map("rubric_rating")
+  @@map("rubric_ratings")
 }
 
 model RatingCellSelection {
@@ -222,5 +222,5 @@ model RatingCellSelection {
   userId         String?
 
   @@unique([rubricCellId, rubricRatingId])
-  @@map("rating_cell_selection")
+  @@map("rating_cell_selections")
 }
