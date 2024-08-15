@@ -26,7 +26,13 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ space });
   }
 
-  if (domain === 'dodao-ui-robinnagpal.vercel.app' || domain === 'localhost' || domain?.includes('.vercel.app')) {
+  if (
+    domain === 'dodao-ui-robinnagpal.vercel.app' ||
+    domain === 'localhost' ||
+    domain === 'myrubrics.com' ||
+    domain === 'myrubrics-localhost.com' ||
+    domain?.includes('.vercel.app')
+  ) {
     const space = await prisma.space.findFirst({
       where: {
         id: {

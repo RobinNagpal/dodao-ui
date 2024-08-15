@@ -18,8 +18,9 @@ export interface RubricCell {
 }
 
 export interface Rubric {
+  id: string;
   name: string;
-  summary?: string;
+  summary: string;
   description?: string;
   levels: RubricCell[];
   criteria: string;
@@ -139,18 +140,6 @@ export interface RubricCriteriaProps {
   isGlobalAccess?: boolean;
   editCriteriaIds?: any;
   rubricCellIds?: any;
-}
-
-export interface ProgramListProps {
-  id: string;
-  name: string;
-  details: string;
-}
-
-export interface RubricListProps {
-  id: string;
-  name: string;
-  summary: string;
 }
 
 export interface SessionProps {

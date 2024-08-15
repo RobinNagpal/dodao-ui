@@ -41,14 +41,14 @@ SET default_table_access_method = heap;
 --
 
 CREATE TABLE public._prisma_migrations (
-    id character varying(36) NOT NULL,
-    checksum character varying(64) NOT NULL,
-    finished_at timestamp with time zone,
-    migration_name character varying(255) NOT NULL,
-    logs text,
-    rolled_back_at timestamp with time zone,
-    started_at timestamp with time zone DEFAULT now() NOT NULL,
-    applied_steps_count integer DEFAULT 0 NOT NULL
+                                           id character varying(36) NOT NULL,
+                                           checksum character varying(64) NOT NULL,
+                                           finished_at timestamp with time zone,
+                                           migration_name character varying(255) NOT NULL,
+                                           logs text,
+                                           rolled_back_at timestamp with time zone,
+                                           started_at timestamp with time zone DEFAULT now() NOT NULL,
+                                           applied_steps_count integer DEFAULT 0 NOT NULL
 );
 
 
@@ -59,18 +59,18 @@ ALTER TABLE public._prisma_migrations OWNER TO admin;
 --
 
 CREATE TABLE public.accounts (
-    id text NOT NULL,
-    user_id text NOT NULL,
-    type text NOT NULL,
-    provider text NOT NULL,
-    provider_account_id text NOT NULL,
-    refresh_token text,
-    access_token text,
-    expires_at integer,
-    token_type text,
-    scope text,
-    id_token text,
-    session_state text
+                                 id text NOT NULL,
+                                 user_id text NOT NULL,
+                                 type text NOT NULL,
+                                 provider text NOT NULL,
+                                 provider_account_id text NOT NULL,
+                                 refresh_token text,
+                                 access_token text,
+                                 expires_at integer,
+                                 token_type text,
+                                 scope text,
+                                 id_token text,
+                                 session_state text
 );
 
 
@@ -81,9 +81,9 @@ ALTER TABLE public.accounts OWNER TO admin;
 --
 
 CREATE TABLE public.crypto_login_nonce (
-    user_id text NOT NULL,
-    nonce text NOT NULL,
-    expires timestamp(3) without time zone NOT NULL
+                                           user_id text NOT NULL,
+                                           nonce text NOT NULL,
+                                           expires timestamp(3) without time zone NOT NULL
 );
 
 
@@ -94,9 +94,9 @@ ALTER TABLE public.crypto_login_nonce OWNER TO admin;
 --
 
 CREATE TABLE public.program_rubric_mappings (
-    id character varying(64) NOT NULL,
-    "programId" character varying(64) NOT NULL,
-    "rubricId" character varying(64) NOT NULL
+                                                id character varying(64) NOT NULL,
+                                                program_id character varying(64) NOT NULL,
+                                                rubric_id character varying(64) NOT NULL
 );
 
 
@@ -107,11 +107,11 @@ ALTER TABLE public.program_rubric_mappings OWNER TO admin;
 --
 
 CREATE TABLE public.programs (
-    id character varying(64) NOT NULL,
-    name text NOT NULL,
-    details text,
-    summary text NOT NULL,
-    space_id character varying(255) NOT NULL
+                                 id character varying(64) NOT NULL,
+                                 name text NOT NULL,
+                                 details text,
+                                 summary text NOT NULL,
+                                 space_id character varying(255) NOT NULL
 );
 
 
@@ -122,11 +122,11 @@ ALTER TABLE public.programs OWNER TO admin;
 --
 
 CREATE TABLE public.rating_cell_selections (
-    id character varying(64) NOT NULL,
-    "rubricCellId" character varying(64) NOT NULL,
-    "rubricRatingId" character varying(64) NOT NULL,
-    comment text NOT NULL,
-    "userId" text
+                                               id character varying(64) NOT NULL,
+                                               rubric_cell_id character varying(64) NOT NULL,
+                                               rubric_rating_id character varying(64) NOT NULL,
+                                               comment text NOT NULL,
+                                               user_id text NOT NULL
 );
 
 
@@ -137,12 +137,12 @@ ALTER TABLE public.rating_cell_selections OWNER TO admin;
 --
 
 CREATE TABLE public.rubric_cells (
-    id character varying(64) NOT NULL,
-    description character varying(64) NOT NULL,
-    "levelId" character varying(64),
-    "criteriaId" character varying(64),
-    "rubricId" character varying(64) NOT NULL,
-    "isArchived" boolean DEFAULT false NOT NULL
+                                     id character varying(64) NOT NULL,
+                                     description character varying(64) NOT NULL,
+                                     level_id character varying(64) NOT NULL,
+                                     criteria_id character varying(64) NOT NULL,
+                                     rubric_id character varying(64) NOT NULL,
+                                     is_archived boolean DEFAULT false NOT NULL
 );
 
 
@@ -153,10 +153,10 @@ ALTER TABLE public.rubric_cells OWNER TO admin;
 --
 
 CREATE TABLE public.rubric_criterias (
-    id text NOT NULL,
-    title character varying(64) NOT NULL,
-    "rubricId" character varying(64) NOT NULL,
-    "isArchived" boolean DEFAULT false NOT NULL
+                                         id text NOT NULL,
+                                         title character varying(64) NOT NULL,
+                                         rubric_id character varying(64) NOT NULL,
+                                         is_archived boolean DEFAULT false NOT NULL
 );
 
 
@@ -167,12 +167,12 @@ ALTER TABLE public.rubric_criterias OWNER TO admin;
 --
 
 CREATE TABLE public.rubric_levels (
-    id character varying(64) NOT NULL,
-    "columnName" character varying(64) NOT NULL,
-    description character varying(64),
-    score integer,
-    "rubricId" character varying(64) NOT NULL,
-    "isArchived" boolean DEFAULT false NOT NULL
+                                      id character varying(64) NOT NULL,
+                                      column_name character varying(64) NOT NULL,
+                                      description character varying(64),
+                                      score integer NOT NULL,
+                                      rubric_id character varying(64) NOT NULL,
+                                      is_archived boolean DEFAULT false NOT NULL
 );
 
 
@@ -183,9 +183,9 @@ ALTER TABLE public.rubric_levels OWNER TO admin;
 --
 
 CREATE TABLE public.rubric_ratings (
-    id character varying(64) NOT NULL,
-    "rubricId" character varying(64) NOT NULL,
-    "userId" text
+                                       id character varying(64) NOT NULL,
+                                       rubric_id character varying(64) NOT NULL,
+                                       user_id text NOT NULL
 );
 
 
@@ -196,11 +196,11 @@ ALTER TABLE public.rubric_ratings OWNER TO admin;
 --
 
 CREATE TABLE public.rubrics (
-    id character varying(64) NOT NULL,
-    name character varying(64) NOT NULL,
-    summary text NOT NULL,
-    description text,
-    space_id character varying(255)
+                                id character varying(64) NOT NULL,
+                                name character varying(64) NOT NULL,
+                                summary text NOT NULL,
+                                description text,
+                                space_id character varying(255) NOT NULL
 );
 
 
@@ -211,10 +211,10 @@ ALTER TABLE public.rubrics OWNER TO admin;
 --
 
 CREATE TABLE public.sessions (
-    id text NOT NULL,
-    session_token text NOT NULL,
-    user_id text NOT NULL,
-    expires timestamp(3) without time zone NOT NULL
+                                 id text NOT NULL,
+                                 session_token text NOT NULL,
+                                 user_id text NOT NULL,
+                                 expires timestamp(3) without time zone NOT NULL
 );
 
 
@@ -225,18 +225,18 @@ ALTER TABLE public.sessions OWNER TO admin;
 --
 
 CREATE TABLE public.spaces (
-    id character varying(64) NOT NULL,
-    verified boolean DEFAULT false NOT NULL,
-    created_at timestamp(3) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    creator character varying(64) NOT NULL,
-    name character varying(255) NOT NULL,
-    updated_at timestamp(3) without time zone NOT NULL,
-    avatar character varying(255),
-    admin_usernames_v1 jsonb[],
-    domains text[] DEFAULT ARRAY[]::text[],
-    auth_settings json DEFAULT '{}'::json NOT NULL,
-    features text[],
-    theme_colors json
+                               id character varying(64) NOT NULL,
+                               verified boolean DEFAULT false NOT NULL,
+                               created_at timestamp(3) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+                               creator character varying(64) NOT NULL,
+                               name character varying(255) NOT NULL,
+                               updated_at timestamp(3) without time zone NOT NULL,
+                               avatar character varying(255),
+                               admin_usernames_v1 jsonb[],
+                               domains text[] DEFAULT ARRAY[]::text[],
+                               auth_settings json DEFAULT '{}'::json NOT NULL,
+                               features text[],
+                               theme_colors json
 );
 
 
@@ -247,17 +247,17 @@ ALTER TABLE public.spaces OWNER TO admin;
 --
 
 CREATE TABLE public.users (
-    id text NOT NULL,
-    name text,
-    email text,
-    email_verified timestamp(3) without time zone,
-    image text,
-    public_address text,
-    phone_number text,
-    password text,
-    space_id text NOT NULL,
-    username text NOT NULL,
-    auth_provider text NOT NULL
+                              id text NOT NULL,
+                              name text,
+                              email text,
+                              email_verified timestamp(3) without time zone,
+                              image text,
+                              public_address text,
+                              phone_number text,
+                              password text,
+                              space_id text NOT NULL,
+                              username text NOT NULL,
+                              auth_provider text NOT NULL
 );
 
 
@@ -268,9 +268,9 @@ ALTER TABLE public.users OWNER TO admin;
 --
 
 CREATE TABLE public.verification_tokens (
-    identifier text NOT NULL,
-    token text NOT NULL,
-    expires timestamp(3) without time zone NOT NULL
+                                            identifier text NOT NULL,
+                                            token text NOT NULL,
+                                            expires timestamp(3) without time zone NOT NULL
 );
 
 
@@ -281,7 +281,7 @@ ALTER TABLE public.verification_tokens OWNER TO admin;
 --
 
 COPY public._prisma_migrations (id, checksum, finished_at, migration_name, logs, rolled_back_at, started_at, applied_steps_count) FROM stdin;
-cefad9b4-4d52-4f84-8c79-9c5987159dcc	6ae2ef594022c0b800193fed35479d154ae323943055daa7092ce09f29abc507	2024-08-15 07:50:20.486216-04	20240815115020_init	\N	\N	2024-08-15 07:50:20.422216-04	1
+3f81111f-a991-48d2-9a84-f758f01a85f5	d17a6a322c53f7e11c6e164352587c996cebf9dd0c51308bf84cd1b4da2790ce	2024-08-15 08:46:29.590098-04	20240815124629_init	\N	\N	2024-08-15 08:46:29.544566-04	1
 \.
 
 
@@ -305,7 +305,8 @@ COPY public.crypto_login_nonce (user_id, nonce, expires) FROM stdin;
 -- Data for Name: program_rubric_mappings; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
-COPY public.program_rubric_mappings (id, "programId", "rubricId") FROM stdin;
+COPY public.program_rubric_mappings (id, program_id, rubric_id) FROM stdin;
+mapping-1	program-1	rubric-1
 \.
 
 
@@ -314,6 +315,7 @@ COPY public.program_rubric_mappings (id, "programId", "rubricId") FROM stdin;
 --
 
 COPY public.programs (id, name, details, summary, space_id) FROM stdin;
+program-1	Test Program 1	Details of Test Program 1	Summary of Test Program 1	test-academy-eth
 \.
 
 
@@ -321,7 +323,7 @@ COPY public.programs (id, name, details, summary, space_id) FROM stdin;
 -- Data for Name: rating_cell_selections; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
-COPY public.rating_cell_selections (id, "rubricCellId", "rubricRatingId", comment, "userId") FROM stdin;
+COPY public.rating_cell_selections (id, rubric_cell_id, rubric_rating_id, comment, user_id) FROM stdin;
 \.
 
 
@@ -329,7 +331,15 @@ COPY public.rating_cell_selections (id, "rubricCellId", "rubricRatingId", commen
 -- Data for Name: rubric_cells; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
-COPY public.rubric_cells (id, description, "levelId", "criteriaId", "rubricId", "isArchived") FROM stdin;
+COPY public.rubric_cells (id, description, level_id, criteria_id, rubric_id, is_archived) FROM stdin;
+cell-1	Detailed and accurate content.	level-1	criteria-1	rubric-1	f
+cell-2	Adequate content.	level-2	criteria-1	rubric-1	f
+cell-3	Content needs more clarity.	level-3	criteria-1	rubric-1	f
+cell-4	Content is unclear.	level-4	criteria-1	rubric-1	f
+cell-5	Clear and comprehensible.	level-1	criteria-2	rubric-1	f
+cell-6	Mostly comprehensible.	level-2	criteria-2	rubric-1	f
+cell-7	Somewhat comprehensible.	level-3	criteria-2	rubric-1	f
+cell-8	Incomprehensible.	level-4	criteria-2	rubric-1	f
 \.
 
 
@@ -337,7 +347,9 @@ COPY public.rubric_cells (id, description, "levelId", "criteriaId", "rubricId", 
 -- Data for Name: rubric_criterias; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
-COPY public.rubric_criterias (id, title, "rubricId", "isArchived") FROM stdin;
+COPY public.rubric_criterias (id, title, rubric_id, is_archived) FROM stdin;
+criteria-1	Content	rubric-1	f
+criteria-2	Comprehensibility	rubric-1	f
 \.
 
 
@@ -345,7 +357,11 @@ COPY public.rubric_criterias (id, title, "rubricId", "isArchived") FROM stdin;
 -- Data for Name: rubric_levels; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
-COPY public.rubric_levels (id, "columnName", description, score, "rubricId", "isArchived") FROM stdin;
+COPY public.rubric_levels (id, column_name, description, score, rubric_id, is_archived) FROM stdin;
+level-1	Excellent	Complete and clear.	4	rubric-1	f
+level-2	Good	Generally clear.	3	rubric-1	f
+level-3	Fair	Somewhat unclear.	2	rubric-1	f
+level-4	Improvement	Unclear.	1	rubric-1	f
 \.
 
 
@@ -353,7 +369,7 @@ COPY public.rubric_levels (id, "columnName", description, score, "rubricId", "is
 -- Data for Name: rubric_ratings; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
-COPY public.rubric_ratings (id, "rubricId", "userId") FROM stdin;
+COPY public.rubric_ratings (id, rubric_id, user_id) FROM stdin;
 \.
 
 
@@ -362,6 +378,7 @@ COPY public.rubric_ratings (id, "rubricId", "userId") FROM stdin;
 --
 
 COPY public.rubrics (id, name, summary, description, space_id) FROM stdin;
+rubric-1	Test Rubric 1	Summary of Test Rubric 1	Description of Test Rubric 1	test-academy-eth
 \.
 
 
@@ -378,6 +395,7 @@ COPY public.sessions (id, session_token, user_id, expires) FROM stdin;
 --
 
 COPY public.spaces (id, verified, created_at, creator, name, updated_at, avatar, admin_usernames_v1, domains, auth_settings, features, theme_colors) FROM stdin;
+test-academy-eth	t	2023-07-08 19:19:16.998	clhjfyne00000mc08gc4wsqs0	The Test Academy	2023-08-10 20:04:43.664	https://d31h13bdjwgzxs.cloudfront.net/academy/daocubator/daocubator_logo.jpg	{}	{}	{"enableLogin":false,"loginOptions":["Discord","MetaMask","Google","Coinbase","Near"]}	{}	{"primaryColor":"#384aff","bgColor":"#ffffff","textColor":"#57606a","linkColor":"#111111","headingColor":"#111111","borderColor":"#d0d7de","blockBg":"#F5F9FF"}
 \.
 
 
@@ -516,38 +534,38 @@ CREATE UNIQUE INDEX crypto_login_nonce_user_id_key ON public.crypto_login_nonce 
 
 
 --
--- Name: program_rubric_mappings_programId_rubricId_key; Type: INDEX; Schema: public; Owner: admin
+-- Name: program_rubric_mappings_program_id_rubric_id_key; Type: INDEX; Schema: public; Owner: admin
 --
 
-CREATE UNIQUE INDEX "program_rubric_mappings_programId_rubricId_key" ON public.program_rubric_mappings USING btree ("programId", "rubricId");
-
-
---
--- Name: rating_cell_selections_rubricCellId_rubricRatingId_key; Type: INDEX; Schema: public; Owner: admin
---
-
-CREATE UNIQUE INDEX "rating_cell_selections_rubricCellId_rubricRatingId_key" ON public.rating_cell_selections USING btree ("rubricCellId", "rubricRatingId");
+CREATE UNIQUE INDEX program_rubric_mappings_program_id_rubric_id_key ON public.program_rubric_mappings USING btree (program_id, rubric_id);
 
 
 --
--- Name: rubric_cells_rubricId_levelId_criteriaId_key; Type: INDEX; Schema: public; Owner: admin
+-- Name: rating_cell_selections_rubric_cell_id_rubric_rating_id_key; Type: INDEX; Schema: public; Owner: admin
 --
 
-CREATE UNIQUE INDEX "rubric_cells_rubricId_levelId_criteriaId_key" ON public.rubric_cells USING btree ("rubricId", "levelId", "criteriaId");
-
-
---
--- Name: rubric_criterias_rubricId_title_key; Type: INDEX; Schema: public; Owner: admin
---
-
-CREATE UNIQUE INDEX "rubric_criterias_rubricId_title_key" ON public.rubric_criterias USING btree ("rubricId", title);
+CREATE UNIQUE INDEX rating_cell_selections_rubric_cell_id_rubric_rating_id_key ON public.rating_cell_selections USING btree (rubric_cell_id, rubric_rating_id);
 
 
 --
--- Name: rubric_ratings_rubricId_userId_key; Type: INDEX; Schema: public; Owner: admin
+-- Name: rubric_cells_rubric_id_level_id_criteria_id_key; Type: INDEX; Schema: public; Owner: admin
 --
 
-CREATE UNIQUE INDEX "rubric_ratings_rubricId_userId_key" ON public.rubric_ratings USING btree ("rubricId", "userId");
+CREATE UNIQUE INDEX rubric_cells_rubric_id_level_id_criteria_id_key ON public.rubric_cells USING btree (rubric_id, level_id, criteria_id);
+
+
+--
+-- Name: rubric_criterias_rubric_id_title_key; Type: INDEX; Schema: public; Owner: admin
+--
+
+CREATE UNIQUE INDEX rubric_criterias_rubric_id_title_key ON public.rubric_criterias USING btree (rubric_id, title);
+
+
+--
+-- Name: rubric_ratings_rubric_id_user_id_key; Type: INDEX; Schema: public; Owner: admin
+--
+
+CREATE UNIQUE INDEX rubric_ratings_rubric_id_user_id_key ON public.rubric_ratings USING btree (rubric_id, user_id);
 
 
 --
@@ -609,19 +627,19 @@ ALTER TABLE ONLY public.crypto_login_nonce
 
 
 --
--- Name: program_rubric_mappings program_rubric_mappings_programId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: admin
+-- Name: program_rubric_mappings program_rubric_mappings_program_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: admin
 --
 
 ALTER TABLE ONLY public.program_rubric_mappings
-    ADD CONSTRAINT "program_rubric_mappings_programId_fkey" FOREIGN KEY ("programId") REFERENCES public.programs(id) ON UPDATE CASCADE ON DELETE RESTRICT;
+    ADD CONSTRAINT program_rubric_mappings_program_id_fkey FOREIGN KEY (program_id) REFERENCES public.programs(id) ON UPDATE CASCADE ON DELETE RESTRICT;
 
 
 --
--- Name: program_rubric_mappings program_rubric_mappings_rubricId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: admin
+-- Name: program_rubric_mappings program_rubric_mappings_rubric_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: admin
 --
 
 ALTER TABLE ONLY public.program_rubric_mappings
-    ADD CONSTRAINT "program_rubric_mappings_rubricId_fkey" FOREIGN KEY ("rubricId") REFERENCES public.rubrics(id) ON UPDATE CASCADE ON DELETE RESTRICT;
+    ADD CONSTRAINT program_rubric_mappings_rubric_id_fkey FOREIGN KEY (rubric_id) REFERENCES public.rubrics(id) ON UPDATE CASCADE ON DELETE RESTRICT;
 
 
 --
@@ -633,83 +651,83 @@ ALTER TABLE ONLY public.programs
 
 
 --
--- Name: rating_cell_selections rating_cell_selections_rubricCellId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: admin
+-- Name: rating_cell_selections rating_cell_selections_rubric_cell_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: admin
 --
 
 ALTER TABLE ONLY public.rating_cell_selections
-    ADD CONSTRAINT "rating_cell_selections_rubricCellId_fkey" FOREIGN KEY ("rubricCellId") REFERENCES public.rubric_cells(id) ON UPDATE CASCADE ON DELETE RESTRICT;
+    ADD CONSTRAINT rating_cell_selections_rubric_cell_id_fkey FOREIGN KEY (rubric_cell_id) REFERENCES public.rubric_cells(id) ON UPDATE CASCADE ON DELETE RESTRICT;
 
 
 --
--- Name: rating_cell_selections rating_cell_selections_rubricRatingId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: admin
---
-
-ALTER TABLE ONLY public.rating_cell_selections
-    ADD CONSTRAINT "rating_cell_selections_rubricRatingId_fkey" FOREIGN KEY ("rubricRatingId") REFERENCES public.rubric_ratings(id) ON UPDATE CASCADE ON DELETE RESTRICT;
-
-
---
--- Name: rating_cell_selections rating_cell_selections_userId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: admin
+-- Name: rating_cell_selections rating_cell_selections_rubric_rating_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: admin
 --
 
 ALTER TABLE ONLY public.rating_cell_selections
-    ADD CONSTRAINT "rating_cell_selections_userId_fkey" FOREIGN KEY ("userId") REFERENCES public.users(id) ON UPDATE CASCADE ON DELETE SET NULL;
+    ADD CONSTRAINT rating_cell_selections_rubric_rating_id_fkey FOREIGN KEY (rubric_rating_id) REFERENCES public.rubric_ratings(id) ON UPDATE CASCADE ON DELETE RESTRICT;
 
 
 --
--- Name: rubric_cells rubric_cells_criteriaId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: admin
+-- Name: rating_cell_selections rating_cell_selections_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: admin
 --
 
-ALTER TABLE ONLY public.rubric_cells
-    ADD CONSTRAINT "rubric_cells_criteriaId_fkey" FOREIGN KEY ("criteriaId") REFERENCES public.rubric_criterias(id) ON UPDATE CASCADE ON DELETE SET NULL;
-
-
---
--- Name: rubric_cells rubric_cells_levelId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: admin
---
-
-ALTER TABLE ONLY public.rubric_cells
-    ADD CONSTRAINT "rubric_cells_levelId_fkey" FOREIGN KEY ("levelId") REFERENCES public.rubric_levels(id) ON UPDATE CASCADE ON DELETE SET NULL;
+ALTER TABLE ONLY public.rating_cell_selections
+    ADD CONSTRAINT rating_cell_selections_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id) ON UPDATE CASCADE ON DELETE RESTRICT;
 
 
 --
--- Name: rubric_cells rubric_cells_rubricId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: admin
+-- Name: rubric_cells rubric_cells_criteria_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: admin
 --
 
 ALTER TABLE ONLY public.rubric_cells
-    ADD CONSTRAINT "rubric_cells_rubricId_fkey" FOREIGN KEY ("rubricId") REFERENCES public.rubrics(id) ON UPDATE CASCADE ON DELETE RESTRICT;
+    ADD CONSTRAINT rubric_cells_criteria_id_fkey FOREIGN KEY (criteria_id) REFERENCES public.rubric_criterias(id) ON UPDATE CASCADE ON DELETE RESTRICT;
 
 
 --
--- Name: rubric_criterias rubric_criterias_rubricId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: admin
+-- Name: rubric_cells rubric_cells_level_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.rubric_cells
+    ADD CONSTRAINT rubric_cells_level_id_fkey FOREIGN KEY (level_id) REFERENCES public.rubric_levels(id) ON UPDATE CASCADE ON DELETE RESTRICT;
+
+
+--
+-- Name: rubric_cells rubric_cells_rubric_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.rubric_cells
+    ADD CONSTRAINT rubric_cells_rubric_id_fkey FOREIGN KEY (rubric_id) REFERENCES public.rubrics(id) ON UPDATE CASCADE ON DELETE RESTRICT;
+
+
+--
+-- Name: rubric_criterias rubric_criterias_rubric_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: admin
 --
 
 ALTER TABLE ONLY public.rubric_criterias
-    ADD CONSTRAINT "rubric_criterias_rubricId_fkey" FOREIGN KEY ("rubricId") REFERENCES public.rubrics(id) ON UPDATE CASCADE ON DELETE RESTRICT;
+    ADD CONSTRAINT rubric_criterias_rubric_id_fkey FOREIGN KEY (rubric_id) REFERENCES public.rubrics(id) ON UPDATE CASCADE ON DELETE RESTRICT;
 
 
 --
--- Name: rubric_levels rubric_levels_rubricId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: admin
+-- Name: rubric_levels rubric_levels_rubric_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: admin
 --
 
 ALTER TABLE ONLY public.rubric_levels
-    ADD CONSTRAINT "rubric_levels_rubricId_fkey" FOREIGN KEY ("rubricId") REFERENCES public.rubrics(id) ON UPDATE CASCADE ON DELETE RESTRICT;
+    ADD CONSTRAINT rubric_levels_rubric_id_fkey FOREIGN KEY (rubric_id) REFERENCES public.rubrics(id) ON UPDATE CASCADE ON DELETE RESTRICT;
 
 
 --
--- Name: rubric_ratings rubric_ratings_rubricId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: admin
---
-
-ALTER TABLE ONLY public.rubric_ratings
-    ADD CONSTRAINT "rubric_ratings_rubricId_fkey" FOREIGN KEY ("rubricId") REFERENCES public.rubrics(id) ON UPDATE CASCADE ON DELETE RESTRICT;
-
-
---
--- Name: rubric_ratings rubric_ratings_userId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: admin
+-- Name: rubric_ratings rubric_ratings_rubric_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: admin
 --
 
 ALTER TABLE ONLY public.rubric_ratings
-    ADD CONSTRAINT "rubric_ratings_userId_fkey" FOREIGN KEY ("userId") REFERENCES public.users(id) ON UPDATE CASCADE ON DELETE SET NULL;
+    ADD CONSTRAINT rubric_ratings_rubric_id_fkey FOREIGN KEY (rubric_id) REFERENCES public.rubrics(id) ON UPDATE CASCADE ON DELETE RESTRICT;
+
+
+--
+-- Name: rubric_ratings rubric_ratings_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.rubric_ratings
+    ADD CONSTRAINT rubric_ratings_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id) ON UPDATE CASCADE ON DELETE RESTRICT;
 
 
 --
@@ -717,7 +735,7 @@ ALTER TABLE ONLY public.rubric_ratings
 --
 
 ALTER TABLE ONLY public.rubrics
-    ADD CONSTRAINT rubrics_space_id_fkey FOREIGN KEY (space_id) REFERENCES public.spaces(id) ON UPDATE CASCADE ON DELETE SET NULL;
+    ADD CONSTRAINT rubrics_space_id_fkey FOREIGN KEY (space_id) REFERENCES public.spaces(id) ON UPDATE CASCADE ON DELETE RESTRICT;
 
 
 --
@@ -738,194 +756,4 @@ REVOKE USAGE ON SCHEMA public FROM PUBLIC;
 --
 -- PostgreSQL database dump complete
 --
-
-
-
-insert into
-    public.spaces (
-        id,
-        verified,
-        created_at,
-        creator,
-        name,
-        updated_at,
-        avatar,
-        admin_usernames_v1,
-        domains,
-        auth_settings,
-        features,
-        theme_colors
-    )
-values
-    (
-        'test-academy-eth',
-        true,
-        '2023-07-08 19:19:16.998',
-        'clhjfyne00000mc08gc4wsqs0',
-        'The Test Academy',
-        '2023-08-10 20:04:43.664',
-        'https://d31h13bdjwgzxs.cloudfront.net/academy/daocubator/daocubator_logo.jpg',
-        '{}',
-        '{}',
-        '{"enableLogin":false,"loginOptions":["Discord","MetaMask","Google","Coinbase","Near"]}',
-        '{}',
-        '{"primaryColor":"#384aff","bgColor":"#ffffff","textColor":"#57606a","linkColor":"#111111","headingColor":"#111111","borderColor":"#d0d7de","blockBg":"#F5F9FF"}'
-    );
-
-INSERT INTO public.programs (
-    id,
-    name,
-    details,
-    summary,
-    space_id
-)
-VALUES (
-    'program-1',
-    'Test Program 1',
-    'Details of Test Program 1',
-    'Summary of Test Program 1',
-    'test-academy-eth'
-);
-
-INSERT INTO public.rubrics (
-    id,
-    name,
-    summary,
-    description,
-    space_id
-)
-VALUES (
-    'rubric-1',
-    'Test Rubric 1',
-    'Summary of Test Rubric 1',
-    'Description of Test Rubric 1',
-    'test-academy-eth'
-);
-INSERT INTO public.program_rubric_mappings (
-    id,
-    "programId",
-    "rubricId"
-)
-VALUES (
-    'mapping-1',
-    'program-1',
-    'rubric-1'
-);
-INSERT INTO public.rubric_criterias (
-    id,
-    title,
-    "rubricId"
-)
-VALUES (
-    'criteria-1',
-    'Content',
-    'rubric-1'
-),
-(
-    'criteria-2',
-    'Comprehensibility',
-    'rubric-1'
-);
-
-INSERT INTO public.rubric_levels (
-    id,
-    "columnName",
-    description,
-    score,
-    "rubricId"
-)
-VALUES (
-    'level-1',
-    'Excellent',
-    'Complete and clear.',
-    4,
-    'rubric-1'
-),
-(
-    'level-2',
-    'Good',
-    'Generally clear.',
-    3,
-    'rubric-1'
-),
-(
-    'level-3',
-    'Fair',
-    'Somewhat unclear.',
-    2,
-    'rubric-1'
-),
-(
-    'level-4',
-    'Improvement',
-    'Unclear.',
-    1,
-    'rubric-1'
-);
-
-INSERT INTO public.rubric_cells (
-    id,
-    description,
-    "rubricId",
-    "levelId",
-    "criteriaId"
-)
-VALUES (
-    'cell-1',
-    'Detailed and accurate content.',
-    'rubric-1',
-    'level-1',
-    'criteria-1'
-),
-(
-    'cell-2',
-    'Adequate content.',
-    'rubric-1',
-    'level-2',
-    'criteria-1'
-),
-(
-    'cell-3',
-    'Content needs more clarity.',
-    'rubric-1',
-    'level-3',
-    'criteria-1'
-),
-(
-    'cell-4',
-    'Content is unclear.',
-    'rubric-1',
-    'level-4',
-    'criteria-1'
-),
-(
-    'cell-5',
-    'Clear and comprehensible.',
-    'rubric-1',
-    'level-1',
-    'criteria-2'
-),
-(
-    'cell-6',
-    'Mostly comprehensible.',
-    'rubric-1',
-    'level-2',
-    'criteria-2'
-),
-(
-    'cell-7',
-    'Somewhat comprehensible.',
-    'rubric-1',
-    'level-3',
-    'criteria-2'
-),
-(
-    'cell-8',
-    'Incomprehensible.',
-    'rubric-1',
-    'level-4',
-    'criteria-2'
-);
-
-
 

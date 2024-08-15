@@ -141,16 +141,16 @@ model Rubric {
   RubricCell   RubricCell[]
   programs     ProgramRubricMapping[]
   RubricRating RubricRating[]
-  spaceId      String?                @map("space_id") @db.VarChar(255)
-  Space        Space?                 @relation(fields: [spaceId], references: [id])
+  spaceId      String                 @map("space_id") @db.VarChar(255)
+  Space        Space                  @relation(fields: [spaceId], references: [id])
 
   @@map("rubrics")
 }
 
 model ProgramRubricMapping {
   id        String  @id @default(uuid()) @db.VarChar(64)
-  programId String  @db.VarChar(64)
-  rubricId  String  @db.VarChar(64)
+  programId String  @map("program_id") @db.VarChar(64)
+  rubricId  String  @map("rubric_id") @db.VarChar(64)
   program   Program @relation(fields: [programId], references: [id])
   rubric    Rubric  @relation(fields: [rubricId], references: [id])
 
@@ -160,13 +160,13 @@ model ProgramRubricMapping {
 
 model RubricLevel {
   id          String       @id @default(uuid()) @db.VarChar(64)
-  columnName  String       @db.VarChar(64)
+  columnName  String       @map("column_name") @db.VarChar(64)
   description String?      @db.VarChar(64)
-  score       Int?
-  rubricId    String       @db.VarChar(64)
+  score       Int
+  rubricId    String       @map("rubric_id") @db.VarChar(64)
   rubric      Rubric       @relation(fields: [rubricId], references: [id])
   RubricCell  RubricCell[]
-  isArchived  Boolean      @default(false)
+  isArchived  Boolean      @default(false) @map("is_archived")
 
   @@map("rubric_levels")
 }
@@ -174,10 +174,10 @@ model RubricLevel {
 model RubricCriteria {
   id         String       @id @default(uuid())
   title      String       @db.VarChar(64)
-  rubricId   String       @db.VarChar(64)
+  rubricId   String       @map("rubric_id") @db.VarChar(64)
   rubric     Rubric       @relation(fields: [rubricId], references: [id])
   RubricCell RubricCell[]
-  isArchived Boolean      @default(false)
+  isArchived Boolean      @default(false) @map("is_archived")
 
   @@unique([rubricId, title])
   @@map("rubric_criterias")
@@ -186,14 +186,14 @@ model RubricCriteria {
 model RubricCell {
   id          String                @id @default(uuid()) @db.VarChar(64)
   description String                @db.VarChar(64)
-  levelId     String?               @db.VarChar(64)
-  criteriaId  String?               @db.VarChar(64)
-  rubricId    String                @db.VarChar(64)
+  levelId     String                @map("level_id") @db.VarChar(64)
+  criteriaId  String                @map("criteria_id") @db.VarChar(64)
+  rubricId    String                @map("rubric_id") @db.VarChar(64)
   rubric      Rubric                @relation(fields: [rubricId], references: [id])
-  level       RubricLevel?          @relation(fields: [levelId], references: [id])
-  criteria    RubricCriteria?       @relation(fields: [criteriaId], references: [id])
+  level       RubricLevel           @relation(fields: [levelId], references: [id])
+  criteria    RubricCriteria        @relation(fields: [criteriaId], references: [id])
   ratings     RatingCellSelection[]
-  isArchived  Boolean               @default(false)
+  isArchived  Boolean               @default(false) @map("is_archived")
 
   @@unique([rubricId, levelId, criteriaId])
   @@map("rubric_cells")
@@ -201,11 +201,11 @@ model RubricCell {
 
 model RubricRating {
   id         String                @id @default(uuid()) @db.VarChar(64)
-  rubricId   String                @db.VarChar(64)
-  rubric     Rubric?               @relation(fields: [rubricId], references: [id])
+  rubricId   String                @map("rubric_id") @db.VarChar(64)
+  rubric     Rubric                @relation(fields: [rubricId], references: [id])
   selections RatingCellSelection[]
-  User       User?                 @relation(fields: [userId], references: [id])
-  userId     String?
+  User       User                  @relation(fields: [userId], references: [id])
+  userId     String                @map("user_id")
 
   @@unique([rubricId, userId])
   @@map("rubric_ratings")
@@ -213,13 +213,13 @@ model RubricRating {
 
 model RatingCellSelection {
   id             String       @id @default(uuid()) @db.VarChar(64)
-  rubricCellId   String       @db.VarChar(64)
-  rubricRatingId String       @db.VarChar(64)
+  rubricCellId   String       @map("rubric_cell_id") @db.VarChar(64)
+  rubricRatingId String       @map("rubric_rating_id") @db.VarChar(64)
   rubricCell     RubricCell   @relation(fields: [rubricCellId], references: [id])
   rubricRating   RubricRating @relation(fields: [rubricRatingId], references: [id])
   comment        String
-  User           User?        @relation(fields: [userId], references: [id])
-  userId         String?
+  User           User         @relation(fields: [userId], references: [id])
+  userId         String       @map("user_id")
 
   @@unique([rubricCellId, rubricRatingId])
   @@map("rating_cell_selections")
