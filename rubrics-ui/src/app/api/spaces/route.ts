@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/prisma';
 import { isRequestUserSuperAdmin } from '@/app/api/helpers/space/checkEditSpacePermission';
-import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
+import { prisma } from '@/prisma';
+import { NextRequest, NextResponse } from 'next/server';
+
 export async function POST(req: NextRequest) {
   const { domain } = await req.json();
 
@@ -24,6 +24,16 @@ export async function POST(req: NextRequest) {
       },
     });
     return NextResponse.json({ space });
+  }
+  if (domain === 'myrubrics.com' || domain === 'myrubrics-localhost.com') {
+    const space = await prisma.space.findFirst({
+      where: {
+        id: {
+          equals: 'my-rubrics-home',
+        },
+      },
+    });
+    return NextResponse.json({ space }, { status: 200 });
   }
 
   if (domain === 'dodao-ui-robinnagpal.vercel.app' || domain === 'localhost' || domain?.includes('.vercel.app')) {

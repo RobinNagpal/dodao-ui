@@ -1,21 +1,23 @@
+import { fetchPrograms, ProgramsGrid } from '@/app/programs/ProgramsGrid';
+import { fetchRubrics, RubricsGrid } from '@/app/rubrics/RubricsGrid';
+import HomePage from '@/components/HomePage/HomePage';
+import { headers } from 'next/headers';
 import React from 'react';
-import { GetStartedButton } from '@dodao/web-core/components/home/common/GetStartedButton';
-import { getServerSession } from 'next-auth';
-import { redirect } from 'next/navigation';
 
 async function Home() {
-  const session = await getServerSession();
+  const headersList = headers();
+  const host = headersList.get('host')?.split(':')?.[0];
 
-  if (session) {
-    redirect('/homepage');
+  if (host === 'myrubrics.com' || host === 'myrubrics-localhost.com') {
+    return <HomePage />;
   }
+
+  const programs = await fetchPrograms();
+  const rubrics = await fetchRubrics();
   return (
     <div>
-      <div className="mt-10 flex items-center justify-center gap-x-6">
-        <GetStartedButton href={`/login`}>
-          Get started <span aria-hidden="true">→</span>
-        </GetStartedButton>
-      </div>
+      <ProgramsGrid programs={programs} />
+      <RubricsGrid rubrics={rubrics} />
     </div>
   );
 }

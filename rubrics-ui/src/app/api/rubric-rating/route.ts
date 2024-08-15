@@ -43,13 +43,21 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ status: 200, body: 'Data saved successfully' });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ status: 500, body: 'An error occurred' });
+    return NextResponse.json({ error: 'An error occurred' }, { status: 500 });
   }
 }
 export async function GET(req: NextRequest) {
   const url = new URL(req.url);
   const userId = url.searchParams.get('userId');
 
+  if (!userId) {
+    return NextResponse.json(
+      {
+        error: "Missing 'userId' query parameter",
+      },
+      { status: 400 }
+    );
+  }
   try {
     const comments = await prisma.ratingCellSelection.findMany({
       where: {
@@ -64,6 +72,6 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ status: 200, body: comments });
   } catch (error) {
     console.error('Error fetching comments:', error);
-    return NextResponse.json({ status: 500, body: 'Internal server error' });
+    return NextResponse.json({ error: 'An error occurred' }, { status: 500 });
   }
 }

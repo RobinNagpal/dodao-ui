@@ -2,8 +2,12 @@ import { prisma } from '@/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(req: NextRequest, res: NextResponse) {
+  const spaceId = req.nextUrl.searchParams.get('spaceId');
+  if (!spaceId) {
+    return NextResponse.json({ error: "Missing 'spaceId' query parameter" }, { status: 400 });
+  }
+
   try {
-    const spaceId = req.nextUrl.searchParams.get('spaceId');
     const rubrics = await prisma.rubric.findMany({
       where: {
         spaceId: spaceId,
