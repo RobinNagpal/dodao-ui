@@ -50,8 +50,7 @@ export async function POST(req: NextRequest) {
   if (isUserSuperAdmin) {
     return NextResponse.json(await prisma.space.findMany());
   }
-  if (!domain) return NextResponse.json('No domain passed', { status: 400 });
-  if (!space) return NextResponse.json('No space found for domain', { status: 404 });
 
-  return NextResponse.json({ space: null }, { status: 200 });
+  if (!domain) return NextResponse.json('No domain passed ' + domain, { status: 400 });
+  if (!space) return NextResponse.json('No space found for domain - ' + domain, { status: 404 });
 }
