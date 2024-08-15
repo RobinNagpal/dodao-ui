@@ -176,6 +176,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, onUpsert: (byt
 
       if (response) {
         showNotification({ type: 'success', message: 'Byte Saved', heading: 'Success 🎉' });
+        await onUpsert(response.id!);
       } else {
         showNotification({ type: 'error', message: $t('notify.somethingWentWrong') });
         console.error('Failed to save byte');
