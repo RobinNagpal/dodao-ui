@@ -4,6 +4,7 @@ import { markdownAIRewriteCommandFacotry } from '@dodao/web-core/components/app/
 import rewriteMarkdownContentPrompt from '@dodao/web-core/components/app/Markdown/rewriteMarkdownContentPrompt';
 import SelectAIGeneratorModal from '@dodao/web-core/components/app/Markdown/SelectAIGeneratorModal';
 import GenerateContentUsingAIModal from '@/components/app/Modal/AI/GenerateContentUsingAIModal';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import PhotoIcon from '@heroicons/react/24/solid/PhotoIcon';
 import RobotIconSolid from '@dodao/web-core/components/core/icons/RobotIconSolid';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
@@ -156,7 +157,7 @@ function MarkdownEditor({
   };
 
   const rewriteContent = async (text: string) => {
-    const response = await axios.post('/api/openAI/ask-chat-completion-ai', {
+    const response = await axios.post(`${getBaseUrl()}/api/openAI/ask-chat-completion-ai`, {
       input: {
         messages: [
           {

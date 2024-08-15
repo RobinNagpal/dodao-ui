@@ -98,21 +98,23 @@ model CryptoLoginNonce {
 }
 
 model Space {
-  id               String   @id @db.VarChar(64)
-  verified         Boolean  @default(false)
-  createdAt        DateTime @default(now()) @map("created_at")
-  creator          String   @db.VarChar(64)
-  name             String   @db.VarChar(255)
-  updatedAt        DateTime @updatedAt @map("updated_at")
-  avatar           String?  @db.VarChar(255)
+  id               String    @id @db.VarChar(64)
+  verified         Boolean   @default(false)
+  createdAt        DateTime  @default(now()) @map("created_at")
+  creator          String    @db.VarChar(64)
+  name             String    @db.VarChar(255)
+  updatedAt        DateTime  @updatedAt @map("updated_at")
+  avatar           String?   @db.VarChar(255)
   /// [UsernameAndName]
-  adminUsernamesV1 Json[]   @map("admin_usernames_v1") @db.JsonB
-  domains          String[] @default([])
+  adminUsernamesV1 Json[]    @map("admin_usernames_v1") @db.JsonB
+  domains          String[]  @default([])
   /// [AuthSettings]
-  authSettings     Json     @default("{}") @map("auth_settings") @db.Json
+  authSettings     Json      @default("{}") @map("auth_settings") @db.Json
   features         String[]
   /// [ThemeColors]
-  themeColors      Json?    @map("theme_colors") @db.Json
+  themeColors      Json?     @map("theme_colors") @db.Json
+  Program          Program[]
+  Rubric           Rubric[]
 
   @@map("spaces")
 }
@@ -123,8 +125,10 @@ model Program {
   details String?
   summary String
   rubrics ProgramRubricMapping[]
+  spaceId String                 @map("space_id") @db.VarChar(255)
+  Space   Space                  @relation(fields: [spaceId], references: [id])
 
-  @@map("program")
+  @@map("programs")
 }
 
 model Rubric {
@@ -137,8 +141,10 @@ model Rubric {
   RubricCell   RubricCell[]
   programs     ProgramRubricMapping[]
   RubricRating RubricRating[]
+  spaceId      String?                @map("space_id") @db.VarChar(255)
+  Space        Space?                 @relation(fields: [spaceId], references: [id])
 
-  @@map("rubric")
+  @@map("rubrics")
 }
 
 model ProgramRubricMapping {
@@ -149,7 +155,7 @@ model ProgramRubricMapping {
   rubric    Rubric  @relation(fields: [rubricId], references: [id])
 
   @@unique([programId, rubricId])
-  @@map("program_rubric_mapping")
+  @@map("program_rubric_mappings")
 }
 
 model RubricLevel {
@@ -162,7 +168,7 @@ model RubricLevel {
   RubricCell  RubricCell[]
   isArchived  Boolean      @default(false)
 
-  @@map("rubric_level")
+  @@map("rubric_levels")
 }
 
 model RubricCriteria {
@@ -174,7 +180,7 @@ model RubricCriteria {
   isArchived Boolean      @default(false)
 
   @@unique([rubricId, title])
-  @@map("rubric_criteria")
+  @@map("rubric_criterias")
 }
 
 model RubricCell {
@@ -190,7 +196,7 @@ model RubricCell {
   isArchived  Boolean               @default(false)
 
   @@unique([rubricId, levelId, criteriaId])
-  @@map("rubric_cell")
+  @@map("rubric_cells")
 }
 
 model RubricRating {
@@ -202,7 +208,7 @@ model RubricRating {
   userId     String?
 
   @@unique([rubricId, userId])
-  @@map("rubric_rating")
+  @@map("rubric_ratings")
 }
 
 model RatingCellSelection {
@@ -216,5 +222,5 @@ model RatingCellSelection {
   userId         String?
 
   @@unique([rubricCellId, rubricRatingId])
-  @@map("rating_cell_selection")
+  @@map("rating_cell_selections")
 }

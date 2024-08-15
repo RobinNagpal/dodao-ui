@@ -3,8 +3,11 @@ import React, { useState, useEffect } from 'react';
 import RubricDetails from '@/components/RubricDetails/RubricDetails';
 import { getSession } from 'next-auth/react';
 import { useLoginModalContext } from '@dodao/web-core/ui/contexts/LoginModalContext';
-import { ProgramServerResponse, SessionProps } from '@/types/rubricsTypes/types';
-const CreateRubric = () => {
+import { ProgramServerResponse, SessionProps, SpaceWithIntegrationsFragment } from '@/types/rubricsTypes/types';
+interface CreateRubricProps {
+  space: SpaceWithIntegrationsFragment;
+}
+const CreateRubric: React.FC<CreateRubricProps> = ({ space }) => {
   const [selectedProgramId, setSelectedProgramId] = useState<string | null>(null);
   const [rubricDetails, setRubricDetails] = useState<{
     name: string;
@@ -56,6 +59,7 @@ const CreateRubric = () => {
             onSelectProgram={handleSelectProgram}
             selectedProgramId={selectedProgramId}
             isGlobalAccess={true}
+            space={space}
           />
         </div>
       ) : (

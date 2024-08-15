@@ -11,6 +11,7 @@ import {
 } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
 import { GitCourseSubmissionModel } from '@dodao/web-core/types/deprecated/models/course/GitCourseSubmissionModel';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import isEqual from 'lodash/isEqual';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
@@ -217,7 +218,7 @@ export const useCourseSubmission = (space: Space, courseKey: string): CourseSubm
       setCourseSubmission(submission);
     } else {
       try {
-        const response = await fetch('/api/courses/submission/initialize-course-submission', {
+        const response = await fetch(`${getBaseUrl()}/api/courses/submission/initialize-course-submission`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

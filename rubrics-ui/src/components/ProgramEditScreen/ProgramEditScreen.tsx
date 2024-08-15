@@ -4,15 +4,16 @@ import React, { useEffect, useState } from 'react';
 import ProgramInput from '@/components/ProgramInput/ProgramInput';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import Button from '@dodao/web-core/components/core/buttons/Button';
-import { EditProgramRubricProps } from '@/types/rubricsTypes/types';
+import { EditProgramRubricProps, SpaceWithIntegrationsFragment } from '@/types/rubricsTypes/types';
 import MarkdownEditor from '@/components/MarkdownEditor/MarkdownEditor';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 
 interface EditProgramProps {
   programId?: string;
+  space: SpaceWithIntegrationsFragment;
 }
 
-function EditProgram({ programId }: EditProgramProps) {
+function EditProgram({ programId, space }: EditProgramProps) {
   const [rubrics, setRubrics] = useState<EditProgramRubricProps[]>([]);
   const [showSelectRubricsModal, setShowSelectRubricsModal] = useState<boolean>(false);
   const [selectedRubrics, setSelectedRubrics] = useState<string[]>([]);
@@ -27,7 +28,7 @@ function EditProgram({ programId }: EditProgramProps) {
 
   useEffect(() => {
     // Fetch rubrics to create mapping
-    fetch('http://localhost:3004/api/rubrics-program')
+    fetch(`http://localhost:3004/api/rubrics-program?spaceId=${space.id}`)
       .then((res) => res.json())
       .then((data) => setRubrics(data.body))
       .catch((error) => console.error('Error fetching rubrics:', error));
@@ -58,6 +59,7 @@ function EditProgram({ programId }: EditProgramProps) {
     const requestData = {
       ...newProgram,
       rubricIds: selectedRubrics,
+      spaceId: space.id,
     };
 
     const url = programId ? `http://localhost:3004/api/program/${programId}` : 'http://localhost:3004/api/programs';

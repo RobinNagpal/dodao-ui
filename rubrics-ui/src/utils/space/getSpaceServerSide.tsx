@@ -3,7 +3,7 @@ import { headers } from 'next/headers';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 export async function getSpaceBasedOnHostHeader(reqHeaders: Headers) {
   const host = reqHeaders.get('host')?.split(':')?.[0];
-  let response = await fetch(getBaseUrl() + '/api/space', {
+  let response = await fetch(getBaseUrl() + '/api/spaces', {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -16,6 +16,7 @@ export async function getSpaceBasedOnHostHeader(reqHeaders: Headers) {
 
   if (response.ok) {
     const spaceResponse = await response.json();
+
     return spaceResponse.space;
   }
   return null;

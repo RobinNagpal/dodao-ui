@@ -4,6 +4,7 @@ import GenerateFromDalleModal from '@/components/app/Image/GenerateFromDalleModa
 import UploadFromUnsplashModal from '@/components/app/Image/UploadFromUnsplashModal';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import { ImageSource, ImageType } from '@/graphql/generated/generated-types';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import ArrowUpTrayIcon from '@heroicons/react/24/solid/ArrowUpTrayIcon';
 import PhotoIcon from '@heroicons/react/24/solid/PhotoIcon';
 
@@ -42,7 +43,7 @@ export default function SelectImageInputModal({ imageType, objectId, spaceId, op
         open={imageUploadModalType === ImageModalSelectionType.UploadFromUnsplash}
         onClose={onClose}
         onInput={async (imageUrl) => {
-          const payload = await axios.post('/api/s3-files', {
+          const payload = await axios.post(`${getBaseUrl()}/api/s3-files`, {
             spaceId,
             input: { imageUrl, imageType, objectId, name: imageUrl.split('/').pop()!, imageSource: ImageSource.Unsplash },
           });

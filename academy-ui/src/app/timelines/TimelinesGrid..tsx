@@ -6,8 +6,8 @@ import RowLoading from '@dodao/web-core/components/core/loaders/RowLoading';
 import TimelineSummaryCard from '@/components/timelines/Timelines/TimelineSummaryCard';
 import NoTimeline from '@/components/timelines/Timelines/NoTimelines';
 import { Grid4Cols } from '@dodao/web-core/components/core/grids/Grid4Cols';
-import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Timeline } from '@/graphql/generated/generated-types';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
@@ -17,7 +17,7 @@ function TimelinesInformation({ space }: SpaceProps) {
   useEffect(() => {
     async function fetchData() {
       setLoading(true);
-      const { data } = await axios.get(`/api/timelines/?spaceId=${space.id}`);
+      const { data } = await axios.get(`${getBaseUrl()}/api/timelines?spaceId=${space.id}`);
       setData(data);
       setLoading(false);
     }

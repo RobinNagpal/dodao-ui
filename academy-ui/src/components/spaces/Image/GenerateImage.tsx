@@ -4,6 +4,7 @@ import { ChatCompletionRequestMessageRoleEnum, ImagesResponse, OpenAiChatComplet
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Input from '@dodao/web-core/components/core/input/Input';
 import TextareaAutosize from '@dodao/web-core/components/core/textarea/TextareaAutosize';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import axios from 'axios';
 import React, { useState } from 'react';
 
@@ -109,7 +110,7 @@ export default function GenerateImage() {
   const generateImagePrompts = async (regenerate: boolean = false) => {
     regenerate ? setRegeneratingImagePrompts(true) : setGeneratingImagePrompts(true);
 
-    const response = await axios.post('/api/openAI/ask-chat-completion-ai', {
+    const response = await axios.post(`${getBaseUrl()}/api/openAI/ask-chat-completion-ai`, {
       input: {
         messages: [
           {

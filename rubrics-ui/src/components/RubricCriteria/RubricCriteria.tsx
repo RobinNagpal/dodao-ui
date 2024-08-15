@@ -74,28 +74,33 @@ const RubricCriteria: React.FC<RubricCriteriaProps> = ({
     fetchData();
   }, [userId, criteria]);
 
-  useEffect(() => {
-    const newFormattedRateRubrics = rowScoresAndComments
-      .filter((entry) => entry.criteria === criteria)
-      .map((entry) => ({
-        criteria: entry.criteria,
-        score: entry.score,
-        comment: entry.comment,
-        cellId: entry.cellId,
-        userId: userId,
-        rubricId: rubricId,
-      }));
-    console.log(newFormattedRateRubrics, 'new');
+  const newFormattedRateRubrics = rowScoresAndComments
+    .filter((entry) => entry.criteria === criteria)
+    .map((entry) => ({
+      criteria: entry.criteria,
+      score: entry.score,
+      comment: entry.comment,
+      cellId: entry.cellId,
+      userId: userId,
+      rubricId: rubricId,
+    }));
 
-    setFormattedRateRubrics(newFormattedRateRubrics);
-  }, [rowScoresAndComments]);
+  // setFormattedRateRubrics(newFormattedRateRubrics);
+
+  // useEffect(() => {
+  //   if (formattedRateRubrics.length > 0) {
+  //     sendRatedRubricsToServer();
+  //   }
+  // }, [formattedRateRubrics]);
+  console.log(newFormattedRateRubrics, 'outside');
 
   const sendRatedRubricsToServer = async () => {
+    console.log(newFormattedRateRubrics, 'inside');
     try {
       const response = await fetch('http://localhost:3004/api/rubric-rating', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formattedRateRubrics),
+        body: JSON.stringify(newFormattedRateRubrics),
       });
 
       if (!response.ok) {
@@ -156,10 +161,8 @@ const RubricCriteria: React.FC<RubricCriteriaProps> = ({
       ...prev,
       [criteria]: clickedCellIndex,
     }));
-
-    handleCloseModal();
-
     sendRatedRubricsToServer();
+    handleCloseModal();
   };
 
   const handleCellClick = (criteria: string, cellIndex: number, cellId: string) => {
@@ -201,6 +204,7 @@ const RubricCriteria: React.FC<RubricCriteriaProps> = ({
   const handleCloseConfirmation = () => {
     setIsConfirmationOpen(false);
   };
+
   // console.log(clickedCellId);
   // console.log(rubrics);
   // console.log(criteria);

@@ -1,5 +1,6 @@
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { GuideSettings, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useState } from 'react';
 
 export type UpdateSpaceGuideSettingsHelper = {
@@ -24,7 +25,7 @@ export function useEditSpaceGuideSettings(space: SpaceWithIntegrationsFragment):
   async function updateGuideSettings() {
     try {
       setUpdating(true);
-      const response = await fetch('/api/spaces/update-guide-settings', {
+      const response = await fetch(`${getBaseUrl()}/api/spaces/update-guide-settings`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

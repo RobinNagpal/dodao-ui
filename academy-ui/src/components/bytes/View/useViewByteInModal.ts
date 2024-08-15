@@ -5,6 +5,7 @@ import { Session } from '@dodao/web-core/types/auth/Session';
 import { LocalStorageKeys } from '@dodao/web-core/types/deprecated/models/enums';
 import { ByteSubmissionError } from '@dodao/web-core/types/errors/error';
 import { StepItemResponse, StepResponse, TempByteSubmission } from '@/utils/byte/TempByteSubmission';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import union from 'lodash/union';
 import { useSession } from 'next-auth/react';
 import { useState } from 'react';
@@ -150,7 +151,7 @@ export function useViewByteInModal({ space, byteId, stepOrder, fetchByteFn }: Us
     };
 
     try {
-      const response = await fetch('/api/byte/submit-byte', {
+      const response = await fetch(`${getBaseUrl()}/api/byte/submit-byte`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

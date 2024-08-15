@@ -1,11 +1,12 @@
 import EditRubric from '@/components/EditRubric/EditRubric';
 import React from 'react';
-
-const Page = ({ params }: { params: { rubricId: string } }) => {
+import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
+const Page = async ({ params }: { params: { rubricId: string } }) => {
   const { rubricId } = params;
+  const space = (await getSpaceServerSide())!;
   return (
     <div>
-      <EditRubric rubricId={rubricId} />
+      <EditRubric rubricId={rubricId} space={space} />
     </div>
   );
 };

@@ -8,6 +8,7 @@ import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenMo
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
@@ -28,7 +29,7 @@ export default function ByteCollectionCardAdminDropdown({ byteCollection, space 
 
   async function upsertByteCollectionFn(byteCollectionn: EditByteCollection) {
     try {
-      const result = await fetch('/api/byte-collection/update-byte-collection', {
+      const result = await fetch(`${getBaseUrl()}/api/byte-collection/update-byte-collection`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -1,14 +1,15 @@
 'use client';
 
+import CourseSummaryCard from '@/components/courses/Summary/CourseSummaryCard';
+import NoCourses from '@/components/courses/Summary/NoCourses';
 import withSpace, { SpaceProps } from '@/contexts/withSpace';
+import { CourseFragment } from '@/graphql/generated/generated-types';
 import Block from '@dodao/web-core/components/app/Block';
 import { Grid3Cols } from '@dodao/web-core/components/core/grids/Grid3Cols';
 import RowLoading from '@dodao/web-core/components/core/loaders/RowLoading';
-import CourseSummaryCard from '@/components/courses/Summary/CourseSummaryCard';
-import NoCourses from '@/components/courses/Summary/NoCourses';
-import { CourseFragment, useCoursesQueryQuery } from '@/graphql/generated/generated-types';
-import React, { useEffect, useState } from 'react';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 
 function CoursesGrid({ space }: SpaceProps) {
   const [data, setData] = useState<{ courses?: CourseFragment[] }>();
@@ -16,7 +17,7 @@ function CoursesGrid({ space }: SpaceProps) {
   useEffect(() => {
     async function fetchData() {
       setLoading(true);
-      const { data } = await axios.get(`/api/courses/?spaceId=${space.id}`);
+      const { data } = await axios.get(`${getBaseUrl()}/api/courses?spaceId=${space.id}`);
       setData(data);
       setLoading(false);
     }

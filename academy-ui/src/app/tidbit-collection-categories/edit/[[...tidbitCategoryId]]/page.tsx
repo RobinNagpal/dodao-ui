@@ -6,6 +6,7 @@ import PageLoading from '@dodao/web-core/components/core/loaders/PageLoading';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { SpaceWithIntegrationsFragment, CategoryWithByteCollection } from '@/graphql/generated/generated-types';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -21,7 +22,7 @@ function EditTidbitCategorySpace(props: { space: SpaceWithIntegrationsFragment; 
     async function fetchData() {
       if (!props.params.tidbitCategoryId) return;
       setLoading(true);
-      const response = await axios.get(`/api/byte-collection-categories/${props.params.tidbitCategoryId![0]}?spaceId=${props.space.id}`);
+      const response = await axios.get(`${getBaseUrl()}/api/byte-collection-categories/${props.params.tidbitCategoryId![0]}?spaceId=${props.space.id}`);
       setData(response.data.byteCollectionCategoryWithByteCollections);
       setLoading(false);
     }

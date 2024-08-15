@@ -6,6 +6,7 @@ import { Table, TableRow } from '@dodao/web-core/components/core/table/Table';
 import TextareaAutosize from '@dodao/web-core/components/core/textarea/TextareaAutosize';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { ChatCompletionRequestMessageRoleEnum, ImagesResponse } from '@/graphql/generated/generated-types';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
@@ -204,7 +205,7 @@ export default function GenerateStoryBoard() {
     setGeneratingImagePrompts(true);
     const imagePrompts: string[] = [];
     for (const panel of storyboardScript?.panels || []) {
-      const response = await axios.post('/api/openAI/ask-chat-completion-ai', {
+      const response = await axios.post(`${getBaseUrl()}/api/openAI/ask-chat-completion-ai`, {
         input: {
           messages: [
             {
