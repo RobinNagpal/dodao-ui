@@ -60,6 +60,16 @@ function TopNavContents(props: {
   onClickCreate: () => void;
   onClickLogin: () => void;
 }) {
+  if (props.space?.id === 'my-rubrics-home') {
+    return (
+      <>
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex h-16 justify-between"></div>
+        </div>
+      </>
+    );
+  }
+
   return (
     <>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

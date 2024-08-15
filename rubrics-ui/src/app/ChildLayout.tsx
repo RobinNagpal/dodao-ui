@@ -22,10 +22,6 @@ import ReactGA from 'react-ga4';
 import styles from './ChildLayout.module.scss';
 import { Footer } from '@/components/HomePage/components/Footer';
 function PageTopNav(props: { space: WebCoreSpace }) {
-  if (props.space?.id === 'my-rubrics-home') {
-    return null;
-  }
-
   return <TopNav space={props.space} />;
 }
 
