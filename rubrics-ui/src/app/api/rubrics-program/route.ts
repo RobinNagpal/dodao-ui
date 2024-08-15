@@ -4,7 +4,6 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function GET(req: NextRequest, res: NextResponse) {
   try {
     const spaceId = req.nextUrl.searchParams.get('spaceId');
-
     const rubrics = await prisma.rubric.findMany({
       where: {
         spaceId: spaceId,
@@ -15,6 +14,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
         summary: true,
       },
     });
+
     return NextResponse.json({ status: 200, body: rubrics });
   } catch (error) {
     console.error('Error getting Rubrics:', error);
