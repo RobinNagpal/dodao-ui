@@ -12,6 +12,6 @@ export const withErrorHandling =
       return response;
     } catch (error) {
       await logError((error as any)?.response?.data || 'an error occured', {}, error as any, null, null);
-      return NextResponse.json({ message: 'An error occured' }, { status: 500 });
+      return NextResponse.json({ message: (error as any)?.response?.data || 'an error occured' }, { status: 500 });
     }
   };

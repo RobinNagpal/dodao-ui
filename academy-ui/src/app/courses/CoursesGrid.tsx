@@ -17,7 +17,7 @@ function CoursesGrid({ space }: SpaceProps) {
   useEffect(() => {
     async function fetchData() {
       setLoading(true);
-      const { data } = await axios.get(`${getBaseUrl()}/api/courses/?spaceId=${space.id}`);
+      const { data } = await axios.get(`${getBaseUrl()}/api/courses?spaceId=${space.id}`);
       setData(data);
       setLoading(false);
     }
