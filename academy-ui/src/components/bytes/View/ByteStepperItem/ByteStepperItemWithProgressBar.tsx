@@ -110,11 +110,6 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space, set
     setNextButtonClicked(true);
     setIncompleteUserInput(false);
 
-    if (!isQuestionAnswered()) {
-      document.getElementById('questionSection')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      return;
-    }
-
     if (isQuestionAnswered() && isDiscordConnected() && isUserInputComplete()) {
       setQuestionNotAnswered(true);
 
@@ -198,15 +193,13 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space, set
             isShortScreen={isShortScreen}
             imageHeight={imageHeight}
           />
-          <div id="questionSection">
-            <ByteStepperItemWarnings
-              showUseInputCompletionWarning={incompleteUserInput}
-              showQuestionsCompletionWarning={showQuestionsCompletionWarning}
-              isUserInputComplete={isUserInputComplete}
-              isQuestionAnswered={isQuestionAnswered}
-              isDiscordConnected={isDiscordConnected}
-            />
-          </div>
+          <ByteStepperItemWarnings
+            showUseInputCompletionWarning={incompleteUserInput}
+            showQuestionsCompletionWarning={showQuestionsCompletionWarning}
+            isUserInputComplete={isUserInputComplete}
+            isQuestionAnswered={isQuestionAnswered}
+            isDiscordConnected={isDiscordConnected}
+          />
         </div>
       </div>
       <div id="bottom-buttons" className="absolute bottom-6 w-full -mx-4 px-4 sm:-mx-8 ">

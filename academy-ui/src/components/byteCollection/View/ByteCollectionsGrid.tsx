@@ -22,8 +22,6 @@ export default function ByteCollectionsGrid({
       {!byteCollections?.length && (isAdmin ? <AddByteCollection space={space} /> : <NoByteCollections space={space} isAdmin={isAdmin} />)}
       {!!byteCollections?.length && (
         <Grid2Cols>
-          {isAdmin! && <AddByteCollection space={space} />}
-
           {byteCollections?.map((byteCollection, i) => (
             <ByteCollectionsCard
               key={i}
@@ -33,6 +31,7 @@ export default function ByteCollectionsGrid({
               isAdmin={isAdmin}
             />
           ))}
+          {isAdmin! && <AddByteCollection space={space} />}
         </Grid2Cols>
       )}
     </>

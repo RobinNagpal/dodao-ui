@@ -76,7 +76,9 @@ export default function FileUploader({ spaceId, objectId, imageType, onLoading, 
   return (
     <div className={className}>
       {loading ? (
-        <LoadingSpinner />
+        <div className="pl-4">
+          <LoadingSpinner />
+        </div>
       ) : (
         <FileSelect>
           <input type="file" ref={inputRef} onChange={handleFileChange} accept={allowedFileTypes.join(', ')} />
