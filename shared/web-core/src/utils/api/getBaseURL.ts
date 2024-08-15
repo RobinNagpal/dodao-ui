@@ -1,7 +1,9 @@
 export default function getBaseUrl() {
   const nextHost = process.env.NEXT_PUBLIC_VERCEL_URL;
 
-  if (process.env?.NEXT_PUBLIC_VERCEL_ENV === 'production' || process.env?.NEXT_PUBLIC_VERCEL_ENV === 'preview') {
+  const nextEnv = process.env.NEXT_PUBLIC_VERCEL_ENV;
+
+  if (nextEnv === 'production' || nextEnv === 'preview') {
     if (typeof window !== 'undefined') {
       return ''; // We don't want the same host since we use cookies for session management
     } else {
