@@ -23,7 +23,6 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { revalidateTidbitCollections } from '@/revalidateTags';
-import axios from 'axios';
 
 export default function EditByteView(props: {
   space: SpaceWithIntegrationsFragment;
@@ -188,18 +187,17 @@ export default function EditByteView(props: {
           onClose={() => setShowDeleteModal(false)}
           onDelete={async () => {
             await revalidateTidbitCollections();
-            await axios.post(
-              `/api/byte/delete-byte`,
-              {
+            fetch(`${getBaseUrl()}/api/byte/byte`, {
+              method: 'DELETE',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
                 byteId: byteId,
                 spaceId: space.id,
-              },
-              {
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-              }
-            );
+              }),
+            });
+
             setShowDeleteModal(false);
             const timestamp = new Date().getTime();
             router.push(`/tidbit-collections?update=${timestamp}`);
