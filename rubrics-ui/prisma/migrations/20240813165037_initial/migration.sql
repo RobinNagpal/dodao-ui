@@ -81,6 +81,7 @@ CREATE TABLE "program" (
     "name" TEXT NOT NULL,
     "details" TEXT,
     "summary" TEXT NOT NULL,
+    "space_id" VARCHAR(255) NOT NULL,
 
     CONSTRAINT "program_pkey" PRIMARY KEY ("id")
 );
@@ -91,6 +92,7 @@ CREATE TABLE "rubric" (
     "name" VARCHAR(64) NOT NULL,
     "summary" TEXT NOT NULL,
     "description" TEXT,
+    "space_id" VARCHAR(255),
 
     CONSTRAINT "rubric_pkey" PRIMARY KEY ("id")
 );
@@ -205,6 +207,12 @@ ALTER TABLE "sessions" ADD CONSTRAINT "sessions_user_id_fkey" FOREIGN KEY ("user
 
 -- AddForeignKey
 ALTER TABLE "crypto_login_nonce" ADD CONSTRAINT "crypto_login_nonce_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "program" ADD CONSTRAINT "program_space_id_fkey" FOREIGN KEY ("space_id") REFERENCES "spaces"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "rubric" ADD CONSTRAINT "rubric_space_id_fkey" FOREIGN KEY ("space_id") REFERENCES "spaces"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "program_rubric_mapping" ADD CONSTRAINT "program_rubric_mapping_programId_fkey" FOREIGN KEY ("programId") REFERENCES "program"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

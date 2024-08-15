@@ -1,8 +1,12 @@
 import ProgramEdit from '@/components/EditProgram/EditProgram';
-function EditProgram() {
+import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
+
+async function EditProgram() {
+  const space = (await getSpaceServerSide())!;
+
   return (
     <div>
-      <ProgramEdit />
+      <ProgramEdit space={space} />
     </div>
   );
 }

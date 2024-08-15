@@ -7,7 +7,7 @@ import { getSession } from 'next-auth/react';
 import { useLoginModalContext } from '@dodao/web-core/ui/contexts/LoginModalContext';
 import { SessionProps, EditRubricProps } from '@/types/rubricsTypes/types';
 
-const EditRubric: React.FC<EditRubricProps> = ({ rubricId }) => {
+const EditRubric: React.FC<EditRubricProps> = ({ rubricId, space }) => {
   const [selectedProgramId, setSelectedProgramId] = useState<string | null>(null);
   const [serverResponse, setServerResponse] = useState<SampleData | null>(null);
   const [rubricDetails, setRubricDetails] = useState<{
@@ -105,6 +105,7 @@ const EditRubric: React.FC<EditRubricProps> = ({ rubricId }) => {
               setRubricDetails={setRubricDetails}
               isEditAccess={true}
               rubricId={rubricId}
+              space={space}
             />
             <RubricsPage
               isEditAccess={true}
