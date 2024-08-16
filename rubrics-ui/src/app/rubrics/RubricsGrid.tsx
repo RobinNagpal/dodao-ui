@@ -1,10 +1,10 @@
-import { Rubric } from '@/types/rubricsTypes/types';
+import { Rubric, SpaceWithIntegrationsFragment } from '@/types/rubricsTypes/types';
 import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
 import Card from '@dodao/web-core/components/core/card/Card';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import Link from 'next/link';
 import React from 'react';
-
+import RubricList from '@/app/rubrics/RubricsList';
 export const fetchRubrics = async (): Promise<Rubric[]> => {
   const space = (await getSpaceServerSide())!;
 
@@ -17,24 +17,12 @@ export const fetchRubrics = async (): Promise<Rubric[]> => {
   }
 };
 
-export function RubricsGrid(props: { rubrics: Rubric[] }) {
+export function RubricsGrid(props: { rubrics: Rubric[]; space: SpaceWithIntegrationsFragment }) {
+  const { rubrics, space } = props;
   return (
     <div className="container mx-auto py-8 px-4">
       <h1 className="text-4xl text-center font-extrabold mb-10">Rubrics</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {props.rubrics.map((rubric) => (
-          <Link href={`/rubrics/view/${rubric.id}`} key={rubric.id}>
-            <Card className="cursor-pointer">
-              <div className="p-4">
-                <h2 className="text-xl font-semibold mb-2" style={{ color: 'var(--primary-color)' }}>
-                  {rubric.name}
-                </h2>
-                <p>{rubric.summary}</p>
-              </div>
-            </Card>
-          </Link>
-        ))}
-      </div>
+      <RubricList rubrics={rubrics} space={space} />
     </div>
   );
 }
