@@ -104,17 +104,12 @@ function TopNavContents(props: {
           </div>
           <div className="flex items-center">
             <div className="flex-shrink-0">
-              <CreateOrLoginButton
-                session={props.session as Session}
-                space={props.space}
-                onClickCreate={props.onClickCreate}
-                onClickLogin={props.onClickLogin}
-              />
+              <CreateOrLoginButton session={props.session} space={props.space} onClickCreate={props.onClickCreate} onClickLogin={props.onClickLogin} />
             </div>
 
             {props.session && props.space && (
               <div className="hidden md:ml-4 md:flex md:flex-shrink-0 md:items-center">
-                <DesktopProfileMenu session={props.session as Session} space={props.space} />
+                <DesktopProfileMenu session={props.session} space={props.space} />
               </div>
             )}
           </div>

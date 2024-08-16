@@ -5,11 +5,8 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 
 export async function getSpaceBasedOnHostHeader(reqHeaders: Headers) {
   const host = reqHeaders.get('host')?.split(':')?.[0];
-  const response = await axios.get(getBaseUrl() + '/api/spaces', {
-    params: {
-      domain: host!,
-    },
-  });
+  const spaceUrl = getBaseUrl() + '/api/spaces?domain=' + host;
+  const response = await axios.get(spaceUrl);
 
   const space = response?.data?.[0] as SpaceWithIntegrationsFragment;
   return response.status === 200 ? space : null;

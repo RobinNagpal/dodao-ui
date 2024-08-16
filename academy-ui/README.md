@@ -30,6 +30,7 @@ TWITTER_CLIENT_SECRET=
 
 NEXTAUTH_SECRET=
 DODAO_AUTH_SECRET=
+NEXT_PUBLIC_VERCEL_URL=
 ```
 
 2. Adjust the DATABASE_URL accordingly, you can find the port number from postgresql.conf file
@@ -82,7 +83,43 @@ from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
 
+## Init Database
+
+We use docker-compose to run the database. To run the database, open a new terminal and run the following command
+`docker-compose up`
+
+```yaml
+  db:
+    image: postgres
+    container_name: dodao-ui-db
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: next_app_localhost_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+```
+
+Here are the details of the database container that will be created.
+
+If you see carefully, we are mounting a volume `./data` to `/var/lib/postgresql/data`. This is where the database
+files will be stored. If you want to delete the database and start fresh, you can delete the `./data` folder.
+
+We are also mounting a file `./init.sql` to `/docker-entrypoint-initdb.d/init.sql`. This file is used to create the
+database and tables.
+
+Note: To create database from scratch, you can delete the `./data` folder and restart the docker-compose.
+
+Here is a video explanation of the database setup [Setup Database using Docker](https://drive.google.com/file/d/1Gg-KWR_OqEPLIjDMUIZmslXuZ0CUpAnZ/view?usp=sharing):
+
 ## Testing different Academy websites on local
+
+The tidbits and academy websites are mapped to different domains. To test the websites on local, you need to map the
+domains to your local machine.
 
 Add the following to your /etc/hosts file
 
@@ -100,27 +137,42 @@ Here is an example of how it looks for me on my local machine (mac)
 # localhost is used to configure the loopback interface
 # when the system is booting.  Do not change this entry.
 ##
-127.0.0.1    dodao-localhost.academy compound-localhost.education  uniswap-localhost.university creditunion-localhost.academy fuse-localhost.university dodao-localhost.io
-127.0.0.1    kleros-localhost.academy empowerher-localhost.academy optimism-localhost.university
-127.0.0.1	 cryptogelato-localhost.com arbitrum-localhost.education lifeinsure-localhost.tips
-127.0.0.1	 opportunity-bank.tidbitshub-localhost.org dodao-tidbits.tidbitshub-localhost.org
+127.0.0.1    dodao-localhost.academy
+127.0.0.1    compound-localhost.education  
+127.0.0.1    uniswap-localhost.university  
+127.0.0.1    dodao-localhost.io 
+127.0.0.1	 arbitrum-localhost.education
 127.0.0.1	 test-tidbits.tidbitshub-localhost.org
+127.0.0.1	 alchemix.tidbitshub-localhost.org
+```
+
+#### For Arbitrum Academy Site
+
+You /etc/hosts file should have this entry
+
+```
+127.0.0.1	 arbitrum-localhost.education
+```
+
+#### For Alchemix Tidbits Site
+
+You /etc/hosts file should have this entry
+
+```
+127.0.0.1	 alchemix.tidbitshub-localhost.org
 ```
 
 Here is the table with the mapping of the domains to the academy websites
 
-| Project          | Local Academy Website Domain              | Website URL                                           |
-| ---------------- | ----------------------------------------- | ----------------------------------------------------- |
-| dodao            | dodao-localhost.academy                   | http://dodao-localhost.academy:3000                   |
-| compound         | compound-localhost.education              | http://compound-localhost.education:3000              |
-| uniswap          | uniswap-localhost.university              | http://uniswap-localhost.university:3000              |
-| arbitrum         | arbitrum-localhost.education              | http://arbitrum-localhost.education:3000              |
-| optimism         | optimism-localhost.university             | http://optimism-localhost.university:3000             |
-| cryptogelato     | cryptogelato-localhost.com                | http://cryptogelato-localhost.com:3000                |
-| lifeinsure       | lifeinsure-localhost.tips                 | http://lifeinsure-localhost.tips:3000                 |
-| Opportunity Bank | opportunity-bank.tidbitshub-localhost.org | http://opportunity-bank.tidbitshub-localhost.org:3000 |
-| DoDAO Tidbits    | dodao-tidbits.tidbitshub-localhost.org    | http://dodao-tidbits.tidbitshub-localhost.org:3000    |
-| Test Tidbits     | test-tidbits.tidbitshub-localhost.org     | http://test-tidbits.tidbitshub-localhost.org:3000     |
+| Project          | Local Academy Website Domain          | Website URL                                       | NEXT_PUBLIC_VERCEL_URL env variable |
+|------------------|---------------------------------------|---------------------------------------------------|-------------------------------------|
+| DoDAO            | dodao-localhost.academy               | http://dodao-localhost.academy:3000               | tidbitshub.org                      |
+| Compound         | compound-localhost.education          | http://compound-localhost.education:3000          | tidbitshub.org                      |
+| Uniswap          | uniswap-localhost.university          | http://uniswap-localhost.university:3000          | tidbitshub.org                      |
+| DoDAO            | dodao-localhost.io                    | http://dodao-localhost.io:3000                    | tidbitshub.org                      |
+| Arbitrum         | arbitrum-localhost.education          | http://arbitrum-localhost.education:3000          | tidbitshub.org                      |
+| Test Tidbits     | test-tidbits.tidbitshub-localhost.org | http://test-tidbits.tidbitshub-localhost.org:3000 | tidbitshub.org                      |
+| Alchemix Tidbits | alchemix.tidbitshub-localhost.org     | http://alchemix.tidbitshub-localhost.org:3000     | tidbitshub.org                      |
 
 ## Coding Workflow
 
