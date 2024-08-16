@@ -22,7 +22,7 @@ interface RubricListProps {
   space: SpaceWithIntegrationsFragment;
 }
 
-const RubricList: React.FC<RubricListProps> = ({ rubrics }) => {
+const RubricList: React.FC<RubricListProps> = ({ rubrics, space }) => {
   const [programNames, setProgramNames] = useState<Record<string, string[]>>({});
   const columnsHeadings = ['Rubric Name', 'Summary', 'Programs'];
   const columnsWidthPercents = [25, 25, 50];
