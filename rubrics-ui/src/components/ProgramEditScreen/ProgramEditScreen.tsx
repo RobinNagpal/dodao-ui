@@ -28,7 +28,7 @@ function EditProgram({ programId, space }: EditProgramProps) {
 
   useEffect(() => {
     // Fetch rubrics to create mapping
-    fetch(`http://localhost:3004/api/rubrics-program?spaceId=${space.id}`)
+    fetch(`/api/rubrics-program?spaceId=${space.id}`)
       .then((res) => res.json())
       .then((data) => setRubrics(data.body))
       .catch((error) => console.error('Error fetching rubrics:', error));
@@ -36,7 +36,7 @@ function EditProgram({ programId, space }: EditProgramProps) {
 
   useEffect(() => {
     if (programId) {
-      fetch(`http://localhost:3004/api/program?programId=${programId}`)
+      fetch(`/api/program?programId=${programId}`)
         .then((res) => res.json())
         .then((data) => {
           const { name, details, summary, rubricIds } = data.body;

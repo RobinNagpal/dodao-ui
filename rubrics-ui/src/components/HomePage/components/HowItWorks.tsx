@@ -31,10 +31,10 @@ const resources = [
 
 export default function Resources() {
   return (
-    <section id="resources" aria-labelledby="resources-title" className="scroll-mt-14 py-16 sm:scroll-mt-32 sm:py-20 lg:py-32">
+    <section id="resources" aria-labelledby="resources-title" className="scroll-mt-12 py-10 sm:scroll-mt-20 sm:py-20 lg:py-5">
       <Container>
         <h1 className="mt-8 font-display text-4xl font-bold tracking-tight text-slate-900 text-center" style={{ color: 'var(--primary-color)' }}>
-          How giving feedback with Rubric works
+          How it works
         </h1>
       </Container>
       <Container className="mt-16">

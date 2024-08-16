@@ -114,7 +114,7 @@ const RubricCriteria: React.FC<RubricCriteriaProps> = ({
 
   const sendRatedRubricsToServer = async () => {
     try {
-      const response = await fetch('http://localhost:3004/api/rubric-rating', {
+      const response = await fetch('/api/rubric-rating', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formattedRateRubrics),

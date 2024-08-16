@@ -16,7 +16,7 @@ const ViewRubric: React.FC<ViewRubricProps> = ({ rubricId, space }) => {
   const spaceId = space.id;
   const fetchRubricData = async () => {
     try {
-      const response = await fetch(`http://localhost:3004/api/rubrics/${rubricId}?spaceId=${spaceId}`);
+      const response = await fetch(`/api/rubrics/${rubricId}?spaceId=${spaceId}`);
       const data = await response.json();
 
       if (response.ok) {
