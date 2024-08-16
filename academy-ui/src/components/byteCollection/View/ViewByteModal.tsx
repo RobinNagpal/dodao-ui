@@ -123,7 +123,9 @@ export default function ViewByteModal({ space, selectedByteId, viewByteModalClos
                   }}
                 />
               </div>
-              <ByteStepper viewByteHelper={viewByteHelper} byte={viewByteHelper.byteRef} space={space} />
+              <div className="overflow-y-scroll overflow-x-hidden sticky">
+                <ByteStepper viewByteHelper={viewByteHelper} byte={viewByteHelper.byteRef} space={space} />
+              </div>
             </>
           ) : (
             <TidbitDetailsLoader />

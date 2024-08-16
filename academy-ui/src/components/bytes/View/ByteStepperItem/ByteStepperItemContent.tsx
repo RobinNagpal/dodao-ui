@@ -75,16 +75,18 @@ export default function ByteStepperItemContent({
   };
   if (!stepItems.some(isQuestion) && step.imageUrl && step.displayMode === ImageDisplayMode.FullScreenImage) {
     return (
-      <div className="absolute left-1/2  top-12 transform -translate-x-1/2 w-[100vw] rounded mx-auto">
+      <div className="absolute left-1/2 top-12 transform -translate-x-1/2 w-[100vw] rounded mx-auto">
         {width > height ? (
-          <img src={step.imageUrl} alt="byte" style={{ height: imageHeight }} className={`rounded mx-auto ${styles.imgContainer}`} />
+          <img src={step.imageUrl} alt="byte" style={{ height: imageHeight }} className={`sticky rounded mx-auto ${styles.imgContainer}`} />
         ) : (
-          <img src={step.imageUrl} alt="byte" style={{ maxHeight: imageHeight }} className={`rounded mx-auto ${styles.imgContainer}`} />
+          <img src={step.imageUrl} alt="byte" style={{ maxHeight: imageHeight }} className={`sticky rounded mx-auto ${styles.imgContainer}`} />
         )}
         <div id="heading" className="flex justify-center w-full mt-4">
           <h1 className={stepClasses.headingClasses}>{step.name || byte.name}</h1>
         </div>
-        <div id="summary" dangerouslySetInnerHTML={{ __html: stepContents }} className={`markdown-body text-center ` + stepClasses.contentClasses} />
+        <div className="ml-96 w-1/2 pl-8 pr-8">
+          <div id="summary" dangerouslySetInnerHTML={{ __html: stepContents }} className={`markdown-body text-justify ` + stepClasses.contentClasses} />
+        </div>
       </div>
     );
   }

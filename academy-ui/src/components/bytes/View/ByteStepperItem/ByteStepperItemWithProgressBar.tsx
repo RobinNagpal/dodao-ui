@@ -213,7 +213,7 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space, set
         {!isShortScreen && (
           <StepIndicatorProgress steps={viewByteHelper.byteRef?.steps?.length || 2} currentStep={activeStepOrder} className="py-4 hidden md:block sm:hidden" />
         )}
-        <div className="w-full sticky">
+        <div className="w-full">
           {isNotFirstStep && (
             <Button onClick={() => viewByteHelper.goToPreviousStep(step)} className="float-left ml-2 sm:ml-0">
               <span className="mr-2 font-bold">&#8592;</span>
