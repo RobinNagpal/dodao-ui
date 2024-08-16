@@ -1,8 +1,8 @@
 import { fetchRubrics, RubricsGrid } from '@/app/rubrics/RubricsGrid';
 import React from 'react';
-import { SpaceWithIntegrationsFragment } from '@/types/rubricsTypes/types';
-const RubricsList = async (props: { space: SpaceWithIntegrationsFragment }) => {
-  const { space } = props;
+import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
+const RubricsList = async () => {
+  const space = (await getSpaceServerSide())!;
   const rubrics = await fetchRubrics();
 
   return <RubricsGrid rubrics={rubrics} space={space} />;
