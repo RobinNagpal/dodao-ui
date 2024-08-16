@@ -4,12 +4,12 @@ import Image from 'next/image';
 
 export default function HowItWorksVideo() {
   return (
-    <section id="rubric-site" aria-labelledby="rubric-site-title" className="scroll-mt-14  sm:scroll-mt-32  pb-16">
+    <section id="rubric-site" aria-labelledby="rubric-site-title" className="">
       <Container>
         <div className="mx-auto lg:mx-0"></div>
-        <div className="py-16 sm:py-12">
-          <div className="mx-auto max-w-7xl px-6 lg:px-8"></div>
-          <div className="relative pt-16">
+        <div className="py-5 sm:py-12">
+          <div className="mx-auto max-w-5xl px-6 lg:px-8"></div>
+          <div className="relative pt-6">
             <div className="mx-auto max-w-7xl px-6 lg:px-8 py-16">
               <Image src={RubricVideo} alt="Rubric Site Gif" className="mb-[-12%]  rounded-xl ring-1 ring-gray-900/10" width={2432} height={1442} />
             </div>
