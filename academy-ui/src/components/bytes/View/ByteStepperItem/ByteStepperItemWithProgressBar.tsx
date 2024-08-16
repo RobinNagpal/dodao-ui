@@ -209,11 +209,11 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space, set
           </div>
         </div>
       </div>
-      <div id="bottom-buttons" className="absolute bottom-6 w-full -mx-4 px-4 sm:-mx-8 ">
+      <div id="bottom-buttons" className="absolute bottom-0 w-full -mx-4 px-4 sm:-mx-8 ">
         {!isShortScreen && (
           <StepIndicatorProgress steps={viewByteHelper.byteRef?.steps?.length || 2} currentStep={activeStepOrder} className="py-4 hidden md:block sm:hidden" />
         )}
-        <div className="w-full">
+        <div className="w-full sticky">
           {isNotFirstStep && (
             <Button onClick={() => viewByteHelper.goToPreviousStep(step)} className="float-left ml-2 sm:ml-0">
               <span className="mr-2 font-bold">&#8592;</span>
