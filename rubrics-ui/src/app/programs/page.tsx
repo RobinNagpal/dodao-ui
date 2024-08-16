@@ -1,8 +1,8 @@
 import { fetchPrograms, ProgramsGrid } from '@/app/programs/ProgramsGrid';
 import React from 'react';
-import { SpaceWithIntegrationsFragment } from '@/types/rubricsTypes/types';
-const ProgramsList = async (props: { space: SpaceWithIntegrationsFragment }) => {
-  const { space } = props;
+import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
+const ProgramsList = async () => {
+  const space = (await getSpaceServerSide())!;
   const programs = await fetchPrograms();
 
   return <ProgramsGrid programs={programs} space={space} />;
