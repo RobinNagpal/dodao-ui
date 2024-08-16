@@ -7,7 +7,7 @@ import { getSession } from 'next-auth/react';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import ConfirmationModal from '@/components/ConfirmationModal/ConfirmationModal';
 import CommentModal from '@/components/CommentModal/CommentModal';
-
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 const RubricCriteria: React.FC<RubricCriteriaProps> = ({
   criteria,
   rubrics,
@@ -38,7 +38,7 @@ const RubricCriteria: React.FC<RubricCriteriaProps> = ({
     const fetchData = async () => {
       if (userId && writeAccess) {
         try {
-          const response = await fetch(`http://localhost:3004/api/rubric-rating?userId=${userId}`);
+          const response = await fetch(`${getBaseUrl()}/api/rubric-rating?userId=${userId}`);
           if (!response.ok) {
             throw new Error('Failed to fetch comments');
           }
@@ -114,7 +114,7 @@ const RubricCriteria: React.FC<RubricCriteriaProps> = ({
 
   const sendRatedRubricsToServer = async () => {
     try {
-      const response = await fetch('/api/rubric-rating', {
+      const response = await fetch(`${getBaseUrl()}/api/rubric-rating`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formattedRateRubrics),

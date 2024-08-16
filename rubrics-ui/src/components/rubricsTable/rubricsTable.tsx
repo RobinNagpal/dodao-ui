@@ -4,7 +4,7 @@ import RubricCriteria from '@/components/RubricCriteria/RubricCriteria';
 import RubricLevel from '@/components/RubricLevel/RubricLevel';
 import EllipsisDropdown, { EllipsisDropdownItem } from '@dodao/web-core/src/components/core/dropdowns/EllipsisDropdown';
 import { useRouter } from 'next/navigation';
-
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 const initialRubrics: Record<string, string[]> = {
   Criteria: [
     'Complete. The speaker clearly conveys the main idea',
@@ -65,7 +65,7 @@ const RubricsPage: React.FC<RubricsPageProps> = ({
         const updatedLevel = ratingHeaders.find((header) => header.id === changedHeaderId);
 
         if (updatedLevel) {
-          await fetch(`/api/rubrics/${rubricId}/level/${changedHeaderId}`, {
+          await fetch(`${getBaseUrl()}/api/rubrics/${rubricId}/level/${changedHeaderId}`, {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json',
@@ -182,7 +182,7 @@ const RubricsPage: React.FC<RubricsPageProps> = ({
               newValue: newCriteriaName,
             });
 
-            await fetch(`/api/rubrics/${rubricId}/criteria/${criteriaId}`, {
+            await fetch(`${getBaseUrl()}/api/rubrics/${rubricId}/criteria/${criteriaId}`, {
               method: 'PUT',
               headers: {
                 'Content-Type': 'application/json',
@@ -225,7 +225,7 @@ const RubricsPage: React.FC<RubricsPageProps> = ({
   };
   async function updateRubricCell(rubricId: string | undefined, cellId: string, value: string) {
     try {
-      const response = await fetch(`/api/rubrics/${rubricId}/cell/${cellId}`, {
+      const response = await fetch(`${getBaseUrl()}/api/rubrics/${rubricId}/cell/${cellId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -259,7 +259,7 @@ const RubricsPage: React.FC<RubricsPageProps> = ({
       ];
 
       try {
-        const response = await fetch('/api/rubrics/', {
+        const response = await fetch(`${getBaseUrl()}/api/rubrics/`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -306,7 +306,7 @@ const RubricsPage: React.FC<RubricsPageProps> = ({
       if (criteriaId) {
         console.log(`Archived: ${criteriaId}`);
         try {
-          const response = await fetch(`/api/rubrics/${rubricId}/criteria/${criteriaId}`, {
+          const response = await fetch(`${getBaseUrl()}/api/rubrics/${rubricId}/criteria/${criteriaId}`, {
             method: 'DELETE',
             headers: {
               'Content-Type': 'application/json',
