@@ -215,6 +215,7 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
               onUpsert={async () => {
                 router.push(`/tidbits/view/${editByteModalState.byteId}`);
               }}
+              closeEditByteModal={closeByteEditModal}
             />
           </div>
         </FullScreenModal>
@@ -223,7 +224,7 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
       {editDemoModalState.isVisible && (
         <FullScreenModal open={true} onClose={closeDemoEditModal} title={'Edit Clickable Demo'}>
           <div className="text-left">
-            <EditClickableDemo demoId={editDemoModalState.demoId} byteCollection={byteCollection} />
+            <EditClickableDemo demoId={editDemoModalState.demoId} byteCollection={byteCollection} closeDemoEditModal={closeDemoEditModal} />
           </div>
         </FullScreenModal>
       )}
@@ -242,6 +243,7 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
                 onCancel={() => {
                   router.push('/tidbit-collections');
                 }}
+                closeEditShortModal={closeShortEditModal}
               />
             </PageWrapper>
           </div>

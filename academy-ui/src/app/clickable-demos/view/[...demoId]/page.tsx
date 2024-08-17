@@ -2,7 +2,7 @@
 
 import ClickableDemoModal from '@/components/clickableDemos/View/ClickableDemoModal';
 import withSpace from '@/contexts/withSpace';
-import { ClickableDemoWithSteps, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { ClickableDemoWithSteps, SpaceWithIntegrationsFragment, SpaceTypes } from '@/graphql/generated/generated-types';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import axios from 'axios';
@@ -40,7 +40,7 @@ function ViewClickableDemo({ params, space }: { params: { demoId: string[] }; sp
         clickableDemoWithSteps={data!.clickableDemoWithSteps}
         space={space}
         onClose={() => {
-          router.push(`/tidbit-collections`);
+          router.push(`${space.type === SpaceTypes.TidbitsSite ? '/' : '/tidbit-collections'}`);
         }}
       />
     );
