@@ -57,8 +57,7 @@ export async function GET(request: Request, { params }: { params: { rubricId: st
 
     const averageScores = Object.entries(criteriaUserScores).map(([criteriaId, userScores]) => {
       const userScoreAverages = Object.values(userScores).map((scores) => {
-        if (scores.length === 0) return 0;
-        return scores.reduce((sum, score) => sum + score, 0) / scores.length;
+        return scores.reduce((sum, score) => sum + score) / scores.length;
       });
 
       const overallAverage = userScoreAverages.length > 0 ? userScoreAverages.reduce((sum, avg) => sum + avg, 0) / userScoreAverages.length : 0;

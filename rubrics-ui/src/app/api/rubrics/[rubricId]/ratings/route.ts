@@ -4,7 +4,6 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function POST(req: NextRequest) {
   try {
     const data = await req.json();
-    console.log(data);
 
     for (const entry of data) {
       const rubricRating = await prisma.rubricRating.upsert({
@@ -49,7 +48,6 @@ export async function POST(req: NextRequest) {
 export async function GET(req: NextRequest, { params }: { params: { rubricId: string } }) {
   const url = new URL(req.url);
   const userId = url.searchParams.get('userId');
-
   if (!userId) {
     return NextResponse.json(
       {
@@ -68,20 +66,5 @@ export async function GET(req: NextRequest, { params }: { params: { rubricId: st
       selections: true,
     },
   });
-  try {
-    const comments = await prisma.ratingCellSelection.findMany({
-      where: {
-        userId: userId,
-      },
-      select: {
-        comment: true,
-        rubricCellId: true,
-      },
-    });
-
-    return NextResponse.json({ status: 200, body: comments });
-  } catch (error) {
-    console.error('Error fetching comments:', error);
-    return NextResponse.json({ error: 'An error occurred' }, { status: 500 });
-  }
+  return NextResponse.json({ rubricRating }, { status: 200 });
 }

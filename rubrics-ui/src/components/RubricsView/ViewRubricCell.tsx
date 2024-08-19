@@ -1,5 +1,3 @@
-'use client';
-
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { CheckCircleIcon } from '@heroicons/react/24/solid';
 import { RubricCell } from '@prisma/client';
@@ -7,7 +5,7 @@ import React from 'react';
 
 export interface ViewRubricCellProps {
   cell: RubricCell;
-  isRatingPresent: boolean;
+  isRatingPresent: boolean | undefined;
   session?: Session;
 }
 

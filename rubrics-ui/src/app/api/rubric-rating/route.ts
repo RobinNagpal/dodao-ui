@@ -4,8 +4,6 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function POST(req: NextRequest) {
   try {
     const data = await req.json();
-    console.log(data);
-
     for (const entry of data) {
       const rubricRating = await prisma.rubricRating.upsert({
         where: {
