@@ -1,5 +1,6 @@
 import RubricsPage from '@/components/RubricsView/RubricsPage';
 import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { ChevronLeftIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import React from 'react';
@@ -8,7 +9,7 @@ const Page = async ({ params }: { params: { rubricId: string } }) => {
   const space = (await getSpaceServerSide())!;
   const { rubricId } = params;
 
-  const response = await fetch(`http://localhost:3004/api/rubrics/${rubricId}?spaceId=${space.id}`);
+  const response = await fetch(`${getBaseUrl()}/api/rubrics/${rubricId}?spaceId=${space.id}`);
   const data = await response.json();
   const rubricData = data.body;
 

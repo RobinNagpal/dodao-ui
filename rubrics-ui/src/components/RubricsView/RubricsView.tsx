@@ -1,5 +1,6 @@
 'use client';
 
+import ViewRubricLevel from '@/components/RubricsView/ViewRubricLevel';
 import RubricCriteria from './RubricCriteria';
 import EditRubricLevel from '@/components/RubricEdit/EditRubricLevel';
 import { CriteriaMapping, RatingHeader, rubricRatingHeader, RubricsPageProps } from '@/types/rubricsTypes/types';
@@ -17,15 +18,12 @@ const initialRubrics: Record<string, string[]> = {
   ],
 };
 
-const RubricsPage: React.FC<RubricsPageProps> = ({
-  selectedProgramId,
+const RubricsView: React.FC<RubricsPageProps> = ({
   isEditAccess,
   rateRubricsFormatted,
   writeAccess,
   rubricName,
-  rubricDetails,
   rubricId,
-  editRubricsFormatted,
   isGlobalAccess,
   editRubrics,
   editCriteriaOrder,
@@ -380,28 +378,9 @@ const RubricsPage: React.FC<RubricsPageProps> = ({
           <thead>
             <tr>
               <th className="py-2 px-4 border-b"></th>
-
-              {!isEditAccess
-                ? rubricRatingHeaders?.map((header, index) => (
-                    <EditRubricLevel
-                      key={index}
-                      header={header.header}
-                      index={index}
-                      score={header.score}
-                      onScoreChange={handleScoreChange}
-                      onEditClick={handleEditClick}
-                    />
-                  ))
-                : ratingHeaders?.map((header, index) => (
-                    <EditRubricLevel
-                      key={index}
-                      header={header.header}
-                      index={index}
-                      score={ratingHeaders[index]?.score || 0}
-                      onScoreChange={handleScoreChange}
-                      onEditClick={handleEditClick}
-                    />
-                  ))}
+              {rubricRatingHeaders?.map((header, index) => (
+                <ViewRubricLevel key={index} header={header.header} index={index} score={header.score} />
+              ))}
             </tr>
           </thead>
           <tbody>
@@ -436,51 +415,8 @@ const RubricsPage: React.FC<RubricsPageProps> = ({
           </tbody>
         </table>
       </div>
-      {isEditAccess && (
-        <div className="flex justify-center">
-          <button className="bg-blue-500 mt-2 text-white py-2 px-4 rounded-full flex items-center justify-center" onClick={handleAddCriteria}>
-            +
-          </button>
-        </div>
-      )}
-
-      {isModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center z-50">
-          <div className="absolute inset-0 bg-gray-900 opacity-50"></div>
-          <div className="bg-white p-4 rounded shadow-md relative z-10">
-            <h2 className="text-2xl font-bold mb-4">Edit Rubric</h2>
-            <textarea className="border p-2 w-full h-40 mb-4" value={currentEdit.value} onChange={(e) => handleInputChange(e.target.value)}></textarea>
-            <div className="flex justify-end">
-              <button onClick={handleSave} className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-700 mr-2">
-                Save
-              </button>
-              <button onClick={handleCancel} className="bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded hover:bg-gray-400">
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {isDeleteConfirm && (
-        <div className="fixed inset-0 flex items-center justify-center z-50">
-          <div className="absolute inset-0 bg-gray-900 opacity-50"></div>
-          <div className="bg-white p-4 rounded shadow-md relative z-10">
-            <h2 className="text-2xl font-bold mb-4">Confirm Delete</h2>
-            <p>Are you sure you want to delete this criteria?</p>
-            <div className="flex justify-end mt-4">
-              <button onClick={confirmDeleteCriteria} className="bg-red-500 text-white font-semibold py-2 px-4 rounded hover:bg-red-700 mr-2">
-                Delete
-              </button>
-              <button onClick={cancelDelete} className="bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded hover:bg-gray-400">
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
 
-export default RubricsPage;
+export default RubricsView;
