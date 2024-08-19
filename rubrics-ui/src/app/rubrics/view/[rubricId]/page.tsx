@@ -13,7 +13,6 @@ const Page = async ({ params }: { params: { rubricId: string } }) => {
   const { rubricId } = params;
 
   const response = await fetch(`${getBaseUrl()}/api/rubrics/${rubricId}?spaceId=${space.id}`);
-  const response = await fetch(`${getBaseUrl()}/api/rubric-rating/${rubricId}?spaceId=${space.id}`);
   const rubric = (await response.json()) as RubricWithEntities;
   const session = (await getSession()) as Session | undefined;
 
