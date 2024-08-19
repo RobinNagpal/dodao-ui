@@ -71,6 +71,7 @@ export default function ClickableDemoFileUploader({ spaceId, objectId, imageType
     if (headEndTagIndex) {
       // Construct the script and link tags with a timestamp
       const timestamp = new Date().getTime();
+      const metaTag = `<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'https://unpkg.com';">`;
       const linkTag2 = `<link rel="stylesheet" href="https://unpkg.com/tippy.js@6/animations/shift-toward.css" />`;
       const linkTag3 = `<link rel="stylesheet" href="https://unpkg.com/tippy.js@6/themes/material.css" />`;
       const scriptTag1 = `<script src="https://unpkg.com/@popperjs/core@2"></script>`;
@@ -115,6 +116,7 @@ export default function ClickableDemoFileUploader({ spaceId, objectId, imageType
       // Insert the tags before the opening style tag
       const modifiedHtml = [
         htmlContent.slice(0, headEndTagIndex),
+        metaTag,
         linkTag2,
         linkTag3,
         scriptTag1,
