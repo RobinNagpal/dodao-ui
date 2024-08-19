@@ -1,7 +1,10 @@
-import RubricsPage from '@/components/RubricsView/RubricsPage';
+import RubricsView from '@/components/RubricsView/RubricsView';
+import { RubricWithEntities } from '@/types/rubricsTypes/types';
 import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
+import { Session } from '@dodao/web-core/types/auth/Session';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { ChevronLeftIcon } from '@heroicons/react/24/outline';
+import { getSession } from 'next-auth/react';
 import Link from 'next/link';
 import React from 'react';
 
@@ -10,8 +13,9 @@ const Page = async ({ params }: { params: { rubricId: string } }) => {
   const { rubricId } = params;
 
   const response = await fetch(`${getBaseUrl()}/api/rubrics/${rubricId}?spaceId=${space.id}`);
-  const data = await response.json();
-  const rubricData = data.body;
+  const response = await fetch(`${getBaseUrl()}/api/rubric-rating/${rubricId}?spaceId=${space.id}`);
+  const rubric = (await response.json()) as RubricWithEntities;
+  const session = (await getSession()) as Session | undefined;
 
   return (
     <div>
@@ -20,7 +24,7 @@ const Page = async ({ params }: { params: { rubricId: string } }) => {
           <ChevronLeftIcon className="h-5 w-5 ml-4" />
           Rubrics
         </Link>
-        <RubricsPage isEditAccess={false} rateRubricsFormatted={rubricData} writeAccess={false} rubricName={rubricData?.name} isGlobalAccess={false} />
+        <RubricsView rubric={rubric} session={session} />
       </div>
     </div>
   );

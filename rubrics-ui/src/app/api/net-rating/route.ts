@@ -12,14 +12,14 @@ export async function GET(request: Request, { params }: { params: { rubricId: st
     const rubric = await prisma.rubric.findUnique({
       where: { id: rubricId },
       include: {
-        RubricCell: {
+        cells: {
           where: { isArchived: false },
           include: {
             level: true,
             ratings: true,
           },
         },
-        criteria: true,
+        criterias: true,
       },
     });
 
@@ -27,10 +27,10 @@ export async function GET(request: Request, { params }: { params: { rubricId: st
       return NextResponse.json({ error: 'Rubric not found' }, { status: 404 });
     }
 
-    const rubricCells = rubric.RubricCell;
+    const rubricCells = rubric.cells;
 
     const criteriaMap: Record<string, string> = {};
-    rubric.criteria.forEach((criterion: any) => {
+    rubric.criterias.forEach((criterion: any) => {
       criteriaMap[criterion.id] = criterion.title;
     });
 
