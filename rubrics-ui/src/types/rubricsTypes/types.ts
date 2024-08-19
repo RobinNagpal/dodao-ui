@@ -11,17 +11,19 @@ export interface RubricWithEntities {
   cells: RubricCell[];
   programs: Program[];
 }
-export interface RubricCellSelection {
+export interface RatingCellSelection {
+  id: string;
+  rubricCellId: string;
+  rubricRatingId: string;
+  comment: string;
+  userId: string;
+}
+[];
+export interface RubricRatingWithEntities {
   id: string;
   rubricId: string;
   userId: string;
-  selections: {
-    id: string;
-    rubricCellId: string;
-    rubricRatingId: string;
-    comment: string;
-    userId: string;
-  }[];
+  selections: RatingCellSelection[];
 }
 export interface ProgramServerResponse {
   status: number;

@@ -1,16 +1,16 @@
 import ViewRubricCriteria from '@/components/RubricsView/ViewRubricCriteria';
 import ViewRubricLevel from '@/components/RubricsView/ViewRubricLevel';
-import { RubricsPageProps, RubricWithEntities, RubricCellSelection } from '@/types/rubricsTypes/types';
+import { RubricsPageProps, RubricWithEntities, RubricRatingWithEntities } from '@/types/rubricsTypes/types';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import React from 'react';
 
 export interface RubricViewProps {
   rubric: RubricWithEntities;
   session?: Session;
-  rubricCellSelection?: RubricCellSelection;
+  rubricRating?: RubricRatingWithEntities;
 }
 
-const RubricsView: React.FC<RubricsPageProps & RubricViewProps> = ({ rubric, session, rubricCellSelection }) => {
+const RubricsView: React.FC<RubricsPageProps & RubricViewProps> = ({ rubric, session, rubricRating }) => {
   return (
     <div className="container mx-auto py-8 p-4">
       <div className="flex items-center pb-8 align-center justify-center">
@@ -31,7 +31,7 @@ const RubricsView: React.FC<RubricsPageProps & RubricViewProps> = ({ rubric, ses
           </thead>
           <tbody>
             {rubric.criterias.map((criteria) => (
-              <ViewRubricCriteria key={criteria.id} rubric={rubric} criteria={criteria} session={session} rubricCellSelections={rubricCellSelection} />
+              <ViewRubricCriteria key={criteria.id} rubric={rubric} criteria={criteria} session={session} rubricRating={rubricRating} />
             ))}
           </tbody>
         </table>

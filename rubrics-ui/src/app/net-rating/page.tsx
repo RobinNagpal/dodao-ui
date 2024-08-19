@@ -10,17 +10,13 @@ export default async function AnalyticsPage() {
   let averageScoresData: AverageScoresData | null = null;
   let error: string | null = null;
 
-  try {
-    const response = await fetch(`${getBaseUrl()}/api/net-rating/`);
+  const response = await fetch(`${getBaseUrl()}/api/net-rating/`);
 
-    if (response.ok) {
-      averageScoresData = await response.json();
-    } else {
-      const errorData = await response.json();
-      error = errorData.error || 'Failed to fetch rubric analytics.';
-    }
-  } catch (err) {
-    error = 'An error occurred while fetching the data.';
+  if (response.ok) {
+    averageScoresData = await response.json();
+  } else {
+    const errorData = await response.json();
+    error = errorData.error || 'Failed to fetch rubric analytics.';
   }
 
   if (error) {

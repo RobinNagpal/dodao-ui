@@ -16,9 +16,9 @@ const Page = async ({ params }: { params: { rubricId: string } }) => {
   const rubric = (await response.json()) as RubricWithEntities;
   const session = (await getServerSession(authOptions)) as Session | undefined;
 
-  const responseForCellSelection = await fetch(`${getBaseUrl()}/api/rubrics/${rubricId}/ratings?userId=${session?.userId}`);
-  const data = await responseForCellSelection.json();
-  const rubricCellSelection = data.rubricRating;
+  const responseForRubricRating = await fetch(`${getBaseUrl()}/api/rubrics/${rubricId}/ratings?userId=${session?.userId}`);
+  const data = await responseForRubricRating.json();
+  const rubricRating = data.rubricRating;
 
   if (!response.ok) {
     throw new Error('Failed to fetch rubric');
@@ -30,7 +30,7 @@ const Page = async ({ params }: { params: { rubricId: string } }) => {
           <ChevronLeftIcon className="h-5 w-5 ml-4" />
           Rubrics
         </Link>
-        <RubricsView rubric={rubric} session={session} rubricCellSelection={rubricCellSelection} />
+        <RubricsView rubric={rubric} session={session} rubricRating={rubricRating} />
       </div>
     </div>
   );
