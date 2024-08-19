@@ -162,11 +162,16 @@ export default function ElementSelectorModal({ space, showModal, objectId, fileU
 
     const iframe = document.getElementById('iframe') as HTMLIFrameElement;
 
-    iframe.width = '100%';
-    iframe.style.height = '93vh';
     iframe.onload = function () {
       handleLoad(iframe);
     };
+    iframe.width = '100%';
+    iframe.style.height = '93vh';
+
+    // In case the onload event has already fired
+    if (!hasModifiedIframe) {
+      handleLoad(iframe);
+    }
 
     return () => {
       window.removeEventListener('message', receiveMessage);
