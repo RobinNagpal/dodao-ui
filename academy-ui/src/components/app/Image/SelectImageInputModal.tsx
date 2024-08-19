@@ -10,6 +10,7 @@ import PhotoIcon from '@heroicons/react/24/solid/PhotoIcon';
 
 import React from 'react';
 import styled from 'styled-components';
+import styles from './SelectImageInputModal.module.scss';
 import UploadImageFromDeviceModal from './UploadImageFromDeviceModal';
 import axios from 'axios';
 
@@ -88,21 +89,30 @@ export default function SelectImageInputModal({ imageType, objectId, spaceId, op
         <UploadWrapper className="mt-2">
           <div className="flex flex-col justify-center sm:flex-row mt-2 rounded-md shadow-sm">
             <div
-              className="relative inline-flex items-center gap-x-1.5 rounded-md px-3 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 hover:bg-gray-50 cursor-pointer ml-2"
+              className={
+                'relative inline-flex items-center gap-x-1.5 rounded-md px-3 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 hover:bg-gray-50 cursor-pointer ml-2 ' +
+                styles.styledHover
+              }
               onClick={() => setImageUploadModalType(ImageModalSelectionType.UploadFromDevice)}
             >
               <ArrowUpTrayIcon className="-ml-0.5 h-5 w-5 text-gray-400" aria-hidden="true" />
               <span className="mx-2">Upload from Device</span>
             </div>
             <div
-              className="relative inline-flex items-center gap-x-1.5 rounded-md px-3 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 hover:bg-gray-50 cursor-pointer ml-2"
+              className={
+                'relative inline-flex items-center gap-x-1.5 rounded-md px-3 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 cursor-pointer ml-2 ' +
+                styles.styledHover
+              }
               onClick={() => setImageUploadModalType(ImageModalSelectionType.UploadFromUnsplash)}
             >
               <PhotoIcon className="-ml-0.5 h-5 w-5 text-gray-400" aria-hidden="true" />
               <span className="mx-2">Upload from Unsplash</span>
             </div>
             <div
-              className="relative inline-flex items-center gap-x-1.5 rounded-md px-3 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 hover:bg-gray-50 cursor-pointer ml-2"
+              className={
+                'relative inline-flex items-center gap-x-1.5 rounded-md px-3 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 cursor-pointer ml-2 ' +
+                styles.styledHover
+              }
               onClick={() => setImageUploadModalType(ImageModalSelectionType.UploadFromDalle)}
             >
               <PhotoIcon className="-ml-0.5 h-5 w-5 text-gray-400" aria-hidden="true" />

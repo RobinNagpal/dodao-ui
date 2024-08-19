@@ -13,8 +13,9 @@ import { emptyByte } from '@/utils/byte/EmptyByte';
 import { validateQuestion, validateUserInput } from '@/utils/stepItems/validateItems';
 import { ByteErrors } from '@dodao/web-core/types/errors/byteErrors';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { revalidateTidbitCollections } from '@/revalidateTags';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { LocalStorageKeys } from '@dodao/web-core/types/deprecated/models/enums';
+import union from 'lodash/union';
 import { Byte } from '@prisma/client';
 import axios from 'axios';
 import { useCallback, useState } from 'react';
@@ -190,7 +191,6 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, onUpsert: (byt
 
   const handleByteUpsert = async (byteCollection: ByteCollectionSummary) => {
     await saveViaMutation(async () => {
-      await revalidateTidbitCollections();
       const upsertResponse = await fetch(`${getBaseUrl()}/api/byte/upsert-byte`, {
         method: 'POST',
         headers: {
@@ -204,6 +204,11 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, onUpsert: (byt
       });
 
       const { upsertedByte } = await upsertResponse.json();
+      console.log(upsertedByte);
+      const completedTidbits = JSON.parse(localStorage.getItem(LocalStorageKeys.COMPLETED_TIDBITS) || '[]');
+      // const updatedTidbits = completedTidbits.filter((id: string) => id !== upsertedByte.id);
+
+      // localStorage.setItem(LocalStorageKeys.COMPLETED_TIDBITS, JSON.stringify(updatedTidbits));
 
       return upsertedByte;
     });

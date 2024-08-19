@@ -1,10 +1,14 @@
-import ByteCompletionCheckmark from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCompletionCheckmark';
 import ArrowTopRightOnSquareIcon from '@heroicons/react/24/outline/ArrowTopRightOnSquareIcon';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import PlayCircleIcon from '@heroicons/react/24/outline/PlayCircleIcon';
 import styles from './ByteCollectionsCard.module.scss';
 import Link from 'next/link';
 import { ByteSummary } from '@/types/bytes/Byte';
+import dynamic from 'next/dynamic';
+
+const ByteCompletionCheckmark: React.ComponentType<any> = dynamic(() => import('./ByteCompletionCheckmark'), {
+  ssr: false, // Disable server-side rendering for this component
+});
 
 interface ByteItemProps {
   viewByteBaseUrl: string;
