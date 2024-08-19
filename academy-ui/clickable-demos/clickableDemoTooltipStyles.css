@@ -161,7 +161,7 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  z-index: 9999999;
+  z-index: 999999999999999;
   transition: all 0.3s ease;
 }
 
@@ -174,7 +174,7 @@
   border: 3px solid var(--primary-color, #007bff) !important;
   border-radius: 5px !important;
   position: relative;
-  z-index: 999999;
+  z-index: 999999999999999;
 }
 
 .dodao-up-down-buttons {
@@ -185,7 +185,7 @@
   justify-content: center;
   gap: 10px;
   border: none !important;
-  z-index: 99999999;
+  z-index: 999999999999999;
 }
 
 .dodao-up-down-buttons button {
