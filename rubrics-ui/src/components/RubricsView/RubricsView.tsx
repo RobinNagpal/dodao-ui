@@ -1,21 +1,23 @@
 import ViewRubricCriteria from '@/components/RubricsView/ViewRubricCriteria';
 import ViewRubricLevel from '@/components/RubricsView/ViewRubricLevel';
-import { RubricsPageProps, RubricWithEntities } from '@/types/rubricsTypes/types';
+import { RubricsPageProps, RubricWithEntities, RubricRatingWithEntities } from '@/types/rubricsTypes/types';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import React from 'react';
 
 export interface RubricViewProps {
   rubric: RubricWithEntities;
   session?: Session;
+  rubricRating?: RubricRatingWithEntities;
 }
-const RubricsView: React.FC<RubricsPageProps & RubricViewProps> = ({ rubric, session }) => {
+
+const RubricsView: React.FC<RubricsPageProps & RubricViewProps> = ({ rubric, session, rubricRating }) => {
   return (
     <div className="container mx-auto py-8 p-4">
       <div className="flex items-center pb-8 align-center justify-center">
         <h1 className="text-3xl text-center font-bold p-2">{rubric.name}</h1>
       </div>
-      <h1 className="text-3xl text-center font-bold mb-4"> View Mode</h1>
-      <h1 className="text-2xl  p-2 text-center mb-2">{rubric.programs?.[0]?.name || 'Not Associated With a Program'}</h1>
+      <h1 className="text-3xl text-center font-bold mb-4">View Mode</h1>
+      <h1 className="text-2xl p-2 text-center mb-2">{rubric.programs?.[0]?.name || 'Not Associated With a Program'}</h1>
 
       <div className="overflow-x-auto mt-4">
         <table className="min-w-full bg-white border-collapse border">
@@ -28,8 +30,8 @@ const RubricsView: React.FC<RubricsPageProps & RubricViewProps> = ({ rubric, ses
             </tr>
           </thead>
           <tbody>
-            {rubric.criterias.map((criteria, index) => (
-              <ViewRubricCriteria key={rubric.id} rubric={rubric} criteria={criteria} session={session} />
+            {rubric.criterias.map((criteria) => (
+              <ViewRubricCriteria key={criteria.id} rubric={rubric} criteria={criteria} session={session} rubricRating={rubricRating} />
             ))}
           </tbody>
         </table>
