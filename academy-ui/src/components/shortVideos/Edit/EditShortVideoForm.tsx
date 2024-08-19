@@ -10,16 +10,25 @@ import { v4 } from 'uuid';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
 import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
+import { revalidateTidbitCollections } from '@/revalidateTags';
 
 export interface EditShortVideoModalProps {
   shortVideoToEdit?: ShortVideo;
   spaceId: string;
+  closeEditShortModal?: () => void;
   saveShortVideoFn: (video: ShortVideoInput) => Promise<void>;
   onCancel: () => void;
   onAfterSave?: () => void;
 }
 
-export default function EditShortVideoModal({ shortVideoToEdit, spaceId, saveShortVideoFn, onCancel, onAfterSave }: EditShortVideoModalProps) {
+export default function EditShortVideoModal({
+  shortVideoToEdit,
+  spaceId,
+  saveShortVideoFn,
+  onCancel,
+  onAfterSave,
+  closeEditShortModal,
+}: EditShortVideoModalProps) {
   const [shortVideo, setShortVideo] = React.useState<ShortVideoInput>({
     id: shortVideoToEdit?.id || v4(),
     title: shortVideoToEdit?.title || '',
@@ -55,6 +64,7 @@ export default function EditShortVideoModal({ shortVideoToEdit, spaceId, saveSho
   });
 
   async function handleDelete() {
+    await revalidateTidbitCollections();
     const response = await fetch(`/api/short-videos/${shortVideo.id}`, {
       method: 'DELETE',
       body: JSON.stringify({ spaceId }),
@@ -100,6 +110,7 @@ export default function EditShortVideoModal({ shortVideoToEdit, spaceId, saveSho
     setShortVideoUpserting(true);
 
     try {
+      await revalidateTidbitCollections();
       await saveShortVideoFn(shortVideo);
       showNotification({ message: 'Short video saved', type: 'success' });
       router.push(`/shorts/view/${shortVideo?.id}`);
@@ -196,8 +207,10 @@ export default function EditShortVideoModal({ shortVideoToEdit, spaceId, saveSho
             onClose={() => setShowDeleteModal(false)}
             onDelete={() => {
               handleDelete();
-              router.push('/shorts');
+              const timestamp = new Date().getTime();
+              router.push(`/tidbit-collections?update=${timestamp}`);
               setShowDeleteModal(false);
+              setTimeout(() => closeEditShortModal?.(), 3000);
             }}
           />
         )}

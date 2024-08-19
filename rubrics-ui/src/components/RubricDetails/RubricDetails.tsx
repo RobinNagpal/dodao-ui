@@ -9,7 +9,7 @@ import { ChevronLeftIcon } from '@heroicons/react/24/outline';
 import { useRouter } from 'next/navigation';
 import ProgramDropDown from '@/components/programDropDown/programDropDown';
 import { SpaceWithIntegrationsFragment } from '@/types/rubricsTypes/types';
-
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 interface RubricDetails {
   name: string;
   summary: string;
@@ -107,7 +107,7 @@ const RubricDetails: React.FC<RubricDetailsProps> = ({
 
       const sendInitialRubricToServer = async () => {
         try {
-          const response = await fetch('/api/rubrics', {
+          const response = await fetch(`${getBaseUrl()}/api/rubrics`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

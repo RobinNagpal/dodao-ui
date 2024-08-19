@@ -7,7 +7,7 @@ import Button from '@dodao/web-core/components/core/buttons/Button';
 import { EditProgramRubricProps, SpaceWithIntegrationsFragment } from '@/types/rubricsTypes/types';
 import MarkdownEditor from '@/components/MarkdownEditor/MarkdownEditor';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 interface EditProgramProps {
   programId?: string;
   space: SpaceWithIntegrationsFragment;
@@ -28,7 +28,7 @@ function EditProgram({ programId, space }: EditProgramProps) {
 
   useEffect(() => {
     // Fetch rubrics to create mapping
-    fetch(`http://localhost:3004/api/rubrics-program?spaceId=${space.id}`)
+    fetch(`${getBaseUrl()}/api/rubrics-program?spaceId=${space.id}`)
       .then((res) => res.json())
       .then((data) => setRubrics(data.body))
       .catch((error) => console.error('Error fetching rubrics:', error));
@@ -36,7 +36,7 @@ function EditProgram({ programId, space }: EditProgramProps) {
 
   useEffect(() => {
     if (programId) {
-      fetch(`http://localhost:3004/api/program?programId=${programId}`)
+      fetch(`${getBaseUrl()}/api/program?programId=${programId}`)
         .then((res) => res.json())
         .then((data) => {
           const { name, details, summary, rubricIds } = data.body;
@@ -62,7 +62,7 @@ function EditProgram({ programId, space }: EditProgramProps) {
       spaceId: space.id,
     };
 
-    const url = programId ? `http://localhost:3004/api/program/${programId}` : 'http://localhost:3004/api/programs';
+    const url = programId ? `${getBaseUrl()}/api/program/${programId}` : `${getBaseUrl()}/api/programs`;
 
     const method = programId ? 'PUT' : 'POST';
 

@@ -14,12 +14,9 @@ async function TidbitCollections() {
   const space = (await getSpaceServerSide())!;
   const session = (await getServerSession(authOptions)) as Session | null;
 
-  const response = await axios.get(`${getBaseUrl()}/api/byte-collection/byte-collections`, {
-    params: {
-      spaceId: space.id,
-    },
-  });
-  const byteCollections: ByteCollectionSummary[] = response.data.byteCollections;
+  const response = await fetch(`${getBaseUrl()}/api/byte-collection/byte-collections?spaceId=${space.id}`, { next: { tags: ['tidbit-collections'] } });
+
+  const byteCollections: ByteCollectionSummary[] = (await response.json()).byteCollections;
   let filteredCollections;
 
   if (session?.isAdminOfSpace) {

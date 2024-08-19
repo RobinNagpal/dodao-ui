@@ -1,24 +1,23 @@
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Space } from '@prisma/client';
 import { headers } from 'next/headers';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+
 export async function getSpaceBasedOnHostHeader(reqHeaders: Headers) {
   const host = reqHeaders.get('host')?.split(':')?.[0];
-  let response = await fetch(getBaseUrl() + '/api/spaces', {
-    method: 'POST',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      domain: host!,
-    }),
-  });
+  const spacesUrl = `${getBaseUrl() + '/api/spaces'}?domain=${host}`;
+  const response = await fetch(spacesUrl);
 
   if (response.ok) {
     const spaceResponse = await response.json();
 
-    return spaceResponse.space;
+    const space = spaceResponse.space;
+    if (!space) {
+      console.log('Error fetching space ' + spacesUrl, 'No space found for domain - ' + host);
+    }
+    return space;
   }
+
+  console.log('Error fetching space ' + spacesUrl, response.statusText);
   return null;
 }
 

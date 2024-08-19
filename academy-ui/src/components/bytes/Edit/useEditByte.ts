@@ -13,6 +13,7 @@ import { emptyByte } from '@/utils/byte/EmptyByte';
 import { validateQuestion, validateUserInput } from '@/utils/stepItems/validateItems';
 import { ByteErrors } from '@dodao/web-core/types/errors/byteErrors';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
+import { revalidateTidbitCollections } from '@/revalidateTags';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Byte } from '@prisma/client';
 import axios from 'axios';
@@ -189,6 +190,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, onUpsert: (byt
 
   const handleByteUpsert = async (byteCollection: ByteCollectionSummary) => {
     await saveViaMutation(async () => {
+      await revalidateTidbitCollections();
       const upsertResponse = await fetch(`${getBaseUrl()}/api/byte/upsert-byte`, {
         method: 'POST',
         headers: {

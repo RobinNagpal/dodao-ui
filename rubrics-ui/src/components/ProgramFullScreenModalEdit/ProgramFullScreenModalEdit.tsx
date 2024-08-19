@@ -15,7 +15,7 @@ const EditProgram: React.FC<EditProgramProps> = ({ programId, space }) => {
   const router = useRouter();
 
   const handleBack = () => {
-    router.push(`/programs/view/${programId}`);
+    router.push(`/programs/`);
   };
   const handleClose = () => {};
   return (
@@ -23,7 +23,7 @@ const EditProgram: React.FC<EditProgramProps> = ({ programId, space }) => {
       <div className="p-10 max-w-4xl mx-auto  rounded-lg shadow-lg">
         <button onClick={handleBack} style={{ color: 'var(--primary-color)' }} className="flex items-center focus:outline-none">
           <ChevronLeftIcon className="h-5 w-5 mr-2" />
-          View Program
+          Programs
         </button>
         <ProgramEditScreen programId={programId} space={space} />
       </div>

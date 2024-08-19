@@ -7,13 +7,14 @@ export interface EditShortVideoModalProps {
   shortVideoToEdit?: ShortVideo;
   space: SpaceWithIntegrationsFragment;
   byteCollection: ByteCollectionSummary;
+  closeEditShortModal?: () => void;
   onAfterSave?: () => void;
   onCancel: () => void;
 }
 
-export default function EditShortVideoView({ shortVideoToEdit, space, byteCollection, onCancel }: EditShortVideoModalProps) {
+export default function EditShortVideoView({ shortVideoToEdit, space, byteCollection, onCancel, closeEditShortModal }: EditShortVideoModalProps) {
   const upsertShortVideo = async (shortVideo: ShortVideoInput) => {
-    const response = await fetch(`/api/short-videos/${shortVideo.id}`, {
+    await fetch(`/api/short-videos/${shortVideo.id}`, {
       method: 'POST',
       body: JSON.stringify({
         spaceId: space.id,
@@ -30,5 +31,13 @@ export default function EditShortVideoView({ shortVideoToEdit, space, byteCollec
     });
   };
 
-  return <EditShortVideoForm onCancel={onCancel} shortVideoToEdit={shortVideoToEdit} spaceId={space.id} saveShortVideoFn={upsertShortVideo} />;
+  return (
+    <EditShortVideoForm
+      onCancel={onCancel}
+      shortVideoToEdit={shortVideoToEdit}
+      spaceId={space.id}
+      saveShortVideoFn={upsertShortVideo}
+      closeEditShortModal={closeEditShortModal}
+    />
+  );
 }

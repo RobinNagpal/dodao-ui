@@ -1,15 +1,12 @@
-import { getAuthOptions } from '@dodao/web-core/api/auth/authOptions';
-import { authorizeCrypto } from '@dodao/web-core/api/auth/authorizeCrypto';
+import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
+import { SpaceProvider } from '@/contexts/SpaceContext';
 import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
+import ErrorPage from '@dodao/web-core/components/app/ErrorPage';
 import { CssTheme, ThemeKey, themes } from '@dodao/web-core/src/components/app/themes';
 import { Session } from '@dodao/web-core/types/auth/Session';
-import { User } from '@dodao/web-core/types/auth/User';
 import { NotificationProvider } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { SpaceProvider } from '@/contexts/SpaceContext';
 import { getGTagId } from '@dodao/web-core/utils/analytics/getGTagId';
 import StyledComponentsRegistry from '@dodao/web-core/utils/StyledComponentsRegistry';
-import { PrismaAdapter } from '@next-auth/prisma-adapter';
-import { PrismaClient } from '@prisma/client';
 import { Analytics } from '@vercel/analytics/react';
 import { getServerSession } from 'next-auth';
 import Script from 'next/script';
@@ -23,31 +20,9 @@ interface RootLayoutProps {
 }
 
 export default async function RootLayout({ children }: RootLayoutProps) {
-  const p = new PrismaClient();
-  const session = (await getServerSession(
-    getAuthOptions(
-      {
-        user: {
-          findUnique: p.user.findUnique,
-          findFirst: p.user.findFirst,
-          upsert: p.user.upsert,
-        },
-        verificationToken: {
-          delete: p.verificationToken.delete,
-        },
-        adapter: {
-          ...PrismaAdapter(p),
-          getUserByEmail: async (email: string) => {
-            const user = (await p.user.findFirst({ where: { email } })) as User;
-            console.log('getUserByEmail', user);
-            return user as any;
-          },
-        },
-      },
-      authorizeCrypto
-    )
-  )) as Session | null;
+  const session = (await getServerSession(authOptions)) as Session | null;
   const space = await getSpaceServerSide();
+
   const gtag = getGTagId(space);
 
   const theme: ThemeKey = CssTheme.GlobalTheme;
@@ -63,6 +38,10 @@ export default async function RootLayout({ children }: RootLayoutProps) {
     '--border-color': themeValue.borderColor,
     '--block-bg': themeValue.blockBg,
   } as CSSProperties;
+
+  if (!space) {
+    return <ErrorPage />;
+  }
 
   return (
     <html lang="en" className="h-full">

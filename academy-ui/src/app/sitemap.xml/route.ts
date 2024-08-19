@@ -87,7 +87,7 @@ async function GET(req: NextRequest, res: NextResponse) {
   const smStream = new SitemapStream({ hostname: 'https://' + host });
 
   // pipe your entries or directly write them.
-  await writeUrlsToStream(space!, host, smStream);
+  // await writeUrlsToStream(space!, host, smStream);
 
   smStream.end();
   // cache the response
