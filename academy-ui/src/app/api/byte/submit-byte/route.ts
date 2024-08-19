@@ -3,7 +3,7 @@ import { MutationSubmitByteArgs } from '@/graphql/generated/generated-types';
 import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
 import { getByte } from '@/app/api/helpers/byte/getByte';
 import { postByteSubmission } from '@/app/api/helpers/discord/webhookMessage';
-import { getDecodedJwtFromContext } from '@/app/api/helpers/permissions/getJwtFromContext';
+import { getDecodedJwtFromContext } from '@dodao/web-core/api/auth/getJwtFromContext';
 import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { prisma } from '@/prisma';
 import { NextRequest, NextResponse } from 'next/server';

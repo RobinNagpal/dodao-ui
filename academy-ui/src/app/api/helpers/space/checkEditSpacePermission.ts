@@ -1,4 +1,4 @@
-import { dodaoTeamMates, getDecodedJwtFromContext } from '@/app/api/helpers/permissions/getJwtFromContext';
+import { dodaoTeamMates, getDecodedJwtFromContext } from '@dodao/web-core/api/auth/getJwtFromContext';
 import { isDoDAOSuperAdmin, isSuperAdminOfDoDAO } from '@/app/api/helpers/space/isSuperAdmin';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { Space } from '@prisma/client';

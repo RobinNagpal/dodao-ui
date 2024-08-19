@@ -1,4 +1,4 @@
-import { Program, RubricCell, RubricCriteria, RubricLevel } from '@prisma/client';
+import { Program, RatingCellSelection, RubricCell, RubricCriteria, RubricLevel } from '@prisma/client';
 
 export interface RubricWithEntities {
   id: string;
@@ -11,20 +11,24 @@ export interface RubricWithEntities {
   cells: RubricCell[];
   programs: Program[];
 }
-export interface RatingCellSelection {
-  id: string;
-  rubricCellId: string;
-  rubricRatingId: string;
-  comment: string;
-  userId: string;
-}
-[];
+
 export interface RubricRatingWithEntities {
   id: string;
   rubricId: string;
   userId: string;
   selections: RatingCellSelection[];
 }
+
+//------------ Request Types -------------//
+
+export interface RubricCellRatingRequest {
+  rubricId: string;
+  cellId: string;
+  comment: string;
+}
+
+//------------ Other Types -------------//
+
 export interface ProgramServerResponse {
   status: number;
   body: Program[];
@@ -175,15 +179,6 @@ export interface RubricRatingHeader {
 export interface ProgramDetails {
   name: string;
   summary: string;
-}
-
-export interface CommentModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  comment: string;
-  setComment: (comment: string) => void;
-  handleSave: () => void;
-  criteria: string;
 }
 
 export interface ConfirmationModalProps {

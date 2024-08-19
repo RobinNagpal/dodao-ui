@@ -5,7 +5,7 @@ import { isDoDAOSuperAdmin } from '@/app/api/helpers/space/isSuperAdmin';
 import { prisma } from '@/prisma';
 import { Space } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
-import { getDecodedJwtFromContext } from '@/app/api/helpers/permissions/getJwtFromContext';
+import { getDecodedJwtFromContext } from '@dodao/web-core/api/auth/getJwtFromContext';
 import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 
 async function postHandler(req: NextRequest) {

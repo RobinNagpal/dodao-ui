@@ -7,7 +7,7 @@ import {
   GuideSubmission as GuideSubmissionGraphql,
 } from '@/graphql/generated/generated-types';
 import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
-import { getDecodedJwtFromContext } from '@/app/api/helpers/permissions/getJwtFromContext';
+import { getDecodedJwtFromContext } from '@dodao/web-core/api/auth/getJwtFromContext';
 import { SubmissionItemInfo, UserGuideQuestionSubmission, UserGuideStepSubmission } from '@/app/api/helpers/types/guideSubmisstion';
 import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { prisma } from '@/prisma';
