@@ -7,7 +7,7 @@ import { EditByteType } from '@/components/bytes/Edit/editByteHelper';
 import EditByteStepper from '@/components/bytes/Edit/EditByteStepper';
 import { useEditByte } from '@/components/bytes/Edit/useEditByte';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
-import { ByteCollectionFragment, ImageType, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { ImageType, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
 import Block from '@dodao/web-core/components/app/Block';
 import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
@@ -22,14 +22,16 @@ import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { revalidateTidbitCollections } from '@/revalidateTags';
 
 export default function EditByteView(props: {
   space: SpaceWithIntegrationsFragment;
   onUpsert: (byteId: string) => Promise<void>;
+  closeEditByteModal?: () => void;
   byteId?: string | null;
   byteCollection: ByteCollectionSummary;
 }) {
-  const { space, byteId, byteCollection } = props;
+  const { space, byteId, byteCollection, closeEditByteModal } = props;
 
   const {
     byteUpserting,
@@ -184,8 +186,9 @@ export default function EditByteView(props: {
           open={showDeleteModal}
           onClose={() => setShowDeleteModal(false)}
           onDelete={async () => {
-            await fetch(`${getBaseUrl()}/api/byte/delete-byte`, {
-              method: 'POST',
+            await revalidateTidbitCollections();
+            fetch(`${getBaseUrl()}/api/byte/byte`, {
+              method: 'DELETE',
               headers: {
                 'Content-Type': 'application/json',
               },
@@ -194,8 +197,11 @@ export default function EditByteView(props: {
                 spaceId: space.id,
               }),
             });
+
             setShowDeleteModal(false);
-            router.push(`/tidbits`);
+            const timestamp = new Date().getTime();
+            router.push(`/tidbit-collections?update=${timestamp}`);
+            setTimeout(() => closeEditByteModal?.(), 3000);
           }}
         />
       )}

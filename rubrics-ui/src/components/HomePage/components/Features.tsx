@@ -3,7 +3,7 @@ import React from 'react';
 const Features = () => {
   return (
     <section id="introduction" aria-label="Introduction">
-      <div className="py-16 sm:py-32">
+      <div className="py-5 sm:py-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-4xl lg:text-center">
             <p className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl" style={{ color: 'var(--primary-color)' }}>
