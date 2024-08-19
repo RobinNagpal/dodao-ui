@@ -23,7 +23,7 @@ const ViewRubricCriteria: React.FC<ViewRubricCriteriaProps> = ({ session, rubric
         .map((cell) => {
           const isRatingPresent = rubricRating?.selections.some((selection) => selection.rubricCellId === cell.id);
 
-          return <ViewRubricCell cell={cell} key={cell.id} isRatingPresent={isRatingPresent} session={session} />;
+          return <ViewRubricCell cell={cell} key={cell.id} isRatingPresent={isRatingPresent} session={session} criteria={criteria} rubric={rubric} />;
         })}
     </tr>
   );

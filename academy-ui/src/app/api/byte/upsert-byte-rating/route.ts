@@ -1,5 +1,5 @@
 import { MutationUpsertByteRatingArgs } from '@/graphql/generated/generated-types';
-import { getDecodedJwtFromContext } from '@/app/api/helpers/permissions/getJwtFromContext';
+import { getDecodedJwtFromContext } from '@dodao/web-core/api/auth/getJwtFromContext';
 import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { prisma } from '@/prisma';
 import { ByteRating } from '@prisma/client';

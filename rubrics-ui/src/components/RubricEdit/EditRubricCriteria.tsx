@@ -270,15 +270,6 @@ const EditRubricCriteria: React.FC<RubricCriteriaProps> = ({
           </td>
         )}
       </tr>
-
-      <CommentModal
-        criteria={criteria}
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        comment={currentComment}
-        setComment={setCurrentComment}
-        handleSave={handleSaveComment}
-      />
       {!isEditAccess && (
         <ConfirmationModal
           isOpen={isConfirmationOpen}

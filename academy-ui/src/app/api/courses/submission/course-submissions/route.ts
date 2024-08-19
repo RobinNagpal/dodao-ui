@@ -1,4 +1,4 @@
-import { getDecodedJwtFromContext } from '@/app/api/helpers/permissions/getJwtFromContext';
+import { getDecodedJwtFromContext } from '@dodao/web-core/api/auth/getJwtFromContext';
 import { prisma } from '@/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
