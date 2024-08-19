@@ -117,7 +117,7 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
   }
 
   return (
-    <div className={`border border-gray-200 rounded-xl overflow-hidden p-4 w-full ` + styles.cardDiv}>
+    <div className={`border border-gray-200 rounded-xl overflow-hidden pl-4 pr-4 pt-4 pb-10 w-full ` + styles.cardDiv}>
       {isEditingAllowed && (
         <div className="w-full flex justify-end items-center flex-row gap-4">
           {isAdmin && (

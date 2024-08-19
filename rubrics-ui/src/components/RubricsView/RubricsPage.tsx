@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { Rubric, NewRubric, RubricsPageProps, rubricRatingHeader, RubricRow, RatingHeader, CriteriaMapping, CriteriaChange } from '@/types/rubricsTypes/types';
-import RubricCriteria from '@/components/RubricCriteria/RubricCriteria';
-import RubricLevel from '@/components/RubricLevel/RubricLevel';
+'use client';
+
+import EditRubricCriteria from '@/components/RubricEdit/EditRubricCriteria';
+import EditRubricLevel from '@/components/RubricEdit/EditRubricLevel';
+import { CriteriaMapping, RatingHeader, RubricRatingHeader, RubricsPageProps } from '@/types/rubricsTypes/types';
 import EllipsisDropdown, { EllipsisDropdownItem } from '@dodao/web-core/src/components/core/dropdowns/EllipsisDropdown';
 import { useRouter } from 'next/navigation';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import React, { useEffect, useState } from 'react';
+
 const initialRubrics: Record<string, string[]> = {
   Criteria: [
     'Complete. The speaker clearly conveys the main idea',
@@ -352,7 +355,7 @@ const RubricsPage: React.FC<RubricsPageProps> = ({
 
   const rateRubric = rateRubricsFormatted?.rubric;
   const rateCriteriaOrder = rateRubricsFormatted?.criteriaOrder;
-  const rubricRatingHeaders: rubricRatingHeader[] = rateRubricsFormatted?.ratingHeaders ?? [];
+  const rubricRatingHeaders: RubricRatingHeader[] = rateRubricsFormatted?.ratingHeaders ?? [];
   const raterubricId = rateRubricsFormatted?.rubricId;
 
   const handleDropdownSelect = (key: string) => {
@@ -380,23 +383,21 @@ const RubricsPage: React.FC<RubricsPageProps> = ({
 
               {!isEditAccess
                 ? rubricRatingHeaders?.map((header, index) => (
-                    <RubricLevel
+                    <EditRubricLevel
                       key={index}
                       header={header.header}
                       index={index}
                       score={header.score}
-                      isEditAccess={isEditAccess}
                       onScoreChange={handleScoreChange}
                       onEditClick={handleEditClick}
                     />
                   ))
                 : ratingHeaders?.map((header, index) => (
-                    <RubricLevel
+                    <EditRubricLevel
                       key={index}
                       header={header.header}
                       index={index}
                       score={ratingHeaders[index]?.score || 0}
-                      isEditAccess={isEditAccess}
                       onScoreChange={handleScoreChange}
                       onEditClick={handleEditClick}
                     />
@@ -406,7 +407,7 @@ const RubricsPage: React.FC<RubricsPageProps> = ({
           <tbody>
             {!isEditAccess
               ? rateCriteriaOrder?.map((criteria: any) => (
-                  <RubricCriteria
+                  <EditRubricCriteria
                     key={criteria}
                     criteria={criteria}
                     rubrics={rateRubric}
@@ -420,7 +421,7 @@ const RubricsPage: React.FC<RubricsPageProps> = ({
                   />
                 ))
               : criteriaOrder?.map((criteria) => (
-                  <RubricCriteria
+                  <EditRubricCriteria
                     key={criteria}
                     criteria={criteria}
                     rubrics={rubrics}

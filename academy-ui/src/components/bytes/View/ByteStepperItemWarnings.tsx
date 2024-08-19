@@ -1,4 +1,5 @@
 import ErrorWithAccentBorder from '@dodao/web-core/components/core/errors/ErrorWithAccentBorder';
+import { useEffect, useRef } from 'react';
 
 interface ByteStepperItemWarningsProps {
   showUseInputCompletionWarning: boolean;
@@ -15,15 +16,25 @@ function ByteStepperItemWarnings({
   isQuestionAnswered,
   isDiscordConnected,
 }: ByteStepperItemWarningsProps) {
+  const myDivRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!isQuestionAnswered()) {
+      myDivRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [isQuestionAnswered]);
+
   return (
     <div className="mb-4">
       {showUseInputCompletionWarning && <ErrorWithAccentBorder error="Answer all the questions in guide to complete" />}
       {showQuestionsCompletionWarning && (
         <>
-          {!isQuestionAnswered() && <ErrorWithAccentBorder error="Answer question to proceed" />}
-
+          {!isQuestionAnswered() && (
+            <div ref={myDivRef}>
+              <ErrorWithAccentBorder error="Answer question to proceed" />
+            </div>
+          )}
           {!isUserInputComplete() && <ErrorWithAccentBorder error="Add information to proceed" />}
-
           {!isDiscordConnected() && <ErrorWithAccentBorder error="Connect your Discord account to proceed" />}
         </>
       )}

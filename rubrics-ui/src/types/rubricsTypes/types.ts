@@ -1,20 +1,20 @@
-export interface Program {
+import { Program, RubricCell, RubricCriteria, RubricLevel } from '@prisma/client';
+
+export interface RubricWithEntities {
   id: string;
   name: string;
-  details?: string | null;
-  rating: number;
   summary: string;
-  rubrics: Rubric[];
+  description: string | null;
+  spaceId: string;
+  levels: RubricLevel[];
+  criterias: RubricCriteria[];
+  cells: RubricCell[];
+  programs: Program[];
 }
+
 export interface ProgramServerResponse {
   status: number;
   body: Program[];
-}
-export interface RubricCell {
-  columnName: string;
-  description: string;
-  score: number;
-  criteriaId?: string;
 }
 
 export interface Rubric {
@@ -27,39 +27,6 @@ export interface Rubric {
   cells?: any[];
 }
 
-export interface NewRubric {
-  name: string;
-  summary?: string;
-  description?: string;
-  rows: {
-    criteria: string;
-    levels: {
-      columnName: string;
-      description: string;
-      score: number;
-    }[];
-    cells?: any[]; // Optional, for additional data if needed
-  }[];
-}
-export interface RubricLevel {
-  columnName: string;
-  description: string;
-  score: number;
-}
-
-export interface RubricRow {
-  criteria: string;
-  levels: RubricLevel[];
-  cells?: any[]; // Add this if you need additional cell-level data
-}
-// export interface RubricsPageProps {
-//   selectedProgramId?: string | null;
-//   isEditAccess?: boolean;
-//   rateRubricsFormatted?: RubricServerData;
-//   writeAccess?: boolean;
-//   rubricName?: string;
-//   handleDropdownSelect?: (key: string) => void;
-// }
 export interface RubricsPageProps extends EditRubricsProps {
   selectedProgramId?: string | null;
   isEditAccess?: boolean;
@@ -108,24 +75,15 @@ export interface RubricCellProps {
   isEditAccess: boolean | undefined;
   onEditClick: (type: 'rubric', criteria: string, index: number, newValue?: string) => void;
   handleCommentModal: (cellIndex: number) => void;
-  rubricRatingHeaders?: rubricRatingHeader[];
+  rubricRatingHeaders?: RubricRatingHeader[];
   className: string;
   onClick: () => void;
   isClicked: boolean;
-  cellIds?: cellIds[];
+  cellIds?: CellIds[];
   isGlobalAccess?: boolean;
   onCellValueChange?: any;
 }
 
-export interface RubricLevelProps {
-  header: string;
-  index: number;
-  score: number;
-  isEditAccess: boolean | undefined;
-  onScoreChange: (index: number, score: number) => void;
-  onEditClick: (type: 'header', criteria: number, index: number) => void;
-  isGlobalAccess?: boolean;
-}
 export interface RubricCriteriaProps {
   criteria: string;
   rubrics?: Record<string, string[]>;
@@ -133,8 +91,8 @@ export interface RubricCriteriaProps {
   onEditClick: (type: 'rubric' | 'header' | 'criteria', criteria: string | number, index: number) => void;
   onDeleteCriteria: (criteria: string) => void;
   rubricCell?: RubricCell[];
-  rubricRatingHeaders?: rubricRatingHeader[];
-  cellIds?: cellIds[];
+  rubricRatingHeaders?: RubricRatingHeader[];
+  cellIds?: CellIds[];
   rubricId?: string;
   writeAccess?: boolean;
   isGlobalAccess?: boolean;
@@ -169,11 +127,7 @@ export interface Level {
   score: number;
 }
 
-export interface Criterion {
-  id: string;
-  title: string;
-}
-export interface cellIds {
+export interface CellIds {
   criteriaId: string;
   levelId: string;
   cellId: string;
@@ -185,14 +139,8 @@ export interface RubricServerData {
   levelId: string;
   criteriaId: string;
   criteriaOrder: [];
-  cellIds: cellIds[];
+  cellIds: CellIds[];
   rubricId: string;
-}
-
-export interface ProgramServerProps {
-  id: string;
-  name: string;
-  summary: string;
 }
 
 export interface RubricServerData {
@@ -205,9 +153,9 @@ export interface RubricServerData {
   rubricCell: RubricCell[];
   programs: ProgramDetails[];
 
-  ratingHeaders: rubricRatingHeader[] | undefined;
+  ratingHeaders: RubricRatingHeader[] | undefined;
 }
-export interface rubricRatingHeader {
+export interface RubricRatingHeader {
   header: string;
   score: number;
 }

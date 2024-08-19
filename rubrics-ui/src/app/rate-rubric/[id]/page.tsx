@@ -1,13 +1,13 @@
 'use client';
-import React, { useState, useEffect } from 'react';
-import RubricsPage from '@/components/rubricsTable/rubricsTable';
-import { RubricServerData } from '@/types/rubricsTypes/types';
-import { RateRubricProps } from '@/types/rubricsTypes/types';
-import { getSession } from 'next-auth/react';
-import { SessionProps } from '@/types/rubricsTypes/types';
+import RubricsPage from '@/components/RubricsView/RubricsPage';
+import { RateRubricProps, RubricServerData, SessionProps } from '@/types/rubricsTypes/types';
 import { useLoginModalContext } from '@dodao/web-core/ui/contexts/LoginModalContext';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { ChevronLeftIcon } from '@heroicons/react/24/outline';
+import { getSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+
 const RateRubric: React.FC<RateRubricProps> = ({ params }) => {
   const [selectedProgramId, setSelectedProgramId] = useState<string | null>(null);
   const [serverResponse, setServerResponse] = useState<RubricServerData>();
@@ -33,7 +33,7 @@ const RateRubric: React.FC<RateRubricProps> = ({ params }) => {
     if (id) {
       const fetchProgramData = async () => {
         try {
-          const response = await fetch(`http://localhost:3004/api/rubrics/${id}`);
+          const response = await fetch(`${getBaseUrl()}/api/rubrics/${id}`);
           const data = await response.json();
 
           if (response.ok) {

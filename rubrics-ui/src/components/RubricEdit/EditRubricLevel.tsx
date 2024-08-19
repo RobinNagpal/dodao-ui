@@ -1,7 +1,14 @@
 import React from 'react';
-import { RubricLevelProps } from '@/types/rubricsTypes/types';
 
-const RubricLevel: React.FC<RubricLevelProps> = ({ header, index, score, isEditAccess, onScoreChange, onEditClick }) => {
+export interface EditRubricLevelProps {
+  header: string;
+  index: number;
+  score: number;
+  onScoreChange: (index: number, score: number) => void;
+  onEditClick: (type: 'header', criteria: number, index: number) => void;
+}
+
+const EditRubricLevel: React.FC<EditRubricLevelProps> = ({ header, index, score, onScoreChange, onEditClick }) => {
   const getHeaderColorClass = (index: number) => {
     switch (index) {
       case 0:
@@ -19,7 +26,7 @@ const RubricLevel: React.FC<RubricLevelProps> = ({ header, index, score, isEditA
 
   return (
     <th className={`py-2 px-4 border-b cursor-pointer text-white ${getHeaderColorClass(index)}`}>
-      <div className="overflow-auto max-h-24" onClick={() => isEditAccess && onEditClick('header', index, -1)}>
+      <div className="overflow-auto max-h-24" onClick={() => onEditClick('header', index, -1)}>
         {header}
         <br />
       </div>
@@ -31,10 +38,9 @@ const RubricLevel: React.FC<RubricLevelProps> = ({ header, index, score, isEditA
         placeholder="Score"
         value={score}
         onChange={(e) => onScoreChange(index, parseInt(e.target.value))}
-        disabled={!isEditAccess}
       />
     </th>
   );
 };
 
-export default RubricLevel;
+export default EditRubricLevel;

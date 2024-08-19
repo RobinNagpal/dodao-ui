@@ -1,5 +1,5 @@
 import React, { useState, useEffect, use } from 'react';
-import RubricCell from '@/components/RubricCell/RubricCell';
+import RubricCell from '@/components/RubricsView/RubricCell';
 import { RubricCriteriaProps } from '@/types/rubricsTypes/types';
 import TrashIcon from '@heroicons/react/24/outline/TrashIcon';
 import { SessionProps } from '@/types/rubricsTypes/types';
@@ -8,7 +8,7 @@ import { useNotificationContext } from '@dodao/web-core/ui/contexts/Notification
 import ConfirmationModal from '@/components/ConfirmationModal/ConfirmationModal';
 import CommentModal from '@/components/CommentModal/CommentModal';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-const RubricCriteria: React.FC<RubricCriteriaProps> = ({
+const EditRubricCriteria: React.FC<RubricCriteriaProps> = ({
   criteria,
   rubrics,
   isEditAccess,
@@ -291,4 +291,4 @@ const RubricCriteria: React.FC<RubricCriteriaProps> = ({
   );
 };
 
-export default RubricCriteria;
+export default EditRubricCriteria;
