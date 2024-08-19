@@ -1,5 +1,5 @@
 import React, { useState, useEffect, use } from 'react';
-import RubricCell from '@/components/RubricCell/RubricCell';
+import RubricCell from '@/components/RubricsView/RubricCell';
 import { RubricCriteriaProps } from '@/types/rubricsTypes/types';
 import TrashIcon from '@heroicons/react/24/outline/TrashIcon';
 import { SessionProps } from '@/types/rubricsTypes/types';

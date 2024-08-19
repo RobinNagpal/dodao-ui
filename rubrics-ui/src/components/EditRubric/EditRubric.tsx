@@ -1,8 +1,8 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import RubricsPage from '@/components/rubricsTable/rubricsTable';
+import RubricsPage from '@/components/RubricsView/RubricsPage';
 import { EditRubricCell, SampleData } from '@/types/rubricsTypes/types';
-import RubricDetails from '@/components/RubricDetails/RubricDetails';
+import RubricDetails from '@/components/RubricsView/RubricDetails';
 import { getSession } from 'next-auth/react';
 import { useLoginModalContext } from '@dodao/web-core/ui/contexts/LoginModalContext';
 import { SessionProps, EditRubricProps } from '@/types/rubricsTypes/types';

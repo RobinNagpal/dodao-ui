@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { Rubric, NewRubric, RubricsPageProps, rubricRatingHeader, RubricRow, RatingHeader, CriteriaMapping, CriteriaChange } from '@/types/rubricsTypes/types';
-import RubricCriteria from '@/components/RubricCriteria/RubricCriteria';
-import RubricLevel from '@/components/RubricLevel/RubricLevel';
+import RubricCriteria from './RubricCriteria';
+import RubricLevel from './RubricLevel';
+import { CriteriaMapping, RatingHeader, rubricRatingHeader, RubricsPageProps } from '@/types/rubricsTypes/types';
 import EllipsisDropdown, { EllipsisDropdownItem } from '@dodao/web-core/src/components/core/dropdowns/EllipsisDropdown';
 import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
 
 const initialRubrics: Record<string, string[]> = {
   Criteria: [
