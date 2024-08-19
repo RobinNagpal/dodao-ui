@@ -1,11 +1,10 @@
-import { Program } from '@/types/rubricsTypes/types';
-import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
-import Card from '@dodao/web-core/components/core/card/Card';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import Link from 'next/link';
-import React from 'react';
-import { SpaceWithIntegrationsFragment } from '@/types/rubricsTypes/types';
 import ProgramList from '@/app/programs/ProgramList';
+import { SpaceWithIntegrationsFragment } from '@/types/rubricsTypes/types';
+import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { Program } from '@prisma/client';
+import React from 'react';
+
 export const fetchPrograms = async (): Promise<Program[]> => {
   const space = (await getSpaceServerSide())!;
   const spaceId = space.id;

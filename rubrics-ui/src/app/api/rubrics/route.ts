@@ -145,12 +145,12 @@ export async function POST(req: NextRequest, res: NextResponse) {
         where: { id: rubricId },
         include: {
           levels: true,
-          criteria: {
+          criterias: {
             include: {
-              RubricCell: true,
+              cells: true,
             },
           },
-          RubricCell: {
+          cells: {
             include: {
               level: true,
               criteria: true,

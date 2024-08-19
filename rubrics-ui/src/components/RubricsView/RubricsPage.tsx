@@ -1,8 +1,8 @@
 'use client';
 
-import RubricCriteria from './RubricCriteria';
+import EditRubricCriteria from '@/components/RubricEdit/EditRubricCriteria';
 import EditRubricLevel from '@/components/RubricEdit/EditRubricLevel';
-import { CriteriaMapping, RatingHeader, rubricRatingHeader, RubricsPageProps } from '@/types/rubricsTypes/types';
+import { CriteriaMapping, RatingHeader, RubricRatingHeader, RubricsPageProps } from '@/types/rubricsTypes/types';
 import EllipsisDropdown, { EllipsisDropdownItem } from '@dodao/web-core/src/components/core/dropdowns/EllipsisDropdown';
 import { useRouter } from 'next/navigation';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -355,7 +355,7 @@ const RubricsPage: React.FC<RubricsPageProps> = ({
 
   const rateRubric = rateRubricsFormatted?.rubric;
   const rateCriteriaOrder = rateRubricsFormatted?.criteriaOrder;
-  const rubricRatingHeaders: rubricRatingHeader[] = rateRubricsFormatted?.ratingHeaders ?? [];
+  const rubricRatingHeaders: RubricRatingHeader[] = rateRubricsFormatted?.ratingHeaders ?? [];
   const raterubricId = rateRubricsFormatted?.rubricId;
 
   const handleDropdownSelect = (key: string) => {
@@ -407,7 +407,7 @@ const RubricsPage: React.FC<RubricsPageProps> = ({
           <tbody>
             {!isEditAccess
               ? rateCriteriaOrder?.map((criteria: any) => (
-                  <RubricCriteria
+                  <EditRubricCriteria
                     key={criteria}
                     criteria={criteria}
                     rubrics={rateRubric}
@@ -421,7 +421,7 @@ const RubricsPage: React.FC<RubricsPageProps> = ({
                   />
                 ))
               : criteriaOrder?.map((criteria) => (
-                  <RubricCriteria
+                  <EditRubricCriteria
                     key={criteria}
                     criteria={criteria}
                     rubrics={rubrics}

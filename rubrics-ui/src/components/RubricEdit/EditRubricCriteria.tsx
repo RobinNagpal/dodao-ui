@@ -8,7 +8,7 @@ import { useNotificationContext } from '@dodao/web-core/ui/contexts/Notification
 import ConfirmationModal from '@/components/ConfirmationModal/ConfirmationModal';
 import CommentModal from '@/components/CommentModal/CommentModal';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-const RubricCriteria: React.FC<RubricCriteriaProps> = ({
+const EditRubricCriteria: React.FC<RubricCriteriaProps> = ({
   criteria,
   rubrics,
   isEditAccess,
@@ -291,4 +291,4 @@ const RubricCriteria: React.FC<RubricCriteriaProps> = ({
   );
 };
 
-export default RubricCriteria;
+export default EditRubricCriteria;

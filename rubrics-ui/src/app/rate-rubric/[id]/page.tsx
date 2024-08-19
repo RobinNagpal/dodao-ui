@@ -1,5 +1,5 @@
 'use client';
-import RubricsView from '@/components/RubricsView/RubricsView';
+import RubricsPage from '@/components/RubricsView/RubricsPage';
 import { RateRubricProps, RubricServerData, SessionProps } from '@/types/rubricsTypes/types';
 import { useLoginModalContext } from '@dodao/web-core/ui/contexts/LoginModalContext';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -61,7 +61,7 @@ const RateRubric: React.FC<RateRubricProps> = ({ params }) => {
             <ChevronLeftIcon className="h-5 w-5 ml-4" />
             View Rubric
           </button>
-          <RubricsView
+          <RubricsPage
             selectedProgramId={selectedProgramId}
             isEditAccess={false}
             rateRubricsFormatted={serverResponse}

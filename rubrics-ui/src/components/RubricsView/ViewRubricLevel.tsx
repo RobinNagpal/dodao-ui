@@ -1,12 +1,12 @@
+import { RubricLevel } from '@prisma/client';
 import React from 'react';
 
 export interface ViewRubricLevelProps {
-  header: string;
+  rubricLevel: RubricLevel;
   index: number;
-  score: number;
 }
 
-const ViewRubricLevel: React.FC<ViewRubricLevelProps> = ({ header, index, score }) => {
+const ViewRubricLevel: React.FC<ViewRubricLevelProps> = ({ rubricLevel, index }) => {
   const getHeaderColorClass = (index: number) => {
     switch (index) {
       case 0:
@@ -25,10 +25,10 @@ const ViewRubricLevel: React.FC<ViewRubricLevelProps> = ({ header, index, score 
   return (
     <th className={`py-2 px-4 border-b cursor-pointer text-white ${getHeaderColorClass(index)}`}>
       <div className="overflow-auto max-h-24">
-        {header}
+        {rubricLevel.columnName}
         <br />
       </div>
-      <span className="w-12 h-8  p-2 text-center mb-2">{score}</span>
+      <span className="w-12 h-8  p-2 text-center mb-2">{rubricLevel.score}</span>
     </th>
   );
 };
