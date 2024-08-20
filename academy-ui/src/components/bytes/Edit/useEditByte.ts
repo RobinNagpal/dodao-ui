@@ -14,8 +14,7 @@ import { validateQuestion, validateUserInput } from '@/utils/stepItems/validateI
 import { ByteErrors } from '@dodao/web-core/types/errors/byteErrors';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { LocalStorageKeys } from '@dodao/web-core/types/deprecated/models/enums';
-import union from 'lodash/union';
+import { revalidateTidbitCollections } from '@/revalidateTags';
 import { Byte } from '@prisma/client';
 import axios from 'axios';
 import { useCallback, useState } from 'react';
@@ -191,6 +190,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, onUpsert: (byt
 
   const handleByteUpsert = async (byteCollection: ByteCollectionSummary) => {
     await saveViaMutation(async () => {
+      await revalidateTidbitCollections();
       const upsertResponse = await fetch(`${getBaseUrl()}/api/byte/upsert-byte`, {
         method: 'POST',
         headers: {
