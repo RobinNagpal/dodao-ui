@@ -194,11 +194,11 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space, set
             imageHeight={imageHeight}
           />
           <ByteStepperItemWarnings
-              showUseInputCompletionWarning={incompleteUserInput}
-              showQuestionsCompletionWarning={showQuestionsCompletionWarning}
-              isUserInputComplete={isUserInputComplete}
-              isQuestionAnswered={isQuestionAnswered}
-              isDiscordConnected={isDiscordConnected}
+            showUseInputCompletionWarning={incompleteUserInput}
+            showQuestionsCompletionWarning={showQuestionsCompletionWarning}
+            isUserInputComplete={isUserInputComplete}
+            isQuestionAnswered={isQuestionAnswered}
+            isDiscordConnected={isDiscordConnected}
           />
         </div>
       </div>
