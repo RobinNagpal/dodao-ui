@@ -4,13 +4,7 @@ import PlayCircleIcon from '@heroicons/react/24/outline/PlayCircleIcon';
 import styles from './ByteCollectionsCard.module.scss';
 import Link from 'next/link';
 import { ByteSummary } from '@/types/bytes/Byte';
-import dynamic from 'next/dynamic';
-import React, { Suspense } from 'react';
-import ByteCollectionTransparentCheckmark from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCollectionTransparentCheckmark';
-
-const ByteCompletionCheckmark: React.ComponentType<any> = dynamic(() => import('./ByteCompletionCheckmark'), {
-  ssr: false, // Disable server-side rendering for this component
-});
+import ByteCompletionCheckmark from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCompletionCheckmark';
 
 interface ByteItemProps {
   viewByteBaseUrl: string;
@@ -39,9 +33,7 @@ export default function ByteItem(props: ByteItemProps) {
         {eventIdx !== itemLength - 1 ? <span className="absolute left-4 top-4 -ml-px h-full w-0.5 bg-gray-200" aria-hidden="true" /> : null}
         <div className="relative flex space-x-3 justify-between">
           <Link className="flex cursor-pointer" href={byteViewUrl}>
-            <Suspense fallback={<ByteCollectionTransparentCheckmark />}>
-              <ByteCompletionCheckmark byteId={byte.byteId} />
-            </Suspense>
+            <ByteCompletionCheckmark byteId={byte.byteId} />
             <div className="flex min-w-0 flex-1 justify-between space-x-2 duration-300 ease-in-out">
               <div className="ml-3 text-sm group">
                 <div className="font-bold flex group-hover:underline">{`${byte.name}`}</div>

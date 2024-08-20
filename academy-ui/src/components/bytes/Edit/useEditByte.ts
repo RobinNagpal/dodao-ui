@@ -205,10 +205,6 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, onUpsert: (byt
 
       const { upsertedByte } = await upsertResponse.json();
 
-      const completedTidbits = JSON.parse(localStorage.getItem(LocalStorageKeys.COMPLETED_TIDBITS) || '[]');
-      const updatedTidbits = completedTidbits.filter((id: string) => id !== upsertedByte.id);
-      localStorage.setItem(LocalStorageKeys.COMPLETED_TIDBITS, JSON.stringify(updatedTidbits));
-
       return upsertedByte;
     });
   };
