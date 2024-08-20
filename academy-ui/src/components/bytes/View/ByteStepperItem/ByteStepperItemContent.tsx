@@ -75,7 +75,7 @@ export default function ByteStepperItemContent({
   };
   if (!stepItems.some(isQuestion) && step.imageUrl && step.displayMode === ImageDisplayMode.FullScreenImage) {
     return (
-      <div className="top-12 left-1/2 transform w-full rounded mx-auto">
+      <div className="top-12 left-1/2 w-full rounded mx-auto">
         {width > height ? (
           <img src={step.imageUrl} alt="byte" style={{ height: imageHeight }} className={`rounded mx-auto ${styles.imgContainer}`} />
         ) : (
