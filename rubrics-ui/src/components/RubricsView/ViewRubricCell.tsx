@@ -6,7 +6,7 @@ import { Session } from '@dodao/web-core/types/auth/Session';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { CheckCircleIcon } from '@heroicons/react/24/solid';
 import { RubricCell, RubricCriteria } from '@prisma/client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 export interface ViewRubricCellProps {
   rubric: RubricWithEntities;
@@ -16,7 +16,9 @@ export interface ViewRubricCellProps {
   session?: Session;
 }
 
-const ViewRubricCell: React.FC<ViewRubricCellProps> = ({ rubric, criteria, cell, isRatingPresent }) => {
+export default function ViewRubricCell({ rubric, criteria, cell, isRatingPresent }: ViewRubricCellProps) {
+  const [showRatingModal, setShowRatingModal] = useState<boolean>(false);
+
   const selectCellForRating = async (comment: string) => {
     const request: RubricCellRatingRequest = {
       rubricId: rubric.id,
@@ -38,11 +40,9 @@ const ViewRubricCell: React.FC<ViewRubricCellProps> = ({ rubric, criteria, cell,
     console.log('Successfully sent data to the server:', request);
   };
 
-  const [isCellSelected, setIsCellSelected] = useState(false);
-
   return (
     <td className={`py-2 px-4 border-r border-b cursor-pointer ${isRatingPresent ? 'border-[var(--primary-color)] border-2' : ''}`}>
-      <div className="flex items-center overflow-y-auto max-h-26 cursor-pointer" onClick={() => setIsCellSelected(true)}>
+      <div className="flex items-center overflow-y-auto max-h-26 cursor-pointer" onClick={() => setShowRatingModal(true)}>
         <span className="flex-grow">{cell.description}</span>
         {isRatingPresent && (
           <CheckCircleIcon
@@ -54,10 +54,17 @@ const ViewRubricCell: React.FC<ViewRubricCellProps> = ({ rubric, criteria, cell,
             className="pl-2"
           />
         )}
-        {isCellSelected && <CommentModal criteria={criteria} onClose={() => setIsCellSelected(false)} onSave={selectCellForRating} />}
       </div>
+      {showRatingModal && (
+        <CommentModal
+          open={showRatingModal}
+          criteria={criteria}
+          onClose={() => {
+            setShowRatingModal(false);
+          }}
+          onSave={selectCellForRating}
+        />
+      )}
     </td>
   );
-};
-
-export default ViewRubricCell;
+}

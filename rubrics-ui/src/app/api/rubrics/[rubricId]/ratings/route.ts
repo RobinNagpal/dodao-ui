@@ -1,10 +1,10 @@
+import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import { prisma } from '@/prisma';
 import { RubricCellRatingRequest } from '@/types/rubricsTypes/types';
-import { getDecodedJwtFromContext } from '@dodao/web-core/api/auth/getJwtFromContext';
-import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import { Session } from '@dodao/web-core/types/auth/Session';
+import { getServerSession } from 'next-auth';
+import { NextRequest, NextResponse } from 'next/server';
+
 export async function POST(req: NextRequest) {
   const data = (await req.json()) as RubricCellRatingRequest;
   const session = (await getServerSession(authOptions)) as Session | undefined;
