@@ -44,36 +44,6 @@ export interface Rubric {
   cells?: any[];
 }
 
-export interface RubricsPageProps extends EditRubricsProps {
-  selectedProgramId?: string | null;
-  isEditAccess?: boolean;
-  rateRubricsFormatted?: any;
-  writeAccess?: boolean;
-  rubricName?: string;
-  handleDropdownSelect?: (key: string) => void;
-  rubricId?: string;
-  editRubricsFormatted?: RubricServerData;
-  isGlobalAccess?: boolean;
-  editRubrics?: any;
-  editCriteriaOrder?: any;
-  editRatingHeaders?: any;
-  editColumnScores?: number[];
-  editCriteriaIds?: any;
-  rubricCellIds?: any;
-}
-
-export interface ProgramListProps {
-  programs?: Program[];
-  summary?: string;
-}
-
-export interface ProgramDropDownProps {
-  onSelectProgram: (id: string) => void;
-  serverResponse: ProgramServerResponse;
-  setServerResponse: React.Dispatch<React.SetStateAction<ProgramServerResponse>>;
-  space: SpaceWithIntegrationsFragment;
-}
-
 export interface EditProgramRubricProps {
   id: string;
   name: string;
@@ -83,38 +53,6 @@ export interface ProgramForm {
   name: string;
   details: string;
   summary: string;
-}
-
-export interface RubricCellProps {
-  cell: string;
-  criteria: string;
-  cellIndex: number;
-  isEditAccess: boolean | undefined;
-  onEditClick: (type: 'rubric', criteria: string, index: number, newValue?: string) => void;
-  handleCommentModal: (cellIndex: number) => void;
-  rubricRatingHeaders?: RubricRatingHeader[];
-  className: string;
-  onClick: () => void;
-  isClicked: boolean;
-  cellIds?: CellIds[];
-  isGlobalAccess?: boolean;
-  onCellValueChange?: any;
-}
-
-export interface RubricCriteriaProps {
-  criteria: string;
-  rubrics?: Record<string, string[]>;
-  isEditAccess: boolean | undefined;
-  onEditClick: (type: 'rubric' | 'header' | 'criteria', criteria: string | number, index: number) => void;
-  onDeleteCriteria: (criteria: string) => void;
-  rubricCell?: RubricCell[];
-  rubricRatingHeaders?: RubricRatingHeader[];
-  cellIds?: CellIds[];
-  rubricId?: string;
-  writeAccess?: boolean;
-  isGlobalAccess?: boolean;
-  editCriteriaIds?: any;
-  rubricCellIds?: any;
 }
 
 export interface SessionProps {
@@ -245,10 +183,6 @@ export interface CriteriaChange {
   id: string;
   oldValue: string;
   newValue: string;
-}
-export interface EditRubricProps {
-  rubricId: string;
-  space: SpaceWithIntegrationsFragment;
 }
 export type SpaceWithIntegrationsFragment = {
   __typename?: 'Space';

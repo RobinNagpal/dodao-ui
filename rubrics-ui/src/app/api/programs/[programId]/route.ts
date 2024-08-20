@@ -1,5 +1,17 @@
 import { prisma } from '@/prisma';
+import { Program } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
+
+export async function GET(req: NextRequest, { params }: { params: { programId: string } }): Promise<NextResponse<Program | { error: string }>> {
+  const programId = params.programId;
+
+  const program = await prisma.program.findUniqueOrThrow({
+    where: { id: programId },
+  });
+
+  return NextResponse.json(program);
+}
+
 export async function PUT(req: NextRequest, { params }: { params: { programId: string } }) {
   const programId = params.programId;
   const { name, details, summary, rubricIds, spaceId } = await req.json();

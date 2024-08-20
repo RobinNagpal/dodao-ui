@@ -6,7 +6,7 @@ import { Session } from '@dodao/web-core/types/auth/Session';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { CheckCircleIcon } from '@heroicons/react/24/solid';
 import { RubricCell, RubricCriteria } from '@prisma/client';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 export interface ViewRubricCellProps {
   rubric: RubricWithEntities;

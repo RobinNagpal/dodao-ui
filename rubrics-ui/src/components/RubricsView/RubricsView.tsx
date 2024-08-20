@@ -1,6 +1,6 @@
 import ViewRubricCriteria from '@/components/RubricsView/ViewRubricCriteria';
 import ViewRubricLevel from '@/components/RubricsView/ViewRubricLevel';
-import { RubricsPageProps, RubricWithEntities, RubricRatingWithEntities } from '@/types/rubricsTypes/types';
+import { RubricWithEntities, RubricRatingWithEntities } from '@/types/rubricsTypes/types';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import React from 'react';
 
@@ -10,7 +10,7 @@ export interface RubricViewProps {
   rubricRating?: RubricRatingWithEntities;
 }
 
-const RubricsView: React.FC<RubricsPageProps & RubricViewProps> = ({ rubric, session, rubricRating }) => {
+const RubricsView: React.FC<RubricViewProps> = ({ rubric, session, rubricRating }) => {
   return (
     <div className="container mx-auto py-8 p-4">
       <div className="flex items-center pb-8 align-center justify-center">

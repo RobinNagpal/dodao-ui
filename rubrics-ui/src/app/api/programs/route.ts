@@ -1,26 +1,23 @@
 import { prisma } from '@/prisma';
+import { Program } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET(req: NextRequest) {
+export async function GET(req: NextRequest): Promise<NextResponse<Program[] | { error: string }>> {
   const url = new URL(req.url);
   const spaceId = url.searchParams.get('spaceId');
 
   if (!spaceId) {
-    return NextResponse.json({ status: 400, body: 'Missing spaceId parameter' });
+    return NextResponse.json({ error: 'Missing spaceId parameter' }, { status: 400 });
   }
 
-  try {
-    const programs = await prisma.program.findMany({
-      where: {
-        spaceId: spaceId,
-      },
-    });
-    return NextResponse.json({ status: 200, body: programs });
-  } catch (error) {
-    console.log('Error getting programs:', error);
-    return NextResponse.json({ status: 500, body: 'Failed to get programs' });
-  }
+  const programs = await prisma.program.findMany({
+    where: {
+      spaceId: spaceId,
+    },
+  });
+  return NextResponse.json(programs);
 }
+
 export async function POST(req: NextRequest, res: NextResponse) {
   try {
     const {
