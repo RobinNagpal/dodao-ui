@@ -2,9 +2,9 @@ import { prisma } from '@/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 export async function PUT(req: NextRequest, { params }: { params: { rubricId: string; cellId: string } }) {
   const { rubricId, cellId } = params;
-  const { value } = await req.json();
+  const { description } = await req.json();
 
-  if (!value) {
+  if (!description) {
     return NextResponse.json({ error: 'Value is required' }, { status: 400 });
   }
 
@@ -14,7 +14,7 @@ export async function PUT(req: NextRequest, { params }: { params: { rubricId: st
         id: cellId,
       },
       data: {
-        description: value,
+        description: description,
       },
     });
 
