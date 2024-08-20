@@ -241,7 +241,7 @@ function elementSelector(event) {
       overlayContainer.style.width = '100%';
       overlayContainer.style.height = scrollHeight + 'px';
       overlayContainer.style.pointerEvents = 'none'; // Allow click events to "fall through" to the target
-      overlayContainer.style.zIndex = '99999'; // Ensure it's above other content
+      overlayContainer.style.zIndex = '999999999999999'; // Ensure it's above other content
 
       // Create four overlay parts with transitions
       const topOverlay = document.createElement('div');
