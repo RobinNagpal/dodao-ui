@@ -2,10 +2,12 @@ import { prisma } from '@/prisma';
 import { RubricCellRatingRequest } from '@/types/rubricsTypes/types';
 import { getDecodedJwtFromContext } from '@dodao/web-core/api/auth/getJwtFromContext';
 import { NextRequest, NextResponse } from 'next/server';
-
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
+import { Session } from '@dodao/web-core/types/auth/Session';
 export async function POST(req: NextRequest) {
   const data = (await req.json()) as RubricCellRatingRequest;
-  const session = await getDecodedJwtFromContext(req);
+  const session = (await getServerSession(authOptions)) as Session | undefined;
   if (!session) {
     return NextResponse.json({ status: 401, body: 'Unauthorized' });
   }
@@ -14,7 +16,7 @@ export async function POST(req: NextRequest) {
     where: {
       rubricId_userId: {
         rubricId: data.rubricId,
-        userId: session.username,
+        userId: session.userId,
       },
     },
     update: {},
@@ -41,7 +43,7 @@ export async function POST(req: NextRequest) {
       rubricCellId: {
         in: rubricCellIds.map((cell) => cell.id),
       },
-      userId: session.username,
+      userId: session.userId,
     },
   });
 
@@ -51,7 +53,7 @@ export async function POST(req: NextRequest) {
       rubricCellId: data.cellId,
       rubricRatingId: rubricRating.id,
       comment: data.comment,
-      userId: session.username,
+      userId: session.userId,
     },
   });
 
