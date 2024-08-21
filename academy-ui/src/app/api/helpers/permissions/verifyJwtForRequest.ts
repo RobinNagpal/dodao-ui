@@ -1,5 +1,5 @@
 import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
-import { getDecodedJwtFromContext } from '@/app/api/helpers/permissions/getJwtFromContext';
+import { getDecodedJwtFromContext } from '@dodao/web-core/api/auth/getJwtFromContext';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { Space } from '@prisma/client';
 import { JwtPayload } from 'jsonwebtoken';

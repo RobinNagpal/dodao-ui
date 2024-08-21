@@ -1,4 +1,4 @@
-import { getDecodedJwtFromContext } from '@/app/api/helpers/permissions/getJwtFromContext';
+import { getDecodedJwtFromContext } from '@dodao/web-core/api/auth/getJwtFromContext';
 import { NextRequest } from 'next/server';
 
 const superAdminsFromEnv = process.env.DODAO_SUPERADMINS ? process.env.DODAO_SUPERADMINS.split(',') : [];

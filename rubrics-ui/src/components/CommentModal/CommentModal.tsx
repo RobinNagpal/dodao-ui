@@ -1,28 +1,37 @@
-import { CommentModalProps } from '@/types/rubricsTypes/types';
-const CommentModal: React.FC<CommentModalProps> = ({ isOpen, onClose, comment, setComment, handleSave, criteria }) => {
-  if (!isOpen) return null;
+'use client';
+
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import SingleSectionModal from '@dodao/web-core/components/core/modals/SingleSectionModal';
+import { RubricCriteria } from '@prisma/client';
+import { useState } from 'react';
+
+export interface CommentModalProps {
+  open: boolean;
+  onSave: (comment: string) => Promise<void>;
+  criteria: RubricCriteria;
+  onClose: () => void;
+}
+
+export default function CommentModal({ open, onClose, onSave, criteria }: CommentModalProps) {
+  const [comment, setComment] = useState<string>('');
 
   return (
-    <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white p-4 rounded shadow-lg">
-        <h2 className="text-xl mb-2">Edit Comment for {criteria}</h2>
-        <textarea value={comment} onChange={(e) => setComment(e.target.value)} className="w-full h-24 p-2 border rounded" />
-        <div className="mt-4 flex justify-end space-x-2">
-          <button onClick={onClose} className="px-4 py-2 bg-gray-300 rounded">
-            Cancel
-          </button>
-          <button
-            onClick={() => {
-              handleSave();
-              onClose();
-            }}
-            className="px-4 py-2 bg-blue-500 text-white rounded"
-          >
-            Save
-          </button>
-        </div>
+    <SingleSectionModal open={open} onClose={onClose} title={'Submit Rating'}>
+      <h2 className="text-xl mb-2">Edit Comment for {criteria.title}</h2>
+      <textarea value={comment} onChange={(e) => setComment(e.target.value)} className="w-full h-24 p-2 border rounded" />
+      <div className="mt-4 flex justify-end space-x-2">
+        <Button onClick={onClose}>Cancel</Button>
+        <Button
+          onClick={async () => {
+            await onSave(comment);
+            onClose();
+          }}
+          variant="contained"
+          primary
+        >
+          Save
+        </Button>
       </div>
-    </div>
+    </SingleSectionModal>
   );
-};
-export default CommentModal;
+}

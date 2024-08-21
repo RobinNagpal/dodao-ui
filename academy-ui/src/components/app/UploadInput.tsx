@@ -4,6 +4,7 @@ import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import ArrowUpTrayIcon from '@heroicons/react/24/solid/ArrowUpTrayIcon';
 import PhotoIcon from '@heroicons/react/24/solid/PhotoIcon';
 import styled from 'styled-components';
+import styles from './UploadInput.module.scss';
 import { v4 as uuidV4 } from 'uuid';
 
 const UploadWrapper = styled.div`
@@ -69,7 +70,10 @@ export default function UploadInput({
           />
         </div>
         <FileUploader
-          className="relative -ml-px inline-flex items-center gap-x-1.5 rounded-r-md px-3 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+          className={
+            'relative -ml-px inline-flex items-center gap-x-1.5 rounded-r-md px-3 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 ' +
+            styles.styledHover
+          }
           spaceId={spaceId}
           onInput={onInput}
           imageType={imageType}

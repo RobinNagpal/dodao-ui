@@ -1,14 +1,17 @@
+import { RubricWithEntities } from '@/types/rubricsTypes/types';
+import { RubricLevel } from '@prisma/client';
 import React from 'react';
 
 export interface EditRubricLevelProps {
-  header: string;
-  index: number;
-  score: number;
-  onScoreChange: (index: number, score: number) => void;
-  onEditClick: (type: 'header', criteria: number, index: number) => void;
+  level: RubricLevel;
+  levelIndex: number;
+  onLevelChanged: (level: RubricLevel) => void;
+  rubric: RubricWithEntities;
 }
 
-const EditRubricLevel: React.FC<EditRubricLevelProps> = ({ header, index, score, onScoreChange, onEditClick }) => {
+const EditRubricLevel: React.FC<EditRubricLevelProps> = ({ levelIndex, level }) => {
+  const [levelScore, setLevelScore] = React.useState(level.score);
+
   const getHeaderColorClass = (index: number) => {
     switch (index) {
       case 0:
@@ -25,9 +28,9 @@ const EditRubricLevel: React.FC<EditRubricLevelProps> = ({ header, index, score,
   };
 
   return (
-    <th className={`py-2 px-4 border-b cursor-pointer text-white ${getHeaderColorClass(index)}`}>
-      <div className="overflow-auto max-h-24" onClick={() => onEditClick('header', index, -1)}>
-        {header}
+    <th className={`py-2 px-4 border-b cursor-pointer text-white ${getHeaderColorClass(levelIndex)}`}>
+      <div className="overflow-auto max-h-24" onClick={() => {}}>
+        {level.columnName}
         <br />
       </div>
       <input
@@ -36,8 +39,8 @@ const EditRubricLevel: React.FC<EditRubricLevelProps> = ({ header, index, score,
         max={10}
         className="w-12 h-8 border rounded-md p-2 text-center mb-2 text-black"
         placeholder="Score"
-        value={score}
-        onChange={(e) => onScoreChange(index, parseInt(e.target.value))}
+        value={levelScore}
+        onChange={(e) => {}}
       />
     </th>
   );
