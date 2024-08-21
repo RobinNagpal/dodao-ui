@@ -4,14 +4,58 @@ import EditRubricCriteria from '@/components/RubricEdit/EditRubricCriteria';
 import EditRubricLevel from '@/components/RubricEdit/EditRubricLevel';
 import { RubricWithEntities, SpaceWithIntegrationsFragment } from '@/types/rubricsTypes/types';
 import React from 'react';
-
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 const EditRubricsDetails: React.FC<{
   rubric: RubricWithEntities;
   space: SpaceWithIntegrationsFragment;
   onRubricUpdated: () => void;
 }> = ({ rubric, space, onRubricUpdated }) => {
-  const handleAddCriteria = () => {
-    // Add logic to add criteria
+  const handleAddCriteriaWithCells = async () => {
+    const newCriteriaTitle = `New Criteria ${rubric.criterias.length + 1}`;
+    const newCells = rubric.levels.map((level, index) => {
+      let description;
+
+      switch (index) {
+        case 0:
+          description = `Outstanding performance `;
+          break;
+        case 1:
+          description = `Good performance.`;
+          break;
+        case 2:
+          description = `Adequate performance.`;
+          break;
+        case 3:
+          description = `Needs improvement.`;
+          break;
+        default:
+          description = `Description for ${newCriteriaTitle}.`;
+          break;
+      }
+
+      return {
+        description,
+        ratingHeaderId: level.id,
+      };
+    });
+
+    const response = await fetch(`${getBaseUrl()}/api/rubrics/`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        rubricId: rubric.id,
+        title: newCriteriaTitle,
+        cells: newCells,
+      }),
+    });
+
+    if (response.ok) {
+      onRubricUpdated();
+    } else {
+      console.log('Failed to add new criteria');
+    }
   };
   console.log(rubric);
 
@@ -40,7 +84,7 @@ const EditRubricsDetails: React.FC<{
       </div>
 
       <div className="flex justify-center">
-        <button className="bg-blue-500 mt-2 text-white py-2 px-4 rounded-full flex items-center justify-center" onClick={handleAddCriteria}>
+        <button className="bg-blue-500 mt-2 text-white py-2 px-4 rounded-full flex items-center justify-center" onClick={handleAddCriteriaWithCells}>
           +
         </button>
       </div>

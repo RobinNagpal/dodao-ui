@@ -1,6 +1,6 @@
 import { prisma } from '@/prisma';
 import { NextRequest, NextResponse } from 'next/server';
-
+import { Rubric } from '@prisma/client';
 export async function PUT(request: NextRequest, { params }: { params: { rubricId: string; criteriaId: string } }) {
   const { rubricId, criteriaId } = params;
 
@@ -32,10 +32,13 @@ export async function PUT(request: NextRequest, { params }: { params: { rubricId
   }
 }
 
-export async function DELETE(req: NextRequest) {
-  const { criteriaId } = await req.json();
-
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: { rubricId: string; criteriaId: string } }
+): Promise<NextResponse<Rubric | { error: string } | { message: string }>> {
   try {
+    const { criteriaId, rubricId } = params;
+
     await prisma.$transaction(async (tx) => {
       await tx.rubricCriteria.update({
         where: { id: criteriaId },
@@ -48,9 +51,17 @@ export async function DELETE(req: NextRequest) {
       });
     });
 
-    return NextResponse.json({ status: 200, body: { message: 'Criteria and associated cells archived successfully' } });
+    const updatedRubric = await prisma.rubric.findUnique({
+      where: { id: criteriaId },
+      include: {
+        criterias: true,
+        cells: true,
+      },
+    });
+
+    return NextResponse.json({ message: 'Criteria and associated cells archived successfully', updatedRubric }, { status: 200 });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ status: 500, body: 'An error occurred' });
+    return NextResponse.json({ error: 'An error occurred' }, { status: 500 });
   }
 }
