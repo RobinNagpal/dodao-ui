@@ -57,7 +57,6 @@ const EditRubricsDetails: React.FC<{
       console.log('Failed to add new criteria');
     }
   };
-  console.log(rubric);
 
   return (
     <div className="container mx-auto py-8 p-4">
