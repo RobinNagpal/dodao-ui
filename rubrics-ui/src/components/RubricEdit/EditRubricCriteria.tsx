@@ -77,7 +77,6 @@ const EditRubricCriteria: React.FC<EditRubricCriteriaProps> = ({ criteria, rubri
         </td>
       </tr>
 
-      {/* Using the EditRubricCriteriaModal component */}
       <EditRubricCriteriaModal
         isOpen={isCriteriaModalOpen}
         onClose={() => setIsCriteriaModalOpen(false)}
