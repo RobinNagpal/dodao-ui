@@ -19,7 +19,7 @@ const EditRubricCriteria: React.FC<EditRubricCriteriaProps> = ({ criteria, rubri
   const { showNotification } = useNotificationContext();
 
   const deleteCriteria = async (criteriaId: string) => {
-    const updatedRubric = await fetch(`${getBaseUrl()}/api/rubrics/${rubric.id}/criterias/${criteriaId}`, {
+    const updatedRubric = await fetch(`${getBaseUrl()}/api/rubrics/${rubric.id}/criteria/${criteriaId}`, {
       method: 'DELETE',
     });
 
@@ -31,7 +31,7 @@ const EditRubricCriteria: React.FC<EditRubricCriteriaProps> = ({ criteria, rubri
   return (
     <>
       <tr>
-        <td className="py-2 px-4 border-r border-b font-bold cursor-pointer max-w-xs break-words relative">
+        <td className="py-2 px-4 border-r border-b font-bold cursor-pointer max-w-xs break-words">
           <div
             onClick={() => {
               // show the modal. Same logic as rating logic
@@ -42,11 +42,10 @@ const EditRubricCriteria: React.FC<EditRubricCriteriaProps> = ({ criteria, rubri
           </div>
         </td>
         {rubric.cells
-          .filter((cell) => cell.criteriaId === criteria.id)
+          .filter((cell, index) => cell.criteriaId === criteria.id)
           .map((cell, cellIndex) => (
             <EditRubricCell key={cell.id} rubric={rubric} cell={cell} criteria={criteria} cellIndex={cellIndex} onUpdated={() => onCriteriaEdited(criteria)} />
           ))}
-
         <td>
           <button onClick={() => setIsDeleteIconClicked(true)}>
             <TrashIcon className="w-8 h-8 text-red-500 mx-auto" />

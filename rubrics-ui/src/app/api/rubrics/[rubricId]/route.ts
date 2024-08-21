@@ -15,7 +15,11 @@ export async function GET(req: NextRequest, { params }: { params: { rubricId: st
     const rubric = await prisma.rubric.findUnique({
       where: { id: rubricId },
       include: {
-        levels: true,
+        levels: {
+          orderBy: {
+            score: 'desc',
+          },
+        },
         criterias: {
           where: { isArchived: false },
         },

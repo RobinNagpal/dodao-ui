@@ -9,7 +9,7 @@ export interface EditRubricCellProps {
   cell: RubricCell;
   criteria: RubricCriteria;
   cellIndex: number;
-  onUpdated: (updatedCell: RubricCell) => void;
+  onUpdated: (cell: RubricCell) => void;
 }
 
 const EditRubricCell: React.FC<EditRubricCellProps> = ({ cell, criteria, cellIndex, onUpdated, rubric }) => {

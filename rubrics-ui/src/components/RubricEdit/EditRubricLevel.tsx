@@ -1,16 +1,17 @@
+'use client';
 import { RubricWithEntities } from '@/types/rubricsTypes/types';
 import { RubricLevel } from '@prisma/client';
-import React from 'react';
-
+import React, { useState, useEffect } from 'react';
+import LevelEditModal from '@/components/LevelEditModal/LevelEditModal';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 export interface EditRubricLevelProps {
   level: RubricLevel;
   levelIndex: number;
   onLevelChanged: (level: RubricLevel) => void;
   rubric: RubricWithEntities;
 }
-
-const EditRubricLevel: React.FC<EditRubricLevelProps> = ({ levelIndex, level }) => {
-  const [levelScore, setLevelScore] = React.useState(level.score);
+const EditRubricLevel: React.FC<EditRubricLevelProps> = ({ levelIndex, level, onLevelChanged, rubric }) => {
+  const [isLevelModalOpen, setIsLevelModalOpen] = useState(false);
 
   const getHeaderColorClass = (index: number) => {
     switch (index) {
@@ -27,22 +28,35 @@ const EditRubricLevel: React.FC<EditRubricLevelProps> = ({ levelIndex, level }) 
     }
   };
 
+  const handleLevelUpdate = async (updatedLevel: RubricLevel) => {
+    const response = await fetch(`${getBaseUrl()}/api/rubrics/${rubric.id}/level/${updatedLevel.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        columnName: updatedLevel.columnName,
+        score: updatedLevel.score,
+        description: updatedLevel.description,
+      }),
+    });
+
+    const updatedLevelResponse = await response.json();
+
+    onLevelChanged(updatedLevelResponse);
+  };
+
   return (
-    <th className={`py-2 px-4 border-b cursor-pointer text-white ${getHeaderColorClass(levelIndex)}`}>
-      <div className="overflow-auto max-h-24" onClick={() => {}}>
-        {level.columnName}
-        <br />
-      </div>
-      <input
-        type="number"
-        min={0}
-        max={10}
-        className="w-12 h-8 border rounded-md p-2 text-center mb-2 text-black"
-        placeholder="Score"
-        value={levelScore}
-        onChange={(e) => {}}
-      />
-    </th>
+    <>
+      <th className={`py-2 px-4 border-b cursor-pointer text-white ${getHeaderColorClass(levelIndex)}`} onClick={() => setIsLevelModalOpen(true)}>
+        <div className="overflow-auto max-h-24">
+          {level.columnName}
+          <br />
+        </div>
+      </th>
+
+      <LevelEditModal isOpen={isLevelModalOpen} onClose={() => setIsLevelModalOpen(false)} onSave={handleLevelUpdate} level={level} />
+    </>
   );
 };
 
