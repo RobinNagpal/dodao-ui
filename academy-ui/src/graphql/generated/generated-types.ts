@@ -1271,6 +1271,7 @@ export interface Mutation {
   __typename?: 'Mutation';
   _empty?: Maybe<Scalars['String']>;
   addDiscordCredentials: Space;
+  addNewApiKey: Space;
   addTopic: GitCourseTopic;
   addTopicExplanation: GitCourseExplanation;
   addTopicQuestion: GitCourseQuestion;
@@ -1385,6 +1386,13 @@ export interface Mutation {
 export interface MutationAddDiscordCredentialsArgs {
   code: Scalars['String'];
   redirectUri: Scalars['String'];
+  spaceId: Scalars['String'];
+}
+
+
+export interface MutationAddNewApiKeyArgs {
+  apiKey: Scalars['String'];
+  creator: Scalars['String'];
   spaceId: Scalars['String'];
 }
 
@@ -4402,6 +4410,15 @@ export type UpsertSpaceFeaturesMutationVariables = Exact<{
 
 
 export type UpsertSpaceFeaturesMutation = { __typename?: 'Mutation', payload: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, type: string, skin: string, avatar?: string | null, domains: Array<string>, botDomains?: Array<string> | null, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, adminUsernamesV1: Array<{ __typename?: 'UsernameAndName', username: string, nameOfTheUser: string }>, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null, loadersInfo?: { __typename?: 'SpaceLoadersInfo', discourseUrl?: string | null, discordServerId?: string | null } | null, spaceApiKeys: Array<{ __typename?: 'SpaceApiKey', creator: string, apiKey?: string | null, lastFourLetters: string, lastUsed?: any | null } | null> } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null }, themeColors?: { __typename?: 'ThemeColors', primaryColor: string, bgColor: string, textColor: string, linkColor: string, headingColor: string, borderColor: string, blockBg: string } | null, tidbitsHomepage?: { __typename?: 'TidbitsHomepage', heading: string, shortDescription: string } | null } };
+
+export type AddNewApiKeyMutationVariables = Exact<{
+  spaceId: Scalars['String'];
+  creator: Scalars['String'];
+  apiKey: Scalars['String'];
+}>;
+
+
+export type AddNewApiKeyMutation = { __typename?: 'Mutation', payload: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, type: string, skin: string, avatar?: string | null, domains: Array<string>, botDomains?: Array<string> | null, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, adminUsernamesV1: Array<{ __typename?: 'UsernameAndName', username: string, nameOfTheUser: string }>, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null, loadersInfo?: { __typename?: 'SpaceLoadersInfo', discourseUrl?: string | null, discordServerId?: string | null } | null, spaceApiKeys: Array<{ __typename?: 'SpaceApiKey', creator: string, apiKey?: string | null, lastFourLetters: string, lastUsed?: any | null } | null> } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null }, themeColors?: { __typename?: 'ThemeColors', primaryColor: string, bgColor: string, textColor: string, linkColor: string, headingColor: string, borderColor: string, blockBg: string } | null, tidbitsHomepage?: { __typename?: 'TidbitsHomepage', heading: string, shortDescription: string } | null } };
 
 export type DropPineconeNamespaceMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -10994,6 +11011,41 @@ export function useUpsertSpaceFeaturesMutation(baseOptions?: Apollo.MutationHook
 export type UpsertSpaceFeaturesMutationHookResult = ReturnType<typeof useUpsertSpaceFeaturesMutation>;
 export type UpsertSpaceFeaturesMutationResult = Apollo.MutationResult<UpsertSpaceFeaturesMutation>;
 export type UpsertSpaceFeaturesMutationOptions = Apollo.BaseMutationOptions<UpsertSpaceFeaturesMutation, UpsertSpaceFeaturesMutationVariables>;
+export const AddNewApiKeyDocument = gql`
+    mutation AddNewApiKey($spaceId: String!, $creator: String!, $apiKey: String!) {
+  payload: addNewApiKey(spaceId: $spaceId, creator: $creator, apiKey: $apiKey) {
+    ...SpaceWithIntegrations
+  }
+}
+    ${SpaceWithIntegrationsFragmentDoc}`;
+export type AddNewApiKeyMutationFn = Apollo.MutationFunction<AddNewApiKeyMutation, AddNewApiKeyMutationVariables>;
+
+/**
+ * __useAddNewApiKeyMutation__
+ *
+ * To run a mutation, you first call `useAddNewApiKeyMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddNewApiKeyMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addNewApiKeyMutation, { data, loading, error }] = useAddNewApiKeyMutation({
+ *   variables: {
+ *      spaceId: // value for 'spaceId'
+ *      creator: // value for 'creator'
+ *      apiKey: // value for 'apiKey'
+ *   },
+ * });
+ */
+export function useAddNewApiKeyMutation(baseOptions?: Apollo.MutationHookOptions<AddNewApiKeyMutation, AddNewApiKeyMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AddNewApiKeyMutation, AddNewApiKeyMutationVariables>(AddNewApiKeyDocument, options);
+      }
+export type AddNewApiKeyMutationHookResult = ReturnType<typeof useAddNewApiKeyMutation>;
+export type AddNewApiKeyMutationResult = Apollo.MutationResult<AddNewApiKeyMutation>;
+export type AddNewApiKeyMutationOptions = Apollo.BaseMutationOptions<AddNewApiKeyMutation, AddNewApiKeyMutationVariables>;
 export const DropPineconeNamespaceDocument = gql`
     mutation DropPineconeNamespace($spaceId: String!) {
   dropPineconeNamespace(spaceId: $spaceId)

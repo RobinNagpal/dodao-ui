@@ -183,6 +183,12 @@ mutation UpsertSpaceFeatures($spaceId: String!, $features: [String!]!) {
   }
 }
 
+mutation AddNewApiKey($spaceId: String!, $creator: String!, $apiKey: String!) {
+  payload: addNewApiKey(spaceId: $spaceId, creator: $creator, apiKey: $apiKey) {
+    ...SpaceWithIntegrations
+  }
+}
+
 mutation DropPineconeNamespace($spaceId: String!) {
   dropPineconeNamespace(spaceId: $spaceId)
 }

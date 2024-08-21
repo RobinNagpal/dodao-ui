@@ -1300,6 +1300,7 @@ type Mutation {
   upsertSimulation(input: UpsertSimulationInput!, spaceId: String!): Simulation!
   upsertSpaceAcademyRepository(academyRepository: String!, spaceId: String!): Space!
   upsertSpaceFeatures(features: [String!]!, spaceId: String!): Space!
+  addNewApiKey(creator: String!, spaceId: String!, apiKey: String!): Space!
   upsertSpaceInviteLinks(spaceId: String!, spaceInviteArgs: SpaceInviteArgs!): Space!
   upsertSpaceLoaderInfo(input: SpaceLoadersInfoInput!, spaceId: String!): Space!
   upsertSummaryOfDiscoursePost(input: UpsertSummaryOfDiscoursePostInput!, spaceId: String!): DiscoursePost!
