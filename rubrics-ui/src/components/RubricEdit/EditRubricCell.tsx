@@ -17,14 +17,6 @@ const EditRubricCell: React.FC<EditRubricCellProps> = ({ cell, criteria, cellInd
   const [updatedCellDescription, setUpdatedCellDescription] = useState<string>(cell.description);
   const { showNotification } = useNotificationContext();
 
-  const handleCellModalOpen = () => {
-    setIsCellModalOpen(true);
-  };
-
-  const handleCellModalClose = () => {
-    setIsCellModalOpen(false);
-  };
-
   const handleCellSave = async () => {
     const response = await fetch(`${getBaseUrl()}/api/rubrics/${rubric.id}/cell/${cell.id}`, {
       method: 'PUT',
@@ -42,18 +34,18 @@ const EditRubricCell: React.FC<EditRubricCellProps> = ({ cell, criteria, cellInd
     }
     const updatedCell = (await response.json()) as RubricCell;
     onUpdated(updatedCell);
-    handleCellModalClose();
+    setIsCellModalOpen(true);
   };
 
   return (
     <>
-      <td className="py-2 px-4 border-r border-b cursor-pointer" onClick={handleCellModalOpen}>
+      <td className="py-2 px-4 border-r border-b cursor-pointer" onClick={() => setIsCellModalOpen(true)}>
         <div className="flex items-center overflow-y-auto max-h-26">
           <span className="flex-grow">{cell.description}</span>
         </div>
       </td>
 
-      <SingleSectionModal open={isCellModalOpen} onClose={handleCellModalClose} title="Edit Cell">
+      <SingleSectionModal open={isCellModalOpen} onClose={() => setIsCellModalOpen(false)} title="Edit Cell">
         <textarea
           value={updatedCellDescription}
           onChange={(e) => setUpdatedCellDescription(e.target.value)}
