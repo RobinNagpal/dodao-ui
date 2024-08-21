@@ -3,6 +3,7 @@ import { RubricWithEntities } from '@/types/rubricsTypes/types';
 import { RubricCell, RubricCriteria } from '@prisma/client';
 import SingleSectionModal from '@dodao/web-core/components/core/modals/SingleSectionModal';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 export interface EditRubricCellProps {
   rubric: RubricWithEntities;
   cell: RubricCell;
@@ -25,7 +26,7 @@ const EditRubricCell: React.FC<EditRubricCellProps> = ({ cell, criteria, cellInd
   };
 
   const handleCellSave = async () => {
-    const response = await fetch(`/api/rubrics/${rubric.id}/cell/${cell.id}`, {
+    const response = await fetch(`${getBaseUrl()}/api/rubrics/${rubric.id}/cell/${cell.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
