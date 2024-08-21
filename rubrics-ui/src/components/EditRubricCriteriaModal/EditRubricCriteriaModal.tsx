@@ -5,11 +5,11 @@ interface EditRubricCriteriaModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSave: (updatedTitle: string) => Promise<void>;
-  initialTitle: string;
+  title: string;
 }
 
-const EditRubricCriteriaModal: React.FC<EditRubricCriteriaModalProps> = ({ isOpen, onClose, onSave, initialTitle }) => {
-  const [updatedTitle, setUpdatedTitle] = useState(initialTitle);
+const EditRubricCriteriaModal: React.FC<EditRubricCriteriaModalProps> = ({ isOpen, onClose, onSave, title }) => {
+  const [updatedTitle, setUpdatedTitle] = useState(title);
 
   const handleSave = async () => {
     await onSave(updatedTitle);
