@@ -58,6 +58,12 @@ fragment SpaceWithIntegrations on Space {
       discourseUrl
       discordServerId
     }
+    SpaceApiKeys {
+      creator
+      apiKey
+      lastFourLetters
+      lastUsed
+    }
   }
   authSettings {
     loginOptions

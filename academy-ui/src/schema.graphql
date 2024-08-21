@@ -1610,6 +1610,19 @@ input SpaceGitRepositoryInput {
   repoUrl: String!
 }
 
+type SpaceApiKey {
+  creator: String!
+  apiKey: String
+  lastFourLetters: String!
+  lastUsed: DateTimeISO!
+}
+input SpaceApiKeyInput {
+  creator: String!
+  apiKey: String
+  lastFourLetters: String!
+  lastUsed: DateTimeISO!
+}
+
 type SpaceIntegrations {
   academyRepository: String
   discordGuildId: String
@@ -1617,6 +1630,7 @@ type SpaceIntegrations {
   gnosisSafeWallets: [GnosisSafeWallet!]
   loadersInfo: SpaceLoadersInfo
   projectGalaxyTokenLastFour: String
+  SpaceApiKeys: [SpaceApiKey]!
 }
 
 input SpaceIntegrationsInput {
@@ -1625,6 +1639,7 @@ input SpaceIntegrationsInput {
   gitGuideRepositories: [SpaceGitRepositoryInput!]!
   gnosisSafeWallets: [GnosisSafeWalletInput!]!
   projectGalaxyTokenLastFour: String
+  SpaceApiKeys: [SpaceApiKeyInput]!
 }
 
 input SpaceInviteArgs {

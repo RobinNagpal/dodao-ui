@@ -152,6 +152,8 @@ model SpaceIntegration {
   /// [SpaceLoadersInfo]
   loadersInfo                Json?    @db.Json
   space                      Space    @relation(fields: [spaceId], references: [id])
+  /// [SpaceApiKey]
+  spaceApiKeys               Json[]   @default([]) @map("api_keys") @db.Json
 
   @@map("space_integrations")
 }
