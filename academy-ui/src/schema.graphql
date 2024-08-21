@@ -1614,13 +1614,13 @@ type SpaceApiKey {
   creator: String!
   apiKey: String
   lastFourLetters: String!
-  lastUsed: DateTimeISO!
+  lastUsed: DateTimeISO
 }
 input SpaceApiKeyInput {
   creator: String!
   apiKey: String
   lastFourLetters: String!
-  lastUsed: DateTimeISO!
+  lastUsed: DateTimeISO
 }
 
 type SpaceIntegrations {
