@@ -1630,7 +1630,7 @@ type SpaceIntegrations {
   gnosisSafeWallets: [GnosisSafeWallet!]
   loadersInfo: SpaceLoadersInfo
   projectGalaxyTokenLastFour: String
-  SpaceApiKeys: [SpaceApiKey]!
+  spaceApiKeys: [SpaceApiKey]!
 }
 
 input SpaceIntegrationsInput {
@@ -1639,7 +1639,7 @@ input SpaceIntegrationsInput {
   gitGuideRepositories: [SpaceGitRepositoryInput!]!
   gnosisSafeWallets: [GnosisSafeWalletInput!]!
   projectGalaxyTokenLastFour: String
-  SpaceApiKeys: [SpaceApiKeyInput]!
+  spaceApiKeys: [SpaceApiKeyInput]!
 }
 
 input SpaceInviteArgs {

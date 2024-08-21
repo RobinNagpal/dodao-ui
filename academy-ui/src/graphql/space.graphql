@@ -58,7 +58,7 @@ fragment SpaceWithIntegrations on Space {
       discourseUrl
       discordServerId
     }
-    SpaceApiKeys {
+    spaceApiKeys {
       creator
       apiKey
       lastFourLetters
