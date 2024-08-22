@@ -5,7 +5,7 @@ export async function GET(request: Request, { params }: { params: { rubricId: st
   const { rubricId } = params;
 
   try {
-    const rubric = await prisma.rubric.findUnique({
+    const rubric = await prisma.rubric.findUniqueOrThrow({
       where: { id: rubricId },
       include: {
         cells: {
@@ -19,26 +19,23 @@ export async function GET(request: Request, { params }: { params: { rubricId: st
       },
     });
 
-    if (!rubric) {
-    }
-
-    const rubricCells = rubric?.cells;
+    const rubricCells = rubric.cells;
 
     const criteriaMap: Record<string, string> = {};
-    rubric?.criterias.forEach((criterion) => {
+    rubric.criterias.forEach((criterion) => {
       criteriaMap[criterion.id] = criterion.title;
     });
 
     const criteriaUserScores: Record<string, Record<string, number[]>> = {};
 
-    rubricCells?.forEach((cell) => {
+    rubricCells.forEach((cell) => {
       if (!cell.criteriaId || !cell.level) return;
 
       const criteria = criteriaUserScores[cell.criteriaId] || {};
 
       cell.ratings.forEach((rating) => {
         const userId = rating.userId;
-        const score = cell.level?.score;
+        const score = cell.level.score;
 
         if (!userId || score == null) return;
 
@@ -65,8 +62,8 @@ export async function GET(request: Request, { params }: { params: { rubricId: st
     });
 
     const response = {
-      name: rubric?.name,
-      summary: rubric?.summary,
+      name: rubric.name,
+      summary: rubric.summary,
       averageScores,
     };
 
