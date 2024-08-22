@@ -1,5 +1,5 @@
 import React from 'react';
-import ProgramScreenModalClient from '@/components/ProgramFullScreenModalView/ProgramFullScreenModalView';
+import ProgramScreenModalClient from '@/components/Program/ProgramView/ViewProgramFullScreenModal';
 
 const Page = async ({ params }: { params: { programId: string } }) => {
   const { programId } = params;
@@ -14,11 +14,7 @@ const Page = async ({ params }: { params: { programId: string } }) => {
     const programName = programData?.body?.name || 'Unknown Program Name';
     const programDetails = programData?.body?.details || 'No details available';
 
-    return (
-      <>
-        <ProgramScreenModalClient programName={programName} programDetails={programDetails} open={true} programId={programId} />
-      </>
-    );
+    return <ProgramScreenModalClient programName={programName} programDetails={programDetails} open={true} programId={programId} />;
   } catch (error) {
     console.error('Error fetching API data:', error);
 

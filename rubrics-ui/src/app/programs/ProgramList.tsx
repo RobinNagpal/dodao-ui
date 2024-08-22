@@ -1,10 +1,12 @@
 'use client';
+
 import React, { useState, useEffect } from 'react';
 import { Table, TableActions, TableRow } from '@dodao/web-core/components/core/table/Table';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { SpaceWithIntegrationsFragment } from '@/types/rubricsTypes/types';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+
 interface Program {
   id: string;
   name: string;

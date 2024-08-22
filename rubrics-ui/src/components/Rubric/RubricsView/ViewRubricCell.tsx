@@ -1,6 +1,6 @@
 'use client';
 
-import CommentModal from '@/components/CommentModal/CommentModal';
+import CommentModal from '@/components/Rubric/RubricsView/CommentModal';
 import { RubricCellRatingRequest, RubricWithEntities } from '@/types/rubricsTypes/types';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';

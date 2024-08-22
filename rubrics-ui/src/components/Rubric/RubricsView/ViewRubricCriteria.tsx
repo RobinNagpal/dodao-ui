@@ -1,4 +1,4 @@
-import ViewRubricCell from '@/components/RubricsView/ViewRubricCell';
+import ViewRubricCell from '@/components/Rubric/RubricsView/ViewRubricCell';
 import { RubricWithEntities, RubricRatingWithEntities } from '@/types/rubricsTypes/types';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { RatingCellSelection, RubricCriteria } from '@prisma/client';

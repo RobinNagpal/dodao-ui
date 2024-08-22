@@ -1,5 +1,5 @@
-import ViewRubricCriteria from '@/components/RubricsView/ViewRubricCriteria';
-import ViewRubricLevel from '@/components/RubricsView/ViewRubricLevel';
+import ViewRubricCriteria from '@/components/Rubric/RubricsView/ViewRubricCriteria';
+import ViewRubricLevel from '@/components/Rubric/RubricsView/ViewRubricLevel';
 import { RubricWithEntities, RubricRatingWithEntities } from '@/types/rubricsTypes/types';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import React from 'react';
