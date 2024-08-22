@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import ProgramInput from '@/components/ProgramInput/ProgramInput';
+import ProgramInput from '@/components/Program/EditProgram/ProgramInput';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import { EditProgramRubricProps, SpaceWithIntegrationsFragment } from '@/types/rubricsTypes/types';

@@ -1,4 +1,4 @@
-import ProgramEdit from '@/components/EditProgram/EditProgram';
+import ProgramEdit from '@/components/Program/EditProgram/EditProgram';
 import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
 
 async function EditProgram() {

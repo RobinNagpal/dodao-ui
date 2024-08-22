@@ -1,4 +1,4 @@
-import ProgramFullScreenModalEdit from '@/components/ProgramFullScreenModalEdit/ProgramFullScreenModalEdit';
+import ProgramFullScreenModalEdit from '@/components/Program/EditProgram/EditProgramFullScreenModal';
 import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
 
 const EditProgram = async ({ params }: { params: { programId: string } }) => {

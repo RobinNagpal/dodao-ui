@@ -1,5 +1,5 @@
 import React from 'react';
-import ProgramScreenModalClient from '@/components/ProgramFullScreenModalView/ProgramFullScreenModalView';
+import ProgramScreenModalClient from '@/components/Program/ViewProgram/ViewProgramFullScreenModal';
 
 const Page = async ({ params }: { params: { programId: string } }) => {
   const { programId } = params;
