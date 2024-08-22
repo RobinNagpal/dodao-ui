@@ -1,10 +1,10 @@
-import { MutationAddNewApiKeyArgs } from '../../../../../graphql/generated/generated-types';
-import { getSpaceById } from '../../../../../app/api/helpers/space/getSpaceById';
-import { checkEditSpacePermission } from '../../../../../app/api/helpers/space/checkEditSpacePermission';
-import { withErrorHandling } from '../../../../../app/api/helpers/middlewares/withErrorHandling';
-import { prisma } from '../../../../../prisma';
+import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
+import { getSpaceWithIntegrations } from '@/app/api/helpers/space';
+import { checkEditSpacePermission } from '@/app/api/helpers/space/checkEditSpacePermission';
+import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
+import { MutationAddNewApiKeyArgs } from '@/graphql/generated/generated-types';
+import { prisma } from '@/prisma';
 import { NextRequest, NextResponse } from 'next/server';
-import { getSpaceWithIntegrations } from '../../../../../app/api/helpers/space';
 
 async function postHandler(req: NextRequest) {
   const { spaceId, creator, apiKey } = (await req.json()) as MutationAddNewApiKeyArgs;
