@@ -26,18 +26,18 @@ export async function GET(request: Request, { params }: { params: { rubricId: st
     const rubricCells = rubric.cells;
 
     const criteriaMap: Record<string, string> = {};
-    rubric.criterias.forEach((criterion: any) => {
+    rubric.criterias.forEach((criterion) => {
       criteriaMap[criterion.id] = criterion.title;
     });
 
     const criteriaUserScores: Record<string, Record<string, number[]>> = {};
 
-    rubricCells.forEach((cell: any) => {
+    rubricCells.forEach((cell) => {
       if (!cell.criteriaId || !cell.level) return;
 
       const criteria = criteriaUserScores[cell.criteriaId] || {};
 
-      cell.ratings.forEach((rating: any) => {
+      cell.ratings.forEach((rating) => {
         const userId = rating.userId;
         const score = cell.level?.score;
 
