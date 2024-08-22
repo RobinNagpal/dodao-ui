@@ -366,6 +366,7 @@ model ByteCollectionItemMappings {
   archive          Boolean?        @default(false)
   ByteCollection   ByteCollection? @relation(fields: [byteCollectionId], references: [id], map: "FK_ByteCollection")
 
+  @@unique([byteCollectionId, itemId])
   @@map("byte_collections_items_mappings")
 }
 

@@ -25,6 +25,7 @@ import ShortItem from './ShortItem';
 
 interface ByteCollectionCardProps {
   byteCollection: ByteCollectionSummary;
+  byteCollections?: ByteCollectionSummary[];
   isEditingAllowed?: boolean;
   viewByteBaseUrl: string;
   space: SpaceWithIntegrationsFragment;
@@ -52,7 +53,14 @@ interface EditShortModalState {
   shortId: string | null;
 }
 
-export default function ByteCollectionsCard({ byteCollection, isEditingAllowed = true, viewByteBaseUrl, space, isAdmin }: ByteCollectionCardProps) {
+export default function ByteCollectionsCard({
+  byteCollection,
+  byteCollections,
+  isEditingAllowed = true,
+  viewByteBaseUrl,
+  space,
+  isAdmin,
+}: ByteCollectionCardProps) {
   const [watchVideo, setWatchVideo] = React.useState<boolean>(false);
   const [selectedVideo, setSelectedVideo] = React.useState<VideoModalProps>();
   const [videoResponse, setVideoResponse] = React.useState<{ shortVideo?: ShortVideoFragment }>();
@@ -61,6 +69,10 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
   const [editDemoModalState, setEditDemoModalState] = React.useState<EditDemoModalState>({ isVisible: false, demoId: null });
   const [editShortModalState, setEditShortModalState] = React.useState<EditShortModalState>({ isVisible: false, shortId: null });
   const threeDotItems = [{ label: 'Edit', key: 'edit' }];
+  const bytethreeDotItems = [
+    { label: 'Edit', key: 'edit' },
+    { label: 'Move to collection', key: 'move' },
+  ];
 
   const nonArchivedItems = byteCollection.items.filter((item) => {
     switch (item.type) {
@@ -164,10 +176,13 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
                   <ByteItem
                     viewByteBaseUrl={viewByteBaseUrl}
                     byte={item.byte}
+                    spaceId={space.id}
+                    currentByteCollectionId={byteCollection.id}
+                    byteCollections={byteCollections}
                     eventIdx={eventIdx}
                     setWatchVideo={setWatchVideo}
                     setSelectedVideo={setSelectedVideo}
-                    threeDotItems={threeDotItems}
+                    threeDotItems={bytethreeDotItems}
                     openByteEditModal={openByteEditModal}
                     itemLength={nonArchivedItems.length}
                     key={item.byte.byteId}

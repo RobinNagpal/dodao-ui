@@ -25,6 +25,7 @@ export default function ByteCollectionsGrid({
           {byteCollections?.map((byteCollection, i) => (
             <ByteCollectionsCard
               key={i}
+              byteCollections={byteCollections}
               byteCollection={byteCollection}
               viewByteBaseUrl={`${byteCollectionsBaseUrl}/view/${byteCollection.id}/`}
               space={space}
