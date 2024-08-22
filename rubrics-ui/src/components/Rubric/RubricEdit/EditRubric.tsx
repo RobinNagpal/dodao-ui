@@ -1,6 +1,6 @@
 'use client';
-import EditRubricsDetails from '@/components/RubricEdit/EditRubricsDetails';
-import RubricBasicInfoForm from '@/components/RubricEdit/RubricBasicInfoForm';
+import EditRubricsDetails from '@/components/Rubric/RubricEdit/EditRubricsDetails';
+import RubricBasicInfoForm from '@/components/Rubric/RubricEdit/RubricBasicInfoForm';
 import { RubricWithEntities, SpaceWithIntegrationsFragment } from '@/types/rubricsTypes/types';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullScreenModal';

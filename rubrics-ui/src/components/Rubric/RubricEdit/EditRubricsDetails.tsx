@@ -1,7 +1,7 @@
 'use client';
 
-import EditRubricCriteria from '@/components/RubricEdit/EditRubricCriteria';
-import EditRubricLevel from '@/components/RubricEdit/EditRubricLevel';
+import EditRubricCriteria from '@/components/Rubric/RubricEdit/EditRubricCriteria';
+import EditRubricLevel from '@/components/Rubric/RubricEdit/EditRubricLevel';
 import { RubricWithEntities, SpaceWithIntegrationsFragment } from '@/types/rubricsTypes/types';
 import React from 'react';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';

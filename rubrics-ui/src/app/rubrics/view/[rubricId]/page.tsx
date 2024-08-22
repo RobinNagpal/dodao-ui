@@ -1,4 +1,4 @@
-import RubricsView from '@/components/RubricsView/RubricsView';
+import RubricsView from '@/components/Rubric/RubricsView/RubricsView';
 import { RubricWithEntities } from '@/types/rubricsTypes/types';
 import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
 import { Session } from '@dodao/web-core/types/auth/Session';

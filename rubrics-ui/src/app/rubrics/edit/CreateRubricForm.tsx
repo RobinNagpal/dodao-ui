@@ -1,6 +1,6 @@
 'use client';
 
-import RubricBasicInfoForm from '@/components/RubricEdit/RubricBasicInfoForm';
+import RubricBasicInfoForm from '@/components/Rubric/RubricEdit/RubricBasicInfoForm';
 import { SpaceWithIntegrationsFragment } from '@/types/rubricsTypes/types';
 import { Program } from '@prisma/client';
 import { useRouter } from 'next/navigation';

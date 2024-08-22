@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { RubricWithEntities } from '@/types/rubricsTypes/types';
 import { RubricCell, RubricCriteria } from '@prisma/client';
-import EditCellModal from '@/components/EditRubricCellModal/EditRubricCellModal';
+import EditCellModal from '@/components/Rubric/RubricEdit/modals/EditRubricCellModal';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 

@@ -1,4 +1,4 @@
-import EditRubric from '@/components/EditRubric/EditRubric';
+import EditRubric from '@/components/Rubric/RubricEdit/EditRubric';
 import { RubricWithEntities } from '@/types/rubricsTypes/types';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Program } from '@prisma/client';

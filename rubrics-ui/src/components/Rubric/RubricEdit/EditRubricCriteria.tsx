@@ -1,12 +1,13 @@
-import ConfirmationModal from '@/components/ConfirmationModal/ConfirmationModal';
-import EditRubricCell from '@/components/RubricEdit/EditRubricCell';
+import EditRubricCriteriaModal from '@/components/Rubric/RubricEdit/modals/EditRubricCriteriaModal';
+import EditRubricCell from '@/components/Rubric/RubricEdit/EditRubricCell';
 import { RubricWithEntities } from '@/types/rubricsTypes/types';
+import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import TrashIcon from '@heroicons/react/24/outline/TrashIcon';
 import { RubricCriteria } from '@prisma/client';
 import React, { useState } from 'react';
-import EditRubricCriteriaModal from '@/components/EditRubricCriteriaModal/EditRubricCriteriaModal';
+
 export interface EditRubricCriteriaProps {
   criteria: RubricCriteria;
   rubric: RubricWithEntities;
@@ -16,9 +17,11 @@ export interface EditRubricCriteriaProps {
 const EditRubricCriteria: React.FC<EditRubricCriteriaProps> = ({ criteria, rubric, onCriteriaEdited }) => {
   const [isDeleteIconClicked, setIsDeleteIconClicked] = useState(false);
   const [isCriteriaModalOpen, setIsCriteriaModalOpen] = useState(false);
+  const [deletingCriteria, setDeletingCriteria] = useState(false);
   const { showNotification } = useNotificationContext();
 
   const deleteCriteria = async (criteriaId: string) => {
+    setDeletingCriteria(true);
     const updatedRubric = await fetch(`${getBaseUrl()}/api/rubrics/${rubric.id}/criteria/${criteriaId}`, {
       method: 'DELETE',
     });
@@ -26,6 +29,8 @@ const EditRubricCriteria: React.FC<EditRubricCriteriaProps> = ({ criteria, rubri
     if (updatedRubric.ok) {
       onCriteriaEdited(criteria);
     }
+
+    setDeletingCriteria(false);
   };
 
   const handleCriteriaSave = async (updatedTitle: string) => {
@@ -78,11 +83,12 @@ const EditRubricCriteria: React.FC<EditRubricCriteriaProps> = ({ criteria, rubri
 
       <EditRubricCriteriaModal isOpen={isCriteriaModalOpen} onClose={() => setIsCriteriaModalOpen(false)} onSave={handleCriteriaSave} title={criteria.title} />
 
-      <ConfirmationModal
-        isOpen={isDeleteIconClicked}
+      <DeleteConfirmationModal
+        title={'Delete Criteria'}
+        open={isDeleteIconClicked}
         onClose={() => setIsDeleteIconClicked(false)}
-        onConfirm={() => deleteCriteria(criteria.id)}
-        message="Are you sure you want to delete this criteria?"
+        onDelete={() => deleteCriteria(criteria.id)}
+        deleting={deletingCriteria}
       />
     </>
   );
