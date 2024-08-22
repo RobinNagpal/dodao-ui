@@ -155,7 +155,7 @@ function MarkdownEditor({
         </label>
       </div>
       <div className="w-full flex justify-center">
-        <MainDiv className="w-full max-w-4xl flex justify-center items-center bg-transparent">
+        <MainDiv className="w-full flex justify-center items-center bg-transparent">
           <MDEditor
             value={modelValue}
             onChange={handleInputContent}

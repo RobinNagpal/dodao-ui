@@ -44,11 +44,6 @@ export interface Rubric {
   cells?: any[];
 }
 
-export interface EditProgramRubricProps {
-  id: string;
-  name: string;
-  summary: string;
-}
 export interface ProgramForm {
   name: string;
   details: string;

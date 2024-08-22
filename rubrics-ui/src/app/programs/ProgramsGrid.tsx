@@ -8,13 +8,8 @@ import React from 'react';
 export const fetchPrograms = async (): Promise<Program[]> => {
   const space = (await getSpaceServerSide())!;
   const spaceId = space.id;
-  try {
-    const response = await fetch(`${getBaseUrl()}/api/programs?spaceId=${spaceId}`);
-    const data = await response.json();
-    return data.body;
-  } catch (error) {
-    throw new Error('Failed to fetch programs');
-  }
+  const response = await fetch(`${getBaseUrl()}/api/programs?spaceId=${spaceId}`);
+  return await response.json();
 };
 
 export function ProgramsGrid(props: { programs: Program[]; space: SpaceWithIntegrationsFragment }) {
