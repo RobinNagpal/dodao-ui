@@ -20,19 +20,18 @@ export async function GET(request: Request, { params }: { params: { rubricId: st
     });
 
     if (!rubric) {
-      return NextResponse.json({ error: 'Rubric not found' }, { status: 404 });
     }
 
-    const rubricCells = rubric.cells;
+    const rubricCells = rubric?.cells;
 
     const criteriaMap: Record<string, string> = {};
-    rubric.criterias.forEach((criterion) => {
+    rubric?.criterias.forEach((criterion) => {
       criteriaMap[criterion.id] = criterion.title;
     });
 
     const criteriaUserScores: Record<string, Record<string, number[]>> = {};
 
-    rubricCells.forEach((cell) => {
+    rubricCells?.forEach((cell) => {
       if (!cell.criteriaId || !cell.level) return;
 
       const criteria = criteriaUserScores[cell.criteriaId] || {};
@@ -66,8 +65,8 @@ export async function GET(request: Request, { params }: { params: { rubricId: st
     });
 
     const response = {
-      name: rubric.name,
-      summary: rubric.summary,
+      name: rubric?.name,
+      summary: rubric?.summary,
       averageScores,
     };
 

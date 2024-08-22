@@ -10,7 +10,7 @@ interface AverageScoresData {
 export default async function RubricsNetRating({ params }: { params: { rubricId: string } }) {
   let averageScoresData: AverageScoresData | null = null;
   let error: string | null = null;
-  const rubricId = params;
+  const { rubricId } = params;
   const response = await fetch(`${getBaseUrl()}/api/net-rating/${rubricId}`);
 
   if (response.ok) {
