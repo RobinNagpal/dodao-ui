@@ -1,13 +1,11 @@
 import DetailsRow from '@dodao/web-core/components/core/details/DetailsRow';
 import DetailsHeader from '@dodao/web-core/components/core/details/DetailsHeader';
 import DetailsSection from '@dodao/web-core/components/core/details/DetailsSection';
-import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
-import UpsertSpaceAuthSettingsModal from '@/components/spaces/Edit/Auth/UpsertSpaceAuthSettingsModal';
 import { Space, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import React, { useState } from 'react';
 import Button from '@dodao/web-core/components/core/buttons/Button';
-import UpsertSpaceApiKey from 'src/components/spaces/Edit/ApiKey/UpsertSpaceApiKeyModal';
 import { Json } from 'aws-sdk/clients/robomaker';
+import UpsertSpaceApiKeyModal from '../Edit/ApiKey/UpsertSpaceApiKeyModal';
 
 export interface SpaceApiKeyDetailsProps {
   space: Space;
@@ -26,7 +24,7 @@ function getSpaceDetailsFields(space: SpaceWithIntegrationsFragment): Array<{ la
     }));
   } else {
     // Return a default entry if no API keys are present
-    return [{ label: 'Api Keys', value: 'No Keys Exist' }];
+    return [{ label: 'Api Keys', value: 'No Keys Exist! You can generte API keys using the Add Key button to the top right corner ' }];
   }
 }
 
@@ -37,27 +35,30 @@ export default function SpaceApiKeyDetails(props: SpaceApiKeyDetailsProps) {
   return (
     <>
       <DetailsSection className={`${props.className} shadow`}>
-        <DetailsHeader header={'API Key Details'} className="grow-1 w-full" />
-        <div className="flex flex-col w-full">
-          {getSpaceDetailsFields(space).map((field) => (
-            <DetailsRow key={field.label} label={field.label} value={field.value} />
-          ))}
+        <div className="flex w-full">
+          <DetailsHeader header={'API Key Details'} className="grow-1 w-full" />
           <Button
             onClick={() => {
               setshowApiKeyModal(true);
             }}
-            className=" self-center my-4"
+            className="w-32 font-bold my-4"
+            variant="contained"
             primary
           >
-            New Key
+            Add Key
           </Button>
         </div>
+        <div className="flex flex-col w-full">
+          {getSpaceDetailsFields(space).map((field) => (
+            <DetailsRow key={field.label} label={field.label} value={field.value} />
+          ))}
+        </div>
       </DetailsSection>
-      <UpsertSpaceApiKey
+      <UpsertSpaceApiKeyModal
         space={props.space}
         open={showApiKeyModal}
         onClose={() => setshowApiKeyModal(false)}
-        onUpdate={(space) => {
+        onUpdate={(space: any) => {
           setSpace(space);
         }}
       />
