@@ -15,6 +15,7 @@ import SpaceThemeDetails from '@/components/spaces/View/SpaceThemeDetails';
 import { Space } from '@/graphql/generated/generated-types';
 import React, { useEffect, useRef, useState } from 'react';
 import SpaceTidbitsHomepageDetails from './View/SpaceTidbitsHomepageDetails';
+import SpaceApiKeyDetails from './View/SpaceApiKeysDetails';
 interface SpaceDetailsProps {
   spaceId: string;
 }
@@ -70,6 +71,7 @@ export default function SpaceDetails(props: SpaceDetailsProps) {
         <div className="flex flex-col gap-y-28 divide-gray-300">
           <SpaceBasicDetails space={data.space} className="pt-6" />
           <SpaceAuthDetails space={data.space} />
+          <SpaceApiKeyDetails space={data.space} />
           <SpaceDomaiDetails space={data.space} />
           <SpaceSocialDetails space={data.space} />
           <SpaceTidbitsHomepageDetails space={data.space} />

@@ -2,9 +2,27 @@ import { prisma } from '@/prisma';
 import { Space, SpaceIntegration } from '@prisma/client';
 
 export async function getSpaceWithIntegrations(spaceId: string): Promise<Space & { spaceIntegrations: SpaceIntegration | null }> {
+  // Fetch the Space details
   const space: Space = await prisma.space.findUniqueOrThrow({ where: { id: spaceId } });
 
-  const spaceIntegrations = await prisma.spaceIntegration.findUnique({ where: { spaceId } });
+  // Fetch the SpaceIntegration details
+  const spaceIntegrations = await prisma.spaceIntegration.findUnique({
+    where: { spaceId },
+  });
+
+  if (spaceIntegrations && spaceIntegrations.spaceApiKeys) {
+    // Exclude apiKey from each object in the SpaceApiKeys array
+    const sanitizedSpaceApiKeys = spaceIntegrations.spaceApiKeys.map(({ apiKey, ...rest }) => rest);
+    return {
+      ...space,
+      spaceIntegrations: {
+        ...spaceIntegrations,
+        spaceApiKeys: sanitizedSpaceApiKeys,
+      },
+    };
+  }
+
+  // Return the space with spaceIntegrations possibly as null if not found
   return { ...space, spaceIntegrations };
 }
 
