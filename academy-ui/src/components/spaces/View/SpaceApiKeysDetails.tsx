@@ -6,7 +6,7 @@ import UpsertSpaceAuthSettingsModal from '@/components/spaces/Edit/Auth/UpsertSp
 import { Space, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import React, { useState } from 'react';
 import Button from '@dodao/web-core/components/core/buttons/Button';
-import UpsertSpaceApiKey from '../Edit/ApiKey/upsertSpaceApiKeyModal';
+import UpsertSpaceApiKey from 'src/components/spaces/Edit/ApiKey/UpsertSpaceApiKeyModal';
 import { Json } from 'aws-sdk/clients/robomaker';
 
 export interface SpaceApiKeyDetailsProps {

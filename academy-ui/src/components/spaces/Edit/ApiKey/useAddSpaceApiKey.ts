@@ -1,17 +1,14 @@
-import { useState, useEffect } from 'react';
+import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { Session } from '@dodao/web-core/types/auth/Session';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { useSession } from 'next-auth/react';
-import { Session } from '@dodao/web-core/types/auth/Session';
 
 export function useAddSpaceApiKey(space: SpaceWithIntegrationsFragment, onUpdate: (space: any) => void) {
-  const [adding, setAdding] = useState(false);
   const { showNotification } = useNotificationContext();
   const { data: clientSession } = useSession() as { data: Session | null };
 
   const addApiKey = async (apiKey: string) => {
-    setAdding(true);
     try {
       // Simulate generating a new API key
       const response = await fetch(`${getBaseUrl()}/api/spaces/add-new-api-key`, {
@@ -36,12 +33,9 @@ export function useAddSpaceApiKey(space: SpaceWithIntegrationsFragment, onUpdate
     } catch (error) {
       console.error('Error adding new API key:', error);
       showNotification({ type: 'error', message: 'Failed to add new API key' });
-    } finally {
-      setAdding(false);
     }
   };
   return {
     addApiKey,
-    adding,
   };
 }

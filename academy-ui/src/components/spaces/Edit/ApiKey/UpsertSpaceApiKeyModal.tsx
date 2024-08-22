@@ -5,11 +5,19 @@ import { useAddSpaceApiKey } from './useAddSpaceApiKey'; // Ensure this path is 
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 
-export default function UpsertSpaceApiKey(props: { space: SpaceWithIntegrationsFragment; open: boolean; onClose: () => void; onUpdate: (space: any) => void }) {
-  const { addApiKey, adding } = useAddSpaceApiKey(props.space, props.onUpdate);
+export default function UpsertSpaceApiKeyModal(props: {
+  space: SpaceWithIntegrationsFragment;
+  open: boolean;
+  onClose: () => void;
+  onUpdate: (space: any) => void;
+}) {
+  const [addingApiKey, setAddingApiKey] = useState(false);
+  const { addApiKey } = useAddSpaceApiKey(props.space, props.onUpdate);
   const [newKey, setNewKey] = useState<string | null>(null);
   const { showNotification } = useNotificationContext();
+
   const handleGenerateAndCopyApiKey = async () => {
+    setAddingApiKey(true);
     const keyPrefix = 'ak_'; // Define a prefix for the API key
     const keyLength = 32; // Define the total desired length of the API key
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -23,7 +31,10 @@ export default function UpsertSpaceApiKey(props: { space: SpaceWithIntegrationsF
     if (apiKey) {
       setNewKey(apiKey);
     }
+
+    setAddingApiKey(false);
   };
+
   const copyToClipboard = (text: string) => {
     navigator.clipboard
       .writeText(text)
@@ -44,8 +55,8 @@ export default function UpsertSpaceApiKey(props: { space: SpaceWithIntegrationsF
       title="API Key Generator"
     >
       <div className="space-y-4 text-left p-4">
-        <Button onClick={handleGenerateAndCopyApiKey} disabled={adding} variant="contained" primary>
-          {adding ? 'Generating...' : 'Generate API Key'}
+        <Button onClick={handleGenerateAndCopyApiKey} disabled={addingApiKey} variant="contained" primary>
+          {addingApiKey ? 'Generating...' : 'Generate API Key'}
         </Button>
         {newKey && (
           <div className="flex items-center gap-x-4 p-4 bg-gray-100 rounded-md">
