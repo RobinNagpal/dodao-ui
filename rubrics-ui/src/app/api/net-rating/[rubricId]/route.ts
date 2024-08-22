@@ -2,11 +2,7 @@ import { prisma } from '@/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: Request, { params }: { params: { rubricId: string } }) {
-  //   const { rubricId } = params;
-  const rubricId = 'rubric-1'; //testing
-  if (!rubricId) {
-    return NextResponse.json({ error: 'Rubric ID is required' }, { status: 400 });
-  }
+  const { rubricId } = params;
 
   try {
     const rubric = await prisma.rubric.findUnique({
