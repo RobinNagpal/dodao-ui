@@ -20,7 +20,8 @@ const EditCellModal: React.FC<EditCellModalProps> = ({ isOpen, onClose, descript
   return (
     <SingleSectionModal open={isOpen} onClose={onClose} title="Edit Cell">
       <TextareaAutosize
-        label={updatedDescription}
+        modelValue={updatedDescription}
+        label=""
         onUpdate={(value: string | number | undefined) => setUpdatedDescription(value as string)}
         className="w-full p-4"
         rows={5}
