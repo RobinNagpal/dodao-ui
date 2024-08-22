@@ -5,6 +5,7 @@ import EditRubricLevel from '@/components/RubricEdit/EditRubricLevel';
 import { RubricWithEntities, SpaceWithIntegrationsFragment } from '@/types/rubricsTypes/types';
 import React from 'react';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import Button from '@dodao/web-core/components/core/buttons/Button';
 const EditRubricsDetails: React.FC<{
   rubric: RubricWithEntities;
   space: SpaceWithIntegrationsFragment;
@@ -83,9 +84,9 @@ const EditRubricsDetails: React.FC<{
       </div>
 
       <div className="flex justify-center">
-        <button className="bg-blue-500 mt-2 text-white py-2 px-4 rounded-full flex items-center justify-center" onClick={handleAddCriteriaWithCells}>
+        <Button primary variant="contained" className=" mt-4 py-4 px-4 rounded-full flex items-center justify-center" onClick={handleAddCriteriaWithCells}>
           +
-        </button>
+        </Button>
       </div>
     </div>
   );

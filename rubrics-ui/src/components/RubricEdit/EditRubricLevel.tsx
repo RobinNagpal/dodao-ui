@@ -1,17 +1,20 @@
-'use client';
+import React, { useState } from 'react';
 import { RubricWithEntities } from '@/types/rubricsTypes/types';
 import { RubricLevel } from '@prisma/client';
-import React, { useState, useEffect } from 'react';
-import LevelEditModal from '@/components/LevelEditModal/LevelEditModal';
+import EditLevelModal from '@/components/LevelEditModal/LevelEditModal';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+
 export interface EditRubricLevelProps {
   level: RubricLevel;
   levelIndex: number;
   onLevelChanged: (level: RubricLevel) => void;
   rubric: RubricWithEntities;
 }
+
 const EditRubricLevel: React.FC<EditRubricLevelProps> = ({ levelIndex, level, onLevelChanged, rubric }) => {
   const [isLevelModalOpen, setIsLevelModalOpen] = useState(false);
+  const { showNotification } = useNotificationContext();
 
   const getHeaderColorClass = (index: number) => {
     switch (index) {
@@ -28,22 +31,21 @@ const EditRubricLevel: React.FC<EditRubricLevelProps> = ({ levelIndex, level, on
     }
   };
 
-  const handleLevelUpdate = async (updatedLevel: RubricLevel) => {
-    const response = await fetch(`${getBaseUrl()}/api/rubrics/${rubric.id}/level/${updatedLevel.id}`, {
+  const handleLevelSave = async (updatedProps: { columnName: string; score: number; description: string }) => {
+    const response = await fetch(`${getBaseUrl()}/api/rubrics/${rubric.id}/level/${level.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        columnName: updatedLevel.columnName,
-        score: updatedLevel.score,
-        description: updatedLevel.description,
-      }),
+      body: JSON.stringify(updatedProps),
     });
 
-    const updatedLevelResponse = await response.json();
-
-    onLevelChanged(updatedLevelResponse);
+    if (response.ok) {
+      showNotification({ type: 'success', message: 'Level updated successfully' });
+      onLevelChanged({ ...level, ...updatedProps });
+    } else {
+      showNotification({ type: 'error', message: 'An error occurred while updating level' });
+    }
   };
 
   return (
@@ -55,7 +57,14 @@ const EditRubricLevel: React.FC<EditRubricLevelProps> = ({ levelIndex, level, on
         </div>
       </th>
 
-      <LevelEditModal isOpen={isLevelModalOpen} onClose={() => setIsLevelModalOpen(false)} onSave={handleLevelUpdate} level={level} />
+      <EditLevelModal
+        isOpen={isLevelModalOpen}
+        onClose={() => setIsLevelModalOpen(false)}
+        columnName={level.columnName}
+        score={level.score}
+        description={level.description || ''}
+        onSave={handleLevelSave}
+      />
     </>
   );
 };

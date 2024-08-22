@@ -7,7 +7,7 @@ import EllipsisDropdown from '@dodao/web-core/src/components/core/dropdowns/Elli
 import { ChevronLeftIcon } from '@heroicons/react/24/outline';
 import { getSession } from 'next-auth/react';
 import { SessionProps } from '@/types/rubricsTypes/types';
-
+import Button from '@dodao/web-core/components/core/buttons/Button';
 interface ProgramScreenModalProps {
   programName: string;
   programDetails?: string;

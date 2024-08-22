@@ -7,7 +7,6 @@ import TrashIcon from '@heroicons/react/24/outline/TrashIcon';
 import { RubricCriteria } from '@prisma/client';
 import React, { useState } from 'react';
 import EditRubricCriteriaModal from '@/components/EditRubricCriteriaModal/EditRubricCriteriaModal';
-
 export interface EditRubricCriteriaProps {
   criteria: RubricCriteria;
   rubric: RubricWithEntities;
@@ -77,12 +76,7 @@ const EditRubricCriteria: React.FC<EditRubricCriteriaProps> = ({ criteria, rubri
         </td>
       </tr>
 
-      <EditRubricCriteriaModal
-        isOpen={isCriteriaModalOpen}
-        onClose={() => setIsCriteriaModalOpen(false)}
-        onSave={handleCriteriaSave}
-        initialTitle={criteria.title}
-      />
+      <EditRubricCriteriaModal isOpen={isCriteriaModalOpen} onClose={() => setIsCriteriaModalOpen(false)} onSave={handleCriteriaSave} title={criteria.title} />
 
       <ConfirmationModal
         isOpen={isDeleteIconClicked}

@@ -1,5 +1,5 @@
 import { ConfirmationModalProps } from '@/types/rubricsTypes/types';
-
+import Button from '@dodao/web-core/components/core/buttons/Button';
 const ConfirmationModal: React.FC<ConfirmationModalProps> = ({ isOpen, onClose, onConfirm, message }) => {
   if (!isOpen) return null;
 
@@ -8,18 +8,18 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({ isOpen, onClose, 
       <div className="bg-white p-4 rounded shadow-lg">
         <h2 className="text-xl mb-2">{message}</h2>
         <div className="mt-4 flex justify-end space-x-2">
-          <button onClick={onClose} className="px-4 py-2 bg-gray-300 rounded">
+          <Button onClick={onClose} className="px-4 py-2">
             Cancel
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={() => {
               onConfirm();
               onClose();
             }}
-            className="px-4 py-2 bg-blue-500 text-white rounded"
+            className="px-4 py-2"
           >
             Confirm
-          </button>
+          </Button>
         </div>
       </div>
     </div>
