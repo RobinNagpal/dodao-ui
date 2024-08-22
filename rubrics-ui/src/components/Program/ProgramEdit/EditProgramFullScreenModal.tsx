@@ -2,7 +2,7 @@
 
 import React from 'react';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
-import ProgramEditScreen from '@/components/Program/EditProgram/ProgramEditScreen';
+import ProgramEditScreen from '@/components/Program/ProgramEdit/ProgramEditScreen';
 import { ChevronLeftIcon } from '@heroicons/react/24/outline';
 import { useRouter } from 'next/navigation';
 import { SpaceWithIntegrationsFragment } from '@/types/rubricsTypes/types';
