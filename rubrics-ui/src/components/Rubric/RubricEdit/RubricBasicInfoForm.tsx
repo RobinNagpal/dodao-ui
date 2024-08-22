@@ -144,25 +144,34 @@ const RubricBasicInfoForm: React.FC<RubricBasicInfoFormProps> = ({ rubric, progr
         Rubrics
       </button>
 
-      <StyledSelect label="Select a program" items={programItems} selectedItemId={selectedProgramId} setSelectedItemId={(id) => setSelectedProgramId(id)} />
+      <StyledSelect
+        className="text-left pt-4"
+        label="Select a program"
+        items={programItems}
+        selectedItemId={selectedProgramId}
+        setSelectedItemId={(id) => setSelectedProgramId(id)}
+      />
 
       <Input
         modelValue={rubricBasicInfo.name}
         onUpdate={(value) => setRubricBasicInfo((prev) => ({ ...prev, name: value as string }))}
         placeholder="Enter rubric name"
         label="Rubric Name"
+        className="text-left"
       />
-      <label>Description</label>
+
       <MarkdownEditor
         modelValue={rubricBasicInfo.description}
         onUpdate={(value) => setRubricBasicInfo((prev) => ({ ...prev, description: value }))}
         placeholder="Enter description"
+        label="Description"
       />
-      <label>Summary</label>
+
       <MarkdownEditor
         modelValue={rubricBasicInfo.summary}
         onUpdate={(value) => setRubricBasicInfo((prev) => ({ ...prev, summary: value }))}
         placeholder="Enter summary"
+        label="Summary"
       />
 
       <div className="flex justify-center gap-2 mt-4">

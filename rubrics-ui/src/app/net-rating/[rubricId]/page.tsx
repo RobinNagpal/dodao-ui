@@ -1,16 +1,17 @@
 import React from 'react';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+
 interface AverageScoresData {
   name: string;
   summary: string;
   averageScores: { criteriaId: string; criteriaName: string; averageScore: number }[];
 }
 
-export default async function AnalyticsPage() {
+export default async function RubricsNetRating({ params }: { params: { rubricId: string } }) {
   let averageScoresData: AverageScoresData | null = null;
   let error: string | null = null;
-
-  const response = await fetch(`${getBaseUrl()}/api/net-rating/`);
+  const { rubricId } = params;
+  const response = await fetch(`${getBaseUrl()}/api/net-rating/${rubricId}`);
 
   if (response.ok) {
     averageScoresData = await response.json();

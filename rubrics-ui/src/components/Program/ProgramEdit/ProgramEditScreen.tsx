@@ -36,10 +36,15 @@ function EditProgram({ programId, space }: EditProgramProps) {
 
   useEffect(() => {
     if (programId) {
-      fetch(`${getBaseUrl()}/api/program?programId=${programId}`)
-        .then((res) => res.json())
+      fetch(`${getBaseUrl()}/api/programs/${programId}`)
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error('Failed to fetch program details');
+          }
+          return res.json();
+        })
         .then((data) => {
-          const { name, details, summary, rubricIds } = data.body;
+          const { name, details, summary, rubricIds } = data;
           setNewProgram({ name, details, summary });
           setSelectedRubrics(rubricIds || []);
         })
@@ -62,7 +67,7 @@ function EditProgram({ programId, space }: EditProgramProps) {
       spaceId: space.id,
     };
 
-    const url = programId ? `${getBaseUrl()}/api/program/${programId}` : `${getBaseUrl()}/api/programs`;
+    const url = programId ? `${getBaseUrl()}/api/programs/${programId}` : `${getBaseUrl()}/api/programs`;
 
     const method = programId ? 'PUT' : 'POST';
 

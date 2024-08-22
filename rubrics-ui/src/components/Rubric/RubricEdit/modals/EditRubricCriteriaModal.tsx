@@ -19,11 +19,12 @@ const EditRubricCriteriaModal: React.FC<EditRubricCriteriaModalProps> = ({ isOpe
   return (
     <SingleSectionModal open={isOpen} onClose={onClose} title="Edit Criteria">
       <TextareaAutosize
-        label={updatedTitle}
+        modelValue={updatedTitle}
         onUpdate={(value: string | number | undefined) => setUpdatedTitle(value as string)}
         className="w-full p-4 resize-none"
         rows={5}
         placeholder="Enter criteria description..."
+        label=""
       />
       <div className="mt-4 flex justify-end">
         <Button className="inline-flex justify-center" onClick={handleSave}>
