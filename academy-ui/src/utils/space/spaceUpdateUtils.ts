@@ -39,6 +39,7 @@ export function getSpaceInput(spaceId: string, space: SpaceEditType): UpsertSpac
         })) || [],
       gnosisSafeWallets: space.spaceIntegrations?.gnosisSafeWallets || [],
       projectGalaxyTokenLastFour: space.spaceIntegrations?.projectGalaxyTokenLastFour || null,
+      spaceApiKeys: space.spaceIntegrations?.spaceApiKeys || [],
     },
   };
 }
@@ -68,6 +69,7 @@ export function getEditSpaceType(spaceResponse: Space): SpaceEditType {
       gitGuideRepositories: spaceResponse.spaceIntegrations?.gitGuideRepositories || [],
       gnosisSafeWallets: spaceResponse.spaceIntegrations?.gnosisSafeWallets || [],
       projectGalaxyTokenLastFour: spaceResponse.spaceIntegrations?.projectGalaxyTokenLastFour || null,
+      spaceApiKeys: spaceResponse.spaceIntegrations?.spaceApiKeys || [],
     },
   };
   return spaceEditType;

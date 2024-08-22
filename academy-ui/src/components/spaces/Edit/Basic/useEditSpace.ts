@@ -36,6 +36,7 @@ export default function useEditSpace(spaceId?: string): UseEditSpaceHelper {
       gitGuideRepositories: [],
       gnosisSafeWallets: [],
       projectGalaxyTokenLastFour: null,
+      spaceApiKeys: [],
     },
   });
 
