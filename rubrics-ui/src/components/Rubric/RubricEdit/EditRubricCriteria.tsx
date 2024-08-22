@@ -2,8 +2,10 @@ import EditRubricCriteriaModal from '@/components/Rubric/RubricEdit/modals/EditR
 import EditRubricCell from '@/components/Rubric/RubricEdit/EditRubricCell';
 import { RubricWithEntities } from '@/types/rubricsTypes/types';
 import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
+import SidebarButton from '@dodao/web-core/components/core/buttons/SidebarButton';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import PlusCircle from '@heroicons/react/20/solid/PlusCircleIcon';
 import TrashIcon from '@heroicons/react/24/outline/TrashIcon';
 import { RubricCriteria } from '@prisma/client';
 import React, { useState } from 'react';
@@ -75,9 +77,9 @@ const EditRubricCriteria: React.FC<EditRubricCriteriaProps> = ({ criteria, rubri
         )}
 
         <td>
-          <button onClick={() => setIsDeleteIconClicked(true)}>
-            <TrashIcon className="w-8 h-8 text-red-500 mx-auto" />
-          </button>
+          <SidebarButton onClick={() => setIsDeleteIconClicked(true)} className="m-auto" primary>
+            <TrashIcon height={28} width={28} className="text-red-500" />
+          </SidebarButton>
         </td>
       </tr>
 

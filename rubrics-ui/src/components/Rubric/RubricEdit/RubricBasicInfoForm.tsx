@@ -4,6 +4,7 @@ import MarkdownEditor from '@/components/MarkdownEditor/MarkdownEditor';
 import { RubricWithEntities, SpaceWithIntegrationsFragment } from '@/types/rubricsTypes/types';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Input from '@dodao/web-core/components/core/input/Input';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import StyledSelect, { StyledSelectItem } from '@dodao/web-core/components/core/select/StyledSelect';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -137,44 +138,39 @@ const RubricBasicInfoForm: React.FC<RubricBasicInfoFormProps> = ({ rubric, progr
   }));
 
   return (
-    <div>
+    <PageWrapper>
       <button onClick={handleBack} style={{ color: 'var(--primary-color)' }} className="flex items-center focus:outline-none">
         <ChevronLeftIcon className="h-5 w-5 ml-4" />
         Rubrics
       </button>
-      <div className="flex flex-col items-center">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-2 w-full max-w-4xl p-4">
-          <StyledSelect label="Select a program" items={programItems} selectedItemId={selectedProgramId} setSelectedItemId={(id) => setSelectedProgramId(id)} />
 
-          <Input
-            modelValue={rubricBasicInfo.name}
-            onUpdate={(value) => setRubricBasicInfo((prev) => ({ ...prev, name: value as string }))}
-            placeholder="Enter rubric name"
-            label="Rubric Name"
-            className="mb-3 text-left"
-          />
-          <label className="block mb-2 text-sm font-medium text-left">Description</label>
-          <MarkdownEditor
-            modelValue={rubricBasicInfo.description}
-            onUpdate={(value) => setRubricBasicInfo((prev) => ({ ...prev, description: value }))}
-            placeholder="Enter description"
-            editorClass="mb-4"
-          />
-          <label className="block mt-4 mb-2 text-sm font-medium text-left">Summary</label>
-          <MarkdownEditor
-            modelValue={rubricBasicInfo.summary}
-            onUpdate={(value) => setRubricBasicInfo((prev) => ({ ...prev, summary: value }))}
-            placeholder="Enter summary"
-            editorClass="mb-4"
-          />
-        </div>
-      </div>
+      <StyledSelect label="Select a program" items={programItems} selectedItemId={selectedProgramId} setSelectedItemId={(id) => setSelectedProgramId(id)} />
+
+      <Input
+        modelValue={rubricBasicInfo.name}
+        onUpdate={(value) => setRubricBasicInfo((prev) => ({ ...prev, name: value as string }))}
+        placeholder="Enter rubric name"
+        label="Rubric Name"
+      />
+      <label>Description</label>
+      <MarkdownEditor
+        modelValue={rubricBasicInfo.description}
+        onUpdate={(value) => setRubricBasicInfo((prev) => ({ ...prev, description: value }))}
+        placeholder="Enter description"
+      />
+      <label>Summary</label>
+      <MarkdownEditor
+        modelValue={rubricBasicInfo.summary}
+        onUpdate={(value) => setRubricBasicInfo((prev) => ({ ...prev, summary: value }))}
+        placeholder="Enter summary"
+      />
+
       <div className="flex justify-center gap-2 mt-4">
         <Button variant="contained" primary onClick={handleSave} className="mt-2">
           Save
         </Button>
       </div>
-    </div>
+    </PageWrapper>
   );
 };
 

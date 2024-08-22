@@ -1,6 +1,7 @@
 import RubricsView from '@/components/Rubric/RubricsView/RubricsView';
 import { RubricWithEntities } from '@/types/rubricsTypes/types';
 import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { ChevronLeftIcon } from '@heroicons/react/24/outline';
@@ -24,7 +25,7 @@ const Page = async ({ params }: { params: { rubricId: string } }) => {
     throw new Error('Failed to fetch rubric');
   }
   return (
-    <div>
+    <PageWrapper>
       <div className="mt-10 p-2 flex-col items-center justify-center gap-x-6">
         <Link href={'/rubrics'} style={{ color: 'var(--primary-color)' }} className="flex items-center focus:outline-none">
           <ChevronLeftIcon className="h-5 w-5 ml-4" />
@@ -32,7 +33,7 @@ const Page = async ({ params }: { params: { rubricId: string } }) => {
         </Link>
         <RubricsView rubric={rubric} session={session} rubricRating={rubricRating} />
       </div>
-    </div>
+    </PageWrapper>
   );
 };
 

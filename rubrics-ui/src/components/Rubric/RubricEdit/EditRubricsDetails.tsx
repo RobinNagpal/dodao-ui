@@ -62,7 +62,7 @@ const EditRubricsDetails: React.FC<{
   };
 
   return (
-    <div className="container mx-auto py-8 p-4">
+    <div>
       <div className="flex items-center pb-8 align-center justify-center">
         <h1 className="text-3xl text-center font-bold p-2">{rubric.name}</h1>
       </div>

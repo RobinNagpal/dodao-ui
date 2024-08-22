@@ -27,25 +27,18 @@ const EditRubric: React.FC<EditRubricProps> = ({ rubric, programs, space }) => {
 
   return (
     <div>
-      <div className="mt-10 p-2 flex-col items-center justify-center gap-x-6">
-        <div className="w-full">
-          <Button variant="contained" primary onClick={() => setShowRubricBasicInfoForm(true)} className="float-right mt-2">
-            Edit Basic Info
-          </Button>
-        </div>
-        {showRubricBasicInfoForm && (
-          <FullPageModal
-            open={showRubricBasicInfoForm}
-            onClose={() => setShowRubricBasicInfoForm(false)}
-            title="Edit Rubric Basic Info"
-            showCloseButton={false}
-          >
-            <RubricBasicInfoForm rubric={rubric} programs={programs} space={space} onCreateOrUpdate={() => setShowRubricBasicInfoForm(false)} />
-          </FullPageModal>
-        )}
-
-        <EditRubricsDetails rubric={updatedRubric} space={space} onRubricUpdated={onRubricUpdated} />
+      <div className="w-full">
+        <Button variant="contained" primary onClick={() => setShowRubricBasicInfoForm(true)} className="float-right mt-2">
+          Edit Basic Info
+        </Button>
       </div>
+      {showRubricBasicInfoForm && (
+        <FullPageModal open={showRubricBasicInfoForm} onClose={() => setShowRubricBasicInfoForm(false)} title="Edit Rubric Basic Info">
+          <RubricBasicInfoForm rubric={rubric} programs={programs} space={space} onCreateOrUpdate={() => setShowRubricBasicInfoForm(false)} />
+        </FullPageModal>
+      )}
+
+      <EditRubricsDetails rubric={updatedRubric} space={space} onRubricUpdated={onRubricUpdated} />
     </div>
   );
 };
