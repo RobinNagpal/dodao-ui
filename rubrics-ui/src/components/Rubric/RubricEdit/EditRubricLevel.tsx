@@ -31,18 +31,18 @@ const EditRubricLevel: React.FC<EditRubricLevelProps> = ({ levelIndex, level, on
     }
   };
 
-  const handleLevelSave = async (updatedProps: { columnName: string; score: number; description: string }) => {
+  const handleLevelSave = async (updatedLevel: RubricLevel) => {
     const response = await fetch(`${getBaseUrl()}/api/rubrics/${rubric.id}/level/${level.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(updatedProps),
+      body: JSON.stringify(updatedLevel),
     });
 
     if (response.ok) {
       showNotification({ type: 'success', message: 'Level updated successfully' });
-      onLevelChanged({ ...level, ...updatedProps });
+      onLevelChanged({ ...level, ...updatedLevel });
     } else {
       showNotification({ type: 'error', message: 'An error occurred while updating level' });
     }
@@ -57,14 +57,7 @@ const EditRubricLevel: React.FC<EditRubricLevelProps> = ({ levelIndex, level, on
         </div>
       </th>
 
-      <EditLevelModal
-        isOpen={isLevelModalOpen}
-        onClose={() => setIsLevelModalOpen(false)}
-        columnName={level.columnName}
-        score={level.score}
-        description={level.description || ''}
-        onSave={handleLevelSave}
-      />
+      <EditLevelModal isOpen={isLevelModalOpen} onClose={() => setIsLevelModalOpen(false)} level={level} onSave={handleLevelSave} />
     </>
   );
 };

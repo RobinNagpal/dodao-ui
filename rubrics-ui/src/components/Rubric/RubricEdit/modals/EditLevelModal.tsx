@@ -1,3 +1,4 @@
+import { RubricLevel } from '@prisma/client';
 import React, { useState } from 'react';
 import SingleSectionModal from '@dodao/web-core/components/core/modals/SingleSectionModal';
 import Button from '@dodao/web-core/components/core/buttons/Button';
@@ -6,18 +7,12 @@ import Input from '@dodao/web-core/components/core/input/Input';
 interface EditLevelModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (updatedProps: { columnName: string; score: number; description: string }) => Promise<void>;
-  columnName: string;
-  score: number;
-  description: string;
+  onSave: (updatedLevel: RubricLevel) => Promise<void>;
+  level: RubricLevel;
 }
 
-const EditLevelModal: React.FC<EditLevelModalProps> = ({ isOpen, onClose, onSave, columnName, score, description }) => {
-  const [updatedLevel, setUpdatedLevel] = useState({
-    columnName,
-    score,
-    description,
-  });
+const EditLevelModal: React.FC<EditLevelModalProps> = ({ level, isOpen, onClose, onSave }) => {
+  const [updatedLevel, setUpdatedLevel] = useState(level);
 
   const handleSave = async () => {
     await onSave(updatedLevel);
@@ -51,7 +46,7 @@ const EditLevelModal: React.FC<EditLevelModalProps> = ({ isOpen, onClose, onSave
       </div>
       <div className="mb-4">
         <TextareaAutosize
-          modelValue={updatedLevel.description}
+          modelValue={updatedLevel.description || ''}
           label="Description:"
           onUpdate={(value: string | number | undefined) => handleChange('description', value as string)}
           className="w-full p-2"

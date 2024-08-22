@@ -3,9 +3,11 @@
 import EditRubricCriteria from '@/components/Rubric/RubricEdit/EditRubricCriteria';
 import EditRubricLevel from '@/components/Rubric/RubricEdit/EditRubricLevel';
 import { RubricWithEntities, SpaceWithIntegrationsFragment } from '@/types/rubricsTypes/types';
-import React from 'react';
+import SidebarButton from '@dodao/web-core/components/core/buttons/SidebarButton';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import Button from '@dodao/web-core/components/core/buttons/Button';
+import PlusCircle from '@heroicons/react/20/solid/PlusCircleIcon';
+import React from 'react';
+
 const EditRubricsDetails: React.FC<{
   rubric: RubricWithEntities;
   space: SpaceWithIntegrationsFragment;
@@ -84,9 +86,9 @@ const EditRubricsDetails: React.FC<{
       </div>
 
       <div className="flex justify-center">
-        <Button primary variant="contained" className=" mt-4 py-4 px-4 rounded-full flex items-center justify-center" onClick={handleAddCriteriaWithCells}>
-          +
-        </Button>
+        <SidebarButton onClick={handleAddCriteriaWithCells} className="m-auto" primary>
+          <PlusCircle height={40} width={40} />
+        </SidebarButton>
       </div>
     </div>
   );
