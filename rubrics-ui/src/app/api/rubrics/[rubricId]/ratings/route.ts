@@ -5,11 +5,12 @@ import { Session } from '@dodao/web-core/types/auth/Session';
 import { getServerSession } from 'next-auth';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST(req: NextRequest) {
+export async function POST(req: NextRequest, { params }: { params: { rubricId: string } }) {
   const data = (await req.json()) as RubricCellRatingRequest;
   const session = (await getServerSession(authOptions)) as Session | undefined;
+  const { rubricId } = params;
   if (!session) {
-    return NextResponse.json({ status: 401, body: 'Unauthorized' });
+    return NextResponse.json({ status: 401, error: 'Unauthorized' });
   }
 
   const rubricRating = await prisma.rubricRating.upsert({
@@ -57,7 +58,19 @@ export async function POST(req: NextRequest) {
     },
   });
 
-  return NextResponse.json({ status: 200, body: 'Data saved successfully' });
+  const updatedRubricRating = await prisma.rubricRating.findUniqueOrThrow({
+    where: {
+      rubricId_userId: {
+        rubricId: rubricId,
+        userId: session.userId,
+      },
+    },
+    include: {
+      selections: true,
+    },
+  });
+
+  return NextResponse.json(updatedRubricRating, { status: 200 });
 }
 
 export async function GET(req: NextRequest, { params }: { params: { rubricId: string } }) {
@@ -82,4 +95,40 @@ export async function GET(req: NextRequest, { params }: { params: { rubricId: st
     },
   });
   return NextResponse.json({ rubricRating }, { status: 200 });
+}
+
+export async function DELETE(req: Request) {
+  try {
+    const { userId, rubricId } = await req.json();
+
+    if (!userId || !rubricId) {
+      return NextResponse.json({ error: 'Missing userId or rubricId' }, { status: 400 });
+    }
+
+    await prisma.ratingCellSelection.deleteMany({
+      where: {
+        rubricRating: {
+          rubricId: rubricId,
+          userId: userId,
+        },
+      },
+    });
+
+    const updatedRubricRating = await prisma.rubricRating.findUniqueOrThrow({
+      where: {
+        rubricId_userId: {
+          rubricId: rubricId,
+          userId: userId,
+        },
+      },
+      include: {
+        selections: true,
+      },
+    });
+
+    return NextResponse.json(updatedRubricRating, { status: 200 });
+  } catch (error) {
+    console.error('Error deleting selections:', error);
+    return NextResponse.json({ error: 'Failed to delete selections' }, { status: 500 });
+  }
 }

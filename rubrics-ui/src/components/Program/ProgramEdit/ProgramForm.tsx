@@ -2,15 +2,15 @@
 import MarkdownEditor from '@/components/MarkdownEditor/MarkdownEditor';
 import React from 'react';
 import Input from '@dodao/web-core/components/core/input/Input';
-import { ProgramForm } from '@/types/rubricsTypes/types';
+import { ProgramFormType } from '@/types/rubricsTypes/types';
 
 const ProgramForm: React.FC<{
-  newProgram: ProgramForm;
-  setNewProgram: React.Dispatch<React.SetStateAction<ProgramForm>>;
+  newProgram: ProgramFormType;
+  setNewProgram: React.Dispatch<React.SetStateAction<ProgramFormType>>;
   error: string | null;
   setError: React.Dispatch<React.SetStateAction<string | null>>;
 }> = ({ newProgram, setNewProgram, error, setError }) => {
-  const handleInputChange = (field: keyof ProgramForm, value: string | number) => {
+  const handleInputChange = (field: keyof ProgramFormType, value: string | number) => {
     setNewProgram((prevProgram) => ({
       ...prevProgram,
       [field]: value,

@@ -44,7 +44,7 @@ export interface Rubric {
   cells?: any[];
 }
 
-export interface ProgramForm {
+export interface ProgramFormType {
   name: string;
   details: string;
   summary: string;
