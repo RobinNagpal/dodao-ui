@@ -6,8 +6,8 @@ import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { emptyClickableDemo } from '@/components/clickableDemos/Edit/EmptyClickableDemo';
 
 async function postHandler(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
-  const apiKey = searchParams.get('apiKey');
+  const headers = req.headers;
+  const apiKey = headers.get('X-API-KEY');
   if (!apiKey) return NextResponse.json({ message: 'apiKey is required' }, { status: 400 });
   const body = await req.json();
   if (!body) return NextResponse.json({ message: 'body is required' }, { status: 400 });
