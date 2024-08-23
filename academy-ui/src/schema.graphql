@@ -1300,6 +1300,7 @@ type Mutation {
   upsertSimulation(input: UpsertSimulationInput!, spaceId: String!): Simulation!
   upsertSpaceAcademyRepository(academyRepository: String!, spaceId: String!): Space!
   upsertSpaceFeatures(features: [String!]!, spaceId: String!): Space!
+  addNewApiKey(creator: String!, spaceId: String!, apiKey: String!): Space!
   upsertSpaceInviteLinks(spaceId: String!, spaceInviteArgs: SpaceInviteArgs!): Space!
   upsertSpaceLoaderInfo(input: SpaceLoadersInfoInput!, spaceId: String!): Space!
   upsertSummaryOfDiscoursePost(input: UpsertSummaryOfDiscoursePostInput!, spaceId: String!): DiscoursePost!
@@ -1610,6 +1611,19 @@ input SpaceGitRepositoryInput {
   repoUrl: String!
 }
 
+type SpaceApiKey {
+  creator: String!
+  apiKey: String
+  lastFourLetters: String!
+  lastUsed: DateTimeISO
+}
+input SpaceApiKeyInput {
+  creator: String!
+  apiKey: String
+  lastFourLetters: String!
+  lastUsed: DateTimeISO
+}
+
 type SpaceIntegrations {
   academyRepository: String
   discordGuildId: String
@@ -1617,6 +1631,7 @@ type SpaceIntegrations {
   gnosisSafeWallets: [GnosisSafeWallet!]
   loadersInfo: SpaceLoadersInfo
   projectGalaxyTokenLastFour: String
+  spaceApiKeys: [SpaceApiKey]!
 }
 
 input SpaceIntegrationsInput {
@@ -1625,6 +1640,7 @@ input SpaceIntegrationsInput {
   gitGuideRepositories: [SpaceGitRepositoryInput!]!
   gnosisSafeWallets: [GnosisSafeWalletInput!]!
   projectGalaxyTokenLastFour: String
+  spaceApiKeys: [SpaceApiKeyInput]!
 }
 
 input SpaceInviteArgs {

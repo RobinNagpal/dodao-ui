@@ -103,6 +103,7 @@ export default function useCreateNewTidbitSpace(): UseEditSpaceHelper {
               gitGuideRepositories: [],
               gnosisSafeWallets: [],
               projectGalaxyTokenLastFour: null,
+              spaceApiKeys: [],
             },
           }),
         },

@@ -58,6 +58,12 @@ fragment SpaceWithIntegrations on Space {
       discourseUrl
       discordServerId
     }
+    spaceApiKeys {
+      creator
+      apiKey
+      lastFourLetters
+      lastUsed
+    }
   }
   authSettings {
     loginOptions
@@ -173,6 +179,12 @@ query VercelDomainRecord($spaceId: String!) {
 
 mutation UpsertSpaceFeatures($spaceId: String!, $features: [String!]!) {
   payload: upsertSpaceFeatures(spaceId: $spaceId, features: $features) {
+    ...SpaceWithIntegrations
+  }
+}
+
+mutation AddNewApiKey($spaceId: String!, $creator: String!, $apiKey: String!) {
+  payload: addNewApiKey(spaceId: $spaceId, creator: $creator, apiKey: $apiKey) {
     ...SpaceWithIntegrations
   }
 }

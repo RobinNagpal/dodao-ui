@@ -15,6 +15,7 @@ import {
   ByteFeedback as ByteFeedbackType,
   ClickableDemoStep as ClickableDemoStepType,
   TimelineEvent as TimelineEventType,
+  SpaceApiKey as SpaceApiKeyType,
 } from '@/graphql/generated/generated-types';
 import { ByteLinkedinPdfContent as ByteLinkedinPdfContentType } from '@/graphql/generated/generated-types';
 import { TempTopicSubmissionModel as TempTopicSubmissionModelInterface } from '@/types/course/submission';
@@ -50,5 +51,6 @@ declare global {
     type ClickableDemoStep = ClickableDemoStepType;
     type TimelineEvent = TimelineEventType;
     type CourseTopics = CourseTopicInterface;
+    type SpaceApiKey = SpaceApiKeyType;
   }
 }
