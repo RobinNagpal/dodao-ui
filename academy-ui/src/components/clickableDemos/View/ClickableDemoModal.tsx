@@ -34,7 +34,11 @@ function ClickableDemoModal({ clickableDemoWithSteps, space, onClose }: Clickabl
       }
 
       if (event.data.completeButton) {
-        router.push(`/clickable-demos`);
+        if (space.type === 'TidbitsSite') {
+          router.push(`/`);
+        } else {
+          router.push(`/tidbit-collections`);
+        }
       }
     }
 
@@ -73,6 +77,16 @@ function ClickableDemoModal({ clickableDemoWithSteps, space, onClose }: Clickabl
         },
         '*'
       );
+      // Lazy load remaining iframes after the first one is loaded
+      if (index === 0) {
+        lazyLoadRemainingIframes();
+      }
+    };
+
+    const lazyLoadRemainingIframes = () => {
+      for (let i = 1; i < clickableDemoWithSteps.steps.length; i++) {
+        iframeArr[i].src = clickableDemoWithSteps.steps[i].url;
+      }
     };
 
     // Function to set iframe opacity
@@ -93,7 +107,9 @@ function ClickableDemoModal({ clickableDemoWithSteps, space, onClose }: Clickabl
 
     for (let i = 0; i < clickableDemoWithSteps.steps.length; i++) {
       iframeArr[i] = document.createElement('iframe');
-      iframeArr[i].src = clickableDemoWithSteps.steps[i].url;
+      if (i === 0) {
+        iframeArr[i].src = clickableDemoWithSteps.steps[i].url; // Load only the first iframe initially
+      }
       iframeArr[i].width = '100%';
       iframeArr[i].style.opacity = i === 0 ? '1' : '0';
       iframeArr[i].style.pointerEvents = i === 0 ? 'auto' : 'none';
