@@ -37,7 +37,7 @@ function ClickableDemoModal({ clickableDemoWithSteps, space, onClose }: Clickabl
         if (space.type === 'TidbitsSite') {
           router.push(`/`);
         } else {
-          router.push(`/tidbit-collections`);
+          router.push(`/clickable-demos`);
         }
       }
     }
