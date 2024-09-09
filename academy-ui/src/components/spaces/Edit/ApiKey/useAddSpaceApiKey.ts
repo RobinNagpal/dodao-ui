@@ -11,7 +11,7 @@ export function useAddSpaceApiKey(space: SpaceWithIntegrationsFragment, onUpdate
   const addApiKey = async (apiKey: string) => {
     try {
       // Simulate generating a new API key
-      const response = await fetch(`${getBaseUrl()}/api/actions/spaces/generate-api-key`, {
+      const response = await fetch(`${getBaseUrl()}/api/${space.id}/actions/spaces/generate-api-key`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
