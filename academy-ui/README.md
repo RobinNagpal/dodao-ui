@@ -15,7 +15,7 @@ with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/
 ## Code setup
 
 1. Copy .env.example and name it as .env
-   Populate the environment variables. For some env variables you can add dummy strings.
+   Populate the environment variables. For some env variables you can add dummy strings like somesecret.
 
 For example for the below env variables add some dummy values
 
@@ -33,7 +33,9 @@ DODAO_AUTH_SECRET=
 NEXT_PUBLIC_VERCEL_URL=
 ```
 
-2. Adjust the DATABASE_URL accordingly, you can find the port number from postgresql.conf file
+2. Adjust the DATABASE_URL accordingly, or keep it as is and follow the steps below.
+
+   **Note:** Ensure that your local PostgreSQL server is not running, as PostgreSQL is set up to run inside Docker. This avoids conflicts with the Docker container.
 
 3. Generate graphql files
 
@@ -52,8 +54,11 @@ NEXT_PUBLIC_VERCEL_URL=
 
    `npx prisma db push`
 
-7. Make sure tables are created. Install a postgres client and make sure a new DB is created `next_app_localhost_db` and
-   tables are also created in it.
+7. Verify the Database Setup:
+
+   - Install a PostgreSQL client such as **pgAdmin 4**.
+   - Make sure a new database, `next_app_localhost_db`, is created and that the tables are present.
+   - When setting up pgAdmin 4, create a server using the same port as in your `.env` file. Use `localhost` as the host name/address and `admin` as the password.
 
 ## Run the code
 
@@ -61,7 +66,11 @@ NEXT_PUBLIC_VERCEL_URL=
 
    `yarn install`
 
-2. Run server
+2. Ensure Docker is Running
+
+   Before starting the development server, make sure Docker is running in another terminal (via `docker-compose up`) or through Docker Desktop. This is necessary for the database and other services to function correctly.
+
+3. Run server
 
    `yarn dev`
 
@@ -173,6 +182,8 @@ Here is the table with the mapping of the domains to the academy websites
 | Arbitrum         | arbitrum-localhost.education          | http://arbitrum-localhost.education:3000          | tidbitshub.org                      |
 | Test Tidbits     | test-tidbits.tidbitshub-localhost.org | http://test-tidbits.tidbitshub-localhost.org:3000 | tidbitshub.org                      |
 | Alchemix Tidbits | alchemix.tidbitshub-localhost.org     | http://alchemix.tidbitshub-localhost.org:3000     | tidbitshub.org                      |
+
+**Note:** Make sure to set your `NEXT_PUBLIC_VERCEL_URL` environment variable to `tidbitshub.org` to match the domain mapping.
 
 ## Coding Workflow
 
