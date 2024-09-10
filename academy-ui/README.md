@@ -33,7 +33,9 @@ DODAO_AUTH_SECRET=
 NEXT_PUBLIC_VERCEL_URL=
 ```
 
-2. Adjust the DATABASE_URL accordingly, you can find the port number from postgresql.conf file
+2. Adjust the DATABASE_URL accordingly, you can find the port number from postgresql.conf file or use the default one (5432).
+
+   **Note:** Ensure that your local PostgreSQL server is **not running**, as PostgreSQL is set up to run inside Docker. This avoids conflicts with the Docker container.
 
 3. Generate graphql files
 
@@ -52,8 +54,11 @@ NEXT_PUBLIC_VERCEL_URL=
 
    `npx prisma db push`
 
-7. Make sure tables are created. Install a postgres client and make sure a new DB is created `next_app_localhost_db` and
-   tables are also created in it.
+7. Verify the Database Setup:
+
+   - Install a PostgreSQL client such as **pgAdmin 4**.
+   - Make sure a new database, `next_app_localhost_db`, is created and that the tables are present.
+   - When setting up pgAdmin 4, create a server using the same port as in your `.env` file. Use `localhost` as the host name/address and `admin` as the password.
 
 ## Run the code
 
