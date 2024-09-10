@@ -21,7 +21,7 @@ export default function DemoItem(props: DemoItemProps) {
         {eventIdx !== itemLength - 1 ? <span className="absolute left-4 top-4 -ml-px h-full w-0.5 bg-gray-200" aria-hidden="true" /> : null}
         <div className="relative flex space-x-3 justify-between">
           <Link className="flex cursor-pointer" href={demoViewUrl}>
-            <span className={'h-8 w-8 rounded-full flex items-center justify-center  ' + styles.tidbitIconSpan}>
+            <span className={'h-8 w-8 rounded-full flex items-center justify-center p-1 ' + styles.tidbitIconSpan}>
               <CursorArrowRipple />
             </span>
             <div className="flex min-w-0 flex-1 justify-between space-x-2 duration-300 ease-in-out">
