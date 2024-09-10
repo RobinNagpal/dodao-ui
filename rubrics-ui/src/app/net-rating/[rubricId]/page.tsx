@@ -3,7 +3,8 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import { Session } from '@dodao/web-core/types/auth/Session';
-import { RubricRatingWithEntities } from '@/types/rubricsTypes/types';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import StackedList from '@dodao/web-core/components/core/lists/StackedList'; // Import the StackedList component
 
 interface AverageScoresData {
   name: string;
@@ -14,50 +15,65 @@ interface AverageScoresData {
     averageScore: number;
     description: string;
   }[];
+  ratingSubmissions: {
+    userId: string;
+    submissions: {
+      criteriaId: string;
+      criteriaName: string;
+      score: number;
+      description: string;
+      comment: string;
+    }[];
+  }[];
 }
 
 export default async function RubricsNetRating({ params }: { params: { rubricId: string } }) {
   const session = (await getServerSession(authOptions)) as Session | undefined;
-  let averageScoresData: AverageScoresData | null = null;
-  let error: string | null = null;
   const { rubricId } = params;
+
   const response = await fetch(`${getBaseUrl()}/api/net-rating/${rubricId}?userId=${session?.userId}`);
-  if (response.ok) {
-    averageScoresData = await response.json();
-  } else {
-    const errorData = await response.json();
-    error = errorData.error || 'Failed to fetch rubric analytics.';
+  if (!response.ok) {
+    const { error } = await response.json();
+    return <div className="text-center py-4">Error: {error || 'Failed to fetch rubric analytics.'}</div>;
   }
-  if (error) {
-    return <div className="text-center py-4">Error: {error}</div>;
-  }
-  if (!averageScoresData) {
-    return <div className="text-center py-4">Loading...</div>;
-  }
+
+  const data: AverageScoresData = await response.json();
+
   return (
-    <div className="analytics-page p-8 bg-gray-50 min-h-screen">
-      <h1 className="text-4xl font-bold text-center mb-6">{averageScoresData.name}</h1>
-      <p className="text-lg text-center text-gray-700 mb-8">{averageScoresData.summary}</p>
-      <div className="overflow-x-auto mb-8">
-        <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
-          <thead className="bg-gray-100">
-            <tr>
-              <th className="py-4 px-6 text-left text-gray-600 font-semibold">Criteria</th>
-              <th className="py-4 px-6 text-left text-gray-600 font-semibold">Average Score</th>
-              <th className="py-4 px-6 text-left text-gray-600 font-semibold">Description</th>
-            </tr>
-          </thead>
-          <tbody>
-            {averageScoresData.averageScores.map((scoreData) => (
-              <tr key={scoreData.criteriaId} className="border-t">
-                <td className="py-4 px-6">{scoreData.criteriaName}</td>
-                <td className="py-4 px-6">{scoreData.averageScore}</td>
-                <td className="py-4 px-6">{scoreData.description}</td>
+    <PageWrapper>
+      <div className="analytics-page p-4 sm:p-8 bg-gray-50 min-h-screen">
+        <h1 className="text-2xl sm:text-4xl font-bold text-center mb-4 sm:mb-6">{data.name}</h1>
+        <p className="text-md sm:text-lg text-center text-gray-700 mb-6 sm:mb-8">{data.summary}</p>
+
+        <h2 className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4">Overall Average Scores</h2>
+        <div className="overflow-x-auto">
+          <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden mb-6 sm:mb-8">
+            <thead className="bg-gray-100">
+              <tr>
+                {['Criteria', 'Average Score', 'Description'].map((header) => (
+                  <th key={header} className="py-3 sm:py-4 px-4 sm:px-6 text-left text-gray-600 font-semibold">
+                    {header}
+                  </th>
+                ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {data.averageScores.map(({ criteriaId, criteriaName, averageScore, description }) => (
+                <tr key={criteriaId} className="border-t">
+                  <td className="py-3 sm:py-4 px-4 sm:px-6">{criteriaName}</td>
+                  <td className="py-3 sm:py-4 px-4 sm:px-6">{averageScore.toFixed(2)}</td>
+                  <td className="py-3 sm:py-4 px-4 sm:px-6">{description}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <h2 className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4">Individual Rating Submissions</h2>
+        {data.ratingSubmissions.map(({ userId, submissions }) => (
+          <StackedList key={userId} userId={userId} submissions={submissions} />
+        ))}
       </div>
-    </div>
+    </PageWrapper>
   );
 }
