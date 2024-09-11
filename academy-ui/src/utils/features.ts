@@ -20,7 +20,7 @@ export function getFeaturesArray(spaceId: string): FeatureItem[] {
     return dodaoIoFeatures;
   } else if (spaceId === 'compound-eth-1') {
     return compoundFeatures;
-  } else if (spaceId === 'test-academy-eth') {
+  } else if (spaceId === process.env.DODAO_DEFAULT_SPACE_ID) {
     return testAcademyFeatures;
   } else if (spaceId === 'uniswap-eth-1') {
     return uniswapFeatures;
