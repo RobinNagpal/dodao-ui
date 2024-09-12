@@ -4,7 +4,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import StackedList from '@dodao/web-core/components/core/lists/StackedList';
+import UserStackedList, { StackedListUserInfo } from '@dodao/web-core/components/core/lists/UserStackedList';
 import { AverageScoresData } from '@/types/rubricsTypes/types';
 
 export default async function RubricsNetRating({ params }: { params: { rubricId: string } }) {
@@ -49,11 +49,52 @@ export default async function RubricsNetRating({ params }: { params: { rubricId:
           </table>
         </div>
 
-        <h2 className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4 ">Individual Rating Submissions</h2>
-        {data.ratingSubmissions.map(({ userId, submissions }) => (
-          <StackedList key={userId} userId={userId} submissions={submissions} />
-        ))}
+        <h2 className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4">Individual Rating Submissions</h2>
+        {data.ratingSubmissions.map(({ userId, submissions }) => {
+          const userInfos: StackedListUserInfo[] = [
+            {
+              title: userId,
+              username: session?.user?.email || 'Unknown',
+              rightColumnComponentFn: () => (
+                <div className="flex justify-end w-full ">
+                  <ul role="list" className="divide-y divide-gray-200">
+                    {submissions.map((submission, index) => (
+                      <li key={index} className="grid grid-cols-1 sm:grid-cols-4 gap-4 p-4 hover:bg-gray-50">
+                        <div className="sm:col-span-1">
+                          <p className="font-semibold text-gray-900 text-left">{submission.criteriaName}</p>
+                        </div>
+                        <div className="sm:col-span-1 flex justify-center items-center">
+                          <span
+                            className={`inline-flex items-center justify-center w-7 h-7 rounded-full text-sm font-medium ${getBadgeColor(
+                              submission.score
+                            )} text-left`}
+                          >
+                            {submission.score}
+                          </span>
+                        </div>
+                        <div className="sm:col-span-1">
+                          <p className="text-sm  text-gray-500 truncate text-left">{submission.description}</p>
+                        </div>
+                        <div className="sm:col-span-1">
+                          <p className="text-sm  text-gray-500 text-left">{submission.comment}</p>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ),
+            },
+          ];
+
+          return <UserStackedList key={userId} userId={userId} userInfos={userInfos} />;
+        })}
       </div>
     </PageWrapper>
   );
+}
+
+function getBadgeColor(score: number) {
+  if (score >= 8) return 'bg-green-100 text-green-800';
+  if (score >= 5) return 'bg-yellow-100 text-yellow-800';
+  return 'bg-red-100 text-red-800';
 }
