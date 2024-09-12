@@ -3,12 +3,6 @@ import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { S3 } from 'aws-sdk';
 import { CreateSignedUrlInput } from '@/graphql/generated/generated-types';
 
-export interface ImageContentType {
-  Guide: 'Guide';
-  Course: 'Course';
-  Byte: 'Byte';
-  Timeline: 'Timeline';
-}
 export const s3Config = {
   bucketName: String(process.env.PUBLIC_AWS_S3_BUCKET),
   defaultRegion: String(process.env.DEFAULT_REGION),
@@ -16,8 +10,6 @@ export const s3Config = {
 
 export class PresignedUrlCreator {
   private client: S3;
-
-  private readonly bucketName = s3Config.bucketName;
 
   constructor() {
     this.client = new S3({
