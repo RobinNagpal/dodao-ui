@@ -139,17 +139,6 @@ export interface RubricMap {
   [key: string]: EditRubricCell[];
 }
 
-export interface SampleData {
-  name: string;
-  rubricId: string;
-  criteriaOrder: string[];
-  rubric: RubricMap;
-  ratingHeaders: { header: string; score: number; id: string }[];
-  programs: { name: string; summary: string }[];
-  details?: string;
-  summary?: string;
-  criteriaIds?: string[];
-}
 export interface NewCell {
   description: string;
   ratingHeaderId: string;
@@ -249,4 +238,11 @@ export type SpaceWithIntegrationsFragment = {
     blockBg: string;
   } | null;
   tidbitsHomepage?: { __typename?: 'TidbitsHomepage'; heading: string; shortDescription: string } | null;
+};
+export type UserRatingSubmission = {
+  criteriaId: string;
+  criteriaName: string;
+  score: number;
+  description: string;
+  comment: string;
 };

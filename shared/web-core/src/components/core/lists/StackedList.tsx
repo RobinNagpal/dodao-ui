@@ -61,7 +61,7 @@ export default function StackedList({ userId, submissions }: StackedListProps) {
                   <p className="text-sm leading-5 text-gray-500 truncate">{submission.description}</p>
                 </div>
 
-                <div className="sm:col-span-1">
+                <div className="sm:col-span-1 pl-2">
                   <p className="text-sm leading-5 text-gray-500">{submission.comment}</p>
                 </div>
               </li>
