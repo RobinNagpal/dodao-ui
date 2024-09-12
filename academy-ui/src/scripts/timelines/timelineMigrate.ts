@@ -65,7 +65,7 @@ const insertTimeline = async (timeline: any, spaceId: string) => {
 const main = async () => {
   // Get the folder path and space ID from command line arguments
   const folderPath = 'C:\\dodaoRepos\\compound-finance-academy\\src\\timelines\\main';
-  const spaceId = 'test-academy-eth';
+  const spaceId = process.env.DODAO_DEFAULT_SPACE_ID;
   if (!folderPath || !spaceId) {
     console.error('Please provide the absolute path of the folder containing timelines.yaml and the space ID.');
     process.exit(1);

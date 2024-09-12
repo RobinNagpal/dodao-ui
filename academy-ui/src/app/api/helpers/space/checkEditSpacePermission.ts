@@ -33,7 +33,7 @@ export function isUserAdminOfSpace(username: string, space: Space) {
 export async function canEditGitSpace(context: NextRequest, space: Space) {
   const doDAOMember = await isDoDAOMember(context);
 
-  if (doDAOMember && space.id === 'test-academy-eth') {
+  if (doDAOMember && space.id === process.env.DODAO_DEFAULT_SPACE_ID) {
     return { decodedJWT: doDAOMember, canEditSpace: true, user: doDAOMember.accountId.toLowerCase() };
   }
 
