@@ -5,27 +5,7 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import StackedList from '@dodao/web-core/components/core/lists/StackedList';
-
-interface AverageScoresData {
-  name: string;
-  summary: string;
-  averageScores: {
-    criteriaId: string;
-    criteriaName: string;
-    averageScore: number;
-    description: string;
-  }[];
-  ratingSubmissions: {
-    userId: string;
-    submissions: {
-      criteriaId: string;
-      criteriaName: string;
-      score: number;
-      description: string;
-      comment: string;
-    }[];
-  }[];
-}
+import { AverageScoresData } from '@/types/rubricsTypes/types';
 
 export default async function RubricsNetRating({ params }: { params: { rubricId: string } }) {
   const session = (await getServerSession(authOptions)) as Session | undefined;

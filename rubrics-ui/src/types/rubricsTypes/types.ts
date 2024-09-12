@@ -246,3 +246,23 @@ export type UserRatingSubmission = {
   description: string;
   comment: string;
 };
+export interface AverageScoresData {
+  name: string;
+  summary: string;
+  averageScores: {
+    criteriaId: string;
+    criteriaName: string;
+    averageScore: number;
+    description: string;
+  }[];
+  ratingSubmissions: {
+    userId: string;
+    submissions: {
+      criteriaId: string;
+      criteriaName: string;
+      score: number;
+      description: string;
+      comment: string;
+    }[];
+  }[];
+}
