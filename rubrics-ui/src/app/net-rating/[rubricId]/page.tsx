@@ -4,7 +4,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import StackedList from '@dodao/web-core/components/core/lists/StackedList'; // Import the StackedList component
+import StackedList from '@dodao/web-core/components/core/lists/StackedList';
 
 interface AverageScoresData {
   name: string;
@@ -69,7 +69,7 @@ export default async function RubricsNetRating({ params }: { params: { rubricId:
           </table>
         </div>
 
-        <h2 className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4">Individual Rating Submissions</h2>
+        <h2 className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4 ">Individual Rating Submissions</h2>
         {data.ratingSubmissions.map(({ userId, submissions }) => (
           <StackedList key={userId} userId={userId} submissions={submissions} />
         ))}

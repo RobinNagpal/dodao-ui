@@ -65,7 +65,7 @@ export async function GET(request: Request, { params }: { params: { rubricId: st
           criteriaName: criteriaMap[rubricCell.criteriaId] || 'Unknown',
           score: rubricCell.level.score,
           description: rubricCell.description,
-          comment: comment || 'No comment available', // Include the comment
+          comment: comment || 'No comment available',
         });
         return acc;
       }, {} as Record<string, any[]>)
