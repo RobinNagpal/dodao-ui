@@ -22,18 +22,18 @@ export async function GET(request: Request, { params }: { params: { rubricId: st
   ]);
 
   const criteriaMap = Object.fromEntries(rubric.criterias.map((c) => [c.id, c.title]));
-  const scoreData = selections.reduce((acc, { rubricCell, user }) => {
-    if (!rubricCell?.criteriaId || !rubricCell.level || !user) return acc;
+  const scoreData = selections.reduce((accumulator, { rubricCell, user }) => {
+    if (!rubricCell?.criteriaId || !rubricCell.level || !user) return accumulator;
     const {
       criteriaId,
       level: { score },
       description,
     } = rubricCell;
-    if (!acc[criteriaId]) acc[criteriaId] = { scores: {}, descriptions: {} };
-    if (!acc[criteriaId].scores[user.id]) acc[criteriaId].scores[user.id] = [];
-    acc[criteriaId].scores[user.id].push(score);
-    acc[criteriaId].descriptions[score] = description;
-    return acc;
+    if (!accumulator[criteriaId]) accumulator[criteriaId] = { scores: {}, descriptions: {} };
+    if (!accumulator[criteriaId].scores[user.id]) accumulator[criteriaId].scores[user.id] = [];
+    accumulator[criteriaId].scores[user.id].push(score);
+    accumulator[criteriaId].descriptions[score] = description;
+    return accumulator;
   }, {} as Record<string, { scores: Record<string, number[]>; descriptions: Record<number, string> }>);
 
   const averageScores = Object.entries(scoreData).map(([criteriaId, data]) => {
@@ -51,17 +51,17 @@ export async function GET(request: Request, { params }: { params: { rubricId: st
   });
 
   const ratingSubmissions = Object.entries(
-    selections.reduce((acc, { rubricCell, user, comment }) => {
-      if (!rubricCell?.criteriaId || !rubricCell.level || !user) return acc;
-      if (!acc[user.id]) acc[user.id] = [];
-      acc[user.id].push({
+    selections.reduce((accumulator, { rubricCell, user, comment }) => {
+      if (!rubricCell?.criteriaId || !rubricCell.level || !user) return accumulator;
+      if (!accumulator[user.id]) accumulator[user.id] = [];
+      accumulator[user.id].push({
         criteriaId: rubricCell.criteriaId,
         criteriaName: criteriaMap[rubricCell.criteriaId] || 'Unknown',
         score: rubricCell.level.score,
         description: rubricCell.description,
         comment: comment || 'No comment available',
       });
-      return acc;
+      return accumulator;
     }, {} as Record<string, UserRatingSubmission[]>)
   ).map(([userId, submissions]) => ({ userId, submissions }));
 
