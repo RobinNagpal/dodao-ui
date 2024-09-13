@@ -199,6 +199,11 @@ model RubricCell {
   @@map("rubric_cells")
 }
 
+enum RatingCellStatus {
+  inProgress
+  finalized
+}
+
 model RubricRating {
   id         String                @id @default(uuid()) @db.VarChar(64)
   rubricId   String                @map("rubric_id") @db.VarChar(64)
@@ -206,26 +211,21 @@ model RubricRating {
   selections RatingCellSelection[]
   user       User                  @relation(fields: [userId], references: [id])
   userId     String                @map("user_id")
+  status     RatingCellStatus      @default(inProgress)
 
   @@unique([rubricId, userId])
   @@map("rubric_ratings")
 }
 
-enum RatingCellStatus {
-  inProgress
-  finalized
-}
-
 model RatingCellSelection {
-  id             String           @id @default(uuid()) @db.VarChar(64)
-  rubricCellId   String           @map("rubric_cell_id") @db.VarChar(64)
-  rubricRatingId String           @map("rubric_rating_id") @db.VarChar(64)
-  rubricCell     RubricCell       @relation(fields: [rubricCellId], references: [id])
-  rubricRating   RubricRating     @relation(fields: [rubricRatingId], references: [id])
+  id             String       @id @default(uuid()) @db.VarChar(64)
+  rubricCellId   String       @map("rubric_cell_id") @db.VarChar(64)
+  rubricRatingId String       @map("rubric_rating_id") @db.VarChar(64)
+  rubricCell     RubricCell   @relation(fields: [rubricCellId], references: [id])
+  rubricRating   RubricRating @relation(fields: [rubricRatingId], references: [id])
   comment        String
-  user           User             @relation(fields: [userId], references: [id])
-  userId         String           @map("user_id")
-  status         RatingCellStatus @default(inProgress)
+  user           User         @relation(fields: [userId], references: [id])
+  userId         String       @map("user_id")
 
   @@unique([rubricCellId, rubricRatingId])
   @@map("rating_cell_selections")

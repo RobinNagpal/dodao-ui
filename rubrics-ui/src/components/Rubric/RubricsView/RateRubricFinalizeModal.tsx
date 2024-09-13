@@ -6,6 +6,7 @@ import { RubricCriteria } from '@prisma/client';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
+
 interface FinalizeModalProps {
   open: boolean;
   onClose: () => void;
@@ -16,6 +17,7 @@ interface FinalizeModalProps {
 
 const FinalizeModal: React.FC<FinalizeModalProps> = ({ open, onClose, rubric, rubricRating, setRubricRatingState }) => {
   const { showNotification } = useNotificationContext();
+
   async function finalizeRubricSelections() {
     const response = await fetch(`${getBaseUrl()}/api/rubrics/${rubric.id}/ratings/finalize`, {
       method: 'POST',
@@ -24,24 +26,29 @@ const FinalizeModal: React.FC<FinalizeModalProps> = ({ open, onClose, rubric, ru
       },
       body: JSON.stringify({ rubricId: rubric.id }),
     });
+
     const updatedRubricRating: RubricRatingWithEntities = await response.json();
 
     if (response.ok) {
       onClose();
-      setRubricRatingState!(updatedRubricRating);
+      if (setRubricRatingState) {
+        setRubricRatingState(updatedRubricRating);
+      }
       showNotification({
         message: 'Selections have been finalized',
         type: 'success',
       });
     } else {
-      console.log('Error occured');
+      console.error('Error occurred while finalizing selections');
     }
   }
-  const isFinalizedButtonDisabled: boolean = rubricRating?.selections[0]?.status === 'finalized';
+
+  const isFinalizedButtonDisabled = !rubricRating || rubricRating.selections.length === 0;
+
   return (
     <SingleSectionModal title="Finalize Rubric Selections" open={open} onClose={onClose}>
       <div className="p-4">
-        <table className="min-w-full bg-white border-collapse border">
+        <table className="min-w-full border-collapse border">
           <thead>
             <tr>
               <th className="py-2 px-4 border-b">Criteria</th>

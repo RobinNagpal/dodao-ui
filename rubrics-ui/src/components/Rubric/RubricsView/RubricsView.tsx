@@ -47,6 +47,8 @@ const RubricsView: React.FC<RubricViewProps> = ({ rubric, session, rubricRating 
   const allCriteriaIds = rubric.criterias.map((criteria) => criteria.id);
   const isFinalizeDisabled = allCriteriaIds.some((criteriaId) => !ratedCriteriaIds.includes(criteriaId));
   const unratedCriteriaCount = allCriteriaIds.filter((criteriaId) => !ratedCriteriaIds.includes(criteriaId)).length;
+
+  const isRatingFinalized = rubricRating?.status === 'finalized';
   return (
     <div className="container mx-auto py-8 p-4">
       <div className="flex items-center pb-8 align-center justify-center">
@@ -58,7 +60,7 @@ const RubricsView: React.FC<RubricViewProps> = ({ rubric, session, rubricRating 
       <h1 className="text-2xl p-2 text-center mb-2">{rubric.programs?.[0]?.name || 'Not Associated With a Program'}</h1>
 
       <div className="overflow-x-auto mt-4">
-        <Button variant="contained" primary className="float-left mt-2 mb-2" onClick={handleSelectionsReset}>
+        <Button variant="contained" primary className="float-left mt-2 mb-2" onClick={handleSelectionsReset} disabled={isRatingFinalized}>
           Reset
         </Button>
         <Button variant="contained" primary className="float-right mt-2 mb-2" onClick={() => setIsModalOpen(true)} disabled={isFinalizeDisabled}>

@@ -32,7 +32,7 @@ export default async function RubricsNetRating({ params }: { params: { rubricId:
 
         <h2 className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4">Overall Average Scores</h2>
         <div className="overflow-x-auto">
-          <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden mb-6 sm:mb-8">
+          <table className="min-w-full shadow-md rounded-lg overflow-hidden mb-6 sm:mb-8">
             <thead className="bg-gray-100">
               <tr>
                 {['Criteria', 'Average Score', 'Description'].map((header) => (
