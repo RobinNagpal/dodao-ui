@@ -20,20 +20,20 @@ async function postHandler(req: NextRequest) {
           spaceId: args.spaceId,
         },
       });
-      
+
       let apiKeyFound = false;
-      
+
       if (spaceIntegration && spaceIntegration.spaceApiKeys) {
         spaceIntegration.spaceApiKeys.forEach((Key, index) => {
           if (Key.apiKey === apiKey) {
             // Update apiKey properties here
             spaceIntegration.spaceApiKeys[index].lastUsed = new Date();
-            
+
             apiKeyFound = true;
           }
         });
       }
-      
+
       if (!apiKeyFound) {
         throw new Error('API Key is not valid');
       }
@@ -49,8 +49,7 @@ async function postHandler(req: NextRequest) {
         console.log(spaceIntegration?.spaceApiKeys);
       }
       return NextResponse.json({ url: await presignedUrlCreator.createSignedUrl(spaceById.id, args.input) }, { status: 200 });
-    }
-    catch(e) {
+    } catch (e) {
       await logError((e as any)?.response?.data || 'Error in createSignedUrls', {}, e as any, null, null);
       throw e;
     }
