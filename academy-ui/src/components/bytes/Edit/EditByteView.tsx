@@ -53,7 +53,7 @@ export default function EditByteView(props: {
   }, [byteId]);
 
   const [showAIGenerateModel, setShowAIGenerateModel] = useState(false);
-  const threeDotItems: EllipsisDropdownItem[] = [{ label: 'Delete', key: 'delete' }];
+  // const threeDotItems: EllipsisDropdownItem[] = [{ label: 'Delete', key: 'delete' }];
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
@@ -71,7 +71,7 @@ export default function EditByteView(props: {
                 updateByteFunctions.includeSteps(newSteps);
               }}
             />
-            {byteId && (
+            {/* {byteId && (
               <PrivateEllipsisDropdown
                 items={threeDotItems}
                 onSelect={(key) => {
@@ -81,7 +81,7 @@ export default function EditByteView(props: {
                 }}
                 className="ml-4 z-50"
               />
-            )}
+            )} */}
           </div>
         </div>
 

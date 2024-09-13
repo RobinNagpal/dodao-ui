@@ -22,6 +22,8 @@ import axios from 'axios';
 import ByteItem from './ByteItem';
 import DemoItem from './DemoItem';
 import ShortItem from './ShortItem';
+import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
+import { revalidateTidbitCollections } from '@/revalidateTags';
 
 interface ByteCollectionCardProps {
   byteCollection: ByteCollectionSummary;
@@ -42,6 +44,11 @@ interface EditByteModalState {
   byteId: string | null;
 }
 
+interface DeleteByteModalState {
+  isVisible: boolean;
+  byteId: string | null;
+}
+
 interface EditDemoModalState {
   isVisible: boolean;
   demoId: string | null;
@@ -58,9 +65,13 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
   const [videoResponse, setVideoResponse] = React.useState<{ shortVideo?: ShortVideoFragment }>();
   const [showCreateModal, setShowCreateModal] = React.useState<boolean>(false);
   const [editByteModalState, setEditModalState] = React.useState<EditByteModalState>({ isVisible: false, byteId: null });
+  const [deleteByteModalState, setDeleteModalState] = React.useState<DeleteByteModalState>({ isVisible: false, byteId: null });
   const [editDemoModalState, setEditDemoModalState] = React.useState<EditDemoModalState>({ isVisible: false, demoId: null });
   const [editShortModalState, setEditShortModalState] = React.useState<EditShortModalState>({ isVisible: false, shortId: null });
-  const threeDotItems = [{ label: 'Edit', key: 'edit' }];
+  const threeDotItems = [
+    { label: 'Edit', key: 'edit' },
+    { label: 'Archive', key: 'archive' },
+  ];
 
   const nonArchivedItems = byteCollection.items.filter((item) => {
     switch (item.type) {
@@ -82,6 +93,10 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
     setEditModalState({ isVisible: true, byteId: byteId });
   }
 
+  function openByteDeleteModal(byteId: string) {
+    setDeleteModalState({ isVisible: true, byteId: byteId });
+  }
+
   function openDemoEditModal(demoId: string) {
     setEditDemoModalState({ isVisible: true, demoId: demoId });
   }
@@ -93,6 +108,10 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
 
   function closeByteEditModal() {
     setEditModalState({ isVisible: false, byteId: null });
+  }
+
+  function closeByteDeleteModal() {
+    setDeleteModalState({ isVisible: false, byteId: null });
   }
 
   function closeDemoEditModal() {
@@ -169,6 +188,7 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
                     setSelectedVideo={setSelectedVideo}
                     threeDotItems={threeDotItems}
                     openByteEditModal={openByteEditModal}
+                    openByteDeleteModal={openByteDeleteModal}
                     itemLength={nonArchivedItems.length}
                     key={item.byte.byteId}
                   />
@@ -219,6 +239,32 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
             />
           </div>
         </FullScreenModal>
+      )}
+
+      {deleteByteModalState.isVisible && (
+        <DeleteConfirmationModal
+        title={'Delete Byte'}
+        open={deleteByteModalState.isVisible}
+        onClose={closeByteDeleteModal}
+        onDelete={async () => {
+          await revalidateTidbitCollections();
+          fetch(`${getBaseUrl()}/api/byte/byte`, {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              byteId: deleteByteModalState.byteId,
+              spaceId: space.id,
+            }),
+          });
+
+          closeByteDeleteModal();
+          const timestamp = new Date().getTime();
+          router.push(`/?update=${timestamp}`);
+          // setTimeout(() => closeEditByteModal?.(), 3000);
+        }}
+      />
       )}
 
       {editDemoModalState.isVisible && (
