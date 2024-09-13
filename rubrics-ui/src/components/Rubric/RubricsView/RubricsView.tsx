@@ -7,14 +7,15 @@ import { Session } from '@dodao/web-core/types/auth/Session';
 import React, { useState } from 'react';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import FinalizeRubricEditModal from '@/components/Rubric/RubricsView/RateRubricFinalizeModal';
-
+import { SpaceWithIntegrationsFragment } from '@/types/rubricsTypes/types';
 export interface RubricViewProps {
   rubric: RubricWithEntities;
   session?: Session;
   rubricRating?: RubricRatingWithEntities;
+  space: SpaceWithIntegrationsFragment;
 }
 
-const RubricsView: React.FC<RubricViewProps> = ({ rubric, session, rubricRating }) => {
+const RubricsView: React.FC<RubricViewProps> = ({ rubric, session, rubricRating, space }) => {
   const [rubricRatingState, setRubricRatingState] = useState<RubricRatingWithEntities | undefined>(rubricRating);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -103,6 +104,7 @@ const RubricsView: React.FC<RubricViewProps> = ({ rubric, session, rubricRating 
         rubric={rubric}
         rubricRating={rubricRatingState}
         setRubricRatingState={setRubricRatingState}
+        space={space}
       />
     </div>
   );

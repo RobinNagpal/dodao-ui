@@ -5,6 +5,7 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import UserStackedList, { StackedListUserInfo } from '@dodao/web-core/components/core/lists/UserStackedList';
+import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
 import { AverageScoresData } from '@/types/rubricsTypes/types';
 function getBadgeColor(score: number) {
   if (score >= 8) return `bg-green-100 text-green-800`;
@@ -14,9 +15,9 @@ function getBadgeColor(score: number) {
 
 export default async function RubricsNetRating({ params }: { params: { rubricId: string } }) {
   const session = (await getServerSession(authOptions)) as Session | undefined;
+  const space = (await getSpaceServerSide())!;
   const { rubricId } = params;
-
-  const response = await fetch(`${getBaseUrl()}/api/net-rating/${rubricId}?userId=${session?.userId}`);
+  const response = await fetch(`${getBaseUrl()}/api/${space.id}/net-ratings/${rubricId}?userId=${session?.userId}`);
   if (!response.ok) {
     const { error } = await response.json();
     return <div className="text-center py-4">Error: {error || 'Failed to fetch rubric analytics.'}</div>;

@@ -6,20 +6,20 @@ import { RubricCriteria } from '@prisma/client';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-
+import { SpaceWithIntegrationsFragment } from '@/types/rubricsTypes/types';
 interface FinalizeModalProps {
   open: boolean;
   onClose: () => void;
   rubric: RubricWithEntities;
   rubricRating: RubricRatingWithEntities | undefined;
   setRubricRatingState?: React.Dispatch<React.SetStateAction<RubricRatingWithEntities | undefined>>;
+  space: SpaceWithIntegrationsFragment;
 }
 
-const FinalizeModal: React.FC<FinalizeModalProps> = ({ open, onClose, rubric, rubricRating, setRubricRatingState }) => {
+const FinalizeModal: React.FC<FinalizeModalProps> = ({ open, onClose, rubric, rubricRating, setRubricRatingState, space }) => {
   const { showNotification } = useNotificationContext();
-
   async function finalizeRubricSelections() {
-    const response = await fetch(`${getBaseUrl()}/api/rubrics/${rubric.id}/ratings/finalize`, {
+    const response = await fetch(`${getBaseUrl()}/api/${space.id}/actions/rubric-ratings/finalize/${rubric.id}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

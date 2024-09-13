@@ -31,7 +31,7 @@ const Page = async ({ params }: { params: { rubricId: string } }) => {
           <ChevronLeftIcon className="h-5 w-5 ml-4" />
           Rubrics
         </Link>
-        <RubricsView rubric={rubric} session={session} rubricRating={rubricRating} />
+        <RubricsView rubric={rubric} session={session} rubricRating={rubricRating} space={space} />
       </div>
     </PageWrapper>
   );
