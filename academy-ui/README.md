@@ -194,3 +194,15 @@ See [CodingWorkflow.md](CodingWorkflow.md) to learn about how to start contribut
 Create a new key `DODAO_SUPERADMINS` and set its value to your own MetaMask key and comma separated email address.
 
 For example: `DODAO_SUPERADMINS = 0x0000000000000000000000000000000000000000,johndoe@gmail.com`
+
+## Uploading images
+To be able to upload images, you need to set the following environment variables:
+
+Ask Robin to create AWS credentials for you.
+```dotenv
+PUBLIC_AWS_S3_BUCKET=dodao-dev-public-assets
+DEFAULT_REGION=us-east-1
+AWS_REGION=us-east-1
+AWS_ACCESS_KEY_ID=
+AWS_SECRET_ACCESS_KEY=
+```
