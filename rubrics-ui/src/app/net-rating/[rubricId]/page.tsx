@@ -6,6 +6,11 @@ import { Session } from '@dodao/web-core/types/auth/Session';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import UserStackedList, { StackedListUserInfo } from '@dodao/web-core/components/core/lists/UserStackedList';
 import { AverageScoresData } from '@/types/rubricsTypes/types';
+function getBadgeColor(score: number) {
+  if (score >= 8) return `bg-green-100 text-green-800`;
+  if (score >= 5) return 'bg-yellow-100 text-yellow-800';
+  return `bg-red-100 text-red-800`;
+}
 
 export default async function RubricsNetRating({ params }: { params: { rubricId: string } }) {
   const session = (await getServerSession(authOptions)) as Session | undefined;
@@ -42,7 +47,7 @@ export default async function RubricsNetRating({ params }: { params: { rubricId:
                 <tr key={criteriaId} className="border-t">
                   <td className="py-3 sm:py-4 px-4 sm:px-6">{criteriaName}</td>
                   <td className="py-3 sm:py-4 px-4 sm:px-6">{averageScore.toFixed(2)}</td>
-                  <td className="py-3 sm:py-4 px-4 sm:px-6">{description}</td>
+                  <td className="py-3 sm:py-4 px-4 sm:px-6 max-h-16 overflow-y-auto">{description}</td>
                 </tr>
               ))}
             </tbody>
@@ -56,14 +61,14 @@ export default async function RubricsNetRating({ params }: { params: { rubricId:
               title: userId,
               username: session?.user?.email || 'Unknown',
               rightColumnComponentFn: () => (
-                <div className="flex justify-end w-full ">
+                <div className="flex justify-end w-full">
                   <ul role="list" className="divide-y divide-gray-200">
                     {submissions.map((submission, index) => (
-                      <li key={index} className="grid grid-cols-1 sm:grid-cols-4 gap-4 p-4 hover:bg-gray-50">
+                      <li key={index} className="grid grid-cols-1 sm:grid-cols-4 lg:gap-10 gap-2 p-4 hover:bg-gray-50">
                         <div className="sm:col-span-1">
                           <p className="font-semibold text-gray-900 text-left">{submission.criteriaName}</p>
                         </div>
-                        <div className="sm:col-span-1 flex justify-center items-center">
+                        <div className="flex-1 flex justify-start sm:justify-center items-center">
                           <span
                             className={`inline-flex items-center justify-center w-7 h-7 rounded-full text-sm font-medium ${getBadgeColor(
                               submission.score
@@ -72,11 +77,11 @@ export default async function RubricsNetRating({ params }: { params: { rubricId:
                             {submission.score}
                           </span>
                         </div>
-                        <div className="sm:col-span-1">
-                          <p className="text-sm  text-gray-500 truncate text-left">{submission.description}</p>
-                        </div>
-                        <div className="sm:col-span-1">
-                          <p className="text-sm  text-gray-500 text-left">{submission.comment}</p>
+
+                        <p className="text-sm text-left  max-h-16 truncate  pl-2 w-24">{submission.comment}</p>
+
+                        <div className="flex-1 w-24">
+                          <p className="text-sm text-gray-500 truncate max-h-16 overflow-y-auto pl-2">{submission.description}</p>
                         </div>
                       </li>
                     ))}
@@ -91,10 +96,4 @@ export default async function RubricsNetRating({ params }: { params: { rubricId:
       </div>
     </PageWrapper>
   );
-}
-
-function getBadgeColor(score: number) {
-  if (score >= 8) return 'bg-green-100 text-green-800';
-  if (score >= 5) return 'bg-yellow-100 text-yellow-800';
-  return 'bg-red-100 text-red-800';
 }
