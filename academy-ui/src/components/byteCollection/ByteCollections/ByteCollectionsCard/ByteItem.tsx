@@ -53,15 +53,16 @@ export default function ByteItem(props: ByteItemProps) {
           )}
           {byte.byteId && (
             <div className="z-10">
-              <PrivateEllipsisDropdown items={threeDotItems} 
-              // onSelect={() => openByteEditModal(byte.byteId)}
-              onSelect={(key) => {
-                if (key === 'archive') {
-                  openByteDeleteModal(byte.byteId);
-                } else {
-                  openByteEditModal(byte.byteId);
-                }
-              }}
+              <PrivateEllipsisDropdown
+                items={threeDotItems}
+                // onSelect={() => openByteEditModal(byte.byteId)}
+                onSelect={(key) => {
+                  if (key === 'archive') {
+                    openByteDeleteModal(byte.byteId);
+                  } else {
+                    openByteEditModal(byte.byteId);
+                  }
+                }}
               />
             </div>
           )}

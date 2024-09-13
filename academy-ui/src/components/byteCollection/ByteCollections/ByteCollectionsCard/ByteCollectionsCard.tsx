@@ -243,28 +243,28 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
 
       {deleteByteModalState.isVisible && (
         <DeleteConfirmationModal
-        title={'Delete Byte'}
-        open={deleteByteModalState.isVisible}
-        onClose={closeByteDeleteModal}
-        onDelete={async () => {
-          await revalidateTidbitCollections();
-          fetch(`${getBaseUrl()}/api/byte/byte`, {
-            method: 'DELETE',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              byteId: deleteByteModalState.byteId,
-              spaceId: space.id,
-            }),
-          });
+          title={'Delete Byte'}
+          open={deleteByteModalState.isVisible}
+          onClose={closeByteDeleteModal}
+          onDelete={async () => {
+            await revalidateTidbitCollections();
+            fetch(`${getBaseUrl()}/api/byte/byte`, {
+              method: 'DELETE',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                byteId: deleteByteModalState.byteId,
+                spaceId: space.id,
+              }),
+            });
 
-          closeByteDeleteModal();
-          const timestamp = new Date().getTime();
-          router.push(`/?update=${timestamp}`);
-          // setTimeout(() => closeEditByteModal?.(), 3000);
-        }}
-      />
+            closeByteDeleteModal();
+            const timestamp = new Date().getTime();
+            router.push(`/?update=${timestamp}`);
+            // setTimeout(() => closeEditByteModal?.(), 3000);
+          }}
+        />
       )}
 
       {editDemoModalState.isVisible && (
