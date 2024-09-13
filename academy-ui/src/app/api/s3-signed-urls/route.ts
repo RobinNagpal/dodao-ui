@@ -46,7 +46,6 @@ async function postHandler(req: NextRequest) {
             spaceApiKeys: spaceIntegration?.spaceApiKeys,
           },
         });
-        console.log(spaceIntegration?.spaceApiKeys);
       }
       return NextResponse.json({ url: await presignedUrlCreator.createSignedUrl(spaceById.id, args.input) }, { status: 200 });
     } catch (e) {
