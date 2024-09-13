@@ -4,6 +4,7 @@ import ArrowTopRightOnSquareIcon from '@heroicons/react/24/outline/ArrowTopRight
 import Bars3BottomLeftIcon from '@heroicons/react/24/solid/Bars3BottomLeftIcon';
 import styles from './ByteCollectionsCard.module.scss';
 import Link from 'next/link';
+import { ByteCollectionItemType } from '@/app/api/helpers/byteCollection/byteCollectionItemType';
 
 interface ShortItemProps {
   short: ShortVideo;
@@ -11,10 +12,11 @@ interface ShortItemProps {
   threeDotItems: { label: string; key: string }[];
   itemLength: number;
   openShortEditModal: (shortId: string) => void;
+  openItemDeleteModal: (itemId: string, itemType: ByteCollectionItemType | null) => void;
 }
 
 export default function ShortItem(props: ShortItemProps) {
-  const { short, eventIdx, threeDotItems, openShortEditModal, itemLength } = props;
+  const { short, eventIdx, threeDotItems, openShortEditModal, openItemDeleteModal, itemLength } = props;
   const shortViewUrl = `shorts/view/${short.shortId}`;
   return (
     <li key={short.shortId}>
@@ -34,7 +36,17 @@ export default function ShortItem(props: ShortItemProps) {
           </Link>
           {short.shortId && (
             <div className="z-10">
-              <PrivateEllipsisDropdown items={threeDotItems} onSelect={() => openShortEditModal(short.shortId)} />
+              <PrivateEllipsisDropdown
+                items={threeDotItems}
+                // onSelect={() => openShortEditModal(short.shortId)}
+                onSelect={(key) => {
+                  if (key === 'archive') {
+                    openItemDeleteModal(short.shortId, ByteCollectionItemType.ShortVideo);
+                  } else {
+                    openShortEditModal(short.shortId);
+                  }
+                }}
+              />
             </div>
           )}
         </div>

@@ -6,21 +6,30 @@ import { prisma } from '@/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 
 async function deleteHandler(req: NextRequest) {
+  console.log('deleteHandler');
   const args: MutationDeleteItemArgs = await req.json();
+  //   const { searchParams } = new URL(req.url);
+  //   const byteCollectionId = searchParams.get('byteCollectionId');
+
+  //   if (byteCollectionId === null) {
+  //     return NextResponse.json({ error: 'byteCollectionId is required' }, { status: 400 });
+  //   }
+
   validateSuperAdmin(req);
 
   await prisma.byteCollectionItemMappings.updateMany({
     where: {
       itemId: args.itemId,
+      itemType: args.itemType,
+      //   byteCollectionId: byteCollectionId,
     },
     data: {
       archive: true,
     },
   });
 
-  let deleted;
   if (args.itemType === ByteCollectionItemType.Byte) {
-    deleted = await prisma.byte.update({
+    const updatedByte = await prisma.byte.update({
       where: {
         id: args.itemId,
       },
@@ -28,8 +37,9 @@ async function deleteHandler(req: NextRequest) {
         archive: true,
       },
     });
+    return NextResponse.json({ updated: updatedByte }, { status: 200 });
   } else if (args.itemType === ByteCollectionItemType.ClickableDemo) {
-    deleted = await prisma.clickableDemos.update({
+    const updatedDemo = await prisma.clickableDemos.update({
       where: {
         id: args.itemId,
       },
@@ -37,8 +47,9 @@ async function deleteHandler(req: NextRequest) {
         archive: true,
       },
     });
+    return NextResponse.json({ updated: updatedDemo }, { status: 200 });
   } else if (args.itemType === ByteCollectionItemType.ShortVideo) {
-    deleted = await prisma.shortVideo.update({
+    const updatedVideo = await prisma.shortVideo.update({
       where: {
         id: args.itemId,
       },
@@ -46,9 +57,10 @@ async function deleteHandler(req: NextRequest) {
         archive: true,
       },
     });
+    return NextResponse.json({ updated: updatedVideo }, { status: 200 });
   }
 
-  return NextResponse.json({ deleted: !!deleted }, { status: 200 });
+  return NextResponse.json({ error: 'Invalid itemType' }, { status: 200 });
 }
 
 export const DELETE = withErrorHandling(deleteHandler);

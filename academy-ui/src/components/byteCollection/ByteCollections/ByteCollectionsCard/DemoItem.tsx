@@ -3,6 +3,7 @@ import CursorArrowRipple from '@heroicons/react/24/solid/CursorArrowRippleIcon';
 import Link from 'next/link';
 import styles from './ByteCollectionsCard.module.scss';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
+import { ByteCollectionItemType } from '@/app/api/helpers/byteCollection/byteCollectionItemType';
 
 interface DemoItemProps {
   demo: ClickableDemoSummary;
@@ -10,10 +11,11 @@ interface DemoItemProps {
   itemLength: number;
   threeDotItems: { label: string; key: string }[];
   openDemoEditModal: (demoId: string) => void;
+  openItemDeleteModal: (itemId: string, itemType: ByteCollectionItemType | null) => void;
 }
 
 export default function DemoItem(props: DemoItemProps) {
-  const { demo, eventIdx, threeDotItems, openDemoEditModal, itemLength } = props;
+  const { demo, eventIdx, threeDotItems, openDemoEditModal, openItemDeleteModal, itemLength } = props;
   const demoViewUrl = `clickable-demos/view/${demo.demoId}`;
   return (
     <li key={demo.demoId}>
@@ -33,7 +35,17 @@ export default function DemoItem(props: DemoItemProps) {
           </Link>
           {demo.demoId && (
             <div className="z-10">
-              <PrivateEllipsisDropdown items={threeDotItems} onSelect={() => openDemoEditModal(demo.demoId)} />
+              <PrivateEllipsisDropdown
+                items={threeDotItems}
+                // onSelect={() => openDemoEditModal(demo.demoId)}
+                onSelect={(key) => {
+                  if (key === 'archive') {
+                    openItemDeleteModal(demo.demoId, ByteCollectionItemType.ClickableDemo);
+                  } else {
+                    openDemoEditModal(demo.demoId);
+                  }
+                }}
+              />
             </div>
           )}
         </div>
