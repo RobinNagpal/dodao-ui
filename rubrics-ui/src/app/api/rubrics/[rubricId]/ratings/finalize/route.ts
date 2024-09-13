@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
         },
       },
       data: {
-        status: 'finalized',
+        status: 'finalized', // Create it as an Enum
       },
     });
 
