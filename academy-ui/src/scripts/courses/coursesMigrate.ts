@@ -47,7 +47,7 @@ const insertCourse = async (course: any, spaceId: string) => {
 const main = async () => {
   // Get the folder path and space ID from command line arguments
   const folderPath = '/Users/robintc/projects/dodao-courses/raising-funds-using-defi/generated';
-  const spaceId = 'test-academy-eth';
+  const spaceId = process.env.DODAO_DEFAULT_SPACE_ID;
   if (!folderPath || !spaceId) {
     console.error('Please provide the absolute path of the folder containing course.json and the space ID.');
     process.exit(1);

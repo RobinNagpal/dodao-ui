@@ -15,10 +15,14 @@ import { v4 as uuid } from 'uuid';
 import { NextRequest, NextResponse } from 'next/server';
 
 function getUploadedImageUrlFromSingedUrl(signedUrl: string) {
-  return signedUrl
-    ?.replace('https://dodao-prod-public-assets.s3.amazonaws.com', 'https://d31h13bdjwgzxs.cloudfront.net')
-    ?.replace('https://dodao-prod-public-assets.s3.us-east-1.amazonaws.com', 'https://d31h13bdjwgzxs.cloudfront.net')
-    ?.split('?')[0];
+  if (signedUrl.includes('dodao-prod-public-assets')) {
+    return signedUrl
+      ?.replace('https://dodao-prod-public-assets.s3.amazonaws.com', 'https://d31h13bdjwgzxs.cloudfront.net')
+      ?.replace('https://dodao-prod-public-assets.s3.us-east-1.amazonaws.com', 'https://d31h13bdjwgzxs.cloudfront.net')
+      ?.split('?')[0];
+  } else {
+    return signedUrl?.split('?')[0];
+  }
 }
 
 function getFileExtensionAndContentType(args: MutationUploadImageFromUrlToS3Args) {

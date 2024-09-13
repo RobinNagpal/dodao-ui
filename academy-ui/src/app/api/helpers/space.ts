@@ -48,10 +48,10 @@ export async function getSpaceIdForDomain(domain: string): Promise<string> {
   }
 
   if (domain === 'dodao-ui-robinnagpal.vercel.app' || domain === 'localhost') {
-    return 'test-academy-eth';
+    return process.env.DODAO_DEFAULT_SPACE_ID!;
   }
 
-  return 'test-academy-eth';
+  return process.env.DODAO_DEFAULT_SPACE_ID!;
 }
 
 export async function getAllSpaceIdsForDomain(domain: string): Promise<string[]> {
@@ -76,8 +76,8 @@ export async function getAllSpaceIdsForDomain(domain: string): Promise<string[]>
   }
 
   if (domain === 'dodao-ui-robinnagpal.vercel.app' || domain === 'localhost') {
-    return ['test-academy-eth'];
+    return [process.env.DODAO_DEFAULT_SPACE_ID!];
   }
 
-  return ['test-academy-eth'];
+  return [process.env.DODAO_DEFAULT_SPACE_ID!];
 }

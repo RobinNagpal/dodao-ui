@@ -33,7 +33,7 @@ async function getHandler(req: NextRequest) {
     const space = await prisma.space.findFirst({
       where: {
         id: {
-          equals: 'test-academy-eth',
+          equals: process.env.DODAO_DEFAULT_SPACE_ID,
         },
       },
     });
