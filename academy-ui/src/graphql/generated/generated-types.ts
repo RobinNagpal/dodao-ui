@@ -1506,11 +1506,6 @@ export interface MutationDeleteByteArgs {
   spaceId: Scalars['String'];
 }
 
-export interface MutationDeleteItemArgs {
-  itemId: Scalars['String'];
-  itemType: Scalars['String'];
-}
-
 export interface MutationDeleteByteCollectionArgs {
   byteCollectionId: Scalars['String'];
 }

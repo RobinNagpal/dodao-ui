@@ -1,3 +1,8 @@
+## Declaring request and response types
+We should add these under `types` folder in `request` and `response` folders. Use the file specific to the entity.
+
+- Make sure 
+
 ## Form Validation
 
 ### Form Validation Process Documentation

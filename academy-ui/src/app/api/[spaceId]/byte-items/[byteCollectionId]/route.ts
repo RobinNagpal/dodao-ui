@@ -1,12 +1,14 @@
 import { ByteCollectionItemType } from '@/app/api/helpers/byteCollection/byteCollectionItemType';
 import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { validateSuperAdmin } from '@/app/api/helpers/space/isSuperAdmin';
-import { MutationDeleteItemArgs } from '@/graphql/generated/generated-types';
 import { prisma } from '@/prisma';
+import { DeleteByteItemRequest } from '@/types/request/ByteRequests';
+import { DeleteByteItemResponse } from '@/types/response/ByteResponses';
+import { ErrorResponse } from '@/types/response/ErrorResponse';
 import { NextRequest, NextResponse } from 'next/server';
 
-async function deleteHandler(req: NextRequest) {
-  const args: MutationDeleteItemArgs = await req.json();
+async function deleteHandler(req: NextRequest): Promise<NextResponse<DeleteByteItemResponse | ErrorResponse>> {
+  const args: DeleteByteItemRequest = await req.json();
 
   const url = new URL(req.url);
   const byteCollectionId = url.pathname.split('/').pop();
@@ -15,7 +17,7 @@ async function deleteHandler(req: NextRequest) {
     return NextResponse.json({ error: 'byteCollectionId is required' }, { status: 400 });
   }
 
-  validateSuperAdmin(req);
+  await validateSuperAdmin(req);
 
   await prisma.byteCollectionItemMappings.updateMany({
     where: {

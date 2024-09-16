@@ -3,6 +3,7 @@
 import ByteCollectionCardAdminDropdown from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCollectionCardAdminDropdown';
 
 import ByteCollectionCardAddItem from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCollectionCardAddItem';
+import { DeleteByteItemRequest } from '@/types/request/ByteRequests';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import { ShortVideoFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
@@ -48,6 +49,7 @@ interface DeleteItemModalState {
   isVisible: boolean;
   itemId: string | null;
   itemType: ByteCollectionItemType | null;
+  deleting: boolean;
 }
 
 interface EditDemoModalState {
@@ -66,10 +68,11 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
   const [videoResponse, setVideoResponse] = React.useState<{ shortVideo?: ShortVideoFragment }>();
   const [showCreateModal, setShowCreateModal] = React.useState<boolean>(false);
   const [editByteModalState, setEditModalState] = React.useState<EditByteModalState>({ isVisible: false, byteId: null });
-  const [deleteItemModalState, setItemModalState] = React.useState<DeleteItemModalState>({
+  const [deleteItemModalState, setDeleteItemModalState] = React.useState<DeleteItemModalState>({
     isVisible: false,
     itemId: null,
     itemType: null,
+    deleting: false,
   });
   const [editDemoModalState, setEditDemoModalState] = React.useState<EditDemoModalState>({ isVisible: false, demoId: null });
   const [editShortModalState, setEditShortModalState] = React.useState<EditShortModalState>({ isVisible: false, shortId: null });
@@ -99,7 +102,7 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
   }
 
   function openItemDeleteModal(itemId: string, itemType: ByteCollectionItemType | null) {
-    setItemModalState({ isVisible: true, itemId: itemId, itemType: itemType });
+    setDeleteItemModalState({ isVisible: true, itemId: itemId, itemType: itemType, deleting: false });
   }
 
   function openDemoEditModal(demoId: string) {
@@ -116,7 +119,7 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
   }
 
   function closeItemDeleteModal() {
-    setItemModalState({ isVisible: false, itemId: null, itemType: null });
+    setDeleteItemModalState({ isVisible: false, itemId: null, itemType: null, deleting: false });
   }
 
   function closeDemoEditModal() {
@@ -261,22 +264,41 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
           }`}
           open={deleteItemModalState.isVisible}
           onClose={closeItemDeleteModal}
+          deleting={deleteItemModalState.deleting}
           onDelete={async () => {
-            await revalidateTidbitCollections();
-            fetch(`${getBaseUrl()}/api/${space.id}/byte-items/${byteCollection.id}`, {
+            if (!deleteItemModalState.itemId || !deleteItemModalState.itemType) {
+              // Show a notification error here that cannot delete item because of missing data
+              // and then close the modal
+              return;
+            }
+
+            setDeleteItemModalState({
+              ...deleteItemModalState,
+              deleting: true,
+            });
+
+            await revalidateTidbitCollections(); // Do we need to do this?
+            const deleteRequest: DeleteByteItemRequest = {
+              itemId: deleteItemModalState.itemId,
+              itemType: deleteItemModalState.itemType,
+            };
+            await fetch(`${getBaseUrl()}/api/${space.id}/byte-items/${byteCollection.id}`, {
               method: 'DELETE',
               headers: {
                 'Content-Type': 'application/json',
               },
-              body: JSON.stringify({
-                itemId: deleteItemModalState.itemId,
-                itemType: deleteItemModalState.itemType,
-              }),
+              body: JSON.stringify(deleteRequest),
+            });
+
+            // We need to check if deletion was a success or not? So we can check the response and show a notification
+            setDeleteItemModalState({
+              ...deleteItemModalState,
+              deleting: false,
             });
 
             closeItemDeleteModal();
             const timestamp = new Date().getTime();
-            router.push(`/?update=${timestamp}`);
+            router.push(`/?update=${timestamp}`); // This might hide the notification because of the refresh. Discuss if that is the case
           }}
         />
       )}
