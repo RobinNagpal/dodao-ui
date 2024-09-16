@@ -37,7 +37,6 @@ export default function DemoItem(props: DemoItemProps) {
             <div className="z-10">
               <PrivateEllipsisDropdown
                 items={threeDotItems}
-                // onSelect={() => openDemoEditModal(demo.demoId)}
                 onSelect={(key) => {
                   if (key === 'archive') {
                     openItemDeleteModal(demo.demoId, ByteCollectionItemType.ClickableDemo);

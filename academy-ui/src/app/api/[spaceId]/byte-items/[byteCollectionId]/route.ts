@@ -6,10 +6,8 @@ import { prisma } from '@/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 
 async function deleteHandler(req: NextRequest) {
-  console.log('deleteHandler');
   const args: MutationDeleteItemArgs = await req.json();
 
-  // Extract byteCollectionId from the URL
   const url = new URL(req.url);
   const byteCollectionId = url.pathname.split('/').pop();
 

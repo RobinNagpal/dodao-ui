@@ -56,7 +56,6 @@ export default function ByteItem(props: ByteItemProps) {
             <div className="z-10">
               <PrivateEllipsisDropdown
                 items={threeDotItems}
-                // onSelect={() => openByteEditModal(byte.byteId)}
                 onSelect={(key) => {
                   if (key === 'archive') {
                     openItemDeleteModal(byte.byteId, ByteCollectionItemType.Byte);
