@@ -277,7 +277,6 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
             closeItemDeleteModal();
             const timestamp = new Date().getTime();
             router.push(`/?update=${timestamp}`);
-            // setTimeout(() => closeEditByteModal?.(), 3000);
           }}
         />
       )}
