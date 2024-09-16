@@ -250,7 +250,6 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
 
       {deleteItemModalState.isVisible && (
         <DeleteConfirmationModal
-          // title={'Delete Byte'}
           title={`Delete ${
             deleteItemModalState.itemType === ByteCollectionItemType.Byte
               ? 'Byte'

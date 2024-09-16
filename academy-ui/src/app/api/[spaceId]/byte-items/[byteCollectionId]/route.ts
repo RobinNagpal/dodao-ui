@@ -8,12 +8,14 @@ import { NextRequest, NextResponse } from 'next/server';
 async function deleteHandler(req: NextRequest) {
   console.log('deleteHandler');
   const args: MutationDeleteItemArgs = await req.json();
-  //   const { searchParams } = new URL(req.url);
-  //   const byteCollectionId = searchParams.get('byteCollectionId');
 
-  //   if (byteCollectionId === null) {
-  //     return NextResponse.json({ error: 'byteCollectionId is required' }, { status: 400 });
-  //   }
+  // Extract byteCollectionId from the URL
+  const url = new URL(req.url);
+  const byteCollectionId = url.pathname.split('/').pop();
+
+  if (!byteCollectionId) {
+    return NextResponse.json({ error: 'byteCollectionId is required' }, { status: 400 });
+  }
 
   validateSuperAdmin(req);
 
@@ -21,7 +23,7 @@ async function deleteHandler(req: NextRequest) {
     where: {
       itemId: args.itemId,
       itemType: args.itemType,
-      //   byteCollectionId: byteCollectionId,
+      byteCollectionId: byteCollectionId,
     },
     data: {
       archive: true,
