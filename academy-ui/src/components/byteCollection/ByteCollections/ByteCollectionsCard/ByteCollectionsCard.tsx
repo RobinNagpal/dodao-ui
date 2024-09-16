@@ -1,7 +1,6 @@
 'use client';
 
 import ByteCollectionCardAdminDropdown from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCollectionCardAdminDropdown';
-
 import ByteCollectionCardAddItem from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCollectionCardAddItem';
 import { DeleteByteItemRequest } from '@/types/request/ByteRequests';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
@@ -25,6 +24,7 @@ import DemoItem from './DemoItem';
 import ShortItem from './ShortItem';
 import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
 import { revalidateTidbitCollections } from '@/revalidateTags';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 
 interface ByteCollectionCardProps {
   byteCollection: ByteCollectionSummary;
@@ -76,6 +76,9 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
   });
   const [editDemoModalState, setEditDemoModalState] = React.useState<EditDemoModalState>({ isVisible: false, demoId: null });
   const [editShortModalState, setEditShortModalState] = React.useState<EditShortModalState>({ isVisible: false, shortId: null });
+
+  const { showNotification } = useNotificationContext();
+
   const threeDotItems = [
     { label: 'Edit', key: 'edit' },
     { label: 'Archive', key: 'archive' },
@@ -267,8 +270,8 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
           deleting={deleteItemModalState.deleting}
           onDelete={async () => {
             if (!deleteItemModalState.itemId || !deleteItemModalState.itemType) {
-              // Show a notification error here that cannot delete item because of missing data
-              // and then close the modal
+              showNotification({ message: 'Some Error occurred', type: 'error' });
+              closeItemDeleteModal();
               return;
             }
 
@@ -277,12 +280,12 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
               deleting: true,
             });
 
-            await revalidateTidbitCollections(); // Do we need to do this?
+            await revalidateTidbitCollections();
             const deleteRequest: DeleteByteItemRequest = {
               itemId: deleteItemModalState.itemId,
               itemType: deleteItemModalState.itemType,
             };
-            await fetch(`${getBaseUrl()}/api/${space.id}/byte-items/${byteCollection.id}`, {
+            const response = await fetch(`${getBaseUrl()}/api/${space.id}/byte-items/${byteCollection.id}`, {
               method: 'DELETE',
               headers: {
                 'Content-Type': 'application/json',
@@ -290,15 +293,37 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
               body: JSON.stringify(deleteRequest),
             });
 
-            // We need to check if deletion was a success or not? So we can check the response and show a notification
-            setDeleteItemModalState({
-              ...deleteItemModalState,
-              deleting: false,
-            });
+            if (response.ok) {
+              const result = await response.json();
 
-            closeItemDeleteModal();
-            const timestamp = new Date().getTime();
-            router.push(`/?update=${timestamp}`); // This might hide the notification because of the refresh. Discuss if that is the case
+              const message =
+                deleteItemModalState.itemType === ByteCollectionItemType.Byte
+                  ? 'Byte Archived Successfully'
+                  : deleteItemModalState.itemType === ByteCollectionItemType.ClickableDemo
+                  ? 'Clickable Demo Archived Successfully'
+                  : deleteItemModalState.itemType === ByteCollectionItemType.ShortVideo
+                  ? 'Short Video Archived Successfully'
+                  : 'Item Archived Successfully';
+
+              setDeleteItemModalState({
+                ...deleteItemModalState,
+                deleting: false,
+              });
+
+              closeItemDeleteModal();
+              showNotification({ message, type: 'success' });
+              const timestamp = new Date().getTime();
+              router.push(`/?update=${timestamp}`);
+            } else {
+              setDeleteItemModalState({
+                ...deleteItemModalState,
+                deleting: false,
+              });
+
+              closeItemDeleteModal();
+
+              return showNotification({ message: 'Failed to archive the item. Please try again.', type: 'error' });
+            }
           }}
         />
       )}
