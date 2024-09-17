@@ -76,6 +76,7 @@ export async function POST(req: NextRequest, { params }: { params: { rubricId: s
 export async function GET(req: NextRequest, { params }: { params: { rubricId: string } }) {
   const url = new URL(req.url);
   const userId = url.searchParams.get('userId');
+
   if (!userId) {
     return NextResponse.json(
       {

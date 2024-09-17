@@ -267,3 +267,7 @@ export interface AverageScoresData {
     }[];
   }[];
 }
+export enum RubricRatingStatus {
+  InProgress = 'InProgress',
+  Finalized = 'Finalized',
+}
