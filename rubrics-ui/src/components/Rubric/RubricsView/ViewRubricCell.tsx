@@ -35,12 +35,11 @@ export default function ViewRubricCell({ rubric, criteria, cell, isRatingPresent
     if (response.ok) {
       const updatedRubricRating: RubricRatingWithEntities = await response.json();
       setRubricRatingState!(updatedRubricRating);
+      console.log('Successfully sent data to the server:', request);
     }
     if (!response.ok) {
       throw new Error('Failed to send data');
     }
-
-    console.log('Successfully sent data to the server:', request);
   };
 
   return (

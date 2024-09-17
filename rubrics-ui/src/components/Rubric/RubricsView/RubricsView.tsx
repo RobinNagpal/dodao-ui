@@ -41,16 +41,17 @@ const RubricsView: React.FC<RubricViewProps> = ({ rubric, session, rubricRating,
   };
 
   const ratedCriteriaIds =
-    rubricRatingState?.selections.map((selection) => {
+    rubricRatingState?.selections?.map((selection) => {
       const cell = rubric.cells.find((c) => c.id === selection.rubricCellId);
       return cell?.criteriaId;
     }) ?? [];
 
-  const allCriteriaIds = rubric.criterias.map((criteria) => criteria.id);
-  const isFinalizeDisabled = allCriteriaIds.some((criteriaId) => !ratedCriteriaIds.includes(criteriaId));
-  const unratedCriteriaCount = allCriteriaIds.filter((criteriaId) => !ratedCriteriaIds.includes(criteriaId)).length;
+  const allCriteriaIds = rubric?.criterias?.map((criteria) => criteria.id);
+  const isFinalizeDisabled = allCriteriaIds?.some((criteriaId) => !ratedCriteriaIds.includes(criteriaId));
+  const unratedCriteriaCount = allCriteriaIds?.filter((criteriaId) => !ratedCriteriaIds.includes(criteriaId)).length;
 
   const isRatingFinalized = rubricRating?.status === RubricRatingStatus.Finalized;
+
   return (
     <div className="container mx-auto py-8 p-4">
       <div className="flex items-center pb-8 align-center justify-center">

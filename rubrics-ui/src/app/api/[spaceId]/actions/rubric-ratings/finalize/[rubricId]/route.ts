@@ -3,7 +3,7 @@ import { prisma } from '@/prisma';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
-
+import { RubricRatingStatus } from '@/types/rubricsTypes/types';
 export async function POST(request: NextRequest) {
   try {
     const { rubricId } = await request.json();
@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
         id: rubricRating.id,
       },
       data: {
-        status: 'finalized',
+        status: RubricRatingStatus.Finalized,
       },
     });
     const updatedRubricRating = await prisma.rubricRating.findUniqueOrThrow({

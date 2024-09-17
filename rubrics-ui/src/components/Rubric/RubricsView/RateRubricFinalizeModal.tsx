@@ -43,7 +43,7 @@ const FinalizeModal: React.FC<FinalizeModalProps> = ({ open, onClose, rubric, ru
     }
   }
 
-  const isFinalizedButtonDisabled = !rubricRating || rubricRating.selections.length === 0;
+  const isFinalizedButtonDisabled = !rubricRating || rubricRating?.selections?.length === 0;
 
   return (
     <SingleSectionModal title="Finalize Rubric Selections" open={open} onClose={onClose}>
