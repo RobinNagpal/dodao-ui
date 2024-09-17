@@ -8,6 +8,7 @@ import React, { useState } from 'react';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import FinalizeRubricEditModal from '@/components/Rubric/RubricsView/RateRubricFinalizeModal';
 import { SpaceWithIntegrationsFragment } from '@/types/rubricsTypes/types';
+import { RubricRatingStatus } from '@/types/rubricsTypes/types';
 export interface RubricViewProps {
   rubric: RubricWithEntities;
   session?: Session;
@@ -49,7 +50,7 @@ const RubricsView: React.FC<RubricViewProps> = ({ rubric, session, rubricRating,
   const isFinalizeDisabled = allCriteriaIds.some((criteriaId) => !ratedCriteriaIds.includes(criteriaId));
   const unratedCriteriaCount = allCriteriaIds.filter((criteriaId) => !ratedCriteriaIds.includes(criteriaId)).length;
 
-  const isRatingFinalized = rubricRating?.status === 'finalized';
+  const isRatingFinalized = rubricRating?.status === RubricRatingStatus.Finalized;
   return (
     <div className="container mx-auto py-8 p-4">
       <div className="flex items-center pb-8 align-center justify-center">

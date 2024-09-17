@@ -17,7 +17,7 @@ export interface RubricRatingWithEntities {
   rubricId: string;
   userId: string;
   selections: RatingCellSelection[];
-  status: 'inProgress ' | 'finalized';
+  status: RubricRatingStatus;
 }
 
 //------------ Request Types -------------//
