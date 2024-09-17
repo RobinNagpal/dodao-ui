@@ -5,6 +5,7 @@ import PlayCircleIcon from '@heroicons/react/24/outline/PlayCircleIcon';
 import styles from './ByteCollectionsCard.module.scss';
 import Link from 'next/link';
 import { ByteSummary } from '@/types/bytes/Byte';
+import { ByteCollectionItemType } from '@/app/api/helpers/byteCollection/byteCollectionItemType';
 
 interface ByteItemProps {
   viewByteBaseUrl: string;
@@ -15,6 +16,7 @@ interface ByteItemProps {
   threeDotItems: { label: string; key: string }[];
   itemLength: number;
   openByteEditModal: (byteId: string) => void;
+  openItemDeleteModal: (itemId: string, itemType: ByteCollectionItemType | null) => void;
 }
 
 interface VideoModalProps {
@@ -24,7 +26,7 @@ interface VideoModalProps {
 }
 
 export default function ByteItem(props: ByteItemProps) {
-  const { viewByteBaseUrl, byte, eventIdx, setWatchVideo, setSelectedVideo, threeDotItems, openByteEditModal, itemLength } = props;
+  const { viewByteBaseUrl, byte, eventIdx, setWatchVideo, setSelectedVideo, threeDotItems, openByteEditModal, openItemDeleteModal, itemLength } = props;
   const byteViewUrl = `${viewByteBaseUrl}/${byte.byteId}`;
 
   return (
@@ -52,7 +54,16 @@ export default function ByteItem(props: ByteItemProps) {
           )}
           {byte.byteId && (
             <div className="z-10">
-              <PrivateEllipsisDropdown items={threeDotItems} onSelect={() => openByteEditModal(byte.byteId)} />
+              <PrivateEllipsisDropdown
+                items={threeDotItems}
+                onSelect={(key) => {
+                  if (key === 'archive') {
+                    openItemDeleteModal(byte.byteId, ByteCollectionItemType.Byte);
+                  } else {
+                    openByteEditModal(byte.byteId);
+                  }
+                }}
+              />
             </div>
           )}
         </div>
