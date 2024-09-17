@@ -206,3 +206,17 @@ AWS_REGION=us-east-1
 AWS_ACCESS_KEY_ID=
 AWS_SECRET_ACCESS_KEY=
 ```
+
+
+# Checklist to make sure you have basic knowledge of the project
+- [ ] Understand how postgres is setup using docker-compose
+
+### API
+- [ ] Understand the convention we follow for creating routes. Check CodingWorkflow.md
+- [ ] Understand how to declare new types for entities, request and response types
+- [ ] Understand how strict types need to be used for request and responses
+### UI
+- [ ] Understand how notifications need to be shown
+- [ ] Understand how strict types need to be used for request and responses
+
+# Check
