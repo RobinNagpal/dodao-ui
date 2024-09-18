@@ -75,16 +75,18 @@ export default function ByteStepperItemContent({
   };
   if (!stepItems.some(isQuestion) && step.imageUrl && step.displayMode === ImageDisplayMode.FullScreenImage) {
     return (
-      <div className="absolute left-1/2  top-12 transform -translate-x-1/2 w-[80vw] rounded mx-auto">
-        {width > height ? (
-          <img src={step.imageUrl} alt="byte" style={{ height: imageHeight }} className={`rounded mx-auto ${styles.imgContainer}`} />
-        ) : (
-          <img src={step.imageUrl} alt="byte" style={{ maxHeight: imageHeight }} className={`rounded mx-auto ${styles.imgContainer}`} />
-        )}
-        <div id="heading" className="flex justify-center w-full mt-4">
-          <h1 className={stepClasses.headingClasses}>{step.name || byte.name}</h1>
+      <div className={`absolute ${styles.fullScreenContainer}`}>
+        <div className="absolute left-1/2  top-12 transform -translate-x-1/2 w-[80vw] rounded mx-auto">
+          {width > height ? (
+            <img src={step.imageUrl} alt="byte" style={{ height: imageHeight }} className={`rounded mx-auto ${styles.imgContainer}`} />
+          ) : (
+            <img src={step.imageUrl} alt="byte" style={{ maxHeight: imageHeight }} className={`rounded mx-auto ${styles.imgContainer}`} />
+          )}
+          <div id="heading" className="flex justify-center w-full mt-4">
+            <h1 className={stepClasses.headingClasses}>{step.name || byte.name}</h1>
+          </div>
+          <div id="summary" dangerouslySetInnerHTML={{ __html: stepContents }} className={`markdown-body text-center ` + stepClasses.contentClasses} />
         </div>
-        <div id="summary" dangerouslySetInnerHTML={{ __html: stepContents }} className={`markdown-body text-center ` + stepClasses.contentClasses} />
       </div>
     );
   }
