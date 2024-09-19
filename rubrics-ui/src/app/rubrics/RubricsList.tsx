@@ -57,7 +57,6 @@ const RubricList: React.FC<RubricListProps> = ({ rubrics, space }) => {
     items: [
       { key: 'edit', label: 'Edit' },
       { key: 'view', label: 'View' },
-      { key: 'rate', label: 'Rate' },
     ],
     onSelect: (key: string, item: Rubric) => {
       if (key === 'view') {

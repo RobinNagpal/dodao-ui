@@ -1,7 +1,7 @@
 'use client';
 
-import CommentModal from '@/components/Rubric/RubricsView/CommentModal';
-import { RubricCellRatingRequest, RubricWithEntities } from '@/types/rubricsTypes/types';
+import CommentModal from '@/components/Rubric/RubricsView/modals/CommentModal';
+import { RubricCellRatingRequest, RubricWithEntities, RubricRatingWithEntities } from '@/types/rubricsTypes/types';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { CheckCircleIcon } from '@heroicons/react/24/solid';
@@ -14,9 +14,10 @@ export interface ViewRubricCellProps {
   cell: RubricCell;
   isRatingPresent: boolean | undefined;
   session?: Session;
+  setRubricRatingState?: React.Dispatch<React.SetStateAction<RubricRatingWithEntities | undefined>>;
 }
 
-export default function ViewRubricCell({ rubric, criteria, cell, isRatingPresent }: ViewRubricCellProps) {
+export default function ViewRubricCell({ rubric, criteria, cell, isRatingPresent, setRubricRatingState }: ViewRubricCellProps) {
   const [showRatingModal, setShowRatingModal] = useState<boolean>(false);
 
   const selectCellForRating = async (comment: string) => {
@@ -31,13 +32,14 @@ export default function ViewRubricCell({ rubric, criteria, cell, isRatingPresent
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(request),
     });
-
+    if (response.ok) {
+      const updatedRubricRating: RubricRatingWithEntities = await response.json();
+      setRubricRatingState!(updatedRubricRating);
+      console.log('Successfully sent data to the server:', request);
+    }
     if (!response.ok) {
       throw new Error('Failed to send data');
     }
-
-    const result = await response.json();
-    console.log('Successfully sent data to the server:', request);
   };
 
   return (

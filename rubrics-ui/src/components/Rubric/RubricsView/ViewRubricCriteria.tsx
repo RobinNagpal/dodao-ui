@@ -10,9 +10,10 @@ export interface ViewRubricCriteriaProps {
   session?: Session;
   rubricRatingsResponse?: RatingCellSelection[];
   rubricRating?: RubricRatingWithEntities;
+  setRubricRatingState?: React.Dispatch<React.SetStateAction<RubricRatingWithEntities | undefined>>;
 }
 
-const ViewRubricCriteria: React.FC<ViewRubricCriteriaProps> = ({ session, rubric, criteria, rubricRating }) => {
+const ViewRubricCriteria: React.FC<ViewRubricCriteriaProps> = ({ session, rubric, criteria, rubricRating, setRubricRatingState }) => {
   return (
     <tr>
       <td className="py-2 px-4 border-r border-b font-bold cursor-pointer max-w-xs break-words relative">
@@ -21,9 +22,18 @@ const ViewRubricCriteria: React.FC<ViewRubricCriteriaProps> = ({ session, rubric
       {rubric.cells
         .filter((cell) => cell.criteriaId === criteria.id)
         .map((cell) => {
-          const isRatingPresent = rubricRating?.selections.some((selection) => selection.rubricCellId === cell.id);
-
-          return <ViewRubricCell cell={cell} key={cell.id} isRatingPresent={isRatingPresent} session={session} criteria={criteria} rubric={rubric} />;
+          const isRatingPresent = rubricRating?.selections?.some((selection) => selection.rubricCellId === cell.id);
+          return (
+            <ViewRubricCell
+              cell={cell}
+              key={cell.id}
+              isRatingPresent={isRatingPresent}
+              session={session}
+              criteria={criteria}
+              rubric={rubric}
+              setRubricRatingState={setRubricRatingState}
+            />
+          );
         })}
     </tr>
   );

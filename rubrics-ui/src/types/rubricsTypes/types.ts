@@ -17,6 +17,7 @@ export interface RubricRatingWithEntities {
   rubricId: string;
   userId: string;
   selections: RatingCellSelection[];
+  status: RubricRatingStatus;
 }
 
 //------------ Request Types -------------//
@@ -44,7 +45,7 @@ export interface Rubric {
   cells?: any[];
 }
 
-export interface ProgramForm {
+export interface ProgramFormType {
   name: string;
   details: string;
   summary: string;
@@ -139,17 +140,6 @@ export interface RubricMap {
   [key: string]: EditRubricCell[];
 }
 
-export interface SampleData {
-  name: string;
-  rubricId: string;
-  criteriaOrder: string[];
-  rubric: RubricMap;
-  ratingHeaders: { header: string; score: number; id: string }[];
-  programs: { name: string; summary: string }[];
-  details?: string;
-  summary?: string;
-  criteriaIds?: string[];
-}
 export interface NewCell {
   description: string;
   ratingHeaderId: string;
@@ -250,3 +240,34 @@ export type SpaceWithIntegrationsFragment = {
   } | null;
   tidbitsHomepage?: { __typename?: 'TidbitsHomepage'; heading: string; shortDescription: string } | null;
 };
+export type UserRatingSubmission = {
+  criteriaId: string;
+  criteriaName: string;
+  score: number;
+  description: string;
+  comment: string;
+};
+export interface AverageScoresData {
+  name: string;
+  summary: string;
+  averageScores: {
+    criteriaId: string;
+    criteriaName: string;
+    averageScore: number;
+    description: string;
+  }[];
+  ratingSubmissions: {
+    userId: string;
+    submissions: {
+      criteriaId: string;
+      criteriaName: string;
+      score: number;
+      description: string;
+      comment: string;
+    }[];
+  }[];
+}
+export enum RubricRatingStatus {
+  InProgress = 'InProgress',
+  Finalized = 'Finalized',
+}
