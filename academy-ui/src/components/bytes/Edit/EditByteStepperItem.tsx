@@ -415,7 +415,7 @@ For background of the image, use the color ${backgroundColor} and for the primar
           />
         </div>
         {step.displayMode === ImageDisplayMode.FullScreenImage ? (
-          <Input modelValue={step.content} onUpdate={(e) => updateStepCaption(e?.toString() || '')}>
+          <Input modelValue={step.content} maxLength={32} onUpdate={(e) => updateStepCaption(e?.toString() || '')}>
             Caption*
           </Input>
         ) : (
