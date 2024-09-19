@@ -332,6 +332,10 @@ export default function EditByteStepperItem({
     updateStep({ ...step, name });
   };
 
+  const updateStepCaption = (caption: string) => {
+    updateStep({ ...step, content: caption });
+  };
+
   const updateStepImageUrl = (imageUrl: string | null) => {
     updateStep({ ...step, imageUrl });
   };
@@ -387,7 +391,7 @@ For background of the image, use the color ${backgroundColor} and for the primar
           />
         </div>
         <div className="w-full mb-4">
-          <Input modelValue={step.name} onUpdate={(e) => updateStepName(e?.toString() || '')}>
+          <Input modelValue={step.name} maxLength={32} onUpdate={(e) => updateStepName(e?.toString() || '')}>
             Name*
           </Input>
         </div>
@@ -411,7 +415,7 @@ For background of the image, use the color ${backgroundColor} and for the primar
           />
         </div>
         {step.displayMode === ImageDisplayMode.FullScreenImage ? (
-          <Input modelValue={step.content} onUpdate={(e) => updateStepName(e?.toString() || '')}>
+          <Input modelValue={step.content} onUpdate={(e) => updateStepCaption(e?.toString() || '')}>
             Caption*
           </Input>
         ) : (
