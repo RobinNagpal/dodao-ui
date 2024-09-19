@@ -410,17 +410,24 @@ For background of the image, use the color ${backgroundColor} and for the primar
             setSelectedItemId={(value) => updateStepDisplayMode(value!)}
           />
         </div>
-        <MarkdownEditor
-          id={step.uuid}
-          modelValue={step.content}
-          generateImagePromptFn={() => promptForImagePrompt}
-          placeholder={'Contents'}
-          onUpdate={updateStepContent}
-          spaceId={space.id}
-          objectId={byte.id || 'unknown_byte_id'}
-          imageType={ImageType.Tidbits}
-          editorStyles={{ height: '200px' }}
-        />
+        {step.displayMode === ImageDisplayMode.FullScreenImage ? (
+          <Input modelValue={step.content} onUpdate={(e) => updateStepName(e?.toString() || '')}>
+            Caption*
+          </Input>
+        ) : (
+          <MarkdownEditor
+            id={step.uuid}
+            modelValue={step.content}
+            generateImagePromptFn={() => promptForImagePrompt}
+            placeholder={'Contents'}
+            label={'Step Contents'}
+            onUpdate={updateStepContent}
+            spaceId={space.id}
+            objectId={byte.id || 'unknown_byte_id'}
+            imageType={ImageType.Tidbits}
+            editorStyles={{ height: '200px' }}
+          />
+        )}
       </div>
       {stepItemsForStepper.map((stepItem, index) => (
         <StepItemWrapper key={stepItem.uuid} className="mt-2" hasError={!!stepErrors?.stepItems?.[stepItem.uuid]}>
