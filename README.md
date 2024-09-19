@@ -25,6 +25,8 @@ You should be know the following things to be able to contribute to this reposit
 - [ ] Understand the convention we follow for creating routes. Check CodingWorkflow.md
 - [ ] Understand how to declare new types for entities, request and response types
 - [ ] Understand how strict types need to be used for request and responses
+- [ ] Understand how to add new routes. More details in [AddingAPIRoutes.md](docs/AddingAPIRoutes.md)
+
 
 ### UI
 - [ ] Understand how notifications need to be shown
