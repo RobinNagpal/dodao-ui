@@ -1506,7 +1506,6 @@ export interface MutationDeleteByteArgs {
   spaceId: Scalars['String'];
 }
 
-
 export interface MutationDeleteByteCollectionArgs {
   byteCollectionId: Scalars['String'];
 }
