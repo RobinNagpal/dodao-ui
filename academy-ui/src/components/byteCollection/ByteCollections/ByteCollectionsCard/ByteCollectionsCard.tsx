@@ -254,6 +254,35 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
         </FullScreenModal>
       )}
 
+      {editDemoModalState.isVisible && (
+        <FullScreenModal open={true} onClose={closeDemoEditModal} title={'Edit Clickable Demo'}>
+          <div className="text-left">
+            <EditClickableDemo demoId={editDemoModalState.demoId} byteCollection={byteCollection} closeDemoEditModal={closeDemoEditModal} />
+          </div>
+        </FullScreenModal>
+      )}
+
+      {editShortModalState.isVisible && (
+        <FullScreenModal open={true} onClose={closeShortEditModal} title={'Edit Short Video'}>
+          <div className="text-left">
+            <PageWrapper>
+              <EditShortVideoView
+                space={space}
+                byteCollection={byteCollection}
+                shortVideoToEdit={videoResponse?.shortVideo}
+                onAfterSave={() => {
+                  router.push(`/shorts/view/${videoResponse?.shortVideo?.id}`);
+                }}
+                onCancel={() => {
+                  router.push('/tidbit-collections');
+                }}
+                closeEditShortModal={closeShortEditModal}
+              />
+            </PageWrapper>
+          </div>
+        </FullScreenModal>
+      )}
+
       {deleteItemModalState.isVisible && (
         <DeleteConfirmationModal
           title={`Delete ${
@@ -326,35 +355,6 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
             }
           }}
         />
-      )}
-
-      {editDemoModalState.isVisible && (
-        <FullScreenModal open={true} onClose={closeDemoEditModal} title={'Edit Clickable Demo'}>
-          <div className="text-left">
-            <EditClickableDemo demoId={editDemoModalState.demoId} byteCollection={byteCollection} closeDemoEditModal={closeDemoEditModal} />
-          </div>
-        </FullScreenModal>
-      )}
-
-      {editShortModalState.isVisible && (
-        <FullScreenModal open={true} onClose={closeShortEditModal} title={'Edit Short Video'}>
-          <div className="text-left">
-            <PageWrapper>
-              <EditShortVideoView
-                space={space}
-                byteCollection={byteCollection}
-                shortVideoToEdit={videoResponse?.shortVideo}
-                onAfterSave={() => {
-                  router.push(`/shorts/view/${videoResponse?.shortVideo?.id}`);
-                }}
-                onCancel={() => {
-                  router.push('/tidbit-collections');
-                }}
-                closeEditShortModal={closeShortEditModal}
-              />
-            </PageWrapper>
-          </div>
-        </FullScreenModal>
       )}
     </div>
   );
