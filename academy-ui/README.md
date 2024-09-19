@@ -31,7 +31,10 @@ TWITTER_CLIENT_SECRET=
 NEXTAUTH_SECRET=
 DODAO_AUTH_SECRET=
 NEXT_PUBLIC_VERCEL_URL=
+DODAO_SUPERADMINS=
 ```
+
+- Replace the value of the DODAO_SUPERADMINS key with your MetaMask wallet's public address.
 
 2. Adjust the DATABASE_URL accordingly, or keep it as is and follow the steps below.
 

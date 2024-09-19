@@ -145,7 +145,6 @@ CREATE TABLE "rubric_ratings" (
     "id" VARCHAR(64) NOT NULL,
     "rubric_id" VARCHAR(64) NOT NULL,
     "user_id" TEXT NOT NULL,
-    "status" TEXT NOT NULL DEFAULT 'InProgress',
 
     CONSTRAINT "rubric_ratings_pkey" PRIMARY KEY ("id")
 );
