@@ -332,6 +332,10 @@ export default function EditByteStepperItem({
     updateStep({ ...step, name });
   };
 
+  const updateStepCaption = (caption: string) => {
+    updateStep({ ...step, content: caption });
+  };
+
   const updateStepImageUrl = (imageUrl: string | null) => {
     updateStep({ ...step, imageUrl });
   };
@@ -387,7 +391,7 @@ For background of the image, use the color ${backgroundColor} and for the primar
           />
         </div>
         <div className="w-full mb-4">
-          <Input modelValue={step.name} onUpdate={(e) => updateStepName(e?.toString() || '')}>
+          <Input modelValue={step.name} maxLength={32} onUpdate={(e) => updateStepName(e?.toString() || '')}>
             Name*
           </Input>
         </div>
@@ -400,7 +404,7 @@ For background of the image, use the color ${backgroundColor} and for the primar
             onInputUpdate={(e) => updateStepImageUrl(e?.toString() || '')}
             inputModelValue={step.imageUrl || ''}
           />
-          {step.imageUrl && <img src={step.imageUrl} style={{ height: '150px', width: '150px' }} className="my-2" />}
+          {step.imageUrl && <img src={step.imageUrl} style={{ height: '150px' }} className="my-2" />}
         </div>
         <div className="w-full mb-4">
           <StyledSelect
@@ -410,17 +414,24 @@ For background of the image, use the color ${backgroundColor} and for the primar
             setSelectedItemId={(value) => updateStepDisplayMode(value!)}
           />
         </div>
-        <MarkdownEditor
-          id={step.uuid}
-          modelValue={step.content}
-          generateImagePromptFn={() => promptForImagePrompt}
-          placeholder={'Contents'}
-          onUpdate={updateStepContent}
-          spaceId={space.id}
-          objectId={byte.id || 'unknown_byte_id'}
-          imageType={ImageType.Tidbits}
-          editorStyles={{ height: '200px' }}
-        />
+        {step.displayMode === ImageDisplayMode.FullScreenImage ? (
+          <Input modelValue={step.content} maxLength={32} onUpdate={(e) => updateStepCaption(e?.toString() || '')}>
+            Caption*
+          </Input>
+        ) : (
+          <MarkdownEditor
+            id={step.uuid}
+            modelValue={step.content}
+            generateImagePromptFn={() => promptForImagePrompt}
+            placeholder={'Contents'}
+            label={'Step Contents'}
+            onUpdate={updateStepContent}
+            spaceId={space.id}
+            objectId={byte.id || 'unknown_byte_id'}
+            imageType={ImageType.Tidbits}
+            editorStyles={{ height: '200px' }}
+          />
+        )}
       </div>
       {stepItemsForStepper.map((stepItem, index) => (
         <StepItemWrapper key={stepItem.uuid} className="mt-2" hasError={!!stepErrors?.stepItems?.[stepItem.uuid]}>

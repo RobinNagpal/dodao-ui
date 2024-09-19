@@ -69,12 +69,11 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space, set
     function handleResize() {
       const viewportHeight = window.innerHeight;
       const bottomButtonsHeight = document.getElementById('bottom-buttons')!.clientHeight; // Adjust selector as needed
-      const summaryHeight = document.getElementById('summary')!.clientHeight; // Adjust selector as needed
       const headingHeight = document.getElementById('heading')!.clientHeight;
       const topBarHeight = document.getElementById('topBar')!.clientHeight;
 
       // Calculate available height
-      const availableHeight = viewportHeight - (bottomButtonsHeight + bottomButtonsHeight + topBarHeight + headingHeight + summaryHeight);
+      const availableHeight = viewportHeight - (bottomButtonsHeight + bottomButtonsHeight + topBarHeight + headingHeight);
 
       // Set image height
       setImageHeight(`${availableHeight}px`);

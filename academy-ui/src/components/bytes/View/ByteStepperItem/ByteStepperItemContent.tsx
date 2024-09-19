@@ -82,9 +82,10 @@ export default function ByteStepperItemContent({
           <img src={step.imageUrl} alt="byte" style={{ maxHeight: imageHeight }} className={`rounded mx-auto ${styles.imgContainer}`} />
         )}
         <div id="heading" className="flex justify-center w-full mt-4">
-          <h1 className={stepClasses.headingClasses}>{step.name || byte.name}</h1>
+          <h1 className="text-md">
+            {step.name || byte.name} : {step.content}
+          </h1>
         </div>
-        <div id="summary" dangerouslySetInnerHTML={{ __html: stepContents }} className={`markdown-body text-center ` + stepClasses.contentClasses} />
       </div>
     );
   }
