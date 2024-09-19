@@ -2,16 +2,18 @@
 
 Welcome to the dodao-ui repository! This repository serves as a monorepo for our projects. We have made some significant changes to improve code organization and reusability.
 
-## Table of Contents
+# Contribution
+So far only DoDAO has been working on the applications in this repository. We like the crypto movement and also
+creation of tokens/points for the community and having people as partners. 
 
-- [Overview](#overview)
-- [Repository Structure](#repository-structure)
-- [Project Details](#project-details)
-  - [Academy UI](#academy-ui)
-  - [Shared Web-Core](#shared-web-core)
-  - [Base UI](#base-ui)
-- [Setup Instructions](#setup-instructions)
-- [Contributing](#contributing)
+If you are not getting paid from DoDAO, and you want to contribute to this repository, you are most welcome for it. 
+
+We will maintain a list of contributors and their contributions in the repository. After we have more than 3-4 contributors, 
+we can create token/points for the contributors and share the revenue/profits with them.
+
+There is a long way to go for this. But its important to have this structure in place.
+
+Check the [Contributions.md](docs/Contributions.md) file for more details.
 
 # Overview
 You should be know the following things to be able to contribute to this repository:
