@@ -15,7 +15,7 @@ async function postHandler(req: NextRequest) {
   try {
     if (apiKey) {
       await validateApiKey(apiKey, args.spaceId);
-    } else {
+    } else if (spaceById.id !== 'tidbitshub') {
       await checkEditSpacePermission(spaceById, req);
     }
     const url = await presignedUrlCreator.createSignedUrl(spaceById.id, args.input);
