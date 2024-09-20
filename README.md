@@ -15,6 +15,11 @@ There is a long way to go for this. But its important to have this structure in 
 
 Check the [Contributions.md](docs/Contributions.md) file for more details.
 
+# Setup
+Academy or Tidbits are in `academy-ui` folder.
+
+See [academy-ui/README.md](academy-ui/README.md) for setup instructions.
+
 # Overview
 You should be know the following things to be able to contribute to this repository:
 
@@ -35,3 +40,25 @@ You should be know the following things to be able to contribute to this reposit
 - [ ] Understand how strict types need to be used for request and responses
 - [ ] Understand the spacing recommendations. More details in [SpacingRecommendations.md](docs/SpacingRecommendations.md)
 - [ ] Making sure the UI works for various themes.
+
+
+### Base Application
+We have a base application in the repository. See here on the things you can work on in the base application
+[BaseFeatures.md](docs/BaseFeatures.md)
+
+Checklist for contribution to base application:
+- [ ] Understand how the code is structured
+- [ ] Understand what is a space
+- [ ] Understand how authentication works
+- [ ] Understand the features we want to add in the base application
+
+### Tidbits Hub
+We have a Tidbits Hub in the repository. See here on the things you can work on in the Tidbits Hub application
+[TidbitsHubFuture.md](docs/TidbitsHubFutures.md)
+
+Checklist for contribution to Tidbits Hub:
+- [ ] Understand how the code is structured
+- [ ] Understand what is a Tidbit
+- [ ] Understand what is a Clickable Demo
+- [ ] 
+- [ ] Understand the features we want to add in the Tidbits Hub application
