@@ -7,7 +7,6 @@ import {
   ByteQuestionFragmentFragment,
   ByteStepFragment,
   ByteStepItemFragment,
-  ImageDisplayMode,
   SpaceWithIntegrationsFragment,
 } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
@@ -46,7 +45,6 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space, set
   const { activeStepOrder } = viewByteHelper;
   const { $t: t } = useI18();
   const { showNotification } = useNotificationContext();
-  const [imageHeight, setImageHeight] = useState('0px');
 
   const { data: sessionData } = useSession();
   const session: Session | null = sessionData as Session | null;
@@ -66,26 +64,6 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space, set
   useEffect(() => {
     setTransitionState('enter');
     setTimeout(() => setTransitionState('active'), 100);
-    function handleResize() {
-      const viewportHeight = window.innerHeight;
-      const bottomButtonsHeight = document.getElementById('bottom-buttons')!.clientHeight; // Adjust selector as needed
-      const headingHeight = document.getElementById('heading')!.clientHeight;
-      const topBarHeight = document.getElementById('topBar')!.clientHeight;
-
-      // Calculate available height
-      const availableHeight = viewportHeight - (bottomButtonsHeight + bottomButtonsHeight + topBarHeight + headingHeight);
-
-      // Set image height
-      setImageHeight(`${availableHeight}px`);
-    }
-
-    // Call once to set initial height and set up event listener for resizing
-    if (step.displayMode === ImageDisplayMode.FullScreenImage && !isShortScreen) {
-      handleResize();
-    }
-    window.addEventListener('resize', handleResize);
-    // Cleanup listener on component unmount
-    return () => window.removeEventListener('resize', handleResize);
   }, [activeStepOrder]);
 
   const [questionsAnsweredCorrectly, setQuestionsAnsweredCorrectly] = useState(false);
@@ -174,7 +152,7 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space, set
 
   return (
     <div className={`w-full flex flex-col justify-between py-12 px-4 md:px-8  ${styles.stepContainer}`}>
-      <div className={`w-full overflow-y-auto flex flex-col  ${transitionClasses[transitionState]} ${styles.stepContents} ${styles.hideScrollbar}`}>
+      <div className={`w-full overflow-y-auto flex flex-col  ${styles.stepContents} ${styles.hideScrollbar}`}>
         <div className="flex flex-col flex-grow justify-center align-center ">
           <ByteStepperItemContent
             space={space}
@@ -190,7 +168,6 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space, set
             width={width}
             height={height}
             isShortScreen={isShortScreen}
-            imageHeight={imageHeight}
           />
           <ByteStepperItemWarnings
             showUseInputCompletionWarning={incompleteUserInput}
