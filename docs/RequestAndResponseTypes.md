@@ -1,4 +1,6 @@
 ## Declaring request and response types
+**NOTE: There is no need to use graphql types now. Create types explicitly**
+
 In our project, defining clear request and response types is essential for maintaining type safety and improving code readability. This practice helps ensure that our API interactions are consistent and manageable.
 
 ### Type Definition Process
