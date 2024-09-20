@@ -31,7 +31,7 @@ You should be know the following things to be able to contribute to this reposit
 ### API
 - [ ] Understand the convention we follow for creating routes. Check CodingWorkflow.md
 - [ ] Understand how to declare new types for entities, request and response types
-- [ ] Understand how strict types need to be used for request and responses
+- [ ] Understand how strict types need to be used for request and responses. See [RequestAndResponseTypes.md](docs/RequestAndResponseTypes.md) 
 - [ ] Understand how to add new routes. More details in [AddingAPIRoutes.md](docs/AddingAPIRoutes.md)
 
 
@@ -40,6 +40,7 @@ You should be know the following things to be able to contribute to this reposit
 - [ ] Understand how strict types need to be used for request and responses
 - [ ] Understand the spacing recommendations. More details in [SpacingRecommendations.md](docs/SpacingRecommendations.md)
 - [ ] Making sure the UI works for various themes.
+- [ ] Understand what is server side rendering and what are server side components in Next.js [ServerSideComponents.md](docs/ServerSideComponents.md)
 
 
 ### Base Application
@@ -60,5 +61,4 @@ Checklist for contribution to Tidbits Hub:
 - [ ] Understand how the code is structured
 - [ ] Understand what is a Tidbit
 - [ ] Understand what is a Clickable Demo
-- [ ] 
 - [ ] Understand the features we want to add in the Tidbits Hub application
