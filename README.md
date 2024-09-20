@@ -24,7 +24,7 @@ See [academy-ui/README.md](academy-ui/README.md) for setup instructions.
 You should be know the following things to be able to contribute to this repository:
 
 - [ ] Understand the monorepo structure. More details in [ProjectStructure.md](docs/ProjectStructure.md)
-- [ ] Understand how postgres is setup using docker-compose
+- [ ] Understand how postgres is setup using docker-compose. See [Video](https://drive.google.com/drive/folders/1_AQi1W_p1OUROBHIv3lAZjnVqkihgD3S)
 - [ ] Understand how migrations work. More details in [PrismaMigrations.md](docs/PrismaMigrations.md)
 
 
@@ -36,6 +36,7 @@ You should be know the following things to be able to contribute to this reposit
 
 
 ### UI
+- [ ] Understand how loading of the space works. See second half of this video [Video](https://drive.google.com/drive/folders/1_AQi1W_p1OUROBHIv3lAZjnVqkihgD3S)
 - [ ] Understand how notifications need to be shown
 - [ ] Understand how strict types need to be used for request and responses
 - [ ] Understand the spacing recommendations. More details in [SpacingRecommendations.md](docs/SpacingRecommendations.md)
