@@ -152,7 +152,7 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space, set
 
   return (
     <div className={`w-full flex flex-col justify-between py-12 px-4 md:px-8  ${styles.stepContainer}`}>
-      <div className={`w-full overflow-y-auto flex flex-col  ${styles.stepContents} ${styles.hideScrollbar}`}>
+      <div className={`w-full overflow-y-auto flex flex-col ${transitionClasses[transitionState]} ${styles.stepContents} ${styles.hideScrollbar}`}>
         <div className="flex flex-col flex-grow justify-center align-center ">
           <ByteStepperItemContent
             space={space}

@@ -94,7 +94,7 @@ export default function ByteStepperItemContent({
     window.addEventListener('resize', handleResize);
     // Cleanup listener on component unmount
     return () => window.removeEventListener('resize', handleResize);
-  }, [activeStepOrder]);
+  }, [activeStepOrder, step.displayMode]);
 
   if (!stepItems.some(isQuestion) && step.imageUrl && step.displayMode === ImageDisplayMode.FullScreenImage) {
     return (
