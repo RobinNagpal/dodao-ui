@@ -1,12 +1,3 @@
-## Declaring request and response types
-We should add these under `types` folder in `request` and `response` folders. Use the file specific to the entity.
-
-- Make sure 
-
-## Form Validation
-
-### Form Validation Process Documentation
-
 #### Overview
 
 This document outlines a structured approach to form validation within our Next.js application, designed to ensure consistency and maintainability across different forms. It describes a method for validating forms based on mandatory fields, utilizing an interface for field definitions and a helper function for validation. It's important to note that while `validateCategory` is used here for illustration purposes, the actual function name will vary according to the form being validated.
@@ -41,3 +32,160 @@ Here is a video explanation on a top level [What is SSR & how to achieve it?](ht
 Here is a coding example of [Converting Client Side to Server Side Rendering](https://drive.google.com/file/d/1jqD-EZL70sYXH-A7NnL7EQ9A1Mr09rjz/view?usp=sharing).
 
 [![What is SSR and how to achieve it?](https://miro.medium.com/v2/resize:fit:1400/1*7TEKaVM6HhAHl0uDc4kjSw.gif)](https://drive.google.com/file/d/1Qj7JJLJB4gx0pgH_4T-vpNG3-pREIlE1/view?usp=sharing)
+
+## Declaring request and response types
+In our project, defining clear request and response types is essential for maintaining type safety and improving code readability. This practice helps ensure that our API interactions are consistent and manageable.
+
+### Type Definition Process
+
+1. **Create Type Definitions**: For each request and response type, create an interface within the appropriate `types` folder. Specifically, place request interfaces in the `request` folder and response interfaces in the `response` folder. This organization promotes clarity and easy access to type definitions.
+
+2. **Example Usage**: Below are examples of request and response types for deleting a item. These interfaces define the expected structure of the API interactions.
+
+#### Example of Request and Response Types
+
+**Request Type**
+
+```typescript
+import { ByteCollectionItemType } from '@/app/api/helpers/byteCollection/byteCollectionItemType';
+
+export interface DeleteByteItemRequest {
+  itemId: string;
+  itemType: ByteCollectionItemType;
+}
+```
+
+**Response Type**
+
+```typescript
+import { Byte, ClickableDemos, ShortVideo } from '@prisma/client';
+
+export interface DeleteByteItemResponse {
+  updated: Byte | ShortVideo | ClickableDemos;
+}
+```
+
+**Usage Example**
+```typescript
+async function deleteHandler(req: NextRequest): Promise<NextResponse<DeleteByteItemResponse | ErrorResponse>> {
+  const args: DeleteByteItemRequest = await req.json();
+
+  // ... handle request logic ...
+}
+```
+
+## Showing Notifications
+
+In our application, we utilize a notification system to provide feedback to users regarding the success or failure of their actions. This enhances the user experience by keeping users informed about the status of their interactions.
+
+### Implementation
+
+We use a context provider to manage notifications globally throughout the application. Below is an example of how notifications are implemented, particularly in the context of deleting items.
+
+### Example Usage
+
+Here’s how we manage notifications during the deletion of an item:
+
+```typescript
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
+
+const { showNotification } = useNotificationContext();
+
+{deleteItemModalState.isVisible && (
+  <DeleteConfirmationModal
+    title={`Delete ${
+      deleteItemModalState.itemType === ByteCollectionItemType.Byte
+        ? 'Byte'
+        : deleteItemModalState.itemType === ByteCollectionItemType.ClickableDemo
+        ? 'Clickable Demo'
+        : deleteItemModalState.itemType === ByteCollectionItemType.ShortVideo
+        ? 'Short Video'
+        : 'Item'
+    }`}
+    open={deleteItemModalState.isVisible}
+    onClose={closeItemDeleteModal}
+    deleting={deleteItemModalState.deleting}
+    onDelete={async () => {
+      if (!deleteItemModalState.itemId || !deleteItemModalState.itemType) {
+        showNotification({ message: 'Some Error occurred', type: 'error' });
+        closeItemDeleteModal();
+        return;
+      }
+
+      setDeleteItemModalState({
+        ...deleteItemModalState,
+        deleting: true,
+      });
+
+      await revalidateTidbitCollections();
+      const deleteRequest: DeleteByteItemRequest = {
+        itemId: deleteItemModalState.itemId,
+        itemType: deleteItemModalState.itemType,
+      };
+
+      const response = await fetch(`${getBaseUrl()}/api/${space.id}/byte-items/${byteCollection.id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(deleteRequest),
+      });
+
+      if (response.ok) {
+        const message =
+          deleteItemModalState.itemType === ByteCollectionItemType.Byte
+            ? 'Byte Archived Successfully'
+            : deleteItemModalState.itemType === ByteCollectionItemType.ClickableDemo
+            ? 'Clickable Demo Archived Successfully'
+            : deleteItemModalState.itemType === ByteCollectionItemType.ShortVideo
+            ? 'Short Video Archived Successfully'
+            : 'Item Archived Successfully';
+
+        setDeleteItemModalState({
+          ...deleteItemModalState,
+          deleting: false,
+        });
+
+        closeItemDeleteModal();
+        showNotification({ message, type: 'success' });
+        const timestamp = new Date().getTime();
+        router.push(`/?update=${timestamp}`);
+      } else {
+        setDeleteItemModalState({
+          ...deleteItemModalState,
+          deleting: false,
+        });
+
+        closeItemDeleteModal();
+        return showNotification({ message: 'Failed to archive the item. Please try again.', type: 'error' });
+      }
+    }}
+  />
+)}
+```
+
+### Notification Types
+
+In our implementation, we use two types of notifications:
+
+- **Success**: Indicates that an action was completed successfully, providing positive feedback to the user.
+- **Error**: Indicates that an action failed, alerting the user to an issue that requires attention.
+
+Here’s how you can add information on testing different screen sizes using the Responsive Viewer extension to your `CodingWorkflow.md`:
+
+## Testing Different Screen Sizes
+
+To ensure our application is responsive and functions well across various devices, we utilize the **Responsive Viewer** extension. This tool allows us to easily test our UI on different screen sizes, helping us identify layout issues and ensure a consistent user experience.
+
+### Using Responsive Viewer
+
+1. **Installation**: Add the Responsive Viewer extension to your browser. It is available for Chrome and can be found in the Chrome Web Store.
+
+2. **Testing Process**:
+   - Once installed, open the Responsive Viewer from your browser's extensions menu.
+   - Input the URL of your application and select from a variety of preset screen sizes or add custom dimensions to test specific scenarios.
+   - Observe how your application responds to different screen sizes and make adjustments as necessary to ensure a smooth user experience across all devices.
+
+## Form Validation
+
+### Form Validation Process Documentation
