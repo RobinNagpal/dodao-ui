@@ -173,8 +173,6 @@ In our implementation, we use two types of notifications:
 
 Here’s how you can add information on testing different screen sizes using the Responsive Viewer extension to your `CodingWorkflow.md`:
 
----
-
 ## Testing Different Screen Sizes
 
 To ensure our application is responsive and functions well across various devices, we utilize the **Responsive Viewer** extension. This tool allows us to easily test our UI on different screen sizes, helping us identify layout issues and ensure a consistent user experience.
