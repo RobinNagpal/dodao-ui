@@ -29,7 +29,7 @@ You should be know the following things to be able to contribute to this reposit
 
 
 ### API
-- [ ] Understand the convention we follow for creating routes. Check CodingWorkflow.md
+- [ ] Understand how migrations work. More details in [PrismaMigrations.md](docs/PrismaMigrations.md)
 - [ ] Understand how to declare new types for entities, request and response types
 - [ ] Understand how strict types need to be used for request and responses. See [RequestAndResponseTypes.md](docs/RequestAndResponseTypes.md) 
 - [ ] Understand how to add new routes. More details in [AddingAPIRoutes.md](docs/AddingAPIRoutes.md)
