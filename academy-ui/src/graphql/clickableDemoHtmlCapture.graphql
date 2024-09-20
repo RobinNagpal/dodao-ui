@@ -1,0 +1,14 @@
+fragment ClickableDemoHtmlCapture on ClickableDemoHtmlCapture{
+  id
+  clickableDemoId
+  fileName
+  fileUrl
+  imageUrl
+  createdAt
+}
+
+mutation CreateClickableDemoHtmlCapture($input: CreateClickableDemoHtmlCaptureInput!) {
+  payload: CreateClickableDemoHtmlCapture(input: $input) {
+    ...ClickableDemoHtmlCapture
+  }
+}
