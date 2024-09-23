@@ -376,7 +376,6 @@ type ClickableDemo {
   title: String!
   updatedAt: DateTimeISO!
 }
-
 type ClickableDemoStep {
   id: String!
   order: Int!
