@@ -35,6 +35,7 @@ You should be know the following things to be able to contribute to this reposit
 - [ ] Understand how to declare new types for entities, request and response types
 - [ ] Understand how strict types need to be used for request and responses. See [TypeDefinitions.md](docs/TypeDefinitions.md) 
 - [ ] Understand how to add new routes. More details in [AddingAPIRoutes.md](docs/AddingAPIRoutes.md)
+- [ ] Understand how to handle errors in the API. More details in [ErrorHandling.md](docs/ErrorHandling.md)
 
 
 ### UI
@@ -44,7 +45,7 @@ You should be know the following things to be able to contribute to this reposit
 - [ ] Understand the spacing recommendations. More details in [SpacingRecommendations.md](docs/SpacingRecommendations.md)
 - [ ] Making sure the UI works for various themes.
 - [ ] Understand what is server side rendering and what are server side components in Next.js [ServerSideComponents.md](docs/ServerSideComponents.md)
-
+- [ ] Understand how to handle errors in the UI. More details in [ErrorHandling.md](docs/ErrorHandling.md)
 
 ### Base Application
 We have a base application in the repository. See here on the things you can work on in the base application
