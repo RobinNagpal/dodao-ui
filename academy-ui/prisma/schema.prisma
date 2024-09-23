@@ -364,8 +364,10 @@ model ClickableDemoHtmlCaptures{
   clickableDemoId String   @map("clickable_demo_id") @db.VarChar(255)
   fileName        String   @map("file_name") @db.VarChar(1024)
   fileUrl         String   @map("file_url") @db.VarChar(1024)
-  imageUrl        String   @map("image_url") @db.VarChar(1024)
+  fileImageUrl    String   @map("file_image_url") @db.VarChar(1024)
   createdAt       DateTime @default(now()) @map("created_at")
+
+  @@map("clickable_demo_html_cpatures")
 }
 model ByteCollectionItemMappings {
   id               String          @id @db.VarChar(64)
