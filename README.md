@@ -24,7 +24,7 @@ See [academy-ui/README.md](academy-ui/README.md) for setup instructions.
 You should be know the following things to be able to contribute to this repository:
 
 - [ ] Understand the monorepo structure. More details in [ProjectStructure.md](docs/ProjectStructure.md)
-- [ ] Understand how postgres is setup using docker-compose. See [Video](https://drive.google.com/drive/folders/1_AQi1W_p1OUROBHIv3lAZjnVqkihgD3S)
+- [ ] Understand how postgres is setup using docker-compose. See [Video](https://drive.google.com/file/d/1Gg-KWR_OqEPLIjDMUIZmslXuZ0CUpAnZ/view?usp=sharing)
 - [ ] Understand how migrations work. More details in [PrismaTypesAndMigrations.md](docs/PrismaTypesAndMigrations.md)
 - [ ] Understand how to declare types for JSON fields in Prisma. More details in [PrismaTypesAndMigrations.md](docs/PrismaTypesAndMigrations.md)
 - [ ] Understand how to create new entities and declare types for them. More details in [TypeDefinitions.md](docs/TypeDefinitions.md)
@@ -39,12 +39,12 @@ You should be know the following things to be able to contribute to this reposit
 
 
 ### UI
-- [ ] Understand how loading of the space works. See second half of this video [Video](https://drive.google.com/drive/folders/1_AQi1W_p1OUROBHIv3lAZjnVqkihgD3S)
+- [ ] Understand how loading of the space works. See second half of this video [Video](https://drive.google.com/file/d/1Gg-KWR_OqEPLIjDMUIZmslXuZ0CUpAnZ/view?usp=sharing)
 - [ ] Understand how notifications need to be shown
 - [ ] Understand how strict types need to be used for request and responses
 - [ ] Understand the spacing recommendations. More details in [SpacingRecommendations.md](docs/SpacingRecommendations.md)
 - [ ] Making sure the UI works for various themes.
-- [ ] Understand what is server side rendering and what are server side components in Next.js [ServerSideComponents.md](docs/ServerSideComponents.md)
+- [ ] Understand what is server side rendering and what are server side components in Next.js [ServerSideComponents.md](docs/ServerSideComponents.md).
 - [ ] Understand how to handle errors in the UI. More details in [ErrorHandling.md](docs/ErrorHandling.md)
 
 ### Base Application
