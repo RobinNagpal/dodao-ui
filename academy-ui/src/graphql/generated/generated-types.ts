@@ -421,16 +421,6 @@ export interface ClickableDemo {
   updatedAt: Scalars['DateTimeISO'];
 }
 
-export interface ClickableDemoHtmlCapture {
-  __typename?: 'ClickableDemoHtmlCapture';
-  clickableDemoId: Scalars['String'];
-  createdAt: Scalars['DateTimeISO'];
-  fileName: Scalars['String'];
-  fileUrl: Scalars['String'];
-  id: Scalars['String'];
-  imageUrl: Scalars['String'];
-}
-
 export interface ClickableDemoStep {
   __typename?: 'ClickableDemoStep';
   elementImgUrl?: Maybe<Scalars['String']>;
@@ -576,13 +566,6 @@ export interface CreateByteCollectionInput {
   spaceId: Scalars['String'];
   status: Scalars['String'];
   videoUrl?: InputMaybe<Scalars['String']>;
-}
-
-export interface CreateClickableDemoHtmlCaptureInput {
-  clickableDemoId: Scalars['String'];
-  fileName: Scalars['String'];
-  fileUrl: Scalars['String'];
-  imageUrl: Scalars['String'];
 }
 
 export interface CreateCompletionResponseChoice {
@@ -1286,7 +1269,6 @@ export interface MoveTopicVideoInput {
 
 export interface Mutation {
   __typename?: 'Mutation';
-  CreateClickableDemoHtmlCapture: ClickableDemoHtmlCapture;
   _empty?: Maybe<Scalars['String']>;
   addDiscordCredentials: Space;
   addNewApiKey: Space;
@@ -1398,11 +1380,6 @@ export interface Mutation {
   upsertSummaryOfDiscoursePost: DiscoursePost;
   upsertTimeline: Timeline;
   upsertVercelDomainRecord: VercelDomain;
-}
-
-
-export interface MutationCreateClickableDemoHtmlCaptureArgs {
-  input: CreateClickableDemoHtmlCaptureInput;
 }
 
 
@@ -3532,15 +3509,6 @@ export type DeleteChatbotUserQuestionMutationVariables = Exact<{
 
 export type DeleteChatbotUserQuestionMutation = { __typename?: 'Mutation', deleteChatbotUserQuestion: boolean };
 
-export type ClickableDemoHtmlCaptureFragment = { __typename?: 'ClickableDemoHtmlCapture', id: string, clickableDemoId: string, fileName: string, fileUrl: string, imageUrl: string, createdAt: any };
-
-export type CreateClickableDemoHtmlCaptureMutationVariables = Exact<{
-  input: CreateClickableDemoHtmlCaptureInput;
-}>;
-
-
-export type CreateClickableDemoHtmlCaptureMutation = { __typename?: 'Mutation', payload: { __typename?: 'ClickableDemoHtmlCapture', id: string, clickableDemoId: string, fileName: string, fileUrl: string, imageUrl: string, createdAt: any } };
-
 export type ClickableDemoWithStepsFragment = { __typename?: 'ClickableDemoWithSteps', id: string, spaceId: string, title: string, excerpt: string, createdAt: any, updatedAt: any, archive?: boolean | null, steps: Array<{ __typename?: 'ClickableDemoStep', id: string, url: string, selector: string, tooltipInfo: string, placement: string, order: number, screenImgUrl?: string | null, elementImgUrl?: string | null }> };
 
 export type ClickableDemoFragment = { __typename?: 'ClickableDemo', id: string, spaceId: string, title: string, excerpt: string, createdAt: any, updatedAt: any, archive?: boolean | null };
@@ -5003,16 +4971,6 @@ export const ChatbotUserQuestionFragmentDoc = gql`
   id
   spaceId
   question
-}
-    `;
-export const ClickableDemoHtmlCaptureFragmentDoc = gql`
-    fragment ClickableDemoHtmlCapture on ClickableDemoHtmlCapture {
-  id
-  clickableDemoId
-  fileName
-  fileUrl
-  imageUrl
-  createdAt
 }
     `;
 export const ClickableDemoWithStepsFragmentDoc = gql`
@@ -7101,39 +7059,6 @@ export function useDeleteChatbotUserQuestionMutation(baseOptions?: Apollo.Mutati
 export type DeleteChatbotUserQuestionMutationHookResult = ReturnType<typeof useDeleteChatbotUserQuestionMutation>;
 export type DeleteChatbotUserQuestionMutationResult = Apollo.MutationResult<DeleteChatbotUserQuestionMutation>;
 export type DeleteChatbotUserQuestionMutationOptions = Apollo.BaseMutationOptions<DeleteChatbotUserQuestionMutation, DeleteChatbotUserQuestionMutationVariables>;
-export const CreateClickableDemoHtmlCaptureDocument = gql`
-    mutation CreateClickableDemoHtmlCapture($input: CreateClickableDemoHtmlCaptureInput!) {
-  payload: CreateClickableDemoHtmlCapture(input: $input) {
-    ...ClickableDemoHtmlCapture
-  }
-}
-    ${ClickableDemoHtmlCaptureFragmentDoc}`;
-export type CreateClickableDemoHtmlCaptureMutationFn = Apollo.MutationFunction<CreateClickableDemoHtmlCaptureMutation, CreateClickableDemoHtmlCaptureMutationVariables>;
-
-/**
- * __useCreateClickableDemoHtmlCaptureMutation__
- *
- * To run a mutation, you first call `useCreateClickableDemoHtmlCaptureMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateClickableDemoHtmlCaptureMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createClickableDemoHtmlCaptureMutation, { data, loading, error }] = useCreateClickableDemoHtmlCaptureMutation({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useCreateClickableDemoHtmlCaptureMutation(baseOptions?: Apollo.MutationHookOptions<CreateClickableDemoHtmlCaptureMutation, CreateClickableDemoHtmlCaptureMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateClickableDemoHtmlCaptureMutation, CreateClickableDemoHtmlCaptureMutationVariables>(CreateClickableDemoHtmlCaptureDocument, options);
-      }
-export type CreateClickableDemoHtmlCaptureMutationHookResult = ReturnType<typeof useCreateClickableDemoHtmlCaptureMutation>;
-export type CreateClickableDemoHtmlCaptureMutationResult = Apollo.MutationResult<CreateClickableDemoHtmlCaptureMutation>;
-export type CreateClickableDemoHtmlCaptureMutationOptions = Apollo.BaseMutationOptions<CreateClickableDemoHtmlCaptureMutation, CreateClickableDemoHtmlCaptureMutationVariables>;
 export const ClickableDemoWithStepsDocument = gql`
     query ClickableDemoWithSteps($spaceId: String!, $demoId: String!) {
   clickableDemoWithSteps(spaceId: $spaceId, demoId: $demoId) {
