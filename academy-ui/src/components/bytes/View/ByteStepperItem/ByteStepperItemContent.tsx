@@ -16,7 +16,7 @@ import {
 import UserInput from '@dodao/web-core/components/app/Form/UserInput';
 import { isQuestion, isUserDiscordConnect, isUserInput } from '@dodao/web-core/types/deprecated/helpers/stepItemTypes';
 import { marked } from 'marked';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 interface ByteStepperItemContentProps {
   byte: ByteDetailsFragment;
@@ -32,7 +32,6 @@ interface ByteStepperItemContentProps {
   width: number;
   height: number;
   isShortScreen: boolean;
-  imageHeight: any;
 }
 
 export default function ByteStepperItemContent({
@@ -48,8 +47,8 @@ export default function ByteStepperItemContent({
   width,
   height,
   isShortScreen,
-  imageHeight,
 }: ByteStepperItemContentProps) {
+  const [imageHeight, setImageHeight] = useState('0px');
   const stepItems = step.stepItems;
 
   const stepContents = useMemo(() => marked.parse(step.content, { renderer }), [step.content]);
@@ -73,6 +72,30 @@ export default function ByteStepperItemContent({
     headingClasses: isShortScreen ? 'text-3xl' : isLongScreen ? 'text-4xl xl:text-5xl' : 'text-3xl',
     contentClasses: isShortScreen ? 'text-lg' : isLongScreen ? 'text-lg xl:text-2xl' : 'text-lg',
   };
+
+  useEffect(() => {
+    function handleResize() {
+      const viewportHeight = window.innerHeight;
+      const bottomButtonsHeight = document.getElementById('bottom-buttons')!.clientHeight; // Adjust selector as needed
+      const headingHeight = document.getElementById('heading')!.clientHeight;
+      const topBarHeight = document.getElementById('topBar')!.clientHeight;
+
+      // Calculate available height
+      const availableHeight = viewportHeight - (bottomButtonsHeight + bottomButtonsHeight + topBarHeight + headingHeight);
+
+      // Set image height
+      setImageHeight(`${availableHeight}px`);
+    }
+
+    // Call once to set initial height and set up event listener for resizing
+    if (step.displayMode === ImageDisplayMode.FullScreenImage) {
+      handleResize();
+    }
+    window.addEventListener('resize', handleResize);
+    // Cleanup listener on component unmount
+    return () => window.removeEventListener('resize', handleResize);
+  }, [activeStepOrder, step.displayMode]);
+
   if (!stepItems.some(isQuestion) && step.imageUrl && step.displayMode === ImageDisplayMode.FullScreenImage) {
     return (
       <div className="absolute left-1/2  top-12 transform -translate-x-1/2 w-[80vw] rounded mx-auto">
