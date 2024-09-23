@@ -1,5 +1,5 @@
 import UserDiscord from '@/components/app/Form/UserDiscord';
-import styles from '@/components/bytes/View/ByteStepperItem/ByteStepperItemWithProgressBar.module.scss';
+import styles from '@/components/bytes/View/ByteStepperItem/ByteStepperItemContent.module.scss';
 import { QuestionSection } from '@/components/bytes/View/QuestionSection';
 import { UseGenericViewByteHelper } from '@/components/bytes/View/useGenericViewByte';
 import {
@@ -16,7 +16,9 @@ import {
 import UserInput from '@dodao/web-core/components/app/Form/UserInput';
 import { isQuestion, isUserDiscordConnect, isUserInput } from '@dodao/web-core/types/deprecated/helpers/stepItemTypes';
 import { marked } from 'marked';
-import { useEffect, useMemo, useState } from 'react';
+import Image from 'next/image';
+import { useMemo } from 'react';
+import { createPortal } from 'react-dom';
 
 interface ByteStepperItemContentProps {
   byte: ByteDetailsFragment;
@@ -48,10 +50,17 @@ export default function ByteStepperItemContent({
   height,
   isShortScreen,
 }: ByteStepperItemContentProps) {
-  const [imageHeight, setImageHeight] = useState('0px');
   const stepItems = step.stepItems;
 
-  const stepContents = useMemo(() => marked.parse(step.content, { renderer }), [step.content]);
+  const svg = `
+  <svg xmlns='http://www.w3.org/2000/svg' width='2' height='2'>
+    <rect width='100%' height='100%' fill='${space.themeColors?.blockBg || '#ccc'}' opacity='0.6'/>
+  </svg>
+`;
+
+  const blurDataURL = `data:image/svg+xml;base64,${Buffer.from(svg).toString('base64')}`;
+
+  const stepContents = useMemo(() => marked.parse(step.content || '', { renderer }), [step.content]);
 
   const postSubmissionContent = useMemo(
     () => (byte.postSubmissionStepContent ? marked.parse(byte.postSubmissionStepContent, { renderer }) : null),
@@ -72,44 +81,42 @@ export default function ByteStepperItemContent({
     headingClasses: isShortScreen ? 'text-3xl' : isLongScreen ? 'text-4xl xl:text-5xl' : 'text-3xl',
     contentClasses: isShortScreen ? 'text-lg' : isLongScreen ? 'text-lg xl:text-2xl' : 'text-lg',
   };
-
-  useEffect(() => {
-    function handleResize() {
-      const viewportHeight = window.innerHeight;
-      const bottomButtonsHeight = document.getElementById('bottom-buttons')!.clientHeight; // Adjust selector as needed
-      const headingHeight = document.getElementById('heading')!.clientHeight;
-      const topBarHeight = document.getElementById('topBar')!.clientHeight;
-
-      // Calculate available height
-      const availableHeight = viewportHeight - (bottomButtonsHeight + bottomButtonsHeight + topBarHeight + headingHeight);
-
-      // Set image height
-      setImageHeight(`${availableHeight}px`);
-    }
-
-    // Call once to set initial height and set up event listener for resizing
-    if (step.displayMode === ImageDisplayMode.FullScreenImage) {
-      handleResize();
-    }
-    window.addEventListener('resize', handleResize);
-    // Cleanup listener on component unmount
-    return () => window.removeEventListener('resize', handleResize);
-  }, [activeStepOrder, step.displayMode]);
+  const maxHeight = height - 200;
+  const maxWidth = (width * 9) / 10;
 
   if (!stepItems.some(isQuestion) && step.imageUrl && step.displayMode === ImageDisplayMode.FullScreenImage) {
-    return (
-      <div className="absolute left-1/2  top-12 transform -translate-x-1/2 w-[80vw] rounded mx-auto">
+    return createPortal(
+      <div className="absolute left-20 right-20 bottom-20 top-20 z-20">
         {width > height ? (
-          <img src={step.imageUrl} alt="byte" style={{ height: imageHeight }} className={`rounded mx-auto ${styles.imgContainer}`} />
+          <Image
+            src={step.imageUrl}
+            alt="byte"
+            style={{ width: maxWidth, maxHeight: maxHeight }}
+            height={maxHeight}
+            width={maxWidth}
+            className={`rounded z-20 mx-auto ${styles.imgContainer}`}
+            placeholder="blur"
+            blurDataURL={blurDataURL}
+          />
         ) : (
-          <img src={step.imageUrl} alt="byte" style={{ maxHeight: imageHeight }} className={`rounded mx-auto ${styles.imgContainer}`} />
+          <Image
+            src={step.imageUrl}
+            alt="byte"
+            style={{ maxHeight: maxHeight }}
+            height={maxHeight}
+            width={width}
+            className={`rounded z-20 mx-auto ${styles.imgContainer}`}
+            placeholder="blur"
+            blurDataURL={blurDataURL}
+          />
         )}
-        <div id="heading" className="flex justify-center w-full mt-4">
-          <h1 className="text-md">
+        <div id="heading" className={`flex justify-center w-full mt-1 ${styles.fullScreenContent}`}>
+          <h1 className="text-lg">
             {step.name || byte.name} : {step.content}
           </h1>
         </div>
-      </div>
+      </div>,
+      document.body
     );
   }
 
@@ -123,7 +130,7 @@ export default function ByteStepperItemContent({
       <div className="flex justify-center w-full mt-4">
         <h1 className={stepClasses.headingClasses}>{step.name || byte.name}</h1>
       </div>
-      <div className="mt-4 lg:mt-8 text-left">
+      <div className="mt-4 px-2 lg:mt-8 text-left">
         <div dangerouslySetInnerHTML={{ __html: stepContents }} className={`markdown-body text-center ` + stepClasses.contentClasses} />
         {stepItems.map((stepItem: ByteStepItemFragment, index) => {
           if (isQuestion(stepItem)) {

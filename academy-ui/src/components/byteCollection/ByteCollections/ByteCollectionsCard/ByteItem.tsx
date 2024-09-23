@@ -1,5 +1,4 @@
 import ByteCompletionCheckmark from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCompletionCheckmark';
-import ArrowTopRightOnSquareIcon from '@heroicons/react/24/outline/ArrowTopRightOnSquareIcon';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import PlayCircleIcon from '@heroicons/react/24/outline/PlayCircleIcon';
 import styles from './ByteCollectionsCard.module.scss';

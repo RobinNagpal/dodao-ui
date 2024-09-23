@@ -41,7 +41,7 @@ async function postErrorOnDiscord(e: Error | null, spaceId: string | null, block
   }
 
   const data = {
-    content: `Got an error on ${process.env.SNAPSHOT_URI}`,
+    content: `Got an error on ${spaceId}`,
     embeds,
   };
 

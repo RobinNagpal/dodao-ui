@@ -4,7 +4,6 @@ import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-typ
 import ButtonLarge from '@dodao/web-core/components/core/buttons/Button';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { useAuth } from '@dodao/web-core/ui/auth/useAuth';
-import { useLoginModalContext } from '@dodao/web-core/ui/contexts/LoginModalContext';
 import React from 'react';
 
 export default function LoginLogoutWithMetamask(props: { session: Session | null; space: SpaceWithIntegrationsFragment }) {

@@ -7,6 +7,7 @@ import {
   ByteQuestionFragmentFragment,
   ByteStepFragment,
   ByteStepItemFragment,
+  ImageDisplayMode,
   SpaceWithIntegrationsFragment,
 } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
@@ -29,7 +30,7 @@ import 'prismjs/components/prism-solidity';
 import 'prismjs/components/prism-toml';
 import 'prismjs/components/prism-yaml';
 import { useEffect, useState } from 'react';
-import styles from './ByteStepperItemWithProgressBar.module.scss';
+import styles from './ByteStepperItemView.module.scss';
 
 interface ByteStepperItemWithProgressBarProps {
   byte: ByteDetailsFragment;
@@ -41,7 +42,7 @@ interface ByteStepperItemWithProgressBarProps {
 
 type TransitionState = 'enter' | 'active' | 'exit';
 
-function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space, setByteSubmitted }: ByteStepperItemWithProgressBarProps) {
+function ByteStepperItemView({ viewByteHelper, step, byte, space, setByteSubmitted }: ByteStepperItemWithProgressBarProps) {
   const { activeStepOrder } = viewByteHelper;
   const { $t: t } = useI18();
   const { showNotification } = useNotificationContext();
@@ -151,40 +152,42 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space, set
   const isShortScreen = height <= 690;
 
   return (
-    <div className={`w-full flex flex-col justify-between py-12 px-4 md:px-8  ${styles.stepContainer}`}>
-      <div className={`w-full overflow-y-auto flex flex-col ${transitionClasses[transitionState]} ${styles.stepContents} ${styles.hideScrollbar}`}>
-        <div className="flex flex-col flex-grow justify-center align-center ">
-          <ByteStepperItemContent
-            space={space}
-            byte={byte}
-            step={step}
-            viewByteHelper={viewByteHelper}
-            renderer={renderer}
-            activeStepOrder={activeStepOrder}
-            nextButtonClicked={nextButtonClicked}
-            questionsAnsweredCorrectly={questionsAnsweredCorrectly}
-            questionNotAnswered={questionNotAnswered}
-            setByteSubmitted={setByteSubmitted}
-            width={width}
-            height={height}
-            isShortScreen={isShortScreen}
-          />
-          <ByteStepperItemWarnings
-            showUseInputCompletionWarning={incompleteUserInput}
-            showQuestionsCompletionWarning={showQuestionsCompletionWarning}
-            isUserInputComplete={isUserInputComplete}
-            isQuestionAnswered={isQuestionAnswered}
-            isDiscordConnected={isDiscordConnected}
-          />
-        </div>
+    <div className={`w-full flex flex-col justify-between  ${!isShortScreen ? styles.longScreenStepContainer : styles.shortScreenStepContainer}`}>
+      <div className={`flex flex-col flex-grow justify-center align-center ${transitionClasses[transitionState]} ${styles.stepContents}`}>
+        <ByteStepperItemContent
+          space={space}
+          byte={byte}
+          step={step}
+          viewByteHelper={viewByteHelper}
+          renderer={renderer}
+          activeStepOrder={activeStepOrder}
+          nextButtonClicked={nextButtonClicked}
+          questionsAnsweredCorrectly={questionsAnsweredCorrectly}
+          questionNotAnswered={questionNotAnswered}
+          setByteSubmitted={setByteSubmitted}
+          width={width}
+          height={height}
+          isShortScreen={isShortScreen}
+        />
+        <ByteStepperItemWarnings
+          showUseInputCompletionWarning={incompleteUserInput}
+          showQuestionsCompletionWarning={showQuestionsCompletionWarning}
+          isUserInputComplete={isUserInputComplete}
+          isQuestionAnswered={isQuestionAnswered}
+          isDiscordConnected={isDiscordConnected}
+        />
       </div>
-      <div id="bottom-buttons" className="absolute bottom-6 w-full -mx-4 px-4 sm:-mx-8 ">
-        {!isShortScreen && (
-          <StepIndicatorProgress steps={viewByteHelper.byteRef?.steps?.length || 2} currentStep={activeStepOrder} className="py-4 hidden md:block sm:hidden" />
-        )}
-        <div className="w-full">
+      {!isShortScreen && step.displayMode !== ImageDisplayMode.FullScreenImage && (
+        <StepIndicatorProgress
+          steps={viewByteHelper.byteRef?.steps?.length || 2}
+          currentStep={activeStepOrder}
+          className="py-4 hidden md:block sm:hidden mb-4"
+        />
+      )}
+      <div id="bottom-buttons" className={`absolute bottom-0 w-full z-10 ${styles.bottomActionBar}`}>
+        <div className="py-4 px-4 w-full relative z-20">
           {isNotFirstStep && (
-            <Button onClick={() => viewByteHelper.goToPreviousStep(step)} className="float-left ml-2 sm:ml-0">
+            <Button onClick={() => viewByteHelper.goToPreviousStep(step)} className="float-left pb-6 ml-2 sm:ml-0">
               <span className="mr-2 font-bold">&#8592;</span>
               Back
             </Button>
@@ -197,7 +200,7 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space, set
               className="float-right w-[150px] mr-2 sm:mr-0"
               primary={true}
             >
-              <span className="sm:block">{isLastStep ? 'Complete' : 'Next'}</span>
+              <span>{isLastStep ? 'Complete' : 'Next'}</span>
               <span className="ml-2 font-bold">&#8594;</span>
             </Button>
           )}
@@ -207,4 +210,4 @@ function ByteStepperItemWithProgressBar({ viewByteHelper, step, byte, space, set
   );
 }
 
-export default ByteStepperItemWithProgressBar;
+export default ByteStepperItemView;

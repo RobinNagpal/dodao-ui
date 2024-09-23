@@ -1,0 +1,23 @@
+.longScreenStepContainer {
+  background-color: var(--block-bg);
+  height: calc(100vh - 108px);
+}
+
+.shortScreenStepContainer {
+  background-color: var(--block-bg);
+  height: calc(100vh - 64px);
+}
+
+.hideScrollbar {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+.hideScrollbar::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
+}
+
+.bottomActionBar {
+  background-color: var(--block-bg);
+  height: 64px;
+}

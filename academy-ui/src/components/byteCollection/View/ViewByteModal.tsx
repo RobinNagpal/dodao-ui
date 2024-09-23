@@ -1,22 +1,23 @@
 'use client';
 
+import RatingModal, { FeedbackOptions } from '@/components/app/Modal/Rating/RatingModal';
+import { useByteRatings } from '@/components/bytes/Rating/useByteRating';
 import ShareBytePage from '@/components/bytes/Share/ShareBytePage';
-import ByteStepper from '@/components/bytes/View/ByteStepper';
+import ByteStepperItemView from '@/components/bytes/View/ByteStepperItem/ByteStepperItemView';
 import ContinuousStepIndicatorProgress from '@/components/bytes/View/ByteStepperItem/Progress/ContinuousStepIndicatorProgress';
 import FullScreenByteModal from '@/components/bytes/View/FullScreenByteModal';
 import RatingByteView from '@/components/bytes/View/RatingByteView';
 import { useViewByteInModal } from '@/components/bytes/View/useViewByteInModal';
-import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
-import { ByteDetailsFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { ByteDetailsFragment, ByteFeedback, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
 import TidbitDetailsLoader from '@dodao/web-core/components/core/loaders/TidbitDetailsLoader';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { ClipboardDocumentListIcon, RocketLaunchIcon } from '@heroicons/react/24/outline';
 import axios from 'axios';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
-import React, { useEffect } from 'react';
-import styles from './ViewByteModal.module.scss';
+import React, { useEffect, useState } from 'react';
 
 const EditByteView: React.ComponentType<any> = dynamic(() => import('@/components/bytes/Edit/EditByteView'), {
   ssr: false, // Disable server-side rendering for this component
@@ -51,7 +52,11 @@ export default function ViewByteModal({ space, selectedByteId, viewByteModalClos
   const [shareByteModalOpen, setShareByteModalOpen] = React.useState(false);
   const [ratingByteModalOpen, setRatingByteModalOpen] = React.useState(false);
 
-  const { activeStepOrder } = viewByteHelper;
+  const { activeStepOrder } = viewByteHelper || 0;
+
+  const byte = viewByteHelper.byteRef;
+
+  const activeStep = byte?.steps?.[activeStepOrder];
 
   const router = useRouter();
 
@@ -63,6 +68,14 @@ export default function ViewByteModal({ space, selectedByteId, viewByteModalClos
     { label: 'Edit', key: 'edit' },
     { label: 'Generate Pdf', key: 'generate-pdf' },
     { label: 'Rating', key: 'rating' },
+  ];
+
+  const [byteSubmitted, setByteSubmitted] = useState<boolean>(false);
+
+  const { showRatingsModal, setShowRatingsModal, setByteRating, skipByteRating } = useByteRatings(space, byte as ByteDetailsFragment, byteSubmitted);
+  const feedbackOptions: FeedbackOptions[] = [
+    { name: 'content', label: 'Content', image: ClipboardDocumentListIcon },
+    { name: 'ux', label: 'User Experience', image: RocketLaunchIcon },
   ];
 
   if (editByteModalOpen && viewByteHelper.byteRef) {
@@ -104,32 +117,20 @@ export default function ViewByteModal({ space, selectedByteId, viewByteModalClos
 
   return (
     <FullScreenByteModal open={true} onClose={onClose} title={viewByteHelper.byteRef?.name || 'Tidbit Details'}>
-      <div id="byte-container" className={`flex flex-col items-center w-full relative inset-0`}>
-        <ContinuousStepIndicatorProgress steps={viewByteHelper.byteRef?.steps?.length || 0} currentStep={activeStepOrder + 1} />
-        <div className={`${styles.styledByteCard} overflow-x-hidden h-full overflow-y-auto w-full`}>
-          {viewByteHelper.byteRef ? (
-            <>
-              <div className="absolute my-2 top-4 right-4">
-                <PrivateEllipsisDropdown
-                  items={threeDotItems}
-                  onSelect={(key) => {
-                    if (key === 'edit') {
-                      setEditByteModalOpen(true);
-                    } else if (key === 'generate-pdf') {
-                      setShareByteModalOpen(true);
-                    } else if (key === 'rating') {
-                      setRatingByteModalOpen(true);
-                    }
-                  }}
-                />
-              </div>
-              <ByteStepper viewByteHelper={viewByteHelper} byte={viewByteHelper.byteRef} space={space} />
-            </>
-          ) : (
-            <TidbitDetailsLoader />
-          )}
-        </div>
-      </div>
+      <ContinuousStepIndicatorProgress steps={viewByteHelper.byteRef?.steps?.length || 0} currentStep={activeStepOrder + 1} />
+      {byte ? (
+        <ByteStepperItemView viewByteHelper={viewByteHelper} byte={byte} step={activeStep} space={space} setByteSubmitted={setByteSubmitted} />
+      ) : (
+        <TidbitDetailsLoader />
+      )}
+      <RatingModal
+        ratingType="Byte"
+        open={showRatingsModal && (space.byteSettings.captureRating as boolean)}
+        onClose={() => setShowRatingsModal(false)}
+        skipRating={skipByteRating}
+        setRating={setByteRating as (rating: number, feedback?: ByteFeedback) => Promise<void>}
+        feedbackOptions={feedbackOptions}
+      />
     </FullScreenByteModal>
   );
 }
