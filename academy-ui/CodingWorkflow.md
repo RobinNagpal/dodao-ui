@@ -39,81 +39,81 @@ We use a context provider to manage notifications globally throughout the applic
 Here’s how we manage notifications during the deletion of an item:
 
 ```typescript
-import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-
-const { showNotification } = useNotificationContext();
-
-{deleteItemModalState.isVisible && (
-  <DeleteConfirmationModal
-    title={`Delete ${
-      deleteItemModalState.itemType === ByteCollectionItemType.Byte
-        ? 'Byte'
-        : deleteItemModalState.itemType === ByteCollectionItemType.ClickableDemo
-        ? 'Clickable Demo'
-        : deleteItemModalState.itemType === ByteCollectionItemType.ShortVideo
-        ? 'Short Video'
-        : 'Item'
-    }`}
-    open={deleteItemModalState.isVisible}
-    onClose={closeItemDeleteModal}
-    deleting={deleteItemModalState.deleting}
-    onDelete={async () => {
-      if (!deleteItemModalState.itemId || !deleteItemModalState.itemType) {
-        showNotification({ message: 'Some Error occurred', type: 'error' });
-        closeItemDeleteModal();
-        return;
-      }
-
-      setDeleteItemModalState({
-        ...deleteItemModalState,
-        deleting: true,
-      });
-
-      await revalidateTidbitCollections();
-      const deleteRequest: DeleteByteItemRequest = {
-        itemId: deleteItemModalState.itemId,
-        itemType: deleteItemModalState.itemType,
-      };
-
-      const response = await fetch(`${getBaseUrl()}/api/${space.id}/byte-items/${byteCollection.id}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(deleteRequest),
-      });
-
-      if (response.ok) {
-        const message =
-          deleteItemModalState.itemType === ByteCollectionItemType.Byte
-            ? 'Byte Archived Successfully'
-            : deleteItemModalState.itemType === ByteCollectionItemType.ClickableDemo
-            ? 'Clickable Demo Archived Successfully'
-            : deleteItemModalState.itemType === ByteCollectionItemType.ShortVideo
-            ? 'Short Video Archived Successfully'
-            : 'Item Archived Successfully';
-
-        setDeleteItemModalState({
-          ...deleteItemModalState,
-          deleting: false,
-        });
-
-        closeItemDeleteModal();
-        showNotification({ message, type: 'success' });
-        const timestamp = new Date().getTime();
-        router.push(`/?update=${timestamp}`);
-      } else {
-        setDeleteItemModalState({
-          ...deleteItemModalState,
-          deleting: false,
-        });
-
-        closeItemDeleteModal();
-        return showNotification({ message: 'Failed to archive the item. Please try again.', type: 'error' });
-      }
-    }}
-  />
-)}
+   import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
+   
+   const { showNotification } = useNotificationContext();
+   
+   {deleteItemModalState.isVisible && (
+     <DeleteConfirmationModal
+       title={`Delete ${
+         deleteItemModalState.itemType === ByteCollectionItemType.Byte
+           ? 'Byte'
+           : deleteItemModalState.itemType === ByteCollectionItemType.ClickableDemo
+           ? 'Clickable Demo'
+           : deleteItemModalState.itemType === ByteCollectionItemType.ShortVideo
+           ? 'Short Video'
+           : 'Item'
+       }`}
+       open={deleteItemModalState.isVisible}
+       onClose={closeItemDeleteModal}
+       deleting={deleteItemModalState.deleting}
+       onDelete={async () => {
+         if (!deleteItemModalState.itemId || !deleteItemModalState.itemType) {
+           showNotification({ message: 'Some Error occurred', type: 'error' });
+           closeItemDeleteModal();
+           return;
+         }
+   
+         setDeleteItemModalState({
+           ...deleteItemModalState,
+           deleting: true,
+         });
+   
+         await revalidateTidbitCollections();
+         const deleteRequest: DeleteByteItemRequest = {
+           itemId: deleteItemModalState.itemId,
+           itemType: deleteItemModalState.itemType,
+         };
+   
+         const response = await fetch(`${getBaseUrl()}/api/${space.id}/byte-items/${byteCollection.id}`, {
+           method: 'DELETE',
+           headers: {
+             'Content-Type': 'application/json',
+           },
+           body: JSON.stringify(deleteRequest),
+         });
+   
+         if (response.ok) {
+           const message =
+             deleteItemModalState.itemType === ByteCollectionItemType.Byte
+               ? 'Byte Archived Successfully'
+               : deleteItemModalState.itemType === ByteCollectionItemType.ClickableDemo
+               ? 'Clickable Demo Archived Successfully'
+               : deleteItemModalState.itemType === ByteCollectionItemType.ShortVideo
+               ? 'Short Video Archived Successfully'
+               : 'Item Archived Successfully';
+   
+           setDeleteItemModalState({
+             ...deleteItemModalState,
+             deleting: false,
+           });
+   
+           closeItemDeleteModal();
+           showNotification({ message, type: 'success' });
+           const timestamp = new Date().getTime();
+           router.push(`/?update=${timestamp}`);
+         } else {
+           setDeleteItemModalState({
+             ...deleteItemModalState,
+             deleting: false,
+           });
+   
+           closeItemDeleteModal();
+           return showNotification({ message: 'Failed to archive the item. Please try again.', type: 'error' });
+         }
+       }}
+     />
+   )}
 ```
 
 ### Notification Types

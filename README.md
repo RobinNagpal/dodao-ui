@@ -25,13 +25,15 @@ You should be know the following things to be able to contribute to this reposit
 
 - [ ] Understand the monorepo structure. More details in [ProjectStructure.md](docs/ProjectStructure.md)
 - [ ] Understand how postgres is setup using docker-compose. See [Video](https://drive.google.com/drive/folders/1_AQi1W_p1OUROBHIv3lAZjnVqkihgD3S)
-- [ ] Understand how migrations work. More details in [PrismaMigrations.md](docs/PrismaMigrations.md)
+- [ ] Understand how migrations work. More details in [PrismaTypesAndMigrations.md](docs/PrismaTypesAndMigrations.md)
+- [ ] Understand how to declare types for JSON fields in Prisma. More details in [PrismaTypesAndMigrations.md](docs/PrismaTypesAndMigrations.md)
+- [ ] Understand how to create new entities and declare types for them. More details in [TypeDefinitions.md](docs/TypeDefinitions.md)
 
 
 ### API
-- [ ] Understand how migrations work. More details in [PrismaMigrations.md](docs/PrismaMigrations.md)
+- [ ] Understand how migrations work. More details in [PrismaTypesAndMigrations.md](docs/PrismaTypesAndMigrations.md)
 - [ ] Understand how to declare new types for entities, request and response types
-- [ ] Understand how strict types need to be used for request and responses. See [RequestAndResponseTypes.md](docs/RequestAndResponseTypes.md) 
+- [ ] Understand how strict types need to be used for request and responses. See [TypeDefinitions.md](docs/TypeDefinitions.md) 
 - [ ] Understand how to add new routes. More details in [AddingAPIRoutes.md](docs/AddingAPIRoutes.md)
 
 
