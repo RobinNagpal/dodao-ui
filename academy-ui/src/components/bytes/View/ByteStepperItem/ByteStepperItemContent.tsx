@@ -98,10 +98,11 @@ export default function ByteStepperItemContent({
   }, [activeStepOrder, step.displayMode]);
 
   if (!stepItems.some(isQuestion) && step.imageUrl && step.displayMode === ImageDisplayMode.FullScreenImage) {
+    const imageWidth = width * 0.57421875;
     return (
       <div className="absolute left-1/2  top-12 transform -translate-x-1/2 w-[80vw] rounded mx-auto">
         {width > height ? (
-          <Image src={step.imageUrl} alt="byte" height={parseInt(imageHeight, 10)} width={882} className={`rounded mx-auto ${styles.imgContainer}`} />
+          <Image src={step.imageUrl} alt="byte" height={parseInt(imageHeight, 10)} width={imageWidth} className={`rounded mx-auto ${styles.imgContainer}`} />
         ) : (
           <img src={step.imageUrl} alt="byte" style={{ maxHeight: imageHeight }} className={`rounded mx-auto ${styles.imgContainer}`} />
         )}
