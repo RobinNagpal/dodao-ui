@@ -16,6 +16,7 @@ import {
 import UserInput from '@dodao/web-core/components/app/Form/UserInput';
 import { isQuestion, isUserDiscordConnect, isUserInput } from '@dodao/web-core/types/deprecated/helpers/stepItemTypes';
 import { marked } from 'marked';
+import Image from 'next/image';
 import { useEffect, useMemo, useState } from 'react';
 
 interface ByteStepperItemContentProps {
@@ -100,13 +101,13 @@ export default function ByteStepperItemContent({
     return (
       <div className="absolute left-1/2  top-12 transform -translate-x-1/2 w-[80vw] rounded mx-auto">
         {width > height ? (
-          <img src={step.imageUrl} alt="byte" style={{ height: imageHeight }} className={`rounded mx-auto ${styles.imgContainer}`} />
+          <Image src={step.imageUrl} alt="byte" height={parseInt(imageHeight, 10)} width={882} className={`rounded mx-auto ${styles.imgContainer}`} />
         ) : (
           <img src={step.imageUrl} alt="byte" style={{ maxHeight: imageHeight }} className={`rounded mx-auto ${styles.imgContainer}`} />
         )}
         <div id="heading" className="flex justify-center w-full mt-4">
           <h1 className="text-md">
-            {step.name || byte.name} : {step.content}
+            {step.name || byte.name}: {step.content}
           </h1>
         </div>
       </div>
