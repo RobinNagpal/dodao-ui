@@ -52,7 +52,7 @@ services:
 
 ## 5. How Data is Stored in the "data" Folder
 
-The line `- ./data:/var/lib/postgresql/data` maps the container's data directory to a local folder named `data`. This means:
+The line `./data:/var/lib/postgresql/data` maps the container's data directory to a local folder named `data`. This means:
 
 - **Data Persistence**: Your database data is saved on your local machine.
 - **Portability**: You can back up or inspect the data directly from the `data` folder.
@@ -60,7 +60,7 @@ The line `- ./data:/var/lib/postgresql/data` maps the container's data directory
 
 ## 6. How `init.sql` Works
 
-The line `- ./init.sql:/docker-entrypoint-initdb.d/init.sql` mounts your local `init.sql` script into the container's 
+The line `./init.sql:/docker-entrypoint-initdb.d/init.sql` mounts your local `init.sql` script into the container's 
 initialization directory. Here's what happens:
 
 - **Automatic Execution**: When the PostgreSQL container is run for the first time, it looks for scripts in `/docker-entrypoint-initdb.d/` and executes them.
@@ -73,8 +73,7 @@ To reset your database:
 
 1. **Stop and Remove Containers**: Run `docker-compose down` to stop and remove the containers.
 2. **Delete the Data Folder**: Remove the `data` folder by executing `rm -rf ./data`. This deletes all your database data.
-3. **Restart the Containers**: Run `docker-compose up` to start fresh. The `init.sql` script will run again, 
-4. reinitializing your database.
+3. **Restart the Containers**: Run `docker-compose up` to start fresh. The `init.sql` script will run again, reinitializing your database.
 
 **Warning**: Deleting the `data` folder will permanently remove all data stored in the database. Ensure you have 
 backups if needed.
