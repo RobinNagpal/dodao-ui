@@ -7,14 +7,14 @@ with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/
 
 ## Prerequisits
 
-1. Nodejs 18+
+1. Nodejs 20+
 2. Yarn 1.22.x
 3. Docker
 4. DockerCompose
 
 ## Code setup
 
-1. Copy .env.example and name it as .env
+1. Copy .env.example file and name it as .env
    Populate the environment variables. For some env variables you can add dummy strings like somesecret.
 
 For example for the below env variables add some dummy values
@@ -34,11 +34,15 @@ NEXT_PUBLIC_VERCEL_URL=
 DODAO_SUPERADMINS=
 ```
 
-- Replace the value of the DODAO_SUPERADMINS key with your MetaMask wallet's public address.
+- Replace the value of the DODAO_SUPERADMINS with your MetaMask wallet's public address.
 
-2. Adjust the DATABASE_URL accordingly, or keep it as is and follow the steps below.
+1. Adjust the DATABASE_URL accordingly, or keep it as is and follow the steps below.
 
    **Note:** Ensure that your local PostgreSQL server is not running, as PostgreSQL is set up to run inside Docker. This avoids conflicts with the Docker container.
+
+2. Go to the academy-ui folder
+
+   `cd academy-ui`
 
 3. Generate graphql files
 
@@ -48,20 +52,21 @@ DODAO_SUPERADMINS=
 
    `npx prisma generate`
 
-5. Run Database: We run databse in a docker container. For that we use docker compose. To run it, open a new terminal
-   and run docker-compose up. Make sure to keep that terminal running
+5. Run Database: We run database in a docker container. For that we use docker compose. To run it, open a new terminal and run the following command:
 
    `docker-compose up`
 
-6. Generate database tables
+   **Note:** Make sure to keep that terminal running.
 
-   `npx prisma db push`
-
-7. Verify the Database Setup:
+6. Verify the Database Setup:
 
    - Install a PostgreSQL client such as **pgAdmin 4**.
+   - When setting up pgAdmin 4, create a server using the same port as specified in `DATABASE_URL` in your `.env` file e.g., 5432. Use `localhost` as the host name/address and `admin` as the username and password.
    - Make sure a new database, `next_app_localhost_db`, is created and that the tables are present.
-   - When setting up pgAdmin 4, create a server using the same port as in your `.env` file. Use `localhost` as the host name/address and `admin` as the password.
+
+7. Generate database tables
+
+   `npx prisma db push`
 
 ## Run the code
 
@@ -101,19 +106,19 @@ We use docker-compose to run the database. To run the database, open a new termi
 `docker-compose up`
 
 ```yaml
-  db:
-    image: postgres
-    container_name: dodao-ui-db
-    restart: always
-    environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
-      POSTGRES_DB: next_app_localhost_db
-    ports:
-      - "5432:5432"
-    volumes:
-      - ./data:/var/lib/postgresql/data
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+db:
+  image: postgres
+  container_name: dodao-ui-db
+  restart: always
+  environment:
+    POSTGRES_USER: admin
+    POSTGRES_PASSWORD: admin
+    POSTGRES_DB: next_app_localhost_db
+  ports:
+    - '5432:5432'
+  volumes:
+    - ./data:/var/lib/postgresql/data
+    - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 ```
 
 Here are the details of the database container that will be created.
@@ -150,9 +155,9 @@ Here is an example of how it looks for me on my local machine (mac)
 # when the system is booting.  Do not change this entry.
 ##
 127.0.0.1    dodao-localhost.academy
-127.0.0.1    compound-localhost.education  
-127.0.0.1    uniswap-localhost.university  
-127.0.0.1    dodao-localhost.io 
+127.0.0.1    compound-localhost.education
+127.0.0.1    uniswap-localhost.university
+127.0.0.1    dodao-localhost.io
 127.0.0.1	 arbitrum-localhost.education
 127.0.0.1	 test-tidbits.tidbitshub-localhost.org
 127.0.0.1	 alchemix.tidbitshub-localhost.org
@@ -177,7 +182,7 @@ You /etc/hosts file should have this entry
 Here is the table with the mapping of the domains to the academy websites
 
 | Project          | Local Academy Website Domain          | Website URL                                       | NEXT_PUBLIC_VERCEL_URL env variable |
-|------------------|---------------------------------------|---------------------------------------------------|-------------------------------------|
+| ---------------- | ------------------------------------- | ------------------------------------------------- | ----------------------------------- |
 | DoDAO            | dodao-localhost.academy               | http://dodao-localhost.academy:3000               | tidbitshub.org                      |
 | Compound         | compound-localhost.education          | http://compound-localhost.education:3000          | tidbitshub.org                      |
 | Uniswap          | uniswap-localhost.university          | http://uniswap-localhost.university:3000          | tidbitshub.org                      |
@@ -199,9 +204,11 @@ Create a new key `DODAO_SUPERADMINS` and set its value to your own MetaMask key 
 For example: `DODAO_SUPERADMINS = 0x0000000000000000000000000000000000000000,johndoe@gmail.com`
 
 ## Uploading images
+
 To be able to upload images, you need to set the following environment variables:
 
 Ask Robin to create AWS credentials for you.
+
 ```dotenv
 PUBLIC_AWS_S3_BUCKET=dodao-dev-public-assets
 DEFAULT_REGION=us-east-1
@@ -209,4 +216,3 @@ AWS_REGION=us-east-1
 AWS_ACCESS_KEY_ID=
 AWS_SECRET_ACCESS_KEY=
 ```
-
