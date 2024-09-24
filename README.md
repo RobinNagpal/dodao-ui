@@ -24,7 +24,7 @@ See [academy-ui/README.md](academy-ui/README.md) for setup instructions.
 You should be know the following things to be able to contribute to this repository:
 
 - [ ] Understand the monorepo structure. More details in [ProjectStructure.md](docs/ProjectStructure.md)
-- [ ] Understand how postgres is setup using docker-compose. See [Video](https://drive.google.com/file/d/1Gg-KWR_OqEPLIjDMUIZmslXuZ0CUpAnZ/view?usp=sharing)
+- [ ] Understand how postgres is setup using docker-compose. See [LocalDatabaseSetup.md](docs/LocalDatabaseSetup.md) &  See [Video](https://drive.google.com/file/d/1Gg-KWR_OqEPLIjDMUIZmslXuZ0CUpAnZ/view?usp=sharing)
 - [ ] Understand how migrations work. More details in [PrismaTypesAndMigrations.md](docs/PrismaTypesAndMigrations.md)
 - [ ] Understand how to declare types for JSON fields in Prisma. More details in [PrismaTypesAndMigrations.md](docs/PrismaTypesAndMigrations.md)
 - [ ] Understand how to create new entities and declare types for them. More details in [TypeDefinitions.md](docs/TypeDefinitions.md)
