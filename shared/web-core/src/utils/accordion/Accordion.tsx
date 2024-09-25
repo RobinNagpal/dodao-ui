@@ -4,7 +4,7 @@ import styles from './Accordion.module.scss';
 interface AccordionProps {
   isOpen: boolean;
   label: string;
-  onClick: () => void;
+  onClick: (e: React.MouseEvent<HTMLElement>) => void;
   children: ReactNode;
   hasError?: boolean;
   errorMessage?: string;
@@ -13,7 +13,10 @@ interface AccordionProps {
 export default function Accordion({ isOpen, label, onClick, children, hasError = false, errorMessage }: AccordionProps) {
   return (
     <div>
-      <div className={`${styles.accordionContainer} ${hasError ? styles.error : ''} ${isOpen ? styles.isOpened : ''}`}>
+      <div
+        className={`rounded-md mb-4 pt-2 cursor-pointer ${styles.accordionContainer} ${hasError ? styles.error : ''} ${isOpen ? styles.isOpened : ''}`}
+        onClick={(e) => !isOpen && onClick(e)}
+      >
         <div id={`accordion-${label}`}>
           <button type="button" className="flex rounded-md items-center justify-between w-full px-2 font-medium rtl:text-right gap-2" onClick={onClick}>
             <span>{label}</span>

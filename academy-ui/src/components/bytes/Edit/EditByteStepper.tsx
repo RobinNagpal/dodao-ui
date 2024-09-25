@@ -27,7 +27,9 @@ function EditByteStepper({ space, byte, byteErrors, errorColor = '#d32f2f', succ
     setOpenAccordionIndex(byte.steps.length);
   };
 
-  const toggleAccordion = (index: number) => {
+  const toggleAccordion = (e: React.MouseEvent<HTMLElement>, index: number) => {
+    e.preventDefault();
+    e.stopPropagation();
     setOpenAccordionIndex(() => (openAccordionIndex === index ? null : index));
   };
 
@@ -61,7 +63,7 @@ function EditByteStepper({ space, byte, byteErrors, errorColor = '#d32f2f', succ
               key={step.uuid}
               isOpen={openAccordionIndex === index}
               label={`Step ${index + 1}: ${step.name}`}
-              onClick={() => toggleAccordion(index)}
+              onClick={(e: React.MouseEvent<HTMLElement>) => toggleAccordion(e, index)}
               hasError={Boolean(byteErrors?.steps?.[step.uuid])}
               errorMessage="This Step has an error!!"
             >
@@ -93,10 +95,10 @@ function EditByteStepper({ space, byte, byteErrors, errorColor = '#d32f2f', succ
             key="completion-screen"
             isOpen={openAccordionIndex === byte.steps.length}
             label="Completion Screen"
-            onClick={() => toggleAccordion(byte.steps.length)}
+            onClick={(e: React.MouseEvent<HTMLElement>) => toggleAccordion(e, byte.steps.length)}
             hasError={false}
           >
-            <div className="w-full">
+            <div className={`w-full ${openAccordionIndex === byte.steps.length ? 'visible' : 'hidden'}`}>
               <EditCompletionScreenStepperItem
                 byteErrors={byteErrors}
                 byte={byte}

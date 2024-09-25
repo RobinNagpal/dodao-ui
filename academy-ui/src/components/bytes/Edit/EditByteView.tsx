@@ -138,10 +138,8 @@ export default function EditByteView(props: {
                 </div>
               </div>
             </Block>
-            <Block title="Byte Steps" slim={true}>
-              <div className="mt-4">
-                <EditByteStepper space={space} byte={byte} byteErrors={byteErrors} updateByteFunctions={updateByteFunctions} />
-              </div>
+            <Block title="Byte Steps">
+              <EditByteStepper space={space} byte={byte} byteErrors={byteErrors} updateByteFunctions={updateByteFunctions} />
             </Block>
 
             <div className="flex">
