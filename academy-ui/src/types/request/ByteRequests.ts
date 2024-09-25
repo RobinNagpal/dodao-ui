@@ -1,6 +1,7 @@
 import { ByteCollectionItemType } from '@/app/api/helpers/byteCollection/byteCollectionItemType';
 import { ByteStepDto, CompletionScreenDto, ImageDisplayMode } from '@/types/bytes/ByteDto';
 import { QuestionChoice } from '@/types/stepItems/stepItemDto';
+import { TextAlign } from '@dodao/web-core/types/ui/TextAlign';
 
 export interface DeleteByteItemRequest {
   itemId: string;
@@ -21,6 +22,7 @@ export interface StepItemInputGenericInput {
 
 export interface ByteStepInput {
   content: string;
+  contentAlign?: TextAlign;
   displayMode?: ImageDisplayMode | null;
   imageUrl?: string | null;
   name: string;

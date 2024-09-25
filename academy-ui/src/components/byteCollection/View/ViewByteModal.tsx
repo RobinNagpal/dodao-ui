@@ -9,7 +9,7 @@ import FullScreenByteModal from '@/components/bytes/View/FullScreenByteModal';
 import RatingByteView from '@/components/bytes/View/RatingByteView';
 import { useViewByteInModal } from '@/components/bytes/View/useViewByteInModal';
 import { ByteDetailsFragment, ByteFeedback, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
-import { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
+import { ByteDto } from '@/types/bytes/ByteDto';
 import TidbitDetailsLoader from '@dodao/web-core/components/core/loaders/TidbitDetailsLoader';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -31,15 +31,14 @@ export interface ViewByteModalProps {
 }
 
 export default function ViewByteModal({ space, selectedByteId, viewByteModalClosedUrl, afterUpsertByteModalClosedUrl }: ViewByteModalProps) {
-  const fetchByteFn = async (byteId: string): Promise<ByteDetailsFragment> => {
+  const fetchByteFn = async (byteId: string): Promise<ByteDto> => {
     const response = await axios.get(`${getBaseUrl()}/api/byte/byte`, {
       params: {
         byteId: byteId,
         spaceId: space.id,
       },
     });
-    const byteDetails = response.data.byte;
-    return byteDetails;
+    return response.data.byte;
   };
 
   const viewByteHelper = useViewByteInModal({ space: space, byteId: selectedByteId, stepOrder: 0, fetchByteFn: fetchByteFn });

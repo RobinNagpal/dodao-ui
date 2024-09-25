@@ -1,12 +1,7 @@
 import { checkIfQuestionIsComplete, checkIfUserInputIsComplete, updateItemValue } from '@/components/bytes/View/viewByteHelper';
+import { ByteDto, ByteStepDto } from '@/types/bytes/ByteDto';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import {
-  ByteDetailsFragment,
-  ByteStepFragment,
-  ByteSubmissionInput,
-  SpaceWithIntegrationsFragment,
-  useSubmitByteMutation,
-} from '@/graphql/generated/generated-types';
+import { ByteSubmissionInput, SpaceWithIntegrationsFragment, useSubmitByteMutation } from '@/graphql/generated/generated-types';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { LocalStorageKeys } from '@dodao/web-core/types/deprecated/models/enums';
 import { ByteSubmissionError } from '@dodao/web-core/types/errors/error';
@@ -19,7 +14,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 export const LAST_STEP_UUID = 'LAST_STEP_UUID';
 
-type GenericByteType = ByteDetailsFragment;
+type GenericByteType = ByteDto;
 
 export interface UseGenericViewByteParams {
   space: SpaceWithIntegrationsFragment;
@@ -35,7 +30,7 @@ export function useGenericViewByte({ space, fetchByte, byteDetailsUrl, byteId, s
   const [activeStepOrder, setActiveStepOrder] = useState<number>(0);
   const [byteLoaded, setByteLoaded] = useState<boolean>(false);
   const [byteRef, setByteRef] = useState<GenericByteType | null>(null);
-  const [byteStepsMap, setByteStepsMap] = useState<{ [uuid: string]: ByteStepFragment }>({});
+  const [byteStepsMap, setByteStepsMap] = useState<{ [uuid: string]: ByteStepDto }>({});
   const [byteSubmitting, setByteSubmitting] = useState<boolean>(false);
   const [errors, setErrors] = useState<ByteSubmissionError>({});
 
@@ -60,7 +55,6 @@ export function useGenericViewByte({ space, fetchByte, byteDetailsUrl, byteId, s
       steps: [
         ...byte.steps,
         {
-          __typename: 'ByteStep',
           content: 'The Tidbit has been completed successfully!',
           name: 'Completed',
           uuid: LAST_STEP_UUID,
@@ -111,7 +105,7 @@ export function useGenericViewByte({ space, fetchByte, byteDetailsUrl, byteId, s
     return stepSubmission?.itemResponsesMap[stepItemUuid];
   }
 
-  function goToNextStep(currentStep: ByteStepFragment) {
+  function goToNextStep(currentStep: ByteStepDto) {
     setActiveStepOrder(activeStepOrder + 1);
 
     setByteSubmission((prevByteSubmission: any) => {
@@ -131,7 +125,7 @@ export function useGenericViewByte({ space, fetchByte, byteDetailsUrl, byteId, s
     history.replaceState(null, '', `${byteDetailsUrl}/${byteId}/${activeStepOrder + 1}`);
   }
 
-  function goToPreviousStep(currentStep: ByteStepFragment) {
+  function goToPreviousStep(currentStep: ByteStepDto) {
     setActiveStepOrder(activeStepOrder - 1);
 
     history.replaceState(null, '', `${byteDetailsUrl}/${byteId}/${activeStepOrder - 1}`);
@@ -199,13 +193,12 @@ export function useGenericViewByte({ space, fetchByte, byteDetailsUrl, byteId, s
         if (result) {
           const lastStepContent = `The tidbit has been completed successfully!`;
 
-          const stepsWithoutLastOne = byteRef!.steps.filter((step: ByteStepFragment) => step.uuid !== LAST_STEP_UUID) || [];
+          const stepsWithoutLastOne = byteRef!.steps.filter((step: ByteStepDto) => step.uuid !== LAST_STEP_UUID) || [];
           setByteRef({
             ...byteRef!,
             steps: [
               ...stepsWithoutLastOne,
               {
-                __typename: 'ByteStep',
                 content: lastStepContent,
                 name: 'Completed',
                 uuid: LAST_STEP_UUID,
@@ -272,8 +265,8 @@ export interface UseGenericViewByteHelper {
   errors: ByteSubmissionError;
   getStepSubmission: (stepUuid: string) => StepResponse | undefined;
   getStepItemSubmission: (stepUuid: string, stepItemUuid: string) => StepItemResponse | undefined;
-  goToNextStep: (currentStep: ByteStepFragment) => void;
-  goToPreviousStep: (currentStep: ByteStepFragment) => void;
+  goToNextStep: (currentStep: ByteStepDto) => void;
+  goToPreviousStep: (currentStep: ByteStepDto) => void;
   byteLoaded: boolean;
   byteRef: GenericByteType;
   byteSubmission: TempByteSubmission;

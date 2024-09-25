@@ -2,16 +2,11 @@ import ByteStepperItemContent from '@/components/bytes/View/ByteStepperItem/Byte
 import StepIndicatorProgress from '@/components/bytes/View/ByteStepperItem/Progress/StepIndicatorProgress';
 import ByteStepperItemWarnings from '@/components/bytes/View/ByteStepperItemWarnings';
 import { LAST_STEP_UUID, UseGenericViewByteHelper } from '@/components/bytes/View/useGenericViewByte';
-import {
-  ByteDetailsFragment,
-  ByteQuestionFragmentFragment,
-  ByteStepFragment,
-  ByteStepItemFragment,
-  ImageDisplayMode,
-  SpaceWithIntegrationsFragment,
-} from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
 import useWindowDimensions from '@/hooks/useWindowDimensions';
+import { ByteDto, ByteStepDto, ImageDisplayMode } from '@/types/bytes/ByteDto';
+import { ByteStepItem, Question } from '@/types/stepItems/stepItemDto';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { isQuestion, isUserDiscordConnect } from '@dodao/web-core/types/deprecated/helpers/stepItemTypes';
@@ -33,8 +28,8 @@ import { useEffect, useState } from 'react';
 import styles from './ByteStepperItemView.module.scss';
 
 interface ByteStepperItemWithProgressBarProps {
-  byte: ByteDetailsFragment;
-  step: ByteStepFragment;
+  byte: ByteDto;
+  step: ByteStepDto;
   space: SpaceWithIntegrationsFragment;
   viewByteHelper: UseGenericViewByteHelper;
   setByteSubmitted: (submitted: boolean) => void;
@@ -91,8 +86,8 @@ function ByteStepperItemView({ viewByteHelper, step, byte, space, setByteSubmitt
     if (isQuestionAnswered() && isDiscordConnected() && isUserInputComplete()) {
       setQuestionNotAnswered(true);
 
-      const answeredCorrectly = step.stepItems.filter(isQuestion).every((stepItem: ByteStepItemFragment) => {
-        const question = stepItem as ByteQuestionFragmentFragment;
+      const answeredCorrectly = step.stepItems.filter(isQuestion).every((stepItem: ByteStepItem) => {
+        const question = stepItem as Question;
         return isEqual(question.answerKeys.sort(), ((viewByteHelper.getStepItemSubmission(step.uuid, stepItem.uuid) as string[]) || []).sort());
       });
 
