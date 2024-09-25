@@ -1,56 +1,63 @@
-import { ByteModel, ByteQuestion, ByteStepItem } from '@/app/api/helpers/deprecatedSchemas/models/byte/ByteModel';
 import { QuestionType } from '@/app/api/helpers/deprecatedSchemas/models/enums';
-import { ByteStep, UpsertByteInput } from '@/graphql/generated/generated-types';
+import { withErrorHandlingV1 } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { transformByteInputSteps } from '@/app/api/helpers/byte/transformByteInputSteps';
 import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
 import { checkEditSpacePermission } from '@/app/api/helpers/space/checkEditSpacePermission';
 import { slugify } from '@/app/api/helpers/space/slugify';
 import { prisma } from '@/prisma';
+import { ByteDto, ByteStepDto } from '@/types/bytes/ByteDto';
+import { UpsertByteInput } from '@/types/request/ByteRequests';
+import { ByteStepItem, Question } from '@/types/stepItems/stepItemDto';
 import { Byte } from '@prisma/client';
 import { ByteCollectionItemType } from '@/app/api/helpers/byteCollection/byteCollectionItemType';
 import { NextRequest, NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
-import { withErrorHandling } from '../../helpers/middlewares/withErrorHandling';
 
-async function transformInput(spaceId: string, message: UpsertByteInput): Promise<ByteModel> {
+async function transformInput(spaceId: string, message: UpsertByteInput): Promise<ByteDto> {
   // remove the order and add id if needed
-  const byteModel: ByteModel = {
+  const byteModel: ByteDto = {
     ...message,
     id: message.id || slugify(message.name),
-    steps: message.steps.map((s, i) => ({
-      ...s,
-      order: undefined,
-      stepItems: ((s.stepItems || []) as ByteStepItem[]).map((si, order) => {
-        if (si.type === QuestionType.MultipleChoice || si.type === QuestionType.SingleChoice) {
-          const question = si as ByteQuestion;
-          if (!question.explanation) {
-            throw Error(`explanation is missing in byte question - ${spaceId} - ${byteModel.name}`);
-          }
-        }
-        return {
-          ...si,
+    steps: message.steps.map(
+      (s, i): ByteStepDto =>
+        ({
+          ...s,
           order: undefined,
-        };
-      }),
-    })),
+          stepItems: (s.stepItems || []).map((si, order): ByteStepItem => {
+            if (si.type === QuestionType.MultipleChoice || si.type === QuestionType.SingleChoice) {
+              const question = si as Question;
+              if (!question.explanation) {
+                throw Error(`explanation is missing in byte question - ${spaceId} - ${byteModel.name}`);
+              }
+            }
+            return {
+              ...si,
+              order: undefined,
+            } as ByteStepItem;
+          }),
+        } as ByteStepDto)
+    ),
     completionScreen: message.completionScreen || null,
   };
   return byteModel;
 }
 
-async function post_handler(req: NextRequest) {
-  const { spaceId, input, byteCollectionId } = await req.json();
-  const spaceById = await getSpaceById(spaceId);
+async function putHandler(
+  req: NextRequest,
+  { params }: { params: { spaceId: string; byteCollectionId: string; byteId: string } }
+): Promise<NextResponse<ByteDto>> {
+  const { input } = await req.json();
+  const spaceById = await getSpaceById(params.spaceId);
   await checkEditSpacePermission(spaceById, req);
-  const transformedByte = await transformInput(spaceId, input);
-  const steps: ByteStep[] = transformByteInputSteps(input);
+  const transformedByte = await transformInput(params.spaceId, input);
+  const steps: ByteStepDto[] = transformByteInputSteps(input);
   const id = input.id || slugify(input.name);
   const upsertedByte: Byte = await prisma.byte.upsert({
     create: {
       ...transformedByte,
       steps: steps,
       id: id,
-      spaceId: spaceId,
+      spaceId: params.spaceId,
       completionScreen: input.completionScreen || undefined,
     },
     update: {
@@ -66,7 +73,7 @@ async function post_handler(req: NextRequest) {
   const existingMapping = await prisma.byteCollectionItemMappings.findFirst({
     where: {
       itemId: upsertedByte.id,
-      byteCollectionId,
+      byteCollectionId: params.byteCollectionId,
       itemType: ByteCollectionItemType.Byte,
     },
   });
@@ -74,7 +81,7 @@ async function post_handler(req: NextRequest) {
   if (!existingMapping) {
     const byteCollection = await prisma.byteCollection.findUnique({
       where: {
-        id: byteCollectionId,
+        id: params.byteCollectionId,
       },
       select: {
         items: true,
@@ -94,13 +101,12 @@ async function post_handler(req: NextRequest) {
         order: highestOrderNumber + 1,
         itemId: upsertedByte.id,
         ByteCollection: {
-          connect: { id: byteCollectionId },
+          connect: { id: params.byteCollectionId },
         },
       },
     });
   }
-  return NextResponse.json({ upsertedByte }, { status: 200 });
+  return NextResponse.json(upsertedByte as ByteDto, { status: 200 });
 }
 
-/// Wrapping handle in withErrorHandling
-export const POST = withErrorHandling(post_handler);
+export const PUT = withErrorHandlingV1<ByteDto>(putHandler);

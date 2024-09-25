@@ -1,19 +1,14 @@
-import {
-  editByteCommonFunctions,
-  EditByteStep,
-  EditByteType,
-  GeneratedByte,
-  KeyOfByteInput,
-  UpdateByteFunctions,
-} from '@/components/bytes/Edit/editByteHelper';
-import { ByteDetailsFragment, ImageDisplayMode, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
-import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
+import { editByteCommonFunctions, GeneratedByte, KeyOfByteInput, UpdateByteFunctions } from '@/components/bytes/Edit/editByteHelper';
+import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
+import { revalidateTidbitCollections } from '@/revalidateTags';
+import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
+import { ByteDto, ImageDisplayMode } from '@/types/bytes/ByteDto';
+import { EditByteStep, EditByteType } from '@/types/request/ByteRequests';
 import { emptyByte } from '@/utils/byte/EmptyByte';
 import { validateQuestion, validateUserInput } from '@/utils/stepItems/validateItems';
 import { ByteErrors } from '@dodao/web-core/types/errors/byteErrors';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { revalidateTidbitCollections } from '@/revalidateTags';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Byte } from '@prisma/client';
 import axios from 'axios';
@@ -58,7 +53,7 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, onUpsert: (byt
           spaceId: space.id,
         },
       });
-      const byte: ByteDetailsFragment = result.data.byte;
+      const byte: ByteDto = result.data.byte;
       setByte({
         ...byte,
         byteExists: true,
@@ -191,21 +186,18 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, onUpsert: (byt
   const handleByteUpsert = async (byteCollection: ByteCollectionSummary) => {
     await saveViaMutation(async () => {
       await revalidateTidbitCollections();
-      const upsertResponse = await fetch(`${getBaseUrl()}/api/byte/upsert-byte`, {
-        method: 'POST',
+      const upsertByteInput = getByteInputFn(byte);
+      const upsertResponse = await fetch(`${getBaseUrl()}/api/${space.id}/byte-collections/${byteCollection.id}/bytes/${upsertByteInput.id}`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          spaceId: space.id,
-          input: getByteInputFn(byte),
-          byteCollectionId: byteCollection.id,
+          input: upsertByteInput,
         }),
       });
 
-      const { upsertedByte } = await upsertResponse.json();
-
-      return upsertedByte;
+      return await upsertResponse.json();
     });
   };
 
