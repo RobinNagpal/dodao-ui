@@ -6,29 +6,29 @@
 - [ ] Never use the type `any` in the code.
 - [ ] When ever we have multiple string values which we compare, always use enum. Create the enum in the `types` folder.
       We keep it string in the database, but in the code we use enum. Keeping it string in Database allows more flexibility.
-- [ ] We use `prisma` which generates types for us. We should use those in the API code, when saving or fetching data from the database.
-- [ ] We should return a custom type very similar to the one created by `prisma` and return it in the API response. This is
-      done to decouple the prisma from the front end code.  
-      Example:
-    - Here we define a type `ClickableDemo` which is similar to the one created by `prisma`.
-    - We should save this type in the `types/clicable-demoes` folder, with the file name `ClickableDemo.ts`
-    - For request and response types, we should save them in the `types/request` and `types/response` folders respectively.
-    - For creating a clickable demo, if we should not pass the `id` in the request, and it should be calculated by the server.
-    - So the type for the request can be `Omit<ClickableDemo, 'id'>`
-    - The response type can be `ClickableDemo`
-      ```typescript
-        export interface ClickableDemo {
-          archive: boolean;
-          createdAt: Date;
-          excerpt: string;
-          id: string;
-          spaceId: string;
-          title: string;
-          updatedAt: Date;
-          steps: ClickableDemoStep[];
-        }
-      ```
+
+
+
+# Request and Response Types
 - [ ] Earlier we used to use `graphql` types, but now we are not using `graphql` so we should not use `graphql` types.
+
+### Response Types
+- We use `prisma` which generates types for us. We should use those in the API code, when saving or fetching data from 
+  the database.
+- However when we return the data to the front end, we should not use the `prisma` types. We should create our own 
+  types. This helps in decoupling the prisma from the front end code.
+- We can use a `Dto` object very similar to the prisma type. Then this `Dto` object can be used on the frontend. See 
+  `academy-ui/src/types/html-captures/ClickableDemoHtmlCaptureDto.ts` for an example.
+- If you see `academy-ui/src/app/api/[spaceId]/html-captures/route.ts` we don't need to convert the `prisma` type 
+  to `Dto` object, because we both have the exact same structure.
+- We should not try to use nesting in the types. We should keep the types flat. Like in the above case we just return 
+  the `ClickableDemoHtmlCaptureDto` rather than something like `{capture: ClickableDemoHtmlCaptureDto}`.
+
+### Request Types
+- When creating a new object, we should can pass the `id` in the request. The `id` can be calculated by the client.
+- `id` can be `slugify(args.input.fileName) + '-' + uuidv4().toString().substring(0, 4)`. 
+- May be we include part of spaceId in the `id` as well. This is to make sure that the `id` is unique across all spaces.
+- If the request is not same as Dto, then we should create a new type for the request in the `types/request` folder.
 
 
 # Declaring request and response types
@@ -44,36 +44,20 @@ In our project, defining clear request and response types is essential for maint
 
 #### Example of Request and Response Types
 
-**Request Type**
-
-```typescript
-import { ByteCollectionItemType } from '@/app/api/helpers/byteCollection/byteCollectionItemType';
-
-export interface DeleteByteItemRequest {
-  itemId: string;
-  itemType: ByteCollectionItemType;
-}
-```
-
 **Response Type**
-
-```typescript
-import { Byte, ClickableDemos, ShortVideo } from '@prisma/client';
-
-export interface DeleteByteItemResponse {
-  updated: Byte | ShortVideo | ClickableDemos;
-}
-```
-
-
 
 **Usage Example**
 ```typescript
-async function deleteHandler(req: NextRequest): Promise<NextResponse<DeleteByteItemResponse | ErrorResponse>> {
-  const args: DeleteByteItemRequest = await req.json();
+async function postHandler(req: NextRequest, { params }: { params: { spaceId: string } }): Promise<NextResponse<ClickableDemoHtmlCaptureDto>> {
 
   // ... handle request logic ...
 }
 ```
 
-Note: Make sure to add a concrete type similar to `Promise<NextResponse<DeleteByteItemResponse | ErrorResponse>>` as the return type
+- [ ] Note: Make sure to add a concrete type similar to `Promise<NextResponse<ClickableDemoHtmlCaptureDto>>` as the return type
+- [ ] Also we now use `withErrorHandlingV1` instead of `withErrorHandling` for the API routes for handling the errors in 
+the api routes. This is because `withErrorHandlingV1` is more flexible and allows us to define the response type explicitly.
+
+```typescript
+export const POST = withErrorHandlingV1<ClickableDemoHtmlCaptureDto>(postHandler);
+```

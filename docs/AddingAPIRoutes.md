@@ -14,3 +14,5 @@ There can be other things like share on social media and for those this theme do
 so we can probably do something like `/api/[spaceId]/actions/programs/share-on-social-media`
 
 So far we didn’t pay attention to this, we should start considering it now
+
+See the [TypeDefinitions](TypeDefinitions.md) for details on how to define the types for the API routes.
