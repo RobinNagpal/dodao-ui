@@ -67,7 +67,7 @@ DODAO_SUPERADMINS=
 
    `docker-compose up`
 
-   **Note:** Make sure to keep that terminal running.
+   **Note:** Make sure to keep that terminal running. If you are running it for the first time in the day, then you may need to open Docker Desktop app once. Otherwise you will get `docker daemon is not running`
 
 5. Verify the Database Setup:
 
