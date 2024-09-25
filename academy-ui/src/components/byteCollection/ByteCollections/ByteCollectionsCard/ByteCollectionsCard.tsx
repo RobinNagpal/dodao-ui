@@ -314,7 +314,7 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
               itemId: deleteItemModalState.itemId,
               itemType: deleteItemModalState.itemType,
             };
-            const response = await fetch(`${getBaseUrl()}/api/${space.id}/byte-items/${byteCollection.id}`, {
+            const response = await fetch(`${getBaseUrl()}/api/${space.id}/byte-collections/${byteCollection.id}/byte-items`, {
               method: 'DELETE',
               headers: {
                 'Content-Type': 'application/json',
