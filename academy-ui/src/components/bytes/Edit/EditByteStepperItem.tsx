@@ -1,26 +1,27 @@
+import CreateQuestion from '@/components/app/Common/CreateQuestion';
 import SelectImageInputModal from '@/components/app/Image/SelectImageInputModal';
+import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
+import { ByteQuestionFragmentFragment, GuideQuestion, ImageDisplayMode, ImageType, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { EditByteStep, EditByteType, StepItemInputGenericInput } from '@/types/request/ByteRequests';
 import { Question, UserInput } from '@/types/stepItems/stepItemDto';
-import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
-import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
 import CreateConnectDiscord from '@dodao/web-core/components/app/Common/CreateDiscordConnect';
-import CreateQuestion from '@/components/app/Common/CreateQuestion';
 import CreateUserInput from '@dodao/web-core/components/app/Common/CreateUserInput';
-import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
-import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
+import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
 import AddStepItemModal from '@dodao/web-core/components/app/Modal/StepItem/AddStepItemModal';
+import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
+import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import Input from '@dodao/web-core/components/core/input/Input';
 import { InputWithButton } from '@dodao/web-core/components/core/input/InputWithButton';
-import { GuideQuestion, ImageType, SpaceWithIntegrationsFragment, ImageDisplayMode, ByteQuestionFragmentFragment } from '@/graphql/generated/generated-types';
+import StyledSelect, { StyledSelectItem } from '@dodao/web-core/components/core/select/StyledSelect';
 import { InputType, QuestionType, UserDiscordConnectType } from '@dodao/web-core/types/deprecated/models/enums';
 import { ByteErrors } from '@dodao/web-core/types/errors/byteErrors';
 import { QuestionError, StepError } from '@dodao/web-core/types/errors/error';
+import { TextAlign } from '@dodao/web-core/types/ui/TextAlign';
+import { findClosestColor } from '@dodao/web-core/utils/colors/findClosestColor';
 import isEqual from 'lodash/isEqual';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
-import { findClosestColor } from '@dodao/web-core/utils/colors/findClosestColor';
-import StyledSelect, { StyledSelectItem } from '@dodao/web-core/components/core/select/StyledSelect';
 
 interface EditByteStepperItemProps {
   space: SpaceWithIntegrationsFragment;
@@ -71,6 +72,10 @@ export default function EditByteStepperItem({
   ];
   const updateStepContent = (content: string) => {
     updateStep({ ...step, content });
+  };
+
+  const updateContentAlignment = (contentAlign: TextAlign) => {
+    updateStep({ ...step, contentAlign });
   };
 
   const updateQuestionDescription = (questionId: string, content: string) => {
@@ -446,6 +451,8 @@ For background of the image, use the color ${backgroundColor} and for the primar
             objectId={byte.id || 'unknown_byte_id'}
             imageType={ImageType.Tidbits}
             editorStyles={{ height: '200px' }}
+            selectedTextAlign={step.contentAlign || TextAlign.Center}
+            setTextAlign={updateContentAlignment}
           />
         )}
       </div>

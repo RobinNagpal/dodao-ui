@@ -3,26 +3,26 @@ import styles from '@/components/bytes/View/ByteStepperItem/ByteStepperItemConte
 import { QuestionSection } from '@/components/bytes/View/QuestionSection';
 import { UseGenericViewByteHelper } from '@/components/bytes/View/useGenericViewByte';
 import {
-  ByteDetailsFragment,
   ByteQuestionFragmentFragment,
-  ByteStepFragment,
-  ByteStepItemFragment,
   ByteUserDiscordConnectFragmentFragment,
   ByteUserInputFragmentFragment,
   ImageDisplayMode,
   SpaceWithIntegrationsFragment,
   UserDiscordInfoInput,
 } from '@/graphql/generated/generated-types';
+import { ByteDto, ByteStepDto } from '@/types/bytes/ByteDto';
+import { ByteStepItem } from '@/types/stepItems/stepItemDto';
 import UserInput from '@dodao/web-core/components/app/Form/UserInput';
 import { isQuestion, isUserDiscordConnect, isUserInput } from '@dodao/web-core/types/deprecated/helpers/stepItemTypes';
+import { TextAlign } from '@dodao/web-core/types/ui/TextAlign';
 import { marked } from 'marked';
 import Image from 'next/image';
 import { useMemo } from 'react';
 import { createPortal } from 'react-dom';
 
 interface ByteStepperItemContentProps {
-  byte: ByteDetailsFragment;
-  step: ByteStepFragment;
+  byte: ByteDto;
+  step: ByteStepDto;
   space: SpaceWithIntegrationsFragment;
   viewByteHelper: UseGenericViewByteHelper;
   setByteSubmitted: (submitted: boolean) => void;
@@ -34,6 +34,21 @@ interface ByteStepperItemContentProps {
   width: number;
   height: number;
   isShortScreen: boolean;
+}
+
+function getTailwindTextAlignmentClass(textAlignment: TextAlign) {
+  switch (textAlignment) {
+    case TextAlign.Center:
+      return 'text-center';
+    case TextAlign.Left:
+      return 'text-left';
+    case TextAlign.Right:
+      return 'text-right';
+    case TextAlign.Justify:
+      return 'text-justify';
+    default:
+      return 'text-left';
+  }
 }
 
 export default function ByteStepperItemContent({
@@ -120,6 +135,7 @@ export default function ByteStepperItemContent({
     );
   }
 
+  const textAlignmentClass = getTailwindTextAlignmentClass(step.contentAlign || TextAlign.Center);
   return (
     <>
       {!stepItems.some(isQuestion) && !isShortScreen && step.imageUrl && (
@@ -131,8 +147,8 @@ export default function ByteStepperItemContent({
         <h1 className={stepClasses.headingClasses}>{step.name || byte.name}</h1>
       </div>
       <div className="mt-4 px-2 lg:mt-8 text-left">
-        <div dangerouslySetInnerHTML={{ __html: stepContents }} className={`markdown-body text-center ` + stepClasses.contentClasses} />
-        {stepItems.map((stepItem: ByteStepItemFragment, index) => {
+        <div dangerouslySetInnerHTML={{ __html: stepContents }} className={`markdown-body ${textAlignmentClass} ` + stepClasses.contentClasses} />
+        {stepItems.map((stepItem: ByteStepItem, index) => {
           if (isQuestion(stepItem)) {
             return (
               <div key={index} className="border-2 rounded-lg p-4 border-transparent ">

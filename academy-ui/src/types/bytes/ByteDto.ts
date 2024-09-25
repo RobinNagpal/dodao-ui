@@ -1,4 +1,5 @@
 import { ByteStepItem } from '@/types/stepItems/stepItemDto';
+import { TextAlign } from '@dodao/web-core/types/ui/TextAlign';
 
 export enum ImageDisplayMode {
   FullScreenImage = 'FullScreenImage',
@@ -7,6 +8,7 @@ export enum ImageDisplayMode {
 
 export interface ByteStepDto {
   content: string;
+  contentAlign?: TextAlign;
   displayMode?: ImageDisplayMode | null;
   name: string;
   uuid: string;

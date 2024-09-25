@@ -178,6 +178,7 @@ function MarkdownEditor({
             commands.fullscreen,
           ]}
           extraCommands={[
+            ...getTextAlignCommands(setTextAlign, selectedTextAlign),
             {
               name: 'imageUpload',
               keyCommand: 'imageUpload',

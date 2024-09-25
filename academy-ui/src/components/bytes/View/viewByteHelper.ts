@@ -1,12 +1,13 @@
 import { LAST_STEP_UUID } from '@/components/bytes/View/useGenericViewByte';
-import { ByteStepFragment, ByteUserInputFragmentFragment } from '@/graphql/generated/generated-types';
+import { ByteStepDto } from '@/types/bytes/ByteDto';
+import { UserInput } from '@/types/stepItems/stepItemDto';
 import { isQuestion, isUserInput } from '@dodao/web-core/types/deprecated/helpers/stepItemTypes';
 import { StepResponse, TempByteSubmission } from '@/utils/byte/TempByteSubmission';
 
 export function checkIfUserInputIsComplete(
   stepUuid: string,
   byteStepsMap: {
-    [p: string]: ByteStepFragment;
+    [p: string]: ByteStepDto;
   },
   getStepSubmission: (stepUuid: string) => StepResponse | undefined
 ) {
@@ -19,7 +20,7 @@ export function checkIfUserInputIsComplete(
 
   const respondedToAllInputs = step.stepItems
     .filter(isUserInput)
-    .filter((item) => (item as ByteUserInputFragmentFragment).required)
+    .filter((item) => (item as UserInput).required)
     .every((userInput) => (stepSubmission?.itemResponsesMap?.[userInput.uuid] as string)?.length);
 
   return respondedToAllInputs;
@@ -28,7 +29,7 @@ export function checkIfUserInputIsComplete(
 export function checkIfQuestionIsComplete(
   stepUuid: string,
   byteStepsMap: {
-    [p: string]: ByteStepFragment;
+    [p: string]: ByteStepDto;
   },
   getStepSubmission: (stepUuid: string) => StepResponse | undefined
 ) {

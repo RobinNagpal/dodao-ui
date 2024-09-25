@@ -253,46 +253,14 @@ export function editByteCommonFunctions(setByte: (value: ((prevState: EditByteTy
       content: byte.content,
       id: byte.id || slugify(byte.name) + '-' + uuidv4().toString().substring(0, 4),
       name: byte.name,
-      steps: byte.steps.map((s) => ({
-        content: s.content,
-        name: s.name,
-        displayMode: s.displayMode || ImageDisplayMode.Normal,
-        stepItems: s.stepItems.map((si) => ({
-          type: si.type,
-          uuid: si.uuid,
-          answerKeys: si.answerKeys,
-          choices: si.choices?.map((c) => ({ key: c.key, content: c.content })),
-          content: si.content,
-          questionType: si.questionType,
-          label: si.label,
-          required: si.required,
-          explanation: si.explanation,
-        })),
-        imageUrl: s.imageUrl,
-        uuid: s.uuid,
-      })),
+      steps: byte.steps,
       thumbnail: byte.thumbnail,
       created: byte.created,
       admins: byte.admins,
       tags: byte.tags,
       priority: byte.priority,
       videoUrl: byte.videoUrl,
-      completionScreen:
-        byte.completionScreen != null
-          ? {
-              content: byte.completionScreen.content,
-              name: byte.completionScreen.name,
-              uuid: byte.completionScreen.uuid,
-              imageUrl: byte.completionScreen.imageUrl,
-              items: Array.isArray(byte.completionScreen.items)
-                ? byte.completionScreen.items.map((i) => ({
-                    uuid: i.uuid,
-                    link: i.link,
-                    label: i.label,
-                  }))
-                : [],
-            }
-          : null,
+      completionScreen: byte.completionScreen,
     };
   }
 
