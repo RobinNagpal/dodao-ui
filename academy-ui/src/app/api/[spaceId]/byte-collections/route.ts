@@ -2,7 +2,7 @@ import { withErrorHandlingV1 } from '@/app/api/helpers/middlewares/withErrorHand
 import { prisma } from '@/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 import { v4 } from 'uuid';
-import { CreateByteCollectionWithApiRequest } from '@/types/request/ByteCollectionWithApiRequests';
+import { CreateByteCollectionWithApiRequest } from '@/types/request/ByteCollectionRequests';
 import { ByteCollectionDto } from '@/types/byteCollections/byteCollection';
 import { validateApiKey } from '@/app/api/helpers/validateApiKey';
 
