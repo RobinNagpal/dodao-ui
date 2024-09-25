@@ -33,18 +33,30 @@ CREATE ROLE postgres WITH LOGIN SUPERUSER CREATEDB CREATEROLE PASSWORD 'admin';
 
 -- Create table for 'spaces'
 CREATE TABLE public.spaces (
-  id VARCHAR(64),
-  verified BOOLEAN DEFAULT FALSE,
-  created_at TIMESTAMPTZ DEFAULT now(),
-  creator VARCHAR(64) NOT NULL,
-  name VARCHAR(255) NOT NULL,
-  updated_at TIMESTAMPTZ DEFAULT now(),
-  avatar VARCHAR(255),
-  admin_usernames_v1 JSONB[],
-  domains TEXT[] DEFAULT '{}',
-  auth_settings JSONB DEFAULT '{}' NOT NULL,
-  features TEXT[] NOT NULL,
-  theme_colors JSONB
+    id character varying(64) NOT NULL,
+    verified boolean DEFAULT false NOT NULL,
+    created_at timestamp(3) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    creator character varying(64) NOT NULL,
+    name character varying(255) NOT NULL,
+    updated_at timestamp(3) without time zone NOT NULL,
+    avatar character varying(255),
+    admin_usernames_v1 jsonb[],
+    domains text[] DEFAULT ARRAY[]::text[],
+    skin character varying(128) DEFAULT 'dodao'::character varying NOT NULL,
+    discord_invite character varying(1024),
+    telegram_invite character varying(1024),
+    invite_links json,
+    auth_settings json DEFAULT '{}'::json NOT NULL,
+    guide_settings json DEFAULT '{}'::json NOT NULL,
+    social_settings json DEFAULT '{}'::json NOT NULL,
+    byte_settings json DEFAULT '{}'::json NOT NULL,
+    features text[],
+    "botDomains" text[] DEFAULT ARRAY[]::text[],
+    theme_colors json,
+    type character varying(255) DEFAULT 'ACADEMY_SITE'::character varying NOT NULL,
+    tidbits_homepage json,
+    admin_usernames character varying(255)[] DEFAULT (ARRAY[]::character varying[])::character varying(255)[],
+    admins text[]
 );
 
 -- Create table for 'users'
@@ -59,7 +71,7 @@ CREATE TABLE public.users (
   password VARCHAR(255),
   space_id VARCHAR(64) NOT NULL,
   username VARCHAR(255) NOT NULL,
-  auth_provider VARCHAR(255) NOT NULL,
+  auth_provider VARCHAR(255) NOT NULL
 );
 
 -- Create table for 'accounts'
@@ -81,7 +93,7 @@ CREATE TABLE public.accounts (
 -- Create table for 'sessions'
 CREATE TABLE public.sessions (
   id VARCHAR(255),
-  session_token VARCHAR(255) UNIQUE NOT NULL,
+  session_token VARCHAR(255) NOT NULL,
   user_id VARCHAR(255) NOT NULL,
   expires TIMESTAMPTZ NOT NULL
 );
@@ -89,13 +101,13 @@ CREATE TABLE public.sessions (
 -- Create table for 'verification_tokens'
 CREATE TABLE public.verification_tokens (
   identifier VARCHAR(255) NOT NULL,
-  token VARCHAR(255) UNIQUE NOT NULL,
-  expires TIMESTAMPTZ NOT NULL,
+  token VARCHAR(255) NOT NULL,
+  expires TIMESTAMPTZ NOT NULL
 );
 
 -- Create table for 'crypto_login_nonce'
 CREATE TABLE public.crypto_login_nonce (
-  user_id VARCHAR(255) UNIQUE NOT NULL,
+  user_id VARCHAR(255) NOT NULL,
   nonce VARCHAR(255) NOT NULL,
   expires TIMESTAMPTZ NOT NULL
 );
@@ -140,7 +152,7 @@ CREATE UNIQUE INDEX sessions_session_token_key ON public.sessions USING btree (s
 
 CREATE UNIQUE INDEX verification_tokens_identifier_token_key ON public.verification_tokens USING btree (identifier, token);
 
-CREATE UNIQUE INDEX verification_tokens_token_key ON public.verification_tokens USING btree (token)
+CREATE UNIQUE INDEX verification_tokens_token_key ON public.verification_tokens USING btree (token);
 
 
 ALTER TABLE ONLY public.accounts
