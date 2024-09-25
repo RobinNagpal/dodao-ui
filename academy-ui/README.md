@@ -14,10 +14,9 @@ with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/
 
 ## Code setup
 
-1. Copy .env.example file and name it as .env
-   Populate the environment variables. For some env variables you can add dummy strings like somesecret.
+1. Duplicate `.env.example` file and name it as `.env` and populate the environment variables. For some `.env` variables you can add dummy strings like `somesecret`.
 
-For example for the below env variables add some dummy values
+For example for the below `.env` variables add some dummy values
 
 ```
 DISCORD_CLIENT_ID=
@@ -36,37 +35,50 @@ DODAO_SUPERADMINS=
 
 - Replace the value of the DODAO_SUPERADMINS with your MetaMask wallet's public address.
 
-1. Adjust the DATABASE_URL accordingly, or keep it as is and follow the steps below.
+- Make sure the DATABASE_URL is this `DATABASE_URL=postgresql://admin:admin@localhost:5432/next_app_localhost_db?sslmode=verify-full`.
+  Things to note in this database url
 
-   **Note:** Ensure that your local PostgreSQL server is not running, as PostgreSQL is set up to run inside Docker. This avoids conflicts with the Docker container.
+  - The username is `admin`
+  - The password is `admin`
+  - The host/address is `localhost`
+  - The port no. is 5432
 
-2. Go to the academy-ui folder
+  **Note**: these values are present in docker-compose.yaml
+
+- The database will be running inside the container but mapped to the port 5432 on your localhost so any database client connected to port 5432 can show the tables
+
+  E.g., when `pgAdmin` is connected to port 5432 and username/password is `admin`, you will be able to see the data of the database container
+
+  **Note:** Ensure that your local PostgreSQL server is not running, as PostgreSQL is set up to run inside Docker. This avoids conflicts with the Docker container.
+
+1. Go to the academy-ui folder
 
    `cd academy-ui`
 
-3. Generate graphql files
+2. Generate graphql files
 
    `yarn graphql:generate`
 
-4. Generate prisma files
+3. Generate prisma files
 
    `npx prisma generate`
 
-5. Run Database: We run database in a docker container. For that we use docker compose. To run it, open a new terminal and run the following command:
+4. Run Database: We run database in a docker container. For that we use docker compose. To run it, open a new terminal and run the following command:
 
    `docker-compose up`
 
    **Note:** Make sure to keep that terminal running.
 
-6. Verify the Database Setup:
+5. Verify the Database Setup:
 
    - Install a PostgreSQL client such as **pgAdmin 4**.
-   - When setting up pgAdmin 4, create a server using the same port as specified in `DATABASE_URL` in your `.env` file e.g., 5432. Use `localhost` as the host name/address and `admin` as the username and password.
+   - When setting up pgAdmin 4, create a server using the same port as specified in `DATABASE_URL` in your `.env` file
+     e.g., 5432. Use `localhost` as the host name/address and `admin` as the username and password.
    - Make sure a new database, `next_app_localhost_db`, is created and that the tables are present.
 
-7. Generate database tables
+6. Generate database tables from the available migrations
 
-   `npx prisma db push`
+   `yarn prisma migrate dev`
 
 ## Run the code
 
@@ -131,7 +143,7 @@ database and tables.
 
 Note: To create database from scratch, you can delete the `./data` folder and restart the docker-compose.
 
-Here is a video explanation of the database setup [Setup Database using Docker](https://drive.google.com/file/d/1Gg-KWR_OqEPLIjDMUIZmslXuZ0CUpAnZ/view?usp=sharing):
+Here is a video explanation of the database setup [Setup Database using Docker](https://drive.google.com/file/d/1Gg-KWR_OqEPLIjDMUIZmslXuZ0CUpAnZ/view?usp=sharing)
 
 ## Testing different Academy websites on local
 
