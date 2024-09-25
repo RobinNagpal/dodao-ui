@@ -1,20 +1,24 @@
 import SelectImageInputModal from '@/components/app/Image/SelectImageInputModal';
+import GenerateContentUsingAIModal from '@/components/app/Modal/AI/GenerateContentUsingAIModal';
+import { ChatCompletionRequestMessageRoleEnum, ImageType } from '@/graphql/generated/generated-types';
 import generateNewMarkdownContentPrompt from '@dodao/web-core/components/app/Markdown/generateNewMarkdownContentPrompt';
 import { markdownAIRewriteCommandFacotry } from '@dodao/web-core/components/app/Markdown/MarkdownAICommand';
 import rewriteMarkdownContentPrompt from '@dodao/web-core/components/app/Markdown/rewriteMarkdownContentPrompt';
 import SelectAIGeneratorModal from '@dodao/web-core/components/app/Markdown/SelectAIGeneratorModal';
-import GenerateContentUsingAIModal from '@/components/app/Modal/AI/GenerateContentUsingAIModal';
+import RobotIconSolid from '@dodao/web-core/components/core/icons/RobotIconSolid';
+import TextAlignCenter from '@dodao/web-core/components/core/icons/TextAlign/TextAlignCenter';
+import TextAlignJustify from '@dodao/web-core/components/core/icons/TextAlign/TextAlignJustify';
+import TextAlignLeft from '@dodao/web-core/components/core/icons/TextAlign/TextAlignLeft';
+import TextAlignRight from '@dodao/web-core/components/core/icons/TextAlign/TextAlignRight';
+import { PropsWithChildren } from '@dodao/web-core/types/PropsWithChildren';
+import { TextAlign } from '@dodao/web-core/types/ui/TextAlign';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import PhotoIcon from '@heroicons/react/24/solid/PhotoIcon';
-import RobotIconSolid from '@dodao/web-core/components/core/icons/RobotIconSolid';
-import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { ChatCompletionRequestMessageRoleEnum, ImageType, useAskChatCompletionAiMutation } from '@/graphql/generated/generated-types';
-import { PropsWithChildren } from '@dodao/web-core/types/PropsWithChildren';
 import MDEditor, { commands } from '@uiw/react-md-editor';
-import React, { SetStateAction, useState } from 'react';
-import styled from 'styled-components';
-import { v4 as uuidV4 } from 'uuid';
 import axios from 'axios';
+import React, { SetStateAction, useState } from 'react';
+import { v4 as uuidV4 } from 'uuid';
 
 const defaultGuidelines = `- The output should be in simple language and easy to understand.
 - The output should be in your own words and not copied from the content provided.
@@ -37,95 +41,53 @@ interface MarkdownEditorProps extends PropsWithChildren {
   info?: React.ReactNode;
   className?: string;
   generateImagePromptFn?: () => string;
+  selectedTextAlign?: TextAlign;
+  setTextAlign?: (align: TextAlign) => void;
 }
 
-const MainDiv = styled.div`
-  .w-md-editor-toolbar {
-    background-color: var(--bg-color);
-    border-color: var(--block-bg);
-    li {
-      button {
-        height: 24px;
-        svg {
-          color: var(--text-color);
-          width: 16px;
-          height: 16px;
-        }
-      }
-      height: 24px;
-    }
+function SelectionIcon({ selected, children }: { selected: boolean; children: React.ReactNode }) {
+  return <div className={selected ? 'border-b-2' : ''}>{children}</div>;
+}
+
+function getTextAlignIcon(textAlign: TextAlign) {
+  switch (textAlign) {
+    case TextAlign.Left:
+      return <TextAlignLeft />;
+    case TextAlign.Center:
+      return <TextAlignCenter />;
+    case TextAlign.Right:
+      return <TextAlignRight />;
+    case TextAlign.Justify:
+      return <TextAlignJustify />;
+  }
+}
+function getTextAlignCommand(selectedAlign: TextAlign, textAlign: TextAlign, setTextAlign: (align: TextAlign) => void) {
+  return {
+    name: `textAlign${textAlign}`,
+    keyCommand: `textAlign${textAlign}`,
+    icon: <SelectionIcon selected={selectedAlign === textAlign}>{getTextAlignIcon(textAlign)}</SelectionIcon>,
+    buttonProps: { title: `Text Align ${textAlign}` },
+    execute: () => {
+      setTextAlign(textAlign);
+    },
+  };
+}
+
+function getTextAlignCommands(setTextAlign?: (align: TextAlign) => void, selectedAlignment?: TextAlign) {
+  const selectedAlign = selectedAlignment || TextAlign.Center;
+  if (!setTextAlign) {
+    return [];
   }
 
-  .w-md-editor-show-edit {
-    color: var(--text-color);
-    background-color: var(--bg-color);
-    box-shadow: none;
-    border: 1px solid var(--border-color);
-  }
-
-  .w-md-editor {
-    color: var(--text-color);
-    border-color: var(--border-color);
-  }
-  .wmde-markdown-color {
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    width: 100%;
-    --color-prettylights-syntax-comment: var(--text-color);
-    --color-prettylights-syntax-constant: var(--text-color);
-    --color-prettylights-syntax-entity: var(--text-color);
-    --color-prettylights-syntax-storage-modifier-import: var(--text-color);
-    --color-prettylights-syntax-entity-tag: var(--text-color);
-    --color-prettylights-syntax-keyword: var(--text-color);
-    --color-prettylights-syntax-string: var(--text-color);
-    --color-prettylights-syntax-variable: var(--text-color);
-    --color-prettylights-syntax-brackethighlighter-unmatched: var(--text-color);
-    --color-prettylights-syntax-invalid-illegal-text: var(--text-color);
-    --color-prettylights-syntax-invalid-illegal-bg: var(--text-color);
-    --color-prettylights-syntax-carriage-return-text: var(--text-color);
-    --color-prettylights-syntax-carriage-return-bg: var(--text-color);
-    --color-prettylights-syntax-string-regexp: var(--text-color);
-    --color-prettylights-syntax-markup-list: var(--text-color);
-    --color-prettylights-syntax-markup-heading: var(--text-color);
-    --color-prettylights-syntax-markup-italic: var(--text-color);
-    --color-prettylights-syntax-markup-bold: var(--text-color);
-    --color-prettylights-syntax-markup-deleted-text: var(--text-color);
-    --color-prettylights-syntax-markup-deleted-bg: var(--text-color);
-    --color-prettylights-syntax-markup-inserted-text: var(--text-color);
-    --color-prettylights-syntax-markup-inserted-bg: var(--text-color);
-    --color-prettylights-syntax-markup-changed-text: var(--text-color);
-    --color-prettylights-syntax-markup-changed-bg: var(--text-color);
-    --color-prettylights-syntax-markup-ignored-text: var(--text-color);
-    --color-prettylights-syntax-markup-ignored-bg: var(--text-color);
-    --color-prettylights-syntax-meta-diff-range: var(--text-color);
-    --color-prettylights-syntax-brackethighlighter-angle: var(--text-color);
-    --color-prettylights-syntax-sublimelinter-gutter-mark: var(--text-color);
-    --color-prettylights-syntax-constant-other-reference-link: var(--text-color);
-    --color-fg-default: var(--text-color);
-    --color-fg-muted: var(--text-color);
-    --color-fg-subtle: var(--text-color);
-    --color-canvas-default: var(--text-color);
-    --color-canvas-subtle: var(--text-color);
-    --color-border-default: var(--text-color);
-    --color-border-muted: var(--text-color);
-    --color-neutral-muted: var(--text-color);
-    --color-accent-fg: var(--text-color);
-    --color-accent-emphasis: var(--text-color);
-    --color-attention-subtle: var(--text-color);
-    --color-danger-fg: var(--text-color);
-  }
-  .w-md-editor-text-input {
-    color: var(--text-color);
-  }
-  textarea {
-    background-color: transparent;
-    color: var(--text-color);
-  }
-  .language-markdown {
-    background-color: var(--bg-color);
-    color: var(--text-color);
-  }
-`;
+  return [
+    commands.divider,
+    getTextAlignCommand(selectedAlign, TextAlign.Left, setTextAlign),
+    getTextAlignCommand(selectedAlign, TextAlign.Center, setTextAlign),
+    getTextAlignCommand(selectedAlign, TextAlign.Right, setTextAlign),
+    getTextAlignCommand(selectedAlign, TextAlign.Justify, setTextAlign),
+    commands.divider,
+  ];
+}
 
 function MarkdownEditor({
   id = '',
@@ -144,6 +106,8 @@ function MarkdownEditor({
   info,
   className,
   children,
+  selectedTextAlign,
+  setTextAlign,
 }: MarkdownEditorProps) {
   const [showSelectAIModal, setShowSelectAIModal] = useState(false);
   const [showAddNewContentModal, setShowAddNewContentModal] = useState(false);
@@ -177,11 +141,11 @@ function MarkdownEditor({
 
   const fieldId = uuidV4();
   return (
-    <div className="mt-2 w-full">
+    <div className="mt-2 w-full markdown-editor-overrides">
       <label htmlFor={id || fieldId} className="block text-sm font-medium leading-6 mb-1">
         {label} {children}
       </label>
-      <MainDiv className="w-full bg-transparent flex">
+      <div className="w-full bg-transparent flex">
         <MDEditor
           value={modelValue}
           onChange={handleInputContent}
@@ -235,7 +199,7 @@ function MarkdownEditor({
             },
           ]}
         />
-      </MainDiv>
+      </div>
 
       {info && <p className="mt-1 text-xs">{info}</p>}
       {typeof error === 'string' && <p className="mt-2 text-sm text-red-600">{error}</p>}
