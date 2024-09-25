@@ -246,11 +246,7 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
               byteCollection={byteCollection}
               byteId={editByteModalState.byteId}
               onUpsert={async () => {
-                if (space.type === SpaceTypes.TidbitsSite) {
-                  router.push(`/tidbit-collections/view/${byteCollection.id}/${editByteModalState.byteId}`);
-                } else {
-                  router.push(`/tidbits/view/${editByteModalState.byteId}`);
-                }
+                router.push(`/tidbit-collections/view/${byteCollection.id}/${editByteModalState.byteId}`);
               }}
               closeEditByteModal={closeByteEditModal}
             />

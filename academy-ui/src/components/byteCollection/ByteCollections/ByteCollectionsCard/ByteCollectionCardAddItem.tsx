@@ -54,11 +54,7 @@ export default function CreateContentModalContents({
               space={space}
               byteCollection={byteCollection}
               onUpsert={async (byteId) => {
-                if (space.type === SpaceTypes.TidbitsSite) {
-                  router.push(`/tidbit-collections/view/${byteCollection.id}/${byteId}`);
-                } else {
-                  router.push(`/tidbits/view/${byteId}`);
-                }
+                router.push(`/tidbit-collections/view/${byteCollection.id}/${byteId}`);
               }}
             />
           </div>
