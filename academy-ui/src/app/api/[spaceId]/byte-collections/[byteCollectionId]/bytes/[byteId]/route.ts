@@ -1,15 +1,16 @@
+import { getByte } from '@/app/api/helpers/byte/getByte';
+import { transformByteInputSteps } from '@/app/api/helpers/byte/transformByteInputSteps';
+import { ByteCollectionItemType } from '@/app/api/helpers/byteCollection/byteCollectionItemType';
 import { QuestionType } from '@/app/api/helpers/deprecatedSchemas/models/enums';
 import { withErrorHandlingV1 } from '@/app/api/helpers/middlewares/withErrorHandling';
-import { transformByteInputSteps } from '@/app/api/helpers/byte/transformByteInputSteps';
-import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
 import { checkEditSpacePermission } from '@/app/api/helpers/space/checkEditSpacePermission';
+import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
 import { slugify } from '@/app/api/helpers/space/slugify';
 import { prisma } from '@/prisma';
 import { ByteDto, ByteStepDto } from '@/types/bytes/ByteDto';
 import { UpsertByteInput } from '@/types/request/ByteRequests';
 import { ByteStepItem, Question } from '@/types/stepItems/stepItemDto';
 import { Byte } from '@prisma/client';
-import { ByteCollectionItemType } from '@/app/api/helpers/byteCollection/byteCollectionItemType';
 import { NextRequest, NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -109,4 +110,13 @@ async function putHandler(
   return NextResponse.json(upsertedByte as ByteDto, { status: 200 });
 }
 
+async function getHandler(
+  req: NextRequest,
+  { params }: { params: { spaceId: string; byteCollectionId: string; byteId: string } }
+): Promise<NextResponse<ByteDto>> {
+  const { byteId, spaceId } = params;
+  return NextResponse.json((await getByte(spaceId, byteId)) as ByteDto, { status: 200 });
+}
+
 export const PUT = withErrorHandlingV1<ByteDto>(putHandler);
+export const GET = withErrorHandlingV1<ByteDto>(getHandler);

@@ -15,7 +15,12 @@ import axios from 'axios';
 import { useCallback, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-export function useEditByte(space: SpaceWithIntegrationsFragment, onUpsert: (byteId: string) => Promise<void>, byteId: string | null) {
+export function useEditByte(
+  space: SpaceWithIntegrationsFragment,
+  onUpsert: (byteId: string) => Promise<void>,
+  byteCollectionId: string,
+  byteId: string | null
+) {
   const emptyByteModel = emptyByte();
   const [byte, setByte] = useState<EditByteType>({
     ...emptyByteModel,
@@ -47,13 +52,8 @@ export function useEditByte(space: SpaceWithIntegrationsFragment, onUpsert: (byt
       setByte(byte);
       setByteLoaded(true);
     } else if (byteId) {
-      const result = await axios.get(`${getBaseUrl()}/api/byte/byte`, {
-        params: {
-          byteId,
-          spaceId: space.id,
-        },
-      });
-      const byte: ByteDto = result.data.byte;
+      const result = await axios.get(`${getBaseUrl()}/api/${space.id}/byte-collections/${byteCollectionId}/bytes/${byteId}`);
+      const byte: ByteDto = result.data;
       setByte({
         ...byte,
         byteExists: true,

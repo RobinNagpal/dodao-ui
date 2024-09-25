@@ -7,15 +7,13 @@ import { DeleteByteItemResponse } from '@/types/response/ByteResponses';
 import { ErrorResponse } from '@/types/response/ErrorResponse';
 import { NextRequest, NextResponse } from 'next/server';
 
-async function deleteHandler(req: NextRequest): Promise<NextResponse<DeleteByteItemResponse | ErrorResponse>> {
+async function deleteHandler(
+  req: NextRequest,
+  { params }: { params: { spaceId: string; byteCollectionId: string; byteId: string } }
+): Promise<NextResponse<DeleteByteItemResponse | ErrorResponse>> {
   const args: DeleteByteItemRequest = await req.json();
 
-  const url = new URL(req.url);
-  const byteCollectionId = url.pathname.split('/').pop();
-
-  if (!byteCollectionId) {
-    return NextResponse.json({ error: 'byteCollectionId is required' }, { status: 400 });
-  }
+  const byteCollectionId = params.byteCollectionId;
 
   await validateSuperAdmin(req);
 

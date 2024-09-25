@@ -39,7 +39,7 @@ export default function EditByteView(props: {
     handleByteUpsert,
     initialize,
     updateByteFunctions,
-  } = useEditByte(space, props.onUpsert, byteId || null);
+  } = useEditByte(space, props.onUpsert, byteCollection.id, byteId || null);
 
   const inputError = (field: keyof ByteErrors): string => {
     const error = byteErrors?.[field];
