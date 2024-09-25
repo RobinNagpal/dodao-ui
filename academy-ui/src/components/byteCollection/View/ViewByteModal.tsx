@@ -25,20 +25,16 @@ const EditByteView: React.ComponentType<any> = dynamic(() => import('@/component
 
 export interface ViewByteModalProps {
   space: SpaceWithIntegrationsFragment;
+  byteCollectionId: string;
   selectedByteId: string;
   viewByteModalClosedUrl: string;
   afterUpsertByteModalClosedUrl: string;
 }
 
-export default function ViewByteModal({ space, selectedByteId, viewByteModalClosedUrl, afterUpsertByteModalClosedUrl }: ViewByteModalProps) {
+export default function ViewByteModal({ space, selectedByteId, viewByteModalClosedUrl, afterUpsertByteModalClosedUrl, byteCollectionId }: ViewByteModalProps) {
   const fetchByteFn = async (byteId: string): Promise<ByteDto> => {
-    const response = await axios.get(`${getBaseUrl()}/api/byte/byte`, {
-      params: {
-        byteId: byteId,
-        spaceId: space.id,
-      },
-    });
-    return response.data.byte;
+    const response = await axios.get(`${getBaseUrl()}/api/${space.id}/byte-collections/${byteCollectionId}/bytes/${byteId}`);
+    return response.data;
   };
 
   const viewByteHelper = useViewByteInModal({ space: space, byteId: selectedByteId, stepOrder: 0, fetchByteFn: fetchByteFn });
