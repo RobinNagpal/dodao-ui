@@ -1,13 +1,13 @@
 import { withErrorHandlingV1 } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { validateApiKey } from '@/app/api/helpers/validateApiKey';
 import { prisma } from '@/prisma';
+import { ClickableDemoHtmlCaptureDto } from '@/types/html-captures/ClickableDemoHtmlCaptureDto';
 import { CreateClickableDemoHtmlCaptureRequest } from '@/types/request/ClickableDemoHtmlCaptureRequests';
-import { CreateClickableDemoHtmlCaptureResponse } from '@/types/response/ClickableDemoHtmlCaptureResponses';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { NextRequest, NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
 
-async function postHandler(req: NextRequest, { params }: { params: { spaceId: string } }): Promise<NextResponse<CreateClickableDemoHtmlCaptureResponse>> {
+async function postHandler(req: NextRequest, { params }: { params: { spaceId: string } }): Promise<NextResponse<ClickableDemoHtmlCaptureDto>> {
   const args: CreateClickableDemoHtmlCaptureRequest = await req.json();
   const { spaceId } = params;
   const apiKey = req.headers.get('X-API-KEY');
@@ -26,7 +26,7 @@ async function postHandler(req: NextRequest, { params }: { params: { spaceId: st
       createdAt: new Date(),
     },
   });
-  return NextResponse.json({ capture }, { status: 200 });
+  return NextResponse.json(capture, { status: 200 });
 }
 
-export const POST = withErrorHandlingV1<CreateClickableDemoHtmlCaptureResponse>(postHandler);
+export const POST = withErrorHandlingV1<ClickableDemoHtmlCaptureDto>(postHandler);
