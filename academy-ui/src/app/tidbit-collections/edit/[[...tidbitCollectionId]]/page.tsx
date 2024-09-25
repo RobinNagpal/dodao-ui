@@ -24,11 +24,7 @@ function EditTidbitCollectionSpace(props: { space: SpaceWithIntegrationsFragment
 
   useEffect(() => {
     async function fetchData() {
-      let response = await axios.get(`${getBaseUrl()}/api/byte/bytes`, {
-        params: {
-          spaceId: props.space.id,
-        },
-      });
+      let response = await axios.get(`${getBaseUrl()}/api/${props.space.id}/bytes`);
       setBytesResponse(response.data);
       if (byteCollectionId) {
         const response = await axios.get(`${getBaseUrl()}/api/byte-collection/byte-collection`, {
