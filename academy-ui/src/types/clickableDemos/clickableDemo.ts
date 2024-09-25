@@ -7,11 +7,11 @@ interface ClickableDemoStep {
   order: number;
 }
 
-export interface ClickableDemo {
-  demoId: string;
+export interface ClickableDemoDto {
+  id: string;
   title: string;
   excerpt: string;
-  archive: boolean;
+  archive: boolean|null;
   steps: Array<ClickableDemoStep>;
 }
 
