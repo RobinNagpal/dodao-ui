@@ -28,11 +28,7 @@ export async function getTidbitsSiteHomepageContentsOld(
     });
     const byteCollections: ByteCollectionSummary[] = response.data.byteCollections;
 
-    response = await axios.get(getBaseUrl() + '/api/byte/bytes', {
-      params: {
-        spaceId: space.id,
-      },
-    });
+    response = await axios.get(getBaseUrl() + `/api/${space.id}/bytes`);
     const bytes: ByteSummaryFragment[] = response.data.bytes;
 
     return (

@@ -10,11 +10,7 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 
 export default async function Byte() {
   const space = (await getSpaceServerSide())!;
-  const response = await axios.get(`${getBaseUrl()}/api/byte/bytes`, {
-    params: {
-      spaceId: space.id,
-    },
-  });
+  const response = await axios.get(`${getBaseUrl()}/api/${space.id}/bytes`);
 
   const bytes: ByteSummaryFragment[] = response.data.bytes;
 

@@ -1,5 +1,6 @@
 import { ByteCollectionItemType } from '@/app/api/helpers/byteCollection/byteCollectionItemType';
 import { ByteStepDto, CompletionScreenDto, ImageDisplayMode } from '@/types/bytes/ByteDto';
+import { QuestionChoice } from '@/types/stepItems/stepItemDto';
 
 export interface DeleteByteItemRequest {
   itemId: string;
@@ -8,7 +9,7 @@ export interface DeleteByteItemRequest {
 
 export interface StepItemInputGenericInput {
   answerKeys?: Array<string> | null;
-  choices?: Array<QuestionChoiceInput> | null;
+  choices?: Array<QuestionChoice> | null;
   content?: string;
   explanation?: string;
   label?: string;
@@ -16,11 +17,6 @@ export interface StepItemInputGenericInput {
   required?: boolean;
   type: string;
   uuid: string;
-}
-
-export interface QuestionChoiceInput {
-  content: string;
-  key: string;
 }
 
 export interface ByteStepInput {
@@ -44,8 +40,8 @@ export interface UpsertByteInput {
   steps: Array<ByteStepInput>;
   tags: Array<string>;
   thumbnail?: string;
-  videoAspectRatio?: string;
-  videoUrl?: string;
+  videoAspectRatio?: string | null;
+  videoUrl?: string | null;
 }
 
 export interface EditByteStep extends ByteStepInput, ByteStepDto {

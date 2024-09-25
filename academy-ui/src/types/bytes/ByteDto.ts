@@ -18,7 +18,7 @@ export interface CompletionScreenDto {
   content: string;
   name: string;
   uuid: string;
-  imageUrl?: string;
+  imageUrl?: string | null;
   items: Array<CompletionScreenItem>;
 }
 
@@ -37,8 +37,8 @@ export interface ByteDto {
   admins: Array<string>;
   tags: Array<string>;
   priority: number;
-  videoUrl?: string;
-  videoAspectRatio?: string;
+  videoUrl?: string | null;
+  videoAspectRatio?: string | null;
   completionScreen?: CompletionScreenDto | null;
   steps: Array<ByteStepDto>;
 }

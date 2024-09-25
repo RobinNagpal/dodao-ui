@@ -1,16 +1,17 @@
 import { isQuestion, isUserDiscordConnect, isUserInput } from '@/app/api/helpers/deprecatedSchemas/helpers/stepItemTypes';
-import { ByteQuestion } from '@/app/api/helpers/deprecatedSchemas/models/byte/ByteModel';
-import { ByteStepInput, ByteStepItem, ByteUserInput, UpsertByteInput, UserDiscordConnect } from '@/graphql/generated/generated-types';
+import { ByteStepDto } from '@/types/bytes/ByteDto';
+import { ByteStepInput, UpsertByteInput } from '@/types/request/ByteRequests';
+import { ByteStepItem, Question, UserDiscordConnect, UserInput } from '@/types/stepItems/stepItemDto';
 
 export function transformByteInputSteps(input: UpsertByteInput) {
-  return input.steps.map((s: ByteStepInput, i) => {
-    const stepItems: ByteStepItem[] = s.stepItems.map((si, order): ByteQuestion | ByteUserInput | UserDiscordConnect => {
+  return input.steps.map((s: ByteStepInput): ByteStepDto => {
+    const stepItems: ByteStepItem[] = s.stepItems.map((si): Question | UserInput | UserDiscordConnect => {
       if (isQuestion(si)) {
-        return si as ByteQuestion;
+        return si as Question;
       }
 
       if (isUserInput(si)) {
-        return si as ByteUserInput;
+        return si as UserInput;
       }
 
       if (isUserDiscordConnect(si)) {
@@ -19,6 +20,6 @@ export function transformByteInputSteps(input: UpsertByteInput) {
 
       throw new Error(`Unknown step item type ${si.type}`);
     });
-    return { ...s, stepItems: stepItems };
+    return { ...s, stepItems: stepItems } as ByteStepDto;
   });
 }
