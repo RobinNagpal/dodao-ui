@@ -1,4 +1,5 @@
-import { EditByteType, UpdateByteFunctions } from '@/components/bytes/Edit/editByteHelper';
+import { UpdateByteFunctions } from '@/components/bytes/Edit/editByteHelper';
+import { EditByteType } from '@/types/request/ByteRequests';
 import SidebarButton from '@dodao/web-core/components/core/buttons/SidebarButton';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { UserDiscordConnectType } from '@dodao/web-core/types/deprecated/models/enums';

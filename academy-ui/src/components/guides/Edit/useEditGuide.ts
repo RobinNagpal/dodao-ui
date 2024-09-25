@@ -1,4 +1,5 @@
 import { EditGuideType } from '@/components/guides/Edit/editGuideType';
+import { InputType } from '@dodao/web-core/types/deprecated/models/enums';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import {
   GuideInput,
@@ -201,7 +202,7 @@ export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHel
         if (isQuestion(item)) {
           validateQuestion(item as GuideQuestionFragment, stepError);
         } else if (isUserInput(item)) {
-          validateUserInput(item as GuideUserInputFragment, stepError);
+          validateUserInput(item as GuideUserInputFragment & { type: InputType }, stepError);
         }
       });
       if (Object.keys(stepError).length > 0) {

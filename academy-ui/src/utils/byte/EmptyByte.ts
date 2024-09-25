@@ -1,13 +1,14 @@
-import { ByteDetailsFragment, ByteQuestionFragmentFragment, ImageDisplayMode } from '@/graphql/generated/generated-types';
-import { PublishStatus, QuestionType } from '@dodao/web-core/types/deprecated/models/enums';
+import { ByteDto, ImageDisplayMode } from '@/types/bytes/ByteDto';
+
+import { Question } from '@/types/stepItems/stepItemDto';
+import { QuestionType } from '@dodao/web-core/types/deprecated/models/enums';
 import { v4 as uuidv4 } from 'uuid';
 
-export const emptyByte = (): Omit<ByteDetailsFragment, 'id'> & { isPristine: boolean; id: string } => {
+export const emptyByte = (): Omit<ByteDto, 'id'> & { isPristine: boolean; id: string } => {
   const step1Uuid = uuidv4();
   const step2Uuid = uuidv4();
   const byteUuid = uuidv4();
-  const stepItem: ByteQuestionFragmentFragment & { __typename: 'ByteQuestion' } = {
-    __typename: 'ByteQuestion',
+  const stepItem: Question = {
     uuid: uuidv4(),
     content: 'What is the best pet?',
     choices: [
