@@ -21,3 +21,13 @@ export interface ByteCollectionSummary {
   shorts?: Array<ShortVideo>;
   items: Array<ByteCollectionItem>;
 }
+
+export interface ByteCollectionDto {
+  id: string;
+  name: string;
+  description: string;
+  status: string;
+  byteIds: Array<string>;
+  priority: number;
+  videoUrl?: string | null;
+}
