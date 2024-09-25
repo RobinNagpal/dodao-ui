@@ -1,6 +1,6 @@
 import { GeneratedQuestionInterface } from '@/components/ai/questions/GenerateQuestionsUsingAI';
 import { GeneratedByte } from '@/components/bytes/Create/CreateByteUsingAIModal';
-import { EditByteStep } from '@/components/bytes/Edit/editByteHelper';
+import { EditByteStep } from '@/types/request/ByteRequests';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import generateQuestionsPrompt from '@/components/guides/Edit/generateQuestionsPrompt';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
