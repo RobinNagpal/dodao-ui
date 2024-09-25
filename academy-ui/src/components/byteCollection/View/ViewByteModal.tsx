@@ -64,12 +64,6 @@ export default function ViewByteModal({ space, selectedByteId, viewByteModalClos
     router.push(viewByteModalClosedUrl);
   }
 
-  const threeDotItems: EllipsisDropdownItem[] = [
-    { label: 'Edit', key: 'edit' },
-    { label: 'Generate Pdf', key: 'generate-pdf' },
-    { label: 'Rating', key: 'rating' },
-  ];
-
   const [byteSubmitted, setByteSubmitted] = useState<boolean>(false);
 
   const { showRatingsModal, setShowRatingsModal, setByteRating, skipByteRating } = useByteRatings(space, byte as ByteDetailsFragment, byteSubmitted);
