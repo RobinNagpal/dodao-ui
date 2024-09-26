@@ -25,8 +25,10 @@
   the `ClickableDemoHtmlCaptureDto` rather than something like `{capture: ClickableDemoHtmlCaptureDto}`.
 
 ### Request Types
-- When creating a new object, we should can pass the `id` in the request. The `id` can be calculated by the client.
-- `id` can be `slugify(args.input.fileName) + '-' + uuidv4().toString().substring(0, 4)`. 
+- When creating a new object, there is no need to pass the id. The `id` can be calculated by the server.
+- For some cases when we have `upsert` i.e. create and update as the same request, then we can pass the `id` in the 
+  request. But in most cases we don't need to pass the `id` in the request for creating a new object.
+- `id` can be created using the function `createNewEntityId` declared in `shared/web-core/src/utils/space/createNewEntityId.ts`. 
 - May be we include part of spaceId in the `id` as well. This is to make sure that the `id` is unique across all spaces.
 - If the request is not same as Dto, then we should create a new type for the request in the `types/request` folder.
 

@@ -6,7 +6,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { v4 as uuidv4 } from 'uuid';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
-import { emptyClickableDemo } from '@/components/clickableDemos/Edit/EmptyClickableDemo';
+import { emptyClickableDemo } from '@/utils/clickableDemos/EmptyClickableDemo';
 
 async function postHandler(req: NextRequest, { params }: { params: { spaceId: string } }) {
   const apiKey = req.headers.get('X-API-KEY');

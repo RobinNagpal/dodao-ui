@@ -1,28 +1,28 @@
-import { checkEditSpacePermission, checkSpaceIdAndSpaceInEntityAreSame } from '@/app/api/helpers/space/checkEditSpacePermission';
+import { withErrorHandlingV1 } from '@/app/api/helpers/middlewares/withErrorHandling';
+import { checkEditSpacePermission } from '@/app/api/helpers/space/checkEditSpacePermission';
 import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
 import { validateApiKey } from '@/app/api/helpers/validateApiKey';
+import { ClickableDemoStepInput } from '@/graphql/generated/generated-types';
 import { prisma } from '@/prisma';
+import { ClickableDemoDto } from '@/types/clickableDemos/ClickableDemoDto';
+import { CreateClickableDemoRequest } from '@/types/request/ClickableDemoRequests';
+import { sampleClickableDemo } from '@/utils/clickableDemos/EmptyClickableDemo';
 import { NextRequest, NextResponse } from 'next/server';
-import { withErrorHandlingV1 } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { v4 as uuidv4 } from 'uuid';
-import { emptyClickableDemo } from '@/components/clickableDemos/Edit/EmptyClickableDemo';
 import { ByteCollectionItemType } from '../../../helpers/byteCollection/byteCollectionItemType';
-import { ClickableDemoDto} from '@/types/clickableDemos/clickableDemo';
-import { CreateClickableDemoRequest, DeleteClickableDemoRequest } from '@/types/request/ClickableDemoRequests';
 
-async function getHandler(req: NextRequest, { params }: { params: { demoId: string; spaceId: string } }): Promise<NextResponse<ClickableDemoDto>>{
-  const { demoId, spaceId } = params;
+async function getHandler(req: NextRequest, { params }: { params: { demoId: string; spaceId: string } }): Promise<NextResponse<ClickableDemoDto>> {
+  const { demoId } = params;
   const clickableDemoWithSteps = await prisma.clickableDemos.findUniqueOrThrow({
     where: {
       id: demoId,
     },
   });
 
-  return NextResponse.json(clickableDemoWithSteps, { status: 200 });
+  return NextResponse.json(clickableDemoWithSteps as ClickableDemoDto, { status: 200 });
 }
 
-async function deleteHandler(req: NextRequest, { params: { demoId,spaceId } }: { params: { demoId: string; spaceId: string } }) {
-  const args: DeleteClickableDemoRequest = await req.json();
+async function deleteHandler(req: NextRequest, { params: { demoId, spaceId } }: { params: { demoId: string; spaceId: string } }) {
   const spaceById = await getSpaceById(spaceId);
   await checkEditSpacePermission(spaceById, req);
   const updatedClickableDemo = await prisma.clickableDemos.update({
@@ -44,60 +44,40 @@ async function deleteHandler(req: NextRequest, { params: { demoId,spaceId } }: {
   });
   return NextResponse.json({ status: 200, updatedClickableDemo });
 }
-async function postHandler(req: NextRequest, { params }: { params: { demoId: string; spaceId: string } }):Promise<NextResponse<ClickableDemoDto>> { 
-  let clickableDemo;
+async function postHandler(req: NextRequest, { params }: { params: { demoId: string; spaceId: string } }): Promise<NextResponse<ClickableDemoDto>> {
   const { demoId, spaceId } = params;
   const apiKey = req.headers.get('X-API-KEY');
   const spaceById = await getSpaceById(params.spaceId);
   const args: CreateClickableDemoRequest = await req.json();
-  const emptyClickableDemoModel = emptyClickableDemo();
-  console.log('args', args);
+
+  const clickableDemoSteps = args.input.steps?.length > 0 ? args.input.steps : [sampleClickableDemo() as ClickableDemoStepInput];
+
   if (apiKey) {
     await validateApiKey(apiKey, params.spaceId);
-    clickableDemo = await prisma.clickableDemos.upsert({
-      where: {
-        id: demoId,
-      },
-      create: {
-        id: demoId,
-        title: args.input.title,
-        excerpt: args.input.excerpt,
-        spaceId: spaceId,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        steps: emptyClickableDemoModel.steps,
-      },
-      update: {
-        title: args.input.title,
-        excerpt: args.input.excerpt,
-        updatedAt: new Date(),
-        steps: emptyClickableDemoModel.steps,
-      },
-    });
   } else {
-    checkSpaceIdAndSpaceInEntityAreSame(spaceId, spaceId);
     await checkEditSpacePermission(spaceById, req);
-    clickableDemo = await prisma.clickableDemos.upsert({
-      where: {
-        id: demoId,
-      },
-      create: {
-        id: demoId,
-        title: args.input.title,
-        excerpt: args.input.excerpt,
-        spaceId: spaceId,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        steps: args.input.steps,
-      },
-      update: {
-        title: args.input.title,
-        excerpt: args.input.excerpt,
-        updatedAt: new Date(),
-        steps: args.input.steps,
-      },
-    });
   }
+  const clickableDemo = await prisma.clickableDemos.upsert({
+    where: {
+      id: demoId,
+    },
+    create: {
+      id: demoId,
+      title: args.input.title,
+      excerpt: args.input.excerpt,
+      spaceId: spaceId,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      steps: clickableDemoSteps,
+    },
+    update: {
+      title: args.input.title,
+      excerpt: args.input.excerpt,
+      updatedAt: new Date(),
+      steps: clickableDemoSteps,
+    },
+  });
+
   const existingMapping = await prisma.byteCollectionItemMappings.findFirst({
     where: {
       itemId: clickableDemo.id,
@@ -133,7 +113,7 @@ async function postHandler(req: NextRequest, { params }: { params: { demoId: str
       },
     });
   }
-  return NextResponse.json(clickableDemo , { status: 200 });
+  return NextResponse.json(clickableDemo as ClickableDemoDto, { status: 200 });
 }
 
 export const POST = withErrorHandlingV1(postHandler);

@@ -1,4 +1,4 @@
-import { emptyClickableDemo } from '@/components/clickableDemos/Edit/EmptyClickableDemo';
+import { emptyClickableDemo } from '@/utils/clickableDemos/EmptyClickableDemo';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { ClickableDemoStepInput, Space, UpsertClickableDemoInput, ByteCollectionFragment } from '@/graphql/generated/generated-types';
 import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
