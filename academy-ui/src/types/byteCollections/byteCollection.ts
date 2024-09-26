@@ -1,6 +1,6 @@
 import { ByteCollectionItemType } from '@/app/api/helpers/byteCollection/byteCollectionItemType';
 import { ByteSummary } from '@/types/bytes/Byte';
-import { ClickableDemoSummary } from '@/types/clickableDemos/clickableDemo';
+import { ClickableDemoSummary } from '@/types/clickableDemos/ClickableDemoDto';
 import { ShortVideo } from '@/types/shortVideos/shortVideo';
 
 export type ByteCollectionItem =
@@ -20,4 +20,14 @@ export interface ByteCollectionSummary {
   demos?: Array<ClickableDemoSummary>;
   shorts?: Array<ShortVideo>;
   items: Array<ByteCollectionItem>;
+}
+
+export interface ByteCollectionDto {
+  id: string;
+  name: string;
+  description: string;
+  status: string;
+  byteIds: Array<string>;
+  priority: number;
+  videoUrl?: string | null;
 }
