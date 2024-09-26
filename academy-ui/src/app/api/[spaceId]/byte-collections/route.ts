@@ -10,7 +10,6 @@ import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
 
 async function postHandler(req: NextRequest, { params }: { params: { spaceId: string } }): Promise<NextResponse<ByteCollectionDto>> {
   const args: CreateByteCollectionWithApiRequest = await req.json();
-  console.log(args);
   const { spaceId } = params;
   const apiKey = req.headers.get('X-API-KEY');
   if (apiKey) {
