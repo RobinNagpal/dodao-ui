@@ -13,14 +13,14 @@ async function postHandler(req: NextRequest, { params }: { params: { spaceId: st
   const { spaceId } = params;
   const apiKey = req.headers.get('X-API-KEY');
   if (apiKey) {
-    await validateApiKey(apiKey, spaceId!);
+    await validateApiKey(apiKey, spaceId);
   } else {
     const spaceById = await getSpaceById(spaceId);
     await checkEditSpacePermission(spaceById, req);
   }
   const byteCollection = await prisma.byteCollection.create({
     data: {
-      id: createNewEntityId(args.input.name, spaceId!),
+      id: createNewEntityId(args.input.name, spaceId),
       name: args.input.name,
       description: args.input.description,
       spaceId: spaceId,

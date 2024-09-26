@@ -12,12 +12,12 @@ async function postHandler(req: NextRequest, { params }: { params: { spaceId: st
   const apiKey = req.headers.get('X-API-KEY');
 
   if (apiKey) {
-    await validateApiKey(apiKey, spaceId!);
+    await validateApiKey(apiKey, spaceId);
   }
   // Create a new ClickableDemoHtmlCapture record in the database
   const capture = await prisma.clickableDemoHtmlCaptures.create({
     data: {
-      id: createNewEntityId(args.input.fileName, spaceId!),
+      id: createNewEntityId(args.input.fileName, spaceId),
       clickableDemoId: args.input.clickableDemoId,
       fileName: args.input.fileName,
       fileUrl: args.input.fileUrl,
