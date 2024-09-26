@@ -146,7 +146,7 @@ export default function ByteStepperItemContent({
       <div className="flex justify-center w-full mt-4">
         <h1 className={stepClasses.headingClasses}>{step.name || byte.name}</h1>
       </div>
-      <div className="mt-4 px-2 lg:mt-8 text-left">
+      <div className="mt-4 px-4 lg:mt-8 text-left">
         <div dangerouslySetInnerHTML={{ __html: stepContents }} className={`markdown-body ${textAlignmentClass} ` + stepClasses.contentClasses} />
         {stepItems.map((stepItem: ByteStepItem, index) => {
           if (isQuestion(stepItem)) {
