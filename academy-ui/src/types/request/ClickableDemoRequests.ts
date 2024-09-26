@@ -9,6 +9,6 @@ export interface CreateClickableDemoRequest {
   byteCollectionId: string;
 }
 export interface DeleteClickableDemoRequest {
-    demoId: string;
-    spaceId: string;
+  demoId: string;
+  spaceId: string;
 }
