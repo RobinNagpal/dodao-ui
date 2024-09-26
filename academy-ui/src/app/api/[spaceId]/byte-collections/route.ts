@@ -32,4 +32,4 @@ async function postHandler(req: NextRequest, { params }: { params: { spaceId: st
   return NextResponse.json(byteCollection, { status: 200 });
 }
 
-export const POST = withErrorHandlingV1(postHandler);
+export const POST = withErrorHandlingV1<ByteCollectionDto>(postHandler);

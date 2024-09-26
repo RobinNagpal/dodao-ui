@@ -1,4 +1,4 @@
-import { ClickableDemoSummary } from '@/types/clickableDemos/clickableDemo';
+import { ClickableDemoSummary } from '@/types/clickableDemos/ClickableDemoDto';
 import CursorArrowRipple from '@heroicons/react/24/solid/CursorArrowRippleIcon';
 import Link from 'next/link';
 import styles from './ByteCollectionsCard.module.scss';

@@ -22,7 +22,10 @@ async function getHandler(req: NextRequest, { params }: { params: { demoId: stri
   return NextResponse.json(clickableDemoWithSteps as ClickableDemoDto, { status: 200 });
 }
 
-async function deleteHandler(req: NextRequest, { params: { demoId, spaceId } }: { params: { demoId: string; spaceId: string } }) {
+async function deleteHandler(
+  req: NextRequest,
+  { params: { demoId, spaceId } }: { params: { demoId: string; spaceId: string } }
+): Promise<NextResponse<ClickableDemoDto>> {
   const spaceById = await getSpaceById(spaceId);
   await checkEditSpacePermission(spaceById, req);
   const updatedClickableDemo = await prisma.clickableDemos.update({
@@ -42,7 +45,7 @@ async function deleteHandler(req: NextRequest, { params: { demoId, spaceId } }: 
       archive: true,
     },
   });
-  return NextResponse.json({ status: 200, updatedClickableDemo });
+  return NextResponse.json(updatedClickableDemo as ClickableDemoDto, { status: 200 });
 }
 async function postHandler(req: NextRequest, { params }: { params: { demoId: string; spaceId: string } }): Promise<NextResponse<ClickableDemoDto>> {
   const { demoId, spaceId } = params;
@@ -116,6 +119,6 @@ async function postHandler(req: NextRequest, { params }: { params: { demoId: str
   return NextResponse.json(clickableDemo as ClickableDemoDto, { status: 200 });
 }
 
-export const POST = withErrorHandlingV1(postHandler);
-export const GET = withErrorHandlingV1(getHandler);
-export const DELETE = withErrorHandlingV1(deleteHandler);
+export const POST = withErrorHandlingV1<ClickableDemoDto>(postHandler);
+export const GET = withErrorHandlingV1<ClickableDemoDto>(getHandler);
+export const DELETE = withErrorHandlingV1<ClickableDemoDto>(deleteHandler);

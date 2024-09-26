@@ -1,42 +1,28 @@
-import { checkEditSpacePermission } from '@/app/api/helpers/space/checkEditSpacePermission';
-import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
-import { validateApiKey } from '@/app/api/helpers/validateApiKey';
 import { prisma } from '@/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
-import { v4 as uuidv4 } from 'uuid';
-import { slugify } from '@dodao/web-core/utils/auth/slugify';
-import { emptyClickableDemo } from '@/utils/clickableDemos/EmptyClickableDemo';
+import exp from 'constants';
 
-async function postHandler(req: NextRequest, { params }: { params: { spaceId: string } }) {
-  const apiKey = req.headers.get('X-API-KEY');
-  const spaceById = await getSpaceById(params.spaceId);
-  if (apiKey) {
-    await validateApiKey(apiKey, params.spaceId);
-  } else {
-    await checkEditSpacePermission(spaceById, req);
-  }
-
-  const body = await req.json();
-  if (!body) return NextResponse.json({ message: 'body is required' }, { status: 400 });
-  const { demoName, demoDescription } = body;
-  if (!demoName || !demoDescription) return NextResponse.json({ message: 'both demoName and description is required' }, { status: 400 });
-
-  const emptyClickableDemoModel = emptyClickableDemo();
-
-  const clickableDemo = await prisma.clickableDemos.create({
-    data: {
-      id: slugify(demoName) + '-' + uuidv4().toString().substring(0, 4),
-      spaceId: params.spaceId,
-      title: demoName,
-      excerpt: demoDescription,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      steps: emptyClickableDemoModel.steps,
+async function getHandler(req: NextRequest) {
+  const { searchParams } = new URL(req.url);
+  const spaceId = searchParams.get('spaceId');
+  if (!spaceId) return NextResponse.json({ message: 'Space ID is required' }, { status: 400 });
+  const clickableDemos = await prisma.clickableDemos.findMany({
+    where: {
+      spaceId: spaceId,
+      archive: false,
+    },
+    select: {
+      id: true,
+      title: true,
+      excerpt: true,
+      spaceId: true,
+      createdAt: true,
+      updatedAt: true,
     },
   });
 
-  return NextResponse.json({ clickableDemo }, { status: 200 });
+  return NextResponse.json({ clickableDemos }, { status: 200 });
 }
 
-export const POST = withErrorHandling(postHandler);
+export const GET = withErrorHandling(getHandler);
