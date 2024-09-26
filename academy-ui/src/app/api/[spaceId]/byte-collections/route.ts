@@ -1,10 +1,10 @@
 import { withErrorHandlingV1 } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { prisma } from '@/prisma';
 import { NextRequest, NextResponse } from 'next/server';
-import { v4 } from 'uuid';
 import { CreateByteCollectionWithApiRequest } from '@/types/request/ByteCollectionRequests';
 import { ByteCollectionDto } from '@/types/byteCollections/byteCollection';
 import { validateApiKey } from '@/app/api/helpers/validateApiKey';
+import { createNewEntityId } from '@dodao/web-core/utils/space/createNewEntityId';
 
 async function postHandler(req: NextRequest, { params }: { params: { spaceId: string } }): Promise<NextResponse<ByteCollectionDto>> {
   const args: CreateByteCollectionWithApiRequest = await req.json();
@@ -16,7 +16,7 @@ async function postHandler(req: NextRequest, { params }: { params: { spaceId: st
   }
   const byteCollection = await prisma.byteCollection.create({
     data: {
-      id: v4(),
+      id: createNewEntityId(args.input.name, spaceId!),
       name: args.input.name,
       description: args.input.description,
       spaceId: spaceId,

@@ -3,9 +3,8 @@ import { validateApiKey } from '@/app/api/helpers/validateApiKey';
 import { prisma } from '@/prisma';
 import { ClickableDemoHtmlCaptureDto } from '@/types/html-captures/ClickableDemoHtmlCaptureDto';
 import { CreateClickableDemoHtmlCaptureRequest } from '@/types/request/ClickableDemoHtmlCaptureRequests';
-import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { NextRequest, NextResponse } from 'next/server';
-import { v4 as uuidv4 } from 'uuid';
+import { createNewEntityId } from '@dodao/web-core/utils/space/createNewEntityId';
 
 async function postHandler(req: NextRequest, { params }: { params: { spaceId: string } }): Promise<NextResponse<ClickableDemoHtmlCaptureDto>> {
   const args: CreateClickableDemoHtmlCaptureRequest = await req.json();
@@ -18,7 +17,7 @@ async function postHandler(req: NextRequest, { params }: { params: { spaceId: st
   // Create a new ClickableDemoHtmlCapture record in the database
   const capture = await prisma.clickableDemoHtmlCaptures.create({
     data: {
-      id: slugify(args.input.fileName) + '-' + uuidv4().toString().substring(0, 4),
+      id: createNewEntityId(args.input.fileName, spaceId!),
       clickableDemoId: args.input.clickableDemoId,
       fileName: args.input.fileName,
       fileUrl: args.input.fileUrl,
