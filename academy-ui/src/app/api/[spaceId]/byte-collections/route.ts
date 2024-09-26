@@ -5,6 +5,8 @@ import { CreateByteCollectionWithApiRequest } from '@/types/request/ByteCollecti
 import { ByteCollectionDto } from '@/types/byteCollections/byteCollection';
 import { validateApiKey } from '@/app/api/helpers/validateApiKey';
 import { createNewEntityId } from '@dodao/web-core/utils/space/createNewEntityId';
+import { checkEditSpacePermission } from '@/app/api/helpers/space/checkEditSpacePermission';
+import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
 
 async function postHandler(req: NextRequest, { params }: { params: { spaceId: string } }): Promise<NextResponse<ByteCollectionDto>> {
   const args: CreateByteCollectionWithApiRequest = await req.json();
@@ -13,6 +15,9 @@ async function postHandler(req: NextRequest, { params }: { params: { spaceId: st
   const apiKey = req.headers.get('X-API-KEY');
   if (apiKey) {
     await validateApiKey(apiKey, spaceId!);
+  } else {
+    const spaceById = await getSpaceById(spaceId);
+    await checkEditSpacePermission(spaceById, req);
   }
   const byteCollection = await prisma.byteCollection.create({
     data: {

@@ -43,7 +43,7 @@ function EditTidbitCollectionSpace(props: { space: SpaceWithIntegrationsFragment
 
   async function upsertByteCollectionFn(byteCollection: EditByteCollection, byteCollectionId: string | null) {
     if (!byteCollectionId) {
-      await fetch(`${getBaseUrl()}/api/byte-collection/create-byte-collection`, {
+      await fetch(`${getBaseUrl()}/api/${props.space.id}/byte-collections`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -23,7 +23,7 @@ export default function AddByteCollection({ space }: { space: SpaceWithIntegrati
 
   async function upsertByteCollectionFn(byteCollection: EditByteCollection) {
     try {
-      const result = await fetch(`${getBaseUrl()}/api/byte-collection/create-byte-collection`, {
+      const result = await fetch(`${getBaseUrl()}/api/${space.id}/byte-collections`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
