@@ -3,7 +3,6 @@ import { ClickableDemoStepInput, Space, UpsertClickableDemoInput, ByteCollection
 import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import { useI18 } from '@/hooks/useI18';
 import { ClickableDemoErrors, ClickableDemoStepError } from '@dodao/web-core/types/errors/clickableDemoErrors';
-import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import orderBy from 'lodash/orderBy';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';

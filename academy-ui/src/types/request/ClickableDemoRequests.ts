@@ -1,10 +1,10 @@
-import { ClickableDemoStep } from '@/graphql/generated/generated-types';
+import { ClickableDemoStepDto } from '@/types/clickableDemos/ClickableDemoDto';
 
 export interface CreateClickableDemoRequest {
   input: {
     title: string;
     excerpt: string;
-    steps: Array<ClickableDemoStep>;
+    steps: Array<ClickableDemoStepDto>;
   };
   byteCollectionId: string;
 }
