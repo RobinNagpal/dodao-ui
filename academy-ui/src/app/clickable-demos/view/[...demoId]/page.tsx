@@ -16,7 +16,7 @@ function ViewClickableDemo({ params, space }: { params: { demoId: string[] }; sp
   useEffect(() => {
     async function fetchData() {
       setLoading(true);
-      const response = await axios.get(`${getBaseUrl()}/api/clickable-demos/${demoId}`, {
+      const response = await axios.get(`${getBaseUrl()}/api/${space.id}/clickable-demos/${demoId}`, {
         params: {
           spaceId: space.id,
           demoId,
