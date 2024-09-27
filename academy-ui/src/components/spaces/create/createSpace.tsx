@@ -10,7 +10,7 @@ import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { useSession } from 'next-auth/react';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { headers } from 'next/headers';
 
 interface CreateSpaceProps {
   space: Space;
@@ -23,6 +23,8 @@ function CreateSpace({ space }: CreateSpaceProps) {
   const { showNotification } = useNotificationContext();
   const router = useRouter();
   const { data: clientSession } = useSession() as { data: Session | null };
+  const reqHeaders = headers();
+  const host = reqHeaders.get('host');
 
   console.log('cleint session', clientSession);
   console.log('dawood space', space);
@@ -54,58 +56,32 @@ function CreateSpace({ space }: CreateSpaceProps) {
     tidbitsHomepage: null,
   };
 
-  const upsertSpace = async () => {
-    console.log('dawood upsert space params: ', upsertSpaceParams);
-    console.log('dawood cleint session: ', clientSession);
+  const onSubmit = async () => {
     try {
       setUpserting(true);
-      const response = await fetch('/api/spaces/upsert', {
+      const response = await fetch('/api/[spaceId]/actions/space/new-tidbit-space', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ ...upsertSpaceParams }),
+        body: JSON.stringify({
+          spaceData: upsertSpaceParams,
+          userId: clientSession?.userId,
+          userData: {
+            spaceId: upsertSpaceParams.id,
+          },
+        }),
       });
       setUpserting(false);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-      console.log('Space created Successful', response);
-      showNotification({ type: 'success', message: 'Space created successfully' });
+      console.log('Space created and User space updated successfully', response);
+      setIsSpaceCreated(true);
+      showNotification({ type: 'success', message: 'Space created and User space updated successfully' });
     } catch (error: any) {
       console.error('Space creation Failed:', error);
-      showNotification({ type: 'error', message: 'Error while creating the space' });
-    }
-  };
-
-  const updateSpaceOfUser = async () => {
-    try {
-      const response = await fetch('/api/user/edit', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ id: clientSession?.userId, spaceId: upsertSpaceParams.id }),
-      });
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      console.log('User Space update Successful', response);
-      showNotification({ type: 'success', message: 'User Space updated successfully' });
-      setIsSpaceCreated(true);
-      // router.push('/');
-    } catch (error: any) {
-      console.error('User Space updation Failed:', error);
-      showNotification({ type: 'error', message: 'Error while updating the user space' });
-    }
-  };
-
-  const onSubmit = async () => {
-    try {
-      await upsertSpace();
-      await updateSpaceOfUser();
-    } catch (error) {
-      console.error('Error during space creation:', error);
+      showNotification({ type: 'error', message: 'Error while creating the space or updating user space' });
     }
   };
 
@@ -142,14 +118,14 @@ function CreateSpace({ space }: CreateSpaceProps) {
               <p className="mt-4 text-md">
                 Your space is created. Click{' '}
                 <a
-                  href={`http://${upsertSpaceParams.id}-${window.location.hostname}:${window.location.port}/spaces/setup`}
+                  href={`http://${upsertSpaceParams.id}.${host}/spaces/finish-space-setup`}
                   className="text-blue-500 underline"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   here
                 </a>{' '}
-                to go to you space
+                to go to your space
               </p>
             </div>
           </div>
