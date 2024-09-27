@@ -113,3 +113,13 @@ to make this work. [See Here](https://vercel.com/docs/projects/domains/add-a-dom
 
 # Spaces and Data
 - We always separate the data of each space and we never show data of all spaces together. We only show it one at a time for a particular url/space.
+
+
+# Checklist to make sure you understand
+- [ ] How we determine the space based on the domain in the url
+- [ ] How we show the content specific to the space based on the domain in the url
+- [ ] How subdomains work
+- [ ] How we use the subdomain to determine the space
+- [ ] How subdomain is the space id
+- [ ] How we use the custom domain to determine the space
+- [ ] How to add a custom domain to the space
