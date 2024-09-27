@@ -1,0 +1,36 @@
+.menuButton {
+  color: var(--text-color);
+
+  &:hover {
+    color: var(--primary-color);
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--primary-color), 0 0 0 4px var(--bg-color);
+  }
+}
+
+.dropdownItem {
+  color: var(--link-color);
+  background-color: transparent;
+
+  &:hover {
+    background-color: var(--block-bg);
+    color: var(--text-color);
+  }
+
+  &.active {
+    color: var(--text-color);
+    background-color: var(--block-bg);
+  }
+}
+
+.menuItems {
+  z-index: 9999; // Higher than typical parent elements
+
+  border: 1px solid var(--border-color);
+  background-color: var(--block-bg);
+
+
+}
