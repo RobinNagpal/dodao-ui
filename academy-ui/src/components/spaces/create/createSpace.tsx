@@ -9,17 +9,24 @@ import { v4 as uuidv4 } from 'uuid';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { useSession } from 'next-auth/react';
+import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 
 interface CreateSpaceProps {
   space: Space;
 }
 
-export default function CreateSpace({ space }: CreateSpaceProps) {
+function CreateSpace({ space }: CreateSpaceProps) {
   const [project, setProject] = useState('');
   const [upserting, setUpserting] = useState(false);
+  const [isSpaceCreated, setIsSpaceCreated] = useState(false);
   const { showNotification } = useNotificationContext();
   const router = useRouter();
   const { data: clientSession } = useSession() as { data: Session | null };
+
+  console.log('cleint session', clientSession);
+  console.log('dawood space', space);
+
   const upsertSpaceParams: Space = {
     id: slugify(project) + '-' + uuidv4().toString().substring(0, 4),
     adminUsernamesV1: space?.adminUsernamesV1!,
@@ -27,18 +34,32 @@ export default function CreateSpace({ space }: CreateSpaceProps) {
     avatar: space?.avatar!,
     createdAt: new Date(),
     updatedAt: new Date(),
-    creator: clientSession?.user?.email!,
+    creator: clientSession?.username!,
     domains: space?.domains!,
-    features: space?.features!,
+    features: [],
     name: project,
-    themeColors: space?.themeColors!,
+    themeColors: null,
     verified: true,
+    type: 'TidbitsSite',
+    skin: '',
+    admins: [],
+    adminUsernames: [],
+    inviteLinks: null,
+    discordInvite: null,
+    telegramInvite: null,
+    botDomains: [],
+    guideSettings: {},
+    socialSettings: {},
+    byteSettings: {},
+    tidbitsHomepage: null,
   };
 
   const upsertSpace = async () => {
+    console.log('dawood upsert space params: ', upsertSpaceParams);
+    console.log('dawood cleint session: ', clientSession);
     try {
       setUpserting(true);
-      const response = await fetch('/api/space/upsert', {
+      const response = await fetch('/api/spaces/upsert', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -49,10 +70,8 @@ export default function CreateSpace({ space }: CreateSpaceProps) {
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-      // Process response here
       console.log('Space created Successful', response);
       showNotification({ type: 'success', message: 'Space created successfully' });
-      //   router.push('/homepage');
     } catch (error: any) {
       console.error('Space creation Failed:', error);
       showNotification({ type: 'error', message: 'Error while creating the space' });
@@ -71,10 +90,10 @@ export default function CreateSpace({ space }: CreateSpaceProps) {
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-      // Process response here
       console.log('User Space update Successful', response);
       showNotification({ type: 'success', message: 'User Space updated successfully' });
-      router.push('/');
+      setIsSpaceCreated(true);
+      // router.push('/');
     } catch (error: any) {
       console.error('User Space updation Failed:', error);
       showNotification({ type: 'error', message: 'Error while updating the user space' });
@@ -82,8 +101,12 @@ export default function CreateSpace({ space }: CreateSpaceProps) {
   };
 
   const onSubmit = async () => {
-    await upsertSpace();
-    await updateSpaceOfUser();
+    try {
+      await upsertSpace();
+      await updateSpaceOfUser();
+    } catch (error) {
+      console.error('Error during space creation:', error);
+    }
   };
 
   return (
@@ -111,6 +134,29 @@ export default function CreateSpace({ space }: CreateSpaceProps) {
           </div>
         </div>
       </div>
+      {isSpaceCreated && (
+        <FullPageModal open={true} onClose={() => {}} title={''}>
+          <div className="flex flex-col items-center p-8 rounded-lg shadow-md pb-16">
+            <div className="text-center">
+              <h1 className="text-xl font-semibold">Space Created Successfully</h1>
+              <p className="mt-4 text-md">
+                Your space is created. Click{' '}
+                <a
+                  href={`http://${upsertSpaceParams.id}-${window.location.hostname}:${window.location.port}/spaces/setup`}
+                  className="text-blue-500 underline"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  here
+                </a>{' '}
+                to go to you space
+              </p>
+            </div>
+          </div>
+        </FullPageModal>
+      )}
     </section>
   );
 }
+
+export default CreateSpace;
