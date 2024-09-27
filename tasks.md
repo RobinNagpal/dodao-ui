@@ -24,6 +24,7 @@
 - [x] notification on sign out
 - [ ] redirect to tidbitshub home page on sign out (for now it goes to localhost instead of tidbithub-localhost)
 - [x] create space page where user will come after clicking verification email link
+- [x] user is shown a message that space is created now click this link to go to that
 - [ ] space-setup page where user will come after clicking create space
 - [ ] creation of new space link and rerouting user to that
 - [x] upon signup, user should go to /space/create but currently login also takes to /space/create
