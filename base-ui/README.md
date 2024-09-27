@@ -45,12 +45,6 @@ DODAO_SUPERADMINS=
 
   **Note**: these values are present in docker-compose.yaml
 
-- The database will be running inside the container but mapped to the port 5432 on your localhost so any database client connected to port 5432 can show the tables
-
-  E.g., when `pgAdmin` is connected to port 5432 and username/password is `admin`, you will be able to see the data of the database container
-
-  **Note:** Ensure that your local PostgreSQL server is not running, as PostgreSQL is set up to run inside Docker. This avoids conflicts with the Docker container.
-
 1. Go to the base-ui folder
 
    `cd base-ui`
@@ -63,9 +57,17 @@ DODAO_SUPERADMINS=
 
    `docker-compose up`
 
-   **Note:** Make sure to keep that terminal running. If you are running it for the first time in the day, then you may need to open Docker Desktop app once. Otherwise you will get `docker daemon is not running`
+   **Note:** Make sure to keep that terminal running. If you are running it for the first time in the day, then you may need to open Docker Desktop app once. Otherwise you will get an error: `docker daemon is not running`.
 
-4. Verify the Database Setup:
+- The database will be running inside the container but mapped to the port 5432 on your localhost so any database client connected to port 5432 can show the tables
+
+  E.g., when `pgAdmin` is connected to port 5432 and username/password is `admin`, you will be able to see the data of the database container
+
+  **Note:** ⚠️ Ensure that your Local PostgreSQL service (e.g., postgresql-x64-16) is not running on your computer, as PostgreSQL is set up to run inside Docker. This avoids conflicts with the Docker container. If it is running then stop it by going to `Task Manager > Services` and scroll down to `postgresql-x64-16` (might be a bit different on your device) and then right click and `Stop`.
+
+  PostgreSQL service is set to restart on system start up by default so its better to change this behavior so that you don't need to stop it manually every time you restart your computer. Go to `Task Manager > Services > postgresql-x64-16 > (right click) > Open services > postgresql-x64-16 > (right click) > Properties > General > Start type` and change it to `disabled`.
+
+1. Verify the Database Setup:
 
    - Install a PostgreSQL client such as **pgAdmin 4**.
    - When setting up pgAdmin 4, create a server using the same port as specified in `DATABASE_URL` in your `.env` file
@@ -81,6 +83,27 @@ DODAO_SUPERADMINS=
 2. Ensure Docker is Running
 
    Before starting the development server, make sure Docker is running in another terminal (via `docker-compose up`) or through Docker Desktop. This is necessary for the database and other services to function correctly.
+
+   **Note:** Ensure that docker container is running fine by checking the terminal logs when you run the command. If you see these in the logs that means docker container is running fine:
+
+   ```bash
+   dodao-base-ui-db  | running bootstrap script ... ok
+   .
+   .
+   .
+   dodao-base-ui-db  | CREATE ROLE
+   dodao-base-ui-db  | CREATE TABLE
+   dodao-base-ui-db  | ALTER TABLE
+   .
+   .
+   .
+   dodao-base-ui-db  | INSERT 0 1
+   dodao-base-ui-db  | INSERT 0 1
+   .
+   .
+   .
+   dodao-base-ui-db  | 2024-09-26 13:38:40.557 UTC [1] LOG:  database system is ready to accept connections
+   ```
 
 3. Run server
 
@@ -103,12 +126,12 @@ We use docker-compose to run the database.
 ```yaml
 db:
   image: postgres
-  container_name: dodao-ui-db
+  container_name: dodao-base-ui-db
   restart: always
   environment:
     POSTGRES_USER: admin
     POSTGRES_PASSWORD: admin
-    POSTGRES_DB: next_app_localhost_db
+    POSTGRES_DB: next_app_localhost_db_base_ui
   ports:
     - '5432:5432'
   volumes:
