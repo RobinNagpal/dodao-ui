@@ -74,7 +74,7 @@ export default function CreateSpace({ space }: CreateSpaceProps) {
       // Process response here
       console.log('User Space update Successful', response);
       showNotification({ type: 'success', message: 'User Space updated successfully' });
-      router.push('/homepage');
+      router.push('/');
     } catch (error: any) {
       console.error('User Space updation Failed:', error);
       showNotification({ type: 'error', message: 'Error while updating the user space' });
