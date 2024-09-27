@@ -1,34 +1,27 @@
-import SelectImageInputModal from '@/components/app/Image/SelectImageInputModal';
-import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
-import { EditByteStep, EditByteType } from '@/components/bytes/Edit/editByteHelper';
-import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
-import CreateConnectDiscord from '@dodao/web-core/components/app/Common/CreateDiscordConnect';
 import CreateQuestion from '@/components/app/Common/CreateQuestion';
-import CreateUserInput from '@dodao/web-core/components/app/Common/CreateUserInput';
-import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
+import SelectImageInputModal from '@/components/app/Image/SelectImageInputModal';
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
+import { ByteQuestionFragmentFragment, GuideQuestion, ImageDisplayMode, ImageType, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { EditByteStep, EditByteType, StepItemInputGenericInput } from '@/types/request/ByteRequests';
+import { Question, UserInput } from '@/types/stepItems/stepItemDto';
+import CreateConnectDiscord from '@dodao/web-core/components/app/Common/CreateDiscordConnect';
+import CreateUserInput from '@dodao/web-core/components/app/Common/CreateUserInput';
+import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
 import AddStepItemModal from '@dodao/web-core/components/app/Modal/StepItem/AddStepItemModal';
+import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
+import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import Input from '@dodao/web-core/components/core/input/Input';
 import { InputWithButton } from '@dodao/web-core/components/core/input/InputWithButton';
-import {
-  ByteQuestion,
-  ByteQuestionFragmentFragment,
-  ByteUserInputFragmentFragment,
-  GuideQuestion,
-  ImageType,
-  SpaceWithIntegrationsFragment,
-  StepItemInputGenericInput,
-  ImageDisplayMode,
-} from '@/graphql/generated/generated-types';
+import StyledSelect, { StyledSelectItem } from '@dodao/web-core/components/core/select/StyledSelect';
 import { InputType, QuestionType, UserDiscordConnectType } from '@dodao/web-core/types/deprecated/models/enums';
 import { ByteErrors } from '@dodao/web-core/types/errors/byteErrors';
 import { QuestionError, StepError } from '@dodao/web-core/types/errors/error';
+import { TextAlign } from '@dodao/web-core/types/ui/TextAlign';
+import { findClosestColor } from '@dodao/web-core/utils/colors/findClosestColor';
 import isEqual from 'lodash/isEqual';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
-import { findClosestColor } from '@dodao/web-core/utils/colors/findClosestColor';
-import StyledSelect, { StyledSelectItem } from '@dodao/web-core/components/core/select/StyledSelect';
 
 interface EditByteStepperItemProps {
   space: SpaceWithIntegrationsFragment;
@@ -81,6 +74,10 @@ export default function EditByteStepperItem({
     updateStep({ ...step, content });
   };
 
+  const updateContentAlignment = (contentAlign: TextAlign) => {
+    updateStep({ ...step, contentAlign });
+  };
+
   const updateQuestionDescription = (questionId: string, content: string) => {
     const stepItems = step.stepItems.map((question) => {
       if (question.uuid === questionId) {
@@ -99,7 +96,7 @@ export default function EditByteStepperItem({
   function updateChoiceContent(questionId: string, choiceKey: string, content: string) {
     const stepItems = step.stepItems.map((question) => {
       if (question.uuid === questionId) {
-        const choices = (question as ByteQuestionFragmentFragment).choices.map((choice) => {
+        const choices = (question as Question).choices.map((choice) => {
           if (choice.key === choiceKey) {
             return { ...choice, content };
           } else {
@@ -118,21 +115,7 @@ export default function EditByteStepperItem({
     updateStep({ ...step, stepItems });
   }
 
-  const stepItemsForStepper = [
-    ...step.stepItems.map(
-      (
-        q: StepItemInputGenericInput,
-        index: number
-      ): StepItemInputGenericInput & {
-        isQuestion: boolean;
-        isDiscord: boolean;
-      } => ({
-        ...q,
-        isQuestion: q.type === QuestionType.MultipleChoice || q.type === QuestionType.SingleChoice,
-        isDiscord: q.type === UserDiscordConnectType,
-      })
-    ),
-  ];
+  const stepItemsForStepper = [...step.stepItems];
 
   function newChoiceKey() {
     return uuidv4().split('-')[0];
@@ -308,7 +291,7 @@ export default function EditByteStepperItem({
   }
 
   function addInput(type: InputType) {
-    const input: ByteUserInputFragmentFragment = {
+    const input: UserInput = {
       uuid: uuidv4(),
       label: 'Label',
       type: type,
@@ -340,7 +323,7 @@ export default function EditByteStepperItem({
     updateStep({ ...step, imageUrl });
   };
   const updateStepDisplayMode = (displayMode: string | null) => {
-    updateStep({ ...step, displayMode: displayMode?.toString() || ImageDisplayMode.Normal });
+    updateStep({ ...step, displayMode: (displayMode?.toString() as ImageDisplayMode) || ImageDisplayMode.Normal });
   };
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -363,6 +346,44 @@ For background of the image, use the color ${backgroundColor} and for the primar
 `;
 
   const [selectImageUploadModal, setSelectImageUploadModal] = useState(false);
+
+  function getStepItem(stepItem: StepItemInputGenericInput, index: number) {
+    const q = stepItem;
+    const isQuestion = q.type === QuestionType.MultipleChoice || q.type === QuestionType.SingleChoice;
+    const isDiscord = q.type === UserDiscordConnectType;
+
+    return (
+      <>
+        {isQuestion ? (
+          <CreateQuestion
+            addChoice={addChoice}
+            item={stepItem as Question}
+            removeChoice={removeChoice}
+            removeQuestion={removeStepItem}
+            setAnswer={setAnswer}
+            updateChoiceContent={updateChoiceContent}
+            updateQuestionDescription={updateQuestionDescription}
+            updateAnswers={updateAnswers}
+            questionErrors={stepErrors?.stepItems?.[stepItem.uuid] as QuestionError}
+            updateQuestionType={updateQuestionType}
+            updateQuestionExplanation={updateExplanation}
+          />
+        ) : isDiscord ? (
+          <CreateConnectDiscord item={stepItem} removeDiscord={removeStepItem} />
+        ) : (
+          <CreateUserInput
+            removeUserInput={removeStepItem}
+            item={{ ...stepItem, order: index }}
+            userInputErrors={stepErrors?.stepItems?.[stepItem.uuid]}
+            updateUserInputLabel={updateUserInputLabel}
+            updateUserInputPrivate={updateUserInputPrivate}
+            updateUserInputRequired={updateUserInputRequired}
+          />
+        )}
+      </>
+    );
+  }
+
   return (
     <StyledStepItemContainer className="w-full">
       <div className={`${byteErrors?.steps?.[step.uuid] ? 'error-event-border' : ''}`}>
@@ -430,37 +451,14 @@ For background of the image, use the color ${backgroundColor} and for the primar
             objectId={byte.id || 'unknown_byte_id'}
             imageType={ImageType.Tidbits}
             editorStyles={{ height: '200px' }}
+            selectedTextAlign={step.contentAlign || TextAlign.Center}
+            setTextAlign={updateContentAlignment}
           />
         )}
       </div>
       {stepItemsForStepper.map((stepItem, index) => (
         <StepItemWrapper key={stepItem.uuid} className="mt-2" hasError={!!stepErrors?.stepItems?.[stepItem.uuid]}>
-          {stepItem.isQuestion ? (
-            <CreateQuestion
-              addChoice={addChoice}
-              item={stepItem as ByteQuestion}
-              removeChoice={removeChoice}
-              removeQuestion={removeStepItem}
-              setAnswer={setAnswer}
-              updateChoiceContent={updateChoiceContent}
-              updateQuestionDescription={updateQuestionDescription}
-              updateAnswers={updateAnswers}
-              questionErrors={stepErrors?.stepItems?.[stepItem.uuid] as QuestionError}
-              updateQuestionType={updateQuestionType}
-              updateQuestionExplanation={updateExplanation}
-            />
-          ) : stepItem.isDiscord ? (
-            <CreateConnectDiscord item={stepItem} removeDiscord={removeStepItem} />
-          ) : (
-            <CreateUserInput
-              removeUserInput={removeStepItem}
-              item={{ ...stepItem, order: index }}
-              userInputErrors={stepErrors?.stepItems?.[stepItem.uuid]}
-              updateUserInputLabel={updateUserInputLabel}
-              updateUserInputPrivate={updateUserInputPrivate}
-              updateUserInputRequired={updateUserInputRequired}
-            />
-          )}
+          {getStepItem(stepItem, index)}
         </StepItemWrapper>
       ))}
       {modalByteInputOrQuestionOpen && (

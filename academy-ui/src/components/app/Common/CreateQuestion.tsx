@@ -1,3 +1,4 @@
+import { Question } from '@/types/stepItems/stepItemDto';
 import Checkbox from '@dodao/web-core/components/app/Form/Checkbox';
 import Radio from '@dodao/web-core/components/app/Form/Radio';
 import SidebarButton from '@dodao/web-core/components/core/buttons/SidebarButton';
@@ -5,7 +6,7 @@ import EllipsisDropdown from '@dodao/web-core/components/core/dropdowns/Ellipsis
 import DeleteIcon from '@dodao/web-core/components/core/icons/DeleteIcon';
 import Input from '@dodao/web-core/components/core/input/Input';
 import TextareaAutosize from '@dodao/web-core/components/core/textarea/TextareaAutosize';
-import { ByteQuestion, CourseQuestionFragment } from '@/graphql/generated/generated-types';
+import { CourseQuestionFragment } from '@/graphql/generated/generated-types';
 import { QuestionType } from '@dodao/web-core/types/deprecated/models/enums';
 import { GuideQuestion, GuideStepItem } from '@dodao/web-core/types/deprecated/models/GuideModel';
 import { QuestionError } from '@dodao/web-core/types/errors/error';
@@ -15,7 +16,7 @@ import styled from 'styled-components';
 
 interface QuestionComponentProps {
   addChoice: (uuid: string) => void;
-  item: GuideStepItem | ByteQuestion | CourseQuestionFragment;
+  item: GuideStepItem | Question | CourseQuestionFragment;
   questionErrors?: QuestionError;
   removeChoice?: (uuid: string, key: string) => void;
   removeQuestion?: (uuid: string) => void;

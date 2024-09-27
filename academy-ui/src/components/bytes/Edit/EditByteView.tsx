@@ -3,26 +3,24 @@
 import UploadInput from '@/components/app/UploadInput';
 import AddByteQuestionsUsingAIButton from '@/components/bytes/Create/AddByteQuestionsUsingAIButton';
 import { CreateByteUsingAIModal } from '@/components/bytes/Create/CreateByteUsingAIModal';
-import { EditByteType } from '@/components/bytes/Edit/editByteHelper';
 import EditByteStepper from '@/components/bytes/Edit/EditByteStepper';
 import { useEditByte } from '@/components/bytes/Edit/useEditByte';
-import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import { ImageType, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
+import { revalidateTidbitCollections } from '@/revalidateTags';
+import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
+import { EditByteType } from '@/types/request/ByteRequests';
 import Block from '@dodao/web-core/components/app/Block';
 import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
 import Button from '@dodao/web-core/components/core/buttons/Button';
-import { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
 import Input from '@dodao/web-core/components/core/input/Input';
 import PageLoading from '@dodao/web-core/components/core/loaders/PageLoading';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import TextareaArray from '@dodao/web-core/components/core/textarea/TextareaArray';
 import { ByteErrors } from '@dodao/web-core/types/errors/byteErrors';
-import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { revalidateTidbitCollections } from '@/revalidateTags';
 
 export default function EditByteView(props: {
   space: SpaceWithIntegrationsFragment;
@@ -41,7 +39,7 @@ export default function EditByteView(props: {
     handleByteUpsert,
     initialize,
     updateByteFunctions,
-  } = useEditByte(space, props.onUpsert, byteId || null);
+  } = useEditByte(space, props.onUpsert, byteCollection.id, byteId || null);
 
   const inputError = (field: keyof ByteErrors): string => {
     const error = byteErrors?.[field];
@@ -138,10 +136,8 @@ export default function EditByteView(props: {
                 </div>
               </div>
             </Block>
-            <Block title="Byte Steps" slim={true}>
-              <div className="mt-4">
-                <EditByteStepper space={space} byte={byte} byteErrors={byteErrors} updateByteFunctions={updateByteFunctions} />
-              </div>
+            <Block title="Byte Steps">
+              <EditByteStepper space={space} byte={byte} byteErrors={byteErrors} updateByteFunctions={updateByteFunctions} />
             </Block>
 
             <div className="flex">

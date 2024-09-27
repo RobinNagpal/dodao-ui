@@ -11,17 +11,19 @@ import { useEffect, useState } from 'react';
 
 function ViewClickableDemo({ params, space }: { params: { demoId: string[] }; space: SpaceWithIntegrationsFragment }) {
   const demoId = params.demoId[0];
-  const [data, setData] = useState<{ clickableDemoWithSteps?: ClickableDemoWithSteps }>();
+  const [data, setData] = useState<ClickableDemoWithSteps>();
   const [loading, setLoading] = useState<boolean>(false);
   useEffect(() => {
     async function fetchData() {
       setLoading(true);
-      const response = await axios.get(`${getBaseUrl()}/api/clickable-demos/${demoId}`, {
+      const response = await axios.get(`${getBaseUrl()}/api/${space.id}/clickable-demos/${demoId}`, {
         params: {
           spaceId: space.id,
           demoId,
         },
       });
+
+      console.log('response.data: ', response.data);
       setData(response.data);
       setLoading(false);
     }
@@ -34,10 +36,10 @@ function ViewClickableDemo({ params, space }: { params: { demoId: string[] }; sp
     return <FullPageLoader />;
   }
 
-  if (data?.clickableDemoWithSteps) {
+  if (data) {
     return (
       <ClickableDemoModal
-        clickableDemoWithSteps={data!.clickableDemoWithSteps}
+        clickableDemoWithSteps={data}
         space={space}
         onClose={() => {
           router.push(`${space.type === SpaceTypes.TidbitsSite ? '/' : '/tidbit-collections'}`);

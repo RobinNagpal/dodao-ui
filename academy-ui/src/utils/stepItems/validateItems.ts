@@ -1,5 +1,6 @@
 import { ByteQuestionFragmentFragment, CourseQuestionFragment, GuideQuestionFragment, StepItemInputGenericInput } from '@/graphql/generated/generated-types';
-import { UserInput } from '@dodao/web-core/types/deprecated/models/GuideModel';
+
+import { UserInput } from '@/types/stepItems/stepItemDto';
 import { ChoiceError, QuestionError, StepError, UserInputError } from '@dodao/web-core/types/errors/error';
 
 const questionContentLimit = 1024;
@@ -50,7 +51,7 @@ export function validateUserInput(userInput: UserInput, stepError: StepError) {
     if (!stepError.stepItems) {
       stepError.stepItems = {};
     }
-    stepError.stepItems[userInput.order] = userInputError;
+    stepError.stepItems[userInput.order || 0] = userInputError;
   } else {
     delete stepError.stepItems;
   }

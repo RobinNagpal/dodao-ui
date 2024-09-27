@@ -1,6 +1,7 @@
 import { checkIfQuestionIsComplete, checkIfUserInputIsComplete, updateItemValue } from '@/components/bytes/View/viewByteHelper';
+import { ByteDto, ByteStepDto } from '@/types/bytes/ByteDto';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { ByteDetailsFragment, ByteStepFragment, ByteSubmissionInput, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { ByteSubmissionInput, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { LocalStorageKeys } from '@dodao/web-core/types/deprecated/models/enums';
 import { ByteSubmissionError } from '@dodao/web-core/types/errors/error';
@@ -17,7 +18,7 @@ export interface UseViewByteInModalArgs {
   space: SpaceWithIntegrationsFragment;
   byteId: string;
   stepOrder: number;
-  fetchByteFn: (byteId: string) => Promise<ByteDetailsFragment>;
+  fetchByteFn: (byteId: string) => Promise<ByteDto>;
 }
 export function useViewByteInModal({ space, byteId, stepOrder, fetchByteFn }: UseViewByteInModalArgs): UseViewByteHelper {
   const { data: sessionData } = useSession();
@@ -25,8 +26,8 @@ export function useViewByteInModal({ space, byteId, stepOrder, fetchByteFn }: Us
   // Replace Vue reactive refs with React state
   const [activeStepOrder, setActiveStepOrder] = useState<number>(0);
   const [byteLoaded, setByteLoaded] = useState<boolean>(false);
-  const [byteRef, setByteRef] = useState<ByteDetailsFragment | null>(null);
-  const [byteStepsMap, setByteStepsMap] = useState<{ [uuid: string]: ByteStepFragment }>({});
+  const [byteRef, setByteRef] = useState<ByteDto | null>(null);
+  const [byteStepsMap, setByteStepsMap] = useState<{ [uuid: string]: ByteStepDto }>({});
   const [byteSubmitting, setByteSubmitting] = useState<boolean>(false);
   const [errors, setErrors] = useState<ByteSubmissionError>({});
 
@@ -44,11 +45,9 @@ export function useViewByteInModal({ space, byteId, stepOrder, fetchByteFn }: Us
 
     setByteRef({
       ...byte,
-      __typename: 'Byte',
       steps: [
         ...byte.steps,
         {
-          __typename: 'ByteStep',
           content: 'The Tidbit has been completed successfully!',
           name: 'Completed',
           uuid: LAST_STEP_UUID,
@@ -66,9 +65,6 @@ export function useViewByteInModal({ space, byteId, stepOrder, fetchByteFn }: Us
     }
 
     setByteStepsMap(Object.fromEntries(byte.steps.map((step) => [step.uuid, step])));
-
-    // ...
-
     setByteSubmission({
       ...byteSubmission,
       stepResponsesMap: Object.fromEntries(
@@ -91,7 +87,7 @@ export function useViewByteInModal({ space, byteId, stepOrder, fetchByteFn }: Us
     return stepSubmission?.itemResponsesMap[stepItemUuid];
   }
 
-  function goToNextStep(currentStep: ByteStepFragment) {
+  function goToNextStep(currentStep: ByteStepDto) {
     setActiveStepOrder(activeStepOrder + 1);
 
     setByteSubmission((prevByteSubmission: any) => {
@@ -109,7 +105,7 @@ export function useViewByteInModal({ space, byteId, stepOrder, fetchByteFn }: Us
     });
   }
 
-  function goToPreviousStep(currentStep: ByteStepFragment) {
+  function goToPreviousStep(currentStep: ByteStepDto) {
     setActiveStepOrder(activeStepOrder - 1);
   }
 
@@ -180,7 +176,6 @@ export function useViewByteInModal({ space, byteId, stepOrder, fetchByteFn }: Us
             steps: [
               ...stepsWithoutLastOne,
               {
-                __typename: 'ByteStep',
                 content: lastStepContent,
                 name: 'Completed',
                 uuid: LAST_STEP_UUID,
@@ -247,10 +242,10 @@ export interface UseViewByteHelper {
   errors: ByteSubmissionError;
   getStepSubmission: (stepUuid: string) => StepResponse | undefined;
   getStepItemSubmission: (stepUuid: string, stepItemUuid: string) => StepItemResponse | undefined;
-  goToNextStep: (currentStep: ByteStepFragment) => void;
-  goToPreviousStep: (currentStep: ByteStepFragment) => void;
+  goToNextStep: (currentStep: ByteStepDto) => void;
+  goToPreviousStep: (currentStep: ByteStepDto) => void;
   byteLoaded: boolean;
-  byteRef: ByteDetailsFragment;
+  byteRef: ByteDto;
   byteSubmission: TempByteSubmission;
   byteSubmitting: boolean;
   isUserInputComplete: (stepUuid: string) => boolean;

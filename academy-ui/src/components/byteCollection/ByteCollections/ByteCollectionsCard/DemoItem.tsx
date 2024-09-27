@@ -1,4 +1,4 @@
-import { ClickableDemoSummary } from '@/types/clickableDemos/clickableDemo';
+import { ClickableDemoSummary } from '@/types/clickableDemos/ClickableDemoDto';
 import CursorArrowRipple from '@heroicons/react/24/solid/CursorArrowRippleIcon';
 import Link from 'next/link';
 import styles from './ByteCollectionsCard.module.scss';
@@ -19,7 +19,7 @@ export default function DemoItem(props: DemoItemProps) {
   const demoViewUrl = `clickable-demos/view/${demo.demoId}`;
   return (
     <li key={demo.demoId}>
-      <div className="relative pb-8">
+      <div className="relative pb-6">
         {eventIdx !== itemLength - 1 ? <span className="absolute left-4 top-4 -ml-px h-full w-0.5 bg-gray-200" aria-hidden="true" /> : null}
         <div className="relative flex space-x-3 justify-between">
           <Link className="flex cursor-pointer" href={demoViewUrl}>

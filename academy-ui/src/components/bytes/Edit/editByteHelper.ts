@@ -1,18 +1,12 @@
-import {
-  ByteQuestionFragmentFragment,
-  ByteStepFragment,
-  ByteStepInput,
-  CompletionScreen,
-  ImageDisplayMode,
-  StepItemInputGenericInput,
-  UpsertByteInput,
-} from '@/graphql/generated/generated-types';
+import { ImageDisplayMode } from '@/graphql/generated/generated-types';
+import { CompletionScreenDto } from '@/types/bytes/ByteDto';
+import { ByteStepInput, EditByteStep, EditByteType, StepItemInputGenericInput, UpsertByteInput } from '@/types/request/ByteRequests';
+import { Question, UserInput } from '@/types/stepItems/stepItemDto';
+import { validateQuestion, validateUserInput } from '@/utils/stepItems/validateItems';
 import { isQuestion, isUserInput } from '@dodao/web-core/types/deprecated/helpers/stepItemTypes';
-import { UserInput } from '@dodao/web-core/types/deprecated/models/GuideModel';
 import { ByteErrors, CompletionScreenErrors, CompletionScreenItemErrors } from '@dodao/web-core/types/errors/byteErrors';
 import { StepError } from '@dodao/web-core/types/errors/error';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
-import { validateQuestion, validateUserInput } from '@/utils/stepItems/validateItems';
 import { v4 as uuidv4 } from 'uuid';
 
 const questionContentLimit = 1024;
@@ -21,18 +15,6 @@ const stepContentLimit = 14400;
 const byteExceptContentLimit = 64;
 const choiceContentLimit = 256;
 const nameLimit = 40;
-export interface EditByteStepItem extends Omit<StepItemInputGenericInput, 'order'> {}
-
-export interface EditByteStep extends Omit<ByteStepInput, 'stepItems'>, Omit<ByteStepFragment, 'stepItems'> {
-  stepItems: EditByteStepItem[];
-}
-
-export interface EditByteType extends UpsertByteInput {
-  id: string;
-  isPristine: boolean;
-  byteExists: boolean;
-  steps: EditByteStep[];
-}
 
 export type KeyOfByteInput = keyof EditByteType;
 
@@ -46,7 +28,7 @@ export type UpdateByteFunctions = {
   removeStep: (stepUuid: string) => void;
   moveStepUp: (stepUuid: string) => void;
   setByte: (byte: EditByteType) => void;
-  updateCompletionScreen: (field: keyof CompletionScreen, value: any) => void;
+  updateCompletionScreen: (field: keyof CompletionScreenDto, value: any) => void;
   removeCompletionScreen: () => void;
   addCallToActionButtonLink: (uuid: string, link: string) => void;
   addCallToActionButtonLabel: (uuid: string, label: string) => void;
@@ -91,10 +73,10 @@ export function editByteCommonFunctions(setByte: (value: ((prevState: EditByteTy
     });
   };
 
-  const updateCompletionScreenFn = (field: keyof CompletionScreen, value: any) => {
+  const updateCompletionScreenFn = (field: keyof CompletionScreenDto, value: any) => {
     setByte((prevByte) => {
       const uuid = uuidv4();
-      const defaultCompletionScreen: CompletionScreen = {
+      const defaultCompletionScreen: CompletionScreenDto = {
         content: '',
         name: '',
         imageUrl: '',
@@ -194,7 +176,7 @@ export function editByteCommonFunctions(setByte: (value: ((prevState: EditByteTy
     });
   };
 
-  function validateCompletionScreen(completionScreen?: CompletionScreen): CompletionScreenErrors {
+  function validateCompletionScreen(completionScreen?: CompletionScreenDto): CompletionScreenErrors {
     let errors: CompletionScreenErrors = {};
 
     if (completionScreen && !completionScreen?.name?.trim()) {
@@ -246,7 +228,7 @@ export function editByteCommonFunctions(setByte: (value: ((prevState: EditByteTy
       }
       step.stepItems.forEach((item: StepItemInputGenericInput) => {
         if (isQuestion(item)) {
-          validateQuestion(item as ByteQuestionFragmentFragment, stepError);
+          validateQuestion(item as Question, stepError);
         } else if (isUserInput(item)) {
           validateUserInput(item as UserInput, stepError);
         }
@@ -271,46 +253,14 @@ export function editByteCommonFunctions(setByte: (value: ((prevState: EditByteTy
       content: byte.content,
       id: byte.id || slugify(byte.name) + '-' + uuidv4().toString().substring(0, 4),
       name: byte.name,
-      steps: byte.steps.map((s) => ({
-        content: s.content,
-        name: s.name,
-        displayMode: s.displayMode || ImageDisplayMode.Normal,
-        stepItems: s.stepItems.map((si) => ({
-          type: si.type,
-          uuid: si.uuid,
-          answerKeys: si.answerKeys,
-          choices: si.choices?.map((c) => ({ key: c.key, content: c.content })),
-          content: si.content,
-          questionType: si.questionType,
-          label: si.label,
-          required: si.required,
-          explanation: si.explanation,
-        })),
-        imageUrl: s.imageUrl,
-        uuid: s.uuid,
-      })),
+      steps: byte.steps,
       thumbnail: byte.thumbnail,
       created: byte.created,
       admins: byte.admins,
       tags: byte.tags,
       priority: byte.priority,
       videoUrl: byte.videoUrl,
-      completionScreen:
-        byte.completionScreen != null
-          ? {
-              content: byte.completionScreen.content,
-              name: byte.completionScreen.name,
-              uuid: byte.completionScreen.uuid,
-              imageUrl: byte.completionScreen.imageUrl,
-              items: Array.isArray(byte.completionScreen.items)
-                ? byte.completionScreen.items.map((i) => ({
-                    uuid: i.uuid,
-                    link: i.link,
-                    label: i.label,
-                  }))
-                : [],
-            }
-          : null,
+      completionScreen: byte.completionScreen,
     };
   }
 

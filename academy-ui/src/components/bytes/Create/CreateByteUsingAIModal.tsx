@@ -1,4 +1,4 @@
-import { EditByteType } from '@/components/bytes/Edit/editByteHelper';
+import { EditByteType } from '@/types/request/ByteRequests';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import ErrorWithAccentBorder from '@dodao/web-core/components/core/errors/ErrorWithAccentBorder';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
