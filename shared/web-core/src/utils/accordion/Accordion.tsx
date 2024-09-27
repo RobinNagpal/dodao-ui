@@ -4,7 +4,7 @@ import styles from './Accordion.module.scss';
 interface AccordionProps {
   isOpen: boolean;
   label: string;
-  onClick: () => void;
+  onClick: (e: React.MouseEvent<HTMLElement>) => void;
   children: ReactNode;
   hasError?: boolean;
   errorMessage?: string;
@@ -12,10 +12,13 @@ interface AccordionProps {
 
 export default function Accordion({ isOpen, label, onClick, children, hasError = false, errorMessage }: AccordionProps) {
   return (
-    <>
-      <div className={`${styles.accordionContainer} ${hasError ? styles.error : ''} ${isOpen ? styles.isOpened : ''}`}>
+    <div>
+      <div
+        className={`rounded-md mb-4 pt-2 cursor-pointer ${styles.accordionContainer} ${hasError ? styles.error : ''} ${isOpen ? styles.isOpened : ''}`}
+        onClick={(e) => !isOpen && onClick(e)}
+      >
         <div id={`accordion-${label}`}>
-          <button type="button" className="flex rounded-md items-center justify-between w-full p-5 font-medium rtl:text-right gap-3" onClick={onClick}>
+          <button type="button" className="flex rounded-md items-center justify-between w-full px-2 font-medium rtl:text-right gap-2" onClick={onClick}>
             <span>{label}</span>
             <svg
               className="w-3 h-3 shrink-0"
@@ -42,6 +45,6 @@ export default function Accordion({ isOpen, label, onClick, children, hasError =
         </div>
       </div>
       {hasError && <div className="text-red-500 ml-1 mt-1">{errorMessage}</div>}
-    </>
+    </div>
   );
 }

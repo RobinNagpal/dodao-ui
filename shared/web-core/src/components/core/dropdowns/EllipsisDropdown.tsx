@@ -1,7 +1,7 @@
 import { Menu, Transition } from '@headlessui/react';
 import { EllipsisVerticalIcon } from '@heroicons/react/20/solid';
 import React, { Fragment } from 'react';
-import styled from 'styled-components';
+import styles from './EllipsisDropdown.module.scss';
 
 export interface EllipsisDropdownItem {
   label: string;
@@ -15,39 +15,14 @@ export interface EllipsisDropdownProps {
   onSelect: (item: string, e: React.MouseEvent<HTMLAnchorElement>) => void;
 }
 
-const MenuButton = styled(Menu.Button)`
-  color: var(--text-color);
-  &:hover {
-    color: var(--primary-color);
-  }
-  &:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px var(--primary-color), 0 0 0 4px var(--bg-color);
-  }
-`;
-
-const DropdownItem = styled.a<{ active?: boolean }>`
-  color: ${({ active }) => (active ? 'var(--text-color)' : 'var(--link-color)')};
-  background-color: ${({ active }) => (active ? 'var(--block-bg)' : 'transparent')};
-  &:hover {
-    background-color: var(--block-bg);
-    color: var(--text-color);
-  }
-`;
-
-const MenuItems = styled(Menu.Items)`
-  border: 1px solid var(--border-color);
-  background-color: var(--block-bg);
-`;
-
 export default function EllipsisDropdown(props: EllipsisDropdownProps) {
   return (
     <Menu as="div" className={`relative inline-block text-left ${props.className || ''}`}>
       <div>
-        <MenuButton className="flex items-center rounded-full focus:ring-offset-2">
+        <Menu.Button className={`flex items-center rounded-full focus:ring-offset-2 z-0 ${styles.menuButton}`}>
           <span className="sr-only">Open options</span>
           <EllipsisVerticalIcon className="h-5 w-5" aria-hidden="true" />
-        </MenuButton>
+        </Menu.Button>
       </div>
       <Transition
         as={Fragment}
@@ -58,17 +33,22 @@ export default function EllipsisDropdown(props: EllipsisDropdownProps) {
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <MenuItems className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+        <Menu.Items
+          className={`absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none ${styles.menuItems}`}
+        >
           <div className="py-1">
             {props.items.map((item, index) => (
               <Menu.Item key={index}>
-                <DropdownItem className="block px-4 py-2 text-sm cursor-pointer" active={item.active} onClick={(e) => props.onSelect(item.key, e)}>
+                <a
+                  className={`block px-4 py-2 text-sm cursor-pointer ${styles.dropdownItem} ${item.active ? 'active' : ''}`}
+                  onClick={(e) => props.onSelect(item.key, e)}
+                >
                   {item.label}
-                </DropdownItem>
+                </a>
               </Menu.Item>
             ))}
           </div>
-        </MenuItems>
+        </Menu.Items>
       </Transition>
     </Menu>
   );

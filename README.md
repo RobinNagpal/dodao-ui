@@ -28,6 +28,7 @@ You should be know the following things to be able to contribute to this reposit
 - [ ] Understand how migrations work. More details in [PrismaTypesAndMigrations.md](docs/PrismaTypesAndMigrations.md)
 - [ ] Understand how to declare types for JSON fields in Prisma. More details in [PrismaTypesAndMigrations.md](docs/PrismaTypesAndMigrations.md)
 - [ ] Understand how to create new entities and declare types for them. More details in [TypeDefinitions.md](docs/TypeDefinitions.md)
+- [ ] Understand what is a space. More details in [UnderstandingSpace.md](docs/UnderstandingSpace.md)
 
 
 ### API

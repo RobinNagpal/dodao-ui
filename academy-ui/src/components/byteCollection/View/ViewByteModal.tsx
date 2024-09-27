@@ -9,7 +9,7 @@ import FullScreenByteModal from '@/components/bytes/View/FullScreenByteModal';
 import RatingByteView from '@/components/bytes/View/RatingByteView';
 import { useViewByteInModal } from '@/components/bytes/View/useViewByteInModal';
 import { ByteDetailsFragment, ByteFeedback, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
-import { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
+import { ByteDto } from '@/types/bytes/ByteDto';
 import TidbitDetailsLoader from '@dodao/web-core/components/core/loaders/TidbitDetailsLoader';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -25,21 +25,16 @@ const EditByteView: React.ComponentType<any> = dynamic(() => import('@/component
 
 export interface ViewByteModalProps {
   space: SpaceWithIntegrationsFragment;
+  byteCollectionId: string;
   selectedByteId: string;
   viewByteModalClosedUrl: string;
   afterUpsertByteModalClosedUrl: string;
 }
 
-export default function ViewByteModal({ space, selectedByteId, viewByteModalClosedUrl, afterUpsertByteModalClosedUrl }: ViewByteModalProps) {
-  const fetchByteFn = async (byteId: string): Promise<ByteDetailsFragment> => {
-    const response = await axios.get(`${getBaseUrl()}/api/byte/byte`, {
-      params: {
-        byteId: byteId,
-        spaceId: space.id,
-      },
-    });
-    const byteDetails = response.data.byte;
-    return byteDetails;
+export default function ViewByteModal({ space, selectedByteId, viewByteModalClosedUrl, afterUpsertByteModalClosedUrl, byteCollectionId }: ViewByteModalProps) {
+  const fetchByteFn = async (byteId: string): Promise<ByteDto> => {
+    const response = await axios.get(`${getBaseUrl()}/api/${space.id}/byte-collections/${byteCollectionId}/bytes/${byteId}`);
+    return response.data;
   };
 
   const viewByteHelper = useViewByteInModal({ space: space, byteId: selectedByteId, stepOrder: 0, fetchByteFn: fetchByteFn });
@@ -63,12 +58,6 @@ export default function ViewByteModal({ space, selectedByteId, viewByteModalClos
   function onClose() {
     router.push(viewByteModalClosedUrl);
   }
-
-  const threeDotItems: EllipsisDropdownItem[] = [
-    { label: 'Edit', key: 'edit' },
-    { label: 'Generate Pdf', key: 'generate-pdf' },
-    { label: 'Rating', key: 'rating' },
-  ];
 
   const [byteSubmitted, setByteSubmitted] = useState<boolean>(false);
 

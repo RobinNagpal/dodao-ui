@@ -11,7 +11,7 @@ export function useDeleteClickableDemo(space: Space, demoId: string) {
   async function handleDeletion() {
     try {
       await revalidateTidbitCollections();
-      const response = await fetch(`/api/clickable-demos/${demoId}`, {
+      const response = await fetch(`/api/${space.id}/clickable-demos/${demoId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

@@ -1,10 +1,11 @@
-import { EditByteType } from '@/components/bytes/Edit/editByteHelper';
+import { CompletionScreenDto, CompletionScreenItem } from '@/types/bytes/ByteDto';
+import { EditByteType } from '@/types/request/ByteRequests';
 import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
 import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
 import Input from '@dodao/web-core/components/core/input/Input';
 import { InputWithButton } from '@dodao/web-core/components/core/input/InputWithButton';
-import { CompletionScreen, CompletionScreenItemInput, ImageType, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { ImageType, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import React, { useState } from 'react';
 import SelectImageInputModal from '@/components/app/Image/SelectImageInputModal';
 import AddCompletionScreenItemsModal from '@dodao/web-core/components/app/Modal/CompletionScreenItem/AddCompletionScreenItemsModal';
@@ -17,7 +18,7 @@ interface EditCompletionScreenStepperItemProps {
   byteErrors?: ByteErrors;
   space: SpaceWithIntegrationsFragment;
   byte: EditByteType;
-  updateByteCompletionScreen: (field: keyof CompletionScreen, value: any) => void;
+  updateByteCompletionScreen: (field: keyof CompletionScreenDto, value: any) => void;
   removeCompletionScreen: () => void;
   addButtonLink: (uuid: string, link: string) => void;
   addButtonLabel: (uuid: string, label: string) => void;
@@ -51,7 +52,7 @@ export default function EditCompletionScreenStepperItem({
     updateByteCompletionScreen('content', content);
   };
   function addButton() {
-    const input: CompletionScreenItemInput = {
+    const input: CompletionScreenItem = {
       uuid: uuidv4(),
       label: '',
       link: '',

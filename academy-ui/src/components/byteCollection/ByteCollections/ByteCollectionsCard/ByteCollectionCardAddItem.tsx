@@ -1,15 +1,15 @@
 'use client';
 
-import Button from '@dodao/web-core/components/core/buttons/Button';
-import { SpaceWithIntegrationsFragment, ByteCollectionFragment } from '@/graphql/generated/generated-types';
 import EditByteView from '@/components/bytes/Edit/EditByteView';
 import EditClickableDemo from '@/components/clickableDemos/Create/EditClickableDemo';
 import EditShortVideoView from '@/components/shortVideos/Edit/EditShortVideoView';
+import { SpaceTypes, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
+import Button from '@dodao/web-core/components/core/buttons/Button';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
-import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
 
 export default function CreateContentModalContents({
   hideModal,
@@ -54,7 +54,7 @@ export default function CreateContentModalContents({
               space={space}
               byteCollection={byteCollection}
               onUpsert={async (byteId) => {
-                router.push(`/tidbits/view/${byteId}`);
+                router.push(`/tidbit-collections/view/${byteCollection.id}/${byteId}`);
               }}
             />
           </div>
