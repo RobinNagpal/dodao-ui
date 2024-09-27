@@ -7,6 +7,17 @@
 - We need to have wildcard subdomain working on our local for `http://*.tidbitshub-localhost.org`
 - After the space is created we will redirect the user to `http://<spaceId>.tidbitshub-localhost.org:3000/space/finish-space-setup`
 
+### Making subdomains work on local
+One simple option is to add a bunch of subdomains in etc file and then use those space names/ids for creating the spaces.
+This means you will have to delete/create the data again. Also you might have to **comment out the uuid logic** for space id generation.
+
+Add the following to your `/etc/hosts` file
+```
+127.0.0.1 space1.tidbitshub-localhost.org space2.tidbitshub-localhost.org space3.tidbitshub-localhost.org space4.tidbitshub-localhost.org space5.tidbitshub-localhost.org space6.tidbitshub-localhost.org space7.tidbitshub-localhost.org space8.tidbitshub-localhost.org space9.tidbitshub-localhost.org space10.tidbitshub-localhost.org
+```
+
+Or setup a wildcard domain on your local machine.
+
 # Understanding needed
 
 - How space loading works using subdomains. See `docs/UnderstandingSpace.md`
@@ -58,4 +69,12 @@
 - [ ] Add a new page in the academy ui at the path `/finish-space-setup`. This can have dummy text and in the next PR we
       can add functionality to this page. i.e. upload logo, updating the theme, adding usernames etc. NO NEED TO DO IN THIS PR
 
-- [ ] Update the logic in
+
+
+# Checkpoints
+- [ ] Making sure user is created in the database and they login and successfully land on to create space page
+  - [ ] Use context as "setupNewSpace" instead of signup to make the flow explicit
+- [ ] Add new route for space creation and calling it from UI. The route has logic for creating space, and updating the user with the spaceId
+- [ ] Show message to user that space is created and they can click here to go to the space
+- [ ] Make the cookie sharing work for subdomains
+- [ ] Setup a new page at `spaces/finish-space-setup` and show a dummy message
