@@ -84,7 +84,7 @@ DODAO_SUPERADMINS=
 
    Before starting the development server, make sure Docker is running in another terminal (via `docker-compose up`) or through Docker Desktop. This is necessary for the database and other services to function correctly.
 
-   **Note:** Ensure that docker container is running fine by checking the terminal logs when you run the command. If you see these in the logs that means docker container is running fine:
+   **Note:** Ensure that docker container is running fine by checking the terminal logs when you run the command. If you see the below statements in the logs then that means docker container is running fine:
 
    ```bash
    dodao-base-ui-db  | running bootstrap script ... ok
