@@ -4,12 +4,9 @@ import { prisma } from '@/prisma';
 import { ClickableDemoHtmlCaptureDto } from '@/types/html-captures/ClickableDemoHtmlCaptureDto';
 import { NextRequest, NextResponse } from 'next/server';
 
-async function getHandler(req: NextRequest, { params }: { params: {spaceId:string, demoId: string } }): Promise<NextResponse<ClickableDemoHtmlCaptureDto[]>> {
-  const { spaceId ,demoId } = params;
+async function getHandler(req: NextRequest, { params }: { params: { spaceId: string; demoId: string } }): Promise<NextResponse<ClickableDemoHtmlCaptureDto[]>> {
+  const { spaceId, demoId } = params;
   const apiKey = req.headers.get('X-API-KEY');
-    console.log(spaceId);
-    console.log(demoId);
-  // Validate API key if present
   if (apiKey) {
     await validateApiKey(apiKey, spaceId);
   }
