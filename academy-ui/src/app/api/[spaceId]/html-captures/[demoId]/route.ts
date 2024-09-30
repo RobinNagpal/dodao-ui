@@ -17,7 +17,6 @@ async function getHandler(req: NextRequest, { params }: { params: { spaceId: str
       clickableDemoId: demoId,
     },
   });
-  console.log(capture);
   return NextResponse.json(capture as ClickableDemoHtmlCaptureDto[], { status: 200 });
 }
 
