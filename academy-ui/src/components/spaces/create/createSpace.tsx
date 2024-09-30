@@ -10,6 +10,7 @@ import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { useSession } from 'next-auth/react';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
+import { CreateSpaceParams } from '@/types/request/CreateSpaceRequests';
 
 interface CreateSpaceProps {
   space: Space;
@@ -23,48 +24,29 @@ function CreateSpace({ space }: CreateSpaceProps) {
   const router = useRouter();
   const { data: clientSession } = useSession() as { data: Session | null };
 
-  const upsertSpaceParams: Space = {
+  const createSpaceParams: CreateSpaceParams = {
     // id: slugify(project) + '-' + uuidv4().toString().substring(0, 4),
     id: slugify(project),
     adminUsernamesV1: space?.adminUsernamesV1!,
     authSettings: space?.authSettings!,
     avatar: space?.avatar!,
-    createdAt: new Date(),
-    updatedAt: new Date(),
     creator: clientSession?.username!,
     domains: space?.domains!,
-    features: [],
     name: project,
-    themeColors: null,
-    verified: true,
     type: 'TidbitsSite',
-    skin: '',
-    admins: [],
-    adminUsernames: [],
-    inviteLinks: null,
-    discordInvite: null,
-    telegramInvite: null,
-    botDomains: [],
-    guideSettings: {},
-    socialSettings: {},
-    byteSettings: {},
-    tidbitsHomepage: null,
   };
 
   const onSubmit = async () => {
     try {
       setUpserting(true);
-      const response = await fetch(`/api/${upsertSpaceParams.id}/actions/spaces/new-tidbit-space`, {
+      const response = await fetch(`/api/${createSpaceParams.id}/actions/spaces/new-tidbit-space`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          spaceData: upsertSpaceParams,
-          userId: clientSession?.userId,
-          userData: {
-            spaceId: upsertSpaceParams.id,
-          },
+          spaceData: createSpaceParams,
+          userId: clientSession?.userId!,
         }),
       });
       setUpserting(false);
@@ -113,7 +95,7 @@ function CreateSpace({ space }: CreateSpaceProps) {
               <p className="mt-4 text-md">
                 Your space is created. Click{' '}
                 <a
-                  href={`http://${upsertSpaceParams.id}.${window.location.hostname}:${window.location.port}/spaces/finish-space-setup`}
+                  href={`http://${createSpaceParams.id}.${window.location.hostname}:${window.location.port}/spaces/finish-space-setup`}
                   className="text-blue-500 underline"
                   rel="noopener noreferrer"
                 >

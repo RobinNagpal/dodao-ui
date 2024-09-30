@@ -61,17 +61,18 @@ Or setup a wildcard domain on your local machine.
       We can have the callback function(we pass to the form component. The callback will be different for each application)
       which we pass to the form and it will be called after the form is submitted. Use `WebCoreSpace`
 - [x] API Change: Add a new route in the academy ui for the create space at route `/api/[spaceId]/actions/space/new-tidbit-space/route.ts`.
-  - [ ] Use error logging as explained here - https://github.com/RobinNagpal/dodao-ui/blob/main/docs/ErrorHandling.md 
-  - [ ] Simplify the logic to just update the spaceId
-  - [ ] For the `space` create fields, we set the fields as null, which we dont pass
+  - [ ] Use error logging as explained here - https://github.com/RobinNagpal/dodao-ui/blob/main/docs/ErrorHandling.md
+  - [x] Simplify the logic to just update the spaceId
+  - [x] For the `space` create fields, we set the fields as null, which we dont pass
   - [ ] Create a new Request type for the route. See https://github.com/RobinNagpal/dodao-ui/blob/main/docs/TypeDefinitions.md
-- [x] API Change: Add route does two things 
-  - [x] Create a new space in the database 
+- [x] API Change: Add route does two things
+
+  - [x] Create a new space in the database
   - [x] Update the user with the new spaceId. See `base-ui/src/components/spaces/create/createSpace.tsx` for the
-      current implementation. Both things can be done together in the same route call.
+        current implementation. Both things can be done together in the same route call.
 
 - [x] Upon creation of the space, we show a message to the user, that "Your space is created. Click [here](http://<spaceId>.tidbitshub-localhost.org:3000/spaces/finish-space-setup) to finish the setup"
-- [ ] Once the users go to that domain, they will need to re-login, as the cookies are not shared. May be the cookies we create right now can be shared across the subdomains to prevent this
+- [x] Once the users go to that domain, they will need to re-login, as the cookies are not shared. May be the cookies we create right now can be shared across the subdomains to prevent this
       step. Check this and talk to Robin if you are not able to figure it out easily.
 - [x] On screen `/finish-space-setup` we can show a message that "Your space is created. Now you can upload your logo, update the theme, add admins etc."
 - [x] Add a new page in the academy ui at the path `/finish-space-setup`. This can have dummy text and in the next PR we
@@ -80,8 +81,8 @@ Or setup a wildcard domain on your local machine.
 # Checkpoints
 
 - [x] Making sure user is created in the database and they login and successfully land on to create space page
-  - [ ] Use context as "setupNewSpace" instead of signup to make the flow explicit
+  - [x] Use context as "setupNewSpace" instead of signup to make the flow explicit
 - [x] Add new route for space creation and calling it from UI. The route has logic for creating space, and updating the user with the spaceId
 - [x] Show message to user that space is created and they can click here to go to the space
-- [ ] Make the cookie sharing work for subdomains
+- [x] Make the cookie sharing work for subdomains
 - [x] Setup a new page at `spaces/finish-space-setup` and show a dummy message

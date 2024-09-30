@@ -6,12 +6,12 @@ import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal'
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { useState } from 'react';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { WebCoreSpace } from '@dodao/web-core/types/space';
 
 export interface EmailSetupNewSpaceModalProps {
   open: boolean;
   onClose: () => void;
-  space: SpaceWithIntegrationsFragment;
+  space: WebCoreSpace;
 }
 
 function EmailSetupNewSpaceModal({ open, onClose, space }: EmailSetupNewSpaceModalProps) {
@@ -47,13 +47,13 @@ function EmailSetupNewSpaceModal({ open, onClose, space }: EmailSetupNewSpaceMod
   };
 
   const onModalClose = () => {
-    onClose(); // Trigger modal close first
+    onClose();
     // Delay the state reset slightly to allow the modal to fully close
     setTimeout(() => {
       setEmail('');
       setPassword('');
       setEmailSent(false);
-    }, 300); // Adjust delay as needed (based on the modal's close animation duration)
+    }, 300);
   };
 
   return (

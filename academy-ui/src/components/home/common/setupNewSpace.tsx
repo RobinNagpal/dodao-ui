@@ -1,9 +1,9 @@
 'use client';
 
 import ButtonLarge from '@dodao/web-core/components/core/buttons/Button';
-import EmailSetupNewSpaceModal from '../TidbitsHub/components/EmailSetupNewSpaceModal';
 import React from 'react';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import EmailSetupNewSpaceModal from '@dodao/web-core/ui/auth/signup/components/EmailSetupNewSpaceModal';
 
 export interface setupNewSpaceButtonProps {
   space: SpaceWithIntegrationsFragment;
