@@ -1,19 +1,18 @@
 'use client';
-import { useRouter } from 'next/navigation';
-import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
+import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { CreateSpaceRequest } from '@/types/request/CreateSpaceRequest';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Input from '@dodao/web-core/components/core/input/Input';
-import { Space } from '@prisma/client';
-import { useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
-import { slugify } from '@dodao/web-core/utils/auth/slugify';
-import { Session } from '@dodao/web-core/types/auth/Session';
-import { useSession } from 'next-auth/react';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
-import { CreateSpaceParams } from '@/types/request/CreateSpaceRequests';
+import { Session } from '@dodao/web-core/types/auth/Session';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
+import { slugify } from '@dodao/web-core/utils/auth/slugify';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 interface CreateSpaceProps {
-  space: Space;
+  space: SpaceWithIntegrationsFragment;
 }
 
 function CreateSpace({ space }: CreateSpaceProps) {
@@ -24,16 +23,10 @@ function CreateSpace({ space }: CreateSpaceProps) {
   const router = useRouter();
   const { data: clientSession } = useSession() as { data: Session | null };
 
-  const createSpaceParams: CreateSpaceParams = {
+  const createSpaceParams: CreateSpaceRequest = {
     // id: slugify(project) + '-' + uuidv4().toString().substring(0, 4),
     id: slugify(project),
-    adminUsernamesV1: space?.adminUsernamesV1!,
-    authSettings: space?.authSettings!,
-    avatar: space?.avatar!,
-    creator: clientSession?.username!,
-    domains: space?.domains!,
     name: project,
-    type: 'TidbitsSite',
   };
 
   const onSubmit = async () => {
