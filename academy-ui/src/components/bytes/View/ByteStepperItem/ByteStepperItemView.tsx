@@ -5,7 +5,7 @@ import { LAST_STEP_UUID, UseGenericViewByteHelper } from '@/components/bytes/Vie
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
 import useWindowDimensions from '@/hooks/useWindowDimensions';
-import { ByteDto, ByteStepDto, ImageDisplayMode } from '@/types/bytes/ByteDto';
+import { ByteDto, ByteStepDto, ByteViewMode, ImageDisplayMode } from '@/types/bytes/ByteDto';
 import { ByteStepItem, Question } from '@/types/stepItems/stepItemDto';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import { Session } from '@dodao/web-core/types/auth/Session';
@@ -26,6 +26,8 @@ import 'prismjs/components/prism-toml';
 import 'prismjs/components/prism-yaml';
 import { useEffect, useState } from 'react';
 import styles from './ByteStepperItemView.module.scss';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
 
 interface ByteStepperItemWithProgressBarProps {
   byte: ByteDto;
@@ -38,6 +40,8 @@ interface ByteStepperItemWithProgressBarProps {
 type TransitionState = 'enter' | 'active' | 'exit';
 
 function ByteStepperItemView({ viewByteHelper, step, byte, space, setByteSubmitted }: ByteStepperItemWithProgressBarProps) {
+  const isSwiperMode = byte.viewMode !== ByteViewMode.Swiper;
+
   const { activeStepOrder } = viewByteHelper;
   const { $t: t } = useI18();
   const { showNotification } = useNotificationContext();
@@ -148,22 +152,51 @@ function ByteStepperItemView({ viewByteHelper, step, byte, space, setByteSubmitt
 
   return (
     <div className={`w-full flex flex-col justify-between  ${!isShortScreen ? styles.longScreenStepContainer : styles.shortScreenStepContainer}`}>
-      <div className={`flex flex-col flex-grow justify-center align-center ${transitionClasses[transitionState]} ${styles.stepContents}`}>
-        <ByteStepperItemContent
-          space={space}
-          byte={byte}
-          step={step}
-          viewByteHelper={viewByteHelper}
-          renderer={renderer}
-          activeStepOrder={activeStepOrder}
-          nextButtonClicked={nextButtonClicked}
-          questionsAnsweredCorrectly={questionsAnsweredCorrectly}
-          questionNotAnswered={questionNotAnswered}
-          setByteSubmitted={setByteSubmitted}
-          width={width}
-          height={height}
-          isShortScreen={isShortScreen}
-        />
+      <div className={`flex flex-col flex-grow justify-center align-center ${isSwiperMode ? '' : transitionClasses[transitionState]} ${styles.stepContents}`}>
+        {isSwiperMode ? (
+          <Swiper
+            onSlideChange={(swiper) => {
+              const activeIndex = swiper.activeIndex;
+              viewByteHelper.setActiveStep(activeIndex);
+            }}
+          >
+            {byte.steps.map((step, index) => (
+              <SwiperSlide key={step.uuid}>
+                <ByteStepperItemContent
+                  space={space}
+                  byte={byte}
+                  step={step}
+                  viewByteHelper={viewByteHelper}
+                  renderer={renderer}
+                  activeStepOrder={index}
+                  nextButtonClicked={nextButtonClicked}
+                  questionsAnsweredCorrectly={questionsAnsweredCorrectly}
+                  questionNotAnswered={questionNotAnswered}
+                  setByteSubmitted={setByteSubmitted}
+                  width={width}
+                  height={height}
+                  isShortScreen={isShortScreen}
+                />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        ) : (
+          <ByteStepperItemContent
+            space={space}
+            byte={byte}
+            step={step}
+            viewByteHelper={viewByteHelper}
+            renderer={renderer}
+            activeStepOrder={activeStepOrder}
+            nextButtonClicked={nextButtonClicked}
+            questionsAnsweredCorrectly={questionsAnsweredCorrectly}
+            questionNotAnswered={questionNotAnswered}
+            setByteSubmitted={setByteSubmitted}
+            width={width}
+            height={height}
+            isShortScreen={isShortScreen}
+          />
+        )}
         <ByteStepperItemWarnings
           showUseInputCompletionWarning={incompleteUserInput}
           showQuestionsCompletionWarning={showQuestionsCompletionWarning}

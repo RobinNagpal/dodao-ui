@@ -6,6 +6,12 @@ export enum ImageDisplayMode {
   Normal = 'Normal',
 }
 
+export enum ByteViewMode {
+  Default = 'Default',
+  Swiper = 'Swiper',
+  SwiperWithProgress = 'SwiperWithProgress',
+}
+
 export interface ByteStepDto {
   content: string;
   contentAlign?: TextAlign;
@@ -35,6 +41,7 @@ export interface ByteDto {
   content: string;
   created: string;
   id: string;
+  viewMode?: ByteViewMode;
   name: string;
   admins: Array<string>;
   tags: Array<string>;

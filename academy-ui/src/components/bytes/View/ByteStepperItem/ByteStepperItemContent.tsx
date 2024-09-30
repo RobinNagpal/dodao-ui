@@ -100,7 +100,7 @@ export default function ByteStepperItemContent({
   const maxWidth = (width * 9) / 10;
 
   if (!stepItems.some(isQuestion) && step.imageUrl && step.displayMode === ImageDisplayMode.FullScreenImage) {
-    return createPortal(
+    return (
       <div className="absolute left-20 right-20 bottom-20 top-20 z-20">
         {width > height ? (
           <Image
@@ -130,8 +130,7 @@ export default function ByteStepperItemContent({
             {step.name || byte.name} : {step.content}
           </h1>
         </div>
-      </div>,
-      document.body
+      </div>
     );
   }
 
