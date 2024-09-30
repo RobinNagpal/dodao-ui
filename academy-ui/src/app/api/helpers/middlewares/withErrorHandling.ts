@@ -1,5 +1,5 @@
 import { NextResponse, NextRequest } from 'next/server';
-import { logError } from '@/app/api/helpers/adapters/errorLogger';
+import { logError, logErrorRequest } from '@/app/api/helpers/adapters/errorLogger';
 import { ErrorResponse } from '@/types/response/ErrorResponse';
 
 /**
@@ -16,6 +16,7 @@ export const withErrorHandling =
       return response;
     } catch (error) {
       await logError((error as any)?.response?.data || 'an error occured', {}, error as any, null, null);
+      await logErrorRequest(error as Error, req);
       return NextResponse.json({ message: (error as any)?.response?.data || 'an error occured' }, { status: 500 });
     }
   };
@@ -28,6 +29,7 @@ export function withErrorHandlingV1<T>(handler: Handler<T>): Handler<T> {
       return await handler(req, dynamic);
     } catch (error) {
       await logError((error as any)?.response?.data || 'an error occured', {}, error as any, null, null);
+      await logErrorRequest(error as Error, req);
       return NextResponse.json({ error: (error as any)?.response?.data || 'an error occured' }, { status: 500 });
     }
   };

@@ -1,10 +1,88 @@
 import { formatAxiosError } from '@/app/api/helpers/adapters/formatAxiosError';
 import axios from 'axios';
+import { NextRequest } from 'next/server';
 
-async function postErrorOnDiscord(e: Error | null, spaceId: string | null, blockchain: string | null, message: string, params: Record<string, any> = {}) {
-  if (message === 'invalid request request') {
+const staticPageGenerationError = "Dynamic server usage: Page couldn't be rendered statically because it used request.url";
+
+export async function logError(
+  message: string,
+  params: Record<string, any> = {},
+  e: Error | null = null,
+  spaceId: string | null = null,
+  blockchain: string | null = null
+) {
+  if (shouldIgnoreError(e || message)) {
     return;
   }
+
+  console.error(
+    e,
+    JSON.stringify({
+      spaceId,
+      blockchain,
+      message,
+      params,
+    })
+  );
+  await postErrorOnDiscord(e, spaceId, blockchain, message, params);
+}
+
+export async function logErrorRequest(e: Error | string | null, req: NextRequest) {
+  if (!e || shouldIgnoreError(e)) {
+    return;
+  }
+
+  let jsonBody = '';
+  try {
+    jsonBody = JSON.stringify(await req.json());
+  } catch (e) {}
+  const embeds = [
+    {
+      title: 'Request Info',
+      fields: [
+        {
+          name: 'Url',
+          value: req.url || '----',
+          inline: true,
+        },
+        {
+          name: 'Message',
+          value: (await req.text()).substring(0, 1000),
+          inline: false,
+        },
+        {
+          name: 'JSON',
+          value: jsonBody.substring(0, 1000),
+          inline: false,
+        },
+      ],
+    },
+  ];
+  const data = {
+    content: `Got an error for ${req.url}`,
+    embeds,
+  };
+
+  axios.post(process.env.SERVER_ERRORS_WEBHOOK!, data).catch((err) => {
+    console.log(formatAxiosError(err));
+    console.log(JSON.stringify(embeds, null, 2));
+  });
+}
+
+function shouldIgnoreError(e: Error | string) {
+  if (typeof e === 'string' && e.includes(staticPageGenerationError)) {
+    return;
+  }
+
+  const error = e as Error;
+
+  if (error?.message?.includes(staticPageGenerationError) || error?.stack?.includes(staticPageGenerationError)) {
+    return;
+  }
+  return false;
+}
+
+async function postErrorOnDiscord(e: Error | null, spaceId: string | null, blockchain: string | null, message: string, params: Record<string, any> = {}) {
   const embeds = [
     {
       title: 'Request Info',
@@ -48,37 +126,5 @@ async function postErrorOnDiscord(e: Error | null, spaceId: string | null, block
   axios.post(process.env.SERVER_ERRORS_WEBHOOK!, data).catch((err) => {
     console.log(formatAxiosError(err));
     console.log(JSON.stringify(embeds, null, 2));
-  });
-}
-
-export async function logError(
-  message: string,
-  params: Record<string, any> = {},
-  e: Error | null = null,
-  spaceId: string | null = null,
-  blockchain: string | null = null
-) {
-  console.error(
-    e,
-    JSON.stringify({
-      spaceId,
-      blockchain,
-      message,
-      params,
-    })
-  );
-  await postErrorOnDiscord(e, spaceId, blockchain, message, params);
-}
-
-export async function logErrorRequest(e: Error | null, body: any) {
-  if (e?.message === 'invalid request request') {
-    return;
-  }
-  console.error(e);
-
-  const data = body.data;
-  const { message } = data;
-  await postErrorOnDiscord(e, message.space ?? null, message.blockchain ?? null, e?.message || 'Error in Request', {
-    message,
   });
 }
