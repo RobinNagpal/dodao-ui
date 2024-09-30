@@ -3,9 +3,10 @@
 import RatingModal, { FeedbackOptions } from '@/components/app/Modal/Rating/RatingModal';
 import { useByteRatings } from '@/components/bytes/Rating/useByteRating';
 import ShareBytePage from '@/components/bytes/Share/ShareBytePage';
-import ByteStepperItemView from '@/components/bytes/View/ByteStepperItem/ByteStepperItemView';
-import ContinuousStepIndicatorProgress from '@/components/bytes/View/ByteStepperItem/Progress/ContinuousStepIndicatorProgress';
 import FullScreenByteModal from '@/components/bytes/View/FullScreenByteModal';
+import NormalByteStepperItemView from '@/components/bytes/View/ByteStepperItem/ByteStepperItemView';
+import SwiperByteStepperItemView from '@/components/bytes/View/SwiperByteView/SwiperByteStepperItemView';
+import ContinuousStepIndicatorProgress from '@/components/bytes/View/ByteStepperItem/Progress/ContinuousStepIndicatorProgress';
 import RatingByteView from '@/components/bytes/View/RatingByteView';
 import { useViewByteInModal } from '@/components/bytes/View/useViewByteInModal';
 import { ByteDetailsFragment, ByteFeedback, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
@@ -13,6 +14,8 @@ import { ByteDto } from '@/types/bytes/ByteDto';
 import TidbitDetailsLoader from '@dodao/web-core/components/core/loaders/TidbitDetailsLoader';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { Dialog } from '@headlessui/react';
+import { XMarkIcon } from '@heroicons/react/20/solid';
 import { ClipboardDocumentListIcon, RocketLaunchIcon } from '@heroicons/react/24/outline';
 import axios from 'axios';
 import dynamic from 'next/dynamic';
@@ -104,14 +107,58 @@ export default function ViewByteModal({ space, selectedByteId, viewByteModalClos
     );
   }
 
+  const isLoading = !viewByteHelper.byteRef;
+  const showSwiper = true;
+
+  if (showSwiper) {
+    return (
+      <div>
+        <div className="absolute right-2 top-2">
+          <button
+            type="button"
+            className="inline-flex rounded-md hover:text-gray-500 focus:outline-none"
+            onClick={() => {
+              onClose();
+            }}
+          >
+            <span className="sr-only">Close</span>
+            <XMarkIcon className="h-10 w-10" aria-hidden="true" />
+          </button>
+        </div>
+
+        <div className="text-center">
+          <h3 id="topBar" className="text-xl font-semibold h-14 pt-4 ">
+            {viewByteHelper.byteRef?.name || 'Tidbit Details'}
+          </h3>
+          <div>
+            {isLoading ? (
+              <TidbitDetailsLoader />
+            ) : (
+              <SwiperByteStepperItemView viewByteHelper={viewByteHelper} byte={byte} step={activeStep} space={space} setByteSubmitted={setByteSubmitted} />
+            )}
+          </div>
+        </div>
+
+        <RatingModal
+          ratingType="Byte"
+          open={showRatingsModal && (space.byteSettings.captureRating as boolean)}
+          onClose={() => setShowRatingsModal(false)}
+          skipRating={skipByteRating}
+          setRating={setByteRating as (rating: number, feedback?: ByteFeedback) => Promise<void>}
+          feedbackOptions={feedbackOptions}
+        />
+      </div>
+    );
+  }
   return (
     <FullScreenByteModal open={true} onClose={onClose} title={viewByteHelper.byteRef?.name || 'Tidbit Details'}>
       <ContinuousStepIndicatorProgress steps={viewByteHelper.byteRef?.steps?.length || 0} currentStep={activeStepOrder + 1} />
-      {byte ? (
-        <ByteStepperItemView viewByteHelper={viewByteHelper} byte={byte} step={activeStep} space={space} setByteSubmitted={setByteSubmitted} />
-      ) : (
+      {isLoading ? (
         <TidbitDetailsLoader />
+      ) : (
+        <NormalByteStepperItemView viewByteHelper={viewByteHelper} byte={byte} step={activeStep} space={space} setByteSubmitted={setByteSubmitted} />
       )}
+
       <RatingModal
         ratingType="Byte"
         open={showRatingsModal && (space.byteSettings.captureRating as boolean)}

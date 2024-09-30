@@ -3,9 +3,7 @@ import { ByteQuestionFragmentFragment } from '@/graphql/generated/generated-type
 import Question from '@/components/app/Common/Question';
 
 export function QuestionSection(props: {
-  nextButtonClicked: boolean;
-  allQuestionsAnsweredCorrectly: boolean;
-  allQuestionsAnswered: boolean;
+  showCorrectAnswerAlso: boolean;
   stepItem: ByteQuestionFragmentFragment;
   stepItemSubmission: StepItemResponse | undefined;
   onSelectAnswer: (questionId: string, selectedAnswers: string[]) => void;
@@ -13,19 +11,13 @@ export function QuestionSection(props: {
   return (
     <div>
       <h2 className="text-2xl font-semibold mb-4 text-center">Question</h2>
-      <div
-        className={
-          props.nextButtonClicked && !props.allQuestionsAnsweredCorrectly && props.allQuestionsAnswered ? 'border-2 rounded-lg p-4 border-red-500 mb-8' : ''
-        }
-      >
-        <Question
-          key={props.stepItem.uuid}
-          question={props.stepItem}
-          questionResponse={(props.stepItemSubmission as string[]) || []}
-          onSelectAnswer={props.onSelectAnswer}
-        />
-      </div>
-      {props.nextButtonClicked && !props.allQuestionsAnsweredCorrectly && props.allQuestionsAnswered && (
+      <Question
+        key={props.stepItem.uuid}
+        question={props.stepItem}
+        questionResponse={(props.stepItemSubmission as string[]) || []}
+        onSelectAnswer={props.onSelectAnswer}
+      />
+      {props.showCorrectAnswerAlso && (
         <div>
           <h3 className="text-xl font-semibold sm:mb-2 mt-2">Correct Answer</h3> {/* Move the "Correct Answer" heading outside the green border */}
           <div className="border-2 rounded-lg border-green-500 p-4 mt-2">

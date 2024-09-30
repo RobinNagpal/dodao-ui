@@ -1,0 +1,12 @@
+
+
+.imgContainer {
+  border: 1px solid;
+  border-color: var(--border-color);
+  box-shadow: 0 1px 1px var(--primary-color);
+}
+
+.fullScreenContent {
+  color: var(--text-color);
+    height: calc(100vh - 108px);
+}

@@ -2,7 +2,6 @@ import ErrorWithAccentBorder from '@dodao/web-core/components/core/errors/ErrorW
 import { useEffect, useRef } from 'react';
 
 interface ByteStepperItemWarningsProps {
-  showUseInputCompletionWarning: boolean;
   showQuestionsCompletionWarning: boolean;
   isUserInputComplete: () => boolean;
   isQuestionAnswered: () => boolean;
@@ -10,7 +9,6 @@ interface ByteStepperItemWarningsProps {
 }
 
 function ByteStepperItemWarnings({
-  showUseInputCompletionWarning,
   showQuestionsCompletionWarning,
   isUserInputComplete,
   isQuestionAnswered,
@@ -26,7 +24,6 @@ function ByteStepperItemWarnings({
 
   return (
     <div className="mb-4">
-      {showUseInputCompletionWarning && <ErrorWithAccentBorder error="Answer all the questions in guide to complete" />}
       {showQuestionsCompletionWarning && (
         <>
           {!isQuestionAnswered() && (

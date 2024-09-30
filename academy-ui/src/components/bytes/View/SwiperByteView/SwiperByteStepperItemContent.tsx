@@ -1,5 +1,5 @@
 import UserDiscord from '@/components/app/Form/UserDiscord';
-import styles from '@/components/bytes/View/ByteStepperItem/ByteStepperItemContent.module.scss';
+import styles from './SwiperByteStepperItemContent.module.scss';
 import { QuestionSection } from '@/components/bytes/View/QuestionSection';
 import { UseGenericViewByteHelper } from '@/components/bytes/View/useGenericViewByte';
 import {
@@ -49,7 +49,7 @@ function getTailwindTextAlignmentClass(textAlignment: TextAlign) {
   }
 }
 
-export default function ByteStepperItemContent({
+export default function SwiperByteStepperItemContent({
   step,
   viewByteHelper,
   space,
@@ -95,45 +95,9 @@ export default function ByteStepperItemContent({
   const maxHeight = height - 200;
   const maxWidth = (width * 9) / 10;
 
-  if (!stepItems.some(isQuestion) && step.imageUrl && step.displayMode === ImageDisplayMode.FullScreenImage) {
-    return createPortal(
-      <div className="absolute left-20 right-20 bottom-20 top-20 z-20">
-        {width > height ? (
-          <Image
-            src={step.imageUrl}
-            alt="byte"
-            style={{ width: maxWidth, maxHeight: maxHeight }}
-            height={maxHeight}
-            width={maxWidth}
-            className={`rounded z-20 mx-auto ${styles.imgContainer}`}
-            placeholder="blur"
-            blurDataURL={blurDataURL}
-          />
-        ) : (
-          <Image
-            src={step.imageUrl}
-            alt="byte"
-            style={{ maxHeight: maxHeight }}
-            height={maxHeight}
-            width={width}
-            className={`rounded z-20 mx-auto ${styles.imgContainer}`}
-            placeholder="blur"
-            blurDataURL={blurDataURL}
-          />
-        )}
-        <div id="heading" className={`flex justify-center w-full mt-1 ${styles.fullScreenContent}`}>
-          <h1 className="text-lg">
-            {step.name || byte.name} : {step.content}
-          </h1>
-        </div>
-      </div>,
-      document.body
-    );
-  }
-
   const textAlignmentClass = getTailwindTextAlignmentClass(step.contentAlign || TextAlign.Center);
   return (
-    <>
+    <div className={`flex flex-col flex-grow justify-center align-center px-4  ${styles.fullScreenContent}`}>
       {!stepItems.some(isQuestion) && !isShortScreen && step.imageUrl && (
         <div className="flex justify-center align-center ">
           <img src={step.imageUrl} alt="byte" className={`max-h-[35vh] rounded ${styles.imgContainer}`} />
@@ -150,10 +114,10 @@ export default function ByteStepperItemContent({
               <div key={index} className="border-2 rounded-lg p-4 border-transparent ">
                 <QuestionSection
                   key={index}
+                  showCorrectAnswerAlso={showCorrectAnswerForQuestion}
                   stepItem={stepItem as ByteQuestionFragmentFragment}
                   stepItemSubmission={viewByteHelper.getStepItemSubmission(step.uuid, stepItem.uuid)}
                   onSelectAnswer={selectAnswer}
-                  showCorrectAnswerAlso={showCorrectAnswerForQuestion}
                 />
               </div>
             );
@@ -190,6 +154,6 @@ export default function ByteStepperItemContent({
         })}
         {postSubmissionContent && <div className="mt-4 text-sm text-gray-500" dangerouslySetInnerHTML={{ __html: postSubmissionContent }} />}
       </div>
-    </>
+    </div>
   );
 }
