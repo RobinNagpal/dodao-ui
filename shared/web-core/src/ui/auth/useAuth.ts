@@ -170,7 +170,7 @@ export function useAuth(spaceId: string) {
     }
     try {
       localStorage.clear();
-      showNotification({ type: 'success', message: 'Successfully logged out' });
+      showNotification({ type: 'success', message: 'User logged out successfully' });
     } catch (error) {
       console.log(error);
       alert('Failed to logout the user. Please try again.');

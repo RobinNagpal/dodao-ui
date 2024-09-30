@@ -8,8 +8,8 @@ const CallbackPage = ({ space }: SpaceProps) => {
   const searchParams = useSearchParams();
   const context = searchParams.get('context');
 
-  // Conditionally set the callback URL based on the context (signup or login)
-  const callbackUrl = context === 'signup' ? '/spaces/create' : '/';
+  // Conditionally set the callback URL based on the context (setupNewSpace or login)
+  const callbackUrl = context === 'setupNewSpace' ? '/spaces/create' : '/';
   return <EmailVerificationCallbackPage space={space} callbackUrl={callbackUrl} />;
 };
 
