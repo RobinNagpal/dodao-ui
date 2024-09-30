@@ -1,10 +1,8 @@
 'use client';
-import Button from '@dodao/web-core/components/core/buttons/Button';
-import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
+
 import ButtonLarge from '@dodao/web-core/components/core/buttons/Button';
 import EmailSetupNewSpaceModal from '../TidbitsHub/components/EmailSetupNewSpaceModal';
 import React from 'react';
-import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 
 export interface setupNewSpaceButtonProps {

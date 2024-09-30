@@ -3,9 +3,7 @@
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Input from '@dodao/web-core/components/core/input/Input';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
-import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import { WebCoreSpace } from '@dodao/web-core/types/space';
 import { useState } from 'react';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
