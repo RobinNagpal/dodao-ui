@@ -3,20 +3,18 @@
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Input from '@dodao/web-core/components/core/input/Input';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
-import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import { WebCoreSpace } from '@dodao/web-core/types/space';
 import { useState } from 'react';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 
-export interface EmailSignupModalProps {
+export interface EmailSetupNewSpaceModalProps {
   open: boolean;
   onClose: () => void;
   space: SpaceWithIntegrationsFragment;
 }
 
-function EmailSignupModal({ open, onClose, space }: EmailSignupModalProps) {
+function EmailSetupNewSpaceModal({ open, onClose, space }: EmailSetupNewSpaceModalProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailSent, setEmailSent] = useState(false);
@@ -32,7 +30,7 @@ function EmailSignupModal({ open, onClose, space }: EmailSignupModalProps) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password, spaceId: space.id, provider: 'email', context: 'signup' }),
+        body: JSON.stringify({ email, password, spaceId: space.id, provider: 'email', context: 'setupNewSpace' }),
       });
       setUpserting(false);
       if (!response.ok) {
@@ -59,7 +57,7 @@ function EmailSignupModal({ open, onClose, space }: EmailSignupModalProps) {
   };
 
   return (
-    <FullPageModal open={open} onClose={onModalClose} title={'Signup with Email'}>
+    <FullPageModal open={open} onClose={onModalClose} title={'Setup New Space with Email'}>
       <PageWrapper>
         <div className="text-left">
           {!emailSent ? (
@@ -74,7 +72,7 @@ function EmailSignupModal({ open, onClose, space }: EmailSignupModalProps) {
                 required
               />
               <Button variant="contained" primary loading={upserting} type="submit">
-                Signup
+                Setup New Space
               </Button>
             </form>
           ) : (
@@ -88,4 +86,4 @@ function EmailSignupModal({ open, onClose, space }: EmailSignupModalProps) {
   );
 }
 
-export default EmailSignupModal;
+export default EmailSetupNewSpaceModal;

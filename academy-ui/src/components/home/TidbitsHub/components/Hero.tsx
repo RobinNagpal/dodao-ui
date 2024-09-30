@@ -3,7 +3,7 @@ import { Container } from './Container';
 import Image from 'next/image';
 import tidbits from '@/images/TidbitsHub/GIFs/tidbits.gif';
 import ContactUsLink from '../../DoDAOHome/components/ContactUsLink';
-import { SignupButton } from '../../common/SignupButton';
+import { SetupNewSpaceButton } from '../../common/setupNewSpace';
 import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
 
 export async function Hero() {
@@ -23,9 +23,9 @@ export async function Hero() {
                 Break down the concepts into easily digestible information, guiding your customers to make empowered decisions. Equip your clients with
                 knowledge and watch their trust in your services grow! <br></br>
                 <br></br>
-                <span className="font-bold">Signup</span> today to create your own tidbits{' '}
+                <span className="font-bold">Setup New Space</span> to create your own tidbits{' '}
                 <span className="ml-2">
-                  <SignupButton space={space!} />
+                  <SetupNewSpaceButton space={space!} />
                 </span>
               </p>
               <div className="mt-4 flex flex-wrap gap-x-6 gap-y-6">

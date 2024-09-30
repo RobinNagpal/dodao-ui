@@ -10,7 +10,6 @@ import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { useSession } from 'next-auth/react';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
-import { headers } from 'next/headers';
 
 interface CreateSpaceProps {
   space: Space;
@@ -23,14 +22,10 @@ function CreateSpace({ space }: CreateSpaceProps) {
   const { showNotification } = useNotificationContext();
   const router = useRouter();
   const { data: clientSession } = useSession() as { data: Session | null };
-  const reqHeaders = headers();
-  const host = reqHeaders.get('host');
-
-  console.log('cleint session', clientSession);
-  console.log('dawood space', space);
 
   const upsertSpaceParams: Space = {
-    id: slugify(project) + '-' + uuidv4().toString().substring(0, 4),
+    // id: slugify(project) + '-' + uuidv4().toString().substring(0, 4),
+    id: slugify(project),
     adminUsernamesV1: space?.adminUsernamesV1!,
     authSettings: space?.authSettings!,
     avatar: space?.avatar!,
@@ -59,7 +54,7 @@ function CreateSpace({ space }: CreateSpaceProps) {
   const onSubmit = async () => {
     try {
       setUpserting(true);
-      const response = await fetch('/api/[spaceId]/actions/space/new-tidbit-space', {
+      const response = await fetch(`/api/${upsertSpaceParams.id}/actions/spaces/new-tidbit-space`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -76,11 +71,11 @@ function CreateSpace({ space }: CreateSpaceProps) {
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-      console.log('Space created and User space updated successfully', response);
+      console.log('Space created and user space updated successfully', response);
       setIsSpaceCreated(true);
-      showNotification({ type: 'success', message: 'Space created and User space updated successfully' });
+      showNotification({ type: 'success', message: 'Space created and user space updated successfully' });
     } catch (error: any) {
-      console.error('Space creation Failed:', error);
+      console.error('Space creation and user space updation failed:', error);
       showNotification({ type: 'error', message: 'Error while creating the space or updating user space' });
     }
   };
@@ -118,9 +113,8 @@ function CreateSpace({ space }: CreateSpaceProps) {
               <p className="mt-4 text-md">
                 Your space is created. Click{' '}
                 <a
-                  href={`http://${upsertSpaceParams.id}.${host}/spaces/finish-space-setup`}
+                  href={`http://${upsertSpaceParams.id}.${window.location.hostname}:${window.location.port}/spaces/finish-space-setup`}
                   className="text-blue-500 underline"
-                  target="_blank"
                   rel="noopener noreferrer"
                 >
                   here
