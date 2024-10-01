@@ -1,0 +1,27 @@
+#byte-view-swiper {
+  &.swiper {
+    .swiper-wrapper {
+      display: flex;
+      align-items: center;
+    }
+    width: 100vw;
+  }
+
+  &.swiper-vertical {
+    .swiper-button-next,
+    .swiper-button-prev {
+      left: 50%;
+      transform: rotate(90deg);
+      transform-origin: left center;
+    }
+
+    .swiper-button-prev {
+      top: 10px;
+    }
+
+    .swiper-button-next {
+      top: auto;
+      bottom: 10px;
+    }
+  }
+}

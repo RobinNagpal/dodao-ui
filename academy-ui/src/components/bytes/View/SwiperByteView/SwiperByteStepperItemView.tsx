@@ -3,7 +3,7 @@ import SwiperByteStepperItemContent from '@/components/bytes/View/SwiperByteView
 import { UseGenericViewByteHelper } from '@/components/bytes/View/useGenericViewByte';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import useWindowDimensions from '@/hooks/useWindowDimensions';
-import { ByteDto, ByteStepDto } from '@/types/bytes/ByteDto';
+import { ByteDto, ByteStepDto, ImageDisplayMode } from '@/types/bytes/ByteDto';
 import { isUserDiscordConnect } from '@dodao/web-core/types/deprecated/helpers/stepItemTypes';
 import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
 import 'prismjs';
@@ -17,12 +17,13 @@ import 'prismjs/components/prism-toml';
 import 'prismjs/components/prism-yaml';
 import { CSSProperties, useEffect, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import styles from './SwiperlByteStepperItemView.module.scss';
+
 import { Navigation, Pagination, Mousewheel, Keyboard } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import 'swiper/css/virtual';
+import styles from './SwiperlByteStepperItemView.module.scss';
 
 interface ByteStepperItemWithProgressBarProps {
   byte: ByteDto;
@@ -45,21 +46,12 @@ const style: CSSProperties = {
   '--swiper-pagination-bullet-vertical-gap': '12px',
 } as any;
 
-type TransitionState = 'enter' | 'active' | 'exit';
-
 function SwiperByteStepperItemView({ viewByteHelper, step, byte, space, setByteSubmitted }: ByteStepperItemWithProgressBarProps) {
   const { activeStepOrder } = viewByteHelper;
   const renderer = getMarkedRenderer();
 
-  const [transitionState, setTransitionState] = useState<TransitionState>('enter');
-
   const [showCorrectAnswerForQuestion, setShowCorrectAnswerForQuestion] = useState(false);
   const [showQuestionsCompletionWarning, setShowQuestionsCompletionWarning] = useState(false);
-  useEffect(() => {
-    setTransitionState('enter');
-    setTimeout(() => setTransitionState('active'), 100);
-  }, [activeStepOrder]);
-
   function isQuestionAnswered() {
     return viewByteHelper.isQuestionAnswered(step.uuid);
   }
@@ -82,6 +74,8 @@ function SwiperByteStepperItemView({ viewByteHelper, step, byte, space, setByteS
       <div className={`${styles.swiperSlides}`}>
         <Swiper
           direction={'vertical'}
+          slidesPerView={1}
+          spaceBetween={50}
           modules={[Navigation, Pagination, Mousewheel, Keyboard]}
           navigation={true}
           onSlideChange={(swiper) => {
@@ -93,13 +87,16 @@ function SwiperByteStepperItemView({ viewByteHelper, step, byte, space, setByteS
           }}
           pagination={{
             clickable: true,
-            dynamicBullets: true,
             enabled: true,
           }}
-          height={height - 100}
+          className={styles.swiperSlides}
+          id="byte-view-swiper"
         >
           {byte.steps.map((step, index) => (
-            <SwiperSlide key={step.uuid}>
+            <SwiperSlide
+              key={step.uuid}
+              className={`${styles.swiperSlide}  ${step?.displayMode === ImageDisplayMode.FullScreenImage ? 'full-screen-image' : ''}`}
+            >
               <SwiperByteStepperItemContent
                 space={space}
                 byte={byte}
