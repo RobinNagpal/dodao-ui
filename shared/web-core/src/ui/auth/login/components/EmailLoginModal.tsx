@@ -16,9 +16,11 @@ export interface EmailLoginModalProps {
 function EmailLoginModal({ open, onClose, space }: EmailLoginModalProps) {
   const [email, setEmail] = useState('');
   const [emailSent, setEmailSent] = useState(false);
+  const [upserting, setUpserting] = useState(false);
 
   const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setUpserting(true);
     // Assume this fetch function sends an email to the user
     const response = await fetch('/api/auth/custom-email/send-verification', {
       method: 'POST',
@@ -31,7 +33,7 @@ function EmailLoginModal({ open, onClose, space }: EmailLoginModalProps) {
         authProvider: 'custom-email',
       }),
     });
-
+    setUpserting(false);
     if (response?.ok) {
       setEmailSent(true);
     } else {
@@ -46,13 +48,13 @@ function EmailLoginModal({ open, onClose, space }: EmailLoginModalProps) {
           {!emailSent ? (
             <form onSubmit={handleEmailSubmit}>
               <Input id="email" modelValue={email} onUpdate={(e) => (e ? setEmail(e.toString()) : setEmail(''))} required label={'Email Address'} />
-              <Button type="submit" primary variant={'contained'} className="mt-4">
+              <Button type="submit" primary variant={'contained'} className="mt-4" loading={upserting}>
                 Send Verification Email
               </Button>
             </form>
           ) : (
             <div>
-              <p>An email has been sent to {email}. Click on the link in the email to log in.</p>
+              <p>A verification link has been sent to {email}. Click on the link in the email to log in.</p>
             </div>
           )}
         </div>

@@ -54,7 +54,7 @@ export default function AddByteCollection({ space }: { space: SpaceWithIntegrati
     <>
       <div className="w-full flex justify-center">
         <Button
-          className="w-full rounded-lg bg-white text-color"
+          className="w-full bg-white text-color font-semibold"
           variant="outlined"
           primary
           style={{ border: '2px dotted', height: '10rem', letterSpacing: '0.05em', borderRadius: '0.5rem' }}
