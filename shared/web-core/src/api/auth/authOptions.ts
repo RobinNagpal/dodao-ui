@@ -264,13 +264,13 @@ export function getAuthOptions(
         name: `next-auth.session-token`,
         options: {
           httpOnly: true,
-          secure: false, // process.env.NODE_ENV === 'production',
+          secure: process.env.VERCEL_ENV === 'production' ? true : false,
           path: '/',
           sameSite: 'lax',
-          domain: '.tidbitshub-localhost.org',
+          domain: process.env.VERCEL_ENV === 'production' ? '.tidbitshub.org' : '.tidbitshub-localhost.org',
         },
       },
-    }    
+    },
   };
 
   return authOptions;
