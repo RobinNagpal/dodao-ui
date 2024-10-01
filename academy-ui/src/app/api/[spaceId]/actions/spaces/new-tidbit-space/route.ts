@@ -8,7 +8,7 @@ import { CreateSpaceResponse } from '@/types/response/CreateSpaceResponse';
 import { withErrorHandlingV1 } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { Space } from '@prisma/client';
 
-async function postHandler(req: NextRequest, { params }: { params: { spaceId: string } }): Promise<NextResponse<CreateSpaceResponse>> {
+async function postHandler(req: NextRequest): Promise<NextResponse<CreateSpaceResponse>> {
   const session = await getDecodedJwtFromContext(req);
   if (!session) throw new Error('User not present in session');
 
@@ -46,8 +46,8 @@ async function postHandler(req: NextRequest, { params }: { params: { spaceId: st
     tidbitsHomepage: null,
   };
 
-   // Use a transaction to group the space creation and user update
-   const [space, user] = await prisma.$transaction([
+  // Use a transaction to group the space creation and user update
+  const [space, user] = await prisma.$transaction([
     prisma.space.create({
       data: {
         ...spaceInput,
