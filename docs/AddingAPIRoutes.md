@@ -4,6 +4,10 @@ In REST i.e. API we normally use the same route and different HTTP functions rel
 consistency, but many times its not possible.
 
 # Basic Rules
+Read about REST conventions here
+* https://medium.com/@nadinCodeHat/rest-api-naming-conventions-and-best-practices-1c4e781eb6a5
+* https://restfulapi.net/resource-naming/
+
 This means the routes which we should have are
 - `GET - /api/[spaceId]/programs`   This should return the list of programs
 - `POST - /api/[spaceId]/programs` - can be used for adding a new program
@@ -19,6 +23,8 @@ so we can probably do something like
 `/api/[spaceId]/actions/programs/share-on-social-media`
 
 So far we didn’t pay attention to this, we should start considering it now
+
+
 
 # Request and Response Types
 See the [TypeDefinitions](TypeDefinitions.md) for details on how to define the types for the API routes.
