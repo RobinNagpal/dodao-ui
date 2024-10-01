@@ -55,33 +55,33 @@ export const sendVerificationRequest = async (params: { identifier: string; url:
   const { identifier: email, url } = params;
 
   const from = 'support@tidbitshub.org';
-  console.log('Sending email to', email, 'from', from, 'with body', emailBody);
+  console.log('Sending email to', email, 'from', from);
   console.log('Email body: ', emailBody(url));
   // Sending email via AWS SES
-  // ses.sendEmail(
-  //   {
-  //     Source: from,
-  //     Destination: { ToAddresses: [email] },
-  //     Message: {
-  //       Subject: {
-  //         Data: 'Sign in to your account',
-  //       },
-  //       Body: {
-  //         Html: {
-  //           Data: emailBody(url),
-  //         },
-  //       },
-  //     },
-  //   },
-  //   (err, info) => {
-  //     if (err) {
-  //       console.error(err);
-  //       throw new Error('Failed to send email');
-  //     } else {
-  //       console.log('Email sent: ', info);
-  //     }
-  //   }
-  // );
+  ses.sendEmail(
+    {
+      Source: from,
+      Destination: { ToAddresses: [email] },
+      Message: {
+        Subject: {
+          Data: 'Sign in to your account',
+        },
+        Body: {
+          Html: {
+            Data: emailBody(url),
+          },
+        },
+      },
+    },
+    (err, info) => {
+      if (err) {
+        console.error(err);
+        throw new Error('Failed to send email');
+      } else {
+        console.log('Email sent: ', info);
+      }
+    }
+  );
 };
 
 export function defaultNormalizer(email?: string) {
