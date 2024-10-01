@@ -13,3 +13,8 @@
 - [ ] reuse the create use form from the web-core
 - [ ] reuse the create space form from the web-core
 - [ ] reuse the finish-space-setup from the web-core
+
+# Checklist
+- [ ] Update documentation for API routes to include queries and point to the `by-username` example
+- [ ]
+- 
