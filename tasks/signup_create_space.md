@@ -56,7 +56,8 @@ Or setup a wildcard domain on your local machine.
 - [x] Add call to action button on tidbitshub.org
 
 # Changes - Academy UI
-- [ ] UI Change: Move the signup form and create space form to the web-core as that flow will be common for all applications.
+
+- [x] UI Change: Move the signup form and create space form to the web-core as that flow will be common for all applications.
       We can have the callback function(we pass to the form component. The callback will be different for each application)
       which we pass to the form and it will be called after the form is submitted. Use `WebCoreSpace`
 - [x] API Change: Add a new route in the academy ui for the create space at route `/api/[spaceId]/actions/space/new-tidbit-space/route.ts`.
@@ -65,6 +66,7 @@ Or setup a wildcard domain on your local machine.
   - [x] For the `space` create fields, we set the fields as null, which we dont pass
   - [x] Create a new Request type for the route. See https://github.com/RobinNagpal/dodao-ui/blob/main/docs/TypeDefinitions.md
 - [x] API Change: Add route does two things
+
   - [x] Create a new space in the database
   - [x] Update the user with the new spaceId. See `base-ui/src/components/spaces/create/createSpace.tsx` for the
         current implementation. Both things can be done together in the same route call.
@@ -75,6 +77,7 @@ Or setup a wildcard domain on your local machine.
 - [x] On screen `/finish-space-setup` we can show a message that "Your space is created. Now you can upload your logo, update the theme, add admins etc."
 - [x] Add a new page in the academy ui at the path `/finish-space-setup`. This can have dummy text and in the next PR we
       can add functionality to this page. i.e. upload logo, updating the theme, adding usernames etc. NO NEED TO DO IN THIS PR
+- [ ] Add login option on subdomain
 
 # Checkpoints
 

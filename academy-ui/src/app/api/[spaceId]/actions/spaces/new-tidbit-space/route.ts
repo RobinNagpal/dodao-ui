@@ -46,19 +46,21 @@ async function postHandler(req: NextRequest, { params }: { params: { spaceId: st
     tidbitsHomepage: null,
   };
 
-  const space = await prisma.space.create({
-    data: {
-      ...spaceInput,
-      inviteLinks: spaceInput.inviteLinks || {},
-      themeColors: undefined,
-      tidbitsHomepage: undefined,
-    },
-  });
-
-  const user = await prisma.user.update({
-    where: { id: session.userId },
-    data: { spaceId: spaceData.id },
-  });
+   // Use a transaction to group the space creation and user update
+   const [space, user] = await prisma.$transaction([
+    prisma.space.create({
+      data: {
+        ...spaceInput,
+        inviteLinks: spaceInput.inviteLinks || {},
+        themeColors: undefined,
+        tidbitsHomepage: undefined,
+      },
+    }),
+    prisma.user.update({
+      where: { id: session.accountId },
+      data: { spaceId: spaceData.id },
+    }),
+  ]);
 
   return NextResponse.json({ space, user }, { status: 200 });
 }
