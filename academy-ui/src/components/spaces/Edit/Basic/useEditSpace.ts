@@ -3,6 +3,7 @@ import { UpsertSpaceInput, useExtendedSpaceQuery } from '@/graphql/generated/gen
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { getEditSpaceType, getSpaceInput, SpaceEditType } from '@/utils/space/spaceUpdateUtils';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 export type UseEditSpaceHelper = {
   setSpaceIntegrationField: (field: keyof UpsertSpaceInput['spaceIntegrations'], value: any) => void;
@@ -41,6 +42,7 @@ export default function useEditSpace(spaceId?: string): UseEditSpaceHelper {
   });
 
   const [upserting, setUpserting] = useState(false);
+  const router = useRouter();
 
   const { refetch: querySpace } = useExtendedSpaceQuery({
     variables: {
@@ -101,6 +103,7 @@ export default function useEditSpace(spaceId?: string): UseEditSpaceHelper {
 
       if (response?.ok) {
         showNotification({ type: 'success', message: 'Space upserted successfully' });
+        router.push('/'); // Redirect to the Home page
       } else {
         showNotification({ type: 'error', message: 'Error while upserting space' });
       }

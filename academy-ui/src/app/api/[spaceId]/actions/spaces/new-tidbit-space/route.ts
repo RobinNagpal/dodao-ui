@@ -7,6 +7,7 @@ import { CreateSpaceRequest } from '@/types/request/CreateSpaceRequest';
 import { CreateSpaceResponse } from '@/types/response/CreateSpaceResponse';
 import { withErrorHandlingV1 } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { Space } from '@prisma/client';
+import { LoginProviders } from '@dodao/web-core/types/deprecated/models/enums';
 
 async function postHandler(req: NextRequest): Promise<NextResponse<CreateSpaceResponse>> {
   const session = await getDecodedJwtFromContext(req);
@@ -17,7 +18,7 @@ async function postHandler(req: NextRequest): Promise<NextResponse<CreateSpaceRe
   const spaceInput: Space = {
     id: spaceData.id,
     name: spaceData.name,
-    creator: session?.username,
+    creator: session.username,
     avatar: 'https://d31h13bdjwgzxs.cloudfront.net/academy/tidbitshub/Space/tidbitshub/1711618687477_dodao_logo%2Btext%20rectangle.png',
     adminUsernamesV1: [
       {
@@ -26,7 +27,7 @@ async function postHandler(req: NextRequest): Promise<NextResponse<CreateSpaceRe
       },
     ],
     domains: [],
-    authSettings: {},
+    authSettings: {enableLogin:true, loginOptions: [LoginProviders.Email]},
     type: SpaceTypes.TidbitsSite,
     features: [],
     themeColors: themes[CssTheme.GlobalTheme],

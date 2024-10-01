@@ -32,7 +32,8 @@ export function MobileProfileMenu({ session, space }: ProfileMenuProps) {
       <div className="mt-3 space-y-1">
         {isSuperAdmin(session) && <ProfileActionButton label="Your Profile" />}
         {isSuperAdmin(session) && <ProfileActionButton label="Manage Space" href={'/space/manage'} />}
-        {isAdmin(session, space) && <ProfileActionButton label="Edit Space" href={'/space/edit'} />}
+        {isSuperAdmin(session) && <ProfileActionButton label="Edit User Space" href={'/space/edit'} />}
+        {isAdmin(session, space) && <ProfileActionButton label="Edit Space" href={'/spaces/finish-space-setup'} />}
         {isAdmin(session, space) && <ProfileActionButton label="Edit Profile" href={'/profile-info/edit'} />}
         <ProfileActionButton label="Sign out" />
       </div>
