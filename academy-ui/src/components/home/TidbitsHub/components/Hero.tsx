@@ -4,10 +4,9 @@ import Image from 'next/image';
 import tidbits from '@/images/TidbitsHub/GIFs/tidbits.gif';
 import ContactUsLink from '../../DoDAOHome/components/ContactUsLink';
 import { SetupNewSpaceButton } from '../../common/setupNewSpace';
-import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
+import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 
-export async function Hero() {
-  const space = await getSpaceServerSide();
+export function Hero({ space }: { space: SpaceWithIntegrationsFragment | null }) {
   return (
     <div className="overflow-hidden py-20 sm:py-12 lg:pb-32 xl:pb-36">
       <Container>
