@@ -1,5 +1,4 @@
 import UserDiscord from '@/components/app/Form/UserDiscord';
-import styles from './SwiperByteStepperItemContent.module.scss';
 import { QuestionSection } from '@/components/bytes/View/QuestionSection';
 import { UseGenericViewByteHelper } from '@/components/bytes/View/useGenericViewByte';
 import {
@@ -16,9 +15,8 @@ import UserInput from '@dodao/web-core/components/app/Form/UserInput';
 import { isQuestion, isUserDiscordConnect, isUserInput } from '@dodao/web-core/types/deprecated/helpers/stepItemTypes';
 import { TextAlign } from '@dodao/web-core/types/ui/TextAlign';
 import { marked } from 'marked';
-import Image from 'next/image';
 import { useMemo } from 'react';
-import { createPortal } from 'react-dom';
+import styles from './SwiperByteStepperItemContent.module.scss';
 
 interface ByteStepperItemContentProps {
   byte: ByteDto;
@@ -49,6 +47,64 @@ function getTailwindTextAlignmentClass(textAlignment: TextAlign) {
   }
 }
 
+function ByteMainContent({
+  step,
+  stepItems,
+  isShortScreen,
+  isLongScreen,
+  renderer,
+  width,
+  height,
+}: {
+  stepItems: Array<ByteStepItem>;
+  isShortScreen: boolean;
+  isLongScreen: boolean;
+  step: ByteStepDto;
+  renderer: marked.Renderer;
+  width: number;
+  height: number;
+}) {
+  const stepClasses = {
+    headingClasses: isShortScreen ? 'text-3xl' : isLongScreen ? 'text-4xl xl:text-5xl' : 'text-3xl',
+    contentClasses: isShortScreen ? 'text-lg' : isLongScreen ? 'text-lg xl:text-2xl' : 'text-lg',
+  };
+
+  const textAlignmentClass = getTailwindTextAlignmentClass(step.contentAlign || TextAlign.Center);
+  const stepContents = useMemo(() => marked.parse(step.content || '', { renderer }), [step.content]);
+  if (step.displayMode === ImageDisplayMode.FullScreenImage) {
+    return (
+      <div style={{ width: '100vw' }}>
+        {step.imageUrl && (
+          <div className="flex justify-center align-center ">
+            <img src={step.imageUrl} alt="byte" className={`rounded ${styles.imgContainer}`} style={{ width: width * 0.8 }} />
+          </div>
+        )}
+        <div className="flex justify-center w-full mt-4">
+          <h3 className="text-lg">
+            {step.name} : {step.content}
+          </h3>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      {!stepItems.some(isQuestion) && !isShortScreen && step.imageUrl && (
+        <div className="flex justify-center align-center ">
+          <img src={step.imageUrl} alt="byte" className={`max-h-[35vh] rounded ${styles.imgContainer}`} />
+        </div>
+      )}
+      <div className="flex justify-center w-full mt-4">
+        <h1 className={stepClasses.headingClasses}>{step.name}</h1>
+      </div>
+      <div className="mt-4 px-4 lg:mt-8 text-left">
+        <div dangerouslySetInnerHTML={{ __html: stepContents }} className={`markdown-body ${textAlignmentClass} ` + stepClasses.contentClasses} />
+      </div>
+    </div>
+  );
+}
+
 export default function SwiperByteStepperItemContent({
   step,
   viewByteHelper,
@@ -62,16 +118,6 @@ export default function SwiperByteStepperItemContent({
   showCorrectAnswerForQuestion,
 }: ByteStepperItemContentProps) {
   const stepItems = step.stepItems;
-
-  const svg = `
-  <svg xmlns='http://www.w3.org/2000/svg' width='2' height='2'>
-    <rect width='100%' height='100%' fill='${space.themeColors?.blockBg || '#ccc'}' opacity='0.6'/>
-  </svg>
-`;
-
-  const blurDataURL = `data:image/svg+xml;base64,${Buffer.from(svg).toString('base64')}`;
-
-  const stepContents = useMemo(() => marked.parse(step.content || '', { renderer }), [step.content]);
 
   const postSubmissionContent = useMemo(
     () => (byte.postSubmissionStepContent ? marked.parse(byte.postSubmissionStepContent, { renderer }) : null),
@@ -88,26 +134,18 @@ export default function SwiperByteStepperItemContent({
 
   const isLongScreen = height >= 900;
 
-  const stepClasses = {
-    headingClasses: isShortScreen ? 'text-3xl' : isLongScreen ? 'text-4xl xl:text-5xl' : 'text-3xl',
-    contentClasses: isShortScreen ? 'text-lg' : isLongScreen ? 'text-lg xl:text-2xl' : 'text-lg',
-  };
-  const maxHeight = height - 200;
-  const maxWidth = (width * 9) / 10;
-
-  const textAlignmentClass = getTailwindTextAlignmentClass(step.contentAlign || TextAlign.Center);
   return (
-    <div className={`flex flex-col flex-grow justify-center align-center px-4  ${styles.fullScreenContent}`}>
-      {!stepItems.some(isQuestion) && !isShortScreen && step.imageUrl && (
-        <div className="flex justify-center align-center ">
-          <img src={step.imageUrl} alt="byte" className={`max-h-[35vh] rounded ${styles.imgContainer}`} />
-        </div>
-      )}
-      <div className="flex justify-center w-full mt-4">
-        <h1 className={stepClasses.headingClasses}>{step.name || byte.name}</h1>
-      </div>
+    <div className={`flex flex-col flex-grow justify-center align-center px-4`}>
+      <ByteMainContent
+        stepItems={stepItems}
+        isShortScreen={isShortScreen}
+        isLongScreen={isLongScreen}
+        step={step}
+        renderer={renderer}
+        width={width}
+        height={height}
+      />
       <div className="mt-4 px-4 lg:mt-8 text-left">
-        <div dangerouslySetInnerHTML={{ __html: stepContents }} className={`markdown-body ${textAlignmentClass} ` + stepClasses.contentClasses} />
         {stepItems.map((stepItem: ByteStepItem, index) => {
           if (isQuestion(stepItem)) {
             return (

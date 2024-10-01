@@ -1,5 +1,4 @@
 
-
 .imgContainer {
   border: 1px solid;
   border-color: var(--border-color);
@@ -8,5 +7,6 @@
 
 .fullScreenContent {
   color: var(--text-color);
-    height: calc(100vh - 108px);
+  max-height: calc(100vh - 300px);
+  width: calc(100vw - 100px);
 }

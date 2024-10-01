@@ -15,9 +15,12 @@
   @media (min-width: 768px) {
     width: 80%;
     max-width: 768px;
+  }
+}
 
-    .full-screen-image {
-      width: 100%;
-    }
+
+@media (min-width: 768px) {
+  .swiperSlide.full-screen-image {
+    width: 90%;
   }
 }
