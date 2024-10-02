@@ -26,7 +26,9 @@ function CreateNewSpace({ upserting, onSubmit, createdSpace }: CreateSpaceProps)
               <p className="mt-4 text-md">
                 Your space is created. Click{' '}
                 <a
-                  href={`${getProtocol()}://${slugify(project)}.${window.location.hostname}:${window.location.port}/spaces/finish-space-setup`}
+                  href={`${getProtocol()}://${slugify(project)}.${window.location.hostname}${
+                    window.location.port ? `:${window.location.port}` : ''
+                  }/spaces/finish-space-setup`}
                   className="text-blue-500 underline"
                   rel="noopener noreferrer"
                 >

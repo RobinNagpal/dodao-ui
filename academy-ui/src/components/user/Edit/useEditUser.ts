@@ -1,7 +1,6 @@
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { User } from '@prisma/client';
 import { useRouter } from 'next/navigation';
-
 import { useState } from 'react';
 
 export type UseEditUserProfileHelper = {
@@ -12,7 +11,7 @@ export type UseEditUserProfileHelper = {
   initialize: () => Promise<void>;
 };
 
-export default function useEditUser(userName: string, update: () => void): UseEditUserProfileHelper {
+export default function useEditUser(userName: string, update: () => void, spaceId: string): UseEditUserProfileHelper {
   const { showNotification } = useNotificationContext();
   const [user, setUser] = useState<User>({
     id: '',
@@ -33,7 +32,7 @@ export default function useEditUser(userName: string, update: () => void): UseEd
   async function initialize() {
     if (userName) {
       try {
-        let response = await fetch(`/api/user/${userName}`, {
+        let response = await fetch(`/api/${spaceId}/queries/users/${userName}`, {
           method: 'GET',
           credentials: 'include',
           headers: {
@@ -42,7 +41,7 @@ export default function useEditUser(userName: string, update: () => void): UseEd
         });
         if (response.ok) {
           const userResponse = await response.json();
-          setUser(userResponse.user);
+          setUser(userResponse[0]);
         }
       } catch (error) {
         console.error(error);
@@ -59,8 +58,8 @@ export default function useEditUser(userName: string, update: () => void): UseEd
   async function upsertUser() {
     setUpserting(true);
     try {
-      let response = await fetch(`/api/user/edit`, {
-        method: 'POST',
+      let response = await fetch(`/api/${spaceId}/users/${user.id}`, {
+        method: 'PUT',
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
@@ -72,14 +71,14 @@ export default function useEditUser(userName: string, update: () => void): UseEd
 
       if (response.ok) {
         update();
-        showNotification({ type: 'success', message: 'User upserted successfully' });
+        showNotification({ type: 'success', message: 'User updated successfully' });
         router.push('/'); // Redirect to the Home page
       } else {
-        showNotification({ type: 'error', message: 'Error while upserting user' });
+        showNotification({ type: 'error', message: 'Error while updating user' });
       }
     } catch (error) {
       console.error(error);
-      showNotification({ type: 'error', message: 'Error while upserting user' });
+      showNotification({ type: 'error', message: 'Error while updating user' });
       setUpserting(false);
       throw error;
     }

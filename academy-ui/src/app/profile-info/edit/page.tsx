@@ -5,10 +5,11 @@ import useEditUser from '@/components/user/Edit/useEditUser';
 import { useSession } from 'next-auth/react';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import React, { useEffect } from 'react';
+import withSpace, { SpaceProps } from '@/contexts/withSpace';
 
-export default function UpsertUserProfileInfo() {
+function UpsertUserProfileInfo({ space }: SpaceProps) {
   const { data: session, update } = useSession() as { data: Session | null; update: any };
-  const editUserHelper = useEditUser(session?.username!, update);
+  const editUserHelper = useEditUser(session?.username!, update, space.id);
 
   const { user, setUserField, upsertUser, upserting, initialize } = editUserHelper;
 
@@ -44,3 +45,5 @@ export default function UpsertUserProfileInfo() {
     </div>
   );
 }
+
+export default withSpace(UpsertUserProfileInfo);

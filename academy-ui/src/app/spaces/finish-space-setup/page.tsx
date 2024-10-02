@@ -1,11 +1,9 @@
 'use client';
+
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import UploadInput from '@/components/app/UploadInput';
 import UpsertKeyValueBadgeInput from '@dodao/web-core/components/core/badge/UpsertKeyValueBadgeInput';
 import StyledSelect from '@dodao/web-core/components/core/select/StyledSelect';
-import useEditUser from '@/components/user/Edit/useEditUser';
-import { useSession } from 'next-auth/react';
-import { Session } from '@dodao/web-core/types/auth/Session';
 import React, { useEffect, useState } from 'react';
 import { ImageType } from '@/graphql/generated/generated-types';
 import useEditSpace from '@/components/spaces/Edit/Basic/useEditSpace';
