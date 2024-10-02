@@ -27,9 +27,20 @@ so we can probably do something like
 
 And if it is related to fetching of data like fetching user by username, so we can do it like this
 
-`/api/[spaceId]/queries/users/[username]`
+- `/api/[spaceId]/queries/users/by-username` - See file `academy-ui/src/app/api/[spaceId]/queries/users/by-username/route.ts`
+- `/api/[spaceId]/queries/spaces/by-creator` - See file `academy-ui/src/app/api/[spaceId]/queries/spaces/by-creator/route.ts`
 
 This is for specific routes which don't qualify for simple REST routes.
+
+# Lists
+- `GET - /api/[spaceId]/programs` This should return the list of programs
+
+# Single Entity
+
+- `GET - /api/[spaceId]/programs/{programId}` Return the specific program
+- `PUT - /api/[spaceId]/programs/{programId}` can be used for updating a program and returns the updated program
+- `DELETE - /api/[spaceId]/programs/{programId}` can be used for deleting a program and returns the archived program
+- `POST - /api/[spaceId]/programs` - can be used for adding a new program and returns the new program
 
 # Request and Response Types
 
