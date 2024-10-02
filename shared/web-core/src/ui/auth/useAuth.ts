@@ -5,6 +5,7 @@ import { metaMask } from '@dodao/web-core/ui/auth/login/connectors/metaMask';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { LocalStorageKeys } from '@dodao/web-core/types/deprecated/models/enums';
 import { setDoDAOTokenInLocalStorage } from '@dodao/web-core/utils/auth/setDoDAOTokenInLocalStorage';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { Connector } from '@web3-react/types';
 import { ethers } from 'ethers';
 import * as nearAPI from 'near-api-js';
@@ -21,6 +22,8 @@ export function useAuth(spaceId: string) {
   const [processingDiscord, setProcessingDiscord] = useState<boolean>(false);
   const [processingEmailPassword, setProcessingEmailPassword] = useState<boolean>(false);
   const [processingNear, setProcessingNear] = useState<boolean>(false);
+  const { showNotification } = useNotificationContext();
+  
   async function onSignInWithCrypto() {
     try {
       if (!window.ethereum) {
@@ -156,18 +159,20 @@ export function useAuth(spaceId: string) {
     });
   }, []);
 
-  const logout = useCallback(async () => {
+  const logout = useCallback(async () => {    
     if (web3Selection?.connector) {
       web3Selection?.connector?.deactivate?.();
     } else {
       await signOut({
-        redirect: false,
+        redirect: false
       });
     }
     try {
       localStorage.clear();
+      showNotification({ type: 'success', message: 'User logged out successfully' });
     } catch (error) {
       console.log(error);
+      alert('Failed to logout the user. Please try again.');
     }
   }, [web3Selection]);
 

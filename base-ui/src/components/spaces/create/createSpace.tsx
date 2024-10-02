@@ -19,7 +19,10 @@ export default function CreateSpace({ space }: CreateSpaceProps) {
   const [upserting, setUpserting] = useState(false);
   const { showNotification } = useNotificationContext();
   const router = useRouter();
-  const { data: clientSession } = useSession() as { data: Session | null };
+  const session = useSession();
+  console.log('session', session);
+  const { data: clientSession } = session as { data: Session | null };
+
   const upsertSpaceParams: Space = {
     id: slugify(project) + '-' + uuidv4().toString().substring(0, 4),
     adminUsernamesV1: space?.adminUsernamesV1!,
@@ -27,7 +30,7 @@ export default function CreateSpace({ space }: CreateSpaceProps) {
     avatar: space?.avatar!,
     createdAt: new Date(),
     updatedAt: new Date(),
-    creator: clientSession?.user?.email!,
+    creator: clientSession?.username!,
     domains: space?.domains!,
     features: space?.features!,
     name: project,

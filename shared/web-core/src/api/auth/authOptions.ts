@@ -259,6 +259,18 @@ export function getAuthOptions(
         console.debug(code, metadata);
       },
     },
+    cookies: {
+      sessionToken: {
+        name: `next-auth.session-token`,
+        options: {
+          httpOnly: true,
+          secure: process.env.VERCEL_ENV === 'production' ? true : false,
+          path: '/',
+          sameSite: 'lax',
+          domain: process.env.VERCEL_ENV === 'production' ? '.tidbitshub.org' : '.tidbitshub-localhost.org',
+        },
+      },
+    },
   };
 
   return authOptions;

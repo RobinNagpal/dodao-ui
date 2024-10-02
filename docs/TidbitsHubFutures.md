@@ -32,6 +32,10 @@ For this we need to make an API Call to vercel.
 
 ### Alternative views for Tidbits
 Right now we have a step-by-step view for Tidbits. We can also have a accordion view, or a carousel view etc.
+- As we scroll the page, the step should be switch, this prevents any clicking
+- Auto play the steps
+- For the current steps show a right bar with all the steps, and the current step should be highlighted and 
+as the steps are completed, they should be marked as completed.
 
 ### Include Photos on Tidbit Steps
 
@@ -52,3 +56,25 @@ social media platforms
 
 ### Generation of Tidbits Site from URLs
 We already have most of this code in place. We can use this to generate a tidbits site from a URL.
+
+
+# Opportunities
+
+### Universities and Colleges can have a tidbits site for each year and for each department
+Unique compelling points for them to use tidbits hub
+- Very condensed information which can be used as a quick reference
+
+### For SAAS - no code, and has many features 
+Unique compelling points for them to use tidbits hub
+- Sharing information about features is easier and clickable demos make it very simple for the users to understand the flow.
+
+### Banks and Financial Institutions
+Unique compelling points for them to use tidbits hub
+- Makes it very easy for their customers to understand in short and simple format
+
+##### Challenges
+- Banks are very slow
+- The language has to be very carefully reviewed and they often have a different department and spend hundreds and 
+thousands of dollars on the review of the content.
+
+### Teachers and Educators - for the full course

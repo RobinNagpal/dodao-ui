@@ -50,7 +50,7 @@ const createUser = async (user: User & { email: string }, spaceId: string) => {
  */
 async function postHandler(req: NextRequest, res: NextResponse) {
   const reqBody = await req.json();
-  const { spaceId, provider, email } = reqBody;
+  const { spaceId, provider, email, context = 'login' } = reqBody;
 
   console.log('######### send-verification - POST #########');
   console.log('request', JSON.stringify(reqBody));
@@ -81,7 +81,7 @@ async function postHandler(req: NextRequest, res: NextResponse) {
 
   const url = `${baseUrl}/auth/email/verify?${new URLSearchParams({
     token,
-  })}`;
+  })}&context=${context}`;
   console.log('url', url);
   await sendVerificationRequest({
     identifier: userEmail,

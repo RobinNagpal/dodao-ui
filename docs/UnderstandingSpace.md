@@ -56,11 +56,31 @@ to the same server as the main domain or **to entirely different servers and dir
 subdomain to host different websites or applications, enabling completely separate content under the umbrella of 
 the main domain.
 
-# Space and Subdomains(or Custom domains)
+# Space and Subdomains
 There are some more features that are added to the space to make the product more useful:
 - We want to have a different subdomain for each space. This architecture allows anyone to map a "custom" domain
   to their space(or our product + space). 
-- For example, many projects(example.com) have docs website or blogs. and they are hosted on a subdomain like `docs.example.com` or `blog.example.com`.
+
+### How we load site for the subdomain: `realfinance.tidbitshub.com`
+- When a user goes to `realfinance.tidbitshub.com`, we determine the space based on the subdomain and show the content specific to that space.
+- See `academy-ui/src/utils/space/getSpaceServerSide.tsx` to understand how UI makes a request to the server passing the space host(domain in the url).
+- We have logic in `academy-ui/src/app/api/spaces/route.ts` to determine the space based on the domain.
+  ```typescript
+    if (domain?.includes('.tidbitshub.org') || domain?.includes('.tidbitshub-localhost.org')) {
+      const idFromDomain = domain.split('.')[0];
+      const space = await prisma.space.findFirst({
+        where: {
+          id: idFromDomain,
+        },
+      });
+      return NextResponse.json([space]);
+    }
+  ``` 
+- Here we check if the domain includes `.tidbitshub.org` or `.tidbitshub-localhost.org` and then we get the space based on the id in the domain.
+- The subdomain is the space id. So we get the space based on the space i.e. the subdomain.
+
+# Custom domains
+- Many projects(example.com) have docs website or blogs. and they are hosted on a subdomain like `docs.example.com` or `blog.example.com`.
   Similarly we want to provide the ability to host `tidbitshub` or `rubrics` on a subdomain like `tidbitshub.example.com` or `rubrics.example.com`.
 - Here `tidbitshub.example.com` should use the theme of `example.com` and the content shown should be specific to the project/space `example.com`.
 - We also provide the ability to have a parent(not subdomain) custom domain like `tidbitsexample.com` which will show a specific space's content and theme.
@@ -74,6 +94,7 @@ we want them to use rubrics for their internal team.
 - On `tidbitshub.com`, we will map this space to `realfinance.tidbitshub.com` and show the content specific to the space "realfinance"
 - To make these subdomains work we use [vercel's](https://vercel.com/docs/projects/domains/working-with-domains#wildcard-domain) wildcard domain feature.
 - Similarly, we will map the rubrics to `realfinance.myrubrics.com` and show the content specific to the space "realfinance"
+
 
 ### On the side of "realfinance.com":
 - They would want to load tidbitshub when a users go to `tidbitshub.realfinance.com` and show the content specific to the space "realfinance". 
@@ -92,3 +113,13 @@ to make this work. [See Here](https://vercel.com/docs/projects/domains/add-a-dom
 
 # Spaces and Data
 - We always separate the data of each space and we never show data of all spaces together. We only show it one at a time for a particular url/space.
+
+
+# Checklist to make sure you understand
+- [ ] How we determine the space based on the domain in the url
+- [ ] How we show the content specific to the space based on the domain in the url
+- [ ] How subdomains work
+- [ ] How we use the subdomain to determine the space
+- [ ] How subdomain is the space id
+- [ ] How we use the custom domain to determine the space
+- [ ] How to add a custom domain to the space

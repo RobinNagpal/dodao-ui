@@ -3,8 +3,10 @@ import { Container } from './Container';
 import Image from 'next/image';
 import tidbits from '@/images/TidbitsHub/GIFs/tidbits.gif';
 import ContactUsLink from '../../DoDAOHome/components/ContactUsLink';
+import { SetupNewSpaceButton } from '../../common/setupNewSpace';
+import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 
-export function Hero() {
+export function Hero({ space }: { space: SpaceWithIntegrationsFragment | null }) {
   return (
     <div className="overflow-hidden py-20 sm:py-12 lg:pb-32 xl:pb-36">
       <Container>
@@ -16,11 +18,16 @@ export function Hero() {
                 <br />
                 The Tidbits Method
               </h1>
-              <p className="mt-6 text-lg xl:text-xl">
-                We break down concepts into easily digestible information, guiding your customers to make empowered decisions. Equip your clients with knowledge
-                and watch their trust in your services grow!
+              <p className="mt-6 text-md xl:text-lg">
+                Break down the concepts into easily digestible information, guiding your customers to make empowered decisions. Equip your clients with
+                knowledge and watch their trust in your services grow! <br></br>
+                <br></br>
+                <span className="font-bold">Setup New Space</span> to create your own tidbits{' '}
+                <span className="ml-2">
+                  <SetupNewSpaceButton space={space!} />
+                </span>
               </p>
-              <div className="mt-8 flex flex-wrap gap-x-6 gap-y-4">
+              <div className="mt-4 flex flex-wrap gap-x-6 gap-y-6">
                 <div>
                   <WatchVideoButton src={'https://dodao-prod-public-assets.s3.us-east-1.amazonaws.com/tidbithub/Updated_Tidbits_Hub-Crypto.mp4'} />
                 </div>

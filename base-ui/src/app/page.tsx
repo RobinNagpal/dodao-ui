@@ -7,7 +7,7 @@ async function Home() {
   const session = await getServerSession();
 
   if (session) {
-    redirect('/homepage');
+    redirect('/');
   }
   return (
     <div>
