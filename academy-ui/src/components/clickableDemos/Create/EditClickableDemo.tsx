@@ -178,7 +178,7 @@ function EditClickableDemo({ space, demoId, byteCollection, closeDemoEditModal }
   return (
     <PageWrapper>
       <SingleCardLayout>
-        <div>
+        <div className="text-color">
           <div className="py-4 my-4">
             <div className="px-4 mb-4 md:px-0 overflow-hidden float-left">
               <Link href={demoId ? `/clickable-demos/view/${demoId}/0` : `/clickable-demos`} className="text-color">
