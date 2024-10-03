@@ -47,6 +47,7 @@ You should be know the following things to be able to contribute to this reposit
 - [ ] Making sure the UI works for various themes.
 - [ ] Understand what is server side rendering and what are server side components in Next.js [ServerSideComponents.md](docs/ServerSideComponents.md).
 - [ ] Understand how to handle errors in the UI. More details in [ErrorHandling.md](docs/ErrorHandling.md)
+- [ ] Understand how theme and CSS works. More details in [HowThemeAndCssWorks.md](docs/HowThemeAndCssWorks.md)
 
 ### Base Application
 We have a base application in the repository. See here on the things you can work on in the base application

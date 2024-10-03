@@ -114,6 +114,15 @@ to make this work. [See Here](https://vercel.com/docs/projects/domains/add-a-dom
 # Spaces and Data
 - We always separate the data of each space and we never show data of all spaces together. We only show it one at a time for a particular url/space.
 
+# URL mappings on local
+- We use `etc/hosts` file to map the domain to localhost. This file maps the domain to the localhost IP address.
+- On windows, the file is located at `C:\Windows\System32\drivers\etc\hosts` (or similar)
+- Here is an example of how we map the domain to localhost
+  ```
+  127.0.0.1    alchemix.tidbitshub-localhost.org
+  ```
+- This will map the domain `alchemix.tidbitshub-localhost.org` to the localhost IP address.
+
 
 # Checklist to make sure you understand
 - [ ] How we determine the space based on the domain in the url
@@ -123,3 +132,4 @@ to make this work. [See Here](https://vercel.com/docs/projects/domains/add-a-dom
 - [ ] How subdomain is the space id
 - [ ] How we use the custom domain to determine the space
 - [ ] How to add a custom domain to the space
+- [ ] How to add entries in the `etc/hosts` file to map the domain to localhost
