@@ -1,5 +1,4 @@
 export interface CreateSpaceRequest {
-    id: string;
-    name: string;
-  }
-  
+  id: string;
+  name: string;
+}

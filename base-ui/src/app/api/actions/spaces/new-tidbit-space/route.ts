@@ -64,4 +64,4 @@ async function postHandler(req: NextRequest): Promise<NextResponse<CreateSpaceRe
   return NextResponse.json({ space, user } as CreateSpaceResponse, { status: 200 });
 }
 
-export const POST = (postHandler);
+export const POST = postHandler;

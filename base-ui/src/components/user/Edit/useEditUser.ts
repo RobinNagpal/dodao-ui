@@ -24,7 +24,7 @@ export default function useEditUser(userName: string, update: () => void): UseEd
     phone_number: '',
     publicAddress: '',
     spaceId: '',
-    username: ''
+    username: '',
   });
 
   const [upserting, setUpserting] = useState(false);

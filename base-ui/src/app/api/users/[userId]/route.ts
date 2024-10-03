@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/prisma'
+import { prisma } from '@/prisma';
 import { UserDto } from '@/types/user/UserDto';
 
 // Set of allowed fields for update
@@ -17,7 +17,6 @@ async function putHandler(req: NextRequest, { params }: { params: { userId: stri
       return obj;
     }, {});
 
-
   // Optionally, handle emailVerified separately if you always want to set it during update
   fieldsToUpdate.emailVerified = new Date();
 
@@ -29,4 +28,4 @@ async function putHandler(req: NextRequest, { params }: { params: { userId: stri
   return NextResponse.json(user as UserDto, { status: 200 });
 }
 
-export const PUT = (putHandler);
+export const PUT = putHandler;
