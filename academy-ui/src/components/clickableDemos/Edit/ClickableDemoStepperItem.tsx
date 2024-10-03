@@ -3,12 +3,12 @@ import Input from '@dodao/web-core/components/core/input/Input';
 import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import { ClickableDemoStepInput, ImageType, Space, UpsertClickableDemoInput, TooltipPlacement } from '@/graphql/generated/generated-types';
 import { ClickableDemoErrors, ClickableDemoStepError } from '@dodao/web-core/types/errors/clickableDemoErrors';
-import UploadInput from '@/components/clickableDemos/FileUpload/UploadInput';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { useState } from 'react';
 import styles from './ClickableDemoStepperItem.module.scss';
 import StyledSelect, { StyledSelectItem } from '@dodao/web-core/components/core/select/StyledSelect';
 import SelectElementInput from '@/components/clickableDemos/ElementSelector/SelectElementInput';
+import CaptureInput from '@/components/clickableDemos/CaptureSelector/CaptureInput';
 
 interface StepProps {
   space: Space;
@@ -55,6 +55,7 @@ export default function Step({
   onUpdateStep,
 }: StepProps) {
   const [uploadHTMLFileLoading, setUploadHTMLFileLoading] = useState(false);
+  const [showSelectHtmlCaptureModal, setShowSelectHtmlCaptureModal] = useState(false);
 
   const updateStepSelector = (selector: string | number | undefined, elementImgUrl: string | undefined) => {
     onUpdateStep({ ...step, selector: selector?.toString() || '', elementImgUrl: elementImgUrl?.toString() || '' });
@@ -95,7 +96,7 @@ export default function Step({
         <div className="mt-4">
           <Input
             modelValue={step.tooltipInfo}
-            placeholder="Toolip Information"
+            placeholder="Tooltip Information"
             maxLength={500}
             onUpdate={updateStepTooltipInfo}
             label="Tooltip Information"
@@ -115,22 +116,20 @@ export default function Step({
       </div>
       <div className="w-full">
         <div className="mt-4">
-          <UploadInput
-            label="HTML File"
+          <CaptureInput
+            label="HTML Capture"
             error={inputError('url') ? 'URL is required' : ''}
-            imageType={ImageType.ClickableDemos}
-            spaceId={space?.id || 'new-space'}
             modelValue={step.url}
-            objectId={(space?.name && slugify(space?.name)) || space?.id || 'new-space'}
             onInput={updateStepUrl}
-            onLoading={setUploadHTMLFileLoading}
+            demoId={clickableDemo.id}
+            spaceId={space.id}
           />
+          {step.screenImgUrl && (
+            <div className="mt-4">
+              <img src={step.screenImgUrl} alt="Screenshot" className="rounded-lg shadow-md max-w-full h-auto" />
+            </div>
+          )}
         </div>
-        {step.screenImgUrl && ( // Assuming `step.screenImgUrl` holds the URL of the screenshot image
-          <div className="mt-4">
-            <img src={step.screenImgUrl} alt="Screenshot" className="rounded-lg shadow-md max-w-full h-auto" />
-          </div>
-        )}
       </div>
       <div className="w-full">
         <div className="mt-4">
