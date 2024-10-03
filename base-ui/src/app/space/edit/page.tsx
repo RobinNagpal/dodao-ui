@@ -7,7 +7,7 @@ import Input from '@dodao/web-core/components/core/input/Input';
 import ToggleWithIcon from '@dodao/web-core/components/core/toggles/ToggleWithIcon';
 import Checkboxes from '@dodao/web-core/components/core/checkboxes/Checkboxes';
 import { LoginProviders } from '@dodao/web-core/types/deprecated/models/enums';
-import useEditSpace from '@/components/spaces/Edit/Basic/useEditSpace';
+import useEditSpace from '@/components/spaces/useEditSpace';
 import union from 'lodash/union';
 import { ThemeColors } from '@dodao/web-core/types/space';
 import React, { useState, CSSProperties, useEffect } from 'react';

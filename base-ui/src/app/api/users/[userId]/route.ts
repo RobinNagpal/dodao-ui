@@ -1,12 +1,13 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/prisma';
-import { User } from '@prisma/client';
+import { UserDto } from '@/types/user/UserDto';
 
 // Set of allowed fields for update
 const ALLOWED_UPDATE_FIELDS = new Set(['authProvider', 'email', 'username', 'name', 'phone_number', 'spaceId', 'image', 'publicAddress']);
 
-export async function POST(req: Request) {
+async function putHandler(req: NextRequest, { params }: { params: { userId: string } }): Promise<NextResponse<UserDto>> {
   const inputData = await req.json();
+  const { userId } = params;
 
   // Filter inputData to include only allowed fields for update
   const fieldsToUpdate = Object.keys(inputData)
@@ -16,19 +17,15 @@ export async function POST(req: Request) {
       return obj;
     }, {});
 
-  const { id } = inputData; // 'id' is always provided for identifying the user
-
-  if (!id) {
-    return new Response(JSON.stringify({ error: 'User ID is required.' }), { status: 400 });
-  }
-
   // Optionally, handle emailVerified separately if you always want to set it during update
   fieldsToUpdate.emailVerified = new Date();
 
-  const user = await prisma.user.update({
-    where: { id },
+  const user = await prisma.baseUser.update({
+    where: { id: userId },
     data: { ...fieldsToUpdate },
   });
 
-  return NextResponse.json({ user }, { status: 200 });
+  return NextResponse.json(user as UserDto, { status: 200 });
 }
+
+export const PUT = putHandler;

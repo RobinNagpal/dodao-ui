@@ -15,7 +15,7 @@ import { getGTagId } from '@dodao/web-core/utils/analytics/getGTagId';
 import { useNavigationEvent } from '@dodao/web-core/utils/analytics/useNavigationEvent';
 import { getAuthenticatedApolloClient } from '@dodao/web-core/utils/apolloClient';
 import { setDoDAOTokenInLocalStorage } from '@dodao/web-core/utils/auth/setDoDAOTokenInLocalStorage';
-import { Space } from '@prisma/client';
+import { BaseSpace } from '@prisma/client';
 import { SessionProvider } from 'next-auth/react';
 import { useEffect, useMemo } from 'react';
 import ReactGA from 'react-ga4';
@@ -37,7 +37,7 @@ export function ChildLayout({
 }: {
   children: React.ReactNode;
   session: Session | null;
-  space?: Space | null;
+  space?: BaseSpace | null;
   spaceError: boolean;
 }) {
   const client = useMemo(() => getAuthenticatedApolloClient(session), [session]);

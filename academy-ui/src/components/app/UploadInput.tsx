@@ -1,11 +1,14 @@
-import FileUploader from '@/components/app/FileUploader';
-import { ImageType } from '@/graphql/generated/generated-types';
+import { CreateSignedUrlInput, ImageType } from '@/graphql/generated/generated-types';
+import WebCoreFileUploader from '@dodao/web-core/components/core/uploadInput/FileUploader';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
+import { getUploadedImageUrlFromSingedUrl } from '@dodao/web-core/utils/upload/getUploadedImageUrlFromSingedUrl';
 import ArrowUpTrayIcon from '@heroicons/react/24/solid/ArrowUpTrayIcon';
 import PhotoIcon from '@heroicons/react/24/solid/PhotoIcon';
+import axios from 'axios';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import styles from './UploadInput.module.scss';
-import { v4 as uuidV4 } from 'uuid';
 
 const UploadWrapper = styled.div`
   background-color: var(--bg-color);
@@ -35,6 +38,21 @@ interface UploadInputProps {
   helpText?: string;
 }
 
+/**
+ * @deprecated - Use UploadInput in webcore instead - shared/web-core/src/components/core/uploadInput/UploadInput.tsx
+ * @param label
+ * @param modelValue
+ * @param imageType
+ * @param objectId
+ * @param spaceId
+ * @param onInput
+ * @param onLoading
+ * @param placeholder
+ * @param allowedFileTypes
+ * @param error
+ * @param helpText
+ * @constructor
+ */
 export default function UploadInput({
   label,
   modelValue,
@@ -48,6 +66,31 @@ export default function UploadInput({
   error,
   helpText,
 }: UploadInputProps) {
+  const [loading, setLoading] = useState(false);
+  async function uploadToS3AndReturnImgUrl(file: File) {
+    onLoading && onLoading(true);
+    setLoading(true);
+    const input: CreateSignedUrlInput = {
+      imageType,
+      contentType: file.type,
+      objectId: objectId.replace(/[^a-z0-9]/gi, '_'),
+      name: file.name.replace(' ', '_').toLowerCase(),
+    };
+
+    const response = await axios.post(`${getBaseUrl()}/api/s3-signed-urls`, { spaceId, input });
+
+    const signedUrl = response?.data?.url!;
+    await axios.put(signedUrl, file, {
+      headers: { 'Content-Type': file.type },
+    });
+
+    const imageUrl = getUploadedImageUrlFromSingedUrl(signedUrl);
+    onInput && onInput(imageUrl);
+
+    onLoading && onLoading(false);
+    setLoading(false);
+  }
+
   const inputId = spaceId + '-' + slugify(label || imageType || objectId);
   return (
     <div className="my-4">
@@ -69,23 +112,20 @@ export default function UploadInput({
             onChange={(e) => onInput(e.target.value)}
           />
         </div>
-        <FileUploader
+        <WebCoreFileUploader
+          allowedFileTypes={allowedFileTypes}
           className={
             'relative -ml-px inline-flex items-center gap-x-1.5 rounded-r-md px-3 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 ' +
             styles.styledHover
           }
-          spaceId={spaceId}
-          onInput={onInput}
-          imageType={imageType}
-          objectId={objectId}
-          onLoading={onLoading}
-          allowedFileTypes={allowedFileTypes}
+          uploadFile={uploadToS3AndReturnImgUrl}
+          loading={loading}
         >
           <div className="flex">
             <ArrowUpTrayIcon className="-ml-0.5 h-5 w-5 text-gray-400" aria-hidden="true" />
             <span className="mx-2">Upload</span>
           </div>
-        </FileUploader>
+        </WebCoreFileUploader>
       </UploadWrapper>
       {helpText && <p className="ml-1 mt-2 mb-2 text-sm">{helpText}</p>}
       {typeof error === 'string' && <p className="mt-2 text-sm text-left text-red-600">{error}</p>}

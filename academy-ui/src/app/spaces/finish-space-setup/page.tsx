@@ -1,7 +1,7 @@
-export default async function FinishSetup() {
-  return (
-    <section className="h-full flex items-center justify-center pt-36" style={{ backgroundColor: 'var(--bg-color)' }}>
-      <div>Your space is created. Now you can upload your logo, update the theme, add admins etc.</div>
-    </section>
-  );
+import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
+import FinishSpaceSetup from '@/components/spaces/finishSetup/FinishSpaceSetup';
+
+export default async function CreateSpacePage() {
+  const space = await getSpaceServerSide();
+  return <FinishSpaceSetup space={space!} />;
 }
