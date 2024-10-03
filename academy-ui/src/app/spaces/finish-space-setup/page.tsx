@@ -1,7 +1,7 @@
 import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
-import FinishSetup from '@/components/spaces/finish-setup/finish-space-setup';
+import FinishSpaceSetup from '@/components/spaces/finishSetup/FinishSpaceSetup';
 
 export default async function CreateSpacePage() {
   const space = await getSpaceServerSide();
-  return <FinishSetup space={space!} />;
+  return <FinishSpaceSetup space={space!} />;
 }

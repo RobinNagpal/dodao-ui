@@ -39,3 +39,8 @@
 ---
 
 # In Next PR - Multiple spaces for user
+
+----
+# In Next PR - Image Upload
+- just show uploaded image. No need to show URL.
+- We can just show image upload square like many other websites show.
