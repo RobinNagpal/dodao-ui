@@ -7,9 +7,9 @@ import SelectHtmlCaptureModal from '@/components/clickableDemoHtmlCapture/Select
 interface HtmlCapture {
   id: string;
   clickable_demo_id: string;
-  file_name: string;
-  file_url: string;
-  file_image_url: string;
+  fileName: string;
+  fileUrl: string;
+  fileImageUrl: string;
   created_at: string;
 }
 
@@ -20,8 +20,8 @@ interface CaptureInputProps {
   placeholder?: string;
   error?: any;
   helpText?: string;
-    demoId: string;
-    spaceId: string;
+  demoId: string;
+  spaceId: string;
 }
 
 export default function CaptureInput({
@@ -31,7 +31,7 @@ export default function CaptureInput({
   placeholder = 'e.g. https://example.com/guide.png',
   error,
   helpText,
-    demoId,
+  demoId,
   spaceId,
 }: CaptureInputProps) {
   const [showSelectHtmlCaptureModal, setShowSelectHtmlCaptureModal] = useState(false);
@@ -41,7 +41,7 @@ export default function CaptureInput({
   const handleSelectHtmlCaptures = (selectedCaptures: HtmlCapture[]) => {
     if (selectedCaptures.length > 0) {
       const selectedCapture = selectedCaptures[0];
-      onInput(selectedCapture.file_url, selectedCapture.file_image_url || '');
+      onInput(selectedCapture.fileUrl, selectedCapture.fileImageUrl || '');
     }
     setShowSelectHtmlCaptureModal(false);
   };
@@ -83,11 +83,11 @@ export default function CaptureInput({
       )}
       {showSelectHtmlCaptureModal && (
         <SelectHtmlCaptureModal
-                  showSelectHtmlCaptureModal={showSelectHtmlCaptureModal}
-                  onClose={() => setShowSelectHtmlCaptureModal(false)}
-                  addHtmlCaptures={handleSelectHtmlCaptures}
-                  demoId={demoId}
-                  spaceId={spaceId} // Add the appropriate spaceId value here
+          showSelectHtmlCaptureModal={showSelectHtmlCaptureModal}
+          onClose={() => setShowSelectHtmlCaptureModal(false)}
+          addHtmlCaptures={handleSelectHtmlCaptures}
+          demoId={demoId}
+          spaceId={spaceId} // Add the appropriate spaceId value here
         />
       )}
     </div>

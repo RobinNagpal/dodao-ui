@@ -1,14 +1,13 @@
 .UploadWrapper {
-    background-color: var(--bg-color);
-    color: var(--text-color);
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+.StyledInput {
+  background-color: var(--bg-color);
+  border-color: var(--primary-color) !important;
+  color: var(--text-color);
+  &:focus {
+    box-shadow: 0 0 0 2px var(--primary-color) !important;
   }
-  
-  .StyledInput {
-    background-color: var(--bg-color);
-    border-color: var(--primary-color) !important;
-    color: var(--text-color);
-    &:focus {
-      box-shadow: 0 0 0 2px var(--primary-color) !important;
-    }
-  }
-  
+}
