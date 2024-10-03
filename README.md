@@ -50,7 +50,7 @@ You should be know the following things to be able to contribute to this reposit
 
 ### Base Application
 We have a base application in the repository. See here on the things you can work on in the base application
-[BaseFeatures.md](docs/BaseFeatures.md)
+[BaseFeatures.md](docs/features/BaseFeatures.md)
 
 Checklist for contribution to base application:
 - [ ] Understand how the code is structured
@@ -60,7 +60,7 @@ Checklist for contribution to base application:
 
 ### Tidbits Hub
 We have a Tidbits Hub in the repository. See here on the things you can work on in the Tidbits Hub application
-[TidbitsHubFuture.md](docs/TidbitsHubFutures.md)
+[TidbitsHubFuture.md](docs/features/TidbitsHubFutures.md)
 
 Checklist for contribution to Tidbits Hub:
 - [ ] Understand how the code is structured

@@ -1,12 +1,8 @@
-import { CreateSignedUrlInput, ImageType } from '@/graphql/generated/generated-types';
 import WebCoreFileUploader from '@dodao/web-core/components/core/uploadInput/FileUploader';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
-import { getUploadedImageUrlFromSingedUrl } from '@dodao/web-core/utils/upload/getUploadedImageUrlFromSingedUrl';
 import ArrowUpTrayIcon from '@heroicons/react/24/solid/ArrowUpTrayIcon';
 import PhotoIcon from '@heroicons/react/24/solid/PhotoIcon';
-import axios from 'axios';
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import styles from './UploadInput.module.scss';
 
@@ -27,71 +23,29 @@ const StyledInput = styled.input`
 interface UploadInputProps {
   label?: string;
   modelValue?: string | null;
-  imageType: ImageType;
-  objectId: string;
   spaceId: string;
-  onInput: (url: string) => void;
-  onLoading?: (value: ((prevState: boolean) => boolean) | boolean) => void;
+  uploadToS3: (file: File) => Promise<void>;
+  loading: boolean;
   placeholder?: string;
   allowedFileTypes?: string[];
   error?: any;
   helpText?: string;
+  onInput: (url: string) => void;
 }
 
-/**
- * @deprecated - Use UploadInput in webcore instead - shared/web-core/src/components/core/uploadInput/UploadInput.tsx
- * @param label
- * @param modelValue
- * @param imageType
- * @param objectId
- * @param spaceId
- * @param onInput
- * @param onLoading
- * @param placeholder
- * @param allowedFileTypes
- * @param error
- * @param helpText
- * @constructor
- */
 export default function UploadInput({
   label,
   modelValue,
-  imageType,
-  objectId,
   spaceId,
   onInput,
-  onLoading,
+  loading,
   placeholder = 'e.g. https://example.com/guide.png',
   allowedFileTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/svg+xml', 'image/svg+xml', 'image/webp', 'text/html'],
   error,
   helpText,
+  uploadToS3,
 }: UploadInputProps) {
-  const [loading, setLoading] = useState(false);
-  async function uploadToS3AndReturnImgUrl(file: File) {
-    onLoading && onLoading(true);
-    setLoading(true);
-    const input: CreateSignedUrlInput = {
-      imageType,
-      contentType: file.type,
-      objectId: objectId.replace(/[^a-z0-9]/gi, '_'),
-      name: file.name.replace(' ', '_').toLowerCase(),
-    };
-
-    const response = await axios.post(`${getBaseUrl()}/api/s3-signed-urls`, { spaceId, input });
-
-    const signedUrl = response?.data?.url!;
-    await axios.put(signedUrl, file, {
-      headers: { 'Content-Type': file.type },
-    });
-
-    const imageUrl = getUploadedImageUrlFromSingedUrl(signedUrl);
-    onInput && onInput(imageUrl);
-
-    onLoading && onLoading(false);
-    setLoading(false);
-  }
-
-  const inputId = spaceId + '-' + slugify(label || imageType || objectId);
+  const inputId = spaceId + '-' + slugify(label || 'image-url');
   return (
     <div className="my-4">
       <label htmlFor={inputId} className="block text-sm font-medium leading-6">
@@ -118,7 +72,7 @@ export default function UploadInput({
             'relative -ml-px inline-flex items-center gap-x-1.5 rounded-r-md px-3 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 ' +
             styles.styledHover
           }
-          uploadFile={uploadToS3AndReturnImgUrl}
+          uploadFile={uploadToS3}
           loading={loading}
         >
           <div className="flex">

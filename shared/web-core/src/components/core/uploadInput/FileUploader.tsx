@@ -4,8 +4,7 @@ import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 
 interface Props {
-  onLoading?: (loading: boolean) => void;
-  onInput?: (imageUrl: string) => void;
+  loading: boolean;
   children: React.ReactNode;
   className?: string;
   allowedFileTypes: string[];
@@ -22,30 +21,17 @@ const FileSelect = styled.label`
   }
 `;
 
-export default function FileUploader({ onLoading, children, className, allowedFileTypes, uploadFile }: Props) {
-  const [loading, setLoading] = useState(false);
+export default function FileUploader({ loading, children, className, allowedFileTypes, uploadFile }: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    setLoading(true);
-    onLoading && onLoading(true);
     const file = e.target.files![0];
     if (!allowedFileTypes.includes(file.type)) {
       console.log('File type not supported');
-      setLoading(false);
       return;
     }
 
-    try {
-      await uploadFile(file);
-
-      setLoading(false);
-      onLoading && onLoading(false);
-    } catch (error) {
-      setLoading(false);
-      onLoading && onLoading(false);
-      console.log(error);
-    }
+    await uploadFile(file);
   };
 
   return (

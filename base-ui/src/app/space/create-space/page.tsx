@@ -1,5 +1,5 @@
 import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
-import CreateSpace from '@/components/spaces/create/createSpace';
+import CreateSpace from '@/components/spaces/CreateSpace';
 
 export default async function CreateSpacePage() {
   const space = await getSpaceServerSide();
