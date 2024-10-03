@@ -32,7 +32,7 @@ export default function useEditUser(userName: string, update: () => void, spaceI
   async function initialize() {
     if (userName) {
       try {
-        let response = await fetch(`/api/${spaceId}/queries/users/${userName}`, {
+        let response = await fetch(`/api/${spaceId}/queries/users/by-username?username=${userName}`, {
           method: 'GET',
           credentials: 'include',
           headers: {

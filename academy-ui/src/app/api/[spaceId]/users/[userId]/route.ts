@@ -6,9 +6,9 @@ import { UserDto } from '@/types/user/UserDto';
 // Set of allowed fields for update
 const ALLOWED_UPDATE_FIELDS = new Set(['authProvider', 'email', 'username', 'name', 'phone_number', 'spaceId', 'image', 'publicAddress']);
 
-async function putHandler(req: NextRequest, { params }: { params: { userId: string; spaceId: string } }): Promise<NextResponse<UserDto[]>>  {
-    const inputData = await req.json();
-    const { userId } = params;
+async function putHandler(req: NextRequest, { params }: { params: { userId: string; spaceId: string } }): Promise<NextResponse<UserDto>> {
+  const inputData = await req.json();
+  const { userId } = params;
 
   // Filter inputData to include only allowed fields for update
   const fieldsToUpdate = Object.keys(inputData)
@@ -26,7 +26,7 @@ async function putHandler(req: NextRequest, { params }: { params: { userId: stri
     data: { ...fieldsToUpdate },
   });
 
-  return NextResponse.json([user] as UserDto[], { status: 200 });
+  return NextResponse.json(user as UserDto, { status: 200 });
 }
 
-export const PUT = withErrorHandlingV1<UserDto[]>(putHandler);
+export const PUT = withErrorHandlingV1<UserDto>(putHandler);

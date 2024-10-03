@@ -15,13 +15,16 @@ async function SpaceCollections() {
   let spaces: Space[] = [];
 
   if (session) {
-    const response = await fetch(`${getBaseUrl()}/api/${space.id}/queries/users/${session.username}/spaces`, {
+    const response = await fetch(`${getBaseUrl()}/api/${space.id}/queries/spaces/by-creator?username=${session.username}`, {
       method: 'GET',
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
       },
     });
+    if (!response.ok) {
+      throw new Error(`Failed to fetch spaces: ${response}`);
+    }
     spaces = await response.json();
   }
 

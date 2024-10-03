@@ -1,11 +1,9 @@
-import { SpaceTypes } from '@/graphql/generated/generated-types';
 import { getDecodedJwtFromContext } from '@dodao/web-core/api/auth/getJwtFromContext';
 import { CssTheme, themes } from '@dodao/web-core/components/app/themes';
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/prisma';
 import { CreateSpaceRequest } from '@/types/request/CreateSpaceRequest';
 import { CreateSpaceResponse } from '@/types/response/CreateSpaceResponse';
-import { withErrorHandlingV1 } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { Space } from '@prisma/client';
 import { LoginProviders } from '@dodao/web-core/types/deprecated/models/enums';
 
@@ -28,7 +26,7 @@ async function postHandler(req: NextRequest): Promise<NextResponse<CreateSpaceRe
     ],
     domains: [],
     authSettings: { enableLogin: true, loginOptions: [LoginProviders.Email] },
-    type: SpaceTypes.TidbitsSite,
+    type: '',
     features: [],
     themeColors: themes[CssTheme.GlobalTheme],
     verified: true,
@@ -63,7 +61,7 @@ async function postHandler(req: NextRequest): Promise<NextResponse<CreateSpaceRe
     }),
   ]);
 
-  return NextResponse.json({ space, user }, { status: 200 });
+  return NextResponse.json({ space, user } as CreateSpaceResponse, { status: 200 });
 }
 
-export const POST = withErrorHandlingV1<CreateSpaceResponse>(postHandler);
+export const POST = (postHandler);

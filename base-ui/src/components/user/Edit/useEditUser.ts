@@ -24,8 +24,7 @@ export default function useEditUser(userName: string, update: () => void): UseEd
     phone_number: '',
     publicAddress: '',
     spaceId: '',
-    username: '',
-    password: '',
+    username: ''
   });
 
   const [upserting, setUpserting] = useState(false);
@@ -34,7 +33,7 @@ export default function useEditUser(userName: string, update: () => void): UseEd
   async function initialize() {
     if (userName) {
       try {
-        let response = await fetch(`/api/user/${userName}`, {
+        let response = await fetch(`/api/queries/users/by-username?username=${userName}`, {
           method: 'GET',
           credentials: 'include',
           headers: {
@@ -60,8 +59,8 @@ export default function useEditUser(userName: string, update: () => void): UseEd
   async function upsertUser() {
     setUpserting(true);
     try {
-      let response = await fetch(`/api/user/edit`, {
-        method: 'POST',
+      let response = await fetch(`/api/users/${user.id}`, {
+        method: 'PUT',
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',

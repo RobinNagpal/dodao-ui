@@ -1,24 +1,28 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/prisma'; 
-import { Space } from '@prisma/client'; 
+import { prisma } from '@/prisma';
+import { Space } from '@prisma/client';
 
-export async function GET(req: NextRequest, { params }: { params: { username: string, spaceId: string } }): Promise<NextResponse<Space[]>> {
-    const { username } = params;
+export async function GET(req: NextRequest, { params }: { params: { spaceId: string } }): Promise<NextResponse<Space[] | { error: string; }>> {
+  const { searchParams } = new URL(req.url);
+  const username = searchParams.get('username');
 
-    const spaceIds = await prisma.user.findMany({
-        where: { username: username },
-        select: { spaceId: true },
-      }).then(users => users.map(user => user.spaceId));
-      
-    let spaces : Space[];
+  if (!username) {
+    return NextResponse.json({ error: 'Creator username is required' }, { status: 400 });
+  }
 
-    if (spaceIds.length === 0) {
-        spaces = []
-    } else {
-        spaces = await prisma.space.findMany({
-          where: { id: { in: spaceIds } },
-        });
-    }
+  const spaceIds = await prisma.user
+    .findMany({
+      where: { username: username },
+      select: { spaceId: true },
+    })
+    .then((users) => users.map((user) => user.spaceId));
 
+  if (spaceIds.length === 0) {
+    return NextResponse.json([], { status: 200 });
+  } else {
+    const spaces = await prisma.space.findMany({
+      where: { id: { in: spaceIds } },
+    });
     return NextResponse.json(spaces as Space[], { status: 200 });
+  }
 }

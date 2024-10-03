@@ -3,9 +3,5 @@ import CreateSpace from '@/components/spaces/create/createSpace';
 
 export default async function CreateSpacePage() {
   const space = await getSpaceServerSide();
-  return (
-    <>
-      <CreateSpace space={space!} />
-    </>
-  );
+  return <CreateSpace space={space!} />;
 }
