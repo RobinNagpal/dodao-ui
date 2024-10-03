@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/prisma';
 import { Space } from '@prisma/client';
 
-export async function GET(req: NextRequest, { params }: { params: { spaceId: string } }): Promise<NextResponse<Space[] | { error: string; }>> {
+export async function GET(req: NextRequest): Promise<NextResponse<Space[] | { error: string }>> {
   const { searchParams } = new URL(req.url);
   const username = searchParams.get('username');
 
