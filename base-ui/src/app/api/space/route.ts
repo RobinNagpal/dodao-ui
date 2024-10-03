@@ -4,7 +4,7 @@ import { prisma } from '@/prisma';
 export async function POST(req: Request) {
   const { domain } = await req.json();
 
-  const space = await prisma.space.findFirst({
+  const space = await prisma.baseSpace.findFirst({
     where: {
       domains: {
         has: domain,
@@ -17,7 +17,7 @@ export async function POST(req: Request) {
   }
 
   if (domain === 'localhost') {
-    const space = await prisma.space.findFirst({
+    const space = await prisma.baseSpace.findFirst({
       where: {
         id: 'test-academy-eth',
       },

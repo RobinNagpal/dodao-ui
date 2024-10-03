@@ -4,11 +4,11 @@ import { CreateSpaceRequest } from '@/types/request/CreateSpaceRequest';
 import CreateNewSpace from '@dodao/web-core/ui/auth/signup/components/CreateNewSpace';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { Space } from '@prisma/client';
+import { BaseSpace } from '@prisma/client';
 import { useState } from 'react';
 
 interface CreateSpaceProps {
-  space: Space;
+  space: BaseSpace;
 }
 
 function CreateSpace({ space }: CreateSpaceProps) {

@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/prisma';
 import { CreateSpaceRequest } from '@/types/request/CreateSpaceRequest';
 import { CreateSpaceResponse } from '@/types/response/CreateSpaceResponse';
-import { Space } from '@prisma/client';
+import { BaseSpace } from '@prisma/client';
 import { LoginProviders } from '@dodao/web-core/types/deprecated/models/enums';
 
 async function postHandler(req: NextRequest): Promise<NextResponse<CreateSpaceResponse>> {
@@ -13,7 +13,7 @@ async function postHandler(req: NextRequest): Promise<NextResponse<CreateSpaceRe
 
   const spaceData: CreateSpaceRequest = await req.json();
 
-  const spaceInput: Space = {
+  const spaceInput: BaseSpace = {
     id: spaceData.id,
     name: spaceData.name,
     creator: session.username,
@@ -26,36 +26,23 @@ async function postHandler(req: NextRequest): Promise<NextResponse<CreateSpaceRe
     ],
     domains: [],
     authSettings: { enableLogin: true, loginOptions: [LoginProviders.Email] },
-    type: '',
+
     features: [],
     themeColors: themes[CssTheme.GlobalTheme],
     verified: true,
     createdAt: new Date(),
     updatedAt: new Date(),
-    admins: [],
-    adminUsernames: [],
-    inviteLinks: null,
-    skin: '',
-    discordInvite: null,
-    telegramInvite: null,
-    botDomains: [],
-    guideSettings: {},
-    socialSettings: {},
-    byteSettings: {},
-    tidbitsHomepage: null,
   };
 
   // Use a transaction to group the space creation and user update
   const [space, user] = await prisma.$transaction([
-    prisma.space.create({
+    prisma.baseSpace.create({
       data: {
         ...spaceInput,
-        inviteLinks: spaceInput.inviteLinks || {},
         themeColors: undefined,
-        tidbitsHomepage: undefined,
       },
     }),
-    prisma.user.update({
+    prisma.baseUser.update({
       where: { id: session.accountId },
       data: { spaceId: spaceData.id },
     }),

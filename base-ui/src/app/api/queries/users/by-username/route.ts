@@ -10,7 +10,7 @@ async function getHandler(req: NextRequest): Promise<NextResponse<UserDto[] | { 
     return NextResponse.json({ error: 'Username is required' }, { status: 400 });
   }
 
-  const user = await prisma.user.findFirstOrThrow({
+  const user = await prisma.baseUser.findFirstOrThrow({
     where: { username: username },
   });
 

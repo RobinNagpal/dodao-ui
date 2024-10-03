@@ -20,7 +20,7 @@ async function putHandler(req: NextRequest, { params }: { params: { userId: stri
   // Optionally, handle emailVerified separately if you always want to set it during update
   fieldsToUpdate.emailVerified = new Date();
 
-  const user = await prisma.user.update({
+  const user = await prisma.baseUser.update({
     where: { id: userId },
     data: { ...fieldsToUpdate },
   });

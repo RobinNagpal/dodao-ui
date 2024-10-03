@@ -1,13 +1,13 @@
 import { createHash } from '@dodao/web-core/api/auth/createHash';
 import { prisma } from '@/prisma';
-import { User } from '@prisma/client';
+import { BaseUser } from '@prisma/client';
 import { headers } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 import { defaultNormalizer, randomString, sendVerificationRequest } from '@dodao/web-core/api/auth/custom-email/send-verification';
 
-const createUser = async (user: User & { email: string }, spaceId: string) => {
+const createUser = async (user: BaseUser & { email: string }, spaceId: string) => {
   console.log('######### signIn - Creating new user #########');
-  const upsertedUser = await prisma.user.upsert({
+  const upsertedUser = await prisma.baseUser.upsert({
     create: {
       spaceId,
       email: user.email,
@@ -63,7 +63,7 @@ async function POST(req: NextRequest, res: NextResponse) {
   const hashedPassword = await createHash(password);
 
   const defaultUser = { id: crypto.randomUUID(), email: userEmail, password: hashedPassword, emailVerified: null };
-  const user = ((await prisma.user.findUnique({ where: { email_spaceId: { email: userEmail, spaceId } } })) ?? defaultUser) as User & { email: string };
+  const user = ((await prisma.baseUser.findUnique({ where: { email_spaceId: { email: userEmail, spaceId } } })) ?? defaultUser) as BaseUser & { email: string };
 
   console.log('user', user);
   await createUser(user, spaceId);

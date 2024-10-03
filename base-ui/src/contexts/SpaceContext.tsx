@@ -1,12 +1,12 @@
 'use client';
 
-import { Space } from '@prisma/client';
+import { BaseSpace } from '@prisma/client';
 // SpaceContext.tsx
 import React, { createContext, useContext, useState } from 'react';
 
 interface SpaceContextProps {
-  space?: Space | null;
-  setSpace: React.Dispatch<React.SetStateAction<Space | null | undefined>>;
+  space?: BaseSpace | null;
+  setSpace: React.Dispatch<React.SetStateAction<BaseSpace | null | undefined>>;
 }
 
 const SpaceContext = createContext<SpaceContextProps>({
@@ -19,11 +19,11 @@ export const useSpace = () => {
 };
 
 export const useRequiredSpace = () => {
-  return useContext(SpaceContext) as { space: Space };
+  return useContext(SpaceContext) as { space: BaseSpace };
 };
 
 export const SpaceProvider = ({ children }: { children: React.ReactNode }) => {
-  const [space, setSpace] = useState<Space | null>();
+  const [space, setSpace] = useState<BaseSpace | null>();
 
   return <SpaceContext.Provider value={{ space, setSpace }}>{children}</SpaceContext.Provider>;
 };

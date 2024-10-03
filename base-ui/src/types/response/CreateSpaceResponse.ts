@@ -1,6 +1,6 @@
-import { Space, User } from '@prisma/client';
+import { BaseSpace, BaseUser } from '@prisma/client';
 
 export interface CreateSpaceResponse {
-  space: Space;
-  user: User;
+  space: BaseSpace;
+  user: BaseUser;
 }

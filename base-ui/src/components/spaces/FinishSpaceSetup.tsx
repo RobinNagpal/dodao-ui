@@ -2,11 +2,11 @@
 
 import useEditSpace from '@/components/spaces/useEditSpace';
 import WebCoreSpaceSetup from '@dodao/web-core/components/space/WebCoreSpaceSetup';
-import { Space } from '@prisma/client';
+import { BaseSpace } from '@prisma/client';
 import React, { useEffect } from 'react';
 
 interface FinishSpaceSetupProps {
-  space: Space;
+  space: BaseSpace;
 }
 
 function FinishSpaceSetup({ space }: FinishSpaceSetupProps) {

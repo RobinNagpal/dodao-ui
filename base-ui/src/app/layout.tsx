@@ -1,5 +1,5 @@
+import { authorizeCrypto } from '@/app/api/auth/[...nextauth]/authorizeCrypto';
 import { getAuthOptions } from '@dodao/web-core/api/auth/authOptions';
-import { authorizeCrypto } from '@dodao/web-core/api/auth/authorizeCrypto';
 import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
 import { CssTheme, ThemeKey, themes } from '@dodao/web-core/src/components/app/themes';
 import { Session } from '@dodao/web-core/types/auth/Session';
@@ -28,9 +28,9 @@ export default async function RootLayout({ children }: RootLayoutProps) {
     getAuthOptions(
       {
         user: {
-          findUnique: p.user.findUnique,
-          findFirst: p.user.findFirst,
-          upsert: p.user.upsert,
+          findUnique: p.baseUser.findUnique,
+          findFirst: p.baseUser.findFirst,
+          upsert: p.baseUser.upsert,
         },
         verificationToken: {
           delete: p.verificationToken.delete,
@@ -38,7 +38,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
         adapter: {
           ...PrismaAdapter(p),
           getUserByEmail: async (email: string) => {
-            const user = (await p.user.findFirst({ where: { email } })) as User;
+            const user = (await p.baseUser.findFirst({ where: { email } })) as User;
             console.log('getUserByEmail', user);
             return user as any;
           },
