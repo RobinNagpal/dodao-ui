@@ -10,14 +10,13 @@ export async function GET(req: NextRequest): Promise<NextResponse<Space[] | { er
     return NextResponse.json({ error: 'Creator username is required' }, { status: 400 });
   }
 
-  const spaceMappings = await prisma.user
-    .findMany({
-      where: { username: username },
-      select: { spaceId: true },
-    })
-    
-  const spaceIds = spaceMappings.map(mapping => mapping.spaceId);
-  
+  const spaceMappings = await prisma.user.findMany({
+    where: { username: username },
+    select: { spaceId: true },
+  });
+
+  const spaceIds = spaceMappings.map((mapping) => mapping.spaceId);
+
   if (spaceIds.length === 0) {
     return NextResponse.json([], { status: 200 });
   } else {
