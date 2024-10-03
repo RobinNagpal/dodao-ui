@@ -30,7 +30,7 @@ function FinishSetup({ space }: FinishSpaceSetupProps) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(spaceReq),
+        body: JSON.stringify({ spaceInput: spaceReq }),
       });
 
       if (response?.ok) {
