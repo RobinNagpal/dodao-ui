@@ -1,22 +1,15 @@
 // Replace with your actual uploadImageToS3 import
 import LoadingSpinner from '@dodao/web-core/components/core/loaders/LoadingSpinner';
-// import { CreateSignedUrlInput, ImageType } from '@/graphql/generated/generated-types';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { getUploadedImageUrlFromSingedUrl } from '@dodao/web-core/utils/upload/getUploadedImageUrlFromSingedUrl';
-import axios from 'axios';
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
-import { ImageType } from './UploadInput';
 
 interface Props {
-  spaceId: string;
-  objectId: string;
-  imageType: ImageType;
   onLoading?: (loading: boolean) => void;
   onInput?: (imageUrl: string) => void;
   children: React.ReactNode;
   className?: string;
   allowedFileTypes: string[];
+  uploadFile: (file: File) => Promise<void>;
 }
 
 const FileSelect = styled.label`
@@ -29,28 +22,9 @@ const FileSelect = styled.label`
   }
 `;
 
-export default function FileUploader({ spaceId, objectId, imageType, onLoading, onInput, children, className, allowedFileTypes }: Props) {
+export default function FileUploader({ onLoading, children, className, allowedFileTypes, uploadFile }: Props) {
   const [loading, setLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-
-  async function uploadToS3AndReturnImgUrl(imageType: string, file: File, objectId: string) {
-    const input: CreateSignedUrlInput = {
-      imageType,
-      contentType: file.type,
-      objectId,
-      name: file.name.replace(' ', '_').toLowerCase(),
-    };
-
-    const response = await axios.post(`${getBaseUrl()}/api/s3-signed-urls`, { spaceId, input });
-
-    const signedUrl = response?.data?.url!;
-    await axios.put(signedUrl, file, {
-      headers: { 'Content-Type': file.type },
-    });
-
-    const imageUrl = getUploadedImageUrlFromSingedUrl(signedUrl);
-    return imageUrl;
-  }
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setLoading(true);
@@ -63,9 +37,8 @@ export default function FileUploader({ spaceId, objectId, imageType, onLoading, 
     }
 
     try {
-      const imageUrl = await uploadToS3AndReturnImgUrl(imageType, file, objectId.replace(/[^a-z0-9]/gi, '_'));
+      await uploadFile(file);
 
-      onInput && onInput(imageUrl);
       setLoading(false);
       onLoading && onLoading(false);
     } catch (error) {
