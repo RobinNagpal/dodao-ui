@@ -1,7 +1,6 @@
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Card from '@dodao/web-core/components/core/card/Card';
 import { Grid4Cols } from '@dodao/web-core/components/core/grids/Grid4Cols';
-import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { shorten } from '@dodao/web-core/utils/utils';
@@ -9,6 +8,7 @@ import CheckCircleIcon from '@heroicons/react/20/solid/CheckCircleIcon';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { ClickableDemoHtmlCaptureDto } from '@/types/html-captures/ClickableDemoHtmlCaptureDto';
+import ArrowPathRoundedSquareIcon from '@heroicons/react/24/outline/ArrowPathRoundedSquareIcon';
 
 interface SelectHtmlCaptureModalProps {
   showSelectHtmlCaptureModal: boolean;
@@ -49,9 +49,11 @@ export default function SelectHtmlCaptureModal(props: SelectHtmlCaptureModalProp
   return (
     <FullPageModal open={showSelectHtmlCaptureModal} onClose={onClose} title={'Select HTML Capture'}>
       {loading ? (
-        <FullPageLoader />
+        <div className="text-center min-h-[40vh] flex justify-center items-center">
+          <ArrowPathRoundedSquareIcon className="w-12 h-12 animate-spin text-blue-500 mx-auto" />
+        </div>
       ) : (
-        <>
+        <div className="min-h-[40vh]">
           <Grid4Cols className="p-16 text-color">
             {availableHtmlCaptures.map((htmlCapture) => (
               <div key={htmlCapture.id}>
@@ -88,7 +90,7 @@ export default function SelectHtmlCaptureModal(props: SelectHtmlCaptureModalProp
           >
             Select HTML Capture
           </Button>
-        </>
+        </div>
       )}
     </FullPageModal>
   );
