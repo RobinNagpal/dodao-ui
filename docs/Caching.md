@@ -8,6 +8,23 @@ Many times we want to load the data again when the user navigates to the page. F
 See [revalidatePath](https://nextjs.org/docs/app/api-reference/functions/revalidatePath) and [revalidateTag](https://nextjs.org/docs/app/api-reference/functions/revalidateTag) for more information.
 for more information.
 
+# Revalidate Path
+See the docs on what is [revalidatePath](https://nextjs.org/docs/app/api-reference/functions/revalidatePath)
+
+We prefer to use `revalidateTag` over `revalidatePath` as causes lesser data to refresh.
+
+For e.g.
+There is a page `/tidbit-collections`, now if change some small thing on one of the entities, and call this page to 
+reload, then it will again
+1) Fetch the space
+2) Fetch the collections
+3) Fetch other items
+
+So `revalidateTag` seems to be a better option.
+
+# Revalidate Tag
+We have added tags for each enitity in 
+
 
 # Checklist
 - [ ] I understand why my data is not loading again when I navigate to the page

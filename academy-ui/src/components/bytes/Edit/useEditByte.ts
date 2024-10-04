@@ -1,7 +1,7 @@
 import { editByteCommonFunctions, GeneratedByte, KeyOfByteInput, UpdateByteFunctions } from '@/components/bytes/Edit/editByteHelper';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
-import { revalidateTidbitCollections } from '@/revalidateTags';
+import { revalidateTidbitCollections } from '@/utils/api/revalidateTags';
 import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import { ByteDto, ImageDisplayMode } from '@/types/bytes/ByteDto';
 import { EditByteStep, EditByteType } from '@/types/request/ByteRequests';
