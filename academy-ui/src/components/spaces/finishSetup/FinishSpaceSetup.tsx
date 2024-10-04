@@ -6,7 +6,6 @@ import { WebCoreSpace } from '@dodao/web-core/types/space';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
-import { Session } from '@dodao/web-core/types/auth/Session';
 
 interface FinishSpaceSetupProps {
   space: SpaceWithIntegrationsFragment;

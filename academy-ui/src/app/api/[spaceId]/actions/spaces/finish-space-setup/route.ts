@@ -5,7 +5,8 @@ import { Space } from '@prisma/client';
 import { MutationUpdateSpaceArgs } from '@/graphql/generated/generated-types';
 import { verifySpaceEditPermissions } from '@/app/api/helpers/permissions/verifySpaceEditPermissions';
 import { isDoDAOSuperAdmin } from '@/app/api/helpers/space/isSuperAdmin';
-import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
+import { revalidateTag } from 'next/cache';
+import { SpaceTags } from '@/utils/api/fetchTags';
 
 async function putHandler(req: NextRequest): Promise<NextResponse<Space>> {
   const { spaceInput } = (await req.json()) as MutationUpdateSpaceArgs;
@@ -60,7 +61,7 @@ async function putHandler(req: NextRequest): Promise<NextResponse<Space>> {
       id: spaceInput.id,
     },
   });
-
+  revalidateTag(SpaceTags.GET_SPACE.toString());
   return NextResponse.json(updatedSpace as Space, { status: 200 });
 }
 

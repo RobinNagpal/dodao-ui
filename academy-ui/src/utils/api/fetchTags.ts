@@ -12,3 +12,8 @@ export enum ClickableDemoTags {
   GET_CLICKABLE_DEMOS,
   GET_CLICKABLE_DEMO,
 }
+
+export enum SpaceTags {
+  GET_SPACE,
+  GET_SPACE_BY_ID,
+}
