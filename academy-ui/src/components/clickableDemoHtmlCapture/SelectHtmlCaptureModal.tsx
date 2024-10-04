@@ -8,31 +8,22 @@ import { shorten } from '@dodao/web-core/utils/utils';
 import CheckCircleIcon from '@heroicons/react/20/solid/CheckCircleIcon';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-
-interface HtmlCapture {
-  id: string;
-  clickable_demo_id: string;
-  fileName: string;
-  fileUrl: string;
-  fileImageUrl: string;
-  created_at: string;
-}
+import { ClickableDemoHtmlCaptureDto } from '@/types/html-captures/ClickableDemoHtmlCaptureDto';
 
 interface SelectHtmlCaptureModalProps {
   showSelectHtmlCaptureModal: boolean;
   onClose: () => void;
-  addHtmlCaptures: (htmlCaptures: HtmlCapture[]) => void;
+  selectHtmlCapture: (htmlCapture: ClickableDemoHtmlCaptureDto) => void;
   demoId: string;
   spaceId: string;
 }
 
 export default function SelectHtmlCaptureModal(props: SelectHtmlCaptureModalProps) {
-  const { addHtmlCaptures, demoId, showSelectHtmlCaptureModal, onClose, spaceId } = props;
-  const [htmlCapturesResponse, setHtmlCapturesResponse] = useState<HtmlCapture[]>([]);
+  const { selectHtmlCapture, demoId, showSelectHtmlCaptureModal, onClose, spaceId } = props;
+  const [htmlCapturesResponse, setHtmlCapturesResponse] = useState<ClickableDemoHtmlCaptureDto[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
-  const [tempSelectedHtmlCaptureIds, setTempSelectedHtmlCaptureIds] = useState<string[]>([]);
-  const [tempSelectedHtmlCaptures, setTempSelectedHtmlCaptures] = useState<HtmlCapture[]>([]);
+  const [selectedHtmlCaptureId, setSelectedHtmlCaptureId] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchData() {
@@ -43,44 +34,43 @@ export default function SelectHtmlCaptureModal(props: SelectHtmlCaptureModalProp
     }
     fetchData();
   }, [demoId]);
-  console.log(htmlCapturesResponse);
+
   const availableHtmlCaptures = htmlCapturesResponse || [];
-  console.log(availableHtmlCaptures);
-  const handleCardClick = (htmlCapture: HtmlCapture) => {
-    console.log(htmlCapture);
-    if (tempSelectedHtmlCaptureIds.includes(htmlCapture.id)) {
-      setTempSelectedHtmlCaptureIds(tempSelectedHtmlCaptureIds.filter((id) => id !== htmlCapture.id));
-      setTempSelectedHtmlCaptures(tempSelectedHtmlCaptures.filter((capture) => capture.id !== htmlCapture.id));
+
+  const handleCardClick = (htmlCapture: ClickableDemoHtmlCaptureDto) => {
+    // When a new capture is clicked, deselect the previous one
+    if (selectedHtmlCaptureId === htmlCapture.id) {
+      setSelectedHtmlCaptureId(null);
     } else {
-      setTempSelectedHtmlCaptureIds([...tempSelectedHtmlCaptureIds, htmlCapture.id]);
-      setTempSelectedHtmlCaptures([...tempSelectedHtmlCaptures, htmlCapture]);
+      setSelectedHtmlCaptureId(htmlCapture.id);
     }
   };
 
   return (
-    <FullPageModal open={showSelectHtmlCaptureModal} onClose={onClose} title={'Select HTML Captures'}>
+    <FullPageModal open={showSelectHtmlCaptureModal} onClose={onClose} title={'Select HTML Capture'}>
       {loading ? (
         <FullPageLoader />
       ) : (
         <>
           <Grid4Cols className="p-16 text-color">
             {availableHtmlCaptures.map((htmlCapture) => (
-              <Card key={htmlCapture.id} onClick={() => handleCardClick(htmlCapture)}>
-                <div className="cursor-pointer">
-                  <div className="p-2 text-center">
-                    <img src={htmlCapture.fileImageUrl} className="w-32 h-32" alt={htmlCapture.fileName}></img>
-                    <h2 className="text-base font-bold whitespace-nowrap overflow-hidden text-ellipsis">{shorten(htmlCapture.fileName, 32)}</h2>
-                    <p className="break-words mb-2 text-sm h-65px text-ellipsis overflow-hidden">{shorten(htmlCapture.fileUrl, 300)}</p>
-                  </div>
-                </div>
-                {tempSelectedHtmlCaptureIds.includes(htmlCapture.id) && (
-                  <div className="flex flex-wrap absolute justify-end top-1 right-1">
-                    <div className={`m-auto rounded-full text-2xl bg-primary w-6 h-6 text-white flex items-center font-bold justify-center`}>
-                      <CheckCircleIcon height={30} width={30} />
+              <div key={htmlCapture.id}>
+                <Card onClick={() => handleCardClick(htmlCapture)}>
+                  <div className="cursor-pointer">
+                    <div className="p-2 text-center">
+                      <img src={htmlCapture.fileImageUrl} alt={htmlCapture.fileName} />
                     </div>
                   </div>
-                )}
-              </Card>
+                  {selectedHtmlCaptureId === htmlCapture.id && (
+                    <div className="flex flex-wrap absolute justify-end top-1 right-1">
+                      <div className={`m-auto rounded-full text-2xl bg-primary w-6 h-6 text-white flex items-center font-bold justify-center`}>
+                        <CheckCircleIcon height={30} width={30} />
+                      </div>
+                    </div>
+                  )}
+                </Card>
+                <h2 className="text-base font-bold whitespace-nowrap overflow-hidden text-ellipsis mt-2">{shorten(htmlCapture.fileName, 32)}</h2>
+              </div>
             ))}
           </Grid4Cols>
 
@@ -88,11 +78,15 @@ export default function SelectHtmlCaptureModal(props: SelectHtmlCaptureModalProp
             variant="contained"
             primary
             onClick={() => {
-              addHtmlCaptures(tempSelectedHtmlCaptures);
+              const selectedCapture = availableHtmlCaptures.find((capture) => capture.id === selectedHtmlCaptureId);
+              if (selectedCapture) {
+                selectHtmlCapture(selectedCapture);
+              }
               onClose();
             }}
+            disabled={!selectedHtmlCaptureId}
           >
-            Select HTML Captures
+            Select HTML Capture
           </Button>
         </>
       )}

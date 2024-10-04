@@ -3,15 +3,7 @@ import PhotoIcon from '@heroicons/react/24/solid/PhotoIcon';
 import styles from './CaptureInput.module.scss';
 import ArrowUpTrayIcon from '@heroicons/react/24/solid/ArrowUpTrayIcon';
 import SelectHtmlCaptureModal from '@/components/clickableDemoHtmlCapture/SelectHtmlCaptureModal';
-
-interface HtmlCapture {
-  id: string;
-  clickable_demo_id: string;
-  fileName: string;
-  fileUrl: string;
-  fileImageUrl: string;
-  created_at: string;
-}
+import { ClickableDemoHtmlCaptureDto } from '@/types/html-captures/ClickableDemoHtmlCaptureDto';
 
 interface CaptureInputProps {
   label?: string;
@@ -38,11 +30,8 @@ export default function CaptureInput({
 
   const inputId = 'capture-input';
 
-  const handleSelectHtmlCaptures = (selectedCaptures: HtmlCapture[]) => {
-    if (selectedCaptures.length > 0) {
-      const selectedCapture = selectedCaptures[0];
-      onInput(selectedCapture.fileUrl, selectedCapture.fileImageUrl || '');
-    }
+  const handleSelectHtmlCapture = (selectedCapture: ClickableDemoHtmlCaptureDto) => {
+    onInput(selectedCapture.fileUrl, selectedCapture.fileImageUrl);
     setShowSelectHtmlCaptureModal(false);
   };
 
@@ -85,9 +74,9 @@ export default function CaptureInput({
         <SelectHtmlCaptureModal
           showSelectHtmlCaptureModal={showSelectHtmlCaptureModal}
           onClose={() => setShowSelectHtmlCaptureModal(false)}
-          addHtmlCaptures={handleSelectHtmlCaptures}
+          selectHtmlCapture={handleSelectHtmlCapture}
           demoId={demoId}
-          spaceId={spaceId} // Add the appropriate spaceId value here
+          spaceId={spaceId}
         />
       )}
     </div>
