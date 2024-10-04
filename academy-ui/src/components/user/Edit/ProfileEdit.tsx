@@ -23,11 +23,11 @@ function UpsertUserProfileInfo({ space }: SpaceProps) {
     <PageWrapper>
       <Block title="Edit User Profile">
         <div className="">
-          <Input label="Email" modelValue={user?.email} onUpdate={(value) => setUserField('email', value?.toString() || '')} disabled />
+          <Input label="Email / Username" modelValue={user?.email} onUpdate={(value) => setUserField('email', value?.toString() || '')} disabled />
           <Input label="Name" modelValue={user?.name} onUpdate={(value) => setUserField('name', value?.toString() || '')} />
           <Input label="Phone Number" modelValue={user?.phone_number} onUpdate={(value) => setUserField('phone_number', value?.toString() || '')} />
         </div>
-        <div className="flex items-center justify-end gap-x-6">
+        <div className="mt-10">
           <Button
             variant="contained"
             primary
@@ -37,7 +37,7 @@ function UpsertUserProfileInfo({ space }: SpaceProps) {
               await upsertUser();
             }}
           >
-            Save
+            Save Profile
           </Button>
         </div>
       </Block>

@@ -6,12 +6,15 @@ import { WebCoreSpace } from '@dodao/web-core/types/space';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
+import { Session } from '@dodao/web-core/types/auth/Session';
+import { Space } from '@prisma/client';
 
 interface FinishSpaceSetupProps {
   space: SpaceWithIntegrationsFragment;
+  session: Session;
 }
 
-function FinishSetup({ space }: FinishSpaceSetupProps) {
+function FinishSetup({ space, session }: FinishSpaceSetupProps) {
   const { showNotification } = useNotificationContext();
   const [upserting, setUpserting] = useState(false);
   const router = useRouter();
@@ -25,8 +28,8 @@ function FinishSetup({ space }: FinishSpaceSetupProps) {
         adminUsernamesV1: updatedSpace.adminUsernamesV1,
         themeColors: updatedSpace.themeColors,
       };
-      const response = await fetch(`/api/spaces/update-space`, {
-        method: 'POST',
+      const response = await fetch(`/api/${space.id}/actions/spaces/finish-space-setup`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -52,6 +55,14 @@ function FinishSetup({ space }: FinishSpaceSetupProps) {
     return '';
   };
 
-  return <WebCoreSpaceSetup space={space} loading={upserting} saveSpace={(webCoreSpace) => upsertSpace(webCoreSpace)} uploadLogoToS3={uploadLogoToS3} />;
+  return (
+    <WebCoreSpaceSetup
+      space={space}
+      session={session}
+      loading={upserting}
+      saveSpace={(webCoreSpace) => upsertSpace(webCoreSpace)}
+      uploadLogoToS3={uploadLogoToS3}
+    />
+  );
 }
 export default FinishSetup;
