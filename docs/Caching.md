@@ -31,3 +31,4 @@ entity you are fetching. Ideally for every fetch(get) request, we should add a t
 - [ ] I understand why my data is not loading again when I navigate to the page
 - [ ] I know the difference in `revalidatePath` and `revalidateTag`
 - [ ] I clearly know when and how to use `revalidatePath` and `revalidateTag`
+- [ ] I know how to add tags for the entities I am fetching
