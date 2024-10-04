@@ -6,7 +6,7 @@ export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const domain = searchParams.get('domain');
 
-  const space = await prisma.space.findFirst({
+  const space = await prisma.rubricSpace.findFirst({
     where: {
       domains: {
         has: domain,
@@ -19,7 +19,7 @@ export async function GET(req: NextRequest) {
   }
   if (domain?.includes('.myrubrics.com') || domain?.includes('.myrubrics-localhost.com')) {
     const idFromDomain = domain.split('.')[0];
-    const space = await prisma.space.findFirst({
+    const space = await prisma.rubricSpace.findFirst({
       where: {
         id: idFromDomain,
       },
@@ -27,7 +27,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ space });
   }
   if (domain === 'myrubrics.com' || domain === 'myrubrics-localhost.com') {
-    const space = await prisma.space.findFirst({
+    const space = await prisma.rubricSpace.findFirst({
       where: {
         id: {
           equals: 'my-rubrics-home',
@@ -38,7 +38,7 @@ export async function GET(req: NextRequest) {
   }
 
   if (domain === 'dodao-ui-robinnagpal.vercel.app' || domain === 'localhost' || domain?.includes('.vercel.app')) {
-    const space = await prisma.space.findFirst({
+    const space = await prisma.rubricSpace.findFirst({
       where: {
         id: {
           equals: 'test-academy-eth',
@@ -49,7 +49,7 @@ export async function GET(req: NextRequest) {
   }
   const isUserSuperAdmin = await isRequestUserSuperAdmin(req);
   if (isUserSuperAdmin) {
-    return NextResponse.json(await prisma.space.findMany());
+    return NextResponse.json(await prisma.rubricSpace.findMany());
   }
 
   if (!domain) return NextResponse.json('No domain passed ' + domain, { status: 400 });
