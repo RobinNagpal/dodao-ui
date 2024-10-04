@@ -158,6 +158,10 @@ export default function useCreateNewTidbitSpace(): UseEditSpaceHelper {
 
   async function updateTidbitSpace(params: { successCallback: (space: Space) => void; failureCallback?: () => void }) {
     const { successCallback } = params;
+    if (!existingSpace) {
+      console.error('No existing space to update');
+      return;
+    }
     setUpserting(true);
     const spaceToUpdate: SpaceEditType = {
       ...getEditSpaceType(existingSpace!),
@@ -165,7 +169,7 @@ export default function useCreateNewTidbitSpace(): UseEditSpaceHelper {
       avatar: tidbitSpace.avatar,
       type: SpaceTypes.TidbitsSite,
     };
-    const response = await fetch(`${getBaseUrl()}/api/spaces/update-space`, {
+    const response = await fetch(`${getBaseUrl()}/api/${existingSpace.id}/actions/spaces/update-space-and-integration`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -174,7 +178,7 @@ export default function useCreateNewTidbitSpace(): UseEditSpaceHelper {
     });
     if (response.ok) {
       setUpserting(false);
-      successCallback((await response.json()).space);
+      successCallback(await response.json());
     } else {
       setUpserting(false);
       showNotification({ type: 'error', message: 'Error while updating space' });

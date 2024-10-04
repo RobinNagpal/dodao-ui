@@ -25,7 +25,7 @@ function FinishSetup({ space }: FinishSpaceSetupProps) {
         adminUsernamesV1: updatedSpace.adminUsernamesV1,
         themeColors: updatedSpace.themeColors,
       };
-      const response = await fetch(`/api/${space.id}/actions/spaces`, {
+      const response = await fetch(`/api/${space.id}/spaces`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

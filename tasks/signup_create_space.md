@@ -30,7 +30,9 @@
 
 ---
 
-# In Next PR - Update Profile and move the update profile to the base UI
+# In Next PR - move the update profile to the core and use it in base UI
+
+- [ ] moving revalidate for tidbits collections
 
 ---
 

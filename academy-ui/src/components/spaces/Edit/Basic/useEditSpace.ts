@@ -82,8 +82,8 @@ export default function useEditSpace(spaceId?: string): UseEditSpaceHelper {
     try {
       let response;
       if (spaceId?.trim()) {
-        response = await fetch(`/api/spaces/update-space`, {
-          method: 'POST',
+        response = await fetch(`/api/${spaceId}/actions/spaces/update-space-and-integration`, {
+          method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
           },

@@ -19,7 +19,7 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { isSuperAdmin } from '@dodao/web-core/utils/auth/superAdmins';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 type CourseInformationProps = {

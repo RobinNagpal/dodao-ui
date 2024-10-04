@@ -51,9 +51,11 @@ function WebCoreSpaceSetup({ space, loading, saveSpace, uploadLogoToS3 }: WebCor
             label={'Admins By Usernames & Names'}
             inputPlaceholder="E.g. john@example.com , John"
             helpText="Current Space Admins <Username , Name>"
-            user={session?.username}
-            creator={updatedSpace.creator}
-            badges={updatedSpace.adminUsernamesV1.map((d) => ({ key: d.username, value: d.nameOfTheUser }))}
+            badges={updatedSpace.adminUsernamesV1.map((d) => ({
+              key: d.username,
+              value: d.nameOfTheUser,
+              readonly: d.username === session?.username || d.username === updatedSpace.creator,
+            }))}
             onAdd={(admin) => {
               const string = admin.split(',');
               const username = string[0].trim();
