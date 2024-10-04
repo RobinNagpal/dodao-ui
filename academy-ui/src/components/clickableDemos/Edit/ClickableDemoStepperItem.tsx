@@ -126,7 +126,7 @@ export default function Step({
           />
           {step.screenImgUrl && (
             <div className="mt-4">
-              <img src={step.screenImgUrl} alt="Screenshot" className="rounded-lg shadow-md max-w-full h-auto" />
+              <img src={step.screenImgUrl} alt="Screenshot" className="rounded-lg shadow-md max-w-full max-h-60" />
             </div>
           )}
         </div>
@@ -146,7 +146,7 @@ export default function Step({
           />
           {step.elementImgUrl && ( // Assuming `step.screenImgUrl` holds the URL of the screenshot image
             <div className="mt-4">
-              <img src={step.elementImgUrl} alt="Screenshot" className="rounded-lg shadow-md max-w-full h-auto" />
+              <img src={step.elementImgUrl} alt="Screenshot" className="rounded-lg shadow-md max-w-full max-h-60" />
             </div>
           )}
         </div>

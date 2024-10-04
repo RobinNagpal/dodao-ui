@@ -8,7 +8,7 @@ import CheckCircleIcon from '@heroicons/react/20/solid/CheckCircleIcon';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { ClickableDemoHtmlCaptureDto } from '@/types/html-captures/ClickableDemoHtmlCaptureDto';
-import ArrowPathRoundedSquareIcon from '@heroicons/react/24/outline/ArrowPathRoundedSquareIcon';
+import LoadingIcon from '@dodao/web-core/components/core/loaders/LoadingIcon';
 
 interface SelectHtmlCaptureModalProps {
   showSelectHtmlCaptureModal: boolean;
@@ -50,7 +50,7 @@ export default function SelectHtmlCaptureModal(props: SelectHtmlCaptureModalProp
     <FullPageModal open={showSelectHtmlCaptureModal} onClose={onClose} title={'Select HTML Capture'}>
       {loading ? (
         <div className="text-center min-h-[40vh] flex justify-center items-center">
-          <ArrowPathRoundedSquareIcon className="w-12 h-12 animate-spin text-blue-500 mx-auto" />
+          <LoadingIcon />
         </div>
       ) : (
         <div className="min-h-[40vh]">

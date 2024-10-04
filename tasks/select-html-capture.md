@@ -13,3 +13,7 @@
 - [x] When user selects a HTML capture, populate the image url and also the HTML file link
 - [x] When the user saves the demo this information should be saved as part of the clickable demo
 - [x] Image and other Ui needs refinement
+- [x] use a loader 
+- [x] add docs for loaders
+- [x] resize the images for capture and selectedElement
+- [x] delete the uploadInput
