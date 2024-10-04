@@ -14,7 +14,7 @@ import Web3ReactProviderWrapper from '@dodao/web-core/ui/contexts/Web3ReactConte
 import { getGTagId } from '@dodao/web-core/utils/analytics/getGTagId';
 import { useNavigationEvent } from '@dodao/web-core/utils/analytics/useNavigationEvent';
 import { setDoDAOTokenInLocalStorage } from '@dodao/web-core/utils/auth/setDoDAOTokenInLocalStorage';
-import { Space } from '@prisma/client';
+import { RubricSpace } from '@prisma/client';
 import { SessionProvider } from 'next-auth/react';
 import { useEffect } from 'react';
 import ReactGA from 'react-ga4';
@@ -32,7 +32,7 @@ function PageFooter(props: { space: WebCoreSpace }) {
   );
 }
 
-export function ChildLayout({ children, session, space }: { children: React.ReactNode; session: Session | null; space: Space; spaceError: boolean }) {
+export function ChildLayout({ children, session, space }: { children: React.ReactNode; session: Session | null; space: RubricSpace; spaceError: boolean }) {
   const { setSpace } = useSpace();
 
   useEffect(() => {

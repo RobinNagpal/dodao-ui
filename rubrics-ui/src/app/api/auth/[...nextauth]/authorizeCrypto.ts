@@ -37,7 +37,7 @@ export async function authorizeCrypto(
   const { publicAddress, signedNonce, spaceId } = credentials;
 
   // Get user from database with their generated nonce
-  const user = await prisma.user.findUnique({
+  const user = await prisma.rubricUser.findUnique({
     where: { publicAddress_spaceId: { publicAddress, spaceId } },
     include: { cryptoLoginNonce: true },
   });
