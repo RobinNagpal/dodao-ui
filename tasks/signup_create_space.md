@@ -16,13 +16,13 @@
 
 ### Changes - Base UI
 
-- [ ] reuse the create use form from the web-core
+- [x] reuse the create use form from the web-core
 - [x] reuse the create space form from the web-core
-- [ ] reuse the finish-space-setup from the web-core
-  - [ ] input to this component will be of the type WebCoreSpace
-  - [ ] another input would be callback function. the callback function will take the webcorespace and it will be calling the api
-  - [ ] this callback is implemented in academyui
-  - [ ] the baseui component will call this callback on submit
+- [x] reuse the finish-space-setup from the web-core
+  - [x] input to this component will be of the type WebCoreSpace
+  - [x] another input would be callback function. the callback function will take the webcorespace and it will be calling the api
+  - [x] this callback is implemented in academyui
+  - [x] the baseui component will call this callback on submit
 
 # Checklist
 
@@ -40,7 +40,9 @@
 
 # In Next PR - Multiple spaces for user
 
-----
+---
+
 # In Next PR - Image Upload
+
 - just show uploaded image. No need to show URL.
 - We can just show image upload square like many other websites show.

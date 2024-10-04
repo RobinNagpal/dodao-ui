@@ -41,7 +41,7 @@ export default function useEditUser(userName: string, update: () => void, spaceI
         });
         if (response.ok) {
           const userResponse = await response.json();
-          setUser(userResponse[0]);
+          setUser(userResponse);
         }
       } catch (error) {
         console.error(error);
