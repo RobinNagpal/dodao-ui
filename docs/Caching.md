@@ -23,7 +23,8 @@ reload, then it will again
 So `revalidateTag` seems to be a better option.
 
 # Revalidate Tag
-We have added tags for each enitity in 
+We have added tags for each entity in `academy-ui/src/utils/api/fetchTags.ts`. Make sure to add the tag for the 
+entity you are fetching. Ideally for every fetch(get) request, we should add a tag.
 
 
 # Checklist
