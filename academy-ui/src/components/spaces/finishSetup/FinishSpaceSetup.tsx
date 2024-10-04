@@ -10,10 +10,9 @@ import { Session } from '@dodao/web-core/types/auth/Session';
 
 interface FinishSpaceSetupProps {
   space: SpaceWithIntegrationsFragment;
-  session: Session;
 }
 
-function FinishSetup({ space, session }: FinishSpaceSetupProps) {
+function FinishSetup({ space }: FinishSpaceSetupProps) {
   const { showNotification } = useNotificationContext();
   const [upserting, setUpserting] = useState(false);
   const router = useRouter();
@@ -54,14 +53,6 @@ function FinishSetup({ space, session }: FinishSpaceSetupProps) {
     return '';
   };
 
-  return (
-    <WebCoreSpaceSetup
-      space={space}
-      session={session}
-      loading={upserting}
-      saveSpace={(webCoreSpace) => upsertSpace(webCoreSpace)}
-      uploadLogoToS3={uploadLogoToS3}
-    />
-  );
+  return <WebCoreSpaceSetup space={space} loading={upserting} saveSpace={(webCoreSpace) => upsertSpace(webCoreSpace)} uploadLogoToS3={uploadLogoToS3} />;
 }
 export default FinishSetup;

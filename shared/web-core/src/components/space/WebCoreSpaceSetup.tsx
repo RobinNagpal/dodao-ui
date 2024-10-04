@@ -9,18 +9,20 @@ import { Session } from '@dodao/web-core/types/auth/Session';
 import { WebCoreSpace } from '@dodao/web-core/types/space';
 import union from 'lodash/union';
 import React, { useState } from 'react';
+import { useSession } from 'next-auth/react';
 
 interface WebCoreSpaceSetupProps {
   space: WebCoreSpace;
-  session: Session;
   uploadLogoToS3: (file: File) => Promise<string>;
   saveSpace: (space: WebCoreSpace) => Promise<void>;
   loading: boolean;
 }
 
-function WebCoreSpaceSetup({ space, session, loading, saveSpace, uploadLogoToS3 }: WebCoreSpaceSetupProps) {
+function WebCoreSpaceSetup({ space, loading, saveSpace, uploadLogoToS3 }: WebCoreSpaceSetupProps) {
   const [updatedSpace, setUpdatedSpace] = useState<WebCoreSpace>(space);
   const [uploadingLogo, setUploadingLogo] = useState(false);
+  const { data: sessionData } = useSession();
+  const session: Session | null = sessionData as Session | null;
 
   const setSpaceField = (field: keyof WebCoreSpace, value: any) => {
     setUpdatedSpace({ ...updatedSpace, [field]: value });
