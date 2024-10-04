@@ -7,7 +7,6 @@ import { useNotificationContext } from '@dodao/web-core/ui/contexts/Notification
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { Session } from '@dodao/web-core/types/auth/Session';
-import { Space } from '@prisma/client';
 
 interface FinishSpaceSetupProps {
   space: SpaceWithIntegrationsFragment;
@@ -38,7 +37,7 @@ function FinishSetup({ space, session }: FinishSpaceSetupProps) {
 
       if (response?.ok) {
         showNotification({ type: 'success', message: 'Space upserted successfully' });
-        router.push('/'); // Redirect to the Home page
+        router.push('/');
       } else {
         showNotification({ type: 'error', message: 'Error while upserting space' });
       }

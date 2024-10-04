@@ -13,8 +13,6 @@ async function putHandler(req: NextRequest): Promise<NextResponse<Space>> {
 
   const doDAOSuperAdmin = isDoDAOSuperAdmin(decodedJwt!.username);
 
-  const user: DoDaoJwtTokenPayload = decodedJwt!;
-
   const spaceInputArgs: Space = {
     admins: spaceInput.admins,
     adminUsernames: spaceInput.adminUsernames,

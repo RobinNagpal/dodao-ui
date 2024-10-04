@@ -11,8 +11,8 @@ export interface UpsertBadgeItemsProps {
   className?: string;
   helpText?: string;
   inputPlaceholder?: string;
-  currentUsername: string;
-  creatorUsername: string;
+  currentUsername?: string;
+  creatorUsername?: string;
 }
 
 export default function UpsertKeyValueBadgeInput(props: UpsertBadgeItemsProps) {
@@ -41,7 +41,7 @@ export default function UpsertKeyValueBadgeInput(props: UpsertBadgeItemsProps) {
       </div>
       {props.helpText && <p className="ml-1 mt-2 mb-2 text-sm">{props.helpText}</p>}
       {props.badges.map((badge) => {
-        const readonly = badge.key === props.creatorUsername || badge.key === props.currentUsername;
+        const readonly = badge.key === props.creatorUsername || badge.key === props.currentUsername || undefined;
         return <KeyValueBadgeWithRemove key={badge.key} badge={badge} labelFn={props.labelFn} onRemove={props.onRemove} readonly={readonly} />;
       })}
     </form>

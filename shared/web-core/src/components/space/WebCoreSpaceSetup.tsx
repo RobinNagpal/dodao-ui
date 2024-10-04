@@ -40,7 +40,7 @@ function WebCoreSpaceSetup({ space, session, loading, saveSpace, uploadLogoToS3 
           <UploadInput
             label="Logo"
             spaceId={space.id!}
-            modelValue={space?.avatar}
+            modelValue={updatedSpace?.avatar}
             onInput={(value) => setSpaceField('avatar', value)}
             uploadToS3={uploadFileToS3}
             loading={false}
@@ -50,7 +50,7 @@ function WebCoreSpaceSetup({ space, session, loading, saveSpace, uploadLogoToS3 
             inputPlaceholder="E.g. john@example.com , John"
             helpText="Current Space Admins <Username , Name>"
             currentUsername={session?.username}
-            creatorUsername={space.creator}
+            creatorUsername={updatedSpace.creator}
             badges={updatedSpace.adminUsernamesV1.map((d) => ({ key: d.username, value: d.nameOfTheUser }))}
             onAdd={(admin) => {
               const string = admin.split(',');
