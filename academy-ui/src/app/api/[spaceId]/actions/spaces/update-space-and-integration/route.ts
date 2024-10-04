@@ -10,7 +10,7 @@ import { Space } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
 import { UpdateSpaceAndIntegrationResponse } from '@/types/response/UpdateSpaceAndIntegration';
 
-async function putHandler(req: NextRequest) : Promise<NextResponse<UpdateSpaceAndIntegrationResponse>>  {
+async function putHandler(req: NextRequest): Promise<NextResponse<UpdateSpaceAndIntegrationResponse>> {
   const { spaceInput } = (await req.json()) as MutationUpdateSpaceArgs;
   const { decodedJwt, space } = await verifySpaceEditPermissions(req, spaceInput.id);
 
@@ -72,7 +72,7 @@ async function putHandler(req: NextRequest) : Promise<NextResponse<UpdateSpaceAn
     throw e;
   }
   const updatedSpace = await getSpaceWithIntegrations(spaceInput.id);
-  return NextResponse.json( updatedSpace as UpdateSpaceAndIntegrationResponse, { status: 200 });
+  return NextResponse.json(updatedSpace as UpdateSpaceAndIntegrationResponse, { status: 200 });
 }
 
 export const PUT = withErrorHandlingV1<UpdateSpaceAndIntegrationResponse>(putHandler);
