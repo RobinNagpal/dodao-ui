@@ -10,7 +10,7 @@ import { v4 } from 'uuid';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
 import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
-import { revalidateTidbitCollections } from '@/revalidateTags';
+import { revalidateTidbitCollections } from '@/utils/api/revalidateTags';
 
 export interface EditShortVideoModalProps {
   shortVideoToEdit?: ShortVideo;

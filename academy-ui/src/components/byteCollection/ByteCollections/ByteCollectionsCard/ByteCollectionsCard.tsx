@@ -23,7 +23,7 @@ import ByteItem from './ByteItem';
 import DemoItem from './DemoItem';
 import ShortItem from './ShortItem';
 import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
-import { revalidateTidbitCollections } from '@/revalidateTags';
+import { revalidateTidbitCollections } from '@/utils/api/revalidateTags';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 
 interface ByteCollectionCardProps {

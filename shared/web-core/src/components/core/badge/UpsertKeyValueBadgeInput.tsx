@@ -38,9 +38,9 @@ export default function UpsertKeyValueBadgeInput(props: UpsertBadgeItemsProps) {
         />
       </div>
       {props.helpText && <p className="ml-1 mt-2 mb-2 text-sm">{props.helpText}</p>}
-      {props.badges.map((badge) => (
-        <KeyValueBadgeWithRemove key={badge.key} badge={badge} labelFn={props.labelFn} onRemove={props.onRemove} />
-      ))}
+      {props.badges.map((badge) => {
+        return <KeyValueBadgeWithRemove key={badge.key} badge={badge} labelFn={props.labelFn} onRemove={props.onRemove} />;
+      })}
     </form>
   );
 }

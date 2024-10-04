@@ -25,8 +25,8 @@ function FinishSetup({ space }: FinishSpaceSetupProps) {
         adminUsernamesV1: updatedSpace.adminUsernamesV1,
         themeColors: updatedSpace.themeColors,
       };
-      const response = await fetch(`/api/spaces/update-space`, {
-        method: 'POST',
+      const response = await fetch(`/api/${space.id}/spaces`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -35,7 +35,7 @@ function FinishSetup({ space }: FinishSpaceSetupProps) {
 
       if (response?.ok) {
         showNotification({ type: 'success', message: 'Space upserted successfully' });
-        router.push('/'); // Redirect to the Home page
+        router.push('/');
       } else {
         showNotification({ type: 'error', message: 'Error while upserting space' });
       }
