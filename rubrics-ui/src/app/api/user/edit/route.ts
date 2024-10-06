@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/prisma';
-import { User } from '@prisma/client';
+import { RubricUser } from '@prisma/client';
 
 export async function POST(req: Request) {
   const { authProvider, email, username, name, phone_number, id, spaceId, image, publicAddress } = await req.json();
 
-  const UserInput: Omit<User, 'id' | 'password'> = {
+  const UserInput: Omit<RubricUser, 'id' | 'password'> = {
     authProvider,
     email,
     username,
@@ -17,7 +17,7 @@ export async function POST(req: Request) {
     image,
   };
 
-  const user = await prisma.user.update({
+  const user = await prisma.rubricUser.update({
     where: { id },
     data: { ...UserInput },
   });

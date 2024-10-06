@@ -1,10 +1,10 @@
 import { useSpace } from '@/contexts/SpaceContext';
-import { Space } from '@prisma/client';
+import { RubricSpace } from '@prisma/client';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import React, { FC } from 'react';
 
 export interface SpaceProps {
-  space: Space;
+  space: RubricSpace;
 }
 
 function withSpace<P extends SpaceProps>(WrappedComponent: React.ComponentType<P & SpaceProps>): React.FC<Omit<P, 'space'>> {

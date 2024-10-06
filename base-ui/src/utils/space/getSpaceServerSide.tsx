@@ -1,4 +1,4 @@
-import { Space } from '@prisma/client';
+import { BaseSpace } from '@prisma/client';
 import { headers } from 'next/headers';
 
 export async function getSpaceBasedOnHostHeader(reqHeaders: Headers) {
@@ -21,7 +21,7 @@ export async function getSpaceBasedOnHostHeader(reqHeaders: Headers) {
   return null;
 }
 
-export async function getSpaceServerSide(): Promise<Space | null> {
+export async function getSpaceServerSide(): Promise<BaseSpace | null> {
   const reqHeaders = headers();
   return await getSpaceBasedOnHostHeader(reqHeaders);
 }

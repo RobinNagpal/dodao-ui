@@ -7,7 +7,7 @@ import EditByteStepper from '@/components/bytes/Edit/EditByteStepper';
 import { useEditByte } from '@/components/bytes/Edit/useEditByte';
 import { ImageType, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
-import { revalidateTidbitCollections } from '@/revalidateTags';
+import { revalidateTidbitCollections } from '@/utils/api/revalidateTags';
 import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import { EditByteType } from '@/types/request/ByteRequests';
 import Block from '@dodao/web-core/components/app/Block';

@@ -1,3 +1,5 @@
+import getProtocol from "./getProtocol";
+
 export default function getBaseUrl() {
   const nextHost = process.env.NEXT_PUBLIC_VERCEL_URL;
 
@@ -12,7 +14,7 @@ export default function getBaseUrl() {
   }
 
   // If the host includes localhost, we use http, otherwise we use https
-  const protocol = nextHost?.includes('localhost') ? 'http' : 'https';
+  const protocol = getProtocol();
 
   const baseUrl = nextHost ? `${protocol}://${nextHost}` : '';
   return baseUrl;

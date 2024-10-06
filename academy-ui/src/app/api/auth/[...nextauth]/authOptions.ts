@@ -2,7 +2,7 @@ import { isUserAdminOfSpace } from '@/app/api/helpers/space/checkEditSpacePermis
 import { isDoDAOSuperAdmin } from '@/app/api/helpers/space/isSuperAdmin';
 import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
 import { getAuthOptions } from '@dodao/web-core/api/auth/authOptions';
-import { authorizeCrypto } from '@dodao/web-core/api/auth/authorizeCrypto';
+import { authorizeCrypto } from './authorizeCrypto';
 import { DoDaoJwtTokenPayload, Session } from '@dodao/web-core/types/auth/Session';
 import { User } from '@dodao/web-core/types/auth/User';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';

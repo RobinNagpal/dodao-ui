@@ -1,5 +1,5 @@
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { Space } from '@prisma/client';
+import { RubricSpace } from '@prisma/client';
 import { headers } from 'next/headers';
 
 export async function getSpaceBasedOnHostHeader(reqHeaders: Headers) {
@@ -21,7 +21,7 @@ export async function getSpaceBasedOnHostHeader(reqHeaders: Headers) {
   return null;
 }
 
-export async function getSpaceServerSide(): Promise<Space | null> {
+export async function getSpaceServerSide(): Promise<RubricSpace | null> {
   const reqHeaders = headers();
 
   return await getSpaceBasedOnHostHeader(reqHeaders);

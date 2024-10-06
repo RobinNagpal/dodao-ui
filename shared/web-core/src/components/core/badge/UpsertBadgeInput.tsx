@@ -14,6 +14,7 @@ export interface UpsertBadgeItemsProps {
   onRemove: (id: string) => void;
   className?: string;
   helpText?: string;
+  inputPlaceholder?: string;
 }
 
 export default function UpsertBadgeInput(props: UpsertBadgeItemsProps) {
@@ -37,6 +38,7 @@ export default function UpsertBadgeInput(props: UpsertBadgeItemsProps) {
             setInputText(e?.toString() || '');
           }}
           inputModelValue={inputText}
+          inputPlaceholder={props.inputPlaceholder}
         />
       </div>
       {props.helpText && <p className="ml-1 mt-2 mb-2 text-sm">{props.helpText}</p>}

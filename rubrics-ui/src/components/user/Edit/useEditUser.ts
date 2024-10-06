@@ -1,12 +1,12 @@
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { User } from '@prisma/client';
+import { RubricUser } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 
 import { useState } from 'react';
 
 export type UseEditUserProfileHelper = {
-  user: User;
-  setUserField: (field: keyof User, value: any) => void;
+  user: RubricUser;
+  setUserField: (field: keyof RubricUser, value: any) => void;
   upsertUser: () => Promise<void>;
   upserting: boolean;
   initialize: () => Promise<void>;
@@ -14,7 +14,7 @@ export type UseEditUserProfileHelper = {
 
 export default function useEditUser(userName: string, update: () => void): UseEditUserProfileHelper {
   const { showNotification } = useNotificationContext();
-  const [user, setUser] = useState<User>({
+  const [user, setUser] = useState<RubricUser>({
     id: '',
     name: '',
     authProvider: '',
@@ -53,7 +53,7 @@ export default function useEditUser(userName: string, update: () => void): UseEd
     }
   }
 
-  function setUserField(field: keyof User, value: any) {
+  function setUserField(field: keyof RubricUser, value: any) {
     setUser((prev: any) => ({ ...prev, [field]: value }));
   }
 

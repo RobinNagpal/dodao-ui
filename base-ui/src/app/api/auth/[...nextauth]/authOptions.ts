@@ -1,5 +1,5 @@
 import { getAuthOptions } from '@dodao/web-core/api/auth/authOptions';
-import { authorizeCrypto } from '@dodao/web-core/api/auth/authorizeCrypto';
+import { authorizeCrypto } from './authorizeCrypto';
 import { User } from '@dodao/web-core/types/auth/User';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { PrismaClient } from '@prisma/client';
@@ -12,9 +12,9 @@ p.verificationToken;
 export const authOptions: AuthOptions = getAuthOptions(
   {
     user: {
-      findUnique: p.user.findUnique,
-      findFirst: p.user.findFirst,
-      upsert: p.user.upsert,
+      findUnique: p.baseUser.findUnique,
+      findFirst: p.baseUser.findFirst,
+      upsert: p.baseUser.upsert,
     },
     verificationToken: {
       delete: p.verificationToken.delete,
@@ -22,7 +22,7 @@ export const authOptions: AuthOptions = getAuthOptions(
     adapter: {
       ...PrismaAdapter(p),
       getUserByEmail: async (email: string) => {
-        const user = (await p.user.findFirst({ where: { email } })) as User;
+        const user = (await p.baseUser.findFirst({ where: { email } })) as User;
         console.log('getUserByEmail', user);
         return user as any;
       },

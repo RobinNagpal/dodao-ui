@@ -25,7 +25,7 @@ import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { getUploadedImageUrlFromSingedUrl } from '@dodao/web-core/utils/upload/getUploadedImageUrlFromSingedUrl';
 import html2canvas from 'html2canvas';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { revalidateTidbitCollections } from '@/revalidateTags';
+import { revalidateTidbitCollections } from '@/utils/api/revalidateTags';
 import { useRouter } from 'next/navigation';
 
 interface EditClickableDemoProps {
@@ -178,7 +178,7 @@ function EditClickableDemo({ space, demoId, byteCollection, closeDemoEditModal }
   return (
     <PageWrapper>
       <SingleCardLayout>
-        <div>
+        <div className="text-color">
           <div className="py-4 my-4">
             <div className="px-4 mb-4 md:px-0 overflow-hidden float-left">
               <Link href={demoId ? `/clickable-demos/view/${demoId}/0` : `/clickable-demos`} className="text-color">

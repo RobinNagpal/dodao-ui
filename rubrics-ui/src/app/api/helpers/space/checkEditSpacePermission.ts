@@ -1,7 +1,7 @@
 import { dodaoTeamMates, getDecodedJwtFromContext } from '@/app/api/helpers/permissions/getJwtFromContext';
 import { isDoDAOSuperAdmin, isSuperAdminOfDoDAO } from '@/app/api/helpers/space/isSuperAdmin';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
-import { Space } from '@prisma/client';
+import { RubricSpace } from '@prisma/client';
 import { JwtPayload } from 'jsonwebtoken';
 import { NextRequest } from 'next/server';
 
@@ -19,7 +19,7 @@ async function isDoDAOMember(context: NextRequest): Promise<(JwtPayload & DoDaoJ
   return null;
 }
 
-export function isUserAdminOfSpace(username: string, space: Space) {
+export function isUserAdminOfSpace(username: string, space: RubricSpace) {
   const spaceAdmins = [space.creator?.toLowerCase()];
   const isAdminOfSpace: boolean = spaceAdmins.includes(username.toLowerCase());
 
@@ -32,7 +32,7 @@ export async function isRequestUserSuperAdmin(req: NextRequest): Promise<boolean
   const decoded = await getDecodedJwtFromContext(req);
   return !!(decoded?.username && isDoDAOSuperAdmin(decoded.username));
 }
-export async function canEditGitSpace(context: NextRequest, space: Space) {
+export async function canEditGitSpace(context: NextRequest, space: RubricSpace) {
   const doDAOMember = await isDoDAOMember(context);
 
   if (doDAOMember && space.id === 'test-academy-eth') {
@@ -63,7 +63,7 @@ export async function canEditGitSpace(context: NextRequest, space: Space) {
   return { decodedJWT, canEditSpace: isUserAdminOfSpace(decodedJWT!.username, space), username: decodedJWT?.accountId.toLowerCase() };
 }
 
-export async function checkEditSpacePermission(space: Space, req: NextRequest): Promise<(JwtPayload & DoDaoJwtTokenPayload) | null> {
+export async function checkEditSpacePermission(space: RubricSpace, req: NextRequest): Promise<(JwtPayload & DoDaoJwtTokenPayload) | null> {
   const { decodedJWT, canEditSpace } = await canEditGitSpace(req, space);
 
   if (!canEditSpace) {

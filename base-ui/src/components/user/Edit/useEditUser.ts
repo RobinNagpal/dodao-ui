@@ -1,12 +1,12 @@
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { User } from '@prisma/client';
+import { BaseUser } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 
 import { useState } from 'react';
 
 export type UseEditUserProfileHelper = {
-  user: User;
-  setUserField: (field: keyof User, value: any) => void;
+  user: BaseUser;
+  setUserField: (field: keyof BaseUser, value: any) => void;
   upsertUser: () => Promise<void>;
   upserting: boolean;
   initialize: () => Promise<void>;
@@ -14,7 +14,7 @@ export type UseEditUserProfileHelper = {
 
 export default function useEditUser(userName: string, update: () => void): UseEditUserProfileHelper {
   const { showNotification } = useNotificationContext();
-  const [user, setUser] = useState<User>({
+  const [user, setUser] = useState<BaseUser>({
     id: '',
     name: '',
     authProvider: '',
@@ -34,7 +34,7 @@ export default function useEditUser(userName: string, update: () => void): UseEd
   async function initialize() {
     if (userName) {
       try {
-        let response = await fetch(`/api/user/${userName}`, {
+        let response = await fetch(`/api/queries/users/by-username?username=${userName}`, {
           method: 'GET',
           credentials: 'include',
           headers: {
@@ -53,15 +53,15 @@ export default function useEditUser(userName: string, update: () => void): UseEd
     }
   }
 
-  function setUserField(field: keyof User, value: any) {
+  function setUserField(field: keyof BaseUser, value: any) {
     setUser((prev: any) => ({ ...prev, [field]: value }));
   }
 
   async function upsertUser() {
     setUpserting(true);
     try {
-      let response = await fetch(`/api/user/edit`, {
-        method: 'POST',
+      let response = await fetch(`/api/users/${user.id}`, {
+        method: 'PUT',
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',

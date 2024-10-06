@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/prisma';
-import { Space } from '@prisma/client';
+import { RubricSpace } from '@prisma/client';
 
 export async function POST(req: Request) {
   const { adminUsernamesV1, avatar, creator, features, id, name, domains, authSettings, themeColors } = await req.json();
 
-  const spaceInput: Space = {
+  const spaceInput: RubricSpace = {
     adminUsernamesV1,
     avatar,
     creator,
@@ -20,7 +20,7 @@ export async function POST(req: Request) {
     themeColors: themeColors,
   };
 
-  const space = await prisma.space.upsert({
+  const space = await prisma.rubricSpace.upsert({
     where: { id },
     update: { ...spaceInput, themeColors },
     create: { ...spaceInput, themeColors },

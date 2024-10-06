@@ -28,7 +28,7 @@ async function POST(req: NextRequest, res: NextResponse) {
 
   // Create or update the nonce for the given user
   //  see: https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#upsert
-  await prisma.user.upsert({
+  await prisma.rubricUser.upsert({
     where: { publicAddress_spaceId: { publicAddress, spaceId } },
     create: {
       publicAddress: publicAddress,

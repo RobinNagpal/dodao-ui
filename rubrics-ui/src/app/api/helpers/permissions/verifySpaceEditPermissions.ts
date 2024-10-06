@@ -1,12 +1,12 @@
 import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
 import { checkEditSpacePermission } from '@/app/api/helpers/space/checkEditSpacePermission';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
-import { Space } from '@prisma/client';
+import { RubricSpace } from '@prisma/client';
 import { JwtPayload } from 'jsonwebtoken';
 import { NextRequest } from 'next/server';
 
 export interface SpaceAndDecodedJwt {
-  space: Space;
+  space: RubricSpace;
   decodedJwt: (JwtPayload & DoDaoJwtTokenPayload) | null;
 }
 

@@ -1,5 +1,5 @@
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { Space } from '@prisma/client';
+import { RubricSpace } from '@prisma/client';
 import { ThemeColors } from '@dodao/web-core/types/space';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -29,7 +29,7 @@ export type SpaceEditType = {
 
 export type UseEditSpaceHelper = {
   space: SpaceEditType;
-  setSpaceField: (field: keyof Space, value: any) => void;
+  setSpaceField: (field: keyof RubricSpace, value: any) => void;
   setAuthSettingsField: (field: keyof AuthSettingsType, value: any) => void;
   upsertSpace: () => Promise<void>;
   upserting: boolean;
@@ -83,7 +83,7 @@ export default function useEditSpace(): UseEditSpaceHelper {
     }
   }
 
-  function setSpaceField(field: keyof Space, value: any) {
+  function setSpaceField(field: keyof RubricSpace, value: any) {
     setSpace((prev: any) => ({ ...prev, [field]: value }));
   }
 

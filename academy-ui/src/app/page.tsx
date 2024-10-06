@@ -33,7 +33,7 @@ async function Home(props: { searchParams: { [key: string]: string | string[] | 
   }
 
   if (space?.id === PredefinedSpaces.TIDBITS_HUB) {
-    return <TidbitsHubHome />;
+    return <TidbitsHubHome space={space!} />;
   }
 
   if (space?.id === 'life-insurance-tips') {
