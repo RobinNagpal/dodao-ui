@@ -76,7 +76,12 @@ function ByteMainContent({
       <div style={{ width: '100vw' }}>
         {step.imageUrl && (
           <div className="flex justify-center align-center ">
-            <img src={step.imageUrl} alt="byte" className={`rounded ${styles.imgContainer}`} style={{ width: width * 0.8 }} />
+            <img
+              src={step.imageUrl}
+              alt="byte"
+              className={`rounded ${styles.imgContainer}`}
+              style={{ maxWidth: width * 0.8, width: '100%', maxHeight: height - 200 }}
+            />
           </div>
         )}
         <div className="flex justify-center w-full mt-4">

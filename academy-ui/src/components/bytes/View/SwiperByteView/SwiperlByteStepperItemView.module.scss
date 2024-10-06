@@ -12,15 +12,26 @@
 
   width: 100%;
 
-  @media (min-width: 768px) {
+  @media (min-width: $screen-md) {
     width: 80%;
-    max-width: 768px;
+    max-width: $screen-lg; // Large tablet
   }
 }
 
 
-@media (min-width: 768px) {
+@media (min-width: $screen-md) {
   .swiperSlide.full-screen-image {
-    width: 90%;
+    max-width: 80%;
   }
+}
+
+.swiper-button-custom-next {
+  top: auto;
+  bottom: 10px;
+
+  transform: rotate(90deg);
+  transform-origin: left center;
+
+  right: var(--swiper-navigation-sides-offset, 10px);
+  left: auto;
 }

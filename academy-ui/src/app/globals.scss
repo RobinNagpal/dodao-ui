@@ -1,3 +1,5 @@
+@import 'styles/css-variables';
+@import 'styles/variables';
 @import 'styles/prism';
 @import 'styles/prism-nord';
 @import 'styles/katex';
@@ -7,9 +9,11 @@
 @import 'styles/theme-styles';
 @import 'styles/markdown-edit-overrides';
 @import "styles/swiper.overrides";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 @import '@uiw/react-md-editor/dist/mdeditor.css';
 
 body {

@@ -15,7 +15,7 @@ import 'prismjs/components/prism-rust';
 import 'prismjs/components/prism-solidity';
 import 'prismjs/components/prism-toml';
 import 'prismjs/components/prism-yaml';
-import { CSSProperties, useEffect, useState } from 'react';
+import { CSSProperties, useEffect, useRef, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { Navigation, Pagination, Mousewheel, Keyboard } from 'swiper/modules';
@@ -23,6 +23,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import 'swiper/css/virtual';
+import { NavigationOptions } from 'swiper/types';
 import styles from './SwiperlByteStepperItemView.module.scss';
 
 interface ByteStepperItemWithProgressBarProps {
@@ -44,6 +45,7 @@ const style: CSSProperties = {
   '--swiper-pagination-bullet-opacity': '1',
   '--swiper-pagination-bullet-horizontal-gap': '8px',
   '--swiper-pagination-bullet-vertical-gap': '12px',
+  '--swiper-pagination-color': 'var(--primary-color)',
 } as any;
 
 function SwiperByteStepperItemView({ viewByteHelper, step, byte, space, setByteSubmitted }: ByteStepperItemWithProgressBarProps) {
@@ -52,6 +54,7 @@ function SwiperByteStepperItemView({ viewByteHelper, step, byte, space, setByteS
 
   const [showCorrectAnswerForQuestion, setShowCorrectAnswerForQuestion] = useState(false);
   const [showQuestionsCompletionWarning, setShowQuestionsCompletionWarning] = useState(false);
+
   function isQuestionAnswered() {
     return viewByteHelper.isQuestionAnswered(step.uuid);
   }
@@ -66,6 +69,10 @@ function SwiperByteStepperItemView({ viewByteHelper, step, byte, space, setByteS
     return !!viewByteHelper.getStepItemSubmission(step.uuid, hasDiscordConnect.uuid);
   }
 
+  // See - https://stackoverflow.com/a/69238830/440432
+  const navigationPrevRef = useRef(null);
+  const navigationNextRef = useRef(null);
+
   const { width, height } = useWindowDimensions();
 
   const isShortScreen = height <= 690;
@@ -77,7 +84,20 @@ function SwiperByteStepperItemView({ viewByteHelper, step, byte, space, setByteS
           slidesPerView={1}
           spaceBetween={50}
           modules={[Navigation, Pagination, Mousewheel, Keyboard]}
-          navigation={true}
+          navigation={{
+            enabled: true,
+            prevEl: navigationPrevRef.current,
+            nextEl: navigationNextRef.current,
+          }}
+          onBeforeInit={(swiper) => {
+            const navigation = swiper.params.navigation;
+            if (!navigation) return;
+
+            // See - https://stackoverflow.com/a/69238830/440432
+            const nav = navigation as NavigationOptions;
+            nav.prevEl = navigationPrevRef.current;
+            nav.nextEl = navigationNextRef.current;
+          }}
           onSlideChange={(swiper) => {
             const activeIndex = swiper.activeIndex;
             viewByteHelper.setActiveStep(activeIndex);
@@ -112,6 +132,20 @@ function SwiperByteStepperItemView({ viewByteHelper, step, byte, space, setByteS
               />
             </SwiperSlide>
           ))}
+          <div
+            ref={navigationPrevRef}
+            className={`swiper-button-prev`}
+            style={{
+              display: 'none', // We are hiding the prev button as it looks a bit off at the top
+            }}
+          />
+          <div
+            ref={navigationNextRef}
+            className={`swiper-button-next`}
+            style={{
+              display: activeStepOrder > 0 ? 'none' : 'block', // We are hiding the next button we just want to show it on the first slide
+            }}
+          />
         </Swiper>
         <ByteStepperItemWarnings
           showQuestionsCompletionWarning={showQuestionsCompletionWarning}
