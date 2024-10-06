@@ -1,6 +1,6 @@
 import ByteStepperItemWarnings from '@/components/bytes/View/ByteStepperItemWarnings';
 import SwiperByteStepperItemContent from '@/components/bytes/View/SwiperByteView/SwiperByteStepperItemContent';
-import { UseGenericViewByteHelper } from '@/components/bytes/View/useGenericViewByte';
+import { UseViewByteHelper } from '@/components/bytes/View/useViewByteInModal';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import useWindowDimensions from '@/hooks/useWindowDimensions';
 import { ByteDto, ByteStepDto, ImageDisplayMode } from '@/types/bytes/ByteDto';
@@ -23,14 +23,14 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import 'swiper/css/virtual';
-import { NavigationOptions } from 'swiper/types';
+import { NavigationOptions, type Swiper as SwiperClass } from 'swiper/types';
 import styles from './SwiperlByteStepperItemView.module.scss';
 
 interface ByteStepperItemWithProgressBarProps {
   byte: ByteDto;
   step: ByteStepDto;
   space: SpaceWithIntegrationsFragment;
-  viewByteHelper: UseGenericViewByteHelper;
+  viewByteHelper: UseViewByteHelper;
   setByteSubmitted: (submitted: boolean) => void;
 }
 
@@ -109,6 +109,8 @@ function SwiperByteStepperItemView({ viewByteHelper, step, byte, space, setByteS
             clickable: true,
             enabled: true,
           }}
+          allowSlideNext={activeStepOrder === 0}
+          onNavigationNext={(swiper: SwiperClass) => {}}
           className={styles.swiperSlides}
           id="byte-view-swiper"
         >

@@ -1,7 +1,7 @@
 import UserDiscord from '@/components/app/Form/UserDiscord';
 import styles from '@/components/bytes/View/ByteStepperItem/ByteStepperItemContent.module.scss';
 import { QuestionSection } from '@/components/bytes/View/QuestionSection';
-import { UseGenericViewByteHelper } from '@/components/bytes/View/useGenericViewByte';
+import { UseViewByteHelper } from '@/components/bytes/View/useViewByteInModal';
 import {
   ByteQuestionFragmentFragment,
   ByteUserDiscordConnectFragmentFragment,
@@ -24,7 +24,7 @@ interface ByteStepperItemContentProps {
   byte: ByteDto;
   step: ByteStepDto;
   space: SpaceWithIntegrationsFragment;
-  viewByteHelper: UseGenericViewByteHelper;
+  viewByteHelper: UseViewByteHelper;
   setByteSubmitted: (submitted: boolean) => void;
   renderer: marked.Renderer;
   activeStepOrder: number;
