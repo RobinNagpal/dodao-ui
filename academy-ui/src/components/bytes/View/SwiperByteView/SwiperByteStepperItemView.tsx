@@ -141,11 +141,13 @@ function SwiperByteStepperItemView({ viewByteHelper, step, byte, space, setByteS
           />
           <div
             ref={navigationNextRef}
-            className={`swiper-button-next`}
+            className={`swiper-button-next ${styles.customNextButton}`}
             style={{
               display: activeStepOrder > 0 ? 'none' : 'block', // We are hiding the next button we just want to show it on the first slide
             }}
-          />
+          >
+            <div className={`w-24 ${styles.nextButtonText}`}>Scroll Down</div>
+          </div>
         </Swiper>
         <ByteStepperItemWarnings
           showQuestionsCompletionWarning={showQuestionsCompletionWarning}

@@ -112,7 +112,11 @@ export default function ViewByteModal({ space, selectedByteId, viewByteModalClos
     return (
       <FullScreenModal open={true} onClose={onClose} title={viewByteHelper.byteRef?.name || 'Tidbit Details'}>
         {isLoading ? (
-          <TidbitDetailsLoader />
+          <div className="flex justify-center align-center w-full">
+            <div className="w-2/3">
+              <TidbitDetailsLoader />
+            </div>
+          </div>
         ) : (
           <SwiperByteStepperItemView viewByteHelper={viewByteHelper} byte={byte} step={activeStep} space={space} setByteSubmitted={setByteSubmitted} />
         )}

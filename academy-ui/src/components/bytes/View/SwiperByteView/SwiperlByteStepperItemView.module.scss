@@ -25,13 +25,28 @@
   }
 }
 
-.swiper-button-custom-next {
-  top: auto;
-  bottom: 10px;
 
-  transform: rotate(90deg);
-  transform-origin: left center;
+.customNextButton {
+  color: var(--primary-color); // Use your primary color
+  font-weight: bold;
+  cursor: pointer;
 
-  right: var(--swiper-navigation-sides-offset, 10px);
-  left: auto;
+  animation: blinkAnimation 2s ease-in-out infinite;
+}
+
+@keyframes blinkAnimation {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3; // Adjust opacity for subtle effect
+  }
+}
+
+.nextButtonText {
+  position: relative;
+  top: 34px;
+  margin-left: -65px; // Adjust margin as needed
+  transform: rotate(-90deg); // Ensure text is not rotated
 }
