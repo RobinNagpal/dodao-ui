@@ -37,9 +37,10 @@ interface ByteStepperItemWithProgressBarProps {
 const style: CSSProperties = {
   '--swiper-pagination-progressbar-bg-color': 'rgba(0,0,0,0.25)',
   '--swiper-pagination-progressbar-size': '6px',
-  '--swiper-pagination-bullet-size': '12px',
-  '--swiper-pagination-bullet-width': '12px',
-  '--swiper-pagination-bullet-height': '12px',
+  '--swiper-pagination-bullet-size': '24px',
+  '--swiper-pagination-bullet-border-radius': '12px',
+  '--swiper-pagination-bullet-width': '24px',
+  '--swiper-pagination-bullet-height': '24px',
   '--swiper-pagination-bullet-inactive-color': '#c1c1c1',
   '--swiper-pagination-bullet-inactive-opacity': '0.5',
   '--swiper-pagination-bullet-opacity': '1',
@@ -47,6 +48,16 @@ const style: CSSProperties = {
   '--swiper-pagination-bullet-vertical-gap': '12px',
   '--swiper-pagination-color': 'var(--primary-color)',
 } as any;
+
+const renderBullet = (index: number, className: string, byte: ByteDto, activeStepOrder: number) => {
+  const isCompleted = index < activeStepOrder;
+  console.log('isCompleted', isCompleted, index, activeStepOrder);
+  return `
+<div class="flex custom-swiper-bullet ${isCompleted ? 'completed' : ''}">
+  <span class="mr-2 mt-3 swiper-pagination-custom-text">${byte.steps?.[index].name}</span>
+  <span class=" ${className} ${index === activeStepOrder ? 'swiper-pagination-bullet-active' : ''} cursor-default">${index + 1}</span>
+</div>`;
+};
 
 function SwiperByteStepperItemView({ viewByteHelper, step, byte, space, setByteSubmitted }: ByteStepperItemWithProgressBarProps) {
   const { activeStepOrder } = viewByteHelper;
@@ -102,14 +113,18 @@ function SwiperByteStepperItemView({ viewByteHelper, step, byte, space, setByteS
             const activeIndex = swiper.activeIndex;
             viewByteHelper.setActiveStep(activeIndex);
           }}
+          onSlideChangeTransitionEnd={(swiper) => {
+            swiper.pagination.render();
+          }}
           mousewheel={{
             forceToAxis: true,
           }}
           pagination={{
-            clickable: true,
+            clickable: false,
             enabled: true,
+            renderBullet: (index, className) => renderBullet(index, className, byte, activeStepOrder),
           }}
-          allowSlideNext={activeStepOrder === 0}
+          allowSlideNext={true}
           onNavigationNext={(swiper: SwiperClass) => {}}
           className={styles.swiperSlides}
           id="byte-view-swiper"

@@ -4,6 +4,7 @@
       display: flex;
       align-items: center;
     }
+
     width: 100vw;
   }
 
@@ -22,6 +23,25 @@
     .swiper-button-next {
       top: auto;
       bottom: 10px;
+    }
+  }
+
+  .swiper-pagination {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  .custom-swiper-bullet {
+    &.completed {
+      .swiper-pagination-custom-text {
+        text-decoration: line-through;
+        color: #c1c1c1;
+      }
+
+      .swiper-pagination-bullet {
+        background-color: #148317;
+      }
     }
   }
 }
