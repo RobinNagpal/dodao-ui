@@ -5,11 +5,11 @@ import ButtonLarge from '@dodao/web-core/components/core/buttons/Button';
 import EmailSetupNewSpaceModal from '@dodao/web-core/ui/auth/signup/components/EmailSetupNewSpaceModal';
 import { BaseSpace } from '@prisma/client';
 
-interface HomepageProps {
+interface GetStartedProps {
   space: BaseSpace;
 }
 
-function Homepage({ space }: HomepageProps) {
+function GetStarted({ space }: GetStartedProps) {
   const [open, setOpen] = React.useState(false);
 
   return (
@@ -24,4 +24,4 @@ function Homepage({ space }: HomepageProps) {
   );
 }
 
-export default Homepage;
+export default GetStarted;

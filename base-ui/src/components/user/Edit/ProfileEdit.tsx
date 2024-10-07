@@ -83,7 +83,7 @@ function ProfileEdit({ space }: ProfileEditProps) {
 
       if (response.ok) {
         showNotification({ type: 'success', message: 'User updated successfully' });
-        router.push('/');
+        router.push('/homepage');
       } else {
         showNotification({ type: 'error', message: 'Error while updating user' });
       }

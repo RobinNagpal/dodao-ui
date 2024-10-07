@@ -2,18 +2,18 @@ import React from 'react';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
-import Homepage from '@/components/homepage/Homepage';
+import GetStarted from '@/components/getStarted/GetStarted';
 
 async function Home() {
   const session = await getServerSession();
   const space = await getSpaceServerSide();
 
   if (session) {
-    redirect('/');
+    redirect('/homepage');
   }
   return (
     <>
-      <Homepage space={space!} />
+      <GetStarted space={space!} />
     </>
   );
 }
