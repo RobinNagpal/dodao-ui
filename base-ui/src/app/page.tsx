@@ -1,22 +1,20 @@
 import React from 'react';
-import { GetStartedButton } from '@dodao/web-core/components/home/common/GetStartedButton';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
+import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
+import Homepage from '@/components/homepage/Homepage';
 
 async function Home() {
   const session = await getServerSession();
+  const space = await getSpaceServerSide();
 
   if (session) {
     redirect('/');
   }
   return (
-    <div>
-      <div className="mt-10 flex items-center justify-center gap-x-6">
-        <GetStartedButton href={`/login`}>
-          Get started <span aria-hidden="true">→</span>
-        </GetStartedButton>
-      </div>
-    </div>
+    <>
+      <Homepage space={space!} />
+    </>
   );
 }
 
