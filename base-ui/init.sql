@@ -68,7 +68,6 @@ CREATE TABLE public.users (
   image VARCHAR(255),
   public_address VARCHAR(255),
   phone_number VARCHAR(255),
-  password VARCHAR(255),
   space_id VARCHAR(64) NOT NULL,
   username VARCHAR(255) NOT NULL,
   auth_provider VARCHAR(255) NOT NULL

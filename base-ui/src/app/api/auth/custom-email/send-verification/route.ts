@@ -14,7 +14,6 @@ const createUser = async (user: BaseUser & { email: string }, spaceId: string) =
       emailVerified: new Date(),
       authProvider: 'email',
       username: user.email,
-      password: user.password,
     },
     update: {
       emailVerified: new Date(),
@@ -50,7 +49,7 @@ const createUser = async (user: BaseUser & { email: string }, spaceId: string) =
  */
 async function POST(req: NextRequest, res: NextResponse) {
   const reqBody = await req.json();
-  const { spaceId, provider, email, password } = reqBody;
+  const { spaceId, provider, email } = reqBody;
 
   console.log('######### send-verification - POST #########');
   console.log('request', JSON.stringify(reqBody));
@@ -60,9 +59,7 @@ async function POST(req: NextRequest, res: NextResponse) {
   const normalizer = defaultNormalizer;
   const userEmail = normalizer(email);
 
-  const hashedPassword = await createHash(password);
-
-  const defaultUser = { id: crypto.randomUUID(), email: userEmail, password: hashedPassword, emailVerified: null };
+  const defaultUser = { id: crypto.randomUUID(), email: userEmail, emailVerified: null };
   const user = ((await prisma.baseUser.findUnique({ where: { email_spaceId: { email: userEmail, spaceId } } })) ?? defaultUser) as BaseUser & { email: string };
 
   console.log('user', user);
