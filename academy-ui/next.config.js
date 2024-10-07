@@ -14,6 +14,10 @@ const nextConfig = {
     V2_API_SERVER_URL: process.env.V2_API_SERVER_URL,
     DODAO_SUPERADMINS: process.env.DODAO_SUPERADMINS,
   },
+  sassOptions: {
+    includePaths: ['./src'],
+    prependData: `@import "app/styles/variables.scss";`,
+  },
   async headers() {
     return [
       {

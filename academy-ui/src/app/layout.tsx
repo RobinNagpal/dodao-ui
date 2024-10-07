@@ -10,6 +10,7 @@ import StyledComponentsRegistry from '@dodao/web-core/utils/StyledComponentsRegi
 import { Analytics } from '@vercel/analytics/react';
 import { getServerSession } from 'next-auth';
 import Script from 'next/script';
+import Head from 'next/head';
 import { CSSProperties, ReactNode } from 'react';
 import 'tailwindcss/tailwind.css';
 import './globals.scss';
@@ -36,11 +37,15 @@ export default async function RootLayout({ children }: RootLayoutProps) {
     '--heading-color': themeValue.headingColor,
     '--border-color': themeValue.borderColor,
     '--block-bg': themeValue.blockBg,
+    '--swiper-theme-color': themeValue.primaryColor,
   } as CSSProperties;
 
   return (
     <html lang="en" className="h-full">
       <body className={'max-h-screen ' + theme} style={{ ...style, backgroundColor: 'var(--bg-color)' }}>
+        <Head>
+          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        </Head>
         <Script src={`https://www.googletagmanager.com/gtag/js?id=${gtag}`} />
         <Script id="google-analytics">
           {`

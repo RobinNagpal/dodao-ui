@@ -3,9 +3,10 @@
 import RatingModal, { FeedbackOptions } from '@/components/app/Modal/Rating/RatingModal';
 import { useByteRatings } from '@/components/bytes/Rating/useByteRating';
 import ShareBytePage from '@/components/bytes/Share/ShareBytePage';
-import ByteStepperItemView from '@/components/bytes/View/ByteStepperItem/ByteStepperItemView';
-import ContinuousStepIndicatorProgress from '@/components/bytes/View/ByteStepperItem/Progress/ContinuousStepIndicatorProgress';
 import FullScreenByteModal from '@/components/bytes/View/FullScreenByteModal';
+import NormalByteStepperItemView from '@/components/bytes/View/ByteStepperItem/ByteStepperItemView';
+import SwiperByteStepperItemView from '@/components/bytes/View/SwiperByteView/SwiperByteStepperItemView';
+import ContinuousStepIndicatorProgress from '@/components/bytes/View/ByteStepperItem/Progress/ContinuousStepIndicatorProgress';
 import RatingByteView from '@/components/bytes/View/RatingByteView';
 import { useViewByteInModal } from '@/components/bytes/View/useViewByteInModal';
 import { ByteDetailsFragment, ByteFeedback, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
@@ -104,14 +105,41 @@ export default function ViewByteModal({ space, selectedByteId, viewByteModalClos
     );
   }
 
+  const isLoading = !viewByteHelper.byteRef;
+  const showSwiper = true;
+
+  if (showSwiper) {
+    return (
+      <FullScreenModal open={true} onClose={onClose} title={viewByteHelper.byteRef?.name || 'Tidbit Details'}>
+        {isLoading ? (
+          <div className="flex justify-center align-center w-full">
+            <div className="w-2/3">
+              <TidbitDetailsLoader />
+            </div>
+          </div>
+        ) : (
+          <SwiperByteStepperItemView viewByteHelper={viewByteHelper} byte={byte} step={activeStep} space={space} setByteSubmitted={setByteSubmitted} />
+        )}
+        <RatingModal
+          ratingType="Byte"
+          open={showRatingsModal && (space.byteSettings.captureRating as boolean)}
+          onClose={() => setShowRatingsModal(false)}
+          skipRating={skipByteRating}
+          setRating={setByteRating as (rating: number, feedback?: ByteFeedback) => Promise<void>}
+          feedbackOptions={feedbackOptions}
+        />
+      </FullScreenModal>
+    );
+  }
   return (
     <FullScreenByteModal open={true} onClose={onClose} title={viewByteHelper.byteRef?.name || 'Tidbit Details'}>
       <ContinuousStepIndicatorProgress steps={viewByteHelper.byteRef?.steps?.length || 0} currentStep={activeStepOrder + 1} />
-      {byte ? (
-        <ByteStepperItemView viewByteHelper={viewByteHelper} byte={byte} step={activeStep} space={space} setByteSubmitted={setByteSubmitted} />
-      ) : (
+      {isLoading ? (
         <TidbitDetailsLoader />
+      ) : (
+        <NormalByteStepperItemView viewByteHelper={viewByteHelper} byte={byte} step={activeStep} space={space} setByteSubmitted={setByteSubmitted} />
       )}
+
       <RatingModal
         ratingType="Byte"
         open={showRatingsModal && (space.byteSettings.captureRating as boolean)}
