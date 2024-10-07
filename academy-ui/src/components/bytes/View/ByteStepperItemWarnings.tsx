@@ -1,38 +1,35 @@
+import { UseViewByteHelper } from '@/components/bytes/View/useViewByteInModal';
+import { ByteStepDto } from '@/types/bytes/ByteDto';
 import ErrorWithAccentBorder from '@dodao/web-core/components/core/errors/ErrorWithAccentBorder';
 import { useEffect, useRef } from 'react';
 
 interface ByteStepperItemWarningsProps {
-  showQuestionsCompletionWarning: boolean;
-  isUserInputComplete: () => boolean;
-  isQuestionAnswered: () => boolean;
-  isDiscordConnected: () => boolean;
+  step: ByteStepDto;
+  viewByteHelper: UseViewByteHelper;
 }
 
-function ByteStepperItemWarnings({
-  showQuestionsCompletionWarning,
-  isUserInputComplete,
-  isQuestionAnswered,
-  isDiscordConnected,
-}: ByteStepperItemWarningsProps) {
+function ByteStepperItemWarnings({ step, viewByteHelper }: ByteStepperItemWarningsProps) {
   const myDivRef = useRef<HTMLDivElement | null>(null);
 
+  const stepResponsesMapElement = viewByteHelper.byteSubmission.stepResponsesMap[step.uuid];
+
   useEffect(() => {
-    if (!isQuestionAnswered()) {
+    if (!viewByteHelper.isQuestionAnswered(step.uuid)) {
       myDivRef.current?.scrollIntoView({ behavior: 'smooth' });
     }
-  }, [isQuestionAnswered]);
+  }, [stepResponsesMapElement]);
 
   return (
     <div className="mb-4">
-      {showQuestionsCompletionWarning && (
+      {!viewByteHelper.isPristine(step.uuid) && (
         <>
-          {!isQuestionAnswered() && (
+          {!viewByteHelper.isQuestionAnswered(step.uuid) && (
             <div ref={myDivRef}>
               <ErrorWithAccentBorder error="Answer question to proceed" />
             </div>
           )}
-          {!isUserInputComplete() && <ErrorWithAccentBorder error="Add information to proceed" />}
-          {!isDiscordConnected() && <ErrorWithAccentBorder error="Connect your Discord account to proceed" />}
+          {!viewByteHelper.isUserInputComplete(step.uuid) && <ErrorWithAccentBorder error="Add information to proceed" />}
+          {!viewByteHelper.isDiscordConnected(step.uuid) && <ErrorWithAccentBorder error="Connect your Discord account to proceed" />}
         </>
       )}
     </div>

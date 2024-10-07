@@ -1,5 +1,5 @@
 import ByteStepperItemWarnings from '@/components/bytes/View/ByteStepperItemWarnings';
-import SwiperByteStepperItemContent from '@/components/bytes/View/SwiperByteView/SwiperByteStepperItemContent';
+import ByteStepperItemContent from '@/components/bytes/View/ByteStepperItemContent';
 import { UseViewByteHelper } from '@/components/bytes/View/useViewByteInModal';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import useWindowDimensions from '@/hooks/useWindowDimensions';
@@ -134,18 +134,17 @@ function SwiperByteStepperItemView({ viewByteHelper, step, byte, space, setByteS
               key={step.uuid}
               className={`${styles.swiperSlide}  ${step?.displayMode === ImageDisplayMode.FullScreenImage ? 'full-screen-image' : ''}`}
             >
-              <SwiperByteStepperItemContent
+              <ByteStepperItemContent
                 space={space}
                 byte={byte}
                 step={step}
                 viewByteHelper={viewByteHelper}
-                renderer={renderer}
                 activeStepOrder={index}
-                showCorrectAnswerForQuestion={showCorrectAnswerForQuestion}
                 setByteSubmitted={setByteSubmitted}
                 width={width}
                 height={height}
                 isShortScreen={isShortScreen}
+                isSwiper={true}
               />
             </SwiperSlide>
           ))}
@@ -166,12 +165,6 @@ function SwiperByteStepperItemView({ viewByteHelper, step, byte, space, setByteS
             <div className={`w-24 ${styles.nextButtonText}`}>Scroll Down</div>
           </div>
         </Swiper>
-        <ByteStepperItemWarnings
-          showQuestionsCompletionWarning={showQuestionsCompletionWarning}
-          isUserInputComplete={isUserInputComplete}
-          isQuestionAnswered={isQuestionAnswered}
-          isDiscordConnected={isDiscordConnected}
-        />
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import { ByteDto, ByteStepDto } from '@/types/bytes/ByteDto';
 import { ByteStepItem, Question, UserInput } from '@/types/stepItems/stepItemDto';
-import { isQuestion, isUserInput } from '@dodao/web-core/types/deprecated/helpers/stepItemTypes';
+import { isQuestion, isUserDiscordConnect, isUserInput } from '@dodao/web-core/types/deprecated/helpers/stepItemTypes';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { ByteSubmissionInput, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { Session } from '@dodao/web-core/types/auth/Session';
@@ -39,6 +39,7 @@ export interface UseViewByteHelper {
   byteSubmitting: boolean;
   isUserInputComplete: (stepUuid: string) => boolean;
   isQuestionAnswered: (stepUuid: string) => boolean;
+  isDiscordConnected: (stepUuid: string) => boolean;
   isValidToSubmit: () => boolean;
   selectAnswer: (stepUuid: string, questionUuid: string, selectedAnswers: string[]) => void;
   setActiveStep: (order: number) => void;
@@ -116,17 +117,45 @@ export function useViewByteInModal({ space, byteId, stepOrder, fetchByteFn }: Us
     return stepSubmission?.itemResponsesMap[stepItemUuid];
   }
 
-  function canNavigateToNext(step: ByteStepDto): boolean {
-    const answeredCorrectly = step.stepItems.filter(isQuestion).every((stepItem: ByteStepItem) => {
-      const question = stepItem as Question;
-      return isEqual(question.answerKeys.sort(), ((getStepItemSubmission(step.uuid, stepItem.uuid) as string[]) || []).sort());
-    });
-
-    return isQuestionAnswered(step.uuid) && isUserInputComplete(step.uuid) && answeredCorrectly;
-  }
-
   function isPristine(stepUuid: string) {
     return pristineSteps[stepUuid];
+  }
+
+  function canNavigateToNext(step: ByteStepDto): boolean {
+    setPristineSteps((prevPristineSteps) => {
+      return {
+        ...prevPristineSteps,
+        [step.uuid]: false,
+      };
+    });
+
+    if (!byteRef) return false;
+
+    if (isQuestionAnswered(step.uuid) && isDiscordConnected(step.uuid) && isUserInputComplete(step.uuid)) {
+      const answeredCorrectly = step.stepItems.filter(isQuestion).every((stepItem: ByteStepItem) => {
+        const question = stepItem as Question;
+        return isEqual(question.answerKeys.sort(), ((getStepItemSubmission(step.uuid, stepItem.uuid) as string[]) || []).sort());
+      });
+
+      if (!answeredCorrectly) {
+        showNotification({
+          type: 'info',
+          message: 'Your answer is wrong! Give correct answer to proceed.',
+          heading: 'Hint',
+        });
+        return false;
+      }
+
+      const isLastStep = byteRef.steps.length - 2 === activeStepOrder;
+
+      if (isLastStep) {
+        if (!isValidToSubmit()) {
+          return false;
+        }
+      }
+    }
+
+    return true;
   }
 
   function goToNextStep(currentStep: ByteStepDto) {
@@ -236,12 +265,24 @@ export function useViewByteInModal({ space, byteId, stepOrder, fetchByteFn }: Us
 
         return true;
       } else {
+        showNotification({
+          type: 'error',
+          message: 'Something went wrong. Please try again.',
+          heading: 'Error',
+        });
+
         setByteSubmitting(false);
         setByteSubmission((prevByteSubmission) => ({ ...prevByteSubmission, isSubmitted: false }));
         return false;
       }
     } catch (e) {
       console.log(e);
+      showNotification({
+        type: 'error',
+        message: 'Something went wrong. Please try again.',
+        heading: 'Error',
+      });
+
       setByteSubmitting(false);
       setByteSubmission((prevByteSubmission) => ({ ...prevByteSubmission, isSubmitted: false }));
       return false;
@@ -255,6 +296,14 @@ export function useViewByteInModal({ space, byteId, stepOrder, fetchByteFn }: Us
   function isUserInputComplete(stepUuid: string) {
     return checkIfUserInputIsComplete(stepUuid, byteStepsMap, getStepSubmission);
   }
+
+  function isDiscordConnected(uuid: string): boolean {
+    const step = byteRef!.steps.find((step) => step.uuid === uuid)!;
+    const hasDiscordConnect = step.stepItems.find(isUserDiscordConnect);
+    if (!hasDiscordConnect) return true;
+    return !!getStepItemSubmission(step.uuid, hasDiscordConnect.uuid);
+  }
+
   return {
     initialize,
     activeStepOrder,
@@ -277,6 +326,7 @@ export function useViewByteInModal({ space, byteId, stepOrder, fetchByteFn }: Us
     submitByte,
     setUserInput,
     setUserDiscord,
+    isDiscordConnected,
   };
 }
 
