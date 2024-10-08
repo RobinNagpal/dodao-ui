@@ -85,6 +85,7 @@ fragment SpaceWithIntegrations on Space {
     askForLoginToSubmit
     captureRating
     showCategoriesInSidebar
+    byteViewMode
   }
   themeColors {
     primaryColor

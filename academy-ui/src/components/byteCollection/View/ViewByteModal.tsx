@@ -106,7 +106,7 @@ export default function ViewByteModal({ space, selectedByteId, viewByteModalClos
   }
 
   const isLoading = !viewByteHelper.byteRef;
-  const showSwiper = true;
+  const showSwiper = false;
 
   if (showSwiper) {
     return (
