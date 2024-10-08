@@ -189,13 +189,21 @@ Here is an example of how it looks for me on my local machine (mac)
 # localhost is used to configure the loopback interface
 # when the system is booting.  Do not change this entry.
 ##
+
+# Marketing Sites
+127.0.0.1    dodao-localhost.io
+127.0.0.1	 tidbitshub-localhost.org
+127.0.0.1    myrubrics-localhost.com
+
+# Academy Sites
 127.0.0.1    dodao-localhost.academy
 127.0.0.1    compound-localhost.education
 127.0.0.1    uniswap-localhost.university
-127.0.0.1    dodao-localhost.io
 127.0.0.1	 arbitrum-localhost.education
-127.0.0.1	 test-tidbits.tidbitshub-localhost.org
+
+# Tidbits Sites
 127.0.0.1	 alchemix.tidbitshub-localhost.org
+127.0.0.1	 test-tidbits.tidbitshub-localhost.org
 ```
 
 #### For Arbitrum Academy Site

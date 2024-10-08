@@ -67,15 +67,9 @@ initialization directory. Here's what happens:
 - **Database Initialization**: `init.sql` can contain SQL commands to set up your database schema, tables, or seed data.
 - **One-Time Setup**: This script runs only if the database is not already initialized (i.e., when the `data` folder is empty).
 
-## 7. How to Recreate the Database to Start from Scratch
+## 7. Logs
 
-To reset your database:
-
-1. **Stop and Remove Containers**: Run `docker-compose down` to stop and remove the containers.
-2. **Delete the Data Folder**: Remove the `data` folder by executing `rm -rf ./data`. This deletes all your database data.
-3. **Restart the Containers**: Run `docker-compose up` to start fresh. The `init.sql` script will run again, reinitializing your database.
-
-   **Note:** Ensure that docker container is running fine by checking the terminal logs when you run the command. If you see the below statements in the logs then that means docker container is running fine:
+**Note:** Ensure that docker container is running fine by checking the terminal logs when you run the command. If you see the below statements in the logs then that means docker container is running fine:
 
 ```bash
   dodao-ui-db  | running bootstrap script ... ok
@@ -96,6 +90,16 @@ To reset your database:
   dodao-ui-db  | 2024-09-26 13:38:40.557 UTC [1] LOG:  database system is ready to accept connections
 ```
 
+## 8. How to Recreate the Database to Start from Scratch
+
+To reset your database:
+
+1. **Stop and Remove Containers**: Run `docker-compose down` to stop and remove the containers.
+2. **Delete the Data Folder**: Remove the `data` folder by executing `rm -rf ./data`. This deletes all your database data.
+3. **Restart the Containers**: Run `docker-compose up` to start fresh. The `init.sql` script will run again, reinitializing your database.
+
+
+
 **Warning**: Deleting the `data` folder will permanently remove all data stored in the database. Ensure you have
 backups if needed.
 
@@ -104,3 +108,12 @@ backups if needed.
 By using Docker and Docker Compose, you streamline the setup process, ensuring consistency and reducing the chances
 of environment-related bugs. The `docker-compose.yml` file provided sets up a PostgreSQL database that's easy to manage
 and share among your development team.
+
+# Checklist
+- [ ] I understand the purpose of Docker and Docker Compose.
+- [ ] I understand how the `docker-compose.yml` file sets up the PostgreSQL database.
+- [ ] I understand how data is stored in the `data` folder for persistence.
+- [ ] I understand how the `init.sql` script initializes the database.
+- [ ] I know how to check the logs to ensure the database is setup properly.
+- [ ] I know how to stop the postgesql on my local machine and have it running in a docker container.
+- [ ] I know how to recreate the database to start from scratch.
