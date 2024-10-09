@@ -2,7 +2,7 @@ import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { AcademySites } from './components/AcademySites';
 import { AIChatbot } from './components/AIChatbot';
 import { BlockchainCourses } from './components/BlockchainCourses';
-import { BlockchainDevelopmentTooling } from './components/BlockchainDevelopmentTooling';
+import Services from './components/Services';
 import DoDAOHelpButton from './components/DoDAOHelpButton';
 import { Footer } from './components/Footer';
 import { Introduction } from './components/Introduction';
@@ -21,7 +21,7 @@ export default function DoDAOHome() {
       <AcademySites />
       <AIChatbot />
       <BlockchainCourses />
-      <BlockchainDevelopmentTooling />
+      <Services />
       <Footer />
     </PageWrapper>
   );
