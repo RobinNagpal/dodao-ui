@@ -1,39 +1,40 @@
-import { InboxIcon, TrashIcon, UsersIcon } from '@heroicons/react/24/outline';
+import { CodeBracketIcon, WrenchScrewdriverIcon, PresentationChartLineIcon, ShieldCheckIcon, CpuChipIcon } from '@heroicons/react/24/outline';
 
 const features = [
   {
-    name: 'Blockchain Development',
+    name: 'Blockchain Tooling.',
     description:
-      'Looking to accelerate your blockchain development? Our team of experts offers specialized development services for strategic projects, helping you innovate and stay ahead of the competition.',
+      'DoDAO’s blockchain tooling has been trusted by top protocols in the industry. Our tools are designed to simplify blockchain operations and enhance your development process. If you’re looking to brainstorm new tooling ideas or need expert assistance with your existing tools, DoDAO is here to help, offering support and innovation tailored to your needs.',
     href: '#',
-    icon: InboxIcon,
+    icon: WrenchScrewdriverIcon,
   },
   {
-    name: 'Blockchain Tooling',
-    description: 'Vero eum voluptatem aliquid nostrum voluptatem. Vitae esse natus. Earum nihil deserunt eos quasi cupiditate. A inventore et molestiae natus.',
+    name: 'DeFi Analytics.',
+    description:
+      'We offer advanced DeFi analytics services, helping you create detailed dashboards to track and analyze your on-chain activity. Our Asset Analysis Dashboard is one of the most comprehensive in the market, providing deep insights and real-time data. It’s trusted by some of the leading DeFi protocols, helping them make data-driven decisions.',
     href: '#',
-    icon: UsersIcon,
+    icon: PresentationChartLineIcon,
   },
   {
-    name: 'DeFi Analytics',
+    name: 'AI/LLM Development and Solution.',
     description:
-      'Make informed decisions with our data-driven Asset Analysis. Evaluate your assets objectively across market performance, adoption rates, decentralization, utility, and more using advanced analytics.',
+      'DoDAO also offers AI and Large Language Model (LLM) development and solutions. Our team can help you integrate cutting-edge AI technologies into your systems, providing custom solutions that leverage the power of machine learning and natural language processing to enhance automation, decision-making, and user experiences in your business.',
     href: '#',
-    icon: TrashIcon,
+    icon: CpuChipIcon,
   },
   {
-    name: 'DeFi Risk Analysis',
+    name: 'Blockchain Development.',
     description:
-      'Et quod quaerat dolorem quaerat architecto aliquam accusantium. Ex adipisci et doloremque autem quia quam. Quis eos molestiae at iure impedit.',
+      'At DoDAO, we specialize in blockchain development with a strong focus on Decentralized Finance (DeFi). Our team of experts has contributed to the top DeFi protocols, ensuring secure and scalable solutions that drive the future of decentralized finance. Whether you’re building smart contracts, decentralized applications, or any other blockchain project, we have the expertise to help you succeed.',
     href: '#',
-    icon: TrashIcon,
+    icon: CodeBracketIcon,
   },
   {
-    name: 'AI/LLM Development and Solution',
+    name: 'DeFi Risk Analysis.',
     description:
-      'Our team of experts ensures safe and reliable AI implementations by preventing data leaks, verifying output accuracy, and protecting your systems from vulnerabilities.',
+      'At DoDAO, we offer expert on-chain risk analysis using advanced models. Monte Carlo simulations help forecast risks, while multivariate GARCH models capture dynamic relationships between assets to manage volatility. We ensure accuracy by evaluating models with Akaike Information Criterion (AIC), Bayesian Information Criterion (BIC), and Mean Squared Error (MSE).',
     href: '#',
-    icon: TrashIcon,
+    icon: ShieldCheckIcon,
   },
 ];
 
@@ -41,34 +42,26 @@ export default function Services() {
   return (
     <div className="bg-white py-24 sm:py-32" id="services">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl lg:mx-0">
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Stay on top of customer support</h2>
+        <div className="mx-auto max-w-2xl sm:text-center">
+          <h2 className="text-base font-semibold leading-7 text-indigo-600">Everything you need</h2>
+          <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Development Services</p>
           <p className="mt-6 text-lg leading-8 text-gray-600">
-            Lorem ipsum dolor sit amet consect adipisicing elit. Possimus magnam voluptatum cupiditate veritatis in accusamus quisquam.
+            At DoDAO, we offer a suite of specialized development services designed to help you innovate and stay ahead in the blockchain landscape.
           </p>
         </div>
-        <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">
-          <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-3">
-            {features.map((feature) => (
-              <div key={feature.name} className="flex flex-col">
-                <dt className="text-base font-semibold leading-7 text-gray-900">
-                  <div className="mb-6 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600">
-                    <feature.icon aria-hidden="true" className="h-6 w-6 text-white" />
-                  </div>
-                  {feature.name}
-                </dt>
-                <dd className="mt-1 flex flex-auto flex-col text-base leading-7 text-gray-600">
-                  <p className="flex-auto">{feature.description}</p>
-                  <p className="mt-6">
-                    <a href={feature.href} className="text-sm font-semibold leading-6 text-indigo-600">
-                      Learn more <span aria-hidden="true">→</span>
-                    </a>
-                  </p>
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </div>
+      </div>
+      <div className="mx-auto mt-16 max-w-7xl px-6 sm:mt-20 md:mt-24 lg:px-8">
+        <dl className="mx-auto grid max-w-2xl grid-cols-1 gap-x-6 gap-y-10 text-base leading-7 text-gray-600 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3 lg:gap-x-8 lg:gap-y-16">
+          {features.map((feature) => (
+            <div key={feature.name} className="relative pl-9">
+              <dt className="inline font-semibold text-gray-900">
+                <feature.icon aria-hidden="true" className="absolute left-1 top-1 h-5 w-5 text-indigo-600" />
+                {feature.name}
+              </dt>{' '}
+              <dd className="inline">{feature.description}</dd>
+            </div>
+          ))}
+        </dl>
       </div>
     </div>
   );
