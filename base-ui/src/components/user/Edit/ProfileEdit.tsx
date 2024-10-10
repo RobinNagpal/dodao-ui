@@ -2,15 +2,15 @@
 
 import React, { useState, useEffect } from 'react';
 import WebCoreProfileEdit from '@dodao/web-core/components/profile/WebCoreProfileEdit';
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { User } from '@dodao/web-core/types/auth/User';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { Session } from '@dodao/web-core/types/auth/Session';
+import { BaseSpace } from '@prisma/client';
 
 interface ProfileEditProps {
-  space: SpaceWithIntegrationsFragment;
+  space: BaseSpace;
 }
 
 function ProfileEdit({ space }: ProfileEditProps) {
@@ -34,7 +34,7 @@ function ProfileEdit({ space }: ProfileEditProps) {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch(`/api/${space.id}/queries/users/by-username?username=${session?.username}`, {
+        const response = await fetch(`/api/queries/users/by-username?username=${session?.username}`, {
           method: 'GET',
           credentials: 'include',
           headers: {
@@ -70,7 +70,7 @@ function ProfileEdit({ space }: ProfileEditProps) {
       phone_number: updatedUser.phone_number,
     };
     try {
-      let response = await fetch(`/api/${space.id}/users/${user.id}`, {
+      let response = await fetch(`/api/users/${user.id}`, {
         method: 'PUT',
         credentials: 'include',
         headers: {
@@ -83,7 +83,7 @@ function ProfileEdit({ space }: ProfileEditProps) {
 
       if (response.ok) {
         showNotification({ type: 'success', message: 'User updated successfully' });
-        router.push('/');
+        router.push('/homepage');
       } else {
         showNotification({ type: 'error', message: 'Error while updating user' });
       }

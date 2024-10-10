@@ -53,8 +53,8 @@ function EmailLoginModal({ open, onClose, space }: EmailLoginModalProps) {
               </Button>
             </form>
           ) : (
-            <div>
-              <p>A verification link has been sent to {email}. Click on the link in the email to log in.</p>
+            <div className="text-center">
+              <p>A verification link has been sent to your email. Click on the link provided in the email to log in.</p>
             </div>
           )}
         </div>

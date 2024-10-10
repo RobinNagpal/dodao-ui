@@ -267,7 +267,7 @@ export function getAuthOptions(
           secure: process.env.VERCEL_ENV === 'production' ? true : false,
           path: '/',
           sameSite: 'lax',
-          domain: process.env.VERCEL_ENV === 'production' ? '.tidbitshub.org' : '.tidbitshub-localhost.org',
+          domain: process.env.VERCEL_ENV === 'production' ? '.tidbitshub.org' : undefined,
         },
       },
     },

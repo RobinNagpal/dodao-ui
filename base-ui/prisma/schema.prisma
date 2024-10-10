@@ -59,7 +59,6 @@ model BaseUser {
   image         String?
   publicAddress String?   @map("public_address")
   phone_number  String?   @map("phone_number")
-  password      String?
 
   spaceId      String @map("space_id")
   username     String @map("username")
