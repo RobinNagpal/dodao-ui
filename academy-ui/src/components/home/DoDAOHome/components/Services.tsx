@@ -1,4 +1,5 @@
 import { CodeBracketIcon, WrenchScrewdriverIcon, PresentationChartLineIcon, ShieldCheckIcon, CpuChipIcon } from '@heroicons/react/24/outline';
+import { SectionHeading } from './SectionHeading';
 
 const features = [
   {
@@ -41,7 +42,10 @@ const features = [
 export default function Services() {
   return (
     <div className="bg-white py-24 sm:py-32" id="services">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+      <SectionHeading number="5" id="services-title">
+        Development Services
+      </SectionHeading>
+      <div className="mx-auto max-w-7xl px-6 lg:px-8 mt-8">
         <div className="mx-auto max-w-2xl sm:text-center">
           <h2 className="text-base font-semibold leading-7 text-indigo-600">Everything you need</h2>
           <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Development Services</p>
