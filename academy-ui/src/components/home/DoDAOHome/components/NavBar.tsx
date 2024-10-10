@@ -13,7 +13,7 @@ const sections = [
   { id: 'ai-chatbot', title: 'AI Chatbot' },
   { id: 'blockchain-courses', title: 'Blockchain Courses' },
   {
-    id: 'blockchain-development-tooling',
+    id: 'services',
     title: 'Development Services',
   },
 ];
