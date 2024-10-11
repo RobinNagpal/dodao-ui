@@ -34,7 +34,7 @@ async function putHandler(request: Request) {
   if (!session) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
-  const { name, email, phone_number, username, spaceId } = await request.json();
+  const { name, email, phoneNumber, username, spaceId } = await request.json();
 
   if (username !== session.username || spaceId !== session.spaceId) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -42,7 +42,7 @@ async function putHandler(request: Request) {
   try {
     const updatedUser = await prisma.user.update({
       where: { username_spaceId: { username: session.username, spaceId: session.spaceId } },
-      data: { name: name, email: email, phone_number: phone_number },
+      data: { name: name, email: email, phoneNumber: phoneNumber },
     });
 
     return NextResponse.json(updatedUser);
@@ -71,7 +71,7 @@ async function postHandler(request: Request) {
         spaceId: spaceId,
         username: userData.username,
         authProvider: userData.authProvider,
-        phone_number: userData.phone_number,
+        phoneNumber: userData.phoneNumber,
       },
     });
 

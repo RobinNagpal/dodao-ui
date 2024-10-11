@@ -4,7 +4,7 @@ import { withErrorHandlingV1 } from '@/app/api/helpers/middlewares/withErrorHand
 import { UserDto } from '@/types/user/UserDto';
 
 // Set of allowed fields for update
-const ALLOWED_UPDATE_FIELDS = new Set(['authProvider', 'email', 'username', 'name', 'phone_number', 'spaceId', 'image', 'publicAddress']);
+const ALLOWED_UPDATE_FIELDS = new Set(['authProvider', 'email', 'username', 'name', 'phoneNumber', 'spaceId', 'image', 'publicAddress']);
 
 async function putHandler(req: NextRequest, { params }: { params: { userId: string; spaceId: string } }): Promise<NextResponse<UserDto>> {
   const inputData = await req.json();

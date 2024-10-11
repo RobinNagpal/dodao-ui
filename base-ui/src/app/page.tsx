@@ -1,4 +1,3 @@
-import React from 'react';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
@@ -11,11 +10,7 @@ async function Home() {
   if (session) {
     redirect('/homepage');
   }
-  return (
-    <>
-      <GetStarted space={space!} />
-    </>
-  );
+  return <GetStarted space={space!} />;
 }
 
 export default Home;

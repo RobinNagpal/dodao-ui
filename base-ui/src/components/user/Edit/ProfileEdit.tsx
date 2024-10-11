@@ -2,19 +2,20 @@
 
 import React, { useState, useEffect } from 'react';
 import WebCoreProfileEdit from '@dodao/web-core/components/profile/WebCoreProfileEdit';
-import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { User } from '@dodao/web-core/types/auth/User';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { BaseSpace } from '@prisma/client';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { useFetchUtils } from '@dodao/web-core/utils/api/helper';
 
 interface ProfileEditProps {
   space: BaseSpace;
 }
 
 function ProfileEdit({ space }: ProfileEditProps) {
-  const { showNotification } = useNotificationContext();
+  const { fetchData, updateData } = useFetchUtils();
   const { data: session } = useSession() as { data: Session | null };
   const [upserting, setUpserting] = useState(false);
   const router = useRouter();
@@ -25,7 +26,7 @@ function ProfileEdit({ space }: ProfileEditProps) {
     email: '',
     image: '',
     emailVerified: new Date(),
-    phone_number: '',
+    phoneNumber: '',
     publicAddress: '',
     spaceId: '',
     username: '',
@@ -33,26 +34,18 @@ function ProfileEdit({ space }: ProfileEditProps) {
 
   useEffect(() => {
     const fetchUser = async () => {
-      try {
-        const response = await fetch(`/api/queries/users/by-username?username=${session?.username}`, {
+      const userData = await fetchData(
+        `${getBaseUrl()}/api/queries/users/by-username?username=${session?.username}`,
+        {
           method: 'GET',
           credentials: 'include',
           headers: {
             'Content-Type': 'application/json',
           },
-        });
-
-        if (response.ok) {
-          const userData = await response.json();
-          setUser(userData);
-        } else {
-          showNotification({ type: 'error', message: 'Error while fetching user' });
-        }
-      } catch (error) {
-        console.error(error);
-        showNotification({ type: 'error', message: 'Error while fetching user' });
-        throw error;
-      }
+        },
+        'Error while fetching user'
+      );
+      setUser(userData);
     };
 
     if (session) {
@@ -60,17 +53,18 @@ function ProfileEdit({ space }: ProfileEditProps) {
     } else {
       console.error('Session is not available');
     }
-  }, []);
+  }, [session]);
 
   async function upsertUser(updatedUser: User) {
     setUpserting(true);
     const userReq: User = {
       ...user,
       name: updatedUser.name,
-      phone_number: updatedUser.phone_number,
+      phoneNumber: updatedUser.phoneNumber,
     };
-    try {
-      let response = await fetch(`/api/users/${user.id}`, {
+    await updateData(
+      `${getBaseUrl()}/api/users/${user.id}`,
+      {
         method: 'PUT',
         credentials: 'include',
         headers: {
@@ -79,20 +73,11 @@ function ProfileEdit({ space }: ProfileEditProps) {
         body: JSON.stringify({
           ...userReq,
         }),
-      });
-
-      if (response.ok) {
-        showNotification({ type: 'success', message: 'User updated successfully' });
-        router.push('/homepage');
-      } else {
-        showNotification({ type: 'error', message: 'Error while updating user' });
-      }
-    } catch (error) {
-      console.error(error);
-      showNotification({ type: 'error', message: 'Error while updating user' });
-      setUpserting(false);
-      throw error;
-    }
+      },
+      'User updated successfully',
+      'Error while updating user',
+      '/homepage'
+    );
     setUpserting(false);
   }
 

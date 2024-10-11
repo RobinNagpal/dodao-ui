@@ -15,7 +15,6 @@ interface WebCoreProfileEditProps {
 
 function WebCoreProfileEdit({ user, saveUser, loading }: WebCoreProfileEditProps) {
   const [updatedUser, setUpdatedUser] = useState<User>(user);
-  console.log('user dawod : ', user);
   function setUserField(field: keyof User, value: any) {
     setUpdatedUser({ ...updatedUser, [field]: value });
   }
@@ -30,7 +29,7 @@ function WebCoreProfileEdit({ user, saveUser, loading }: WebCoreProfileEditProps
         <div className="">
           <Input label="Email / Username" modelValue={updatedUser.email} onUpdate={(value) => setUserField('email', value?.toString() || '')} disabled />
           <Input label="Name" modelValue={updatedUser.name} onUpdate={(value) => setUserField('name', value?.toString() || '')} />
-          <Input label="Phone Number" modelValue={updatedUser.phone_number} onUpdate={(value) => setUserField('phone_number', value?.toString() || '')} />
+          <Input label="Phone Number" modelValue={updatedUser.phoneNumber} onUpdate={(value) => setUserField('phoneNumber', value?.toString() || '')} />
         </div>
         <div className="mt-10">
           <Button

@@ -60,7 +60,7 @@ model User {
   spaceId          String            @map("space_id")
   username         String            @map("username")
   authProvider     String            @map("auth_provider")
-  phone_number     String?           @map("phone_number")
+  phoneNumber      String?           @map("phone_number")
   accounts         Account[]
   cryptoLoginNonce CryptoLoginNonce?
   sessions         Session[]
@@ -359,7 +359,7 @@ model ClickableDemos {
   @@map("clickable_demos")
 }
 
-model ClickableDemoHtmlCaptures{
+model ClickableDemoHtmlCaptures {
   id              String   @id @db.VarChar(255)
   clickableDemoId String   @map("clickable_demo_id") @db.VarChar(255)
   fileName        String   @map("file_name") @db.VarChar(1024)
@@ -369,6 +369,7 @@ model ClickableDemoHtmlCaptures{
 
   @@map("clickable_demo_html_cpatures")
 }
+
 model ByteCollectionItemMappings {
   id               String          @id @db.VarChar(64)
   byteCollectionId String          @map("byte_collection_id")
