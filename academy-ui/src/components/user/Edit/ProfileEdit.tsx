@@ -18,7 +18,6 @@ function ProfileEdit({ space }: ProfileEditProps) {
   const { fetchData, updateData } = useFetchUtils();
   const { data: session } = useSession() as { data: Session | null };
   const [upserting, setUpserting] = useState(false);
-  const router = useRouter();
   const [user, setUser] = useState<User>({
     id: '',
     name: '',
