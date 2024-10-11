@@ -276,6 +276,7 @@ export interface ByteSettings {
 
 export interface ByteSettingsInput {
   askForLoginToSubmit?: InputMaybe<Scalars['Boolean']>;
+  byteViewMode?: InputMaybe<ByteViewMode>;
   captureRating?: InputMaybe<Scalars['Boolean']>;
   showCategoriesInSidebar?: InputMaybe<Scalars['Boolean']>;
 }

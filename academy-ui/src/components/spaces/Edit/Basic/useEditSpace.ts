@@ -1,3 +1,4 @@
+import { SpaceTags } from '@/utils/api/fetchTags';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { UpsertSpaceInput, useExtendedSpaceQuery } from '@/graphql/generated/generated-types';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
@@ -42,19 +43,15 @@ export default function useEditSpace(spaceId?: string): UseEditSpaceHelper {
 
   const [upserting, setUpserting] = useState(false);
 
-  const { refetch: querySpace } = useExtendedSpaceQuery({
-    variables: {
-      spaceId: spaceId!,
-    },
-    skip: true,
-  });
-
   async function initialize() {
     if (spaceId) {
       const response = await fetch(`/api/spaces/${spaceId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
+        },
+        next: {
+          tags: [SpaceTags.GET_SPACE.toString()],
         },
       });
 

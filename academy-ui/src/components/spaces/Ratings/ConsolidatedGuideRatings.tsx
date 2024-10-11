@@ -52,12 +52,8 @@ export default function ConsolidatedGuideRatings(props: { space: SpaceWithIntegr
   const [consolidatedRatingsResponse, setConsolidatedRatingsResponse] = React.useState<any>();
   React.useEffect(() => {
     async function fetchConsolidatedRatings() {
-      let response = await axios.get(`${getBaseUrl()}/api/guide/consolidated-guide-ratings-for-space`, {
-        params: {
-          spaceId: props.space.id,
-        },
-      });
-      setConsolidatedRatingsResponse(response.data);
+      let response = await fetch(`${getBaseUrl()}/api/guide/consolidated-guide-ratings-for-space?spaceId=${props.space.id}`);
+      setConsolidatedRatingsResponse(await response.json());
     }
     fetchConsolidatedRatings();
   }, [props.space.id]);

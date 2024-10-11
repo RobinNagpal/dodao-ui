@@ -3,13 +3,13 @@
 import RatingModal, { FeedbackOptions } from '@/components/app/Modal/Rating/RatingModal';
 import { useByteRatings } from '@/components/bytes/Rating/useByteRating';
 import ShareBytePage from '@/components/bytes/Share/ShareBytePage';
-import FullScreenByteModal from '@/components/bytes/View/FullScreenByteModal';
 import NormalByteStepperItemView from '@/components/bytes/View/ByteStepperItem/ByteStepperItemView';
-import SwiperByteStepperItemView from '@/components/bytes/View/SwiperByteView/SwiperByteStepperItemView';
 import ContinuousStepIndicatorProgress from '@/components/bytes/View/ByteStepperItem/Progress/ContinuousStepIndicatorProgress';
+import FullScreenByteModal from '@/components/bytes/View/FullScreenByteModal';
 import RatingByteView from '@/components/bytes/View/RatingByteView';
+import SwiperByteStepperItemView from '@/components/bytes/View/SwiperByteView/SwiperByteStepperItemView';
 import { useViewByteInModal } from '@/components/bytes/View/useViewByteInModal';
-import { ByteDetailsFragment, ByteFeedback, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { ByteDetailsFragment, ByteFeedback, ByteViewMode, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { ByteDto } from '@/types/bytes/ByteDto';
 import TidbitDetailsLoader from '@dodao/web-core/components/core/loaders/TidbitDetailsLoader';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
@@ -106,7 +106,7 @@ export default function ViewByteModal({ space, selectedByteId, viewByteModalClos
   }
 
   const isLoading = !viewByteHelper.byteRef;
-  const showSwiper = false;
+  const showSwiper = space.byteSettings?.byteViewMode === ByteViewMode.FullScreenSwiper;
 
   if (showSwiper) {
     return (

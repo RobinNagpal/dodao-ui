@@ -249,6 +249,7 @@ input ByteSettingsInput {
   askForLoginToSubmit: Boolean
   captureRating: Boolean
   showCategoriesInSidebar: Boolean
+  byteViewMode: ByteViewMode
 }
 
 type ByteSocialShare {

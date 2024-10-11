@@ -1,12 +1,31 @@
-import Button from '@dodao/web-core/components/core/buttons/Button';
-import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
-import ToggleWithIcon from '@dodao/web-core/components/core/toggles/ToggleWithIcon';
 import { useEditSpaceByteSettings } from '@/components/spaces/Edit/Bytes/useEditSpaceByteSettings';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { ByteViewMode } from '@/types/bytes/ByteDto';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
+import StyledSelect, { StyledSelectItem } from '@dodao/web-core/components/core/select/StyledSelect';
+import ToggleWithIcon from '@dodao/web-core/components/core/toggles/ToggleWithIcon';
 import React from 'react';
 
-export default function UpsertSpaceByteSettingsModal(props: { space: SpaceWithIntegrationsFragment; open: boolean; onClose: () => void }) {
-  const { byteSettings, setByteSettingsField, updateByteSettings, updating } = useEditSpaceByteSettings(props.space);
+export default function UpsertSpaceByteSettingsModal(props: {
+  space: SpaceWithIntegrationsFragment;
+  open: boolean;
+  onClose: () => void;
+  onUpdateSettings: () => Promise<void>;
+}) {
+  const { byteSettings, setByteSettingsField, updateByteSettings, updating } = useEditSpaceByteSettings(props.space, props.onUpdateSettings);
+
+  const byteViewModeSelect: StyledSelectItem[] = [
+    {
+      label: 'Card Stepper',
+      id: ByteViewMode.CardStepper,
+    },
+    {
+      label: 'Full Screen Swiper',
+      id: ByteViewMode.FullScreenSwiper,
+    },
+  ];
+
   return (
     <FullPageModal open={props.open} onClose={props.onClose} title="Byte Settings">
       <div className="py-4 px-8">
@@ -28,6 +47,15 @@ export default function UpsertSpaceByteSettingsModal(props: { space: SpaceWithIn
               label={'Show categories in sidebar'}
               enabled={!!byteSettings.showCategoriesInSidebar}
               setEnabled={(value) => setByteSettingsField('showCategoriesInSidebar', value)}
+            />
+
+            <StyledSelect
+              label={'View Mode'}
+              items={byteViewModeSelect}
+              setSelectedItemId={(mode) => {
+                setByteSettingsField('byteViewMode', mode);
+              }}
+              selectedItemId={byteSettings.byteViewMode || ByteViewMode.CardStepper}
             />
           </div>
         </div>

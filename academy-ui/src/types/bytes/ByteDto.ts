@@ -7,9 +7,8 @@ export enum ImageDisplayMode {
 }
 
 export enum ByteViewMode {
-  Default = 'Default',
-  Swiper = 'Swiper',
-  SwiperWithProgress = 'SwiperWithProgress',
+  CardStepper = 'CardStepper',
+  FullScreenSwiper = 'FullScreenSwiper',
 }
 
 export interface ByteStepDto {
@@ -41,7 +40,6 @@ export interface ByteDto {
   content: string;
   created: string;
   id: string;
-  viewMode?: ByteViewMode;
   name: string;
   admins: Array<string>;
   tags: Array<string>;

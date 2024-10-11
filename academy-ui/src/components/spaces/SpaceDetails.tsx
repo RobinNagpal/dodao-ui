@@ -1,5 +1,6 @@
 'use client';
 
+import { SpaceTags } from '@/utils/api/fetchTags';
 import PageLoading from '@dodao/web-core/components/core/loaders/PageLoading';
 import TabsWithUnderline, { TabItem } from '@dodao/web-core/components/core/tabs/TabsWithUnderline';
 import ConsolidatedByteRatings from '@/components/spaces/Ratings/ConsolidatedByteRatings';
@@ -43,22 +44,31 @@ export default function SpaceDetails(props: SpaceDetailsProps) {
     },
   ];
   const [data, setData] = useState<SpaceDetails | null>(null);
-  useEffect(() => {
-    async function getSpaceById() {
-      const response = await fetch(`/api/spaces/${props.spaceId}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
 
-      if (response.ok) {
-        const res = await response.json();
-        setData(res);
-      }
+  async function getSpaceById() {
+    const response = await fetch(`/api/spaces/${props.spaceId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      next: {
+        tags: [SpaceTags.GET_SPACE.toString()],
+      },
+    });
+
+    if (response.ok) {
+      const res = await response.json();
+      setData(res);
     }
+  }
+
+  useEffect(() => {
     getSpaceById();
   }, [props.spaceId]);
+
+  const onUpdateSettings = async () => {
+    await getSpaceById();
+  };
 
   const [selectedTabId, setSelectedTabId] = useState(TabIds.Basic);
 
@@ -72,7 +82,7 @@ export default function SpaceDetails(props: SpaceDetailsProps) {
           <SpaceBasicDetails space={data.space} className="pt-6" />
           <SpaceAuthDetails space={data.space} />
           <SpaceApiKeyDetails space={data.space} />
-          <SpaceDomaiDetails space={data.space} />
+          {/*<SpaceDomaiDetails space={data.space} />*/}
           <SpaceSocialDetails space={data.space} />
           <SpaceTidbitsHomepageDetails space={data.space} />
           <SpaceThemeDetails space={data.space} />
@@ -84,7 +94,7 @@ export default function SpaceDetails(props: SpaceDetailsProps) {
         <div className="flex flex-col  gap-y-10 divide-gray-300">
           <SpaceCourseDetails space={data.space} className="pt-6" />
           <SpaceGuideDetails space={data.space} />
-          <SpaceByteDetails space={data.space} />
+          <SpaceByteDetails space={data.space} onUpdateSettings={onUpdateSettings} />
         </div>
       )}
     </div>
