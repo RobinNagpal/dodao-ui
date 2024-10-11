@@ -1,6 +1,5 @@
 import { Space } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
-import { revalidateTidbitCollections } from '@/utils/api/revalidateTags';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { useRouter } from 'next/navigation';
 
@@ -10,7 +9,6 @@ export function useDeleteClickableDemo(space: Space, demoId: string) {
   const { $t } = useI18();
   async function handleDeletion() {
     try {
-      await revalidateTidbitCollections();
       const response = await fetch(`/api/${space.id}/clickable-demos/${demoId}`, {
         method: 'DELETE',
         headers: {

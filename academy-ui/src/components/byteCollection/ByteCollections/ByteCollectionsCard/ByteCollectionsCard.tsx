@@ -23,8 +23,8 @@ import ByteItem from './ByteItem';
 import DemoItem from './DemoItem';
 import ShortItem from './ShortItem';
 import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
-import { revalidateTidbitCollections } from '@/utils/api/revalidateTags';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
+import { TidbitCollectionTags } from '@/utils/api/fetchTags';
 
 interface ByteCollectionCardProps {
   byteCollection: ByteCollectionSummary;
@@ -96,8 +96,17 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
   });
 
   async function fetchData(shortId: string) {
-    const response = await axios.get(`${getBaseUrl()}/api/short-videos/${shortId}?spaceId=${space.id}`);
-    setVideoResponse(response.data);
+    const response = await fetch(`${getBaseUrl()}/api/short-videos/${shortId}?spaceId=${space.id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      next: {
+        tags: [TidbitCollectionTags.GET_TIDBIT_COLLECTIONS.toString()],
+      },
+    });
+    const data = await response.json();
+    setVideoResponse(data);
   }
 
   function openByteEditModal(byteId: string) {
@@ -309,7 +318,6 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
               deleting: true,
             });
 
-            await revalidateTidbitCollections();
             const deleteRequest: DeleteByteItemRequest = {
               itemId: deleteItemModalState.itemId,
               itemType: deleteItemModalState.itemType,

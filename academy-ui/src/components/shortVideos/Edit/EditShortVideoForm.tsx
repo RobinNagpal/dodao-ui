@@ -10,7 +10,7 @@ import { v4 } from 'uuid';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
 import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
-import { revalidateTidbitCollections } from '@/utils/api/revalidateTags';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 
 export interface EditShortVideoModalProps {
   shortVideoToEdit?: ShortVideo;
@@ -64,8 +64,7 @@ export default function EditShortVideoModal({
   });
 
   async function handleDelete() {
-    await revalidateTidbitCollections();
-    const response = await fetch(`/api/short-videos/${shortVideo.id}`, {
+    const response = await fetch(`${getBaseUrl()}/api/short-videos/${shortVideo.id}`, {
       method: 'DELETE',
       body: JSON.stringify({ spaceId }),
     });
@@ -110,7 +109,6 @@ export default function EditShortVideoModal({
     setShortVideoUpserting(true);
 
     try {
-      await revalidateTidbitCollections();
       await saveShortVideoFn(shortVideo);
       showNotification({ message: 'Short video saved', type: 'success' });
       router.push(`/shorts/view/${shortVideo?.id}`);

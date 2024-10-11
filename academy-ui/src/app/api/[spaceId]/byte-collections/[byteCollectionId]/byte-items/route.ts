@@ -5,6 +5,8 @@ import { prisma } from '@/prisma';
 import { DeleteByteItemRequest } from '@/types/request/ByteRequests';
 import { DeleteByteItemResponse } from '@/types/response/ByteResponses';
 import { ErrorResponse } from '@/types/response/ErrorResponse';
+import { TidbitCollectionTags } from '@/utils/api/fetchTags';
+import { revalidateTag } from 'next/cache';
 import { NextRequest, NextResponse } from 'next/server';
 
 async function deleteHandler(
@@ -57,6 +59,7 @@ async function deleteHandler(
         archive: true,
       },
     });
+    revalidateTag(TidbitCollectionTags.GET_TIDBIT_COLLECTIONS.toString());
     return NextResponse.json({ updated: updatedVideo }, { status: 200 });
   }
 
