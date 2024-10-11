@@ -11,9 +11,8 @@ import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import 'swiper/css/virtual';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { NavigationOptions, type Swiper as SwiperClass } from 'swiper/types';
+import { NavigationOptions } from 'swiper/types';
 import styles from './SwiperlByteStepperItemView.module.scss';
-import ByteStepperItemWarnings from '../ByteStepperItemWarnings';
 
 interface ByteStepperItemWithProgressBarProps {
   byte: ByteDto;
@@ -42,9 +41,11 @@ const renderBullet = (index: number, className: string, byte: ByteDto, activeSte
   const isCompleted = index < activeStepOrder;
   console.log('isCompleted', isCompleted, index, activeStepOrder);
   return `
-<div class="flex custom-swiper-bullet ${isCompleted ? 'completed' : ''}">
-  <span class="mr-2 mt-3 swiper-pagination-custom-text">${byte.steps?.[index].name}</span>
-  <span class=" ${className} ${index === activeStepOrder ? 'swiper-pagination-bullet-active' : ''} cursor-default">${index + 1}</span>
+<div class="flex custom-swiper-bullet">
+  <span class="mr-2 mt-3 swiper-pagination-custom-text ${isCompleted ? 'completed' : ''}">${byte.steps?.[index].name}</span>
+  <span class=" ${className} ${index === activeStepOrder ? 'swiper-pagination-bullet-active' : ''} cursor-default ${isCompleted ? 'completed' : ''}">${
+    index + 1
+  }</span>
 </div>`;
 };
 
@@ -59,7 +60,7 @@ function SwiperByteStepperItemView({ viewByteHelper, step, byte, space, setByteS
 
   const isShortScreen = height <= 690;
   return (
-    <div className="w-full flex justify-center" style={style}>
+    <div className="w-full flex justify-center mr-20" style={style}>
       <div className={`${styles.swiperSlides}`}>
         <Swiper
           direction={'vertical'}

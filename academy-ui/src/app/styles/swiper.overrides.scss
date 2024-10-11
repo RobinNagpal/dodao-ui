@@ -33,14 +33,24 @@
   }
 
   .custom-swiper-bullet {
-    &.completed {
-      .swiper-pagination-custom-text {
-        text-decoration: line-through;
-        color: #c1c1c1;
+
+    .swiper-pagination-custom-text {
+      display: none;
+      @media (min-width: $screen-lg) {
+        display: block;
       }
 
-      .swiper-pagination-bullet {
-        background-color: #148317;
+      &.completed {
+        text-decoration: line-through;
+        color: white;
+      }
+    }
+
+    .swiper-pagination-bullet {
+      &.completed {
+        background-color: #0da213;
+        color: white;
+        opacity: 1;
       }
     }
   }

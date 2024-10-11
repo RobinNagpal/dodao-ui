@@ -46,6 +46,7 @@ export interface UseViewByteHelper {
   submitByte: () => Promise<boolean>;
   setUserInput: (stepUuid: string, userInputUuid: string, userInput: string) => void;
   setUserDiscord: (stepUuid: string, userDiscordUuid: string, userDiscordId: string) => void;
+  updateStepTouched: (stepUuid: string, touched: boolean) => void;
 }
 
 export function useViewByteInModal({ space, byteId, stepOrder, fetchByteFn }: UseViewByteInModalArgs): UseViewByteHelper {
@@ -314,6 +315,15 @@ export function useViewByteInModal({ space, byteId, stepOrder, fetchByteFn }: Us
     return !!getStepItemSubmission(step.uuid, hasDiscordConnect.uuid);
   }
 
+  function updateStepTouched(stepUuid: string, touched: boolean) {
+    setTouchedSteps((prevPristineSteps) => {
+      return {
+        ...prevPristineSteps,
+        [stepUuid]: touched,
+      };
+    });
+  }
+
   return {
     initialize,
     activeStepOrder,
@@ -337,6 +347,7 @@ export function useViewByteInModal({ space, byteId, stepOrder, fetchByteFn }: Us
     setUserInput,
     setUserDiscord,
     isDiscordConnected,
+    updateStepTouched,
   };
 }
 
