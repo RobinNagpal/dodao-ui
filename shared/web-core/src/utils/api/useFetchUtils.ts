@@ -1,5 +1,5 @@
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 export interface FetchDataOptions {
   successMessage: string;
