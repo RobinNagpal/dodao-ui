@@ -3,8 +3,8 @@
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import WebCoreSpaceSetup from '@dodao/web-core/components/space/WebCoreSpaceSetup';
 import { WebCoreSpace } from '@dodao/web-core/types/space';
-import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { useRouter } from 'next/navigation';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { useFetchUtils } from '@dodao/web-core/utils/api/helper';
 import React, { useState } from 'react';
 
 interface FinishSpaceSetupProps {
@@ -12,39 +12,30 @@ interface FinishSpaceSetupProps {
 }
 
 function FinishSetup({ space }: FinishSpaceSetupProps) {
-  const { showNotification } = useNotificationContext();
+  const { updateData } = useFetchUtils();
   const [upserting, setUpserting] = useState(false);
-  const router = useRouter();
 
   async function upsertSpace(updatedSpace: WebCoreSpace) {
     setUpserting(true);
-    try {
-      const spaceReq: SpaceWithIntegrationsFragment = {
-        ...space,
-        avatar: updatedSpace.avatar,
-        adminUsernamesV1: updatedSpace.adminUsernamesV1,
-        themeColors: updatedSpace.themeColors,
-      };
-      const response = await fetch(`/api/${space.id}/spaces`, {
+    const spaceReq: SpaceWithIntegrationsFragment = {
+      ...space,
+      avatar: updatedSpace.avatar,
+      adminUsernamesV1: updatedSpace.adminUsernamesV1,
+      themeColors: updatedSpace.themeColors,
+    };
+    await updateData(
+      `${getBaseUrl()}/api/${space.id}/spaces`,
+      {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ spaceInput: spaceReq }),
-      });
-
-      if (response?.ok) {
-        showNotification({ type: 'success', message: 'Space upserted successfully' });
-        router.push('/');
-      } else {
-        showNotification({ type: 'error', message: 'Error while upserting space' });
-      }
-    } catch (error) {
-      console.error(error);
-      showNotification({ type: 'error', message: 'Error while upserting space' });
-      setUpserting(false);
-      throw error;
-    }
+      },
+      'Space updated successfully',
+      'Error while updating space',
+      '/'
+    );
     setUpserting(false);
   }
 
