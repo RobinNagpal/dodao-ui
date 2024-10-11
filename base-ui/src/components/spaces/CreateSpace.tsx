@@ -19,7 +19,7 @@ function CreateSpace({ space }: CreateSpaceProps) {
   const onSubmit = async (req: CreateSpaceRequest) => {
     try {
       setUpserting(true);
-      const response = await fetch(`${getBaseUrl()}/api/${space.id}/actions/spaces/new-tidbit-space`, {
+      const response = await fetch(`${getBaseUrl()}/api/actions/spaces/new-tidbit-space`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

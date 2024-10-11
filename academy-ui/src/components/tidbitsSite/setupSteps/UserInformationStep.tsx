@@ -59,7 +59,7 @@ export default function LoginInfo({ goToNextStep }: LoginInformationProps) {
         body: JSON.stringify({
           name: name,
           email: email,
-          phone_number: phone,
+          phoneNumber: phone,
           username: username,
           spaceId: spaceId,
         }),
@@ -94,7 +94,7 @@ export default function LoginInfo({ goToNextStep }: LoginInformationProps) {
         if (userData) {
           setName(userData.name || '');
           setEmail(userData.email || '');
-          setPhone(userData.phone_number || '');
+          setPhone(userData.phoneNumber || '');
         }
       } catch (error) {
         showNotification({ type: 'error', message: 'Error fetching user data' });

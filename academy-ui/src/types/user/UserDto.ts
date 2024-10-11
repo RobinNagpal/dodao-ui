@@ -8,5 +8,5 @@ export interface UserDto {
   spaceId: string;
   username: string;
   authProvider: string;
-  phone_number?: string;
+  phoneNumber?: string;
 }

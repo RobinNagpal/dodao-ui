@@ -1,25 +1,23 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
 import WebCoreProfileEdit from '@dodao/web-core/components/profile/WebCoreProfileEdit';
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
-import { User } from '@dodao/web-core/types/auth/User';
-import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
 import { Session } from '@dodao/web-core/types/auth/Session';
+import { User } from '@dodao/web-core/types/auth/User';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useFetchUtils } from '@dodao/web-core/utils/api/useFetchUtils';
+import { BaseSpace } from '@prisma/client';
+import { useSession } from 'next-auth/react';
+import React, { useEffect, useState } from 'react';
 
 interface ProfileEditProps {
-  space: SpaceWithIntegrationsFragment;
+  space: BaseSpace;
 }
 
 function ProfileEdit({ space }: ProfileEditProps) {
   const { fetchData, updateData } = useFetchUtils();
   const { data: session } = useSession() as { data: Session | null };
   const [upserting, setUpserting] = useState(false);
-  const router = useRouter();
-  const defaultUserFields = {
+  const initialState = {
     id: '',
     name: '',
     authProvider: '',
@@ -31,15 +29,12 @@ function ProfileEdit({ space }: ProfileEditProps) {
     spaceId: '',
     username: '',
   };
-  const [user, setUser] = useState<User>(defaultUserFields);
+  const [user, setUser] = useState<User>(initialState);
 
   useEffect(() => {
     const fetchUser = async () => {
-      const userData = await fetchData<User>(
-        `${getBaseUrl()}/api/${space.id}/queries/users/by-username?username=${session?.username}`,
-        'Error while fetching user'
-      );
-      setUser(userData || defaultUserFields);
+      const userData = await fetchData<User>(`${getBaseUrl()}/api/queries/users/by-username?username=${session?.username}`, 'Error while fetching user');
+      setUser(userData || initialState);
     };
 
     if (session) {
@@ -56,10 +51,10 @@ function ProfileEdit({ space }: ProfileEditProps) {
       name: updatedUser.name,
       phoneNumber: updatedUser.phoneNumber,
     };
-    await updateData<User, User>(`${getBaseUrl()}/api/${space.id}/users/${user.id}`, userReq, {
+    await updateData<User, User>(`${getBaseUrl()}/api/users/${user.id}`, userReq, {
       successMessage: 'User updated successfully',
       errorMessage: 'Error while updating user',
-      redirectPath: '/',
+      redirectPath: '/homepage',
     });
     setUpserting(false);
   }

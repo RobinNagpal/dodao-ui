@@ -21,11 +21,10 @@ export default function useEditUser(userName: string, update: () => void): UseEd
     email: '',
     image: '',
     emailVerified: new Date(),
-    phone_number: '',
+    phoneNumber: '',
     publicAddress: '',
     spaceId: '',
     username: '',
-    password: '',
   });
 
   const [upserting, setUpserting] = useState(false);

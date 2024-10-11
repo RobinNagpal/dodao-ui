@@ -16,7 +16,6 @@ export interface EmailSetupNewSpaceModalProps {
 
 function EmailSetupNewSpaceModal({ open, onClose, space }: EmailSetupNewSpaceModalProps) {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [emailSent, setEmailSent] = useState(false);
   const [upserting, setUpserting] = useState(false);
   const { showNotification } = useNotificationContext();
@@ -30,15 +29,13 @@ function EmailSetupNewSpaceModal({ open, onClose, space }: EmailSetupNewSpaceMod
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password, spaceId: space.id, provider: 'email', context: 'setupNewSpace' }),
+        body: JSON.stringify({ email, spaceId: space.id, provider: 'email', context: 'setupNewSpace' }),
       });
       setUpserting(false);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-      // Process response here
-      console.log('Registration Successful', response);
-      showNotification({ type: 'success', message: 'User registered successfully' });
+      console.log('Email sent successfully', response);
       setEmailSent(true);
     } catch (error: any) {
       console.error('Registration Failed:', error);
@@ -51,7 +48,6 @@ function EmailSetupNewSpaceModal({ open, onClose, space }: EmailSetupNewSpaceMod
     // Delay the state reset slightly to allow the modal to fully close
     setTimeout(() => {
       setEmail('');
-      setPassword('');
       setEmailSent(false);
     }, 300);
   };
@@ -63,21 +59,13 @@ function EmailSetupNewSpaceModal({ open, onClose, space }: EmailSetupNewSpaceMod
           {!emailSent ? (
             <form onSubmit={handleEmailSubmit}>
               <Input label={'Email Address'} id="email" modelValue={email} onUpdate={(e) => (e ? setEmail(e.toString()) : setEmail(''))} required />
-              <Input
-                label={'Password'}
-                id="password"
-                modelValue={password}
-                onUpdate={(e) => (e ? setPassword(e.toString()) : setPassword(''))}
-                password
-                required
-              />
               <Button variant="contained" primary loading={upserting} type="submit">
                 Setup New Space
               </Button>
             </form>
           ) : (
-            <div>
-              <p>A verification link has been sent to {email}. Click on the link in the email to log in.</p>
+            <div className="text-center">
+              <p>A verification link has been sent to your email. Click on the link provided in the email to log in.</p>
             </div>
           )}
         </div>
