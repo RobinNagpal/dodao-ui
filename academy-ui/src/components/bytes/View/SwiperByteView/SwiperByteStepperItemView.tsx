@@ -1,28 +1,16 @@
-import ByteStepperItemWarnings from '@/components/bytes/View/ByteStepperItemWarnings';
 import ByteStepperItemContent from '@/components/bytes/View/ByteStepperItemContent';
 import { UseViewByteHelper } from '@/components/bytes/View/useViewByteInModal';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import useWindowDimensions from '@/hooks/useWindowDimensions';
 import { ByteDto, ByteStepDto, ImageDisplayMode } from '@/types/bytes/ByteDto';
-import { isUserDiscordConnect } from '@dodao/web-core/types/deprecated/helpers/stepItemTypes';
-import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
-import 'prismjs';
-import 'prismjs/components/prism-css';
-import 'prismjs/components/prism-javascript';
-import 'prismjs/components/prism-json';
-import 'prismjs/components/prism-markup-templating';
-import 'prismjs/components/prism-rust';
-import 'prismjs/components/prism-solidity';
-import 'prismjs/components/prism-toml';
-import 'prismjs/components/prism-yaml';
-import { CSSProperties, useEffect, useRef, useState } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
+import { CSSProperties, useRef } from 'react';
 
-import { Navigation, Pagination, Mousewheel, Keyboard } from 'swiper/modules';
+import { Keyboard, Mousewheel, Navigation, Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import 'swiper/css/virtual';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import { NavigationOptions, type Swiper as SwiperClass } from 'swiper/types';
 import styles from './SwiperlByteStepperItemView.module.scss';
 
@@ -61,24 +49,6 @@ const renderBullet = (index: number, className: string, byte: ByteDto, activeSte
 
 function SwiperByteStepperItemView({ viewByteHelper, step, byte, space, setByteSubmitted }: ByteStepperItemWithProgressBarProps) {
   const { activeStepOrder } = viewByteHelper;
-  const renderer = getMarkedRenderer();
-
-  const [showCorrectAnswerForQuestion, setShowCorrectAnswerForQuestion] = useState(false);
-  const [showQuestionsCompletionWarning, setShowQuestionsCompletionWarning] = useState(false);
-
-  function isQuestionAnswered() {
-    return viewByteHelper.isQuestionAnswered(step.uuid);
-  }
-
-  function isUserInputComplete() {
-    return viewByteHelper.isUserInputComplete(step.uuid);
-  }
-
-  function isDiscordConnected(): boolean {
-    const hasDiscordConnect = step.stepItems.find(isUserDiscordConnect);
-    if (!hasDiscordConnect) return true;
-    return !!viewByteHelper.getStepItemSubmission(step.uuid, hasDiscordConnect.uuid);
-  }
 
   // See - https://stackoverflow.com/a/69238830/440432
   const navigationPrevRef = useRef(null);
@@ -124,8 +94,15 @@ function SwiperByteStepperItemView({ viewByteHelper, step, byte, space, setByteS
             enabled: true,
             renderBullet: (index, className) => renderBullet(index, className, byte, activeStepOrder),
           }}
-          allowSlideNext={true}
-          onNavigationNext={(swiper: SwiperClass) => {}}
+          allowTouchMove={true}
+          simulateTouch={true}
+          autoFocus={true}
+          onBeforeTransitionStart={(swiper) => {
+            if (!viewByteHelper.canNavigateToNext(step)) {
+              console.log('Cannot navigate to next');
+              swiper.slideTo(activeStepOrder, 300, false);
+            }
+          }}
           className={styles.swiperSlides}
           id="byte-view-swiper"
         >

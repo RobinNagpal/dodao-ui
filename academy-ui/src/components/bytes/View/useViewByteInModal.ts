@@ -132,26 +132,36 @@ export function useViewByteInModal({ space, byteId, stepOrder, fetchByteFn }: Us
     if (!byteRef) return false;
 
     if (isQuestionAnswered(step.uuid) && isDiscordConnected(step.uuid) && isUserInputComplete(step.uuid)) {
-      const answeredCorrectly = step.stepItems.filter(isQuestion).every((stepItem: ByteStepItem) => {
-        const question = stepItem as Question;
-        return isEqual(question.answerKeys.sort(), ((getStepItemSubmission(step.uuid, stepItem.uuid) as string[]) || []).sort());
+    }
+
+    const answeredCorrectly = step.stepItems.filter(isQuestion).every((stepItem: ByteStepItem) => {
+      const question = stepItem as Question;
+      return isEqual(question.answerKeys.sort(), ((getStepItemSubmission(step.uuid, stepItem.uuid) as string[]) || []).sort());
+    });
+
+    if (!isQuestionAnswered(step.uuid) || !answeredCorrectly) {
+      showNotification({
+        type: 'info',
+        message: 'Your answer is wrong! Give correct answer to proceed.',
+        heading: 'Hint',
       });
+      return false;
+    }
 
-      if (!answeredCorrectly) {
-        showNotification({
-          type: 'info',
-          message: 'Your answer is wrong! Give correct answer to proceed.',
-          heading: 'Hint',
-        });
+    if (!isUserInputComplete(step.uuid)) {
+      showNotification({
+        type: 'info',
+        message: 'Please provide the required information to proceed.',
+        heading: 'Hint',
+      });
+      return false;
+    }
+
+    const isLastStep = byteRef.steps.length - 2 === activeStepOrder;
+
+    if (isLastStep) {
+      if (!isValidToSubmit()) {
         return false;
-      }
-
-      const isLastStep = byteRef.steps.length - 2 === activeStepOrder;
-
-      if (isLastStep) {
-        if (!isValidToSubmit()) {
-          return false;
-        }
       }
     }
 

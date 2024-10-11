@@ -8,7 +8,6 @@ import { ByteDto, ByteStepDto, ImageDisplayMode } from '@/types/bytes/ByteDto';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { useLoginModalContext } from '@dodao/web-core/ui/contexts/LoginModalContext';
-import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
 import { useSession } from 'next-auth/react';
 import 'prismjs';
 import 'prismjs/components/prism-css';
