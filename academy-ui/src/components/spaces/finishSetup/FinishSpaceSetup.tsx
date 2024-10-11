@@ -4,7 +4,8 @@ import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-typ
 import WebCoreSpaceSetup from '@dodao/web-core/components/space/WebCoreSpaceSetup';
 import { WebCoreSpace } from '@dodao/web-core/types/space';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { useFetchUtils } from '@dodao/web-core/utils/api/helper';
+import { useFetchUtils } from '@dodao/web-core/utils/api/useFetchUtils';
+import { User } from '@prisma/client';
 import React, { useState } from 'react';
 
 interface FinishSpaceSetupProps {
@@ -23,18 +24,12 @@ function FinishSetup({ space }: FinishSpaceSetupProps) {
       adminUsernamesV1: updatedSpace.adminUsernamesV1,
       themeColors: updatedSpace.themeColors,
     };
-    await updateData(
+    await updateData<User, { spaceInput: SpaceWithIntegrationsFragment }>(
       `${getBaseUrl()}/api/${space.id}/spaces`,
       {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ spaceInput: spaceReq }),
+        spaceInput: spaceReq,
       },
-      'Space updated successfully',
-      'Error while updating space',
-      '/'
+      { successMessage: 'Space updated successfully', errorMessage: 'Error while updating space', redirectPath: '/' }
     );
     setUpserting(false);
   }

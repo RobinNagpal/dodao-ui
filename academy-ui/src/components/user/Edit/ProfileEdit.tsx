@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { useFetchUtils } from '@dodao/web-core/utils/api/helper';
+import { useFetchUtils } from '@dodao/web-core/utils/api/useFetchUtils';
 
 interface ProfileEditProps {
   space: SpaceWithIntegrationsFragment;
@@ -19,7 +19,7 @@ function ProfileEdit({ space }: ProfileEditProps) {
   const { data: session } = useSession() as { data: Session | null };
   const [upserting, setUpserting] = useState(false);
   const router = useRouter();
-  const [user, setUser] = useState<User>({
+  const defaultUserFields = {
     id: '',
     name: '',
     authProvider: '',
@@ -30,22 +30,16 @@ function ProfileEdit({ space }: ProfileEditProps) {
     publicAddress: '',
     spaceId: '',
     username: '',
-  });
+  };
+  const [user, setUser] = useState<User>(defaultUserFields);
 
   useEffect(() => {
     const fetchUser = async () => {
-      const userData = await fetchData(
+      const userData = await fetchData<User>(
         `${getBaseUrl()}/api/${space.id}/queries/users/by-username?username=${session?.username}`,
-        {
-          method: 'GET',
-          credentials: 'include',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
         'Error while fetching user'
       );
-      setUser(userData);
+      setUser(userData || defaultUserFields);
     };
 
     if (session) {
@@ -62,22 +56,11 @@ function ProfileEdit({ space }: ProfileEditProps) {
       name: updatedUser.name,
       phoneNumber: updatedUser.phoneNumber,
     };
-    await updateData(
-      `${getBaseUrl()}/api/${space.id}/users/${user.id}`,
-      {
-        method: 'PUT',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...userReq,
-        }),
-      },
-      'User updated successfully',
-      'Error while updating user',
-      '/'
-    );
+    await updateData<User, User>(`${getBaseUrl()}/api/${space.id}/users/${user.id}`, userReq, {
+      successMessage: 'User updated successfully',
+      errorMessage: 'Error while updating user',
+      redirectPath: '/',
+    });
     setUpserting(false);
   }
 
