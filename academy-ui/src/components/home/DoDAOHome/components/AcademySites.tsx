@@ -43,8 +43,8 @@ export function AcademySites() {
     },
   ];
   return (
-    <section id="academy-sites" aria-labelledby="academy-sites-title" className="scroll-mt-14 py-16 sm:scroll-mt-32 sm:py-20 lg:py-16">
-      <Container size="lg">
+    <section id="academy-sites" aria-labelledby="academy-sites-title" className="scroll-mt-14 sm:scroll-mt-32 pb-20">
+      <Container size="lg" className="bg-gray-50 pt-8">
         <div className="mx-auto lg:mx-0">
           <SectionHeading number="2" id="academy-sites-title">
             Academy Sites
