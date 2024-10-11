@@ -20,12 +20,8 @@ export function BlockchainCourses() {
   };
 
   return (
-    <section
-      id="blockchain-courses"
-      aria-labelledby="blockchain-courses-title"
-      className="scroll-mt-14 pb-8 pt-4 sm:scroll-mt-32 sm:pb-10 sm:pt-20 lg:pb-16 lg:pt-16"
-    >
-      <Container size="lg">
+    <section id="blockchain-courses" aria-labelledby="blockchain-courses-title" className="scroll-mt-14 sm:scroll-mt-32 pb-20">
+      <Container size="lg" className="bg-gray-50 pt-8">
         <SectionHeading number="4" id="blockchain-courses-title">
           Blockchain Courses
         </SectionHeading>

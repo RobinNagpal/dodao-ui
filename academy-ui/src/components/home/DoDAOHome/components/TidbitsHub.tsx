@@ -24,8 +24,8 @@ const features = [
 
 export default function TidbitsHub() {
   return (
-    <section id="tidibits-hub" aria-labelledby="tidibits-hub-title" className="scroll-mt-14 sm:scroll-mt-32 sm:py-20 text-left">
-      <Container size="lg" className="mt-6">
+    <section id="tidibits-hub" aria-labelledby="tidibits-hub-title" className="scroll-mt-14 sm:scroll-mt-32 py-20 text-left">
+      <Container size="lg" className="bg-gray-50 pt-8">
         <SectionHeading number="1" id="tidibits-hub-title">
           TidbitsHub
         </SectionHeading>
