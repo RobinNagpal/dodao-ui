@@ -1,5 +1,6 @@
 import { CodeBracketIcon, WrenchScrewdriverIcon, PresentationChartLineIcon, ShieldCheckIcon, CpuChipIcon } from '@heroicons/react/24/outline';
 import { SectionHeading } from './SectionHeading';
+import { Container } from './Container';
 
 const features = [
   {
@@ -41,32 +42,34 @@ const features = [
 
 export default function Services() {
   return (
-    <div className="bg-white py-24 sm:py-32" id="services">
-      <SectionHeading number="5" id="services-title">
-        Development Services
-      </SectionHeading>
-      <div className="mx-auto max-w-7xl px-6 lg:px-8 mt-8">
-        <div className="mx-auto max-w-2xl sm:text-center">
-          <h2 className="text-base font-semibold leading-7 text-indigo-600">Everything you need</h2>
-          <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Development Services</p>
-          <p className="mt-6 text-lg leading-8 text-gray-600">
-            At DoDAO, we offer a suite of specialized development services designed to help you innovate and stay ahead in the blockchain landscape.
-          </p>
+    <section className="bg-white py-20 sm:py-28" id="services">
+      <Container size="lg">
+        <SectionHeading number="5" id="services-title">
+          Development Services
+        </SectionHeading>
+        <div className="mx-auto max-w-7xl px-6 lg:px-8 mt-8">
+          <div className="mx-auto max-w-2xl sm:text-center">
+            <h2 className="text-base font-semibold leading-7 text-indigo-600">Everything you need</h2>
+            <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Development Services</p>
+            <p className="mt-6 text-lg leading-8 text-gray-600">
+              At DoDAO, we offer a suite of specialized development services designed to help you innovate and stay ahead in the blockchain landscape.
+            </p>
+          </div>
         </div>
-      </div>
-      <div className="mx-auto mt-16 max-w-7xl px-6 sm:mt-20 md:mt-24 lg:px-8">
-        <dl className="mx-auto grid max-w-2xl grid-cols-1 gap-x-6 gap-y-10 text-base leading-7 text-gray-600 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3 lg:gap-x-8 lg:gap-y-16">
-          {features.map((feature) => (
-            <div key={feature.name} className="relative pl-9">
-              <dt className="inline font-semibold text-gray-900">
-                <feature.icon aria-hidden="true" className="absolute left-1 top-1 h-5 w-5 text-indigo-600" />
-                {feature.name}
-              </dt>{' '}
-              <dd className="inline">{feature.description}</dd>
-            </div>
-          ))}
-        </dl>
-      </div>
-    </div>
+        <div className="mx-auto mt-16 max-w-7xl px-6 sm:mt-20 md:mt-24 lg:px-8">
+          <dl className="mx-auto grid max-w-2xl grid-cols-1 gap-x-6 gap-y-10 text-base leading-7 text-gray-600 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3 lg:gap-x-8 lg:gap-y-16">
+            {features.map((feature) => (
+              <div key={feature.name} className="relative pl-9">
+                <dt className="inline font-semibold text-gray-900">
+                  <feature.icon aria-hidden="true" className="absolute left-1 top-1 h-5 w-5 text-indigo-600" />
+                  {feature.name}
+                </dt>{' '}
+                <dd className="inline">{feature.description}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </Container>
+    </section>
   );
 }

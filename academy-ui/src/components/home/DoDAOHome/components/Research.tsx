@@ -1,3 +1,4 @@
+import { Container } from './Container';
 import { SectionHeading } from './SectionHeading';
 import { MagnifyingGlassIcon, MapIcon, UsersIcon, PresentationChartLineIcon } from '@heroicons/react/24/outline';
 
@@ -45,74 +46,79 @@ const decentralized = [
 
 export default function Research() {
   return (
-    <div className="bg-white" id="research">
-      <SectionHeading number="3" id="research-title">
-        Research
-      </SectionHeading>
-      <div className="mx-auto max-w-7xl py-16 sm:px-2 sm:py-20 lg:px-4">
-        <div className="mx-auto max-w-2xl px-4 lg:max-w-none">
-          <div className="max-w-3xl">
-            <h2 className="text-4xl font-bold tracking-tight text-gray-900">Real-World Assets on Blockchain</h2>
-            <p className="mt-4 text-gray-500">
-              At DoDAO, we specialize in simplifying the complex world of Real World Assets (RWAs) for builders and investors. Our expertise spans research,
-              consulting, and business development, helping companies navigate regulatory hurdles, find strategic partners, and optimize their asset portfolios.
-            </p>
-          </div>
-          <div className="bg-gray-50 mt-12">
-            <h2 className="sr-only">Our RWA Services</h2>
-            <div className="mx-auto max-w-7xl py-12 sm:px-2 sm:py-20 lg:px-4">
-              <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-12 px-4 lg:max-w-none lg:grid-cols-2 lg:gap-y-16">
-                {rwa.map((perk) => (
-                  <div key={perk.name} className="sm:flex">
-                    <div className="sm:flex-shrink-0">
-                      <div className="flow-root">
-                        <perk.icon aria-hidden="true" className="h-16 w-20 text-indigo-600" />
+    <section id="research" aria-labelledby="research-title" className="bg-gray-50 pt-4">
+      <Container size="lg">
+        <div className="mx-auto lg:mx-0">
+          <SectionHeading number="3" id="research-title">
+            Research
+          </SectionHeading>
+        </div>
+        <div className="mx-auto max-w-7xl py-4 sm:py-8">
+          <div className="mx-auto max-w-2xl lg:max-w-none">
+            <div className="max-w-3xl">
+              <h2 className="text-4xl font-bold tracking-tight text-gray-900">Real-World Assets on Blockchain</h2>
+              <p className=" text-gray-500">
+                At DoDAO, we specialize in simplifying the complex world of Real World Assets (RWAs) for builders and investors. Our expertise spans research,
+                consulting, and business development, helping companies navigate regulatory hurdles, find strategic partners, and optimize their asset
+                portfolios.
+              </p>
+            </div>
+            <div className="mt-4">
+              <h2 className="sr-only">Our RWA Services</h2>
+              <div className="mx-auto max-w-7xl py-4 sm:px-2 sm:py-12 lg:px-4">
+                <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-12 px-4 lg:max-w-none lg:grid-cols-2 lg:gap-y-16">
+                  {rwa.map((perk) => (
+                    <div key={perk.name} className="sm:flex">
+                      <div className="sm:flex-shrink-0">
+                        <div className="flow-root">
+                          <perk.icon aria-hidden="true" className="h-16 w-20 text-indigo-600" />
+                        </div>
+                      </div>
+                      <div className="mt-3 sm:ml-3 sm:mt-0">
+                        <h3 className="text-sm font-medium text-gray-900">{perk.name}</h3>
+                        <p className="mt-2 text-sm text-gray-500">{perk.description}</p>
                       </div>
                     </div>
-                    <div className="mt-3 sm:ml-3 sm:mt-0">
-                      <h3 className="text-sm font-medium text-gray-900">{perk.name}</h3>
-                      <p className="mt-2 text-sm text-gray-500">{perk.description}</p>
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div className="mx-auto max-w-7xl py-4 sm:px-2 sm:py-4 lg:px-4">
-        <div className="mx-auto max-w-2xl px-4 lg:max-w-none">
-          <div className="max-w-3xl">
-            <h2 className="text-4xl font-bold tracking-tight text-gray-900">Decentralized - Solution & Reviews</h2>
-            <p className="mt-4 text-gray-500">
-              DoDAO is exploring ways to improve human coordination in both public and private sectors through decentralized systems. We aim to create
-              transparent and accountable platforms where everyone can contribute ideas and provide honest feedback, ensuring that resources are used
-              effectively and the system benefits all.
-            </p>
-          </div>
-          <div className="bg-gray-50 mt-12">
-            <h2 className="sr-only">Our Decentralized - Solution & Reviews</h2>
-            <div className="mx-auto max-w-7xl py-12 sm:px-2 sm:py-20 lg:px-4">
-              <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-12 px-4 lg:max-w-none lg:grid-cols-2 lg:gap-y-16">
-                {decentralized.map((perk) => (
-                  <div key={perk.name} className="sm:flex">
-                    <div className="sm:flex-shrink-0">
-                      <div className="flow-root">
-                        <img alt="" src={perk.imageSrc} className="h-20 w-24" />
+        <div className="mx-auto max-w-7xl py-4 sm:py-4">
+          <div className="mx-auto max-w-2xl lg:max-w-none">
+            <div className="max-w-3xl">
+              <h2 className="text-4xl font-bold tracking-tight text-gray-900">Decentralized - Solution & Reviews</h2>
+              <p className=" text-gray-500">
+                DoDAO is exploring ways to improve human coordination in both public and private sectors through decentralized systems. We aim to create
+                transparent and accountable platforms where everyone can contribute ideas and provide honest feedback, ensuring that resources are used
+                effectively and the system benefits all.
+              </p>
+            </div>
+            <div className="mt-4">
+              <h2 className="sr-only">Our Decentralized - Solution & Reviews</h2>
+              <div className="mx-auto max-w-7xl py-4 sm:px-2 sm:py-12 lg:px-4">
+                <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-12 px-4 lg:max-w-none lg:grid-cols-2 lg:gap-y-16">
+                  {decentralized.map((perk) => (
+                    <div key={perk.name} className="sm:flex">
+                      <div className="sm:flex-shrink-0">
+                        <div className="flow-root">
+                          <img alt="" src={perk.imageSrc} className="h-16 w-20" />
+                        </div>
+                      </div>
+                      <div className="mt-3 sm:ml-3 sm:mt-0">
+                        <h3 className="text-sm font-medium text-gray-900">{perk.name}</h3>
+                        <p className="mt-2 text-sm text-gray-500">{perk.description}</p>
                       </div>
                     </div>
-                    <div className="mt-3 sm:ml-3 sm:mt-0">
-                      <h3 className="text-sm font-medium text-gray-900">{perk.name}</h3>
-                      <p className="mt-2 text-sm text-gray-500">{perk.description}</p>
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </Container>
+    </section>
   );
 }
