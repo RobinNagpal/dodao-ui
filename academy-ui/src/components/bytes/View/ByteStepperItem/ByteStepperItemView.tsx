@@ -102,7 +102,6 @@ function ByteStepperItemView({ viewByteHelper, step, byte, space, setByteSubmitt
           isShortScreen={isShortScreen}
           isSwiper={false}
         />
-        <ByteStepperItemWarnings step={step} viewByteHelper={viewByteHelper} />
       </div>
       {!isShortScreen && step.displayMode !== ImageDisplayMode.FullScreenImage && (
         <StepIndicatorProgress

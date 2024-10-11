@@ -21,7 +21,7 @@ function ByteStepperItemWarnings({ step, viewByteHelper }: ByteStepperItemWarnin
 
   return (
     <div className="mb-4">
-      {!viewByteHelper.isPristine(step.uuid) && (
+      {viewByteHelper.isStepTouched(step.uuid) && (
         <>
           {!viewByteHelper.isQuestionAnswered(step.uuid) && (
             <div ref={myDivRef}>

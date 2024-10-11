@@ -1,6 +1,7 @@
 import UserDiscord from '@/components/app/Form/UserDiscord';
 import styles from '@/components/bytes/View/ByteStepperItem/ByteStepperItemContent.module.scss';
 import { ByteQuestionItemSection } from '@/components/bytes/View/ByteQuestionItemSection';
+import ByteStepperItemWarnings from '@/components/bytes/View/ByteStepperItemWarnings';
 import { UseViewByteHelper } from '@/components/bytes/View/useViewByteInModal';
 import {
   ByteQuestionFragmentFragment,
@@ -177,7 +178,7 @@ export default function ByteStepperItemContent(props: ByteStepperItemContentProp
   };
 
   return (
-    <div>
+    <div className="w-full">
       {!stepItems.some(isQuestion) && !isShortScreen && step.imageUrl && (
         <div className="flex justify-center align-center ">
           <img src={step.imageUrl} alt="byte" className={`max-h-[35vh] rounded ${styles.imgContainer}`} />
@@ -234,6 +235,7 @@ export default function ByteStepperItemContent(props: ByteStepperItemContentProp
           return null;
         })}
         {postSubmissionContent && <div className="mt-4 text-sm text-gray-500" dangerouslySetInnerHTML={{ __html: postSubmissionContent }} />}
+        <ByteStepperItemWarnings step={step} viewByteHelper={viewByteHelper} />
       </div>
     </div>
   );

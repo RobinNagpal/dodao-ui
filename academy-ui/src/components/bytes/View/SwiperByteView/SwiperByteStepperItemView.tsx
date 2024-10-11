@@ -13,6 +13,7 @@ import 'swiper/css/virtual';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { NavigationOptions, type Swiper as SwiperClass } from 'swiper/types';
 import styles from './SwiperlByteStepperItemView.module.scss';
+import ByteStepperItemWarnings from '../ByteStepperItemWarnings';
 
 interface ByteStepperItemWithProgressBarProps {
   byte: ByteDto;
@@ -136,10 +137,14 @@ function SwiperByteStepperItemView({ viewByteHelper, step, byte, space, setByteS
             ref={navigationNextRef}
             className={`swiper-button-next ${styles.customNextButton}`}
             style={{
-              display: activeStepOrder > 0 ? 'none' : 'block', // We are hiding the next button we just want to show it on the first slide
+              display: activeStepOrder > 0 && !viewByteHelper.isStepTouched(step.uuid) ? 'none' : 'block', // We are hiding the next button we just want to show it on the first slide
             }}
           >
-            <div className={`w-24 ${styles.nextButtonText}`}>Scroll Down</div>
+            {viewByteHelper.isStepTouched(step.uuid) ? (
+              <div className={`w-36 ${styles.clickHereForNextButtonText}`}>Click Here for Next</div>
+            ) : (
+              <div className={`w-24 ${styles.scrollDownNextButtonText}`}>Scroll Down</div>
+            )}
           </div>
         </Swiper>
       </div>

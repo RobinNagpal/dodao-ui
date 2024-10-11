@@ -27,7 +27,7 @@ export interface UseViewByteHelper {
   initialize: () => Promise<void>;
   activeStepOrder: number;
   canNavigateToNext: (step: ByteStepDto) => boolean;
-  isPristine: (stepUuid: string) => boolean;
+  isStepTouched: (stepUuid: string) => boolean;
   errors: ByteSubmissionError;
   getStepSubmission: (stepUuid: string) => StepResponse | undefined;
   getStepItemSubmission: (stepUuid: string, stepItemUuid: string) => StepItemResponse | undefined;
@@ -59,7 +59,7 @@ export function useViewByteInModal({ space, byteId, stepOrder, fetchByteFn }: Us
   const [byteSubmitting, setByteSubmitting] = useState<boolean>(false);
   const [errors, setErrors] = useState<ByteSubmissionError>({});
 
-  const [pristineSteps, setPristineSteps] = useState<{ [stepUuid: string]: boolean }>({});
+  const [touchedSteps, setTouchedSteps] = useState<{ [stepUuid: string]: boolean }>({});
 
   const [byteSubmission, setByteSubmission] = useState<TempByteSubmission>({
     isPristine: true,
@@ -118,14 +118,14 @@ export function useViewByteInModal({ space, byteId, stepOrder, fetchByteFn }: Us
   }
 
   function isPristine(stepUuid: string) {
-    return pristineSteps[stepUuid];
+    return touchedSteps[stepUuid];
   }
 
   function canNavigateToNext(step: ByteStepDto): boolean {
-    setPristineSteps((prevPristineSteps) => {
+    setTouchedSteps((prevPristineSteps) => {
       return {
         ...prevPristineSteps,
-        [step.uuid]: false,
+        [step.uuid]: true,
       };
     });
 
@@ -318,7 +318,7 @@ export function useViewByteInModal({ space, byteId, stepOrder, fetchByteFn }: Us
     initialize,
     activeStepOrder,
     canNavigateToNext,
-    isPristine,
+    isStepTouched: isPristine,
     errors,
     getStepSubmission,
     getStepItemSubmission,

@@ -20,7 +20,7 @@ export function ByteQuestionItemSection({
 }) {
   const answeredCorrectly = isEqual(question.answerKeys.sort(), ((stepItemSubmission as string[]) || []).sort());
 
-  const showCorrectAnswerAlso = !viewByteHelper.isPristine(step.uuid) && !answeredCorrectly;
+  const showCorrectAnswerAlso = viewByteHelper.isStepTouched(step.uuid) && (stepItemSubmission as string[])?.length > 0 && !answeredCorrectly;
   return (
     <div>
       <h2 className="text-2xl font-semibold mb-4 text-center">Question</h2>

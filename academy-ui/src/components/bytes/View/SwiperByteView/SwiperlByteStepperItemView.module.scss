@@ -44,9 +44,16 @@
   }
 }
 
-.nextButtonText {
+.scrollDownNextButtonText {
   position: relative;
   top: 34px;
   margin-left: -65px; // Adjust margin as needed
+  transform: rotate(-90deg); // Ensure text is not rotated
+}
+
+.clickHereForNextButtonText {
+  position: relative;
+  top: 34px;
+  margin-left: -85px; // Adjust margin as needed
   transform: rotate(-90deg); // Ensure text is not rotated
 }
