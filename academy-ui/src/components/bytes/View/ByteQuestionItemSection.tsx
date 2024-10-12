@@ -52,14 +52,16 @@ export function ByteQuestionItemSection({ viewByteHelper, step, question, stepIt
     <div>
       <h2 className="text-2xl font-semibold mb-4 text-center">Question</h2>
       <Question key={question.uuid} question={question} questionResponse={(stepItemSubmission as string[]) || []} onSelectAnswer={onSelectAnswer} />
-      <div className="w-full flex justify-center align-center mt-4">
-        <SubmitButtonOrText
-          stepItemSubmission={(stepItemSubmission as string[]) || []}
-          answeredCorrectly={answeredCorrectly}
-          isSubmitted={isSubmitted}
-          setIsSubmitted={setIsSubmitted}
-        />
-      </div>
+      {isSwiper && (
+        <div className="w-full flex justify-center align-center mt-4">
+          <SubmitButtonOrText
+            stepItemSubmission={(stepItemSubmission as string[]) || []}
+            answeredCorrectly={answeredCorrectly}
+            isSubmitted={isSubmitted}
+            setIsSubmitted={setIsSubmitted}
+          />
+        </div>
+      )}
       {showCorrectAnswers && (
         <div>
           <h3 className="text-xl font-semibold sm:mb-2 mt-2">Correct Answer</h3> {/* Move the "Correct Answer" heading outside the green border */}

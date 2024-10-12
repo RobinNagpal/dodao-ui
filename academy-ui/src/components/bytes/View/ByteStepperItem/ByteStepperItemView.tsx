@@ -68,12 +68,8 @@ function ByteStepperItemView({ viewByteHelper, step, byte, space, setByteSubmitt
           viewByteHelper.goToNextStep(step);
         }, 300);
       }
+      setTransitionState('exit');
     }
-
-    setTransitionState('exit');
-    setTimeout(async () => {
-      viewByteHelper.goToNextStep(step);
-    }, 300);
   };
 
   const transitionClasses: Record<TransitionState, string> = {

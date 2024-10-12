@@ -15,6 +15,8 @@ const nextConfig = {
     DODAO_SUPERADMINS: process.env.DODAO_SUPERADMINS,
   },
   sassOptions: {
+    // This allows you to use variables defined `"app/styles/variables.scss` to be used in scss module files without
+    // importing them explicitly
     includePaths: ['./src'],
     prependData: `@import "app/styles/variables.scss";`,
   },
