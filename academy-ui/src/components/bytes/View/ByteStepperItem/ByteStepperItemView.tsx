@@ -1,7 +1,6 @@
 import ByteStepperItemContent from '@/components/bytes/View/ByteStepperItemContent';
 import StepIndicatorProgress from '@/components/bytes/View/ByteStepperItem/Progress/StepIndicatorProgress';
-import ByteStepperItemWarnings from '@/components/bytes/View/ByteStepperItemWarnings';
-import { LAST_STEP_UUID, UseViewByteHelper } from '@/components/bytes/View/useViewByteInModal';
+import { LAST_STEP_UUID, UseViewByteHelper } from '@/components/bytes/View/useViewByteHelper';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import useWindowDimensions from '@/hooks/useWindowDimensions';
 import { ByteDto, ByteStepDto, ImageDisplayMode } from '@/types/bytes/ByteDto';

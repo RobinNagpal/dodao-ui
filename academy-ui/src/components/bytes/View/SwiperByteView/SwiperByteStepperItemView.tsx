@@ -1,5 +1,5 @@
 import ByteStepperItemContent from '@/components/bytes/View/ByteStepperItemContent';
-import { UseViewByteHelper } from '@/components/bytes/View/useViewByteInModal';
+import { UseViewByteHelper } from '@/components/bytes/View/useViewByteHelper';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import useWindowDimensions from '@/hooks/useWindowDimensions';
 import { ByteDto, ByteStepDto, ImageDisplayMode } from '@/types/bytes/ByteDto';

@@ -8,7 +8,7 @@ import ContinuousStepIndicatorProgress from '@/components/bytes/View/ByteStepper
 import FullScreenByteModal from '@/components/bytes/View/FullScreenByteModal';
 import RatingByteView from '@/components/bytes/View/RatingByteView';
 import SwiperByteStepperItemView from '@/components/bytes/View/SwiperByteView/SwiperByteStepperItemView';
-import { useViewByteInModal } from '@/components/bytes/View/useViewByteInModal';
+import { useViewByteHelper } from '@/components/bytes/View/useViewByteHelper';
 import { ByteDetailsFragment, ByteFeedback, ByteViewMode, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { ByteDto } from '@/types/bytes/ByteDto';
 import TidbitDetailsLoader from '@dodao/web-core/components/core/loaders/TidbitDetailsLoader';
@@ -38,7 +38,7 @@ export default function ViewByteModal({ space, selectedByteId, viewByteModalClos
     return response.data;
   };
 
-  const viewByteHelper = useViewByteInModal({ space: space, byteId: selectedByteId, stepOrder: 0, fetchByteFn: fetchByteFn });
+  const viewByteHelper = useViewByteHelper({ space: space, byteId: selectedByteId, stepOrder: 0, fetchByteFn: fetchByteFn });
 
   useEffect(() => {
     viewByteHelper.initialize();

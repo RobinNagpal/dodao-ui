@@ -1,4 +1,4 @@
-import { UseViewByteHelper } from '@/components/bytes/View/useViewByteInModal';
+import { UseViewByteHelper } from '@/components/bytes/View/useViewByteHelper';
 import { ByteStepDto } from '@/types/bytes/ByteDto';
 import ErrorWithAccentBorder from '@dodao/web-core/components/core/errors/ErrorWithAccentBorder';
 import { useEffect, useRef } from 'react';

@@ -2,7 +2,7 @@ import UserDiscord from '@/components/app/Form/UserDiscord';
 import styles from '@/components/bytes/View/ByteStepperItem/ByteStepperItemContent.module.scss';
 import { ByteQuestionItemSection } from '@/components/bytes/View/ByteQuestionItemSection';
 import ByteStepperItemWarnings from '@/components/bytes/View/ByteStepperItemWarnings';
-import { UseViewByteHelper } from '@/components/bytes/View/useViewByteInModal';
+import { UseViewByteHelper } from '@/components/bytes/View/useViewByteHelper';
 import {
   ByteQuestionFragmentFragment,
   ByteUserDiscordConnectFragmentFragment,
@@ -200,6 +200,7 @@ export default function ByteStepperItemContent(props: ByteStepperItemContentProp
                   viewByteHelper={viewByteHelper}
                   stepItemSubmission={viewByteHelper.getStepItemSubmission(step.uuid, stepItem.uuid)}
                   onSelectAnswer={selectAnswer}
+                  isSwiper={isSwiper}
                 />
               </div>
             );

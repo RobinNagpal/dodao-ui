@@ -6,7 +6,7 @@ import { ByteSubmissionInput, SpaceWithIntegrationsFragment } from '@/graphql/ge
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { LocalStorageKeys } from '@dodao/web-core/types/deprecated/models/enums';
 import { ByteSubmissionError } from '@dodao/web-core/types/errors/error';
-import { StepItemResponse, StepResponse, TempByteSubmission } from '@/utils/byte/TempByteSubmission';
+import { ByteStepItemResponse, ByteStepResponse, TempByteSubmission } from '@/utils/byte/TempByteSubmission';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import isEqual from 'lodash/isEqual';
 import union from 'lodash/union';
@@ -29,8 +29,8 @@ export interface UseViewByteHelper {
   canNavigateToNext: (step: ByteStepDto) => boolean;
   isStepTouched: (stepUuid: string) => boolean;
   errors: ByteSubmissionError;
-  getStepSubmission: (stepUuid: string) => StepResponse | undefined;
-  getStepItemSubmission: (stepUuid: string, stepItemUuid: string) => StepItemResponse | undefined;
+  getStepSubmission: (stepUuid: string) => ByteStepResponse | undefined;
+  getStepItemSubmission: (stepUuid: string, stepItemUuid: string) => ByteStepItemResponse | undefined;
   goToNextStep: (currentStep: ByteStepDto) => void;
   goToPreviousStep: (currentStep: ByteStepDto) => void;
   byteLoaded: boolean;
@@ -46,10 +46,9 @@ export interface UseViewByteHelper {
   submitByte: () => Promise<boolean>;
   setUserInput: (stepUuid: string, userInputUuid: string, userInput: string) => void;
   setUserDiscord: (stepUuid: string, userDiscordUuid: string, userDiscordId: string) => void;
-  updateStepTouched: (stepUuid: string, touched: boolean) => void;
 }
 
-export function useViewByteInModal({ space, byteId, stepOrder, fetchByteFn }: UseViewByteInModalArgs): UseViewByteHelper {
+export function useViewByteHelper({ space, byteId, stepOrder, fetchByteFn }: UseViewByteInModalArgs): UseViewByteHelper {
   const { data: sessionData } = useSession();
   const session: Session | null = sessionData as Session | null;
   // Replace Vue reactive refs with React state
@@ -59,8 +58,6 @@ export function useViewByteInModal({ space, byteId, stepOrder, fetchByteFn }: Us
   const [byteStepsMap, setByteStepsMap] = useState<{ [uuid: string]: ByteStepDto }>({});
   const [byteSubmitting, setByteSubmitting] = useState<boolean>(false);
   const [errors, setErrors] = useState<ByteSubmissionError>({});
-
-  const [touchedSteps, setTouchedSteps] = useState<{ [stepUuid: string]: boolean }>({});
 
   const [byteSubmission, setByteSubmission] = useState<TempByteSubmission>({
     isPristine: true,
@@ -109,26 +106,25 @@ export function useViewByteInModal({ space, byteId, stepOrder, fetchByteFn }: Us
     setActiveStepOrder(order);
   }
 
-  function getStepSubmission(stepUuid: string): StepResponse | undefined {
+  function getStepSubmission(stepUuid: string): ByteStepResponse | undefined {
     return byteSubmission.stepResponsesMap?.[stepUuid];
   }
 
-  function getStepItemSubmission(stepUuid: string, stepItemUuid: string): StepItemResponse | undefined {
+  function getStepItemSubmission(stepUuid: string, stepItemUuid: string): ByteStepItemResponse | undefined {
     const stepSubmission = getStepSubmission(stepUuid);
     return stepSubmission?.itemResponsesMap[stepItemUuid];
   }
 
   function isPristine(stepUuid: string) {
-    return touchedSteps[stepUuid];
+    return byteSubmission.stepResponsesMap[stepUuid]?.isTouched;
   }
 
   function canNavigateToNext(step: ByteStepDto): boolean {
-    setTouchedSteps((prevPristineSteps) => {
-      return {
-        ...prevPristineSteps,
-        [step.uuid]: true,
-      };
-    });
+    if (byteSubmission.stepResponsesMap[step.uuid]) {
+      byteSubmission.stepResponsesMap[step.uuid].isTouched = true;
+    } else {
+      byteSubmission.stepResponsesMap[step.uuid] = { isTouched: true, isCompleted: false, itemResponsesMap: {} };
+    }
 
     if (!byteRef) return false;
 
@@ -315,15 +311,6 @@ export function useViewByteInModal({ space, byteId, stepOrder, fetchByteFn }: Us
     return !!getStepItemSubmission(step.uuid, hasDiscordConnect.uuid);
   }
 
-  function updateStepTouched(stepUuid: string, touched: boolean) {
-    setTouchedSteps((prevPristineSteps) => {
-      return {
-        ...prevPristineSteps,
-        [stepUuid]: touched,
-      };
-    });
-  }
-
   return {
     initialize,
     activeStepOrder,
@@ -347,7 +334,6 @@ export function useViewByteInModal({ space, byteId, stepOrder, fetchByteFn }: Us
     setUserInput,
     setUserDiscord,
     isDiscordConnected,
-    updateStepTouched,
   };
 }
 
@@ -356,7 +342,7 @@ export function checkIfUserInputIsComplete(
   byteStepsMap: {
     [p: string]: ByteStepDto;
   },
-  getStepSubmission: (stepUuid: string) => StepResponse | undefined
+  getStepSubmission: (stepUuid: string) => ByteStepResponse | undefined
 ) {
   if (stepUuid === LAST_STEP_UUID) return true;
   const step = byteStepsMap[stepUuid];
@@ -378,7 +364,7 @@ export function checkIfQuestionIsComplete(
   byteStepsMap: {
     [p: string]: ByteStepDto;
   },
-  getStepSubmission: (stepUuid: string) => StepResponse | undefined
+  getStepSubmission: (stepUuid: string) => ByteStepResponse | undefined
 ) {
   if (stepUuid === LAST_STEP_UUID) return true;
   const step = byteStepsMap[stepUuid];
