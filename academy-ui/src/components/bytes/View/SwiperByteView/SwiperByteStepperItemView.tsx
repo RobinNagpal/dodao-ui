@@ -59,6 +59,9 @@ function SwiperByteStepperItemView({ viewByteHelper, step, byte, space, setByteS
   const { width, height } = useWindowDimensions();
 
   const isShortScreen = height <= 690;
+  const showClickForNextStep = step.stepItems?.length > 0 && viewByteHelper.isStepTouched(step.uuid);
+  const showScrollDown = activeStepOrder == 0 && !viewByteHelper.isStepTouched(step.uuid);
+  console.log('showScrollDown', showScrollDown, 'activeStepOrder', activeStepOrder, 'isStepTouched', viewByteHelper.isStepTouched(step.uuid));
   return (
     <div className="w-full flex justify-center mr-20" style={style}>
       <div className={`${styles.swiperSlides}`}>
@@ -99,10 +102,14 @@ function SwiperByteStepperItemView({ viewByteHelper, step, byte, space, setByteS
           allowTouchMove={true}
           simulateTouch={true}
           autoFocus={true}
-          onBeforeTransitionStart={(swiper) => {
+          onBeforeTransitionStart={async (swiper) => {
             if (!viewByteHelper.canNavigateToNext(step)) {
               console.log('Cannot navigate to next');
               swiper.slideTo(activeStepOrder, 300, false);
+            } else {
+              if (activeStepOrder === byte.steps.length - 2) {
+                await viewByteHelper.submitByte();
+              }
             }
           }}
           className={styles.swiperSlides}
@@ -138,10 +145,10 @@ function SwiperByteStepperItemView({ viewByteHelper, step, byte, space, setByteS
             ref={navigationNextRef}
             className={`swiper-button-next ${styles.customNextButton}`}
             style={{
-              display: activeStepOrder > 0 && !viewByteHelper.isStepTouched(step.uuid) ? 'none' : 'block', // We are hiding the next button we just want to show it on the first slide
+              display: showScrollDown || showClickForNextStep ? 'block' : 'none', // We are hiding the next button we just want to show it on the first slide
             }}
           >
-            {viewByteHelper.isStepTouched(step.uuid) ? (
+            {showClickForNextStep ? (
               <div className={`w-36 ${styles.clickHereForNextButtonText}`}>Click Here for Next</div>
             ) : (
               <div className={`w-24 ${styles.scrollDownNextButtonText}`}>Scroll Down</div>
