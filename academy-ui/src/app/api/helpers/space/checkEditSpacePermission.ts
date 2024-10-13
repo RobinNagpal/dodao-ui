@@ -13,7 +13,7 @@ import { NextRequest } from 'next/server';
  */
 async function isDoDAOMember(context: NextRequest): Promise<(JwtPayload & DoDaoJwtTokenPayload) | null> {
   const decoded = await getDecodedJwtFromContext(context);
-  if (dodaoTeamMates.map((u) => u.toLowerCase()).includes(decoded!.username.toLowerCase())) {
+  if (decoded && dodaoTeamMates.map((u) => u.toLowerCase()).includes(decoded.username.toLowerCase())) {
     return decoded;
   }
   return null;
@@ -50,7 +50,9 @@ export async function canEditGitSpace(context: NextRequest, space: Space) {
   }
 
   const decoded = await getDecodedJwtFromContext(context);
-  const doDAOAdmin = isDoDAOSuperAdmin(decoded!.username);
+  if (!decoded) throw new Error('No decoded JWT found');
+
+  const doDAOAdmin = isDoDAOSuperAdmin(decoded.username);
 
   if (doDAOAdmin) {
     return { decodedJWT: decoded, canEditSpace: true, user: decoded?.accountId.toLowerCase() };

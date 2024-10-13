@@ -1,3 +1,4 @@
+import { ByteViewMode } from '@/types/bytes/ByteDto';
 import DetailsRow from '@dodao/web-core/components/core/details/DetailsRow';
 import DetailsHeader from '@dodao/web-core/components/core/details/DetailsHeader';
 import DetailsSection from '@dodao/web-core/components/core/details/DetailsSection';
@@ -9,6 +10,7 @@ import React, { useState } from 'react';
 export interface SpaceAuthDetailsProps {
   space: Space;
   className?: string;
+  onUpdateSettings: () => Promise<void>;
 }
 
 function getSpaceDetailsFields(space: SpaceWithIntegrationsFragment): Array<{ label: string; value: string }> {
@@ -24,6 +26,10 @@ function getSpaceDetailsFields(space: SpaceWithIntegrationsFragment): Array<{ la
     {
       label: 'Show Categories in Sidebar',
       value: (!!space.byteSettings.showCategoriesInSidebar).toString(),
+    },
+    {
+      label: 'View Mode',
+      value: (space.byteSettings?.byteViewMode === ByteViewMode.FullScreenSwiper ? 'Full Screen Swiper' : 'Card Stepper').toString(),
     },
   ];
 }
@@ -49,7 +55,12 @@ export default function SpaceByteDetails(props: SpaceAuthDetailsProps) {
           <DetailsRow key={field.label} label={field.label} value={field.value} />
         ))}
       </DetailsSection>
-      <UpsertSpaceByteSettingsModal space={props.space} open={showByteSettingsModal} onClose={() => setShowByteSettingsModal(false)} />
+      <UpsertSpaceByteSettingsModal
+        space={props.space}
+        open={showByteSettingsModal}
+        onClose={() => setShowByteSettingsModal(false)}
+        onUpdateSettings={props.onUpdateSettings}
+      />
     </>
   );
 }

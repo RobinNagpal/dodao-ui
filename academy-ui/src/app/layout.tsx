@@ -36,6 +36,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
     '--heading-color': themeValue.headingColor,
     '--border-color': themeValue.borderColor,
     '--block-bg': themeValue.blockBg,
+    '--swiper-theme-color': themeValue.primaryColor,
   } as CSSProperties;
 
   return (

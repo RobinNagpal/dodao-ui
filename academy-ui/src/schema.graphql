@@ -232,17 +232,24 @@ type ByteRatingDistribution {
   ux: Float!
 }
 
+enum ByteViewMode {
+  CardStepper
+  FullScreenSwiper
+}
+
 type ByteSettings {
   askForLoginToSubmit: Boolean
   captureBeforeAndAfterRating: Boolean @deprecated(reason: "Use captureRating instead")
   captureRating: Boolean
   showCategoriesInSidebar: Boolean
+  byteViewMode: ByteViewMode
 }
 
 input ByteSettingsInput {
   askForLoginToSubmit: Boolean
   captureRating: Boolean
   showCategoriesInSidebar: Boolean
+  byteViewMode: ByteViewMode
 }
 
 type ByteSocialShare {

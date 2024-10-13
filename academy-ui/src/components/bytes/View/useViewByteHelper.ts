@@ -1,12 +1,14 @@
-import { checkIfQuestionIsComplete, checkIfUserInputIsComplete, updateItemValue } from '@/components/bytes/View/viewByteHelper';
 import { ByteDto, ByteStepDto } from '@/types/bytes/ByteDto';
+import { ByteStepItem, Question, UserInput } from '@/types/stepItems/stepItemDto';
+import { isQuestion, isUserDiscordConnect, isUserInput } from '@dodao/web-core/types/deprecated/helpers/stepItemTypes';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { ByteSubmissionInput, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { LocalStorageKeys } from '@dodao/web-core/types/deprecated/models/enums';
 import { ByteSubmissionError } from '@dodao/web-core/types/errors/error';
-import { StepItemResponse, StepResponse, TempByteSubmission } from '@/utils/byte/TempByteSubmission';
+import { ByteStepItemResponse, ByteStepResponse, TempByteSubmission } from '@/utils/byte/TempByteSubmission';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import isEqual from 'lodash/isEqual';
 import union from 'lodash/union';
 import { useSession } from 'next-auth/react';
 import { useState } from 'react';
@@ -20,7 +22,35 @@ export interface UseViewByteInModalArgs {
   stepOrder: number;
   fetchByteFn: (byteId: string) => Promise<ByteDto>;
 }
-export function useViewByteInModal({ space, byteId, stepOrder, fetchByteFn }: UseViewByteInModalArgs): UseViewByteHelper {
+
+export interface UseViewByteHelper {
+  initialize: () => Promise<void>;
+  activeStepOrder: number;
+  canNavigateToNext: (step: ByteStepDto) => boolean;
+  isStepTouched: (stepUuid: string) => boolean;
+  errors: ByteSubmissionError;
+  getStepSubmission: (stepUuid: string) => ByteStepResponse | undefined;
+  getStepItemSubmission: (stepUuid: string, stepItemUuid: string) => ByteStepItemResponse | undefined;
+  goToNextStep: (currentStep: ByteStepDto) => void;
+  goToPreviousStep: (currentStep: ByteStepDto) => void;
+  byteLoaded: boolean;
+  byteRef: ByteDto;
+  byteSubmission: TempByteSubmission;
+  byteSubmitting: boolean;
+  isUserInputComplete: (stepUuid: string) => boolean;
+  isQuestionAnswered: (stepUuid: string) => boolean;
+  isQuestionAnsweredCorrectly: (stepUuid: string) => boolean;
+  hasQuestion: (stepUuid: string) => boolean;
+  isDiscordConnected: (stepUuid: string) => boolean;
+  isValidToSubmit: () => boolean;
+  selectAnswer: (stepUuid: string, questionUuid: string, selectedAnswers: string[]) => void;
+  setActiveStep: (order: number) => void;
+  submitByte: () => Promise<boolean>;
+  setUserInput: (stepUuid: string, userInputUuid: string, userInput: string) => void;
+  setUserDiscord: (stepUuid: string, userDiscordUuid: string, userDiscordId: string) => void;
+}
+
+export function useViewByteHelper({ space, byteId, stepOrder, fetchByteFn }: UseViewByteInModalArgs): UseViewByteHelper {
   const { data: sessionData } = useSession();
   const session: Session | null = sessionData as Session | null;
   // Replace Vue reactive refs with React state
@@ -78,13 +108,60 @@ export function useViewByteInModal({ space, byteId, stepOrder, fetchByteFn }: Us
     setActiveStepOrder(order);
   }
 
-  function getStepSubmission(stepUuid: string): StepResponse | undefined {
+  function getStepSubmission(stepUuid: string): ByteStepResponse | undefined {
     return byteSubmission.stepResponsesMap?.[stepUuid];
   }
 
-  function getStepItemSubmission(stepUuid: string, stepItemUuid: string): StepItemResponse | undefined {
+  function getStepItemSubmission(stepUuid: string, stepItemUuid: string): ByteStepItemResponse | undefined {
     const stepSubmission = getStepSubmission(stepUuid);
     return stepSubmission?.itemResponsesMap[stepItemUuid];
+  }
+
+  function isPristine(stepUuid: string) {
+    return byteSubmission.stepResponsesMap[stepUuid]?.isTouched;
+  }
+
+  function canNavigateToNext(step: ByteStepDto): boolean {
+    if (byteSubmission.stepResponsesMap[step.uuid]) {
+      byteSubmission.stepResponsesMap[step.uuid].isTouched = true;
+    } else {
+      byteSubmission.stepResponsesMap[step.uuid] = { isTouched: true, isCompleted: false, itemResponsesMap: {} };
+    }
+
+    if (!byteRef) return false;
+
+    const answeredCorrectly = step.stepItems.filter(isQuestion).every((stepItem: ByteStepItem) => {
+      const question = stepItem as Question;
+      return isEqual(question.answerKeys.sort(), ((getStepItemSubmission(step.uuid, stepItem.uuid) as string[]) || []).sort());
+    });
+
+    if (!isQuestionAnswered(step.uuid) || !answeredCorrectly) {
+      showNotification({
+        type: 'info',
+        message: 'Your answer is wrong! Give correct answer to proceed.',
+        heading: 'Hint',
+      });
+      return false;
+    }
+
+    if (!isUserInputComplete(step.uuid)) {
+      showNotification({
+        type: 'info',
+        message: 'Please provide the required information to proceed.',
+        heading: 'Hint',
+      });
+      return false;
+    }
+
+    const isLastStep = byteRef.steps.length - 2 === activeStepOrder;
+
+    if (isLastStep) {
+      if (!isValidToSubmit()) {
+        return false;
+      }
+    }
+
+    return true;
   }
 
   function goToNextStep(currentStep: ByteStepDto) {
@@ -110,15 +187,33 @@ export function useViewByteInModal({ space, byteId, stepOrder, fetchByteFn }: Us
   }
 
   function selectAnswer(stepUuid: string, questionUuid: string, selectedAnswers: string[]) {
-    updateItemValue(stepUuid, questionUuid, selectedAnswers, setByteSubmission);
+    updateItemValue(stepUuid, questionUuid, selectedAnswers);
   }
 
   function setUserInput(stepUuid: string, userInputUuid: string, userInput: string) {
-    updateItemValue(stepUuid, userInputUuid, userInput, setByteSubmission);
+    updateItemValue(stepUuid, userInputUuid, userInput);
   }
 
   function setUserDiscord(stepUuid: string, userDiscordUuid: string, userDiscordId: string) {
-    updateItemValue(stepUuid, userDiscordUuid, userDiscordId, setByteSubmission);
+    updateItemValue(stepUuid, userDiscordUuid, userDiscordId);
+  }
+
+  function updateItemValue(stepUuid: string, itemUuid: string, itemValue: string | string[]) {
+    setByteSubmission((prevByteSubmission: TempByteSubmission) => {
+      return {
+        ...prevByteSubmission,
+        stepResponsesMap: {
+          ...prevByteSubmission.stepResponsesMap,
+          [stepUuid]: {
+            ...prevByteSubmission.stepResponsesMap?.[stepUuid],
+            itemResponsesMap: {
+              ...prevByteSubmission.stepResponsesMap?.[stepUuid]?.itemResponsesMap,
+              [itemUuid]: itemValue,
+            },
+          },
+        },
+      };
+    });
   }
 
   function isEverythingInByteIsAnswered() {
@@ -130,6 +225,8 @@ export function useViewByteInModal({ space, byteId, stepOrder, fetchByteFn }: Us
     return isEverythingInByteIsAnswered();
   }
   async function submitByte(): Promise<boolean> {
+    if (byteSubmission.isSubmitted) return true;
+
     setByteSubmitting(true);
     setByteSubmission((prevByteSubmission) => ({ ...prevByteSubmission, isPristine: false }));
 
@@ -189,17 +286,29 @@ export function useViewByteInModal({ space, byteId, stepOrder, fetchByteFn }: Us
             JSON.stringify(union([...JSON.parse(localStorage.getItem(LocalStorageKeys.COMPLETED_TIDBITS) || '[]'), byteId]))
           );
 
-          setByteSubmission((prevByteSubmission) => ({ ...prevByteSubmission }));
+          setByteSubmission((prevByteSubmission) => ({ ...prevByteSubmission, isSubmitted: true }));
         }
 
         return true;
       } else {
+        showNotification({
+          type: 'error',
+          message: 'Something went wrong. Please try again.',
+          heading: 'Error',
+        });
+
         setByteSubmitting(false);
         setByteSubmission((prevByteSubmission) => ({ ...prevByteSubmission, isSubmitted: false }));
         return false;
       }
     } catch (e) {
       console.log(e);
+      showNotification({
+        type: 'error',
+        message: 'Something went wrong. Please try again.',
+        heading: 'Error',
+      });
+
       setByteSubmitting(false);
       setByteSubmission((prevByteSubmission) => ({ ...prevByteSubmission, isSubmitted: false }));
       return false;
@@ -207,15 +316,70 @@ export function useViewByteInModal({ space, byteId, stepOrder, fetchByteFn }: Us
   }
 
   function isQuestionAnswered(stepUuid: string): boolean {
-    return checkIfQuestionIsComplete(stepUuid, byteStepsMap, getStepSubmission);
+    if (stepUuid === LAST_STEP_UUID) return true;
+    const step = byteStepsMap[stepUuid];
+    if (!step) {
+      console.error(`no step with uuid - ${stepUuid} found in`, byteStepsMap);
+    }
+    const stepSubmission = getStepSubmission(stepUuid);
+
+    const allQuestionsAnswered = step.stepItems
+      .filter(isQuestion)
+      .every((question) => (stepSubmission?.itemResponsesMap?.[question.uuid] as string[] | undefined)?.length);
+
+    return allQuestionsAnswered;
+  }
+
+  function isQuestionAnsweredCorrectly(stepUuid: string): boolean {
+    const step = byteStepsMap[stepUuid];
+    if (!step) {
+      console.error(`no step with uuid - ${stepUuid} found in`, byteStepsMap);
+      return false;
+    }
+    const stepSubmission = getStepSubmission(stepUuid);
+    if (!stepSubmission) return false;
+
+    const allQuestionsAnswered = step.stepItems.filter(isQuestion).every((question) => {
+      const questionResponse = stepSubmission?.itemResponsesMap?.[question.uuid] as string[] | undefined;
+      if (!questionResponse) return false;
+      return isEqual((question as Question).answerKeys.sort(), questionResponse.sort());
+    });
+
+    return allQuestionsAnswered;
+  }
+
+  function hasQuestion(stepUuid: string): boolean {
+    return byteStepsMap[stepUuid]?.stepItems?.some(isQuestion);
   }
 
   function isUserInputComplete(stepUuid: string) {
-    return checkIfUserInputIsComplete(stepUuid, byteStepsMap, getStepSubmission);
+    if (stepUuid === LAST_STEP_UUID) return true;
+    const step = byteStepsMap[stepUuid];
+    const stepSubmission = getStepSubmission(stepUuid);
+    if (!step) {
+      console.error(`no step with uuid - ${stepUuid} found in`, byteStepsMap);
+    }
+
+    const respondedToAllInputs = step.stepItems
+      .filter(isUserInput)
+      .filter((item) => (item as UserInput).required)
+      .every((userInput) => (stepSubmission?.itemResponsesMap?.[userInput.uuid] as string)?.length);
+
+    return respondedToAllInputs;
   }
+
+  function isDiscordConnected(uuid: string): boolean {
+    const step = byteRef!.steps.find((step) => step.uuid === uuid)!;
+    const hasDiscordConnect = step.stepItems.find(isUserDiscordConnect);
+    if (!hasDiscordConnect) return true;
+    return !!getStepItemSubmission(step.uuid, hasDiscordConnect.uuid);
+  }
+
   return {
     initialize,
     activeStepOrder,
+    canNavigateToNext,
+    isStepTouched: isPristine,
     errors,
     getStepSubmission,
     getStepItemSubmission,
@@ -227,33 +391,14 @@ export function useViewByteInModal({ space, byteId, stepOrder, fetchByteFn }: Us
     byteSubmitting,
     isUserInputComplete,
     isQuestionAnswered,
+    isQuestionAnsweredCorrectly,
+    hasQuestion,
     isValidToSubmit,
     selectAnswer,
     setActiveStep,
     submitByte,
     setUserInput,
     setUserDiscord,
+    isDiscordConnected,
   };
-}
-
-export interface UseViewByteHelper {
-  initialize: () => Promise<void>;
-  activeStepOrder: number;
-  errors: ByteSubmissionError;
-  getStepSubmission: (stepUuid: string) => StepResponse | undefined;
-  getStepItemSubmission: (stepUuid: string, stepItemUuid: string) => StepItemResponse | undefined;
-  goToNextStep: (currentStep: ByteStepDto) => void;
-  goToPreviousStep: (currentStep: ByteStepDto) => void;
-  byteLoaded: boolean;
-  byteRef: ByteDto;
-  byteSubmission: TempByteSubmission;
-  byteSubmitting: boolean;
-  isUserInputComplete: (stepUuid: string) => boolean;
-  isQuestionAnswered: (stepUuid: string) => boolean;
-  isValidToSubmit: () => boolean;
-  selectAnswer: (stepUuid: string, questionUuid: string, selectedAnswers: string[]) => void;
-  setActiveStep: (order: number) => void;
-  submitByte: () => Promise<boolean>;
-  setUserInput: (stepUuid: string, userInputUuid: string, userInput: string) => void;
-  setUserDiscord: (stepUuid: string, userDiscordUuid: string, userDiscordId: string) => void;
 }
