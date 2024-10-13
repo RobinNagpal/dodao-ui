@@ -145,7 +145,7 @@ export default function ByteStepperItemContent(props: ByteStepperItemContentProp
   const stepItems = step.stepItems;
 
   const renderer = getMarkedRenderer();
-  const stepContents = useMemo(() => marked.parse(step.content || '', { renderer }), [step.content]);
+  const stepContents = marked.parse(step.content || '', { renderer });
 
   const postSubmissionContent = useMemo(
     () => (byte.postSubmissionStepContent ? marked.parse(byte.postSubmissionStepContent, { renderer }) : null),

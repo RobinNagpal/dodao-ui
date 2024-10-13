@@ -63,11 +63,12 @@ function ByteStepperItemView({ viewByteHelper, step, byte, space, setByteSubmitt
     if (viewByteHelper.canNavigateToNext(step)) {
       if (isLastStep) {
         await sbmitByte();
-      } else {
-        setTimeout(async () => {
-          viewByteHelper.goToNextStep(step);
-        }, 300);
       }
+
+      setTimeout(async () => {
+        viewByteHelper.goToNextStep(step);
+      }, 300);
+
       setTransitionState('exit');
     }
   };
