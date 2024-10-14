@@ -70,7 +70,7 @@ export function Education() {
           <div className="mx-auto max-w-2xl lg:max-w-none">
             <div className="mx-auto max-w-3xl text-center">
               <h2 className="text-4xl font-bold tracking-tight text-gray-900">Education</h2>
-              <p className="mt-4 text-gray-500">
+              <p className="mt-4 text-base text-gray-500">
                 At DoDAO, we are dedicated to spreading knowledge about blockchain technology and decentralized finance (DeFi). We offer a variety of
                 educational services to help individuals and businesses understand and embrace this rapidly evolving industry.
               </p>
@@ -87,19 +87,19 @@ export function Education() {
                       </div>
                       <div className="mt-3 sm:ml-3 sm:mt-0 lg:ml-0 lg:mt-3">
                         <h3 className="text-base font-medium text-gray-900">{item.name}</h3>
-                        <p className="mt-2 text-sm text-gray-500">{item.description}</p>
+                        <p className="mt-2 text-base text-gray-500">{item.description}</p>
                         {item.name === 'Blockchain Courses' && (
-                          <p onClick={handleClickPDF} className="mt-2 text-sm font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer">
+                          <p onClick={handleClickPDF} className="mt-2 text-base font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer">
                             Read more →
                           </p>
                         )}
 
                         {item.name === 'Educational Content' && (
                           <>
-                            <p onClick={handleClickUni} className="mt-2 text-sm font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer">
+                            <p onClick={handleClickUni} className="mt-2 text-base font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer">
                               https://uniswap.university/ →
                             </p>
-                            <p onClick={handleClickArbi} className="mt-2 text-sm font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer">
+                            <p onClick={handleClickArbi} className="mt-2 text-base font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer">
                               https://arbitrum.education/ →
                             </p>
                           </>
