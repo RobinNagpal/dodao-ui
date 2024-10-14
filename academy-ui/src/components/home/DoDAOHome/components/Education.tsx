@@ -69,7 +69,7 @@ export function Education() {
         <div className="mx-auto max-w-7xl pt-4 sm:pt-8">
           <div className="mx-auto max-w-2xl lg:max-w-none">
             <div className="mx-auto max-w-3xl text-center">
-              <h2 className="text-4xl font-bold tracking-tight text-gray-900">Education</h2>
+              <p className="text-3xl font-bold tracking-tight sm:text-4xl">Education</p>
               <p className="mt-4 text-base text-gray-500">
                 At DoDAO, we are dedicated to spreading knowledge about blockchain technology and decentralized finance (DeFi). We offer a variety of
                 educational services to help individuals and businesses understand and embrace this rapidly evolving industry.
@@ -86,7 +86,7 @@ export function Education() {
                         </div>
                       </div>
                       <div className="mt-3 sm:ml-3 sm:mt-0 lg:ml-0 lg:mt-3">
-                        <h3 className="text-base font-medium text-gray-900">{item.name}</h3>
+                        <h3 className="text-base font-semibold text-gray-900">{item.name}</h3>
                         <p className="mt-2 text-base text-gray-500">{item.description}</p>
                         {item.name === 'Blockchain Courses' && (
                           <p onClick={handleClickPDF} className="mt-2 text-base font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer">

@@ -56,7 +56,7 @@ export default function Research() {
         <div className="mx-auto max-w-7xl py-4 sm:py-8">
           <div className="mx-auto max-w-2xl lg:max-w-none">
             <div className="mx-auto max-w-3xl text-center">
-              <h2 className="text-4xl font-bold tracking-tight text-gray-900">Real-World Assets on Blockchain</h2>
+              <p className="text-3xl font-bold tracking-tight sm:text-4xl">Real-World Assets on Blockchain</p>
               <p className="mt-4 text-base text-gray-500">
                 At DoDAO, we specialize in simplifying the complex world of Real World Assets (RWAs) for builders and investors. Our expertise spans research,
                 consulting, and business development, helping companies navigate regulatory hurdles, find strategic partners, and optimize their asset
@@ -75,7 +75,7 @@ export default function Research() {
                         </div>
                       </div>
                       <div className="mt-3 sm:ml-3 sm:mt-0">
-                        <h3 className="text-base font-medium text-gray-900">{perk.name}</h3>
+                        <h3 className="text-base font-semibold text-gray-900">{perk.name}</h3>
                         <p className="mt-2 text-base text-gray-500">{perk.description}</p>
                       </div>
                     </div>
@@ -89,7 +89,7 @@ export default function Research() {
         <div className="mx-auto max-w-7xl py-4 sm:py-4">
           <div className="mx-auto max-w-2xl lg:max-w-none">
             <div className="mx-auto max-w-3xl text-center">
-              <h2 className="text-4xl font-bold tracking-tight text-gray-900">Decentralized - Solution & Reviews</h2>
+              <p className="text-3xl font-bold tracking-tight sm:text-4xl">Decentralized - Solution & Reviews</p>
               <p className="mt-4 text-base text-gray-500">
                 DoDAO is exploring ways to improve human coordination in both public and private sectors through decentralized systems. We aim to create
                 transparent and accountable platforms where everyone can contribute ideas and provide honest feedback, ensuring that resources are used
@@ -108,7 +108,7 @@ export default function Research() {
                         </div>
                       </div>
                       <div className="mt-3 sm:ml-3 sm:mt-0">
-                        <h3 className="text-base font-medium text-gray-900">{perk.name}</h3>
+                        <h3 className="text-base font-semibold text-gray-900">{perk.name}</h3>
                         <p className="mt-2 text-base text-gray-500">{perk.description}</p>
                       </div>
                     </div>

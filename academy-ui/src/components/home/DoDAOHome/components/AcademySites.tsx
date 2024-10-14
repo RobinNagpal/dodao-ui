@@ -54,7 +54,7 @@ export function AcademySites() {
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="mx-auto max-w-3xl sm:text-center">
               <p className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Academy Sites</p>
-              <p className="mt-6 text-lg leading-8">
+              <p className="mt-6 text-lg leading-8 text-gray-500">
                 Companies rely heavily on extensive technical documentation that can be overwhelming and time-consuming for users to review and comprehend. We
                 have created academy sites which utilize a combination of different innovative formats for educating your users.
               </p>
@@ -73,7 +73,7 @@ export function AcademySites() {
                     <feature.icon className="absolute left-1 top-1 h-5 w-5 text-indigo-600" aria-hidden="true" />
                     {feature.name}
                   </dt>{' '}
-                  <dd className="inline">{feature.description}</dd>
+                  <dd className="inline text-gray-500">{feature.description}</dd>
                 </div>
               ))}
             </dl>
