@@ -18,7 +18,6 @@ import EditByteView from '@/components/bytes/Edit/EditByteView';
 import EditClickableDemo from '@/components/clickableDemos/Create/EditClickableDemo';
 import EditShortVideoView from '@/components/shortVideos/Edit/EditShortVideoView';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import axios from 'axios';
 import ByteItem from './ByteItem';
 import DemoItem from './DemoItem';
 import ShortItem from './ShortItem';

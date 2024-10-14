@@ -1,16 +1,15 @@
-import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { ClickableDemoStepInput, Space, UpsertClickableDemoInput, ByteCollectionFragment } from '@/graphql/generated/generated-types';
-import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
+import { ClickableDemoStepInput, Space, UpsertClickableDemoInput } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
+import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
+import { TidbitCollectionTags } from '@/utils/api/fetchTags';
+import { emptyClickableDemo } from '@/utils/clickableDemos/EmptyClickableDemo';
 import { ClickableDemoErrors, ClickableDemoStepError } from '@dodao/web-core/types/errors/clickableDemoErrors';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
+import { createNewEntityId } from '@dodao/web-core/utils/space/createNewEntityId';
 import orderBy from 'lodash/orderBy';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import axios from 'axios';
-import { emptyClickableDemo } from '@/utils/clickableDemos/EmptyClickableDemo';
-import { createNewEntityId } from '@dodao/web-core/utils/space/createNewEntityId';
-import { TidbitCollectionTags } from '@/utils/api/fetchTags';
 
 const titleLimit = 32;
 const excerptLimit = 64;
