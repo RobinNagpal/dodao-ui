@@ -26,7 +26,7 @@ export default function UpsertUserProfileInfo() {
           <Input label="Id" modelValue={user?.id} onUpdate={(value) => setUserField('id', value?.toString() || '')} disabled />
           <Input label="Name" modelValue={user?.name} onUpdate={(value) => setUserField('name', value?.toString() || '')} />
           <Input label="Email" modelValue={user?.email} onUpdate={(value) => setUserField('email', value?.toString() || '')} />
-          <Input label="Phone Number" modelValue={user?.phone_number} onUpdate={(value) => setUserField('phone_number', value?.toString() || '')} />
+          <Input label="Phone Number" modelValue={user?.phoneNumber} onUpdate={(value) => setUserField('phoneNumber', value?.toString() || '')} />
           <Input
             label="Public Address"
             modelValue={user?.publicAddress}

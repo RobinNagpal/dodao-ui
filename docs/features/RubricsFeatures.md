@@ -68,20 +68,7 @@ influences creation of this decentralized rubrics application platform is is [Po
 - [ ] Using rubrics for evaluating Crowdfunding projects
 
 # Opportunities
+See [Opportunities](./rubrics/opportunities.md) for more details.
 
-### For rich philanthropists who want to get solutions and validation on solutions for a specific problem
-- Currently there is a huge divide in left and right. There is no clear solution for things like income inequality, 
-climate change, homosexuality, abortion, Ukraine war, Israel-Palestinian conflict, crime, drug addiction, etc.
-- Rich philanthropists can use this platform mention the problem and ask for solutions. They can put money out for the 
-best solution.
-- There are three actors in this case. The philanthropist, the evaluators, and the solution providers.
-- The evaluators will be carefully selected by us. 
-- The evaluation will be on a checklist + rubric.
-
-##### Challenges
-- How to get started? How do we get the first philanthropist?
-
-### NGOs, Governments, and Public Departments
-Exactly the same as above.
-
-
+# Home Page Content
+See [Home Page Content](./rubrics/homepage.md) for more details.

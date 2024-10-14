@@ -1,14 +1,14 @@
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { AcademySites } from './components/AcademySites';
-import { AIChatbot } from './components/AIChatbot';
-import { BlockchainCourses } from './components/BlockchainCourses';
-import { BlockchainDevelopmentTooling } from './components/BlockchainDevelopmentTooling';
+import Services from './components/Services';
 import DoDAOHelpButton from './components/DoDAOHelpButton';
 import { Footer } from './components/Footer';
 import { Introduction } from './components/Introduction';
 import { NavBar } from './components/NavBar';
 import { Hero } from './components/Hero';
 import TidbitsHub from './components/TidbitsHub';
+import Research from './components/Research';
+import { Education } from './components/Education';
 
 export default function DoDAOHome() {
   return (
@@ -19,9 +19,9 @@ export default function DoDAOHome() {
       <NavBar />
       <TidbitsHub />
       <AcademySites />
-      <AIChatbot />
-      <BlockchainCourses />
-      <BlockchainDevelopmentTooling />
+      <Research />
+      <Education />
+      <Services />
       <Footer />
     </PageWrapper>
   );

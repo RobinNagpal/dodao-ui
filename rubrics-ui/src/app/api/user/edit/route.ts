@@ -3,7 +3,7 @@ import { prisma } from '@/prisma';
 import { RubricUser } from '@prisma/client';
 
 export async function POST(req: Request) {
-  const { authProvider, email, username, name, phone_number, id, spaceId, image, publicAddress } = await req.json();
+  const { authProvider, email, username, name, phoneNumber, id, spaceId, image, publicAddress } = await req.json();
 
   const UserInput: Omit<RubricUser, 'id' | 'password'> = {
     authProvider,
@@ -11,7 +11,7 @@ export async function POST(req: Request) {
     username,
     name,
     emailVerified: new Date(),
-    phone_number,
+    phoneNumber,
     publicAddress,
     spaceId: spaceId,
     image,

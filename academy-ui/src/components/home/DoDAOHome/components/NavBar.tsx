@@ -10,10 +10,10 @@ const sections = [
     id: 'academy-sites',
     title: 'Academy Sites',
   },
-  { id: 'ai-chatbot', title: 'AI Chatbot' },
-  { id: 'blockchain-courses', title: 'Blockchain Courses' },
+  { id: 'research', title: 'Our Research' },
+  { id: 'education', title: 'Education' },
   {
-    id: 'blockchain-development-tooling',
+    id: 'services',
     title: 'Development Services',
   },
 ];

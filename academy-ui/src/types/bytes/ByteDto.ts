@@ -6,6 +6,11 @@ export enum ImageDisplayMode {
   Normal = 'Normal',
 }
 
+export enum ByteViewMode {
+  CardStepper = 'CardStepper',
+  FullScreenSwiper = 'FullScreenSwiper',
+}
+
 export interface ByteStepDto {
   content: string;
   contentAlign?: TextAlign;

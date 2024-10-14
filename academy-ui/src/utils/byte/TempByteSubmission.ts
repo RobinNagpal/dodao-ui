@@ -1,17 +1,17 @@
 import { UserDiscordInfoInput } from '@/graphql/generated/generated-types';
 
-export type StepItemResponse = string[] | string | UserDiscordInfoInput;
+export type ByteStepItemResponse = string[] | string | UserDiscordInfoInput;
 
-export type StepItemResponseMap = Record<string, StepItemResponse>;
+export type ByteStepItemResponseMap = Record<string, ByteStepItemResponse>;
 
-export type StepResponse = { isCompleted: boolean; isTouched: boolean; itemResponsesMap: StepItemResponseMap };
+export type ByteStepResponse = { isCompleted: boolean; isTouched: boolean; itemResponsesMap: ByteStepItemResponseMap };
 
-export type ByteResponsesMap = Record<string, StepResponse>;
+export type ByteStepResponsesMap = Record<string, ByteStepResponse>;
 
 // Add GuideSubmissionsQuery_guideSubmissions_result for bytes
 
 export interface TempByteSubmission {
   isPristine: boolean;
   isSubmitted: boolean;
-  stepResponsesMap: ByteResponsesMap;
+  stepResponsesMap: ByteStepResponsesMap;
 }

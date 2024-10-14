@@ -1,48 +1,70 @@
 'use client';
-import Button from '@dodao/web-core/components/core/buttons/Button';
-import Input from '@dodao/web-core/components/core/input/Input';
-import useEditUser from '@/components/user/Edit/useEditUser';
+
+import React, { useState, useEffect } from 'react';
+import WebCoreProfileEdit from '@dodao/web-core/components/profile/WebCoreProfileEdit';
+import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { User } from '@dodao/web-core/types/auth/User';
+import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { Session } from '@dodao/web-core/types/auth/Session';
-import React, { useEffect } from 'react';
-import { SpaceProps } from '@/contexts/withSpace';
-import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import Block from '@dodao/web-core/components/app/Block';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { useFetchUtils } from '@dodao/web-core/utils/api/useFetchUtils';
 
-function UpsertUserProfileInfo({ space }: SpaceProps) {
-  const { data: session, update } = useSession() as { data: Session | null; update: any };
-  const editUserHelper = useEditUser(session?.username!, update, space.id);
-
-  const { user, setUserField, upsertUser, upserting, initialize } = editUserHelper;
-
-  useEffect(() => {
-    initialize();
-  }, []);
-
-  return (
-    <PageWrapper>
-      <Block title="Edit User Profile">
-        <div className="">
-          <Input label="Email / Username" modelValue={user?.email} onUpdate={(value) => setUserField('email', value?.toString() || '')} disabled />
-          <Input label="Name" modelValue={user?.name} onUpdate={(value) => setUserField('name', value?.toString() || '')} />
-          <Input label="Phone Number" modelValue={user?.phone_number} onUpdate={(value) => setUserField('phone_number', value?.toString() || '')} />
-        </div>
-        <div className="mt-10">
-          <Button
-            variant="contained"
-            primary
-            loading={upserting}
-            disabled={upserting}
-            onClick={async () => {
-              await upsertUser();
-            }}
-          >
-            Save Profile
-          </Button>
-        </div>
-      </Block>
-    </PageWrapper>
-  );
+interface ProfileEditProps {
+  space: SpaceWithIntegrationsFragment;
 }
 
-export default UpsertUserProfileInfo;
+function ProfileEdit({ space }: ProfileEditProps) {
+  const { fetchData, updateData } = useFetchUtils();
+  const { data: session } = useSession() as { data: Session | null };
+  const [upserting, setUpserting] = useState(false);
+  const router = useRouter();
+  const defaultUserFields = {
+    id: '',
+    name: '',
+    authProvider: '',
+    email: '',
+    image: '',
+    emailVerified: new Date(),
+    phoneNumber: '',
+    publicAddress: '',
+    spaceId: '',
+    username: '',
+  };
+  const [user, setUser] = useState<User>(defaultUserFields);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const userData = await fetchData<User>(
+        `${getBaseUrl()}/api/${space.id}/queries/users/by-username?username=${session?.username}`,
+        'Error while fetching user'
+      );
+      setUser(userData || defaultUserFields);
+    };
+
+    if (session) {
+      fetchUser();
+    } else {
+      console.error('Session is not available');
+    }
+  }, [session]);
+
+  async function upsertUser(updatedUser: User) {
+    setUpserting(true);
+    const userReq: User = {
+      ...user,
+      name: updatedUser.name,
+      phoneNumber: updatedUser.phoneNumber,
+    };
+    await updateData<User, User>(`${getBaseUrl()}/api/${space.id}/users/${user.id}`, userReq, {
+      successMessage: 'User updated successfully',
+      errorMessage: 'Error while updating user',
+      redirectPath: '/',
+    });
+    setUpserting(false);
+  }
+
+  return <WebCoreProfileEdit user={user} saveUser={(user) => upsertUser(user)} loading={upserting} />;
+}
+
+export default ProfileEdit;
