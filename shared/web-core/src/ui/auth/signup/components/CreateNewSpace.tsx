@@ -6,6 +6,7 @@ import { WebCoreSpace } from '@dodao/web-core/types/space';
 import getProtocol from '@dodao/web-core/utils/api/getProtocol';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 interface CreateSpaceProps {
   upserting: boolean;
@@ -15,11 +16,17 @@ interface CreateSpaceProps {
 
 function CreateNewSpace({ upserting, onSubmit, createdSpace }: CreateSpaceProps) {
   const [project, setProject] = useState('');
-
+  const router = useRouter();
   return (
     <div>
       {createdSpace ? (
-        <FullPageModal open={true} onClose={() => {}} title={''}>
+        <FullPageModal
+          open={true}
+          onClose={() => {
+            router.push('/spaces/space-collections');
+          }}
+          title={''}
+        >
           <div className="flex flex-col items-center p-8 rounded-lg shadow-md pb-16">
             <div className="text-center">
               <h1 className="text-xl font-semibold">Space Created Successfully</h1>
