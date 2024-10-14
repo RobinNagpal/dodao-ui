@@ -35,7 +35,7 @@ export default function TidbitsHub() {
               <div className="lg:ml-auto lg:pl-4">
                 <div className="lg:max-w-lg">
                   <p className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Tidbits Hub</p>
-                  <p className="mt-6 text-lg leading-8">
+                  <p className="mt-6 text-lg leading-8 text-gray-500">
                     At Tidbits Hub, we&apos;ve tapped into understanding precisely what format and style of content resonate most with today&apos;s consumers.
                     Using this platform you can craft short, straightforward bite sized pieces of information which we call &quot;tidbits&quot; with each piece
                     containing 5-10 sentences. It provides quick understanding within 5 minutes, without the need for users to go through extensive material.
@@ -43,11 +43,11 @@ export default function TidbitsHub() {
                   <dl className="mt-10 max-w-xl space-y-8 text-base leading-7 lg:max-w-none">
                     {features.map((feature) => (
                       <div key={feature.name} className="relative pl-9">
-                        <dt className="inline font-bold">
+                        <dt className="inline font-bold text-gray-900">
                           <feature.icon className="absolute left-1 top-1 h-5 w-5 text-indigo-600" aria-hidden="true" />
                           {feature.name}
                         </dt>{' '}
-                        <dd className="inline">{feature.description}</dd>
+                        <dd className="inline text-gray-500">{feature.description}</dd>
                       </div>
                     ))}
                   </dl>
