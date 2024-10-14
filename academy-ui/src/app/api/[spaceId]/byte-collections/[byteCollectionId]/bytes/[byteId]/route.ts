@@ -10,7 +10,9 @@ import { prisma } from '@/prisma';
 import { ByteDto, ByteStepDto } from '@/types/bytes/ByteDto';
 import { UpsertByteInput } from '@/types/request/ByteRequests';
 import { ByteStepItem, Question } from '@/types/stepItems/stepItemDto';
+import { TidbitCollectionTags } from '@/utils/api/fetchTags';
 import { Byte } from '@prisma/client';
+import { revalidateTag } from 'next/cache';
 import { NextRequest, NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -107,6 +109,7 @@ async function putHandler(
       },
     });
   }
+  revalidateTag(TidbitCollectionTags.GET_TIDBIT_COLLECTIONS.toString());
   return NextResponse.json(upsertedByte as ByteDto, { status: 200 });
 }
 

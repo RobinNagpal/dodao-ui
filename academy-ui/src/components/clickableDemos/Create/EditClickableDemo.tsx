@@ -25,7 +25,6 @@ import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { getUploadedImageUrlFromSingedUrl } from '@dodao/web-core/utils/upload/getUploadedImageUrlFromSingedUrl';
 import html2canvas from 'html2canvas';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { revalidateTidbitCollections } from '@/utils/api/revalidateTags';
 import { useRouter } from 'next/navigation';
 
 interface EditClickableDemoProps {
@@ -171,7 +170,6 @@ function EditClickableDemo({ space, demoId, byteCollection, closeDemoEditModal }
   }, [demoId]);
 
   async function clickSubmit(byteCollection: ByteCollectionSummary) {
-    await revalidateTidbitCollections();
     handleSubmit(byteCollection);
   }
 

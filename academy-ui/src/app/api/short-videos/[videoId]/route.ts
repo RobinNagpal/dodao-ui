@@ -6,6 +6,8 @@ import { ByteCollectionItemType } from '@/app/api/helpers/byteCollection/byteCol
 import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { v4 as uuidv4 } from 'uuid';
 import { prisma } from '@/prisma';
+import { revalidateTag } from 'next/cache';
+import { TidbitCollectionTags } from '@/utils/api/fetchTags';
 
 async function getHandler(req: NextRequest, { params: { videoId } }: { params: { videoId: string } }) {
   const { searchParams } = new URL(req.url);
@@ -117,7 +119,7 @@ async function deleteHandler(req: NextRequest, { params: { videoId } }: { params
         archive: true,
       },
     });
-
+    revalidateTag(TidbitCollectionTags.GET_TIDBIT_COLLECTIONS.toString());
     return NextResponse.json({ status: 200, archivedShortVideo });
   } catch (error) {
     console.log(error);

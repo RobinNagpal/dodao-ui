@@ -1,7 +1,6 @@
 import { editByteCommonFunctions, GeneratedByte, KeyOfByteInput, UpdateByteFunctions } from '@/components/bytes/Edit/editByteHelper';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
-import { revalidateTidbitCollections } from '@/utils/api/revalidateTags';
 import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import { ByteDto, ImageDisplayMode } from '@/types/bytes/ByteDto';
 import { EditByteStep, EditByteType } from '@/types/request/ByteRequests';
@@ -185,7 +184,6 @@ export function useEditByte(
 
   const handleByteUpsert = async (byteCollection: ByteCollectionSummary) => {
     await saveViaMutation(async () => {
-      await revalidateTidbitCollections();
       const upsertByteInput = getByteInputFn(byte);
       const upsertResponse = await fetch(`${getBaseUrl()}/api/${space.id}/byte-collections/${byteCollection.id}/bytes/${upsertByteInput.id}`, {
         method: 'PUT',

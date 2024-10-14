@@ -10,6 +10,8 @@ import { sampleClickableDemo } from '@/utils/clickableDemos/EmptyClickableDemo';
 import { NextRequest, NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
 import { ByteCollectionItemType } from '../../../helpers/byteCollection/byteCollectionItemType';
+import { revalidateTag } from 'next/cache';
+import { TidbitCollectionTags } from '@/utils/api/fetchTags';
 
 async function getHandler(req: NextRequest, { params }: { params: { demoId: string; spaceId: string } }): Promise<NextResponse<ClickableDemoDto>> {
   const { demoId } = params;
@@ -45,6 +47,7 @@ async function deleteHandler(
       archive: true,
     },
   });
+  revalidateTag(TidbitCollectionTags.GET_TIDBIT_COLLECTIONS.toString());
   return NextResponse.json(updatedClickableDemo as ClickableDemoDto, { status: 200 });
 }
 async function postHandler(req: NextRequest, { params }: { params: { demoId: string; spaceId: string } }): Promise<NextResponse<ClickableDemoDto>> {
@@ -116,6 +119,7 @@ async function postHandler(req: NextRequest, { params }: { params: { demoId: str
       },
     });
   }
+  revalidateTag(TidbitCollectionTags.GET_TIDBIT_COLLECTIONS.toString());
   return NextResponse.json(clickableDemo as ClickableDemoDto, { status: 200 });
 }
 
