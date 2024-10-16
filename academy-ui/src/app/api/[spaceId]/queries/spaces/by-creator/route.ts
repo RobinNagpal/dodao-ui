@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/prisma';
 import { Space } from '@prisma/client';
 
-export async function GET(req: NextRequest,  { params }: { params: { spaceId: string } }): Promise<NextResponse<Space[] | { error: string }>> {
+export async function GET(req: NextRequest, { params }: { params: { spaceId: string } }): Promise<NextResponse<Space[] | { error: string }>> {
   const { searchParams } = new URL(req.url);
   const spaceId = params.spaceId;
   const username = searchParams.get('username');
@@ -22,7 +22,7 @@ export async function GET(req: NextRequest,  { params }: { params: { spaceId: st
     return NextResponse.json([], { status: 200 });
   } else {
     const spaces = await prisma.space.findMany({
-      where: { 
+      where: {
         id: { in: spaceIds },
         NOT: { id: spaceId },
       },
