@@ -16,7 +16,6 @@ interface SpaceCollectionGridProps {
 export default function SpaceCollectionsGrid({ spaceCollections, space, spaceCollectionsBaseUrl, isAdmin }: SpaceCollectionGridProps) {
   return (
     <>
-      {!spaceCollections?.length && (isAdmin ? <AddByteCollection space={space} /> : <NoByteCollections space={space} isAdmin={isAdmin} />)}
       {!!spaceCollections?.length && (
         <Grid2Cols>
           {spaceCollections.map((byteCollection, i) => (
@@ -28,7 +27,6 @@ export default function SpaceCollectionsGrid({ spaceCollections, space, spaceCol
               isAdmin={isAdmin}
             />
           ))}
-          {isAdmin! && <AddByteCollection space={space} />}
         </Grid2Cols>
       )}
     </>
