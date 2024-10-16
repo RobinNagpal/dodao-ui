@@ -1,10 +1,7 @@
+'use client';
+
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { useRouter } from 'next/navigation';
-
-export interface FetchDataOptions {
-  successMessage: string;
-  errorMessage: string;
-}
 
 export interface UpdateDataOptions {
   successMessage: string;

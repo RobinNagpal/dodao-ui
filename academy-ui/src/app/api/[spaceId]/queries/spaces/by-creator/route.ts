@@ -2,8 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/prisma';
 import { Space } from '@prisma/client';
 
-export async function GET(req: NextRequest): Promise<NextResponse<Space[] | { error: string }>> {
+export async function GET(req: NextRequest,  { params }: { params: { spaceId: string } }): Promise<NextResponse<Space[] | { error: string }>> {
   const { searchParams } = new URL(req.url);
+  const spaceId = params.spaceId;
   const username = searchParams.get('username');
 
   if (!username) {
@@ -21,7 +22,10 @@ export async function GET(req: NextRequest): Promise<NextResponse<Space[] | { er
     return NextResponse.json([], { status: 200 });
   } else {
     const spaces = await prisma.space.findMany({
-      where: { id: { in: spaceIds } },
+      where: { 
+        id: { in: spaceIds },
+        NOT: { id: spaceId },
+      },
     });
     return NextResponse.json(spaces as Space[], { status: 200 });
   }
