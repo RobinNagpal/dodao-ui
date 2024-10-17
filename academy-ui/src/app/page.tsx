@@ -1,7 +1,7 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import ChatHome from '@/chatbot/home/home';
 import { OpenAIModelID } from '@/chatbot/types/openai';
-import { PredefinedSpaces } from '@/chatbot/utils/app/constants';
+import { PredefinedSpaces } from '@dodao/web-core/src/utils/constants/constants';
 import DefaultHome from '@/components/home/DefaultHome/DefaultHome';
 import DoDAOHome from '@/components/home/DoDAOHome/DoDAOHome';
 import TidbitsHubHome from '@/components/home/TidbitsHub/TidbitsHubHome';
