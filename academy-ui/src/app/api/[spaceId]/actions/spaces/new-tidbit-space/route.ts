@@ -49,7 +49,7 @@ async function postHandler(req: NextRequest, { params }: { params: { spaceId: st
   };
 
   const existingUser = await prisma.user.findUnique({
-    where: { id: session.accountId },
+    where: { id: session.userId },
   });
 
   if (!existingUser) throw new Error('User does not exist');
@@ -69,7 +69,7 @@ async function postHandler(req: NextRequest, { params }: { params: { spaceId: st
 
     const updatedUser =
       existingUser.spaceId === mainSpaceId
-        ? await tx.user.update({ where: { id: session.accountId }, data: { spaceId: spaceData.id } })
+        ? await tx.user.update({ where: { id: session.userId }, data: { spaceId: spaceData.id } })
         : await tx.user.create({ data: newUserData });
 
     const createdSpace = await tx.space.create({

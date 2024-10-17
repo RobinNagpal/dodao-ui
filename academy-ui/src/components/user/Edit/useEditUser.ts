@@ -1,4 +1,5 @@
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { User } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -32,7 +33,7 @@ export default function useEditUser(userName: string, update: () => void, spaceI
   async function initialize() {
     if (userName) {
       try {
-        let response = await fetch(`/api/${spaceId}/queries/users/by-username`, {
+        let response = await fetch(`${getBaseUrl()}/api/${spaceId}/queries/users/by-username`, {
           method: 'GET',
           credentials: 'include',
           headers: {

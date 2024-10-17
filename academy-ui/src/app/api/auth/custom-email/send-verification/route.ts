@@ -61,6 +61,9 @@ async function postHandler(req: NextRequest, res: NextResponse) {
   const userEmail = defaultNormalizer(email);
 
   const defaultUser = { id: crypto.randomUUID(), email: userEmail, emailVerified: null };
+
+  // We do this because we want to allow to login on TidbitsHub only using the email. If a user create a space
+  // and then comes back to login via Tidbits hub, this flow will be invoked.
   const user =
     spaceId === PredefinedSpaces.TIDBITS_HUB
       ? await prisma.user.findFirst({ where: { email: userEmail } })

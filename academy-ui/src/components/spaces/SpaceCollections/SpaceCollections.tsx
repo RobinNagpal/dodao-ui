@@ -1,16 +1,17 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import { Space } from '@prisma/client';
-import { Suspense, useEffect, useState } from 'react';
-import { useFetchUtils } from '@dodao/web-core/utils/api/useFetchUtils';
 import SpaceCollectionsGrid from '@/components/spaces/SpaceCollections/View/SpaceCollectionsGrid';
-import { Session } from '@dodao/web-core/types/auth/Session';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
-import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import CollectionPageLoading from '@dodao/web-core/components/core/loaders/CollectionPageLoading';
-import { useSession } from 'next-auth/react';
 import Button from '@dodao/web-core/components/core/buttons/Button';
+import CollectionPageLoading from '@dodao/web-core/components/core/loaders/CollectionPageLoading';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import { Session } from '@dodao/web-core/types/auth/Session';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { useFetchUtils } from '@dodao/web-core/utils/api/useFetchUtils';
+import { Space } from '@prisma/client';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { Suspense, useEffect, useState } from 'react';
 
 interface SpaceCollectionsClientProps {
   space: SpaceWithIntegrationsFragment;
@@ -25,7 +26,7 @@ export default function SpaceCollections({ space }: SpaceCollectionsClientProps)
   useEffect(() => {
     const fetchSpaces = async () => {
       if (session) {
-        const fetchedSpaces = await fetchData<Space[]>(`/api/${space.id}/queries/spaces/by-creator`, 'Error while fetching spaces');
+        const fetchedSpaces = await fetchData<Space[]>(`${getBaseUrl()}/api/${space.id}/queries/spaces/by-creator`, 'Error while fetching spaces');
 
         if (fetchedSpaces && fetchedSpaces.length === 0) {
           router.push('/spaces/create');
