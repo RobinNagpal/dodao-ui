@@ -55,14 +55,22 @@ async function postHandler(req: NextRequest, { params }: { params: { spaceId: st
   if (!existingUser) throw new Error('User does not exist');
 
   const [space, user] = await prisma.$transaction(async (tx) => {
-    const userUpdateData = {
-      ...existingUser,
+    const newUserData = {
+      name: existingUser.name,
+      email: existingUser.email,
+      emailVerified: existingUser.emailVerified,
+      publicAddress: existingUser.publicAddress,
+      username: existingUser.username,
+      image: existingUser.image,
+      authProvider: existingUser.authProvider,
+      phoneNumber: existingUser.phoneNumber,
       spaceId: spaceData.id,
     };
+
     const updatedUser =
       existingUser.spaceId === mainSpaceId
         ? await tx.user.update({ where: { id: session.accountId }, data: { spaceId: spaceData.id } })
-        : await tx.user.create({ data: userUpdateData });
+        : await tx.user.create({ data: newUserData });
 
     const createdSpace = await tx.space.create({
       data: {
