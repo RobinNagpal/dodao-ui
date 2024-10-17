@@ -10,6 +10,7 @@ import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-typ
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import CollectionPageLoading from '@dodao/web-core/components/core/loaders/CollectionPageLoading';
 import { useSession } from 'next-auth/react';
+import Button from '@dodao/web-core/components/core/buttons/Button';
 
 interface SpaceCollectionsClientProps {
   space: SpaceWithIntegrationsFragment;
@@ -24,10 +25,7 @@ export default function SpaceCollections({ space }: SpaceCollectionsClientProps)
   useEffect(() => {
     const fetchSpaces = async () => {
       if (session) {
-        const fetchedSpaces = await fetchData<Space[]>(
-          `/api/${space.id}/queries/spaces/by-creator?username=${session.username}`,
-          'Error while fetching spaces'
-        );
+        const fetchedSpaces = await fetchData<Space[]>(`/api/${space.id}/queries/spaces/by-creator`, 'Error while fetching spaces');
 
         if (fetchedSpaces && fetchedSpaces.length === 0) {
           router.push('/spaces/create');
@@ -40,11 +38,20 @@ export default function SpaceCollections({ space }: SpaceCollectionsClientProps)
     fetchSpaces();
   }, [session, space.id, fetchData, router]);
 
+  const handleCreateSpaceClick = () => {
+    router.push('/spaces/create');
+  };
+
   return (
     <PageWrapper>
       <Suspense fallback={<CollectionPageLoading />}>
         <SpaceCollectionsGrid spaceCollections={spaces} space={space} spaceCollectionsBaseUrl={`/spaces`} isAdmin={session?.isAdminOfSpace} />
       </Suspense>
+      <div className="p-6 flex items-center justify-end gap-x-6">
+        <Button variant="contained" primary onClick={handleCreateSpaceClick}>
+          Create New Space
+        </Button>
+      </div>
     </PageWrapper>
   );
 }

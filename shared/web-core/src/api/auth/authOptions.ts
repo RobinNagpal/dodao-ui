@@ -80,14 +80,19 @@ export function getAuthOptions(
           if (!verificationToken) return null;
           const expired = verificationToken.expires.valueOf() < Date.now();
           if (expired) return null;
-          const user = await p.user.findUnique({
+          
+          const user = (credentials?.spaceId === 'tidbitshub' ? await p.user.findFirst({
+            where: {
+                email: verificationToken.identifier,
+            },
+          }) : await p.user.findUnique({
             where: {
               email_spaceId: {
                 email: verificationToken.identifier,
                 spaceId: credentials?.spaceId!,
               },
             },
-          });
+          }));
           if (!user) return null;
           return {
             id: user.id,

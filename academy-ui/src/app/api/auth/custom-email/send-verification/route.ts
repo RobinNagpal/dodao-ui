@@ -5,6 +5,7 @@ import { User } from 'next-auth/core/types';
 import { headers } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 import { defaultNormalizer, randomString, sendVerificationRequest } from '@dodao/web-core/api/auth/custom-email/send-verification';
+import { PredefinedSpaces } from '@dodao/web-core/src/utils/constants/constants';
 
 const createUser = async (user: User & { email: string }, spaceId: string) => {
   console.log('######### signIn - Creating new user #########');
@@ -57,14 +58,18 @@ async function postHandler(req: NextRequest, res: NextResponse) {
 
   console.log('request', JSON.stringify(req.cookies.getAll()));
 
-  const normalizer = defaultNormalizer;
-  const userEmail = normalizer(email);
+  const userEmail = defaultNormalizer(email);
 
   const defaultUser = { id: crypto.randomUUID(), email: userEmail, emailVerified: null };
-  const user = ((await prisma.user.findUnique({ where: { email_spaceId: { email: userEmail, spaceId } } })) ?? defaultUser) as User & { email: string };
+  const user =
+    spaceId === PredefinedSpaces.TIDBITS_HUB
+      ? await prisma.user.findFirst({ where: { email: userEmail } })
+      : await prisma.user.findUnique({ where: { email_spaceId: { email: userEmail, spaceId } } });
 
   console.log('user', user);
-  await createUser(user, spaceId);
+  if (!user) {
+    await createUser(defaultUser, spaceId);
+  }
 
   const token = randomString(32);
 
