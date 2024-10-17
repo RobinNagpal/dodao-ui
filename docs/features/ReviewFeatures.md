@@ -68,7 +68,10 @@ influences creation of this decentralized rubrics application platform is is [Po
 - [ ] Using rubrics for evaluating Crowdfunding projects
 
 # Opportunities
-See [Opportunities](./rubrics/opportunities.md) for more details.
+See [Opportunities](./review/opportunities.md) for more details.
 
 # Home Page Content
-See [Home Page Content](./rubrics/homepage.md) for more details.
+See [Home Page Content](./review/homepage.md) for more details.
+
+# Growth Plan
+See [Growth Plan](./review/growth_plan.md) for more details.
