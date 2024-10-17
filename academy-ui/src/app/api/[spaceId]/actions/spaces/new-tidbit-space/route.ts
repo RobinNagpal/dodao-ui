@@ -9,7 +9,8 @@ import { withErrorHandlingV1 } from '@/app/api/helpers/middlewares/withErrorHand
 import { Space } from '@prisma/client';
 import { LoginProviders } from '@dodao/web-core/types/deprecated/models/enums';
 
-async function postHandler(req: NextRequest): Promise<NextResponse<CreateSpaceResponse>> {
+async function postHandler(req: NextRequest, { params }: { params: { spaceId: string } }): Promise<NextResponse<CreateSpaceResponse>> {
+  const mainSpaceId = params.spaceId;
   const session = await getDecodedJwtFromContext(req);
   if (!session) throw new Error('User not present in session');
 
@@ -47,21 +48,40 @@ async function postHandler(req: NextRequest): Promise<NextResponse<CreateSpaceRe
     tidbitsHomepage: null,
   };
 
-  // Use a transaction to group the space creation and user update
-  const [space, user] = await prisma.$transaction([
-    prisma.space.create({
+  const existingUser = await prisma.user.findUnique({
+    where: { id: session.userId },
+  });
+
+  if (!existingUser) throw new Error('User does not exist');
+
+  const [space, user] = await prisma.$transaction(async (tx) => {
+    const newUserData = {
+      name: existingUser.name,
+      email: existingUser.email,
+      emailVerified: existingUser.emailVerified,
+      publicAddress: existingUser.publicAddress,
+      username: existingUser.username,
+      image: existingUser.image,
+      authProvider: existingUser.authProvider,
+      phoneNumber: existingUser.phoneNumber,
+      spaceId: spaceData.id,
+    };
+
+    const updatedUser =
+      existingUser.spaceId === mainSpaceId
+        ? await tx.user.update({ where: { id: session.userId }, data: { spaceId: spaceData.id } })
+        : await tx.user.create({ data: newUserData });
+
+    const createdSpace = await tx.space.create({
       data: {
         ...spaceInput,
         inviteLinks: spaceInput.inviteLinks || {},
         themeColors: undefined,
         tidbitsHomepage: undefined,
       },
-    }),
-    prisma.user.update({
-      where: { id: session.accountId },
-      data: { spaceId: spaceData.id },
-    }),
-  ]);
+    });
+    return [createdSpace, updatedUser];
+  });
 
   return NextResponse.json({ space, user }, { status: 200 });
 }

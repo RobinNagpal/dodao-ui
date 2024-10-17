@@ -35,10 +35,7 @@ function ProfileEdit({ space }: ProfileEditProps) {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const userData = await fetchData<User>(
-        `${getBaseUrl()}/api/${space.id}/queries/users/by-username?username=${session?.username}`,
-        'Error while fetching user'
-      );
+      const userData = await fetchData<User>(`${getBaseUrl()}/api/${space.id}/queries/users/by-username`, 'Error while fetching user');
       setUser(userData || defaultUserFields);
     };
 

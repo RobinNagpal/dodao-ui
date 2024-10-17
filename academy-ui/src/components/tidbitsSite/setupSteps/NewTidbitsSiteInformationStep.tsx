@@ -1,6 +1,6 @@
 'use client';
 
-import { PredefinedSpaces } from '@/chatbot/utils/app/constants';
+import { PredefinedSpaces } from '@dodao/web-core/src/utils/constants/constants';
 import UploadInput from '@/components/app/UploadInput';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Input from '@dodao/web-core/components/core/input/Input';

@@ -2,6 +2,7 @@ import { createHash } from '@dodao/web-core/api/auth/createHash';
 import { DoDaoJwtTokenPayload, Session } from '@dodao/web-core/types/auth/Session';
 import { User } from '@dodao/web-core/types/auth/User';
 import { VerificationToken } from '@dodao/web-core/types/auth/VerificationToken';
+import { PredefinedSpaces } from '@dodao/web-core/utils/constants/constants';
 import jwt from 'jsonwebtoken';
 import { AuthOptions, RequestInternal } from 'next-auth';
 import { Adapter } from 'next-auth/adapters';
@@ -80,14 +81,24 @@ export function getAuthOptions(
           if (!verificationToken) return null;
           const expired = verificationToken.expires.valueOf() < Date.now();
           if (expired) return null;
-          const user = await p.user.findUnique({
-            where: {
-              email_spaceId: {
-                email: verificationToken.identifier,
-                spaceId: credentials?.spaceId!,
-              },
-            },
-          });
+
+          // We do this because we want to allow to login on TidbitsHub only using the email. If a user create a space
+          // and then comes back to login via Tidbits hub, this flow will be invoked.
+          const user =
+            credentials?.spaceId === PredefinedSpaces.TIDBITS_HUB
+              ? await p.user.findFirst({
+                  where: {
+                    email: verificationToken.identifier,
+                  },
+                })
+              : await p.user.findUnique({
+                  where: {
+                    email_spaceId: {
+                      email: verificationToken.identifier,
+                      spaceId: credentials?.spaceId!,
+                    },
+                  },
+                });
           if (!user) return null;
           return {
             id: user.id,

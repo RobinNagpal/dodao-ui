@@ -1,6 +1,6 @@
 'use client';
 
-import { PredefinedSpaces } from '@/chatbot/utils/app/constants';
+import { PredefinedSpaces } from '@dodao/web-core/src/utils/constants/constants';
 import ButtonLarge from '@dodao/web-core/components/core/buttons/Button';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import CreateContentModalContents from '@/components/main/TopNav/CreateContentModalContents';
