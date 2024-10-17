@@ -42,7 +42,11 @@
 
 # In Next PR - Multiple spaces for user
 
----
+- [ ] Add a page where user can see all of his spaces
+- [ ] Handle current logic to have multiple users with different space ids
+- [ ] fetch user spaces according to new logic
+- [ ] Add a button to create a new space (after first time create)
+- [ ] Add check to handle login using email only
 
 # In Next PR - Image Upload
 
