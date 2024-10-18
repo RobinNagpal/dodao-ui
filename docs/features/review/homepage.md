@@ -66,6 +66,8 @@ assessments get their bond back along with a reward. If the evaluation is poor o
 
 # Our Aim - Shaping the Future of Governance
 
+TODO - Make it generic and use "Public Projects" instead of "Government Policies"
+
 Governments don’t operate in absolutes—policies exist on a spectrum, with people agreeing with some and opposing others.
 
 While democracy remains the most effective form of government, its processes are built on centuries-old systems.
