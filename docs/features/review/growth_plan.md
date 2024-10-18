@@ -5,6 +5,6 @@
 
 # Growing the reviewers
 ### Reputation Token
-We can create reputation token which can be given to the people submitting the reviews. We can talk to professors 
-of the universities and get them to give reputation tokens to the students who submit solutions and reviews.
+We can create reputation token/s which can be given to the people submitting the reviews. We can talk to professors 
+to have students submit solutions and reviews.
 

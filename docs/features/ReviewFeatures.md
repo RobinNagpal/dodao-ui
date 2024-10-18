@@ -7,8 +7,10 @@ We then decided to start with a simple decentralized rating and review platform.
 ### Users
 This platform can be used in a few ways:
 - For solutions to problems and review of those solutions
-- For rating and reviews of things "Financial Assets", "Crypto Projects", "Proposals", "Crowdfunding Projects", "IPOs", 
-NGO, environment work, etc.
+- For rating and reviews of things "Government Policies", "Corporate Policies(CSR)", "Financial Assets", "Crypto Projects", "Proposals", "Crowdfunding Projects", "IPOs", 
+NGO, environment work, Carbon Credit Projects, etc.
+  - NGOs - as natural calamities happen, those are NGOs are focused on. 
+  - 
 
 ### Review Methods
 Other things to note:
