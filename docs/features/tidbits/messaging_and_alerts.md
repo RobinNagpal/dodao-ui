@@ -15,13 +15,16 @@ Check the following on the below features:
       - [ ] when changing between steps the screen is empty for a small time we can add some loader their as well
       - [ ] sometimes the image take more time we can add loader for it
       - ![empty box](https://github.com/RobinNagpal/dodao-ui/blob/main/academy-ui//docs/images/imageLoading.png)
-      - [ ] incase of wrong answer in the message for wrong answer is not appearing correctly
+      - [ ] incase of wrong answer the message for wrong answer is not appearing correctly
       - ![questionError](https://github.com/RobinNagpal/dodao-ui/blob/main/academy-ui//docs/images/questionError.png)
     - [ ] Working Fine
       - [ ] The notification for the completion of tidbit is Fine
       - [ ] Also the loading of the first screen of tidbit is Fine
       - ![firstScreen](https://github.com/RobinNagpal/dodao-ui/blob/main/academy-ui//docs/images/firstScreen.png)
   - [ ] Creation/Editing
+      - [ ] The creation error is always the "oops something went wrong" should'nt it be specific.
+      - [ ] Also how would the new user know that what things he can add in the tidbit as i had to find the question adding option
+      - [ ] 
 - Clickable Demos
   - [ ] Creation/Editing
   - [ ] View and completions
