@@ -15,11 +15,13 @@
   - [x] Elixir AMO
   - [ ] Everything is alAligned
 
+
+
 ### Tidbit - What is Alchemix?
 
 - [x] put "vault" heading before "alAssets" in section 'What is Alchemix?' (point 3)
 - [x] update "Transmuter" heading in section 'What is Alchemix?' (point 5 & 6)
-- [x] rewrite heading 'alAssets' from section 'What is Alchemix?' (point 2)
+- [x] rewrite heading 'alAssets' from section 'What is Alchemix?' (point 2) and update the content - "alAssets are the ...” CHANGE TO: alAssets are the ...."
 - [x] correct misspelled 'anytim' in heading 'vault' of section 'What is Alchemix?' (point 13)
 
 ### Tidbit - Elixir AMO
@@ -119,3 +121,10 @@
 
 - [ ] images are stretched (point 4)
 - [ ] separate page/tab for simulations (point 21)
+
+
+# Questions
+1) Do we need to move Clickable Demos? If yes, where?
+   1. Deposit into Transmuter needs to be moved from fourth to third collection
+2) Do we need to move tidbits?
+
