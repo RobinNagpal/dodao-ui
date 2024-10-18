@@ -29,7 +29,7 @@
 ### Tidbit - Self Liquidate & Early Repay
 
 - [x] update "Manual loan repay" heading in section 'Self liquidate & Repay' (point 7)
-- [ ] remove tidbit "Self liquidate and early repay"
+- [ ] remove tidbit "Self liquidate and early repay" (move to new tidbit 'What is Transmuter') (point 8)
 
 ### Tidbit - Yield Opportunities
 
@@ -56,8 +56,8 @@
 
 ### Tidbit - Everything is alAligned
 
-- [ ] remove heading 'Focus on users' from section 'Everything is alAligned' (point 15)
-- [ ] rewrite heading 'Alchemix Fee' from section 'Everything is alAligned' (point 16)
+- [x] remove heading 'Focus on users' from section 'Everything is alAligned' (point 15)
+- [x] rewrite heading 'Alchemix Fee' from section 'Everything is alAligned' (point 16)
 - [x] delete heading 'Alignment of the Alchemix' from section 'Everything is alAligned' (point 18)
 
 ### Tidbit - alAsset price scenarios
