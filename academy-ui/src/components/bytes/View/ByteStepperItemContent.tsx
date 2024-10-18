@@ -19,7 +19,7 @@ import { TextAlign } from '@dodao/web-core/types/ui/TextAlign';
 import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
 import Image from 'next/image';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 interface ByteStepperItemContentProps {
@@ -50,38 +50,69 @@ function getTailwindTextAlignmentClass(textAlignment: TextAlign) {
   }
 }
 
-function SwiperFullScreenImageContent(props: ByteStepperItemContentProps) {
-  const { step, space, width, height } = props;
+interface FullScreenImageProps {
+  space: SpaceWithIntegrationsFragment;
+  imageUrl: string;
+  width: number;
+  height: number;
+  className?: string;
+}
 
-  const svg = `
-  <svg xmlns='http://www.w3.org/2000/svg' width='2' height='2'>
-    <rect width='100%' height='100%' fill='${space.themeColors?.blockBg || '#ccc'}' opacity='0.6'/>
-  </svg>
-`;
-
-  const blurDataURL = `data:image/svg+xml;base64,${Buffer.from(svg).toString('base64')}`;
-
+export function FullScreenImage({ space, imageUrl, width, height, className = '' }: FullScreenImageProps) {
   const maxHeight = height - 200;
   const maxWidth = width * 0.8;
+
+  const [imageDimensions, setImageDimensions] = useState({ width: maxWidth, height: maxHeight });
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
+
+  const svg = `
+    <svg xmlns='http://www.w3.org/2000/svg' width='2' height='2'>
+      <rect width='100%' height='100%' fill='${space.themeColors?.blockBg || '#ccc'}' opacity='0.6'/>
+    </svg>
+  `;
+  const blurDataURL = `data:image/svg+xml;base64,${Buffer.from(svg).toString('base64')}`;
+
+  return (
+    <Image
+      src={imageUrl}
+      alt="byte"
+      className={className}
+      placeholder="blur"
+      blurDataURL={blurDataURL}
+      width={imageDimensions.width}
+      height={imageDimensions.height}
+      style={{
+        transition: 'opacity 500ms ease-in-out',
+      }}
+      onLoadingComplete={({ naturalWidth, naturalHeight }) => {
+        const aspectRatio = naturalWidth / naturalHeight;
+        let displayWidth = maxWidth;
+        let displayHeight = displayWidth / aspectRatio;
+
+        if (displayHeight > maxHeight) {
+          displayHeight = maxHeight;
+          displayWidth = displayHeight * aspectRatio;
+        }
+
+        setImageDimensions({ width: displayWidth, height: displayHeight });
+        setIsImageLoaded(true);
+      }}
+    />
+  );
+}
+
+function SwiperFullScreenImageContent(props: ByteStepperItemContentProps) {
+  const { step, space, width, height } = props;
 
   return (
     <div style={{ width: '100vw' }}>
       {step.imageUrl && (
-        <div className="flex justify-center align-center ">
-          <Image
-            src={step.imageUrl}
-            alt="byte"
-            className={`rounded ${styles.imgContainer}`}
-            height={maxHeight}
-            width={maxWidth}
-            style={{ maxWidth: maxWidth, maxHeight: maxHeight }}
-            placeholder="blur"
-            blurDataURL={blurDataURL}
-          />
+        <div className="flex justify-center align-center">
+          <FullScreenImage space={space} width={width} height={height} imageUrl={step.imageUrl} className={`rounded ${styles.imgContainer}`} />
         </div>
       )}
       <div className="flex justify-center w-full mt-4">
-        <h3 className="text-lg">
+        <h3 className="text-lg text-color">
           {step.name} : {step.content}
         </h3>
       </div>
@@ -90,55 +121,23 @@ function SwiperFullScreenImageContent(props: ByteStepperItemContentProps) {
 }
 
 function NormalFullScreenImageContent(props: ByteStepperItemContentProps) {
-  const { byte, step, space, width, height } = props;
+  const { step, space, width, height } = props;
 
   if (!step.imageUrl) return null;
 
-  const svg = `
-  <svg xmlns='http://www.w3.org/2000/svg' width='2' height='2'>
-    <rect width='100%' height='100%' fill='${space.themeColors?.blockBg || '#ccc'}' opacity='0.6'/>
-  </svg>
-`;
-
-  const blurDataURL = `data:image/svg+xml;base64,${Buffer.from(svg).toString('base64')}`;
-
-  const maxHeight = height - 200;
-  const maxWidth = (width * 9) / 10;
-
   return createPortal(
     <div className="absolute left-20 right-20 bottom-20 top-20 z-20">
-      {width > height ? (
-        <Image
-          src={step.imageUrl}
-          alt="byte"
-          style={{ width: maxWidth, maxHeight: maxHeight }}
-          height={maxHeight}
-          width={maxWidth}
-          className={`rounded z-20 mx-auto ${styles.imgContainer}`}
-          placeholder="blur"
-          blurDataURL={blurDataURL}
-        />
-      ) : (
-        <Image
-          src={step.imageUrl}
-          alt="byte"
-          style={{ maxHeight: maxHeight }}
-          height={maxHeight}
-          width={width}
-          className={`rounded z-20 mx-auto ${styles.imgContainer}`}
-          placeholder="blur"
-          blurDataURL={blurDataURL}
-        />
-      )}
-      <div id="heading" className={`flex justify-center w-full mt-1 ${styles.fullScreenContent}`}>
-        <h1 className="text-lg">
-          {step.name || byte.name} : {step.content}
-        </h1>
+      <FullScreenImage imageUrl={step.imageUrl} space={space} width={width} height={height} className={`rounded z-20 mx-auto ${styles.imgContainer}`} />
+      <div className="flex justify-center w-full mt-4">
+        <h3 className="text-lg text-color">
+          {step.name} : {step.content}
+        </h3>
       </div>
     </div>,
     document.body
   );
 }
+
 export default function ByteStepperItemContent(props: ByteStepperItemContentProps) {
   const { byte, step, space, viewByteHelper, activeStepOrder, isSwiper, width, height, isShortScreen } = props;
 

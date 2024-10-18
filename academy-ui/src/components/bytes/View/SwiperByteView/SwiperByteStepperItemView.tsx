@@ -39,7 +39,6 @@ const style: CSSProperties = {
 
 const renderBullet = (index: number, className: string, byte: ByteDto, activeStepOrder: number) => {
   const isCompleted = index < activeStepOrder;
-  console.log('isCompleted', isCompleted, index, activeStepOrder);
   return `
 <div class="flex custom-swiper-bullet">
   <span class="mr-2 mt-3 swiper-pagination-custom-text ${isCompleted ? 'completed' : ''}">${byte.steps?.[index].name}</span>
@@ -61,9 +60,8 @@ function SwiperByteStepperItemView({ viewByteHelper, step, byte, space, setByteS
   const isShortScreen = height <= 690;
   const showClickForNextStep = step.stepItems?.length > 0 && viewByteHelper.isStepTouched(step.uuid);
   const showScrollDown = activeStepOrder == 0 && !viewByteHelper.isStepTouched(step.uuid);
-  console.log('showScrollDown', showScrollDown, 'activeStepOrder', activeStepOrder, 'isStepTouched', viewByteHelper.isStepTouched(step.uuid));
   return (
-    <div className="w-full flex justify-center mr-20" style={style}>
+    <div className="w-full flex justify-center" style={style}>
       <div className={`${styles.swiperSlides}`}>
         <Swiper
           direction={'vertical'}
