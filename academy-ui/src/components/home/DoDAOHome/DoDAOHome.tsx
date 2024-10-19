@@ -1,14 +1,14 @@
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { AcademySites } from './components/AcademySites';
-import Services from './components/Services';
 import DoDAOHelpButton from './components/DoDAOHelpButton';
+import { Education } from './components/Education';
 import { Footer } from './components/Footer';
+import { Hero } from './components/Hero';
 import { Introduction } from './components/Introduction';
 import { NavBar } from './components/NavBar';
-import { Hero } from './components/Hero';
-import TidbitsHub from './components/TidbitsHub';
 import Research from './components/Research';
-import { Education } from './components/Education';
+import Services from './components/Services';
+import TidbitsHub from './components/TidbitsHub';
 
 export default function DoDAOHome() {
   return (
