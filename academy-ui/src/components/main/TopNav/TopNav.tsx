@@ -1,4 +1,4 @@
-import DoDAOHomeTopNav from '@/components/home/DoDAOHome/components/TopNav';
+import DoDAOHomeTopNav from '@/components/home/DoDAOHome/components/DoDAOHomeTopNav';
 import { SpaceProps } from '@/contexts/withSpace';
 import { PredefinedSpaces } from '@dodao/web-core/utils/constants/constants';
 import React from 'react';
