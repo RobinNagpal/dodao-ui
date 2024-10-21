@@ -1,10 +1,10 @@
 import ByteStepperItemContent from '@/components/bytes/View/ByteStepperItemContent';
-import { UseViewByteHelper } from '@/components/bytes/View/useViewByteHelper';
+import { LAST_STEP_UUID, UseViewByteHelper } from '@/components/bytes/View/useViewByteHelper';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import useWindowDimensions from '@/hooks/useWindowDimensions';
 import { ByteDto, ByteStepDto, ImageDisplayMode } from '@/types/bytes/ByteDto';
-import { CSSProperties, useRef } from 'react';
-
+import { CSSProperties, useRef, useState } from 'react';
+import Button from '@dodao/web-core/components/core/buttons/Button';
 import { Keyboard, Mousewheel, Navigation, Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -13,6 +13,8 @@ import 'swiper/css/virtual';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { NavigationOptions } from 'swiper/types';
 import styles from './SwiperlByteStepperItemView.module.scss';
+import { useRouter } from 'next/navigation';
+
 
 interface ByteStepperItemWithProgressBarProps {
   byte: ByteDto;
@@ -20,6 +22,7 @@ interface ByteStepperItemWithProgressBarProps {
   space: SpaceWithIntegrationsFragment;
   viewByteHelper: UseViewByteHelper;
   setByteSubmitted: (submitted: boolean) => void;
+  viewByteModalClosedUrl: string;
 }
 
 const style: CSSProperties = {
@@ -49,7 +52,11 @@ const renderBullet = (index: number, className: string, byte: ByteDto, activeSte
 </div>`;
 };
 
-function SwiperByteStepperItemView({ viewByteHelper, step, byte, space, setByteSubmitted }: ByteStepperItemWithProgressBarProps) {
+function SwiperByteStepperItemView({ viewByteHelper, step, byte, space, setByteSubmitted ,viewByteModalClosedUrl}: ByteStepperItemWithProgressBarProps) {
+  const [isCloseButtonDisabled, setIsCloseButtonDisabled] = useState(false);
+  
+  const router = useRouter();
+
   const { activeStepOrder } = viewByteHelper;
 
   // See - https://stackoverflow.com/a/69238830/440432
@@ -57,6 +64,8 @@ function SwiperByteStepperItemView({ viewByteHelper, step, byte, space, setByteS
   const navigationNextRef = useRef(null);
 
   const { width, height } = useWindowDimensions();
+
+  const isByteCompletedStep = step.uuid === LAST_STEP_UUID;
 
   const isShortScreen = height <= 690;
   const showClickForNextStep = step.stepItems?.length > 0 && viewByteHelper.isStepTouched(step.uuid);
@@ -132,6 +141,22 @@ function SwiperByteStepperItemView({ viewByteHelper, step, byte, space, setByteS
                 isShortScreen={isShortScreen}
                 isSwiper={true}
               />
+              {isByteCompletedStep && (
+            <Button
+              onClick={() => {
+                setIsCloseButtonDisabled(true); // Disable the button when clicked
+                router.push(viewByteModalClosedUrl);
+                router.refresh();
+              }}
+              variant="contained"
+              className="float-right w-[150px] mr-2 sm:mr-0"
+              primary={true}
+              disabled={isCloseButtonDisabled} // Set disabled property
+            >
+              <span>Close</span>
+              <span className="ml-2 font-bold">&#8594;</span>
+            </Button>
+          )}
             </SwiperSlide>
           ))}
           <div

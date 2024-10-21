@@ -260,7 +260,7 @@ export function useViewByteHelper({ space, byteId, stepOrder, fetchByteFn }: Use
       if (result) {
         showNotification({
           type: 'success',
-          message: "Tidbit submitted.Close the Modal to continue your learning journey.",
+          message: 'Tidbit submitted.Close the Modal to continue your learning journey.',
           heading: 'Success 🎉',
         });
 
