@@ -16,7 +16,7 @@ const coreValues = [
   {
     name: 'Hard Work',
     description:
-      'Working hard effortlessly is a great blessing. By focusing on the right things and having the right team, we can work hard without feeling burdened.',
+      'Being able to work hard without feeling drained is a true blessing. We believe that when we focus on what truly matters and surround ourselves with the right team, hard work becomes more fulfilling and less of a forced effort.',
     icon: WrenchIcon,
   },
   {
