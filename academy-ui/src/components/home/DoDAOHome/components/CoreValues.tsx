@@ -28,24 +28,24 @@ const coreValues = [
   {
     name: 'Collective Growth',
     description:
-      'Though we are still far from our goals, we believe each day should be full of learning and growth. We promise intellectual growth every day. Once we find the right business area, we aim to grow financially as a team too.',
+      "Even though we haven't reached our goals yet, we believe every day should be about learning and growing. We commit to growing our knowledge each day. Once we find the right business area, we aim to achieve financial growth together as a team.",
     icon: ArrowTrendingUpIcon,
   },
 ];
 
 export default function CoreValues() {
   return (
-    <div className="bg-white py-8 sm:py-8">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl lg:text-center">
+    <div className="py-8 mt-8 bg-gray-50">
+      <div className="mx-auto px-6 w-full">
+        <div className="mx-auto max-w-2xl text-center lg:text-center">
           <h2 className="text-base font-semibold leading-7 text-indigo-600">Our Core Values</h2>
-          <p className="mt-2 text-pretty text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl lg:text-balance">What We Believe In</p>
+          <p className="mt-2 text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">What We Believe In</p>
           <p className="mt-6 text-lg leading-8 text-gray-600">Our journey is guided by our core values. They shape our actions and decisions every day.</p>
         </div>
-        <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-4xl">
-          <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-10 lg:max-w-none lg:grid-cols-2 lg:gap-y-16">
-            {coreValues.map((value) => (
-              <div key={value.name} className="relative pl-16">
+        <div className="mx-auto mt-16 max-w-6xl">
+          <dl className="flex flex-wrap justify-center gap-y-10">
+            {coreValues.map((value, index) => (
+              <div key={value.name} className={`relative px-16 w-full sm:w-1/2 ${index === coreValues.length - 1 ? 'sm:mx-auto' : ''}`}>
                 <dt className="text-base font-semibold leading-7 text-gray-900">
                   <div className="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600">
                     <value.icon aria-hidden="true" className="h-6 w-6 text-white" />
