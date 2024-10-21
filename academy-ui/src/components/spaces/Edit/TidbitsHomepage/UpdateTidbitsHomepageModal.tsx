@@ -35,7 +35,7 @@ export default function UpdateTidbitsHomepageModal(props: { space: SpaceWithInte
             variant="contained"
             primary
             loading={updating}
-            disabled={tidbitsHomepage.heading.length === 0 || tidbitsHomepage.shortDescription.length === 0}
+            disabled={tidbitsHomepage?.heading?.length === 0 || tidbitsHomepage?.shortDescription?.length === 0}
             onClick={async () => {
               const bool = await updateTidbitsHomepage();
               if (bool) props.onClose();

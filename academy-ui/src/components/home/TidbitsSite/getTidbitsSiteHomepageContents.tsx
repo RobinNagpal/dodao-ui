@@ -21,8 +21,17 @@ export async function getTidbitsSiteHomepageContents(space: SpaceWithIntegration
   });
   const byteCollections: ByteCollectionSummary[] = response.data.byteCollections;
 
+  const tidbitsHomepage = space?.tidbitsHomepage;
   return (
     <PageWrapper>
+      {tidbitsHomepage && (
+        <div className="text-center">
+          {tidbitsHomepage.heading && (
+            <h1 className="text-balance text-2xl font-bold tracking-tight sm:text-2xl primary-text-color">{tidbitsHomepage.heading}</h1>
+          )}
+          {tidbitsHomepage.shortDescription && <p className="mt-2 mb-6 text-lg leading-8">{tidbitsHomepage.shortDescription}</p>}
+        </div>
+      )}
       <Suspense fallback={<CollectionPageLoading />}>
         <ByteCollectionsGrid
           byteCollections={byteCollections}

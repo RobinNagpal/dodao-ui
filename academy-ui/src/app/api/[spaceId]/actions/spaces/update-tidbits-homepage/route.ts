@@ -3,6 +3,8 @@ import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
 import { checkEditSpacePermission } from '@/app/api/helpers/space/checkEditSpacePermission';
 import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { prisma } from '@/prisma';
+import { SpaceTags } from '@/utils/api/fetchTags';
+import { revalidateTag } from 'next/cache';
 import { NextRequest, NextResponse } from 'next/server';
 
 async function postHandler(req: NextRequest) {
@@ -21,6 +23,8 @@ async function postHandler(req: NextRequest) {
       id: spaceId,
     },
   });
+
+  revalidateTag(SpaceTags.GET_SPACE.toString());
 
   return NextResponse.json({ space }, { status: 200 });
 }

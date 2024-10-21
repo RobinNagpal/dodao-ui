@@ -1,7 +1,7 @@
-import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { SpaceWithIntegrationsFragment, TidbitsHomepage } from '@/graphql/generated/generated-types';
-import { TidbitsHomepageError } from '@dodao/web-core/types/errors/error';
 import { useI18 } from '@/hooks/useI18';
+import { TidbitsHomepageError } from '@dodao/web-core/types/errors/error';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useState } from 'react';
 
@@ -60,14 +60,14 @@ export function useEditTidbitsHomepage(space: SpaceWithIntegrationsFragment): Up
     }
     try {
       setUpdating(true);
-      const response = await fetch(`${getBaseUrl()}/api/spaces/update-tidbits-homepage`, {
+      const response = await fetch(`${getBaseUrl()}/api/${space.id}/actions/spaces/update-tidbits-homepage`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           spaceId: space.id,
-          input: {
+          tidbitsHomepage: {
             heading: tidbitsHomepage.heading,
             shortDescription: tidbitsHomepage.shortDescription,
           },

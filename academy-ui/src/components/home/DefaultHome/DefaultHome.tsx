@@ -29,15 +29,9 @@ function DefaultHome({ space }: { space: SpaceWithIntegrationsFragment }) {
           </Grid2Cols>
         </div>
         <div className="flex align-center justify-center mb-24">
-          {space.id === 'life-insurance-tips' ? (
-            <GetStartedButton href="/tidbit-collections">
-              Get started <span aria-hidden="true">→</span>
-            </GetStartedButton>
-          ) : (
-            <GetStartedButton href={space.id === 'uniswap-eth-1' ? '/courses' : '/guides'}>
-              Get started <span aria-hidden="true">→</span>
-            </GetStartedButton>
-          )}
+          <GetStartedButton href={space.id === 'uniswap-eth-1' ? '/courses' : '/guides'}>
+            Get started <span aria-hidden="true">→</span>
+          </GetStartedButton>
         </div>
         <div className="px-[36px] sm:px-[24px]">
           <Grid2Cols>
