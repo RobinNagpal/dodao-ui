@@ -4,7 +4,7 @@ const coreValues = [
   {
     name: 'Right Intention',
     description:
-      "Inspired by the Buddha's Eightfold Path, it's important to start with the right intentions. We aim to serve our users, develop solutions for our partners, and create a positive impact.",
+      "Inspired by the Buddha's Eightfold Path, it's important to start with the right intentions.  We strive to create valuable tools and services for our partners, helping them succeed. We aim to leave a positive impact on everyone we work with.",
     icon: LightBulbIcon,
   },
   {
@@ -22,7 +22,7 @@ const coreValues = [
   {
     name: 'Moving Fast',
     description:
-      "We are not rushing to build a big team or raise funds. But as a startup, it's important to try many 'home run shots'. We are not afraid of failing, but we are afraid of not trying.",
+      "We are not rushing to build a big team or raise funds. But as a startup, it's important to try many 'home run shots'. For us, the biggest failure is not trying at all. Each attempt, whether successful or not, brings us closer to finding what works.",
     icon: RocketLaunchIcon,
   },
   {
