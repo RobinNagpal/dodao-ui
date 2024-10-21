@@ -18,6 +18,7 @@ import 'prismjs/components/prism-solidity';
 import 'prismjs/components/prism-toml';
 import 'prismjs/components/prism-yaml';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import styles from './ByteStepperItemView.module.scss';
 
 interface ByteStepperItemWithProgressBarProps {
@@ -26,12 +27,15 @@ interface ByteStepperItemWithProgressBarProps {
   space: SpaceWithIntegrationsFragment;
   viewByteHelper: UseViewByteHelper;
   setByteSubmitted: (submitted: boolean) => void;
+  viewByteModalClosedUrl: string;
 }
 
 type TransitionState = 'enter' | 'active' | 'exit';
 
-function ByteStepperItemView({ viewByteHelper, step, byte, space, setByteSubmitted }: ByteStepperItemWithProgressBarProps) {
+function ByteStepperItemView({ viewByteHelper, step, byte, space, setByteSubmitted, viewByteModalClosedUrl }: ByteStepperItemWithProgressBarProps) {
   const { activeStepOrder } = viewByteHelper;
+
+  const router = useRouter();
 
   const { data: sessionData } = useSession();
   const session: Session | null = sessionData as Session | null;
@@ -43,6 +47,7 @@ function ByteStepperItemView({ viewByteHelper, step, byte, space, setByteSubmitt
   const isByteCompletedStep = step.uuid === LAST_STEP_UUID;
 
   const [transitionState, setTransitionState] = useState<TransitionState>('enter');
+  const [isCloseButtonDisabled, setIsCloseButtonDisabled] = useState(false);
 
   useEffect(() => {
     setTransitionState('enter');
@@ -123,6 +128,22 @@ function ByteStepperItemView({ viewByteHelper, step, byte, space, setByteSubmitt
               primary={true}
             >
               <span>{isLastStep ? 'Complete' : 'Next'}</span>
+              <span className="ml-2 font-bold">&#8594;</span>
+            </Button>
+          )}
+          {isByteCompletedStep && (
+            <Button
+              onClick={() => {
+                setIsCloseButtonDisabled(true); // Disable the button when clicked
+                router.push(viewByteModalClosedUrl);
+                router.refresh();
+              }}
+              variant="contained"
+              className="float-right w-[150px] mr-2 sm:mr-0"
+              primary={true}
+              disabled={isCloseButtonDisabled} // Set disabled property
+            >
+              <span>Close</span>
               <span className="ml-2 font-bold">&#8594;</span>
             </Button>
           )}
