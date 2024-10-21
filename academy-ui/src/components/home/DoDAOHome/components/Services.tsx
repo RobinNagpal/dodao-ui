@@ -44,7 +44,7 @@ export default function Services() {
   return (
     <section className="sm:pb-20" id="services">
       <Container size="lg" className="bg-gray-50 pt-8">
-        <SectionHeading number="5" id="services-title">
+        <SectionHeading number="2" id="services-title">
           Development Services
         </SectionHeading>
         <div className="mx-auto max-w-7xl px-6 lg:px-8 mt-8">

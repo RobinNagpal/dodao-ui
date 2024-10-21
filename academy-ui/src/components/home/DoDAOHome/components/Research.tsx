@@ -49,7 +49,7 @@ export default function Research() {
     <section id="research" aria-labelledby="research-title" className="pb-20">
       <Container size="lg" className="bg-gray-50 pt-8">
         <div className="mx-auto lg:mx-0">
-          <SectionHeading number="3" id="research-title">
+          <SectionHeading number="4" id="research-title">
             Research
           </SectionHeading>
         </div>

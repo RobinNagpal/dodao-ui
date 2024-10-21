@@ -32,7 +32,14 @@ proposals, or NGOs etc. Or the items can be created, as in the case of asking fo
 - A different team will evaluate the evaluation of the evaluator. If the evaluation is not of good quality, the 
 evaluator's bond will be lost. Else they will get the bond back and some rewards for their good evaluation.
 
-
+# Bonding Mechanism
+This bonding mechanism is a common layer than can be used by multiple applications. For example
+- Please have problem commiting to group goals. You can put some money as bond and if you don't meet the goals, you lose the bond.
+- Fitness goals
+- Learning goals and incentives for kids
+- Learning goals and incentives for employees
+- Many free programs like Accelerator programs, Incubator programs, etc. can use this bonding mechanism to ensure that 
+the participants are serious about the program.
   
 # Why Decentralized Reviews?
 Decentralized is a buzzword in the crypto world. But it has been very useful in a few cases. The application that has

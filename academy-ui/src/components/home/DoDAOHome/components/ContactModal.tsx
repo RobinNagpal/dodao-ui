@@ -77,7 +77,7 @@ export default function ContactModal({ open, onClose }: any) {
   };
 
   return (
-    <FullPageModal open={open} onClose={onClose} title={'Get started for free'}>
+    <FullPageModal open={open} onClose={onClose} title={'Contact DoDAO'}>
       <div className="p-16">
         <form action="#" className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2" onSubmit={handleSubmit}>
           <TextField label="First name" id="firstName" name="firstName" type="text" autoComplete="given-name" required onChange={handleChange} />

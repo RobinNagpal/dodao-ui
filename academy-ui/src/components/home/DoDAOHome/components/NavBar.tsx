@@ -5,17 +5,13 @@ import { Popover } from '@headlessui/react';
 import clsx from 'clsx';
 
 const sections = [
-  { id: 'tidibits-hub', title: 'Tidbits Hub' },
-  {
-    id: 'academy-sites',
-    title: 'Academy Sites',
-  },
-  { id: 'research', title: 'Our Research' },
-  { id: 'education', title: 'Education' },
+  { id: 'products', title: 'Products' },
   {
     id: 'services',
     title: 'Development Services',
   },
+  { id: 'education', title: 'Education' },
+  { id: 'research', title: 'Research' },
 ];
 
 function MenuIcon({

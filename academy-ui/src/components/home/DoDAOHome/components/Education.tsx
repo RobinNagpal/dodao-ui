@@ -62,7 +62,7 @@ export function Education() {
   return (
     <section id="education" aria-labelledby="education-title" className="scroll-mt-14 sm:scroll-mt-32 pb-20">
       <Container size="lg" className="bg-gray-50 pt-8">
-        <SectionHeading number="4" id="education-title">
+        <SectionHeading number="3" id="education-title">
           Education
         </SectionHeading>
 
