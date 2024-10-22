@@ -10,9 +10,9 @@ interface FooterProps {
 export default function Footer({ spaceType }: FooterProps) {
   const pathname = usePathname(); // Use the useRouter hook to get the current route
 
-  // Check if the current pathname is the root ('/')
-  if (pathname !== '/') {
-    return null; // Do not render anything if not on the root path
+  // Check if the pathname is the root and spaceType is TidbitsSite or AcademySite
+  if ((spaceType !== SpaceTypes.TidbitsSite && spaceType !== SpaceTypes.AcademySite) || pathname !== '/') {
+    return null; // Do not render the footer if the conditions are not met
   }
 
   return (
