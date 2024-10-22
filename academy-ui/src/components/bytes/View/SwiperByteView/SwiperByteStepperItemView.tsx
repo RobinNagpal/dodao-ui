@@ -52,7 +52,6 @@ const renderBullet = (index: number, className: string, byte: ByteDto, activeSte
 };
 
 function SwiperByteStepperItemView({ viewByteHelper, step, byte, space, setByteSubmitted, viewByteModalClosedUrl }: ByteStepperItemWithProgressBarProps) {
-  const [isCloseButtonDisabled, setIsCloseButtonDisabled] = useState(false);
   const [isLastStep, setisLastStep] = useState(false);
 
   const router = useRouter();
@@ -97,7 +96,7 @@ function SwiperByteStepperItemView({ viewByteHelper, step, byte, space, setByteS
             if (swiper.isEnd) {
               setTimeout(() => {
                 setisLastStep(true);
-              }, 200);
+              }, 200); // Delay is added to prevent the button to display the image before the complete view of the last step appears
             } else {
               setisLastStep(false);
             }
@@ -149,14 +148,11 @@ function SwiperByteStepperItemView({ viewByteHelper, step, byte, space, setByteS
               {isLastStep && (
                 <Button
                   onClick={() => {
-                    setIsCloseButtonDisabled(true); // Disable the button when clicked
                     router.push(viewByteModalClosedUrl);
-                    router.refresh();
                   }}
                   variant="contained"
                   className="absolute bottom-8 w-[150px] mr-2 sm:mr-0"
                   primary={true}
-                  disabled={isCloseButtonDisabled} // Set disabled property
                 >
                   <span>Close</span>
                   <span className="ml-2 font-bold">&#8594;</span>

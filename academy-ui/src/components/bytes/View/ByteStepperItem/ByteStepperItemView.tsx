@@ -47,7 +47,6 @@ function ByteStepperItemView({ viewByteHelper, step, byte, space, setByteSubmitt
   const isByteCompletedStep = step.uuid === LAST_STEP_UUID;
 
   const [transitionState, setTransitionState] = useState<TransitionState>('enter');
-  const [isCloseButtonDisabled, setIsCloseButtonDisabled] = useState(false);
 
   useEffect(() => {
     setTransitionState('enter');
@@ -134,14 +133,11 @@ function ByteStepperItemView({ viewByteHelper, step, byte, space, setByteSubmitt
           {isByteCompletedStep && (
             <Button
               onClick={() => {
-                setIsCloseButtonDisabled(true); // Disable the button when clicked
                 router.push(viewByteModalClosedUrl);
-                router.refresh();
               }}
               variant="contained"
               className="float-right w-[150px] mr-2 sm:mr-0"
               primary={true}
-              disabled={isCloseButtonDisabled} // Set disabled property
             >
               <span>Close</span>
               <span className="ml-2 font-bold">&#8594;</span>
