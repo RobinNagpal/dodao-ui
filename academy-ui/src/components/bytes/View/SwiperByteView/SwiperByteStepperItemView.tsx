@@ -96,7 +96,7 @@ function SwiperByteStepperItemView({ viewByteHelper, step, byte, space, setByteS
             if (swiper.isEnd) {
               setTimeout(() => {
                 setisLastStep(true);
-              }, 200); // Delay is added to prevent the button to display the image before the complete view of the last step appears
+              }, 200); // Delay is added to prevent the button to display before the complete view of the last step appears
             } else {
               setisLastStep(false);
             }
