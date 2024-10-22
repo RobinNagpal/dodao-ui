@@ -4,7 +4,7 @@ import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-typ
 import WebCoreSpaceSetup from '@dodao/web-core/components/space/WebCoreSpaceSetup';
 import { WebCoreSpace } from '@dodao/web-core/types/space';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { useFetchUtils } from '@dodao/web-core/src/ui/hooks/useFetchUtils';
+import { useFetchUtils } from '@dodao/web-core/ui/hooks/useFetchUtils';
 import { User } from '@prisma/client';
 import React, { useState } from 'react';
 
