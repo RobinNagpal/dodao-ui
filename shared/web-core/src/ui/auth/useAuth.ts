@@ -164,8 +164,7 @@ export function useAuth(spaceId: string) {
       web3Selection?.connector?.deactivate?.();
     } else {
       await signOut({
-        redirect: true,
-        callbackUrl: '/'
+        redirect: false
       });
     }
     try {
