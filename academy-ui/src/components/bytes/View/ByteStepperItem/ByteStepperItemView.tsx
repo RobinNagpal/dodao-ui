@@ -31,7 +31,7 @@ interface ByteStepperItemWithProgressBarProps {
 
 type TransitionState = 'enter' | 'active' | 'exit';
 
-function ByteStepperItemView({ viewByteHelper, step, byte, space, setByteSubmitted,onClose }: ByteStepperItemWithProgressBarProps) {
+function ByteStepperItemView({ viewByteHelper, step, byte, space, setByteSubmitted, onClose }: ByteStepperItemWithProgressBarProps) {
   const { activeStepOrder } = viewByteHelper;
 
   const { data: sessionData } = useSession();
@@ -128,12 +128,7 @@ function ByteStepperItemView({ viewByteHelper, step, byte, space, setByteSubmitt
             </Button>
           )}
           {isByteCompletedStep && (
-            <Button
-              onClick={onClose}
-              variant="contained"
-              className="float-right w-[150px] mr-2 sm:mr-0"
-              primary={true}
-            >
+            <Button onClick={onClose} variant="contained" className="float-right w-[150px] mr-2 sm:mr-0" primary={true}>
               <span>Close</span>
               <span className="ml-2 font-bold">&#8594;</span>
             </Button>

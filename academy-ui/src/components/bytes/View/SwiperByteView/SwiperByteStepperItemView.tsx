@@ -143,12 +143,7 @@ function SwiperByteStepperItemView({ viewByteHelper, step, byte, space, setByteS
                 isSwiper={true}
               />
               {isLastStep && (
-                <Button
-                  onClick={onClose}
-                  variant="contained"
-                  className="absolute bottom-8 w-[150px] mr-2 sm:mr-0"
-                  primary={true}
-                >
+                <Button onClick={onClose} variant="contained" className="absolute bottom-8 w-[150px] mr-2 sm:mr-0" primary={true}>
                   <span>Close</span>
                   <span className="ml-2 font-bold">&#8594;</span>
                 </Button>
