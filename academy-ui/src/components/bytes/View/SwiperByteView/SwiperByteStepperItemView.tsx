@@ -13,7 +13,6 @@ import 'swiper/css/virtual';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { NavigationOptions } from 'swiper/types';
 import styles from './SwiperlByteStepperItemView.module.scss';
-import { useRouter } from 'next/navigation';
 
 interface ByteStepperItemWithProgressBarProps {
   byte: ByteDto;
@@ -21,7 +20,7 @@ interface ByteStepperItemWithProgressBarProps {
   space: SpaceWithIntegrationsFragment;
   viewByteHelper: UseViewByteHelper;
   setByteSubmitted: (submitted: boolean) => void;
-  viewByteModalClosedUrl: string;
+  onClose: () => void;
 }
 
 const style: CSSProperties = {
@@ -51,10 +50,8 @@ const renderBullet = (index: number, className: string, byte: ByteDto, activeSte
 </div>`;
 };
 
-function SwiperByteStepperItemView({ viewByteHelper, step, byte, space, setByteSubmitted, viewByteModalClosedUrl }: ByteStepperItemWithProgressBarProps) {
+function SwiperByteStepperItemView({ viewByteHelper, step, byte, space, setByteSubmitted, onClose }: ByteStepperItemWithProgressBarProps) {
   const [isLastStep, setisLastStep] = useState(false);
-
-  const router = useRouter();
 
   const { activeStepOrder } = viewByteHelper;
 
@@ -96,7 +93,7 @@ function SwiperByteStepperItemView({ viewByteHelper, step, byte, space, setByteS
             if (swiper.isEnd) {
               setTimeout(() => {
                 setisLastStep(true);
-              }, 200); // Delay is added to prevent the button to display before the complete view of the last step appears
+              }, 200); // Delay is added to prevent the close button to appear before the complete view of the last step appears
             } else {
               setisLastStep(false);
             }
@@ -147,9 +144,7 @@ function SwiperByteStepperItemView({ viewByteHelper, step, byte, space, setByteS
               />
               {isLastStep && (
                 <Button
-                  onClick={() => {
-                    router.push(viewByteModalClosedUrl);
-                  }}
+                  onClick={onClose}
                   variant="contained"
                   className="absolute bottom-8 w-[150px] mr-2 sm:mr-0"
                   primary={true}

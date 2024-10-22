@@ -124,7 +124,7 @@ export default function ViewByteModal({ space, selectedByteId, viewByteModalClos
             step={activeStep}
             space={space}
             setByteSubmitted={setByteSubmitted}
-            viewByteModalClosedUrl={viewByteModalClosedUrl}
+            onClose={onClose}
           />
         )}
         <RatingModal
@@ -150,7 +150,7 @@ export default function ViewByteModal({ space, selectedByteId, viewByteModalClos
           step={activeStep}
           space={space}
           setByteSubmitted={setByteSubmitted}
-          viewByteModalClosedUrl={viewByteModalClosedUrl}
+          onClose={onClose}
         />
       )}
 

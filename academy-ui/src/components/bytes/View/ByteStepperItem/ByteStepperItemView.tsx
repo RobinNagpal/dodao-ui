@@ -18,7 +18,6 @@ import 'prismjs/components/prism-solidity';
 import 'prismjs/components/prism-toml';
 import 'prismjs/components/prism-yaml';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import styles from './ByteStepperItemView.module.scss';
 
 interface ByteStepperItemWithProgressBarProps {
@@ -27,15 +26,13 @@ interface ByteStepperItemWithProgressBarProps {
   space: SpaceWithIntegrationsFragment;
   viewByteHelper: UseViewByteHelper;
   setByteSubmitted: (submitted: boolean) => void;
-  viewByteModalClosedUrl: string;
+  onClose: () => void;
 }
 
 type TransitionState = 'enter' | 'active' | 'exit';
 
-function ByteStepperItemView({ viewByteHelper, step, byte, space, setByteSubmitted, viewByteModalClosedUrl }: ByteStepperItemWithProgressBarProps) {
+function ByteStepperItemView({ viewByteHelper, step, byte, space, setByteSubmitted,onClose }: ByteStepperItemWithProgressBarProps) {
   const { activeStepOrder } = viewByteHelper;
-
-  const router = useRouter();
 
   const { data: sessionData } = useSession();
   const session: Session | null = sessionData as Session | null;
@@ -132,9 +129,7 @@ function ByteStepperItemView({ viewByteHelper, step, byte, space, setByteSubmitt
           )}
           {isByteCompletedStep && (
             <Button
-              onClick={() => {
-                router.push(viewByteModalClosedUrl);
-              }}
+              onClick={onClose}
               variant="contained"
               className="float-right w-[150px] mr-2 sm:mr-0"
               primary={true}
