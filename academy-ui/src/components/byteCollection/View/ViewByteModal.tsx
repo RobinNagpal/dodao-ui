@@ -118,7 +118,14 @@ export default function ViewByteModal({ space, selectedByteId, viewByteModalClos
             </div>
           </div>
         ) : (
-          <SwiperByteStepperItemView viewByteHelper={viewByteHelper} byte={byte} step={activeStep} space={space} setByteSubmitted={setByteSubmitted} />
+          <SwiperByteStepperItemView
+            viewByteHelper={viewByteHelper}
+            byte={byte}
+            step={activeStep}
+            space={space}
+            setByteSubmitted={setByteSubmitted}
+            onClose={onClose}
+          />
         )}
         <RatingModal
           ratingType="Byte"
@@ -137,7 +144,14 @@ export default function ViewByteModal({ space, selectedByteId, viewByteModalClos
       {isLoading ? (
         <TidbitDetailsLoader />
       ) : (
-        <NormalByteStepperItemView viewByteHelper={viewByteHelper} byte={byte} step={activeStep} space={space} setByteSubmitted={setByteSubmitted} />
+        <NormalByteStepperItemView
+          viewByteHelper={viewByteHelper}
+          byte={byte}
+          step={activeStep}
+          space={space}
+          setByteSubmitted={setByteSubmitted}
+          onClose={onClose}
+        />
       )}
 
       <RatingModal

@@ -3,8 +3,8 @@ import { UseViewByteHelper } from '@/components/bytes/View/useViewByteHelper';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import useWindowDimensions from '@/hooks/useWindowDimensions';
 import { ByteDto, ByteStepDto, ImageDisplayMode } from '@/types/bytes/ByteDto';
-import { CSSProperties, useRef } from 'react';
-
+import { CSSProperties, useRef, useState } from 'react';
+import Button from '@dodao/web-core/components/core/buttons/Button';
 import { Keyboard, Mousewheel, Navigation, Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -20,6 +20,7 @@ interface ByteStepperItemWithProgressBarProps {
   space: SpaceWithIntegrationsFragment;
   viewByteHelper: UseViewByteHelper;
   setByteSubmitted: (submitted: boolean) => void;
+  onClose: () => void;
 }
 
 const style: CSSProperties = {
@@ -48,7 +49,9 @@ const renderBullet = (index: number, className: string, byte: ByteDto, activeSte
 </div>`;
 };
 
-function SwiperByteStepperItemView({ viewByteHelper, step, byte, space, setByteSubmitted }: ByteStepperItemWithProgressBarProps) {
+function SwiperByteStepperItemView({ viewByteHelper, step, byte, space, setByteSubmitted, onClose }: ByteStepperItemWithProgressBarProps) {
+  const [isLastStep, setisLastStep] = useState(false);
+
   const { activeStepOrder } = viewByteHelper;
 
   // See - https://stackoverflow.com/a/69238830/440432
@@ -85,6 +88,13 @@ function SwiperByteStepperItemView({ viewByteHelper, step, byte, space, setByteS
           onSlideChange={(swiper) => {
             const activeIndex = swiper.activeIndex;
             viewByteHelper.setActiveStep(activeIndex);
+            if (swiper.isEnd) {
+              setTimeout(() => {
+                setisLastStep(true);
+              }, 200); // Delay is added to prevent the close button to appear before the complete view of the last step appears
+            } else {
+              setisLastStep(false);
+            }
           }}
           onSlideChangeTransitionEnd={(swiper) => {
             swiper.pagination.render();
@@ -130,6 +140,12 @@ function SwiperByteStepperItemView({ viewByteHelper, step, byte, space, setByteS
                 isShortScreen={isShortScreen}
                 isSwiper={true}
               />
+              {isLastStep && (
+                <Button onClick={onClose} variant="contained" className="absolute bottom-8 w-[150px] mr-2 sm:mr-0" primary={true}>
+                  <span>Close</span>
+                  <span className="ml-2 font-bold">&#8594;</span>
+                </Button>
+              )}
             </SwiperSlide>
           ))}
           <div
