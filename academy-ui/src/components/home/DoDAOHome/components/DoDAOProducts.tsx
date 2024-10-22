@@ -34,7 +34,7 @@ export default function DoDAOProducts() {
         <div className="mx-auto max-w-7xl px-6 lg:px-8 mt-8">
           <div className="mx-auto max-w-2xl sm:text-center">
             <p className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Empowering Innovation with DoDAO Products</p>
-            <p className="mt-6 text-base leading-8 text-gray-500">
+            <p className="mt-6 text-base text-gray-500">
               At DoDAO, we are a team of builders dedicated to delivering impactful products. We offer a diverse range of products that support top blockchain
               projects in areas like Smart Contract Development, Blockchain Tooling, Education, and Research. Our product lineup, including Tidbits Hub and
               Academy Sites, provides customized learning and development tools designed to enhance your blockchain expertise. Additionally, we are developing a
@@ -49,8 +49,8 @@ export default function DoDAOProducts() {
             return (
               <div key={feature.name} className={`lg:pt-6 sm:pt-2 flex flex-col ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'} md:items-center`}>
                 <div className="px-3 md:mt-0 md:w-1/2 lg:w-2/5">
-                  <h3 className="text-lg font-medium text-gray-900">{feature.name}</h3>
-                  <p className="mt-2 text-sm text-gray-500">{feature.description}</p>
+                  <h3 className="text-base font-semibold text-gray-900">{feature.name}</h3>
+                  <p className="mt-2 text-gray-500 text-base">{feature.description}</p>
                 </div>
                 <div className="md:w-1/2 lg:w-3/5">
                   <div className={`aspect-w-6 aspect-h-2 overflow-hidden rounded-lg bg-gray-100 ${isEven ? 'float-right' : 'float-left'}`}>
