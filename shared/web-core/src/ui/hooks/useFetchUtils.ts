@@ -2,7 +2,6 @@
 
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { useRouter } from 'next/navigation';
-import { useCallback } from 'react';
 
 export interface UpdateDataOptions {
   successMessage: string;
@@ -14,7 +13,7 @@ export const useFetchUtils = () => {
   const { showNotification } = useNotificationContext();
   const router = useRouter();
 
-  const fetchData = useCallback(async <T>(url: string, errorMessage: string, options: RequestInit = {}): Promise<T | undefined> => {
+  const fetchData = async <T>(url: string, errorMessage: string, options: RequestInit = {}): Promise<T | undefined> => {
     try {
       const response = await fetch(url, {
         credentials: 'include',
@@ -35,7 +34,7 @@ export const useFetchUtils = () => {
       showNotification({ type: 'error', message: errorMessage });
       throw error;
     }
-  }, []);
+  };
 
   const updateDataGeneric = async <T, X>(
     url: string,
