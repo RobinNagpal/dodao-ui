@@ -34,7 +34,7 @@ export default function DoDAOProducts() {
         <div className="mx-auto max-w-7xl px-6 lg:px-8 mt-8">
           <div className="mx-auto max-w-2xl sm:text-center">
             <p className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Empowering Innovation with DoDAO Products</p>
-            <p className="mt-6 text-base text-gray-500">
+            <p className="mt-4 text-base text-gray-500">
               At DoDAO, we are a team of builders dedicated to delivering impactful products. We offer a diverse range of products that support top blockchain
               projects in areas like Smart Contract Development, Blockchain Tooling, Education, and Research. Our product lineup, including Tidbits Hub and
               Academy Sites, provides customized learning and development tools designed to enhance your blockchain expertise. Additionally, we are developing a

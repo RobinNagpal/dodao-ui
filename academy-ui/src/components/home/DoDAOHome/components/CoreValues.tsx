@@ -39,8 +39,8 @@ export default function CoreValues() {
       <div className="mx-auto px-6 w-full">
         <div className="mx-auto max-w-2xl text-center lg:text-center">
           <h2 className="text-base font-semibold leading-7 text-indigo-600">Our Core Values</h2>
-          <p className="mt-2 text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">What We Believe In</p>
-          <p className="mt-6 text-lg leading-8 text-gray-600">Our journey is guided by our core values. They shape our actions and decisions every day.</p>
+          <p className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">What We Believe In</p>
+          <p className="mt-4 text-base text-gray-500">Our journey is guided by our core values. They shape our actions and decisions every day.</p>
         </div>
         <div className="mx-auto mt-16 max-w-6xl">
           <dl className="flex flex-wrap justify-center gap-y-10">
@@ -52,7 +52,7 @@ export default function CoreValues() {
                   </div>
                   {value.name}
                 </dt>
-                <dd className="mt-2 text-base leading-7 text-gray-600">{value.description}</dd>
+                <dd className="mt-2 text-base text-gray-500">{value.description}</dd>
               </div>
             ))}
           </dl>
