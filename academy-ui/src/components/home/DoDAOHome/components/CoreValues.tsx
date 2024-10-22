@@ -40,7 +40,10 @@ export default function CoreValues() {
         <div className="mx-auto max-w-2xl text-center lg:text-center">
           <h2 className="text-base font-semibold leading-7 text-indigo-600">Our Core Values</h2>
           <p className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">What We Believe In</p>
-          <p className="mt-4 text-base text-gray-500">Our journey is guided by our core values. They shape our actions and decisions every day.</p>
+          <p className="mt-4 text-base text-gray-500">
+            Our journey is guided by our core values. They shape our actions and decisions every day. These principles ensure we stay true to our mission and
+            vision.
+          </p>
         </div>
         <div className="mx-auto mt-16 max-w-6xl">
           <dl className="flex flex-wrap justify-center gap-y-10">
