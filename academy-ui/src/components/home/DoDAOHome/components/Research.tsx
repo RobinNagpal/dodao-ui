@@ -1,6 +1,6 @@
 import { Container } from './Container';
 import { SectionHeading } from './SectionHeading';
-import { MagnifyingGlassIcon, MapIcon, UsersIcon, PresentationChartLineIcon } from '@heroicons/react/24/outline';
+import { MagnifyingGlassIcon, MapIcon, UsersIcon, PresentationChartLineIcon, StarIcon, UserGroupIcon } from '@heroicons/react/24/outline';
 
 const rwa = [
   {
@@ -32,13 +32,13 @@ const rwa = [
 const decentralized = [
   {
     name: 'Empowering Collective Solutions',
-    imageSrc: 'https://tailwindui.com/plus/img/ecommerce/icons/icon-delivery-light.svg',
+    icon: UserGroupIcon,
     description:
       'People can propose solutions by submitting a bond. Honest proposals lead to getting their bond back, while the best-rated ideas are rewarded. This system ensures fairness and encourages innovative thinking. With this approach, we motivate communities to actively participate and create impactful solutions.',
   },
   {
     name: 'Ensuring Honest Reviews',
-    imageSrc: 'https://tailwindui.com/plus/img/ecommerce/icons/icon-warranty-light.svg',
+    icon: StarIcon,
     description:
       'Reviews play a vital role in choosing the best products, services, and providers. We apply a similar bonding system to reviews. Reviewers provide a bond, which they lose if they are dishonest. Honest reviewers get their bond back and receive a reward for their genuine feedback.',
   },
@@ -63,30 +63,25 @@ export default function Research() {
                 portfolios.
               </p>
             </div>
-            <div className="mt-4">
-              <h2 className="sr-only">Our RWA Services</h2>
-              <div className="mx-auto max-w-7xl py-4 sm:px-2 sm:py-12 lg:px-4">
-                <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-12 px-4 lg:max-w-none lg:grid-cols-2 lg:gap-y-16">
-                  {rwa.map((perk) => (
-                    <div key={perk.name} className="sm:flex">
-                      <div className="sm:flex-shrink-0">
-                        <div className="flow-root">
-                          <perk.icon aria-hidden="true" className="h-16 w-20 text-indigo-600" />
-                        </div>
+            <div className="mx-auto mt-12 max-w-6xl">
+              <dl className="flex flex-wrap justify-center gap-y-10">
+                {rwa.map((value, index) => (
+                  <div key={value.name} className={`relative px-16 w-full sm:w-1/2 ${index === rwa.length - 1 ? 'sm:mx-auto' : ''}`}>
+                    <dt className="text-base font-semibold text-gray-900">
+                      <div className="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600">
+                        <value.icon aria-hidden="true" className="h-6 w-6 text-white" />
                       </div>
-                      <div className="mt-3 sm:ml-3 sm:mt-0">
-                        <h3 className="text-base font-semibold text-gray-900">{perk.name}</h3>
-                        <p className="mt-2 text-base text-gray-500">{perk.description}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+                      {value.name}
+                    </dt>
+                    <dd className="mt-2 text-base text-gray-500">{value.description}</dd>
+                  </div>
+                ))}
+              </dl>
             </div>
           </div>
         </div>
 
-        <div className="mx-auto max-w-7xl py-4 sm:py-4">
+        <div className="mx-auto max-w-7xl py-4 sm:py-8">
           <div className="mx-auto max-w-2xl lg:max-w-none">
             <div className="mx-auto max-w-3xl text-center">
               <p className="text-3xl font-bold tracking-tight sm:text-4xl">Decentralized - Solution & Reviews</p>
@@ -96,25 +91,20 @@ export default function Research() {
                 effectively and the system benefits all.
               </p>
             </div>
-            <div className="mt-4">
-              <h2 className="sr-only">Our Decentralized - Solution & Reviews</h2>
-              <div className="mx-auto max-w-7xl py-4 sm:px-2 sm:py-12 lg:px-4">
-                <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-12 px-4 lg:max-w-none lg:grid-cols-2 lg:gap-y-16">
-                  {decentralized.map((perk) => (
-                    <div key={perk.name} className="sm:flex">
-                      <div className="sm:flex-shrink-0">
-                        <div className="flow-root">
-                          <img alt="" src={perk.imageSrc} className="h-16 w-20" />
-                        </div>
+            <div className="mx-auto mt-12 max-w-6xl">
+              <dl className="flex flex-wrap justify-center gap-y-10">
+                {decentralized.map((value, index) => (
+                  <div key={value.name} className={`relative px-16 w-full sm:w-1/2 ${index === decentralized.length - 1 ? 'sm:mx-auto' : ''}`}>
+                    <dt className="text-base font-semibold text-gray-900">
+                      <div className="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600">
+                        <value.icon aria-hidden="true" className="h-6 w-6 text-white" />
                       </div>
-                      <div className="mt-3 sm:ml-3 sm:mt-0">
-                        <h3 className="text-base font-semibold text-gray-900">{perk.name}</h3>
-                        <p className="mt-2 text-base text-gray-500">{perk.description}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+                      {value.name}
+                    </dt>
+                    <dd className="mt-2 text-base text-gray-500">{value.description}</dd>
+                  </div>
+                ))}
+              </dl>
             </div>
           </div>
         </div>
