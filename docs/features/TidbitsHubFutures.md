@@ -19,6 +19,7 @@ With GenerativeAI demand for crisp content with further increase and we are in a
 
 # Other Features
 - [ ] Generation of Tidbits Site from URLs. See [here](./tidbits/generation_of_tidbits_site.md)
+- [ ] Tidbits icons with help information. We can show tidbits, clickable demos, or short videos in a modal along with other related information(other related tidbits, vidoes or demos).
 - [ ] Include Photos on Tidbit Steps. See [here](./tidbits/photos_on_steps.md)
 - [ ] Social Sharing of Tidbits. See [here](./tidbits/social_sharing.md)
 

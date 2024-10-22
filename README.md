@@ -68,3 +68,21 @@ Checklist for contribution to Tidbits Hub:
 - [ ] Understand what is a Tidbit
 - [ ] Understand what is a Clickable Demo
 - [ ] Understand the features we want to add in the Tidbits Hub application
+
+
+
+- Right Intention: Inspired by the eightfold path of Buddha, it is very important to start with the right intentions.
+Right intention to service users, right intention to develop solutions for our partners, right intention to create an impact.
+
+- Right Team: We don't have any aggressive financial goals. For us journey itself should be full of fun and learning. 
+We are a team of builder who are always looking to build something new and useful, whether is our own product or for our partners.
+
+- Hard Work: Working hard effortlessly is one of the best blessings one can have. Only by working on the right things and 
+by having the right team, we can work hard, but not feeling any burden.
+
+- Collective Growth: We are still far away from our goals and we believe that every day of our journey should be full of
+learning and growth. Right now we promise intelectual growth each and every day. Once we find the right focus area, our
+goal is to grow as a team financially as well.
+
+- Moving Fast: We are in no hurry to make a big team, or raise funds, but as a startup one of the most important things that 
+can influce future is "How many home run shorts can we try". We are not afraid of failing, but we are afraid of not trying.
