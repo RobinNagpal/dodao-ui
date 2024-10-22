@@ -17,3 +17,11 @@
 .link-color {
   color: var(--link-color);
 }
+
+.block-bg-color {
+  background-color: var(--bg-color);
+}
+
+.block-bg-color:hover {
+  background-color: var(--block-bg);
+}
