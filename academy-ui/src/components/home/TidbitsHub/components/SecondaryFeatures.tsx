@@ -167,8 +167,8 @@ export function SecondaryFeatures() {
           {features.map((feature) => (
             <li key={feature.name} className="rounded-2xl border border-gray-200 p-8">
               <feature.icon className="h-8 w-8" />
-              <h3 className="mt-6 font-semibold">{feature.name}</h3>
-              <p className="mt-2">{feature.description}</p>
+              <h3 className="mt-6 text-base font-semibold">{feature.name}</h3>
+              <p className="mt-2 text-base">{feature.description}</p>
             </li>
           ))}
         </ul>
