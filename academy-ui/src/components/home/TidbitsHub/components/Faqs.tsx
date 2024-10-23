@@ -52,7 +52,7 @@ export function Faqs() {
         <ul role="list" className="mx-auto mt-16 grid max-w-2xl gap-12 sm:mt-20 lg:max-w-none lg:grid-cols-3">
           {faqs.map((faq, index) => (
             <li key={index} className="space-y-4">
-              <h3 className="text-xl font-semibold leading-tight">{faq.question}</h3>
+              <h3 className="text-base font-semibold leading-tight">{faq.question}</h3>
               <p className="text-base">{faq.answer}</p>
             </li>
           ))}

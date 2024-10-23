@@ -236,12 +236,12 @@ function FeaturesDesktop() {
             <div className="relative z-10 p-8">
               <feature.icon className="h-8 w-8" />
               <h3 className="mt-6 text-lg font-semibold">
-                <Tab className="text-left ui-not-focus-visible:outline-none text-white">
+                <Tab className="text-left ui-not-focus-visible:outline-none text-base text-white">
                   <span className="absolute inset-0 rounded-2xl" />
                   {feature.name}
                 </Tab>
               </h3>
-              <p className="mt-2 text-sm text-white">{feature.description}</p>
+              <p className="mt-2 text-base text-white">{feature.description}</p>
             </div>
           </div>
         ))}
