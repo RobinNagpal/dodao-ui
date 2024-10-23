@@ -10,7 +10,11 @@ const CallbackPage = ({ space }: SpaceProps) => {
 
   // Conditionally set the callback URL based on the context (setupNewSpace or login)
   const callbackUrl = context === 'setupNewSpace' ? '/spaces/create' : '/spaces/space-collections';
-  return <EmailVerificationCallbackPage space={space} callbackUrl={callbackUrl} />;
+
+  const full = location.protocol + '//' + location.host;
+  const fullCallbackUrl = full + callbackUrl;
+
+  return <EmailVerificationCallbackPage space={space} callbackUrl={fullCallbackUrl} />;
 };
 
 export default withSpace(CallbackPage);
