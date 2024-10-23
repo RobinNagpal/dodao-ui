@@ -1,4 +1,5 @@
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
+import jwt from 'jsonwebtoken';
 import { getToken } from 'next-auth/jwt';
 import { NextRequest } from 'next/server';
 
@@ -10,6 +11,12 @@ export const dodaoTeamMates = [
 ];
 
 export async function getDecodedJwtFromContext(req: NextRequest): Promise<DoDaoJwtTokenPayload | null> {
+  const authorizationHeader = req.headers.get('Authorization');
+  if (authorizationHeader) {
+    const token = authorizationHeader.split(' ')[1];
+    const decodedToken = jwt.verify(token, process.env.DODAO_AUTH_SECRET!);
+    return decodedToken as DoDaoJwtTokenPayload;
+  }
   const token = (await getToken({ req })) as DoDaoJwtTokenPayload | null;
   return token;
 }

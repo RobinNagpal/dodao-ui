@@ -1,5 +1,16 @@
-export default async function fetchDataServerSide<T>(url: string, options: RequestInit = {}): Promise<T | undefined> {
+import { Session } from '@dodao/web-core/types/auth/Session';
+import { authOptions } from 'academy-ui/src/app/api/auth/[...nextauth]/authOptions';
+import { getServerSession } from 'next-auth';
+
+export default async function fetchDataServerSide<T>(url: string, options: RequestInit = {}): Promise<T> {
   try {
+    const session = (await getServerSession(authOptions)) as Session | null;
+    if (session) {
+      options.headers = {
+        ...(options.headers || {}),
+        Authorization: `Bearer ${session?.dodaoAccessToken}`,
+      };
+    }
     const response = await fetch(url, {
       credentials: 'include',
       headers: {

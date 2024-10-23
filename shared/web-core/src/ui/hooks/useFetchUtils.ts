@@ -1,5 +1,6 @@
 'use client';
 
+import { DODAO_ACCESS_TOKEN_KEY } from '@dodao/web-core/types/deprecated/models/enums';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { useRouter } from 'next/navigation';
 
@@ -15,12 +16,16 @@ export const useFetchUtils = () => {
 
   const fetchData = async <T>(url: string, errorMessage: string, options: RequestInit = {}): Promise<T | undefined> => {
     try {
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json',
+        ...((options.headers as Record<string, string>) || {}),
+      };
+      if (localStorage.getItem('token')) {
+        headers['Authorization'] = `Bearer ${localStorage.getItem(DODAO_ACCESS_TOKEN_KEY)}`;
+      }
       const response = await fetch(url, {
         credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(options.headers || {}),
-        },
+        headers,
         ...options,
       });
 
