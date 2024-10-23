@@ -20,6 +20,7 @@ const nextConfig = {
     includePaths: ['./src'],
     prependData: `@import "app/styles/variables.scss";`,
   },
+  crossOrigin: 'use-credentials',
   async headers() {
     return [
       {

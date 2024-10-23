@@ -4,7 +4,7 @@ import WebCoreProfileEdit from '@dodao/web-core/components/profile/WebCoreProfil
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { User } from '@dodao/web-core/types/auth/User';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { useFetchUtils } from '@dodao/web-core/utils/api/useFetchUtils';
+import { useFetchUtils } from '@dodao/web-core/ui/hooks/useFetchUtils';
 import { BaseSpace } from '@prisma/client';
 import { useSession } from 'next-auth/react';
 import React, { useEffect, useState } from 'react';

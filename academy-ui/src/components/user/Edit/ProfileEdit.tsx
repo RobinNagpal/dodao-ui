@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { useFetchUtils } from '@dodao/web-core/utils/api/useFetchUtils';
+import { useFetchUtils } from '@dodao/web-core/ui/hooks/useFetchUtils';
 
 interface ProfileEditProps {
   space: SpaceWithIntegrationsFragment;

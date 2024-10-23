@@ -33,8 +33,8 @@ const CallbackPage = ({ space, callbackUrl }: CallbackPageProps) => {
         // const session = (await getSession()) as Session | undefined;
         // setDoDAOTokenInLocalStorage(session);
         // Redirect to the home page or custom callback URL on success
-        if (result?.url) {
-          push(result.url);
+        if (result?.url && result?.ok && callbackUrl) {
+          push(callbackUrl);
         } else {
           // Handle sign-in failure (e.g., invalid token) as needed
           console.error('Failed to sign in');
