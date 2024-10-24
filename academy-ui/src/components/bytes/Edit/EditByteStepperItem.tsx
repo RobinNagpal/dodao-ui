@@ -394,14 +394,23 @@ For background of the image, use the color ${backgroundColor} and for the primar
             removeBorder
             disabled={byte.steps.length === 1}
             onClick={() => setShowDeleteModal(true)}
+            tooltip="Delete Step"
           />
-          <IconButton className="float-right ml-2" iconName={IconTypes.MoveUp} removeBorder disabled={stepIndex === 0} onClick={() => moveStepUp(step.uuid)} />
+          <IconButton
+            className="float-right ml-2"
+            iconName={IconTypes.MoveUp}
+            removeBorder
+            disabled={stepIndex === 0}
+            onClick={() => moveStepUp(step.uuid)}
+            tooltip="Move Step Up"
+          />
           <IconButton
             className="float-right ml-2"
             iconName={IconTypes.MoveDown}
             removeBorder
             disabled={stepIndex + 1 === byte.steps.length}
             onClick={() => moveStepDown(step.uuid)}
+            tooltip="Move Step Down"
           />
           <IconButton
             className="float-right ml-2"
@@ -409,6 +418,7 @@ For background of the image, use the color ${backgroundColor} and for the primar
             disabled={step.stepItems.length >= 1}
             removeBorder
             onClick={() => setModalByteInputOrQuestionOpen(true)}
+            tooltip="Add Manual Input or Question"
           />
         </div>
         <div className="w-full mb-4">
