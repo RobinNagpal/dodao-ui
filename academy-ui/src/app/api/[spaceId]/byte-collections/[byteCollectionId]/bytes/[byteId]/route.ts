@@ -49,24 +49,24 @@ async function putHandler(
   req: NextRequest,
   { params }: { params: { spaceId: string; byteCollectionId: string; byteId: string } }
 ): Promise<NextResponse<ByteDto>> {
-  const { input } = await req.json();
+  const args: UpsertByteInput = await req.json();
   const spaceById = await getSpaceById(params.spaceId);
   await checkEditSpacePermission(spaceById, req);
-  const transformedByte = await transformInput(params.spaceId, input);
-  const steps: ByteStepDto[] = transformByteInputSteps(input);
-  const id = input.id || slugify(input.name);
+  const transformedByte = await transformInput(params.spaceId, args);
+  const steps: ByteStepDto[] = transformByteInputSteps(args);
+  const id = args.id || slugify(args.name);
   const upsertedByte: Byte = await prisma.byte.upsert({
     create: {
       ...transformedByte,
       steps: steps,
       id: id,
       spaceId: params.spaceId,
-      completionScreen: input.completionScreen || undefined,
+      completionScreen: args.completionScreen || undefined,
     },
     update: {
-      ...input,
+      ...args,
       steps: steps,
-      completionScreen: input.completionScreen || undefined,
+      completionScreen: args.completionScreen || undefined,
     },
     where: {
       id: id,
