@@ -20,6 +20,24 @@ const nextConfig = {
     includePaths: ['./src'],
     prependData: `@import "app/styles/variables.scss";`,
   },
+  crossOrigin: 'anonymous',
+  async headers() {
+    console.log('Setting up headers');
+    return [
+      {
+        // matching all API routes
+        source: '/api/:path*',
+        headers: [
+          { key: 'Access-Control-Allow-Origin', value: '*' },
+          { key: 'Access-Control-Allow-Methods', value: 'GET, POST, PUT, DELETE, OPTIONS' },
+          {
+            key: 'Access-Control-Allow-Headers',
+            value: 'Content-Type, Authorization, X-api-key, dodao-auth-token',
+          },
+        ],
+      },
+    ];
+  },
 };
 
 module.exports = nextConfig;
