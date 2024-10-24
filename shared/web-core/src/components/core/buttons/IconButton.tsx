@@ -46,7 +46,8 @@ function IconButton({
   removeBorder = false,
   onClick,
   className,
-}: IconButtonProps) {
+  tooltip,
+}: IconButtonProps & { tooltip?: string }) {
   const renderIcon = () => {
     switch (iconName) {
       case IconTypes.Trash:
@@ -71,18 +72,20 @@ function IconButton({
   };
 
   return (
-    <StyledUiButton
-      disabled={disabled}
-      primary={primary}
-      variant={variant}
-      loading={loading}
-      removeBorder={removeBorder}
-      size="sm"
-      onClick={disabled ? undefined : onClick}
-      className={className}
-    >
-      {renderIcon()}
-    </StyledUiButton>
+    <div title={tooltip} onClick={disabled ? undefined : onClick}>
+      <StyledUiButton
+        disabled={disabled}
+        primary={primary}
+        variant={variant}
+        loading={loading}
+        removeBorder={removeBorder}
+        size="sm"
+        onClick={disabled ? undefined : onClick}
+        className={className}
+      >
+        {renderIcon()}
+      </StyledUiButton>
+    </div>
   );
 }
 
