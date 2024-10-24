@@ -88,7 +88,7 @@ function SwiperByteStepperItemView({ viewByteHelper, step, byte, space, setByteS
           onSlideChange={(swiper) => {
             const activeIndex = swiper.activeIndex;
             viewByteHelper.setActiveStep(activeIndex);
-            if (swiper.isEnd) {
+            if (swiper.isEnd && viewByteHelper.canNavigateToNext(step)) {
               setTimeout(() => {
                 setisLastStep(true);
               }, 200); // Delay is added to prevent the close button to appear before the complete view of the last step appears

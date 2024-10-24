@@ -68,7 +68,7 @@ function ByteStepperItemView({ viewByteHelper, step, byte, space, setByteSubmitt
 
       setTimeout(async () => {
         viewByteHelper.goToNextStep(step);
-      }, 300);
+      }, 300); //the delay is added for the smoother transition between steps
 
       setTransitionState('exit');
     }
@@ -85,7 +85,7 @@ function ByteStepperItemView({ viewByteHelper, step, byte, space, setByteSubmitt
   const isShortScreen = height <= 690;
 
   return (
-    <div className={`w-full flex flex-col justify-between  ${!isShortScreen ? styles.longScreenStepContainer : styles.shortScreenStepContainer}`}>
+    <div className={`w-full flex flex-col justify-between overflow-auto ${!isShortScreen ? styles.longScreenStepContainer : styles.shortScreenStepContainer}`}>
       <div className={`flex flex-col flex-grow justify-center align-center ${transitionClasses[transitionState]} ${styles.stepContents}`}>
         <ByteStepperItemContent
           space={space}
