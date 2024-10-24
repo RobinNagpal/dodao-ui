@@ -2,7 +2,6 @@
 
 import { ByteCollectionItemType } from '@/app/api/helpers/byteCollection/byteCollectionItemType';
 import AddNewItemButton from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/AddNewItemButton';
-import ByteCollectionCardAddItem from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCollectionCardAddItem';
 import ByteCollectionCardAdminDropdown from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCollectionCardAdminDropdown';
 import EditByteView from '@/components/bytes/Edit/EditByteView';
 import EditShortVideoView from '@/components/shortVideos/Edit/EditShortVideoView';
@@ -11,7 +10,6 @@ import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import { DeleteByteItemRequest } from '@/types/request/ByteRequests';
 import { TidbitCollectionTags } from '@/utils/api/fetchTags';
 import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
-import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
@@ -59,7 +57,6 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
   const [watchVideo, setWatchVideo] = React.useState<boolean>(false);
   const [selectedVideo, setSelectedVideo] = React.useState<VideoModalProps>();
   const [videoResponse, setVideoResponse] = React.useState<{ shortVideo?: ShortVideoFragment }>();
-  const [showCreateModal, setShowCreateModal] = React.useState<boolean>(false);
   const [editByteModalState, setEditModalState] = React.useState<EditByteModalState>({ isVisible: false, byteId: null });
   const [deleteItemModalState, setDeleteItemModalState] = React.useState<DeleteItemModalState>({
     isVisible: false,
@@ -213,9 +210,6 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
           })}
         </ul>
       </div>
-      <FullPageModal className={'w-1/2'} open={showCreateModal} onClose={() => setShowCreateModal(false)} title={'Create New Item'} showCloseButton={false}>
-        <ByteCollectionCardAddItem space={space} hideModal={() => setShowCreateModal(false)} byteCollection={byteCollection} />
-      </FullPageModal>
 
       {editByteModalState.isVisible && (
         <FullScreenModal open={true} onClose={closeByteEditModal} title={'Edit Byte'}>
