@@ -1,10 +1,11 @@
 'use client';
 
 import ViewShortVideoModal from '@/components/shortVideos/View/ViewShortVideoModal';
+import { SpaceTypes } from '@/types/space/SpaceDto';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
-import { ShortVideo, SpaceWithIntegrationsFragment, SpaceTypes } from '@/graphql/generated/generated-types';
+import { ShortVideo, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import withSpace from '@/contexts/withSpace';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 

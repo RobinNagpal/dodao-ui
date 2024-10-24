@@ -1,5 +1,6 @@
+import { SpaceTypes } from '@/types/space/SpaceDto';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { Space, SpaceTypes, useCreateNewTidbitSpaceMutation, useGetSpaceFromCreatorQuery } from '@/graphql/generated/generated-types';
+import { Space, useCreateNewTidbitSpaceMutation, useGetSpaceFromCreatorQuery } from '@/graphql/generated/generated-types';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
