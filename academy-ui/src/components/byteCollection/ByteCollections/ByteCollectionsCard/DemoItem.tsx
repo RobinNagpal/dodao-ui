@@ -1,22 +1,33 @@
+import { ByteCollectionItemType } from '@/app/api/helpers/byteCollection/byteCollectionItemType';
+import EditClickableDemo from '@/components/clickableDemos/Create/EditClickableDemo';
+import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
+import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import { ClickableDemoSummary } from '@/types/clickableDemos/ClickableDemoDto';
+import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import CursorArrowRipple from '@heroicons/react/24/solid/CursorArrowRippleIcon';
 import Link from 'next/link';
+import React from 'react';
 import styles from './ByteCollectionsCard.module.scss';
-import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
-import { ByteCollectionItemType } from '@/app/api/helpers/byteCollection/byteCollectionItemType';
 
 interface DemoItemProps {
+  byteCollection: ByteCollectionSummary;
   demo: ClickableDemoSummary;
   eventIdx: number;
   itemLength: number;
   threeDotItems: { label: string; key: string }[];
-  openDemoEditModal: (demoId: string) => void;
   openItemDeleteModal: (itemId: string, itemType: ByteCollectionItemType | null) => void;
 }
 
+interface EditDemoModalState {
+  isVisible: boolean;
+  demoId: string | null;
+}
+
 export default function DemoItem(props: DemoItemProps) {
-  const { demo, eventIdx, threeDotItems, openDemoEditModal, openItemDeleteModal, itemLength } = props;
+  const { byteCollection, demo, eventIdx, threeDotItems, openItemDeleteModal, itemLength } = props;
   const demoViewUrl = `clickable-demos/view/${demo.demoId}`;
+  const [editDemoModalState, setEditDemoModalState] = React.useState<EditDemoModalState>({ isVisible: false, demoId: null });
+
   return (
     <li key={demo.demoId}>
       <div className="relative pb-6">
@@ -41,7 +52,7 @@ export default function DemoItem(props: DemoItemProps) {
                   if (key === 'archive') {
                     openItemDeleteModal(demo.demoId, ByteCollectionItemType.ClickableDemo);
                   } else {
-                    openDemoEditModal(demo.demoId);
+                    setEditDemoModalState({ isVisible: true, demoId: demo.demoId });
                   }
                 }}
               />
@@ -49,6 +60,25 @@ export default function DemoItem(props: DemoItemProps) {
           )}
         </div>
       </div>
+      {editDemoModalState.isVisible && (
+        <FullScreenModal
+          open={true}
+          onClose={function () {
+            setEditDemoModalState({ isVisible: false, demoId: null });
+          }}
+          title={'Edit Clickable Demo'}
+        >
+          <div className="text-left">
+            <EditClickableDemo
+              demoId={editDemoModalState.demoId}
+              byteCollection={byteCollection}
+              closeDemoEditModal={function () {
+                setEditDemoModalState({ isVisible: false, demoId: null });
+              }}
+            />
+          </div>
+        </FullScreenModal>
+      )}
     </li>
   );
 }
