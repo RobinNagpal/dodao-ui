@@ -1,8 +1,7 @@
 import NoByteCollectionCategories from '@/components/byteCollectionCategory/NoByteCollectionCategory';
 import ByteCollectionCategoryGrid from '@/components/byteCollectionCategory/View/ByteCollectionCategoryGrid';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import { TidbitSiteTabIds } from '@/components/home/TidbitsSite/TidbitSiteTabIds';
-import TidbitsSiteTabs from '@/components/home/TidbitsSite/TidbitsSiteTabs';
+import TidbitsSiteTabs, { TidbitSiteTabIds } from '@/components/home/TidbitsSite/TidbitsSiteTabs';
 import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';

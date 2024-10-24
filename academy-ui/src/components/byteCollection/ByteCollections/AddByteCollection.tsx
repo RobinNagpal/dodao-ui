@@ -1,53 +1,39 @@
 'use client';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import React from 'react';
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import ByteCollectionEditor from '@/components/byteCollection/ByteCollections/ByteCollectionEditor';
 import { EditByteCollection } from '@/components/byteCollection/ByteCollections/useEditByteCollection';
-import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import { ByteCollection, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
-import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
-import { useRouter } from 'next/navigation';
+import { CreateByteCollectionRequest } from '@/types/request/ByteCollectionRequests';
 import Button from '@dodao/web-core/components/core/buttons/Button';
-import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
+import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import { useFetchUtils } from '@dodao/web-core/ui/hooks/useFetchUtils';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import React from 'react';
 
 export default function AddByteCollection({ space }: { space: SpaceWithIntegrationsFragment }) {
   const [showAddCollectionModal, setShowAddCollectionModal] = React.useState(false);
-  const { showNotification } = useNotificationContext();
-  const router = useRouter();
 
+  const { postData } = useFetchUtils();
   function onClose() {
     setShowAddCollectionModal(false);
-    router.refresh();
   }
 
   async function upsertByteCollectionFn(byteCollection: EditByteCollection) {
-    try {
-      const result = await fetch(`${getBaseUrl()}/api/${space.id}/byte-collections`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          input: {
-            spaceId: space.id,
-            name: byteCollection.name,
-            description: byteCollection.description,
-            byteIds: [],
-            status: byteCollection.status,
-            priority: byteCollection.priority,
-            videoUrl: byteCollection.videoUrl,
-          },
-        }),
-      });
-
-      if (result.ok) {
-        showNotification({ message: 'Collection Created Successfully', type: 'success' });
-        setShowAddCollectionModal(false);
+    await postData<ByteCollection, CreateByteCollectionRequest>(
+      `${getBaseUrl()}/api/${space.id}/byte-collections`,
+      {
+        name: byteCollection.name,
+        description: byteCollection.description,
+        priority: byteCollection.priority,
+        videoUrl: byteCollection.videoUrl,
+      },
+      {
+        redirectPath: `/?updated=${Date.now()}`,
+        successMessage: 'Tidbit collection created successfully',
+        errorMessage: 'Failed to create tidbit collection',
       }
-    } catch (error) {
-      showNotification({ message: 'Something went wrong', type: 'error' });
-    }
+    );
   }
 
   return (
@@ -69,12 +55,7 @@ export default function AddByteCollection({ space }: { space: SpaceWithIntegrati
           <div className="text-left">
             <PageWrapper>
               <SingleCardLayout>
-                <ByteCollectionEditor
-                  space={space}
-                  byteCollection={undefined}
-                  viewByteCollectionsUrl={'/tidbit-collections'}
-                  upsertByteCollectionFn={upsertByteCollectionFn}
-                />
+                <ByteCollectionEditor space={space} byteCollection={undefined} viewByteCollectionsUrl={'/'} upsertByteCollectionFn={upsertByteCollectionFn} />
               </SingleCardLayout>
             </PageWrapper>
           </div>

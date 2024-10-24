@@ -131,7 +131,11 @@ export function useEditByteCollection({
     if (!byteCollection.name.trim() || !byteCollection.description.trim()) {
       return;
     }
-    await upsertByteCollectionFn(byteCollection, byteCollection.id || null);
+    try {
+      await upsertByteCollectionFn(byteCollection, byteCollection.id || null);
+    } catch (e) {
+      console.error(e);
+    }
     setloading(false);
     router.push(viewByteCollectionsUrl);
     router.refresh();

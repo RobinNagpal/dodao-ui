@@ -30,7 +30,7 @@ function ByteCollectionEditor(props: ByteCollectionEditorProps) {
   });
 
   return (
-    <div>
+    <div className="text-color">
       <Input
         modelValue={byteCollection.name}
         onUpdate={(v) => helperFunctions.updateByteCollectionName(v?.toString() || '')}

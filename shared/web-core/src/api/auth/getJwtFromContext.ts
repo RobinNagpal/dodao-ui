@@ -11,11 +11,12 @@ export const dodaoTeamMates = [
 ];
 
 export async function getDecodedJwtFromContext(req: NextRequest): Promise<DoDaoJwtTokenPayload | null> {
-  const authorizationHeader = req.headers.get('Authorization');
-  if (authorizationHeader) {
-    const token = authorizationHeader.split(' ')[1];
-    const decodedToken = jwt.verify(token, process.env.DODAO_AUTH_SECRET!);
+  const clientKeyHeader = req.headers.get('dodao-auth-token');
+  if (clientKeyHeader) {
+    const decodedToken = jwt.verify(clientKeyHeader, process.env.DODAO_AUTH_SECRET!);
     return decodedToken as DoDaoJwtTokenPayload;
+  } else {
+    console.error('No dodao-auth-token header found in request ', req.url);
   }
   const token = (await getToken({ req })) as DoDaoJwtTokenPayload | null;
   return token;

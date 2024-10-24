@@ -1,13 +1,13 @@
-import { CssTheme } from '@dodao/web-core/src/components/app/themes';
 import UploadInput from '@/components/app/UploadInput';
+import useEditSpace from '@/components/spaces/Edit/Basic/useEditSpace';
+import { ImageType, Space, SpaceTypes } from '@/graphql/generated/generated-types';
 import UpsertBadgeInput from '@dodao/web-core/components/core/badge/UpsertBadgeInput';
 import UpsertKeyValueBadgeInput from '@dodao/web-core/components/core/badge/UpsertKeyValueBadgeInput';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Input from '@dodao/web-core/components/core/input/Input';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import StyledSelect from '@dodao/web-core/components/core/select/StyledSelect';
-import useEditSpace from '@/components/spaces/Edit/Basic/useEditSpace';
-import { ImageType, Space } from '@/graphql/generated/generated-types';
+import { CssTheme } from '@dodao/web-core/src/components/app/themes';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { themeSelect } from '@dodao/web-core/utils/ui/statuses';
 import union from 'lodash/union';
@@ -27,6 +27,16 @@ export default function UpsertSpaceBasicSettingsModal(props: { space?: Space; op
     editSpaceHelper.initialize();
   }, [space?.id]);
 
+  const spaceTypes = [
+    {
+      label: 'TidbitsSite',
+      id: SpaceTypes.TidbitsSite,
+    },
+    {
+      label: 'AcademySite',
+      id: SpaceTypes.AcademySite,
+    },
+  ];
   return (
     <FullPageModal open={props.open} onClose={props.onClose} title="Basic Space Settings">
       <div className="space-y-12 text-left p-6">
@@ -58,6 +68,7 @@ export default function UpsertSpaceBasicSettingsModal(props: { space?: Space; op
             items={themeSelect}
             setSelectedItemId={(value) => setSpaceField('skin', value)}
           />
+          <StyledSelect label="Theme" selectedItemId={space.type} items={spaceTypes} setSelectedItemId={(value) => setSpaceField('type', value)} />
           <UpsertBadgeInput
             label={'Domains'}
             badges={space.domains.map((d) => ({ id: d, label: d }))}

@@ -2,9 +2,14 @@
 
 import PrivateComponent from '@/components/core/PrivateComponent';
 import TabsWithUnderline, { TabItem } from '@dodao/web-core/components/core/tabs/TabsWithUnderline';
-import { TidbitSiteTabIds } from '@/components/home/TidbitsSite/TidbitSiteTabIds';
 import { useRouter } from 'next/navigation';
 import React from 'react';
+
+export enum TidbitSiteTabIds {
+  Tidbits = 'Tidbits',
+  TidbitCollections = 'TidbitCollections',
+  TidbitCollectionCategories = 'TidbitCollectionCategories',
+}
 
 export default function TidbitsSiteTabs({ selectedTabId }: { selectedTabId?: string }) {
   const router = useRouter();

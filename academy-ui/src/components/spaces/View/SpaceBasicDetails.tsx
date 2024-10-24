@@ -27,6 +27,10 @@ function getSpaceDetailsFields(space: SpaceWithIntegrationsFragment): Array<{ la
       value: space.skin!,
     },
     {
+      label: 'Type',
+      value: space.type || 'None',
+    },
+    {
       label: 'Logo',
       value: space.avatar!,
     },
@@ -37,10 +41,6 @@ function getSpaceDetailsFields(space: SpaceWithIntegrationsFragment): Array<{ la
     {
       label: 'Domains',
       value: space.domains!.join(', ') || 'None',
-    },
-    {
-      label: 'Bot Domains',
-      value: space.botDomains!.join(', ') || 'None',
     },
     {
       label: 'Admins',

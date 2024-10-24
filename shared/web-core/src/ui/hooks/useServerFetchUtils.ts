@@ -8,7 +8,7 @@ export default async function fetchDataServerSide<T>(url: string, options: Reque
     if (session) {
       options.headers = {
         ...(options.headers || {}),
-        Authorization: `Bearer ${session?.dodaoAccessToken}`,
+        'dodao-auth-token': session?.dodaoAccessToken,
       };
     }
     const response = await fetch(url, {

@@ -22,11 +22,15 @@ export interface ByteCollectionSummary {
   items: Array<ByteCollectionItem>;
 }
 
+export enum ByteCollectionStatus {
+  LIVE = 'LIVE',
+}
+
 export interface ByteCollectionDto {
   id: string;
   name: string;
   description: string;
-  status: string;
+  status: ByteCollectionStatus;
   byteIds: Array<string>;
   priority: number;
   videoUrl?: string | null;

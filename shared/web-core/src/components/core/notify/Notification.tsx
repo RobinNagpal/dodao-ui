@@ -78,7 +78,7 @@ export default function Notification({ heading, message, duration = 5000, type =
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <NotificationPanel className="pointer-events-auto w-full max-w-sm overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
+            <NotificationPanel className="pointer-events-auto w-full max-w-sm overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 z-50">
               <div className="p-4">
                 <div className="flex items-start">
                   <div className="flex-shrink-0">

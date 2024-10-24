@@ -1,27 +1,21 @@
-import type { NextRequest } from 'next/server';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-api-key',
-  ' Access-Control-Allow-Credentials': 'true',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-api-key, dodao-auth-token',
 };
 
 export async function middleware(request: NextRequest) {
   if (request.method === 'OPTIONS') {
-    return NextResponse.json({}, { headers: corsHeaders });
+    return new NextResponse(null, { headers: corsHeaders });
   }
 
-  const headers = new Headers(request.headers);
-
-  const nextResponse = NextResponse.next({
-    request: {
-      headers: headers,
-    },
+  const response = NextResponse.next();
+  Object.entries(corsHeaders).forEach(([key, value]) => {
+    response.headers.set(key, value);
   });
-
-  return nextResponse;
+  return response;
 }
 
 export const config = { matcher: ['/api/:path*'] };
