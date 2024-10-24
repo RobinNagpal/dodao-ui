@@ -1,6 +1,7 @@
 import { ByteCollection, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
-import { ByteCollectionDto, ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
+import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import { CreateByteCollectionRequest } from '@/types/request/ByteCollectionRequests';
+import { SpaceTypes } from '@/types/space/SpaceDto';
 import { useFetchUtils } from '@dodao/web-core/ui/hooks/useFetchUtils';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useRouter } from 'next/navigation';
@@ -13,9 +14,6 @@ interface HelperFunctions {
   updateByteCollectionDescription: (description: string) => void;
   updateByteCollectionVideoUrl: (videoUrl: string) => void;
   updateByteCollectionPriority: (priority: number) => void;
-  moveByteUp: (byteUuid: string) => void;
-  moveByteDown: (byteUuid: string) => void;
-  removeByte: (byteUuid: string) => void;
   upsertByteCollection: () => void;
 }
 
@@ -28,17 +26,10 @@ interface UseEditByteCollectionType {
 
 export interface UseEditByteCollectionArgs {
   space: SpaceWithIntegrationsFragment;
-  viewByteCollectionsUrl: string;
   byteCollection?: ByteCollectionSummary;
-  redirectPath: string;
 }
 
-export function useEditByteCollection({
-  space,
-  viewByteCollectionsUrl,
-  redirectPath,
-  byteCollection: byteCollectionProp,
-}: UseEditByteCollectionArgs): UseEditByteCollectionType {
+export function useEditByteCollection({ space, byteCollection: byteCollectionProp }: UseEditByteCollectionArgs): UseEditByteCollectionType {
   const { postData, putData } = useFetchUtils();
   const [isPrestine, setIsPrestine] = useState<boolean>(true);
   const router = useRouter();
@@ -72,44 +63,6 @@ export function useEditByteCollection({
     });
   }, [byteCollectionProp]);
 
-  const moveByteUp = (byteUuid: string) => {
-    setByteCollection((prevByte) => {
-      const bytes = [...prevByte.bytes!];
-      const index = bytes.findIndex((byte) => byte.byteId === byteUuid);
-      if (index > 0) {
-        const temp = bytes[index - 1];
-        bytes[index - 1] = bytes[index];
-        bytes[index] = temp;
-      }
-      return { ...prevByte, bytes: bytes };
-    });
-  };
-
-  const moveByteDown = (byteUuid: string) => {
-    setByteCollection((prevByte) => {
-      const newBytes = [...prevByte.bytes!];
-      const index = newBytes.findIndex((byte) => byte.byteId === byteUuid);
-      if (index >= 0 && index < newBytes.length - 1) {
-        [newBytes[index], newBytes[index + 1]] = [newBytes[index + 1], newBytes[index]];
-      }
-
-      return { ...prevByte, bytes: newBytes };
-    });
-  };
-
-  const removeByte = (byteUuid: string) => {
-    setByteCollection((prevByte) => {
-      const updatedBytes = prevByte
-        .bytes!.filter((s) => s.byteId !== byteUuid)
-        .map((byte, index) => ({
-          ...byte,
-          order: index,
-        }));
-
-      return { ...prevByte, bytes: updatedBytes };
-    });
-  };
-
   const updateByteCollectionName = (name: string) => {
     setByteCollection((prevByte) => ({ ...prevByte, name }));
   };
@@ -132,6 +85,7 @@ export function useEditByteCollection({
     if (!byteCollection.name.trim() || !byteCollection.description.trim()) {
       return;
     }
+    const redirectPath = space.type === SpaceTypes.AcademySite ? '/tidbit-collections' : '/';
     try {
       if (byteCollectionProp?.id) {
         await putData<ByteCollection, CreateByteCollectionRequest>(
@@ -143,7 +97,7 @@ export function useEditByteCollection({
             videoUrl: byteCollection.videoUrl,
           },
           {
-            redirectPath: `/?updated=${Date.now()}`,
+            redirectPath: `${redirectPath}?updated=${Date.now()}`,
             successMessage: 'Tidbit collection updated successfully',
             errorMessage: 'Failed to create updated collection',
           }
@@ -158,7 +112,7 @@ export function useEditByteCollection({
             videoUrl: byteCollection.videoUrl,
           },
           {
-            redirectPath: `/?updated=${Date.now()}`,
+            redirectPath: `${redirectPath}?updated=${Date.now()}`,
             successMessage: 'Tidbit collection created successfully',
             errorMessage: 'Failed to create tidbit collection',
           }
@@ -168,8 +122,6 @@ export function useEditByteCollection({
       console.error(e);
     }
     setloading(false);
-    router.push(viewByteCollectionsUrl);
-    router.refresh();
   };
 
   return {
@@ -181,9 +133,6 @@ export function useEditByteCollection({
       updateByteCollectionDescription,
       updateByteCollectionVideoUrl,
       updateByteCollectionPriority,
-      moveByteUp,
-      moveByteDown,
-      removeByte,
       upsertByteCollection,
     },
   };

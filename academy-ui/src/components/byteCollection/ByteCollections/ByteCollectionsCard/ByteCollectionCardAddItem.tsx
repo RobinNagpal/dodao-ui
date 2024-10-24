@@ -3,7 +3,7 @@
 import EditByteView from '@/components/bytes/Edit/EditByteView';
 import EditClickableDemo from '@/components/clickableDemos/Create/EditClickableDemo';
 import EditShortVideoView from '@/components/shortVideos/Edit/EditShortVideoView';
-import { SpaceTypes, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';

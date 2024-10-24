@@ -4,7 +4,7 @@ import ByteCollectionCardAdminDropdown from '@/components/byteCollection/ByteCol
 import ByteCollectionCardAddItem from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCollectionCardAddItem';
 import { DeleteByteItemRequest } from '@/types/request/ByteRequests';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
-import { ShortVideoFragment, SpaceTypes, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { ShortVideoFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import { ByteCollectionItemType } from '@/app/api/helpers/byteCollection/byteCollectionItemType';
 import React from 'react';

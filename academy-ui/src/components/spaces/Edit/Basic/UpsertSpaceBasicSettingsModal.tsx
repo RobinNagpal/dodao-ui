@@ -1,6 +1,7 @@
 import UploadInput from '@/components/app/UploadInput';
 import useEditSpace from '@/components/spaces/Edit/Basic/useEditSpace';
-import { ImageType, Space, SpaceTypes } from '@/graphql/generated/generated-types';
+import { ImageType, Space } from '@/graphql/generated/generated-types';
+import { SpaceTypes } from '@/types/space/SpaceDto';
 import UpsertBadgeInput from '@dodao/web-core/components/core/badge/UpsertBadgeInput';
 import UpsertKeyValueBadgeInput from '@dodao/web-core/components/core/badge/UpsertKeyValueBadgeInput';
 import Button from '@dodao/web-core/components/core/buttons/Button';

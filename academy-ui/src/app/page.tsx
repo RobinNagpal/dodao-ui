@@ -1,12 +1,12 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import ChatHome from '@/chatbot/home/home';
 import { OpenAIModelID } from '@/chatbot/types/openai';
+import { SpaceTypes } from '@/types/space/SpaceDto';
 import { PredefinedSpaces } from '@dodao/web-core/src/utils/constants/constants';
 import DefaultHome from '@/components/home/DefaultHome/DefaultHome';
 import DoDAOHome from '@/components/home/DoDAOHome/DoDAOHome';
 import TidbitsHubHome from '@/components/home/TidbitsHub/TidbitsHubHome';
 import { getTidbitsSiteHomepageContents } from '@/components/home/TidbitsSite/getTidbitsSiteHomepageContents';
-import { SpaceTypes } from '@/graphql/generated/generated-types';
 import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { getServerSession } from 'next-auth';

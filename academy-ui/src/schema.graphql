@@ -1680,13 +1680,6 @@ input SpaceLoadersInfoInput {
   discourseUrl: String
 }
 
-enum SpaceTypes {
-  AcademySite
-  AiChatbotSite
-  CryptoGelatoSite
-  TidbitsSite
-}
-
 input SpaceWhere {
   id: String
   id_in: [String]
