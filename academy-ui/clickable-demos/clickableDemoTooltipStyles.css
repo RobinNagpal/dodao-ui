@@ -165,6 +165,22 @@
   transition: all 0.3s ease;
 }
 
+.dodao-clear-selection-button {
+  position: fixed;
+  font-size: 24px;
+  bottom: 10px;
+  right: 250px;
+  padding: 10px 20px;
+  background-color: var(--primary-color, #007bff) !important;
+  -webkit-text-fill-color: var(--text-color, #fff) !important;
+  color: var(--text-color, #fff) !important;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 999999999999999;
+  transition: all 0.3s ease;
+}
+
 /* .dodao-hovered-element {
   border: 0.1px solid var(--primary-color, #007bff) !important;
   border-radius: 5px;
