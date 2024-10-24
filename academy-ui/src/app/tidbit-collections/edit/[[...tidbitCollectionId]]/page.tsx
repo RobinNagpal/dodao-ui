@@ -41,46 +41,6 @@ function EditTidbitCollectionSpace(props: { space: SpaceWithIntegrationsFragment
 
   const byteCollectionId = props.params.tidbitCollectionId?.[0] || null;
 
-  async function upsertByteCollectionFn(byteCollection: EditByteCollection, byteCollectionId: string | null) {
-    if (!byteCollectionId) {
-      await fetch(`${getBaseUrl()}/api/${props.space.id}/byte-collections`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          input: {
-            spaceId: props.space.id,
-            name: byteCollection.name,
-            description: byteCollection.description,
-            byteIds: byteCollection.bytes?.map((byte) => byte.byteId),
-            status: byteCollection.status,
-            priority: byteCollection.priority,
-            videoUrl: byteCollection.videoUrl,
-          },
-        }),
-      });
-    } else {
-      await fetch(`${getBaseUrl()}/api/byte-collection/update-byte-collection`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          input: {
-            byteCollectionId,
-            name: byteCollection.name,
-            description: byteCollection.description,
-            byteIds: byteCollection.bytes?.map((byte) => byte.byteId),
-            status: byteCollection.status,
-            spaceId: props.space.id,
-            priority: byteCollection.priority,
-            videoUrl: byteCollection.videoUrl,
-          },
-        }),
-      });
-    }
-  }
   const threeDotItems: EllipsisDropdownItem[] = [{ label: 'Delete', key: 'delete' }];
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const router = useRouter();
@@ -129,12 +89,7 @@ function EditTidbitCollectionSpace(props: { space: SpaceWithIntegrationsFragment
           )}
         </div>
         {bytesResponse?.bytes && (!byteCollectionId || data) ? (
-          <ByteCollectionEditor
-            space={props.space}
-            byteCollection={data!.byteCollection}
-            viewByteCollectionsUrl={'/tidbit-collections'}
-            upsertByteCollectionFn={upsertByteCollectionFn}
-          />
+          <ByteCollectionEditor space={props.space} byteCollection={data!.byteCollection} viewByteCollectionsUrl={'/tidbit-collections'} />
         ) : (
           <PageLoading />
         )}

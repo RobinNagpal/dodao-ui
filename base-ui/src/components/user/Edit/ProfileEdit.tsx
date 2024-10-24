@@ -14,7 +14,7 @@ interface ProfileEditProps {
 }
 
 function ProfileEdit({ space }: ProfileEditProps) {
-  const { fetchData, updateData } = useFetchUtils();
+  const { fetchData, putData } = useFetchUtils();
   const { data: session } = useSession() as { data: Session | null };
   const [upserting, setUpserting] = useState(false);
   const initialState = {
@@ -51,7 +51,7 @@ function ProfileEdit({ space }: ProfileEditProps) {
       name: updatedUser.name,
       phoneNumber: updatedUser.phoneNumber,
     };
-    await updateData<User, User>(`${getBaseUrl()}/api/users/${user.id}`, userReq, {
+    await putData<User, User>(`${getBaseUrl()}/api/users/${user.id}`, userReq, {
       successMessage: 'User updated successfully',
       errorMessage: 'Error while updating user',
       redirectPath: '/homepage',

@@ -23,18 +23,6 @@ export default function CreateContentModalContents({ hideModal, space }: { hideM
           <Button variant="outlined" primary className="p-2 w-full" onClick={() => goToUrl('/timelines/edit')}>
             Create timeline
           </Button>
-          <Button variant="outlined" primary className="p-2 w-full" onClick={() => goToUrl('/tidbit-collections/edit')}>
-            Create Tidbit Collection
-          </Button>
-          <Button variant="outlined" primary className="p-2 w-full" onClick={() => goToUrl('/tidbit-collection-categories/edit')}>
-            Create Tidbit Collection Category
-          </Button>
-          <Button variant="outlined" primary className="p-2 w-full" onClick={() => goToUrl('/shorts/create')}>
-            Create Short Video
-          </Button>
-          <Button variant="outlined" primary className="p-2 w-full" onClick={() => goToUrl('/clickable-demos/edit')}>
-            Create Clickable Demo
-          </Button>
         </Grid2Cols>
       </div>
     </div>
