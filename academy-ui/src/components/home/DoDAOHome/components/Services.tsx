@@ -49,8 +49,8 @@ export default function Services() {
         </SectionHeading>
         <div className="mx-auto max-w-7xl px-6 lg:px-8 mt-8">
           <div className="mx-auto max-w-2xl sm:text-center">
-            <h2 className="text-base font-semibold leading-7 text-indigo-600">Everything you need</h2>
-            <p className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Development Services</p>
+            <p className="text-base font-semibold leading-7 text-indigo-600">Everything you need</p>
+            <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Development Services</h2>
             <p className="mt-4 text-base text-gray-500">
               At DoDAO, we offer a suite of specialized development services designed to help you innovate and stay ahead in the blockchain landscape.
             </p>

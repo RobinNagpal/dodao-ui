@@ -69,7 +69,7 @@ export function Education() {
         <div className="mx-auto max-w-7xl pt-4 sm:pt-8">
           <div className="mx-auto max-w-2xl lg:max-w-none">
             <div className="mx-auto max-w-3xl text-center">
-              <p className="text-3xl font-bold tracking-tight sm:text-4xl">Education</p>
+              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Education</h2>
               <p className="mt-4 text-base text-gray-500">
                 At DoDAO, we are dedicated to spreading knowledge about blockchain technology and decentralized finance (DeFi). We offer a variety of
                 educational services to help individuals and businesses understand and embrace this rapidly evolving industry.

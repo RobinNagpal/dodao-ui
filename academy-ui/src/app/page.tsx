@@ -37,10 +37,10 @@ export async function generateMetadata(): Promise<Metadata> {
     };
   } else if (host === 'dodao-localhost.io' || host === 'academy.dodao.io' || host === 'dodao.io') {
     metadata = {
-      title: 'DoDAO - Empowering Blockchain Innovation with Education, Research, and Development',
-      description:
-        'DoDAO is your gateway to blockchain expertise, offering services in Smart Contract Development, Blockchain Education, Research, and DeFi solutions to empower the ecosystem.',
+      title: 'DoDAO - Empowering Blockchain Innovation',
+      description: 'DoDAO offers blockchain development, education, and research services to empower innovation in the blockchain ecosystem.',
       keywords: [
+        'dodao',
         'DoDAO',
         'DoDAO website',
         'DoDAO Blockchain',
