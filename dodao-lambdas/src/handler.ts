@@ -8,6 +8,7 @@ import {
 import { Upload } from "@aws-sdk/lib-storage";
 import * as yauzl from "yauzl";
 import { Readable } from "stream";
+import * as mime from "mime-types";
 
 const s3Client = new S3Client({});
 
@@ -79,13 +80,21 @@ export const unzipperHandler: S3Handler = async (event: S3Event) => {
 
               const newKey = `${targetPath}${zipBaseName}/${entry.fileName}`;
 
-              console.log(`Uploading extracted file to: ${newKey}`);
+              // Determine the content type based on the file extension
+              const contentType =
+                mime.lookup(entry.fileName) || "application/octet-stream";
+
+              console.log(
+                `Uploading extracted file to: ${newKey} with content type - ${contentType} `
+              );
 
               const uploadParams = {
                 Bucket: bucket,
                 Key: newKey,
                 Body: readStream, // The entry stream
                 ACL: "public-read",
+                ContentType: contentType, // Set the correct content type
+                // ContentDisposition: "inline", // Suggests to display in the browser
               };
 
               const upload = new Upload({
