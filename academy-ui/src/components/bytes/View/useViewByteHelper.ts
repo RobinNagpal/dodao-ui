@@ -293,7 +293,7 @@ export function useViewByteHelper({ space, byteId, stepOrder, fetchByteFn }: Use
       } else {
         showNotification({
           type: 'error',
-          message: 'Something went wrong. Please try again.',
+          message: 'The Byte was not saved. Please try again.',
           heading: 'Error',
         });
 
@@ -305,7 +305,7 @@ export function useViewByteHelper({ space, byteId, stepOrder, fetchByteFn }: Use
       console.log(e);
       showNotification({
         type: 'error',
-        message: 'Something went wrong. Please try again.',
+        message: 'The Byte was not saved. Please try again.',
         heading: 'Error',
       });
 

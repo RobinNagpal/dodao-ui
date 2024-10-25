@@ -1,5 +1,8 @@
+import { CreateSignedUrlRequest } from '@/types/request/SignedUrl';
+import { SingedUrlResponse } from '@/types/response/SignedUrl';
 import LoadingSpinner from '@dodao/web-core/components/core/loaders/LoadingSpinner';
 import { CreateSignedUrlInput, ImageType } from '@/graphql/generated/generated-types';
+import { useFetchUtils } from '@dodao/web-core/ui/hooks/useFetchUtils';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { getUploadedImageUrlFromSingedUrl } from '@dodao/web-core/utils/upload/getUploadedImageUrlFromSingedUrl';
 import axios from 'axios';
@@ -22,6 +25,7 @@ export default function ClickableDemoFileUploader({ spaceId, objectId, imageType
   const [loading, setLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const { postData } = useFetchUtils();
 
   async function uploadToS3AndReturnImgUrl(imageType: string, file: File, objectId: string) {
     const input: CreateSignedUrlInput = {
@@ -31,9 +35,15 @@ export default function ClickableDemoFileUploader({ spaceId, objectId, imageType
       name: file.name.replace(' ', '_').toLowerCase(),
     };
 
-    const response = await axios.post(`${getBaseUrl()}/api/s3-signed-urls`, { spaceId, input });
+    const response = await postData<SingedUrlResponse, CreateSignedUrlRequest>(
+      `${getBaseUrl()}/api/s3-signed-urls`,
+      { spaceId, input },
+      {
+        errorMessage: 'Failed to get signed URL',
+      }
+    );
 
-    const signedUrl = response?.data?.url!;
+    const signedUrl = response?.url!;
     await axios.put(signedUrl, file, {
       headers: { 'Content-Type': file.type },
     });

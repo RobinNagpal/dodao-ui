@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 export interface UpdateDataOptions {
-  successMessage: string;
+  successMessage?: string;
   errorMessage: string;
   redirectPath?: string;
 }
@@ -74,7 +74,11 @@ export const useFetchUtils = () => {
         showNotification({ type: 'error', message: errorMessage });
         return;
       }
-      showNotification({ type: 'success', message: successMessage });
+
+      if (successMessage) {
+        showNotification({ type: 'success', message: successMessage });
+      }
+
       if (redirectPath) {
         await router.push(redirectPath);
       }

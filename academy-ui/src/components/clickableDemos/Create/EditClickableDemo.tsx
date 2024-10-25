@@ -7,6 +7,8 @@ import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsis
 import withSpace from '@/contexts/withSpace';
 import { useI18 } from '@/hooks/useI18';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
+import { CreateSignedUrlRequest } from '@/types/request/SignedUrl';
+import { SingedUrlResponse } from '@/types/response/SignedUrl';
 import Block from '@dodao/web-core/components/app/Block';
 import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
 import Button from '@dodao/web-core/components/core/buttons/Button';
@@ -17,6 +19,7 @@ import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { CreateSignedUrlInput, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import { ClickableDemoErrors } from '@dodao/web-core/types/errors/clickableDemoErrors';
+import { useFetchUtils } from '@dodao/web-core/ui/hooks/useFetchUtils';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -36,6 +39,7 @@ interface EditClickableDemoProps {
 
 function EditClickableDemo({ space, demoId, byteCollection, closeDemoEditModal }: EditClickableDemoProps) {
   const spaceId = space.id;
+  const { postData } = useFetchUtils();
 
   const { clickableDemoCreating, clickableDemoLoaded, clickableDemo, clickableDemoErrors, handleSubmit, updateClickableDemoFunctions } = useEditClickableDemo(
     space,
@@ -67,9 +71,15 @@ function EditClickableDemo({ space, demoId, byteCollection, closeDemoEditModal }
       name: file.name.replace(' ', '_').toLowerCase(),
     };
 
-    const response = await axios.post(`${getBaseUrl()}/api/s3-signed-urls`, { spaceId, input });
+    const response = await postData<SingedUrlResponse, CreateSignedUrlRequest>(
+      `${getBaseUrl()}/api/s3-signed-urls`,
+      { spaceId, input },
+      {
+        errorMessage: 'Failed to get signed URL',
+      }
+    );
 
-    const signedUrl = response?.data?.url!;
+    const signedUrl = response?.url!;
     await axios.put(signedUrl, file, {
       headers: { 'Content-Type': 'image/png' },
     });
