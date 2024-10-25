@@ -32,7 +32,7 @@ export function useEditByte(
   const [byteUpserting, setByteUpserting] = useState<boolean>(false);
 
   const { showNotification } = useNotificationContext();
-  const { updateData } = useFetchUtils();
+  const { putData } = useFetchUtils();
   const { $t } = useI18();
 
   const initialize = useCallback(async () => {
@@ -187,7 +187,7 @@ export function useEditByte(
   const handleByteUpsert = async (byteCollection: ByteCollectionSummary) => {
     await saveViaMutation(async () => {
       const upsertByteInput = getByteInputFn(byte);
-      const upsertResponse = await updateData<Byte, UpsertByteInput>(
+      const upsertResponse = await putData<Byte, UpsertByteInput>(
         `${getBaseUrl()}/api/${space.id}/byte-collections/${byteCollection.id}/bytes/${upsertByteInput.id}`,
         {
           ...upsertByteInput,
