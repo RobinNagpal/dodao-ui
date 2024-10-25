@@ -1,4 +1,4 @@
-import { SpaceTypes } from '@/graphql/generated/generated-types';
+import { SpaceTypes } from '@/types/space/SpaceDto';
 import { getDecodedJwtFromContext } from '@dodao/web-core/api/auth/getJwtFromContext';
 import { CssTheme, themes } from '@dodao/web-core/components/app/themes';
 import { NextRequest, NextResponse } from 'next/server';

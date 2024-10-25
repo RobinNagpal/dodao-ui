@@ -37,20 +37,25 @@ export default function ByteItem(props: ByteItemProps) {
             <ByteCompletionCheckmark byteId={byte.byteId} />
             <div className="flex min-w-0 flex-1 justify-between space-x-2 duration-300 ease-in-out">
               <div className="ml-3 text-sm group">
-                <div className="font-bold flex group-hover:underline">{`${byte.name}`}</div>
+                <div className="flex">
+                  <div className="font-bold hover:underline">{`${byte.name}`}</div>
+                  {byte?.videoUrl && (
+                    <PlayCircleIcon
+                      className={`h-6 w-6 ml-6 -mt-1 ${styles.playVideoIcon} cursor-pointer`}
+                      onClick={(e) => {
+                        setWatchVideo(true);
+                        setSelectedVideo({ key: byte.byteId, title: byte.name, src: byte.videoUrl! });
+                        e.preventDefault();
+                        e.stopPropagation();
+                      }}
+                    />
+                  )}
+                </div>
                 <div className="flex-wrap">{byte.content}</div>
               </div>
             </div>
           </Link>
-          {byte?.videoUrl && (
-            <PlayCircleIcon
-              className={`h-6 w-6 ml-2 ${styles.playVideoIcon} cursor-pointer`}
-              onClick={() => {
-                setWatchVideo(true);
-                setSelectedVideo({ key: byte.byteId, title: byte.name, src: byte.videoUrl! });
-              }}
-            />
-          )}
+
           {byte.byteId && (
             <div className="z-10">
               <PrivateEllipsisDropdown

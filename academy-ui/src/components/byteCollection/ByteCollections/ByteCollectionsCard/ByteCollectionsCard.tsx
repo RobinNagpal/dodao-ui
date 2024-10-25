@@ -1,29 +1,26 @@
 'use client';
 
-import ByteCollectionCardAdminDropdown from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCollectionCardAdminDropdown';
-import ByteCollectionCardAddItem from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCollectionCardAddItem';
-import { DeleteByteItemRequest } from '@/types/request/ByteRequests';
-import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
-import { ShortVideoFragment, SpaceTypes, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
-import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import { ByteCollectionItemType } from '@/app/api/helpers/byteCollection/byteCollectionItemType';
-import React from 'react';
-import styles from './ByteCollectionsCard.module.scss';
-import Button from '@dodao/web-core/components/core/buttons/Button';
+import AddNewItemButton from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/AddNewItemButton';
+import ByteCollectionCardAdminDropdown from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCollectionCardAdminDropdown';
+import EditByteView from '@/components/bytes/Edit/EditByteView';
+import EditShortVideoView from '@/components/shortVideos/Edit/EditShortVideoView';
+import { ShortVideoFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
+import { DeleteByteItemRequest } from '@/types/request/ByteRequests';
+import { TidbitCollectionTags } from '@/utils/api/fetchTags';
+import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import PlayCircleIcon from '@heroicons/react/24/outline/PlayCircleIcon';
 import { useRouter } from 'next/navigation';
-import EditByteView from '@/components/bytes/Edit/EditByteView';
-import EditClickableDemo from '@/components/clickableDemos/Create/EditClickableDemo';
-import EditShortVideoView from '@/components/shortVideos/Edit/EditShortVideoView';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import React from 'react';
+import styles from './ByteCollectionsCard.module.scss';
 import ByteItem from './ByteItem';
 import DemoItem from './DemoItem';
 import ShortItem from './ShortItem';
-import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
-import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { TidbitCollectionTags } from '@/utils/api/fetchTags';
 
 interface ByteCollectionCardProps {
   byteCollection: ByteCollectionSummary;
@@ -51,11 +48,6 @@ interface DeleteItemModalState {
   deleting: boolean;
 }
 
-interface EditDemoModalState {
-  isVisible: boolean;
-  demoId: string | null;
-}
-
 interface EditShortModalState {
   isVisible: boolean;
   shortId: string | null;
@@ -65,7 +57,6 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
   const [watchVideo, setWatchVideo] = React.useState<boolean>(false);
   const [selectedVideo, setSelectedVideo] = React.useState<VideoModalProps>();
   const [videoResponse, setVideoResponse] = React.useState<{ shortVideo?: ShortVideoFragment }>();
-  const [showCreateModal, setShowCreateModal] = React.useState<boolean>(false);
   const [editByteModalState, setEditModalState] = React.useState<EditByteModalState>({ isVisible: false, byteId: null });
   const [deleteItemModalState, setDeleteItemModalState] = React.useState<DeleteItemModalState>({
     isVisible: false,
@@ -73,7 +64,7 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
     itemType: null,
     deleting: false,
   });
-  const [editDemoModalState, setEditDemoModalState] = React.useState<EditDemoModalState>({ isVisible: false, demoId: null });
+
   const [editShortModalState, setEditShortModalState] = React.useState<EditShortModalState>({ isVisible: false, shortId: null });
 
   const { showNotification } = useNotificationContext();
@@ -116,10 +107,6 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
     setDeleteItemModalState({ isVisible: true, itemId: itemId, itemType: itemType, deleting: false });
   }
 
-  function openDemoEditModal(demoId: string) {
-    setEditDemoModalState({ isVisible: true, demoId: demoId });
-  }
-
   function openShortEditModal(shortId: string) {
     fetchData(shortId);
     setEditShortModalState({ isVisible: true, shortId: shortId });
@@ -131,10 +118,6 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
 
   function closeItemDeleteModal() {
     setDeleteItemModalState({ isVisible: false, itemId: null, itemType: null, deleting: false });
-  }
-
-  function closeDemoEditModal() {
-    setEditDemoModalState({ isVisible: false, demoId: null });
   }
 
   function closeShortEditModal() {
@@ -158,22 +141,7 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
     <div className={`border border-gray-200 rounded-xl overflow-hidden pl-4 pr-4 pt-4 pb-10 w-full ` + styles.cardDiv}>
       {isEditingAllowed && (
         <div className="w-full flex justify-end items-center flex-row gap-4">
-          {isAdmin && (
-            <Button
-              className="rounded-lg text-color"
-              variant="outlined"
-              primary
-              style={{
-                border: '2px dotted',
-                padding: '0.5rem',
-                letterSpacing: '0.05em',
-                borderRadius: '0.5rem',
-              }}
-              onClick={() => setShowCreateModal(true)}
-            >
-              + Add New Item
-            </Button>
-          )}
+          <AddNewItemButton isAdmin={!!isAdmin} space={space} byteCollection={byteCollection} />
           <ByteCollectionCardAdminDropdown byteCollection={byteCollection} space={space} />
         </div>
       )}
@@ -215,12 +183,12 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
               case ByteCollectionItemType.ClickableDemo:
                 return (
                   <DemoItem
+                    byteCollection={byteCollection}
                     key={item.demo.demoId}
                     demo={item.demo}
                     eventIdx={eventIdx}
                     itemLength={nonArchivedItems.length}
                     threeDotItems={threeDotItems}
-                    openDemoEditModal={openDemoEditModal}
                     openItemDeleteModal={openItemDeleteModal}
                   />
                 );
@@ -242,9 +210,6 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
           })}
         </ul>
       </div>
-      <FullPageModal className={'w-1/2'} open={showCreateModal} onClose={() => setShowCreateModal(false)} title={'Create New Item'} showCloseButton={false}>
-        <ByteCollectionCardAddItem space={space} hideModal={() => setShowCreateModal(false)} byteCollection={byteCollection} />
-      </FullPageModal>
 
       {editByteModalState.isVisible && (
         <FullScreenModal open={true} onClose={closeByteEditModal} title={'Edit Byte'}>
@@ -258,14 +223,6 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
               }}
               closeEditByteModal={closeByteEditModal}
             />
-          </div>
-        </FullScreenModal>
-      )}
-
-      {editDemoModalState.isVisible && (
-        <FullScreenModal open={true} onClose={closeDemoEditModal} title={'Edit Clickable Demo'}>
-          <div className="text-left">
-            <EditClickableDemo demoId={editDemoModalState.demoId} byteCollection={byteCollection} closeDemoEditModal={closeDemoEditModal} />
           </div>
         </FullScreenModal>
       )}

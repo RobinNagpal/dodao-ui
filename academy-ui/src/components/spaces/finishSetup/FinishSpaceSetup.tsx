@@ -13,7 +13,7 @@ interface FinishSpaceSetupProps {
 }
 
 function FinishSetup({ space }: FinishSpaceSetupProps) {
-  const { updateData } = useFetchUtils();
+  const { putData } = useFetchUtils();
   const [upserting, setUpserting] = useState(false);
 
   async function upsertSpace(updatedSpace: WebCoreSpace) {
@@ -24,7 +24,7 @@ function FinishSetup({ space }: FinishSpaceSetupProps) {
       adminUsernamesV1: updatedSpace.adminUsernamesV1,
       themeColors: updatedSpace.themeColors,
     };
-    await updateData<User, { spaceInput: SpaceWithIntegrationsFragment }>(
+    await putData<User, { spaceInput: SpaceWithIntegrationsFragment }>(
       `${getBaseUrl()}/api/${space.id}/spaces`,
       {
         spaceInput: spaceReq,

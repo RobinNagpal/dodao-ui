@@ -1,6 +1,6 @@
 'use client';
 
-import { SpaceTypes } from '@/graphql/generated/generated-types';
+import { SpaceTypes } from '@/types/space/SpaceDto';
 import { usePathname } from 'next/navigation';
 
 interface FooterProps {

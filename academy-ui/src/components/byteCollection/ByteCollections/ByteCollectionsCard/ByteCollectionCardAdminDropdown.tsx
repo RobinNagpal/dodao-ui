@@ -1,4 +1,4 @@
-import ByteCollectionEditor from '@/components/byteCollection/ByteCollections/ByteCollectionEditor';
+import ByteCollectionEditModal from '@/components/byteCollection/ByteCollections/ByteCollectionEditModal';
 import { EditByteCollection } from '@/components/byteCollection/ByteCollections/useEditByteCollection';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
@@ -25,36 +25,6 @@ export default function ByteCollectionCardAdminDropdown({ byteCollection, space 
   function onClose() {
     setShowEditCollectionModal(false);
     router.refresh();
-  }
-
-  async function upsertByteCollectionFn(byteCollectionn: EditByteCollection) {
-    try {
-      const result = await fetch(`${getBaseUrl()}/api/byte-collection/update-byte-collection`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          input: {
-            byteCollectionId: byteCollectionn.id,
-            name: byteCollectionn.name,
-            description: byteCollectionn.description,
-            byteIds: byteCollectionn.bytes?.map((byte) => byte.byteId),
-            status: byteCollectionn.status,
-            spaceId: space.id,
-            priority: byteCollectionn.priority,
-            videoUrl: byteCollectionn.videoUrl,
-          },
-        }),
-      });
-
-      if (result.ok) {
-        showNotification({ message: 'Collection Updated Successfully', type: 'success' });
-        setShowEditCollectionModal(false);
-      }
-    } catch (error) {
-      showNotification({ message: 'Something went wrong', type: 'error' });
-    }
   }
 
   const getThreeDotItems = (byteCollection: ByteCollectionSummary) => {
@@ -109,22 +79,7 @@ export default function ByteCollectionCardAdminDropdown({ byteCollection, space 
         />
       )}
 
-      {showEditCollectionModal && (
-        <FullScreenModal open={true} onClose={onClose} title={'Edit Tidbit Collection'}>
-          <div className="text-left">
-            <PageWrapper>
-              <SingleCardLayout>
-                <ByteCollectionEditor
-                  space={space}
-                  byteCollection={byteCollection}
-                  viewByteCollectionsUrl={'/tidbit-collections'}
-                  upsertByteCollectionFn={upsertByteCollectionFn}
-                />
-              </SingleCardLayout>
-            </PageWrapper>
-          </div>
-        </FullScreenModal>
-      )}
+      {showEditCollectionModal && <ByteCollectionEditModal space={space} byteCollection={byteCollection} onClose={() => setShowEditCollectionModal(false)} />}
     </>
   );
 }
