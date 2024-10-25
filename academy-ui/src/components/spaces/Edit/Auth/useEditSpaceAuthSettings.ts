@@ -1,5 +1,5 @@
-import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { AuthSettings, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { useFetchUtils } from '@dodao/web-core/ui/hooks/useFetchUtils';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useState } from 'react';
 
@@ -10,10 +10,15 @@ export type UpdateSpaceAuthSettingsHelper = {
   updating: boolean;
 };
 
+interface UpdateAuthSettingsRequest {
+  spaceId: string;
+  input: AuthSettings;
+}
+
 export function useEditSpaceAuthSettings(space: SpaceWithIntegrationsFragment): UpdateSpaceAuthSettingsHelper {
   const [authSettings, setAuthSettings] = useState<AuthSettings>(space.authSettings || {});
   const [updating, setUpdating] = useState(false);
-  const { showNotification } = useNotificationContext();
+  const { postData } = useFetchUtils();
 
   function setAuthSettingsField(field: keyof AuthSettings, value: any) {
     setAuthSettings({
@@ -23,36 +28,27 @@ export function useEditSpaceAuthSettings(space: SpaceWithIntegrationsFragment): 
   }
 
   async function updateAuthSettings() {
-    try {
-      setUpdating(true);
-      const response = await fetch(`${getBaseUrl()}/api/spaces/update-auth-settings`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+    setUpdating(true);
+    const response = await postData<SpaceWithIntegrationsFragment, UpdateAuthSettingsRequest>(
+      `${getBaseUrl()}/api/spaces/update-auth-settings`,
+      {
+        spaceId: space.id,
+        input: {
+          enableLogin: !!authSettings.enableLogin,
+          loginOptions: authSettings.loginOptions || [],
         },
-        body: JSON.stringify({
-          spaceId: space.id,
-          input: {
-            enableLogin: !!authSettings.enableLogin,
-            loginOptions: authSettings.loginOptions || [],
-          },
-        }),
-      });
-      if (response.ok) {
-        const updatedSpace: SpaceWithIntegrationsFragment = await response.json();
-        setAuthSettings({
-          ...updatedSpace.authSettings,
-        });
-        showNotification({ type: 'success', message: 'Auth settings updated' });
-      } else {
-        showNotification({ type: 'error', message: 'Failed to update auth settings' });
+      },
+      {
+        errorMessage: 'Failed to update auth settings',
+        successMessage: 'Auth settings updated',
       }
-      setUpdating(false);
-    } catch (e) {
-      console.log(e);
-      showNotification({ type: 'error', message: 'Failed to update auth settings' });
-      setUpdating(false);
-    }
+    );
+    const updatedSpace: SpaceWithIntegrationsFragment = response!;
+    setAuthSettings({
+      ...updatedSpace.authSettings,
+    });
+
+    setUpdating(false);
   }
 
   return {
