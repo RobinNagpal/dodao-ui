@@ -3,11 +3,12 @@ import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-typ
 import { useI18 } from '@/hooks/useI18';
 import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import { ByteDto, ImageDisplayMode } from '@/types/bytes/ByteDto';
-import { EditByteStep, EditByteType } from '@/types/request/ByteRequests';
+import { EditByteStep, EditByteType, UpsertByteInput } from '@/types/request/ByteRequests';
 import { emptyByte } from '@/utils/byte/EmptyByte';
 import { validateQuestion, validateUserInput } from '@/utils/stepItems/validateItems';
 import { ByteErrors } from '@dodao/web-core/types/errors/byteErrors';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
+import { useFetchUtils } from '@dodao/web-core/ui/hooks/useFetchUtils';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Byte } from '@prisma/client';
 import axios from 'axios';
@@ -31,6 +32,7 @@ export function useEditByte(
   const [byteUpserting, setByteUpserting] = useState<boolean>(false);
 
   const { showNotification } = useNotificationContext();
+  const { putData } = useFetchUtils();
   const { $t } = useI18();
 
   const initialize = useCallback(async () => {
@@ -169,11 +171,11 @@ export function useEditByte(
       const response = await mutationFn();
 
       if (response) {
-        showNotification({ type: 'success', message: 'Byte Saved', heading: 'Success 🎉' });
+        showNotification({ type: 'success', message: 'Tidbit saved successfully', heading: 'Success 🎉' });
         await onUpsert(response.id!);
       } else {
         showNotification({ type: 'error', message: $t('notify.somethingWentWrong') });
-        console.error('Failed to save byte');
+        console.error('Failed to save tidbit');
       }
     } catch (e) {
       showNotification({ type: 'error', message: $t('notify.somethingWentWrong') });
@@ -185,17 +187,18 @@ export function useEditByte(
   const handleByteUpsert = async (byteCollection: ByteCollectionSummary) => {
     await saveViaMutation(async () => {
       const upsertByteInput = getByteInputFn(byte);
-      const upsertResponse = await fetch(`${getBaseUrl()}/api/${space.id}/byte-collections/${byteCollection.id}/bytes/${upsertByteInput.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
+      const upsertResponse = await putData<Byte, UpsertByteInput>(
+        `${getBaseUrl()}/api/${space.id}/byte-collections/${byteCollection.id}/bytes/${upsertByteInput.id}`,
+        {
+          ...upsertByteInput,
         },
-        body: JSON.stringify({
-          input: upsertByteInput,
-        }),
-      });
-
-      return await upsertResponse.json();
+        {
+          redirectPath: `/?updated=${Date.now()}`,
+          successMessage: 'Tidbit saved successfully',
+          errorMessage: 'Failed to save tidbit',
+        }
+      );
+      return upsertResponse!;
     });
   };
 
