@@ -1,3 +1,4 @@
+import { slugify } from "@dodao/web-core/src/utils/auth/slugify";
 import { S3Event, S3Handler } from "aws-lambda";
 import {
   S3Client,
@@ -5,7 +6,7 @@ import {
   PutObjectCommand,
 } from "@aws-sdk/client-s3";
 import { Upload } from "@aws-sdk/lib-storage";
-import * as unzipper from "unzipper";
+import * as yauzl from "yauzl";
 import { Readable } from "stream";
 
 const s3Client = new S3Client({});
@@ -21,11 +22,19 @@ export const unzipperHandler: S3Handler = async (event: S3Event) => {
 
   console.log(`Processing file: ${key} from bucket: ${bucket}`);
 
-  // check if key is a zip file else return
+  // Check if key is a zip file, else return
   if (!key.endsWith(".zip")) {
     console.log("Key is not a zip file");
     return;
   }
+
+  const zipBaseName = slugify(
+    key.substring(key.lastIndexOf("/") + 1, key.lastIndexOf(".zip"))
+  );
+
+  const targetPath = key
+    .substring(0, key.lastIndexOf("/") + 1)
+    .replace("test/", "unzipped/");
 
   try {
     // Get the object from S3
@@ -41,53 +50,67 @@ export const unzipperHandler: S3Handler = async (event: S3Event) => {
       throw new Error("No content in the S3 object");
     }
 
-    const zipObjectStream = response.Body as Readable;
+    const zipBuffer = await streamToBuffer(response.Body as Readable);
 
     // Prepare an array to hold upload promises
     const uploadPromises: Promise<any>[] = [];
 
-    // Use unzipper to parse the zip file stream
+    // Use yauzl to open the zip file from the buffer
     await new Promise<void>((resolve, reject) => {
-      zipObjectStream
-        .pipe(unzipper.Parse())
-        .on("entry", (entry: unzipper.Entry) => {
-          const fileName = entry.path;
-          const type = entry.type; // 'Directory' or 'File'
+      yauzl.fromBuffer(zipBuffer, { lazyEntries: true }, (err, zipfile) => {
+        if (err || !zipfile) {
+          console.error("Error opening zip file:", err);
+          return reject(err);
+        }
 
-          if (type === "File") {
-            // Construct the new key by replacing the zip file name with the extracted file name
-            const baseKey = key.substring(0, key.lastIndexOf("/") + 1);
-            const newKey = `${baseKey}${fileName}`;
+        zipfile.readEntry();
 
-            console.log(`Uploading extracted file to: ${newKey}`);
-
-            // Upload the file back to S3
-            const uploadParams = {
-              Bucket: bucket,
-              Key: newKey,
-              Body: entry, // The entry is a stream
-            };
-
-            const upload = new Upload({
-              client: s3Client,
-              params: uploadParams,
-            });
-
-            const uploadPromise = upload.done();
-            uploadPromises.push(uploadPromise);
+        zipfile.on("entry", (entry) => {
+          if (/\/$/.test(entry.fileName)) {
+            // Directory entry, proceed to the next entry
+            zipfile.readEntry();
           } else {
-            // If it's a directory, drain the stream
-            entry.autodrain();
+            // File entry
+            zipfile.openReadStream(entry, (readStreamErr, readStream) => {
+              if (readStreamErr || !readStream) {
+                console.error("Error reading zip entry stream:", readStreamErr);
+                return reject(readStreamErr);
+              }
+
+              const newKey = `${targetPath}${zipBaseName}/${entry.fileName}`;
+
+              console.log(`Uploading extracted file to: ${newKey}`);
+
+              const uploadParams = {
+                Bucket: bucket,
+                Key: newKey,
+                Body: readStream, // The entry stream
+                ACL: "public-read",
+              };
+
+              const upload = new Upload({
+                client: s3Client,
+                params: uploadParams,
+              });
+
+              const uploadPromise = upload.done();
+              uploadPromises.push(uploadPromise);
+
+              readStream.on("end", () => zipfile.readEntry());
+            });
           }
-        })
-        .on("error", (err) => {
-          console.error("Error during unzip:", err);
-          reject(err);
-        })
-        .on("close", () => {
+        });
+
+        zipfile.on("end", () => {
           console.log("Finished unzipping");
           resolve();
         });
+
+        zipfile.on("error", (err) => {
+          console.error("Error during zip processing:", err);
+          reject(err);
+        });
+      });
     });
 
     // Wait for all uploads to complete
@@ -98,4 +121,14 @@ export const unzipperHandler: S3Handler = async (event: S3Event) => {
     console.error("Error processing S3 event:", error);
     throw error;
   }
+};
+
+// Helper function to convert a stream into a buffer
+const streamToBuffer = async (stream: Readable): Promise<Buffer> => {
+  return new Promise((resolve, reject) => {
+    const chunks: Buffer[] = [];
+    stream.on("data", (chunk) => chunks.push(Buffer.from(chunk)));
+    stream.on("end", () => resolve(Buffer.concat(chunks)));
+    stream.on("error", (err) => reject(err));
+  });
 };

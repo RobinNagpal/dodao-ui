@@ -1,11 +1,8 @@
 service: unzipper-service
 
-plugins:
-  - serverless-plugin-typescript
-
 provider:
   name: aws
-  runtime: nodejs14.x
+  runtime: nodejs18.x
   region: us-east-1
   iamRoleStatements:
     - Effect: Allow
@@ -13,6 +10,7 @@ provider:
         - s3:GetObject
         - s3:PutObject
         - s3:ListBucket
+        - s3:PutObjectAcl
       Resource:
         - arn:aws:s3:::dodao-dev-public-assets/*    # Replace with your first bucket name
         - arn:aws:s3:::dodao-dev-public-assets
@@ -26,10 +24,6 @@ functions:
       - s3:
           bucket: dodao-dev-public-assets          # Replace with your first bucket name
           event: s3:ObjectCreated:*
-#          rules:
-#            - prefix: clickable-demos/recorded/
-      - s3:
-          bucket: dodao-prod-public-assets          # Replace with your second bucket name
-          event: s3:ObjectCreated:*
-#          rules:
-#            - prefix: clickable-demos/recorded/
+          existing: true
+          rules:
+            - prefix: test/
