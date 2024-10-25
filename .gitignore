@@ -47,3 +47,4 @@ academy-ui/.sentryclirc
 dodao-lambdas/node_modules
 dodao-lambdas/.env
 dodao-lambdas/yarn-error.log
+dodao-lambdas/.serverless
