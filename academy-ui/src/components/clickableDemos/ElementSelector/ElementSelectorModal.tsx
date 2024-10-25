@@ -79,7 +79,7 @@ export default function ElementSelectorModal({ space, showModal, objectId, fileU
       }
     );
 
-    const signedUrl = response?.data?.url!;
+    const signedUrl = response?.url!;
     await axios.put(signedUrl, file, {
       headers: { 'Content-Type': 'image/png' },
     });
