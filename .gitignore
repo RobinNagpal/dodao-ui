@@ -44,3 +44,6 @@ data
 # Sentry Config File
 academy-ui/.sentryclirc
 .envrc
+dodao-lambdas/node_modules
+dodao-lambdas/.env
+dodao-lambdas/yarn-error.log

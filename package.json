@@ -6,6 +6,7 @@
     "referral-ui",
     "base-ui",
     "rubrics-ui",
+    "dodao-lambdas",
     "shared/web-core"
   ],
   "resolutions": {
