@@ -1,5 +1,5 @@
 import ViewByteModal from '@/components/byteCollection/View/ViewByteModal';
-import { SpaceTypes } from '@/graphql/generated/generated-types';
+import { SpaceTypes } from '@/types/space/SpaceDto';
 import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
 import React from 'react';
 

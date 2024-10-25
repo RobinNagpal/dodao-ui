@@ -87,7 +87,7 @@ export const useFetchUtils = () => {
     }
   };
 
-  const updateData = async <T, X>(url: string, body: X, updateOptions: UpdateDataOptions): Promise<T | undefined> => {
+  const putData = async <T, X>(url: string, body: X, updateOptions: UpdateDataOptions): Promise<T | undefined> => {
     return updateDataGeneric<T, X>(
       url,
       {
@@ -109,5 +109,5 @@ export const useFetchUtils = () => {
     );
   };
 
-  return { fetchData, updateData, postData, loading, updating };
+  return { fetchData, putData, postData, loading, updating };
 };

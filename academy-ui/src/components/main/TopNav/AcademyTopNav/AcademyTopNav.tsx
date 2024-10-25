@@ -1,10 +1,11 @@
 'use client';
 
 import CreateContentModalContents from '@/components/main/TopNav/CreateContentModalContents';
+import { SpaceTypes } from '@/types/space/SpaceDto';
 import { DesktopNavLinks } from './DesktopNavLinks';
 import { MobileNavLinks } from './MobileNavLinks';
 import { SpaceProps } from '@/contexts/withSpace';
-import { Space, SpaceTypes } from '@/graphql/generated/generated-types';
+import { Space } from '@/graphql/generated/generated-types';
 import { isAdmin } from '@/utils/auth/isAdmin';
 import ButtonLarge from '@dodao/web-core/components/core/buttons/Button';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';

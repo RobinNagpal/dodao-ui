@@ -1,5 +1,6 @@
+import { SpaceTypes } from '@/types/space/SpaceDto';
 import { PredefinedSpaces } from '@dodao/web-core/src/utils/constants/constants';
-import { SpaceTypes, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { compoundFeatures } from '@dodao/web-core/types/features/compoundFeatures';
 import { creditUnionAcademyFeatures } from '@dodao/web-core/types/features/creditUnionAcademyFeatures';
 import { dodaoAcademyFeatures } from '@dodao/web-core/types/features/dodaoAcademyFeatures';

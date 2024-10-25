@@ -2734,13 +2734,6 @@ export interface SpaceLoadersInfoInput {
   discourseUrl?: InputMaybe<Scalars['String']>;
 }
 
-export enum SpaceTypes {
-  AcademySite = 'AcademySite',
-  AiChatbotSite = 'AiChatbotSite',
-  CryptoGelatoSite = 'CryptoGelatoSite',
-  TidbitsSite = 'TidbitsSite'
-}
-
 export interface SpaceWhere {
   id?: InputMaybe<Scalars['String']>;
   id_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
