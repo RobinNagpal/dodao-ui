@@ -15,18 +15,22 @@ interface AddApiKeyResponse {
   space: SpaceWithIntegrationsFragment;
 }
 
-export function useAddSpaceApiKey(space: SpaceWithIntegrationsFragment, onUpdate: (space: any) => void) {
+export interface AddSpaceKeyHook {
+  addApiKey: (apiKey: string) => void;
+}
+
+export function useAddSpaceApiKey(space: SpaceWithIntegrationsFragment, onUpdate: (space: any) => void): AddSpaceKeyHook {
   const { showNotification } = useNotificationContext();
   const { postData } = useFetchUtils();
   const { data: clientSession } = useSession() as { data: Session | null };
 
-  const username = clientSession?.username;
-  if (!username) {
-    showNotification({ type: 'error', message: 'No session present for user' });
-    return;
-  }
-
   const addApiKey = async (apiKey: string) => {
+    const username = clientSession?.username;
+    if (!username) {
+      showNotification({ type: 'error', message: 'No session present for user' });
+      return;
+    }
+
     // Simulate generating a new API key
     const response = await postData<AddApiKeyResponse, AddApiKeyRequest>(
       `${getBaseUrl()}/api/${space.id}/actions/spaces/generate-api-key`,
