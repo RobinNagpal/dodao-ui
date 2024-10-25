@@ -32,7 +32,7 @@ export function useEditByte(
   const [byteUpserting, setByteUpserting] = useState<boolean>(false);
 
   const { showNotification } = useNotificationContext();
-  const {updateData} = useFetchUtils();
+  const { updateData } = useFetchUtils();
   const { $t } = useI18();
 
   const initialize = useCallback(async () => {
@@ -187,14 +187,17 @@ export function useEditByte(
   const handleByteUpsert = async (byteCollection: ByteCollectionSummary) => {
     await saveViaMutation(async () => {
       const upsertByteInput = getByteInputFn(byte);
-      const upsertResponse = await updateData<Byte, UpsertByteInput>(`${getBaseUrl()}/api/${space.id}/byte-collections/${byteCollection.id}/bytes/${upsertByteInput.id}`, {
-        ...upsertByteInput
-      },
-      {
-        redirectPath: `/?updated=${Date.now()}`,
-        successMessage: 'Tidbit saved successfully',
-        errorMessage: 'Failed to save tidbit',
-      })
+      const upsertResponse = await updateData<Byte, UpsertByteInput>(
+        `${getBaseUrl()}/api/${space.id}/byte-collections/${byteCollection.id}/bytes/${upsertByteInput.id}`,
+        {
+          ...upsertByteInput,
+        },
+        {
+          redirectPath: `/?updated=${Date.now()}`,
+          successMessage: 'Tidbit saved successfully',
+          errorMessage: 'Failed to save tidbit',
+        }
+      );
       return upsertResponse!;
     });
   };
