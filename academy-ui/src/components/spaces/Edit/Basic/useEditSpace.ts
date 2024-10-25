@@ -1,8 +1,9 @@
+import { UpsertSpaceInput } from '@/graphql/generated/generated-types';
 import { SpaceTags } from '@/utils/api/fetchTags';
-import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { UpsertSpaceInput, useExtendedSpaceQuery } from '@/graphql/generated/generated-types';
-import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { getEditSpaceType, getSpaceInput, SpaceEditType } from '@/utils/space/spaceUpdateUtils';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
+import { useFetchUtils } from '@dodao/web-core/ui/hooks/useFetchUtils';
+import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { useState } from 'react';
 
 export type UseEditSpaceHelper = {
@@ -15,8 +16,13 @@ export type UseEditSpaceHelper = {
   upserting: boolean;
 };
 
+interface SpaceUpsertRequest {
+  spaceInput: UpsertSpaceInput;
+}
+
 export default function useEditSpace(spaceId?: string): UseEditSpaceHelper {
   const { showNotification } = useNotificationContext();
+  const { postData, putData } = useFetchUtils();
   const [space, setSpace] = useState<SpaceEditType>({
     id: spaceId,
     admins: [],
@@ -76,37 +82,27 @@ export default function useEditSpace(spaceId?: string): UseEditSpaceHelper {
 
   async function upsertSpace() {
     setUpserting(true);
-    try {
-      let response;
-      if (spaceId?.trim()) {
-        response = await fetch(`/api/${spaceId}/actions/spaces/update-space-and-integration`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ spaceInput: getSpaceInput(spaceId, space) }),
-        });
-      } else {
-        response = await fetch(`/api/spaces/create-space`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ spaceInput: getSpaceInput(slugify(space.name), space) }),
-        });
-      }
 
-      if (response?.ok) {
-        showNotification({ type: 'success', message: 'Space upserted successfully' });
-      } else {
-        showNotification({ type: 'error', message: 'Error while upserting space' });
-      }
-    } catch (error) {
-      console.error(error);
-      showNotification({ type: 'error', message: 'Error while upserting space' });
-      setUpserting(false);
-      throw error;
+    if (spaceId?.trim()) {
+      await putData<SpaceEditType, SpaceUpsertRequest>(
+        `/api/${spaceId}/actions/spaces/update-space-and-integration`,
+        { spaceInput: getSpaceInput(spaceId, space) },
+        {
+          errorMessage: 'Failed to update space',
+          successMessage: 'Space updated successfully',
+        }
+      );
+    } else {
+      await postData<SpaceEditType, SpaceUpsertRequest>(
+        `/api/spaces/create-space`,
+        { spaceInput: getSpaceInput(slugify(space.name), space) },
+        {
+          errorMessage: 'Failed to create space',
+          successMessage: 'Space created successfully',
+        }
+      );
     }
+
     setUpserting(false);
   }
 

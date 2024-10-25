@@ -1,3 +1,6 @@
+import { CreateSignedUrlRequest } from '@/types/request/SignedUrl';
+import { SingedUrlResponse } from '@/types/response/SignedUrl';
+import { useFetchUtils } from '@dodao/web-core/ui/hooks/useFetchUtils';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import React, { useEffect, useState } from 'react';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
@@ -21,6 +24,8 @@ export default function ElementSelectorModal({ space, showModal, objectId, fileU
   const [currentXpath, setCurrenXpath] = useState(xPath);
   const [currentCapture, setCurrentCapture] = useState(elementImgUrl);
   const spaceId = space.id;
+  const { postData } = useFetchUtils();
+
   async function modifyHTML(url: string) {
     try {
       // Fetch the HTML content from the URL
@@ -66,9 +71,15 @@ export default function ElementSelectorModal({ space, showModal, objectId, fileU
       name: file.name.replace(' ', '_').toLowerCase(),
     };
 
-    const response = await axios.post(`${getBaseUrl()}/api/s3-signed-urls`, { spaceId, input });
+    const response = await postData<SingedUrlResponse, CreateSignedUrlRequest>(
+      `${getBaseUrl()}/api/s3-signed-urls`,
+      { spaceId, input },
+      {
+        errorMessage: 'Failed to get signed URL',
+      }
+    );
 
-    const signedUrl = response?.data?.url!;
+    const signedUrl = response?.url!;
     await axios.put(signedUrl, file, {
       headers: { 'Content-Type': 'image/png' },
     });
