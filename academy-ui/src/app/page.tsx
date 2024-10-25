@@ -32,8 +32,8 @@ export async function generateMetadata(): Promise<Metadata> {
     };
   } else if (space?.type === SpaceTypes.TidbitsSite) {
     metadata = {
-      title: 'Tidbits Site - Learn Quickly',
-      description: 'Discover bite-sized learning content on our Tidbits Site.',
+      title: `${space?.name} - Learn Quickly`,
+      description: `Learn ${space.name} with the help of Tidbits`,
     };
   } else if (host === 'dodao-localhost.io' || host === 'academy.dodao.io' || host === 'dodao.io') {
     metadata = {
@@ -117,10 +117,15 @@ export async function generateMetadata(): Promise<Metadata> {
         creator: '@dodao_io',
       },
     };
+  } else if (space?.type === SpaceTypes.AcademySite) {
+    metadata = {
+      title: `${space?.name} Academy Site`,
+      description: `Learn at ${space?.name} with the help of guides, tidbits, shortvideos, and courses`,
+    };
   } else {
     metadata = {
-      title: 'Welcome to Our Platform',
-      description: 'Discover our services and offerings.',
+      title: `${space?.name} Academy Site`,
+      description: `Learn at ${space?.name} with the help of guides, tidbits, shortvideos, and courses`,
     };
   }
 
