@@ -12,18 +12,27 @@ provider:
         - s3:ListBucket
         - s3:PutObjectAcl
       Resource:
-        - arn:aws:s3:::dodao-dev-public-assets/*    # Replace with your first bucket name
+        - arn:aws:s3:::dodao-dev-public-assets/*
         - arn:aws:s3:::dodao-dev-public-assets
-        - arn:aws:s3:::dodao-prod-public-assets/*    # Replace with your second bucket name
+        - arn:aws:s3:::dodao-prod-public-assets/*
         - arn:aws:s3:::dodao-prod-public-assets
 
 functions:
-  unzipper:
-    handler: src/handler.unzipperHandler
+  unzipper-dev:
+    handler: src/unzipperHandler.unzipperHandler
     events:
       - s3:
-          bucket: dodao-dev-public-assets          # Replace with your first bucket name
+          bucket: dodao-dev-public-assets
           event: s3:ObjectCreated:*
           existing: true
           rules:
-            - prefix: test/
+            - prefix: zipped-html-captures/
+  unzipper-prod:
+    handler: src/unzipperHandler.unzipperHandler
+    events:
+      - s3:
+          bucket: dodao-prod-public-assets
+          event: s3:ObjectCreated:*
+          existing: true
+          rules:
+            - prefix: zipped-html-captures/

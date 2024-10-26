@@ -1,7 +1,6 @@
 import { ObjectCannedACL, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { S3 } from 'aws-sdk';
-import { CreateSignedUrlInput } from '@/graphql/generated/generated-types';
 
 export const s3Config = {
   bucketName: String(process.env.PUBLIC_AWS_S3_BUCKET),
@@ -17,14 +16,12 @@ export class PresignedUrlCreator {
     });
   }
 
-  async createSignedUrl(spaceId: string, args: CreateSignedUrlInput): Promise<string> {
-    const { imageType, contentType, objectId, name } = args;
-
+  async createSignedUrl(contentType: string, createKeyFunction: () => string): Promise<string> {
     const client: S3Client = new S3Client({
       region: s3Config.defaultRegion,
     });
     const command = new PutObjectCommand({
-      Key: `academy/${spaceId}/${imageType}/${objectId}/${Date.now()}_${name}`,
+      Key: createKeyFunction(),
       Bucket: s3Config.bucketName,
       ContentType: contentType,
       ACL: ObjectCannedACL.public_read,

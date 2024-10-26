@@ -1,4 +1,3 @@
-import { slugify } from "@dodao/web-core/src/utils/auth/slugify";
 import { S3Event, S3Handler } from "aws-lambda";
 import {
   S3Client,
@@ -29,13 +28,14 @@ export const unzipperHandler: S3Handler = async (event: S3Event) => {
     return;
   }
 
-  const zipBaseName = slugify(
-    key.substring(key.lastIndexOf("/") + 1, key.lastIndexOf(".zip"))
+  const zipBaseName = key.substring(
+    key.lastIndexOf("/") + 1,
+    key.lastIndexOf(".zip")
   );
 
   const targetPath = key
     .substring(0, key.lastIndexOf("/") + 1)
-    .replace("test/", "unzipped/");
+    .replace("zipped-html-captures/", "unzipped-html-captures/");
 
   try {
     // Get the object from S3
