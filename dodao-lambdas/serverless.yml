@@ -1,0 +1,38 @@
+service: unzipper-service
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - s3:GetObject
+        - s3:PutObject
+        - s3:ListBucket
+        - s3:PutObjectAcl
+      Resource:
+        - arn:aws:s3:::dodao-dev-public-assets/*
+        - arn:aws:s3:::dodao-dev-public-assets
+        - arn:aws:s3:::dodao-prod-public-assets/*
+        - arn:aws:s3:::dodao-prod-public-assets
+
+functions:
+  unzipper-dev:
+    handler: src/unzipperHandler.unzipperHandler
+    events:
+      - s3:
+          bucket: dodao-dev-public-assets
+          event: s3:ObjectCreated:*
+          existing: true
+          rules:
+            - prefix: zipped-html-captures/
+  unzipper-prod:
+    handler: src/unzipperHandler.unzipperHandler
+    events:
+      - s3:
+          bucket: dodao-prod-public-assets
+          event: s3:ObjectCreated:*
+          existing: true
+          rules:
+            - prefix: zipped-html-captures/

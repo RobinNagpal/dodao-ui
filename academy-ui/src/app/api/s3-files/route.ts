@@ -1,4 +1,4 @@
-import { ImageSource, MutationUploadImageFromUrlToS3Args } from '@/graphql/generated/generated-types';
+import { CreateSignedUrlInput, ImageSource, MutationUploadImageFromUrlToS3Args } from '@/graphql/generated/generated-types';
 import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
 import { logError } from '@/app/api/helpers/adapters/errorLogger';
 import { presignedUrlCreator } from '@/app/api/helpers/s3/getPresignedUrl';
@@ -13,6 +13,11 @@ import { URL } from 'url';
 
 import { v4 as uuid } from 'uuid';
 import { NextRequest, NextResponse } from 'next/server';
+
+const createKeyFunction = (spaceId: string, args: CreateSignedUrlInput) => {
+  const { imageType, objectId, name } = args;
+  return () => `academy/${spaceId}/${imageType}/${objectId}/${Date.now()}_${name}`;
+};
 
 function getUploadedImageUrlFromSingedUrl(signedUrl: string) {
   if (signedUrl.includes('dodao-prod-public-assets')) {
@@ -83,12 +88,15 @@ async function postHandler(req: NextRequest) {
     const file = fs.readFileSync(filePath);
 
     const name = args.input.name;
-    const signedUrl = await presignedUrlCreator.createSignedUrl(spaceById.id, {
-      ...args.input,
-      name: name.includes('.') ? name : name + '.' + fileExtension,
-      imageType: args.input.imageType,
-      contentType: contentType,
-    });
+    const signedUrl = await presignedUrlCreator.createSignedUrl(
+      contentType,
+      createKeyFunction(spaceById.id, {
+        ...args.input,
+        name: name.includes('.') ? name : name + '.' + fileExtension,
+        imageType: args.input.imageType,
+        contentType: contentType,
+      })
+    );
 
     await axios.put(signedUrl, file, {
       headers: { 'Content-Type': contentType },

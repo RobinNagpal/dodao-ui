@@ -26,42 +26,6 @@ export default function ElementSelectorModal({ space, showModal, objectId, fileU
   const spaceId = space.id;
   const { postData } = useFetchUtils();
 
-  async function modifyHTML(url: string) {
-    try {
-      // Fetch the HTML content from the URL
-      const response = await axios.get(url);
-      if (response.status !== 200) {
-        throw new Error('Network response was not ok');
-      }
-
-      const htmlContent = response.data;
-
-      // Inject necessary script and link tags
-      const modifiedHtml = injectScriptLinkTags(htmlContent);
-
-      // Create a Blob and URL for the HTML content
-      const blob = new Blob([modifiedHtml], { type: 'text/html' });
-      const editedFile = new File([blob], 'demo.html', { type: 'text/html' });
-      const newUrl = URL.createObjectURL(editedFile);
-      return newUrl;
-    } catch (error) {
-      console.error('Error fetching or processing the URL:', error);
-      return url;
-    }
-  }
-  function injectScriptLinkTags(htmlContent: string): string {
-    const closingHeadRegex = /<style>/i;
-    const headEndTagIndex = closingHeadRegex.exec(htmlContent)?.index;
-
-    if (headEndTagIndex) {
-      const html2CanvasScript = `<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>`;
-
-      return [htmlContent.slice(0, headEndTagIndex), html2CanvasScript, htmlContent.slice(headEndTagIndex)].join('');
-    } else {
-      console.warn('Unable to find opening style tag in HTML content');
-      return htmlContent; // Return unmodified content if the style tag is not found
-    }
-  }
   async function uploadToS3AndReturnScreenshotUrl(file: File | null, objectId: string) {
     if (!file) return;
     const input: CreateSignedUrlInput = {
@@ -133,7 +97,7 @@ export default function ElementSelectorModal({ space, showModal, objectId, fileU
       if (!iframe) return;
       if (!hasModifiedIframe) {
         // Modify the HTML and get the new URL
-        const newUrl = await modifyHTML(fileUrl);
+        const newUrl = fileUrl;
 
         // Set the iframe's source to the modified URL
         iframe.src = newUrl;

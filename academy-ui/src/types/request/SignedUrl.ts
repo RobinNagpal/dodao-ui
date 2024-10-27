@@ -9,3 +9,8 @@ export interface CreateSignedUrlRequest {
   input: CreateSignedUrlRequestInput;
   spaceId: string;
 }
+
+export interface CreateSignedUrlForHtmlCaptureRequest {
+  name: string;
+  contentType: string;
+}
