@@ -8,11 +8,13 @@ import { Footer } from './components/Footer';
 import { NavBar } from './components/NavBar';
 import Research from './components/Research';
 import Services from './components/Services';
+import { TrustedBy } from './components/TrustedBy';
 
 export default function DoDAOHome() {
   return (
     <div>
       <DoDAOHomeHero />
+      <TrustedBy />
 
       <PageWrapper>
         <DoDAOHelpButton />
