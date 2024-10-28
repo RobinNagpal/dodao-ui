@@ -294,37 +294,42 @@ function elementSelector(event) {
     bottomOverlay.style.height = `${scrollHeight - rect.bottom - scrollY}px`;
   }
 
-  function captureScreenshotWithOverlay(element) {
-    const margin = 30;
-    const { x: scrollOffsetX, y: scrollOffsetY } = calculateScrollOffsets(element);
-    const yScroll = scrollOffsetY + window.scrollY;
-    const rect = element.getBoundingClientRect();
+  async function captureScreenshotWithOverlay(element) {
+    return new Promise((resolve, reject) => {
+      const margin = 30;
+      const { x: scrollOffsetX, y: scrollOffsetY } = calculateScrollOffsets(element);
+      const yScroll = scrollOffsetY + window.scrollY;
+      const rect = element.getBoundingClientRect();
 
-    const captureArea = {
-      x: Math.max(0, rect.left + scrollOffsetX - margin),
-      y: Math.max(0, rect.top + yScroll - margin),
-      width: rect.width + margin * 2,
-      height: rect.height + margin * 2,
-    };
+      const captureArea = {
+        x: Math.max(0, rect.left + scrollOffsetX - margin),
+        y: Math.max(0, rect.top + yScroll - margin),
+        width: rect.width + margin * 2,
+        height: rect.height + margin * 2,
+      };
 
-    html2canvas(document.body, {
-      x: captureArea.x,
-      y: captureArea.y,
-      width: captureArea.width,
-      height: captureArea.height,
-      windowWidth: document.documentElement.scrollWidth,
-      scrollY: scrollOffsetY,
-      useCORS: true,
-      backgroundColor: null,
-      logging: true,
-    })
-      .then((canvas) => {
-        dataURL = canvas.toDataURL('image/png');
+      html2canvas(document.body, {
+        x: captureArea.x,
+        y: captureArea.y,
+        width: captureArea.width,
+        height: captureArea.height,
+        windowWidth: document.documentElement.scrollWidth,
+        scrollY: scrollOffsetY,
+        useCORS: true,
+        backgroundColor: null,
+        logging: true,
       })
-      .catch((error) => {
-        console.error('Error capturing screenshot:', error);
-      });
+        .then((canvas) => {
+          const dataURL = canvas.toDataURL('image/png');
+          resolve(dataURL); // Resolve with the dataURL
+        })
+        .catch((error) => {
+          console.error('Error capturing screenshot:', error);
+          reject(error); // Reject on error
+        });
+    });
   }
+
 
   function calculateScrollOffsets(element) {
     let x = 0;
@@ -386,11 +391,9 @@ function elementSelector(event) {
     button.disabled = true;
     button.style.opacity = '0.5';
 
-    button.addEventListener('click', () => {
-      captureScreenshotWithOverlay(selectedElement);
-      setTimeout(() => {
-        event.source.postMessage({ xpath: finalXPath, elementImgUrl: dataURL }, event.origin);
-      }, 200);
+    button.addEventListener('click', async () => {
+      const dataUrl = await captureScreenshotWithOverlay(selectedElement);
+      event.source.postMessage({ xpath: finalXPath, elementImgUrl: dataUrl }, event.origin);
     });
 
     button.addEventListener('mouseover', () => {

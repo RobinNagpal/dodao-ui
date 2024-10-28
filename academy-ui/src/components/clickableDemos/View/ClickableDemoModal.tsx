@@ -77,15 +77,9 @@ function ClickableDemoModal({ clickableDemoWithSteps, space, onClose }: Clickabl
         },
         '*'
       );
-      // Lazy load remaining iframes after the first one is loaded
-      if (index === 0) {
-        lazyLoadRemainingIframes();
-      }
-    };
-
-    const lazyLoadRemainingIframes = () => {
-      for (let i = 1; i < clickableDemoWithSteps.steps.length; i++) {
-        iframeArr[i].src = clickableDemoWithSteps.steps[i].url;
+      // Load the next Iframe
+      if (index < clickableDemoWithSteps.steps.length - 1) {
+        iframeArr[index + 1].src = clickableDemoWithSteps.steps[index + 1].url;
       }
     };
 
