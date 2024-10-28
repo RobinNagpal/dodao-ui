@@ -1,3 +1,4 @@
+import React, { CSSProperties, useState } from 'react';
 import ByteCollectionsCard from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCollectionsCard';
 import { SpaceWithIntegrationsFragment, ThemeColors, UpdateThemeColorsMutationVariables } from '@/graphql/generated/generated-types';
 import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
@@ -7,7 +8,6 @@ import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { CssTheme, ThemeKey, themes } from '@dodao/web-core/src/components/app/themes';
 import { useFetchUtils } from '@dodao/web-core/ui/hooks/useFetchUtils';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import React, { CSSProperties, useState } from 'react';
 
 export interface UpdateThemeModalProps {
   space: SpaceWithIntegrationsFragment;
@@ -27,6 +27,7 @@ export const ColorLabels: Record<ThemeColorsKeys, string> = {
   borderColor: 'Border Color',
   blockBg: 'Block Background Color',
 };
+
 export default function UpdateThemeModal({ space, open, onClose, byteCollection }: UpdateThemeModalProps) {
   const skin = space?.skin;
   const theme: ThemeKey = space?.skin && Object.keys(CssTheme).includes(skin || '') ? (skin as CssTheme) : CssTheme.GlobalTheme;
@@ -62,6 +63,17 @@ export default function UpdateThemeModal({ space, open, onClose, byteCollection 
     setThemeColors({ ...themeColors, [colorKey]: colorValue });
   };
 
+  const handleColorInputChange = (colorKey: ThemeColorsKeys, colorValue: string) => {
+    // Ensure that colorValue starts with '#'
+    if (!colorValue.startsWith('#')) {
+      colorValue = '#' + colorValue;
+    }
+    // Validate that colorValue is a valid hex color or incomplete input
+    if (/^#([0-9A-Fa-f]{0,6})$/.test(colorValue)) {
+      setThemeColors({ ...themeColors, [colorKey]: colorValue });
+    }
+  };
+
   const themeStyles = {
     '--primary-color': themeColors.primaryColor,
     '--bg-color': themeColors.bgColor,
@@ -83,15 +95,19 @@ export default function UpdateThemeModal({ space, open, onClose, byteCollection 
                 <h1 style={{ color: 'var(--heading-color)' }} className="font-bold text-2xl mb-4">
                   Theme Details
                 </h1>
-                {Object.entries(ColorLabels).map((e) => {
-                  const [colorKey, label] = e as [ThemeColorsKeys, string];
-                  const colorValue = themeColors[colorKey];
+                {Object.entries(ColorLabels).map(([colorKey, label]) => {
+                  const key = colorKey as ThemeColorsKeys;
+                  const colorValue = themeColors[key];
                   return (
-                    <div style={{ color: 'var(--text-color)' }} key={colorKey} className="flex justify-between mb-2">
+                    <div style={{ color: 'var(--text-color)' }} key={key} className="flex justify-between mb-2">
                       <label className="ml-7">{label}</label>
-                      <div className="grid grid-cols-2	">
-                        <input type="color" className="w-12 h-8 mr-8" value={colorValue} onChange={(e) => handleColorChange(colorKey, e.target.value)} />
-                        <div>{colorValue}</div>
+                      <div className="flex items-center">
+                        <input type="color" className="w-12 h-8 mr-4" value={colorValue} onChange={(e) => handleColorChange(key, e.target.value)} />
+                        <input
+                          className="w-24 p-1 border border-gray-300 rounded text-color background-color"
+                          value={colorValue}
+                          onChange={(e) => handleColorInputChange(key, e.target.value)}
+                        />
                       </div>
                     </div>
                   );
