@@ -2,7 +2,7 @@ import { formatAxiosError } from '@/app/api/helpers/adapters/formatAxiosError';
 import axios from 'axios';
 import { NextRequest } from 'next/server';
 
-const staticPageGenerationError = "Dynamic server usage: Page couldn't be rendered statically because it used request.url";
+const staticPageGenerationError = 'rendered statically ';
 
 export async function logError(
   message: string,
@@ -71,13 +71,13 @@ export async function logErrorRequest(e: Error | string | null, req: NextRequest
 
 function shouldIgnoreError(e: Error | string) {
   if (typeof e === 'string' && e.includes(staticPageGenerationError)) {
-    return;
+    return true;
   }
 
   const error = e as Error;
 
   if (error?.message?.includes(staticPageGenerationError) || error?.stack?.includes(staticPageGenerationError)) {
-    return;
+    return true;
   }
   return false;
 }

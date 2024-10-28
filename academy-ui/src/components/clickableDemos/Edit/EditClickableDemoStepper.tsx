@@ -1,4 +1,4 @@
-import ClickableDemoStepperItem from '@/components/clickableDemos/Edit/ClickableDemoStepperItem';
+import ClickableDemoStepperItem from '@/components/clickableDemos/Edit/EditClickableDemoStepperItem';
 import { Space, UpsertClickableDemoInput } from '@/graphql/generated/generated-types';
 import { UpdateClickableDemoFunctions } from '@/components/clickableDemos/Edit/useEditClickableDemo';
 import { ClickableDemoErrors } from '@dodao/web-core/types/errors/clickableDemoErrors';
@@ -16,7 +16,7 @@ interface ClickableDemoCreateStepperProps {
   updateClickableDemoFunctions: UpdateClickableDemoFunctions;
 }
 
-function ClickableDemoCreateStepper({
+export default function EditClickableDemoStepper({
   space,
   clickableDemo,
   clickableDemoErrors,
@@ -77,5 +77,3 @@ function ClickableDemoCreateStepper({
     </div>
   );
 }
-
-export default ClickableDemoCreateStepper;

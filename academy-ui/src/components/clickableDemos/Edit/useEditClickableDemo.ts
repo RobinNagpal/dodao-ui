@@ -1,6 +1,7 @@
 import { ClickableDemoStepInput, Space, UpsertClickableDemoInput } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
 import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
+import { TooltipPlacement } from '@/types/clickableDemos/ClickableDemoDto';
 import { TidbitCollectionTags } from '@/utils/api/fetchTags';
 import { emptyClickableDemo } from '@/utils/clickableDemos/EmptyClickableDemo';
 import { ClickableDemoErrors, ClickableDemoStepError } from '@dodao/web-core/types/errors/clickableDemoErrors';
@@ -132,7 +133,7 @@ export function useEditClickableDemo(space: Space, demoId: string | null) {
           tooltipInfo: ``,
           selector: '',
           order: prevClickableDemo.steps.length,
-          placement: 'bottom',
+          placement: TooltipPlacement.bottom,
         },
       ],
     }));

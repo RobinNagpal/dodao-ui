@@ -10,7 +10,7 @@ export const sampleClickableDemo = (): ClickableDemoStepDto => {
     selector: `XPath to be used to select element`,
     tooltipInfo: `Text to be displayed on tooltip`,
     order: 0,
-    placement: TooltipPlacement.Top,
+    placement: TooltipPlacement.bottom,
   };
 };
 

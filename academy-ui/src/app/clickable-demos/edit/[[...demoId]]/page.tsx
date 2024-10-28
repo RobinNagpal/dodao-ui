@@ -1,11 +1,11 @@
 'use client';
 
-import Stepper from '@/components/clickableDemos/Edit/ClickableDemoStepper';
+import Stepper from '@/components/clickableDemos/Edit/EditClickableDemoStepper';
 import { useDeleteClickableDemo } from '@/components/clickableDemos/Edit/useDeleteClickableDemo';
 import { useEditClickableDemo } from '@/components/clickableDemos/Edit/useEditClickableDemo';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import withSpace from '@/contexts/withSpace';
-import { useI18 } from '@/hooks/useI18';
+import { CreateSignedUrlInput, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
 import { CreateSignedUrlRequest } from '@/types/request/SignedUrl';
 import { SingedUrlResponse } from '@/types/response/SignedUrl';
@@ -16,17 +16,16 @@ import { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/
 import Input from '@dodao/web-core/components/core/input/Input';
 import PageLoading from '@dodao/web-core/components/core/loaders/PageLoading';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import { CreateSignedUrlInput, CreateSignedUrlMutationResult, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { ClickableDemoErrors } from '@dodao/web-core/types/errors/clickableDemoErrors';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { useFetchUtils } from '@dodao/web-core/ui/hooks/useFetchUtils';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { getUploadedImageUrlFromSingedUrl } from '@dodao/web-core/utils/upload/getUploadedImageUrlFromSingedUrl';
+import axios from 'axios';
 import html2canvas from 'html2canvas';
-import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 function EditClickableDemo(props: { space: SpaceWithIntegrationsFragment; params: { demoId?: string[] } }) {
   const { space, params } = props;
@@ -54,7 +53,6 @@ function EditClickableDemo(props: { space: SpaceWithIntegrationsFragment; params
     return error ? error.toString() : '';
   };
 
-  const { $t } = useI18();
   async function uploadToS3AndReturnScreenshotUrl(file: File | null, objectId: string) {
     if (!file) return;
     const input: CreateSignedUrlInput = {
@@ -108,7 +106,7 @@ function EditClickableDemo(props: { space: SpaceWithIntegrationsFragment; params
 
     return new File([byteNumbers], filename, { type: mimeType });
   }
-  async function generate_images() {
+  async function generateImages() {
     const iframe = document.createElement('iframe') as HTMLIFrameElement;
     iframe.id = 'iframe';
     iframe.style.width = '1920px';
@@ -192,13 +190,13 @@ function EditClickableDemo(props: { space: SpaceWithIntegrationsFragment; params
               {demoId && (
                 <PrivateEllipsisDropdown
                   items={threeDotItems}
-                  onSelect={(key) => {
+                  onSelect={async (key) => {
                     if (key === 'delete') {
                       setShowDeleteModal(true);
                     }
                     if (key === 'generate_images') {
                       // setGenerateImages(true);
-                      generate_images();
+                      await generateImages();
                     }
                   }}
                   className="ml-4"
