@@ -5,7 +5,7 @@ import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandli
 import { prisma } from '@/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 
-async function postHandler(req: NextRequest) {
+async function putHandler(req: NextRequest) {
   const { spaceId, themeColors } = (await req.json()) as MutationUpdateThemeColorsArgs;
   const spaceById = await getSpaceById(spaceId);
   await checkEditSpacePermission(spaceById, req);
@@ -30,4 +30,4 @@ async function postHandler(req: NextRequest) {
   return NextResponse.json({ space }, { status: 200 });
 }
 
-export const POST = withErrorHandling(postHandler);
+export const PUT = withErrorHandling(putHandler);

@@ -1,14 +1,12 @@
-import { CssTheme, ThemeKey, themes } from '@dodao/web-core/src/components/app/themes';
 import ByteCollectionsCard from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCollectionsCard';
+import { SpaceWithIntegrationsFragment, ThemeColors, UpdateThemeColorsMutationVariables } from '@/graphql/generated/generated-types';
+import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { SpaceWithIntegrationsFragment, ThemeColors } from '@/graphql/generated/generated-types';
-import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
-import { useI18 } from '@/hooks/useI18';
+import { CssTheme, ThemeKey, themes } from '@dodao/web-core/src/components/app/themes';
+import { useFetchUtils } from '@dodao/web-core/ui/hooks/useFetchUtils';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { useRouter } from 'next/navigation';
 import React, { CSSProperties, useState } from 'react';
 
 export interface UpdateThemeModalProps {
@@ -33,47 +31,31 @@ export default function UpdateThemeModal({ space, open, onClose, byteCollection 
   const skin = space?.skin;
   const theme: ThemeKey = space?.skin && Object.keys(CssTheme).includes(skin || '') ? (skin as CssTheme) : CssTheme.GlobalTheme;
   const [themeColors, setThemeColors] = useState<ThemeColors>(space?.themeColors || themes[theme]);
-  const { showNotification } = useNotificationContext();
-  const router = useRouter();
-  const { $t } = useI18();
+
+  const { putData } = useFetchUtils();
 
   async function upsertThemeColors() {
-    try {
-      const response = await fetch(`${getBaseUrl()}/api/spaces/update-theme-colors`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+    await putData<SpaceWithIntegrationsFragment, UpdateThemeColorsMutationVariables>(
+      `${getBaseUrl()}/api/${space.id}/actions/spaces/update-theme-colors`,
+      {
+        spaceId: space.id,
+        themeColors: {
+          bgColor: themeColors.bgColor,
+          textColor: themeColors.textColor,
+          blockBg: themeColors.blockBg,
+          borderColor: themeColors.borderColor,
+          primaryColor: themeColors.primaryColor,
+          headingColor: themeColors.headingColor,
+          linkColor: themeColors.linkColor,
         },
-        body: JSON.stringify({
-          spaceId: space.id,
-          themeColors: {
-            bgColor: themeColors.bgColor,
-            textColor: themeColors.textColor,
-            blockBg: themeColors.blockBg,
-            borderColor: themeColors.borderColor,
-            primaryColor: themeColors.primaryColor,
-            headingColor: themeColors.headingColor,
-            linkColor: themeColors.linkColor,
-          },
-        }),
-      });
-
-      if (response.ok) {
-        showNotification({
-          type: 'success',
-          message: 'Theme Updated',
-          heading: 'Success 🎉',
-        });
-        location.reload();
-      } else {
-        const errorData = await response.json();
-        console.log('Error updating theme colors', errorData);
-        showNotification({ type: 'error', message: $t('notify.somethingWentWrong') });
+      },
+      {
+        successMessage: 'Theme Updated',
+        errorMessage: 'Error updating theme colors',
       }
-    } catch (e) {
-      console.error('Error updating theme colors', e);
-      showNotification({ type: 'error', message: $t('notify.somethingWentWrong') });
-    }
+    );
+    // reload the page to reflect the changes
+    window.location.reload();
   }
 
   const handleColorChange = (colorKey: ThemeColorsKeys, colorValue: string) => {
