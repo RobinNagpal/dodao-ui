@@ -2832,13 +2832,6 @@ export interface TimelineEvent {
   uuid: Scalars['String'];
 }
 
-export enum TooltipPlacement {
-  Bottom = 'Bottom',
-  Left = 'Left',
-  Right = 'Right',
-  Top = 'Top'
-}
-
 export interface TopicConfig {
   __typename?: 'TopicConfig';
   showExplanations: Scalars['Boolean'];

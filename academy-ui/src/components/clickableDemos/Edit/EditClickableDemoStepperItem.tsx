@@ -1,14 +1,15 @@
+import CaptureInput from '@/components/clickableDemos/CaptureSelector/CaptureInput';
+import SelectElementInput from '@/components/clickableDemos/ElementSelector/SelectElementInput';
+import { ClickableDemoStepInput, Space, UpsertClickableDemoInput } from '@/graphql/generated/generated-types';
+import { TooltipPlacement } from '@/types/clickableDemos/ClickableDemoDto';
 import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
-import Input from '@dodao/web-core/components/core/input/Input';
 import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
-import { ClickableDemoStepInput, ImageType, Space, UpsertClickableDemoInput, TooltipPlacement } from '@/graphql/generated/generated-types';
+import Input from '@dodao/web-core/components/core/input/Input';
+import StyledSelect, { StyledSelectItem } from '@dodao/web-core/components/core/select/StyledSelect';
 import { ClickableDemoErrors, ClickableDemoStepError } from '@dodao/web-core/types/errors/clickableDemoErrors';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { useState } from 'react';
-import styles from './ClickableDemoStepperItem.module.scss';
-import StyledSelect, { StyledSelectItem } from '@dodao/web-core/components/core/select/StyledSelect';
-import SelectElementInput from '@/components/clickableDemos/ElementSelector/SelectElementInput';
-import CaptureInput from '@/components/clickableDemos/CaptureSelector/CaptureInput';
+import styles from './EditClickableDemoStepperItem.module.scss';
 
 interface StepProps {
   space: Space;
@@ -25,24 +26,24 @@ interface StepProps {
 
 const tooltipStyleSelect: StyledSelectItem[] = [
   {
-    label: TooltipPlacement.Top,
+    label: TooltipPlacement.top,
     id: 'top',
   },
   {
-    label: TooltipPlacement.Bottom,
+    label: TooltipPlacement.bottom,
     id: 'bottom',
   },
   {
-    label: TooltipPlacement.Right,
+    label: TooltipPlacement.right,
     id: 'right',
   },
   {
-    label: TooltipPlacement.Left,
+    label: TooltipPlacement.left,
     id: 'left',
   },
 ];
 
-export default function Step({
+export default function EditClickableDemoStepperItem({
   space,
   clickableDemo,
   clickableDemoErrors,
@@ -55,7 +56,6 @@ export default function Step({
   onUpdateStep,
 }: StepProps) {
   const [uploadHTMLFileLoading, setUploadHTMLFileLoading] = useState(false);
-  const [showSelectHtmlCaptureModal, setShowSelectHtmlCaptureModal] = useState(false);
 
   const updateStepSelector = (selector: string | number | undefined, elementImgUrl: string | undefined) => {
     onUpdateStep({ ...step, selector: selector?.toString() || '', elementImgUrl: elementImgUrl?.toString() || '' });
@@ -79,8 +79,10 @@ export default function Step({
     return error ? error.toString() : '';
   };
 
+  console.log('step.placement', step.placement);
+
   return (
-    <div className={`${styles.StyledStepContainer}`} style={{ border: !!clickableDemoErrors?.steps?.[step.id] === true ? '1px solid red' : 'none' }}>
+    <div className={`${styles.StyledStepContainer}`} style={{ border: !!clickableDemoErrors?.steps?.[step.id] ? '1px solid red' : 'none' }}>
       <h3>Step {step.order + 1}</h3>
       <div className="flex justify-end min-h-10">
         <IconButton onClick={() => moveStepUp?.(step.id)} iconName={IconTypes.MoveUp} removeBorder disabled={step.order === 0} />
@@ -108,7 +110,7 @@ export default function Step({
         <div className="mt-4">
           <StyledSelect
             label="Tooltip Position *"
-            selectedItemId={step.placement}
+            selectedItemId={step.placement || TooltipPlacement.bottom}
             items={tooltipStyleSelect}
             setSelectedItemId={(value) => updateStepTooltipPlacement(value!)}
           />

@@ -1,6 +1,6 @@
 'use client';
 
-import Stepper from '@/components/clickableDemos/Edit/ClickableDemoStepper';
+import Stepper from '@/components/clickableDemos/Edit/EditClickableDemoStepper';
 import { useDeleteClickableDemo } from '@/components/clickableDemos/Edit/useDeleteClickableDemo';
 import { useEditClickableDemo } from '@/components/clickableDemos/Edit/useEditClickableDemo';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
