@@ -55,7 +55,7 @@ export default function ConsolidatedByteRatings(props: { space: SpaceWithIntegra
   useEffect(() => {
     async function fetchRatings() {
       const response = await fetchData<ConsolidatedByteRatingDto>(
-        `${getBaseUrl()}/api/${props.space.id}/consolidate-byte-rating}`,
+        `${getBaseUrl()}/api/${props.space.id}/consolidated-byte-rating`,
         'Failed to fetch consolidated ratings for space'
       );
       setConsolidatedRatings(response);

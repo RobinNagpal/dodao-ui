@@ -1,7 +1,9 @@
-import { ConsolidatedGuideRating } from '@/graphql/generated/generated-types';
+import { ConsolidatedGuideRatingDto } from '@/types/bytes/ConsolidatedGuideRatingDto';
 import { GuideRating } from '@prisma/client';
 
-export function consolidateGuideRatings(ratings: Pick<GuideRating, 'endRating' | 'positiveFeedback' | 'negativeFeedback'>[]) {
+export function consolidateGuideRatings(
+  ratings: Pick<GuideRating, 'endRating' | 'positiveFeedback' | 'negativeFeedback'>[]
+): ConsolidatedGuideRatingDto | undefined {
   if (ratings.length > 0) {
     const totalRatings = ratings.length;
     let totalRatingSum = 0;
@@ -40,7 +42,7 @@ export function consolidateGuideRatings(ratings: Pick<GuideRating, 'endRating' |
 
     const avgRating = totalRatingSum / totalRatings;
 
-    const consolidatedRatings: ConsolidatedGuideRating = {
+    const consolidatedRatings: ConsolidatedGuideRatingDto = {
       avgRating,
       positiveRatingDistribution: {
         ux: (positiveCount.ux / positiveFeedbackCount) * 100,
@@ -58,6 +60,21 @@ export function consolidateGuideRatings(ratings: Pick<GuideRating, 'endRating' |
     };
     return consolidatedRatings;
   } else {
-    return undefined;
+    return {
+      avgRating: 0,
+      positiveRatingDistribution: {
+        ux: 0,
+        content: 0,
+        questions: 0,
+      },
+      negativeRatingDistribution: {
+        ux: 0,
+        content: 0,
+        questions: 0,
+      },
+      positiveFeedbackCount: 0,
+      negativeFeedbackCount: 0,
+      endRatingFeedbackCount: 0,
+    };
   }
 }

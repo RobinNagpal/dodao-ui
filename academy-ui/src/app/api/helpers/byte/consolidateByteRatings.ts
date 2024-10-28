@@ -56,6 +56,13 @@ export function consolidateByteRatings(
     };
     return consolidatedByteRating;
   } else {
-    return undefined;
+    return {
+      avgRating: 0,
+      negativeFeedbackCount: 0,
+      negativeRatingDistribution: { content: 0, ux: 0 },
+      positiveFeedbackCount: 0,
+      positiveRatingDistribution: { content: 0, ux: 0 },
+      ratingFeedbackCount: 0,
+    };
   }
 }

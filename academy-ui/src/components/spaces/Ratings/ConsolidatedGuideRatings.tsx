@@ -1,13 +1,14 @@
 'use client';
 
 import styles from '@/components/app/Rating/Table/RatingsTable.module.scss';
+import { ConsolidatedGuideRating, RatingDistribution, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { ConsolidatedGuideRatingDto } from '@/types/bytes/ConsolidatedGuideRatingDto';
 import { Grid2Cols } from '@dodao/web-core/components/core/grids/Grid2Cols';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import { ConsolidatedGuideRating, RatingDistribution, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { useFetchUtils } from '@dodao/web-core/ui/hooks/useFetchUtils';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import React from 'react';
 import { Cell, Legend, Pie, PieChart, Tooltip } from 'recharts';
-import axios from 'axios';
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28'];
 
@@ -49,17 +50,22 @@ function ConsolidatedRatings(props: { consolidatedRatings: ConsolidatedGuideRati
 }
 
 export default function ConsolidatedGuideRatings(props: { space: SpaceWithIntegrationsFragment }) {
-  const [consolidatedRatingsResponse, setConsolidatedRatingsResponse] = React.useState<any>();
+  const [consolidatedRatings, setConsolidatedRatings] = React.useState<ConsolidatedGuideRatingDto | undefined>();
+  const { fetchData } = useFetchUtils();
   React.useEffect(() => {
     async function fetchConsolidatedRatings() {
-      let response = await fetch(`${getBaseUrl()}/api/guide/consolidated-guide-ratings-for-space?spaceId=${props.space.id}`);
-      setConsolidatedRatingsResponse(await response.json());
+      const response = await fetchData<ConsolidatedGuideRatingDto>(
+        `${getBaseUrl()}/api/${props.space.id}/consolidated-guide-rating`,
+        'Failed to fetch consolidated ratings for guides'
+      );
+      if (response) {
+        setConsolidatedRatings(response);
+      }
     }
     fetchConsolidatedRatings();
   }, [props.space.id]);
 
-  const consolidatedGuideRatingsForSpace = consolidatedRatingsResponse?.consolidatedGuideRatingsForSpace;
-  const positiveRatingDistribution = consolidatedGuideRatingsForSpace?.positiveRatingDistribution;
+  const positiveRatingDistribution = consolidatedRatings?.positiveRatingDistribution;
 
   const ratingDistributions = positiveRatingDistribution && [
     { name: 'UX', value: +positiveRatingDistribution.ux.toFixed(2) },
@@ -68,8 +74,8 @@ export default function ConsolidatedGuideRatings(props: { space: SpaceWithIntegr
   ];
   return (
     <PageWrapper>
-      {consolidatedGuideRatingsForSpace ? (
-        <ConsolidatedRatings consolidatedRatings={consolidatedGuideRatingsForSpace} ratingDistributions={ratingDistributions} />
+      {consolidatedRatings ? (
+        <ConsolidatedRatings consolidatedRatings={consolidatedRatings} ratingDistributions={ratingDistributions} />
       ) : (
         <div>No Ratings found </div>
       )}

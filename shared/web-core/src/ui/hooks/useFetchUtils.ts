@@ -24,7 +24,7 @@ export const useFetchUtils = () => {
         'Content-Type': 'application/json',
         ...((options.headers as Record<string, string>) || {}),
       };
-      if (localStorage.getItem('token')) {
+      if (localStorage.getItem(DODAO_ACCESS_TOKEN_KEY)) {
         headers['dodao-auth-token'] = `${localStorage.getItem(DODAO_ACCESS_TOKEN_KEY)}`;
       }
       const response = await fetch(url, {
