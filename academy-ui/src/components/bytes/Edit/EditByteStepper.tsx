@@ -1,4 +1,4 @@
-import { UpdateByteFunctions } from '@/components/bytes/Edit/editByteHelper';
+import { UpdateByteFunctions } from '@/components/bytes/Edit/useEditByte';
 import { EditByteType } from '@/types/request/ByteRequests';
 import SidebarButton from '@dodao/web-core/components/core/buttons/SidebarButton';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
@@ -78,8 +78,14 @@ function EditByteStepper({ space, byte, byteErrors, errorColor = '#d32f2f', succ
                   stepIndex={index}
                   stepErrors={byteErrors?.steps?.[step.uuid]}
                   updateStep={updateByteFunctions.updateStep}
-                  moveStepUp={updateByteFunctions.moveStepUp}
-                  moveStepDown={updateByteFunctions.moveStepDown}
+                  moveStepUp={(uuid: string) => {
+                    updateByteFunctions.moveStepUp(uuid);
+                    setOpenAccordionIndex(index - 1);
+                  }}
+                  moveStepDown={(uuid: string) => {
+                    updateByteFunctions.moveStepDown(uuid);
+                    setOpenAccordionIndex(index + 1);
+                  }}
                   removeStep={updateByteFunctions.removeStep}
                 />
               </div>
