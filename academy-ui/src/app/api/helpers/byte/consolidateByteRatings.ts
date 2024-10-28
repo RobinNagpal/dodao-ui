@@ -1,7 +1,9 @@
 import { ConsolidatedByteRating } from '@/graphql/generated/generated-types';
 import { ByteRating } from '@prisma/client';
 
-export function consolidateByteRatings(ratings: Array<Pick<ByteRating, 'rating' | 'positiveFeedback' | 'negativeFeedback'>>) {
+export function consolidateByteRatings(
+  ratings: Array<Pick<ByteRating, 'rating' | 'positiveFeedback' | 'negativeFeedback'>>
+): ConsolidatedByteRating | undefined {
   if (ratings.length > 0) {
     const totalRatings = ratings.length;
     let totalRatingSum = 0;
