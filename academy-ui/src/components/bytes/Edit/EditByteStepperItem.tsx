@@ -1,5 +1,6 @@
 import CreateQuestion from '@/components/app/Common/CreateQuestion';
 import SelectImageInputModal from '@/components/app/Image/SelectImageInputModal';
+import UploadImageFromDeviceModal from '@/components/app/Image/UploadImageFromDeviceModal';
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
 import { ByteQuestionFragmentFragment, GuideQuestion, ImageDisplayMode, ImageType, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { EditByteStep, EditByteType, StepItemInputGenericInput } from '@/types/request/ByteRequests';
@@ -8,6 +9,7 @@ import CreateConnectDiscord from '@dodao/web-core/components/app/Common/CreateDi
 import CreateUserInput from '@dodao/web-core/components/app/Common/CreateUserInput';
 import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
 import AddStepItemModal from '@dodao/web-core/components/app/Modal/StepItem/AddStepItemModal';
+import Button from '@dodao/web-core/components/core/buttons/Button';
 import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
 import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import Input from '@dodao/web-core/components/core/input/Input';
@@ -428,19 +430,18 @@ For background of the image, use the color ${backgroundColor} and for the primar
         </div>
 
         <div className="w-full mb-4">
-          <InputWithButton
-            buttonLabel={'Set Image'}
-            inputLabel={'Image Url'}
-            onButtonClick={() => setSelectImageUploadModal(true)}
-            onInputUpdate={(e) => updateStepImageUrl(e?.toString() || '')}
-            inputModelValue={step.imageUrl || ''}
-          />
-          {step.imageUrl && <img src={step.imageUrl} style={{ height: '150px' }} className="my-2" />}
+          {step.imageUrl ? (
+            <img src={step.imageUrl} style={{ height: '150px' }} className="my-2 cursor-pointer" onClick={() => setSelectImageUploadModal(true)} />
+          ) : (
+            <Button primary={true} onClick={() => setSelectImageUploadModal(true)}>
+              Set Step Image
+            </Button>
+          )}
         </div>
         <div className="w-full mb-4">
           <StyledSelect
             label="Image Display Mode"
-            selectedItemId={step.displayMode}
+            selectedItemId={step.displayMode || ImageDisplayMode.Normal}
             items={displayModeSelect}
             setSelectedItemId={(value) => updateStepDisplayMode(value!)}
           />
@@ -494,17 +495,17 @@ For background of the image, use the color ${backgroundColor} and for the primar
         />
       )}
       {selectImageUploadModal && (
-        <SelectImageInputModal
+        <UploadImageFromDeviceModal
           open={selectImageUploadModal}
           onClose={() => setSelectImageUploadModal(false)}
           imageType={ImageType.Tidbits}
           objectId={byte.id || 'unknown_byte_id'}
           spaceId={space.id}
-          generateImagePromptFn={() => promptForImagePrompt}
           imageUploaded={(imageUrl) => {
             updateStepImageUrl(imageUrl);
             setSelectImageUploadModal(false);
           }}
+          modelValue={step.imageUrl || undefined}
         />
       )}
     </StyledStepItemContainer>
