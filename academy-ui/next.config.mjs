@@ -1,8 +1,11 @@
+import createMDX from '@next/mdx';
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
     esmExternals: 'loose',
   },
+  pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
   compiler: {
     // Enables the styled-components SWC transform
     styledComponents: true,
@@ -40,4 +43,8 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+const withMDX = createMDX({
+  // Add markdown plugins here, as desired
+});
+
+export default withMDX(nextConfig);
