@@ -1,5 +1,4 @@
 import CreateQuestion from '@/components/app/Common/CreateQuestion';
-import SelectImageInputModal from '@/components/app/Image/SelectImageInputModal';
 import UploadImageFromDeviceModal from '@/components/app/Image/UploadImageFromDeviceModal';
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
 import { ByteQuestionFragmentFragment, GuideQuestion, ImageDisplayMode, ImageType, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
@@ -13,7 +12,6 @@ import Button from '@dodao/web-core/components/core/buttons/Button';
 import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
 import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import Input from '@dodao/web-core/components/core/input/Input';
-import { InputWithButton } from '@dodao/web-core/components/core/input/InputWithButton';
 import StyledSelect, { StyledSelectItem } from '@dodao/web-core/components/core/select/StyledSelect';
 import { InputType, QuestionType, UserDiscordConnectType } from '@dodao/web-core/types/deprecated/models/enums';
 import { ByteErrors } from '@dodao/web-core/types/errors/byteErrors';

@@ -7,7 +7,6 @@ import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal'
 import { useFetchUtils } from '@dodao/web-core/ui/hooks/useFetchUtils';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { getUploadedImageUrlFromSingedUrl } from '@dodao/web-core/utils/upload/getUploadedImageUrlFromSingedUrl';
-import { XMarkIcon } from '@heroicons/react/20/solid';
 import axios from 'axios';
 import { useState } from 'react';
 
