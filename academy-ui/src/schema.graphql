@@ -1772,13 +1772,6 @@ type TimelineEvent {
   uuid: String!
 }
 
-enum TooltipPlacement {
-  Bottom
-  Left
-  Right
-  Top
-}
-
 enum ImageDisplayMode {
   Normal
   FullScreenImage
