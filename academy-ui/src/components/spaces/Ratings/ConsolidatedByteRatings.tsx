@@ -1,9 +1,11 @@
 'use client';
 
 import styles from '@/components/app/Rating/Table/RatingsTable.module.scss';
-import { ConsolidatedByteRating, ConsolidatedByteRatingsForSpaceQuery, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { ConsolidatedByteRating, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { ConsolidatedByteRatingDto } from '@/types/bytes/ConsolidatedByteRatingDto';
 import { Grid2Cols } from '@dodao/web-core/components/core/grids/Grid2Cols';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import { useFetchUtils } from '@dodao/web-core/ui/hooks/useFetchUtils';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import React, { useEffect } from 'react';
 import { Cell, Legend, Pie, PieChart, Tooltip } from 'recharts';
@@ -48,19 +50,20 @@ function ConsolidatedRatings(props: { consolidatedRatings: ConsolidatedByteRatin
 }
 
 export default function ConsolidatedByteRatings(props: { space: SpaceWithIntegrationsFragment }) {
-  const [consolidatedRatingsResponse, setConsolidatedRatingsResponse] = React.useState<ConsolidatedByteRatingsForSpaceQuery>();
-
+  const [consolidatedRatings, setConsolidatedRatings] = React.useState<ConsolidatedByteRatingDto>();
+  const { fetchData } = useFetchUtils();
   useEffect(() => {
-    async function fetchData() {
-      const response = await fetch(`${getBaseUrl()}/api/byte/consolidate-byte-ratings-for-space?spaceId=${props.space.id}`);
-      setConsolidatedRatingsResponse(await response.json());
+    async function fetchRatings() {
+      const response = await fetchData<ConsolidatedByteRatingDto>(
+        `${getBaseUrl()}/api/${props.space.id}/consolidate-byte-rating}`,
+        'Failed to fetch consolidated ratings for space'
+      );
+      setConsolidatedRatings(response);
     }
-    fetchData();
+    fetchRatings();
   }, [props.space.id]);
 
-  const consolidatedByteRatingsForSpace = consolidatedRatingsResponse?.consolidatedByteRatingsForSpace;
-  const positiveRatingDistribution = consolidatedByteRatingsForSpace?.positiveRatingDistribution;
-  console.log('consolidatedByteRatingsForSpace', consolidatedRatingsResponse);
+  const positiveRatingDistribution = consolidatedRatings?.positiveRatingDistribution;
 
   const ratingDistributions = positiveRatingDistribution && [
     { name: 'UX', value: +positiveRatingDistribution.ux?.toFixed(2) },
@@ -68,8 +71,8 @@ export default function ConsolidatedByteRatings(props: { space: SpaceWithIntegra
   ];
   return (
     <PageWrapper>
-      {consolidatedByteRatingsForSpace ? (
-        <ConsolidatedRatings consolidatedRatings={consolidatedByteRatingsForSpace} ratingDistributions={ratingDistributions} />
+      {consolidatedRatings ? (
+        <ConsolidatedRatings consolidatedRatings={consolidatedRatings} ratingDistributions={ratingDistributions} />
       ) : (
         <div>No Ratings found </div>
       )}

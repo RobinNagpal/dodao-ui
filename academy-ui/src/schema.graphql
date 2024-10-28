@@ -232,24 +232,12 @@ type ByteRatingDistribution {
   ux: Float!
 }
 
-enum ByteViewMode {
-  CardStepper
-  FullScreenSwiper
-}
-
 type ByteSettings {
   askForLoginToSubmit: Boolean
   captureBeforeAndAfterRating: Boolean @deprecated(reason: "Use captureRating instead")
   captureRating: Boolean
   showCategoriesInSidebar: Boolean
-  byteViewMode: ByteViewMode
-}
-
-input ByteSettingsInput {
-  askForLoginToSubmit: Boolean
-  captureRating: Boolean
-  showCategoriesInSidebar: Boolean
-  byteViewMode: ByteViewMode
+  byteViewMode: String
 }
 
 type ByteSocialShare {
@@ -1269,7 +1257,6 @@ type Mutation {
   triggerSiteScrapingRun(spaceId: String!, websiteScrapingInfoId: String!): SiteScrapingRun!
   updateAuthSettings(input: AuthSettingsInput!, spaceId: String!): Space!
   updateByteCollection(input: UpdateByteCollectionInput!): ByteCollection!
-  updateByteSettings(input: ByteSettingsInput!, spaceId: String!): Space!
   updateCourseBasicInfo(courseBasicInfo: CourseBasicInfoInput!, spaceId: String!): GitCourse!
   updateGuideSettings(input: GuideSettingsInput!, spaceId: String!): Space!
   updateIndexWithAllDiscordPosts(spaceId: String!): Boolean!

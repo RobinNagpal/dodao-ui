@@ -1,19 +1,21 @@
-import { MutationUpdateByteSettingsArgs } from '@/graphql/generated/generated-types';
-import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
+import { withErrorHandlingV1 } from '@/app/api/helpers/middlewares/withErrorHandling';
+import { getSpaceWithIntegrations } from '@/app/api/helpers/space';
 import { checkEditSpacePermission } from '@/app/api/helpers/space/checkEditSpacePermission';
-import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
+import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
+import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { prisma } from '@/prisma';
+import { UpsertByteSettingsRequest } from '@/types/request/space/UpsertByteSettingsRequest';
 import { SpaceTags } from '@/utils/api/fetchTags';
 import { revalidateTag } from 'next/cache';
 import { NextRequest, NextResponse } from 'next/server';
 
-async function postHandler(req: NextRequest) {
-  const { spaceId, input } = (await req.json()) as MutationUpdateByteSettingsArgs;
-  const spaceById = await getSpaceById(spaceId);
+async function putHandler(req: NextRequest, { params }: { params: { spaceId: string } }): Promise<NextResponse<SpaceWithIntegrationsFragment>> {
+  const input = (await req.json()) as UpsertByteSettingsRequest;
+  const spaceById = await getSpaceById(params.spaceId);
 
   await checkEditSpacePermission(spaceById, req);
 
-  const space = await prisma.space.update({
+  await prisma.space.update({
     data: {
       byteSettings: {
         askForLoginToSubmit: input.askForLoginToSubmit,
@@ -23,13 +25,14 @@ async function postHandler(req: NextRequest) {
       },
     },
     where: {
-      id: spaceId,
+      id: params.spaceId,
     },
   });
 
   revalidateTag(SpaceTags.GET_SPACE.toString());
 
-  return NextResponse.json({ space }, { status: 200 });
+  const spaceWithIntegrations = (await getSpaceWithIntegrations(params.spaceId)) as SpaceWithIntegrationsFragment;
+  return NextResponse.json(spaceWithIntegrations, { status: 200 });
 }
 
-export const POST = withErrorHandling(postHandler);
+export const PUT = withErrorHandlingV1<SpaceWithIntegrationsFragment>(putHandler);

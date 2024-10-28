@@ -271,12 +271,6 @@ mutation UpdateSpaceSocialSettings($spaceId: String!, $input: SocialSettingsInpu
   }
 }
 
-mutation UpdateSpaceByteSettings($spaceId: String!, $input: ByteSettingsInput!) {
-  payload: updateByteSettings(spaceId: $spaceId, input: $input) {
-    ...SpaceWithIntegrations
-  }
-}
-
 mutation SendEmail($input: SendEmailInput!) {
   payload: sendEmail(input: $input)
 }
