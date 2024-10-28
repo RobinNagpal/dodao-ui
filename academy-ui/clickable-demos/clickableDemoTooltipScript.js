@@ -180,7 +180,6 @@ function replaceIframeWithDiv() {
 function elementSelector(event) {
   let selectedElement = null;
   let finalXPath = null;
-  let dataURL;
   let hoverEnabled = true;
   let hoverTimer;
 
@@ -191,9 +190,11 @@ function elementSelector(event) {
 
   const upDownButtons = createUpDownButtons();
   const selectButton = createSelectButton();
+  const clearSelectionButton = createClearSelectionButton();
 
   document.body.appendChild(upDownButtons);
   document.body.appendChild(selectButton);
+  document.body.appendChild(clearSelectionButton);
 
   document.addEventListener('mouseover', handleMouseOver);
   document.addEventListener('click', handleClick);
@@ -407,6 +408,32 @@ function elementSelector(event) {
     return button;
   }
 
+  function createClearSelectionButton() {
+    const button = document.createElement('button');
+    button.textContent = 'Clear Selection';
+    button.classList.add('dodao-clear-selection-button');
+    button.disabled = selectedElement === null;
+    button.style.opacity = '0.5';
+    button.onmouseover = () => {
+      if (!button.disabled) button.style.opacity = '0.7';
+    };
+    button.onmouseout = () => {
+      if (!button.disabled) button.style.opacity = '1';
+    };
+    button.addEventListener('click', () => {
+      selectedElement = null;
+      finalXPath = null;
+      hoverEnabled = true;
+      document.getElementById('dimming-overlay').remove();
+      document.querySelector('.dodao-select-element-button').disabled = true;
+      document.querySelector('.dodao-select-element-button').style.opacity = '0.5';
+      document.body.style.cursor = 'default';
+      button.disabled = true;
+      button.style.opacity = '0.5';
+    });
+    return button;
+  }
+
   function handleMouseOver(e) {
     e.preventDefault();
     if (hoverEnabled && !selectedElement) {
@@ -425,6 +452,7 @@ function elementSelector(event) {
     const clickedElement = e.target;
 
     if (clickedElement === selectButton) return;
+    if (clickedElement === clearSelectionButton) return;
 
     if ([...upDownButtons.children].includes(clickedElement)) return;
 
@@ -432,6 +460,8 @@ function elementSelector(event) {
     selectedElement = clickedElement;
     selectButton.disabled = false;
     selectButton.style.opacity = '1';
+    clearSelectionButton.disabled = false;
+    clearSelectionButton.style.opacity = '1';
     createOrUpdateOverlay(selectedElement);
     finalXPath = getXPath(selectedElement);
   }
