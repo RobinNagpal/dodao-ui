@@ -3,7 +3,7 @@
 import WebCoreProfileEdit from '@dodao/web-core/components/profile/WebCoreProfileEdit';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { User } from '@dodao/web-core/types/auth/User';
-import { useFetchData } from '@dodao/web-core/ui/hooks/useFetchUtils';
+import { useFetchData, useFetchUtils } from '@dodao/web-core/ui/hooks/useFetchUtils';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { BaseSpace } from '@prisma/client';
 import { useSession } from 'next-auth/react';
@@ -14,7 +14,7 @@ interface ProfileEditProps {
 }
 
 function ProfileEdit({ space }: ProfileEditProps) {
-  const { fetchData, putData } = useFetchUtils();
+  const { putData } = useFetchUtils();
   const { data: session } = useSession() as { data: Session | null };
   const [upserting, setUpserting] = useState(false);
   const initialState = {
