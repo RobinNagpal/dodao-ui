@@ -15,6 +15,7 @@ async function getHandler(req: NextRequest, { params }: { params: { spaceId: str
   const capture = await prisma.clickableDemoHtmlCaptures.findMany({
     where: {
       clickableDemoId: demoId,
+      archive: false,
     },
   });
   return NextResponse.json(capture as ClickableDemoHtmlCaptureDto[], { status: 200 });

@@ -366,6 +366,7 @@ model ClickableDemoHtmlCaptures {
   fileUrl         String   @map("file_url") @db.VarChar(1024)
   fileImageUrl    String   @map("file_image_url") @db.VarChar(1024)
   createdAt       DateTime @default(now()) @map("created_at")
+  archive         Boolean? @default(false)
 
   @@map("clickable_demo_html_cpatures")
 }
