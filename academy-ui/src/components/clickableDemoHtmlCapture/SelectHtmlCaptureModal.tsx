@@ -53,10 +53,7 @@ export default function SelectHtmlCaptureModal(props: SelectHtmlCaptureModalProp
     fetchData();
   }, [demoId]);
 
-  const { deleteData } = useDeleteData<
-    void,
-    {}
-  >(
+  const { deleteData } = useDeleteData<void, {}>(
     {},
     {
       successMessage: 'Capture Archived Successfully',

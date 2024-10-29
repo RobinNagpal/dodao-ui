@@ -5,7 +5,10 @@ import { ClickableDemoHtmlCaptureDto } from '@/types/html-captures/ClickableDemo
 import { validateSuperAdmin } from '@/app/api/helpers/space/isSuperAdmin';
 import { NextRequest, NextResponse } from 'next/server';
 
-async function deleteHandler(req: NextRequest, { params }: { params: { spaceId: string; captureId: string } }): Promise<NextResponse<ClickableDemoHtmlCaptureDto>> {
+async function deleteHandler(
+  req: NextRequest,
+  { params }: { params: { spaceId: string; captureId: string } }
+): Promise<NextResponse<ClickableDemoHtmlCaptureDto>> {
   const args: DeleteClickableDemoHtmlCaptureRequest = await req.json();
 
   await validateSuperAdmin(req);
