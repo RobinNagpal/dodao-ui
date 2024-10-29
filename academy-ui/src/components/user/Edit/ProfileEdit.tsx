@@ -4,7 +4,7 @@ import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-typ
 import WebCoreProfileEdit from '@dodao/web-core/components/profile/WebCoreProfileEdit';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { User } from '@dodao/web-core/types/auth/User';
-import { useFetchData } from '@dodao/web-core/ui/hooks/useFetchUtils';
+import { useFetchData, useFetchUtils } from '@dodao/web-core/ui/hooks/useFetchUtils';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useSession } from 'next-auth/react';
 import React, { useEffect, useState } from 'react';
