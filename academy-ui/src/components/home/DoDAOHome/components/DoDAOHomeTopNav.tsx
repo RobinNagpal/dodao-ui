@@ -34,7 +34,7 @@ const products = [
     icon: AcademicCapIcon,
   },
   {
-    name: 'Decentralized Reviews',
+    name: 'Decentralized Solution and Reviews',
     description: 'Ensure transparency and security in customer feedback.',
     href: '#',
     icon: FingerPrintIcon,
@@ -82,7 +82,7 @@ const educationAreas = [
     icon: PresentationChartLineIcon,
   },
   {
-    name: 'Education Websites',
+    name: 'Educational Content',
     description: 'Customized educational websites to enhance learning.',
     href: '#',
     icon: ComputerDesktopIcon,

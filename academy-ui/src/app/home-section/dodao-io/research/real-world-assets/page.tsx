@@ -1,11 +1,11 @@
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import TidBitsHubMdx from './tidbitshub.mdx';
+import RealWorldAssets from './real-world-assets.mdx';
 
 export default async function RiskAnalysisPage() {
   return (
     <PageWrapper>
       <div className="markdown-body w-full">
-        <TidBitsHubMdx />
+        <RealWorldAssets />
       </div>
     </PageWrapper>
   );

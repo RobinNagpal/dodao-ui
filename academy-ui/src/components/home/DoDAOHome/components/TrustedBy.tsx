@@ -7,6 +7,9 @@ import Near from '@/images/DAO/Near.png';
 import Uniswap from '@/images/DAO/Uniswap.png';
 import Optimism from '@/images/DAO/Optimism.png';
 import Arbitrum from '@/images/DAO/Arbitrum.png';
+import Alchemix from '@/images/DAO/Alchemix.png';
+import Fuel from '@/images/DAO/Fuel.jpg';
+import Safe from '@/images/DAO/Safe.png';
 
 export function TrustedBy() {
   return (
@@ -21,18 +24,39 @@ export function TrustedBy() {
           <Image className="col-span-2 col-start-2 object-contain sm:col-start-auto lg:col-span-1" src={AAVE} alt="AAVE" width={130} height={150} />
           <Image className="col-span-2 col-start-2 object-contain sm:col-start-auto lg:col-span-1" src={Uniswap} alt="Uniswap" width={150} height={150} />
           <Image
-            className="col-span-2 col-start-2 object-contain sm:col-start-auto lg:col-span-1 lg:col-start-3"
+            className="col-span-2 col-start-2 object-contain sm:col-start-auto lg:col-span-1 lg:col-start-2"
             src={Arbitrum}
             alt="Arbitrum"
             width={200}
             height={150}
           />
           <Image
-            className="col-span-2 col-start-2 object-contain sm:col-start-auto lg:col-span-1 lg:col-start-4"
+            className="col-span-2 col-start-2 object-contain sm:col-start-auto lg:col-span-1 lg:col-start-3"
             src={Optimism}
             alt="Optimism"
             width={150}
             height={150}
+          />
+          <Image
+            className="col-span-2 col-start-2 object-contain sm:col-start-auto lg:col-span-1 lg:col-start-4"
+            src={Alchemix}
+            alt="Alchemix"
+            width={150}
+            height={150}
+          />
+          <Image
+            className="col-span-2 col-start-2 object-contain sm:col-start-auto lg:col-span-1 lg:col-start-5"
+            src={Safe}
+            alt="Safe Wallet"
+            width={130}
+            height={150}
+          />
+          <Image
+            className="col-span-2 col-start-2 object-contain sm:col-start-auto lg:col-span-1 lg:col-start-6"
+            src={Fuel}
+            alt="Fuel Blockchain"
+            width={150}
+            height={100}
           />
         </div>
       </div>
