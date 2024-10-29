@@ -45,3 +45,5 @@
 8. **Accordion Elements Not Showing in Selector**  
    - When attempting to select an element inside an accordion, the selector doesn’t display the expanded accordion contents most of the time.
 
+9. **Iframe Replacement not working properly**
+   - Since we are replacing the iframe with srcdoc, there are certain iframes where srcdoc is an empty string, we need to fetch the html from the src url in that case.
