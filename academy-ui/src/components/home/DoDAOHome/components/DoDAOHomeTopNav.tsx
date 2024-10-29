@@ -82,7 +82,7 @@ const educationAreas = [
     icon: PresentationChartLineIcon,
   },
   {
-    name: 'Education Websites',
+    name: 'Educational Content',
     description: 'Customized educational websites to enhance learning.',
     href: '#',
     icon: ComputerDesktopIcon,
