@@ -1,4 +1,4 @@
-import { ClickableDemoHtmlCaptureDto } from "@/types/html-captures/ClickableDemoHtmlCaptureDto";
+import { ClickableDemoHtmlCaptureDto } from '@/types/html-captures/ClickableDemoHtmlCaptureDto';
 
 export interface CreateClickableDemoHtmlCaptureRequest {
   input: {

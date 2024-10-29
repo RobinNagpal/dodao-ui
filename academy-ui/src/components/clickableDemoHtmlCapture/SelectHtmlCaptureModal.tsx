@@ -37,12 +37,12 @@ export default function SelectHtmlCaptureModal(props: SelectHtmlCaptureModalProp
   const { showNotification } = useNotificationContext();
 
   const [selectedHtmlCaptureId, setSelectedHtmlCaptureId] = useState<string | null>(null);
-    const [deleteItemModalState, setDeleteItemModalState] = React.useState<DeleteItemModalState>({
-      isVisible: false,
-      itemId: null,
-      itemType: null,
-      deleting: false,
-    });
+  const [deleteItemModalState, setDeleteItemModalState] = React.useState<DeleteItemModalState>({
+    isVisible: false,
+    itemId: null,
+    itemType: null,
+    deleting: false,
+  });
 
   useEffect(() => {
     async function fetchData() {
@@ -54,19 +54,19 @@ export default function SelectHtmlCaptureModal(props: SelectHtmlCaptureModalProp
     fetchData();
   }, [demoId]);
 
-    const { deleteData } = useDeleteData<
-      void,
-      {
-        itemId: string;
-        itemType: ClickableDemoHtmlCaptureDto;
-      }
-    >(
-      {},
-      {
-        successMessage: 'Item Archived Successfully',
-        errorMessage: 'Failed to archive the item. Please try again.',
-      }
-    );
+  const { deleteData } = useDeleteData<
+    void,
+    {
+      itemId: string;
+      itemType: ClickableDemoHtmlCaptureDto;
+    }
+  >(
+    {},
+    {
+      successMessage: 'Item Archived Successfully',
+      errorMessage: 'Failed to archive the item. Please try again.',
+    }
+  );
 
   const availableHtmlCaptures = htmlCapturesResponse || [];
 

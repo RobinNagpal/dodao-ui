@@ -30,10 +30,7 @@ async function postHandler(req: NextRequest, { params }: { params: { spaceId: st
   return NextResponse.json(capture, { status: 200 });
 }
 
-async function deleteHandler(
-  req: NextRequest,
-  { params }: { params: { spaceId: string; } }
-): Promise<NextResponse<ClickableDemoHtmlCaptureDto>> {
+async function deleteHandler(req: NextRequest, { params }: { params: { spaceId: string } }): Promise<NextResponse<ClickableDemoHtmlCaptureDto>> {
   const args: DeleteClickableDemoHtmlCaptureRequest = await req.json();
 
   await validateSuperAdmin(req);
@@ -51,6 +48,5 @@ async function deleteHandler(
 }
 
 export const DELETE = withErrorHandlingV1<ClickableDemoHtmlCaptureDto>(deleteHandler);
-
 
 export const POST = withErrorHandlingV1<ClickableDemoHtmlCaptureDto>(postHandler);
