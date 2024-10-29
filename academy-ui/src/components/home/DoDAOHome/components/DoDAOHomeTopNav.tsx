@@ -34,7 +34,7 @@ const products = [
     icon: AcademicCapIcon,
   },
   {
-    name: 'Decentralized Reviews',
+    name: 'Decentralized Solution and Reviews',
     description: 'Ensure transparency and security in customer feedback.',
     href: '#',
     icon: FingerPrintIcon,
