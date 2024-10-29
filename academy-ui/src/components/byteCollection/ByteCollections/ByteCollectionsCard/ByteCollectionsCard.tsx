@@ -13,6 +13,7 @@ import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/Delete
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
+import { useDeleteData } from '@dodao/web-core/ui/hooks/useFetchUtils';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import PlayCircleIcon from '@heroicons/react/24/outline/PlayCircleIcon';
 import { useRouter } from 'next/navigation';
@@ -84,6 +85,20 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
         return !item.short.archive;
     }
   });
+
+  const { deleteData } = useDeleteData<
+    void,
+    {
+      itemId: string;
+      itemType: ByteCollectionItemType;
+    }
+  >(
+    {},
+    {
+      successMessage: 'Item Archived Successfully',
+      errorMessage: 'Failed to archive the item. Please try again.',
+    }
+  );
 
   async function fetchData(shortId: string) {
     const response = await fetch(`${getBaseUrl()}/api/short-videos/${shortId}?spaceId=${space.id}`, {
@@ -269,54 +284,12 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
               return;
             }
 
-            setDeleteItemModalState({
-              ...deleteItemModalState,
-              deleting: true,
-            });
-
             const deleteRequest: DeleteByteItemRequest = {
               itemId: deleteItemModalState.itemId,
               itemType: deleteItemModalState.itemType,
             };
-            const response = await fetch(`${getBaseUrl()}/api/${space.id}/byte-collections/${byteCollection.id}/byte-items`, {
-              method: 'DELETE',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(deleteRequest),
-            });
-
-            if (response.ok) {
-              const result = await response.json();
-
-              const message =
-                deleteItemModalState.itemType === ByteCollectionItemType.Byte
-                  ? 'Byte Archived Successfully'
-                  : deleteItemModalState.itemType === ByteCollectionItemType.ClickableDemo
-                  ? 'Clickable Demo Archived Successfully'
-                  : deleteItemModalState.itemType === ByteCollectionItemType.ShortVideo
-                  ? 'Short Video Archived Successfully'
-                  : 'Item Archived Successfully';
-
-              setDeleteItemModalState({
-                ...deleteItemModalState,
-                deleting: false,
-              });
-
-              closeItemDeleteModal();
-              showNotification({ message, type: 'success' });
-              const timestamp = new Date().getTime();
-              router.push(`/?update=${timestamp}`);
-            } else {
-              setDeleteItemModalState({
-                ...deleteItemModalState,
-                deleting: false,
-              });
-
-              closeItemDeleteModal();
-
-              return showNotification({ message: 'Failed to archive the item. Please try again.', type: 'error' });
-            }
+            await deleteData(`${getBaseUrl()}/api/${space.id}/byte-collections/${byteCollection.id}/byte-items`, deleteRequest);
+            closeItemDeleteModal();
           }}
         />
       )}

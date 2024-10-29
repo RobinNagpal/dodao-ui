@@ -5,9 +5,9 @@ import { ConsolidatedByteRating, SpaceWithIntegrationsFragment } from '@/graphql
 import { ConsolidatedByteRatingDto } from '@/types/bytes/ConsolidatedByteRatingDto';
 import { Grid2Cols } from '@dodao/web-core/components/core/grids/Grid2Cols';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import { useFetchUtils } from '@dodao/web-core/ui/hooks/useFetchUtils';
+import { useFetchData } from '@dodao/web-core/ui/hooks/useFetchUtils';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Cell, Legend, Pie, PieChart, Tooltip } from 'recharts';
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28'];
@@ -50,24 +50,14 @@ function ConsolidatedRatings(props: { consolidatedRatings: ConsolidatedByteRatin
 }
 
 export default function ConsolidatedByteRatings(props: { space: SpaceWithIntegrationsFragment }) {
-  const [consolidatedRatings, setConsolidatedRatings] = React.useState<ConsolidatedByteRatingDto>();
-  const { fetchData } = useFetchUtils();
-  useEffect(() => {
-    async function fetchRatings() {
-      const response = await fetchData<ConsolidatedByteRatingDto>(
-        `${getBaseUrl()}/api/${props.space.id}/consolidated-byte-rating`,
-        'Failed to fetch consolidated ratings for space'
-      );
-      setConsolidatedRatings(response);
-    }
-    fetchRatings();
-  }, [props.space.id]);
-
-  const positiveRatingDistribution = consolidatedRatings?.positiveRatingDistribution;
-
-  const ratingDistributions = positiveRatingDistribution && [
-    { name: 'UX', value: +positiveRatingDistribution.ux?.toFixed(2) },
-    { name: 'Content', value: +positiveRatingDistribution.content?.toFixed(2) },
+  const { data: consolidatedRatings } = useFetchData<ConsolidatedByteRatingDto>(
+    `${getBaseUrl()}/api/${props.space.id}/consolidated-byte-rating`,
+    {},
+    'Failed to fetch consolidated ratings for space'
+  );
+  const ratingDistributions = consolidatedRatings?.positiveRatingDistribution && [
+    { name: 'UX', value: +consolidatedRatings?.positiveRatingDistribution.ux?.toFixed(2) },
+    { name: 'Content', value: +consolidatedRatings?.positiveRatingDistribution.content?.toFixed(2) },
   ];
   return (
     <PageWrapper>

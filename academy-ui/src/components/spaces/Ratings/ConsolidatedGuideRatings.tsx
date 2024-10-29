@@ -5,7 +5,7 @@ import { ConsolidatedGuideRating, RatingDistribution, SpaceWithIntegrationsFragm
 import { ConsolidatedGuideRatingDto } from '@/types/bytes/ConsolidatedGuideRatingDto';
 import { Grid2Cols } from '@dodao/web-core/components/core/grids/Grid2Cols';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import { useFetchUtils } from '@dodao/web-core/ui/hooks/useFetchUtils';
+import { useFetchData } from '@dodao/web-core/ui/hooks/useFetchUtils';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import React from 'react';
 import { Cell, Legend, Pie, PieChart, Tooltip } from 'recharts';
@@ -50,27 +50,16 @@ function ConsolidatedRatings(props: { consolidatedRatings: ConsolidatedGuideRati
 }
 
 export default function ConsolidatedGuideRatings(props: { space: SpaceWithIntegrationsFragment }) {
-  const [consolidatedRatings, setConsolidatedRatings] = React.useState<ConsolidatedGuideRatingDto | undefined>();
-  const { fetchData } = useFetchUtils();
-  React.useEffect(() => {
-    async function fetchConsolidatedRatings() {
-      const response = await fetchData<ConsolidatedGuideRatingDto>(
-        `${getBaseUrl()}/api/${props.space.id}/consolidated-guide-rating`,
-        'Failed to fetch consolidated ratings for guides'
-      );
-      if (response) {
-        setConsolidatedRatings(response);
-      }
-    }
-    fetchConsolidatedRatings();
-  }, [props.space.id]);
+  const { data: consolidatedRatings } = useFetchData<ConsolidatedGuideRatingDto>(
+    `${getBaseUrl()}/api/${props.space.id}/consolidated-guide-rating`,
+    {},
+    'Failed to fetch consolidated ratings for guides'
+  );
 
-  const positiveRatingDistribution = consolidatedRatings?.positiveRatingDistribution;
-
-  const ratingDistributions = positiveRatingDistribution && [
-    { name: 'UX', value: +positiveRatingDistribution.ux.toFixed(2) },
-    { name: 'Content', value: +positiveRatingDistribution.content.toFixed(2) },
-    ...[{ name: 'Questions', value: +(positiveRatingDistribution as RatingDistribution).questions.toFixed(2) }],
+  const ratingDistributions = consolidatedRatings?.positiveRatingDistribution && [
+    { name: 'UX', value: +consolidatedRatings?.positiveRatingDistribution.ux.toFixed(2) },
+    { name: 'Content', value: +consolidatedRatings?.positiveRatingDistribution.content.toFixed(2) },
+    ...[{ name: 'Questions', value: +(consolidatedRatings?.positiveRatingDistribution as RatingDistribution).questions.toFixed(2) }],
   ];
   return (
     <PageWrapper>

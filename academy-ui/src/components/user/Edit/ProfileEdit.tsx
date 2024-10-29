@@ -1,24 +1,22 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import WebCoreProfileEdit from '@dodao/web-core/components/profile/WebCoreProfileEdit';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
-import { User } from '@dodao/web-core/types/auth/User';
-import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
+import WebCoreProfileEdit from '@dodao/web-core/components/profile/WebCoreProfileEdit';
 import { Session } from '@dodao/web-core/types/auth/Session';
+import { User } from '@dodao/web-core/types/auth/User';
+import { useFetchData } from '@dodao/web-core/ui/hooks/useFetchUtils';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { useFetchUtils } from '@dodao/web-core/ui/hooks/useFetchUtils';
+import { useSession } from 'next-auth/react';
+import React, { useEffect, useState } from 'react';
 
 interface ProfileEditProps {
   space: SpaceWithIntegrationsFragment;
 }
 
 function ProfileEdit({ space }: ProfileEditProps) {
-  const { fetchData, putData } = useFetchUtils();
+  const { putData } = useFetchUtils();
   const { data: session } = useSession() as { data: Session | null };
   const [upserting, setUpserting] = useState(false);
-  const router = useRouter();
   const defaultUserFields = {
     id: '',
     name: '',
@@ -32,13 +30,23 @@ function ProfileEdit({ space }: ProfileEditProps) {
     username: '',
   };
   const [user, setUser] = useState<User>(defaultUserFields);
+  const { data, reFetchData } = useFetchData<User>(
+    `${getBaseUrl()}/api/${space.id}/queries/users/by-username`,
+    {
+      skipInitialFetch: true,
+    },
+    'Error while fetching user'
+  );
 
+  const fetchUser = async () => {
+    if (session) {
+      const user = await reFetchData();
+      if (user) {
+        setUser(user);
+      }
+    }
+  };
   useEffect(() => {
-    const fetchUser = async () => {
-      const userData = await fetchData<User>(`${getBaseUrl()}/api/${space.id}/queries/users/by-username`, 'Error while fetching user');
-      setUser(userData || defaultUserFields);
-    };
-
     if (session) {
       fetchUser();
     } else {

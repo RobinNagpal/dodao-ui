@@ -3,8 +3,8 @@
 import WebCoreProfileEdit from '@dodao/web-core/components/profile/WebCoreProfileEdit';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { User } from '@dodao/web-core/types/auth/User';
+import { useFetchData } from '@dodao/web-core/ui/hooks/useFetchUtils';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { useFetchUtils } from '@dodao/web-core/ui/hooks/useFetchUtils';
 import { BaseSpace } from '@prisma/client';
 import { useSession } from 'next-auth/react';
 import React, { useEffect, useState } from 'react';
@@ -30,13 +30,24 @@ function ProfileEdit({ space }: ProfileEditProps) {
     username: '',
   };
   const [user, setUser] = useState<User>(initialState);
+  const { reFetchData } = useFetchData<User>(
+    `${getBaseUrl()}/api/${space.id}/queries/users/by-username`,
+    {
+      skipInitialFetch: true,
+    },
+    'Error while fetching user'
+  );
+
+  const fetchUser = async () => {
+    if (session) {
+      const user = await reFetchData();
+      if (user) {
+        setUser(user);
+      }
+    }
+  };
 
   useEffect(() => {
-    const fetchUser = async () => {
-      const userData = await fetchData<User>(`${getBaseUrl()}/api/queries/users/by-username?username=${session?.username}`, 'Error while fetching user');
-      setUser(userData || initialState);
-    };
-
     if (session) {
       fetchUser();
     } else {
