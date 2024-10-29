@@ -187,10 +187,20 @@
 } */
 
 .dodao-target-element {
-  border: 3px solid var(--primary-color, #007bff) !important;
-  border-radius: 5px !important;
   position: relative;
-  z-index: 999999999999999;
+}
+
+.dodao-target-element::after {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  bottom: -1px;
+  right: -1px;
+  border: 3px solid var(--primary-color, #007bff);
+  border-radius: 5px;
+  pointer-events: none; /* Ensure the pseudo-element doesn't interfere with interactions */
+  z-index: 9999; /* Place it above the element content */
 }
 
 .dodao-up-down-buttons {
