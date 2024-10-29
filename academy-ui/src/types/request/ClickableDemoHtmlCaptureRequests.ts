@@ -11,6 +11,5 @@ export interface CreateClickableDemoHtmlCaptureRequest {
 }
 
 export interface DeleteClickableDemoHtmlCaptureRequest {
-  itemId: string;
-  itemType: ClickableDemoHtmlCaptureDto;
+  captureId: string;
 }

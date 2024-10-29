@@ -38,7 +38,7 @@ async function deleteHandler(req: NextRequest, { params }: { params: { spaceId: 
   // Archive the ClickableDemoHtmlCapture record from the database
   const capture = await prisma.clickableDemoHtmlCaptures.update({
     where: {
-      id: args.itemId,
+      id: args.captureId,
     },
     data: {
       archive: true,

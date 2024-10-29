@@ -23,10 +23,9 @@ interface SelectHtmlCaptureModalProps {
   spaceId: string;
 }
 
-interface DeleteItemModalState {
+interface DeleteCaptureModalState {
   isVisible: boolean;
-  itemId: string | null;
-  itemType: ClickableDemoHtmlCaptureDto | null;
+  captureId: string | null;
   deleting: boolean;
 }
 
@@ -37,10 +36,9 @@ export default function SelectHtmlCaptureModal(props: SelectHtmlCaptureModalProp
   const { showNotification } = useNotificationContext();
 
   const [selectedHtmlCaptureId, setSelectedHtmlCaptureId] = useState<string | null>(null);
-  const [deleteItemModalState, setDeleteItemModalState] = React.useState<DeleteItemModalState>({
+  const [deleteCaptureModalState, setDeleteCaptureModalState] = React.useState<DeleteCaptureModalState>({
     isVisible: false,
-    itemId: null,
-    itemType: null,
+    captureId: null,
     deleting: false,
   });
 
@@ -57,25 +55,24 @@ export default function SelectHtmlCaptureModal(props: SelectHtmlCaptureModalProp
   const { deleteData } = useDeleteData<
     void,
     {
-      itemId: string;
-      itemType: ClickableDemoHtmlCaptureDto;
+      captureId: string;
     }
   >(
     {},
     {
-      successMessage: 'Item Archived Successfully',
-      errorMessage: 'Failed to archive the item. Please try again.',
+      successMessage: 'Capture Archived Successfully',
+      errorMessage: 'Failed to archive the capture. Please try again.',
     }
   );
 
   const availableHtmlCaptures = htmlCapturesResponse || [];
 
-  function openItemDeleteModal(itemId: string, itemType: ClickableDemoHtmlCaptureDto | null) {
-    setDeleteItemModalState({ isVisible: true, itemId: itemId, itemType: itemType, deleting: false });
+  function openCaptureDeleteModal(captureId: string) {
+    setDeleteCaptureModalState({ isVisible: true, captureId: captureId, deleting: false });
   }
 
-  function closeItemDeleteModal() {
-    setDeleteItemModalState({ isVisible: false, itemId: null, itemType: null, deleting: false });
+  function closeCaptureDeleteModal() {
+    setDeleteCaptureModalState({ isVisible: false, captureId: null, deleting: false });
   }
 
   const handleCardClick = (htmlCapture: ClickableDemoHtmlCaptureDto) => {
@@ -106,7 +103,7 @@ export default function SelectHtmlCaptureModal(props: SelectHtmlCaptureModalProp
                   </div>
                   {/* Delete Icon */}
                   <div className="absolute top-2 right-2">
-                    <button onClick={(e) => openItemDeleteModal(htmlCapture.id, htmlCapture)} className="text-gray-500 hover:text-red-600" aria-label="Delete">
+                    <button onClick={(e) => openCaptureDeleteModal(htmlCapture.id)} className="text-gray-500 hover:text-red-600" aria-label="Delete">
                       <TrashIcon height={24} width={24} />
                     </button>
                   </div>
@@ -140,26 +137,25 @@ export default function SelectHtmlCaptureModal(props: SelectHtmlCaptureModalProp
         </div>
       )}
 
-      {deleteItemModalState.isVisible && (
+      {deleteCaptureModalState.isVisible && (
         <DeleteConfirmationModal
           title={`Delete HTML Capture`}
-          open={deleteItemModalState.isVisible}
-          onClose={closeItemDeleteModal}
-          deleting={deleteItemModalState.deleting}
+          open={deleteCaptureModalState.isVisible}
+          onClose={closeCaptureDeleteModal}
+          deleting={deleteCaptureModalState.deleting}
           onDelete={async () => {
-            if (!deleteItemModalState.itemId || !deleteItemModalState.itemType) {
+            if (!deleteCaptureModalState.captureId) {
               showNotification({ message: 'Some Error occurred', type: 'error' });
-              closeItemDeleteModal();
+              closeCaptureDeleteModal();
               return;
             }
 
             const deleteRequest: DeleteClickableDemoHtmlCaptureRequest = {
-              itemId: deleteItemModalState.itemId,
-              itemType: deleteItemModalState.itemType,
+              captureId: deleteCaptureModalState.captureId,
             };
             await deleteData(`${getBaseUrl()}/api/${spaceId}/html-captures`, deleteRequest);
-            setHtmlCapturesResponse(htmlCapturesResponse.filter((item) => item.id !== deleteItemModalState.itemId));
-            closeItemDeleteModal();
+            setHtmlCapturesResponse(htmlCapturesResponse.filter((capture) => capture.id !== deleteCaptureModalState.captureId));
+            closeCaptureDeleteModal();
           }}
         />
       )}
