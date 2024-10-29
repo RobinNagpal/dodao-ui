@@ -5,7 +5,6 @@ import { ClickableDemoHtmlCaptureDto } from '@/types/html-captures/ClickableDemo
 import { CreateClickableDemoHtmlCaptureRequest, DeleteClickableDemoHtmlCaptureRequest } from '@/types/request/ClickableDemoHtmlCaptureRequests';
 import { NextRequest, NextResponse } from 'next/server';
 import { createNewEntityId } from '@dodao/web-core/utils/space/createNewEntityId';
-import { validateSuperAdmin } from '@/app/api/helpers/space/isSuperAdmin';
 
 async function postHandler(req: NextRequest, { params }: { params: { spaceId: string } }): Promise<NextResponse<ClickableDemoHtmlCaptureDto>> {
   const args: CreateClickableDemoHtmlCaptureRequest = await req.json();
@@ -30,23 +29,31 @@ async function postHandler(req: NextRequest, { params }: { params: { spaceId: st
   return NextResponse.json(capture, { status: 200 });
 }
 
-async function deleteHandler(req: NextRequest, { params }: { params: { spaceId: string } }): Promise<NextResponse<ClickableDemoHtmlCaptureDto>> {
-  const args: DeleteClickableDemoHtmlCaptureRequest = await req.json();
+async function getHandler(
+  req: NextRequest,
+  { params }: { params: { spaceId: string } }
+): Promise<NextResponse<ClickableDemoHtmlCaptureDto[]> | NextResponse<{ body: string }>> {
+  const { spaceId } = params;
+  const { searchParams } = new URL(req.url);
+  const clickableDemoId = searchParams.get('clickableDemoId');
+  if (!clickableDemoId) {
+    return NextResponse.json({ body: 'No clickableDemoId provided' }, { status: 400 });
+  }
+  const apiKey = req.headers.get('X-API-KEY');
+  if (apiKey) {
+    await validateApiKey(apiKey, spaceId);
+  }
 
-  await validateSuperAdmin(req);
-
-  // Archive the ClickableDemoHtmlCapture record from the database
-  const capture = await prisma.clickableDemoHtmlCaptures.update({
+  // Fetch the ClickableDemoHtmlCapture record based on demoId
+  const capture = await prisma.clickableDemoHtmlCaptures.findMany({
     where: {
-      id: args.captureId,
-    },
-    data: {
-      archive: true,
+      clickableDemoId: clickableDemoId,
+      archive: false,
     },
   });
-  return NextResponse.json(capture, { status: 200 });
+  return NextResponse.json(capture as ClickableDemoHtmlCaptureDto[], { status: 200 });
 }
 
-export const DELETE = withErrorHandlingV1<ClickableDemoHtmlCaptureDto>(deleteHandler);
+export const GET = withErrorHandlingV1<ClickableDemoHtmlCaptureDto[] | { body: string }>(getHandler);
 
 export const POST = withErrorHandlingV1<ClickableDemoHtmlCaptureDto>(postHandler);

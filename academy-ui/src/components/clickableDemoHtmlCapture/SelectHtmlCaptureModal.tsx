@@ -13,7 +13,6 @@ import LoadingIcon from '@dodao/web-core/components/core/loaders/LoadingIcon';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/useFetchUtils';
 import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { DeleteClickableDemoHtmlCaptureRequest } from '@/types/request/ClickableDemoHtmlCaptureRequests';
 
 interface SelectHtmlCaptureModalProps {
   showSelectHtmlCaptureModal: boolean;
@@ -45,7 +44,9 @@ export default function SelectHtmlCaptureModal(props: SelectHtmlCaptureModalProp
   useEffect(() => {
     async function fetchData() {
       setLoading(true);
-      const response = await axios.get(`${getBaseUrl()}/api/${spaceId}/html-captures/${demoId}`);
+      const response = await axios.get(`${getBaseUrl()}/api/${spaceId}/html-captures`, {
+        params: { clickableDemoId: demoId },
+      });
       setHtmlCapturesResponse(response.data);
       setLoading(false);
     }
@@ -54,9 +55,7 @@ export default function SelectHtmlCaptureModal(props: SelectHtmlCaptureModalProp
 
   const { deleteData } = useDeleteData<
     void,
-    {
-      captureId: string;
-    }
+    {}
   >(
     {},
     {
@@ -149,11 +148,7 @@ export default function SelectHtmlCaptureModal(props: SelectHtmlCaptureModalProp
               closeCaptureDeleteModal();
               return;
             }
-
-            const deleteRequest: DeleteClickableDemoHtmlCaptureRequest = {
-              captureId: deleteCaptureModalState.captureId,
-            };
-            await deleteData(`${getBaseUrl()}/api/${spaceId}/html-captures`, deleteRequest);
+            await deleteData(`${getBaseUrl()}/api/${spaceId}/html-captures/${deleteCaptureModalState.captureId}`, {});
             setHtmlCapturesResponse(htmlCapturesResponse.filter((capture) => capture.id !== deleteCaptureModalState.captureId));
             closeCaptureDeleteModal();
           }}
