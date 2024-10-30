@@ -5,7 +5,7 @@
     "strictNullChecks": true,
     "sourceMap": false,
     "module": "commonjs",
-    "outDir": "./",
+    "outDir": "./prod-files/",
     "rootDir": "./src",
     "strict": true,
     "noImplicitAny": true,
