@@ -25,7 +25,7 @@ export default function ImageUploadSection({
   imageType,
   objectId,
   spaceId,
-  allowedFileTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/svg+xml', 'image/webp', 'text/html'],
+  allowedFileTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/svg+xml', 'image/webp', 'text/html', 'image/gif'],
   error,
   helpText,
   loading,
