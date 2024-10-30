@@ -48,3 +48,6 @@ dodao-lambdas/node_modules
 dodao-lambdas/.env
 dodao-lambdas/yarn-error.log
 dodao-lambdas/.serverless
+
+
+clickable-demos/node_modules

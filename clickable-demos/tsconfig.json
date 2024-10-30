@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "es2016",
+    "preserveConstEnums": true,
+    "strictNullChecks": true,
+    "sourceMap": false,
+    "module": "commonjs",
+    "outDir": "./",
+    "rootDir": "./src",
+    "strict": true,
+    "noImplicitAny": true,
+    "types": ["html2canvas", "tippy.js"],
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules"]
+}
