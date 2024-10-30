@@ -3,6 +3,7 @@ import { getSpaceBasedOnHostHeader } from '@/utils/space/getSpaceServerSide';
 import axios from 'axios';
 import { NextRequest, NextResponse } from 'next/server';
 import { SitemapStream, streamToPromise } from 'sitemap';
+import { PredefinedSpaces } from '@dodao/web-core/src/utils/constants/constants';
 
 interface SiteMapUrl {
   url: string;
@@ -63,6 +64,37 @@ async function getCourseUrlsForAcademy(space: SpaceWithIntegrationsFragment): Pr
   return urls;
 }
 
+async function getDoDAOSiteMapUrls(): Promise<SiteMapUrl[]> {
+  const urls: SiteMapUrl[] = [
+    { url: '/', changefreq: 'weekly' },
+    { url: '/home-section/dodao-io/products/tidbitshub', changefreq: 'weekly' },
+    { url: '/home-section/dodao-io/products/academysites', changefreq: 'weekly' },
+    { url: '/home-section/dodao-io/products/decen-reviews', changefreq: 'weekly' },
+    { url: '/home-section/dodao-io/services/smart-contract', changefreq: 'weekly' },
+    { url: '/home-section/dodao-io/services/blockchain-tooling', changefreq: 'weekly' },
+    { url: '/home-section/dodao-io/services/defi-analytics', changefreq: 'weekly' },
+    { url: '/home-section/dodao-io/services/risk-analysis', changefreq: 'weekly' },
+    { url: '/home-section/dodao-io/services/ai-llm-dev', changefreq: 'weekly' },
+    { url: '/home-section/dodao-io/education/blockchain-bootcamp', changefreq: 'weekly' },
+    { url: '/home-section/dodao-io/education/educational-content', changefreq: 'weekly' },
+    { url: '/home-section/dodao-io/research/real-world-assets', changefreq: 'weekly' },
+    { url: '/home-section/dodao-io/research/decen-sol-reviews', changefreq: 'weekly' },
+  ];
+
+  return urls;
+}
+
+async function writeDoDAOSiteMapToStream(space: SpaceWithIntegrationsFragment, host: string, smStream: SitemapStream) {
+  if (space.id === PredefinedSpaces.DODAO_HOME) {
+    const dodaoUrls = await getDoDAOSiteMapUrls();
+    for (const url of dodaoUrls) {
+      smStream.write(url);
+    }
+  } else {
+    return [];
+  }
+}
+
 async function writeUrlsToStream(space: SpaceWithIntegrationsFragment, host: string, smStream: SitemapStream) {
   const guideUrls = await getGuideUrlsForAcademy(space.id);
 
@@ -88,6 +120,7 @@ async function GET(req: NextRequest, res: NextResponse) {
 
   // pipe your entries or directly write them.
   // await writeUrlsToStream(space!, host, smStream);
+  await writeDoDAOSiteMapToStream(space, host, smStream);
 
   smStream.end();
   // cache the response
