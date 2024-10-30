@@ -1,11 +1,12 @@
 import { ClickableDemoStepInput, Space, UpsertClickableDemoInput } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
 import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
-import { TooltipPlacement } from '@/types/clickableDemos/ClickableDemoDto';
+import { ClickableDemoDto, TooltipPlacement } from '@/types/clickableDemos/ClickableDemoDto';
 import { TidbitCollectionTags } from '@/utils/api/fetchTags';
 import { emptyClickableDemo } from '@/utils/clickableDemos/EmptyClickableDemo';
 import { ClickableDemoErrors, ClickableDemoStepError } from '@dodao/web-core/types/errors/clickableDemoErrors';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
+import { useFetchUtils } from '@dodao/web-core/ui/hooks/useFetchUtils';
 import { createNewEntityId } from '@dodao/web-core/utils/space/createNewEntityId';
 import orderBy from 'lodash/orderBy';
 import { useRouter } from 'next/navigation';
@@ -41,6 +42,8 @@ export function useEditClickableDemo(space: Space, demoId: string | null) {
   const [clickableDemoLoaded, setClickableDemoLoaded] = useState<boolean>(false);
   const [clickableDemoCreating, setClickableDemoCreating] = useState<boolean>(false);
 
+  const { postData } = useFetchUtils();
+
   async function initialize() {
     if (demoId) {
       const response = await fetch(`/api/${space.id}/clickable-demos/${demoId}`, {
@@ -63,6 +66,7 @@ export function useEditClickableDemo(space: Space, demoId: string | null) {
       setClickableDemoLoaded(true);
     }
   }
+
   function updateStep(step: ClickableDemoStepInput) {
     setClickableDemo((prevClickableDemo) => ({
       ...prevClickableDemo,
@@ -191,44 +195,30 @@ export function useEditClickableDemo(space: Space, demoId: string | null) {
 
   async function handleSubmit(byteCollection: ByteCollectionSummary) {
     setClickableDemoCreating(true);
-    try {
-      const valid = validateClickableDemo(clickableDemo);
-      setClickableDemo((prevClickableDemo) => ({ ...prevClickableDemo }));
-      if (!valid) {
-        showNotification({ type: 'error', message: $t('notify.validationFailed') });
 
-        setClickableDemoCreating(false);
-        return;
-      }
-      const input = getClickableDemoInput();
-      const response = await fetch(`/api/${space.id}/clickable-demos/${input.id}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          spaceId: space.id,
-          input,
-          byteCollectionId: byteCollection.id,
-        }),
-      });
+    const valid = validateClickableDemo(clickableDemo);
+    setClickableDemo((prevClickableDemo) => ({ ...prevClickableDemo }));
+    if (!valid) {
+      showNotification({ type: 'error', message: $t('notify.validationFailed') });
 
-      const payload = await response.json();
-      if (response.ok) {
-        showNotification({
-          type: 'success',
-          message: 'Clickable Demo saved successfully!',
-        });
-
-        router.push(`/clickable-demos/view/${payload.id}`);
-      } else {
-        console.error(response.body);
-        showNotification({ type: 'error', message: $t('notify.somethingWentWrong') });
-      }
-    } catch (e) {
-      console.error(e);
-      showNotification({ type: 'error', message: $t('notify.somethingWentWrong') });
+      setClickableDemoCreating(false);
+      return;
     }
+    const input = getClickableDemoInput();
+    const response = await postData<ClickableDemoDto, any>(
+      `/api/${space.id}/clickable-demos/${input.id}`,
+      {
+        spaceId: space.id,
+        input,
+        byteCollectionId: byteCollection.id,
+      },
+      {
+        successMessage: 'Clickable Demo saved successfully!',
+        errorMessage: 'Something went wrong while saving the Clickable Demo',
+        redirectPath: `/clickable-demos/view/${input.id}`,
+      }
+    );
+
     setClickableDemoCreating(false);
   }
 
