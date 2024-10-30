@@ -3,6 +3,7 @@ import { getSpaceBasedOnHostHeader } from '@/utils/space/getSpaceServerSide';
 import axios from 'axios';
 import { NextRequest, NextResponse } from 'next/server';
 import { SitemapStream, streamToPromise } from 'sitemap';
+import { PredefinedSpaces } from '@dodao/web-core/src/utils/constants/constants';
 
 interface SiteMapUrl {
   url: string;
@@ -64,30 +65,31 @@ async function getCourseUrlsForAcademy(space: SpaceWithIntegrationsFragment): Pr
 }
 
 async function getDoDAOSiteMapUrls(spaceId: string): Promise<SiteMapUrl[]> {
-  if (spaceId !== 'dodao-academy') {
-    return [];
+  if (spaceId === PredefinedSpaces.DODAO_HOME) {
+    const urls: SiteMapUrl[] = [
+      { url: '/', changefreq: 'weekly' },
+      { url: '/home-section/dodao-io/products/tidbitshub', changefreq: 'weekly' },
+      { url: '/home-section/dodao-io/products/academysites', changefreq: 'weekly' },
+      { url: '/home-section/dodao-io/products/decen-reviews', changefreq: 'weekly' },
+      { url: '/home-section/dodao-io/services/smart-contract', changefreq: 'weekly' },
+      { url: '/home-section/dodao-io/services/blockchain-tooling', changefreq: 'weekly' },
+      { url: '/home-section/dodao-io/services/defi-analytics', changefreq: 'weekly' },
+      { url: '/home-section/dodao-io/services/risk-analysis', changefreq: 'weekly' },
+      { url: '/home-section/dodao-io/services/ai-llm-dev', changefreq: 'weekly' },
+      { url: '/home-section/dodao-io/education/blockchain-bootcamp', changefreq: 'weekly' },
+      { url: '/home-section/dodao-io/education/educational-content', changefreq: 'weekly' },
+      { url: '/home-section/dodao-io/research/real-world-assets', changefreq: 'weekly' },
+      { url: '/home-section/dodao-io/research/decen-sol-reviews', changefreq: 'weekly' },
+    ];
+
+    return urls;
   }
 
-  const urls: SiteMapUrl[] = [
-    { url: '/home-section/dodao-io/products/tidbitshub', changefreq: 'weekly' },
-    { url: '/home-section/dodao-io/products/academysites', changefreq: 'weekly' },
-    { url: '/home-section/dodao-io/products/decen-reviews', changefreq: 'weekly' },
-    { url: '/home-section/dodao-io/services/smart-contract', changefreq: 'weekly' },
-    { url: '/home-section/dodao-io/services/blockchain-tooling', changefreq: 'weekly' },
-    { url: '/home-section/dodao-io/services/defi-analytics', changefreq: 'weekly' },
-    { url: '/home-section/dodao-io/services/risk-analysis', changefreq: 'weekly' },
-    { url: '/home-section/dodao-io/services/ai-llm-dev', changefreq: 'weekly' },
-    { url: '/home-section/dodao-io/education/blockchain-bootcamp', changefreq: 'weekly' },
-    { url: '/home-section/dodao-io/education/educational-content', changefreq: 'weekly' },
-    { url: '/home-section/dodao-io/research/real-world-assets', changefreq: 'weekly' },
-    { url: '/home-section/dodao-io/research/decen-sol-reviews', changefreq: 'weekly' },
-  ];
-
-  return urls;
+  return [];
 }
 
 async function writeDoDAOSiteMapToStream(space: SpaceWithIntegrationsFragment, host: string, smStream: SitemapStream) {
-  if (space.id === 'dodao-academy') {
+  if (space.id === PredefinedSpaces.DODAO_HOME) {
     const dodaoUrls = await getDoDAOSiteMapUrls(space.id);
     for (const url of dodaoUrls) {
       smStream.write(url);
