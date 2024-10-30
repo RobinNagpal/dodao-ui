@@ -24,19 +24,19 @@ const products = [
   {
     name: 'Tidbits Hub',
     description: 'Empower your customers with quick educational tidbits.',
-    href: '#',
+    href: '/home-section/dodao-io/products/tidbitshub',
     icon: ClipboardIcon,
   },
   {
     name: 'Academy Sites',
     description: 'Build immersive educational platforms for your audience.',
-    href: '#',
+    href: '/home-section/dodao-io/products/academysites',
     icon: AcademicCapIcon,
   },
   {
     name: 'Decentralized Solution and Reviews',
     description: 'Ensure transparency and security in customer feedback.',
-    href: '#',
+    href: '/home-section/dodao-io/products/decen-reviews',
     icon: FingerPrintIcon,
   },
 ];
@@ -45,31 +45,31 @@ const services = [
   {
     name: 'SmartContract Development',
     description: 'Craft secure and efficient decentralized applications.',
-    href: '#',
+    href: '/home-section/dodao-io/services/smart-contract',
     icon: CodeBracketIcon,
   },
   {
     name: 'Blockchain Tooling',
     description: 'Enhance your development process with cutting-edge tools.',
-    href: '#',
+    href: '/home-section/dodao-io/services/blockchain-tooling',
     icon: WrenchScrewdriverIcon,
   },
   {
     name: 'DeFi Analytics',
     description: 'Gain deep insights with advanced DeFi analytics.',
-    href: '#',
+    href: '/home-section/dodao-io/services/defi-analytics',
     icon: ChartBarIcon,
   },
   {
     name: 'DeFi Risk Analysis',
     description: 'Manage and mitigate risks in your DeFi operations.',
-    href: '#',
+    href: '/home-section/dodao-io/services/risk-analysis',
     icon: ShieldExclamationIcon,
   },
   {
     name: 'AI/LLM Development & Solutions',
     description: 'Integrate AI to optimize and innovate your solutions.',
-    href: '#',
+    href: '/home-section/dodao-io/services/ai-llm-dev',
     icon: CpuChipIcon,
   },
 ];
@@ -78,13 +78,13 @@ const educationAreas = [
   {
     name: 'Blockchain Bootcamp',
     description: 'Comprehensive training from basics to advanced blockchain technologies.',
-    href: '#',
+    href: '/home-section/dodao-io/education/blockchain-bootcamp',
     icon: PresentationChartLineIcon,
   },
   {
     name: 'Educational Content',
     description: 'Customized educational websites to enhance learning.',
-    href: '#',
+    href: '/home-section/dodao-io/education/educational-content',
     icon: ComputerDesktopIcon,
   },
 ];
@@ -93,13 +93,13 @@ const researchAreas = [
   {
     name: 'Real World Assets',
     description: 'Explore the integration of real-world assets on blockchain.',
-    href: '#',
+    href: '/home-section/dodao-io/research/real-world-assets',
     icon: BuildingOfficeIcon,
   },
   {
     name: 'Decentralized Solution & Reviews',
     description: 'Researching innovative decentralized solutions for improved system transparency.',
-    href: '#',
+    href: '/home-section/dodao-io/research/decen-sol-reviews',
     icon: GlobeAltIcon,
   },
 ];
@@ -114,7 +114,7 @@ export default function DoDAOHomeTopNav() {
           <a href="#" className="-m-1.5 p-1.5">
             <span className="sr-only">Your Company</span>
             <img
-              alt=""
+              alt="DoDAO logo"
               src="https://d31h13bdjwgzxs.cloudfront.net/academy/tidbitshub/Space/tidbitshub/1711618687477_dodao_logo%2Btext%20rectangle.png"
               className="h-8 w-auto"
             />
