@@ -67,6 +67,7 @@ function showTooltip(event: MessageEvent) {
 
     event.source?.postMessage({ backButton: true }, { targetOrigin: event.origin });
   });
+
   if (currentTooltipIndex === 0) backButton.style.visibility = 'hidden';
   buttonsRow.appendChild(backButton);
 
@@ -83,6 +84,7 @@ function showTooltip(event: MessageEvent) {
     const messageType = isLastTooltip ? 'completeButton' : 'nextButton';
     event.source?.postMessage({ [messageType]: true }, { targetOrigin: event.origin });
   });
+
   adjustButtonStyles([backButton, nextButton], isLastTooltip);
   buttonsRow.appendChild(nextButton);
 
@@ -112,6 +114,7 @@ function showTooltip(event: MessageEvent) {
     hideOnClick: false,
     trigger: 'manual',
     theme: 'material',
+    zIndex: 999999999999999,
   });
 }
 
@@ -401,12 +404,10 @@ function elementSelector(event: MessageEvent) {
       if (selectedElement && finalXPath) {
         const dataUrl = await captureScreenshotWithOverlay(selectedElement);
 
-        if (event.source && typeof event.source.postMessage === 'function') {
-          event.source.postMessage(
-            { xpath: finalXPath, elementImgUrl: dataUrl },
-            { targetOrigin: event.origin } // Use options object instead of just `event.origin`
-          );
-        }
+        event.source?.postMessage(
+          { xpath: finalXPath, elementImgUrl: dataUrl },
+          { targetOrigin: event.origin } // Use options object instead of just `event.origin`
+        );
       }
     });
 

@@ -76,6 +76,7 @@ function showTooltip(event) {
         hideOnClick: false,
         trigger: 'manual',
         theme: 'material',
+        zIndex: 999999999999999,
     });
 }
 function createTooltipButton(text, className, onClick) {
@@ -326,12 +327,11 @@ function elementSelector(event) {
         button.disabled = true;
         button.style.opacity = '0.5';
         button.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
+            var _a;
             if (selectedElement && finalXPath) {
                 const dataUrl = yield captureScreenshotWithOverlay(selectedElement);
-                if (event.source && typeof event.source.postMessage === 'function') {
-                    event.source.postMessage({ xpath: finalXPath, elementImgUrl: dataUrl }, { targetOrigin: event.origin } // Use options object instead of just `event.origin`
-                    );
-                }
+                (_a = event.source) === null || _a === void 0 ? void 0 : _a.postMessage({ xpath: finalXPath, elementImgUrl: dataUrl }, { targetOrigin: event.origin } // Use options object instead of just `event.origin`
+                );
             }
         }));
         button.addEventListener('mouseover', () => {

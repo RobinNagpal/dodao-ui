@@ -1,0 +1,256 @@
+// Variables
+$bg-color: var(--bg-color, #555);
+$text-color: var(--text-color, #fff);
+$primary-color: var(--primary-color, #007bff);
+$border-color-light: rgb(244, 244, 244);
+$border-color-dark: rgb(224, 224, 224);
+$border-radius: 0.7rem;
+$z-index-top: 9999999999;
+$z-index-higher: 999999999999999;
+$z-index-arrow: -1;
+
+// Styles
+.tippy-box {
+  z-index: $z-index-top;
+
+  &[data-theme~='material'] {
+    border-radius: $border-radius;
+    border: 1px solid $border-color-light;
+    box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.2);
+    z-index: 99999;
+    background: $bg-color;
+    background-color: $bg-color;
+    opacity: 1;
+
+    &[data-placement^='bottom'] > .tippy-arrow {
+      &::before {
+        border-bottom-color: $bg-color;
+      }
+
+      &::after {
+        content: '';
+        position: absolute;
+        border-color: transparent;
+        border-style: solid;
+        border-width: 9px;
+        border-bottom-color: $border-color-dark;
+        top: -18px;
+        left: -1px;
+        z-index: $z-index-arrow;
+      }
+    }
+
+    &[data-placement^='top'] > .tippy-arrow {
+      &::before {
+        border-top-color: $bg-color;
+      }
+
+      &::after {
+        content: '';
+        position: absolute;
+        border-color: transparent;
+        border-style: solid;
+        border-width: 9px;
+        border-bottom-color: $border-color-dark;
+        top: 16px;
+        left: -1px;
+        rotate: 180deg;
+        z-index: $z-index-arrow;
+      }
+    }
+
+    &[data-placement^='right'] > .tippy-arrow {
+      &::before {
+        border-right-color: $bg-color;
+      }
+
+      &::after {
+        content: '';
+        position: absolute;
+        border-color: transparent;
+        border-style: solid;
+        border-width: 9px;
+        border-right-color: $border-color-dark;
+        left: -18px;
+        top: -1px;
+        z-index: $z-index-arrow;
+      }
+    }
+
+    &[data-placement^='left'] > .tippy-arrow {
+      &::before {
+        border-left-color: $bg-color;
+      }
+
+      &::after {
+        content: '';
+        position: absolute;
+        border-color: transparent;
+        border-style: solid;
+        border-width: 9px;
+        border-left-color: $border-color-dark;
+        right: -18px;
+        top: -1px;
+        z-index: $z-index-arrow;
+      }
+    }
+  }
+}
+
+#tippy-1 {
+  z-index: $z-index-top !important;
+}
+
+.tippy-content {
+  background: $bg-color;
+  background-color: $bg-color;
+  -webkit-text-fill-color: $text-color !important;
+  color: $text-color !important;
+  opacity: 1;
+  border-radius: $border-radius;
+}
+
+.reset-styles {
+  all: initial; // Reset all styles
+  font-family: inherit;
+  font-weight: inherit;
+  font-size: inherit;
+}
+
+.dodao-text-element {
+  display: inline !important;
+  margin: 0 auto !important;
+  font-size: 1rem !important;
+  font-family: sans-serif !important;
+  font-weight: 300 !important;
+  text-align: center !important;
+  color: $text-color !important;
+}
+
+.dodao-tooltip-content {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-around !important;
+  min-height: 130px !important;
+  min-width: 300px !important;
+  padding: 3px 12px !important;
+}
+
+.dodao-tooltip-button {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: $primary-color;
+  -webkit-text-fill-color: $text-color !important;
+  color: $text-color !important;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  margin-top: auto;
+}
+
+.dodao-indices {
+  color: #84868a;
+  margin: auto;
+  font-size: small;
+  font-weight: 300;
+}
+
+.dodao-horizontal-line {
+  border: 1px solid !important;
+  -webkit-text-fill-color: #808080 !important;
+  margin: 2px 0;
+}
+
+.dodao-buttons-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.dodao-back-button {
+  align-self: flex-start;
+  margin-right: auto;
+}
+
+.dodao-next-button {
+  align-self: flex-end;
+  margin-left: auto;
+}
+
+.dodao-select-element-button,
+.dodao-clear-selection-button {
+  position: fixed;
+  font-size: 24px;
+  bottom: 10px;
+  padding: 10px 20px;
+  background-color: $primary-color !important;
+  -webkit-text-fill-color: $text-color !important;
+  color: $text-color !important;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: $z-index-higher;
+  transition: all 0.3s ease;
+}
+
+.dodao-select-element-button {
+  right: 135px;
+}
+
+.dodao-clear-selection-button {
+  right: 260px;
+}
+
+// .dodao-hovered-element {
+//   border: 0.1px solid $primary-color !important;
+//   border-radius: 5px;
+// }
+
+.dodao-target-element {
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    bottom: -1px;
+    right: -1px;
+    border: 3px solid $primary-color;
+    border-radius: 5px;
+    pointer-events: none; // Ensure the pseudo-element doesn't interfere with interactions
+    z-index: 9999; // Place it above the element content
+  }
+}
+
+.dodao-up-down-buttons {
+  display: flex;
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  justify-content: center;
+  gap: 10px;
+  border: none !important;
+  z-index: $z-index-higher;
+
+  button {
+    font-size: 24px;
+    background-color: $primary-color !important;
+    -webkit-text-fill-color: $text-color !important;
+    color: $text-color !important;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 10px 20px;
+    transition: background-color 0.3s, transform 0.2s;
+
+    &:hover {
+      transform: translateY(-2px); // Slightly raise the button
+    }
+
+    &:active {
+      transform: translateY(1px); // Push the button down when clicked
+    }
+  }
+}

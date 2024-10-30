@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "compile": "tsc",
-    "build:scss": "sass src/styles/clickableDemoTooltipStyles.scss clickableDemoTooltipStyles.css",
+    "build:scss": "sass --no-source-map src/styles/clickableDemoTooltipStyles.scss prod-files/clickableDemoTooltipStyles.css",
     "build": "tsc && npm run build:scss",
     "lint": "next lint",
     "lint-fix": "eslint . --ext .ts,.js,.tsx --fix",
