@@ -1,5 +1,4 @@
 import { withErrorHandlingV1 } from '@/app/api/helpers/middlewares/withErrorHandling';
-import { DeleteClickableDemoHtmlCaptureRequest } from '@/types/request/ClickableDemoHtmlCaptureRequests';
 import { prisma } from '@/prisma';
 import { ClickableDemoHtmlCaptureDto } from '@/types/html-captures/ClickableDemoHtmlCaptureDto';
 import { validateSuperAdmin } from '@/app/api/helpers/space/isSuperAdmin';
@@ -9,7 +8,6 @@ async function deleteHandler(
   req: NextRequest,
   { params }: { params: { spaceId: string; captureId: string } }
 ): Promise<NextResponse<ClickableDemoHtmlCaptureDto>> {
-  const args: DeleteClickableDemoHtmlCaptureRequest = await req.json();
 
   await validateSuperAdmin(req);
 

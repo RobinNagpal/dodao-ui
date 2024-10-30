@@ -25,6 +25,7 @@ interface SelectHtmlCaptureModalProps {
 interface DeleteCaptureModalState {
   isVisible: boolean;
   captureId: string | null;
+  captureName: string | null;
   deleting: boolean;
 }
 
@@ -38,6 +39,7 @@ export default function SelectHtmlCaptureModal(props: SelectHtmlCaptureModalProp
   const [deleteCaptureModalState, setDeleteCaptureModalState] = React.useState<DeleteCaptureModalState>({
     isVisible: false,
     captureId: null,
+    captureName: null,
     deleting: false,
   });
 
@@ -63,12 +65,12 @@ export default function SelectHtmlCaptureModal(props: SelectHtmlCaptureModalProp
 
   const availableHtmlCaptures = htmlCapturesResponse || [];
 
-  function openCaptureDeleteModal(captureId: string) {
-    setDeleteCaptureModalState({ isVisible: true, captureId: captureId, deleting: false });
+  function openCaptureDeleteModal(captureId: string, captureName: string) {
+    setDeleteCaptureModalState({ isVisible: true, captureId: captureId, captureName, deleting: false });
   }
 
   function closeCaptureDeleteModal() {
-    setDeleteCaptureModalState({ isVisible: false, captureId: null, deleting: false });
+    setDeleteCaptureModalState({ isVisible: false, captureId: null, captureName: null, deleting: false });
   }
 
   const handleCardClick = (htmlCapture: ClickableDemoHtmlCaptureDto) => {
@@ -99,7 +101,7 @@ export default function SelectHtmlCaptureModal(props: SelectHtmlCaptureModalProp
                   </div>
                   {/* Delete Icon */}
                   <div className="absolute top-2 right-2">
-                    <button onClick={(e) => openCaptureDeleteModal(htmlCapture.id)} className="text-gray-500 hover:text-red-600" aria-label="Delete">
+                    <button onClick={(e) => openCaptureDeleteModal(htmlCapture.id, htmlCapture.fileName)} className="text-gray-500 hover:text-red-600" aria-label="Delete">
                       <TrashIcon height={24} width={24} />
                     </button>
                   </div>
@@ -135,7 +137,7 @@ export default function SelectHtmlCaptureModal(props: SelectHtmlCaptureModalProp
 
       {deleteCaptureModalState.isVisible && (
         <DeleteConfirmationModal
-          title={`Delete HTML Capture`}
+          title={`Delete Capture - ${deleteCaptureModalState.captureName}`}
           open={deleteCaptureModalState.isVisible}
           onClose={closeCaptureDeleteModal}
           deleting={deleteCaptureModalState.deleting}
@@ -145,7 +147,7 @@ export default function SelectHtmlCaptureModal(props: SelectHtmlCaptureModalProp
               closeCaptureDeleteModal();
               return;
             }
-            await deleteData(`${getBaseUrl()}/api/${spaceId}/html-captures/${deleteCaptureModalState.captureId}`, {});
+            await deleteData(`${getBaseUrl()}/api/${spaceId}/html-captures/${deleteCaptureModalState.captureId}`);
             setHtmlCapturesResponse(htmlCapturesResponse.filter((capture) => capture.id !== deleteCaptureModalState.captureId));
             closeCaptureDeleteModal();
           }}

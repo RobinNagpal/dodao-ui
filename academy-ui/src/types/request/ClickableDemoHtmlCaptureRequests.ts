@@ -9,7 +9,3 @@ export interface CreateClickableDemoHtmlCaptureRequest {
     archive: boolean;
   };
 }
-
-export interface DeleteClickableDemoHtmlCaptureRequest {
-  captureId: string;
-}

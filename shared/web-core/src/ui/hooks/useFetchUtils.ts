@@ -92,7 +92,7 @@ export const useFetchData = <T>(url: string, options: RequestInit & { skipInitia
 };
 
 export interface UseDeleteDataResponse<T, R> {
-  deleteData: (url: string, request: R) => Promise<T | undefined>;
+  deleteData: (url: string, request?: R) => Promise<T | undefined>;
   loading: boolean;
   data: T | undefined;
   error: string | undefined;
@@ -110,7 +110,7 @@ export const useDeleteData = <T, R>(options: RequestInit = {}, updateOptions: Up
   const memoizedOptions = useDeepCompareMemoize(options);
 
   const deleteData = useCallback(
-    async (url: string, body: R): Promise<T | undefined> => {
+    async (url: string, body?: R): Promise<T | undefined> => {
       setLoading(true);
       setError(undefined);
       setData(undefined); // Reset data before new request

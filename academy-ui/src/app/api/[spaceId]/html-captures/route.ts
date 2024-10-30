@@ -2,7 +2,7 @@ import { withErrorHandlingV1 } from '@/app/api/helpers/middlewares/withErrorHand
 import { validateApiKey } from '@/app/api/helpers/validateApiKey';
 import { prisma } from '@/prisma';
 import { ClickableDemoHtmlCaptureDto } from '@/types/html-captures/ClickableDemoHtmlCaptureDto';
-import { CreateClickableDemoHtmlCaptureRequest, DeleteClickableDemoHtmlCaptureRequest } from '@/types/request/ClickableDemoHtmlCaptureRequests';
+import { CreateClickableDemoHtmlCaptureRequest } from '@/types/request/ClickableDemoHtmlCaptureRequests';
 import { NextRequest, NextResponse } from 'next/server';
 import { createNewEntityId } from '@dodao/web-core/utils/space/createNewEntityId';
 
@@ -32,12 +32,13 @@ async function postHandler(req: NextRequest, { params }: { params: { spaceId: st
 async function getHandler(
   req: NextRequest,
   { params }: { params: { spaceId: string } }
-): Promise<NextResponse<ClickableDemoHtmlCaptureDto[]> | NextResponse<{ body: string }>> {
+): Promise<NextResponse<ClickableDemoHtmlCaptureDto[]>> {
   const { spaceId } = params;
   const { searchParams } = new URL(req.url);
   const clickableDemoId = searchParams.get('clickableDemoId');
+  // Throw an error if clickableDemoId is not found
   if (!clickableDemoId) {
-    return NextResponse.json({ body: 'No clickableDemoId provided' }, { status: 400 });
+    throw new Error('clickableDemoId is required but was not provided');
   }
   const apiKey = req.headers.get('X-API-KEY');
   if (apiKey) {
@@ -54,6 +55,6 @@ async function getHandler(
   return NextResponse.json(capture as ClickableDemoHtmlCaptureDto[], { status: 200 });
 }
 
-export const GET = withErrorHandlingV1<ClickableDemoHtmlCaptureDto[] | { body: string }>(getHandler);
+export const GET = withErrorHandlingV1<ClickableDemoHtmlCaptureDto[]>(getHandler);
 
 export const POST = withErrorHandlingV1<ClickableDemoHtmlCaptureDto>(postHandler);
