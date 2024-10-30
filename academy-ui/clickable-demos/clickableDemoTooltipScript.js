@@ -78,6 +78,7 @@ function showTooltip(event) {
     hideOnClick: false,
     trigger: 'manual',
     theme: 'material',
+    zIndex: 999999999999999,
   });
 }
 
