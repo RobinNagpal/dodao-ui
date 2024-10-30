@@ -8,7 +8,6 @@ async function deleteHandler(
   req: NextRequest,
   { params }: { params: { spaceId: string; captureId: string } }
 ): Promise<NextResponse<ClickableDemoHtmlCaptureDto>> {
-
   await validateSuperAdmin(req);
 
   // Archive the ClickableDemoHtmlCapture record from the database

@@ -29,10 +29,7 @@ async function postHandler(req: NextRequest, { params }: { params: { spaceId: st
   return NextResponse.json(capture, { status: 200 });
 }
 
-async function getHandler(
-  req: NextRequest,
-  { params }: { params: { spaceId: string } }
-): Promise<NextResponse<ClickableDemoHtmlCaptureDto[]>> {
+async function getHandler(req: NextRequest, { params }: { params: { spaceId: string } }): Promise<NextResponse<ClickableDemoHtmlCaptureDto[]>> {
   const { spaceId } = params;
   const { searchParams } = new URL(req.url);
   const clickableDemoId = searchParams.get('clickableDemoId');

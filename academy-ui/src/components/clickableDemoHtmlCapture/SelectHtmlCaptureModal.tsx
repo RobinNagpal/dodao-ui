@@ -101,7 +101,11 @@ export default function SelectHtmlCaptureModal(props: SelectHtmlCaptureModalProp
                   </div>
                   {/* Delete Icon */}
                   <div className="absolute top-2 right-2">
-                    <button onClick={(e) => openCaptureDeleteModal(htmlCapture.id, htmlCapture.fileName)} className="text-gray-500 hover:text-red-600" aria-label="Delete">
+                    <button
+                      onClick={(e) => openCaptureDeleteModal(htmlCapture.id, htmlCapture.fileName)}
+                      className="text-gray-500 hover:text-red-600"
+                      aria-label="Delete"
+                    >
                       <TrashIcon height={24} width={24} />
                     </button>
                   </div>

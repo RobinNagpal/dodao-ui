@@ -1,5 +1,3 @@
-import { ClickableDemoHtmlCaptureDto } from '@/types/html-captures/ClickableDemoHtmlCaptureDto';
-
 export interface CreateClickableDemoHtmlCaptureRequest {
   input: {
     clickableDemoId: string;
