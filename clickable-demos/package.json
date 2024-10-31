@@ -9,7 +9,8 @@
     "lint": "next lint",
     "lint-fix": "eslint . --ext .ts,.js,.tsx --fix",
     "prettier-fix": "prettier --config .prettierrc 'src/**/*.{js,ts,tsx,json}' --write",
-    "prettier-check": "prettier --check 'src/**/*.{js,ts,tsx,json}'"
+    "prettier-check": "prettier --check 'src/**/*.{js,ts,tsx,json}'",
+    "test-server": "http-server -o --cors -d sample-demos -p 9090"
   },
   "dependencies": {
     "@dodao/web-core": "1.0.0",
@@ -22,6 +23,7 @@
     "eslint": "8.39.0",
     "eslint-config-next": "13.3.4",
     "html2canvas": "^1.4.1",
+    "http-server": "^14.1.1",
     "postcss": "8.4.35",
     "prettier": "^2.8.8",
     "tippy.js": "^6.3.7",

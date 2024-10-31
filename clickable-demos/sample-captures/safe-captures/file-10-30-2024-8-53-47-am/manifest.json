@@ -1,0 +1,17 @@
+{
+  "originalUrl": "https://app.safe.global/home?safe=matic:0x2b7F7EdF3e35393693E37ad7F410C6C8CCb14477",
+  "title": "Safe{Wallet} – Dashboard",
+  "archiveTime": "2024-10-30T12:53:50.869Z",
+  "indexFilename": "index.html",
+  "resources": {
+    "fonts/0.woff2": "https://app.safe.global/fonts/DMSansRegular.woff2",
+    "fonts/1.woff2": "https://app.safe.global/fonts/DMSans700.woff2",
+    "stylesheet_3.css": "https://app.safe.global/fonts/fonts.css",
+    "stylesheet_4.css": "https://app.getbeamer.com/styles/beamer-embed.css?v=9",
+    "stylesheet_5.css": "https://app.safe.global/_next/static/css/942e49f1b49b6c1f.css",
+    "stylesheet_6.css": "https://app.safe.global/_next/static/css/a7087e2570c901c4.css",
+    "stylesheet_7.css": "https://app.safe.global/_next/static/css/d7243ed6c37f594d.css",
+    "images/3.ico": "https://app.safe.global/favicons/favicon.ico",
+    "images/4.png": "https://safe-transaction-assets.safe.global/chains/137/chain_logo.png"
+  }
+}

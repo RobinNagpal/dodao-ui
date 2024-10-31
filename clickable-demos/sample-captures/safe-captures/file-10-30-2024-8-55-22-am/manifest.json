@@ -1,0 +1,25 @@
+{
+  "originalUrl": "https://app.safe.global/home?safe=matic:0x2b7F7EdF3e35393693E37ad7F410C6C8CCb14477",
+  "title": "Safe{Wallet} – Dashboard",
+  "archiveTime": "2024-10-30T12:55:25.144Z",
+  "indexFilename": "index.html",
+  "resources": {
+    "fonts/0.woff2": "https://app.safe.global/fonts/DMSansRegular.woff2",
+    "fonts/1.woff2": "https://app.safe.global/fonts/DMSans700.woff2",
+    "stylesheet_3.css": "https://app.safe.global/fonts/fonts.css",
+    "stylesheet_4.css": "https://app.safe.global/_next/static/css/7d61aec3bc83a056.css",
+    "stylesheet_5.css": "https://app.safe.global/_next/static/css/911fc349ecb8f7c7.css",
+    "stylesheet_6.css": "https://app.getbeamer.com/styles/beamer-embed.css?v=9",
+    "stylesheet_7.css": "https://app.safe.global/_next/static/css/942e49f1b49b6c1f.css",
+    "stylesheet_8.css": "https://app.safe.global/_next/static/css/a7087e2570c901c4.css",
+    "stylesheet_9.css": "https://app.safe.global/_next/static/css/01fe0ffa3d5b7e32.css",
+    "stylesheet_10.css": "https://app.safe.global/_next/static/css/d7243ed6c37f594d.css",
+    "images/3.ico": "https://app.safe.global/favicons/favicon.ico",
+    "images/4.png": "https://safe-transaction-assets.safe.global/chains/137/chain_logo.png",
+    "images/7.png": "https://safe-transaction-assets.safe.global/safe_apps/36/icon.png",
+    "images/8.png": "https://safe-transaction-assets.safe.global/safe_apps/85/icon.png",
+    "images/6.png": "https://safe-transaction-assets.safe.global/safe_apps/88/icon.png",
+    "images/5.png": "https://safe-transaction-assets.safe.global/safe_apps/06b0ba7a-1ecb-46d5-97dc-7feab3f9165c/icon.png",
+    "images/9.png": "https://safe-transaction-assets.safe.global/safe_apps/162/icon.png"
+  }
+}
