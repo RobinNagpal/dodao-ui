@@ -5,4 +5,5 @@ export interface ClickableDemoHtmlCaptureDto {
   fileUrl: string;
   fileImageUrl: string;
   createdAt: Date;
+  archive: boolean | null;
 }

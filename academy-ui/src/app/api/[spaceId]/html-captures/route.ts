@@ -23,9 +23,35 @@ async function postHandler(req: NextRequest, { params }: { params: { spaceId: st
       fileUrl: args.input.fileUrl,
       fileImageUrl: args.input.fileImageUrl,
       createdAt: new Date(),
+      archive: false,
     },
   });
   return NextResponse.json(capture, { status: 200 });
 }
+
+async function getHandler(req: NextRequest, { params }: { params: { spaceId: string } }): Promise<NextResponse<ClickableDemoHtmlCaptureDto[]>> {
+  const { spaceId } = params;
+  const { searchParams } = new URL(req.url);
+  const clickableDemoId = searchParams.get('clickableDemoId');
+  // Throw an error if clickableDemoId is not found
+  if (!clickableDemoId) {
+    throw new Error('clickableDemoId is required but was not provided');
+  }
+  const apiKey = req.headers.get('X-API-KEY');
+  if (apiKey) {
+    await validateApiKey(apiKey, spaceId);
+  }
+
+  // Fetch the ClickableDemoHtmlCapture record based on demoId
+  const capture = await prisma.clickableDemoHtmlCaptures.findMany({
+    where: {
+      clickableDemoId: clickableDemoId,
+      archive: false,
+    },
+  });
+  return NextResponse.json(capture as ClickableDemoHtmlCaptureDto[], { status: 200 });
+}
+
+export const GET = withErrorHandlingV1<ClickableDemoHtmlCaptureDto[]>(getHandler);
 
 export const POST = withErrorHandlingV1<ClickableDemoHtmlCaptureDto>(postHandler);

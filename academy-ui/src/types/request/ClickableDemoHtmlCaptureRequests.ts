@@ -4,5 +4,6 @@ export interface CreateClickableDemoHtmlCaptureRequest {
     fileName: string;
     fileUrl: string;
     fileImageUrl: string;
+    archive: boolean;
   };
 }
