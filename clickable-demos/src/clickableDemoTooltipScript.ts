@@ -227,7 +227,7 @@ function elementSelector(event: MessageEvent) {
       width: '100%',
       height: `${scrollHeight}px`,
       pointerEvents: 'none',
-      zIndex: '999999999999999',
+      zIndex: '50000000',
     });
 
     const overlays = ['top', 'left', 'right', 'bottom'].map((position) => createOverlayPart(position, rect, scrollY, scrollHeight));

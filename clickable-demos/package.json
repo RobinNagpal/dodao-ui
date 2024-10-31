@@ -6,6 +6,7 @@
     "compile": "tsc",
     "build:scss": "sass --no-source-map src/styles/clickableDemoTooltipStyles.scss prod-files/clickableDemoTooltipStyles.css",
     "build": "tsc && npm run build:scss",
+    "dev": "tsc -w",
     "lint": "next lint",
     "lint-fix": "eslint . --ext .ts,.js,.tsx --fix",
     "prettier-fix": "prettier --config .prettierrc 'src/**/*.{js,ts,tsx,json}' --write",
