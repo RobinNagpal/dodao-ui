@@ -12,7 +12,7 @@ export interface ByteCollectionSummary {
   id: string;
   name: string;
   description: string;
-  status: string;
+  archive?: boolean | null;
   byteIds: Array<string>;
   priority: number;
   videoUrl?: string | null;
@@ -22,16 +22,15 @@ export interface ByteCollectionSummary {
   items: Array<ByteCollectionItem>;
 }
 
-export enum ByteCollectionStatus {
-  LIVE = 'LIVE',
-}
-
 export interface ByteCollectionDto {
   id: string;
+  spaceId: string;
+  createdAt: Date;
+  updatedAt: Date;
   name: string;
   description: string;
-  status: ByteCollectionStatus;
-  byteIds: Array<string>;
+  byteIds: string[];
   priority: number;
-  videoUrl?: string | null;
+  videoUrl: string | null;
+  archive: boolean | null;
 }

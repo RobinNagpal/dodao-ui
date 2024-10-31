@@ -32,7 +32,7 @@ export default function SpaceThemeDetails({ space }: SpaceDetailsProps) {
     id: 'b757246b-1b08-42ce-a8cb-a9ce19bc78b3',
     name: 'About DEX',
     description: 'This collection of Tidbits explains different exchange models and the benefits of AMM',
-    status: 'DRAFT',
+    archive: false,
     byteIds: ['centralized-vs-decentralized-exchange-uniswap', 'amm-benefits-uniswap'],
     priority: 50,
     bytes: [

@@ -1,6 +1,4 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
-import ChatHome from '@/chatbot/home/home';
-import { OpenAIModelID } from '@/chatbot/types/openai';
 import { SpaceTypes } from '@/types/space/SpaceDto';
 import { PredefinedSpaces } from '@dodao/web-core/src/utils/constants/constants';
 import DefaultHome from '@/components/home/DefaultHome/DefaultHome';
@@ -138,9 +136,6 @@ async function Home(props: { searchParams: { [key: string]: string | string[] | 
 
   const space = await getSpaceServerSide();
   const session = (await getServerSession(authOptions)) as Session;
-  if (host && (space?.botDomains || [])?.includes(host)) {
-    return <ChatHome defaultModelId={OpenAIModelID.GPT_3_5} serverSideApiKeyIsSet={true} serverSidePluginKeysSet={false} isChatbotSite={true} />;
-  }
 
   if (space?.type === SpaceTypes.TidbitsSite) {
     return await getTidbitsSiteHomepageContents(space, session);

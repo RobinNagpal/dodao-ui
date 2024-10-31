@@ -22,21 +22,11 @@ export default function ByteCollectionCardAdminDropdown({ byteCollection, space 
   const [showEditCollectionModal, setShowEditCollectionModal] = React.useState<boolean>(false);
   const router = useRouter();
 
-  function onClose() {
-    setShowEditCollectionModal(false);
-    router.refresh();
-  }
-
-  const getThreeDotItems = (byteCollection: ByteCollectionSummary) => {
-    if (byteCollection.hasOwnProperty('archived')) {
-      return [
-        { label: 'Edit', key: 'edit' },
-        { label: 'Edit Seo', key: 'editSeo' },
-        { label: 'Archive', key: 'archive' },
-      ];
-    }
-
-    return [{ label: 'Edit', key: 'edit' }];
+  const getThreeDotItems = () => {
+    return [
+      { label: 'Edit', key: 'edit' },
+      { label: 'Archive', key: 'archive' },
+    ];
   };
 
   const onArchivedStatusChange = async (archived: boolean) => {
@@ -54,7 +44,7 @@ export default function ByteCollectionCardAdminDropdown({ byteCollection, space 
   return (
     <>
       <PrivateEllipsisDropdown
-        items={getThreeDotItems(byteCollection)}
+        items={getThreeDotItems()}
         onSelect={async (key) => {
           if (key === 'edit') {
             setShowEditCollectionModal(true);

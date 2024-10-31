@@ -1,13 +1,9 @@
-import {
-  ByteCollection as ByteCollectionGraphql,
-  MutationUpsertByteCollectionCategoryArgs,
-  QueryByteCollectionCategoryWithByteCollectionsArgs,
-} from '@/graphql/generated/generated-types';
 import { getByteCollectionWithItem } from '@/app/api/helpers/byteCollection/byteCollectionHelper';
-import { prisma } from '@/prisma';
-import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
-import { checkEditSpacePermission, checkSpaceIdAndSpaceInEntityAreSame } from '@/app/api/helpers/space/checkEditSpacePermission';
 import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
+import { checkEditSpacePermission, checkSpaceIdAndSpaceInEntityAreSame } from '@/app/api/helpers/space/checkEditSpacePermission';
+import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
+import { MutationUpsertByteCollectionCategoryArgs, QueryByteCollectionCategoryWithByteCollectionsArgs } from '@/graphql/generated/generated-types';
+import { prisma } from '@/prisma';
 import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import { NextRequest, NextResponse } from 'next/server';
 
