@@ -19,8 +19,8 @@ export function Hero({ space }: { space: SpaceWithIntegrationsFragment | null })
                 The Tidbits Method
               </h1>
               <p className="mt-6 text-md xl:text-lg">
-                Break down the concepts into easily digestible information, guiding your customers to make empowered decisions. Equip your clients with
-                knowledge and watch their trust in your services grow! <br></br>
+                Turn complex concepts into easy-to-understand information. With Tidbits Hub, reduce your customers’ learning time from hours to minutes. Help
+                your customers learn quickly with bite-sized content, interactive clickable demos, and short videos. <br></br>
                 <br></br>
                 <span className="font-bold">Setup New Space</span> to create your own tidbits{' '}
                 <span className="ml-2">
