@@ -82,7 +82,7 @@ export function Education() {
                     <div key={item.name} className="text-center sm:flex sm:text-left lg:block lg:text-center">
                       <div className="sm:flex-shrink-0">
                         <div className="flow-root">
-                          <Image alt="" src={item.imageSrc} className="mx-auto h-40" width={220} height={150} />
+                          <Image alt="education services" src={item.imageSrc} className="mx-auto h-40" width={220} height={150} />
                         </div>
                       </div>
                       <div className="mt-3 sm:ml-3 sm:mt-0 lg:ml-0 lg:mt-3">
