@@ -45,3 +45,66 @@ run `yarn build` and it will generate the files in the `prod-files` directory
 Then you can run `make upload-clickable-demo-files-to-dev` or `make upload-clickable-demo-files-to-prod` to upload the files to the respective environments
 
 
+# Adding a New HTML Capture
+
+Follow these steps to add a new HTML capture:
+
+1. **Download the HTML Capture as a Zip File**:
+   - Copy the link of the hosted `index.html` file and paste it in your browser's address bar.
+   - Replace `unzipped-html` with `zipped-html` and remove everything after the last slash, including the slash itself, then add `.zip` at the end of the URL.
+   - **Example**: If the URL is:
+
+     ```
+     https://dodao-dev-public-assets.s3.us-east-1.amazonaws.com/unzipped-html-captures/alchemix/dev-demo-1-alchemix-ba33/etherscan/index.html
+     ```
+
+     It should become:
+
+     ```
+     https://dodao-dev-public-assets.s3.us-east-1.amazonaws.com/zipped-html-captures/alchemix/dev-demo-1-alchemix-ba33/etherscan.zip
+     ```
+
+   - Press `Enter` to download the zip file.
+
+2. **Save the Capture Screenshot**:
+   - Open the HTML capture from the modal.
+   - Right-click on the capture image and select `Save image as...` to download the image.
+
+3. **Unzip and Move Files**:
+   - Unzip the downloaded folder.
+   - Copy the entire unzipped folder to the following location:
+     ```
+     dodao-ui/clickable-demos/sample-captures/safe-captures
+     ```
+
+4. **Move the Screenshot**:
+   - Copy the saved image file to:
+     ```
+     dodao-ui/clickable-demos/sample-captures/safe-screenshots
+     ```
+
+5. **Update URLs in `index.html`**:
+   - Open the `index.html` file in the unzipped folder you just copied.
+   - Search for all instances of:
+     ```
+     https://dodao-dev-public-assets.s3.amazonaws.com/clickable-demos-prod-files
+     ```
+   - Replace them with:
+     ```
+     http://localhost:9090/prod-files
+     ```
+
+6. **Insert the Record into the Database**:
+   - Use the following SQL command to insert the record into the `clickable_demo_html_cpatures` table:
+
+     ```sql
+     insert into public.clickable_demo_html_cpatures
+     values (md5(random()::text),
+             'demo-id',                       -- Replace with your Demo ID
+             'file-name',                     -- Replace with your file name
+             'http://localhost:9090/sample-captures/safe-captures/etherscan/index.html',  -- Replace with your HTML file URL
+             'http://localhost:9090/sample-captures/safe-screenshots/etherscanImagepng.png',  -- Replace with your image URL
+             'YYYY-MM-DD HH:MM:SS');          -- Replace with the current date and time
+     ```
+
+   - **Note**: Replace `demo-id`, `file-name`, the URLs, and the timestamp accordingly.
