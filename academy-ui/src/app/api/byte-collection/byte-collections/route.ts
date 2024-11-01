@@ -13,8 +13,8 @@ async function getHandler(req: NextRequest) {
   const byteCollections = await prisma.byteCollection.findMany({
     where: {
       spaceId: spaceId,
-      status: {
-        not: 'DELETED',
+      archive: {
+        not: true,
       },
     },
     orderBy: {

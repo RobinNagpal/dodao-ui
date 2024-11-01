@@ -1,10 +1,10 @@
-import { checkEditSpacePermission, checkSpaceIdAndSpaceInEntityAreSame } from '@/app/api/helpers/space/checkEditSpacePermission';
-import { MutationDeleteClickableDemoArgs, ByteCollectionFragment, MutationUpsertClickableDemoArgs } from '@/graphql/generated/generated-types';
-import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
-import { NextRequest, NextResponse } from 'next/server';
 import { ByteCollectionItemType } from '@/app/api/helpers/byteCollection/byteCollectionItemType';
 import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
+import { checkEditSpacePermission, checkSpaceIdAndSpaceInEntityAreSame } from '@/app/api/helpers/space/checkEditSpacePermission';
+import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
+import { MutationDeleteClickableDemoArgs } from '@/graphql/generated/generated-types';
 import { prisma } from '@/prisma';
+import { NextRequest, NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
 
 async function getHandler(req: NextRequest, { params: { demoId } }: { params: { demoId: string } }) {

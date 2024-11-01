@@ -251,10 +251,10 @@ model ByteCollection {
   name        String                       @db.VarChar(255)
   description String
   byteIds     String[]                     @map("byte_ids") @db.VarChar(255)
-  status      String                       @db.VarChar(255)
   priority    Int                          @default(50) @map("priority")
   videoUrl    String?                      @map("video_url") @db.VarChar(1024)
   items       ByteCollectionItemMappings[]
+  archive     Boolean?                     @default(false)
 
   @@map("byte_collections")
 }

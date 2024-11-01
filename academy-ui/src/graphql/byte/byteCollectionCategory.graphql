@@ -18,9 +18,6 @@ fragment CategoryWithByteCollection on CategoryWithByteCollection {
   status
   priority
   archive
-  byteCollections {
-    ...ByteCollection
-  }
 }
 
 query ByteCollectionCategoryWithByteCollections($spaceId: String!, $categoryId: String!) {

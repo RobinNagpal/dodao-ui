@@ -115,19 +115,6 @@ type Byte {
   videoUrl: String
 }
 
-type ByteCollection {
-  byteIds: [String!]!
-  bytes: [ByteCollectionByte!]!
-  demos: [ByteCollectionDemo!]!
-  description: String!
-  id: ID!
-  name: String!
-  priority: Int!
-  shorts: [ByteCollectionShort!]!
-  status: String!
-  videoUrl: String
-}
-
 type ByteCollectionByte {
   byteId: String!
   content: String!
@@ -300,7 +287,6 @@ type ByteUserInput {
 
 type CategoryWithByteCollection {
   archive: Boolean!
-  byteCollections: [ByteCollection!]!
   creator: String!
   excerpt: String!
   id: String!
@@ -498,16 +484,6 @@ type CourseReadingQuestion {
 input CourseSubmissionInput {
   courseKey: String!
   uuid: String!
-}
-
-input CreateByteCollectionInput {
-  byteIds: [String!]!
-  description: String!
-  name: String!
-  priority: Int!
-  spaceId: String!
-  status: String!
-  videoUrl: String
 }
 
 type CreateCompletionResponseChoice {
@@ -1190,7 +1166,6 @@ type Mutation {
   authenticateWithUnstoppable(idToken: String!): JwtResponse!
   copyAllBytesFromGitToDatabase: Boolean!
   createArticleIndexingInfo(articleUrl: String!, spaceId: String!): ArticleIndexingInfo!
-  createByteCollection(input: CreateByteCollectionInput!): ByteCollection!
   createNewTidbitSpace(spaceInput: UpsertSpaceInput!): Space!
   createSignedUrl(input: CreateSignedUrlInput!, spaceId: String!): String!
   createSpace(spaceInput: UpsertSpaceInput!): Space!
@@ -1204,7 +1179,6 @@ type Mutation {
   ): WebsiteScrapingInfo!
   deleteAndPullCourseRepo(courseKey: String!, spaceId: String!): GitCourse!
   deleteByte(byteId: String!, spaceId: String!): Boolean!
-  deleteByteCollection(byteCollectionId: String!): Boolean!
   deleteByteCollectionCategory(categoryId: String!, spaceId: String!): ByteCollectionCategory!
   deleteChatbotCategory(id: String!, spaceId: String!): Boolean!
   deleteChatbotFAQ(id: String!, spaceId: String!): Boolean!
@@ -1256,7 +1230,6 @@ type Mutation {
   triggerNewDiscourseIndexRun(spaceId: String!): DiscourseIndexRun!
   triggerSiteScrapingRun(spaceId: String!, websiteScrapingInfoId: String!): SiteScrapingRun!
   updateAuthSettings(input: AuthSettingsInput!, spaceId: String!): Space!
-  updateByteCollection(input: UpdateByteCollectionInput!): ByteCollection!
   updateCourseBasicInfo(courseBasicInfo: CourseBasicInfoInput!, spaceId: String!): GitCourse!
   updateGuideSettings(input: GuideSettingsInput!, spaceId: String!): Space!
   updateIndexWithAllDiscordPosts(spaceId: String!): Boolean!
@@ -1366,10 +1339,8 @@ type Query {
   articleIndexingInfo(articleIndexingInfoId: String!, spaceId: String!): ArticleIndexingInfo!
   articleIndexingInfos(spaceId: String!): [ArticleIndexingInfo!]!
   byte(byteId: String!, includeDraft: Boolean, spaceId: String!): Byte!
-  byteCollection(byteCollectionId: String!, spaceId: String!): ByteCollection!
   byteCollectionCategories(spaceId: String!): [ByteCollectionCategory!]!
   byteCollectionCategoryWithByteCollections(categoryId: String!, spaceId: String!): CategoryWithByteCollection!
-  byteCollections(spaceId: String!): [ByteCollection!]!
   byteRating(ratingUuid: String!, spaceId: String): [ByteRating!]!
   byteRatings(byteId: String!, spaceId: String!): [ByteRating!]!
   byteSocialShare(byteId: String!, spaceId: String!): ByteSocialShare
@@ -1776,17 +1747,6 @@ input TopicConfigInput {
 input TopicQuestionChoiceInput {
   content: String!
   key: String!
-}
-
-input UpdateByteCollectionInput {
-  byteCollectionId: String!
-  byteIds: [String!]!
-  description: String!
-  name: String!
-  priority: Int!
-  spaceId: String!
-  status: String!
-  videoUrl: String
 }
 
 input UpdateTopicBasicInfoInput {

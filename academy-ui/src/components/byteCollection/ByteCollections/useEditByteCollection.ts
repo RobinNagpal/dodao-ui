@@ -1,5 +1,5 @@
-import { ByteCollection, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
-import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
+import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { ByteCollectionDto, ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import { CreateByteCollectionRequest } from '@/types/request/ByteCollectionRequests';
 import { SpaceTypes } from '@/types/space/SpaceDto';
 import { useFetchUtils } from '@dodao/web-core/ui/hooks/useFetchUtils';
@@ -43,7 +43,7 @@ export function useEditByteCollection({ space, byteCollection: byteCollectionPro
     name: byteCollectionProp?.name || '',
     description: byteCollectionProp?.description || '',
     byteIds: byteCollectionProp?.bytes?.map((byte) => byte.byteId) || [],
-    status: byteCollectionProp?.status || 'DRAFT',
+    archive: byteCollectionProp?.archive,
     priority: byteCollectionProp?.priority || 50,
     videoUrl: byteCollectionProp?.videoUrl || '',
   });
@@ -57,7 +57,7 @@ export function useEditByteCollection({ space, byteCollection: byteCollectionPro
       name: byteCollectionProp?.name || '',
       description: byteCollectionProp?.description || '',
       byteIds: byteCollectionProp?.bytes?.map((byte) => byte.byteId) || [],
-      status: byteCollectionProp?.status || 'DRAFT',
+      archive: byteCollectionProp?.archive,
       priority: byteCollectionProp?.priority || 50,
       videoUrl: byteCollectionProp?.videoUrl || '',
     });
@@ -88,7 +88,7 @@ export function useEditByteCollection({ space, byteCollection: byteCollectionPro
     const redirectPath = space.type === SpaceTypes.AcademySite ? '/tidbit-collections' : '/';
     try {
       if (byteCollectionProp?.id) {
-        await putData<ByteCollection, CreateByteCollectionRequest>(
+        await putData<ByteCollectionDto, CreateByteCollectionRequest>(
           `${getBaseUrl()}/api/${space.id}/byte-collections/${byteCollectionProp?.id}`,
           {
             name: byteCollection.name,
@@ -103,7 +103,7 @@ export function useEditByteCollection({ space, byteCollection: byteCollectionPro
           }
         );
       } else {
-        await postData<ByteCollection, CreateByteCollectionRequest>(
+        await postData<ByteCollectionDto, CreateByteCollectionRequest>(
           `${getBaseUrl()}/api/${space.id}/byte-collections`,
           {
             name: byteCollection.name,

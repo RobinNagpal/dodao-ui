@@ -3,7 +3,7 @@ import { checkEditSpacePermission } from '@/app/api/helpers/space/checkEditSpace
 import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
 import { validateApiKey } from '@/app/api/helpers/validateApiKey';
 import { prisma } from '@/prisma';
-import { ByteCollectionDto, ByteCollectionStatus } from '@/types/byteCollections/byteCollection';
+import { ByteCollectionDto } from '@/types/byteCollections/byteCollection';
 import { CreateByteCollectionRequest } from '@/types/request/ByteCollectionRequests';
 import { createNewEntityId } from '@dodao/web-core/utils/space/createNewEntityId';
 import { NextRequest, NextResponse } from 'next/server';
@@ -27,7 +27,7 @@ async function postHandler(req: NextRequest, { params }: { params: { spaceId: st
       byteIds: [],
       createdAt: new Date(),
       updatedAt: new Date(),
-      status: ByteCollectionStatus.LIVE,
+      archive: false,
       priority: 50,
       videoUrl: '',
     },
