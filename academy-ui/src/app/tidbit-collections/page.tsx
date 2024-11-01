@@ -5,18 +5,16 @@ import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import CollectionPageLoading from '@dodao/web-core/src/components/core/loaders/CollectionPageLoading';
 import { Session } from '@dodao/web-core/types/auth/Session';
+import fetchDataServerSide from '@dodao/web-core/ui/hooks/useServerFetchUtils';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import axios from 'axios';
 import { getServerSession } from 'next-auth';
 import React, { Suspense } from 'react';
 
 async function TidbitCollections() {
   const space = (await getSpaceServerSide())!;
   const session = (await getServerSession(authOptions)) as Session | null;
+  const byteCollections = await fetchDataServerSide<ByteCollectionSummary[]>(`${getBaseUrl()}/api/${space.id}/byte-collections`);
 
-  const response = await fetch(`${getBaseUrl()}/api/byte-collection/byte-collections?spaceId=${space.id}`, { next: { tags: ['tidbit-collections'] } });
-
-  const byteCollections: ByteCollectionSummary[] = (await response.json()).byteCollections;
   let filteredCollections;
 
   if (session?.isAdminOfSpace) {

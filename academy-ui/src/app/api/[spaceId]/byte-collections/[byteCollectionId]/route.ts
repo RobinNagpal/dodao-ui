@@ -2,10 +2,29 @@ import { getByteCollectionWithItem } from '@/app/api/helpers/byteCollection/byte
 import { withErrorHandlingV1 } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { checkEditSpacePermission } from '@/app/api/helpers/space/checkEditSpacePermission';
 import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
+import { validateSuperAdmin } from '@/app/api/helpers/space/isSuperAdmin';
 import { prisma } from '@/prisma';
-import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
+import { ByteCollectionDto, ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import { CreateByteCollectionRequest } from '@/types/request/ByteCollectionRequests';
 import { NextRequest, NextResponse } from 'next/server';
+
+async function deleteHandler(
+  req: NextRequest,
+  { params }: { params: { spaceId: string; byteCollectionId: string } }
+): Promise<NextResponse<ByteCollectionDto>> {
+  await validateSuperAdmin(req);
+
+  const updatedByteCollection = await prisma.byteCollection.update({
+    where: {
+      id: params.byteCollectionId,
+    },
+    data: {
+      archive: true,
+    },
+  });
+
+  return NextResponse.json(updatedByteCollection, { status: 200 });
+}
 
 async function putHandler(
   req: NextRequest,
@@ -41,3 +60,4 @@ async function putHandler(
 }
 
 export const PUT = withErrorHandlingV1<ByteCollectionSummary>(putHandler);
+export const DELETE = withErrorHandlingV1<ByteCollectionDto>(deleteHandler);

@@ -98,10 +98,14 @@ export interface UseDeleteDataResponse<T, R> {
   error: string | undefined;
 }
 
-export const useDeleteData = <T, R>(options: RequestInit = {}, updateOptions: UpdateDataOptions): UseDeleteDataResponse<T, R> => {
+export const useDeleteData = <RESPONSE_TYPE, REQUEST_TYPE>(
+  options: RequestInit = {},
+  updateOptions: UpdateDataOptions
+): UseDeleteDataResponse<RESPONSE_TYPE, REQUEST_TYPE> => {
+  const router = useRouter();
   // Separate state variables as per your request
   const [loading, setLoading] = useState<boolean>(false);
-  const [data, setData] = useState<T | undefined>(undefined);
+  const [data, setData] = useState<RESPONSE_TYPE | undefined>(undefined);
   const [error, setError] = useState<string | undefined>(undefined);
 
   const { showNotification } = useNotificationContext();
@@ -110,7 +114,7 @@ export const useDeleteData = <T, R>(options: RequestInit = {}, updateOptions: Up
   const memoizedOptions = useDeepCompareMemoize(options);
 
   const deleteData = useCallback(
-    async (url: string, body?: R): Promise<T | undefined> => {
+    async (url: string, body?: REQUEST_TYPE): Promise<RESPONSE_TYPE | undefined> => {
       setLoading(true);
       setError(undefined);
       setData(undefined); // Reset data before new request
@@ -140,7 +144,7 @@ export const useDeleteData = <T, R>(options: RequestInit = {}, updateOptions: Up
         }
 
         // Handle cases where response might not have a JSON body
-        let responseData: T | undefined = undefined;
+        let responseData: RESPONSE_TYPE | undefined = undefined;
         try {
           responseData = await response.json();
         } catch {
@@ -152,6 +156,10 @@ export const useDeleteData = <T, R>(options: RequestInit = {}, updateOptions: Up
         // Show success notification if provided
         if (updateOptions.successMessage) {
           showNotification({ type: 'success', message: updateOptions.successMessage });
+        }
+
+        if (updateOptions.redirectPath) {
+          await router.push(updateOptions.redirectPath);
         }
 
         return responseData;
