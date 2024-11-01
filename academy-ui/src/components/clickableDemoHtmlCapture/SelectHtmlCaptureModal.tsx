@@ -96,7 +96,7 @@ export default function SelectHtmlCaptureModal(props: SelectHtmlCaptureModalProp
                 <Card onClick={() => handleCardClick(htmlCapture)}>
                   <div className="cursor-pointer">
                     <div className="p-2 text-center">
-                      <img src={htmlCapture.fileImageUrl} alt={htmlCapture.fileName} />
+                      <img src={htmlCapture.fileImageUrl} alt={htmlCapture.fileName} className="w-full h-[150px] object-cover rounded-lg" />
                     </div>
                   </div>
                   {/* Delete Icon */}

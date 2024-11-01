@@ -128,7 +128,7 @@ export default function EditClickableDemoStepperItem({
           />
           {step.screenImgUrl && (
             <div className="mt-4">
-              <img src={step.screenImgUrl} alt="Screenshot" className="rounded-lg shadow-md max-w-full max-h-60" />
+              <img src={step.screenImgUrl} alt="Screenshot" className="rounded-lg shadow-md max-w-full h-[150px] object-fit" />
             </div>
           )}
         </div>
