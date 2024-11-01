@@ -28,21 +28,28 @@ const features = [
   {
     name: 'Concise, Step-by-Step Tidbits',
     description:
-      'Dive into bite-sized learning with content structured in clear, manageable steps. Each tidbit is crafted to deliver understanding swiftly and efficiently, making every 5-10 sentence piece a powerful nugget of knowledge.',
+      'Learn quickly with short, clear steps. Each tidbit breaks down complex information into simple sentences, making learning fast and efficient.',
     icon: DeviceUserIcon,
+    screen: InviteScreen,
+  },
+  {
+    name: 'Interactive Clickable Demos',
+    description:
+      'Experience features firsthand with our guided, interactive demos. Users learn by clicking through simulations, understanding functionality in just seconds.',
+    icon: DeviceTouchIcon,
     screen: InviteScreen,
   },
   {
     name: 'One-Minute Videos',
     description:
-      "Dive into different concepts with our one-minute videos. Each piece distills complex information into easy-to-understand visuals, perfect for quick learning. It's an efficient way to grasp the basics, one sip of coffee at a time.",
+      'Dive into different concepts with our one-minute videos. Each piece distills complex information into easy-to-understand visuals, perfect for quick learning.',
     icon: DeviceNotificationIcon,
     screen: StocksScreen,
   },
   {
     name: 'Interactive Quizzes',
     description:
-      "Reinforce your learning with our interactive quizzes following each educational segment. They're designed to test your understanding in a fun, engaging manner, providing instant feedback to help solidify your knowledge and encourage deeper exploration.",
+      'Reinforce learning of your users with fun quizzes after each topic. Get instant feedback to solidify your knowledge and encourage deeper exploration.',
     icon: DeviceTouchIcon,
     screen: InvestScreen,
   },
@@ -359,8 +366,9 @@ export function PrimaryFeatures() {
             Embrace Modern Learning. <br></br>Grasp Knowledge Effortlessly with Tidbits.
           </h2>
           <p className="mt-2 text-lg text-white">
-            Step into a new era of learning with our platform. We have created the best of modern education content to make learning simple & fun! Where others
-            stick to tradition, we innovate to educate.
+            We offer different ways to educate — short bite sized information instead of long paragraphs, interactive clickable demos, and quick videos. The
+            more your users learn about your product, the more they can utilize it fully, and the less likely they are to switch to other solutions. While
+            others stick to old methods, we innovate to educate.
           </p>
         </div>
       </Container>

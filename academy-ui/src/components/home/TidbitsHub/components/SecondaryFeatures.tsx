@@ -24,16 +24,49 @@ const features = [
     icon: DeviceListIcon,
   },
   {
-    name: 'Reduce Support Queries',
-    description: 'Anticipate and address common questions with our comprehensive learning resources, freeing up your support team.',
-    icon: DeviceLockIcon,
+    name: 'Gain Customer Insights',
+    description: 'Understand your customers better with detailed analytics on how they interact with your content.',
+    icon: DeviceAnalyticsIcon,
   },
   {
     name: 'Empower Your Clients',
     description: 'Provide customers with the knowledge to make confident choices, fostering trust and loyalty.',
     icon: DeviceChartIcon,
   },
+  {
+    name: 'Decrease Churn',
+    description:
+      'Educated customers use your product more and are less likely to leave. By empowering them with quick and effective learning, you retain more customers over time.',
+    icon: DeviceCardsIcon,
+  },
+  {
+    name: 'Reduce Learning Time',
+    description: 'Transform hours of learning into minutes. Faster learning means customers can quickly start using your product to its fullest potential.',
+    icon: DeviceClockIcon,
+  },
+  {
+    name: 'Reduce Support Queries',
+    description: 'Anticipate and address common questions with our comprehensive learning resources, freeing up your support team.',
+    icon: DeviceLockIcon,
+  },
 ];
+
+function DeviceAnalyticsIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
+  return (
+    <svg viewBox="0 0 32 32" aria-hidden="true" {...props}>
+      <circle cx={16} cy={16} r={16} fill="#A3A3A3" fillOpacity={0.2} />
+      {/* <path fillRule="evenodd" clipRule="evenodd" d="M5 4a4 4 0 014-4h14a4 4 0 014 4v24a4 4 0 01-4 4H9a4 4 0 01-4-4V4z" fill="#737373" /> */}
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M9 0a4 4 0 00-4 4v24a4 4 0 004 4h14a4 4 0 004-4V4a4 4 0 00-4-4H9zm0 2a2 2 0 00-2 2v24a2 2 0 002 2h14a2 2 0 002-2V4a2 2 0 00-2-2h-1.382a1 1 0 00-.894.553l-.448.894a1 1 0 01-.894.553h-6.764a1 1 0 01-.894-.553l-.448-.894A1 1 0 0010.382 2H9z"
+        fill="#737373"
+      />
+      {/* <path d="M11 21h2v5h-2v-5zm4-4h2v9h-2v-9zm4-5h2v14h-2V12zm4-5h2v19h-2V7z" fill="#171717" /> */}
+      <path d="M11 21h2v5h-2v-5zm4-4h2v9h-2v-9zm4-5h2v14h-2V12z" fill="#171717" />
+    </svg>
+  );
+}
 
 function DeviceArrowIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
   return (
