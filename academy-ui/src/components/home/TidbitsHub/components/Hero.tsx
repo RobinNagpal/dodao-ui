@@ -38,7 +38,7 @@ export function Hero({ space }: { space: SpaceWithIntegrationsFragment | null })
             </div>
           </div>
           <div className="relative w-fit m-auto lg:row-span-2 md:block flex justify-center">
-            <Image src={tidbits} alt="Product screenshot" className="w-full max-h-[80vh] object-contain rounded-xl shadow-xl ring-1 ring-gray-400/10" />
+            <Image src={tidbits} alt="Tidbits Hub screenshot" className="w-full max-h-[80vh] object-contain rounded-xl shadow-xl ring-1 ring-gray-400/10" />
           </div>
         </div>
       </Container>

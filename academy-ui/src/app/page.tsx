@@ -76,8 +76,7 @@ export async function generateMetadata(): Promise<Metadata> {
   } else if (space?.id === PredefinedSpaces.TIDBITS_HUB) {
     metadata = {
       title: 'Tidbits Hub - Simplify Learning with Bite-Sized Content',
-      description:
-        'Tidbits Hub offers an innovative learning platform with short, impactful content, one-minute videos, and interactive quizzes to enhance customer engagement and simplify education.',
+      description: 'Tidbits Hub offers an innovative platform with bite-sized content, interactive demos, and short videos to boost customer engagement.',
       keywords: [
         'Tidbits Hub',
         'Bite-Sized Learning',
