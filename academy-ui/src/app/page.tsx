@@ -30,7 +30,7 @@ export async function generateMetadata(): Promise<Metadata> {
     };
   } else if (space?.type === SpaceTypes.TidbitsSite) {
     metadata = {
-      title: `${space?.name} - Learn Quickly`,
+      title: `${space?.name} - Tidbits`,
       description: `Learn ${space.name} with the help of Tidbits`,
     };
   } else if (host === 'dodao-localhost.io' || host === 'academy.dodao.io' || host === 'dodao.io') {

@@ -101,6 +101,7 @@ function SwiperByteStepperItemView({ viewByteHelper, step, byte, space, setByteS
           }}
           mousewheel={{
             forceToAxis: true,
+            thresholdTime: 500,
           }}
           pagination={{
             clickable: false,
