@@ -1,0 +1,15 @@
+{
+  "originalUrl": "https://etherscan.io/readContract?m=light&a=0xc3d688B66703497DAA19211EEdff47f25384cdc3&n=mainnet&v=0x528c57A87706C31765001779168b42f24c694E1b",
+  "indexFilename": "index.html",
+  "resources": {
+    "fonts/0.woff2": "https://etherscan.io/assets/vendor/font-awesome/webfonts/fa-brands-400.woff2",
+    "fonts/2.woff2": "https://etherscan.io/assets/vendor/font-awesome/webfonts/fa-duotone-900.woff2",
+    "fonts/4.woff2": "https://etherscan.io/assets/vendor/font-awesome/webfonts/fa-light-300.woff2",
+    "fonts/6.woff2": "https://etherscan.io/assets/vendor/font-awesome/webfonts/fa-regular-400.woff2",
+    "fonts/8.woff2": "https://etherscan.io/assets/vendor/font-awesome/webfonts/fa-solid-900.woff2",
+    "fonts/10.woff2": "https://etherscan.io/assets/vendor/font-awesome/webfonts/fa-thin-100.woff2",
+    "stylesheet_0.css": "https://etherscan.io/assets/css/theme.min.css?v=24.10.4.8",
+    "stylesheet_1.css": "https://etherscan.io/assets/vendor/font-awesome/css/all.css?v=24.10.4.8",
+    "stylesheet_2.css": "https://etherscan.io/assets/vendor/bootstrap/bootstrap.css?v=24.10.4.8"
+  }
+}
