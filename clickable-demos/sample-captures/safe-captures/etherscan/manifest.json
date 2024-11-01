@@ -1,0 +1,32 @@
+{
+  "originalUrl": "https://etherscan.io/address/0xc3d688B66703497DAA19211EEdff47f25384cdc3#readProxyContract",
+  "title": "Compound: USDCv3 Token | Address 0xc3d688B66703497DAA19211EEdff47f25384cdc3 | Etherscan",
+  "archiveTime": "2024-11-01T12:55:33.561Z",
+  "indexFilename": "index.html",
+  "resources": {
+    "fonts/0.woff2": "https://fonts.gstatic.com/s/roboto/v32/KFOmCnqEu92Fr1Mu4mxK.woff2",
+    "fonts/1.woff2": "https://fonts.gstatic.com/s/roboto/v32/KFOlCnqEu92Fr1MmEU9fBBc4.woff2",
+    "fonts/2.woff2": "https://fonts.gstatic.com/s/roboto/v32/KFOlCnqEu92Fr1MmWUlfBBc4.woff2",
+    "fonts/3.woff2": "https://etherscan.io/assets/vendor/font-awesome/webfonts/fa-brands-400.woff2",
+    "fonts/5.woff2": "https://etherscan.io/assets/vendor/font-awesome/webfonts/fa-duotone-900.woff2",
+    "fonts/11.woff2": "https://etherscan.io/assets/vendor/font-awesome/webfonts/fa-solid-900.woff2",
+    "fonts/9.woff2": "https://etherscan.io/assets/vendor/font-awesome/webfonts/fa-regular-400.woff2",
+    "fonts/15.woff2": "https://etherscan.io/assets/vendor/font-awesome/webfonts/fa-v4compatibility.woff2",
+    "fonts/7.woff2": "https://etherscan.io/assets/vendor/font-awesome/webfonts/fa-light-300.woff2",
+    "fonts/13.woff2": "https://etherscan.io/assets/vendor/font-awesome/webfonts/fa-thin-100.woff2",
+    "stylesheet_0.css": "https://etherscan.io/assets/vendor/datatables/dataTables.bootstrap5.min.css?v=24.10.4.8",
+    "stylesheet_1.css": "https://etherscan.io/assets/css/custom.css?v=24.10.4.8",
+    "stylesheet_2.css": "https://etherscan.io/assets/css/theme.min.css?v=24.10.4.8",
+    "stylesheet_3.css": "https://etherscan.io/assets/vendor/autocomplete/dist/css/autocomplete.min.css?v=24.10.4.8",
+    "stylesheet_4.css": "https://etherscan.io/assets/vendor/font-awesome/css/all.min.css?v=24.10.4.8",
+    "stylesheet_5.css": "https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap",
+    "images/17.ico": "https://etherscan.io/images/favicon3-light.ico",
+    "images/18.svg": "https://etherscan.io/images/svg/brands/ethereum-original.svg",
+    "images/19.svg": "https://etherscan.io/assets/svg/logos/logo-etherscan.svg?v=0.0.5",
+    "images/20.svg": "https://etherscan.io/images/svg/blockscan-logo-light.svg?v=0.0.5",
+    "images/21.webp": "https://etherscan.io/images/gen/coindesk_20.png",
+    "images/22.webp": "https://etherscan.io/token/images/compound-usdc_28.png",
+    "images/23.png": "https://etherscan.io/images/map.png",
+    "frames/0/": "https://etherscan.io/readContract?m=light&a=0xc3d688B66703497DAA19211EEdff47f25384cdc3&n=mainnet&v=0x528c57A87706C31765001779168b42f24c694E1b"
+  }
+}
