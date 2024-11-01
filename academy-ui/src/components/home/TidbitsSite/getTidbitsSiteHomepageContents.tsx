@@ -4,8 +4,8 @@ import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import CollectionPageLoading from '@dodao/web-core/components/core/loaders/CollectionPageLoading';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Session } from '@dodao/web-core/types/auth/Session';
+import fetchDataServerSide from '@dodao/web-core/ui/hooks/useServerFetchUtils';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import axios from 'axios';
 import React, { Suspense } from 'react';
 
 /**
@@ -14,12 +14,7 @@ import React, { Suspense } from 'react';
  * @param session
  */
 export async function getTidbitsSiteHomepageContents(space: SpaceWithIntegrationsFragment, session?: Session) {
-  const response = await axios.get(`${getBaseUrl()}/api/byte-collection/byte-collections`, {
-    params: {
-      spaceId: space.id,
-    },
-  });
-  const byteCollections: ByteCollectionSummary[] = response.data.byteCollections;
+  const byteCollections = await fetchDataServerSide<ByteCollectionSummary[]>(`${getBaseUrl()}/api/${space.id}/byte-collections`);
 
   const tidbitsHomepage = space?.tidbitsHomepage;
   return (

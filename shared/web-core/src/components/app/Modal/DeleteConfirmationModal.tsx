@@ -9,9 +9,10 @@ export interface DeleteCourseSubmissionModalProps {
   onClose: () => void;
   onDelete: () => void;
   deleting?: boolean;
+  deleteButtonText?: string;
 }
 
-export default function DeleteConfirmationModal({ open, onClose, deleting, onDelete, title }: DeleteCourseSubmissionModalProps) {
+export default function DeleteConfirmationModal({ open, onClose, deleting, onDelete, title, deleteButtonText }: DeleteCourseSubmissionModalProps) {
   const [deleteMeText, setDeleteMeText] = useState('');
   return (
     <SingleSectionModal open={open} onClose={onClose} title={title}>
@@ -20,7 +21,7 @@ export default function DeleteConfirmationModal({ open, onClose, deleting, onDel
           {`Type "Delete Me" *`}
         </Input>
         <Button disabled={deleteMeText !== 'Delete Me' || deleting} onClick={onDelete} loading={deleting} variant="contained" primary>
-          {title}
+          {deleteButtonText || title}
         </Button>
       </div>
     </SingleSectionModal>
