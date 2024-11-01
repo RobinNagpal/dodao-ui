@@ -4,12 +4,12 @@ const faqs = [
   {
     question: 'How can you help me save on support costs?',
     answer:
-      'By offering a robust platform where customers can easily access all the information they need, our platform reduces the reliance on customer support teams. This means lower overhead costs for your business and faster, more efficient customer service.',
+      'By offering easy-to-access information through bite-sized content, clickable demos, and short videos, customers can find answers quickly. This reduces their need to contact support, lowering your costs.',
   },
   {
-    question: 'What insights can I gain about my customers through your platform?',
+    question: 'How does your platform help to reduce churn rates?',
     answer:
-      "We provide valuable insights into your customers' behaviors and preferences through their interactions with the platform's educational content. This data can be used to personalize customer experiences and further enhance satisfaction and loyalty.",
+      'When customers understand your product well, they’re more likely to keep using it. Our platform educates them quickly, reducing the chance they’ll switch to another solution.',
   },
   {
     question: 'How do you empower customers?',
@@ -17,14 +17,14 @@ const faqs = [
       'We empower customers by providing them with the tools and resources they need to fully understand and appreciate your products or services. It helps customers to become more confident and capable, which enhances their overall experience with your brand.',
   },
   {
-    question: 'How does your platform help to reduce churn rates?',
+    question: 'What insights can I gain about my customers through your platform?',
     answer:
-      'By providing engaging, user-friendly educational content, we keep customers invested in your brand. This high level of engagement reduces churn rates by promoting customer loyalty and satisfaction.',
+      "We provide valuable insights into your customers' behaviors and preferences through their interactions with the platform's educational content. This data can be used to personalize customer experiences and further enhance satisfaction and loyalty.",
   },
   {
     question: 'How do you engage and educate customers?',
     answer:
-      'We offer a variety of interactive features in our Tidbits including quizzes and short videos. These engaging tools make learning about your products and services both fun and effective for your customers.',
+      'We offer a variety of interactive features in our Tidbits Hub including bite sized content or tidbits, clickable demos, quizzes and short videos. This approach keeps customers interested and helps them understand your products quickly and effectively.',
   },
   {
     question: 'How do you help create long-term customer relationships?',
