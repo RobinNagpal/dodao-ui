@@ -131,10 +131,77 @@ function replaceIframeWithShadowDom() {
 }
 function elementSelector(event) {
     let selectedElement = null;
+    let hoveredElement = null;
     let finalXPath = null;
     let hoverEnabled = true;
     let hoverTimer;
+    // Set the cursor for the entire body
     document.body.style.cursor = 'pointer';
+    // Create the canvas element
+    const canvas = document.createElement('canvas');
+    // Set CSS properties to ensure the canvas overlays the entire page
+    canvas.style.position = 'fixed';
+    canvas.style.top = '0';
+    canvas.style.left = '0';
+    canvas.style.width = '100%';
+    canvas.style.height = '100%';
+    canvas.style.zIndex = '100000'; // Ensure it's above other content
+    canvas.style.pointerEvents = 'none'; // Allow mouse events to pass through to elements below
+    canvas.style.opacity = '0.5'; // Semi-transparent
+    // Append the canvas to the body
+    document.body.appendChild(canvas);
+    console.log('canvas', canvas);
+    // Get the canvas drawing context
+    const ctx = canvas.getContext('2d');
+    // Function to update canvas size based on the window size
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    // Listen for resize events to adjust the canvas size
+    window.addEventListener('resize', resizeCanvas);
+    // Initially set the canvas size and fill it
+    resizeCanvas();
+    // Example of filling the canvas with a semi-transparent color
+    ctx.fillStyle = 'rgba(128, 128, 128, 0.9)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    function updateCanvasForSelectedElement(element) {
+        fillCanvas();
+        clearArea(element);
+    }
+    function fillCanvas() {
+        console.log('fillCanvas');
+        // Fill the canvas with a semi-transparent overlay
+        ctx.fillStyle = 'rgba(128, 128, 128, 0.9)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+    // Function to clear area based on an element's dimensions
+    function clearArea(element) {
+        console.log('clearArea', element);
+        // const rect = element.getBoundingClientRect();
+        const startTime = performance.now();
+        const rect = element.getBoundingClientRect();
+        function animate(time) {
+            const elapsedTime = time - startTime;
+            const progress = Math.min(elapsedTime / 600, 1);
+            const remainingAlpha = 1 - progress;
+            // Clear the area with decreasing alpha
+            ctx.save();
+            ctx.globalAlpha = remainingAlpha;
+            ctx.clearRect(rect.left, rect.top, rect.width, rect.height);
+            ctx.restore();
+            // Continue the animation until the progress is complete
+            if (progress < 1) {
+                requestAnimationFrame(animate);
+            }
+            else {
+                // Animation complete
+                fillCanvas();
+                ctx.clearRect(rect.left, rect.top, rect.width, rect.height);
+            }
+        }
+        requestAnimationFrame(animate);
+    }
     document.querySelectorAll('input').forEach((input) => {
         input.style.cursor = 'pointer';
     });
@@ -144,100 +211,7 @@ function elementSelector(event) {
     document.body.appendChild(upDownButtons);
     document.body.appendChild(selectButton);
     document.body.appendChild(clearSelectionButton);
-    document.addEventListener('mouseover', handleMouseOver);
     document.addEventListener('click', handleClick);
-    function createOrUpdateOverlay(element) {
-        if (!element)
-            return;
-        const rect = element.getBoundingClientRect();
-        const scrollY = window.scrollY;
-        const scrollHeight = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
-        const existingOverlay = document.getElementById('dimming-overlay');
-        if (existingOverlay) {
-            updateOverlay(existingOverlay, rect, scrollY, scrollHeight);
-        }
-        else {
-            const overlayContainer = createOverlayContainer(rect, scrollY, scrollHeight);
-            document.body.appendChild(overlayContainer);
-        }
-    }
-    function createOverlayContainer(rect, scrollY, scrollHeight) {
-        const overlayContainer = document.createElement('div');
-        overlayContainer.id = 'dimming-overlay';
-        Object.assign(overlayContainer.style, {
-            position: 'absolute',
-            top: '0',
-            left: '0',
-            width: '100%',
-            height: `${scrollHeight}px`,
-            pointerEvents: 'none',
-            zIndex: '50000000',
-        });
-        const overlays = ['top', 'left', 'right', 'bottom'].map((position) => createOverlayPart(position, rect, scrollY, scrollHeight));
-        overlays.forEach((overlay) => overlayContainer.appendChild(overlay));
-        return overlayContainer;
-    }
-    function createOverlayPart(position, rect, scrollY, scrollHeight) {
-        const overlay = document.createElement('div');
-        overlay.className = `${position}-overlay`;
-        overlay.style.position = 'absolute';
-        overlay.style.backgroundColor = 'rgba(128, 128, 128, 0.6)';
-        overlay.style.transition = 'all 0.3s ease';
-        switch (position) {
-            case 'top':
-                Object.assign(overlay.style, {
-                    top: '0',
-                    left: '0',
-                    width: '100%',
-                    height: `${rect.top + scrollY}px`,
-                });
-                break;
-            case 'left':
-                Object.assign(overlay.style, {
-                    top: `${rect.top + scrollY}px`,
-                    left: '0',
-                    width: `${rect.left}px`,
-                    height: `${scrollHeight - rect.top - scrollY}px`,
-                });
-                break;
-            case 'right':
-                Object.assign(overlay.style, {
-                    top: `${rect.top + scrollY}px`,
-                    left: `${rect.right}px`,
-                    width: `calc(100% - ${rect.right}px)`,
-                    height: `${scrollHeight - rect.top - scrollY}px`,
-                });
-                break;
-            case 'bottom':
-                Object.assign(overlay.style, {
-                    top: `${rect.bottom + scrollY}px`,
-                    left: `${rect.left}px`,
-                    width: `${rect.width}px`,
-                    height: `${scrollHeight - rect.bottom - scrollY}px`,
-                });
-                break;
-        }
-        return overlay;
-    }
-    function updateOverlay(container, rect, scrollY, scrollHeight) {
-        const overlays = container.children;
-        const topOverlay = overlays[0];
-        const leftOverlay = overlays[1];
-        const rightOverlay = overlays[2];
-        const bottomOverlay = overlays[3];
-        topOverlay.style.height = `${rect.top + scrollY}px`;
-        leftOverlay.style.top = `${rect.top + scrollY}px`;
-        leftOverlay.style.height = `${scrollHeight - rect.top - scrollY}px`;
-        leftOverlay.style.width = `${rect.left}px`;
-        rightOverlay.style.top = `${rect.top + scrollY}px`;
-        rightOverlay.style.left = `${rect.right}px`;
-        rightOverlay.style.width = `calc(100% - ${rect.right}px)`;
-        rightOverlay.style.height = `${scrollHeight - rect.top - scrollY}px`;
-        bottomOverlay.style.top = `${rect.bottom + scrollY}px`;
-        bottomOverlay.style.left = `${rect.left}px`;
-        bottomOverlay.style.width = `${rect.width}px`;
-        bottomOverlay.style.height = `${scrollHeight - rect.bottom - scrollY}px`;
-    }
     function captureScreenshotWithOverlay(element) {
         return __awaiter(this, void 0, void 0, function* () {
             return new Promise((resolve, reject) => {
@@ -317,7 +291,7 @@ function elementSelector(event) {
         else {
             return;
         }
-        createOrUpdateOverlay(selectedElement);
+        updateCanvasForSelectedElement(selectedElement);
         finalXPath = getXPath(selectedElement);
     }
     function createSelectButton() {
@@ -373,32 +347,44 @@ function elementSelector(event) {
         });
         return button;
     }
-    function handleMouseOver(e) {
-        e.preventDefault();
-        if (hoverEnabled && !selectedElement) {
-            clearTimeout(hoverTimer);
-            hoverTimer = window.setTimeout(() => {
-                const hoveredElement = e.target;
-                if (![selectButton, clearSelectionButton, upDownButtons, ...Array.from(upDownButtons.children)].includes(hoveredElement)) {
-                    createOrUpdateOverlay(hoveredElement);
-                }
-            }, 180);
-        }
-    }
+    // Add mouseover listener to all elements that need this effect
+    document
+        .querySelectorAll('div, span, p, img, a, button') // Specify other selectors as needed
+        .forEach((el) => {
+        el.addEventListener('mouseover', function (e) {
+            const htmlElement = el;
+            hoveredElement = htmlElement;
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+            e.preventDefault();
+            if (!selectedElement) {
+                clearTimeout(hoverTimer);
+                hoverTimer = window.setTimeout(() => {
+                    const hoveredElement = htmlElement;
+                    if (![selectButton, clearSelectionButton, upDownButtons, ...Array.from(upDownButtons.children)].includes(hoveredElement)) {
+                        updateCanvasForSelectedElement(hoveredElement);
+                    }
+                });
+            }
+            else {
+                console.log('element is already selected', selectedElement);
+            }
+        });
+    });
     function handleClick(e) {
         e.preventDefault();
         const clickedElement = e.target;
-        if (clickedElement === selectButton || clickedElement === clearSelectionButton)
+        if (!hoveredElement || clickedElement === selectButton || clickedElement === clearSelectionButton)
             return;
         if (Array.from(upDownButtons.children).includes(clickedElement))
             return;
         hoverEnabled = false;
-        selectedElement = clickedElement;
+        selectedElement = hoveredElement;
         selectButton.disabled = false;
         selectButton.style.opacity = '1';
         clearSelectionButton.disabled = false;
         clearSelectionButton.style.opacity = '1';
-        createOrUpdateOverlay(selectedElement);
+        updateCanvasForSelectedElement(selectedElement);
         finalXPath = getXPath(selectedElement);
     }
     function getXPath(element) {
