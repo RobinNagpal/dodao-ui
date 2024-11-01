@@ -20,7 +20,19 @@ yarn test-server
 This will start the server at port 9090 and will serve the local files from there.
 
 ### Referring to local files
-You can create a clickable demo or html captures using the script `populate-sample-captures.sql`.
+You can create a clickable demo or HTML capture using the `populate-sample-captures.sql` script. Simply replace `DESIRED-DEMO-ID` with the ID of the demo for which you want to generate an HTML capture. For example:
+
+```sql
+insert into public.clickable_demo_html_cpatures
+values (md5(random()::text),
+        'DESIRED-DEMO-ID',
+        'file-10-30-2024-8-55-39-am',
+        'http://localhost:9090/sample-captures/safe-captures/file-10-30-2024-8-55-39-am/index.html',
+        'http://localhost:9090/sample-captures/safe-screenshots/1730292942806_file-10-30-2024-8-55-39-AMscreenshot.png',
+        '2024-10-30 08:55:39');
+```
+
+Replace `DESIRED-DEMO-ID` with the specific ID of your demo.
 
 This script refers to sample html files which are in the local folder and which refer to the local files.
 
