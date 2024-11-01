@@ -56,11 +56,11 @@ export default function SelectHtmlCaptureModal(props: SelectHtmlCaptureModalProp
   }, [demoId]);
 
   const { deleteData } = useDeleteData<void, {}>(
-    {},
     {
       successMessage: 'Capture Archived Successfully',
       errorMessage: 'Failed to archive the capture. Please try again.',
-    }
+    },
+    {}
   );
 
   const availableHtmlCaptures = htmlCapturesResponse || [];

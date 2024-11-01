@@ -20,12 +20,12 @@ export default function ByteCollectionCardAdminDropdown({ byteCollection, space 
 
   const redirectPath = space.type === SpaceTypes.AcademySite ? '/byteCollections' : '/';
   const { deleteData, loading } = useDeleteData<ByteCollectionDto, {}>(
-    {},
     {
       errorMessage: 'Failed to archive ByteCollection',
       successMessage: 'ByteCollection archived successfully',
       redirectPath: `${redirectPath}?updated=${Date.now()}`,
-    }
+    },
+    {}
   );
   const getThreeDotItems = () => {
     return [

@@ -93,11 +93,11 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
       itemType: ByteCollectionItemType;
     }
   >(
-    {},
     {
       successMessage: 'Item Archived Successfully',
       errorMessage: 'Failed to archive the item. Please try again.',
-    }
+    },
+    {}
   );
 
   async function fetchData(shortId: string) {

@@ -4,7 +4,7 @@ import { checkEditSpacePermission } from '@/app/api/helpers/space/checkEditSpace
 import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
 import { prisma } from '@/prisma';
 import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
-import { UpdateByteCollectionItemsOrderRequest } from '@/types/request/ByteCollectionRequests';
+import { SortByteCollectionItemsRequest } from '@/types/request/ByteCollectionRequests';
 import { NextRequest, NextResponse } from 'next/server';
 
 async function postHandler(
@@ -17,7 +17,7 @@ async function postHandler(
 
   await checkEditSpacePermission(spaceById, req);
 
-  const request: UpdateByteCollectionItemsOrderRequest = await req.json();
+  const request: SortByteCollectionItemsRequest = await req.json();
 
   const updates = request.newItemIdAndOrders.map((itemIdAndOrder) => {
     return prisma.byteCollectionItemMappings.updateMany({

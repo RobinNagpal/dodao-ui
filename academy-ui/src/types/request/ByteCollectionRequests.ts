@@ -7,6 +7,6 @@ export interface CreateByteCollectionRequest {
   videoUrl?: string | null;
 }
 
-export interface UpdateByteCollectionItemsOrderRequest {
+export interface SortByteCollectionItemsRequest {
   newItemIdAndOrders: { itemId: string; itemType: ByteCollectionItemType; order: number }[];
 }

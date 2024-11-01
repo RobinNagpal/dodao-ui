@@ -1,9 +1,13 @@
 import { ByteCollectionItemType } from '@/app/api/helpers/byteCollection/byteCollectionItemType';
 import { Space } from '@/graphql/generated/generated-types';
 import { ByteCollectionItem, ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
+import { SortByteCollectionItemsRequest } from '@/types/request/ByteCollectionRequests';
+import { SpaceTypes } from '@/types/space/SpaceDto';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Input from '@dodao/web-core/components/core/input/Input';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
+import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useState } from 'react';
 
 interface SortByteCollectionItemsModalProps {
@@ -33,11 +37,34 @@ const getItemIdAndType = (item: ByteCollectionItem) => {
       return { itemId: item.short.shortId, itemType: item.type };
   }
 };
+
+const filterArchivedItems = (items: ByteCollectionItem[]) => {
+  return items.filter((item) => {
+    switch (item.type) {
+      case ByteCollectionItemType.Byte:
+        return !item.byte.archive;
+      case ByteCollectionItemType.ClickableDemo:
+        return !item.demo.archive;
+      case ByteCollectionItemType.ShortVideo:
+        return !item.short.archive;
+    }
+  });
+};
 export default function SortByteCollectionItemsModal(props: SortByteCollectionItemsModalProps) {
   const { space, byteCollection, onClose } = props;
 
-  const [items, setItems] = useState<ByteCollectionItem[]>(byteCollection.items);
+  const [items, setItems] = useState<ByteCollectionItem[]>(filterArchivedItems(byteCollection.items || []));
   const [error, setError] = useState<string | null>(null);
+  const redirectPath = space.type === SpaceTypes.AcademySite ? '/byteCollections' : '/';
+
+  const { loading, postData } = usePostData(
+    {
+      successMessage: 'Items sorted successfully',
+      errorMessage: 'Failed to sort items',
+      redirectPath: `${redirectPath}?updated=${Date.now()}`,
+    },
+    {}
+  );
 
   function handleOrderChange(index: number, order: number) {
     const newItems = [...items];
@@ -45,7 +72,7 @@ export default function SortByteCollectionItemsModal(props: SortByteCollectionIt
     setItems(newItems);
   }
 
-  function handleSave() {
+  async function handleSave() {
     setError(null);
     const orderNumbers = new Set<number>();
     for (const item of items) {
@@ -59,7 +86,7 @@ export default function SortByteCollectionItemsModal(props: SortByteCollectionIt
       return;
     }
 
-    const request = {
+    const request: SortByteCollectionItemsRequest = {
       newItemIdAndOrders: items.map((item) => {
         const itemIdAndType = getItemIdAndType(item);
         return {
@@ -69,6 +96,9 @@ export default function SortByteCollectionItemsModal(props: SortByteCollectionIt
         };
       }),
     };
+
+    await postData(`${getBaseUrl()}/api/${space.id}/actions/byte-collections/${byteCollection.id}/sort-items`, request);
+    onClose();
   }
 
   return (
@@ -125,7 +155,7 @@ export default function SortByteCollectionItemsModal(props: SortByteCollectionIt
           </div>
           <div className="mt-6">{error && <p className="text-red-500">{error}</p>}</div>
           <div className="w-full flex justify-center mt-6">
-            <Button primary={true} variant="contained" onClick={handleSave}>
+            <Button primary={true} variant="contained" onClick={handleSave} disabled={loading} loading={loading}>
               Save
             </Button>
           </div>
