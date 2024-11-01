@@ -13,7 +13,7 @@ import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/Delete
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { useDeleteData } from '@dodao/web-core/ui/hooks/useFetchUtils';
+import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import PlayCircleIcon from '@heroicons/react/24/outline/PlayCircleIcon';
 import { useRouter } from 'next/navigation';

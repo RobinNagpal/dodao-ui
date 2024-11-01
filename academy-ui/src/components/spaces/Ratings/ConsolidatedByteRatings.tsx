@@ -5,7 +5,7 @@ import { ConsolidatedByteRating, SpaceWithIntegrationsFragment } from '@/graphql
 import { ConsolidatedByteRatingDto } from '@/types/bytes/ConsolidatedByteRatingDto';
 import { Grid2Cols } from '@dodao/web-core/components/core/grids/Grid2Cols';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import { useFetchData } from '@dodao/web-core/ui/hooks/useFetchUtils';
+import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import React from 'react';
 import { Cell, Legend, Pie, PieChart, Tooltip } from 'recharts';

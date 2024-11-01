@@ -2,6 +2,7 @@ import Button from '@dodao/web-core/components/core/buttons/Button';
 import Card from '@dodao/web-core/components/core/card/Card';
 import { Grid4Cols } from '@dodao/web-core/components/core/grids/Grid4Cols';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
+import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { shorten } from '@dodao/web-core/utils/utils';
 import CheckCircleIcon from '@heroicons/react/20/solid/CheckCircleIcon';
@@ -10,7 +11,6 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { ClickableDemoHtmlCaptureDto } from '@/types/html-captures/ClickableDemoHtmlCaptureDto';
 import LoadingIcon from '@dodao/web-core/components/core/loaders/LoadingIcon';
-import { useDeleteData } from '@dodao/web-core/ui/hooks/useFetchUtils';
 import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 
