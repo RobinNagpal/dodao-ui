@@ -10,17 +10,9 @@ import { createNewEntityId } from '@dodao/web-core/utils/space/createNewEntityId
 import { NextRequest, NextResponse } from 'next/server';
 
 async function getHandler(req: NextRequest, { params }: { params: { spaceId: string } }): Promise<NextResponse<ByteCollectionSummary[]>> {
-  const { spaceId } = params;
-  const apiKey = req.headers.get('X-API-KEY');
-  if (apiKey) {
-    await validateApiKey(apiKey, spaceId);
-  } else {
-    const spaceById = await getSpaceById(spaceId);
-    await checkEditSpacePermission(spaceById, req);
-  }
   const byteCollections = await prisma.byteCollection.findMany({
     where: {
-      spaceId: spaceId,
+      spaceId: params.spaceId,
       archive: {
         not: true,
       },
