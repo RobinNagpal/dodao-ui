@@ -515,7 +515,21 @@ function handleDoDAOParentWindowEvent(event: MessageEvent) {
 
   if (data.type === 'showTooltip') {
     replaceIframeWithShadowDom();
-    showTooltip(event);
+
+    // Check if the page has fully loaded
+    if (document.readyState === 'complete') {
+      // Page is fully loaded, proceed to show tooltip
+      showTooltip(event);
+    } else {
+      // Wait for the page to fully load before showing tooltip
+      window.addEventListener(
+        'load',
+        () => {
+          showTooltip(event);
+        },
+        { once: true }
+      ); // Ensure the event is only handled once
+    }
   }
 
   if (data.type === 'setCssVariables') {
