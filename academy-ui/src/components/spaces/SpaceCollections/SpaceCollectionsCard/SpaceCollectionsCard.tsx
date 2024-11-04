@@ -9,6 +9,8 @@ import { ChevronRightIcon } from '@heroicons/react/20/solid';
 import Image from 'next/image';
 import { getCDNImageUrl } from '@dodao/web-core/utils/images/getCDNImageUrl';
 import DefaultSpaceAvatar from '@/images/background-features.jpg';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 
 interface SpaceCollectionCardProps {
   spaceCollection: Space;
@@ -16,11 +18,19 @@ interface SpaceCollectionCardProps {
 
 export default function SpaceCollectionsCard({ spaceCollection }: SpaceCollectionCardProps) {
   const router = useRouter();
+  const { postData } = usePostData(
+    {
+      errorMessage: 'Failed to create token for space',
+    },
+    {}
+  );
 
   const handleCardClick = async () => {
     const projectSlug = slugify(spaceCollection.name);
     const url = getSubdomainUrl(projectSlug);
-    router.push(url);
+
+    const token = await postData(`${getBaseUrl()}/api/${spaceCollection.id}/actions/spaces/new-tidbit-subspace`);
+    router.push(`${url}?token=${token}`);
   };
   return (
     <li onClick={handleCardClick} className="cursor-pointer block-bg-color">

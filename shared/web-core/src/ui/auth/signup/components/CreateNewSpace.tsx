@@ -1,5 +1,5 @@
 'use client';
-import Button from '@dodao/web-core/components/core/buttons/Button';
+
 import Input from '@dodao/web-core/components/core/input/Input';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import { WebCoreSpace } from '@dodao/web-core/types/space';
@@ -7,6 +7,7 @@ import getProtocol from '@dodao/web-core/utils/api/getProtocol';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { FormFooter } from '@dodao/web-core/components/app/Form/FormFooter';
 
 interface CreateSpaceProps {
   upserting: boolean;
@@ -23,7 +24,7 @@ function CreateNewSpace({ upserting, onSubmit, createdSpace }: CreateSpaceProps)
         <FullPageModal
           open={true}
           onClose={() => {
-            router.push('/spaces/space-collections');
+            router.push(`/spaces/space-collections?updated=${Date.now()}`);
           }}
           title={''}
         >
@@ -48,30 +49,21 @@ function CreateNewSpace({ upserting, onSubmit, createdSpace }: CreateSpaceProps)
         </FullPageModal>
       ) : (
         <section className="h-full flex items-center justify-center pt-36" style={{ backgroundColor: 'var(--bg-color)' }}>
-          <div className="w-[600px]">
-            <div className="p-6">
-              <div className="space-y-12 text-left p-6">
-                <div className="">
-                  <h2 className="font-semibold leading-7 text-3xl text-center pb-8">Create Space</h2>
-                  <Input label="Project Name" modelValue={project} onUpdate={(value) => setProject(value?.toString() || '')} />
-                </div>
-              </div>
-              <div className="p-6 flex items-center justify-end gap-x-6">
-                <Button
-                  variant="contained"
-                  primary
-                  loading={upserting}
-                  onClick={async () => {
-                    await onSubmit({
-                      id: slugify(project),
-                      name: project,
-                    });
-                  }}
-                >
-                  Create Space
-                </Button>
-              </div>
+          <div className="w-[600px] pt-12">
+            <div className="space-y-12 text-left ">
+              <h2 className="font-semibold leading-7 text-3xl text-center pb-8">Create Space</h2>
+              <Input label="Project Name" modelValue={project} onUpdate={(value) => setProject(value?.toString() || '')} />
             </div>
+            <FormFooter
+              saveButtonText="Create Space"
+              onSave={async () => {
+                await onSubmit({
+                  id: slugify(project),
+                  name: project,
+                });
+              }}
+              onSaveLoading={upserting}
+            />
           </div>
         </section>
       )}
