@@ -11,7 +11,8 @@
     "lint-fix": "eslint . --ext .ts,.js,.tsx --fix",
     "prettier-fix": "prettier --config .prettierrc 'src/**/*.{js,ts,tsx,json}' --write",
     "prettier-check": "prettier --check 'src/**/*.{js,ts,tsx,json}'",
-    "test-server": "http-server -o --cors -d sample-demos -p 9090"
+    "test-server": "http-server -o --cors -d sample-demos -p 9090",
+    "start-server": "serve --config serve.json -l 9090"
   },
   "dependencies": {
     "@dodao/web-core": "1.0.0",
@@ -27,6 +28,7 @@
     "http-server": "^14.1.1",
     "postcss": "8.4.35",
     "prettier": "^2.8.8",
+    "serve": "^14.2.4",
     "tippy.js": "^6.3.7",
     "typescript": "5.0.4"
   }
