@@ -116,14 +116,14 @@ export default function ImageUploadSection({
               <p className="mt-2 text-sm">Uploading...</p>
             ) : (
               <>
-                <div className="mt-4 flex text-sm leading-6">
+                <div className="mt-4 flex text-md leading-6">
                   <label htmlFor={inputId} className={`relative cursor-pointer rounded-md font-semibold ${styles.uploadButton}`}>
                     <span className="px-2">Upload a file</span>
                     <input id={inputId} name="file-upload" type="file" className="sr-only" onChange={handleFileChange} accept={allowedFileTypes.join(', ')} />
                   </label>
                   <p className="pl-1 font-semibold">or drag and drop or paste from clipboard</p>
                 </div>
-                <p className="text-xs leading-5">PNG, JPG, GIF up to 10MB</p>
+                <p className="text-xs leading-5 mt-2">PNG, JPEG, JPG, SVG, WEBP, HTML, GIF up to 10MB</p>
               </>
             )}
           </div>
