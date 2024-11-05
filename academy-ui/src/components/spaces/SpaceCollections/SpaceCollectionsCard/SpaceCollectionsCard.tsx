@@ -33,7 +33,7 @@ export default function SpaceCollectionsCard({ spaceCollection }: SpaceCollectio
     router.push(`${url}${verificationPath}`);
   };
   return (
-    <li onClick={handleCardClick} className="cursor-pointer block-bg-color">
+    <li onClick={handleCardClick} className="cursor-pointer block-bg-color border-t border-color">
       <div className="group relative flex space-x-10 py-5">
         <div className="flex-shrink-0">
           <Image
@@ -44,10 +44,10 @@ export default function SpaceCollectionsCard({ spaceCollection }: SpaceCollectio
           />
         </div>
         <div className="min-w-0 flex-1 self-center">
-          <div className="text-md font-medium text-gray-900">{spaceCollection.name}</div>
+          <div className="text-md font-medium">{spaceCollection.name}</div>
         </div>
         <div className="flex-shrink-0 self-center">
-          <ChevronRightIcon aria-hidden="true" className="h-5 w-5 text-gray-400 group-hover:text-gray-500" />
+          <ChevronRightIcon aria-hidden="true" className="h-5 w-5" />
         </div>
       </div>
     </li>

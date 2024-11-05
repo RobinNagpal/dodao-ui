@@ -10,26 +10,67 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 function showTooltip(event) {
+    var _a;
     const { elementXPath, tooltipContent: contentText, currentTooltipIndex, tooltipArrayLen, placement } = event.data;
     console.log('event.data.elementXPath', elementXPath);
     document.addEventListener('click', (e) => e.preventDefault());
-    const xpathResult = document.evaluate(elementXPath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
-    console.log('xpathResult', xpathResult);
-    const targetNode = xpathResult.singleNodeValue;
-    if (!targetNode || !(targetNode instanceof HTMLElement))
+    let currentContextNode = document;
+    // Determine if the XPath is intended for an iframe by checking the prefix
+    const isIframeXPath = elementXPath.startsWith('/html[1]/body[1]');
+    let targetNode = null;
+    if (isIframeXPath) {
+        // Search in all iframes
+        const iframes = document.querySelectorAll('iframe');
+        for (const iframe of iframes) {
+            const iframeDoc = iframe.contentDocument || ((_a = iframe.contentWindow) === null || _a === void 0 ? void 0 : _a.document);
+            if (iframeDoc) {
+                try {
+                    const xpathResult = iframeDoc.evaluate(elementXPath, iframeDoc, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+                    if (xpathResult) {
+                        targetNode = xpathResult;
+                        currentContextNode = iframeDoc;
+                        const head = iframeDoc.head || iframeDoc.getElementsByTagName('head')[0];
+                        // Copy each <link> element from the main document and add it to the iframe
+                        document.querySelectorAll("link[rel='stylesheet']").forEach((link) => {
+                            const newLink = link.cloneNode(true);
+                            head.appendChild(newLink);
+                        });
+                        break;
+                    }
+                }
+                catch (error) {
+                    console.error('Error evaluating XPath in iframe:', error);
+                }
+            }
+        }
+        if (!targetNode) {
+            console.log('Element not found in any iframe.');
+        }
+    }
+    else {
+        const xpathResult = document.evaluate(elementXPath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+        if (xpathResult) {
+            console.log('Element found in the main document:', xpathResult);
+            targetNode = xpathResult;
+        }
+        else {
+            console.log('Element not found in the main document.');
+        }
+    }
+    if (!targetNode)
         return;
     const target = targetNode;
     target.classList.add('dodao-target-element');
-    const tooltipContent = document.createElement('div');
+    const tooltipContent = currentContextNode.createElement('div');
     tooltipContent.classList.add('dodao-tooltip-content');
-    const textElement = document.createElement('p');
+    const textElement = currentContextNode.createElement('p');
     textElement.textContent = contentText;
     textElement.classList.add('dodao-text-element');
     tooltipContent.appendChild(textElement);
-    const horizontalLine = document.createElement('hr');
+    const horizontalLine = currentContextNode.createElement('hr');
     horizontalLine.classList.add('dodao-horizontal-line');
     tooltipContent.appendChild(horizontalLine);
-    const buttonsRow = document.createElement('div');
+    const buttonsRow = currentContextNode.createElement('div');
     buttonsRow.classList.add('dodao-buttons-row');
     const backButton = createTooltipButton('Back', 'dodao-back-button', () => {
         var _a, _b;
@@ -39,7 +80,7 @@ function showTooltip(event) {
     if (currentTooltipIndex === 0)
         backButton.style.visibility = 'hidden';
     buttonsRow.appendChild(backButton);
-    const indices = document.createElement('span');
+    const indices = currentContextNode.createElement('span');
     indices.textContent = `${currentTooltipIndex + 1} of ${tooltipArrayLen}`;
     indices.classList.add('dodao-indices');
     buttonsRow.appendChild(indices);
@@ -59,12 +100,12 @@ function showTooltip(event) {
         block: 'center',
         inline: 'nearest',
     });
-    const tooltipWrapper = document.createElement('div');
+    const tooltipWrapper = currentContextNode.createElement('div');
     tooltipWrapper.appendChild(tooltipContent);
     window.tippy(target, {
         allowHTML: true,
         placement: placement,
-        appendTo: document.body,
+        appendTo: currentContextNode.body,
         offset: [0, 10],
         animation: 'shift-toward',
         interactive: true,
@@ -98,42 +139,12 @@ function adjustButtonStyles(buttons, isLastTooltip) {
         button.style.maxWidth = maxWidth;
     });
 }
-function replaceIframeWithShadowDom() {
-    const iframeArr = document.getElementsByTagName('iframe');
-    if (iframeArr.length === 0) {
-        console.log('No iframes found. Exiting function.');
-        return;
-    }
-    for (const iframe of Array.from(iframeArr)) {
-        const iframeStyle = window.getComputedStyle(iframe);
-        if (iframeStyle.display === 'none') {
-            console.log(`Iframe with id: ${iframe.id} and src: ${iframe.src} is set to display: none. Skipping replacement.`);
-            continue;
-        }
-        if (iframe && iframe.srcdoc) {
-            const srcdocContent = iframe.srcdoc;
-            // Create a new div to host the Shadow DOM
-            const hostDiv = document.createElement('div');
-            // Apply original attributes
-            hostDiv.className = iframe.className;
-            hostDiv.id = iframe.id;
-            hostDiv.setAttribute('style', iframe.getAttribute('style') || '');
-            // Replace the iframe with the host div
-            if (iframe.parentNode) {
-                iframe.parentNode.replaceChild(hostDiv, iframe);
-            }
-            // Create a shadow root
-            const shadowRoot = hostDiv.attachShadow({ mode: 'open' });
-            // Set the innerHTML of the shadow root
-            shadowRoot.innerHTML = srcdocContent;
-        }
-    }
-}
 function elementSelector(event) {
     let selectedElement = null;
     let finalXPath = null;
     let hoverEnabled = true;
     let hoverTimer;
+    let containingIframe;
     document.body.style.cursor = 'pointer';
     document.querySelectorAll('input').forEach((input) => {
         input.style.cursor = 'pointer';
@@ -144,14 +155,68 @@ function elementSelector(event) {
     document.body.appendChild(upDownButtons);
     document.body.appendChild(selectButton);
     document.body.appendChild(clearSelectionButton);
-    document.addEventListener('mouseover', handleMouseOver);
-    document.addEventListener('click', handleClick);
+    document.addEventListener('mouseover', (event) => {
+        containingIframe = null;
+        handleMouseOver(event);
+    });
+    document.addEventListener('click', (event) => {
+        containingIframe = null;
+        handleClick(event);
+    });
+    addEventListenersToIframe();
+    function addEventListenersToIframe() {
+        // Get all iframes in the document
+        const iframes = document.querySelectorAll('iframe');
+        iframes.forEach((iframe) => {
+            // Ensure the iframe is of type HTMLIFrameElement
+            if (iframe instanceof HTMLIFrameElement) {
+                // Function to attach event listeners to the iframe content
+                const attachEventListeners = () => {
+                    var _a;
+                    try {
+                        const iframeDoc = iframe.contentDocument || ((_a = iframe.contentWindow) === null || _a === void 0 ? void 0 : _a.document);
+                        if (iframeDoc) {
+                            iframeDoc.addEventListener('click', (event) => {
+                                event.stopPropagation();
+                                containingIframe = iframe;
+                                handleClick(event);
+                            });
+                            iframeDoc.addEventListener('mouseover', (event) => {
+                                event.stopPropagation();
+                                containingIframe = iframe;
+                                handleMouseOver(event);
+                            });
+                        }
+                        else {
+                            console.error('Unable to access iframe content. It might be cross-origin.');
+                        }
+                    }
+                    catch (error) {
+                        console.error('Error accessing or attaching event listeners to iframe content:', error);
+                    }
+                };
+                attachEventListeners();
+            }
+        });
+    }
     function createOrUpdateOverlay(element) {
         if (!element)
             return;
-        const rect = element.getBoundingClientRect();
-        const scrollY = window.scrollY;
+        let rect = element.getBoundingClientRect();
+        let scrollY = window.scrollY;
         const scrollHeight = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+        if (containingIframe) {
+            const iframeOffset = getIframeOffset(containingIframe);
+            rect = {
+                top: rect.top + iframeOffset.top,
+                left: rect.left + iframeOffset.left,
+                right: rect.right + iframeOffset.left,
+                bottom: rect.bottom + iframeOffset.top,
+                width: rect.width,
+                height: rect.height,
+            };
+            scrollY = 0;
+        }
         const existingOverlay = document.getElementById('dimming-overlay');
         if (existingOverlay) {
             updateOverlay(existingOverlay, rect, scrollY, scrollHeight);
@@ -238,20 +303,46 @@ function elementSelector(event) {
         bottomOverlay.style.width = `${rect.width}px`;
         bottomOverlay.style.height = `${scrollHeight - rect.bottom - scrollY}px`;
     }
+    function getIframeOffset(iframe) {
+        var _a, _b, _c;
+        let top = 0;
+        let left = 0;
+        let element = iframe;
+        while (element) {
+            const rect = element.getBoundingClientRect();
+            top += rect.top + (((_a = element.ownerDocument.defaultView) === null || _a === void 0 ? void 0 : _a.scrollY) || 0);
+            left += rect.left + (((_b = element.ownerDocument.defaultView) === null || _b === void 0 ? void 0 : _b.scrollX) || 0);
+            element = (_c = element.ownerDocument.defaultView) === null || _c === void 0 ? void 0 : _c.frameElement;
+        }
+        return { top, left };
+    }
     function captureScreenshotWithOverlay(element) {
         return __awaiter(this, void 0, void 0, function* () {
             return new Promise((resolve, reject) => {
+                let currentContextNode = document;
+                let captureArea;
                 const margin = 30;
                 const { x: scrollOffsetX, y: scrollOffsetY } = calculateScrollOffsets(element);
                 const yScroll = scrollOffsetY + window.scrollY;
                 const rect = element.getBoundingClientRect();
-                const captureArea = {
-                    x: Math.max(0, rect.left + scrollOffsetX - margin),
-                    y: Math.max(0, rect.top + yScroll - margin),
-                    width: rect.width + margin * 2,
-                    height: rect.height + margin * 2,
-                };
-                html2canvas(document.body, {
+                if (containingIframe) {
+                    captureArea = {
+                        x: Math.max(0, rect.left + scrollOffsetX - margin),
+                        y: Math.max(0, rect.top - margin),
+                        width: rect.width + margin * 2,
+                        height: rect.height + margin * 2,
+                    };
+                    currentContextNode = containingIframe.contentDocument || containingIframe.contentWindow.document;
+                }
+                else {
+                    captureArea = {
+                        x: Math.max(0, rect.left + scrollOffsetX - margin),
+                        y: Math.max(0, rect.top + yScroll - margin),
+                        width: rect.width + margin * 2,
+                        height: rect.height + margin * 2,
+                    };
+                }
+                html2canvas(currentContextNode.body, {
                     x: captureArea.x,
                     y: captureArea.y,
                     width: captureArea.width,
@@ -361,6 +452,7 @@ function elementSelector(event) {
         button.addEventListener('click', () => {
             selectedElement = null;
             finalXPath = null;
+            containingIframe = null;
             hoverEnabled = true;
             const overlay = document.getElementById('dimming-overlay');
             if (overlay)
@@ -412,6 +504,9 @@ function elementSelector(event) {
             segments.unshift(`${tagName}[${index}]`);
             current = current.parentElement;
         }
+        if (containingIframe) {
+            return `/${segments.join('/')}`;
+        }
         return `/html/body/${segments.join('/')}`;
     }
     function getElementIndex(element) {
@@ -426,33 +521,40 @@ function elementSelector(event) {
     }
 }
 function handleDoDAOParentWindowEvent(event) {
-    const data = event.data;
-    if (data.type === 'showTooltip') {
-        replaceIframeWithShadowDom();
-        // Check if the page has fully loaded
-        if (document.readyState === 'complete') {
-            // Page is fully loaded, proceed to show tooltip
-            showTooltip(event);
-        }
-        else {
-            // Wait for the page to fully load before showing tooltip
-            window.addEventListener('load', () => {
+    var _a;
+    return __awaiter(this, void 0, void 0, function* () {
+        const data = event.data;
+        if (data.type === 'showTooltip') {
+            // Check if the page has fully loaded
+            if (document.readyState === 'complete') {
+                // Page is fully loaded, proceed to show tooltip
                 showTooltip(event);
-            }, { once: true }); // Ensure the event is only handled once
-        }
-    }
-    if (data.type === 'setCssVariables') {
-        const cssValues = data.cssValues;
-        if (cssValues) {
-            for (const variable in cssValues) {
-                document.documentElement.style.setProperty(variable, cssValues[variable]);
+            }
+            else {
+                // Wait for the page to fully load before showing tooltip
+                window.addEventListener('load', () => {
+                    showTooltip(event);
+                }, { once: true }); // Ensure the event is only handled once
             }
         }
-    }
-    if (data.type === 'elementSelector') {
-        replaceIframeWithShadowDom();
-        elementSelector(event);
-    }
+        if (data.type === 'setCssVariables') {
+            const cssValues = data.cssValues;
+            if (cssValues) {
+                for (const variable in cssValues) {
+                    document.documentElement.style.setProperty(variable, cssValues[variable]);
+                }
+                const iframeArr = document.getElementsByTagName('iframe');
+                for (const iframe of Array.from(iframeArr)) {
+                    for (const variable in cssValues) {
+                        (_a = iframe.contentDocument) === null || _a === void 0 ? void 0 : _a.documentElement.style.setProperty(variable, cssValues[variable]);
+                    }
+                }
+            }
+        }
+        if (data.type === 'elementSelector') {
+            elementSelector(event);
+        }
+    });
 }
 window.handleDoDAOParentWindowEvent = handleDoDAOParentWindowEvent;
 console.log('handleDoDAOParentWindowEvent is defined on window', window.handleDoDAOParentWindowEvent);
