@@ -1,0 +1,11 @@
+# DoDAO UI
+- [ ] Navigation/step names in swiper has an issue as it gets cuttoff
+- [ ] Styling of Upload Image Modal
+    - Also make sure drag and drop of image works 
+    - Make sure the wording is correct
+    - There is ability to remove the image also
+- [ ] Image display component
+    -  Show an `X` button on the image to remove it
+    -  Show a `Change` button to change the image
+    -  When image is clicked show a modal with the image in full screen with options to remove, replace or cancel
+- [ ] Edit section of the image
