@@ -1,6 +1,7 @@
 import React from 'react';
 import { Space } from '@prisma/client';
 import SpaceCollectionsCard from '../SpaceCollectionsCard/SpaceCollectionsCard';
+import Link from 'next/link';
 
 interface SpaceCollectionGridProps {
   spaceCollections: Space[];
@@ -17,10 +18,10 @@ export default function SpaceCollectionsGrid({ spaceCollections }: SpaceCollecti
         ))}
       </ul>
       <div className="mt-6 flex">
-        <button className="text-sm font-medium text-indigo-600 hover:text-indigo-500">
+        <Link href="/spaces/create" className="text-sm font-medium text-indigo-600 hover:text-indigo-500">
           Or create a new space
           <span aria-hidden="true"> &rarr;</span>
-        </button>
+        </Link>
       </div>
     </div>
   );

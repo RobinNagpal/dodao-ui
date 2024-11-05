@@ -34,7 +34,7 @@ function CreateOrLoginButton(props: {
   onClickCreate: () => void;
   onClickLogin: () => void;
 }) {
-  if (props.session && props.space && isAdmin(props.session, props.space)) {
+  if (props.session && props.space && isAdmin(props.session, props.space) && props.space?.type != SpaceTypes.TidbitsSite) {
     return (
       <ButtonLarge type="button" variant="contained" primary onClick={props.onClickCreate}>
         <PlusIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
