@@ -1,5 +1,3 @@
-'use client';
-
 import SpaceCollectionsGrid from '@/components/spaces/SpaceCollections/View/SpaceCollectionsGrid';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Space } from '@prisma/client';

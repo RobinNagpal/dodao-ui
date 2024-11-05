@@ -23,7 +23,7 @@ const CallbackPage = ({ space, callbackUrl }: CallbackPageProps) => {
     async function handleSignIn() {
       // Ensure we have the token and only try to sign in if not already signed in
       const token = get('token');
-      if (token && status !== 'authenticated') {
+      if (token) {
         // Attempt to sign in
         const result = await signIn('custom-email', {
           redirect: false, // Prevent NextAuth from automatically redirecting
@@ -32,8 +32,6 @@ const CallbackPage = ({ space, callbackUrl }: CallbackPageProps) => {
           spaceId: space.id,
         });
 
-        // const session = (await getSession()) as Session | undefined;
-        // setDoDAOTokenInLocalStorage(session);
         // Redirect to the home page or custom callback URL on success
         if (result?.url && result?.ok && callbackUrl) {
           const session = (await getSession()) as Session | undefined;
@@ -52,12 +50,6 @@ const CallbackPage = ({ space, callbackUrl }: CallbackPageProps) => {
 
   if (status === 'loading') {
     return <div>Loading...</div>;
-  }
-
-  // Optionally, redirect authenticated users or show a message
-  if (status === 'authenticated') {
-    push(callbackUrl!); // Redirect to home or another page
-    return null; // Or a "You are already signed in" message
   }
 
   return (

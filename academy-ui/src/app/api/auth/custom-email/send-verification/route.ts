@@ -5,7 +5,7 @@ import { User } from 'next-auth/core/types';
 import { headers } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 import { defaultNormalizer, randomString, sendVerificationRequest } from '@dodao/web-core/api/auth/custom-email/send-verification';
-import { PredefinedSpaces } from '@dodao/web-core/src/utils/constants/constants';
+import { Contexts, PredefinedSpaces } from '@dodao/web-core/src/utils/constants/constants';
 
 const createUser = async (user: User & { email: string }, spaceId: string) => {
   console.log('######### signIn - Creating new user #########');
@@ -51,7 +51,7 @@ const createUser = async (user: User & { email: string }, spaceId: string) => {
  */
 async function postHandler(req: NextRequest, res: NextResponse) {
   const reqBody = await req.json();
-  const { spaceId, provider, email, context = 'login' } = reqBody;
+  const { spaceId, provider, email, context = Contexts.login } = reqBody;
 
   console.log('######### send-verification - POST #########');
   console.log('request', JSON.stringify(reqBody));
