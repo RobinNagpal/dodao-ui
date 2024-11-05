@@ -4,15 +4,16 @@ on:
   push:
     branches:
       - main
-    paths-ignore:
-      - 'docs/**'
-      - 'tasks/**'
+    paths:
+      - '!docs/**'
+      - '!tasks/**'
   pull_request:
     branches:
       - main
-    paths-ignore:
-      - 'docs/**'
-      - 'tasks/**'
+    paths:
+      - '!docs/**'
+      - '!tasks/**'
+
 
 jobs:
   lint_and_prettier:
