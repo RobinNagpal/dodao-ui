@@ -83,9 +83,9 @@ export default function ImageUploadSection({
   };
 
   return (
-    <div className={`my-4  ${styles.uploadWrapper}`}>
+    <div className={`my-4 ${styles.uploadWrapper}`}>
       <div
-        className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10"
+        className="mt-2 flex justify-center rounded-lg border border-dashed border-color px-6 py-10"
         onDragOver={handleDragOver}
         onDrop={handleDrop}
         onPaste={handlePaste}
@@ -111,23 +111,19 @@ export default function ImageUploadSection({
           </div>
         ) : (
           <div className="text-center">
-            <PhotoIcon aria-hidden="true" className="mx-auto h-12 w-12 text-gray-300" />
+            <PhotoIcon aria-hidden="true" className="mx-auto h-12 w-12" />
             {loading ? (
-              <p className="mt-2 text-sm text-gray-600">Uploading...</p>
+              <p className="mt-2 text-sm">Uploading...</p>
             ) : (
               <>
-                <div className="mt-4 flex text-sm leading-6 text-gray-600">
-                  <label
-                    htmlFor={inputId}
-                    className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none
-                      focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
-                  >
-                    <span>Upload a file</span>
+                <div className="mt-4 flex text-sm leading-6">
+                  <label htmlFor={inputId} className={`relative cursor-pointer rounded-md font-semibold ${styles.uploadButton}`}>
+                    <span className="px-2">Upload a file</span>
                     <input id={inputId} name="file-upload" type="file" className="sr-only" onChange={handleFileChange} accept={allowedFileTypes.join(', ')} />
                   </label>
-                  <p className="pl-1">or drag and drop or paste from clipboard</p>
+                  <p className="pl-1 font-semibold">or drag and drop or paste from clipboard</p>
                 </div>
-                <p className="text-xs leading-5 text-gray-600">PNG, JPG, GIF up to 10MB</p>
+                <p className="text-xs leading-5">PNG, JPG, GIF up to 10MB</p>
               </>
             )}
           </div>

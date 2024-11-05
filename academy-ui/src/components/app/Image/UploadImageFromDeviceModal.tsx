@@ -1,6 +1,7 @@
 import { CreateSignedUrlInput, ImageType } from '@/graphql/generated/generated-types';
 import { CreateSignedUrlRequest } from '@/types/request/SignedUrl';
 import { SingedUrlResponse } from '@/types/response/SignedUrl';
+import { FormFooter } from '@dodao/web-core/components/app/Form/FormFooter';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import ImageUploadSection from '@dodao/web-core/components/core/file/ImageUploadSection';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
@@ -65,16 +66,13 @@ export default function UploadImageFromDeviceModal(props: UploadImageModalProps)
           loading={loading}
           clearSelectedImage={() => setImageURL(null)}
         />
-        <div className=" w-full mt-4 flex justify-between">
-          <div>
-            <Button onClick={onClose}>Cancel</Button>
-          </div>
-          <div>
-            <Button disabled={!imageURL?.trim()} variant="contained" primary onClick={() => imageUploaded(imageURL as string)} className="ml-4">
-              Done
-            </Button>
-          </div>
-        </div>
+        <FormFooter
+          saveButtonText="Done"
+          onSave={() => imageUploaded(imageURL as string)}
+          saveButtonDisabled={!imageURL?.trim()}
+          cancelButtonText="Cancel"
+          onCancel={onClose}
+        />
       </div>
     </FullPageModal>
   );
