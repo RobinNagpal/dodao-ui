@@ -29,8 +29,8 @@ export default function SpaceCollectionsCard({ spaceCollection }: SpaceCollectio
     const projectSlug = slugify(spaceCollection.name);
     const url = getSubdomainUrl(projectSlug);
 
-    const token = await postData(`${getBaseUrl()}/api/${spaceCollection.id}/actions/spaces/new-tidbit-subspace`);
-    router.push(`${url}?token=${token}`);
+    const verificationPath = await postData(`${getBaseUrl()}/api/${spaceCollection.id}/verification-tokens`);
+    router.push(`${url}${verificationPath}`);
   };
   return (
     <li onClick={handleCardClick} className="cursor-pointer block-bg-color">

@@ -1,5 +1,6 @@
 import React from 'react';
 import Button from '@dodao/web-core/components/core/buttons/Button';
+import styles from './FormFooter.module.scss';
 
 interface FormFooterProps {
   saveButtonText: string;
@@ -15,7 +16,7 @@ export const FormFooter = ({ saveButtonText, onSave, onSaveLoading, cancelButton
       <div className="border-t border-gray-900/10">
         <div className="mt-6 flex items-center justify-end gap-x-2">
           {cancelButtonText && onCancel && (
-            <Button removeBorder className="text-sm font-semibold text-gray-900" onClick={onCancel}>
+            <Button removeBorder className={`text-sm font-semibold ${styles.textColor}`} onClick={onCancel}>
               {cancelButtonText}
             </Button>
           )}
