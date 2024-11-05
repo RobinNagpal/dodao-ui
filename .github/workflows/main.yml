@@ -6,11 +6,13 @@ on:
       - main
     paths-ignore:
       - 'docs/**'
+      - 'tasks/**'
   pull_request:
     branches:
       - main
     paths-ignore:
       - 'docs/**'
+      - 'tasks/**'
 
 jobs:
   lint_and_prettier:
