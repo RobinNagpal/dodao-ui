@@ -1,7 +1,9 @@
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import { ClickableDemoWithSteps, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { LocalStorageKeys } from '@dodao/web-core/types/deprecated/models/enums';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import union from 'lodash/union';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 
 interface ClickableDemoModalProps {
@@ -34,6 +36,10 @@ function ClickableDemoModal({ clickableDemoWithSteps, space, onClose }: Clickabl
       }
 
       if (event.data.completeButton) {
+        localStorage.setItem(
+          LocalStorageKeys.COMPLETED_CLICKABLE_DEMOS,
+          JSON.stringify(union([...JSON.parse(localStorage.getItem(LocalStorageKeys.COMPLETED_CLICKABLE_DEMOS) || '[]'), clickableDemoWithSteps.id]))
+        );
         if (space.type === 'TidbitsSite') {
           router.push(`/`);
         } else {

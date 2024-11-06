@@ -1,4 +1,4 @@
-import ByteCompletionCheckmark from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCompletionCheckmark';
+import ItemCompletionCheckmark from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ItemCompletionCheckmark';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import PlayCircleIcon from '@heroicons/react/24/outline/PlayCircleIcon';
 import styles from './ByteCollectionsCard.module.scss';
@@ -34,7 +34,7 @@ export default function ByteItem(props: ByteItemProps) {
         {eventIdx !== itemLength - 1 ? <span className="absolute left-4 top-4 -ml-px h-full w-0.5 bg-gray-200" aria-hidden="true" /> : null}
         <div className="relative flex space-x-3 justify-between">
           <Link className="flex cursor-pointer" href={byteViewUrl}>
-            <ByteCompletionCheckmark byteId={byte.byteId} />
+            <ItemCompletionCheckmark itemId={byte.byteId} itemType={ByteCollectionItemType.Byte} />
             <div className="flex min-w-0 flex-1 justify-between space-x-2 duration-300 ease-in-out">
               <div className="ml-3 text-sm group">
                 <div className="flex">
