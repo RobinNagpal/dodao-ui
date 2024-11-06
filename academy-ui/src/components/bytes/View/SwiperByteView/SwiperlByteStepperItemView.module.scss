@@ -12,8 +12,12 @@
   padding-right: 20px;
 
   @media (min-width: $screen-md) {
-    width: 80%;
+    width: 70%;
     max-width: $screen-lg; // Large tablet
+  }
+  
+  @media (min-width: $screen-lg) {
+    padding-right: 0;
   }
 }
 

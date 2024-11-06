@@ -34,7 +34,7 @@ const style: CSSProperties = {
   '--swiper-pagination-bullet-inactive-opacity': '0.5',
   '--swiper-pagination-bullet-opacity': '1',
   '--swiper-pagination-bullet-horizontal-gap': '8px',
-  '--swiper-pagination-bullet-vertical-gap': '12px',
+  '--swiper-pagination-bullet-vertical-gap': '8px',
   '--swiper-pagination-color': 'var(--primary-color)',
 } as any;
 
@@ -42,7 +42,7 @@ const renderBullet = (index: number, className: string, byte: ByteDto, activeSte
   const isCompleted = index < activeStepOrder;
   return `
 <div class="flex custom-swiper-bullet">
-  <span class="mr-2 mt-3 swiper-pagination-custom-text ${isCompleted ? 'completed' : ''}">${byte.steps?.[index].name}</span>
+  <span class="mr-2 mt-2 swiper-pagination-custom-text ${isCompleted ? 'completed' : ''}">${byte.steps?.[index].name}</span>
   <span class=" ${className} ${index === activeStepOrder ? 'swiper-pagination-bullet-active' : ''} cursor-default ${isCompleted ? 'completed' : ''}">${
     index + 1
   }</span>
