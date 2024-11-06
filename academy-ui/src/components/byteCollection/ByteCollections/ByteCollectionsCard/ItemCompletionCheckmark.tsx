@@ -9,10 +9,10 @@ import CheckIcon from '@heroicons/react/24/solid/CheckIcon';
 import React, { useEffect } from 'react';
 
 export interface ItemCompletionCheckmarkProps {
-  itemType: string;
+  itemType: ByteCollectionItemType;
   itemId: string;
 }
-export default function ByteCompletionCheckmark({ itemId, itemType }: ItemCompletionCheckmarkProps) {
+export default function ItemCompletionCheckmark({ itemId, itemType }: ItemCompletionCheckmarkProps) {
   const [isItemCompleted, setIsItemCompleted] = React.useState<boolean>(false);
   const localStorageKey = itemType === ByteCollectionItemType.Byte ? LocalStorageKeys.COMPLETED_TIDBITS : LocalStorageKeys.COMPLETED_CLICKABLE_DEMOS;
 
