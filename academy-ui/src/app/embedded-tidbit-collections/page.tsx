@@ -1,8 +1,8 @@
 import ByteCollectionsGrid from '@/components/byteCollection/View/ByteCollectionsGrid';
 import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
+import fetchDataServerSide from '@/utils/api/fetchDataServerSide';
 import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import fetchDataServerSide from '@dodao/web-core/ui/hooks/useServerFetchUtils';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import React from 'react';
 

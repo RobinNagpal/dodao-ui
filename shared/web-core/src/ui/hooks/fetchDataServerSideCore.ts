@@ -1,8 +1,7 @@
 import { Session } from '@dodao/web-core/types/auth/Session';
-import { authOptions } from 'academy-ui/src/app/api/auth/[...nextauth]/authOptions';
-import { getServerSession } from 'next-auth';
+import { AuthOptions, getServerSession } from 'next-auth';
 
-export default async function fetchDataServerSide<T>(url: string, options: RequestInit = {}): Promise<T> {
+export default async function fetchDataServerSideCore<T>(url: string, authOptions: AuthOptions, options: RequestInit = {}): Promise<T> {
   try {
     const session = (await getServerSession(authOptions)) as Session | null;
     if (session) {

@@ -4,21 +4,44 @@ on:
   push:
     branches:
       - main
-    paths:
-      - '!docs/**'
-      - '!tasks/**'
+    paths-ignore:
+      - 'docs/**'
+      - 'tasks/**'
   pull_request:
     branches:
       - main
-    paths:
-      - '!docs/**'
-      - '!tasks/**'
-
+    paths-ignore:
+      - 'docs/**'
+      - 'tasks/**'
 
 jobs:
-  lint_and_prettier:
+  determine-changed-paths:
     runs-on: ubuntu-latest
+    outputs:
+      shared_web_core_changed: ${{ steps.filter.outputs.shared_web_core }}
+      academy_ui_changed: ${{ steps.filter.outputs.academy_ui }}
+      base_ui_changed: ${{ steps.filter.outputs.base_ui }}
+      rubrics_ui_changed: ${{ steps.filter.outputs.rubrics_ui }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Determine changed paths
+        id: filter
+        uses: dorny/paths-filter@v2
+        with:
+          filters: |
+            shared_web_core:
+              - 'shared/web-core/**'
+            academy_ui:
+              - 'academy-ui/**'
+            base_ui:
+              - 'base-ui/**'
+            rubrics_ui:
+              - 'rubrics-ui/**'
 
+  academy_ui_job:
+    runs-on: ubuntu-latest
+    needs: determine-changed-paths
+    if: ${{ needs.determine-changed-paths.outputs.academy_ui_changed == 'true' || needs.determine-changed-paths.outputs.shared_web_core_changed == 'true' }}
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
@@ -27,6 +50,15 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 20
+
+      - name: Shared Web Core - Install dependencies
+        run: cd shared/web-core && yarn
+
+      - name: Shared Web Core - TSC
+        run: cd shared/web-core && yarn tsc
+
+      - name: Shared Web Core - Run Prettier
+        run: cd shared/web-core && yarn prettier-check
 
       - name: Academy - Install dependencies
         run: cd academy-ui && yarn
@@ -43,6 +75,28 @@ jobs:
       - name: Academy - NEXT Build
         run: cd academy-ui && yarn build
 
+  base_ui_job:
+    runs-on: ubuntu-latest
+    needs: determine-changed-paths
+    if: ${{ needs.determine-changed-paths.outputs.base_ui_changed == 'true' || needs.determine-changed-paths.outputs.shared_web_core_changed == 'true' }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 20
+
+      - name: Shared Web Core - Install dependencies
+        run: cd shared/web-core && yarn
+
+      - name: Shared Web Core - TSC
+        run: cd shared/web-core && yarn tsc
+
+      - name: Shared Web Core - Run Prettier
+        run: cd shared/web-core && yarn prettier-check
+
       - name: Base UI - Install dependencies
         run: cd base-ui && yarn
 
@@ -55,8 +109,30 @@ jobs:
       - name: Base UI - TSC
         run: cd base-ui && yarn compile
 
-      - name: BASE UI - NEXT Build
+      - name: Base UI - NEXT Build
         run: cd base-ui && yarn build
+
+  rubrics_ui_job:
+    runs-on: ubuntu-latest
+    needs: determine-changed-paths
+    if: ${{ needs.determine-changed-paths.outputs.rubrics_ui_changed == 'true' || needs.determine-changed-paths.outputs.shared_web_core_changed == 'true' }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 20
+
+      - name: Shared Web Core - Install dependencies
+        run: cd shared/web-core && yarn
+
+      - name: Shared Web Core - TSC
+        run: cd shared/web-core && yarn tsc
+
+      - name: Shared Web Core - Run Prettier
+        run: cd shared/web-core && yarn prettier-check
 
       - name: Rubrics UI - Install dependencies
         run: cd rubrics-ui && yarn
@@ -72,4 +148,3 @@ jobs:
 
       - name: Rubrics UI - NEXT Build
         run: cd rubrics-ui && yarn build
-

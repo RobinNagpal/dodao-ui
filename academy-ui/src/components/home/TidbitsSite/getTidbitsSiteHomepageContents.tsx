@@ -1,10 +1,10 @@
 import ByteCollectionsGrid from '@/components/byteCollection/View/ByteCollectionsGrid';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
+import fetchDataServerSide from '@/utils/api/fetchDataServerSide';
 import CollectionPageLoading from '@dodao/web-core/components/core/loaders/CollectionPageLoading';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Session } from '@dodao/web-core/types/auth/Session';
-import fetchDataServerSide from '@dodao/web-core/ui/hooks/useServerFetchUtils';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import React, { Suspense } from 'react';
 
