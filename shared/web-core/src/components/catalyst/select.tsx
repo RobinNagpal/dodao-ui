@@ -1,6 +1,6 @@
-import * as Headless from '@headlessui/react'
-import clsx from 'clsx'
-import React, { forwardRef } from 'react'
+import * as Headless from '@headlessui/react';
+import clsx from 'clsx';
+import React, { forwardRef } from 'react';
 
 export const Select = forwardRef(function Select(
   { className, multiple, ...props }: { className?: string } & Omit<Headless.SelectProps, 'as' | 'className'>,
@@ -64,5 +64,5 @@ export const Select = forwardRef(function Select(
         </span>
       )}
     </span>
-  )
-})
+  );
+});

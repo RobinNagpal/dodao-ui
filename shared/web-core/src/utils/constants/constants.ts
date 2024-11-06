@@ -3,7 +3,6 @@ export const PredefinedSpaces = {
   DODAO_HOME: 'dodao-academy',
 };
 
-
 export enum Contexts {
   login = 'login',
   setupNewSpace = 'setupNewSpace',

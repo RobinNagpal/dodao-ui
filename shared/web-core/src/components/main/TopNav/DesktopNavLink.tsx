@@ -1,15 +1,8 @@
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import styles from "./DesktopNavLink.module.scss";
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import styles from './DesktopNavLink.module.scss';
 
-export function DesktopNavLink({
-  label,
-  href,
-}: {
-  label: string;
-  isActive?: boolean;
-  href: string;
-}) {
+export function DesktopNavLink({ label, href }: { label: string; isActive?: boolean; href: string }) {
   const pathname = usePathname();
   const isActive = pathname === href;
   return (
