@@ -2,7 +2,7 @@
 Must have features
 
 # View Clickable Demos
-- [ ] When the demo is done show a green tick mark on the demo like we show on the completed tidbits
+- [x] When the demo is done show a green tick mark on the demo like we show on the completed tidbits
 
 # Creation/Editing Bytes
 - [ ] The creation error is always the "oops something went wrong" should'nt it be specific.
@@ -11,6 +11,20 @@ option(solution we can add tooltips for the icons)
 - [ ] The size of the text box is too large
 - [ ] Full stepper needs adjustments to mae it look good
 
+Are we using the priority and tags fields anywhere, if not, we can then remove them.
+Step Contents field could be made smaller.
+Add some hovering effect on `Add Question`, `Move up`, `Move down`, and `Delete step` icons.
+Upload image modal needs to be styled better.
+We get these generic errors like `Validation Error: Can't Save Byte`, the user doesn't know what exactly is the error.
+If a step has an error, it just shows `This step has an error`, doesn't really tell about the error. May be we should add real time validation and not wait until the user clicks on Upload button.
+Instead of show an icon for `Add Input or Questions`, which on clicking shows a modal with various buttons, we can directly show these buttons below the `Step Content` field. This would make adding questions more explicit for new users.
+Hide the scrollbars from stepper accordion.
+Add hover tooltip on the icons on `Completion Screen` accordion.
+The `trash` icon (for deleting) on the `Completion Screen` doesn't work.
+Placeholders missing from fields in `Completion Screen` accordion.
+"Tags" input is a standard textarea, we should use a tags input component that allows users to type a tag and press Enter or comma to create a tag bubble.
+Add relevant icons to certain fields (e.g., a video icon next to "Video URL", a tag icon next to "Tags") to make the form feel more engaging and intuitive.
+Use slightly bigger font on the accordion where we are showing the step name.
 
 Styling of the login/"get started" modal. The modal is too big for a single input field.
 
