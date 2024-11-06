@@ -4,7 +4,7 @@ import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsis
 import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import { ClickableDemoSummary } from '@/types/clickableDemos/ClickableDemoDto';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
-import DemoCompletionCheckmark from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/DemoCompletionCheckmark';
+import ItemCompletionCheckmark from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ItemCompletionCheckmark';
 import Link from 'next/link';
 import React from 'react';
 import styles from './ByteCollectionsCard.module.scss';
@@ -35,7 +35,7 @@ export default function DemoItem(props: DemoItemProps) {
         <div className="relative flex space-x-3 justify-between">
           <Link className="flex cursor-pointer" href={demoViewUrl}>
             <span className={'h-8 w-8 rounded-full flex items-center justify-center p-1 ' + styles.tidbitIconSpan}>
-              <DemoCompletionCheckmark demoId={demo.demoId} />
+              <ItemCompletionCheckmark itemId={demo.demoId} itemType={ByteCollectionItemType.ClickableDemo} />
             </span>
             <div className="flex min-w-0 flex-1 justify-between space-x-2 duration-300 ease-in-out">
               <div className="ml-3 text-sm group">
