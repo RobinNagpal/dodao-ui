@@ -1,9 +1,9 @@
-import getProtocol from "./getProtocol";
+import getProtocol from './getProtocol';
 
-export default function getSubdomainUrl(projectSlug: string){
-    const protocol = getProtocol();
-    const hostname = window.location.hostname;
-    const port = window.location.port ? `:${window.location.port}` : '';
+export default function getSubdomainUrl(projectSlug: string) {
+  const protocol = getProtocol();
+  const hostname = window.location.hostname;
+  const port = window.location.port ? `:${window.location.port}` : '';
 
-    return `${protocol}://${projectSlug}.${hostname}${port}`;
+  return `${protocol}://${projectSlug}.${hostname}${port}`;
 }

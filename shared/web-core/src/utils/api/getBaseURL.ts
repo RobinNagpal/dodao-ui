@@ -1,4 +1,4 @@
-import getProtocol from "./getProtocol";
+import getProtocol from './getProtocol';
 
 export default function getBaseUrl() {
   const nextHost = process.env.NEXT_PUBLIC_VERCEL_URL;

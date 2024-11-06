@@ -1,15 +1,8 @@
-import { Disclosure } from "@headlessui/react";
-import { usePathname } from "next/navigation";
-import { Fragment } from "react";
-import styles from "./MobileNavLink.module.scss";
-export function MobileNavLink({
-  label,
-  href,
-}: {
-  label: string;
-  isActive?: boolean;
-  href: string;
-}) {
+import { Disclosure } from '@headlessui/react';
+import { usePathname } from 'next/navigation';
+import { Fragment } from 'react';
+import styles from './MobileNavLink.module.scss';
+export function MobileNavLink({ label, href }: { label: string; isActive?: boolean; href: string }) {
   const pathname = usePathname();
   const isActive = pathname === href;
 

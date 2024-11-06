@@ -23,7 +23,7 @@ export function useAuth(spaceId: string) {
   const [processingEmailPassword, setProcessingEmailPassword] = useState<boolean>(false);
   const [processingNear, setProcessingNear] = useState<boolean>(false);
   const { showNotification } = useNotificationContext();
-  
+
   async function onSignInWithCrypto() {
     try {
       if (!window.ethereum) {
@@ -159,12 +159,12 @@ export function useAuth(spaceId: string) {
     });
   }, []);
 
-  const logout = useCallback(async () => {    
+  const logout = useCallback(async () => {
     if (web3Selection?.connector) {
       web3Selection?.connector?.deactivate?.();
     } else {
       await signOut({
-        redirect: false
+        redirect: false,
       });
     }
     try {
