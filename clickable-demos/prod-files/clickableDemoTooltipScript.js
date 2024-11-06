@@ -156,11 +156,13 @@ function elementSelector(event) {
     document.body.appendChild(selectButton);
     document.body.appendChild(clearSelectionButton);
     document.addEventListener('mouseover', (event) => {
-        containingIframe = null;
+        if (hoverEnabled)
+            containingIframe = null;
         handleMouseOver(event);
     });
     document.addEventListener('click', (event) => {
-        containingIframe = null;
+        if (hoverEnabled)
+            containingIframe = null;
         handleClick(event);
     });
     addEventListenersToIframe();
@@ -236,7 +238,7 @@ function elementSelector(event) {
             width: '100%',
             height: `${scrollHeight}px`,
             pointerEvents: 'none',
-            zIndex: '50000000',
+            zIndex: '999999999999999',
         });
         const overlays = ['top', 'left', 'right', 'bottom'].map((position) => createOverlayPart(position, rect, scrollY, scrollHeight));
         overlays.forEach((overlay) => overlayContainer.appendChild(overlay));
