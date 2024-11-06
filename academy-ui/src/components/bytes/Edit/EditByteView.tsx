@@ -76,8 +76,8 @@ export default function EditByteView(props: {
               <div className="mb-8">
                 <Input
                   modelValue={byte.name}
-                  error={inputError('name')}
-                  placeholder="byte.create.name (only 64 characters)"
+                  error={inputError('name') ? 'Name is required' : ''}
+                  placeholder="byte name (only 32 characters)"
                   maxLength={32}
                   onUpdate={(e) => updateByteFunctions.updateByteField('name', e)}
                 >
@@ -86,7 +86,7 @@ export default function EditByteView(props: {
                 <Input
                   modelValue={byte.content}
                   error={inputError('content') ? 'Summary is required and should be less than 64 characters long' : ''}
-                  placeholder="byte.create.summary (only 64 characters)"
+                  placeholder="byte summary (only 64 characters)"
                   maxLength={64}
                   onUpdate={(e) => updateByteFunctions.updateByteField('content', e)}
                 >
@@ -113,26 +113,6 @@ export default function EditByteView(props: {
                   onInput={(e) => updateByteFunctions.updateByteField('videoUrl', e)}
                   placeholder="e.g. https://example.com/video.mp4"
                 />
-                <TextareaArray
-                  label="Tags"
-                  id="tags"
-                  modelValue={byte.tags}
-                  placeholder={`tag1\ntag2`}
-                  className="input w-full text-left"
-                  onUpdate={(e) => updateByteFunctions.updateByteField('tags', e)}
-                />
-
-                <div className="mt-4">
-                  <Input
-                    modelValue={byte.priority}
-                    maxLength={500}
-                    onUpdate={(e) => updateByteFunctions.updateByteField('priority', e)}
-                    className="edit-timeline-inputs"
-                    number
-                  >
-                    Priority
-                  </Input>
-                </div>
               </div>
             </Block>
             <Block title="Byte Steps">

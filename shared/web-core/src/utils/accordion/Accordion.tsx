@@ -13,6 +13,7 @@ interface AccordionProps {
 export default function Accordion({ isOpen, label, onClick, children, hasError = false, errorMessage }: AccordionProps) {
   return (
     <div>
+      {hasError && <div className="text-red-500 ml-1 mb-2">{errorMessage}</div>}
       <div
         className={`rounded-md mb-4 pt-2 cursor-pointer ${styles.accordionContainer} ${hasError ? styles.error : ''} ${isOpen ? styles.isOpened : ''}`}
         onClick={(e) => !isOpen && onClick(e)}
@@ -36,7 +37,7 @@ export default function Accordion({ isOpen, label, onClick, children, hasError =
           style={{
             maxHeight: isOpen ? '1000px' : '0',
             opacity: isOpen ? 1 : 0,
-            overflow: 'scroll',
+            overflow: 'auto',
             padding: '0 1rem 1rem 1rem',
           }}
           className={styles.accordionContent}
@@ -44,7 +45,6 @@ export default function Accordion({ isOpen, label, onClick, children, hasError =
           {children}
         </div>
       </div>
-      {hasError && <div className="text-red-500 ml-1 mt-1">{errorMessage}</div>}
     </div>
   );
 }

@@ -422,7 +422,12 @@ For background of the image, use the color ${backgroundColor} and for the primar
           />
         </div>
         <div className="w-full mb-4">
-          <Input modelValue={step.name} maxLength={32} onUpdate={(e) => updateStepName(e?.toString() || '')}>
+          <Input
+            modelValue={step.name}
+            maxLength={32}
+            onUpdate={(e) => updateStepName(e?.toString() || '')}
+            error={stepErrors?.stepName ? 'Name is required' : ''}
+          >
             Name*
           </Input>
         </div>

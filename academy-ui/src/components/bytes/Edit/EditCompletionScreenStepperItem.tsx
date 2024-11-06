@@ -64,8 +64,14 @@ export default function EditCompletionScreenStepperItem({
     <div className={'w-full ' + styles.CompletionScreenItemContainer}>
       <div>
         <div style={{ minHeight: '20px' }}>
-          <IconButton className="float-right ml-2" iconName={IconTypes.GuideAddIcon} removeBorder onClick={() => setModalAddButtonInput(true)} />
-          <IconButton className="float-right ml-2" iconName={IconTypes.Trash} removeBorder onClick={() => handleDelete()} />
+          <IconButton
+            className="float-right ml-2"
+            iconName={IconTypes.GuideAddIcon}
+            removeBorder
+            onClick={() => setModalAddButtonInput(true)}
+            tooltip="Add Button"
+          />
+          <IconButton className="float-right ml-2" iconName={IconTypes.Trash} removeBorder onClick={() => handleDelete()} tooltip="Delete Completion Step" />
         </div>
         <div className="w-full mb-4">
           <Input
