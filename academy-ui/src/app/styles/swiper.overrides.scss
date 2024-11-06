@@ -30,16 +30,19 @@
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    max-height: calc(100vh - 100px);
+    max-height: 80vh;
     overflow-y: auto;
+  
+    @media (min-width: $screen-lg) {
+      width: 15%;
+      max-width: 15%; 
+    }
   }
 
   .custom-swiper-bullet {
-
+    
     .swiper-pagination-custom-text {
       display: none;
-      max-width: 12vw;
-      word-wrap: break-word;
       text-align: right;
 
       @media (min-width: $screen-lg) {
@@ -53,6 +56,9 @@
     }
 
     .swiper-pagination-bullet {
+      min-width: 24px;
+      min-height: 24px;
+      
       &.completed {
         background-color: #0da213;
         color: white;
