@@ -200,11 +200,11 @@ function elementSelector(event: MessageEvent) {
   document.body.appendChild(clearSelectionButton);
 
   document.addEventListener('mouseover', (event: MouseEvent) => {
-    containingIframe = null;
+    if (hoverEnabled) containingIframe = null;
     handleMouseOver(event);
   });
   document.addEventListener('click', (event: MouseEvent) => {
-    containingIframe = null;
+    if (hoverEnabled) containingIframe = null;
     handleClick(event);
   });
 
@@ -284,7 +284,7 @@ function elementSelector(event: MessageEvent) {
       width: '100%',
       height: `${scrollHeight}px`,
       pointerEvents: 'none',
-      zIndex: '50000000',
+      zIndex: '999999999999999',
     });
 
     const overlays = ['top', 'left', 'right', 'bottom'].map((position) => createOverlayPart(position, rect, scrollY, scrollHeight));
@@ -602,7 +602,6 @@ async function handleDoDAOParentWindowEvent(event: MessageEvent) {
   const data = event.data as DoDAOEventData;
 
   if (data.type === 'showTooltip') {
-
     // Check if the page has fully loaded
     if (document.readyState === 'complete') {
       // Page is fully loaded, proceed to show tooltip
