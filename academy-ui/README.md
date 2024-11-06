@@ -250,7 +250,6 @@ For example: `DODAO_SUPERADMINS = 0x0000000000000000000000000000000000000000,joh
 
 To be able to upload images, you need to set the following environment variables:
 
-
 Ask Robin to create AWS credentials for you.
 
 ```dotenv
