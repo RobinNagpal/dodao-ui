@@ -41,7 +41,7 @@ const style: CSSProperties = {
 const renderBullet = (index: number, className: string, byte: ByteDto, activeStepOrder: number) => {
   const isCompleted = index < activeStepOrder;
   return `
-<div class="flex custom-swiper-bullet">
+<div class="flex custom-swiper-bullet block-bg-color">
   <span class="mr-2 mt-3 swiper-pagination-custom-text ${isCompleted ? 'completed' : ''}">${byte.steps?.[index].name}</span>
   <span class=" ${className} ${index === activeStepOrder ? 'swiper-pagination-bullet-active' : ''} cursor-default ${isCompleted ? 'completed' : ''}">${
     index + 1
@@ -107,6 +107,7 @@ function SwiperByteStepperItemView({ viewByteHelper, step, byte, space, setByteS
             clickable: false,
             enabled: true,
             renderBullet: (index, className) => renderBullet(index, className, byte, activeStepOrder),
+            verticalClass: 'swiper-pagination-vertical',
           }}
           allowTouchMove={true}
           simulateTouch={true}

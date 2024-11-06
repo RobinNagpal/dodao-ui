@@ -32,7 +32,16 @@
     align-items: flex-end;
   }
 
+  .swiper-pagination-vertical {
+    background-color: var(--block-bg);
+    max-width: calc(10% + 20px);
+    overflow: scroll !important;
+    max-height: calc(100vh - 400px);
+    height: 400px;
+  }
+
   .custom-swiper-bullet {
+
 
     .swiper-pagination-custom-text {
       display: none;
@@ -54,4 +63,5 @@
       }
     }
   }
+
 }
