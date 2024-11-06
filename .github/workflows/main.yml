@@ -4,15 +4,15 @@ on:
   push:
     branches:
       - main
-    paths:
-      - '!docs/**'
-      - '!tasks/**'
+    paths-ignore:
+      - 'docs/**'
+      - 'tasks/**'
   pull_request:
     branches:
       - main
-    paths:
-      - '!docs/**'
-      - '!tasks/**'
+    paths-ignore:
+      - 'docs/**'
+      - 'tasks/**'
 
 jobs:
   determine-changed-paths:
