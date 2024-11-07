@@ -3,6 +3,7 @@ import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-typ
 import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
+import { PlusIcon } from '@heroicons/react/24/solid';
 import React from 'react';
 
 export default function AddNewItemButton({
@@ -20,7 +21,7 @@ export default function AddNewItemButton({
     <>
       {isAdmin && (
         <Button
-          className="rounded-lg text-color"
+          className="text-color"
           variant="outlined"
           primary
           style={{
@@ -31,7 +32,10 @@ export default function AddNewItemButton({
           }}
           onClick={() => setShowCreateModal(true)}
         >
-          + Add New Item
+          <span>
+            <PlusIcon className="h-5 w-5 mr-1" />
+          </span>
+          Add New Item
         </Button>
       )}
       <FullPageModal className={'w-1/2'} open={showCreateModal} onClose={() => setShowCreateModal(false)} title={'Create New Item'} showCloseButton={false}>
