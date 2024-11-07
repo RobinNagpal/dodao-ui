@@ -80,6 +80,7 @@ export default function EditCompletionScreenStepperItem({
             onUpdate={(e) => {
               updateByteCompletionScreen('name', e?.toString());
             }}
+            error={byteErrors?.completionScreen?.name ? 'Name is required' : ''}
           >
             Name*
           </Input>
@@ -105,6 +106,7 @@ export default function EditCompletionScreenStepperItem({
           objectId={byte.id || 'unknown_byte_id'}
           imageType={ImageType.Tidbits}
           editorStyles={{ height: '200px' }}
+          error={byteErrors?.completionScreen?.content ? 'Content is required' : ''}
         />
       </div>
 

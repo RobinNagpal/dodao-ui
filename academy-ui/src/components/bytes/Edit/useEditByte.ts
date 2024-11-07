@@ -300,6 +300,7 @@ export function useEditByte(
       }
     });
 
+    updatedByteErrors.completionScreen = undefined;
     const completionScreenErrors = validateCompletionScreen(byte.completionScreen || undefined);
     if (Object.keys(completionScreenErrors).length > 0) {
       updatedByteErrors.completionScreen = completionScreenErrors;
