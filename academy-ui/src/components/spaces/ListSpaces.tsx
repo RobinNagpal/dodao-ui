@@ -82,7 +82,8 @@ export default function ListSpaces() {
       </MainDiv>
       {deletePineconeSpace && (
         <DeleteConfirmationModal
-          title={'Delete Index'}
+          title={`Delete Index - ${deletePineconeSpace.name}`}
+          deleteButtonText="Delete Index"
           open={!!deletePineconeSpace}
           onClose={() => setDeletePineconeSpace(null)}
           onDelete={async () => {

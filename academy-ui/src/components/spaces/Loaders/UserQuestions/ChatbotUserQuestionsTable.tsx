@@ -83,7 +83,8 @@ export function ChatbotUserQuestionsTable(props: { space: SpaceWithIntegrationsF
       )}
       {deleteChatbotUserQuestion && (
         <DeleteConfirmationModal
-          title={'Delete UserQuestion'}
+          title={`Delete UserQuestion - ${deleteChatbotUserQuestion.question}`}
+          deleteButtonText="Delete UserQuestion"
           open={!!deleteChatbotUserQuestion}
           onClose={() => setDeleteChatbotUserQuestion(null)}
           onDelete={async () => {

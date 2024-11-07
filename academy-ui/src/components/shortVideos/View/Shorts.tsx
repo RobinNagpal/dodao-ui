@@ -58,7 +58,8 @@ function ShortsThumbnail({ shortVideo, space }: ShortsThumbnailProps) {
       </div>
       {showDeleteModal && (
         <DeleteConfirmationModal
-          title={'Delete Short Video'}
+          title={`Delete Short Video - ${shortVideo.title}`}
+          deleteButtonText="Delete Short Video"
           open={showDeleteModal}
           onClose={() => setShowDeleteModal(false)}
           onDelete={async () => {

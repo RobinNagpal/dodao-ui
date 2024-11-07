@@ -41,12 +41,12 @@ export default function StyledSelect(props: StyledSelectProps) {
   const selectedItem = props.items.find((item) => item.id === props.selectedItemId);
   const items = props.showPleaseSelect ? [{ id: undefined, label: 'Please Select' }, ...props.items] : props.items;
   return (
-    <div className={props.className + ' mt-2'}>
+    <div className={props.className + ' my-2'}>
       <Listbox value={props.selectedItemId} onChange={(itemId) => props.setSelectedItemId(itemId)}>
         {({ open }) => {
           return (
             <div>
-              <Listbox.Label className="block text-sm font-medium leading-6">{props.label}</Listbox.Label>
+              <Listbox.Label className="block text-sm font-semibold leading-6">{props.label}</Listbox.Label>
               <div className="relative mt-2">
                 <StyledListboxButton className="relative w-full cursor-default rounded-md py-1.5 pl-3 pr-10 text-left shadow-sm ring-1 ring-inset focus:outline-none focus:ring-2 sm:text-sm sm:leading-6 ring-gray-400">
                   {selectedItem && <span className="block truncate">{selectedItem.label}</span>}

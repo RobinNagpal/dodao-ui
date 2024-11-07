@@ -23,6 +23,9 @@ Must have features
 - [x] Hide the scrollbars from stepper accordion. Dawood - Done
 - [x] Add hover tooltip on the icons on `Completion Screen` accordion.   Sami
 
+- [] If the name of item is too long, the dropdown ellipses hide.
+- [] Similar kind of validation to be added on Clickable demos.
+
 Styling of the login/"get started" modal. The modal is too big for a single input field.
 
 - [ ] Add some hovering effect on `Add Question`, `Move up`, `Move down`, and `Delete step` icons.    Skipped

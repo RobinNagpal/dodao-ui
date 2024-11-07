@@ -111,7 +111,8 @@ export function ChatbotFAQsTable(props: { space: SpaceWithIntegrationsFragment }
       )}
       {deleteChatbotFAQ && (
         <DeleteConfirmationModal
-          title={'Delete FAQ'}
+          title={`Delete FAQ - ${deleteChatbotFAQ.question}`}
+          deleteButtonText="Delete FAQ"
           open={!!deleteChatbotFAQ}
           onClose={() => setDeleteChatbotFAQ(null)}
           onDelete={async () => {

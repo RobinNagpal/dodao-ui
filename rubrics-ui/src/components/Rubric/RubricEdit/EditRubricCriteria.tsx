@@ -5,7 +5,6 @@ import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/Delete
 import SidebarButton from '@dodao/web-core/components/core/buttons/SidebarButton';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import PlusCircle from '@heroicons/react/20/solid/PlusCircleIcon';
 import TrashIcon from '@heroicons/react/24/outline/TrashIcon';
 import { RubricCriteria } from '@prisma/client';
 import React, { useState } from 'react';
@@ -86,7 +85,8 @@ const EditRubricCriteria: React.FC<EditRubricCriteriaProps> = ({ criteria, rubri
       <EditRubricCriteriaModal isOpen={isCriteriaModalOpen} onClose={() => setIsCriteriaModalOpen(false)} onSave={handleCriteriaSave} title={criteria.title} />
 
       <DeleteConfirmationModal
-        title={'Delete Criteria'}
+        title={`Delete Criteria - ${criteria.title}`}
+        deleteButtonText="Delete Criteria"
         open={isDeleteIconClicked}
         onClose={() => setIsDeleteIconClicked(false)}
         onDelete={() => deleteCriteria(criteria.id)}

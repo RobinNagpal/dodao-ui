@@ -28,6 +28,11 @@ function EditByteStepper({ space, byte, byteErrors, errorColor = '#d32f2f', succ
     setOpenAccordionIndex(byte.steps.length);
   };
 
+  const removeCompletionScreen = () => {
+    updateByteFunctions.removeCompletionScreen();
+    setShowCompletionScreen(false);
+  };
+
   const toggleAccordion = (e: React.MouseEvent<HTMLElement>, index: number) => {
     e.preventDefault();
     e.stopPropagation();
@@ -68,7 +73,7 @@ function EditByteStepper({ space, byte, byteErrors, errorColor = '#d32f2f', succ
               hasError={Boolean(byteErrors?.steps?.[step.uuid])}
               errorMessage="This Step has an error!!"
             >
-              <div className="w-full">
+              <div className="w-full px-4 lg:px-8">
                 <EditByteStepperItem
                   space={space}
                   byte={byte}
@@ -103,7 +108,8 @@ function EditByteStepper({ space, byte, byteErrors, errorColor = '#d32f2f', succ
             isOpen={openAccordionIndex === byte.steps.length}
             label="Completion Screen"
             onClick={(e: React.MouseEvent<HTMLElement>) => toggleAccordion(e, byte.steps.length)}
-            hasError={false}
+            hasError={Boolean(byteErrors?.completionScreen)}
+            errorMessage="Completion Screen has an error!!"
           >
             <div className={`w-full ${openAccordionIndex === byte.steps.length ? 'visible' : 'hidden'}`}>
               <EditCompletionScreenStepperItem
@@ -111,7 +117,7 @@ function EditByteStepper({ space, byte, byteErrors, errorColor = '#d32f2f', succ
                 byte={byte}
                 space={space}
                 updateByteCompletionScreen={updateByteFunctions.updateCompletionScreen}
-                removeCompletionScreen={updateByteFunctions.removeCompletionScreen}
+                removeCompletionScreen={removeCompletionScreen}
                 addButtonLabel={updateByteFunctions.addCallToActionButtonLabel}
                 addButtonLink={updateByteFunctions.addCallToActionButtonLink}
                 removeCompletionScreenItemButton={updateByteFunctions.removeCallToActionButton}

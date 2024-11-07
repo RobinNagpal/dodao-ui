@@ -1,8 +1,11 @@
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
-import { XMarkIcon } from '@heroicons/react/20/solid';
+import { PencilSquareIcon, TrashIcon } from '@heroicons/react/20/solid';
 import PhotoIcon from '@heroicons/react/24/solid/PhotoIcon';
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './InputUploadSection.module.scss';
+import FullScreenModal from '../modals/FullScreenModal';
+import IconButton from '../buttons/IconButton';
+import { IconTypes } from '../icons/IconTypes';
 
 interface ImageUploadSectionProps {
   label?: string;
@@ -33,6 +36,8 @@ export default function ImageUploadSection({
   clearSelectedImage,
 }: ImageUploadSectionProps) {
   const inputId = spaceId + '-' + slugify(label || imageType || objectId);
+  const [showFullScreenModal, setShowFullScreenModal] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -55,6 +60,7 @@ export default function ImageUploadSection({
   };
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    clearSelectedImage();
     const file = e.target.files![0];
     if (!allowedFileTypes.includes(file.type)) {
       console.log('File type not supported');
@@ -92,21 +98,36 @@ export default function ImageUploadSection({
       >
         {modelValue ? (
           <div className="relative w-full flex justify-center items-center">
-            <div className="relative max-h-4/5 max-w-4/5">
-              <img src={modelValue} alt="Uploaded file" className="w-full h-full object-cover" />
-
-              <div className="absolute top-0 right-0 m-2">
-                <button
-                  type="button"
-                  className="inline-flex items-center p-2 rounded-md bg-gray-500 hover:bg-gray-600 text-white"
-                  onClick={() => {
-                    clearSelectedImage();
-                  }}
-                >
-                  <span className="sr-only">Close</span>
-                  <XMarkIcon className="h-8 w-8" />
-                </button>
-              </div>
+            <div className="relative max-h-4/5 max-w-4/5 group">
+              <img
+                src={modelValue}
+                alt="Uploaded file"
+                title="Click image to view full screen"
+                className="w-full h-full object-contain cursor-pointer"
+                onClick={() => setShowFullScreenModal(true)}
+                onLoad={() => setImageLoaded(true)}
+              />
+              {imageLoaded && (
+                <div className={`absolute -top-5 -right-3 opacity-0 group-hover:opacity-100 transition-opacity`}>
+                  <div className="flex justify-center items-center gap-3">
+                    <label htmlFor={inputId} className={`relative`}>
+                      <IconButton tooltip="Change Image" iconName={IconTypes.Edit} height="30" width="30" className={`${styles.buttonColorToggle}`} />
+                      <input id={inputId} name="file-upload" type="file" className="sr-only" onChange={handleFileChange} accept={allowedFileTypes.join(', ')} />
+                    </label>
+                    <IconButton
+                      tooltip="Remove Image"
+                      iconName={IconTypes.Trash}
+                      height="30"
+                      width="30"
+                      className={`inline-flex items-center ${styles.buttonColorToggle}`}
+                      onClick={() => {
+                        clearSelectedImage();
+                        setImageLoaded(false);
+                      }}
+                    />
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         ) : (
@@ -117,7 +138,7 @@ export default function ImageUploadSection({
             ) : (
               <>
                 <div className="mt-4 flex text-md leading-6">
-                  <label htmlFor={inputId} className={`relative cursor-pointer rounded-md font-semibold ${styles.uploadButton}`}>
+                  <label htmlFor={inputId} className={`relative cursor-pointer rounded-md font-semibold ${styles.buttonColorToggle}`}>
                     <span className="px-2">Upload a file</span>
                     <input id={inputId} name="file-upload" type="file" className="sr-only" onChange={handleFileChange} accept={allowedFileTypes.join(', ')} />
                   </label>
@@ -131,6 +152,11 @@ export default function ImageUploadSection({
       </div>
       {helpText && <p className="ml-1 mt-2 mb-2 text-sm">{helpText}</p>}
       {typeof error === 'string' && <p className="mt-2 text-sm text-left text-red-600">{error}</p>}
+      {showFullScreenModal && modelValue && (
+        <FullScreenModal open={true} onClose={() => setShowFullScreenModal(false)} title={''} showTitleBg={false}>
+          <img src={modelValue} alt="Uploaded file" className="w-full h-[90vh] px-5 object-contain" />
+        </FullScreenModal>
+      )}
     </div>
   );
 }
