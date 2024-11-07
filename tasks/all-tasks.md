@@ -2,30 +2,30 @@
 Must have features
 
 # View Clickable Demos
-- [x] When the demo is done show a green tick mark on the demo like we show on the completed tidbits
+- [ ] The `trash` icon (for deleting) on the `Completion Screen` doesn't work.    Sami - Next
+- [ ] Placeholders missing from fields in `Completion Screen` accordion.  Sami - Next
+- [ ] Use slightly bigger font on the accordion where we are showing the step name.   Sami - Next
+- [ ] I don't see an option to delete byte - Sami - Next
 
-# Creation/Editing Bytes
-- [ ] The creation error is always the "oops something went wrong" should'nt it be specific.
-- [ ] Also how would the new user know that what things he can add in the tidbit as i had to find the question adding 
-option(solution we can add tooltips for the icons)
-- [ ] The size of the text box is too large
-- [ ] Full stepper needs adjustments to mae it look good
+### Dawood - Next
+- [ ] For the Delete Confirmation Modal, we need to pass the name of the entity also. This makes it clear to the user what he is deleting.    Dawood - Next
 
-Are we using the priority and tags fields anywhere, if not, we can then remove them.    Sami
-Step Contents field could be made smaller.  Dawood
-Add some hovering effect on `Add Question`, `Move up`, `Move down`, and `Delete step` icons.    Skipped
-Upload image modal needs to be styled better.   Dawood
-We get these generic errors like `Validation Error: Can't Save Byte`, the user doesn't know what exactly is the error.
-If a step has an error, it just shows `This step has an error`, doesn't really tell about the error. May be we should add real time validation and not wait until the user clicks on Upload button.     Sami
-Instead of show an icon for `Add Input or Questions`, which on clicking shows a modal with various buttons, we can directly show these buttons below the `Step Content` field. This would make adding questions more explicit for new users.    Skipped
-Hide the scrollbars from stepper accordion. Dawood
-Add hover tooltip on the icons on `Completion Screen` accordion.   Sami
-The `trash` icon (for deleting) on the `Completion Screen` doesn't work.    Sami
-Placeholders missing from fields in `Completion Screen` accordion.  Sami
-Use slightly bigger font on the accordion where we are showing the step name.   Sami
-I don't see an option to delete byte.
+
+
+
+- [x] Are we using the priority and tags fields anywhere, if not, we can then remove them.    Sami
+- [ ] Step Contents field could be made smaller.  Dawood - In Progress
+- [ ] Upload image modal needs to be styled better.   Dawood - In Progress
+- [x] We get these generic errors like `Validation Error: Can't Save Byte`, the user doesn't know what exactly is the error.
+- [x] If a step has an error, it just shows `This step has an error`, doesn't really tell about the error. May be we should add real time validation and not wait until the user clicks on Upload button.     Sami
+- [ ] Since we know the fields which has errors, above the save/update button, we can list down those fields with generic or a specific error message - Sami
+- [ ] Instead of show an icon for `Add Input or Questions`, which on clicking shows a modal with various buttons, we can directly show these buttons below the `Step Content` field. This would make adding questions more explicit for new users.    Skipped
+- [x] Hide the scrollbars from stepper accordion. Dawood - Done
+- [x] Add hover tooltip on the icons on `Completion Screen` accordion.   Sami
 
 Styling of the login/"get started" modal. The modal is too big for a single input field.
+
+- [ ] Add some hovering effect on `Add Question`, `Move up`, `Move down`, and `Delete step` icons.    Skipped
 
 # Signup/Login on Tidbitshub
 We added feature to show the spaces created by him. If there is already one or more spaces created
