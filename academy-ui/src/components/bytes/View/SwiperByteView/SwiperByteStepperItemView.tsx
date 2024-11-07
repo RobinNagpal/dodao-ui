@@ -3,15 +3,16 @@ import { UseViewByteHelper } from '@/components/bytes/View/useViewByteHelper';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import useWindowDimensions from '@/hooks/useWindowDimensions';
 import { ByteDto, ByteStepDto, ImageDisplayMode } from '@/types/bytes/ByteDto';
-import { CSSProperties, useRef, useState } from 'react';
+import { CSSProperties, useRef, useState, WheelEventHandler } from 'react';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import { Keyboard, Mousewheel, Navigation, Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import 'swiper/css/virtual';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { NavigationOptions } from 'swiper/types';
+import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
+import { SwiperRef } from 'swiper/swiper-react';
+import { NavigationOptions, type Swiper as SwiperClass } from 'swiper/types';
 import styles from './SwiperlByteStepperItemView.module.scss';
 
 interface ByteStepperItemWithProgressBarProps {
@@ -85,6 +86,17 @@ function SwiperByteStepperItemView({ viewByteHelper, step, byte, space, setByteS
             nav.prevEl = navigationPrevRef.current;
             nav.nextEl = navigationNextRef.current;
           }}
+          onPaginationUpdate={(swiper) => {
+            const element1 = swiper.pagination.el.getElementsByClassName('swiper-pagination-bullet-active')?.[0] as HTMLElement;
+            const paginationContainer = swiper.pagination.el;
+            if (paginationContainer?.scrollHeight > paginationContainer?.clientHeight) {
+              paginationContainer.classList.add('block-bg-color');
+              element1.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center',
+              });
+            }
+          }}
           onSlideChange={(swiper) => {
             const activeIndex = swiper.activeIndex;
             viewByteHelper.setActiveStep(activeIndex);
@@ -107,10 +119,19 @@ function SwiperByteStepperItemView({ viewByteHelper, step, byte, space, setByteS
             clickable: false,
             enabled: true,
             renderBullet: (index, className) => renderBullet(index, className, byte, activeStepOrder),
+            verticalClass: 'swiper-pagination-vertical',
           }}
           allowTouchMove={true}
           simulateTouch={true}
           autoFocus={true}
+          onPaginationRender={(swiper, el) => {
+            const containerForBullets = el;
+            // stop scroll event propagation to parent
+            containerForBullets.addEventListener('wheel', (e) => {
+              e.stopPropagation();
+            });
+            console.log('Pagination Rendered');
+          }}
           onBeforeTransitionStart={async (swiper) => {
             if (!viewByteHelper.canNavigateToNext(step)) {
               console.log('Cannot navigate to next');
@@ -169,6 +190,7 @@ function SwiperByteStepperItemView({ viewByteHelper, step, byte, space, setByteS
               <div className={`w-24 ${styles.scrollDownNextButtonText}`}>Scroll Down</div>
             )}
           </div>
+          <div id="containerForBullets" className="swiper-pagination swiper-pagination-bullets swiper-pagination-vertical" />
         </Swiper>
       </div>
     </div>
