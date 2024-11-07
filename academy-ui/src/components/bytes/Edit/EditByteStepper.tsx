@@ -68,7 +68,7 @@ function EditByteStepper({ space, byte, byteErrors, errorColor = '#d32f2f', succ
               hasError={Boolean(byteErrors?.steps?.[step.uuid])}
               errorMessage="This Step has an error!!"
             >
-              <div className="w-full">
+              <div className="w-full px-4 lg:px-8">
                 <EditByteStepperItem
                   space={space}
                   byte={byte}

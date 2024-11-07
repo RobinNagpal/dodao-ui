@@ -60,7 +60,7 @@ export default function Input({
   const inputId = uuidV4();
 
   return (
-    <div className={'my-4 ' + className || ''}>
+    <div className={'my-2 ' + className}>
       <label htmlFor={id || inputId} className="block text-sm font-medium leading-6">
         {label} {children}
       </label>
