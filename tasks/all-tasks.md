@@ -35,6 +35,7 @@ section which is another list, which "Admin of spaces", that allows user to sele
 This will help achieve both the goals 
 1) Signup and create space - already done
 2) Login to selected space from tidbitshub.org - new feature
+3) Show some default missing icon image if the icon is not present. Just like you added a placeholder for image
 
 # View Tidbit Collections
 - [ ] Have a way to separate the tidbits and clickable demos so that its clear to the user
