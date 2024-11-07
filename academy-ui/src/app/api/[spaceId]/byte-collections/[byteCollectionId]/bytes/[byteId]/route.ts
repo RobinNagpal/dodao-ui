@@ -7,6 +7,7 @@ import { checkEditSpacePermission } from '@/app/api/helpers/space/checkEditSpace
 import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
 import { slugify } from '@/app/api/helpers/space/slugify';
 import { prisma } from '@/prisma';
+import { Prisma } from '@prisma/client';
 import { ByteDto, ByteStepDto } from '@/types/bytes/ByteDto';
 import { UpsertByteInput } from '@/types/request/ByteRequests';
 import { ByteStepItem, Question } from '@/types/stepItems/stepItemDto';
@@ -66,7 +67,7 @@ async function putHandler(
     update: {
       ...args,
       steps: steps,
-      completionScreen: args.completionScreen || undefined,
+      completionScreen: args.completionScreen === null ? Prisma.DbNull : args.completionScreen,
     },
     where: {
       id: id,

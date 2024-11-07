@@ -28,6 +28,11 @@ function EditByteStepper({ space, byte, byteErrors, errorColor = '#d32f2f', succ
     setOpenAccordionIndex(byte.steps.length);
   };
 
+  const removeCompletionScreen = () => {
+    updateByteFunctions.removeCompletionScreen();
+    setShowCompletionScreen(false);
+  };
+
   const toggleAccordion = (e: React.MouseEvent<HTMLElement>, index: number) => {
     e.preventDefault();
     e.stopPropagation();
@@ -112,7 +117,7 @@ function EditByteStepper({ space, byte, byteErrors, errorColor = '#d32f2f', succ
                 byte={byte}
                 space={space}
                 updateByteCompletionScreen={updateByteFunctions.updateCompletionScreen}
-                removeCompletionScreen={updateByteFunctions.removeCompletionScreen}
+                removeCompletionScreen={removeCompletionScreen}
                 addButtonLabel={updateByteFunctions.addCallToActionButtonLabel}
                 addButtonLink={updateByteFunctions.addCallToActionButtonLink}
                 removeCompletionScreenItemButton={updateByteFunctions.removeCallToActionButton}
