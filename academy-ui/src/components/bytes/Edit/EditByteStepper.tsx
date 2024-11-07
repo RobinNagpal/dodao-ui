@@ -103,7 +103,8 @@ function EditByteStepper({ space, byte, byteErrors, errorColor = '#d32f2f', succ
             isOpen={openAccordionIndex === byte.steps.length}
             label="Completion Screen"
             onClick={(e: React.MouseEvent<HTMLElement>) => toggleAccordion(e, byte.steps.length)}
-            hasError={false}
+            hasError={Boolean(byteErrors?.completionScreen)}
+            errorMessage="Completion Screen has an error!!"
           >
             <div className={`w-full ${openAccordionIndex === byte.steps.length ? 'visible' : 'hidden'}`}>
               <EditCompletionScreenStepperItem
