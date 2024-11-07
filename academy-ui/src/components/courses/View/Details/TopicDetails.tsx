@@ -217,7 +217,8 @@ const Topic = ({ course, isCourseAdmin, space, topicKey, courseHelper }: TopicPr
       )}
       {showDeleteModal && (
         <DeleteConfirmationModal
-          title={'Delete Chapter'}
+          title={`Delete Chapter - ${currentTopic.title}`}
+          deleteButtonText="Delete Chapter"
           open={showDeleteModal}
           onClose={() => setShowDeleteModal(false)}
           onDelete={() => {

@@ -268,7 +268,8 @@ function EditClickableDemo({ space, demoId, byteCollection, closeDemoEditModal }
       </SingleCardLayout>
       {showDeleteModal && (
         <DeleteConfirmationModal
-          title={'Delete Demo'}
+          title={`Delete Demo - ${clickableDemo.title}`}
+          deleteButtonText="Delete Demo"
           open={showDeleteModal}
           onClose={() => setShowDeleteModal(false)}
           onDelete={async () => {

@@ -265,7 +265,8 @@ const SummaryDetails: FC<CourseSummaryProps> = ({ course, isCourseAdmin, space, 
       )}
       {showDeleteModal && (
         <DeleteConfirmationModal
-          title={'Delete Summary'}
+          title={`Delete Summary - ${currentSummary.title}`}
+          deleteButtonText="Delete Summary"
           open={showDeleteModal}
           onClose={() => setShowDeleteModal(false)}
           onDelete={() => {

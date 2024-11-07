@@ -70,7 +70,8 @@ export function ChatbotSubCategoriesTable(props: {
       )}
       {showDeleteModal && (
         <DeleteConfirmationModal
-          title={'Delete Sub Category'}
+          title={`Delete Sub Category - ${editChatbotSubCategory?.name}`}
+          deleteButtonText="Delete Sub Category"
           open={showDeleteModal}
           onClose={() => setShowDeleteModal(false)}
           onDelete={() => {

@@ -81,7 +81,7 @@ export function ChatbotCategoriesTable(props: { space: SpaceWithIntegrationsFrag
             setShowDeleteModal(value);
           }}
           spaceId={props.space.id}
-          chatbotCategoryId={deleteChatbotCategory.id}
+          chatbotCategory={deleteChatbotCategory}
         />
       )}
     </div>
