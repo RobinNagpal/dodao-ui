@@ -142,6 +142,7 @@ export default function SelectHtmlCaptureModal(props: SelectHtmlCaptureModalProp
       {deleteCaptureModalState.isVisible && (
         <DeleteConfirmationModal
           title={`Delete Capture - ${deleteCaptureModalState.captureName}`}
+          deleteButtonText="Delete Capture"
           open={deleteCaptureModalState.isVisible}
           onClose={closeCaptureDeleteModal}
           deleting={deleteCaptureModalState.deleting}

@@ -478,7 +478,8 @@ const GuideStep: React.FC<GuideStepProps> = ({ guide, step, stepErrors, guideHas
       )}
       {showDeleteModal && (
         <DeleteConfirmationModal
-          title={'Delete Step'}
+          title={`Delete Step - ${step.stepName}`}
+          deleteButtonText="Delete Step"
           open={showDeleteModal}
           onClose={() => setShowDeleteModal(false)}
           onDelete={() => {

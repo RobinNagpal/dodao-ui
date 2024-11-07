@@ -297,7 +297,8 @@ const CourseVideo: React.FC<CourseVideoProps> = ({ course, isCourseAdmin, space,
       )}
       {showDeleteModal && (
         <DeleteConfirmationModal
-          title={'Delete Video'}
+          title={`Delete Video - ${currentReading.title}`}
+          deleteButtonText="Delete Video"
           open={showDeleteModal}
           onClose={() => setShowDeleteModal(false)}
           onDelete={() => {

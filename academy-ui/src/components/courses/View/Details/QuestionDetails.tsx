@@ -31,7 +31,6 @@ interface QuestionDetailsProps {
   topicKey: string;
   courseHelper: CourseHelper;
   submissionHelper: CourseSubmissionHelper;
-
   questionIndex: string;
 }
 
@@ -301,7 +300,8 @@ export default function QuestionDetails(props: QuestionDetailsProps) {
         </div>
         {showDeleteModal && (
           <DeleteConfirmationModal
-            title={'Delete Question'}
+            title={`Delete Question - ${currentQuestion.content}`}
+            deleteButtonText="Delete Question"
             open={showDeleteModal}
             onClose={() => setShowDeleteModal(false)}
             onDelete={() => {

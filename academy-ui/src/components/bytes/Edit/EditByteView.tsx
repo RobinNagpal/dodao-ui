@@ -148,7 +148,8 @@ export default function EditByteView(props: {
       />
       {showDeleteModal && (
         <DeleteConfirmationModal
-          title={'Delete Byte'}
+          title={`Delete Byte - ${byte.name}`}
+          deleteButtonText="Delete Byte"
           open={showDeleteModal}
           onClose={() => setShowDeleteModal(false)}
           onDelete={async () => {
