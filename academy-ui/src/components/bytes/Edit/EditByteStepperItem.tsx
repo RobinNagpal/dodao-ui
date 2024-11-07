@@ -8,7 +8,6 @@ import CreateConnectDiscord from '@dodao/web-core/components/app/Common/CreateDi
 import CreateUserInput from '@dodao/web-core/components/app/Common/CreateUserInput';
 import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
 import AddStepItemModal from '@dodao/web-core/components/app/Modal/StepItem/AddStepItemModal';
-import Button from '@dodao/web-core/components/core/buttons/Button';
 import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
 import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import Input from '@dodao/web-core/components/core/input/Input';
@@ -22,6 +21,9 @@ import isEqual from 'lodash/isEqual';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
+import styles from './EditByteStepperItem.module.scss';
+import { PencilSquareIcon, PlusIcon, TrashIcon } from '@heroicons/react/20/solid';
+import dummyImage from '@/images/TidbitsHub/image-placeholder.png';
 
 interface EditByteStepperItemProps {
   space: SpaceWithIntegrationsFragment;
@@ -60,6 +62,8 @@ export default function EditByteStepperItem({
   updateStep,
 }: EditByteStepperItemProps) {
   const [modalByteInputOrQuestionOpen, setModalByteInputOrQuestionOpen] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
+
   const displayModeSelect: StyledSelectItem[] = [
     {
       label: 'Normal',
@@ -421,33 +425,78 @@ For background of the image, use the color ${backgroundColor} and for the primar
             tooltip="Add Manual Input or Question"
           />
         </div>
-        <div className="w-full mb-4">
-          <Input
-            modelValue={step.name}
-            maxLength={32}
-            onUpdate={(e) => updateStepName(e?.toString() || '')}
-            error={stepErrors?.stepName ? 'Name is required' : ''}
-          >
-            Name*
-          </Input>
-        </div>
 
-        <div className="w-full mb-4">
-          {step.imageUrl ? (
-            <img src={step.imageUrl} style={{ height: '150px' }} className="my-2 cursor-pointer" onClick={() => setSelectImageUploadModal(true)} />
-          ) : (
-            <Button primary={true} onClick={() => setSelectImageUploadModal(true)}>
-              Set Step Image
-            </Button>
-          )}
-        </div>
-        <div className="w-full mb-4">
-          <StyledSelect
-            label="Image Display Mode"
-            selectedItemId={step.displayMode || ImageDisplayMode.Normal}
-            items={displayModeSelect}
-            setSelectedItemId={(value) => updateStepDisplayMode(value!)}
-          />
+        <div className="w-full my-4 flex flex-col lg:flex-row justify-between">
+          <div className="w-full lg:w-1/2 my-2 flex flex-col justify-around">
+            <Input
+              modelValue={step.name}
+              maxLength={32}
+              onUpdate={(e) => updateStepName(e?.toString() || '')}
+              error={stepErrors?.stepName ? 'Name is required' : ''}
+            >
+              <span className="font-semibold">Name*</span>
+            </Input>
+            <StyledSelect
+              label="Image Display Mode"
+              selectedItemId={step.displayMode || ImageDisplayMode.Normal}
+              items={displayModeSelect}
+              setSelectedItemId={(value) => updateStepDisplayMode(value!)}
+            />
+          </div>
+          <div className="w-full lg:w-1/2 my-4 flex justify-center items-center">
+            {step.imageUrl ? (
+              <div className="relative inline-block h-[200px] group justify-center">
+                <img
+                  src={step.imageUrl}
+                  style={{ height: '100%' }}
+                  className="cursor-pointer border border-color"
+                  title="Click to change image"
+                  onLoad={() => setImageLoaded(true)}
+                />
+                {imageLoaded && (
+                  /* Overlay and Icons */
+                  <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="flex gap-4">
+                      <button
+                        type="button"
+                        title="Change Image"
+                        className={`p-1 rounded-full ${styles.iconsColorToggle}`}
+                        onClick={() => setSelectImageUploadModal(true)}
+                      >
+                        <span className="sr-only">Change Image</span>
+                        <PencilSquareIcon className="h-8 w-8" />
+                      </button>
+                      <button
+                        type="button"
+                        title="Remove Image"
+                        className={`p-1 rounded-full ${styles.iconsColorToggle}`}
+                        onClick={() => updateStepImageUrl('')}
+                      >
+                        <span className="sr-only">Remove Image</span>
+                        <TrashIcon className="h-8 w-8" />
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="relative h-[150px] group">
+                <img src={dummyImage.src} style={{ height: '100%' }} title="Add image" className="cursor-pointer border border-color" />
+                {/* Overlay and Icon */}
+                <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <button
+                    type="button"
+                    title="Add Image"
+                    className={`p-1 rounded-full ${styles.iconsColorToggle}`}
+                    onClick={() => setSelectImageUploadModal(true)}
+                  >
+                    <span className="sr-only">Add Image</span>
+                    <PlusIcon className="h-8 w-8" />
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
         {step.displayMode === ImageDisplayMode.FullScreenImage ? (
           <Input modelValue={step.content} maxLength={32} onUpdate={(e) => updateStepCaption(e?.toString() || '')}>
@@ -464,7 +513,7 @@ For background of the image, use the color ${backgroundColor} and for the primar
             spaceId={space.id}
             objectId={byte.id || 'unknown_byte_id'}
             imageType={ImageType.Tidbits}
-            editorStyles={{ height: '200px' }}
+            maxHeight={200}
             selectedTextAlign={step.contentAlign || TextAlign.Center}
             setTextAlign={updateContentAlignment}
           />
