@@ -10,6 +10,7 @@ import DocumentPlusIcon from '@heroicons/react/24/solid/DocumentPlusIcon';
 import TrashIcon from '@heroicons/react/24/solid/TrashIcon';
 import ArrowPathIcon from '@heroicons/react/24/solid/ArrowPathIcon';
 import styled from 'styled-components';
+import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/24/solid';
 
 // Define component's props using TypeScript interfaces
 interface IconButtonProps {
@@ -55,9 +56,9 @@ function IconButton({
       case IconTypes.Edit:
         return <PencilSquareIcon width="20" height="20" />;
       case IconTypes.MoveUp:
-        return <ArrowSmallUpIcon width="20" height="20" />;
+        return <ArrowUpIcon width="20" height="20" />;
       case IconTypes.MoveDown:
-        return <ArrowSmallDownIcon width="20" height="20" />;
+        return <ArrowDownIcon width="20" height="20" />;
       case IconTypes.GuideAddIcon:
         return <DocumentPlusIcon width="20" height="20" />;
       case IconTypes.ArrowDownTrayIcon:
