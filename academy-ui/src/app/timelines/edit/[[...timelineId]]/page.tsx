@@ -104,9 +104,9 @@ const EditTimeline = (props: { space: SpaceWithIntegrationsFragment; params: { t
             <div className="border-dashed border-t-2 mt-10 px-4" key={event.uuid}>
               <EventContainer hasError={!!timelineErrors.events?.[event.uuid]}>
                 <div className="flex flex-row-reverse mt-2">
-                  <IconButton iconName={IconTypes.Trash} size="large" onClick={() => removeEvent(event.uuid)} />
-                  <IconButton iconName={IconTypes.MoveDown} size="large" onClick={() => moveEventDown(event.uuid)} />
-                  <IconButton iconName={IconTypes.MoveUp} size="large" onClick={() => moveEventUp(event.uuid)} />
+                  <IconButton iconName={IconTypes.Trash} onClick={() => removeEvent(event.uuid)} />
+                  <IconButton iconName={IconTypes.MoveDown} onClick={() => moveEventDown(event.uuid)} />
+                  <IconButton iconName={IconTypes.MoveUp} onClick={() => moveEventUp(event.uuid)} />
                 </div>
                 <Input
                   modelValue={event.title}

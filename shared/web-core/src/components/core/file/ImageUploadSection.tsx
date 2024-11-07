@@ -4,6 +4,8 @@ import PhotoIcon from '@heroicons/react/24/solid/PhotoIcon';
 import React, { useState } from 'react';
 import styles from './InputUploadSection.module.scss';
 import FullScreenModal from '../modals/FullScreenModal';
+import IconButton from '../buttons/IconButton';
+import { IconTypes } from '../icons/IconTypes';
 
 interface ImageUploadSectionProps {
   label?: string;
@@ -109,21 +111,20 @@ export default function ImageUploadSection({
                 <div className={`absolute -top-5 -right-3 opacity-0 group-hover:opacity-100 transition-opacity`}>
                   <div className="flex justify-center items-center gap-3">
                     <label htmlFor={inputId} className={`relative cursor-pointer rounded-full p-2 ${styles.buttonColorToggle}`}>
-                      <PencilSquareIcon title="Change Image" className="h-8 w-8" />
+                      <PencilSquareIcon title="Change Image" width={30} height={30} />
                       <input id={inputId} name="file-upload" type="file" className="sr-only" onChange={handleFileChange} accept={allowedFileTypes.join(', ')} />
                     </label>
-                    <button
-                      type="button"
-                      title="Remove Image"
+                    <IconButton
+                      tooltip="Remove Image"
+                      iconName={IconTypes.Trash}
+                      height="30"
+                      width="30"
                       className={`inline-flex items-center p-2 rounded-full ${styles.buttonColorToggle}`}
                       onClick={() => {
                         clearSelectedImage();
                         setImageLoaded(false);
                       }}
-                    >
-                      <span className="sr-only">Remove Image</span>
-                      <TrashIcon className="h-8 w-8" />
-                    </button>
+                    />
                   </div>
                 </div>
               )}

@@ -22,8 +22,9 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
 import styles from './EditByteStepperItem.module.scss';
-import { PencilSquareIcon, PlusIcon, TrashIcon } from '@heroicons/react/20/solid';
 import dummyImage from '@/images/TidbitsHub/image-placeholder.png';
+import ViewEditableImage from '@dodao/web-core/components/core/image/ViewEditableImage';
+import OverlayOnHover from '@dodao/web-core/components/core/overlay/OverlayOnHover';
 
 interface EditByteStepperItemProps {
   space: SpaceWithIntegrationsFragment;
@@ -454,53 +455,31 @@ For background of the image, use the color ${backgroundColor} and for the primar
                   onLoad={() => setImageLoaded(true)}
                 />
                 {imageLoaded && (
-                  /* Overlay and Icons */
-                  <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <div className="flex gap-4">
-                      <button
-                        type="button"
-                        title="Change Image"
-                        className={`p-1 rounded-full ${styles.iconsColorToggle}`}
-                        onClick={() => setSelectImageUploadModal(true)}
-                      >
-                        <span className="sr-only">Change Image</span>
-                        <PencilSquareIcon className="h-8 w-8" />
-                      </button>
-                      <button
-                        type="button"
-                        title="Remove Image"
-                        className={`p-1 rounded-full ${styles.iconsColorToggle}`}
-                        onClick={() => updateStepImageUrl('')}
-                      >
-                        <span className="sr-only">Remove Image</span>
-                        <TrashIcon className="h-8 w-8" />
-                      </button>
-                    </div>
-                  </div>
+                  <OverlayOnHover>
+                    <ViewEditableImage onClickEditIcon={() => setSelectImageUploadModal(true)} onClickTrashIcon={() => updateStepImageUrl('')} />
+                  </OverlayOnHover>
                 )}
               </div>
             ) : (
               <div className="relative h-[150px] group">
-                <img src={dummyImage.src} style={{ height: '100%' }} title="Add image" className="cursor-pointer border border-color" />
-                {/* Overlay and Icon */}
-                <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <button
-                    type="button"
-                    title="Add Image"
+                <img src={dummyImage.src} style={{ height: '100%' }} className="cursor-pointer border border-color" />
+                <OverlayOnHover>
+                  <IconButton
+                    tooltip="Add Image"
+                    iconName={IconTypes.PlusIcon}
+                    height="30"
+                    width="30"
                     className={`p-1 rounded-full ${styles.iconsColorToggle}`}
                     onClick={() => setSelectImageUploadModal(true)}
-                  >
-                    <span className="sr-only">Add Image</span>
-                    <PlusIcon className="h-8 w-8" />
-                  </button>
-                </div>
+                  />
+                </OverlayOnHover>
               </div>
             )}
           </div>
         </div>
         {step.displayMode === ImageDisplayMode.FullScreenImage ? (
           <Input modelValue={step.content} maxLength={32} onUpdate={(e) => updateStepCaption(e?.toString() || '')}>
-            Caption*
+            <span className="font-semibold">Caption*</span>
           </Input>
         ) : (
           <MarkdownEditor
@@ -508,7 +487,6 @@ For background of the image, use the color ${backgroundColor} and for the primar
             modelValue={step.content}
             generateImagePromptFn={() => promptForImagePrompt}
             placeholder={'Contents'}
-            label={'Step Contents'}
             onUpdate={updateStepContent}
             spaceId={space.id}
             objectId={byte.id || 'unknown_byte_id'}
@@ -516,7 +494,9 @@ For background of the image, use the color ${backgroundColor} and for the primar
             maxHeight={200}
             selectedTextAlign={step.contentAlign || TextAlign.Center}
             setTextAlign={updateContentAlignment}
-          />
+          >
+            <span className="font-semibold">Step Content*</span>
+          </MarkdownEditor>
         )}
       </div>
       {stepItemsForStepper.map((stepItem, index) => (

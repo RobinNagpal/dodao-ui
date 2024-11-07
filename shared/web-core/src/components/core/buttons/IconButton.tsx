@@ -2,15 +2,12 @@
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import RobotIconSolid from '@dodao/web-core/components/core/icons/RobotIconSolid';
-import PencilSquareIcon from '@heroicons/react/24/outline/PencilSquareIcon';
-import ArrowSmallDownIcon from '@heroicons/react/24/solid/ArrowSmallDownIcon';
 import ArrowDownTrayIcon from '@heroicons/react/24/outline/ArrowDownTrayIcon';
-import ArrowSmallUpIcon from '@heroicons/react/24/solid/ArrowSmallUpIcon';
 import DocumentPlusIcon from '@heroicons/react/24/solid/DocumentPlusIcon';
-import TrashIcon from '@heroicons/react/24/solid/TrashIcon';
 import ArrowPathIcon from '@heroicons/react/24/solid/ArrowPathIcon';
 import styled from 'styled-components';
-import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/24/solid';
+import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/20/solid';
+import { PencilSquareIcon, PlusIcon, TrashIcon } from '@heroicons/react/20/solid';
 
 // Define component's props using TypeScript interfaces
 interface IconButtonProps {
@@ -20,18 +17,19 @@ interface IconButtonProps {
   variant?: 'outlined' | 'contained' | 'text';
   loading?: boolean;
   type?: string;
-  size?: string;
+  height?: string;
+  width?: string;
   removeBorder?: boolean;
   onClick?: () => void;
   className?: string;
 }
 
 // Create the Styled Components
-const StyledUiButton = styled(Button)`
+const StyledUiButton = styled(Button)<{ className?: string }>`
   border: none;
 
   svg {
-    color: var(--text-color);
+    color: ${({ className }) => (className?.toLowerCase().includes('color') ? '' : 'var(--text-color)')};
   }
 `;
 
@@ -43,7 +41,8 @@ function IconButton({
   variant = 'outlined',
   loading = false,
   type,
-  size,
+  height = '20',
+  width = '20',
   removeBorder = false,
   onClick,
   className,
@@ -52,21 +51,23 @@ function IconButton({
   const renderIcon = () => {
     switch (iconName) {
       case IconTypes.Trash:
-        return <TrashIcon width="20" height="20" />;
+        return <TrashIcon width={width} height={height} />;
       case IconTypes.Edit:
-        return <PencilSquareIcon width="20" height="20" />;
+        return <PencilSquareIcon width={width} height={height} />;
       case IconTypes.MoveUp:
-        return <ArrowUpIcon width="20" height="20" />;
+        return <ArrowUpIcon width={width} height={height} />;
       case IconTypes.MoveDown:
-        return <ArrowDownIcon width="20" height="20" />;
+        return <ArrowDownIcon width={width} height={height} />;
       case IconTypes.GuideAddIcon:
-        return <DocumentPlusIcon width="20" height="20" />;
+        return <DocumentPlusIcon width={width} height={height} />;
       case IconTypes.ArrowDownTrayIcon:
-        return <ArrowDownTrayIcon width="20" height="20" />;
+        return <ArrowDownTrayIcon width={width} height={height} />;
       case IconTypes.Reload:
-        return <ArrowPathIcon width="20" height="20" />;
+        return <ArrowPathIcon width={width} height={height} />;
       case IconTypes.RobotIconSolid:
         return <RobotIconSolid />;
+      case IconTypes.PlusIcon:
+        return <PlusIcon width={width} height={height} />;
       default:
         return null;
     }
@@ -80,7 +81,6 @@ function IconButton({
         variant={variant}
         loading={loading}
         removeBorder={removeBorder}
-        size="sm"
         onClick={disabled ? undefined : onClick}
         className={className}
       >

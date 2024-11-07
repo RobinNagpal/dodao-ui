@@ -127,7 +127,7 @@ export default function GuideSubmissionsTable(props: GuideSubmissionsTableProps)
   return (
     <div className="w-full">
       <div className={`w-full flex justify-end mb-4 ${styles.downloadWrapper}`}>
-        <IconButton iconName={IconTypes.ArrowDownTrayIcon} loading={csvDownloading} size="large" onClick={() => downloadCSV()} />
+        <IconButton iconName={IconTypes.ArrowDownTrayIcon} loading={csvDownloading} onClick={() => downloadCSV()} />
       </div>
       <div
         className={`ag-theme-alpine flex-grow h-max text-xs ${styles.agGridWrapper}`}

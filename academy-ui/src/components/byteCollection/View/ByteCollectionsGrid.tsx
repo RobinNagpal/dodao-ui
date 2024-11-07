@@ -32,7 +32,6 @@ export default function ByteCollectionsGrid({
               isAdmin={isAdmin}
             />
           ))}
-          {/* {isAdmin! && <AddByteCollection space={space} />} */}
         </Grid2Cols>
       )}
     </>
