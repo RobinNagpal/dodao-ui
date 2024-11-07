@@ -31,7 +31,7 @@ function EditByteStepper({ space, byte, byteErrors, errorColor = '#d32f2f', succ
   const removeCompletionScreen = () => {
     updateByteFunctions.removeCompletionScreen();
     setShowCompletionScreen(false);
-  }
+  };
 
   const toggleAccordion = (e: React.MouseEvent<HTMLElement>, index: number) => {
     e.preventDefault();
