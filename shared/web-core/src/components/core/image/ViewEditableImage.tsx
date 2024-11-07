@@ -11,20 +11,13 @@ interface ViewEditableImageProps {
 export default function ViewEditableImage({ onClickEditIcon, onClickTrashIcon }: ViewEditableImageProps) {
   return (
     <div className="flex gap-4">
-      <IconButton
-        tooltip="Change Image"
-        iconName={IconTypes.Edit}
-        height="30"
-        width="30"
-        className={`p-1 rounded-full ${styles.iconsColorToggle}`}
-        onClick={onClickEditIcon}
-      />
+      <IconButton tooltip="Change Image" iconName={IconTypes.Edit} height="30" width="30" className={`${styles.iconsColorToggle}`} onClick={onClickEditIcon} />
       <IconButton
         tooltip="Remove Image"
         iconName={IconTypes.Trash}
         height="30"
         width="30"
-        className={`p-1 rounded-full ${styles.iconsColorToggle}`}
+        className={`${styles.iconsColorToggle}`}
         onClick={onClickTrashIcon}
       />
     </div>

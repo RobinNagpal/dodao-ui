@@ -111,13 +111,7 @@ export default function ImageUploadSection({
                 <div className={`absolute -top-5 -right-3 opacity-0 group-hover:opacity-100 transition-opacity`}>
                   <div className="flex justify-center items-center gap-3">
                     <label htmlFor={inputId} className={`relative`}>
-                      <IconButton
-                        tooltip="Change Image"
-                        iconName={IconTypes.Edit}
-                        height="30"
-                        width="30"
-                        className={`rounded-full p-2 ${styles.buttonColorToggle}`}
-                      />
+                      <IconButton tooltip="Change Image" iconName={IconTypes.Edit} height="30" width="30" className={`${styles.buttonColorToggle}`} />
                       <input id={inputId} name="file-upload" type="file" className="sr-only" onChange={handleFileChange} accept={allowedFileTypes.join(', ')} />
                     </label>
                     <IconButton
@@ -125,7 +119,7 @@ export default function ImageUploadSection({
                       iconName={IconTypes.Trash}
                       height="30"
                       width="30"
-                      className={`inline-flex items-center p-2 rounded-full ${styles.buttonColorToggle}`}
+                      className={`inline-flex items-center ${styles.buttonColorToggle}`}
                       onClick={() => {
                         clearSelectedImage();
                         setImageLoaded(false);
