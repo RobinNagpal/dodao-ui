@@ -6,7 +6,7 @@ const NoBytes = (props: SpaceProps) => {
   return (
     <div className="mb-3 text-center">
       <Block className="pt-1">
-        <p className="mb-2">No tidbits present for {props.space.name}</p>
+        <p className="my-2 text-xl font-semibold">No Tidbits present for {props.space.name}</p>
       </Block>
     </div>
   );
