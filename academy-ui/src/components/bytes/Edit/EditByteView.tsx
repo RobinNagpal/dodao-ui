@@ -17,7 +17,7 @@ import PageLoading from '@dodao/web-core/components/core/loaders/PageLoading';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import TextareaArray from '@dodao/web-core/components/core/textarea/TextareaArray';
 import { ByteErrors } from '@dodao/web-core/types/errors/byteErrors';
-import ErrorMessages from '@dodao/web-core/components/app/ErrorMessage';
+import EditByteErrorMessage from '@/components/bytes/Edit/EditByteErrorMessage';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -120,7 +120,7 @@ export default function EditByteView(props: {
               <EditByteStepper space={space} byte={byte} byteErrors={byteErrors} updateByteFunctions={updateByteFunctions} />
             </Block>
 
-            <ErrorMessages byte={byte} byteErrors={byteErrors} />
+            <EditByteErrorMessage byte={byte} byteErrors={byteErrors} />
 
             <div className="flex">
               <Button
