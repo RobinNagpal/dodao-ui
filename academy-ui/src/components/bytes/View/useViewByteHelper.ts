@@ -225,7 +225,7 @@ export function useViewByteHelper({ space, byteId, stepOrder, fetchByteFn }: Use
     return isEverythingInByteIsAnswered();
   }
   async function submitByte(): Promise<boolean> {
-    if (byteSubmission.isSubmitted) return true;
+    if (byteSubmission.isSubmitted || byteId.startsWith('0001-demo-byte')) return true;
 
     setByteSubmitting(true);
     setByteSubmission((prevByteSubmission) => ({ ...prevByteSubmission, isPristine: false }));

@@ -56,7 +56,7 @@ export default function ByteItem(props: ByteItemProps) {
             </div>
           </Link>
 
-          {byte.byteId && (
+          {byte.byteId && !byte.byteId.startsWith('0001-demo-byte') && (
             <div className="z-10">
               <PrivateEllipsisDropdown
                 items={threeDotItems}

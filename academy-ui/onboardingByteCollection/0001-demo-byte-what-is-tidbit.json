@@ -1,0 +1,63 @@
+{
+  "postSubmissionStepContent": "",
+  "content": "A Tidbit is a quick, byte-sized piece of information designed for easy consumption. TidbitsHub allows you to create these small chunks of content for quick learning and interaction.",
+  "created": "2024-11-08T10:00:00.000Z",
+  "id": "0001-demo-byte-what-is-tidbit",
+  "name": "What is a Tidbit?",
+  "admins": ["admin1@example.com", "admin2@example.com"],
+  "tags": ["onboarding", "tidbits"],
+  "priority": 1,
+  "videoUrl": null,
+  "videoAspectRatio": null,
+  "completionScreen": null,
+  "steps": [
+    {
+      "content": "A Tidbit is a byte-sized piece of information, designed to convey key concepts quickly and easily. Tidbits are perfect for introducing essential ideas in an easily digestible format, allowing users to learn in short bursts. They are especially effective for busy individuals who want to understand key points without reading lengthy material.",
+      "displayMode": "normal",
+      "name": "The Essence of a Tidbit",
+      "uuid": "step-1",
+      "imageUrl": "",
+      "stepItems": []
+    },
+    {
+      "content": "Companies use tidbits to educate clients on key concepts, new features, or best practices without overwhelming them. By breaking down complex topics into manageable pieces, tidbits allow clients to retain information better and feel more engaged with the material. This approach can significantly enhance understanding and satisfaction.",
+      "displayMode": "normal",
+      "name": "Why Tidbits Matter",
+      "uuid": "step-2",
+      "imageUrl": "",
+      "stepItems": []
+    },
+    {
+      "content": "TidbitsHub offers AI-powered creation tools that can help you craft a tidbit in minutes. Simply input your topic, and our AI will suggest structured content, ensuring your tidbit is informative and concise. This feature makes content creation quick and accessible, even for those without prior experience in writing or design.",
+      "displayMode": "normal",
+      "name": "Creating Tidbits with AI",
+      "uuid": "step-3",
+      "imageUrl": "",
+      "stepItems": []
+    },
+    {
+      "content": "Tidbits aren’t just static text. You can add single-choice or multiple-choice questions to test if a person has engaged with the content. These interactive elements make learning more engaging and ensure that users are actively processing the information rather than passively skimming through it.",
+      "displayMode": "normal",
+      "name": "Making Tidbits Interactive",
+      "uuid": "step-4",
+      "imageUrl": "",
+      "stepItems": []
+    },
+    {
+      "content": "At the end of each tidbit, users can leave feedback. This feedback helps creators understand what worked well and what could be improved, making future tidbits even more effective. Continuous feedback allows TidbitsHub to be a dynamic learning platform that adapts to users' needs and preferences.",
+      "displayMode": "normal",
+      "name": "Collecting Feedback",
+      "uuid": "step-5",
+      "imageUrl": "",
+      "stepItems": []
+    },
+    {
+      "content": "Tidbits on TidbitsHub are not only easy to create but also effective for educating clients in an engaging way. With AI-powered content suggestions, interactive question options, and feedback mechanisms, TidbitsHub offers a unique, comprehensive approach to knowledge sharing that keeps users engaged and informed.",
+      "displayMode": "normal",
+      "name": "Why Use Tidbits on TidbitsHub?",
+      "uuid": "step-6",
+      "imageUrl": "",
+      "stepItems": []
+    }
+  ]
+}

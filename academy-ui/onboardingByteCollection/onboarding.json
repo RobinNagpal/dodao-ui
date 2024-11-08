@@ -1,0 +1,47 @@
+{
+  "id": "0001-onboarding-5e6f-7g8h-9i0j-k1l2m3n4o5p6",
+  "spaceId": "dodao_onboarding",
+  "createdAt": "2024-11-08T10:00:00.000Z",
+  "updatedAt": "2024-11-08T10:00:00.000Z",
+  "name": "TidbitsHub Onboarding",
+  "description": "An introductory collection to help new users understand the TidbitsHub platform, covering core features like tidbits, clickable demos, and short videos.",
+  "byteIds": [],
+  "priority": 100,
+  "videoUrl": "https://example.com/intro-video.mp4",
+  "archive": false,
+  "items": [
+    {
+      "byte": {
+        "byteId": "0001-demo-byte-what-is-tidbit",
+        "name": "What is a Tidbit?",
+        "content": "A Tidbit is a byte-sized piece of information, designed to convey key concepts quickly and easily. Tidbits are perfect for introducing essential ideas in an easily digestible format.",
+        "videoUrl": null,
+        "archive": false
+      },
+      "type": "Byte",
+      "order": 1
+    },
+    {
+      "byte": {
+        "byteId": "0002-what-is-clickable-demo",
+        "name": "What is a Clickable Demo?",
+        "content": "A Clickable Demo is an interactive experience that allows users to explore features or processes hands-on. TidbitsHub's Clickable Demos help users engage with content actively.",
+        "videoUrl": null,
+        "archive": false
+      },
+      "type": "Byte",
+      "order": 2
+    },
+    {
+      "byte": {
+        "byteId": "0003-what-is-short-video",
+        "name": "What is a Short Video?",
+        "content": "A Short Video in TidbitsHub provides visual explanations and demonstrations in a compact format. It's great for users who prefer learning through visual content.",
+        "videoUrl": null,
+        "archive": false
+      },
+      "type": "Byte",
+      "order": 3
+    }
+  ]
+}

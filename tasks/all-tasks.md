@@ -5,7 +5,12 @@ Must have features
 - [ ] The `trash` icon (for deleting) on the `Completion Screen` doesn't work.    Sami - Next
 - [ ] Placeholders missing from fields in `Completion Screen` accordion.  Sami - Next
 - [ ] Use slightly bigger font on the accordion where we are showing the step name.   Sami - Next
-- [ ] I don't see an option to delete byte - Sami - Next
+- [ ] Create Byte collection for onboarding new users:
+        1. This byte collection would only be shown to admins
+        2. Only show this collection if total collections are less than 3 (including the onboarding collection)
+        3. The collection would have:
+            1. Introductory video about TidbitsHub platform
+            2. Tidbits about `What is Tidbit`, `What is Clickable Demo`, and `What is Short Video`.
 
 ### Dawood - Next
 - [ ] For the Delete Confirmation Modal, we need to pass the name of the entity also. This makes it clear to the user what he is deleting.    Dawood - Next
