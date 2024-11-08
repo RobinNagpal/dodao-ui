@@ -150,6 +150,22 @@ Make sure to include the following mappings in your `etc/hosts` file to test the
 127.0.0.1	 test-tidbits.tidbitshub-localhost.org
 ```
 
+# Local Setup for testing
+When testing creating or logging to different spaces from the marketing site(https://tidbitshub.org or myrubrics.com),
+When you login, you will see the list of spaces. You will see two lists
+- One list will have the spaces that are created by the user
+- The other list will have the spaces that the user is an admin of
+
+### To test the spaces on local
+We need to make sure we have a few mapping of the format in the `etc/hosts` file
+```
+{space-id}.tidbitshub-localhost.org
+```
+
+Here space-id can be the id of the space already created or of the new space that will be created. On you local you
+can hardcode the space id of the new space to be created when testing space creation flow.
+
+
 
 # Checklist to make sure you understand
 - [ ] How we determine the space based on the domain in the url

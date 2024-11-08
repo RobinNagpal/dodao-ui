@@ -11,38 +11,22 @@ Must have features
         3. The collection would have:
             1. Introductory video about TidbitsHub platform
             2. Tidbits about `What is Tidbit`, `What is Clickable Demo`, and `What is Short Video`.
-
-### Dawood - Next
-- [ ] For the Delete Confirmation Modal, we need to pass the name of the entity also. This makes it clear to the user what he is deleting.    Dawood - Next
-
-
-
-
-- [x] Are we using the priority and tags fields anywhere, if not, we can then remove them.    Sami
-- [ ] Step Contents field could be made smaller.  Dawood - In Progress
-- [ ] Upload image modal needs to be styled better.   Dawood - In Progress
-- [x] We get these generic errors like `Validation Error: Can't Save Byte`, the user doesn't know what exactly is the error.
-- [x] If a step has an error, it just shows `This step has an error`, doesn't really tell about the error. May be we should add real time validation and not wait until the user clicks on Upload button.     Sami
-- [ ] Since we know the fields which has errors, above the save/update button, we can list down those fields with generic or a specific error message - Sami
-- [ ] Instead of show an icon for `Add Input or Questions`, which on clicking shows a modal with various buttons, we can directly show these buttons below the `Step Content` field. This would make adding questions more explicit for new users.    Skipped
-- [x] Hide the scrollbars from stepper accordion. Dawood - Done
-- [x] Add hover tooltip on the icons on `Completion Screen` accordion.   Sami
-
-- [] If the name of item is too long, the dropdown ellipses hide.
-- [] Similar kind of validation to be added on Clickable demos.
-
-Styling of the login/"get started" modal. The modal is too big for a single input field.
-
-- [ ] Add some hovering effect on `Add Question`, `Move up`, `Move down`, and `Delete step` icons.    Skipped
+# Tidbits
+- [ ] Instead of show an icon for `Add Input or Questions`, which on clicking shows a modal with various buttons, we 
+can directly show these buttons below the `Step Content` field. This would make adding questions more explicit for new 
+users - Skipped
+- [ ] Add some hovering effect on `Add Question`, `Move up`, `Move down`, and `Delete step` icons - Skipped
 
 # Signup/Login on Tidbitshub
-We added feature to show the spaces created by him. If there is already one or more spaces created
-by the user, we should show a list of spaces and let the user select one of them to login. Here we can show another
-section which is another list, which "Admin of spaces", that allows user to select and login to that space. 
+- [ ] Styling of the login/"get started" modal. The modal is too big for a single input field.
+- [ ] Remove avatar image which we show and we can show an empty avatar image there
+- [ ] Test the following
+    - Login with email works fine
+    - The user sees the list of spaces they are part of after login
+    - Users gets loggedin after selection of the space. The new JWT create has the spaceId of the space selected
+- [ ] Fix issue in `academy-ui/src/app/api/[spaceId]/queries/spaces/by-admin/route.ts`
+- [ ] There are some styling issues in the spaces list. The rows are not of the same height. some other improvements can be made
 
-This will help achieve both the goals 
-1) Signup and create space - already done
-2) Login to selected space from tidbitshub.org - new feature
 3) Show some default missing icon image if the icon is not present. Just like you added a placeholder for image
 
 # View Tidbit Collections
