@@ -1,0 +1,63 @@
+{
+  "postSubmissionStepContent": "",
+  "content": "A Clickable Demo is an interactive experience that allows users to explore features, processes, or concepts hands-on. TidbitsHub provides Clickable Demos to create immersive and guided learning paths for users.",
+  "created": "2024-11-08T10:00:00.000Z",
+  "id": "0001-demo-byte-what-is-clickable-demo",
+  "name": "What is a Clickable Demo?",
+  "admins": ["admin1@example.com", "admin2@example.com"],
+  "tags": ["onboarding", "clickable-demo"],
+  "priority": 2,
+  "videoUrl": null,
+  "videoAspectRatio": null,
+  "completionScreen": null,
+  "steps": [
+    {
+      "content": "A Clickable Demo is a hands-on, interactive experience that allows users to actively explore a feature or concept. Unlike static tutorials, clickable demos guide users through each step, providing an engaging way to learn.",
+      "displayMode": "normal",
+      "name": "Introduction to Clickable Demos",
+      "uuid": "step-1",
+      "imageUrl": "",
+      "stepItems": []
+    },
+    {
+      "content": "Clickable Demos are perfect for explaining complex processes or multi-step actions. Users can follow along, click by click, to understand each part of a feature or workflow in detail. This approach is highly effective for breaking down complicated topics.",
+      "displayMode": "normal",
+      "name": "Breaking Down Complex Processes",
+      "uuid": "step-2",
+      "imageUrl": "",
+      "stepItems": []
+    },
+    {
+      "content": "On TidbitsHub, you can create Clickable Demos that walk users through realistic scenarios. Each step is designed to mimic actual user interactions, providing a simulated environment that prepares users for real-life application.",
+      "displayMode": "normal",
+      "name": "Realistic Scenarios on TidbitsHub",
+      "uuid": "step-3",
+      "imageUrl": "",
+      "stepItems": []
+    },
+    {
+      "content": "Clickable Demos are also interactive, meaning users can actively engage with the demo instead of passively watching. This increases retention and understanding, as users are more likely to remember what they've interacted with.",
+      "displayMode": "normal",
+      "name": "Interactivity for Better Retention",
+      "uuid": "step-4",
+      "imageUrl": "",
+      "stepItems": []
+    },
+    {
+      "content": "TidbitsHub’s Clickable Demos are easy to create, with tools that guide you through building each step. You can customize demos to match your exact needs, making them a flexible and powerful tool for training, onboarding, and education.",
+      "displayMode": "normal",
+      "name": "Easy Creation and Customization",
+      "uuid": "step-5",
+      "imageUrl": "",
+      "stepItems": []
+    },
+    {
+      "content": "Overall, Clickable Demos provide a unique learning experience, blending interactivity and guidance to make complex topics accessible. They are a cornerstone of user education on TidbitsHub, helping users learn by doing.",
+      "displayMode": "normal",
+      "name": "Why Use Clickable Demos on TidbitsHub?",
+      "uuid": "step-6",
+      "imageUrl": "",
+      "stepItems": []
+    }
+  ]
+}

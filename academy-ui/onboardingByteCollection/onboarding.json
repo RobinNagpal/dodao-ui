@@ -23,7 +23,7 @@
     },
     {
       "byte": {
-        "byteId": "0002-what-is-clickable-demo",
+        "byteId": "0001-demo-byte-what-is-clickable-demo",
         "name": "What is a Clickable Demo?",
         "content": "A Clickable Demo is an interactive experience that allows users to explore features or processes hands-on. TidbitsHub's Clickable Demos help users engage with content actively.",
         "videoUrl": null,
@@ -34,7 +34,7 @@
     },
     {
       "byte": {
-        "byteId": "0003-what-is-short-video",
+        "byteId": "0001-demo-byte-what-is-short-video",
         "name": "What is a Short Video?",
         "content": "A Short Video in TidbitsHub provides visual explanations and demonstrations in a compact format. It's great for users who prefer learning through visual content.",
         "videoUrl": null,
