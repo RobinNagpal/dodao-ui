@@ -33,7 +33,7 @@ export default function SpaceCollectionsCard({ spaceCollection }: SpaceCollectio
     router.push(`${url}${verificationPath}`);
   };
   return (
-    <li onClick={handleCardClick} className="cursor-pointer block-bg-color border-t border-color">
+    <li onClick={handleCardClick} className="cursor-pointer block-bg-color border-b border-color">
       <div className="group relative flex space-x-10 py-5">
         <div className="flex-shrink-0">
           <Image

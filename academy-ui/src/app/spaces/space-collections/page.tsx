@@ -8,11 +8,17 @@ import React from 'react';
 
 async function SpaceCollectionsPage() {
   const space = (await getSpaceServerSide())!;
-  const fetchedSpaces = await fetchDataServerSide<Space[]>(`${getBaseUrl()}/api/${space.id}/queries/spaces/by-creator`);
+
+  const [spacesByCreator, spacesByAdmin] = await Promise.all([
+    fetchDataServerSide<Space[]>(`${getBaseUrl()}/api/${space.id}/queries/spaces/by-creator`),
+    fetchDataServerSide<Space[]>(`${getBaseUrl()}/api/${space.id}/queries/spaces/by-admin`),
+  ]);
+
+  const uniqueSpacesByAdmin = spacesByAdmin.filter((adminSpace) => !spacesByCreator.some((creatorSpace) => creatorSpace.id === adminSpace.id));
 
   return (
     <PageWrapper>
-      <SpaceCollections spacesByCreator={fetchedSpaces} />
+      <SpaceCollections spacesByCreator={spacesByCreator} spacesByAdmin={uniqueSpacesByAdmin} />
     </PageWrapper>
   );
 }

@@ -14,7 +14,7 @@ export function InputWithButton({ inputLabel, buttonLabel, onButtonClick, loadin
   return (
     <div className="flex w-full items-end">
       <Input label={inputLabel} onUpdate={onInputUpdate} modelValue={inputModelValue} className="grow" disabled={loading} placeholder={inputPlaceholder} />
-      <Button onClick={onButtonClick} className="ml-2 grow-0 my-4" variant="contained" primary loading={loading}>
+      <Button onClick={onButtonClick} className="ml-2 grow-0 my-2" variant="contained" primary loading={loading}>
         {buttonLabel}
       </Button>
     </div>
