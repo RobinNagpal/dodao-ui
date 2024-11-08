@@ -1,6 +1,14 @@
 import { Container } from './Container';
 import { SectionHeading } from './SectionHeading';
-import { MagnifyingGlassIcon, MapIcon, UsersIcon, PresentationChartLineIcon, StarIcon, UserGroupIcon } from '@heroicons/react/24/outline';
+import {
+  MagnifyingGlassIcon,
+  MapIcon,
+  UsersIcon,
+  PresentationChartLineIcon,
+  StarIcon,
+  UserGroupIcon,
+  ChatBubbleLeftRightIcon,
+} from '@heroicons/react/24/outline';
 
 const rwa = [
   {
@@ -41,6 +49,21 @@ const decentralized = [
     icon: StarIcon,
     description:
       'Reviews play a vital role in choosing the best products, services, and providers. We apply a similar bonding system to reviews. Reviewers provide a bond, which they lose if they are dishonest. Honest reviewers get their bond back and receive a reward for their genuine feedback.',
+  },
+];
+
+const creditUnion = [
+  {
+    name: 'Engaging Generation Z',
+    icon: UsersIcon,
+    description:
+      'We provide in-depth research on how credit unions can effectively attract and engage Generation Z. By understanding their unique financial behaviors, preferences, and values, credit unions can tap into this significant market opportunity and build lasting relationships with this tech-savvy generation.',
+  },
+  {
+    name: 'Modernizing Social Media Strategies',
+    icon: ChatBubbleLeftRightIcon,
+    description:
+      'Our study offers insights into how credit unions can adapt their marketing tone and social media content to resonate with Generation Z. We explore strategies such as subtle product placement, creating informal and relatable content, and incorporating wit and humor',
   },
 ];
 
@@ -95,6 +118,33 @@ export default function Research() {
               <dl className="flex flex-wrap justify-center gap-y-10">
                 {decentralized.map((value, index) => (
                   <div key={value.name} className={`relative px-16 w-full sm:w-1/2 ${index === decentralized.length - 1 ? 'sm:mx-auto' : ''}`}>
+                    <dt className="text-base font-semibold text-gray-900">
+                      <div className="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600">
+                        <value.icon aria-hidden="true" className="h-6 w-6 text-white" />
+                      </div>
+                      {value.name}
+                    </dt>
+                    <dd className="mt-2 text-base text-gray-500">{value.description}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          </div>
+        </div>
+
+        <div className="mx-auto max-w-7xl py-4 sm:py-8">
+          <div className="mx-auto max-w-2xl lg:max-w-none">
+            <div className="mx-auto max-w-3xl text-center">
+              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">How Credit Unions Can Attract Gen Z</h2>
+              <p className="mt-4 text-base text-gray-500">
+                At DoDAO, we explore strategies to help credit unions engage and attract Generation Z. By modernizing social media approaches and understanding
+                the unique preferences of this tech-savvy generation, credit unions can build lasting relationships and secure future growth.
+              </p>
+            </div>
+            <div className="mx-auto mt-12 max-w-6xl">
+              <dl className="flex flex-wrap justify-center gap-y-10">
+                {creditUnion.map((value, index) => (
+                  <div key={value.name} className={`relative px-16 w-full sm:w-1/2 ${index === creditUnion.length - 1 ? 'sm:mx-auto' : ''}`}>
                     <dt className="text-base font-semibold text-gray-900">
                       <div className="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600">
                         <value.icon aria-hidden="true" className="h-6 w-6 text-white" />
