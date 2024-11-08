@@ -5,17 +5,17 @@ import SpaceCollectionsList from '../SpaceCollectionsList/SpaceCollectionsList';
 
 interface SpaceCollectionGridProps {
   spacesByCreator: Space[];
-  spacesWhereAdmin: Space[];
+  spacesByAdmin: Space[];
 }
 
-export default function SpaceCollectionsGrid({ spacesByCreator, spacesWhereAdmin }: SpaceCollectionGridProps) {
+export default function SpaceCollectionsGrid({ spacesByCreator, spacesByAdmin }: SpaceCollectionGridProps) {
   return (
     <div className="mx-auto max-w-md">
       <h2 className="text-base font-bold leading-6">Select Your Space</h2>
       <p className="my-1 text-sm">Get started by selecting a space or create a new space.</p>
       <div className="py-4">
         <SpaceCollectionsList spaceCollections={spacesByCreator} title="Creator of Spaces" noSpaceText="No Space Created" />
-        <SpaceCollectionsList spaceCollections={spacesWhereAdmin} title="Admin of Spaces" noSpaceText="No Space" />
+        <SpaceCollectionsList spaceCollections={spacesByAdmin} title="Admin of Spaces" noSpaceText="No Space" />
       </div>
       <div className="my-2">
         <Link href="/spaces/create" className="text-sm font-medium link-color">
