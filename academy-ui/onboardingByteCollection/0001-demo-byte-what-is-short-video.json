@@ -1,0 +1,55 @@
+{
+  "postSubmissionStepContent": "",
+  "content": "Short videos are a visual tool used to convey information quickly and effectively. TidbitsHub supports short videos to provide engaging, high-impact content that is easy for users to consume and understand.",
+  "created": "2024-11-08T10:00:00.000Z",
+  "id": "0001-demo-byte-what-is-short-video",
+  "name": "What is a Short Video?",
+  "admins": ["admin1@example.com", "admin2@example.com"],
+  "tags": ["onboarding", "short-video"],
+  "priority": 3,
+  "videoUrl": null,
+  "videoAspectRatio": null,
+  "completionScreen": null,
+  "steps": [
+    {
+      "content": "A Short Video is a concise, visually engaging piece of content designed to quickly communicate key information. Videos are great for topics that benefit from a visual explanation, making it easier for users to grasp concepts.",
+      "displayMode": "normal",
+      "name": "Introduction to Short Videos",
+      "uuid": "step-1",
+      "imageUrl": "",
+      "stepItems": []
+    },
+    {
+      "content": "Short videos are perfect for tutorials, product demos, or quick tips. By using video, you can demonstrate a process or show a feature in action, making it more understandable for users compared to just text or images.",
+      "displayMode": "normal",
+      "name": "Ideal Use Cases for Short Videos",
+      "uuid": "step-2",
+      "imageUrl": "",
+      "stepItems": []
+    },
+    {
+      "content": "On TidbitsHub, you can easily upload pre-recorded videos to enhance your content. Simply prepare your video and upload it to your byte collection to provide users with a visual learning experience.",
+      "displayMode": "normal",
+      "name": "Uploading Pre-Recorded Videos",
+      "uuid": "step-3",
+      "imageUrl": "",
+      "stepItems": []
+    },
+    {
+      "content": "Short videos are especially useful for visual learners who retain information better when they can see concepts in action. Video content appeals to a wide audience and enhances user engagement and retention.",
+      "displayMode": "normal",
+      "name": "Benefits for Visual Learners",
+      "uuid": "step-4",
+      "imageUrl": "",
+      "stepItems": []
+    },
+    {
+      "content": "Overall, short videos on TidbitsHub provide a powerful medium to communicate ideas in an engaging, memorable way. They are a great addition to any learning experience, making complex topics easier to understand.",
+      "displayMode": "normal",
+      "name": "Why Use Short Videos on TidbitsHub?",
+      "uuid": "step-5",
+      "imageUrl": "",
+      "stepItems": []
+    }
+  ]
+}

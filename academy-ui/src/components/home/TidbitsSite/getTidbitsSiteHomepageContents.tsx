@@ -6,6 +6,8 @@ import CollectionPageLoading from '@dodao/web-core/components/core/loaders/Colle
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { promises as fs } from 'fs';
+import path from 'path';
 import React, { Suspense } from 'react';
 
 /**
@@ -15,6 +17,18 @@ import React, { Suspense } from 'react';
  */
 export async function getTidbitsSiteHomepageContents(space: SpaceWithIntegrationsFragment, session?: Session) {
   const byteCollections = await fetchDataServerSide<ByteCollectionSummary[]>(`${getBaseUrl()}/api/${space.id}/byte-collections`);
+
+  if (session?.isAdminOfSpace && byteCollections.length < 3) {
+    try {
+      const filePath = path.join(process.cwd(), 'onboardingByteCollection', 'onboarding.json');
+
+      const onboardingByteCollection = JSON.parse(await fs.readFile(filePath, 'utf-8'));
+
+      byteCollections.unshift(onboardingByteCollection);
+    } catch (error) {
+      console.error('Error reading onboarding byte collection JSON file:', error);
+    }
+  }
 
   const tidbitsHomepage = space?.tidbitsHomepage;
   return (

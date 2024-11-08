@@ -1,5 +1,8 @@
 'use client';
 
+import whatIsTidbit from '../../../../onboardingByteCollection/0001-demo-byte-what-is-tidbit.json';
+import whatIsClickableDemo from '../../../../onboardingByteCollection/0001-demo-byte-what-is-clickable-demo.json';
+import whatIsShortVideo from '../../../../onboardingByteCollection/0001-demo-byte-what-is-short-video.json';
 import RatingModal, { FeedbackOptions } from '@/components/app/Modal/Rating/RatingModal';
 import { useByteRatings } from '@/components/bytes/Rating/useByteRating';
 import ShareBytePage from '@/components/bytes/Share/ShareBytePage';
@@ -34,7 +37,18 @@ export interface ViewByteModalProps {
 
 export default function ViewByteModal({ space, selectedByteId, viewByteModalClosedUrl, afterUpsertByteModalClosedUrl, byteCollectionId }: ViewByteModalProps) {
   const fetchByteFn = async (byteId: string): Promise<ByteDto> => {
+    if (byteId.startsWith('0001-demo-byte')) {
+      switch (byteId) {
+        case '0001-demo-byte-what-is-tidbit':
+          return whatIsTidbit as ByteDto;
+        case '0001-demo-byte-what-is-clickable-demo':
+          return whatIsClickableDemo as ByteDto;
+        case '0001-demo-byte-what-is-short-video':
+          return whatIsShortVideo as ByteDto;
+      }
+    }
     const response = await axios.get(`${getBaseUrl()}/api/${space.id}/byte-collections/${byteCollectionId}/bytes/${byteId}`);
+    console.log('response.data: ', response.data);
     return response.data;
   };
 

@@ -227,6 +227,21 @@ export function useViewByteHelper({ space, byteId, stepOrder, fetchByteFn }: Use
   async function submitByte(): Promise<boolean> {
     if (byteSubmission.isSubmitted) return true;
 
+    if (byteId.startsWith('0001-demo-byte')) {
+      showNotification({
+        type: 'success',
+        message: "You've successfully completed this tidbit. Ready for the next one?",
+        heading: 'Success 🎉',
+      });
+
+      localStorage.setItem(
+        LocalStorageKeys.COMPLETED_TIDBITS,
+        JSON.stringify(union([...JSON.parse(localStorage.getItem(LocalStorageKeys.COMPLETED_TIDBITS) || '[]'), byteId]))
+      );
+
+      return true;
+    }
+
     setByteSubmitting(true);
     setByteSubmission((prevByteSubmission) => ({ ...prevByteSubmission, isPristine: false }));
 
