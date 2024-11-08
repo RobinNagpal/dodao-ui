@@ -48,7 +48,7 @@ export default function EditClickableDemoStepper({
               isOpen={openAccordionIndex === index}
               label={`Step ${index + 1}: ${step.tooltipInfo}`}
               onClick={() => toggleAccordion(index)}
-              hasError={Boolean(clickableDemoErrors?.steps?.[step.id])}
+              hasError={Boolean(clickableDemoErrors?.steps?.[index])}
               errorMessage="This Step has an error!!"
             >
               <div className="w-full">
