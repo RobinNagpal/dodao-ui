@@ -26,7 +26,11 @@ export function MobileProfileMenu({ session, space }: ProfileMenuProps) {
     <div className="border-t border-gray-200 pb-3 pt-4">
       <div className="flex items-center px-4 sm:px-6">
         <div className="flex-shrink-0">
-          <Image className="h-10 w-10 rounded-full" src={`https://api.multiavatar.com/${session?.username || 'unknown'}.svg`} alt="" width={50} height={50} />
+          <span className="inline-block h-10 w-10 overflow-hidden rounded-full bg-gray-100">
+            <svg fill="currentColor" viewBox="0 0 24 24" className="h-full w-full text-gray-300">
+              <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+          </span>
         </div>
       </div>
       <div className="mt-3 space-y-1">
