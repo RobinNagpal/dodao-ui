@@ -20,7 +20,7 @@ export default function Accordion({ isOpen, label, onClick, children, hasError =
       >
         <div id={`accordion-${label}`}>
           <button type="button" className="flex rounded-md items-center justify-between w-full px-2 font-medium rtl:text-right gap-2" onClick={onClick}>
-            <span>{label}</span>
+            <span className="text-lg">{label}</span>
             <svg
               className="w-3 h-3 shrink-0"
               aria-hidden="true"
