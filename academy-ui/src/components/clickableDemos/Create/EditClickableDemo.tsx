@@ -28,6 +28,7 @@ import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { getUploadedImageUrlFromSingedUrl } from '@dodao/web-core/utils/upload/getUploadedImageUrlFromSingedUrl';
 import html2canvas from 'html2canvas';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
+import EditClickableDemoErrorMessage from '@/components/clickableDemos/Create/EditClickableDemoErrorMessage';
 import { useRouter } from 'next/navigation';
 
 interface EditClickableDemoProps {
@@ -219,7 +220,7 @@ function EditClickableDemo({ space, demoId, byteCollection, closeDemoEditModal }
                     modelValue={clickableDemo.title}
                     error={inputError('title') ? 'Title is required' : ''}
                     maxLength={32}
-                    placeholder="only 64 characters"
+                    placeholder="only 32 characters"
                     onUpdate={(newValue) => updateClickableDemoFunctions.updateClickableDemoField('title', newValue)}
                   >
                     <div>Title*</div>
@@ -250,6 +251,8 @@ function EditClickableDemo({ space, demoId, byteCollection, closeDemoEditModal }
                   </div>
                 </Block>
               ) : null}
+
+              <EditClickableDemoErrorMessage clickableDemo={clickableDemo} clickableDemoErrors={clickableDemoErrors} />
 
               <Button
                 onClick={() => clickSubmit(byteCollection)}
