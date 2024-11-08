@@ -17,6 +17,7 @@ import {
   ComputerDesktopIcon,
   BuildingOfficeIcon,
   GlobeAltIcon,
+  UserGroupIcon,
 } from '@heroicons/react/24/outline';
 import { useState } from 'react';
 
@@ -101,6 +102,12 @@ const researchAreas = [
     description: 'Researching innovative decentralized solutions for improved system transparency.',
     href: '/home-section/dodao-io/research/decen-sol-reviews',
     icon: GlobeAltIcon,
+  },
+  {
+    name: 'How Credit Unions Can Attract Gen Z',
+    description: 'Strategies for credit unions to connect with Gen Z members.',
+    href: '/home-section/dodao-io/research/credit-union',
+    icon: UserGroupIcon,
   },
 ];
 
