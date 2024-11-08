@@ -79,6 +79,7 @@ async function getDoDAOSiteMapUrls(): Promise<SiteMapUrl[]> {
     { url: '/home-section/dodao-io/education/educational-content', changefreq: 'weekly' },
     { url: '/home-section/dodao-io/research/real-world-assets', changefreq: 'weekly' },
     { url: '/home-section/dodao-io/research/decen-sol-reviews', changefreq: 'weekly' },
+    { url: '/home-section/dodao-io/research/credit-union', changefreq: 'weekly' },
   ];
 
   return urls;
