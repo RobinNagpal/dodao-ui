@@ -81,7 +81,7 @@ export default function EditCompletionScreenStepperItem({
               updateByteCompletionScreen('name', e?.toString());
             }}
             error={byteErrors?.completionScreen?.name ? 'Name is required' : ''}
-            placeholder='Completion Screen Name'
+            placeholder="Completion Screen Name"
           >
             Name*
           </Input>
@@ -95,7 +95,7 @@ export default function EditCompletionScreenStepperItem({
               updateCompletionScreenImageUrl(e?.toString() || '');
             }}
             inputModelValue={byte.completionScreen?.imageUrl ?? ''}
-            inputPlaceholder='Image Url'
+            inputPlaceholder="Image Url"
           />
         </div>
 
