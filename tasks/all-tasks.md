@@ -42,6 +42,7 @@ This will help achieve both the goals
 
 # View Tidbit Collections
 - [ ] Have a way to separate the tidbits and clickable demos so that its clear to the user
+- [ ] ellipsis not visible against tidbits on subdomain
 
 # Post signup - Help text
 - [ ] After the user signs up, We should probably show some help tidbits or a help Tidbit collection, which has
