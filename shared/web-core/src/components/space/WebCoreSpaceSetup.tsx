@@ -10,6 +10,7 @@ import { WebCoreSpace } from '@dodao/web-core/types/space';
 import union from 'lodash/union';
 import React, { useState } from 'react';
 import { useSession } from 'next-auth/react';
+import { FormFooter } from '../app/Form/FormFooter';
 
 interface WebCoreSpaceSetupProps {
   space: WebCoreSpace;
@@ -73,17 +74,14 @@ function WebCoreSpaceSetup({ space, loading, saveSpace, uploadLogoToS3 }: WebCor
           />
         </div>
         <div className="mt-10">
-          <Button
-            variant="contained"
-            primary
-            loading={uploadingLogo || loading}
-            disabled={uploadingLogo || loading}
-            onClick={async () => {
+          <FormFooter
+            saveButtonText="Save Space"
+            onSave={async () => {
               await saveSpace(updatedSpace);
             }}
-          >
-            Save Space
-          </Button>
+            onSaveLoading={uploadingLogo || loading}
+            saveButtonDisabled={uploadingLogo || loading}
+          />
         </div>
       </Block>
     </PageWrapper>
