@@ -26,6 +26,8 @@ users - Skipped
     - Users gets loggedin after selection of the space. The new JWT create has the spaceId of the space selected
 - [ ] Fix issue in `academy-ui/src/app/api/[spaceId]/queries/spaces/by-admin/route.ts`
 - [ ] There are some styling issues in the spaces list. The rows are not of the same height. some other improvements can be made
+- [ ] use one of the two new hooks(`shared/web-core/src/ui/hooks/fetch/useFetchData.ts` or `academy-ui/src/utils/api/fetchDataServerSide.ts`) to fetch data in `academy-ui/src/components/spaces/ListSpaces.tsx`
+- [ ] Sami reported that he is getting an error in backend(JWT), after he creates a new space and then does `finish-setup` of space.
 
 3) Show some default missing icon image if the icon is not present. Just like you added a placeholder for image
 
