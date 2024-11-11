@@ -49,7 +49,7 @@ function PageFooter(props: { space: SpaceWithIntegrationsFragment }) {
       return null;
     }
   }
-  return <Footer spaceType={props.space.type} />;
+  return <Footer space={props.space} />;
 }
 export function BasePage(props: { space: SpaceWithIntegrationsFragment | null; children: ReactNode }) {
   if (props.space?.id) {
