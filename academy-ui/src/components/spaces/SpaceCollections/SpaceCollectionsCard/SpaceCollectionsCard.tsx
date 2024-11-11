@@ -36,7 +36,6 @@ export default function SpaceCollectionsCard({ spaceCollection }: SpaceCollectio
   return (
     <li onClick={handleCardClick} className="cursor-pointer block-bg-color border-b border-color h-28">
       <div className="group relative flex items-center space-x-6 h-full px-4">
-        {' '}
         <div className="flex-shrink-0">
           <Image
             src={spaceCollection.avatar ? getCDNImageUrl(spaceCollection.avatar) : DefaultSpaceAvatar}
