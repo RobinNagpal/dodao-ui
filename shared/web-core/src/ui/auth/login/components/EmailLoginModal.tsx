@@ -2,7 +2,7 @@
 
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Input from '@dodao/web-core/components/core/input/Input';
-import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
+import SingleSectionModal from '@dodao/web-core/components/core/modals/SingleSectionModal';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { WebCoreSpace } from '@dodao/web-core/types/space';
 import { useState } from 'react';
@@ -42,7 +42,7 @@ function EmailLoginModal({ open, onClose, space }: EmailLoginModalProps) {
   };
 
   return (
-    <FullScreenModal open={open} onClose={onClose} title={'Login with Email'}>
+    <SingleSectionModal open={open} onClose={onClose} title={'Login with Email'}>
       <PageWrapper>
         <div className="text-left">
           {!emailSent ? (
@@ -59,7 +59,7 @@ function EmailLoginModal({ open, onClose, space }: EmailLoginModalProps) {
           )}
         </div>
       </PageWrapper>
-    </FullScreenModal>
+    </SingleSectionModal>
   );
 }
 
