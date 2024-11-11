@@ -1,6 +1,8 @@
 
 Must have features
 
+# Demos Extension
+- [ ] input still needs to be clicked more than once to get it into focus
 
 # Clickable Demos
 - [ ] Overlay shows over the buttons - Sami
@@ -10,7 +12,11 @@ Must have features
 when we release the extension, we can show a link to the extension - Sami
 - [ ] Remove back arrow from the clickable demo page - Sami
 - [ ] Check the move up and move down of steps. Make sure the accordian is not closed when we move up or down - Sami
-
+- [ ] tooltips are not appearing correctly for the new iframe changes
+- [ ] upon selecting an html capture,  we can border it with a different color (primary color) / tick can be of primary color
+- [ ] redundant Step # in edit stepper
+- [ ] modal's cross button outline getting cutoff - (clickable demo view)
+  
 # Signup/Login on Tidbitshub
 - [ ] On the single section Modal - make it transparent(may be 50% or something) - Dawood
 - [ ] On create pace modal the space is too much, and we should add a placeholder - Dawood
@@ -26,6 +32,7 @@ when we release the extension, we can show a link to the extension - Sami
 
 
 # Login issue for admins
+- [ ] the admin is not able to login to the subdomain from list of spaces
 - [ ] ellipsis not visible against tidbits on subdomain, when a user clicks on the space he is an admin of in the list - Dawood to verify
 - [ ] Making it easy for the admin to login. Right now we are not showing any login button.
   May be we show in the footer? or somewhere else where its not too visible?
