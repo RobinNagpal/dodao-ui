@@ -3,11 +3,14 @@
 import Input from '@dodao/web-core/components/core/input/Input';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import { WebCoreSpace } from '@dodao/web-core/types/space';
-import getProtocol from '@dodao/web-core/utils/api/getProtocol';
+import getSubdomainUrl from '@dodao/web-core/utils/api/getSubdomainUrl';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { FormFooter } from '@dodao/web-core/components/app/Form/FormFooter';
+import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { Contexts } from '@dodao/web-core/utils/constants/constants';
 
 interface CreateSpaceProps {
   upserting: boolean;
@@ -18,6 +21,22 @@ interface CreateSpaceProps {
 function CreateNewSpace({ upserting, onSubmit, createdSpace }: CreateSpaceProps) {
   const [project, setProject] = useState('');
   const router = useRouter();
+
+  const { postData } = usePostData(
+    {
+      errorMessage: 'Failed to create token for space',
+    },
+    {}
+  );
+
+  const handleLinkClick = async () => {
+    const projectSlug = slugify(project);
+    const url = getSubdomainUrl(projectSlug);
+
+    const verificationPath = await postData(`${getBaseUrl()}/api/${project}/verification-tokens`);
+    router.push(`${url}${verificationPath}&context=${Contexts.finishSetup}`);
+  };
+
   return (
     <div>
       {createdSpace ? (
@@ -33,15 +52,9 @@ function CreateNewSpace({ upserting, onSubmit, createdSpace }: CreateSpaceProps)
               <h1 className="text-xl font-semibold">Space Created Successfully</h1>
               <p className="mt-4 text-md">
                 Your space is created. Click{' '}
-                <a
-                  href={`${getProtocol()}://${slugify(project)}.${window.location.hostname}${
-                    window.location.port ? `:${window.location.port}` : ''
-                  }/spaces/finish-space-setup`}
-                  className="text-blue-500 underline"
-                  rel="noopener noreferrer"
-                >
+                <span onClick={handleLinkClick} className="link-color underline cursor-pointer">
                   here
-                </a>{' '}
+                </span>{' '}
                 to go to your space
               </p>
             </div>

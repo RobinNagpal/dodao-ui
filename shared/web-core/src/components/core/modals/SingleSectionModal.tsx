@@ -33,7 +33,7 @@ export default function SingleSectionModal({ open, title, children, onClose, sho
         </Transition.Child>
 
         <ModalContainer className="fixed inset-0 z-10 overflow-y-auto">
-          <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+          <div className="flex min-h-full items-center justify-center p-4 text-center sm:items-center sm:p-0">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"

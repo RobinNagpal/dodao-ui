@@ -7,4 +7,5 @@ export enum Contexts {
   login = 'login',
   setupNewSpace = 'setupNewSpace',
   verifyToken = 'verifyToken',
+  finishSetup = 'finishSetup',
 }
