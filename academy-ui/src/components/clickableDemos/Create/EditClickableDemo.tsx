@@ -189,8 +189,7 @@ function EditClickableDemo({ space, demoId, byteCollection, closeDemoEditModal }
       <SingleCardLayout>
         <div className="text-color">
           <div className="py-4 my-4">
-            <div className="px-4 mb-4 md:px-0 overflow-hidden float-left">
-            </div>
+            <div className="px-4 mb-4 md:px-0 overflow-hidden float-left"></div>
             <div className="px-4 mb-4 md:px-0 float-right">
               {demoId && (
                 <PrivateEllipsisDropdown
