@@ -7,15 +7,17 @@ export async function GET(req: NextRequest, { params }: { params: { spaceId: str
   const session = await getDecodedJwtFromContext(req);
   if (!session) return NextResponse.json({ error: 'No session found' }, { status: 401 });
 
-  const spaces = await prisma.space.findMany({
-    where: {
-      adminUsernamesV1: {
-        isEmpty: false,
-      },
-    },
-  });
+  // filtering values within list of json objects is not supported so we have to use raw query
+  const spaces = await prisma.$queryRaw`
+  SELECT *
+  FROM "spaces"
+  WHERE EXISTS (
+    SELECT 1
+    FROM unnest("admin_usernames_v1") AS item
+    WHERE item->>'username' = ${session.username}
+  )
+  AND "creator" != ${session.username};;
+`;
 
-  const adminSpaces = spaces.filter((space) => space.adminUsernamesV1?.some((admin) => admin.username === session.username));
-
-  return NextResponse.json(adminSpaces as Space[], { status: 200 });
+  return NextResponse.json(spaces as Space[], { status: 200 });
 }
