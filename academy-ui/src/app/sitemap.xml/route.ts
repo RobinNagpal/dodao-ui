@@ -80,6 +80,8 @@ async function getDoDAOSiteMapUrls(): Promise<SiteMapUrl[]> {
     { url: '/home-section/dodao-io/research/real-world-assets', changefreq: 'weekly' },
     { url: '/home-section/dodao-io/research/decen-sol-reviews', changefreq: 'weekly' },
     { url: '/home-section/dodao-io/research/credit-union', changefreq: 'weekly' },
+    // New URL added here
+    { url: 'https://publications.dodao.io/dodao-engaging-gen-z-website', changefreq: 'weekly' },
   ];
 
   return urls;

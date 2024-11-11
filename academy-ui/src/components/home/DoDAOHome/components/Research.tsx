@@ -63,7 +63,7 @@ const creditUnion = [
     name: 'Modernizing Social Media Strategies',
     icon: ChatBubbleLeftRightIcon,
     description:
-      'Our study offers insights into how credit unions can adapt their marketing tone and social media content to resonate with Generation Z. We explore strategies such as subtle product placement, creating informal and relatable content, and incorporating wit and humor',
+      'Our study offers insights into how credit unions can adapt their marketing tone and social media content to resonate with Generation Z. We explore strategies such as subtle product placement, creating informal and relatable content, and incorporating wit and humor.',
   },
 ];
 
