@@ -11,6 +11,7 @@ import { getCDNImageUrl } from '@dodao/web-core/utils/images/getCDNImageUrl';
 import DefaultSpaceAvatar from '@/images/background-features.jpg';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
+import { Contexts } from '@dodao/web-core/utils/constants/constants';
 
 interface SpaceCollectionCardProps {
   spaceCollection: Space;
@@ -30,7 +31,7 @@ export default function SpaceCollectionsCard({ spaceCollection }: SpaceCollectio
     const url = getSubdomainUrl(projectSlug);
 
     const verificationPath = await postData(`${getBaseUrl()}/api/${spaceCollection.id}/verification-tokens`);
-    router.push(`${url}${verificationPath}`);
+    router.push(`${url}${verificationPath}&context=${Contexts.verifyToken}`);
   };
 
   return (

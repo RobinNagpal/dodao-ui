@@ -6,6 +6,7 @@ import EmailVerificationCallbackPage from '@dodao/web-core/components/auth/Email
 import { Contexts } from '@dodao/web-core/utils/constants/constants';
 
 const contextToUrlMapping: { [key in Contexts]: string } = {
+  [Contexts.finishSetup]: '/spaces/finish-space-setup',
   [Contexts.login]: '/spaces/space-collections',
   [Contexts.setupNewSpace]: '/spaces/create',
   [Contexts.verifyToken]: '/',

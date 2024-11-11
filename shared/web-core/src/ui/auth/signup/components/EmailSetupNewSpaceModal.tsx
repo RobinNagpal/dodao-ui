@@ -2,7 +2,7 @@
 
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Input from '@dodao/web-core/components/core/input/Input';
-import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
+import SingleSectionModal from '@dodao/web-core/components/core/modals/SingleSectionModal';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { useState } from 'react';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
@@ -53,7 +53,7 @@ function EmailSetupNewSpaceModal({ open, onClose, space }: EmailSetupNewSpaceMod
   };
 
   return (
-    <FullPageModal open={open} onClose={onModalClose} title={'Setup New Space with Email'}>
+    <SingleSectionModal open={open} onClose={onModalClose} title={'Setup New Space with Email'}>
       <PageWrapper>
         <div className="text-left">
           {!emailSent ? (
@@ -70,7 +70,7 @@ function EmailSetupNewSpaceModal({ open, onClose, space }: EmailSetupNewSpaceMod
           )}
         </div>
       </PageWrapper>
-    </FullPageModal>
+    </SingleSectionModal>
   );
 }
 
