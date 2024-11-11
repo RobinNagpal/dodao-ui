@@ -90,37 +90,43 @@ export default function SelectHtmlCaptureModal(props: SelectHtmlCaptureModalProp
         </div>
       ) : (
         <div className="min-h-[40vh]">
-          <Grid4Cols className="p-16 text-color">
-            {availableHtmlCaptures.map((htmlCapture) => (
-              <div key={htmlCapture.id}>
-                <Card onClick={() => handleCardClick(htmlCapture)}>
-                  <div className="cursor-pointer">
-                    <div className="p-2 text-center">
-                      <img src={htmlCapture.fileImageUrl} alt={htmlCapture.fileName} className="w-full h-[150px] object-cover rounded-lg" />
-                    </div>
-                  </div>
-                  {/* Delete Icon */}
-                  <div className="absolute top-2 right-2">
-                    <button
-                      onClick={(e) => openCaptureDeleteModal(htmlCapture.id, htmlCapture.fileName)}
-                      className="text-gray-500 hover:text-red-600"
-                      aria-label="Delete"
-                    >
-                      <TrashIcon height={24} width={24} />
-                    </button>
-                  </div>
-                  {selectedHtmlCaptureId === htmlCapture.id && (
-                    <div className="flex flex-wrap absolute justify-end top-1 left-1">
-                      <div className={`m-auto rounded-full text-2xl bg-primary w-6 h-6 text-white flex items-center font-bold justify-center`}>
-                        <CheckCircleIcon height={30} width={30} />
+          {availableHtmlCaptures.length ? (
+            <Grid4Cols className="p-16 text-color">
+              {availableHtmlCaptures.map((htmlCapture) => (
+                <div key={htmlCapture.id}>
+                  <Card onClick={() => handleCardClick(htmlCapture)}>
+                    <div className="cursor-pointer">
+                      <div className="p-2 text-center">
+                        <img src={htmlCapture.fileImageUrl} alt={htmlCapture.fileName} className="w-full h-[150px] object-cover rounded-lg" />
                       </div>
                     </div>
-                  )}
-                </Card>
-                <h2 className="text-base font-bold whitespace-nowrap overflow-hidden text-ellipsis mt-2">{shorten(htmlCapture.fileName, 32)}</h2>
-              </div>
-            ))}
-          </Grid4Cols>
+                    {/* Delete Icon */}
+                    <div className="absolute top-2 right-2">
+                      <button
+                        onClick={(e) => openCaptureDeleteModal(htmlCapture.id, htmlCapture.fileName)}
+                        className="text-gray-500 hover:text-red-600"
+                        aria-label="Delete"
+                      >
+                        <TrashIcon height={24} width={24} />
+                      </button>
+                    </div>
+                    {selectedHtmlCaptureId === htmlCapture.id && (
+                      <div className="flex flex-wrap absolute justify-end top-1 left-1">
+                        <div className={`m-auto rounded-full text-2xl bg-primary w-6 h-6 text-white flex items-center font-bold justify-center`}>
+                          <CheckCircleIcon height={30} width={30} />
+                        </div>
+                      </div>
+                    )}
+                  </Card>
+                  <h2 className="text-base font-bold whitespace-nowrap overflow-hidden text-ellipsis mt-2">{shorten(htmlCapture.fileName, 32)}</h2>
+                </div>
+              ))}
+            </Grid4Cols>
+          ) : (
+            <div className="text-center mt-16 pb-8">
+              <p>Install the extension to capture HTML</p>
+            </div>
+          )}
 
           <Button
             variant="contained"

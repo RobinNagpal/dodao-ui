@@ -83,7 +83,7 @@ export default function EditClickableDemoStepperItem({
 
   return (
     <div className={`${styles.StyledStepContainer}`} style={{ border: !!clickableDemoErrors?.steps?.[step.id] ? '1px solid red' : 'none' }}>
-      <h3>Step {step.order + 1}</h3>
+      <h3>Step {stepIndex + 1}</h3>
       <div className="flex justify-end min-h-10">
         <IconButton onClick={() => moveStepUp?.(step.id)} iconName={IconTypes.MoveUp} removeBorder disabled={step.order === 0} />
         <IconButton
