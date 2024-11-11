@@ -79,6 +79,19 @@ influences creation of this decentralized rubrics application platform is is [Po
 # Opportunities
 See [Opportunities](./review/opportunities.md) for more details.
 
+### Very Similar Audience
+- There will quite a lot of overlap of audiance with https://electionbuddy.com/
+- There will be some overlap with https://www.simplyvoting.com/
+
+### Some Overlap
+- https://hivebrite.io/
+- https://www.memberleap.com/
+- https://www.wildapricot.com/
+- https://neonone.com/
+- https://memberclicks.com/
+- https://www.glueup.com/
+
+
 # Home Page Content
 See [Home Page Content](./review/homepage.md) for more details.
 
