@@ -18,18 +18,18 @@ users - Skipped
 - [ ] Add some hovering effect on `Add Question`, `Move up`, `Move down`, and `Delete step` icons - Skipped
 
 # Signup/Login on Tidbitshub
-- [ ] Styling of the login/"get started" modal. The modal is too big for a single input field.
-- [ ] Remove avatar image which we show and we can show an empty avatar image there
-- [ ] Test the following
+- [ ] Styling of the login/"get started" modal. The modal is too big for a single input field. - Sami - Next
+- [x] Remove avatar image which we show and we can show an empty avatar image there
+- [ ] Test the following - Sami
     - Login with email works fine
     - The user sees the list of spaces they are part of after login
     - Users gets loggedin after selection of the space. The new JWT create has the spaceId of the space selected
-- [ ] Fix issue in `academy-ui/src/app/api/[spaceId]/queries/spaces/by-admin/route.ts`
-- [ ] There are some styling issues in the spaces list. The rows are not of the same height. some other improvements can be made
-- [ ] use one of the two new hooks(`shared/web-core/src/ui/hooks/fetch/useFetchData.ts` or `academy-ui/src/utils/api/fetchDataServerSide.ts`) to fetch data in `academy-ui/src/components/spaces/ListSpaces.tsx`
-- [ ] Sami reported that he is getting an error in backend(JWT), after he creates a new space and then does `finish-setup` of space.
+- [ ] Sami reported that he is getting an error in backend(JWT), after he creates a new space and then does `finish-setup` of space. - Sami
+- [ ] Fix issue in `academy-ui/src/app/api/[spaceId]/queries/spaces/by-admin/route.ts` - Dawood
+- [x] There are some styling issues in the spaces list. The rows are not of the same height. some other improvements can be made
+- [ ] use one of the two new hooks(`shared/web-core/src/ui/hooks/fetch/useFetchData.ts` or `academy-ui/src/utils/api/fetchDataServerSide.ts`) to fetch data in `academy-ui/src/components/spaces/ListSpaces.tsx` - Dawood
 
-3) Show some default missing icon image if the icon is not present. Just like you added a placeholder for image
+
 
 # View Tidbit Collections
 - [ ] Have a way to separate the tidbits and clickable demos so that its clear to the user
