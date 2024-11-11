@@ -14,11 +14,9 @@ async function SpaceCollectionsPage() {
     fetchDataServerSide<Space[]>(`${getBaseUrl()}/api/${space.id}/queries/spaces/by-admin`),
   ]);
 
-  const uniqueSpacesByAdmin = spacesByAdmin.filter((adminSpace) => !spacesByCreator.some((creatorSpace) => creatorSpace.id === adminSpace.id));
-
   return (
     <PageWrapper>
-      <SpaceCollections spacesByCreator={spacesByCreator} spacesByAdmin={uniqueSpacesByAdmin} />
+      <SpaceCollections spacesByCreator={spacesByCreator} spacesByAdmin={spacesByAdmin} />
     </PageWrapper>
   );
 }
