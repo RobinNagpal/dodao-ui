@@ -10,7 +10,6 @@ import { AppScreen } from './AppScreen';
 import { CircleBackground } from './CircleBackground';
 import { Container } from './Container';
 import { PhoneFrame } from './PhoneFrame';
-import { DiageoLogo, LaravelLogo, MirageLogo, ReversableLogo, StatamicLogo, StaticKitLogo, TransistorLogo, TupleLogo } from './StockLogos';
 import Image from 'next/image';
 import Tidbits from '@/images/lifeInsure/images/tidbits.png';
 import Quizzes from '@/images/lifeInsure/images/quiz.png';
