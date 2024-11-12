@@ -5,8 +5,8 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Program } from '@prisma/client';
 import React from 'react';
 import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
-const Page = async ({ params }: { params: { rubricId: string } }) => {
-  const { rubricId } = params;
+const Page = async ({ params }: { params: Promise<{ rubricId: string }> }) => {
+  const { rubricId } = await params;
   const space = (await getSpaceServerSide())!;
   const response = await fetch(`${getBaseUrl()}/api/rubrics/${rubricId}?spaceId=${space.id}`);
   const rubric = (await response.json()) as RubricWithEntities;

@@ -1,8 +1,8 @@
 import { prisma } from '@/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 import { Rubric } from '@prisma/client';
-export async function PUT(request: NextRequest, { params }: { params: { rubricId: string; criteriaId: string } }) {
-  const { rubricId, criteriaId } = params;
+export async function PUT(request: NextRequest, { params }: { params: Promise<{ rubricId: string; criteriaId: string }> }) {
+  const { rubricId, criteriaId } = await params;
 
   const { newContent } = await request.json();
 
@@ -34,10 +34,10 @@ export async function PUT(request: NextRequest, { params }: { params: { rubricId
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { rubricId: string; criteriaId: string } }
+  { params }: { params: Promise<{ rubricId: string; criteriaId: string }> }
 ): Promise<NextResponse<Rubric | { error: string } | { message: string }>> {
   try {
-    const { criteriaId, rubricId } = params;
+    const { criteriaId, rubricId } = await params;
 
     await prisma.$transaction(async (tx) => {
       await tx.rubricCriteria.update({

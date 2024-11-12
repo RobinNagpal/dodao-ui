@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/prisma';
 
-export async function GET(req: Request, { params: { name } }: { params: { name: string } }) {
+export async function GET(req: Request, { params }: { params: Promise<{ name: string }> }) {
+  const { name } = await params;
   const user = await prisma.rubricUser.findFirstOrThrow({
     where: { username: name },
   });

@@ -1,7 +1,7 @@
 import { prisma } from '@/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET(req: NextRequest, res: NextResponse) {
+export async function GET(req: NextRequest) {
   const spaceId = req.nextUrl.searchParams.get('spaceId');
   if (!spaceId) {
     return NextResponse.json({ error: "Missing 'spaceId' query parameter" }, { status: 400 });

@@ -49,7 +49,7 @@ const createUser = async (user: User & { email: string }, spaceId: string) => {
  * and sending it to the user's e-mail (with the help of a DB adapter).
  * At the end, it returns a redirect to the `verify-request` page.
  */
-async function postHandler(req: NextRequest, res: NextResponse) {
+async function postHandler(req: NextRequest) {
   const reqBody = await req.json();
   const { spaceId, provider, email, context = Contexts.login } = reqBody;
 

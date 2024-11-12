@@ -1,7 +1,7 @@
 import { prisma } from '@/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 import { NewCriteriaRequest } from '@/types/rubricsTypes/types';
-export async function POST(req: NextRequest, res: NextResponse) {
+export async function POST(req: NextRequest) {
   const { programId, rubric, spaceId } = await req.json();
 
   try {
@@ -211,7 +211,7 @@ export async function PUT(request: Request) {
   }
 }
 
-export async function GET(req: NextRequest, res: NextResponse) {
+export async function GET(req: NextRequest) {
   try {
     const spaceId = req.nextUrl.searchParams.get('spaceId');
 

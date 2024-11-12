@@ -3,11 +3,11 @@ import { logError } from '@/app/api/helpers/adapters/errorLogger';
 
 export const withErrorHandling =
   (...handlers: Function[]) =>
-  async (req: NextRequest, res: NextResponse) => {
+  async (req: NextRequest, params: any) => {
     try {
       let response;
       for (const handler of handlers) {
-        response = await handler(req, res);
+        response = await handler(req, params);
       }
       return response;
     } catch (error) {
