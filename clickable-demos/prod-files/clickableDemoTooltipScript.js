@@ -238,7 +238,7 @@ function elementSelector(event) {
             width: '100%',
             height: `${scrollHeight}px`,
             pointerEvents: 'none',
-            zIndex: '999999999999999',
+            zIndex: '2147483646',
         });
         const overlays = ['top', 'left', 'right', 'bottom'].map((position) => createOverlayPart(position, rect, scrollY, scrollHeight));
         overlays.forEach((overlay) => overlayContainer.appendChild(overlay));
@@ -330,7 +330,7 @@ function elementSelector(event) {
                 if (containingIframe) {
                     captureArea = {
                         x: Math.max(0, rect.left + scrollOffsetX - margin),
-                        y: Math.max(0, rect.top - margin),
+                        y: Math.max(0, rect.top - 2 * margin),
                         width: rect.width + margin * 2,
                         height: rect.height + margin * 2,
                     };
