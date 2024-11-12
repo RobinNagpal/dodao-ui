@@ -74,7 +74,7 @@ const emailBody = (link: string) => `
 <body>
     <div class="container">
         <div class="header">
-            <h1>Log in to Tidbitshub</h1>
+            <h1>Log In to Your Account</h1>
         </div>
         <div class="content">
             <p>Hello,</p>
@@ -109,7 +109,7 @@ export const sendVerificationRequest = async (params: { identifier: string; url:
       Destination: { ToAddresses: [email] },
       Message: {
         Subject: {
-          Data: 'Sign in to your account',
+          Data: 'Log in to your account',
         },
         Body: {
           Html: {
