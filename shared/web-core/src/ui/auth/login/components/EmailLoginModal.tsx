@@ -4,6 +4,7 @@ import Button from '@dodao/web-core/components/core/buttons/Button';
 import Input from '@dodao/web-core/components/core/input/Input';
 import SingleSectionModal from '@dodao/web-core/components/core/modals/SingleSectionModal';
 import { WebCoreSpace } from '@dodao/web-core/types/space';
+import { getEmailProviderUrl } from '@dodao/web-core/utils/api/getEmailProviderUrl';
 import { useState } from 'react';
 
 export interface EmailLoginModalProps {
@@ -40,6 +41,15 @@ function EmailLoginModal({ open, onClose, space }: EmailLoginModalProps) {
     }
   };
 
+  const handleLinkClick = () => {
+    const url = getEmailProviderUrl(email);
+    if (url) {
+      window.open(url, '_blank');
+    } else {
+      alert('Email provider not recognized. Please open your email manually.');
+    }
+  };
+
   return (
     <SingleSectionModal open={open} onClose={onClose} title={'Login with Email'}>
       <div className="text-left py-4">
@@ -61,7 +71,13 @@ function EmailLoginModal({ open, onClose, space }: EmailLoginModalProps) {
           </form>
         ) : (
           <div className="text-center">
-            <p>A verification link has been sent to your email. Click on the link provided in the email to log in.</p>
+            <p>
+              A verification link has been sent to{' '}
+              <span onClick={handleLinkClick} className="underline link-color cursor-pointer">
+                your email
+              </span>
+              . Click on the link provided in the email to log in.
+            </p>
           </div>
         )}
       </div>
