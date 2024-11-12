@@ -1,14 +1,13 @@
-import { QueryConsolidatedByteRatingArgs } from '@/graphql/generated/generated-types';
-import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
 import { consolidateByteRatings } from '@/app/api/helpers/byte/consolidateByteRatings';
 import { checkEditSpacePermission } from '@/app/api/helpers/space/checkEditSpacePermission';
+import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
 import { prisma } from '@/prisma';
 import { ByteRating } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
 import { withErrorHandling } from '../../helpers/middlewares/withErrorHandling';
 
 async function getHandler(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
+  const searchParams = req.nextUrl.searchParams;
   const byteId = searchParams.get('byteId');
   if (!byteId) return NextResponse.json({ body: 'No byteId provided' }, { status: 400 });
 

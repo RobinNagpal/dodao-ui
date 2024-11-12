@@ -50,16 +50,16 @@ async function deleteHandler(
   revalidateTag(TidbitCollectionTags.GET_TIDBIT_COLLECTIONS.toString());
   return NextResponse.json(updatedClickableDemo as ClickableDemoDto, { status: 200 });
 }
-async function postHandler(req: NextRequest, { params }: { params: { demoId: string; spaceId: string } }): Promise<NextResponse<ClickableDemoDto>> {
-  const { demoId, spaceId } = params;
+async function postHandler(req: NextRequest, { params }: { params: Promise<{ demoId: string; spaceId: string }> }): Promise<NextResponse<ClickableDemoDto>> {
+  const { demoId, spaceId } = await params;
   const apiKey = req.headers.get('X-API-KEY');
-  const spaceById = await getSpaceById(params.spaceId);
+  const spaceById = await getSpaceById(spaceId);
   const args: CreateClickableDemoRequest = await req.json();
 
   const clickableDemoSteps = args.input.steps?.length > 0 ? args.input.steps : [sampleClickableDemo() as ClickableDemoStepInput];
 
   if (apiKey) {
-    await validateApiKey(apiKey, params.spaceId);
+    await validateApiKey(apiKey, spaceId);
   } else {
     await checkEditSpacePermission(spaceById, req);
   }

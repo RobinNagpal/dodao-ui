@@ -48,12 +48,13 @@ async function transformInput(spaceId: string, message: UpsertByteInput): Promis
 
 async function putHandler(
   req: NextRequest,
-  { params }: { params: { spaceId: string; byteCollectionId: string; byteId: string } }
+  { params }: { params: Promise<{ spaceId: string; byteCollectionId: string; byteId: string }> }
 ): Promise<NextResponse<ByteDto>> {
   const args: UpsertByteInput = await req.json();
-  const spaceById = await getSpaceById(params.spaceId);
+  const { spaceId, byteCollectionId } = await params;
+  const spaceById = await getSpaceById(spaceId);
   await checkEditSpacePermission(spaceById, req);
-  const transformedByte = await transformInput(params.spaceId, args);
+  const transformedByte = await transformInput(spaceId, args);
   const steps: ByteStepDto[] = transformByteInputSteps(args);
   const id = args.id || slugify(args.name);
   const upsertedByte: Byte = await prisma.byte.upsert({
@@ -61,7 +62,7 @@ async function putHandler(
       ...transformedByte,
       steps: steps,
       id: id,
-      spaceId: params.spaceId,
+      spaceId: spaceId,
       completionScreen: args.completionScreen || undefined,
     },
     update: {
@@ -77,7 +78,7 @@ async function putHandler(
   const existingMapping = await prisma.byteCollectionItemMappings.findFirst({
     where: {
       itemId: upsertedByte.id,
-      byteCollectionId: params.byteCollectionId,
+      byteCollectionId: byteCollectionId,
       itemType: ByteCollectionItemType.Byte,
     },
   });
@@ -85,7 +86,7 @@ async function putHandler(
   if (!existingMapping) {
     const byteCollection = await prisma.byteCollection.findUnique({
       where: {
-        id: params.byteCollectionId,
+        id: byteCollectionId,
       },
       select: {
         items: true,
@@ -105,7 +106,7 @@ async function putHandler(
         order: highestOrderNumber + 1,
         itemId: upsertedByte.id,
         ByteCollection: {
-          connect: { id: params.byteCollectionId },
+          connect: { id: byteCollectionId },
         },
       },
     });

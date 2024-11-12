@@ -129,7 +129,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return metadata;
 }
 
-async function Home(props: { searchParams: { [key: string]: string | string[] | undefined } }) {
+async function Home() {
   const headersList = await headers();
   const host = headersList.get('host')?.split(':')?.[0];
 

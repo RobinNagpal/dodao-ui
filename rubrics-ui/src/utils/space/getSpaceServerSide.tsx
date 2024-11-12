@@ -22,7 +22,7 @@ export async function getSpaceBasedOnHostHeader(reqHeaders: Headers) {
 }
 
 export async function getSpaceServerSide(): Promise<RubricSpace | null> {
-  const reqHeaders = headers();
+  const reqHeaders = await headers();
 
   return await getSpaceBasedOnHostHeader(reqHeaders);
 }

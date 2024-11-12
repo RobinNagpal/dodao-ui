@@ -11,11 +11,11 @@ import { NextRequest, NextResponse } from 'next/server';
 
 async function deleteHandler(
   req: NextRequest,
-  { params }: { params: { spaceId: string; byteCollectionId: string; byteId: string } }
+  { params }: { params: Promise<{ spaceId: string; byteCollectionId: string; byteId: string }> }
 ): Promise<NextResponse<DeleteByteItemResponse | ErrorResponse>> {
   const args: DeleteByteItemRequest = await req.json();
 
-  const byteCollectionId = params.byteCollectionId;
+  const { byteCollectionId } = await params;
 
   await validateSuperAdmin(req);
 

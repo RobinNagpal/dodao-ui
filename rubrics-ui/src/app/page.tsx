@@ -5,7 +5,7 @@ import { headers } from 'next/headers';
 import React from 'react';
 import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
 async function Home() {
-  const headersList = headers();
+  const headersList = await headers();
   const host = headersList.get('host')?.split(':')?.[0];
   const space = (await getSpaceServerSide())!;
   if (host === 'myrubrics.com' || host === 'myrubrics-localhost.com') {

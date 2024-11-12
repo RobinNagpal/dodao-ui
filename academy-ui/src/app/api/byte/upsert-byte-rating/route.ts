@@ -9,7 +9,7 @@ async function postHandler(req: NextRequest) {
   const args: MutationUpsertByteRatingArgs = await req.json();
   const decodedJWT = await getDecodedJwtFromContext(req);
   const xForwardedFor = req.headers.get('x-forwarded-for');
-  const ip = xForwardedFor ? xForwardedFor.split(',')[0] : req.ip || req.headers.get('x-real-ip');
+  const ip = xForwardedFor ? xForwardedFor.split(',')[0] : req.headers.get('x-real-ip');
   const byteRating: ByteRating = await prisma.byteRating.upsert({
     where: {
       ratingUuid: args.upsertByteRatingInput.ratingUuid,

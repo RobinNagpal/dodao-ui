@@ -9,9 +9,10 @@ import { SpaceTags } from '@/utils/api/fetchTags';
 import { revalidateTag } from 'next/cache';
 import { NextRequest, NextResponse } from 'next/server';
 
-async function putHandler(req: NextRequest, { params }: { params: { spaceId: string } }): Promise<NextResponse<SpaceWithIntegrationsFragment>> {
+async function putHandler(req: NextRequest, { params }: { params: Promise<{ spaceId: string }> }): Promise<NextResponse<SpaceWithIntegrationsFragment>> {
   const input = (await req.json()) as UpsertByteSettingsRequest;
-  const spaceById = await getSpaceById(params.spaceId);
+  const spaceId = (await params).spaceId;
+  const spaceById = await getSpaceById(spaceId);
 
   await checkEditSpacePermission(spaceById, req);
 
@@ -25,13 +26,13 @@ async function putHandler(req: NextRequest, { params }: { params: { spaceId: str
       },
     },
     where: {
-      id: params.spaceId,
+      id: spaceId,
     },
   });
 
   revalidateTag(SpaceTags.GET_SPACE.toString());
 
-  const spaceWithIntegrations = (await getSpaceWithIntegrations(params.spaceId)) as SpaceWithIntegrationsFragment;
+  const spaceWithIntegrations = (await getSpaceWithIntegrations(spaceId)) as SpaceWithIntegrationsFragment;
   return NextResponse.json(spaceWithIntegrations, { status: 200 });
 }
 

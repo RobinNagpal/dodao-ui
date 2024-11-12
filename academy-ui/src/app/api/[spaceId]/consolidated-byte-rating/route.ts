@@ -7,8 +7,12 @@ import { ConsolidatedByteRatingDto } from '@/types/bytes/ConsolidatedByteRatingD
 import { ByteRating } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
 
-async function getHandler(req: NextRequest, { params }: { params: { spaceId: string } }): Promise<NextResponse<ConsolidatedByteRatingDto | undefined>> {
-  const spaceById = await getSpaceById(params.spaceId);
+async function getHandler(
+  req: NextRequest,
+  { params }: { params: Promise<{ spaceId: string }> }
+): Promise<NextResponse<ConsolidatedByteRatingDto | undefined>> {
+  const { spaceId } = await params;
+  const spaceById = await getSpaceById(spaceId);
   await checkEditSpacePermission(spaceById, req);
 
   const ratings: Array<Pick<ByteRating, 'rating' | 'positiveFeedback' | 'negativeFeedback'>> = await prisma.byteRating.findMany({
@@ -16,7 +20,7 @@ async function getHandler(req: NextRequest, { params }: { params: { spaceId: str
       NOT: {
         rating: null,
       },
-      spaceId: params.spaceId,
+      spaceId: spaceId,
     },
     select: {
       rating: true,

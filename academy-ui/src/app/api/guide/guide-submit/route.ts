@@ -1,24 +1,24 @@
 import { isQuestion, isUserDiscordConnect, isUserInput } from '@/app/api/helpers/deprecatedSchemas/helpers/stepItemTypes';
 import { GuideModel, GuideQuestion, UserInput } from '@/app/api/helpers/deprecatedSchemas/models/GuideModel';
+import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
+import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
+import { SubmissionItemInfo, UserGuideQuestionSubmission, UserGuideStepSubmission } from '@/app/api/helpers/types/guideSubmisstion';
 import {
+  GuideSubmission as GuideSubmissionGraphql,
   GuideSubmissionInput,
   GuideSubmissionResult,
   MutationSubmitGuideArgs,
-  GuideSubmission as GuideSubmissionGraphql,
 } from '@/graphql/generated/generated-types';
-import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
-import { getDecodedJwtFromContext } from '@dodao/web-core/api/auth/getJwtFromContext';
-import { SubmissionItemInfo, UserGuideQuestionSubmission, UserGuideStepSubmission } from '@/app/api/helpers/types/guideSubmisstion';
-import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { prisma } from '@/prisma';
+import { getDecodedJwtFromContext } from '@dodao/web-core/api/auth/getJwtFromContext';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { GuideSubmission } from '@prisma/client';
+import axios from 'axios';
 import { JwtPayload } from 'jsonwebtoken';
 import intersection from 'lodash/intersection';
 import isEqual from 'lodash/isEqual';
 import { NextRequest, NextResponse } from 'next/server';
-import axios from 'axios';
 
 function getGuideStepSubmissionMap(msg: GuideSubmissionInput) {
   const stepEntries = msg.steps.map((step) => {
@@ -118,7 +118,7 @@ async function doSubmitGuide(
   const guideResult = getGuideResult(guide, stepSubmissionsMap);
 
   const xForwardedFor = context.headers.get('x-forwarded-for');
-  const ip = xForwardedFor ? xForwardedFor.split(',')[0] : context.ip || context.headers.get('x-real-ip');
+  const ip = xForwardedFor ? xForwardedFor.split(',')[0] : context.headers.get('x-real-ip');
 
   const submission: GuideSubmission = await prisma.guideSubmission.create({
     data: {
@@ -141,7 +141,7 @@ async function doSubmitGuide(
 }
 
 async function getHandler(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
+  const searchParams = req.nextUrl.searchParams;
   const filters = searchParams.get('filters');
   const spaceId = searchParams.get('spaceId');
   const guideId = searchParams.get('guideId');

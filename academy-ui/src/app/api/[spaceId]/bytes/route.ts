@@ -3,8 +3,9 @@ import { prisma } from '@/prisma';
 import { ByteDto } from '@/types/bytes/ByteDto';
 import { NextRequest, NextResponse } from 'next/server';
 
-async function getHandler(req: NextRequest, { params }: { params: { spaceId: string } }): Promise<NextResponse<{ bytes: ByteDto[] }>> {
-  const bytes = (await prisma.byte.findMany({ where: { spaceId: params.spaceId } })) as ByteDto[];
+async function getHandler(req: NextRequest, { params }: { params: Promise<{ spaceId: string }> }): Promise<NextResponse<{ bytes: ByteDto[] }>> {
+  const { spaceId } = await params;
+  const bytes = (await prisma.byte.findMany({ where: { spaceId } })) as ByteDto[];
   return NextResponse.json({ bytes }, { status: 200 });
 }
 

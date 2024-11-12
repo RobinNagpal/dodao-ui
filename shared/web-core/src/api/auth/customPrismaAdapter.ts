@@ -235,7 +235,7 @@ export function CustomPrismaAdapter(p: PrismaClient): Adapter {
     },
     updateUser: ({ id, ...data }) => p.user.update({ where: { id }, data }) as Promise<PrismaUser>,
     deleteUser: (id: string): Promise<AdapterUser> => p.user.delete({ where: { id } }) as Promise<PrismaUser>,
-    linkAccount: (data) => p.account.create({ data }) as unknown as AdapterAccount,
+    linkAccount: (data: AdapterAccount) => p.account.create({ data }) as unknown as AdapterAccount,
     unlinkAccount: (provider_providerAccountId) =>
       p.account.delete({
         where: { provider_providerAccountId },

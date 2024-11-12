@@ -140,8 +140,8 @@ function GetSubview(props: { spaceInfo: string[]; space: SpaceWithIntegrationsFr
 
   return <SpaceDetails spaceId={props.space.id} />;
 }
-async function ManageSpace({ params }: { params: { spaceInfo: string[] } }) {
-  const { spaceInfo } = params;
+async function ManageSpace({ params }: { params: Promise<{ spaceInfo: string[] }> }) {
+  const { spaceInfo } = await params;
   const subView = spaceInfo?.[1];
   const subSubView = spaceInfo?.[2];
   const space = (await getSpaceServerSide())!;
