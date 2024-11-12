@@ -7,28 +7,8 @@ Must have features
 
 # Clickable Demos
 - [ ] Overlay shows over the buttons - Sami
-- [x] Iframe image cooridnates are not correct - Sami
-- [x] If there are no HTML captures, then we show a message, to install the extension. For now we show a message. Later
-when we release the extension, we can show a link to the extension - Sami
-- [x] Remove back arrow from the clickable demo page - Sami
-- [x] Check the move up and move down of steps. Make sure the accordian is not closed when we move up or down - Sami
 - [ ] tooltips are not appearing correctly for the new iframe changes
-- [x] upon selecting an html capture,  we can border it with a different color (primary color) / tick can be of primary color
-- [x] redundant Step # in edit stepper
 - [ ] modal's cross button outline getting cutoff - (clickable demo view)
-  
-# Signup/Login on Tidbitshub
-- [x] On the single section Modal - make it transparent(may be 50% or something) - Dawood
-- [x] On create pace modal the space is too much, and we should add a placeholder - Dawood
-- [x] Similar to the signup modal, we should update the login modal - Dawood
-- [x] Fix issue in `academy-ui/src/app/api/[spaceId]/queries/spaces/by-admin/route.ts` - Dawood
-- [x] There are some styling issues in the spaces list - Dawood
-- [x] use one of the two new hooks(`shared/web-core/src/ui/hooks/fetch/useFetchData.ts` or `academy-ui/src/utils/api/fetchDataServerSide.ts`) to fetch data in `academy-ui/src/components/spaces/ListSpaces.tsx` - Dawood
-
-
-# Signup email text and styling
-- [x] The email that is sent to the user after signup should be styled properly.
-- [x] The email should have a proper subject line
 
 
 # Login issue for admins
@@ -61,8 +41,6 @@ Optional features
 
 # Social Sharing
 
-# Signup updates
-- [x] When we send the email, show a link to the user to open email depending on the domain they input
 
 ---------
 
