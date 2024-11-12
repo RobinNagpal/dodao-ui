@@ -72,3 +72,28 @@ Optional features
 - [ ] AI Agent to collect data from the web on a given topic
 - [ ] AI Agent to collect data from the web for a company
 
+---------
+# Hassaan
+
+## DoDAO site
+- [ ] Improve the styling of the pages
+- [ ] Make sure each page has the right meta tags and has SEO optimized
+- [ ] Check how the page looks on google search. Make sure if someone serches for DoDAO the link for DoDAO looks good.
+- [ ] Finds ways of improving DoDAO's + Tidbits SEO on. Create a simple word doc with the recommendations.
+     - Micro Learning
+     - User Education
+     - Clickable Demos
+     - Guided Demos
+
+
+## Tidbits Hub Site
+- [ ] Update gif
+- [ ] Add a separate section and gif of clickable demos. This quite and important feature.
+
+## Decentralized Solutions and Reviews Website
+- [ ] Create content for the website
+
+## Chained Assets
+- [ ] Ecosystem page for Service providers
+---------
+Hussain
