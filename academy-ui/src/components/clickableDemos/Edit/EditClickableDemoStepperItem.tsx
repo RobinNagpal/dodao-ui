@@ -83,15 +83,14 @@ export default function EditClickableDemoStepperItem({
 
   return (
     <div className={`${styles.StyledStepContainer}`} style={{ border: !!clickableDemoErrors?.steps?.[step.id] ? '1px solid red' : 'none' }}>
-      <h3>Step {stepIndex + 1}</h3>
       <div className="flex justify-end min-h-10">
-        <IconButton onClick={() => moveStepUp?.(step.id)} iconName={IconTypes.MoveUp} removeBorder disabled={step.order === 0} />
         <IconButton
           onClick={() => moveStepDown?.(step.id)}
           iconName={IconTypes.MoveDown}
           removeBorder
-          disabled={step.order + 1 === clickableDemo.steps.length}
+          disabled={stepIndex + 1 === clickableDemo.steps.length}
         />
+        <IconButton onClick={() => moveStepUp?.(step.id)} iconName={IconTypes.MoveUp} removeBorder disabled={stepIndex === 0} />
         <IconButton onClick={() => removeStep?.(step.id)} iconName={IconTypes.Trash} removeBorder disabled={clickableDemo.steps.length === 1} />
       </div>
       <div className="w-full">

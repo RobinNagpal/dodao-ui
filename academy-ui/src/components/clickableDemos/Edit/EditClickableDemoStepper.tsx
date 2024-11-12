@@ -41,7 +41,7 @@ export default function EditClickableDemoStepper({
   return (
     <div className="w-full flex flex-row">
       <div className="w-full" style={styleObject}>
-        <div id="accordion-collapse" data-accordion="collapse">
+        <div id="accordion-collapse" data-accordion="collapse" className="px-3">
           {clickableDemo.steps.map((step, index) => (
             <Accordion
               key={step.id}
@@ -59,8 +59,14 @@ export default function EditClickableDemoStepper({
                   step={step}
                   stepIndex={index}
                   stepErrors={errors?.steps?.[step.order]}
-                  moveStepUp={updateClickableDemoFunctions.moveStepUp}
-                  moveStepDown={updateClickableDemoFunctions.moveStepDown}
+                  moveStepUp={(stepId: string) => {
+                    updateClickableDemoFunctions.moveStepUp(stepId);
+                    setOpenAccordionIndex(index - 1);
+                  }}
+                  moveStepDown={(stepId: string) => {
+                    updateClickableDemoFunctions.moveStepDown(stepId);
+                    setOpenAccordionIndex(index + 1);
+                  }}
                   removeStep={updateClickableDemoFunctions.removeStep}
                   onUpdateStep={updateClickableDemoFunctions.updateStep}
                 />
