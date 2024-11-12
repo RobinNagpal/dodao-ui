@@ -13,39 +13,85 @@ export function randomString(size: number) {
 
 const emailBody = (link: string) => `
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
             background-color: #f4f4f4;
-            color: #333;
+            color: #333333;
+            margin: 0;
+            padding: 0;
         }
+
         .container {
-            background-color: #ffffff;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
             padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
         }
-        a {
+
+        .header {
+            text-align: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #dddddd;
+        }
+
+        .content {
+            padding: 20px;
+            font-size: 16px;
+            line-height: 1.5;
+            color: #555555;
+        }
+
+        .button-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .button {
+            font-size: 16px;
+            color: #ffffff;
             background-color: #007bff;
-            color: white;
-            padding: 10px 20px;
+            ;
+            padding: 12px 20px;
             text-decoration: none;
             border-radius: 5px;
         }
-        h1 {
-            color: #333;
+
+        .footer {
+            font-size: 14px;
+            color: #999999;
+            text-align: center;
+            margin-top: 30px;
         }
     </style>
 </head>
+
 <body>
     <div class="container">
-        <h1>Sign In to Your Account</h1>
-        <p>Your sign-in link is below. Please click the button to proceed.</p>
-        <a href="${decodeURIComponent(link)}">Sign In</a>
-        <p>If you did not request this email, please ignore it.</p>
+        <div class="header">
+            <h1>Log in to Tidbitshub</h1>
+        </div>
+        <div class="content">
+            <p>Hello,</p>
+            <p>You requested a secure login link to access your account on our platform. Click the button below to log
+                in.</p>
+            <p><strong>Please note:</strong> This link is valid for a limited time and can only be used once.</p>
+            <div class="button-container">
+                <a href="${decodeURIComponent(link)}" class="button">Log in to Your Account</a>
+            </div>
+            <p>If you didn’t request this link, please ignore this email or contact our support team if you have any
+                concerns.</p>
+            <p>Thanks,<br>Dodao Support</p>
+        </div>
+        <div class="footer">
+            <p>&copy; 2024 Dodao. All rights reserved.</p>
+        </div>
     </div>
 </body>
 </html>
