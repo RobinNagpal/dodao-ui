@@ -117,9 +117,9 @@ async function putHandler(
 
 async function getHandler(
   req: NextRequest,
-  { params }: { params: { spaceId: string; byteCollectionId: string; byteId: string } }
+  { params }: { params: Promise<{ spaceId: string; byteCollectionId: string; byteId: string }> }
 ): Promise<NextResponse<ByteDto>> {
-  const { byteId, spaceId } = params;
+  const { byteId, spaceId } = await params;
   return NextResponse.json((await getByte(spaceId, byteId)) as ByteDto, { status: 200 });
 }
 

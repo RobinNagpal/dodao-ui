@@ -13,8 +13,8 @@ import { ByteCollectionItemType } from '../../../helpers/byteCollection/byteColl
 import { revalidateTag } from 'next/cache';
 import { TidbitCollectionTags } from '@/utils/api/fetchTags';
 
-async function getHandler(req: NextRequest, { params }: { params: { demoId: string; spaceId: string } }): Promise<NextResponse<ClickableDemoDto>> {
-  const { demoId } = params;
+async function getHandler(req: NextRequest, { params }: { params: Promise<{ demoId: string; spaceId: string }> }): Promise<NextResponse<ClickableDemoDto>> {
+  const { demoId } = await params;
   const clickableDemoWithSteps = await prisma.clickableDemos.findUniqueOrThrow({
     where: {
       id: demoId,
@@ -24,10 +24,8 @@ async function getHandler(req: NextRequest, { params }: { params: { demoId: stri
   return NextResponse.json(clickableDemoWithSteps as ClickableDemoDto, { status: 200 });
 }
 
-async function deleteHandler(
-  req: NextRequest,
-  { params: { demoId, spaceId } }: { params: { demoId: string; spaceId: string } }
-): Promise<NextResponse<ClickableDemoDto>> {
+async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ demoId: string; spaceId: string }> }): Promise<NextResponse<ClickableDemoDto>> {
+  const { demoId, spaceId } = await params;
   const spaceById = await getSpaceById(spaceId);
   await checkEditSpacePermission(spaceById, req);
   const updatedClickableDemo = await prisma.clickableDemos.update({
