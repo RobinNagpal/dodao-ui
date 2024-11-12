@@ -54,12 +54,12 @@ function showTooltip(event: MessageEvent) {
           if (xpathResult) {
             targetNode = xpathResult;
             currentContextNode = iframeDoc;
+
             const head = iframeDoc.head || iframeDoc.getElementsByTagName('head')[0];
-            // Copy each <link> element from the main document and add it to the iframe
-            document.querySelectorAll("link[rel='stylesheet']").forEach((link) => {
-              const newLink = link.cloneNode(true) as HTMLLinkElement;
-              head.appendChild(newLink);
-            });
+            const link = iframeDoc.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = '/clickable-demos-prod-files/clickableDemoTooltipStyles.css';
+            iframeDoc.head.appendChild(link);
             break;
           }
         } catch (error) {
