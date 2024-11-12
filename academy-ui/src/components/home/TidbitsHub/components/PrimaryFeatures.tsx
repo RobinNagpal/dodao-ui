@@ -15,6 +15,7 @@ import Image from 'next/image';
 import Tidbits from '@/images/lifeInsure/images/tidbits.png';
 import Quizzes from '@/images/lifeInsure/images/quiz.png';
 import Shorts from '@/images/lifeInsure/images/shorts.png';
+import Demos from '@/images/lifeInsure/images/demos.png';
 
 const MotionAppScreenHeader = motion(AppScreen.Header);
 const MotionAppScreenBody = motion(AppScreen.Body);
@@ -37,7 +38,7 @@ const features = [
     description:
       'Experience features firsthand with our guided, interactive demos. Users learn by clicking through simulations, understanding functionality in just seconds.',
     icon: DeviceTouchIcon,
-    screen: InviteScreen,
+    screen: DemosScreen,
   },
   {
     name: 'One-Minute Videos',
@@ -174,6 +175,21 @@ function InviteScreen(props: ScreenProps) {
 
       <MotionAppScreenBody {...(props.animated ? { ...bodyAnimation, custom: props.custom } : {})}>
         <Image src={Tidbits} alt="Tidbits" />
+      </MotionAppScreenBody>
+    </AppScreen>
+  );
+}
+
+function DemosScreen(props: ScreenProps) {
+  return (
+    <AppScreen className="w-full">
+      <MotionAppScreenHeader {...(props.animated ? headerAnimation : {})}>
+        <AppScreen.Title>Clickable Demos</AppScreen.Title>
+        <AppScreen.Subtitle>Users learn by doing</AppScreen.Subtitle>
+      </MotionAppScreenHeader>
+
+      <MotionAppScreenBody {...(props.animated ? { ...bodyAnimation, custom: props.custom } : {})}>
+        <Image src={Demos} alt="Clickable Demos" />
       </MotionAppScreenBody>
     </AppScreen>
   );
