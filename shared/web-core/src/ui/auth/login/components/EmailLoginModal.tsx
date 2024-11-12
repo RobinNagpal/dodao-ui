@@ -3,7 +3,6 @@
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Input from '@dodao/web-core/components/core/input/Input';
 import SingleSectionModal from '@dodao/web-core/components/core/modals/SingleSectionModal';
-import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { WebCoreSpace } from '@dodao/web-core/types/space';
 import { useState } from 'react';
 
@@ -43,22 +42,29 @@ function EmailLoginModal({ open, onClose, space }: EmailLoginModalProps) {
 
   return (
     <SingleSectionModal open={open} onClose={onClose} title={'Login with Email'}>
-      <PageWrapper>
-        <div className="text-left">
-          {!emailSent ? (
-            <form onSubmit={handleEmailSubmit}>
-              <Input id="email" modelValue={email} onUpdate={(e) => (e ? setEmail(e.toString()) : setEmail(''))} required label={'Email Address'} />
+      <div className="text-left py-4">
+        {!emailSent ? (
+          <form onSubmit={handleEmailSubmit}>
+            <Input
+              id="email"
+              modelValue={email}
+              placeholder="john@example.com"
+              onUpdate={(e) => (e ? setEmail(e.toString()) : setEmail(''))}
+              required
+              label={'Email Address'}
+            />
+            <div className="w-full flex justify-center">
               <Button type="submit" primary variant={'contained'} className="mt-4" loading={upserting}>
-                Send Verification Email
+                Login
               </Button>
-            </form>
-          ) : (
-            <div className="text-center">
-              <p>A verification link has been sent to your email. Click on the link provided in the email to log in.</p>
             </div>
-          )}
-        </div>
-      </PageWrapper>
+          </form>
+        ) : (
+          <div className="text-center">
+            <p>A verification link has been sent to your email. Click on the link provided in the email to log in.</p>
+          </div>
+        )}
+      </div>
     </SingleSectionModal>
   );
 }

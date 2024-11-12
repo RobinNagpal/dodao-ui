@@ -3,7 +3,6 @@
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Input from '@dodao/web-core/components/core/input/Input';
 import SingleSectionModal from '@dodao/web-core/components/core/modals/SingleSectionModal';
-import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { useState } from 'react';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { WebCoreSpace } from '@dodao/web-core/types/space';
@@ -54,22 +53,30 @@ function EmailSetupNewSpaceModal({ open, onClose, space }: EmailSetupNewSpaceMod
 
   return (
     <SingleSectionModal open={open} onClose={onModalClose} title={'Setup New Space with Email'}>
-      <PageWrapper>
-        <div className="text-left">
-          {!emailSent ? (
-            <form onSubmit={handleEmailSubmit}>
-              <Input label={'Email Address'} id="email" modelValue={email} onUpdate={(e) => (e ? setEmail(e.toString()) : setEmail(''))} required />
-              <Button variant="contained" primary loading={upserting} type="submit">
-                Setup New Space
+      <div className="text-left py-4">
+        {!emailSent ? (
+          <form onSubmit={handleEmailSubmit}>
+            <Input
+              label={'Email Address'}
+              id="email"
+              modelValue={email}
+              placeholder="john@example.com"
+              onUpdate={(e) => (e ? setEmail(e.toString()) : setEmail(''))}
+              required
+            />
+
+            <div className="w-full flex justify-center">
+              <Button variant="contained" primary loading={upserting} className="mt-4" type="submit">
+                Setup
               </Button>
-            </form>
-          ) : (
-            <div className="text-center">
-              <p>A verification link has been sent to your email. Click on the link provided in the email to log in.</p>
             </div>
-          )}
-        </div>
-      </PageWrapper>
+          </form>
+        ) : (
+          <div className="text-center">
+            <p>A verification link has been sent to your email. Click on the link provided in the email to log in.</p>
+          </div>
+        )}
+      </div>
     </SingleSectionModal>
   );
 }
