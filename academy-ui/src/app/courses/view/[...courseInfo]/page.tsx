@@ -7,10 +7,11 @@ import axios from 'axios';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 
 type CourseViewProps = {
-  params: { courseInfo: string[] };
+  params: Promise<{ courseInfo: string[] }>;
 };
 
-export async function generateMetadata({ params }: CourseViewProps): Promise<Metadata> {
+export async function generateMetadata(args: CourseViewProps): Promise<Metadata> {
+  const params = await args.params;
   const courseInfo = params.courseInfo;
   const courseKey = Array.isArray(courseInfo) ? courseInfo[0] : (courseInfo as string);
 
@@ -62,9 +63,11 @@ export async function generateMetadata({ params }: CourseViewProps): Promise<Met
 }
 
 const CourseView = async (props: CourseViewProps) => {
+  const params = await props.params;
+  const courseInfo = params.courseInfo;
   return (
     <PageWrapper>
-      <CourseInformation courseInfo={props.params.courseInfo} />
+      <CourseInformation courseInfo={courseInfo} />
     </PageWrapper>
   );
 };
