@@ -94,8 +94,11 @@ export default function SelectHtmlCaptureModal(props: SelectHtmlCaptureModalProp
             <Grid4Cols className="p-16 text-color">
               {availableHtmlCaptures.map((htmlCapture) => (
                 <div key={htmlCapture.id}>
-                  <Card onClick={() => handleCardClick(htmlCapture)}>
-                    <div className="cursor-pointer">
+                  <Card onClick={() => handleCardClick(htmlCapture)} className={selectedHtmlCaptureId == htmlCapture.id ? 'border-none' : ''}>
+                    <div
+                      className="cursor-pointer"
+                      style={{ border: selectedHtmlCaptureId === htmlCapture.id ? '2px solid var(--primary-color)' : '', borderRadius: '0.75rem' }}
+                    >
                       <div className="p-2 text-center">
                         <img src={htmlCapture.fileImageUrl} alt={htmlCapture.fileName} className="w-full h-[150px] object-cover rounded-lg" />
                       </div>

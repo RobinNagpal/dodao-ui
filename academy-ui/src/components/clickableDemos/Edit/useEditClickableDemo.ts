@@ -81,34 +81,29 @@ export function useEditClickableDemo(space: Space, demoId: string | null) {
   }
 
   function moveStepUp(stepUuid: string) {
-    setClickableDemo((prevClickableDemo) => {
-      const stepIndex = prevClickableDemo.steps.findIndex((s) => s.id === stepUuid);
-      const updatedSteps = [...prevClickableDemo.steps];
-      const stepMovingDown = { ...updatedSteps[stepIndex - 1], order: stepIndex };
-      const stepMovingUp = { ...updatedSteps[stepIndex], order: stepIndex - 1 };
-      updatedSteps[stepIndex - 1] = stepMovingDown;
-      updatedSteps[stepIndex] = stepMovingUp;
+    const steps = [...clickableDemo.steps];
+    const index = steps.findIndex((step) => step.id === stepUuid);
+    if (index >= 0 && index < steps.length - 1) {
+      // Swap elements to move the step up
+      const temp = steps[index];
+      steps[index] = steps[index - 1];
+      steps[index - 1] = temp;
+    }
 
-      return {
-        ...prevClickableDemo,
-        steps: orderBy(updatedSteps, 'order'),
-      };
-    });
+    setClickableDemo({ ...clickableDemo, steps });
   }
 
   function moveStepDown(stepUuid: string) {
-    setClickableDemo((prevClickableDemo) => {
-      const stepIndex = prevClickableDemo.steps.findIndex((s) => s.id === stepUuid);
-      const updatedSteps = [...prevClickableDemo.steps];
-      const stepMovingDown = { ...updatedSteps[stepIndex], order: stepIndex + 1 };
-      const stepMovingUp = { ...updatedSteps[stepIndex + 1], order: stepIndex };
-      updatedSteps[stepIndex + 1] = stepMovingDown;
-      updatedSteps[stepIndex] = stepMovingUp;
-      return {
-        ...prevClickableDemo,
-        steps: orderBy(updatedSteps, 'order'),
-      };
-    });
+    const steps = [...clickableDemo.steps];
+    const index = steps.findIndex((step) => step.id === stepUuid);
+    if (index >= 0 && index < steps.length - 1) {
+      // Swap elements to move the step down
+      const temp = steps[index];
+      steps[index] = steps[index + 1];
+      steps[index + 1] = temp;
+    }
+
+    setClickableDemo({ ...clickableDemo, steps });
   }
 
   function removeStep(stepUuid: string) {
