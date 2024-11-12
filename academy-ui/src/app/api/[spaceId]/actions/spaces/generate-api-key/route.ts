@@ -1,12 +1,17 @@
-import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
+import { withErrorHandling, withErrorHandlingV1 } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { getSpaceWithIntegrations } from '@/app/api/helpers/space';
 import { checkEditSpacePermission } from '@/app/api/helpers/space/checkEditSpacePermission';
 import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
 import { MutationAddNewApiKeyArgs } from '@/graphql/generated/generated-types';
 import { prisma } from '@/prisma';
+import { CreateSpaceResponse } from '@/types/response/CreateSpaceResponse';
+import { Space, SpaceIntegration } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
 
-async function postHandler(req: NextRequest) {
+async function postHandler(
+  req: NextRequest,
+  { params }: { params: Promise<{ spaceId: string }> }
+): Promise<NextResponse<{ space: Space & { spaceIntegrations: SpaceIntegration | null } }>> {
   const { spaceId, creator, apiKey } = (await req.json()) as MutationAddNewApiKeyArgs;
   const spaceById = await getSpaceById(spaceId);
 
@@ -40,4 +45,4 @@ async function postHandler(req: NextRequest) {
   return NextResponse.json({ space: space }, { status: 200 });
 }
 
-export const POST = withErrorHandling(postHandler);
+export const POST = withErrorHandlingV1<{ space: Space & { spaceIntegrations: SpaceIntegration | null } }>(postHandler);

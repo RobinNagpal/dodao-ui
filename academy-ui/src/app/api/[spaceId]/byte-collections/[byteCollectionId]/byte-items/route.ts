@@ -1,5 +1,5 @@
 import { ByteCollectionItemType } from '@/app/api/helpers/byteCollection/byteCollectionItemType';
-import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
+import { withErrorHandlingV1 } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { validateSuperAdmin } from '@/app/api/helpers/space/isSuperAdmin';
 import { prisma } from '@/prisma';
 import { DeleteByteItemRequest } from '@/types/request/ByteRequests';
@@ -66,4 +66,4 @@ async function deleteHandler(
   return NextResponse.json({ error: 'Invalid itemType' }, { status: 200 });
 }
 
-export const DELETE = withErrorHandling(deleteHandler);
+export const DELETE = withErrorHandlingV1<DeleteByteItemResponse | ErrorResponse>(deleteHandler);

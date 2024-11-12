@@ -7,11 +7,11 @@ import { ErrorResponse } from '@/types/response/ErrorResponse';
  */
 export const withErrorHandling =
   (...handlers: Function[]) =>
-  async (req: NextRequest, res: NextResponse) => {
+  async (req: NextRequest): Promise<NextResponse<any>> => {
     try {
       let response;
       for (const handler of handlers) {
-        response = await handler(req, res);
+        response = await handler(req);
       }
       return response;
     } catch (error) {
