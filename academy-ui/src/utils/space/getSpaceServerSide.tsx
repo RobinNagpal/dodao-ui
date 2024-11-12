@@ -26,6 +26,6 @@ export async function getSpaceBasedOnHostHeader(reqHeaders: Headers) {
 }
 
 export async function getSpaceServerSide(): Promise<SpaceWithIntegrationsFragment | null> {
-  const reqHeaders = headers();
+  const reqHeaders = await headers();
   return await getSpaceBasedOnHostHeader(reqHeaders);
 }

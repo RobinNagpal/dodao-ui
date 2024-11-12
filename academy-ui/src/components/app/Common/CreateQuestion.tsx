@@ -11,7 +11,7 @@ import { QuestionType } from '@dodao/web-core/types/deprecated/models/enums';
 import { GuideQuestion, GuideStepItem } from '@dodao/web-core/types/deprecated/models/GuideModel';
 import { QuestionError } from '@dodao/web-core/types/errors/error';
 import PlusCircle from '@heroicons/react/20/solid/PlusCircleIcon';
-import MinusCircle from '@heroicons/react/24/outline//MinusCircleIcon';
+import MinusCircle from '@heroicons/react/24/outline/MinusCircleIcon';
 import styled from 'styled-components';
 
 interface QuestionComponentProps {

@@ -19,7 +19,7 @@ interface RootLayoutProps {
 }
 
 export default async function RootLayout({ children }: RootLayoutProps) {
-  const session = (await getServerSession(authOptions)) as Session | null;
+  const session = (await getServerSession(await authOptions)) as Session | null;
   const space = await getSpaceServerSide();
   const gtag = getGTagId(space);
 

@@ -13,7 +13,7 @@ import React from 'react';
 import { Metadata } from 'next';
 
 export async function generateMetadata(): Promise<Metadata> {
-  const headersList = headers();
+  const headersList = await headers();
   const host = headersList.get('host')?.split(':')?.[0];
 
   const space = await getSpaceServerSide();
@@ -130,7 +130,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 async function Home(props: { searchParams: { [key: string]: string | string[] | undefined } }) {
-  const headersList = headers();
+  const headersList = await headers();
   const host = headersList.get('host')?.split(':')?.[0];
 
   const space = await getSpaceServerSide();
