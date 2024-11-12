@@ -3,17 +3,18 @@ import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
 import React from 'react';
 
-export default async function ByteDetails(props: { params: { tidbitCollectionId: string; tidbitId?: string } }) {
+export default async function ByteDetails({ params }: { params: Promise<{ tidbitCollectionId: string; tidbitId?: string }> }) {
   const space = (await getSpaceServerSide())!;
 
+  const { tidbitCollectionId, tidbitId } = await params;
   return (
     <PageWrapper>
       <ViewByteModal
-        byteCollectionId={props.params.tidbitCollectionId}
+        byteCollectionId={tidbitCollectionId}
         space={space}
-        selectedByteId={props.params.tidbitId!}
+        selectedByteId={tidbitId!}
         viewByteModalClosedUrl={'/embedded-tidbit-collections'}
-        afterUpsertByteModalClosedUrl={`/embedded-tidbit-collections/view/${props.params?.tidbitCollectionId}`}
+        afterUpsertByteModalClosedUrl={`/embedded-tidbit-collections/view/${tidbitCollectionId}`}
       />
     </PageWrapper>
   );
