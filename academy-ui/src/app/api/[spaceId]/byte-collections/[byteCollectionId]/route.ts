@@ -10,13 +10,14 @@ import { NextRequest, NextResponse } from 'next/server';
 
 async function deleteHandler(
   req: NextRequest,
-  { params }: { params: { spaceId: string; byteCollectionId: string } }
+  { params }: { params: Promise<{ spaceId: string; byteCollectionId: string }> }
 ): Promise<NextResponse<ByteCollectionDto>> {
   await validateSuperAdmin(req);
 
+  const { byteCollectionId } = await params;
   const updatedByteCollection = await prisma.byteCollection.update({
     where: {
-      id: params.byteCollectionId,
+      id: byteCollectionId,
     },
     data: {
       archive: true,
@@ -28,12 +29,13 @@ async function deleteHandler(
 
 async function putHandler(
   req: NextRequest,
-  { params }: { params: { spaceId: string; byteCollectionId: string } }
+  { params }: { params: Promise<{ spaceId: string; byteCollectionId: string }> }
 ): Promise<NextResponse<ByteCollectionSummary>> {
   const args: CreateByteCollectionRequest = await req.json();
+  const { spaceId, byteCollectionId } = await params;
   const byteCollection = await prisma.byteCollection.findUniqueOrThrow({
     where: {
-      id: params.byteCollectionId,
+      id: byteCollectionId,
     },
   });
 
@@ -43,7 +45,7 @@ async function putHandler(
 
   const updatedByteCollection = await prisma.byteCollection.update({
     where: {
-      id: params.byteCollectionId,
+      id: byteCollectionId,
     },
     data: {
       name: args.name,

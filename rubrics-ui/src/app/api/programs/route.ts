@@ -18,7 +18,7 @@ export async function GET(req: NextRequest): Promise<NextResponse<Program[] | { 
   return NextResponse.json(programs);
 }
 
-export async function POST(req: NextRequest, res: NextResponse) {
+export async function POST(req: NextRequest) {
   try {
     const {
       id,

@@ -1,16 +1,18 @@
-import { MutationUpdateThemeColorsArgs } from '@/graphql/generated/generated-types';
-import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
+import { withErrorHandlingV1 } from '@/app/api/helpers/middlewares/withErrorHandling';
+import { getSpaceWithIntegrations } from '@/app/api/helpers/space';
 import { checkEditSpacePermission } from '@/app/api/helpers/space/checkEditSpacePermission';
-import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
+import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
+import { MutationUpdateThemeColorsArgs } from '@/graphql/generated/generated-types';
 import { prisma } from '@/prisma';
+import { Space, SpaceIntegration } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
 
-async function putHandler(req: NextRequest) {
+async function putHandler(req: NextRequest): Promise<NextResponse<{ space: Space & { spaceIntegrations: SpaceIntegration | null } }>> {
   const { spaceId, themeColors } = (await req.json()) as MutationUpdateThemeColorsArgs;
   const spaceById = await getSpaceById(spaceId);
   await checkEditSpacePermission(spaceById, req);
 
-  const space = await prisma.space.update({
+  await prisma.space.update({
     data: {
       themeColors: {
         primaryColor: themeColors.primaryColor,
@@ -27,7 +29,9 @@ async function putHandler(req: NextRequest) {
     },
   });
 
+  const space = await getSpaceWithIntegrations(spaceId);
+
   return NextResponse.json({ space }, { status: 200 });
 }
 
-export const PUT = withErrorHandling(putHandler);
+export const PUT = withErrorHandlingV1<{ space: Space & { spaceIntegrations: SpaceIntegration | null } }>(putHandler);

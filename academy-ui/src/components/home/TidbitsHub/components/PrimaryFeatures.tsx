@@ -1,6 +1,6 @@
 'use client';
 
-import { Fragment, useEffect, useId, useRef, useState } from 'react';
+import { Fragment, LegacyRef, useEffect, useId, useRef, useState } from 'react';
 import { Tab } from '@headlessui/react';
 import clsx from 'clsx';
 import { AnimatePresence, type MotionProps, type Variant, type Variants, motion } from 'framer-motion';
@@ -296,8 +296,8 @@ function FeaturesDesktop() {
 
 function FeaturesMobile() {
   let [activeIndex, setActiveIndex] = useState(0);
-  let slideContainerRef = useRef<React.ElementRef<'div'>>(null);
-  let slideRefs = useRef<Array<React.ElementRef<'div'>>>([]);
+  let slideContainerRef = useRef<HTMLDivElement>(null);
+  let slideRefs = useRef<Array<HTMLDivElement>>([]);
 
   useEffect(() => {
     let observer = new window.IntersectionObserver(
@@ -333,7 +333,13 @@ function FeaturesMobile() {
         className="-mb-4 flex snap-x snap-mandatory -space-x-4 overflow-x-auto overscroll-x-contain scroll-smooth pb-4 [scrollbar-width:none] sm:-space-x-6 [&::-webkit-scrollbar]:hidden"
       >
         {features.map((feature, featureIndex) => (
-          <div key={featureIndex} ref={(ref) => ref && (slideRefs.current[featureIndex] = ref)} className="w-full flex-none snap-center px-4 sm:px-6">
+          <div
+            key={featureIndex}
+            ref={(ref) => {
+              ref && (slideRefs.current[featureIndex] = ref);
+            }}
+            className="w-full flex-none snap-center px-4 sm:px-6"
+          >
             <div className="relative transform overflow-hidden rounded-2xl bg-gray-800 px-5 py-6">
               <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
                 <CircleBackground color="#13B5C8" className={featureIndex % 2 === 1 ? 'rotate-180' : undefined} />

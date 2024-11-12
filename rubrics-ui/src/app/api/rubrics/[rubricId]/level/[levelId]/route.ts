@@ -1,7 +1,7 @@
 import { prisma } from '@/prisma';
 import { NextRequest, NextResponse } from 'next/server';
-export async function PUT(request: Request, { params }: { params: { rubricId: string; levelId: string } }) {
-  const { rubricId, levelId } = params;
+export async function PUT(request: Request, { params }: { params: Promise<{ rubricId: string; levelId: string }> }) {
+  const { rubricId, levelId } = await params;
   const { columnName, score, description } = await request.json();
 
   try {

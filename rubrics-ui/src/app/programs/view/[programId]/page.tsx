@@ -1,8 +1,8 @@
 import React from 'react';
 import ProgramScreenModalClient from '@/components/Program/ProgramView/ViewProgramFullScreenModal';
 
-const Page = async ({ params }: { params: { programId: string } }) => {
-  const { programId } = params;
+const Page = async ({ params }: { params: Promise<{ programId: string }> }) => {
+  const { programId } = await params;
 
   try {
     const response = await fetch(`http://localhost:3004/api/program?programId=${programId}`);

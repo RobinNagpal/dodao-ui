@@ -5,8 +5,8 @@ import { ChevronLeftIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import React from 'react';
 
-const EditProgram = async ({ params }: { params: { programId: string } }) => {
-  const { programId } = params;
+const EditProgram = async ({ params }: { params: Promise<{ programId: string }> }) => {
+  const { programId } = await params;
   const space = (await getSpaceServerSide())!;
   return (
     <PageWrapper>

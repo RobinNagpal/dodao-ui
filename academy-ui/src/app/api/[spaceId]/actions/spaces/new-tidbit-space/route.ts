@@ -9,8 +9,8 @@ import { withErrorHandlingV1 } from '@/app/api/helpers/middlewares/withErrorHand
 import { Space } from '@prisma/client';
 import { LoginProviders } from '@dodao/web-core/types/deprecated/models/enums';
 
-async function postHandler(req: NextRequest, { params }: { params: { spaceId: string } }): Promise<NextResponse<CreateSpaceResponse>> {
-  const mainSpaceId = params.spaceId;
+async function postHandler(req: NextRequest, { params }: { params: Promise<{ spaceId: string }> }): Promise<NextResponse<CreateSpaceResponse>> {
+  const mainSpaceId = (await params).spaceId;
   const session = await getDecodedJwtFromContext(req);
   if (!session) throw new Error('User not present in session');
 

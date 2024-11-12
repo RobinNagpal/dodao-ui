@@ -1,9 +1,9 @@
-import { createHash } from '@dodao/web-core/api/auth/createHash';
 import { prisma } from '@/prisma';
+import { createHash } from '@dodao/web-core/api/auth/createHash';
+import { defaultNormalizer, randomString, sendVerificationRequest } from '@dodao/web-core/api/auth/custom-email/send-verification';
 import { BaseUser } from '@prisma/client';
 import { headers } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
-import { defaultNormalizer, randomString, sendVerificationRequest } from '@dodao/web-core/api/auth/custom-email/send-verification';
 
 const createUser = async (user: BaseUser & { email: string }, spaceId: string) => {
   console.log('######### signIn - Creating new user #########');
@@ -47,7 +47,7 @@ const createUser = async (user: BaseUser & { email: string }, spaceId: string) =
  * and sending it to the user's e-mail (with the help of a DB adapter).
  * At the end, it returns a redirect to the `verify-request` page.
  */
-async function POST(req: NextRequest, res: NextResponse) {
+async function POST(req: NextRequest) {
   const reqBody = await req.json();
   const { spaceId, provider, email } = reqBody;
 
@@ -70,7 +70,7 @@ async function POST(req: NextRequest, res: NextResponse) {
   const ONE_DAY_IN_SECONDS = 86400;
   const expires = new Date(Date.now() + ONE_DAY_IN_SECONDS * 1000 * 30); // 30 days
 
-  const headersList = headers();
+  const headersList = await headers();
 
   const host = headersList.get('x-forwarded-host') || headersList.get('host');
   const httpsProto = headersList.get('x-forwarded-proto');

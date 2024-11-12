@@ -6,8 +6,11 @@ import { prisma } from '@/prisma';
 import { ConsolidatedGuideRatingDto } from '@/types/bytes/ConsolidatedGuideRatingDto';
 import { NextRequest, NextResponse } from 'next/server';
 
-async function getHandler(req: NextRequest, { params }: { params: { spaceId: string } }): Promise<NextResponse<ConsolidatedGuideRatingDto | undefined>> {
-  const spaceId = params.spaceId;
+async function getHandler(
+  req: NextRequest,
+  { params }: { params: Promise<{ spaceId: string }> }
+): Promise<NextResponse<ConsolidatedGuideRatingDto | undefined>> {
+  const { spaceId } = await params;
 
   const spaceById = await getSpaceById(spaceId);
   await checkEditSpacePermission(spaceById, req);

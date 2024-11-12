@@ -13,10 +13,10 @@ function getBadgeColor(score: number) {
   return `bg-red-100 text-red-800`;
 }
 
-export default async function RubricsNetRating({ params }: { params: { rubricId: string } }) {
+export default async function RubricsNetRating({ params }: { params: Promise<{ rubricId: string }> }) {
   const session = (await getServerSession(authOptions)) as Session | undefined;
   const space = (await getSpaceServerSide())!;
-  const { rubricId } = params;
+  const { rubricId } = await params;
   const response = await fetch(`${getBaseUrl()}/api/${space.id}/net-ratings/${rubricId}?userId=${session?.userId}`);
   if (!response.ok) {
     const { error } = await response.json();

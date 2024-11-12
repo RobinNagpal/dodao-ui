@@ -1,16 +1,16 @@
-import { MutationUpsertShortVideoArgs, MutationDeleteShortVideoArgs } from '@/graphql/generated/generated-types';
-import { checkEditSpacePermission } from '@/app/api/helpers/space/checkEditSpacePermission';
-import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
-import { NextRequest, NextResponse } from 'next/server';
 import { ByteCollectionItemType } from '@/app/api/helpers/byteCollection/byteCollectionItemType';
 import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
-import { v4 as uuidv4 } from 'uuid';
+import { checkEditSpacePermission } from '@/app/api/helpers/space/checkEditSpacePermission';
+import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
+import { MutationDeleteShortVideoArgs } from '@/graphql/generated/generated-types';
 import { prisma } from '@/prisma';
-import { revalidateTag } from 'next/cache';
 import { TidbitCollectionTags } from '@/utils/api/fetchTags';
+import { revalidateTag } from 'next/cache';
+import { NextRequest, NextResponse } from 'next/server';
+import { v4 as uuidv4 } from 'uuid';
 
 async function getHandler(req: NextRequest, { params: { videoId } }: { params: { videoId: string } }) {
-  const { searchParams } = new URL(req.url);
+  const searchParams = req.nextUrl.searchParams;
   const spaceId = searchParams.get('spaceId');
   if (!spaceId) return NextResponse.json({ message: 'spaceId is required' }, { status: 400 });
 

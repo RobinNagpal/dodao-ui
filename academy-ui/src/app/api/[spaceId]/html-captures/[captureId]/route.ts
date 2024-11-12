@@ -6,14 +6,16 @@ import { NextRequest, NextResponse } from 'next/server';
 
 async function deleteHandler(
   req: NextRequest,
-  { params }: { params: { spaceId: string; captureId: string } }
+  { params }: { params: Promise<{ spaceId: string; captureId: string }> }
 ): Promise<NextResponse<ClickableDemoHtmlCaptureDto>> {
   await validateSuperAdmin(req);
+
+  const { spaceId, captureId } = await params;
 
   // Archive the ClickableDemoHtmlCapture record from the database
   const capture = await prisma.clickableDemoHtmlCaptures.update({
     where: {
-      id: params.captureId,
+      id: captureId,
     },
     data: {
       archive: true,

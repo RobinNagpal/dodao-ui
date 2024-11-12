@@ -9,11 +9,10 @@ import { NextRequest, NextResponse } from 'next/server';
 
 async function postHandler(
   req: NextRequest,
-  { params }: { params: { byteCollectionId: string; spaceId: string } }
+  { params }: { params: Promise<{ byteCollectionId: string; spaceId: string }> }
 ): Promise<NextResponse<ByteCollectionSummary>> {
-  console.log('got request to create signed url for html capture', params);
-  const { byteCollectionId } = params;
-  const spaceById = await getSpaceById(params.spaceId);
+  const { byteCollectionId, spaceId } = await params;
+  const spaceById = await getSpaceById(spaceId);
 
   await checkEditSpacePermission(spaceById, req);
 

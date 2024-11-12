@@ -2,8 +2,8 @@ import { prisma } from '@/prisma';
 import { Program } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET(req: NextRequest, { params }: { params: { programId: string } }): Promise<NextResponse<Program | { error: string }>> {
-  const programId = params.programId;
+export async function GET(req: NextRequest, { params }: { params: Promise<{ programId: string }> }): Promise<NextResponse<Program | { error: string }>> {
+  const programId = (await params).programId;
 
   const program = await prisma.program.findUniqueOrThrow({
     where: { id: programId },
@@ -12,8 +12,8 @@ export async function GET(req: NextRequest, { params }: { params: { programId: s
   return NextResponse.json(program);
 }
 
-export async function PUT(req: NextRequest, { params }: { params: { programId: string } }) {
-  const programId = params.programId;
+export async function PUT(req: NextRequest, { params }: { params: Promise<{ programId: string }> }) {
+  const programId = (await params).programId;
   const { name, details, summary, rubricIds, spaceId } = await req.json();
 
   if (!programId) {

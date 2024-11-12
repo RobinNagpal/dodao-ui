@@ -4,9 +4,9 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Metadata } from 'next';
 import React from 'react';
 
-export async function generateMetadata({ params }: { params: { videoId: string } }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ videoId: string }> }): Promise<Metadata> {
   const space = (await getSpaceServerSide())!;
-  const videoId = params.videoId;
+  const videoId = (await params).videoId;
   const response = await fetch(`${getBaseUrl()}/api/short-videos/${videoId}?spaceId=${space.id}`);
   const video = (await response.json()).shortVideo;
   return {
@@ -16,6 +16,6 @@ export async function generateMetadata({ params }: { params: { videoId: string }
   };
 }
 
-export default function VideoPage({ params }: { params: { videoId: string } }) {
-  return <VideoModal params={params} />;
+export default async function VideoPage({ params }: { params: Promise<{ videoId: string }> }) {
+  return <VideoModal params={await params} />;
 }

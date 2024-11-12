@@ -1,7 +1,7 @@
-import { MutationUpsertGuideRatingArgs } from '@/graphql/generated/generated-types';
-import { getDecodedJwtFromContext } from '@dodao/web-core/api/auth/getJwtFromContext';
 import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
+import { MutationUpsertGuideRatingArgs } from '@/graphql/generated/generated-types';
 import { prisma } from '@/prisma';
+import { getDecodedJwtFromContext } from '@dodao/web-core/api/auth/getJwtFromContext';
 import { GuideRating } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -10,7 +10,7 @@ async function postHandler(req: NextRequest) {
   const args = (await req.json()) as MutationUpsertGuideRatingArgs;
 
   const xForwardedFor = req.headers.get('x-forwarded-for');
-  const ip = xForwardedFor ? xForwardedFor.split(',')[0] : req.ip || req.headers.get('x-real-ip');
+  const ip = xForwardedFor ? xForwardedFor.split(',')[0] : req.headers.get('x-real-ip');
 
   const guideRating: GuideRating = await prisma.guideRating.upsert({
     where: {

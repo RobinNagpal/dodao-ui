@@ -7,11 +7,11 @@ import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import axios from 'axios';
 
 type GuideViewProps = {
-  params: { guideIdAndStep: string[] };
+  params: Promise<{ guideIdAndStep: string[] }>;
 };
 
 export async function generateMetadata({ params }: GuideViewProps): Promise<Metadata> {
-  const guideIdAndStep = params.guideIdAndStep;
+  const guideIdAndStep = (await params).guideIdAndStep;
   const response = await axios.get(`${getBaseUrl()}/api/guide/${guideIdAndStep[0]}`);
   const guide = response.data.guide;
   let stepOrder = 0;
@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: GuideViewProps): Promise<Meta
 }
 
 const GuideView = async ({ params }: GuideViewProps) => {
-  const { guideIdAndStep } = params;
+  const { guideIdAndStep } = await params;
   const space = (await getSpaceServerSide())!;
 
   const response = await axios.get(`${getBaseUrl()}/api/guide/${guideIdAndStep[0]}`);

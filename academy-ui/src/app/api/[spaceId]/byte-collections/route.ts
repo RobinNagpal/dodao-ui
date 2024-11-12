@@ -9,10 +9,11 @@ import { CreateByteCollectionRequest } from '@/types/request/ByteCollectionReque
 import { createNewEntityId } from '@dodao/web-core/utils/space/createNewEntityId';
 import { NextRequest, NextResponse } from 'next/server';
 
-async function getHandler(req: NextRequest, { params }: { params: { spaceId: string } }): Promise<NextResponse<ByteCollectionSummary[]>> {
+async function getHandler(req: NextRequest, { params }: { params: Promise<{ spaceId: string }> }): Promise<NextResponse<ByteCollectionSummary[]>> {
+  const { spaceId } = await params;
   const byteCollections = await prisma.byteCollection.findMany({
     where: {
-      spaceId: params.spaceId,
+      spaceId: spaceId,
       archive: {
         not: true,
       },

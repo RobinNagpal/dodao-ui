@@ -2,7 +2,8 @@ import { prisma } from '@/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 
-async function getHandler(req: NextRequest, { params: { guideId } }: { params: { guideId: string } }) {
+async function getHandler(req: NextRequest, { params }: { params: Promise<{ guideId: string }> }) {
+  const { guideId } = await params;
   const guide = await prisma.guide.findFirst({
     where: {
       OR: [

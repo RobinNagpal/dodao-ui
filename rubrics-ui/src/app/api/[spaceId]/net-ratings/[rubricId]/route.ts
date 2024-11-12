@@ -2,8 +2,8 @@ import { prisma } from '@/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 import { UserRatingSubmission } from '@/types/rubricsTypes/types';
 
-export async function GET(request: Request, { params }: { params: { rubricId: string } }) {
-  const { rubricId } = params;
+export async function GET(request: Request, { params }: { params: Promise<{ rubricId: string }> }) {
+  const { rubricId } = await params;
   const userId = new URL(request.url).searchParams.get('userId');
   if (!userId) console.log('No User id passed');
 

@@ -5,9 +5,9 @@ import { UserDto } from '@/types/user/UserDto';
 // Set of allowed fields for update
 const ALLOWED_UPDATE_FIELDS = new Set(['authProvider', 'email', 'username', 'name', 'phoneNumber', 'spaceId', 'image', 'publicAddress']);
 
-async function putHandler(req: NextRequest, { params }: { params: { userId: string } }): Promise<NextResponse<UserDto>> {
+async function putHandler(req: NextRequest, { params }: { params: Promise<{ userId: string }> }): Promise<NextResponse<UserDto>> {
   const inputData = await req.json();
-  const { userId } = params;
+  const { userId } = await params;
 
   // Filter inputData to include only allowed fields for update
   const fieldsToUpdate = Object.keys(inputData)

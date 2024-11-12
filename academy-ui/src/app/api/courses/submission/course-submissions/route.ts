@@ -1,10 +1,10 @@
-import { getDecodedJwtFromContext } from '@dodao/web-core/api/auth/getJwtFromContext';
-import { prisma } from '@/prisma';
-import { NextRequest, NextResponse } from 'next/server';
 import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
+import { prisma } from '@/prisma';
+import { getDecodedJwtFromContext } from '@dodao/web-core/api/auth/getJwtFromContext';
+import { NextRequest, NextResponse } from 'next/server';
 
 async function getHandler(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
+  const searchParams = req.nextUrl.searchParams;
   const spaceId = searchParams.get('spaceId');
   const courseKey = searchParams.get('courseKey');
   if (!spaceId || !courseKey) {

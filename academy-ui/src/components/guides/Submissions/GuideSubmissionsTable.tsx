@@ -1,3 +1,5 @@
+'use client';
+
 import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
 import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import SpinnerWithText from '@dodao/web-core/components/core/loaders/SpinnerWithText';

@@ -12,14 +12,13 @@ const createKeyFunction = (args: { spaceId: string; demoId: string; name: string
   return () => `zipped-html-captures/${spaceId}/${demoId}/${name}`;
 };
 
-async function postHandler(req: NextRequest, { params }: { params: { demoId: string; spaceId: string } }): Promise<NextResponse<SingedUrlResponse>> {
-  console.log('got request to create signed url for html capture', params);
-  const { demoId, spaceId } = params;
+async function postHandler(req: NextRequest, { params }: { params: Promise<{ demoId: string; spaceId: string }> }): Promise<NextResponse<SingedUrlResponse>> {
+  const { demoId, spaceId } = await params;
   const apiKey = req.headers.get('X-API-KEY');
-  const spaceById = await getSpaceById(params.spaceId);
+  const spaceById = await getSpaceById(spaceId);
 
   if (apiKey) {
-    await validateApiKey(apiKey, params.spaceId);
+    await validateApiKey(apiKey, spaceId);
   } else {
     await checkEditSpacePermission(spaceById, req);
   }

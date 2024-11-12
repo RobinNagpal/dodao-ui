@@ -4,7 +4,7 @@ import { prisma } from '@/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 
 async function getHandler(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
+  const searchParams = req.nextUrl.searchParams;
   const args: QueryByteSocialShareArgs = {
     byteId: searchParams.get('byteId')!,
     spaceId: searchParams.get('spaceId')!,

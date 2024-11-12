@@ -1,26 +1,25 @@
-'use client';
-
-import withSpace from '@/contexts/withSpace';
-import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import GuideSubmissionsTable from '@/components/guides/Submissions/GuideSubmissionsTable';
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import Link from 'next/link';
 import React from 'react';
 
-function GuideSubmissionsPage(props: { space: SpaceWithIntegrationsFragment; params: { guideId: string } }) {
+async function GuideSubmissionsPage({ params }: { params: Promise<{ guideId: string }> }) {
+  const { guideId } = await params;
+  const space = (await getSpaceServerSide())!;
   return (
     <PageWrapper>
       <div tw="px-4 md:px-0 overflow-hidden">
-        <Link href={`/guides/view/${props.params.guideId}/0`} className="text-color">
+        <Link href={`/guides/view/${guideId}/0`} className="text-color">
           <span className="mr-1 font-bold">&#8592;</span>
           Back to Guide
         </Link>
       </div>
       <div className="mt-4">
-        <GuideSubmissionsTable space={props.space} guideId={props.params.guideId} />
+        <GuideSubmissionsTable space={space} guideId={guideId} />
       </div>
     </PageWrapper>
   );
 }
 
-export default withSpace(GuideSubmissionsPage);
+export default GuideSubmissionsPage;

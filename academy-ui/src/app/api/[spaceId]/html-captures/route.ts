@@ -31,7 +31,7 @@ async function postHandler(req: NextRequest, { params }: { params: { spaceId: st
 
 async function getHandler(req: NextRequest, { params }: { params: { spaceId: string } }): Promise<NextResponse<ClickableDemoHtmlCaptureDto[]>> {
   const { spaceId } = params;
-  const { searchParams } = new URL(req.url);
+  const searchParams = req.nextUrl.searchParams;
   const clickableDemoId = searchParams.get('clickableDemoId');
   // Throw an error if clickableDemoId is not found
   if (!clickableDemoId) {

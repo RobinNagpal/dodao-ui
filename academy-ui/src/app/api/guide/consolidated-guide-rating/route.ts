@@ -1,13 +1,13 @@
-import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
 import { consolidateGuideRatings } from '@/app/api/helpers/guide/consolidateGuideRatings';
-import { checkEditSpacePermission } from '@/app/api/helpers/space/checkEditSpacePermission';
 import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
+import { checkEditSpacePermission } from '@/app/api/helpers/space/checkEditSpacePermission';
+import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
 import { prisma } from '@/prisma';
 import { GuideRating } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
 
 async function getHandler(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
+  const searchParams = req.nextUrl.searchParams;
   const guideUuid = searchParams.get('guideUuid');
   const spaceId = searchParams.get('spaceId');
   if (!guideUuid) return NextResponse.json({ body: 'No guideUuid provided' }, { status: 400 });

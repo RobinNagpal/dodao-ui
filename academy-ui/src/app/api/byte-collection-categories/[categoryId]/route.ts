@@ -8,7 +8,7 @@ import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import { NextRequest, NextResponse } from 'next/server';
 
 async function getHandler(req: NextRequest, { params: { categoryId } }: { params: { categoryId: string } }) {
-  const { searchParams } = new URL(req.url);
+  const searchParams = req.nextUrl.searchParams;
   const spaceId = searchParams.get('spaceId');
   if (!spaceId) return NextResponse.json({ message: 'Space ID is required' }, { status: 400 });
 

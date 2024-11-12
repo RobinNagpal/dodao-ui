@@ -2,11 +2,6 @@ import { prisma } from '@/prisma';
 import crypto from 'crypto';
 import { NextRequest, NextResponse } from 'next/server';
 
-interface CryptoNonceResponse {
-  nonce: string;
-  expires: string;
-}
-
 // Generating a nonce is the first step of both registering and logging in.
 //  In this function we generate a secure random string and assign it to
 //  the public address that we get as a parameter.
@@ -15,7 +10,7 @@ interface CryptoNonceResponse {
 // Later steps of both logging in and registering require the user to sign
 //  the nonce we send back, with that they prove that they are the owners
 //  of the public address they gave.
-async function POST(req: NextRequest, res: NextResponse) {
+async function POST(req: NextRequest) {
   const { publicAddress, spaceId } = await req.json();
 
   // Note: this nonce is displayed in the user's wallet for them to sign

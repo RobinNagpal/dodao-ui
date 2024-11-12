@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 
 async function getHandler(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
+  const searchParams = req.nextUrl.searchParams;
   const domain = searchParams.get('domain');
 
   const space = await prisma.space.findFirst({

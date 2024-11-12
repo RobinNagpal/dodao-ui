@@ -9,9 +9,9 @@ import Link from 'next/link';
 import React from 'react';
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import { getServerSession } from 'next-auth';
-const Page = async ({ params }: { params: { rubricId: string } }) => {
+const Page = async ({ params }: { params: Promise<{ rubricId: string }> }) => {
   const space = (await getSpaceServerSide())!;
-  const { rubricId } = params;
+  const { rubricId } = await params;
 
   const response = await fetch(`${getBaseUrl()}/api/rubrics/${rubricId}?spaceId=${space.id}`);
   const rubric = (await response.json()) as RubricWithEntities;

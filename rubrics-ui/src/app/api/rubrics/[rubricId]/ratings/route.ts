@@ -5,10 +5,10 @@ import { Session } from '@dodao/web-core/types/auth/Session';
 import { getServerSession } from 'next-auth';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST(req: NextRequest, { params }: { params: { rubricId: string } }) {
+export async function POST(req: NextRequest, { params }: { params: Promise<{ rubricId: string }> }) {
   const data = (await req.json()) as RubricCellRatingRequest;
   const session = (await getServerSession(authOptions)) as Session | undefined;
-  const { rubricId } = params;
+  const { rubricId } = await params;
   if (!session) {
     return NextResponse.json({ status: 401, error: 'Unauthorized' });
   }
@@ -73,9 +73,8 @@ export async function POST(req: NextRequest, { params }: { params: { rubricId: s
   return NextResponse.json(updatedRubricRating, { status: 200 });
 }
 
-export async function GET(req: NextRequest, { params }: { params: { rubricId: string } }) {
-  const url = new URL(req.url);
-  const userId = url.searchParams.get('userId');
+export async function GET(req: NextRequest, { params }: { params: Promise<{ rubricId: string }> }) {
+  const userId = req.nextUrl.searchParams.get('userId');
 
   if (!userId) {
     return NextResponse.json(
@@ -89,7 +88,7 @@ export async function GET(req: NextRequest, { params }: { params: { rubricId: st
   const rubricRating = await prisma.rubricRating.findFirst({
     where: {
       userId: userId,
-      rubricId: params.rubricId,
+      rubricId: (await params).rubricId,
     },
     include: {
       selections: true,
