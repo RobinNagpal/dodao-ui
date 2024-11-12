@@ -90,7 +90,6 @@ function SwiperByteStepperItemView({ viewByteHelper, step, byte, space, setByteS
             const element1 = swiper.pagination.el.getElementsByClassName('swiper-pagination-bullet-active')?.[0] as HTMLElement;
             const paginationContainer = swiper.pagination.el;
             if (paginationContainer?.scrollHeight > paginationContainer?.clientHeight) {
-              paginationContainer.classList.add('block-bg-color');
               element1.scrollIntoView({
                 behavior: 'smooth',
                 block: 'center',

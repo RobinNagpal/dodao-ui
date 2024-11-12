@@ -71,7 +71,7 @@ export default function ViewByteModal({ space, selectedByteId, viewByteModalClos
   const router = useRouter();
 
   function onClose() {
-    router.push(viewByteModalClosedUrl);
+    router.push(`${viewByteModalClosedUrl}?updated=${Date.now()}`);
   }
 
   const [byteSubmitted, setByteSubmitted] = useState<boolean>(false);
