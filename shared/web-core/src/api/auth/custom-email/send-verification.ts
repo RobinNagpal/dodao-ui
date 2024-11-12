@@ -57,7 +57,6 @@ const emailBody = (link: string) => `
             font-size: 16px;
             color: #ffffff;
             background-color: #007bff;
-            ;
             padding: 12px 20px;
             text-decoration: none;
             border-radius: 5px;
