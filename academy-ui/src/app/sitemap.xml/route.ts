@@ -111,13 +111,9 @@ async function writeUrlsToStream(space: SpaceWithIntegrationsFragment, host: str
     smStream.write(courseUrl);
   }
 }
-async function GET(req: NextRequest, res: NextResponse) {
+async function GET(req: NextRequest): Promise<NextResponse<Buffer>> {
   const host = req.headers.get('host') as string;
-  const space = await getSpaceBasedOnHostHeader(req.headers);
-
-  if (!space) {
-    return new NextResponse(`Space Not found`, { status: 500 });
-  }
+  const space = (await getSpaceBasedOnHostHeader(req.headers))!;
 
   const smStream = new SitemapStream({ hostname: 'https://' + host });
 

@@ -11,7 +11,7 @@ type GuideViewProps = {
 };
 
 export async function generateMetadata({ params }: GuideViewProps): Promise<Metadata> {
-  const guideIdAndStep = params.guideIdAndStep;
+  const guideIdAndStep = (await params).guideIdAndStep;
   const response = await axios.get(`${getBaseUrl()}/api/guide/${guideIdAndStep[0]}`);
   const guide = response.data.guide;
   let stepOrder = 0;

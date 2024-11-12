@@ -13,7 +13,7 @@ import { Metadata } from 'next';
 import React from 'react';
 
 type GuidesProps = {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
 export const metadata: Metadata = {
@@ -32,7 +32,7 @@ async function Guides({ searchParams }: GuidesProps) {
   });
   const allGuides: GuideSummaryFragment[] = response.data.guides;
 
-  const showDrafts = searchParams?.['showDrafts'] === 'true';
+  const showDrafts = (await searchParams)?.['showDrafts'] === 'true';
 
   const guides = allGuides?.filter((guide) => guide.publishStatus !== PublishStatus.Draft || showDrafts) || [];
   const hasDraftGuides = !!allGuides?.find((guide) => guide.publishStatus === PublishStatus.Draft);
