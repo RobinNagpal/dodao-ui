@@ -1,7 +1,7 @@
 import { WatchVideoButton } from './../../common/WatchVideoButton';
 import { Container } from './Container';
 import Image from 'next/image';
-import tidbits from '@/images/TidbitsHub/GIFs/tidbits.gif';
+import alchemix from '@/images/TidbitsHub/GIFs/alchemix.gif';
 import ContactUsLink from '../../DoDAOHome/components/ContactUsLink';
 import { SetupNewSpaceButton } from '../../common/setupNewSpace';
 import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
@@ -35,7 +35,7 @@ export function Hero({ space }: { space: SpaceWithIntegrationsFragment | null })
           </div>
           <div className="relative lg:w-1/2 m-auto lg:row-span-2 flex lg:justify-end sm:justify-center">
             <div className="max-h-[80vh]">
-              <Image src={tidbits} alt="Tidbits Hub screenshot" className="w-full max-h-[80vh] object-contain rounded-xl shadow-xl ring-1 ring-gray-400/10" />
+              <Image src={alchemix} alt="Tidbits Hub screenshot" className="w-full max-h-[80vh] object-contain rounded-xl shadow-xl ring-1 ring-gray-400/10" />
             </div>
           </div>
         </div>
