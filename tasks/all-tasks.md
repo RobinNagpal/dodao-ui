@@ -36,6 +36,11 @@ users - Skipped
 - Styling fixes for large screen as currently the content is not properly aligned
 
 
+# Extension
+- [ ] The input box is not focused for some scenarios. Try creating demo of transaction builder, or check with Dawood
+- [ ] Remove the options from the extension. 
+- [ ] Try capturing 15-20 screenshots and see if we get any error. 
+- [ ] Add a close button on the bottom bar which can close the extension. Discuss the design before implementing
 --------
 Optional features
 
