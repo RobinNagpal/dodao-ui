@@ -1,6 +1,5 @@
 import AcademyGif from '@/images/DoDAOHomePage/Academy_site.gif';
 import TidbitsHubGif from '@/images/DoDAOHomePage/Tidbitshub_giffy.gif';
-import classNames from '@dodao/web-core/utils/classNames';
 import { Container } from './Container';
 import { SectionHeading } from './SectionHeading';
 
@@ -11,7 +10,7 @@ const features = [
     description:
       'Tidbits Hub offers a unique way to quickly absorb information through "tidbits"—short, impactful pieces of content that are only 5-10 sentences long. Each tidbit delivers essential insights in under five minutes and includes concise one-minute videos to suit different learning styles. The platform also features clickable demos, making the learning interactive and practical. Users can easily share these tidbits on social media or in print formats like pamphlets, with embedded calls to action (CTAs) guiding them to applications or further details.',
     imageSrc: TidbitsHubGif.src,
-    imageAlt: 'White canvas laptop sleeve with gray felt interior, silver zipper, and tan leather zipper pull.',
+    imageAlt: 'Tidbits Hub',
   },
   {
     name: 'Academy Sites',
@@ -20,7 +19,7 @@ const features = [
       "Academy Sites offers a streamlined way to learn through various formats that suit everyone's needs. Our nano-courses cover specific topics in 5-10 minutes, with quick quizzes to test understanding. The platform also features safe, interactive simulations and clickable demos that help users learn protocols risk-free. For deeper learning, our full courses blend texts, diagrams, videos, and interactive questions into a comprehensive 30-60 minute session. Additionally, our timelines keep users up-to-date with the latest product developments and releases, ensuring everyone stays informed.",
 
     imageSrc: AcademyGif.src,
-    imageAlt: 'Detail of zipper pull with tan leather and silver rivet.',
+    imageAlt: 'Academy Sites',
   },
 ];
 
