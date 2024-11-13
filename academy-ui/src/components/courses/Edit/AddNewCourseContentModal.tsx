@@ -1,6 +1,4 @@
 import GenerateQuestionsUsingAI, { GeneratedQuestionInterface } from '@/components/ai/questions/GenerateQuestionsUsingAI';
-import Button from '@dodao/web-core/components/core/buttons/Button';
-import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import EditCourseExplanation from '@/components/courses/Edit/Items/EditCourseExplanation';
 import EditCourseQuestion from '@/components/courses/Edit/Items/EditCourseQuestion';
 import EditTopic from '@/components/courses/Edit/Items/EditTopic';
@@ -11,17 +9,19 @@ import {
   AddTopicQuestionInput,
   AddTopicQuestionsInput,
   CourseDetailsFragment,
-  Space,
   UpdateTopicBasicInfoInput,
   UpdateTopicExplanationInput,
   UpdateTopicQuestionInput,
   UpdateTopicSummaryInput,
   UpdateTopicVideoInput,
 } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import { QuestionType } from '@dodao/web-core/types/deprecated/models/enums';
+import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { slugify } from '@dodao/web-core/utils/auth/slugify';
 
 enum AddActions {
   Topic = 'Topic',
@@ -34,7 +34,7 @@ enum AddActions {
 
 interface ModalCourseNewItemProps {
   course: CourseDetailsFragment;
-  space: Space;
+  space: SpaceWithIntegrationsDto;
   courseHelper: CourseHelper;
   submissionHelper: CourseSubmissionHelper;
   open: boolean;

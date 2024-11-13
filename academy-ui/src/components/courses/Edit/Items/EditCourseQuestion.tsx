@@ -1,14 +1,14 @@
 import CreateQuestion from '@/components/app/Common/CreateQuestion';
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
-import Button from '@dodao/web-core/components/core/buttons/Button';
 import {
   CourseDetailsFragment,
   CourseQuestionFragment,
   ImageType,
-  Space,
   TopicQuestionChoiceInput,
   UpdateTopicQuestionInput,
 } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
+import Button from '@dodao/web-core/components/core/buttons/Button';
 import { QuestionType } from '@dodao/web-core/types/deprecated/models/enums';
 import { QuestionError } from '@dodao/web-core/types/errors/error';
 import isEqual from 'lodash/isEqual';
@@ -30,7 +30,7 @@ interface QuestionToUpdate extends CourseQuestionFragment {
 
 interface Props {
   course: CourseDetailsFragment;
-  space: Space;
+  space: SpaceWithIntegrationsDto;
   topicKey: string;
   currentQuestion?: CourseQuestionFragment;
   selectedQuestionType: string;

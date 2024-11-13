@@ -1,23 +1,24 @@
 'use client';
 
-import Block from '@dodao/web-core/components/app/Block';
 import AddGuideCategoryModal from '@/components/app/Modal/Guide/AddGuideCategoryModal';
 import UploadInput from '@/components/app/UploadInput';
-import ErrorWithAccentBorder from '@dodao/web-core/components/core/errors/ErrorWithAccentBorder';
-import Input from '@dodao/web-core/components/core/input/Input';
-import StyledSelect from '@dodao/web-core/components/core/select/StyledSelect';
 import { EditGuideStepper } from '@/components/guides/Edit/EditGuideStepper';
 import { EditGuideType } from '@/components/guides/Edit/editGuideType';
 import { UseEditGuideHelper } from '@/components/guides/Edit/useEditGuide';
-import { ImageType, Space } from '@/graphql/generated/generated-types';
+import { ImageType } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
+import Block from '@dodao/web-core/components/app/Block';
+import ErrorWithAccentBorder from '@dodao/web-core/components/core/errors/ErrorWithAccentBorder';
+import Input from '@dodao/web-core/components/core/input/Input';
+import StyledSelect from '@dodao/web-core/components/core/select/StyledSelect';
 import { GuideCategoryType, PublishStatus } from '@dodao/web-core/types/deprecated/models/enums';
 import { GuideError } from '@dodao/web-core/types/errors/error';
 import { publishStatusesSelect } from '@dodao/web-core/utils/ui/statuses';
 import React, { useState } from 'react';
 
 type BasicGuideSettingsProps = {
-  space: Space;
+  space: SpaceWithIntegrationsDto;
   guide: EditGuideType;
   guideErrors: GuideError;
   editGuideHelper: UseEditGuideHelper;

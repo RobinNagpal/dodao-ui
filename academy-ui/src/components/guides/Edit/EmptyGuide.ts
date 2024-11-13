@@ -1,17 +1,17 @@
 import { EditGuideType } from '@/components/guides/Edit/editGuideType';
-import { GuideInput, Space } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import { InputType, PublishStatus, QuestionType } from '@dodao/web-core/types/deprecated/models/enums';
 import { GuideSource } from '@dodao/web-core/types/deprecated/models/GuideModel';
 import { v4 as uuidv4 } from 'uuid';
 
-export const emptyGuide = (from: string, space: Space, guideType: string): EditGuideType => {
+export const emptyGuide = (from: string, space: SpaceWithIntegrationsDto, guideType: string): EditGuideType => {
   const step1Uuid = uuidv4();
   const step2Uuid = uuidv4();
   const guideUuid = uuidv4();
 
   // If the space has an academy repository, then the guide is from the academy, else if
   // it has a git guide repository, then the guide is from git, else it is from the database
-  const guideSource = space.spaceIntegrations?.academyRepository ? GuideSource.Academy : GuideSource.Database;
+  const guideSource = GuideSource.Database;
 
   return {
     id: guideUuid,

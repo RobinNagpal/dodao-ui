@@ -1,22 +1,22 @@
 'use client';
 
-import { SpaceTags } from '@/utils/api/fetchTags';
-import PageLoading from '@dodao/web-core/components/core/loaders/PageLoading';
-import TabsWithUnderline, { TabItem } from '@dodao/web-core/components/core/tabs/TabsWithUnderline';
 import ConsolidatedByteRatings from '@/components/spaces/Ratings/ConsolidatedByteRatings';
 import ConsolidatedGuideRatings from '@/components/spaces/Ratings/ConsolidatedGuideRatings';
 import SpaceAuthDetails from '@/components/spaces/View/SpaceAuthDetails';
 import SpaceBasicDetails from '@/components/spaces/View/SpaceBasicDetails';
 import SpaceByteDetails from '@/components/spaces/View/SpaceByteDetails';
 import SpaceCourseDetails from '@/components/spaces/View/SpaceCoursesDetails';
-import SpaceDomaiDetails from '@/components/spaces/View/SpaceDomaiDetails';
 import SpaceGuideDetails from '@/components/spaces/View/SpaceGuideDetails';
 import SpaceSocialDetails from '@/components/spaces/View/SpaceSocialDetails';
 import SpaceThemeDetails from '@/components/spaces/View/SpaceThemeDetails';
-import { Space } from '@/graphql/generated/generated-types';
-import React, { useEffect, useRef, useState } from 'react';
-import SpaceTidbitsHomepageDetails from './View/SpaceTidbitsHomepageDetails';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
+import { SpaceTags } from '@/utils/api/fetchTags';
+import PageLoading from '@dodao/web-core/components/core/loaders/PageLoading';
+import TabsWithUnderline, { TabItem } from '@dodao/web-core/components/core/tabs/TabsWithUnderline';
+import React, { useEffect, useState } from 'react';
 import SpaceApiKeyDetails from './View/SpaceApiKeysDetails';
+import SpaceTidbitsHomepageDetails from './View/SpaceTidbitsHomepageDetails';
+
 interface SpaceDetailsProps {
   spaceId: string;
 }
@@ -27,7 +27,7 @@ enum TabIds {
 }
 
 interface SpaceDetails {
-  space: Space;
+  space: SpaceWithIntegrationsDto;
   status: string;
 }
 

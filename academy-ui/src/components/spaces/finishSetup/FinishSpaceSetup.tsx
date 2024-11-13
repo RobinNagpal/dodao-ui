@@ -20,9 +20,9 @@ function FinishSetup({ space }: FinishSpaceSetupProps) {
     setUpserting(true);
     const spaceReq: SpaceWithIntegrationsDto = {
       ...space,
-      avatar: updatedSpace.avatar,
+      avatar: updatedSpace.avatar || null,
       adminUsernamesV1: updatedSpace.adminUsernamesV1,
-      themeColors: updatedSpace.themeColors,
+      themeColors: updatedSpace.themeColors || null,
     };
     await putData<User, { spaceInput: SpaceWithIntegrationsDto }>(
       `${getBaseUrl()}/api/${space.id}/spaces`,

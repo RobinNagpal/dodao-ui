@@ -23,10 +23,7 @@ function getSpaceDetailsFields(space: SpaceWithIntegrationsDto): Array<{ label: 
       label: 'Name',
       value: space.name!,
     },
-    {
-      label: 'Theme',
-      value: space.skin!,
-    },
+
     {
       label: 'Type',
       value: space.type || 'None',
@@ -34,10 +31,6 @@ function getSpaceDetailsFields(space: SpaceWithIntegrationsDto): Array<{ label: 
     {
       label: 'Logo',
       value: space.avatar!,
-    },
-    {
-      label: 'Academy Repo',
-      value: space.spaceIntegrations?.academyRepository!,
     },
     {
       label: 'Domains',

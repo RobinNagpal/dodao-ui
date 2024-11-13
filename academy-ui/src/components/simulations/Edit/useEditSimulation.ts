@@ -1,9 +1,10 @@
 import { emptySimulation } from '@/components/simulations/Edit/EmptySimulation';
-import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { SimulationStepInput, Space, UpsertSimulationInput, useSimulationDetailsQuery, useUpsertSimulationMutation } from '@/graphql/generated/generated-types';
+import { SimulationStepInput, UpsertSimulationInput, useSimulationDetailsQuery, useUpsertSimulationMutation } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import { StepError } from '@dodao/web-core/types/errors/error';
 import { SimulationErrors } from '@dodao/web-core/types/errors/simulationErrors';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import orderBy from 'lodash/orderBy';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -30,7 +31,7 @@ export type UpdateSimulationFunctions = {
   moveStepUp: (stepUuid: string) => void;
 };
 
-export function useEditSimulation(space: Space, simulationId: string | null) {
+export function useEditSimulation(space: SpaceWithIntegrationsDto, simulationId: string | null) {
   const router = useRouter();
   const emptySimulationModel = emptySimulation();
   const { showNotification } = useNotificationContext();

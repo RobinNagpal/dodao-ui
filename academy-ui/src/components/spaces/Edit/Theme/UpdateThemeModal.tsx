@@ -1,7 +1,7 @@
 import ByteCollectionsCard from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCollectionsCard';
-import { ThemeColors, UpdateThemeColorsMutationVariables } from '@/graphql/generated/generated-types';
+import { ThemeColors } from '@/graphql/generated/generated-types';
 import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
-import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
+import { SpaceWithIntegrationsDto, ThemeColorsDto } from '@/types/space/SpaceDto';
 import { GlobalThemeColors } from '@dodao/web-core/components/app/themes';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
@@ -30,13 +30,12 @@ export const ColorLabels: Record<ThemeColorsKeys, string> = {
 };
 
 export default function UpdateThemeModal({ space, open, onClose, byteCollection }: UpdateThemeModalProps) {
-  const skin = space?.skin;
   const [themeColors, setThemeColors] = useState<ThemeColors>(space?.themeColors || GlobalThemeColors);
 
   const { putData } = useFetchUtils();
 
   async function upsertThemeColors() {
-    await putData<SpaceWithIntegrationsDto, UpdateThemeColorsMutationVariables>(
+    await putData<SpaceWithIntegrationsDto, { spaceId: string; themeColors: ThemeColorsDto }>(
       `${getBaseUrl()}/api/${space.id}/actions/spaces/update-theme-colors`,
       {
         spaceId: space.id,

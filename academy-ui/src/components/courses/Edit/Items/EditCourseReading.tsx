@@ -1,8 +1,9 @@
-import Input from '@dodao/web-core/components/core/input/Input';
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
-import Button from '@dodao/web-core/components/core/buttons/Button';
 import { minMaxValidation, minValidation } from '@/components/courses/Edit/courseValidations';
-import { CourseDetailsFragment, GitCourseReading, ImageType, Space, UpdateTopicVideoInput } from '@/graphql/generated/generated-types';
+import { CourseDetailsFragment, GitCourseReading, ImageType, UpdateTopicVideoInput } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import Input from '@dodao/web-core/components/core/input/Input';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
@@ -19,7 +20,7 @@ export interface UpdateTopicReadingForm {
 
 interface TopicReadingFormProps {
   course: CourseDetailsFragment;
-  space: Space;
+  space: SpaceWithIntegrationsDto;
   topicKey: string;
   currentReading?: GitCourseReading;
   saveReading: (updatedReading: UpdateTopicVideoInput) => Promise<void>;
@@ -123,7 +124,7 @@ export default function EditCourseReading({ course, space, topicKey, currentRead
 }
 
 const StyledDiv = styled.div`
-  border: 1px solid var(--skin-border);
+  border: 1px solid;
   border-radius: 0.375rem;
   padding: 0.5rem;
 `;

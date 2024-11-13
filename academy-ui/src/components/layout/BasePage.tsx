@@ -6,7 +6,7 @@ import LoginModal from '@dodao/web-core/components/auth/LoginModal';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import { LoginModalProvider } from '@dodao/web-core/ui/contexts/LoginModalContext';
 import dynamic from 'next/dynamic';
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 
 const Footer: React.ComponentType<any> = dynamic(() => import('./Footer'), {
@@ -20,16 +20,6 @@ const StyledMain = styled.main`
 `;
 
 function PageTopNav(props: { space: SpaceWithIntegrationsDto }) {
-  const [isBotSite, setIsBotSite] = useState(true);
-
-  useEffect(() => {
-    setIsBotSite(!!props.space?.botDomains?.includes?.(window.location.hostname));
-  }, [props.space]);
-
-  if (isBotSite) {
-    return null;
-  }
-
   //Checking if the url contains embedded-tidbit-collections
   if (typeof window !== 'undefined') {
     const currentUrl = window.location.href;

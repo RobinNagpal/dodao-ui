@@ -3,18 +3,19 @@
 import ChapterSubmission from '@/components/courses/View/Details/ChapterSubmission';
 import CourseDetails from '@/components/courses/View/Details/CourseDetails';
 import CourseSubmission from '@/components/courses/View/Details/CourseSubmission';
-import ExplanationDetails from './Details/ExplanationDetails';
 import QuestionDetails from '@/components/courses/View/Details/QuestionDetails';
 import SummaryDetails from '@/components/courses/View/Details/SummaryDetails';
 import TopicDetails from '@/components/courses/View/Details/TopicDetails';
 import VideoDetails from '@/components/courses/View/Details/VideoDetails';
 import { CourseSubmissionHelper } from '@/components/courses/View/useCourseSubmission';
 import { CourseHelper } from '@/components/courses/View/useViewCourse';
-import { CourseDetailsFragment, Space } from '@/graphql/generated/generated-types';
+import { CourseDetailsFragment } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
+import ExplanationDetails from './Details/ExplanationDetails';
 
 export type ItemTypes = 'readings' | 'summaries' | 'explanations' | 'questions' | 'submission';
 interface CourseDetailsRightSectionProps {
-  space: Space;
+  space: SpaceWithIntegrationsDto;
   course: CourseDetailsFragment;
   isCourseAdmin: boolean;
   courseHelper: CourseHelper;

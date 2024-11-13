@@ -1,13 +1,14 @@
 'use client';
 
-import SidebarButton from '@dodao/web-core/components/core/buttons/SidebarButton';
-import EditIcon from '@dodao/web-core/components/core/icons/EditIcon';
-import Button from '@dodao/web-core/components/core/buttons/Button';
-import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import EditCourse from '@/components/courses/Edit/EditCourse';
 import { CourseSubmissionHelper } from '@/components/courses/View/useCourseSubmission';
 import { CourseHelper } from '@/components/courses/View/useViewCourse';
-import { CourseBasicInfoInput, CourseDetailsFragment, Space } from '@/graphql/generated/generated-types';
+import { CourseBasicInfoInput, CourseDetailsFragment } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import SidebarButton from '@dodao/web-core/components/core/buttons/SidebarButton';
+import EditIcon from '@dodao/web-core/components/core/icons/EditIcon';
+import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
 import Link from 'next/link';
@@ -16,7 +17,7 @@ import React, { useMemo, useState } from 'react';
 
 interface ChapterDetailsProps {
   course: CourseDetailsFragment;
-  space: Space;
+  space: SpaceWithIntegrationsDto;
   isCourseAdmin: boolean;
   courseHelper: CourseHelper;
   submissionHelper: CourseSubmissionHelper;

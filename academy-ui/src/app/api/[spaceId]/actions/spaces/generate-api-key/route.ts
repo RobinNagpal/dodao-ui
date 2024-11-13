@@ -5,13 +5,11 @@ import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
 import { MutationAddNewApiKeyArgs } from '@/graphql/generated/generated-types';
 import { prisma } from '@/prisma';
 import { CreateSpaceResponse } from '@/types/response/CreateSpaceResponse';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import { Space, SpaceIntegration } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
 
-async function postHandler(
-  req: NextRequest,
-  { params }: { params: Promise<{ spaceId: string }> }
-): Promise<NextResponse<{ space: Space & { spaceIntegrations: SpaceIntegration | null } }>> {
+async function postHandler(req: NextRequest, { params }: { params: Promise<{ spaceId: string }> }): Promise<NextResponse<{ space: SpaceWithIntegrationsDto }>> {
   const { spaceId, creator, apiKey } = (await req.json()) as MutationAddNewApiKeyArgs;
   const spaceById = await getSpaceById(spaceId);
 
@@ -45,4 +43,4 @@ async function postHandler(
   return NextResponse.json({ space: space }, { status: 200 });
 }
 
-export const POST = withErrorHandlingV1<{ space: Space & { spaceIntegrations: SpaceIntegration | null } }>(postHandler);
+export const POST = withErrorHandlingV1<{ space: SpaceWithIntegrationsDto }>(postHandler);

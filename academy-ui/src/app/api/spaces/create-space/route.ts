@@ -1,12 +1,12 @@
-import { MutationCreateSpaceArgs } from '@/graphql/generated/generated-types';
-import { upsertSpaceIntegrations } from '@/app/api/helpers/space/upsertSpaceIntegrations';
+import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { getSpaceWithIntegrations } from '@/app/api/helpers/space';
 import { isDoDAOSuperAdmin } from '@/app/api/helpers/space/isSuperAdmin';
+import { upsertSpaceIntegrations } from '@/app/api/helpers/space/upsertSpaceIntegrations';
 import { prisma } from '@/prisma';
+import { UpsertSpaceInputDto } from '@/types/space/SpaceDto';
+import { getDecodedJwtFromContext } from '@dodao/web-core/api/auth/getJwtFromContext';
 import { Space } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
-import { getDecodedJwtFromContext } from '@dodao/web-core/api/auth/getJwtFromContext';
-import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 
 async function postHandler(req: NextRequest) {
   const decodedJWT = await getDecodedJwtFromContext(req);
@@ -14,27 +14,23 @@ async function postHandler(req: NextRequest) {
   if (!doDAOSuperAdmin) {
     throw new Error('Space not found');
   }
-  const { spaceInput } = (await req.json()) as MutationCreateSpaceArgs;
+  const { spaceInput } = (await req.json()) as { spaceInput: UpsertSpaceInputDto };
 
   const spaceInputArgs: Space = {
-    admins: spaceInput.admins,
-    adminUsernames: spaceInput.adminUsernames,
     adminUsernamesV1: spaceInput.adminUsernamesV1,
     avatar: spaceInput.avatar,
     creator: spaceInput.creator,
     features: spaceInput.features || [],
     id: spaceInput.id,
     type: spaceInput.type,
-    inviteLinks: spaceInput.inviteLinks || {},
+    inviteLinks: spaceInput.inviteLinks,
     name: spaceInput.name,
-    skin: spaceInput.skin,
     createdAt: new Date(),
     verified: true,
     updatedAt: new Date(),
     discordInvite: null,
     telegramInvite: null,
     domains: spaceInput.domains,
-    botDomains: spaceInput.botDomains || [],
     guideSettings: {},
     authSettings: {},
     socialSettings: {},
@@ -46,7 +42,7 @@ async function postHandler(req: NextRequest) {
   await prisma.space.create({
     data: {
       ...spaceInputArgs,
-      inviteLinks: spaceInput.inviteLinks || {},
+      inviteLinks: spaceInput.inviteLinks || undefined,
       themeColors: undefined,
       tidbitsHomepage: undefined,
     },

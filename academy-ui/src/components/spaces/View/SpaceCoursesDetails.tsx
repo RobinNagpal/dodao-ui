@@ -1,14 +1,15 @@
 import UpsertRawCourseModal from '@/components/app/Modal/Course/UpsertRawCourseModal';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
+import { RawGitCourse } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import { Table, TableActions, TableRow } from '@dodao/web-core/components/core/table/Table';
-import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { RawGitCourse, Space } from '@/graphql/generated/generated-types';
 import { PublishStatus } from '@dodao/web-core/types/deprecated/models/enums';
-import React, { useEffect, useMemo, useState } from 'react';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import soryBy from 'lodash/sortBy';
+import React, { useEffect, useMemo, useState } from 'react';
 
 export interface SpaceAuthDetailsProps {
-  space: Space;
+  space: SpaceWithIntegrationsDto;
   className?: string;
 }
 

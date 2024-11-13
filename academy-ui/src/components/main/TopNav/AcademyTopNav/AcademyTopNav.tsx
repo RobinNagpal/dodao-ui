@@ -1,11 +1,8 @@
 'use client';
 
 import CreateContentModalContents from '@/components/main/TopNav/CreateContentModalContents';
-import { SpaceTypes } from '@/types/space/SpaceDto';
-import { DesktopNavLinks } from './DesktopNavLinks';
-import { MobileNavLinks } from './MobileNavLinks';
 import { SpaceProps } from '@/contexts/withSpace';
-import { Space } from '@/graphql/generated/generated-types';
+import { SpaceTypes, SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import { isAdmin } from '@/utils/auth/isAdmin';
 import ButtonLarge from '@dodao/web-core/components/core/buttons/Button';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
@@ -22,6 +19,8 @@ import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { DesktopNavLinks } from './DesktopNavLinks';
+import { MobileNavLinks } from './MobileNavLinks';
 
 const StyledDiv = styled.div`
   background-color: var(--bg-color);
@@ -30,7 +29,7 @@ const StyledDiv = styled.div`
 
 function CreateOrLoginButton(props: {
   session?: Session | undefined | null;
-  space: Space | null | undefined;
+  space: SpaceWithIntegrationsDto | null | undefined;
   onClickCreate: () => void;
   onClickLogin: () => void;
 }) {

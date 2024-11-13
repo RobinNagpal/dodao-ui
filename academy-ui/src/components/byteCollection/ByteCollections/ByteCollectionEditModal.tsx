@@ -1,7 +1,7 @@
 import { useEditByteCollection } from '@/components/byteCollection/ByteCollections/useEditByteCollection';
-import { Space } from '@/graphql/generated/generated-types';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
 import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Input from '@dodao/web-core/components/core/input/Input';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
@@ -10,7 +10,7 @@ import TextareaAutosize from '@dodao/web-core/components/core/textarea/TextareaA
 import React from 'react';
 
 interface ByteCollectionEditorProps {
-  space: Space;
+  space: SpaceWithIntegrationsDto;
   byteCollection?: ByteCollectionSummary;
   onClose: () => void;
 }

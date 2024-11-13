@@ -71,7 +71,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
     const createdSpace = await tx.space.create({
       data: {
         ...spaceInput,
-        inviteLinks: spaceInput.inviteLinks || {},
+        inviteLinks: spaceInput.inviteLinks || undefined,
         themeColors: undefined,
         tidbitsHomepage: undefined,
       },

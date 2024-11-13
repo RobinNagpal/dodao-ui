@@ -1,5 +1,6 @@
 import { getLinkToFeaturePage } from '@/components/main/getLinkToFeaturePage';
 import { useI18 } from '@/hooks/useI18';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import { FeatureItem, FeatureName } from '@dodao/web-core/types/features/spaceFeatures';
 import Link from 'next/link';
 import React from 'react';

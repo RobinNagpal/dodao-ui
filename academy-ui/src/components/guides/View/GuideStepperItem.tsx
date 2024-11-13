@@ -1,23 +1,23 @@
 import Question from '@/components/app/Common/Question';
 import UserDiscord from '@/components/app/Form/UserDiscord';
-import UserInput from '@dodao/web-core/components/app/Form/UserInput';
-import Button from '@dodao/web-core/components/core/buttons/Button';
-import ErrorWithAccentBorder from '@dodao/web-core/components/core/errors/ErrorWithAccentBorder';
 import { LAST_STEP_UUID, UseViewGuideHelper } from '@/components/guides/View/useViewGuide';
-import { useLoginModalContext } from '@dodao/web-core/ui/contexts/LoginModalContext';
-import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import {
   GuideFragment,
   GuideQuestionFragment,
   GuideStepFragment,
   GuideUserDiscordConnectFragment,
   GuideUserInputFragment,
-  Space,
   UserDiscordInfoInput,
 } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
+import UserInput from '@dodao/web-core/components/app/Form/UserInput';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import ErrorWithAccentBorder from '@dodao/web-core/components/core/errors/ErrorWithAccentBorder';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { isQuestion, isUserDiscordConnect, isUserInput } from '@dodao/web-core/types/deprecated/helpers/stepItemTypes';
+import { useLoginModalContext } from '@dodao/web-core/ui/contexts/LoginModalContext';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
 import flatten from 'lodash/flatten';
 import { marked } from 'marked';
@@ -27,7 +27,7 @@ import 'plyr/dist/plyr.css';
 import styles from './GuideStepperItem.module.scss';
 
 export interface GuideStepProps {
-  space: Space;
+  space: SpaceWithIntegrationsDto;
   guide: GuideFragment;
   step: GuideStepFragment;
   viewGuideHelper: UseViewGuideHelper;

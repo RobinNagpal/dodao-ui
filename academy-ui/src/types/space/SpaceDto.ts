@@ -12,6 +12,14 @@ export interface GuideSettingsDto {
   showIncorrectOnCompletion?: boolean;
 }
 
+export interface ByteSettingsDto {
+  askForLoginToSubmit: boolean;
+  captureBeforeAndAfterRating: boolean; // Deprecated: Use captureRating instead
+  captureRating: boolean;
+  showCategoriesInSidebar: boolean;
+  byteViewMode: string;
+}
+
 export interface AuthSettingsDto {
   enableLogin?: boolean;
   loginOptions?: string[];
@@ -22,13 +30,13 @@ export interface SocialSettingsDto {
 }
 
 export interface InviteLinksDto {
-  discordInviteLink?: string;
-  showAnimatedButtonForDiscord?: boolean;
-  telegramInviteLink?: string;
-  showAnimatedButtonForTelegram?: boolean;
+  discordInviteLink: string | null;
+  showAnimatedButtonForDiscord: boolean | null;
+  telegramInviteLink: string | null;
+  showAnimatedButtonForTelegram: boolean | null;
 }
 
-export interface UsernameAndName {
+export interface UsernameAndNameDto {
   username: string;
   nameOfTheUser: string;
 }
@@ -46,29 +54,37 @@ export interface SpaceApiKeyDto {
 }
 
 export interface SpaceIntegrationsDto extends SpaceIntegration {
-  academyRepository: string | null;
   discordGuildId: string | null;
   projectGalaxyToken: string | null;
   projectGalaxyTokenLastFour: string | null;
-  loadersInfo: SpaceLoadersInfo | null;
-  spaceApiKeys: SpaceApiKey[] | null;
+  loadersInfo: SpaceLoadersInfoDto | null;
+  spaceApiKeys: SpaceApiKeyDto[];
 }
 
+export interface ThemeColorsDto {
+  bgColor: string;
+  blockBg: string;
+  borderColor: string;
+  headingColor: string;
+  linkColor: string;
+  primaryColor: string;
+  textColor: string;
+}
 export interface SpaceWithIntegrationsDto extends Space {
   id: string;
   creator: string;
   features: string[];
   name: string;
   type: string;
-  skin: string;
   avatar: string | null;
   domains: string[];
-  inviteLinks: InviteLinks | null;
-  adminUsernamesV1: UsernameAndName[];
+  inviteLinks: InviteLinksDto | null;
+  adminUsernamesV1: UsernameAndNameDto[];
   spaceIntegrations?: SpaceIntegrationsDto;
   authSettings: AuthSettingsDto;
   socialSettings: SocialSettingsDto;
   guideSettings: GuideSettingsDto;
+  themeColors: ThemeColorsDto | null;
 }
 
 export interface SpaceSummaryDto {
@@ -81,4 +97,62 @@ export interface SpaceSummaryDto {
   skin: string;
   domains: string[];
   type: string;
+}
+
+export interface UpsertSpaceInputDto {
+  adminUsernamesV1: UsernameAndNameInputDto[];
+  avatar: string;
+  botDomains?: string[];
+  creator: string;
+  domains: string[];
+  features: string[];
+  id: string;
+  inviteLinks: InviteLinksDto | null;
+  name: string;
+  skin: string;
+  spaceIntegrations: SpaceIntegrationsInputDto;
+  type: string;
+}
+
+export interface UsernameAndNameInputDto {
+  nameOfTheUser: string;
+  username: string;
+}
+
+export interface SpaceInviteLinksInputSto {
+  discordInviteLink?: string;
+  showAnimatedButtonForDiscord?: boolean;
+  showAnimatedButtonForTelegram?: boolean;
+  telegramInviteLink?: string;
+}
+
+export interface SpaceGitRepositoryInputDto {
+  authenticationToken?: string;
+  gitRepoType?: string;
+  repoUrl: string;
+}
+
+export interface GnosisSafeWalletInputDto {
+  id: string;
+  chainId: number;
+  order: number;
+  tokenContractAddress: string;
+  walletAddress: string;
+  walletName: string;
+}
+
+export interface SpaceApiKeyInputDto {
+  creator: string;
+  apiKey?: string;
+  lastFourLetters: string;
+  lastUsed?: any;
+}
+
+export interface SpaceIntegrationsInputDto {
+  academyRepository?: string;
+  discordGuildId?: string;
+  gitGuideRepositories: SpaceGitRepositoryInputDto[];
+  gnosisSafeWallets: GnosisSafeWalletInputDto[];
+  projectGalaxyTokenLastFour?: string;
+  spaceApiKeys: SpaceApiKeyInputDto[] | null;
 }

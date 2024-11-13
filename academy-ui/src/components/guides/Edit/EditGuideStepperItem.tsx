@@ -1,20 +1,12 @@
 import { GeneratedQuestionInterface } from '@/components/ai/questions/GenerateQuestionsUsingAI';
-import CreateConnectDiscord from '@dodao/web-core/components/app/Common/CreateDiscordConnect';
 import CreateQuestion from '@/components/app/Common/CreateQuestion';
-import CreateUserInput from '@dodao/web-core/components/app/Common/CreateUserInput';
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
 import AddContentOrQuestionAIModal from '@/components/app/Modal/AI/AddContentOrQuestionAIModal';
 import GenerateContentUsingAIModal from '@/components/app/Modal/AI/GenerateContentUsingAIModal';
 import GenerateQuestionUsingAIModal from '@/components/app/Modal/AI/GenerateQuestionUsingAIModal';
-import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
-import AddStepItemModal from '@dodao/web-core/components/app/Modal/StepItem/AddStepItemModal';
-import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
-import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
-import Input from '@dodao/web-core/components/core/input/Input';
 import generateGuideContentPrompt from '@/components/guides/Edit/generateGuideContentPrompt';
 import generateQuestionsPrompt from '@/components/guides/Edit/generateQuestionsPrompt';
 import { UseEditGuideHelper } from '@/components/guides/Edit/useEditGuide';
-import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import {
   GuideFragment,
   GuideQuestion,
@@ -24,19 +16,27 @@ import {
   GuideUserDiscordConnectFragment,
   GuideUserInputFragment,
   ImageType,
-  Space,
   StepItemInputGenericInput,
 } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
+import CreateConnectDiscord from '@dodao/web-core/components/app/Common/CreateDiscordConnect';
+import CreateUserInput from '@dodao/web-core/components/app/Common/CreateUserInput';
+import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
+import AddStepItemModal from '@dodao/web-core/components/app/Modal/StepItem/AddStepItemModal';
+import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
+import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
+import Input from '@dodao/web-core/components/core/input/Input';
 import { InputType, QuestionType, UserDiscordConnectType } from '@dodao/web-core/types/deprecated/models/enums';
 import { QuestionError, StepError } from '@dodao/web-core/types/errors/error';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import isEqual from 'lodash/isEqual';
 import { useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
 
 interface GuideStepProps {
-  space: Space;
+  space: SpaceWithIntegrationsDto;
   guide: GuideFragment;
   guideHasDiscordEnabled: boolean;
   step: GuideStepFragment;

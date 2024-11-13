@@ -1,5 +1,6 @@
 import { StepResponse, TempSimulationSubmission } from '@/components/simulations/Edit/TempSimulationSubmission';
-import { SimulationDetailsFragment, SimulationStepFragment, Space, useSimulationDetailsQuery } from '@/graphql/generated/generated-types';
+import { SimulationDetailsFragment, SimulationStepFragment, useSimulationDetailsQuery } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 
 import { useState } from 'react';
 
@@ -18,7 +19,7 @@ export interface UseViewSimulationHelper {
   submitSimulation: () => Promise<void>;
 }
 
-export function useViewSimulation(space: Space, simulationId: string, stepOrder: number): UseViewSimulationHelper {
+export function useViewSimulation(space: SpaceWithIntegrationsDto, simulationId: string, stepOrder: number): UseViewSimulationHelper {
   const [simulationRef, setSimulationRef] = useState<SimulationDetailsFragment>();
   const [simulationLoaded, setSimulationLoaded] = useState<boolean>(false);
   const [simulationSubmission, setSimulationSubmission] = useState<TempSimulationSubmission>({

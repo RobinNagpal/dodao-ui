@@ -7,9 +7,6 @@ export const isAdmin = (session?: Session, space?: Space | SpaceWithIntegrations
   return (
     space &&
     session &&
-    (isSuperAdmin(session) ||
-      space.admins.some((admin) => admin === session.userId) ||
-      space.adminUsernames.map((s) => s.toLowerCase()).some((admin) => admin === session?.username?.toLowerCase()) ||
-      space.adminUsernamesV1.map((s) => s.username.toLowerCase()).some((admin) => admin === session?.username?.toLowerCase()))
+    (isSuperAdmin(session) || space.adminUsernamesV1.map((s) => s.username.toLowerCase()).some((admin) => admin === session?.username?.toLowerCase()))
   );
 };

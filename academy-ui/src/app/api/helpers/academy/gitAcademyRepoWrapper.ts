@@ -1,10 +1,10 @@
 import { AcademyObjectTypes } from '@/app/api/helpers/academy/academyObjectTypes';
 import { ensureDirectoryExistence } from '@/app/api/helpers/git/ensureDirectoryExistence';
-import { prisma } from '@/prisma';
 import { Space } from '@prisma/client';
 import fs from 'fs';
 import { clone, listRemotes } from 'isomorphic-git';
 import http from 'isomorphic-git/http/node';
+
 export interface AcademyRepoInfo {
   academyRepository: string;
   repositoryFolderName: string;
@@ -13,8 +13,7 @@ export interface AcademyRepoInfo {
 }
 
 export async function getAcademyRepoInfo(space: Space): Promise<AcademyRepoInfo> {
-  const spaceIntegration = await prisma.spaceIntegration.findFirst({ where: { spaceId: space.id } });
-  const academyRepository = spaceIntegration?.academyRepository;
+  const academyRepository = 'adqweqwe';
   if (!academyRepository) {
     throw new Error('No git repository integration added');
   }

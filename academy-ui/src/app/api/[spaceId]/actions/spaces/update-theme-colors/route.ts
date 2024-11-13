@@ -4,10 +4,11 @@ import { checkEditSpacePermission } from '@/app/api/helpers/space/checkEditSpace
 import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
 import { MutationUpdateThemeColorsArgs } from '@/graphql/generated/generated-types';
 import { prisma } from '@/prisma';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import { Space, SpaceIntegration } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
 
-async function putHandler(req: NextRequest): Promise<NextResponse<{ space: Space & { spaceIntegrations: SpaceIntegration | null } }>> {
+async function putHandler(req: NextRequest): Promise<NextResponse<{ space: SpaceWithIntegrationsDto }>> {
   const { spaceId, themeColors } = (await req.json()) as MutationUpdateThemeColorsArgs;
   const spaceById = await getSpaceById(spaceId);
   await checkEditSpacePermission(spaceById, req);
@@ -34,4 +35,4 @@ async function putHandler(req: NextRequest): Promise<NextResponse<{ space: Space
   return NextResponse.json({ space }, { status: 200 });
 }
 
-export const PUT = withErrorHandlingV1<{ space: Space & { spaceIntegrations: SpaceIntegration | null } }>(putHandler);
+export const PUT = withErrorHandlingV1<{ space: SpaceWithIntegrationsDto }>(putHandler);

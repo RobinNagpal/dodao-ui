@@ -23,12 +23,7 @@ export async function generateMetadata(): Promise<Metadata> {
     description: 'Default description',
   };
 
-  if (host && (space?.botDomains || [])?.includes(host)) {
-    metadata = {
-      title: 'Chat with Our Bot',
-      description: 'Interact with our AI-powered chatbot.',
-    };
-  } else if (space?.type === SpaceTypes.TidbitsSite) {
+  if (space?.type === SpaceTypes.TidbitsSite) {
     metadata = {
       title: `${space?.name} - Tidbits`,
       description: `Learn ${space.name} with the help of Tidbits`,

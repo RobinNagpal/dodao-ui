@@ -1,13 +1,14 @@
+import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
+import UpsertSpaceAuthSettingsModal from '@/components/spaces/Edit/Auth/UpsertSpaceAuthSettingsModal';
+import { useRoute53RecordQuery, useUpsertDomainRecordsMutation, useVercelDomainRecordQuery } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import DetailsHeader from '@dodao/web-core/components/core/details/DetailsHeader';
 import DetailsRow from '@dodao/web-core/components/core/details/DetailsRow';
 import DetailsSection from '@dodao/web-core/components/core/details/DetailsSection';
-import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
-import UpsertSpaceAuthSettingsModal from '@/components/spaces/Edit/Auth/UpsertSpaceAuthSettingsModal';
-import { Space, useRoute53RecordQuery, useUpsertDomainRecordsMutation, useVercelDomainRecordQuery } from '@/graphql/generated/generated-types';
 import React, { useState } from 'react';
 
 export interface SpaceAuthDetailsProps {
-  space: Space;
+  space: SpaceWithIntegrationsDto;
   className?: string;
 }
 

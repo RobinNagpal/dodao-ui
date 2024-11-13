@@ -1,16 +1,16 @@
-import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import {
   CourseDetailsFragment,
   CourseSubmissionFragment,
   CourseTopicFragment,
   GitCourseTopicSubmissionInput,
-  Space,
   TopicCorrectAnswersFragment,
   TopicSubmissionFragment,
   useUpsertGitCourseTopicSubmissionMutation,
 } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import { GitCourseSubmissionModel } from '@dodao/web-core/types/deprecated/models/course/GitCourseSubmissionModel';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import isEqual from 'lodash/isEqual';
 import { useSession } from 'next-auth/react';
@@ -184,7 +184,7 @@ export interface CourseSubmissionHelper {
   getTopicSubmission: (topicKey: string) => TempTopicSubmission | undefined;
 }
 
-export const useCourseSubmission = (space: Space, courseKey: string): CourseSubmissionHelper => {
+export const useCourseSubmission = (space: SpaceWithIntegrationsDto, courseKey: string): CourseSubmissionHelper => {
   const [courseSubmission, setCourseSubmission] = useState<TempCourseSubmission | undefined>();
   const { data: session } = useSession();
 

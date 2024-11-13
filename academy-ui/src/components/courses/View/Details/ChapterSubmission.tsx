@@ -1,3 +1,4 @@
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import { CourseSubmissionHelper, TopicItemStatus } from '@/components/courses/View/useCourseSubmission';
 import { CourseHelper } from '@/components/courses/View/useViewCourse';
@@ -33,7 +34,7 @@ const Icon = styled.div`
 interface TopicComponentProps {
   course: CourseDetailsFragment;
   isCourseAdmin: boolean;
-  space: Space;
+  space: SpaceWithIntegrationsDto;
   topicKey: string;
   courseHelper: CourseHelper;
   submissionHelper: CourseSubmissionHelper;

@@ -1,49 +1,49 @@
 import {
-  ByteStep as GraphqlByteStep,
-  AuthSettings as SpaceAuthSettings,
-  GuideSettings as SpaceGuideSettings,
-  SocialSettings as SpaceSocialSettings,
-  ByteSettings as SpaceByteSettings,
-  GuideFeedback as GuideFeedbackType,
-  SpaceLoadersInfo as SpaceLoadersInfoType,
-  ChatbotSubcategory as ChatbotSubcategoryType,
-  ThemeColors as SpaceThemeColors,
-  UsernameAndName as UsernameAndNameType,
-  SEOMeta as SEOMetaType,
-  CompletionScreen as CompletionScreenType,
-  TidbitsHomepage as TidbitsHomepageType,
   ByteFeedback as ByteFeedbackType,
+  ByteLinkedinPdfContent as ByteLinkedinPdfContentType,
+  ByteStep as GraphqlByteStep,
+  ChatbotSubcategory as ChatbotSubcategoryType,
   ClickableDemoStep as ClickableDemoStepType,
+  CompletionScreen as CompletionScreenType,
+  GuideFeedback as GuideFeedbackType,
+  SEOMeta as SEOMetaType,
+  TidbitsHomepage as TidbitsHomepageType,
   TimelineEvent as TimelineEventType,
-  SpaceApiKey as SpaceApiKeyType,
+  GuideStepSubmission as GuideStepSubmissionInterface,
 } from '@/graphql/generated/generated-types';
-import { ByteLinkedinPdfContent as ByteLinkedinPdfContentType } from '@/graphql/generated/generated-types';
 import { TempTopicSubmissionModel as TempTopicSubmissionModelInterface } from '@/types/course/submission';
 import { CourseTopic as CourseTopicInterface } from '@/types/course/topic';
 import { GuideSubmissionResult as GuideSubmissionResultInterface } from '@/types/guide/GuideSubmissionResult';
 import { GuidesGitRepository as GuidesGitRepositoryInterface } from '@/types/space/GuidesGitRepository';
-import { SpaceInviteLinks as SpaceInviteLinksInterface } from '@/types/space/SpaceInviteLinks';
-import { GuideStepSubmission as GuideStepSubmissionInterface } from '@/types/space/SpaceInviteLinks';
+import {
+  AuthSettingsDto,
+  GuideSettingsDto,
+  InviteLinksDto,
+  SocialSettingsDto,
+  SpaceLoadersInfoDto,
+  ThemeColorsDto,
+  UsernameAndNameDto,
+} from '@/types/space/SpaceDto';
 
 declare global {
   namespace PrismaJson {
     // you can use classes, interfaces, types, etc.
     type GuidesGitRepository = GuidesGitRepositoryInterface;
     type GuideSubmissionResult = GuideSubmissionResultInterface;
-    type SpaceInviteLinks = SpaceInviteLinksInterface;
+    type SpaceInviteLinks = InviteLinksDto;
     type TempTopicSubmissionModel = TempTopicSubmissionModelInterface;
     type ByteStep = GraphqlByteStep;
-    type AuthSettings = SpaceAuthSettings;
-    type GuideSettings = SpaceGuideSettings;
-    type SocialSettings = SpaceSocialSettings;
+    type AuthSettings = AuthSettingsDto;
+    type GuideSettings = GuideSettingsDto;
+    type SocialSettings = SocialSettingsDto;
     type ByteLinkedinPdfContent = ByteLinkedinPdfContentType;
     type ByteSettings = SpaceByteSettings;
     type GuideFeedback = GuideFeedbackType;
-    type SpaceLoadersInfo = SpaceLoadersInfoType;
+    type SpaceLoadersInfo = SpaceLoadersInfoDto;
     type GuideStepSubmissionArray = GuideStepSubmissionInterface[];
     type ChatbotSubcategory = ChatbotSubcategoryType;
-    type ThemeColors = SpaceThemeColors;
-    type UsernameAndName = UsernameAndNameType;
+    type ThemeColors = ThemeColorsDto;
+    type UsernameAndName = UsernameAndNameDto;
     type SEOMeta = SEOMetaType;
     type CompletionScreen = CompletionScreenType;
     type TidbitsHomepage = TidbitsHomepageType;

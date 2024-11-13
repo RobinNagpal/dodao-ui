@@ -19,11 +19,11 @@ const MainDiv = styled.div`
   color: var(--text-color);
 `;
 
-function getSpaceTableRows(spaceList?: SpaceSummaryFragment[]): TableRow[] {
+function getSpaceTableRows(spaceList?: SpaceWithIntegrationsDto[]): TableRow[] {
   return (spaceList || []).map(
     (space): TableRow => ({
       id: space.id,
-      columns: [space.name, space.id, space.skin, space.type],
+      columns: [space.name, space.id, space.type],
       item: space,
     })
   );
@@ -74,12 +74,7 @@ export default function ListSpaces() {
             </Button>
           </div>
         </div>
-        <Table
-          data={getSpaceTableRows(data || [])}
-          columnsHeadings={['Name', 'Id', 'Skin', 'Type']}
-          columnsWidthPercents={[20, 20, 20, 20]}
-          actions={tableActions}
-        />
+        <Table data={getSpaceTableRows(data || [])} columnsHeadings={['Name', 'Id', 'Type']} columnsWidthPercents={[20, 20, 20]} actions={tableActions} />
         <UpsertSpaceBasicSettingsModal open={showSpaceAddModal} onClose={() => setShowSpaceAddModal(false)} />
       </MainDiv>
       {deletePineconeSpace && (

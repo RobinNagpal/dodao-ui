@@ -1,8 +1,9 @@
-import Input from '@dodao/web-core/components/core/input/Input';
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
-import Button from '@dodao/web-core/components/core/buttons/Button';
 import { minMaxValidation, minValidation } from '@/components/courses/Edit/courseValidations';
-import { CourseDetailsFragment, CourseTopicFragment, ImageType, Space, UpdateTopicBasicInfoInput } from '@/graphql/generated/generated-types';
+import { CourseDetailsFragment, CourseTopicFragment, ImageType, UpdateTopicBasicInfoInput } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import Input from '@dodao/web-core/components/core/input/Input';
 import React, { useCallback, useMemo, useState } from 'react';
 import styled from 'styled-components';
 
@@ -16,7 +17,7 @@ export interface UpdateTopicForm {
 
 interface EditTopicProps {
   course: CourseDetailsFragment;
-  space: Space;
+  space: SpaceWithIntegrationsDto;
   topicKey?: string;
   currentTopic?: CourseTopicFragment;
   saveTopic: (updatedTopic: UpdateTopicBasicInfoInput) => Promise<void>;
@@ -91,7 +92,7 @@ export default function EditTopic({ course, space, topicKey, currentTopic, saveT
 }
 
 const StyledDiv = styled.div`
-  border: 1px solid var(--skin-border);
+  border: 1px solid;
   border-radius: 0.375rem;
   padding: 0.5rem;
 `;

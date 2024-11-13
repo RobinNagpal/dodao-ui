@@ -1,4 +1,3 @@
-import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import {
   CourseDetailsFragment,
   CourseExplanationFragment,
@@ -6,12 +5,13 @@ import {
   CourseReadingFragment,
   CourseSummaryFragment,
   CourseTopicFragment,
-  Space,
 } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 
 import { FetchResult } from '@apollo/client';
-import { useEffect, useState } from 'react';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import axios from 'axios';
+import { useEffect, useState } from 'react';
 
 export interface CourseHelper {
   course?: CourseDetailsFragment;
@@ -31,7 +31,7 @@ export interface CourseHelper {
   getTopicQuestionWithIndex: (topicKey: string, questionKey: string) => { question: CourseQuestionFragment; index: number };
 }
 
-const useViewCourse = (space: Space, courseKey: string): CourseHelper => {
+const useViewCourse = (space: SpaceWithIntegrationsDto, courseKey: string): CourseHelper => {
   const [course, setCourse] = useState<CourseDetailsFragment | undefined>();
 
   const [data, setData] = useState<{ course?: CourseDetailsFragment }>();
