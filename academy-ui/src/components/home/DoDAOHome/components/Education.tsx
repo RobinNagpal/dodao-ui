@@ -15,12 +15,14 @@ const education = [
     description:
       'Unlock the potential of blockchain technology with our comprehensive courses. We have created a curriculum that dives deep into the world of NFTs, DeFi, Layer 2 solutions, and more, providing essential knowledge and practical skills that will set you apart in this rapidly evolving industry.',
     imageSrc: educationCrypto,
+    imageAlt: 'Blockchain Courses',
   },
   {
     name: 'Educational Content',
     description:
       'Need engaging educational materials for your blockchain or DeFi project? DoDAO offers comprehensive content creation services tailored to your needs. As a leading provider, we craft end-to-end educational content that empowers your audience to understand and embrace your technology.',
     imageSrc: educationalContent,
+    imageAlt: 'Educational Content',
   },
 ];
 
@@ -82,7 +84,7 @@ export function Education() {
                     <div key={item.name} className="text-center sm:flex sm:text-left lg:block lg:text-center">
                       <div className="sm:flex-shrink-0">
                         <div className="flow-root">
-                          <Image alt="education services" src={item.imageSrc} className="mx-auto h-40" width={220} height={150} />
+                          <Image alt={item.imageAlt} src={item.imageSrc} className="mx-auto h-40" width={220} height={150} />
                         </div>
                       </div>
                       <div className="mt-3 sm:ml-3 sm:mt-0 lg:ml-0 lg:mt-3">

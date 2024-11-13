@@ -25,7 +25,7 @@ export function PhoneFrame({ className, children, priority = false, ...props }: 
         {children}
       </div>
       <PlaceholderFrame className="pointer-events-none absolute inset-0 h-full w-full fill-gray-100" />
-      <Image src={frame} alt="" className="pointer-events-none absolute inset-0 h-full w-full" unoptimized priority={priority} />
+      <Image src={frame} alt="Phone Frame" className="pointer-events-none absolute inset-0 h-full w-full" unoptimized priority={priority} />
     </div>
   );
 }
