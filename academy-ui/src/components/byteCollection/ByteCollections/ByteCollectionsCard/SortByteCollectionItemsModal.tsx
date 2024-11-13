@@ -1,8 +1,7 @@
 import { ByteCollectionItemType } from '@/app/api/helpers/byteCollection/byteCollectionItemType';
-import { Space } from '@/graphql/generated/generated-types';
 import { ByteCollectionItem, ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import { SortByteCollectionItemsRequest } from '@/types/request/ByteCollectionRequests';
-import { SpaceTypes } from '@/types/space/SpaceDto';
+import { SpaceTypes, SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Input from '@dodao/web-core/components/core/input/Input';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
@@ -11,7 +10,7 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useState } from 'react';
 
 interface SortByteCollectionItemsModalProps {
-  space: Space;
+  space: SpaceWithIntegrationsDto;
   byteCollection: ByteCollectionSummary;
   onClose: () => void;
 }

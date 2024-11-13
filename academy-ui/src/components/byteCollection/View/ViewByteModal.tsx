@@ -1,8 +1,5 @@
 'use client';
 
-import whatIsTidbit from '../../../../onboardingByteCollection/0001-demo-byte-what-is-tidbit.json';
-import whatIsClickableDemo from '../../../../onboardingByteCollection/0001-demo-byte-what-is-clickable-demo.json';
-import whatIsShortVideo from '../../../../onboardingByteCollection/0001-demo-byte-what-is-short-video.json';
 import RatingModal, { FeedbackOptions } from '@/components/app/Modal/Rating/RatingModal';
 import { useByteRatings } from '@/components/bytes/Rating/useByteRating';
 import ShareBytePage from '@/components/bytes/Share/ShareBytePage';
@@ -12,8 +9,9 @@ import FullScreenByteModal from '@/components/bytes/View/FullScreenByteModal';
 import RatingByteView from '@/components/bytes/View/RatingByteView';
 import SwiperByteStepperItemView from '@/components/bytes/View/SwiperByteView/SwiperByteStepperItemView';
 import { useViewByteHelper } from '@/components/bytes/View/useViewByteHelper';
-import { ByteDetailsFragment, ByteFeedback, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { ByteDetailsFragment, ByteFeedback } from '@/graphql/generated/generated-types';
 import { ByteDto, ByteViewMode } from '@/types/bytes/ByteDto';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import TidbitDetailsLoader from '@dodao/web-core/components/core/loaders/TidbitDetailsLoader';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -22,13 +20,16 @@ import axios from 'axios';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
+import whatIsClickableDemo from '../../../../onboardingByteCollection/0001-demo-byte-what-is-clickable-demo.json';
+import whatIsShortVideo from '../../../../onboardingByteCollection/0001-demo-byte-what-is-short-video.json';
+import whatIsTidbit from '../../../../onboardingByteCollection/0001-demo-byte-what-is-tidbit.json';
 
 const EditByteView: React.ComponentType<any> = dynamic(() => import('@/components/bytes/Edit/EditByteView'), {
   ssr: false, // Disable server-side rendering for this component
 });
 
 export interface ViewByteModalProps {
-  space: SpaceWithIntegrationsFragment;
+  space: SpaceWithIntegrationsDto;
   byteCollectionId: string;
   selectedByteId: string;
   viewByteModalClosedUrl: string;

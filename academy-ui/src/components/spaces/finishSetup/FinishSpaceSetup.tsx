@@ -1,15 +1,15 @@
 'use client';
 
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import WebCoreSpaceSetup from '@dodao/web-core/components/space/WebCoreSpaceSetup';
 import { WebCoreSpace } from '@dodao/web-core/types/space';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useFetchUtils } from '@dodao/web-core/ui/hooks/useFetchUtils';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { User } from '@prisma/client';
 import React, { useState } from 'react';
 
 interface FinishSpaceSetupProps {
-  space: SpaceWithIntegrationsFragment;
+  space: SpaceWithIntegrationsDto;
 }
 
 function FinishSetup({ space }: FinishSpaceSetupProps) {
@@ -18,13 +18,13 @@ function FinishSetup({ space }: FinishSpaceSetupProps) {
 
   async function upsertSpace(updatedSpace: WebCoreSpace) {
     setUpserting(true);
-    const spaceReq: SpaceWithIntegrationsFragment = {
+    const spaceReq: SpaceWithIntegrationsDto = {
       ...space,
-      avatar: updatedSpace.avatar,
+      avatar: updatedSpace.avatar || null,
       adminUsernamesV1: updatedSpace.adminUsernamesV1,
-      themeColors: updatedSpace.themeColors,
+      themeColors: updatedSpace.themeColors || null,
     };
-    await putData<User, { spaceInput: SpaceWithIntegrationsFragment }>(
+    await putData<User, { spaceInput: SpaceWithIntegrationsDto }>(
       `${getBaseUrl()}/api/${space.id}/spaces`,
       {
         spaceInput: spaceReq,

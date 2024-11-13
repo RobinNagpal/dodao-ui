@@ -1,16 +1,17 @@
 // Add necessary imports for your project
-import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
-import Input from '@dodao/web-core/components/core/input/Input';
-import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
 import { EditSimulationType } from '@/components/simulations/Edit/useEditSimulation';
-import { ImageType, SimulationStepInput, Space } from '@/graphql/generated/generated-types';
+import { ImageType, SimulationStepInput } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
+import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
+import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
+import Input from '@dodao/web-core/components/core/input/Input';
 import { StepError } from '@dodao/web-core/types/errors/error';
 import { SimulationErrors } from '@dodao/web-core/types/errors/simulationErrors';
 import styled from 'styled-components';
 
 interface StepProps {
-  space: Space;
+  space: SpaceWithIntegrationsDto;
   simulation: EditSimulationType;
   simulationErrors?: SimulationErrors;
   step: SimulationStepInput;

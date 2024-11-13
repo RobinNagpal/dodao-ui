@@ -3,8 +3,8 @@
 import AdvancedSettings from '@/components/guides/Edit/AdvancedSettings';
 import BasicGuideSettings from '@/components/guides/Edit/BasicGuideSettings';
 import { useEditGuide } from '@/components/guides/Edit/useEditGuide';
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import PageLoading from '@dodao/web-core/components/core/loaders/PageLoading';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
@@ -17,7 +17,7 @@ const Wrapper = styled.div`
   min-height: 484px;
 `;
 
-const EditGuide = (props: { space: SpaceWithIntegrationsFragment; guideId: string | null }) => {
+const EditGuide = (props: { space: SpaceWithIntegrationsDto; guideId: string | null }) => {
   const { space, guideId } = props;
   const [selectedTabId, setSelectedTabId] = React.useState('basic');
 

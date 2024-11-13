@@ -1,13 +1,13 @@
 'use client';
 
+import TopNav from '@/components/main/TopNav/TopNav';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import LoginModal from '@dodao/web-core/components/auth/LoginModal';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
-import TopNav from '@/components/main/TopNav/TopNav';
 import { LoginModalProvider } from '@dodao/web-core/ui/contexts/LoginModalContext';
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
-import React, { ReactNode, useEffect, useState } from 'react';
-import styled from 'styled-components';
 import dynamic from 'next/dynamic';
+import React, { ReactNode } from 'react';
+import styled from 'styled-components';
 
 const Footer: React.ComponentType<any> = dynamic(() => import('./Footer'), {
   ssr: false, // Disable server-side rendering for this component
@@ -19,17 +19,7 @@ const StyledMain = styled.main`
   min-height: calc(100vh - 64px);
 `;
 
-function PageTopNav(props: { space: SpaceWithIntegrationsFragment }) {
-  const [isBotSite, setIsBotSite] = useState(true);
-
-  useEffect(() => {
-    setIsBotSite(!!props.space?.botDomains?.includes?.(window.location.hostname));
-  }, [props.space]);
-
-  if (isBotSite) {
-    return null;
-  }
-
+function PageTopNav(props: { space: SpaceWithIntegrationsDto }) {
   //Checking if the url contains embedded-tidbit-collections
   if (typeof window !== 'undefined') {
     const currentUrl = window.location.href;
@@ -41,7 +31,7 @@ function PageTopNav(props: { space: SpaceWithIntegrationsFragment }) {
   return <TopNav space={props.space} />;
 }
 
-function PageFooter(props: { space: SpaceWithIntegrationsFragment }) {
+function PageFooter(props: { space: SpaceWithIntegrationsDto }) {
   //Checking if the url contains embedded-tidbit-collections
   if (typeof window !== 'undefined') {
     const currentUrl = window.location.href;
@@ -51,7 +41,7 @@ function PageFooter(props: { space: SpaceWithIntegrationsFragment }) {
   }
   return <Footer space={props.space} />;
 }
-export function BasePage(props: { space: SpaceWithIntegrationsFragment | null; children: ReactNode }) {
+export function BasePage(props: { space: SpaceWithIntegrationsDto | null; children: ReactNode }) {
   if (props.space?.id) {
     return (
       <LoginModalProvider>

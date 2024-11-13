@@ -1,11 +1,12 @@
 import UploadInput from '@/components/app/UploadInput';
+import { useEditSpaceSocialSettings } from '@/components/spaces/Edit/Social/useEditSpaceSocialSettings';
+import { ImageType } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
-import { useEditSpaceSocialSettings } from '@/components/spaces/Edit/Social/useEditSpaceSocialSettings';
-import { ImageType, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import React, { useState } from 'react';
 
-export default function UpsertSpaceSocialSettingsModal(props: { space: SpaceWithIntegrationsFragment; open: boolean; onClose: () => void }) {
+export default function UpsertSpaceSocialSettingsModal(props: { space: SpaceWithIntegrationsDto; open: boolean; onClose: () => void }) {
   const { socialSettings, setSocialSettingsField, updateSocialSettings, updating } = useEditSpaceSocialSettings(props.space);
   const [uploadThumbnailLoading, setUploadThumbnailLoading] = useState(false);
 

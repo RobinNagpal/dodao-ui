@@ -1,10 +1,10 @@
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import { Grid2Cols } from '@dodao/web-core/components/core/grids/Grid2Cols';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
-export default function CreateContentModalContents({ hideModal, space }: { hideModal: () => void; space?: SpaceWithIntegrationsFragment | null }) {
+export default function CreateContentModalContents({ hideModal, space }: { hideModal: () => void; space?: SpaceWithIntegrationsDto | null }) {
   const router = useRouter();
   const goToUrl = (url: string) => {
     router.push(url);

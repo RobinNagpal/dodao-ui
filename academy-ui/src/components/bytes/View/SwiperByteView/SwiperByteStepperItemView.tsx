@@ -1,24 +1,23 @@
 import ByteStepperItemContent from '@/components/bytes/View/ByteStepperItemContent';
 import { UseViewByteHelper } from '@/components/bytes/View/useViewByteHelper';
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import useWindowDimensions from '@/hooks/useWindowDimensions';
 import { ByteDto, ByteStepDto, ImageDisplayMode } from '@/types/bytes/ByteDto';
-import { CSSProperties, useRef, useState, WheelEventHandler } from 'react';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import Button from '@dodao/web-core/components/core/buttons/Button';
+import { CSSProperties, useRef, useState } from 'react';
 import { Keyboard, Mousewheel, Navigation, Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import 'swiper/css/virtual';
-import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
-import { SwiperRef } from 'swiper/swiper-react';
-import { NavigationOptions, type Swiper as SwiperClass } from 'swiper/types';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { NavigationOptions } from 'swiper/types';
 import styles from './SwiperlByteStepperItemView.module.scss';
 
 interface ByteStepperItemWithProgressBarProps {
   byte: ByteDto;
   step: ByteStepDto;
-  space: SpaceWithIntegrationsFragment;
+  space: SpaceWithIntegrationsDto;
   viewByteHelper: UseViewByteHelper;
   setByteSubmitted: (submitted: boolean) => void;
   onClose: () => void;

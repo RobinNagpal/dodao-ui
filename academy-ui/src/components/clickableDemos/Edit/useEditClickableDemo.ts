@@ -1,14 +1,14 @@
-import { ClickableDemoStepInput, Space, UpsertClickableDemoInput } from '@/graphql/generated/generated-types';
+import { ClickableDemoStepInput, UpsertClickableDemoInput } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
 import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import { ClickableDemoDto, TooltipPlacement } from '@/types/clickableDemos/ClickableDemoDto';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import { TidbitCollectionTags } from '@/utils/api/fetchTags';
 import { emptyClickableDemo } from '@/utils/clickableDemos/EmptyClickableDemo';
 import { ClickableDemoErrors, ClickableDemoStepError } from '@dodao/web-core/types/errors/clickableDemoErrors';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { useFetchUtils } from '@dodao/web-core/ui/hooks/useFetchUtils';
 import { createNewEntityId } from '@dodao/web-core/utils/space/createNewEntityId';
-import orderBy from 'lodash/orderBy';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
@@ -29,7 +29,7 @@ export type UpdateClickableDemoFunctions = {
   moveStepUp: (stepUuid: string) => void;
 };
 
-export function useEditClickableDemo(space: Space, demoId: string | null) {
+export function useEditClickableDemo(space: SpaceWithIntegrationsDto, demoId: string | null) {
   const router = useRouter();
   const emptyClickableDemoModel = emptyClickableDemo();
   const { showNotification } = useNotificationContext();

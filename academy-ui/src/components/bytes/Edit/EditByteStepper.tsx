@@ -1,7 +1,7 @@
 import { UpdateByteFunctions } from '@/components/bytes/Edit/useEditByte';
 import { EditByteType } from '@/types/request/ByteRequests';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import SidebarButton from '@dodao/web-core/components/core/buttons/SidebarButton';
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { UserDiscordConnectType } from '@dodao/web-core/types/deprecated/models/enums';
 import { ByteErrors } from '@dodao/web-core/types/errors/byteErrors';
 import Accordion from '@dodao/web-core/utils/accordion/Accordion';
@@ -12,7 +12,7 @@ import Button from '@dodao/web-core/components/core/buttons/Button';
 import EditCompletionScreenStepperItem from './EditCompletionScreenStepperItem';
 
 interface EditByteStepperProps {
-  space: SpaceWithIntegrationsFragment;
+  space: SpaceWithIntegrationsDto;
   byte: EditByteType;
   byteErrors?: ByteErrors;
   errorColor?: string;

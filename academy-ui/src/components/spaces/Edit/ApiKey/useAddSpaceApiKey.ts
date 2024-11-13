@@ -1,4 +1,4 @@
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { useFetchUtils } from '@dodao/web-core/ui/hooks/useFetchUtils';
@@ -12,14 +12,14 @@ interface AddApiKeyRequest {
 }
 
 interface AddApiKeyResponse {
-  space: SpaceWithIntegrationsFragment;
+  space: SpaceWithIntegrationsDto;
 }
 
 export interface AddSpaceKeyHook {
   addApiKey: (apiKey: string) => void;
 }
 
-export function useAddSpaceApiKey(space: SpaceWithIntegrationsFragment, onUpdate: (space: any) => void): AddSpaceKeyHook {
+export function useAddSpaceApiKey(space: SpaceWithIntegrationsDto, onUpdate: (space: any) => void): AddSpaceKeyHook {
   const { showNotification } = useNotificationContext();
   const { postData } = useFetchUtils();
   const { data: clientSession } = useSession() as { data: Session | null };

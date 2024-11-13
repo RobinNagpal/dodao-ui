@@ -2,7 +2,7 @@
 
 import { BasePage } from '@/components/layout/BasePage';
 import { useSpace } from '@/contexts/SpaceContext';
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import { ApolloProvider } from '@apollo/client';
 import ErrorPage from '@dodao/web-core/components/app/ErrorPage';
 import { NotificationWrapper } from '@dodao/web-core/components/layout/NotificationWrapper';
@@ -25,7 +25,7 @@ export function ChildLayout({
 }: {
   children: React.ReactNode;
   session: Session | null;
-  space?: SpaceWithIntegrationsFragment | null;
+  space?: SpaceWithIntegrationsDto | null;
   spaceError: boolean;
 }) {
   const client = useMemo(() => getAuthenticatedApolloClient(session), [session]);

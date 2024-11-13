@@ -1,7 +1,8 @@
 import CaptureInput from '@/components/clickableDemos/CaptureSelector/CaptureInput';
 import SelectElementInput from '@/components/clickableDemos/ElementSelector/SelectElementInput';
-import { ClickableDemoStepInput, Space, UpsertClickableDemoInput } from '@/graphql/generated/generated-types';
+import { ClickableDemoStepInput, UpsertClickableDemoInput } from '@/graphql/generated/generated-types';
 import { TooltipPlacement } from '@/types/clickableDemos/ClickableDemoDto';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
 import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import Input from '@dodao/web-core/components/core/input/Input';
@@ -12,7 +13,7 @@ import { useState } from 'react';
 import styles from './EditClickableDemoStepperItem.module.scss';
 
 interface StepProps {
-  space: Space;
+  space: SpaceWithIntegrationsDto;
   clickableDemo: UpsertClickableDemoInput;
   clickableDemoErrors?: ClickableDemoErrors;
   step: ClickableDemoStepInput;

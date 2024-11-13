@@ -1,8 +1,8 @@
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
 import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import { ByteDto, CompletionScreenDto, ImageDisplayMode } from '@/types/bytes/ByteDto';
 import { ByteStepInput, EditByteStep, EditByteType, StepItemInputGenericInput, UpsertByteInput } from '@/types/request/ByteRequests';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import { Question, UserInput } from '@/types/stepItems/stepItemDto';
 import { emptyByte } from '@/utils/byte/EmptyByte';
 import { validateQuestion, validateUserInput } from '@/utils/stepItems/validateItems';
@@ -53,12 +53,7 @@ export interface GeneratedByte {
   }[];
 }
 
-export function useEditByte(
-  space: SpaceWithIntegrationsFragment,
-  onUpsert: (byteId: string) => Promise<void>,
-  byteCollectionId: string,
-  byteId: string | null
-) {
+export function useEditByte(space: SpaceWithIntegrationsDto, onUpsert: (byteId: string) => Promise<void>, byteCollectionId: string, byteId: string | null) {
   const emptyByteModel = emptyByte();
   const [byte, setByte] = useState<EditByteType>({
     ...emptyByteModel,

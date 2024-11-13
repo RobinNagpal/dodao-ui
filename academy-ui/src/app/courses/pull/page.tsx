@@ -1,8 +1,9 @@
 'use client';
 import withSpace from '@/contexts/withSpace';
-import { GitCourseInput, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { GitCourseInput } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import Block from '@dodao/web-core/components/app/Block';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Input from '@dodao/web-core/components/core/input/Input';
@@ -14,7 +15,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
-const AddCourse = (props: { space: SpaceWithIntegrationsFragment }) => {
+const AddCourse = (props: { space: SpaceWithIntegrationsDto }) => {
   const [gitCourseUpserting, setGitCourseUpserting] = useState(false);
   const [form, setForm] = useState<GitCourseInput>({
     weight: 20,

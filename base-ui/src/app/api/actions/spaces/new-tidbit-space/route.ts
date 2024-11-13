@@ -1,5 +1,5 @@
 import { getDecodedJwtFromContext } from '@dodao/web-core/api/auth/getJwtFromContext';
-import { CssTheme, themes } from '@dodao/web-core/components/app/themes';
+import { GlobalThemeColors } from '@dodao/web-core/components/app/themes';
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/prisma';
 import { CreateSpaceRequest } from '@/types/request/CreateSpaceRequest';
@@ -28,7 +28,7 @@ async function postHandler(req: NextRequest): Promise<NextResponse<CreateSpaceRe
     authSettings: { enableLogin: true, loginOptions: [LoginProviders.Email] },
 
     features: [],
-    themeColors: themes[CssTheme.GlobalTheme],
+    themeColors: GlobalThemeColors,
     verified: true,
     createdAt: new Date(),
     updatedAt: new Date(),

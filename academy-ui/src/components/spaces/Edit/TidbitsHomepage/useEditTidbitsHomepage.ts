@@ -1,5 +1,6 @@
-import { SpaceWithIntegrationsFragment, TidbitsHomepage } from '@/graphql/generated/generated-types';
+import { TidbitsHomepage } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import { TidbitsHomepageError } from '@dodao/web-core/types/errors/error';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -20,7 +21,7 @@ const tidbitHP: TidbitsHomepage = {
   shortDescription: '',
 };
 
-export function useEditTidbitsHomepage(space: SpaceWithIntegrationsFragment): UpdateTidbitsHompageHelper {
+export function useEditTidbitsHomepage(space: SpaceWithIntegrationsDto): UpdateTidbitsHompageHelper {
   const [tidbitsHomepage, setTidbitsHomepage] = useState<TidbitsHomepage>(space.tidbitsHomepage || tidbitHP);
   const [updating, setUpdating] = useState(false);
 

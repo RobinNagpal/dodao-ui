@@ -1,5 +1,6 @@
 'use client';
 
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import { Table, TableActions, TableRow } from '@dodao/web-core/components/core/table/Table';
@@ -19,7 +20,6 @@ import { ChatbotSubView, ChatbotView, getChatbotSubviewUrl, ManageSpaceSubviews 
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import {
   ArticleIndexingInfoFragment,
-  SpaceWithIntegrationsFragment,
   useArticleIndexingInfosQuery,
   useTriggerSiteScrapingRunMutation,
   useWebsiteScrapingInfosQuery,
@@ -51,7 +51,7 @@ function getLoaderRows(): TableRow[] {
   return tableRows;
 }
 
-export default function AllLoaders(props: { space: SpaceWithIntegrationsFragment; spaceInfoParams: string[] }) {
+export default function AllLoaders(props: { space: SpaceWithIntegrationsDto; spaceInfoParams: string[] }) {
   const router = useRouter();
 
   const websiteScrappingThreeDotItems = [{ label: 'Add', key: 'add' }];

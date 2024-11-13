@@ -1,3 +1,4 @@
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import EllipsisDropdown, { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
 import SectionLoader from '@dodao/web-core/components/core/loaders/SectionLoader';
 import { Table, TableRow } from '@dodao/web-core/components/core/table/Table';
@@ -6,7 +7,6 @@ import DiscoursePostsTable from '@/components/spaces/Loaders/Discourse/Discourse
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import {
   DiscourseIndexRunFragmentFragment,
-  SpaceWithIntegrationsFragment,
   useDiscourseIndexRunsQuery,
   useIndexNeedsIndexingDiscoursePostsMutation,
   useTriggerNewDiscourseIndexRunMutation,
@@ -32,7 +32,7 @@ enum TabIds {
   Posts = 'Posts',
 }
 
-export default function DiscourseIndexRuns(props: { space: SpaceWithIntegrationsFragment }) {
+export default function DiscourseIndexRuns(props: { space: SpaceWithIntegrationsDto }) {
   const { data, loading } = useDiscourseIndexRunsQuery({
     variables: {
       spaceId: props.space.id,

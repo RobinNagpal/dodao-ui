@@ -1,6 +1,6 @@
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
-import { headers } from 'next/headers';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { headers } from 'next/headers';
 import { SpaceTags } from '../api/fetchTags';
 
 export async function getSpaceBasedOnHostHeader(reqHeaders: Headers) {
@@ -20,12 +20,12 @@ export async function getSpaceBasedOnHostHeader(reqHeaders: Headers) {
   }
 
   const data = await response.json();
-  const space = data?.[0] as SpaceWithIntegrationsFragment;
+  const space = data?.[0] as SpaceWithIntegrationsDto;
 
   return space;
 }
 
-export async function getSpaceServerSide(): Promise<SpaceWithIntegrationsFragment | null> {
+export async function getSpaceServerSide(): Promise<SpaceWithIntegrationsDto | null> {
   const reqHeaders = await headers();
   return await getSpaceBasedOnHostHeader(reqHeaders);
 }

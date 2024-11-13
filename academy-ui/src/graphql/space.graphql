@@ -14,94 +14,6 @@ fragment SocialSettings on SocialSettings {
   linkedSharePdfBackgroundImage
 }
 
-fragment SpaceWithIntegrations on Space {
-  id
-  creator
-  features
-  name
-  type
-  skin
-  avatar
-  domains
-  botDomains
-  inviteLinks {
-    discordInviteLink
-    showAnimatedButtonForDiscord
-    telegramInviteLink
-    showAnimatedButtonForTelegram
-  }
-  admins
-  adminUsernames
-  adminUsernamesV1 {
-    username
-    nameOfTheUser
-  }
-  spaceIntegrations {
-    academyRepository
-    discordGuildId
-    gitGuideRepositories {
-      authenticationToken
-      gitRepoType
-      repoUrl
-    }
-    gnosisSafeWallets {
-      id
-      chainId
-      order
-      tokenContractAddress
-      walletAddress
-      walletName
-    }
-    projectGalaxyTokenLastFour
-
-    loadersInfo {
-      discourseUrl
-      discordServerId
-    }
-    spaceApiKeys {
-      creator
-      apiKey
-      lastFourLetters
-      lastUsed
-    }
-  }
-  authSettings {
-    loginOptions
-    enableLogin
-  }
-
-  socialSettings {
-    linkedSharePdfBackgroundImage
-  }
-  guideSettings {
-    askForLoginToSubmit
-    captureRating
-    showCategoriesInSidebar
-    showIncorrectAfterEachStep
-    showIncorrectOnCompletion
-  }
-
-  byteSettings {
-    askForLoginToSubmit
-    captureRating
-    showCategoriesInSidebar
-    byteViewMode
-  }
-  themeColors {
-    primaryColor
-    bgColor
-    textColor
-    linkColor
-    headingColor
-    borderColor
-    blockBg
-  }
-  tidbitsHomepage {
-    heading
-    shortDescription
-  }
-}
-
 fragment SpaceSummary on Space {
   id
   admins
@@ -144,24 +56,6 @@ query Spaces {
   }
 }
 
-query ExtendedSpace($spaceId: String!) {
-  space(id: $spaceId) {
-    ...SpaceWithIntegrations
-  }
-}
-
-query GetSpaceFromCreator($creatorUsername: String!) {
-  getSpaceFromCreator(creatorUsername: $creatorUsername) {
-    ...SpaceWithIntegrations
-  }
-}
-
-query ExtendedSpaceByDomain($domain: String!) {
-  space(domain: $domain) {
-    ...SpaceWithIntegrations
-  }
-}
-
 query SpaceDiscordGuild($spaceId: String!) {
   payload: spaceDiscordGuild(spaceId: $spaceId)
 }
@@ -175,18 +69,6 @@ query Route53Record($spaceId: String!) {
 query VercelDomainRecord($spaceId: String!) {
   vercelDomainRecord(spaceId: $spaceId) {
     ...VercelDomainRecord
-  }
-}
-
-mutation UpsertSpaceFeatures($spaceId: String!, $features: [String!]!) {
-  payload: upsertSpaceFeatures(spaceId: $spaceId, features: $features) {
-    ...SpaceWithIntegrations
-  }
-}
-
-mutation AddNewApiKey($spaceId: String!, $creator: String!, $apiKey: String!) {
-  payload: addNewApiKey(spaceId: $spaceId, creator: $creator, apiKey: $apiKey) {
-    ...SpaceWithIntegrations
   }
 }
 
@@ -220,24 +102,6 @@ mutation UpsertSpaceAcademyRepository($spaceId: String!, $academyRepository: Str
   }
 }
 
-mutation UpdateSpace($spaceInput: UpsertSpaceInput!) {
-  updateSpace(spaceInput: $spaceInput) {
-    ...SpaceWithIntegrations
-  }
-}
-
-mutation CreateSpace($spaceInput: UpsertSpaceInput!) {
-  createSpace(spaceInput: $spaceInput) {
-    ...SpaceWithIntegrations
-  }
-}
-
-mutation CreateNewTidbitSpace($spaceInput: UpsertSpaceInput!) {
-  createNewTidbitSpace(spaceInput: $spaceInput) {
-    ...SpaceWithIntegrations
-  }
-}
-
 mutation UpsertDomainRecords($spaceId: String!) {
   upsertDomainRecords(spaceId: $spaceId) {
     route53Record {
@@ -253,50 +117,8 @@ mutation ReloadAcademyRepo($spaceId: String!) {
   reloadAcademyRepository(spaceId: $spaceId)
 }
 
-mutation UpdateSpaceGuideSettings($spaceId: String!, $input: GuideSettingsInput!) {
-  payload: updateGuideSettings(spaceId: $spaceId, input: $input) {
-    ...SpaceWithIntegrations
-  }
-}
-
-mutation UpdateSpaceAuthSettings($spaceId: String!, $input: AuthSettingsInput!) {
-  payload: updateAuthSettings(spaceId: $spaceId, input: $input) {
-    ...SpaceWithIntegrations
-  }
-}
-
-mutation UpdateSpaceSocialSettings($spaceId: String!, $input: SocialSettingsInput!) {
-  payload: updateSocialSettings(spaceId: $spaceId, input: $input) {
-    ...SpaceWithIntegrations
-  }
-}
-
 mutation SendEmail($input: SendEmailInput!) {
   payload: sendEmail(input: $input)
-}
-
-mutation UpsertSpaceLoaderInfo($spaceId: String!, $input: SpaceLoadersInfoInput!) {
-  payload: upsertSpaceLoaderInfo(spaceId: $spaceId, input: $input) {
-    ...SpaceWithIntegrations
-  }
-}
-
-mutation UpdateThemeColors($spaceId: ID!, $themeColors: ThemeColorsInput!) {
-  payload: updateThemeColors(spaceId: $spaceId, themeColors: $themeColors) {
-    ...SpaceWithIntegrations
-  }
-}
-
-mutation UpdateTidbitsHomepage($spaceId: ID!, $tidbitsHomepage: TidbitsHomepageInput!) {
-  payload: updateTidbitsHomepage(spaceId: $spaceId, tidbitsHomepage: $tidbitsHomepage) {
-    ...SpaceWithIntegrations
-  }
-}
-
-mutation UpdateSpaceCreator($spaceId: String!, $id: String!) {
-  updateSpaceCreator(spaceId: $spaceId, creator: $id) {
-    ...SpaceWithIntegrations
-  }
 }
 
 mutation UpsertRoute53Record($spaceId: String!) {

@@ -1,14 +1,15 @@
 'use client';
 
 import RatingsTable from '@/components/app/Rating/Table/RatingsTable';
-import { ConsolidatedByteRatingQuery, ConsolidatedGuideRatingQuery, GuideFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { ConsolidatedByteRatingQuery, ConsolidatedGuideRatingQuery, GuideFragment } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import axios from 'axios';
 import Link from 'next/link';
 import React, { useEffect } from 'react';
 
-function ViewGuideRatings(props: { space: SpaceWithIntegrationsFragment; guideId: string }) {
+function ViewGuideRatings(props: { space: SpaceWithIntegrationsDto; guideId: string }) {
   const [guideRatingsResponse, setGuideRatingsResponse] = React.useState<any>();
   const [consolidatedRatingsResponse, setConsolidatedRatingsResponse] = React.useState<ConsolidatedByteRatingQuery | ConsolidatedGuideRatingQuery>();
   const [guideResponse, setGuideResponse] = React.useState<{ guide: GuideFragment }>();

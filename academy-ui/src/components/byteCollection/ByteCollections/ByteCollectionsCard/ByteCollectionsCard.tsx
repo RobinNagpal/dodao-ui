@@ -5,9 +5,10 @@ import AddNewItemButton from '@/components/byteCollection/ByteCollections/ByteCo
 import ByteCollectionCardAdminDropdown from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCollectionCardAdminDropdown';
 import EditByteView from '@/components/bytes/Edit/EditByteView';
 import EditShortVideoView from '@/components/shortVideos/Edit/EditShortVideoView';
-import { ShortVideoFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { ShortVideoFragment } from '@/graphql/generated/generated-types';
 import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import { DeleteByteItemRequest } from '@/types/request/ByteRequests';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import { TidbitCollectionTags } from '@/utils/api/fetchTags';
 import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
@@ -27,7 +28,7 @@ interface ByteCollectionCardProps {
   byteCollection: ByteCollectionSummary;
   isEditingAllowed?: boolean;
   viewByteBaseUrl: string;
-  space: SpaceWithIntegrationsFragment;
+  space: SpaceWithIntegrationsDto;
   isAdmin?: boolean | undefined;
 }
 

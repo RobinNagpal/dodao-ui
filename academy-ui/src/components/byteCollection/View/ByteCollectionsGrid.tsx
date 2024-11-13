@@ -1,9 +1,9 @@
+import AddByteCollection from '@/components/byteCollection/ByteCollections/AddByteCollection';
 import ByteCollectionsCard from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCollectionsCard';
 import NoByteCollections from '@/components/byteCollection/ByteCollections/NoByteCollections';
-import { Grid2Cols } from '@dodao/web-core/components/core/grids/Grid2Cols';
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
-import AddByteCollection from '@/components/byteCollection/ByteCollections/AddByteCollection';
 import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
+import { Grid2Cols } from '@dodao/web-core/components/core/grids/Grid2Cols';
 import React from 'react';
 
 export default function ByteCollectionsGrid({
@@ -13,7 +13,7 @@ export default function ByteCollectionsGrid({
   isAdmin,
 }: {
   byteCollections?: ByteCollectionSummary[];
-  space: SpaceWithIntegrationsFragment;
+  space: SpaceWithIntegrationsDto;
   byteCollectionsBaseUrl: string;
   isAdmin?: boolean | undefined;
 }) {

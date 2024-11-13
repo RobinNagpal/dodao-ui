@@ -5,10 +5,11 @@ import AddByteQuestionsUsingAIButton from '@/components/bytes/Create/AddByteQues
 import { CreateByteUsingAIModal } from '@/components/bytes/Create/CreateByteUsingAIModal';
 import EditByteStepper from '@/components/bytes/Edit/EditByteStepper';
 import { useEditByte } from '@/components/bytes/Edit/useEditByte';
-import { ImageType, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { ImageType } from '@/graphql/generated/generated-types';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
 import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import { EditByteType } from '@/types/request/ByteRequests';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import Block from '@dodao/web-core/components/app/Block';
 import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
 import Button from '@dodao/web-core/components/core/buttons/Button';
@@ -23,7 +24,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 export default function EditByteView(props: {
-  space: SpaceWithIntegrationsFragment;
+  space: SpaceWithIntegrationsDto;
   onUpsert: (byteId: string) => Promise<void>;
   closeEditByteModal?: () => void;
   byteId?: string | null;

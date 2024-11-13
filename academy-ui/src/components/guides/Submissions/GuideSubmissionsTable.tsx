@@ -1,11 +1,12 @@
 'use client';
 
+import { GuideSubmission } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
 import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import SpinnerWithText from '@dodao/web-core/components/core/loaders/SpinnerWithText';
-import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { SpaceWithIntegrationsFragment, GuideSubmission } from '@/graphql/generated/generated-types';
 import { DODAO_ACCESS_TOKEN_KEY } from '@dodao/web-core/types/deprecated/models/enums';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { GridOptions, GridSizeChangedEvent } from 'ag-grid-community';
 import { FilterChangedEvent, FilterModifiedEvent, FilterOpenedEvent } from 'ag-grid-community/dist/lib/events';
@@ -18,7 +19,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import styles from './GuideSubmissionsTable.module.scss';
 
 export interface GuideSubmissionsTableProps {
-  space: SpaceWithIntegrationsFragment;
+  space: SpaceWithIntegrationsDto;
   guideId: string;
 }
 

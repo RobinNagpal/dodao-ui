@@ -1,6 +1,6 @@
 import ByteCollectionCardAddItem from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCollectionCardAddItem';
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import { PlusIcon } from '@heroicons/react/24/solid';
@@ -12,7 +12,7 @@ export default function AddNewItemButton({
   byteCollection,
 }: {
   isAdmin: boolean;
-  space: SpaceWithIntegrationsFragment;
+  space: SpaceWithIntegrationsDto;
   byteCollection: ByteCollectionSummary;
 }) {
   const [showCreateModal, setShowCreateModal] = React.useState<boolean>(false);

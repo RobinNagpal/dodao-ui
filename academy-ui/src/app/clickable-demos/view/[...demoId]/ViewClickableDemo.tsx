@@ -1,16 +1,15 @@
 'use client';
 
 import ClickableDemoModal from '@/components/clickableDemos/View/ClickableDemoModal';
-import withSpace from '@/contexts/withSpace';
-import { ClickableDemoWithSteps, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
-import { SpaceTypes } from '@/types/space/SpaceDto';
+import { ClickableDemoWithSteps } from '@/graphql/generated/generated-types';
+import { SpaceTypes, SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-function ViewClickableDemo({ demoId, space }: { demoId: string; space: SpaceWithIntegrationsFragment }) {
+function ViewClickableDemo({ demoId, space }: { demoId: string; space: SpaceWithIntegrationsDto }) {
   const [data, setData] = useState<ClickableDemoWithSteps>();
   const [loading, setLoading] = useState<boolean>(false);
   useEffect(() => {

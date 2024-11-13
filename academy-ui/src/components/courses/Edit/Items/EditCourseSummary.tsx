@@ -1,3 +1,4 @@
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import Input from '@dodao/web-core/components/core/input/Input';
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
 import Button from '@dodao/web-core/components/core/buttons/Button';
@@ -18,7 +19,7 @@ export interface UpdateTopicSummaryForm {
 
 interface EditCourseSummaryProps {
   course: CourseDetailsFragment;
-  space: Space;
+  space: SpaceWithIntegrationsDto;
   topicKey: string;
   currentSummary?: CourseSummaryFragment;
   saveSummary: (updatedSummary: UpdateTopicSummaryInput) => Promise<void>;

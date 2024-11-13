@@ -1,3 +1,4 @@
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
 import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
 import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
@@ -100,7 +101,7 @@ function NextButton(props: { course: CourseDetailsFragment; currentTopic: Course
 interface TopicProps {
   course: CourseDetailsFragment;
   isCourseAdmin: boolean;
-  space: Space;
+  space: SpaceWithIntegrationsDto;
   topicKey: string;
   courseHelper: CourseHelper;
   submissionHelper: CourseSubmissionHelper;

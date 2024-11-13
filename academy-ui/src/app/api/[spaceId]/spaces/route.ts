@@ -1,37 +1,33 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/prisma';
 import { withErrorHandlingV1 } from '@/app/api/helpers/middlewares/withErrorHandling';
-import { Space } from '@prisma/client';
-import { MutationUpdateSpaceArgs } from '@/graphql/generated/generated-types';
 import { verifySpaceEditPermissions } from '@/app/api/helpers/permissions/verifySpaceEditPermissions';
 import { isDoDAOSuperAdmin } from '@/app/api/helpers/space/isSuperAdmin';
-import { revalidateTag } from 'next/cache';
+import { prisma } from '@/prisma';
+import { UpsertSpaceInputDto } from '@/types/space/SpaceDto';
 import { SpaceTags } from '@/utils/api/fetchTags';
+import { Space } from '@prisma/client';
+import { revalidateTag } from 'next/cache';
+import { NextRequest, NextResponse } from 'next/server';
 
 async function putHandler(req: NextRequest): Promise<NextResponse<Space>> {
-  const { spaceInput } = (await req.json()) as MutationUpdateSpaceArgs;
+  const { spaceInput } = (await req.json()) as { spaceInput: UpsertSpaceInputDto };
   const { decodedJwt, space } = await verifySpaceEditPermissions(req, spaceInput.id);
 
   const doDAOSuperAdmin = isDoDAOSuperAdmin(decodedJwt!.username);
 
   const spaceInputArgs: Space = {
-    admins: spaceInput.admins,
-    adminUsernames: spaceInput.adminUsernames,
     adminUsernamesV1: spaceInput.adminUsernamesV1,
     avatar: spaceInput.avatar,
     creator: spaceInput.creator,
     features: spaceInput.features || [],
     id: spaceInput.id,
-    inviteLinks: spaceInput.inviteLinks || {},
+    inviteLinks: spaceInput.inviteLinks,
     name: spaceInput.name,
-    skin: spaceInput.skin,
     createdAt: new Date(),
     verified: true,
     updatedAt: new Date(),
     discordInvite: null,
     telegramInvite: null,
     domains: doDAOSuperAdmin ? spaceInput.domains : space.domains,
-    botDomains: doDAOSuperAdmin ? spaceInput.botDomains || [] : space.botDomains || [],
     authSettings: space.authSettings || {},
     guideSettings: space.guideSettings || {},
     socialSettings: space.socialSettings || {},
@@ -46,10 +42,7 @@ async function putHandler(req: NextRequest): Promise<NextResponse<Space>> {
       ...spaceInputArgs,
       telegramInvite: null,
       discordInvite: null,
-      inviteLinks: spaceInput.inviteLinks || {
-        discordInviteLink: null,
-        telegramInviteLink: null,
-      },
+      inviteLinks: spaceInput.inviteLinks || undefined,
       guideSettings: spaceInputArgs.guideSettings || {},
       authSettings: spaceInputArgs.authSettings || {},
       byteSettings: spaceInputArgs.byteSettings || {},

@@ -1,5 +1,3 @@
-import { initialSteps } from '@/app/new-tidbit-site/steps';
-
 export type StepStatus = 'complete' | 'current' | 'upcoming';
 
 interface Step {
@@ -12,7 +10,7 @@ interface StepperItemProps {
   currentStepId: string;
   steps: Step[];
 }
-const getStepStatus = (stepId: string, currentStepId: string): StepStatus => {
+const getStepStatus = (stepId: string, currentStepId: string, initialSteps: Step[]): StepStatus => {
   const currentStepIndex = initialSteps.findIndex((step) => step.id === currentStepId);
   const stepIndex = initialSteps.findIndex((step) => step.id === stepId);
   if (stepIndex < currentStepIndex) {
@@ -30,7 +28,7 @@ const HorizontalStepperSimple: React.FC<StepperItemProps> = ({ currentStepId, st
       <ol role="list" className="space-y-4 sm:px-0 px-4 md:flex md:space-x-8 md:space-y-0">
         {steps.map((step) => {
           const index = steps.findIndex((s) => step.id === s.id) + 1;
-          const status = getStepStatus(step.id, currentStepId);
+          const status = getStepStatus(step.id, currentStepId, steps);
           return (
             <li key={step.id} className="md:flex-1">
               {status === 'complete' ? (

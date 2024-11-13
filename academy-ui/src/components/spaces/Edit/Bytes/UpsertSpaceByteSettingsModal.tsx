@@ -1,6 +1,6 @@
 import { useEditSpaceByteSettings } from '@/components/spaces/Edit/Bytes/useEditSpaceByteSettings';
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { ByteViewMode } from '@/types/bytes/ByteDto';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import StyledSelect, { StyledSelectItem } from '@dodao/web-core/components/core/select/StyledSelect';
@@ -8,7 +8,7 @@ import ToggleWithIcon from '@dodao/web-core/components/core/toggles/ToggleWithIc
 import React from 'react';
 
 export default function UpsertSpaceByteSettingsModal(props: {
-  space: SpaceWithIntegrationsFragment;
+  space: SpaceWithIntegrationsDto;
   open: boolean;
   onClose: () => void;
   onUpdateSettings: () => Promise<void>;

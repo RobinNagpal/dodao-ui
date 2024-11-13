@@ -9,10 +9,10 @@ import React from 'react';
 async function SpaceCollectionsPage() {
   const space = (await getSpaceServerSide())!;
 
-  const [spacesByCreator, spacesByAdmin] = await Promise.all([
-    fetchDataServerSide<Space[]>(`${getBaseUrl()}/api/${space.id}/queries/spaces/by-creator`),
-    fetchDataServerSide<Space[]>(`${getBaseUrl()}/api/${space.id}/queries/spaces/by-admin`),
-  ]);
+  const spacesByCreator = await fetchDataServerSide<Space[]>(`${getBaseUrl()}/api/${space.id}/queries/spaces/by-creator`);
+  const spacesByAdmin = await fetchDataServerSide<Space[]>(`${getBaseUrl()}/api/${space.id}/queries/spaces/by-admin`);
+
+  console.log('SpaceCollectionsPage', { spacesByCreator, spacesByAdmin });
 
   return (
     <PageWrapper>

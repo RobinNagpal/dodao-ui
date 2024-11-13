@@ -1,10 +1,10 @@
-import { Space } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import { getSortedFeaturesArray } from '@/utils/features';
 import { DesktopNavLink } from '@dodao/web-core/components/main/TopNav/DesktopNavLink';
 import { FeatureItem, FeatureName } from '@dodao/web-core/types/features/spaceFeatures';
 import React from 'react';
 
-export function DesktopNavLinks({ space }: { space: Space }) {
+export function DesktopNavLinks({ space }: { space: SpaceWithIntegrationsDto }) {
   const sortedSpaceFeatures: FeatureItem[] = getSortedFeaturesArray(space);
 
   return (

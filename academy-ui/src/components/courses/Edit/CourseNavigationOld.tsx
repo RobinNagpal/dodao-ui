@@ -1,7 +1,3 @@
-import { Tree } from '@dodao/web-core/components/app/TreeView/Tree';
-import { TreeNodeType } from '@dodao/web-core/components/app/TreeView/TreeNode';
-import Button from '@dodao/web-core/components/core/buttons/Button';
-import AddIcon from '@dodao/web-core/components/core/icons/AddIcon';
 import { ItemTypes } from '@/components/courses/View/CourseDetailsRightSection';
 import { CourseSubmissionHelper, QuestionStatus, TopicItemStatus, TopicStatus } from '@/components/courses/View/useCourseSubmission';
 import { CourseHelper } from '@/components/courses/View/useViewCourse';
@@ -11,8 +7,12 @@ import {
   CourseReadingFragment,
   CourseSummaryFragment,
   CourseTopicFragment,
-  Space,
 } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
+import { Tree } from '@dodao/web-core/components/app/TreeView/Tree';
+import { TreeNodeType } from '@dodao/web-core/components/app/TreeView/TreeNode';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import AddIcon from '@dodao/web-core/components/core/icons/AddIcon';
 import { CheckCircleIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
@@ -20,7 +20,7 @@ import styled from 'styled-components';
 
 interface CourseNavigationProps {
   course: CourseDetailsFragment;
-  space: Space;
+  space: SpaceWithIntegrationsDto;
   showAddModal: () => void;
   courseHelper: CourseHelper;
   submissionHelper: CourseSubmissionHelper;

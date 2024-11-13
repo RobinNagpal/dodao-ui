@@ -1,16 +1,11 @@
+import UpsertChatbotFAQModal from '@/components/spaces/Loaders/FAQs/UpsertChatbotFAQModal';
+import { ChatbotFaqFragment, useChatbotFaQsQuery, useDeleteChatbotFaqMutation, useIndexChatbotFaQsMutation } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
 import { Table, TableRow } from '@dodao/web-core/components/core/table/Table';
-import UpsertChatbotFAQModal from '@/components/spaces/Loaders/FAQs/UpsertChatbotFAQModal';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import {
-  ChatbotFaqFragment,
-  SpaceWithIntegrationsFragment,
-  useChatbotFaQsQuery,
-  useDeleteChatbotFaqMutation,
-  useIndexChatbotFaQsMutation,
-} from '@/graphql/generated/generated-types';
 import orderBy from 'lodash/orderBy';
 import React, { useState } from 'react';
 
@@ -24,7 +19,7 @@ function getFAQsTable(faqs: ChatbotFaqFragment[]): TableRow[] {
   });
 }
 
-export function ChatbotFAQsTable(props: { space: SpaceWithIntegrationsFragment }) {
+export function ChatbotFAQsTable(props: { space: SpaceWithIntegrationsDto }) {
   const { data: chatbotFAQsResponse } = useChatbotFaQsQuery({
     variables: {
       spaceId: props.space.id,

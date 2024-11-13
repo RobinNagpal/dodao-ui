@@ -1,4 +1,5 @@
-import { Space, ByteFeedback, ByteRating, ByteDetailsFragment } from '@/graphql/generated/generated-types';
+import { ByteDetailsFragment, ByteFeedback, ByteRating } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import { UserIdKey } from '@dodao/web-core/types/auth/User';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useEffect, useState } from 'react';
@@ -11,7 +12,7 @@ export type ByteRatingsHelper = {
   setByteRating: (rating: number, feedback?: ByteFeedback, suggestion?: string) => Promise<void>;
 };
 
-export function useByteRatings(space: Space, byte: ByteDetailsFragment, byteSubmitted: boolean): ByteRatingsHelper {
+export function useByteRatings(space: SpaceWithIntegrationsDto, byte: ByteDetailsFragment, byteSubmitted: boolean): ByteRatingsHelper {
   const [showRatingsModal, setShowRatingsModal] = useState(false);
   const [shownByteRatingsModal, setShownByteRatingsModal] = useState(false);
 

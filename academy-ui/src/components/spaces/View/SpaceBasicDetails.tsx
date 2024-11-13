@@ -1,18 +1,19 @@
-import DetailsRow from '@dodao/web-core/components/core/details/DetailsRow';
-import DetailsHeader from '@dodao/web-core/components/core/details/DetailsHeader';
-import DetailsSection from '@dodao/web-core/components/core/details/DetailsSection';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import UpsertSpaceBasicSettingsModal from '@/components/spaces/Edit/Basic/UpsertSpaceBasicSettingsModal';
+import { useReloadAcademyRepoMutation } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
+import DetailsHeader from '@dodao/web-core/components/core/details/DetailsHeader';
+import DetailsRow from '@dodao/web-core/components/core/details/DetailsRow';
+import DetailsSection from '@dodao/web-core/components/core/details/DetailsSection';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { Space, SpaceWithIntegrationsFragment, useReloadAcademyRepoMutation } from '@/graphql/generated/generated-types';
 import React from 'react';
 
 export interface SpaceBasicDetailsProps {
-  space: Space;
+  space: SpaceWithIntegrationsDto;
   className?: string;
 }
 
-function getSpaceDetailsFields(space: SpaceWithIntegrationsFragment): Array<{ label: string; value: string }> {
+function getSpaceDetailsFields(space: SpaceWithIntegrationsDto): Array<{ label: string; value: string }> {
   return [
     {
       label: 'Id',
@@ -22,10 +23,7 @@ function getSpaceDetailsFields(space: SpaceWithIntegrationsFragment): Array<{ la
       label: 'Name',
       value: space.name!,
     },
-    {
-      label: 'Theme',
-      value: space.skin!,
-    },
+
     {
       label: 'Type',
       value: space.type || 'None',
@@ -35,20 +33,8 @@ function getSpaceDetailsFields(space: SpaceWithIntegrationsFragment): Array<{ la
       value: space.avatar!,
     },
     {
-      label: 'Academy Repo',
-      value: space.spaceIntegrations?.academyRepository!,
-    },
-    {
       label: 'Domains',
       value: space.domains!.join(', ') || 'None',
-    },
-    {
-      label: 'Admins',
-      value: space.admins!.join(', ') || 'None',
-    },
-    {
-      label: 'Admins By Username',
-      value: space.adminUsernames!.join(', ') || 'None',
     },
     {
       label: 'Admins By Username & Names',

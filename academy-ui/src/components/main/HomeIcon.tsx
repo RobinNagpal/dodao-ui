@@ -1,17 +1,17 @@
 import { getLinkToFeaturePage } from '@/components/main/getLinkToFeaturePage';
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import { FeatureItem, FeatureName } from '@dodao/web-core/types/features/spaceFeatures';
 import Link from 'next/link';
 import React from 'react';
 import styles from './HomeIcon.module.scss';
 
 interface HomeIconProps {
-  space: SpaceWithIntegrationsFragment;
+  space: SpaceWithIntegrationsDto;
   feature: FeatureItem;
 }
 
-function Card({ space, heading, details, featureName }: { space: SpaceWithIntegrationsFragment; heading: string; details: string; featureName: FeatureName }) {
+function Card({ space, heading, details, featureName }: { space: SpaceWithIntegrationsDto; heading: string; details: string; featureName: FeatureName }) {
   const { $t } = useI18();
   return (
     <div className="flex flex-row">

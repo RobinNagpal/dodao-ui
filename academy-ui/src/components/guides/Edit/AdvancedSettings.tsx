@@ -1,18 +1,18 @@
-import Block from '@dodao/web-core/components/app/Block';
-import Input from '@dodao/web-core/components/core/input/Input';
-import StyledSelect, { StyledSelectItem } from '@dodao/web-core/components/core/select/StyledSelect';
-import TextareaAutosize from '@dodao/web-core/components/core/textarea/TextareaAutosize';
 import { EditGuideType } from '@/components/guides/Edit/editGuideType';
 import { UpdateGuideFunctions } from '@/components/guides/Edit/useEditGuide';
-import { Space } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
+import Block from '@dodao/web-core/components/app/Block';
+import Input from '@dodao/web-core/components/core/input/Input';
+import { StyledSelectItem } from '@dodao/web-core/components/core/select/StyledSelect';
+import TextareaAutosize from '@dodao/web-core/components/core/textarea/TextareaAutosize';
 import { GuideError } from '@dodao/web-core/types/errors/error';
 import React from 'react';
 
 interface Props {
   guide: EditGuideType;
   guideErrors: GuideError;
-  space: Space;
+  space: SpaceWithIntegrationsDto;
   updateGuideFunctions: UpdateGuideFunctions;
 }
 

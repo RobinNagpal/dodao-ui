@@ -1,15 +1,15 @@
 'use client';
 
 import withSpace from '@/contexts/withSpace';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { LocalStorageKeys } from '@dodao/web-core/types/deprecated/models/enums';
+import * as nearAPI from 'near-api-js';
 import { signIn } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
-import * as nearAPI from 'near-api-js';
 
-function NearLoginSuccessful({ space }: { space: SpaceWithIntegrationsFragment }) {
+function NearLoginSuccessful({ space }: { space: SpaceWithIntegrationsDto }) {
   const searchParams = useSearchParams();
 
   // http://localhost:3000/auth/success/near?account_id=robinnagpal.near&all_keys=ed25519%3A8osUHJZ48fuNDo6NSfdg4ZF4ChaE7Y3qjoqGKLt9VGwm

@@ -1,12 +1,12 @@
 'use client';
 
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import ButtonLarge from '@dodao/web-core/components/core/buttons/Button';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { useAuth } from '@dodao/web-core/ui/auth/useAuth';
 import React from 'react';
 
-export default function LoginLogoutWithMetamask(props: { session: Session | null; space: SpaceWithIntegrationsFragment }) {
+export default function LoginLogoutWithMetamask(props: { session: Session | null; space: SpaceWithIntegrationsDto }) {
   const { loginWithMetamask, processing, processingMetaMask, logout } = useAuth(props.space!.id);
 
   return (

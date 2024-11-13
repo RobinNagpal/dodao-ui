@@ -1,7 +1,8 @@
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import SectionLoader from '@dodao/web-core/components/core/loaders/SectionLoader';
 import { Table, TableRow } from '@dodao/web-core/components/core/table/Table';
 import { ManageSpaceSubviews } from '@/components/spaces/manageSpaceSubviews';
-import { DiscoursePostComment, SpaceWithIntegrationsFragment, useDiscoursePostCommentsQuery } from '@/graphql/generated/generated-types';
+import { DiscoursePostComment, useDiscoursePostCommentsQuery } from '@/graphql/generated/generated-types';
 import moment from 'moment/moment';
 import Link from 'next/link';
 import React from 'react';
@@ -18,7 +19,7 @@ function getIndexRunRows(discordRuns: DiscoursePostComment[]): TableRow[] {
   });
 }
 
-export default function DiscoursePostComments(props: { space: SpaceWithIntegrationsFragment; postId: string }) {
+export default function DiscoursePostComments(props: { space: SpaceWithIntegrationsDto; postId: string }) {
   const { data, loading } = useDiscoursePostCommentsQuery({
     variables: {
       spaceId: props.space.id,

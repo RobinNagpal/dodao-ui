@@ -1,11 +1,11 @@
 import ReviewShareContent from '@/components/bytes/Share/Review/ReviewShareContent';
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import { TidbitShareSteps } from '@dodao/web-core/types/deprecated/models/enums';
 
 export interface ShareByteViewProps {
   byteId: string;
   currentStep: TidbitShareSteps;
-  space: SpaceWithIntegrationsFragment;
+  space: SpaceWithIntegrationsDto;
 }
 
 export default function ShareByteView(props: ShareByteViewProps) {

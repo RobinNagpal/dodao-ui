@@ -1,12 +1,13 @@
+import { ByteSubmissionInput } from '@/graphql/generated/generated-types';
 import { ByteDto, ByteStepDto } from '@/types/bytes/ByteDto';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import { ByteStepItem, Question, UserInput } from '@/types/stepItems/stepItemDto';
-import { isQuestion, isUserDiscordConnect, isUserInput } from '@dodao/web-core/types/deprecated/helpers/stepItemTypes';
-import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { ByteSubmissionInput, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { ByteStepItemResponse, ByteStepResponse, TempByteSubmission } from '@/utils/byte/TempByteSubmission';
 import { Session } from '@dodao/web-core/types/auth/Session';
+import { isQuestion, isUserDiscordConnect, isUserInput } from '@dodao/web-core/types/deprecated/helpers/stepItemTypes';
 import { LocalStorageKeys } from '@dodao/web-core/types/deprecated/models/enums';
 import { ByteSubmissionError } from '@dodao/web-core/types/errors/error';
-import { ByteStepItemResponse, ByteStepResponse, TempByteSubmission } from '@/utils/byte/TempByteSubmission';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import isEqual from 'lodash/isEqual';
 import union from 'lodash/union';
@@ -17,7 +18,7 @@ import { v4 as uuidv4 } from 'uuid';
 export const LAST_STEP_UUID = 'LAST_STEP_UUID';
 
 export interface UseViewByteInModalArgs {
-  space: SpaceWithIntegrationsFragment;
+  space: SpaceWithIntegrationsDto;
   byteId: string;
   stepOrder: number;
   fetchByteFn: (byteId: string) => Promise<ByteDto>;

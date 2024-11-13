@@ -1,5 +1,6 @@
+import { GuideSettings } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { GuideSettings, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useState } from 'react';
 
@@ -10,7 +11,7 @@ export type UpdateSpaceGuideSettingsHelper = {
   updating: boolean;
 };
 
-export function useEditSpaceGuideSettings(space: SpaceWithIntegrationsFragment): UpdateSpaceGuideSettingsHelper {
+export function useEditSpaceGuideSettings(space: SpaceWithIntegrationsDto): UpdateSpaceGuideSettingsHelper {
   const [guideSettings, setGuideSettings] = useState<GuideSettings>(space.guideSettings || {});
   const [updating, setUpdating] = useState(false);
   const { showNotification } = useNotificationContext();
@@ -43,7 +44,7 @@ export function useEditSpaceGuideSettings(space: SpaceWithIntegrationsFragment):
       });
 
       if (response.ok) {
-        const updatedSpace: SpaceWithIntegrationsFragment = (await response.json()).space;
+        const updatedSpace: SpaceWithIntegrationsDto = (await response.json()).space;
         setGuideSettings({
           ...updatedSpace.guideSettings,
         });

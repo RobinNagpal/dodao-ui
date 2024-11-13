@@ -1,19 +1,20 @@
 'use client';
 
-import withSpace from '@/contexts/withSpace';
-import Block from '@dodao/web-core/components/app/Block';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
+import TimelineDetails from '@/components/timelines/View/TimelineDetailView';
+import withSpace from '@/contexts/withSpace';
+import { TimelineDetailsFragment } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
+import Block from '@dodao/web-core/components/app/Block';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import RowLoading from '@dodao/web-core/components/core/loaders/RowLoading';
-import TimelineDetails from '@/components/timelines/View/TimelineDetailView';
-import { SpaceWithIntegrationsFragment, TimelineDetailsFragment } from '@/graphql/generated/generated-types';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 
-const TimelineInformation = ({ timelineId, space }: { timelineId: string; space: SpaceWithIntegrationsFragment }) => {
+const TimelineInformation = ({ timelineId, space }: { timelineId: string; space: SpaceWithIntegrationsDto }) => {
   const threeDotItems = [{ label: 'Edit', key: 'edit' }];
   const router = useRouter();
   const [data, setData] = useState<{ timeline?: TimelineDetailsFragment }>();

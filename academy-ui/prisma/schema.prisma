@@ -92,19 +92,17 @@ model CryptoLoginNonce {
 }
 
 model Space {
-  id                     String                   @id @db.VarChar(64)
-  verified               Boolean                  @default(false)
-  createdAt              DateTime                 @default(now()) @map("created_at")
-  creator                String                   @db.VarChar(64)
-  name                   String                   @db.VarChar(255)
-  updatedAt              DateTime                 @updatedAt @map("updated_at")
-  avatar                 String?                  @db.VarChar(255)
-  admins                 String[]
-  adminUsernames         String[]                 @default(dbgenerated("(ARRAY[]::character varying[])::character varying(255)[]")) @map("admin_usernames") @db.VarChar(255)
+  id        String   @id @db.VarChar(64)
+  verified  Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+  creator   String   @db.VarChar(64)
+  name      String   @db.VarChar(255)
+  updatedAt DateTime @updatedAt @map("updated_at")
+  avatar    String?  @db.VarChar(255)
+
   /// [UsernameAndName]
   adminUsernamesV1       Json[]                   @map("admin_usernames_v1") @db.JsonB
   domains                String[]                 @default([])
-  skin                   String                   @default("dodao") @db.VarChar(128)
   discordInvite          String?                  @map("discord_invite") @db.VarChar(1024)
   telegramInvite         String?                  @map("telegram_invite") @db.VarChar(1024)
   /// [SpaceInviteLinks]
@@ -118,7 +116,6 @@ model Space {
   /// [ByteSettings]
   byteSettings           Json                     @default("{}") @map("byte_settings") @db.Json
   features               String[]
-  botDomains             String[]                 @default([])
   SpaceDiscord           SpaceDiscord[]
   SpaceIntegration       SpaceIntegration?
   /// [ThemeColors]
@@ -145,10 +142,6 @@ model SpaceIntegration {
   projectGalaxyTokenLastFour String?  @map("project_galaxy_token_last_four") @db.VarChar(64)
   updatedAt                  DateTime @updatedAt @map("updated_at")
   updatedBy                  String?  @map("updated_by") @db.VarChar(256)
-  gnosisSafeWallets          Json?    @map("gnosis_safe_wallets") @db.Json
-  /// [GitGuideRepository]
-  gitGuideRepositories       Json[]   @map("git_guide_repositories") @db.Json
-  academyRepository          String?  @map("academy_repository") @db.VarChar(2048)
   /// [SpaceLoadersInfo]
   loadersInfo                Json?    @db.Json
   space                      Space    @relation(fields: [spaceId], references: [id])

@@ -1,12 +1,12 @@
-import CalendarIcon from '@dodao/web-core/components/core/icons/CalendarIcon';
 import SimulationStepperItem from '@/components/simulations/Edit/SimulationStepperItem';
-import { Space } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
+import CalendarIcon from '@dodao/web-core/components/core/icons/CalendarIcon';
 import { SimulationErrors } from '@dodao/web-core/types/errors/simulationErrors';
 import styled from 'styled-components';
 import { EditSimulationType, UpdateSimulationFunctions } from './useEditSimulation';
 
 interface SimulationCreateStepperProps {
-  space: Space;
+  space: SpaceWithIntegrationsDto;
   simulation: EditSimulationType;
   simulationErrors?: SimulationErrors;
   errorColor?: string;

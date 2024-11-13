@@ -1,9 +1,10 @@
-import { CourseDetailsFragment, CourseTopicFragment, GuideFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { CourseDetailsFragment, CourseTopicFragment, GuideFragment } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import { getSpaceBasedOnHostHeader } from '@/utils/space/getSpaceServerSide';
+import { PredefinedSpaces } from '@dodao/web-core/src/utils/constants/constants';
 import axios from 'axios';
 import { NextRequest, NextResponse } from 'next/server';
 import { SitemapStream, streamToPromise } from 'sitemap';
-import { PredefinedSpaces } from '@dodao/web-core/src/utils/constants/constants';
 
 interface SiteMapUrl {
   url: string;
@@ -43,7 +44,7 @@ async function getGuideUrlsForAcademy(spaceId: string): Promise<SiteMapUrl[]> {
   return urls;
 }
 
-async function getCourseUrlsForAcademy(space: SpaceWithIntegrationsFragment): Promise<SiteMapUrl[]> {
+async function getCourseUrlsForAcademy(space: SpaceWithIntegrationsDto): Promise<SiteMapUrl[]> {
   const gitCourses: CourseDetailsFragment[] = await getAllCourses(space.id);
 
   const urls: SiteMapUrl[] = [];
@@ -87,7 +88,7 @@ async function getDoDAOSiteMapUrls(): Promise<SiteMapUrl[]> {
   return urls;
 }
 
-async function writeDoDAOSiteMapToStream(space: SpaceWithIntegrationsFragment, host: string, smStream: SitemapStream) {
+async function writeDoDAOSiteMapToStream(space: SpaceWithIntegrationsDto, host: string, smStream: SitemapStream) {
   if (space.id === PredefinedSpaces.DODAO_HOME) {
     const dodaoUrls = await getDoDAOSiteMapUrls();
     for (const url of dodaoUrls) {
@@ -98,7 +99,7 @@ async function writeDoDAOSiteMapToStream(space: SpaceWithIntegrationsFragment, h
   }
 }
 
-async function writeUrlsToStream(space: SpaceWithIntegrationsFragment, host: string, smStream: SitemapStream) {
+async function writeUrlsToStream(space: SpaceWithIntegrationsDto, host: string, smStream: SitemapStream) {
   const guideUrls = await getGuideUrlsForAcademy(space.id);
 
   for (const guideUrl of guideUrls) {

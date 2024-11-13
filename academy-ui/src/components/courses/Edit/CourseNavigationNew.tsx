@@ -1,16 +1,10 @@
-import Button from '@dodao/web-core/components/core/buttons/Button';
-import AddIcon from '@dodao/web-core/components/core/icons/AddIcon';
 import { ItemTypes } from '@/components/courses/View/CourseDetailsRightSection';
 import { CourseSubmissionHelper, QuestionStatus, TopicItemStatus, TopicStatus } from '@/components/courses/View/useCourseSubmission';
 import { CourseHelper } from '@/components/courses/View/useViewCourse';
-import {
-  CourseDetailsFragment,
-  CourseExplanationFragment,
-  CourseReadingFragment,
-  CourseSummaryFragment,
-  CourseTopicFragment,
-  Space,
-} from '@/graphql/generated/generated-types';
+import { CourseDetailsFragment, CourseExplanationFragment, CourseReadingFragment, CourseTopicFragment } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import AddIcon from '@dodao/web-core/components/core/icons/AddIcon';
 import CheckIcon from '@heroicons/react/24/solid/CheckIcon';
 import classNames from 'classnames';
 import Link from 'next/link';
@@ -101,7 +95,7 @@ function getExplanations(
 }
 interface CourseNavigationProps {
   course: CourseDetailsFragment;
-  space: Space;
+  space: SpaceWithIntegrationsDto;
   showAddModal: () => void;
   courseHelper: CourseHelper;
   submissionHelper: CourseSubmissionHelper;

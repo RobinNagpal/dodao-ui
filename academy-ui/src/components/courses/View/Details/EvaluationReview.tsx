@@ -1,6 +1,7 @@
 import { CourseQuestionSubmission, CourseSubmissionHelper, QuestionStatus } from '@/components/courses/View/useCourseSubmission';
 import { CourseHelper } from '@/components/courses/View/useViewCourse';
-import { CourseDetailsFragment, CourseQuestionFragment, Space, TopicCorrectAnswersFragment } from '@/graphql/generated/generated-types';
+import { CourseDetailsFragment, CourseQuestionFragment, TopicCorrectAnswersFragment } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import isEqual from 'lodash/isEqual';
 import sortBy from 'lodash/sortBy';
 import Link from 'next/link';
@@ -10,7 +11,7 @@ import styled from 'styled-components';
 interface IProps {
   course: CourseDetailsFragment;
   isCourseAdmin: boolean;
-  space: Space;
+  space: SpaceWithIntegrationsDto;
   topicKey: string;
   courseHelper: CourseHelper;
   submissionHelper: CourseSubmissionHelper;

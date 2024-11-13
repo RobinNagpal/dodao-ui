@@ -1,9 +1,9 @@
 import ByteStepperItemContent from '@/components/bytes/View/ByteStepperItemContent';
 import StepIndicatorProgress from '@/components/bytes/View/ByteStepperItem/Progress/StepIndicatorProgress';
 import { LAST_STEP_UUID, UseViewByteHelper } from '@/components/bytes/View/useViewByteHelper';
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import useWindowDimensions from '@/hooks/useWindowDimensions';
 import { ByteDto, ByteStepDto, ImageDisplayMode } from '@/types/bytes/ByteDto';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { useLoginModalContext } from '@dodao/web-core/ui/contexts/LoginModalContext';
@@ -23,7 +23,7 @@ import styles from './ByteStepperItemView.module.scss';
 interface ByteStepperItemWithProgressBarProps {
   byte: ByteDto;
   step: ByteStepDto;
-  space: SpaceWithIntegrationsFragment;
+  space: SpaceWithIntegrationsDto;
   viewByteHelper: UseViewByteHelper;
   setByteSubmitted: (submitted: boolean) => void;
   onClose: () => void;

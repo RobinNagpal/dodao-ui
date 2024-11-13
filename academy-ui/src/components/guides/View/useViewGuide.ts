@@ -1,6 +1,5 @@
 import guideSubmissionCache from '@/components/guides/View/guideSubmissionCache';
 import { StepItemResponse, StepResponse, TempGuideSubmission } from '@/components/guides/View/TempGuideSubmission';
-import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import {
   GuideFragment,
   GuideStepFragment,
@@ -8,14 +7,15 @@ import {
   GuideStepSubmissionInput,
   GuideSubmissionInput,
   GuideUserInputFragment,
-  Space,
   UserDiscordInfoInput,
   useSubmitGuideMutation,
 } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { isQuestion, isUserDiscordConnect, isUserInput } from '@dodao/web-core/types/deprecated/helpers/stepItemTypes';
 import { StepItemSubmissionType } from '@dodao/web-core/types/deprecated/models/enums';
 import { GuideSubmissionError } from '@dodao/web-core/types/errors/error';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useSession } from 'next-auth/react';
 import { useState } from 'react';
@@ -44,7 +44,7 @@ export interface UseViewGuideHelper {
   setUserDiscord: (stepUuid: string, userDiscordUuid: string, userDiscordId: string) => void;
 }
 
-export function useViewGuide(space: Space, fetchedGuide: GuideFragment, stepOrder: number): UseViewGuideHelper {
+export function useViewGuide(space: SpaceWithIntegrationsDto, fetchedGuide: GuideFragment, stepOrder: number): UseViewGuideHelper {
   const uuid = fetchedGuide.uuid;
 
   const { data: sessionData } = useSession();

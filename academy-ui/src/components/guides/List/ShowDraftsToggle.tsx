@@ -1,15 +1,15 @@
 'use client';
 
-import ToggleWithIcon from '@dodao/web-core/components/core/toggles/ToggleWithIcon';
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
-import { Session } from '@dodao/web-core/types/auth/Session';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import { isAdmin } from '@/utils/auth/isAdmin';
+import ToggleWithIcon from '@dodao/web-core/components/core/toggles/ToggleWithIcon';
+import { Session } from '@dodao/web-core/types/auth/Session';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
 export interface ShowDraftsToggleProps {
-  space: SpaceWithIntegrationsFragment;
+  space: SpaceWithIntegrationsDto;
   showDrafts: boolean;
 }
 export default function ShowDraftsToggle({ showDrafts, space }: ShowDraftsToggleProps) {

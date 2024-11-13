@@ -1,7 +1,8 @@
-import Input from '@dodao/web-core/components/core/input/Input';
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
+import { CourseDetailsFragment, CourseExplanationFragment, ImageType, UpdateTopicExplanationInput } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import Button from '@dodao/web-core/components/core/buttons/Button';
-import { CourseDetailsFragment, CourseExplanationFragment, ImageType, Space, UpdateTopicExplanationInput } from '@/graphql/generated/generated-types';
+import Input from '@dodao/web-core/components/core/input/Input';
 import React, { useState } from 'react';
 import { minMaxValidation, minValidation } from './../courseValidations';
 
@@ -13,7 +14,7 @@ interface UpdateTopicExplanationForm extends UpdateTopicExplanationInput {
 
 interface EditCourseExplanationProps {
   course: CourseDetailsFragment;
-  space: Space;
+  space: SpaceWithIntegrationsDto;
   topicKey: string;
   currentExplanation?: CourseExplanationFragment;
   saveExplanation: (form: UpdateTopicExplanationInput) => Promise<void>;

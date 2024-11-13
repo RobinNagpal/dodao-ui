@@ -1,12 +1,12 @@
+import alchemix from '@/images/TidbitsHub/GIFs/alchemix.gif';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
+import Image from 'next/image';
+import { SetupNewSpaceButton } from '../../common/setupNewSpace';
+import ContactUsLink from '../../DoDAOHome/components/ContactUsLink';
 import { WatchVideoButton } from './../../common/WatchVideoButton';
 import { Container } from './Container';
-import Image from 'next/image';
-import alchemix from '@/images/TidbitsHub/GIFs/alchemix.gif';
-import ContactUsLink from '../../DoDAOHome/components/ContactUsLink';
-import { SetupNewSpaceButton } from '../../common/setupNewSpace';
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 
-export function Hero({ space }: { space: SpaceWithIntegrationsFragment | null }) {
+export function Hero({ space }: { space: SpaceWithIntegrationsDto | null }) {
   return (
     <div className="overflow-hidden py-20 sm:py-12 lg:pb-32 xl:pb-36">
       <Container>

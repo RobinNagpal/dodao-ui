@@ -1,18 +1,19 @@
+import RatingModal, { FeedbackOptions } from '@/components/app/Modal/Rating/RatingModal';
 import GuideSidebar from '@/components/guides/View/GuideSidebar';
 import GuideStepperItem from '@/components/guides/View/GuideStepperItem';
 
 import { useGuideRatings } from '@/components/guides/View/useGuideRatings';
 import { UseViewGuideHelper } from '@/components/guides/View/useViewGuide';
-import { GuideFeedback, GuideFragment, Space } from '@/graphql/generated/generated-types';
+import { GuideFeedback, GuideFragment } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
+import { ClipboardDocumentListIcon, QuestionMarkCircleIcon, RocketLaunchIcon } from '@heroicons/react/24/outline';
 import React, { useMemo } from 'react';
 import styles from './GuideStepper.module.scss';
-import RatingModal, { FeedbackOptions } from '@/components/app/Modal/Rating/RatingModal';
-import { ClipboardDocumentListIcon, QuestionMarkCircleIcon, RocketLaunchIcon } from '@heroicons/react/24/outline';
 
 interface GuideProps {
   viewGuideHelper: UseViewGuideHelper;
   guide: GuideFragment;
-  space: Space;
+  space: SpaceWithIntegrationsDto;
 }
 
 const Guide: React.FC<GuideProps> = ({ viewGuideHelper, guide, space }) => {

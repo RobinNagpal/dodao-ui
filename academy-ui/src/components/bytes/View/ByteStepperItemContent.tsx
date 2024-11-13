@@ -1,6 +1,6 @@
 import UserDiscord from '@/components/app/Form/UserDiscord';
-import styles from '@/components/bytes/View/ByteStepperItem/ByteStepperItemContent.module.scss';
 import { ByteQuestionItemSection } from '@/components/bytes/View/ByteQuestionItemSection';
+import styles from '@/components/bytes/View/ByteStepperItem/ByteStepperItemContent.module.scss';
 import ByteStepperItemWarnings from '@/components/bytes/View/ByteStepperItemWarnings';
 import { UseViewByteHelper } from '@/components/bytes/View/useViewByteHelper';
 import {
@@ -8,10 +8,10 @@ import {
   ByteUserDiscordConnectFragmentFragment,
   ByteUserInputFragmentFragment,
   ImageDisplayMode,
-  SpaceWithIntegrationsFragment,
   UserDiscordInfoInput,
 } from '@/graphql/generated/generated-types';
 import { ByteDto, ByteStepDto } from '@/types/bytes/ByteDto';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import { ByteStepItem } from '@/types/stepItems/stepItemDto';
 import UserInput from '@dodao/web-core/components/app/Form/UserInput';
 import { isQuestion, isUserDiscordConnect, isUserInput } from '@dodao/web-core/types/deprecated/helpers/stepItemTypes';
@@ -25,7 +25,7 @@ import { createPortal } from 'react-dom';
 interface ByteStepperItemContentProps {
   byte: ByteDto;
   step: ByteStepDto;
-  space: SpaceWithIntegrationsFragment;
+  space: SpaceWithIntegrationsDto;
   viewByteHelper: UseViewByteHelper;
   setByteSubmitted: (submitted: boolean) => void;
   activeStepOrder: number;
@@ -51,7 +51,7 @@ function getTailwindTextAlignmentClass(textAlignment: TextAlign) {
 }
 
 interface FullScreenImageProps {
-  space: SpaceWithIntegrationsFragment;
+  space: SpaceWithIntegrationsDto;
   imageUrl: string;
   width: number;
   height: number;

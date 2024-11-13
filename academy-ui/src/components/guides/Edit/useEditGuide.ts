@@ -1,6 +1,4 @@
 import { EditGuideType } from '@/components/guides/Edit/editGuideType';
-import { InputType } from '@dodao/web-core/types/deprecated/models/enums';
-import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import {
   GuideInput,
   GuideQuestionFragment,
@@ -8,25 +6,27 @@ import {
   GuideStepInput,
   GuideUserInputFragment,
   QuestionChoiceInput,
-  Space,
   StepItemInputGenericInput,
   useGuideQueryQuery,
   useUpsertGuideMutation,
 } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
+import { validateQuestion, validateUserInput } from '@/utils/stepItems/validateItems';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { isQuestion, isUserInput } from '@dodao/web-core/types/deprecated/helpers/stepItemTypes';
+import { InputType } from '@dodao/web-core/types/deprecated/models/enums';
 import { GuideType } from '@dodao/web-core/types/deprecated/models/GuideModel';
 import { GuideError, KeyOfGuideIntegration, StepError } from '@dodao/web-core/types/errors/error';
-import { validateQuestion, validateUserInput } from '@/utils/stepItems/validateItems';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import axios from 'axios';
 import orderBy from 'lodash/orderBy';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { emptyGuide } from './EmptyGuide';
-import axios from 'axios';
 
 const stepContentLimit = 14400;
 const guideExceptContentLimit = 64;
@@ -58,7 +58,7 @@ export interface UseEditGuideHelper {
   updateGuideFunctions: UpdateGuideFunctions;
 }
 
-export function useEditGuide(space: Space, uuid: string | null): UseEditGuideHelper {
+export function useEditGuide(space: SpaceWithIntegrationsDto, uuid: string | null): UseEditGuideHelper {
   const { data: sessionData } = useSession();
   const session: Session | null = sessionData as Session | null;
   const emptyGuideModel = emptyGuide(session?.username || '', space, GuideType.Onboarding);

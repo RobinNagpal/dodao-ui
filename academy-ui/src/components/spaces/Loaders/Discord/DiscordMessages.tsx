@@ -1,8 +1,9 @@
+import { ManageSpaceSubviews } from '@/components/spaces/manageSpaceSubviews';
+import { DiscordMessage, useDiscordMessagesQuery, useReFetchDiscordMessagesMutation } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import SectionLoader from '@dodao/web-core/components/core/loaders/SectionLoader';
 import { Table, TableRow } from '@dodao/web-core/components/core/table/Table';
-import { ManageSpaceSubviews } from '@/components/spaces/manageSpaceSubviews';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { DiscordMessage, SpaceWithIntegrationsFragment, useDiscordMessagesQuery, useReFetchDiscordMessagesMutation } from '@/graphql/generated/generated-types';
 import moment from 'moment';
 import Link from 'next/link';
 import React from 'react';
@@ -18,7 +19,7 @@ function getMessageRows(discordRuns: DiscordMessage[]): TableRow[] {
   });
 }
 
-export default function DiscordMessages(props: { space: SpaceWithIntegrationsFragment; channelId: string }) {
+export default function DiscordMessages(props: { space: SpaceWithIntegrationsDto; channelId: string }) {
   const { data, loading } = useDiscordMessagesQuery({
     variables: {
       spaceId: props.space.id,

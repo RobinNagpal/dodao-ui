@@ -1,17 +1,18 @@
 import UpsertRawCourseModal from '@/components/app/Modal/Course/UpsertRawCourseModal';
+import { RawGitCourse } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import EllipsisDropdown from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
-import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { SpaceWithIntegrationsFragment, RawGitCourse } from '@/graphql/generated/generated-types';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { PublishStatus } from '@dodao/web-core/types/deprecated/models/enums';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { isSuperAdmin } from '@dodao/web-core/utils/auth/superAdmins';
-import { useSession } from 'next-auth/react';
-import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useSession } from 'next-auth/react';
+import { useEffect, useState } from 'react';
 
 export interface BasicCourseConfigurationsProps {
-  space: SpaceWithIntegrationsFragment;
+  space: SpaceWithIntegrationsDto;
   courseKey: string;
 }
 export default function BasicCourseConfigurations({ space, courseKey }: BasicCourseConfigurationsProps) {

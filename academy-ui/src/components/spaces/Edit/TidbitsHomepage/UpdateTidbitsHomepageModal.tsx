@@ -1,11 +1,11 @@
-import Input from '@dodao/web-core/components/core/input/Input';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import Button from '@dodao/web-core/components/core/buttons/Button';
+import Input from '@dodao/web-core/components/core/input/Input';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
-import { useEditTidbitsHomepage } from './useEditTidbitsHomepage';
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import React from 'react';
+import { useEditTidbitsHomepage } from './useEditTidbitsHomepage';
 
-export default function UpdateTidbitsHomepageModal(props: { space: SpaceWithIntegrationsFragment; open: boolean; onClose: () => void }) {
+export default function UpdateTidbitsHomepageModal(props: { space: SpaceWithIntegrationsDto; open: boolean; onClose: () => void }) {
   const { tidbitsHomepage, updateHeading, updateShortDescription, updateTidbitsHomepage, updating, tidbitsHomepageErrors, validateTidbitsHomepage } =
     useEditTidbitsHomepage(props.space);
 

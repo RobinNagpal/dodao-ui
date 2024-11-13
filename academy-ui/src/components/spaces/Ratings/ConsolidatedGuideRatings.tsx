@@ -1,8 +1,9 @@
 'use client';
 
 import styles from '@/components/app/Rating/Table/RatingsTable.module.scss';
-import { ConsolidatedGuideRating, RatingDistribution, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { ConsolidatedGuideRating, RatingDistribution } from '@/graphql/generated/generated-types';
 import { ConsolidatedGuideRatingDto } from '@/types/bytes/ConsolidatedGuideRatingDto';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import { Grid2Cols } from '@dodao/web-core/components/core/grids/Grid2Cols';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
@@ -49,7 +50,7 @@ function ConsolidatedRatings(props: { consolidatedRatings: ConsolidatedGuideRati
   );
 }
 
-export default function ConsolidatedGuideRatings(props: { space: SpaceWithIntegrationsFragment }) {
+export default function ConsolidatedGuideRatings(props: { space: SpaceWithIntegrationsDto }) {
   const { data: consolidatedRatings } = useFetchData<ConsolidatedGuideRatingDto>(
     `${getBaseUrl()}/api/${props.space.id}/consolidated-guide-rating`,
     {},

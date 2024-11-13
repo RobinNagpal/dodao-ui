@@ -1,20 +1,20 @@
 'use client';
 
+import DefaultSpaceAvatar from '@/images/background-features.jpg';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
+import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import getSubdomainUrl from '@dodao/web-core/utils/api/getSubdomainUrl';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
-import { Space } from '@prisma/client';
-import { useRouter } from 'next/navigation';
-import React from 'react';
+import { Contexts } from '@dodao/web-core/utils/constants/constants';
+import { getCDNImageUrl } from '@dodao/web-core/utils/images/getCDNImageUrl';
 import { ChevronRightIcon } from '@heroicons/react/20/solid';
 import Image from 'next/image';
-import { getCDNImageUrl } from '@dodao/web-core/utils/images/getCDNImageUrl';
-import DefaultSpaceAvatar from '@/images/background-features.jpg';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
-import { Contexts } from '@dodao/web-core/utils/constants/constants';
+import { useRouter } from 'next/navigation';
+import React from 'react';
 
 interface SpaceCollectionCardProps {
-  spaceCollection: Space;
+  spaceCollection: SpaceWithIntegrationsDto;
 }
 
 export default function SpaceCollectionsCard({ spaceCollection }: SpaceCollectionCardProps) {

@@ -1,20 +1,21 @@
 'use client';
+import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
+import { ShortVideo } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
+import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
+import { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
 import Grid5Cols from '@dodao/web-core/components/core/grids/Grid5Cols';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import Image from 'next/image';
 import Link from 'next/link';
-import styles from './Shorts.module.scss';
-import blurDataURL from './BlurDataUrl';
-import { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
-import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
-import { useState } from 'react';
-import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
 import { useRouter } from 'next/navigation';
-import { ShortVideo, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { useState } from 'react';
+import blurDataURL from './BlurDataUrl';
+import styles from './Shorts.module.scss';
 
 interface ShortsThumbnailProps {
   shortVideo: ShortVideo;
-  space?: SpaceWithIntegrationsFragment;
+  space?: SpaceWithIntegrationsDto;
 }
 
 function ShortsThumbnail({ shortVideo, space }: ShortsThumbnailProps) {
@@ -77,7 +78,7 @@ function ShortsThumbnail({ shortVideo, space }: ShortsThumbnailProps) {
 }
 interface ShortsUIProps {
   shortVideos: ShortVideo[];
-  space?: SpaceWithIntegrationsFragment;
+  space?: SpaceWithIntegrationsDto;
 }
 
 export default function Shorts({ shortVideos, space }: ShortsUIProps) {

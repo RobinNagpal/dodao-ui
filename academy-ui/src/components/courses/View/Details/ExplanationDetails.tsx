@@ -1,24 +1,24 @@
-import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
-import Button from '@dodao/web-core/components/core/buttons/Button';
-import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
-import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import EditCourseExplanation from '@/components/courses/Edit/Items/EditCourseExplanation';
 import { useDeleteCourseItem } from '@/components/courses/Edit/useDeleteCourseItem';
 import { useEditCourseDetails } from '@/components/courses/Edit/useEditCourseDetails';
 import { useMoveCourseItem } from '@/components/courses/Edit/useMoveCourseItem';
 import { CourseSubmissionHelper } from '@/components/courses/View/useCourseSubmission';
 import { CourseHelper } from '@/components/courses/View/useViewCourse';
-import { useLoginModalContext } from '@dodao/web-core/ui/contexts/LoginModalContext';
 import {
   CourseDetailsFragment,
   CourseExplanationFragment,
   CourseTopicFragment,
   DeleteTopicExplanationInput,
   MoveTopicExplanationInput,
-  Space,
   UpdateTopicExplanationInput,
 } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
+import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
+import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import { MoveCourseItemDirection } from '@dodao/web-core/types/deprecated/models/enums';
+import { useLoginModalContext } from '@dodao/web-core/ui/contexts/LoginModalContext';
 import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
 import { useSession } from 'next-auth/react';
@@ -46,7 +46,7 @@ const RightDiv = styled.div`
 interface CourseExplanationProps {
   course: CourseDetailsFragment;
   isCourseAdmin: boolean;
-  space: Space;
+  space: SpaceWithIntegrationsDto;
   topicKey: string;
   courseHelper: CourseHelper;
   submissionHelper: CourseSubmissionHelper;

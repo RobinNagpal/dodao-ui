@@ -2,8 +2,9 @@
 
 import { useEditTimeline } from '@/app/timelines/edit/[[...timelineId]]/useEditTimeline';
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
-import { ImageType, SpaceWithIntegrationsFragment, UpsertTimelineEventInput } from '@/graphql/generated/generated-types';
+import { ImageType, UpsertTimelineEventInput } from '@/graphql/generated/generated-types';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import { TimelineStyles, timelineStyleSelect } from '@/utils/timeline/timelineStyles';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
@@ -30,7 +31,7 @@ const AddEventButton = styled.button`
   color: var(--primary-color);
 `;
 
-const EditTimeline = (props: { space: SpaceWithIntegrationsFragment; timelineId: string | null }) => {
+const EditTimeline = (props: { space: SpaceWithIntegrationsDto; timelineId: string | null }) => {
   const { space, timelineId } = props;
 
   const {

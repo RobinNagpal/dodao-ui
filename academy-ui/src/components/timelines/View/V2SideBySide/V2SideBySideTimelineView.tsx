@@ -1,15 +1,16 @@
-import TimelineDetailsModal from '@/components/timelines/View/TimelineDetailsModal'; // Assuming the correct file location for TimelineDetailsModal
+import TimelineDetailsModal from '@/components/timelines/View/TimelineDetailsModal';
+import { TimelineDetailsFragment, TimelineEventFragment } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto'; // Assuming the correct file location for TimelineDetailsModal
+import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
 import ArrowRightIcon from '@heroicons/react/24/solid/ArrowRightIcon';
 import ArrowTopRightOnSquareIcon from '@heroicons/react/24/solid/ArrowTopRightOnSquareIcon';
-import React, { useState } from 'react';
-import { Space, TimelineDetailsFragment, TimelineEventFragment } from '@/graphql/generated/generated-types';
-import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
 import moment from 'moment';
+import React, { useState } from 'react';
 import styles from './V2SideBySideTimelineView.module.scss';
 
 interface V3AlternatingTimelineViewProps {
-  space: Space;
+  space: SpaceWithIntegrationsDto;
   timeline: TimelineDetailsFragment;
 }
 

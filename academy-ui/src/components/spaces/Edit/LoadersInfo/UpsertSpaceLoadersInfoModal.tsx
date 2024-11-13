@@ -1,19 +1,20 @@
+import { DiscordServer, SpaceLoadersInfoInput, useReFetchDiscordServersMutation } from '@/graphql/generated/generated-types';
+import { SpaceLoadersInfoDto } from '@/types/space/SpaceDto';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Input from '@dodao/web-core/components/core/input/Input';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import StyledSelect from '@dodao/web-core/components/core/select/StyledSelect';
-import { DiscordServer, SpaceLoadersInfo, SpaceLoadersInfoInput, useReFetchDiscordServersMutation } from '@/graphql/generated/generated-types';
 import React, { useEffect, useState } from 'react';
 
 export interface UpsertSpaceLoadersInfoModalProps {
   open: boolean;
   onUpsert: (loaderInfos: SpaceLoadersInfoInput) => void;
-  loadersInfo?: SpaceLoadersInfo;
+  loadersInfo?: SpaceLoadersInfoDto;
   onClose: () => void;
 }
 export default function UpsertSpaceLoadersInfoModal({ open, onUpsert, onClose, loadersInfo }: UpsertSpaceLoadersInfoModalProps) {
   const [discourseUrl, setDiscourseUrl] = useState(loadersInfo?.discourseUrl);
-  const [discordServerId, setDiscordServerId] = useState(loadersInfo?.discordServerId);
+  const [discordServerId, setDiscordServerId] = useState(loadersInfo?.discordServerId || null);
   const [reFetchDiscordServersMutation] = useReFetchDiscordServersMutation();
   const [discordServers, setDiscordServers] = useState<{ label: string; id: string }[]>([]);
   const fetchDiscordServers = async () => {

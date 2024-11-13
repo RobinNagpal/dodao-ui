@@ -1,7 +1,6 @@
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { ByteCollectionDto, ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import { CreateByteCollectionRequest } from '@/types/request/ByteCollectionRequests';
-import { SpaceTypes } from '@/types/space/SpaceDto';
+import { SpaceTypes, SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import { useFetchUtils } from '@dodao/web-core/ui/hooks/useFetchUtils';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useRouter } from 'next/navigation';
@@ -25,7 +24,7 @@ interface UseEditByteCollectionType {
 }
 
 export interface UseEditByteCollectionArgs {
-  space: SpaceWithIntegrationsFragment;
+  space: SpaceWithIntegrationsDto;
   byteCollection?: ByteCollectionSummary;
 }
 
