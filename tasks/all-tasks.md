@@ -13,6 +13,8 @@ Must have features
 - [ ] upon completion, successful toast is missing just like the one on tidbit completion
 - [ ] only looks fine above 1024px, down that its all a mess so we can detect the screen size and show a message like view the demo on a large screen
 - [ ] Edit modal - bottom padding needs to be added to the box wrapper
+- [ ] Edit modal - summary error should be changed from "Excerpt is required" to "Summary is required"
+- [ ] Edit modal - add border to tooltip position dropdown
 
 
 # Login issue for admins
@@ -32,8 +34,15 @@ users - Skipped
 - [ ] Edit modal - header should be "Edit Tidbit" instead of Edit Byte
 - [ ] Edit modal - steps heading should be "Tidbit Steps" instead of Byte Steps
 - [ ] Edit modal - in stepper - icon to duplicate a step 
+- [ ] Edit modal - in stepper - if step content isnt mandatory then remove the star from heading "Step Content*"
 - [ ] Edit modal - in stepper - bit of padding left & right for the closed accordion content (name+arrow)
+- [ ] Edit modal - in stepper - add border to image display mode dropdown
 - [ ] Edit modal - bottom padding needs to be added to the box wrapper
+- [ ] Edit modal - name & summary field placeholder should use tidbit instead of byte
+- [ ] Edit modal - errors should be consistent 
+  - [ ] name error : Name is required
+  - [ ] summary error with field: Summary is required and should be less than 64 characters long
+  - [ ] summary error above upload button: Content cannot be empty.
 
 
 # Short videos
@@ -41,6 +50,7 @@ users - Skipped
 - [ ] when short video is opened, an ellipsis is shown with options (Edit, Edit SEO) but we dont have such ellipsis for tidbits/clickable demos
 - [ ] when video has been watched, its icon doesnt change to a tick
 - [ ] remove the priority field, its not working
+- [ ] if mandatory field left empty and saved, shows error message with the field but doesnt show an error toast
 
 # Tidbit Collections
 - [ ] Have a way to separate the tidbits and clickable demos so that its clear to the user

@@ -79,15 +79,15 @@
 - [ ] Only logged in admin:
   - [ ] is given the option (ellipsis/three dots) to edit, archive and sort the tidbit steps
   - [ ] can edit a tidbit's:
-    - [ ] name
-    - [ ] summary 
+    - [ ] name - if left empty shows an error message and error notification when saved
+    - [ ] summary - if left empty shows an error message and error notification when saved
     - [ ] admins
     - [ ] video url
     - [ ] Byte Steps - which further includes these fields:
       - [ ] icons to move a step up and down so easy ordering
       - [ ] icon to remove the whole step
       - [ ] icon to add input or question which basically offers to have a simple or multiple choice question as a step
-      - [ ] name
+      - [ ] name - if left empty shows an error message and error notification when saved
       - [ ] image display mode (will only work if an image is uploaded)
       - [ ] step content - which is a rich text editor giving options like bold, italic, right/left/center/justify text aligment, hyperlink, numbering, bullets, upload image, code block, AI content generation
       - [ ] image upload - which when hovered shows a plus icon if image is not uploaded yet and if image has been uploaded then shows edit and remove icons
@@ -108,10 +108,10 @@
     - [ ] Clickable demo Steps - which further includes these fields:
       - [ ] icons to move a step up and down so easy ordering
       - [ ] icon to remove the whole step
-      - [ ] tooltip information
+      - [ ] tooltip information - if left empty shows an error message and error notification when saved
       - [ ] tooltip position
-      - [ ] upload HTML capture which shows the captures done through our extension
-      - [ ] element selector which opens the html capture so we can select something around which tooltip will be positioned
+      - [ ] upload HTML capture which shows the captures done through our extension - if left empty shows an error message and error notification when saved
+      - [ ] element selector which opens the html capture so we can select something around which tooltip will be positioned - if left empty shows an error message and error notification when saved
 
 
 ## View Short Videos
@@ -126,7 +126,7 @@
 - [ ] Only logged in admin:
   - [ ] is given the option (ellipsis/three dots) to edit and archive the video
   - [ ] can edit a video's:
-    - [ ] title
-    - [ ] description
-    - [ ] thumbnail
-    - [ ] video 
+    - [ ] title - if left empty shows an error message and error notification when saved
+    - [ ] description - if left empty shows an error message and error notification when saved
+    - [ ] thumbnail - if left empty shows an error message and error notification when saved
+    - [ ] video  - if left empty shows an error message and error notification when saved
