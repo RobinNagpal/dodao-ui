@@ -1,14 +1,14 @@
 'use client';
 
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { CreateSpaceRequest } from '@/types/request/CreateSpaceRequest';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import CreateNewSpace from '@dodao/web-core/ui/auth/signup/components/CreateNewSpace';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useState } from 'react';
 
 interface CreateSpaceProps {
-  space: SpaceWithIntegrationsFragment;
+  space: SpaceWithIntegrationsDto;
 }
 
 function CreateSpace({ space }: CreateSpaceProps) {

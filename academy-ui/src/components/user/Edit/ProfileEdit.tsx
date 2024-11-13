@@ -1,6 +1,6 @@
 'use client';
 
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import WebCoreProfileEdit from '@dodao/web-core/components/profile/WebCoreProfileEdit';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { User } from '@dodao/web-core/types/auth/User';
@@ -11,7 +11,7 @@ import { useSession } from 'next-auth/react';
 import React, { useEffect, useState } from 'react';
 
 interface ProfileEditProps {
-  space: SpaceWithIntegrationsFragment;
+  space: SpaceWithIntegrationsDto;
 }
 
 function ProfileEdit({ space }: ProfileEditProps) {

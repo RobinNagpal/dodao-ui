@@ -1,9 +1,8 @@
 import ByteCollectionEditModal from '@/components/byteCollection/ByteCollections/ByteCollectionEditModal';
 import SortByteCollectionItemsModal from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/SortByteCollectionItemsModal';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { ByteCollectionDto, ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
-import { SpaceTypes } from '@/types/space/SpaceDto';
+import { SpaceTypes, SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -11,7 +10,7 @@ import React from 'react';
 
 interface ByteCollectionCardAdminDropdownProps {
   byteCollection: ByteCollectionSummary;
-  space: SpaceWithIntegrationsFragment;
+  space: SpaceWithIntegrationsDto;
 }
 export default function ByteCollectionCardAdminDropdown({ byteCollection, space }: ByteCollectionCardAdminDropdownProps) {
   const [showDeleteModal, setShowDeleteModal] = React.useState<boolean>(false);

@@ -1,16 +1,17 @@
-import React, { CSSProperties, useState } from 'react';
 import ByteCollectionsCard from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCollectionsCard';
-import { SpaceWithIntegrationsFragment, ThemeColors, UpdateThemeColorsMutationVariables } from '@/graphql/generated/generated-types';
+import { ThemeColors, UpdateThemeColorsMutationVariables } from '@/graphql/generated/generated-types';
 import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
+import { GlobalThemeColors } from '@dodao/web-core/components/app/themes';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import { CssTheme, ThemeKey, themes } from '@dodao/web-core/src/components/app/themes';
 import { useFetchUtils } from '@dodao/web-core/ui/hooks/useFetchUtils';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import React, { CSSProperties, useState } from 'react';
 
 export interface UpdateThemeModalProps {
-  space: SpaceWithIntegrationsFragment;
+  space: SpaceWithIntegrationsDto;
   open: boolean;
   onClose: () => void;
   byteCollection: ByteCollectionSummary;
@@ -30,13 +31,12 @@ export const ColorLabels: Record<ThemeColorsKeys, string> = {
 
 export default function UpdateThemeModal({ space, open, onClose, byteCollection }: UpdateThemeModalProps) {
   const skin = space?.skin;
-  const theme: ThemeKey = space?.skin && Object.keys(CssTheme).includes(skin || '') ? (skin as CssTheme) : CssTheme.GlobalTheme;
-  const [themeColors, setThemeColors] = useState<ThemeColors>(space?.themeColors || themes[theme]);
+  const [themeColors, setThemeColors] = useState<ThemeColors>(space?.themeColors || GlobalThemeColors);
 
   const { putData } = useFetchUtils();
 
   async function upsertThemeColors() {
-    await putData<SpaceWithIntegrationsFragment, UpdateThemeColorsMutationVariables>(
+    await putData<SpaceWithIntegrationsDto, UpdateThemeColorsMutationVariables>(
       `${getBaseUrl()}/api/${space.id}/actions/spaces/update-theme-colors`,
       {
         spaceId: space.id,

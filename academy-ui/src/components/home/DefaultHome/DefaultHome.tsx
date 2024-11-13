@@ -1,15 +1,15 @@
+import HomeIcon from '@/components/main/HomeIcon';
+import { useI18 } from '@/hooks/useI18';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
+import { getSortedFeaturesArray } from '@/utils/features';
 import { Grid2Cols } from '@dodao/web-core/components/core/grids/Grid2Cols';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { GetStartedButton } from '@dodao/web-core/components/home/common/GetStartedButton';
-import { LottieAnimation } from './LottieAnimation';
-import HomeIcon from '@/components/main/HomeIcon';
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
-import { useI18 } from '@/hooks/useI18';
 import { FeatureItem } from '@dodao/web-core/types/features/spaceFeatures';
-import { getSortedFeaturesArray } from '@/utils/features';
 import React from 'react';
+import { LottieAnimation } from './LottieAnimation';
 
-function DefaultHome({ space }: { space: SpaceWithIntegrationsFragment }) {
+function DefaultHome({ space }: { space: SpaceWithIntegrationsDto }) {
   const { $t } = useI18();
   const sortedSpaceFeatures: FeatureItem[] = getSortedFeaturesArray(space);
 

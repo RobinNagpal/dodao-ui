@@ -1,10 +1,10 @@
 import DiscourseIndexRuns from '@/components/spaces/Loaders/Discourse/DiscourseIndexRuns';
 import SpaceLoadersInformation from '@/components/spaces/View/SpaceLoadersInformation';
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import React from 'react';
 
 export interface DiscourseInfoProps {
-  space: SpaceWithIntegrationsFragment;
+  space: SpaceWithIntegrationsDto;
 }
 
 export default function DiscourseInfo(props: DiscourseInfoProps) {

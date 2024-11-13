@@ -1,6 +1,6 @@
 import ByteCollectionsGrid from '@/components/byteCollection/View/ByteCollectionsGrid';
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import fetchDataServerSide from '@/utils/api/fetchDataServerSide';
 import CollectionPageLoading from '@dodao/web-core/components/core/loaders/CollectionPageLoading';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
@@ -15,7 +15,7 @@ import React, { Suspense } from 'react';
  * @param space
  * @param session
  */
-export async function getTidbitsSiteHomepageContents(space: SpaceWithIntegrationsFragment, session?: Session) {
+export async function getTidbitsSiteHomepageContents(space: SpaceWithIntegrationsDto, session?: Session) {
   const byteCollections = await fetchDataServerSide<ByteCollectionSummary[]>(`${getBaseUrl()}/api/${space.id}/byte-collections`);
 
   if (session?.isAdminOfSpace && byteCollections.length < 3) {

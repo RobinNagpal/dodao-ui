@@ -1,18 +1,19 @@
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
 import UploadInput from '@/components/app/UploadInput';
+import { CourseBasicInfoInput, CourseFragment, ImageType, TopicConfigInput } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Input from '@dodao/web-core/components/core/input/Input';
 import StyledSelect from '@dodao/web-core/components/core/select/StyledSelect';
 import TextareaArray from '@dodao/web-core/components/core/textarea/TextareaArray';
 import TextareaAutosize from '@dodao/web-core/components/core/textarea/TextareaAutosize';
 import ToggleWithIcon from '@dodao/web-core/components/core/toggles/ToggleWithIcon';
-import { CourseBasicInfoInput, CourseFragment, ImageType, SpaceWithIntegrationsFragment, TopicConfigInput } from '@/graphql/generated/generated-types';
 import { PublishStatus } from '@dodao/web-core/types/deprecated/models/enums';
 import { publishStatusesSelect } from '@dodao/web-core/utils/ui/statuses';
 import React, { useState } from 'react';
 
 export interface EditCourseProps {
-  space: SpaceWithIntegrationsFragment;
+  space: SpaceWithIntegrationsDto;
   course: CourseFragment;
   updateCourse: (courseInfo: CourseBasicInfoInput) => void;
   cancel: () => void;

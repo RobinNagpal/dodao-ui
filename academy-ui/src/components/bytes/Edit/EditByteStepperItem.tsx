@@ -1,8 +1,10 @@
 import CreateQuestion from '@/components/app/Common/CreateQuestion';
 import UploadImageFromDeviceModal from '@/components/app/Image/UploadImageFromDeviceModal';
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
-import { ByteQuestionFragmentFragment, GuideQuestion, ImageDisplayMode, ImageType, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { ByteQuestionFragmentFragment, GuideQuestion, ImageDisplayMode, ImageType } from '@/graphql/generated/generated-types';
+import dummyImage from '@/images/TidbitsHub/image-placeholder.png';
 import { EditByteStep, EditByteType, StepItemInputGenericInput } from '@/types/request/ByteRequests';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import { Question, UserInput } from '@/types/stepItems/stepItemDto';
 import CreateConnectDiscord from '@dodao/web-core/components/app/Common/CreateDiscordConnect';
 import CreateUserInput from '@dodao/web-core/components/app/Common/CreateUserInput';
@@ -10,7 +12,9 @@ import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/Delete
 import AddStepItemModal from '@dodao/web-core/components/app/Modal/StepItem/AddStepItemModal';
 import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
 import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
+import ViewEditableImage from '@dodao/web-core/components/core/image/ViewEditableImage';
 import Input from '@dodao/web-core/components/core/input/Input';
+import OverlayOnHover from '@dodao/web-core/components/core/overlay/OverlayOnHover';
 import StyledSelect, { StyledSelectItem } from '@dodao/web-core/components/core/select/StyledSelect';
 import { InputType, QuestionType, UserDiscordConnectType } from '@dodao/web-core/types/deprecated/models/enums';
 import { ByteErrors } from '@dodao/web-core/types/errors/byteErrors';
@@ -22,12 +26,9 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
 import styles from './EditByteStepperItem.module.scss';
-import dummyImage from '@/images/TidbitsHub/image-placeholder.png';
-import ViewEditableImage from '@dodao/web-core/components/core/image/ViewEditableImage';
-import OverlayOnHover from '@dodao/web-core/components/core/overlay/OverlayOnHover';
 
 interface EditByteStepperItemProps {
-  space: SpaceWithIntegrationsFragment;
+  space: SpaceWithIntegrationsDto;
   byte: EditByteType;
   byteErrors?: ByteErrors;
   step: EditByteStep;

@@ -1,5 +1,5 @@
 'use client';
-import { CssTheme, themes, ThemeKey } from '@dodao/web-core/src/components/app/themes';
+import { GlobalThemeColors } from '@dodao/web-core/components/app/themes';
 import UpsertBadgeInput from '@dodao/web-core/components/core/badge/UpsertBadgeInput';
 import UpsertKeyValueBadgeInput from '@dodao/web-core/components/core/badge/UpsertKeyValueBadgeInput';
 import Button from '@dodao/web-core/components/core/buttons/Button';
@@ -28,8 +28,7 @@ export default function UpsertSpaceBasicSettings() {
   const editSpaceHelper = useEditSpace();
 
   const { space, setSpaceField, setAuthSettingsField, upsertSpace, initialize, upserting } = editSpaceHelper;
-  const theme: ThemeKey = CssTheme.GlobalTheme;
-  const [themeColors, setThemeColors] = useState<ThemeColors>(space?.themeColors || themes[theme]);
+  const [themeColors, setThemeColors] = useState<ThemeColors>(space?.themeColors || GlobalThemeColors);
 
   const themeStyles = {
     '--primary-color': themeColors.primaryColor,

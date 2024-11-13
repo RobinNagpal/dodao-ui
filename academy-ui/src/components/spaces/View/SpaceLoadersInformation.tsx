@@ -1,23 +1,18 @@
-import DetailsRow from '@dodao/web-core/components/core/details/DetailsRow';
-import DetailsHeader from '@dodao/web-core/components/core/details/DetailsHeader';
-import DetailsSection from '@dodao/web-core/components/core/details/DetailsSection';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import UpsertSpaceLoadersInfoModal from '@/components/spaces/Edit/LoadersInfo/UpsertSpaceLoadersInfoModal';
-import {
-  Space,
-  SpaceLoadersInfoInput,
-  SpaceWithIntegrationsFragment,
-  useDiscordServerQuery,
-  useUpsertSpaceLoaderInfoMutation,
-} from '@/graphql/generated/generated-types';
+import { SpaceLoadersInfoInput, useDiscordServerQuery, useUpsertSpaceLoaderInfoMutation } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
+import DetailsHeader from '@dodao/web-core/components/core/details/DetailsHeader';
+import DetailsRow from '@dodao/web-core/components/core/details/DetailsRow';
+import DetailsSection from '@dodao/web-core/components/core/details/DetailsSection';
 import React, { useEffect, useState } from 'react';
 
 export interface SpaceAuthDetailsProps {
-  space: Space;
+  space: SpaceWithIntegrationsDto;
   className?: string;
 }
 
-function getLoaderInfoFields(space: SpaceWithIntegrationsFragment, discordServerName: string): Array<{ label: string; value: string }> {
+function getLoaderInfoFields(space: SpaceWithIntegrationsDto, discordServerName: string): Array<{ label: string; value: string }> {
   return [
     {
       label: 'Discourse Url',

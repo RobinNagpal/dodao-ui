@@ -1,11 +1,12 @@
-import { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
-import SectionLoader from '@dodao/web-core/components/core/loaders/SectionLoader';
-import { Table, TableRow } from '@dodao/web-core/components/core/table/Table';
 import AnnotateDiscoursePostModal from '@/components/spaces/Loaders/Discourse/AnnotateDiscoursePostModal';
 import UpdateSummaryDiscoursePostModal from '@/components/spaces/Loaders/Discourse/UpdateSummaryDiscoursePostModal';
 import { ChatbotSubView, ChatbotView, getChatbotSubviewUrl } from '@/components/spaces/manageSpaceSubviews';
+import { DiscoursePost, useDiscoursePostsQuery, useIndexDiscoursePostMutation } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
+import { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
+import SectionLoader from '@dodao/web-core/components/core/loaders/SectionLoader';
+import { Table, TableRow } from '@dodao/web-core/components/core/table/Table';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { DiscoursePost, SpaceWithIntegrationsFragment, useDiscoursePostsQuery, useIndexDiscoursePostMutation } from '@/graphql/generated/generated-types';
 import moment from 'moment/moment';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
@@ -28,7 +29,7 @@ function getIndexRunRows(discoursePosts: DiscoursePost[]): TableRow[] {
   });
 }
 
-export default function DiscoursePostsTable(props: { space: SpaceWithIntegrationsFragment }) {
+export default function DiscoursePostsTable(props: { space: SpaceWithIntegrationsDto }) {
   const { data, loading } = useDiscoursePostsQuery({
     variables: {
       spaceId: props.space.id,

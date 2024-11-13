@@ -1,17 +1,17 @@
-import { Space } from '@/graphql/generated/generated-types';
+import ElementSelectorModal from '@/components/clickableDemos/ElementSelector/ElementSelectorModal';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import ArrowUpTrayIcon from '@heroicons/react/24/solid/ArrowUpTrayIcon';
-import ElementSelectorModal from '@/components/clickableDemos/ElementSelector/ElementSelectorModal';
 import PhotoIcon from '@heroicons/react/24/solid/PhotoIcon';
-import styles from './SelectElementInput.module.scss';
 import { useState } from 'react';
+import styles from './SelectElementInput.module.scss';
 
 interface SelectElementInputProps {
   label?: string;
   modelValue?: string | null;
   elementImgUrl?: string | null;
   objectId: string;
-  space: Space;
+  space: SpaceWithIntegrationsDto;
   fileUrl?: string;
   onInput: (url: string, elementImgUrl: string) => void;
   onLoading?: (value: ((prevState: boolean) => boolean) | boolean) => void;

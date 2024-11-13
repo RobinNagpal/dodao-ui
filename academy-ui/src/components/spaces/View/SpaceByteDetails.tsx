@@ -1,19 +1,19 @@
-import { ByteViewMode } from '@/types/bytes/ByteDto';
-import DetailsRow from '@dodao/web-core/components/core/details/DetailsRow';
-import DetailsHeader from '@dodao/web-core/components/core/details/DetailsHeader';
-import DetailsSection from '@dodao/web-core/components/core/details/DetailsSection';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import UpsertSpaceByteSettingsModal from '@/components/spaces/Edit/Bytes/UpsertSpaceByteSettingsModal';
-import { Space, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { ByteViewMode } from '@/types/bytes/ByteDto';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
+import DetailsHeader from '@dodao/web-core/components/core/details/DetailsHeader';
+import DetailsRow from '@dodao/web-core/components/core/details/DetailsRow';
+import DetailsSection from '@dodao/web-core/components/core/details/DetailsSection';
 import React, { useState } from 'react';
 
 export interface SpaceAuthDetailsProps {
-  space: Space;
+  space: SpaceWithIntegrationsDto;
   className?: string;
   onUpdateSettings: () => Promise<void>;
 }
 
-function getSpaceDetailsFields(space: SpaceWithIntegrationsFragment): Array<{ label: string; value: string }> {
+function getSpaceDetailsFields(space: SpaceWithIntegrationsDto): Array<{ label: string; value: string }> {
   return [
     {
       label: 'Ask for Login to Submit',

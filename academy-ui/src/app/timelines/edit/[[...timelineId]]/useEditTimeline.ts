@@ -1,16 +1,17 @@
-import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { Space, Timeline, UpsertTimelineEventInput, UpsertTimelineInput } from '@/graphql/generated/generated-types';
+import { Timeline, UpsertTimelineEventInput, UpsertTimelineInput } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
+import { TimelineStyles } from '@/utils/timeline/timelineStyles';
 
 import { TimelineErrors, TimelineEventsError } from '@dodao/web-core/types/errors/timelineErrors';
-import { TimelineStyles } from '@/utils/timeline/timelineStyles';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { isValidURL } from '@dodao/web-core/utils/validator';
+import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import axios from 'axios';
-import { slugify } from '@dodao/web-core/utils/auth/slugify';
 
 interface EditTimelineEventType extends Omit<UpsertTimelineEventInput, 'date'> {
   order: number;
@@ -40,7 +41,7 @@ export interface EditTimelineHelper {
   updateTimelineEventDate(uuid: string, value: string): void;
 }
 
-export function useEditTimeline(timelineId: string | null, space: Space): EditTimelineHelper {
+export function useEditTimeline(timelineId: string | null, space: SpaceWithIntegrationsDto): EditTimelineHelper {
   const [editTimelineRef, setEditTimelineRef] = useState<EditTimelineType>({
     id: '',
     name: '',

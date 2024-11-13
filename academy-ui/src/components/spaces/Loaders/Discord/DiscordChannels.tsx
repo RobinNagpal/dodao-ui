@@ -1,14 +1,14 @@
-import SectionLoader from '@dodao/web-core/components/core/loaders/SectionLoader';
-import { Table, TableActions, TableRow } from '@dodao/web-core/components/core/table/Table';
 import { ManageSpaceSubviews } from '@/components/spaces/manageSpaceSubviews';
-import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import {
   DiscordChannel,
-  SpaceWithIntegrationsFragment,
   useDiscordChannelsQuery,
   useReFetchDiscordChannelsMutation,
   useUpdateIndexingOfDiscordChannelMutation,
 } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
+import SectionLoader from '@dodao/web-core/components/core/loaders/SectionLoader';
+import { Table, TableActions, TableRow } from '@dodao/web-core/components/core/table/Table';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { useRouter } from 'next/navigation';
 import React, { useMemo } from 'react';
 
@@ -22,7 +22,7 @@ function getChannelRows(discordRuns: DiscordChannel[]): TableRow[] {
   });
 }
 
-export default function DiscordChannels(props: { space: SpaceWithIntegrationsFragment }) {
+export default function DiscordChannels(props: { space: SpaceWithIntegrationsDto }) {
   const { data, loading } = useDiscordChannelsQuery({
     variables: {
       spaceId: props.space.id,

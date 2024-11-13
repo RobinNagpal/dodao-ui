@@ -1,4 +1,5 @@
 import SidebarLayout from '@/app/SidebarLayout';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import GenerateImage from '@/components/spaces/Image/GenerateImage';
@@ -7,7 +8,6 @@ import AllLoaders from '@/components/spaces/Loaders/AllLoaders';
 import { ChatbotSubView, ChatbotView, getBaseUrlForSpaceSubview, ManageSpaceSubviews } from '@/components/spaces/manageSpaceSubviews';
 import SpaceDetails from '@/components/spaces/SpaceDetails';
 import GenerateStoryBoard from '@/components/spaces/StoryBoard/GenerateStoryBoard';
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import classNames from '@dodao/web-core/utils/classNames';
 import BuildingOffice2Icon from '@heroicons/react/24/outline/BuildingOffice2Icon';
 import CircleStackIcon from '@heroicons/react/24/outline/CircleStackIcon';
@@ -29,7 +29,7 @@ interface NavigationElementType {
   current: boolean;
 }
 
-const getNavigation = (space: SpaceWithIntegrationsFragment, subView?: string, subSubView?: string): NavigationElementType[] => {
+const getNavigation = (space: SpaceWithIntegrationsDto, subView?: string, subSubView?: string): NavigationElementType[] => {
   if (subView === ManageSpaceSubviews.Chatbot) {
     const chatbotBaseUrl = getBaseUrlForSpaceSubview(space.id, ManageSpaceSubviews.Chatbot);
     return [
@@ -113,7 +113,7 @@ const getNavigation = (space: SpaceWithIntegrationsFragment, subView?: string, s
 
   return navigation;
 };
-function GetSubview(props: { spaceInfo: string[]; space: SpaceWithIntegrationsFragment }) {
+function GetSubview(props: { spaceInfo: string[]; space: SpaceWithIntegrationsDto }) {
   const { spaceInfo } = props;
 
   const subView = spaceInfo?.[1];

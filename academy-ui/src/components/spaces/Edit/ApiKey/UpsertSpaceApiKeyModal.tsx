@@ -1,16 +1,11 @@
-import React, { useState } from 'react';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
-import { useAddSpaceApiKey } from './useAddSpaceApiKey'; // Ensure this path is correct
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
+import React, { useState } from 'react';
+import { useAddSpaceApiKey } from './useAddSpaceApiKey'; // Ensure this path is correct
 
-export default function UpsertSpaceApiKeyModal(props: {
-  space: SpaceWithIntegrationsFragment;
-  open: boolean;
-  onClose: () => void;
-  onUpdate: (space: any) => void;
-}) {
+export default function UpsertSpaceApiKeyModal(props: { space: SpaceWithIntegrationsDto; open: boolean; onClose: () => void; onUpdate: (space: any) => void }) {
   const [addingApiKey, setAddingApiKey] = useState(false);
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const { addApiKey } = useAddSpaceApiKey(props.space, props.onUpdate);

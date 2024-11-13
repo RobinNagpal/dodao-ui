@@ -1,12 +1,11 @@
 'use client';
 
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import ToggleWithIcon from '@dodao/web-core/components/core/toggles/ToggleWithIcon';
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import React from 'react';
-import { usePathname } from 'next/navigation';
 
-export default function ShowArchivedToggle(props: { space: SpaceWithIntegrationsFragment; showArchived: boolean }) {
+export default function ShowArchivedToggle(props: { space: SpaceWithIntegrationsDto; showArchived: boolean }) {
   const router = useRouter();
   const pathname = usePathname();
 

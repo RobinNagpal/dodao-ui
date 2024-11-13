@@ -1,9 +1,9 @@
 'use client';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import { Grid2Cols } from '@dodao/web-core/components/core/grids/Grid2Cols';
 import SpinnerWithText from '@dodao/web-core/components/core/loaders/SpinnerWithText';
 import {
   ByteRating,
-  SpaceWithIntegrationsFragment,
   ByteRatingsQuery,
   ConsolidatedByteRatingQuery,
   GuideRating,
@@ -23,7 +23,7 @@ import styles from './RatingsTable.module.scss';
 
 export interface RatingsTableProps {
   ratingType: 'Byte' | 'Guide';
-  space: SpaceWithIntegrationsFragment;
+  space: SpaceWithIntegrationsDto;
   ratingsResponse: ByteRatingsQuery | GuideRatingsQuery;
   consolidatedRatingsResponse: ConsolidatedByteRatingQuery | ConsolidatedGuideRatingQuery;
   name: String;

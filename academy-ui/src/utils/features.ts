@@ -1,6 +1,5 @@
-import { SpaceTypes } from '@/types/space/SpaceDto';
+import { SpaceTypes, SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import { PredefinedSpaces } from '@dodao/web-core/src/utils/constants/constants';
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import { compoundFeatures } from '@dodao/web-core/types/features/compoundFeatures';
 import { creditUnionAcademyFeatures } from '@dodao/web-core/types/features/creditUnionAcademyFeatures';
 import { dodaoAcademyFeatures } from '@dodao/web-core/types/features/dodaoAcademyFeatures';
@@ -55,7 +54,7 @@ export function getFeaturesArray(spaceId: string): FeatureItem[] {
   ];
 }
 
-export function getSortedFeaturesArray(space: SpaceWithIntegrationsFragment): FeatureItem[] {
+export function getSortedFeaturesArray(space: SpaceWithIntegrationsDto): FeatureItem[] {
   if (space?.type === SpaceTypes.TidbitsSite) {
     return [];
   }

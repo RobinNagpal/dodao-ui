@@ -1,8 +1,9 @@
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
 import SectionLoader from '@dodao/web-core/components/core/loaders/SectionLoader';
 import { Table, TableRow } from '@dodao/web-core/components/core/table/Table';
 import { ManageSpaceSubviews } from '@/components/spaces/manageSpaceSubviews';
-import { ScrapedUrlInfoFragmentFragment, SpaceWithIntegrationsFragment, useScrapedUrlInfosQuery } from '@/graphql/generated/generated-types';
+import { ScrapedUrlInfoFragmentFragment, useScrapedUrlInfosQuery } from '@/graphql/generated/generated-types';
 import moment from 'moment/moment';
 import Link from 'next/link';
 import React, { useState } from 'react';
@@ -19,7 +20,7 @@ function getIndexRunRows(discordRuns: ScrapedUrlInfoFragmentFragment[]): TableRo
   });
 }
 
-export default function WebsiteScrapedURLInfosTable(props: { space: SpaceWithIntegrationsFragment; websiteScrapingInfoId: string }) {
+export default function WebsiteScrapedURLInfosTable(props: { space: SpaceWithIntegrationsDto; websiteScrapingInfoId: string }) {
   const [viewCompleteTextModal, setViewCompleteTextModal] = useState<boolean>(false);
   const [websiteIndexingSpaceAndInfoId, setWebsiteIndexingSpaceAndInfoId] = useState<{ spaceId: string; scrapedUrlInfoId: string } | undefined>(undefined);
   const { data, loading } = useScrapedUrlInfosQuery({

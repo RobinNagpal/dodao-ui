@@ -1,8 +1,8 @@
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import Block from '@dodao/web-core/components/app/Block';
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import React from 'react';
 
-const NoByteCollections = ({ space }: { space: SpaceWithIntegrationsFragment }) => {
+const NoByteCollections = ({ space }: { space: SpaceWithIntegrationsDto }) => {
   return (
     <div className="mb-3 text-center">
       <Block className="pt-1">

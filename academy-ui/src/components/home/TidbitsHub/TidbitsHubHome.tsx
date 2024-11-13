@@ -1,13 +1,13 @@
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
+import React from 'react';
 import { Footer } from '../DoDAOHome/components/Footer';
+import Demos from './components/Demos';
 import { Faqs } from './components/Faqs';
 import { Hero } from './components/Hero';
 import { PrimaryFeatures } from './components/PrimaryFeatures';
 import { SecondaryFeatures } from './components/SecondaryFeatures';
-import React from 'react';
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
-import Demos from './components/Demos';
 
-export default function TidbitsHubHome({ space }: { space: SpaceWithIntegrationsFragment }) {
+export default function TidbitsHubHome({ space }: { space: SpaceWithIntegrationsDto }) {
   return (
     <>
       <Hero space={space!} />

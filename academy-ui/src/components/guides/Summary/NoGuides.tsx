@@ -1,9 +1,9 @@
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import Block from '@dodao/web-core/components/app/Block';
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import React from 'react';
 
 export interface NoGuidesProps {
-  space: SpaceWithIntegrationsFragment;
+  space: SpaceWithIntegrationsDto;
 }
 const NoGuides = ({ space }: NoGuidesProps) => {
   return (

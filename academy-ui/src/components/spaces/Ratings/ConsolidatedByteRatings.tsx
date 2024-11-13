@@ -1,8 +1,9 @@
 'use client';
 
 import styles from '@/components/app/Rating/Table/RatingsTable.module.scss';
-import { ConsolidatedByteRating, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { ConsolidatedByteRating } from '@/graphql/generated/generated-types';
 import { ConsolidatedByteRatingDto } from '@/types/bytes/ConsolidatedByteRatingDto';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import { Grid2Cols } from '@dodao/web-core/components/core/grids/Grid2Cols';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
@@ -49,7 +50,7 @@ function ConsolidatedRatings(props: { consolidatedRatings: ConsolidatedByteRatin
   );
 }
 
-export default function ConsolidatedByteRatings(props: { space: SpaceWithIntegrationsFragment }) {
+export default function ConsolidatedByteRatings(props: { space: SpaceWithIntegrationsDto }) {
   const { data: consolidatedRatings } = useFetchData<ConsolidatedByteRatingDto>(
     `${getBaseUrl()}/api/${props.space.id}/consolidated-byte-rating`,
     {},

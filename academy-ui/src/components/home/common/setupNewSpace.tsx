@@ -1,15 +1,15 @@
 'use client';
 
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import ButtonLarge from '@dodao/web-core/components/core/buttons/Button';
 import React from 'react';
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import EmailSetupNewSpaceModal from '@dodao/web-core/ui/auth/signup/components/EmailSetupNewSpaceModal';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { Session } from '@dodao/web-core/types/auth/Session';
 
 export interface setupNewSpaceButtonProps {
-  space: SpaceWithIntegrationsFragment;
+  space: SpaceWithIntegrationsDto;
 }
 
 export function SetupNewSpaceButton({ space }: setupNewSpaceButtonProps) {

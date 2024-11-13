@@ -7,7 +7,7 @@ import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsis
 import PageLoading from '@dodao/web-core/components/core/loaders/PageLoading';
 import GuideStepper from '@/components/guides/View/GuideStepper';
 import { useViewGuide } from '@/components/guides/View/useViewGuide';
-import { GuideFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { GuideFragment } from '@/graphql/generated/generated-types';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
@@ -18,7 +18,7 @@ import React, { useEffect, useMemo } from 'react';
 
 type GuideInformationProps = {
   guideIdAndStep: string[];
-  space: SpaceWithIntegrationsFragment;
+  space: SpaceWithIntegrationsDto;
   guide: GuideFragment;
 };
 

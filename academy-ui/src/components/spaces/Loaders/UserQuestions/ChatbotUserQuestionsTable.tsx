@@ -1,13 +1,9 @@
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
 import { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
 import { Table, TableRow } from '@dodao/web-core/components/core/table/Table';
 import UpsertChatbotUserQuestionModal from '@/components/spaces/Loaders/FAQs/UpsertChatbotUserQuestionModal';
-import {
-  ChatbotUserQuestionFragment,
-  SpaceWithIntegrationsFragment,
-  useChatbotUserQuestionsQuery,
-  useDeleteChatbotUserQuestionMutation,
-} from '@/graphql/generated/generated-types';
+import { ChatbotUserQuestionFragment, useChatbotUserQuestionsQuery, useDeleteChatbotUserQuestionMutation } from '@/graphql/generated/generated-types';
 import React, { useState } from 'react';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 
@@ -21,7 +17,7 @@ function getUserQuestionsTable(faqs: ChatbotUserQuestionFragment[]): TableRow[] 
   });
 }
 
-export function ChatbotUserQuestionsTable(props: { space: SpaceWithIntegrationsFragment }) {
+export function ChatbotUserQuestionsTable(props: { space: SpaceWithIntegrationsDto }) {
   const { data: chatbotUserQuestionsResponse } = useChatbotUserQuestionsQuery({
     variables: {
       spaceId: props.space.id,

@@ -4217,8 +4217,6 @@ export type AuthSettingsFragment = { __typename?: 'AuthSettings', enableLogin?: 
 
 export type SocialSettingsFragment = { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null };
 
-export type SpaceWithIntegrationsFragment = { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, type: string, skin: string, avatar?: string | null, domains: Array<string>, botDomains?: Array<string> | null, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, adminUsernamesV1: Array<{ __typename?: 'UsernameAndName', username: string, nameOfTheUser: string }>, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null, loadersInfo?: { __typename?: 'SpaceLoadersInfo', discourseUrl?: string | null, discordServerId?: string | null } | null, spaceApiKeys: Array<{ __typename?: 'SpaceApiKey', creator: string, apiKey?: string | null, lastFourLetters: string, lastUsed?: any | null } | null> } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, byteViewMode?: string | null }, themeColors?: { __typename?: 'ThemeColors', primaryColor: string, bgColor: string, textColor: string, linkColor: string, headingColor: string, borderColor: string, blockBg: string } | null, tidbitsHomepage?: { __typename?: 'TidbitsHomepage', heading: string, shortDescription: string } | null };
-
 export type SpaceSummaryFragment = { __typename?: 'Space', id: string, admins: Array<string>, adminUsernames: Array<string>, avatar?: string | null, creator: string, name: string, skin: string, domains: Array<string>, type: string };
 
 export type VercelDomainRecordFragment = { __typename?: 'VercelDomain', apexName: string, createdAt?: any | null, gitBranch?: string | null, name: string, projectId: string, redirect?: string | null, updatedAt?: any | null, verified: boolean, verification?: Array<{ __typename?: 'VercelVerification', type: string, domain: string, reason: string, value: string }> | null };
@@ -4229,27 +4227,6 @@ export type SpacesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type SpacesQuery = { __typename?: 'Query', spaces?: Array<{ __typename?: 'Space', id: string, admins: Array<string>, adminUsernames: Array<string>, avatar?: string | null, creator: string, name: string, skin: string, domains: Array<string>, type: string }> | null };
-
-export type ExtendedSpaceQueryVariables = Exact<{
-  spaceId: Scalars['String'];
-}>;
-
-
-export type ExtendedSpaceQuery = { __typename?: 'Query', space?: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, type: string, skin: string, avatar?: string | null, domains: Array<string>, botDomains?: Array<string> | null, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, adminUsernamesV1: Array<{ __typename?: 'UsernameAndName', username: string, nameOfTheUser: string }>, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null, loadersInfo?: { __typename?: 'SpaceLoadersInfo', discourseUrl?: string | null, discordServerId?: string | null } | null, spaceApiKeys: Array<{ __typename?: 'SpaceApiKey', creator: string, apiKey?: string | null, lastFourLetters: string, lastUsed?: any | null } | null> } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, byteViewMode?: string | null }, themeColors?: { __typename?: 'ThemeColors', primaryColor: string, bgColor: string, textColor: string, linkColor: string, headingColor: string, borderColor: string, blockBg: string } | null, tidbitsHomepage?: { __typename?: 'TidbitsHomepage', heading: string, shortDescription: string } | null } | null };
-
-export type GetSpaceFromCreatorQueryVariables = Exact<{
-  creatorUsername: Scalars['String'];
-}>;
-
-
-export type GetSpaceFromCreatorQuery = { __typename?: 'Query', getSpaceFromCreator?: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, type: string, skin: string, avatar?: string | null, domains: Array<string>, botDomains?: Array<string> | null, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, adminUsernamesV1: Array<{ __typename?: 'UsernameAndName', username: string, nameOfTheUser: string }>, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null, loadersInfo?: { __typename?: 'SpaceLoadersInfo', discourseUrl?: string | null, discordServerId?: string | null } | null, spaceApiKeys: Array<{ __typename?: 'SpaceApiKey', creator: string, apiKey?: string | null, lastFourLetters: string, lastUsed?: any | null } | null> } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, byteViewMode?: string | null }, themeColors?: { __typename?: 'ThemeColors', primaryColor: string, bgColor: string, textColor: string, linkColor: string, headingColor: string, borderColor: string, blockBg: string } | null, tidbitsHomepage?: { __typename?: 'TidbitsHomepage', heading: string, shortDescription: string } | null } | null };
-
-export type ExtendedSpaceByDomainQueryVariables = Exact<{
-  domain: Scalars['String'];
-}>;
-
-
-export type ExtendedSpaceByDomainQuery = { __typename?: 'Query', space?: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, type: string, skin: string, avatar?: string | null, domains: Array<string>, botDomains?: Array<string> | null, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, adminUsernamesV1: Array<{ __typename?: 'UsernameAndName', username: string, nameOfTheUser: string }>, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null, loadersInfo?: { __typename?: 'SpaceLoadersInfo', discourseUrl?: string | null, discordServerId?: string | null } | null, spaceApiKeys: Array<{ __typename?: 'SpaceApiKey', creator: string, apiKey?: string | null, lastFourLetters: string, lastUsed?: any | null } | null> } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, byteViewMode?: string | null }, themeColors?: { __typename?: 'ThemeColors', primaryColor: string, bgColor: string, textColor: string, linkColor: string, headingColor: string, borderColor: string, blockBg: string } | null, tidbitsHomepage?: { __typename?: 'TidbitsHomepage', heading: string, shortDescription: string } | null } | null };
 
 export type SpaceDiscordGuildQueryVariables = Exact<{
   spaceId: Scalars['String'];
@@ -4271,23 +4248,6 @@ export type VercelDomainRecordQueryVariables = Exact<{
 
 
 export type VercelDomainRecordQuery = { __typename?: 'Query', vercelDomainRecord?: { __typename?: 'VercelDomain', apexName: string, createdAt?: any | null, gitBranch?: string | null, name: string, projectId: string, redirect?: string | null, updatedAt?: any | null, verified: boolean, verification?: Array<{ __typename?: 'VercelVerification', type: string, domain: string, reason: string, value: string }> | null } | null };
-
-export type UpsertSpaceFeaturesMutationVariables = Exact<{
-  spaceId: Scalars['String'];
-  features: Array<Scalars['String']> | Scalars['String'];
-}>;
-
-
-export type UpsertSpaceFeaturesMutation = { __typename?: 'Mutation', payload: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, type: string, skin: string, avatar?: string | null, domains: Array<string>, botDomains?: Array<string> | null, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, adminUsernamesV1: Array<{ __typename?: 'UsernameAndName', username: string, nameOfTheUser: string }>, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null, loadersInfo?: { __typename?: 'SpaceLoadersInfo', discourseUrl?: string | null, discordServerId?: string | null } | null, spaceApiKeys: Array<{ __typename?: 'SpaceApiKey', creator: string, apiKey?: string | null, lastFourLetters: string, lastUsed?: any | null } | null> } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, byteViewMode?: string | null }, themeColors?: { __typename?: 'ThemeColors', primaryColor: string, bgColor: string, textColor: string, linkColor: string, headingColor: string, borderColor: string, blockBg: string } | null, tidbitsHomepage?: { __typename?: 'TidbitsHomepage', heading: string, shortDescription: string } | null } };
-
-export type AddNewApiKeyMutationVariables = Exact<{
-  spaceId: Scalars['String'];
-  creator: Scalars['String'];
-  apiKey: Scalars['String'];
-}>;
-
-
-export type AddNewApiKeyMutation = { __typename?: 'Mutation', payload: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, type: string, skin: string, avatar?: string | null, domains: Array<string>, botDomains?: Array<string> | null, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, adminUsernamesV1: Array<{ __typename?: 'UsernameAndName', username: string, nameOfTheUser: string }>, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null, loadersInfo?: { __typename?: 'SpaceLoadersInfo', discourseUrl?: string | null, discordServerId?: string | null } | null, spaceApiKeys: Array<{ __typename?: 'SpaceApiKey', creator: string, apiKey?: string | null, lastFourLetters: string, lastUsed?: any | null } | null> } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, byteViewMode?: string | null }, themeColors?: { __typename?: 'ThemeColors', primaryColor: string, bgColor: string, textColor: string, linkColor: string, headingColor: string, borderColor: string, blockBg: string } | null, tidbitsHomepage?: { __typename?: 'TidbitsHomepage', heading: string, shortDescription: string } | null } };
 
 export type DropPineconeNamespaceMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -4337,27 +4297,6 @@ export type UpsertSpaceAcademyRepositoryMutationVariables = Exact<{
 
 export type UpsertSpaceAcademyRepositoryMutation = { __typename?: 'Mutation', upsertSpaceAcademyRepository: { __typename?: 'Space', id: string } };
 
-export type UpdateSpaceMutationVariables = Exact<{
-  spaceInput: UpsertSpaceInput;
-}>;
-
-
-export type UpdateSpaceMutation = { __typename?: 'Mutation', updateSpace: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, type: string, skin: string, avatar?: string | null, domains: Array<string>, botDomains?: Array<string> | null, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, adminUsernamesV1: Array<{ __typename?: 'UsernameAndName', username: string, nameOfTheUser: string }>, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null, loadersInfo?: { __typename?: 'SpaceLoadersInfo', discourseUrl?: string | null, discordServerId?: string | null } | null, spaceApiKeys: Array<{ __typename?: 'SpaceApiKey', creator: string, apiKey?: string | null, lastFourLetters: string, lastUsed?: any | null } | null> } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, byteViewMode?: string | null }, themeColors?: { __typename?: 'ThemeColors', primaryColor: string, bgColor: string, textColor: string, linkColor: string, headingColor: string, borderColor: string, blockBg: string } | null, tidbitsHomepage?: { __typename?: 'TidbitsHomepage', heading: string, shortDescription: string } | null } };
-
-export type CreateSpaceMutationVariables = Exact<{
-  spaceInput: UpsertSpaceInput;
-}>;
-
-
-export type CreateSpaceMutation = { __typename?: 'Mutation', createSpace: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, type: string, skin: string, avatar?: string | null, domains: Array<string>, botDomains?: Array<string> | null, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, adminUsernamesV1: Array<{ __typename?: 'UsernameAndName', username: string, nameOfTheUser: string }>, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null, loadersInfo?: { __typename?: 'SpaceLoadersInfo', discourseUrl?: string | null, discordServerId?: string | null } | null, spaceApiKeys: Array<{ __typename?: 'SpaceApiKey', creator: string, apiKey?: string | null, lastFourLetters: string, lastUsed?: any | null } | null> } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, byteViewMode?: string | null }, themeColors?: { __typename?: 'ThemeColors', primaryColor: string, bgColor: string, textColor: string, linkColor: string, headingColor: string, borderColor: string, blockBg: string } | null, tidbitsHomepage?: { __typename?: 'TidbitsHomepage', heading: string, shortDescription: string } | null } };
-
-export type CreateNewTidbitSpaceMutationVariables = Exact<{
-  spaceInput: UpsertSpaceInput;
-}>;
-
-
-export type CreateNewTidbitSpaceMutation = { __typename?: 'Mutation', createNewTidbitSpace: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, type: string, skin: string, avatar?: string | null, domains: Array<string>, botDomains?: Array<string> | null, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, adminUsernamesV1: Array<{ __typename?: 'UsernameAndName', username: string, nameOfTheUser: string }>, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null, loadersInfo?: { __typename?: 'SpaceLoadersInfo', discourseUrl?: string | null, discordServerId?: string | null } | null, spaceApiKeys: Array<{ __typename?: 'SpaceApiKey', creator: string, apiKey?: string | null, lastFourLetters: string, lastUsed?: any | null } | null> } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, byteViewMode?: string | null }, themeColors?: { __typename?: 'ThemeColors', primaryColor: string, bgColor: string, textColor: string, linkColor: string, headingColor: string, borderColor: string, blockBg: string } | null, tidbitsHomepage?: { __typename?: 'TidbitsHomepage', heading: string, shortDescription: string } | null } };
-
 export type UpsertDomainRecordsMutationVariables = Exact<{
   spaceId: Scalars['String'];
 }>;
@@ -4372,68 +4311,12 @@ export type ReloadAcademyRepoMutationVariables = Exact<{
 
 export type ReloadAcademyRepoMutation = { __typename?: 'Mutation', reloadAcademyRepository: boolean };
 
-export type UpdateSpaceGuideSettingsMutationVariables = Exact<{
-  spaceId: Scalars['String'];
-  input: GuideSettingsInput;
-}>;
-
-
-export type UpdateSpaceGuideSettingsMutation = { __typename?: 'Mutation', payload: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, type: string, skin: string, avatar?: string | null, domains: Array<string>, botDomains?: Array<string> | null, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, adminUsernamesV1: Array<{ __typename?: 'UsernameAndName', username: string, nameOfTheUser: string }>, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null, loadersInfo?: { __typename?: 'SpaceLoadersInfo', discourseUrl?: string | null, discordServerId?: string | null } | null, spaceApiKeys: Array<{ __typename?: 'SpaceApiKey', creator: string, apiKey?: string | null, lastFourLetters: string, lastUsed?: any | null } | null> } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, byteViewMode?: string | null }, themeColors?: { __typename?: 'ThemeColors', primaryColor: string, bgColor: string, textColor: string, linkColor: string, headingColor: string, borderColor: string, blockBg: string } | null, tidbitsHomepage?: { __typename?: 'TidbitsHomepage', heading: string, shortDescription: string } | null } };
-
-export type UpdateSpaceAuthSettingsMutationVariables = Exact<{
-  spaceId: Scalars['String'];
-  input: AuthSettingsInput;
-}>;
-
-
-export type UpdateSpaceAuthSettingsMutation = { __typename?: 'Mutation', payload: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, type: string, skin: string, avatar?: string | null, domains: Array<string>, botDomains?: Array<string> | null, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, adminUsernamesV1: Array<{ __typename?: 'UsernameAndName', username: string, nameOfTheUser: string }>, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null, loadersInfo?: { __typename?: 'SpaceLoadersInfo', discourseUrl?: string | null, discordServerId?: string | null } | null, spaceApiKeys: Array<{ __typename?: 'SpaceApiKey', creator: string, apiKey?: string | null, lastFourLetters: string, lastUsed?: any | null } | null> } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, byteViewMode?: string | null }, themeColors?: { __typename?: 'ThemeColors', primaryColor: string, bgColor: string, textColor: string, linkColor: string, headingColor: string, borderColor: string, blockBg: string } | null, tidbitsHomepage?: { __typename?: 'TidbitsHomepage', heading: string, shortDescription: string } | null } };
-
-export type UpdateSpaceSocialSettingsMutationVariables = Exact<{
-  spaceId: Scalars['String'];
-  input: SocialSettingsInput;
-}>;
-
-
-export type UpdateSpaceSocialSettingsMutation = { __typename?: 'Mutation', payload: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, type: string, skin: string, avatar?: string | null, domains: Array<string>, botDomains?: Array<string> | null, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, adminUsernamesV1: Array<{ __typename?: 'UsernameAndName', username: string, nameOfTheUser: string }>, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null, loadersInfo?: { __typename?: 'SpaceLoadersInfo', discourseUrl?: string | null, discordServerId?: string | null } | null, spaceApiKeys: Array<{ __typename?: 'SpaceApiKey', creator: string, apiKey?: string | null, lastFourLetters: string, lastUsed?: any | null } | null> } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, byteViewMode?: string | null }, themeColors?: { __typename?: 'ThemeColors', primaryColor: string, bgColor: string, textColor: string, linkColor: string, headingColor: string, borderColor: string, blockBg: string } | null, tidbitsHomepage?: { __typename?: 'TidbitsHomepage', heading: string, shortDescription: string } | null } };
-
 export type SendEmailMutationVariables = Exact<{
   input: SendEmailInput;
 }>;
 
 
 export type SendEmailMutation = { __typename?: 'Mutation', payload: boolean };
-
-export type UpsertSpaceLoaderInfoMutationVariables = Exact<{
-  spaceId: Scalars['String'];
-  input: SpaceLoadersInfoInput;
-}>;
-
-
-export type UpsertSpaceLoaderInfoMutation = { __typename?: 'Mutation', payload: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, type: string, skin: string, avatar?: string | null, domains: Array<string>, botDomains?: Array<string> | null, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, adminUsernamesV1: Array<{ __typename?: 'UsernameAndName', username: string, nameOfTheUser: string }>, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null, loadersInfo?: { __typename?: 'SpaceLoadersInfo', discourseUrl?: string | null, discordServerId?: string | null } | null, spaceApiKeys: Array<{ __typename?: 'SpaceApiKey', creator: string, apiKey?: string | null, lastFourLetters: string, lastUsed?: any | null } | null> } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, byteViewMode?: string | null }, themeColors?: { __typename?: 'ThemeColors', primaryColor: string, bgColor: string, textColor: string, linkColor: string, headingColor: string, borderColor: string, blockBg: string } | null, tidbitsHomepage?: { __typename?: 'TidbitsHomepage', heading: string, shortDescription: string } | null } };
-
-export type UpdateThemeColorsMutationVariables = Exact<{
-  spaceId: Scalars['ID'];
-  themeColors: ThemeColorsInput;
-}>;
-
-
-export type UpdateThemeColorsMutation = { __typename?: 'Mutation', payload: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, type: string, skin: string, avatar?: string | null, domains: Array<string>, botDomains?: Array<string> | null, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, adminUsernamesV1: Array<{ __typename?: 'UsernameAndName', username: string, nameOfTheUser: string }>, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null, loadersInfo?: { __typename?: 'SpaceLoadersInfo', discourseUrl?: string | null, discordServerId?: string | null } | null, spaceApiKeys: Array<{ __typename?: 'SpaceApiKey', creator: string, apiKey?: string | null, lastFourLetters: string, lastUsed?: any | null } | null> } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, byteViewMode?: string | null }, themeColors?: { __typename?: 'ThemeColors', primaryColor: string, bgColor: string, textColor: string, linkColor: string, headingColor: string, borderColor: string, blockBg: string } | null, tidbitsHomepage?: { __typename?: 'TidbitsHomepage', heading: string, shortDescription: string } | null } };
-
-export type UpdateTidbitsHomepageMutationVariables = Exact<{
-  spaceId: Scalars['ID'];
-  tidbitsHomepage: TidbitsHomepageInput;
-}>;
-
-
-export type UpdateTidbitsHomepageMutation = { __typename?: 'Mutation', payload: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, type: string, skin: string, avatar?: string | null, domains: Array<string>, botDomains?: Array<string> | null, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, adminUsernamesV1: Array<{ __typename?: 'UsernameAndName', username: string, nameOfTheUser: string }>, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null, loadersInfo?: { __typename?: 'SpaceLoadersInfo', discourseUrl?: string | null, discordServerId?: string | null } | null, spaceApiKeys: Array<{ __typename?: 'SpaceApiKey', creator: string, apiKey?: string | null, lastFourLetters: string, lastUsed?: any | null } | null> } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, byteViewMode?: string | null }, themeColors?: { __typename?: 'ThemeColors', primaryColor: string, bgColor: string, textColor: string, linkColor: string, headingColor: string, borderColor: string, blockBg: string } | null, tidbitsHomepage?: { __typename?: 'TidbitsHomepage', heading: string, shortDescription: string } | null } };
-
-export type UpdateSpaceCreatorMutationVariables = Exact<{
-  spaceId: Scalars['String'];
-  id: Scalars['String'];
-}>;
-
-
-export type UpdateSpaceCreatorMutation = { __typename?: 'Mutation', updateSpaceCreator: { __typename?: 'Space', id: string, creator: string, features: Array<string>, name: string, type: string, skin: string, avatar?: string | null, domains: Array<string>, botDomains?: Array<string> | null, admins: Array<string>, adminUsernames: Array<string>, inviteLinks?: { __typename?: 'SpaceInviteLinks', discordInviteLink?: string | null, showAnimatedButtonForDiscord?: boolean | null, telegramInviteLink?: string | null, showAnimatedButtonForTelegram?: boolean | null } | null, adminUsernamesV1: Array<{ __typename?: 'UsernameAndName', username: string, nameOfTheUser: string }>, spaceIntegrations?: { __typename?: 'SpaceIntegrations', academyRepository?: string | null, discordGuildId?: string | null, projectGalaxyTokenLastFour?: string | null, gitGuideRepositories?: Array<{ __typename?: 'SpaceGitRepository', authenticationToken?: string | null, gitRepoType?: string | null, repoUrl: string }> | null, gnosisSafeWallets?: Array<{ __typename?: 'GnosisSafeWallet', id: string, chainId: number, order: number, tokenContractAddress: string, walletAddress: string, walletName: string }> | null, loadersInfo?: { __typename?: 'SpaceLoadersInfo', discourseUrl?: string | null, discordServerId?: string | null } | null, spaceApiKeys: Array<{ __typename?: 'SpaceApiKey', creator: string, apiKey?: string | null, lastFourLetters: string, lastUsed?: any | null } | null> } | null, authSettings: { __typename?: 'AuthSettings', loginOptions?: Array<string> | null, enableLogin?: boolean | null }, socialSettings: { __typename?: 'SocialSettings', linkedSharePdfBackgroundImage?: string | null }, guideSettings: { __typename?: 'GuideSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, showIncorrectAfterEachStep?: boolean | null, showIncorrectOnCompletion?: boolean | null }, byteSettings: { __typename?: 'ByteSettings', askForLoginToSubmit?: boolean | null, captureRating?: boolean | null, showCategoriesInSidebar?: boolean | null, byteViewMode?: string | null }, themeColors?: { __typename?: 'ThemeColors', primaryColor: string, bgColor: string, textColor: string, linkColor: string, headingColor: string, borderColor: string, blockBg: string } | null, tidbitsHomepage?: { __typename?: 'TidbitsHomepage', heading: string, shortDescription: string } | null } };
 
 export type UpsertRoute53RecordMutationVariables = Exact<{
   spaceId: Scalars['String'];
@@ -5381,92 +5264,6 @@ export const AuthSettingsFragmentDoc = gql`
 export const SocialSettingsFragmentDoc = gql`
     fragment SocialSettings on SocialSettings {
   linkedSharePdfBackgroundImage
-}
-    `;
-export const SpaceWithIntegrationsFragmentDoc = gql`
-    fragment SpaceWithIntegrations on Space {
-  id
-  creator
-  features
-  name
-  type
-  skin
-  avatar
-  domains
-  botDomains
-  inviteLinks {
-    discordInviteLink
-    showAnimatedButtonForDiscord
-    telegramInviteLink
-    showAnimatedButtonForTelegram
-  }
-  admins
-  adminUsernames
-  adminUsernamesV1 {
-    username
-    nameOfTheUser
-  }
-  spaceIntegrations {
-    academyRepository
-    discordGuildId
-    gitGuideRepositories {
-      authenticationToken
-      gitRepoType
-      repoUrl
-    }
-    gnosisSafeWallets {
-      id
-      chainId
-      order
-      tokenContractAddress
-      walletAddress
-      walletName
-    }
-    projectGalaxyTokenLastFour
-    loadersInfo {
-      discourseUrl
-      discordServerId
-    }
-    spaceApiKeys {
-      creator
-      apiKey
-      lastFourLetters
-      lastUsed
-    }
-  }
-  authSettings {
-    loginOptions
-    enableLogin
-  }
-  socialSettings {
-    linkedSharePdfBackgroundImage
-  }
-  guideSettings {
-    askForLoginToSubmit
-    captureRating
-    showCategoriesInSidebar
-    showIncorrectAfterEachStep
-    showIncorrectOnCompletion
-  }
-  byteSettings {
-    askForLoginToSubmit
-    captureRating
-    showCategoriesInSidebar
-    byteViewMode
-  }
-  themeColors {
-    primaryColor
-    bgColor
-    textColor
-    linkColor
-    headingColor
-    borderColor
-    blockBg
-  }
-  tidbitsHomepage {
-    heading
-    shortDescription
-  }
 }
     `;
 export const SpaceSummaryFragmentDoc = gql`
@@ -10397,120 +10194,6 @@ export type SpacesQueryResult = Apollo.QueryResult<SpacesQuery, SpacesQueryVaria
 export function refetchSpacesQuery(variables?: SpacesQueryVariables) {
       return { query: SpacesDocument, variables: variables }
     }
-export const ExtendedSpaceDocument = gql`
-    query ExtendedSpace($spaceId: String!) {
-  space(id: $spaceId) {
-    ...SpaceWithIntegrations
-  }
-}
-    ${SpaceWithIntegrationsFragmentDoc}`;
-
-/**
- * __useExtendedSpaceQuery__
- *
- * To run a query within a React component, call `useExtendedSpaceQuery` and pass it any options that fit your needs.
- * When your component renders, `useExtendedSpaceQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useExtendedSpaceQuery({
- *   variables: {
- *      spaceId: // value for 'spaceId'
- *   },
- * });
- */
-export function useExtendedSpaceQuery(baseOptions: Apollo.QueryHookOptions<ExtendedSpaceQuery, ExtendedSpaceQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<ExtendedSpaceQuery, ExtendedSpaceQueryVariables>(ExtendedSpaceDocument, options);
-      }
-export function useExtendedSpaceLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ExtendedSpaceQuery, ExtendedSpaceQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<ExtendedSpaceQuery, ExtendedSpaceQueryVariables>(ExtendedSpaceDocument, options);
-        }
-export type ExtendedSpaceQueryHookResult = ReturnType<typeof useExtendedSpaceQuery>;
-export type ExtendedSpaceLazyQueryHookResult = ReturnType<typeof useExtendedSpaceLazyQuery>;
-export type ExtendedSpaceQueryResult = Apollo.QueryResult<ExtendedSpaceQuery, ExtendedSpaceQueryVariables>;
-export function refetchExtendedSpaceQuery(variables: ExtendedSpaceQueryVariables) {
-      return { query: ExtendedSpaceDocument, variables: variables }
-    }
-export const GetSpaceFromCreatorDocument = gql`
-    query GetSpaceFromCreator($creatorUsername: String!) {
-  getSpaceFromCreator(creatorUsername: $creatorUsername) {
-    ...SpaceWithIntegrations
-  }
-}
-    ${SpaceWithIntegrationsFragmentDoc}`;
-
-/**
- * __useGetSpaceFromCreatorQuery__
- *
- * To run a query within a React component, call `useGetSpaceFromCreatorQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetSpaceFromCreatorQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetSpaceFromCreatorQuery({
- *   variables: {
- *      creatorUsername: // value for 'creatorUsername'
- *   },
- * });
- */
-export function useGetSpaceFromCreatorQuery(baseOptions: Apollo.QueryHookOptions<GetSpaceFromCreatorQuery, GetSpaceFromCreatorQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetSpaceFromCreatorQuery, GetSpaceFromCreatorQueryVariables>(GetSpaceFromCreatorDocument, options);
-      }
-export function useGetSpaceFromCreatorLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetSpaceFromCreatorQuery, GetSpaceFromCreatorQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetSpaceFromCreatorQuery, GetSpaceFromCreatorQueryVariables>(GetSpaceFromCreatorDocument, options);
-        }
-export type GetSpaceFromCreatorQueryHookResult = ReturnType<typeof useGetSpaceFromCreatorQuery>;
-export type GetSpaceFromCreatorLazyQueryHookResult = ReturnType<typeof useGetSpaceFromCreatorLazyQuery>;
-export type GetSpaceFromCreatorQueryResult = Apollo.QueryResult<GetSpaceFromCreatorQuery, GetSpaceFromCreatorQueryVariables>;
-export function refetchGetSpaceFromCreatorQuery(variables: GetSpaceFromCreatorQueryVariables) {
-      return { query: GetSpaceFromCreatorDocument, variables: variables }
-    }
-export const ExtendedSpaceByDomainDocument = gql`
-    query ExtendedSpaceByDomain($domain: String!) {
-  space(domain: $domain) {
-    ...SpaceWithIntegrations
-  }
-}
-    ${SpaceWithIntegrationsFragmentDoc}`;
-
-/**
- * __useExtendedSpaceByDomainQuery__
- *
- * To run a query within a React component, call `useExtendedSpaceByDomainQuery` and pass it any options that fit your needs.
- * When your component renders, `useExtendedSpaceByDomainQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useExtendedSpaceByDomainQuery({
- *   variables: {
- *      domain: // value for 'domain'
- *   },
- * });
- */
-export function useExtendedSpaceByDomainQuery(baseOptions: Apollo.QueryHookOptions<ExtendedSpaceByDomainQuery, ExtendedSpaceByDomainQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<ExtendedSpaceByDomainQuery, ExtendedSpaceByDomainQueryVariables>(ExtendedSpaceByDomainDocument, options);
-      }
-export function useExtendedSpaceByDomainLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ExtendedSpaceByDomainQuery, ExtendedSpaceByDomainQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<ExtendedSpaceByDomainQuery, ExtendedSpaceByDomainQueryVariables>(ExtendedSpaceByDomainDocument, options);
-        }
-export type ExtendedSpaceByDomainQueryHookResult = ReturnType<typeof useExtendedSpaceByDomainQuery>;
-export type ExtendedSpaceByDomainLazyQueryHookResult = ReturnType<typeof useExtendedSpaceByDomainLazyQuery>;
-export type ExtendedSpaceByDomainQueryResult = Apollo.QueryResult<ExtendedSpaceByDomainQuery, ExtendedSpaceByDomainQueryVariables>;
-export function refetchExtendedSpaceByDomainQuery(variables: ExtendedSpaceByDomainQueryVariables) {
-      return { query: ExtendedSpaceByDomainDocument, variables: variables }
-    }
 export const SpaceDiscordGuildDocument = gql`
     query SpaceDiscordGuild($spaceId: String!) {
   payload: spaceDiscordGuild(spaceId: $spaceId)
@@ -10623,75 +10306,6 @@ export type VercelDomainRecordQueryResult = Apollo.QueryResult<VercelDomainRecor
 export function refetchVercelDomainRecordQuery(variables: VercelDomainRecordQueryVariables) {
       return { query: VercelDomainRecordDocument, variables: variables }
     }
-export const UpsertSpaceFeaturesDocument = gql`
-    mutation UpsertSpaceFeatures($spaceId: String!, $features: [String!]!) {
-  payload: upsertSpaceFeatures(spaceId: $spaceId, features: $features) {
-    ...SpaceWithIntegrations
-  }
-}
-    ${SpaceWithIntegrationsFragmentDoc}`;
-export type UpsertSpaceFeaturesMutationFn = Apollo.MutationFunction<UpsertSpaceFeaturesMutation, UpsertSpaceFeaturesMutationVariables>;
-
-/**
- * __useUpsertSpaceFeaturesMutation__
- *
- * To run a mutation, you first call `useUpsertSpaceFeaturesMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpsertSpaceFeaturesMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [upsertSpaceFeaturesMutation, { data, loading, error }] = useUpsertSpaceFeaturesMutation({
- *   variables: {
- *      spaceId: // value for 'spaceId'
- *      features: // value for 'features'
- *   },
- * });
- */
-export function useUpsertSpaceFeaturesMutation(baseOptions?: Apollo.MutationHookOptions<UpsertSpaceFeaturesMutation, UpsertSpaceFeaturesMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpsertSpaceFeaturesMutation, UpsertSpaceFeaturesMutationVariables>(UpsertSpaceFeaturesDocument, options);
-      }
-export type UpsertSpaceFeaturesMutationHookResult = ReturnType<typeof useUpsertSpaceFeaturesMutation>;
-export type UpsertSpaceFeaturesMutationResult = Apollo.MutationResult<UpsertSpaceFeaturesMutation>;
-export type UpsertSpaceFeaturesMutationOptions = Apollo.BaseMutationOptions<UpsertSpaceFeaturesMutation, UpsertSpaceFeaturesMutationVariables>;
-export const AddNewApiKeyDocument = gql`
-    mutation AddNewApiKey($spaceId: String!, $creator: String!, $apiKey: String!) {
-  payload: addNewApiKey(spaceId: $spaceId, creator: $creator, apiKey: $apiKey) {
-    ...SpaceWithIntegrations
-  }
-}
-    ${SpaceWithIntegrationsFragmentDoc}`;
-export type AddNewApiKeyMutationFn = Apollo.MutationFunction<AddNewApiKeyMutation, AddNewApiKeyMutationVariables>;
-
-/**
- * __useAddNewApiKeyMutation__
- *
- * To run a mutation, you first call `useAddNewApiKeyMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useAddNewApiKeyMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [addNewApiKeyMutation, { data, loading, error }] = useAddNewApiKeyMutation({
- *   variables: {
- *      spaceId: // value for 'spaceId'
- *      creator: // value for 'creator'
- *      apiKey: // value for 'apiKey'
- *   },
- * });
- */
-export function useAddNewApiKeyMutation(baseOptions?: Apollo.MutationHookOptions<AddNewApiKeyMutation, AddNewApiKeyMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<AddNewApiKeyMutation, AddNewApiKeyMutationVariables>(AddNewApiKeyDocument, options);
-      }
-export type AddNewApiKeyMutationHookResult = ReturnType<typeof useAddNewApiKeyMutation>;
-export type AddNewApiKeyMutationResult = Apollo.MutationResult<AddNewApiKeyMutation>;
-export type AddNewApiKeyMutationOptions = Apollo.BaseMutationOptions<AddNewApiKeyMutation, AddNewApiKeyMutationVariables>;
 export const DropPineconeNamespaceDocument = gql`
     mutation DropPineconeNamespace($spaceId: String!) {
   dropPineconeNamespace(spaceId: $spaceId)
@@ -10900,105 +10514,6 @@ export function useUpsertSpaceAcademyRepositoryMutation(baseOptions?: Apollo.Mut
 export type UpsertSpaceAcademyRepositoryMutationHookResult = ReturnType<typeof useUpsertSpaceAcademyRepositoryMutation>;
 export type UpsertSpaceAcademyRepositoryMutationResult = Apollo.MutationResult<UpsertSpaceAcademyRepositoryMutation>;
 export type UpsertSpaceAcademyRepositoryMutationOptions = Apollo.BaseMutationOptions<UpsertSpaceAcademyRepositoryMutation, UpsertSpaceAcademyRepositoryMutationVariables>;
-export const UpdateSpaceDocument = gql`
-    mutation UpdateSpace($spaceInput: UpsertSpaceInput!) {
-  updateSpace(spaceInput: $spaceInput) {
-    ...SpaceWithIntegrations
-  }
-}
-    ${SpaceWithIntegrationsFragmentDoc}`;
-export type UpdateSpaceMutationFn = Apollo.MutationFunction<UpdateSpaceMutation, UpdateSpaceMutationVariables>;
-
-/**
- * __useUpdateSpaceMutation__
- *
- * To run a mutation, you first call `useUpdateSpaceMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateSpaceMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [updateSpaceMutation, { data, loading, error }] = useUpdateSpaceMutation({
- *   variables: {
- *      spaceInput: // value for 'spaceInput'
- *   },
- * });
- */
-export function useUpdateSpaceMutation(baseOptions?: Apollo.MutationHookOptions<UpdateSpaceMutation, UpdateSpaceMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateSpaceMutation, UpdateSpaceMutationVariables>(UpdateSpaceDocument, options);
-      }
-export type UpdateSpaceMutationHookResult = ReturnType<typeof useUpdateSpaceMutation>;
-export type UpdateSpaceMutationResult = Apollo.MutationResult<UpdateSpaceMutation>;
-export type UpdateSpaceMutationOptions = Apollo.BaseMutationOptions<UpdateSpaceMutation, UpdateSpaceMutationVariables>;
-export const CreateSpaceDocument = gql`
-    mutation CreateSpace($spaceInput: UpsertSpaceInput!) {
-  createSpace(spaceInput: $spaceInput) {
-    ...SpaceWithIntegrations
-  }
-}
-    ${SpaceWithIntegrationsFragmentDoc}`;
-export type CreateSpaceMutationFn = Apollo.MutationFunction<CreateSpaceMutation, CreateSpaceMutationVariables>;
-
-/**
- * __useCreateSpaceMutation__
- *
- * To run a mutation, you first call `useCreateSpaceMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateSpaceMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createSpaceMutation, { data, loading, error }] = useCreateSpaceMutation({
- *   variables: {
- *      spaceInput: // value for 'spaceInput'
- *   },
- * });
- */
-export function useCreateSpaceMutation(baseOptions?: Apollo.MutationHookOptions<CreateSpaceMutation, CreateSpaceMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateSpaceMutation, CreateSpaceMutationVariables>(CreateSpaceDocument, options);
-      }
-export type CreateSpaceMutationHookResult = ReturnType<typeof useCreateSpaceMutation>;
-export type CreateSpaceMutationResult = Apollo.MutationResult<CreateSpaceMutation>;
-export type CreateSpaceMutationOptions = Apollo.BaseMutationOptions<CreateSpaceMutation, CreateSpaceMutationVariables>;
-export const CreateNewTidbitSpaceDocument = gql`
-    mutation CreateNewTidbitSpace($spaceInput: UpsertSpaceInput!) {
-  createNewTidbitSpace(spaceInput: $spaceInput) {
-    ...SpaceWithIntegrations
-  }
-}
-    ${SpaceWithIntegrationsFragmentDoc}`;
-export type CreateNewTidbitSpaceMutationFn = Apollo.MutationFunction<CreateNewTidbitSpaceMutation, CreateNewTidbitSpaceMutationVariables>;
-
-/**
- * __useCreateNewTidbitSpaceMutation__
- *
- * To run a mutation, you first call `useCreateNewTidbitSpaceMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateNewTidbitSpaceMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createNewTidbitSpaceMutation, { data, loading, error }] = useCreateNewTidbitSpaceMutation({
- *   variables: {
- *      spaceInput: // value for 'spaceInput'
- *   },
- * });
- */
-export function useCreateNewTidbitSpaceMutation(baseOptions?: Apollo.MutationHookOptions<CreateNewTidbitSpaceMutation, CreateNewTidbitSpaceMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateNewTidbitSpaceMutation, CreateNewTidbitSpaceMutationVariables>(CreateNewTidbitSpaceDocument, options);
-      }
-export type CreateNewTidbitSpaceMutationHookResult = ReturnType<typeof useCreateNewTidbitSpaceMutation>;
-export type CreateNewTidbitSpaceMutationResult = Apollo.MutationResult<CreateNewTidbitSpaceMutation>;
-export type CreateNewTidbitSpaceMutationOptions = Apollo.BaseMutationOptions<CreateNewTidbitSpaceMutation, CreateNewTidbitSpaceMutationVariables>;
 export const UpsertDomainRecordsDocument = gql`
     mutation UpsertDomainRecords($spaceId: String!) {
   upsertDomainRecords(spaceId: $spaceId) {
@@ -11069,108 +10584,6 @@ export function useReloadAcademyRepoMutation(baseOptions?: Apollo.MutationHookOp
 export type ReloadAcademyRepoMutationHookResult = ReturnType<typeof useReloadAcademyRepoMutation>;
 export type ReloadAcademyRepoMutationResult = Apollo.MutationResult<ReloadAcademyRepoMutation>;
 export type ReloadAcademyRepoMutationOptions = Apollo.BaseMutationOptions<ReloadAcademyRepoMutation, ReloadAcademyRepoMutationVariables>;
-export const UpdateSpaceGuideSettingsDocument = gql`
-    mutation UpdateSpaceGuideSettings($spaceId: String!, $input: GuideSettingsInput!) {
-  payload: updateGuideSettings(spaceId: $spaceId, input: $input) {
-    ...SpaceWithIntegrations
-  }
-}
-    ${SpaceWithIntegrationsFragmentDoc}`;
-export type UpdateSpaceGuideSettingsMutationFn = Apollo.MutationFunction<UpdateSpaceGuideSettingsMutation, UpdateSpaceGuideSettingsMutationVariables>;
-
-/**
- * __useUpdateSpaceGuideSettingsMutation__
- *
- * To run a mutation, you first call `useUpdateSpaceGuideSettingsMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateSpaceGuideSettingsMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [updateSpaceGuideSettingsMutation, { data, loading, error }] = useUpdateSpaceGuideSettingsMutation({
- *   variables: {
- *      spaceId: // value for 'spaceId'
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useUpdateSpaceGuideSettingsMutation(baseOptions?: Apollo.MutationHookOptions<UpdateSpaceGuideSettingsMutation, UpdateSpaceGuideSettingsMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateSpaceGuideSettingsMutation, UpdateSpaceGuideSettingsMutationVariables>(UpdateSpaceGuideSettingsDocument, options);
-      }
-export type UpdateSpaceGuideSettingsMutationHookResult = ReturnType<typeof useUpdateSpaceGuideSettingsMutation>;
-export type UpdateSpaceGuideSettingsMutationResult = Apollo.MutationResult<UpdateSpaceGuideSettingsMutation>;
-export type UpdateSpaceGuideSettingsMutationOptions = Apollo.BaseMutationOptions<UpdateSpaceGuideSettingsMutation, UpdateSpaceGuideSettingsMutationVariables>;
-export const UpdateSpaceAuthSettingsDocument = gql`
-    mutation UpdateSpaceAuthSettings($spaceId: String!, $input: AuthSettingsInput!) {
-  payload: updateAuthSettings(spaceId: $spaceId, input: $input) {
-    ...SpaceWithIntegrations
-  }
-}
-    ${SpaceWithIntegrationsFragmentDoc}`;
-export type UpdateSpaceAuthSettingsMutationFn = Apollo.MutationFunction<UpdateSpaceAuthSettingsMutation, UpdateSpaceAuthSettingsMutationVariables>;
-
-/**
- * __useUpdateSpaceAuthSettingsMutation__
- *
- * To run a mutation, you first call `useUpdateSpaceAuthSettingsMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateSpaceAuthSettingsMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [updateSpaceAuthSettingsMutation, { data, loading, error }] = useUpdateSpaceAuthSettingsMutation({
- *   variables: {
- *      spaceId: // value for 'spaceId'
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useUpdateSpaceAuthSettingsMutation(baseOptions?: Apollo.MutationHookOptions<UpdateSpaceAuthSettingsMutation, UpdateSpaceAuthSettingsMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateSpaceAuthSettingsMutation, UpdateSpaceAuthSettingsMutationVariables>(UpdateSpaceAuthSettingsDocument, options);
-      }
-export type UpdateSpaceAuthSettingsMutationHookResult = ReturnType<typeof useUpdateSpaceAuthSettingsMutation>;
-export type UpdateSpaceAuthSettingsMutationResult = Apollo.MutationResult<UpdateSpaceAuthSettingsMutation>;
-export type UpdateSpaceAuthSettingsMutationOptions = Apollo.BaseMutationOptions<UpdateSpaceAuthSettingsMutation, UpdateSpaceAuthSettingsMutationVariables>;
-export const UpdateSpaceSocialSettingsDocument = gql`
-    mutation UpdateSpaceSocialSettings($spaceId: String!, $input: SocialSettingsInput!) {
-  payload: updateSocialSettings(spaceId: $spaceId, input: $input) {
-    ...SpaceWithIntegrations
-  }
-}
-    ${SpaceWithIntegrationsFragmentDoc}`;
-export type UpdateSpaceSocialSettingsMutationFn = Apollo.MutationFunction<UpdateSpaceSocialSettingsMutation, UpdateSpaceSocialSettingsMutationVariables>;
-
-/**
- * __useUpdateSpaceSocialSettingsMutation__
- *
- * To run a mutation, you first call `useUpdateSpaceSocialSettingsMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateSpaceSocialSettingsMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [updateSpaceSocialSettingsMutation, { data, loading, error }] = useUpdateSpaceSocialSettingsMutation({
- *   variables: {
- *      spaceId: // value for 'spaceId'
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useUpdateSpaceSocialSettingsMutation(baseOptions?: Apollo.MutationHookOptions<UpdateSpaceSocialSettingsMutation, UpdateSpaceSocialSettingsMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateSpaceSocialSettingsMutation, UpdateSpaceSocialSettingsMutationVariables>(UpdateSpaceSocialSettingsDocument, options);
-      }
-export type UpdateSpaceSocialSettingsMutationHookResult = ReturnType<typeof useUpdateSpaceSocialSettingsMutation>;
-export type UpdateSpaceSocialSettingsMutationResult = Apollo.MutationResult<UpdateSpaceSocialSettingsMutation>;
-export type UpdateSpaceSocialSettingsMutationOptions = Apollo.BaseMutationOptions<UpdateSpaceSocialSettingsMutation, UpdateSpaceSocialSettingsMutationVariables>;
 export const SendEmailDocument = gql`
     mutation SendEmail($input: SendEmailInput!) {
   payload: sendEmail(input: $input)
@@ -11202,145 +10615,6 @@ export function useSendEmailMutation(baseOptions?: Apollo.MutationHookOptions<Se
 export type SendEmailMutationHookResult = ReturnType<typeof useSendEmailMutation>;
 export type SendEmailMutationResult = Apollo.MutationResult<SendEmailMutation>;
 export type SendEmailMutationOptions = Apollo.BaseMutationOptions<SendEmailMutation, SendEmailMutationVariables>;
-export const UpsertSpaceLoaderInfoDocument = gql`
-    mutation UpsertSpaceLoaderInfo($spaceId: String!, $input: SpaceLoadersInfoInput!) {
-  payload: upsertSpaceLoaderInfo(spaceId: $spaceId, input: $input) {
-    ...SpaceWithIntegrations
-  }
-}
-    ${SpaceWithIntegrationsFragmentDoc}`;
-export type UpsertSpaceLoaderInfoMutationFn = Apollo.MutationFunction<UpsertSpaceLoaderInfoMutation, UpsertSpaceLoaderInfoMutationVariables>;
-
-/**
- * __useUpsertSpaceLoaderInfoMutation__
- *
- * To run a mutation, you first call `useUpsertSpaceLoaderInfoMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpsertSpaceLoaderInfoMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [upsertSpaceLoaderInfoMutation, { data, loading, error }] = useUpsertSpaceLoaderInfoMutation({
- *   variables: {
- *      spaceId: // value for 'spaceId'
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useUpsertSpaceLoaderInfoMutation(baseOptions?: Apollo.MutationHookOptions<UpsertSpaceLoaderInfoMutation, UpsertSpaceLoaderInfoMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpsertSpaceLoaderInfoMutation, UpsertSpaceLoaderInfoMutationVariables>(UpsertSpaceLoaderInfoDocument, options);
-      }
-export type UpsertSpaceLoaderInfoMutationHookResult = ReturnType<typeof useUpsertSpaceLoaderInfoMutation>;
-export type UpsertSpaceLoaderInfoMutationResult = Apollo.MutationResult<UpsertSpaceLoaderInfoMutation>;
-export type UpsertSpaceLoaderInfoMutationOptions = Apollo.BaseMutationOptions<UpsertSpaceLoaderInfoMutation, UpsertSpaceLoaderInfoMutationVariables>;
-export const UpdateThemeColorsDocument = gql`
-    mutation UpdateThemeColors($spaceId: ID!, $themeColors: ThemeColorsInput!) {
-  payload: updateThemeColors(spaceId: $spaceId, themeColors: $themeColors) {
-    ...SpaceWithIntegrations
-  }
-}
-    ${SpaceWithIntegrationsFragmentDoc}`;
-export type UpdateThemeColorsMutationFn = Apollo.MutationFunction<UpdateThemeColorsMutation, UpdateThemeColorsMutationVariables>;
-
-/**
- * __useUpdateThemeColorsMutation__
- *
- * To run a mutation, you first call `useUpdateThemeColorsMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateThemeColorsMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [updateThemeColorsMutation, { data, loading, error }] = useUpdateThemeColorsMutation({
- *   variables: {
- *      spaceId: // value for 'spaceId'
- *      themeColors: // value for 'themeColors'
- *   },
- * });
- */
-export function useUpdateThemeColorsMutation(baseOptions?: Apollo.MutationHookOptions<UpdateThemeColorsMutation, UpdateThemeColorsMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateThemeColorsMutation, UpdateThemeColorsMutationVariables>(UpdateThemeColorsDocument, options);
-      }
-export type UpdateThemeColorsMutationHookResult = ReturnType<typeof useUpdateThemeColorsMutation>;
-export type UpdateThemeColorsMutationResult = Apollo.MutationResult<UpdateThemeColorsMutation>;
-export type UpdateThemeColorsMutationOptions = Apollo.BaseMutationOptions<UpdateThemeColorsMutation, UpdateThemeColorsMutationVariables>;
-export const UpdateTidbitsHomepageDocument = gql`
-    mutation UpdateTidbitsHomepage($spaceId: ID!, $tidbitsHomepage: TidbitsHomepageInput!) {
-  payload: updateTidbitsHomepage(
-    spaceId: $spaceId
-    tidbitsHomepage: $tidbitsHomepage
-  ) {
-    ...SpaceWithIntegrations
-  }
-}
-    ${SpaceWithIntegrationsFragmentDoc}`;
-export type UpdateTidbitsHomepageMutationFn = Apollo.MutationFunction<UpdateTidbitsHomepageMutation, UpdateTidbitsHomepageMutationVariables>;
-
-/**
- * __useUpdateTidbitsHomepageMutation__
- *
- * To run a mutation, you first call `useUpdateTidbitsHomepageMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateTidbitsHomepageMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [updateTidbitsHomepageMutation, { data, loading, error }] = useUpdateTidbitsHomepageMutation({
- *   variables: {
- *      spaceId: // value for 'spaceId'
- *      tidbitsHomepage: // value for 'tidbitsHomepage'
- *   },
- * });
- */
-export function useUpdateTidbitsHomepageMutation(baseOptions?: Apollo.MutationHookOptions<UpdateTidbitsHomepageMutation, UpdateTidbitsHomepageMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateTidbitsHomepageMutation, UpdateTidbitsHomepageMutationVariables>(UpdateTidbitsHomepageDocument, options);
-      }
-export type UpdateTidbitsHomepageMutationHookResult = ReturnType<typeof useUpdateTidbitsHomepageMutation>;
-export type UpdateTidbitsHomepageMutationResult = Apollo.MutationResult<UpdateTidbitsHomepageMutation>;
-export type UpdateTidbitsHomepageMutationOptions = Apollo.BaseMutationOptions<UpdateTidbitsHomepageMutation, UpdateTidbitsHomepageMutationVariables>;
-export const UpdateSpaceCreatorDocument = gql`
-    mutation UpdateSpaceCreator($spaceId: String!, $id: String!) {
-  updateSpaceCreator(spaceId: $spaceId, creator: $id) {
-    ...SpaceWithIntegrations
-  }
-}
-    ${SpaceWithIntegrationsFragmentDoc}`;
-export type UpdateSpaceCreatorMutationFn = Apollo.MutationFunction<UpdateSpaceCreatorMutation, UpdateSpaceCreatorMutationVariables>;
-
-/**
- * __useUpdateSpaceCreatorMutation__
- *
- * To run a mutation, you first call `useUpdateSpaceCreatorMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateSpaceCreatorMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [updateSpaceCreatorMutation, { data, loading, error }] = useUpdateSpaceCreatorMutation({
- *   variables: {
- *      spaceId: // value for 'spaceId'
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useUpdateSpaceCreatorMutation(baseOptions?: Apollo.MutationHookOptions<UpdateSpaceCreatorMutation, UpdateSpaceCreatorMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateSpaceCreatorMutation, UpdateSpaceCreatorMutationVariables>(UpdateSpaceCreatorDocument, options);
-      }
-export type UpdateSpaceCreatorMutationHookResult = ReturnType<typeof useUpdateSpaceCreatorMutation>;
-export type UpdateSpaceCreatorMutationResult = Apollo.MutationResult<UpdateSpaceCreatorMutation>;
-export type UpdateSpaceCreatorMutationOptions = Apollo.BaseMutationOptions<UpdateSpaceCreatorMutation, UpdateSpaceCreatorMutationVariables>;
 export const UpsertRoute53RecordDocument = gql`
     mutation UpsertRoute53Record($spaceId: String!) {
   upsertRoute53Record(spaceId: $spaceId) {

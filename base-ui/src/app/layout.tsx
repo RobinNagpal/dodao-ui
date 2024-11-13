@@ -1,7 +1,7 @@
 import { authorizeCrypto } from '@/app/api/auth/[...nextauth]/authorizeCrypto';
 import { getAuthOptions } from '@dodao/web-core/api/auth/authOptions';
 import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
-import { CssTheme, ThemeKey, themes } from '@dodao/web-core/src/components/app/themes';
+import { GlobalThemeColors } from '@dodao/web-core/src/components/app/themes';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { User } from '@dodao/web-core/types/auth/User';
 import { NotificationProvider } from '@dodao/web-core/ui/contexts/NotificationContext';
@@ -50,9 +50,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
   const space = await getSpaceServerSide();
   const gtag = getGTagId(space);
 
-  const theme: ThemeKey = CssTheme.GlobalTheme;
-
-  const themeValue = space?.themeColors || themes[theme];
+  const themeValue = space?.themeColors || GlobalThemeColors;
 
   const style = {
     '--primary-color': themeValue.primaryColor,
@@ -66,7 +64,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 
   return (
     <html lang="en" className="h-full">
-      <body className={'max-h-screen ' + theme} style={{ ...style, backgroundColor: 'var(--bg-color)' }}>
+      <body className={'max-h-screen'} style={{ ...style, backgroundColor: 'var(--bg-color)' }}>
         <Script src={`https://www.googletagmanager.com/gtag/js?id=${gtag}`} />
         <Script id="google-analytics">
           {`

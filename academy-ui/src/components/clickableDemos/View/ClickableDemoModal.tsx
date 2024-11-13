@@ -1,14 +1,15 @@
-import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
-import { ClickableDemoWithSteps, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
-import { LocalStorageKeys } from '@dodao/web-core/types/deprecated/models/enums';
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import union from 'lodash/union';
+import { ClickableDemoWithSteps } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
+import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
+import { LocalStorageKeys } from '@dodao/web-core/types/deprecated/models/enums';
+import union from 'lodash/union';
+import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
 
 interface ClickableDemoModalProps {
   clickableDemoWithSteps: ClickableDemoWithSteps;
-  space: SpaceWithIntegrationsFragment;
+  space: SpaceWithIntegrationsDto;
   onClose: () => void;
 }
 

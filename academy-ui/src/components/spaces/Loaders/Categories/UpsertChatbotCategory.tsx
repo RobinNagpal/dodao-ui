@@ -1,14 +1,14 @@
-import Button from '@dodao/web-core/components/core/buttons/Button';
-import Input from '@dodao/web-core/components/core/input/Input';
 import { ChatbotSubCategoriesTable } from '@/components/spaces/Loaders/Categories/ChatbotSubCategoriesTable';
 import { useEditChatbotCategory } from '@/components/spaces/Loaders/Categories/useEditChatbotCategory';
 import { ChatbotSubView, ChatbotView, getChatbotSubviewUrl } from '@/components/spaces/manageSpaceSubviews';
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import Input from '@dodao/web-core/components/core/input/Input';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
 interface UpsertChatbotCategoryProps {
-  space: SpaceWithIntegrationsFragment;
+  space: SpaceWithIntegrationsDto;
   categoryId?: string;
 }
 

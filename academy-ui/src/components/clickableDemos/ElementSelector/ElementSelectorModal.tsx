@@ -1,15 +1,16 @@
+import { CreateSignedUrlInput } from '@/graphql/generated/generated-types';
 import { CreateSignedUrlRequest } from '@/types/request/SignedUrl';
 import { SingedUrlResponse } from '@/types/response/SignedUrl';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
+import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import { useFetchUtils } from '@dodao/web-core/ui/hooks/useFetchUtils';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import React, { useEffect, useState } from 'react';
-import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
-import { CreateSignedUrlInput, Space } from '@/graphql/generated/generated-types';
 import { getUploadedImageUrlFromSingedUrl } from '@dodao/web-core/utils/upload/getUploadedImageUrlFromSingedUrl';
 import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 
 interface Props {
-  space: Space;
+  space: SpaceWithIntegrationsDto;
   showModal: boolean;
   objectId: string;
   fileUrl: string;

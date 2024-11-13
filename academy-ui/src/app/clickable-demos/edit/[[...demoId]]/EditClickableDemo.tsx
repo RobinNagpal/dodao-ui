@@ -4,11 +4,11 @@ import Stepper from '@/components/clickableDemos/Edit/EditClickableDemoStepper';
 import { useDeleteClickableDemo } from '@/components/clickableDemos/Edit/useDeleteClickableDemo';
 import { useEditClickableDemo } from '@/components/clickableDemos/Edit/useEditClickableDemo';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
-import withSpace from '@/contexts/withSpace';
-import { CreateSignedUrlInput, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { CreateSignedUrlInput } from '@/graphql/generated/generated-types';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
 import { CreateSignedUrlRequest } from '@/types/request/SignedUrl';
 import { SingedUrlResponse } from '@/types/response/SignedUrl';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import Block from '@dodao/web-core/components/app/Block';
 import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
 import Button from '@dodao/web-core/components/core/buttons/Button';
@@ -27,7 +27,7 @@ import html2canvas from 'html2canvas';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
-function EditClickableDemo(props: { space: SpaceWithIntegrationsFragment; demoId: string }) {
+function EditClickableDemo(props: { space: SpaceWithIntegrationsDto; demoId: string }) {
   const { space, demoId } = props;
   const spaceId = space.id;
   const { showNotification } = useNotificationContext();

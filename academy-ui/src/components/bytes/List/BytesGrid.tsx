@@ -1,7 +1,8 @@
 import ByteSummaryCard from '@/components/bytes/Summary/ByteSummaryCard';
 import NoByte from '@/components/bytes/Summary/NoBytes';
+import { ByteSummaryFragment } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import { Grid4Cols } from '@dodao/web-core/components/core/grids/Grid4Cols';
-import { ByteSummaryFragment, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import React from 'react';
 
 export default function BytesGrid({
@@ -9,7 +10,7 @@ export default function BytesGrid({
   baseByteViewUrl,
   space,
 }: {
-  space: SpaceWithIntegrationsFragment;
+  space: SpaceWithIntegrationsDto;
   bytes?: ByteSummaryFragment[];
   baseByteViewUrl: string;
 }) {

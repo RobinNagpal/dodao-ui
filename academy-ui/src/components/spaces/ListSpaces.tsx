@@ -1,17 +1,18 @@
 'use client';
 
+import UpsertSpaceBasicSettingsModal from '@/components/spaces/Edit/Basic/UpsertSpaceBasicSettingsModal';
+import { ManageSpaceSubviews } from '@/components/spaces/manageSpaceSubviews';
+import { SpaceSummaryFragment, useDropPineconeNamespaceMutation } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import { Table, TableActions, TableRow } from '@dodao/web-core/components/core/table/Table';
-import UpsertSpaceBasicSettingsModal from '@/components/spaces/Edit/Basic/UpsertSpaceBasicSettingsModal';
-import { ManageSpaceSubviews } from '@/components/spaces/manageSpaceSubviews';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { SpaceSummaryFragment, SpaceWithIntegrationsFragment, useDropPineconeNamespaceMutation, useSpacesQuery } from '@/graphql/generated/generated-types';
+import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useRouter } from 'next/navigation';
 import React, { useMemo, useState } from 'react';
 import styled from 'styled-components';
-import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 
 const MainDiv = styled.div`
   background-color: var(--bg-color);
@@ -29,7 +30,7 @@ function getSpaceTableRows(spaceList?: SpaceSummaryFragment[]): TableRow[] {
 }
 
 export default function ListSpaces() {
-  const { data } = useFetchData<SpaceWithIntegrationsFragment[]>(`${getBaseUrl()}/api/spaces`, {}, 'Failed to fetch spaces');
+  const { data } = useFetchData<SpaceWithIntegrationsDto[]>(`${getBaseUrl()}/api/spaces`, {}, 'Failed to fetch spaces');
   const [showSpaceAddModal, setShowSpaceAddModal] = useState(false);
   const [dropPineconeNamespaceMutation] = useDropPineconeNamespaceMutation();
   const router = useRouter();

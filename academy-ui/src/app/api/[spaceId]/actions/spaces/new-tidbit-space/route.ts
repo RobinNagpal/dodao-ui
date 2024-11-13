@@ -1,6 +1,6 @@
 import { SpaceTypes } from '@/types/space/SpaceDto';
 import { getDecodedJwtFromContext } from '@dodao/web-core/api/auth/getJwtFromContext';
-import { CssTheme, themes } from '@dodao/web-core/components/app/themes';
+import { GlobalThemeColors } from '@dodao/web-core/components/app/themes';
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/prisma';
 import { CreateSpaceRequest } from '@/types/request/CreateSpaceRequest';
@@ -31,17 +31,13 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
     authSettings: { enableLogin: true, loginOptions: [LoginProviders.Email] },
     type: SpaceTypes.TidbitsSite,
     features: [],
-    themeColors: themes[CssTheme.GlobalTheme],
+    themeColors: GlobalThemeColors,
     verified: true,
     createdAt: new Date(),
     updatedAt: new Date(),
-    admins: [],
-    adminUsernames: [],
     inviteLinks: null,
-    skin: '',
     discordInvite: null,
     telegramInvite: null,
-    botDomains: [],
     guideSettings: {},
     socialSettings: {},
     byteSettings: {},

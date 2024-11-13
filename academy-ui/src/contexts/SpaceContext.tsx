@@ -1,10 +1,10 @@
 'use client';
 
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 // SpaceContext.tsx
 import React, { createContext, useContext, useState } from 'react';
 
-type Space = SpaceWithIntegrationsFragment;
+type Space = SpaceWithIntegrationsDto;
 
 interface SpaceContextProps {
   space?: Space | null;

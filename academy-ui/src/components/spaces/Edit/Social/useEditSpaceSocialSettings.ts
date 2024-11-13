@@ -1,5 +1,6 @@
+import { SocialSettings } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { SocialSettings, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useState } from 'react';
 
@@ -10,7 +11,7 @@ export type UpdateSpaceSocialSettingsHelper = {
   updating: boolean;
 };
 
-export function useEditSpaceSocialSettings(space: SpaceWithIntegrationsFragment): UpdateSpaceSocialSettingsHelper {
+export function useEditSpaceSocialSettings(space: SpaceWithIntegrationsDto): UpdateSpaceSocialSettingsHelper {
   const [socialSettings, setSocialSettings] = useState<SocialSettings>(space.socialSettings || {});
   const [updating, setUpdating] = useState(false);
   const { showNotification } = useNotificationContext();
@@ -39,7 +40,7 @@ export function useEditSpaceSocialSettings(space: SpaceWithIntegrationsFragment)
       });
 
       if (response.ok) {
-        const updatedSpace: SpaceWithIntegrationsFragment = (await response.json()).space;
+        const updatedSpace: SpaceWithIntegrationsDto = (await response.json()).space;
         setSocialSettings({
           ...updatedSpace.socialSettings,
         });

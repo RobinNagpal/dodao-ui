@@ -1,4 +1,5 @@
-import { AuthSettings, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { AuthSettings } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import { useFetchUtils } from '@dodao/web-core/ui/hooks/useFetchUtils';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useState } from 'react';
@@ -15,7 +16,7 @@ interface UpdateAuthSettingsRequest {
   input: AuthSettings;
 }
 
-export function useEditSpaceAuthSettings(space: SpaceWithIntegrationsFragment): UpdateSpaceAuthSettingsHelper {
+export function useEditSpaceAuthSettings(space: SpaceWithIntegrationsDto): UpdateSpaceAuthSettingsHelper {
   const [authSettings, setAuthSettings] = useState<AuthSettings>(space.authSettings || {});
   const [updating, setUpdating] = useState(false);
   const { postData } = useFetchUtils();
@@ -29,7 +30,7 @@ export function useEditSpaceAuthSettings(space: SpaceWithIntegrationsFragment): 
 
   async function updateAuthSettings() {
     setUpdating(true);
-    const response = await postData<SpaceWithIntegrationsFragment, UpdateAuthSettingsRequest>(
+    const response = await postData<SpaceWithIntegrationsDto, UpdateAuthSettingsRequest>(
       `${getBaseUrl()}/api/spaces/update-auth-settings`,
       {
         spaceId: space.id,
@@ -43,7 +44,7 @@ export function useEditSpaceAuthSettings(space: SpaceWithIntegrationsFragment): 
         successMessage: 'Auth settings updated',
       }
     );
-    const updatedSpace: SpaceWithIntegrationsFragment = response!;
+    const updatedSpace: SpaceWithIntegrationsDto = response!;
     setAuthSettings({
       ...updatedSpace.authSettings,
     });

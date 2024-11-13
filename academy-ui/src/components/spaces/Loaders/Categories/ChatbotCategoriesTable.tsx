@@ -1,13 +1,9 @@
-import { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
-import { Table, TableRow } from '@dodao/web-core/components/core/table/Table';
 import DeleteChatbotCategoryModal from '@/components/spaces/Loaders/Categories/DeleteChatbotCategoryModal';
 import { ChatbotSubView, ChatbotView, getChatbotSubviewUrl } from '@/components/spaces/manageSpaceSubviews';
-import {
-  ChatbotCategoryFragment,
-  ChatbotSubCategoryFragment,
-  SpaceWithIntegrationsFragment,
-  useChatbotCategoriesQuery,
-} from '@/graphql/generated/generated-types';
+import { ChatbotCategoryFragment, ChatbotSubCategoryFragment, useChatbotCategoriesQuery } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
+import { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
+import { Table, TableRow } from '@dodao/web-core/components/core/table/Table';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
@@ -21,7 +17,7 @@ function getCategoriesTable(categories: ChatbotCategoryFragment[]): TableRow[] {
   });
 }
 
-export function ChatbotCategoriesTable(props: { space: SpaceWithIntegrationsFragment }) {
+export function ChatbotCategoriesTable(props: { space: SpaceWithIntegrationsDto }) {
   const { data: categories } = useChatbotCategoriesQuery({
     variables: {
       spaceId: props.space.id,

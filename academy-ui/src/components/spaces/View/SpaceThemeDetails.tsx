@@ -1,21 +1,20 @@
-import { CssTheme, ThemeKey, themes } from '@dodao/web-core/src/components/app/themes';
+import ByteCollectionsCard from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCollectionsCard';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import UpdateThemeModal, { ColorLabels, ThemeColorsKeys } from '@/components/spaces/Edit/Theme/UpdateThemeModal';
-import { SpaceWithIntegrationsFragment, ThemeColors } from '@/graphql/generated/generated-types';
-import ByteCollectionsCard from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCollectionsCard';
+import { ThemeColors } from '@/graphql/generated/generated-types';
 import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
+import { GlobalThemeColors } from '@dodao/web-core/components/app/themes';
 import React from 'react';
 
 export interface SpaceDetailsProps {
-  space: SpaceWithIntegrationsFragment;
+  space: SpaceWithIntegrationsDto;
 }
 
 export default function SpaceThemeDetails({ space }: SpaceDetailsProps) {
   const [showThemeUpdateModal, setShowThemeUpdateModal] = React.useState(false);
-  const skin = space?.skin;
 
-  const theme: ThemeKey = space?.skin && Object.keys(CssTheme).includes(skin || '') ? (skin as CssTheme) : CssTheme.GlobalTheme;
-  const themeColors: ThemeColors = space?.themeColors || themes[theme];
+  const themeColors: ThemeColors = space?.themeColors || GlobalThemeColors;
 
   const threeDotItems = [
     { label: 'Reload Repo', key: 'reloadRepo' },

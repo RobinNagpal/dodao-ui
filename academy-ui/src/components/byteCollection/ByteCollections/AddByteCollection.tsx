@@ -1,11 +1,11 @@
 'use client';
 import ByteCollectionEditModal from '@/components/byteCollection/ByteCollections/ByteCollectionEditModal';
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import { PlusIcon } from '@heroicons/react/20/solid';
 import React from 'react';
 
-export default function AddByteCollection({ space }: { space: SpaceWithIntegrationsFragment }) {
+export default function AddByteCollection({ space }: { space: SpaceWithIntegrationsDto }) {
   const [showAddCollectionModal, setShowAddCollectionModal] = React.useState(false);
 
   return (

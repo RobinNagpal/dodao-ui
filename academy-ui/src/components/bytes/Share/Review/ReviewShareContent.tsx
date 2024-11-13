@@ -1,14 +1,14 @@
 import useReviewByteSocialShareContent from '@/components/bytes/Share/Review/useReviewByteSocialShareContent';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Input from '@dodao/web-core/components/core/input/Input';
 import SpinnerWithText from '@dodao/web-core/components/core/loaders/SpinnerWithText';
 import TextareaAutosize from '@dodao/web-core/components/core/textarea/TextareaAutosize';
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
 export interface ReviewShareContentProps {
-  space: SpaceWithIntegrationsFragment;
+  space: SpaceWithIntegrationsDto;
   byteId: string;
 }
 

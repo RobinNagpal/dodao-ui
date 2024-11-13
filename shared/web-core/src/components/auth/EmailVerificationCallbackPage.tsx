@@ -18,11 +18,11 @@ const CallbackPage = ({ space, callbackUrl }: CallbackPageProps) => {
   const { push } = useRouter();
   const { status } = useSession();
 
-  const { get } = useSearchParams();
+  const searchParams = useSearchParams();
   useEffect(() => {
     async function handleSignIn() {
       // Ensure we have the token and only try to sign in if not already signed in
-      const token = get('token');
+      const token = searchParams.get('token');
       if (token) {
         // Attempt to sign in
         const result = await signIn('custom-email', {
@@ -39,7 +39,7 @@ const CallbackPage = ({ space, callbackUrl }: CallbackPageProps) => {
           push(callbackUrl);
         } else {
           // Handle sign-in failure (e.g., invalid token) as needed
-          console.error('Failed to sign in');
+          console.error('Failed to sign in', result);
           // Redirect to an error page or display an error message
         }
       }

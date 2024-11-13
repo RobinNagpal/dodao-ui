@@ -1,7 +1,8 @@
 import { prisma } from '@/prisma';
-import { Space, SpaceIntegration } from '@prisma/client';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
+import { Space } from '@prisma/client';
 
-export async function getSpaceWithIntegrations(spaceId: string): Promise<Space & { spaceIntegrations: SpaceIntegration | null }> {
+export async function getSpaceWithIntegrations(spaceId: string): Promise<SpaceWithIntegrationsDto> {
   // Fetch the Space details
   const space: Space = await prisma.space.findUniqueOrThrow({ where: { id: spaceId } });
 

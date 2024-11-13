@@ -1,18 +1,17 @@
-import DetailsRow from '@dodao/web-core/components/core/details/DetailsRow';
-import DetailsHeader from '@dodao/web-core/components/core/details/DetailsHeader';
-import DetailsSection from '@dodao/web-core/components/core/details/DetailsSection';
-import { Space, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
-import React, { useState } from 'react';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import Button from '@dodao/web-core/components/core/buttons/Button';
-import { Json } from 'aws-sdk/clients/robomaker';
+import DetailsHeader from '@dodao/web-core/components/core/details/DetailsHeader';
+import DetailsRow from '@dodao/web-core/components/core/details/DetailsRow';
+import DetailsSection from '@dodao/web-core/components/core/details/DetailsSection';
+import React, { useState } from 'react';
 import UpsertSpaceApiKeyModal from '../Edit/ApiKey/UpsertSpaceApiKeyModal';
 
 export interface SpaceApiKeyDetailsProps {
-  space: Space;
+  space: SpaceWithIntegrationsDto;
   className?: string;
 }
 
-function getSpaceDetailsFields(space: SpaceWithIntegrationsFragment): Array<{ label: string; value: string }> {
+function getSpaceDetailsFields(space: SpaceWithIntegrationsDto): Array<{ label: string; value: string }> {
   // Check if spaceApiKeys exist and have length
   if (space.spaceIntegrations?.spaceApiKeys && space.spaceIntegrations.spaceApiKeys.length > 0) {
     // Map each apiKey to a new object with a label and a combined value of last four letters and last used date

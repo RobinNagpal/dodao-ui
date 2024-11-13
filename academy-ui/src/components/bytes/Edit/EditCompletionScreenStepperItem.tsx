@@ -1,22 +1,23 @@
+import SelectImageInputModal from '@/components/app/Image/SelectImageInputModal';
+import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
+import { ImageType } from '@/graphql/generated/generated-types';
 import { CompletionScreenDto, CompletionScreenItem } from '@/types/bytes/ByteDto';
 import { EditByteType } from '@/types/request/ByteRequests';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
+import CallToActionButtonForm from '@dodao/web-core/components/app/Common/CallToActionButtonForm';
+import AddCompletionScreenItemsModal from '@dodao/web-core/components/app/Modal/CompletionScreenItem/AddCompletionScreenItemsModal';
 import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
 import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
-import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
 import Input from '@dodao/web-core/components/core/input/Input';
 import { InputWithButton } from '@dodao/web-core/components/core/input/InputWithButton';
-import { ImageType, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
-import React, { useState } from 'react';
-import SelectImageInputModal from '@/components/app/Image/SelectImageInputModal';
-import AddCompletionScreenItemsModal from '@dodao/web-core/components/app/Modal/CompletionScreenItem/AddCompletionScreenItemsModal';
-import { v4 as uuidv4 } from 'uuid';
-import CallToActionButtonForm from '@dodao/web-core/components/app/Common/CallToActionButtonForm';
 import { ByteErrors } from '@dodao/web-core/types/errors/byteErrors';
+import React, { useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import styles from './EditCompletionScreenStepperItem.module.scss';
 
 interface EditCompletionScreenStepperItemProps {
   byteErrors?: ByteErrors;
-  space: SpaceWithIntegrationsFragment;
+  space: SpaceWithIntegrationsDto;
   byte: EditByteType;
   updateByteCompletionScreen: (field: keyof CompletionScreenDto, value: any) => void;
   removeCompletionScreen: () => void;

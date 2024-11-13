@@ -1,8 +1,9 @@
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Datepicker from '@dodao/web-core/components/core/datepicker/Datepicker';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import TextareaAutosize from '@dodao/web-core/components/core/textarea/TextareaAutosize';
-import { DiscoursePost, SpaceWithIntegrationsFragment, useUpsertSummaryOfDiscoursePostMutation } from '@/graphql/generated/generated-types';
+import { DiscoursePost, useUpsertSummaryOfDiscoursePostMutation } from '@/graphql/generated/generated-types';
 import React, { useEffect, useState } from 'react';
 import styles from './UpdateSummaryDiscoursePostModal.module.scss';
 export default function UpdateSummaryDiscoursePostModal({
@@ -14,7 +15,7 @@ export default function UpdateSummaryDiscoursePostModal({
   open: boolean;
   onClose: () => void;
   post: DiscoursePost;
-  space: SpaceWithIntegrationsFragment;
+  space: SpaceWithIntegrationsDto;
 }) {
   const [upsertSummaryOfDiscoursePostMutation] = useUpsertSummaryOfDiscoursePostMutation();
 

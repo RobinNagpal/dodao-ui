@@ -1,9 +1,9 @@
-import { Space } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { useRouter } from 'next/navigation';
 
-export function useDeleteClickableDemo(space: Space, demoId: string) {
+export function useDeleteClickableDemo(space: SpaceWithIntegrationsDto, demoId: string) {
   const router = useRouter();
   const { showNotification } = useNotificationContext();
   const { $t } = useI18();

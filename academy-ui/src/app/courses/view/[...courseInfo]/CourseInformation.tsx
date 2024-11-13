@@ -8,7 +8,7 @@ import CourseDetailsRightSection, { ItemTypes } from '@/components/courses/View/
 import { useCourseSubmission } from '@/components/courses/View/useCourseSubmission';
 import useViewCourse from '@/components/courses/View/useViewCourse';
 import withSpace from '@/contexts/withSpace';
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import { isAdmin } from '@/utils/auth/isAdmin';
 import Block from '@dodao/web-core/components/app/Block';
 import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
@@ -24,7 +24,7 @@ import styled from 'styled-components';
 
 type CourseInformationProps = {
   courseInfo: string[];
-  space: SpaceWithIntegrationsFragment;
+  space: SpaceWithIntegrationsDto;
 };
 
 const StyledNavWrapper = styled.div`

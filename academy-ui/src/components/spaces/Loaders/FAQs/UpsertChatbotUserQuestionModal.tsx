@@ -1,14 +1,9 @@
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import {
-  ChatbotUserQuestionFragment,
-  ImageType,
-  SpaceWithIntegrationsFragment,
-  useChatbotCategoriesQuery,
-  useUpsertChatbotUserQuestionMutation,
-} from '@/graphql/generated/generated-types';
+import { ChatbotUserQuestionFragment, ImageType, useChatbotCategoriesQuery, useUpsertChatbotUserQuestionMutation } from '@/graphql/generated/generated-types';
 import React, { useState } from 'react';
 import { v4 } from 'uuid';
 
@@ -21,7 +16,7 @@ export default function UpsertChatbotUserQuestionModal({
   open: boolean;
   onClose: () => void;
   userQuestion: ChatbotUserQuestionFragment | null;
-  space: SpaceWithIntegrationsFragment;
+  space: SpaceWithIntegrationsDto;
 }) {
   const { data: categoriesResponse } = useChatbotCategoriesQuery({
     variables: {

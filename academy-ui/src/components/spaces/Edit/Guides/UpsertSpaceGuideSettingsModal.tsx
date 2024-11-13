@@ -1,11 +1,11 @@
+import { useEditSpaceGuideSettings } from '@/components/spaces/Edit/Guides/useEditSpaceGuideSettings';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import ToggleWithIcon from '@dodao/web-core/components/core/toggles/ToggleWithIcon';
-import { useEditSpaceGuideSettings } from '@/components/spaces/Edit/Guides/useEditSpaceGuideSettings';
-import { SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
 import React from 'react';
 
-export default function UpsertSpaceGuideSettingsModal(props: { space: SpaceWithIntegrationsFragment; open: boolean; onClose: () => void }) {
+export default function UpsertSpaceGuideSettingsModal(props: { space: SpaceWithIntegrationsDto; open: boolean; onClose: () => void }) {
   const { guideSettings, setGuideSettingsField, updateGuideSettings, updating } = useEditSpaceGuideSettings(props.space);
   return (
     <FullPageModal open={props.open} onClose={props.onClose} title="Guide Settings">

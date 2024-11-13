@@ -1,6 +1,7 @@
-import { ByteSettings, SpaceWithIntegrationsFragment } from '@/graphql/generated/generated-types';
+import { ByteSettings } from '@/graphql/generated/generated-types';
 import { ByteViewMode } from '@/types/bytes/ByteDto';
 import { UpsertByteSettingsRequest } from '@/types/request/space/UpsertByteSettingsRequest';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import { useFetchUtils } from '@dodao/web-core/ui/hooks/useFetchUtils';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useState } from 'react';
@@ -12,7 +13,7 @@ export type UpdateSpaceByteSettingsHelper = {
   updating: boolean;
 };
 
-export function useEditSpaceByteSettings(space: SpaceWithIntegrationsFragment, onUpdateSettings: () => Promise<void>): UpdateSpaceByteSettingsHelper {
+export function useEditSpaceByteSettings(space: SpaceWithIntegrationsDto, onUpdateSettings: () => Promise<void>): UpdateSpaceByteSettingsHelper {
   const [byteSettings, setByteSettings] = useState<ByteSettings>(space.byteSettings || {});
   const [updating, setUpdating] = useState(false);
   const { putData } = useFetchUtils();
@@ -26,7 +27,7 @@ export function useEditSpaceByteSettings(space: SpaceWithIntegrationsFragment, o
 
   async function updateByteSettings() {
     setUpdating(true);
-    const response = await putData<SpaceWithIntegrationsFragment, UpsertByteSettingsRequest>(
+    const response = await putData<SpaceWithIntegrationsDto, UpsertByteSettingsRequest>(
       `${getBaseUrl()}/api/${space.id}/actions/spaces/update-byte-settings`,
       {
         askForLoginToSubmit: byteSettings.askForLoginToSubmit,
