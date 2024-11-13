@@ -30,6 +30,18 @@ function showTooltip(event) {
                         targetNode = xpathResult;
                         currentContextNode = iframeDoc;
                         const head = iframeDoc.head || iframeDoc.getElementsByTagName('head')[0];
+                        const materialStyle = iframeDoc.createElement('link');
+                        materialStyle.rel = 'stylesheet';
+                        materialStyle.href = '/clickable-demos-prod-files/dependencies/tippy.js@6/themes/material.css';
+                        head.appendChild(materialStyle);
+                        const shiftTowardsStyle = iframeDoc.createElement('link');
+                        shiftTowardsStyle.rel = 'stylesheet';
+                        shiftTowardsStyle.href = '/clickable-demos-prod-files/dependencies/tippy.js@6/animations/shift-toward.css';
+                        head.appendChild(shiftTowardsStyle);
+                        const tippyData = iframeDoc.createElement('link');
+                        tippyData.rel = 'stylesheet';
+                        tippyData.href = '/clickable-demos-prod-files/dependencies/tippy.js@6/stylesheet/tippy-data.css';
+                        head.appendChild(tippyData);
                         const link = iframeDoc.createElement('link');
                         link.rel = 'stylesheet';
                         link.href = '/clickable-demos-prod-files/clickableDemoTooltipStyles.css';
