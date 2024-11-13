@@ -9,6 +9,10 @@ Must have features
 - [ ] Overlay shows over the buttons - Sami
 - [ ] tooltips are not appearing correctly for the new iframe changes
 - [ ] modal's cross button outline getting cutoff - (clickable demo view)
+- [ ] we can show a "Try it" button when clickable demo gets completed which takes user to some link relevant to the demo
+- [ ] upon completion, successful toast is missing just like the one on tidbit completion
+- [ ] only looks fine above 1024px, down that its all a mess so we can detect the screen size and show a message like view the demo on a large screen
+- [ ] Edit modal - bottom padding needs to be added to the box wrapper
 
 
 # Login issue for admins
@@ -16,17 +20,55 @@ Must have features
 - [ ] ellipsis not visible against tidbits on subdomain, when a user clicks on the space he is an admin of in the list - Dawood to verify
 - [ ] Making it easy for the admin to login. Right now we are not showing any login button.
   May be we show in the footer? or somewhere else where its not too visible?
+- [ ] Go to /login on a subdomain:
+  - [ ] if already logged in then welcome screen can look better
+  - [ ] (for tidbitshub only) if not logged in then single section modal is showing but behind it Full Screen Modal is showing - just gotta make the single section modal background opacity-100 for this flow only
 
 # Tidbits
 - [ ] Instead of show an icon for `Add Input or Questions`, which on clicking shows a modal with various buttons, we 
 can directly show these buttons below the `Step Content` field. This would make adding questions more explicit for new 
 users - Skipped
 - [ ] Add some hovering effect on `Add Question`, `Move up`, `Move down`, and `Delete step` icons - Skipped
+- [ ] Edit modal - header should be "Edit Tidbit" instead of Edit Byte
+- [ ] Edit modal - steps heading should be "Tidbit Steps" instead of Byte Steps
+- [ ] Edit modal - in stepper - icon to duplicate a step 
+- [ ] Edit modal - in stepper - bit of padding left & right for the closed accordion content (name+arrow)
+- [ ] Edit modal - bottom padding needs to be added to the box wrapper
 
-# View Tidbit Collections
+
+# Short videos
+- [ ] icon can be changed (its same as tidbit)
+- [ ] when short video is opened, an ellipsis is shown with options (Edit, Edit SEO) but we dont have such ellipsis for tidbits/clickable demos
+- [ ] when video has been watched, its icon doesnt change to a tick
+- [ ] remove the priority field, its not working
+
+# Tidbit Collections
 - [ ] Have a way to separate the tidbits and clickable demos so that its clear to the user
+- [ ] whole entity (tidbit/clickable demo/short video) tile should be clickable
+- [ ] entity tile should change background color when hovered over
+- [ ] input field background color has been messed up, its white everywhere 
+- [ ] Archive notification needs to be updated from "Failed to archive ByteCollection" to "Failed to archive Tidbit Collection"
+- [ ] If admin cant archive a collection then lets not show the option to
+- [ ] Either we should use delete everywhere because archive means that there is a place where we can see all the archived ones
+- [ ] Collection archive modal shows collection name but archive modal of other entities arent showing the entity name
+- [ ] Ellipsis of an entity when opened, shows the ellipsis of the lower entity like its just appearing maybe due to z-index issue
 
 
+# Edit Space
+- [ ] Edit space name field
+- [ ] Make the heading "Space Setup" bold and large
+- [ ] Home screen button can be added
+
+# Edit Profile
+- [ ] Add form footer
+- [ ] Make the heading "Edit User Profile" bold and large
+- [ ] Email/username field is coming to be empty
+- [ ] Home screen button can be added
+
+# Short Videos
+- [ ] description text area height needs to be reduced
+- [ ] needs to use the box wrapper for all the fields just like tidbits and demos
+ 
 # Post signup - Help text
 
 - [ ] Add couple of clickable demos. One for creating tidbit, and other for creating a clickable demo.
