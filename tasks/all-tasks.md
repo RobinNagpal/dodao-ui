@@ -10,10 +10,7 @@ Must have features
 # 2nd Priority
 
 ### Clickable Demos
-- [x] View modal - upon completion, successful toast is missing just like the one on tidbit completion. Reduce the time of the toast when you add it.
-- [x] Edit modal - when saved without creating any step, gives an error that clickable demo not found and loader keeps on spinning
 - [ ] View modal - the top bar is not visible on some of the steps (i guess where the demo step has a tooltip that is closer to the bottom of the screen) - see step#4 onwards `https://alchemix.tidbitshub.org/clickable-demos/view/withdraw-from-transmuter-8288`
-- [x] Edit modal - html capture and selector arent showing the error message when left empty
 
 ### Login issue for admins
 - [ ] homepage - ellipsis not visible against tidbits on subdomain when admin is logged in - needs to be verified
@@ -22,10 +19,6 @@ Must have features
 - [ ] homepage - If admin cant archive a collection then lets not show the option to. We can allow admin to archive - Sami
 - [ ] homepage - remove the 'testing' collection from the homepage - `https://alchemix.tidbitshub.org`
 - [ ] homepage - use the switch component to add functionality of showing archived, not archived. When archived selected, we can show archived collections and also archived items. And may be show a badge against the archived ones - Sami
-
-### Short videos
-- [x] Edit modal - needs to use the box wrapper for all the fields just like tidbits and demos
-- [x] Edit modal - if mandatory field left empty and saved, shows error message with the field but doesnt show an error toast
 
 ### Post signup - Help text
 - [ ] Add couple of clickable demos. One for creating tidbit, and other for creating a clickable demo.
