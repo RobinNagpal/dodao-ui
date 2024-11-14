@@ -16,26 +16,12 @@ interface CreateSpaceProps {
   upserting: boolean;
   onSubmit: (spaceData: { id: string; name: string }) => Promise<void>;
   createdSpace?: WebCoreSpace;
+  loginToCreatedSpace: (createdSpace: WebCoreSpace) => Promise<void>;
 }
 
-function CreateNewSpace({ upserting, onSubmit, createdSpace }: CreateSpaceProps) {
+function CreateNewSpace({ upserting, onSubmit, createdSpace, loginToCreatedSpace }: CreateSpaceProps) {
   const [project, setProject] = useState('');
   const router = useRouter();
-
-  const { postData } = usePostData(
-    {
-      errorMessage: 'Failed to create token for space',
-    },
-    {}
-  );
-
-  const handleLinkClick = async () => {
-    const projectSlug = slugify(project);
-    const url = getSubdomainUrl(projectSlug);
-
-    const verificationPath = await postData(`${getBaseUrl()}/api/${project}/verification-tokens`);
-    router.push(`${url}${verificationPath}&context=${Contexts.finishSetup}`);
-  };
 
   return (
     <div>
@@ -52,7 +38,7 @@ function CreateNewSpace({ upserting, onSubmit, createdSpace }: CreateSpaceProps)
               <h1 className="text-xl font-semibold">Space Created Successfully</h1>
               <p className="mt-4 text-md">
                 Your space is created. Click{' '}
-                <span onClick={handleLinkClick} className="link-color underline cursor-pointer">
+                <span onClick={() => loginToCreatedSpace(createdSpace)} className="link-color underline cursor-pointer">
                   here
                 </span>{' '}
                 to go to your space

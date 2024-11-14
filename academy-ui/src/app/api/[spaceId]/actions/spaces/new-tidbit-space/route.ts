@@ -10,7 +10,6 @@ import { Space } from '@prisma/client';
 import { LoginProviders } from '@dodao/web-core/types/deprecated/models/enums';
 
 async function postHandler(req: NextRequest, { params }: { params: Promise<{ spaceId: string }> }): Promise<NextResponse<CreateSpaceResponse>> {
-  const mainSpaceId = (await params).spaceId;
   const session = await getDecodedJwtFromContext(req);
   if (!session) throw new Error('User not present in session');
 
@@ -63,10 +62,17 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
       spaceId: spaceData.id,
     };
 
-    const updatedUser =
-      existingUser.spaceId === mainSpaceId
-        ? await tx.user.update({ where: { id: session.userId }, data: { spaceId: spaceData.id } })
-        : await tx.user.create({ data: newUserData });
+    // Its fine to have the user both in tidbits hub and in the new site. So we add the new site also here.
+    const updatedUser = await tx.user.upsert({
+      where: {
+        username_spaceId: {
+          username: existingUser.username,
+          spaceId: spaceData.id,
+        },
+      },
+      update: newUserData,
+      create: newUserData,
+    });
 
     const createdSpace = await tx.space.create({
       data: {
