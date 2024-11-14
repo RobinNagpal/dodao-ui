@@ -4,8 +4,18 @@ import { PrismaSpaceAdapter, PrismaUserAdapter, PrismaVerificationTokenAdapter }
 import { WebCoreSpace } from '@dodao/web-core/types/space';
 import jwt from 'jsonwebtoken';
 import type { AdapterUser } from 'next-auth/adapters';
-import { Awaitable, DefaultSession } from 'next-auth/core/types';
 import type { JWT } from 'next-auth/jwt';
+
+export type Awaitable<T> = T | PromiseLike<T>;
+
+export interface DefaultSession {
+  user?: {
+    name?: string | null;
+    email?: string | null;
+    image?: string | null;
+  };
+  expires: string;
+}
 
 export interface PrismaCallbacksOptions {
   /**
