@@ -8,7 +8,7 @@ export const sampleClickableDemo = (): ClickableDemoStepDto => {
     id: step1Uuid,
     url: '',
     selector: '',
-    tooltipInfo: '',
+    tooltipInfo: `Text to be displayed on tooltip`,
     order: 0,
     placement: TooltipPlacement.bottom,
   };
