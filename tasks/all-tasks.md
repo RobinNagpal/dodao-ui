@@ -10,10 +10,7 @@ Must have features
 # 2nd Priority
 
 ### Clickable Demos
-- [ ] View modal - upon completion, successful toast is missing just like the one on tidbit completion. Reduce the time of the toast when you add it. - This PR Dawood
-- [ ] Edit modal - when saved without creating any step, gives an error that clickable demo not found and loader keeps on spinning - This PR Dawood
-- [ ] View modal - the top bar is not visible on some of the steps - see step#4 onwards `https://alchemix.tidbitshub.org/clickable-demos/view/withdraw-from-transmuter-8288`
-- [ ] Edit modal - html capture and selector arent showing the error message when left empty - This PR Dawood
+- [ ] View modal - the top bar is not visible on some of the steps (i guess where the demo step has a tooltip that is closer to the bottom of the screen) - see step#4 onwards `https://alchemix.tidbitshub.org/clickable-demos/view/withdraw-from-transmuter-8288`
 
 ### Login issue for admins
 - [ ] homepage - ellipsis not visible against tidbits on subdomain when admin is logged in - needs to be verified
@@ -22,10 +19,6 @@ Must have features
 - [ ] homepage - If admin cant archive a collection then lets not show the option to. We can allow admin to archive - Sami
 - [ ] homepage - remove the 'testing' collection from the homepage - `https://alchemix.tidbitshub.org`
 - [ ] homepage - use the switch component to add functionality of showing archived, not archived. When archived selected, we can show archived collections and also archived items. And may be show a badge against the archived ones - Sami
-
-### Short videos
-- [ ] Edit modal - needs to use the box wrapper for all the fields just like tidbits and demos - This PR Dawood
-- [ ] Edit modal - if mandatory field left empty and saved, shows error message with the field but doesnt show an error toast - This PR Dawood
 
 ### Post signup - Help text
 - [ ] Add couple of clickable demos. One for creating tidbit, and other for creating a clickable demo.
@@ -50,6 +43,7 @@ Must have features
 - [ ] homepage - Ellipsis of an entity when opened, shows the ellipsis of the lower entity like its just appearing maybe due to z-index issue - Next PR Dawood
 - [ ] homepage - Collection archive modal shows collection name but archive modal of other entities arent showing the entity name - Next PR Dawood
 - [ ] homepage - last entity's ellipsis is cutting from the bottom
+- [ ] homepage - sort items modal is cutting from below
 
 ### Short videos
 - [ ] Edit modal - remove showing of url from upload fields - new design is needed
@@ -66,7 +60,6 @@ Must have features
 ### Others
 - [ ] Remove the hardcoded messages of notifications and errors. Make use of `default.json` file for all the messages 
 ### Clickable Demos
-- [ ] View modal - cross button outline getting cutoff where the first demo step has a tooltip that is closer to the bottom of the screen
 - [ ] View modal - we can show a "Try it" button when clickable demo gets completed which takes user to some link relevant to the demo
 - [ ] Edit modal - add border to tooltip position dropdown
 - [ ] Edit modal - errors at the bottom (before save button) are in reverse order
