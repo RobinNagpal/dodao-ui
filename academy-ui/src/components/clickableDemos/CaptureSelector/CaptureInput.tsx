@@ -37,7 +37,7 @@ export default function CaptureInput({
 
   return (
     <div className="mt-2">
-      <label htmlFor={inputId} className="block text-sm font-medium leading-6">
+      <label htmlFor={inputId} className="block text-sm font-semibold leading-6">
         {label || 'Image URL'}
       </label>
       <div className={`mt-2 flex rounded-md shadow-sm ${styles.UploadWrapper}`}>
