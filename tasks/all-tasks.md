@@ -43,6 +43,7 @@ Must have features
 - [ ] homepage - Ellipsis of an entity when opened, shows the ellipsis of the lower entity like its just appearing maybe due to z-index issue
 - [ ] homepage - Collection archive modal shows collection name but archive modal of other entities arent showing the entity name
 - [ ] homepage - last entity's ellipsis is cutting from the bottom
+- [ ] homepage - sort items modal is cutting from below
 
 ### Short videos
 - [ ] Edit modal - remove showing of url from upload fields - new design is needed
