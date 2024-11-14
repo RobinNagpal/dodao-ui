@@ -12,7 +12,7 @@ interface ShortItemProps {
   threeDotItems: { label: string; key: string }[];
   itemLength: number;
   openShortEditModal: (shortId: string) => void;
-  openItemDeleteModal: (itemId: string, itemType: ByteCollectionItemType | null) => void;
+  openItemDeleteModal: (itemId: string, itemName: string, itemType: ByteCollectionItemType | null) => void;
 }
 
 export default function ShortItem(props: ShortItemProps) {
@@ -35,12 +35,12 @@ export default function ShortItem(props: ShortItemProps) {
             </div>
           </Link>
           {short.shortId && (
-            <div className="z-10">
+            <div className="z-15">
               <PrivateEllipsisDropdown
                 items={threeDotItems}
                 onSelect={(key) => {
                   if (key === 'archive') {
-                    openItemDeleteModal(short.shortId, ByteCollectionItemType.ShortVideo);
+                    openItemDeleteModal(short.shortId, short.title, ByteCollectionItemType.ShortVideo);
                   } else {
                     openShortEditModal(short.shortId);
                   }

@@ -15,7 +15,7 @@ interface ByteItemProps {
   threeDotItems: { label: string; key: string }[];
   itemLength: number;
   openByteEditModal: (byteId: string) => void;
-  openItemDeleteModal: (itemId: string, itemType: ByteCollectionItemType | null) => void;
+  openItemDeleteModal: (itemId: string, itemName: string, itemType: ByteCollectionItemType | null) => void;
 }
 
 interface VideoModalProps {
@@ -57,12 +57,12 @@ export default function ByteItem(props: ByteItemProps) {
           </Link>
 
           {byte.byteId && !byte.byteId.startsWith('0001-demo-byte') && (
-            <div className="z-10">
+            <div className="z-15">
               <PrivateEllipsisDropdown
                 items={threeDotItems}
                 onSelect={(key) => {
                   if (key === 'archive') {
-                    openItemDeleteModal(byte.byteId, ByteCollectionItemType.Byte);
+                    openItemDeleteModal(byte.byteId, byte.name, ByteCollectionItemType.Byte);
                   } else {
                     openByteEditModal(byte.byteId);
                   }
