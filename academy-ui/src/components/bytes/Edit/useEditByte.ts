@@ -404,7 +404,7 @@ export function useEditByte(space: SpaceWithIntegrationsDto, onUpsert: (byteId: 
 
       if (!valid) {
         console.log('Byte invalid', valid, byteErrors);
-        showNotification({ type: 'error', message: "Validation Error: Can't Save Byte" });
+        showNotification({ type: 'error', message: $t('notify.validationFailed') });
 
         setByteUpserting(false);
         return;

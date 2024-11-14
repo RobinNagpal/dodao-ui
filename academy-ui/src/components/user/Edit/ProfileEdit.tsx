@@ -63,7 +63,7 @@ function ProfileEdit({ space }: ProfileEditProps) {
       phoneNumber: updatedUser.phoneNumber,
     };
     await putData<User, User>(`${getBaseUrl()}/api/${space.id}/users/${user.id}`, userReq, {
-      successMessage: 'User updated successfully',
+      successMessage: 'User updated successfully!',
       errorMessage: 'Error while updating user',
       redirectPath: '/',
     });

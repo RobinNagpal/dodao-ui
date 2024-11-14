@@ -11,6 +11,9 @@ import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsis
 import { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
 import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import SingleCardLayout from '@/layouts/SingleCardLayout';
+import { useI18 } from '@/hooks/useI18';
 
 export interface EditShortVideoModalProps {
   shortVideoToEdit?: ShortVideo;
@@ -52,6 +55,7 @@ export default function EditShortVideoModal({
   const [shortVideoUpserting, setShortVideoUpserting] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const threeDotItems: EllipsisDropdownItem[] = [{ label: 'Delete', key: 'delete' }];
+  const { $t } = useI18();
 
   const [shortVideoErrors, setshortVideoErrors] = useState<Record<keyof ShortVideoInput, any>>({
     id: null,
@@ -81,28 +85,25 @@ export default function EditShortVideoModal({
       videoUrl: null,
       archive: false,
     };
-    if (!shortVideo.title || shortVideo.title.length < 3) {
-      errors['title'] = 'Add a proper title';
+    if (!shortVideo.title) {
+      errors['title'] = 'Title is required';
     }
-    if (!shortVideo.description || shortVideo.description.length < 5) {
-      errors['description'] = 'Add a proper description';
+    if (!shortVideo.description) {
+      errors['description'] = 'Description is required';
     }
 
     if (!shortVideo.thumbnail) {
-      errors['thumbnail'] = 'Add a thumbnail';
+      errors['thumbnail'] = 'Video thumbnail is required';
     }
 
     if (!shortVideo.videoUrl) {
-      errors['videoUrl'] = 'Add a video';
-    }
-
-    if (shortVideo.priority < 0 || shortVideo.priority > 100) {
-      errors['priority'] = 'Priority must be between 0 and 100';
+      errors['videoUrl'] = 'Video is required';
     }
 
     setshortVideoErrors(errors);
 
     if (Object.values(errors).some((v) => !!v)) {
+      showNotification({ type: 'error', message: $t('notify.validationFailed') });
       return;
     }
 
@@ -123,85 +124,90 @@ export default function EditShortVideoModal({
   };
 
   return (
-    <div className="text-left">
-      <div className="px-4 mb-4 md:px-0 float-right">
-        {shortVideoToEdit && (
-          <PrivateEllipsisDropdown
-            items={threeDotItems}
-            onSelect={(key) => {
-              if (key === 'delete') {
-                setShowDeleteModal(true);
-              }
-            }}
-            className="ml-4"
+    <PageWrapper>
+      <SingleCardLayout>
+        <div className="text-color pb-10">
+          <div className="py-2 my-2">
+            <div className="float-right">
+              {shortVideoToEdit && (
+                <PrivateEllipsisDropdown
+                  items={threeDotItems}
+                  onSelect={(key) => {
+                    if (key === 'delete') {
+                      setShowDeleteModal(true);
+                    }
+                  }}
+                  className="ml-4"
+                />
+              )}
+            </div>
+          </div>
+          <div className="mb-2">
+            <Input
+              modelValue={shortVideo.title}
+              maxLength={32}
+              onUpdate={(v) => updateShortVideoField('title', v?.toString() || '')}
+              label="Title*"
+              required
+              placeholder="only 32 characters"
+              error={shortVideoErrors['title']}
+            />
+          </div>
+          <div className="mb-2">
+            <Input
+              modelValue={shortVideo.description}
+              maxLength={64}
+              label="Description*"
+              placeholder="only 64 characters"
+              onUpdate={(v) => updateShortVideoField('description', v?.toString() || '')}
+              error={shortVideoErrors['description']}
+            />
+          </div>
+
+          <UploadInput
+            error={shortVideoErrors['thumbnail']}
+            imageType={ImageType.ShortVideo}
+            spaceId={spaceId}
+            modelValue={shortVideo.thumbnail}
+            objectId={shortVideo.id || 'new-short-video' + '-thumbnail'}
+            onInput={(value) => updateShortVideoField('thumbnail', value?.toString() || '')}
+            label={'Thumbnail*'}
+            placeholder="e.g. https://example.com/thumbnail.png"
           />
-        )}
-      </div>
-      <Input
-        modelValue={shortVideo.title}
-        onUpdate={(v) => updateShortVideoField('title', v?.toString() || '')}
-        label="Title"
-        required
-        error={shortVideoErrors['title']}
-      />
-
-      <MarkdownEditor
-        id={shortVideo.id + '-description'}
-        modelValue={shortVideo.description}
-        placeholder={'Description'}
-        maxHeight={200}
-        onUpdate={(v) => updateShortVideoField('description', v?.toString() || '')}
-        spaceId={spaceId}
-        objectId={shortVideo.id}
-        imageType={ImageType.ShortVideo}
-        className="w-full"
-        label={'Description'}
-        error={shortVideoErrors['description']}
-      />
-
-      <UploadInput
-        error={shortVideoErrors['thumbnail']}
-        imageType={ImageType.ShortVideo}
-        spaceId={spaceId}
-        modelValue={shortVideo.thumbnail}
-        objectId={shortVideo.id || 'new-short-video' + '-thumbnail'}
-        onInput={(value) => updateShortVideoField('thumbnail', value?.toString() || '')}
-        label={'Thumbnail'}
-        placeholder="e.g. https://example.com/thumbnail.png"
-      />
-      <UploadInput
-        error={shortVideoErrors['videoUrl']}
-        imageType={ImageType.ShortVideo}
-        spaceId={spaceId}
-        modelValue={shortVideo.videoUrl}
-        objectId={shortVideo.id || 'new-short-video' + '-short-video'}
-        onInput={(value) => updateShortVideoField('videoUrl', value?.toString() || '')}
-        allowedFileTypes={['video/mp4', 'video/x-m4v', 'video/*']}
-        label={'Video'}
-        placeholder="e.g. https://example.com/video.mp4"
-      />
-
-      <div className="flex mt-4">
-        <Button onClick={() => upsertShortVideo()} loading={shortVideoUpserting} variant="contained" primary>
-          Save
-        </Button>
-
-        {showDeleteModal && (
-          <DeleteConfirmationModal
-            title={`Delete Short Video - ${shortVideo.title}`}
-            deleteButtonText="Delete Short Video"
-            open={showDeleteModal}
-            onClose={() => setShowDeleteModal(false)}
-            onDelete={() => {
-              handleDelete();
-              const timestamp = new Date().getTime();
-              router.push(`/tidbit-collections?update=${timestamp}`);
-              setShowDeleteModal(false);
-              setTimeout(() => closeEditShortModal?.(), 3000);
-            }}
+          <UploadInput
+            error={shortVideoErrors['videoUrl']}
+            imageType={ImageType.ShortVideo}
+            spaceId={spaceId}
+            modelValue={shortVideo.videoUrl}
+            objectId={shortVideo.id || 'new-short-video' + '-short-video'}
+            onInput={(value) => updateShortVideoField('videoUrl', value?.toString() || '')}
+            allowedFileTypes={['video/mp4', 'video/x-m4v', 'video/*']}
+            label={'Video*'}
+            placeholder="e.g. https://example.com/video.mp4"
           />
-        )}
-      </div>
-    </div>
+
+          <div className="mt-6 flex justify-center items-center">
+            <Button onClick={() => upsertShortVideo()} loading={shortVideoUpserting} variant="contained" primary>
+              Save
+            </Button>
+          </div>
+        </div>
+      </SingleCardLayout>
+      {showDeleteModal && (
+        <DeleteConfirmationModal
+          title={`Delete Short Video - ${shortVideo.title}`}
+          deleteButtonText="Delete Short Video"
+          open={showDeleteModal}
+          onClose={() => setShowDeleteModal(false)}
+          onDelete={() => {
+            handleDelete();
+            const timestamp = new Date().getTime();
+            router.push(`/tidbit-collections?update=${timestamp}`);
+            setShowDeleteModal(false);
+            setTimeout(() => closeEditShortModal?.(), 3000);
+          }}
+        />
+      )}
+    </PageWrapper>
   );
 }
