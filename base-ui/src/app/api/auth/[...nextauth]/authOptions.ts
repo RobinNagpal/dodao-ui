@@ -11,14 +11,8 @@ const p = new PrismaClient();
 p.verificationToken;
 export const authOptions: AuthOptions = getAuthOptions(
   {
-    user: {
-      findUnique: p.baseUser.findUnique,
-      findFirst: p.baseUser.findFirst,
-      upsert: p.baseUser.upsert,
-    },
-    verificationToken: {
-      delete: p.verificationToken.delete,
-    },
+    user: p.baseUser,
+    verificationToken: p.verificationToken,
     adapter: {
       ...PrismaAdapter(p),
       getUserByEmail: async (email: string) => {

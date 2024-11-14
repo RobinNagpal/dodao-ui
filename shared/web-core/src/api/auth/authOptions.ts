@@ -1,7 +1,7 @@
 import { createHash } from '@dodao/web-core/api/auth/createHash';
 import { DoDaoJwtTokenPayload, Session } from '@dodao/web-core/types/auth/Session';
 import { User } from '@dodao/web-core/types/auth/User';
-import { VerificationToken } from '@dodao/web-core/types/auth/VerificationToken';
+import { PrismaUserAdapter, PrismaVerificationTokenAdapter } from '@dodao/web-core/types/prisma/prismaAdapters';
 import { PredefinedSpaces } from '@dodao/web-core/utils/constants/constants';
 import jwt from 'jsonwebtoken';
 import { AuthOptions, RequestInternal } from 'next-auth';
@@ -12,23 +12,8 @@ import GoogleProvider from 'next-auth/providers/google';
 import TwitterProvider from 'next-auth/providers/twitter';
 
 export type PrismaUserHelper = {
-  user: {
-    findUnique: (args: {
-      where: {
-        id?: string;
-        email_spaceId?: { email: string; spaceId: string };
-      };
-    }) => Promise<User | null>;
-    findFirst: (args: { where: { email: string } }) => Promise<any>;
-    upsert: (args: {
-      where: { publicAddress_spaceId: { publicAddress: string; spaceId: string } };
-      create: { publicAddress: string; username: string; name: string; authProvider: string; spaceId: string };
-      update: {};
-    }) => Promise<User>;
-  };
-  verificationToken: {
-    delete: (args: { where: { token: string } }) => Promise<VerificationToken | null>;
-  };
+  user: PrismaUserAdapter;
+  verificationToken: PrismaVerificationTokenAdapter;
   adapter: Adapter;
 };
 
@@ -75,11 +60,25 @@ export function getAuthOptions(
           credentials: Record<'token' | 'spaceId', string> | undefined,
           req: Pick<RequestInternal, 'body' | 'query' | 'headers' | 'method'>
         ) {
-          const verificationToken = await p.verificationToken.delete({
+          console.log('authorize - credentials', credentials);
+
+          const verificationToken = await p.verificationToken.findFirstOrThrow({
             where: { token: await createHash(`${credentials?.token}${process.env.EMAIL_TOKEN_SECRET!}`) },
           });
-          if (!verificationToken) return null;
+          console.log('verificationToken', verificationToken);
+
+          if (!verificationToken) {
+            console.error('Verification token not found - ', credentials?.token);
+            return null;
+          }
+
+          await p.verificationToken.delete({
+            where: { token: await createHash(`${credentials?.token}${process.env.EMAIL_TOKEN_SECRET!}`) },
+          });
+
           const expired = verificationToken.expires.valueOf() < Date.now();
+
+          console.log('expired', expired, verificationToken.expires.valueOf(), Date.now());
           if (expired) return null;
 
           // We do this because we want to allow to login on TidbitsHub only using the email. If a user create a space
@@ -99,40 +98,43 @@ export function getAuthOptions(
                     },
                   },
                 });
-          if (!user) return null;
-          return {
-            id: user.id,
-            name: user.publicAddress,
-            username: user.publicAddress,
-          };
-        },
-      }),
-      CredentialsProvider({
-        // The name to display on the sign in form (e.g. 'Sign in with...')
-        name: 'email-login',
-        // The credentials is used to generate a suitable form on the sign in page.
-        // You can specify whatever fields you are expecting to be submitted.
-        // e.g. domain, username, password, 2FA token, etc.
-        // You can pass any HTML attribute to the <input> tag through the object.
-        credentials: {
-          email: {},
-          password: {},
-          spaceId: {},
-        },
-        async authorize(credentials, req) {
-          const user = await p.user.findUnique({
-            where: {
-              email_spaceId: {
-                email: credentials?.email!,
+
+          console.log('user - user', user);
+          if (!user) {
+            const user = await p.user.findFirst({
+              where: {
+                email: verificationToken.identifier,
+              },
+            });
+
+            if (!user) {
+              console.error('User not found - ', verificationToken.identifier);
+              return null;
+            }
+
+            console.warn('User found but not in the space. Creating a new one - ', user);
+            await p.user.create({
+              data: {
+                email: verificationToken.identifier,
+                username: verificationToken.identifier,
+                name: user.name,
+                authProvider: 'custom-email',
                 spaceId: credentials?.spaceId!,
               },
-            },
-          });
-          const hashedPassword = await createHash(credentials?.password!);
-          if (user && user.password === hashedPassword) {
-            return user;
+            });
+
+            return {
+              id: user.id,
+              name: user.name,
+              username: user.name,
+            };
+          } else {
+            return {
+              id: user.id,
+              name: user.publicAddress,
+              username: user.publicAddress,
+            };
           }
-          return null;
         },
       }),
       {

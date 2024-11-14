@@ -1,7 +1,7 @@
 import React from 'react';
 import { Space } from '@prisma/client';
 import Link from 'next/link';
-import SpaceCollectionsList from '../SpaceCollectionsList/SpaceCollectionsList';
+import SpaceCollectionsList from './SpaceCollectionsList';
 
 interface SpaceCollectionGridProps {
   spacesByCreator: Space[];

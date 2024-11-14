@@ -9,7 +9,6 @@ export interface User {
   spaceId: string;
   username: string;
   authProvider: string;
-  password?: string | null;
 }
 
 export const UserIdKey = 'dodao_user_id';

@@ -1,4 +1,4 @@
-import SpaceCollectionsGrid from '@/components/spaces/SpaceCollections/View/SpaceCollectionsGrid';
+import SpaceCollectionsGrid from '@/components/spaces/SpaceCollections/SpaceCollectionsGrid';
 import { Space } from '@prisma/client';
 import NoSpaceCollections from './NoSpaceCollections';
 
