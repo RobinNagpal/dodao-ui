@@ -46,6 +46,7 @@ interface EditByteModalState {
 interface DeleteItemModalState {
   isVisible: boolean;
   itemId: string | null;
+  itemName: string | null;
   itemType: ByteCollectionItemType | null;
   deleting: boolean;
 }
@@ -63,6 +64,7 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
   const [deleteItemModalState, setDeleteItemModalState] = React.useState<DeleteItemModalState>({
     isVisible: false,
     itemId: null,
+    itemName: null,
     itemType: null,
     deleting: false,
   });
@@ -119,8 +121,8 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
     setEditModalState({ isVisible: true, byteId: byteId });
   }
 
-  function openItemDeleteModal(itemId: string, itemType: ByteCollectionItemType | null) {
-    setDeleteItemModalState({ isVisible: true, itemId: itemId, itemType: itemType, deleting: false });
+  function openItemDeleteModal(itemId: string, itemName: string, itemType: ByteCollectionItemType | null) {
+    setDeleteItemModalState({ isVisible: true, itemId: itemId, itemName: itemName, itemType: itemType, deleting: false });
   }
 
   function openShortEditModal(shortId: string) {
@@ -133,7 +135,7 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
   }
 
   function closeItemDeleteModal() {
-    setDeleteItemModalState({ isVisible: false, itemId: null, itemType: null, deleting: false });
+    setDeleteItemModalState({ isVisible: false, itemId: null, itemName: null, itemType: null, deleting: false });
   }
 
   function closeShortEditModal() {
@@ -266,11 +268,11 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
         <DeleteConfirmationModal
           title={`Delete ${
             deleteItemModalState.itemType === ByteCollectionItemType.Byte
-              ? 'Byte'
+              ? `Byte - ${deleteItemModalState.itemName}`
               : deleteItemModalState.itemType === ByteCollectionItemType.ClickableDemo
-              ? 'Clickable Demo'
+              ? `Clickable Demo - ${deleteItemModalState.itemName}`
               : deleteItemModalState.itemType === ByteCollectionItemType.ShortVideo
-              ? 'Short Video'
+              ? `Short Video - ${deleteItemModalState.itemName}`
               : 'Item'
           }`}
           open={deleteItemModalState.isVisible}

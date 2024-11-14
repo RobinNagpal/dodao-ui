@@ -15,7 +15,7 @@ interface DemoItemProps {
   eventIdx: number;
   itemLength: number;
   threeDotItems: { label: string; key: string }[];
-  openItemDeleteModal: (itemId: string, itemType: ByteCollectionItemType | null) => void;
+  openItemDeleteModal: (itemId: string, itemName: string, itemType: ByteCollectionItemType | null) => void;
 }
 
 interface EditDemoModalState {
@@ -45,12 +45,12 @@ export default function DemoItem(props: DemoItemProps) {
             </div>
           </Link>
           {demo.demoId && (
-            <div className="z-10">
+            <div className="z-15">
               <PrivateEllipsisDropdown
                 items={threeDotItems}
                 onSelect={(key) => {
                   if (key === 'archive') {
-                    openItemDeleteModal(demo.demoId, ByteCollectionItemType.ClickableDemo);
+                    openItemDeleteModal(demo.demoId, demo.title, ByteCollectionItemType.ClickableDemo);
                   } else {
                     setEditDemoModalState({ isVisible: true, demoId: demo.demoId });
                   }
