@@ -3,56 +3,51 @@ Must have features
 
 # 1st Priority
 
-### Demos Extension
-- [ ] input still needs to be clicked more than once to get it into focus - Sami - to be merged
-- [ ] when taking the screenshot, use height of viewport instead of the height of the page - Sami - to be merged
-- [ ] when creating a new demo, there was an error (due to incorrect api route) - Sami - to be merged
-
 ### Clickable Demos
-- [x] Edit modal - Element selector - Overlay shows over the buttons
-- [x] View modal - tooltips are not appearing correctly for the new iframe changes
-- [x] Edit modal - bottom padding needs to be added to the box wrapper
+- [x] Edit modal - bottom padding needs to be added to the box wrapper - To be merged
 
 ### Login issue for admins
 - [ ] the admin is not able to login to the subdomain from list of spaces
+
 ### Tidbits
-- [x] Edit modal - bottom padding needs to be added to the box wrapper
+- [x] Edit modal - bottom padding needs to be added to the box wrapper - To be merged
 
 ### Tidbit Collections
-- [ ] Edit modal - input field background color has been messed up, its white everywhere - issue on the prod
+- [ ] Edit modal - input field background color has been messed up, its white everywhere - issue on the prod - To be merged and verified
+
 ### Short videos
 - [x] Edit modal - when saved and view modal opens up and when it is closed and we are on the homepage, the newly added video is not shown - needs to add `?updated=${Date.now()}` to the close modal url
-### Edit Space
-### Edit Profile
-### Post signup - Help text
-### Home page styling
-
-
 
 
 # 2nd Priority
 
-### Demos Extension
+
 ### Clickable Demos
-- [ ] View modal - upon completion, successful toast is missing just like the one on tidbit completion
+- [ ] View modal - upon completion, successful toast is missing just like the one on tidbit completion. Reduce the time of the toast when you add it. 
+
 - [x] Edit modal - summary error should be changed from "Excerpt is required" to "Summary is required"
 - [x] Edit modal - publish button too large
 - [ ] Edit modal - when saved without creating any step, gives an error that clickable demo not found and loader keeps on spinning
 ### Login issue for admins
 - [ ] homepage - ellipsis not visible against tidbits on subdomain when admin is logged in - needs to be verified
 ### Tidbits
-- [x] Edit modal - upload button too large
-- [x] Edit modal - header should be "Edit Tidbit" instead of Edit Byte
-- [x] Edit modal - steps heading should be "Tidbit Steps" instead of Byte Steps
-- [x] Edit modal - name & summary field placeholder should use tidbit instead of byte
-- [x] Edit modal - in stepper - if step content isnt mandatory then remove the star from heading "Step Content*"
-- [x] Edit modal - errors should be consistent 
+- [ ] View Byte - Reduce the time of the toast which is shown when we complete the tidbit.
+- [x] Edit modal - upload button too large - To be merged
+- [x] Edit modal - header should be "Edit Tidbit" instead of Edit Byte - To be merged
+- [x] Edit modal - steps heading should be "Tidbit Steps" instead of Byte Steps - To be merged
+- [x] Edit modal - name & summary field placeholder should use tidbit instead of byte - To be merged
+- [x] Edit modal - in stepper - if step content isnt mandatory then remove the star from heading "Step Content*" - To be merged
+- [x] Edit modal - errors should be consistent - To be merged
   - [x] name error : Name is required
   - [x] summary error with field: Summary is required and should be less than 64 characters long
   - [x] summary error above upload button: Content cannot be empty.
+
 ### Tidbit Collections
-- [x] Edit modal - Archive notification needs to be updated from "Failed to archive ByteCollection" to "Failed to archive Tidbit Collection"
-- [ ] homepage - If admin cant archive a collection then lets not show the option to
+- [x] Edit modal - Archive notification needs to be updated from "Failed to archive ByteCollection" to "Failed to archive Tidbit Collection" 
+
+- [ ] homepage - If admin cant archive a collection then lets not show the option to. We can allow admin to archive - Sami
+- [ ] homepage - use the switch component to add functionality of showing archived, not archived. When archived selected, we can show archived collections and also archived items. And may be show a badge against the archived ones - Sami
+
 ### Short videos
 - [ ] Edit modal - needs to use the box wrapper for all the fields just like tidbits and demos
 - [x] Edit modal - when saved, toast needs to be updated from "Short video saved" to "Short video saved successfully!"
@@ -60,6 +55,7 @@ Must have features
 - [x] View modal - an ellipsis is shown with options (Edit, Edit SEO) but we dont have such ellipsis for tidbits/clickable demos
 - [x] Edit modal - remove the priority field, its not working
 - [ ] Edit modal - if mandatory field left empty and saved, shows error message with the field but doesnt show an error toast
+
 ### Edit Space
 ### Edit Profile
 - [ ] Email/username field is coming to be empty
