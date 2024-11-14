@@ -38,7 +38,7 @@ function WebCoreSpaceSetup({ space, loading, saveSpace, uploadLogoToS3 }: WebCor
 
   return (
     <PageWrapper>
-      <Block title={'Space Setup'}>
+      <Block title={'Space Setup'} className="font-semibold text-lg text-center">
         <div className="">
           <UploadInput
             label="Logo"

@@ -80,7 +80,7 @@ export default function useEditSpace(spaceId?: string): UseEditSpaceHelper {
         { spaceInput: getSpaceInput(spaceId, space) },
         {
           errorMessage: 'Failed to update space',
-          successMessage: 'Space updated successfully',
+          successMessage: 'Space updated successfully!',
         }
       );
     } else {
@@ -89,7 +89,7 @@ export default function useEditSpace(spaceId?: string): UseEditSpaceHelper {
         { spaceInput: getSpaceInput(slugify(space.name), space) },
         {
           errorMessage: 'Failed to create space',
-          successMessage: 'Space created successfully',
+          successMessage: 'Space created successfully!',
         }
       );
     }

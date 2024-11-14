@@ -29,7 +29,7 @@ function FinishSetup({ space }: FinishSpaceSetupProps) {
       {
         spaceInput: spaceReq,
       },
-      { successMessage: 'Space updated successfully', errorMessage: 'Error while updating space', redirectPath: '/' }
+      { successMessage: 'Space updated successfully!', errorMessage: 'Error while updating space', redirectPath: '/' }
     );
     setUpserting(false);
   }

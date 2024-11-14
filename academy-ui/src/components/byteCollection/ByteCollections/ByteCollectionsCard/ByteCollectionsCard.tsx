@@ -246,20 +246,18 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
       {editShortModalState.isVisible && (
         <FullScreenModal open={true} onClose={closeShortEditModal} title={'Edit Short Video'}>
           <div className="text-left">
-            <PageWrapper>
-              <EditShortVideoView
-                space={space}
-                byteCollection={byteCollection}
-                shortVideoToEdit={videoResponse?.shortVideo}
-                onAfterSave={() => {
-                  router.push(`/shorts/view/${videoResponse?.shortVideo?.id}`);
-                }}
-                onCancel={() => {
-                  router.push('/tidbit-collections');
-                }}
-                closeEditShortModal={closeShortEditModal}
-              />
-            </PageWrapper>
+            <EditShortVideoView
+              space={space}
+              byteCollection={byteCollection}
+              shortVideoToEdit={videoResponse?.shortVideo}
+              onAfterSave={() => {
+                router.push(`/shorts/view/${videoResponse?.shortVideo?.id}`);
+              }}
+              onCancel={() => {
+                router.push('/tidbit-collections');
+              }}
+              closeEditShortModal={closeShortEditModal}
+            />
           </div>
         </FullScreenModal>
       )}

@@ -3,6 +3,7 @@ import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import { LocalStorageKeys } from '@dodao/web-core/types/deprecated/models/enums';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import union from 'lodash/union';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
@@ -15,6 +16,7 @@ interface ClickableDemoModalProps {
 
 function ClickableDemoModal({ clickableDemoWithSteps, space, onClose }: ClickableDemoModalProps) {
   const router = useRouter();
+  const { showNotification } = useNotificationContext();
   const [isLoading, setIsLoading] = useState(true); // Loading state
   let indexCount = 0;
 
@@ -41,11 +43,12 @@ function ClickableDemoModal({ clickableDemoWithSteps, space, onClose }: Clickabl
           LocalStorageKeys.COMPLETED_CLICKABLE_DEMOS,
           JSON.stringify(union([...JSON.parse(localStorage.getItem(LocalStorageKeys.COMPLETED_CLICKABLE_DEMOS) || '[]'), clickableDemoWithSteps.id]))
         );
-        if (space.type === 'TidbitsSite') {
-          router.push(`/`);
-        } else {
-          router.push(`/clickable-demos`);
-        }
+        showNotification({
+          type: 'success',
+          message: "You've successfully completed this demo. Ready for the next one?",
+          heading: 'Success 🎉',
+        });
+        onClose();
       }
     }
 
@@ -144,7 +147,7 @@ function ClickableDemoModal({ clickableDemoWithSteps, space, onClose }: Clickabl
   return (
     <FullScreenModal open={true} onClose={onClose} title={clickableDemoWithSteps.title}>
       <div id="iframe-container" className="relative w-full h-[93vh]">
-        {isLoading && <FullPageLoader></FullPageLoader>}
+        {isLoading && <FullPageLoader />}
       </div>
     </FullScreenModal>
   );

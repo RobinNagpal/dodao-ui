@@ -41,7 +41,7 @@ function ViewClickableDemo({ demoId, space }: { demoId: string; space: SpaceWith
         clickableDemoWithSteps={data}
         space={space}
         onClose={() => {
-          router.push(`${space.type === SpaceTypes.TidbitsSite ? '/' : '/clickable-demos'}`);
+          router.push(`${space.type === SpaceTypes.TidbitsSite ? `/?updated=${Date.now()}` : '/clickable-demos'}`);
         }}
       />
     );
