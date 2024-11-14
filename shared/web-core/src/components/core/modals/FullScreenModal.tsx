@@ -64,7 +64,7 @@ export default function FullScreenModal({ open, title, children, onClose, showCl
                         </div>
                       )}
                     </Dialog.Title>
-                    <div className="overflow-y-auto max-h-screen">{children}</div>
+                    <div className="overflow-y-auto max-h-screen pb-6">{children}</div>
                   </div>
                 </StyledModalWrapper>
               </Dialog.Panel>
