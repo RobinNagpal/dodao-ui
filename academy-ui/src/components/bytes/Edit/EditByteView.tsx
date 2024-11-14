@@ -74,12 +74,12 @@ export default function EditByteView(props: {
 
         {byteLoaded ? (
           <div className="text-color pb-10">
-            <Block title="Basic Info">
+            <Block title="Basic Info" className="font-semibold">
               <div className="mb-8">
                 <Input
                   modelValue={byte.name}
-                  error={inputError('name') ? 'Name is required' : ''}
-                  placeholder="byte name (only 32 characters)"
+                  error={inputError('name') ? 'Name is required and should be less than 32 characters long' : ''}
+                  placeholder="Tidbit name (only 32 characters)"
                   maxLength={32}
                   onUpdate={(e) => updateByteFunctions.updateByteField('name', e)}
                 >
@@ -88,7 +88,7 @@ export default function EditByteView(props: {
                 <Input
                   modelValue={byte.content}
                   error={inputError('content') ? 'Summary is required and should be less than 64 characters long' : ''}
-                  placeholder="byte summary (only 64 characters)"
+                  placeholder="Tidbit summary (only 64 characters)"
                   maxLength={64}
                   onUpdate={(e) => updateByteFunctions.updateByteField('content', e)}
                 >
@@ -117,22 +117,22 @@ export default function EditByteView(props: {
                 />
               </div>
             </Block>
-            <Block title="Byte Steps">
+            <Block title="Tidbit Steps" className="font-semibold">
               <EditByteStepper space={space} byte={byte} byteErrors={byteErrors} updateByteFunctions={updateByteFunctions} />
             </Block>
 
             <EditByteErrorMessage byte={byte} byteErrors={byteErrors} />
 
-            <div className="flex">
+            <div className="flex justify-center items-center">
               <Button
                 onClick={() => handleByteUpsert(byteCollection)}
                 loading={byteUpserting}
                 disabled={!byteLoaded || byteUpserting}
-                className="ml-2 block w-full"
+                className="block"
                 variant="contained"
                 primary
               >
-                Upload
+                Save
               </Button>
             </div>
           </div>

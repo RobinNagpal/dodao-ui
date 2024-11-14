@@ -412,7 +412,7 @@ export function useEditByte(space: SpaceWithIntegrationsDto, onUpsert: (byteId: 
       const response = await mutationFn();
 
       if (response) {
-        showNotification({ type: 'success', message: 'Tidbit saved successfully', heading: 'Success 🎉' });
+        showNotification({ type: 'success', message: 'Tidbit saved successfully!' });
         await onUpsert(response.id!);
       } else {
         showNotification({ type: 'error', message: $t('notify.somethingWentWrong') });
@@ -435,7 +435,7 @@ export function useEditByte(space: SpaceWithIntegrationsDto, onUpsert: (byteId: 
         },
         {
           redirectPath: `/?updated=${Date.now()}`,
-          successMessage: 'Tidbit saved successfully',
+          successMessage: 'Tidbit saved successfully!',
           errorMessage: 'Failed to save tidbit',
         }
       );

@@ -20,8 +20,8 @@ export default function ByteCollectionCardAdminDropdown({ byteCollection, space 
   const redirectPath = space.type === SpaceTypes.AcademySite ? '/byteCollections' : '/';
   const { deleteData, loading } = useDeleteData<ByteCollectionDto, {}>(
     {
-      errorMessage: 'Failed to archive ByteCollection',
-      successMessage: 'ByteCollection archived successfully',
+      errorMessage: 'Failed to archive Tidbit Collection',
+      successMessage: 'Tidbit Collection archived successfully',
       redirectPath: `${redirectPath}?updated=${Date.now()}`,
     },
     {}

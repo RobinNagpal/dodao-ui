@@ -83,7 +83,7 @@ export default function EditClickableDemoStepperItem({
   console.log('step.placement', step.placement);
 
   return (
-    <div className={`${styles.StyledStepContainer}`} style={{ border: !!clickableDemoErrors?.steps?.[step.id] ? '1px solid red' : 'none' }}>
+    <div className={`${styles.StyledStepContainer} p-5`} style={{ border: !!clickableDemoErrors?.steps?.[step.id] ? '1px solid red' : 'none' }}>
       <div className="flex justify-end min-h-10">
         <IconButton
           onClick={() => moveStepDown?.(step.id)}
@@ -109,7 +109,7 @@ export default function EditClickableDemoStepperItem({
       <div className="w-full">
         <div className="mt-4">
           <StyledSelect
-            label="Tooltip Position *"
+            label="Tooltip Position*"
             selectedItemId={step.placement || TooltipPlacement.bottom}
             items={tooltipStyleSelect}
             setSelectedItemId={(value) => updateStepTooltipPlacement(value!)}
