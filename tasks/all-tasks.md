@@ -10,10 +10,10 @@ Must have features
 # 2nd Priority
 
 ### Clickable Demos
-- [ ] View modal - upon completion, successful toast is missing just like the one on tidbit completion. Reduce the time of the toast when you add it. - This PR Dawood
-- [ ] Edit modal - when saved without creating any step, gives an error that clickable demo not found and loader keeps on spinning - This PR Dawood
-- [ ] View modal - the top bar is not visible on some of the steps - see step#4 onwards `https://alchemix.tidbitshub.org/clickable-demos/view/withdraw-from-transmuter-8288`
-- [ ] Edit modal - html capture and selector arent showing the error message when left empty - This PR Dawood
+- [x] View modal - upon completion, successful toast is missing just like the one on tidbit completion. Reduce the time of the toast when you add it.
+- [x] Edit modal - when saved without creating any step, gives an error that clickable demo not found and loader keeps on spinning
+- [ ] View modal - the top bar is not visible on some of the steps (i guess where the demo step has a tooltip that is closer to the bottom of the screen) - see step#4 onwards `https://alchemix.tidbitshub.org/clickable-demos/view/withdraw-from-transmuter-8288`
+- [x] Edit modal - html capture and selector arent showing the error message when left empty
 
 ### Login issue for admins
 - [ ] homepage - ellipsis not visible against tidbits on subdomain when admin is logged in - needs to be verified
@@ -24,8 +24,8 @@ Must have features
 - [ ] homepage - use the switch component to add functionality of showing archived, not archived. When archived selected, we can show archived collections and also archived items. And may be show a badge against the archived ones - Sami
 
 ### Short videos
-- [ ] Edit modal - needs to use the box wrapper for all the fields just like tidbits and demos - This PR Dawood
-- [ ] Edit modal - if mandatory field left empty and saved, shows error message with the field but doesnt show an error toast - This PR Dawood
+- [x] Edit modal - needs to use the box wrapper for all the fields just like tidbits and demos
+- [x] Edit modal - if mandatory field left empty and saved, shows error message with the field but doesnt show an error toast
 
 ### Post signup - Help text
 - [ ] Add couple of clickable demos. One for creating tidbit, and other for creating a clickable demo.
@@ -66,7 +66,6 @@ Must have features
 ### Others
 - [ ] Remove the hardcoded messages of notifications and errors. Make use of `default.json` file for all the messages 
 ### Clickable Demos
-- [ ] View modal - cross button outline getting cutoff where the first demo step has a tooltip that is closer to the bottom of the screen
 - [ ] View modal - we can show a "Try it" button when clickable demo gets completed which takes user to some link relevant to the demo
 - [ ] Edit modal - add border to tooltip position dropdown
 - [ ] Edit modal - errors at the bottom (before save button) are in reverse order
