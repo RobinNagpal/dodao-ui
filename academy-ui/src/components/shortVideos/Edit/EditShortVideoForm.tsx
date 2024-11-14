@@ -110,7 +110,7 @@ export default function EditShortVideoModal({
 
     try {
       await saveShortVideoFn(shortVideo);
-      showNotification({ message: 'Short video saved', type: 'success' });
+      showNotification({ message: 'Short video saved successfully!', type: 'success' });
       router.push(`/shorts/view/${shortVideo?.id}`);
     } catch (e) {
       showNotification({ message: 'Something went wrong', type: 'error' });
@@ -149,6 +149,7 @@ export default function EditShortVideoModal({
         id={shortVideo.id + '-description'}
         modelValue={shortVideo.description}
         placeholder={'Description'}
+        maxHeight={200}
         onUpdate={(v) => updateShortVideoField('description', v?.toString() || '')}
         spaceId={spaceId}
         objectId={shortVideo.id}
@@ -180,24 +181,11 @@ export default function EditShortVideoModal({
         placeholder="e.g. https://example.com/video.mp4"
       />
 
-      <Input
-        modelValue={shortVideo.priority}
-        onUpdate={(v) => {
-          const priorityString = v?.toString() || '50';
-          updateShortVideoField('priority', parseInt(priorityString));
-        }}
-        label={'Priority'}
-        number
-        required
-        error={shortVideoErrors['priority']}
-      />
       <div className="flex mt-4">
         <Button onClick={() => upsertShortVideo()} loading={shortVideoUpserting} variant="contained" primary>
           Save
         </Button>
-        <Button onClick={() => onCancel()} className="ml-2" variant="contained">
-          Cancel
-        </Button>
+
         {showDeleteModal && (
           <DeleteConfirmationModal
             title={`Delete Short Video - ${shortVideo.title}`}

@@ -496,7 +496,7 @@ For background of the image, use the color ${backgroundColor} and for the primar
             selectedTextAlign={step.contentAlign || TextAlign.Center}
             setTextAlign={updateContentAlignment}
           >
-            <span className="font-semibold">Step Content*</span>
+            <span className="font-semibold">Step Content</span>
           </MarkdownEditor>
         )}
       </div>

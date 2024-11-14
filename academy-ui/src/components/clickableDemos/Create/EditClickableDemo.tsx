@@ -187,7 +187,7 @@ function EditClickableDemo({ space, demoId, byteCollection, closeDemoEditModal }
   return (
     <PageWrapper>
       <SingleCardLayout>
-        <div className="text-color">
+        <div className="text-color pb-10">
           <div className="py-4 my-4">
             <div className="px-4 mb-4 md:px-0 float-right">
               {demoId && (
@@ -208,33 +208,33 @@ function EditClickableDemo({ space, demoId, byteCollection, closeDemoEditModal }
           </div>
           {clickableDemoLoaded ? (
             <>
-              <Block title="Basic Info" className="mt-4">
+              <Block title="Basic Info" className="mt-4 font-semibold">
                 <div className="mb-2">
                   <Input
                     modelValue={clickableDemo.title}
-                    error={inputError('title') ? 'Title is required' : ''}
+                    error={inputError('title') ? 'Title is required and should be less than 32 characters long' : ''}
                     maxLength={32}
                     placeholder="only 32 characters"
                     onUpdate={(newValue) => updateClickableDemoFunctions.updateClickableDemoField('title', newValue)}
                   >
-                    <div>Title*</div>
+                    <div className="font-semibold">Title*</div>
                   </Input>
                 </div>
                 <div className="mb-2">
                   <Input
                     modelValue={clickableDemo.excerpt}
-                    error={inputError('excerpt') ? 'Excerpt is required' : ''}
+                    error={inputError('excerpt') ? 'Summary is required and should be less than 64 characters long' : ''}
                     maxLength={64}
                     placeholder="only 64 characters"
                     onUpdate={(newValue) => updateClickableDemoFunctions.updateClickableDemoField('excerpt', newValue)}
                   >
-                    <div>Summary*</div>
+                    <div className="font-semibold">Summary*</div>
                   </Input>
                 </div>
               </Block>
 
               {clickableDemo ? (
-                <Block title="Clickable Demo Steps" slim={true}>
+                <Block title="Clickable Demo Steps" slim={true} className="font-semibold">
                   <div className="mt-4">
                     <Stepper
                       space={space}
@@ -248,15 +248,17 @@ function EditClickableDemo({ space, demoId, byteCollection, closeDemoEditModal }
 
               <EditClickableDemoErrorMessage clickableDemo={clickableDemo} clickableDemoErrors={clickableDemoErrors} />
 
-              <Button
-                onClick={() => clickSubmit(byteCollection)}
-                loading={!clickableDemoLoaded || clickableDemoCreating}
-                className="block w-full"
-                variant="contained"
-                primary
-              >
-                Publish
-              </Button>
+              <div className="flex justify-center items-center">
+                <Button
+                  onClick={() => clickSubmit(byteCollection)}
+                  loading={!clickableDemoLoaded || clickableDemoCreating}
+                  className="block"
+                  variant="contained"
+                  primary
+                >
+                  Save
+                </Button>
+              </div>
             </>
           ) : (
             <PageLoading />

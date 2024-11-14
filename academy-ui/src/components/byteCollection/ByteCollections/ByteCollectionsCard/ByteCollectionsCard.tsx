@@ -228,7 +228,7 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
       </div>
 
       {editByteModalState.isVisible && (
-        <FullScreenModal open={true} onClose={closeByteEditModal} title={'Edit Byte'}>
+        <FullScreenModal open={true} onClose={closeByteEditModal} title={'Edit Tidbit'}>
           <div className="text-left">
             <EditByteView
               space={space}
