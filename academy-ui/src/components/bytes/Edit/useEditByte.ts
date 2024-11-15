@@ -404,7 +404,7 @@ export function useEditByte(space: SpaceWithIntegrationsDto, onUpsert: (byteId: 
 
       if (!valid) {
         console.log('Byte invalid', valid, byteErrors);
-        showNotification({ type: 'error', message: "Validation Error: Can't Save Byte" });
+        showNotification({ type: 'error', message: $t('notify.validationFailed') });
 
         setByteUpserting(false);
         return;
@@ -412,7 +412,7 @@ export function useEditByte(space: SpaceWithIntegrationsDto, onUpsert: (byteId: 
       const response = await mutationFn();
 
       if (response) {
-        showNotification({ type: 'success', message: 'Tidbit saved successfully', heading: 'Success 🎉' });
+        showNotification({ type: 'success', message: 'Tidbit saved successfully!' });
         await onUpsert(response.id!);
       } else {
         showNotification({ type: 'error', message: $t('notify.somethingWentWrong') });
@@ -435,7 +435,7 @@ export function useEditByte(space: SpaceWithIntegrationsDto, onUpsert: (byteId: 
         },
         {
           redirectPath: `/?updated=${Date.now()}`,
-          successMessage: 'Tidbit saved successfully',
+          successMessage: 'Tidbit saved successfully!',
           errorMessage: 'Failed to save tidbit',
         }
       );

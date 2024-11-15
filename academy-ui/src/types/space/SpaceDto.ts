@@ -30,10 +30,10 @@ export interface SocialSettingsDto {
 }
 
 export interface InviteLinksDto {
-  discordInviteLink: string | null;
-  showAnimatedButtonForDiscord: boolean | null;
-  telegramInviteLink: string | null;
-  showAnimatedButtonForTelegram: boolean | null;
+  discordInviteLink?: string | null;
+  showAnimatedButtonForDiscord?: boolean | null;
+  telegramInviteLink?: string | null;
+  showAnimatedButtonForTelegram?: boolean | null;
 }
 
 export interface UsernameAndNameDto {
@@ -102,14 +102,12 @@ export interface SpaceSummaryDto {
 export interface UpsertSpaceInputDto {
   adminUsernamesV1: UsernameAndNameInputDto[];
   avatar: string;
-  botDomains?: string[];
   creator: string;
   domains: string[];
   features: string[];
   id: string;
   inviteLinks: InviteLinksDto | null;
   name: string;
-  skin: string;
   spaceIntegrations: SpaceIntegrationsInputDto;
   type: string;
 }
@@ -119,8 +117,8 @@ export interface UsernameAndNameInputDto {
   username: string;
 }
 
-export interface SpaceInviteLinksInputSto {
-  discordInviteLink?: string;
+export interface SpaceInviteLinksInputDto {
+  discordInviteLink: string | null;
   showAnimatedButtonForDiscord?: boolean;
   showAnimatedButtonForTelegram?: boolean;
   telegramInviteLink?: string;
@@ -151,8 +149,6 @@ export interface SpaceApiKeyInputDto {
 export interface SpaceIntegrationsInputDto {
   academyRepository?: string;
   discordGuildId?: string;
-  gitGuideRepositories: SpaceGitRepositoryInputDto[];
-  gnosisSafeWallets: GnosisSafeWalletInputDto[];
   projectGalaxyTokenLastFour?: string;
   spaceApiKeys: SpaceApiKeyInputDto[] | null;
 }

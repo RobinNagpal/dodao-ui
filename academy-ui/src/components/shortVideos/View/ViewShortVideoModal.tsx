@@ -43,23 +43,9 @@ export default function ViewShortVideoModal({ initialSlide, videos, onClose, onS
     }
   };
   const currentVideoTitle = videos[currentSlideIndex]?.title || '';
-  const threeDotItems = [
-    { label: 'Edit', key: 'edit' },
-    { label: 'Edit Seo', key: 'editSeo' },
-  ];
+
   return (
     <FullScreenModal title={currentVideoTitle} open={true} onClose={onClose} fullWidth={false}>
-      <div className="flex justify-end">
-        <PrivateEllipsisDropdown
-          items={threeDotItems}
-          onSelect={async (key) => {
-            if (key === 'edit') {
-              onShowEditModal();
-            }
-          }}
-          className="mt-2 mr-2"
-        />
-      </div>
       <div className="flex justify-around">
         <Swiper
           ref={swiperRef as any}

@@ -103,7 +103,7 @@ export default function TextareaAutosize({
   return (
     <div className={'w-full mt-2 ' + className || ''}>
       {label && (
-        <label htmlFor={id || slugLabel || uuid} className="block text-sm font-medium leading-6">
+        <label htmlFor={id || slugLabel || uuid} className="block text-sm font-semibold leading-6">
           {label}
         </label>
       )}

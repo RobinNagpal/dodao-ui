@@ -27,7 +27,7 @@ function VideoModal(props: { space: SpaceWithIntegrationsDto; params: { videoId:
       key={initialSlideIndex}
       initialSlide={initialSlideIndex}
       videos={videos}
-      onClose={() => (props.space.type === SpaceTypes.TidbitsSite ? router.push('/') : router.push('/tidbit-collections'))}
+      onClose={() => (props.space.type === SpaceTypes.TidbitsSite ? router.push(`/?updated=${Date.now()}`) : router.push('/tidbit-collections'))}
       onShowEditModal={() => {
         router.push(`/shorts/edit/${props.params.videoId}`);
       }}

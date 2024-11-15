@@ -61,7 +61,7 @@ export default function Input({
 
   return (
     <div className={'my-2 ' + className}>
-      <label htmlFor={id || inputId} className="block text-sm font-medium leading-6">
+      <label htmlFor={id || inputId} className="block text-sm font-semibold leading-6">
         {label} {children}
       </label>
       <div className="relative mt-2 rounded-md shadow-sm">
@@ -69,8 +69,8 @@ export default function Input({
           id={id || inputId}
           ref={inputRef}
           className={`block w-full rounded-md border-0 py-1.5 pr-10 ring-1 ring-inset ring-gray-400 shadow-sm focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6 ${
-            error ? styles.styledInput + ' ' + styles.error : styles.styledInput
-          }`}
+            styles.styledInput
+          } ${error ? styles.error : ''}`}
           value={modelValue || ''}
           onChange={handleInput}
           placeholder={placeholder}

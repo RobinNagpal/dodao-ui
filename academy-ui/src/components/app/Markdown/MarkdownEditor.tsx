@@ -142,10 +142,10 @@ function MarkdownEditor({
   const fieldId = uuidV4();
   return (
     <div className="my-2 w-full markdown-editor-overrides">
-      <label htmlFor={id || fieldId} className="block text-sm font-medium leading-6 mb-1">
+      <label htmlFor={id || fieldId} className="block text-sm font-semibold leading-6 mb-1">
         {label} {children}
       </label>
-      <div className="w-full bg-transparent flex">
+      <div className="w-full bg-transparent flex mt-2">
         <MDEditor
           value={modelValue}
           onChange={handleInputContent}

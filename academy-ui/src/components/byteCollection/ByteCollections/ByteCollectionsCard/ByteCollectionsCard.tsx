@@ -49,6 +49,7 @@ interface EditByteModalState {
 interface DeleteItemModalState {
   isVisible: boolean;
   itemId: string | null;
+  itemName: string | null;
   itemType: ByteCollectionItemType | null;
   deleting: boolean;
 }
@@ -80,6 +81,7 @@ export default function ByteCollectionsCard({
   const [deleteItemModalState, setDeleteItemModalState] = React.useState<DeleteItemModalState>({
     isVisible: false,
     itemId: null,
+    itemName: null,
     itemType: null,
     deleting: false,
   });
@@ -169,8 +171,8 @@ export default function ByteCollectionsCard({
     setEditModalState({ isVisible: true, byteId: byteId });
   }
 
-  function openItemDeleteModal(itemId: string, itemType: ByteCollectionItemType | null) {
-    setDeleteItemModalState({ isVisible: true, itemId: itemId, itemType: itemType, deleting: false });
+  function openItemDeleteModal(itemId: string, itemName: string, itemType: ByteCollectionItemType | null) {
+    setDeleteItemModalState({ isVisible: true, itemId: itemId, itemName: itemName, itemType: itemType, deleting: false });
   }
 
   function openItemUnarchiveModal(itemId: string, itemType: ByteCollectionItemType | null) {
@@ -187,7 +189,7 @@ export default function ByteCollectionsCard({
   }
 
   function closeItemDeleteModal() {
-    setDeleteItemModalState({ isVisible: false, itemId: null, itemType: null, deleting: false });
+    setDeleteItemModalState({ isVisible: false, itemId: null, itemName: null, itemType: null, deleting: false });
   }
 
   function closeItemUnarchiveModal() {
@@ -297,7 +299,7 @@ export default function ByteCollectionsCard({
       </div>
 
       {editByteModalState.isVisible && (
-        <FullScreenModal open={true} onClose={closeByteEditModal} title={'Edit Byte'}>
+        <FullScreenModal open={true} onClose={closeByteEditModal} title={'Edit Tidbit'}>
           <div className="text-left">
             <EditByteView
               space={space}
@@ -315,20 +317,18 @@ export default function ByteCollectionsCard({
       {editShortModalState.isVisible && (
         <FullScreenModal open={true} onClose={closeShortEditModal} title={'Edit Short Video'}>
           <div className="text-left">
-            <PageWrapper>
-              <EditShortVideoView
-                space={space}
-                byteCollection={byteCollection}
-                shortVideoToEdit={videoResponse?.shortVideo}
-                onAfterSave={() => {
-                  router.push(`/shorts/view/${videoResponse?.shortVideo?.id}`);
-                }}
-                onCancel={() => {
-                  router.push('/tidbit-collections');
-                }}
-                closeEditShortModal={closeShortEditModal}
-              />
-            </PageWrapper>
+            <EditShortVideoView
+              space={space}
+              byteCollection={byteCollection}
+              shortVideoToEdit={videoResponse?.shortVideo}
+              onAfterSave={() => {
+                router.push(`/shorts/view/${videoResponse?.shortVideo?.id}`);
+              }}
+              onCancel={() => {
+                router.push('/tidbit-collections');
+              }}
+              closeEditShortModal={closeShortEditModal}
+            />
           </div>
         </FullScreenModal>
       )}
@@ -337,11 +337,11 @@ export default function ByteCollectionsCard({
         <DeleteConfirmationModal
           title={`Delete ${
             deleteItemModalState.itemType === ByteCollectionItemType.Byte
-              ? 'Byte'
+              ? `Byte - ${deleteItemModalState.itemName}`
               : deleteItemModalState.itemType === ByteCollectionItemType.ClickableDemo
-              ? 'Clickable Demo'
+              ? `Clickable Demo - ${deleteItemModalState.itemName}`
               : deleteItemModalState.itemType === ByteCollectionItemType.ShortVideo
-              ? 'Short Video'
+              ? `Short Video - ${deleteItemModalState.itemName}`
               : 'Item'
           }`}
           open={deleteItemModalState.isVisible}

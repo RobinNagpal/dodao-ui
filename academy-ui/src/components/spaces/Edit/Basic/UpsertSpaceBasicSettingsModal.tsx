@@ -75,32 +75,7 @@ export default function UpsertSpaceBasicSettingsModal(props: { space?: SpaceWith
               );
             }}
           />
-          <UpsertBadgeInput
-            label={'Bot Domains'}
-            badges={(space.botDomains || []).map((d) => ({ id: d, label: d }))}
-            onAdd={(d) => {
-              setSpaceField('botDomains', union(space.botDomains || [], [d]));
-            }}
-            onRemove={(d) => {
-              setSpaceField(
-                'botDomains',
-                (space.botDomains || []).filter((domain) => domain !== d)
-              );
-            }}
-          />
-          <UpsertBadgeInput
-            label={'Admins By Usernames'}
-            badges={space.adminUsernames.map((d) => ({ id: d, label: d }))}
-            onAdd={(admin) => {
-              setSpaceField('adminUsernames', union(space.adminUsernames, [admin]));
-            }}
-            onRemove={(d) => {
-              setSpaceField(
-                'adminUsernames',
-                space.adminUsernames.filter((domain) => domain !== d)
-              );
-            }}
-          />
+
           <UpsertKeyValueBadgeInput
             label={'Admins By Usernames & Names'}
             badges={space.adminUsernamesV1.map((d) => ({ key: d.username, value: d.nameOfTheUser }))}

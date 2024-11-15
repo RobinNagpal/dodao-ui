@@ -99,6 +99,20 @@ export default function ByteItem(props: ByteItemProps) {
               </div>
             )}
           </div>
+          {byte.byteId && !byte.byteId.startsWith('0001-demo-byte') && (
+            <div className="z-15">
+              <PrivateEllipsisDropdown
+                items={threeDotItems}
+                onSelect={(key) => {
+                  if (key === 'archive') {
+                    openItemDeleteModal(byte.byteId, byte.name, ByteCollectionItemType.Byte);
+                  } else {
+                    openByteEditModal(byte.byteId);
+                  }
+                }}
+              />
+            </div>
+          )}
         </div>
       </div>
     </li>

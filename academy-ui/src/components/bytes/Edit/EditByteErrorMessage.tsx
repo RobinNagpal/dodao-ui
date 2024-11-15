@@ -9,7 +9,7 @@ interface EditByteErrorMessagesProps {
 
 const errorMessages: { [key: string]: string } = {
   name: 'Name is required.',
-  content: 'Content cannot be empty.',
+  content: 'Summary is required.',
   stepName: 'Step name is required.',
 };
 

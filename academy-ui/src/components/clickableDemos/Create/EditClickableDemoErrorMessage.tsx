@@ -9,7 +9,7 @@ interface EditClickableDemoErrorMessagesProps {
 
 const errorMessages: { [key: string]: string } = {
   title: 'Title is required.',
-  excerpt: 'Summary cannot be empty.',
+  excerpt: 'Summary is required.',
   stepName: 'Step name is required.',
   selector: 'Selector is required.',
   url: 'URL is required.',

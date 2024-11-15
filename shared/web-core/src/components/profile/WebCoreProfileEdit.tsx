@@ -6,6 +6,7 @@ import React, { useState, useEffect } from 'react';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import Block from '@dodao/web-core/components/app/Block';
 import { User } from '@dodao/web-core/types/auth/User';
+import { FormFooter } from '../app/Form/FormFooter';
 
 interface WebCoreProfileEditProps {
   user: User;
@@ -25,24 +26,21 @@ function WebCoreProfileEdit({ user, saveUser, loading }: WebCoreProfileEditProps
 
   return (
     <PageWrapper>
-      <Block title="Edit User Profile">
+      <Block title="Edit User Profile" className="font-semibold text-lg text-center">
         <div className="">
-          <Input label="Email / Username" modelValue={updatedUser.email} onUpdate={(value) => setUserField('email', value?.toString() || '')} disabled />
+          <Input label="Email / Username" modelValue={updatedUser.email || updatedUser.username} disabled />
           <Input label="Name" modelValue={updatedUser.name} onUpdate={(value) => setUserField('name', value?.toString() || '')} />
           <Input label="Phone Number" modelValue={updatedUser.phoneNumber} onUpdate={(value) => setUserField('phoneNumber', value?.toString() || '')} />
         </div>
         <div className="mt-10">
-          <Button
-            variant="contained"
-            primary
-            loading={loading}
-            disabled={loading}
-            onClick={async () => {
+          <FormFooter
+            saveButtonText="Save Profile"
+            onSave={async () => {
               await saveUser(updatedUser);
             }}
-          >
-            Save Profile
-          </Button>
+            onSaveLoading={loading}
+            saveButtonDisabled={loading}
+          />
         </div>
       </Block>
     </PageWrapper>
