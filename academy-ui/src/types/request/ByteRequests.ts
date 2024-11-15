@@ -8,9 +8,10 @@ export interface DeleteByteItemRequest {
   itemType: ByteCollectionItemType;
 }
 
-export interface UnarchiveByteItemRequest {
+export interface PutByteItemRequest {
   itemId: string;
   itemType: ByteCollectionItemType;
+  archive: boolean;
 }
 
 export interface StepItemInputGenericInput {

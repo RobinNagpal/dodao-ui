@@ -4,6 +4,6 @@ export interface DeleteByteItemResponse {
   updated: Byte | ShortVideo | ClickableDemos;
 }
 
-export interface UnarchiveByteItemResponse {
+export interface PutByteItemResponse {
   updated: Byte | ShortVideo | ClickableDemos;
 }

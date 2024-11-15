@@ -2,30 +2,10 @@ import { getByteCollectionWithItem } from '@/app/api/helpers/byteCollection/byte
 import { withErrorHandlingV1 } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { checkEditSpacePermission } from '@/app/api/helpers/space/checkEditSpacePermission';
 import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
-import { validateSuperAdmin } from '@/app/api/helpers/space/isSuperAdmin';
 import { prisma } from '@/prisma';
 import { ByteCollectionDto, ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import { CreateByteCollectionRequest } from '@/types/request/ByteCollectionRequests';
 import { NextRequest, NextResponse } from 'next/server';
-
-async function deleteHandler(
-  req: NextRequest,
-  { params }: { params: Promise<{ spaceId: string; byteCollectionId: string }> }
-): Promise<NextResponse<ByteCollectionDto>> {
-  await validateSuperAdmin(req);
-
-  const { byteCollectionId } = await params;
-  const updatedByteCollection = await prisma.byteCollection.update({
-    where: {
-      id: byteCollectionId,
-    },
-    data: {
-      archive: true,
-    },
-  });
-
-  return NextResponse.json(updatedByteCollection, { status: 200 });
-}
 
 async function putHandler(
   req: NextRequest,
@@ -53,6 +33,7 @@ async function putHandler(
       updatedAt: new Date(),
       priority: args.priority,
       videoUrl: args.videoUrl,
+      archive: args.archive,
     },
   });
 
@@ -61,25 +42,4 @@ async function putHandler(
   return NextResponse.json(byteCollectionsWithBytes, { status: 200 });
 }
 
-async function postHandler(
-  req: NextRequest,
-  { params }: { params: Promise<{ spaceId: string; byteCollectionId: string }> }
-): Promise<NextResponse<ByteCollectionDto>> {
-  await validateSuperAdmin(req);
-
-  const { byteCollectionId } = await params;
-  const updatedByteCollection = await prisma.byteCollection.update({
-    where: {
-      id: byteCollectionId,
-    },
-    data: {
-      archive: false,
-    },
-  });
-
-  return NextResponse.json(updatedByteCollection, { status: 200 });
-}
-
 export const PUT = withErrorHandlingV1<ByteCollectionSummary>(putHandler);
-export const DELETE = withErrorHandlingV1<ByteCollectionDto>(deleteHandler);
-export const POST = withErrorHandlingV1<ByteCollectionDto>(postHandler);

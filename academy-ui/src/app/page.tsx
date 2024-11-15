@@ -124,7 +124,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return metadata;
 }
 
-async function Home({ searchParams }: { searchParams: Promise<any> }) {
+async function Home() {
   const headersList = await headers();
   const host = headersList.get('host')?.split(':')?.[0];
 
@@ -132,7 +132,7 @@ async function Home({ searchParams }: { searchParams: Promise<any> }) {
   const session = (await getServerSession(authOptions)) as Session;
 
   if (space?.type === SpaceTypes.TidbitsSite) {
-    return await getTidbitsSiteHomepageContents(space, session, (await searchParams)?.archive === 'true');
+    return await getTidbitsSiteHomepageContents(space, session);
   }
 
   if (host === 'dodao-localhost.io' || host === 'academy.dodao.io' || host === 'dodao.io') {

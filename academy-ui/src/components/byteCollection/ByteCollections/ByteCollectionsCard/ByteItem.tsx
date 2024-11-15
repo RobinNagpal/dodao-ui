@@ -16,7 +16,7 @@ interface ByteItemProps {
   itemLength: number;
   openByteEditModal: (byteId: string) => void;
   openItemDeleteModal: (itemId: string, itemName: string, itemType: ByteCollectionItemType | null) => void;
-  openItemUnarchiveModal: (itemId: string, itemType: ByteCollectionItemType | null) => void;
+  openItemUnarchiveModal: (itemId: string, itemName: string, itemType: ByteCollectionItemType | null) => void;
 }
 
 interface VideoModalProps {
@@ -77,7 +77,7 @@ export default function ByteItem(props: ByteItemProps) {
             {byte?.archive && (
               <span
                 className={`inline-flex items-center rounded-xl px-2 py-1 mr-2 text-xs font-medium max-h-6 ${styles.archiveBadge}`}
-                onClick={() => openItemUnarchiveModal(byte.byteId, ByteCollectionItemType.Byte)}
+                onClick={() => openItemUnarchiveModal(byte.byteId, byte.name, ByteCollectionItemType.Byte)}
               >
                 Archived
               </span>
@@ -90,7 +90,7 @@ export default function ByteItem(props: ByteItemProps) {
                     if (key === 'archive') {
                       openItemDeleteModal(byte.byteId, byte.name, ByteCollectionItemType.Byte);
                     } else if (key === 'unarchive') {
-                      openItemUnarchiveModal(byte.byteId, ByteCollectionItemType.Byte);
+                      openItemUnarchiveModal(byte.byteId, byte.name, ByteCollectionItemType.Byte);
                     } else {
                       openByteEditModal(byte.byteId);
                     }

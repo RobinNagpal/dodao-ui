@@ -12,7 +12,7 @@ interface ShortItemProps {
   itemLength: number;
   openShortEditModal: (shortId: string) => void;
   openItemDeleteModal: (itemId: string, itemName: string, itemType: ByteCollectionItemType | null) => void;
-  openItemUnarchiveModal: (itemId: string, itemType: ByteCollectionItemType | null) => void;
+  openItemUnarchiveModal: (itemId: string, itemName: string, itemType: ByteCollectionItemType | null) => void;
 }
 
 export default function ShortItem(props: ShortItemProps) {
@@ -43,7 +43,7 @@ export default function ShortItem(props: ShortItemProps) {
             {short.archive && (
               <span
                 className={`inline-flex items-center rounded-xl px-2 py-1 mr-2 text-xs font-medium max-h-6 ${styles.archiveBadge}`}
-                onClick={() => openItemUnarchiveModal(short.shortId, ByteCollectionItemType.ShortVideo)}
+                onClick={() => openItemUnarchiveModal(short.shortId, short.title, ByteCollectionItemType.ShortVideo)}
               >
                 Archived
               </span>
@@ -56,7 +56,7 @@ export default function ShortItem(props: ShortItemProps) {
                     if (key === 'archive') {
                       openItemDeleteModal(short.shortId, short.title, ByteCollectionItemType.ShortVideo);
                     } else if (key === 'unarhive') {
-                      openItemUnarchiveModal(short.shortId, ByteCollectionItemType.ShortVideo);
+                      openItemUnarchiveModal(short.shortId, short.title, ByteCollectionItemType.ShortVideo);
                     } else {
                       openShortEditModal(short.shortId);
                     }

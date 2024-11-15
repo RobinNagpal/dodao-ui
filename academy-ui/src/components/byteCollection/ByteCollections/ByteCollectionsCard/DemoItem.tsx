@@ -16,7 +16,7 @@ interface DemoItemProps {
   itemLength: number;
   threeDotItems: { label: string; key: string }[];
   openItemDeleteModal: (itemId: string, itemName: string, itemType: ByteCollectionItemType | null) => void;
-  openItemUnarchiveModal: (itemId: string, itemType: ByteCollectionItemType | null) => void;
+  openItemUnarchiveModal: (itemId: string, itemName: string, itemType: ByteCollectionItemType | null) => void;
 }
 
 interface EditDemoModalState {
@@ -55,7 +55,7 @@ export default function DemoItem(props: DemoItemProps) {
             {demo?.archive && (
               <span
                 className={`inline-flex items-center rounded-xl px-2 py-1 mr-2 text-xs font-medium max-h-6 ${styles.archiveBadge}`}
-                onClick={() => openItemUnarchiveModal(demo.demoId, ByteCollectionItemType.ClickableDemo)}
+                onClick={() => openItemUnarchiveModal(demo.demoId, demo.title, ByteCollectionItemType.ClickableDemo)}
               >
                 Archived
               </span>
@@ -68,7 +68,7 @@ export default function DemoItem(props: DemoItemProps) {
                     if (key === 'archive') {
                       openItemDeleteModal(demo.demoId, demo.title, ByteCollectionItemType.ClickableDemo);
                     } else if (key === 'unarchive') {
-                      openItemUnarchiveModal(demo.demoId, ByteCollectionItemType.ClickableDemo);
+                      openItemUnarchiveModal(demo.demoId, demo.title, ByteCollectionItemType.ClickableDemo);
                     } else {
                       setEditDemoModalState({ isVisible: true, demoId: demo.demoId });
                     }

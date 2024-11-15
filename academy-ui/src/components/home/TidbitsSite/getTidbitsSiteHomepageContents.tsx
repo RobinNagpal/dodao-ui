@@ -15,7 +15,7 @@ import React, { Suspense } from 'react';
  * @param space
  * @param session
  */
-export async function getTidbitsSiteHomepageContents(space: SpaceWithIntegrationsDto, session?: Session, archive?: boolean) {
+export async function getTidbitsSiteHomepageContents(space: SpaceWithIntegrationsDto, session?: Session) {
   const byteCollections = await fetchDataServerSide<ByteCollectionSummary[]>(`${getBaseUrl()}/api/${space.id}/byte-collections`);
 
   if (session?.isAdminOfSpace && byteCollections.length < 3) {
@@ -47,7 +47,6 @@ export async function getTidbitsSiteHomepageContents(space: SpaceWithIntegration
           space={space}
           byteCollectionsBaseUrl={`/tidbit-collections`}
           isAdmin={session?.isAdminOfSpace || session?.isSuperAdminOfDoDAO}
-          archive={archive}
         />
       </Suspense>
     </PageWrapper>
