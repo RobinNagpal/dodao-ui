@@ -5,7 +5,7 @@ export default function Demos() {
   return (
     <div className="bg-white py-16 sm:py-24">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl sm:text-center">
+        <div className="mx-auto max-w-3xl sm:text-center">
           <h2 className="text-base/7 font-semibold text-indigo-600">Bring it to life</h2>
           <p className="mt-2 text-3xl font-medium tracking-tight">Hands-On Clickable Demos</p>
           <p className="mt-2 text-lg">

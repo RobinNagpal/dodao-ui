@@ -45,7 +45,7 @@ export function WatchVideoButton(props: { src: string }) {
     <>
       <Button removeBorder onClick={() => setOpen(true)}>
         <PlayIcon className="h-6 w-6 flex-none" />
-        <span className="ml-2.5 hover:underline">Watch the video</span>
+        <span className="text-gray-900 ml-2.5 hover:underline">Watch & Learn</span>
       </Button>
       <VideoFullScreenModal open={open} onClose={() => setOpen(false)} src={props.src} />
     </>

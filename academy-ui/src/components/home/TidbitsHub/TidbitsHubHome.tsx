@@ -6,6 +6,7 @@ import { Faqs } from './components/Faqs';
 import { Hero } from './components/Hero';
 import { PrimaryFeatures } from './components/PrimaryFeatures';
 import { SecondaryFeatures } from './components/SecondaryFeatures';
+import { TrustedBy } from '../DoDAOHome/components/TrustedBy';
 
 export default function TidbitsHubHome({ space }: { space: SpaceWithIntegrationsDto }) {
   return (
@@ -14,6 +15,7 @@ export default function TidbitsHubHome({ space }: { space: SpaceWithIntegrations
       <PrimaryFeatures />
       <Demos />
       <SecondaryFeatures />
+      <TrustedBy />
       <Faqs />
       <Footer />
     </>
