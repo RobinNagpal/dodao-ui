@@ -15,7 +15,7 @@ interface DemoItemProps {
   eventIdx: number;
   itemLength: number;
   threeDotItems: { label: string; key: string }[];
-  openItemDeleteModal: (itemId: string, itemType: ByteCollectionItemType | null) => void;
+  openItemDeleteModal: (itemId: string, itemName: string, itemType: ByteCollectionItemType | null) => void;
   openItemUnarchiveModal: (itemId: string, itemType: ByteCollectionItemType | null) => void;
 }
 
@@ -66,7 +66,7 @@ export default function DemoItem(props: DemoItemProps) {
                   items={modifiedThreeDotItems}
                   onSelect={(key) => {
                     if (key === 'archive') {
-                      openItemDeleteModal(demo.demoId, ByteCollectionItemType.ClickableDemo);
+                      openItemDeleteModal(demo.demoId, demo.title, ByteCollectionItemType.ClickableDemo);
                     } else if (key === 'unarchive') {
                       openItemUnarchiveModal(demo.demoId, ByteCollectionItemType.ClickableDemo);
                     } else {

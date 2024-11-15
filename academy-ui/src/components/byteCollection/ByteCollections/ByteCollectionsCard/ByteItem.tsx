@@ -15,7 +15,7 @@ interface ByteItemProps {
   threeDotItems: { label: string; key: string }[];
   itemLength: number;
   openByteEditModal: (byteId: string) => void;
-  openItemDeleteModal: (itemId: string, itemType: ByteCollectionItemType | null) => void;
+  openItemDeleteModal: (itemId: string, itemName: string, itemType: ByteCollectionItemType | null) => void;
   openItemUnarchiveModal: (itemId: string, itemType: ByteCollectionItemType | null) => void;
 }
 
@@ -39,7 +39,7 @@ export default function ByteItem(props: ByteItemProps) {
     itemLength,
   } = props;
   const byteViewUrl = `${viewByteBaseUrl}/${byte.byteId}`;
-  const modifiedThreeDotItems = JSON.parse(JSON.stringify(threeDotItems));  // Creating a deep copy so that it doesn't affect the original array
+  const modifiedThreeDotItems = JSON.parse(JSON.stringify(threeDotItems)); // Creating a deep copy so that it doesn't affect the original array
   if (byte.archive) {
     modifiedThreeDotItems.pop();
     modifiedThreeDotItems.push({ label: 'Unarchive', key: 'unarchive' });
@@ -88,7 +88,7 @@ export default function ByteItem(props: ByteItemProps) {
                   items={modifiedThreeDotItems}
                   onSelect={(key) => {
                     if (key === 'archive') {
-                      openItemDeleteModal(byte.byteId, ByteCollectionItemType.Byte);
+                      openItemDeleteModal(byte.byteId, byte.name, ByteCollectionItemType.Byte);
                     } else if (key === 'unarchive') {
                       openItemUnarchiveModal(byte.byteId, ByteCollectionItemType.Byte);
                     } else {

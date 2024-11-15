@@ -11,7 +11,7 @@ interface ShortItemProps {
   threeDotItems: { label: string; key: string }[];
   itemLength: number;
   openShortEditModal: (shortId: string) => void;
-  openItemDeleteModal: (itemId: string, itemType: ByteCollectionItemType | null) => void;
+  openItemDeleteModal: (itemId: string, itemName: string, itemType: ByteCollectionItemType | null) => void;
   openItemUnarchiveModal: (itemId: string, itemType: ByteCollectionItemType | null) => void;
 }
 
@@ -54,7 +54,7 @@ export default function ShortItem(props: ShortItemProps) {
                   items={modifiedThreeDotItems}
                   onSelect={(key) => {
                     if (key === 'archive') {
-                      openItemDeleteModal(short.shortId, ByteCollectionItemType.ShortVideo);
+                      openItemDeleteModal(short.shortId, short.title, ByteCollectionItemType.ShortVideo);
                     } else if (key === 'unarhive') {
                       openItemUnarchiveModal(short.shortId, ByteCollectionItemType.ShortVideo);
                     } else {
