@@ -1,18 +1,26 @@
 'use client';
 
-import { CreateSpaceRequest } from '@/types/request/CreateSpaceRequest';
 import { WebCoreSpace } from '@dodao/web-core/types/space';
 import CreateNewSpace from '@dodao/web-core/ui/auth/signup/components/CreateNewSpace';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import getSubdomainUrl from '@dodao/web-core/utils/api/getSubdomainUrl';
 import { Contexts } from '@dodao/web-core/utils/constants/constants';
-import { BaseSpace } from '@prisma/client';
-import { CreateSpaceResponse } from 'academy-ui/src/types/response/CreateSpaceResponse';
+import { BaseSpace, User } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 
 interface CreateSpaceProps {
   space: BaseSpace;
+}
+
+interface CreateSpaceResponse {
+  space: BaseSpace;
+  user: User;
+}
+
+interface CreateSpaceRequest {
+  id: string;
+  name: string;
 }
 
 function CreateSpace({ space }: CreateSpaceProps) {
