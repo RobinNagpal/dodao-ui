@@ -1,18 +1,17 @@
-'use client';
-
-import withSpace, { SpaceProps } from '@/contexts/withSpace';
+import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
 import EmailLoginModal from '@dodao/web-core/ui/auth/login/components/EmailLoginModal';
 
-const EmailAuthPage = ({ space }: SpaceProps) => {
+const EmailAuthPage = async () => {
+  const space = await getSpaceServerSide();
   return (
     <EmailLoginModal
       open={true}
       onClose={() => {
         // do nothing
       }}
-      space={space}
+      space={space!}
     />
   );
 };
 
-export default withSpace(EmailAuthPage);
+export default EmailAuthPage;

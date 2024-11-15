@@ -1,6 +1,6 @@
 import { Space } from '@prisma/client';
 import React from 'react';
-import SpaceCollectionsCard from '../SpaceCollectionsCard/SpaceCollectionsCard';
+import SpaceCollectionsCard from './SpaceCollectionsCard';
 
 interface SpaceCollectionsListProps {
   spaceCollections: Space[];
@@ -15,7 +15,7 @@ export default function SpaceCollectionsList({ spaceCollections, title, noSpaceT
       {spaceCollections.length != 0 ? (
         <ul role="list" className="max-w-lg">
           {spaceCollections.map((spaceCollection, i) => (
-            <SpaceCollectionsCard key={i} spaceCollection={spaceCollection} />
+            <SpaceCollectionsCard key={i} space={spaceCollection} />
           ))}
         </ul>
       ) : (
