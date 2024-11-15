@@ -7,6 +7,7 @@ import Bars3BottomLeftIcon from '@heroicons/react/24/solid/Bars3BottomLeftIcon';
 import CursorArrowRipple from '@heroicons/react/24/solid/CursorArrowRippleIcon';
 import CheckIcon from '@heroicons/react/24/solid/CheckIcon';
 import React, { useEffect } from 'react';
+import VideoCameraIcon from '@heroicons/react/24/solid/VideoCameraIcon';
 
 export interface ItemCompletionCheckmarkProps {
   itemType: ByteCollectionItemType;
@@ -14,7 +15,12 @@ export interface ItemCompletionCheckmarkProps {
 }
 export default function ItemCompletionCheckmark({ itemId, itemType }: ItemCompletionCheckmarkProps) {
   const [isItemCompleted, setIsItemCompleted] = React.useState<boolean>(false);
-  const localStorageKey = itemType === ByteCollectionItemType.Byte ? LocalStorageKeys.COMPLETED_TIDBITS : LocalStorageKeys.COMPLETED_CLICKABLE_DEMOS;
+  const localStorageKey =
+    itemType === ByteCollectionItemType.Byte
+      ? LocalStorageKeys.COMPLETED_TIDBITS
+      : itemType === ByteCollectionItemType.ClickableDemo
+      ? LocalStorageKeys.COMPLETED_CLICKABLE_DEMOS
+      : LocalStorageKeys.COMPLETED_SHORT_VIDEO;
 
   useEffect(() => {
     const itemCompleted = JSON.parse(localStorage.getItem(localStorageKey) || '[]')?.includes(itemId);
@@ -31,8 +37,10 @@ export default function ItemCompletionCheckmark({ itemId, itemType }: ItemComple
         <span className={'h-8 w-8 rounded-full flex items-center justify-center ring-5 ring-white ' + styles.tidbitIconSpan}>
           {itemType === ByteCollectionItemType.Byte ? (
             <Bars3BottomLeftIcon className="h-5 w-5 text-white" aria-hidden="true" />
-          ) : (
+          ) : itemType === ByteCollectionItemType.ClickableDemo ? (
             <CursorArrowRipple className="h-5 w-5 text-white" aria-hidden="true" />
+          ) : (
+            <VideoCameraIcon className="h-5 w-5 text-white" aria-hidden="true" />
           )}
         </span>
       )}
