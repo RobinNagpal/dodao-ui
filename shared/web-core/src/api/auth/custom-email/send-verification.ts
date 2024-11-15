@@ -68,6 +68,10 @@ const emailBody = (link: string) => `
             text-align: center;
             margin-top: 30px;
         }
+        .link {
+            cursor: pointer;
+            text-decoration: underline;
+        }
     </style>
 </head>
 
@@ -89,7 +93,11 @@ const emailBody = (link: string) => `
             <p>Thanks,<br>Dodao Support</p>
         </div>
         <div class="footer">
-            <p>&copy; 2024 Dodao. All rights reserved.</p>
+            <p>&copy; ${new Date().getFullYear()} 
+            <a href={'https://dodao.io/'} class="link">
+              DoDAO
+            </a>
+            . All rights reserved.</p>
         </div>
     </div>
 </body>
