@@ -61,7 +61,7 @@ export default function DemoItem(props: DemoItemProps) {
               </span>
             )}
             {demo.demoId && (
-              <div className="z-10">
+              <div className="z-15">
                 <PrivateEllipsisDropdown
                   items={modifiedThreeDotItems}
                   onSelect={(key) => {

@@ -49,7 +49,7 @@ export default function ShortItem(props: ShortItemProps) {
               </span>
             )}
             {short.shortId && (
-              <div className="z-10">
+              <div className="z-15">
                 <PrivateEllipsisDropdown
                   items={modifiedThreeDotItems}
                   onSelect={(key) => {

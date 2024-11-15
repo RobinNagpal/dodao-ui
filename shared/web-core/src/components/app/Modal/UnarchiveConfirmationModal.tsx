@@ -12,7 +12,14 @@ export interface UnarchiveCourseSubmissionModalProps {
   unarchiveButtonText?: string;
 }
 
-export default function UnarchiveConfirmationModal({ open, onClose, unarchiving, onUnarchive, title, unarchiveButtonText }: UnarchiveCourseSubmissionModalProps) {
+export default function UnarchiveConfirmationModal({
+  open,
+  onClose,
+  unarchiving,
+  onUnarchive,
+  title,
+  unarchiveButtonText,
+}: UnarchiveCourseSubmissionModalProps) {
   const [unarchiveMeText, setUnarchiveMeText] = useState('');
   return (
     <SingleSectionModal open={open} onClose={onClose} title={title}>
