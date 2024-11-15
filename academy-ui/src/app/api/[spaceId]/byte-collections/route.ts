@@ -14,9 +14,6 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ spac
   const byteCollections = await prisma.byteCollection.findMany({
     where: {
       spaceId: spaceId,
-      archive: {
-        not: true,
-      },
     },
     orderBy: {
       priority: 'desc',

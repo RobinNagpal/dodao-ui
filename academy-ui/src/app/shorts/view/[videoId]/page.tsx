@@ -17,5 +17,10 @@ export async function generateMetadata({ params }: { params: Promise<{ videoId: 
 }
 
 export default async function VideoPage({ params }: { params: Promise<{ videoId: string }> }) {
-  return <VideoModal params={await params} />;
+  const space = (await getSpaceServerSide())!;
+  const videoId = (await params).videoId;
+  const response = await fetch(`${getBaseUrl()}/api/short-videos/${videoId}?spaceId=${space.id}`);
+  const video = (await response.json()).shortVideo;
+
+  return <VideoModal space={space} video={video} />;
 }

@@ -2,45 +2,25 @@ import Button from '@dodao/web-core/components/core/buttons/Button';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { SendEmailInput, useSendEmailMutation } from '@/graphql/generated/generated-types';
-import clsx from 'clsx';
 import { useState } from 'react';
 
-const formClasses =
-  'block w-full appearance-none rounded-md border border-gray-200 bg-gray-50 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-blue-500 sm:text-sm';
-
-function Label({ id, children }: any) {
+export function TextField({ id, label, type = 'text', onChange, ...props }: any) {
   return (
-    <label htmlFor={id} className="mb-3 mx-3 block text-sm text-left font-medium text-gray-700">
-      {children}
-    </label>
-  );
-}
-export function TextField({ id, label, type = 'text', className = '', onChange, ...props }: any) {
-  return (
-    <div className={className}>
-      {label && <Label id={id}>{label}</Label>}
-      <input id={id} type={type} {...props} className={formClasses} onChange={onChange} />
+    <div>
+      <label className="block text-sm/6 text-gray-900">{label}</label>
+      <div className="mt-2.5">
+        <input
+          id={id}
+          type={type}
+          {...props}
+          onChange={onChange}
+          className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm/6"
+        />
+      </div>
     </div>
   );
 }
 
-export function TextAreaField({ id, label, placeholder, className = '', minLength = 1000, onChange, ...props }: any) {
-  return (
-    <div className={className}>
-      {label && <Label id={id}>{label}</Label>}
-      <textarea id={id} minLength={minLength} {...props} className={formClasses} placeholder={placeholder} onChange={onChange} />
-    </div>
-  );
-}
-
-export function SelectField({ id, label, className = '', onChange, ...props }: any) {
-  return (
-    <div className={className}>
-      {label && <Label id={id}>{label}</Label>}
-      <select id={id} {...props} className={clsx(formClasses, 'pr-8')} onChange={onChange} />
-    </div>
-  );
-}
 export default function ContactModal({ open, onClose }: any) {
   const { showNotification } = useNotificationContext();
   const [sendEmailMutation] = useSendEmailMutation();
@@ -64,7 +44,8 @@ export default function ContactModal({ open, onClose }: any) {
       await sendEmailMutation({ variables: { input: form } });
       showNotification({
         type: 'success',
-        message: 'Email sent successfully',
+        heading: 'Success🎉',
+        message: 'Email sent successfully!',
       });
       onClose();
     } catch (error) {
@@ -78,35 +59,33 @@ export default function ContactModal({ open, onClose }: any) {
 
   return (
     <FullPageModal open={open} onClose={onClose} title={'Contact DoDAO'}>
-      <div className="p-16">
-        <form action="#" className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2" onSubmit={handleSubmit}>
-          <TextField label="First name" id="firstName" name="firstName" type="text" autoComplete="given-name" required onChange={handleChange} />
-          <TextField label="Last name" id="lastName" name="lastName" type="text" autoComplete="family-name" required onChange={handleChange} />
-          <TextField
-            className="col-span-full"
-            label="Email address"
-            id="email"
-            name="email"
-            type="email"
-            autoComplete="email"
-            required
-            onChange={handleChange}
-          />
-          <TextAreaField
-            className="col-span-full"
-            label="Message"
-            name="message"
-            placeholder="Enter your message here"
-            required
-            minLength={30}
-            onChange={handleChange}
-          />
-
-          <div className="col-span-full">
-            <Button type="submit" variant="contained" primary={true} className="w-full">
-              <span>
-                Submit <span aria-hidden="true">&rarr;</span>
-              </span>
+      <div className="p-6 text-left">
+        <form action="#" method="POST" className="mx-auto max-w-xl" onSubmit={handleSubmit}>
+          <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
+            <TextField label="First name" id="firstName" name="firstName" type="text" autoComplete="given-name" required onChange={handleChange} />
+            <TextField label="Last name" id="lastName" name="lastName" type="text" autoComplete="family-name" required onChange={handleChange} />
+            <div className="sm:col-span-2">
+              <TextField label="Email address" id="email" name="email" type="email" autoComplete="email" required onChange={handleChange} />
+            </div>
+            <div className="sm:col-span-2">
+              <label htmlFor="message" className="block text-sm/6 text-gray-900">
+                Message
+              </label>
+              <div className="mt-2.5">
+                <textarea
+                  id="message"
+                  name="message"
+                  rows={4}
+                  className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm/6"
+                  defaultValue={''}
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="mt-10">
+            <Button type="submit" variant="contained" primary={true} className="w-full rounded-md" removeBorder={true}>
+              <span>{`Let's talk`}</span>
             </Button>
           </div>
         </form>

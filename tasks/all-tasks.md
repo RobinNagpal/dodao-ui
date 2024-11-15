@@ -35,12 +35,9 @@ Must have features
 
 ### Tidbit Collections
 - [ ] homepage - Have a way to separate the tidbits and clickable demos so that its clear to the user
-- [ ] homepage - last entity's ellipsis is cutting from the bottom
-
 
 ### Short videos
 - [ ] Edit modal - remove showing of url from upload fields - new design is needed
-- [ ] View modal - add border to the video - Next PR Dawood
 
 ### Edit Space
 - [ ] Edit space name field
@@ -75,6 +72,8 @@ users - Skipped
 - [ ] homepage - whole entity (tidbit/clickable demo/short video) tile should be clickable
 - [ ] homepage - entity tile should change background color when hovered over
 - [ ] Either we should use delete everywhere because archive means that there is a place where we can see all the archived ones
+
+
 
 ### Edit Space
 - [ ] Home screen button can be added
