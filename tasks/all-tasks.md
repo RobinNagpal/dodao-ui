@@ -27,7 +27,6 @@ Must have features
 # 3rd Priority
 
 ### Clickable Demos
-- [ ] Edit modal - stepper- flickering when hovered over in error state - Next PR Dawood
 - [ ] View modal - only looks fine above 1024px, down that its all a mess so we can detect the screen size and show a message like view the demo on a large screen
 - [ ] Edit modal - remove showing of url from upload fields - new design is needed
 
@@ -36,18 +35,13 @@ Must have features
   - [ ] if already logged in then welcome screen can look better
   - [ ] (for tidbitshub only) if not logged in then single section modal is showing but behind it Full Screen Modal is showing - just gotta make the single section modal background opacity-100 for this flow only
 ### Tidbits
-- [ ] Edit modal - stepper- flickering when hovered over in error state - Next PR Dawood
 - [ ] Edit modal - remove showing of url from upload fields - new design is needed
 ### Tidbit Collections
 - [ ] homepage - Have a way to separate the tidbits and clickable demos so that its clear to the user
-- [ ] homepage - Ellipsis of an entity when opened, shows the ellipsis of the lower entity like its just appearing maybe due to z-index issue - Next PR Dawood
-- [ ] homepage - Collection archive modal shows collection name but archive modal of other entities arent showing the entity name - Next PR Dawood
-- [ ] homepage - last entity's ellipsis is cutting from the bottom
-- [ ] homepage - sort items modal is cutting from below
 
 ### Short videos
 - [ ] Edit modal - remove showing of url from upload fields - new design is needed
-- [ ] View modal - add border to the video
+
 ### Edit Space
 - [ ] Edit space name field
 
@@ -81,9 +75,7 @@ users - Skipped
 - [ ] homepage - entity tile should change background color when hovered over
 - [ ] Either we should use delete everywhere because archive means that there is a place where we can see all the archived ones
   
-### Short videos
-- [ ] homepage - icon can be changed (its same as tidbit)
-- [ ] homepage - when video has been watched, its icon doesnt change to a tick
+
 
 ### Edit Space
 - [ ] Home screen button can be added

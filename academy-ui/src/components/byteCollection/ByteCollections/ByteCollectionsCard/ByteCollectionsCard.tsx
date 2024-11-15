@@ -333,7 +333,7 @@ export default function ByteCollectionsCard({
 
       {deleteItemModalState.isVisible && (
         <DeleteConfirmationModal
-          title={`Delete ${
+          title={`Archive ${
             deleteItemModalState.itemType === ByteCollectionItemType.Byte
               ? `Byte - ${deleteItemModalState.itemName}`
               : deleteItemModalState.itemType === ByteCollectionItemType.ClickableDemo
