@@ -1,3 +1,4 @@
+import ReachOut from '../../DoDAOHome/components/ReachOut';
 import { Container } from './Container';
 
 const faqs = [
@@ -42,11 +43,7 @@ export function Faqs() {
             Frequently asked questions
           </h2>
           <p className="mt-2 text-lg">
-            If you have anything else you want to ask,{' '}
-            <a href="mailto:info@example.com" className="underline">
-              reach out to us
-            </a>
-            .
+            If you have anything else you want to ask, <ReachOut />.
           </p>
         </div>
         <ul role="list" className="mx-auto mt-16 grid max-w-2xl gap-12 sm:mt-20 lg:max-w-none lg:grid-cols-3">

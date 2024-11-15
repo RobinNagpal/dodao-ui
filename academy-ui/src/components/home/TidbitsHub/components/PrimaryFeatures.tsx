@@ -235,20 +235,44 @@ function usePrevious<T>(value: T) {
 function FeaturesDesktop() {
   let [changeCount, setChangeCount] = useState(0);
   let [selectedIndex, setSelectedIndex] = useState(0);
-  let prevIndex = usePrevious(selectedIndex);
-  let isForwards = prevIndex === undefined ? true : selectedIndex > prevIndex;
+  let timerRef = useRef<NodeJS.Timeout | null>(null);
 
-  let onChange = useDebouncedCallback(
-    (selectedIndex) => {
-      setSelectedIndex(selectedIndex);
-      setChangeCount((changeCount) => changeCount + 1);
-    },
-    100,
-    { leading: true }
-  );
+  const startAutoSwitch = () => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+
+    timerRef.current = setTimeout(() => {
+      setSelectedIndex((prevIndex) => (prevIndex + 1) % features.length);
+      setChangeCount((prevCount) => prevCount + 1);
+      startAutoSwitch();
+    }, 3000);
+  };
+
+  useEffect(() => {
+    startAutoSwitch();
+
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
+  }, []);
+
+  const handleManualChange = (newIndex: number) => {
+    setSelectedIndex(newIndex);
+    setChangeCount((changeCount) => changeCount + 1);
+    startAutoSwitch();
+  };
 
   return (
-    <Tab.Group as="div" className="grid grid-cols-12 items-center gap-8 lg:gap-16 xl:gap-24" selectedIndex={selectedIndex} onChange={onChange} vertical>
+    <Tab.Group
+      as="div"
+      className="grid grid-cols-12 items-center gap-8 lg:gap-16 xl:gap-24"
+      selectedIndex={selectedIndex}
+      onChange={handleManualChange}
+      vertical
+    >
       <Tab.List className="relative z-10 order-last col-span-6 space-y-6">
         {features.map((feature, featureIndex) => (
           <div key={feature.name} className="relative rounded-2xl transition-colors hover:bg-gray-800/30">
@@ -274,7 +298,7 @@ function FeaturesDesktop() {
         </div>
         <PhoneFrame className="z-10 mx-auto w-full max-w-[366px]">
           <Tab.Panels as={Fragment}>
-            <AnimatePresence initial={false} custom={{ isForwards, changeCount }}>
+            <AnimatePresence initial={false}>
               {features.map((feature, featureIndex) =>
                 selectedIndex === featureIndex ? (
                   <Tab.Panel
@@ -282,7 +306,7 @@ function FeaturesDesktop() {
                     key={feature.name + changeCount}
                     className="col-start-1 row-start-1 flex focus:outline-offset-[32px] ui-not-focus-visible:outline-none"
                   >
-                    <feature.screen animated custom={{ isForwards, changeCount }} />
+                    <feature.screen animated custom={{ isForwards: true, changeCount }} />
                   </Tab.Panel>
                 ) : null
               )}
@@ -326,6 +350,22 @@ function FeaturesMobile() {
     };
   }, [slideContainerRef, slideRefs]);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveIndex((prevIndex) => {
+        const nextIndex = (prevIndex + 1) % features.length;
+        slideRefs.current[nextIndex]?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'nearest',
+          inline: 'nearest',
+        });
+        return nextIndex;
+      });
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <>
       <div
@@ -368,6 +408,7 @@ function FeaturesMobile() {
                 block: 'nearest',
                 inline: 'nearest',
               });
+              setActiveIndex(featureIndex);
             }}
           >
             <span className="absolute -inset-x-1.5 -inset-y-3" />
@@ -384,12 +425,11 @@ export function PrimaryFeatures() {
       <Container>
         <div className="mx-auto max-w-4xl lg:max-w-4xl text-center">
           <h2 className="text-3xl font-medium tracking-tight text-white">
-            Embrace Modern Learning. <br></br>Grasp Knowledge Effortlessly with Tidbits.
+            Embrace Modern Learning<br></br>Grasp Knowledge Effortlessly with Tidbits
           </h2>
           <p className="mt-2 text-lg text-white">
-            We offer different ways to educate — short bite sized information instead of long paragraphs, interactive clickable demos, and quick videos. The
-            more your users learn about your product, the more they can utilize it fully, and the less likely they are to switch to other solutions. While
-            others stick to old methods, we innovate to educate.
+            We offer different ways to educate — bite-sized info, interactive demos, and quick videos to help users fully understand your product. The more they
+            learn, the more they’ll stay engaged, reducing the chance of switching to other solutions.
           </p>
         </div>
       </Container>
