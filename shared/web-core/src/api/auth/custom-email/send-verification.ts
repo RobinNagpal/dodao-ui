@@ -93,8 +93,8 @@ const emailBody = (link: string) => `
             <p>Thanks,<br>Dodao Support</p>
         </div>
         <div class="footer">
-            <p>&copy; ${new Date().getFullYear()} 
-            <a href={'https://dodao.io/'} class="link">
+            <p>&copy; 
+            <a href='https://dodao.io/' class="link">
               DoDAO
             </a>
             . All rights reserved.</p>

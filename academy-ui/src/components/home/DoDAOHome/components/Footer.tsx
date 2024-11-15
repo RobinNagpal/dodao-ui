@@ -43,7 +43,7 @@ export function Footer() {
           </div>
           <p className="mt-8 text-xs leading-5 text-gray-500 md:order-1 md:mt-0">
             Copyright &copy; {new Date().getFullYear()}{' '}
-            <a href={'https://dodao.io/'} className="underline cursor-pointer">
+            <a href={'https://dodao.io/'} target="_blank" className="underline cursor-pointer">
               DoDAO
             </a>
             . All rights reserved.
