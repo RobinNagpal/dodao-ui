@@ -6,7 +6,7 @@ import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import getSubdomainUrl from '@dodao/web-core/utils/api/getSubdomainUrl';
 import { Contexts } from '@dodao/web-core/utils/constants/constants';
-import { BaseSpace, User } from '@prisma/client';
+import { BaseSpace, BaseUser } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 
 interface CreateSpaceProps {
@@ -15,7 +15,7 @@ interface CreateSpaceProps {
 
 interface CreateSpaceResponse {
   space: BaseSpace;
-  user: User;
+  user: BaseUser;
 }
 
 interface CreateSpaceRequest {
