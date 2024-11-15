@@ -4,38 +4,72 @@ import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsis
 import { ByteCollectionDto, ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import { SpaceTypes, SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
-import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
+import UnarchiveConfirmationModal from '@dodao/web-core/components/app/Modal/UnarchiveConfirmationModal';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { useFetchUtils } from '@dodao/web-core/ui/hooks/useFetchUtils';
 import React from 'react';
+import { CreateByteCollectionRequest } from '@/types/request/ByteCollectionRequests';
 
 interface ByteCollectionCardAdminDropdownProps {
   byteCollection: ByteCollectionSummary;
   space: SpaceWithIntegrationsDto;
+  archive?: boolean;
 }
-export default function ByteCollectionCardAdminDropdown({ byteCollection, space }: ByteCollectionCardAdminDropdownProps) {
+export default function ByteCollectionCardAdminDropdown({ byteCollection, space, archive }: ByteCollectionCardAdminDropdownProps) {
+  const { putData } = useFetchUtils();
   const [showDeleteModal, setShowDeleteModal] = React.useState<boolean>(false);
+  const [showUnarchiveModal, setShowUnarchiveModal] = React.useState<boolean>(false);
   const [showEditCollectionModal, setShowEditCollectionModal] = React.useState<boolean>(false);
   const [showSortByteCollectionItemsModal, setShowSortByteCollectionItemsModal] = React.useState<boolean>(false);
+  const [updating, setUpdating] = React.useState<boolean>(false);
 
   const redirectPath = space.type === SpaceTypes.AcademySite ? '/byteCollections' : '/';
-  const { deleteData, loading } = useDeleteData<ByteCollectionDto, {}>(
-    {
-      errorMessage: 'Failed to archive Tidbit Collection',
-      successMessage: 'Tidbit Collection archived successfully',
-      redirectPath: `${redirectPath}?updated=${Date.now()}`,
-    },
-    {}
-  );
   const getThreeDotItems = () => {
     return [
       { label: 'Edit', key: 'edit' },
-      { label: 'Archive', key: 'archive' },
+      { label: archive ? 'Unarchive' : 'Archive', key: archive ? 'unarchive' : 'archive' },
       { label: 'Sort Items', key: 'sortItems' },
     ];
   };
 
   const onArchive = async () => {
-    await deleteData(`${getBaseUrl()}/api/${space.id}/byte-collections/${byteCollection.id}`);
+    setUpdating(true);
+    await putData<ByteCollectionDto, CreateByteCollectionRequest>(
+      `${getBaseUrl()}/api/${space.id}/byte-collections/${byteCollection?.id}`,
+      {
+        name: byteCollection.name,
+        description: byteCollection.description,
+        priority: byteCollection.priority,
+        videoUrl: byteCollection.videoUrl,
+        archive: true,
+      },
+      {
+        redirectPath: `${redirectPath}?updated=${Date.now()}`,
+        successMessage: 'Tidbit collection deleted successfully',
+        errorMessage: 'Failed to delete collection',
+      }
+    );
+    setUpdating(false);
+  };
+
+  const onUnarchive = async () => {
+    setUpdating(true);
+    await putData<ByteCollectionDto, CreateByteCollectionRequest>(
+      `${getBaseUrl()}/api/${space.id}/byte-collections/${byteCollection?.id}`,
+      {
+        name: byteCollection.name,
+        description: byteCollection.description,
+        priority: byteCollection.priority,
+        videoUrl: byteCollection.videoUrl,
+        archive: false,
+      },
+      {
+        redirectPath: `${redirectPath}?updated=${Date.now()}`,
+        successMessage: 'Tidbit collection unarchived successfully',
+        errorMessage: 'Failed to unarchive collection',
+      }
+    );
+    setUpdating(false);
   };
 
   return (
@@ -49,7 +83,9 @@ export default function ByteCollectionCardAdminDropdown({ byteCollection, space 
           if (key === 'archive') {
             setShowDeleteModal(true);
           }
-
+          if (key === 'unarchive') {
+            setShowUnarchiveModal(true);
+          }
           if (key === 'sortItems') {
             setShowSortByteCollectionItemsModal(true);
           }
@@ -64,8 +100,22 @@ export default function ByteCollectionCardAdminDropdown({ byteCollection, space 
             await onArchive();
             setShowDeleteModal(false);
           }}
-          deleting={loading}
+          deleting={updating}
           deleteButtonText={'Archive Byte Collection'}
+        />
+      )}
+
+      {showUnarchiveModal && (
+        <UnarchiveConfirmationModal
+          title={`Unarchive Byte Collection - ${byteCollection.name}`}
+          open={showUnarchiveModal}
+          onClose={() => setShowUnarchiveModal(false)}
+          onUnarchive={async () => {
+            await onUnarchive();
+            setShowUnarchiveModal(false);
+          }}
+          unarchiving={updating}
+          unarchiveButtonText={'Restore Byte Collection'}
         />
       )}
 

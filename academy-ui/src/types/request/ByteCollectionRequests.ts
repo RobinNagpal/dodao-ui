@@ -5,6 +5,7 @@ export interface CreateByteCollectionRequest {
   description: string;
   priority?: number;
   videoUrl?: string | null;
+  archive?: boolean;
 }
 
 export interface SortByteCollectionItemsRequest {

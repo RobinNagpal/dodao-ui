@@ -8,6 +8,12 @@ export interface DeleteByteItemRequest {
   itemType: ByteCollectionItemType;
 }
 
+export interface PutByteItemRequest {
+  itemId: string;
+  itemType: ByteCollectionItemType;
+  archive: boolean;
+}
+
 export interface StepItemInputGenericInput {
   answerKeys?: Array<string> | null;
   choices?: Array<QuestionChoice> | null;
