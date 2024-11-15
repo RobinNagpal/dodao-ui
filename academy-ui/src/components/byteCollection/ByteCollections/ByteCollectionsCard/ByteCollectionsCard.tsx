@@ -266,7 +266,7 @@ export default function ByteCollectionsCard({ byteCollection, isEditingAllowed =
 
       {deleteItemModalState.isVisible && (
         <DeleteConfirmationModal
-          title={`Delete ${
+          title={`Archive ${
             deleteItemModalState.itemType === ByteCollectionItemType.Byte
               ? `Byte - ${deleteItemModalState.itemName}`
               : deleteItemModalState.itemType === ByteCollectionItemType.ClickableDemo
