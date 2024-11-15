@@ -16,6 +16,7 @@ interface DemoItemProps {
   itemLength: number;
   threeDotItems: { label: string; key: string }[];
   openItemDeleteModal: (itemId: string, itemType: ByteCollectionItemType | null) => void;
+  openItemUnarchiveModal: (itemId: string, itemType: ByteCollectionItemType | null) => void;
 }
 
 interface EditDemoModalState {
@@ -24,9 +25,15 @@ interface EditDemoModalState {
 }
 
 export default function DemoItem(props: DemoItemProps) {
-  const { byteCollection, demo, eventIdx, threeDotItems, openItemDeleteModal, itemLength } = props;
+  const { byteCollection, demo, eventIdx, threeDotItems, openItemDeleteModal, openItemUnarchiveModal, itemLength } = props;
   const demoViewUrl = `clickable-demos/view/${demo.demoId}`;
   const [editDemoModalState, setEditDemoModalState] = React.useState<EditDemoModalState>({ isVisible: false, demoId: null });
+
+  const modifiedThreeDotItems = JSON.parse(JSON.stringify(threeDotItems)); // Creating a deep copy so that it doesn't affect the original array
+  if (demo.archive) {
+    modifiedThreeDotItems.pop();
+    modifiedThreeDotItems.push({ label: 'Unarchive', key: 'unarchive' });
+  }
 
   return (
     <li key={demo.demoId}>
@@ -44,20 +51,32 @@ export default function DemoItem(props: DemoItemProps) {
               </div>
             </div>
           </Link>
-          {demo.demoId && (
-            <div className="z-10">
-              <PrivateEllipsisDropdown
-                items={threeDotItems}
-                onSelect={(key) => {
-                  if (key === 'archive') {
-                    openItemDeleteModal(demo.demoId, ByteCollectionItemType.ClickableDemo);
-                  } else {
-                    setEditDemoModalState({ isVisible: true, demoId: demo.demoId });
-                  }
-                }}
-              />
-            </div>
-          )}
+          <div className="flex">
+            {demo?.archive && (
+              <span
+                className={`inline-flex items-center rounded-xl px-2 py-1 mr-2 text-xs font-medium max-h-6 ${styles.archiveBadge}`}
+                onClick={() => openItemUnarchiveModal(demo.demoId, ByteCollectionItemType.ClickableDemo)}
+              >
+                Archived
+              </span>
+            )}
+            {demo.demoId && (
+              <div className="z-10">
+                <PrivateEllipsisDropdown
+                  items={modifiedThreeDotItems}
+                  onSelect={(key) => {
+                    if (key === 'archive') {
+                      openItemDeleteModal(demo.demoId, ByteCollectionItemType.ClickableDemo);
+                    } else if (key === 'unarchive') {
+                      openItemUnarchiveModal(demo.demoId, ByteCollectionItemType.ClickableDemo);
+                    } else {
+                      setEditDemoModalState({ isVisible: true, demoId: demo.demoId });
+                    }
+                  }}
+                />
+              </div>
+            )}
+          </div>
         </div>
       </div>
       {editDemoModalState.isVisible && (

@@ -1,6 +1,5 @@
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import { ShortVideo } from '@/types/shortVideos/shortVideo';
-import ArrowTopRightOnSquareIcon from '@heroicons/react/24/outline/ArrowTopRightOnSquareIcon';
 import Bars3BottomLeftIcon from '@heroicons/react/24/solid/Bars3BottomLeftIcon';
 import styles from './ByteCollectionsCard.module.scss';
 import Link from 'next/link';
@@ -13,11 +12,17 @@ interface ShortItemProps {
   itemLength: number;
   openShortEditModal: (shortId: string) => void;
   openItemDeleteModal: (itemId: string, itemType: ByteCollectionItemType | null) => void;
+  openItemUnarchiveModal: (itemId: string, itemType: ByteCollectionItemType | null) => void;
 }
 
 export default function ShortItem(props: ShortItemProps) {
-  const { short, eventIdx, threeDotItems, openShortEditModal, openItemDeleteModal, itemLength } = props;
+  const { short, eventIdx, threeDotItems, openShortEditModal, openItemDeleteModal, openItemUnarchiveModal, itemLength } = props;
   const shortViewUrl = `shorts/view/${short.shortId}`;
+  const modifiedThreeDotItems = JSON.parse(JSON.stringify(threeDotItems)); // Creating a deep copy so that it doesn't affect the original array
+  if (short.archive) {
+    modifiedThreeDotItems.pop();
+    modifiedThreeDotItems.push({ label: 'Unarchive', key: 'unarchive' });
+  }
   return (
     <li key={short.shortId}>
       <div className="relative pb-6">
@@ -34,20 +39,32 @@ export default function ShortItem(props: ShortItemProps) {
               </div>
             </div>
           </Link>
-          {short.shortId && (
-            <div className="z-10">
-              <PrivateEllipsisDropdown
-                items={threeDotItems}
-                onSelect={(key) => {
-                  if (key === 'archive') {
-                    openItemDeleteModal(short.shortId, ByteCollectionItemType.ShortVideo);
-                  } else {
-                    openShortEditModal(short.shortId);
-                  }
-                }}
-              />
-            </div>
-          )}
+          <div className="flex">
+            {short.archive && (
+              <span
+                className={`inline-flex items-center rounded-xl px-2 py-1 mr-2 text-xs font-medium max-h-6 ${styles.archiveBadge}`}
+                onClick={() => openItemUnarchiveModal(short.shortId, ByteCollectionItemType.ShortVideo)}
+              >
+                Archived
+              </span>
+            )}
+            {short.shortId && (
+              <div className="z-10">
+                <PrivateEllipsisDropdown
+                  items={modifiedThreeDotItems}
+                  onSelect={(key) => {
+                    if (key === 'archive') {
+                      openItemDeleteModal(short.shortId, ByteCollectionItemType.ShortVideo);
+                    } else if (key === 'unarhive') {
+                      openItemUnarchiveModal(short.shortId, ByteCollectionItemType.ShortVideo);
+                    } else {
+                      openShortEditModal(short.shortId);
+                    }
+                  }}
+                />
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </li>

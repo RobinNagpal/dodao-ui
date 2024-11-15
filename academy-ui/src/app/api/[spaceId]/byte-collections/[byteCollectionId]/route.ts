@@ -61,5 +61,25 @@ async function putHandler(
   return NextResponse.json(byteCollectionsWithBytes, { status: 200 });
 }
 
+async function postHandler(
+  req: NextRequest,
+  { params }: { params: Promise<{ spaceId: string; byteCollectionId: string }> }
+): Promise<NextResponse<ByteCollectionDto>> {
+  await validateSuperAdmin(req);
+
+  const { byteCollectionId } = await params;
+  const updatedByteCollection = await prisma.byteCollection.update({
+    where: {
+      id: byteCollectionId,
+    },
+    data: {
+      archive: false,
+    },
+  });
+
+  return NextResponse.json(updatedByteCollection, { status: 200 });
+}
+
 export const PUT = withErrorHandlingV1<ByteCollectionSummary>(putHandler);
 export const DELETE = withErrorHandlingV1<ByteCollectionDto>(deleteHandler);
+export const POST = withErrorHandlingV1<ByteCollectionDto>(postHandler);

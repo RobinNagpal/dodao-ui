@@ -4,32 +4,37 @@ import NoByteCollections from '@/components/byteCollection/ByteCollections/NoByt
 import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import { Grid2Cols } from '@dodao/web-core/components/core/grids/Grid2Cols';
-import React from 'react';
+import ArchiveToggle from '@/components/byteCollection/View/ArchiveToggle';
 
 export default function ByteCollectionsGrid({
   byteCollections,
   space,
   byteCollectionsBaseUrl,
   isAdmin,
+  archive,
 }: {
   byteCollections?: ByteCollectionSummary[];
   space: SpaceWithIntegrationsDto;
   byteCollectionsBaseUrl: string;
   isAdmin?: boolean | undefined;
+  archive?: boolean;
 }) {
+  const byteCollectionsList = archive ? byteCollections : byteCollections?.filter((byteCollection) => !byteCollection.archive);
   return (
     <>
       {isAdmin! && <AddByteCollection space={space} />}
-      {!byteCollections?.length && !isAdmin && <NoByteCollections space={space} />}
-      {!!byteCollections?.length && (
+      {isAdmin! && <ArchiveToggle archive={archive} />}
+      {!byteCollectionsList?.length && !isAdmin && <NoByteCollections space={space} />}
+      {!!byteCollectionsList?.length && (
         <Grid2Cols>
-          {byteCollections?.map((byteCollection, i) => (
+          {byteCollectionsList?.map((byteCollection, i) => (
             <ByteCollectionsCard
               key={i}
               byteCollection={byteCollection}
               viewByteBaseUrl={`${byteCollectionsBaseUrl}/view/${byteCollection.id}/`}
               space={space}
               isAdmin={isAdmin}
+              showArchived={archive}
             />
           ))}
         </Grid2Cols>

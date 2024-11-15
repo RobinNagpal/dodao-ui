@@ -19,3 +19,15 @@
 .headingColor {
   color: var(--heading-color);
 }
+
+.archiveBadge {
+  background-color: var(--bg-color);
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  cursor: pointer;
+}
+
+.archiveBadge:hover {
+  background-color: var(--primary-color);
+  color: var(--bg-color);
+}

@@ -16,6 +16,7 @@ interface ByteItemProps {
   itemLength: number;
   openByteEditModal: (byteId: string) => void;
   openItemDeleteModal: (itemId: string, itemType: ByteCollectionItemType | null) => void;
+  openItemUnarchiveModal: (itemId: string, itemType: ByteCollectionItemType | null) => void;
 }
 
 interface VideoModalProps {
@@ -25,8 +26,24 @@ interface VideoModalProps {
 }
 
 export default function ByteItem(props: ByteItemProps) {
-  const { viewByteBaseUrl, byte, eventIdx, setWatchVideo, setSelectedVideo, threeDotItems, openByteEditModal, openItemDeleteModal, itemLength } = props;
+  const {
+    viewByteBaseUrl,
+    byte,
+    eventIdx,
+    setWatchVideo,
+    setSelectedVideo,
+    threeDotItems,
+    openByteEditModal,
+    openItemDeleteModal,
+    openItemUnarchiveModal,
+    itemLength,
+  } = props;
   const byteViewUrl = `${viewByteBaseUrl}/${byte.byteId}`;
+  const modifiedThreeDotItems = JSON.parse(JSON.stringify(threeDotItems));  // Creating a deep copy so that it doesn't affect the original array
+  if (byte.archive) {
+    modifiedThreeDotItems.pop();
+    modifiedThreeDotItems.push({ label: 'Unarchive', key: 'unarchive' });
+  }
 
   return (
     <li key={byte.byteId}>
@@ -56,20 +73,32 @@ export default function ByteItem(props: ByteItemProps) {
             </div>
           </Link>
 
-          {byte.byteId && !byte.byteId.startsWith('0001-demo-byte') && (
-            <div className="z-10">
-              <PrivateEllipsisDropdown
-                items={threeDotItems}
-                onSelect={(key) => {
-                  if (key === 'archive') {
-                    openItemDeleteModal(byte.byteId, ByteCollectionItemType.Byte);
-                  } else {
-                    openByteEditModal(byte.byteId);
-                  }
-                }}
-              />
-            </div>
-          )}
+          <div className="flex">
+            {byte?.archive && (
+              <span
+                className={`inline-flex items-center rounded-xl px-2 py-1 mr-2 text-xs font-medium max-h-6 ${styles.archiveBadge}`}
+                onClick={() => openItemUnarchiveModal(byte.byteId, ByteCollectionItemType.Byte)}
+              >
+                Archived
+              </span>
+            )}
+            {byte.byteId && !byte.byteId.startsWith('0001-demo-byte') && (
+              <div className="z-10">
+                <PrivateEllipsisDropdown
+                  items={modifiedThreeDotItems}
+                  onSelect={(key) => {
+                    if (key === 'archive') {
+                      openItemDeleteModal(byte.byteId, ByteCollectionItemType.Byte);
+                    } else if (key === 'unarchive') {
+                      openItemUnarchiveModal(byte.byteId, ByteCollectionItemType.Byte);
+                    } else {
+                      openByteEditModal(byte.byteId);
+                    }
+                  }}
+                />
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </li>
