@@ -62,7 +62,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
       spaceId: spaceData.id,
     };
 
-    // Its fine to have the user both in tidbits hub and in the new site. So we add the new site also here.
+    // Its better to have the user both in tidbits hub and in the new site. So we add the user to the new site also here.
     const updatedUser = await tx.user.upsert({
       where: {
         username_spaceId: {

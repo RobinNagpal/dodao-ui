@@ -7,9 +7,6 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ spac
   const session = await getDecodedJwtFromContext(req);
   if (!session) return NextResponse.json({ error: 'No session found' }, { status: 401 });
 
-  console.log('GET /api/spaces/[spaceId]/queries/spaces/by-admin', { session });
-  // Adjust the query to handle JSONB array correctly
-
   const spaces = await prisma.$queryRaw`
       SELECT *
       FROM spaces
@@ -20,8 +17,6 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ spac
       )
       AND "creator" != ${session.username};
   `;
-
-  console.log('GET /api/spaces/[spaceId]/queries/spaces/by-admin', { spaces });
 
   return NextResponse.json(spaces as Space[], { status: 200 });
 }
