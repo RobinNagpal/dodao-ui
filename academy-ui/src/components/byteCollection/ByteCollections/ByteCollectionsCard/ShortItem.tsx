@@ -1,6 +1,5 @@
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import { ShortVideo } from '@/types/shortVideos/shortVideo';
-import Bars3BottomLeftIcon from '@heroicons/react/24/solid/Bars3BottomLeftIcon';
 import styles from './ByteCollectionsCard.module.scss';
 import Link from 'next/link';
 import { ByteCollectionItemType } from '@/app/api/helpers/byteCollection/byteCollectionItemType';
