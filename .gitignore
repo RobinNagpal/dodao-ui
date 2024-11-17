@@ -51,3 +51,6 @@ dodao-lambdas/.serverless
 
 
 clickable-demos/node_modules
+venv/
+out/
+shared/pull-tweets/accounts.db

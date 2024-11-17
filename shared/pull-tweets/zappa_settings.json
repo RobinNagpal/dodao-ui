@@ -1,0 +1,13 @@
+{
+  "dev": {
+    "app_function": "app.app",
+    "aws_region": "us-east-1",
+    "profile_name": null,
+    "project_name": "twitter-fetcher",
+    "runtime": "python3.10",
+    "s3_bucket": "your-s3-bucket-for-deployment",
+    "environment_variables": {
+      "TWS_DB_PATH": "accounts.db"
+    }
+  }
+}
