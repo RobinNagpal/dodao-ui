@@ -44,10 +44,10 @@ data
 # Sentry Config File
 academy-ui/.sentryclirc
 .envrc
-dodao-lambdas/node_modules
-dodao-lambdas/.env
-dodao-lambdas/yarn-error.log
-dodao-lambdas/.serverless
+dodao-lambdas/unzipper-service/node_modules
+dodao-lambdas/unzipper-service/.env
+dodao-lambdas/unzipper-service/yarn-error.log
+dodao-lambdas/unzipper-service/.serverless
 
 
 clickable-demos/node_modules
