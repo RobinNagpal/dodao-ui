@@ -12,9 +12,8 @@ import { SpaceTypes, SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import { TidbitCollectionTags } from '@/utils/api/fetchTags';
 import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
-import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import MoveItemModal from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/MoveItemModal';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import PlayCircleIcon from '@heroicons/react/24/outline/PlayCircleIcon';
 import { useUpdateData } from '@dodao/web-core/ui/hooks/fetch/useUpdateData';
@@ -25,7 +24,7 @@ import styles from './ByteCollectionsCard.module.scss';
 import ByteItem from './ByteItem';
 import DemoItem from './DemoItem';
 import ShortItem from './ShortItem';
-import { CreateByteCollectionRequest } from '@/types/request/ByteCollectionRequests';
+import { CreateByteCollectionRequest, MoveByteCollectionItemRequest } from '@/types/request/ByteCollectionRequests';
 import { useFetchUtils } from '@dodao/web-core/ui/hooks/useFetchUtils';
 
 interface ByteCollectionCardProps {
@@ -64,6 +63,15 @@ interface UnarchiveItemModalState {
   unarchiving: boolean;
 }
 
+interface MoveItemModalState {
+  isVisible: boolean;
+  itemId: string | null;
+  itemName: string | null;
+  itemType: ByteCollectionItemType | null;
+  byteCollectionId: string | null;
+  moving: boolean;
+}
+
 interface EditShortModalState {
   isVisible: boolean;
   shortId: string | null;
@@ -97,6 +105,14 @@ export default function ByteCollectionsCard({
     itemName: null,
     unarchiving: false,
   });
+  const [moveItemModalState, setMoveItemModalState] = React.useState<MoveItemModalState>({
+    isVisible: false,
+    itemId: null,
+    itemName: null,
+    itemType: null,
+    byteCollectionId: null,
+    moving: false,
+  });
   const [showUnarchiveModal, setShowUnarchiveModal] = React.useState<boolean>(false);
 
   const [editShortModalState, setEditShortModalState] = React.useState<EditShortModalState>({ isVisible: false, shortId: null });
@@ -127,6 +143,7 @@ export default function ByteCollectionsCard({
 
   const threeDotItems = [
     { label: 'Edit', key: 'edit' },
+    { label: 'Move', key: 'move' },
     { label: 'Archive', key: 'archive' },
   ];
 
@@ -177,6 +194,10 @@ export default function ByteCollectionsCard({
     setUnarchiveItemModalState({ isVisible: true, itemId: itemId, itemName, itemType: itemType, unarchiving: false });
   }
 
+  function openItemMoveModal(itemId: string, itemName: string, itemType: ByteCollectionItemType | null) {
+    setMoveItemModalState({ isVisible: true, itemId: itemId, itemName: itemName, itemType: itemType, byteCollectionId: byteCollection.id, moving: false });
+  }
+
   function openShortEditModal(shortId: string) {
     fetchData(shortId);
     setEditShortModalState({ isVisible: true, shortId: shortId });
@@ -192,6 +213,10 @@ export default function ByteCollectionsCard({
 
   function closeItemUnarchiveModal() {
     setUnarchiveItemModalState({ isVisible: false, itemId: null, itemName: null, itemType: null, unarchiving: false });
+  }
+
+  function closeItemMoveModal() {
+    setMoveItemModalState({ isVisible: false, itemId: null, itemName: null, itemType: null, byteCollectionId: null, moving: false });
   }
 
   function closeShortEditModal() {
@@ -259,6 +284,7 @@ export default function ByteCollectionsCard({
                     openByteEditModal={openByteEditModal}
                     openItemDeleteModal={openItemDeleteModal}
                     openItemUnarchiveModal={openItemUnarchiveModal}
+                    openItemMoveModal={openItemMoveModal}
                     itemLength={byteCollectionItems.length}
                     key={item.byte.byteId}
                   />
@@ -274,6 +300,7 @@ export default function ByteCollectionsCard({
                     threeDotItems={threeDotItems}
                     openItemDeleteModal={openItemDeleteModal}
                     openItemUnarchiveModal={openItemUnarchiveModal}
+                    openItemMoveModal={openItemMoveModal}
                   />
                 );
               case ByteCollectionItemType.ShortVideo:
@@ -287,6 +314,7 @@ export default function ByteCollectionsCard({
                     openShortEditModal={openShortEditModal}
                     openItemDeleteModal={openItemDeleteModal}
                     openItemUnarchiveModal={openItemUnarchiveModal}
+                    openItemMoveModal={openItemMoveModal}
                   />
                 );
               default:
@@ -437,6 +465,31 @@ export default function ByteCollectionsCard({
           }}
           unarchiving={updating}
           unarchiveButtonText={'Unarchive Tidbit Collection'}
+        />
+      )}
+
+      {moveItemModalState.isVisible && (
+        <MoveItemModal
+          showSelectByteCollectionModal={moveItemModalState.isVisible}
+          onClose={closeItemMoveModal}
+          selectByteCollection={async (selectedByteCollection: ByteCollectionSummary) => {
+            await putData<ByteCollectionDto, MoveByteCollectionItemRequest>(
+              `${getBaseUrl()}/api/${space.id}/actions/byte-collections/move-item`,
+              {
+                itemId: moveItemModalState.itemId!,
+                itemType: moveItemModalState.itemType!,
+                sourceByteCollectionId: moveItemModalState.byteCollectionId!,
+                targetByteCollectionId: selectedByteCollection.id,
+              },
+              {
+                redirectPath: `${redirectPath}?updated=${Date.now()}`,
+                successMessage: 'Item moved successfully',
+                errorMessage: 'Failed to move item',
+              }
+            );
+          }}
+          byteCollectionId={byteCollection.id}
+          spaceId={space.id}
         />
       )}
     </div>
