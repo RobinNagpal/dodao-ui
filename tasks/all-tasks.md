@@ -10,21 +10,21 @@ Must have features
 
 ### Login issue for admins
 - [ ] Go to /login on a subdomain:
-  - [ ] if already logged in then welcome screen can look better
+  - [x] if already logged in then welcome screen can look better
   - [ ] (for tidbitshub only) if not logged in then single section modal is showing but behind it Full Screen Modal is showing - just gotta make the single section modal background opacity-100 for this flow only
 
 ### Tidbit Collections
-- [ ] homepage - reduce distance between archive button and its text "See Archived"
-- [ ] Either we should use delete everywhere because archive means that there is a place where we can see all the archived ones
+- [x] homepage - reduce distance between archive button and its text "See Archived"
+- [x] Either we should use delete everywhere because archive means that there is a place where we can see all the archived ones
 
 ### Post signup - Help text
 - [ ] Add couple of clickable demos. One for creating tidbit, and other for creating a clickable demo.
 
 ### Edit Space
-- [ ] Edit space name field
+- [x] Edit space name field
 
 ### Home page 
-- [ ] Dodao logo and login button/avatar not clickable probably due to the placement of the design behind hero section
+- [x] Dodao logo and login button/avatar not clickable probably due to the placement of the design behind hero section
 
 
 
