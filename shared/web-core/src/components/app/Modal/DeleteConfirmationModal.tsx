@@ -18,9 +18,9 @@ export default function DeleteConfirmationModal({ open, onClose, deleting, onDel
     <SingleSectionModal open={open} onClose={onClose} title={title}>
       <div className="p-4">
         <Input modelValue={deleteMeText} maxLength={32} onUpdate={(e) => setDeleteMeText(e?.toString() || '')} className="mb-4">
-          {`Type "Delete Me" *`}
+          {`Type "Archive Me" *`}
         </Input>
-        <Button disabled={deleteMeText !== 'Delete Me' || deleting} onClick={onDelete} loading={deleting} variant="contained" primary>
+        <Button disabled={deleteMeText !== 'Archive Me' || deleting} onClick={onDelete} loading={deleting} variant="contained" primary>
           {deleteButtonText || title}
         </Button>
       </div>

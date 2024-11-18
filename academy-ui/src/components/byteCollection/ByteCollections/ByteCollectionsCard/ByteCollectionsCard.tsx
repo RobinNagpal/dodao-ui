@@ -335,11 +335,20 @@ export default function ByteCollectionsCard({
         <DeleteConfirmationModal
           title={`Archive ${
             deleteItemModalState.itemType === ByteCollectionItemType.Byte
-              ? `Byte - ${deleteItemModalState.itemName}`
+              ? `Tidbit - ${deleteItemModalState.itemName}`
               : deleteItemModalState.itemType === ByteCollectionItemType.ClickableDemo
               ? `Clickable Demo - ${deleteItemModalState.itemName}`
               : deleteItemModalState.itemType === ByteCollectionItemType.ShortVideo
               ? `Short Video - ${deleteItemModalState.itemName}`
+              : 'Item'
+          }`}
+          deleteButtonText={`Archive ${
+            deleteItemModalState.itemType === ByteCollectionItemType.Byte
+              ? `Tidbit`
+              : deleteItemModalState.itemType === ByteCollectionItemType.ClickableDemo
+              ? `Clickable Demo`
+              : deleteItemModalState.itemType === ByteCollectionItemType.ShortVideo
+              ? `Short Video`
               : 'Item'
           }`}
           open={deleteItemModalState.isVisible}
@@ -373,11 +382,20 @@ export default function ByteCollectionsCard({
         <UnarchiveConfirmationModal
           title={`Unarchive ${
             unarchiveItemModalState.itemType === ByteCollectionItemType.Byte
-              ? `Byte - ${unarchiveItemModalState.itemName}`
+              ? `Tidbit - ${unarchiveItemModalState.itemName}`
               : unarchiveItemModalState.itemType === ByteCollectionItemType.ClickableDemo
               ? `Clickable Demo - ${unarchiveItemModalState.itemName}`
               : unarchiveItemModalState.itemType === ByteCollectionItemType.ShortVideo
               ? `Short Video - ${unarchiveItemModalState.itemName}`
+              : 'Item'
+          }`}
+          unarchiveButtonText={`Unarchive ${
+            unarchiveItemModalState.itemType === ByteCollectionItemType.Byte
+              ? `Tidbit`
+              : unarchiveItemModalState.itemType === ByteCollectionItemType.ClickableDemo
+              ? `Clickable Demo`
+              : unarchiveItemModalState.itemType === ByteCollectionItemType.ShortVideo
+              ? `Short Video`
               : 'Item'
           }`}
           open={unarchiveItemModalState.isVisible}
@@ -410,7 +428,7 @@ export default function ByteCollectionsCard({
 
       {showUnarchiveModal && (
         <UnarchiveConfirmationModal
-          title={`Unarchive Byte Collection - ${byteCollection.name}`}
+          title={`Unarchive Tidbit Collection - ${byteCollection.name}`}
           open={showUnarchiveModal}
           onClose={() => setShowUnarchiveModal(false)}
           onUnarchive={async () => {
@@ -418,7 +436,7 @@ export default function ByteCollectionsCard({
             setShowUnarchiveModal(false);
           }}
           unarchiving={updating}
-          unarchiveButtonText={'Restore Byte Collection'}
+          unarchiveButtonText={'Unarchive Tidbit Collection'}
         />
       )}
     </div>
