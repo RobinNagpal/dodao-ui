@@ -1,0 +1,11 @@
+{
+    "production": {
+        "app_function": "app.app",
+        "aws_region": "us-east-1",
+        "profile_name": "dodao-admin",
+        "project_name": "pull-tweets",
+        "runtime": "python3.11",
+        "s3_bucket": "zappa-lambdas",
+        "cors": true
+    }
+}

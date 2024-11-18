@@ -9,3 +9,6 @@ deploy:
 
 remove:
 	zappa undeploy production --remove-logs
+
+update:
+	zappa update production
