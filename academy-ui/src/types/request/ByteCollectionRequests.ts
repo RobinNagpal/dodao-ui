@@ -3,11 +3,15 @@ import { ByteCollectionItemType } from '@/app/api/helpers/byteCollection/byteCol
 export interface CreateByteCollectionRequest {
   name: string;
   description: string;
-  priority?: number;
+  order?: number;
   videoUrl?: string | null;
   archive?: boolean;
 }
 
 export interface SortByteCollectionItemsRequest {
   newItemIdAndOrders: { itemId: string; itemType: ByteCollectionItemType; order: number }[];
+}
+
+export interface SortByteCollectionsRequest {
+  newByteCollectionIdAndOrder: { byteCollectionId: string; order: number }[];
 }

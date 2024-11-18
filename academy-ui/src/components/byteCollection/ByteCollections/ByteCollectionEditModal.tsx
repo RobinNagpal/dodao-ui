@@ -51,14 +51,6 @@ export default function ByteCollectionEditModal(props: ByteCollectionEditorProps
                 Video URL
               </Input>
 
-              <Input
-                modelValue={byteCollection.priority}
-                number
-                onUpdate={(v) => helperFunctions.updateByteCollectionPriority(v ? parseInt(v.toString()) : 50)}
-                label="Byte Collection Priority *"
-                required
-              />
-
               <div className="py-4">
                 <Button
                   variant="contained"

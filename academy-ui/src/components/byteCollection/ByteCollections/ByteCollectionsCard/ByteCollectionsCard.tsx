@@ -112,7 +112,7 @@ export default function ByteCollectionsCard({
       {
         name: byteCollection.name,
         description: byteCollection.description,
-        priority: byteCollection.priority,
+        order: byteCollection.order,
         videoUrl: byteCollection.videoUrl,
         archive: false,
       },
