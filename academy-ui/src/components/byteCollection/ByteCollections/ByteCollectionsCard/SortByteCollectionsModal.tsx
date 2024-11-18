@@ -1,5 +1,4 @@
 import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
-import { SortByteCollectionsRequest } from '@/types/request/ByteCollectionRequests';
 import { SpaceTypes, SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Input from '@dodao/web-core/components/core/input/Input';
@@ -51,7 +50,7 @@ export default function SortByteCollectionsModal(props: SortByteCollectionsModal
       return;
     }
 
-    const request: SortByteCollectionsRequest = {
+    const request = {
       newByteCollectionIdAndOrder: collections.map((collection) => {
         return {
           byteCollectionId: collection.id,

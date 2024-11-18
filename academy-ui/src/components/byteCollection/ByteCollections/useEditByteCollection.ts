@@ -43,7 +43,7 @@ export function useEditByteCollection({ space, byteCollection: byteCollectionPro
     description: byteCollectionProp?.description || '',
     byteIds: byteCollectionProp?.bytes?.map((byte) => byte.byteId) || [],
     archive: byteCollectionProp?.archive,
-    order: byteCollectionProp?.order || 50,
+    order: byteCollectionProp?.order || 100,
     videoUrl: byteCollectionProp?.videoUrl || '',
   });
 
@@ -57,7 +57,7 @@ export function useEditByteCollection({ space, byteCollection: byteCollectionPro
       description: byteCollectionProp?.description || '',
       byteIds: byteCollectionProp?.bytes?.map((byte) => byte.byteId) || [],
       archive: byteCollectionProp?.archive,
-      order: byteCollectionProp?.order || 50,
+      order: byteCollectionProp?.order || 100,
       videoUrl: byteCollectionProp?.videoUrl || '',
     });
   }, [byteCollectionProp]);
