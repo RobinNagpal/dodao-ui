@@ -20,6 +20,7 @@ function FinishSetup({ space }: FinishSpaceSetupProps) {
     setUpserting(true);
     const spaceReq: SpaceWithIntegrationsDto = {
       ...space,
+      name: updatedSpace.name,
       avatar: updatedSpace.avatar || null,
       adminUsernamesV1: updatedSpace.adminUsernamesV1,
       themeColors: updatedSpace.themeColors || null,
