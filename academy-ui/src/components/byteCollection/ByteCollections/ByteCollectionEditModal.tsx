@@ -55,7 +55,7 @@ export default function ByteCollectionEditModal(props: ByteCollectionEditorProps
                 modelValue={byteCollection.order}
                 number
                 onUpdate={(v) => helperFunctions.updateByteCollectionOrder(v ? parseInt(v.toString()) : 100)}
-                label="Byte Collection Priority *"
+                label="Byte Collection Order *"
                 required
               />
 

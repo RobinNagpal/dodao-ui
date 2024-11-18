@@ -11,3 +11,8 @@ export interface CreateByteCollectionRequest {
 export interface SortByteCollectionItemsRequest {
   newItemIdAndOrders: { itemId: string; itemType: ByteCollectionItemType; order: number }[];
 }
+
+export type SortByteCollectionsRequest = Array<{
+  byteCollectionId: string;
+  order: number;
+}>;

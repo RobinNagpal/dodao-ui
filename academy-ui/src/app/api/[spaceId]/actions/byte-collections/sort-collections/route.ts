@@ -1,5 +1,6 @@
 import { withErrorHandlingV1 } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { checkEditSpacePermission } from '@/app/api/helpers/space/checkEditSpacePermission';
+import { SortByteCollectionsRequest } from '@/types/request/ByteCollectionRequests';
 import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
 import { prisma } from '@/prisma';
 import { ByteCollection } from '@prisma/client';
@@ -11,9 +12,9 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
 
   await checkEditSpacePermission(spaceById, req);
 
-  const request = await req.json();
+  const request: SortByteCollectionsRequest = await req.json();
 
-  const updates = request.newByteCollectionIdAndOrder.map((collectionIdAndOrder: any) => {
+  const updates = request.map((collectionIdAndOrder) => {
     return prisma.byteCollection.update({
       where: {
         id: collectionIdAndOrder.byteCollectionId,

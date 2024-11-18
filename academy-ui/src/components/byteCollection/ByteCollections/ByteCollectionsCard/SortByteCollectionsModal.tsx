@@ -3,6 +3,7 @@ import { SpaceTypes, SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Input from '@dodao/web-core/components/core/input/Input';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
+import { SortByteCollectionsRequest } from '@/types/request/ByteCollectionRequests';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -50,14 +51,12 @@ export default function SortByteCollectionsModal(props: SortByteCollectionsModal
       return;
     }
 
-    const request = {
-      newByteCollectionIdAndOrder: collections.map((collection) => {
-        return {
-          byteCollectionId: collection.id,
-          order: collection.order,
-        };
-      }),
-    };
+    const request: SortByteCollectionsRequest = collections.map((collection) => {
+      return {
+        byteCollectionId: collection.id,
+        order: collection.order,
+      };
+    });
 
     await postData(`${getBaseUrl()}/api/${space.id}/actions/byte-collections/sort-collections`, request);
     onClose();
