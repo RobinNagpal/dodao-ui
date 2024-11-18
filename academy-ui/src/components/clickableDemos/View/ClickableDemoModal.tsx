@@ -146,8 +146,10 @@ function ClickableDemoModal({ clickableDemoWithSteps, space, onClose }: Clickabl
 
   return (
     <FullScreenModal open={true} onClose={onClose} title={clickableDemoWithSteps.title}>
-      <div id="iframe-container" className="relative w-full h-[93vh]">
-        {isLoading && <FullPageLoader />}
+      <div className="max-w-7xl w-full overflow-x-auto xl:max-w-full">
+        <div id="iframe-container" className="relative w-full h-[93vh]">
+          {isLoading && <FullPageLoader />}
+        </div>
       </div>
     </FullScreenModal>
   );

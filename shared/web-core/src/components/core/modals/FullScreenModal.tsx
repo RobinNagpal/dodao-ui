@@ -34,7 +34,7 @@ export default function FullScreenModal({ open, title, children, onClose, showCl
         </Transition.Child>
 
         <div className={`fixed inset-0 z-10 ${styles.modalContainer}`}>
-          <div className="flex min--hflul items-end justify-center text-center sm:items-center sm:p-0 h-full">
+          <div className="flex min-h-full items-end justify-center text-center sm:items-center sm:p-0 h-full">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
