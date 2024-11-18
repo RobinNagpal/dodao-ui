@@ -14,6 +14,8 @@ uvicorn = {extras = ["standard"], version = "^0.32.0"}
 python-dotenv = "^1.0.1"
 boto3 = "^1.35.63"
 botocore = "^1.35.63"
+mangum = "^0.19.0"
+chalice = "^1.31.2"
 
 
 [tool.poetry.group.dev.dependencies]

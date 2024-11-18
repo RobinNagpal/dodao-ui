@@ -12,3 +12,6 @@ remove:
 
 update:
 	zappa update production
+
+requirements:
+	poetry export --without-hashes --format=requirements.txt > requirements.txt

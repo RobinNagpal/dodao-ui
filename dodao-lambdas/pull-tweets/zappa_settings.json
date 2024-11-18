@@ -6,6 +6,7 @@
         "project_name": "pull-tweets",
         "runtime": "python3.11",
         "s3_bucket": "zappa-lambdas",
+        "keep_warm": false,
         "cors": true
     }
 }

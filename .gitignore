@@ -53,6 +53,7 @@ dodao-lambdas/pull-tweets/accounts.db
 dodao-lambdas/pull-tweets/*.iml
 dodao-lambdas/pull-tweets/node_modules
 dodao-lambdas/pull-tweets/.serverless
+dodao-lambdas/pull-tweets/.chalice
 
 
 clickable-demos/node_modules
