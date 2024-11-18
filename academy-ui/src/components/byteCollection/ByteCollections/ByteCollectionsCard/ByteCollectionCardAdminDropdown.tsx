@@ -107,7 +107,7 @@ export default function ByteCollectionCardAdminDropdown({ byteCollection, space,
 
       {showUnarchiveModal && (
         <UnarchiveConfirmationModal
-          title={`Unarchive Byte Collection - ${byteCollection.name}`}
+          title={`Unarchive Tidbit Collection - ${byteCollection.name}`}
           open={showUnarchiveModal}
           onClose={() => setShowUnarchiveModal(false)}
           onUnarchive={async () => {
@@ -115,7 +115,7 @@ export default function ByteCollectionCardAdminDropdown({ byteCollection, space,
             setShowUnarchiveModal(false);
           }}
           unarchiving={updating}
-          unarchiveButtonText={'Restore Byte Collection'}
+          unarchiveButtonText={'Unarchive Tidbit Collection'}
         />
       )}
 

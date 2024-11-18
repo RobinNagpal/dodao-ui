@@ -2,57 +2,40 @@ Must have features
 
 
 
-# 2nd Priority
+# 1st Priority
 
 ### Clickable Demos
 - [ ] View modal - the top bar is not visible on some of the steps (i guess where the demo step has a tooltip that is closer to the bottom of the screen) - see step#4 onwards `https://alchemix.tidbitshub.org/clickable-demos/view/withdraw-from-transmuter-8288`
+- [ ] View modal - only looks fine above 1024px, down that its all a mess so we can detect the screen size and show a message like view the demo on a large screen
 
 ### Login issue for admins
-- [ ] homepage - ellipsis not visible against tidbits on subdomain when admin is logged in - needs to be verified
+- [ ] Go to /login on a subdomain:
+  - [x] if already logged in then welcome screen can look better
+  - [ ] (for tidbitshub only) if not logged in then single section modal is showing but behind it Full Screen Modal is showing - just gotta make the single section modal background opacity-100 for this flow only
 
 ### Tidbit Collections
-- [ ] homepage - If admin cant archive a collection then lets not show the option to. We can allow admin to archive - Sami
-- [ ] homepage - remove the 'testing' collection from the homepage - `https://alchemix.tidbitshub.org`
-- [ ] homepage - use the switch component to add functionality of showing archived, not archived. When archived selected, we can show archived collections and also archived items. And may be show a badge against the archived ones - Sami
+- [x] homepage - reduce distance between archive button and its text "See Archived"
+- [x] Either we should use delete everywhere because archive means that there is a place where we can see all the archived ones
 
 ### Post signup - Help text
 - [ ] Add couple of clickable demos. One for creating tidbit, and other for creating a clickable demo.
 
-
-# 3rd Priority
-
-### Clickable Demos
-- [ ] View modal - only looks fine above 1024px, down that its all a mess so we can detect the screen size and show a message like view the demo on a large screen
-- [ ] Edit modal - remove showing of url from upload fields - new design is needed
-
-### Login issue for admins
-- [ ] Go to /login on a subdomain:
-  - [ ] if already logged in then welcome screen can look better
-  - [ ] (for tidbitshub only) if not logged in then single section modal is showing but behind it Full Screen Modal is showing - just gotta make the single section modal background opacity-100 for this flow only
-
-### Tidbits
-- [ ] Edit modal - remove showing of url from upload fields - new design is needed
-
-### Tidbit Collections
-- [ ] homepage - Have a way to separate the tidbits and clickable demos so that its clear to the user
-
-### Short videos
-- [ ] Edit modal - remove showing of url from upload fields - new design is needed
-
 ### Edit Space
-- [ ] Edit space name field
+- [x] Edit space name field
 
-### Home page styling
-- [ ] Styling fixes for large screen as currently the content is not properly aligned
+### Home page 
+- [x] Dodao logo and login button/avatar not clickable probably due to the placement of the design behind hero section
 
 
-# 4th Priority
+
+# 2nd Priority
 
 ### Others
 - [ ] Remove the hardcoded messages of notifications and errors. Make use of `default.json` file for all the messages 
 
 ### Clickable Demos
 - [ ] View modal - we can show a "Try it" button when clickable demo gets completed which takes user to some link relevant to the demo
+- [ ] Edit modal - remove showing of url from upload fields - new design is needed
 - [ ] Edit modal - add border to tooltip position dropdown
 - [ ] Edit modal - errors at the bottom (before save button) are in reverse order
 
@@ -60,6 +43,7 @@ Must have features
 - [ ] Making it easy for the admin to login. Right now we are not showing any login button. May be we show in the footer? or somewhere else where its not too visible?
   
 ### Tidbits
+- [ ] Edit modal - remove showing of url from upload fields - new design is needed
 - [ ] Edit modal - in stepper - icon to duplicate a step 
 - [ ] Edit modal - in stepper - bit of padding left & right for the closed accordion content (name+arrow)
 - [ ] Edit modal - in stepper - add border to image display mode dropdown
@@ -69,11 +53,16 @@ users - Skipped
 - [ ] Edit modal - Add some hovering effect on `Add Question`, `Move up`, `Move down`, and `Delete step` icons - Skipped
   
 ### Tidbit Collections
+- [ ] homepage - Have a way to separate the tidbits and clickable demos so that its clear to the user
 - [ ] homepage - whole entity (tidbit/clickable demo/short video) tile should be clickable
 - [ ] homepage - entity tile should change background color when hovered over
-- [ ] Either we should use delete everywhere because archive means that there is a place where we can see all the archived ones
+- [ ] homepage - ellipsis of the last entity is getting cut off
 
+### Short videos
+- [ ] Edit modal - remove showing of url from upload fields - new design is needed
 
+### Home page 
+- [ ] Add border to clickable demo gif same as tidbit gif
 
 ### Edit Space
 - [ ] Home screen button can be added

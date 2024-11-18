@@ -11,6 +11,7 @@ import union from 'lodash/union';
 import React, { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { FormFooter } from '../app/Form/FormFooter';
+import Input from '@dodao/web-core/components/core/input/Input';
 
 interface WebCoreSpaceSetupProps {
   space: WebCoreSpace;
@@ -40,6 +41,7 @@ function WebCoreSpaceSetup({ space, loading, saveSpace, uploadLogoToS3 }: WebCor
     <PageWrapper>
       <Block title={'Space Setup'} className="font-semibold text-lg text-center">
         <div className="">
+          <Input label="Space Name" modelValue={updatedSpace?.name} onUpdate={(value) => setSpaceField('name', value?.toString() || '')} />
           <UploadInput
             label="Logo"
             spaceId={space.id!}
