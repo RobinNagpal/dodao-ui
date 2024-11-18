@@ -14,7 +14,7 @@ export interface ByteCollectionSummary {
   description: string;
   archive?: boolean | null;
   byteIds: Array<string>;
-  priority: number;
+  order: number;
   videoUrl?: string | null;
   bytes?: Array<ByteSummary>;
   demos?: Array<ClickableDemoSummary>;
@@ -30,7 +30,7 @@ export interface ByteCollectionDto {
   name: string;
   description: string;
   byteIds: string[];
-  priority: number;
+  order: number;
   videoUrl: string | null;
   archive: boolean | null;
 }

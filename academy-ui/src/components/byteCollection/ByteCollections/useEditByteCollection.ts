@@ -12,7 +12,7 @@ interface HelperFunctions {
   updateByteCollectionName: (name: string) => void;
   updateByteCollectionDescription: (description: string) => void;
   updateByteCollectionVideoUrl: (videoUrl: string) => void;
-  updateByteCollectionPriority: (priority: number) => void;
+  updateByteCollectionOrder: (order: number) => void;
   upsertByteCollection: () => void;
 }
 
@@ -43,7 +43,7 @@ export function useEditByteCollection({ space, byteCollection: byteCollectionPro
     description: byteCollectionProp?.description || '',
     byteIds: byteCollectionProp?.bytes?.map((byte) => byte.byteId) || [],
     archive: byteCollectionProp?.archive,
-    priority: byteCollectionProp?.priority || 50,
+    order: byteCollectionProp?.order || 100,
     videoUrl: byteCollectionProp?.videoUrl || '',
   });
 
@@ -57,7 +57,7 @@ export function useEditByteCollection({ space, byteCollection: byteCollectionPro
       description: byteCollectionProp?.description || '',
       byteIds: byteCollectionProp?.bytes?.map((byte) => byte.byteId) || [],
       archive: byteCollectionProp?.archive,
-      priority: byteCollectionProp?.priority || 50,
+      order: byteCollectionProp?.order || 100,
       videoUrl: byteCollectionProp?.videoUrl || '',
     });
   }, [byteCollectionProp]);
@@ -74,8 +74,8 @@ export function useEditByteCollection({ space, byteCollection: byteCollectionPro
     setByteCollection((prevByte) => ({ ...prevByte, videoUrl }));
   };
 
-  const updateByteCollectionPriority = (priority: number) => {
-    setByteCollection((prevByte) => ({ ...prevByte, priority }));
+  const updateByteCollectionOrder = (order: number) => {
+    setByteCollection((prevByte) => ({ ...prevByte, order }));
   };
   const upsertByteCollection = async () => {
     setloading(true);
@@ -92,7 +92,7 @@ export function useEditByteCollection({ space, byteCollection: byteCollectionPro
           {
             name: byteCollection.name,
             description: byteCollection.description,
-            priority: byteCollection.priority,
+            order: byteCollection.order,
             videoUrl: byteCollection.videoUrl,
           },
           {
@@ -107,7 +107,7 @@ export function useEditByteCollection({ space, byteCollection: byteCollectionPro
           {
             name: byteCollection.name,
             description: byteCollection.description,
-            priority: byteCollection.priority,
+            order: byteCollection.order,
             videoUrl: byteCollection.videoUrl,
           },
           {
@@ -131,7 +131,7 @@ export function useEditByteCollection({ space, byteCollection: byteCollectionPro
       updateByteCollectionName,
       updateByteCollectionDescription,
       updateByteCollectionVideoUrl,
-      updateByteCollectionPriority,
+      updateByteCollectionOrder,
       upsertByteCollection,
     },
   };
