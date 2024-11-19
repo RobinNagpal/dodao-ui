@@ -3,7 +3,7 @@ import { CreateSignedUrlRequest } from '@/types/request/SignedUrl';
 import { SingedUrlResponse } from '@/types/response/SignedUrl';
 import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
-import { useFetchUtils } from '@dodao/web-core/ui/hooks/useFetchUtils';
+import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { getUploadedImageUrlFromSingedUrl } from '@dodao/web-core/utils/upload/getUploadedImageUrlFromSingedUrl';
 import axios from 'axios';
@@ -25,7 +25,12 @@ export default function ElementSelectorModal({ space, showModal, objectId, fileU
   const [currentXpath, setCurrenXpath] = useState(xPath);
   const [currentCapture, setCurrentCapture] = useState(elementImgUrl);
   const spaceId = space.id;
-  const { postData } = useFetchUtils();
+  const { postData } = usePostData<SingedUrlResponse, CreateSignedUrlRequest>(
+    {
+      errorMessage: 'Failed to get signed URL',
+    },
+    {}
+  );
 
   async function uploadToS3AndReturnScreenshotUrl(file: File | null, objectId: string) {
     if (!file) return;
@@ -36,13 +41,7 @@ export default function ElementSelectorModal({ space, showModal, objectId, fileU
       name: file.name.replace(' ', '_').toLowerCase(),
     };
 
-    const response = await postData<SingedUrlResponse, CreateSignedUrlRequest>(
-      `${getBaseUrl()}/api/s3-signed-urls`,
-      { spaceId, input },
-      {
-        errorMessage: 'Failed to get signed URL',
-      }
-    );
+    const response = await postData(`${getBaseUrl()}/api/s3-signed-urls`, { spaceId, input });
 
     const signedUrl = response?.url!;
     await axios.put(signedUrl, file, {

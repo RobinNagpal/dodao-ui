@@ -7,9 +7,8 @@ import { TidbitCollectionTags } from '@/utils/api/fetchTags';
 import { emptyClickableDemo } from '@/utils/clickableDemos/EmptyClickableDemo';
 import { ClickableDemoErrors, ClickableDemoStepError } from '@dodao/web-core/types/errors/clickableDemoErrors';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { useFetchUtils } from '@dodao/web-core/ui/hooks/useFetchUtils';
+import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { createNewEntityId } from '@dodao/web-core/utils/space/createNewEntityId';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -30,7 +29,6 @@ export type UpdateClickableDemoFunctions = {
 };
 
 export function useEditClickableDemo(space: SpaceWithIntegrationsDto, demoId: string | null) {
-  const router = useRouter();
   const emptyClickableDemoModel = emptyClickableDemo();
   const { showNotification } = useNotificationContext();
   const { $t } = useI18();
@@ -40,9 +38,17 @@ export function useEditClickableDemo(space: SpaceWithIntegrationsDto, demoId: st
   });
   const [clickableDemoErrors, setClickableDemoErrors] = useState<ClickableDemoErrors>({});
   const [clickableDemoLoaded, setClickableDemoLoaded] = useState<boolean>(false);
-  const [clickableDemoCreating, setClickableDemoCreating] = useState<boolean>(false);
 
-  const { postData } = useFetchUtils();
+  const input = getClickableDemoInput();
+
+  const { postData, loading } = usePostData<ClickableDemoDto, any>(
+    {
+      successMessage: 'Clickable Demo saved successfully!',
+      errorMessage: 'Something went wrong while saving the Clickable Demo',
+      redirectPath: `/clickable-demos/view/${input.id}`,
+    },
+    {}
+  );
 
   async function initialize() {
     if (demoId) {
@@ -189,32 +195,18 @@ export function useEditClickableDemo(space: SpaceWithIntegrationsDto, demoId: st
   }
 
   async function handleSubmit(byteCollection: ByteCollectionSummary) {
-    setClickableDemoCreating(true);
-
     const valid = validateClickableDemo(clickableDemo);
     setClickableDemo((prevClickableDemo) => ({ ...prevClickableDemo }));
     if (!valid) {
       showNotification({ type: 'error', message: $t('notify.validationFailed') });
 
-      setClickableDemoCreating(false);
       return;
     }
-    const input = getClickableDemoInput();
-    const response = await postData<ClickableDemoDto, any>(
-      `/api/${space.id}/clickable-demos/${input.id}`,
-      {
-        spaceId: space.id,
-        input,
-        byteCollectionId: byteCollection.id,
-      },
-      {
-        successMessage: 'Clickable Demo saved successfully!',
-        errorMessage: 'Something went wrong while saving the Clickable Demo',
-        redirectPath: `/clickable-demos/view/${input.id}`,
-      }
-    );
-
-    setClickableDemoCreating(false);
+    await postData(`/api/${space.id}/clickable-demos/${input.id}`, {
+      spaceId: space.id,
+      input,
+      byteCollectionId: byteCollection.id,
+    });
   }
 
   function updateClickableDemoField(field: KeyOfClickableDemoInput, value: any) {
@@ -244,7 +236,7 @@ export function useEditClickableDemo(space: SpaceWithIntegrationsDto, demoId: st
 
   // Return the necessary values and functions
   return {
-    clickableDemoCreating,
+    clickableDemoCreating: loading,
     clickableDemoLoaded,
     clickableDemo,
     clickableDemoErrors,

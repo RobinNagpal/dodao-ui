@@ -1,7 +1,7 @@
 import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { useFetchUtils } from '@dodao/web-core/ui/hooks/useFetchUtils';
+import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useSession } from 'next-auth/react';
 
@@ -21,7 +21,13 @@ export interface AddSpaceKeyHook {
 
 export function useAddSpaceApiKey(space: SpaceWithIntegrationsDto, onUpdate: (space: any) => void): AddSpaceKeyHook {
   const { showNotification } = useNotificationContext();
-  const { postData } = useFetchUtils();
+  const { postData } = usePostData<AddApiKeyResponse, AddApiKeyRequest>(
+    {
+      errorMessage: 'Failed to add new API key',
+      successMessage: 'API key added successfully',
+    },
+    {}
+  );
   const { data: clientSession } = useSession() as { data: Session | null };
 
   const addApiKey = async (apiKey: string) => {
@@ -32,18 +38,11 @@ export function useAddSpaceApiKey(space: SpaceWithIntegrationsDto, onUpdate: (sp
     }
 
     // Simulate generating a new API key
-    const response = await postData<AddApiKeyResponse, AddApiKeyRequest>(
-      `${getBaseUrl()}/api/${space.id}/actions/spaces/generate-api-key`,
-      {
-        spaceId: space.id,
-        creator: username,
-        apiKey: apiKey,
-      },
-      {
-        errorMessage: 'Failed to add new API key',
-        successMessage: 'API key added successfully',
-      }
-    );
+    const response = await postData(`${getBaseUrl()}/api/${space.id}/actions/spaces/generate-api-key`, {
+      spaceId: space.id,
+      creator: username,
+      apiKey: apiKey,
+    });
 
     onUpdate(response!.space);
   };

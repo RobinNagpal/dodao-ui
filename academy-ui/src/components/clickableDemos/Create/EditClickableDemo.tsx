@@ -22,7 +22,7 @@ import PageLoading from '@dodao/web-core/components/core/loaders/PageLoading';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { ClickableDemoErrors } from '@dodao/web-core/types/errors/clickableDemoErrors';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { useFetchUtils } from '@dodao/web-core/ui/hooks/useFetchUtils';
+import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { getUploadedImageUrlFromSingedUrl } from '@dodao/web-core/utils/upload/getUploadedImageUrlFromSingedUrl';
@@ -40,7 +40,12 @@ interface EditClickableDemoProps {
 
 function EditClickableDemo({ space, demoId, byteCollection, closeDemoEditModal }: EditClickableDemoProps) {
   const spaceId = space.id;
-  const { postData } = useFetchUtils();
+  const { postData } = usePostData<SingedUrlResponse, CreateSignedUrlRequest>(
+    {
+      errorMessage: 'Failed to get signed URL',
+    },
+    {}
+  );
 
   const { clickableDemoCreating, clickableDemoLoaded, clickableDemo, clickableDemoErrors, handleSubmit, updateClickableDemoFunctions } = useEditClickableDemo(
     space,
@@ -72,13 +77,7 @@ function EditClickableDemo({ space, demoId, byteCollection, closeDemoEditModal }
       name: file.name.replace(' ', '_').toLowerCase(),
     };
 
-    const response = await postData<SingedUrlResponse, CreateSignedUrlRequest>(
-      `${getBaseUrl()}/api/s3-signed-urls`,
-      { spaceId, input },
-      {
-        errorMessage: 'Failed to get signed URL',
-      }
-    );
+    const response = await postData(`${getBaseUrl()}/api/s3-signed-urls`, { spaceId, input });
 
     const signedUrl = response?.url!;
     await axios.put(signedUrl, file, {
