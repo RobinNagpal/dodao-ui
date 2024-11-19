@@ -6,7 +6,7 @@ import { GlobalThemeColors } from '@dodao/web-core/components/app/themes';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import { useFetchUtils } from '@dodao/web-core/ui/hooks/useFetchUtils';
+import { useUpdateData } from '@dodao/web-core/ui/hooks/fetch/useUpdateData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import React, { CSSProperties, useState } from 'react';
 
@@ -32,10 +32,16 @@ export const ColorLabels: Record<ThemeColorsKeys, string> = {
 export default function UpdateThemeModal({ space, open, onClose, byteCollection }: UpdateThemeModalProps) {
   const [themeColors, setThemeColors] = useState<ThemeColors>(space?.themeColors || GlobalThemeColors);
 
-  const { putData } = useFetchUtils();
+  const { updateData: putData } = useUpdateData<SpaceWithIntegrationsDto, { spaceId: string; themeColors: ThemeColorsDto }>(
+    {},
+    {
+      successMessage: 'Theme Updated',
+      errorMessage: 'Error updating theme colors',
+    }
+  , 'PUT');
 
   async function upsertThemeColors() {
-    await putData<SpaceWithIntegrationsDto, { spaceId: string; themeColors: ThemeColorsDto }>(
+    await putData(
       `${getBaseUrl()}/api/${space.id}/actions/spaces/update-theme-colors`,
       {
         spaceId: space.id,
@@ -48,10 +54,6 @@ export default function UpdateThemeModal({ space, open, onClose, byteCollection 
           headingColor: themeColors.headingColor,
           linkColor: themeColors.linkColor,
         },
-      },
-      {
-        successMessage: 'Theme Updated',
-        errorMessage: 'Error updating theme colors',
       }
     );
     // reload the page to reflect the changes

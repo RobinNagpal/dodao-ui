@@ -1,6 +1,6 @@
 import { AuthSettings } from '@/graphql/generated/generated-types';
 import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
-import { useFetchUtils } from '@dodao/web-core/ui/hooks/useFetchUtils';
+import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useState } from 'react';
 
@@ -19,7 +19,13 @@ interface UpdateAuthSettingsRequest {
 export function useEditSpaceAuthSettings(space: SpaceWithIntegrationsDto): UpdateSpaceAuthSettingsHelper {
   const [authSettings, setAuthSettings] = useState<AuthSettings>(space.authSettings || {});
   const [updating, setUpdating] = useState(false);
-  const { postData } = useFetchUtils();
+  const { postData } = usePostData<SpaceWithIntegrationsDto, UpdateAuthSettingsRequest>(
+    {
+      errorMessage: 'Failed to update auth settings',
+      successMessage: 'Auth settings updated',
+    },
+    {}
+  );
 
   function setAuthSettingsField(field: keyof AuthSettings, value: any) {
     setAuthSettings({
@@ -30,20 +36,13 @@ export function useEditSpaceAuthSettings(space: SpaceWithIntegrationsDto): Updat
 
   async function updateAuthSettings() {
     setUpdating(true);
-    const response = await postData<SpaceWithIntegrationsDto, UpdateAuthSettingsRequest>(
-      `${getBaseUrl()}/api/spaces/update-auth-settings`,
-      {
-        spaceId: space.id,
-        input: {
-          enableLogin: !!authSettings.enableLogin,
-          loginOptions: authSettings.loginOptions || [],
-        },
+    const response = await postData(`${getBaseUrl()}/api/spaces/update-auth-settings`, {
+      spaceId: space.id,
+      input: {
+        enableLogin: !!authSettings.enableLogin,
+        loginOptions: authSettings.loginOptions || [],
       },
-      {
-        errorMessage: 'Failed to update auth settings',
-        successMessage: 'Auth settings updated',
-      }
-    );
+    });
     const updatedSpace: SpaceWithIntegrationsDto = response!;
     setAuthSettings({
       ...updatedSpace.authSettings,

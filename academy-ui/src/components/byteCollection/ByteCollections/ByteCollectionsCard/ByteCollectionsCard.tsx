@@ -25,7 +25,6 @@ import ByteItem from './ByteItem';
 import DemoItem from './DemoItem';
 import ShortItem from './ShortItem';
 import { CreateByteCollectionRequest, MoveByteCollectionItemRequest } from '@/types/request/ByteCollectionRequests';
-import { useFetchUtils } from '@dodao/web-core/ui/hooks/useFetchUtils';
 
 interface ByteCollectionCardProps {
   byteCollection: ByteCollectionSummary;
