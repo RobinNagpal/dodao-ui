@@ -4,7 +4,7 @@ import WebCoreProfileEdit from '@dodao/web-core/components/profile/WebCoreProfil
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { User } from '@dodao/web-core/types/auth/User';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
-import { useFetchUtils } from '@dodao/web-core/ui/hooks/useFetchUtils';
+import { useUpdateData } from '@dodao/web-core/ui/hooks/fetch/useUpdateData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { BaseSpace } from '@prisma/client';
 import { useSession } from 'next-auth/react';
@@ -15,9 +15,16 @@ interface ProfileEditProps {
 }
 
 function ProfileEdit({ space }: ProfileEditProps) {
-  const { putData } = useFetchUtils();
+  const { updateData: putData, loading } = useUpdateData<User, User>(
+    {},
+    {
+      successMessage: 'User updated successfully',
+      errorMessage: 'Error while updating user',
+      redirectPath: '/homepage',
+    },
+    'PUT'
+  );
   const { data: session } = useSession() as { data: Session | null };
-  const [upserting, setUpserting] = useState(false);
   const initialState = {
     id: '',
     name: '',
@@ -57,21 +64,15 @@ function ProfileEdit({ space }: ProfileEditProps) {
   }, [session]);
 
   async function upsertUser(updatedUser: User) {
-    setUpserting(true);
     const userReq: User = {
       ...user,
       name: updatedUser.name,
       phoneNumber: updatedUser.phoneNumber,
     };
-    await putData<User, User>(`${getBaseUrl()}/api/users/${user.id}`, userReq, {
-      successMessage: 'User updated successfully',
-      errorMessage: 'Error while updating user',
-      redirectPath: '/homepage',
-    });
-    setUpserting(false);
+    await putData(`${getBaseUrl()}/api/users/${user.id}`, userReq);
   }
 
-  return <WebCoreProfileEdit user={user} saveUser={(user) => upsertUser(user)} loading={upserting} />;
+  return <WebCoreProfileEdit user={user} saveUser={(user) => upsertUser(user)} loading={loading} />;
 }
 
 export default ProfileEdit;

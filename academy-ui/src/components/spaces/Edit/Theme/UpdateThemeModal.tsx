@@ -37,25 +37,23 @@ export default function UpdateThemeModal({ space, open, onClose, byteCollection 
     {
       successMessage: 'Theme Updated',
       errorMessage: 'Error updating theme colors',
-    }
-  , 'PUT');
+    },
+    'PUT'
+  );
 
   async function upsertThemeColors() {
-    await putData(
-      `${getBaseUrl()}/api/${space.id}/actions/spaces/update-theme-colors`,
-      {
-        spaceId: space.id,
-        themeColors: {
-          bgColor: themeColors.bgColor,
-          textColor: themeColors.textColor,
-          blockBg: themeColors.blockBg,
-          borderColor: themeColors.borderColor,
-          primaryColor: themeColors.primaryColor,
-          headingColor: themeColors.headingColor,
-          linkColor: themeColors.linkColor,
-        },
-      }
-    );
+    await putData(`${getBaseUrl()}/api/${space.id}/actions/spaces/update-theme-colors`, {
+      spaceId: space.id,
+      themeColors: {
+        bgColor: themeColors.bgColor,
+        textColor: themeColors.textColor,
+        blockBg: themeColors.blockBg,
+        borderColor: themeColors.borderColor,
+        primaryColor: themeColors.primaryColor,
+        headingColor: themeColors.headingColor,
+        linkColor: themeColors.linkColor,
+      },
+    });
     // reload the page to reflect the changes
     window.location.reload();
   }
