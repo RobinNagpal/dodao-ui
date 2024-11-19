@@ -85,12 +85,10 @@ export default function ByteCollectionsCard({
   isAdmin,
   showArchived,
 }: ByteCollectionCardProps) {
-  const { putData } = useFetchUtils();
   const [watchVideo, setWatchVideo] = React.useState<boolean>(false);
   const [selectedVideo, setSelectedVideo] = React.useState<VideoModalProps>();
   const [videoResponse, setVideoResponse] = React.useState<{ shortVideo?: ShortVideoFragment }>();
   const [editByteModalState, setEditModalState] = React.useState<EditByteModalState>({ isVisible: false, byteId: null });
-  const [updating, setUpdating] = React.useState<boolean>(false);
   const [deleteItemModalState, setDeleteItemModalState] = React.useState<DeleteItemModalState>({
     isVisible: false,
     itemId: null,
@@ -121,24 +119,54 @@ export default function ByteCollectionsCard({
 
   const redirectPath = space.type === SpaceTypes.AcademySite ? '/byteCollections' : '/';
 
+  const { updateData: archiveItem, loading: archiveItemLoading } = useUpdateData<ByteCollectionDto, PutByteItemRequest>(
+    {},
+    {
+      successMessage: 'Item Archived Successfully',
+      errorMessage: 'Failed to archive the item. Please try again.',
+      redirectPath: `${redirectPath}?updated=${Date.now()}`,
+    },
+    'PUT'
+  );
+
+  const { updateData: unArchiveItem, loading: unArchiveItemLoading } = useUpdateData<ByteCollectionDto, PutByteItemRequest>(
+    {},
+    {
+      successMessage: 'Item Unachived Successfully',
+      errorMessage: 'Failed to unarchive the item. Please try again.',
+      redirectPath: `${redirectPath}?updated=${Date.now()}`,
+    },
+    'PUT'
+  );
+
+  const { updateData: unArchiveByteCollection, loading: unArchiveByteCollectionLoading } = useUpdateData<ByteCollectionDto, CreateByteCollectionRequest>(
+    {},
+    {
+      successMessage: 'Tidbit Collection Unarchived Successfully',
+      errorMessage: 'Failed to archive the Tidbit Collection. Please try again.',
+      redirectPath: `${redirectPath}?updated=${Date.now()}`,
+    },
+    'PUT'
+  );
+
+  const { updateData: moveByteCollectionItem, loading: moveByteCollectionItemLoading } = useUpdateData<ByteCollectionDto, MoveByteCollectionItemRequest>(
+    {},
+    {
+      successMessage: 'Item moved Successfully',
+      errorMessage: 'Failed to move the item. Please try again.',
+      redirectPath: `${redirectPath}?updated=${Date.now()}`,
+    },
+    'PUT'
+  );
+
   const onUnarchive = async () => {
-    setUpdating(true);
-    await putData<ByteCollectionDto, CreateByteCollectionRequest>(
-      `${getBaseUrl()}/api/${space.id}/byte-collections/${byteCollection?.id}`,
-      {
-        name: byteCollection.name,
-        description: byteCollection.description,
-        order: byteCollection.order,
-        videoUrl: byteCollection.videoUrl,
-        archive: false,
-      },
-      {
-        redirectPath: `${redirectPath}?updated=${Date.now()}`,
-        successMessage: 'Tidbit collection unarchived successfully',
-        errorMessage: 'Failed to unarchive collection',
-      }
-    );
-    setUpdating(false);
+    await unArchiveByteCollection(`${getBaseUrl()}/api/${space.id}/byte-collections/${byteCollection?.id}`, {
+      name: byteCollection.name,
+      description: byteCollection.description,
+      order: byteCollection.order,
+      videoUrl: byteCollection.videoUrl,
+      archive: false,
+    });
   };
 
   const threeDotItems = [
@@ -159,14 +187,6 @@ export default function ByteCollectionsCard({
   });
 
   const byteCollectionItems = showArchived ? byteCollection.items : nonArchivedItems;
-
-  const { updateData: updateItemData, loading: updateItemLoading } = useUpdateData<
-    void,
-    {
-      itemId: string;
-      itemType: ByteCollectionItemType;
-    }
-  >({}, { successMessage: 'Item Unarchived Successfully', errorMessage: 'Failed to unarchive the item. Please try again.' }, 'PUT');
 
   async function fetchData(shortId: string) {
     const response = await fetch(`${getBaseUrl()}/api/short-videos/${shortId}?spaceId=${space.id}`, {
@@ -381,26 +401,18 @@ export default function ByteCollectionsCard({
           }`}
           open={deleteItemModalState.isVisible}
           onClose={closeItemDeleteModal}
-          deleting={deleteItemModalState.deleting}
+          deleting={archiveItemLoading}
           onDelete={async () => {
             if (!deleteItemModalState.itemId || !deleteItemModalState.itemType) {
               showNotification({ message: 'Some Error occurred', type: 'error' });
               closeItemDeleteModal();
               return;
             }
-            await putData<ByteCollectionDto, PutByteItemRequest>(
-              `${getBaseUrl()}/api/${space.id}/byte-collections/${byteCollection?.id}/byte-items`,
-              {
-                itemId: deleteItemModalState.itemId,
-                itemType: deleteItemModalState.itemType,
-                archive: true,
-              },
-              {
-                redirectPath: `${redirectPath}?updated=${Date.now()}`,
-                successMessage: 'Item deleted successfully',
-                errorMessage: 'Failed to delete item',
-              }
-            );
+            await archiveItem(`${getBaseUrl()}/api/${space.id}/byte-collections/${byteCollection?.id}/byte-items`, {
+              itemId: deleteItemModalState.itemId,
+              itemType: deleteItemModalState.itemType,
+              archive: true,
+            });
             closeItemDeleteModal();
           }}
         />
@@ -428,7 +440,7 @@ export default function ByteCollectionsCard({
           }`}
           open={unarchiveItemModalState.isVisible}
           onClose={closeItemUnarchiveModal}
-          unarchiving={updateItemLoading}
+          unarchiving={unArchiveItemLoading}
           onUnarchive={async () => {
             if (!unarchiveItemModalState.itemId || !unarchiveItemModalState.itemType) {
               showNotification({ message: 'Some Error occurred', type: 'error' });
@@ -436,19 +448,11 @@ export default function ByteCollectionsCard({
               return;
             }
 
-            await putData<ByteCollectionDto, PutByteItemRequest>(
-              `${getBaseUrl()}/api/${space.id}/byte-collections/${byteCollection?.id}/byte-items`,
-              {
-                itemId: unarchiveItemModalState.itemId,
-                itemType: unarchiveItemModalState.itemType,
-                archive: false,
-              },
-              {
-                redirectPath: `${redirectPath}?updated=${Date.now()}`,
-                successMessage: 'Item unarchived successfully',
-                errorMessage: 'Failed to unarchive item',
-              }
-            );
+            await unArchiveItem(`${getBaseUrl()}/api/${space.id}/byte-collections/${byteCollection?.id}/byte-items`, {
+              itemId: unarchiveItemModalState.itemId,
+              itemType: unarchiveItemModalState.itemType,
+              archive: false,
+            });
             closeItemUnarchiveModal();
           }}
         />
@@ -463,7 +467,7 @@ export default function ByteCollectionsCard({
             await onUnarchive();
             setShowUnarchiveModal(false);
           }}
-          unarchiving={updating}
+          unarchiving={unArchiveByteCollectionLoading}
           unarchiveButtonText={'Unarchive Tidbit Collection'}
         />
       )}
@@ -473,20 +477,12 @@ export default function ByteCollectionsCard({
           showSelectByteCollectionModal={moveItemModalState.isVisible}
           onClose={closeItemMoveModal}
           selectByteCollection={async (selectedByteCollection: ByteCollectionSummary) => {
-            await putData<ByteCollectionDto, MoveByteCollectionItemRequest>(
-              `${getBaseUrl()}/api/${space.id}/actions/byte-collections/move-item`,
-              {
-                itemId: moveItemModalState.itemId!,
-                itemType: moveItemModalState.itemType!,
-                sourceByteCollectionId: moveItemModalState.byteCollectionId!,
-                targetByteCollectionId: selectedByteCollection.id,
-              },
-              {
-                redirectPath: `${redirectPath}?updated=${Date.now()}`,
-                successMessage: 'Item moved successfully',
-                errorMessage: 'Failed to move item',
-              }
-            );
+            await moveByteCollectionItem(`${getBaseUrl()}/api/${space.id}/actions/byte-collections/move-item`, {
+              itemId: moveItemModalState.itemId!,
+              itemType: moveItemModalState.itemType!,
+              sourceByteCollectionId: moveItemModalState.byteCollectionId!,
+              targetByteCollectionId: selectedByteCollection.id,
+            });
           }}
           byteCollectionId={byteCollection.id}
           spaceId={space.id}
