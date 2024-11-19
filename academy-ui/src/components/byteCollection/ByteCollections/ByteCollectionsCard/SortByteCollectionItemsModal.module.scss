@@ -1,0 +1,7 @@
+.sortItem {
+    background-color: none;
+    
+    &:hover {
+        background-color: var(--block-bg);
+    }
+}
