@@ -44,23 +44,27 @@ export default function ByteCollectionsGrid({
     <>
       {isAdmin! && <AddByteCollection space={space} />}
       {isAdmin! && (
-        <div className="flex justify-end mb-2">
+        <div className="flex justify-end mb-2 items-center gap-x-5">
           <ToggleWithIcon label={'See Archived'} enabled={isArchived} setEnabled={handleToggle} />
-
-          <ArrowsUpDown
-            style={{
-              transition: 'color 0.2s ease',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.color = 'var(--primary-color)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.color = '';
-            }}
-            className="ml-4 h-6 w-6 mt-4 cursor-pointer"
-            aria-hidden="true"
-            onClick={handleSort}
-          />
+          <div className="flex align-center mt-4 mb-1">
+            <div className="mr-3">
+              <ArrowsUpDown
+                style={{
+                  transition: 'color 0.2s ease',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = 'var(--primary-color)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = '';
+                }}
+                className="h-6 w-6 cursor-pointer"
+                aria-hidden="true"
+                onClick={handleSort}
+              />
+            </div>
+            <div>Sort Collections</div>
+          </div>
         </div>
       )}
       {!byteCollectionsList?.length && !isAdmin && <NoByteCollections space={space} />}
