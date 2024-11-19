@@ -17,6 +17,7 @@ interface DemoItemProps {
   threeDotItems: { label: string; key: string }[];
   openItemDeleteModal: (itemId: string, itemName: string, itemType: ByteCollectionItemType | null) => void;
   openItemUnarchiveModal: (itemId: string, itemName: string, itemType: ByteCollectionItemType | null) => void;
+  openItemMoveModal: (itemId: string, itemName: string, itemType: ByteCollectionItemType | null) => void;
 }
 
 interface EditDemoModalState {
@@ -25,7 +26,7 @@ interface EditDemoModalState {
 }
 
 export default function DemoItem(props: DemoItemProps) {
-  const { byteCollection, demo, eventIdx, threeDotItems, openItemDeleteModal, openItemUnarchiveModal, itemLength } = props;
+  const { byteCollection, demo, eventIdx, threeDotItems, openItemDeleteModal, openItemUnarchiveModal, openItemMoveModal, itemLength } = props;
   const demoViewUrl = `clickable-demos/view/${demo.demoId}`;
   const [editDemoModalState, setEditDemoModalState] = React.useState<EditDemoModalState>({ isVisible: false, demoId: null });
 
@@ -69,6 +70,8 @@ export default function DemoItem(props: DemoItemProps) {
                       openItemDeleteModal(demo.demoId, demo.title, ByteCollectionItemType.ClickableDemo);
                     } else if (key === 'unarchive') {
                       openItemUnarchiveModal(demo.demoId, demo.title, ByteCollectionItemType.ClickableDemo);
+                    } else if (key === 'move') {
+                      openItemMoveModal(demo.demoId, demo.title, ByteCollectionItemType.ClickableDemo);
                     } else {
                       setEditDemoModalState({ isVisible: true, demoId: demo.demoId });
                     }

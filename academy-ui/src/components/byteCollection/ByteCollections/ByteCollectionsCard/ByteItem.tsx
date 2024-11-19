@@ -17,6 +17,7 @@ interface ByteItemProps {
   openByteEditModal: (byteId: string) => void;
   openItemDeleteModal: (itemId: string, itemName: string, itemType: ByteCollectionItemType | null) => void;
   openItemUnarchiveModal: (itemId: string, itemName: string, itemType: ByteCollectionItemType | null) => void;
+  openItemMoveModal: (itemId: string, itemName: string, itemType: ByteCollectionItemType | null) => void;
 }
 
 interface VideoModalProps {
@@ -36,6 +37,7 @@ export default function ByteItem(props: ByteItemProps) {
     openByteEditModal,
     openItemDeleteModal,
     openItemUnarchiveModal,
+    openItemMoveModal,
     itemLength,
   } = props;
   const byteViewUrl = `${viewByteBaseUrl}/${byte.byteId}`;
@@ -91,6 +93,8 @@ export default function ByteItem(props: ByteItemProps) {
                       openItemDeleteModal(byte.byteId, byte.name, ByteCollectionItemType.Byte);
                     } else if (key === 'unarchive') {
                       openItemUnarchiveModal(byte.byteId, byte.name, ByteCollectionItemType.Byte);
+                    } else if (key === 'move') {
+                      openItemMoveModal(byte.byteId, byte.name, ByteCollectionItemType.Byte);
                     } else {
                       openByteEditModal(byte.byteId);
                     }

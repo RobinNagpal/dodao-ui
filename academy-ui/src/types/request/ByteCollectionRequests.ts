@@ -16,3 +16,10 @@ export type SortByteCollectionsRequest = Array<{
   byteCollectionId: string;
   order: number;
 }>;
+
+export interface MoveByteCollectionItemRequest {
+  itemId: string;
+  itemType: ByteCollectionItemType;
+  sourceByteCollectionId: string;
+  targetByteCollectionId: string;
+}

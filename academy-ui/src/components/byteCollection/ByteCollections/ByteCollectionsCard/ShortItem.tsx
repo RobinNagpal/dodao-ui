@@ -13,10 +13,11 @@ interface ShortItemProps {
   openShortEditModal: (shortId: string) => void;
   openItemDeleteModal: (itemId: string, itemName: string, itemType: ByteCollectionItemType | null) => void;
   openItemUnarchiveModal: (itemId: string, itemName: string, itemType: ByteCollectionItemType | null) => void;
+  openItemMoveModal: (itemId: string, itemName: string, itemType: ByteCollectionItemType | null) => void;
 }
 
 export default function ShortItem(props: ShortItemProps) {
-  const { short, eventIdx, threeDotItems, openShortEditModal, openItemDeleteModal, openItemUnarchiveModal, itemLength } = props;
+  const { short, eventIdx, threeDotItems, openShortEditModal, openItemDeleteModal, openItemUnarchiveModal, openItemMoveModal, itemLength } = props;
   const shortViewUrl = `shorts/view/${short.shortId}`;
   const modifiedThreeDotItems = JSON.parse(JSON.stringify(threeDotItems)); // Creating a deep copy so that it doesn't affect the original array
   if (short.archive) {
@@ -55,6 +56,8 @@ export default function ShortItem(props: ShortItemProps) {
                       openItemDeleteModal(short.shortId, short.title, ByteCollectionItemType.ShortVideo);
                     } else if (key === 'unarhive') {
                       openItemUnarchiveModal(short.shortId, short.title, ByteCollectionItemType.ShortVideo);
+                    } else if (key === 'move') {
+                      openItemMoveModal(short.shortId, short.title, ByteCollectionItemType.ShortVideo);
                     } else {
                       openShortEditModal(short.shortId);
                     }

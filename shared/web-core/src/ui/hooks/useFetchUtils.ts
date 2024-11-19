@@ -5,6 +5,9 @@ import { useNotificationContext } from '@dodao/web-core/ui/contexts/Notification
 import { UpdateDataOptions } from '@dodao/web-core/ui/hooks/fetch/UpdateDataOptions';
 import { useRouter } from 'next/navigation';
 
+/**
+ * @deprecated The method should not be used, instead use useUpdateData or usePostData or useFetchData
+ */
 export const useFetchUtils = () => {
   const { showNotification } = useNotificationContext();
   const router = useRouter();
@@ -51,6 +54,9 @@ export const useFetchUtils = () => {
     }
   };
 
+  /**
+   * @deprecated The method should not be used
+   */
   const putData = async <T, X>(url: string, body: X, updateOptions: UpdateDataOptions): Promise<T | undefined> => {
     return updateDataGeneric<T, X>(
       url,
@@ -62,6 +68,9 @@ export const useFetchUtils = () => {
     );
   };
 
+  /**
+   * @deprecated The method should not be used
+   */
   const postData = async <T, X>(url: string, body: X, updateOptions: UpdateDataOptions): Promise<T | undefined> => {
     return updateDataGeneric<T, X>(
       url,
