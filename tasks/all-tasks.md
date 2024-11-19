@@ -7,25 +7,21 @@ Must have features
 ### Clickable Demos
 - [ ] View modal - the top bar is not visible on some of the steps (i guess where the demo step has a tooltip that is closer to the bottom of the screen) - see step#4 onwards `https://alchemix.tidbitshub.org/clickable-demos/view/withdraw-from-transmuter-8288`
 - [ ] View modal - only looks fine above 1024px, down that its all a mess so we can detect the screen size and show a message like view the demo on a large screen
+- [ ] Edit modal - remove showing of url from upload fields - new design is needed
 
 ### Login issue for admins
 - [ ] Go to /login on a subdomain:
-  - [x] if already logged in then welcome screen can look better
   - [ ] (for tidbitshub only) if not logged in then single section modal is showing but behind it Full Screen Modal is showing - just gotta make the single section modal background opacity-100 for this flow only
+  
+- ### Tidbit
+- [ ] Edit modal - in stepper - add help text somewhere around the image selector
+- [ ] Edit modal - remove showing of url from upload fields - new design is needed
 
-### Tidbit Collections
-- [x] homepage - reduce distance between archive button and its text "See Archived"
-- [x] Either we should use delete everywhere because archive means that there is a place where we can see all the archived ones
+### Short videos
+- [ ] Edit modal - remove showing of url from upload fields - new design is needed
 
 ### Post signup - Help text
 - [ ] Add couple of clickable demos. One for creating tidbit, and other for creating a clickable demo.
-
-### Edit Space
-- [x] Edit space name field
-
-### Home page 
-- [x] Dodao logo and login button/avatar not clickable probably due to the placement of the design behind hero section
-
 
 
 # 2nd Priority
@@ -35,7 +31,6 @@ Must have features
 
 ### Clickable Demos
 - [ ] View modal - we can show a "Try it" button when clickable demo gets completed which takes user to some link relevant to the demo
-- [ ] Edit modal - remove showing of url from upload fields - new design is needed
 - [ ] Edit modal - add border to tooltip position dropdown
 - [ ] Edit modal - errors at the bottom (before save button) are in reverse order
 
@@ -43,7 +38,6 @@ Must have features
 - [ ] Making it easy for the admin to login. Right now we are not showing any login button. May be we show in the footer? or somewhere else where its not too visible?
   
 ### Tidbits
-- [ ] Edit modal - remove showing of url from upload fields - new design is needed
 - [ ] Edit modal - in stepper - icon to duplicate a step 
 - [ ] Edit modal - in stepper - bit of padding left & right for the closed accordion content (name+arrow)
 - [ ] Edit modal - in stepper - add border to image display mode dropdown
@@ -57,9 +51,8 @@ users - Skipped
 - [ ] homepage - whole entity (tidbit/clickable demo/short video) tile should be clickable
 - [ ] homepage - entity tile should change background color when hovered over
 - [ ] homepage - ellipsis of the last entity is getting cut off
+- [ ] homepage - sort items - make the tidbits arrangeable through drag and drop 
 
-### Short videos
-- [ ] Edit modal - remove showing of url from upload fields - new design is needed
 
 ### Home page 
 - [ ] Add border to clickable demo gif same as tidbit gif
