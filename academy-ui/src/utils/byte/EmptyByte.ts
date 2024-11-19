@@ -40,8 +40,8 @@ export const emptyByte = (): Omit<ByteDto, 'id'> & { isPristine: boolean; id: st
     priority: 0,
     tags: [],
     isPristine: true,
-    name: 'Byte Name',
-    content: 'New Byte',
+    name: 'Tidbit Name',
+    content: 'New Tidbit',
     steps: [
       {
         uuid: step1Uuid,
