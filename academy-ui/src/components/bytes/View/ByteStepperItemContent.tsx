@@ -87,6 +87,7 @@ export function FullScreenImage({ space, imageUrl, width, height, className = ''
         onClick={() => setShowFullScreenModal(true)}
         style={{
           transition: 'opacity 500ms ease-in-out',
+          cursor: 'zoom-in',
         }}
         onLoadingComplete={({ naturalWidth, naturalHeight }) => {
           const aspectRatio = naturalWidth / naturalHeight;
