@@ -14,6 +14,7 @@ import { ByteDto, ByteStepDto } from '@/types/bytes/ByteDto';
 import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import { ByteStepItem } from '@/types/stepItems/stepItemDto';
 import UserInput from '@dodao/web-core/components/app/Form/UserInput';
+import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import { isQuestion, isUserDiscordConnect, isUserInput } from '@dodao/web-core/types/deprecated/helpers/stepItemTypes';
 import { TextAlign } from '@dodao/web-core/types/ui/TextAlign';
 import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
@@ -64,6 +65,7 @@ export function FullScreenImage({ space, imageUrl, width, height, className = ''
 
   const [imageDimensions, setImageDimensions] = useState({ width: maxWidth, height: maxHeight });
   const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const [showFullScreenModal, setShowFullScreenModal] = useState(false);
 
   const svg = `
     <svg xmlns='http://www.w3.org/2000/svg' width='2' height='2'>
@@ -73,31 +75,40 @@ export function FullScreenImage({ space, imageUrl, width, height, className = ''
   const blurDataURL = `data:image/svg+xml;base64,${Buffer.from(svg).toString('base64')}`;
 
   return (
-    <Image
-      src={imageUrl}
-      alt="byte"
-      className={className}
-      placeholder="blur"
-      blurDataURL={blurDataURL}
-      width={imageDimensions.width}
-      height={imageDimensions.height}
-      style={{
-        transition: 'opacity 500ms ease-in-out',
-      }}
-      onLoadingComplete={({ naturalWidth, naturalHeight }) => {
-        const aspectRatio = naturalWidth / naturalHeight;
-        let displayWidth = maxWidth;
-        let displayHeight = displayWidth / aspectRatio;
+    <>
+      <Image
+        src={imageUrl}
+        alt="byte"
+        className={className}
+        placeholder="blur"
+        blurDataURL={blurDataURL}
+        width={imageDimensions.width}
+        height={imageDimensions.height}
+        onClick={() => setShowFullScreenModal(true)}
+        style={{
+          transition: 'opacity 500ms ease-in-out',
+        }}
+        onLoadingComplete={({ naturalWidth, naturalHeight }) => {
+          const aspectRatio = naturalWidth / naturalHeight;
+          let displayWidth = maxWidth;
+          let displayHeight = displayWidth / aspectRatio;
 
-        if (displayHeight > maxHeight) {
-          displayHeight = maxHeight;
-          displayWidth = displayHeight * aspectRatio;
-        }
+          if (displayHeight > maxHeight) {
+            displayHeight = maxHeight;
+            displayWidth = displayHeight * aspectRatio;
+          }
 
-        setImageDimensions({ width: displayWidth, height: displayHeight });
-        setIsImageLoaded(true);
-      }}
-    />
+          setImageDimensions({ width: displayWidth, height: displayHeight });
+          setIsImageLoaded(true);
+        }}
+      />
+
+      {showFullScreenModal && (
+        <FullScreenModal open={true} onClose={() => setShowFullScreenModal(false)} title={''} showTitleBg={false}>
+          <img src={imageUrl} alt="Uploaded file" className="w-full h-[90vh] px-5 object-contain" />
+        </FullScreenModal>
+      )}
+    </>
   );
 }
 
