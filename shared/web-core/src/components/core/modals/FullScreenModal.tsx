@@ -20,7 +20,7 @@ const StyledModalWrapper = styled.div`
 export default function FullScreenModal({ open, title, children, onClose, showCloseButton = true, showTitleBg = true }: SingleSectionModalProps) {
   return (
     <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={onClose}>
+      <Dialog as="div" className="relative z-30" onClose={onClose}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
