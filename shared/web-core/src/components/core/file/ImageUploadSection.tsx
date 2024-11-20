@@ -37,7 +37,6 @@ export default function ImageUploadSection({
 }: ImageUploadSectionProps) {
   const inputId = spaceId + '-' + slugify(label || imageType || objectId);
   const [showFullScreenModal, setShowFullScreenModal] = useState(false);
-  const [imageLoaded, setImageLoaded] = useState(false);
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -103,31 +102,27 @@ export default function ImageUploadSection({
                 src={modelValue}
                 alt="Uploaded file"
                 title="Click image to view full screen"
-                className="w-full h-full object-contain cursor-pointer"
+                className="w-full h-full object-contain cursor-zoom-in"
                 onClick={() => setShowFullScreenModal(true)}
-                onLoad={() => setImageLoaded(true)}
               />
-              {imageLoaded && (
-                <div className={`absolute -top-5 -right-3 opacity-0 group-hover:opacity-100 transition-opacity`}>
-                  <div className="flex justify-center items-center gap-3">
-                    <label htmlFor={inputId} className={`relative`}>
-                      <IconButton tooltip="Change Image" iconName={IconTypes.Edit} height="30" width="30" className={`${styles.buttonColorToggle}`} />
-                      <input id={inputId} name="file-upload" type="file" className="sr-only" onChange={handleFileChange} accept={allowedFileTypes.join(', ')} />
-                    </label>
-                    <IconButton
-                      tooltip="Remove Image"
-                      iconName={IconTypes.Trash}
-                      height="30"
-                      width="30"
-                      className={`inline-flex items-center ${styles.buttonColorToggle}`}
-                      onClick={() => {
-                        clearSelectedImage();
-                        setImageLoaded(false);
-                      }}
-                    />
-                  </div>
+              <div className={`absolute -top-5 -right-3 opacity-0 group-hover:opacity-100 transition-opacity`}>
+                <div className="flex justify-center items-center gap-3">
+                  <label htmlFor={inputId} className={`relative`}>
+                    <IconButton tooltip="Change Image" iconName={IconTypes.Edit} height="30" width="30" className={`${styles.buttonColorToggle}`} />
+                    <input id={inputId} name="file-upload" type="file" className="sr-only" onChange={handleFileChange} accept={allowedFileTypes.join(', ')} />
+                  </label>
+                  <IconButton
+                    tooltip="Remove Image"
+                    iconName={IconTypes.Trash}
+                    height="30"
+                    width="30"
+                    className={`inline-flex items-center ${styles.buttonColorToggle}`}
+                    onClick={() => {
+                      clearSelectedImage();
+                    }}
+                  />
                 </div>
-              )}
+              </div>
             </div>
           </div>
         ) : (
