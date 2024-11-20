@@ -38,6 +38,7 @@ Must have features
 - [ ] Making it easy for the admin to login. Right now we are not showing any login button. May be we show in the footer? or somewhere else where its not too visible?
   
 ### Tidbits
+- [ ] Edit modal - in stepper - image uploader - if gif is uploaded, edit and trash icon doesnt appear 
 - [ ] Edit modal - in stepper - icon to duplicate a step 
 - [ ] Edit modal - in stepper - bit of padding left & right for the closed accordion content (name+arrow)
 - [ ] Edit modal - in stepper - add border to image display mode dropdown
