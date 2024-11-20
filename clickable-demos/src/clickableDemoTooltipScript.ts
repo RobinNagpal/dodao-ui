@@ -31,8 +31,8 @@ declare global {
   }
 }
 
-function showTooltip(event: MessageEvent) {
-  const { elementXPath, tooltipContent: contentText, currentTooltipIndex, tooltipArrayLen, placement } = event.data as TooltipEventData;
+function showTooltip(data: TooltipEventData) {
+  const { elementXPath, tooltipContent: contentText, currentTooltipIndex, tooltipArrayLen, placement } = data;
 
   console.log('event.data.elementXPath', elementXPath);
   document.addEventListener('click', (e: Event) => e.preventDefault());
@@ -121,7 +121,7 @@ function showTooltip(event: MessageEvent) {
 
   const backButton = createTooltipButton('Back', 'dodao-back-button', () => {
     target._tippy?.destroy();
-    event.source?.postMessage({ backButton: true }, { targetOrigin: event.origin });
+    window.parent.postMessage({ backButton: true }, '*');
   });
 
   if (currentTooltipIndex === 0) backButton.style.visibility = 'hidden';
@@ -138,7 +138,7 @@ function showTooltip(event: MessageEvent) {
   const nextButton = createTooltipButton(nextButtonText, 'dodao-next-button', () => {
     target._tippy?.destroy();
     const messageType = isLastTooltip ? 'completeButton' : 'nextButton';
-    event.source?.postMessage({ [messageType]: true }, { targetOrigin: event.origin });
+    window.parent.postMessage({ [messageType]: true }, '*');
   });
 
   adjustButtonStyles([backButton, nextButton], isLastTooltip);
@@ -617,22 +617,22 @@ function elementSelector(event: MessageEvent) {
 async function handleDoDAOParentWindowEvent(event: MessageEvent) {
   const data = event.data as DoDAOEventData;
 
-  if (data.type === 'showTooltip') {
-    // Check if the page has fully loaded
-    if (document.readyState === 'complete') {
-      // Page is fully loaded, proceed to show tooltip
-      showTooltip(event);
-    } else {
-      // Wait for the page to fully load before showing tooltip
-      window.addEventListener(
-        'load',
-        () => {
-          showTooltip(event);
-        },
-        { once: true }
-      ); // Ensure the event is only handled once
-    }
-  }
+  // if (data.type === 'showTooltip') {
+  //   // Check if the page has fully loaded
+  //   if (document.readyState === 'complete') {
+  //     // Page is fully loaded, proceed to show tooltip
+  //     showTooltip(event);
+  //   } else {
+  //     // Wait for the page to fully load before showing tooltip
+  //     window.addEventListener(
+  //       'load',
+  //       () => {
+  //         showTooltip(event);
+  //       },
+  //       { once: true }
+  //     ); // Ensure the event is only handled once
+  //   }
+  // }
 
   if (data.type === 'setCssVariables') {
     const cssValues = data.cssValues;
@@ -657,3 +657,19 @@ async function handleDoDAOParentWindowEvent(event: MessageEvent) {
 window.handleDoDAOParentWindowEvent = handleDoDAOParentWindowEvent;
 
 console.log('handleDoDAOParentWindowEvent is defined on window', window.handleDoDAOParentWindowEvent);
+
+document.addEventListener('DOMContentLoaded', () => {
+  const dataString = window.name;
+  if (dataString) {
+    const data = JSON.parse(dataString);
+
+    // Set CSS variables
+    if (data.cssValues) {
+      for (const variable in data.cssValues) {
+        document.documentElement.style.setProperty(variable, data.cssValues[variable]);
+      }
+    }
+
+    showTooltip(data);
+  }
+});
