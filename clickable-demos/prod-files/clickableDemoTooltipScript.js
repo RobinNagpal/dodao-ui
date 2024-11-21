@@ -9,69 +9,29 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 (function () {
-    function showTooltip(data) {
-        var _a;
-        const { elementXPath, tooltipContent: contentText, currentTooltipIndex, tooltipArrayLen, placement } = data;
-        console.log('event.data.elementXPath', elementXPath);
-        document.addEventListener('click', (e) => e.preventDefault());
-        let currentContextNode = document;
-        // Determine if the XPath is intended for an iframe by checking the prefix
-        const isIframeXPath = elementXPath.startsWith('/html[1]/body[1]');
-        let targetNode = null;
-        if (isIframeXPath) {
-            // Search in all iframes
-            const iframes = document.querySelectorAll('iframe');
-            for (const iframe of iframes) {
-                const iframeDoc = iframe.contentDocument || ((_a = iframe.contentWindow) === null || _a === void 0 ? void 0 : _a.document);
-                if (iframeDoc) {
-                    try {
-                        const xpathResult = iframeDoc.evaluate(elementXPath, iframeDoc, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-                        if (xpathResult) {
-                            targetNode = xpathResult;
-                            currentContextNode = iframeDoc;
-                            const head = iframeDoc.head || iframeDoc.getElementsByTagName('head')[0];
-                            const materialStyle = iframeDoc.createElement('link');
-                            materialStyle.rel = 'stylesheet';
-                            materialStyle.href = '/clickable-demos-prod-files/dependencies/tippy.js@6/themes/material.css';
-                            head.appendChild(materialStyle);
-                            const shiftTowardsStyle = iframeDoc.createElement('link');
-                            shiftTowardsStyle.rel = 'stylesheet';
-                            shiftTowardsStyle.href = '/clickable-demos-prod-files/dependencies/tippy.js@6/animations/shift-toward.css';
-                            head.appendChild(shiftTowardsStyle);
-                            const tippyData = iframeDoc.createElement('link');
-                            tippyData.rel = 'stylesheet';
-                            tippyData.href = '/clickable-demos-prod-files/dependencies/tippy.js@6/stylesheet/tippy-data.css';
-                            head.appendChild(tippyData);
-                            const link = iframeDoc.createElement('link');
-                            link.rel = 'stylesheet';
-                            link.href = '/clickable-demos-prod-files/clickableDemoTooltipStyles.css';
-                            iframeDoc.head.appendChild(link);
-                            break;
-                        }
-                    }
-                    catch (error) {
-                        console.error('Error evaluating XPath in iframe:', error);
-                    }
-                }
-            }
-            if (!targetNode) {
-                console.log('Element not found in any iframe.');
-            }
-        }
-        else {
-            const xpathResult = document.evaluate(elementXPath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-            if (xpathResult) {
-                console.log('Element found in the main document:', xpathResult);
-                targetNode = xpathResult;
-            }
-            else {
-                console.log('Element not found in the main document.');
-            }
-        }
-        if (!targetNode)
+    function showTooltip() {
+        const dataString = window.name;
+        if (!dataString) {
             return;
+        }
+        const data = JSON.parse(dataString);
+        // Set CSS variables
+        if (data.cssValues) {
+            for (const variable in data.cssValues) {
+                document.documentElement.style.setProperty(variable, data.cssValues[variable]);
+            }
+        }
+        const { tooltipContent: contentText, currentTooltipIndex, tooltipArrayLen, placement } = data;
+        const currentDocAndTargetNode = getCurrentContextNodeAndTarget(data);
+        if (!currentDocAndTargetNode.targetNode || !currentDocAndTargetNode.currentContextNode)
+            return;
+        const { currentContextNode, targetNode } = currentDocAndTargetNode;
         const target = targetNode;
         target.classList.add('dodao-target-element');
+        // Check if the tooltip already exists and destroy it if it does
+        if (target._tippy) {
+            target._tippy.destroy();
+        }
         const tooltipContent = currentContextNode.createElement('div');
         tooltipContent.classList.add('dodao-tooltip-content');
         const textElement = currentContextNode.createElement('p');
@@ -130,6 +90,96 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
             theme: 'material',
             zIndex: 999999999999999,
         });
+    }
+    function getCurrentContextNodeAndTarget(data) {
+        var _a;
+        const { elementXPath } = data;
+        console.log('event.data.elementXPath', elementXPath);
+        document.addEventListener('click', (e) => e.preventDefault());
+        let currentContextNode = document;
+        // Determine if the XPath is intended for an iframe by checking the prefix
+        const isIframeXPath = elementXPath.startsWith('/html[1]/body[1]');
+        let targetNode = null;
+        if (isIframeXPath) {
+            // Search in all iframes
+            const iframes = document.querySelectorAll('iframe');
+            for (const iframe of iframes) {
+                const iframeDoc = iframe.contentDocument || ((_a = iframe.contentWindow) === null || _a === void 0 ? void 0 : _a.document);
+                if (iframeDoc) {
+                    try {
+                        const xpathResult = iframeDoc.evaluate(elementXPath, iframeDoc, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+                        if (xpathResult) {
+                            targetNode = xpathResult;
+                            currentContextNode = iframeDoc;
+                            const head = iframeDoc.head || iframeDoc.getElementsByTagName('head')[0];
+                            const materialStyle = iframeDoc.createElement('link');
+                            materialStyle.rel = 'stylesheet';
+                            materialStyle.href = '/clickable-demos-prod-files/dependencies/tippy.js@6/themes/material.css';
+                            head.appendChild(materialStyle);
+                            const shiftTowardsStyle = iframeDoc.createElement('link');
+                            shiftTowardsStyle.rel = 'stylesheet';
+                            shiftTowardsStyle.href = '/clickable-demos-prod-files/dependencies/tippy.js@6/animations/shift-toward.css';
+                            head.appendChild(shiftTowardsStyle);
+                            const tippyData = iframeDoc.createElement('link');
+                            tippyData.rel = 'stylesheet';
+                            tippyData.href = '/clickable-demos-prod-files/dependencies/tippy.js@6/stylesheet/tippy-data.css';
+                            head.appendChild(tippyData);
+                            const link = iframeDoc.createElement('link');
+                            link.rel = 'stylesheet';
+                            link.href = '/clickable-demos-prod-files/clickableDemoTooltipStyles.css';
+                            iframeDoc.head.appendChild(link);
+                            break;
+                        }
+                    }
+                    catch (error) {
+                        console.error('Error evaluating XPath in iframe:', error);
+                    }
+                }
+            }
+            if (!targetNode) {
+                console.log('Element not found in any iframe.');
+            }
+        }
+        else {
+            const xpathResult = document.evaluate(elementXPath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+            if (xpathResult) {
+                console.log('Element found in the main document:', xpathResult);
+                targetNode = xpathResult;
+            }
+            else {
+                console.log('Element not found in the main document.');
+            }
+        }
+        if (targetNode) {
+            return { currentContextNode, targetNode };
+        }
+        else {
+            console.log('Element not found using XPath.');
+            // Fallback 1: select element near the middle of the screen
+            console.log('Attempting to select a fallback element near the middle of the screen.');
+            const viewportWidth = currentContextNode.documentElement.clientWidth;
+            const viewportHeight = currentContextNode.documentElement.clientHeight;
+            const centerX = viewportWidth / 2;
+            const centerY = viewportHeight / 2;
+            targetNode = currentContextNode.elementFromPoint(centerX, centerY);
+            if (targetNode) {
+                console.log('Fallback element selected:', targetNode);
+                return { currentContextNode, targetNode };
+            }
+            else {
+                console.log('Fallback failed: Could not find an element at the center of the screen.');
+                // Fallback 2: use document.body or document.documentElement
+                targetNode = currentContextNode.body || currentContextNode.documentElement;
+                if (targetNode) {
+                    console.log('Defaulting to document body as the target element:', targetNode);
+                    return { currentContextNode, targetNode };
+                }
+                else {
+                    console.log('No suitable default element found. Exiting function.');
+                    return null;
+                }
+            }
+        }
     }
     function createTooltipButton(text, className, onClick) {
         const button = document.createElement('button');
@@ -534,57 +584,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         }
     }
     function handleDoDAOParentWindowEvent(event) {
-        var _a;
         return __awaiter(this, void 0, void 0, function* () {
             const data = event.data;
-            // if (data.type === 'showTooltip') {
-            //   // Check if the page has fully loaded
-            //   if (document.readyState === 'complete') {
-            //     // Page is fully loaded, proceed to show tooltip
-            //     showTooltip(event);
-            //   } else {
-            //     // Wait for the page to fully load before showing tooltip
-            //     window.addEventListener(
-            //       'load',
-            //       () => {
-            //         showTooltip(event);
-            //       },
-            //       { once: true }
-            //     ); // Ensure the event is only handled once
-            //   }
-            // }
-            if (data.type === 'setCssVariables') {
-                const cssValues = data.cssValues;
-                if (cssValues) {
-                    for (const variable in cssValues) {
-                        document.documentElement.style.setProperty(variable, cssValues[variable]);
-                    }
-                    const iframeArr = document.getElementsByTagName('iframe');
-                    for (const iframe of Array.from(iframeArr)) {
-                        for (const variable in cssValues) {
-                            (_a = iframe.contentDocument) === null || _a === void 0 ? void 0 : _a.documentElement.style.setProperty(variable, cssValues[variable]);
-                        }
-                    }
-                }
-            }
+            console.log('Received message from parent window:', data);
             if (data.type === 'elementSelector') {
                 elementSelector(event);
+            }
+            if (data.type === 'showTooltip') {
+                showTooltip();
             }
         });
     }
     window.handleDoDAOParentWindowEvent = handleDoDAOParentWindowEvent;
     console.log('handleDoDAOParentWindowEvent is defined on window', window.handleDoDAOParentWindowEvent);
     window.document.addEventListener('DOMContentLoaded', () => {
-        const dataString = window.name;
-        if (dataString) {
-            const data = JSON.parse(dataString);
-            // Set CSS variables
-            if (data.cssValues) {
-                for (const variable in data.cssValues) {
-                    document.documentElement.style.setProperty(variable, data.cssValues[variable]);
-                }
-            }
-            showTooltip(data);
-        }
+        showTooltip();
     });
 })();
