@@ -10,8 +10,21 @@ You will be modifying these files to fix some of the issues related to clickable
 
 
 # Local Setup
+As part of the development we modify  `clickableDemoTooltipScript.ts` and `clickableDemoTooltipStyles.scss` files. 
+To test the changes we will have to upload these to S3. 
 
-### Running Local Server
+But this is a longer process. We want to test the changes locally before uploading them to S3.
+
+We can run the local server which will serve these files from the local machine. 
+
+So the things we need are
+1. A local server to serve the files. See `Running Local Server` section below.
+2. Some HTML Captures that refer to these files. We have these in the `clickable-demos/sample-captures/safe-captures` folder.
+   and these files are served by the local server.
+3. Add these HTML Captures for a demo in the database. See `Adding a New HTML Capture` section below.
+
+
+# Running Local Server
 You can run a local server to test the clickable demos.
 
 ```shell
@@ -19,8 +32,11 @@ yarn test-server
 ```
 This will start the server at port 9090 and will serve the local files from there.
 
-### Referring to local files
-You can create a clickable demo or HTML capture using the `populate-sample-captures.sql` script. Simply replace `DESIRED-DEMO-ID` with the ID of the demo for which you want to generate an HTML capture. For example:
+# Referring to local files
+You can create a clickable demo and then add HTML capture using the `populate-sample-captures.sql` script. The html
+captures in this script refer to the local files.
+
+Simply replace `DESIRED-DEMO-ID` with the ID of the demo for which you want to use HTML capture. For example:
 
 ```sql
 insert into public.clickable_demo_html_cpatures

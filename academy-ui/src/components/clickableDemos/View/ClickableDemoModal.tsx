@@ -108,12 +108,36 @@ function ClickableDemoModal({ clickableDemoWithSteps, space, onClose }: Clickabl
     const container = document.getElementById('iframe-container');
 
     const iframeArr: HTMLIFrameElement[] = [];
+    // Set the CSS variables in the iframe
+    const parentStyles = window.getComputedStyle(document.body);
+    // Collect CSS variables
+    const cssVariables = ['--primary-color', '--bg-color', '--text-color', '--link-color', '--heading-color', '--border-color', '--block-bg'];
+
+    const cssValues: any = {};
+    cssVariables.forEach((variable) => {
+      cssValues[variable] = parentStyles.getPropertyValue(variable);
+    });
 
     for (let i = 0; i < clickableDemoWithSteps.steps.length; i++) {
       iframeArr[i] = document.createElement('iframe');
-      if (i === 0) {
-        iframeArr[i].src = clickableDemoWithSteps.steps[i].url; // Load only the first iframe initially
-      }
+
+      // Prepare the data you want to pass
+      const data = {
+        cssValues, // your collected CSS variables
+        elementXPath: clickableDemoWithSteps.steps[i].selector,
+        tooltipContent: clickableDemoWithSteps.steps[i].tooltipInfo,
+        tooltipArrayLen: clickableDemoWithSteps.steps.length,
+        currentTooltipIndex: i,
+        buttonColor: space?.themeColors?.primaryColor,
+        buttonTextColor: space?.themeColors?.textColor,
+        placement: clickableDemoWithSteps.steps[i].placement,
+      };
+
+      // Set the iframe's name to the serialized data
+      iframeArr[i].name = JSON.stringify(data);
+
+      iframeArr[i].src = clickableDemoWithSteps.steps[i].url; // Load only the first iframe initially
+
       iframeArr[i].width = '100%';
       iframeArr[i].style.opacity = i === 0 ? '1' : '0';
       iframeArr[i].style.pointerEvents = i === 0 ? 'auto' : 'none';
@@ -122,11 +146,6 @@ function ClickableDemoModal({ clickableDemoWithSteps, space, onClose }: Clickabl
       iframeArr[i].style.top = '0';
       iframeArr[i].style.left = '0';
       iframeArr[i].style.height = '93vh';
-      i === 0
-        ? (iframeArr[i].onload = function () {
-            handleLoad(i);
-          })
-        : null;
 
       // Append the iframe to the container
       container!.appendChild(iframeArr[i]);
