@@ -85,22 +85,20 @@ export default function ByteItem(props: ByteItemProps) {
               </span>
             )}
             {byte.byteId && !byte.byteId.startsWith('0001-demo-byte') && (
-              <div className="z-15">
-                <PrivateEllipsisDropdown
-                  items={modifiedThreeDotItems}
-                  onSelect={(key) => {
-                    if (key === 'archive') {
-                      openItemDeleteModal(byte.byteId, byte.name, ByteCollectionItemType.Byte);
-                    } else if (key === 'unarchive') {
-                      openItemUnarchiveModal(byte.byteId, byte.name, ByteCollectionItemType.Byte);
-                    } else if (key === 'move') {
-                      openItemMoveModal(byte.byteId, byte.name, ByteCollectionItemType.Byte);
-                    } else {
-                      openByteEditModal(byte.byteId);
-                    }
-                  }}
-                />
-              </div>
+              <PrivateEllipsisDropdown
+                items={modifiedThreeDotItems}
+                onSelect={(key) => {
+                  if (key === 'archive') {
+                    openItemDeleteModal(byte.byteId, byte.name, ByteCollectionItemType.Byte);
+                  } else if (key === 'unarchive') {
+                    openItemUnarchiveModal(byte.byteId, byte.name, ByteCollectionItemType.Byte);
+                  } else if (key === 'move') {
+                    openItemMoveModal(byte.byteId, byte.name, ByteCollectionItemType.Byte);
+                  } else {
+                    openByteEditModal(byte.byteId);
+                  }
+                }}
+              />
             )}
           </div>
         </div>
