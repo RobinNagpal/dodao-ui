@@ -80,29 +80,34 @@ function ClickableDemoModal({ clickableDemoWithSteps, space, onClose }: Clickabl
     <FullScreenModal open={true} onClose={onClose} title={clickableDemoWithSteps.title}>
       <div id="iframe-container" className="relative w-full h-[93vh]">
         {clickableDemoWithSteps.steps.map((step, index) => {
-          const i = index;
           // Set the CSS variables in the iframe
 
-          // Prepare the data you want to pass
           const data = {
             cssValues, // your collected CSS variables
             elementXPath: step.selector,
             tooltipContent: step.tooltipInfo,
             tooltipArrayLen: clickableDemoWithSteps.steps.length,
-            currentTooltipIndex: i,
+            currentTooltipIndex: index,
             placement: step.placement,
           };
 
-          const { url } = step;
+          const isActive = selectedStepNumber === index;
+
           const styles: CSSProperties = {
             width: '100%',
             height: '100%',
+            minHeight: '93vh',
             border: 'none',
             position: 'absolute',
             left: '0',
             top: '0',
-            display: selectedStepNumber === index ? 'block' : 'none',
+            opacity: isActive ? 1 : 0,
+            transition: 'opacity 0.5s ease-in-out',
+            pointerEvents: isActive ? 'auto' : 'none',
+            zIndex: isActive ? 1 : 0,
           };
+
+          const { url } = step;
 
           return <iframe key={index} id={`iframe-${index}`} style={styles} src={url} name={JSON.stringify(data)} />;
         })}
