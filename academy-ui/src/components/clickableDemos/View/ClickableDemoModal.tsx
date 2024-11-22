@@ -1,5 +1,6 @@
 import { ClickableDemoWithSteps } from '@/graphql/generated/generated-types';
 import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
+import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import { LocalStorageKeys } from '@dodao/web-core/types/deprecated/models/enums';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
@@ -16,6 +17,7 @@ function ClickableDemoModal({ clickableDemoWithSteps, space, onClose }: Clickabl
   const { showNotification } = useNotificationContext();
 
   const [selectedStepNumber, setSelectedStepNumber] = useState(0);
+  const [iframeLoaded, setIframeLoaded] = useState(true);
 
   function sendMessageToIframe(stepIndex: number) {
     const iframe: HTMLIFrameElement | null = document.getElementById(`iframe-${stepIndex}`) as HTMLIFrameElement | null;
@@ -79,6 +81,7 @@ function ClickableDemoModal({ clickableDemoWithSteps, space, onClose }: Clickabl
   return (
     <FullScreenModal open={true} onClose={onClose} title={clickableDemoWithSteps.title}>
       <div id="iframe-container" className="relative w-full h-[93vh]">
+        {iframeLoaded && selectedStepNumber === 0 && <FullPageLoader />}
         {clickableDemoWithSteps.steps.map((step, index) => {
           // Set the CSS variables in the iframe
 
@@ -109,7 +112,18 @@ function ClickableDemoModal({ clickableDemoWithSteps, space, onClose }: Clickabl
 
           const { url } = step;
 
-          return <iframe key={index} id={`iframe-${index}`} style={styles} src={url} name={JSON.stringify(data)} />;
+          return (
+            <iframe
+              key={index}
+              id={`iframe-${index}`}
+              style={styles}
+              src={url}
+              name={JSON.stringify(data)}
+              onLoad={() => {
+                if (index === 0) setIframeLoaded(false);
+              }}
+            />
+          );
         })}
       </div>
     </FullScreenModal>
