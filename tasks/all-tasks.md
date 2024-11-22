@@ -74,6 +74,8 @@ users - Skipped
 - [ ] Remove the options from the extension. 
 - [ ] Try capturing 15-20 screenshots and see if we get any error. 
 - [ ] Add a close button on the bottom bar which can close the extension. Discuss the design before implementing
+- [ ] When i click choose another collection, and then click on some collection, it has to be clicked multiple times
+- [ ] The input box for entering file name is focused but as i type something, it goes away. 
 --------
 Optional features
 

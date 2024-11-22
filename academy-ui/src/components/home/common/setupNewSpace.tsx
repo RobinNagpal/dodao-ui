@@ -31,7 +31,7 @@ export function SetupNewSpaceButton({ space }: setupNewSpaceButtonProps) {
       <ButtonLarge type="button" variant="contained" primary onClick={handleButtonClick} className="px-6 py-4 font-semibold">
         Get Started
       </ButtonLarge>
-      <EmailSetupNewSpaceModal open={open} onClose={() => setOpen(false)} space={space!} />
+      <EmailSetupNewSpaceModal open={open} onClose={() => setOpen(false)} space={space!} showSemiTransparentBg={true} />
     </>
   );
 }
