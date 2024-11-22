@@ -9,6 +9,7 @@
   "priority": 100,
   "videoUrl": "https://example.com/intro-video.mp4",
   "archive": false,
+  "order": 1,
   "items": [
     {
       "byte": {
