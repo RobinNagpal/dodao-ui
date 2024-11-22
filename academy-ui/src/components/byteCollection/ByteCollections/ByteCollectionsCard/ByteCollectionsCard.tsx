@@ -11,6 +11,7 @@ import { PutByteItemRequest } from '@/types/request/ByteRequests';
 import { SpaceTypes, SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import { TidbitCollectionTags } from '@/utils/api/fetchTags';
 import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
+import PrimaryColorBadge from '@dodao/web-core/components/core/badge/PrimaryColorBadge';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import MoveItemModal from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/MoveItemModal';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
@@ -33,6 +34,7 @@ interface ByteCollectionCardProps {
   space: SpaceWithIntegrationsDto;
   isAdmin?: boolean | undefined;
   showArchived?: boolean;
+  showItemTypeBadge: boolean;
 }
 
 interface VideoModalProps {
@@ -83,6 +85,7 @@ export default function ByteCollectionsCard({
   space,
   isAdmin,
   showArchived,
+  showItemTypeBadge,
 }: ByteCollectionCardProps) {
   const [watchVideo, setWatchVideo] = React.useState<boolean>(false);
   const [selectedVideo, setSelectedVideo] = React.useState<VideoModalProps>();
@@ -276,14 +279,7 @@ export default function ByteCollectionsCard({
               }}
             />
           )}
-          {byteCollection.archive && (
-            <span
-              className={`inline-flex items-center rounded-xl px-2 py-1 text-xs font-medium max-h-6 ${styles.archiveBadge}`}
-              onClick={() => setShowUnarchiveModal(true)}
-            >
-              Archived
-            </span>
-          )}
+          {byteCollection.archive && <PrimaryColorBadge onClick={() => setShowUnarchiveModal(true)}>Archived</PrimaryColorBadge>}
         </div>
         <div className="my-3 text-sm">{byteCollection.description}</div>
       </div>
@@ -306,6 +302,7 @@ export default function ByteCollectionsCard({
                     openItemMoveModal={openItemMoveModal}
                     itemLength={byteCollectionItems.length}
                     key={item.byte.byteId}
+                    showItemTypeBadge={showItemTypeBadge}
                   />
                 );
               case ByteCollectionItemType.ClickableDemo:
@@ -320,6 +317,7 @@ export default function ByteCollectionsCard({
                     openItemDeleteModal={openItemDeleteModal}
                     openItemUnarchiveModal={openItemUnarchiveModal}
                     openItemMoveModal={openItemMoveModal}
+                    showItemTypeBadge={showItemTypeBadge}
                   />
                 );
               case ByteCollectionItemType.ShortVideo:
@@ -334,6 +332,7 @@ export default function ByteCollectionsCard({
                     openItemDeleteModal={openItemDeleteModal}
                     openItemUnarchiveModal={openItemUnarchiveModal}
                     openItemMoveModal={openItemMoveModal}
+                    showItemTypeBadge={showItemTypeBadge}
                   />
                 );
               default:

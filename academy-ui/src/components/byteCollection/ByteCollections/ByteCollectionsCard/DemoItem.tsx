@@ -3,6 +3,7 @@ import EditClickableDemo from '@/components/clickableDemos/Create/EditClickableD
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import { ClickableDemoSummary } from '@/types/clickableDemos/ClickableDemoDto';
+import PrimaryColorBadge from '@dodao/web-core/components/core/badge/PrimaryColorBadge';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import ItemCompletionCheckmark from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ItemCompletionCheckmark';
 import Link from 'next/link';
@@ -18,6 +19,7 @@ interface DemoItemProps {
   openItemDeleteModal: (itemId: string, itemName: string, itemType: ByteCollectionItemType | null) => void;
   openItemUnarchiveModal: (itemId: string, itemName: string, itemType: ByteCollectionItemType | null) => void;
   openItemMoveModal: (itemId: string, itemName: string, itemType: ByteCollectionItemType | null) => void;
+  showItemTypeBadge: boolean;
 }
 
 interface EditDemoModalState {
@@ -26,7 +28,8 @@ interface EditDemoModalState {
 }
 
 export default function DemoItem(props: DemoItemProps) {
-  const { byteCollection, demo, eventIdx, threeDotItems, openItemDeleteModal, openItemUnarchiveModal, openItemMoveModal, itemLength } = props;
+  const { byteCollection, demo, eventIdx, threeDotItems, openItemDeleteModal, openItemUnarchiveModal, openItemMoveModal, itemLength, showItemTypeBadge } =
+    props;
   const demoViewUrl = `clickable-demos/view/${demo.demoId}`;
   const [editDemoModalState, setEditDemoModalState] = React.useState<EditDemoModalState>({ isVisible: false, demoId: null });
 
@@ -53,13 +56,11 @@ export default function DemoItem(props: DemoItemProps) {
             </div>
           </Link>
           <div className="flex">
+            {showItemTypeBadge && <PrimaryColorBadge>Clickable Demo</PrimaryColorBadge>}
             {demo?.archive && (
-              <span
-                className={`inline-flex items-center rounded-xl px-2 py-1 mr-2 text-xs font-medium max-h-6 ${styles.archiveBadge}`}
-                onClick={() => openItemUnarchiveModal(demo.demoId, demo.title, ByteCollectionItemType.ClickableDemo)}
-              >
+              <PrimaryColorBadge onClick={() => openItemUnarchiveModal(demo.demoId, demo.title, ByteCollectionItemType.ClickableDemo)}>
                 Archived
-              </span>
+              </PrimaryColorBadge>
             )}
             {demo.demoId && (
               <div className="z-15">

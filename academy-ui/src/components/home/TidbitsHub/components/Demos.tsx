@@ -13,9 +13,12 @@ export default function Demos() {
             experience helps them understand functionality quickly and remember it better.
           </p>
         </div>
-      </div>
-      <div className="flex justify-center pt-16">
-        <Image alt="Clickable Demos screenshot" src={clickabledemos} width={1308} height={610} className="rounded-xl shadow-2xl ring-1 ring-gray-900/10" />
+
+        <div className="mt-16">
+          <div className="-m-2 rounded-xl bg-gray-900/5 p-2 ring-1 ring-inset ring-gray-900/10 lg:-m-4 lg:rounded-2xl lg:p-4">
+            <Image src={clickabledemos} alt="Clickable Demos screenshot" className="rounded-md bg-white/5 shadow-2xl ring-1 ring-white/10" />
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -16,7 +16,7 @@ const Footer: React.ComponentType<any> = dynamic(() => import('./Footer'), {
 const StyledMain = styled.main`
   background-color: var(--bg-color);
   color: var(--text-color);
-  min-height: calc(100vh - 64px);
+  min-height: calc(100vh - 118px);
 `;
 
 function PageTopNav(props: { space: SpaceWithIntegrationsDto }) {

@@ -25,10 +25,10 @@ export default function ByteCollectionsGrid({
   const currentPath = usePathname();
   const searchParams = useSearchParams();
   const archived = searchParams.get('archive');
-  const isArchived = archived === 'true' ? true : false;
+  const isArchived = archived === 'true';
 
   const sort = searchParams.get('sort');
-  const openSort = sort === 'true' ? true : false;
+  const openSort = sort === 'true';
 
   const byteCollectionsList = isArchived ? byteCollections : byteCollections?.filter((byteCollection) => !byteCollection.archive);
   const handleToggle = () => {
@@ -40,13 +40,17 @@ export default function ByteCollectionsGrid({
     const newRoute = `${currentPath}?sort=${!openSort}`;
     router.push(newRoute);
   };
+
+  // See if there are more than one type of items in the byteCollections
+  const showItemTypeBadge: boolean = new Set(byteCollections?.flatMap((bc) => bc.items)?.map((item) => item.type) || []).size > 1;
+
   return (
     <>
-      {isAdmin! && <AddByteCollection space={space} />}
-      {isAdmin! && (
-        <div className="flex justify-end mb-2 items-center gap-x-5">
-          <ToggleWithIcon label={'See Archived'} enabled={isArchived} setEnabled={handleToggle} />
-          <div className="flex align-center mt-4 mb-1">
+      {isAdmin && <AddByteCollection space={space} />}
+      {isAdmin && (
+        <div className="flex justify-end mb-2 items-center gap-x-8">
+          <ToggleWithIcon label={'See Archived'} enabled={isArchived} setEnabled={handleToggle} onClickOnLabel={true} />
+          <div className="flex align-center mt-4 mb-1 cursor-pointer" onClick={handleSort}>
             <div className="mr-3">
               <ArrowsUpDown
                 style={{
@@ -60,7 +64,6 @@ export default function ByteCollectionsGrid({
                 }}
                 className="h-6 w-6 cursor-pointer"
                 aria-hidden="true"
-                onClick={handleSort}
               />
             </div>
             <div>Sort Collections</div>
@@ -78,6 +81,7 @@ export default function ByteCollectionsGrid({
               space={space}
               isAdmin={isAdmin}
               showArchived={isArchived}
+              showItemTypeBadge={showItemTypeBadge}
             />
           ))}
         </Grid2Cols>

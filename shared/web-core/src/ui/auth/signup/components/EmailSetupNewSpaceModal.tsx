@@ -12,9 +12,10 @@ export interface EmailSetupNewSpaceModalProps {
   open: boolean;
   onClose: () => void;
   space: WebCoreSpace;
+  showSemiTransparentBg?: boolean;
 }
 
-function EmailSetupNewSpaceModal({ open, onClose, space }: EmailSetupNewSpaceModalProps) {
+function EmailSetupNewSpaceModal({ open, onClose, space, showSemiTransparentBg }: EmailSetupNewSpaceModalProps) {
   const [email, setEmail] = useState('');
   const [emailSent, setEmailSent] = useState(false);
   const [upserting, setUpserting] = useState(false);
@@ -62,7 +63,7 @@ function EmailSetupNewSpaceModal({ open, onClose, space }: EmailSetupNewSpaceMod
   };
 
   return (
-    <SingleSectionModal open={open} onClose={onModalClose} title={'Setup New Space with Email'}>
+    <SingleSectionModal open={open} onClose={onModalClose} title={'Setup New Space with Email'} showSemiTransparentBg={showSemiTransparentBg}>
       <div className="text-left py-4">
         {!emailSent ? (
           <form onSubmit={handleEmailSubmit}>
