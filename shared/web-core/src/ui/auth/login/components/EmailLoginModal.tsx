@@ -11,9 +11,10 @@ export interface EmailLoginModalProps {
   space: WebCoreSpace;
   open: boolean;
   onClose: () => void;
+  showSemiTransparentBg?: boolean;
 }
 
-function EmailLoginModal({ open, onClose, space }: EmailLoginModalProps) {
+function EmailLoginModal({ open, onClose, space, showSemiTransparentBg }: EmailLoginModalProps) {
   const [email, setEmail] = useState('');
   const [emailSent, setEmailSent] = useState(false);
   const [upserting, setUpserting] = useState(false);
@@ -51,7 +52,7 @@ function EmailLoginModal({ open, onClose, space }: EmailLoginModalProps) {
   };
 
   return (
-    <SingleSectionModal open={open} onClose={onClose} title={'Login with Email'}>
+    <SingleSectionModal open={open} onClose={onClose} title={'Login with Email'} showSemiTransparentBg={showSemiTransparentBg}>
       <div className="text-left py-4">
         {!emailSent ? (
           <form onSubmit={handleEmailSubmit}>
