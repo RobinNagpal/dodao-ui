@@ -5,23 +5,26 @@ Must have features
 # 1st Priority
 
 ### Clickable Demos
-- [ ] View modal - the top bar is not visible on some of the steps (i guess where the demo step has a tooltip that is closer to the bottom of the screen) - see step#4 onwards `https://alchemix.tidbitshub.org/clickable-demos/view/withdraw-from-transmuter-8288`
 - [ ] View modal - only looks fine above 1024px, down that its all a mess so we can detect the screen size and show a message like view the demo on a large screen
 - [ ] Edit modal - remove showing of url from upload fields - new design is needed
+- [ ] Cross check code to generate images again - Robin - Next PR
+- [ ] Change icon for simulation. Show some other button - Robin - Next PR
 
 ### Login issue for admins
 - [ ] Go to /login on a subdomain:
-  - [ ] (for tidbitshub only) if not logged in then single section modal is showing but behind it Full Screen Modal is showing - just gotta make the single section modal background opacity-100 for this flow only
-  
+- [ ] (for tidbitshub only) if not logged in then single section modal is showing but behind it Full Screen Modal is
+      showing - just gotta make the single section modal background opacity-100 for this flow only - Dawood - Next PR
+- [ ] Show icons for Tidbit, Clickable Demo, Short Video on Create Modal - Dawood - Next PR
+
 - ### Tidbit
-- [ ] Edit modal - in stepper - add help text somewhere around the image selector
-- [ ] Edit modal - remove showing of url from upload fields - new design is needed
+- [ ] Edit modal - in stepper - add help text somewhere around the image selector - Already done as part of current PR
+- [ ] Edit modal - remove showing of url from upload fields - new design is needed - Already done as part of current PR
 
 ### Short videos
-- [ ] Edit modal - remove showing of url from upload fields - new design is needed
+- [ ] Edit modal - remove showing of url from upload fields - new design is needed - Already done as part of current PR
 
 ### Post signup - Help text
-- [ ] Add couple of clickable demos. One for creating tidbit, and other for creating a clickable demo.
+- [ ] Add couple of clickable demos. One for creating tidbit, and other for creating a clickable demo. 
 
 
 # 2nd Priority
