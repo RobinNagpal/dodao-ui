@@ -9,12 +9,8 @@ Must have features
 - [ ] Edit modal - remove showing of url from upload fields - new design is needed
 - [ ] Cross check code to generate images again - Robin - Next PR
 - [ ] Change icon for simulation. Show some other button - Robin - Next PR
+- [ ] Edit modal - in stepper - up arrow is not working 
 
-### Login issue for admins
-- [ ] Go to /login on a subdomain:
-- [ ] (for tidbitshub only) if not logged in then single section modal is showing but behind it Full Screen Modal is
-      showing - just gotta make the single section modal background opacity-100 for this flow only - Dawood - Next PR
-- [ ] Show icons for Tidbit, Clickable Demo, Short Video on Create Modal - Dawood - Next PR
 
 - ### Tidbit
 - [ ] Edit modal - in stepper - add help text somewhere around the image selector - Already done as part of current PR
@@ -31,6 +27,7 @@ Must have features
 
 ### Others
 - [ ] Remove the hardcoded messages of notifications and errors. Make use of `default.json` file for all the messages 
+- [ ] Add more preview items in Theme Settings modal to see the color changes
 
 ### Clickable Demos
 - [ ] View modal - we can show a "Try it" button when clickable demo gets completed which takes user to some link relevant to the demo
