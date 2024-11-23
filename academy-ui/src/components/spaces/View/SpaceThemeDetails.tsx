@@ -1,9 +1,8 @@
 import ByteCollectionsCard from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCollectionsCard';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import UpdateThemeModal, { ColorLabels, ThemeColorsKeys } from '@/components/spaces/Edit/Theme/UpdateThemeModal';
-import { ThemeColors } from '@/graphql/generated/generated-types';
 import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
-import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
+import { SpaceWithIntegrationsDto, ThemeColorsDto } from '@/types/space/SpaceDto';
 import { GlobalThemeColors } from '@dodao/web-core/components/app/themes';
 import React from 'react';
 
@@ -14,7 +13,7 @@ export interface SpaceDetailsProps {
 export default function SpaceThemeDetails({ space }: SpaceDetailsProps) {
   const [showThemeUpdateModal, setShowThemeUpdateModal] = React.useState(false);
 
-  const themeColors: ThemeColors = space?.themeColors || GlobalThemeColors;
+  const themeColors: ThemeColorsDto = space?.themeColors || GlobalThemeColors;
 
   const threeDotItems = [
     { label: 'Reload Repo', key: 'reloadRepo' },
