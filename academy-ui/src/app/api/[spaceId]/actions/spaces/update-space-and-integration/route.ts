@@ -1,6 +1,6 @@
 import { withErrorHandlingV1 } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { verifySpaceEditPermissions } from '@/app/api/helpers/permissions/verifySpaceEditPermissions';
-import { getSpaceWithIntegrations } from '@/app/api/helpers/space';
+import { getSpaceWithIntegrations } from '@/app/api/helpers/getSpaceWithIntegrations';
 import { isDoDAOSuperAdmin } from '@/app/api/helpers/space/isSuperAdmin';
 import { upsertSpaceIntegrations } from '@/app/api/helpers/space/upsertSpaceIntegrations';
 import { prisma } from '@/prisma';

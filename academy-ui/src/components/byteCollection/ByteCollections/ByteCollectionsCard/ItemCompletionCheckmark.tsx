@@ -36,11 +36,11 @@ export default function ItemCompletionCheckmark({ itemId, itemType }: ItemComple
       ) : (
         <span className={'h-8 w-8 rounded-full flex items-center justify-center ring-5 ring-white ' + styles.tidbitIconSpan}>
           {itemType === ByteCollectionItemType.Byte ? (
-            <Bars3BottomLeftIcon className="h-5 w-5 text-white" aria-hidden="true" />
+            <Bars3BottomLeftIcon className="h-5 w-5 primary-text-color" aria-hidden="true" />
           ) : itemType === ByteCollectionItemType.ClickableDemo ? (
-            <CursorArrowRipple className="h-5 w-5 text-white" aria-hidden="true" />
+            <CursorArrowRipple className="h-5 w-5 primary-text-color" aria-hidden="true" />
           ) : (
-            <VideoCameraIcon className="h-5 w-5 text-white" aria-hidden="true" />
+            <VideoCameraIcon className="h-5 w-5 primary-text-color" aria-hidden="true" />
           )}
         </span>
       )}

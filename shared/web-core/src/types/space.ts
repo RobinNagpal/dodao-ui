@@ -1,5 +1,6 @@
 export interface ThemeColors {
   primaryColor: string;
+  primaryTextColor: string;
   bgColor: string;
   textColor: string;
   linkColor: string;

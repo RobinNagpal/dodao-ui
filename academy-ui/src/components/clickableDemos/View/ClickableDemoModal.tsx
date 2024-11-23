@@ -69,7 +69,16 @@ function ClickableDemoModal({ clickableDemoWithSteps, space, onClose }: Clickabl
 
   const parentStyles = window.getComputedStyle(document.body);
   // Collect CSS variables
-  const cssVariables = ['--primary-color', '--bg-color', '--text-color', '--link-color', '--heading-color', '--border-color', '--block-bg'];
+  const cssVariables = [
+    '--primary-color',
+    '--primary-text-color',
+    '--bg-color',
+    '--text-color',
+    '--link-color',
+    '--heading-color',
+    '--border-color',
+    '--block-bg',
+  ];
 
   const cssValues: any = {};
   cssVariables.forEach((variable) => {
