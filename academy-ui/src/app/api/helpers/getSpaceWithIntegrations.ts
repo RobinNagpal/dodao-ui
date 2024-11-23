@@ -20,10 +20,15 @@ export async function getSpaceWithIntegrations(spaceId: string): Promise<SpaceWi
     };
     return {
       ...space,
+      themeColors: space.themeColors && { ...space.themeColors, primaryTextColor: space.themeColors.primaryTextColor || '#ffffff' },
       spaceIntegrations: integrations,
     };
   }
 
   // Return the space with spaceIntegrations possibly as null if not found
   return { ...space, spaceIntegrations };
+}
+
+export async function getWithIntegrations(space: Space): Promise<SpaceWithIntegrationsDto> {
+  return getSpaceWithIntegrations(space.id);
 }

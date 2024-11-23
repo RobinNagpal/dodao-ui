@@ -38,7 +38,7 @@
       border-color: var(--primary-color);
 
       &:hover {
-        color: white;
+        color: var(--primary-text-color);
         background-color: var(--primary-color);
       }
     }
@@ -46,7 +46,7 @@
 
   &.contained {
     &.primary {
-      color: white;
+      color: var(--primary-text-color);
       background-color: var(--primary-color);
       border-color: var(--primary-color);
 

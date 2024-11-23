@@ -1312,7 +1312,6 @@ export interface Mutation {
   updateSocialSettings: Space;
   updateSpace: Space;
   updateSpaceCreator: Space;
-  updateThemeColors: Space;
   updateTidbitsHomepage: Space;
   updateTopicBasicInfo: GitCourse;
   updateTopicExplanation: GitCourse;
@@ -1756,12 +1755,6 @@ export interface MutationUpdateSpaceArgs {
 export interface MutationUpdateSpaceCreatorArgs {
   creator: Scalars['String'];
   spaceId: Scalars['String'];
-}
-
-
-export interface MutationUpdateThemeColorsArgs {
-  spaceId: Scalars['ID'];
-  themeColors: ThemeColorsInput;
 }
 
 
@@ -2567,7 +2560,6 @@ export interface Space {
   skin: Scalars['String'];
   socialSettings: SocialSettings;
   spaceIntegrations?: Maybe<SpaceIntegrations>;
-  themeColors?: Maybe<ThemeColors>;
   tidbitsHomepage?: Maybe<TidbitsHomepage>;
   type: Scalars['String'];
 }
@@ -2697,27 +2689,6 @@ export interface SummarizedGitCourseTopic {
   details: Scalars['String'];
   key: Scalars['String'];
   title: Scalars['String'];
-}
-
-export interface ThemeColors {
-  __typename?: 'ThemeColors';
-  bgColor: Scalars['String'];
-  blockBg: Scalars['String'];
-  borderColor: Scalars['String'];
-  headingColor: Scalars['String'];
-  linkColor: Scalars['String'];
-  primaryColor: Scalars['String'];
-  textColor: Scalars['String'];
-}
-
-export interface ThemeColorsInput {
-  bgColor: Scalars['String'];
-  blockBg: Scalars['String'];
-  borderColor: Scalars['String'];
-  headingColor: Scalars['String'];
-  linkColor: Scalars['String'];
-  primaryColor: Scalars['String'];
-  textColor: Scalars['String'];
 }
 
 export interface TidbitsHomepage {

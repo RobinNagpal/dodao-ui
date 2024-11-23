@@ -112,8 +112,8 @@
   border: none;
   border-radius: 5px;
   background-color: var(--primary-color, #007bff);
-  -webkit-text-fill-color: var(--text-color, #fff) !important;
-  color: var(--text-color, #fff) !important;
+  -webkit-text-fill-color: var(--primary-text-color, #fff) !important;
+  color: var(--primary-text-color, #fff) !important;
   font-weight: bold;
   cursor: pointer;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -156,8 +156,8 @@
   bottom: 10px;
   padding: 10px 20px;
   background-color: var(--primary-color, #007bff) !important;
-  -webkit-text-fill-color: var(--text-color, #fff) !important;
-  color: var(--text-color, #fff) !important;
+  -webkit-text-fill-color: var(--primary-text-color, #fff) !important;
+  color: var(--primary-text-color, #fff) !important;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -202,8 +202,8 @@
 .dodao-up-down-buttons button {
   font-size: 24px;
   background-color: var(--primary-color, #007bff) !important;
-  -webkit-text-fill-color: var(--text-color, #fff) !important;
-  color: var(--text-color, #fff) !important;
+  -webkit-text-fill-color: var(--primary-text-color, #fff) !important;
+  color: var(--primary-text-color, #fff) !important;
   border: none;
   border-radius: 5px;
   cursor: pointer;
