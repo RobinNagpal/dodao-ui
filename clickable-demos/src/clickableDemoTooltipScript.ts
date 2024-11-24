@@ -113,127 +113,6 @@
     });
   }
 
-  function getCurrentContextNodeAndTarget(data: TooltipEventData): { currentContextNode: Document; targetNode: Node } | null {
-    const { elementXPath } = data;
-    console.log('event.data.elementXPath', elementXPath);
-    document.addEventListener('click', (e: Event) => e.preventDefault());
-    let currentContextNode: Document = document;
-
-    // Determine if the XPath is intended for an iframe by checking the prefix
-    const isIframeXPath = elementXPath.startsWith('/html[1]/body[1]');
-    let targetNode: Node | null = null;
-
-    if (isIframeXPath) {
-      // Search in all iframes
-      const iframes = document.querySelectorAll('iframe')!;
-      for (const iframe of iframes) {
-        const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
-        if (iframeDoc) {
-          try {
-            const xpathResult = iframeDoc.evaluate(elementXPath, iframeDoc, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-
-            if (xpathResult) {
-              targetNode = xpathResult;
-              currentContextNode = iframeDoc;
-              const head = iframeDoc.head || iframeDoc.getElementsByTagName('head')[0];
-
-              const materialStyle = iframeDoc.createElement('link');
-              materialStyle.rel = 'stylesheet';
-              materialStyle.href = '/clickable-demos-prod-files/dependencies/tippy.js@6/themes/material.css';
-              head.appendChild(materialStyle);
-
-              const shiftTowardsStyle = iframeDoc.createElement('link');
-              shiftTowardsStyle.rel = 'stylesheet';
-              shiftTowardsStyle.href = '/clickable-demos-prod-files/dependencies/tippy.js@6/animations/shift-toward.css';
-              head.appendChild(shiftTowardsStyle);
-
-              const tippyData = iframeDoc.createElement('link');
-              tippyData.rel = 'stylesheet';
-              tippyData.href = '/clickable-demos-prod-files/dependencies/tippy.js@6/stylesheet/tippy-data.css';
-              head.appendChild(tippyData);
-
-              const link = iframeDoc.createElement('link');
-              link.rel = 'stylesheet';
-              link.href = '/clickable-demos-prod-files/clickableDemoTooltipStyles.css';
-              iframeDoc.head.appendChild(link);
-
-              break;
-            }
-          } catch (error) {
-            console.error('Error evaluating XPath in iframe:', error);
-          }
-        }
-      }
-
-      if (!targetNode) {
-        console.log('Element not found in any iframe.');
-      }
-    } else {
-      const xpathResult = document.evaluate(elementXPath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-
-      if (xpathResult) {
-        console.log('Element found in the main document:', xpathResult);
-        targetNode = xpathResult;
-      } else {
-        console.log('Element not found in the main document.');
-      }
-    }
-
-    if (targetNode) {
-      return { currentContextNode, targetNode };
-    } else {
-      console.log('Element not found using XPath.');
-
-      // Fallback 1: select element near the middle of the screen
-      console.log('Attempting to select a fallback element near the middle of the screen.');
-      const viewportWidth = currentContextNode.documentElement.clientWidth;
-      const viewportHeight = currentContextNode.documentElement.clientHeight;
-      const centerX = viewportWidth / 2;
-      const centerY = viewportHeight / 2;
-
-      targetNode = currentContextNode.elementFromPoint(centerX, centerY);
-
-      if (targetNode) {
-        console.log('Fallback element selected:', targetNode);
-        return { currentContextNode, targetNode };
-      } else {
-        console.log('Fallback failed: Could not find an element at the center of the screen.');
-
-        // Fallback 2: use document.body or document.documentElement
-        targetNode = currentContextNode.body || currentContextNode.documentElement;
-
-        if (targetNode) {
-          console.log('Defaulting to document body as the target element:', targetNode);
-          return { currentContextNode, targetNode };
-        } else {
-          console.log('No suitable default element found. Exiting function.');
-          return null;
-        }
-      }
-    }
-  }
-
-  function createTooltipButton(text: string, className: string, onClick: () => void): HTMLButtonElement {
-    const button = document.createElement('button');
-    button.textContent = text;
-    button.classList.add('dodao-tooltip-button', className);
-    button.onclick = onClick;
-    button.onmouseover = () => {
-      button.style.opacity = '0.7';
-    };
-    button.onmouseout = () => {
-      button.style.opacity = '1';
-    };
-    return button;
-  }
-
-  function adjustButtonStyles(buttons: HTMLButtonElement[], isLastTooltip: boolean): void {
-    const maxWidth = isLastTooltip ? '30%' : '20%';
-    buttons.forEach((button) => {
-      button.style.maxWidth = maxWidth;
-    });
-  }
-
   function elementSelector(event: MessageEvent) {
     let selectedElement: HTMLElement | null = null;
     let finalXPath: string | null = null;
@@ -346,86 +225,6 @@
 
       overlays.forEach((overlay) => overlayContainer.appendChild(overlay));
       return overlayContainer;
-    }
-
-    function createOverlayPart(position: string, rect: DOMRect, scrollY: number, scrollHeight: number): HTMLDivElement {
-      const overlay = document.createElement('div');
-      overlay.className = `${position}-overlay`;
-      overlay.style.position = 'absolute';
-      overlay.style.backgroundColor = 'rgba(128, 128, 128, 0.6)';
-      overlay.style.transition = 'all 0.3s ease';
-
-      switch (position) {
-        case 'top':
-          Object.assign(overlay.style, {
-            top: '0',
-            left: '0',
-            width: '100%',
-            height: `${rect.top + scrollY}px`,
-          });
-          break;
-        case 'left':
-          Object.assign(overlay.style, {
-            top: `${rect.top + scrollY}px`,
-            left: '0',
-            width: `${rect.left}px`,
-            height: `${scrollHeight - rect.top - scrollY}px`,
-          });
-          break;
-        case 'right':
-          Object.assign(overlay.style, {
-            top: `${rect.top + scrollY}px`,
-            left: `${rect.right}px`,
-            width: `calc(100% - ${rect.right}px)`,
-            height: `${scrollHeight - rect.top - scrollY}px`,
-          });
-          break;
-        case 'bottom':
-          Object.assign(overlay.style, {
-            top: `${rect.bottom + scrollY}px`,
-            left: `${rect.left}px`,
-            width: `${rect.width}px`,
-            height: `${scrollHeight - rect.bottom - scrollY}px`,
-          });
-          break;
-      }
-      return overlay;
-    }
-
-    function updateOverlay(container: HTMLElement, rect: DOMRect, scrollY: number, scrollHeight: number) {
-      const overlays = container.children;
-      const topOverlay = overlays[0] as HTMLElement;
-      const leftOverlay = overlays[1] as HTMLElement;
-      const rightOverlay = overlays[2] as HTMLElement;
-      const bottomOverlay = overlays[3] as HTMLElement;
-
-      topOverlay.style.height = `${rect.top + scrollY}px`;
-      leftOverlay.style.top = `${rect.top + scrollY}px`;
-      leftOverlay.style.height = `${scrollHeight - rect.top - scrollY}px`;
-      leftOverlay.style.width = `${rect.left}px`;
-      rightOverlay.style.top = `${rect.top + scrollY}px`;
-      rightOverlay.style.left = `${rect.right}px`;
-      rightOverlay.style.width = `calc(100% - ${rect.right}px)`;
-      rightOverlay.style.height = `${scrollHeight - rect.top - scrollY}px`;
-      bottomOverlay.style.top = `${rect.bottom + scrollY}px`;
-      bottomOverlay.style.left = `${rect.left}px`;
-      bottomOverlay.style.width = `${rect.width}px`;
-      bottomOverlay.style.height = `${scrollHeight - rect.bottom - scrollY}px`;
-    }
-
-    function getIframeOffset(iframe: HTMLIFrameElement): { top: number; left: number } {
-      let top = 0;
-      let left = 0;
-      let element: HTMLElement | null = iframe;
-
-      while (element) {
-        const rect = element.getBoundingClientRect();
-        top += rect.top + (element.ownerDocument.defaultView?.scrollY || 0);
-        left += rect.left + (element.ownerDocument.defaultView?.scrollX || 0);
-        element = element.ownerDocument.defaultView?.frameElement as HTMLElement | null;
-      }
-
-      return { top, left };
     }
 
     async function captureScreenshotWithOverlay(element: HTMLElement): Promise<string> {
@@ -640,17 +439,6 @@
       }
       return `/html/body/${segments.join('/')}`;
     }
-
-    function getElementIndex(element: HTMLElement): number {
-      let index = 1;
-      let sibling = element.previousElementSibling;
-
-      while (sibling) {
-        if (sibling.tagName === element.tagName) index++;
-        sibling = sibling.previousElementSibling;
-      }
-      return index;
-    }
   }
 
   async function handleDoDAOParentWindowEvent(event: MessageEvent) {
@@ -672,4 +460,216 @@
   window.document.addEventListener('DOMContentLoaded', () => {
     showTooltip();
   });
+
+  function getCurrentContextNodeAndTarget(data: TooltipEventData): { currentContextNode: Document; targetNode: Node } | null {
+    const { elementXPath } = data;
+    console.log('event.data.elementXPath', elementXPath);
+    document.addEventListener('click', (e: Event) => e.preventDefault());
+    let currentContextNode: Document = document;
+
+    // Determine if the XPath is intended for an iframe by checking the prefix
+    const isIframeXPath = elementXPath.startsWith('/html[1]/body[1]');
+    let targetNode: Node | null = null;
+
+    if (isIframeXPath) {
+      // Search in all iframes
+      const iframes = document.querySelectorAll('iframe')!;
+      for (const iframe of iframes) {
+        const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
+        if (iframeDoc) {
+          try {
+            const xpathResult = iframeDoc.evaluate(elementXPath, iframeDoc, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+
+            if (xpathResult) {
+              targetNode = xpathResult;
+              currentContextNode = iframeDoc;
+              const head = iframeDoc.head || iframeDoc.getElementsByTagName('head')[0];
+
+              const materialStyle = iframeDoc.createElement('link');
+              materialStyle.rel = 'stylesheet';
+              materialStyle.href = '/clickable-demos-prod-files/dependencies/tippy.js@6/themes/material.css';
+              head.appendChild(materialStyle);
+
+              const shiftTowardsStyle = iframeDoc.createElement('link');
+              shiftTowardsStyle.rel = 'stylesheet';
+              shiftTowardsStyle.href = '/clickable-demos-prod-files/dependencies/tippy.js@6/animations/shift-toward.css';
+              head.appendChild(shiftTowardsStyle);
+
+              const tippyData = iframeDoc.createElement('link');
+              tippyData.rel = 'stylesheet';
+              tippyData.href = '/clickable-demos-prod-files/dependencies/tippy.js@6/stylesheet/tippy-data.css';
+              head.appendChild(tippyData);
+
+              const link = iframeDoc.createElement('link');
+              link.rel = 'stylesheet';
+              link.href = '/clickable-demos-prod-files/clickableDemoTooltipStyles.css';
+              iframeDoc.head.appendChild(link);
+
+              break;
+            }
+          } catch (error) {
+            console.error('Error evaluating XPath in iframe:', error);
+          }
+        }
+      }
+
+      if (!targetNode) {
+        console.log('Element not found in any iframe.');
+      }
+    } else {
+      const xpathResult = document.evaluate(elementXPath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+
+      if (xpathResult) {
+        console.log('Element found in the main document:', xpathResult);
+        targetNode = xpathResult;
+      } else {
+        console.log('Element not found in the main document.');
+      }
+    }
+
+    if (targetNode) {
+      return { currentContextNode, targetNode };
+    } else {
+      console.log('Element not found using XPath.');
+
+      // Fallback 1: select element near the middle of the screen
+      console.log('Attempting to select a fallback element near the middle of the screen.');
+      const viewportWidth = currentContextNode.documentElement.clientWidth;
+      const viewportHeight = currentContextNode.documentElement.clientHeight;
+      const centerX = viewportWidth / 2;
+      const centerY = viewportHeight / 2;
+
+      targetNode = currentContextNode.elementFromPoint(centerX, centerY);
+
+      if (targetNode) {
+        console.log('Fallback element selected:', targetNode);
+        return { currentContextNode, targetNode };
+      } else {
+        console.log('Fallback failed: Could not find an element at the center of the screen.');
+
+        // Fallback 2: use document.body or document.documentElement
+        targetNode = currentContextNode.body || currentContextNode.documentElement;
+
+        if (targetNode) {
+          console.log('Defaulting to document body as the target element:', targetNode);
+          return { currentContextNode, targetNode };
+        } else {
+          console.log('No suitable default element found. Exiting function.');
+          return null;
+        }
+      }
+    }
+  }
+
+  function createTooltipButton(text: string, className: string, onClick: () => void): HTMLButtonElement {
+    const button = document.createElement('button');
+    button.textContent = text;
+    button.classList.add('dodao-tooltip-button', className);
+    button.onclick = onClick;
+    button.onmouseover = () => {
+      button.style.opacity = '0.7';
+    };
+    button.onmouseout = () => {
+      button.style.opacity = '1';
+    };
+    return button;
+  }
+
+  function adjustButtonStyles(buttons: HTMLButtonElement[], isLastTooltip: boolean): void {
+    const maxWidth = isLastTooltip ? '30%' : '20%';
+    buttons.forEach((button) => {
+      button.style.maxWidth = maxWidth;
+    });
+  }
+
+  function createOverlayPart(position: string, rect: DOMRect, scrollY: number, scrollHeight: number): HTMLDivElement {
+    const overlay = document.createElement('div');
+    overlay.className = `${position}-overlay`;
+    overlay.style.position = 'absolute';
+    overlay.style.backgroundColor = 'rgba(128, 128, 128, 0.6)';
+    overlay.style.transition = 'all 0.3s ease';
+
+    switch (position) {
+      case 'top':
+        Object.assign(overlay.style, {
+          top: '0',
+          left: '0',
+          width: '100%',
+          height: `${rect.top + scrollY}px`,
+        });
+        break;
+      case 'left':
+        Object.assign(overlay.style, {
+          top: `${rect.top + scrollY}px`,
+          left: '0',
+          width: `${rect.left}px`,
+          height: `${scrollHeight - rect.top - scrollY}px`,
+        });
+        break;
+      case 'right':
+        Object.assign(overlay.style, {
+          top: `${rect.top + scrollY}px`,
+          left: `${rect.right}px`,
+          width: `calc(100% - ${rect.right}px)`,
+          height: `${scrollHeight - rect.top - scrollY}px`,
+        });
+        break;
+      case 'bottom':
+        Object.assign(overlay.style, {
+          top: `${rect.bottom + scrollY}px`,
+          left: `${rect.left}px`,
+          width: `${rect.width}px`,
+          height: `${scrollHeight - rect.bottom - scrollY}px`,
+        });
+        break;
+    }
+    return overlay;
+  }
+
+  function updateOverlay(container: HTMLElement, rect: DOMRect, scrollY: number, scrollHeight: number) {
+    const overlays = container.children;
+    const topOverlay = overlays[0] as HTMLElement;
+    const leftOverlay = overlays[1] as HTMLElement;
+    const rightOverlay = overlays[2] as HTMLElement;
+    const bottomOverlay = overlays[3] as HTMLElement;
+
+    topOverlay.style.height = `${rect.top + scrollY}px`;
+    leftOverlay.style.top = `${rect.top + scrollY}px`;
+    leftOverlay.style.height = `${scrollHeight - rect.top - scrollY}px`;
+    leftOverlay.style.width = `${rect.left}px`;
+    rightOverlay.style.top = `${rect.top + scrollY}px`;
+    rightOverlay.style.left = `${rect.right}px`;
+    rightOverlay.style.width = `calc(100% - ${rect.right}px)`;
+    rightOverlay.style.height = `${scrollHeight - rect.top - scrollY}px`;
+    bottomOverlay.style.top = `${rect.bottom + scrollY}px`;
+    bottomOverlay.style.left = `${rect.left}px`;
+    bottomOverlay.style.width = `${rect.width}px`;
+    bottomOverlay.style.height = `${scrollHeight - rect.bottom - scrollY}px`;
+  }
+
+  function getIframeOffset(iframe: HTMLIFrameElement): { top: number; left: number } {
+    let top = 0;
+    let left = 0;
+    let element: HTMLElement | null = iframe;
+
+    while (element) {
+      const rect = element.getBoundingClientRect();
+      top += rect.top + (element.ownerDocument.defaultView?.scrollY || 0);
+      left += rect.left + (element.ownerDocument.defaultView?.scrollX || 0);
+      element = element.ownerDocument.defaultView?.frameElement as HTMLElement | null;
+    }
+
+    return { top, left };
+  }
+
+  function getElementIndex(element: HTMLElement): number {
+    let index = 1;
+    let sibling = element.previousElementSibling;
+
+    while (sibling) {
+      if (sibling.tagName === element.tagName) index++;
+      sibling = sibling.previousElementSibling;
+    }
+    return index;
+  }
 })();
