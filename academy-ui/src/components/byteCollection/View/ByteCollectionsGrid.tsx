@@ -46,7 +46,6 @@ export default function ByteCollectionsGrid({
 
   return (
     <>
-      {isAdmin && <AddByteCollection space={space} />}
       {isAdmin && (
         <div className="flex justify-end mb-2 items-center gap-x-8">
           <ToggleWithIcon label={'See Archived'} enabled={isArchived} setEnabled={handleToggle} onClickOnLabel={true} />
@@ -86,6 +85,7 @@ export default function ByteCollectionsGrid({
           ))}
         </Grid2Cols>
       )}
+      {isAdmin && <AddByteCollection space={space} />}
       {openSort && <SortByteCollectionsModal byteCollections={byteCollections!} space={space} onClose={handleSort} />}
     </>
   );
