@@ -1,5 +1,3 @@
-'use client';
-
 import Stepper from '@/components/clickableDemos/Edit/EditClickableDemoStepper';
 import { useDeleteClickableDemo } from '@/components/clickableDemos/Edit/useDeleteClickableDemo';
 import { useEditClickableDemo } from '@/components/clickableDemos/Edit/useEditClickableDemo';
@@ -22,7 +20,6 @@ import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { getUploadedImageUrlFromSingedUrl } from '@dodao/web-core/utils/upload/getUploadedImageUrlFromSingedUrl';
-import axios from 'axios';
 import html2canvas from 'html2canvas';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -46,7 +43,7 @@ function EditClickableDemo(props: { space: SpaceWithIntegrationsDto; demoId: str
   const { handleDeletion } = useDeleteClickableDemo(space, demoId);
   const threeDotItems: EllipsisDropdownItem[] = [
     { label: 'Delete', key: 'delete' },
-    { label: 'Genarate Images', key: 'generate_images' },
+    { label: 'Generate Images', key: 'generate_images' },
   ];
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -57,8 +54,8 @@ function EditClickableDemo(props: { space: SpaceWithIntegrationsDto; demoId: str
     return error ? error.toString() : '';
   };
 
-  async function uploadToS3AndReturnScreenshotUrl(file: File | null, objectId: string) {
-    if (!file) return;
+  async function uploadToS3AndReturnScreenshotUrl(file: File, objectId: string): Promise<string | undefined> {
+    if (!file) return undefined;
     const input: CreateSignedUrlInput = {
       imageType: 'ClickableDemos/SCREENSHOT_CAPTURE',
       contentType: 'image/png',
@@ -70,30 +67,25 @@ function EditClickableDemo(props: { space: SpaceWithIntegrationsDto; demoId: str
 
     const signedUrl = response?.url!;
 
-    await axios.put(signedUrl, file, {
+    await fetch(signedUrl, {
+      method: 'PUT',
       headers: { 'Content-Type': 'image/png' },
+      body: file,
     });
+
     const screenshotUrl = getUploadedImageUrlFromSingedUrl(signedUrl);
     return screenshotUrl;
   }
+
   function getFileName(url: string): string {
     const segments = url.split('/');
     return segments[segments.length - 1] + '_screenshot.png';
   }
-  function base64ToFile(base64String: string | undefined, filename: string): File | null {
-    if (!base64String) {
-      console.error('Invalid Base64 string');
-      return null;
-    }
 
+  function base64ToFile(base64String: string, filename: string): File {
     const arr = base64String.split(',');
-    if (arr.length !== 2) {
-      console.error('Invalid Base64 string format');
-      return null;
-    }
-
     const mimeTypeMatch = arr[0].match(/:(.*?);/);
-    const mimeType = mimeTypeMatch ? mimeTypeMatch[1] : '';
+    const mimeType = mimeTypeMatch ? mimeTypeMatch[1] : 'image/png';
 
     const byteString = atob(arr[1]);
     const byteNumbers = new Uint8Array(byteString.length);
@@ -104,8 +96,9 @@ function EditClickableDemo(props: { space: SpaceWithIntegrationsDto; demoId: str
 
     return new File([byteNumbers], filename, { type: mimeType });
   }
-  async function generateImages() {
-    const iframe = document.createElement('iframe') as HTMLIFrameElement;
+
+  async function generateImages(): Promise<void> {
+    const iframe: HTMLIFrameElement = document.createElement('iframe');
     iframe.id = 'iframe';
     iframe.style.width = '1920px';
     iframe.style.height = '1080px';
@@ -118,53 +111,116 @@ function EditClickableDemo(props: { space: SpaceWithIntegrationsDto; demoId: str
     for (const step of clickableDemo.steps) {
       try {
         // Fetch the HTML content from the URL
-        const response = await axios.get(step.url);
-        if (response.status !== 200) {
+        const response = await fetch(step.url);
+        if (!response.ok) {
           throw new Error('Network response was not ok');
         }
-        const htmlContent = response.data;
+        const htmlContent = await response.text();
         const blob = new Blob([htmlContent], { type: 'text/html' });
-        const iframe = document.getElementById('iframe') as HTMLIFrameElement;
-        if (iframe) {
+        const iframeElement = document.getElementById('iframe') as HTMLIFrameElement;
+        if (iframeElement) {
           const iframeSrc = URL.createObjectURL(blob); // Create a URL from the blob
-          iframe.src = iframeSrc; // Set the iframe src to the blob URL
+          iframeElement.src = iframeSrc; // Set the iframe src to the blob URL
 
-          // Optionally wait for the iframe to load
+          // Wait for the iframe to load
           await new Promise<void>((resolve) => {
-            iframe.onload = () => {
+            iframeElement.onload = () => {
               resolve();
             };
           });
 
-          const iframeDocument = iframe.contentDocument || iframe.contentWindow?.document;
+          const iframeDocument = iframeElement.contentDocument || iframeElement.contentWindow?.document;
           if (iframeDocument) {
-            const canvas = await html2canvas(iframeDocument.documentElement, {
+            // Capture the screenshot of the entire page
+            const canvasFullPage = await html2canvas(iframeDocument.documentElement, {
               useCORS: true,
               width: 1920,
               height: 1080,
               backgroundColor: null,
             });
-            if (canvas.width > 0 && canvas.height > 0) {
-              let dataUrl = canvas.toDataURL('image/png');
-              const filename = getFileName(step.url);
-              let screenshotFile = base64ToFile(dataUrl, filename);
-              let screenshotURL: string | undefined;
+            if (canvasFullPage.width > 0 && canvasFullPage.height > 0) {
+              const dataUrlFullPage = canvasFullPage.toDataURL('image/png');
+              const filenameFullPage = getFileName(step.url);
+              const screenshotFileFullPage = base64ToFile(dataUrlFullPage, filenameFullPage);
               const objectId = (space?.name && slugify(space?.name)) || space?.id || 'new-space';
-              screenshotURL = await uploadToS3AndReturnScreenshotUrl(screenshotFile, objectId.replace(/[^a-z0-9]/gi, '_'));
+              const screenshotURL = await uploadToS3AndReturnScreenshotUrl(screenshotFileFullPage, objectId.replace(/[^a-z0-9]/gi, '_'));
               step.screenImgUrl = screenshotURL;
               showNotification({ message: `Image generated for step ${stepNo} successfully`, type: 'success' });
-              stepNo += 1;
             }
+
+            // Now capture the screenshot of the selected element
+            if (step.selector) {
+              // Find the element using the selector (XPath)
+              const selectedElement = getElementByXPath(step.selector, iframeDocument) as HTMLElement;
+              if (selectedElement) {
+                const dataUrlElement = await captureScreenshotWithOverlay(selectedElement, iframeDocument);
+                const filenameElement = `${getFileName(step.url)}_element.png`;
+                const screenshotFileElement = base64ToFile(dataUrlElement, filenameElement);
+                const objectId = (space?.name && slugify(space?.name)) || space?.id || 'new-space';
+                const screenshotElementURL = await uploadToS3AndReturnScreenshotUrl(screenshotFileElement, objectId.replace(/[^a-z0-9]/gi, '_'));
+                step.elementImgUrl = screenshotElementURL;
+                showNotification({ message: `Element image generated for step ${stepNo} successfully`, type: 'success' });
+              } else {
+                console.error('Selected element not found in the iframe document.');
+                showNotification({ message: 'Selected element not found', type: 'error' });
+              }
+            }
+
+            stepNo += 1;
           }
         }
-      } catch {
-        console.error('Error fetching or processing the URL:');
+      } catch (error) {
+        console.error('Error fetching or processing the URL:', error);
         showNotification({ message: 'Some Error occurred', type: 'error' });
       }
     }
     showNotification({ message: 'All images Generated Successfully', type: 'success' });
     document.body.removeChild(iframe);
   }
+
+  function getElementByXPath(xpath: string, doc: Document): HTMLElement | null {
+    const iterator = doc.evaluate(xpath, doc, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+    const node = iterator.singleNodeValue;
+    return node as HTMLElement | null;
+  }
+
+  async function captureScreenshotWithOverlay(element: HTMLElement, currentContextNode: Document): Promise<string> {
+    // First, create an overlay on the element
+    const overlay = createOverlay(element, currentContextNode);
+    // Wait for the overlay to be added
+    await new Promise<void>((resolve) => setTimeout(resolve, 100));
+    // Capture the screenshot
+    const rect = element.getBoundingClientRect();
+    const canvas = await html2canvas(currentContextNode.body, {
+      useCORS: true,
+      backgroundColor: null,
+      x: rect.left + window.scrollX,
+      y: rect.top + window.scrollY,
+      width: rect.width,
+      height: rect.height,
+    });
+    // Remove the overlay
+    overlay.remove();
+    return canvas.toDataURL('image/png');
+  }
+
+  function createOverlay(element: HTMLElement, currentContextNode: Document): HTMLDivElement {
+    const overlay = currentContextNode.createElement('div');
+    const rect = element.getBoundingClientRect();
+    Object.assign(overlay.style, {
+      position: 'absolute',
+      top: `${rect.top + window.scrollY}px`,
+      left: `${rect.left + window.scrollX}px`,
+      width: `${rect.width}px`,
+      height: `${rect.height}px`,
+      backgroundColor: 'rgba(255, 0, 0, 0.5)', // Semi-transparent red overlay
+      pointerEvents: 'none',
+      zIndex: '999999',
+    });
+    currentContextNode.body.appendChild(overlay);
+    return overlay;
+  }
+
   useEffect(() => {
     updateClickableDemoFunctions.initialize();
   }, [demoId]);
