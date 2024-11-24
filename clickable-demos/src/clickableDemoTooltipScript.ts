@@ -27,9 +27,9 @@
         document.documentElement.style.setProperty(variable, data.cssValues[variable]);
       }
     }
-    const { tooltipContent: contentText, currentTooltipIndex, tooltipArrayLen, placement } = data;
+    const { tooltipContent: contentText, currentTooltipIndex, tooltipArrayLen, placement, elementXPath } = data;
 
-    const currentDocAndTargetNode = getCurrentContextNodeAndTarget(data)!;
+    const currentDocAndTargetNode = getCurrentContextNodeAndTarget(elementXPath)!;
     if (!currentDocAndTargetNode.targetNode || !currentDocAndTargetNode.currentContextNode) return;
 
     const { currentContextNode, targetNode } = currentDocAndTargetNode;
@@ -179,125 +179,6 @@
       });
     }
 
-    function createOrUpdateOverlay(element: HTMLElement | null) {
-      if (!element) return;
-
-      let rect: any = element.getBoundingClientRect();
-      let scrollY = window.scrollY;
-      const scrollHeight = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
-
-      if (containingIframe) {
-        const iframeOffset = getIframeOffset(containingIframe!);
-        rect = {
-          top: rect.top + iframeOffset.top,
-          left: rect.left + iframeOffset.left,
-          right: rect.right + iframeOffset.left,
-          bottom: rect.bottom + iframeOffset.top,
-          width: rect.width,
-          height: rect.height,
-        };
-        scrollY = 0;
-      }
-
-      const existingOverlay = document.getElementById('dimming-overlay');
-      if (existingOverlay) {
-        updateOverlay(existingOverlay, rect, scrollY, scrollHeight);
-      } else {
-        const overlayContainer = createOverlayContainer(rect, scrollY, scrollHeight);
-        document.body.appendChild(overlayContainer);
-      }
-    }
-
-    function createOverlayContainer(rect: DOMRect, scrollY: number, scrollHeight: number): HTMLDivElement {
-      const overlayContainer: HTMLDivElement = document.createElement('div');
-      overlayContainer.id = 'dimming-overlay';
-      Object.assign(overlayContainer.style, {
-        position: 'absolute',
-        top: '0',
-        left: '0',
-        width: '100%',
-        height: `${scrollHeight}px`,
-        pointerEvents: 'none',
-        zIndex: '2147483646',
-      });
-
-      const overlays = ['top', 'left', 'right', 'bottom'].map((position) => createOverlayPart(position, rect, scrollY, scrollHeight));
-
-      overlays.forEach((overlay) => overlayContainer.appendChild(overlay));
-      return overlayContainer;
-    }
-
-    async function captureScreenshotWithOverlay(element: HTMLElement): Promise<string> {
-      return new Promise((resolve, reject) => {
-        let currentContextNode = document;
-        let captureArea;
-        const margin = 30;
-        const { x: scrollOffsetX, y: scrollOffsetY } = calculateScrollOffsets(element);
-        const yScroll = scrollOffsetY + window.scrollY;
-        const rect = element.getBoundingClientRect();
-
-        if (containingIframe) {
-          captureArea = {
-            x: Math.max(0, rect.left + scrollOffsetX - margin),
-            y: Math.max(0, rect.top - 2 * margin),
-            width: rect.width + margin * 2,
-            height: rect.height + margin * 2,
-          };
-          currentContextNode = containingIframe.contentDocument || containingIframe.contentWindow!.document;
-        } else {
-          captureArea = {
-            x: Math.max(0, rect.left + scrollOffsetX - margin),
-            y: Math.max(0, rect.top + yScroll - margin),
-            width: rect.width + margin * 2,
-            height: rect.height + margin * 2,
-          };
-        }
-
-        html2canvas(currentContextNode.body, {
-          x: captureArea.x,
-          y: captureArea.y,
-          width: captureArea.width,
-          height: captureArea.height,
-          windowWidth: document.documentElement.scrollWidth,
-          scrollY: scrollOffsetY,
-          useCORS: true,
-          backgroundColor: null,
-          logging: true,
-        })
-          .then((canvas: HTMLCanvasElement) => {
-            const dataURL = canvas.toDataURL('image/png');
-            resolve(dataURL);
-          })
-          .catch((error: Error) => {
-            console.error('Error capturing screenshot:', error);
-            reject(error);
-          });
-      });
-    }
-
-    function calculateScrollOffsets(element: HTMLElement): {
-      x: number;
-      y: number;
-    } {
-      let x = 0;
-      let y = 0;
-      let parent = element.parentElement;
-
-      while (parent) {
-        if (isScrollable(parent)) {
-          x += parent.scrollLeft;
-          y += parent.scrollTop;
-        }
-        parent = parent.parentElement;
-      }
-      return { x, y };
-    }
-
-    function isScrollable(element: HTMLElement): boolean {
-      const overflowY = window.getComputedStyle(element).overflowY;
-      return overflowY === 'scroll' || overflowY === 'auto';
-    }
-
     function createUpDownButtons(): HTMLDivElement {
       const container = document.createElement('div');
       container.classList.add('dodao-up-down-buttons');
@@ -327,8 +208,8 @@
       } else {
         return;
       }
-      createOrUpdateOverlay(selectedElement);
-      finalXPath = getXPath(selectedElement);
+      createOrUpdateOverlay(selectedElement, containingIframe);
+      finalXPath = getXPath(selectedElement, containingIframe);
     }
 
     function createSelectButton(): HTMLButtonElement {
@@ -340,7 +221,7 @@
 
       button.addEventListener('click', async () => {
         if (selectedElement && finalXPath) {
-          const dataUrl = await captureScreenshotWithOverlay(selectedElement);
+          const dataUrl = await captureScreenshotWithOverlay(selectedElement, containingIframe);
 
           event.source?.postMessage(
             { xpath: finalXPath, elementImgUrl: dataUrl },
@@ -399,7 +280,7 @@
         hoverTimer = window.setTimeout(() => {
           const hoveredElement = e.target as HTMLElement;
           if (![selectButton, clearSelectionButton, upDownButtons, ...Array.from(upDownButtons.children)].includes(hoveredElement)) {
-            createOrUpdateOverlay(hoveredElement);
+            createOrUpdateOverlay(hoveredElement, containingIframe);
           }
         }, 180);
       }
@@ -419,27 +300,12 @@
       selectButton.style.opacity = '1';
       clearSelectionButton.disabled = false;
       clearSelectionButton.style.opacity = '1';
-      createOrUpdateOverlay(selectedElement);
-      finalXPath = getXPath(selectedElement);
-    }
-
-    function getXPath(element: HTMLElement): string {
-      if (!element) return '';
-      const segments: string[] = [];
-      let current: HTMLElement | null = element;
-
-      while (current && current !== document.body) {
-        const tagName = current.tagName.toLowerCase();
-        const index = getElementIndex(current);
-        segments.unshift(`${tagName}[${index}]`);
-        current = current.parentElement;
-      }
-      if (containingIframe) {
-        return `/${segments.join('/')}`;
-      }
-      return `/html/body/${segments.join('/')}`;
+      createOrUpdateOverlay(selectedElement, containingIframe);
+      finalXPath = getXPath(selectedElement, containingIframe);
     }
   }
+
+  //************** Event handler **************//
 
   async function handleDoDAOParentWindowEvent(event: MessageEvent) {
     const data = event.data as DoDAOEventData;
@@ -461,8 +327,8 @@
     showTooltip();
   });
 
-  function getCurrentContextNodeAndTarget(data: TooltipEventData): { currentContextNode: Document; targetNode: Node } | null {
-    const { elementXPath } = data;
+  //************** Helper functions **************//
+  function getCurrentContextNodeAndTarget(elementXPath: string): { currentContextNode: Document; targetNode: Node } | null {
     console.log('event.data.elementXPath', elementXPath);
     document.addEventListener('click', (e: Event) => e.preventDefault());
     let currentContextNode: Document = document;
@@ -671,5 +537,135 @@
       sibling = sibling.previousElementSibling;
     }
     return index;
+  }
+
+  function createOverlayContainer(rect: DOMRect, scrollY: number, scrollHeight: number): HTMLDivElement {
+    const overlayContainer: HTMLDivElement = document.createElement('div');
+    overlayContainer.id = 'dimming-overlay';
+    Object.assign(overlayContainer.style, {
+      position: 'absolute',
+      top: '0',
+      left: '0',
+      width: '100%',
+      height: `${scrollHeight}px`,
+      pointerEvents: 'none',
+      zIndex: '2147483646',
+    });
+
+    const overlays = ['top', 'left', 'right', 'bottom'].map((position) => createOverlayPart(position, rect, scrollY, scrollHeight));
+
+    overlays.forEach((overlay) => overlayContainer.appendChild(overlay));
+    return overlayContainer;
+  }
+
+  function createOrUpdateOverlay(element: HTMLElement | null, containerIframe: HTMLIFrameElement | null) {
+    if (!element) return;
+
+    // get element's Xpath
+
+    let rect: any = element.getBoundingClientRect();
+    let scrollY = window.scrollY;
+    const scrollHeight = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+
+    if (containerIframe) {
+      const iframeOffset = getIframeOffset(containerIframe!);
+      rect = {
+        top: rect.top + iframeOffset.top,
+        left: rect.left + iframeOffset.left,
+        right: rect.right + iframeOffset.left,
+        bottom: rect.bottom + iframeOffset.top,
+        width: rect.width,
+        height: rect.height,
+      };
+      scrollY = 0;
+    }
+
+    const existingOverlay = document.getElementById('dimming-overlay');
+    if (existingOverlay) {
+      updateOverlay(existingOverlay, rect, scrollY, scrollHeight);
+    } else {
+      const overlayContainer = createOverlayContainer(rect, scrollY, scrollHeight);
+      document.body.appendChild(overlayContainer);
+    }
+  }
+
+  function getXPath(element: HTMLElement, containerIframe: HTMLIFrameElement | null): string {
+    if (!element) return '';
+    const segments: string[] = [];
+    let current: HTMLElement | null = element;
+
+    while (current && current !== document.body) {
+      const tagName = current.tagName.toLowerCase();
+      const index = getElementIndex(current);
+      segments.unshift(`${tagName}[${index}]`);
+      current = current.parentElement;
+    }
+    if (containerIframe) {
+      return `/${segments.join('/')}`;
+    }
+    return `/html/body/${segments.join('/')}`;
+  }
+
+  async function captureScreenshotWithOverlay(element: HTMLElement, containerIframe: HTMLIFrameElement | null): Promise<string> {
+    let currentContextNode = document;
+    let captureArea;
+    const margin = 30;
+    const { x: scrollOffsetX, y: scrollOffsetY } = calculateScrollOffsets(element);
+    const yScroll = scrollOffsetY + window.scrollY;
+    const rect = element.getBoundingClientRect();
+
+    if (containerIframe) {
+      captureArea = {
+        x: Math.max(0, rect.left + scrollOffsetX - margin),
+        y: Math.max(0, rect.top - 2 * margin),
+        width: rect.width + margin * 2,
+        height: rect.height + margin * 2,
+      };
+      currentContextNode = containerIframe.contentDocument || containerIframe.contentWindow!.document;
+    } else {
+      captureArea = {
+        x: Math.max(0, rect.left + scrollOffsetX - margin),
+        y: Math.max(0, rect.top + yScroll - margin),
+        width: rect.width + margin * 2,
+        height: rect.height + margin * 2,
+      };
+    }
+
+    const canvas = await html2canvas(currentContextNode.body, {
+      x: captureArea.x,
+      y: captureArea.y,
+      width: captureArea.width,
+      height: captureArea.height,
+      windowWidth: document.documentElement.scrollWidth,
+      scrollY: scrollOffsetY,
+      useCORS: true,
+      backgroundColor: null,
+      logging: true,
+    });
+    const dataURL = canvas.toDataURL('image/png');
+    return dataURL;
+  }
+
+  function calculateScrollOffsets(element: HTMLElement): {
+    x: number;
+    y: number;
+  } {
+    let x = 0;
+    let y = 0;
+    let parent = element.parentElement;
+
+    while (parent) {
+      if (isScrollable(parent)) {
+        x += parent.scrollLeft;
+        y += parent.scrollTop;
+      }
+      parent = parent.parentElement;
+    }
+    return { x, y };
+  }
+
+  function isScrollable(element: HTMLElement): boolean {
+    const overflowY = window.getComputedStyle(element).overflowY;
+    return overflowY === 'scroll' || overflowY === 'auto';
   }
 })();
