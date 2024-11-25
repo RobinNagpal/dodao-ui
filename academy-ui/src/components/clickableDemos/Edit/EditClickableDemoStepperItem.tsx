@@ -1,5 +1,3 @@
-import CaptureInput from '@/components/clickableDemos/CaptureSelector/CaptureInput';
-import SelectElementInput from '@/components/clickableDemos/ElementSelector/SelectElementInput';
 import { ClickableDemoStepInput, UpsertClickableDemoInput } from '@/graphql/generated/generated-types';
 import { TooltipPlacement } from '@/types/clickableDemos/ClickableDemoDto';
 import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
@@ -11,6 +9,10 @@ import { ClickableDemoErrors, ClickableDemoStepError } from '@dodao/web-core/typ
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { useState } from 'react';
 import styles from './EditClickableDemoStepperItem.module.scss';
+import EditableImage from '@dodao/web-core/components/core/image/EditableImage';
+import { ClickableDemoHtmlCaptureDto } from '@/types/html-captures/ClickableDemoHtmlCaptureDto';
+import SelectHtmlCaptureModal from '@/components/clickableDemoHtmlCapture/SelectHtmlCaptureModal';
+import ElementSelectorModal from '../ElementSelector/ElementSelectorModal';
 
 interface StepProps {
   space: SpaceWithIntegrationsDto;
@@ -58,6 +60,16 @@ export default function EditClickableDemoStepperItem({
   onUpdateStep,
   uploadToS3AndReturnScreenshotUrl,
 }: StepProps) {
+  const [showSelectHtmlCaptureModal, setShowSelectHtmlCaptureModal] = useState(false);
+  const [showElementSelectorModal, setShowElementSelectorModal] = useState(false);
+
+  const inputId = 'capture-input';
+
+  const handleSelectHtmlCapture = (selectedCapture: ClickableDemoHtmlCaptureDto) => {
+    updateStepUrl(selectedCapture.fileUrl, selectedCapture.fileImageUrl);
+    setShowSelectHtmlCaptureModal(false);
+  };
+
   const [uploadHTMLFileLoading, setUploadHTMLFileLoading] = useState(false);
 
   const updateStepSelector = (selector: string | number | undefined, elementImgUrl: string | undefined) => {
@@ -81,8 +93,6 @@ export default function EditClickableDemoStepperItem({
     const error = errors?.steps?.[stepIndex]?.[field];
     return error ? error.toString() : '';
   };
-
-  console.log('step.placement', step.placement);
 
   return (
     <div className={`${styles.StyledStepContainer} p-5`} style={{ border: !!clickableDemoErrors?.steps?.[step.id] ? '1px solid red' : 'none' }}>
@@ -118,43 +128,53 @@ export default function EditClickableDemoStepperItem({
           />
         </div>
       </div>
-      <div className="w-full">
-        <div className="mt-4">
-          <CaptureInput
-            label="HTML Capture"
-            error={inputError('url') ? 'URL is required' : ''}
-            modelValue={step.url}
-            onInput={updateStepUrl}
-            demoId={clickableDemo.id}
-            spaceId={space.id}
-          />
-          {step.screenImgUrl && (
-            <div className="mt-4">
-              <img src={step.screenImgUrl} alt="Screenshot" className="rounded-lg shadow-md max-w-full h-[150px] object-fit" />
-            </div>
-          )}
-        </div>
+
+      <div className="w-full my-2 flex flex-wrap sm:flex-nowrap justify-around items-end gap-5">
+        <EditableImage
+          label="Select Capture"
+          afterUploadLabel="Capture Selected"
+          imageUrl={step.screenImgUrl}
+          onRemove={() => updateStepUrl('', '')}
+          onUpload={() => setShowSelectHtmlCaptureModal(true)}
+          height="200px"
+          error={inputError('url') ? 'Screen Capture is required' : ''}
+        />
+
+        <EditableImage
+          label="Select Element"
+          afterUploadLabel="Element Selected"
+          imageUrl={step.elementImgUrl}
+          onRemove={() => updateStepSelector('', '')}
+          onUpload={() => setShowElementSelectorModal(true)}
+          height="150px"
+          maxWidth="250px"
+          disabled={step.screenImgUrl != ''}
+          disabledTooltip="Please select a capture first"
+          error={inputError('selector') ? 'Selector is required' : ''}
+        />
       </div>
-      <div className="w-full">
-        <div className="mt-4">
-          <SelectElementInput
-            label="Selector"
-            error={inputError('selector') ? 'Selector is required' : ''}
-            space={space}
-            modelValue={step.selector}
-            stepIndex={stepIndex}
-            objectId={(space?.name && slugify(space?.name)) || space?.id || 'new-space'}
-            fileUrl={step.url}
-            onInput={updateStepSelector}
-            uploadToS3AndReturnScreenshotUrl={uploadToS3AndReturnScreenshotUrl}
-          />
-          {step.elementImgUrl && ( // Assuming `step.screenImgUrl` holds the URL of the screenshot image
-            <div className="mt-4">
-              <img src={step.elementImgUrl} alt="Screenshot" className="rounded-lg shadow-md max-w-full max-h-60" />
-            </div>
-          )}
-        </div>
-      </div>
+      {showSelectHtmlCaptureModal && (
+        <SelectHtmlCaptureModal
+          showSelectHtmlCaptureModal={showSelectHtmlCaptureModal}
+          onClose={() => setShowSelectHtmlCaptureModal(false)}
+          selectHtmlCapture={handleSelectHtmlCapture}
+          demoId={clickableDemo.id}
+          spaceId={space.id}
+        />
+      )}
+      {showElementSelectorModal && (
+        <ElementSelectorModal
+          space={space}
+          onInput={updateStepSelector}
+          showModal={showElementSelectorModal}
+          objectId={(space?.name && slugify(space?.name)) || space?.id || 'new-space'}
+          fileUrl={step.url!}
+          xPath={step.selector || ''}
+          setShowModal={setShowElementSelectorModal}
+          uploadToS3AndReturnScreenshotUrl={uploadToS3AndReturnScreenshotUrl}
+          stepIndex={stepIndex}
+        />
+      )}
     </div>
   );
 }

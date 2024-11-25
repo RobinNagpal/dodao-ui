@@ -1,0 +1,9 @@
+.iconsColorToggle {
+    background-color: var(--text-color);
+    color: var(--primary-color);
+    
+    &:hover {
+      background-color: var(--primary-color);
+      color: var(--text-color);
+    }
+}

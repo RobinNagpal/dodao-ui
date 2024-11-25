@@ -28,6 +28,7 @@ const StyledListboxButton = styled(Listbox.Button)`
 
 const StyledListboxOptions = styled(Listbox.Options)`
   background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
   .active {
     background-color: var(--primary-color);
   }

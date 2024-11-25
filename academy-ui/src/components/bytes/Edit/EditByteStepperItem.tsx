@@ -2,7 +2,6 @@ import CreateQuestion from '@/components/app/Common/CreateQuestion';
 import UploadImageFromDeviceModal from '@/components/app/Image/UploadImageFromDeviceModal';
 import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
 import { ByteQuestionFragmentFragment, GuideQuestion, ImageDisplayMode, ImageType } from '@/graphql/generated/generated-types';
-import dummyImage from '@/images/TidbitsHub/image-placeholder.png';
 import { EditByteStep, EditByteType, StepItemInputGenericInput } from '@/types/request/ByteRequests';
 import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import { Question, UserInput } from '@/types/stepItems/stepItemDto';
@@ -12,9 +11,8 @@ import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/Delete
 import AddStepItemModal from '@dodao/web-core/components/app/Modal/StepItem/AddStepItemModal';
 import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
 import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
-import ViewEditableImage from '@dodao/web-core/components/core/image/ViewEditableImage';
+import EditableImage from '@dodao/web-core/components/core/image/EditableImage';
 import Input from '@dodao/web-core/components/core/input/Input';
-import OverlayOnHover from '@dodao/web-core/components/core/overlay/OverlayOnHover';
 import StyledSelect, { StyledSelectItem } from '@dodao/web-core/components/core/select/StyledSelect';
 import { InputType, QuestionType, UserDiscordConnectType } from '@dodao/web-core/types/deprecated/models/enums';
 import { ByteErrors } from '@dodao/web-core/types/errors/byteErrors';
@@ -25,7 +23,6 @@ import isEqual from 'lodash/isEqual';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
-import styles from './EditByteStepperItem.module.scss';
 
 interface EditByteStepperItemProps {
   space: SpaceWithIntegrationsDto;
@@ -445,37 +442,15 @@ For background of the image, use the color ${backgroundColor} and for the primar
               setSelectedItemId={(value) => updateStepDisplayMode(value!)}
             />
           </div>
-          <div className="w-full lg:w-1/2 my-4 flex justify-center items-center">
-            {step.imageUrl ? (
-              <div className="relative inline-block h-[200px] group justify-center">
-                <img
-                  src={step.imageUrl}
-                  style={{ height: '100%' }}
-                  className="cursor-pointer border border-color"
-                  title="Click to change image"
-                  onLoad={() => setImageLoaded(true)}
-                />
-                {imageLoaded && (
-                  <OverlayOnHover>
-                    <ViewEditableImage onClickEditIcon={() => setSelectImageUploadModal(true)} onClickTrashIcon={() => updateStepImageUrl('')} />
-                  </OverlayOnHover>
-                )}
-              </div>
-            ) : (
-              <div className="relative h-[150px] group">
-                <img src={dummyImage.src} style={{ height: '100%' }} className="cursor-pointer border border-color" />
-                <OverlayOnHover>
-                  <IconButton
-                    tooltip="Add Image"
-                    iconName={IconTypes.PlusIcon}
-                    height="30"
-                    width="30"
-                    className={`p-1 rounded-full ${styles.iconsColorToggle}`}
-                    onClick={() => setSelectImageUploadModal(true)}
-                  />
-                </OverlayOnHover>
-              </div>
-            )}
+          <div className="w-full lg:w-1/2 flex justify-center items-center">
+            <EditableImage
+              label="Select Image"
+              afterUploadLabel="Image Selected"
+              imageUrl={step.imageUrl}
+              onRemove={() => updateStepImageUrl(null)}
+              onUpload={() => setSelectImageUploadModal(true)}
+              height="200px"
+            />
           </div>
         </div>
         {step.displayMode === ImageDisplayMode.FullScreenImage ? (
