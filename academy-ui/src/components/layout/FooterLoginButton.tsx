@@ -10,7 +10,7 @@ export default function FooterLoginButton({ space }: SpaceProps) {
       <div className="text-sm text-gray-400 hover:text-gray-900 cursor-pointer underline" onClick={() => setShowLoginModal(true)}>
         Login
       </div>
-      ?{showLoginModal && <EmailLoginModal space={space} open={showLoginModal} onClose={() => setShowLoginModal(false)} />}
+      ?{showLoginModal && <EmailLoginModal space={space} open={showLoginModal} onClose={() => setShowLoginModal(false)} showSemiTransparentBg={true} />}
     </>
   );
 }
