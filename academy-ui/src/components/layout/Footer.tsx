@@ -4,9 +4,12 @@ import { SpaceTypes } from '@/types/space/SpaceDto';
 import { PredefinedSpaces } from '@dodao/web-core/utils/constants/constants';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useSession } from 'next-auth/react';
+import { Session } from '@dodao/web-core/types/auth/Session';
 
 export default function Footer({ space }: SpaceProps) {
   const pathname = usePathname();
+  const { data: session } = useSession() as { data: Session | null };
 
   if (
     (space.type !== SpaceTypes.TidbitsSite && space.type !== SpaceTypes.AcademySite) ||
@@ -27,7 +30,7 @@ export default function Footer({ space }: SpaceProps) {
           </Link>
           .
         </p>
-        <FooterLoginButton space={space} />
+        {!session?.username && <FooterLoginButton space={space} />}
       </div>
     </footer>
   );

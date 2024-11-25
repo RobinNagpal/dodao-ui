@@ -4,8 +4,8 @@ export const PredefinedSpaces = {
 };
 
 export enum Contexts {
-  login = 'login',
+  loginAndGoToSpaces = 'loginAndGoToSpaces',
   setupNewSpace = 'setupNewSpace',
-  verifyToken = 'verifyToken',
+  loginAndRedirectToHome = 'loginAndRedirectToHome',
   finishSetup = 'finishSetup',
 }
