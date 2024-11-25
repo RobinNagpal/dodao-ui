@@ -290,10 +290,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
                     return;
                 const { currentContextNode, targetNode } = currentDocAndTargetNode;
                 const target = targetNode;
-                if (selector.includes('iframe')) {
-                    const dataURL = yield captureScreenshotWithOverlay(target, currentContextNode.documentElement);
-                    (_b = event.source) === null || _b === void 0 ? void 0 : _b.postMessage({ type: 'elementScreenshotCaptured', dataURL }, { targetOrigin: '*' });
-                }
+                const dataURL = yield captureScreenshotWithOverlay(target, selector.includes('iframe') ? currentContextNode.documentElement : null);
+                (_b = event.source) === null || _b === void 0 ? void 0 : _b.postMessage({ type: 'elementScreenshotCaptured', dataURL }, { targetOrigin: '*' });
             }
         });
     }

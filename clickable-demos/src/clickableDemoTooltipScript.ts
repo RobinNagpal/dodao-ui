@@ -331,10 +331,12 @@
 
       const { currentContextNode, targetNode } = currentDocAndTargetNode;
       const target = targetNode as HTMLElement;
-      if ((selector as string).includes('iframe')) {
-        const dataURL = await captureScreenshotWithOverlay(target, currentContextNode.documentElement as HTMLIFrameElement);
-        event.source?.postMessage({ type: 'elementScreenshotCaptured', dataURL }, { targetOrigin: '*' });
-      }
+
+      const dataURL = await captureScreenshotWithOverlay(
+        target,
+        (selector as string).includes('iframe') ? (currentContextNode.documentElement as HTMLIFrameElement) : null
+      );
+      event.source?.postMessage({ type: 'elementScreenshotCaptured', dataURL }, { targetOrigin: '*' });
     }
   }
 
