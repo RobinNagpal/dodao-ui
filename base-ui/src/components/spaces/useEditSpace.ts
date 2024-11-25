@@ -55,6 +55,7 @@ export default function useEditSpace(): UseEditSpaceHelper {
       headingColor: '#111111',
       borderColor: '#d0d7de',
       blockBg: '#F5F9FF',
+      primaryTextColor: '#ffffff',
     },
   });
 

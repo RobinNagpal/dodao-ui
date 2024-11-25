@@ -1,13 +1,22 @@
+import { getWithIntegrations } from '@/app/api/helpers/getSpaceWithIntegrations';
+import { withErrorHandlingV1 } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { isRequestUserSuperAdmin } from '@/app/api/helpers/space/checkEditSpacePermission';
 import { prisma } from '@/prisma';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
+import { Space } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
-import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 
-async function getHandler(req: NextRequest) {
+async function getHandler(req: NextRequest): Promise<NextResponse<SpaceWithIntegrationsDto[]>> {
   const searchParams = req.nextUrl.searchParams;
   const domain = searchParams.get('domain');
 
-  const space = await prisma.space.findFirst({
+  const isUserSuperAdmin = await isRequestUserSuperAdmin(req);
+  if (isUserSuperAdmin && !domain) {
+    const spaces = await prisma.space.findMany();
+    return NextResponse.json(spaces as SpaceWithIntegrationsDto[]);
+  }
+
+  const space: Space | null = await prisma.space.findFirst({
     where: {
       domains: {
         has: domain,
@@ -16,38 +25,34 @@ async function getHandler(req: NextRequest) {
   });
 
   if (space) {
-    return NextResponse.json([space]);
+    return NextResponse.json([await getWithIntegrations(space)]);
   }
 
   if (domain?.includes('.tidbitshub.org') || domain?.includes('.tidbitshub-localhost.org')) {
     const idFromDomain = domain.split('.')[0];
-    const space = await prisma.space.findFirst({
+    const space = await prisma.space.findFirstOrThrow({
       where: {
         id: idFromDomain,
       },
     });
-    return NextResponse.json([space]);
+    return NextResponse.json([await getWithIntegrations(space)]);
   }
 
   if (domain === 'dodao-ui-robinnagpal.vercel.app' || domain === 'localhost' || domain?.includes('.vercel.app')) {
-    const space = await prisma.space.findFirst({
+    const space = await prisma.space.findFirstOrThrow({
       where: {
         id: {
           equals: process.env.DODAO_DEFAULT_SPACE_ID,
         },
       },
     });
-    return NextResponse.json([space]);
-  }
-  const isUserSuperAdmin = await isRequestUserSuperAdmin(req);
-  if (isUserSuperAdmin) {
-    return NextResponse.json(await prisma.space.findMany());
+    return NextResponse.json([await getWithIntegrations(space)]);
   }
 
-  if (!domain) return NextResponse.json('No domain passed', { status: 400 });
-  if (!space) return NextResponse.json('No space found for domain', { status: 404 });
+  if (!domain) throw new Error('Domain not provided');
+  if (!space) throw new Error('Space not found');
 
-  return NextResponse.json([space]);
+  return NextResponse.json([await getWithIntegrations(space as Space)]);
 }
 
-export const GET = withErrorHandling(getHandler);
+export const GET = withErrorHandlingV1<SpaceWithIntegrationsDto[]>(getHandler);

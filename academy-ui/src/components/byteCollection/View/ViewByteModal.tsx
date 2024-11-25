@@ -20,9 +20,9 @@ import axios from 'axios';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
-import whatIsClickableDemo from '../../../../onboardingByteCollection/0001-demo-byte-what-is-clickable-demo.json';
-import whatIsShortVideo from '../../../../onboardingByteCollection/0001-demo-byte-what-is-short-video.json';
-import whatIsTidbit from '../../../../onboardingByteCollection/0001-demo-byte-what-is-tidbit.json';
+import whatIsClickableDemo from '@/onboardingByteCollection/0001-demo-byte-what-is-clickable-demo.json';
+import whatIsShortVideo from '@/onboardingByteCollection/0001-demo-byte-what-is-short-video.json';
+import whatIsTidbit from '@/onboardingByteCollection/0001-demo-byte-what-is-tidbit.json';
 
 const EditByteView: React.ComponentType<any> = dynamic(() => import('@/components/bytes/Edit/EditByteView'), {
   ssr: false, // Disable server-side rendering for this component

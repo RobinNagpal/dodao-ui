@@ -1,4 +1,5 @@
 import ByteCollectionsGrid from '@/components/byteCollection/View/ByteCollectionsGrid';
+import onboardingByteCollection from '@/onboardingByteCollection/onboarding.json';
 import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import fetchDataServerSide from '@/utils/api/fetchDataServerSide';
@@ -6,8 +7,6 @@ import CollectionPageLoading from '@dodao/web-core/components/core/loaders/Colle
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { promises as fs } from 'fs';
-import path from 'path';
 import React, { Suspense } from 'react';
 
 /**
@@ -18,35 +17,24 @@ import React, { Suspense } from 'react';
 export async function getTidbitsSiteHomepageContents(space: SpaceWithIntegrationsDto, session?: Session) {
   const byteCollections = await fetchDataServerSide<ByteCollectionSummary[]>(`${getBaseUrl()}/api/${space.id}/byte-collections`);
 
-  if (session?.isAdminOfSpace && byteCollections.length < 3) {
-    try {
-      const filePath = path.join(process.cwd(), 'onboardingByteCollection', 'onboarding.json');
-
-      const onboardingByteCollection = JSON.parse(await fs.readFile(filePath, 'utf-8'));
-
-      byteCollections.unshift(onboardingByteCollection);
-    } catch (error) {
-      console.error('Error reading onboarding byte collection JSON file:', error);
-    }
-  }
-
+  const isAdmin = session?.isAdminOfSpace || session?.isSuperAdminOfDoDAO;
+  const onboardingCollection: ByteCollectionSummary[] = isAdmin ? [onboardingByteCollection as ByteCollectionSummary] : [];
   const tidbitsHomepage = space?.tidbitsHomepage;
+
   return (
     <PageWrapper>
       {tidbitsHomepage && (
         <div className="text-center">
-          {tidbitsHomepage.heading && (
-            <h1 className="text-balance text-2xl font-bold tracking-tight sm:text-2xl primary-text-color">{tidbitsHomepage.heading}</h1>
-          )}
+          {tidbitsHomepage.heading && <h1 className="text-balance text-2xl font-bold tracking-tight sm:text-2xl primary-color">{tidbitsHomepage.heading}</h1>}
           {tidbitsHomepage.shortDescription && <p className="mt-2 mb-6 text-lg leading-8">{tidbitsHomepage.shortDescription}</p>}
         </div>
       )}
       <Suspense fallback={<CollectionPageLoading />}>
         <ByteCollectionsGrid
-          byteCollections={byteCollections}
+          byteCollections={byteCollections.length > 2 ? byteCollections : [...onboardingCollection, ...byteCollections]}
           space={space}
           byteCollectionsBaseUrl={`/tidbit-collections`}
-          isAdmin={session?.isAdminOfSpace || session?.isSuperAdminOfDoDAO}
+          isAdmin={isAdmin}
         />
       </Suspense>
     </PageWrapper>

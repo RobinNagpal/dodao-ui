@@ -5,29 +5,29 @@ Must have features
 # 1st Priority
 
 ### Clickable Demos
-- [ ] View modal - the top bar is not visible on some of the steps (i guess where the demo step has a tooltip that is closer to the bottom of the screen) - see step#4 onwards `https://alchemix.tidbitshub.org/clickable-demos/view/withdraw-from-transmuter-8288`
 - [ ] View modal - only looks fine above 1024px, down that its all a mess so we can detect the screen size and show a message like view the demo on a large screen
 - [ ] Edit modal - remove showing of url from upload fields - new design is needed
+- [ ] Cross check code to generate images again - Robin - Next PR
+- [ ] Change icon for simulation. Show some other button - Robin - Next PR
+- [ ] Edit modal - in stepper - up arrow is not working 
 
-### Login issue for admins
-- [ ] Go to /login on a subdomain:
-  - [ ] (for tidbitshub only) if not logged in then single section modal is showing but behind it Full Screen Modal is showing - just gotta make the single section modal background opacity-100 for this flow only
-  
+
 - ### Tidbit
-- [ ] Edit modal - in stepper - add help text somewhere around the image selector
-- [ ] Edit modal - remove showing of url from upload fields - new design is needed
+- [ ] Edit modal - in stepper - add help text somewhere around the image selector - Already done as part of current PR
+- [ ] Edit modal - remove showing of url from upload fields - new design is needed - Already done as part of current PR
 
 ### Short videos
-- [ ] Edit modal - remove showing of url from upload fields - new design is needed
+- [ ] Edit modal - remove showing of url from upload fields - new design is needed - Already done as part of current PR
 
 ### Post signup - Help text
-- [ ] Add couple of clickable demos. One for creating tidbit, and other for creating a clickable demo.
+- [ ] Add couple of clickable demos. One for creating tidbit, and other for creating a clickable demo. 
 
 
 # 2nd Priority
 
 ### Others
 - [ ] Remove the hardcoded messages of notifications and errors. Make use of `default.json` file for all the messages 
+- [ ] Add more preview items in Theme Settings modal to see the color changes
 
 ### Clickable Demos
 - [ ] View modal - we can show a "Try it" button when clickable demo gets completed which takes user to some link relevant to the demo
@@ -72,6 +72,8 @@ users - Skipped
 - [ ] Remove the options from the extension. 
 - [ ] Try capturing 15-20 screenshots and see if we get any error. 
 - [ ] Add a close button on the bottom bar which can close the extension. Discuss the design before implementing
+- [ ] When i click choose another collection, and then click on some collection, it has to be clicked multiple times
+- [ ] The input box for entering file name is focused but as i type something, it goes away. 
 --------
 Optional features
 

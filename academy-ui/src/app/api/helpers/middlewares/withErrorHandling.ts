@@ -28,9 +28,12 @@ export function withErrorHandlingV1<T>(handler: Handler<T>): Handler<T> {
     try {
       return await handler(req, dynamic);
     } catch (error) {
-      await logError((error as any)?.response?.data || 'an error occured', {}, error as any, null, null);
+      const requestInfo = `host: ${req.nextUrl.host}, origin: ${req.nextUrl.origin}, url: ${req.url}, searchParams: ${req.nextUrl.searchParams.toString()}`;
+      console.log('error for ', requestInfo);
+      const message = (error as any)?.response?.data + `. Error occured while processing the request  ${requestInfo}`;
+      await logError(message, {}, error as any, null, null);
       await logErrorRequest(error as Error, req);
-      return NextResponse.json({ error: (error as any)?.response?.data || 'an error occured' }, { status: 500 });
+      return NextResponse.json({ error: message }, { status: 500 });
     }
   };
 }

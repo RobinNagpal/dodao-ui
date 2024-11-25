@@ -2,6 +2,7 @@ import { ThemeColors } from '@dodao/web-core/types/space';
 
 export const GlobalThemeColors: ThemeColors = {
   primaryColor: '#384aff',
+  primaryTextColor: '#ffffff',
   bgColor: '#ffffff',
   textColor: '#57606a',
   linkColor: '#111111',

@@ -5,48 +5,31 @@ import Stepper from '@/components/clickableDemos/Edit/EditClickableDemoStepper';
 import { useDeleteClickableDemo } from '@/components/clickableDemos/Edit/useDeleteClickableDemo';
 import { useEditClickableDemo } from '@/components/clickableDemos/Edit/useEditClickableDemo';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
-import withSpace from '@/contexts/withSpace';
-import { CreateSignedUrlInput } from '@/graphql/generated/generated-types';
-import { useI18 } from '@/hooks/useI18';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
 import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
-import { CreateSignedUrlRequest } from '@/types/request/SignedUrl';
-import { SingedUrlResponse } from '@/types/response/SignedUrl';
 import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
+import { base64ToFile, getFileName } from '@/utils/clickableDemos/clickableDemoUtils';
 import Block from '@dodao/web-core/components/app/Block';
 import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
 import Input from '@dodao/web-core/components/core/input/Input';
+import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import PageLoading from '@dodao/web-core/components/core/loaders/PageLoading';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { ClickableDemoErrors } from '@dodao/web-core/types/errors/clickableDemoErrors';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { slugify } from '@dodao/web-core/utils/auth/slugify';
-import { getUploadedImageUrlFromSingedUrl } from '@dodao/web-core/utils/upload/getUploadedImageUrlFromSingedUrl';
-import axios from 'axios';
-import html2canvas from 'html2canvas';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { CSSProperties, useEffect, useState } from 'react';
 
-interface EditClickableDemoProps {
+export interface EditClickableDemoProps {
   space: SpaceWithIntegrationsDto;
   demoId?: string | null;
   byteCollection: ByteCollectionSummary;
   closeDemoEditModal?: () => void;
 }
 
-function EditClickableDemo({ space, demoId, byteCollection, closeDemoEditModal }: EditClickableDemoProps) {
-  const spaceId = space.id;
-  const { postData } = usePostData<SingedUrlResponse, CreateSignedUrlRequest>(
-    {
-      errorMessage: 'Failed to get signed URL',
-    },
-    {}
-  );
-
+export default function EditClickableDemo({ space, demoId, byteCollection, closeDemoEditModal }: EditClickableDemoProps) {
   const { clickableDemoCreating, clickableDemoLoaded, clickableDemo, clickableDemoErrors, handleSubmit, updateClickableDemoFunctions } = useEditClickableDemo(
     space,
     demoId!
@@ -59,6 +42,9 @@ function EditClickableDemo({ space, demoId, byteCollection, closeDemoEditModal }
   ];
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [generatedImages, setGeneratedImages] = useState<boolean>(false);
+  const [currentScreenshotStep, setCurrentScreenshotStep] = useState<number>(0);
+
   const errors = clickableDemoErrors;
   const router = useRouter();
 
@@ -67,114 +53,86 @@ function EditClickableDemo({ space, demoId, byteCollection, closeDemoEditModal }
     return error ? error.toString() : '';
   };
 
-  const { $t } = useI18();
-  async function uploadToS3AndReturnScreenshotUrl(file: File | null, objectId: string) {
-    if (!file) return;
-    const input: CreateSignedUrlInput = {
-      imageType: 'ClickableDemos/SCREENSHOT_CAPTURE',
-      contentType: 'image/png',
-      objectId,
-      name: file.name.replace(' ', '_').toLowerCase(),
-    };
+  const iframeId = 'generating_screen_shot_iframe';
 
-    const response = await postData(`${getBaseUrl()}/api/s3-signed-urls`, { spaceId, input });
+  async function generateImages(): Promise<void> {
+    setGeneratedImages(true);
+  }
 
-    const signedUrl = response?.url!;
-    await axios.put(signedUrl, file, {
-      headers: { 'Content-Type': 'image/png' },
+  const iframeLoaded = async () => {
+    const step = clickableDemo.steps[currentScreenshotStep];
+    console.log('iframe loaded');
+    const iframe: HTMLIFrameElement | null = document.getElementById(iframeId) as HTMLIFrameElement | null;
+
+    if (!iframe) {
+      showNotification({
+        type: 'error',
+        message: 'Failed to load iframe',
+        heading: 'Error',
+      });
+      return;
+    }
+    const imageDataUrl = await getScreenshotFromIframe(iframe, { type: 'capturePageScreenshot' });
+    const urlOfPageScreenshot = await updateClickableDemoFunctions.uploadToS3AndReturnScreenshotUrl(
+      base64ToFile(imageDataUrl, getFileName(iframe.src))!,
+      currentScreenshotStep,
+      'page-screenshot'
+    );
+
+    updateClickableDemoFunctions.updateStep({ ...step, screenImgUrl: urlOfPageScreenshot });
+    if (step.selector) {
+      const elementDataUrl = await getScreenshotFromIframe(iframe, { type: 'captureElementScreenshot', selector: step.selector });
+      const urlOfElementScreenshot = await updateClickableDemoFunctions.uploadToS3AndReturnScreenshotUrl(
+        base64ToFile(elementDataUrl, getFileName(iframe.src))!,
+        currentScreenshotStep,
+        'element-screenshot'
+      );
+      updateClickableDemoFunctions.updateStep({ ...step, elementImgUrl: urlOfElementScreenshot });
+    }
+
+    if (currentScreenshotStep < clickableDemo.steps.length - 1) {
+      setCurrentScreenshotStep(currentScreenshotStep + 1);
+      iframe.src = clickableDemo.steps[currentScreenshotStep + 1].url;
+    } else {
+      setGeneratedImages(false);
+      setCurrentScreenshotStep(0);
+    }
+  };
+
+  function getScreenshotFromIframe(
+    iframe: HTMLIFrameElement,
+    message: {
+      type: 'capturePageScreenshot' | 'captureElementScreenshot';
+      selector?: string;
+    }
+  ): Promise<string> {
+    return new Promise<string>((resolve, reject) => {
+      // Function to handle the message event
+      const handleMessage = (event: MessageEvent) => {
+        console.log('Received message:', event.data);
+        if (event.data.type === 'pageScreenshotCaptured' || event.data.type === 'elementScreenshotCaptured') {
+          resolve(event.data.dataURL);
+          window.removeEventListener('message', handleMessage);
+        }
+      };
+      console.log('Sending message:', message);
+
+      window.addEventListener('message', handleMessage, false);
+
+      // Post message to the iframe
+      iframe.contentWindow && iframe.contentWindow.postMessage(message, '*');
     });
-    const screenshotUrl = getUploadedImageUrlFromSingedUrl(signedUrl);
-    return screenshotUrl;
   }
-  function getFileName(url: string): string {
-    const segments = url.split('/');
-    return segments[segments.length - 1] + '_screenshot.png';
+
+  function downloadImage(dataUrl: string, filename: string) {
+    const link = document.createElement('a');
+    link.href = dataUrl;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   }
-  function base64ToFile(base64String: string | undefined, filename: string): File | null {
-    if (!base64String) {
-      console.error('Invalid Base64 string');
-      return null;
-    }
 
-    const arr = base64String.split(',');
-    if (arr.length !== 2) {
-      console.error('Invalid Base64 string format');
-      return null;
-    }
-
-    const mimeTypeMatch = arr[0].match(/:(.*?);/);
-    const mimeType = mimeTypeMatch ? mimeTypeMatch[1] : '';
-
-    const byteString = atob(arr[1]);
-    const byteNumbers = new Uint8Array(byteString.length);
-
-    for (let i = 0; i < byteString.length; i++) {
-      byteNumbers[i] = byteString.charCodeAt(i);
-    }
-
-    return new File([byteNumbers], filename, { type: mimeType });
-  }
-  async function generate_images() {
-    const iframe = document.createElement('iframe') as HTMLIFrameElement;
-    iframe.id = 'iframe';
-    iframe.style.width = '1920px';
-    iframe.style.height = '1080px';
-    iframe.style.border = 'none';
-    iframe.style.position = 'absolute';
-    iframe.style.left = '-9999px';
-    iframe.style.top = '-9999px';
-    document.body.appendChild(iframe);
-    let stepNo = 1;
-    for (const step of clickableDemo.steps) {
-      try {
-        // Fetch the HTML content from the URL
-        const response = await axios.get(step.url);
-        if (response.status !== 200) {
-          throw new Error('Network response was not ok');
-        }
-        const htmlContent = response.data;
-        const blob = new Blob([htmlContent], { type: 'text/html' });
-        const iframe = document.getElementById('iframe') as HTMLIFrameElement;
-        if (iframe) {
-          const iframeSrc = URL.createObjectURL(blob); // Create a URL from the blob
-          iframe.src = iframeSrc; // Set the iframe src to the blob URL
-
-          // Optionally wait for the iframe to load
-          await new Promise<void>((resolve) => {
-            iframe.onload = () => {
-              resolve();
-            };
-          });
-
-          const iframeDocument = iframe.contentDocument || iframe.contentWindow?.document;
-          if (iframeDocument) {
-            const canvas = await html2canvas(iframeDocument.documentElement, {
-              useCORS: true,
-              width: 1920,
-              height: 1080,
-              backgroundColor: null,
-            });
-            if (canvas.width > 0 && canvas.height > 0) {
-              let dataUrl = canvas.toDataURL('image/png');
-              const filename = getFileName(step.url);
-              let screenshotFile = base64ToFile(dataUrl, filename);
-              let screenshotURL: string | undefined;
-              const objectId = (space?.name && slugify(space?.name)) || space?.id || 'new-space';
-              screenshotURL = await uploadToS3AndReturnScreenshotUrl(screenshotFile, objectId.replace(/[^a-z0-9]/gi, '_'));
-              step.screenImgUrl = screenshotURL;
-              showNotification({ message: `Image generated for step ${stepNo} successfully`, type: 'success' });
-              stepNo += 1;
-            }
-          }
-        }
-      } catch {
-        console.error('Error fetching or processing the URL:');
-        showNotification({ message: 'Some Error occurred', type: 'error' });
-      }
-    }
-    showNotification({ message: 'All images Generated Successfully', type: 'success' });
-    document.body.removeChild(iframe);
-  }
   useEffect(() => {
     updateClickableDemoFunctions.initialize();
   }, [demoId]);
@@ -182,6 +140,19 @@ function EditClickableDemo({ space, demoId, byteCollection, closeDemoEditModal }
   async function clickSubmit(byteCollection: ByteCollectionSummary) {
     handleSubmit(byteCollection);
   }
+
+  const styles: CSSProperties = {
+    width: '100%',
+    height: '100%',
+    minHeight: '93vh',
+    border: 'none',
+    position: 'absolute',
+    left: '0',
+    top: '100',
+    opacity: 1,
+    transition: 'opacity 0.5s ease-in-out',
+    pointerEvents: 'none',
+  };
 
   return (
     <PageWrapper>
@@ -197,7 +168,7 @@ function EditClickableDemo({ space, demoId, byteCollection, closeDemoEditModal }
                       setShowDeleteModal(true);
                     }
                     if (key === 'generate_images') {
-                      generate_images();
+                      generateImages();
                     }
                   }}
                   className="ml-4"
@@ -279,8 +250,12 @@ function EditClickableDemo({ space, demoId, byteCollection, closeDemoEditModal }
           }}
         />
       )}
+      {generatedImages && clickableDemo.steps?.[0].url && (
+        <>
+          <iframe src={clickableDemo.steps?.[0].url} style={styles} id={iframeId} onLoad={iframeLoaded} />
+          <FullPageLoader message={'Generating Screen shot for step ' + currentScreenshotStep} className={'z-50 h-20 block-bg-color'} />
+        </>
+      )}
     </PageWrapper>
   );
 }
-
-export default withSpace(EditClickableDemo);

@@ -1,5 +1,5 @@
 import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
-import { getSpaceWithIntegrations } from '@/app/api/helpers/space';
+import { getSpaceWithIntegrations } from '@/app/api/helpers/getSpaceWithIntegrations';
 import { isDoDAOSuperAdmin } from '@/app/api/helpers/space/isSuperAdmin';
 import { upsertSpaceIntegrations } from '@/app/api/helpers/space/upsertSpaceIntegrations';
 import { prisma } from '@/prisma';

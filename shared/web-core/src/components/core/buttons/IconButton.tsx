@@ -77,7 +77,7 @@ function IconButton({
     <div title={tooltip} onClick={disabled ? undefined : onClick}>
       <StyledUiButton
         disabled={disabled}
-        primary={primary}
+        primary={!!primary}
         variant={variant}
         loading={loading}
         removeBorder={removeBorder}

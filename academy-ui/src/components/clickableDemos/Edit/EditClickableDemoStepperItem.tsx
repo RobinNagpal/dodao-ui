@@ -25,6 +25,7 @@ interface StepProps {
   moveStepDown?: (stepUuid: string) => void;
   removeStep?: (stepUuid: string) => void;
   onUpdateStep: (step: ClickableDemoStepInput) => void;
+  uploadToS3AndReturnScreenshotUrl: (file: File, stepNumber: number, imageType: 'page-screenshot' | 'element-screenshot') => Promise<string>;
 }
 
 const tooltipStyleSelect: StyledSelectItem[] = [
@@ -57,6 +58,7 @@ export default function EditClickableDemoStepperItem({
   moveStepDown,
   removeStep,
   onUpdateStep,
+  uploadToS3AndReturnScreenshotUrl,
 }: StepProps) {
   const [showSelectHtmlCaptureModal, setShowSelectHtmlCaptureModal] = useState(false);
   const [showElementSelectorModal, setShowElementSelectorModal] = useState(false);

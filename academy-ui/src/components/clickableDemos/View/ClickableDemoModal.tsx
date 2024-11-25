@@ -5,8 +5,7 @@ import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenMo
 import { LocalStorageKeys } from '@dodao/web-core/types/deprecated/models/enums';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import union from 'lodash/union';
-import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import React, { CSSProperties, useEffect, useState } from 'react';
 
 interface ClickableDemoModalProps {
   clickableDemoWithSteps: ClickableDemoWithSteps;
@@ -15,139 +14,152 @@ interface ClickableDemoModalProps {
 }
 
 function ClickableDemoModal({ clickableDemoWithSteps, space, onClose }: ClickableDemoModalProps) {
-  const router = useRouter();
   const { showNotification } = useNotificationContext();
-  const [isLoading, setIsLoading] = useState(true); // Loading state
-  let indexCount = 0;
 
-  useEffect(() => {
-    function receiveMessage(event: any) {
-      if (event.data.nextButton) {
-        setIframeOpacity(indexCount, false);
-        indexCount++;
-        setIframeOpacity(indexCount, true);
-        iframeArr[indexCount].focus();
-        handleLoad(indexCount);
-      }
+  const [selectedStepNumber, setSelectedStepNumber] = useState(0);
+  const [iframeLoaded, setIframeLoaded] = useState(false);
+  const [loadedSteps, setLoadedSteps] = useState<number[]>([]);
 
-      if (event.data.backButton) {
-        setIframeOpacity(indexCount, false);
-        indexCount--;
-        setIframeOpacity(indexCount, true);
-        iframeArr[indexCount].focus();
-        handleLoad(indexCount);
-      }
-
-      if (event.data.completeButton) {
-        localStorage.setItem(
-          LocalStorageKeys.COMPLETED_CLICKABLE_DEMOS,
-          JSON.stringify(union([...JSON.parse(localStorage.getItem(LocalStorageKeys.COMPLETED_CLICKABLE_DEMOS) || '[]'), clickableDemoWithSteps.id]))
-        );
-        showNotification({
-          type: 'success',
-          message: "You've successfully completed this demo. Ready for the next one?",
-          heading: 'Success 🎉',
-        });
-        onClose();
-      }
-    }
-
-    const handleLoad = (index: number) => {
-      const iframeArrElement = iframeArr[index];
-      const iframeNotPresent = !iframeArrElement;
-      if (iframeNotPresent) return; // Ensure the iframe ref is set
-
-      setIsLoading(false); // Hide loader when the iframe is loaded
-      const contentWindow = iframeArrElement.contentWindow;
-
-      // Set the CSS variables in the iframe
-      const parentStyles = window.getComputedStyle(document.body);
-
-      // Collect CSS variables
-      const cssVariables = ['--primary-color', '--bg-color', '--text-color', '--link-color', '--heading-color', '--border-color', '--block-bg'];
-
-      const cssValues: any = {};
-      cssVariables.forEach((variable) => {
-        cssValues[variable] = parentStyles.getPropertyValue(variable);
-      });
-
-      // Send the CSS variables to the iframe
-      contentWindow!.postMessage({ type: 'setCssVariables', cssValues }, '*');
-
-      contentWindow!.postMessage(
+  function sendMessageToIframe(stepIndex: number) {
+    const iframe: HTMLIFrameElement | null = document.getElementById(`iframe-${stepIndex}`) as HTMLIFrameElement | null;
+    if (iframe && iframe.contentWindow) {
+      iframe.contentWindow.postMessage(
         {
           type: 'showTooltip',
-          elementXPath: clickableDemoWithSteps.steps[index].selector,
-          tooltipContent: clickableDemoWithSteps.steps[index].tooltipInfo,
-          tooltipArrayLen: clickableDemoWithSteps.steps.length,
-          currentTooltipIndex: index,
-          buttonColor: space?.themeColors?.primaryColor,
-          buttonTextColor: space?.themeColors?.textColor,
-          placement: clickableDemoWithSteps.steps[index].placement,
         },
         '*'
       );
-      // Load the next Iframe
-      if (index < clickableDemoWithSteps.steps.length - 1) {
-        iframeArr[index + 1].src = clickableDemoWithSteps.steps[index + 1].url;
-      }
-    };
+    }
+  }
 
-    // Function to set iframe opacity
-    const setIframeOpacity = (index: number, visible: boolean) => {
-      const iframe = iframeArr[index];
-      if (iframe) {
-        iframe.style.opacity = visible ? '1' : '0';
-        iframe.style.pointerEvents = visible ? 'auto' : 'none';
-      }
-    };
-
-    window.addEventListener('message', receiveMessage);
-
-    // Container where all the iframes will be appended
-    const container = document.getElementById('iframe-container');
-
-    const iframeArr: HTMLIFrameElement[] = [];
-
-    for (let i = 0; i < clickableDemoWithSteps.steps.length; i++) {
-      iframeArr[i] = document.createElement('iframe');
-      if (i === 0) {
-        iframeArr[i].src = clickableDemoWithSteps.steps[i].url; // Load only the first iframe initially
-      }
-      iframeArr[i].width = '100%';
-      iframeArr[i].style.opacity = i === 0 ? '1' : '0';
-      iframeArr[i].style.pointerEvents = i === 0 ? 'auto' : 'none';
-      iframeArr[i].style.transition = 'opacity 0.3s ease-in-out'; // Smooth transition for opacity
-      iframeArr[i].style.position = 'absolute'; // Position all iframes on top of each other
-      iframeArr[i].style.top = '0';
-      iframeArr[i].style.left = '0';
-      iframeArr[i].style.height = '93vh';
-      i === 0
-        ? (iframeArr[i].onload = function () {
-            handleLoad(i);
-          })
-        : null;
-
-      // Append the iframe to the container
-      container!.appendChild(iframeArr[i]);
+  function receiveMessage(event: any) {
+    if (event.data.nextButton) {
+      setSelectedStepNumber((prev) => {
+        const next = prev + 1;
+        sendMessageToIframe(next);
+        return next;
+      });
     }
 
-    // Cleanup function to remove the iframe
+    if (event.data.backButton) {
+      setSelectedStepNumber((prev) => {
+        const next = prev - 1;
+        sendMessageToIframe(next);
+        return next;
+      });
+    }
+
+    if (event.data.completeButton) {
+      localStorage.setItem(
+        LocalStorageKeys.COMPLETED_CLICKABLE_DEMOS,
+        JSON.stringify(
+          union([...(JSON.parse(localStorage.getItem(LocalStorageKeys.COMPLETED_CLICKABLE_DEMOS) || '[]') as string[]), clickableDemoWithSteps.id])
+        )
+      );
+      showNotification({
+        type: 'success',
+        message: "You've successfully completed this demo. Ready for the next one?",
+        heading: 'Success 🎉',
+      });
+      onClose();
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener('message', receiveMessage);
     return () => {
-      // Checks if the iframe still exists in the document before attempting to remove it
-      for (let i = 0; i < iframeArr.length; i++) {
-        if (container!.contains(iframeArr[i])) {
-          container!.removeChild(iframeArr[i]);
-        }
-      }
       window.removeEventListener('message', receiveMessage);
     };
-  }, [clickableDemoWithSteps.steps, router, space]);
+  }, []);
+
+  useEffect(() => {
+    // Initialize loadedSteps with the first six steps
+    setLoadedSteps((prevLoadedSteps) => {
+      const initialStepsToLoad = [];
+      for (let i = 0; i <= 5 && i < clickableDemoWithSteps.steps.length; i++) {
+        if (!prevLoadedSteps.includes(i)) {
+          initialStepsToLoad.push(i);
+        }
+      }
+      if (initialStepsToLoad.length > 0) {
+        return [...prevLoadedSteps, ...initialStepsToLoad];
+      } else {
+        return prevLoadedSteps;
+      }
+    });
+  }, [clickableDemoWithSteps.steps.length]);
+
+  useEffect(() => {
+    // Update loadedSteps when selectedStepNumber changes
+    setLoadedSteps((prevLoadedSteps) => {
+      const maxToLoad = selectedStepNumber + 5;
+      const stepsToLoad = [];
+      for (let i = selectedStepNumber; i <= maxToLoad && i < clickableDemoWithSteps.steps.length; i++) {
+        if (!prevLoadedSteps.includes(i)) {
+          stepsToLoad.push(i);
+        }
+      }
+      if (stepsToLoad.length > 0) {
+        return [...prevLoadedSteps, ...stepsToLoad];
+      } else {
+        return prevLoadedSteps;
+      }
+    });
+  }, [selectedStepNumber, clickableDemoWithSteps.steps.length]);
+
+  const parentStyles = window.getComputedStyle(document.body);
+  // Collect CSS variables
+  const cssVariables = [
+    '--primary-color',
+    '--primary-text-color',
+    '--bg-color',
+    '--text-color',
+    '--link-color',
+    '--heading-color',
+    '--border-color',
+    '--block-bg',
+  ];
+
+  const cssValues: any = {};
+  cssVariables.forEach((variable) => {
+    cssValues[variable] = parentStyles.getPropertyValue(variable);
+  });
 
   return (
     <FullScreenModal open={true} onClose={onClose} title={clickableDemoWithSteps.title}>
       <div id="iframe-container" className="relative w-full h-[93vh]">
-        {isLoading && <FullPageLoader />}
+        {!iframeLoaded && selectedStepNumber === 0 && <FullPageLoader />}
+        {loadedSteps.map((index) => {
+          const step = clickableDemoWithSteps.steps[index];
+          const data = {
+            cssValues, // your collected CSS variables
+            elementXPath: step.selector,
+            tooltipContent: step.tooltipInfo,
+            tooltipArrayLen: clickableDemoWithSteps.steps.length,
+            currentTooltipIndex: index,
+            placement: step.placement,
+          };
+
+          const isActive = selectedStepNumber === index;
+
+          const styles: CSSProperties = {
+            width: '100%',
+            height: '100%',
+            minHeight: '93vh',
+            border: 'none',
+            position: 'absolute',
+            left: '0',
+            top: '0',
+            opacity: isActive ? 1 : 0,
+            transition: 'opacity 0.5s ease-in-out',
+            pointerEvents: isActive ? 'auto' : 'none',
+            zIndex: isActive ? 1 : 0,
+          };
+
+          const { url } = step;
+          const onLoad = index === 0 && !iframeLoaded ? () => setIframeLoaded(true) : undefined;
+          return <iframe key={index} id={`iframe-${index}`} style={styles} src={url} name={JSON.stringify(data)} onLoad={onLoad} />;
+        })}
       </div>
     </FullScreenModal>
   );

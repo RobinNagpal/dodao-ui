@@ -1,5 +1,5 @@
 import { withErrorHandlingV1 } from '@/app/api/helpers/middlewares/withErrorHandling';
-import { getSpaceWithIntegrations } from '@/app/api/helpers/space';
+import { getSpaceWithIntegrations } from '@/app/api/helpers/getSpaceWithIntegrations';
 import { checkEditSpacePermission } from '@/app/api/helpers/space/checkEditSpacePermission';
 import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
 import { prisma } from '@/prisma';
