@@ -445,6 +445,7 @@ For background of the image, use the color ${backgroundColor} and for the primar
           <div className="w-full lg:w-1/2 flex justify-center items-center">
             <EditableImage
               label="Select Image"
+              afterUploadLabel="Image Selected"
               imageUrl={step.imageUrl}
               onRemove={() => updateStepImageUrl(null)}
               onUpload={() => setSelectImageUploadModal(true)}
