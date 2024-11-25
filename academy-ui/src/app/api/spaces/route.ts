@@ -1,4 +1,4 @@
-import { getSpaceWithIntegrations, getWithIntegrations } from '@/app/api/helpers/getSpaceWithIntegrations';
+import { getWithIntegrations } from '@/app/api/helpers/getSpaceWithIntegrations';
 import { withErrorHandlingV1 } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { isRequestUserSuperAdmin } from '@/app/api/helpers/space/checkEditSpacePermission';
 import { prisma } from '@/prisma';
@@ -9,6 +9,12 @@ import { NextRequest, NextResponse } from 'next/server';
 async function getHandler(req: NextRequest): Promise<NextResponse<SpaceWithIntegrationsDto[]>> {
   const searchParams = req.nextUrl.searchParams;
   const domain = searchParams.get('domain');
+
+  const isUserSuperAdmin = await isRequestUserSuperAdmin(req);
+  if (isUserSuperAdmin && !domain) {
+    const spaces = await prisma.space.findMany();
+    return NextResponse.json(spaces as SpaceWithIntegrationsDto[]);
+  }
 
   const space: Space | null = await prisma.space.findFirst({
     where: {
@@ -41,15 +47,6 @@ async function getHandler(req: NextRequest): Promise<NextResponse<SpaceWithInteg
       },
     });
     return NextResponse.json([await getWithIntegrations(space)]);
-  }
-  const isUserSuperAdmin = await isRequestUserSuperAdmin(req);
-  if (isUserSuperAdmin) {
-    const spaces = await prisma.space.findMany();
-    const spacesWithIntegrations: SpaceWithIntegrationsDto[] = [];
-    for (const s of spaces) {
-      spacesWithIntegrations.push(await getSpaceWithIntegrations(s.id));
-    }
-    return NextResponse.json(spacesWithIntegrations);
   }
 
   if (!domain) throw new Error('Domain not provided');
