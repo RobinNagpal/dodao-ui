@@ -5,6 +5,7 @@ import Input from '@dodao/web-core/components/core/input/Input';
 import SingleSectionModal from '@dodao/web-core/components/core/modals/SingleSectionModal';
 import { WebCoreSpace } from '@dodao/web-core/types/space';
 import { getEmailProviderUrl } from '@dodao/web-core/utils/api/getEmailProviderUrl';
+import { Contexts, PredefinedSpaces } from '@dodao/web-core/utils/constants/constants';
 import { useState } from 'react';
 
 export interface EmailLoginModalProps {
@@ -23,7 +24,7 @@ function EmailLoginModal({ open, onClose, space, showSemiTransparentBg }: EmailL
     e.preventDefault();
     setUpserting(true);
     // Assume this fetch function sends an email to the user
-    const response = await fetch('/api/auth/custom-email/send-verification', {
+    const response = await fetch('/api/auth/custom-email/login-signup-by-email', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -31,7 +32,7 @@ function EmailLoginModal({ open, onClose, space, showSemiTransparentBg }: EmailL
       body: JSON.stringify({
         email,
         spaceId: space.id,
-        authProvider: 'custom-email',
+        context: `${space.id === PredefinedSpaces.TIDBITS_HUB ? Contexts.loginAndGoToSpaces : Contexts.loginAndRedirectToHome}`,
       }),
     });
     setUpserting(false);
@@ -42,12 +43,11 @@ function EmailLoginModal({ open, onClose, space, showSemiTransparentBg }: EmailL
     }
   };
 
+  const emailUrl = email ? getEmailProviderUrl(email) : null;
+
   const handleLinkClick = () => {
-    const url = getEmailProviderUrl(email);
-    if (url) {
-      window.open(url, '_blank');
-    } else {
-      alert('Email provider not recognized. Please open your email manually.');
+    if (emailUrl) {
+      window.open(emailUrl, '_blank');
     }
   };
 
@@ -74,7 +74,7 @@ function EmailLoginModal({ open, onClose, space, showSemiTransparentBg }: EmailL
           <div className="text-center">
             <p>
               A verification link has been sent to{' '}
-              <span onClick={handleLinkClick} className="underline link-color cursor-pointer">
+              <span onClick={emailUrl ? handleLinkClick : undefined} className={`${emailUrl ? 'link-color underline cursor-pointer' : ''}`}>
                 your email
               </span>
               . Click on the link provided in the email to log in.

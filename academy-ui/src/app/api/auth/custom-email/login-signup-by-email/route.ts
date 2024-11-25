@@ -5,7 +5,8 @@ import { User } from 'next-auth/core/types';
 import { headers } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 import { defaultNormalizer, randomString, sendVerificationRequest } from '@dodao/web-core/api/auth/custom-email/send-verification';
-import { Contexts, PredefinedSpaces } from '@dodao/web-core/src/utils/constants/constants';
+import { PredefinedSpaces } from '@dodao/web-core/src/utils/constants/constants';
+import { LoginSignupByEmailRequestBody } from '@/types/request/LoginSignupByEmailRequest';
 
 const createUser = async (user: User & { email: string }, spaceId: string) => {
   console.log('######### signIn - Creating new user #########');
@@ -50,8 +51,8 @@ const createUser = async (user: User & { email: string }, spaceId: string) => {
  * At the end, it returns a redirect to the `verify-request` page.
  */
 async function postHandler(req: NextRequest) {
-  const reqBody = await req.json();
-  const { spaceId, provider, email, context = Contexts.login } = reqBody;
+  const reqBody = await req.json() as LoginSignupByEmailRequestBody;
+  const { spaceId, email, context } = reqBody;
 
   console.log('######### send-verification - POST #########');
   console.log('request', JSON.stringify(reqBody));
