@@ -21,9 +21,9 @@ interface StepProps {
   step: ClickableDemoStepInput;
   stepIndex: number;
   stepErrors: ClickableDemoStepError | undefined;
-  moveStepUp?: (stepUuid: string) => void;
-  moveStepDown?: (stepUuid: string) => void;
-  removeStep?: (stepUuid: string) => void;
+  moveStepUp: (stepUuid: string) => void;
+  moveStepDown: (stepUuid: string) => void;
+  removeStep: (stepUuid: string) => void;
   onUpdateStep: (step: ClickableDemoStepInput) => void;
   uploadToS3AndReturnScreenshotUrl: (file: File, stepNumber: number, imageType: 'page-screenshot' | 'element-screenshot') => Promise<string>;
 }
@@ -98,13 +98,26 @@ export default function EditClickableDemoStepperItem({
     <div className={`${styles.StyledStepContainer} p-5`} style={{ border: !!clickableDemoErrors?.steps?.[step.id] ? '1px solid red' : 'none' }}>
       <div className="flex justify-end min-h-10">
         <IconButton
-          onClick={() => moveStepDown?.(step.id)}
+          onClick={() => moveStepDown(step.id)}
           iconName={IconTypes.MoveDown}
+          tooltip={`${stepIndex + 1 === clickableDemo.steps.length ? 'Cannot move the last step further down' : 'Move Step Down'}`}
           removeBorder
           disabled={stepIndex + 1 === clickableDemo.steps.length}
         />
-        <IconButton onClick={() => moveStepUp?.(step.id)} iconName={IconTypes.MoveUp} removeBorder disabled={stepIndex === 0} />
-        <IconButton onClick={() => removeStep?.(step.id)} iconName={IconTypes.Trash} removeBorder disabled={clickableDemo.steps.length === 1} />
+        <IconButton
+          onClick={() => moveStepUp(step.id)}
+          iconName={IconTypes.MoveUp}
+          tooltip={`${stepIndex === 0 ? 'Cannot move the first step further up' : 'Move Step Up'}`}
+          removeBorder
+          disabled={stepIndex === 0}
+        />
+        <IconButton
+          onClick={() => removeStep(step.id)}
+          iconName={IconTypes.Trash}
+          tooltip={`${clickableDemo.steps.length === 1 ? 'Cannot delete the only step' : 'Delete Step'}`}
+          removeBorder
+          disabled={clickableDemo.steps.length === 1}
+        />
       </div>
       <div className="w-full">
         <div className="mt-4">

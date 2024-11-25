@@ -397,7 +397,7 @@ For background of the image, use the color ${backgroundColor} and for the primar
             removeBorder
             disabled={byte.steps.length === 1}
             onClick={() => setShowDeleteModal(true)}
-            tooltip="Delete Step"
+            tooltip={`${byte.steps.length === 1 ? 'Cannot delete the only step' : 'Delete Step'}`}
           />
           <IconButton
             className="float-right ml-2"
@@ -405,7 +405,7 @@ For background of the image, use the color ${backgroundColor} and for the primar
             removeBorder
             disabled={stepIndex === 0}
             onClick={() => moveStepUp(step.uuid)}
-            tooltip="Move Step Up"
+            tooltip={`${stepIndex === 0 ? 'Cannot move the first step further up' : 'Move Step Up'}`}
           />
           <IconButton
             className="float-right ml-2"
@@ -413,7 +413,7 @@ For background of the image, use the color ${backgroundColor} and for the primar
             removeBorder
             disabled={stepIndex + 1 === byte.steps.length}
             onClick={() => moveStepDown(step.uuid)}
-            tooltip="Move Step Down"
+            tooltip={`${stepIndex + 1 === byte.steps.length ? 'Cannot move the last step further down' : 'Move Step Down'}`}
           />
           <IconButton
             className="float-right ml-2"
