@@ -170,9 +170,9 @@ export default function EditClickableDemoStepperItem({
           objectId={(space?.name && slugify(space?.name)) || space?.id || 'new-space'}
           fileUrl={step.url!}
           xPath={step.selector || ''}
-          elementImgUrl={step.elementImgUrl || ''}
-          onLoading={setUploadHTMLFileLoading}
           setShowModal={setShowElementSelectorModal}
+          uploadToS3AndReturnScreenshotUrl={uploadToS3AndReturnScreenshotUrl}
+          stepIndex={stepIndex}
         />
       )}
     </div>
