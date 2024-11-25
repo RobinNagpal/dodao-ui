@@ -30,7 +30,7 @@ export default function Footer({ space }: SpaceProps) {
           </Link>
           .
         </p>
-        {!session && <FooterLoginButton space={space} />}
+        {!session?.username && <FooterLoginButton space={space} />}
       </div>
     </footer>
   );
