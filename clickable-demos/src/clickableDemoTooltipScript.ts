@@ -27,9 +27,9 @@
         document.documentElement.style.setProperty(variable, data.cssValues[variable]);
       }
     }
-    const { tooltipContent: contentText, currentTooltipIndex, tooltipArrayLen, placement } = data;
+    const { tooltipContent: contentText, currentTooltipIndex, tooltipArrayLen, placement, elementXPath } = data;
 
-    const currentDocAndTargetNode = getCurrentContextNodeAndTarget(data)!;
+    const currentDocAndTargetNode = getCurrentContextNodeAndTarget(elementXPath)!;
     if (!currentDocAndTargetNode.targetNode || !currentDocAndTargetNode.currentContextNode) return;
 
     const { currentContextNode, targetNode } = currentDocAndTargetNode;
@@ -113,8 +113,244 @@
     });
   }
 
-  function getCurrentContextNodeAndTarget(data: TooltipEventData): { currentContextNode: Document; targetNode: Node } | null {
-    const { elementXPath } = data;
+  function elementSelector(event: MessageEvent) {
+    let selectedElement: HTMLElement | null = null;
+    let finalXPath: string | null = null;
+    let hoverEnabled = true;
+    let hoverTimer: number | undefined;
+    let containingIframe: HTMLIFrameElement | null;
+
+    document.body.style.cursor = 'pointer';
+    document.querySelectorAll('input').forEach((input) => {
+      (input as HTMLElement).style.cursor = 'pointer';
+    });
+
+    const upDownButtons = createUpDownButtons();
+    const selectButton = createSelectButton();
+    const clearSelectionButton = createClearSelectionButton();
+
+    document.body.appendChild(upDownButtons);
+    document.body.appendChild(selectButton);
+    document.body.appendChild(clearSelectionButton);
+
+    document.addEventListener('mouseover', (event: MouseEvent) => {
+      if (hoverEnabled) containingIframe = null;
+      handleMouseOver(event);
+    });
+    document.addEventListener('click', (event: MouseEvent) => {
+      if (hoverEnabled) containingIframe = null;
+      handleClick(event);
+    });
+
+    addEventListenersToIframe();
+
+    function addEventListenersToIframe() {
+      // Get all iframes in the document
+      const iframes = document.querySelectorAll('iframe');
+
+      iframes.forEach((iframe) => {
+        // Ensure the iframe is of type HTMLIFrameElement
+        if (iframe instanceof HTMLIFrameElement) {
+          // Function to attach event listeners to the iframe content
+          const attachEventListeners = () => {
+            try {
+              const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
+              if (iframeDoc) {
+                iframeDoc.addEventListener('click', (event: Event) => {
+                  event.stopPropagation();
+                  containingIframe = iframe;
+                  handleClick(event as MouseEvent);
+                });
+
+                iframeDoc.addEventListener('mouseover', (event: Event) => {
+                  event.stopPropagation();
+                  containingIframe = iframe;
+                  handleMouseOver(event as MouseEvent);
+                });
+              } else {
+                console.error('Unable to access iframe content. It might be cross-origin.');
+              }
+            } catch (error) {
+              console.error('Error accessing or attaching event listeners to iframe content:', error);
+            }
+          };
+          attachEventListeners();
+        }
+      });
+    }
+
+    function createUpDownButtons(): HTMLDivElement {
+      const container = document.createElement('div');
+      container.classList.add('dodao-up-down-buttons');
+
+      const minusButton = document.createElement('button');
+      minusButton.textContent = '-';
+      minusButton.title = 'Click to move to parent of element';
+      minusButton.addEventListener('click', () => navigateSelection('up'));
+      container.appendChild(minusButton);
+
+      const plusButton = document.createElement('button');
+      plusButton.textContent = '+';
+      plusButton.title = 'Click to move down to first child of element';
+      plusButton.addEventListener('click', () => navigateSelection('down'));
+      container.appendChild(plusButton);
+
+      return container;
+    }
+
+    function navigateSelection(direction: 'up' | 'down') {
+      if (!selectedElement) return;
+
+      if (direction === 'up' && selectedElement.parentElement && selectedElement.parentElement !== document.body) {
+        selectedElement = selectedElement.parentElement;
+      } else if (direction === 'down' && selectedElement.firstElementChild) {
+        selectedElement = selectedElement.firstElementChild as HTMLElement;
+      } else {
+        return;
+      }
+      createOrUpdateOverlay(selectedElement, containingIframe);
+      finalXPath = getXPath(selectedElement, containingIframe);
+    }
+
+    function createSelectButton(): HTMLButtonElement {
+      const button = document.createElement('button');
+      button.textContent = 'Select';
+      button.classList.add('dodao-select-element-button');
+      button.disabled = true;
+      button.style.opacity = '0.5';
+
+      button.addEventListener('click', async () => {
+        if (selectedElement && finalXPath) {
+          const dataUrl = await captureScreenshotWithOverlay(selectedElement, containingIframe);
+
+          event.source?.postMessage(
+            { xpath: finalXPath, elementImgUrl: dataUrl },
+            { targetOrigin: event.origin } // Use options object instead of just `event.origin`
+          );
+        }
+      });
+
+      button.addEventListener('mouseover', () => {
+        if (!button.disabled) button.style.opacity = '0.7';
+      });
+
+      button.addEventListener('mouseout', () => {
+        if (!button.disabled) button.style.opacity = '1';
+      });
+
+      return button;
+    }
+
+    function createClearSelectionButton(): HTMLButtonElement {
+      const button = document.createElement('button');
+      button.textContent = 'Clear Selection';
+      button.classList.add('dodao-clear-selection-button');
+      button.disabled = selectedElement === null;
+      button.style.opacity = '0.5';
+
+      button.addEventListener('mouseover', () => {
+        if (!button.disabled) button.style.opacity = '0.7';
+      });
+
+      button.addEventListener('mouseout', () => {
+        if (!button.disabled) button.style.opacity = '1';
+      });
+
+      button.addEventListener('click', () => {
+        selectedElement = null;
+        finalXPath = null;
+        containingIframe = null;
+        hoverEnabled = true;
+        const overlay = document.getElementById('dimming-overlay');
+        if (overlay) overlay.remove();
+        selectButton.disabled = true;
+        selectButton.style.opacity = '0.5';
+        document.body.style.cursor = 'default';
+        button.disabled = true;
+        button.style.opacity = '0.5';
+      });
+
+      return button;
+    }
+
+    function handleMouseOver(e: MouseEvent) {
+      e.preventDefault();
+      if (hoverEnabled && !selectedElement) {
+        clearTimeout(hoverTimer);
+        hoverTimer = window.setTimeout(() => {
+          const hoveredElement = e.target as HTMLElement;
+          if (![selectButton, clearSelectionButton, upDownButtons, ...Array.from(upDownButtons.children)].includes(hoveredElement)) {
+            createOrUpdateOverlay(hoveredElement, containingIframe);
+          }
+        }, 180);
+      }
+    }
+
+    function handleClick(e: MouseEvent) {
+      e.preventDefault();
+      const clickedElement = e.target as HTMLElement;
+
+      if (clickedElement === selectButton || clickedElement === clearSelectionButton) return;
+
+      if (Array.from(upDownButtons.children).includes(clickedElement)) return;
+
+      hoverEnabled = false;
+      selectedElement = clickedElement;
+      selectButton.disabled = false;
+      selectButton.style.opacity = '1';
+      clearSelectionButton.disabled = false;
+      clearSelectionButton.style.opacity = '1';
+      createOrUpdateOverlay(selectedElement, containingIframe);
+      finalXPath = getXPath(selectedElement, containingIframe);
+    }
+  }
+
+  //************** Event handler **************//
+
+  async function handleDoDAOParentWindowEvent(event: MessageEvent) {
+    const data = event.data as DoDAOEventData;
+    console.log('Received message from parent window:', data);
+    if (data.type === 'elementSelector') {
+      elementSelector(event);
+    }
+
+    if (data.type === 'showTooltip') {
+      showTooltip();
+    }
+
+    if (data.type === 'capturePageScreenshot') {
+      const canvas = await html2canvas(document.body, { useCORS: true });
+      const dataURL = canvas.toDataURL('image/png');
+      event.source?.postMessage({ type: 'pageScreenshotCaptured', dataURL }, { targetOrigin: '*' });
+    }
+
+    if (data.type === 'captureElementScreenshot') {
+      const { selector } = data;
+      const currentDocAndTargetNode = getCurrentContextNodeAndTarget(selector)!;
+      if (!currentDocAndTargetNode.targetNode || !currentDocAndTargetNode.currentContextNode) return;
+
+      const { currentContextNode, targetNode } = currentDocAndTargetNode;
+      const target = targetNode as HTMLElement;
+
+      const dataURL = await captureScreenshotWithOverlay(
+        target,
+        (selector as string).includes('iframe') ? (currentContextNode.documentElement as HTMLIFrameElement) : null
+      );
+      event.source?.postMessage({ type: 'elementScreenshotCaptured', dataURL }, { targetOrigin: '*' });
+    }
+  }
+
+  window.onmessage = handleDoDAOParentWindowEvent;
+  window.handleDoDAOParentWindowEvent = handleDoDAOParentWindowEvent;
+
+  console.log('handleDoDAOParentWindowEvent is defined on window', window.handleDoDAOParentWindowEvent);
+
+  window.document.addEventListener('DOMContentLoaded', () => {
+    showTooltip();
+  });
+
+  //************** Helper functions **************//
+  function getCurrentContextNodeAndTarget(elementXPath: string): { currentContextNode: Document; targetNode: Node } | null {
     console.log('event.data.elementXPath', elementXPath);
     document.addEventListener('click', (e: Event) => e.preventDefault());
     let currentContextNode: Document = document;
@@ -234,442 +470,224 @@
     });
   }
 
-  function elementSelector(event: MessageEvent) {
-    let selectedElement: HTMLElement | null = null;
-    let finalXPath: string | null = null;
-    let hoverEnabled = true;
-    let hoverTimer: number | undefined;
-    let containingIframe: HTMLIFrameElement | null;
+  function createOverlayPart(position: string, rect: DOMRect, scrollY: number, scrollHeight: number): HTMLDivElement {
+    const overlay = document.createElement('div');
+    overlay.className = `${position}-overlay`;
+    overlay.style.position = 'absolute';
+    overlay.style.backgroundColor = 'rgba(128, 128, 128, 0.6)';
+    overlay.style.transition = 'all 0.3s ease';
 
-    document.body.style.cursor = 'pointer';
-    document.querySelectorAll('input').forEach((input) => {
-      (input as HTMLElement).style.cursor = 'pointer';
+    switch (position) {
+      case 'top':
+        Object.assign(overlay.style, {
+          top: '0',
+          left: '0',
+          width: '100%',
+          height: `${rect.top + scrollY}px`,
+        });
+        break;
+      case 'left':
+        Object.assign(overlay.style, {
+          top: `${rect.top + scrollY}px`,
+          left: '0',
+          width: `${rect.left}px`,
+          height: `${scrollHeight - rect.top - scrollY}px`,
+        });
+        break;
+      case 'right':
+        Object.assign(overlay.style, {
+          top: `${rect.top + scrollY}px`,
+          left: `${rect.right}px`,
+          width: `calc(100% - ${rect.right}px)`,
+          height: `${scrollHeight - rect.top - scrollY}px`,
+        });
+        break;
+      case 'bottom':
+        Object.assign(overlay.style, {
+          top: `${rect.bottom + scrollY}px`,
+          left: `${rect.left}px`,
+          width: `${rect.width}px`,
+          height: `${scrollHeight - rect.bottom - scrollY}px`,
+        });
+        break;
+    }
+    return overlay;
+  }
+
+  function updateOverlay(container: HTMLElement, rect: DOMRect, scrollY: number, scrollHeight: number) {
+    const overlays = container.children;
+    const topOverlay = overlays[0] as HTMLElement;
+    const leftOverlay = overlays[1] as HTMLElement;
+    const rightOverlay = overlays[2] as HTMLElement;
+    const bottomOverlay = overlays[3] as HTMLElement;
+
+    topOverlay.style.height = `${rect.top + scrollY}px`;
+    leftOverlay.style.top = `${rect.top + scrollY}px`;
+    leftOverlay.style.height = `${scrollHeight - rect.top - scrollY}px`;
+    leftOverlay.style.width = `${rect.left}px`;
+    rightOverlay.style.top = `${rect.top + scrollY}px`;
+    rightOverlay.style.left = `${rect.right}px`;
+    rightOverlay.style.width = `calc(100% - ${rect.right}px)`;
+    rightOverlay.style.height = `${scrollHeight - rect.top - scrollY}px`;
+    bottomOverlay.style.top = `${rect.bottom + scrollY}px`;
+    bottomOverlay.style.left = `${rect.left}px`;
+    bottomOverlay.style.width = `${rect.width}px`;
+    bottomOverlay.style.height = `${scrollHeight - rect.bottom - scrollY}px`;
+  }
+
+  function getIframeOffset(iframe: HTMLIFrameElement): { top: number; left: number } {
+    let top = 0;
+    let left = 0;
+    let element: HTMLElement | null = iframe;
+
+    while (element) {
+      const rect = element.getBoundingClientRect();
+      top += rect.top + (element.ownerDocument.defaultView?.scrollY || 0);
+      left += rect.left + (element.ownerDocument.defaultView?.scrollX || 0);
+      element = element.ownerDocument.defaultView?.frameElement as HTMLElement | null;
+    }
+
+    return { top, left };
+  }
+
+  function getElementIndex(element: HTMLElement): number {
+    let index = 1;
+    let sibling = element.previousElementSibling;
+
+    while (sibling) {
+      if (sibling.tagName === element.tagName) index++;
+      sibling = sibling.previousElementSibling;
+    }
+    return index;
+  }
+
+  function createOverlayContainer(rect: DOMRect, scrollY: number, scrollHeight: number): HTMLDivElement {
+    const overlayContainer: HTMLDivElement = document.createElement('div');
+    overlayContainer.id = 'dimming-overlay';
+    Object.assign(overlayContainer.style, {
+      position: 'absolute',
+      top: '0',
+      left: '0',
+      width: '100%',
+      height: `${scrollHeight}px`,
+      pointerEvents: 'none',
+      zIndex: '2147483646',
     });
 
-    const upDownButtons = createUpDownButtons();
-    const selectButton = createSelectButton();
-    const clearSelectionButton = createClearSelectionButton();
+    const overlays = ['top', 'left', 'right', 'bottom'].map((position) => createOverlayPart(position, rect, scrollY, scrollHeight));
 
-    document.body.appendChild(upDownButtons);
-    document.body.appendChild(selectButton);
-    document.body.appendChild(clearSelectionButton);
+    overlays.forEach((overlay) => overlayContainer.appendChild(overlay));
+    return overlayContainer;
+  }
 
-    document.addEventListener('mouseover', (event: MouseEvent) => {
-      if (hoverEnabled) containingIframe = null;
-      handleMouseOver(event);
-    });
-    document.addEventListener('click', (event: MouseEvent) => {
-      if (hoverEnabled) containingIframe = null;
-      handleClick(event);
-    });
+  function createOrUpdateOverlay(element: HTMLElement | null, containerIframe: HTMLIFrameElement | null) {
+    if (!element) return;
 
-    addEventListenersToIframe();
+    // get element's Xpath
 
-    function addEventListenersToIframe() {
-      // Get all iframes in the document
-      const iframes = document.querySelectorAll('iframe');
+    let rect: any = element.getBoundingClientRect();
+    let scrollY = window.scrollY;
+    const scrollHeight = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
 
-      iframes.forEach((iframe) => {
-        // Ensure the iframe is of type HTMLIFrameElement
-        if (iframe instanceof HTMLIFrameElement) {
-          // Function to attach event listeners to the iframe content
-          const attachEventListeners = () => {
-            try {
-              const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
-              if (iframeDoc) {
-                iframeDoc.addEventListener('click', (event: Event) => {
-                  event.stopPropagation();
-                  containingIframe = iframe;
-                  handleClick(event as MouseEvent);
-                });
-
-                iframeDoc.addEventListener('mouseover', (event: Event) => {
-                  event.stopPropagation();
-                  containingIframe = iframe;
-                  handleMouseOver(event as MouseEvent);
-                });
-              } else {
-                console.error('Unable to access iframe content. It might be cross-origin.');
-              }
-            } catch (error) {
-              console.error('Error accessing or attaching event listeners to iframe content:', error);
-            }
-          };
-          attachEventListeners();
-        }
-      });
+    if (containerIframe) {
+      const iframeOffset = getIframeOffset(containerIframe!);
+      rect = {
+        top: rect.top + iframeOffset.top,
+        left: rect.left + iframeOffset.left,
+        right: rect.right + iframeOffset.left,
+        bottom: rect.bottom + iframeOffset.top,
+        width: rect.width,
+        height: rect.height,
+      };
+      scrollY = 0;
     }
 
-    function createOrUpdateOverlay(element: HTMLElement | null) {
-      if (!element) return;
-
-      let rect: any = element.getBoundingClientRect();
-      let scrollY = window.scrollY;
-      const scrollHeight = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
-
-      if (containingIframe) {
-        const iframeOffset = getIframeOffset(containingIframe!);
-        rect = {
-          top: rect.top + iframeOffset.top,
-          left: rect.left + iframeOffset.left,
-          right: rect.right + iframeOffset.left,
-          bottom: rect.bottom + iframeOffset.top,
-          width: rect.width,
-          height: rect.height,
-        };
-        scrollY = 0;
-      }
-
-      const existingOverlay = document.getElementById('dimming-overlay');
-      if (existingOverlay) {
-        updateOverlay(existingOverlay, rect, scrollY, scrollHeight);
-      } else {
-        const overlayContainer = createOverlayContainer(rect, scrollY, scrollHeight);
-        document.body.appendChild(overlayContainer);
-      }
-    }
-
-    function createOverlayContainer(rect: DOMRect, scrollY: number, scrollHeight: number): HTMLDivElement {
-      const overlayContainer: HTMLDivElement = document.createElement('div');
-      overlayContainer.id = 'dimming-overlay';
-      Object.assign(overlayContainer.style, {
-        position: 'absolute',
-        top: '0',
-        left: '0',
-        width: '100%',
-        height: `${scrollHeight}px`,
-        pointerEvents: 'none',
-        zIndex: '2147483646',
-      });
-
-      const overlays = ['top', 'left', 'right', 'bottom'].map((position) => createOverlayPart(position, rect, scrollY, scrollHeight));
-
-      overlays.forEach((overlay) => overlayContainer.appendChild(overlay));
-      return overlayContainer;
-    }
-
-    function createOverlayPart(position: string, rect: DOMRect, scrollY: number, scrollHeight: number): HTMLDivElement {
-      const overlay = document.createElement('div');
-      overlay.className = `${position}-overlay`;
-      overlay.style.position = 'absolute';
-      overlay.style.backgroundColor = 'rgba(128, 128, 128, 0.6)';
-      overlay.style.transition = 'all 0.3s ease';
-
-      switch (position) {
-        case 'top':
-          Object.assign(overlay.style, {
-            top: '0',
-            left: '0',
-            width: '100%',
-            height: `${rect.top + scrollY}px`,
-          });
-          break;
-        case 'left':
-          Object.assign(overlay.style, {
-            top: `${rect.top + scrollY}px`,
-            left: '0',
-            width: `${rect.left}px`,
-            height: `${scrollHeight - rect.top - scrollY}px`,
-          });
-          break;
-        case 'right':
-          Object.assign(overlay.style, {
-            top: `${rect.top + scrollY}px`,
-            left: `${rect.right}px`,
-            width: `calc(100% - ${rect.right}px)`,
-            height: `${scrollHeight - rect.top - scrollY}px`,
-          });
-          break;
-        case 'bottom':
-          Object.assign(overlay.style, {
-            top: `${rect.bottom + scrollY}px`,
-            left: `${rect.left}px`,
-            width: `${rect.width}px`,
-            height: `${scrollHeight - rect.bottom - scrollY}px`,
-          });
-          break;
-      }
-      return overlay;
-    }
-
-    function updateOverlay(container: HTMLElement, rect: DOMRect, scrollY: number, scrollHeight: number) {
-      const overlays = container.children;
-      const topOverlay = overlays[0] as HTMLElement;
-      const leftOverlay = overlays[1] as HTMLElement;
-      const rightOverlay = overlays[2] as HTMLElement;
-      const bottomOverlay = overlays[3] as HTMLElement;
-
-      topOverlay.style.height = `${rect.top + scrollY}px`;
-      leftOverlay.style.top = `${rect.top + scrollY}px`;
-      leftOverlay.style.height = `${scrollHeight - rect.top - scrollY}px`;
-      leftOverlay.style.width = `${rect.left}px`;
-      rightOverlay.style.top = `${rect.top + scrollY}px`;
-      rightOverlay.style.left = `${rect.right}px`;
-      rightOverlay.style.width = `calc(100% - ${rect.right}px)`;
-      rightOverlay.style.height = `${scrollHeight - rect.top - scrollY}px`;
-      bottomOverlay.style.top = `${rect.bottom + scrollY}px`;
-      bottomOverlay.style.left = `${rect.left}px`;
-      bottomOverlay.style.width = `${rect.width}px`;
-      bottomOverlay.style.height = `${scrollHeight - rect.bottom - scrollY}px`;
-    }
-
-    function getIframeOffset(iframe: HTMLIFrameElement): { top: number; left: number } {
-      let top = 0;
-      let left = 0;
-      let element: HTMLElement | null = iframe;
-
-      while (element) {
-        const rect = element.getBoundingClientRect();
-        top += rect.top + (element.ownerDocument.defaultView?.scrollY || 0);
-        left += rect.left + (element.ownerDocument.defaultView?.scrollX || 0);
-        element = element.ownerDocument.defaultView?.frameElement as HTMLElement | null;
-      }
-
-      return { top, left };
-    }
-
-    async function captureScreenshotWithOverlay(element: HTMLElement): Promise<string> {
-      return new Promise((resolve, reject) => {
-        let currentContextNode = document;
-        let captureArea;
-        const margin = 30;
-        const { x: scrollOffsetX, y: scrollOffsetY } = calculateScrollOffsets(element);
-        const yScroll = scrollOffsetY + window.scrollY;
-        const rect = element.getBoundingClientRect();
-
-        if (containingIframe) {
-          captureArea = {
-            x: Math.max(0, rect.left + scrollOffsetX - margin),
-            y: Math.max(0, rect.top - 2 * margin),
-            width: rect.width + margin * 2,
-            height: rect.height + margin * 2,
-          };
-          currentContextNode = containingIframe.contentDocument || containingIframe.contentWindow!.document;
-        } else {
-          captureArea = {
-            x: Math.max(0, rect.left + scrollOffsetX - margin),
-            y: Math.max(0, rect.top + yScroll - margin),
-            width: rect.width + margin * 2,
-            height: rect.height + margin * 2,
-          };
-        }
-
-        html2canvas(currentContextNode.body, {
-          x: captureArea.x,
-          y: captureArea.y,
-          width: captureArea.width,
-          height: captureArea.height,
-          windowWidth: document.documentElement.scrollWidth,
-          scrollY: scrollOffsetY,
-          useCORS: true,
-          backgroundColor: null,
-          logging: true,
-        })
-          .then((canvas: HTMLCanvasElement) => {
-            const dataURL = canvas.toDataURL('image/png');
-            resolve(dataURL);
-          })
-          .catch((error: Error) => {
-            console.error('Error capturing screenshot:', error);
-            reject(error);
-          });
-      });
-    }
-
-    function calculateScrollOffsets(element: HTMLElement): {
-      x: number;
-      y: number;
-    } {
-      let x = 0;
-      let y = 0;
-      let parent = element.parentElement;
-
-      while (parent) {
-        if (isScrollable(parent)) {
-          x += parent.scrollLeft;
-          y += parent.scrollTop;
-        }
-        parent = parent.parentElement;
-      }
-      return { x, y };
-    }
-
-    function isScrollable(element: HTMLElement): boolean {
-      const overflowY = window.getComputedStyle(element).overflowY;
-      return overflowY === 'scroll' || overflowY === 'auto';
-    }
-
-    function createUpDownButtons(): HTMLDivElement {
-      const container = document.createElement('div');
-      container.classList.add('dodao-up-down-buttons');
-
-      const minusButton = document.createElement('button');
-      minusButton.textContent = '-';
-      minusButton.title = 'Click to move to parent of element';
-      minusButton.addEventListener('click', () => navigateSelection('up'));
-      container.appendChild(minusButton);
-
-      const plusButton = document.createElement('button');
-      plusButton.textContent = '+';
-      plusButton.title = 'Click to move down to first child of element';
-      plusButton.addEventListener('click', () => navigateSelection('down'));
-      container.appendChild(plusButton);
-
-      return container;
-    }
-
-    function navigateSelection(direction: 'up' | 'down') {
-      if (!selectedElement) return;
-
-      if (direction === 'up' && selectedElement.parentElement && selectedElement.parentElement !== document.body) {
-        selectedElement = selectedElement.parentElement;
-      } else if (direction === 'down' && selectedElement.firstElementChild) {
-        selectedElement = selectedElement.firstElementChild as HTMLElement;
-      } else {
-        return;
-      }
-      createOrUpdateOverlay(selectedElement);
-      finalXPath = getXPath(selectedElement);
-    }
-
-    function createSelectButton(): HTMLButtonElement {
-      const button = document.createElement('button');
-      button.textContent = 'Select';
-      button.classList.add('dodao-select-element-button');
-      button.disabled = true;
-      button.style.opacity = '0.5';
-
-      button.addEventListener('click', async () => {
-        if (selectedElement && finalXPath) {
-          const dataUrl = await captureScreenshotWithOverlay(selectedElement);
-
-          event.source?.postMessage(
-            { xpath: finalXPath, elementImgUrl: dataUrl },
-            { targetOrigin: event.origin } // Use options object instead of just `event.origin`
-          );
-        }
-      });
-
-      button.addEventListener('mouseover', () => {
-        if (!button.disabled) button.style.opacity = '0.7';
-      });
-
-      button.addEventListener('mouseout', () => {
-        if (!button.disabled) button.style.opacity = '1';
-      });
-
-      return button;
-    }
-
-    function createClearSelectionButton(): HTMLButtonElement {
-      const button = document.createElement('button');
-      button.textContent = 'Clear Selection';
-      button.classList.add('dodao-clear-selection-button');
-      button.disabled = selectedElement === null;
-      button.style.opacity = '0.5';
-
-      button.addEventListener('mouseover', () => {
-        if (!button.disabled) button.style.opacity = '0.7';
-      });
-
-      button.addEventListener('mouseout', () => {
-        if (!button.disabled) button.style.opacity = '1';
-      });
-
-      button.addEventListener('click', () => {
-        selectedElement = null;
-        finalXPath = null;
-        containingIframe = null;
-        hoverEnabled = true;
-        const overlay = document.getElementById('dimming-overlay');
-        if (overlay) overlay.remove();
-        selectButton.disabled = true;
-        selectButton.style.opacity = '0.5';
-        document.body.style.cursor = 'default';
-        button.disabled = true;
-        button.style.opacity = '0.5';
-      });
-
-      return button;
-    }
-
-    function handleMouseOver(e: MouseEvent) {
-      e.preventDefault();
-      if (hoverEnabled && !selectedElement) {
-        clearTimeout(hoverTimer);
-        hoverTimer = window.setTimeout(() => {
-          const hoveredElement = e.target as HTMLElement;
-          if (![selectButton, clearSelectionButton, upDownButtons, ...Array.from(upDownButtons.children)].includes(hoveredElement)) {
-            createOrUpdateOverlay(hoveredElement);
-          }
-        }, 180);
-      }
-    }
-
-    function handleClick(e: MouseEvent) {
-      e.preventDefault();
-      const clickedElement = e.target as HTMLElement;
-
-      if (clickedElement === selectButton || clickedElement === clearSelectionButton) return;
-
-      if (Array.from(upDownButtons.children).includes(clickedElement)) return;
-
-      hoverEnabled = false;
-      selectedElement = clickedElement;
-      selectButton.disabled = false;
-      selectButton.style.opacity = '1';
-      clearSelectionButton.disabled = false;
-      clearSelectionButton.style.opacity = '1';
-      createOrUpdateOverlay(selectedElement);
-      finalXPath = getXPath(selectedElement);
-    }
-
-    function getXPath(element: HTMLElement): string {
-      if (!element) return '';
-      const segments: string[] = [];
-      let current: HTMLElement | null = element;
-
-      while (current && current !== document.body) {
-        const tagName = current.tagName.toLowerCase();
-        const index = getElementIndex(current);
-        segments.unshift(`${tagName}[${index}]`);
-        current = current.parentElement;
-      }
-      if (containingIframe) {
-        return `/${segments.join('/')}`;
-      }
-      return `/html/body/${segments.join('/')}`;
-    }
-
-    function getElementIndex(element: HTMLElement): number {
-      let index = 1;
-      let sibling = element.previousElementSibling;
-
-      while (sibling) {
-        if (sibling.tagName === element.tagName) index++;
-        sibling = sibling.previousElementSibling;
-      }
-      return index;
+    const existingOverlay = document.getElementById('dimming-overlay');
+    if (existingOverlay) {
+      updateOverlay(existingOverlay, rect, scrollY, scrollHeight);
+    } else {
+      const overlayContainer = createOverlayContainer(rect, scrollY, scrollHeight);
+      document.body.appendChild(overlayContainer);
     }
   }
 
-  async function handleDoDAOParentWindowEvent(event: MessageEvent) {
-    const data = event.data as DoDAOEventData;
-    console.log('Received message from parent window:', data);
-    if (data.type === 'elementSelector') {
-      elementSelector(event);
-    }
+  function getXPath(element: HTMLElement, containerIframe: HTMLIFrameElement | null): string {
+    if (!element) return '';
+    const segments: string[] = [];
+    let current: HTMLElement | null = element;
 
-    if (data.type === 'showTooltip') {
-      showTooltip();
+    while (current && current !== document.body) {
+      const tagName = current.tagName.toLowerCase();
+      const index = getElementIndex(current);
+      segments.unshift(`${tagName}[${index}]`);
+      current = current.parentElement;
     }
+    if (containerIframe) {
+      return `/${segments.join('/')}`;
+    }
+    return `/html/body/${segments.join('/')}`;
   }
 
-  window.handleDoDAOParentWindowEvent = handleDoDAOParentWindowEvent;
+  async function captureScreenshotWithOverlay(element: HTMLElement, containerIframe: HTMLIFrameElement | null): Promise<string> {
+    let currentContextNode = document;
+    let captureArea;
+    const margin = 30;
+    const { x: scrollOffsetX, y: scrollOffsetY } = calculateScrollOffsets(element);
+    const yScroll = scrollOffsetY + window.scrollY;
+    const rect = element.getBoundingClientRect();
 
-  console.log('handleDoDAOParentWindowEvent is defined on window', window.handleDoDAOParentWindowEvent);
+    if (containerIframe) {
+      captureArea = {
+        x: Math.max(0, rect.left + scrollOffsetX - margin),
+        y: Math.max(0, rect.top - 2 * margin),
+        width: rect.width + margin * 2,
+        height: rect.height + margin * 2,
+      };
+      currentContextNode = containerIframe.contentDocument || containerIframe.contentWindow!.document;
+    } else {
+      captureArea = {
+        x: Math.max(0, rect.left + scrollOffsetX - margin),
+        y: Math.max(0, rect.top + yScroll - margin),
+        width: rect.width + margin * 2,
+        height: rect.height + margin * 2,
+      };
+    }
 
-  window.document.addEventListener('DOMContentLoaded', () => {
-    showTooltip();
-  });
+    const canvas = await html2canvas(currentContextNode.body, {
+      x: captureArea.x,
+      y: captureArea.y,
+      width: captureArea.width,
+      height: captureArea.height,
+      windowWidth: document.documentElement.scrollWidth,
+      scrollY: scrollOffsetY,
+      useCORS: true,
+      backgroundColor: null,
+      logging: true,
+    });
+    const dataURL = canvas.toDataURL('image/png');
+    return dataURL;
+  }
+
+  function calculateScrollOffsets(element: HTMLElement): {
+    x: number;
+    y: number;
+  } {
+    let x = 0;
+    let y = 0;
+    let parent = element.parentElement;
+
+    while (parent) {
+      if (isScrollable(parent)) {
+        x += parent.scrollLeft;
+        y += parent.scrollTop;
+      }
+      parent = parent.parentElement;
+    }
+    return { x, y };
+  }
+
+  function isScrollable(element: HTMLElement): boolean {
+    const overflowY = window.getComputedStyle(element).overflowY;
+    return overflowY === 'scroll' || overflowY === 'auto';
+  }
 })();

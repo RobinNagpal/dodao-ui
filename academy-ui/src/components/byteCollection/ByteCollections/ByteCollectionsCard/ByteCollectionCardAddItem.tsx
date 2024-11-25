@@ -70,7 +70,7 @@ export default function CreateContentModalContents({
       {showCreateDemoModal && (
         <FullScreenModal open={true} onClose={onClose} title={'Create Clickable Demo'}>
           <div className="text-left">
-            <EditClickableDemo demoId={null} byteCollection={byteCollection} />
+            <EditClickableDemo demoId={null} byteCollection={byteCollection} space={space} />
           </div>
         </FullScreenModal>
       )}

@@ -9,7 +9,7 @@ interface IconButtonProps {
   onClick: () => void;
 }
 
-const StyledButton = styled.button<{ disabled?: boolean; primary?: boolean }>`
+const StyledButton = styled.button<{ disabled?: boolean; primary: boolean }>`
   width: 44px;
   height: 44px;
   border-radius: 50%;
@@ -45,7 +45,7 @@ const StyledButton = styled.button<{ disabled?: boolean; primary?: boolean }>`
 
 function IconButton({ disabled = false, children, className = '', onClick, primary = false }: IconButtonProps) {
   return (
-    <StyledButton disabled={disabled} className={className} onClick={onClick} primary={primary}>
+    <StyledButton disabled={disabled} className={className} onClick={onClick} primary={!!primary}>
       {children}
     </StyledButton>
   );

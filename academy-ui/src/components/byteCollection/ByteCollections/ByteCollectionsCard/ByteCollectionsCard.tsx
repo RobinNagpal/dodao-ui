@@ -308,6 +308,7 @@ export default function ByteCollectionsCard({
               case ByteCollectionItemType.ClickableDemo:
                 return (
                   <DemoItem
+                    space={space}
                     byteCollection={byteCollection}
                     key={item.demo.demoId}
                     demo={item.demo}

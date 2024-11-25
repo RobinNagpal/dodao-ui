@@ -9,31 +9,29 @@ import styles from './SelectElementInput.module.scss';
 interface SelectElementInputProps {
   label?: string;
   modelValue?: string | null;
-  elementImgUrl?: string | null;
   objectId: string;
   space: SpaceWithIntegrationsDto;
   fileUrl?: string;
   onInput: (url: string, elementImgUrl: string) => void;
-  onLoading?: (value: ((prevState: boolean) => boolean) | boolean) => void;
   placeholder?: string;
-  allowedFileTypes?: string[];
   error?: any;
   helpText?: string;
+  uploadToS3AndReturnScreenshotUrl: (file: File, stepNumber: number, imageType: 'page-screenshot' | 'element-screenshot') => Promise<string>;
+  stepIndex: number;
 }
 
 export default function SelectElementInput({
   label,
   modelValue,
-  elementImgUrl,
   objectId,
   space,
   fileUrl,
   onInput,
-  onLoading,
   placeholder = '/html/body/',
-  allowedFileTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/svg+xml', 'image/svg+xml', 'image/webp', 'text/html'],
   error,
   helpText,
+  uploadToS3AndReturnScreenshotUrl,
+  stepIndex,
 }: SelectElementInputProps) {
   const inputId = space.id + '-' + slugify(label || objectId);
   const [showModal, setShowModal] = useState(false);
@@ -76,9 +74,9 @@ export default function SelectElementInput({
           objectId={objectId}
           fileUrl={fileUrl!}
           xPath={modelValue || ''}
-          elementImgUrl={elementImgUrl || ''}
-          onLoading={onLoading}
           setShowModal={setShowModal}
+          uploadToS3AndReturnScreenshotUrl={uploadToS3AndReturnScreenshotUrl}
+          stepIndex={stepIndex}
         ></ElementSelectorModal>
       )}
     </div>

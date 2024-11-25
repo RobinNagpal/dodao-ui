@@ -21,8 +21,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
                 document.documentElement.style.setProperty(variable, data.cssValues[variable]);
             }
         }
-        const { tooltipContent: contentText, currentTooltipIndex, tooltipArrayLen, placement } = data;
-        const currentDocAndTargetNode = getCurrentContextNodeAndTarget(data);
+        const { tooltipContent: contentText, currentTooltipIndex, tooltipArrayLen, placement, elementXPath } = data;
+        const currentDocAndTargetNode = getCurrentContextNodeAndTarget(elementXPath);
         if (!currentDocAndTargetNode.targetNode || !currentDocAndTargetNode.currentContextNode)
             return;
         const { currentContextNode, targetNode } = currentDocAndTargetNode;
@@ -91,9 +91,219 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
             zIndex: 999999999999999,
         });
     }
-    function getCurrentContextNodeAndTarget(data) {
+    function elementSelector(event) {
+        let selectedElement = null;
+        let finalXPath = null;
+        let hoverEnabled = true;
+        let hoverTimer;
+        let containingIframe;
+        document.body.style.cursor = 'pointer';
+        document.querySelectorAll('input').forEach((input) => {
+            input.style.cursor = 'pointer';
+        });
+        const upDownButtons = createUpDownButtons();
+        const selectButton = createSelectButton();
+        const clearSelectionButton = createClearSelectionButton();
+        document.body.appendChild(upDownButtons);
+        document.body.appendChild(selectButton);
+        document.body.appendChild(clearSelectionButton);
+        document.addEventListener('mouseover', (event) => {
+            if (hoverEnabled)
+                containingIframe = null;
+            handleMouseOver(event);
+        });
+        document.addEventListener('click', (event) => {
+            if (hoverEnabled)
+                containingIframe = null;
+            handleClick(event);
+        });
+        addEventListenersToIframe();
+        function addEventListenersToIframe() {
+            // Get all iframes in the document
+            const iframes = document.querySelectorAll('iframe');
+            iframes.forEach((iframe) => {
+                // Ensure the iframe is of type HTMLIFrameElement
+                if (iframe instanceof HTMLIFrameElement) {
+                    // Function to attach event listeners to the iframe content
+                    const attachEventListeners = () => {
+                        var _a;
+                        try {
+                            const iframeDoc = iframe.contentDocument || ((_a = iframe.contentWindow) === null || _a === void 0 ? void 0 : _a.document);
+                            if (iframeDoc) {
+                                iframeDoc.addEventListener('click', (event) => {
+                                    event.stopPropagation();
+                                    containingIframe = iframe;
+                                    handleClick(event);
+                                });
+                                iframeDoc.addEventListener('mouseover', (event) => {
+                                    event.stopPropagation();
+                                    containingIframe = iframe;
+                                    handleMouseOver(event);
+                                });
+                            }
+                            else {
+                                console.error('Unable to access iframe content. It might be cross-origin.');
+                            }
+                        }
+                        catch (error) {
+                            console.error('Error accessing or attaching event listeners to iframe content:', error);
+                        }
+                    };
+                    attachEventListeners();
+                }
+            });
+        }
+        function createUpDownButtons() {
+            const container = document.createElement('div');
+            container.classList.add('dodao-up-down-buttons');
+            const minusButton = document.createElement('button');
+            minusButton.textContent = '-';
+            minusButton.title = 'Click to move to parent of element';
+            minusButton.addEventListener('click', () => navigateSelection('up'));
+            container.appendChild(minusButton);
+            const plusButton = document.createElement('button');
+            plusButton.textContent = '+';
+            plusButton.title = 'Click to move down to first child of element';
+            plusButton.addEventListener('click', () => navigateSelection('down'));
+            container.appendChild(plusButton);
+            return container;
+        }
+        function navigateSelection(direction) {
+            if (!selectedElement)
+                return;
+            if (direction === 'up' && selectedElement.parentElement && selectedElement.parentElement !== document.body) {
+                selectedElement = selectedElement.parentElement;
+            }
+            else if (direction === 'down' && selectedElement.firstElementChild) {
+                selectedElement = selectedElement.firstElementChild;
+            }
+            else {
+                return;
+            }
+            createOrUpdateOverlay(selectedElement, containingIframe);
+            finalXPath = getXPath(selectedElement, containingIframe);
+        }
+        function createSelectButton() {
+            const button = document.createElement('button');
+            button.textContent = 'Select';
+            button.classList.add('dodao-select-element-button');
+            button.disabled = true;
+            button.style.opacity = '0.5';
+            button.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
+                var _a;
+                if (selectedElement && finalXPath) {
+                    const dataUrl = yield captureScreenshotWithOverlay(selectedElement, containingIframe);
+                    (_a = event.source) === null || _a === void 0 ? void 0 : _a.postMessage({ xpath: finalXPath, elementImgUrl: dataUrl }, { targetOrigin: event.origin } // Use options object instead of just `event.origin`
+                    );
+                }
+            }));
+            button.addEventListener('mouseover', () => {
+                if (!button.disabled)
+                    button.style.opacity = '0.7';
+            });
+            button.addEventListener('mouseout', () => {
+                if (!button.disabled)
+                    button.style.opacity = '1';
+            });
+            return button;
+        }
+        function createClearSelectionButton() {
+            const button = document.createElement('button');
+            button.textContent = 'Clear Selection';
+            button.classList.add('dodao-clear-selection-button');
+            button.disabled = selectedElement === null;
+            button.style.opacity = '0.5';
+            button.addEventListener('mouseover', () => {
+                if (!button.disabled)
+                    button.style.opacity = '0.7';
+            });
+            button.addEventListener('mouseout', () => {
+                if (!button.disabled)
+                    button.style.opacity = '1';
+            });
+            button.addEventListener('click', () => {
+                selectedElement = null;
+                finalXPath = null;
+                containingIframe = null;
+                hoverEnabled = true;
+                const overlay = document.getElementById('dimming-overlay');
+                if (overlay)
+                    overlay.remove();
+                selectButton.disabled = true;
+                selectButton.style.opacity = '0.5';
+                document.body.style.cursor = 'default';
+                button.disabled = true;
+                button.style.opacity = '0.5';
+            });
+            return button;
+        }
+        function handleMouseOver(e) {
+            e.preventDefault();
+            if (hoverEnabled && !selectedElement) {
+                clearTimeout(hoverTimer);
+                hoverTimer = window.setTimeout(() => {
+                    const hoveredElement = e.target;
+                    if (![selectButton, clearSelectionButton, upDownButtons, ...Array.from(upDownButtons.children)].includes(hoveredElement)) {
+                        createOrUpdateOverlay(hoveredElement, containingIframe);
+                    }
+                }, 180);
+            }
+        }
+        function handleClick(e) {
+            e.preventDefault();
+            const clickedElement = e.target;
+            if (clickedElement === selectButton || clickedElement === clearSelectionButton)
+                return;
+            if (Array.from(upDownButtons.children).includes(clickedElement))
+                return;
+            hoverEnabled = false;
+            selectedElement = clickedElement;
+            selectButton.disabled = false;
+            selectButton.style.opacity = '1';
+            clearSelectionButton.disabled = false;
+            clearSelectionButton.style.opacity = '1';
+            createOrUpdateOverlay(selectedElement, containingIframe);
+            finalXPath = getXPath(selectedElement, containingIframe);
+        }
+    }
+    //************** Event handler **************//
+    function handleDoDAOParentWindowEvent(event) {
+        var _a, _b;
+        return __awaiter(this, void 0, void 0, function* () {
+            const data = event.data;
+            console.log('Received message from parent window:', data);
+            if (data.type === 'elementSelector') {
+                elementSelector(event);
+            }
+            if (data.type === 'showTooltip') {
+                showTooltip();
+            }
+            if (data.type === 'capturePageScreenshot') {
+                const canvas = yield html2canvas(document.body, { useCORS: true });
+                const dataURL = canvas.toDataURL('image/png');
+                (_a = event.source) === null || _a === void 0 ? void 0 : _a.postMessage({ type: 'pageScreenshotCaptured', dataURL }, { targetOrigin: '*' });
+            }
+            if (data.type === 'captureElementScreenshot') {
+                const { selector } = data;
+                const currentDocAndTargetNode = getCurrentContextNodeAndTarget(selector);
+                if (!currentDocAndTargetNode.targetNode || !currentDocAndTargetNode.currentContextNode)
+                    return;
+                const { currentContextNode, targetNode } = currentDocAndTargetNode;
+                const target = targetNode;
+                const dataURL = yield captureScreenshotWithOverlay(target, selector.includes('iframe') ? currentContextNode.documentElement : null);
+                (_b = event.source) === null || _b === void 0 ? void 0 : _b.postMessage({ type: 'elementScreenshotCaptured', dataURL }, { targetOrigin: '*' });
+            }
+        });
+    }
+    window.onmessage = handleDoDAOParentWindowEvent;
+    window.handleDoDAOParentWindowEvent = handleDoDAOParentWindowEvent;
+    console.log('handleDoDAOParentWindowEvent is defined on window', window.handleDoDAOParentWindowEvent);
+    window.document.addEventListener('DOMContentLoaded', () => {
+        showTooltip();
+    });
+    //************** Helper functions **************//
+    function getCurrentContextNodeAndTarget(elementXPath) {
         var _a;
-        const { elementXPath } = data;
         console.log('event.data.elementXPath', elementXPath);
         document.addEventListener('click', (e) => e.preventDefault());
         let currentContextNode = document;
@@ -200,404 +410,205 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
             button.style.maxWidth = maxWidth;
         });
     }
-    function elementSelector(event) {
-        let selectedElement = null;
-        let finalXPath = null;
-        let hoverEnabled = true;
-        let hoverTimer;
-        let containingIframe;
-        document.body.style.cursor = 'pointer';
-        document.querySelectorAll('input').forEach((input) => {
-            input.style.cursor = 'pointer';
-        });
-        const upDownButtons = createUpDownButtons();
-        const selectButton = createSelectButton();
-        const clearSelectionButton = createClearSelectionButton();
-        document.body.appendChild(upDownButtons);
-        document.body.appendChild(selectButton);
-        document.body.appendChild(clearSelectionButton);
-        document.addEventListener('mouseover', (event) => {
-            if (hoverEnabled)
-                containingIframe = null;
-            handleMouseOver(event);
-        });
-        document.addEventListener('click', (event) => {
-            if (hoverEnabled)
-                containingIframe = null;
-            handleClick(event);
-        });
-        addEventListenersToIframe();
-        function addEventListenersToIframe() {
-            // Get all iframes in the document
-            const iframes = document.querySelectorAll('iframe');
-            iframes.forEach((iframe) => {
-                // Ensure the iframe is of type HTMLIFrameElement
-                if (iframe instanceof HTMLIFrameElement) {
-                    // Function to attach event listeners to the iframe content
-                    const attachEventListeners = () => {
-                        var _a;
-                        try {
-                            const iframeDoc = iframe.contentDocument || ((_a = iframe.contentWindow) === null || _a === void 0 ? void 0 : _a.document);
-                            if (iframeDoc) {
-                                iframeDoc.addEventListener('click', (event) => {
-                                    event.stopPropagation();
-                                    containingIframe = iframe;
-                                    handleClick(event);
-                                });
-                                iframeDoc.addEventListener('mouseover', (event) => {
-                                    event.stopPropagation();
-                                    containingIframe = iframe;
-                                    handleMouseOver(event);
-                                });
-                            }
-                            else {
-                                console.error('Unable to access iframe content. It might be cross-origin.');
-                            }
-                        }
-                        catch (error) {
-                            console.error('Error accessing or attaching event listeners to iframe content:', error);
-                        }
-                    };
-                    attachEventListeners();
-                }
-            });
-        }
-        function createOrUpdateOverlay(element) {
-            if (!element)
-                return;
-            let rect = element.getBoundingClientRect();
-            let scrollY = window.scrollY;
-            const scrollHeight = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
-            if (containingIframe) {
-                const iframeOffset = getIframeOffset(containingIframe);
-                rect = {
-                    top: rect.top + iframeOffset.top,
-                    left: rect.left + iframeOffset.left,
-                    right: rect.right + iframeOffset.left,
-                    bottom: rect.bottom + iframeOffset.top,
-                    width: rect.width,
-                    height: rect.height,
-                };
-                scrollY = 0;
-            }
-            const existingOverlay = document.getElementById('dimming-overlay');
-            if (existingOverlay) {
-                updateOverlay(existingOverlay, rect, scrollY, scrollHeight);
-            }
-            else {
-                const overlayContainer = createOverlayContainer(rect, scrollY, scrollHeight);
-                document.body.appendChild(overlayContainer);
-            }
-        }
-        function createOverlayContainer(rect, scrollY, scrollHeight) {
-            const overlayContainer = document.createElement('div');
-            overlayContainer.id = 'dimming-overlay';
-            Object.assign(overlayContainer.style, {
-                position: 'absolute',
-                top: '0',
-                left: '0',
-                width: '100%',
-                height: `${scrollHeight}px`,
-                pointerEvents: 'none',
-                zIndex: '2147483646',
-            });
-            const overlays = ['top', 'left', 'right', 'bottom'].map((position) => createOverlayPart(position, rect, scrollY, scrollHeight));
-            overlays.forEach((overlay) => overlayContainer.appendChild(overlay));
-            return overlayContainer;
-        }
-        function createOverlayPart(position, rect, scrollY, scrollHeight) {
-            const overlay = document.createElement('div');
-            overlay.className = `${position}-overlay`;
-            overlay.style.position = 'absolute';
-            overlay.style.backgroundColor = 'rgba(128, 128, 128, 0.6)';
-            overlay.style.transition = 'all 0.3s ease';
-            switch (position) {
-                case 'top':
-                    Object.assign(overlay.style, {
-                        top: '0',
-                        left: '0',
-                        width: '100%',
-                        height: `${rect.top + scrollY}px`,
-                    });
-                    break;
-                case 'left':
-                    Object.assign(overlay.style, {
-                        top: `${rect.top + scrollY}px`,
-                        left: '0',
-                        width: `${rect.left}px`,
-                        height: `${scrollHeight - rect.top - scrollY}px`,
-                    });
-                    break;
-                case 'right':
-                    Object.assign(overlay.style, {
-                        top: `${rect.top + scrollY}px`,
-                        left: `${rect.right}px`,
-                        width: `calc(100% - ${rect.right}px)`,
-                        height: `${scrollHeight - rect.top - scrollY}px`,
-                    });
-                    break;
-                case 'bottom':
-                    Object.assign(overlay.style, {
-                        top: `${rect.bottom + scrollY}px`,
-                        left: `${rect.left}px`,
-                        width: `${rect.width}px`,
-                        height: `${scrollHeight - rect.bottom - scrollY}px`,
-                    });
-                    break;
-            }
-            return overlay;
-        }
-        function updateOverlay(container, rect, scrollY, scrollHeight) {
-            const overlays = container.children;
-            const topOverlay = overlays[0];
-            const leftOverlay = overlays[1];
-            const rightOverlay = overlays[2];
-            const bottomOverlay = overlays[3];
-            topOverlay.style.height = `${rect.top + scrollY}px`;
-            leftOverlay.style.top = `${rect.top + scrollY}px`;
-            leftOverlay.style.height = `${scrollHeight - rect.top - scrollY}px`;
-            leftOverlay.style.width = `${rect.left}px`;
-            rightOverlay.style.top = `${rect.top + scrollY}px`;
-            rightOverlay.style.left = `${rect.right}px`;
-            rightOverlay.style.width = `calc(100% - ${rect.right}px)`;
-            rightOverlay.style.height = `${scrollHeight - rect.top - scrollY}px`;
-            bottomOverlay.style.top = `${rect.bottom + scrollY}px`;
-            bottomOverlay.style.left = `${rect.left}px`;
-            bottomOverlay.style.width = `${rect.width}px`;
-            bottomOverlay.style.height = `${scrollHeight - rect.bottom - scrollY}px`;
-        }
-        function getIframeOffset(iframe) {
-            var _a, _b, _c;
-            let top = 0;
-            let left = 0;
-            let element = iframe;
-            while (element) {
-                const rect = element.getBoundingClientRect();
-                top += rect.top + (((_a = element.ownerDocument.defaultView) === null || _a === void 0 ? void 0 : _a.scrollY) || 0);
-                left += rect.left + (((_b = element.ownerDocument.defaultView) === null || _b === void 0 ? void 0 : _b.scrollX) || 0);
-                element = (_c = element.ownerDocument.defaultView) === null || _c === void 0 ? void 0 : _c.frameElement;
-            }
-            return { top, left };
-        }
-        function captureScreenshotWithOverlay(element) {
-            return __awaiter(this, void 0, void 0, function* () {
-                return new Promise((resolve, reject) => {
-                    let currentContextNode = document;
-                    let captureArea;
-                    const margin = 30;
-                    const { x: scrollOffsetX, y: scrollOffsetY } = calculateScrollOffsets(element);
-                    const yScroll = scrollOffsetY + window.scrollY;
-                    const rect = element.getBoundingClientRect();
-                    if (containingIframe) {
-                        captureArea = {
-                            x: Math.max(0, rect.left + scrollOffsetX - margin),
-                            y: Math.max(0, rect.top - 2 * margin),
-                            width: rect.width + margin * 2,
-                            height: rect.height + margin * 2,
-                        };
-                        currentContextNode = containingIframe.contentDocument || containingIframe.contentWindow.document;
-                    }
-                    else {
-                        captureArea = {
-                            x: Math.max(0, rect.left + scrollOffsetX - margin),
-                            y: Math.max(0, rect.top + yScroll - margin),
-                            width: rect.width + margin * 2,
-                            height: rect.height + margin * 2,
-                        };
-                    }
-                    html2canvas(currentContextNode.body, {
-                        x: captureArea.x,
-                        y: captureArea.y,
-                        width: captureArea.width,
-                        height: captureArea.height,
-                        windowWidth: document.documentElement.scrollWidth,
-                        scrollY: scrollOffsetY,
-                        useCORS: true,
-                        backgroundColor: null,
-                        logging: true,
-                    })
-                        .then((canvas) => {
-                        const dataURL = canvas.toDataURL('image/png');
-                        resolve(dataURL);
-                    })
-                        .catch((error) => {
-                        console.error('Error capturing screenshot:', error);
-                        reject(error);
-                    });
+    function createOverlayPart(position, rect, scrollY, scrollHeight) {
+        const overlay = document.createElement('div');
+        overlay.className = `${position}-overlay`;
+        overlay.style.position = 'absolute';
+        overlay.style.backgroundColor = 'rgba(128, 128, 128, 0.6)';
+        overlay.style.transition = 'all 0.3s ease';
+        switch (position) {
+            case 'top':
+                Object.assign(overlay.style, {
+                    top: '0',
+                    left: '0',
+                    width: '100%',
+                    height: `${rect.top + scrollY}px`,
                 });
-            });
+                break;
+            case 'left':
+                Object.assign(overlay.style, {
+                    top: `${rect.top + scrollY}px`,
+                    left: '0',
+                    width: `${rect.left}px`,
+                    height: `${scrollHeight - rect.top - scrollY}px`,
+                });
+                break;
+            case 'right':
+                Object.assign(overlay.style, {
+                    top: `${rect.top + scrollY}px`,
+                    left: `${rect.right}px`,
+                    width: `calc(100% - ${rect.right}px)`,
+                    height: `${scrollHeight - rect.top - scrollY}px`,
+                });
+                break;
+            case 'bottom':
+                Object.assign(overlay.style, {
+                    top: `${rect.bottom + scrollY}px`,
+                    left: `${rect.left}px`,
+                    width: `${rect.width}px`,
+                    height: `${scrollHeight - rect.bottom - scrollY}px`,
+                });
+                break;
         }
-        function calculateScrollOffsets(element) {
-            let x = 0;
-            let y = 0;
-            let parent = element.parentElement;
-            while (parent) {
-                if (isScrollable(parent)) {
-                    x += parent.scrollLeft;
-                    y += parent.scrollTop;
-                }
-                parent = parent.parentElement;
-            }
-            return { x, y };
+        return overlay;
+    }
+    function updateOverlay(container, rect, scrollY, scrollHeight) {
+        const overlays = container.children;
+        const topOverlay = overlays[0];
+        const leftOverlay = overlays[1];
+        const rightOverlay = overlays[2];
+        const bottomOverlay = overlays[3];
+        topOverlay.style.height = `${rect.top + scrollY}px`;
+        leftOverlay.style.top = `${rect.top + scrollY}px`;
+        leftOverlay.style.height = `${scrollHeight - rect.top - scrollY}px`;
+        leftOverlay.style.width = `${rect.left}px`;
+        rightOverlay.style.top = `${rect.top + scrollY}px`;
+        rightOverlay.style.left = `${rect.right}px`;
+        rightOverlay.style.width = `calc(100% - ${rect.right}px)`;
+        rightOverlay.style.height = `${scrollHeight - rect.top - scrollY}px`;
+        bottomOverlay.style.top = `${rect.bottom + scrollY}px`;
+        bottomOverlay.style.left = `${rect.left}px`;
+        bottomOverlay.style.width = `${rect.width}px`;
+        bottomOverlay.style.height = `${scrollHeight - rect.bottom - scrollY}px`;
+    }
+    function getIframeOffset(iframe) {
+        var _a, _b, _c;
+        let top = 0;
+        let left = 0;
+        let element = iframe;
+        while (element) {
+            const rect = element.getBoundingClientRect();
+            top += rect.top + (((_a = element.ownerDocument.defaultView) === null || _a === void 0 ? void 0 : _a.scrollY) || 0);
+            left += rect.left + (((_b = element.ownerDocument.defaultView) === null || _b === void 0 ? void 0 : _b.scrollX) || 0);
+            element = (_c = element.ownerDocument.defaultView) === null || _c === void 0 ? void 0 : _c.frameElement;
         }
-        function isScrollable(element) {
-            const overflowY = window.getComputedStyle(element).overflowY;
-            return overflowY === 'scroll' || overflowY === 'auto';
+        return { top, left };
+    }
+    function getElementIndex(element) {
+        let index = 1;
+        let sibling = element.previousElementSibling;
+        while (sibling) {
+            if (sibling.tagName === element.tagName)
+                index++;
+            sibling = sibling.previousElementSibling;
         }
-        function createUpDownButtons() {
-            const container = document.createElement('div');
-            container.classList.add('dodao-up-down-buttons');
-            const minusButton = document.createElement('button');
-            minusButton.textContent = '-';
-            minusButton.title = 'Click to move to parent of element';
-            minusButton.addEventListener('click', () => navigateSelection('up'));
-            container.appendChild(minusButton);
-            const plusButton = document.createElement('button');
-            plusButton.textContent = '+';
-            plusButton.title = 'Click to move down to first child of element';
-            plusButton.addEventListener('click', () => navigateSelection('down'));
-            container.appendChild(plusButton);
-            return container;
+        return index;
+    }
+    function createOverlayContainer(rect, scrollY, scrollHeight) {
+        const overlayContainer = document.createElement('div');
+        overlayContainer.id = 'dimming-overlay';
+        Object.assign(overlayContainer.style, {
+            position: 'absolute',
+            top: '0',
+            left: '0',
+            width: '100%',
+            height: `${scrollHeight}px`,
+            pointerEvents: 'none',
+            zIndex: '2147483646',
+        });
+        const overlays = ['top', 'left', 'right', 'bottom'].map((position) => createOverlayPart(position, rect, scrollY, scrollHeight));
+        overlays.forEach((overlay) => overlayContainer.appendChild(overlay));
+        return overlayContainer;
+    }
+    function createOrUpdateOverlay(element, containerIframe) {
+        if (!element)
+            return;
+        // get element's Xpath
+        let rect = element.getBoundingClientRect();
+        let scrollY = window.scrollY;
+        const scrollHeight = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+        if (containerIframe) {
+            const iframeOffset = getIframeOffset(containerIframe);
+            rect = {
+                top: rect.top + iframeOffset.top,
+                left: rect.left + iframeOffset.left,
+                right: rect.right + iframeOffset.left,
+                bottom: rect.bottom + iframeOffset.top,
+                width: rect.width,
+                height: rect.height,
+            };
+            scrollY = 0;
         }
-        function navigateSelection(direction) {
-            if (!selectedElement)
-                return;
-            if (direction === 'up' && selectedElement.parentElement && selectedElement.parentElement !== document.body) {
-                selectedElement = selectedElement.parentElement;
-            }
-            else if (direction === 'down' && selectedElement.firstElementChild) {
-                selectedElement = selectedElement.firstElementChild;
+        const existingOverlay = document.getElementById('dimming-overlay');
+        if (existingOverlay) {
+            updateOverlay(existingOverlay, rect, scrollY, scrollHeight);
+        }
+        else {
+            const overlayContainer = createOverlayContainer(rect, scrollY, scrollHeight);
+            document.body.appendChild(overlayContainer);
+        }
+    }
+    function getXPath(element, containerIframe) {
+        if (!element)
+            return '';
+        const segments = [];
+        let current = element;
+        while (current && current !== document.body) {
+            const tagName = current.tagName.toLowerCase();
+            const index = getElementIndex(current);
+            segments.unshift(`${tagName}[${index}]`);
+            current = current.parentElement;
+        }
+        if (containerIframe) {
+            return `/${segments.join('/')}`;
+        }
+        return `/html/body/${segments.join('/')}`;
+    }
+    function captureScreenshotWithOverlay(element, containerIframe) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let currentContextNode = document;
+            let captureArea;
+            const margin = 30;
+            const { x: scrollOffsetX, y: scrollOffsetY } = calculateScrollOffsets(element);
+            const yScroll = scrollOffsetY + window.scrollY;
+            const rect = element.getBoundingClientRect();
+            if (containerIframe) {
+                captureArea = {
+                    x: Math.max(0, rect.left + scrollOffsetX - margin),
+                    y: Math.max(0, rect.top - 2 * margin),
+                    width: rect.width + margin * 2,
+                    height: rect.height + margin * 2,
+                };
+                currentContextNode = containerIframe.contentDocument || containerIframe.contentWindow.document;
             }
             else {
-                return;
+                captureArea = {
+                    x: Math.max(0, rect.left + scrollOffsetX - margin),
+                    y: Math.max(0, rect.top + yScroll - margin),
+                    width: rect.width + margin * 2,
+                    height: rect.height + margin * 2,
+                };
             }
-            createOrUpdateOverlay(selectedElement);
-            finalXPath = getXPath(selectedElement);
-        }
-        function createSelectButton() {
-            const button = document.createElement('button');
-            button.textContent = 'Select';
-            button.classList.add('dodao-select-element-button');
-            button.disabled = true;
-            button.style.opacity = '0.5';
-            button.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
-                var _a;
-                if (selectedElement && finalXPath) {
-                    const dataUrl = yield captureScreenshotWithOverlay(selectedElement);
-                    (_a = event.source) === null || _a === void 0 ? void 0 : _a.postMessage({ xpath: finalXPath, elementImgUrl: dataUrl }, { targetOrigin: event.origin } // Use options object instead of just `event.origin`
-                    );
-                }
-            }));
-            button.addEventListener('mouseover', () => {
-                if (!button.disabled)
-                    button.style.opacity = '0.7';
+            const canvas = yield html2canvas(currentContextNode.body, {
+                x: captureArea.x,
+                y: captureArea.y,
+                width: captureArea.width,
+                height: captureArea.height,
+                windowWidth: document.documentElement.scrollWidth,
+                scrollY: scrollOffsetY,
+                useCORS: true,
+                backgroundColor: null,
+                logging: true,
             });
-            button.addEventListener('mouseout', () => {
-                if (!button.disabled)
-                    button.style.opacity = '1';
-            });
-            return button;
-        }
-        function createClearSelectionButton() {
-            const button = document.createElement('button');
-            button.textContent = 'Clear Selection';
-            button.classList.add('dodao-clear-selection-button');
-            button.disabled = selectedElement === null;
-            button.style.opacity = '0.5';
-            button.addEventListener('mouseover', () => {
-                if (!button.disabled)
-                    button.style.opacity = '0.7';
-            });
-            button.addEventListener('mouseout', () => {
-                if (!button.disabled)
-                    button.style.opacity = '1';
-            });
-            button.addEventListener('click', () => {
-                selectedElement = null;
-                finalXPath = null;
-                containingIframe = null;
-                hoverEnabled = true;
-                const overlay = document.getElementById('dimming-overlay');
-                if (overlay)
-                    overlay.remove();
-                selectButton.disabled = true;
-                selectButton.style.opacity = '0.5';
-                document.body.style.cursor = 'default';
-                button.disabled = true;
-                button.style.opacity = '0.5';
-            });
-            return button;
-        }
-        function handleMouseOver(e) {
-            e.preventDefault();
-            if (hoverEnabled && !selectedElement) {
-                clearTimeout(hoverTimer);
-                hoverTimer = window.setTimeout(() => {
-                    const hoveredElement = e.target;
-                    if (![selectButton, clearSelectionButton, upDownButtons, ...Array.from(upDownButtons.children)].includes(hoveredElement)) {
-                        createOrUpdateOverlay(hoveredElement);
-                    }
-                }, 180);
-            }
-        }
-        function handleClick(e) {
-            e.preventDefault();
-            const clickedElement = e.target;
-            if (clickedElement === selectButton || clickedElement === clearSelectionButton)
-                return;
-            if (Array.from(upDownButtons.children).includes(clickedElement))
-                return;
-            hoverEnabled = false;
-            selectedElement = clickedElement;
-            selectButton.disabled = false;
-            selectButton.style.opacity = '1';
-            clearSelectionButton.disabled = false;
-            clearSelectionButton.style.opacity = '1';
-            createOrUpdateOverlay(selectedElement);
-            finalXPath = getXPath(selectedElement);
-        }
-        function getXPath(element) {
-            if (!element)
-                return '';
-            const segments = [];
-            let current = element;
-            while (current && current !== document.body) {
-                const tagName = current.tagName.toLowerCase();
-                const index = getElementIndex(current);
-                segments.unshift(`${tagName}[${index}]`);
-                current = current.parentElement;
-            }
-            if (containingIframe) {
-                return `/${segments.join('/')}`;
-            }
-            return `/html/body/${segments.join('/')}`;
-        }
-        function getElementIndex(element) {
-            let index = 1;
-            let sibling = element.previousElementSibling;
-            while (sibling) {
-                if (sibling.tagName === element.tagName)
-                    index++;
-                sibling = sibling.previousElementSibling;
-            }
-            return index;
-        }
-    }
-    function handleDoDAOParentWindowEvent(event) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const data = event.data;
-            console.log('Received message from parent window:', data);
-            if (data.type === 'elementSelector') {
-                elementSelector(event);
-            }
-            if (data.type === 'showTooltip') {
-                showTooltip();
-            }
+            const dataURL = canvas.toDataURL('image/png');
+            return dataURL;
         });
     }
-    window.handleDoDAOParentWindowEvent = handleDoDAOParentWindowEvent;
-    console.log('handleDoDAOParentWindowEvent is defined on window', window.handleDoDAOParentWindowEvent);
-    window.document.addEventListener('DOMContentLoaded', () => {
-        showTooltip();
-    });
+    function calculateScrollOffsets(element) {
+        let x = 0;
+        let y = 0;
+        let parent = element.parentElement;
+        while (parent) {
+            if (isScrollable(parent)) {
+                x += parent.scrollLeft;
+                y += parent.scrollTop;
+            }
+            parent = parent.parentElement;
+        }
+        return { x, y };
+    }
+    function isScrollable(element) {
+        const overflowY = window.getComputedStyle(element).overflowY;
+        return overflowY === 'scroll' || overflowY === 'auto';
+    }
 })();

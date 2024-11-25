@@ -70,6 +70,7 @@ export default function EditClickableDemoStepper({
                   }}
                   removeStep={updateClickableDemoFunctions.removeStep}
                   onUpdateStep={updateClickableDemoFunctions.updateStep}
+                  uploadToS3AndReturnScreenshotUrl={updateClickableDemoFunctions.uploadToS3AndReturnScreenshotUrl}
                 />
               </div>
             </Accordion>

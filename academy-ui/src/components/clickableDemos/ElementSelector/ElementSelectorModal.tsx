@@ -1,13 +1,7 @@
-import { CreateSignedUrlInput } from '@/graphql/generated/generated-types';
-import { CreateSignedUrlRequest } from '@/types/request/SignedUrl';
-import { SingedUrlResponse } from '@/types/response/SignedUrl';
 import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
+import { base64ToFile, getFileName } from '@/utils/clickableDemos/clickableDemoUtils';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
-import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { getUploadedImageUrlFromSingedUrl } from '@dodao/web-core/utils/upload/getUploadedImageUrlFromSingedUrl';
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
 interface Props {
   space: SpaceWithIntegrationsDto;
@@ -15,80 +9,24 @@ interface Props {
   objectId: string;
   fileUrl: string;
   xPath: string;
-  elementImgUrl: string;
-  onLoading?: (loading: boolean) => void;
-  onInput?: (imageUrl: string, elementImgUrl: string) => void;
+  onInput: (imageUrl: string, elementImgUrl: string) => void;
   setShowModal: (showModal: boolean) => void;
+  uploadToS3AndReturnScreenshotUrl: (file: File, stepNumber: number, imageType: 'page-screenshot' | 'element-screenshot') => Promise<string>;
+  stepIndex: number;
 }
 
-export default function ElementSelectorModal({ space, showModal, objectId, fileUrl, xPath, elementImgUrl, onInput, setShowModal }: Props) {
-  const [currentXpath, setCurrenXpath] = useState(xPath);
-  const [currentCapture, setCurrentCapture] = useState(elementImgUrl);
-  const spaceId = space.id;
-  const { postData } = usePostData<SingedUrlResponse, CreateSignedUrlRequest>(
-    {
-      errorMessage: 'Failed to get signed URL',
-    },
-    {}
-  );
-
-  async function uploadToS3AndReturnScreenshotUrl(file: File | null, objectId: string) {
-    if (!file) return;
-    const input: CreateSignedUrlInput = {
-      imageType: 'ClickableDemos/Element_Image',
-      contentType: 'image/png',
-      objectId,
-      name: file.name.replace(' ', '_').toLowerCase(),
-    };
-
-    const response = await postData(`${getBaseUrl()}/api/s3-signed-urls`, { spaceId, input });
-
-    const signedUrl = response?.url!;
-    await axios.put(signedUrl, file, {
-      headers: { 'Content-Type': 'image/png' },
-    });
-    const screenshotUrl = getUploadedImageUrlFromSingedUrl(signedUrl);
-    return screenshotUrl;
-  }
-  function getFileName(url: string): string {
-    const segments = url.split('/');
-    return segments[segments.length - 1] + '_selectedElementImg';
-  }
-  function base64ToFile(base64String: string | undefined, filename: string): File | null {
-    if (!base64String) {
-      console.error('Invalid Base64 string');
-      return null;
-    }
-
-    const arr = base64String.split(',');
-    if (arr.length !== 2) {
-      console.error('Invalid Base64 string format');
-      return null;
-    }
-
-    const mimeTypeMatch = arr[0].match(/:(.*?);/);
-    const mimeType = mimeTypeMatch ? mimeTypeMatch[1] : '';
-
-    const byteString = atob(arr[1]);
-    const byteNumbers = new Uint8Array(byteString.length);
-
-    for (let i = 0; i < byteString.length; i++) {
-      byteNumbers[i] = byteString.charCodeAt(i);
-    }
-
-    return new File([byteNumbers], filename, { type: mimeType });
-  }
+export default function ElementSelectorModal({ space, showModal, fileUrl, xPath, onInput, setShowModal, uploadToS3AndReturnScreenshotUrl, stepIndex }: Props) {
   const filename = getFileName(fileUrl);
   useEffect(() => {
     let hasModifiedIframe = false; // Flag to track if the iframe has been modified
     async function receiveMessage(event: any) {
       if (event.data.xpath && event.data.elementImgUrl) {
-        let screenshotFile = base64ToFile(event.data.elementImgUrl, filename);
-        let screenshotURL: string | undefined;
-        screenshotURL = await uploadToS3AndReturnScreenshotUrl(screenshotFile, objectId.replace(/[^a-z0-9]/gi, '_'));
+        const screenshotFile = base64ToFile(event.data.elementImgUrl, filename);
+        if (!screenshotFile) return;
+        const screenshotURL: string = await uploadToS3AndReturnScreenshotUrl(screenshotFile, stepIndex, 'element-screenshot');
         if (event.data.xpath && screenshotURL) {
           setShowModal(false);
-          onInput && onInput(event.data.xpath, screenshotURL);
+          onInput(event.data.xpath, screenshotURL);
         }
       }
     }
@@ -159,7 +97,6 @@ export default function ElementSelectorModal({ space, showModal, objectId, fileU
         open={true}
         onClose={() => {
           setShowModal(false);
-          onInput && onInput(currentXpath, currentCapture);
         }}
         title={'Element Selector'}
       >
