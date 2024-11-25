@@ -11,27 +11,43 @@ interface EditableImageProps {
   onRemove: () => void;
   onUpload: () => void;
   height?: string;
+  maxWidth?: string;
   label?: string;
+  afterUploadLabel?: string;
   disabled?: boolean;
   disabledTooltip?: string;
   error?: string | boolean;
 }
 
-export default function EditableImage({ imageUrl, onRemove, onUpload, height = '150px', label, disabled, disabledTooltip = '', error }: EditableImageProps) {
+export default function EditableImage({
+  imageUrl,
+  onRemove,
+  onUpload,
+  height = '150px',
+  maxWidth = '100%',
+  label,
+  afterUploadLabel,
+  disabled,
+  disabledTooltip = '',
+  error,
+}: EditableImageProps) {
   return (
     <div className="my-4 flex justify-center items-center">
       {imageUrl ? (
-        <div className={`relative group inline-block h-[${height}] justify-center`}>
-          <img src={imageUrl} style={{ height: height }} className="border border-color object-cover" />
+        <div className="flex flex-col justify-center items-center">
+          <div className={`relative group inline-block h-[${height}]`}>
+            <img src={imageUrl} style={{ height: height, maxWidth: maxWidth }} className="border border-color object-cover" />
 
-          <OverlayOnHover>
-            <ViewEditableImage onClickEditIcon={onUpload} onClickTrashIcon={onRemove} />
-          </OverlayOnHover>
+            <OverlayOnHover>
+              <ViewEditableImage onClickEditIcon={onUpload} onClickTrashIcon={onRemove} />
+            </OverlayOnHover>
+          </div>
+          {afterUploadLabel && !error && <div className="mt-2 font-semibold">{afterUploadLabel}</div>}
         </div>
       ) : (
         <div className="h-full flex flex-col justify-center items-center">
           <div className={`relative h-[150px] group ${error ? 'border border-red-600 border-2' : ''}`}>
-            <img src={dummyImage.src} style={{ height: '100%' }} className="cursor-pointer border border-color" />
+            <img src={dummyImage.src} style={{ height: '100%', width: '100%' }} className="cursor-pointer border border-color" />
             <OverlayOnHover>
               <IconButton
                 tooltip={`${disabled ? disabledTooltip : 'Add Image'}`}

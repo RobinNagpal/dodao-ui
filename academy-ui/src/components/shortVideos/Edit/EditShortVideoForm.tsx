@@ -208,6 +208,7 @@ export default function EditShortVideoModal({
                 onUpload={() => setSelectImageUploadModal(true)}
                 height="200px"
                 label="Select Thumbnail"
+                afterUploadLabel="Thumbnail Selected"
                 error={shortVideoErrors['thumbnail']}
               />
 
@@ -216,6 +217,7 @@ export default function EditShortVideoModal({
                 onRemove={() => updateShortVideoField('videoUrl', '')}
                 height="200px"
                 label="Select Video"
+                afterUploadLabel="Video Selected"
                 onUpload={uploadToS3AndReturnImgUrl}
                 loading={uploadFileLoading}
                 error={shortVideoErrors['videoUrl']}

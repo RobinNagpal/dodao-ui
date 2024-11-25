@@ -12,6 +12,7 @@ interface EditableVideoProps {
   onUpload: (file: File) => Promise<void>;
   height?: string;
   label?: string;
+  afterUploadLabel?: string;
   disabled?: boolean;
   disabledTooltip?: string;
   loading: boolean;
@@ -24,6 +25,7 @@ export default function EditableVideo({
   onUpload,
   height = '150px',
   label,
+  afterUploadLabel,
   disabled,
   disabledTooltip = '',
   loading,
@@ -32,32 +34,35 @@ export default function EditableVideo({
   return (
     <div className="my-4 flex justify-center items-center">
       {videoUrl ? (
-        <div className={`relative group inline-block h-[${height}] justify-center`}>
-          <video src={videoUrl} style={{ height: height }} className="border border-color" />
+        <div className="flex flex-col justify-center items-center">
+          <div className={`relative group inline-block h-[${height}] justify-center`}>
+            <video src={videoUrl} style={{ height: height }} className="border border-color" />
 
-          <OverlayOnHover>
-            <div className={`flex justify-center items-center gap-x-4 ${loading ? 'cursor-progress' : ''}`}>
-              <WebCoreFileUploader
-                allowedFileTypes={['video/mp4', 'video/x-m4v', 'video/*']}
-                className={`flex justify-center items-center`}
-                uploadFile={async (file) => {
-                  onRemove();
-                  onUpload(file);
-                }}
-                loading={loading}
-              >
-                <IconButton tooltip="Change Video" iconName={IconTypes.Edit} height="30" width="30" className={`${styles.iconsColorToggle}`} />
-              </WebCoreFileUploader>
-              <IconButton
-                tooltip="Remove Video"
-                iconName={IconTypes.Trash}
-                height="30"
-                width="30"
-                className={`${styles.iconsColorToggle}`}
-                onClick={onRemove}
-              />
-            </div>
-          </OverlayOnHover>
+            <OverlayOnHover>
+              <div className={`flex justify-center items-center gap-x-4 ${loading ? 'cursor-progress' : ''}`}>
+                <WebCoreFileUploader
+                  allowedFileTypes={['video/mp4', 'video/x-m4v', 'video/*']}
+                  className={`flex justify-center items-center`}
+                  uploadFile={async (file) => {
+                    onRemove();
+                    onUpload(file);
+                  }}
+                  loading={loading}
+                >
+                  <IconButton tooltip="Change Video" iconName={IconTypes.Edit} height="30" width="30" className={`${styles.iconsColorToggle}`} />
+                </WebCoreFileUploader>
+                <IconButton
+                  tooltip="Remove Video"
+                  iconName={IconTypes.Trash}
+                  height="30"
+                  width="30"
+                  className={`${styles.iconsColorToggle}`}
+                  onClick={onRemove}
+                />
+              </div>
+            </OverlayOnHover>
+          </div>
+          {afterUploadLabel && !error && <div className="mt-2 font-semibold">{afterUploadLabel}</div>}
         </div>
       ) : (
         <div className="h-full flex flex-col justify-center items-center">

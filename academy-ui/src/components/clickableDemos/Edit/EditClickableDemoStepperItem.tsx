@@ -129,9 +129,10 @@ export default function EditClickableDemoStepperItem({
         </div>
       </div>
 
-      <div className="w-full my-2 flex flex-wrap sm:flex-nowrap justify-around gap-5">
+      <div className="w-full my-2 flex flex-wrap sm:flex-nowrap justify-around items-end gap-5">
         <EditableImage
           label="Select Capture"
+          afterUploadLabel="Capture Selected"
           imageUrl={step.screenImgUrl}
           onRemove={() => updateStepUrl('', '')}
           onUpload={() => setShowSelectHtmlCaptureModal(true)}
@@ -141,10 +142,12 @@ export default function EditClickableDemoStepperItem({
 
         <EditableImage
           label="Select Element"
+          afterUploadLabel="Element Selected"
           imageUrl={step.elementImgUrl}
           onRemove={() => updateStepSelector('', '')}
           onUpload={() => setShowElementSelectorModal(true)}
-          height="200px"
+          height="150px"
+          maxWidth="250px"
           disabled={step.screenImgUrl != ''}
           disabledTooltip="Please select a capture first"
           error={inputError('selector') ? 'Selector is required' : ''}
