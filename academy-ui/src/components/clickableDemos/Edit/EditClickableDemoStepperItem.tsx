@@ -23,6 +23,7 @@ interface StepProps {
   moveStepDown?: (stepUuid: string) => void;
   removeStep?: (stepUuid: string) => void;
   onUpdateStep: (step: ClickableDemoStepInput) => void;
+  uploadToS3AndReturnScreenshotUrl: (file: File, stepNumber: number, imageType: 'page-screenshot' | 'element-screenshot') => Promise<string>;
 }
 
 const tooltipStyleSelect: StyledSelectItem[] = [
@@ -55,6 +56,7 @@ export default function EditClickableDemoStepperItem({
   moveStepDown,
   removeStep,
   onUpdateStep,
+  uploadToS3AndReturnScreenshotUrl,
 }: StepProps) {
   const [uploadHTMLFileLoading, setUploadHTMLFileLoading] = useState(false);
 
@@ -140,11 +142,11 @@ export default function EditClickableDemoStepperItem({
             error={inputError('selector') ? 'Selector is required' : ''}
             space={space}
             modelValue={step.selector}
-            elementImgUrl={step.elementImgUrl}
+            stepIndex={stepIndex}
             objectId={(space?.name && slugify(space?.name)) || space?.id || 'new-space'}
             fileUrl={step.url}
             onInput={updateStepSelector}
-            onLoading={setUploadHTMLFileLoading}
+            uploadToS3AndReturnScreenshotUrl={uploadToS3AndReturnScreenshotUrl}
           />
           {step.elementImgUrl && ( // Assuming `step.screenImgUrl` holds the URL of the screenshot image
             <div className="mt-4">

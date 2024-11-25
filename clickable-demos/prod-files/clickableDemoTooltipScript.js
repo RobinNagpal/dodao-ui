@@ -268,6 +268,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     }
     //************** Event handler **************//
     function handleDoDAOParentWindowEvent(event) {
+        var _a, _b;
         return __awaiter(this, void 0, void 0, function* () {
             const data = event.data;
             console.log('Received message from parent window:', data);
@@ -277,8 +278,26 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
             if (data.type === 'showTooltip') {
                 showTooltip();
             }
+            if (data.type === 'capturePageScreenshot') {
+                const canvas = yield html2canvas(document.body, { useCORS: true });
+                const dataURL = canvas.toDataURL('image/png');
+                (_a = event.source) === null || _a === void 0 ? void 0 : _a.postMessage({ type: 'pageScreenshotCaptured', dataURL }, { targetOrigin: '*' });
+            }
+            if (data.type === 'captureElementScreenshot') {
+                const { selector } = data;
+                const currentDocAndTargetNode = getCurrentContextNodeAndTarget(selector);
+                if (!currentDocAndTargetNode.targetNode || !currentDocAndTargetNode.currentContextNode)
+                    return;
+                const { currentContextNode, targetNode } = currentDocAndTargetNode;
+                const target = targetNode;
+                if (selector.includes('iframe')) {
+                    const dataURL = yield captureScreenshotWithOverlay(target, currentContextNode.documentElement);
+                    (_b = event.source) === null || _b === void 0 ? void 0 : _b.postMessage({ type: 'elementScreenshotCaptured', dataURL }, { targetOrigin: '*' });
+                }
+            }
         });
     }
+    window.onmessage = handleDoDAOParentWindowEvent;
     window.handleDoDAOParentWindowEvent = handleDoDAOParentWindowEvent;
     console.log('handleDoDAOParentWindowEvent is defined on window', window.handleDoDAOParentWindowEvent);
     window.document.addEventListener('DOMContentLoaded', () => {

@@ -317,8 +317,28 @@
     if (data.type === 'showTooltip') {
       showTooltip();
     }
+
+    if (data.type === 'capturePageScreenshot') {
+      const canvas = await html2canvas(document.body, { useCORS: true });
+      const dataURL = canvas.toDataURL('image/png');
+      event.source?.postMessage({ type: 'pageScreenshotCaptured', dataURL }, { targetOrigin: '*' });
+    }
+
+    if (data.type === 'captureElementScreenshot') {
+      const { selector } = data;
+      const currentDocAndTargetNode = getCurrentContextNodeAndTarget(selector)!;
+      if (!currentDocAndTargetNode.targetNode || !currentDocAndTargetNode.currentContextNode) return;
+
+      const { currentContextNode, targetNode } = currentDocAndTargetNode;
+      const target = targetNode as HTMLElement;
+      if ((selector as string).includes('iframe')) {
+        const dataURL = await captureScreenshotWithOverlay(target, currentContextNode.documentElement as HTMLIFrameElement);
+        event.source?.postMessage({ type: 'elementScreenshotCaptured', dataURL }, { targetOrigin: '*' });
+      }
+    }
   }
 
+  window.onmessage = handleDoDAOParentWindowEvent;
   window.handleDoDAOParentWindowEvent = handleDoDAOParentWindowEvent;
 
   console.log('handleDoDAOParentWindowEvent is defined on window', window.handleDoDAOParentWindowEvent);

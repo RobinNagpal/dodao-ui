@@ -3,6 +3,7 @@ import EditClickableDemo from '@/components/clickableDemos/Create/EditClickableD
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import { ClickableDemoSummary } from '@/types/clickableDemos/ClickableDemoDto';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import PrimaryColorBadge from '@dodao/web-core/components/core/badge/PrimaryColorBadge';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import ItemCompletionCheckmark from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ItemCompletionCheckmark';
@@ -20,6 +21,7 @@ interface DemoItemProps {
   openItemUnarchiveModal: (itemId: string, itemName: string, itemType: ByteCollectionItemType | null) => void;
   openItemMoveModal: (itemId: string, itemName: string, itemType: ByteCollectionItemType | null) => void;
   showItemTypeBadge: boolean;
+  space: SpaceWithIntegrationsDto;
 }
 
 interface EditDemoModalState {
@@ -28,8 +30,18 @@ interface EditDemoModalState {
 }
 
 export default function DemoItem(props: DemoItemProps) {
-  const { byteCollection, demo, eventIdx, threeDotItems, openItemDeleteModal, openItemUnarchiveModal, openItemMoveModal, itemLength, showItemTypeBadge } =
-    props;
+  const {
+    byteCollection,
+    demo,
+    eventIdx,
+    threeDotItems,
+    openItemDeleteModal,
+    openItemUnarchiveModal,
+    openItemMoveModal,
+    itemLength,
+    showItemTypeBadge,
+    space,
+  } = props;
   const demoViewUrl = `clickable-demos/view/${demo.demoId}`;
   const [editDemoModalState, setEditDemoModalState] = React.useState<EditDemoModalState>({ isVisible: false, demoId: null });
 
@@ -93,6 +105,7 @@ export default function DemoItem(props: DemoItemProps) {
         >
           <div className="text-left">
             <EditClickableDemo
+              space={space}
               demoId={editDemoModalState.demoId}
               byteCollection={byteCollection}
               closeDemoEditModal={function () {
