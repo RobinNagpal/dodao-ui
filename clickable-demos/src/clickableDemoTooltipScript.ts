@@ -291,9 +291,7 @@
         minusButton.textContent = '-';
         minusButton.title = 'Click to move to parent of element';
         minusButton.id = 'dodao-up-button';
-        minusButton.style.opacity = '0.3';
-        minusButton.style.cursor = 'not-allowed';
-        minusButton.disabled = true;
+        addDisableButtonStyles(minusButton);
         container.appendChild(minusButton);
       }
 
@@ -303,9 +301,7 @@
         plusButton.textContent = '+';
         plusButton.title = 'Click to move down to first child of element';
         plusButton.id = 'dodao-down-button';
-        plusButton.style.opacity = '0.3';
-        plusButton.style.cursor = 'not-allowed';
-        plusButton.disabled = true;
+        addDisableButtonStyles(plusButton);
         container.appendChild(plusButton);
       }
 
@@ -320,9 +316,7 @@
       button.textContent = 'Select';
       button.classList.add('dodao-select-element-button');
       button.id = 'dodao-select-element-button';
-      button.disabled = true;
-      button.style.opacity = '0.3';
-      button.style.cursor = 'not-allowed';
+      addDisableButtonStyles(button);
       return button;
     }
 
@@ -334,69 +328,58 @@
       button.textContent = 'Clear Selection';
       button.classList.add('dodao-clear-selection-button');
       button.id = 'dodao-clear-selection-button';
-      button.disabled = selectedElement === null;
-      button.style.opacity = '0.3';
-      button.style.cursor = 'not-allowed';
+      addDisableButtonStyles(button);
       return button;
     }
 
+    function addEnableButtonStyles(button: HTMLButtonElement) {
+      button.style.cursor = 'pointer';
+      button.disabled = false;
+      button.style.opacity = '1';
+      button.addEventListener('mouseover', buttonMouseoverHandler);
+      button.addEventListener('mouseout', buttonMouseoutHandler);
+    }
+
+    function addDisableButtonStyles(button: HTMLButtonElement) {
+      button.style.cursor = 'not-allowed';
+      button.disabled = true;
+      button.style.opacity = '0.3';
+      button.removeEventListener('mouseover', buttonMouseoverHandler);
+      button.removeEventListener('mouseout', buttonMouseoutHandler);
+    }
     function enableButtonActions() {
       const selectButton: HTMLButtonElement = document.getElementById('dodao-select-element-button') as HTMLButtonElement;
-      selectButton.style.cursor = 'pointer';
-      selectButton.disabled = false;
-      selectButton.style.opacity = '1';
-      selectButton.addEventListener('mouseover', buttonMouseoverHandler);
-      selectButton.addEventListener('mouseout', buttonMouseoutHandler);
+      addEnableButtonStyles(selectButton);
       selectButton.addEventListener('click', handleSelectButtonClicked);
 
       const clearButton = document.getElementById('dodao-clear-selection-button') as HTMLButtonElement;
-      clearButton.style.cursor = 'pointer';
-      clearButton.disabled = false;
-      clearButton.style.opacity = '1';
-      clearButton.addEventListener('mouseover', buttonMouseoverHandler);
-      clearButton.addEventListener('mouseout', buttonMouseoutHandler);
+      addEnableButtonStyles(clearButton);
       clearButton.addEventListener('click', handleClearButtonClicked);
 
       const upButton = document.getElementById('dodao-up-button') as HTMLButtonElement;
-      upButton.style.cursor = 'pointer';
-      upButton.disabled = false;
-      upButton.style.opacity = '1';
-      upButton.addEventListener('mouseover', buttonMouseoverHandler);
-      upButton.addEventListener('mouseout', buttonMouseoutHandler);
+      addEnableButtonStyles(upButton);
       upButton.addEventListener('click', handleUpButtonClicked);
 
       const downButton = document.getElementById('dodao-down-button') as HTMLButtonElement;
-      downButton.style.cursor = 'pointer';
-      downButton.disabled = false;
-      downButton.style.opacity = '1';
-      downButton.addEventListener('mouseover', buttonMouseoverHandler);
-      downButton.addEventListener('mouseout', buttonMouseoutHandler);
+      addEnableButtonStyles(downButton);
       downButton.addEventListener('click', handleDownButtonClicked);
     }
 
     function disableButtonActions() {
       const selectButton: HTMLButtonElement = document.getElementById('dodao-select-element-button') as HTMLButtonElement;
-      selectButton.style.cursor = 'not-allowed';
-      selectButton.disabled = true;
-      selectButton.style.opacity = '0.3';
+      addDisableButtonStyles(selectButton);
       selectButton.removeEventListener('click', handleSelectButtonClicked);
 
       const clearButton = document.getElementById('dodao-clear-selection-button') as HTMLButtonElement;
-      clearButton.style.cursor = 'not-allowed';
-      clearButton.disabled = true;
-      clearButton.style.opacity = '0.3';
+      addDisableButtonStyles(clearButton);
       clearButton.removeEventListener('click', handleClearButtonClicked);
 
       const upButton = document.getElementById('dodao-up-button') as HTMLButtonElement;
-      upButton.style.cursor = 'not-allowed';
-      upButton.disabled = true;
-      upButton.style.opacity = '0.3';
+      addDisableButtonStyles(upButton);
       upButton.removeEventListener('click', handleUpButtonClicked);
 
       const downButton = document.getElementById('dodao-down-button') as HTMLButtonElement;
-      downButton.style.cursor = 'not-allowed';
-      downButton.disabled = true;
-      downButton.style.opacity = '0.3';
+      addDisableButtonStyles(downButton);
       downButton.removeEventListener('click', handleDownButtonClicked);
     }
 
