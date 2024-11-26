@@ -219,7 +219,7 @@ export default function EditClickableDemo({ space, demoId, byteCollection, close
       {generatedImages && clickableDemo.steps?.[0].url && (
         <>
           <iframe src={clickableDemo.steps?.[0].url} style={iframeStyles} id={iframeId} onLoad={iframeLoaded} />
-          <FullPageLoader message={'Generating Screen shot for step ' + currentScreenshotStep} className={'z-50 h-20 block-bg-color'} />
+          <FullPageLoader message={`Generating Screenshot for Step # ${currentScreenshotStep + 1}`} className={'z-50 h-20 block-bg-color'} />
         </>
       )}
     </PageWrapper>

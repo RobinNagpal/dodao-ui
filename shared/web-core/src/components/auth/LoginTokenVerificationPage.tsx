@@ -17,9 +17,9 @@ interface CallbackPageProps {
 
 const contextToUrlMapping: { [key in Contexts]: string } = {
   [Contexts.finishSetup]: '/spaces/finish-space-setup',
-  [Contexts.login]: '/spaces/space-collections',
+  [Contexts.loginAndGoToSpaces]: '/spaces/space-collections',
   [Contexts.setupNewSpace]: '/spaces/create',
-  [Contexts.verifyToken]: '/',
+  [Contexts.loginAndRedirectToHome]: '/',
 };
 
 export default function LoginTokenVerificationPage({ space }: CallbackPageProps) {
