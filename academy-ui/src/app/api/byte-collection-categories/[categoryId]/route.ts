@@ -27,7 +27,7 @@ async function getHandler(req: NextRequest, { params: { categoryId } }: { params
         id: byteCollectionId,
       },
       orderBy: {
-        priority: 'desc',
+        order: 'asc',
       },
     });
 

@@ -1,9 +1,8 @@
 import ByteCollectionsCard from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCollectionsCard';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import UpdateThemeModal, { ColorLabels, ThemeColorsKeys } from '@/components/spaces/Edit/Theme/UpdateThemeModal';
-import { ThemeColors } from '@/graphql/generated/generated-types';
 import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
-import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
+import { SpaceWithIntegrationsDto, ThemeColorsDto } from '@/types/space/SpaceDto';
 import { GlobalThemeColors } from '@dodao/web-core/components/app/themes';
 import React from 'react';
 
@@ -14,7 +13,7 @@ export interface SpaceDetailsProps {
 export default function SpaceThemeDetails({ space }: SpaceDetailsProps) {
   const [showThemeUpdateModal, setShowThemeUpdateModal] = React.useState(false);
 
-  const themeColors: ThemeColors = space?.themeColors || GlobalThemeColors;
+  const themeColors: ThemeColorsDto = space?.themeColors || GlobalThemeColors;
 
   const threeDotItems = [
     { label: 'Reload Repo', key: 'reloadRepo' },
@@ -33,7 +32,7 @@ export default function SpaceThemeDetails({ space }: SpaceDetailsProps) {
     description: 'This collection of Tidbits explains different exchange models and the benefits of AMM',
     archive: false,
     byteIds: ['centralized-vs-decentralized-exchange-uniswap', 'amm-benefits-uniswap'],
-    priority: 50,
+    order: 50,
     bytes: [
       {
         byteId: 'centralized-vs-decentralized-exchange-uniswap_1',
@@ -88,7 +87,7 @@ export default function SpaceThemeDetails({ space }: SpaceDetailsProps) {
           </div>
 
           <div className="w-full md:mt-0 mt-4 md:w-1/2 p-2 md:p-4">
-            <ByteCollectionsCard byteCollection={byteCollection} isEditingAllowed={false} viewByteBaseUrl={'/'} space={space} />
+            <ByteCollectionsCard byteCollection={byteCollection} isEditingAllowed={false} viewByteBaseUrl={'/'} space={space} showItemTypeBadge={true} />
           </div>
         </div>
       </div>

@@ -23,8 +23,8 @@ export default function NoSpaceCollections() {
             strokeLinejoin="round"
           />
         </svg>
-        <h3 className="mt-2 text-sm font-semibold text-gray-900">No Spaces</h3>
-        <p className="mt-1 text-sm text-gray-500">Get started by creating a new space.</p>
+        <h3 className="mt-2 text-sm font-semibold text-color">No Spaces</h3>
+        <p className="mt-1 text-sm text-color">Get started by creating a new space.</p>
         <div className="mt-6">
           <button
             type="button"

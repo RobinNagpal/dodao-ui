@@ -1,5 +1,7 @@
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import { ShortVideo } from '@/types/shortVideos/shortVideo';
+import PrimaryColorBadge from '@dodao/web-core/components/core/badge/PrimaryColorBadge';
+import React from 'react';
 import styles from './ByteCollectionsCard.module.scss';
 import Link from 'next/link';
 import { ByteCollectionItemType } from '@/app/api/helpers/byteCollection/byteCollectionItemType';
@@ -13,10 +15,13 @@ interface ShortItemProps {
   openShortEditModal: (shortId: string) => void;
   openItemDeleteModal: (itemId: string, itemName: string, itemType: ByteCollectionItemType | null) => void;
   openItemUnarchiveModal: (itemId: string, itemName: string, itemType: ByteCollectionItemType | null) => void;
+  openItemMoveModal: (itemId: string, itemName: string, itemType: ByteCollectionItemType | null) => void;
+  showItemTypeBadge: boolean;
 }
 
 export default function ShortItem(props: ShortItemProps) {
-  const { short, eventIdx, threeDotItems, openShortEditModal, openItemDeleteModal, openItemUnarchiveModal, itemLength } = props;
+  const { short, eventIdx, threeDotItems, openShortEditModal, openItemDeleteModal, openItemUnarchiveModal, openItemMoveModal, itemLength, showItemTypeBadge } =
+    props;
   const shortViewUrl = `shorts/view/${short.shortId}`;
   const modifiedThreeDotItems = JSON.parse(JSON.stringify(threeDotItems)); // Creating a deep copy so that it doesn't affect the original array
   if (short.archive) {
@@ -38,13 +43,11 @@ export default function ShortItem(props: ShortItemProps) {
             </div>
           </Link>
           <div className="flex">
+            {showItemTypeBadge && <PrimaryColorBadge>Short Video</PrimaryColorBadge>}
             {short.archive && (
-              <span
-                className={`inline-flex items-center rounded-xl px-2 py-1 mr-2 text-xs font-medium max-h-6 ${styles.archiveBadge}`}
-                onClick={() => openItemUnarchiveModal(short.shortId, short.title, ByteCollectionItemType.ShortVideo)}
-              >
+              <PrimaryColorBadge onClick={() => openItemUnarchiveModal(short.shortId, short.title, ByteCollectionItemType.ShortVideo)}>
                 Archived
-              </span>
+              </PrimaryColorBadge>
             )}
             {short.shortId && (
               <div className="z-15">
@@ -55,6 +58,8 @@ export default function ShortItem(props: ShortItemProps) {
                       openItemDeleteModal(short.shortId, short.title, ByteCollectionItemType.ShortVideo);
                     } else if (key === 'unarhive') {
                       openItemUnarchiveModal(short.shortId, short.title, ByteCollectionItemType.ShortVideo);
+                    } else if (key === 'move') {
+                      openItemMoveModal(short.shortId, short.title, ByteCollectionItemType.ShortVideo);
                     } else {
                       openShortEditModal(short.shortId);
                     }

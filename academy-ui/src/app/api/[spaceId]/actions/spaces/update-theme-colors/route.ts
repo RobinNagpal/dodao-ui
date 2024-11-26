@@ -1,15 +1,14 @@
 import { withErrorHandlingV1 } from '@/app/api/helpers/middlewares/withErrorHandling';
-import { getSpaceWithIntegrations } from '@/app/api/helpers/space';
+import { getSpaceWithIntegrations } from '@/app/api/helpers/getSpaceWithIntegrations';
 import { checkEditSpacePermission } from '@/app/api/helpers/space/checkEditSpacePermission';
 import { getSpaceById } from '@/app/api/helpers/space/getSpaceById';
-import { MutationUpdateThemeColorsArgs } from '@/graphql/generated/generated-types';
 import { prisma } from '@/prisma';
-import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
-import { Space, SpaceIntegration } from '@prisma/client';
+import { SpaceWithIntegrationsDto, ThemeColorsDto } from '@/types/space/SpaceDto';
 import { NextRequest, NextResponse } from 'next/server';
 
-async function putHandler(req: NextRequest): Promise<NextResponse<{ space: SpaceWithIntegrationsDto }>> {
-  const { spaceId, themeColors } = (await req.json()) as MutationUpdateThemeColorsArgs;
+async function putHandler(req: NextRequest, { params }: { params: Promise<{ spaceId: string }> }): Promise<NextResponse<{ space: SpaceWithIntegrationsDto }>> {
+  const { spaceId } = await params;
+  const themeColors = (await req.json()) as ThemeColorsDto;
   const spaceById = await getSpaceById(spaceId);
   await checkEditSpacePermission(spaceById, req);
 
@@ -17,6 +16,7 @@ async function putHandler(req: NextRequest): Promise<NextResponse<{ space: Space
     data: {
       themeColors: {
         primaryColor: themeColors.primaryColor,
+        primaryTextColor: themeColors.primaryTextColor,
         bgColor: themeColors.bgColor,
         textColor: themeColors.textColor,
         linkColor: themeColors.linkColor,

@@ -19,13 +19,21 @@ export interface ToggleWithIconProps {
   label: string;
   enabled: boolean;
   setEnabled: (value: boolean) => void;
+  onClickOnLabel?: boolean;
 }
 export default function ToggleWithIcon(props: ToggleWithIconProps) {
-  const { enabled, setEnabled } = props;
+  const { enabled, setEnabled, onClickOnLabel } = props;
 
   return (
-    <div className="flex align-center mt-4">
-      <div className="mr-8">
+    <div
+      className={`flex align-center mt-4 ${onClickOnLabel ? 'cursor-pointer' : ''}`}
+      onClick={() => {
+        if (onClickOnLabel) {
+          setEnabled(!enabled);
+        }
+      }}
+    >
+      <div className="mr-4">
         <StyledSwitch
           checked={enabled}
           onChange={setEnabled}

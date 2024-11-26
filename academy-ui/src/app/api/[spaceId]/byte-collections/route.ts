@@ -16,7 +16,7 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ spac
       spaceId: spaceId,
     },
     orderBy: {
-      priority: 'desc',
+      order: 'asc',
     },
   });
 
@@ -49,7 +49,7 @@ async function postHandler(req: NextRequest, { params }: { params: { spaceId: st
       createdAt: new Date(),
       updatedAt: new Date(),
       archive: false,
-      priority: 50,
+      order: 50,
       videoUrl: '',
     },
   });

@@ -9,7 +9,7 @@ export default function AddByteCollection({ space }: { space: SpaceWithIntegrati
   const [showAddCollectionModal, setShowAddCollectionModal] = React.useState(false);
 
   return (
-    <div className="w-full flex justify-center mx-auto mb-6">
+    <div className="w-full flex justify-center mx-auto my-4">
       <Button
         className="w-full text-color font-semibold"
         variant="outlined"

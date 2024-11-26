@@ -11,10 +11,10 @@ import { PutByteItemRequest } from '@/types/request/ByteRequests';
 import { SpaceTypes, SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import { TidbitCollectionTags } from '@/utils/api/fetchTags';
 import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
+import PrimaryColorBadge from '@dodao/web-core/components/core/badge/PrimaryColorBadge';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
-import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import MoveItemModal from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/MoveItemModal';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import PlayCircleIcon from '@heroicons/react/24/outline/PlayCircleIcon';
 import { useUpdateData } from '@dodao/web-core/ui/hooks/fetch/useUpdateData';
@@ -25,8 +25,7 @@ import styles from './ByteCollectionsCard.module.scss';
 import ByteItem from './ByteItem';
 import DemoItem from './DemoItem';
 import ShortItem from './ShortItem';
-import { CreateByteCollectionRequest } from '@/types/request/ByteCollectionRequests';
-import { useFetchUtils } from '@dodao/web-core/ui/hooks/useFetchUtils';
+import { CreateByteCollectionRequest, MoveByteCollectionItemRequest } from '@/types/request/ByteCollectionRequests';
 
 interface ByteCollectionCardProps {
   byteCollection: ByteCollectionSummary;
@@ -35,6 +34,7 @@ interface ByteCollectionCardProps {
   space: SpaceWithIntegrationsDto;
   isAdmin?: boolean | undefined;
   showArchived?: boolean;
+  showItemTypeBadge: boolean;
 }
 
 interface VideoModalProps {
@@ -64,6 +64,15 @@ interface UnarchiveItemModalState {
   unarchiving: boolean;
 }
 
+interface MoveItemModalState {
+  isVisible: boolean;
+  itemId: string | null;
+  itemName: string | null;
+  itemType: ByteCollectionItemType | null;
+  byteCollectionId: string | null;
+  moving: boolean;
+}
+
 interface EditShortModalState {
   isVisible: boolean;
   shortId: string | null;
@@ -76,13 +85,12 @@ export default function ByteCollectionsCard({
   space,
   isAdmin,
   showArchived,
+  showItemTypeBadge,
 }: ByteCollectionCardProps) {
-  const { putData } = useFetchUtils();
   const [watchVideo, setWatchVideo] = React.useState<boolean>(false);
   const [selectedVideo, setSelectedVideo] = React.useState<VideoModalProps>();
   const [videoResponse, setVideoResponse] = React.useState<{ shortVideo?: ShortVideoFragment }>();
   const [editByteModalState, setEditModalState] = React.useState<EditByteModalState>({ isVisible: false, byteId: null });
-  const [updating, setUpdating] = React.useState<boolean>(false);
   const [deleteItemModalState, setDeleteItemModalState] = React.useState<DeleteItemModalState>({
     isVisible: false,
     itemId: null,
@@ -97,6 +105,14 @@ export default function ByteCollectionsCard({
     itemName: null,
     unarchiving: false,
   });
+  const [moveItemModalState, setMoveItemModalState] = React.useState<MoveItemModalState>({
+    isVisible: false,
+    itemId: null,
+    itemName: null,
+    itemType: null,
+    byteCollectionId: null,
+    moving: false,
+  });
   const [showUnarchiveModal, setShowUnarchiveModal] = React.useState<boolean>(false);
 
   const [editShortModalState, setEditShortModalState] = React.useState<EditShortModalState>({ isVisible: false, shortId: null });
@@ -105,28 +121,59 @@ export default function ByteCollectionsCard({
 
   const redirectPath = space.type === SpaceTypes.AcademySite ? '/byteCollections' : '/';
 
+  const { updateData: archiveItem, loading: archiveItemLoading } = useUpdateData<ByteCollectionDto, PutByteItemRequest>(
+    {},
+    {
+      successMessage: 'Item Archived Successfully',
+      errorMessage: 'Failed to archive the item. Please try again.',
+      redirectPath: `${redirectPath}?updated=${Date.now()}`,
+    },
+    'PUT'
+  );
+
+  const { updateData: unArchiveItem, loading: unArchiveItemLoading } = useUpdateData<ByteCollectionDto, PutByteItemRequest>(
+    {},
+    {
+      successMessage: 'Item Unachived Successfully',
+      errorMessage: 'Failed to unarchive the item. Please try again.',
+      redirectPath: `${redirectPath}?updated=${Date.now()}`,
+    },
+    'PUT'
+  );
+
+  const { updateData: unArchiveByteCollection, loading: unArchiveByteCollectionLoading } = useUpdateData<ByteCollectionDto, CreateByteCollectionRequest>(
+    {},
+    {
+      successMessage: 'Tidbit Collection Unarchived Successfully',
+      errorMessage: 'Failed to archive the Tidbit Collection. Please try again.',
+      redirectPath: `${redirectPath}?updated=${Date.now()}`,
+    },
+    'PUT'
+  );
+
+  const { updateData: moveByteCollectionItem, loading: moveByteCollectionItemLoading } = useUpdateData<ByteCollectionDto, MoveByteCollectionItemRequest>(
+    {},
+    {
+      successMessage: 'Item moved Successfully',
+      errorMessage: 'Failed to move the item. Please try again.',
+      redirectPath: `${redirectPath}?updated=${Date.now()}`,
+    },
+    'PUT'
+  );
+
   const onUnarchive = async () => {
-    setUpdating(true);
-    await putData<ByteCollectionDto, CreateByteCollectionRequest>(
-      `${getBaseUrl()}/api/${space.id}/byte-collections/${byteCollection?.id}`,
-      {
-        name: byteCollection.name,
-        description: byteCollection.description,
-        priority: byteCollection.priority,
-        videoUrl: byteCollection.videoUrl,
-        archive: false,
-      },
-      {
-        redirectPath: `${redirectPath}?updated=${Date.now()}`,
-        successMessage: 'Tidbit collection unarchived successfully',
-        errorMessage: 'Failed to unarchive collection',
-      }
-    );
-    setUpdating(false);
+    await unArchiveByteCollection(`${getBaseUrl()}/api/${space.id}/byte-collections/${byteCollection?.id}`, {
+      name: byteCollection.name,
+      description: byteCollection.description,
+      order: byteCollection.order,
+      videoUrl: byteCollection.videoUrl,
+      archive: false,
+    });
   };
 
   const threeDotItems = [
     { label: 'Edit', key: 'edit' },
+    { label: 'Move', key: 'move' },
     { label: 'Archive', key: 'archive' },
   ];
 
@@ -142,14 +189,6 @@ export default function ByteCollectionsCard({
   });
 
   const byteCollectionItems = showArchived ? byteCollection.items : nonArchivedItems;
-
-  const { updateData: updateItemData, loading: updateItemLoading } = useUpdateData<
-    void,
-    {
-      itemId: string;
-      itemType: ByteCollectionItemType;
-    }
-  >({}, { successMessage: 'Item Unarchived Successfully', errorMessage: 'Failed to unarchive the item. Please try again.' }, 'PUT');
 
   async function fetchData(shortId: string) {
     const response = await fetch(`${getBaseUrl()}/api/short-videos/${shortId}?spaceId=${space.id}`, {
@@ -177,6 +216,10 @@ export default function ByteCollectionsCard({
     setUnarchiveItemModalState({ isVisible: true, itemId: itemId, itemName, itemType: itemType, unarchiving: false });
   }
 
+  function openItemMoveModal(itemId: string, itemName: string, itemType: ByteCollectionItemType | null) {
+    setMoveItemModalState({ isVisible: true, itemId: itemId, itemName: itemName, itemType: itemType, byteCollectionId: byteCollection.id, moving: false });
+  }
+
   function openShortEditModal(shortId: string) {
     fetchData(shortId);
     setEditShortModalState({ isVisible: true, shortId: shortId });
@@ -192,6 +235,10 @@ export default function ByteCollectionsCard({
 
   function closeItemUnarchiveModal() {
     setUnarchiveItemModalState({ isVisible: false, itemId: null, itemName: null, itemType: null, unarchiving: false });
+  }
+
+  function closeItemMoveModal() {
+    setMoveItemModalState({ isVisible: false, itemId: null, itemName: null, itemType: null, byteCollectionId: null, moving: false });
   }
 
   function closeShortEditModal() {
@@ -232,14 +279,7 @@ export default function ByteCollectionsCard({
               }}
             />
           )}
-          {byteCollection.archive && (
-            <span
-              className={`inline-flex items-center rounded-xl px-2 py-1 text-xs font-medium max-h-6 ${styles.archiveBadge}`}
-              onClick={() => setShowUnarchiveModal(true)}
-            >
-              Archived
-            </span>
-          )}
+          {byteCollection.archive && <PrimaryColorBadge onClick={() => setShowUnarchiveModal(true)}>Archived</PrimaryColorBadge>}
         </div>
         <div className="my-3 text-sm">{byteCollection.description}</div>
       </div>
@@ -259,13 +299,16 @@ export default function ByteCollectionsCard({
                     openByteEditModal={openByteEditModal}
                     openItemDeleteModal={openItemDeleteModal}
                     openItemUnarchiveModal={openItemUnarchiveModal}
+                    openItemMoveModal={openItemMoveModal}
                     itemLength={byteCollectionItems.length}
                     key={item.byte.byteId}
+                    showItemTypeBadge={showItemTypeBadge}
                   />
                 );
               case ByteCollectionItemType.ClickableDemo:
                 return (
                   <DemoItem
+                    space={space}
                     byteCollection={byteCollection}
                     key={item.demo.demoId}
                     demo={item.demo}
@@ -274,6 +317,8 @@ export default function ByteCollectionsCard({
                     threeDotItems={threeDotItems}
                     openItemDeleteModal={openItemDeleteModal}
                     openItemUnarchiveModal={openItemUnarchiveModal}
+                    openItemMoveModal={openItemMoveModal}
+                    showItemTypeBadge={showItemTypeBadge}
                   />
                 );
               case ByteCollectionItemType.ShortVideo:
@@ -287,6 +332,8 @@ export default function ByteCollectionsCard({
                     openShortEditModal={openShortEditModal}
                     openItemDeleteModal={openItemDeleteModal}
                     openItemUnarchiveModal={openItemUnarchiveModal}
+                    openItemMoveModal={openItemMoveModal}
+                    showItemTypeBadge={showItemTypeBadge}
                   />
                 );
               default:
@@ -335,35 +382,36 @@ export default function ByteCollectionsCard({
         <DeleteConfirmationModal
           title={`Archive ${
             deleteItemModalState.itemType === ByteCollectionItemType.Byte
-              ? `Byte - ${deleteItemModalState.itemName}`
+              ? `Tidbit - ${deleteItemModalState.itemName}`
               : deleteItemModalState.itemType === ByteCollectionItemType.ClickableDemo
               ? `Clickable Demo - ${deleteItemModalState.itemName}`
               : deleteItemModalState.itemType === ByteCollectionItemType.ShortVideo
               ? `Short Video - ${deleteItemModalState.itemName}`
               : 'Item'
           }`}
+          deleteButtonText={`Archive ${
+            deleteItemModalState.itemType === ByteCollectionItemType.Byte
+              ? `Tidbit`
+              : deleteItemModalState.itemType === ByteCollectionItemType.ClickableDemo
+              ? `Clickable Demo`
+              : deleteItemModalState.itemType === ByteCollectionItemType.ShortVideo
+              ? `Short Video`
+              : 'Item'
+          }`}
           open={deleteItemModalState.isVisible}
           onClose={closeItemDeleteModal}
-          deleting={deleteItemModalState.deleting}
+          deleting={archiveItemLoading}
           onDelete={async () => {
             if (!deleteItemModalState.itemId || !deleteItemModalState.itemType) {
               showNotification({ message: 'Some Error occurred', type: 'error' });
               closeItemDeleteModal();
               return;
             }
-            await putData<ByteCollectionDto, PutByteItemRequest>(
-              `${getBaseUrl()}/api/${space.id}/byte-collections/${byteCollection?.id}/byte-items`,
-              {
-                itemId: deleteItemModalState.itemId,
-                itemType: deleteItemModalState.itemType,
-                archive: true,
-              },
-              {
-                redirectPath: `${redirectPath}?updated=${Date.now()}`,
-                successMessage: 'Item deleted successfully',
-                errorMessage: 'Failed to delete item',
-              }
-            );
+            await archiveItem(`${getBaseUrl()}/api/${space.id}/byte-collections/${byteCollection?.id}/byte-items`, {
+              itemId: deleteItemModalState.itemId,
+              itemType: deleteItemModalState.itemType,
+              archive: true,
+            });
             closeItemDeleteModal();
           }}
         />
@@ -373,16 +421,25 @@ export default function ByteCollectionsCard({
         <UnarchiveConfirmationModal
           title={`Unarchive ${
             unarchiveItemModalState.itemType === ByteCollectionItemType.Byte
-              ? `Byte - ${unarchiveItemModalState.itemName}`
+              ? `Tidbit - ${unarchiveItemModalState.itemName}`
               : unarchiveItemModalState.itemType === ByteCollectionItemType.ClickableDemo
               ? `Clickable Demo - ${unarchiveItemModalState.itemName}`
               : unarchiveItemModalState.itemType === ByteCollectionItemType.ShortVideo
               ? `Short Video - ${unarchiveItemModalState.itemName}`
               : 'Item'
           }`}
+          unarchiveButtonText={`Unarchive ${
+            unarchiveItemModalState.itemType === ByteCollectionItemType.Byte
+              ? `Tidbit`
+              : unarchiveItemModalState.itemType === ByteCollectionItemType.ClickableDemo
+              ? `Clickable Demo`
+              : unarchiveItemModalState.itemType === ByteCollectionItemType.ShortVideo
+              ? `Short Video`
+              : 'Item'
+          }`}
           open={unarchiveItemModalState.isVisible}
           onClose={closeItemUnarchiveModal}
-          unarchiving={updateItemLoading}
+          unarchiving={unArchiveItemLoading}
           onUnarchive={async () => {
             if (!unarchiveItemModalState.itemId || !unarchiveItemModalState.itemType) {
               showNotification({ message: 'Some Error occurred', type: 'error' });
@@ -390,19 +447,11 @@ export default function ByteCollectionsCard({
               return;
             }
 
-            await putData<ByteCollectionDto, PutByteItemRequest>(
-              `${getBaseUrl()}/api/${space.id}/byte-collections/${byteCollection?.id}/byte-items`,
-              {
-                itemId: unarchiveItemModalState.itemId,
-                itemType: unarchiveItemModalState.itemType,
-                archive: false,
-              },
-              {
-                redirectPath: `${redirectPath}?updated=${Date.now()}`,
-                successMessage: 'Item unarchived successfully',
-                errorMessage: 'Failed to unarchive item',
-              }
-            );
+            await unArchiveItem(`${getBaseUrl()}/api/${space.id}/byte-collections/${byteCollection?.id}/byte-items`, {
+              itemId: unarchiveItemModalState.itemId,
+              itemType: unarchiveItemModalState.itemType,
+              archive: false,
+            });
             closeItemUnarchiveModal();
           }}
         />
@@ -410,15 +459,32 @@ export default function ByteCollectionsCard({
 
       {showUnarchiveModal && (
         <UnarchiveConfirmationModal
-          title={`Unarchive Byte Collection - ${byteCollection.name}`}
+          title={`Unarchive Tidbit Collection - ${byteCollection.name}`}
           open={showUnarchiveModal}
           onClose={() => setShowUnarchiveModal(false)}
           onUnarchive={async () => {
             await onUnarchive();
             setShowUnarchiveModal(false);
           }}
-          unarchiving={updating}
-          unarchiveButtonText={'Restore Byte Collection'}
+          unarchiving={unArchiveByteCollectionLoading}
+          unarchiveButtonText={'Unarchive Tidbit Collection'}
+        />
+      )}
+
+      {moveItemModalState.isVisible && (
+        <MoveItemModal
+          showSelectByteCollectionModal={moveItemModalState.isVisible}
+          onClose={closeItemMoveModal}
+          selectByteCollection={async (selectedByteCollection: ByteCollectionSummary) => {
+            await moveByteCollectionItem(`${getBaseUrl()}/api/${space.id}/actions/byte-collections/move-item`, {
+              itemId: moveItemModalState.itemId!,
+              itemType: moveItemModalState.itemType!,
+              sourceByteCollectionId: moveItemModalState.byteCollectionId!,
+              targetByteCollectionId: selectedByteCollection.id,
+            });
+          }}
+          byteCollectionId={byteCollection.id}
+          spaceId={space.id}
         />
       )}
     </div>

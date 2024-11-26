@@ -35,6 +35,7 @@ const LoginModal = ({ space }: { space: WebCoreSpace }) => {
             onClose={() => {
               setShowLoginModal(false);
             }}
+            showSemiTransparentBg={true}
           />
         )}
       </>

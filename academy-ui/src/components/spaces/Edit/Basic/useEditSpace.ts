@@ -1,7 +1,8 @@
 import { UpsertSpaceInputDto } from '@/types/space/SpaceDto';
 import { SpaceTags } from '@/utils/api/fetchTags';
 import { getEditSpaceType, getSpaceInput, SpaceEditType } from '@/utils/space/spaceUpdateUtils';
-import { useFetchUtils } from '@dodao/web-core/ui/hooks/useFetchUtils';
+import { useUpdateData } from '@dodao/web-core/ui/hooks/fetch/useUpdateData';
+import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { useState } from 'react';
 
@@ -20,7 +21,22 @@ interface SpaceUpsertRequest {
 }
 
 export default function useEditSpace(spaceId?: string): UseEditSpaceHelper {
-  const { postData, putData } = useFetchUtils();
+  const { updateData: putData } = useUpdateData<SpaceEditType, SpaceUpsertRequest>(
+    {},
+    {
+      errorMessage: 'Failed to update space',
+      successMessage: 'Space updated successfully!',
+    },
+    'PUT'
+  );
+
+  const { postData, loading: upserting } = usePostData<SpaceEditType, SpaceUpsertRequest>(
+    {
+      errorMessage: 'Failed to create space',
+      successMessage: 'Space created successfully!',
+    },
+    {}
+  );
   const [space, setSpace] = useState<SpaceEditType>({
     id: spaceId,
     adminUsernamesV1: [],
@@ -37,8 +53,6 @@ export default function useEditSpace(spaceId?: string): UseEditSpaceHelper {
       spaceApiKeys: [],
     },
   });
-
-  const [upserting, setUpserting] = useState(false);
 
   async function initialize() {
     if (spaceId) {
@@ -72,29 +86,11 @@ export default function useEditSpace(spaceId?: string): UseEditSpaceHelper {
   }
 
   async function upsertSpace() {
-    setUpserting(true);
-
     if (spaceId?.trim()) {
-      await putData<SpaceEditType, SpaceUpsertRequest>(
-        `/api/${spaceId}/actions/spaces/update-space-and-integration`,
-        { spaceInput: getSpaceInput(spaceId, space) },
-        {
-          errorMessage: 'Failed to update space',
-          successMessage: 'Space updated successfully!',
-        }
-      );
+      await putData(`/api/${spaceId}/actions/spaces/update-space-and-integration`, { spaceInput: getSpaceInput(spaceId, space) });
     } else {
-      await postData<SpaceEditType, SpaceUpsertRequest>(
-        `/api/spaces/create-space`,
-        { spaceInput: getSpaceInput(slugify(space.name), space) },
-        {
-          errorMessage: 'Failed to create space',
-          successMessage: 'Space created successfully!',
-        }
-      );
+      await postData(`/api/spaces/create-space`, { spaceInput: getSpaceInput(slugify(space.name), space) });
     }
-
-    setUpserting(false);
   }
 
   return {

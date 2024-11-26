@@ -6,9 +6,13 @@ export async function getSpaceWithIntegrations(spaceId: string): Promise<SpaceWi
   // Fetch the Space details
   const space: Space = await prisma.space.findUniqueOrThrow({ where: { id: spaceId } });
 
+  return getWithIntegrations(space);
+}
+
+export async function getWithIntegrations(space: Space): Promise<SpaceWithIntegrationsDto> {
   // Fetch the SpaceIntegration details
   const spaceIntegrations = await prisma.spaceIntegration.findUniqueOrThrow({
-    where: { spaceId },
+    where: { spaceId: space.id },
   });
 
   if (spaceIntegrations && spaceIntegrations.spaceApiKeys) {
@@ -20,6 +24,7 @@ export async function getSpaceWithIntegrations(spaceId: string): Promise<SpaceWi
     };
     return {
       ...space,
+      themeColors: space.themeColors && { ...space.themeColors, primaryTextColor: space.themeColors.primaryTextColor || '#ffffff' },
       spaceIntegrations: integrations,
     };
   }

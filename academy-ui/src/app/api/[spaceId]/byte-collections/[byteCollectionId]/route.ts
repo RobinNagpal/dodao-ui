@@ -31,7 +31,7 @@ async function putHandler(
       name: args.name,
       description: args.description,
       updatedAt: new Date(),
-      priority: args.priority,
+      order: args.order,
       videoUrl: args.videoUrl,
       archive: args.archive,
     },

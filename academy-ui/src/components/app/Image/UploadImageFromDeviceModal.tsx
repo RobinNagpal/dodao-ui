@@ -2,10 +2,9 @@ import { CreateSignedUrlInput, ImageType } from '@/graphql/generated/generated-t
 import { CreateSignedUrlRequest } from '@/types/request/SignedUrl';
 import { SingedUrlResponse } from '@/types/response/SignedUrl';
 import { FormFooter } from '@dodao/web-core/components/app/Form/FormFooter';
-import Button from '@dodao/web-core/components/core/buttons/Button';
 import ImageUploadSection from '@dodao/web-core/components/core/file/ImageUploadSection';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
-import { useFetchUtils } from '@dodao/web-core/ui/hooks/useFetchUtils';
+import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { getUploadedImageUrlFromSingedUrl } from '@dodao/web-core/utils/upload/getUploadedImageUrlFromSingedUrl';
 import axios from 'axios';
@@ -24,7 +23,12 @@ export default function UploadImageFromDeviceModal(props: UploadImageModalProps)
   const { imageType, objectId, spaceId, open, onClose, imageUploaded } = props;
   const [imageURL, setImageURL] = useState<string | null>(props.modelValue || null);
   const [loading, setLoading] = useState(false);
-  const { postData } = useFetchUtils();
+  const { postData } = usePostData<SingedUrlResponse, CreateSignedUrlRequest>(
+    {
+      errorMessage: 'Failed to get signed URL',
+    },
+    {}
+  );
 
   async function uploadToS3AndReturnImgUrl(file: File) {
     setLoading(true);
@@ -35,13 +39,7 @@ export default function UploadImageFromDeviceModal(props: UploadImageModalProps)
       name: file.name.replace(' ', '_').toLowerCase(),
     };
 
-    const response = await postData<SingedUrlResponse, CreateSignedUrlRequest>(
-      `${getBaseUrl()}/api/s3-signed-urls`,
-      { spaceId, input },
-      {
-        errorMessage: 'Failed to get signed URL',
-      }
-    );
+    const response = await postData(`${getBaseUrl()}/api/s3-signed-urls`, { spaceId, input });
     const signedUrl = response?.url!;
     await axios.put(signedUrl, file, {
       headers: { 'Content-Type': file.type },

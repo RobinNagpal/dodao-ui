@@ -2,13 +2,16 @@ import { ByteCollectionItemType } from '@/app/api/helpers/byteCollection/byteCol
 import { ByteCollectionItem, ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import { SortByteCollectionItemsRequest } from '@/types/request/ByteCollectionRequests';
 import { SpaceTypes, SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
+import { closestCenter, DndContext } from '@dnd-kit/core';
+import { arrayMove, rectSortingStrategy, SortableContext, useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import Button from '@dodao/web-core/components/core/buttons/Button';
-import Input from '@dodao/web-core/components/core/input/Input';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useState } from 'react';
+import styles from './SortByteCollectionItemsModal.module.scss';
 
 interface SortByteCollectionItemsModalProps {
   space: SpaceWithIntegrationsDto;
@@ -50,11 +53,36 @@ const filterArchivedItems = (items: ByteCollectionItem[]) => {
     }
   });
 };
+
+function SortableGridItem({ item, index }: { item: ByteCollectionItem; index: number }) {
+  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: getItemIdAndType(item).itemId });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
+  return (
+    <div
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
+      className={`${styles.sortItem} cursor-grab active:cursor-grabbing p-4 rounded shadow flex justify-between`}
+    >
+      <div className="text-left">
+        <h3 className="text-sm font-medium">{getItemName(item)}</h3>
+        <p className="text-xs text-gray-500">{item.type === ByteCollectionItemType.Byte ? 'Tidbit' : item.type}</p>
+      </div>
+      <div>{index}</div>
+    </div>
+  );
+}
+
 export default function SortByteCollectionItemsModal(props: SortByteCollectionItemsModalProps) {
   const { space, byteCollection, onClose } = props;
 
   const [items, setItems] = useState<ByteCollectionItem[]>(filterArchivedItems(byteCollection.items || []));
-  const [error, setError] = useState<string | null>(null);
   const redirectPath = space.type === SpaceTypes.AcademySite ? '/byteCollections' : '/';
 
   const { loading, postData } = usePostData(
@@ -66,26 +94,24 @@ export default function SortByteCollectionItemsModal(props: SortByteCollectionIt
     {}
   );
 
-  function handleOrderChange(index: number, order: number) {
-    const newItems = [...items];
-    newItems[index].order = order;
-    setItems(newItems);
-  }
+  const handleDragEnd = (event: any) => {
+    const { active, over } = event;
+
+    if (active.id !== over.id) {
+      const oldIndex = items.findIndex((item) => getItemIdAndType(item).itemId === active.id);
+      const newIndex = items.findIndex((item) => getItemIdAndType(item).itemId === over.id);
+      const newItems = arrayMove(items, oldIndex, newIndex);
+
+      // Update the `order` property based on the new position
+      newItems.forEach((item, index) => {
+        item.order = index + 1;
+      });
+
+      setItems(newItems);
+    }
+  };
 
   async function handleSave() {
-    setError(null);
-    const orderNumbers = new Set<number>();
-    for (const item of items) {
-      if (orderNumbers.has(item.order)) {
-        setError('Order numbers must be unique');
-      }
-      orderNumbers.add(item.order);
-    }
-
-    if (error) {
-      return;
-    }
-
     const request: SortByteCollectionItemsRequest = {
       newItemIdAndOrders: items.map((item) => {
         const itemIdAndType = getItemIdAndType(item);
@@ -104,57 +130,27 @@ export default function SortByteCollectionItemsModal(props: SortByteCollectionIt
   return (
     <FullScreenModal open={true} onClose={props.onClose} title={`Sort Items in - ${byteCollection.name}`}>
       <PageWrapper>
-        <div className="flex justify-center align-center">
-          <div className="max-w-4xl">
-            <div className="px-4 sm:px-6 lg:px-8 max-w-4xl">
+        <div className="flex justify-center items-center">
+          <div className="max-w-4xl w-full">
+            <div className="px-4 sm:px-6 lg:px-8">
               <div className="sm:flex sm:items-center">
                 <div className="sm:flex-auto">
-                  <h1 className="text-base font-semibold">Sort Byte Collection Items</h1>
-                  <p className="mt-2 text-sm">Specify the order number for displaying items. Items with a lower order number appear first in the list.</p>
+                  <h1 className="text-base font-semibold">Sort Tidbit Collection Items</h1>
+                  <p className="mt-2 text-sm">Drag and drop to reorder items. Lower-order items appear first in the list.</p>
                 </div>
               </div>
-              <div className="mt-8 flow-root">
-                <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                  <div className="inline-block min-w-full align-middle sm:px-6 lg:px-8">
-                    <table className="min-w-full divide-y divide-gray-300">
-                      <thead>
-                        <tr>
-                          <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold sm:pl-3">
-                            Item Name
-                          </th>
-                          <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold">
-                            Item Type
-                          </th>
-                          <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold ">
-                            Order
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody className="text-left">
-                        {items.map((item: ByteCollectionItem, index) => {
-                          return (
-                            <tr key={index}>
-                              <td className="whitespace-nowrap py-2 pl-2 pr-3 text-sm font-medium sm:pl-2">{getItemName(item)}</td>
-                              <td className="whitespace-nowrap px-3 py-2 text-sm">{item.type}</td>
-
-                              <td className="whitespace-nowrap px-3 py-2 text-sm">
-                                <Input
-                                  number={true}
-                                  modelValue={item.order?.toString() || '0'}
-                                  className="w-24"
-                                  onUpdate={(value) => handleOrderChange(index, value as number)}
-                                />
-                              </td>
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
+              <div className="mt-8">
+                <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+                  <SortableContext items={items.map((item) => getItemIdAndType(item).itemId)} strategy={rectSortingStrategy}>
+                    <div className="grid grid-cols-1">
+                      {items.map((item, index) => (
+                        <SortableGridItem key={getItemIdAndType(item).itemId} item={item} index={index} />
+                      ))}
+                    </div>
+                  </SortableContext>
+                </DndContext>
               </div>
             </div>
-            <div className="mt-6">{error && <p className="text-red-500">{error}</p>}</div>
             <div className="w-full flex justify-center my-6">
               <Button primary={true} variant="contained" onClick={handleSave} disabled={loading} loading={loading}>
                 Save

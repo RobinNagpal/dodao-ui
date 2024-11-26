@@ -1,5 +1,6 @@
 import ItemCompletionCheckmark from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ItemCompletionCheckmark';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
+import PrimaryColorBadge from '@dodao/web-core/components/core/badge/PrimaryColorBadge';
 import PlayCircleIcon from '@heroicons/react/24/outline/PlayCircleIcon';
 import styles from './ByteCollectionsCard.module.scss';
 import Link from 'next/link';
@@ -17,6 +18,8 @@ interface ByteItemProps {
   openByteEditModal: (byteId: string) => void;
   openItemDeleteModal: (itemId: string, itemName: string, itemType: ByteCollectionItemType | null) => void;
   openItemUnarchiveModal: (itemId: string, itemName: string, itemType: ByteCollectionItemType | null) => void;
+  openItemMoveModal: (itemId: string, itemName: string, itemType: ByteCollectionItemType | null) => void;
+  showItemTypeBadge: boolean;
 }
 
 interface VideoModalProps {
@@ -36,7 +39,9 @@ export default function ByteItem(props: ByteItemProps) {
     openByteEditModal,
     openItemDeleteModal,
     openItemUnarchiveModal,
+    openItemMoveModal,
     itemLength,
+    showItemTypeBadge,
   } = props;
   const byteViewUrl = `${viewByteBaseUrl}/${byte.byteId}`;
   const modifiedThreeDotItems = JSON.parse(JSON.stringify(threeDotItems)); // Creating a deep copy so that it doesn't affect the original array
@@ -74,29 +79,25 @@ export default function ByteItem(props: ByteItemProps) {
           </Link>
 
           <div className="flex">
+            {showItemTypeBadge && <PrimaryColorBadge>Tidbit</PrimaryColorBadge>}
             {byte?.archive && (
-              <span
-                className={`inline-flex items-center rounded-xl px-2 py-1 mr-2 text-xs font-medium max-h-6 ${styles.archiveBadge}`}
-                onClick={() => openItemUnarchiveModal(byte.byteId, byte.name, ByteCollectionItemType.Byte)}
-              >
-                Archived
-              </span>
+              <PrimaryColorBadge onClick={() => openItemUnarchiveModal(byte.byteId, byte.name, ByteCollectionItemType.Byte)}>Archived</PrimaryColorBadge>
             )}
             {byte.byteId && !byte.byteId.startsWith('0001-demo-byte') && (
-              <div className="z-15">
-                <PrivateEllipsisDropdown
-                  items={modifiedThreeDotItems}
-                  onSelect={(key) => {
-                    if (key === 'archive') {
-                      openItemDeleteModal(byte.byteId, byte.name, ByteCollectionItemType.Byte);
-                    } else if (key === 'unarchive') {
-                      openItemUnarchiveModal(byte.byteId, byte.name, ByteCollectionItemType.Byte);
-                    } else {
-                      openByteEditModal(byte.byteId);
-                    }
-                  }}
-                />
-              </div>
+              <PrivateEllipsisDropdown
+                items={modifiedThreeDotItems}
+                onSelect={(key) => {
+                  if (key === 'archive') {
+                    openItemDeleteModal(byte.byteId, byte.name, ByteCollectionItemType.Byte);
+                  } else if (key === 'unarchive') {
+                    openItemUnarchiveModal(byte.byteId, byte.name, ByteCollectionItemType.Byte);
+                  } else if (key === 'move') {
+                    openItemMoveModal(byte.byteId, byte.name, ByteCollectionItemType.Byte);
+                  } else {
+                    openByteEditModal(byte.byteId);
+                  }
+                }}
+              />
             )}
           </div>
         </div>

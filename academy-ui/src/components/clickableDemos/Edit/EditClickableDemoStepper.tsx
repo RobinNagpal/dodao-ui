@@ -1,4 +1,4 @@
-import ClickableDemoStepperItem from '@/components/clickableDemos/Edit/EditClickableDemoStepperItem';
+import EditClickableDemoStepperItem from '@/components/clickableDemos/Edit/EditClickableDemoStepperItem';
 import { UpdateClickableDemoFunctions } from '@/components/clickableDemos/Edit/useEditClickableDemo';
 import { UpsertClickableDemoInput } from '@/graphql/generated/generated-types';
 import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
@@ -53,7 +53,7 @@ export default function EditClickableDemoStepper({
               errorMessage="This Step has an error!!"
             >
               <div className="w-full">
-                <ClickableDemoStepperItem
+                <EditClickableDemoStepperItem
                   space={space}
                   clickableDemo={clickableDemo}
                   clickableDemoErrors={clickableDemoErrors}
@@ -70,6 +70,7 @@ export default function EditClickableDemoStepper({
                   }}
                   removeStep={updateClickableDemoFunctions.removeStep}
                   onUpdateStep={updateClickableDemoFunctions.updateStep}
+                  uploadToS3AndReturnScreenshotUrl={updateClickableDemoFunctions.uploadToS3AndReturnScreenshotUrl}
                 />
               </div>
             </Accordion>

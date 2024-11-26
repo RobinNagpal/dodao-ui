@@ -13,8 +13,8 @@ export default function LoginLogoutButtons(props: { session: Session | null; spa
 
   return (
     <div>
-      <div className="flex-col">
-        {props.session?.username && <p>Welcome - {props.session?.username}</p>}
+      <div className="flex flex-col items-center justify-center gap-y-5">
+        {props.session?.username && <p className="font-medium text-lg">Welcome - {props.session?.username}</p>}
         {props.session?.username && (
           <ButtonLarge variant={'contained'} primary onClick={logout}>
             Logout

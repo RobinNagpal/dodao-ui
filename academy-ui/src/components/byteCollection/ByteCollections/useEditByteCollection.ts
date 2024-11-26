@@ -1,9 +1,9 @@
 import { ByteCollectionDto, ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import { CreateByteCollectionRequest } from '@/types/request/ByteCollectionRequests';
 import { SpaceTypes, SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
-import { useFetchUtils } from '@dodao/web-core/ui/hooks/useFetchUtils';
+import { useUpdateData } from '@dodao/web-core/ui/hooks/fetch/useUpdateData';
+import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 export type EditByteCollection = Omit<ByteCollectionSummary, 'id' | 'items'> & { id?: string };
@@ -12,7 +12,7 @@ interface HelperFunctions {
   updateByteCollectionName: (name: string) => void;
   updateByteCollectionDescription: (description: string) => void;
   updateByteCollectionVideoUrl: (videoUrl: string) => void;
-  updateByteCollectionPriority: (priority: number) => void;
+  updateByteCollectionOrder: (order: number) => void;
   upsertByteCollection: () => void;
 }
 
@@ -29,10 +29,27 @@ export interface UseEditByteCollectionArgs {
 }
 
 export function useEditByteCollection({ space, byteCollection: byteCollectionProp }: UseEditByteCollectionArgs): UseEditByteCollectionType {
-  const { postData, putData } = useFetchUtils();
+  const redirectPath = space.type === SpaceTypes.AcademySite ? '/tidbit-collections' : '/';
+  const { updateData: putData } = useUpdateData<ByteCollectionDto, CreateByteCollectionRequest>(
+    {},
+    {
+      redirectPath: `${redirectPath}?updated=${Date.now()}`,
+      successMessage: 'Tidbit collection updated successfully',
+      errorMessage: 'Failed to create updated collection',
+    },
+    'PUT'
+  );
+
+  const { postData } = usePostData<ByteCollectionDto, CreateByteCollectionRequest>(
+    {
+      redirectPath: `${redirectPath}?updated=${Date.now()}`,
+      successMessage: 'Tidbit collection created successfully',
+      errorMessage: 'Failed to create tidbit collection',
+    },
+    {}
+  );
+  const [loading, setLoading] = useState<boolean>(false);
   const [isPrestine, setIsPrestine] = useState<boolean>(true);
-  const router = useRouter();
-  const [loading, setloading] = useState<boolean>(false);
 
   const [byteCollection, setByteCollection] = useState<EditByteCollection>({
     id: byteCollectionProp?.id,
@@ -43,7 +60,7 @@ export function useEditByteCollection({ space, byteCollection: byteCollectionPro
     description: byteCollectionProp?.description || '',
     byteIds: byteCollectionProp?.bytes?.map((byte) => byte.byteId) || [],
     archive: byteCollectionProp?.archive,
-    priority: byteCollectionProp?.priority || 50,
+    order: byteCollectionProp?.order || 100,
     videoUrl: byteCollectionProp?.videoUrl || '',
   });
 
@@ -57,7 +74,7 @@ export function useEditByteCollection({ space, byteCollection: byteCollectionPro
       description: byteCollectionProp?.description || '',
       byteIds: byteCollectionProp?.bytes?.map((byte) => byte.byteId) || [],
       archive: byteCollectionProp?.archive,
-      priority: byteCollectionProp?.priority || 50,
+      order: byteCollectionProp?.order || 100,
       videoUrl: byteCollectionProp?.videoUrl || '',
     });
   }, [byteCollectionProp]);
@@ -74,53 +91,36 @@ export function useEditByteCollection({ space, byteCollection: byteCollectionPro
     setByteCollection((prevByte) => ({ ...prevByte, videoUrl }));
   };
 
-  const updateByteCollectionPriority = (priority: number) => {
-    setByteCollection((prevByte) => ({ ...prevByte, priority }));
+  const updateByteCollectionOrder = (order: number) => {
+    setByteCollection((prevByte) => ({ ...prevByte, order }));
   };
   const upsertByteCollection = async () => {
-    setloading(true);
     setIsPrestine(false);
 
     if (!byteCollection.name.trim() || !byteCollection.description.trim()) {
       return;
     }
-    const redirectPath = space.type === SpaceTypes.AcademySite ? '/tidbit-collections' : '/';
     try {
+      setLoading(true);
       if (byteCollectionProp?.id) {
-        await putData<ByteCollectionDto, CreateByteCollectionRequest>(
-          `${getBaseUrl()}/api/${space.id}/byte-collections/${byteCollectionProp?.id}`,
-          {
-            name: byteCollection.name,
-            description: byteCollection.description,
-            priority: byteCollection.priority,
-            videoUrl: byteCollection.videoUrl,
-          },
-          {
-            redirectPath: `${redirectPath}?updated=${Date.now()}`,
-            successMessage: 'Tidbit collection updated successfully',
-            errorMessage: 'Failed to create updated collection',
-          }
-        );
+        await putData(`${getBaseUrl()}/api/${space.id}/byte-collections/${byteCollectionProp?.id}`, {
+          name: byteCollection.name,
+          description: byteCollection.description,
+          order: byteCollection.order,
+          videoUrl: byteCollection.videoUrl,
+        });
       } else {
-        await postData<ByteCollectionDto, CreateByteCollectionRequest>(
-          `${getBaseUrl()}/api/${space.id}/byte-collections`,
-          {
-            name: byteCollection.name,
-            description: byteCollection.description,
-            priority: byteCollection.priority,
-            videoUrl: byteCollection.videoUrl,
-          },
-          {
-            redirectPath: `${redirectPath}?updated=${Date.now()}`,
-            successMessage: 'Tidbit collection created successfully',
-            errorMessage: 'Failed to create tidbit collection',
-          }
-        );
+        await postData(`${getBaseUrl()}/api/${space.id}/byte-collections`, {
+          name: byteCollection.name,
+          description: byteCollection.description,
+          order: byteCollection.order,
+          videoUrl: byteCollection.videoUrl,
+        });
       }
+      setLoading(false);
     } catch (e) {
       console.error(e);
     }
-    setloading(false);
   };
 
   return {
@@ -131,7 +131,7 @@ export function useEditByteCollection({ space, byteCollection: byteCollectionPro
       updateByteCollectionName,
       updateByteCollectionDescription,
       updateByteCollectionVideoUrl,
-      updateByteCollectionPriority,
+      updateByteCollectionOrder,
       upsertByteCollection,
     },
   };

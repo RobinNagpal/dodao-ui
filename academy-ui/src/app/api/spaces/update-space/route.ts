@@ -1,6 +1,6 @@
 import { MutationUpdateSpaceArgs } from '@/graphql/generated/generated-types';
 import { upsertSpaceIntegrations } from '@/app/api/helpers/space/upsertSpaceIntegrations';
-import { getSpaceWithIntegrations } from '@/app/api/helpers/space';
+import { getSpaceWithIntegrations } from '@/app/api/helpers/getSpaceWithIntegrations';
 import { verifySpaceEditPermissions } from '@/app/api/helpers/permissions/verifySpaceEditPermissions';
 import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { isDoDAOSuperAdmin } from '@/app/api/helpers/space/isSuperAdmin';

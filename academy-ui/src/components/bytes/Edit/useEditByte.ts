@@ -10,7 +10,7 @@ import { isQuestion, isUserInput } from '@dodao/web-core/types/deprecated/helper
 import { ByteErrors, CompletionScreenErrors, CompletionScreenItemErrors } from '@dodao/web-core/types/errors/byteErrors';
 import { StepError } from '@dodao/web-core/types/errors/error';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { useFetchUtils } from '@dodao/web-core/ui/hooks/useFetchUtils';
+import { useUpdateData } from '@dodao/web-core/ui/hooks/fetch/useUpdateData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { Byte } from '@prisma/client';
@@ -65,7 +65,15 @@ export function useEditByte(space: SpaceWithIntegrationsDto, onUpsert: (byteId: 
   const [byteUpserting, setByteUpserting] = useState<boolean>(false);
 
   const { showNotification } = useNotificationContext();
-  const { putData } = useFetchUtils();
+  const { updateData: putData } = useUpdateData<Byte, UpsertByteInput>(
+    {},
+    {
+      redirectPath: `/?updated=${Date.now()}`,
+      successMessage: 'Tidbit saved successfully!',
+      errorMessage: 'Failed to save tidbit',
+    },
+    'PUT'
+  );
   const { $t } = useI18();
 
   const initialize = useCallback(async () => {
@@ -428,17 +436,9 @@ export function useEditByte(space: SpaceWithIntegrationsDto, onUpsert: (byteId: 
   const handleByteUpsert = async (byteCollection: ByteCollectionSummary) => {
     await saveViaMutation(async () => {
       const upsertByteInput = getByteInputFn(byte);
-      const upsertResponse = await putData<Byte, UpsertByteInput>(
-        `${getBaseUrl()}/api/${space.id}/byte-collections/${byteCollection.id}/bytes/${upsertByteInput.id}`,
-        {
-          ...upsertByteInput,
-        },
-        {
-          redirectPath: `/?updated=${Date.now()}`,
-          successMessage: 'Tidbit saved successfully!',
-          errorMessage: 'Failed to save tidbit',
-        }
-      );
+      const upsertResponse = await putData(`${getBaseUrl()}/api/${space.id}/byte-collections/${byteCollection.id}/bytes/${upsertByteInput.id}`, {
+        ...upsertByteInput,
+      });
       return upsertResponse!;
     });
   };
