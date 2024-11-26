@@ -6,7 +6,6 @@
     "referral-ui",
     "base-ui",
     "rubrics-ui",
-    "dodao-lambdas",
     "clickable-demos",
     "shared/web-core"
   ],
