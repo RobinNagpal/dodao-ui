@@ -109,7 +109,7 @@ export function useEditClickableDemo(space: SpaceWithIntegrationsDto, demoId: st
   function moveStepUp(stepUuid: string) {
     const steps = [...clickableDemo.steps];
     const index = steps.findIndex((step) => step.id === stepUuid);
-    if (index >= 0 && index < steps.length - 1) {
+    if (index > 0) {
       // Swap elements to move the step up
       const temp = steps[index];
       steps[index] = steps[index - 1];
